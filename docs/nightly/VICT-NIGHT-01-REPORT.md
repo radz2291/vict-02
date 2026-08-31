@@ -215,3 +215,57 @@ server. Runs, events, and graph versions become restart-survivable while the
 public API stays identical. Include migration of the existing in-memory
 repository to the new port and keep every test offline and deterministic
 (uses `node:sqlite`, which ships with the installed Node 22 LTS).
+
+---
+
+## Post-audit amendment (Night 01.1)
+
+The independent code audit (`VICT-NIGHT-01-CODE-AUDIT.md`, verdict
+**VERIFIED WITH ISSUES**) verified the PASS above and identified
+documentation inaccuracies and pre-persistence design gaps. The original
+report text above is preserved as written; the following corrections and
+closures apply from Night 01.1 onward (implementation and evidence in
+`VICT-NIGHT-01-FINALIZATION-REPORT.md`):
+
+1. **"`graphVersion` … any semantic change does change the version" —
+   corrected.** `graphVersion` is a topology/declaration fingerprint only.
+   Night 01.1 adds `capabilitySetVersion` (effective capability/contract
+   bindings incl. revisions and effect classes) and `activationVersion`
+   (hash over both), plus an immutable activation snapshot that runs pin to.
+   The audit's R1 scenario (same version, different handler/schema/effect) is
+   closed and regression-tested.
+2. **Issue-code count: 12 → 13.** The `GraphIssueCode` union has 13 codes;
+   the original report undercounted by one.
+3. **Benchmark investigation note corrected.** The bench graph (3 nodes,
+   2 edges) emits **10 events** and performs **6 contract validations** per
+   run — not "two contracts, 4 events" as originally noted. Timings
+   (median ≈0.03–0.04 ms, p95 ≈0.06–0.08 ms at 5000 iterations) were
+   reproduced by the audit and remain sound.
+4. **Isolated irreversible testing policy corrected.** The original
+   foundation table (and code comment) claimed "denied"; actual and intended
+   behaviour — matching the original handoff — is *double required, real
+   implementation never runs*: a registered safe double runs in isolated
+   tests, and without one the node is blocked. Documentation, code comment,
+   and a permanent regression test now align.
+5. **Zod boundary corrected and rebuilt.** Zod is no longer part of the base
+   public contract API: `defineContract` now takes a neutral definition
+   object; Zod convenience is the optional `@vict/contracts/zod` /
+   `@vict/sdk/zod` subpath (optional peer dependency). Base emitted
+   declarations contain no zod types; an isolated packed-package consumer
+   works without zod installed.
+6. **Trace safety vs run-history retention separated.** The original
+   "payloads are never recorded" claim was true for traces but not for
+   repository records (which stored full outputs). Night 01.1 introduces
+   `PayloadRetention` ('none' | 'summary' | 'full', default 'summary'):
+   stored records now contain metadata + safe summaries by default; full
+   payloads require explicit opt-in.
+7. **Error-message propagation sanitised.** Capability-thrown messages,
+   double-thrown messages, custom schema messages, and messages inside error
+   causes are no longer copied into traces, run records, or persistable
+   `VictError.details`; a correlation id, error class name, and
+   framework-generated messages are retained instead (adversarially tested
+   with unique secret strings).
+8. **Activation snapshot semantics documented.** Runs execute against an
+   immutable snapshot of the effective capabilities/contracts; test doubles
+   are snapshotted at run start; duplicate `registerDouble` is rejected in
+   favour of explicit `replaceDouble`.

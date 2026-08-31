@@ -14,7 +14,10 @@ import type {
 export const DEFAULT_MAX_STEPS = 100;
 
 const SYSTEM_CLOCK = { now: (): number => Date.now() };
-const SYSTEM_IDS = { runId: (): string => `run_${randomUUID()}` };
+const SYSTEM_IDS = {
+  runId: (): string => `run_${randomUUID()}`,
+  errorId: (): string => `err_${randomUUID()}`,
+};
 
 /**
  * Execute a compiled graph deterministically.
@@ -43,7 +46,9 @@ export async function executeGraph(run: KernelRunInput): Promise<KernelRunOutput
       seq: seq++,
       runId,
       graphId: graph.id,
-      graphVersion: graph.version,
+      graphVersion: graph.graphVersion,
+      capabilitySetVersion: graph.capabilitySetVersion,
+      activationVersion: graph.activationVersion,
       timestamp: clock.now(),
       ...event,
     } as KernelEvent;
@@ -233,7 +238,9 @@ export async function executeGraph(run: KernelRunInput): Promise<KernelRunOutput
       invocation = await ports.capabilities.invoke(node.capability, payload, {
         runId,
         graphId: graph.id,
-        graphVersion: graph.version,
+        graphVersion: graph.graphVersion,
+        capabilitySetVersion: graph.capabilitySetVersion,
+        activationVersion: graph.activationVersion,
         nodeId: node.id,
         capabilityId: node.capability,
         mode: run.mode,
@@ -242,12 +249,19 @@ export async function executeGraph(run: KernelRunInput): Promise<KernelRunOutput
       });
     } catch (cause) {
       // Ports must return explicit results; a throw is converted, never swallowed.
+      // The thrown message is untrusted content and is never copied into the
+      // error: only a safe type name and a correlation id are retained.
       invocation = {
         ok: false as const,
         error: kernelError(
           'VICT_KERNEL_PORT_FAILURE',
-          `Capability port threw while invoking '${node.capability}': ${cause instanceof Error ? cause.message : String(cause)}.`,
-          { capabilityId: node.capability, nodeId: node.id },
+          `Capability port threw while invoking '${node.capability}'; the thrown message is not retained.`,
+          {
+            capabilityId: node.capability,
+            nodeId: node.id,
+            errorName: cause instanceof Error ? cause.name : typeof cause,
+            errorId: ids.errorId?.(),
+          },
         ),
       };
     }
@@ -319,7 +333,9 @@ export async function executeGraph(run: KernelRunInput): Promise<KernelRunOutput
   return {
     runId,
     graphId: graph.id,
-    graphVersion: graph.version,
+    graphVersion: graph.graphVersion,
+    capabilitySetVersion: graph.capabilitySetVersion,
+    activationVersion: graph.activationVersion,
     status,
     output,
     error: finalError,

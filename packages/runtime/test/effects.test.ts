@@ -1,9 +1,10 @@
 import { describe, expect, it, vi } from 'vitest';
 import { z } from 'zod';
-import { defineCapability, defineContract, defineGraph } from '@vict/sdk';
+import { defineCapability, defineGraph } from '@vict/sdk';
+import { defineZodContract } from '@vict/sdk/zod';
 import { createInMemoryRunRepository, createRuntime } from '@vict/runtime';
 
-const Count = defineContract('e.count', z.object({ count: z.number() }));
+const Count = defineZodContract('e.count', '1', z.object({ count: z.number() }));
 
 /** Build a runtime with one capability whose real and double implementations are spied on. */
 function spyCapability(effect: 'pure' | 'read' | 'write' | 'irreversible') {
@@ -11,6 +12,7 @@ function spyCapability(effect: 'pure' | 'read' | 'write' | 'irreversible') {
   const double = vi.fn((input: unknown) => ({ count: (input as { count: number }).count + 1 }));
   const capability = defineCapability({
     id: `e.${effect}`,
+    revision: '1',
     effect,
     input: Count,
     output: Count,
@@ -228,6 +230,25 @@ describe('isolated node testing', () => {
     // A normal run still lands in the repository afterwards.
     await runtime.run({ count: 2 });
     expect(runtime.listRuns().length).toBe(1);
+  });
+
+  it('runs a registered safe double for irreversible capabilities in isolated testing while the real implementation stays untouched', async () => {
+    const irreversible = spyCapability('irreversible');
+    const runtime = createRuntime();
+    runtime.registerCapability(irreversible.capability);
+    runtime.registerDouble('e.irreversible', irreversible.double);
+    runtime.activate(oneNodeGraph('e.irreversible'));
+
+    const result = await runtime.runNode('n', { count: 3 });
+    // The safe double runs; the real irreversible implementation never does.
+    expect(result.status).toBe('completed');
+    expect(irreversible.double).toHaveBeenCalledTimes(1);
+    expect(irreversible.real).not.toHaveBeenCalled();
+    expect(result.output).toEqual({ count: 4 });
+    const completed = result.trace.find((event) => event.type === 'node.completed');
+    if (completed?.type === 'node.completed') {
+      expect(completed.invokedVia).toBe('double');
+    }
   });
 
   it('rejects isolated runs for unknown nodes', async () => {

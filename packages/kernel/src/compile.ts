@@ -1,4 +1,10 @@
-import { canonicalSemanticForm, computeGraphVersion } from './canonical.js';
+import {
+  canonicalSemanticForm,
+  computeActivationVersion,
+  computeCapabilitySetVersion,
+  computeGraphVersion,
+} from './canonical.js';
+import type { CapabilityBindingFingerprint } from './canonical.js';
 import type {
   ApplicationGraphDefinition,
   CapabilityIndex,
@@ -162,12 +168,12 @@ export function compileGraph(input: CompileGraphInput): CompileResult {
     const outputContractId = node.outputContractId ?? descriptor.outputContractId;
     effectiveNodes.set(id, { id, capability: node.capability, inputContractId, outputContractId });
 
-    // Node-level contract overrides must reference registered contracts.
+    // Node-level contract overrides must resolve to registered contracts.
     for (const [role, contractId] of [
       ['input', node.inputContractId],
       ['output', node.outputContractId],
     ] as const) {
-      if (contractId !== undefined && !contracts.has(contractId)) {
+      if (contractId !== undefined && contracts.get(contractId) === undefined) {
         issues.push({
           code: 'MISSING_CONTRACT',
           message: `Node '${id}' overrides its ${role} contract with unknown contract '${contractId}'.`,
@@ -235,11 +241,52 @@ export function compileGraph(input: CompileGraphInput): CompileResult {
     frozenNodes[id] = Object.freeze({ ...node });
   }
   const nodeIds = Object.freeze([...effectiveNodes.keys()].sort());
-  const version = computeGraphVersion(definition);
+  const graphVersion = computeGraphVersion(definition);
+
+  // Effective capability/contract bindings: capability id + revision + effect
+  // class + effective input/output contract id + revision, per resolved node.
+  // Contract override revisions are resolved from the contract environment.
+  const bindings: CapabilityBindingFingerprint[] = [];
+  for (const rawNode of definition.nodes) {
+    const node = effectiveNodes.get(rawNode.id);
+    if (!node) {
+      continue; // already rejected above with a structured issue
+    }
+    const descriptor = capabilities.getCapabilityDescriptor(node.capability);
+    if (!descriptor) {
+      continue; // already rejected above with a structured issue
+    }
+    const inputId = node.inputContractId;
+    const outputId = node.outputContractId;
+    const inputRevision =
+      inputId === undefined
+        ? undefined
+        : rawNode.input !== undefined
+          ? contracts.get(inputId)?.revision
+          : descriptor.inputRevision;
+    const outputRevision =
+      outputId === undefined
+        ? undefined
+        : rawNode.output !== undefined
+          ? contracts.get(outputId)?.revision
+          : descriptor.outputRevision;
+    bindings.push({
+      capability: node.capability,
+      revision: descriptor.revision,
+      effect: descriptor.effect,
+      input: inputId === undefined ? null : { id: inputId, revision: inputRevision ?? 'unknown' },
+      output:
+        outputId === undefined ? null : { id: outputId, revision: outputRevision ?? 'unknown' },
+    });
+  }
+  const capabilitySetVersion = computeCapabilitySetVersion(bindings);
+  const activationVersion = computeActivationVersion(graphVersion, capabilitySetVersion);
 
   const graph: CompiledGraph = Object.freeze({
     id: definition.id,
-    version,
+    graphVersion,
+    capabilitySetVersion,
+    activationVersion,
     entryNodeId: definition.entry,
     nodeCount: nodeIds.length,
     nodeIds,

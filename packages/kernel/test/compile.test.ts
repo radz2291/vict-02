@@ -15,8 +15,19 @@ function descriptor(
   effect: CapabilityDescriptor['effect'] = 'pure',
   inputContractId?: string,
   outputContractId?: string,
+  revision = '1',
+  inputRevision?: string,
+  outputRevision?: string,
 ): CapabilityDescriptor {
-  return { id, effect, inputContractId, outputContractId };
+  return {
+    id,
+    revision,
+    effect,
+    inputContractId,
+    inputRevision: inputRevision ?? (inputContractId ? '1' : undefined),
+    outputContractId,
+    outputRevision: outputRevision ?? (outputContractId ? '1' : undefined),
+  };
 }
 
 function capabilityIndex(entries: CapabilityDescriptor[]): CapabilityIndex {
@@ -25,12 +36,23 @@ function capabilityIndex(entries: CapabilityDescriptor[]): CapabilityIndex {
 }
 
 /** Identity-based static compatibility: unknown sides are assumed compatible. */
+const registeredContractIds = new Set(['In', 'Out', 'InB', 'OutA', 'vict.error-signal']);
+const contractObjects = new Map(
+  [...registeredContractIds].map((id) => [
+    id,
+    {
+      id,
+      revision: '1',
+      expected: id,
+      parse: (input: unknown) => ({ ok: true as const, value: input }),
+    },
+  ]),
+);
 const contracts: ContractEnvironment = {
   has: (id) => registeredContractIds.has(id),
   isCompatible: (from, to) => from === undefined || to === undefined || from === to,
-  get: () => undefined,
+  get: (id) => contractObjects.get(id),
 };
-const registeredContractIds = new Set(['In', 'Out', 'InB', 'OutA', 'vict.error-signal']);
 
 /** Permissive knowledge: used by tests that exercise other rules (e.g. cycles). */
 const permissiveContracts: ContractEnvironment = {
@@ -77,7 +99,9 @@ describe('compileGraph', () => {
     expect(graph.entryNodeId).toBe('a');
     expect(graph.nodeCount).toBe(3);
     expect(graph.nodeIds).toEqual(['a', 'b', 'c']);
-    expect(graph.version).toMatch(/^v1_[0-9a-f]{64}$/);
+    expect(graph.graphVersion).toMatch(/^v1_[0-9a-f]{64}$/);
+    expect(graph.capabilitySetVersion).toMatch(/^v1_[0-9a-f]{64}$/);
+    expect(graph.activationVersion).toMatch(/^v1_[0-9a-f]{64}$/);
     expect(graph.successTargetOf('a')).toBe('b');
     expect(graph.successTargetOf('c')).toBeUndefined();
     expect(graph.errorTargetOf('a')).toBeUndefined();
@@ -115,7 +139,9 @@ describe('compileGraph', () => {
     const resultA = compileGraph({ definition: defA, capabilities: VALID_CAPS, contracts });
     const resultB = compileGraph({ definition: shuffled, capabilities: VALID_CAPS, contracts });
     if (resultA.ok && resultB.ok) {
-      expect(resultA.graph.version).toBe(resultB.graph.version);
+      expect(resultA.graph.graphVersion).toBe(resultB.graph.graphVersion);
+      expect(resultA.graph.capabilitySetVersion).toBe(resultB.graph.capabilitySetVersion);
+      expect(resultA.graph.activationVersion).toBe(resultB.graph.activationVersion);
     } else {
       expect.unreachable('valid graphs should compile');
     }
@@ -125,6 +151,17 @@ describe('compileGraph', () => {
     const defA: ApplicationGraphDefinition = VALID_DEF;
     const defB: ApplicationGraphDefinition = { ...VALID_DEF, id: 'g2' };
     expect(computeGraphVersion(defA)).not.toBe(computeGraphVersion(defB));
+  });
+
+  it('accepts node contract overrides that resolve to registered contracts', () => {
+    const def: ApplicationGraphDefinition = {
+      id: 'g',
+      entry: 'a',
+      nodes: [{ id: 'a', capability: 'cap-a', input: 'In' }],
+      edges: [],
+    };
+    const result = compileGraph({ definition: def, capabilities: VALID_CAPS, contracts });
+    expect(result.ok).toBe(true);
   });
 
   it('rejects duplicate node ids', () => {

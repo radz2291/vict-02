@@ -16,13 +16,19 @@ import type {
 
 /** A contract that accepts everything (kernel-level tests don't need real schemas). */
 function acceptAll(id: string): Contract<unknown> {
-  return { id, expected: 'anything', parse: (input) => ({ ok: true, value: input }) };
+  return {
+    id,
+    revision: '1',
+    expected: 'anything',
+    parse: (input) => ({ ok: true, value: input }),
+  };
 }
 
 /** A contract that rejects everything with one structured issue. */
 function rejectAll(id: string): Contract<unknown> {
   return {
     id,
+    revision: '1',
     expected: 'nothing',
     parse: () => ({
       ok: false as const,
@@ -53,9 +59,12 @@ function makeHarness(options?: {
   const capabilityIndex: CapabilityIndex = {
     getCapabilityDescriptor: (id) => ({
       id,
+      revision: '1',
       effect: effects[id] ?? 'pure',
       inputContractId: contractMap.has(`in:${id}`) ? `in:${id}` : undefined,
+      inputRevision: contractMap.has(`in:${id}`) ? '1' : undefined,
       outputContractId: contractMap.has(`out:${id}`) ? `out:${id}` : undefined,
+      outputRevision: contractMap.has(`out:${id}`) ? '1' : undefined,
     }),
   };
   const contractEnvironment: ContractEnvironment = {

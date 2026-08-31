@@ -9,8 +9,10 @@ const resolveFromRoot = (relative: string): string =>
 const aliases = {
   '@vict/kernel/testing': resolveFromRoot('packages/kernel/src/testing.ts'),
   '@vict/kernel': resolveFromRoot('packages/kernel/src/index.ts'),
+  '@vict/contracts/zod': resolveFromRoot('packages/contracts/src/zod/index.ts'),
   '@vict/contracts': resolveFromRoot('packages/contracts/src/index.ts'),
   '@vict/runtime': resolveFromRoot('packages/runtime/src/index.ts'),
+  '@vict/sdk/zod': resolveFromRoot('packages/sdk/src/zod.ts'),
   '@vict/sdk': resolveFromRoot('packages/sdk/src/index.ts'),
 };
 

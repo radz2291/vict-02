@@ -1,6 +1,5 @@
 import { runAraTurn } from './ara.js';
 import { AssistantMessageContract } from './contracts.js';
-
 /**
  * Executable demonstration: one deterministic ARA turn, printed with its run
  * identity and ordered event summary. Runs fully offline.
@@ -27,7 +26,9 @@ async function main(): Promise<void> {
   console.log('Final structured response:');
   console.log(JSON.stringify(validated.value, null, 2));
   console.log(`Run ID: ${result.runId}`);
-  console.log(`Graph version: ${graphVersion}`);
+  console.log(`Graph version (topology): ${graphVersion}`);
+  console.log(`Capability set version: ${result.capabilitySetVersion}`);
+  console.log(`Activation version: ${result.activationVersion}`);
   console.log('Ordered events:');
   for (const event of result.trace) {
     const node = 'nodeId' in event ? ` ${event.nodeId}` : '';

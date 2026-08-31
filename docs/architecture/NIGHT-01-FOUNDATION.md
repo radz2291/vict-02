@@ -1,7 +1,10 @@
 # Night 01 Foundation — Vict Kernel
 
-Status: verified. Everything in this note is derived from running code in this
-repository (see `docs/nightly/VICT-NIGHT-01-REPORT.md` for evidence).
+Status: verified (Night 01.1 finalization applied). Everything in this note is
+derived from running code in this repository (see
+`docs/nightly/VICT-NIGHT-01-FINALIZATION-REPORT.md` for the post-audit
+evidence, and `docs/nightly/VICT-NIGHT-01-REPORT.md` for the original night
+plus its post-audit amendment).
 
 ## What Vict is (Night 01 slice)
 
@@ -22,29 +25,35 @@ user message → prepare context → assistant capability → assistant response
        ↑                 ↑                ↑
        └──────────────── @vict/sdk ───────┘  (public authoring facade)
 
-examples/ara-proof → @vict/sdk + @vict/runtime
+examples/ara-proof → @vict/sdk (+ optional @vict/sdk/zod)
 ```
 
-- **@vict/contracts** — executable data promises (`Contract<T>`), structured
+- **@vict/contracts** — the neutral contract API: executable data promises
+  (`Contract<T>` with `id`, `revision`, `expected`, `parse`), structured
   validation results (`ContractResult`, `ContractIssue`), and the shared
   `VictError` shape plus a ready `errorSignalContract` for error handlers.
-  Implementation detail: a small adapter over zod. Zod types are **not**
-  exported; issue mapping guarantees received values are never copied into
-  validation results.
+  The base package is **schema-library neutral**: no schema library appears
+  in its signatures or emitted declarations. Zod convenience exists only in
+  the optional `@vict/contracts/zod` adapter subpath (zod as an optional peer
+  dependency), which maps zod issues onto neutral, safe `ContractIssue`
+  objects with framework-generated messages.
 - **@vict/kernel** — pure graph semantics: definition types, compiler with
-  structured rejections, immutable compiled graphs, deterministic graph
-  versions, the sequential executor, ordered trace events, structured errors.
-  The kernel performs **no** filesystem, network, database, provider, or
-  secret access. All environment access arrives through explicit ports
-  (`CapabilityPort`, `PolicyPort`, `ContractEnvironment`, `CapabilityIndex`,
-  `Clock`, `IdFactory`).
+  structured rejections (13 stable issue codes), immutable compiled graphs,
+  layered activation identity, the sequential executor, ordered trace events,
+  structured errors. The kernel performs **no** filesystem, network, database,
+  provider, or secret access. All environment access arrives through explicit
+  ports (`CapabilityPort`, `PolicyPort`, `ContractEnvironment`,
+  `CapabilityIndex`, `Clock`, `IdFactory`).
 - **@vict/runtime** — the usable in-process runtime: capability registry,
-  test doubles, execution modes (`normal | simulate | test`), effect policy
-  enforcement, atomic graph activation, isolated node testing, in-memory run
-  repository, public execution facade. Contains no ARA-specific logic.
+  test doubles (`registerDouble`/`replaceDouble`), execution modes
+  (`normal | simulate | test`), effect policy enforcement, atomic activation
+  with an **immutable activation snapshot**, isolated node testing, payload
+  retention policy, in-memory run repository, public execution facade.
+  Contains no ARA-specific logic.
 - **@vict/sdk** — the stable import surface for application authors:
-  `defineContract`, `defineCapability`, `defineGraph`, `createRuntime`, and
-  the public vocabulary. No lower package imports from the SDK.
+  `defineContract` (neutral), `defineCapability`, `defineGraph`,
+  `createRuntime`, and the public vocabulary. Optional Zod authoring sugar
+  lives in `@vict/sdk/zod`. No lower package imports from the SDK.
 
 No circular dependencies. The physical arrangement matches the handoff; no
 deviation was necessary.
@@ -54,26 +63,60 @@ deviation was necessary.
 | Concept | Implementation |
 |---|---|
 | Kernel | `@vict/kernel` — compile + execute, pure, port-driven |
-| Contract | `Contract<T>` with `parse(input): ContractResult<T>` |
-| Capability | `CapabilityDefinition<I, O>` — id, effect class, contracts, `invoke` |
-| Runtime | `VictRuntime` / `createRuntime()` |
+| Contract | `Contract<T>` with `id`, `revision`, `expected`, `parse` |
+| Capability | `CapabilityDefinition<I, O>` — id, revision, effect class, contracts, `invoke` |
+| Runtime | `VictRuntime` / `createRuntime()` with an immutable activation snapshot |
 | Application graph | `ApplicationGraphDefinition` (id, entry, nodes, edges) |
 | Change set | Not implemented (future governed modification unit) |
 | Capability pack | Not implemented (future installable collection) |
 
+## Activation identity: three distinct layers
+
+Revisions are an **author/build responsibility**: changing handler logic,
+effect classification or contract semantics requires changing the `revision`
+(e.g. `revision: '1'` → `'2'`). Identity never hashes function bodies, schema
+internals, memory addresses, timestamps, or object insertion order. Missing or
+empty revisions are rejected with structured errors at authoring/registration
+time.
+
+1. **`graphVersion`** — SHA-256 over a canonicalized *topology/declaration*
+   form: graph id, entry, nodes (id, capability reference, contract override
+   references), edges. `graphVersion` is a declaration fingerprint **only**;
+   it makes no claim about executable semantics.
+2. **`capabilitySetVersion`** — SHA-256 over the effective capability/contract
+   bindings the activated graph requires: per resolved node, the capability
+   id + capability revision + effect class + effective input/output contract
+   id + contract revision (node overrides resolved), canonically sorted and
+   deduplicated. Only capabilities actually required by the graph contribute.
+3. **`activationVersion`** — SHA-256 over
+   `graphVersion + capabilitySetVersion + activation schema marker`. This is
+   the identity of the exact executable activation.
+
+Every normal/simulated run and every event identifies graph id,
+`graphVersion`, `capabilitySetVersion`, and `activationVersion`.
+
 ## Execution lifecycle
 
-1. **Author** — application code defines contracts, capabilities, and a graph
-   through `@vict/sdk`.
-2. **Register** — capabilities (and their embedded contracts) register on a
-   runtime instance. Test doubles may be registered per capability.
-3. **Activate** — `runtime.activate(definition)` compiles the graph.
-   Compilation either produces an immutable compiled graph or a structured
-   rejection (`GraphIssue[]` with stable codes). **Activation is atomic**:
-   failure leaves the previous graph active. Compilation happens here, once —
+1. **Author** — application code defines contracts (neutral API or optional
+   adapter), capabilities, and a graph through `@vict/sdk`.
+2. **Register** — capabilities (with revisions) and their embedded contracts
+   register on a runtime instance. Registration validates revisions with
+   structured errors. Test doubles are registered with `registerDouble`;
+   replacement is explicit via `replaceDouble` (duplicates are rejected).
+3. **Activate** — `runtime.activate(definition)` compiles the graph and
+   **captures an immutable activation snapshot**: frozen copies of the
+   execution-relevant capability bindings (invoke references, revisions,
+   effect classes) and the contracts the graph requires. Compilation either
+   produces an immutable compiled graph or a structured rejection
+   (`GraphIssue[]` with stable codes). **Activation is atomic**: failure
+   leaves the previous snapshot active. Compilation happens here, once —
    never on the conversational hot path.
-4. **Run** — `runtime.run(input, { mode })` pins the run to the active graph
-   id/version, then the kernel executor:
+4. **Run** — `runtime.run(input, { mode })` executes against the activation
+   snapshot — never the live registry — with **doubles snapshotted at run
+   start**. Registering or mutating capabilities/contracts/doubles after
+   activation cannot affect an active graph or an in-flight run; an explicit
+   `activate()` call captures updated registry state under a new activation
+   identity when execution-relevant metadata changed. The kernel executor:
    - checks the effect policy for the node's capability,
    - validates the input against the effective input contract
      (node override, else capability declaration),
@@ -81,33 +124,49 @@ deviation was necessary.
    - validates the output against the effective output contract,
    - routes validated output along the success edge,
    - converts failures (capability errors, contract rejections, port
-     failures) into structured `VictError` signals routed along the explicit
-     error edge, or fails the run honestly when none exists,
+     failures) into structured, **sanitised** `VictError` signals routed
+     along the explicit error edge, or fails the run honestly when none
+     exists,
    - enforces a hard maximum step count (defense in depth; cycles are already
      rejected at compile time),
    - emits ordered events (`seq` is monotonic per run; timestamps are
      diagnostics only).
-5. **Trace** — the `RunResult` carries status/output/error and the full
-   ordered `KernelEvent[]`. Normal and simulate runs are recorded in the
-   in-memory repository; isolated node runs are not.
+5. **Trace and history** — the `RunResult` carries status/output/error and
+   the full ordered `KernelEvent[]`. Run records are written to the in-memory
+   repository under the runtime's payload retention policy (see below);
+   isolated node runs are not persisted.
 
 Event vocabulary: `run.started`, `node.started`, `node.completed`,
 `node.failed`, `contract.rejected`, `signal.routed`, `effect.blocked`,
-`run.completed`, `run.failed`, `run.blocked`. Every event carries run id,
-graph id, graph version, sequence number, and timestamp. Payloads are never
-recorded: outputs are summarized to shapes/lengths/key-names only, and
-secret-like key names are redacted (`password`, `secret`, `token`,
-`credential`, `api-key`, `private-key`, `authorization`).
+`run.completed`, `run.failed`, `run.blocked`.
 
-## Graph identity and versioning
+## Trace safety versus run-history retention
 
-`graphVersion` is a SHA-256 content hash (`v1_<64 hex>`) over a canonicalized
-semantic form of the definition: object keys sorted, node/edge arrays sorted
-by identity, absent optionals normalized to `null`, schema marker
-`vict.graph@1` included. Whitespace and key insertion order cannot change the
-version; any semantic change does. Determinism is covered by tests
-(`computeGraphVersion` equal across reordered, reformatted, JSON-round-tripped
-definitions).
+Two different guarantees, deliberately separated:
+
+- **Trace (always safe).** Events never contain values: outputs are
+  summarized to shapes/lengths/key-names only; secret-like key names are
+  redacted (`password`, `secret`, `token`, `credential`, `api-key`,
+  `private-key`, `authorization`); contract issues carry framework-generated
+  messages plus type-shape `received` descriptions.
+- **Run history (policy-controlled).** A stored `RunRecord` follows the
+  runtime's `PayloadRetention`:
+  - `'summary'` (default): metadata, status, trace, sanitised error, and the
+    safe output summary. **No complete payloads.**
+  - `'none'`: additionally drop the output summary.
+  - `'full'`: additionally retain the complete validated output. Explicit
+    opt-in via `createRuntime({ payloadRetention: 'full' })`.
+- **Errors are sanitised at their source.** Thrown capability/double errors
+  are untrusted: the runtime retains a stable code, capability/node ids, a
+  safe framework-generated message, the error class name, and a correlation
+  id — never the raw thrown message. Schema/adapter messages are never copied
+  into issues; a schema message surfaces only as `issue.safeMessage` when the
+  author explicitly opts in (`trustSchemaMessages`), and is then treated as
+  author-controlled content.
+- The caller-facing `RunResult.output` always carries the actual validated
+  output regardless of retention; retention governs *stored history* only.
+  The same `RunRecord`/`RunRepository` boundary is what a future `RunStore`
+  would persist.
 
 ## Simulation and effect policy
 
@@ -118,32 +177,45 @@ Enforced by the runtime before any invocation (kernel `PolicyPort`):
 | `pure` | real | real | real |
 | `read` | real | double required | double required |
 | `write` | real | double required | double required |
-| `irreversible` | real **only** with explicit `policy.allowIrreversible` | double required | denied |
+| `irreversible` | real **only** with explicit `policy.allowIrreversible` | double required (real never runs) | double required (real never runs) |
 
-When a required test double is absent, the runtime returns a structured
-**blocked** result (`effect.blocked` + `run.blocked`) including the capability
-id, effect class, mode, reason, and remediation. The real implementation is
-never invoked. Regression tests use spies that fail loudly if a real
-implementation is touched.
+In simulate and isolated-test modes the real implementation of read, write,
+and irreversible effects is **unreachable**: a registered safe double may
+run, and without a double the operation is blocked. Irreversible effects in
+normal mode require explicit caller permission
+(`policy: { allowIrreversible: true }`). Blocked results are structured
+(`effect.blocked` + `run.blocked`) with capability id, effect class, mode,
+reason, and remediation. Regression tests use spies that fail loudly if a
+real implementation runs where policy forbids it.
 
 Isolated node testing (`runtime.runNode(nodeId, input)`):
 
-- executes exactly one node of the active graph (mode forced to `test`),
-- never traverses outgoing edges,
-- never mutates the active graph,
-- never writes to the normal run repository/event stream,
+- executes exactly one node of the active graph (mode forced to `'test'`),
+- compiles against the activation snapshot, so post-activation registry
+  changes cannot affect it,
+- never traverses edges, never mutates the active graph, never writes to the
+  run repository,
 - returns its trace directly.
 
 ## Public API example
 
 ```ts
 import { createRuntime, defineCapability, defineContract, defineGraph } from '@vict/sdk';
-import { z } from 'zod';
 
-const Text = defineContract('app.Text', z.object({ text: z.string().min(1) }));
+// Neutral contract authoring (no schema library). Optional Zod sugar:
+//   import { defineZodContract } from '@vict/sdk/zod';
+const Text = defineContract<{ text: string }>({
+  id: 'app.text',
+  revision: '1',
+  parse: (input) =>
+    typeof (input as { text?: unknown })?.text === 'string'
+      ? { ok: true, value: input as { text: string } }
+      : { ok: false, issues: [{ code: 'invalid_type', path: 'text', message: "Expected a string at 'text'." }] },
+});
 
 const shout = defineCapability({
   id: 'app.shout',
+  revision: '1',
   effect: 'pure',
   input: Text,
   output: Text,
@@ -162,7 +234,9 @@ runtime.activate(defineGraph({
 const result = await runtime.run({ text: 'vict' });   // { status: 'completed', output: { text: 'VICT' }, trace: [...] }
 ```
 
-Executable demo: `npm run example` (deterministic ARA proof, fully offline).
+Executable demo: `npm run example` (deterministic ARA proof, fully offline,
+13 events). Package-isolation proof: `npm run verify:consumer` (installs
+packed tarballs into isolated consumers; the neutral consumer has no zod).
 
 ## Decisions that intentionally differ from legacy Vict
 
@@ -184,16 +258,20 @@ healer/recovery, capability registry service, change sets, capability packs,
 YAML serialization, HTTP/MCP surfaces, real model adapters, distributed
 execution, cloud deployment. Structural contract compatibility is currently
 identity-based (two adjacent contracts are statically compatible when they are
-the same contract id); richer structural rules are deferred.
+the same contract id); richer structural rules are deferred. Effect
+classifications are author-supplied labels — a capability labelled `pure`
+could still perform I/O; enforcement is only as truthful as the
+classification (documented trust boundary).
 
 ## Repository commands
 
 ```text
-npm run format:check   # prettier
-npm run lint           # eslint
-npm run typecheck      # tsc, whole workspace incl. tests
-npm test               # vitest (unit + integration projects)
-npm run build          # ordered package builds (contracts → kernel → runtime → sdk)
-npm run example        # deterministic ARA proof
-npm run bench          # three-node pure graph execution benchmark
+npm run format:check     # prettier
+npm run lint             # eslint
+npm run typecheck        # tsc, whole workspace incl. tests
+npm test                 # vitest (unit + integration projects)
+npm run build            # ordered package builds (contracts → kernel → runtime → sdk)
+npm run example          # deterministic ARA proof
+npm run bench            # three-node pure graph execution benchmark
+npm run verify:consumer  # isolated packed-package consumer check (run after build)
 ```

@@ -17,6 +17,7 @@ import { deterministicAssistant } from './assistant.js';
  */
 export const userMessageCapability = defineCapability({
   id: 'ara.user-message',
+  revision: '1',
   effect: 'pure',
   input: UserMessageContract,
   output: UserMessageContract,
@@ -25,6 +26,7 @@ export const userMessageCapability = defineCapability({
 
 export const prepareContextCapability = defineCapability({
   id: 'ara.prepare-context',
+  revision: '1',
   effect: 'pure',
   input: UserMessageContract,
   output: PreparedContextContract,
@@ -37,6 +39,7 @@ export const prepareContextCapability = defineCapability({
 export function createAssistantCapability() {
   return defineCapability({
     id: 'ara.assistant',
+    revision: '1',
     effect: 'read',
     input: PreparedContextContract,
     output: AssistantMessageContract,
@@ -46,6 +49,7 @@ export function createAssistantCapability() {
 
 export const assistantResponseCapability = defineCapability({
   id: 'ara.assistant-response',
+  revision: '1',
   effect: 'pure',
   input: AssistantMessageContract,
   output: AssistantMessageContract,

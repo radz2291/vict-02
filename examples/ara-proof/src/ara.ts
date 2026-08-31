@@ -23,7 +23,12 @@ export function createAraRuntime() {
 export async function runAraTurn(text: string) {
   const { runtime, activation } = createAraRuntime();
   const result = await runtime.run<{ role: 'assistant'; text: string }>({ text });
-  return { result, graphVersion: activation.graphVersion };
+  return {
+    result,
+    graphVersion: activation.graphVersion,
+    capabilitySetVersion: activation.capabilitySetVersion,
+    activationVersion: activation.activationVersion,
+  };
 }
 
 export type AraRunResult = Awaited<ReturnType<typeof runAraTurn>>['result'];

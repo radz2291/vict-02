@@ -13,10 +13,13 @@ export interface EffectPolicyOverrides {
  * | pure          | real                  | real                  | real                   |
  * | read          | real                  | double required       | double required        |
  * | write         | real                  | double required       | double required        |
- * | irreversible  | real only with explicit allow | double required | denied              |
+ * | irreversible  | real only with explicit allow | double required (real never runs) | double required (real never runs) |
  *
- * The runtime additionally denies a `useDouble` decision when no test double
- * is registered, producing a blocked result with remediation guidance.
+ * In simulate/test modes the real implementation of read, write and
+ * irreversible effects is unreachable: a registered safe double may run, and
+ * without one the operation is blocked. The runtime additionally denies a
+ * `useDouble` decision when no test double is registered, producing a
+ * blocked result with remediation guidance.
  */
 export function decideEffectAuthorization(
   request: EffectAuthorizationRequest,

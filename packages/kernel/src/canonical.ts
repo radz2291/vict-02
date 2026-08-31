@@ -2,15 +2,29 @@ import { createHash } from 'node:crypto';
 import type { ApplicationGraphDefinition } from './types.js';
 
 /**
- * Deterministic graph identity.
+ * Deterministic identity for Vict activations.
  *
- * The graph version is a SHA-256 content hash over a canonicalized *semantic*
- * form of the definition: object keys are sorted, node and edge arrays are
- * sorted by their identity fields, absent optionals become `null`. Whitespace
- * and object key insertion order therefore cannot change the version.
+ * Three distinct, layered identities:
+ *
+ * - `graphVersion` (see `computeGraphVersion`): SHA-256 over a canonicalized
+ *   *topology/declaration* form of the definition. It says nothing about
+ *   executable semantics.
+ * - `capabilitySetVersion` (see `computeCapabilitySetVersion`): SHA-256 over
+ *   the effective capability/contract bindings the graph requires — capability
+ *   id + revision + effect class + effective input/output contract id +
+ *   revision. Function bodies, zod internals, memory addresses, timestamps
+ *   and object insertion order are never hashed.
+ * - `activationVersion` (see `computeActivationVersion`): SHA-256 over
+ *   graphVersion + capabilitySetVersion + an activation schema marker — the
+ *   identity of the exact executable activation.
+ *
+ * Revisions are author/build responsibility: changing handler logic or
+ * contract semantics without changing the revision is invisible to identity.
  */
 
 const GRAPH_IDENTITY_SCHEMA = 'vict.graph@1';
+const CAPABILITY_SET_IDENTITY_SCHEMA = 'vict.capability-set@1';
+const ACTIVATION_IDENTITY_SCHEMA = 'vict.activation@1';
 
 interface CanonicalNode {
   readonly id: string;
@@ -31,6 +45,15 @@ interface CanonicalGraph {
   readonly entry: string;
   readonly nodes: readonly CanonicalNode[];
   readonly edges: readonly CanonicalEdge[];
+}
+
+/** One effective capability/contract binding required by a compiled graph. */
+export interface CapabilityBindingFingerprint {
+  readonly capability: string;
+  readonly revision: string;
+  readonly effect: string;
+  readonly input: { readonly id: string; readonly revision: string } | null;
+  readonly output: { readonly id: string; readonly revision: string } | null;
 }
 
 export function canonicalSemanticForm(definition: ApplicationGraphDefinition): CanonicalGraph {
@@ -96,9 +119,62 @@ function canonicalize(value: unknown): unknown {
   return out;
 }
 
+function sha256Hex(payload: string): string {
+  return createHash('sha256').update(payload).digest('hex');
+}
+
 export function computeGraphVersion(definition: ApplicationGraphDefinition): string {
-  const digest = createHash('sha256')
-    .update(canonicalJson(canonicalSemanticForm(definition)))
-    .digest('hex');
-  return `v1_${digest}`;
+  return `v1_${sha256Hex(canonicalJson(canonicalSemanticForm(definition)))}`;
+}
+
+/**
+ * Identity of the effective capability/contract set required by a graph.
+ * Bindings are canonically sorted and deduplicated so node multiplicity and
+ * registration order cannot change the version; only execution-relevant
+ * metadata can.
+ */
+export function computeCapabilitySetVersion(
+  bindings: readonly CapabilityBindingFingerprint[],
+): string {
+  const sorted = bindings
+    .map((binding) => ({
+      capability: binding.capability,
+      revision: binding.revision,
+      effect: binding.effect,
+      input:
+        binding.input === null ? null : { id: binding.input.id, revision: binding.input.revision },
+      output:
+        binding.output === null
+          ? null
+          : { id: binding.output.id, revision: binding.output.revision },
+    }))
+    .sort((a, b) => {
+      const keyA = canonicalJson(a);
+      const keyB = canonicalJson(b);
+      return keyA < keyB ? -1 : keyA > keyB ? 1 : 0;
+    });
+  const deduped: typeof sorted = [];
+  let previous: string | undefined;
+  for (const binding of sorted) {
+    const key = canonicalJson(binding);
+    if (key !== previous) {
+      deduped.push(binding);
+      previous = key;
+    }
+  }
+  return `v1_${sha256Hex(canonicalJson({ schema: CAPABILITY_SET_IDENTITY_SCHEMA, bindings: deduped }))}`;
+}
+
+/** Identity of the exact executable activation: topology + effective capability set. */
+export function computeActivationVersion(
+  graphVersion: string,
+  capabilitySetVersion: string,
+): string {
+  return `v1_${sha256Hex(
+    canonicalJson({
+      schema: ACTIVATION_IDENTITY_SCHEMA,
+      graphVersion,
+      capabilitySetVersion,
+    }),
+  )}`;
 }

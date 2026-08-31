@@ -8,20 +8,22 @@
  *
  * Usage: npm run bench
  */
-import { createRuntime, defineCapability, defineContract, defineGraph } from '@vict/sdk';
+import { createRuntime, defineCapability, defineGraph } from '@vict/sdk';
+import { defineZodContract } from '@vict/sdk/zod';
 import { z } from 'zod';
 import { createHash } from 'node:crypto';
 import { platform, release, arch } from 'node:os';
 
-const In = defineContract('bench.in', z.object({ n: z.number() }));
-const Mid = defineContract('bench.mid', z.object({ n: z.number(), doubled: z.boolean() }));
-const Out = defineContract('bench.out', z.object({ n: z.number(), digest: z.string() }));
+const In = defineZodContract('bench.in', '1', z.object({ n: z.number() }));
+const Mid = defineZodContract('bench.mid', '1', z.object({ n: z.number(), doubled: z.boolean() }));
+const Out = defineZodContract('bench.out', '1', z.object({ n: z.number(), digest: z.string() }));
 
 const runtime = createRuntime();
 runtime
   .registerCapability(
     defineCapability({
       id: 'bench.start',
+      revision: '1',
       effect: 'pure',
       input: In,
       output: In,
@@ -31,6 +33,7 @@ runtime
   .registerCapability(
     defineCapability({
       id: 'bench.prepare',
+      revision: '1',
       effect: 'pure',
       input: In,
       output: Mid,
@@ -40,6 +43,7 @@ runtime
   .registerCapability(
     defineCapability({
       id: 'bench.finish',
+      revision: '1',
       effect: 'pure',
       input: Mid,
       output: Out,
@@ -114,6 +118,7 @@ async function main(): Promise<void> {
   console.log(`node:            ${nodeVersion} (${platform()} ${release()} ${arch()})`);
   console.log(`packages:        @vict/* ${pkgVersions.kernel}`);
   console.log(`graph:           ${benchGraphId} @ ${benchGraphVersion.slice(0, 18)}...`);
+  console.log(`activation:      ${runtime.activeGraph()?.activationVersion.slice(0, 18)}...`);
   console.log(`iterations:      ${ITERATIONS} (warmup ${WARMUP})`);
   console.log(`total:           ${totalMs.toFixed(1)} ms`);
   console.log(`median:          ${median.toFixed(3)} ms/run`);

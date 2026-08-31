@@ -12,25 +12,28 @@
     "examples/*"
   ],
   "scripts": {
+    "bench": "tsx scripts/benchmark.ts",
+    "build": "npm run build -w @vict/contracts && npm run build -w @vict/kernel && npm run build -w @vict/runtime && npm run build -w @vict/sdk",
+    "example": "tsx examples/ara-proof/src/main.ts",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "lint": "eslint .",
-    "typecheck": "tsc -p tsconfig.json --noEmit",
-    "build": "npm run build -w @vict/contracts && npm run build -w @vict/kernel && npm run build -w @vict/runtime && npm run build -w @vict/sdk",
     "test": "vitest run",
-    "test:unit": "vitest run --project unit",
     "test:integration": "vitest run --project integration",
-    "example": "tsx examples/ara-proof/src/main.ts",
-    "bench": "tsx scripts/benchmark.ts"
+    "test:unit": "vitest run --project unit",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "verify:consumer": "node scripts/isolated-consumer-check.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@types/node": "^26.4.0",
     "eslint": "^10.9.1",
+    "globals": "^17.11.0",
     "prettier": "^3.9.6",
     "tsx": "^4.23.13",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.68.0",
-    "vitest": "^4.1.11"
+    "vitest": "^4.1.11",
+    "zod": "^3.25.76"
   }
 }

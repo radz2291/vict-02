@@ -2,13 +2,24 @@
  * `@vict/sdk` is the intended import surface for application and future
  * capability authors. Application code should not need deep kernel internals.
  *
+ * The base surface is schema-library neutral. Zod convenience lives in the
+ * optional `@vict/sdk/zod` subpath.
+ *
  * Dependency direction: contracts <- kernel <- runtime, with the sdk layered
  * on top and lower packages never importing from it.
  */
 
-// Executable contracts and structured results.
+// Neutral executable contracts and structured results.
 export { defineContract, victError, errorSignalContract } from '@vict/contracts';
-export type { Contract, ContractIssue, ContractResult, VictError } from '@vict/contracts';
+export type {
+  Contract,
+  ContractDefinition,
+  ContractIssue,
+  ContractResult,
+  VictError,
+} from '@vict/contracts';
+export { ContractDefinitionError } from '@vict/contracts';
+export type { ContractDefinitionErrorCode } from '@vict/contracts';
 
 // Graph vocabulary (authoring types only; execution is runtime's job).
 export type {
@@ -41,6 +52,7 @@ export type {
   CapabilityDefinition,
   DoubleInvoke,
   EffectPolicyOverrides,
+  PayloadRetention,
   RunNodeOptions,
   RunOptions,
   RunRecord,

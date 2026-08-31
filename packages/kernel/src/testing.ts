@@ -1,8 +1,14 @@
-import { canonicalSemanticForm, computeGraphVersion } from './canonical.js';
+import {
+  canonicalSemanticForm,
+  computeActivationVersion,
+  computeCapabilitySetVersion,
+  computeGraphVersion,
+} from './canonical.js';
 import type {
   ApplicationGraphDefinition,
   CompiledGraph,
   CompiledNode,
+  EffectClass,
   GraphEdgeDefinition,
   GraphNodeDefinition,
 } from './types.js';
@@ -12,6 +18,17 @@ export interface UnsafeGraphSpec {
   readonly entry: string;
   readonly nodes: readonly GraphNodeDefinition[];
   readonly edges: readonly GraphEdgeDefinition[];
+  /**
+   * Capability bindings used for capability-set/activation identity of the
+   * unsafe graph. Defaults to a stable placeholder revision for each declared
+   * capability — fine for safety tests that exercise execution bounds, but do
+   * not treat versions from this factory as meaningful identity.
+   */
+  readonly capabilities?: readonly {
+    readonly id: string;
+    readonly revision: string;
+    readonly effect: EffectClass;
+  }[];
 }
 
 /**
@@ -46,11 +63,30 @@ export function unsafeCompiledGraphForTesting(spec: UnsafeGraphSpec): CompiledGr
     nodes: Object.freeze(spec.nodes.map((node) => Object.freeze({ ...node }))),
     edges: Object.freeze(spec.edges.map((edge) => Object.freeze({ ...edge }))),
   });
-  const version = computeGraphVersion(definition);
+  const graphVersion = computeGraphVersion(definition);
+  const declaredCapabilities =
+    spec.capabilities ??
+    [...new Set(spec.nodes.map((node) => node.capability))].map((capabilityId) => ({
+      id: capabilityId,
+      revision: 'test-unversioned',
+      effect: 'pure' as EffectClass,
+    }));
+  const capabilitySetVersion = computeCapabilitySetVersion(
+    declaredCapabilities.map((capability) => ({
+      capability: capability.id,
+      revision: capability.revision,
+      effect: capability.effect,
+      input: null,
+      output: null,
+    })),
+  );
+  const activationVersion = computeActivationVersion(graphVersion, capabilitySetVersion);
 
   return Object.freeze({
     id: spec.id,
-    version,
+    graphVersion,
+    capabilitySetVersion,
+    activationVersion,
     entryNodeId: spec.entry,
     nodeCount: nodeIds.length,
     nodeIds,

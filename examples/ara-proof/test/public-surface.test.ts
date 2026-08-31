@@ -1,25 +1,26 @@
 import { describe, expect, it, vi } from 'vitest';
 import { z } from 'zod';
-import {
-  createRuntime,
-  defineCapability,
-  defineContract,
-  defineGraph,
-  type VictRuntime,
-} from '@vict/sdk';
+import { createRuntime, defineCapability, defineGraph, type VictRuntime } from '@vict/sdk';
+import { defineZodContract } from '@vict/sdk/zod';
 
 /**
- * Public-surface smoke test: this file imports ONLY from '@vict/sdk' (plus
- * zod for schema authoring), exactly as an external application would, and
- * proves the system through public APIs - not package internals.
+ * Public-surface smoke test: this file imports ONLY from '@vict/sdk' and its
+ * optional zod adapter '@vict/sdk/zod' (plus zod for schema authoring),
+ * exactly as an external application would, and proves the system through
+ * public APIs - not package internals.
  */
 
-const Text = defineContract('pub.text', z.object({ text: z.string().min(1) }));
-const Enriched = defineContract('pub.enriched', z.object({ text: z.string(), notes: z.number() }));
+const Text = defineZodContract('pub.text', '1', z.object({ text: z.string().min(1) }));
+const Enriched = defineZodContract(
+  'pub.enriched',
+  '1',
+  z.object({ text: z.string(), notes: z.number() }),
+);
 
 function buildPublicApp(runtime: VictRuntime): void {
   const normalize = defineCapability({
     id: 'pub.normalize',
+    revision: '1',
     effect: 'pure',
     input: Text,
     output: Text,
@@ -27,6 +28,7 @@ function buildPublicApp(runtime: VictRuntime): void {
   });
   const enrich = defineCapability({
     id: 'pub.enrich',
+    revision: '1',
     effect: 'read',
     input: Text,
     output: Enriched,
@@ -55,6 +57,8 @@ describe('public SDK surface (outside package internals)', () => {
     expect(result.output).toEqual({ text: 'public surface', notes: 14 });
     expect(result.graphId).toBe('pub-graph');
     expect(result.graphVersion).toMatch(/^v1_[0-9a-f]{64}$/);
+    expect(result.capabilitySetVersion).toMatch(/^v1_[0-9a-f]{64}$/);
+    expect(result.activationVersion).toMatch(/^v1_[0-9a-f]{64}$/);
   });
 
   it('blocks unmocked read effects in simulation through the public API only', async () => {
@@ -71,13 +75,15 @@ describe('public SDK surface (outside package internals)', () => {
  * integration project exercises the exact imports an application would use.
  */
 const araContracts = {
-  UserMessage: defineContract('ara2.UserMessage', z.object({ text: z.string().min(1) })),
-  PreparedContext: defineContract(
+  UserMessage: defineZodContract('ara2.UserMessage', '1', z.object({ text: z.string().min(1) })),
+  PreparedContext: defineZodContract(
     'ara2.PreparedContext',
+    '1',
     z.object({ text: z.string().min(1), context: z.array(z.string()) }),
   ),
-  AssistantMessage: defineContract(
+  AssistantMessage: defineZodContract(
     'ara2.AssistantMessage',
+    '1',
     z.object({ role: z.literal('assistant'), text: z.string().min(1) }),
   ),
 };
@@ -89,6 +95,7 @@ function buildAraRuntime(): VictRuntime {
     .registerCapability(
       defineCapability({
         id: 'ara2.user-message',
+        revision: '1',
         effect: 'pure',
         input: UserMessage,
         output: UserMessage,
@@ -98,6 +105,7 @@ function buildAraRuntime(): VictRuntime {
     .registerCapability(
       defineCapability({
         id: 'ara2.prepare-context',
+        revision: '1',
         effect: 'pure',
         input: UserMessage,
         output: PreparedContext,
@@ -110,6 +118,7 @@ function buildAraRuntime(): VictRuntime {
     .registerCapability(
       defineCapability({
         id: 'ara2.assistant',
+        revision: '1',
         effect: 'read',
         input: PreparedContext,
         output: AssistantMessage,
@@ -122,6 +131,7 @@ function buildAraRuntime(): VictRuntime {
     .registerCapability(
       defineCapability({
         id: 'ara2.assistant-response',
+        revision: '1',
         effect: 'pure',
         input: AssistantMessage,
         output: AssistantMessage,
@@ -152,7 +162,7 @@ function buildAraRuntime(): VictRuntime {
 }
 
 describe('ARA proof integration (public imports)', () => {
-  it('executes one user message through the full graph, offline', async () => {
+  it('executes one user message through the full graph, offline, with exactly 13 events', async () => {
     const runtime = buildAraRuntime();
     const active = runtime.activeGraph();
     expect(active?.id).toBe('ara2-proof');
@@ -183,13 +193,17 @@ describe('ARA proof integration (public imports)', () => {
       'assistant-response',
     ]);
 
-    // 6. terminal event matches status
+    // 6. terminal event matches status; trace stays at exactly 13 events
+    //    (1 run.started + 4 x 2 node events + 3 signal.routed + 1 run.completed).
     expect(result.trace.at(-1)?.type).toBe('run.completed');
+    expect(result.trace.length).toBe(13);
 
-    // 7. graph id/version pinned on every event
+    // 7. graph id and all three identity layers pinned on every event
     for (const event of result.trace) {
       expect(event.graphId).toBe('ara2-proof');
       expect(event.graphVersion).toBe(active?.version);
+      expect(event.capabilitySetVersion).toBe(active?.capabilitySetVersion);
+      expect(event.activationVersion).toBe(active?.activationVersion);
     }
 
     // Run record persisted under the same id.

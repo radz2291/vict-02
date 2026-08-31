@@ -4,6 +4,7 @@ export type {
   CapabilityContext,
   CapabilityDefinition,
   DoubleInvoke,
+  PayloadRetention,
   RunNodeOptions,
   RunOptions,
   RunRecord,

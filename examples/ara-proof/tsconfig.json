@@ -4,10 +4,12 @@
     "noEmit": true,
     "paths": {
       "@vict/contracts": ["../../packages/contracts/src/index.ts"],
+      "@vict/contracts/zod": ["../../packages/contracts/src/zod/index.ts"],
       "@vict/kernel": ["../../packages/kernel/src/index.ts"],
       "@vict/kernel/testing": ["../../packages/kernel/src/testing.ts"],
       "@vict/runtime": ["../../packages/runtime/src/index.ts"],
-      "@vict/sdk": ["../../packages/sdk/src/index.ts"]
+      "@vict/sdk": ["../../packages/sdk/src/index.ts"],
+      "@vict/sdk/zod": ["../../packages/sdk/src/zod.ts"]
     }
   },
   "include": ["src", "test"]

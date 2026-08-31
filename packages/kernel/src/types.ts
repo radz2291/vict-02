@@ -44,14 +44,24 @@ export interface ApplicationGraphDefinition {
 
 export interface ContractSummary {
   readonly id: string;
+  readonly revision: string;
   readonly expected: string;
 }
 
+/**
+ * Execution-relevant knowledge about one capability. The `revision` fields
+ * are author/build-owned markers: changing handler logic, effect class or
+ * contract semantics requires changing the revision. Revisions feed the
+ * capability-set and activation identity; function bodies are never hashed.
+ */
 export interface CapabilityDescriptor {
   readonly id: string;
+  readonly revision: string;
   readonly effect: EffectClass;
   readonly inputContractId?: string;
+  readonly inputRevision?: string;
   readonly outputContractId?: string;
+  readonly outputRevision?: string;
 }
 
 export interface CapabilityIndex {
@@ -83,11 +93,26 @@ export interface CompiledNode {
   readonly outputContractId?: string;
 }
 
-/** Immutable compiled graph. Frozen at compile time. */
+/**
+ * Immutable compiled graph. Frozen at compile time.
+ *
+ * Three distinct identity layers:
+ * - `graphVersion`: topology/declaration identity ONLY (id, entry, nodes,
+ *   capability references, contract override references, edges). It makes no
+ *   claim about executable semantics.
+ * - `capabilitySetVersion`: identity of the effective capability/contract
+ *   bindings required by this graph (capability id + revision + effect class
+ *   + effective input/output contract id + revision, per resolved node,
+ *   deduplicated, canonically ordered).
+ * - `activationVersion`: hash over graphVersion + capabilitySetVersion + an
+ *   activation schema marker — the identity of the exact executable
+ *   activation.
+ */
 export interface CompiledGraph {
   readonly id: string;
-  /** Deterministic content hash of the canonicalized semantic definition. */
-  readonly version: string;
+  readonly graphVersion: string;
+  readonly capabilitySetVersion: string;
+  readonly activationVersion: string;
   readonly entryNodeId: string;
   readonly nodeCount: number;
   readonly nodeIds: readonly string[];
@@ -156,7 +181,12 @@ export interface EventEnvelope {
   readonly seq: number;
   readonly runId: string;
   readonly graphId: string;
+  /** Topology/declaration identity of the pinned graph. */
   readonly graphVersion: string;
+  /** Identity of the effective capability/contract bindings pinned by the activation. */
+  readonly capabilitySetVersion: string;
+  /** Identity of the exact executable activation the run is pinned to. */
+  readonly activationVersion: string;
   /** Epoch milliseconds; diagnostics only, never used for ordering. */
   readonly timestamp: number;
 }
@@ -225,6 +255,8 @@ export interface CapabilityInvocationContext {
   readonly runId: string;
   readonly graphId: string;
   readonly graphVersion: string;
+  readonly capabilitySetVersion: string;
+  readonly activationVersion: string;
   readonly nodeId: string;
   readonly capabilityId: string;
   readonly mode: ExecutionMode;
@@ -271,6 +303,8 @@ export interface Clock {
 
 export interface IdFactory {
   runId(): string;
+  /** Correlation id for sanitised failure diagnostics. Optional; a default is supplied. */
+  errorId?(): string;
 }
 
 /** Everything the kernel needs from the outside world, supplied explicitly. */
@@ -302,6 +336,8 @@ export interface KernelRunOutput {
   readonly runId: string;
   readonly graphId: string;
   readonly graphVersion: string;
+  readonly capabilitySetVersion: string;
+  readonly activationVersion: string;
   readonly status: RunStatus;
   readonly output?: unknown;
   readonly error?: VictError;
