@@ -1,0 +1,36 @@
+{
+  "name": "vict-monorepo",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Vict - agent-native application operating layer. Night 01 greenfield kernel.",
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "workspaces": [
+    "packages/*",
+    "examples/*"
+  ],
+  "scripts": {
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "eslint .",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "build": "npm run build -w @vict/contracts && npm run build -w @vict/kernel && npm run build -w @vict/runtime && npm run build -w @vict/sdk",
+    "test": "vitest run",
+    "test:unit": "vitest run --project unit",
+    "test:integration": "vitest run --project integration",
+    "example": "tsx examples/ara-proof/src/main.ts",
+    "bench": "tsx scripts/benchmark.ts"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^26.4.0",
+    "eslint": "^10.9.1",
+    "prettier": "^3.9.6",
+    "tsx": "^4.23.13",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.68.0",
+    "vitest": "^4.1.11"
+  }
+}

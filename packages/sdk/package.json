@@ -1,0 +1,26 @@
+{
+  "name": "@vict/sdk",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Stable authoring facade for Vict: contracts, capabilities, graphs, runtime.",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@vict/contracts": "0.1.0",
+    "@vict/kernel": "0.1.0",
+    "@vict/runtime": "0.1.0"
+  }
+}

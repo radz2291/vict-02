@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "paths": {
+      "@vict/contracts": ["../../packages/contracts/src/index.ts"],
+      "@vict/kernel": ["../../packages/kernel/src/index.ts"],
+      "@vict/kernel/testing": ["../../packages/kernel/src/testing.ts"],
+      "@vict/runtime": ["../../packages/runtime/src/index.ts"],
+      "@vict/sdk": ["../../packages/sdk/src/index.ts"]
+    }
+  },
+  "include": ["src", "test"]
+}

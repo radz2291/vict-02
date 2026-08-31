@@ -1,0 +1,270 @@
+import { describe, expect, it } from 'vitest';
+import { z } from 'zod';
+import { defineCapability, defineContract, defineGraph, errorSignalContract } from '@vict/sdk';
+import { createRuntime } from '@vict/runtime';
+
+const Counter = defineContract('t.counter', z.object({ count: z.number() }));
+const Greeting = defineContract('t.greeting', z.object({ message: z.string(), count: z.number() }));
+
+function counterCapability() {
+  return defineCapability({
+    id: 't.counter',
+    effect: 'pure',
+    input: Counter,
+    output: Counter,
+    invoke: async (input) => ({ count: input.count + 1 }),
+  });
+}
+
+function twoNodeGraph() {
+  return defineGraph({
+    id: 't-graph',
+    entry: 'a',
+    nodes: [
+      { id: 'a', capability: 't.counter' },
+      { id: 'b', capability: 't.greeter' },
+    ],
+    edges: [{ from: 'a', to: 'b' }],
+  });
+}
+
+describe('runtime activation and configuration', () => {
+  it('compiles and activates a valid graph atomically', () => {
+    const runtime = createRuntime();
+    runtime.registerCapability(counterCapability());
+    runtime.registerCapability(
+      defineCapability({
+        id: 't.greeter',
+        effect: 'pure',
+        input: Counter,
+        output: Greeting,
+        invoke: (input) => ({ message: `count ${input.count}`, count: input.count }),
+      }),
+    );
+    const activation = runtime.activate(twoNodeGraph());
+    expect(activation.ok).toBe(true);
+    if (activation.ok) {
+      expect(activation.graphId).toBe('t-graph');
+      expect(activation.graphVersion).toMatch(/^v1_[0-9a-f]{64}$/);
+      expect(activation.nodeCount).toBe(2);
+    }
+    expect(runtime.activeGraph()?.id).toBe('t-graph');
+  });
+
+  it('preserves the previously active graph when activation fails', async () => {
+    const runtime = createRuntime();
+    runtime.registerCapability(counterCapability());
+    runtime.registerCapability(
+      defineCapability({
+        id: 't.greeter',
+        effect: 'pure',
+        input: Counter,
+        output: Greeting,
+        invoke: (input) => ({ message: `count ${input.count}`, count: input.count }),
+      }),
+    );
+    const first = runtime.activate(twoNodeGraph());
+    expect(first.ok).toBe(true);
+
+    // Invalid: duplicate node ids.
+    const broken = defineGraph({
+      id: 't-graph-broken',
+      entry: 'a',
+      nodes: [
+        { id: 'a', capability: 't.counter' },
+        { id: 'a', capability: 't.greeter' },
+      ],
+      edges: [],
+    });
+    const second = runtime.activate(broken);
+    expect(second.ok).toBe(false);
+    if (!second.ok) {
+      expect(second.issues.some((issue) => issue.code === 'DUPLICATE_NODE')).toBe(true);
+      expect(second.previousGraph?.id).toBe('t-graph');
+    }
+    // Previous graph is still active and still runnable.
+    expect(runtime.activeGraph()?.id).toBe('t-graph');
+    const result = await runtime.run({ count: 1 });
+    expect(result.status).toBe('completed');
+    expect(runtime.getRun(result.runId)?.graphId).toBe('t-graph');
+  });
+
+  it('rejects runs before any graph is activated', async () => {
+    const runtime = createRuntime();
+    await expect(runtime.run({})).rejects.toMatchObject({ code: 'VICT_RUNTIME_NO_ACTIVE_GRAPH' });
+  });
+
+  it('rejects duplicate capability registration and conflicting contract ids', () => {
+    const runtime = createRuntime();
+    runtime.registerCapability(counterCapability());
+    expect(() => runtime.registerCapability(counterCapability())).toThrowError(
+      /already registered/,
+    );
+    const conflicting = defineContract('t.counter', z.object({ different: z.boolean() }));
+    expect(() => runtime.registerContract(conflicting)).toThrowError(/different contract object/);
+  });
+
+  it('rejects test doubles for unknown capabilities', () => {
+    const runtime = createRuntime();
+    expect(() => runtime.registerDouble('t.ghost', () => ({}))).toThrowError(/unknown capability/);
+  });
+
+  it('records runs in the repository and exposes them', async () => {
+    const runtime = createRuntime();
+    runtime.registerCapability(counterCapability());
+    runtime.registerCapability(
+      defineCapability({
+        id: 't.greeter',
+        effect: 'pure',
+        input: Counter,
+        output: Greeting,
+        invoke: (input) => ({ message: `count ${input.count}`, count: input.count }),
+      }),
+    );
+    runtime.activate(twoNodeGraph());
+    const result = await runtime.run({ count: 41 });
+    expect(runtime.listRuns().length).toBe(1);
+    const record = runtime.getRun(result.runId);
+    expect(record).toBeDefined();
+    expect(record?.status).toBe('completed');
+    expect(record?.trace.length).toBeGreaterThan(0);
+  });
+});
+
+describe('trace safety', () => {
+  it('keeps secret-like values and key names out of trace diagnostics', async () => {
+    const Session = defineContract(
+      't.session',
+      z.object({ username: z.string(), password: z.string(), apiToken: z.string() }),
+    );
+    const runtime = createRuntime();
+    runtime.registerCapability(
+      defineCapability({
+        id: 't.session-maker',
+        effect: 'pure',
+        input: Counter,
+        output: Session,
+        invoke: () => ({
+          username: 'alex',
+          password: 'hunter2-super-secret',
+          apiToken: 'tok-123-xyz',
+        }),
+      }),
+    );
+    runtime.activate(
+      defineGraph({
+        id: 't-secret-graph',
+        entry: 's',
+        nodes: [{ id: 's', capability: 't.session-maker' }],
+        edges: [],
+      }),
+    );
+    const result = await runtime.run({ count: 1 });
+    expect(result.status).toBe('completed');
+    const serialized = JSON.stringify(result.trace);
+    expect(serialized).not.toContain('hunter2-super-secret');
+    expect(serialized).not.toContain('tok-123-xyz');
+    expect(serialized).not.toContain('password');
+    expect(serialized).not.toContain('apiToken');
+    expect(serialized).toContain('username');
+    const completed = result.trace.find((event) => event.type === 'node.completed');
+    expect(completed).toBeDefined();
+    if (completed?.type === 'node.completed' && completed.output.shape === 'object') {
+      expect([...completed.output.keys].sort()).toEqual(['[redacted]', '[redacted]', 'username']);
+    }
+  });
+
+  it('keeps contract rejections useful after redaction', async () => {
+    const runtime = createRuntime();
+    runtime.registerCapability(counterCapability());
+    runtime.activate(
+      defineGraph({
+        id: 't-reject-graph',
+        entry: 'a',
+        nodes: [{ id: 'a', capability: 't.counter' }],
+        edges: [],
+      }),
+    );
+    const result = await runtime.run({ count: 'not-a-number' });
+    expect(result.status).toBe('failed');
+    const rejected = result.trace.find((event) => event.type === 'contract.rejected');
+    expect(rejected).toBeDefined();
+    if (rejected?.type === 'contract.rejected') {
+      expect(rejected.contractId).toBe('t.counter');
+      expect(rejected.issues.length).toBeGreaterThan(0);
+      expect(rejected.issues[0]?.path).toBe('count');
+      expect(typeof rejected.issues[0]?.message).toBe('string');
+    }
+    expect(JSON.stringify(result.trace)).not.toContain('not-a-number');
+  });
+
+  it('routes explicit capability throws over the error edge as structured signals', async () => {
+    const runtime = createRuntime();
+    runtime.registerCapability(
+      defineCapability({
+        id: 't.exploding',
+        effect: 'pure',
+        input: Counter,
+        output: Counter,
+        invoke: () => {
+          throw new Error('model provider offline');
+        },
+      }),
+    );
+    runtime.registerCapability(
+      defineCapability({
+        id: 't.error-handler',
+        effect: 'pure',
+        input: errorSignalContract,
+        output: Greeting,
+        invoke: (error) => ({ message: `handled: ${error.code}`, count: 0 }),
+      }),
+    );
+    runtime.activate(
+      defineGraph({
+        id: 't-error-graph',
+        entry: 'x',
+        nodes: [
+          { id: 'x', capability: 't.exploding' },
+          { id: 'handler', capability: 't.error-handler' },
+        ],
+        edges: [{ from: 'x', to: 'handler', kind: 'error' }],
+      }),
+    );
+    const result = await runtime.run({ count: 1 });
+    expect(result.status).toBe('completed');
+    expect(result.output).toMatchObject({ message: 'handled: VICT_RUNTIME_CAPABILITY_THREW' });
+    const routed = result.trace.find((event) => event.type === 'signal.routed');
+    expect(routed).toBeDefined();
+    if (routed?.type === 'signal.routed') {
+      expect(routed.kind).toBe('error');
+    }
+  });
+
+  it('fails honestly when a capability throws with no error edge', async () => {
+    const runtime = createRuntime();
+    runtime.registerCapability(
+      defineCapability({
+        id: 't.exploding',
+        effect: 'pure',
+        input: Counter,
+        output: Counter,
+        invoke: () => {
+          throw new Error('offline');
+        },
+      }),
+    );
+    runtime.activate(
+      defineGraph({
+        id: 't-fail-graph',
+        entry: 'x',
+        nodes: [{ id: 'x', capability: 't.exploding' }],
+        edges: [],
+      }),
+    );
+    const result = await runtime.run({ count: 1 });
+    expect(result.status).toBe('failed');
+    expect(result.error?.code).toBe('VICT_RUNTIME_CAPABILITY_THREW');
+    expect(result.trace.at(-1)?.type).toBe('run.failed');
+  });
+});

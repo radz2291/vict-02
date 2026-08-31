@@ -1,0 +1,25 @@
+{
+  "name": "@vict/runtime",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "In-process Vict runtime: capability registry, effect policy, execution modes, atomic graph activation, run traces.",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@vict/contracts": "0.1.0",
+    "@vict/kernel": "0.1.0"
+  }
+}

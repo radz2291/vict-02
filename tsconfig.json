@@ -1,0 +1,23 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "paths": {
+      "@vict/contracts": ["./packages/contracts/src/index.ts"],
+      "@vict/contracts/*": ["./packages/contracts/src/*"],
+      "@vict/kernel": ["./packages/kernel/src/index.ts"],
+      "@vict/kernel/*": ["./packages/kernel/src/*"],
+      "@vict/runtime": ["./packages/runtime/src/index.ts"],
+      "@vict/runtime/*": ["./packages/runtime/src/*"],
+      "@vict/sdk": ["./packages/sdk/src/index.ts"],
+      "@vict/sdk/*": ["./packages/sdk/src/*"]
+    }
+  },
+  "include": [
+    "packages/*/src/**/*.ts",
+    "packages/*/test/**/*.ts",
+    "examples/**/*.ts",
+    "scripts/**/*.ts",
+    "vitest.config.ts"
+  ]
+}
