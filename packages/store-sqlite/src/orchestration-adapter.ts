@@ -1060,9 +1060,28 @@ export function createSqliteOrchestrationStore(
           }
           faults?.afterStateStage?.('orchestration.completeAttempt');
 
-          // 5. Events (dense, atomic with the state).
+          // 5. Events (dense, atomic with the state). A fired join appends
+          // its join.completed fact in the same atomic transition.
+          let commandEvents: readonly OrchestrationEventInput[] = command.events;
+          if (joinFired && continuation.kind === 'branchArrival') {
+            commandEvents = [
+              ...command.events,
+              {
+                type: 'join.completed',
+                forkId: continuation.forkId,
+                joinId: continuation.joinId,
+                branchKeys: [...(command.declaredBranchKeys ?? [])],
+                runId: command.runId,
+                graphId: run.graph_id,
+                graphVersion: run.graph_version,
+                capabilitySetVersion: run.capability_set_version,
+                activationVersion: run.activation_version,
+                timestamp: command.now,
+              } as unknown as OrchestrationEventInput,
+            ];
+          }
           const updatedRun = runRow(command.runId) as RunRow;
-          const seq = appendEvents(command.runId, command.events);
+          const seq = appendEvents(command.runId, commandEvents);
           faults?.beforeCommit?.('orchestration.completeAttempt');
 
           const branchResult: BranchResultRecord | null =

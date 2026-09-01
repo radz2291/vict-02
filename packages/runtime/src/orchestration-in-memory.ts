@@ -708,8 +708,27 @@ export function createInMemoryOrchestrationStore(
           }
         }
         faults?.afterStateStage?.('orchestration.completeAttempt');
-        // 5. Events (dense, atomic with the state).
-        appendEvents(stored, command.events);
+        // 5. Events (dense, atomic with the state). A fired join appends its
+        // join.completed fact in the same atomic transition.
+        const commandEvents =
+          joinFired && command.continuation.kind === 'branchArrival'
+            ? ([
+                ...command.events,
+                {
+                  type: 'join.completed',
+                  forkId: command.continuation.forkId,
+                  joinId: command.continuation.joinId,
+                  branchKeys: [...(command.declaredBranchKeys ?? [])],
+                  runId: command.runId,
+                  graphId: stored.run.graphId,
+                  graphVersion: stored.run.graphVersion,
+                  capabilitySetVersion: stored.run.capabilitySetVersion,
+                  activationVersion: stored.run.activationVersion,
+                  timestamp: now,
+                } as unknown as KernelEvent,
+              ])
+            : command.events;
+        appendEvents(stored, commandEvents);
         faults?.beforeCommit?.('orchestration.completeAttempt');
         return {
           attempt: immutableSnapshot(attempt),

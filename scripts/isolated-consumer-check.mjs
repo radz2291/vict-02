@@ -250,6 +250,166 @@ check(
   'activation restored and run/events read back after real close/reopen',
 );
 
+// 2b. SQLite ORCHESTRATION consumer (Stage 03): an extended graph with a
+// decision, fork/join, and a durable signal wait. The consumer:
+//   - activates the extended graph,
+//   - starts and reaches the durable wait,
+//   - CLOSES the store/process boundary,
+//   - reopens, delivers one idempotent signal,
+//   - resumes to completion, and reads the exact ordered trace.
+const orchDir = join(work, 'consumer-orchestration');
+mkdirSync(join(orchDir, 'src'), { recursive: true });
+writeFileSync(
+  join(orchDir, 'package.json'),
+  JSON.stringify({ name: 'vict-consumer-orchestration', private: true, type: 'module' }, null, 2),
+);
+run('npm', ['install', ...tarballs.map((file) => join(work, file)), 'typescript@6', '@types/node'], { cwd: orchDir });
+writeFileSync(join(orchDir, 'tsconfig.json'), JSON.stringify({ compilerOptions: { target: 'ES2022', module: 'NodeNext', moduleResolution: 'NodeNext', strict: true, noUncheckedIndexedAccess: true, skipLibCheck: false, noEmit: true, types: ['node'] }, include: ['src/**/*.ts'] }, null, 2));
+writeFileSync(
+  join(orchDir, 'src', 'index.ts'),
+  `import { createRuntime, defineContract, defineGraph } from '@vict/sdk';
+import { createSqliteStores } from '@vict/store-sqlite';
+import type { RunResult } from '@vict/sdk';
+
+const S = defineContract<string>({
+  id: 'orch.s',
+  revision: '1',
+  expected: 'a string',
+  parse: (input) =>
+    typeof input === 'string'
+      ? { ok: true, value: input }
+      : { ok: false, issues: [{ code: 'TYPE', path: '$', message: 'expected a string' }] },
+});
+
+const dbPath = process.argv[2] ?? 'orch.db';
+const phase = process.argv[3] ?? 'start';
+
+const stores = createSqliteStores({ path: dbPath });
+const runtime = createRuntime({ stores, orchestration: { leaseMs: 1000 } });
+runtime
+  .registerContract(S)
+  .registerCapability({
+    id: 'orch.route',
+    revision: '1',
+    effect: 'pure',
+    invoke: (input: unknown) => ({ route: 'go', value: String(input) }),
+  })
+  .registerCapability({
+    id: 'orch.branch',
+    revision: '1',
+    effect: 'pure',
+    invoke: (input: unknown, context) =>
+      String(input) + ':' + (context.branch?.branchKey ?? '?'),
+  })
+  .registerCapability({
+    id: 'orch.sink',
+    revision: '1',
+    effect: 'pure',
+    invoke: (input: unknown) => String(input),
+  });
+
+const graph = defineGraph({
+  id: 'orch-graph',
+  entry: 'd',
+  nodes: [
+    { id: 'd', kind: 'decision', capability: 'orch.route' },
+    { id: 'f', kind: 'fork', join: 'j' },
+    { id: 'a', capability: 'orch.branch' },
+    { id: 'b', capability: 'orch.branch' },
+    { id: 'j', kind: 'join', fork: 'f' },
+    { id: 'w', kind: 'wait', wait: { kind: 'signal', name: 'go' } },
+    { id: 'done', capability: 'orch.sink', output: 'orch.s' },
+  ],
+  edges: [
+    { from: 'd', to: 'f', kind: 'route', key: 'go' },
+    { from: 'f', to: 'a', kind: 'branch', key: 'a' },
+    { from: 'f', to: 'b', kind: 'branch', key: 'b' },
+    { from: 'a', to: 'j' },
+    { from: 'b', to: 'j' },
+    { from: 'j', to: 'w' },
+    { from: 'w', to: 'done' },
+  ],
+});
+
+if (phase === 'resume') {
+  const runId = process.argv[4] ?? '';
+  const orchestration = stores.orchestration as import('@vict/runtime').OrchestrationStore;
+  const waits = await orchestration.listWaits(runId);
+  const openWait = waits.find((w) => w.status === 'open');
+  if (!openWait) {
+    throw new Error('reopen: no open durable wait found');
+  }
+  const signalId = 'consumer-signal-' + runId;
+  const delivered = await runtime.signal({
+    runId,
+    waitId: openWait.waitId,
+    signalId,
+    signalName: 'go',
+    payload: 'resumed',
+  });
+  if (!delivered.ok || delivered.status !== 'accepted') {
+    throw new Error('signal delivery failed: ' + JSON.stringify(delivered));
+  }
+  const duplicate = await runtime.signal({
+    runId,
+    waitId: openWait.waitId,
+    signalId,
+    signalName: 'go',
+    payload: 'resumed',
+  });
+  if (!duplicate.ok || duplicate.status !== 'duplicate') {
+    throw new Error('duplicate signal was not idempotent: ' + JSON.stringify(duplicate));
+  }
+  const result = (await runtime.resumeRun(runId)) as RunResult<string>;
+  if (result.status !== 'completed' || result.output !== 'resumed') {
+    throw new Error('unexpected resume outcome: ' + result.status + ' ' + String(result.output));
+  }
+  const traceTypes = result.trace.map((event) => event.type).join(',');
+  if (!traceTypes.includes('fork.created') || !traceTypes.includes('join.completed') || !traceTypes.includes('signal.received')) {
+    throw new Error('trace missing orchestration facts: ' + traceTypes);
+  }
+  await stores.dispose();
+  console.log('ORCH_CONSUMER_RESUME_OK', String(result.trace.length));
+} else {
+  const activation = await runtime.activate(graph);
+  if (!activation.ok) {
+    throw new Error('orchestration activation failed: ' + JSON.stringify(activation.issues?.map((i) => i.code)));
+  }
+  const result = (await runtime.run('seed')) as RunResult<string>;
+  if (result.status !== 'waiting' || (result.waits?.length ?? 0) !== 1) {
+    throw new Error('run did not park at the durable wait: ' + result.status);
+  }
+  const waitId = result.waits?.[0]?.waitId ?? '';
+  await stores.dispose();
+  console.log('ORCH_CONSUMER_WAIT_OK', result.runId, waitId);
+}
+`,
+);
+console.log('\n[orchestration consumer] strict type-check against packed declarations');
+run('npx', ['tsc', '-p', join(orchDir, 'tsconfig.json')]);
+console.log('[orchestration consumer] activate extended graph, start, reach durable wait, close');
+const orchRun = run('npx', ['tsx', join(orchDir, 'src', 'index.ts'), dbPathFor(orchDir), 'start'], {
+  capture: true,
+  cwd: orchDir,
+});
+check(
+  orchRun.status === 0 && (orchRun.stdout ?? '').includes('ORCH_CONSUMER_WAIT_OK'),
+  'orchestration consumer parked at a durable signal wait',
+);
+const orchParts = (orchRun.stdout ?? '').trim().split(/\r?\n/).at(-1)?.split(' ') ?? [];
+const orchRunId = orchParts[1] ?? '';
+const orchWaitId = orchParts[2] ?? '';
+console.log('\n[orchestration consumer] REOPEN, deliver one idempotent signal, resume to completion');
+const orchResume = run(
+  'npx',
+  ['tsx', join(orchDir, 'src', 'index.ts'), dbPathFor(orchDir), 'resume', orchRunId],
+  { capture: true, cwd: orchDir },
+);
+check(
+  orchResume.status === 0 && (orchResume.stdout ?? '').includes('ORCH_CONSUMER_RESUME_OK'),
+  'exact-activation resume after close/reopen completed the orchestration run',
+);
+
 // 3. Zod consumer: same tarballs plus zod, using the optional adapter subpath.
 const zodDir = join(work, 'consumer-zod');
 mkdirSync(join(zodDir, 'src'), { recursive: true });

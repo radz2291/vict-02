@@ -1,0 +1,14 @@
+{
+  "name": "orchestration-proof",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Deterministic offline Stage 03 proof: decision routing, fixed fan-out with a deterministic join, a durable signal wait with timeout, a keyed-idempotent write that fails once and retries, and completion after a real process-restart boundary. No network, no credentials.",
+  "scripts": {
+    "demo": "tsx src/main.ts"
+  },
+  "dependencies": {
+    "@vict/runtime": "0.1.0",
+    "@vict/sdk": "0.1.0"
+  }
+}

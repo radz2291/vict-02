@@ -1059,6 +1059,9 @@ export async function resultFromRun<T>(
       ...(wait.dueAt !== null ? { dueAt: wait.dueAt } : {}),
     }));
   }
+  const trace = (await orchestration
+    .listOrchestrationEvents(run.runId)
+    .catch(() => [])) as readonly import('@vict/kernel').KernelEvent[];
   const result: import('./orchestration-driver-types.js').OrchestrationRunResult<T> = {
     runId: run.runId,
     graphId: run.graphId,
@@ -1067,7 +1070,7 @@ export async function resultFromRun<T>(
     activationVersion: run.activationVersion,
     status: run.status as 'completed' | 'failed' | 'cancelled' | 'waiting' | 'blocked',
     steps: run.steps,
-    trace: [],
+    trace,
     ...(waits !== undefined ? { waits } : {}),
   };
   if (run.error !== undefined) {
