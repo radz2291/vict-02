@@ -19,6 +19,11 @@
 import { spawnSync } from 'node:child_process';
 
 const steps = [
+  [
+    'workspace build (fixtures and packed consumers require freshly built dist artifacts)',
+    'npm',
+    ['run', 'build'],
+  ],
   ['unit tests', 'npx', ['vitest', 'run', '--project', 'unit']],
   ['integration tests', 'npx', ['vitest', 'run', '--project', 'integration']],
   ['packed consumer + SQLite reopen verification', 'node', ['scripts/isolated-consumer-check.mjs']],
