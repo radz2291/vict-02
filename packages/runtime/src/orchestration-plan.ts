@@ -7,7 +7,6 @@ import {
   type CompiledNode,
   type DecisionResult,
   type EffectClass,
-  type RetryPolicy,
   type SignalWaitDefinition,
   type TimerWaitDefinition,
 } from '@vict/kernel';
@@ -256,7 +255,13 @@ function planSuccess(input: PlanInput): PlannedCompletion {
       contractId: wait.contract ?? null,
       contractRevision: null,
       dueAt: null,
-      timeoutAt: wait.timeoutMs !== undefined ? input.now + wait.timeoutMs : null,
+      // The canonical manifest form normalizes an ABSENT timeout to `null`;
+      // only a declared positive `timeoutMs` creates a timeout deadline
+      // (`timeoutMs: 0` is rejected by the compiler). Both `undefined` and
+      // `null` therefore mean "no timeout": no wait-timeout timer is ever
+      // scheduled for a plain signal wait.
+      timeoutAt:
+        wait.timeoutMs !== undefined && wait.timeoutMs !== null ? input.now + wait.timeoutMs : null,
     };
     return {
       kind: 'transition',

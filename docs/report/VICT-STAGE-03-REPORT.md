@@ -206,7 +206,7 @@ All commands exit 0. Observed from the actual runs:
 | --- | --- | --- |
 | `npm ci` | 0 | 48 packages, 0 vulnerabilities |
 | `npm run format:check` | 0 | all files Prettier-clean |
-| `npm run lint` | 0 | eslint clean |
+| `npm run lint` | 0 | eslint clean (see post-audit amendment below) |
 | `npm run typecheck` | 0 | strict, no errors |
 | `npm run build` | 0 | all five packages build |
 | `npm run test:unit` | 0 | **30 files / 335 tests passed — five consecutive runs, all 335/335** |
@@ -218,6 +218,17 @@ All commands exit 0. Observed from the actual runs:
 | `npm run bench` | 0 | Stage 02 + Stage 03 sections |
 | `npm run verify:stage3` | 0 | build + unit + integration + offline proof + packed orchestration consumer |
 | `git diff --check` | 0 | no whitespace errors |
+
+> **Post-audit amendment (independent audit `f8c8d5b`).** The "eslint
+> clean" row above was FALSE at the audited implementation commit
+> `11bbae5`: the independent audit measured `npm run lint` EXIT 1 with 61
+> errors on both Node 22.13.1 and Node 24.10.0, and recorded it as finding
+> MED-1. The claim was not corrected before audit. The lint gate was
+> restored to EXIT 0 during the remediation pass (see
+> `docs/report/VICT-STAGE-03-AUDIT-REMEDIATION-REPORT.md`) by fixing the
+> 61 findings (unused variables/imports, `prefer-const`, one
+> `no-useless-assignment`, one unused private class member) without
+> disabling or weakening any ESLint rule.
 
 Targeted runs (executed individually during the corrective work):
 orchestration join suite (both adapters), race suite (both adapters),

@@ -4,7 +4,6 @@ import { mkdtemp, readFile, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { retryRm } from './helpers/retry-rm.js';
 import { rm } from 'node:fs/promises';
 
 /**
@@ -203,7 +202,6 @@ describe('orchestration restart and crash (real subprocess boundaries)', () => {
         expect(b.status).toBe(0);
 
         // Exactly one external mutation in the disposable ledger.
-        const { readFileSync } = await import('node:fs');
         const ledger = JSON.parse(await readFile(`${state}.ledger`, 'utf8')) as Record<
           string,
           { count: number; result: string }

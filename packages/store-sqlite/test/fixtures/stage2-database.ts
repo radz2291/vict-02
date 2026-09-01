@@ -23,37 +23,6 @@ import {
 
 const [dbPath = '', reportPath = ''] = process.argv.slice(2);
 
-interface ContractLike {
-  parse(input: unknown): { ok: boolean; value?: unknown; issues: unknown[] };
-}
-
-const stringContract: ContractLike = {
-  parse: (input: unknown) =>
-    typeof input === 'string'
-      ? { ok: true, value: input, issues: [] }
-      : { ok: false, issues: [{ code: 'TYPE', path: '$', message: 'expected a string' }] },
-};
-
-function kernelEvent(
-  runId: string,
-  seq: number,
-  identity: Record<string, string>,
-  type: string,
-  extra: Record<string, unknown> = {},
-): Record<string, unknown> {
-  return {
-    seq,
-    runId,
-    graphId: 'stage2-fixture',
-    graphVersion: 'v1_fixturegraphversion000000000000000000000000000',
-    capabilitySetVersion: 'v1_fixturecapabilitysetversion000000000000000000',
-    activationVersion: 'v1_fixtureactivationversion00000000000000000000',
-    timestamp: 1_700_000_000_000,
-    type,
-    ...extra,
-  };
-}
-
 async function main(): Promise<void> {
   const stores = createSqliteStores({ path: dbPath });
 

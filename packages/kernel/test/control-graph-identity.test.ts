@@ -9,11 +9,7 @@ import {
   canonicalJoinOutput,
   RETRY_MAX_ATTEMPTS_LIMIT,
 } from '@vict/kernel';
-import type {
-  ApplicationGraphDefinition,
-  CapabilityIndex,
-  ContractEnvironment,
-} from '@vict/kernel';
+import type { ApplicationGraphDefinition, CapabilityIndex } from '@vict/kernel';
 
 /** Stable capability/contract knowledge for compiler tests. */
 const capabilities: CapabilityIndex = {

@@ -133,7 +133,7 @@ function hostileContract(id: string, position: 'code' | 'path' | 'message' | 'fi
     id,
     revision: '1',
     expected: 'never',
-    parse: (input: unknown) => {
+    parse: (_input: unknown) => {
       const issue: Record<string, unknown> = {
         code: 'invalid_type',
         path: '(root)',

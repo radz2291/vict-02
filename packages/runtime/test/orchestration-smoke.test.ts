@@ -1,4 +1,3 @@
-import { defineContract } from '@vict/contracts';
 import { createRuntime } from '@vict/runtime';
 import type { KernelEvent } from '@vict/kernel';
 import { describe, expect, it } from 'vitest';
@@ -9,59 +8,6 @@ import { describe, expect, it } from 'vitest';
  * Runs on the in-memory durable orchestration engine.
  */
 
-const stringContract = defineContract({
-  id: 'orch-string',
-  revision: '1',
-  expected: 'a string',
-  parse: (input: unknown) => {
-    if (typeof input === 'string') {
-      return { ok: true as const, value: input, issues: [] };
-    }
-    return {
-      ok: false as const,
-      issues: [{ code: 'TYPE', path: '$', message: 'expected a string' }],
-    };
-  },
-});
-
-const decisionContract = defineContract({
-  id: 'orch-decision-result',
-  revision: '1',
-  expected: 'a DecisionResult with a route and a string value',
-  parse: (input: unknown) => {
-    if (
-      typeof input === 'object' &&
-      input !== null &&
-      typeof (input as { route?: unknown }).route === 'string' &&
-      typeof (input as { value?: unknown }).value === 'string'
-    ) {
-      return { ok: true as const, value: input, issues: [] };
-    }
-    return {
-      ok: false as const,
-      issues: [{ code: 'TYPE', path: '$', message: 'expected { route, value }' }],
-    };
-  },
-});
-
-const joinContract = defineContract({
-  id: 'orch-join-result',
-  revision: '1',
-  expected: 'an object with string values under keys a and b',
-  parse: (input: unknown) => {
-    if (typeof input === 'object' && input !== null) {
-      const record = input as Record<string, unknown>;
-      if (typeof record.a === 'string' && typeof record.b === 'string') {
-        return { ok: true as const, value: input, issues: [] };
-      }
-    }
-    return {
-      ok: false as const,
-      issues: [{ code: 'SHAPE', path: '$', message: 'expected { a: string, b: string }' }],
-    };
-  },
-});
-
 describe('stage 03 orchestration smoke (in-memory)', () => {
   it('routes a decision, fans out, joins deterministically, waits for a signal, and completes a keyed write', async () => {
     const runtime = createRuntime({
@@ -71,7 +17,7 @@ describe('stage 03 orchestration smoke (in-memory)', () => {
     let routeCalls = 0;
     let branchACalls = 0;
     let branchBCalls = 0;
-    let writeCalls: string[] = [];
+    const writeCalls: string[] = [];
 
     runtime
       .registerCapability({

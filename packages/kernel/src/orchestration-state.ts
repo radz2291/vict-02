@@ -186,7 +186,10 @@ export const RUN_TRANSITIONS: Readonly<Record<string, readonly string[]>> = Obje
   created: ['running'],
   running: ['running', 'waiting', 'blocked', 'completed', 'failed', 'cancelled'],
   waiting: ['waiting', 'running', 'cancelled'],
-  blocked: ['blocked', 'running', 'cancelled'],
+  // `failed` is the authorized operator fail resolution (runtime.resolveBlocked
+  // action 'fail'): an explicitly authorized operator may terminate a blocked
+  // run as failed; the resolution is atomic, evented, and idempotent.
+  blocked: ['blocked', 'running', 'cancelled', 'failed'],
   completed: [],
   failed: [],
   cancelled: [],

@@ -139,19 +139,15 @@ describe('stage 03 atomic fault injection (in-memory adapter hooks)', () => {
 
         // Arm the fault for the next matching transition, then run.
         arbiter.arm(operation);
-        let firstAttempt: 'threw' | 'returned' | 'other' = 'threw';
         let runId: string | undefined;
         try {
           const result = await runtime.run('seed');
-          firstAttempt = 'returned';
           runId = result.runId;
         } catch (error) {
           expect(error).toBeInstanceOf(VictStoreError);
-          firstAttempt = 'threw';
         }
         arbiter.disarm();
         expect(arbiter.fired).toEqual([operation]);
-        void firstAttempt;
 
         if (operation === 'orchestration.completeAttempt') {
           // The claim committed (node.started is durable), the completion did

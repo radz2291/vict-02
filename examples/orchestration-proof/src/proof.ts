@@ -185,7 +185,7 @@ export async function runProof(): Promise<ProofReport> {
   }
 
   // Phase 4: drive across the retry timer to completion.
-  let final = (await state.runtime.resumeRun(runId)) as unknown as RunResult;
+  const final = (await state.runtime.resumeRun(runId)) as unknown as RunResult;
   if ((final.status as string) === 'running' || (final.status as string) === 'waiting') {
     // Advance the injected clock past the durable retry backoff (1ms).
     advanceTime(10);

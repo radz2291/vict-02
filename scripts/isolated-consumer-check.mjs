@@ -421,7 +421,6 @@ check(
 );
 const orchParts = (orchRun.stdout ?? '').trim().split(/\r?\n/).at(-1)?.split(' ') ?? [];
 const orchRunId = orchParts[1] ?? '';
-const orchWaitId = orchParts[2] ?? '';
 console.log(
   '\n[orchestration consumer] REOPEN, deliver one idempotent signal, resume to completion',
 );

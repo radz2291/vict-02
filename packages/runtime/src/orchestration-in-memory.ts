@@ -13,31 +13,23 @@ import {
 } from '@vict/kernel';
 import type { VictError } from '@vict/contracts';
 import type {
-  ApplyCancellationCommand,
+  CompleteAttemptCommand,
   CancellationResult,
-  ClaimDueTimersCommand,
   ClaimDueTimersResult,
   ClaimedAttempt,
   ClaimReadyTokenCommand,
   ClaimReadyTokenResult,
-  CompleteAttemptCommand,
   CompleteAttemptResult,
-  CreateOrchestrationRunCommand,
   DueTimerRecord,
   OrchestrationFaultHooks,
   OrchestrationRunQuery,
   OrchestrationSnapshotView,
   OrchestrationStore,
   RecoverableClaim,
-  RecoverAttemptCommand,
   RecoverOrchestrationCommand,
-  RequestCancellationCommand,
-  ResolveBlockedCommand,
   ResolveBlockedResult,
-  ResolveDueTimerCommand,
   ResolveDueTimerResult,
   SignalDeliveryResult,
-  SignalWaitCommand,
   OrchestrationEventInput,
   StoredOrchestrationRun,
   TimerRecord,
@@ -66,7 +58,6 @@ export interface OrchestrationInMemoryOptions {
 type Writable<T> = { -readonly [K in keyof T]: T[K] };
 
 type InternalToken = Writable<DurableTokenState> & { checkpoint?: unknown };
-type InternalRunRecord = Writable<StoredOrchestrationRun>;
 type InternalAttempt = Writable<DurableAttemptState>;
 type InternalWait = Writable<DurableWaitState>;
 type InternalTimer = Writable<TimerRecord>;
@@ -437,7 +428,6 @@ export function createInMemoryOrchestrationStore(
         [];
       const previousWaits: { wait: InternalWait; status: DurableWaitState['status'] }[] = [];
       const previousTimers: { timer: InternalTimer; status: TimerRecord['status'] }[] = [];
-      const previousBranchResultCount = stored.branchResults.length;
       const previousBranchOutputs = new Map(stored.branchOutputs);
       let joinFired = false;
 
@@ -533,7 +523,6 @@ export function createInMemoryOrchestrationStore(
           token.revision += 1;
           token.updatedAt = now;
           for (const child of continuation.children) {
-            const childId = `tok_${command.runId}_${child.branchKey}_${child.toNodeId}_${now}_${stored.tokens.size}`;
             const childToken: InternalToken = {
               tokenId: child.tokenId as string,
               runId: command.runId,

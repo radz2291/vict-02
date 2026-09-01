@@ -41,6 +41,7 @@ stateDiagram-v2
     waiting --> running: signal / due timer
     running --> blocked: ambiguous outcome / policy denial
     blocked --> running: authorized operator resolution
+    blocked --> failed: authorized operator fail resolution
     running --> completed
     running --> failed
     running --> cancelled
@@ -322,6 +323,12 @@ Actions: `retry` (only where a retry policy exists), `confirm_applied`
 (must pass the pinned output contract), `fail` (approved safe code),
 `cancel`. It cannot change graph definitions, activation identity,
 permissions, or capability metadata. Approvals/roles remain Stage 05.
+The `fail` action applies the legal `blocked → failed` run transition
+(kernel `RUN_TRANSITIONS`): the run is failed atomically in the same
+transaction that records the sanitized `operator.intervened` and terminal
+`run.failed` events, the blocked token is cancelled, no downstream
+continuation is created, and a repeated identical resolution is a durable
+duplicate.
 
 ## 10. Exact-activation resume
 

@@ -853,7 +853,7 @@ describe('orchestration SQLite corrective evidence', () => {
               { branchKey: 'b', toNodeId: 'x2', forkId: 'f', lineage: 'b', tokenId: 'tok_fj_b' },
             ],
           };
-          const arrival = (branchKey: string, tokenId: string) => ({
+          const arrival = (branchKey: string) => ({
             kind: 'branchArrival' as const,
             forkId: 'f',
             joinId: 'j',
@@ -929,7 +929,7 @@ describe('orchestration SQLite corrective evidence', () => {
             expectedAttemptFence: ca1.attempt.fence,
             now: Date.now(),
             outcome: { kind: 'completed', outputSummary: { shape: 'string', length: 5 } },
-            continuation: arrival('a', ca1.token.tokenId),
+            continuation: arrival('a'),
             events: [],
             run: { status: 'running', steps: 3 },
             removeCheckpoints: [ca1.token.tokenId],
@@ -961,7 +961,7 @@ describe('orchestration SQLite corrective evidence', () => {
               expectedAttemptFence: cb1.attempt.fence,
               now: Date.now(),
               outcome: { kind: 'completed', outputSummary: { shape: 'string', length: 4 } },
-              continuation: arrival('b', cb1.token.tokenId),
+              continuation: arrival('b'),
               events: [],
               run: { status: 'running', steps: 4 },
               removeCheckpoints: [cb1.token.tokenId],
@@ -984,7 +984,7 @@ describe('orchestration SQLite corrective evidence', () => {
             expectedAttemptFence: cb1.attempt.fence,
             now: Date.now(),
             outcome: { kind: 'completed', outputSummary: { shape: 'string', length: 4 } },
-            continuation: arrival('b', cb1.token.tokenId),
+            continuation: arrival('b'),
             events: [],
             run: { status: 'running', steps: 4 },
             removeCheckpoints: [cb1.token.tokenId],
@@ -1003,7 +1003,7 @@ describe('orchestration SQLite corrective evidence', () => {
               expectedAttemptFence: cb1.attempt.fence,
               now: Date.now(),
               outcome: { kind: 'completed', outputSummary: { shape: 'string', length: 4 } },
-              continuation: arrival('b', cb1.token.tokenId),
+              continuation: arrival('b'),
               events: [],
               run: { status: 'running', steps: 5 },
               removeCheckpoints: [cb1.token.tokenId],
@@ -1085,15 +1085,11 @@ describe('orchestration SQLite corrective evidence', () => {
       {
         const stores = createSqliteStores({ path: db });
         const runtime = createRuntime({ stores });
-        let calls = 0;
         runtime.registerCapability({
           id: 'flaky',
           revision: '1',
           effect: 'pure',
-          invoke: (input: unknown) => {
-            calls += 1;
-            return `ok:${String(input)}`;
-          },
+          invoke: (input: unknown) => `ok:${String(input)}`,
         });
         await settle(550); // the 500ms backoff elapses while offline
         const pumped = await runtime.processDueTimers({});

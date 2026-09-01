@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { spawnSync } from 'node:child_process';
-import { mkdtemp, readFile, rm } from 'node:fs/promises';
+import { mkdtemp, readFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -20,15 +20,6 @@ import { createSqliteStores, CURRENT_SCHEMA_VERSION } from '@vict/store-sqlite';
 const HERE = resolve(fileURLToPath(import.meta.url), '..');
 const REPO_ROOT = resolve(HERE, '..', '..', '..');
 const STAGE2_FIXTURE = 'packages/store-sqlite/test/fixtures/stage2-database.ts';
-
-interface FixtureReport {
-  readonly runs: number;
-  readonly events: { readonly [runId: string]: number };
-  readonly activations: number;
-  readonly selections: number;
-  readonly completedRunId: string;
-  readonly blockedRunId: string;
-}
 
 describe('stage 02 database migrates forward to the Stage 03 schema', () => {
   it(

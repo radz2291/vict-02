@@ -1,6 +1,4 @@
-import type { KernelEvent } from '@vict/kernel';
-import type { OrchestrationEventInput, SignalDeliveryResult } from './orchestration-store-types.js';
-import { VictRuntimeError } from './errors.js';
+import type { OrchestrationEventInput } from './orchestration-store-types.js';
 import {
   signalCommandHash,
   cancellationCommandHash,
@@ -27,17 +25,6 @@ import type {
  * and boot-time effect-aware recovery. All commands are concurrency-guarded
  * through the store's optimistic revisions and idempotency deduplication.
  */
-
-async function requireRun(
-  deps: OrchestrationDriverDeps,
-  runId: string,
-): Promise<import('./orchestration-store-types.js').StoredOrchestrationRun> {
-  const run = await deps.orchestration.getOrchestrationRun(runId);
-  if (!run) {
-    throw new VictRuntimeError('VICT_RUN_NOT_FOUND', `No orchestration run '${runId}' exists.`);
-  }
-  return run;
-}
 
 function envelopeOf(run: {
   runId: string;

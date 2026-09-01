@@ -9,8 +9,53 @@ import {
   runOrchestrationConformanceSuite,
   runOrchestrationJoinSuite,
   runOrchestrationRaceSuite,
+  runOrchestrationRemediationSuite,
 } from '@vict/runtime/testing';
-import type { OrchestrationConformanceFixture } from '@vict/runtime/testing';
+import type { OrchestrationRemediationStores } from '@vict/runtime/testing';
+
+/** The shared Stage 03 audit-remediation suite — SQLite backend (real close/reopen). */
+describe('orchestration remediation (shared suite, sqlite)', () => {
+  runOrchestrationRemediationSuite({ test: it }, expect, {
+    name: 'sqlite',
+    async create(clock) {
+      const dir = await mkdtemp(join(tmpdir(), 'vict-orch-remediation-'));
+      const dbPath = join(dir, 'remediation.db');
+      let current = createSqliteStores({ path: dbPath });
+      const buildRuntime = (): ReturnType<typeof createRuntime> =>
+        createRuntime({
+          stores: current,
+          ...(clock ? { clock, orchestration: { time: clock } } : {}),
+        });
+      let runtime = buildRuntime();
+      const currentStores = (): OrchestrationRemediationStores => ({
+        runtime,
+        orchestration: current.orchestration as never,
+      });
+      return {
+        stores: currentStores(),
+        async reopen() {
+          await current.dispose();
+          current = createSqliteStores({ path: dbPath });
+          runtime = buildRuntime();
+          return currentStores();
+        },
+        async createOperatorRuntime() {
+          return createRuntime({
+            stores: current,
+            orchestration: {
+              operatorAuthorized: true,
+              ...(clock ? { time: clock } : {}),
+            },
+          });
+        },
+        async dispose() {
+          await current.dispose();
+          await rm(dir, { recursive: true, force: true });
+        },
+      };
+    },
+  });
+});
 
 /** The shared Stage 03 orchestration conformance suite — SQLite backend. */
 describe('orchestration conformance (shared suite, sqlite)', () => {

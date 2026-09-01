@@ -1,4 +1,3 @@
-import type { KernelEvent } from '@vict/kernel';
 import type { OrchestrationStore } from './orchestration-store-types.js';
 import type { VictRuntime } from './runtime.js';
 import { decideEffectAuthorization } from './effect-policy.js';
@@ -48,17 +47,6 @@ export interface OrchestrationConformanceStores {
 export interface ConformanceContext {
   readonly runner: ConformanceTestRunner;
   readonly expect: ConformanceExpect;
-}
-
-interface StringContractLike {
-  id: string;
-  revision: string;
-  expected: string;
-  parse(input: unknown): {
-    ok: boolean;
-    value?: unknown;
-    issues: { code: string; path: string; message: string }[];
-  };
 }
 
 export function stringContract(id: string): Parameters<VictRuntime['registerContract']>[0] {
@@ -221,7 +209,6 @@ export function runOrchestrationConformanceSuite(
     try {
       const runtime = fixture.runtime;
       let routeCalls = 0;
-      let branchCalls = 0;
       runtime
         .registerCapability({
           id: 'route',

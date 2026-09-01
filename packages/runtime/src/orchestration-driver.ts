@@ -4,7 +4,6 @@ import {
   type CompiledGraph,
   type CompiledNode,
   type DecisionResult,
-  type ExecutionMode,
   type KernelEvent,
 } from '@vict/kernel';
 import type {
@@ -22,8 +21,6 @@ import {
   deriveAttemptId,
   deriveIdempotencyKey,
   deriveInvocationId,
-  forkLineageOf,
-  joinTokenId,
   resolveBindings,
   resolveGraphForActivation,
   rootTokenId,
@@ -32,7 +29,6 @@ import {
 import { planContinuation, type PlannedCompletion } from './orchestration-plan.js';
 import type {
   OrchestrationEngineDeps,
-  OrchestrationRunResult,
   OrchestrationTimePort,
 } from './orchestration-driver-types.js';
 import { ORCHESTRATION_LIMITS } from './orchestration-driver-types.js';
@@ -210,20 +206,6 @@ export class OrchestrationDriver {
     return resolution;
   }
 
-  #eventEnvelope(activationVersion: string): Promise<{
-    graphId: string;
-    graphVersion: string;
-    capabilitySetVersion: string;
-    activationVersion: string;
-  }> {
-    return this.#resolveExecution(activationVersion).then((resolved) => ({
-      graphId: resolved.graph.id,
-      graphVersion: resolved.graph.graphVersion,
-      capabilitySetVersion: resolved.graph.capabilitySetVersion,
-      activationVersion: resolved.graph.activationVersion,
-    }));
-  }
-
   /** Root token id helper for the facade. */
   static rootTokenId(runId: string): string {
     return rootTokenId(runId);
@@ -354,7 +336,6 @@ export class OrchestrationDriver {
       ORCHESTRATION_LIMITS.maxConcurrency,
     );
     const inFlight = new Set<Promise<void>>();
-    let cancelledWhileDriving = false;
     for (;;) {
       while (inFlight.size < concurrency) {
         const claim = await this.#deps.orchestration.claimReadyToken({
@@ -409,9 +390,6 @@ export class OrchestrationDriver {
           },
         });
         if (!claim.claimed) {
-          if (claim.reason === 'cancelled') {
-            cancelledWhileDriving = true;
-          }
           break;
         }
         const attempt = this.#executeAttempt(resolved, claim.claim, mode, options);
@@ -553,15 +531,24 @@ export class OrchestrationDriver {
       if (node.kind === 'wait') {
         // First arrival parks (creates the durable wait); a post-wake
         // execution (the wait is already resolved) advances along the
-        // wait's success edge with the resolved payload.
+        // wait's success edge with the resolved payload. The wake/park
+        // decision is bound to the CURRENT wait instance (token + node
+        // identity): a resolved earlier wait elsewhere on the same token
+        // lineage must never satisfy this node's own wait.
         const snapshot = await this.#deps.orchestration.getOrchestrationSnapshot(run.runId);
         const hasOpenWait = (snapshot?.waits ?? []).some(
-          (wait) => wait.tokenId === claim.token.tokenId && wait.status === 'open',
+          (wait) =>
+            wait.tokenId === claim.token.tokenId &&
+            wait.nodeId === claim.token.nodeId &&
+            wait.status === 'open',
         );
         if (
           hasOpenWait ||
           !(snapshot?.waits ?? []).some(
-            (wait) => wait.tokenId === claim.token.tokenId && wait.status === 'resolved',
+            (wait) =>
+              wait.tokenId === claim.token.tokenId &&
+              wait.nodeId === claim.token.nodeId &&
+              wait.status === 'resolved',
           )
         ) {
           await this.#completeWithOutcome(
@@ -730,7 +717,6 @@ export class OrchestrationDriver {
             }
           : {}),
       };
-      let invocation: { ok: true; value: unknown } | { ok: false; error: VictError };
       // Promise.resolve().then ensures a SYNCHRONOUS throw from the handler
       // is still converted into a capability failure, not a driver failure.
       const invokePromise = Promise.resolve()
@@ -752,7 +738,7 @@ export class OrchestrationDriver {
             ),
           }),
         );
-      invocation =
+      const invocation: { ok: true; value: unknown } | { ok: false; error: VictError } =
         deadlinePromise === null
           ? await invokePromise
           : await Promise.race([

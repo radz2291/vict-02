@@ -359,11 +359,6 @@ async function benchStage03(
   console.log('');
   console.log('--- Stage 03 durable orchestration (informational) ---');
 
-  const orchestration = (
-    fileStores as unknown as {
-      orchestration: import('@vict/runtime').OrchestrationStore;
-    }
-  ).orchestration;
   let seq = 0;
   const runtime = createRuntime({
     stores: fileStores,

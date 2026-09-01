@@ -7,15 +7,12 @@ import type {
 } from '@vict/kernel';
 import type { VictError } from '@vict/contracts';
 import type {
-  ApplyCancellationCommand,
   ClaimDueTimersCommand,
   ClaimDueTimersResult,
   ClaimedAttempt,
   ClaimReadyTokenCommand,
   ClaimReadyTokenResult,
-  CompleteAttemptCommand,
   CompleteAttemptResult,
-  CreateOrchestrationRunCommand,
   DueTimerRecord,
   OrchestrationEventInput,
   OrchestrationFaultHooks,
@@ -23,7 +20,6 @@ import type {
   OrchestrationSnapshotView,
   OrchestrationStore,
   RecoverableClaim,
-  RecoverAttemptCommand,
   RecoverOrchestrationCommand,
   CancellationResult,
   RequestCancellationCommand,
@@ -32,7 +28,6 @@ import type {
   ResolveDueTimerCommand,
   ResolveDueTimerResult,
   SignalDeliveryResult,
-  SignalWaitCommand,
   StoredOrchestrationRun,
   TimerRecord,
 } from '@vict/runtime';
@@ -428,16 +423,6 @@ function parseJson(text: string, context: string, runId?: string): unknown {
   }
 }
 
-function immutable<T>(value: T) {
-  if (value !== null && typeof value === 'object') {
-    for (const key of Object.keys(value as Record<string, unknown>)) {
-      immutable((value as Record<string, unknown>)[key]);
-    }
-    Object.freeze(value);
-  }
-  return value;
-}
-
 /** Create the SQLite orchestration store over an opened database handle. */
 export function createSqliteOrchestrationStore(
   handle: OpenDatabase,
@@ -540,13 +525,6 @@ export function createSqliteOrchestrationStore(
           tokenId,
         },
       );
-    }
-  };
-
-  const tombstoneCheckpoints = (tokenIds: readonly string[]): void => {
-    const update = db.prepare('UPDATE vict_token SET checkpoint = NULL WHERE token_id = ?;');
-    for (const tokenId of tokenIds) {
-      update.run(tokenId);
     }
   };
 
@@ -803,7 +781,6 @@ export function createSqliteOrchestrationStore(
           db.prepare(
             "UPDATE vict_run SET status = 'running', steps = steps + 1, current_node_id = ?, record_revision = record_revision + 1, updated_at = ? WHERE run_id = ?;",
           ).run(token.nodeId, toIso(command.now), command.runId);
-          const updatedRun = runRow(command.runId) as RunRow;
           const seq = nextEventSeqOf(command.runId);
           insertEvent(
             {
@@ -1364,7 +1341,6 @@ export function createSqliteOrchestrationStore(
             "UPDATE vict_run SET status = 'running', record_revision = record_revision + 1, updated_at = ? WHERE run_id = ?;",
           ).run(nowIso, command.runId);
           faults?.afterStateStage?.('orchestration.signalWait');
-          const updatedRun = runRow(command.runId) as RunRow;
           const seq = appendEvents(command.runId, command.events);
           faults?.beforeCommit?.('orchestration.signalWait');
           const token = validateTokenRow(
@@ -1469,11 +1445,6 @@ export function createSqliteOrchestrationStore(
             };
           }
           const nowIso = toIso(command.now);
-          const result: ResolveDueTimerResult = {
-            runRecordRevision: run.record_revision,
-            runNextEventSeq: 0,
-            applied: true,
-          };
           if (command.resolution.kind === 'wake' || command.resolution.kind === 'waitTimeout') {
             const waitRow = db
               .prepare('SELECT * FROM vict_wait WHERE wait_id = ?;')
@@ -1544,9 +1515,9 @@ export function createSqliteOrchestrationStore(
             command.runId,
           );
           faults?.afterStateStage?.('orchestration.resolveDueTimer');
-          const updatedRun = runRow(command.runId) as RunRow;
           const seq = appendEvents(command.runId, command.events);
           faults?.beforeCommit?.('orchestration.resolveDueTimer');
+          const updatedRun = runRow(command.runId) as RunRow;
           return {
             runRecordRevision: updatedRun.record_revision,
             runNextEventSeq: seq,
@@ -1618,7 +1589,6 @@ export function createSqliteOrchestrationStore(
             ).run(nowIso, command.runId);
           }
           faults?.afterStateStage?.('orchestration.requestCancellation');
-          const updatedRun = runRow(command.runId) as RunRow;
           const seq = appendEvents(
             command.runId,
             runCancelledNow && command.terminalCancelEvent !== undefined
@@ -1681,7 +1651,6 @@ export function createSqliteOrchestrationStore(
             "UPDATE vict_run SET status = 'cancelled', completed_at = ?, record_revision = record_revision + 1, updated_at = ? WHERE run_id = ?;",
           ).run(nowIso, nowIso, command.runId);
           faults?.afterStateStage?.('orchestration.applyCancellation');
-          const updatedRun = runRow(command.runId) as RunRow;
           const seq = appendEvents(command.runId, command.events);
           // Terminal cleanup: tombstone every private operational payload.
           db.prepare('UPDATE vict_token SET checkpoint = NULL WHERE run_id = ?;').run(
@@ -1815,7 +1784,6 @@ export function createSqliteOrchestrationStore(
             command.runId,
           );
           faults?.afterStateStage?.('orchestration.recoverAttempt');
-          const updatedRun = runRow(command.runId) as RunRow;
           const seq = appendEvents(command.runId, command.events);
           faults?.beforeCommit?.('orchestration.recoverAttempt');
           return {
@@ -1957,7 +1925,6 @@ export function createSqliteOrchestrationStore(
             }
           }
           faults?.afterStateStage?.('orchestration.resolveBlocked');
-          const updatedRun = runRow(command.runId) as RunRow;
           const seq = appendEvents(command.runId, command.events);
           faults?.beforeCommit?.('orchestration.resolveBlocked');
           return {

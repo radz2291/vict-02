@@ -18,8 +18,15 @@ export {
   unsafeWriteGraph,
 } from './orchestration-conformance.js';
 export { runOrchestrationJoinSuite } from './orchestration-join-conformance.js';
+export { createManualOrchestrationClock } from './orchestration-race-conformance.js';
 export { runOrchestrationRaceSuite } from './orchestration-race-conformance.js';
 export { runOrchestrationCanarySuite } from './orchestration-canary-conformance.js';
+export { runOrchestrationRemediationSuite } from './orchestration-remediation-conformance.js';
+export type {
+  OrchestrationRemediationFixture,
+  OrchestrationRemediationHandle,
+  OrchestrationRemediationStores,
+} from './orchestration-remediation-conformance.js';
 export type {
   OrchestrationCanaryFixture,
   OrchestrationCanaryStores,

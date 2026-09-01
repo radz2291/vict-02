@@ -5,8 +5,43 @@ import {
   runOrchestrationConformanceSuite,
   runOrchestrationJoinSuite,
   runOrchestrationRaceSuite,
+  runOrchestrationRemediationSuite,
 } from '@vict/runtime/testing';
-import type { OrchestrationConformanceFixture } from '@vict/runtime/testing';
+
+/** The shared Stage 03 audit-remediation suite — in-memory backend. */
+describe('orchestration remediation (shared suite, in-memory)', () => {
+  runOrchestrationRemediationSuite({ test: it }, expect, {
+    name: 'in-memory',
+    async create(clock) {
+      const stores = createInMemoryStores();
+      const buildRuntime = (): ReturnType<typeof createRuntime> =>
+        createRuntime({
+          stores,
+          ...(clock ? { clock, orchestration: { time: clock } } : {}),
+        });
+      const runtime = buildRuntime();
+      return {
+        stores: { runtime, orchestration: stores.orchestration as never },
+        async reopen() {
+          // Nothing is persisted to disk, but the reopened runtime is a NEW
+          // runtime instance over the SAME store state (registry is
+          // per-runtime, mirroring the SQLite close/reopen semantics).
+          const reopened = buildRuntime();
+          return { runtime: reopened, orchestration: stores.orchestration as never };
+        },
+        async createOperatorRuntime() {
+          return createRuntime({
+            stores,
+            orchestration: { operatorAuthorized: true },
+          });
+        },
+        async dispose() {
+          /* nothing durable to release */
+        },
+      };
+    },
+  });
+});
 
 /** The shared Stage 03 orchestration conformance suite — in-memory backend. */
 describe('orchestration conformance (shared suite, in-memory)', () => {

@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto';
-import type { Contract, VictError } from '@vict/contracts';
+import type { Contract } from '@vict/contracts';
 import { compileGraph, type CompiledGraph, type GraphIssue } from '@vict/kernel';
 import type { ApplicationGraphDefinition } from '@vict/kernel';
 import { VictStoreError } from './store-errors.js';
