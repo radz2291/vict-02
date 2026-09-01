@@ -95,6 +95,173 @@ export const SCHEMA_MIGRATIONS: readonly Migration[] = [
       );`,
     ],
   },
+  {
+    // Stage 03 durable orchestration. The vict_run table is REBUILT (SQLite
+    // cannot widen a CHECK constraint) with the extended run lifecycle
+    // ('waiting', 'cancelled'); every historical row, foreign key and index
+    // is preserved exactly. New tables cover tokens (with the private
+    // operational checkpoint column), attempts, waits, timers, signal
+    // receipts, cancellation and operator-resolution deduplication, and
+    // branch/join membership with the private branch-output payloads.
+    version: 2,
+    name: 'durable-orchestration',
+    statements: [
+      // 1. Rebuild vict_run with the extended status domain.
+      `CREATE TABLE vict_run_v3 (
+        run_id TEXT PRIMARY KEY,
+        graph_id TEXT NOT NULL,
+        graph_version TEXT NOT NULL,
+        capability_set_version TEXT NOT NULL,
+        activation_version TEXT NOT NULL REFERENCES vict_activation(activation_version),
+        status TEXT NOT NULL CHECK (status IN ('running', 'waiting', 'blocked', 'completed', 'failed', 'cancelled')),
+        mode TEXT NOT NULL CHECK (mode IN ('normal', 'simulate', 'test')),
+        retention TEXT NOT NULL CHECK (retention IN ('none', 'summary', 'full')),
+        steps INTEGER NOT NULL,
+        current_node_id TEXT,
+        output_summary TEXT,
+        output TEXT,
+        error TEXT,
+        record_revision INTEGER NOT NULL,
+        created_at TEXT NOT NULL,
+        updated_at TEXT NOT NULL,
+        completed_at TEXT
+      );`,
+      `INSERT INTO vict_run_v3
+        (run_id, graph_id, graph_version, capability_set_version, activation_version, status, mode, retention,
+         steps, current_node_id, output_summary, output, error, record_revision, created_at, updated_at, completed_at)
+      SELECT run_id, graph_id, graph_version, capability_set_version, activation_version, status, mode, retention,
+             steps, current_node_id, output_summary, output, error, record_revision, created_at, updated_at, completed_at
+      FROM vict_run;`,
+      `DROP TABLE vict_run;`,
+      `ALTER TABLE vict_run_v3 RENAME TO vict_run;`,
+      `CREATE INDEX idx_vict_run_graph ON vict_run (graph_id, created_at);`,
+      `CREATE INDEX idx_vict_run_status ON vict_run (status);`,
+      // 2. Durable continuation tokens (with the private operational checkpoint payload).
+      `CREATE TABLE vict_token (
+        token_id TEXT PRIMARY KEY,
+        run_id TEXT NOT NULL REFERENCES vict_run(run_id),
+        activation_version TEXT NOT NULL,
+        node_id TEXT NOT NULL,
+        status TEXT NOT NULL CHECK (status IN ('ready', 'claimed', 'waiting', 'completed', 'joined', 'cancelled', 'blocked')),
+        parent_token_id TEXT,
+        lineage TEXT NOT NULL DEFAULT '',
+        fork_id TEXT,
+        branch_key TEXT,
+        revision INTEGER NOT NULL,
+        checkpoint TEXT,
+        created_at TEXT NOT NULL,
+        updated_at TEXT NOT NULL
+      );`,
+      `CREATE INDEX idx_vict_token_ready ON vict_token (run_id, status, created_at, token_id);`,
+      `CREATE INDEX idx_vict_token_run ON vict_token (run_id);`,
+      // 3. Logical invocations and node attempts (ownership, leases, fences).
+      `CREATE TABLE vict_attempt (
+        attempt_id TEXT PRIMARY KEY,
+        invocation_id TEXT NOT NULL,
+        run_id TEXT NOT NULL REFERENCES vict_run(run_id),
+        token_id TEXT NOT NULL REFERENCES vict_token(token_id),
+        node_id TEXT NOT NULL,
+        capability_id TEXT NOT NULL,
+        attempt_number INTEGER NOT NULL,
+        effect_class TEXT NOT NULL CHECK (effect_class IN ('pure', 'read', 'write', 'irreversible')),
+        idempotency_key TEXT,
+        state TEXT NOT NULL CHECK (state IN ('ready', 'claimed', 'started', 'completed', 'failed', 'timed_out', 'cancelled', 'outcome_unknown')),
+        owner_id TEXT,
+        lease_expires_at TEXT,
+        deadline_at TEXT,
+        fence INTEGER NOT NULL,
+        retry_due_at TEXT,
+        created_at TEXT NOT NULL,
+        updated_at TEXT NOT NULL,
+        UNIQUE (invocation_id, attempt_number)
+      );`,
+      `CREATE INDEX idx_vict_attempt_invocation ON vict_attempt (invocation_id);`,
+      `CREATE INDEX idx_vict_attempt_token ON vict_attempt (run_id, token_id, state);`,
+      `CREATE INDEX idx_vict_attempt_lease ON vict_attempt (state, lease_expires_at);`,
+      // 4. Durable waits (signal + timer).
+      `CREATE TABLE vict_wait (
+        wait_id TEXT PRIMARY KEY,
+        run_id TEXT NOT NULL REFERENCES vict_run(run_id),
+        token_id TEXT NOT NULL REFERENCES vict_token(token_id),
+        node_id TEXT NOT NULL,
+        activation_version TEXT NOT NULL,
+        kind TEXT NOT NULL CHECK (kind IN ('signal', 'timer')),
+        signal_name TEXT,
+        contract_id TEXT,
+        contract_revision TEXT,
+        due_at TEXT,
+        timeout_at TEXT,
+        status TEXT NOT NULL CHECK (status IN ('open', 'resolved', 'cancelled')),
+        revision INTEGER NOT NULL,
+        created_at TEXT NOT NULL,
+        resolved_at TEXT,
+        resolved_by TEXT
+      );`,
+      `CREATE INDEX idx_vict_wait_open ON vict_wait (run_id, status);`,
+      `CREATE INDEX idx_vict_wait_token ON vict_wait (token_id);`,
+      // 5. Due-time scheduling (timer waits, wait timeouts, retry backoff).
+      `CREATE TABLE vict_timer (
+        timer_id TEXT PRIMARY KEY,
+        run_id TEXT NOT NULL REFERENCES vict_run(run_id),
+        kind TEXT NOT NULL CHECK (kind IN ('wait', 'wait-timeout', 'retry')),
+        wait_id TEXT,
+        attempt_id TEXT,
+        token_id TEXT,
+        due_at TEXT NOT NULL,
+        status TEXT NOT NULL CHECK (status IN ('scheduled', 'firing', 'fired', 'cancelled')),
+        owner_id TEXT,
+        lease_expires_at TEXT,
+        revision INTEGER NOT NULL,
+        created_at TEXT NOT NULL
+      );`,
+      `CREATE INDEX idx_vict_timer_due ON vict_timer (status, due_at, timer_id);`,
+      `CREATE INDEX idx_vict_timer_run ON vict_timer (run_id, status);`,
+      // 6. Signal receipts and deduplication (safe identity/hash metadata only).
+      `CREATE TABLE vict_signal_receipt (
+        signal_id TEXT PRIMARY KEY,
+        run_id TEXT NOT NULL REFERENCES vict_run(run_id),
+        wait_id TEXT,
+        signal_name TEXT,
+        command_hash TEXT NOT NULL,
+        status TEXT NOT NULL CHECK (status IN ('accepted', 'duplicate', 'conflict', 'rejected')),
+        event_seq INTEGER,
+        created_at TEXT NOT NULL
+      );`,
+      `CREATE INDEX idx_vict_signal_run ON vict_signal_receipt (run_id);`,
+      // 7. Cancellation request deduplication.
+      `CREATE TABLE vict_cancellation_request (
+        run_id TEXT NOT NULL REFERENCES vict_run(run_id),
+        request_id TEXT NOT NULL,
+        reason_code TEXT NOT NULL,
+        command_hash TEXT NOT NULL,
+        created_at TEXT NOT NULL,
+        PRIMARY KEY (run_id, request_id)
+      );`,
+      // 8. Operator resolution deduplication.
+      `CREATE TABLE vict_operator_resolution (
+        run_id TEXT NOT NULL REFERENCES vict_run(run_id),
+        resolution_id TEXT NOT NULL,
+        action TEXT NOT NULL CHECK (action IN ('retry', 'confirm_applied', 'fail', 'cancel')),
+        reason_code TEXT NOT NULL,
+        command_hash TEXT NOT NULL,
+        created_at TEXT NOT NULL,
+        PRIMARY KEY (run_id, resolution_id)
+      );`,
+      // 9. Branch/join membership and private branch-output payloads.
+      `CREATE TABLE vict_branch_result (
+        run_id TEXT NOT NULL REFERENCES vict_run(run_id),
+        fork_id TEXT NOT NULL,
+        join_id TEXT NOT NULL,
+        branch_key TEXT NOT NULL,
+        token_id TEXT NOT NULL,
+        failed INTEGER NOT NULL CHECK (failed IN (0, 1)),
+        output TEXT,
+        created_at TEXT NOT NULL,
+        PRIMARY KEY (run_id, fork_id, branch_key)
+      );`,
+      `CREATE INDEX idx_vict_branch_join ON vict_branch_result (run_id, fork_id);`,
+    ],
+  },
 ];
 
 /** The highest schema version this adapter understands. */
@@ -140,7 +307,11 @@ export function runMigrations(
     if (migration.version <= current || migration.version > shippedCurrent) {
       continue;
     }
-    // Migration statements plus the version row commit together or not at all.
+    // Migration statements plus the version row commit together or not at
+    // all. Foreign keys are relaxed for the duration of the transaction so
+    // table rebuilds (e.g. the Stage 03 vict_run rebuild) can drop and
+    // recreate a referenced table; integrity is re-verified afterwards.
+    safeDisableForeignKeys(db);
     db.exec('BEGIN IMMEDIATE;');
     try {
       for (const statement of migration.statements) {
@@ -157,6 +328,7 @@ export function runMigrations(
       } catch {
         /* a broken transaction may already be rolled back */
       }
+      restoreForeignKeys(db);
       throw new VictStoreError(
         'VICT_STORE_MIGRATION_FAILED',
         `Migration '${migration.name}' failed; the database was left at its previous schema version.`,
@@ -164,6 +336,8 @@ export function runMigrations(
         cause,
       );
     }
+    restoreForeignKeys(db);
+    verifyForeignKeys(db);
   }
   const toVersion = applied.length > 0 ? Math.max(...applied) : current;
   return { fromVersion: current, toVersion, applied };
@@ -177,5 +351,41 @@ export function readSchemaVersion(db: DatabaseSync): number | undefined {
     return row?.version ?? undefined;
   } catch {
     return undefined;
+  }
+}
+
+function safeDisableForeignKeys(db: DatabaseSync): void {
+  try {
+    db.exec('PRAGMA foreign_keys = OFF;');
+  } catch {
+    /* some embedded builds disallow pragma changes; rebuilds then rely on
+       consistent data, which the copy statement guarantees */
+  }
+}
+
+function restoreForeignKeys(db: DatabaseSync): void {
+  try {
+    db.exec('PRAGMA foreign_keys = ON;');
+  } catch {
+    /* ignore */
+  }
+}
+
+/** Fail closed when a rebuild left dangling references. */
+function verifyForeignKeys(db: DatabaseSync): void {
+  try {
+    const violations = db.prepare('PRAGMA foreign_key_check;').all();
+    if (Array.isArray(violations) && violations.length > 0) {
+      throw new VictStoreError(
+        'VICT_STORE_MIGRATION_FAILED',
+        'A migration left the database with foreign-key violations; the database was not modified further.',
+        { operation: 'store.migrate' },
+      );
+    }
+  } catch (cause) {
+    if (cause instanceof VictStoreError) {
+      throw cause;
+    }
+    /* pragma unavailable: skip */
   }
 }

@@ -109,9 +109,17 @@ describe('sqlite schema migrations', () => {
       expect(tables.map((t) => t.name)).toEqual([
         'vict_activation',
         'vict_activation_selection',
+        'vict_attempt',
+        'vict_branch_result',
+        'vict_cancellation_request',
+        'vict_operator_resolution',
         'vict_run',
         'vict_run_event',
         'vict_schema_migration',
+        'vict_signal_receipt',
+        'vict_timer',
+        'vict_token',
+        'vict_wait',
       ]);
       db2.close();
       // Byte-level identity is not required (SQLite may touch the header on

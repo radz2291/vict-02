@@ -38,6 +38,7 @@ import type {
 import { inTransaction, openDatabase, safeRun } from './driver.js';
 import type { OpenDatabase, SqliteDriverOptions } from './driver.js';
 import { runMigrations } from './migrations.js';
+import { createSqliteOrchestrationStore } from './orchestration-adapter.js';
 
 /**
  * SQLite adapter for Vict's semantic store ports.
@@ -1140,7 +1141,19 @@ export function createSqliteStores(options: SqliteStoresOptions = {}): Disposabl
     },
   };
 
-  const stores: VictStores = { catalog, execution };
+  const stores: VictStores = {
+    catalog,
+    execution,
+    orchestration: createSqliteOrchestrationStore(
+      handle,
+      faults === undefined
+        ? undefined
+        : {
+            afterStateStage: (operation) => faults.afterRunUpdate?.({ runId: operation } as never),
+            beforeCommit: (operation) => faults.beforeCommit?.({ runId: operation } as never),
+          },
+    ),
+  };
   return {
     ...stores,
     async dispose(): Promise<void> {
