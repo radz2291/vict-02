@@ -36,7 +36,10 @@ export class CapabilityRegistry {
    * pinned activation artifacts (handoff §17). The same id+revision may
    * never be registered twice.
    */
-  readonly #capabilityRevisions = new Map<string, Map<string, CapabilityDefinition<unknown, unknown>>>();
+  readonly #capabilityRevisions = new Map<
+    string,
+    Map<string, CapabilityDefinition<unknown, unknown>>
+  >();
   readonly #contracts = new Map<string, Contract<unknown>>();
   readonly #contractRevisions = new Map<string, Map<string, Contract<unknown>>>();
   readonly #doubles = new Map<string, DoubleInvoke>();
@@ -81,7 +84,10 @@ export class CapabilityRegistry {
       capabilityRevisions = new Map<string, CapabilityDefinition<unknown, unknown>>();
       this.#capabilityRevisions.set(definition.id, capabilityRevisions);
     }
-    capabilityRevisions.set(definition.revision, definition as CapabilityDefinition<unknown, unknown>);
+    capabilityRevisions.set(
+      definition.revision,
+      definition as CapabilityDefinition<unknown, unknown>,
+    );
     // Capability-embedded contracts are published under their own ids so the
     // kernel can validate against them at execution time.
     if (definition.input) {

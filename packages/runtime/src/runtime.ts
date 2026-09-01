@@ -270,9 +270,15 @@ export class VictRuntime {
         contractRevisions.set(contract.id, contract.revision);
       }
       const revision = contractRevisions.get(contractId);
-      const contract = revision === undefined ? registry.getContract(contractId) : registry.getContractRevision(contractId, revision);
+      const contract =
+        revision === undefined
+          ? registry.getContract(contractId)
+          : registry.getContractRevision(contractId, revision);
       if (!contract) {
-        return { ok: false, message: `Contract '${contractId}' required by the pinned activation is not registered.` };
+        return {
+          ok: false,
+          message: `Contract '${contractId}' required by the pinned activation is not registered.`,
+        };
       }
       const parsed = contract.parse(payload);
       if (!parsed.ok) {
@@ -319,7 +325,9 @@ export class VictRuntime {
    * write retries with the same key) and block ambiguous unsafe work.
    * Historical Stage 02 sequential recovery is unchanged.
    */
-  async recoverOrchestration(options: RecoverOrchestrationOptions = {}): Promise<RecoverOrchestrationSummary> {
+  async recoverOrchestration(
+    options: RecoverOrchestrationOptions = {},
+  ): Promise<RecoverOrchestrationSummary> {
     const driver = this.#orchestrationDriver();
     const deps = driver.deps;
     const summary = await recoverOrchestrationCommands(deps, options, async (runId, attempt) => {
@@ -331,7 +339,10 @@ export class VictRuntime {
         const graph = await driver.resolveGraphForDriver(run.activationVersion);
         const node = graph.getNode(attempt.nodeId);
         if (!node) {
-          return { action: 'block' as const, reason: 'the pinned activation cannot resolve the attempt node' };
+          return {
+            action: 'block' as const,
+            reason: 'the pinned activation cannot resolve the attempt node',
+          };
         }
         const retry = node.retry;
         const effect = attempt.effectClass;
@@ -357,12 +368,14 @@ export class VictRuntime {
         }
         return {
           action: 'block' as const,
-          reason: 'An irreversible capability has an unknown outcome after process loss; it is never replayed.',
+          reason:
+            'An irreversible capability has an unknown outcome after process loss; it is never replayed.',
         };
       } catch {
         return {
           action: 'skip' as const,
-          reason: 'the exact pinned activation is unavailable; the claim is left for explicit resolution',
+          reason:
+            'the exact pinned activation is unavailable; the claim is left for explicit resolution',
         };
       }
     });
@@ -465,7 +478,11 @@ export class VictRuntime {
       const snapshot = await deps.orchestration.getOrchestrationSnapshot(runId);
       const blockedToken = snapshot?.tokens.find((token) => token.status === 'blocked');
       if (!blockedToken) {
-        return { ok: false as const, code: 'VICT_ORCH_NOT_BLOCKED', message: 'The run has no blocked token.' };
+        return {
+          ok: false as const,
+          code: 'VICT_ORCH_NOT_BLOCKED',
+          message: 'The run has no blocked token.',
+        };
       }
       const node = graph.getNode(blockedToken.nodeId);
       if (input.action === 'retry') {
@@ -1127,12 +1144,13 @@ export class VictRuntime {
                 nodeId,
                 kind: 'signal',
                 name: wait.name,
-                contract: wait.contract === undefined
-                  ? null
-                  : {
-                      id: wait.contract,
-                      revision: this.#registry.getContract(wait.contract)?.revision ?? 'unknown',
-                    },
+                contract:
+                  wait.contract === undefined
+                    ? null
+                    : {
+                        id: wait.contract,
+                        revision: this.#registry.getContract(wait.contract)?.revision ?? 'unknown',
+                      },
                 ...(wait.timeoutMs !== undefined ? { timeoutMs: wait.timeoutMs } : {}),
               }
             : { nodeId, kind: 'timer', delayMs: wait.delayMs },
@@ -1157,7 +1175,10 @@ export class VictRuntime {
           outputContract:
             outputId === undefined
               ? null
-              : { id: outputId, revision: this.#registry.getContract(outputId)?.revision ?? 'unknown' },
+              : {
+                  id: outputId,
+                  revision: this.#registry.getContract(outputId)?.revision ?? 'unknown',
+                },
         });
         if (outputId !== undefined) {
           recordContract(outputId);

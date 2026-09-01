@@ -75,96 +75,121 @@ const WAIT_GRAPH = {
 function registerCapabilities(runtime: ReturnType<typeof createRuntime>): void {
   runtime
     .registerCapability({ id: 'c.first', revision: '1', effect: 'pure', invoke: () => 'one' })
-    .registerCapability({ id: 'c.second', revision: '1', effect: 'pure', invoke: (input: unknown) => `two:${String(input)}` });
+    .registerCapability({
+      id: 'c.second',
+      revision: '1',
+      effect: 'pure',
+      invoke: (input: unknown) => `two:${String(input)}`,
+    });
 }
 
 describe('stage 03 atomic fault injection (in-memory adapter hooks)', () => {
   for (const operation of OPERATIONS) {
-    it(`an injected fault at '${operation}' leaves no half-state and the flow recovers on retry`, { timeout: 30_000 }, async () => {
-      const arbiter = createFaultArbiter();
-      const stores = createInMemoryStores({ faults: arbiter.hooks });
-      const runtime = createRuntime({ stores });
-      registerCapabilities(runtime);
-      const activated = await runtime.activate(WAIT_GRAPH as never);
-      expect(activated.ok).toBe(true);
+    it(
+      `an injected fault at '${operation}' leaves no half-state and the flow recovers on retry`,
+      { timeout: 30_000 },
+      async () => {
+        const arbiter = createFaultArbiter();
+        const stores = createInMemoryStores({ faults: arbiter.hooks });
+        const orchestration =
+          stores.orchestration as never as import('@vict/runtime').OrchestrationStore;
+        const runtime = createRuntime({ stores });
+        registerCapabilities(runtime);
+        const activated = await runtime.activate(WAIT_GRAPH as never);
+        expect(activated.ok).toBe(true);
 
-      if (operation === 'orchestration.signalWait') {
-        // Park first (no fault), then inject the fault at signal delivery.
-        const parked = await runtime.run('seed');
-        expect(parked.status).toBe('waiting');
-        const waitId = parked.waits?.[0]?.waitId as string;
+        if (operation === 'orchestration.signalWait') {
+          // Park first (no fault), then inject the fault at signal delivery.
+          const parked = await runtime.run('seed');
+          expect(parked.status).toBe('waiting');
+          const waitId = parked.waits?.[0]?.waitId as string;
+          arbiter.arm(operation);
+          await expect(
+            runtime.signal({
+              runId: parked.runId,
+              waitId,
+              signalId: 'sig-fault',
+              signalName: 'go',
+              payload: 'resumed',
+            }),
+          ).rejects.toThrow();
+          arbiter.disarm();
+          // No half-state: the wait is still open, no receipt, no resume event.
+          const waits = await orchestration.listWaits(parked.runId);
+          expect(waits.find((wait) => wait.waitId === waitId)?.status).toBe('open');
+          const receipts = await orchestration.listSignalReceipts(parked.runId);
+          expect(receipts.length).toBe(0);
+          // Retry the signal: accepted exactly once, run completes once.
+          const ok = await runtime.signal({
+            runId: parked.runId,
+            waitId,
+            signalId: 'sig-fault',
+            signalName: 'go',
+            payload: 'resumed',
+          });
+          expect(ok.ok).toBe(true);
+          const final = await runtime.resumeRun(parked.runId);
+          expect(final.status).toBe('completed');
+          const receiptsAfter = await orchestration.listSignalReceipts(parked.runId);
+          expect(receiptsAfter.length).toBe(1);
+          const events = await orchestration.listOrchestrationEvents(parked.runId);
+          expect(events.filter((event) => event.type === 'run.resumed').length).toBe(1);
+          return;
+        }
+
+        // Arm the fault for the next matching transition, then run.
         arbiter.arm(operation);
-        await expect(
-          runtime.signal({ runId: parked.runId, waitId, signalId: 'sig-fault', signalName: 'go', payload: 'resumed' }),
-        ).rejects.toThrow();
+        let firstAttempt: 'threw' | 'returned' | 'other' = 'threw';
+        let runId: string | undefined;
+        try {
+          const result = await runtime.run('seed');
+          firstAttempt = 'returned';
+          runId = result.runId;
+        } catch (error) {
+          expect(error).toBeInstanceOf(VictStoreError);
+          firstAttempt = 'threw';
+        }
         arbiter.disarm();
-        // No half-state: the wait is still open, no receipt, no resume event.
-        const waits = await stores.orchestration.listWaits(parked.runId);
-        expect(waits.find((wait) => wait.waitId === waitId)?.status).toBe('open');
-        const receipts = await stores.orchestration.listSignalReceipts(parked.runId);
-        expect(receipts.length).toBe(0);
-        // Retry the signal: accepted exactly once, run completes once.
-        const ok = await runtime.signal({ runId: parked.runId, waitId, signalId: 'sig-fault', signalName: 'go', payload: 'resumed' });
-        expect(ok.ok).toBe(true);
-        const final = await runtime.resumeRun(parked.runId);
-        expect(final.status).toBe('completed');
-        const receiptsAfter = await stores.orchestration.listSignalReceipts(parked.runId);
-        expect(receiptsAfter.length).toBe(1);
-        const events = await stores.orchestration.listOrchestrationEvents(parked.runId);
-        expect(events.filter((event) => event.type === 'run.resumed').length).toBe(1);
-        return;
-      }
+        expect(arbiter.fired).toEqual([operation]);
+        void firstAttempt;
 
-      // Arm the fault for the next matching transition, then run.
-      arbiter.arm(operation);
-      let firstAttempt: 'threw' | 'completed' | 'other' = 'threw';
-      let runId: string | undefined;
-      try {
-        const result = await runtime.run('seed');
-        firstAttempt = 'returned';
-        runId = result.runId;
-      } catch (error) {
-        expect(error).toBeInstanceOf(VictStoreError);
-        firstAttempt = 'threw';
-      }
-      arbiter.disarm();
-      expect(arbiter.fired).toEqual([operation]);
-      void firstAttempt;
+        if (operation === 'orchestration.completeAttempt') {
+          // The claim committed (node.started is durable), the completion did
+          // not: the token is claimed with its intent, the run has no
+          // duplicated continuation, and a fresh claim can finish the work.
+          const runs = await orchestration.listOrchestrationRuns({});
+          expect(runs.length).toBe(1);
+          runId = runs[0]?.runId;
+          const snapshot = await orchestration.getOrchestrationSnapshot(runId as string);
+          expect(snapshot?.run.status === 'running' || snapshot?.run.status === 'waiting').toBe(
+            true,
+          );
+          const events = await orchestration.listOrchestrationEvents(runId as string);
+          // The claim's node.started is durable; no duplicated continuation.
+          const starts = events.filter((event) => event.type === 'node.started').length;
+          expect(starts).toBe(1);
+        }
+        if (operation === 'orchestration.createRun') {
+          // Creation is fully rolled back: no run row, no events.
+          const runs = await orchestration.listOrchestrationRuns({});
+          expect(runs.length).toBe(0);
+        }
+        if (operation === 'orchestration.claimReadyToken') {
+          // Nothing was claimed: the run exists and the root token is still ready.
+          const runs = await orchestration.listOrchestrationRuns({});
+          expect(runs.length).toBe(1);
+          const snapshot = await orchestration.getOrchestrationSnapshot(runs[0]?.runId as string);
+          expect(snapshot?.tokens.every((token) => token.status === 'ready')).toBe(true);
+        }
 
-      if (operation === 'orchestration.completeAttempt') {
-        // The claim committed (node.started is durable), the completion did
-        // not: the token is claimed with its intent, the run has no
-        // duplicated continuation, and a fresh claim can finish the work.
-        const runs = await stores.orchestration.listOrchestrationRuns({});
-        expect(runs.length).toBe(1);
-        runId = runs[0]?.runId;
-        const snapshot = await stores.orchestration.getOrchestrationSnapshot(runId as string);
-        expect(snapshot?.run.status === 'running' || snapshot?.run.status === 'waiting').toBe(true);
-        const events = await stores.orchestration.listOrchestrationEvents(runId as string);
-        // The claim's node.started is durable; no duplicated continuation.
-        const starts = events.filter((event) => event.type === 'node.started').length;
-        expect(starts).toBe(1);
-      }
-      if (operation === 'orchestration.createRun') {
-        // Creation is fully rolled back: no run row, no events.
-        const runs = await stores.orchestration.listOrchestrationRuns({});
-        expect(runs.length).toBe(0);
-      }
-      if (operation === 'orchestration.claimReadyToken') {
-        // Nothing was claimed: the run exists and the root token is still ready.
-        const runs = await stores.orchestration.listOrchestrationRuns({});
-        expect(runs.length).toBe(1);
-        const snapshot = await stores.orchestration.getOrchestrationSnapshot(runs[0]?.runId as string);
-        expect(snapshot?.tokens.every((token) => token.status === 'ready')).toBe(true);
-      }
-
-      // Retry the whole flow after the fault: it completes honestly.
-      const retry = (await runtime.resumeRun(runId as string).catch(async () => {
-        // If creation itself failed, there is no run to resume: start again.
-        return runtime.run('seed');
-      })) as unknown as { status: string; runId: string; waits?: { waitId: string }[] };
-      expect(['completed', 'running', 'waiting', 'blocked']).toContain(retry.status);
-      void runId;
-    });
+        // Retry the whole flow after the fault: it completes honestly.
+        const retry = (await runtime.resumeRun(runId as string).catch(async () => {
+          // If creation itself failed, there is no run to resume: start again.
+          return runtime.run('seed');
+        })) as unknown as { status: string; runId: string; waits?: { waitId: string }[] };
+        expect(['completed', 'running', 'waiting', 'blocked']).toContain(retry.status);
+        void runId;
+      },
+    );
   }
 });

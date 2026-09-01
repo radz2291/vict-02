@@ -23,7 +23,11 @@ export interface FrozenContractHandle {
   readonly id: string;
   readonly revision: string;
   readonly expected: string;
-  readonly parse: (input: unknown) => { readonly ok: boolean; readonly value?: unknown; readonly issues?: readonly { code: string; path: string; message: string }[] };
+  readonly parse: (input: unknown) => {
+    readonly ok: boolean;
+    readonly value?: unknown;
+    readonly issues?: readonly { code: string; path: string; message: string }[];
+  };
 }
 
 export interface ResolvedBindings {
@@ -116,7 +120,8 @@ export async function resolveGraphForActivation(
     return {
       ok: false,
       code: 'VICT_RUNTIME_ACTIVATION_MISMATCH',
-      message: 'The registered artifacts do not reproduce the exact pinned activation; no substitute is used.',
+      message:
+        'The registered artifacts do not reproduce the exact pinned activation; no substitute is used.',
       issues: [],
     };
   }
@@ -130,7 +135,6 @@ export interface CompiledGraphResolution {
   readonly message?: string;
   readonly issues?: readonly GraphIssue[];
 }
-
 
 function revisionMaps(manifest: ActivationManifest): {
   capabilityRevisions: Map<string, string>;
@@ -275,8 +279,14 @@ export function waitIdFor(runId: string, lineage: string, nodeId: string): strin
   return `wait_${sha256Hex(toCanonicalJson({ lineage, nodeId, runId })).slice(0, 24)}`;
 }
 
-export function canonicalBranchLineage(parentLineage: string, forkId: string, branchKey: string): string {
-  return parentLineage.length === 0 ? `${forkId}.${branchKey}` : `${parentLineage}.${forkId}.${branchKey}`;
+export function canonicalBranchLineage(
+  parentLineage: string,
+  forkId: string,
+  branchKey: string,
+): string {
+  return parentLineage.length === 0
+    ? `${forkId}.${branchKey}`
+    : `${parentLineage}.${forkId}.${branchKey}`;
 }
 
 /** Branch lineage of the post-join continuation: the fork's own lineage. */
@@ -353,4 +363,3 @@ function safeJson(value: unknown): string {
     return `unserializable:${typeof value}`;
   }
 }
-

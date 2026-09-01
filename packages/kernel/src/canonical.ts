@@ -85,10 +85,20 @@ interface CanonicalRetry {
 
 type CanonicalRetryBackoff =
   | { readonly kind: 'fixed'; readonly delayMs: number }
-  | { readonly kind: 'exponential'; readonly initialMs: number; readonly multiplier: number; readonly maxMs: number };
+  | {
+      readonly kind: 'exponential';
+      readonly initialMs: number;
+      readonly multiplier: number;
+      readonly maxMs: number;
+    };
 
 type CanonicalWait =
-  | { readonly kind: 'signal'; readonly name: string; readonly contract: string | null; readonly timeoutMs: number | null }
+  | {
+      readonly kind: 'signal';
+      readonly name: string;
+      readonly contract: string | null;
+      readonly timeoutMs: number | null;
+    }
   | { readonly kind: 'timer'; readonly delayMs: number };
 
 interface CanonicalEdgeV2 {
@@ -180,7 +190,9 @@ export function declaresControlSemantics(definition: ApplicationGraphDefinition)
   return false;
 }
 
-function canonicalRetry(retry: NonNullable<CapabilityNodeFields['retry']> | null | undefined): CanonicalRetry | null {
+function canonicalRetry(
+  retry: NonNullable<CapabilityNodeFields['retry']> | null | undefined,
+): CanonicalRetry | null {
   if (retry === undefined || retry === null) {
     return null;
   }
@@ -204,7 +216,9 @@ export function canonicalSemanticFormV2(definition: ApplicationGraphDefinition):
   const nodes: CanonicalNodeV2[] = definition.nodes
     .map((rawNode) => {
       const node = rawNode as CapabilityNodeDefinition &
-        Partial<WaitNodeDefinition> & Partial<ForkNodeDefinition> & Partial<JoinNodeDefinition>;
+        Partial<WaitNodeDefinition> &
+        Partial<ForkNodeDefinition> &
+        Partial<JoinNodeDefinition>;
       const kind: string = node.kind ?? 'capability';
       const wait = node.wait ?? null;
       const isControl = kind === 'wait' || kind === 'fork' || kind === 'join';
@@ -229,8 +243,8 @@ export function canonicalSemanticFormV2(definition: ApplicationGraphDefinition):
                   timeoutMs: wait.timeoutMs ?? null,
                 }
               : { kind: 'timer' as const, delayMs: wait.delayMs },
-        fork: isFork ? ((node.join ?? node.fork) ?? null) : null,
-        join: isJoin ? ((node.fork ?? node.join) ?? null) : null,
+        fork: isFork ? (node.join ?? node.fork ?? null) : null,
+        join: isJoin ? (node.fork ?? node.join ?? null) : null,
         maxConcurrency: isFork ? (node.maxConcurrency ?? null) : null,
       };
     })
@@ -344,7 +358,9 @@ export function computeCapabilitySetVersion(
 export function computeActivationVersion(
   graphVersion: string,
   capabilitySetVersion: string,
-  schema: string = ACTIVATION_IDENTITY_SCHEMA,
+  schema: string = graphVersion.startsWith('v2_')
+    ? ACTIVATION_IDENTITY_SCHEMA_V2
+    : ACTIVATION_IDENTITY_SCHEMA,
 ): string {
   return `${schema.endsWith('@2') ? 'v2' : 'v1'}_${sha256Hex(
     canonicalJson({

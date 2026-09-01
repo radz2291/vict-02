@@ -135,7 +135,15 @@ describe('stage 03 orchestration smoke (in-memory)', () => {
         { id: 'j', kind: 'join', fork: 'f' },
         { id: 'w2', kind: 'wait', wait: { kind: 'signal', name: 'go' } },
         { id: 'aw', capability: 'afterWait' },
-        { id: 'wr', capability: 'keyedWrite', retry: { maxAttempts: 3, retryOn: ['VICT_RUNTIME_CAPABILITY_THREW'], backoff: { kind: 'fixed', delayMs: 1 } } },
+        {
+          id: 'wr',
+          capability: 'keyedWrite',
+          retry: {
+            maxAttempts: 3,
+            retryOn: ['VICT_RUNTIME_CAPABILITY_THREW'],
+            backoff: { kind: 'fixed', delayMs: 1 },
+          },
+        },
       ],
       edges: [
         { from: 'd', to: 'f', kind: 'route', key: 'split' },
@@ -150,7 +158,10 @@ describe('stage 03 orchestration smoke (in-memory)', () => {
     });
     expect(activation.ok).toBe(true);
 
-    const result = await runtime.run<{ value: string }>({ value: 'seed' }, { mode: 'normal', onEvent: (e) => events.push(e) });
+    const result = await runtime.run<{ value: string }>(
+      { value: 'seed' },
+      { mode: 'normal', onEvent: (e) => events.push(e) },
+    );
     expect(result.status).toBe('waiting');
     expect(result.waits?.length).toBe(1);
     const waitId = result.waits?.[0]?.waitId as string;
@@ -163,7 +174,7 @@ describe('stage 03 orchestration smoke (in-memory)', () => {
       payload: 'resumed',
     });
     expect(signal.ok).toBe(true);
-    expect(signal.status).toBe('accepted');
+    expect(signal.ok ? signal.status : '').toBe('accepted');
 
     const final = await runtime.resumeRun<string>(result.runId);
     expect(final.status).toBe('completed');
@@ -182,6 +193,6 @@ describe('stage 03 orchestration smoke (in-memory)', () => {
       payload: 'resumed',
     });
     expect(duplicate.ok).toBe(true);
-    expect(duplicate.status).toBe('duplicate');
+    expect(duplicate.ok ? duplicate.status : '').toBe('duplicate');
   });
 });

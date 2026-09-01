@@ -134,7 +134,10 @@ export function createInMemoryOrchestrationStore(
   };
 
   /** Append the ordered safe events with dense sequence numbers (validated against the run identity). */
-  const appendEvents = (stored: InternalRun, events: readonly OrchestrationEventInput[]): number => {
+  const appendEvents = (
+    stored: InternalRun,
+    events: readonly OrchestrationEventInput[],
+  ): number => {
     let seq = nextEventSeq(stored);
     for (const event of events) {
       const full = { ...event, seq } as KernelEvent;
@@ -258,7 +261,8 @@ export function createInMemoryOrchestrationStore(
             (query.status === undefined || run.status === query.status),
         )
         .sort((a, b) => a.createdAt - b.createdAt);
-      const limited = query.limit !== undefined ? all.slice(0, Math.max(0, Math.floor(query.limit))) : all;
+      const limited =
+        query.limit !== undefined ? all.slice(0, Math.max(0, Math.floor(query.limit))) : all;
       return limited.map((run) => immutableSnapshot(run));
     },
 
@@ -346,7 +350,10 @@ export function createInMemoryOrchestrationStore(
           token: immutableSnapshot(stripCheckpoint(token)),
           attempt: immutableSnapshot(attempt),
           invocationId,
-          checkpoint: token.checkpoint === undefined ? undefined : structuredClone(token.checkpoint) as unknown,
+          checkpoint:
+            token.checkpoint === undefined
+              ? undefined
+              : (structuredClone(token.checkpoint) as unknown),
           deadlineAt: plan.deadlineAt,
           idempotencyKey: plan.idempotencyKey,
           runRecordRevision: stored.run.recordRevision,
@@ -403,10 +410,17 @@ export function createInMemoryOrchestrationStore(
         throw new VictStoreError(
           'VICT_STORE_INVALID_COMMAND',
           'The attempt references an unknown token.',
-          { operation: 'orchestration.completeAttempt', runId: command.runId, attemptId: command.attemptId },
+          {
+            operation: 'orchestration.completeAttempt',
+            runId: command.runId,
+            attemptId: command.attemptId,
+          },
         );
       }
-      if (command.run.status !== undefined && !canTransitionRun(stored.run.status, command.run.status)) {
+      if (
+        command.run.status !== undefined &&
+        !canTransitionRun(stored.run.status, command.run.status)
+      ) {
         throw new VictStoreError(
           'VICT_STORE_RUN_CONFLICT',
           `Run status '${stored.run.status}' cannot transition to '${command.run.status}'.`,
@@ -419,7 +433,8 @@ export function createInMemoryOrchestrationStore(
       const previousAttemptState = attempt.state;
       const previousToken: InternalToken = { ...token };
       const previousChildTokens: InternalToken[] = [];
-      const previousSiblingTokens: { token: InternalToken; status: DurableTokenState['status'] }[] = [];
+      const previousSiblingTokens: { token: InternalToken; status: DurableTokenState['status'] }[] =
+        [];
       const previousWaits: { wait: InternalWait; status: DurableWaitState['status'] }[] = [];
       const previousTimers: { timer: InternalTimer; status: TimerRecord['status'] }[] = [];
       const previousBranchResultCount = stored.branchResults.length;
@@ -598,7 +613,10 @@ export function createInMemoryOrchestrationStore(
           token.updatedAt = now;
           // Cancel every unfinished sibling branch token and close their waits.
           for (const other of stored.tokens.values()) {
-            if (other.tokenId !== token.tokenId && (other.status === 'ready' || other.status === 'claimed' || other.status === 'waiting')) {
+            if (
+              other.tokenId !== token.tokenId &&
+              (other.status === 'ready' || other.status === 'claimed' || other.status === 'waiting')
+            ) {
               previousSiblingTokens.push({ token: { ...other }, status: other.status });
               other.status = 'cancelled';
               other.revision += 1;
@@ -667,11 +685,15 @@ export function createInMemoryOrchestrationStore(
         stored.run = {
           ...stored.run,
           ...(command.run.steps !== undefined ? { steps: command.run.steps } : {}),
-          ...(command.run.currentNodeId !== undefined ? { currentNodeId: command.run.currentNodeId } : {}),
+          ...(command.run.currentNodeId !== undefined
+            ? { currentNodeId: command.run.currentNodeId }
+            : {}),
           ...(command.run.outputSummary !== undefined
             ? { outputSummary: canonicalPersistedValue(command.run.outputSummary) as OutputSummary }
             : {}),
-          ...(command.run.output !== undefined ? { output: canonicalPersistedValue(command.run.output) } : {}),
+          ...(command.run.output !== undefined
+            ? { output: canonicalPersistedValue(command.run.output) }
+            : {}),
           ...(command.run.error !== undefined
             ? { error: canonicalPersistedValue(command.run.error) as VictError }
             : {}),
@@ -712,7 +734,7 @@ export function createInMemoryOrchestrationStore(
         // join.completed fact in the same atomic transition.
         const commandEvents =
           joinFired && command.continuation.kind === 'branchArrival'
-            ? ([
+            ? [
                 ...command.events,
                 {
                   type: 'join.completed',
@@ -726,7 +748,7 @@ export function createInMemoryOrchestrationStore(
                   activationVersion: stored.run.activationVersion,
                   timestamp: now,
                 } as unknown as KernelEvent,
-              ])
+              ]
             : command.events;
         appendEvents(stored, commandEvents);
         faults?.beforeCommit?.('orchestration.completeAttempt');
@@ -788,7 +810,11 @@ export function createInMemoryOrchestrationStore(
       const existing = stored.signalReceipts.get(command.signalId);
       if (existing) {
         if (existing.commandHash === command.commandHash) {
-          return { status: 'duplicate', signalId: command.signalId, waitId: existing.waitId ?? command.waitId };
+          return {
+            status: 'duplicate',
+            signalId: command.signalId,
+            waitId: existing.waitId ?? command.waitId,
+          };
         }
         return { status: 'conflict', signalId: command.signalId };
       }
@@ -814,16 +840,23 @@ export function createInMemoryOrchestrationStore(
           { operation: 'orchestration.signalWait', runId: command.runId, waitId: command.waitId },
         );
       }
-      if (command.expectedWaitRevision !== undefined && wait.revision !== command.expectedWaitRevision) {
+      if (
+        command.expectedWaitRevision !== undefined &&
+        wait.revision !== command.expectedWaitRevision
+      ) {
         return { status: 'already_resolved', waitId: wait.waitId };
       }
       const token = stored.tokens.get(wait.tokenId);
       if (!token) {
-        throw new VictStoreError('VICT_STORE_INVALID_RECORD', 'The wait references an unknown token.', {
-          operation: 'orchestration.signalWait',
-          runId: command.runId,
-          waitId: command.waitId,
-        });
+        throw new VictStoreError(
+          'VICT_STORE_INVALID_RECORD',
+          'The wait references an unknown token.',
+          {
+            operation: 'orchestration.signalWait',
+            runId: command.runId,
+            waitId: command.waitId,
+          },
+        );
       }
       const now = command.now;
       const previousRun = stored.run;
@@ -957,8 +990,10 @@ export function createInMemoryOrchestrationStore(
       }
       const now = command.now;
       const previousRun = stored.run;
-      const targetWait: InternalWait | undefined = timer.waitId !== null ? stored.waits.get(timer.waitId) : undefined;
-      const targetToken: InternalToken | undefined = timer.tokenId !== null ? stored.tokens.get(timer.tokenId) : undefined;
+      const targetWait: InternalWait | undefined =
+        timer.waitId !== null ? stored.waits.get(timer.waitId) : undefined;
+      const targetToken: InternalToken | undefined =
+        timer.tokenId !== null ? stored.tokens.get(timer.tokenId) : undefined;
       const previousWaitStatus = targetWait?.status;
       const previousTokenStatus = targetToken?.status;
       try {
@@ -986,7 +1021,10 @@ export function createInMemoryOrchestrationStore(
           targetToken.updatedAt = now;
         }
         if (command.resolution.kind === 'retry') {
-          if (!targetToken || (targetToken.status !== 'claimed' && targetToken.status !== 'blocked')) {
+          if (
+            !targetToken ||
+            (targetToken.status !== 'claimed' && targetToken.status !== 'blocked')
+          ) {
             return {
               runRecordRevision: stored.run.recordRevision,
               runNextEventSeq: nextEventSeq(stored),
@@ -1100,7 +1138,11 @@ export function createInMemoryOrchestrationStore(
             throw new VictStoreError(
               'VICT_STORE_RUN_CONFLICT',
               'The run cannot be cancelled from its current status.',
-              { operation: 'orchestration.requestCancellation', runId: command.runId, status: stored.run.status },
+              {
+                operation: 'orchestration.requestCancellation',
+                runId: command.runId,
+                status: stored.run.status,
+              },
             );
           }
           stored.run = { ...stored.run, status: 'cancelled', completedAt: now };
@@ -1166,13 +1208,20 @@ export function createInMemoryOrchestrationStore(
         }
         if (stored.run.status === 'cancelled') {
           // Already finalized: idempotent no-op.
-          return { runRecordRevision: stored.run.recordRevision, runNextEventSeq: nextEventSeq(stored) };
+          return {
+            runRecordRevision: stored.run.recordRevision,
+            runNextEventSeq: nextEventSeq(stored),
+          };
         }
         if (!canTransitionRun(stored.run.status, 'cancelled')) {
           throw new VictStoreError(
             'VICT_STORE_RUN_CONFLICT',
             'The run cannot be cancelled from its current status.',
-            { operation: 'orchestration.applyCancellation', runId: command.runId, status: stored.run.status },
+            {
+              operation: 'orchestration.applyCancellation',
+              runId: command.runId,
+              status: stored.run.status,
+            },
           );
         }
         stored.run = {
@@ -1189,14 +1238,19 @@ export function createInMemoryOrchestrationStore(
           token.checkpoint = undefined;
         }
         faults?.beforeCommit?.('orchestration.applyCancellation');
-        return { runRecordRevision: stored.run.recordRevision, runNextEventSeq: nextEventSeq(stored) };
+        return {
+          runRecordRevision: stored.run.recordRevision,
+          runNextEventSeq: nextEventSeq(stored),
+        };
       } catch (cause) {
         stored.run = previousRun;
         throw wrap(cause, 'orchestration.applyCancellation', command.runId);
       }
     },
 
-    async findRecoverableClaims(_command: RecoverOrchestrationCommand): Promise<readonly RecoverableClaim[]> {
+    async findRecoverableClaims(
+      _command: RecoverOrchestrationCommand,
+    ): Promise<readonly RecoverableClaim[]> {
       const recoverable: RecoverableClaim[] = [];
       for (const stored of runs.values()) {
         if (stored.run.status !== 'running') {
@@ -1207,7 +1261,9 @@ export function createInMemoryOrchestrationStore(
             continue;
           }
           const attempt = [...stored.attempts.values()]
-            .filter((candidate) => candidate.tokenId === token.tokenId && candidate.state === 'started')
+            .filter(
+              (candidate) => candidate.tokenId === token.tokenId && candidate.state === 'started',
+            )
             .sort((a, b) => b.attemptNumber - a.attemptNumber)[0];
           if (attempt && attempt.leaseExpiresAt !== null) {
             recoverable.push({
@@ -1239,7 +1295,11 @@ export function createInMemoryOrchestrationStore(
         throw new VictStoreError(
           'VICT_STORE_ATTEMPT_FENCE_CONFLICT',
           'The recovery carries a stale fence.',
-          { operation: 'orchestration.recoverAttempt', runId: command.runId, attemptId: command.attemptId },
+          {
+            operation: 'orchestration.recoverAttempt',
+            runId: command.runId,
+            attemptId: command.attemptId,
+          },
         );
       }
       const now = command.now;
@@ -1252,7 +1312,11 @@ export function createInMemoryOrchestrationStore(
           throw new VictStoreError(
             'VICT_STORE_ATTEMPT_STATE_CONFLICT',
             `Attempt '${attempt.attemptId}' is in state '${attempt.state}' and cannot be recovered.`,
-            { operation: 'orchestration.recoverAttempt', runId: command.runId, attemptId: command.attemptId },
+            {
+              operation: 'orchestration.recoverAttempt',
+              runId: command.runId,
+              attemptId: command.attemptId,
+            },
           );
         }
         attempt.state = 'outcome_unknown';
@@ -1290,7 +1354,10 @@ export function createInMemoryOrchestrationStore(
         faults?.afterStateStage?.('orchestration.recoverAttempt');
         appendEvents(stored, command.events);
         faults?.beforeCommit?.('orchestration.recoverAttempt');
-        return { runRecordRevision: stored.run.recordRevision, runNextEventSeq: nextEventSeq(stored) };
+        return {
+          runRecordRevision: stored.run.recordRevision,
+          runNextEventSeq: nextEventSeq(stored),
+        };
       } catch (cause) {
         stored.run = previousRun;
         attempt.state = previousAttemptState;

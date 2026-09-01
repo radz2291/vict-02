@@ -1,7 +1,11 @@
 import { writeFileSync } from 'node:fs';
 import { createSqliteStores } from '../../dist/index.js';
 import { toCanonicalJson } from '@vict/runtime';
-import { computeGraphVersion, computeCapabilitySetVersion, computeActivationVersion } from '@vict/kernel';
+import {
+  computeGraphVersion,
+  computeCapabilitySetVersion,
+  computeActivationVersion,
+} from '@vict/kernel';
 
 /**
  * Produce a REAL Stage 02 database (schema v1 semantics) with the actual
@@ -13,7 +17,7 @@ import { computeGraphVersion, computeCapabilitySetVersion, computeActivationVers
  * migration test can prove real data migrates without loss.
  */
 
-const [dbPath, reportPath] = process.argv.slice(2);
+const [dbPath = '', reportPath = ''] = process.argv.slice(2);
 
 interface ContractLike {
   parse(input: unknown): { ok: boolean; value?: unknown; issues: unknown[] };
@@ -136,18 +140,72 @@ async function main(): Promise<void> {
   const completedIdentity = { runId: completedId, ...identity };
   await createRun(completedId, [
     { ...completedIdentity, seq: 0, type: 'run.started', timestamp: 1_700_000_000_000 },
-    { ...completedIdentity, seq: 1, type: 'node.started', nodeId: 'a', capabilityId: 'c.a', timestamp: 1_700_000_000_000 },
-    { ...completedIdentity, seq: 2, type: 'node.completed', nodeId: 'a', capabilityId: 'c.a', durationMs: 1, invokedVia: 'real', output: { shape: 'string', length: 4 }, timestamp: 1_700_000_000_000 },
-    { ...completedIdentity, seq: 3, type: 'signal.routed', kind: 'success', fromNodeId: 'a', toNodeId: 'b', timestamp: 1_700_000_000_000 },
-    { ...completedIdentity, seq: 4, type: 'node.started', nodeId: 'b', capabilityId: 'c.b', timestamp: 1_700_000_000_001 },
-    { ...completedIdentity, seq: 5, type: 'node.completed', nodeId: 'b', capabilityId: 'c.b', durationMs: 1, invokedVia: 'real', output: { shape: 'string', length: 4 }, timestamp: 1_700_000_000_001 },
-    { ...completedIdentity, seq: 6, type: 'run.completed', steps: 2, output: { shape: 'string', length: 4 }, timestamp: 1_700_000_000_001 },
+    {
+      ...completedIdentity,
+      seq: 1,
+      type: 'node.started',
+      nodeId: 'a',
+      capabilityId: 'c.a',
+      timestamp: 1_700_000_000_000,
+    },
+    {
+      ...completedIdentity,
+      seq: 2,
+      type: 'node.completed',
+      nodeId: 'a',
+      capabilityId: 'c.a',
+      durationMs: 1,
+      invokedVia: 'real',
+      output: { shape: 'string', length: 4 },
+      timestamp: 1_700_000_000_000,
+    },
+    {
+      ...completedIdentity,
+      seq: 3,
+      type: 'signal.routed',
+      kind: 'success',
+      fromNodeId: 'a',
+      toNodeId: 'b',
+      timestamp: 1_700_000_000_000,
+    },
+    {
+      ...completedIdentity,
+      seq: 4,
+      type: 'node.started',
+      nodeId: 'b',
+      capabilityId: 'c.b',
+      timestamp: 1_700_000_000_001,
+    },
+    {
+      ...completedIdentity,
+      seq: 5,
+      type: 'node.completed',
+      nodeId: 'b',
+      capabilityId: 'c.b',
+      durationMs: 1,
+      invokedVia: 'real',
+      output: { shape: 'string', length: 4 },
+      timestamp: 1_700_000_000_001,
+    },
+    {
+      ...completedIdentity,
+      seq: 6,
+      type: 'run.completed',
+      steps: 2,
+      output: { shape: 'string', length: 4 },
+      timestamp: 1_700_000_000_001,
+    },
   ]);
   await stores.execution.commitTransition({
     runId: completedId,
     expectedRecordRevision: 1,
     expectedNextEventSeq: 7,
-    next: { status: 'completed', steps: 2, completedAt: 1_700_000_000_002, outputSummary: { shape: 'string', length: 4 } },
+    next: {
+      status: 'completed',
+      steps: 2,
+      completedAt: 1_700_000_000_002,
+      outputSummary: { shape: 'string', length: 4 },
+    },
     events: [],
     timestamp: 1_700_000_000_002,
   });
@@ -157,15 +215,46 @@ async function main(): Promise<void> {
   const failedIdentity = { runId: failedId, ...identity };
   await createRun(failedId, [
     { ...failedIdentity, seq: 0, type: 'run.started', timestamp: 1_700_000_000_000 },
-    { ...failedIdentity, seq: 1, type: 'node.started', nodeId: 'a', capabilityId: 'c.a', timestamp: 1_700_000_000_000 },
-    { ...failedIdentity, seq: 2, type: 'node.failed', nodeId: 'a', capabilityId: 'c.a', durationMs: 1, error: { code: 'VICT_KERNEL_CONTRACT_REJECTED', message: 'sanitized', retryable: false }, timestamp: 1_700_000_000_001 },
-    { ...failedIdentity, seq: 3, type: 'run.failed', steps: 1, error: { code: 'VICT_KERNEL_CONTRACT_REJECTED', message: 'sanitized', retryable: false }, timestamp: 1_700_000_000_001 },
+    {
+      ...failedIdentity,
+      seq: 1,
+      type: 'node.started',
+      nodeId: 'a',
+      capabilityId: 'c.a',
+      timestamp: 1_700_000_000_000,
+    },
+    {
+      ...failedIdentity,
+      seq: 2,
+      type: 'node.failed',
+      nodeId: 'a',
+      capabilityId: 'c.a',
+      durationMs: 1,
+      error: { code: 'VICT_KERNEL_CONTRACT_REJECTED', message: 'sanitized', retryable: false },
+      timestamp: 1_700_000_000_001,
+    },
+    {
+      ...failedIdentity,
+      seq: 3,
+      type: 'run.failed',
+      steps: 1,
+      error: { code: 'VICT_KERNEL_CONTRACT_REJECTED', message: 'sanitized', retryable: false },
+      timestamp: 1_700_000_000_001,
+    },
   ]);
   await stores.execution.commitTransition({
     runId: failedId,
     expectedRecordRevision: 1,
     expectedNextEventSeq: 4,
-    next: { status: 'failed', completedAt: 1_700_000_000_002, error: { code: 'VICT_KERNEL_CONTRACT_REJECTED', message: 'sanitized', retryable: false } as never },
+    next: {
+      status: 'failed',
+      completedAt: 1_700_000_000_002,
+      error: {
+        code: 'VICT_KERNEL_CONTRACT_REJECTED',
+        message: 'sanitized',
+        retryable: false,
+      } as never,
+    },
     events: [],
     timestamp: 1_700_000_000_002,
   });
@@ -175,7 +264,14 @@ async function main(): Promise<void> {
   const blockedIdentity = { runId: blockedId, ...identity };
   await createRun(blockedId, [
     { ...blockedIdentity, seq: 0, type: 'run.started', timestamp: 1_700_000_000_000 },
-    { ...blockedIdentity, seq: 1, type: 'node.started', nodeId: 'a', capabilityId: 'c.a', timestamp: 1_700_000_000_000 },
+    {
+      ...blockedIdentity,
+      seq: 1,
+      type: 'node.started',
+      nodeId: 'a',
+      capabilityId: 'c.a',
+      timestamp: 1_700_000_000_000,
+    },
   ]);
 
   const report = {

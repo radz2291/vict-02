@@ -305,7 +305,10 @@ interface ActivationRow {
 
 function validateActivationRow(row: ActivationRow): StoredActivation {
   const context = 'catalog.readActivation';
-  if (row.manifest_schema !== ACTIVATION_MANIFEST_SCHEMA && row.manifest_schema !== ACTIVATION_MANIFEST_SCHEMA_V2) {
+  if (
+    row.manifest_schema !== ACTIVATION_MANIFEST_SCHEMA &&
+    row.manifest_schema !== ACTIVATION_MANIFEST_SCHEMA_V2
+  ) {
     throw new VictStoreError(
       'VICT_STORE_INVALID_RECORD',
       'A stored activation carries an unsupported manifest schema.',

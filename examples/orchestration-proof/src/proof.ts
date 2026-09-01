@@ -146,7 +146,9 @@ export async function runProof(): Promise<ProofReport> {
 
   const activated = await state.runtime.activate(proofGraph);
   if (!activated.ok) {
-    throw new Error(`proof graph failed to compile: ${activated.issues.map((issue) => issue.code).join(', ')}`);
+    throw new Error(
+      `proof graph failed to compile: ${activated.issues.map((issue) => issue.code).join(', ')}`,
+    );
   }
 
   // Phase 1: start and drive to the durable signal wait.
@@ -189,7 +191,10 @@ export async function runProof(): Promise<ProofReport> {
     advanceTime(10);
     await state.runtime.processDueTimers({ runId });
   }
-  const completed = final.status === 'completed' ? final : ((await state.runtime.resumeRun(runId)) as unknown as RunResult);
+  const completed =
+    final.status === 'completed'
+      ? final
+      : ((await state.runtime.resumeRun(runId)) as unknown as RunResult);
   if (completed.status !== 'completed') {
     throw new Error(
       `proof run did not complete: '${completed.status}' error=${JSON.stringify(completed.error ?? null)}`,
@@ -226,7 +231,7 @@ export async function runProof(): Promise<ProofReport> {
     signalName: 'proof-go',
     payload: 'resumed',
   });
-  let final2 = (await second.runtime.resumeRun(parked2.runId)) as unknown as RunResult;
+  const final2 = (await second.runtime.resumeRun(parked2.runId)) as unknown as RunResult;
   if ((final2.status as string) === 'running' || (final2.status as string) === 'waiting') {
     secondNow += 10;
     await second.runtime.processDueTimers({ runId: parked2.runId });
@@ -235,9 +240,16 @@ export async function runProof(): Promise<ProofReport> {
     final2.status === 'completed'
       ? final2
       : ((await second.runtime.resumeRun(parked2.runId)) as unknown as RunResult);
-  const events2 = await (second.stores.orchestration as import('@vict/runtime').OrchestrationStore).listOrchestrationEvents(parked2.runId);
+  if (completed2.status !== 'completed') {
+    throw new Error(`proof run (determinism pass) did not complete: '${completed2.status}'`);
+  }
+  const events2 = await (
+    second.stores.orchestration as import('@vict/runtime').OrchestrationStore
+  ).listOrchestrationEvents(parked2.runId);
   const semanticFingerprint = (list: readonly KernelEvent[]): string =>
-    list.map((event) => `${event.seq}:${event.type}:${('nodeId' in event ? event.nodeId : '') ?? ''}`).join('|');
+    list
+      .map((event) => `${event.seq}:${event.type}:${('nodeId' in event ? event.nodeId : '') ?? ''}`)
+      .join('|');
   const deterministic = semanticFingerprint(events) === semanticFingerprint(events2);
 
   await (second.stores as { dispose?: () => Promise<void> }).dispose?.();
@@ -249,7 +261,8 @@ export async function runProof(): Promise<ProofReport> {
     eventCount: events.length,
     durableTransitions: snapshot.run.recordRevision,
     attempts,
-    externalMutations: [...state.externalLedger.values()].filter((entry) => entry.count === 1).length,
+    externalMutations: [...state.externalLedger.values()].filter((entry) => entry.count === 1)
+      .length,
     branchOverlapProven: state.overlap.max > 1,
     finalOutput: String(completed.output),
     runId,

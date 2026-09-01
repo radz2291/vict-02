@@ -1,10 +1,11 @@
 import type { KernelEvent } from '@vict/kernel';
-import type {
-  OrchestrationEventInput,
-  SignalDeliveryResult,
-} from './orchestration-store-types.js';
+import type { OrchestrationEventInput, SignalDeliveryResult } from './orchestration-store-types.js';
 import { VictRuntimeError } from './errors.js';
-import { signalCommandHash, cancellationCommandHash, resolutionCommandHash } from './orchestration-activation.js';
+import {
+  signalCommandHash,
+  cancellationCommandHash,
+  resolutionCommandHash,
+} from './orchestration-activation.js';
 import { CANCELLATION_REASON_CODES } from './orchestration-driver-types.js';
 import type {
   CancelCommand,
@@ -65,11 +66,19 @@ export async function signalWait(
   ) => Promise<{ ok: boolean; message?: string }>,
 ): Promise<SignalResult> {
   if (typeof command.signalId !== 'string' || command.signalId.length === 0) {
-    return { ok: false, code: 'VICT_ORCH_INVALID_SIGNAL', message: 'A signal requires a non-empty signalId.' };
+    return {
+      ok: false,
+      code: 'VICT_ORCH_INVALID_SIGNAL',
+      message: 'A signal requires a non-empty signalId.',
+    };
   }
   const run = await deps.orchestration.getOrchestrationRun(command.runId);
   if (!run) {
-    return { ok: false, code: 'VICT_ORCH_UNKNOWN_RUN', message: `No orchestration run '${command.runId}' exists.` };
+    return {
+      ok: false,
+      code: 'VICT_ORCH_UNKNOWN_RUN',
+      message: `No orchestration run '${command.runId}' exists.`,
+    };
   }
   const waits = await deps.orchestration.listWaits(command.runId);
   const wait = waits.find((candidate) => candidate.waitId === command.waitId);
@@ -80,17 +89,30 @@ export async function signalWait(
       message: `No wait '${command.waitId}' exists on run '${command.runId}'.`,
     };
   }
-  if (wait.signalName !== null && command.signalName !== undefined && command.signalName !== wait.signalName) {
-    return { ok: false, code: 'VICT_ORCH_SIGNAL_NAME_MISMATCH', message: 'The signal name does not match the open wait.' };
+  if (
+    wait.signalName !== null &&
+    command.signalName !== undefined &&
+    command.signalName !== wait.signalName
+  ) {
+    return {
+      ok: false,
+      code: 'VICT_ORCH_SIGNAL_NAME_MISMATCH',
+      message: 'The signal name does not match the open wait.',
+    };
   }
   // Validate the payload against the pinned wait contract BEFORE consuming.
   if (wait.contractId !== null) {
-    const validation = await resolveContract(run.activationVersion, wait.contractId, command.payload);
+    const validation = await resolveContract(
+      run.activationVersion,
+      wait.contractId,
+      command.payload,
+    );
     if (!validation.ok) {
       return {
         ok: false,
         code: 'VICT_ORCH_SIGNAL_CONTRACT_REJECTED',
-        message: validation.message ?? 'The signal payload was rejected by the pinned wait contract.',
+        message:
+          validation.message ?? 'The signal payload was rejected by the pinned wait contract.',
       };
     }
   }
@@ -105,7 +127,7 @@ export async function signalWait(
     expectedWaitRevision: command.expectedWaitRevision,
     commandHash: signalCommandHash(command),
     now,
-    events: ([
+    events: [
       {
         type: 'signal.received',
         waitId: command.waitId,
@@ -122,7 +144,7 @@ export async function signalWait(
         ...envelope,
         timestamp: now,
       },
-    ] as unknown as readonly OrchestrationEventInput[]),
+    ] as unknown as readonly OrchestrationEventInput[],
   });
   switch (result.status) {
     case 'accepted':
@@ -141,7 +163,10 @@ export async function signalWait(
 }
 
 /** Idempotently request cancellation of one run (durable request, not an undo). */
-export async function cancelRun(deps: OrchestrationDriverDeps, command: CancelCommand): Promise<CancelResult> {
+export async function cancelRun(
+  deps: OrchestrationDriverDeps,
+  command: CancelCommand,
+): Promise<CancelResult> {
   if (!CANCELLATION_REASON_CODES.includes(command.reasonCode)) {
     return {
       ok: false,
@@ -151,7 +176,11 @@ export async function cancelRun(deps: OrchestrationDriverDeps, command: CancelCo
   }
   const run = await deps.orchestration.getOrchestrationRun(command.runId);
   if (!run) {
-    return { ok: false, code: 'VICT_ORCH_UNKNOWN_RUN', message: `No orchestration run '${command.runId}' exists.` };
+    return {
+      ok: false,
+      code: 'VICT_ORCH_UNKNOWN_RUN',
+      message: `No orchestration run '${command.runId}' exists.`,
+    };
   }
   const now = deps.clock.now();
   const envelope = envelopeOf(run);
@@ -187,7 +216,11 @@ export async function cancelRun(deps: OrchestrationDriverDeps, command: CancelCo
     };
   }
   if (result.status === 'unknown_run') {
-    return { ok: false, code: 'VICT_ORCH_UNKNOWN_RUN', message: `No orchestration run '${command.runId}' exists.` };
+    return {
+      ok: false,
+      code: 'VICT_ORCH_UNKNOWN_RUN',
+      message: `No orchestration run '${command.runId}' exists.`,
+    };
   }
   if (result.status === 'already_terminal') {
     return { ok: true, status: 'duplicate', cancelled: false };
@@ -234,7 +267,12 @@ export async function processDueTimers(
     ownerId: deps.ownerId,
     leaseExpiresAt: now + 30_000,
   });
-  const timers: { timerId: string; runId: string; kind: 'wait' | 'wait-timeout' | 'retry'; applied: boolean }[] = [];
+  const timers: {
+    timerId: string;
+    runId: string;
+    kind: 'wait' | 'wait-timeout' | 'retry';
+    applied: boolean;
+  }[] = [];
   for (const timer of claimed.timers) {
     const applied = await resolveOneDueTimer(deps, timer, resolveGraph);
     if (applied) {
@@ -273,7 +311,14 @@ async function resolveOneDueTimer(
       now,
       resolution: { kind: 'wake' },
       events: [
-        { type: 'timer.fired', timerId: timer.timerId, nodeId: run.currentNodeId ?? '(wait)', kind: 'wait', ...envelope, timestamp: now },
+        {
+          type: 'timer.fired',
+          timerId: timer.timerId,
+          nodeId: run.currentNodeId ?? '(wait)',
+          kind: 'wait',
+          ...envelope,
+          timestamp: now,
+        },
         { type: 'run.resumed', by: 'timer', ...envelope, timestamp: now },
       ] as unknown as readonly OrchestrationEventInput[],
       run: { status: 'running' },
@@ -284,9 +329,10 @@ async function resolveOneDueTimer(
     let toNodeId: string | null = null;
     try {
       const snapshot = await deps.orchestration.getOrchestrationSnapshot(timer.runId);
-      const wait = timer.waitId !== null
-        ? (await deps.orchestration.listWaits(timer.runId)).find((w) => w.waitId === timer.waitId)
-        : undefined;
+      const wait =
+        timer.waitId !== null
+          ? (await deps.orchestration.listWaits(timer.runId)).find((w) => w.waitId === timer.waitId)
+          : undefined;
       if (snapshot && wait) {
         const graph = await resolveGraph(run.activationVersion);
         if (graph.ok) {
@@ -308,13 +354,22 @@ async function resolveOneDueTimer(
         now,
         resolution: { kind: 'waitTimeout', toNodeId: null, payload: undefined },
         events: [
-          { type: 'timer.fired', timerId: timer.timerId, nodeId: run.currentNodeId ?? '(unknown)', kind: 'wait-timeout', ...envelope, timestamp: now },
+          {
+            type: 'timer.fired',
+            timerId: timer.timerId,
+            nodeId: run.currentNodeId ?? '(unknown)',
+            kind: 'wait-timeout',
+            ...envelope,
+            timestamp: now,
+          },
           {
             type: 'run.blocked',
             steps: run.steps,
             code: 'VICT_ORCH_ACTIVATION_UNAVAILABLE',
-            reason: 'The exact pinned activation could not be resolved to process the wait timeout.',
-            remediation: 'Register the exact capability/contract revisions, then resolve the blocked run through the operator API.',
+            reason:
+              'The exact pinned activation could not be resolved to process the wait timeout.',
+            remediation:
+              'Register the exact capability/contract revisions, then resolve the blocked run through the operator API.',
             ...envelope,
             timestamp: now,
           },
@@ -331,7 +386,14 @@ async function resolveOneDueTimer(
       now,
       resolution: { kind: 'waitTimeout', toNodeId, payload: undefined },
       events: [
-        { type: 'timer.fired', timerId: timer.timerId, nodeId: run.currentNodeId ?? '(unknown)', kind: 'wait-timeout', ...envelope, timestamp: now },
+        {
+          type: 'timer.fired',
+          timerId: timer.timerId,
+          nodeId: run.currentNodeId ?? '(unknown)',
+          kind: 'wait-timeout',
+          ...envelope,
+          timestamp: now,
+        },
         { type: 'run.resumed', by: 'timer', ...envelope, timestamp: now },
       ] as unknown as readonly OrchestrationEventInput[],
       run: { status: 'running' },
@@ -346,7 +408,14 @@ async function resolveOneDueTimer(
     now,
     resolution: { kind: 'retry' },
     events: [
-      { type: 'timer.fired', timerId: timer.timerId, nodeId: run.currentNodeId ?? '(unknown)', kind: 'retry', ...envelope, timestamp: now },
+      {
+        type: 'timer.fired',
+        timerId: timer.timerId,
+        nodeId: run.currentNodeId ?? '(unknown)',
+        kind: 'retry',
+        ...envelope,
+        timestamp: now,
+      },
     ] as unknown as readonly OrchestrationEventInput[],
   });
   return result.applied;
@@ -378,7 +447,11 @@ export async function resolveBlocked(
 ): Promise<ResolveBlockedOutcome> {
   const run = await deps.orchestration.getOrchestrationRun(input.runId);
   if (!run) {
-    return { ok: false, code: 'VICT_ORCH_UNKNOWN_RUN', message: `No orchestration run '${input.runId}' exists.` };
+    return {
+      ok: false,
+      code: 'VICT_ORCH_UNKNOWN_RUN',
+      message: `No orchestration run '${input.runId}' exists.`,
+    };
   }
   const now = deps.clock.now();
   const envelope = envelopeOf(run);
@@ -401,18 +474,16 @@ export async function resolveBlocked(
     commandHash,
     expectedRunRevision: input.expectedRunRevision ?? run.recordRevision,
     now,
-    events: (
-      [
-        {
-          type: 'operator.intervened',
-          resolutionId: input.resolutionId,
-          action: input.action,
-          ...envelope,
-          timestamp: now,
-        },
-        ...planned.events,
-      ] as unknown as readonly OrchestrationEventInput[]
-    ),
+    events: [
+      {
+        type: 'operator.intervened',
+        resolutionId: input.resolutionId,
+        action: input.action,
+        ...envelope,
+        timestamp: now,
+      },
+      ...planned.events,
+    ] as unknown as readonly OrchestrationEventInput[],
   });
   switch (result.status) {
     case 'accepted':
@@ -442,7 +513,11 @@ export async function resolveBlocked(
         message: `The run record revision is stale (actual ${result.actualRunRevision}).`,
       };
     case 'unknown_run':
-      return { ok: false, code: 'VICT_ORCH_UNKNOWN_RUN', message: `No orchestration run '${input.runId}' exists.` };
+      return {
+        ok: false,
+        code: 'VICT_ORCH_UNKNOWN_RUN',
+        message: `No orchestration run '${input.runId}' exists.`,
+      };
     case 'not_blocked':
       return {
         ok: false,
@@ -478,12 +553,25 @@ export async function recoverOrchestration(
 ): Promise<RecoverOrchestrationSummary> {
   const now = deps.clock.now();
   const claims = await deps.orchestration.findRecoverableClaims({ now });
-  const reclaimed: { runId: string; attemptId: string; effectClass: import('@vict/kernel').EffectClass }[] = [];
-  const blocked: { runId: string; attemptId: string; effectClass: import('@vict/kernel').EffectClass; reason: string }[] = [];
+  const reclaimed: {
+    runId: string;
+    attemptId: string;
+    effectClass: import('@vict/kernel').EffectClass;
+  }[] = [];
+  const blocked: {
+    runId: string;
+    attemptId: string;
+    effectClass: import('@vict/kernel').EffectClass;
+    reason: string;
+  }[] = [];
   const skipped: { runId: string; attemptId: string; reason: string }[] = [];
   for (const claim of claims) {
     if (claim.leaseExpiresAt > now) {
-      skipped.push({ runId: claim.runId, attemptId: claim.attempt.attemptId, reason: 'lease still active' });
+      skipped.push({
+        runId: claim.runId,
+        attemptId: claim.attempt.attemptId,
+        reason: 'lease still active',
+      });
       continue;
     }
     const run = await deps.orchestration.getOrchestrationRun(claim.runId);
@@ -493,7 +581,11 @@ export async function recoverOrchestration(
     const envelope = envelopeOf(run);
     const decision = await policyFor(claim.runId, claim.attempt);
     if (decision.action === 'skip') {
-      skipped.push({ runId: claim.runId, attemptId: claim.attempt.attemptId, reason: decision.reason });
+      skipped.push({
+        runId: claim.runId,
+        attemptId: claim.attempt.attemptId,
+        reason: decision.reason,
+      });
       continue;
     }
     if (decision.action === 'block') {
@@ -509,7 +601,8 @@ export async function recoverOrchestration(
             steps: run.steps,
             code: 'VICT_ORCH_OUTCOME_UNKNOWN',
             reason: decision.reason,
-            remediation: 'Resolve the blocked run through the operator API (runtime.resolveBlocked).',
+            remediation:
+              'Resolve the blocked run through the operator API (runtime.resolveBlocked).',
             ...envelope,
             timestamp: now,
           },

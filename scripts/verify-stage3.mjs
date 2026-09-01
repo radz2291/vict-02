@@ -29,10 +29,18 @@
 import { spawnSync } from 'node:child_process';
 
 const steps = [
-  ['unit tests (incl. shared orchestration conformance, restart + crash fixtures)', 'npx', ['vitest', 'run', '--project', 'unit']],
+  [
+    'unit tests (incl. shared orchestration conformance, restart + crash fixtures)',
+    'npx',
+    ['vitest', 'run', '--project', 'unit'],
+  ],
   ['integration tests', 'npx', ['vitest', 'run', '--project', 'integration']],
   ['offline orchestration proof', 'npx', ['tsx', 'examples/orchestration-proof/src/main.ts']],
-  ['packed consumer + orchestration consumer (SQLite close/reopen/wait/signal/resume)', 'node', ['scripts/isolated-consumer-check.mjs']],
+  [
+    'packed consumer + orchestration consumer (SQLite close/reopen/wait/signal/resume)',
+    'node',
+    ['scripts/isolated-consumer-check.mjs'],
+  ],
 ];
 
 let failures = 0;
@@ -53,4 +61,6 @@ if (failures > 0) {
   console.error(`\nverify:stage3 FAILED with ${failures} failing step(s).`);
   process.exit(1);
 }
-console.log('\nverify:stage3 PASSED (full unit + integration suites, offline proof, packed orchestration consumer).');
+console.log(
+  '\nverify:stage3 PASSED (full unit + integration suites, offline proof, packed orchestration consumer).',
+);

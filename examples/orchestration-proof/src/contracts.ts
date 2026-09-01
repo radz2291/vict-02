@@ -49,9 +49,7 @@ export const JoinResultContract = defineContract({
     }
     return {
       ok: false as const,
-      issues: [
-        { code: 'SHAPE', path: '$', message: 'expected { alpha: string, beta: string }' },
-      ],
+      issues: [{ code: 'SHAPE', path: '$', message: 'expected { alpha: string, beta: string }' }],
     };
   },
 });

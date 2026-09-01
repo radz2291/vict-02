@@ -1,27 +1,29 @@
 import { describe, expect, it } from 'vitest';
 import {
   compileGraph,
-  computeGraphVersion,
   canonicalSemanticFormV2,
   canonicalJson,
   backoffDelayMs,
   isRetryable,
   resolveDecisionRoute,
   canonicalJoinOutput,
-  deriveRunStatus,
   RETRY_MAX_ATTEMPTS_LIMIT,
 } from '@vict/kernel';
-import type { ApplicationGraphDefinition, CapabilityIndex, ContractEnvironment } from '@vict/kernel';
+import type {
+  ApplicationGraphDefinition,
+  CapabilityIndex,
+  ContractEnvironment,
+} from '@vict/kernel';
 
 /** Stable capability/contract knowledge for compiler tests. */
 const capabilities: CapabilityIndex = {
   getCapabilityDescriptor: (capabilityId: string) => {
     const table: Record<string, { effect: string; idempotency?: 'keyed' }> = {
-      'pure': { effect: 'pure' },
-      'reader': { effect: 'read' },
-      'writer': { effect: 'write' },
+      pure: { effect: 'pure' },
+      reader: { effect: 'read' },
+      writer: { effect: 'write' },
       'keyed-writer': { effect: 'write', idempotency: 'keyed' },
-      'irreversible': { effect: 'irreversible' },
+      irreversible: { effect: 'irreversible' },
     };
     const entry = table[capabilityId];
     if (!entry) {
@@ -70,7 +72,11 @@ function fanoutDefinition(): ApplicationGraphDefinition {
       { id: 'b', capability: 'pure' },
       { id: 'j', kind: 'join', fork: 'f' },
       { id: 'w', kind: 'wait', wait: { kind: 'signal', name: 'go', timeoutMs: 100 } },
-      { id: 'apply', capability: 'keyed-writer', retry: { maxAttempts: 2, retryOn: ['X'], backoff: { kind: 'fixed', delayMs: 5 } } },
+      {
+        id: 'apply',
+        capability: 'keyed-writer',
+        retry: { maxAttempts: 2, retryOn: ['X'], backoff: { kind: 'fixed', delayMs: 5 } },
+      },
       { id: 'timeout', capability: 'pure' },
     ],
     edges: [
@@ -129,7 +135,9 @@ describe('stage 03 compiler validation', () => {
     });
     expect(unsafeWrite.ok).toBe(false);
     if (!unsafeWrite.ok) {
-      expect(unsafeWrite.issues.some((issue) => issue.code === 'WRITE_RETRY_NOT_IDEMPOTENT')).toBe(true);
+      expect(unsafeWrite.issues.some((issue) => issue.code === 'WRITE_RETRY_NOT_IDEMPOTENT')).toBe(
+        true,
+      );
     }
 
     // Irreversible retry denied at compilation.
@@ -141,7 +149,9 @@ describe('stage 03 compiler validation', () => {
     });
     expect(irreversible.ok).toBe(false);
     if (!irreversible.ok) {
-      expect(irreversible.issues.some((issue) => issue.code === 'IRREVERSIBLE_RETRY_DENIED')).toBe(true);
+      expect(irreversible.issues.some((issue) => issue.code === 'IRREVERSIBLE_RETRY_DENIED')).toBe(
+        true,
+      );
     }
 
     // Timeout edge without a declared signal timeout.
@@ -149,24 +159,30 @@ describe('stage 03 compiler validation', () => {
       ...fanoutDefinition(),
       nodes: fanoutDefinition().nodes.map((node) =>
         node.id === 'w'
-          ? { ...node, wait: { kind: 'signal', name: 'go' } }
+          ? ({ ...node, wait: { kind: 'signal' as const, name: 'go' } } as never)
           : node,
       ),
     });
     expect(orphanTimeout.ok).toBe(false);
     if (!orphanTimeout.ok) {
-      expect(orphanTimeout.issues.some((issue) => issue.code === 'TIMEOUT_EDGE_WITHOUT_SIGNAL_TIMEOUT')).toBe(true);
+      expect(
+        orphanTimeout.issues.some((issue) => issue.code === 'TIMEOUT_EDGE_WITHOUT_SIGNAL_TIMEOUT'),
+      ).toBe(true);
     }
 
     // Signal timeout without a timeout edge.
     const missingTimeoutEdge = compile({
       ...fanoutDefinition(),
-      edges: fanoutDefinition().edges.filter((edge) => (edge as { kind?: string }).kind !== 'timeout'),
+      edges: fanoutDefinition().edges.filter(
+        (edge) => (edge as { kind?: string }).kind !== 'timeout',
+      ),
     });
     expect(missingTimeoutEdge.ok).toBe(false);
     if (!missingTimeoutEdge.ok) {
       expect(
-        missingTimeoutEdge.issues.some((issue) => issue.code === 'SIGNAL_TIMEOUT_WITHOUT_TIMEOUT_EDGE'),
+        missingTimeoutEdge.issues.some(
+          (issue) => issue.code === 'SIGNAL_TIMEOUT_WITHOUT_TIMEOUT_EDGE',
+        ),
       ).toBe(true);
     }
     expect(RETRY_MAX_ATTEMPTS_LIMIT).toBeGreaterThan(1);
@@ -181,7 +197,11 @@ describe('stage 03 canonical identity for control graphs', () => {
       id: 'identity-fanout',
       entry: 'd',
       nodes: [
-        { id: 'apply', capability: 'keyed-writer', retry: { maxAttempts: 2, retryOn: ['X'], backoff: { kind: 'fixed', delayMs: 5 } } },
+        {
+          id: 'apply',
+          capability: 'keyed-writer',
+          retry: { maxAttempts: 2, retryOn: ['X'], backoff: { kind: 'fixed', delayMs: 5 } },
+        },
         { id: 'w', kind: 'wait', wait: { kind: 'signal', name: 'go', timeoutMs: 100 } },
         { id: 'j', kind: 'join', fork: 'f' },
         { id: 'b', capability: 'pure' },
@@ -214,7 +234,9 @@ describe('stage 03 canonical identity for control graphs', () => {
       ),
     });
     expect(changedRoute.ok).toBe(true);
-    expect(a.ok && changedRoute.ok && changedRoute.graph.graphVersion !== a.graph.graphVersion).toBe(true);
+    expect(
+      a.ok && changedRoute.ok && changedRoute.graph.graphVersion !== a.graph.graphVersion,
+    ).toBe(true);
 
     // A changed branch key changes the graph identity.
     const changedBranch = compile({
@@ -226,31 +248,45 @@ describe('stage 03 canonical identity for control graphs', () => {
       ),
     });
     expect(changedBranch.ok).toBe(true);
-    expect(a.ok && changedBranch.ok && changedBranch.graph.graphVersion !== a.graph.graphVersion).toBe(true);
+    expect(
+      a.ok && changedBranch.ok && changedBranch.graph.graphVersion !== a.graph.graphVersion,
+    ).toBe(true);
 
     // A changed retry bound changes the graph identity (not the capability set).
     const changedRetry = compile({
       ...fanoutDefinition(),
       nodes: fanoutDefinition().nodes.map((node) =>
         node.id === 'apply'
-          ? { ...node, retry: { maxAttempts: 3, retryOn: ['X'], backoff: { kind: 'fixed', delayMs: 5 } } }
+          ? {
+              ...node,
+              retry: { maxAttempts: 3, retryOn: ['X'], backoff: { kind: 'fixed', delayMs: 5 } },
+            }
           : node,
       ),
     });
     expect(changedRetry.ok).toBe(true);
-    expect(a.ok && changedRetry.ok && changedRetry.graph.graphVersion !== a.graph.graphVersion).toBe(true);
+    expect(
+      a.ok && changedRetry.ok && changedRetry.graph.graphVersion !== a.graph.graphVersion,
+    ).toBe(true);
 
     // The v2 canonical form is idempotent and independent of declaration order.
     const c1 = canonicalSemanticFormV2(fanoutDefinition());
     const c2 = canonicalSemanticFormV2(reordered);
     expect(canonicalJson(c1) === canonicalJson(c2)).toBe(true);
-    expect(canonicalJson(canonicalSemanticFormV2(c1 as unknown as ApplicationGraphDefinition)) === canonicalJson(c1)).toBe(true);
+    expect(
+      canonicalJson(canonicalSemanticFormV2(c1 as unknown as ApplicationGraphDefinition)) ===
+        canonicalJson(c1),
+    ).toBe(true);
   });
 });
 
 describe('stage 03 pure helpers', () => {
   it('backoff is deterministic and bounded; retry classification uses stable codes only', () => {
-    const fixed = { maxAttempts: 3, retryOn: ['X'], backoff: { kind: 'fixed' as const, delayMs: 100 } };
+    const fixed = {
+      maxAttempts: 3,
+      retryOn: ['X'],
+      backoff: { kind: 'fixed' as const, delayMs: 100 },
+    };
     expect(backoffDelayMs(fixed, 1)).toBe(100);
     expect(backoffDelayMs(fixed, 2)).toBe(100);
     const exp = {
@@ -273,7 +309,10 @@ describe('stage 03 pure helpers', () => {
 
   it('decision routing resolves only declared keys; join output is canonical by key', () => {
     const routes = { b: 'node-b', a: 'node-a' };
-    expect(resolveDecisionRoute(routes, { route: 'a', value: 1 })).toEqual({ ok: true, target: 'node-a' });
+    expect(resolveDecisionRoute(routes, { route: 'a', value: 1 })).toEqual({
+      ok: true,
+      target: 'node-a',
+    });
     expect(resolveDecisionRoute(routes, { route: 'zzz', value: 1 })).toEqual({
       ok: false,
       code: 'UNKNOWN_ROUTE',

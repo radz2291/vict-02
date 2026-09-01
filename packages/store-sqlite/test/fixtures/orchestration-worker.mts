@@ -103,13 +103,19 @@ async function main(): Promise<void> {
           };
     const activated = await runtime.activate(definition);
     if (!activated.ok) {
-      throw new Error(`activation failed: ${JSON.stringify(activated.issues.map((issue) => issue.code))}`);
+      throw new Error(
+        `activation failed: ${JSON.stringify(activated.issues.map((issue) => issue.code))}`,
+      );
     }
     const result = await runtime.run('seed');
     if (result.status !== 'waiting') {
       throw new Error(`expected waiting, got ${result.status}`);
     }
-    writeState({ runId: result.runId, activationVersion: activated.activationVersion, waitId: result.waits?.[0]?.waitId ?? null });
+    writeState({
+      runId: result.runId,
+      activationVersion: activated.activationVersion,
+      waitId: result.waits?.[0]?.waitId ?? null,
+    });
     await stores.dispose();
     return;
   }
@@ -182,7 +188,11 @@ async function main(): Promise<void> {
         {
           id: 'h',
           capability: 'hang',
-          retry: { maxAttempts: 3, retryOn: ['VICT_RUNTIME_CAPABILITY_THREW'], backoff: { kind: 'fixed', delayMs: 1 } },
+          retry: {
+            maxAttempts: 3,
+            retryOn: ['VICT_RUNTIME_CAPABILITY_THREW'],
+            backoff: { kind: 'fixed', delayMs: 1 },
+          },
           output: 'restart-hang',
         },
       ],
@@ -199,7 +209,10 @@ async function main(): Promise<void> {
       if (!existsSync(ledgerPath)) {
         return {};
       }
-      return JSON.parse(readFileSync(ledgerPath, 'utf8')) as Record<string, { count: number; result: string }>;
+      return JSON.parse(readFileSync(ledgerPath, 'utf8')) as Record<
+        string,
+        { count: number; result: string }
+      >;
     };
     const writeLedger = (ledger: Record<string, { count: number; result: string }>): void => {
       writeFileSync(ledgerPath, JSON.stringify(ledger));
@@ -270,7 +283,10 @@ async function main(): Promise<void> {
         effect: 'write',
         idempotency: 'keyed',
         invoke: (input: unknown, context) => {
-          const ledger = JSON.parse(readFileSync(`${statePath}.ledger`, 'utf8')) as Record<string, { count: number; result: string }>;
+          const ledger = JSON.parse(readFileSync(`${statePath}.ledger`, 'utf8')) as Record<
+            string,
+            { count: number; result: string }
+          >;
           const prior = ledger[context.idempotencyKey as string];
           if (prior === undefined) {
             throw new Error('the external ledger lost the prior mutation');
@@ -300,13 +316,20 @@ main()
     process.exit(0);
   })
   .catch((error: unknown) => {
-    const detail = error as { code?: string; details?: unknown; driverCause?: { message?: string } };
+    const detail = error as {
+      code?: string;
+      details?: unknown;
+      driverCause?: { message?: string };
+    };
     console.error(
       'WORKER FAILED:',
       error instanceof Error ? error.message : String(error),
-      '| code:', detail.code ?? '(none)',
-      '| cause:', detail.driverCause?.message ?? '(none)',
-      '| details:', JSON.stringify(detail.details ?? {}),
+      '| code:',
+      detail.code ?? '(none)',
+      '| cause:',
+      detail.driverCause?.message ?? '(none)',
+      '| details:',
+      JSON.stringify(detail.details ?? {}),
     );
     process.exit(1);
   });

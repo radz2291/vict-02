@@ -263,8 +263,31 @@ writeFileSync(
   join(orchDir, 'package.json'),
   JSON.stringify({ name: 'vict-consumer-orchestration', private: true, type: 'module' }, null, 2),
 );
-run('npm', ['install', ...tarballs.map((file) => join(work, file)), 'typescript@6', '@types/node'], { cwd: orchDir });
-writeFileSync(join(orchDir, 'tsconfig.json'), JSON.stringify({ compilerOptions: { target: 'ES2022', module: 'NodeNext', moduleResolution: 'NodeNext', strict: true, noUncheckedIndexedAccess: true, skipLibCheck: false, noEmit: true, types: ['node'] }, include: ['src/**/*.ts'] }, null, 2));
+run(
+  'npm',
+  ['install', ...tarballs.map((file) => join(work, file)), 'typescript@6', '@types/node'],
+  { cwd: orchDir },
+);
+writeFileSync(
+  join(orchDir, 'tsconfig.json'),
+  JSON.stringify(
+    {
+      compilerOptions: {
+        target: 'ES2022',
+        module: 'NodeNext',
+        moduleResolution: 'NodeNext',
+        strict: true,
+        noUncheckedIndexedAccess: true,
+        skipLibCheck: false,
+        noEmit: true,
+        types: ['node'],
+      },
+      include: ['src/**/*.ts'],
+    },
+    null,
+    2,
+  ),
+);
 writeFileSync(
   join(orchDir, 'src', 'index.ts'),
   `import { createRuntime, defineContract, defineGraph } from '@vict/sdk';
@@ -399,7 +422,9 @@ check(
 const orchParts = (orchRun.stdout ?? '').trim().split(/\r?\n/).at(-1)?.split(' ') ?? [];
 const orchRunId = orchParts[1] ?? '';
 const orchWaitId = orchParts[2] ?? '';
-console.log('\n[orchestration consumer] REOPEN, deliver one idempotent signal, resume to completion');
+console.log(
+  '\n[orchestration consumer] REOPEN, deliver one idempotent signal, resume to completion',
+);
 const orchResume = run(
   'npx',
   ['tsx', join(orchDir, 'src', 'index.ts'), dbPathFor(orchDir), 'resume', orchRunId],

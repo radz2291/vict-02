@@ -352,14 +352,18 @@ const ORCH_GRAPH = defineGraph({
 });
 
 async function benchStage03(
-  fileStores: ReturnType<typeof createSqliteStores> extends never ? never : Awaited<ReturnType<typeof createSqliteStores>>,
+  fileStores: ReturnType<typeof createSqliteStores> extends never
+    ? never
+    : Awaited<ReturnType<typeof createSqliteStores>>,
 ): Promise<void> {
   console.log('');
   console.log('--- Stage 03 durable orchestration (informational) ---');
 
-  const orchestration = (fileStores as unknown as {
-    orchestration: import('@vict/runtime').OrchestrationStore;
-  }).orchestration;
+  const orchestration = (
+    fileStores as unknown as {
+      orchestration: import('@vict/runtime').OrchestrationStore;
+    }
+  ).orchestration;
   let seq = 0;
   const runtime = createRuntime({
     stores: fileStores,
@@ -367,9 +371,25 @@ async function benchStage03(
   });
   runtime
     .registerContract(ORCH_S)
-    .registerCapability({ id: 'bench.route', revision: '1', effect: 'pure', invoke: (input: unknown) => ({ route: 'go', value: String(input) }) })
-    .registerCapability({ id: 'bench.branch', revision: '1', effect: 'pure', invoke: (input: unknown, context) => `${String(input)}:${String(context.branch?.branchKey ?? '?')}` })
-    .registerCapability({ id: 'bench.sink', revision: '1', effect: 'pure', invoke: (input: unknown) => String(input) })
+    .registerCapability({
+      id: 'bench.route',
+      revision: '1',
+      effect: 'pure',
+      invoke: (input: unknown) => ({ route: 'go', value: String(input) }),
+    })
+    .registerCapability({
+      id: 'bench.branch',
+      revision: '1',
+      effect: 'pure',
+      invoke: (input: unknown, context) =>
+        `${String(input)}:${String(context.branch?.branchKey ?? '?')}`,
+    })
+    .registerCapability({
+      id: 'bench.sink',
+      revision: '1',
+      effect: 'pure',
+      invoke: (input: unknown) => String(input),
+    })
     .registerCapability({
       id: 'bench.timer',
       revision: '1',
@@ -386,7 +406,11 @@ async function benchStage03(
   const samples: number[] = [];
   for (let i = 0; i < 50; i++) {
     const t0 = process.hrtime.bigint();
-    const parked = (await runtime.run(`seed-${i}`)) as unknown as { status: string; runId: string; waits?: { waitId: string }[] };
+    const parked = (await runtime.run(`seed-${i}`)) as unknown as {
+      status: string;
+      runId: string;
+      waits?: { waitId: string }[];
+    };
     if (parked.status !== 'waiting') {
       throw new Error('orchestration bench run did not park');
     }
@@ -412,7 +436,9 @@ async function benchStage03(
     summarize(samples),
     samples.length,
   );
-  console.log('  durable transactions per completed orchestration run: claims + completions + wait + signal + join (each fsynced)');
+  console.log(
+    '  durable transactions per completed orchestration run: claims + completions + wait + signal + join (each fsynced)',
+  );
   console.log('');
 
   // Due-timer pump.

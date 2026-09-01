@@ -4,8 +4,8 @@ An agent-native application operating layer. Important application behaviour is
 represented as an explicit, inspectable graph that can eventually be versioned
 and safely changed by humans and agents together.
 
-This repository is the greenfield Stage 02 kernel with durable identity and
-stores:
+This repository is the greenfield kernel with durable identity, stores, and
+(Stage 03) durable orchestration:
 
 - `packages/contracts` — executable input/output promises
 - `packages/kernel` — pure graph compilation and execution semantics
@@ -15,14 +15,21 @@ stores:
   `node:sqlite` driver, forward migrations)
 - `packages/sdk` — the public authoring facade
 - `examples/ara-proof` — deterministic, offline ARA conversation proof
+- `examples/orchestration-proof` — deterministic, offline Stage 03
+  orchestration proof (decision route, fork/join, durable signal wait,
+  keyed-write retry/reconciliation across a restart boundary)
 
 ## Quick start
 
 ```bash
 npm install
-npm test        # deterministic, offline tests (unit + integration)
-npm run example # run the ARA proof
-npm run bench   # in-memory and SQLite-backed benchmarks
+npm test             # deterministic, offline tests (unit + integration)
+npm run example      # run the ARA proof
+npm run bench        # in-memory and SQLite-backed benchmarks
+npm run verify:stage2  # Stage 02 aggregate verification
+npm run verify:stage3  # Stage 03 aggregate verification (conformance,
+                       # crash/restart fixtures, offline proof, packed
+                       # orchestration consumer)
 ```
 
 ## Durable local store quick start
@@ -83,10 +90,72 @@ Notes:
   sidecars when present); Vict never deletes databases automatically.
 - Requires Node `>=22.13.0` (built-in `node:sqlite`).
 
+## Durable orchestration (Stage 03)
+
+Graphs can branch, wait, retry, and survive process loss:
+
+```ts
+const activation = await runtime.activate(
+  defineGraph({
+    id: 'pipeline',
+    entry: 'decide',
+    nodes: [
+      { id: 'decide', kind: 'decision', capability: 'app.route' },
+      { id: 'f', kind: 'fork', join: 'j' },
+      { id: 'a', capability: 'app.prepare' },
+      { id: 'b', capability: 'app.prepare' },
+      { id: 'j', kind: 'join', fork: 'f' },
+      { id: 'gate', kind: 'wait', wait: { kind: 'signal', name: 'approve' } },
+      {
+        id: 'apply',
+        capability: 'app.apply',              // effect: 'write', idempotency: 'keyed'
+        retry: { maxAttempts: 3, retryOn: ['timeout'], backoff: { kind: 'fixed', delayMs: 100 } },
+      },
+    ],
+    edges: [
+      { from: 'decide', to: 'f', kind: 'route', key: 'go' },
+      { from: 'f', to: 'a', kind: 'branch', key: 'a' },
+      { from: 'f', to: 'b', kind: 'branch', key: 'b' },
+      { from: 'a', to: 'j' },
+      { from: 'b', to: 'j' },
+      { from: 'j', to: 'gate' },
+      { from: 'gate', to: 'apply' },
+    ],
+  }),
+);
+
+const parked = await runtime.run('request');   // parks at the durable wait
+await runtime.signal({
+  runId: parked.runId,
+  waitId: parked.waits![0].waitId,             // exact wait addressing
+  signalId: 'approval-1',                      // caller idempotency key
+  signalName: 'approve',
+  payload: 'approved',
+});
+const final = await runtime.resumeRun(parked.runId); // drive to terminal/quiescent
+```
+
+- `resumeRun` resolves the run's EXACT pinned activation (revision-pinned);
+  activation selection changes never affect suspended runs; missing
+  artifacts block instead of substituting.
+- Retries are bounded, classified by safe stable codes, and durable
+  (survive restart via the due-timer pump: `runtime.processDueTimers`).
+- Ambiguous unsafe effects (non-keyed writes, irreversible operations) block
+  for operator resolution (`runtime.resolveBlocked`, denied by default).
+- Cancellation is a durable, cooperative, idempotent request:
+  `runtime.cancel({ runId, requestId, reasonCode })`.
+
+See `docs/architecture/STAGE-03-DURABLE-ORCHESTRATION.md` for the full
+model, state diagrams, effect/ambiguity rules, and operational limits.
+
 ## Documentation
 
 - `docs/architecture/NIGHT-01-FOUNDATION.md` — the kernel and why it exists
 - `docs/architecture/STAGE-02-STORES.md` — store ports, SQLite adapter,
   migrations, restart/interruption semantics
 - `docs/VICT-SYSTEM-REFERENCE.md` — authoritative system reference
+- `docs/architecture/STAGE-03-DURABLE-ORCHESTRATION.md` — durable
+  orchestration: tokens/attempts/waits, retries, cancellation, blocked
+  resolution, exact-activation resume, checkpoint boundary
 - `docs/handoff/VICT-STAGE-02-HANDOFF.md` — Stage 02 scope
+- `docs/handoff/VICT-STAGE-03-HANDOFF.md` — Stage 03 scope

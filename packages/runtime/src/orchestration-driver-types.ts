@@ -137,13 +137,19 @@ export interface RecoverOrchestrationSummary {
     readonly effectClass: EffectClass;
     readonly reason: string;
   }[];
-  readonly skipped: readonly { readonly runId: string; readonly attemptId: string; readonly reason: string }[];
+  readonly skipped: readonly {
+    readonly runId: string;
+    readonly attemptId: string;
+    readonly reason: string;
+  }[];
 }
 
 /** Internal dependency view used by the command modules. */
 export interface OrchestrationDriverDeps extends Omit<OrchestrationEngineDeps, 'catalog'> {
   readonly catalog: {
-    get(activationVersion: string): Promise<import('./store-types.js').StoredActivation | undefined>;
+    get(
+      activationVersion: string,
+    ): Promise<import('./store-types.js').StoredActivation | undefined>;
   };
 }
 
@@ -158,7 +164,9 @@ export interface OrchestrationEngineDeps {
   readonly leaseMs?: number;
   readonly orchestration: OrchestrationStore;
   readonly catalog: {
-    get(activationVersion: string): Promise<import('./store-types.js').StoredActivation | undefined>;
+    get(
+      activationVersion: string,
+    ): Promise<import('./store-types.js').StoredActivation | undefined>;
   };
   readonly time?: OrchestrationTimePort;
 }

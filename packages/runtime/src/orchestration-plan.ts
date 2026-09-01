@@ -61,10 +61,17 @@ export type PlannedCompletion =
   | { readonly kind: 'invalid'; readonly error: VictError };
 
 export function invalidOutcome(message: string): VictError {
-  return { code: 'VICT_ORCH_INVALID_TRANSITION', message, retryable: false } as unknown as VictError;
+  return {
+    code: 'VICT_ORCH_INVALID_TRANSITION',
+    message,
+    retryable: false,
+  } as unknown as VictError;
 }
 
-export function blockedOutcome(code: string, reason: string): { continuation: AttemptContinuation; runStatus: 'blocked' } {
+export function blockedOutcome(
+  code: string,
+  reason: string,
+): { continuation: AttemptContinuation; runStatus: 'blocked' } {
   return { continuation: { kind: 'block', code, reason }, runStatus: 'blocked' };
 }
 
@@ -76,7 +83,10 @@ export function planContinuation(input: PlanInput): PlannedCompletion {
   const { graph, claim, outcome } = input;
   const node = graph.getNode(claim.token.nodeId);
   if (!node) {
-    return { kind: 'invalid', error: invalidOutcome(`Compiled graph '${graph.id}' has no node '${claim.token.nodeId}'.`) };
+    return {
+      kind: 'invalid',
+      error: invalidOutcome(`Compiled graph '${graph.id}' has no node '${claim.token.nodeId}'.`),
+    };
   }
   if (outcome.kind === 'cancelled') {
     return { kind: 'transition', continuation: { kind: 'none' }, runStatus: 'running' };
@@ -105,7 +115,11 @@ export function planContinuation(input: PlanInput): PlannedCompletion {
 function planFailure(input: PlanInput, code: string): PlannedCompletion {
   const { graph, claim } = input;
   const node = graph.getNode(claim.token.nodeId) as CompiledNode;
-  if (node.retry !== undefined && claim.attempt.attemptNumber < node.retry.maxAttempts && isRetryable(node.retry, code)) {
+  if (
+    node.retry !== undefined &&
+    claim.attempt.attemptNumber < node.retry.maxAttempts &&
+    isRetryable(node.retry, code)
+  ) {
     return {
       kind: 'transition',
       continuation: {
@@ -221,7 +235,11 @@ function planSuccess(input: PlanInput): PlannedCompletion {
         dueAt: input.now + wait.delayMs,
         timeoutAt: null,
       };
-      return { kind: 'transition', continuation: { kind: 'wait', wait: command }, runStatus: 'waiting' };
+      return {
+        kind: 'transition',
+        continuation: { kind: 'wait', wait: command },
+        runStatus: 'waiting',
+      };
     }
     const command: NewWaitCommand = {
       waitId,
@@ -233,23 +251,32 @@ function planSuccess(input: PlanInput): PlannedCompletion {
       dueAt: null,
       timeoutAt: wait.timeoutMs !== undefined ? input.now + wait.timeoutMs : null,
     };
-    return { kind: 'transition', continuation: { kind: 'wait', wait: command }, runStatus: 'waiting' };
+    return {
+      kind: 'transition',
+      continuation: { kind: 'wait', wait: command },
+      runStatus: 'waiting',
+    };
   }
   if (node.kind === 'fork') {
     const joinId = graph.joinOfFork(node.id);
     if (joinId === undefined) {
-      return { kind: 'invalid', error: invalidOutcome(`Fork node '${node.id}' has no matching join.`) };
+      return {
+        kind: 'invalid',
+        error: invalidOutcome(`Fork node '${node.id}' has no matching join.`),
+      };
     }
-    const children = graph
-      .branchKeysOf(node.id)
-      .map((branchKey) => ({
-        branchKey,
-        toNodeId: graph.branchTargetsOf(node.id)[branchKey] as string,
-        forkId: node.id,
-        lineage: canonicalBranchLineage(claim.token.lineage, node.id, branchKey),
-        tokenId: forkChildTokenId(claim.token.runId, node.id, branchKey),
-      }));
-    return { kind: 'transition', continuation: { kind: 'fork', joinId, children }, runStatus: 'running' };
+    const children = graph.branchKeysOf(node.id).map((branchKey) => ({
+      branchKey,
+      toNodeId: graph.branchTargetsOf(node.id)[branchKey] as string,
+      forkId: node.id,
+      lineage: canonicalBranchLineage(claim.token.lineage, node.id, branchKey),
+      tokenId: forkChildTokenId(claim.token.runId, node.id, branchKey),
+    }));
+    return {
+      kind: 'transition',
+      continuation: { kind: 'fork', joinId, children },
+      runStatus: 'running',
+    };
   }
   const successTarget = graph.successTargetOf(node.id);
   if (successTarget === undefined) {
@@ -273,7 +300,11 @@ function planSuccess(input: PlanInput): PlannedCompletion {
         joinContinuation: {
           tokenId: joinTokenId(claim.token.runId, successTarget),
           toNodeId: graph.successTargetOf(successTarget) as string,
-          lineage: forkLineageOf(claim.token.lineage, targetNode.fork as string, claim.token.branchKey ?? ''),
+          lineage: forkLineageOf(
+            claim.token.lineage,
+            targetNode.fork as string,
+            claim.token.branchKey ?? '',
+          ),
         },
       },
       runStatus: 'running',

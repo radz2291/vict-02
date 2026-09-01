@@ -195,7 +195,10 @@ export class OrchestrationDriver {
   /** @internal Facade accessor: resolve the exact pinned bindings. */
   async resolveBindingsForDriver(activationVersion: string): Promise<ResolvedBindings> {
     await this.#resolveExecution(activationVersion);
-    const bindings = await resolveBindings({ catalog: { get: this.#deps.catalog.get }, registry: this.#deps.registry }, activationVersion);
+    const bindings = await resolveBindings(
+      { catalog: { get: this.#deps.catalog.get }, registry: this.#deps.registry },
+      activationVersion,
+    );
     if (!bindings.ok || bindings.bindings === undefined || bindings.contracts === undefined) {
       throw new VictRuntimeError(
         'VICT_RUNTIME_ACTIVATION_UNAVAILABLE',
@@ -412,7 +415,9 @@ export class OrchestrationDriver {
     options: { onEvent?: (event: KernelEvent) => void } = {},
   ): Promise<void> {
     const { graph, bindings, contracts } = resolved;
-    const run = (await this.#deps.orchestration.getOrchestrationRun(claim.token.runId)) as StoredOrchestrationRun;
+    const run = (await this.#deps.orchestration.getOrchestrationRun(
+      claim.token.runId,
+    )) as StoredOrchestrationRun;
     const node = graph.getNode(claim.token.nodeId);
     if (!node) {
       return; // defensive: compiled graphs always resolve their nodes
@@ -443,7 +448,11 @@ export class OrchestrationDriver {
           mode,
           {
             kind: 'failed',
-            error: { code: 'VICT_KERNEL_UNKNOWN_CONTRACT', message: `Node '${node.id}' references unknown input contract '${node.inputContractId}'.`, retryable: false } as unknown as VictError,
+            error: {
+              code: 'VICT_KERNEL_UNKNOWN_CONTRACT',
+              message: `Node '${node.id}' references unknown input contract '${node.inputContractId}'.`,
+              retryable: false,
+            } as unknown as VictError,
           },
           undefined,
           onEvent,
@@ -457,7 +466,7 @@ export class OrchestrationDriver {
           message: `Input contract '${node.inputContractId}' rejected the value at node '${node.id}'.`,
           retryable: false,
         } as unknown as VictError;
-        onEvent(({
+        onEvent({
           type: 'contract.rejected',
           stage: 'input',
           nodeId: node.id,
@@ -466,8 +475,16 @@ export class OrchestrationDriver {
           issues: parsed.issues ?? [],
           ...envelope,
           timestamp: this.#deps.clock.now(),
-        }) as unknown as KernelEvent);
-        await this.#completeWithOutcome(resolved, claim, envelope, mode, { kind: 'failed', error }, undefined, onEvent);
+        } as unknown as KernelEvent);
+        await this.#completeWithOutcome(
+          resolved,
+          claim,
+          envelope,
+          mode,
+          { kind: 'failed', error },
+          undefined,
+          onEvent,
+        );
         return;
       }
       inputPayload = parsed.value;
@@ -483,8 +500,21 @@ export class OrchestrationDriver {
         const hasOpenWait = (snapshot?.waits ?? []).some(
           (wait) => wait.tokenId === claim.token.tokenId && wait.status === 'open',
         );
-        if (hasOpenWait || !(snapshot?.waits ?? []).some((wait) => wait.tokenId === claim.token.tokenId && wait.status === 'resolved')) {
-          await this.#completeWithOutcome(resolved, claim, envelope, mode, { kind: 'completed', raw: inputPayload }, inputPayload, onEvent);
+        if (
+          hasOpenWait ||
+          !(snapshot?.waits ?? []).some(
+            (wait) => wait.tokenId === claim.token.tokenId && wait.status === 'resolved',
+          )
+        ) {
+          await this.#completeWithOutcome(
+            resolved,
+            claim,
+            envelope,
+            mode,
+            { kind: 'completed', raw: inputPayload },
+            inputPayload,
+            onEvent,
+          );
           return;
         }
         const successTarget = graph.successTargetOf(node.id);
@@ -500,7 +530,15 @@ export class OrchestrationDriver {
         );
         return;
       }
-      await this.#completeWithOutcome(resolved, claim, envelope, mode, { kind: 'completed', raw: inputPayload }, inputPayload, onEvent);
+      await this.#completeWithOutcome(
+        resolved,
+        claim,
+        envelope,
+        mode,
+        { kind: 'completed', raw: inputPayload },
+        inputPayload,
+        onEvent,
+      );
       return;
     }
 
@@ -510,9 +548,13 @@ export class OrchestrationDriver {
       this.#deps.defaultOverrides,
     );
     if (!decision.allowed) {
-      const reason = decision.reason ?? `Effect class '${binding?.effect ?? 'pure'}' is not allowed in '${mode}' mode.`;
-      const remediation = decision.remediation ?? 'Adjust the execution policy or provide an approved implementation.';
-      onEvent(({
+      const reason =
+        decision.reason ??
+        `Effect class '${binding?.effect ?? 'pure'}' is not allowed in '${mode}' mode.`;
+      const remediation =
+        decision.remediation ??
+        'Adjust the execution policy or provide an approved implementation.';
+      onEvent({
         type: 'effect.blocked',
         nodeId: node.id,
         capabilityId: node.capability,
@@ -522,7 +564,7 @@ export class OrchestrationDriver {
         remediation,
         ...envelope,
         timestamp: this.#deps.clock.now(),
-      }) as unknown as KernelEvent);
+      } as unknown as KernelEvent);
       await this.#completeWithOutcome(
         resolved,
         claim,
@@ -530,7 +572,11 @@ export class OrchestrationDriver {
         mode,
         {
           kind: 'outcome_unknown',
-          error: { code: 'VICT_ORCH_EFFECT_BLOCKED', message: reason, retryable: false } as unknown as VictError,
+          error: {
+            code: 'VICT_ORCH_EFFECT_BLOCKED',
+            message: reason,
+            retryable: false,
+          } as unknown as VictError,
         },
         undefined,
         onEvent,
@@ -550,10 +596,12 @@ export class OrchestrationDriver {
     let timedOut = false;
     const deadlinePromise =
       deadlineAt !== null
-        ? this.time().delay(Math.max(0, deadlineAt - this.time().now())).then(() => {
-            timedOut = true;
-            controller.abort();
-          })
+        ? this.time()
+            .delay(Math.max(0, deadlineAt - this.time().now()))
+            .then(() => {
+              timedOut = true;
+              controller.abort();
+            })
         : null;
     if (timeoutExceeded) {
       timedOut = true;
@@ -601,25 +649,25 @@ export class OrchestrationDriver {
       let invocation: { ok: true; value: unknown } | { ok: false; error: VictError };
       // Promise.resolve().then ensures a SYNCHRONOUS throw from the handler
       // is still converted into a capability failure, not a driver failure.
-      const invokePromise = Promise.resolve().then(async () =>
-        binding.invoke(inputPayload, context),
-      ).then(
-        (value) => ({ ok: true as const, value }),
-        (cause: unknown) => ({
-          ok: false as const,
-          error: runtimeError(
-            'VICT_RUNTIME_CAPABILITY_THREW',
-            `Capability '${node.capability}' threw during invocation; the thrown message is not retained.`,
-            {
-              capabilityId: node.capability,
-              nodeId: node.id,
-              invokedVia: 'real',
-              errorName: cause instanceof Error ? cause.name : typeof cause,
-              errorId: this.#deps.ids.errorId?.() ?? `err_${randomId()}`,
-            },
-          ),
-        }),
-      );
+      const invokePromise = Promise.resolve()
+        .then(async () => binding.invoke(inputPayload, context))
+        .then(
+          (value) => ({ ok: true as const, value }),
+          (cause: unknown) => ({
+            ok: false as const,
+            error: runtimeError(
+              'VICT_RUNTIME_CAPABILITY_THREW',
+              `Capability '${node.capability}' threw during invocation; the thrown message is not retained.`,
+              {
+                capabilityId: node.capability,
+                nodeId: node.id,
+                invokedVia: 'real',
+                errorName: cause instanceof Error ? cause.name : typeof cause,
+                errorId: this.#deps.ids.errorId?.() ?? `err_${randomId()}`,
+              },
+            ),
+          }),
+        );
       invocation =
         deadlinePromise === null
           ? await invokePromise
@@ -654,7 +702,15 @@ export class OrchestrationDriver {
     }
     void deadlinePromise;
 
-    await this.#completeWithOutcome(resolved, claim, envelope, mode, outcome, inputPayload, onEvent);
+    await this.#completeWithOutcome(
+      resolved,
+      claim,
+      envelope,
+      mode,
+      outcome,
+      inputPayload,
+      onEvent,
+    );
   }
 
   /**
@@ -680,9 +736,10 @@ export class OrchestrationDriver {
     }
     const binding = bindings.get(node.capability);
     // ---- Normalize the outcome and validate output contracts ----------
-    let outcome: AttemptOutcome = rawOutcome.kind === 'completed'
-      ? { kind: 'completed', outputSummary: { shape: 'undefined' } }
-      : rawOutcome;
+    let outcome: AttemptOutcome =
+      rawOutcome.kind === 'completed'
+        ? { kind: 'completed', outputSummary: { shape: 'undefined' } }
+        : rawOutcome;
     let validatedOutput: unknown = undefined;
     let decisionResult: DecisionResult | undefined;
     if (rawOutcome.kind === 'completed') {
@@ -702,9 +759,7 @@ export class OrchestrationDriver {
         } else {
           // Decision nodes validate the decision VALUE against the contract.
           const candidate =
-            node.kind === 'decision'
-              ? extractDecisionValue(validatedOutput)
-              : validatedOutput;
+            node.kind === 'decision' ? extractDecisionValue(validatedOutput) : validatedOutput;
           if (candidate === undefined) {
             outcome = {
               kind: 'failed',
@@ -717,7 +772,7 @@ export class OrchestrationDriver {
           } else {
             const parsed = contract.parse(candidate);
             if (!parsed.ok) {
-              onEvent?.(({
+              onEvent?.({
                 type: 'contract.rejected',
                 stage: 'output',
                 nodeId: node.id,
@@ -726,7 +781,7 @@ export class OrchestrationDriver {
                 issues: parsed.issues ?? [],
                 ...envelope,
                 timestamp: this.#deps.clock.now(),
-              }) as unknown as KernelEvent);
+              } as unknown as KernelEvent);
               outcome = {
                 kind: 'failed',
                 error: {
@@ -801,26 +856,47 @@ export class OrchestrationDriver {
           descriptor: binding,
         });
         if (failurePlan.kind === 'invalid') {
-          throw new VictRuntimeError(
-            'VICT_ORCH_INVALID_TRANSITION',
-            failurePlan.error.message,
-          );
+          throw new VictRuntimeError('VICT_ORCH_INVALID_TRANSITION', failurePlan.error.message);
         }
-        const command = this.#buildCommand(graph, claim, envelope, failurePlan, attemptOutcome, validatedOutput, bindings);
+        const command = this.#buildCommand(
+          graph,
+          claim,
+          envelope,
+          failurePlan,
+          attemptOutcome,
+          validatedOutput,
+          bindings,
+        );
         await this.#commitCompletion(claim, command, onEvent);
         return;
       }
-      if (effectivePlan.kind === 'transition' && effectivePlan.runStatus === 'completed' && attemptOutcome.kind === 'completed') {
+      if (
+        effectivePlan.kind === 'transition' &&
+        effectivePlan.runStatus === 'completed' &&
+        attemptOutcome.kind === 'completed'
+      ) {
         this.#completedOutputs.set(claim.token.runId, validatedOutput);
       }
-      const command = this.#buildCommand(graph, claim, envelope, effectivePlan, attemptOutcome, validatedOutput, bindings);
+      const command = this.#buildCommand(
+        graph,
+        claim,
+        envelope,
+        effectivePlan,
+        attemptOutcome,
+        validatedOutput,
+        bindings,
+      );
       try {
         await this.#commitCompletion(claim, command, onEvent);
         return;
       } catch (cause) {
         if (
           cause instanceof VictStoreError &&
-          ['VICT_STORE_RUN_CONFLICT', 'VICT_STORE_EVENT_SEQUENCE_CONFLICT', 'VICT_STORE_TOKEN_CONFLICT'].includes(cause.code) &&
+          [
+            'VICT_STORE_RUN_CONFLICT',
+            'VICT_STORE_EVENT_SEQUENCE_CONFLICT',
+            'VICT_STORE_TOKEN_CONFLICT',
+          ].includes(cause.code) &&
           conflictRetries < 5
         ) {
           conflictRetries += 1;
@@ -897,7 +973,9 @@ export class OrchestrationDriver {
         nodeId: node.id,
         waitId: continuation.wait.waitId,
         waitKind: continuation.wait.kind,
-        ...(continuation.wait.signalName !== null ? { signalName: continuation.wait.signalName } : {}),
+        ...(continuation.wait.signalName !== null
+          ? { signalName: continuation.wait.signalName }
+          : {}),
         ...(continuation.wait.dueAt !== null ? { dueAt: continuation.wait.dueAt } : {}),
       });
       if (continuation.wait.dueAt !== null) {
@@ -979,11 +1057,15 @@ export class OrchestrationDriver {
       push({
         type: 'run.completed',
         steps: claim.attempt.attemptNumber,
-        output: attemptOutcome.kind === 'completed' ? attemptOutcome.outputSummary : { shape: 'undefined' },
+        output:
+          attemptOutcome.kind === 'completed'
+            ? attemptOutcome.outputSummary
+            : { shape: 'undefined' },
       });
       if (this.#deps.retention === 'full' && validatedOutput !== undefined) {
         run.output = validatedOutput;
-        run.outputSummary = attemptOutcome.kind === 'completed' ? attemptOutcome.outputSummary : undefined;
+        run.outputSummary =
+          attemptOutcome.kind === 'completed' ? attemptOutcome.outputSummary : undefined;
       } else if (this.#deps.retention !== 'none' && attemptOutcome.kind === 'completed') {
         run.outputSummary = attemptOutcome.outputSummary;
       }
@@ -1049,9 +1131,12 @@ export async function resultFromRun<T>(
   orchestration: OrchestrationStore,
   completedOutputs?: ReadonlyMap<string, unknown>,
 ): Promise<import('./orchestration-driver-types.js').OrchestrationRunResult<T>> {
-  let waits: { waitId: string; kind: 'signal' | 'timer'; signalName?: string; dueAt?: number }[] | undefined;
+  let waits:
+    { waitId: string; kind: 'signal' | 'timer'; signalName?: string; dueAt?: number }[] | undefined;
   if (run.status === 'waiting') {
-    const openWaits = (await orchestration.listWaits(run.runId)).filter((wait) => wait.status === 'open');
+    const openWaits = (await orchestration.listWaits(run.runId)).filter(
+      (wait) => wait.status === 'open',
+    );
     waits = openWaits.map((wait) => ({
       waitId: wait.waitId,
       kind: wait.kind,
@@ -1079,7 +1164,10 @@ export async function resultFromRun<T>(
   if (run.status === 'completed') {
     const output = completedOutputs?.get(run.runId) ?? run.output;
     if (output !== undefined) {
-      return { ...result, output } as import('./orchestration-driver-types.js').OrchestrationRunResult<T>;
+      return {
+        ...result,
+        output,
+      } as import('./orchestration-driver-types.js').OrchestrationRunResult<T>;
     }
   }
   return result;
@@ -1092,5 +1180,4 @@ export function withCompletedOutputs<T>(
   completedOutputs: ReadonlyMap<string, unknown> | undefined,
 ): Promise<import('./orchestration-driver-types.js').OrchestrationRunResult<T>> {
   return resultFromRun<T>(run, orchestration, completedOutputs);
-
 }

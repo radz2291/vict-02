@@ -31,13 +31,7 @@ export interface DurableTokenState {
   readonly activationVersion: string;
   readonly nodeId: string;
   readonly status:
-    | 'ready'
-    | 'claimed'
-    | 'waiting'
-    | 'completed'
-    | 'joined'
-    | 'cancelled'
-    | 'blocked';
+    'ready' | 'claimed' | 'waiting' | 'completed' | 'joined' | 'cancelled' | 'blocked';
   /** Parent token when this token was created by a fork. */
   readonly parentTokenId: string | null;
   /** Canonical branch lineage, e.g. `"fork1.a"`; empty for the root token. */
@@ -145,13 +139,7 @@ export interface OrchestrationSnapshot {
   readonly runId: string;
   readonly activationVersion: string;
   readonly status:
-    | 'created'
-    | 'running'
-    | 'waiting'
-    | 'blocked'
-    | 'completed'
-    | 'failed'
-    | 'cancelled';
+    'created' | 'running' | 'waiting' | 'blocked' | 'completed' | 'failed' | 'cancelled';
   readonly steps: number;
   readonly recordRevision: number;
   readonly nextEventSeq: number;
@@ -285,7 +273,9 @@ export interface DecisionResultInput {
  * Canonical join output: branch results keyed by branch key in
  * lexicographic order, never by completion timing or insertion order.
  */
-export function canonicalJoinOutput(results: Readonly<Record<string, unknown>>): Record<string, unknown> {
+export function canonicalJoinOutput(
+  results: Readonly<Record<string, unknown>>,
+): Record<string, unknown> {
   const out: Record<string, unknown> = {};
   for (const key of Object.keys(results).sort()) {
     out[key] = results[key];

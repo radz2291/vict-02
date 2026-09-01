@@ -121,12 +121,21 @@ export type AttemptContinuation =
       readonly joinId: string;
       readonly branchKey: string;
       /** Applied by the store only when this arrival is the final one. */
-      readonly joinContinuation?: { readonly tokenId: string; readonly toNodeId: string; readonly lineage: string };
+      readonly joinContinuation?: {
+        readonly tokenId: string;
+        readonly toNodeId: string;
+        readonly lineage: string;
+      };
     }
   /** One unhandled branch failure: cancel unfinished siblings and fail the run once. */
   | { readonly kind: 'branchFailure' }
   /** Schedule a durable retry timer for the same logical invocation. */
-  | { readonly kind: 'retry'; readonly dueAt: number; readonly retryOnCode: string; readonly maxAttempts: number }
+  | {
+      readonly kind: 'retry';
+      readonly dueAt: number;
+      readonly retryOnCode: string;
+      readonly maxAttempts: number;
+    }
   /** The token needs explicit operator resolution. */
   | { readonly kind: 'block'; readonly code: string; readonly reason: string };
 
@@ -397,7 +406,11 @@ export interface ResolveBlockedCommand {
   /** For confirm_applied: token advance target and payload (computed by the driver from the pinned plan). */
   readonly continuation?:
     | { readonly kind: 'advance'; readonly toNodeId: string; readonly payload: unknown }
-    | { readonly kind: 'complete'; readonly outputSummary: OutputSummary; readonly output?: unknown }
+    | {
+        readonly kind: 'complete';
+        readonly outputSummary: OutputSummary;
+        readonly output?: unknown;
+      }
     | { readonly kind: 'none' };
   readonly checkpoint?: { readonly tokenId: string; readonly payload: unknown } | null;
 }
@@ -410,7 +423,11 @@ export type ResolveBlockedResult =
       readonly runStatus: string;
     }
   | { readonly status: 'conflict'; readonly resolutionId: string }
-  | { readonly status: 'stale_revision'; readonly runId: string; readonly actualRunRevision: number }
+  | {
+      readonly status: 'stale_revision';
+      readonly runId: string;
+      readonly actualRunRevision: number;
+    }
   | { readonly status: 'unknown_run' }
   | { readonly status: 'not_blocked'; readonly runId: string; readonly runStatus: string }
   | { readonly status: 'already_resolved'; readonly resolutionId: string };
@@ -479,9 +496,13 @@ export interface OrchestrationStore {
   claimDueTimers(command: ClaimDueTimersCommand): Promise<ClaimDueTimersResult>;
   resolveDueTimer(command: ResolveDueTimerCommand): Promise<ResolveDueTimerResult>;
   requestCancellation(command: RequestCancellationCommand): Promise<CancellationResult>;
-  applyCancellation(command: ApplyCancellationCommand): Promise<{ runRecordRevision: number; runNextEventSeq: number }>;
+  applyCancellation(
+    command: ApplyCancellationCommand,
+  ): Promise<{ runRecordRevision: number; runNextEventSeq: number }>;
   findRecoverableClaims(command: RecoverOrchestrationCommand): Promise<readonly RecoverableClaim[]>;
-  recoverAttempt(command: RecoverAttemptCommand): Promise<{ runRecordRevision: number; runNextEventSeq: number }>;
+  recoverAttempt(
+    command: RecoverAttemptCommand,
+  ): Promise<{ runRecordRevision: number; runNextEventSeq: number }>;
   resolveBlocked(command: ResolveBlockedCommand): Promise<ResolveBlockedResult>;
   /** Read open waits for a run (safe descriptors; never checkpoint payloads). */
   listWaits(runId: string): Promise<readonly DurableWaitState[]>;

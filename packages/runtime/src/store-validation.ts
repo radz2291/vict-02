@@ -73,8 +73,7 @@ export function assertPublishableManifest(command: PublishActivationCommand): vo
       { activationVersion: manifest.activationVersion },
     );
   }
-  const isV2 =
-    (manifest.graph as { schema?: string } | null)?.schema === 'vict.graph@2';
+  const isV2 = (manifest.graph as { schema?: string } | null)?.schema === 'vict.graph@2';
   let canonicalGraph: unknown;
   try {
     // canonicalSemanticForm is idempotent on an already-canonical graph;
@@ -252,8 +251,7 @@ export function assertStoredActivationReadable(row: {
     throw fail();
   }
   try {
-    const isV2 =
-      (manifest.graph as { schema?: string } | null)?.schema === 'vict.graph@2';
+    const isV2 = (manifest.graph as { schema?: string } | null)?.schema === 'vict.graph@2';
     const canonicalGraph = isV2
       ? canonicalSemanticFormV2(manifest.graph as Parameters<typeof canonicalSemanticFormV2>[0])
       : canonicalSemanticForm(manifest.graph as Parameters<typeof canonicalSemanticForm>[0]);

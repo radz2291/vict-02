@@ -412,20 +412,97 @@ export interface EventEnvelope {
 export type KernelEvent = EventEnvelope &
   (
     | { readonly type: 'run.started' }
-    | { readonly type: 'run.waiting'; readonly nodeId: string; readonly waitId: string; readonly waitKind: 'signal' | 'timer'; readonly signalName?: string; readonly dueAt?: number }
-    | { readonly type: 'run.resumed'; readonly by: 'signal' | 'timer' | 'operator'; readonly waitId?: string; readonly signalId?: string }
-    | { readonly type: 'run.cancel_requested'; readonly requestId: string; readonly reasonCode: string }
-    | { readonly type: 'run.cancelled'; readonly requestId: string; readonly reasonCode: string; readonly steps: number }
-    | { readonly type: 'node.retry_scheduled'; readonly nodeId: string; readonly capabilityId: string; readonly attempt: number; readonly maxAttempts: number; readonly dueAt: number; readonly retryOnCode: string }
-    | { readonly type: 'node.timed_out'; readonly nodeId: string; readonly capabilityId: string; readonly attempt: number; readonly deadlineAt: number }
-    | { readonly type: 'node.cancelled'; readonly nodeId: string; readonly capabilityId: string; readonly attempt: number }
-    | { readonly type: 'signal.received'; readonly waitId: string; readonly signalId: string; readonly signalName: string }
-    | { readonly type: 'timer.scheduled'; readonly timerId: string; readonly nodeId: string; readonly dueAt: number; readonly kind: 'wait' | 'wait-timeout' | 'retry' }
-    | { readonly type: 'timer.fired'; readonly timerId: string; readonly nodeId: string; readonly kind: 'wait' | 'wait-timeout' | 'retry' }
-    | { readonly type: 'fork.created'; readonly forkId: string; readonly joinId: string; readonly branchKeys: readonly string[] }
-    | { readonly type: 'branch.completed'; readonly forkId: string; readonly joinId: string; readonly branchKey: string }
-    | { readonly type: 'join.completed'; readonly forkId: string; readonly joinId: string; readonly branchKeys: readonly string[] }
-    | { readonly type: 'operator.intervened'; readonly resolutionId: string; readonly action: 'retry' | 'confirm_applied' | 'fail' | 'cancel'; readonly nodeId?: string; readonly attemptId?: string }
+    | {
+        readonly type: 'run.waiting';
+        readonly nodeId: string;
+        readonly waitId: string;
+        readonly waitKind: 'signal' | 'timer';
+        readonly signalName?: string;
+        readonly dueAt?: number;
+      }
+    | {
+        readonly type: 'run.resumed';
+        readonly by: 'signal' | 'timer' | 'operator';
+        readonly waitId?: string;
+        readonly signalId?: string;
+      }
+    | {
+        readonly type: 'run.cancel_requested';
+        readonly requestId: string;
+        readonly reasonCode: string;
+      }
+    | {
+        readonly type: 'run.cancelled';
+        readonly requestId: string;
+        readonly reasonCode: string;
+        readonly steps: number;
+      }
+    | {
+        readonly type: 'node.retry_scheduled';
+        readonly nodeId: string;
+        readonly capabilityId: string;
+        readonly attempt: number;
+        readonly maxAttempts: number;
+        readonly dueAt: number;
+        readonly retryOnCode: string;
+      }
+    | {
+        readonly type: 'node.timed_out';
+        readonly nodeId: string;
+        readonly capabilityId: string;
+        readonly attempt: number;
+        readonly deadlineAt: number;
+      }
+    | {
+        readonly type: 'node.cancelled';
+        readonly nodeId: string;
+        readonly capabilityId: string;
+        readonly attempt: number;
+      }
+    | {
+        readonly type: 'signal.received';
+        readonly waitId: string;
+        readonly signalId: string;
+        readonly signalName: string;
+      }
+    | {
+        readonly type: 'timer.scheduled';
+        readonly timerId: string;
+        readonly nodeId: string;
+        readonly dueAt: number;
+        readonly kind: 'wait' | 'wait-timeout' | 'retry';
+      }
+    | {
+        readonly type: 'timer.fired';
+        readonly timerId: string;
+        readonly nodeId: string;
+        readonly kind: 'wait' | 'wait-timeout' | 'retry';
+      }
+    | {
+        readonly type: 'fork.created';
+        readonly forkId: string;
+        readonly joinId: string;
+        readonly branchKeys: readonly string[];
+      }
+    | {
+        readonly type: 'branch.completed';
+        readonly forkId: string;
+        readonly joinId: string;
+        readonly branchKey: string;
+      }
+    | {
+        readonly type: 'join.completed';
+        readonly forkId: string;
+        readonly joinId: string;
+        readonly branchKeys: readonly string[];
+      }
+    | {
+        readonly type: 'operator.intervened';
+        readonly resolutionId: string;
+        readonly action: 'retry' | 'confirm_applied' | 'fail' | 'cancel';
+        readonly nodeId?: string;
+        readonly attemptId?: string;
+      }
     | { readonly type: 'node.started'; readonly nodeId: string; readonly capabilityId: string }
     | {
         readonly type: 'node.completed';
@@ -522,7 +599,12 @@ export interface DurableInvocationContext {
   /** Cooperative abort signal; aborted on timeout or cancellation. */
   readonly abortSignal?: AbortSignal;
   /** Branch identity when executing inside a fork branch. */
-  readonly branch?: { readonly forkId: string; readonly joinId: string; readonly branchKey: string; readonly lineage: string };
+  readonly branch?: {
+    readonly forkId: string;
+    readonly joinId: string;
+    readonly branchKey: string;
+    readonly lineage: string;
+  };
 }
 
 /** Explicit invocation result. Failures are values, never guessed from payloads. */

@@ -72,8 +72,25 @@ import type { OpenDatabase } from './driver.js';
  *   every public read model. Terminal cleanup tombstones them to NULL.
  */
 
-const TOKEN_STATUSES = ['ready', 'claimed', 'waiting', 'completed', 'joined', 'cancelled', 'blocked'] as const;
-const ATTEMPT_STATES = ['ready', 'claimed', 'started', 'completed', 'failed', 'timed_out', 'cancelled', 'outcome_unknown'] as const;
+const TOKEN_STATUSES = [
+  'ready',
+  'claimed',
+  'waiting',
+  'completed',
+  'joined',
+  'cancelled',
+  'blocked',
+] as const;
+const ATTEMPT_STATES = [
+  'ready',
+  'claimed',
+  'started',
+  'completed',
+  'failed',
+  'timed_out',
+  'cancelled',
+  'outcome_unknown',
+] as const;
 const EFFECT_CLASSES = ['pure', 'read', 'write', 'irreversible'] as const;
 const RUN_STATUSES = ['running', 'waiting', 'blocked', 'completed', 'failed', 'cancelled'] as const;
 
@@ -138,10 +155,14 @@ function validateRunRow(
     });
   }
   if (!RUN_STATUSES.includes(row.status as (typeof RUN_STATUSES)[number])) {
-    throw new VictStoreError('VICT_STORE_INVALID_RECORD', 'A stored run carries an unknown status.', {
-      operation: context,
-      runId: row.run_id,
-    });
+    throw new VictStoreError(
+      'VICT_STORE_INVALID_RECORD',
+      'A stored run carries an unknown status.',
+      {
+        operation: context,
+        runId: row.run_id,
+      },
+    );
   }
   if (!Number.isInteger(row.record_revision) || row.record_revision < 1) {
     throw new VictStoreError(
@@ -151,10 +172,14 @@ function validateRunRow(
     );
   }
   if (!Number.isInteger(row.steps) || row.steps < 0) {
-    throw new VictStoreError('VICT_STORE_INVALID_RECORD', 'A stored run carries an invalid step count.', {
-      operation: context,
-      runId: row.run_id,
-    });
+    throw new VictStoreError(
+      'VICT_STORE_INVALID_RECORD',
+      'A stored run carries an invalid step count.',
+      {
+        operation: context,
+        runId: row.run_id,
+      },
+    );
   }
   return {
     runId: row.run_id,
@@ -176,7 +201,9 @@ function validateRunRow(
       ? { outputSummary: parseJson(row.output_summary, context, row.run_id) as OutputSummary }
       : {}),
     ...(row.output !== null ? { output: parseJson(row.output, context, row.run_id) } : {}),
-    ...(row.error !== null ? { error: parseJson(row.error, context, row.run_id) as VictError } : {}),
+    ...(row.error !== null
+      ? { error: parseJson(row.error, context, row.run_id) as VictError }
+      : {}),
   };
 }
 
@@ -198,17 +225,25 @@ interface TokenRow {
 
 function validateTokenRow(row: TokenRow, context: string): DurableTokenState {
   if (!TOKEN_STATUSES.includes(row.status as (typeof TOKEN_STATUSES)[number])) {
-    throw new VictStoreError('VICT_STORE_INVALID_RECORD', 'A stored token carries an unknown status.', {
-      operation: context,
-      runId: row.run_id,
-      tokenId: row.token_id,
-    });
+    throw new VictStoreError(
+      'VICT_STORE_INVALID_RECORD',
+      'A stored token carries an unknown status.',
+      {
+        operation: context,
+        runId: row.run_id,
+        tokenId: row.token_id,
+      },
+    );
   }
   if (!Number.isInteger(row.revision) || row.revision < 1) {
-    throw new VictStoreError('VICT_STORE_INVALID_RECORD', 'A stored token carries an invalid revision.', {
-      operation: context,
-      tokenId: row.token_id,
-    });
+    throw new VictStoreError(
+      'VICT_STORE_INVALID_RECORD',
+      'A stored token carries an invalid revision.',
+      {
+        operation: context,
+        tokenId: row.token_id,
+      },
+    );
   }
   return {
     tokenId: row.token_id,
@@ -248,11 +283,15 @@ interface AttemptRow {
 
 function validateAttemptRow(row: AttemptRow, context: string): DurableAttemptState {
   if (!ATTEMPT_STATES.includes(row.state as (typeof ATTEMPT_STATES)[number])) {
-    throw new VictStoreError('VICT_STORE_INVALID_RECORD', 'A stored attempt carries an unknown state.', {
-      operation: context,
-      runId: row.run_id,
-      attemptId: row.attempt_id,
-    });
+    throw new VictStoreError(
+      'VICT_STORE_INVALID_RECORD',
+      'A stored attempt carries an unknown state.',
+      {
+        operation: context,
+        runId: row.run_id,
+        attemptId: row.attempt_id,
+      },
+    );
   }
   if (!EFFECT_CLASSES.includes(row.effect_class as (typeof EFFECT_CLASSES)[number])) {
     throw new VictStoreError(
@@ -303,11 +342,15 @@ interface WaitRow {
 
 function validateWaitRow(row: WaitRow, context: string): DurableWaitState {
   if (!['open', 'resolved', 'cancelled'].includes(row.status)) {
-    throw new VictStoreError('VICT_STORE_INVALID_RECORD', 'A stored wait carries an unknown status.', {
-      operation: context,
-      runId: row.run_id,
-      waitId: row.wait_id,
-    });
+    throw new VictStoreError(
+      'VICT_STORE_INVALID_RECORD',
+      'A stored wait carries an unknown status.',
+      {
+        operation: context,
+        runId: row.run_id,
+        waitId: row.wait_id,
+      },
+    );
   }
   return {
     waitId: row.wait_id,
@@ -346,11 +389,15 @@ interface TimerRow {
 
 function validateTimerRow(row: TimerRow, context: string): TimerRecord {
   if (!['scheduled', 'firing', 'fired', 'cancelled'].includes(row.status)) {
-    throw new VictStoreError('VICT_STORE_INVALID_RECORD', 'A stored timer carries an unknown status.', {
-      operation: context,
-      runId: row.run_id,
-      timerId: row.timer_id,
-    });
+    throw new VictStoreError(
+      'VICT_STORE_INVALID_RECORD',
+      'A stored timer carries an unknown status.',
+      {
+        operation: context,
+        runId: row.run_id,
+        timerId: row.timer_id,
+      },
+    );
   }
   return {
     timerId: row.timer_id,
@@ -413,7 +460,10 @@ export function createSqliteOrchestrationStore(
   const readRun = (runId: string, context: string): StoredOrchestrationRun => {
     const row = runRow(runId);
     if (!row) {
-      throw new VictStoreError('VICT_STORE_RUN_NOT_FOUND', 'Run not found.', { operation: context, runId });
+      throw new VictStoreError('VICT_STORE_RUN_NOT_FOUND', 'Run not found.', {
+        operation: context,
+        runId,
+      });
     }
     return validateRunRow(row, cancellationOf(runId));
   };
@@ -476,14 +526,20 @@ export function createSqliteOrchestrationStore(
     // domain and canonicalize before it becomes durable.
     const validated = canonicalPersistedValue(payload);
     const updated = db
-      .prepare('UPDATE vict_token SET checkpoint = ?, updated_at = ? WHERE token_id = ? AND run_id = ?;')
+      .prepare(
+        'UPDATE vict_token SET checkpoint = ?, updated_at = ? WHERE token_id = ? AND run_id = ?;',
+      )
       .run(toCanonicalJson(validated), toIso(Date.now()), tokenId, runId);
     if (updated.changes !== 1) {
-      throw new VictStoreError('VICT_STORE_INVALID_COMMAND', 'A checkpoint references an unknown token.', {
-        operation: 'orchestration.checkpoint',
-        runId,
-        tokenId,
-      });
+      throw new VictStoreError(
+        'VICT_STORE_INVALID_COMMAND',
+        'A checkpoint references an unknown token.',
+        {
+          operation: 'orchestration.checkpoint',
+          runId,
+          tokenId,
+        },
+      );
     }
   };
 
@@ -498,12 +554,18 @@ export function createSqliteOrchestrationStore(
     async createOrchestrationRun(command): Promise<StoredOrchestrationRun> {
       return safeRun('orchestration.createRun', () =>
         inTransaction(db, () => {
-          const existing = db.prepare('SELECT run_id FROM vict_run WHERE run_id = ?;').get(command.runId);
+          const existing = db
+            .prepare('SELECT run_id FROM vict_run WHERE run_id = ?;')
+            .get(command.runId);
           if (existing) {
-            throw new VictStoreError('VICT_STORE_RUN_CONFLICT', 'A run with this id already exists.', {
-              operation: 'orchestration.createRun',
-              runId: command.runId,
-            });
+            throw new VictStoreError(
+              'VICT_STORE_RUN_CONFLICT',
+              'A run with this id already exists.',
+              {
+                operation: 'orchestration.createRun',
+                runId: command.runId,
+              },
+            );
           }
           try {
             db.prepare(
@@ -576,7 +638,8 @@ export function createSqliteOrchestrationStore(
           clauses.push('status = ?');
           params.push(query.status);
         }
-        const limit = query.limit !== undefined ? ` LIMIT ${Math.max(0, Math.floor(query.limit))}` : '';
+        const limit =
+          query.limit !== undefined ? ` LIMIT ${Math.max(0, Math.floor(query.limit))}` : '';
         const where = clauses.length > 0 ? ` WHERE ${clauses.join(' AND ')}` : '';
         const rows = db
           .prepare(`SELECT * FROM vict_run${where} ORDER BY created_at ASC, run_id ASC${limit};`)
@@ -593,19 +656,31 @@ export function createSqliteOrchestrationStore(
         }
         const context = 'orchestration.readSnapshot';
         const tokens = (
-          db.prepare('SELECT * FROM vict_token WHERE run_id = ? ORDER BY created_at ASC, token_id ASC;').all(runId) as unknown as TokenRow[]
+          db
+            .prepare(
+              'SELECT * FROM vict_token WHERE run_id = ? ORDER BY created_at ASC, token_id ASC;',
+            )
+            .all(runId) as unknown as TokenRow[]
         ).map((tokenRow) => validateTokenRow(tokenRow, context));
         const attempts = (
-          db.prepare('SELECT * FROM vict_attempt WHERE run_id = ? ORDER BY created_at ASC;').all(runId) as unknown as AttemptRow[]
+          db
+            .prepare('SELECT * FROM vict_attempt WHERE run_id = ? ORDER BY created_at ASC;')
+            .all(runId) as unknown as AttemptRow[]
         ).map((attemptRow) => validateAttemptRow(attemptRow, context));
         const waits = (
-          db.prepare('SELECT * FROM vict_wait WHERE run_id = ? ORDER BY created_at ASC;').all(runId) as unknown as WaitRow[]
+          db
+            .prepare('SELECT * FROM vict_wait WHERE run_id = ? ORDER BY created_at ASC;')
+            .all(runId) as unknown as WaitRow[]
         ).map((waitRow) => validateWaitRow(waitRow, context));
         const timers = (
-          db.prepare('SELECT * FROM vict_timer WHERE run_id = ? ORDER BY created_at ASC;').all(runId) as unknown as TimerRow[]
+          db
+            .prepare('SELECT * FROM vict_timer WHERE run_id = ? ORDER BY created_at ASC;')
+            .all(runId) as unknown as TimerRow[]
         ).map((timerRow) => validateTimerRow(timerRow, context));
         const branchRows = db
-          .prepare('SELECT * FROM vict_branch_result WHERE run_id = ? ORDER BY fork_id ASC, branch_key ASC;')
+          .prepare(
+            'SELECT * FROM vict_branch_result WHERE run_id = ? ORDER BY fork_id ASC, branch_key ASC;',
+          )
           .all(runId) as unknown as {
           run_id: string;
           fork_id: string;
@@ -628,7 +703,11 @@ export function createSqliteOrchestrationStore(
         const branchOutputs: Record<string, Record<string, unknown>> = {};
         for (const row of branchRows) {
           if (row.output !== null) {
-            (branchOutputs[row.fork_id] ??= {})[row.branch_key] = parseJson(row.output, context, runId);
+            (branchOutputs[row.fork_id] ??= {})[row.branch_key] = parseJson(
+              row.output,
+              context,
+              runId,
+            );
           }
         }
         return {
@@ -655,7 +734,10 @@ export function createSqliteOrchestrationStore(
             });
           }
           if (row.status !== 'running' && row.status !== 'waiting') {
-            return { claimed: false as const, reason: row.status === 'blocked' ? ('quiescent' as const) : ('terminal' as const) };
+            return {
+              claimed: false as const,
+              reason: row.status === 'blocked' ? ('quiescent' as const) : ('terminal' as const),
+            };
           }
           const cancellation = db
             .prepare('SELECT request_id FROM vict_cancellation_request WHERE run_id = ? LIMIT 1;')
@@ -678,14 +760,19 @@ export function createSqliteOrchestrationStore(
           const plan = command.planner.planFor(token);
           const invocationId = command.planner.invocationIdFor(token);
           const priorCount = (
-            db.prepare('SELECT COUNT(*) AS c FROM vict_attempt WHERE invocation_id = ?;').get(invocationId) as {
+            db
+              .prepare('SELECT COUNT(*) AS c FROM vict_attempt WHERE invocation_id = ?;')
+              .get(invocationId) as {
               c: number;
             }
           ).c;
           const attemptNumber = priorCount + 1;
           const attemptId = command.planner.attemptIdFor(token, attemptNumber);
           const checkpointText = tokenRow.checkpoint;
-          const checkpoint = checkpointText === null ? undefined : parseJson(checkpointText, "orchestration.claimReadyToken", command.runId);
+          const checkpoint =
+            checkpointText === null
+              ? undefined
+              : parseJson(checkpointText, 'orchestration.claimReadyToken', command.runId);
 
           // Claim + attempt intent + node.started: one atomic transition.
           db.prepare(
@@ -789,7 +876,10 @@ export function createSqliteOrchestrationStore(
             });
           }
           const attempt = validateAttemptRow(attemptRow, 'orchestration.completeAttempt');
-          if (attempt.fence !== command.expectedAttemptFence || attempt.ownerId !== command.ownerId) {
+          if (
+            attempt.fence !== command.expectedAttemptFence ||
+            attempt.ownerId !== command.ownerId
+          ) {
             throw new VictStoreError(
               'VICT_STORE_ATTEMPT_FENCE_CONFLICT',
               'The attempt completion carries a stale owner or fence.',
@@ -824,17 +914,25 @@ export function createSqliteOrchestrationStore(
               },
             );
           }
-          const tokenRow = db.prepare('SELECT * FROM vict_token WHERE token_id = ?;').get(attempt.tokenId) as unknown as
-            TokenRow | undefined;
+          const tokenRow = db
+            .prepare('SELECT * FROM vict_token WHERE token_id = ?;')
+            .get(attempt.tokenId) as unknown as TokenRow | undefined;
           if (!tokenRow) {
             throw new VictStoreError(
               'VICT_STORE_INVALID_COMMAND',
               'The attempt references an unknown token.',
-              { operation: 'orchestration.completeAttempt', runId: command.runId, attemptId: attempt.attemptId },
+              {
+                operation: 'orchestration.completeAttempt',
+                runId: command.runId,
+                attemptId: attempt.attemptId,
+              },
             );
           }
           const token = validateTokenRow(tokenRow, 'orchestration.completeAttempt');
-          if (command.run.status !== undefined && !canTransitionRun(run.status, command.run.status)) {
+          if (
+            command.run.status !== undefined &&
+            !canTransitionRun(run.status, command.run.status)
+          ) {
             throw new VictStoreError(
               'VICT_STORE_RUN_CONFLICT',
               `Run status '${run.status}' cannot transition to '${String(command.run.status)}'.`,
@@ -889,13 +987,27 @@ export function createSqliteOrchestrationStore(
               db.prepare(
                 `INSERT INTO vict_timer (timer_id, run_id, kind, wait_id, attempt_id, token_id, due_at, status, owner_id, lease_expires_at, revision, created_at)
                  VALUES (?, ?, 'wait', ?, NULL, ?, ?, 'scheduled', NULL, NULL, 1, ?);`,
-              ).run(`timer_${wait.waitId}`, command.runId, wait.waitId, token.tokenId, toIso(wait.dueAt), nowIso);
+              ).run(
+                `timer_${wait.waitId}`,
+                command.runId,
+                wait.waitId,
+                token.tokenId,
+                toIso(wait.dueAt),
+                nowIso,
+              );
             }
             if (wait.timeoutAt !== null) {
               db.prepare(
                 `INSERT INTO vict_timer (timer_id, run_id, kind, wait_id, attempt_id, token_id, due_at, status, owner_id, lease_expires_at, revision, created_at)
                  VALUES (?, ?, 'wait-timeout', ?, NULL, ?, ?, 'scheduled', NULL, NULL, 1, ?);`,
-              ).run(`timer_timeout_${wait.waitId}`, command.runId, wait.waitId, token.tokenId, toIso(wait.timeoutAt), nowIso);
+              ).run(
+                `timer_timeout_${wait.waitId}`,
+                command.runId,
+                wait.waitId,
+                token.tokenId,
+                toIso(wait.timeoutAt),
+                nowIso,
+              );
             }
             db.prepare(
               "UPDATE vict_token SET status = 'waiting', revision = revision + 1, updated_at = ? WHERE token_id = ?;",
@@ -909,7 +1021,18 @@ export function createSqliteOrchestrationStore(
                 `INSERT INTO vict_token
                   (token_id, run_id, activation_version, node_id, status, parent_token_id, lineage, fork_id, branch_key, revision, checkpoint, created_at, updated_at)
                 VALUES (?, ?, ?, ?, 'ready', ?, ?, ?, ?, 1, NULL, ?, ?);`,
-              ).run(child.tokenId, command.runId, run.activation_version, child.toNodeId, token.tokenId, child.lineage, continuation.joinId, child.branchKey, nowIso, nowIso);
+              ).run(
+                child.tokenId,
+                command.runId,
+                run.activation_version,
+                child.toNodeId,
+                token.tokenId,
+                child.lineage,
+                continuation.joinId,
+                child.branchKey,
+                nowIso,
+                nowIso,
+              );
             }
           } else if (continuation.kind === 'branchArrival') {
             const arrival = continuation;
@@ -925,11 +1048,15 @@ export function createSqliteOrchestrationStore(
               arrival.joinId,
               arrival.branchKey,
               token.tokenId,
-              command.branchOutput === undefined ? null : toCanonicalJson(canonicalPersistedValue(command.branchOutput)),
+              command.branchOutput === undefined
+                ? null
+                : toCanonicalJson(canonicalPersistedValue(command.branchOutput)),
               nowIso,
             );
             const completed = db
-              .prepare('SELECT branch_key FROM vict_branch_result WHERE run_id = ? AND fork_id = ? AND failed = 0;')
+              .prepare(
+                'SELECT branch_key FROM vict_branch_result WHERE run_id = ? AND fork_id = ? AND failed = 0;',
+              )
               .all(command.runId, arrival.forkId) as unknown as { branch_key: string }[];
             const completedKeys = new Set(completed.map((entry) => entry.branch_key));
             const declared = command.declaredBranchKeys ?? [];
@@ -937,11 +1064,23 @@ export function createSqliteOrchestrationStore(
               joinFired = true;
               if (arrival.joinContinuation !== undefined) {
                 const outputRows = db
-                  .prepare('SELECT branch_key, output FROM vict_branch_result WHERE run_id = ? AND fork_id = ?;')
-                  .all(command.runId, arrival.forkId) as unknown as { branch_key: string; output: string | null }[];
+                  .prepare(
+                    'SELECT branch_key, output FROM vict_branch_result WHERE run_id = ? AND fork_id = ?;',
+                  )
+                  .all(command.runId, arrival.forkId) as unknown as {
+                  branch_key: string;
+                  output: string | null;
+                }[];
                 const byKey: Record<string, unknown> = {};
                 for (const outputRow of outputRows) {
-                  byKey[outputRow.branch_key] = outputRow.output === null ? null : parseJson(outputRow.output, "orchestration.readPrivatePayload", command.runId);
+                  byKey[outputRow.branch_key] =
+                    outputRow.output === null
+                      ? null
+                      : parseJson(
+                          outputRow.output,
+                          'orchestration.readPrivatePayload',
+                          command.runId,
+                        );
                 }
                 const joinPayload = canonicalJoinOutput(byKey);
                 db.prepare(
@@ -987,7 +1126,14 @@ export function createSqliteOrchestrationStore(
             db.prepare(
               `INSERT INTO vict_timer (timer_id, run_id, kind, wait_id, attempt_id, token_id, due_at, status, owner_id, lease_expires_at, revision, created_at)
                VALUES (?, ?, 'retry', NULL, ?, ?, ?, 'scheduled', NULL, NULL, 1, ?);`,
-            ).run(`timer_retry_${attempt.attemptId}`, command.runId, attempt.attemptId, token.tokenId, toIso(continuation.dueAt), nowIso);
+            ).run(
+              `timer_retry_${attempt.attemptId}`,
+              command.runId,
+              attempt.attemptId,
+              token.tokenId,
+              toIso(continuation.dueAt),
+              nowIso,
+            );
           } else if (continuation.kind === 'block') {
             db.prepare(
               "UPDATE vict_token SET status = 'blocked', revision = revision + 1, updated_at = ? WHERE token_id = ?;",
@@ -1030,14 +1176,18 @@ export function createSqliteOrchestrationStore(
           ).run(
             nextStatus,
             command.run.steps ?? run.steps,
-            command.run.currentNodeId !== undefined ? command.run.currentNodeId : run.current_node_id,
+            command.run.currentNodeId !== undefined
+              ? command.run.currentNodeId
+              : run.current_node_id,
             command.run.outputSummary !== undefined
               ? toCanonicalJson(canonicalPersistedValue(command.run.outputSummary))
               : run.output_summary,
             command.run.output !== undefined
               ? toCanonicalJson(canonicalPersistedValue(command.run.output))
               : run.output,
-            command.run.error !== undefined ? toCanonicalJson(canonicalPersistedValue(command.run.error)) : run.error,
+            command.run.error !== undefined
+              ? toCanonicalJson(canonicalPersistedValue(command.run.error))
+              : run.error,
             nowIso,
             completedAt,
             command.runId,
@@ -1056,7 +1206,9 @@ export function createSqliteOrchestrationStore(
           if (['completed', 'failed', 'cancelled'].includes(nextStatus)) {
             // Terminal cleanup: no private operational payload survives a
             // terminal transition (tested lifecycle rule).
-            db.prepare('UPDATE vict_token SET checkpoint = NULL WHERE run_id = ?;').run(command.runId);
+            db.prepare('UPDATE vict_token SET checkpoint = NULL WHERE run_id = ?;').run(
+              command.runId,
+            );
           }
           faults?.afterStateStage?.('orchestration.completeAttempt');
 
@@ -1131,8 +1283,9 @@ export function createSqliteOrchestrationStore(
             }
             return { status: 'conflict' as const, signalId: command.signalId };
           }
-          const waitRow = db.prepare('SELECT * FROM vict_wait WHERE wait_id = ?;').get(command.waitId) as unknown as
-            WaitRow | undefined;
+          const waitRow = db
+            .prepare('SELECT * FROM vict_wait WHERE wait_id = ?;')
+            .get(command.waitId) as unknown as WaitRow | undefined;
           if (!waitRow) {
             throw new VictStoreError('VICT_STORE_WAIT_NOT_FOUND', 'Wait not found.', {
               operation: 'orchestration.signalWait',
@@ -1151,7 +1304,11 @@ export function createSqliteOrchestrationStore(
             throw new VictStoreError(
               'VICT_STORE_SIGNAL_NAME_MISMATCH',
               'The signal name does not match the open wait.',
-              { operation: 'orchestration.signalWait', runId: command.runId, waitId: command.waitId },
+              {
+                operation: 'orchestration.signalWait',
+                runId: command.runId,
+                waitId: command.waitId,
+              },
             );
           }
           if (
@@ -1164,20 +1321,29 @@ export function createSqliteOrchestrationStore(
           db.prepare(
             "UPDATE vict_wait SET status = 'resolved', revision = revision + 1, resolved_at = ?, resolved_by = ? WHERE wait_id = ? AND revision = ?;",
           ).run(nowIso, command.signalId, command.waitId, waitRow.revision);
-          const tokenRow = db.prepare('SELECT * FROM vict_token WHERE token_id = ?;').get(waitRow.token_id) as unknown as
-            TokenRow | undefined;
+          const tokenRow = db
+            .prepare('SELECT * FROM vict_token WHERE token_id = ?;')
+            .get(waitRow.token_id) as unknown as TokenRow | undefined;
           if (!tokenRow) {
-            throw new VictStoreError('VICT_STORE_INVALID_RECORD', 'The wait references an unknown token.', {
-              operation: 'orchestration.signalWait',
-              runId: command.runId,
-              waitId: command.waitId,
-            });
+            throw new VictStoreError(
+              'VICT_STORE_INVALID_RECORD',
+              'The wait references an unknown token.',
+              {
+                operation: 'orchestration.signalWait',
+                runId: command.runId,
+                waitId: command.waitId,
+              },
+            );
           }
           if (tokenRow.status !== 'waiting') {
             throw new VictStoreError(
               'VICT_STORE_WAIT_CONFLICT',
               'The wait lost the race against a concurrent resolution.',
-              { operation: 'orchestration.signalWait', runId: command.runId, waitId: command.waitId },
+              {
+                operation: 'orchestration.signalWait',
+                runId: command.runId,
+                waitId: command.waitId,
+              },
             );
           }
           db.prepare(
@@ -1193,7 +1359,14 @@ export function createSqliteOrchestrationStore(
           db.prepare(
             `INSERT INTO vict_signal_receipt (signal_id, run_id, wait_id, signal_name, command_hash, status, event_seq, created_at)
              VALUES (?, ?, ?, ?, ?, 'accepted', NULL, ?);`,
-          ).run(command.signalId, command.runId, command.waitId, waitRow.signal_name, command.commandHash, nowIso);
+          ).run(
+            command.signalId,
+            command.runId,
+            command.waitId,
+            waitRow.signal_name,
+            command.commandHash,
+            nowIso,
+          );
           db.prepare(
             "UPDATE vict_run SET status = 'running', record_revision = record_revision + 1, updated_at = ? WHERE run_id = ?;",
           ).run(nowIso, command.runId);
@@ -1202,7 +1375,9 @@ export function createSqliteOrchestrationStore(
           const seq = appendEvents(command.runId, command.events);
           faults?.beforeCommit?.('orchestration.signalWait');
           const token = validateTokenRow(
-            db.prepare('SELECT * FROM vict_token WHERE token_id = ?;').get(tokenRow.token_id) as unknown as TokenRow,
+            db
+              .prepare('SELECT * FROM vict_token WHERE token_id = ?;')
+              .get(tokenRow.token_id) as unknown as TokenRow,
             'orchestration.signalWait',
           );
           return {
@@ -1212,7 +1387,9 @@ export function createSqliteOrchestrationStore(
             runRecordRevision: (runRow(command.runId) as RunRow).record_revision,
             runNextEventSeq: seq,
             waitRevision: (
-              db.prepare('SELECT revision FROM vict_wait WHERE wait_id = ?;').get(command.waitId) as unknown as {
+              db
+                .prepare('SELECT revision FROM vict_wait WHERE wait_id = ?;')
+                .get(command.waitId) as unknown as {
                 revision: number;
               }
             ).revision,
@@ -1226,19 +1403,17 @@ export function createSqliteOrchestrationStore(
         inTransaction(db, () => {
           const limit = Math.max(1, Math.floor(command.limit));
           const runClause = command.runId !== undefined ? ' AND run_id = ?' : '';
-          const rows = (
-            command.runId !== undefined
-              ? db
-                  .prepare(
-                    `SELECT * FROM vict_timer WHERE status = 'scheduled' AND due_at <= ?${runClause} ORDER BY due_at ASC, timer_id ASC LIMIT ?;`,
-                  )
-                  .all(toIso(command.now), command.runId, limit)
-              : db
-                  .prepare(
-                    "SELECT * FROM vict_timer WHERE status = 'scheduled' AND due_at <= ? ORDER BY due_at ASC, timer_id ASC LIMIT ?;",
-                  )
-                  .all(toIso(command.now), limit)
-          ) as unknown as TimerRow[];
+          const rows = (command.runId !== undefined
+            ? db
+                .prepare(
+                  `SELECT * FROM vict_timer WHERE status = 'scheduled' AND due_at <= ?${runClause} ORDER BY due_at ASC, timer_id ASC LIMIT ?;`,
+                )
+                .all(toIso(command.now), command.runId, limit)
+            : db
+                .prepare(
+                  "SELECT * FROM vict_timer WHERE status = 'scheduled' AND due_at <= ? ORDER BY due_at ASC, timer_id ASC LIMIT ?;",
+                )
+                .all(toIso(command.now), limit)) as unknown as TimerRow[];
           const due: DueTimerRecord[] = [];
           for (const row of rows) {
             db.prepare(
@@ -1271,8 +1446,9 @@ export function createSqliteOrchestrationStore(
               runId: command.runId,
             });
           }
-          const timerRow = db.prepare('SELECT * FROM vict_timer WHERE timer_id = ?;').get(command.timerId) as unknown as
-            TimerRow | undefined;
+          const timerRow = db
+            .prepare('SELECT * FROM vict_timer WHERE timer_id = ?;')
+            .get(command.timerId) as unknown as TimerRow | undefined;
           if (!timerRow) {
             throw new VictStoreError('VICT_STORE_TIMER_NOT_FOUND', 'Timer not found.', {
               operation: 'orchestration.resolveDueTimer',
@@ -1280,7 +1456,10 @@ export function createSqliteOrchestrationStore(
               timerId: command.timerId,
             });
           }
-          if (timerRow.revision !== command.expectedTimerFence || timerRow.owner_id !== command.ownerId) {
+          if (
+            timerRow.revision !== command.expectedTimerFence ||
+            timerRow.owner_id !== command.ownerId
+          ) {
             return {
               runRecordRevision: run.record_revision,
               runNextEventSeq: nextEventSeqOf(command.runId),
@@ -1301,18 +1480,24 @@ export function createSqliteOrchestrationStore(
             applied: true,
           };
           if (command.resolution.kind === 'wake' || command.resolution.kind === 'waitTimeout') {
-            const waitRow = db.prepare('SELECT * FROM vict_wait WHERE wait_id = ?;').get(timerRow.wait_id) as unknown as
-              WaitRow | undefined;
+            const waitRow = db
+              .prepare('SELECT * FROM vict_wait WHERE wait_id = ?;')
+              .get(timerRow.wait_id) as unknown as WaitRow | undefined;
             if (!waitRow || waitRow.status !== 'open') {
               return { runRecordRevision: run.record_revision, runNextEventSeq: 0, applied: false };
             }
-            const tokenRow = db.prepare('SELECT * FROM vict_token WHERE token_id = ?;').get(waitRow.token_id) as
-              TokenRow | undefined;
+            const tokenRow = db
+              .prepare('SELECT * FROM vict_token WHERE token_id = ?;')
+              .get(waitRow.token_id) as TokenRow | undefined;
             if (!tokenRow) {
-              throw new VictStoreError('VICT_STORE_INVALID_RECORD', 'A wait references an unknown token.', {
-                operation: 'orchestration.resolveDueTimer',
-                runId: command.runId,
-              });
+              throw new VictStoreError(
+                'VICT_STORE_INVALID_RECORD',
+                'A wait references an unknown token.',
+                {
+                  operation: 'orchestration.resolveDueTimer',
+                  runId: command.runId,
+                },
+              );
             }
             db.prepare(
               "UPDATE vict_wait SET status = 'resolved', revision = revision + 1, resolved_at = ?, resolved_by = ? WHERE wait_id = ?;",
@@ -1334,8 +1519,9 @@ export function createSqliteOrchestrationStore(
             if (timerRow.token_id === null) {
               return { runRecordRevision: run.record_revision, runNextEventSeq: 0, applied: false };
             }
-            const tokenRow = db.prepare('SELECT * FROM vict_token WHERE token_id = ?;').get(timerRow.token_id) as unknown as
-              TokenRow | undefined;
+            const tokenRow = db
+              .prepare('SELECT * FROM vict_token WHERE token_id = ?;')
+              .get(timerRow.token_id) as unknown as TokenRow | undefined;
             if (!tokenRow || (tokenRow.status !== 'claimed' && tokenRow.status !== 'blocked')) {
               return { runRecordRevision: run.record_revision, runNextEventSeq: 0, applied: false };
             }
@@ -1343,10 +1529,9 @@ export function createSqliteOrchestrationStore(
               "UPDATE vict_token SET status = 'ready', revision = revision + 1, updated_at = ? WHERE token_id = ?;",
             ).run(nowIso, tokenRow.token_id);
           }
-          db.prepare('UPDATE vict_timer SET status = ?, revision = revision + 1 WHERE timer_id = ?;').run(
-            command.resolution.kind === 'cancel' ? 'cancelled' : 'fired',
-            timerRow.timer_id,
-          );
+          db.prepare(
+            'UPDATE vict_timer SET status = ?, revision = revision + 1 WHERE timer_id = ?;',
+          ).run(command.resolution.kind === 'cancel' ? 'cancelled' : 'fired', timerRow.timer_id);
           if (command.checkpoint !== undefined && command.checkpoint !== null) {
             stageCheckpoint(command.runId, command.checkpoint.tokenId, command.checkpoint.payload);
           }
@@ -1357,7 +1542,9 @@ export function createSqliteOrchestrationStore(
             runUpdate.status ?? run.status,
             runUpdate.currentNodeId !== undefined ? runUpdate.currentNodeId : run.current_node_id,
             runUpdate.steps ?? run.steps,
-            command.error !== undefined ? toCanonicalJson(canonicalPersistedValue(command.error)) : run.error,
+            command.error !== undefined
+              ? toCanonicalJson(canonicalPersistedValue(command.error))
+              : run.error,
             nowIso,
             command.runId,
           );
@@ -1365,7 +1552,11 @@ export function createSqliteOrchestrationStore(
           const updatedRun = runRow(command.runId) as RunRow;
           const seq = appendEvents(command.runId, command.events);
           faults?.beforeCommit?.('orchestration.resolveDueTimer');
-          return { runRecordRevision: updatedRun.record_revision, runNextEventSeq: seq, applied: true };
+          return {
+            runRecordRevision: updatedRun.record_revision,
+            runNextEventSeq: seq,
+            applied: true,
+          };
         }),
       );
     },
@@ -1378,7 +1569,9 @@ export function createSqliteOrchestrationStore(
             return { status: 'unknown_run' as const, runId: command.runId };
           }
           const existing = db
-            .prepare('SELECT command_hash FROM vict_cancellation_request WHERE run_id = ? AND request_id = ?;')
+            .prepare(
+              'SELECT command_hash FROM vict_cancellation_request WHERE run_id = ? AND request_id = ?;',
+            )
             .get(command.runId, command.requestId) as { command_hash: string } | undefined;
           if (existing) {
             if (existing.command_hash === command.commandHash) {
@@ -1393,7 +1586,11 @@ export function createSqliteOrchestrationStore(
             return { status: 'conflict' as const, requestId: command.requestId };
           }
           if (run.status === 'completed' || run.status === 'failed' || run.status === 'cancelled') {
-            return { status: 'already_terminal' as const, runId: command.runId, runStatus: run.status };
+            return {
+              status: 'already_terminal' as const,
+              runId: command.runId,
+              runStatus: run.status,
+            };
           }
           const nowIso = toIso(command.now);
           db.prepare(
@@ -1410,7 +1607,9 @@ export function createSqliteOrchestrationStore(
             "UPDATE vict_token SET status = 'cancelled', revision = revision + 1, updated_at = ? WHERE run_id = ? AND status = 'ready';",
           ).run(nowIso, command.runId);
           const inFlight = db
-            .prepare("SELECT COUNT(*) AS c FROM vict_token WHERE run_id = ? AND status = 'claimed';")
+            .prepare(
+              "SELECT COUNT(*) AS c FROM vict_token WHERE run_id = ? AND status = 'claimed';",
+            )
             .get(command.runId) as { c: number };
           let runCancelledNow = false;
           if (inFlight.c === 0) {
@@ -1443,7 +1642,9 @@ export function createSqliteOrchestrationStore(
       );
     },
 
-    async applyCancellation(command): Promise<{ runRecordRevision: number; runNextEventSeq: number }> {
+    async applyCancellation(
+      command,
+    ): Promise<{ runRecordRevision: number; runNextEventSeq: number }> {
       return safeRun('orchestration.applyCancellation', () =>
         inTransaction(db, () => {
           const run = runRow(command.runId);
@@ -1474,7 +1675,11 @@ export function createSqliteOrchestrationStore(
             throw new VictStoreError(
               'VICT_STORE_RUN_CONFLICT',
               'The run cannot be cancelled from its current status.',
-              { operation: 'orchestration.applyCancellation', runId: command.runId, status: run.status },
+              {
+                operation: 'orchestration.applyCancellation',
+                runId: command.runId,
+                status: run.status,
+              },
             );
           }
           db.prepare(
@@ -1484,14 +1689,21 @@ export function createSqliteOrchestrationStore(
           const updatedRun = runRow(command.runId) as RunRow;
           const seq = appendEvents(command.runId, command.events);
           // Terminal cleanup: tombstone every private operational payload.
-          db.prepare('UPDATE vict_token SET checkpoint = NULL WHERE run_id = ?;').run(command.runId);
+          db.prepare('UPDATE vict_token SET checkpoint = NULL WHERE run_id = ?;').run(
+            command.runId,
+          );
           faults?.beforeCommit?.('orchestration.applyCancellation');
-          return { runRecordRevision: (runRow(command.runId) as RunRow).record_revision, runNextEventSeq: seq };
+          return {
+            runRecordRevision: (runRow(command.runId) as RunRow).record_revision,
+            runNextEventSeq: seq,
+          };
         }),
       );
     },
 
-    async findRecoverableClaims(_command: RecoverOrchestrationCommand): Promise<readonly RecoverableClaim[]> {
+    async findRecoverableClaims(
+      _command: RecoverOrchestrationCommand,
+    ): Promise<readonly RecoverableClaim[]> {
       return safeRun('orchestration.findRecoverableClaims', () => {
         const rows = db
           .prepare(
@@ -1501,7 +1713,11 @@ export function createSqliteOrchestrationStore(
              WHERE t.status = 'claimed' AND a.state = 'started'
              ORDER BY a.lease_expires_at ASC, t.token_id ASC;`,
           )
-          .all() as unknown as (TokenRow & { a_attempt_id: string; a_fence: number; a_lease: string | null })[];
+          .all() as unknown as (TokenRow & {
+          a_attempt_id: string;
+          a_fence: number;
+          a_lease: string | null;
+        })[];
         const claims: RecoverableClaim[] = [];
         for (const row of rows) {
           const token = validateTokenRow(row, 'orchestration.findRecoverableClaims');
@@ -1533,8 +1749,9 @@ export function createSqliteOrchestrationStore(
               runId: command.runId,
             });
           }
-          const attemptRow = db.prepare('SELECT * FROM vict_attempt WHERE attempt_id = ?;').get(command.attemptId) as unknown as
-            AttemptRow | undefined;
+          const attemptRow = db
+            .prepare('SELECT * FROM vict_attempt WHERE attempt_id = ?;')
+            .get(command.attemptId) as unknown as AttemptRow | undefined;
           if (!attemptRow) {
             throw new VictStoreError('VICT_STORE_INVALID_COMMAND', 'Unknown attempt.', {
               operation: 'orchestration.recoverAttempt',
@@ -1547,14 +1764,22 @@ export function createSqliteOrchestrationStore(
             throw new VictStoreError(
               'VICT_STORE_ATTEMPT_FENCE_CONFLICT',
               'The recovery carries a stale fence.',
-              { operation: 'orchestration.recoverAttempt', runId: command.runId, attemptId: command.attemptId },
+              {
+                operation: 'orchestration.recoverAttempt',
+                runId: command.runId,
+                attemptId: command.attemptId,
+              },
             );
           }
           if (!canTransitionAttempt(attempt.state, 'outcome_unknown')) {
             throw new VictStoreError(
               'VICT_STORE_ATTEMPT_STATE_CONFLICT',
               `Attempt '${attempt.attemptId}' is in state '${attempt.state}' and cannot be recovered.`,
-              { operation: 'orchestration.recoverAttempt', runId: command.runId, attemptId: command.attemptId },
+              {
+                operation: 'orchestration.recoverAttempt',
+                runId: command.runId,
+                attemptId: command.attemptId,
+              },
             );
           }
           const nowIso = toIso(command.now);
@@ -1588,7 +1813,9 @@ export function createSqliteOrchestrationStore(
             'UPDATE vict_run SET status = ?, error = ?, record_revision = record_revision + 1, updated_at = ? WHERE run_id = ?;',
           ).run(
             runStatus,
-            command.run?.error !== undefined ? toCanonicalJson(canonicalPersistedValue(command.run.error)) : run.error,
+            command.run?.error !== undefined
+              ? toCanonicalJson(canonicalPersistedValue(command.run.error))
+              : run.error,
             nowIso,
             command.runId,
           );
@@ -1596,7 +1823,10 @@ export function createSqliteOrchestrationStore(
           const updatedRun = runRow(command.runId) as RunRow;
           const seq = appendEvents(command.runId, command.events);
           faults?.beforeCommit?.('orchestration.recoverAttempt');
-          return { runRecordRevision: (runRow(command.runId) as RunRow).record_revision, runNextEventSeq: seq };
+          return {
+            runRecordRevision: (runRow(command.runId) as RunRow).record_revision,
+            runNextEventSeq: seq,
+          };
         }),
       );
     },
@@ -1609,7 +1839,9 @@ export function createSqliteOrchestrationStore(
             return { status: 'unknown_run' as const };
           }
           const existing = db
-            .prepare('SELECT command_hash FROM vict_operator_resolution WHERE run_id = ? AND resolution_id = ?;')
+            .prepare(
+              'SELECT command_hash FROM vict_operator_resolution WHERE run_id = ? AND resolution_id = ?;',
+            )
             .get(command.runId, command.resolutionId) as { command_hash: string } | undefined;
           if (existing) {
             if (existing.command_hash === command.commandHash) {
@@ -1636,7 +1868,14 @@ export function createSqliteOrchestrationStore(
           db.prepare(
             `INSERT INTO vict_operator_resolution (run_id, resolution_id, action, reason_code, command_hash, created_at)
              VALUES (?, ?, ?, ?, ?, ?);`,
-          ).run(command.runId, command.resolutionId, command.action, command.reasonCode, command.commandHash, nowIso);
+          ).run(
+            command.runId,
+            command.resolutionId,
+            command.action,
+            command.reasonCode,
+            command.commandHash,
+            nowIso,
+          );
           if (command.action === 'cancel') {
             if (!canTransitionRun(run.status, 'cancelled')) {
               throw new VictStoreError(
@@ -1667,7 +1906,9 @@ export function createSqliteOrchestrationStore(
             ).run(command.runId);
           } else {
             const blocked = db
-              .prepare("SELECT * FROM vict_token WHERE run_id = ? AND status = 'blocked' ORDER BY token_id ASC LIMIT 1;")
+              .prepare(
+                "SELECT * FROM vict_token WHERE run_id = ? AND status = 'blocked' ORDER BY token_id ASC LIMIT 1;",
+              )
               .get(command.runId) as unknown as TokenRow | undefined;
             if (!blocked) {
               throw new VictStoreError(
@@ -1695,7 +1936,11 @@ export function createSqliteOrchestrationStore(
                 "UPDATE vict_token SET node_id = ?, status = 'ready', revision = revision + 1, updated_at = ? WHERE token_id = ?;",
               ).run(command.continuation.toNodeId, nowIso, blocked.token_id);
               if (command.checkpoint) {
-                stageCheckpoint(command.runId, command.checkpoint.tokenId, command.checkpoint.payload);
+                stageCheckpoint(
+                  command.runId,
+                  command.checkpoint.tokenId,
+                  command.checkpoint.payload,
+                );
               }
             } else if (command.continuation && command.continuation.kind === 'complete') {
               db.prepare(
@@ -1751,7 +1996,9 @@ export function createSqliteOrchestrationStore(
         const rows = db
           .prepare('SELECT payload FROM vict_run_event WHERE run_id = ? ORDER BY seq ASC;')
           .all(runId) as unknown as { payload: string }[];
-        return rows.map((row) => parseJson(row.payload, 'orchestration.listEvents', runId) as KernelEvent);
+        return rows.map(
+          (row) => parseJson(row.payload, 'orchestration.listEvents', runId) as KernelEvent,
+        );
       });
     },
 

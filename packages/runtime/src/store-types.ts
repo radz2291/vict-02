@@ -166,12 +166,7 @@ export interface ActivationCatalog {
 
 /** Durable run status. `running` is the pre-terminal state of an in-flight or interrupted run. */
 export type StoredRunStatus =
-  | 'running'
-  | 'waiting'
-  | 'blocked'
-  | 'completed'
-  | 'failed'
-  | 'cancelled';
+  'running' | 'waiting' | 'blocked' | 'completed' | 'failed' | 'cancelled';
 
 /**
  * Current durable run record. Contains safe material only: identifiers,

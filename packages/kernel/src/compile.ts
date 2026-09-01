@@ -62,7 +62,9 @@ interface NodeDraft {
 function edgeRef(edge: GraphEdgeDefinition): GraphIssue['edge'] {
   const kind = edge.kind ?? 'success';
   const key = (edge as { key?: string }).key;
-  return key !== undefined ? { from: edge.from, to: edge.to, kind, key } : { from: edge.from, to: edge.to, kind };
+  return key !== undefined
+    ? { from: edge.from, to: edge.to, kind, key }
+    : { from: edge.from, to: edge.to, kind };
 }
 
 function pushTarget(map: Map<string, string[]>, from: string, to: string): void {
@@ -107,18 +109,29 @@ function checkWaitContract(
 }
 
 /** Validate retry/timeout policy bounds; returns structured issues. */
-function checkPolicyBounds(retry: RetryPolicy | null | undefined, timeoutMs: number | undefined, nodeId: string): GraphIssue[] {
+function checkPolicyBounds(
+  retry: RetryPolicy | null | undefined,
+  timeoutMs: number | undefined,
+  nodeId: string,
+): GraphIssue[] {
   const issues: GraphIssue[] = [];
   if (retry !== undefined && retry !== null) {
     const maxAttempts = retry.maxAttempts;
-    if (!Number.isInteger(maxAttempts) || maxAttempts < 1 || maxAttempts > RETRY_MAX_ATTEMPTS_LIMIT) {
+    if (
+      !Number.isInteger(maxAttempts) ||
+      maxAttempts < 1 ||
+      maxAttempts > RETRY_MAX_ATTEMPTS_LIMIT
+    ) {
       issues.push({
         code: 'INVALID_RETRY_POLICY',
         message: `Node '${nodeId}' declares maxAttempts ${JSON.stringify(maxAttempts)}; it must be an integer between 1 and ${RETRY_MAX_ATTEMPTS_LIMIT}.`,
         nodeIds: [nodeId],
       });
     }
-    if (!Array.isArray(retry.retryOn) || retry.retryOn.some((code) => typeof code !== 'string' || code.length === 0)) {
+    if (
+      !Array.isArray(retry.retryOn) ||
+      retry.retryOn.some((code) => typeof code !== 'string' || code.length === 0)
+    ) {
       issues.push({
         code: 'INVALID_RETRY_POLICY',
         message: `Node '${nodeId}' declares an invalid retryOn list; entries must be non-empty stable error codes.`,
@@ -133,7 +146,11 @@ function checkPolicyBounds(retry: RetryPolicy | null | undefined, timeoutMs: num
         nodeIds: [nodeId],
       });
     } else if (backoff.kind === 'fixed') {
-      if (!Number.isFinite(backoff.delayMs) || backoff.delayMs <= 0 || backoff.delayMs > MAX_DELAY_MS_LIMIT) {
+      if (
+        !Number.isFinite(backoff.delayMs) ||
+        backoff.delayMs <= 0 ||
+        backoff.delayMs > MAX_DELAY_MS_LIMIT
+      ) {
         issues.push({
           code: 'INVALID_RETRY_POLICY',
           message: `Node '${nodeId}' declares an invalid fixed backoff delayMs.`,
@@ -549,7 +566,11 @@ export function compileGraph(input: CompileGraphInput): CompileResult {
           });
         }
       }
-      if (node.kind === 'join' && node.outputContractId !== undefined && contracts.get(node.outputContractId) === undefined) {
+      if (
+        node.kind === 'join' &&
+        node.outputContractId !== undefined &&
+        contracts.get(node.outputContractId) === undefined
+      ) {
         issues.push({
           code: 'UNKNOWN_JOIN_CONTRACT',
           message: `Join node '${node.id}' references unknown output contract '${node.outputContractId}'.`,
@@ -623,8 +644,14 @@ export function compileGraph(input: CompileGraphInput): CompileResult {
         }
       }
     }
-    const inputContractId = node.kind === 'wait' || node.kind === 'fork' || node.kind === 'join' ? undefined : (node.inputContractId ?? descriptor?.inputContractId);
-    const outputContractId = node.kind === 'wait' || node.kind === 'fork' || node.kind === 'join' ? undefined : (node.outputContractId ?? descriptor?.outputContractId);
+    const inputContractId =
+      node.kind === 'wait' || node.kind === 'fork' || node.kind === 'join'
+        ? undefined
+        : (node.inputContractId ?? descriptor?.inputContractId);
+    const outputContractId =
+      node.kind === 'wait' || node.kind === 'fork' || node.kind === 'join'
+        ? undefined
+        : (node.outputContractId ?? descriptor?.outputContractId);
     effectiveNodes.set(id, {
       id,
       kind: node.kind,
@@ -632,7 +659,9 @@ export function compileGraph(input: CompileGraphInput): CompileResult {
       inputContractId,
       outputContractId,
       ...(node.retry !== undefined && node.retry !== null ? { retry: node.retry } : {}),
-      ...(node.timeoutMs !== undefined && node.timeoutMs !== null ? { timeoutMs: node.timeoutMs } : {}),
+      ...(node.timeoutMs !== undefined && node.timeoutMs !== null
+        ? { timeoutMs: node.timeoutMs }
+        : {}),
       ...(node.wait !== undefined && node.wait !== null ? { wait: node.wait } : {}),
       ...(node.join !== undefined ? { join: node.join } : {}),
       ...(node.maxConcurrency !== undefined ? { maxConcurrency: node.maxConcurrency } : {}),
@@ -710,13 +739,26 @@ export function compileGraph(input: CompileGraphInput): CompileResult {
       continue; // already diagnosed
     }
     for (const [branchKey, branchTarget] of branchMap) {
-      const analysis = analyzeBranchRegion(branchTarget, joinId, nodesById, successTargets, errorTargets, routes, timeoutTargets);
+      const analysis = analyzeBranchRegion(
+        branchTarget,
+        joinId,
+        nodesById,
+        successTargets,
+        errorTargets,
+        routes,
+        timeoutTargets,
+      );
       if (!analysis.reachesJoin) {
         issues.push({
           code: 'BRANCH_CANNOT_REACH_JOIN',
           message: `Fork '${forkId}' branch '${branchKey}' cannot reach its declared join '${joinId}'.`,
           nodeIds: [forkId, branchTarget, joinId],
-          edge: { from: forkId, to: branchTarget, kind: 'branch', key: branchTarget === branchTarget ? branchKey : branchKey },
+          edge: {
+            from: forkId,
+            to: branchTarget,
+            kind: 'branch',
+            key: branchTarget === branchTarget ? branchKey : branchKey,
+          },
         });
       }
       if (analysis.nestedControlNode !== undefined) {
@@ -739,7 +781,14 @@ export function compileGraph(input: CompileGraphInput): CompileResult {
   }
 
   // ---- Cycles over the combined adjacency -------------------------------------
-  const cycle = findCycle(effectiveNodes, successTargets, errorTargets, routes, branches, timeoutTargets);
+  const cycle = findCycle(
+    effectiveNodes,
+    successTargets,
+    errorTargets,
+    routes,
+    branches,
+    timeoutTargets,
+  );
   if (cycle) {
     issues.push({
       code: 'UNSUPPORTED_CYCLE',
@@ -886,7 +935,9 @@ export function compileGraph(input: CompileGraphInput): CompileResult {
     },
     toDefinition(): ApplicationGraphDefinition {
       if (hasControlNodes) {
-        return deepFreeze(canonicalSemanticFormV2(definition)) as unknown as ApplicationGraphDefinition;
+        return deepFreeze(
+          canonicalSemanticFormV2(definition),
+        ) as unknown as ApplicationGraphDefinition;
       }
       return deepFreeze(canonicalSemanticForm(definition)) as unknown as ApplicationGraphDefinition;
     },
