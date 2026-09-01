@@ -582,8 +582,15 @@ export function createInMemoryOrchestrationStore(
           const declared = command.declaredBranchKeys ?? [];
           if (declared.length > 0 && declared.every((key) => completedKeys.has(key))) {
             joinFired = true;
-            // Fire the join exactly once: create the post-join token with the
-            // canonical (lexicographically sorted) join output payload.
+            // Final arrival: create exactly ONE join-ready token AT THE
+            // JOIN NODE with the canonical (lexicographically sorted)
+            // join output as its private checkpoint. The runtime claims
+            // this token, validates the join's declared output contract
+            // outside the store, and completes the join in one atomic
+            // transition (advance downstream, terminal completion, or a
+            // sanitized contract failure). This keeps author-controlled
+            // parsers out of the persistence layer and makes terminal
+            // joins (zero success edges) well-defined.
             if (arrival.joinContinuation !== undefined) {
               const joinPayload = canonicalJoinOutput(
                 Object.fromEntries(stored.branchOutputs.get(arrival.forkId) ?? new Map()),
@@ -730,27 +737,13 @@ export function createInMemoryOrchestrationStore(
           }
         }
         faults?.afterStateStage?.('orchestration.completeAttempt');
-        // 5. Events (dense, atomic with the state). A fired join appends its
-        // join.completed fact in the same atomic transition.
-        const commandEvents =
-          joinFired && command.continuation.kind === 'branchArrival'
-            ? [
-                ...command.events,
-                {
-                  type: 'join.completed',
-                  forkId: command.continuation.forkId,
-                  joinId: command.continuation.joinId,
-                  branchKeys: [...(command.declaredBranchKeys ?? [])],
-                  runId: command.runId,
-                  graphId: stored.run.graphId,
-                  graphVersion: stored.run.graphVersion,
-                  capabilitySetVersion: stored.run.capabilitySetVersion,
-                  activationVersion: stored.run.activationVersion,
-                  timestamp: now,
-                } as unknown as KernelEvent,
-              ]
-            : command.events;
-        appendEvents(stored, commandEvents);
+        // 5. Events (dense, atomic with the state). The join.completed fact
+        // is supplied by the runtime in the atomic transition that records
+        // the VALIDATED join completion — never by the store, because the
+        // join's declared output contract must be validated outside the
+        // persistence adapter. A final branch arrival only creates the
+        // join-ready token (joinFired marks that durable fact).
+        appendEvents(stored, command.events);
         faults?.beforeCommit?.('orchestration.completeAttempt');
         return {
           attempt: immutableSnapshot(attempt),

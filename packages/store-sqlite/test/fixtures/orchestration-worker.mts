@@ -15,6 +15,10 @@ import { createRuntime } from '@vict/runtime';
  * - `hang-write`   keyed-idempotent write that records an external ledger, then hangs (parent SIGKILLs it)
  * - `recover-pure` reopen after crash, recover policy-permitted work, complete
  * - `recover-write` reopen after the keyed-write crash; the external ledger reconciles; one external mutation
+ * - `start-join-partial` partial fan-out: branch 'a' completes, branch 'b' hangs (parent SIGKILLs)
+ * - `resume-join` reopen after the partial fan-out crash; completed branches are not re-invoked; the join validates once
+ * - `start-join-terminal` park a branch at a signal wait feeding a TERMINAL join, exit
+ * - `signal-join-terminal` reopen, signal, terminal join validates + completes with the canonical output
  */
 
 const [stage, dbPath, statePath] = process.argv.slice(2);
@@ -304,6 +308,316 @@ async function main(): Promise<void> {
       throw new Error(`unexpected run status after recovery: ${String(run?.status)}`);
     }
     writeState({ ...state, recovered: true, reclaimed: recovered.reclaimed });
+    await stores.dispose();
+    return;
+  }
+
+  if (stage === 'start-join-partial') {
+    // Partial fan-out interruption: branch 'a' completes durably, branch
+    // 'b' hangs forever (parent SIGKILLs). An external ledger records every
+    // capability invocation and join-contract parse across processes.
+    const ledgerPath = `${statePath}.ledger`;
+    const bump = (key: string): void => {
+      const ledger = existsSync(ledgerPath)
+        ? (JSON.parse(readFileSync(ledgerPath, 'utf8')) as Record<string, number>)
+        : {};
+      ledger[key] = (ledger[key] ?? 0) + 1;
+      writeFileSync(ledgerPath, JSON.stringify(ledger));
+    };
+    registerCommon();
+    runtime.registerContract({
+      id: 'join-upper',
+      revision: '1',
+      expected: 'a record of strings',
+      parse: (input: unknown) => {
+        bump('joinParse');
+        if (typeof input !== 'object' || input === null) {
+          return {
+            ok: false as const,
+            issues: [{ code: 'TYPE', path: '$', message: 'expected a record' }],
+          };
+        }
+        const out: Record<string, unknown> = {};
+        for (const [key, value] of Object.entries(input as Record<string, unknown>)) {
+          out[key] = String(value).toUpperCase();
+        }
+        return { ok: true as const, value: out, issues: [] };
+      },
+    });
+    runtime
+      .registerCapability({
+        id: 'jstart',
+        revision: '1',
+        effect: 'pure',
+        invoke: () => 'seed',
+      })
+      .registerCapability({
+        id: 'branchA',
+        revision: '1',
+        effect: 'pure',
+        invoke: () => {
+          bump('branchA');
+          return 'alpha';
+        },
+      })
+      .registerCapability({
+        id: 'branchB',
+        revision: '1',
+        effect: 'pure',
+        invoke: (input: unknown, context) => {
+          bump('branchB');
+          // Durable intent has committed; the handler now hangs so the
+          // parent's SIGKILL is a real mid-fan-out crash.
+          writeState({ hanging: true, runId: context.runId });
+          setInterval(() => undefined, 1_000_000);
+          void input;
+          return new Promise<string>(() => undefined);
+        },
+      })
+      .registerCapability({
+        id: 'after',
+        revision: '1',
+        effect: 'pure',
+        invoke: (input: unknown) => `after:${JSON.stringify(input)}`,
+      });
+    const activated = await runtime.activate({
+      id: 'restart-join-partial',
+      entry: 's',
+      nodes: [
+        { id: 's', capability: 'jstart' },
+        { id: 'f', kind: 'fork' as const, join: 'j' },
+        { id: 'a', capability: 'branchA' },
+        { id: 'b', capability: 'branchB' },
+        { id: 'j', kind: 'join' as const, fork: 'f', output: 'join-upper' },
+        { id: 'z', capability: 'after' },
+      ],
+      edges: [
+        { from: 's', to: 'f' },
+        { from: 'f', to: 'a', kind: 'branch' as const, key: 'a' },
+        { from: 'f', to: 'b', kind: 'branch' as const, key: 'b' },
+        { from: 'a', to: 'j' },
+        { from: 'b', to: 'j' },
+        { from: 'j', to: 'z' },
+      ],
+    });
+    if (!activated.ok) {
+      throw new Error(
+        `activation failed: ${JSON.stringify(activated.issues.map((issue) => issue.code))}`,
+      );
+    }
+    await runtime.run('seed');
+    return; // never reached: branchB hangs forever
+  }
+
+  if (stage === 'resume-join') {
+    // Fresh process after the partial-fan-out SIGKILL: completed branches
+    // are NOT invoked again; only the interrupted safe work resumes.
+    const ledgerPath = `${statePath}.ledger`;
+    const bump = (key: string): void => {
+      const ledger = existsSync(ledgerPath)
+        ? (JSON.parse(readFileSync(ledgerPath, 'utf8')) as Record<string, number>)
+        : {};
+      ledger[key] = (ledger[key] ?? 0) + 1;
+      writeFileSync(ledgerPath, JSON.stringify(ledger));
+    };
+    registerCommon();
+    runtime.registerContract({
+      id: 'join-upper',
+      revision: '1',
+      expected: 'a record of strings',
+      parse: (input: unknown) => {
+        bump('joinParse');
+        if (typeof input !== 'object' || input === null) {
+          return {
+            ok: false as const,
+            issues: [{ code: 'TYPE', path: '$', message: 'expected a record' }],
+          };
+        }
+        const out: Record<string, unknown> = {};
+        for (const [key, value] of Object.entries(input as Record<string, unknown>)) {
+          out[key] = String(value).toUpperCase();
+        }
+        return { ok: true as const, value: out, issues: [] };
+      },
+    });
+    runtime
+      .registerCapability({ id: 'jstart', revision: '1', effect: 'pure', invoke: () => 'seed' })
+      .registerCapability({
+        id: 'branchA',
+        revision: '1',
+        effect: 'pure',
+        invoke: () => {
+          bump('branchA');
+          return 'alpha';
+        },
+      })
+      .registerCapability({
+        id: 'branchB',
+        revision: '1',
+        effect: 'pure',
+        invoke: () => {
+          bump('branchB');
+          return 'beta';
+        },
+      })
+      .registerCapability({
+        id: 'after',
+        revision: '1',
+        effect: 'pure',
+        invoke: (input: unknown) => `after:${JSON.stringify(input)}`,
+      });
+    await new Promise((resolve) => setTimeout(resolve, 1500)); // lease expiry + WAL settle
+    const recovered = await runtime.recoverOrchestration({ resume: true, concurrency: 2 });
+    if (recovered.reclaimed.length !== 1) {
+      throw new Error(`expected one reclaimed claim, got ${JSON.stringify(recovered)}`);
+    }
+    const candidates = await stores.orchestration.listOrchestrationRuns({});
+    const runId = candidates[0]?.runId;
+    const run = await stores.orchestration.getOrchestrationRun(runId as string);
+    if (run === undefined || run.status !== 'completed') {
+      throw new Error(`unexpected run status after join recovery: ${String(run?.status)}`);
+    }
+    const events = await stores.orchestration.listOrchestrationEvents(runId as string);
+    const joinCompleted = events.filter((event) => event.type === 'join.completed').length;
+    const branchCompleted = events.filter((event) => event.type === 'branch.completed').length;
+    writeState({
+      recovered: true,
+      status: run.status,
+      joinCompleted,
+      branchCompleted,
+      events: events.length,
+    });
+    await stores.dispose();
+    return;
+  }
+
+  if (stage === 'start-join-terminal' || stage === 'signal-join-terminal') {
+    const ledgerPath = `${statePath}.ledger`;
+    const bump = (key: string): void => {
+      const ledger = existsSync(ledgerPath)
+        ? (JSON.parse(readFileSync(ledgerPath, 'utf8')) as Record<string, number>)
+        : {};
+      ledger[key] = (ledger[key] ?? 0) + 1;
+      writeFileSync(ledgerPath, JSON.stringify(ledger));
+    };
+    registerCommon();
+    runtime.registerContract({
+      id: 'join-terminal-upper',
+      revision: '1',
+      expected: 'a record of strings',
+      parse: (input: unknown) => {
+        bump('joinParse');
+        if (typeof input !== 'object' || input === null) {
+          return {
+            ok: false as const,
+            issues: [{ code: 'TYPE', path: '$', message: 'expected a record' }],
+          };
+        }
+        const out: Record<string, unknown> = {};
+        for (const [key, value] of Object.entries(input as Record<string, unknown>)) {
+          out[key] = String(value).toUpperCase();
+        }
+        return { ok: true as const, value: out, issues: [] };
+      },
+    });
+    runtime
+      .registerCapability({ id: 'jstart', revision: '1', effect: 'pure', invoke: () => 'seed' })
+      .registerCapability({
+        id: 'branchA',
+        revision: '1',
+        effect: 'pure',
+        invoke: () => {
+          bump('branchA');
+          return 'alpha';
+        },
+      })
+      .registerCapability({
+        id: 'branchB',
+        revision: '1',
+        effect: 'pure',
+        invoke: () => {
+          bump('branchB');
+          return 'beta';
+        },
+      });
+    const definition = {
+      id: 'restart-join-terminal',
+      entry: 's',
+      nodes: [
+        { id: 's', capability: 'jstart' },
+        { id: 'f', kind: 'fork' as const, join: 'j' },
+        { id: 'a', capability: 'branchA' },
+        {
+          id: 'w',
+          kind: 'wait' as const,
+          wait: { kind: 'signal' as const, name: 'release' },
+        },
+        { id: 'b', capability: 'branchB' },
+        {
+          id: 'j',
+          kind: 'join' as const,
+          fork: 'f',
+          output: 'join-terminal-upper',
+        },
+      ],
+      edges: [
+        { from: 's', to: 'f' },
+        { from: 'f', to: 'a', kind: 'branch' as const, key: 'a' },
+        { from: 'f', to: 'b', kind: 'branch' as const, key: 'b' },
+        { from: 'a', to: 'j' },
+        { from: 'w', to: 'j' },
+        { from: 'b', to: 'w' },
+      ],
+    };
+    if (stage === 'start-join-terminal') {
+      const activated = await runtime.activate(definition);
+      if (!activated.ok) {
+        throw new Error(
+          `activation failed: ${JSON.stringify(activated.issues.map((issue) => issue.code))}`,
+        );
+      }
+      const result = await runtime.run('seed');
+      if (result.status !== 'waiting') {
+        throw new Error(`expected waiting, got ${result.status}`);
+      }
+      writeState({
+        runId: result.runId,
+        activationVersion: activated.activationVersion,
+        waitId: result.waits?.[0]?.waitId ?? null,
+      });
+      await stores.dispose();
+      return;
+    }
+    // signal-join-terminal: reopen, resolve the EXACT activation, deliver
+    // the signal, and let the join validate + complete across the restart.
+    const state = JSON.parse(await await_readState()) as {
+      runId: string;
+      waitId: string | null;
+    };
+    const delivered = await runtime.signal({
+      runId: state.runId,
+      waitId: state.waitId as string,
+      signalId: 'join-term-sig-1',
+      signalName: 'release',
+      payload: 'go',
+    });
+    if (!delivered.ok || delivered.status !== 'accepted') {
+      throw new Error(`signal delivery failed: ${JSON.stringify(delivered)}`);
+    }
+    const final = await runtime.resumeRun(state.runId);
+    if (final.status !== 'completed') {
+      throw new Error(`expected completed terminal join, got ${final.status}`);
+    }
+    // Branch 'a' completes with its capability output; branch 'b' completes
+    // with the RESUMED signal payload (the documented wait-wake semantics:
+    // the resolved payload is the continuation value across the wait).
+    const expected = JSON.stringify({ a: 'ALPHA', b: 'GO' });
+    if (JSON.stringify(final.output) !== expected) {
+      throw new Error(`unexpected terminal join output: ${JSON.stringify(final.output)}`);
+    }
+    const events = await stores.orchestration.listOrchestrationEvents(state.runId);
+    const joinCompleted = events.filter((event) => event.type === 'join.completed').length;
+    writeState({ resumed: true, joinCompleted, output: JSON.stringify(final.output) });
     await stores.dispose();
     return;
   }

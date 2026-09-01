@@ -106,6 +106,26 @@ function isTerminalStatus(status: string): boolean {
   return status === 'completed' || status === 'failed' || status === 'cancelled';
 }
 
+/**
+ * Reduce author-controlled contract issues to structurally safe evidence.
+ * A raw `parse()` implementation may place arbitrary strings (custom
+ * messages, payload echoes, nested secrets) anywhere in an issue object,
+ * so only a bounded, character-restricted `code` and `path` survive into
+ * events. Genuine framework issues (`toSafeIssue`) keep their meaning;
+ * hostile content cannot leak.
+ */
+function safeContractIssues(
+  issues: readonly { readonly code?: unknown; readonly path?: unknown }[] | undefined,
+): { code: string; path: string }[] {
+  const safe = (value: unknown, max: number): string => {
+    const raw = typeof value === 'string' ? value : '';
+    return raw.replace(/[^A-Za-z0-9_.\-\[\]()/]/g, '').slice(0, max);
+  };
+  return (issues ?? [])
+    .slice(0, 10)
+    .map((issue) => ({ code: safe(issue.code, 64) || 'invalid', path: safe(issue.path, 120) }));
+}
+
 export class OrchestrationDriver {
   readonly #deps: OrchestrationEngineDeps;
   readonly #resolved = new Map<string, Promise<ResolvedExecution>>();
@@ -472,7 +492,7 @@ export class OrchestrationDriver {
           nodeId: node.id,
           capabilityId: node.capability,
           contractId: node.inputContractId,
-          issues: parsed.issues ?? [],
+          issues: safeContractIssues(parsed.issues),
           ...envelope,
           timestamp: this.#deps.clock.now(),
         } as unknown as KernelEvent);
@@ -491,7 +511,7 @@ export class OrchestrationDriver {
     }
 
     // ---- Control nodes complete directly (no capability invocation) -----
-    if (node.kind === 'wait' || node.kind === 'fork') {
+    if (node.kind === 'wait' || node.kind === 'fork' || node.kind === 'join') {
       if (node.kind === 'wait') {
         // First arrival parks (creates the durable wait); a post-wake
         // execution (the wait is already resolved) advances along the
@@ -517,7 +537,11 @@ export class OrchestrationDriver {
           );
           return;
         }
-        const successTarget = graph.successTargetOf(node.id);
+        // Wake path: the wait is already resolved. Do NOT park again and do
+        // NOT force a plain advance — the completion is re-planned so that a
+        // success target which is the fork's join routes through the durable
+        // branch-arrival boundary (canonical checkpoint, single join-ready
+        // token, validated join), exactly like any other branch completion.
         await this.#completeWithOutcome(
           resolved,
           claim,
@@ -526,7 +550,28 @@ export class OrchestrationDriver {
           { kind: 'completed', raw: inputPayload },
           inputPayload,
           onEvent,
-          { kind: 'advance', toNodeId: successTarget ?? '', payload: inputPayload },
+          undefined,
+          { resolvedWait: true },
+        );
+        return;
+      }
+      if (node.kind === 'join') {
+        // Durable join boundary: the claimed token carries the private
+        // canonical branch-result checkpoint created atomically by the
+        // final branch arrival. #completeWithOutcome validates the join's
+        // own declared output contract (outside any store transaction)
+        // and one atomic transition either advances downstream, completes
+        // a terminal join with the validated output, or fails the run
+        // with a sanitized contract error. No capability is ever invoked
+        // here and no author parser runs inside the persistence adapter.
+        await this.#completeWithOutcome(
+          resolved,
+          claim,
+          envelope,
+          mode,
+          { kind: 'completed', raw: inputPayload },
+          inputPayload,
+          onEvent,
         );
         return;
       }
@@ -728,6 +773,7 @@ export class OrchestrationDriver {
     inputPayload: unknown,
     onEvent?: (event: KernelEvent) => void,
     forcedContinuation?: import('./orchestration-store-types.js').AttemptContinuation,
+    planning?: { readonly resolvedWait?: boolean },
   ): Promise<void> {
     const { graph, bindings, contracts } = resolved;
     const node = graph.getNode(claim.token.nodeId);
@@ -778,7 +824,7 @@ export class OrchestrationDriver {
                 nodeId: node.id,
                 capabilityId: node.capability,
                 contractId: node.outputContractId,
-                issues: parsed.issues ?? [],
+                issues: safeContractIssues(parsed.issues),
                 ...envelope,
                 timestamp: this.#deps.clock.now(),
               } as unknown as KernelEvent);
@@ -839,6 +885,7 @@ export class OrchestrationDriver {
               : validatedOutput
             : undefined,
         descriptor: binding,
+        ...(planning?.resolvedWait === true ? { resolvedWait: true } : {}),
       });
       const effectivePlan: PlannedCompletion =
         forcedContinuation !== undefined
@@ -1046,6 +1093,20 @@ export class OrchestrationDriver {
       });
     }
 
+    // The join.completed fact is committed exactly once, in the same
+    // atomic transition that records the VALIDATED join completion and
+    // its downstream continuation (or terminal completion). A rejecting
+    // join contract never produces it.
+    if (node.kind === 'join' && attemptOutcome.kind === 'completed') {
+      const forkId = graph.forkOfJoin(node.id) ?? '';
+      push({
+        type: 'join.completed',
+        forkId,
+        joinId: node.id,
+        branchKeys: [...graph.branchKeysOf(forkId)],
+      });
+    }
+
     // Terminal run events.
     const run: {
       status: typeof plan.runStatus;
@@ -1111,11 +1172,7 @@ export class OrchestrationDriver {
     command: CompleteAttemptCommand,
     onEvent?: (event: KernelEvent) => void,
   ): Promise<void> {
-    const result = await this.#deps.orchestration.completeAttempt(command);
-    if (result.joinFired) {
-      // The store fired the join exactly once; the join.completed fact is
-      // appended by the store in the same atomic transaction.
-    }
+    await this.#deps.orchestration.completeAttempt(command);
     for (const event of command.events) {
       onEvent?.(event as KernelEvent);
     }

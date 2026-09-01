@@ -1062,6 +1062,13 @@ export function createSqliteOrchestrationStore(
             const declared = command.declaredBranchKeys ?? [];
             if (declared.length > 0 && declared.every((key) => completedKeys.has(key))) {
               joinFired = true;
+              // Final arrival: create exactly ONE join-ready token AT THE
+              // JOIN NODE with the canonical join output as its private
+              // checkpoint. The runtime claims this token, validates the
+              // join's declared output contract outside the store, and
+              // completes the join in one atomic transition. Terminal
+              // joins (zero success edges) are therefore well-defined and
+              // author parsers never execute inside a transaction.
               if (arrival.joinContinuation !== undefined) {
                 const outputRows = db
                   .prepare(
@@ -1212,28 +1219,14 @@ export function createSqliteOrchestrationStore(
           }
           faults?.afterStateStage?.('orchestration.completeAttempt');
 
-          // 5. Events (dense, atomic with the state). A fired join appends
-          // its join.completed fact in the same atomic transition.
-          let commandEvents: readonly OrchestrationEventInput[] = command.events;
-          if (joinFired && continuation.kind === 'branchArrival') {
-            commandEvents = [
-              ...command.events,
-              {
-                type: 'join.completed',
-                forkId: continuation.forkId,
-                joinId: continuation.joinId,
-                branchKeys: [...(command.declaredBranchKeys ?? [])],
-                runId: command.runId,
-                graphId: run.graph_id,
-                graphVersion: run.graph_version,
-                capabilitySetVersion: run.capability_set_version,
-                activationVersion: run.activation_version,
-                timestamp: command.now,
-              } as unknown as OrchestrationEventInput,
-            ];
-          }
-          const updatedRun = runRow(command.runId) as RunRow;
-          const seq = appendEvents(command.runId, commandEvents);
+          // 5. Events (dense, atomic with the state). The join.completed
+          // fact is supplied by the runtime in the atomic transition that
+          // records the VALIDATED join completion — never by the store,
+          // because the join's declared output contract must be validated
+          // outside the persistence adapter (never inside a SQLite
+          // transaction). A final branch arrival only creates the
+          // join-ready token (joinFired marks that durable fact).
+          const seq = appendEvents(command.runId, command.events);
           faults?.beforeCommit?.('orchestration.completeAttempt');
 
           const branchResult: BranchResultRecord | null =
@@ -1253,7 +1246,7 @@ export function createSqliteOrchestrationStore(
             token: { ...token },
             branchResult,
             joinFired,
-            runRecordRevision: updatedRun.record_revision,
+            runRecordRevision: (runRow(command.runId) as RunRow).record_revision,
             runNextEventSeq: seq,
           };
         }),

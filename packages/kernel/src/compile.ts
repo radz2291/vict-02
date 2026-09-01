@@ -645,13 +645,18 @@ export function compileGraph(input: CompileGraphInput): CompileResult {
       }
     }
     const inputContractId =
-      node.kind === 'wait' || node.kind === 'fork' || node.kind === 'join'
+      node.kind === 'wait' || node.kind === 'fork'
         ? undefined
         : (node.inputContractId ?? descriptor?.inputContractId);
     const outputContractId =
-      node.kind === 'wait' || node.kind === 'fork' || node.kind === 'join'
+      node.kind === 'wait' || node.kind === 'fork'
         ? undefined
-        : (node.outputContractId ?? descriptor?.outputContractId);
+        : // Join nodes KEEP their declared output contract: the canonical
+          // branch-result object must cross the join's own boundary, and
+          // the runtime validates it outside the persistence layer.
+          node.kind === 'join'
+          ? node.outputContractId
+          : (node.outputContractId ?? descriptor?.outputContractId);
     effectiveNodes.set(id, {
       id,
       kind: node.kind,

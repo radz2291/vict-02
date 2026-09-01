@@ -50,6 +50,13 @@ export interface PlanInput {
   readonly descriptor?: { readonly effect: EffectClass; readonly idempotency?: 'keyed' };
   /** True when the claimed node is a fork/join-adjacent branch arrival. */
   readonly isBranchArrival?: boolean;
+  /**
+   * True when the claimed wait node has ALREADY been resolved (wake path):
+   * the node must NOT park again; it advances along its success edge using
+   * the same routing as any other completion (including branch arrival
+   * when the success target is the fork's join).
+   */
+  readonly resolvedWait?: boolean;
 }
 
 export type PlannedCompletion =
@@ -221,7 +228,7 @@ function planSuccess(input: PlanInput): PlannedCompletion {
       runStatus: 'running',
     };
   }
-  if (node.kind === 'wait') {
+  if (node.kind === 'wait' && input.resolvedWait !== true) {
     const wait = node.wait as SignalWaitDefinition | TimerWaitDefinition;
     const waitId = waitIdFor(claim.token.runId, claim.token.lineage, node.id);
     if (wait.kind === 'timer') {
@@ -289,7 +296,16 @@ function planSuccess(input: PlanInput): PlannedCompletion {
   }
   const targetNode = graph.getNode(successTarget);
   if (targetNode !== undefined && targetNode.kind === 'join') {
-    // Branch arrival: the branch token is consumed; the join fires once.
+    // Branch arrival: the branch token is consumed; the store records the
+    // branch result and — on the final arrival — creates exactly ONE
+    // join-ready token AT THE JOIN NODE carrying the private canonical
+    // checkpoint. The join node is then claimed and completed by the
+    // runtime like any other control node: its declared output contract
+    // is validated OUTSIDE the store transaction, and one atomic
+    // transition either advances downstream (or completes a terminal
+    // join) or fails the run with a sanitized contract error. The join
+    // therefore always crosses its own declared boundary, exactly once,
+    // even when it declares zero success edges (terminal join).
     return {
       kind: 'transition',
       continuation: {
@@ -299,7 +315,7 @@ function planSuccess(input: PlanInput): PlannedCompletion {
         branchKey: claim.token.branchKey ?? '',
         joinContinuation: {
           tokenId: joinTokenId(claim.token.runId, successTarget),
-          toNodeId: graph.successTargetOf(successTarget) as string,
+          toNodeId: successTarget,
           lineage: forkLineageOf(
             claim.token.lineage,
             targetNode.fork as string,

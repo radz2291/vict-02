@@ -17,6 +17,7 @@ export {
   retryGraph,
   unsafeWriteGraph,
 } from './orchestration-conformance.js';
+export { runOrchestrationJoinSuite } from './orchestration-join-conformance.js';
 export type {
   ConformanceTestRunner as OrchestrationConformanceRunner,
   ConformanceExpect as OrchestrationConformanceExpect,

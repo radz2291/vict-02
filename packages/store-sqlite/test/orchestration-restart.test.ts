@@ -231,4 +231,107 @@ describe('orchestration restart and crash (real subprocess boundaries)', () => {
       }
     },
   );
+
+  it(
+    'partial fan-out SIGKILL: completed branches are not re-invoked; the join validates and completes once',
+    { timeout: 120_000 },
+    async () => {
+      const dir = await mkdtemp(join(tmpdir(), 'vict-join-partial-'));
+      try {
+        const db = join(dir, 'join.db');
+        const state = join(dir, 'state.json');
+        const child = runChild([WORKER, 'start-join-partial', db, state], 3000, {
+          killSignal: 'SIGKILL',
+        });
+        expect(child.status === null || child.status !== 0).toBeTruthy();
+        const stateData = JSON.parse(await readFile(state, 'utf8')) as {
+          runId: string;
+          hanging: boolean;
+        };
+        expect(stateData.hanging).toBe(true);
+
+        // Fresh process: only the interrupted safe work resumes.
+        const b = runChild([WORKER, 'resume-join', db, state]);
+        expect(b.status).toBe(0);
+        const finalState = JSON.parse(await readFile(state, 'utf8')) as {
+          status: string;
+          joinCompleted: number;
+          branchCompleted: number;
+        };
+        expect(finalState.status).toBe('completed');
+        expect(finalState.joinCompleted).toBe(1);
+        expect(finalState.branchCompleted).toBe(2);
+
+        // The external ledger: branch 'a' was invoked exactly ONCE across
+        // both processes (never re-run after the crash); branch 'b' twice
+        // (one killed attempt + one recovered attempt of the same logical
+        // invocation); the join contract parsed exactly once.
+        const ledger = JSON.parse(await readFile(`${state}.ledger`, 'utf8')) as Record<
+          string,
+          number
+        >;
+        expect(ledger['branchA']).toBe(1);
+        expect(ledger['branchB']).toBe(2);
+        expect(ledger['joinParse']).toBe(1);
+      } finally {
+        await cleanupAfterKill(dir);
+      }
+    },
+  );
+
+  it(
+    'a terminal join validates its contract and completes with the canonical output across close/reopen',
+    { timeout: 120_000 },
+    async () => {
+      const dir = await mkdtemp(join(tmpdir(), 'vict-join-terminal-'));
+      try {
+        const db = join(dir, 'terminal.db');
+        const state = join(dir, 'state.json');
+        // Process A: fork with a parked branch feeding a terminal join; exit.
+        const a = runChild([WORKER, 'start-join-terminal', db, state]);
+        expect(a.status).toBe(0);
+        const stateData = JSON.parse(await readFile(state, 'utf8')) as {
+          runId: string;
+          waitId: string | null;
+          activationVersion: string;
+        };
+        expect(stateData.runId).toBeTruthy();
+
+        // Process B: reopen, signal, join validates + completes durably.
+        const b = runChild([WORKER, 'signal-join-terminal', db, state]);
+        expect(b.status).toBe(0);
+        const finalState = JSON.parse(await readFile(state, 'utf8')) as {
+          joinCompleted: number;
+          output: string;
+        };
+        expect(finalState.joinCompleted).toBe(1);
+        expect(finalState.output).toBe(JSON.stringify({ a: 'ALPHA', b: 'GO' }));
+
+        // The join contract parsed exactly once across both processes.
+        const ledger = JSON.parse(await readFile(`${state}.ledger`, 'utf8')) as Record<
+          string,
+          number
+        >;
+        expect(ledger['joinParse']).toBe(1);
+        expect(ledger['branchA']).toBe(1);
+
+        // Durable facts: exactly one join completion and one resume.
+        const dbFile = new DatabaseSync(db);
+        try {
+          const joins = dbFile
+            .prepare("SELECT COUNT(*) AS c FROM vict_run_event WHERE type = 'join.completed';")
+            .get() as { c: number };
+          expect(joins.c).toBe(1);
+          const resumed = dbFile
+            .prepare("SELECT COUNT(*) AS c FROM vict_run_event WHERE type = 'run.resumed';")
+            .get() as { c: number };
+          expect(resumed.c).toBe(1);
+        } finally {
+          dbFile.close();
+        }
+      } finally {
+        await cleanupAfterKill(dir);
+      }
+    },
+  );
 });
