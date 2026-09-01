@@ -48,7 +48,7 @@ describe('benchmark graph event semantics', () => {
           invoke: (input) => ({ n: input.n, digest: `d-${input.n}-${input.doubled}` }),
         }),
       );
-    runtime.activate(
+    await runtime.activate(
       defineGraph({
         id: 'b-three-node-pure',
         entry: 'start',

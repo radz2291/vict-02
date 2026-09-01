@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { z } from 'zod';
 import { defineCapability, defineGraph } from '@vict/sdk';
 import { defineZodContract } from '@vict/sdk/zod';
-import { createInMemoryRunRepository, createRuntime } from '@vict/runtime';
+import { createRuntime } from '@vict/runtime';
 
 const Count = defineZodContract('e.count', '1', z.object({ count: z.number() }));
 
@@ -47,7 +47,7 @@ describe('effect policy enforcement', () => {
     const pure = spyCapability('pure');
     const runtime = createRuntime();
     runtime.registerCapability(pure.capability);
-    runtime.activate(oneNodeGraph('e.pure'));
+    await runtime.activate(oneNodeGraph('e.pure'));
 
     const result = await runtime.run({ count: 1 }, { mode: 'simulate' });
     expect(result.status).toBe('completed');
@@ -59,7 +59,7 @@ describe('effect policy enforcement', () => {
     const read = spyCapability('read');
     const runtime = createRuntime();
     runtime.registerCapability(read.capability);
-    runtime.activate(oneNodeGraph('e.read'));
+    await runtime.activate(oneNodeGraph('e.read'));
 
     const result = await runtime.run({ count: 1 }, { mode: 'simulate' });
     expect(result.status).toBe('blocked');
@@ -80,7 +80,7 @@ describe('effect policy enforcement', () => {
     const runtime = createRuntime();
     runtime.registerCapability(read.capability);
     runtime.registerDouble('e.read', read.double);
-    runtime.activate(oneNodeGraph('e.read'));
+    await runtime.activate(oneNodeGraph('e.read'));
 
     const result = await runtime.run({ count: 5 }, { mode: 'simulate' });
     expect(result.status).toBe('completed');
@@ -97,7 +97,7 @@ describe('effect policy enforcement', () => {
     const write = spyCapability('write');
     const runtime = createRuntime();
     runtime.registerCapability(write.capability);
-    runtime.activate(oneNodeGraph('e.write'));
+    await runtime.activate(oneNodeGraph('e.write'));
 
     const result = await runtime.run({ count: 1 }, { mode: 'simulate' });
     expect(result.status).toBe('blocked');
@@ -109,7 +109,7 @@ describe('effect policy enforcement', () => {
     const runtime = createRuntime();
     runtime.registerCapability(write.capability);
     runtime.registerDouble('e.write', write.double);
-    runtime.activate(oneNodeGraph('e.write'));
+    await runtime.activate(oneNodeGraph('e.write'));
 
     const result = await runtime.run({ count: 2 }, { mode: 'simulate' });
     expect(result.status).toBe('completed');
@@ -122,7 +122,7 @@ describe('effect policy enforcement', () => {
     const runtime = createRuntime();
     runtime.registerCapability(irreversible.capability);
     runtime.registerDouble('e.irreversible', irreversible.double);
-    runtime.activate(oneNodeGraph('e.irreversible'));
+    await runtime.activate(oneNodeGraph('e.irreversible'));
 
     const result = await runtime.run(
       { count: 1 },
@@ -138,7 +138,7 @@ describe('effect policy enforcement', () => {
     const irreversible = spyCapability('irreversible');
     const runtime = createRuntime();
     runtime.registerCapability(irreversible.capability);
-    runtime.activate(oneNodeGraph('e.irreversible'));
+    await runtime.activate(oneNodeGraph('e.irreversible'));
 
     const result = await runtime.runNode('n', { count: 1 });
     expect(result.status).toBe('blocked');
@@ -149,7 +149,7 @@ describe('effect policy enforcement', () => {
     const irreversible = spyCapability('irreversible');
     const runtime = createRuntime();
     runtime.registerCapability(irreversible.capability);
-    runtime.activate(oneNodeGraph('e.irreversible'));
+    await runtime.activate(oneNodeGraph('e.irreversible'));
 
     const result = await runtime.run({ count: 1 });
     expect(result.status).toBe('blocked');
@@ -164,7 +164,7 @@ describe('effect policy enforcement', () => {
     const irreversible = spyCapability('irreversible');
     const runtime = createRuntime();
     runtime.registerCapability(irreversible.capability);
-    runtime.activate(oneNodeGraph('e.irreversible'));
+    await runtime.activate(oneNodeGraph('e.irreversible'));
 
     const result = await runtime.run({ count: 1 }, { policy: { allowIrreversible: true } });
     expect(result.status).toBe('completed');
@@ -176,7 +176,7 @@ describe('effect policy enforcement', () => {
     const write = spyCapability('write');
     const runtime = createRuntime();
     runtime.registerCapability(read.capability).registerCapability(write.capability);
-    runtime.activate(twoNodeGraph('e.read', 'e.write'));
+    await runtime.activate(twoNodeGraph('e.read', 'e.write'));
 
     const result = await runtime.run({ count: 1 });
     expect(result.status).toBe('completed');
@@ -189,7 +189,7 @@ describe('effect policy enforcement', () => {
     const runtime = createRuntime();
     runtime.registerCapability(read.capability);
     runtime.registerDouble('e.read', read.double);
-    runtime.activate(oneNodeGraph('e.read'));
+    await runtime.activate(oneNodeGraph('e.read'));
 
     const result = await runtime.run({ count: 7 });
     expect(result.status).toBe('completed');
@@ -205,7 +205,7 @@ describe('isolated node testing', () => {
     const runtime = createRuntime();
     runtime.registerCapability(first.capability).registerCapability(second.capability);
     runtime.registerDouble('e.read', second.double);
-    runtime.activate(twoNodeGraph('e.pure', 'e.read'));
+    await runtime.activate(twoNodeGraph('e.pure', 'e.read'));
 
     const result = await runtime.runNode('n1', { count: 1 });
     expect(result.status).toBe('completed');
@@ -215,21 +215,22 @@ describe('isolated node testing', () => {
   });
 
   it('does not publish into normal run history', async () => {
-    const repository = createInMemoryRunRepository();
     const pure = spyCapability('pure');
-    const runtime = createRuntime({ repository });
+    const runtime = createRuntime();
     runtime.registerCapability(pure.capability);
-    runtime.activate(oneNodeGraph('e.pure'));
+    await runtime.activate(oneNodeGraph('e.pure'));
 
     const isolated = await runtime.runNode('n', { count: 1 });
     expect(isolated.status).toBe('completed');
     expect(isolated.trace.length).toBeGreaterThan(0);
-    expect(repository.list()).toEqual([]);
-    expect(runtime.listRuns()).toEqual([]);
+    // Isolated node execution never writes durable run records.
+    expect(await runtime.listRuns()).toEqual([]);
 
-    // A normal run still lands in the repository afterwards.
+    // A normal run still lands in the store afterwards.
     await runtime.run({ count: 2 });
-    expect(runtime.listRuns().length).toBe(1);
+    expect((await runtime.listRuns()).length).toBe(1);
+    const stored = await runtime.getRun(((await runtime.listRuns())[0] as { runId: string }).runId);
+    expect(stored?.status).toBe('completed');
   });
 
   it('runs a registered safe double for irreversible capabilities in isolated testing while the real implementation stays untouched', async () => {
@@ -237,7 +238,7 @@ describe('isolated node testing', () => {
     const runtime = createRuntime();
     runtime.registerCapability(irreversible.capability);
     runtime.registerDouble('e.irreversible', irreversible.double);
-    runtime.activate(oneNodeGraph('e.irreversible'));
+    await runtime.activate(oneNodeGraph('e.irreversible'));
 
     const result = await runtime.runNode('n', { count: 3 });
     // The safe double runs; the real irreversible implementation never does.
@@ -255,7 +256,7 @@ describe('isolated node testing', () => {
     const pure = spyCapability('pure');
     const runtime = createRuntime();
     runtime.registerCapability(pure.capability);
-    runtime.activate(oneNodeGraph('e.pure'));
+    await runtime.activate(oneNodeGraph('e.pure'));
     await expect(runtime.runNode('ghost', {})).rejects.toMatchObject({
       code: 'VICT_RUNTIME_UNKNOWN_NODE',
     });

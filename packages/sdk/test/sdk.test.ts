@@ -47,7 +47,7 @@ describe('@vict/sdk public surface', () => {
     const runtime = createRuntime();
     runtime.registerCapability(uppercase).registerCapability(exclaim);
 
-    const activation = runtime.activate(graph);
+    const activation = await runtime.activate(graph);
     expect(activation.ok).toBe(true);
     if (!activation.ok) {
       return;
@@ -99,7 +99,7 @@ describe('@vict/sdk public surface', () => {
     });
     const runtime = createRuntime();
     runtime.registerCapability(echo);
-    const activation = runtime.activate(
+    const activation = await runtime.activate(
       defineGraph({
         id: 'smoke-neutral-graph',
         entry: 'e',

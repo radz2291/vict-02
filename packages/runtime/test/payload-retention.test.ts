@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { z } from 'zod';
 import { defineCapability, defineGraph } from '@vict/sdk';
 import { defineZodContract } from '@vict/sdk/zod';
-import { createInMemoryRunRepository, createRuntime } from '@vict/runtime';
+import { createRuntime } from '@vict/runtime';
 import type { PayloadRetention } from '@vict/runtime';
 
 const SECRET_OUTPUT = { text: 'public part', secretNote: 'retained-SECRET-8a2f1' };
@@ -15,9 +15,8 @@ const Text = defineZodContract(
 );
 const Count = defineZodContract('r.count', '1', z.object({ count: z.number() }));
 
-function retentionRuntime(retention: PayloadRetention) {
-  const repository = createInMemoryRunRepository();
-  const runtime = createRuntime({ repository, payloadRetention: retention });
+async function retentionRuntime(retention: PayloadRetention) {
+  const runtime = createRuntime({ payloadRetention: retention });
   runtime.registerCapability(
     defineCapability({
       id: 'r.producer',
@@ -28,7 +27,7 @@ function retentionRuntime(retention: PayloadRetention) {
       invoke: () => SECRET_OUTPUT,
     }),
   );
-  runtime.activate(
+  await runtime.activate(
     defineGraph({
       id: 'r-graph',
       entry: 'p',
@@ -36,18 +35,18 @@ function retentionRuntime(retention: PayloadRetention) {
       edges: [],
     }),
   );
-  return { runtime, repository };
+  return { runtime };
 }
 
 describe('run-record payload policy', () => {
   it('default retention stores metadata and safe summary only', async () => {
-    const { runtime } = retentionRuntime('summary');
+    const { runtime } = await retentionRuntime('summary');
     const result = await runtime.run({ count: 1 });
     expect(result.status).toBe('completed');
     // The caller still receives the actual output.
     expect(result.output).toEqual(SECRET_OUTPUT);
 
-    const record = runtime.getRun(result.runId);
+    const record = await runtime.getRun(result.runId);
     expect(record?.retention).toBe('summary');
     expect('output' in (record ?? {})).toBe(false);
     expect(record?.outputSummary).toEqual({
@@ -59,11 +58,11 @@ describe('run-record payload policy', () => {
   });
 
   it("'none' retains no output payload or summary", async () => {
-    const { runtime } = retentionRuntime('none');
+    const { runtime } = await retentionRuntime('none');
     const result = await runtime.run({ count: 1 });
     expect(result.output).toEqual(SECRET_OUTPUT); // caller-facing result unaffected
 
-    const record = runtime.getRun(result.runId);
+    const record = await runtime.getRun(result.runId);
     expect(record?.retention).toBe('none');
     expect('output' in (record ?? {})).toBe(false);
     expect('outputSummary' in (record ?? {})).toBe(false);
@@ -71,11 +70,11 @@ describe('run-record payload policy', () => {
   });
 
   it("explicit 'full' retention stores the complete output", async () => {
-    const { runtime } = retentionRuntime('full');
+    const { runtime } = await retentionRuntime('full');
     const result = await runtime.run({ count: 1 });
     expect(result.output).toEqual(SECRET_OUTPUT);
 
-    const record = runtime.getRun(result.runId);
+    const record = await runtime.getRun(result.runId);
     expect(record?.retention).toBe('full');
     expect(record?.output).toEqual(SECRET_OUTPUT);
     expect(record?.outputSummary).toBeDefined();
@@ -83,8 +82,7 @@ describe('run-record payload policy', () => {
 
   it('failed runs retain sanitised errors under every retention policy', async () => {
     for (const retention of ['none', 'summary', 'full'] as const) {
-      const repository = createInMemoryRunRepository();
-      const runtime = createRuntime({ repository, payloadRetention: retention });
+      const runtime = createRuntime({ payloadRetention: retention });
       runtime.registerCapability(
         defineCapability({
           id: 'r.failing',
@@ -97,7 +95,7 @@ describe('run-record payload policy', () => {
           },
         }),
       );
-      runtime.activate(
+      await runtime.activate(
         defineGraph({
           id: 'r-fail-graph',
           entry: 'f',
@@ -107,7 +105,7 @@ describe('run-record payload policy', () => {
       );
       const result = await runtime.run({ count: 1 });
       expect(result.status).toBe('failed');
-      const record = runtime.getRun(result.runId);
+      const record = await runtime.getRun(result.runId);
       expect(record?.error?.code).toBe('VICT_RUNTIME_CAPABILITY_THREW');
       expect(JSON.stringify(record)).not.toContain(SECRET);
       expect(JSON.stringify(result)).not.toContain(SECRET);

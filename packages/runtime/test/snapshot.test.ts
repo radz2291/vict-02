@@ -42,7 +42,7 @@ describe('activation snapshot semantics', () => {
     };
     const runtime = createRuntime();
     runtime.registerCapability(definition);
-    runtime.activate(oneNodeGraph('s.mutant'));
+    await runtime.activate(oneNodeGraph('s.mutant'));
 
     const before = await runtime.run({ count: 1 }, { mode: 'simulate' });
     expect(before.status).toBe('completed'); // pure runs real in simulate
@@ -73,7 +73,7 @@ describe('activation snapshot semantics', () => {
         invoke: (input) => input,
       }),
     );
-    const activation = runtime.activate(oneNodeGraph('s.pure'));
+    const activation = await runtime.activate(oneNodeGraph('s.pure'));
     const before = await runtime.run({ count: 1 });
     expect(before.status).toBe('completed');
 
@@ -107,13 +107,13 @@ describe('activation snapshot semantics', () => {
     };
     const runtime = createRuntime();
     runtime.registerCapability(definition);
-    const first = runtime.activate(oneNodeGraph('s.revisable'));
+    const first = await runtime.activate(oneNodeGraph('s.revisable'));
     expect(first.ok).toBe(true);
 
     // Change the effect class and revision, then reactivate explicitly.
     (definition as { effect: string }).effect = 'write';
     definition.revision = '2';
-    const second = runtime.activate(oneNodeGraph('s.revisable'));
+    const second = await runtime.activate(oneNodeGraph('s.revisable'));
     expect(second.ok).toBe(true);
     if (first.ok && second.ok) {
       expect(first.graphVersion).toBe(second.graphVersion); // topology unchanged
@@ -160,7 +160,7 @@ describe('activation snapshot semantics', () => {
           invoke: real,
         }),
       );
-    runtime.activate(twoNodeGraph('s.gate', 's.reader'));
+    await runtime.activate(twoNodeGraph('s.gate', 's.reader'));
 
     const inFlight = runtime.run(
       { count: 5 },
@@ -232,7 +232,7 @@ describe('activation snapshot semantics', () => {
         }),
       );
     runtime.registerDouble('s.pure', doubleA);
-    runtime.activate(twoNodeGraph('s.gate', 's.pure'));
+    await runtime.activate(twoNodeGraph('s.gate', 's.pure'));
 
     const inFlight = runtime.run(
       { count: 1 },

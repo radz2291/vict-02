@@ -52,9 +52,9 @@ function twoNodeGraph() {
 }
 
 describe('runtime activation and configuration', () => {
-  it('compiles and activates a valid graph with layered identity', () => {
+  it('compiles and activates a valid graph with layered identity', async () => {
     const runtime = counterRuntime();
-    const activation = runtime.activate(twoNodeGraph());
+    const activation = await runtime.activate(twoNodeGraph());
     expect(activation.ok).toBe(true);
     if (activation.ok) {
       expect(activation.graphId).toBe('t-graph');
@@ -70,11 +70,11 @@ describe('runtime activation and configuration', () => {
     expect(active?.activationVersion).toBeDefined();
   });
 
-  it('produces the same activation identity for identical revisions and a new one after revision changes', () => {
+  it('produces the same activation identity for identical revisions and a new one after revision changes', async () => {
     const a = counterRuntime();
     const b = counterRuntime();
-    const activationA = a.activate(twoNodeGraph());
-    const activationB = b.activate(twoNodeGraph());
+    const activationA = await a.activate(twoNodeGraph());
+    const activationB = await b.activate(twoNodeGraph());
     if (activationA.ok && activationB.ok) {
       expect(activationA.graphVersion).toBe(activationB.graphVersion);
       expect(activationA.capabilitySetVersion).toBe(activationB.capabilitySetVersion);
@@ -84,7 +84,7 @@ describe('runtime activation and configuration', () => {
     }
 
     const c = counterRuntime('2');
-    const activationC = c.activate(twoNodeGraph());
+    const activationC = await c.activate(twoNodeGraph());
     if (activationA.ok && activationC.ok) {
       expect(activationA.graphVersion).toBe(activationC.graphVersion);
       expect(activationA.capabilitySetVersion).not.toBe(activationC.capabilitySetVersion);
@@ -96,7 +96,7 @@ describe('runtime activation and configuration', () => {
 
   it('preserves the previously active graph when activation fails', async () => {
     const runtime = counterRuntime();
-    const first = runtime.activate(twoNodeGraph());
+    const first = await runtime.activate(twoNodeGraph());
     expect(first.ok).toBe(true);
 
     // Invalid: duplicate node ids.
@@ -109,7 +109,7 @@ describe('runtime activation and configuration', () => {
       ],
       edges: [],
     });
-    const second = runtime.activate(broken);
+    const second = await runtime.activate(broken);
     expect(second.ok).toBe(false);
     if (!second.ok) {
       expect(second.issues.some((issue) => issue.code === 'DUPLICATE_NODE')).toBe(true);
@@ -119,7 +119,7 @@ describe('runtime activation and configuration', () => {
     expect(runtime.activeGraph()?.id).toBe('t-graph');
     const result = await runtime.run({ count: 1 });
     expect(result.status).toBe('completed');
-    expect(runtime.getRun(result.runId)?.graphId).toBe('t-graph');
+    expect((await runtime.getRun(result.runId))?.graphId).toBe('t-graph');
   });
 
   it('rejects runs before any graph is activated', async () => {
@@ -190,10 +190,10 @@ describe('runtime activation and configuration', () => {
 
   it('records runs in the repository and exposes them', async () => {
     const runtime = counterRuntime();
-    runtime.activate(twoNodeGraph());
+    await runtime.activate(twoNodeGraph());
     const result = await runtime.run({ count: 41 });
-    expect(runtime.listRuns().length).toBe(1);
-    const record = runtime.getRun(result.runId);
+    expect((await runtime.listRuns()).length).toBe(1);
+    const record = await runtime.getRun(result.runId);
     expect(record).toBeDefined();
     expect(record?.status).toBe('completed');
     expect(record?.trace.length).toBeGreaterThan(0);
@@ -222,7 +222,7 @@ describe('trace safety', () => {
         }),
       }),
     );
-    runtime.activate(
+    await runtime.activate(
       defineGraph({
         id: 't-secret-graph',
         entry: 's',
@@ -247,7 +247,7 @@ describe('trace safety', () => {
 
   it('keeps contract rejections useful after redaction', async () => {
     const runtime = counterRuntime();
-    runtime.activate(
+    await runtime.activate(
       defineGraph({
         id: 't-reject-graph',
         entry: 'a',
@@ -294,7 +294,7 @@ describe('trace safety', () => {
         invoke: (error) => ({ message: `handled: ${error.code}`, count: 0 }),
       }),
     );
-    runtime.activate(
+    await runtime.activate(
       defineGraph({
         id: 't-error-graph',
         entry: 'x',
@@ -331,7 +331,7 @@ describe('trace safety', () => {
         },
       }),
     );
-    runtime.activate(
+    await runtime.activate(
       defineGraph({
         id: 't-fail-graph',
         entry: 'x',

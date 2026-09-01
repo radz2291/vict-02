@@ -31,7 +31,11 @@ export function defineZodContract<T>(
 ): Contract<T> {
   validateContractIdentity(id, revision);
   const expected = options.description ?? schema.description ?? id;
-  return {
+  // The returned contract is frozen: callers cannot swap `parse` or identity
+  // fields in place and silently change what a pinned activation parses with.
+  // Capturing the schema reference by value inside `parse` also pins the
+  // effective validation behaviour to this factory call.
+  const contract: Contract<T> = {
     id,
     revision,
     expected,
@@ -57,4 +61,5 @@ export function defineZodContract<T>(
       };
     },
   };
+  return Object.freeze(contract);
 }

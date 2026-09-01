@@ -156,6 +156,14 @@ Two different guarantees, deliberately separated:
   - `'none'`: additionally drop the output summary.
   - `'full'`: additionally retain the complete validated output. Explicit
     opt-in via `createRuntime({ payloadRetention: 'full' })`.
+
+> **WARNING — full retention transfers responsibility.** Selecting `'full'`
+> retention makes the caller/operator responsible for the sensitivity,
+> access control, minimization, and lifecycle of the complete output that
+> will be persisted. Vict cannot make arbitrary retained payloads safe merely
+> by labeling the mode: pair `'full'` with an explicit access-control and
+> deletion/lifecycle policy. Inputs are never stored, including under
+> `'full'` retention.
 - **Errors are sanitised at their source.** Thrown capability/double errors
   are untrusted: the runtime retains a stable code, capability/node ids, a
   safe framework-generated message, the error class name, and a correlation
@@ -165,8 +173,10 @@ Two different guarantees, deliberately separated:
   author-controlled content.
 - The caller-facing `RunResult.output` always carries the actual validated
   output regardless of retention; retention governs *stored history* only.
-  The same `RunRecord`/`RunRepository` boundary is what a future `RunStore`
-  would persist.
+  Since Stage 02, that stored history lives behind the semantic store ports
+  (`ActivationCatalog` / `ExecutionStore`) with the in-memory store as the
+  default backend and SQLite (`@vict/store-sqlite`) as the durable adapter;
+  see `docs/architecture/STAGE-02-STORES.md`.
 
 ## Simulation and effect policy
 

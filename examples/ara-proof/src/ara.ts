@@ -8,10 +8,10 @@ import type { AssistantMessage } from './contracts.js';
  * graph compiled and activated. Compilation happens here, once - never on the
  * conversational hot path.
  */
-export function createAraRuntime() {
+export async function createAraRuntime() {
   const runtime = createRuntime();
   registerAraCapabilities(runtime);
-  const activation = runtime.activate(araGraph);
+  const activation = await runtime.activate(araGraph);
   if (!activation.ok) {
     const detail = activation.issues.map((issue) => issue.message).join('; ');
     throw new Error(`ARA graph failed to activate: ${detail}`);
@@ -21,7 +21,7 @@ export function createAraRuntime() {
 
 /** Run one deterministic ARA turn. */
 export async function runAraTurn(text: string) {
-  const { runtime, activation } = createAraRuntime();
+  const { runtime, activation } = await createAraRuntime();
   const result = await runtime.run<{ role: 'assistant'; text: string }>({ text });
   return {
     result,

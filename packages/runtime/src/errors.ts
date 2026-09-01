@@ -15,7 +15,9 @@ export type RuntimeErrorCode =
   | 'VICT_RUNTIME_UNKNOWN_NODE'
   | 'VICT_RUNTIME_CAPABILITY_MISSING'
   | 'VICT_RUNTIME_CAPABILITY_THREW'
-  | 'VICT_RUNTIME_INVALID_RETENTION';
+  | 'VICT_RUNTIME_INVALID_RETENTION'
+  | 'VICT_RUNTIME_INVALID_STORES'
+  | 'VICT_RUNTIME_STORE_FAILURE';
 
 /** Thrown only for programmer/configuration errors; data-level failures are structured values. */
 export class VictRuntimeError extends Error {

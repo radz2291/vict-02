@@ -344,6 +344,44 @@ describe('compileGraph', () => {
     }
   });
 
+  it('reports cycles alongside other independent diagnostics in deterministic order', () => {
+    // The graph has BOTH an unknown capability and a cycle. Both issues must
+    // be reported, and repeated compilation of the same definition must
+    // produce the identical issue sequence.
+    const def: ApplicationGraphDefinition = {
+      id: 'g',
+      entry: 'a',
+      nodes: [
+        { id: 'a', capability: 'cap-a' },
+        { id: 'b', capability: 'cap-ghost' },
+      ],
+      edges: [
+        { from: 'a', to: 'b' },
+        { from: 'b', to: 'a' },
+      ],
+    };
+    const first = compileGraph({
+      definition: def,
+      capabilities: VALID_CAPS,
+      contracts: permissiveContracts,
+    });
+    expect(first.ok).toBe(false);
+    if (!first.ok) {
+      const codes = first.issues.map((issue) => issue.code);
+      expect(codes).toContain('UNKNOWN_CAPABILITY');
+      expect(codes).toContain('UNSUPPORTED_CYCLE');
+      // Deterministic order: the capability diagnostic precedes the cycle
+      // diagnostic on every compilation of the same definition.
+      expect(codes.indexOf('UNKNOWN_CAPABILITY')).toBeLessThan(codes.indexOf('UNSUPPORTED_CYCLE'));
+    }
+    const second = compileGraph({
+      definition: def,
+      capabilities: VALID_CAPS,
+      contracts: permissiveContracts,
+    });
+    expect(second).toEqual(first);
+  });
+
   it('rejects statically knowable adjacent contract incompatibility', () => {
     const def: ApplicationGraphDefinition = {
       id: 'g',

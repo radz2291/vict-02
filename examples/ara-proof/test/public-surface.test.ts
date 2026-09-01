@@ -51,7 +51,7 @@ function buildPublicApp(runtime: VictRuntime): void {
 describe('public SDK surface (outside package internals)', () => {
   it('runs a normal execution end to end', async () => {
     const runtime = createRuntime();
-    buildPublicApp(runtime);
+    await buildPublicApp(runtime);
     const result = await runtime.run({ text: '  public surface  ' });
     expect(result.status).toBe('completed');
     expect(result.output).toEqual({ text: 'public surface', notes: 14 });
@@ -63,7 +63,7 @@ describe('public SDK surface (outside package internals)', () => {
 
   it('blocks unmocked read effects in simulation through the public API only', async () => {
     const runtime = createRuntime();
-    buildPublicApp(runtime);
+    await buildPublicApp(runtime);
     const result = await runtime.run({ text: 'x' }, { mode: 'simulate' });
     expect(result.status).toBe('blocked');
     expect(result.trace.some((event) => event.type === 'effect.blocked')).toBe(true);
@@ -88,7 +88,7 @@ const araContracts = {
   ),
 };
 
-function buildAraRuntime(): VictRuntime {
+async function buildAraRuntime(): Promise<VictRuntime> {
   const runtime = createRuntime();
   const { UserMessage, PreparedContext, AssistantMessage } = araContracts;
   runtime
@@ -138,7 +138,7 @@ function buildAraRuntime(): VictRuntime {
         invoke: async (message) => ({ role: message.role, text: message.text }),
       }),
     );
-  const activation = runtime.activate(
+  const activation = await runtime.activate(
     defineGraph({
       id: 'ara2-proof',
       entry: 'user-message',
@@ -163,7 +163,7 @@ function buildAraRuntime(): VictRuntime {
 
 describe('ARA proof integration (public imports)', () => {
   it('executes one user message through the full graph, offline, with exactly 13 events', async () => {
-    const runtime = buildAraRuntime();
+    const runtime = await buildAraRuntime();
     const active = runtime.activeGraph();
     expect(active?.id).toBe('ara2-proof');
 
@@ -207,11 +207,11 @@ describe('ARA proof integration (public imports)', () => {
     }
 
     // Run record persisted under the same id.
-    expect(runtime.getRun(result.runId)?.runId).toBe(result.runId);
+    expect((await runtime.getRun(result.runId))?.runId).toBe(result.runId);
   });
 
   it('blocks the assistant node in simulation without a double, runs the double when registered', async () => {
-    const runtime = buildAraRuntime();
+    const runtime = await buildAraRuntime();
     const double = vi.fn(() => ({
       role: 'assistant' as const,
       text: 'simulated reply',

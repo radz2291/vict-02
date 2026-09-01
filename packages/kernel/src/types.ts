@@ -239,6 +239,8 @@ export type KernelEvent = EventEnvelope &
         readonly type: 'run.blocked';
         readonly steps: number;
         readonly reason: string;
+        /** Stable machine-readable blocking code (e.g. an interruption code set by durable recovery). */
+        readonly code?: string;
         readonly capabilityId?: string;
         readonly effect?: EffectClass;
         readonly remediation: string;

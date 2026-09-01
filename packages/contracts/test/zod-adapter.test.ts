@@ -111,4 +111,17 @@ describe('defineZodContract (optional adapter)', () => {
       }
     }
   });
+
+  it('returns a frozen contract that cannot be mutated in place', () => {
+    const contract = defineZodContract<{ n: number }>('z.frozen', '1', z.object({ n: z.number() }));
+    expect(Object.isFrozen(contract)).toBe(true);
+    expect(() => {
+      (contract as { parse: unknown }).parse = () => ({ ok: true as const, value: { n: 666 } });
+    }).toThrow();
+    expect(() => {
+      (contract as { revision: string }).revision = '2';
+    }).toThrow();
+    // The original parsing behaviour is unchanged.
+    expect(contract.parse({ n: 'still-bad' }).ok).toBe(false);
+  });
 });

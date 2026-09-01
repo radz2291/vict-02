@@ -1,13 +1,16 @@
 #!/usr/bin/env node
 /**
- * Isolated consumer / package check for Vict Night 01.1.
+ * Isolated consumer / package check for Vict Stage 02.
  *
  * Proves, against PACKED TARBALLS (not workspace sources, no hoisting):
- *   1. A neutral consumer can install @vict/{contracts,kernel,runtime,sdk}
- *      WITHOUT zod, author contracts through the neutral API, type-check
- *      under strict TypeScript against the emitted declarations, and run.
+ *   1. A neutral consumer can install @vict/{contracts,kernel,runtime,store-sqlite,sdk}
+ *      WITHOUT zod, author contracts through the neutral API, persist an
+ *      activation and run in a real SQLite database file, close, reopen,
+ *      restore the activation, and read the identical run — all type-checked
+ *      under strict TypeScript (skipLibCheck: false) against emitted
+ *      declarations.
  *   2. A consumer that installs zod can use the optional @vict/sdk/zod
- *      adapter subpath.
+ *      adapter subpath (and its contract is frozen).
  *   3. Base emitted declarations contain no Zod type/module references.
  *
  * Usage: node scripts/isolated-consumer-check.mjs   (run `npm run build` first)
@@ -19,7 +22,7 @@ import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 
 const repoRoot = resolve(new URL('..', import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '$1'));
-const packages = ['contracts', 'kernel', 'runtime', 'sdk'];
+const packages = ['contracts', 'kernel', 'runtime', 'store-sqlite', 'sdk'];
 let failures = 0;
 
 function run(command, args, options = {}) {
@@ -62,15 +65,21 @@ for (const name of packages) {
   }
 }
 const tarballs = readdirSync(work).filter((file) => file.endsWith('.tgz'));
-check(tarballs.length === packages.length, `packed ${tarballs.length} tarballs`);
+check(
+  tarballs.length === packages.length,
+  `packed ${tarballs.length} tarballs (five public packages)`,
+);
 
-// 2. Neutral consumer: installs the four tarballs and NOTHING else.
+// 2. Neutral consumer: installs the five tarballs and NOTHING else.
 const neutralDir = join(work, 'consumer-neutral');
 mkdirSync(join(neutralDir, 'src'), { recursive: true });
 writeFileSync(
   join(neutralDir, 'package.json'),
   JSON.stringify({ name: 'vict-consumer-neutral', private: true, type: 'module' }, null, 2),
 );
+// @types/node is consumer-side dev tooling for the Node runtime platform
+// (process, node:sqlite declaration checking) — not a Vict dependency.
+run('npm', ['install', '--save-dev', '@types/node@22'], { cwd: neutralDir });
 run('npm', ['install', ...tarballs.map((file) => join(work, file))], { cwd: neutralDir });
 check(
   !existsSync(join(neutralDir, 'node_modules', 'zod')),
@@ -89,6 +98,7 @@ writeFileSync(
         noUncheckedIndexedAccess: true,
         skipLibCheck: false,
         noEmit: true,
+        types: ['node'],
       },
       include: ['src/**/*.ts'],
     },
@@ -99,6 +109,7 @@ writeFileSync(
 writeFileSync(
   join(neutralDir, 'src', 'index.ts'),
   `import { createRuntime, defineCapability, defineContract, defineGraph } from '@vict/sdk';
+import { createSqliteStores } from '@vict/store-sqlite';
 import type { Contract } from '@vict/sdk';
 
 // Neutral contract authoring: no schema library involved anywhere.
@@ -135,37 +146,99 @@ const echo = defineCapability({
   invoke: (input) => ({ text: input.text.toUpperCase() }),
 });
 
-const runtime = createRuntime();
-runtime.registerCapability(echo);
-const activation = runtime.activate(
-  defineGraph({
-    id: 'consumer-graph',
-    entry: 'e',
-    nodes: [{ id: 'e', capability: 'c.echo' }],
-    edges: [],
-  }),
-);
-if (!activation.ok) {
-  throw new Error('activation failed');
+// Durable SQLite stores from the packed adapter (built-in node:sqlite).
+const dbPath = process.argv[2] ?? 'consumer.db';
+const reopen = process.argv[3] === 'reopen';
+
+if (reopen) {
+  // Reopen phase: restore the exact activation and read the run back.
+  const stores = createSqliteStores({ path: dbPath });
+  const runtime = createRuntime({ stores });
+  runtime.registerCapability(echo);
+  const restored = await runtime.restoreActivation(
+    defineGraph({
+      id: 'consumer-graph',
+      entry: 'e',
+      nodes: [{ id: 'e', capability: 'c.echo' }],
+      edges: [],
+    }),
+  );
+  if (!restored.ok) {
+    throw new Error('reopen: restoration failed: ' + restored.code);
+  }
+  const record = await runtime.getRun(process.argv[4] ?? '');
+  if (!record || record.status !== 'completed') {
+    throw new Error('reopen: run record missing or not completed');
+  }
+  if (!record.trace || record.trace.length === 0) {
+    throw new Error('reopen: trace missing');
+  }
+  await stores.dispose();
+  console.log(
+    'NEUTRAL_CONSUMER_REOPEN_OK',
+    restored.activationVersion.slice(0, 14),
+    String(record.trace.length),
+  );
+} else {
+  const stores = createSqliteStores({ path: dbPath });
+  const runtime = createRuntime({ stores });
+  runtime.registerCapability(echo);
+  const activation = await runtime.activate(
+    defineGraph({
+      id: 'consumer-graph',
+      entry: 'e',
+      nodes: [{ id: 'e', capability: 'c.echo' }],
+      edges: [],
+    }),
+  );
+  if (!activation.ok) {
+    throw new Error('activation failed');
+  }
+  const result = await runtime.run<{ text: string }>({ text: 'isolated consumer' });
+  if (result.status !== 'completed' || result.output?.text !== 'ISOLATED CONSUMER') {
+    throw new Error('unexpected run outcome: ' + result.status);
+  }
+  await stores.dispose();
+  console.log(
+    'NEUTRAL_CONSUMER_OK',
+    activation.graphVersion.slice(0, 14),
+    activation.activationVersion.slice(0, 14),
+    result.runId,
+  );
 }
-const result = await runtime.run<{ text: string }>({ text: 'isolated consumer' });
-if (result.status !== 'completed' || result.output?.text !== 'ISOLATED CONSUMER') {
-  throw new Error(\`unexpected run outcome: \${result.status}\`);
-}
-console.log('NEUTRAL_CONSUMER_OK', activation.graphVersion.slice(0, 14), activation.activationVersion.slice(0, 14));
 `,
 );
 
 console.log('\n[neutral consumer] strict type-check against packed declarations');
 run('npx', ['tsc', '-p', join(neutralDir, 'tsconfig.json')]);
-console.log('[neutral consumer] execute packed artifacts');
-const neutralRun = run('npx', ['tsx', join(neutralDir, 'src', 'index.ts')], {
+console.log('[neutral consumer] execute packed artifacts (SQLite publish/activate/run/close)');
+const neutralRun = run('npx', ['tsx', join(neutralDir, 'src', 'index.ts'), dbPathFor(neutralDir)], {
   capture: true,
   cwd: neutralDir,
 });
 check(
   neutralRun.status === 0 && neutralRun.stdout?.includes('NEUTRAL_CONSUMER_OK'),
-  'neutral consumer ran end to end',
+  'neutral consumer ran end to end with SQLite stores',
+);
+const runId = (neutralRun.stdout ?? '').trim().split(/\r?\n/).at(-1)?.split(' ').at(-1) ?? '';
+check(runId.startsWith('run_'), 'run id captured from neutral consumer output');
+
+function dbPathFor(dir) {
+  return join(dir, 'consumer.db');
+}
+
+console.log('[neutral consumer] REOPEN the same SQLite database in a fresh process');
+const reopenRun = run(
+  'npx',
+  ['tsx', join(neutralDir, 'src', 'index.ts'), dbPathFor(neutralDir), 'reopen', runId],
+  {
+    capture: true,
+    cwd: neutralDir,
+  },
+);
+check(
+  reopenRun.status === 0 && reopenRun.stdout?.includes('NEUTRAL_CONSUMER_REOPEN_OK'),
+  'activation restored and run/events read back after real close/reopen',
 );
 
 // 3. Zod consumer: same tarballs plus zod, using the optional adapter subpath.
@@ -193,6 +266,9 @@ if (rejected.ok) {
 const issue = rejected.issues[0];
 if (!issue || issue.path !== 'name' || !issue.message.includes('name')) {
   throw new Error('zod issues were not mapped to neutral safe issues');
+}
+if (!Object.isFrozen(User)) {
+  throw new Error('the zod adapter contract must be frozen');
 }
 console.log('ZOD_CONSUMER_OK', issue.message);
 `,
@@ -229,6 +305,7 @@ const scan = (base) => {
 scan(join(repoRoot, 'packages', 'contracts', 'dist'));
 scan(join(repoRoot, 'packages', 'kernel', 'dist'));
 scan(join(repoRoot, 'packages', 'runtime', 'dist'));
+scan(join(repoRoot, 'packages', 'store-sqlite', 'dist'));
 scan(join(repoRoot, 'packages', 'sdk', 'dist'));
 check(zodTypeReferences === 0, 'no zod type/module references in base emitted artifacts');
 

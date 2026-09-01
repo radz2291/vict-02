@@ -1,12 +1,12 @@
 # VICT System Reference
 
 > **Canonical title:** Vict Architecture and Operating Model — Authoritative System Reference  
-> **Document version:** 0.1.0  
+> **Document version:** 0.1.1  
 > **System generation:** Greenfield  
 > **Status:** Authoritative baseline; future features are individually marked  
-> **Last updated:** 2026-08-31  
-> **Current delivery point:** Stage 1 verified; Stage 1.1 in progress and awaiting independent audit  
-> **Next permitted stage:** Stage 2, only after Stage 1.1 passes its exit gate
+> **Last updated:** 2026-09-01 (Stage 2 implementation status recorded; audit pending)  
+> **Current delivery point:** Stages 1 and 1.1 independently verified; Stage 2 (durable identity and stores) implemented and awaiting independent audit  
+> **Next permitted stage:** Stage 3 — durable orchestration, only after Stage 2 passes its exit gate
 
 ---
 
@@ -305,6 +305,8 @@ The exact TypeScript spelling may evolve; the semantics are normative.
 
 The base authoring path must accept a handwritten neutral contract. Optional adapters may make Zod, JSON Schema, TypeBox, Valibot, or other schema systems convenient. Their public types belong in optional adapter entry points, not in the base Contract protocol.
 
+Official contract factories and adapters must return frozen contract objects. Activation must also capture the effective parsing callable or reject unsupported mutable contract shapes; a caller-owned object must not be able to change the meaning of a pinned activation through in-place mutation.
+
 ### 6.3 Safe failures
 
 Validation failures cross an observability boundary. Arbitrary custom messages can contain input or secrets, so Vict must:
@@ -317,12 +319,13 @@ Validation failures cross an observability boundary. Arbitrary custom messages c
 | ID | Requirement | Maturity | Delivery |
 |---|---|---|---|
 | CONT-001 | Every executable capability MUST declare input and output contracts. | Invariant | Verified |
-| CONT-002 | Contracts MUST expose stable IDs and explicit revisions. | Accepted | In Progress |
-| CONT-003 | The base contract protocol MUST be independent of a schema library. | Invariant | In Progress |
-| CONT-004 | Parsing MUST return schema-neutral structured results. | Accepted | In Progress |
-| CONT-005 | Raw third-party validation messages MUST NOT enter normal persisted traces unsanitized. | Invariant | In Progress |
-| CONT-006 | A schema adapter MUST NOT leak its types into the base public declaration API. | Accepted | In Progress |
+| CONT-002 | Contracts MUST expose stable IDs and explicit revisions. | Accepted | Verified |
+| CONT-003 | The base contract protocol MUST be independent of a schema library. | Invariant | Verified |
+| CONT-004 | Parsing MUST return schema-neutral structured results. | Accepted | Verified |
+| CONT-005 | Raw third-party validation messages MUST NOT enter normal persisted traces unsanitized. | Invariant | Verified |
+| CONT-006 | A schema adapter MUST NOT leak its types into the base public declaration API. | Accepted | Verified |
 | CONT-007 | Contract compatibility beyond exact identity MUST remain conservative until formally defined. | Accepted | Planned |
+| CONT-008 | Official contract factories/adapters MUST freeze returned contracts, and activation MUST prevent later caller-owned mutation from changing pinned parsing behavior. | Invariant | In Progress |
 
 ---
 
@@ -379,13 +382,13 @@ It must not expose a universal service locator or unrestricted control-plane mut
 
 | ID | Requirement | Maturity | Delivery |
 |---|---|---|---|
-| CAP-001 | Every capability MUST have a stable ID and explicit revision. | Accepted | In Progress |
+| CAP-001 | Every capability MUST have a stable ID and explicit revision. | Accepted | Verified |
 | CAP-002 | Every capability MUST declare one effect class. | Invariant | Verified |
-| CAP-003 | Activated execution MUST resolve handlers from the pinned activation, not a live registry. | Invariant | In Progress |
+| CAP-003 | Activated execution MUST resolve handlers from the pinned activation, not a live registry. | Invariant | Verified |
 | CAP-004 | Capability context MUST expose least-authority ports and identity. | Invariant | Planned |
 | CAP-005 | Capability revisions MUST change when executable semantics or declared boundary semantics change. | Accepted | Planned |
-| CAP-006 | Vict MUST NOT derive capability identity from function.toString or third-party schema internals. | Invariant | In Progress |
-| CAP-007 | Registry replacement MUST be explicit and affect only subsequent activations. | Accepted | In Progress |
+| CAP-006 | Vict MUST NOT derive capability identity from function.toString or third-party schema internals. | Invariant | Verified |
+| CAP-007 | Registry replacement MUST be explicit and affect only subsequent activations. | Accepted | Verified |
 
 ---
 
@@ -437,7 +440,8 @@ Activation may compile a definition into an internal execution plan. Compilation
 | KERN-004 | Arbitrary cycles MUST NOT be accepted as implicit workflow semantics. | Accepted | Verified |
 | KERN-005 | Future iteration MUST be explicit, bounded, and durable. | Accepted | Planned |
 | KERN-006 | Branching SHOULD use declared typed route keys rather than a new general expression language. | Accepted | Planned |
-| KERN-007 | Compilation SHOULD occur at activation and MUST NOT be required per application message. | Accepted | In Progress |
+| KERN-007 | Compilation SHOULD occur at activation and MUST NOT be required per application message. | Accepted | Verified |
+| KERN-008 | Compiler diagnostics SHOULD report independently detectable structural issues in stable order, including cycles when other issues coexist. | Accepted | In Progress (Stage 2 implementation pending audit) |
 
 ---
 
@@ -478,7 +482,7 @@ An activation contains:
 
 - graph and graphVersion;
 - resolved capability references and immutable executable handles;
-- resolved contract references;
+- resolved contract identities and captured parsing handles;
 - capabilitySetVersion and activationVersion;
 - activation schema version;
 - creation metadata and provenance;
@@ -492,6 +496,8 @@ A run captures the activation before it starts. The runtime may use a mutable re
 
 Test or simulation doubles are similarly snapshotted at run creation or activation, according to the mode contract. Mid-run replacement cannot alter the run.
 
+The Stage 1.1 audit verified immutable capability bindings, frozen contracts produced by the neutral defineContract path, and per-run double snapshots. It also found that a hand-rolled mutable contract, including the current Zod-adapter result, can still swap its parse function after activation. This is a non-blocking carry-forward issue, but the final invariant remains that activated parsing semantics are pinned.
+
 ### 9.3 Compatibility
 
 - Existing runs remain pinned to their original activation.
@@ -501,15 +507,16 @@ Test or simulation doubles are similarly snapshotted at run creation or activati
 
 | ID | Requirement | Maturity | Delivery |
 |---|---|---|---|
-| VER-001 | graphVersion MUST represent graph declaration/topology and MUST NOT pretend to identify handler code. | Accepted | In Progress |
-| VER-002 | capabilitySetVersion MUST cover effective capability and contract identities. | Accepted | In Progress |
-| VER-003 | activationVersion MUST combine graphVersion and capabilitySetVersion under a versioned schema. | Accepted | In Progress |
-| VER-004 | Canonical identity MUST use explicit revisions and stable manifests, never runtime function text. | Invariant | In Progress |
-| VER-005 | Activations MUST be immutable. | Invariant | In Progress |
-| VER-006 | Registry changes MUST require reactivation before affecting new production runs. | Invariant | In Progress |
-| VER-007 | Every run MUST pin one immutable activation for its lifetime. | Invariant | In Progress |
-| VER-008 | A suspended run MUST NOT silently resume against a substitute activation. | Invariant | Planned |
+| VER-001 | graphVersion MUST represent graph declaration/topology and MUST NOT pretend to identify handler code. | Accepted | Verified |
+| VER-002 | capabilitySetVersion MUST cover effective capability and contract identities. | Accepted | Verified |
+| VER-003 | activationVersion MUST combine graphVersion and capabilitySetVersion under a versioned schema. | Accepted | Verified |
+| VER-004 | Canonical identity MUST use explicit revisions and stable manifests, never runtime function text. | Invariant | Verified |
+| VER-005 | Activations MUST be immutable. | Invariant | In Progress (Stage 2 implementation pending audit) |
+| VER-006 | Registry changes MUST require reactivation before affecting new production runs. | Invariant | Verified |
+| VER-007 | Every run MUST pin one immutable activation for its lifetime. | Invariant | In Progress (Stage 2 implementation pending audit) |
+| VER-008 | A suspended run MUST NOT silently resume against a substitute activation. | Invariant | In Progress (Stage 2 implementation pending audit) |
 | VER-009 | Build provenance MAY strengthen identity but MUST NOT replace semantic revisions. | Accepted | Planned |
+| VER-010 | Activation MUST capture contract parsing semantics by value or enforce equivalent immutability. | Invariant | In Progress (Stage 2 implementation pending audit) |
 
 ---
 
@@ -588,14 +595,14 @@ Sequential deterministic execution is the baseline. Fan-out, workers, leases, an
 
 | ID | Requirement | Maturity | Delivery |
 |---|---|---|---|
-| RUN-001 | A run MUST be associated with exactly one activationVersion. | Invariant | In Progress |
+| RUN-001 | A run MUST be associated with exactly one activationVersion. | Invariant | Verified |
 | RUN-002 | Inputs and outputs MUST be contract-validated at declared boundaries. | Invariant | Verified |
-| RUN-003 | Scheduling semantics MUST be explicit and reproducible. | Invariant | In Progress |
+| RUN-003 | Scheduling semantics MUST be explicit and reproducible. | Invariant | In Progress (Stage 2 implementation pending audit) |
 | RUN-004 | Nondeterministic values MUST enter through recordable ports or capability results. | Accepted | Planned |
 | RUN-005 | Cancellation MUST be cooperative, recorded, and propagated to child work. | Accepted | Planned |
 | RUN-006 | Retries MUST be bounded and classified; they MUST NOT blindly repeat irreversible work. | Invariant | Planned |
 | RUN-007 | Durable attempts MUST use idempotent ownership/transition rules. | Accepted | Planned |
-| RUN-008 | Persisted errors MUST use safe error classes and correlation identifiers. | Invariant | In Progress |
+| RUN-008 | Persisted errors MUST use safe error classes and correlation identifiers. | Invariant | Verified |
 
 ---
 
@@ -638,9 +645,9 @@ For irreversible actions, approval and explicit intent must be recorded before e
 | ID | Requirement | Maturity | Delivery |
 |---|---|---|---|
 | EFF-001 | Runtime MUST enforce the capability’s declared effect against execution mode and permissions. | Invariant | Verified |
-| EFF-002 | Simulation/test MUST NOT execute real read, write, or irreversible handlers without an explicit safe policy. | Invariant | In Progress |
+| EFF-002 | Simulation/test MUST NOT execute real read, write, or irreversible handlers without an explicit safe policy. | Invariant | Verified |
 | EFF-003 | Missing required doubles MUST fail closed. | Invariant | Verified |
-| EFF-004 | Effective doubles MUST be snapshotted so mid-run registry mutation cannot change behavior. | Invariant | In Progress |
+| EFF-004 | Effective doubles MUST be snapshotted so mid-run registry mutation cannot change behavior. | Invariant | Verified |
 | EFF-005 | Irreversible production effects MUST require explicit elevated policy or approval. | Invariant | Planned |
 | EFF-006 | Write capabilities SHOULD define idempotency and ambiguity behavior before durable retry is enabled. | Accepted | Planned |
 | EFF-007 | Vict MUST NOT promise universal external exactly-once execution. | Invariant | Verified |
@@ -694,6 +701,8 @@ Every run selects one payload-retention policy:
 
 The immediate RunResult may return the actual output to the authorized caller. That does not imply full output persistence.
 
+Selecting full transfers responsibility to the caller/operator for everything the capability returns. Full retention must therefore be deliberate, documented, access-controlled, minimized, and covered by an explicit deletion/lifecycle policy; Vict cannot make arbitrary retained payloads safe merely by labeling the mode.
+
 ### 12.4 Events and transactions
 
 Vict uses an append-only operational ledger, but does not require every domain model to be event-sourced.
@@ -715,16 +724,18 @@ Rollback selects a prior activation for future runs. It does not erase events, m
 
 | ID | Requirement | Maturity | Delivery |
 |---|---|---|---|
-| DATA-001 | Runtime persistence MUST be accessed through semantic store ports. | Invariant | Planned |
-| DATA-002 | Activations and operational events MUST be immutable once published. | Invariant | Planned |
-| DATA-003 | Run transition and event recording MUST be atomic or outbox-equivalent. | Accepted | Planned |
-| DATA-004 | Payload retention MUST support none, summary, and full policies. | Accepted | In Progress |
-| DATA-005 | Summary MUST be the default retained payload policy. | Invariant | In Progress |
-| DATA-006 | Full payload persistence MUST be explicit, access-controlled, and lifecycle-managed. | Invariant | Planned |
+| DATA-001 | Runtime persistence MUST be accessed through semantic store ports. | Invariant | In Progress (Stage 2 implementation pending audit) |
+| DATA-002 | Activations and operational events MUST be immutable once published. | Invariant | In Progress (Stage 2 implementation pending audit) |
+| DATA-003 | Run transition and event recording MUST be atomic or outbox-equivalent. | Accepted | In Progress (Stage 2 implementation pending audit) |
+| DATA-004 | Payload retention MUST support none, summary, and full policies. | Accepted | Verified |
+| DATA-005 | Summary MUST be the default retained payload policy. | Invariant | Verified |
+| DATA-006 | Full payload persistence MUST be explicit, access-controlled, and lifecycle-managed. | Invariant | In Progress (Stage 2 implementation pending audit) |
 | DATA-007 | Secrets MUST be resolved at runtime and MUST NOT be stored in normal run history. | Invariant | Planned |
-| DATA-008 | Resume MUST require the exact pinned activation or enter a blocked state. | Invariant | Planned |
+| DATA-008 | Resume MUST require the exact pinned activation or enter a blocked state. | Invariant | In Progress (Stage 2 implementation pending audit) |
 | DATA-009 | Rollback MUST affect future activation selection and MUST NOT claim to undo external effects. | Invariant | Planned |
 | DATA-010 | The architecture MUST NOT require application domain state to use Vict event sourcing. | Invariant | Verified |
+| DATA-011 | Public configuration and type documentation for full retention MUST explicitly state the caller’s responsibility for retained content. | Accepted | In Progress (Stage 2 implementation pending audit) |
+| DATA-012 | Store read APIs SHOULD return immutable snapshots or defensive copies so callers cannot mutate canonical stored records by reference. | Accepted | In Progress (Stage 2 implementation pending audit) |
 
 ---
 
@@ -777,8 +788,8 @@ Automatic recovery is limited to pre-authorized mechanical actions such as bound
 
 | ID | Requirement | Maturity | Delivery |
 |---|---|---|---|
-| OBS-001 | Every event MUST identify run, activation, event schema, and ordering context. | Accepted | Planned |
-| OBS-002 | Ordinary events MUST store safe summaries rather than raw payloads. | Invariant | In Progress |
+| OBS-001 | Every event MUST identify run, activation, event schema, and ordering context. | Accepted | In Progress (Stage 2 implementation pending audit) |
+| OBS-002 | Ordinary events MUST store safe summaries rather than raw payloads. | Invariant | Verified |
 | OBS-003 | Metrics MUST be attributable to activationVersion. | Accepted | Planned |
 | OBS-004 | Diagnostic access to protected details MUST be separately authorized and audited. | Invariant | Planned |
 | OBS-005 | Automated recovery MUST remain within pre-authorized mechanical policies. | Invariant | Planned |
@@ -1081,8 +1092,8 @@ Distributed execution adds ownership, leasing, partitioning, backpressure, and f
 
 | ID | Requirement | Maturity | Delivery |
 |---|---|---|---|
-| DEP-001 | Vict MUST support a local modular-monolith deployment. | Invariant | In Progress |
-| DEP-002 | SQLite SHOULD be the first durable adapter unless environment verification rejects it. | Accepted | Planned |
+| DEP-001 | Vict MUST support a local modular-monolith deployment. | Invariant | In Progress (Stage 2 implementation pending audit) |
+| DEP-002 | SQLite SHOULD be the first durable adapter unless environment verification rejects it. | Accepted | In Progress (Stage 2 implementation pending audit) |
 | DEP-003 | Local and distributed adapters MUST pass the same semantic conformance suite. | Accepted | Planned |
 | DEP-004 | Microservices MUST NOT be required before independent scaling or ownership needs are demonstrated. | Invariant | Verified |
 | DEP-005 | Distributed workers MUST use durable claims, leases, idempotent transitions, and backpressure. | Accepted | Planned |
@@ -1223,11 +1234,11 @@ Only PASS, or an explicit owner decision accepting listed issues, permits the ne
 |---|---|---|---|
 | TEST-001 | Every normative invariant implemented by a stage MUST have direct automated evidence where feasible. | Invariant | In Progress |
 | TEST-002 | Tests MUST include negative paths and mutation/adversarial cases, not only happy paths. | Invariant | In Progress |
-| TEST-003 | Performance claims MUST state workload, environment, sample count, and measured boundary. | Accepted | In Progress |
-| TEST-004 | Reports MUST use observed counts and MUST NOT copy stale expectations. | Invariant | In Progress |
+| TEST-003 | Performance claims MUST state workload, environment, sample count, and measured boundary. | Accepted | Verified |
+| TEST-004 | Reports MUST use observed counts and MUST NOT copy stale expectations. | Invariant | Verified |
 | TEST-005 | Independent audit MUST inspect code and reproduce material evidence. | Invariant | Verified |
-| TEST-006 | Durable stages MUST include process-restart and corrupted/incomplete-state tests. | Invariant | Planned |
-| TEST-007 | Security-sensitive stages MUST include explicit leakage and permission tests. | Invariant | In Progress |
+| TEST-006 | Durable stages MUST include process-restart and corrupted/incomplete-state tests. | Invariant | In Progress (Stage 2 implementation pending audit) |
+| TEST-007 | Security-sensitive stages MUST include explicit leakage and permission tests. | Invariant | Verified |
 
 ---
 
@@ -1239,8 +1250,8 @@ Stages are capability gates, not calendar promises. A “night” may complete p
 |---|---|---|---|
 | 0 | Constitution and greenfield boundary | Complete | New source of truth and no legacy coupling |
 | 1 | Walking kernel | Verified with documented qualifications | Small end-to-end deterministic graph runtime |
-| 1.1 | Activation integrity and data safety | In Progress | Immutable meaning and safe retained records |
-| 2 | Durable identity and stores | Planned | Restart-safe sequential runs on SQLite |
+| 1.1 | Activation integrity and data safety | Verified with non-blocking issues | Pinned execution meaning and safe retained records |
+| 2 | Durable identity and stores | Implemented; awaiting independent audit | Restart-safe sequential runs on SQLite |
 | 3 | Durable orchestration | Planned | Waits, signals, timers, retries, cancellation, branching |
 | 4 | Capability platform | Planned | Stable authoring ABI, packs, adapters, config/secrets |
 | 5 | Control plane | Planned | Governed ChangeSets, approvals, activation operations |
@@ -1331,6 +1342,24 @@ Stages are capability gates, not calendar promises. A “night” may complete p
 - all repository checks pass;
 - independent code audit returns PASS or accepted PASS WITH ISSUES.
 
+**Independent disposition — 2026-09-01**
+
+- **VERIFIED WITH ISSUES; Stage 2 is authorized to begin.**
+- The auditor reproduced the complete quality ladder from a clean install: 105 of 105 tests, strict typecheck, lint, format, build, packed-consumer verification, offline ARA proof, and benchmark.
+- The three pre-persistence blockers are closed: layered execution identity, pinned capability/double snapshots, and safe retention/error policy at the future store boundary.
+- The base contracts and SDK declarations are Zod-free; independent packed consumers worked both without Zod and through the optional Zod subpath.
+- ARA remained deterministic at 4 nodes, 3 edges, and 13 events. The three-node benchmark retained 10 events, 6 validations, and one repository write per run.
+- No Critical, High, or Medium findings remain.
+
+**Non-blocking carry-forward**
+
+1. Freeze contracts returned by the Zod adapter and capture or enforce immutability for all supported contract objects at activation.
+2. Add an explicit caller-responsibility warning beside full retention in foundation/type documentation.
+3. Define store reads as immutable/defensive handover rather than mutable by-reference records.
+4. Improve cycle diagnostics when another compile issue coexists.
+
+Because the contract-object mutation path remains open for hand-rolled/Zod-adapter objects, the broad activation-immutability requirements CONT-008, VER-005, VER-007, and VER-010 remain In Progress even though the Stage 1.1 gate itself is accepted.
+
 ### Stage 2 — Durable identity and stores
 
 **Purpose**
@@ -1346,6 +1375,8 @@ Prove restart correctness without changing the execution language.
 - restart and exact-activation resolution;
 - retention policy persistence;
 - local inspect/resume rules for sequential runs.
+- close the Stage 1.1 non-blocking hygiene items that touch contract immutability, retention documentation, and store read semantics;
+- improve multi-issue cycle diagnostics if it can be done without expanding orchestration semantics.
 
 **Excludes**
 
@@ -1361,6 +1392,9 @@ Prove restart correctness without changing the execution language.
 - transaction interruption tests do not create impossible run/event states;
 - default data retention passes canary leakage tests;
 - in-memory and SQLite adapters pass the same conformance suite;
+- mutation of any supported caller-owned contract after activation cannot alter a pinned run;
+- full-retention responsibility is explicit in public configuration/type documentation;
+- callers cannot mutate canonical stored run records through returned references;
 - independent audit passes.
 
 ### Stage 3 — Durable orchestration
@@ -1593,27 +1627,38 @@ This section is deliberately factual and should be updated after every accepted 
 ### 23.1 Verified baseline
 
 - Greenfield package family exists.
-- Contracts, graph validation, activation, deterministic sequential execution, effects, doubles, traces, and SDK facade exist.
-- Offline ARA proof and benchmark exist.
-- The independent Night 1 code audit established the walking-kernel objective with the qualifications recorded in Stage 1.
+- Contracts and capabilities carry explicit revisions; graphVersion, capabilitySetVersion, and activationVersion have independently verified canonical semantics.
+- Activated capability handlers are snapshotted, registry changes require reactivation, and doubles are snapshotted per run.
+- Contracts are schema-neutral at the base API; Zod is isolated to optional subpaths and absent from base packed declarations.
+- Deterministic sequential execution, the effect matrix, explicit double replacement, and irreversible-effect protections are verified.
+- Retention none/summary/full exists; summary is the verified default; caller results preserve actual output while default records retain only safe summaries.
+- Capability/schema errors are structurally sanitized and carry safe codes, locations, error class, and correlation identity.
+- Offline ARA proof and benchmark remain correct at 13 events and 10 events/6 validations respectively.
+- The independent Stage 1.1 audit reproduced 105 of 105 tests and all verification commands from repository commit 877d859.
 
-### 23.2 In progress
+### 23.2 Accepted carry-forward issues
 
-Stage 1.1 is being finalized. Until a new independent audit is accepted:
+No issue blocks Stage 2. The following remain visible rather than being hidden by the accepted verdict:
 
-- activation immutability and run pinning are target behavior, not a completion claim;
-- safe retention and sanitized errors are target behavior, not a completion claim;
-- schema-neutral base authoring and revised identity are target behavior, not a completion claim.
+- **Low:** defineZodContract and caller-supplied hand-rolled contracts can remain mutable by reference; swapping parse after activation can change later execution without changing identity. Official adapters must freeze, and activation must capture or enforce parsing immutability.
+- **Low:** project foundation/type documentation still needs an explicit statement that selecting full retention transfers responsibility for retained content to the caller/operator.
+- **Informational:** the in-memory repository returns run records by reference; the Stage 2 store contract should require immutable snapshots or defensive copies.
+- **Informational:** cycle diagnostics are deferred when another compile issue is present; diagnostics should eventually report independently detectable issues in stable order.
+- **Accepted trust boundaries:** identity depends on authors/build tooling bumping revisions, and effect classifications are author-supplied.
+- **Accepted limitation:** trace key-name redaction is best-effort, but values are structurally omitted regardless of key name.
 
-### 23.3 Explicit stop point
+### 23.3 Authorized next work
 
-No Stage 2 persistence work should begin until Stage 1.1 is audited and this section is updated with its verified evidence and remaining issues.
+Stage 2 durable identity and stores has been implemented (commit recorded in VICT-STAGE-02-REPORT.md): semantic store ports and an in-memory store in @vict/runtime; a @vict/store-sqlite adapter on the built-in node:sqlite driver with versioned forward migrations; atomic run/event transitions; exact-activation restoration; explicit interrupted-run recovery to blocked without replay; and the carry-forward corrections for contract immutability, full-retention documentation, store read encapsulation, and cycle diagnostics. All Stage 2 delivery statuses above remain unverified until the independent audit accepts them. It stops before Stage 3 orchestration: no waits, timers, branching, fan-out, durable retries, distributed workers, control plane, or Studio.
 
 ### 23.4 Evidence documents
 
 - NIGHT-01-FOUNDATION.md — implementation handoff and original exit criteria.
 - VICT-NIGHT-01-REPORT.md — implementer report; useful but not independently authoritative.
 - VICT-NIGHT-01-CODE-AUDIT.md — independent verification and corrected findings.
+- VICT-NIGHT-01-FINALIZATION-REPORT.md — Stage 1.1 implementer claim and verification evidence.
+- VICT-NIGHT-01-FINALIZATION-AUDIT.md — independent adversarial verification; authoritative Stage 1.1 disposition.
+- VICT-STAGE-02-REPORT.md — Stage 2 implementer report (implementation claim and verification evidence; awaiting independent audit).
 
 ---
 
@@ -1645,7 +1690,7 @@ These questions do not block the current stage.
 
 | ID | Question | Current direction | Decide by |
 |---|---|---|---|
-| OPEN-001 | Which SQLite implementation and migration library? | Prefer the smallest maintained adapter compatible with the supported Node runtime; verify environment first | Stage 2 handoff |
+| OPEN-001 | Which SQLite implementation and migration library? | Decided for Stage 2: built-in `node:sqlite` with a hand-rolled forward migration runner (better-sqlite3 v13 segfaults on the supported runtime; v12 couples Node upgrades to native prebuilds). Engines floor raised explicitly to >=22.13.0. | Decided (Stage 2, pending audit) |
 | OPEN-002 | Exact durable control-node syntax? | Typed route keys, explicit wait/fan/join, bounded loop only | Stage 3 design |
 | OPEN-003 | When should SDK dependency direction be refactored? | After activation integrity, before external capability ABI is declared stable | Stage 4 |
 | OPEN-004 | How is structural contract compatibility represented? | Exact ID/revision first; add conservative tooling only with evidence | Stage 4 |
@@ -1775,4 +1820,4 @@ Otherwise it probably belongs in an application, capability pack, adapter, devel
 
 ---
 
-**End of authoritative baseline v0.1.0**
+**End of authoritative baseline v0.1.1**

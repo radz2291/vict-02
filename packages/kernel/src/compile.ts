@@ -205,16 +205,19 @@ export function compileGraph(input: CompileGraphInput): CompileResult {
     }
   }
 
-  // Cycles in the combined adjacency (only meaningful when endpoints all exist).
-  if (issues.length === 0) {
-    const cycle = findCycle(effectiveNodes, successTargets, errorTargets);
-    if (cycle) {
-      issues.push({
-        code: 'UNSUPPORTED_CYCLE',
-        message: `Graph contains an unsupported cycle: ${cycle.join(' -> ')}.`,
-        nodeIds: cycle,
-      });
-    }
+  // Cycles in the combined adjacency. Cycle detection is independent of the
+  // capability/contract diagnostics above: it only needs structurally valid
+  // edges, so it runs even when other issues were found. Findings are
+  // appended in the same deterministic position (after compatibility
+  // checks), so the diagnostics for a given definition are always in a
+  // stable order.
+  const cycle = findCycle(effectiveNodes, successTargets, errorTargets);
+  if (cycle) {
+    issues.push({
+      code: 'UNSUPPORTED_CYCLE',
+      message: `Graph contains an unsupported cycle: ${cycle.join(' -> ')}.`,
+      nodeIds: cycle,
+    });
   }
 
   if (issues.length > 0) {

@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "Vict - agent-native application operating layer. Night 01 greenfield kernel.",
+  "description": "Vict - agent-native application operating layer. Stage 02 greenfield kernel with durable identity and stores.",
   "engines": {
-    "node": ">=22.0.0"
+    "node": ">=22.13.0"
   },
   "workspaces": [
     "packages/*",
@@ -13,7 +13,7 @@
   ],
   "scripts": {
     "bench": "tsx scripts/benchmark.ts",
-    "build": "npm run build -w @vict/contracts && npm run build -w @vict/kernel && npm run build -w @vict/runtime && npm run build -w @vict/sdk",
+    "build": "npm run build -w @vict/contracts && npm run build -w @vict/kernel && npm run build -w @vict/runtime && npm run build -w @vict/store-sqlite && npm run build -w @vict/sdk",
     "example": "tsx examples/ara-proof/src/main.ts",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
@@ -22,7 +22,8 @@
     "test:integration": "vitest run --project integration",
     "test:unit": "vitest run --project unit",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "verify:consumer": "node scripts/isolated-consumer-check.mjs"
+    "verify:consumer": "node scripts/isolated-consumer-check.mjs",
+    "verify:stage2": "node scripts/verify-stage2.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

@@ -11,7 +11,9 @@ const aliases = {
   '@vict/kernel': resolveFromRoot('packages/kernel/src/index.ts'),
   '@vict/contracts/zod': resolveFromRoot('packages/contracts/src/zod/index.ts'),
   '@vict/contracts': resolveFromRoot('packages/contracts/src/index.ts'),
+  '@vict/runtime/testing': resolveFromRoot('packages/runtime/src/testing.ts'),
   '@vict/runtime': resolveFromRoot('packages/runtime/src/index.ts'),
+  '@vict/store-sqlite': resolveFromRoot('packages/store-sqlite/src/index.ts'),
   '@vict/sdk/zod': resolveFromRoot('packages/sdk/src/zod.ts'),
   '@vict/sdk': resolveFromRoot('packages/sdk/src/index.ts'),
 };

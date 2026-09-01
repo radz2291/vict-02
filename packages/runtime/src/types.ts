@@ -8,6 +8,7 @@ import type {
   RunStatus,
 } from '@vict/kernel';
 import type { VictError } from '@vict/contracts';
+import type { VictStores } from './store-types.js';
 
 /** Context handed to capability implementations and test doubles at invocation time. */
 export interface CapabilityContext {
@@ -56,6 +57,13 @@ export type DoubleInvoke = (input: unknown, context: CapabilityContext) => unkno
  *
  * `RunResult` returned to the caller always carries the actual validated
  * output regardless of retention; retention governs *stored history* only.
+ *
+ * WARNING (full retention): selecting `'full'` makes the caller/operator
+ * responsible for the sensitivity, access control, minimization, and
+ * lifecycle of the complete output that will be persisted. Vict cannot make
+ * arbitrary retained payloads safe merely by labeling the mode; pair `'full'`
+ * with an explicit deletion/lifecycle policy and access control. Inputs are
+ * never stored in Stage 02, including under `'full'` retention.
  */
 export type PayloadRetention = 'none' | 'summary' | 'full';
 
@@ -70,7 +78,6 @@ export interface RunResult<T = unknown> {
   readonly error?: VictError;
   readonly trace: readonly KernelEvent[];
 }
-
 export interface RunOptions {
   /** Defaults to `'normal'`. */
   readonly mode?: ExecutionMode;
@@ -113,8 +120,44 @@ export type ActivationResult =
       readonly previousGraph?: ActiveGraphInfo;
     };
 
+/** Why an exact-activation restoration failed. */
+export type RestorationFailureCode =
+  | 'VICT_RUNTIME_ACTIVATION_NOT_FOUND'
+  | 'VICT_RUNTIME_ACTIVATION_MISMATCH'
+  | 'VICT_RUNTIME_ACTIVATION_UNAVAILABLE';
+
 /**
- * A stored run record.
+ * Result of restoring an activation from the durable catalog.
+ *
+ * Restoration verifies availability against the current registered code:
+ * it never executes a capability, never chooses a “closest” revision, and
+ * never replaces the currently active graph on failure.
+ */
+export type RestorationResult =
+  | {
+      readonly ok: true;
+      readonly graphId: string;
+      readonly graphVersion: string;
+      readonly capabilitySetVersion: string;
+      readonly activationVersion: string;
+      readonly nodeCount: number;
+    }
+  | {
+      readonly ok: false;
+      readonly code: RestorationFailureCode;
+      readonly message: string;
+      /** Stored activation identity, when one was found. */
+      readonly expectedActivationVersion?: string;
+      /** Identity rebuilt from current code, when compilation succeeded. */
+      readonly actualActivationVersion?: string;
+      /** Safe description of what differs, for mismatches. */
+      readonly differences?: readonly string[];
+      /** Compile issues, when current code cannot compile the graph at all. */
+      readonly issues?: readonly GraphIssue[];
+    };
+
+/**
+ * A stored run record (assembled view: run state plus its ordered trace).
  *
  * Retention policy (see `PayloadRetention`):
  * - `trace` is always the safe, summarized event stream (values never).
@@ -122,6 +165,9 @@ export type ActivationResult =
  * - `outputSummary` (safe shape/key description) appears under `'summary'`
  *   and `'full'`.
  * - `output` (the complete validated payload) appears ONLY under `'full'`.
+ *   Selecting `'full'` makes the caller/operator responsible for the
+ *   sensitivity, access control, minimization, and lifecycle of the
+ *   complete persisted output.
  */
 export interface RunRecord {
   readonly runId: string;
@@ -130,11 +176,16 @@ export interface RunRecord {
   readonly capabilitySetVersion: string;
   readonly activationVersion: string;
   readonly mode: ExecutionMode;
-  readonly status: RunStatus;
+  /** Lifecycle status. `running` means nonterminal (in flight or interrupted). */
+  readonly status: RunStatus | 'running';
   readonly startedAt: number;
   readonly durationMs: number;
   readonly steps: number;
   readonly retention: PayloadRetention;
+  /** Last durable node context, when known. Never a payload value. */
+  readonly currentNodeId?: string | null;
+  /** Durable record revision; increments with every committed transition. */
+  readonly recordRevision: number;
   readonly outputSummary?: OutputSummary;
   /** Complete validated output — present only when retention is `'full'`. */
   readonly output?: unknown;
@@ -143,17 +194,28 @@ export interface RunRecord {
   readonly trace: readonly KernelEvent[];
 }
 
-export interface RunRepository {
-  record(record: RunRecord): void;
-  get(runId: string): RunRecord | undefined;
-  list(): readonly RunRecord[];
-}
-
 export interface VictRuntimeOptions {
   /** Default policy permissions applied to every run unless overridden per run. */
   readonly policy?: { readonly allowIrreversible?: boolean };
-  readonly repository?: RunRepository;
+  /**
+   * Durable activation/execution stores. Defaults to a private in-memory
+   * store set with identical semantics. To persist across process restarts
+   * inject an adapter such as `createSqliteStores()` from `@vict/store-sqlite`.
+   */
+  readonly stores?: VictStores;
+  /** Clock used for run and event timestamps. Defaults to the system clock. */
+  readonly clock?: { readonly now: () => number };
+  /** Identity factory for run ids. Defaults to random UUID-based ids. */
+  readonly ids?: { readonly runId: () => string; readonly errorId?: () => string };
   readonly maxSteps?: number;
-  /** Payload retention for stored run records. Default: `'summary'`. Use `'full'` only with explicit intent. */
+  /**
+   * Payload retention for stored run records. Default: `'summary'`.
+   *
+   * WARNING: `'full'` persists the complete validated output of every run.
+   * Selecting full retention makes the caller/operator responsible for the
+   * sensitivity, access control, minimization, and lifecycle of the complete
+   * output that will be persisted. Use only with explicit intent and an
+   * explicit deletion/lifecycle policy.
+   */
   readonly payloadRetention?: PayloadRetention;
 }

@@ -43,14 +43,14 @@ describe('error propagation safety', () => {
         },
       }),
     );
-    runtime.activate(graphWith('x.thrower'));
+    await runtime.activate(graphWith('x.thrower'));
 
     const result = await runtime.run({ count: 1 });
     expect(result.status).toBe('failed');
     const serialized = JSON.stringify({
       trace: result.trace,
       error: result.error,
-      record: runtime.getRun(result.runId),
+      record: await runtime.getRun(result.runId),
     });
     expect(serialized).not.toContain(SECRET);
     expect(serialized).not.toContain('provider rejected');
@@ -76,13 +76,13 @@ describe('error propagation safety', () => {
         },
       }),
     );
-    runtime.activate(graphWith('x.nested-thrower'));
+    await runtime.activate(graphWith('x.nested-thrower'));
     const result = await runtime.run({ count: 1 });
     expect(
       JSON.stringify({
         trace: result.trace,
         error: result.error,
-        record: runtime.getRun(result.runId),
+        record: await runtime.getRun(result.runId),
       }),
     ).not.toContain(SECRET);
   });
@@ -99,14 +99,14 @@ describe('error propagation safety', () => {
         invoke: (input) => ({ count: input.token.length }),
       }),
     );
-    runtime.activate(graphWith('x.guarded'));
+    await runtime.activate(graphWith('x.guarded'));
 
     const result = await runtime.run({ token: 'short-token' });
     expect(result.status).toBe('failed');
     const serialized = JSON.stringify({
       trace: result.trace,
       error: result.error,
-      record: runtime.getRun(result.runId),
+      record: await runtime.getRun(result.runId),
     });
     expect(serialized).not.toContain(SECRET);
     // The framework-generated message still diagnoses the failure precisely.
@@ -133,13 +133,13 @@ describe('error propagation safety', () => {
           },
       }),
     );
-    runtime.activate(graphWith('x.passthrough'));
+    await runtime.activate(graphWith('x.passthrough'));
     const result = await runtime.run({ count: 1 });
     expect(result.status).toBe('completed');
     expect(result.output).toMatchObject({ count: 1 }); // caller keeps the real output
     const serialized = JSON.stringify({
       trace: result.trace,
-      record: runtime.getRun(result.runId),
+      record: await runtime.getRun(result.runId),
     });
     expect(serialized).not.toContain(SECRET);
     expect(serialized).not.toContain('password');
@@ -157,7 +157,7 @@ describe('error propagation safety', () => {
         invoke: (input) => ({ count: input.token.length }),
       }),
     );
-    runtime.activate(graphWith('x.guarded-input-secret'));
+    await runtime.activate(graphWith('x.guarded-input-secret'));
 
     // The failing input itself contains the secret.
     const result = await runtime.run({ token: SECRET });
@@ -165,7 +165,7 @@ describe('error propagation safety', () => {
     const serialized = JSON.stringify({
       trace: result.trace,
       error: result.error,
-      record: runtime.getRun(result.runId),
+      record: await runtime.getRun(result.runId),
     });
     expect(serialized).not.toContain(SECRET);
     // Received stays a length description; the invocation never happened.

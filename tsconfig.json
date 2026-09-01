@@ -11,6 +11,8 @@
       "@vict/kernel/testing": ["./packages/kernel/src/testing.ts"],
       "@vict/runtime": ["./packages/runtime/src/index.ts"],
       "@vict/runtime/*": ["./packages/runtime/src/*"],
+      "@vict/runtime/testing": ["./packages/runtime/src/testing.ts"],
+      "@vict/store-sqlite": ["./packages/store-sqlite/src/index.ts"],
       "@vict/sdk": ["./packages/sdk/src/index.ts"],
       "@vict/sdk/*": ["./packages/sdk/src/*"],
       "@vict/sdk/zod": ["./packages/sdk/src/zod.ts"]
