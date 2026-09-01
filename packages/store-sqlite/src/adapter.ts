@@ -5,6 +5,11 @@ import {
   ACTIVATION_MANIFEST_SCHEMA,
   RUN_EVENT_SCHEMA,
   VictStoreError,
+  assertActivationBelongsToGraph,
+  assertEventMatchesRun,
+  assertPublishableManifest,
+  assertRunMatchesActivation,
+  assertStoredActivationReadable,
   toCanonicalJson,
 } from '@vict/runtime';
 import type {
@@ -309,20 +314,24 @@ function validateActivationRow(row: ActivationRow): StoredActivation {
     row.canonical_manifest,
     'activation manifest',
   );
-  if (
-    !manifest ||
-    typeof manifest !== 'object' ||
-    (manifest as ActivationManifest).activationVersion !== row.activation_version ||
-    (manifest as ActivationManifest).graphId !== row.graph_id ||
-    (manifest as ActivationManifest).graphVersion !== row.graph_version ||
-    (manifest as ActivationManifest).capabilitySetVersion !== row.capability_set_version
-  ) {
+  if (!manifest || typeof manifest !== 'object') {
     throw new VictStoreError(
       'VICT_STORE_INVALID_RECORD',
-      'A stored activation manifest disagrees with its identity columns.',
+      'A stored activation manifest is missing or is not an object.',
       { operation: context, activationVersion: row.activation_version },
     );
   }
+  // Identity columns must agree with the manifest, AND every content-derived
+  // identity must recompute from the persisted canonical content. Corrupt
+  // rows are rejected, never silently normalized.
+  assertStoredActivationReadable({
+    activationVersion: row.activation_version,
+    graphId: row.graph_id,
+    graphVersion: row.graph_version,
+    capabilitySetVersion: row.capability_set_version,
+    canonicalManifest: row.canonical_manifest,
+    manifest,
+  });
   return immutable({
     activationVersion: row.activation_version,
     manifestSchema: row.manifest_schema,
@@ -345,19 +354,21 @@ function immutable<T>(value: T): T {
   return value;
 }
 
-function assertEvent(event: KernelEvent, runId?: string): void {
+/** Identity columns a run row (or command) presents for event validation. */
+interface RunIdentity {
+  readonly runId: string;
+  readonly graphId: string;
+  readonly graphVersion: string;
+  readonly capabilitySetVersion: string;
+  readonly activationVersion: string;
+}
+
+function assertEvent(event: KernelEvent): void {
   if (!event || typeof event.type !== 'string' || !Number.isInteger(event.seq) || event.seq < 0) {
     throw new VictStoreError(
       'VICT_STORE_EVENT_SEQUENCE_CONFLICT',
       'An event requires a non-negative integer sequence number and a string type.',
       { operation: 'execution.appendEvents' },
-    );
-  }
-  if (runId !== undefined && event.runId !== runId) {
-    throw new VictStoreError(
-      'VICT_STORE_INVALID_COMMAND',
-      'An event references a different run than the transition targets.',
-      { operation: 'execution.appendEvents', runId },
     );
   }
 }
@@ -401,8 +412,10 @@ export function createSqliteStores(options: SqliteStoresOptions = {}): Disposabl
     throw cause;
   }
 
-  const insertEvent = (event: KernelEvent, runId?: string): void => {
-    assertEvent(event, runId);
+  const insertEvent = (event: KernelEvent, run: RunIdentity): void => {
+    assertEvent(event);
+    // Every appended event must carry exactly its run's identity columns.
+    assertEventMatchesRun(event, run);
     db.prepare(
       `INSERT INTO vict_run_event
         (run_id, seq, event_schema, type, graph_id, graph_version, capability_set_version, activation_version, node_id, capability_id, payload, timestamp)
@@ -437,6 +450,9 @@ export function createSqliteStores(options: SqliteStoresOptions = {}): Disposabl
             .prepare('SELECT canonical_manifest FROM vict_activation WHERE activation_version = ?;')
             .get(command.manifest.activationVersion) as { canonical_manifest: string } | undefined;
           if (existing) {
+            // Same version + different canonical content is a collision
+            // regardless of content validity; equivalent content is an
+            // idempotent republish.
             if (existing.canonical_manifest !== command.canonicalManifest) {
               throw new VictStoreError(
                 'VICT_STORE_ACTIVATION_COLLISION',
@@ -449,6 +465,10 @@ export function createSqliteStores(options: SqliteStoresOptions = {}): Disposabl
             }
             return { activationVersion: command.manifest.activationVersion, created: false };
           }
+          // Fresh creation: content-derived identity validation, shared with
+          // the in-memory adapter — the canonical string must BE the
+          // manifest's canonical form and every identity must recompute.
+          assertPublishableManifest(command);
           db.prepare(
             `INSERT INTO vict_activation
               (activation_version, manifest_schema, graph_id, graph_version, capability_set_version, canonical_manifest, created_at)
@@ -489,14 +509,23 @@ export function createSqliteStores(options: SqliteStoresOptions = {}): Disposabl
       return safeRun('catalog.select', () =>
         inTransaction(db, () => {
           const exists = db
-            .prepare('SELECT activation_version FROM vict_activation WHERE activation_version = ?;')
-            .get(command.activationVersion);
+            .prepare(
+              'SELECT activation_version, graph_id FROM vict_activation WHERE activation_version = ?;',
+            )
+            .get(command.activationVersion) as
+            { activation_version: string; graph_id: string } | undefined;
           if (!exists) {
             throw new VictStoreError('VICT_STORE_ACTIVATION_NOT_FOUND', 'Activation not found.', {
               operation: 'catalog.select',
               activationVersion: command.activationVersion,
             });
           }
+          // An activation may only be selected for the graph it belongs to.
+          assertActivationBelongsToGraph(
+            { activationVersion: exists.activation_version, graphId: exists.graph_id },
+            command.graphId,
+            'catalog.select',
+          );
           const current = db
             .prepare('SELECT selection_revision FROM vict_activation_selection WHERE graph_id = ?;')
             .get(command.graphId) as { selection_revision: number } | undefined;
@@ -579,6 +608,17 @@ export function createSqliteStores(options: SqliteStoresOptions = {}): Disposabl
       command: PublishAndSelectCommand,
     ): Promise<PublishResult & { selection: ActivationSelection }> {
       assertManifestContent(command.publish);
+      if (command.publish.manifest.graphId !== command.select.graphId) {
+        throw new VictStoreError(
+          'VICT_STORE_ACTIVATION_MISMATCH',
+          'The activation does not belong to the graph being selected for.',
+          {
+            operation: 'catalog.publishAndSelect',
+            activationVersion: command.publish.manifest.activationVersion,
+            graphId: command.select.graphId,
+          },
+        );
+      }
       return safeRun('catalog.publishAndSelect', () =>
         inTransaction(db, () => {
           const existing = db
@@ -587,6 +627,8 @@ export function createSqliteStores(options: SqliteStoresOptions = {}): Disposabl
             { canonical_manifest: string } | undefined;
           let created: boolean;
           if (existing) {
+            // Same version + different canonical content is a collision
+            // regardless of content validity.
             if (existing.canonical_manifest !== command.publish.canonicalManifest) {
               throw new VictStoreError(
                 'VICT_STORE_ACTIVATION_COLLISION',
@@ -599,6 +641,8 @@ export function createSqliteStores(options: SqliteStoresOptions = {}): Disposabl
             }
             created = false;
           } else {
+            // Fresh creation: identity must recompute from content.
+            assertPublishableManifest(command.publish);
             db.prepare(
               `INSERT INTO vict_activation
                 (activation_version, manifest_schema, graph_id, graph_version, capability_set_version, canonical_manifest, created_at)
@@ -614,10 +658,30 @@ export function createSqliteStores(options: SqliteStoresOptions = {}): Disposabl
             );
             created = true;
           }
+          // The selection participates in the same transaction and honors
+          // the optimistic revision guard — a stale writer must leave BOTH
+          // the catalog and the selection untouched.
           const current = db
             .prepare('SELECT selection_revision FROM vict_activation_selection WHERE graph_id = ?;')
             .get(command.select.graphId) as { selection_revision: number } | undefined;
-          const nextRevision = (current?.selection_revision ?? 0) + 1;
+          const currentRevision = current?.selection_revision;
+          if (
+            command.select.expectedSelectionRevision !== undefined &&
+            (currentRevision === undefined ||
+              currentRevision !== command.select.expectedSelectionRevision)
+          ) {
+            throw new VictStoreError(
+              'VICT_STORE_SELECTION_CONFLICT',
+              'The selection changed since it was read; the expected selection revision is stale.',
+              {
+                operation: 'catalog.publishAndSelect',
+                graphId: command.select.graphId,
+                expectedSelectionRevision: command.select.expectedSelectionRevision,
+                actualSelectionRevision: currentRevision,
+              },
+            );
+          }
+          const nextRevision = (currentRevision ?? 0) + 1;
           const selectedAt = toIso(Date.now());
           db.prepare(
             `INSERT INTO vict_activation_selection (graph_id, activation_version, selection_revision, selected_at)
@@ -661,6 +725,52 @@ export function createSqliteStores(options: SqliteStoresOptions = {}): Disposabl
               { operation: 'execution.createRun', runId: command.runId },
             );
           }
+          // Enum validation happens before identity lookups so command
+          // errors surface deterministically as invalid-command failures.
+          if (!MODES.includes(command.mode)) {
+            throw new VictStoreError(
+              'VICT_STORE_INVALID_COMMAND',
+              'A run requires a known execution mode.',
+              { operation: 'execution.createRun', runId: command.runId },
+            );
+          }
+          if (!RETENTIONS.includes(command.retention)) {
+            throw new VictStoreError(
+              'VICT_STORE_INVALID_COMMAND',
+              'A run requires a known payload retention.',
+              { operation: 'execution.createRun', runId: command.runId },
+            );
+          }
+          const storedActivation = db
+            .prepare(
+              'SELECT activation_version, graph_id, graph_version, capability_set_version FROM vict_activation WHERE activation_version = ?;',
+            )
+            .get(command.activationVersion) as
+            | {
+                activation_version: string;
+                graph_id: string;
+                graph_version: string;
+                capability_set_version: string;
+              }
+            | undefined;
+          if (!storedActivation) {
+            throw new VictStoreError('VICT_STORE_ACTIVATION_NOT_FOUND', 'Activation not found.', {
+              operation: 'execution.createRun',
+              activationVersion: command.activationVersion,
+            });
+          }
+          // The run's identity columns must describe exactly that published
+          // activation (foreign keys alone cannot prove coherence).
+          assertRunMatchesActivation(
+            {
+              activationVersion: storedActivation.activation_version,
+              graphId: storedActivation.graph_id,
+              graphVersion: storedActivation.graph_version,
+              capabilitySetVersion: storedActivation.capability_set_version,
+            },
+            command,
+            'execution.createRun',
+          );
           try {
             db.prepare(
               `INSERT INTO vict_run
@@ -690,9 +800,30 @@ export function createSqliteStores(options: SqliteStoresOptions = {}): Disposabl
             );
           }
           faults?.afterRunUpdate?.(command);
-          for (const event of command.events) {
-            insertEvent(event, command.runId);
-          }
+          // The initial batch must be dense and begin at sequence zero, and
+          // every event must carry the run's identity columns.
+          const runIdentity: RunIdentity = {
+            runId: command.runId,
+            graphId: command.graphId,
+            graphVersion: command.graphVersion,
+            capabilitySetVersion: command.capabilitySetVersion,
+            activationVersion: command.activationVersion,
+          };
+          command.events.forEach((event, index) => {
+            if (event.seq !== index) {
+              throw new VictStoreError(
+                'VICT_STORE_EVENT_SEQUENCE_CONFLICT',
+                'The initial event batch must be dense and begin at sequence zero.',
+                {
+                  operation: 'execution.createRun',
+                  runId: command.runId,
+                  expectedEventSeq: index,
+                  actualEventSeq: event.seq,
+                },
+              );
+            }
+            insertEvent(event, runIdentity);
+          });
           faults?.beforeCommit?.(command);
           const row = db
             .prepare('SELECT * FROM vict_run WHERE run_id = ?;')
@@ -734,6 +865,40 @@ export function createSqliteStores(options: SqliteStoresOptions = {}): Disposabl
                 runId: command.runId,
                 expectedRecordRevision: command.expectedRecordRevision,
                 actualRecordRevision: row.record_revision,
+              },
+            );
+          }
+          // The caller's expectation must equal the ACTUAL stored next
+          // sequence (dense: zero for an empty run, otherwise preceding+1).
+          // A gapped stored history is reported as corrupt, never extended.
+          // All of this participates in the same transaction as the update
+          // and the event append.
+          const history = db
+            .prepare(
+              'SELECT COUNT(*) AS count, MAX(seq) AS maxSeq FROM vict_run_event WHERE run_id = ?;',
+            )
+            .get(command.runId) as { count: number; maxSeq: number | null };
+          const actualNextSeq = history.maxSeq === null ? 0 : history.maxSeq + 1;
+          if (history.count !== actualNextSeq) {
+            throw new VictStoreError(
+              'VICT_STORE_INVALID_RECORD',
+              'The stored event sequence has a gap; the run history is incomplete or corrupt.',
+              {
+                operation: 'execution.commitTransition',
+                runId: command.runId,
+                expectedEventSeq: actualNextSeq,
+              },
+            );
+          }
+          if (command.expectedNextEventSeq !== actualNextSeq) {
+            throw new VictStoreError(
+              'VICT_STORE_EVENT_SEQUENCE_CONFLICT',
+              'The expected next event sequence does not match the stored event history.',
+              {
+                operation: 'execution.commitTransition',
+                runId: command.runId,
+                expectedEventSeq: actualNextSeq,
+                actualEventSeq: command.expectedNextEventSeq,
               },
             );
           }
@@ -817,6 +982,13 @@ export function createSqliteStores(options: SqliteStoresOptions = {}): Disposabl
             command.runId,
           );
           faults?.afterRunUpdate?.(command);
+          const runIdentity: RunIdentity = {
+            runId: row.run_id,
+            graphId: row.graph_id,
+            graphVersion: row.graph_version,
+            capabilitySetVersion: row.capability_set_version,
+            activationVersion: row.activation_version,
+          };
           let seq = command.expectedNextEventSeq;
           for (const event of command.events) {
             assertEvent(event);
@@ -832,7 +1004,7 @@ export function createSqliteStores(options: SqliteStoresOptions = {}): Disposabl
                 },
               );
             }
-            insertEvent(event, command.runId);
+            insertEvent(event, runIdentity);
             seq += 1;
           }
           faults?.beforeCommit?.(command);
@@ -943,7 +1115,13 @@ export function createSqliteStores(options: SqliteStoresOptions = {}): Disposabl
               reason: command.reason,
               remediation: command.remediation,
             } as KernelEvent;
-            insertEvent(event);
+            insertEvent(event, {
+              runId: row.run_id,
+              graphId: row.graph_id,
+              graphVersion: row.graph_version,
+              capabilitySetVersion: row.capability_set_version,
+              activationVersion: row.activation_version,
+            });
             return immutable({
               runId: row.run_id,
               graphId: row.graph_id,

@@ -3,8 +3,8 @@ import { mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { createInMemoryStores } from '@vict/runtime';
-import { runStoreConformanceSuite } from '@vict/runtime/testing';
-import type { ConformanceStores } from '@vict/runtime/testing';
+import { runDurableBoundarySuite, runStoreConformanceSuite } from '@vict/runtime/testing';
+import type { BoundaryConformanceFactory, ConformanceStores } from '@vict/runtime/testing';
 import { createSqliteStores } from '@vict/store-sqlite';
 import type { SqliteStoresOptions } from '@vict/store-sqlite';
 
@@ -32,6 +32,28 @@ function inMemoryFactory() {
 
 describe('store conformance (shared suite)', () => {
   runStoreConformanceSuite({ test: it, expect }, inMemoryFactory());
+
+  describe('durable invocation boundary (shared suite)', () => {
+    runDurableBoundarySuite(
+      { test: it, expect },
+      inMemoryFactory() as unknown as BoundaryConformanceFactory,
+    );
+
+    runDurableBoundarySuite({ test: it, expect }, {
+      name: 'sqlite',
+      async create(): Promise<ConformanceStores> {
+        const dir = await mkdtemp(join(tmpdir(), 'vict-boundary-'));
+        const stores = createSqliteStores({ path: join(dir, 'boundary.db') });
+        return {
+          ...stores,
+          async dispose(): Promise<void> {
+            await stores.dispose();
+            await rm(dir, { recursive: true, force: true });
+          },
+        };
+      },
+    } as unknown as BoundaryConformanceFactory);
+  });
 
   runStoreConformanceSuite(
     { test: it, expect },

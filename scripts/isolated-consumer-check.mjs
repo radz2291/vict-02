@@ -56,12 +56,21 @@ const work = await mkdtemp(join(tmpdir(), 'vict-consumer-'));
 console.log(`Isolated consumer check in ${work}\n`);
 
 // 1. Pack every package into the temp dir.
+//
+// Cross-platform note: `npm pack packages/contracts` is ambiguous — npm
+// interprets a slash-containing argument that is not an existing path
+// reference as GitHub shorthand (`github.com/packages/contracts`), which
+// breaks on POSIX. Each package is therefore passed as an ABSOLUTE path
+// (drive-letter or leading '/'), which npm always treats as a local
+// directory, independent of the caller's working directory or path
+// separators.
 for (const name of packages) {
-  const result = run('npm', ['pack', join('packages', name), '--pack-destination', work], {
+  const packageDir = resolve(repoRoot, 'packages', name);
+  const result = run('npm', ['pack', packageDir, '--pack-destination', work], {
     capture: true,
   });
   if (result.status !== 0) {
-    throw new Error(`npm pack failed for ${name}`);
+    throw new Error(`npm pack failed for ${name} (dir: ${packageDir})`);
   }
 }
 const tarballs = readdirSync(work).filter((file) => file.endsWith('.tgz'));
@@ -317,4 +326,18 @@ if (failures > 0) {
   process.exit(1);
 }
 console.log(`ISOLATED CONSUMER CHECK PASSED. Cleaning ${work}`);
-rmSync(work, { recursive: true, force: true });
+// Cleanup: on Windows, SQLite/tsx file locks can outlive the processes
+// briefly. Retry a few times; a leftover temp directory is harmless (the
+// OS clears it) and must never fail an otherwise green verification.
+for (let attempt = 0; attempt < 5; attempt++) {
+  try {
+    rmSync(work, { recursive: true, force: true });
+    break;
+  } catch (cause) {
+    if (attempt === 4) {
+      console.warn(`cleanup of ${work} deferred to the OS: ${cause.code}`);
+    } else {
+      await new Promise((resolve) => setTimeout(resolve, 400));
+    }
+  }
+}

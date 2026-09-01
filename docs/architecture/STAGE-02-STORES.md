@@ -129,13 +129,20 @@ Operational settings (all documented, all overridable):
   a failed storage write throws; in both cases the previously active graph
   remains selected and runnable.
 - **Runs** persist: create + `run.started`; `node.started` + current-node/step
-  context before each invocation; node result batches (`node.completed`/
+  context; node result batches (`node.completed`/
   `node.failed`/`contract.rejected`/`effect.blocked` plus their
   `signal.routed` follow-ups) atomically; the terminal event + terminal record
   atomically (under `'full'` retention the complete validated output rides the
   terminal transition). A completed three-node run performs **7 durable
   transactions** (1 create + 3 node-start + 2 node-result + 1 terminal); this
   replaces the Stage 01 "one repository write per run" fact.
+- **Durable write-ahead rule**: the kernel's `beforeInvoke` port is wired to
+  the tracker's `awaitDurableBoundary()`; the boundary resolves only when
+  every durable write enqueued so far has committed, so run creation and the
+  first `node.started` commit before the first capability invocation, and a
+  node-result batch plus the next `node.started` commit before the next
+  invocation. A store rejection at any boundary yields zero invocations and
+  surfaces the structured store error.
 - The in-memory trace and the durable event sequence agree exactly for
   completed runs.
 - Inputs are never stored; the complete output is stored only under explicit
@@ -203,6 +210,19 @@ create/transition, stale-revision and sequence conflicts, dense append-only
 events, retention shapes, safe errors, record encapsulation, idempotent
 recovery, malformed-record rejection, and injected mid-transaction faults
 leaving no half-state.
+
+The corrective finalization pass extended the same suite with: actual
+stored-next-sequence enforcement (with rollback proofs), dense initial
+batches, canonical-content/identity cross-validation at publish, selection
+and run creation, event-vs-run identity checks, atomic `publishAndSelect`
+failure (nothing left behind), a selection-revision guard inside
+`publishAndSelect`, and strict persisted-value serialization for retained
+outputs. A second adapter-neutral suite (`runDurableBoundarySuite`) proves
+the durable write-ahead rule against both backends through the real tracker
+wiring: an unresolved or rejected create-run / node-start commit blocks the
+capability invocation, and the second capability of a two-node graph cannot
+begin before the first result batch and its own `node.started` have
+committed.
 
 SQLite additionally carries: fresh-migration/reopen/future-schema/partial-
 migration tests, corruption tests (malformed JSON, inconsistent identities,

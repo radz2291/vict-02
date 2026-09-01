@@ -3,78 +3,105 @@ import { VictStoreError } from './store-errors.js';
 /**
  * Strict, canonical JSON serialization for persisted records.
  *
- * Identity and byte-comparison depend on this form, so it rejects anything
- * JSON cannot represent losslessly and deterministically: NaN, Infinity,
- * `undefined` object values (silently dropped by JSON.stringify), functions,
- * symbols, bigints outside JSON, and cyclic structures.
+ * Persisted-value domain (enforced, not assumed): JSON primitives (`string`,
+ * finite `number`, `boolean`, `null`), arrays, and plain string-keyed
+ * objects. `Date` is the single deliberate extension and becomes ISO-8601
+ * UTC. Everything else is REJECTED with a structured error — nothing caller
+ * supplied is ever silently dropped, replaced, or collapsed:
+ *
+ * - `undefined` is rejected everywhere (top level, in objects, in arrays).
+ *   JSON.stringify would silently drop object values and turn array items
+ *   into `null`; both are data changes, so both are forbidden.
+ * - `NaN`/`Infinity`/`-Infinity` are rejected (JSON would emit `null`).
+ * - functions, symbols, and bigints are rejected (callers convert
+ *   deliberately).
+ * - `Map`, `Set`, class instances, and other non-plain objects are rejected:
+ *   JSON.stringify would collapse them to `{}` or their enumerable fields,
+ *   silently losing their semantics.
+ * - cyclic structures are rejected.
  *
  * Canonical form: object keys recursively sorted, arrays preserved, no
- * whitespace. `Date` becomes ISO-8601 UTC; `bigint` is rejected (callers
- * must convert deliberately).
+ * whitespace. Identity and byte-comparison of activation manifests depend on
+ * this form.
  */
 
-class SerializationError extends Error {
-  readonly code = 'VICT_STORE_INVALID_COMMAND';
-  constructor(message: string) {
-    super(message);
-    this.name = 'SerializationError';
-  }
+function invalid(path: string, why: string): VictStoreError {
+  return new VictStoreError(
+    'VICT_STORE_INVALID_COMMAND',
+    `Value at '${path}' cannot be persisted: ${why}`,
+    { operation: 'serialization.persistedValue' },
+  );
 }
 
-function assertSerializable(value: unknown, path: string, seen: Set<object>): void {
-  if (value === null || value === undefined) {
-    // undefined object values are dropped by canonicalize (JSON semantics);
-    // undefined array items become null.
+function isPlainObject(value: object): boolean {
+  const prototype = Object.getPrototypeOf(value);
+  return prototype === Object.prototype || prototype === null;
+}
+
+function assertPersistedValue(value: unknown, path: string, seen: Set<object>): void {
+  if (value === null) {
     return;
+  }
+  if (value === undefined) {
+    throw invalid(path, 'undefined is not a persisted value (omit the field explicitly).');
   }
   switch (typeof value) {
     case 'string':
     case 'boolean':
-    case 'undefined':
       return;
     case 'number':
       if (!Number.isFinite(value)) {
-        throw new SerializationError(`Value at '${path}' is not a finite number.`);
+        throw invalid(path, 'numbers must be finite (NaN/Infinity are not JSON values).');
       }
       return;
     case 'bigint':
-      throw new SerializationError(`Value at '${path}' is a bigint; convert it deliberately.`);
+      throw invalid(path, 'bigint must be converted deliberately (e.g. to string).');
     case 'function':
     case 'symbol':
-      throw new SerializationError(
-        `Value at '${path}' is not JSON-serializable (${typeof value}).`,
-      );
+      throw invalid(path, `a ${typeof value} is not a persisted value.`);
     case 'object':
       break;
     default:
-      throw new SerializationError(`Value at '${path}' is not JSON-serializable.`);
+      throw invalid(path, `the type '${typeof value}' is not a persisted value.`);
   }
-  if (seen.has(value as object)) {
-    throw new SerializationError(`Value at '${path}' contains a cyclic reference.`);
-  }
-  if (value instanceof Date) {
-    if (Number.isNaN(value.getTime())) {
-      throw new SerializationError(`Value at '${path}' is an invalid Date.`);
+  const object = value as object;
+  if (object instanceof Date) {
+    if (Number.isNaN(object.getTime())) {
+      throw invalid(path, 'the Date is invalid (NaN time).');
     }
+    // Deliberate extension: preserved as an ISO-8601 UTC string.
     return;
   }
-  seen.add(value as object);
+  if (seen.has(object)) {
+    throw invalid(path, 'the value contains a cyclic reference.');
+  }
+  if (!Array.isArray(object) && !isPlainObject(object)) {
+    throw invalid(
+      path,
+      `only plain objects and arrays are persisted (received ${
+        object.constructor?.name ?? 'an exotic object'
+      }).`,
+    );
+  }
+  seen.add(object);
   try {
-    if (Array.isArray(value)) {
-      for (let index = 0; index < value.length; index++) {
-        assertSerializable(value[index], `${path}[${index}]`, seen);
+    if (Array.isArray(object)) {
+      for (let index = 0; index < object.length; index++) {
+        assertPersistedValue(object[index], `${path}[${index}]`, seen);
       }
     } else {
-      for (const [key, item] of Object.entries(value as Record<string, unknown>)) {
-        assertSerializable(item, `${path}.${key}`, seen);
+      for (const [key, item] of Object.entries(object as Record<string, unknown>)) {
+        assertPersistedValue(item, `${path}.${key}`, seen);
       }
     }
   } finally {
-    seen.delete(value as object);
+    seen.delete(object);
   }
 }
 
 function canonicalize(value: unknown): unknown {
+  // Callers have validated the value already; canonicalize only sorts keys
+  // and applies the documented Date extension.
   if (value === null) {
     return null;
   }
@@ -94,10 +121,25 @@ function canonicalize(value: unknown): unknown {
   return value;
 }
 
-/** Validate then serialize to canonical (stable, sorted-key) JSON. */
+/**
+ * Validate against the persisted-value domain, then serialize to canonical
+ * (stable, sorted-key) JSON. Rejects — never silently alters — anything
+ * outside the domain.
+ */
 export function toCanonicalJson(value: unknown): string {
-  assertSerializable(value, '$', new Set());
+  assertPersistedValue(value, '$', new Set());
   return JSON.stringify(canonicalize(value));
+}
+
+/**
+ * Validate against the persisted-value domain, then return the canonical
+ * JS value (sorted plain objects, Dates as ISO strings) — the same shape the
+ * SQLite adapter persists and reads back. Adapters stay equivalent: both
+ * reject out-of-domain values and both canonicalize identically.
+ */
+export function canonicalPersistedValue(value: unknown): unknown {
+  assertPersistedValue(value, '$', new Set());
+  return canonicalize(value);
 }
 
 /**

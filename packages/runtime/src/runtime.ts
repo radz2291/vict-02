@@ -107,7 +107,9 @@ interface ActivationSnapshot {
  *   one activationVersion (RUN-001), persisted with the run.
  * - Runs execute against the pinned snapshot; in-flight runs cannot observe
  *   registry changes. Every run transition and its events are committed
- *   atomically (DATA-003) with optimistic concurrency.
+ *   atomically (DATA-003) with optimistic concurrency, and the durable
+ *   write-ahead rule holds: a capability is invoked only after its
+ *   `node.started` intent (and every preceding durable write) has committed.
  * - Test doubles are snapshotted at run start; replacing a double mid-run
  *   affects only later runs. Duplicate `registerDouble` is rejected; use
  *   `replaceDouble`.
@@ -385,7 +387,16 @@ export class VictRuntime {
         input,
         mode,
         maxSteps: options.maxSteps ?? this.#defaultMaxSteps,
-        ports: this.#buildPorts(snapshot, doubles, overrides, onEvent, runId),
+        ports: this.#buildPorts(
+          snapshot,
+          doubles,
+          overrides,
+          onEvent,
+          runId,
+          // Durable write-ahead boundary: no capability is invoked before
+          // its durable intent (and everything before it) has committed.
+          (): Promise<void> => tracker.awaitDurableBoundary(),
+        ),
       });
     } catch (error) {
       // Kernel execution failed (e.g. a storage fail-fast): settle the
@@ -440,7 +451,8 @@ export class VictRuntime {
         `Isolated node graph for '${nodeId}' failed to compile: ${isolated.issues.map((issue) => issue.message).join(' ')}`,
       );
     }
-    // Isolated tests always run in 'test' mode with no policy overrides.
+    // Isolated tests always run in 'test' mode with no policy overrides and
+    // no durable records, so no invocation boundary applies here.
     // Irreversible effects never run their real implementation here: a
     // registered safe double may run, and without one the node is blocked.
     const doubles = this.#registry.snapshotDoubles();
@@ -708,6 +720,7 @@ export class VictRuntime {
     overrides: EffectPolicyOverrides,
     onEvent: ((event: KernelEvent) => void) | undefined,
     runId: string | undefined,
+    beforeInvoke?: () => Promise<void>,
   ): KernelPorts {
     const bindings = snapshot.bindings;
     const contracts = snapshot.contractEnvironment;
@@ -715,6 +728,7 @@ export class VictRuntime {
       descriptors: snapshot.descriptors,
       contracts,
       onEvent,
+      ...(beforeInvoke !== undefined ? { beforeInvoke } : {}),
       clock: this.#clock,
       ids: {
         runId: runId !== undefined ? (): string => runId : (): string => this.#ids.runId(),

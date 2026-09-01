@@ -40,15 +40,26 @@ export function toSafeIssue(
   const path = formatPath(issue.path);
   const received = describeReceived(readPath(root, issue.path));
   const expected = typeof issue.expected === 'string' ? issue.expected : undefined;
-  const result = {
+  // Absent optional fields are OMITTED, never carried as explicit
+  // `undefined`: persisted values must be honestly in the JSON domain.
+  const result: {
+    code: string;
+    path: string;
+    message: string;
+    expected?: string;
+    received: string;
+    safeMessage?: string;
+  } = {
     code: issue.code,
     path,
     message: safeIssueMessage(issue.code, path, expected, received),
-    expected,
     received,
   };
+  if (expected !== undefined) {
+    result.expected = expected;
+  }
   if (options.trustSchemaMessages === true && typeof issue.message === 'string') {
-    return { ...result, safeMessage: issue.message };
+    result.safeMessage = issue.message;
   }
   return result;
 }

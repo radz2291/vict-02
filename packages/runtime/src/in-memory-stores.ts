@@ -22,7 +22,13 @@ import type {
 } from './store-types.js';
 import { ACTIVATION_MANIFEST_SCHEMA, RUN_EVENT_SCHEMA } from './store-types.js';
 import { VictStoreError } from './store-errors.js';
-import { immutableSnapshot, toCanonicalJson } from './serialization.js';
+import { canonicalPersistedValue, immutableSnapshot, toCanonicalJson } from './serialization.js';
+import {
+  assertActivationBelongsToGraph,
+  assertEventMatchesRun,
+  assertPublishableManifest,
+  assertRunMatchesActivation,
+} from './store-validation.js';
 
 interface InternalRun {
   run: StoredRun;
@@ -65,6 +71,8 @@ export function createInMemoryStores(options: InMemoryStoresOptions = {}): VictS
     assertManifest(command);
     const existing = activations.get(command.manifest.activationVersion);
     if (existing) {
+      // Same version + different canonical content is a collision regardless
+      // of content validity; equivalent content is an idempotent republish.
       if (existing.canonicalManifest !== command.canonicalManifest) {
         throw new VictStoreError(
           'VICT_STORE_ACTIVATION_COLLISION',
@@ -77,6 +85,9 @@ export function createInMemoryStores(options: InMemoryStoresOptions = {}): VictS
       }
       return { activationVersion: existing.activationVersion, created: false };
     }
+    // Fresh creation: the canonical string must BE the manifest's canonical
+    // form, and every identity must recompute from that content.
+    assertPublishableManifest(command);
     const record: StoredActivation = {
       activationVersion: command.manifest.activationVersion,
       manifestSchema: command.manifest.manifestSchema,
@@ -91,7 +102,9 @@ export function createInMemoryStores(options: InMemoryStoresOptions = {}): VictS
   };
 
   const select = (command: SelectActivationCommand): ActivationSelection => {
-    requireActivation(command.activationVersion, 'catalog.select');
+    const stored = requireActivation(command.activationVersion, 'catalog.select');
+    // An activation may only be selected for the graph it belongs to.
+    assertActivationBelongsToGraph(stored, command.graphId, 'catalog.select');
     const current = selections.get(command.graphId);
     if (command.expectedSelectionRevision !== undefined) {
       if (!current) {
@@ -158,7 +171,58 @@ export function createInMemoryStores(options: InMemoryStoresOptions = {}): VictS
       );
     },
     async publishAndSelect(command: PublishAndSelectCommand) {
-      const published = publish(command.publish);
+      // Atomic from the caller's perspective: every validation runs against
+      // the pre-call state first; the mutations are applied in one
+      // synchronous section afterwards. A failed selection therefore leaves
+      // the activation catalog and the graph selection exactly as before —
+      // including the case where the activation was never published before.
+      assertManifest(command.publish);
+      const existing = activations.get(command.publish.manifest.activationVersion);
+      if (existing && existing.canonicalManifest !== command.publish.canonicalManifest) {
+        throw new VictStoreError(
+          'VICT_STORE_ACTIVATION_COLLISION',
+          'An activation with this version already exists with different content.',
+          {
+            operation: 'catalog.publishAndSelect',
+            activationVersion: command.publish.manifest.activationVersion,
+          },
+        );
+      }
+      if (!existing) {
+        // Fresh creation: identity must recompute from content.
+        assertPublishableManifest(command.publish);
+      }
+      // The selected activation must belong to the selected graph.
+      if (command.publish.manifest.graphId !== command.select.graphId) {
+        throw new VictStoreError(
+          'VICT_STORE_ACTIVATION_MISMATCH',
+          'The activation does not belong to the graph being selected for.',
+          {
+            operation: 'catalog.publishAndSelect',
+            activationVersion: command.publish.manifest.activationVersion,
+            graphId: command.select.graphId,
+          },
+        );
+      }
+      const current = selections.get(command.select.graphId);
+      if (command.select.expectedSelectionRevision !== undefined) {
+        if (!current || current.selectionRevision !== command.select.expectedSelectionRevision) {
+          throw new VictStoreError(
+            'VICT_STORE_SELECTION_CONFLICT',
+            'The selection changed since it was read; the expected selection revision is stale.',
+            {
+              operation: 'catalog.publishAndSelect',
+              graphId: command.select.graphId,
+              expectedSelectionRevision: command.select.expectedSelectionRevision,
+              actualSelectionRevision: current?.selectionRevision,
+            },
+          );
+        }
+      }
+      // Apply: publish (idempotent) + select, with no intervening awaits.
+      const published = existing
+        ? { activationVersion: existing.activationVersion, created: false }
+        : publish(command.publish);
       const selection = select({
         ...command.select,
         activationVersion: published.activationVersion,
@@ -176,8 +240,10 @@ export function createInMemoryStores(options: InMemoryStoresOptions = {}): VictS
       });
     }
     // A run must reference a published activation (RUN-001, FK parity with
-    // the SQLite adapter's foreign key).
-    requireActivation(command.activationVersion, 'execution.createRun');
+    // the SQLite adapter's foreign key), and its identity columns must
+    // describe exactly that activation.
+    const activation = requireActivation(command.activationVersion, 'execution.createRun');
+    assertRunMatchesActivation(activation, command, 'execution.createRun');
     const record: StoredRun = {
       runId: command.runId,
       graphId: command.graphId,
@@ -242,6 +308,23 @@ export function createInMemoryStores(options: InMemoryStoresOptions = {}): VictS
         },
       );
     }
+    // The caller's expectation must equal the ACTUAL stored next sequence
+    // (dense: zero for an empty run, otherwise the preceding sequence plus
+    // one). A gapped stored history is reported as corrupt rather than
+    // extended.
+    const actualNextSeq = storedNextEventSeq(stored.events, command.runId);
+    if (command.expectedNextEventSeq !== actualNextSeq) {
+      throw new VictStoreError(
+        'VICT_STORE_EVENT_SEQUENCE_CONFLICT',
+        'The expected next event sequence does not match the stored event history.',
+        {
+          operation: 'execution.commitTransition',
+          runId: command.runId,
+          expectedEventSeq: actualNextSeq,
+          actualEventSeq: command.expectedNextEventSeq,
+        },
+      );
+    }
     const nextStatus = command.next.status ?? 'running';
     if (!ALL_RUN_STATUSES.includes(nextStatus)) {
       throw new VictStoreError(
@@ -282,25 +365,36 @@ export function createInMemoryStores(options: InMemoryStoresOptions = {}): VictS
       );
     }
     // Stage the updated record without mutating the previous snapshot, then
-    // append events. Any failure \u2014 invalid sequence, fault hook, or
-    // serialization \u2014 rolls the staged transition back so no half-state
-    // (run updated without its events) ever becomes visible.
+    // append events. Any failure — invalid sequence, out-of-domain persisted
+    // value, fault hook, or serialization — rolls the staged transition back
+    // so no half-state (run updated without its events) ever becomes
+    // visible. Persisted values are canonicalized exactly like the SQLite
+    // adapter stores them, so both adapters behave equivalently.
     const previous = stored.run;
-    const updated: StoredRun = {
-      ...stored.run,
-      ...command.next,
-      status: nextStatus,
-      recordRevision: stored.run.recordRevision + 1,
-      updatedAt: command.timestamp,
-      completedAt:
-        command.next.completedAt !== undefined
-          ? command.next.completedAt
-          : nextStatus === 'running'
-            ? stored.run.completedAt
-            : command.timestamp,
-    };
-    stored.run = updated;
     try {
+      const updated: StoredRun = {
+        ...stored.run,
+        ...command.next,
+        ...(command.next.outputSummary !== undefined
+          ? { outputSummary: canonicalPersistedValue(command.next.outputSummary) }
+          : {}),
+        ...(command.next.output !== undefined
+          ? { output: canonicalPersistedValue(command.next.output) }
+          : {}),
+        ...(command.next.error !== undefined
+          ? { error: canonicalPersistedValue(command.next.error) }
+          : {}),
+        status: nextStatus,
+        recordRevision: stored.run.recordRevision + 1,
+        updatedAt: command.timestamp,
+        completedAt:
+          command.next.completedAt !== undefined
+            ? command.next.completedAt
+            : nextStatus === 'running'
+              ? stored.run.completedAt
+              : command.timestamp,
+      } as StoredRun;
+      stored.run = updated;
       faults?.afterRunUpdate?.(command);
       appendEvents(stored, command.events, command.expectedNextEventSeq, command.timestamp);
       faults?.beforeCommit?.(command);
@@ -423,7 +517,9 @@ function appendEvents(
 ): void {
   let seq = expectedNextSeq;
   for (const event of events) {
-    assertEvent(event, stored.run.runId);
+    assertEvent(event);
+    // Every appended event must carry exactly its run's identity columns.
+    assertEventMatchesRun(event, stored.run);
     if (event.seq !== seq) {
       throw new VictStoreError(
         'VICT_STORE_EVENT_SEQUENCE_CONFLICT',
@@ -452,6 +548,26 @@ function appendEvents(
     });
     seq += 1;
   }
+}
+
+/**
+ * The actual next event sequence of stored history: zero for an empty run,
+ * otherwise the preceding sequence plus one. A gapped or misaligned history
+ * is structured corruption and is never extended.
+ */
+function storedNextEventSeq(events: readonly StoredEvent[], runId: string): number {
+  let expected = 0;
+  for (const event of events) {
+    if (event.seq !== expected) {
+      throw new VictStoreError(
+        'VICT_STORE_INVALID_RECORD',
+        'The stored event sequence has a gap; the run history is incomplete or corrupt.',
+        { operation: 'execution.commitTransition', runId, expectedEventSeq: expected },
+      );
+    }
+    expected += 1;
+  }
+  return expected;
 }
 
 function assertManifest(command: PublishActivationCommand): void {

@@ -56,4 +56,12 @@ export { VictRuntime, createRuntime } from './runtime.js';
 export { decideEffectAuthorization } from './effect-policy.js';
 export type { EffectPolicyOverrides } from './effect-policy.js';
 export { VictRuntimeError } from './errors.js';
-export { toCanonicalJson } from './serialization.js';
+export { toCanonicalJson, canonicalPersistedValue } from './serialization.js';
+export {
+  assertPublishableManifest,
+  assertRunMatchesActivation,
+  assertActivationBelongsToGraph,
+  assertEventMatchesRun,
+  assertStoredActivationReadable,
+} from './store-validation.js';
+export type { ActivationIdentity, RunIdentityColumns } from './store-validation.js';

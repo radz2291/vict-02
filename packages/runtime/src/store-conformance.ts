@@ -1,4 +1,10 @@
 import type { KernelEvent } from '@vict/kernel';
+import {
+  canonicalSemanticForm,
+  computeActivationVersion,
+  computeCapabilitySetVersion,
+  computeGraphVersion,
+} from '@vict/kernel';
 import type { VictError } from '@vict/contracts';
 import { ACTIVATION_MANIFEST_SCHEMA, RUN_EVENT_SCHEMA } from './store-types.js';
 import type {
@@ -56,30 +62,48 @@ export interface StoreConformanceFactory {
   create(): Promise<ConformanceStores>;
 }
 
-const GRAPH_A: ActivationManifest = {
-  manifestSchema: ACTIVATION_MANIFEST_SCHEMA,
-  graphId: 'conf-graph-a',
-  graph: {
+/**
+ * Build a fixture activation manifest whose identities are REAL: every
+ * content-derived identity is computed by the kernel's canonical identity
+ * functions, exactly as the runtime would produce it. Stores recompute and
+ * reject hand-made identities, so fixtures must be genuine.
+ */
+function fixtureManifest(graphId: string, capabilityRevision = '1'): ActivationManifest {
+  const graph = {
     schema: 'vict.graph@1',
-    id: 'conf-graph-a',
+    id: graphId,
     entry: 'n1',
     nodes: [{ id: 'n1', capability: 'cap.a', input: null, output: null }],
-    edges: [],
-  },
-  graphVersion: 'v1_graph-a',
-  capabilitySetVersion: 'v1_capset-a',
-  activationVersion: 'v1_act-a',
-  bindings: [{ capability: 'cap.a', revision: '1', effect: 'pure', input: null, output: null }],
-  contracts: [],
-};
+    edges: [] as never[],
+  } as unknown as Parameters<typeof computeGraphVersion>[0];
+  const bindings = [
+    {
+      capability: 'cap.a',
+      revision: capabilityRevision,
+      effect: 'pure' as const,
+      input: null,
+      output: null,
+    },
+  ];
+  const graphVersion = computeGraphVersion(graph);
+  const capabilitySetVersion = computeCapabilitySetVersion(bindings);
+  const activationVersion = computeActivationVersion(graphVersion, capabilitySetVersion);
+  return {
+    manifestSchema: ACTIVATION_MANIFEST_SCHEMA,
+    graphId,
+    graph: canonicalSemanticForm(graph as unknown as Parameters<typeof canonicalSemanticForm>[0]),
+    graphVersion,
+    capabilitySetVersion,
+    activationVersion,
+    bindings,
+    contracts: [],
+  };
+}
 
-const GRAPH_B = {
-  ...GRAPH_A,
-  graphId: 'conf-graph-b',
-  activationVersion: 'v1_act-b',
-  graphVersion: 'v1_graph-b',
-  capabilitySetVersion: 'v1_capset-b',
-};
+const GRAPH_A = fixtureManifest('conf-graph-a');
+/** Same graph as GRAPH_A, different capability revision: a valid successor activation. */
+const GRAPH_A_V2 = fixtureManifest('conf-graph-a', '2');
+const GRAPH_B = fixtureManifest('conf-graph-b');
 
 function makeEvent(
   seq: number,
@@ -240,17 +264,32 @@ export function runStoreConformanceSuite(
     const s = await factory.create();
     try {
       await s.catalog.publish({ manifest: GRAPH_A, canonicalManifest: toCanonicalJson(GRAPH_A) });
+      await s.catalog.publish({
+        manifest: GRAPH_A_V2,
+        canonicalManifest: toCanonicalJson(GRAPH_A_V2),
+      });
+      // A valid activation of ANOTHER graph, for the cross-graph rejection below.
       await s.catalog.publish({ manifest: GRAPH_B, canonicalManifest: toCanonicalJson(GRAPH_B) });
       const first = await s.catalog.select({
         graphId: GRAPH_A.graphId,
         activationVersion: GRAPH_A.activationVersion,
       });
       expect(first.selectionRevision).toBe(1);
+      // Select the successor activation of the SAME graph.
       const second = await s.catalog.select({
         graphId: GRAPH_A.graphId,
-        activationVersion: GRAPH_B.activationVersion,
+        activationVersion: GRAPH_A_V2.activationVersion,
       });
       expect(second.selectionRevision).toBe(2);
+      // An activation of a DIFFERENT graph cannot be selected for this one.
+      await rejectsWithCode(
+        expect,
+        s.catalog.select({
+          graphId: GRAPH_A.graphId,
+          activationVersion: GRAPH_B.activationVersion,
+        }),
+        'VICT_STORE_ACTIVATION_MISMATCH',
+      );
       // Stale writer loses.
       await rejectsWithCode(
         expect,
@@ -658,6 +697,389 @@ export function runStoreConformanceSuite(
       await s.execution.createRun(createCommand());
       const events = await s.execution.listEvents('conf-run-1');
       expect(events[0]?.eventSchema).toBe(RUN_EVENT_SCHEMA);
+    } finally {
+      await s.dispose();
+    }
+  });
+
+  test(`[${factory.name}] expectedNextEventSeq must equal the actual stored next sequence`, async () => {
+    const s = await factory.create();
+    try {
+      await publishFixture(s);
+      await s.execution.createRun(createCommand());
+      const events = await s.execution.listEvents('conf-run-1');
+      expect(events.length).toBe(1);
+      // The stored history ends at seq 0; an expectation of 5 with a
+      // matching event seq must be rejected against ACTUAL stored history.
+      await rejectsWithCode(
+        expect,
+        s.execution.commitTransition(
+          transitionCommand({
+            expectedRecordRevision: 1,
+            expectedNextEventSeq: 5,
+            events: [makeEvent(5, 'node.completed', { nodeId: 'n1', capabilityId: 'cap.a' })],
+          }),
+        ),
+        'VICT_STORE_EVENT_SEQUENCE_CONFLICT',
+      );
+      // A stale expectation is equally rejected.
+      await rejectsWithCode(
+        expect,
+        s.execution.commitTransition(
+          transitionCommand({
+            expectedRecordRevision: 1,
+            expectedNextEventSeq: 0,
+            events: [makeEvent(0, 'node.completed', { nodeId: 'n1', capabilityId: 'cap.a' })],
+          }),
+        ),
+        'VICT_STORE_EVENT_SEQUENCE_CONFLICT',
+      );
+      // Rollback proof: revision and history are untouched.
+      const run = await s.execution.getRun('conf-run-1');
+      expect(run?.recordRevision).toBe(1);
+      expect((await s.execution.listEvents('conf-run-1')).length).toBe(1);
+      // The correct expectation succeeds.
+      await s.execution.commitTransition(
+        transitionCommand({
+          expectedRecordRevision: 1,
+          expectedNextEventSeq: 1,
+          events: [makeEvent(1, 'node.completed', { nodeId: 'n1', capabilityId: 'cap.a' })],
+        }),
+      );
+      expect((await s.execution.listEvents('conf-run-1')).length).toBe(2);
+    } finally {
+      await s.dispose();
+    }
+  });
+
+  test(`[${factory.name}] createRun accepts only a dense initial batch beginning at zero`, async () => {
+    const s = await factory.create();
+    try {
+      await publishFixture(s);
+      // Batch starting at 1: rejected.
+      await rejectsWithCode(
+        expect,
+        s.execution.createRun(
+          createCommand({ runId: 'r-gap1', events: [makeEvent(1, 'run.started', {}, 'r-gap1')] }),
+        ),
+        'VICT_STORE_EVENT_SEQUENCE_CONFLICT',
+      );
+      // Dense prefix then gap [0, 2]: rejected.
+      await rejectsWithCode(
+        expect,
+        s.execution.createRun(
+          createCommand({
+            runId: 'r-gap2',
+            events: [
+              makeEvent(0, 'run.started', {}, 'r-gap2'),
+              makeEvent(2, 'node.started', { nodeId: 'n1', capabilityId: 'cap.a' }, 'r-gap2'),
+            ],
+          }),
+        ),
+        'VICT_STORE_EVENT_SEQUENCE_CONFLICT',
+      );
+      // No partial runs or events were left behind.
+      expect(await s.execution.getRun('r-gap1')).toBeUndefined();
+      expect(await s.execution.getRun('r-gap2')).toBeUndefined();
+      // A dense batch from zero is accepted.
+      await s.execution.createRun(
+        createCommand({
+          runId: 'r-dense',
+          events: [
+            makeEvent(0, 'run.started', {}, 'r-dense'),
+            makeEvent(1, 'node.started', { nodeId: 'n1', capabilityId: 'cap.a' }, 'r-dense'),
+          ],
+        }),
+      );
+      expect((await s.execution.listEvents('r-dense')).map((event) => event.seq)).toEqual([0, 1]);
+    } finally {
+      await s.dispose();
+    }
+  });
+
+  test(`[${factory.name}] publish rejects canonical content that is not the manifest's canonical form`, async () => {
+    const s = await factory.create();
+    try {
+      // Top-level identifiers look valid, but the canonical string does not
+      // correspond to the supplied manifest content.
+      const tampered = { ...GRAPH_A, graphVersion: 'v1_graph-a' } as ActivationManifest;
+      await rejectsWithCode(
+        expect,
+        s.catalog.publish({ manifest: tampered, canonicalManifest: '{"tampered":true}' }),
+        'VICT_STORE_ACTIVATION_MISMATCH',
+      );
+      // Canonical string of a DIFFERENT manifest: rejected.
+      await rejectsWithCode(
+        expect,
+        s.catalog.publish({
+          manifest: GRAPH_A,
+          canonicalManifest: toCanonicalJson(GRAPH_B),
+        }),
+        'VICT_STORE_ACTIVATION_MISMATCH',
+      );
+      expect((await s.catalog.list()).length).toBe(0);
+    } finally {
+      await s.dispose();
+    }
+  });
+
+  test(`[${factory.name}] publish rejects identities that do not recompute from content`, async () => {
+    const s = await factory.create();
+    try {
+      // The manifest is internally consistent JSON (canonical string
+      // matches), the columns agree — but the graph CONTENT was tampered
+      // with while keeping the original identity strings. The canonical
+      // identity functions must catch it.
+      const forgedGraph = {
+        schema: 'vict.graph@1',
+        id: 'conf-graph-a',
+        entry: 'n1',
+        nodes: [{ id: 'n1', capability: 'cap.OTHER', input: null, output: null }],
+        edges: [],
+      };
+      const forged = { ...GRAPH_A, graph: forgedGraph };
+      await rejectsWithCode(
+        expect,
+        s.catalog.publish({ manifest: forged, canonicalManifest: toCanonicalJson(forged) }),
+        'VICT_STORE_ACTIVATION_MISMATCH',
+      );
+      // Same trick for bindings: keep the capabilitySetVersion string, swap
+      // the binding revision.
+      const forgedBindings = {
+        ...GRAPH_A,
+        bindings: [
+          {
+            capability: 'cap.a',
+            revision: '999',
+            effect: 'pure' as const,
+            input: null,
+            output: null,
+          },
+        ],
+      };
+      await rejectsWithCode(
+        expect,
+        s.catalog.publish({
+          manifest: forgedBindings,
+          canonicalManifest: toCanonicalJson(forgedBindings),
+        }),
+        'VICT_STORE_ACTIVATION_MISMATCH',
+      );
+      expect((await s.catalog.list()).length).toBe(0);
+    } finally {
+      await s.dispose();
+    }
+  });
+
+  test(`[${factory.name}] selection requires the activation to belong to the graph`, async () => {
+    const s = await factory.create();
+    try {
+      await s.catalog.publish({ manifest: GRAPH_A, canonicalManifest: toCanonicalJson(GRAPH_A) });
+      await rejectsWithCode(
+        expect,
+        s.catalog.select({
+          graphId: GRAPH_B.graphId,
+          activationVersion: GRAPH_A.activationVersion,
+        }),
+        'VICT_STORE_ACTIVATION_MISMATCH',
+      );
+      expect(await s.catalog.getSelection(GRAPH_B.graphId)).toBeUndefined();
+    } finally {
+      await s.dispose();
+    }
+  });
+
+  test(`[${factory.name}] createRun requires a coherent published activation identity`, async () => {
+    const s = await factory.create();
+    try {
+      await publishFixture(s);
+      // Wrong graph id.
+      await rejectsWithCode(
+        expect,
+        s.execution.createRun(createCommand({ runId: 'r-id1', graphId: 'conf-graph-OTHER' })),
+        'VICT_STORE_ACTIVATION_MISMATCH',
+      );
+      // Wrong graph version.
+      await rejectsWithCode(
+        expect,
+        s.execution.createRun(createCommand({ runId: 'r-id2', graphVersion: 'v1_graph-a-OTHER' })),
+        'VICT_STORE_ACTIVATION_MISMATCH',
+      );
+      // Wrong capability-set version.
+      await rejectsWithCode(
+        expect,
+        s.execution.createRun(
+          createCommand({ runId: 'r-id3', capabilitySetVersion: 'v1_capset-a-OTHER' }),
+        ),
+        'VICT_STORE_ACTIVATION_MISMATCH',
+      );
+      // No partial runs were created.
+      for (const runId of ['r-id1', 'r-id2', 'r-id3']) {
+        expect(await s.execution.getRun(runId)).toBeUndefined();
+      }
+    } finally {
+      await s.dispose();
+    }
+  });
+
+  test(`[${factory.name}] appended events must carry the stored run's identity`, async () => {
+    const s = await factory.create();
+    try {
+      await publishFixture(s);
+      await s.execution.createRun(createCommand());
+      for (const [field, value] of [
+        ['graphId', 'conf-graph-OTHER'],
+        ['graphVersion', 'v1_graph-a-OTHER'],
+        ['capabilitySetVersion', 'v1_capset-a-OTHER'],
+        ['activationVersion', 'v1_act-a-OTHER'],
+      ] as const) {
+        const event = makeEvent(1, 'node.started', { nodeId: 'n1', capabilityId: 'cap.a' });
+        await rejectsWithCode(
+          expect,
+          s.execution.commitTransition(
+            transitionCommand({
+              expectedRecordRevision: 1,
+              expectedNextEventSeq: 1,
+              events: [{ ...event, [field]: value } as KernelEvent],
+            }),
+          ),
+          'VICT_STORE_INVALID_COMMAND',
+        );
+      }
+      // Every rejection left no partial state.
+      expect((await s.execution.getRun('conf-run-1'))?.recordRevision).toBe(1);
+      expect((await s.execution.listEvents('conf-run-1')).length).toBe(1);
+    } finally {
+      await s.dispose();
+    }
+  });
+
+  test(`[${factory.name}] publishAndSelect failure leaves catalog and selection untouched`, async () => {
+    const s = await factory.create();
+    try {
+      // Establish an unrelated selection so revision 0 is stale.
+      await s.catalog.publish({ manifest: GRAPH_B, canonicalManifest: toCanonicalJson(GRAPH_B) });
+      await s.catalog.select({
+        graphId: GRAPH_B.graphId,
+        activationVersion: GRAPH_B.activationVersion,
+      });
+      // Publish a previously ABSENT activation with a stale selection
+      // revision: the whole operation must fail atomically.
+      await rejectsWithCode(
+        expect,
+        s.catalog.publishAndSelect({
+          publish: { manifest: GRAPH_A, canonicalManifest: toCanonicalJson(GRAPH_A) },
+          select: { graphId: GRAPH_A.graphId, expectedSelectionRevision: 999 },
+        }),
+        'VICT_STORE_SELECTION_CONFLICT',
+      );
+      // The activation was NOT left behind.
+      expect(await s.catalog.get(GRAPH_A.activationVersion)).toBeUndefined();
+      expect((await s.catalog.list()).length).toBe(1);
+      expect(await s.catalog.getSelection(GRAPH_A.graphId)).toBeUndefined();
+    } finally {
+      await s.dispose();
+    }
+  });
+
+  test(`[${factory.name}] publishAndSelect honors the selection revision guard`, async () => {
+    const s = await factory.create();
+    try {
+      const first = await s.catalog.publishAndSelect({
+        publish: { manifest: GRAPH_A, canonicalManifest: toCanonicalJson(GRAPH_A) },
+        select: { graphId: GRAPH_A.graphId },
+      });
+      expect(first.selection.selectionRevision).toBe(1);
+      // Stale guard (0) fails; nothing changes.
+      await rejectsWithCode(
+        expect,
+        s.catalog.publishAndSelect({
+          publish: { manifest: GRAPH_A, canonicalManifest: toCanonicalJson(GRAPH_A) },
+          select: { graphId: GRAPH_A.graphId, expectedSelectionRevision: 0 },
+        }),
+        'VICT_STORE_SELECTION_CONFLICT',
+      );
+      expect((await s.catalog.getSelection(GRAPH_A.graphId))?.selectionRevision).toBe(1);
+      // Current guard succeeds.
+      const again = await s.catalog.publishAndSelect({
+        publish: { manifest: GRAPH_A, canonicalManifest: toCanonicalJson(GRAPH_A) },
+        select: { graphId: GRAPH_A.graphId, expectedSelectionRevision: 1 },
+      });
+      expect(again.selection.selectionRevision).toBe(2);
+      expect(again.created).toBe(false);
+    } finally {
+      await s.dispose();
+    }
+  });
+
+  test(`[${factory.name}] strict persisted-value domain: full-retention output cannot be silently altered`, async () => {
+    const s = await factory.create();
+    try {
+      await publishFixture(s);
+      await s.execution.createRun(createCommand({ runId: 'r-strict', retention: 'full' }));
+      // A Map collapses to {} under JSON.stringify — must be rejected.
+      await rejectsWithCode(
+        expect,
+        s.execution.commitTransition(
+          transitionCommand({
+            runId: 'r-strict',
+            expectedRecordRevision: 1,
+            expectedNextEventSeq: 1,
+            next: {
+              status: 'completed',
+              steps: 1,
+              completedAt: 2_000,
+              output: { plain: 1, sneaky: new Map([['secret', 'value']]) },
+            },
+            events: [makeEvent(1, 'run.completed', { steps: 1 }, 'r-strict')],
+          }),
+        ),
+        'VICT_STORE_INVALID_COMMAND',
+      );
+      // Explicit undefined in objects and arrays: rejected.
+      // NOTE: an absent/undefined `output` means 'no output' at the port
+      // level (the field is optional), so it is not in the rejected set;
+      // carrying `undefined` INSIDE an object or array is rejected.
+      for (const bad of [{ x: undefined }, [undefined], new Set([1]), Symbol('s')]) {
+        await rejectsWithCode(
+          expect,
+          s.execution.commitTransition(
+            transitionCommand({
+              runId: 'r-strict',
+              expectedRecordRevision: 1,
+              expectedNextEventSeq: 1,
+              next: { status: 'completed', steps: 1, completedAt: 2_000, output: bad },
+              events: [makeEvent(1, 'run.completed', { steps: 1 }, 'r-strict')],
+            }),
+          ),
+          'VICT_STORE_INVALID_COMMAND',
+        );
+      }
+      // No partial mutation: still running at revision 1 with one event.
+      const run = await s.execution.getRun('r-strict');
+      expect(run?.status).toBe('running');
+      expect(run?.recordRevision).toBe(1);
+      expect((await s.execution.listEvents('r-strict')).length).toBe(1);
+      // A plain, in-domain output is accepted and round-trips.
+      const completed = await s.execution.commitTransition(
+        transitionCommand({
+          runId: 'r-strict',
+          expectedRecordRevision: 1,
+          expectedNextEventSeq: 1,
+          next: {
+            status: 'completed',
+            steps: 1,
+            completedAt: 2_000,
+            output: { plain: 1, nested: { b: 2, a: 1 }, when: new Date(1_500) },
+          },
+          events: [makeEvent(1, 'run.completed', { steps: 1 }, 'r-strict')],
+        }),
+      );
+      expect(completed.output).toEqual({
+        plain: 1,
+        nested: { b: 2, a: 1 },
+        when: '1970-01-01T00:00:01.500Z',
+      });
     } finally {
       await s.dispose();
     }

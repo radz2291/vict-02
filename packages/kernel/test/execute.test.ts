@@ -49,6 +49,11 @@ function makeHarness(options?: {
   handlers?: Record<string, (input: unknown) => unknown | Promise<unknown>>;
   allow?: boolean;
   effects?: Record<string, CapabilityDescriptor['effect']>;
+  beforeInvoke?: (boundary: {
+    nodeId: string;
+    capabilityId: string;
+    step: number;
+  }) => Promise<void>;
 }): Harness {
   const invocations: Harness['invocations'] = [];
   const contractMap = new Map<string, Contract<unknown>>(
@@ -90,6 +95,7 @@ function makeHarness(options?: {
     },
     clock: { now: () => 1_000 },
     ids: { runId: () => 'run_test_1' },
+    ...(options?.beforeInvoke !== undefined ? { beforeInvoke: options.beforeInvoke } : {}),
   };
   return { ports, invocations, capabilityIndex, contractEnvironment };
 }
@@ -410,5 +416,77 @@ describe('event envelope', () => {
       seqs.push(event.seq);
     }
     expect(seqs).toEqual(seqs.map((_, index) => index));
+  });
+});
+
+describe('executeGraph durable invocation boundary (beforeInvoke)', () => {
+  it('awaits the guard before every capability invocation, in node order', async () => {
+    const events: string[] = [];
+    const harness = makeHarness({
+      beforeInvoke: async (boundary) => {
+        // Record the boundary crossing; the guard resolves immediately but
+        // asynchronously, so a synchronous invoke would beat it.
+        events.push(`boundary:${boundary.nodeId}:${boundary.step}`);
+      },
+    });
+    // Wrap invoke to record its start relative to the guard.
+    const innerInvoke = harness.ports.capabilities.invoke;
+    harness.ports.capabilities.invoke = async (id, input, context) => {
+      events.push(`invoke:${id}`);
+      return innerInvoke(id, input, context);
+    };
+    const output = await runThreeNode(harness, { n: 1 });
+    expect(output.status).toBe('completed');
+    expect(events).toEqual([
+      'boundary:n1:1',
+      'invoke:c1',
+      'boundary:n2:2',
+      'invoke:c2',
+      'boundary:n3:3',
+      'invoke:c3',
+    ]);
+  });
+
+  it('a guard rejection prevents the capability invocation and propagates unchanged', async () => {
+    const harness = makeHarness({
+      beforeInvoke: async (boundary) => {
+        if (boundary.nodeId === 'n1') {
+          throw Object.assign(new Error('durable intent not committed'), {
+            code: 'VICT_TEST_NOT_DURABLE',
+          });
+        }
+      },
+    });
+    let caught: unknown;
+    try {
+      await runThreeNode(harness, { n: 1 });
+    } catch (error) {
+      caught = error;
+    }
+    expect(caught).toBeDefined();
+    expect((caught as { code?: string }).code).toBe('VICT_TEST_NOT_DURABLE');
+    expect((caught as { message?: string }).message).toBe('durable intent not committed');
+    // The capability was never invoked; the error was not converted into a
+    // domain event or routed along an error edge.
+    expect(harness.invocations).toEqual([]);
+  });
+
+  it('a guard that resolves only after a deferred write orders invocation causally', async () => {
+    let release!: () => void;
+    const gate = new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    const harness = makeHarness({
+      beforeInvoke: () => gate,
+    });
+    const invocationPromise = runThreeNode(harness, { n: 1 });
+    // Give the kernel a chance to run to the boundary; the capability must
+    // not have been invoked while the gate is closed.
+    await new Promise<void>((resolve) => setImmediate(resolve));
+    expect(harness.invocations).toEqual([]);
+    release();
+    const output = await invocationPromise;
+    expect(output.status).toBe('completed');
+    expect(harness.invocations).toHaveLength(3);
   });
 });

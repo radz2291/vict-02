@@ -299,6 +299,14 @@ export interface PolicyPort {
   authorize(request: EffectAuthorizationRequest): EffectAuthorizationDecision;
 }
 
+/** The exact invocation a durable-boundary guard is asked to release. */
+export interface InvocationBoundary {
+  readonly runId: string;
+  readonly nodeId: string;
+  readonly capabilityId: string;
+  readonly step: number;
+}
+
 export interface Clock {
   now(): number;
 }
@@ -319,6 +327,22 @@ export interface KernelPorts {
   readonly ids?: IdFactory;
   /** Optional streaming hook; called for every event as it is emitted. */
   readonly onEvent?: (event: KernelEvent) => void;
+  /**
+   * Optional asynchronous invocation guard (the durable write-ahead
+   * boundary). When supplied, the kernel awaits it after emitting
+   * `node.started` for a node and before invoking that node's capability,
+   * every invocation, sequentially. The environment uses it to guarantee
+   * that every durable write enqueued so far — run creation, the preceding
+   * node-result batch, and this node's `node.started` transition — has
+   * committed before the side effect may begin (Stage 02 write-ahead rule).
+   *
+   * A rejection is an infrastructure failure: the capability is NOT invoked
+   * and the error propagates out of `executeGraph` unchanged. It is
+   * deliberately not converted into a domain event, routed along an error
+   * edge, or sanitised — hiding or downgrading a durability failure would
+   * misrepresent what is durably known about the run.
+   */
+  readonly beforeInvoke?: (boundary: InvocationBoundary) => Promise<void>;
 }
 
 /* ------------------------------------------------------------------ */

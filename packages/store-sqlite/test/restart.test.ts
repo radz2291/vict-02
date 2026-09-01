@@ -121,6 +121,14 @@ describe('sqlite restart and interruption (real subprocess boundaries)', () => {
   }, 240_000);
 
   it('forced interruption: the run blocks, nothing replays, and recovery is idempotent', async () => {
+    // What this REAL subprocess scenario proves (complementary to the
+    // gate-based boundary suite): the parent waits until the second node's
+    // `node.started` transition is durable (via an independent DB reader)
+    // BEFORE killing the child. Because the durable write-ahead boundary
+    // commits that transition before the capability is invoked, the kill
+    // lands either before invocation or during it — in both cases the
+    // marker file proves the second capability NEVER completed work, and
+    // recovery blocks the run without replaying anything.
     await withWorkspace(async (dir) => {
       const db = join(dir, 'interrupt.db');
       const marker = join(dir, 'marker.txt');

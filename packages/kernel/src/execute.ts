@@ -31,6 +31,10 @@ const SYSTEM_IDS = {
  * Purity: the kernel performs no I/O. Capability invocation, policy,
  * contract judgment, time, and identity are all supplied through ports.
  * Event order is defined by the per-run monotonic `seq`, never timestamps.
+ *
+ * Determinism: the kernel awaits the optional `beforeInvoke` port at every
+ * invocation boundary, but the port itself is environment policy — with no
+ * guard supplied, execution is exactly as deterministic as before.
  */
 export async function executeGraph(run: KernelRunInput): Promise<KernelRunOutput> {
   const { graph, ports } = run;
@@ -232,6 +236,20 @@ export async function executeGraph(run: KernelRunInput): Promise<KernelRunOutput
 
     // ---- Invocation ------------------------------------------------------
     emit({ type: 'node.started', nodeId: node.id, capabilityId: node.capability });
+    // Durable write-ahead boundary: the environment may require every
+    // durable write enqueued so far — run creation, the preceding
+    // node-result batch, and this node's `node.started` transition — to be
+    // committed before this capability may begin. A rejection here is an
+    // infrastructure failure: the capability is not invoked and the error
+    // propagates unchanged (never converted into a domain event).
+    if (ports.beforeInvoke !== undefined) {
+      await ports.beforeInvoke({
+        runId,
+        nodeId: node.id,
+        capabilityId: node.capability,
+        step: steps,
+      });
+    }
     const startedAt = clock.now();
     let invocation;
     try {

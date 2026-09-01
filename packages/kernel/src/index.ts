@@ -35,5 +35,7 @@ export { compileGraph } from './compile.js';
 export type { CompileGraphInput } from './compile.js';
 export { executeGraph, DEFAULT_MAX_STEPS } from './execute.js';
 export { computeGraphVersion, canonicalJson, canonicalSemanticForm } from './canonical.js';
+export { computeCapabilitySetVersion, computeActivationVersion } from './canonical.js';
+export type { CapabilityBindingFingerprint } from './canonical.js';
 export { summarizeOutput } from './summarize.js';
 export type { KernelErrorCode } from './errors.js';

@@ -12,4 +12,6 @@ export type {
   ConformanceStores,
   ConformanceExpect,
 } from './store-conformance.js';
+export { runDurableBoundarySuite } from './boundary-conformance.js';
+export type { BoundaryConformanceFactory, BoundaryGates } from './boundary-conformance.js';
 export { RECOVERY_CODE, RECOVERY_REASON, RECOVERY_REMEDIATION } from './runtime.js';

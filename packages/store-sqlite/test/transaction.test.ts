@@ -4,33 +4,52 @@ import { mkdtemp } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { createSqliteStores } from '@vict/store-sqlite';
+import { toCanonicalJson, ACTIVATION_MANIFEST_SCHEMA } from '@vict/runtime';
 import type {
   ActivationManifest,
   KernelEvent,
   TransitionFaultHooks,
   VictStores,
 } from '@vict/runtime';
+import {
+  canonicalSemanticForm,
+  computeActivationVersion,
+  computeCapabilitySetVersion,
+  computeGraphVersion,
+} from '@vict/kernel';
 
 /**
  * Transaction failure (15.4) and concurrency conflict (15.5) against the
  * SQLite adapter. Faults are injected through the documented test-only
  * hooks inside the real transaction; no user database is corrupted.
+ *
+ * The fixture activation is GENUINE (identities computed by the kernel's
+ * canonical identity functions) because stores validate identity on publish.
  */
 
+const TX_GRAPH = {
+  schema: 'vict.graph@1',
+  id: 'tx-graph',
+  entry: 'n1',
+  nodes: [{ id: 'n1', capability: 'cap.a', input: null, output: null }],
+  edges: [] as never[],
+} as unknown as Parameters<typeof computeGraphVersion>[0];
+
+const TX_BINDINGS = [
+  { capability: 'cap.a', revision: '1', effect: 'pure' as const, input: null, output: null },
+];
+
 const ACTIVATION: ActivationManifest = {
-  manifestSchema: 'vict.activation-manifest@1',
-  graphId: 'tx-graph',
-  graph: {
-    schema: 'vict.graph@1',
-    id: 'tx-graph',
-    entry: 'n1',
-    nodes: [{ id: 'n1', capability: 'cap.a', input: null, output: null }],
-    edges: [],
-  },
-  graphVersion: 'v1_tx-graph',
-  capabilitySetVersion: 'v1_tx-cap',
-  activationVersion: 'v1_tx-act',
-  bindings: [{ capability: 'cap.a', revision: '1', effect: 'pure', input: null, output: null }],
+  manifestSchema: ACTIVATION_MANIFEST_SCHEMA,
+  graphId: TX_GRAPH.id,
+  graph: canonicalSemanticForm(TX_GRAPH),
+  graphVersion: computeGraphVersion(TX_GRAPH),
+  capabilitySetVersion: computeCapabilitySetVersion(TX_BINDINGS),
+  activationVersion: computeActivationVersion(
+    computeGraphVersion(TX_GRAPH),
+    computeCapabilitySetVersion(TX_BINDINGS),
+  ),
+  bindings: TX_BINDINGS,
   contracts: [],
 };
 
@@ -72,7 +91,7 @@ describe('sqlite transaction boundaries', () => {
     await withStores({ faults }, async (stores) => {
       await stores.catalog.publish({
         manifest: ACTIVATION,
-        canonicalManifest: JSON.stringify(ACTIVATION),
+        canonicalManifest: toCanonicalJson(ACTIVATION),
       });
       await stores.execution.createRun({
         runId: 'tx-run',
@@ -120,7 +139,7 @@ describe('sqlite transaction boundaries', () => {
     await withStores({ faults }, async (stores) => {
       await stores.catalog.publish({
         manifest: ACTIVATION,
-        canonicalManifest: JSON.stringify(ACTIVATION),
+        canonicalManifest: toCanonicalJson(ACTIVATION),
       });
       await stores.execution.createRun({
         runId: 'tx-run',
@@ -158,7 +177,7 @@ describe('sqlite transaction boundaries', () => {
     await withStores({}, async (stores) => {
       await stores.catalog.publish({
         manifest: ACTIVATION,
-        canonicalManifest: JSON.stringify(ACTIVATION),
+        canonicalManifest: toCanonicalJson(ACTIVATION),
       });
       await stores.execution.createRun({
         runId: 'tx-run',
@@ -220,7 +239,7 @@ describe('sqlite transaction boundaries', () => {
       // The run requires a published activation; publish via the same owner.
       await first.catalog.publish({
         manifest: ACTIVATION,
-        canonicalManifest: JSON.stringify(ACTIVATION),
+        canonicalManifest: toCanonicalJson(ACTIVATION),
       });
       const stores: VictStores = first;
       await stores.execution.createRun({

@@ -5,31 +5,50 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
 import { createSqliteStores, openDatabase, inTransaction } from '@vict/store-sqlite';
-import { toCanonicalJson } from '@vict/runtime';
+import { toCanonicalJson, ACTIVATION_MANIFEST_SCHEMA } from '@vict/runtime';
 import type { ActivationManifest, KernelEvent, StoredActivation } from '@vict/runtime';
 import type { DisposableVictStores } from '@vict/runtime';
+import {
+  canonicalSemanticForm,
+  computeActivationVersion,
+  computeCapabilitySetVersion,
+  computeGraphVersion,
+} from '@vict/kernel';
 
 /**
  * Corruption and schema adversarial cases (15.6): malformed JSON,
  * internally inconsistent records, unsupported future schema, invalid
  * sequences, and dangling selection targets all fail closed and keep the
  * data inspectable where possible.
+ *
+ * The fixture activation is GENUINE (identities computed by the kernel's
+ * canonical identity functions) because stores validate identity on
+ * publish; corruption is then injected directly into the database.
  */
 
+const CORR_GRAPH = {
+  schema: 'vict.graph@1',
+  id: 'corr-graph',
+  entry: 'n1',
+  nodes: [{ id: 'n1', capability: 'cap.a', input: null, output: null }],
+  edges: [] as never[],
+} as unknown as Parameters<typeof computeGraphVersion>[0];
+
+const CORR_BINDINGS = [
+  { capability: 'cap.a', revision: '1', effect: 'pure' as const, input: null, output: null },
+];
+
 const MANIFEST: ActivationManifest = {
-  manifestSchema: 'vict.activation-manifest@1',
-  graphId: 'corr-graph',
-  graph: {
-    schema: 'vict.graph@1',
-    id: 'corr-graph',
-    entry: 'n1',
-    nodes: [{ id: 'n1', capability: 'cap.a', input: null, output: null }],
-    edges: [],
-  },
-  graphVersion: 'v1_corr-graph',
-  capabilitySetVersion: 'v1_corr-cap',
-  activationVersion: 'v1_corr-act',
-  bindings: [{ capability: 'cap.a', revision: '1', effect: 'pure', input: null, output: null }],
+  manifestSchema: ACTIVATION_MANIFEST_SCHEMA,
+  graphId: CORR_GRAPH.id,
+  graph: canonicalSemanticForm(CORR_GRAPH),
+  graphVersion: computeGraphVersion(CORR_GRAPH),
+  capabilitySetVersion: computeCapabilitySetVersion(CORR_BINDINGS),
+  activationVersion: computeActivationVersion(
+    computeGraphVersion(CORR_GRAPH),
+    computeCapabilitySetVersion(CORR_BINDINGS),
+  ),
+  bindings: CORR_BINDINGS,
   contracts: [],
 };
 

@@ -23,19 +23,25 @@ export interface DurableRunContext {
  * Transaction model (DATA-003):
  * - the run is created atomically with its `run.started` event;
  * - each `node.started` is committed atomically with the current-node/step
- *   context update, before the capability is invoked;
+ *   context update;
  * - a node result (`node.completed` / `node.failed` /
  *   `contract.rejected` / `effect.blocked`) plus its `signal.routed`
  *   follow-ups are committed as one transition;
  * - the terminal event is committed atomically with the terminal record —
  *   under `'full'` retention the complete validated output is attached.
  *
- * Events are applied strictly in emission order by a FIFO write queue that
- * drains concurrently with execution. Every write uses optimistic
- * concurrency (expected record revision and expected next event sequence).
- * A failed write records the failure; the next `onEvent` call throws, so
- * execution fail-fasts instead of silently running capabilities that can no
- * longer be persisted.
+ * Write-ahead rule (Stage 02 safety invariant): writes are applied in
+ * emission order by a FIFO queue, and `awaitDurableBoundary()` — the
+ * kernel's `beforeInvoke` port — resolves only once every write enqueued so
+ * far has committed. The kernel awaits it before every capability
+ * invocation, so an intent is durable before the corresponding side effect
+ * may begin: run creation and the first `node.started` commit before the
+ * first invocation; a node-result batch and the next `node.started` commit
+ * before the next invocation. A failed write is recorded; the boundary
+ * rejects with the structured store error, so the capability is never
+ * invoked, and later `onEvent` calls throw so execution fail-fasts.
+ * Every write uses optimistic concurrency (expected record revision and
+ * expected next event sequence).
  */
 export class DurableRunTracker {
   readonly #execution: ExecutionStore;
@@ -113,6 +119,24 @@ export class DurableRunTracker {
       }
     }
   };
+
+  /**
+   * Durable invocation boundary (the kernel's `beforeInvoke` port).
+   *
+   * Resolves only after every durable write enqueued so far — run creation,
+   * any preceding node-result batch, and the current node's `node.started`
+   * transition — has committed. Rejects with the recorded structured store
+   * failure if any required write failed, which prevents the capability
+   * from being invoked. Awaiting the queue is causal, not a timing
+   * assumption: the queue promise settles only when all writes enqueued
+   * before the boundary call have settled.
+   */
+  async awaitDurableBoundary(): Promise<void> {
+    await this.#queue;
+    if (this.#failure) {
+      throw this.#failure.error;
+    }
+  }
 
   /**
    * Commit the terminal transition (and anything still batched), wait for
