@@ -178,6 +178,7 @@ export async function resolveBindings(
         revision: live.revision,
         effect: live.effect,
         invoke: live.invoke,
+        ...(live.idempotency === undefined ? {} : { idempotency: live.idempotency }),
         inputContractId: live.input?.id,
         inputRevision: live.input?.revision,
         outputContractId: live.output?.id,

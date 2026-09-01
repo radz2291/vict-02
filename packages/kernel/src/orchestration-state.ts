@@ -174,7 +174,11 @@ export const ATTEMPT_TRANSITIONS: Readonly<Record<string, readonly string[]>> = 
   failed: [],
   timed_out: [],
   cancelled: [],
-  outcome_unknown: ['completed', 'failed'],
+  // `outcome_unknown` is TERMINAL for the attempt row: the late result of a
+  // genuinely still-running handler whose lease was recovered is REJECTED,
+  // never applied (fencing). Recovered work continues in a NEW attempt of
+  // the same logical invocation.
+  outcome_unknown: [],
 });
 
 /** Run status transitions (handoff §9.1 lifecycle). */

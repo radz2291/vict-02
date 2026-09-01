@@ -18,6 +18,11 @@ export {
   unsafeWriteGraph,
 } from './orchestration-conformance.js';
 export { runOrchestrationJoinSuite } from './orchestration-join-conformance.js';
+export { runOrchestrationRaceSuite } from './orchestration-race-conformance.js';
+export type {
+  OrchestrationRaceFixture,
+  OrchestrationRaceStores,
+} from './orchestration-race-conformance.js';
 export type {
   ConformanceTestRunner as OrchestrationConformanceRunner,
   ConformanceExpect as OrchestrationConformanceExpect,

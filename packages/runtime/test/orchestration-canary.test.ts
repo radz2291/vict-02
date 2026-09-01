@@ -111,6 +111,175 @@ describe('stage 03 payload and error canaries (in-memory durable orchestration)'
       allowLabelCache.value = 'unknown';
     },
   );
+
+  it(
+    'canaries in contract messages, join output, and operator flow never leak',
+    { timeout: 30_000 },
+    async () => {
+      const CANARY2 = 'CANARY-op-meta-91f2';
+      const assertNo2 = (value: unknown, label: string): void => {
+        const text = JSON.stringify(value) ?? '';
+        if (text.includes(CANARY2)) {
+          throw new Error(`canary leaked into ${label}: ${text.slice(0, 200)}`);
+        }
+      };
+      const stores = createInMemoryStores();
+      const orchestration =
+        stores.orchestration as never as import('@vict/runtime').OrchestrationStore;
+      const runtime = createRuntime({ stores });
+      let downstreamCalls = 0;
+      runtime
+        .registerCapability({ id: 'k.first', revision: '1', effect: 'pure', invoke: () => 'one' })
+        .registerCapability({ id: 'k.b1', revision: '1', effect: 'pure', invoke: () => 'alpha' })
+        .registerCapability({ id: 'k.b2', revision: '1', effect: 'pure', invoke: () => 'beta' })
+        .registerCapability({
+          id: 'k.after',
+          revision: '1',
+          effect: 'pure',
+          invoke: () => {
+            downstreamCalls += 1;
+            return 'after';
+          },
+        })
+        .registerCapability({
+          id: 'k.slowWrite',
+          revision: '1',
+          effect: 'write',
+          invoke: async () => {
+            await new Promise((resolve) => setTimeout(resolve, 120));
+            return 'applied';
+          },
+        })
+        // A hostile join contract: raw message + payload echo + nested secret.
+        .registerContract({
+          id: 'k.join-reject',
+          revision: '1',
+          expected: 'never',
+          parse: (input: unknown) => ({
+            ok: false as const,
+            issues: [
+              {
+                code: 'HOSTILE',
+                path: '$',
+                message: `${CANARY2}:${JSON.stringify(input)}`,
+              },
+            ],
+          }),
+        })
+        .registerContract({
+          id: 'k.output',
+          revision: '1',
+          expected: 'a record',
+          parse: (input: unknown) =>
+            typeof input === 'object' && input !== null
+              ? { ok: true as const, value: input, issues: [] }
+              : { ok: false as const, issues: [{ code: 'TYPE', path: '$', message: 'record' }] },
+        });
+
+      // --- Join contract rejection: raw parser message and payload never leak ---
+      const joinActivated = await runtime.activate({
+        id: 'canary-join',
+        entry: 's',
+        nodes: [
+          { id: 's', capability: 'k.first' },
+          { id: 'f', kind: 'fork', join: 'j' },
+          { id: 'x1', capability: 'k.b1' },
+          { id: 'x2', capability: 'k.b2' },
+          { id: 'j', kind: 'join', fork: 'f', output: 'k.join-reject' },
+          { id: 'z', capability: 'k.after' },
+        ],
+        edges: [
+          { from: 's', to: 'f' },
+          { from: 'f', to: 'x1', kind: 'branch', key: 'a' },
+          { from: 'f', to: 'x2', kind: 'branch', key: 'b' },
+          { from: 'x1', to: 'j' },
+          { from: 'x2', to: 'j' },
+          { from: 'j', to: 'z' },
+        ],
+      });
+      expect(joinActivated.ok).toBe(true);
+      const joinResult = (await runtime.run('seed')) as unknown as {
+        runId: string;
+        status: string;
+        error?: { code?: string; message?: string; details?: unknown };
+      };
+      expect(joinResult.status).toBe('failed');
+      expect(downstreamCalls).toBe(0);
+      const joinEvents = await orchestration.listOrchestrationEvents(joinResult.runId);
+      assertNo2(joinEvents, 'the join-rejection event ledger');
+      assertNo2(joinResult.error, 'the join-rejection safe error');
+      const joinRecord = await runtime.getRun(joinResult.runId);
+      assertNo2(joinRecord, 'the join-rejection default run record');
+
+      // --- Cancellation + authorized operator resolution canaries ---
+      await runtime.activate({
+        id: 'canary-cancel',
+        entry: 'w',
+        nodes: [
+          { id: 'w', capability: 'k.slowWrite', timeoutMs: 20, output: 'k.join-reject' as never },
+          { id: 'z', capability: 'k.after' },
+        ],
+        edges: [{ from: 'w', to: 'z' }],
+      });
+      void joinActivated;
+      const blockedResult = (await runtime.run('seed')) as unknown as {
+        runId: string;
+        status: string;
+      };
+      // The blocked run's records never carry contract-parser messages.
+      const blockedEvents = await orchestration.listOrchestrationEvents(blockedResult.runId);
+      assertNo2(blockedEvents, 'the blocked-run event ledger');
+
+      // Authorized operator resolution: same stores, explicit authorization.
+      const operator = createRuntime({
+        stores,
+        orchestration: { operatorAuthorized: true },
+      });
+      operator
+        .registerCapability({
+          id: 'k.slowWrite',
+          revision: '1',
+          effect: 'write',
+          invoke: async () => 'applied',
+        })
+        .registerCapability({ id: 'k.after', revision: '1', effect: 'pure', invoke: () => 'after' })
+        .registerContract({
+          id: 'k.join-reject',
+          revision: '1',
+          expected: 'a record',
+          parse: (input: unknown) =>
+            typeof input === 'object' && input !== null
+              ? { ok: true as const, value: input, issues: [] }
+              : { ok: false as const, issues: [{ code: 'TYPE', path: '$', message: 'record' }] },
+        });
+      const runBefore = await orchestration.getOrchestrationRun(blockedResult.runId);
+      const resolved = await operator.resolveBlocked({
+        runId: blockedResult.runId,
+        resolutionId: 'res-op-1',
+        action: 'confirm_applied',
+        output: { applied: true },
+        reasonCode: 'operator_request',
+        expectedRunRevision: runBefore?.recordRevision,
+      });
+      expect(resolved.ok).toBe(true);
+      expect(resolved.ok ? resolved.status : '').toBe('accepted');
+      const final = await runtime.resumeRun(blockedResult.runId);
+      expect(final.status).toBe('completed');
+      const resolvedEvents = await orchestration.listOrchestrationEvents(blockedResult.runId);
+      expect(resolvedEvents.filter((event) => event.type === 'operator.intervened').length).toBe(1);
+      // The operator.intervened event carries only structured safe fields.
+      const intervened = resolvedEvents.find(
+        (event) => event.type === 'operator.intervened',
+      ) as unknown as Record<string, unknown>;
+      expect(typeof intervened['resolutionId']).toBe('string');
+      expect(intervened['action']).toBe('confirm_applied');
+      // The confirmed output flows; no parser messages or payload echoes leak.
+      const record2 = await runtime.getRun(blockedResult.runId);
+      assertNo2(record2, 'the resolved-run default record');
+      assertNo2(resolvedEvents, 'the resolved-run event ledger');
+      allowLabelCache.value = 'unknown';
+    },
+  );
 });
 
 function assertNoCanaryIn(value: unknown): void {

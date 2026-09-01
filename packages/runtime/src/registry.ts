@@ -9,6 +9,8 @@ export interface FrozenCapabilityBinding {
   readonly revision: string;
   readonly effect: CapabilityDefinition['effect'];
   readonly invoke: CapabilityDefinition['invoke'];
+  /** Declared idempotency semantics (drives write-timeout retry classification). */
+  readonly idempotency?: CapabilityDefinition['idempotency'];
   readonly inputContractId?: string;
   readonly inputRevision?: string;
   readonly outputContractId?: string;

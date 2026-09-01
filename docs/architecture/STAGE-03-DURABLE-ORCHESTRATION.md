@@ -71,7 +71,10 @@ their exact historical identity):
 - **fork** — static bounded fan-out: branch edges with unique keys, a
   matching join, optional concurrency bound.
 - **join** — consumes exactly one completed token per declared branch key;
-  output is a canonical object keyed lexicographically. Fires once.
+  output is a canonical object keyed lexicographically. The join is a
+  durable control node with its own declared output contract (§5.1); it
+  fires exactly once. A join may declare zero or one success edge — a join
+  with zero success edges is a **terminal join** (§5.1).
 
 Edge kinds: `success`, `error`, `route` (decision), `branch` (fork),
 `timeout` (timed signal wait only). Compilation (kernel `compileGraph`)
@@ -155,7 +158,76 @@ sequenceDiagram
     S->>S: attempt 2 completed — one logical invocation, one external mutation
 ```
 
-## 5. Retry, backoff, idempotency, and ambiguity
+## 5. Durable join boundaries (RUN-002)
+
+The join node is a real durable boundary: the canonical branch-result
+object must cross the join node's OWN declared output contract, validated
+by the runtime against the exact pinned activation — never inside the
+persistence adapter or a SQLite transaction (author-controlled parsers
+never execute in the store).
+
+### 5.1 Join transaction sequence
+
+```mermaid
+sequenceDiagram
+    participant B as Final branch attempt
+    participant S as OrchestrationStore (atomic tx)
+    participant R as Runtime (pinned activation)
+    participant C as Join output contract (author parser)
+    B->>S: completeAttempt(branchArrival, branchKey, output)
+    Note over S: one atomic transaction: branch result recorded, branch token completed; on the FINAL arrival exactly ONE join-ready token is created AT THE JOIN NODE with the private canonical checkpoint (lexicographic by branch key)
+    R->>S: claim the join-ready token (durable intent)
+    R->>C: parse(canonical join payload)
+    alt contract accepts
+        R->>S: one atomic transition: join completed, downstream token ready (or terminal completion), join.completed committed here
+        Note over S: downstream token executable only after this commit
+    else contract rejects
+        R->>S: one atomic transition: sanitized contract failure + terminal run failure
+        Note over S: no join.completed, no downstream token, no raw parser content anywhere
+    end
+```
+
+Precise semantics:
+
+- **When `join.completed` commits:** exactly once, in the same atomic
+  transition that records the VALIDATED join completion and its downstream
+  (or terminal) continuation. A final branch arrival alone only creates
+  the join-ready token; a rejecting contract never produces the fact.
+- **Accepting contract:** the canonical branch-result object passes; the
+  parser is invoked exactly once (per join completion), even across
+  retries and restarts.
+- **Rejecting contract:** invoked exactly once; no downstream capability
+  is invoked; the run fails durably with a sanitized structured
+  `VICT_KERNEL_CONTRACT_REJECTED` error; duplicate or stale arrivals cannot
+  revalidate or rejoin.
+- **Transforming contract:** the parser's validated/transformed return
+  value is what downstream work receives as its input (crossing the
+  downstream node's own input contract, which validates independently),
+  and what a terminal join places in `RunResult.output`.
+- **Terminal joins (zero success edges):** the join validates its declared
+  output contract; on success the run completes with the validated
+  canonical join output in `RunResult.output` (stored output under the
+  configured retention only); on rejection the run fails safely and
+  durably. No undefined node or continuation identifier is ever
+  constructed; terminal cleanup and events are atomic.
+- **Wait-wake into a join:** a resolved wait whose success target is the
+  fork's join routes through the same durable branch-arrival boundary
+  (the branch's completion value is the resolved wake payload).
+- **Restart and concurrency:** the join-ready token is durable, so join
+  validation survives close/reopen; concurrent final arrivals serialize on
+  the store transition — exactly one join token and one completion;
+  duplicate or stale branch completions are rejected by membership and
+  fencing guards.
+
+### 5.2 Contract-issue sanitization
+
+Contract `issues` returned by raw author parsers are untrusted content.
+Before any issue reaches an event, the runtime reduces it to a bounded,
+character-restricted `code` and `path` — raw custom messages, payload
+echoes, and nested secrets cannot leak into events, history, or safe
+errors.
+
+## 6. Retry, backoff, idempotency, and ambiguity
 
 - `RetryPolicy` is bounded (`maxAttempts` ≤ 10) with deterministic,
   non-jittered backoff (fixed or exponential capped at `maxMs`).
@@ -174,7 +246,7 @@ sequenceDiagram
   the same key; non-keyed writes and irreversible operations with
   ambiguous outcomes **block** — they are never replayed automatically.
 
-## 6. Timeouts
+## 7. Timeouts
 
 Timeouts persist a durable deadline before invocation and race the
 invocation against the injected time port, aborting the capability context
@@ -183,17 +255,20 @@ late results are ignored and may retry under policy; keyed writes may retry
 with the same key; unsafe writes and irreversible operations with unknown
 outcomes block.
 
-## 7. Cancellation
+## 8. Cancellation
 
 Cancellation is a durable request (caller-supplied idempotency ID, stable
 reason code) — never a claim that external effects were undone. It
-prevents claims, closes waits/timers, cancels ready tokens, aborts the
-in-flight capability context cooperatively, records the actual result of a
-capability that completes after the request, and stops all downstream
-continuation. Duplicate requests are idempotent; competing requests
-produce one canonical outcome.
+prevents claims, closes waits/timers, cancels ready tokens, and
+cooperatively ABORTS every in-flight capability context of the run: each
+capability observes its `AbortSignal`, the attempt boundary classifies the
+aborted attempt honestly as cancelled, and no downstream node or retry can
+start from an aborted attempt. A late completion against a cancelled token
+is fenced by the durable token and attempt guards. Duplicate requests are
+idempotent; competing request IDs produce one canonical terminal outcome;
+ambiguous unsafe effects never claim reversal.
 
-## 8. Blocked runs and operator resolution
+## 9. Blocked runs and operator resolution
 
 A blocked run exposes a bounded administrative API
 (`runtime.resolveBlocked`) that is:
@@ -211,7 +286,7 @@ Actions: `retry` (only where a retry policy exists), `confirm_applied`
 `cancel`. It cannot change graph definitions, activation identity,
 permissions, or capability metadata. Approvals/roles remain Stage 05.
 
-## 9. Exact-activation resume
+## 10. Exact-activation resume
 
 Runs pin their activation. Resuming, signaling, timing, cancelling, or
 resolving a run always resolves that run's `activationVersion` from the
@@ -220,7 +295,7 @@ lookups. Selection changes affect future runs only. Missing artifacts
 produce a structured unavailable condition and block the run — never a
 substitute revision.
 
-## 10. Checkpoint boundary (local trust)
+## 11. Checkpoint boundary (local trust)
 
 Private operational checkpoint payloads exist only to continue active,
 waiting, or blocked work. They are never part of `RunRecord`, event
@@ -235,7 +310,7 @@ platform or cloud encryption policy. Applications should pass opaque
 references for sensitive or large state and resolve secrets just in time.
 Local checkpoint bytes are not a protected multi-tenant secret store.
 
-## 11. Storage and migration
+## 12. Storage and migration
 
 One forward migration from the Stage 02 schema (v2): `vict_run` is rebuilt
 with the extended lifecycle; new tables cover tokens (private checkpoint
@@ -247,11 +322,22 @@ dense event sequences are preserved exactly (proven against a real Stage
 02 fixture database).
 
 All orchestration commands are atomic semantic transitions guarded by
-optimistic revisions; the in-memory and SQLite adapters pass the same
-conformance suite (`@vict/runtime/testing` →
-`runOrchestrationConformanceSuite`).
+optimistic revisions. Deterministic fault injection at every material
+compound transition (run creation, attempt claim, attempt completion,
+signal resolution, timer resolution, fork child creation, final join,
+cancellation request/application, attempt recovery, operator resolution)
+proves that no half-state, skipped event, duplicate continuation, lost
+receipt, or leaked checkpoint becomes visible — including REAL SQLite
+transaction rollback, not only in-memory staged rollback. Both adapters
+pass the same shared suites (`@vict/runtime/testing`:
+`runOrchestrationConformanceSuite`, `runOrchestrationJoinSuite`,
+`runOrchestrationRaceSuite`).
 
-## 12. Events
+Timer recovery: a pump that fails mid-resolution leaves the timer in a
+leased `firing` state; once that lease lapses the timer becomes claimable
+again, so a wake is never lost to a partial resolution.
+
+## 13. Events
 
 New versioned facts (all carrying the full run/activation identity, dense
 per-run `seq`, and safe structured metadata only): `run.waiting`,
@@ -262,7 +348,7 @@ per-run `seq`, and safe structured metadata only): `run.waiting`,
 schema stays `vict.run-event@1` (additive); existing capability-only
 sequential runs keep their verified trace counts (ARA: 13 events).
 
-## 13. Operational limits (Stage 03)
+## 14. Operational limits (Stage 03)
 
 | Limit | Value |
 | --- | --- |
@@ -276,7 +362,7 @@ sequential runs keep their verified trace counts (ARA: 13 events).
 | Dynamic (data-sized) fan-out | not supported |
 | Distributed scheduling / multi-host | not supported |
 
-## 14. Verification
+## 15. Verification
 
 - Shared adapter-neutral conformance suite: both adapters
   (`runOrchestrationConformanceSuite`).

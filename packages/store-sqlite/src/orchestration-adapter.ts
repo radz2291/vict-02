@@ -1028,7 +1028,7 @@ export function createSqliteOrchestrationStore(
                 child.toNodeId,
                 token.tokenId,
                 child.lineage,
-                continuation.joinId,
+                child.forkId,
                 child.branchKey,
                 nowIso,
                 nowIso,
@@ -1396,17 +1396,19 @@ export function createSqliteOrchestrationStore(
         inTransaction(db, () => {
           const limit = Math.max(1, Math.floor(command.limit));
           const runClause = command.runId !== undefined ? ' AND run_id = ?' : '';
+          // Due scheduled timers plus timers left 'firing' by a pump that
+          // failed mid-resolution once their lease has lapsed (recovery).
           const rows = (command.runId !== undefined
             ? db
                 .prepare(
-                  `SELECT * FROM vict_timer WHERE status = 'scheduled' AND due_at <= ?${runClause} ORDER BY due_at ASC, timer_id ASC LIMIT ?;`,
+                  `SELECT * FROM vict_timer WHERE ((status = 'scheduled' AND due_at <= ?) OR (status = 'firing' AND lease_expires_at <= ?))${runClause} ORDER BY due_at ASC, timer_id ASC LIMIT ?;`,
                 )
-                .all(toIso(command.now), command.runId, limit)
+                .all(toIso(command.now), toIso(command.now), command.runId, limit)
             : db
                 .prepare(
-                  "SELECT * FROM vict_timer WHERE status = 'scheduled' AND due_at <= ? ORDER BY due_at ASC, timer_id ASC LIMIT ?;",
+                  "SELECT * FROM vict_timer WHERE ((status = 'scheduled' AND due_at <= ?) OR (status = 'firing' AND lease_expires_at <= ?)) ORDER BY due_at ASC, timer_id ASC LIMIT ?;",
                 )
-                .all(toIso(command.now), limit)) as unknown as TimerRow[];
+                .all(toIso(command.now), toIso(command.now), limit)) as unknown as TimerRow[];
           const due: DueTimerRecord[] = [];
           for (const row of rows) {
             db.prepare(

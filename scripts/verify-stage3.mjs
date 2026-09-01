@@ -30,6 +30,11 @@ import { spawnSync } from 'node:child_process';
 
 const steps = [
   [
+    'workspace build (packed consumers must package freshly built declarations and artifacts)',
+    'npm',
+    ['run', 'build'],
+  ],
+  [
     'unit tests (incl. shared orchestration conformance, restart + crash fixtures)',
     'npx',
     ['vitest', 'run', '--project', 'unit'],

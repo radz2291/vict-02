@@ -131,6 +131,8 @@ export class OrchestrationDriver {
   readonly #resolved = new Map<string, Promise<ResolvedExecution>>();
   /** In-process view of each run's completed root output (retention-independent). */
   readonly #completedOutputs = new Map<string, unknown>();
+  /** In-flight cooperative-abort contexts per run (cancellation + shutdown). */
+  readonly #inflightControllers = new Map<string, Set<AbortController>>();
 
   constructor(deps: OrchestrationEngineDeps) {
     this.#deps = deps;
@@ -142,6 +144,32 @@ export class OrchestrationDriver {
 
   get deps(): OrchestrationEngineDeps {
     return this.#deps;
+  }
+
+  /** Track one in-flight cooperative-abort context for its run. */
+  #trackInflight(runId: string, controller: AbortController): void {
+    let set = this.#inflightControllers.get(runId);
+    if (set === undefined) {
+      set = new Set();
+      this.#inflightControllers.set(runId, set);
+    }
+    set.add(controller);
+  }
+
+  #untrackInflight(runId: string, controller: AbortController): void {
+    this.#inflightControllers.get(runId)?.delete(controller);
+  }
+
+  /**
+   * Cooperatively abort every in-flight capability context of one run
+   * (used when a durable cancellation request lands). The capability's own
+   * abort handling decides how to unwind; the durable transition boundary
+   * classifies the attempt outcome.
+   */
+  abortInflight(runId: string): void {
+    for (const controller of this.#inflightControllers.get(runId) ?? []) {
+      controller.abort();
+    }
   }
 
   time(): OrchestrationTimePort {
@@ -240,7 +268,11 @@ export class OrchestrationDriver {
     input: unknown,
     mode: import('@vict/kernel').ExecutionMode,
     runId: string,
-    options: { concurrency?: number; onEvent?: (event: KernelEvent) => void } = {},
+    options: {
+      concurrency?: number;
+      onEvent?: (event: KernelEvent) => void;
+      policy?: import('./effect-policy.js').EffectPolicyOverrides;
+    } = {},
   ): Promise<import('./orchestration-driver-types.js').OrchestrationRunResult<T>> {
     const now = this.#deps.clock.now();
     const events: OrchestrationEventInput[] = [
@@ -277,7 +309,11 @@ export class OrchestrationDriver {
    */
   async resumeRun<T>(
     runId: string,
-    options: { concurrency?: number; onEvent?: (event: KernelEvent) => void } = {},
+    options: {
+      concurrency?: number;
+      onEvent?: (event: KernelEvent) => void;
+      policy?: import('./effect-policy.js').EffectPolicyOverrides;
+    } = {},
   ): Promise<import('./orchestration-driver-types.js').OrchestrationRunResult<T>> {
     const stored = await this.#deps.orchestration.getOrchestrationRun(runId);
     if (!stored) {
@@ -307,7 +343,11 @@ export class OrchestrationDriver {
   async #drive<T>(
     runId: string,
     mode: import('@vict/kernel').ExecutionMode,
-    options: { concurrency?: number; onEvent?: (event: KernelEvent) => void } = {},
+    options: {
+      concurrency?: number;
+      onEvent?: (event: KernelEvent) => void;
+      policy?: import('./effect-policy.js').EffectPolicyOverrides;
+    } = {},
   ): Promise<import('./orchestration-driver-types.js').OrchestrationRunResult<T>> {
     const run = await this.#deps.orchestration.getOrchestrationRun(runId);
     if (!run) {
@@ -432,7 +472,10 @@ export class OrchestrationDriver {
     resolved: ResolvedExecution,
     claim: ClaimedAttempt,
     mode: import('@vict/kernel').ExecutionMode,
-    options: { onEvent?: (event: KernelEvent) => void } = {},
+    options: {
+      onEvent?: (event: KernelEvent) => void;
+      policy?: import('./effect-policy.js').EffectPolicyOverrides;
+    } = {},
   ): Promise<void> {
     const { graph, bindings, contracts } = resolved;
     const run = (await this.#deps.orchestration.getOrchestrationRun(
@@ -590,7 +633,7 @@ export class OrchestrationDriver {
     // ---- Effect policy -------------------------------------------------
     const decision = decideEffectAuthorization(
       { capabilityId: node.capability, effect: binding?.effect ?? 'pure', mode },
-      this.#deps.defaultOverrides,
+      options.policy ?? this.#deps.defaultOverrides,
     );
     if (!decision.allowed) {
       const reason =
@@ -636,6 +679,7 @@ export class OrchestrationDriver {
 
     // ---- Cooperative deadline + invocation ------------------------------
     const controller = new AbortController();
+    this.#trackInflight(run.runId, controller);
     const deadlineAt = claim.deadlineAt;
     const timeoutExceeded = deadlineAt !== null && deadlineAt < now;
     let timedOut = false;
@@ -746,6 +790,14 @@ export class OrchestrationDriver {
       }
     }
     void deadlinePromise;
+    this.#untrackInflight(run.runId, controller);
+
+    // A cooperative abort that was NOT the deadline is a cancellation or
+    // shutdown request: classify the attempt honestly as cancelled so no
+    // downstream continuation and no retry can start from it.
+    if (controller.signal.aborted && !timedOut && outcome.kind === 'failed') {
+      outcome = { kind: 'cancelled' as const };
+    }
 
     await this.#completeWithOutcome(
       resolved,

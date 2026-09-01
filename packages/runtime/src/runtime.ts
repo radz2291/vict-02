@@ -294,7 +294,16 @@ export class VictRuntime {
 
   /** Idempotently request cancellation of one orchestration run. */
   async cancel(command: CancelCommand): Promise<CancelResult> {
-    return orchestrationCancelRun(this.#orchestrationDriver().deps, command);
+    const driver = this.#orchestrationDriver();
+    const result = await orchestrationCancelRun(driver.deps, command);
+    if (result.ok && result.status === 'accepted') {
+      // Cooperatively abort in-flight capability contexts: each capability
+      // observes its abort signal and unwinds; the durable transition
+      // boundary classifies the attempt as cancelled. No downstream node or
+      // retry can start from an aborted attempt.
+      driver.abortInflight(command.runId);
+    }
+    return result;
   }
 
   /** Resolve bounded due timers (timer waits, wait timeouts, retry backoff). */
@@ -783,7 +792,11 @@ export class VictRuntime {
         input,
         options.mode ?? 'normal',
         this.#ids.runId(),
-        { concurrency: options.concurrency, onEvent: options.onEvent },
+        {
+          concurrency: options.concurrency,
+          onEvent: options.onEvent,
+          ...(options.policy === undefined ? {} : { policy: options.policy }),
+        },
       )) as unknown as RunResult<T>;
     }
     const mode: ExecutionMode = options.mode ?? 'normal';
@@ -1124,9 +1137,6 @@ export class VictRuntime {
       recordContract(node.outputContractId);
     }
     const dedupedBindings = dedupeCanonical(bindings);
-    const contracts = [...contractById.values()].sort((a, b) =>
-      a.id < b.id ? -1 : a.id > b.id ? 1 : 0,
-    );
     // Stage 03: control-node metadata for v2 manifests (control graphs only).
     const waits: ActivationManifestWait[] = [];
     const forks: ActivationManifestFork[] = [];
@@ -1185,6 +1195,12 @@ export class VictRuntime {
         }
       }
     }
+    // Computed AFTER every recordContract call (capability bindings, wait
+    // signal contracts, and join output contracts) so the pinned contract
+    // environment is complete.
+    const contracts = [...contractById.values()].sort((a, b) =>
+      a.id < b.id ? -1 : a.id > b.id ? 1 : 0,
+    );
     const isControl = graph.hasControlNodes;
     return {
       manifestSchema: isControl ? ACTIVATION_MANIFEST_SCHEMA_V2 : ACTIVATION_MANIFEST_SCHEMA,

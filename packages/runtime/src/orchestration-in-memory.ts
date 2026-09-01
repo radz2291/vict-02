@@ -928,6 +928,15 @@ export function createInMemoryOrchestrationStore(
         for (const timer of stored.timers.values()) {
           if (timer.status === 'scheduled' && timer.dueAt <= now) {
             candidates.push(timer);
+          } else if (
+            // A pump that failed mid-resolution leaves the timer 'firing'
+            // with a held lease; once that lease lapses the timer must be
+            // reclaimable, or the wake would be lost forever.
+            timer.status === 'firing' &&
+            timer.leaseExpiresAt !== null &&
+            timer.leaseExpiresAt <= now
+          ) {
+            candidates.push(timer);
           }
         }
       }

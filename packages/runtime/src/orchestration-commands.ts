@@ -215,6 +215,9 @@ export async function cancelRun(
       message: 'The requestId was already used with different content.',
     };
   }
+  if (result.status === 'duplicate') {
+    return { ok: true, status: 'duplicate', cancelled: false };
+  }
   if (result.status === 'unknown_run') {
     return {
       ok: false,
@@ -451,6 +454,32 @@ export async function resolveBlocked(
       ok: false,
       code: 'VICT_ORCH_UNKNOWN_RUN',
       message: `No orchestration run '${input.runId}' exists.`,
+    };
+  }
+  // Idempotent retries of an ALREADY-APPLIED resolution short-circuit from
+  // the durable record (the run is no longer blocked, so the store's
+  // resolution dedupe would never be reached). Same id + same action is a
+  // truthful duplicate; same id + different action conflicts.
+  const priorEvents = await deps.orchestration.listOrchestrationEvents(input.runId);
+  const prior = priorEvents.find(
+    (event) =>
+      event.type === 'operator.intervened' &&
+      (event as unknown as { resolutionId?: string }).resolutionId === input.resolutionId,
+  );
+  if (prior !== undefined) {
+    const priorAction = (prior as unknown as { action?: string }).action;
+    if (priorAction !== input.action) {
+      return {
+        ok: false,
+        code: 'VICT_ORCH_OPERATOR_CONFLICT',
+        message: 'The resolutionId was already used with different content.',
+      };
+    }
+    return {
+      ok: true,
+      status: 'duplicate',
+      runStatus: run.status,
+      runRecordRevision: run.recordRevision,
     };
   }
   const now = deps.clock.now();
