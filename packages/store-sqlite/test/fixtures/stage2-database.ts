@@ -1,5 +1,9 @@
 import { writeFileSync } from 'node:fs';
-import { createSqliteStores } from '../../dist/index.js';
+// The package specifier (NOT a relative dist import): under tsx it resolves
+// to the source in unbuilt checkouts (a relative '../../dist/index.js' hard
+// dependency on a prior build broke `npm test` in fresh clones), and to the
+// built artifact in published usage. Same adapter the suite tests.
+import { createSqliteStores } from '@vict/store-sqlite';
 import { toCanonicalJson } from '@vict/runtime';
 import {
   computeGraphVersion,
