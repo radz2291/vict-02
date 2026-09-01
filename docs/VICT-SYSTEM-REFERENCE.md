@@ -4,9 +4,9 @@
 > **Document version:** 0.1.1  
 > **System generation:** Greenfield  
 > **Status:** Authoritative baseline; future features are individually marked  
-> **Last updated:** 2026-09-01 (Stage 2 implementation status recorded; audit pending)  
-> **Current delivery point:** Stages 1 and 1.1 independently verified; Stage 2 (durable identity and stores) implemented and awaiting independent audit  
-> **Next permitted stage:** Stage 3 — durable orchestration, only after Stage 2 passes its exit gate
+> **Last updated:** 2026-09-01 (Stage 2 independently verified; closure recorded)  
+> **Current delivery point:** Stages 1, 1.1, and 2 independently verified  
+> **Next permitted stage:** Stage 3 — durable orchestration (permitted by the Stage 2 independent audit; not yet implemented)
 
 ---
 
@@ -325,7 +325,7 @@ Validation failures cross an observability boundary. Arbitrary custom messages c
 | CONT-005 | Raw third-party validation messages MUST NOT enter normal persisted traces unsanitized. | Invariant | Verified |
 | CONT-006 | A schema adapter MUST NOT leak its types into the base public declaration API. | Accepted | Verified |
 | CONT-007 | Contract compatibility beyond exact identity MUST remain conservative until formally defined. | Accepted | Planned |
-| CONT-008 | Official contract factories/adapters MUST freeze returned contracts, and activation MUST prevent later caller-owned mutation from changing pinned parsing behavior. | Invariant | In Progress |
+| CONT-008 | Official contract factories/adapters MUST freeze returned contracts, and activation MUST prevent later caller-owned mutation from changing pinned parsing behavior. | Invariant | Verified |
 
 ---
 
@@ -441,7 +441,7 @@ Activation may compile a definition into an internal execution plan. Compilation
 | KERN-005 | Future iteration MUST be explicit, bounded, and durable. | Accepted | Planned |
 | KERN-006 | Branching SHOULD use declared typed route keys rather than a new general expression language. | Accepted | Planned |
 | KERN-007 | Compilation SHOULD occur at activation and MUST NOT be required per application message. | Accepted | Verified |
-| KERN-008 | Compiler diagnostics SHOULD report independently detectable structural issues in stable order, including cycles when other issues coexist. | Accepted | In Progress |
+| KERN-008 | Compiler diagnostics SHOULD report independently detectable structural issues in stable order, including cycles when other issues coexist. | Accepted | Verified |
 
 ---
 
@@ -511,12 +511,12 @@ The Stage 1.1 audit verified immutable capability bindings, frozen contracts pro
 | VER-002 | capabilitySetVersion MUST cover effective capability and contract identities. | Accepted | Verified |
 | VER-003 | activationVersion MUST combine graphVersion and capabilitySetVersion under a versioned schema. | Accepted | Verified |
 | VER-004 | Canonical identity MUST use explicit revisions and stable manifests, never runtime function text. | Invariant | Verified |
-| VER-005 | Activations MUST be immutable. | Invariant | In Progress |
+| VER-005 | Activations MUST be immutable. | Invariant | Verified |
 | VER-006 | Registry changes MUST require reactivation before affecting new production runs. | Invariant | Verified |
-| VER-007 | Every run MUST pin one immutable activation for its lifetime. | Invariant | In Progress |
-| VER-008 | A suspended run MUST NOT silently resume against a substitute activation. | Invariant | In Progress |
+| VER-007 | Every run MUST pin one immutable activation for its lifetime. | Invariant | Verified |
+| VER-008 | A suspended run MUST NOT silently resume against a substitute activation. | Invariant | Verified |
 | VER-009 | Build provenance MAY strengthen identity but MUST NOT replace semantic revisions. | Accepted | Planned |
-| VER-010 | Activation MUST capture contract parsing semantics by value or enforce equivalent immutability. | Invariant | In Progress |
+| VER-010 | Activation MUST capture contract parsing semantics by value or enforce equivalent immutability. | Invariant | Verified |
 
 ---
 
@@ -724,18 +724,18 @@ Rollback selects a prior activation for future runs. It does not erase events, m
 
 | ID | Requirement | Maturity | Delivery |
 |---|---|---|---|
-| DATA-001 | Runtime persistence MUST be accessed through semantic store ports. | Invariant | In Progress |
-| DATA-002 | Activations and operational events MUST be immutable once published. | Invariant | In Progress |
-| DATA-003 | Run transition and event recording MUST be atomic or outbox-equivalent. | Accepted | In Progress |
+| DATA-001 | Runtime persistence MUST be accessed through semantic store ports. | Invariant | Verified |
+| DATA-002 | Activations and operational events MUST be immutable once published. | Invariant | Verified |
+| DATA-003 | Run transition and event recording MUST be atomic or outbox-equivalent. | Accepted | Verified |
 | DATA-004 | Payload retention MUST support none, summary, and full policies. | Accepted | Verified |
 | DATA-005 | Summary MUST be the default retained payload policy. | Invariant | Verified |
-| DATA-006 | Full payload persistence MUST be explicit, access-controlled, and lifecycle-managed. | Invariant | In Progress |
+| DATA-006 | Full payload persistence MUST be explicit, access-controlled, and lifecycle-managed. | Invariant | Verified |
 | DATA-007 | Secrets MUST be resolved at runtime and MUST NOT be stored in normal run history. | Invariant | Planned |
-| DATA-008 | Resume MUST require the exact pinned activation or enter a blocked state. | Invariant | In Progress |
+| DATA-008 | Resume MUST require the exact pinned activation or enter a blocked state. | Invariant | Verified |
 | DATA-009 | Rollback MUST affect future activation selection and MUST NOT claim to undo external effects. | Invariant | Planned |
 | DATA-010 | The architecture MUST NOT require application domain state to use Vict event sourcing. | Invariant | Verified |
-| DATA-011 | Public configuration and type documentation for full retention MUST explicitly state the caller’s responsibility for retained content. | Accepted | In Progress |
-| DATA-012 | Store read APIs SHOULD return immutable snapshots or defensive copies so callers cannot mutate canonical stored records by reference. | Accepted | In Progress |
+| DATA-011 | Public configuration and type documentation for full retention MUST explicitly state the caller’s responsibility for retained content. | Accepted | Verified |
+| DATA-012 | Store read APIs SHOULD return immutable snapshots or defensive copies so callers cannot mutate canonical stored records by reference. | Accepted | Verified |
 
 ---
 
@@ -788,7 +788,7 @@ Automatic recovery is limited to pre-authorized mechanical actions such as bound
 
 | ID | Requirement | Maturity | Delivery |
 |---|---|---|---|
-| OBS-001 | Every event MUST identify run, activation, event schema, and ordering context. | Accepted | In Progress |
+| OBS-001 | Every event MUST identify run, activation, event schema, and ordering context. | Accepted | Verified |
 | OBS-002 | Ordinary events MUST store safe summaries rather than raw payloads. | Invariant | Verified |
 | OBS-003 | Metrics MUST be attributable to activationVersion. | Accepted | Planned |
 | OBS-004 | Diagnostic access to protected details MUST be separately authorized and audited. | Invariant | Planned |
@@ -1092,8 +1092,8 @@ Distributed execution adds ownership, leasing, partitioning, backpressure, and f
 
 | ID | Requirement | Maturity | Delivery |
 |---|---|---|---|
-| DEP-001 | Vict MUST support a local modular-monolith deployment. | Invariant | In Progress |
-| DEP-002 | SQLite SHOULD be the first durable adapter unless environment verification rejects it. | Accepted | In Progress |
+| DEP-001 | Vict MUST support a local modular-monolith deployment. | Invariant | Verified |
+| DEP-002 | SQLite SHOULD be the first durable adapter unless environment verification rejects it. | Accepted | Verified |
 | DEP-003 | Local and distributed adapters MUST pass the same semantic conformance suite. | Accepted | Planned |
 | DEP-004 | Microservices MUST NOT be required before independent scaling or ownership needs are demonstrated. | Invariant | Verified |
 | DEP-005 | Distributed workers MUST use durable claims, leases, idempotent transitions, and backpressure. | Accepted | Planned |
@@ -1237,7 +1237,7 @@ Only PASS, or an explicit owner decision accepting listed issues, permits the ne
 | TEST-003 | Performance claims MUST state workload, environment, sample count, and measured boundary. | Accepted | Verified |
 | TEST-004 | Reports MUST use observed counts and MUST NOT copy stale expectations. | Invariant | Verified |
 | TEST-005 | Independent audit MUST inspect code and reproduce material evidence. | Invariant | Verified |
-| TEST-006 | Durable stages MUST include process-restart and corrupted/incomplete-state tests. | Invariant | In Progress |
+| TEST-006 | Durable stages MUST include process-restart and corrupted/incomplete-state tests. | Invariant | Verified |
 | TEST-007 | Security-sensitive stages MUST include explicit leakage and permission tests. | Invariant | Verified |
 
 ---
@@ -1251,7 +1251,7 @@ Stages are capability gates, not calendar promises. A “night” may complete p
 | 0 | Constitution and greenfield boundary | Complete | New source of truth and no legacy coupling |
 | 1 | Walking kernel | Verified with documented qualifications | Small end-to-end deterministic graph runtime |
 | 1.1 | Activation integrity and data safety | Verified with non-blocking issues | Pinned execution meaning and safe retained records |
-| 2 | Durable identity and stores | Implemented; awaiting independent audit | Restart-safe sequential runs on SQLite |
+| 2 | Durable identity and stores | Verified | Restart-safe sequential runs on SQLite |
 | 3 | Durable orchestration | Planned | Waits, signals, timers, retries, cancellation, branching |
 | 4 | Capability platform | Planned | Stable authoring ABI, packs, adapters, config/secrets |
 | 5 | Control plane | Planned | Governed ChangeSets, approvals, activation operations |
@@ -1358,7 +1358,7 @@ Stages are capability gates, not calendar promises. A “night” may complete p
 3. Define store reads as immutable/defensive handover rather than mutable by-reference records.
 4. Improve cycle diagnostics when another compile issue coexists.
 
-Because the contract-object mutation path remains open for hand-rolled/Zod-adapter objects, the broad activation-immutability requirements CONT-008, VER-005, VER-007, and VER-010 remain In Progress even though the Stage 1.1 gate itself is accepted.
+Because the contract-object mutation path remained open for hand-rolled/Zod-adapter objects at the Stage 1.1 gate, the broad activation-immutability requirements CONT-008, VER-005, VER-007, and VER-010 stayed In Progress at that point. All four carry-forward items were subsequently closed during Stage 2 and verified by its independent audit; CONT-008, VER-005, VER-007, VER-010, DATA-011, DATA-012, and KERN-008 are now marked Verified.
 
 ### Stage 2 — Durable identity and stores
 
@@ -1396,6 +1396,18 @@ Prove restart correctness without changing the execution language.
 - full-retention responsibility is explicit in public configuration/type documentation;
 - callers cannot mutate canonical stored run records through returned references;
 - independent audit passes.
+
+**Independent disposition — 2026-09-01**
+
+- **PASS — STAGE 03 PERMITTED.**
+- Audited implementation commit `a1ccea1` (corrective-report commit `baed453`; independent-audit record `eb263ab`).
+- The auditor reproduced the complete quality ladder from a fresh clone: 217 unit tests and 4 integration tests passed, plus strict typecheck, lint, format, build, packed-consumer verification, the offline ARA proof, and the benchmark.
+- Durable-before-invocation ordering was independently proven with an adversarial gated-store probe around the real runtime wiring: zero capability invocations before the required durable boundaries on both adapters, with structured rejections and no replay.
+- Both store adapters (in-memory and SQLite) passed the shared conformance suite and 78/78 independent adversarial assertions per adapter covering sequence/atomicity enforcement, identity integrity, publishAndSelect atomicity, and strict persisted-value serialization.
+- Restart recovery was independently proven: real SIGKILL of a running child process, exact-activation restoration, idempotent recovery to blocked with exactly one interruption event and no capability replay; migrations, corruption handling, and driver guarantees (WAL, synchronous=FULL) were verified by pragma and file-hash checks.
+- Packed-consumer verification passed: five packed tarballs, a neutral consumer without Zod under strict typecheck, and cross-process close/reopen with exact-activation restore.
+- No Blocking, High, or Medium findings remain. Recorded Low findings: the repository lacked `.gitattributes` (spurious CRLF Prettier failures on Windows-default clones — addressed in the closure commit) and the SQLite injected pre-opened handle does not apply production pragmas (documented as a test-infrastructure caveat; no runtime change).
+- Environmental scope: verification was executed on Windows (win32-x64) only; POSIX execution remains not verified (recorded as environmental, not a defect).
 
 ### Stage 3 — Durable orchestration
 
@@ -1635,21 +1647,27 @@ This section is deliberately factual and should be updated after every accepted 
 - Capability/schema errors are structurally sanitized and carry safe codes, locations, error class, and correlation identity.
 - Offline ARA proof and benchmark remain correct at 13 events and 10 events/6 validations respectively.
 - The independent Stage 1.1 audit reproduced 105 of 105 tests and all verification commands from repository commit 877d859.
+- Stage 2 adds verified durable identity and stores: semantic store ports with an in-memory adapter and a SQLite adapter (built-in node:sqlite, WAL, synchronous=FULL), versioned forward migrations, atomic run/event transitions, exact-activation restoration, and interrupted-run recovery to blocked without replay.
+- Durable write-ahead ordering (durable intent committed before capability invocation) is enforced through the kernel's beforeInvoke boundary and independently proven on both adapters; a completed three-node run performs seven durable transactions.
+- Store reads return deep-frozen immutable snapshots; persisted values follow a strict serialization domain; activations, selection, runs, and events are identity-cross-validated against canonical content.
+- The independent Stage 2 audit reproduced 221 tests (217 unit + 4 integration) and all verification commands from repository commit a1ccea1; disposition PASS — STAGE 03 PERMITTED.
 
 ### 23.2 Accepted carry-forward issues
 
-No issue blocks Stage 2. The following remain visible rather than being hidden by the accepted verdict:
+The Stage 1.1 non-blocking carry-forward was closed during Stage 2 and verified by its independent audit: official contract freezing and activation-time immutability enforcement (CONT-008, VER-005, VER-007, VER-010 now Verified), the explicit full-retention caller-responsibility warning in public configuration/type documentation (DATA-011 now Verified), immutable store-read handover (DATA-012 now Verified), and cycle diagnostics that run independently of other compile issues in stable order (KERN-008 now Verified).
 
-- **Low:** defineZodContract and caller-supplied hand-rolled contracts can remain mutable by reference; swapping parse after activation can change later execution without changing identity. Official adapters must freeze, and activation must capture or enforce parsing immutability.
-- **Low:** project foundation/type documentation still needs an explicit statement that selecting full retention transfers responsibility for retained content to the caller/operator.
-- **Informational:** the in-memory repository returns run records by reference; the Stage 2 store contract should require immutable snapshots or defensive copies.
-- **Informational:** cycle diagnostics are deferred when another compile issue is present; diagnostics should eventually report independently detectable issues in stable order.
+The following accepted notes remain visible rather than being hidden by the accepted verdicts:
+
+- **Low (test infrastructure, documented):** the SQLite adapter's injected pre-opened database handle is test/integration infrastructure; it does not apply the production pragma configuration automatically. Callers supplying their own handle own its pragma setup. The production durability path is `createSqliteStores({ path })`, which configures WAL, foreign keys, busy timeout, and synchronous=FULL (see the store architecture note).
 - **Accepted trust boundaries:** identity depends on authors/build tooling bumping revisions, and effect classifications are author-supplied.
 - **Accepted limitation:** trace key-name redaction is best-effort, but values are structurally omitted regardless of key name.
+- **Environmental (not a defect):** the full verification ladder and packed-consumer check have been executed on Windows (win32-x64) only; POSIX execution remains not verified.
 
 ### 23.3 Authorized next work
 
-Stage 2 durable identity and stores has been implemented (commit recorded in VICT-STAGE-02-REPORT.md): semantic store ports and an in-memory store in @vict/runtime; a @vict/store-sqlite adapter on the built-in node:sqlite driver with versioned forward migrations; atomic run/event transitions; exact-activation restoration; explicit interrupted-run recovery to blocked without replay; and the carry-forward corrections for contract immutability, full-retention documentation, store read encapsulation, and cycle diagnostics. All Stage 2 delivery statuses above remain unverified until the independent audit accepts them. It stops before Stage 3 orchestration: no waits, timers, branching, fan-out, durable retries, distributed workers, control plane, or Studio.
+Stage 2 durable identity and stores is independently verified (implementation commit `a1ccea1`; disposition PASS — STAGE 03 PERMITTED). The verified delivery comprises: semantic store ports and an in-memory store in @vict/runtime; a @vict/store-sqlite adapter on the built-in node:sqlite driver with versioned forward migrations; atomic run/event transitions (seven durable transactions per completed three-node run); durable write-ahead enforcement through the kernel beforeInvoke boundary; exact-activation restoration; explicit interrupted-run recovery to blocked without replay; strict persisted-value serialization; and the closed Stage 1.1 carry-forward items (contract immutability, retention documentation, store read encapsulation, and cycle diagnostics).
+
+Stage 3 — durable orchestration — is the next permitted stage and has not been started: no waits, timers, branching, fan-out, durable retries, distributed workers, control plane, or Studio exist yet.
 
 ### 23.4 Evidence documents
 
@@ -1658,8 +1676,9 @@ Stage 2 durable identity and stores has been implemented (commit recorded in VIC
 - VICT-NIGHT-01-CODE-AUDIT.md — independent verification and corrected findings.
 - VICT-NIGHT-01-FINALIZATION-REPORT.md — Stage 1.1 implementer claim and verification evidence.
 - VICT-NIGHT-01-FINALIZATION-AUDIT.md — independent adversarial verification; authoritative Stage 1.1 disposition.
-- VICT-STAGE-02-REPORT.md — Stage 2 implementer report (implementation claim and verification evidence; awaiting independent audit; now maintained under docs/report/).
-- VICT-STAGE-02-CORRECTIVE-FINALIZATION-REPORT.md — corrective pass over the Stage 2 implementation: durable write-ahead enforcement, store identity/sequence validation, atomic publishAndSelect, strict persisted-value domain, portable packed-consumer verification; implementation claim awaiting independent audit.
+- VICT-STAGE-02-REPORT.md — Stage 2 implementer report (implementation claim and verification evidence; superseded by the independent audit; maintained under docs/report/).
+- VICT-STAGE-02-CORRECTIVE-FINALIZATION-REPORT.md — corrective pass over the Stage 2 implementation: durable write-ahead enforcement, store identity/sequence validation, atomic publishAndSelect, strict persisted-value domain, portable packed-consumer verification; accepted by the independent audit.
+- VICT-STAGE-02-INDEPENDENT-AUDIT.md — independent adversarial verification of Stage 2 (fresh-clone reproduction, gated-store durability probe, per-adapter adversarial assertions, real SIGKILL restart probe, migration/corruption checks); authoritative Stage 2 disposition: PASS — STAGE 03 PERMITTED. Maintained under docs/report/.
 
 ---
 
@@ -1691,7 +1710,7 @@ These questions do not block the current stage.
 
 | ID | Question | Current direction | Decide by |
 |---|---|---|---|
-| OPEN-001 | Which SQLite implementation and migration library? | Decided for Stage 2: built-in `node:sqlite` with a hand-rolled forward migration runner (better-sqlite3 v13 segfaults on the supported runtime; v12 couples Node upgrades to native prebuilds). Engines floor raised explicitly to >=22.13.0. | Decided (Stage 2, pending audit) |
+| OPEN-001 | Which SQLite implementation and migration library? | Decided for Stage 2: built-in `node:sqlite` with a hand-rolled forward migration runner (better-sqlite3 v13 segfaults on the supported runtime; v12 couples Node upgrades to native prebuilds). Engines floor raised explicitly to >=22.13.0. | Decided (Stage 2; audit-accepted) |
 | OPEN-002 | Exact durable control-node syntax? | Typed route keys, explicit wait/fan/join, bounded loop only | Stage 3 design |
 | OPEN-003 | When should SDK dependency direction be refactored? | After activation integrity, before external capability ABI is declared stable | Stage 4 |
 | OPEN-004 | How is structural contract compatibility represented? | Exact ID/revision first; add conservative tooling only with evidence | Stage 4 |

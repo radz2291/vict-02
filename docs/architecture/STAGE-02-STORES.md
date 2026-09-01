@@ -102,6 +102,14 @@ Operational settings (all documented, all overridable):
 - one local runtime owner per database; multi-process concurrent ownership is
   out of scope for this stage and is not implemented (no leases).
 
+Durability note (injected handles): the production durability path is
+`createSqliteStores({ path })`, which applies the pragmas above
+automatically. The `database` option injects a pre-opened handle and is
+test/integration infrastructure only: it does **not** apply the production
+pragma configuration by itself. Callers supplying their own handle own its
+pragma setup and must not treat an injected handle as providing the default
+production durability configuration.
+
 ## Store ports and semantics
 
 - All port operations are Promise-based; reads return deep-frozen immutable
