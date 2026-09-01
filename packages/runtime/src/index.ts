@@ -49,6 +49,44 @@ export type {
 export { ACTIVATION_MANIFEST_SCHEMA, RUN_EVENT_SCHEMA } from './store-types.js';
 export type { InMemoryStoresOptions } from './in-memory-stores.js';
 export { createInMemoryStores } from './in-memory-stores.js';
+export type { OrchestrationInMemoryOptions } from './orchestration-in-memory.js';
+export { createInMemoryOrchestrationStore } from './orchestration-in-memory.js';
+export type {
+  OrchestrationStore,
+  OrchestrationSnapshotView,
+  StoredOrchestrationRun,
+  OrchestrationRunQuery,
+  ClaimReadyTokenCommand,
+  ClaimReadyTokenResult,
+  ClaimedAttempt,
+  ClaimPlanner,
+  NodeExecutionPlanEntry,
+  CompleteAttemptCommand,
+  CompleteAttemptResult,
+  AttemptContinuation,
+  AttemptOutcome,
+  NewWaitCommand,
+  SignalWaitCommand,
+  SignalDeliveryResult,
+  DueTimerRecord,
+  ClaimDueTimersCommand,
+  ClaimDueTimersResult,
+  ResolveDueTimerCommand,
+  ResolveDueTimerResult,
+  TimerRecord,
+  RequestCancellationCommand,
+  CancellationResult,
+  ApplyCancellationCommand,
+  RecoverableClaim,
+  RecoverAttemptCommand,
+  RecoverOrchestrationCommand,
+  RecoverOrchestrationResult,
+  ResolveBlockedCommand,
+  ResolveBlockedResult,
+  OrchestrationEventInput,
+  OrchestrationFaultHooks,
+  CreateOrchestrationRunCommand,
+} from './orchestration-store-types.js';
 export type { StoreErrorCode, StoreErrorDetails } from './store-errors.js';
 export { VictStoreError } from './store-errors.js';
 export type { RuntimeErrorCode } from './errors.js';

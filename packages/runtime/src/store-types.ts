@@ -1,6 +1,7 @@
 import type { EffectClass, ExecutionMode, KernelEvent, OutputSummary } from '@vict/kernel';
 import type { VictError } from '@vict/contracts';
 import type { PayloadRetention } from './types.js';
+import type { OrchestrationStore } from './orchestration-store-types.js';
 
 /* ------------------------------------------------------------------ */
 /* Schema versions                                                     */
@@ -8,6 +9,12 @@ import type { PayloadRetention } from './types.js';
 
 /** Identity of the serializable activation-manifest shape. Independent of the SQLite schema version. */
 export const ACTIVATION_MANIFEST_SCHEMA = 'vict.activation-manifest@1' as const;
+/**
+ * Stage 03 activation-manifest schema for control graphs. The v1 manifest
+ * schema is never edited: capability-only activations keep their exact
+ * historical manifest schema and remain readable/restorable.
+ */
+export const ACTIVATION_MANIFEST_SCHEMA_V2 = 'vict.activation-manifest@2' as const;
 /** Identity of the serialized durable event shape. Independent of the SQLite schema version. */
 export const RUN_EVENT_SCHEMA = 'vict.run-event@1' as const;
 
@@ -22,6 +29,38 @@ export interface ActivationManifestBinding {
   readonly effect: EffectClass;
   readonly input: { readonly id: string; readonly revision: string } | null;
   readonly output: { readonly id: string; readonly revision: string } | null;
+  /** Declared idempotency semantics ('keyed'); omitted when undeclared. */
+  readonly idempotency?: 'keyed';
+}
+
+/** One control-node declaration captured by a Stage 03 activation manifest. */
+export interface ActivationManifestWait {
+  readonly nodeId: string;
+  readonly kind: 'signal' | 'timer';
+  /** Signal name (signal waits). */
+  readonly name?: string;
+  /** Signal payload contract identity (signal waits). */
+  readonly contract?: { readonly id: string; readonly revision: string } | null;
+  /** Absolute timeout (timed signal waits). */
+  readonly timeoutMs?: number | null;
+  /** Relative delay (timer waits). */
+  readonly delayMs?: number;
+}
+
+/** One fork declaration captured by a Stage 03 activation manifest. */
+export interface ActivationManifestFork {
+  readonly forkId: string;
+  readonly joinId: string;
+  readonly branchKeys: readonly string[];
+  readonly maxConcurrency: number | null;
+}
+
+/** One join declaration captured by a Stage 03 activation manifest. */
+export interface ActivationManifestJoin {
+  readonly joinId: string;
+  readonly forkId: string;
+  /** Output contract identity validating the canonical joined output. */
+  readonly outputContract?: { readonly id: string; readonly revision: string } | null;
 }
 
 /** One contract identity recorded in an activation manifest. */
@@ -37,7 +76,7 @@ export interface ActivationManifestContract {
  * maps and secrets are never part of a manifest.
  */
 export interface ActivationManifest {
-  readonly manifestSchema: typeof ACTIVATION_MANIFEST_SCHEMA;
+  readonly manifestSchema: typeof ACTIVATION_MANIFEST_SCHEMA | typeof ACTIVATION_MANIFEST_SCHEMA_V2;
   readonly graphId: string;
   /** Canonical semantic graph declaration (defaults filled, nodes/edges sorted). */
   readonly graph: unknown;
@@ -46,6 +85,10 @@ export interface ActivationManifest {
   readonly activationVersion: string;
   readonly bindings: readonly ActivationManifestBinding[];
   readonly contracts: readonly ActivationManifestContract[];
+  /** Control-node declarations (v2 manifests only). */
+  readonly waits?: readonly ActivationManifestWait[];
+  readonly forks?: readonly ActivationManifestFork[];
+  readonly joins?: readonly ActivationManifestJoin[];
 }
 
 /** An immutable stored activation: the manifest plus storage metadata. */
@@ -122,7 +165,13 @@ export interface ActivationCatalog {
 /* ------------------------------------------------------------------ */
 
 /** Durable run status. `running` is the pre-terminal state of an in-flight or interrupted run. */
-export type StoredRunStatus = 'running' | 'completed' | 'failed' | 'blocked';
+export type StoredRunStatus =
+  | 'running'
+  | 'waiting'
+  | 'blocked'
+  | 'completed'
+  | 'failed'
+  | 'cancelled';
 
 /**
  * Current durable run record. Contains safe material only: identifiers,
@@ -258,10 +307,16 @@ export interface ExecutionStore {
   recoverInterruptedRuns(command: RecoveryCommand): Promise<RecoveryResult>;
 }
 
-/** The set of stores a runtime needs. Both ports share one backend. */
+/** The set of stores a runtime needs. All ports share one backend. */
 export interface VictStores {
   readonly catalog: ActivationCatalog;
   readonly execution: ExecutionStore;
+  /**
+   * Stage 03 durable orchestration store. Optional for backward
+   * compatibility with pre-Stage-03 store sets; the durable orchestration
+   * driver requires it and fails with a structured error when absent.
+   */
+  readonly orchestration?: OrchestrationStore;
 }
 
 /** Stores plus explicit lifecycle. Adapters should implement `dispose` for clean shutdown. */

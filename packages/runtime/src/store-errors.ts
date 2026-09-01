@@ -22,7 +22,20 @@ export type StoreErrorCode =
   | 'VICT_STORE_INVALID_RECORD'
   | 'VICT_STORE_BUSY'
   | 'VICT_STORE_UNAVAILABLE'
-  | 'VICT_STORE_INVALID_COMMAND';
+  | 'VICT_STORE_INVALID_COMMAND'
+  // Stage 03 durable orchestration conflicts and lookups.
+  | 'VICT_STORE_ATTEMPT_FENCE_CONFLICT'
+  | 'VICT_STORE_ATTEMPT_STATE_CONFLICT'
+  | 'VICT_STORE_TOKEN_CONFLICT'
+  | 'VICT_STORE_WAIT_NOT_FOUND'
+  | 'VICT_STORE_WAIT_CONFLICT'
+  | 'VICT_STORE_SIGNAL_NAME_MISMATCH'
+  | 'VICT_STORE_SIGNAL_CONFLICT'
+  | 'VICT_STORE_TIMER_NOT_FOUND'
+  | 'VICT_STORE_TIMER_CONFLICT'
+  | 'VICT_STORE_CANCELLATION_CONFLICT'
+  | 'VICT_STORE_RESOLUTION_CONFLICT'
+  | 'VICT_STORE_INVARIANT';
 
 /** Safe details carried by store errors: operation plus relevant safe identifiers. */
 export interface StoreErrorDetails {

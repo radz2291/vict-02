@@ -21,6 +21,7 @@ import type {
   VictStores,
 } from './store-types.js';
 import { ACTIVATION_MANIFEST_SCHEMA, RUN_EVENT_SCHEMA } from './store-types.js';
+import { createInMemoryOrchestrationStore } from './orchestration-in-memory.js';
 import { VictStoreError } from './store-errors.js';
 import { canonicalPersistedValue, immutableSnapshot, toCanonicalJson } from './serialization.js';
 import {
@@ -491,7 +492,16 @@ export function createInMemoryStores(options: InMemoryStoresOptions = {}): VictS
     },
   };
 
-  return { catalog, execution };
+  const orchestration = createInMemoryOrchestrationStore({
+    faults:
+      faults === undefined
+        ? undefined
+        : {
+            afterStateStage: (operation) => faults.afterRunUpdate?.({ runId: operation } as never),
+            beforeCommit: (operation) => faults.beforeCommit?.({ runId: operation } as never),
+          },
+  });
+  return { catalog, execution, orchestration };
 }
 
 const ALL_RUN_STATUSES: readonly StoredRunStatus[] = ['running', 'completed', 'failed', 'blocked'];
