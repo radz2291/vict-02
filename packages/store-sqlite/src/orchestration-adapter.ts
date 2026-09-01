@@ -3,7 +3,9 @@ import type {
   DurableAttemptState,
   DurableTokenState,
   DurableWaitState,
+  OutputSummary,
 } from '@vict/kernel';
+import type { VictError } from '@vict/contracts';
 import type {
   ApplyCancellationCommand,
   ClaimDueTimersCommand,
@@ -170,6 +172,11 @@ function validateRunRow(
     createdAt: requireIso(row.created_at, context, row.run_id),
     updatedAt: requireIso(row.updated_at, context, row.run_id),
     completedAt: fromIso(row.completed_at, context, row.run_id),
+    ...(row.output_summary !== null
+      ? { outputSummary: parseJson(row.output_summary, context, row.run_id) as OutputSummary }
+      : {}),
+    ...(row.output !== null ? { output: parseJson(row.output, context, row.run_id) } : {}),
+    ...(row.error !== null ? { error: parseJson(row.error, context, row.run_id) as VictError } : {}),
   };
 }
 
@@ -361,7 +368,20 @@ function validateTimerRow(row: TimerRow, context: string): TimerRecord {
   };
 }
 
-function immutable<T>(value: T): T {
+function parseJson(text: string, context: string, runId?: string): unknown {
+  try {
+    return JSON.parse(text);
+  } catch (cause) {
+    throw new VictStoreError(
+      'VICT_STORE_INVALID_RECORD',
+      'A stored private operational payload is not valid JSON.',
+      { operation: 'orchestration.readPrivatePayload', runId },
+      cause,
+    );
+  }
+}
+
+function immutable<T>(value: T) {
   if (value !== null && typeof value === 'object') {
     for (const key of Object.keys(value as Record<string, unknown>)) {
       immutable((value as Record<string, unknown>)[key]);
@@ -953,16 +973,15 @@ export function createSqliteOrchestrationStore(
               "UPDATE vict_timer SET status = 'cancelled', revision = revision + 1 WHERE run_id = ? AND status = 'scheduled';",
             ).run(command.runId);
           } else if (continuation.kind === 'retry') {
-            if (!canTransitionToken(token.status, 'ready')) {
+            // The token stays claimed (ineligible) until its durable retry
+            // timer fires; the timer resolution makes it ready again.
+            if (token.status !== 'claimed') {
               throw new VictStoreError(
                 'VICT_STORE_TOKEN_CONFLICT',
                 `Token '${token.tokenId}' cannot be rescheduled from state '${token.status}'.`,
                 { operation: 'orchestration.completeAttempt', runId: command.runId },
               );
             }
-            db.prepare(
-              "UPDATE vict_token SET status = 'ready', revision = revision + 1, updated_at = ? WHERE token_id = ?;",
-            ).run(nowIso, token.tokenId);
             db.prepare(
               `INSERT INTO vict_timer (timer_id, run_id, kind, wait_id, attempt_id, token_id, due_at, status, owner_id, lease_expires_at, revision, created_at)
                VALUES (?, ?, 'retry', NULL, ?, ?, ?, 'scheduled', NULL, NULL, 1, ?);`,
@@ -1031,6 +1050,11 @@ export function createSqliteOrchestrationStore(
           }
           for (const tokenId of command.removeCheckpoints ?? []) {
             db.prepare('UPDATE vict_token SET checkpoint = NULL WHERE token_id = ?;').run(tokenId);
+          }
+          if (['completed', 'failed', 'cancelled'].includes(nextStatus)) {
+            // Terminal cleanup: no private operational payload survives a
+            // terminal transition (tested lifecycle rule).
+            db.prepare('UPDATE vict_token SET checkpoint = NULL WHERE run_id = ?;').run(command.runId);
           }
           faults?.afterStateStage?.('orchestration.completeAttempt');
 
@@ -1708,19 +1732,6 @@ export function createSqliteOrchestrationStore(
       seq += 1;
     }
     return seq;
-  }
-
-  function parseJson(text: string, context: string, runId?: string): unknown {
-    try {
-      return JSON.parse(text);
-    } catch (cause) {
-      throw new VictStoreError(
-        'VICT_STORE_INVALID_RECORD',
-        'A stored private operational payload is not valid JSON.',
-        { operation: 'orchestration.readPrivatePayload', runId },
-        cause,
-      );
-    }
   }
 
   return store;

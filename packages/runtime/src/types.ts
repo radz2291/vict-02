@@ -23,6 +23,26 @@ export interface CapabilityContext {
   readonly step: number;
   /** `'double'` when the policy required the registered test double to run. */
   readonly invokedVia: 'real' | 'double';
+  // ---- Stage 03 durable-orchestration extensions (additive, optional) ----
+  /** Stable logical invocation identity (invariant across retries). */
+  readonly invocationId?: string;
+  /** This attempt's durable identity. */
+  readonly attemptId?: string;
+  /** 1-based attempt number within the logical invocation. */
+  readonly attemptNumber?: number;
+  /** Stable opaque idempotency key, when the node declared a retry policy. */
+  readonly idempotencyKey?: string;
+  /** Epoch-ms deadline for this attempt, when one applies. */
+  readonly deadlineAt?: number;
+  /** Cooperative abort signal; aborted on timeout or cancellation. */
+  readonly abortSignal?: AbortSignal;
+  /** Branch identity when executing inside a fork branch. */
+  readonly branch?: {
+    readonly forkId: string;
+    readonly joinId: string;
+    readonly branchKey: string;
+    readonly lineage: string;
+  };
 }
 
 /**
@@ -41,6 +61,15 @@ export interface CapabilityDefinition<I = unknown, O = unknown> {
   readonly input?: Contract<I>;
   readonly output?: Contract<O>;
   invoke(input: I, context: CapabilityContext): Promise<O> | O;
+  /**
+   * Declared idempotency semantics for retryable writes: `'keyed'` means the
+   * capability accepts a stable idempotency key (supplied through the
+   * capability context) and repeats with the same key are reconciled to one
+   * external mutation. Absent for non-write effects and for writes without
+   * keyed support (which may never be auto-retried). Participates in
+   * capability-set and activation identity when declared.
+   */
+  readonly idempotency?: 'keyed';
 }
 
 /** Test-double invocation. Contracts of the original capability still apply. */
@@ -86,6 +115,8 @@ export interface RunOptions {
   readonly maxSteps?: number;
   /** Streaming hook for run events. */
   readonly onEvent?: (event: KernelEvent) => void;
+  /** Local worker-pool bound for durable orchestration runs (default 4, max 32). */
+  readonly concurrency?: number;
 }
 
 export interface RunNodeOptions {
@@ -218,4 +249,19 @@ export interface VictRuntimeOptions {
    * explicit deletion/lifecycle policy.
    */
   readonly payloadRetention?: PayloadRetention;
+  /**
+   * Stage 03 durable orchestration options.
+   *
+   * - `concurrency`: default local worker-pool bound (default 4, max 32).
+   * - `operatorAuthorized`: explicit operator authorization for the bounded
+   *   blocked-run resolution API. DENIED by default.
+   * - `time`: injected time port (now/delay) for deterministic tests.
+   * - `ownerId`: stable process/worker owner id for claim leases.
+   */
+  readonly orchestration?: {
+    readonly concurrency?: number;
+    readonly operatorAuthorized?: boolean;
+    readonly time?: import('./orchestration-driver-types.js').OrchestrationTimePort;
+    readonly ownerId?: string;
+  };
 }

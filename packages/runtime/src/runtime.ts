@@ -1,4 +1,29 @@
 import { compileGraph, executeGraph } from '@vict/kernel';
+import { OrchestrationDriver } from './orchestration-driver.js';
+import type {
+  OrchestrationRunResult,
+  OrchestrationTimePort,
+  ProcessDueTimersOptions,
+  ProcessDueTimersResult,
+  ResolveBlockedInput,
+  ResolveBlockedOutcome,
+  SignalCommand,
+  SignalResult,
+  CancelCommand,
+  CancelResult,
+  RecoverOrchestrationOptions,
+  RecoverOrchestrationSummary,
+} from './orchestration-driver-types.js';
+import { ORCHESTRATION_LIMITS } from './orchestration-driver-types.js';
+import {
+  cancelRun as orchestrationCancelRun,
+  processDueTimers as processOrchestrationDueTimers,
+  recoverOrchestration as recoverOrchestrationCommands,
+  resolveBlocked as resolveBlockedCommand,
+  signalWait,
+} from './orchestration-commands.js';
+import { loadManifest } from './orchestration-activation.js';
+import { deriveIdempotencyKey, deriveInvocationId } from './orchestration-activation.js';
 import type {
   ApplicationGraphDefinition,
   CapabilityIndex,
@@ -130,7 +155,14 @@ export class VictRuntime {
   readonly #defaultOverrides: EffectPolicyOverrides;
   readonly #defaultMaxSteps: number | undefined;
   readonly #retention: PayloadRetention;
+  readonly #orchestrationOptions: {
+    readonly concurrency?: number;
+    readonly operatorAuthorized: boolean;
+    readonly time?: OrchestrationTimePort;
+    readonly ownerId: string;
+  };
   #active: ActivationSnapshot | undefined;
+  #orchestrationDriverInstance: OrchestrationDriver | undefined;
 
   constructor(options: VictRuntimeOptions = {}) {
     const retention = options.payloadRetention ?? 'summary';
@@ -162,6 +194,360 @@ export class VictRuntime {
     };
     this.#defaultOverrides = options.policy ?? {};
     this.#defaultMaxSteps = options.maxSteps;
+    const orchestrationOptions = options.orchestration ?? {};
+    this.#orchestrationOptions = {
+      concurrency: orchestrationOptions.concurrency,
+      operatorAuthorized: orchestrationOptions.operatorAuthorized ?? false,
+      time: orchestrationOptions.time,
+      ownerId: orchestrationOptions.ownerId ?? `owner_${globalThis.crypto.randomUUID()}`,
+    };
+  }
+
+  /** The Stage 03 durable orchestration driver (lazily constructed). */
+  #orchestrationDriver(): OrchestrationDriver {
+    if (this.#orchestrationDriverInstance === undefined) {
+      const orchestration = this.#stores.orchestration;
+      if (orchestration === undefined) {
+        throw new VictRuntimeError(
+          'VICT_RUNTIME_INVALID_STORES',
+          'Durable orchestration requires a store set with a conforming `orchestration` port (OrchestrationStore). Provide @vict/store-sqlite ≥ Stage 03 or the default in-memory stores.',
+        );
+      }
+      this.#orchestrationDriverInstance = new OrchestrationDriver({
+        registry: this.#registry,
+        clock: this.#clock,
+        ids: this.#ids,
+        defaultOverrides: this.#defaultOverrides,
+        retention: this.#retention,
+        ownerId: this.#orchestrationOptions.ownerId,
+        orchestration,
+        catalog: { get: (activationVersion) => this.#stores.catalog.get(activationVersion) },
+        ...(this.#orchestrationOptions.time !== undefined
+          ? { time: this.#orchestrationOptions.time }
+          : {}),
+      });
+    }
+    return this.#orchestrationDriverInstance;
+  }
+
+  /**
+   * Drive an existing orchestration run to terminal/quiescent against its
+   * EXACT pinned activation. Selection changes never affect this run; a
+   * newer selected activation applies only to future runs.
+   */
+  async resumeRun<T = unknown>(
+    runId: string,
+    options: { concurrency?: number; onEvent?: (event: KernelEvent) => void } = {},
+  ): Promise<OrchestrationRunResult<T>> {
+    return this.#orchestrationDriver().resumeRun<T>(runId, options);
+  }
+
+  /** Idempotently deliver one signal to one exact durable wait. */
+  async signal(command: SignalCommand): Promise<SignalResult> {
+    const deps = this.#orchestrationDriver().deps;
+    const registry = this.#registry;
+    const parseWithPinnedContract = async (
+      activationVersion: string,
+      contractId: string,
+      payload: unknown,
+    ): Promise<{ ok: boolean; message?: string }> => {
+      const manifest = await loadManifest(
+        { catalog: { get: (version) => this.#stores.catalog.get(version) } },
+        activationVersion,
+      );
+      const contractRevisions = new Map<string, string>();
+      for (const contract of manifest.contracts) {
+        contractRevisions.set(contract.id, contract.revision);
+      }
+      const revision = contractRevisions.get(contractId);
+      const contract = revision === undefined ? registry.getContract(contractId) : registry.getContractRevision(contractId, revision);
+      if (!contract) {
+        return { ok: false, message: `Contract '${contractId}' required by the pinned activation is not registered.` };
+      }
+      const parsed = contract.parse(payload);
+      if (!parsed.ok) {
+        return {
+          ok: false,
+          message: `The signal payload was rejected by contract '${contractId}' revision '${revision ?? contract.revision}'; the wait remains open.`,
+        };
+      }
+      return { ok: true };
+    };
+    return signalWait(deps, command, parseWithPinnedContract);
+  }
+
+  /** Idempotently request cancellation of one orchestration run. */
+  async cancel(command: CancelCommand): Promise<CancelResult> {
+    return orchestrationCancelRun(this.#orchestrationDriver().deps, command);
+  }
+
+  /** Resolve bounded due timers (timer waits, wait timeouts, retry backoff). */
+  async processDueTimers(options: ProcessDueTimersOptions = {}): Promise<ProcessDueTimersResult> {
+    const driver = this.#orchestrationDriver();
+    const deps = driver.deps;
+    return processOrchestrationDueTimers(
+      deps,
+      {
+        runId: options.runId,
+        limit: options.limit ?? ORCHESTRATION_LIMITS.defaultTimerBatch,
+      },
+      async (activationVersion) => {
+        try {
+          const graph = await driver.resolveGraphForDriver(activationVersion);
+          return { ok: true as const, graph };
+        } catch {
+          return { ok: false as const };
+        }
+      },
+      (): number => deps.clock.now(),
+    );
+  }
+
+  /**
+   * Explicit boot-time effect-aware recovery for orchestration runs:
+   * reclaim policy-permitted expired claims (pure/read recompute; keyed
+   * write retries with the same key) and block ambiguous unsafe work.
+   * Historical Stage 02 sequential recovery is unchanged.
+   */
+  async recoverOrchestration(options: RecoverOrchestrationOptions = {}): Promise<RecoverOrchestrationSummary> {
+    const driver = this.#orchestrationDriver();
+    const deps = driver.deps;
+    const summary = await recoverOrchestrationCommands(deps, options, async (runId, attempt) => {
+      const run = await deps.orchestration.getOrchestrationRun(runId);
+      if (!run) {
+        return { action: 'skip' as const, reason: 'run not found' };
+      }
+      try {
+        const graph = await driver.resolveGraphForDriver(run.activationVersion);
+        const node = graph.getNode(attempt.nodeId);
+        if (!node) {
+          return { action: 'block' as const, reason: 'the pinned activation cannot resolve the attempt node' };
+        }
+        const retry = node.retry;
+        const effect = attempt.effectClass;
+        if (effect === 'pure' || effect === 'read') {
+          return { action: 'reclaim' as const };
+        }
+        if (effect === 'write') {
+          const keyed = attempt.idempotencyKey !== null;
+          if (!keyed) {
+            return {
+              action: 'block' as const,
+              reason:
+                'A write capability without keyed idempotency has an unknown outcome after process loss; it is never replayed.',
+            };
+          }
+          if (retry !== undefined && attempt.attemptNumber < retry.maxAttempts) {
+            return { action: 'reclaim' as const };
+          }
+          return {
+            action: 'block' as const,
+            reason: 'The keyed write retry policy is exhausted; the outcome remains ambiguous.',
+          };
+        }
+        return {
+          action: 'block' as const,
+          reason: 'An irreversible capability has an unknown outcome after process loss; it is never replayed.',
+        };
+      } catch {
+        return {
+          action: 'skip' as const,
+          reason: 'the exact pinned activation is unavailable; the claim is left for explicit resolution',
+        };
+      }
+    });
+    if (options.resume === true && summary.reclaimed.length > 0) {
+      const runIds = [...new Set(summary.reclaimed.map((entry) => entry.runId))];
+      for (const runId of runIds) {
+        await this.resumeRun(runId, { concurrency: options.concurrency });
+      }
+    }
+    return summary;
+  }
+
+  /**
+   * Bounded authorized operator resolution for one blocked run. Denied by
+   * default: only runtimes explicitly constructed with
+   * `orchestration.operatorAuthorized: true` may resolve blocked work.
+   */
+  async resolveBlocked(input: ResolveBlockedInput): Promise<ResolveBlockedOutcome> {
+    if (this.#orchestrationOptions.operatorAuthorized !== true) {
+      return {
+        ok: false,
+        code: 'VICT_ORCH_OPERATOR_DENIED',
+        message:
+          'Operator resolution is denied: no explicit operator authorization is configured for this runtime.',
+      };
+    }
+    const driver = this.#orchestrationDriver();
+    const deps = driver.deps;
+    return resolveBlockedCommand(deps, input, async (runId, action, output) => {
+      const run = await deps.orchestration.getOrchestrationRun(runId);
+      if (!run) {
+        return { ok: false as const, code: 'VICT_ORCH_UNKNOWN_RUN', message: 'Run not found.' };
+      }
+      let graph: import('@vict/kernel').CompiledGraph;
+      try {
+        graph = await driver.resolveGraphForDriver(run.activationVersion);
+      } catch (error) {
+        return {
+          ok: false as const,
+          code: 'VICT_ORCH_ACTIVATION_UNAVAILABLE',
+          message:
+            error instanceof VictRuntimeError
+              ? error.message
+              : 'The exact pinned activation could not be resolved.',
+        };
+      }
+      const envelopeIdentity = {
+        runId: run.runId,
+        graphId: run.graphId,
+        graphVersion: run.graphVersion,
+        capabilitySetVersion: run.capabilitySetVersion,
+        activationVersion: run.activationVersion,
+      };
+      const now = deps.clock.now();
+      const VictErr = (code: string, message: string): import('@vict/contracts').VictError =>
+        ({ code, message, retryable: false }) as unknown as import('@vict/contracts').VictError;
+      if (action === 'cancel') {
+        return {
+          ok: true as const,
+          command: {
+            runId,
+            action: 'cancel' as const,
+            reasonCode: input.reasonCode,
+          },
+          events: [
+            {
+              type: 'run.cancelled',
+              requestId: input.resolutionId,
+              reasonCode: input.reasonCode,
+              steps: run.steps,
+              ...envelopeIdentity,
+              timestamp: now,
+            },
+          ] as unknown as readonly import('./orchestration-store-types.js').OrchestrationEventInput[],
+        };
+      }
+      if (action === 'fail') {
+        return {
+          ok: true as const,
+          command: {
+            runId,
+            action: 'fail' as const,
+            reasonCode: input.reasonCode,
+            failCode: input.failCode,
+          },
+          events: [
+            {
+              type: 'run.failed',
+              steps: run.steps,
+              error: VictErr(
+                input.failCode ?? 'VICT_ORCH_OPERATOR_FAILED',
+                'The run was failed by an authorized operator resolution.',
+              ),
+              ...envelopeIdentity,
+              timestamp: now,
+            },
+          ] as unknown as readonly import('./orchestration-store-types.js').OrchestrationEventInput[],
+        };
+      }
+      const snapshot = await deps.orchestration.getOrchestrationSnapshot(runId);
+      const blockedToken = snapshot?.tokens.find((token) => token.status === 'blocked');
+      if (!blockedToken) {
+        return { ok: false as const, code: 'VICT_ORCH_NOT_BLOCKED', message: 'The run has no blocked token.' };
+      }
+      const node = graph.getNode(blockedToken.nodeId);
+      if (input.action === 'retry') {
+        if (node?.retry === undefined) {
+          return {
+            ok: false as const,
+            code: 'VICT_ORCH_OPERATOR_DENIED',
+            message: 'Retry is only permitted for work that declares a retry policy.',
+          };
+        }
+        return {
+          ok: true as const,
+          command: { runId, action: 'retry' as const, reasonCode: input.reasonCode },
+          events: [],
+        };
+      }
+      // confirm_applied: the output must pass the ORIGINAL pinned output contract.
+      if (node?.outputContractId === undefined) {
+        return {
+          ok: false as const,
+          code: 'VICT_ORCH_OPERATOR_CONFLICT',
+          message: 'Confirm-applied requires the blocked node to declare an output contract.',
+        };
+      }
+      const bindings = await driver.resolveBindingsForDriver(run.activationVersion);
+      const contract = bindings.contracts.get(node.outputContractId);
+      if (!contract) {
+        return {
+          ok: false as const,
+          code: 'VICT_ORCH_ACTIVATION_UNAVAILABLE',
+          message: `Contract '${node.outputContractId}' is not resolvable from the pinned activation.`,
+        };
+      }
+      const parsed = contract.parse(output);
+      if (!parsed.ok) {
+        return {
+          ok: false as const,
+          code: 'VICT_ORCH_SIGNAL_CONTRACT_REJECTED',
+          message: `The confirmed output was rejected by contract '${node.outputContractId}'; confirm-applied cannot bypass validation.`,
+        };
+      }
+      const successTarget = graph.successTargetOf(node.id);
+      const invocationId = deriveInvocationId({
+        runId,
+        activationVersion: run.activationVersion,
+        lineage: blockedToken.lineage,
+        nodeId: node.id,
+      });
+      if (successTarget === undefined) {
+        return {
+          ok: true as const,
+          command: {
+            runId,
+            action: 'confirm_applied' as const,
+            reasonCode: input.reasonCode,
+            continuation: {
+              kind: 'complete' as const,
+              outputSummary: await import('@vict/kernel').then((k) => k.summarizeOutput(output)),
+              output,
+            },
+            checkpoint: undefined,
+            output,
+            failCode: undefined,
+          },
+          events: [],
+        };
+      }
+      return {
+        ok: true as const,
+        command: {
+          runId,
+          action: 'confirm_applied' as const,
+          reasonCode: input.reasonCode,
+          continuation: {
+            kind: 'advance' as const,
+            toNodeId: successTarget,
+            payload: parsed.value,
+          },
+          checkpoint: { tokenId: blockedToken.tokenId, payload: parsed.value },
+          output,
+          failCode: undefined,
+          idempotencyKey: deriveIdempotencyKey({
+            runId,
+            activationVersion: run.activationVersion,
+            lineage: blockedToken.lineage,
+            nodeId: node.id,
+            invocationId,
+          }),
+        },
+        events: [],
+      };
+    });
   }
 
   registerCapability<I, O>(definition: CapabilityDefinition<I, O>): this {
@@ -356,12 +742,23 @@ export class VictRuntime {
   }
 
   /**
-   * Execute the active graph sequentially. Run transitions and events are
-   * committed to the execution store atomically as the run progresses; when
-   * `run()` resolves, the terminal record is durable.
+   * Execute the active graph. Capability-only graphs keep the verified
+   * Stage 02 sequential engine; graphs with control nodes run on the Stage
+   * 03 durable orchestration driver (token/attempt state machine). Run
+   * transitions and events are committed to the store atomically as the
+   * run progresses; when `run()` resolves, the durable record is current.
    */
   async run<T = unknown>(input: unknown, options: RunOptions = {}): Promise<RunResult<T>> {
     const snapshot = this.#requireActive();
+    if (snapshot.graph.hasControlNodes) {
+      return (await this.#orchestrationDriver().startRun<T>(
+        snapshot.graph,
+        input,
+        options.mode ?? 'normal',
+        this.#ids.runId(),
+        { concurrency: options.concurrency, onEvent: options.onEvent },
+      )) as unknown as RunResult<T>;
+    }
     const mode: ExecutionMode = options.mode ?? 'normal';
     const overrides = options.policy ?? this.#defaultOverrides;
     const doubles = this.#registry.snapshotDoubles();

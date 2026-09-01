@@ -622,16 +622,15 @@ export function createInMemoryOrchestrationStore(
             }
           }
         } else if (continuation.kind === 'retry') {
-          if (!canTransitionToken(token.status, 'ready')) {
+          // The token stays claimed (ineligible) until its durable retry
+          // timer fires; the timer resolution makes it ready again.
+          if (token.status !== 'claimed') {
             throw new VictStoreError(
               'VICT_STORE_TOKEN_CONFLICT',
               `Token '${token.tokenId}' cannot be rescheduled from state '${token.status}'.`,
               { operation: 'orchestration.completeAttempt', runId: command.runId },
             );
           }
-          token.status = 'ready';
-          token.revision += 1;
-          token.updatedAt = now;
           const timerId = `timer_retry_${command.attemptId}`;
           stored.timers.set(timerId, {
             timerId,
@@ -695,9 +694,17 @@ export function createInMemoryOrchestrationStore(
           stageCheckpoint(stored, child.tokenId, child.payload);
         }
         for (const tokenId of command.removeCheckpoints ?? []) {
-          const removed = stored.tokens.get(tokenId);
-          if (removed) {
-            stored.tokens.delete(tokenId);
+          const token = stored.tokens.get(tokenId);
+          if (token) {
+            // Tombstone: the token row stays (audit), the private payload goes.
+            token.checkpoint = undefined;
+          }
+        }
+        if (['completed', 'failed', 'cancelled'].includes(stored.run.status)) {
+          // Terminal cleanup: no private operational payload survives a
+          // terminal transition (tested lifecycle rule).
+          for (const token of stored.tokens.values()) {
+            token.checkpoint = undefined;
           }
         }
         faults?.afterStateStage?.('orchestration.completeAttempt');
@@ -1147,8 +1154,9 @@ export function createInMemoryOrchestrationStore(
         };
         faults?.afterStateStage?.('orchestration.applyCancellation');
         appendEvents(stored, command.events);
-        for (const tokenId of command.removeCheckpoints ?? []) {
-          stored.tokens.delete(tokenId);
+        for (const token of stored.tokens.values()) {
+          // Terminal cleanup tombstones every private operational payload.
+          token.checkpoint = undefined;
         }
         faults?.beforeCommit?.('orchestration.applyCancellation');
         return { runRecordRevision: stored.run.recordRevision, runNextEventSeq: nextEventSeq(stored) };

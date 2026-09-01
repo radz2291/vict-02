@@ -440,6 +440,12 @@ export interface StoredOrchestrationRun {
   readonly currentNodeId: string | null;
   readonly recordRevision: number;
   readonly cancellation: { readonly requestId: string; readonly reasonCode: string } | null;
+  /** Safe output summary (never a payload); present under summary/full retention. */
+  readonly outputSummary?: OutputSummary;
+  /** Complete validated output; present only under explicit full retention. */
+  readonly output?: unknown;
+  /** Sanitized structured terminal error. */
+  readonly error?: VictError;
   readonly createdAt: number;
   readonly updatedAt: number;
   readonly completedAt: number | null;
