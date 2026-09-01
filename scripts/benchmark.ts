@@ -268,6 +268,9 @@ async function main(): Promise<void> {
       readSamples.length,
     );
 
+    // --- 6. Stage 03 durable orchestration ---------------------------------
+    await benchStage03(fileStores);
+
     await memStores.dispose();
     await fileStores.dispose();
   } finally {
@@ -310,3 +313,146 @@ main().catch((error: unknown) => {
   console.error(error);
   process.exit(1);
 });
+
+/* ------------------------------------------------------------------ */
+/* Stage 03 durable orchestration measurements                          */
+/* ------------------------------------------------------------------ */
+
+const ORCH_S = {
+  id: 'bench.s',
+  revision: '1',
+  expected: 'a string',
+  parse: (input: unknown) =>
+    typeof input === 'string'
+      ? { ok: true as const, value: input, issues: [] }
+      : { ok: false as const, issues: [] },
+};
+
+const ORCH_GRAPH = defineGraph({
+  id: 'bench-orchestration',
+  entry: 'd',
+  nodes: [
+    { id: 'd', kind: 'decision', capability: 'bench.route' },
+    { id: 'f', kind: 'fork', join: 'j' },
+    { id: 'a', capability: 'bench.branch' },
+    { id: 'b', capability: 'bench.branch' },
+    { id: 'j', kind: 'join', fork: 'f' },
+    { id: 'w', kind: 'wait', wait: { kind: 'signal', name: 'bench-go' } },
+    { id: 'done', capability: 'bench.sink', output: 'bench.s' },
+  ],
+  edges: [
+    { from: 'd', to: 'f', kind: 'route', key: 'go' },
+    { from: 'f', to: 'a', kind: 'branch', key: 'a' },
+    { from: 'f', to: 'b', kind: 'branch', key: 'b' },
+    { from: 'a', to: 'j' },
+    { from: 'b', to: 'j' },
+    { from: 'j', to: 'w' },
+    { from: 'w', to: 'done' },
+  ],
+});
+
+async function benchStage03(
+  fileStores: ReturnType<typeof createSqliteStores> extends never ? never : Awaited<ReturnType<typeof createSqliteStores>>,
+): Promise<void> {
+  console.log('');
+  console.log('--- Stage 03 durable orchestration (informational) ---');
+
+  const orchestration = (fileStores as unknown as {
+    orchestration: import('@vict/runtime').OrchestrationStore;
+  }).orchestration;
+  let seq = 0;
+  const runtime = createRuntime({
+    stores: fileStores,
+    ids: { runId: (): string => `bench-orch-${++seq}` },
+  });
+  runtime
+    .registerContract(ORCH_S)
+    .registerCapability({ id: 'bench.route', revision: '1', effect: 'pure', invoke: (input: unknown) => ({ route: 'go', value: String(input) }) })
+    .registerCapability({ id: 'bench.branch', revision: '1', effect: 'pure', invoke: (input: unknown, context) => `${String(input)}:${String(context.branch?.branchKey ?? '?')}` })
+    .registerCapability({ id: 'bench.sink', revision: '1', effect: 'pure', invoke: (input: unknown) => String(input) })
+    .registerCapability({
+      id: 'bench.timer',
+      revision: '1',
+      effect: 'pure',
+      invoke: (input: unknown) => String(input),
+    });
+
+  const activation = await runtime.activate(ORCH_GRAPH);
+  if (!activation.ok) {
+    throw new Error('orchestration benchmark graph failed to activate');
+  }
+
+  // Signal wait + delivery + resume (the full durable round trip).
+  const samples: number[] = [];
+  for (let i = 0; i < 50; i++) {
+    const t0 = process.hrtime.bigint();
+    const parked = (await runtime.run(`seed-${i}`)) as unknown as { status: string; runId: string; waits?: { waitId: string }[] };
+    if (parked.status !== 'waiting') {
+      throw new Error('orchestration bench run did not park');
+    }
+    const delivered = await runtime.signal({
+      runId: parked.runId,
+      waitId: parked.waits?.[0]?.waitId as string,
+      signalId: `bench-signal-${i}`,
+      signalName: 'bench-go',
+      payload: 'resumed',
+    });
+    if (!delivered.ok) {
+      throw new Error('orchestration bench signal failed');
+    }
+    const final = (await runtime.resumeRun(parked.runId)) as unknown as { status: string };
+    if (final.status !== 'completed') {
+      throw new Error('orchestration bench run did not complete');
+    }
+    const t1 = process.hrtime.bigint();
+    samples.push(Number(t1 - t0) / 1e6);
+  }
+  printSet(
+    'durable orchestration round trip (start -> fork/join -> signal wait -> signal -> resume -> complete), n=50',
+    summarize(samples),
+    samples.length,
+  );
+  console.log('  durable transactions per completed orchestration run: claims + completions + wait + signal + join (each fsynced)');
+  console.log('');
+
+  // Due-timer pump.
+  const timerGraph = defineGraph({
+    id: 'bench-timer',
+    entry: 'a',
+    nodes: [
+      { id: 'a', capability: 'bench.sink' },
+      { id: 't', kind: 'wait', wait: { kind: 'timer', delayMs: 1 } },
+      { id: 'b', capability: 'bench.sink' },
+    ],
+    edges: [
+      { from: 'a', to: 't' },
+      { from: 't', to: 'b' },
+    ],
+  });
+  const timerActivation = await runtime.activate(timerGraph);
+  if (!timerActivation.ok) {
+    throw new Error('timer benchmark graph failed to activate');
+  }
+  const timerSamples: number[] = [];
+  for (let i = 0; i < 50; i++) {
+    const t0 = process.hrtime.bigint();
+    const parked = (await runtime.run(`t-${i}`)) as unknown as { status: string; runId: string };
+    if (parked.status !== 'waiting') {
+      throw new Error('timer bench run did not park');
+    }
+    await new Promise((resolve) => setTimeout(resolve, 5));
+    await runtime.processDueTimers({ runId: parked.runId });
+    const final = (await runtime.resumeRun(parked.runId)) as unknown as { status: string };
+    if (final.status !== 'completed') {
+      throw new Error('timer bench run did not complete');
+    }
+    const t1 = process.hrtime.bigint();
+    timerSamples.push(Number(t1 - t0) / 1e6);
+  }
+  printSet(
+    'durable timer wait: park -> due-time pump -> wake -> complete, n=50',
+    summarize(timerSamples),
+    timerSamples.length,
+  );
+  console.log('');
+}

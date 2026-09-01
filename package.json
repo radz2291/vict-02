@@ -23,7 +23,8 @@
     "test:unit": "vitest run --project unit",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "verify:consumer": "node scripts/isolated-consumer-check.mjs",
-    "verify:stage2": "node scripts/verify-stage2.mjs"
+    "verify:stage2": "node scripts/verify-stage2.mjs",
+    "verify:stage3": "node scripts/verify-stage3.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
