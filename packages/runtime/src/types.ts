@@ -106,6 +106,14 @@ export interface RunResult<T = unknown> {
   readonly output?: T;
   readonly error?: VictError;
   readonly trace: readonly KernelEvent[];
+  /** Safe open-wait descriptors when a durable orchestration run is waiting. */
+  readonly waits?: readonly {
+    readonly waitId: string;
+    readonly kind: 'signal' | 'timer';
+    readonly signalName?: string;
+    readonly dueAt?: number;
+  }[];
+  readonly steps?: number;
 }
 export interface RunOptions {
   /** Defaults to `'normal'`. */

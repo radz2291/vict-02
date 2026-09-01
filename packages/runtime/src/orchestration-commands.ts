@@ -170,6 +170,14 @@ export async function cancelRun(deps: OrchestrationDriverDeps, command: CancelCo
         timestamp: now,
       },
     ] as unknown as readonly OrchestrationEventInput[],
+    terminalCancelEvent: {
+      type: 'run.cancelled',
+      requestId: command.requestId,
+      reasonCode: command.reasonCode,
+      steps: run.steps,
+      ...envelope,
+      timestamp: now,
+    } as unknown as OrchestrationEventInput,
   });
   if (result.status === 'conflict') {
     return {

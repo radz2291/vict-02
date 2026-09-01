@@ -46,7 +46,11 @@ export type {
   TransitionFaultHooks,
   VictStores,
 } from './store-types.js';
-export { ACTIVATION_MANIFEST_SCHEMA, RUN_EVENT_SCHEMA } from './store-types.js';
+export {
+  ACTIVATION_MANIFEST_SCHEMA,
+  ACTIVATION_MANIFEST_SCHEMA_V2,
+  RUN_EVENT_SCHEMA,
+} from './store-types.js';
 export type { InMemoryStoresOptions } from './in-memory-stores.js';
 export { createInMemoryStores } from './in-memory-stores.js';
 export type { OrchestrationInMemoryOptions } from './orchestration-in-memory.js';

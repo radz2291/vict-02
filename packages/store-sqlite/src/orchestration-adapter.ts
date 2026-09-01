@@ -707,7 +707,9 @@ export function createSqliteOrchestrationStore(
             plan.effectClass,
             plan.idempotencyKey,
             command.ownerId,
+            toIso(command.leaseExpiresAt),
             plan.deadlineAt === null ? null : toIso(plan.deadlineAt),
+            attemptNumber,
             toIso(command.now),
             toIso(command.now),
           );
@@ -1404,7 +1406,12 @@ export function createSqliteOrchestrationStore(
           }
           faults?.afterStateStage?.('orchestration.requestCancellation');
           const updatedRun = runRow(command.runId) as RunRow;
-          const seq = appendEvents(command.runId, command.events);
+          const seq = appendEvents(
+            command.runId,
+            runCancelledNow && command.terminalCancelEvent !== undefined
+              ? [...command.events, command.terminalCancelEvent]
+              : command.events,
+          );
           faults?.beforeCommit?.('orchestration.requestCancellation');
           return {
             status: 'accepted' as const,
@@ -1437,6 +1444,20 @@ export function createSqliteOrchestrationStore(
           db.prepare(
             "UPDATE vict_timer SET status = 'cancelled', revision = revision + 1 WHERE run_id = ? AND status IN ('scheduled','firing');",
           ).run(command.runId);
+          if (run.status === 'cancelled') {
+            // Already finalized: idempotent.
+            return {
+              runRecordRevision: run.record_revision,
+              runNextEventSeq: nextEventSeqOf(command.runId),
+            };
+          }
+          if (!canTransitionRun(run.status, 'cancelled')) {
+            throw new VictStoreError(
+              'VICT_STORE_RUN_CONFLICT',
+              'The run cannot be cancelled from its current status.',
+              { operation: 'orchestration.applyCancellation', runId: command.runId, status: run.status },
+            );
+          }
           db.prepare(
             "UPDATE vict_run SET status = 'cancelled', completed_at = ?, record_revision = record_revision + 1, updated_at = ? WHERE run_id = ?;",
           ).run(nowIso, nowIso, command.runId);
@@ -1696,6 +1717,22 @@ export function createSqliteOrchestrationStore(
           .prepare('SELECT * FROM vict_wait WHERE run_id = ? ORDER BY created_at ASC, wait_id ASC;')
           .all(runId) as unknown as WaitRow[];
         return rows.map((row) => validateWaitRow(row, 'orchestration.listWaits'));
+      });
+    },
+
+    async listOrchestrationEvents(runId) {
+      return safeRun('orchestration.listEvents', () => {
+        const run = runRow(runId);
+        if (!run) {
+          throw new VictStoreError('VICT_STORE_RUN_NOT_FOUND', 'Run not found.', {
+            operation: 'orchestration.listEvents',
+            runId,
+          });
+        }
+        const rows = db
+          .prepare('SELECT payload FROM vict_run_event WHERE run_id = ? ORDER BY seq ASC;')
+          .all(runId) as unknown as { payload: string }[];
+        return rows.map((row) => parseJson(row.payload, 'orchestration.listEvents', runId) as KernelEvent);
       });
     },
 

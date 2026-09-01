@@ -6,6 +6,23 @@
  * behavioral source.
  */
 export { runStoreConformanceSuite } from './store-conformance.js';
+export {
+  runOrchestrationConformanceSuite,
+  stringContract,
+  recordContract,
+  decisionGraph,
+  fanoutGraph,
+  signalWaitGraph,
+  timerWaitGraph,
+  retryGraph,
+  unsafeWriteGraph,
+} from './orchestration-conformance.js';
+export type {
+  ConformanceTestRunner as OrchestrationConformanceRunner,
+  ConformanceExpect as OrchestrationConformanceExpect,
+  OrchestrationConformanceFixture,
+  OrchestrationConformanceStores,
+} from './orchestration-conformance.js';
 export type {
   StoreConformanceFactory,
   ConformanceTestRunner,

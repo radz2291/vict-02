@@ -3,6 +3,7 @@ import type { VictError } from '@vict/contracts';
 import type { ExecutionMode, PayloadRetention } from '@vict/runtime';
 import {
   ACTIVATION_MANIFEST_SCHEMA,
+  ACTIVATION_MANIFEST_SCHEMA_V2,
   RUN_EVENT_SCHEMA,
   VictStoreError,
   assertActivationBelongsToGraph,
@@ -304,7 +305,7 @@ interface ActivationRow {
 
 function validateActivationRow(row: ActivationRow): StoredActivation {
   const context = 'catalog.readActivation';
-  if (row.manifest_schema !== ACTIVATION_MANIFEST_SCHEMA) {
+  if (row.manifest_schema !== ACTIVATION_MANIFEST_SCHEMA && row.manifest_schema !== ACTIVATION_MANIFEST_SCHEMA_V2) {
     throw new VictStoreError(
       'VICT_STORE_INVALID_RECORD',
       'A stored activation carries an unsupported manifest schema.',
@@ -377,7 +378,8 @@ function assertEvent(event: KernelEvent): void {
 function assertManifestContent(command: PublishActivationCommand): void {
   const manifest: ActivationManifest = command.manifest;
   if (
-    manifest.manifestSchema !== ACTIVATION_MANIFEST_SCHEMA ||
+    (manifest.manifestSchema !== ACTIVATION_MANIFEST_SCHEMA &&
+      manifest.manifestSchema !== ACTIVATION_MANIFEST_SCHEMA_V2) ||
     typeof manifest.activationVersion !== 'string' ||
     manifest.activationVersion.length === 0 ||
     typeof manifest.graphId !== 'string' ||

@@ -310,8 +310,13 @@ export interface RequestCancellationCommand {
   readonly reasonCode: string;
   readonly commandHash: string;
   readonly now: number;
-  /** Ordered safe events (run.cancel_requested, run.cancelled, node.cancelled...). */
+  /** Ordered safe events (run.cancel_requested, node.cancelled...). */
   readonly events: readonly OrchestrationEventInput[];
+  /**
+   * The terminal run.cancelled event, appended atomically ONLY when the
+   * cancellation finalizes inside this transaction (no in-flight work).
+   */
+  readonly terminalCancelEvent?: OrchestrationEventInput;
 }
 
 export type CancellationResult =
@@ -482,6 +487,8 @@ export interface OrchestrationStore {
   listWaits(runId: string): Promise<readonly DurableWaitState[]>;
   /** Read signal receipts for a run (safe identity metadata only). */
   listSignalReceipts(runId: string): Promise<readonly SignalReceiptRecord[]>;
+  /** Read the run's ordered safe event ledger (all orchestration facts). */
+  listOrchestrationEvents(runId: string): Promise<readonly KernelEvent[]>;
 }
 
 /**

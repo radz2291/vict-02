@@ -599,7 +599,9 @@ export class OrchestrationDriver {
           : {}),
       };
       let invocation: { ok: true; value: unknown } | { ok: false; error: VictError };
-      const invokePromise = Promise.resolve(
+      // Promise.resolve().then ensures a SYNCHRONOUS throw from the handler
+      // is still converted into a capability failure, not a driver failure.
+      const invokePromise = Promise.resolve().then(async () =>
         binding.invoke(inputPayload, context),
       ).then(
         (value) => ({ ok: true as const, value }),
@@ -641,7 +643,11 @@ export class OrchestrationDriver {
           error: runtimeError(
             'VICT_RUNTIME_STORE_FAILURE',
             'The durable orchestration driver failed outside the capability invocation; the thrown message is not retained.',
-            { errorName: cause instanceof Error ? cause.name : typeof cause },
+            {
+              errorName: cause instanceof Error ? cause.name : typeof cause,
+              ...(cause instanceof VictStoreError ? { causeCode: cause.code } : {}),
+              phase: 'completeWithOutcome',
+            },
           ),
         };
       }

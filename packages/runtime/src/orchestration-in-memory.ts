@@ -1088,7 +1088,11 @@ export function createInMemoryOrchestrationStore(
           runCancelledNow = true;
         }
         faults?.afterStateStage?.('orchestration.requestCancellation');
-        appendEvents(stored, command.events);
+        const allEvents =
+          runCancelledNow && command.terminalCancelEvent !== undefined
+            ? [...command.events, command.terminalCancelEvent]
+            : command.events;
+        appendEvents(stored, allEvents);
         faults?.beforeCommit?.('orchestration.requestCancellation');
         return {
           status: 'accepted',
@@ -1140,6 +1144,10 @@ export function createInMemoryOrchestrationStore(
             timer.status = 'cancelled';
             timer.revision += 1;
           }
+        }
+        if (stored.run.status === 'cancelled') {
+          // Already finalized: idempotent no-op.
+          return { runRecordRevision: stored.run.recordRevision, runNextEventSeq: nextEventSeq(stored) };
         }
         if (!canTransitionRun(stored.run.status, 'cancelled')) {
           throw new VictStoreError(
@@ -1430,6 +1438,11 @@ export function createInMemoryOrchestrationStore(
     async listSignalReceipts(runId) {
       const stored = requireRun(runId, 'orchestration.listSignalReceipts');
       return [...stored.signalReceipts.values()].map((receipt) => immutableSnapshot(receipt));
+    },
+
+    async listOrchestrationEvents(runId) {
+      const stored = requireRun(runId, 'orchestration.listEvents');
+      return stored.events.map((event) => immutableSnapshot(event));
     },
   };
 
