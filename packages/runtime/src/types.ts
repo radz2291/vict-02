@@ -271,5 +271,7 @@ export interface VictRuntimeOptions {
     readonly operatorAuthorized?: boolean;
     readonly time?: import('./orchestration-driver-types.js').OrchestrationTimePort;
     readonly ownerId?: string;
+    /** Claim lease duration in ms (default 30000). */
+    readonly leaseMs?: number;
   };
 }

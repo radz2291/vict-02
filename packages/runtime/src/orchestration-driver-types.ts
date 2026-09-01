@@ -154,6 +154,8 @@ export interface OrchestrationEngineDeps {
   readonly defaultOverrides: EffectPolicyOverrides;
   readonly retention: 'none' | 'summary' | 'full';
   readonly ownerId: string;
+  /** Claim lease duration in ms (default 30000). */
+  readonly leaseMs?: number;
   readonly orchestration: OrchestrationStore;
   readonly catalog: {
     get(activationVersion: string): Promise<import('./store-types.js').StoredActivation | undefined>;

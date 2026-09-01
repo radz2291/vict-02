@@ -302,7 +302,7 @@ export class OrchestrationDriver {
         const claim = await this.#deps.orchestration.claimReadyToken({
           runId,
           ownerId: this.#deps.ownerId,
-          leaseExpiresAt: this.time().now() + DEFAULT_LEASE_MS,
+          leaseExpiresAt: this.#deps.clock.now() + (this.#deps.leaseMs ?? DEFAULT_LEASE_MS),
           now: this.#deps.clock.now(),
           planner: {
             invocationIdFor: (token) =>

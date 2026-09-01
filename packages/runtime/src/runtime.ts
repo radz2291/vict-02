@@ -167,6 +167,7 @@ export class VictRuntime {
     readonly operatorAuthorized: boolean;
     readonly time?: OrchestrationTimePort;
     readonly ownerId: string;
+    readonly leaseMs: number;
   };
   #active: ActivationSnapshot | undefined;
   #orchestrationDriverInstance: OrchestrationDriver | undefined;
@@ -207,6 +208,7 @@ export class VictRuntime {
       operatorAuthorized: orchestrationOptions.operatorAuthorized ?? false,
       time: orchestrationOptions.time,
       ownerId: orchestrationOptions.ownerId ?? `owner_${globalThis.crypto.randomUUID()}`,
+      leaseMs: orchestrationOptions.leaseMs ?? 30_000,
     };
   }
 
@@ -227,6 +229,7 @@ export class VictRuntime {
         defaultOverrides: this.#defaultOverrides,
         retention: this.#retention,
         ownerId: this.#orchestrationOptions.ownerId,
+        leaseMs: this.#orchestrationOptions.leaseMs,
         orchestration,
         catalog: { get: (activationVersion) => this.#stores.catalog.get(activationVersion) },
         ...(this.#orchestrationOptions.time !== undefined
