@@ -46,11 +46,18 @@ import { DurableRunTracker } from './durable-run.js';
 import { createInMemoryStores } from './in-memory-stores.js';
 import { deepFreeze, parseStoredJson, toCanonicalJson } from './serialization.js';
 import { VictStoreError } from './store-errors.js';
-import { ACTIVATION_MANIFEST_SCHEMA, RUN_EVENT_SCHEMA } from './store-types.js';
+import {
+  ACTIVATION_MANIFEST_SCHEMA,
+  ACTIVATION_MANIFEST_SCHEMA_V2,
+  RUN_EVENT_SCHEMA,
+} from './store-types.js';
 import type {
   ActivationManifest,
   ActivationManifestBinding,
   ActivationManifestContract,
+  ActivationManifestFork,
+  ActivationManifestJoin,
+  ActivationManifestWait,
   RecoveryResult,
   StoredActivation,
   StoredEvent,
@@ -956,8 +963,8 @@ export class VictRuntime {
     };
     for (const nodeId of graph.nodeIds) {
       const node: CompiledNode | undefined = graph.getNode(nodeId);
-      if (!node) {
-        continue;
+      if (!node || (node.kind !== 'capability' && node.kind !== 'decision')) {
+        continue; // control nodes carry no capability binding
       }
       const live = this.#registry.getCapability(node.capability);
       if (!live) {
@@ -1064,8 +1071,8 @@ export class VictRuntime {
     };
     for (const nodeId of graph.nodeIds) {
       const node = graph.getNode(nodeId);
-      if (!node) {
-        continue;
+      if (!node || (node.kind !== 'capability' && node.kind !== 'decision')) {
+        continue; // control nodes carry no capability binding
       }
       const live = this.#registry.getCapability(node.capability);
       if (!live) {
@@ -1089,6 +1096,7 @@ export class VictRuntime {
         input: inputId === undefined ? null : { id: inputId, revision: inputRevision ?? 'unknown' },
         output:
           outputId === undefined ? null : { id: outputId, revision: outputRevision ?? 'unknown' },
+        ...(live.idempotency === undefined ? {} : { idempotency: live.idempotency }),
       });
       recordContract(live.input?.id);
       recordContract(live.output?.id);
@@ -1099,8 +1107,63 @@ export class VictRuntime {
     const contracts = [...contractById.values()].sort((a, b) =>
       a.id < b.id ? -1 : a.id > b.id ? 1 : 0,
     );
+    // Stage 03: control-node metadata for v2 manifests (control graphs only).
+    const waits: ActivationManifestWait[] = [];
+    const forks: ActivationManifestFork[] = [];
+    const joins: ActivationManifestJoin[] = [];
+    for (const nodeId of graph.nodeIds) {
+      const node = graph.getNode(nodeId);
+      if (!node) {
+        continue;
+      }
+      if (node.kind === 'wait' && node.wait !== undefined) {
+        const wait = node.wait;
+        waits.push(
+          wait.kind === 'signal'
+            ? {
+                nodeId,
+                kind: 'signal',
+                name: wait.name,
+                contract: wait.contract === undefined
+                  ? null
+                  : {
+                      id: wait.contract,
+                      revision: this.#registry.getContract(wait.contract)?.revision ?? 'unknown',
+                    },
+                ...(wait.timeoutMs !== undefined ? { timeoutMs: wait.timeoutMs } : {}),
+              }
+            : { nodeId, kind: 'timer', delayMs: wait.delayMs },
+        );
+        if (wait.kind === 'signal' && wait.contract !== undefined) {
+          recordContract(wait.contract);
+        }
+      }
+      if (node.kind === 'fork' && node.join !== undefined) {
+        forks.push({
+          forkId: nodeId,
+          joinId: node.join,
+          branchKeys: graph.branchKeysOf(nodeId),
+          maxConcurrency: node.maxConcurrency ?? null,
+        });
+      }
+      if (node.kind === 'join') {
+        const outputId = node.outputContractId;
+        joins.push({
+          joinId: nodeId,
+          forkId: node.fork ?? '',
+          outputContract:
+            outputId === undefined
+              ? null
+              : { id: outputId, revision: this.#registry.getContract(outputId)?.revision ?? 'unknown' },
+        });
+        if (outputId !== undefined) {
+          recordContract(outputId);
+        }
+      }
+    }
+    const isControl = graph.hasControlNodes;
     return {
-      manifestSchema: ACTIVATION_MANIFEST_SCHEMA,
+      manifestSchema: isControl ? ACTIVATION_MANIFEST_SCHEMA_V2 : ACTIVATION_MANIFEST_SCHEMA,
       graphId: graph.id,
       graph: graph.toDefinition(),
       graphVersion: graph.graphVersion,
@@ -1108,6 +1171,7 @@ export class VictRuntime {
       activationVersion: graph.activationVersion,
       bindings: dedupedBindings,
       contracts,
+      ...(isControl ? { waits, forks, joins } : {}),
     };
   }
 
@@ -1254,7 +1318,8 @@ function parseManifest(stored: StoredActivation): ActivationManifest {
   if (
     !parsed ||
     typeof parsed !== 'object' ||
-    parsed.manifestSchema !== ACTIVATION_MANIFEST_SCHEMA ||
+    (parsed.manifestSchema !== ACTIVATION_MANIFEST_SCHEMA &&
+      parsed.manifestSchema !== ACTIVATION_MANIFEST_SCHEMA_V2) ||
     typeof parsed.activationVersion !== 'string' ||
     typeof parsed.graphId !== 'string' ||
     typeof parsed.graphVersion !== 'string' ||

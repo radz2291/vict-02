@@ -192,9 +192,9 @@ export const ATTEMPT_TRANSITIONS: Readonly<Record<string, readonly string[]>> = 
 /** Run status transitions (handoff §9.1 lifecycle). */
 export const RUN_TRANSITIONS: Readonly<Record<string, readonly string[]>> = Object.freeze({
   created: ['running'],
-  running: ['waiting', 'blocked', 'completed', 'failed', 'cancelled'],
-  waiting: ['running', 'cancelled'],
-  blocked: ['running', 'cancelled'],
+  running: ['running', 'waiting', 'blocked', 'completed', 'failed', 'cancelled'],
+  waiting: ['waiting', 'running', 'cancelled'],
+  blocked: ['blocked', 'running', 'cancelled'],
   completed: [],
   failed: [],
   cancelled: [],

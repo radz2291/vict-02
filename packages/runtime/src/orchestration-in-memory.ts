@@ -823,6 +823,9 @@ export function createInMemoryOrchestrationStore(
         token.status = 'ready';
         token.revision += 1;
         token.updatedAt = now;
+        // The resolved signal payload becomes the token's private
+        // operational checkpoint (it is the continuation input).
+        token.checkpoint = canonicalPersistedValue(command.payload);
         // Cancel the wait's outstanding timeout timer, if any.
         for (const timer of stored.timers.values()) {
           if (timer.waitId === command.waitId && timer.status === 'scheduled') {

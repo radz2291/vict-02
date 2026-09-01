@@ -107,9 +107,9 @@ function checkWaitContract(
 }
 
 /** Validate retry/timeout policy bounds; returns structured issues. */
-function checkPolicyBounds(nodeId: string, retry: RetryPolicy | undefined, timeoutMs: number | undefined): GraphIssue[] {
+function checkPolicyBounds(retry: RetryPolicy | null | undefined, timeoutMs: number | undefined, nodeId: string): GraphIssue[] {
   const issues: GraphIssue[] = [];
-  if (retry !== undefined) {
+  if (retry !== undefined && retry !== null) {
     const maxAttempts = retry.maxAttempts;
     if (!Number.isInteger(maxAttempts) || maxAttempts < 1 || maxAttempts > RETRY_MAX_ATTEMPTS_LIMIT) {
       issues.push({
@@ -232,7 +232,7 @@ export function compileGraph(input: CompileGraphInput): CompileResult {
     const node = rawNode as GraphNodeDefinition &
       Partial<WaitNodeDefinition> &
       Partial<ForkNodeDefinition> &
-      Partial<JoinNodeDefinition>;
+      Partial<JoinNodeDefinition> & { fork?: string };
     const capability = node.capability ?? '';
     if ((kind === 'capability' || kind === 'decision') && capability.length === 0) {
       issues.push({
@@ -242,18 +242,22 @@ export function compileGraph(input: CompileGraphInput): CompileResult {
       });
       continue;
     }
+    // Canonical (v2) forms store nulls for absent control fields and swap
+    // fork/join reference names; normalize both spellings here.
+    const forkRef = kind === 'fork' ? (node.join ?? node.fork ?? undefined) : undefined;
+    const joinForkRef = kind === 'join' ? (node.fork ?? node.join ?? undefined) : undefined;
     nodesById.set(rawNode.id, {
       id: rawNode.id,
       kind,
       capability,
-      inputContractId: node.input,
-      outputContractId: node.output,
-      retry: node.retry,
-      timeoutMs: node.timeoutMs,
-      wait: node.wait,
-      join: kind === 'fork' ? node.join : undefined,
-      maxConcurrency: kind === 'fork' ? node.maxConcurrency : undefined,
-      fork: kind === 'join' ? node.fork : undefined,
+      inputContractId: node.input ?? undefined,
+      outputContractId: node.output ?? undefined,
+      retry: node.retry ?? undefined,
+      timeoutMs: node.timeoutMs ?? undefined,
+      wait: node.wait ?? undefined,
+      join: forkRef,
+      maxConcurrency: node.maxConcurrency ?? undefined,
+      fork: joinForkRef,
     });
   }
 
@@ -410,7 +414,7 @@ export function compileGraph(input: CompileGraphInput): CompileResult {
     }
   }
   for (const node of nodesById.values()) {
-    issues.push(...checkPolicyBounds(node.id, node.retry, node.timeoutMs));
+    issues.push(...checkPolicyBounds(node.retry, node.timeoutMs, node.id));
 
     if (node.kind === 'decision') {
       const routeMap = routes.get(node.id);
@@ -434,23 +438,25 @@ export function compileGraph(input: CompileGraphInput): CompileResult {
         });
       }
       if (wait.kind === 'signal') {
+        const waitTimeoutMs = wait.timeoutMs ?? undefined;
+        const waitContract = (wait as { contract?: string | null }).contract ?? undefined;
         const hasTimeoutEdge = timeoutTargets.has(node.id);
-        if (wait.timeoutMs !== undefined && !hasTimeoutEdge) {
+        if (waitTimeoutMs !== undefined && !hasTimeoutEdge) {
           issues.push({
             code: 'SIGNAL_TIMEOUT_WITHOUT_TIMEOUT_EDGE',
             message: `Signal wait '${node.id}' declares timeoutMs but has no timeout edge.`,
             nodeIds: [node.id],
           });
         }
-        if (wait.timeoutMs === undefined && hasTimeoutEdge) {
+        if (waitTimeoutMs === undefined && hasTimeoutEdge) {
           issues.push({
             code: 'TIMEOUT_EDGE_WITHOUT_SIGNAL_TIMEOUT',
             message: `Wait node '${node.id}' has a timeout edge but declares no timeoutMs.`,
             nodeIds: [node.id],
           });
         }
-        if (wait.contract !== undefined) {
-          issues.push(...checkWaitContract(node.id, wait.contract, contracts));
+        if (waitContract !== undefined) {
+          issues.push(...checkWaitContract(node.id, waitContract, contracts));
         }
       } else if (timeoutTargets.has(node.id)) {
         issues.push({
@@ -597,7 +603,7 @@ export function compileGraph(input: CompileGraphInput): CompileResult {
           nodeIds: [id],
         });
       }
-      if (node.retry !== undefined) {
+      if (node.retry !== undefined && node.retry !== null) {
         const maxAttempts = node.retry.maxAttempts;
         if (Number.isInteger(maxAttempts) && maxAttempts > 1) {
           if (descriptor.effect === 'irreversible') {
@@ -625,9 +631,9 @@ export function compileGraph(input: CompileGraphInput): CompileResult {
       capability: node.capability,
       inputContractId,
       outputContractId,
-      ...(node.retry !== undefined ? { retry: node.retry } : {}),
-      ...(node.timeoutMs !== undefined ? { timeoutMs: node.timeoutMs } : {}),
-      ...(node.wait !== undefined ? { wait: node.wait } : {}),
+      ...(node.retry !== undefined && node.retry !== null ? { retry: node.retry } : {}),
+      ...(node.timeoutMs !== undefined && node.timeoutMs !== null ? { timeoutMs: node.timeoutMs } : {}),
+      ...(node.wait !== undefined && node.wait !== null ? { wait: node.wait } : {}),
       ...(node.join !== undefined ? { join: node.join } : {}),
       ...(node.maxConcurrency !== undefined ? { maxConcurrency: node.maxConcurrency } : {}),
       ...(node.fork !== undefined ? { fork: node.fork } : {}),

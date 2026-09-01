@@ -1160,8 +1160,12 @@ export function createSqliteOrchestrationStore(
             );
           }
           db.prepare(
-            "UPDATE vict_token SET status = 'ready', revision = revision + 1, updated_at = ? WHERE token_id = ?;",
-          ).run(nowIso, tokenRow.token_id);
+            "UPDATE vict_token SET status = 'ready', revision = revision + 1, updated_at = ?, checkpoint = ? WHERE token_id = ?;",
+          ).run(
+            nowIso,
+            toCanonicalJson(canonicalPersistedValue(command.payload)),
+            tokenRow.token_id,
+          );
           db.prepare(
             "UPDATE vict_timer SET status = 'cancelled', revision = revision + 1 WHERE wait_id = ? AND status = 'scheduled';",
           ).run(command.waitId);

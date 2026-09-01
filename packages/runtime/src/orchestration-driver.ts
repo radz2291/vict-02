@@ -109,6 +109,8 @@ function isTerminalStatus(status: string): boolean {
 export class OrchestrationDriver {
   readonly #deps: OrchestrationEngineDeps;
   readonly #resolved = new Map<string, Promise<ResolvedExecution>>();
+  /** In-process view of each run's completed root output (retention-independent). */
+  readonly #completedOutputs = new Map<string, unknown>();
 
   constructor(deps: OrchestrationEngineDeps) {
     this.#deps = deps;
@@ -147,7 +149,7 @@ export class OrchestrationDriver {
       if (!graph.ok || graph.graph === undefined) {
         throw new VictRuntimeError(
           'VICT_RUNTIME_ACTIVATION_UNAVAILABLE',
-          graph.message ?? 'Activation unavailable.',
+          `${graph.message ?? 'Activation unavailable.'} [${(graph.issues ?? []).map((issue) => issue.code).join(',') || 'none'}]`,
         );
       }
       const bindings = await resolveBindings(deps, activationVersion);
@@ -271,7 +273,7 @@ export class OrchestrationDriver {
     if (!run) {
       throw new VictRuntimeError('VICT_RUN_NOT_FOUND', `No orchestration run '${runId}' exists.`);
     }
-    return resultFromRun<T>(run, this.#deps.orchestration);
+    return resultFromRun<T>(run, this.#deps.orchestration, this.#completedOutputs);
   }
 
   /**
@@ -471,6 +473,37 @@ export class OrchestrationDriver {
       inputPayload = parsed.value;
     }
 
+    // ---- Control nodes complete directly (no capability invocation) -----
+    if (node.kind === 'wait' || node.kind === 'fork') {
+      if (node.kind === 'wait') {
+        // First arrival parks (creates the durable wait); a post-wake
+        // execution (the wait is already resolved) advances along the
+        // wait's success edge with the resolved payload.
+        const snapshot = await this.#deps.orchestration.getOrchestrationSnapshot(run.runId);
+        const hasOpenWait = (snapshot?.waits ?? []).some(
+          (wait) => wait.tokenId === claim.token.tokenId && wait.status === 'open',
+        );
+        if (hasOpenWait || !(snapshot?.waits ?? []).some((wait) => wait.tokenId === claim.token.tokenId && wait.status === 'resolved')) {
+          await this.#completeWithOutcome(resolved, claim, envelope, mode, { kind: 'completed', raw: inputPayload }, inputPayload, onEvent);
+          return;
+        }
+        const successTarget = graph.successTargetOf(node.id);
+        await this.#completeWithOutcome(
+          resolved,
+          claim,
+          envelope,
+          mode,
+          { kind: 'completed', raw: inputPayload },
+          inputPayload,
+          onEvent,
+          { kind: 'advance', toNodeId: successTarget ?? '', payload: inputPayload },
+        );
+        return;
+      }
+      await this.#completeWithOutcome(resolved, claim, envelope, mode, { kind: 'completed', raw: inputPayload }, inputPayload, onEvent);
+      return;
+    }
+
     // ---- Effect policy -------------------------------------------------
     const decision = decideEffectAuthorization(
       { capabilityId: node.capability, effect: binding?.effect ?? 'pure', mode },
@@ -632,6 +665,7 @@ export class OrchestrationDriver {
     rawOutcome: OutcomeForPlan,
     inputPayload: unknown,
     onEvent?: (event: KernelEvent) => void,
+    forcedContinuation?: import('./orchestration-store-types.js').AttemptContinuation,
   ): Promise<void> {
     const { graph, bindings, contracts } = resolved;
     const node = graph.getNode(claim.token.nodeId);
@@ -745,14 +779,19 @@ export class OrchestrationDriver {
             : undefined,
         descriptor: binding,
       });
-      if (plan.kind === 'invalid') {
+      const effectivePlan: PlannedCompletion =
+        forcedContinuation !== undefined
+          ? { kind: 'transition', continuation: forcedContinuation, runStatus: 'running' }
+          : plan;
+      if (effectivePlan.kind === 'invalid') {
         // Invalid routing/shape: fail honestly (route along error edge or fail).
+        const planError = effectivePlan.error;
         const failurePlan = planContinuation({
           graph,
           claim,
           now: this.#deps.clock.now(),
-          outcome: { kind: 'failed', error: plan.error },
-          error: plan.error,
+          outcome: { kind: 'failed', error: planError },
+          error: planError,
           descriptor: binding,
         });
         if (failurePlan.kind === 'invalid') {
@@ -765,7 +804,10 @@ export class OrchestrationDriver {
         await this.#commitCompletion(claim, command, onEvent);
         return;
       }
-      const command = this.#buildCommand(graph, claim, envelope, plan, attemptOutcome, validatedOutput, bindings);
+      if (effectivePlan.kind === 'transition' && effectivePlan.runStatus === 'completed' && attemptOutcome.kind === 'completed') {
+        this.#completedOutputs.set(claim.token.runId, validatedOutput);
+      }
+      const command = this.#buildCommand(graph, claim, envelope, effectivePlan, attemptOutcome, validatedOutput, bindings);
       try {
         await this.#commitCompletion(claim, command, onEvent);
         return;
@@ -999,6 +1041,7 @@ const DEFAULT_LEASE_MS = 30_000;
 export async function resultFromRun<T>(
   run: import('./orchestration-store-types.js').StoredOrchestrationRun,
   orchestration: OrchestrationStore,
+  completedOutputs?: ReadonlyMap<string, unknown>,
 ): Promise<import('./orchestration-driver-types.js').OrchestrationRunResult<T>> {
   let waits: { waitId: string; kind: 'signal' | 'timer'; signalName?: string; dueAt?: number }[] | undefined;
   if (run.status === 'waiting') {
@@ -1024,9 +1067,21 @@ export async function resultFromRun<T>(
   if (run.error !== undefined) {
     return { ...result, error: run.error };
   }
-  if (run.status === 'completed' && run.output !== undefined) {
-    return { ...result, output: run.output as T };
+  if (run.status === 'completed') {
+    const output = completedOutputs?.get(run.runId) ?? run.output;
+    if (output !== undefined) {
+      return { ...result, output } as import('./orchestration-driver-types.js').OrchestrationRunResult<T>;
+    }
   }
   return result;
 }
 
+/** Inject the in-process completed-output view (used by the driver). */
+export function withCompletedOutputs<T>(
+  run: import('./orchestration-store-types.js').StoredOrchestrationRun,
+  orchestration: OrchestrationStore,
+  completedOutputs: ReadonlyMap<string, unknown> | undefined,
+): Promise<import('./orchestration-driver-types.js').OrchestrationRunResult<T>> {
+  return resultFromRun<T>(run, orchestration, completedOutputs);
+
+}

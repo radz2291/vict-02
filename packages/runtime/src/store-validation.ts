@@ -2,6 +2,7 @@ import type { KernelEvent } from '@vict/kernel';
 import {
   canonicalJson,
   canonicalSemanticForm,
+  canonicalSemanticFormV2,
   computeActivationVersion,
   computeCapabilitySetVersion,
   computeGraphVersion,
@@ -72,13 +73,15 @@ export function assertPublishableManifest(command: PublishActivationCommand): vo
       { activationVersion: manifest.activationVersion },
     );
   }
+  const isV2 =
+    (manifest.graph as { schema?: string } | null)?.schema === 'vict.graph@2';
   let canonicalGraph: unknown;
   try {
     // canonicalSemanticForm is idempotent on an already-canonical graph;
     // comparing its JSON against the stored form detects tampering.
-    canonicalGraph = canonicalSemanticForm(
-      manifest.graph as Parameters<typeof canonicalSemanticForm>[0],
-    );
+    canonicalGraph = isV2
+      ? canonicalSemanticFormV2(manifest.graph as Parameters<typeof canonicalSemanticFormV2>[0])
+      : canonicalSemanticForm(manifest.graph as Parameters<typeof canonicalSemanticForm>[0]);
   } catch {
     throw mismatch(
       'catalog.publish',
@@ -95,9 +98,7 @@ export function assertPublishableManifest(command: PublishActivationCommand): vo
   }
   let graphVersion: string;
   try {
-    graphVersion = computeGraphVersion(
-      manifest.graph as Parameters<typeof canonicalSemanticForm>[0],
-    );
+    graphVersion = computeGraphVersion(manifest.graph as Parameters<typeof computeGraphVersion>[0]);
   } catch {
     throw mismatch(
       'catalog.publish',
@@ -129,7 +130,11 @@ export function assertPublishableManifest(command: PublishActivationCommand): vo
       { activationVersion: manifest.activationVersion },
     );
   }
-  const activationVersion = computeActivationVersion(graphVersion, capabilitySetVersion);
+  const activationVersion = computeActivationVersion(
+    graphVersion,
+    capabilitySetVersion,
+    graphVersion.startsWith('v2_') ? 'vict.activation@2' : 'vict.activation@1',
+  );
   if (activationVersion !== manifest.activationVersion) {
     throw mismatch(
       'catalog.publish',
@@ -247,16 +252,21 @@ export function assertStoredActivationReadable(row: {
     throw fail();
   }
   try {
-    const canonicalGraph = canonicalSemanticForm(
-      manifest.graph as Parameters<typeof canonicalSemanticForm>[0],
-    );
+    const isV2 =
+      (manifest.graph as { schema?: string } | null)?.schema === 'vict.graph@2';
+    const canonicalGraph = isV2
+      ? canonicalSemanticFormV2(manifest.graph as Parameters<typeof canonicalSemanticFormV2>[0])
+      : canonicalSemanticForm(manifest.graph as Parameters<typeof canonicalSemanticForm>[0]);
     if (
       canonicalJson(canonicalGraph) !== canonicalJson(manifest.graph) ||
-      computeGraphVersion(manifest.graph as Parameters<typeof canonicalSemanticForm>[0]) !==
+      computeGraphVersion(manifest.graph as Parameters<typeof computeGraphVersion>[0]) !==
         manifest.graphVersion ||
       computeCapabilitySetVersion(manifest.bindings) !== manifest.capabilitySetVersion ||
-      computeActivationVersion(manifest.graphVersion, manifest.capabilitySetVersion) !==
-        manifest.activationVersion
+      computeActivationVersion(
+        manifest.graphVersion,
+        manifest.capabilitySetVersion,
+        manifest.graphVersion.startsWith('v2_') ? 'vict.activation@2' : 'vict.activation@1',
+      ) !== manifest.activationVersion
     ) {
       throw fail();
     }

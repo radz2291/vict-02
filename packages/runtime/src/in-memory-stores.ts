@@ -20,7 +20,11 @@ import type {
   TransitionFaultHooks,
   VictStores,
 } from './store-types.js';
-import { ACTIVATION_MANIFEST_SCHEMA, RUN_EVENT_SCHEMA } from './store-types.js';
+import {
+  ACTIVATION_MANIFEST_SCHEMA,
+  ACTIVATION_MANIFEST_SCHEMA_V2,
+  RUN_EVENT_SCHEMA,
+} from './store-types.js';
 import { createInMemoryOrchestrationStore } from './orchestration-in-memory.js';
 import { VictStoreError } from './store-errors.js';
 import { canonicalPersistedValue, immutableSnapshot, toCanonicalJson } from './serialization.js';
@@ -581,7 +585,10 @@ function storedNextEventSeq(events: readonly StoredEvent[], runId: string): numb
 }
 
 function assertManifest(command: PublishActivationCommand): void {
-  if (command.manifest.manifestSchema !== ACTIVATION_MANIFEST_SCHEMA) {
+  if (
+    command.manifest.manifestSchema !== ACTIVATION_MANIFEST_SCHEMA &&
+    command.manifest.manifestSchema !== ACTIVATION_MANIFEST_SCHEMA_V2
+  ) {
     throw new VictStoreError(
       'VICT_STORE_INVALID_COMMAND',
       `Unsupported activation manifest schema '${String(command.manifest.manifestSchema)}'.`,

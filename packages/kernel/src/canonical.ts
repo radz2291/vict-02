@@ -180,8 +180,8 @@ export function declaresControlSemantics(definition: ApplicationGraphDefinition)
   return false;
 }
 
-function canonicalRetry(retry: NonNullable<CapabilityNodeFields['retry']> | undefined): CanonicalRetry | null {
-  if (retry === undefined) {
+function canonicalRetry(retry: NonNullable<CapabilityNodeFields['retry']> | null | undefined): CanonicalRetry | null {
+  if (retry === undefined || retry === null) {
     return null;
   }
   return {
@@ -206,7 +206,7 @@ export function canonicalSemanticFormV2(definition: ApplicationGraphDefinition):
       const node = rawNode as CapabilityNodeDefinition &
         Partial<WaitNodeDefinition> & Partial<ForkNodeDefinition> & Partial<JoinNodeDefinition>;
       const kind: string = node.kind ?? 'capability';
-      const wait = node.wait;
+      const wait = node.wait ?? null;
       const isControl = kind === 'wait' || kind === 'fork' || kind === 'join';
       const isFork = kind === 'fork';
       const isJoin = kind === 'join';
@@ -219,7 +219,7 @@ export function canonicalSemanticFormV2(definition: ApplicationGraphDefinition):
         retry: canonicalRetry(node.retry),
         timeoutMs: node.timeoutMs ?? null,
         wait:
-          wait === undefined
+          wait === undefined || wait === null
             ? null
             : wait.kind === 'signal'
               ? {
@@ -229,8 +229,8 @@ export function canonicalSemanticFormV2(definition: ApplicationGraphDefinition):
                   timeoutMs: wait.timeoutMs ?? null,
                 }
               : { kind: 'timer' as const, delayMs: wait.delayMs },
-        fork: isFork ? (node.join ?? null) : null,
-        join: isJoin ? (node.fork ?? null) : null,
+        fork: isFork ? ((node.join ?? node.fork) ?? null) : null,
+        join: isJoin ? ((node.fork ?? node.join) ?? null) : null,
         maxConcurrency: isFork ? (node.maxConcurrency ?? null) : null,
       };
     })
