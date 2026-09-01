@@ -56,9 +56,19 @@ Supporting corrections discovered and fixed during the work:
   branch-arrival boundary (it now re-plans and routes through it);
 - pinned capability bindings dropped the declared `idempotency`, so
   keyed-write timeout retries were misclassified as ambiguous (blocked);
-- contract `issues` entering events are now sanitized to a bounded,
-  character-restricted `code`/`path` (hostile parsers cannot leak raw
-  messages, payload echoes, or nested secrets);
+- contract `issues` entering events are now sanitized by the single
+  shared fail-closed sanitizer (`sanitizeContractIssues` in
+  `@vict/contracts`, applied by BOTH the durable and sequential engines):
+  a closed framework code vocabulary with a stable `untrusted_issue`
+  fallback, ORDINAL paths only (author/schema paths are never propagated —
+  they may contain payload-derived key names), and framework-GENERATED
+  messages. The prior character-filtering approach was confirmed
+  insufficient: an adversarial probe returned a join-contract rejection
+  whose issue code and path each carried an alphanumeric secret unchanged
+  into the `onEvent` callback. Raw messages, `expected`/`received`,
+  `safeMessage`, and extra/nested properties are never copied; the same
+  policy is enforced at input, output, join, signal, and
+  operator-confirmation boundaries;
 - `cancelRun` did not map the store's `duplicate` status;
 - per-run effect-policy overrides were silently dropped for orchestration
   runs;
@@ -195,9 +205,9 @@ All commands exit 0. Observed from the actual runs:
 | `npm run lint` | 0 | eslint clean |
 | `npm run typecheck` | 0 | strict, no errors |
 | `npm run build` | 0 | all five packages build |
-| `npm run test:unit` | 0 | **30 files / 307 tests passed** |
+| `npm run test:unit` | 0 | **30 files / 335 tests passed — five consecutive runs, all 335/335** |
 | `npm run test:integration` | 0 | 1 file / 4 tests passed |
-| `npm test` | 0 | 311/311 |
+| `npm test` | 0 | 339/339 — **three consecutive runs, all 339/339** (includes the stabilized keyed-write timeout case inside the full parallel suite) |
 | `npm run verify:consumer` | 0 | neutral + zod + orchestration consumers on packed tarballs |
 | `npm run verify:stage2` | 0 | Stage 02 closure intact |
 | `npm run example` | 0 | ARA proof (13 events) |
@@ -211,8 +221,11 @@ corrective SQLite fault/reopen suite, canary suite, join-boundary
 regression checks, `examples/orchestration-proof` (`PROOF PASSED`).
 
 The final count is taken from observed output of the full ladder run at
-the end of this finalization (30 unit files / 307 unit tests, 1
-integration file / 4 tests).
+the end of this finalization (30 unit files / 335 unit tests, 1
+integration file / 4 tests; 339 total). Node v22.13.1 (win32-x64) was
+used for every verification; Node 24.x was NOT available on the
+verification machine, so it was not tested (the package declares
+`>=22.13.0`).
 
 ## Direct evidence for formerly missing adversarial groups
 
@@ -262,19 +275,61 @@ after B is selected; new runs use B; restart without the pinned artifacts
 fails closed (`VICT_RUNTIME_ACTIVATION_UNAVAILABLE`) and the newer
 activation is never substituted.
 
-**Atomic fault injection** (SQLite, real transactions): fault at run
-creation, attempt claim, attempt completion, signal resolution, timer
-resolution, fork child creation, and final join — each leaves no half-state
-(no run record, no attempt, no event, no receipt, no child tokens, no join
-token respectively) and a clean retry succeeds exactly once.
+**Atomic fault injection** (SQLite, REAL transaction rollback) — the
+boundaries with direct tests, individually: run creation; attempt claim;
+attempt completion (generic); wait creation (the arrival transaction that
+atomically creates a wait and its timer — no partial wait, no orphan
+timer, no incorrect token state, no event-sequence advancement, no lost
+checkpoint, retry creates the wait exactly once); signal resolution;
+timer resolution; cancellation request and application; fork child
+creation; final-join arrival; terminal cleanup (the terminal completion
+that updates the run, appends the terminal event, and tombstones the
+checkpoint in one transaction — no half-terminal run, no lone terminal
+event, no premature checkpoint loss — proven by reclaiming the expired
+claim and observing the payload intact — and the retry completes exactly
+once); attempt recovery; operator resolution (the run remains blocked, no
+resolution receipt or `operator.intervened` event survives, no downstream
+token is created, nothing about the run changes, and the same authorized
+command retries successfully exactly once). Each boundary leaves no
+half-state and a clean retry succeeds exactly once.
 
-**Canaries**: unique canaries injected through run input/checkpoint,
-decision value, branch outputs, join output, thrown message with nested
-cause, hostile contract parser message + payload echo, and the operator
-resolution flow; searched across the event ledger, default (summary) run
-records, public failure errors, safe errors, signal receipts, and wait
-descriptors. Checkpoint payloads stay inside the private boundary and are
-tombstoned at terminal transitions.
+**Canaries** (both adapters, shared suite) — the sources with direct
+probes: run input/checkpoint; decision value; branch outputs; join
+output; a hostile contract parser with the SAME alphanumeric canary
+placed independently in issue code, path, message, expected/received
+fields, extra nested issue properties, and a dynamic payload-derived key
+(the class that survives character filtering) — captured from BOTH the
+`onEvent` callback and every stored surface; valid signal payloads
+(usable only inside the private continuation boundary; absent from
+events, receipts, default history, safe errors, and diagnostics);
+cancellation metadata (invalid reason codes fail safely without echoing
+the supplied value; persisted cancellation facts use only the closed safe
+vocabulary plus the caller-owned `requestId` identifier); external-ledger
+thrown errors with nested causes (absent from events, history, safe
+errors, retries, and operator-visible diagnostics); hostile signal
+contracts (no echo of the rejected payload); operator confirmation
+rejections (no echo). One persistence-backed canary probe crosses a real
+SQLite close/reopen boundary. Checkpoint payloads stay inside the private
+boundary and are tombstoned at terminal transitions.
+
+**Timeout-test stabilization**: the keyed-write timeout-retry race test
+(and the same-class irreversible-timeout test) now run on an injected
+manual clock (`createManualOrchestrationClock` — simultaneously the
+runtime clock and the orchestration time port) with explicit invocation
+barriers. The first attempt is held open by the test, the persisted
+deadline fires only when the clock advances, the retry timer becomes
+eligible at an exact advanced instant, and the late first-attempt value is
+proven fenced. Root cause of the former flake: wall-clock suite load
+could exceed 20 ms between a claim's deadline computation and attempt
+two's execution start, so the runtime's correct expired-deadline check
+failed attempt two pre-invocation and scheduled a second retry the test
+never pumped — the runtime behaved as designed; the test guessed about
+real time. The proofs retained: attempt one genuinely times out; the
+retry is durable (`node.retry_scheduled` + `timer.scheduled` in the
+trace); the timer becomes eligible deterministically; attempt two uses
+the same idempotency key; the old attempt cannot overwrite the result;
+exactly one logical invocation completes; the final status is
+`completed`.
 
 ## Truthful limitations
 
@@ -285,12 +340,12 @@ tombstoned at terminal transitions.
 - Nested fan-out is rejected at compilation; dynamic (data-sized) fan-out
   is not supported.
 - Irreversible effects are denied in normal execution unless explicitly
-  authorized (per-run policy override); this is the accepted Night-01
+  authorized (per-run policy override); this is the accepted Stage 02
   effect policy, now also honored by the durable engine.
 - Local SQLite is a trusted local deployment; checkpoint bytes are not a
   multi-tenant secret store (Stage 04 owns the secret/artifact platform).
 - Join contract compatibility between adjacent nodes is identity-based
-  (accepted Night-01 rule), so a downstream node's input contract must be
+  (accepted Stage 02 rule), so a downstream node's input contract must be
   the same contract id as the join's output contract when both are
   declared; independence is proven by the downstream boundary rejecting
   what the join passed through and by per-boundary invocation counts.

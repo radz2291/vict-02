@@ -219,13 +219,50 @@ Precise semantics:
   duplicate or stale branch completions are rejected by membership and
   fencing guards.
 
-### 5.2 Contract-issue sanitization
+### 5.2 Safe contract-issue boundary (fail-closed)
 
-Contract `issues` returned by raw author parsers are untrusted content.
-Before any issue reaches an event, the runtime reduces it to a bounded,
-character-restricted `code` and `path` — raw custom messages, payload
-echoes, and nested secrets cannot leak into events, history, or safe
-errors.
+Contract `issues` returned by a raw author `parse()` are UNTRUSTED
+content: an author-controlled parser may place arbitrary strings — custom
+messages, payload echoes, nested secrets, alphanumeric codes and paths —
+anywhere in an issue object, and even schema-library issue paths may
+contain PAYLOAD-DERIVED key names (a dynamic object key can be a secret).
+Character filtering is therefore insufficient by construction: an
+alphanumeric secret survives any allowlist of characters.
+
+The single shared sanitizer (`sanitizeContractIssues` in
+`@vict/contracts`, applied identically by the durable engine and the
+sequential engine) reduces every rejection to framework-controlled
+facts only:
+
+1. **`code`** — copied ONLY when it is a member of the closed
+   framework vocabulary (`SAFE_ISSUE_CODES`: `invalid_type`,
+   `invalid_literal`, `invalid_enum_value`, `too_small`, `too_big`,
+   `unrecognized_keys`, `invalid_union`, `invalid_string`,
+   `invalid_date`). Any other code — including a secret — becomes the
+   stable fallback `untrusted_issue`.
+2. **`path`** — NEVER propagated. Issues are located by ordinal only:
+   `issues[0]`, `issues[1]`, … (bounded at 10).
+3. **`message`** — always framework-GENERATED from the safe code and the
+   ordinal (`Expected a valid value at 'issues[0]', received a value.`).
+4. **Everything else** — raw `message`, `safeMessage`, `expected`,
+   `received`, and any extra or nested issue properties are dropped;
+   payload echoes cannot leak.
+
+The SAME policy applies to every validation boundary: input, output,
+join, signal, and operator-confirmation validation. No
+payload-derived or author-controlled string reaches `onEvent`,
+`RunResult.trace`, stored events, default run history, public failure
+errors, wait/signal/resolution records, or diagnostic metadata.
+
+**The exact safe metadata boundary** (what IS observable): the contract
+id, the node id, the issue COUNT, the allowlisted issue codes, the issue
+ordinals, and the framework-generated messages. Caller-owned identifiers
+(`runId`, `signalId`, `requestId`, `resolutionId`, `ownerId`) are
+identifiers in the caller's own namespace — explicitly safe by policy,
+never arbitrary diagnostic text. The cancellation `reasonCode` accepts
+only the closed safe vocabulary (`operator_request`, `shutdown`,
+`policy`, `superseded`); an invalid code is rejected with a fixed
+framework message that does not echo the supplied value.
 
 ## 6. Retry, backoff, idempotency, and ambiguity
 
@@ -364,13 +401,35 @@ sequential runs keep their verified trace counts (ARA: 13 events).
 
 ## 15. Verification
 
-- Shared adapter-neutral conformance suite: both adapters
-  (`runOrchestrationConformanceSuite`).
+- Shared adapter-neutral conformance suites, run against BOTH adapters:
+  behavior (`runOrchestrationConformanceSuite`), join boundaries
+  (`runOrchestrationJoinSuite`), races/adversarial
+  (`runOrchestrationRaceSuite`), and canaries
+  (`runOrchestrationCanarySuite`).
 - Real-process fixtures: signal-wait restart, offline timer,
   SIGKILL during a pure attempt (durable intent + fence + one retry),
   SIGKILL after an external keyed-write commit (exactly one external
-  mutation).
+  mutation), partial fan-out SIGKILL, terminal-join close/reopen.
 - Real Stage 02 database migration fixture.
-- Atomic fault injection and canary suites.
+- Atomic fault injection at EVERY material store boundary, on real
+  SQLite transactions: run creation, attempt claim, attempt completion
+  (including its wait-creation, fork-creation, join-arrival, and
+  terminal-cleanup forms), signal resolution, timer resolution,
+  cancellation request and application, attempt recovery, and operator
+  resolution.
+- Adversarial canary sources: run input/checkpoint, decision value,
+  branch outputs, join output, thrown messages with nested causes,
+  hostile contract parsers (issue code, path, message,
+  expected/received, extra nested properties, payload-derived key
+  names), valid signal payloads, cancellation metadata, external-ledger
+  errors, and the operator resolution flow — searched across the event
+  ledger, run records, safe errors, `RunResult.trace`, receipts, and
+  wait descriptors; one persistence-backed probe crosses a real SQLite
+  close/reopen boundary.
+- Timeout/race determinism: the keyed-write timeout-retry and
+  irreversible-timeout race tests run on an injected manual clock
+  (`createManualOrchestrationClock`) with explicit invocation barriers —
+  persisted deadlines, retry-timer eligibility, and deadline racing move
+  only when the test moves them. No wall-clock sleeps.
 - Offline proof: `examples/orchestration-proof` (`npm run demo` there).
 - Aggregate: `npm run verify:stage3`.
