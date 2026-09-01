@@ -37,5 +37,38 @@ export { executeGraph, DEFAULT_MAX_STEPS } from './execute.js';
 export { computeGraphVersion, canonicalJson, canonicalSemanticForm } from './canonical.js';
 export { computeCapabilitySetVersion, computeActivationVersion } from './canonical.js';
 export type { CapabilityBindingFingerprint } from './canonical.js';
+export {
+  declaresControlSemantics,
+  canonicalSemanticFormV2,
+} from './canonical.js';
+export type {
+  DurableTokenState,
+  DurableAttemptState,
+  DurableWaitState,
+  SignalReceiptRecord,
+  BranchResultRecord,
+  OrchestrationSnapshot,
+  DecisionRouteOutcome,
+  DecisionResultInput,
+  QuiescenceInput,
+} from './orchestration-state.js';
+export {
+  TOKEN_TRANSITIONS,
+  ATTEMPT_TRANSITIONS,
+  RUN_TRANSITIONS,
+  canTransitionRun,
+  canTransitionToken,
+  canTransitionAttempt,
+  backoffDelayMs,
+  isRetryable,
+  resolveDecisionRoute,
+  canonicalJoinOutput,
+  deriveRunStatus,
+} from './orchestration-state.js';
+export {
+  RETRY_MAX_ATTEMPTS_LIMIT,
+  MAX_DELAY_MS_LIMIT,
+  MAX_BRANCH_COUNT,
+} from './types.js';
 export { summarizeOutput } from './summarize.js';
 export type { KernelErrorCode } from './errors.js';

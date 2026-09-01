@@ -1,8 +1,10 @@
 import {
   canonicalSemanticForm,
+  canonicalSemanticFormV2,
   computeActivationVersion,
   computeCapabilitySetVersion,
   computeGraphVersion,
+  declaresControlSemantics,
 } from './canonical.js';
 import type {
   ApplicationGraphDefinition,
@@ -48,12 +50,14 @@ export function unsafeCompiledGraphForTesting(spec: UnsafeGraphSpec): CompiledGr
     }
   }
   const frozenNodes: Record<string, CompiledNode> = {};
-  for (const node of spec.nodes) {
+  for (const rawNode of spec.nodes) {
+    const node = rawNode as GraphNodeDefinition & { kind?: CompiledNode['kind'] };
     frozenNodes[node.id] = Object.freeze({
       id: node.id,
-      capability: node.capability,
-      inputContractId: node.input,
-      outputContractId: node.output,
+      kind: node.kind ?? 'capability',
+      capability: (node as { capability?: string }).capability ?? '',
+      inputContractId: (node as { input?: string }).input,
+      outputContractId: (node as { output?: string }).output,
     });
   }
   const nodeIds = Object.freeze(spec.nodes.map((node) => node.id).sort());
@@ -66,7 +70,13 @@ export function unsafeCompiledGraphForTesting(spec: UnsafeGraphSpec): CompiledGr
   const graphVersion = computeGraphVersion(definition);
   const declaredCapabilities =
     spec.capabilities ??
-    [...new Set(spec.nodes.map((node) => node.capability))].map((capabilityId) => ({
+    [
+      ...new Set(
+        spec.nodes
+          .map((node) => (node as { capability?: string }).capability)
+          .filter((capability): capability is string => capability !== undefined),
+      ),
+    ].map((capabilityId) => ({
       id: capabilityId,
       revision: 'test-unversioned',
       effect: 'pure' as EffectClass,
@@ -80,7 +90,11 @@ export function unsafeCompiledGraphForTesting(spec: UnsafeGraphSpec): CompiledGr
       output: null,
     })),
   );
-  const activationVersion = computeActivationVersion(graphVersion, capabilitySetVersion);
+  const activationVersion = computeActivationVersion(
+    graphVersion,
+    capabilitySetVersion,
+    declaresControlSemantics(definition) ? 'vict.activation@2' : 'vict.activation@1',
+  );
 
   return Object.freeze({
     id: spec.id,
@@ -90,9 +104,19 @@ export function unsafeCompiledGraphForTesting(spec: UnsafeGraphSpec): CompiledGr
     entryNodeId: spec.entry,
     nodeCount: nodeIds.length,
     nodeIds,
+    hasControlNodes: declaresControlSemantics(definition),
     getNode: (nodeId: string) => frozenNodes[nodeId],
     successTargetOf: (nodeId: string) => success[nodeId],
     errorTargetOf: (nodeId: string) => error[nodeId],
-    toDefinition: () => canonicalSemanticForm(definition) as unknown as ApplicationGraphDefinition,
+    routeTargetsOf: () => Object.freeze({}),
+    branchTargetsOf: () => Object.freeze({}),
+    branchKeysOf: () => Object.freeze([]),
+    timeoutTargetOf: () => undefined,
+    joinOfFork: () => undefined,
+    forkOfJoin: () => undefined,
+    toDefinition: () =>
+      declaresControlSemantics(definition)
+        ? (canonicalSemanticFormV2(definition) as unknown as ApplicationGraphDefinition)
+        : (canonicalSemanticForm(definition) as unknown as ApplicationGraphDefinition),
   });
 }
