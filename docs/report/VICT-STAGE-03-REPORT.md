@@ -78,7 +78,11 @@ Supporting corrections discovered and fixed during the work:
   genuinely still-running handler whose lease was recovered is rejected
   after fence loss, never applied;
 - SQLite stored `continuation.joinId` (not `child.forkId`) in fork child
-  tokens' `fork_id`, diverging from the in-memory adapter.
+  tokens' `fork_id`, diverging from the in-memory adapter;
+- the `stage2-database` fixture imported `../../dist/index.js` relatively,
+  making the Stage 02→03 migration unit test depend on a prior workspace
+  build (`npm test` failed in fresh unbuilt clones) — discovered by the
+  Node 24 fresh-clone verification and fixed to the package specifier.
 
 ## Terminal joins
 
@@ -222,10 +226,20 @@ regression checks, `examples/orchestration-proof` (`PROOF PASSED`).
 
 The final count is taken from observed output of the full ladder run at
 the end of this finalization (30 unit files / 335 unit tests, 1
-integration file / 4 tests; 339 total). Node v22.13.1 (win32-x64) was
-used for every verification; Node 24.x was NOT available on the
-verification machine, so it was not tested (the package declares
-`>=22.13.0`).
+integration file / 4 tests; 339 total).
+
+Both supported Node lines were verified: Node v22.13.1 (win32-x64) for
+the full ladder, and Node v24.20.0 (win32-x64) for a fresh-clone ladder
+(`npm ci`, `test:unit`, `test:integration`, `npm test`,
+`verify:stage3`, `verify:stage2`, the packed consumer check) — all PASS
+on both. The Node 24 fresh-clone run surfaced one genuine defect: the
+`stage2-database` child fixture imported `../../dist/index.js`
+relatively, so its migration unit test failed in any checkout that had
+not been built first (`npm ci` does not build) — reproduced identically
+on Node 22, so not a Node-version issue. The fixture now uses the
+`@vict/store-sqlite` package specifier (source resolution under tsx in
+unbuilt checkouts, the built artifact in published usage); the exact
+failing scenario passes on both Node versions after the fix.
 
 ## Direct evidence for formerly missing adversarial groups
 
