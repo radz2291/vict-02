@@ -109,12 +109,18 @@ describe('error propagation safety', () => {
       record: await runtime.getRun(result.runId),
     });
     expect(serialized).not.toContain(SECRET);
-    // The framework-generated message still diagnoses the failure precisely.
+    // The framework-generated message still diagnoses the failure precisely
+    // without copying the author/schema path: issues are located by ordinal
+    // (paths may contain payload-derived key names), and the zod `custom`
+    // code is outside the safe vocabulary, so it becomes the stable fallback.
     const rejected = result.trace.find((event) => event.type === 'contract.rejected');
     expect(rejected).toBeDefined();
     if (rejected?.type === 'contract.rejected') {
-      expect(rejected.issues[0]?.path).toBe('token');
-      expect(rejected.issues[0]?.message).toMatch(/^Validation failed \(custom\) at 'token'/);
+      expect(rejected.issues[0]?.path).toBe('issues[0]');
+      expect(rejected.issues[0]?.code).toBe('untrusted_issue');
+      expect(rejected.issues[0]?.message).toMatch(
+        /^Validation failed \(untrusted_issue\) at 'issues\[0\]'/,
+      );
     }
   });
 
@@ -168,10 +174,14 @@ describe('error propagation safety', () => {
       record: await runtime.getRun(result.runId),
     });
     expect(serialized).not.toContain(SECRET);
-    // Received stays a length description; the invocation never happened.
+    // Nothing from the raw issue is copied — not even a received-shape
+    // description (a length leaks information about the secret).
     const rejected = result.trace.find((event) => event.type === 'contract.rejected');
     if (rejected?.type === 'contract.rejected') {
-      expect(rejected.issues[0]?.received).toBe(`string(${SECRET.length})`);
+      const issue = rejected.issues[0] as { code?: unknown; received?: unknown } | undefined;
+      expect(issue?.received).toBeUndefined();
+      expect(issue?.code).toBe('untrusted_issue');
+      expect(JSON.stringify(rejected.issues)).not.toContain(`string(${SECRET.length})`);
     }
   });
 });

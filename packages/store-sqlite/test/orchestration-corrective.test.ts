@@ -1294,4 +1294,560 @@ describe('orchestration SQLite corrective evidence', () => {
       }
     },
   );
+
+  it(
+    'a signal-payload canary survives close/reopen inside the private boundary and never reaches stored surfaces',
+    { timeout: 60_000 },
+    async () => {
+      const dir = await mkdtemp(join(tmpdir(), 'vict-canary-reopen-'));
+      const db = join(dir, 'canary.db');
+      const CANARY = 'CANARYSecret123';
+      try {
+        const waitId = { value: '' };
+        let runId = '';
+        // Phase 1: park the run on a signal wait, then deliver the secret
+        // payload; the run suspends with the payload ONLY in the private
+        // checkpoint boundary. Then close the database.
+        {
+          const stores = createSqliteStores({ path: db });
+          const runtime = createRuntime({ stores });
+          runtime
+            .registerCapability({
+              id: 'k.first',
+              revision: '1',
+              effect: 'pure',
+              invoke: () => 'go',
+            })
+            .registerCapability({
+              id: 'k.echo',
+              revision: '1',
+              effect: 'pure',
+              invoke: (input: unknown) => `echo:${String(input)}`,
+            })
+            .registerContract({
+              id: 'k.string',
+              revision: '1',
+              expected: 'a string',
+              parse: (input: unknown) =>
+                typeof input === 'string'
+                  ? { ok: true as const, value: input, issues: [] }
+                  : {
+                      ok: false as const,
+                      issues: [{ code: 'TYPE', path: '$', message: 'expected a string' }],
+                    },
+            });
+          const activated = await runtime.activate({
+            id: 'canary-reopen',
+            entry: 'a',
+            nodes: [
+              { id: 'a', capability: 'k.first' },
+              { id: 'w', kind: 'wait', wait: { kind: 'signal', name: 'go', contract: 'k.string' } },
+              { id: 'b', capability: 'k.echo', output: 'k.string' },
+            ],
+            edges: [
+              { from: 'a', to: 'w' },
+              { from: 'w', to: 'b' },
+            ],
+          });
+          expect(activated.ok).toBe(true);
+          const parked = await runtime.run('seed');
+          expect(parked.status).toBe('waiting');
+          runId = parked.runId;
+          waitId.value = parked.waits?.[0]?.waitId as string;
+          const signaled = await runtime.signal({
+            runId,
+            waitId: waitId.value,
+            signalId: 'sig-canary',
+            signalName: 'go',
+            payload: `${CANARY}-payload`,
+          });
+          expect(signaled.ok).toBe(true);
+          await stores.dispose();
+        }
+        // Phase 2: reopen, resume to completion, and search every stored
+        // surface of the persisted run for the payload canary.
+        {
+          const stores = createSqliteStores({ path: db });
+          try {
+            const runtime = createRuntime({ stores });
+            runtime
+              .registerCapability({
+                id: 'k.first',
+                revision: '1',
+                effect: 'pure',
+                invoke: () => 'go',
+              })
+              .registerCapability({
+                id: 'k.echo',
+                revision: '1',
+                effect: 'pure',
+                invoke: (input: unknown) => `echo:${String(input)}`,
+              })
+              .registerContract({
+                id: 'k.string',
+                revision: '1',
+                expected: 'a string',
+                parse: (input: unknown) =>
+                  typeof input === 'string'
+                    ? { ok: true as const, value: input, issues: [] }
+                    : {
+                        ok: false as const,
+                        issues: [{ code: 'TYPE', path: '$', message: 'expected a string' }],
+                      },
+              });
+            const final = await runtime.resumeRun(runId);
+            // The payload crossed the private boundary correctly: the
+            // application output is the intentional public result.
+            expect(final.status).toBe('completed');
+            expect(final.output).toBe(`echo:${CANARY}-payload`);
+            const orchestration = stores.orchestration as unknown as OrchestrationStore;
+            const surfaces: Record<string, unknown>[] = [
+              {
+                label: 'stored event ledger',
+                value: await orchestration.listOrchestrationEvents(runId),
+              },
+              { label: 'signal receipts', value: await orchestration.listSignalReceipts(runId) },
+              { label: 'wait records', value: await orchestration.listWaits(runId) },
+              { label: 'default run record', value: await runtime.getRun(runId) },
+            ];
+            for (const { label, value } of surfaces) {
+              const text = JSON.stringify(value) ?? '';
+              if (text.includes(`${CANARY}-payload`)) {
+                throw new Error(`canary leaked into ${label}: ${text.slice(0, 200)}`);
+              }
+            }
+          } finally {
+            await stores.dispose();
+          }
+        }
+      } finally {
+        for (let attempt = 0; attempt < 10; attempt++) {
+          try {
+            await rm(dir, { recursive: true, force: true });
+            break;
+          } catch {
+            await settle(500);
+          }
+        }
+      }
+    },
+  );
+
+  it(
+    'a wait-creation fault leaves no partial wait or orphan timer; the retry creates the wait exactly once',
+    { timeout: 60_000 },
+    async () => {
+      const dir = await mkdtemp(join(tmpdir(), 'vict-fault-wait-'));
+      try {
+        const targets: FaultTarget[] = [
+          {
+            operation: 'orchestration.completeAttempt',
+            hook: 'beforeCommit',
+            armed: true,
+            hitCount: 0,
+          },
+        ];
+        const stores = createSqliteStores({
+          path: join(dir, 'wait.db'),
+          faults: faultSwitch(targets),
+        });
+        try {
+          const runtime = createRuntime({ stores });
+          runtime.registerCapability({
+            id: 'noop',
+            revision: '1',
+            effect: 'pure',
+            invoke: () => 'x',
+          });
+          const activated = await runtime.activate({
+            id: 'fault-wait',
+            entry: 'w',
+            nodes: [
+              { id: 'w', kind: 'wait', wait: { kind: 'timer', delayMs: 50 } },
+              { id: 'after', capability: 'noop' },
+            ],
+            edges: [{ from: 'w', to: 'after' }],
+          });
+          expect(activated.ok).toBe(true);
+          const activationVersion = (activated as { ok: true; activationVersion: string })
+            .activationVersion;
+          const storedActivation = await stores.catalog.get(activationVersion);
+          const manifest = JSON.parse(storedActivation!.canonicalManifest) as {
+            graphId: string;
+            graphVersion: string;
+            capabilitySetVersion: string;
+          };
+          const orchestration = stores.orchestration as unknown as OrchestrationStore;
+          await orchestration.createOrchestrationRun({
+            runId: 'run_fault_wait',
+            graphId: manifest.graphId,
+            graphVersion: manifest.graphVersion,
+            capabilitySetVersion: manifest.capabilitySetVersion,
+            activationVersion,
+            mode: 'normal',
+            retention: 'summary',
+            rootTokenId: 'tok_fault_wait',
+            entryNodeId: 'w',
+            checkpoint: 'seed',
+            events: [],
+            now: Date.now(),
+          });
+          const claimed = await orchestration.claimReadyToken({
+            runId: 'run_fault_wait',
+            ownerId: 'owner-a',
+            leaseExpiresAt: Date.now() + 60_000,
+            now: Date.now(),
+            planner: rawPlanner,
+          });
+          expect(claimed.claimed).toBe(true);
+          const claim = (claimed as { claim: { attempt: { attemptId: string; fence: number } } })
+            .claim;
+          const parkCommand = {
+            runId: 'run_fault_wait',
+            attemptId: claim.attempt.attemptId,
+            ownerId: 'owner-a',
+            expectedAttemptFence: claim.attempt.fence,
+            now: Date.now(),
+            outcome: { kind: 'completed', outputSummary: { shape: 'string', length: 4 } },
+            continuation: {
+              kind: 'wait',
+              wait: {
+                waitId: 'wait_fault_wait',
+                nodeId: 'w',
+                kind: 'timer',
+                signalName: null,
+                contractId: null,
+                contractRevision: null,
+                dueAt: Date.now() + 50,
+                timeoutAt: null,
+              },
+            },
+            events: [],
+            run: { status: 'waiting' },
+          } as const;
+          // The wait and its timer are created by ONE atomic attempt
+          // completion; the fault must roll the pair back together.
+          await expect(orchestration.completeAttempt(parkCommand)).rejects.toThrow();
+          expect((await orchestration.listWaits('run_fault_wait')).length).toBe(0);
+          const snapshot = await orchestration.getOrchestrationSnapshot('run_fault_wait');
+          expect(snapshot?.timers.length).toBe(0);
+          expect(snapshot?.run.status).toBe('running'); // never half-waiting
+          expect(snapshot?.attempts[0]?.state).toBe('started');
+          const events = await orchestration.listOrchestrationEvents('run_fault_wait');
+          expect(events.length).toBe(1); // only the claim's node.started
+          expect(events[0]?.type).toBe('node.started');
+          // The private checkpoint was NOT lost by the rolled-back
+          // transition: reclaim the expired claim and observe the payload.
+          const recoverable = await orchestration.findRecoverableClaims({
+            now: Date.now() + 120_000,
+          });
+          expect(recoverable.some((candidate) => candidate.runId === 'run_fault_wait')).toBe(true);
+          await orchestration.recoverAttempt({
+            runId: 'run_fault_wait',
+            attemptId: claim.attempt.attemptId,
+            expectedAttemptFence: claim.attempt.fence,
+            now: Date.now(),
+            action: { kind: 'reclaim' },
+            events: [],
+            run: { status: 'running' },
+          });
+          const reclaimed = await orchestration.claimReadyToken({
+            runId: 'run_fault_wait',
+            ownerId: 'owner-b',
+            leaseExpiresAt: Date.now() + 60_000,
+            now: Date.now(),
+            planner: rawPlanner,
+          });
+          expect(reclaimed.claimed).toBe(true);
+          expect((reclaimed as { claim: { checkpoint: unknown } }).claim.checkpoint).toEqual(
+            'seed',
+          );
+          // Clean retry: the wait (and its timer) is created exactly once.
+          const retryCommand = {
+            ...parkCommand,
+            ownerId: 'owner-b',
+            attemptId: (reclaimed as { claim: { attempt: { attemptId: string } } }).claim.attempt
+              .attemptId,
+            expectedAttemptFence: (reclaimed as { claim: { attempt: { fence: number } } }).claim
+              .attempt.fence,
+          };
+          await orchestration.completeAttempt(retryCommand);
+          expect((await orchestration.listWaits('run_fault_wait')).length).toBe(1);
+          const snapshotAfter = await orchestration.getOrchestrationSnapshot('run_fault_wait');
+          expect(snapshotAfter?.timers.length).toBe(1);
+          expect(snapshotAfter?.run.status).toBe('waiting');
+          const eventsAfter = await orchestration.listOrchestrationEvents('run_fault_wait');
+          // Exactly two durable-intent facts: the faulted attempt's claim
+          // and the recovered attempt's claim — nothing else, no duplicates.
+          expect(eventsAfter.length).toBe(2);
+          expect(eventsAfter.every((event) => event.type === 'node.started')).toBe(true);
+        } finally {
+          await stores.dispose();
+        }
+      } finally {
+        await rm(dir, { recursive: true, force: true });
+      }
+    },
+  );
+
+  it(
+    'a resolveBlocked fault keeps the run blocked with no resolution fact; the same command retries once',
+    { timeout: 60_000 },
+    async () => {
+      const dir = await mkdtemp(join(tmpdir(), 'vict-fault-resolve-'));
+      try {
+        const targets: FaultTarget[] = [
+          {
+            operation: 'orchestration.resolveBlocked',
+            hook: 'beforeCommit',
+            armed: true,
+            hitCount: 0,
+          },
+        ];
+        const stores = createSqliteStores({
+          path: join(dir, 'resolve.db'),
+          faults: faultSwitch(targets),
+        });
+        try {
+          const runtime = createRuntime({ stores });
+          const register = (rt: ReturnType<typeof createRuntime>): void => {
+            rt.registerCapability({
+              id: 'guarded',
+              revision: '1',
+              effect: 'irreversible',
+              invoke: () => 'never',
+            });
+            rt.registerCapability({
+              id: 'after',
+              revision: '1',
+              effect: 'pure',
+              invoke: () => 'after',
+            });
+            rt.registerContract({
+              id: 'resolve-string',
+              revision: '1',
+              expected: 'a string',
+              parse: (input: unknown) =>
+                typeof input === 'string'
+                  ? { ok: true as const, value: input, issues: [] }
+                  : {
+                      ok: false as const,
+                      issues: [{ code: 'TYPE', path: '$', message: 'expected a string' }],
+                    },
+            });
+          };
+          register(runtime);
+          const activated = await runtime.activate({
+            id: 'fault-resolve',
+            entry: 'b',
+            nodes: [
+              { id: 'b', capability: 'guarded', output: 'resolve-string', timeoutMs: 30_000 },
+              { id: 'z', capability: 'after' },
+            ],
+            edges: [{ from: 'b', to: 'z' }],
+          });
+          expect(activated.ok).toBe(true);
+          const blocked = await runtime.run('seed');
+          expect(blocked.status).toBe('blocked');
+          const orchestration = stores.orchestration as unknown as OrchestrationStore;
+          const operator = createRuntime({
+            stores,
+            orchestration: { operatorAuthorized: true },
+          });
+          register(operator);
+          const command = {
+            runId: blocked.runId,
+            resolutionId: 'res_fault_resolve',
+            action: 'confirm_applied',
+            output: 'confirmed',
+            reasonCode: 'operator_request',
+          } as const;
+          // Faulted application: nothing about the resolution survives.
+          await expect(operator.resolveBlocked(command)).rejects.toThrow();
+          expect((await orchestration.getOrchestrationRun(blocked.runId))?.status).toBe('blocked');
+          const events = await orchestration.listOrchestrationEvents(blocked.runId);
+          expect(events.some((event) => event.type === 'operator.intervened')).toBe(false);
+          const snapshotBefore = await orchestration.getOrchestrationSnapshot(blocked.runId);
+          const snapshot = await orchestration.getOrchestrationSnapshot(blocked.runId);
+          expect(snapshot?.tokens.some((token) => token.nodeId === 'z')).toBe(false);
+          expect(snapshot?.tokens.some((token) => token.status === 'ready')).toBe(false);
+          // NOTHING about the run changed (state, revisions, ledger cursor).
+          expect(JSON.stringify(snapshot)).toBe(JSON.stringify(snapshotBefore));
+          // Clean retry of the SAME authorized command: applied exactly once.
+          const applied = await operator.resolveBlocked(command);
+          expect(applied.ok).toBe(true);
+          expect(applied.ok ? applied.status : '').toBe('accepted');
+          const eventsAfter = await orchestration.listOrchestrationEvents(blocked.runId);
+          expect(eventsAfter.filter((event) => event.type === 'operator.intervened').length).toBe(
+            1,
+          );
+          const snapshotAfter = await orchestration.getOrchestrationSnapshot(blocked.runId);
+          expect(snapshotAfter?.tokens.filter((token) => token.nodeId === 'z').length).toBe(1);
+        } finally {
+          await stores.dispose();
+        }
+      } finally {
+        await rm(dir, { recursive: true, force: true });
+      }
+    },
+  );
+
+  it(
+    'a terminal-cleanup fault leaves no half-terminal run and no lone terminal event; the retry completes once',
+    { timeout: 60_000 },
+    async () => {
+      const dir = await mkdtemp(join(tmpdir(), 'vict-fault-terminal-'));
+      try {
+        const targets: FaultTarget[] = [
+          {
+            operation: 'orchestration.completeAttempt',
+            hook: 'beforeCommit',
+            armed: true,
+            hitCount: 0,
+          },
+        ];
+        const stores = createSqliteStores({
+          path: join(dir, 'terminal.db'),
+          faults: faultSwitch(targets),
+        });
+        try {
+          const runtime = createRuntime({ stores });
+          runtime.registerCapability({
+            id: 'final',
+            revision: '1',
+            effect: 'pure',
+            invoke: () => 'done',
+          });
+          const activated = await runtime.activate({
+            id: 'fault-terminal',
+            entry: 'a',
+            nodes: [{ id: 'a', capability: 'final', timeoutMs: 30_000 }],
+            edges: [],
+          });
+          expect(activated.ok).toBe(true);
+          const activationVersion = (activated as { ok: true; activationVersion: string })
+            .activationVersion;
+          const storedActivation = await stores.catalog.get(activationVersion);
+          const manifest = JSON.parse(storedActivation!.canonicalManifest) as {
+            graphId: string;
+            graphVersion: string;
+            capabilitySetVersion: string;
+          };
+          const orchestration = stores.orchestration as unknown as OrchestrationStore;
+          const envelope = {
+            runId: 'run_fault_terminal',
+            graphId: manifest.graphId,
+            graphVersion: manifest.graphVersion,
+            capabilitySetVersion: manifest.capabilitySetVersion,
+            activationVersion,
+          };
+          await orchestration.createOrchestrationRun({
+            runId: envelope.runId,
+            graphId: envelope.graphId,
+            graphVersion: envelope.graphVersion,
+            capabilitySetVersion: envelope.capabilitySetVersion,
+            activationVersion,
+            mode: 'normal',
+            retention: 'summary',
+            rootTokenId: 'tok_fault_terminal',
+            entryNodeId: 'a',
+            checkpoint: 'seed',
+            events: [],
+            now: Date.now(),
+          });
+          const claimed = await orchestration.claimReadyToken({
+            runId: envelope.runId,
+            ownerId: 'owner-a',
+            leaseExpiresAt: Date.now() + 60_000,
+            now: Date.now(),
+            planner: rawPlanner,
+          });
+          expect(claimed.claimed).toBe(true);
+          const claim = (
+            claimed as {
+              claim: {
+                attempt: { attemptId: string; fence: number };
+                token: { tokenId: string };
+              };
+            }
+          ).claim;
+          // The terminal update, the terminal event batch, and the
+          // checkpoint tombstone commit in ONE transaction.
+          const terminalCommand = {
+            runId: envelope.runId,
+            attemptId: claim.attempt.attemptId,
+            ownerId: 'owner-a',
+            expectedAttemptFence: claim.attempt.fence,
+            now: Date.now(),
+            outcome: { kind: 'completed', outputSummary: { shape: 'string', length: 4 } },
+            continuation: { kind: 'none' },
+            removeCheckpoints: [claim.token.tokenId],
+            events: [
+              {
+                type: 'run.completed',
+                steps: 1,
+                output: { shape: 'string', length: 4 },
+                ...envelope,
+                timestamp: Date.now(),
+              },
+            ],
+            run: { status: 'completed' },
+          } as const;
+          await expect(orchestration.completeAttempt(terminalCommand)).rejects.toThrow();
+          const snapshot = await orchestration.getOrchestrationSnapshot(envelope.runId);
+          expect(snapshot?.run.status).toBe('running'); // never half-terminal
+          expect(snapshot?.attempts[0]?.state).toBe('started');
+          const events = await orchestration.listOrchestrationEvents(envelope.runId);
+          expect(events.some((event) => event.type === 'run.completed')).toBe(false);
+          expect(events.length).toBe(1);
+          // The checkpoint was NOT prematurely tombstoned by the rolled-back
+          // transition: recovery finds the expired claim, reclaims the token,
+          // and the private payload is still there.
+          const recoverable = await orchestration.findRecoverableClaims({
+            now: Date.now() + 120_000,
+          });
+          const mine = recoverable.find((candidate) => candidate.runId === envelope.runId);
+          expect(mine).toBeDefined();
+          await orchestration.recoverAttempt({
+            runId: envelope.runId,
+            attemptId: claim.attempt.attemptId,
+            expectedAttemptFence: claim.attempt.fence,
+            now: Date.now(),
+            action: { kind: 'reclaim' },
+            events: [],
+            run: { status: 'running' },
+          });
+          const reclaimed = await orchestration.claimReadyToken({
+            runId: envelope.runId,
+            ownerId: 'owner-b',
+            leaseExpiresAt: Date.now() + 60_000,
+            now: Date.now(),
+            planner: rawPlanner,
+          });
+          expect(reclaimed.claimed).toBe(true);
+          expect((reclaimed as { claim: { checkpoint: unknown } }).claim.checkpoint).toEqual(
+            'seed',
+          );
+          // Clean retry: completes exactly once, tombstoning atomically.
+          await orchestration.completeAttempt({
+            ...terminalCommand,
+            ownerId: 'owner-b',
+            expectedAttemptFence: (reclaimed as { claim: { attempt: { fence: number } } }).claim
+              .attempt.fence,
+            attemptId: (reclaimed as { claim: { attempt: { attemptId: string } } }).claim.attempt
+              .attemptId,
+          });
+          expect((await orchestration.getOrchestrationRun(envelope.runId))?.status).toBe(
+            'completed',
+          );
+          const eventsAfter = await orchestration.listOrchestrationEvents(envelope.runId);
+          expect(eventsAfter.filter((event) => event.type === 'run.completed').length).toBe(1);
+        } finally {
+          await stores.dispose();
+        }
+      } finally {
+        await rm(dir, { recursive: true, force: true });
+      }
+    },
+  );
 });

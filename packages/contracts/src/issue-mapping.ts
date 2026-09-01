@@ -107,6 +107,77 @@ function readPath(value: unknown, path: readonly PropertyKey[]): unknown {
   return current;
 }
 
+/**
+ * The closed vocabulary of issue codes considered ESTABLISHED-SAFE for
+ * observation. These are the framework's own schema-issue codes; their text
+ * is fixed, bounded, and payload-independent. A `parse()` implementation is
+ * an author-controlled boundary: any code outside this set is untrusted
+ * content and is replaced with a stable framework fallback.
+ */
+export const SAFE_ISSUE_CODES = Object.freeze([
+  'invalid_type',
+  'invalid_literal',
+  'invalid_enum_value',
+  'too_small',
+  'too_big',
+  'unrecognized_keys',
+  'invalid_union',
+  'invalid_string',
+  'invalid_date',
+] as const);
+
+/** Stable fallback for untrusted (non-allowlisted) issue codes. */
+export const UNTRUSTED_ISSUE_CODE = 'untrusted_issue';
+
+/** Upper bound on how many issues may be observable from one rejection. */
+export const MAX_OBSERVABLE_ISSUES = 10;
+
+export interface ObservableContractIssue {
+  readonly code: string;
+  readonly path: string;
+  readonly message: string;
+}
+
+/**
+ * Reduce RAW contract issues (the return value of an author-controlled
+ * `parse()`) to structurally safe, observable diagnostics.
+ *
+ * Policy (fail-closed; the only information that survives is framework
+ * controlled):
+ * 1. `code` — copied ONLY when it is a member of `SAFE_ISSUE_CODES` (a
+ *    closed, payload-independent vocabulary). Anything else — including an
+ *    alphanumeric secret — becomes `UNTRUSTED_ISSUE_CODE`.
+ * 2. `path` — NEVER propagated. Author- or schema-supplied paths may
+ *    contain payload-derived key names (a dynamic object key can be a
+ *    secret), so character filtering is insufficient by construction.
+ *    Issues are located by ordinal only: `issues[<index>]`.
+ * 3. `message` — always framework-GENERATED from the safe code and the
+ *    ordinal. Raw `message`, `safeMessage`, `expected`, `received`, and
+ *    any extra/nested properties are dropped; payload echoes cannot leak.
+ *
+ * The SAME policy applies to every validation boundary (input, output,
+ * join, signal, operator confirmation): nothing payload-derived or
+ * author-controlled is copied into observable or persistable diagnostics.
+ */
+export function sanitizeContractIssues(
+  issues: readonly unknown[] | undefined,
+): ObservableContractIssue[] {
+  return (issues ?? []).slice(0, MAX_OBSERVABLE_ISSUES).map((raw, index) => {
+    const candidate =
+      typeof raw === 'object' && raw !== null ? (raw as { code?: unknown }).code : undefined;
+    const code: string =
+      typeof candidate === 'string' && (SAFE_ISSUE_CODES as readonly string[]).includes(candidate)
+        ? candidate
+        : UNTRUSTED_ISSUE_CODE;
+    const path = `issues[${index}]`;
+    return {
+      code,
+      path,
+      message: safeIssueMessage(code, path, undefined, 'a value'),
+    };
+  });
+}
+
 export function formatPath(path: readonly PropertyKey[]): string {
   if (path.length === 0) {
     return '(root)';

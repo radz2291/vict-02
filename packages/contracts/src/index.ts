@@ -17,3 +17,14 @@ export { defineContract, validateContractIdentity } from './define-contract.js';
 export { ContractDefinitionError } from './errors.js';
 export type { ContractDefinitionErrorCode } from './errors.js';
 export { victError, errorSignalContract } from './error.js';
+export {
+  describeReceived,
+  formatPath,
+  safeIssueMessage,
+  sanitizeContractIssues,
+  toSafeIssue,
+  MAX_OBSERVABLE_ISSUES,
+  SAFE_ISSUE_CODES,
+  UNTRUSTED_ISSUE_CODE,
+} from './issue-mapping.js';
+export type { ObservableContractIssue, RawSchemaIssue, SafeIssueOptions } from './issue-mapping.js';

@@ -262,9 +262,11 @@ describe('trace safety', () => {
     if (rejected?.type === 'contract.rejected') {
       expect(rejected.contractId).toBe('t.counter');
       expect(rejected.issues.length).toBeGreaterThan(0);
-      expect(rejected.issues[0]?.path).toBe('count');
-      // Framework-generated safe message, no schema text copied.
-      expect(rejected.issues[0]?.message).toMatch(/Expected number at 'count'/);
+      // Fail-closed path policy: issues are located by ordinal; the
+      // framework-generated message quotes the ordinal, never the raw
+      // schema path, and no schema text is copied.
+      expect(rejected.issues[0]?.path).toBe('issues[0]');
+      expect(rejected.issues[0]?.message).toMatch(/Expected a valid value at 'issues\[0\]'/);
       expect(rejected.issues[0]?.safeMessage).toBeUndefined();
     }
     expect(JSON.stringify(result.trace)).not.toContain('not-a-number');

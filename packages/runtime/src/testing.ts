@@ -19,6 +19,11 @@ export {
 } from './orchestration-conformance.js';
 export { runOrchestrationJoinSuite } from './orchestration-join-conformance.js';
 export { runOrchestrationRaceSuite } from './orchestration-race-conformance.js';
+export { runOrchestrationCanarySuite } from './orchestration-canary-conformance.js';
+export type {
+  OrchestrationCanaryFixture,
+  OrchestrationCanaryStores,
+} from './orchestration-canary-conformance.js';
 export type {
   OrchestrationRaceFixture,
   OrchestrationRaceStores,

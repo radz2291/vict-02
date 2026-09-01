@@ -1,5 +1,5 @@
 import { randomUUID } from 'node:crypto';
-import type { VictError } from '@vict/contracts';
+import { sanitizeContractIssues, type VictError } from '@vict/contracts';
 import { kernelError } from './errors.js';
 import { summarizeOutput } from './summarize.js';
 import type {
@@ -165,8 +165,11 @@ export async function executeGraph(run: KernelRunInput): Promise<KernelRunOutput
     const contractRejection = (
       stage: 'input' | 'output',
       contractId: string,
-      issues: readonly { code: string; path: string; message: string }[],
+      rawIssues: readonly unknown[],
     ): VictError => {
+      // Author-controlled issues are reduced to the framework-controlled
+      // safe vocabulary BEFORE they reach the event ledger or error details.
+      const issues = sanitizeContractIssues(rawIssues);
       emit({
         type: 'contract.rejected',
         stage,
@@ -225,7 +228,11 @@ export async function executeGraph(run: KernelRunInput): Promise<KernelRunOutput
       }
       const result = contract.parse(payload);
       if (!result.ok) {
-        const error = contractRejection('input', node.inputContractId, result.issues);
+        const error = contractRejection(
+          'input',
+          node.inputContractId,
+          result.issues as readonly unknown[],
+        );
         handleNodeFailure(error, 0);
         if (failed) {
           break loop;
@@ -316,7 +323,11 @@ export async function executeGraph(run: KernelRunInput): Promise<KernelRunOutput
       }
       const result = contract.parse(validatedOutput);
       if (!result.ok) {
-        const error = contractRejection('output', node.outputContractId, result.issues);
+        const error = contractRejection(
+          'output',
+          node.outputContractId,
+          result.issues as readonly unknown[],
+        );
         handleNodeFailure(error, durationMs);
         if (failed) {
           break loop;

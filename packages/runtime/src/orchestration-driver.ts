@@ -1,4 +1,4 @@
-import type { VictError } from '@vict/contracts';
+import { sanitizeContractIssues, type VictError } from '@vict/contracts';
 import {
   summarizeOutput,
   type CompiledGraph,
@@ -109,21 +109,16 @@ function isTerminalStatus(status: string): boolean {
 /**
  * Reduce author-controlled contract issues to structurally safe evidence.
  * A raw `parse()` implementation may place arbitrary strings (custom
- * messages, payload echoes, nested secrets) anywhere in an issue object,
- * so only a bounded, character-restricted `code` and `path` survive into
- * events. Genuine framework issues (`toSafeIssue`) keep their meaning;
- * hostile content cannot leak.
+ * messages, payload echoes, nested secrets, alphanumeric codes/paths)
+ * anywhere in an issue object, so ONLY the framework-controlled shared
+ * sanitizer output survives into events: an allowlisted issue code, an
+ * ordinal path, and a framework-generated message. See
+ * `sanitizeContractIssues` in `@vict/contracts` for the exact policy.
  */
 function safeContractIssues(
-  issues: readonly { readonly code?: unknown; readonly path?: unknown }[] | undefined,
-): { code: string; path: string }[] {
-  const safe = (value: unknown, max: number): string => {
-    const raw = typeof value === 'string' ? value : '';
-    return raw.replace(/[^A-Za-z0-9_.\-\[\]()/]/g, '').slice(0, max);
-  };
-  return (issues ?? [])
-    .slice(0, 10)
-    .map((issue) => ({ code: safe(issue.code, 64) || 'invalid', path: safe(issue.path, 120) }));
+  issues: readonly unknown[] | undefined,
+): { code: string; path: string; message: string }[] {
+  return sanitizeContractIssues(issues);
 }
 
 export class OrchestrationDriver {
@@ -535,7 +530,7 @@ export class OrchestrationDriver {
           nodeId: node.id,
           capabilityId: node.capability,
           contractId: node.inputContractId,
-          issues: safeContractIssues(parsed.issues),
+          issues: safeContractIssues(parsed.issues as readonly unknown[]),
           ...envelope,
           timestamp: this.#deps.clock.now(),
         } as unknown as KernelEvent);
@@ -876,7 +871,7 @@ export class OrchestrationDriver {
                 nodeId: node.id,
                 capabilityId: node.capability,
                 contractId: node.outputContractId,
-                issues: safeContractIssues(parsed.issues),
+                issues: safeContractIssues(parsed.issues as readonly unknown[]),
                 ...envelope,
                 timestamp: this.#deps.clock.now(),
               } as unknown as KernelEvent);

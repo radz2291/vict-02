@@ -27,7 +27,11 @@ export interface OrchestrationRaceStores extends OrchestrationConformanceStores 
 }
 
 export interface OrchestrationRaceFixture extends OrchestrationConformanceFixture {
-  create(): Promise<OrchestrationRaceStores>;
+  /**
+   * `clock` (optional) is injected as both the runtime clock and the
+   * orchestration time port so timeout/race tests are fully deterministic.
+   */
+  create(clock?: ManualOrchestrationClock): Promise<OrchestrationRaceStores>;
 }
 
 /** Deterministic store-level planner for raw claim tests. */
@@ -43,6 +47,44 @@ function rawPlanner(effectClass: 'pure' | 'write' | 'irreversible' = 'pure'): Cl
         deadlineAt: null,
         idempotencyKey: null,
       };
+    },
+  };
+}
+
+/**
+ * A fully deterministic orchestration clock: `now()` is test-advanced,
+ * `delay()` resolves only when the test advances past the requested due
+ * time. Injected as BOTH the runtime `clock` and the orchestration time
+ * port, so persisted deadlines, retry-timer eligibility, and deadline
+ * racing all move only when the test moves them. No wall-clock guessing.
+ */
+export interface ManualOrchestrationClock {
+  readonly now: () => number;
+  readonly delay: (ms: number) => Promise<void>;
+  readonly advance: (ms: number) => void;
+}
+
+export function createManualOrchestrationClock(start = 1_000_000): ManualOrchestrationClock {
+  let current = start;
+  let waiters: { due: number; resolve: () => void }[] = [];
+  return {
+    now: () => current,
+    delay: (ms: number) =>
+      new Promise<void>((resolve) => {
+        const due = current + Math.max(0, ms);
+        if (due <= current) {
+          resolve();
+          return;
+        }
+        waiters.push({ due, resolve });
+      }),
+    advance: (ms: number) => {
+      current += Math.max(0, ms);
+      const due = waiters.filter((w) => w.due <= current).sort((a, b) => a.due - b.due);
+      waiters = waiters.filter((w) => w.due > current);
+      for (const waiter of due) {
+        waiter.resolve();
+      }
     },
   };
 }
@@ -440,11 +482,28 @@ export function runOrchestrationRaceSuite(
   t(
     `[${factory.name}] keyed-write timeout retries with the same idempotency key and completes once`,
     async () => {
-      const fixture = await factory.create();
+      // Deterministic by construction: a manual clock drives BOTH the
+      // persisted deadline and the retry-timer eligibility, and the first
+      // attempt is held by an explicit invocation barrier. Nothing depends
+      // on wall-clock sleeps (the previous real-time version could flake
+      // under suite load: a slow claim-to-execution start legitimately
+      // failed attempt two on its ALREADY-EXPIRED persisted deadline
+      // before invocation, scheduling a second retry the test never
+      // pumped — the runtime behaved correctly; the test guessed wrong).
+      const clock = createManualOrchestrationClock();
+      const fixture = await factory.create(clock);
       try {
         const runtime = fixture.runtime;
         const keys: (string | undefined)[] = [];
         let attempts = 0;
+        let releaseFirstAttempt: (() => void) | undefined;
+        const firstAttemptGate = new Promise<void>((resolve) => {
+          releaseFirstAttempt = resolve;
+        });
+        let firstAttemptStartedResolve: (() => void) | undefined;
+        const firstAttemptStarted = new Promise<void>((resolve) => {
+          firstAttemptStartedResolve = resolve;
+        });
         runtime.registerCapability({
           id: 'keyedSlow',
           revision: '1',
@@ -454,7 +513,11 @@ export function runOrchestrationRaceSuite(
             attempts += 1;
             keys.push(context.idempotencyKey);
             if (attempts === 1) {
-              await settle(60); // blows the 20ms deadline
+              // Hold attempt one open past its deadline until the test
+              // releases it: its late return value must be fenced.
+              firstAttemptStartedResolve?.();
+              await firstAttemptGate;
+              return `late:${String(input)}`;
             }
             return `applied:${String(input)}`;
           },
@@ -477,14 +540,35 @@ export function runOrchestrationRaceSuite(
           edges: [],
         } as never);
         expect(activated.ok).toBe(true);
-        const parked = await runtime.run('seed');
-        // Attempt 1 blows the deadline; the retry is a durable timer.
+        const startedRun = runtime.run('seed');
+        // Barrier: attempt one is genuinely in flight (invoked) before the
+        // clock moves — a state-based wait, never a sleep.
+        await firstAttemptStarted;
+        // Advance the manual clock past the persisted 20ms deadline: the
+        // deadline promise fires, the attempt is classified timed_out, and
+        // a DURABLE retry timer is scheduled (backoff 1ms).
+        clock.advance(25);
+        const parked = await startedRun;
+        // Attempt one genuinely timed out; the retry is durable.
         expect(parked.status).toBe('running');
-        await settle(20);
+        expect(attempts).toBe(1);
+        expect(parked.trace.some((event) => event.type === 'node.timed_out')).toBe(true);
+        expect(parked.trace.some((event) => event.type === 'node.retry_scheduled')).toBe(true);
+        expect(parked.trace.some((event) => event.type === 'timer.scheduled')).toBe(true);
+        // Timer eligibility is deterministic: the retry timer became due
+        // exactly when the clock passed (completion time + backoff).
+        clock.advance(5);
         const pumped = await runtime.processDueTimers({ runId: parked.runId });
         expect(pumped.fired).toBe(1);
+        expect(pumped.timers[0]?.kind).toBe('retry');
+        // Attempt one's late value arrives only after its attempt was
+        // terminally classified — the old attempt cannot overwrite the
+        // result (the release order relative to attempt two is irrelevant).
+        releaseFirstAttempt?.();
         const final = await runtime.resumeRun(parked.runId);
         expect(final.status).toBe('completed');
+        // Attempt two used the SAME idempotency key: one logical
+        // invocation, one external mutation, the late value discarded.
         expect(attempts).toBe(2);
         expect(keys[0]).toBeTruthy();
         expect(keys[0] === keys[1]).toBe(true);
@@ -496,17 +580,29 @@ export function runOrchestrationRaceSuite(
   );
 
   t(`[${factory.name}] irreversible timeout blocks without replay`, async () => {
-    const fixture = await factory.create();
+    // Deterministic: manual clock + invocation barrier (same mechanism and
+    // rationale as the keyed-write timeout test above).
+    const clock = createManualOrchestrationClock();
+    const fixture = await factory.create(clock);
     try {
       const runtime = fixture.runtime;
       let invokeCount = 0;
+      let invokedResolve: (() => void) | undefined;
+      const invoked = new Promise<void>((resolve) => {
+        invokedResolve = resolve;
+      });
+      let releaseIrreversible: (() => void) | undefined;
+      const irreversibleGate = new Promise<void>((resolve) => {
+        releaseIrreversible = resolve;
+      });
       runtime.registerCapability({
         id: 'slowIrreversible',
         revision: '1',
         effect: 'irreversible',
         invoke: async () => {
           invokeCount += 1;
-          await settle(80);
+          invokedResolve?.();
+          await irreversibleGate;
           return 'done';
         },
       });
@@ -517,7 +613,11 @@ export function runOrchestrationRaceSuite(
         edges: [],
       } as never);
       expect(activated.ok).toBe(true);
-      const result = await runtime.run('seed', { policy: { allowIrreversible: true } });
+      const startedRun = runtime.run('seed', { policy: { allowIrreversible: true } });
+      await invoked;
+      clock.advance(25);
+      const result = await startedRun;
+      releaseIrreversible?.();
       expect(result.status).toBe('blocked');
       expect(invokeCount).toBe(1);
       const run = await fixture.orchestration.getOrchestrationRun(result.runId);

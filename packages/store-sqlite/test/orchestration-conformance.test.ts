@@ -5,6 +5,7 @@ import { join } from 'node:path';
 import { createRuntime } from '@vict/runtime';
 import { createSqliteStores } from '@vict/store-sqlite';
 import {
+  runOrchestrationCanarySuite,
   runOrchestrationConformanceSuite,
   runOrchestrationJoinSuite,
   runOrchestrationRaceSuite,
@@ -55,9 +56,41 @@ describe('orchestration join boundary (shared suite, sqlite)', () => {
 describe('orchestration races (shared suite, sqlite)', () => {
   runOrchestrationRaceSuite({ test: it }, expect, {
     name: 'sqlite',
-    async create() {
+    async create(clock) {
       const dir = await mkdtemp(join(tmpdir(), 'vict-orch-race-'));
       const stores = createSqliteStores({ path: join(dir, 'race.db') });
+      const runtime = createRuntime({
+        stores,
+        ...(clock ? { clock, orchestration: { time: clock } } : {}),
+      });
+      return {
+        runtime,
+        orchestration: stores.orchestration as never,
+        async createOperatorRuntime() {
+          return createRuntime({
+            stores,
+            orchestration: {
+              operatorAuthorized: true,
+              ...(clock ? { time: clock } : {}),
+            },
+          });
+        },
+        async dispose() {
+          await stores.dispose();
+          await rm(dir, { recursive: true, force: true });
+        },
+      };
+    },
+  });
+});
+
+/** The shared adversarial canary suite — SQLite backend. */
+describe('orchestration canaries (shared suite, sqlite)', () => {
+  runOrchestrationCanarySuite({ test: it }, expect, {
+    name: 'sqlite',
+    async create() {
+      const dir = await mkdtemp(join(tmpdir(), 'vict-orch-canary-'));
+      const stores = createSqliteStores({ path: join(dir, 'canary.db') });
       const runtime = createRuntime({ stores });
       return {
         runtime,
