@@ -163,12 +163,18 @@ export function sanitizeContractIssues(
   issues: readonly unknown[] | undefined,
 ): ObservableContractIssue[] {
   return (issues ?? []).slice(0, MAX_OBSERVABLE_ISSUES).map((raw, index) => {
-    const candidate =
-      typeof raw === 'object' && raw !== null ? (raw as { code?: unknown }).code : undefined;
-    const code: string =
-      typeof candidate === 'string' && (SAFE_ISSUE_CODES as readonly string[]).includes(candidate)
-        ? candidate
-        : UNTRUSTED_ISSUE_CODE;
+    // Hostile-getter hardening: EVERY property access on an author-supplied
+    // issue is untrusted. A getter may throw, return a proxy, or wedge —
+    // any failure degrades to the stable untrusted-issue fallback without
+    // propagating, leaking, or retaining hostile content.
+    let candidate: unknown;
+    try {
+      candidate =
+        typeof raw === 'object' && raw !== null ? (raw as { code?: unknown }).code : undefined;
+    } catch {
+      candidate = undefined;
+    }
+    const code: string = safeIssueCode(candidate);
     const path = `issues[${index}]`;
     return {
       code,
@@ -176,6 +182,18 @@ export function sanitizeContractIssues(
       message: safeIssueMessage(code, path, undefined, 'a value'),
     };
   });
+}
+
+/** Reduce a candidate issue code to the closed safe vocabulary or the stable fallback. */
+function safeIssueCode(candidate: unknown): string {
+  try {
+    return typeof candidate === 'string' &&
+      (SAFE_ISSUE_CODES as readonly string[]).includes(candidate)
+      ? candidate
+      : UNTRUSTED_ISSUE_CODE;
+  } catch {
+    return UNTRUSTED_ISSUE_CODE;
+  }
 }
 
 export function formatPath(path: readonly PropertyKey[]): string {

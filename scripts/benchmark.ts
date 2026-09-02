@@ -15,7 +15,8 @@
  *
  * Usage: npm run bench
  */
-import { createRuntime, defineCapability, defineGraph } from '@vict/sdk';
+import { defineCapability, defineGraph } from '@vict/sdk';
+import { createRuntime } from '@vict/runtime';
 import { createSqliteStores } from '@vict/store-sqlite';
 import type { VictRuntime } from '@vict/runtime';
 import { defineZodContract } from '@vict/sdk/zod';

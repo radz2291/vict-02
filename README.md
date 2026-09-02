@@ -10,22 +10,37 @@ This repository is the greenfield kernel with durable identity, stores, and
 - `packages/contracts` — executable input/output promises
 - `packages/kernel` — pure graph compilation and execution semantics
 - `packages/runtime` — capabilities, policy, semantic store ports, durable
-  run lifecycle, in-memory store
+  run lifecycle, in-memory store, capability-pack installation
 - `packages/store-sqlite` — SQLite adapter for the store ports (built-in
   `node:sqlite` driver, forward migrations)
-- `packages/sdk` — the public authoring facade
+- `packages/application` — framework-neutral Application Definition
+  compiler, canonical identity, release manifests, renderer and
+  application-data contracts with shared conformance fixtures
+- `packages/sdk` — the stable authoring ABI (contracts, capabilities,
+  graphs, packs, applications, resources, releases; no runtime dependency)
+- `packs/notes-pack`, `packs/ledger-pack` — offline capability packs
+  passing the shared pack-conformance suite
 - `examples/ara-proof` — deterministic, offline ARA conversation proof
 - `examples/orchestration-proof` — deterministic, offline Stage 03
   orchestration proof (decision route, fork/join, durable signal wait,
   keyed-write retry/reconciliation across a restart boundary)
+- `examples/application-proof` — Stage 04 SvelteKit vertical proof:
+  one neutral Application Definition rendered by a generic catch-all host
+  with a typed view, contract-validated form, local action, real VICT
+  capability action, and a custom component resolved by id/revision
 
-Stages 1–3 are independently verified. The accepted next stage is the
-capability and application authoring foundation. Vict's target product now
-includes a framework-neutral Application Definition and Delivery Layer that
-turns structured behavior, domain-resource, screen/layout, component, and
-action declarations into a complete usable application. SvelteKit is the
-canonical first renderer; the current repository does **not** implement that
-layer yet. See `docs/VICT-SYSTEM-REFERENCE.md` v0.2.0 for the normative scope.
+Stages 1–3 are independently verified. Stage 4 — the capability and
+application authoring foundation — is implemented and awaiting independent
+audit: the SDK is now a lightweight authoring ABI below the kernel and
+runtime (`@vict/contracts → @vict/sdk → @vict/kernel → @vict/runtime`),
+capability packs install explicitly with least-authority permissions,
+configuration and secret resolution, and a framework-neutral
+Application Definition compiles into an immutable plan with canonical
+`applicationVersion` and Application Release manifests. A minimal
+SvelteKit vertical proof renders one neutral definition through a generic
+catch-all host. See
+`docs/architecture/STAGE-04-CAPABILITY-APPLICATION-AUTHORING.md` and
+`docs/report/VICT-STAGE-04-REPORT.md`.
 
 ## Quick start
 
@@ -38,6 +53,11 @@ npm run verify:stage2  # Stage 02 aggregate verification
 npm run verify:stage3  # Stage 03 aggregate verification (conformance,
                        # crash/restart fixtures, offline proof, packed
                        # orchestration consumer)
+npm run verify:stage4  # Stage 04 aggregate verification (authoring ABI,
+                       # packs, application model, isolated packed
+                       # consumers, SvelteKit proof)
+npm run example:application  # build + DOM-level tests for the SvelteKit
+                             # application proof
 ```
 
 ## Durable local store quick start

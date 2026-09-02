@@ -117,7 +117,8 @@ writeFileSync(
 );
 writeFileSync(
   join(neutralDir, 'src', 'index.ts'),
-  `import { createRuntime, defineCapability, defineContract, defineGraph } from '@vict/sdk';
+  `import { defineCapability, defineContract, defineGraph } from '@vict/sdk';
+import { createRuntime } from '@vict/runtime';
 import { createSqliteStores } from '@vict/store-sqlite';
 import type { Contract } from '@vict/sdk';
 
@@ -290,9 +291,10 @@ writeFileSync(
 );
 writeFileSync(
   join(orchDir, 'src', 'index.ts'),
-  `import { createRuntime, defineContract, defineGraph } from '@vict/sdk';
+  `import { defineContract, defineGraph } from '@vict/sdk';
+import { createRuntime } from '@vict/runtime';
 import { createSqliteStores } from '@vict/store-sqlite';
-import type { RunResult } from '@vict/sdk';
+import type { RunResult } from '@vict/runtime';
 
 const S = defineContract<string>({
   id: 'orch.s',

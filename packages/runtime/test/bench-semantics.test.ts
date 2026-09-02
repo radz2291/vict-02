@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { z } from 'zod';
-import { createRuntime, defineCapability, defineGraph } from '@vict/sdk';
+import { defineCapability, defineGraph } from '@vict/sdk';
+import { createRuntime } from '@vict/runtime';
 import { defineZodContract } from '@vict/sdk/zod';
 
 /**

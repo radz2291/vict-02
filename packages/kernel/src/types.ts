@@ -1,10 +1,47 @@
 import type { Contract, ContractIssue, VictError } from '@vict/contracts';
 
-/** Effect classification for a capability. */
-export type EffectClass = 'pure' | 'read' | 'write' | 'irreversible';
-
-/** Execution modes understood by the kernel policy port. */
-export type ExecutionMode = 'normal' | 'simulate' | 'test';
+/**
+ * Stage 04: the stable authoring definitions (graph language, capability
+ * vocabulary, effect/execution modes, retry policy and its limits) now live
+ * in `@vict/sdk`, the authoring ABI below the kernel. The kernel CONSUMES
+ * these public declarations; it no longer owns author-facing definitions.
+ * They are re-exported here (and from the kernel index) purely for
+ * internal/consumer convenience — `@vict/sdk` is the single authoritative
+ * home and the dependency direction stays acyclic:
+ * `contracts -> sdk -> kernel -> runtime`.
+ */
+export type {
+  ApplicationGraphDefinition,
+  BranchEdgeDefinition,
+  CapabilityNodeDefinition,
+  CapabilityNodeFields,
+  DecisionNodeDefinition,
+  DecisionResult,
+  EffectClass,
+  ErrorEdgeDefinition,
+  ExecutionMode,
+  ForkNodeDefinition,
+  GraphEdgeDefinition,
+  GraphEdgeKind,
+  GraphNodeDefinition,
+  JoinNodeDefinition,
+  RetryPolicy,
+  RouteEdgeDefinition,
+  SignalWaitDefinition,
+  SuccessEdgeDefinition,
+  TimeoutEdgeDefinition,
+  TimerWaitDefinition,
+  WaitNodeDefinition,
+} from '@vict/sdk';
+export { MAX_BRANCH_COUNT, MAX_DELAY_MS_LIMIT, RETRY_MAX_ATTEMPTS_LIMIT } from '@vict/sdk';
+import type {
+  ApplicationGraphDefinition,
+  EffectClass,
+  ExecutionMode,
+  RetryPolicy,
+  SignalWaitDefinition,
+  TimerWaitDefinition,
+} from '@vict/sdk';
 
 /**
  * Run status.
@@ -24,162 +61,6 @@ export type QuiescentStatus = 'waiting' | 'blocked';
 /* ------------------------------------------------------------------ */
 /* Graph definitions                                                   */
 /* ------------------------------------------------------------------ */
-
-/**
- * Bounded declarative retry policy. `maxAttempts` includes the first
- * attempt. Retry classification uses safe stable error codes — raw thrown
- * messages never drive retry decisions. Backoff is deterministic
- * (non-jittered) so due times are reproducible.
- */
-export interface RetryPolicy {
-  /** Total attempts allowed, including the first. Must be 1..RETRY_MAX_ATTEMPTS_LIMIT. */
-  readonly maxAttempts: number;
-  /** Stable safe error codes that trigger a retry (never raw messages). */
-  readonly retryOn: readonly string[];
-  readonly backoff:
-    | { readonly kind: 'fixed'; readonly delayMs: number }
-    | {
-        readonly kind: 'exponential';
-        readonly initialMs: number;
-        readonly multiplier: number;
-        readonly maxMs: number;
-      };
-}
-
-/** Hard upper bound for `RetryPolicy.maxAttempts` (compiler-enforced). */
-export const RETRY_MAX_ATTEMPTS_LIMIT = 10;
-/** Hard upper bound for a single backoff delay, timeout, or timer delay (compiler-enforced): 7 days. */
-export const MAX_DELAY_MS_LIMIT = 7 * 24 * 60 * 60 * 1000;
-/** Hard upper bound for fork branch count (compiler-enforced). */
-export const MAX_BRANCH_COUNT = 64;
-
-export interface SignalWaitDefinition {
-  readonly kind: 'signal';
-  /** Exact signal name this wait accepts. */
-  readonly name: string;
-  /** Optional contract the signal payload must pass before the wait resolves. */
-  readonly contract?: string;
-  /** Optional durable timeout. When present, a `timeout` edge is required. */
-  readonly timeoutMs?: number;
-}
-
-export interface TimerWaitDefinition {
-  readonly kind: 'timer';
-  /** Relative delay from the moment the wait becomes durable. Must be positive. */
-  readonly delayMs: number;
-}
-
-export interface CapabilityNodeFields {
-  readonly id: string;
-  /** Capability invoked at this node. */
-  readonly capability: string;
-  /** Optional contract id overriding the capability's declared input contract. */
-  readonly input?: string;
-  /** Optional contract id overriding the capability's declared output contract. */
-  readonly output?: string;
-  /** Optional bounded retry policy. Compilation enforces effect compatibility. */
-  readonly retry?: RetryPolicy;
-  /** Optional invocation deadline in milliseconds. Persisted before invocation. */
-  readonly timeoutMs?: number;
-}
-
-export interface CapabilityNodeDefinition extends CapabilityNodeFields {
-  readonly kind?: 'capability';
-}
-
-/** A decision node invokes a pure capability and routes by declared typed key. */
-export interface DecisionNodeDefinition extends CapabilityNodeFields {
-  readonly kind: 'decision';
-}
-
-/** A wait node parks the continuation behind a durable signal wait or timer. */
-export interface WaitNodeDefinition {
-  readonly id: string;
-  readonly kind: 'wait';
-  readonly wait: SignalWaitDefinition | TimerWaitDefinition;
-}
-
-/** A fork node fans out into a statically declared, bounded set of branches. */
-export interface ForkNodeDefinition {
-  readonly id: string;
-  readonly kind: 'fork';
-  /** Id of the matching join node. */
-  readonly join: string;
-  /** Optional concurrency bound for branch execution (default: unbounded within the worker pool). */
-  readonly maxConcurrency?: number;
-}
-
-/** A join node consumes exactly one completed token per declared branch key. */
-export interface JoinNodeDefinition {
-  readonly id: string;
-  readonly kind: 'join';
-  /** Id of the matching fork node. */
-  readonly fork: string;
-  /** Optional contract id validating the canonical joined output. */
-  readonly output?: string;
-}
-
-export type GraphNodeDefinition =
-  | CapabilityNodeDefinition
-  | DecisionNodeDefinition
-  | WaitNodeDefinition
-  | ForkNodeDefinition
-  | JoinNodeDefinition;
-
-/** Edge kinds. `route` carries a typed decision key; `branch` connects a fork to a branch; `timeout` leaves a timed signal wait. */
-export type GraphEdgeKind = 'success' | 'error' | 'route' | 'branch' | 'timeout';
-
-interface EdgeFields {
-  readonly from: string;
-  readonly to: string;
-}
-
-export interface SuccessEdgeDefinition extends EdgeFields {
-  readonly kind?: 'success';
-}
-
-export interface ErrorEdgeDefinition extends EdgeFields {
-  readonly kind: 'error';
-}
-
-export interface RouteEdgeDefinition extends EdgeFields {
-  readonly kind: 'route';
-  /** Non-empty declared route key. Unique per source node. */
-  readonly key: string;
-}
-
-export interface BranchEdgeDefinition extends EdgeFields {
-  readonly kind: 'branch';
-  /** Non-empty declared branch key. Unique per fork node. */
-  readonly key: string;
-}
-
-export interface TimeoutEdgeDefinition extends EdgeFields {
-  readonly kind: 'timeout';
-}
-
-export type GraphEdgeDefinition =
-  | SuccessEdgeDefinition
-  | ErrorEdgeDefinition
-  | RouteEdgeDefinition
-  | BranchEdgeDefinition
-  | TimeoutEdgeDefinition;
-
-/** The validated result a decision capability must return. */
-export interface DecisionResult {
-  /** Must match exactly one declared route key of the decision node. */
-  readonly route: string;
-  /** Validated decision value; becomes the input of the routed target node. */
-  readonly value: unknown;
-}
-
-export interface ApplicationGraphDefinition {
-  readonly id: string;
-  /** Id of the entry node; exactly one entry per graph for Night 01. */
-  readonly entry: string;
-  readonly nodes: readonly GraphNodeDefinition[];
-  readonly edges: readonly GraphEdgeDefinition[];
-}
 
 /* ------------------------------------------------------------------ */
 /* Capability knowledge supplied to the kernel through ports           */
@@ -350,7 +231,14 @@ export type GraphIssueCode =
   | 'UNKNOWN_JOIN_CONTRACT'
   | 'INVALID_FORK_CONCURRENCY'
   | 'INVALID_ENTRY_KIND'
-  | 'JOIN_SUCCESS_EDGE_INVALID';
+  | 'JOIN_SUCCESS_EDGE_INVALID'
+  // Stage 04 authoring-boundary diagnostics (closed schemas, wait bounds).
+  | 'UNKNOWN_GRAPH_FIELD'
+  | 'UNKNOWN_NODE_FIELD'
+  | 'UNKNOWN_EDGE_FIELD'
+  | 'UNKNOWN_WAIT_FIELD'
+  | 'UNKNOWN_RETRY_FIELD'
+  | 'INVALID_WAIT_BOUND';
 
 export type GraphEdgeRefKind = 'success' | 'error' | 'route' | 'branch' | 'timeout';
 

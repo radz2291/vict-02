@@ -10,3 +10,6 @@ coverage/
 *.sqlite
 *.sqlite-wal
 *.sqlite-shm
+# SvelteKit application proof artifacts
+.svelte-kit/
+examples/application-proof/build/

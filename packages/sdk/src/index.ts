@@ -1,16 +1,23 @@
 /**
- * `@vict/sdk` is the intended import surface for application and future
- * capability authors. Application code should not need deep kernel internals.
+ * `@vict/sdk` — the stable authoring ABI for Vict.
  *
- * The base surface is schema-library neutral. Zod convenience lives in the
- * optional `@vict/sdk/zod` subpath.
+ * Stage 04 corrected the dependency direction: the SDK is a lightweight
+ * authoring layer BELOW the kernel and runtime, so capability-pack and
+ * application authors can install and import `@vict/sdk` without
+ * installing the runtime:
  *
- * Dependency direction: contracts <- kernel <- runtime, with the sdk layered
- * on top and lower packages never importing from it.
+ *   @vict/contracts -> @vict/sdk -> @vict/kernel -> @vict/runtime
+ *
+ * This base surface is schema-library neutral and framework neutral:
+ * - NO runtime composition APIs are exported here. Import `createRuntime`
+ *   and friends explicitly from `@vict/runtime`.
+ * - No Zod, Svelte, or runtime implementation type appears in these
+ *   declarations. Optional Zod convenience lives in `@vict/sdk/zod`.
+ * - Official factories return immutable (deep-frozen) definitions.
  */
 
-// Neutral executable contracts and structured results.
-export { defineContract, victError, errorSignalContract } from '@vict/contracts';
+// ---- Neutral executable contracts and structured results -----------------
+export { defineContract, validateContractIdentity } from '@vict/contracts';
 export type {
   Contract,
   ContractDefinition,
@@ -20,78 +27,122 @@ export type {
 } from '@vict/contracts';
 export { ContractDefinitionError } from '@vict/contracts';
 export type { ContractDefinitionErrorCode } from '@vict/contracts';
-
-// Graph vocabulary (authoring types only; execution is runtime's job).
-export type {
-  ApplicationGraphDefinition,
-  CompiledGraph,
-  CompiledNode,
-  EffectClass,
-  ExecutionMode,
-  GraphEdgeDefinition,
-  GraphIssue,
-  GraphIssueCode,
-  GraphNodeDefinition,
-  KernelEvent,
-  OutputSummary,
-  RunStatus,
-} from '@vict/kernel';
-
-// Runtime facade.
+export { victError, errorSignalContract } from '@vict/contracts';
 export {
-  createRuntime,
-  createInMemoryStores,
-  decideEffectAuthorization,
-  VictRuntime,
-  VictRuntimeError,
-  VictStoreError,
-  ACTIVATION_MANIFEST_SCHEMA,
-  RUN_EVENT_SCHEMA,
-  toCanonicalJson,
-} from '@vict/runtime';
+  describeReceived,
+  formatPath,
+  safeIssueMessage,
+  sanitizeContractIssues,
+  toSafeIssue,
+  MAX_OBSERVABLE_ISSUES,
+  SAFE_ISSUE_CODES,
+  UNTRUSTED_ISSUE_CODE,
+} from '@vict/contracts';
+export type { ObservableContractIssue, RawSchemaIssue, SafeIssueOptions } from '@vict/contracts';
+
+// ---- Capability authoring vocabulary (moved from kernel/runtime) ----------
 export type {
-  ActiveGraphInfo,
-  ActivationResult,
-  RestorationResult,
-  RestorationFailureCode,
+  CapabilityConfigReader,
   CapabilityContext,
   CapabilityDefinition,
+  CapabilitySecretReader,
   DoubleInvoke,
-  EffectPolicyOverrides,
-  PayloadRetention,
-  RunNodeOptions,
-  RunOptions,
-  RunRecord,
-  RunResult,
-  RuntimeErrorCode,
-  StoreErrorCode,
-  StoreErrorDetails,
-  VictRuntimeOptions,
-  VictStores,
-  DisposableVictStores,
-  ActivationCatalog,
-  ActivationSelection,
-  ActivationManifest,
-  ActivationManifestBinding,
-  ActivationManifestContract,
-  ExecutionStore,
-  StoredRun,
-  StoredRunStatus,
-  StoredEvent,
-  StoredActivation,
-  RunQuery,
-  RecoveryResult,
-  RecoveredRun,
-  CreateRunCommand,
-  CommitRunTransitionCommand,
-  RunStateUpdate,
-  PublishActivationCommand,
-  PublishAndSelectCommand,
-  PublishResult,
-  SelectActivationCommand,
-  RecoveryCommand,
-  TransitionFaultHooks,
-} from '@vict/runtime';
+  EffectClass,
+  ExecutionMode,
+} from './capability.js';
 
-// Authoring helpers.
-export { defineCapability, defineGraph } from './authoring.js';
+// ---- Graph authoring vocabulary (moved from kernel) ------------------------
+export type {
+  ApplicationGraphDefinition,
+  BranchEdgeDefinition,
+  CapabilityNodeDefinition,
+  CapabilityNodeFields,
+  DecisionNodeDefinition,
+  DecisionResult,
+  ErrorEdgeDefinition,
+  ForkNodeDefinition,
+  GraphEdgeDefinition,
+  GraphEdgeKind,
+  GraphNodeDefinition,
+  JoinNodeDefinition,
+  RetryPolicy,
+  RouteEdgeDefinition,
+  SignalWaitDefinition,
+  SuccessEdgeDefinition,
+  TimeoutEdgeDefinition,
+  TimerWaitDefinition,
+  WaitNodeDefinition,
+} from './graph.js';
+export { MAX_BRANCH_COUNT, MAX_DELAY_MS_LIMIT, RETRY_MAX_ATTEMPTS_LIMIT } from './graph.js';
+
+// ---- Capability packs --------------------------------------------------------
+export {
+  CAPABILITY_PACK_SCHEMA,
+  VICT_AUTHORING_COMPAT_VERSION,
+  defineCapabilityPack,
+  satisfiesCompatibilityRange,
+  validateCapabilityPack,
+} from './pack.js';
+export type {
+  CapabilityPack,
+  CapabilityPackBindings,
+  CapabilityPackManifest,
+  PackAmbiguityPolicy,
+  PackCapabilityBinding,
+  PackCapabilityDeclaration,
+  PackConfigurationDescriptor,
+  PackContractDeclaration,
+  PackDocumentation,
+  PackDoubleDeclaration,
+  PackEvaluation,
+  PackIssue,
+  PackIssueCode,
+  PackPermissionDeclaration,
+  PackProvenance,
+  PackSecretDescriptor,
+  PackValidationOptions,
+  PackValidationResult,
+} from './pack.js';
+
+// ---- Application / Resource / Release definitions ---------------------------
+export {
+  APPLICATION_DEFINITION_SCHEMA,
+  APPLICATION_RELEASE_SCHEMA,
+  RESOURCE_DEFINITION_SCHEMA,
+} from './application.js';
+export type {
+  ActionDefinition,
+  ApplicationCompatibility,
+  ApplicationDefinition,
+  ApplicationRelease,
+  ComponentReference,
+  FormBinding,
+  FormField,
+  ReleaseActivation,
+  ReleaseDataAdapter,
+  ReleaseComponentRegistry,
+  ReleaseProvenance,
+  ReleaseRenderer,
+  ResourceDefinition,
+  ResourceField,
+  ResourceFieldType,
+  ResourceMutation,
+  ResourcePresentationHint,
+  ResourceQuerySupport,
+  ResourceRelationship,
+  ScreenDefinition,
+  ScreenRegion,
+  ScreenStates,
+  Surface,
+  SurfaceRole,
+  ViewBinding,
+} from './application.js';
+
+// ---- Authoring factories (immutable by construction) ------------------------
+export {
+  defineApplication,
+  defineApplicationRelease,
+  defineCapability,
+  defineGraph,
+  defineResource,
+} from './authoring.js';

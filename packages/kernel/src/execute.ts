@@ -1,5 +1,5 @@
 import { randomUUID } from 'node:crypto';
-import { sanitizeContractIssues, type VictError } from '@vict/contracts';
+import { sanitizeContractIssues, type ContractResult, type VictError } from '@vict/contracts';
 import { kernelError } from './errors.js';
 import { summarizeOutput } from './summarize.js';
 import type {
@@ -206,6 +206,54 @@ export async function executeGraph(run: KernelRunInput): Promise<KernelRunOutput
       failed = true;
     };
 
+    /**
+     * A THROWING author parser is a hostile/buggy validation boundary, not a
+     * data-level rejection: it is always a TERMINAL run failure. No error
+     * edge is routed and no downstream capability may run. The thrown
+     * message is untrusted content and is never retained.
+     */
+    const parserThrew = (stage: 'input' | 'output', contractId: string, cause: unknown): void => {
+      finalError = kernelError(
+        'VICT_KERNEL_CONTRACT_PARSER_THREW',
+        `Contract '${contractId}' threw while parsing the ${stage} value at node '${node.id}'; the thrown message is not retained.`,
+        {
+          stage,
+          contractId,
+          nodeId: node.id,
+          errorName: cause instanceof Error ? cause.name : typeof cause,
+          ...(ids.errorId ? { errorId: ids.errorId() } : {}),
+        },
+      );
+      emit({
+        type: 'node.failed',
+        nodeId: node.id,
+        capabilityId: node.capability,
+        durationMs: 0,
+        error: finalError,
+      });
+      emit({ type: 'run.failed', steps, error: finalError });
+      status = 'failed';
+      failed = true;
+    };
+
+    /**
+     * Invoke an author-supplied parser safely: a throw becomes a structured
+     * `undefined` marker the caller must turn into a sanitized terminal
+     * failure — the exception itself never escapes into the engine.
+     */
+    const parseSafely = (
+      contract: { parse(input: unknown): ContractResult<unknown> },
+      input: unknown,
+    ):
+      | { readonly result: ContractResult<unknown>; readonly threw?: never }
+      | { readonly result?: never; readonly threw: unknown } => {
+      try {
+        return { result: contract.parse(input) };
+      } catch (cause) {
+        return { threw: cause };
+      }
+    };
+
     // ---- Input contract ------------------------------------------------
     if (node.inputContractId !== undefined) {
       const contract = ports.contracts.get(node.inputContractId);
@@ -226,7 +274,15 @@ export async function executeGraph(run: KernelRunInput): Promise<KernelRunOutput
         status = 'failed';
         break;
       }
-      const result = contract.parse(payload);
+      const parseOutcome = parseSafely(
+        contract as { parse(input: unknown): ContractResult<unknown> },
+        payload,
+      );
+      if ('threw' in parseOutcome) {
+        parserThrew('input', node.inputContractId, parseOutcome.threw);
+        break loop;
+      }
+      const result = parseOutcome.result;
       if (!result.ok) {
         const error = contractRejection(
           'input',
@@ -321,7 +377,15 @@ export async function executeGraph(run: KernelRunInput): Promise<KernelRunOutput
         status = 'failed';
         break;
       }
-      const result = contract.parse(validatedOutput);
+      const parseOutcome = parseSafely(
+        contract as { parse(input: unknown): ContractResult<unknown> },
+        validatedOutput,
+      );
+      if ('threw' in parseOutcome) {
+        parserThrew('output', node.outputContractId, parseOutcome.threw);
+        break loop;
+      }
+      const result = parseOutcome.result;
       if (!result.ok) {
         const error = contractRejection(
           'output',

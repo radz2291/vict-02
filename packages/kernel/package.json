@@ -23,6 +23,7 @@
     "build": "tsc -p tsconfig.json"
   },
   "dependencies": {
-    "@vict/contracts": "0.1.0"
+    "@vict/contracts": "0.1.0",
+    "@vict/sdk": "0.1.0"
   }
 }

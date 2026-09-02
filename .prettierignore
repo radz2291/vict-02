@@ -3,3 +3,5 @@ dist/
 coverage/
 package-lock.json
 *.md
+# SvelteKit application proof: .svelte sources need the svelte plugin (prettier has no svelte parser by default)
+examples/application-proof/

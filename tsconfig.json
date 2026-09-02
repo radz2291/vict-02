@@ -13,6 +13,9 @@
       "@vict/runtime/*": ["./packages/runtime/src/*"],
       "@vict/runtime/testing": ["./packages/runtime/src/testing.ts"],
       "@vict/store-sqlite": ["./packages/store-sqlite/src/index.ts"],
+      "@vict/application": ["./packages/application/src/index.ts"],
+      "@vict/application/*": ["./packages/application/src/*"],
+      "@vict/application/testing": ["./packages/application/src/testing.ts"],
       "@vict/sdk": ["./packages/sdk/src/index.ts"],
       "@vict/sdk/*": ["./packages/sdk/src/*"],
       "@vict/sdk/zod": ["./packages/sdk/src/zod.ts"]
@@ -24,5 +27,6 @@
     "examples/**/*.ts",
     "scripts/**/*.ts",
     "vitest.config.ts"
-  ]
+  ],
+  "exclude": ["examples/application-proof"]
 }

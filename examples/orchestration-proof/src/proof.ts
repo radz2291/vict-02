@@ -1,6 +1,7 @@
 import { createRuntime, createInMemoryStores } from '@vict/runtime';
 import type { VictRuntime } from '@vict/runtime';
-import type { KernelEvent, RunResult } from '@vict/sdk';
+import type { KernelEvent } from '@vict/kernel';
+import type { RunResult } from '@vict/runtime';
 import { DecisionResultContract, JoinResultContract, StringContract } from './contracts.js';
 import { proofGraph } from './graph.js';
 

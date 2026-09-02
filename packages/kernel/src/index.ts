@@ -50,7 +50,7 @@ export type {
   PolicyPort,
   RunStatus,
 } from './types.js';
-export { compileGraph } from './compile.js';
+export { compileGraph, isValidMsBound } from './compile.js';
 export type { CompileGraphInput } from './compile.js';
 export { executeGraph, DEFAULT_MAX_STEPS } from './execute.js';
 export { computeGraphVersion, canonicalJson, canonicalSemanticForm } from './canonical.js';

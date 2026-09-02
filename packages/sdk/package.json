@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "Stable, schema-library-neutral authoring facade for Vict: contracts, capabilities, graphs, runtime. Optional Zod adapter under ./zod.",
+  "description": "Stable, schema-library-neutral authoring ABI for Vict: contracts, capabilities, graphs, capability packs, applications, resources and releases. Optional Zod adapter under ./zod. Has NO dependency on the runtime.",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -23,9 +23,7 @@
     "build": "tsc -p tsconfig.json"
   },
   "dependencies": {
-    "@vict/contracts": "0.1.0",
-    "@vict/kernel": "0.1.0",
-    "@vict/runtime": "0.1.0"
+    "@vict/contracts": "0.1.0"
   },
   "peerDependencies": {
     "zod": "^3.25.0"

@@ -14,7 +14,7 @@ import type {
   OrchestrationStore,
   StoredOrchestrationRun,
 } from './orchestration-store-types.js';
-import { VictRuntimeError, runtimeError } from './errors.js';
+import { VictRuntimeError, classifyInvocationFailure, runtimeError } from './errors.js';
 import { VictStoreError } from './store-errors.js';
 import { decideEffectAuthorization } from './effect-policy.js';
 import {
@@ -115,6 +115,31 @@ function safeContractIssues(
   issues: readonly unknown[] | undefined,
 ): { code: string; path: string; message: string }[] {
   return sanitizeContractIssues(issues);
+}
+
+/**
+ * Invoke an author-supplied parser safely. A parser throw is captured and
+ * returned as an untrusted marker; it NEVER propagates into the driver (a
+ * throw escaping #executeAttempt would wedge the run in a silent
+ * reclaim/re-throw cycle — the Stage 03 LOW-1 defect). The caller converts
+ * a captured throw into a sanitized terminal failure.
+ */
+function parseSafely(
+  contract: {
+    parse(input: unknown): { ok: boolean; value?: unknown; issues?: readonly unknown[] };
+  },
+  input: unknown,
+):
+  | {
+      readonly result: { ok: boolean; value?: unknown; issues?: readonly unknown[] };
+      readonly threw?: never;
+    }
+  | { readonly result?: never; readonly threw: unknown } {
+  try {
+    return { result: contract.parse(input) };
+  } catch (cause) {
+    return { threw: cause };
+  }
 }
 
 export class OrchestrationDriver {
@@ -495,8 +520,29 @@ export class OrchestrationDriver {
         );
         return;
       }
-      const parsed = contract.parse(inputPayload);
-      if (!parsed.ok) {
+      const parsed = parseSafely(contract, inputPayload);
+      if ('threw' in parsed) {
+        // Stage 04 (Stage 03 LOW-1 closure): a throwing author parser is a
+        // TERMINAL failure, committed durably as one sanitized transition —
+        // never a silent reclaim loop, never an error-edge route, never a
+        // downstream invocation. The thrown message is not retained.
+        await this.#completeWithOutcome(
+          resolved,
+          claim,
+          envelope,
+          mode,
+          {
+            kind: 'failed',
+            error: this.#parserThrewError('input', node.inputContractId, node.id, parsed.threw),
+          },
+          undefined,
+          onEvent,
+          undefined,
+          { forceTerminalFailure: true },
+        );
+        return;
+      }
+      if (!parsed.result.ok) {
         const error = {
           code: 'VICT_KERNEL_CONTRACT_REJECTED',
           message: `Input contract '${node.inputContractId}' rejected the value at node '${node.id}'.`,
@@ -508,7 +554,7 @@ export class OrchestrationDriver {
           nodeId: node.id,
           capabilityId: node.capability,
           contractId: node.inputContractId,
-          issues: safeContractIssues(parsed.issues as readonly unknown[]),
+          issues: safeContractIssues(parsed.result.issues as readonly unknown[]),
           ...envelope,
           timestamp: this.#deps.clock.now(),
         } as unknown as KernelEvent);
@@ -523,7 +569,7 @@ export class OrchestrationDriver {
         );
         return;
       }
-      inputPayload = parsed.value;
+      inputPayload = parsed.result.value;
     }
 
     // ---- Control nodes complete directly (no capability invocation) -----
@@ -723,20 +769,19 @@ export class OrchestrationDriver {
         .then(async () => binding.invoke(inputPayload, context))
         .then(
           (value) => ({ ok: true as const, value }),
-          (cause: unknown) => ({
-            ok: false as const,
-            error: runtimeError(
-              'VICT_RUNTIME_CAPABILITY_THREW',
-              `Capability '${node.capability}' threw during invocation; the thrown message is not retained.`,
-              {
-                capabilityId: node.capability,
-                nodeId: node.id,
-                invokedVia: 'real',
-                errorName: cause instanceof Error ? cause.name : typeof cause,
-                errorId: this.#deps.ids.errorId?.() ?? `err_${randomId()}`,
-              },
-            ),
-          }),
+          (cause: unknown) => {
+            // Stage 04: structured authority failures keep their stable
+            // code; anything else is reduced to CAPABILITY_THREW without
+            // retaining the thrown message.
+            const classified = classifyInvocationFailure(cause, node.capability, {
+              nodeId: node.id,
+              invokedVia: 'real',
+            });
+            return {
+              ok: false as const,
+              error: runtimeError(classified.code, classified.message, classified.details),
+            };
+          },
         );
       const invocation: { ok: true; value: unknown } | { ok: false; error: VictError } =
         deadlinePromise === null
@@ -797,6 +842,26 @@ export class OrchestrationDriver {
    * policy, events, checkpoints, waits, forks/joins, and run status.
    * Conflicts re-derive from fresh durable state (bounded).
    */
+  /** Sanitized structured error for a throwing author contract parser. */
+  #parserThrewError(
+    stage: 'input' | 'output',
+    contractId: string,
+    nodeId: string,
+    cause: unknown,
+  ): VictError {
+    return runtimeError(
+      'VICT_RUNTIME_CONTRACT_PARSER_THREW',
+      `Contract '${contractId}' threw while parsing the ${stage} value at node '${nodeId}'; the thrown message is not retained.`,
+      {
+        stage,
+        contractId,
+        nodeId,
+        errorName: cause instanceof Error ? cause.name : typeof cause,
+        errorId: this.#deps.ids.errorId?.() ?? `err_${randomId()}`,
+      },
+    );
+  }
+
   async #completeWithOutcome(
     resolved: ResolvedExecution,
     claim: ClaimedAttempt,
@@ -806,7 +871,7 @@ export class OrchestrationDriver {
     inputPayload: unknown,
     onEvent?: (event: KernelEvent) => void,
     forcedContinuation?: import('./orchestration-store-types.js').AttemptContinuation,
-    planning?: { readonly resolvedWait?: boolean },
+    planning?: { readonly resolvedWait?: boolean; readonly forceTerminalFailure?: boolean },
   ): Promise<void> {
     const { graph, bindings, contracts } = resolved;
     const node = graph.getNode(claim.token.nodeId);
@@ -814,6 +879,9 @@ export class OrchestrationDriver {
       return;
     }
     const binding = bindings.get(node.capability);
+    // A throwing author parser forces the completion to a TERMINAL failed
+    // transition (no retry, no error edge, no downstream invocation).
+    let forceTerminalFailure = planning?.forceTerminalFailure === true;
     // ---- Normalize the outcome and validate output contracts ----------
     let outcome: AttemptOutcome =
       rawOutcome.kind === 'completed'
@@ -849,15 +917,45 @@ export class OrchestrationDriver {
               } as unknown as VictError,
             };
           } else {
-            const parsed = contract.parse(candidate);
-            if (!parsed.ok) {
+            const parsed = parseSafely(contract, candidate);
+            if ('threw' in parsed) {
               onEvent?.({
                 type: 'contract.rejected',
                 stage: 'output',
                 nodeId: node.id,
                 capabilityId: node.capability,
                 contractId: node.outputContractId,
-                issues: safeContractIssues(parsed.issues as readonly unknown[]),
+                issues: [
+                  {
+                    code: 'parser_threw',
+                    path: 'issues[0]',
+                    message: `Contract '${node.outputContractId}' threw while parsing at node '${node.id}'; the thrown message is not retained.`,
+                  },
+                ],
+                ...envelope,
+                timestamp: this.#deps.clock.now(),
+              } as unknown as KernelEvent);
+              outcome = {
+                kind: 'failed',
+                error: this.#parserThrewError(
+                  'output',
+                  node.outputContractId,
+                  node.id,
+                  parsed.threw,
+                ),
+              };
+              validatedOutput = undefined;
+              // Force the terminal failure at the commit below; a parser
+              // throw never retries and never routes along an error edge.
+              forceTerminalFailure = true;
+            } else if (!parsed.result.ok) {
+              onEvent?.({
+                type: 'contract.rejected',
+                stage: 'output',
+                nodeId: node.id,
+                capabilityId: node.capability,
+                contractId: node.outputContractId,
+                issues: safeContractIssues(parsed.result.issues as readonly unknown[]),
                 ...envelope,
                 timestamp: this.#deps.clock.now(),
               } as unknown as KernelEvent);
@@ -871,7 +969,7 @@ export class OrchestrationDriver {
               };
               validatedOutput = undefined;
             } else {
-              validatedOutput = node.kind === 'decision' ? rawOutcome.raw : parsed.value;
+              validatedOutput = node.kind === 'decision' ? rawOutcome.raw : parsed.result.value;
             }
           }
         }
@@ -921,9 +1019,11 @@ export class OrchestrationDriver {
         ...(planning?.resolvedWait === true ? { resolvedWait: true } : {}),
       });
       const effectivePlan: PlannedCompletion =
-        forcedContinuation !== undefined
-          ? { kind: 'transition', continuation: forcedContinuation, runStatus: 'running' }
-          : plan;
+        forceTerminalFailure === true
+          ? { kind: 'transition', continuation: { kind: 'none' }, runStatus: 'failed' }
+          : forcedContinuation !== undefined
+            ? { kind: 'transition', continuation: forcedContinuation, runStatus: 'running' }
+            : plan;
       if (effectivePlan.kind === 'invalid') {
         // Invalid routing/shape: fail honestly (route along error edge or fail).
         const planError = effectivePlan.error;

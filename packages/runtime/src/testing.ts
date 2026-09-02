@@ -50,3 +50,9 @@ export type {
 export { runDurableBoundarySuite } from './boundary-conformance.js';
 export type { BoundaryConformanceFactory, BoundaryGates } from './boundary-conformance.js';
 export { RECOVERY_CODE, RECOVERY_REASON, RECOVERY_REMEDIATION } from './runtime.js';
+export { runCapabilityPackConformanceSuite } from './pack-conformance.js';
+export type {
+  CapabilityPackConformanceFixture,
+  CapabilityPackConformanceOptions,
+} from './pack-conformance.js';
+export { installCapabilityPack } from './pack-install.js';

@@ -1,79 +1,24 @@
-import type { Contract } from '@vict/contracts';
-import type {
-  EffectClass,
-  ExecutionMode,
-  GraphIssue,
-  KernelEvent,
-  OutputSummary,
-  RunStatus,
-} from '@vict/kernel';
+import type { GraphIssue, KernelEvent, OutputSummary, RunStatus } from '@vict/kernel';
 import type { VictError } from '@vict/contracts';
 import type { VictStores } from './store-types.js';
 
-/** Context handed to capability implementations and test doubles at invocation time. */
-export interface CapabilityContext {
-  readonly runId: string;
-  readonly graphId: string;
-  readonly graphVersion: string;
-  readonly capabilitySetVersion: string;
-  readonly activationVersion: string;
-  readonly nodeId: string;
-  readonly capabilityId: string;
-  readonly mode: ExecutionMode;
-  readonly step: number;
-  /** `'double'` when the policy required the registered test double to run. */
-  readonly invokedVia: 'real' | 'double';
-  // ---- Stage 03 durable-orchestration extensions (additive, optional) ----
-  /** Stable logical invocation identity (invariant across retries). */
-  readonly invocationId?: string;
-  /** This attempt's durable identity. */
-  readonly attemptId?: string;
-  /** 1-based attempt number within the logical invocation. */
-  readonly attemptNumber?: number;
-  /** Stable opaque idempotency key, when the node declared a retry policy. */
-  readonly idempotencyKey?: string;
-  /** Epoch-ms deadline for this attempt, when one applies. */
-  readonly deadlineAt?: number;
-  /** Cooperative abort signal; aborted on timeout or cancellation. */
-  readonly abortSignal?: AbortSignal;
-  /** Branch identity when executing inside a fork branch. */
-  readonly branch?: {
-    readonly forkId: string;
-    readonly joinId: string;
-    readonly branchKey: string;
-    readonly lineage: string;
-  };
-}
-
 /**
- * A typed operation a graph can invoke. `effect` classifies its external
- * impact; contracts are executable promises about its input and output.
- *
- * The `revision` is an author/build responsibility: changing handler logic,
- * effect class or bound contracts requires changing the revision so
- * activation identity can distinguish the change. Function bodies are never
- * hashed or serialized — identity is revision-based.
+ * Stage 04: capability authoring declarations (capability context,
+ * capability definition, double invocation, effect/execution modes) now
+ * live in `@vict/sdk`, the authoring ABI below the kernel and runtime. The
+ * runtime consumes them; they are re-exported here (and from the runtime
+ * index) for consumer convenience — `@vict/sdk` is the single home.
  */
-export interface CapabilityDefinition<I = unknown, O = unknown> {
-  readonly id: string;
-  readonly revision: string;
-  readonly effect: EffectClass;
-  readonly input?: Contract<I>;
-  readonly output?: Contract<O>;
-  invoke(input: I, context: CapabilityContext): Promise<O> | O;
-  /**
-   * Declared idempotency semantics for retryable writes: `'keyed'` means the
-   * capability accepts a stable idempotency key (supplied through the
-   * capability context) and repeats with the same key are reconciled to one
-   * external mutation. Absent for non-write effects and for writes without
-   * keyed support (which may never be auto-retried). Participates in
-   * capability-set and activation identity when declared.
-   */
-  readonly idempotency?: 'keyed';
-}
-
-/** Test-double invocation. Contracts of the original capability still apply. */
-export type DoubleInvoke = (input: unknown, context: CapabilityContext) => unknown;
+export type {
+  CapabilityConfigReader,
+  CapabilityContext,
+  CapabilityDefinition,
+  CapabilitySecretReader,
+  DoubleInvoke,
+  EffectClass,
+  ExecutionMode,
+} from '@vict/sdk';
+import type { ExecutionMode } from '@vict/sdk';
 
 /**
  * How much payload data the runtime retains in stored run records.
@@ -236,6 +181,17 @@ export interface RunRecord {
 export interface VictRuntimeOptions {
   /** Default policy permissions applied to every run unless overridden per run. */
   readonly policy?: { readonly allowIrreversible?: boolean };
+  /**
+   * Stage 04 least-authority boundary: explicit permission grants plus the
+   * configuration/secret ports that scoped capability readers resolve
+   * through. Capability packs declare the names they require; anything
+   * undeclared or ungranted fails before the handler runs.
+   */
+  readonly authority?: {
+    readonly grants?: readonly string[];
+    readonly configuration?: { readonly get: (name: string) => unknown };
+    readonly secrets?: { readonly get: (name: string) => Promise<string | undefined> };
+  };
   /**
    * Durable activation/execution stores. Defaults to a private in-memory
    * store set with identical semantics. To persist across process restarts

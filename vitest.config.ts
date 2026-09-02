@@ -14,6 +14,8 @@ const aliases = {
   '@vict/runtime/testing': resolveFromRoot('packages/runtime/src/testing.ts'),
   '@vict/runtime': resolveFromRoot('packages/runtime/src/index.ts'),
   '@vict/store-sqlite': resolveFromRoot('packages/store-sqlite/src/index.ts'),
+  '@vict/application/testing': resolveFromRoot('packages/application/src/testing.ts'),
+  '@vict/application': resolveFromRoot('packages/application/src/index.ts'),
   '@vict/sdk/zod': resolveFromRoot('packages/sdk/src/zod.ts'),
   '@vict/sdk': resolveFromRoot('packages/sdk/src/index.ts'),
 };
@@ -25,7 +27,7 @@ export default defineConfig({
       {
         test: {
           name: 'unit',
-          include: ['packages/*/test/**/*.test.ts'],
+          include: ['packages/*/test/**/*.test.ts', 'packs/*/test/**/*.test.ts'],
         },
         resolve: { alias: aliases },
       },
@@ -33,6 +35,10 @@ export default defineConfig({
         test: {
           name: 'integration',
           include: ['examples/**/*.test.ts'],
+          // The SvelteKit application proof runs its own DOM-level project
+          // (examples/application-proof) with the svelte plugin — excluded
+          // here so it is never double-run without its toolchain.
+          exclude: ['examples/application-proof/**'],
         },
         resolve: { alias: aliases },
       },

@@ -98,6 +98,15 @@ export { VictRuntime, createRuntime } from './runtime.js';
 export { decideEffectAuthorization } from './effect-policy.js';
 export type { EffectPolicyOverrides } from './effect-policy.js';
 export { VictRuntimeError } from './errors.js';
+// Stage 04 capability packs.
+export { installCapabilityPack, VICT_RUNTIME_COMPAT_VERSION } from './pack-install.js';
+export { runCapabilityPackConformanceSuite } from './pack-conformance.js';
+export type {
+  CapabilityPackConformanceFixture,
+  CapabilityPackConformanceOptions,
+} from './pack-conformance.js';
+export { gateCapabilityInvoke } from './authority.js';
+export type { CapabilityAuthority, ConfigurationPort, SecretResolutionPort } from './authority.js';
 export { toCanonicalJson, canonicalPersistedValue } from './serialization.js';
 export {
   assertPublishableManifest,

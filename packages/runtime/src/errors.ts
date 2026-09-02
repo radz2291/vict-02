@@ -15,6 +15,10 @@ export type RuntimeErrorCode =
   | 'VICT_RUNTIME_UNKNOWN_NODE'
   | 'VICT_RUNTIME_CAPABILITY_MISSING'
   | 'VICT_RUNTIME_CAPABILITY_THREW'
+  | 'VICT_RUNTIME_CONTRACT_PARSER_THREW'
+  | 'VICT_RUNTIME_PERMISSION_DENIED'
+  | 'VICT_RUNTIME_SECRET_UNAVAILABLE'
+  | 'VICT_RUNTIME_CONFIGURATION_UNAVAILABLE'
   | 'VICT_RUNTIME_INVALID_RETENTION'
   | 'VICT_RUNTIME_INVALID_STORES'
   | 'VICT_RUNTIME_STORE_FAILURE'
@@ -39,7 +43,11 @@ export type RuntimeErrorCode =
   | 'VICT_ORCH_OPERATOR_CONFLICT'
   | 'VICT_ORCH_INVALID_CHECKPOINT'
   | 'VICT_ORCH_RETRY_EXHAUSTED'
-  | 'VICT_ORCH_UNSUPPORTED_EFFECT';
+  | 'VICT_ORCH_UNSUPPORTED_EFFECT'
+  // Stage 04 capability packs.
+  | 'VICT_PACK_INVALID'
+  | 'VICT_PACK_COMPATIBILITY_UNMET'
+  | 'VICT_PACK_DUPLICATE';
 
 /** Thrown only for programmer/configuration errors; data-level failures are structured values. */
 export class VictRuntimeError extends Error {
@@ -67,6 +75,54 @@ export function sanitiseThrownError(cause: unknown): { errorName: string; errorI
   return {
     errorName: cause instanceof Error ? cause.name : typeof cause,
     errorId: `err_${randomId()}`,
+  };
+}
+
+/**
+ * Stable codes a structured in-invocation failure may carry through to the
+ * structured error signal (Stage 04 least-authority gate). Everything else
+ * is untrusted content and is reduced to CAPABILITY_THREW.
+ */
+export const SAFE_INVOCATION_ERROR_CODES: ReadonlySet<RuntimeErrorCode> = new Set([
+  'VICT_RUNTIME_PERMISSION_DENIED',
+  'VICT_RUNTIME_SECRET_UNAVAILABLE',
+  'VICT_RUNTIME_CONFIGURATION_UNAVAILABLE',
+] as RuntimeErrorCode[]);
+
+/**
+ * Classify one capability-invocation failure. Structured VictRuntimeError
+ * authority failures (permission/secret/configuration) keep their stable
+ * code and framework-generated message so authorization outcomes stay
+ * observable and classified; any other throw is reduced to the stable
+ * CAPABILITY_THREW class with the thrown message never retained.
+ */
+export function classifyInvocationFailure(
+  cause: unknown,
+  capabilityId: string,
+  context: { readonly nodeId?: string; readonly invokedVia?: 'real' | 'double' },
+): { code: RuntimeErrorCode; message: string; details: Record<string, unknown> } {
+  const sanitised = sanitiseThrownError(cause);
+  if (cause instanceof VictRuntimeError && SAFE_INVOCATION_ERROR_CODES.has(cause.code)) {
+    return {
+      code: cause.code,
+      message: cause.message,
+      details: {
+        capabilityId,
+        ...(context.nodeId !== undefined ? { nodeId: context.nodeId } : {}),
+        ...(context.invokedVia !== undefined ? { invokedVia: context.invokedVia } : {}),
+        errorId: sanitised.errorId,
+      },
+    };
+  }
+  return {
+    code: 'VICT_RUNTIME_CAPABILITY_THREW',
+    message: `Capability '${capabilityId}' threw during invocation; the thrown message is not retained.`,
+    details: {
+      capabilityId,
+      ...(context.nodeId !== undefined ? { nodeId: context.nodeId } : {}),
+      ...(context.invokedVia !== undefined ? { invokedVia: context.invokedVia } : {}),
+      ...sanitised,
+    },
   };
 }
 

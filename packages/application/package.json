@@ -1,0 +1,33 @@
+{
+  "name": "@vict/application",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Framework-neutral Application Definition compiler, canonical identity, release manifests, renderer contract, and application-data adapter contracts with shared conformance fixtures. Depends only on @vict/contracts and @vict/sdk \u2014 never on the runtime or a UI framework.",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./renderer": {
+      "types": "./dist/renderer.d.ts",
+      "default": "./dist/renderer.js"
+    },
+    "./testing": {
+      "types": "./dist/testing.d.ts",
+      "default": "./dist/testing.js"
+    }
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@vict/contracts": "0.1.0",
+    "@vict/sdk": "0.1.0"
+  }
+}

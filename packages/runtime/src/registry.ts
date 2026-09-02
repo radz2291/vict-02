@@ -2,6 +2,7 @@ import type { Contract } from '@vict/contracts';
 import type { CapabilityDescriptor, CapabilityIndex, ContractEnvironment } from '@vict/kernel';
 import { VictRuntimeError } from './errors.js';
 import type { CapabilityDefinition, DoubleInvoke } from './types.js';
+import { gateCapabilityInvoke, type CapabilityAuthority } from './authority.js';
 
 /** A frozen copy of the execution-relevant parts of a capability definition. */
 export interface FrozenCapabilityBinding {
@@ -30,6 +31,7 @@ function isValidRevision(revision: unknown): revision is string {
  * receive descriptors or frozen copies.
  */
 export class CapabilityRegistry {
+  readonly #authority: CapabilityAuthority | undefined;
   readonly #capabilities = new Map<string, CapabilityDefinition<unknown, unknown>>();
   /**
    * Stage 03: historical revisions per capability id. Registering a NEW
@@ -45,6 +47,10 @@ export class CapabilityRegistry {
   readonly #contracts = new Map<string, Contract<unknown>>();
   readonly #contractRevisions = new Map<string, Map<string, Contract<unknown>>>();
   readonly #doubles = new Map<string, DoubleInvoke>();
+
+  constructor(authority?: CapabilityAuthority) {
+    this.#authority = authority;
+  }
 
   registerCapability(definition: CapabilityDefinition): void {
     if (typeof definition.id !== 'string' || definition.id.length === 0) {
@@ -80,16 +86,31 @@ export class CapabilityRegistry {
         `Capability '${definition.id}' must provide an invoke function.`,
       );
     }
-    this.#capabilities.set(definition.id, definition as CapabilityDefinition<unknown, unknown>);
+    // Stage 04 least-authority gate: the WRAPPED invoke is what activations
+    // capture, so permission/secret/configuration enforcement is identical
+    // on the sequential and durable engines. Default-deny: a definition
+    // that declares permissions/requirements is gated even when the runtime
+    // has NO authority configured (empty grants, absent ports). Function-
+    // bearing fields are captured by reference at registration time.
+    const declaresAuthorityRequirements =
+      (definition.permissions !== undefined && definition.permissions.length > 0) ||
+      (definition.requiredConfiguration !== undefined &&
+        definition.requiredConfiguration.length > 0) ||
+      (definition.requiredSecrets !== undefined && definition.requiredSecrets.length > 0);
+    const needsGate = this.#authority !== undefined || declaresAuthorityRequirements;
+    const effective: CapabilityDefinition<unknown, unknown> = needsGate
+      ? {
+          ...(definition as CapabilityDefinition<unknown, unknown>),
+          invoke: gateCapabilityInvoke(definition, this.#authority ?? {}),
+        }
+      : (definition as CapabilityDefinition<unknown, unknown>);
+    this.#capabilities.set(definition.id, effective);
     let capabilityRevisions = this.#capabilityRevisions.get(definition.id);
     if (!capabilityRevisions) {
       capabilityRevisions = new Map<string, CapabilityDefinition<unknown, unknown>>();
       this.#capabilityRevisions.set(definition.id, capabilityRevisions);
     }
-    capabilityRevisions.set(
-      definition.revision,
-      definition as CapabilityDefinition<unknown, unknown>,
-    );
+    capabilityRevisions.set(definition.revision, effective);
     // Capability-embedded contracts are published under their own ids so the
     // kernel can validate against them at execution time.
     if (definition.input) {

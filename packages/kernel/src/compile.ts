@@ -17,6 +17,7 @@ import type {
   ForkNodeDefinition,
   GraphEdgeDefinition,
   GraphIssue,
+  GraphIssueCode,
   GraphNodeDefinition,
   JoinNodeDefinition,
   RetryPolicy,
@@ -65,6 +66,232 @@ function edgeRef(edge: GraphEdgeDefinition): GraphIssue['edge'] {
   return key !== undefined
     ? { from: edge.from, to: edge.to, kind, key }
     : { from: edge.from, to: edge.to, kind };
+}
+
+/* ------------------------------------------------------------------ */
+/* Stage 04: closed authoring schemas                                  */
+/*                                                                      */
+/* Untyped JavaScript authors must never receive silent property       */
+/* stripping: every declaration boundary below is CLOSED, and unknown  */
+/* fields produce structured diagnostics with stable codes and safe    */
+/* definition paths. Diagnostics are sorted by path so ordering is     */
+/* deterministic and insertion-order independent.                      */
+/* ------------------------------------------------------------------ */
+
+/** Unknown-field issue under collection (sorted by safe path before reporting). */
+interface UnknownFieldIssue {
+  readonly code: Extract<
+    GraphIssueCode,
+    | 'UNKNOWN_GRAPH_FIELD'
+    | 'UNKNOWN_NODE_FIELD'
+    | 'UNKNOWN_EDGE_FIELD'
+    | 'UNKNOWN_WAIT_FIELD'
+    | 'UNKNOWN_RETRY_FIELD'
+  >;
+  readonly message: string;
+  readonly path: string;
+  readonly nodeIds?: readonly string[];
+}
+
+function collectUnknownFields(
+  sink: UnknownFieldIssue[],
+  value: object,
+  allowed: ReadonlySet<string>,
+  code: UnknownFieldIssue['code'],
+  path: string,
+  messageNoun: string,
+  nodeIds?: readonly string[],
+): void {
+  const names = Object.keys(value)
+    .filter((key) => !allowed.has(key))
+    .sort();
+  for (const key of names) {
+    sink.push({
+      code,
+      message: `Unknown field '${key}' at '${path}': the ${messageNoun} schema is closed and does not accept it.`,
+      path: `${path}.${key}`,
+      ...(nodeIds !== undefined ? { nodeIds } : {}),
+    });
+  }
+}
+
+const GRAPH_FIELDS: ReadonlySet<string> = new Set(['id', 'entry', 'nodes', 'edges']);
+const COMMON_NODE_FIELDS: ReadonlySet<string> = new Set(['id', 'kind']);
+const CAPABILITY_NODE_FIELDS: ReadonlySet<string> = new Set([
+  'capability',
+  'input',
+  'output',
+  'retry',
+  'timeoutMs',
+]);
+const WAIT_NODE_FIELDS: ReadonlySet<string> = new Set(['wait']);
+const FORK_NODE_FIELDS: ReadonlySet<string> = new Set(['join', 'maxConcurrency']);
+const JOIN_NODE_FIELDS: ReadonlySet<string> = new Set(['fork', 'output']);
+const BASE_EDGE_FIELDS: ReadonlySet<string> = new Set(['from', 'to', 'kind']);
+const KEYED_EDGE_FIELDS: ReadonlySet<string> = new Set([...BASE_EDGE_FIELDS, 'key']);
+const SIGNAL_WAIT_FIELDS: ReadonlySet<string> = new Set(['kind', 'name', 'contract', 'timeoutMs']);
+const TIMER_WAIT_FIELDS: ReadonlySet<string> = new Set(['kind', 'delayMs']);
+const RETRY_FIELDS: ReadonlySet<string> = new Set(['maxAttempts', 'retryOn', 'backoff']);
+const FIXED_BACKOFF_FIELDS: ReadonlySet<string> = new Set(['kind', 'delayMs']);
+const EXPONENTIAL_BACKOFF_FIELDS: ReadonlySet<string> = new Set([
+  'kind',
+  'initialMs',
+  'multiplier',
+  'maxMs',
+]);
+
+/** True when the value is a positive finite safe integer (the only valid ms bound). */
+export function isValidMsBound(value: unknown): value is number {
+  return typeof value === 'number' && Number.isSafeInteger(value) && value > 0;
+}
+
+/** Collect unknown fields on one node's retry policy (deterministically sorted later). */
+function collectRetryFields(
+  sink: UnknownFieldIssue[],
+  retry: RetryPolicy,
+  path: string,
+  nodeId: string,
+): void {
+  collectUnknownFields(
+    sink,
+    retry as unknown as object,
+    RETRY_FIELDS,
+    'UNKNOWN_RETRY_FIELD',
+    path,
+    'retry policy',
+    [nodeId],
+  );
+  const backoff = (retry as { backoff?: unknown }).backoff;
+  if (backoff !== undefined && backoff !== null && typeof backoff === 'object') {
+    const exponential = (backoff as { kind?: unknown }).kind === 'exponential';
+    collectUnknownFields(
+      sink,
+      backoff as object,
+      exponential ? EXPONENTIAL_BACKOFF_FIELDS : FIXED_BACKOFF_FIELDS,
+      'UNKNOWN_RETRY_FIELD',
+      `${path}.backoff`,
+      'backoff policy',
+      [nodeId],
+    );
+  }
+}
+
+/**
+ * Full canonical (vict.graph@2) node field set — the stored manifest carries
+ * every field with explicit nulls, so re-compiling a canonical manifest from
+ * storage must accept the complete closed set.
+ */
+const CANONICAL_NODE_FIELDS: ReadonlySet<string> = new Set([
+  'id',
+  'kind',
+  'capability',
+  'input',
+  'output',
+  'retry',
+  'timeoutMs',
+  'wait',
+  'fork',
+  'join',
+  'maxConcurrency',
+]);
+
+/** Canonical graph root fields (adds the schema marker). */
+const CANONICAL_GRAPH_FIELDS: ReadonlySet<string> = new Set([...GRAPH_FIELDS, 'schema']);
+
+/** Collect unknown fields on one node definition (kind-aware closed schema). */
+function collectNodeFields(
+  sink: UnknownFieldIssue[],
+  rawNode: GraphNodeDefinition,
+  declaredKind: string,
+  canonical: boolean,
+): void {
+  const nodeId = typeof rawNode.id === 'string' ? rawNode.id : '(unidentified)';
+  const nodePath = `nodes[${nodeId}]`;
+  if (canonical) {
+    collectUnknownFields(
+      sink,
+      rawNode as unknown as object,
+      CANONICAL_NODE_FIELDS,
+      'UNKNOWN_NODE_FIELD',
+      nodePath,
+      'node',
+      [nodeId],
+    );
+    return;
+  }
+  switch (declaredKind) {
+    case 'capability':
+    case 'decision': {
+      collectUnknownFields(
+        sink,
+        rawNode as unknown as object,
+        new Set([...COMMON_NODE_FIELDS, ...CAPABILITY_NODE_FIELDS]),
+        'UNKNOWN_NODE_FIELD',
+        nodePath,
+        `${declaredKind} node`,
+        [nodeId],
+      );
+      const retry = (rawNode as { retry?: unknown }).retry;
+      if (retry !== undefined && retry !== null && typeof retry === 'object') {
+        collectRetryFields(sink, retry as RetryPolicy, `${nodePath}.retry`, nodeId);
+      }
+      break;
+    }
+    case 'wait': {
+      collectUnknownFields(
+        sink,
+        rawNode as unknown as object,
+        new Set([...COMMON_NODE_FIELDS, ...WAIT_NODE_FIELDS]),
+        'UNKNOWN_NODE_FIELD',
+        nodePath,
+        'wait node',
+        [nodeId],
+      );
+      const wait = (rawNode as { wait?: unknown }).wait;
+      if (wait !== undefined && wait !== null && typeof wait === 'object') {
+        const isSignal = (wait as { kind?: unknown }).kind !== 'timer';
+        collectUnknownFields(
+          sink,
+          wait as object,
+          isSignal ? SIGNAL_WAIT_FIELDS : TIMER_WAIT_FIELDS,
+          'UNKNOWN_WAIT_FIELD',
+          `${nodePath}.wait`,
+          isSignal ? 'signal wait' : 'timer wait',
+          [nodeId],
+        );
+      }
+      break;
+    }
+    case 'fork': {
+      // `fork` nodes carry their join reference under `join` (the canonical
+      // v2 spelling); the historical `fork` spelling is accepted as the
+      // documented legacy alias and is NOT an unknown field.
+      collectUnknownFields(
+        sink,
+        rawNode as unknown as object,
+        new Set([...COMMON_NODE_FIELDS, ...FORK_NODE_FIELDS, 'fork']),
+        'UNKNOWN_NODE_FIELD',
+        nodePath,
+        'fork node',
+        [nodeId],
+      );
+      break;
+    }
+    case 'join': {
+      // Join nodes carry their fork reference under `fork`; `join` is the
+      // documented legacy alias.
+      collectUnknownFields(
+        sink,
+        rawNode as unknown as object,
+        new Set([...COMMON_NODE_FIELDS, ...JOIN_NODE_FIELDS, 'join']),
+        'UNKNOWN_NODE_FIELD',
+        nodePath,
+        'join node',
+        [nodeId],
+      );
+      break;
+    }
+  }
 }
 
 function pushTarget(map: Map<string, string[]>, from: string, to: string): void {
@@ -216,6 +443,22 @@ function checkPolicyBounds(
 export function compileGraph(input: CompileGraphInput): CompileResult {
   const { definition, capabilities, contracts } = input;
   const issues: GraphIssue[] = [];
+  // Unknown-field diagnostics are collected separately and reported in a
+  // canonical (path-sorted) order so they are insertion-order independent.
+  const fieldIssues: UnknownFieldIssue[] = [];
+
+  // Canonical manifests (vict.graph@1/@2) recompiled from storage carry the
+  // schema marker and explicit null fields; authoring definitions do not.
+  const schemaMarker = (definition as { schema?: unknown }).schema;
+  const canonical = schemaMarker === 'vict.graph@1' || schemaMarker === 'vict.graph@2';
+  collectUnknownFields(
+    fieldIssues,
+    definition as unknown as object,
+    canonical ? CANONICAL_GRAPH_FIELDS : GRAPH_FIELDS,
+    'UNKNOWN_GRAPH_FIELD',
+    'graph',
+    'graph',
+  );
 
   if (definition.id.length === 0) {
     issues.push({ code: 'EMPTY_GRAPH_ID', message: 'Graph id must be a non-empty string.' });
@@ -246,6 +489,7 @@ export function compileGraph(input: CompileGraphInput): CompileResult {
       continue;
     }
     const kind = declaredKind as NodeDraft['kind'];
+    collectNodeFields(fieldIssues, rawNode, declaredKind, canonical);
     const node = rawNode as GraphNodeDefinition &
       Partial<WaitNodeDefinition> &
       Partial<ForkNodeDefinition> &
@@ -306,6 +550,14 @@ export function compileGraph(input: CompileGraphInput): CompileResult {
   for (const edge of definition.edges) {
     const kind = edge.kind ?? 'success';
     const key = (edge as { key?: string }).key;
+    collectUnknownFields(
+      fieldIssues,
+      edge as unknown as object,
+      canonical || kind === 'route' || kind === 'branch' ? KEYED_EDGE_FIELDS : BASE_EDGE_FIELDS,
+      'UNKNOWN_EDGE_FIELD',
+      `edges[${edge.from}->${edge.to}:${kind}]`,
+      `${kind} edge`,
+    );
     const missing = [edge.from, edge.to].filter((id) => !nodesById.has(id));
     if (missing.length > 0) {
       issues.push({
@@ -458,6 +710,19 @@ export function compileGraph(input: CompileGraphInput): CompileResult {
         const waitTimeoutMs = wait.timeoutMs ?? undefined;
         const waitContract = (wait as { contract?: string | null }).contract ?? undefined;
         const hasTimeoutEdge = timeoutTargets.has(node.id);
+        // Stage 04 (LOW-3): one exact bound rule for wait-level timeouts.
+        // Rejected HERE at compilation — never deferred to persistence or
+        // timer pumping. `undefined`/`null` mean absent.
+        if (
+          waitTimeoutMs !== undefined &&
+          (!isValidMsBound(waitTimeoutMs) || waitTimeoutMs > MAX_DELAY_MS_LIMIT)
+        ) {
+          issues.push({
+            code: 'INVALID_WAIT_BOUND',
+            message: `Signal wait '${node.id}' declares timeoutMs ${JSON.stringify(wait.timeoutMs)}; when present it must be a positive finite safe integer (ms), bounded by ${MAX_DELAY_MS_LIMIT}.`,
+            nodeIds: [node.id],
+          });
+        }
         if (waitTimeoutMs !== undefined && !hasTimeoutEdge) {
           issues.push({
             code: 'SIGNAL_TIMEOUT_WITHOUT_TIMEOUT_EDGE',
@@ -475,12 +740,23 @@ export function compileGraph(input: CompileGraphInput): CompileResult {
         if (waitContract !== undefined) {
           issues.push(...checkWaitContract(node.id, waitContract, contracts));
         }
-      } else if (timeoutTargets.has(node.id)) {
-        issues.push({
-          code: 'TIMER_WAIT_WITH_TIMEOUT_EDGE',
-          message: `Timer wait node '${node.id}' cannot have a timeout edge.`,
-          nodeIds: [node.id],
-        });
+      } else {
+        // Timer wait: the delay bound follows the SAME exact rule (Stage 04).
+        const delayMs = (wait as { delayMs?: unknown }).delayMs;
+        if (!isValidMsBound(delayMs) || delayMs > MAX_DELAY_MS_LIMIT) {
+          issues.push({
+            code: 'INVALID_WAIT_BOUND',
+            message: `Timer wait node '${node.id}' declares delayMs ${JSON.stringify(delayMs)}; it must be a positive finite safe integer (ms), bounded by ${MAX_DELAY_MS_LIMIT}.`,
+            nodeIds: [node.id],
+          });
+        }
+        if (timeoutTargets.has(node.id)) {
+          issues.push({
+            code: 'TIMER_WAIT_WITH_TIMEOUT_EDGE',
+            message: `Timer wait node '${node.id}' cannot have a timeout edge.`,
+            nodeIds: [node.id],
+          });
+        }
       }
     }
 
@@ -800,6 +1076,18 @@ export function compileGraph(input: CompileGraphInput): CompileResult {
       message: `Graph contains an unsupported cycle: ${cycle.join(' -> ')}.`,
       nodeIds: cycle,
     });
+  }
+
+  // Unknown-field diagnostics: canonical path-sorted order, appended last so
+  // the full diagnostic list is deterministic and insertion-order independent.
+  for (const field of fieldIssues
+    .slice()
+    .sort((a, b) => (a.path === b.path ? (a.code < b.code ? -1 : 1) : a.path < b.path ? -1 : 1))) {
+    issues.push({
+      code: field.code,
+      message: field.message,
+      ...(field.nodeIds !== undefined ? { nodeIds: field.nodeIds } : {}),
+    } as GraphIssue);
   }
 
   if (issues.length > 0) {

@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { defineCapability, defineGraph } from '@vict/sdk';
 import { defineZodContract } from '@vict/sdk/zod';
 import { createRuntime } from '@vict/runtime';
-import type { KernelEvent } from '@vict/sdk';
+import type { KernelEvent } from '@vict/kernel';
 
 const Count = defineZodContract('s.count', '1', z.object({ count: z.number() }));
 

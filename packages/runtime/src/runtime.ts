@@ -41,7 +41,12 @@ import { CapabilityRegistry } from './registry.js';
 import type { FrozenCapabilityBinding } from './registry.js';
 import { decideEffectAuthorization } from './effect-policy.js';
 import type { EffectPolicyOverrides } from './effect-policy.js';
-import { VictRuntimeError, runtimeError, sanitiseThrownError } from './errors.js';
+import {
+  VictRuntimeError,
+  classifyInvocationFailure,
+  runtimeError,
+  sanitiseThrownError,
+} from './errors.js';
 import { DurableRunTracker } from './durable-run.js';
 import { createInMemoryStores } from './in-memory-stores.js';
 import { deepFreeze, parseStoredJson, toCanonicalJson } from './serialization.js';
@@ -155,7 +160,7 @@ interface ActivationSnapshot {
  *   content to the caller/operator. Thrown error messages are never stored.
  */
 export class VictRuntime {
-  readonly #registry = new CapabilityRegistry();
+  readonly #registry: CapabilityRegistry;
   readonly #stores: VictStores;
   readonly #clock: { now(): number };
   readonly #ids: { runId(): string; errorId?(): string };
@@ -173,6 +178,19 @@ export class VictRuntime {
   #orchestrationDriverInstance: OrchestrationDriver | undefined;
 
   constructor(options: VictRuntimeOptions = {}) {
+    this.#registry = new CapabilityRegistry(
+      options.authority === undefined
+        ? undefined
+        : {
+            ...(options.authority.grants !== undefined ? { grants: options.authority.grants } : {}),
+            ...(options.authority.configuration !== undefined
+              ? { configuration: options.authority.configuration }
+              : {}),
+            ...(options.authority.secrets !== undefined
+              ? { secrets: options.authority.secrets }
+              : {}),
+          },
+    );
     const retention = options.payloadRetention ?? 'summary';
     if (!RETENTION_VALUES.includes(retention)) {
       throw new VictRuntimeError(
@@ -280,7 +298,18 @@ export class VictRuntime {
           message: `Contract '${contractId}' required by the pinned activation is not registered.`,
         };
       }
-      const parsed = contract.parse(payload);
+      let parsed;
+      try {
+        parsed = contract.parse(payload);
+      } catch {
+        // Stage 04: a throwing author parser is a sanitized structured
+        // rejection — the wait remains open and the thrown message is
+        // never echoed.
+        return {
+          ok: false,
+          message: `The signal payload could not be validated by contract '${contractId}' (revision '${revision ?? contract.revision}'): the contract parser threw. The wait remains open.`,
+        };
+      }
       if (!parsed.ok) {
         return {
           ok: false,
@@ -525,7 +554,16 @@ export class VictRuntime {
           message: `Contract '${node.outputContractId}' is not resolvable from the pinned activation.`,
         };
       }
-      const parsed = contract.parse(output);
+      let parsed;
+      try {
+        parsed = contract.parse(output);
+      } catch {
+        return {
+          ok: false as const,
+          code: 'VICT_RUNTIME_CONTRACT_PARSER_THREW',
+          message: `The confirmed output could not be validated by contract '${node.outputContractId}': the contract parser threw; confirm-applied cannot bypass validation.`,
+        };
+      }
       if (!parsed.ok) {
         return {
           ok: false as const,
@@ -1310,19 +1348,16 @@ export class VictRuntime {
                 value: await binding.invoke(input, invocationContext),
               };
             } catch (cause) {
-              const sanitised = sanitiseThrownError(cause);
+              // Stage 04: structured authority failures (permission denied,
+              // secret/configuration unavailable) keep their stable code;
+              // any other throw is reduced to CAPABILITY_THREW.
+              const classified = classifyInvocationFailure(cause, capabilityId, {
+                nodeId: context.nodeId,
+                invokedVia: 'real',
+              });
               return {
                 ok: false as const,
-                error: runtimeError(
-                  'VICT_RUNTIME_CAPABILITY_THREW',
-                  `Capability '${capabilityId}' threw during invocation; the thrown message is not retained.`,
-                  {
-                    capabilityId,
-                    nodeId: context.nodeId,
-                    invokedVia: 'real',
-                    ...sanitised,
-                  },
-                ),
+                error: runtimeError(classified.code, classified.message, classified.details),
               };
             }
           }
