@@ -112,43 +112,78 @@ export interface ComponentRegistry {
 }
 
 export function createComponentRegistry(registryId: string, revision: string): ComponentRegistry {
-  const entries = new Map<string, unknown>();
+  if (typeof registryId !== 'string' || registryId.trim().length === 0) {
+    throw new RendererDiagnostic(
+      'RENDERER_INVALID_PLAN',
+      'Component registry id must be a non-empty, non-whitespace string.',
+    );
+  }
+  if (typeof revision !== 'string' || revision.trim().length === 0) {
+    throw new RendererDiagnostic(
+      'RENDERER_INVALID_PLAN',
+      'Component registry revision must be a non-empty, non-whitespace string.',
+    );
+  }
+  // STRUCTURAL identity (HIGH-04-B remediation): entries are keyed by
+  // componentId first and revision second — never by a delimiter-
+  // concatenated string. Ids and revisions containing '@', colons, slashes,
+  // or Unicode remain distinct: ('a', '1@2') and ('a@1', '2') are two
+  // different components in two different revision maps.
+  const entries = new Map<string, Map<string, unknown>>();
+  const requireValidComponentId = (componentId: string): void => {
+    if (typeof componentId !== 'string' || componentId.trim().length === 0) {
+      throw new RendererDiagnostic(
+        'RENDERER_INVALID_PLAN',
+        'Component id must be a non-empty, non-whitespace string.',
+      );
+    }
+  };
+  const requireValidRevision = (componentId: string, componentRevision: string): void => {
+    if (typeof componentRevision !== 'string' || componentRevision.trim().length === 0) {
+      throw new RendererDiagnostic(
+        'RENDERER_INVALID_PLAN',
+        `Component '${componentId}' must declare a non-empty, non-whitespace revision.`,
+      );
+    }
+  };
   return {
     registryId,
     revision,
     register(entry: ComponentRegistration): void {
-      if (typeof entry.componentId !== 'string' || entry.componentId.length === 0) {
-        throw new RendererDiagnostic('RENDERER_INVALID_PLAN', 'Component id must be non-empty.');
+      requireValidComponentId(entry.componentId);
+      requireValidRevision(entry.componentId, entry.revision);
+      let revisions = entries.get(entry.componentId);
+      if (revisions === undefined) {
+        revisions = new Map<string, unknown>();
+        entries.set(entry.componentId, revisions);
       }
-      if (typeof entry.revision !== 'string' || entry.revision.length === 0) {
+      if (revisions.has(entry.revision)) {
         throw new RendererDiagnostic(
           'RENDERER_INVALID_PLAN',
-          `Component '${entry.componentId}' must declare a revision.`,
+          `Component '${entry.componentId}' revision '${entry.revision}' is already registered.`,
         );
       }
-      const key = `${entry.componentId}@${entry.revision}`;
-      if (entries.has(key)) {
-        throw new RendererDiagnostic(
-          'RENDERER_INVALID_PLAN',
-          `Component '${key}' is already registered.`,
-        );
-      }
-      entries.set(key, entry.implementation);
+      revisions.set(entry.revision, entry.implementation);
     },
     resolve(reference: ComponentReference): ComponentResolution {
-      const key = `${reference.componentId}@${reference.revision}`;
-      const exact = entries.get(key);
+      const revisions = entries.get(reference.componentId);
+      if (revisions === undefined) {
+        return {
+          ok: false,
+          code: 'UNKNOWN_COMPONENT',
+          message: `Component '${reference.componentId}' is not registered.`,
+        };
+      }
+      const exact = revisions.get(reference.revision);
       if (exact !== undefined) {
         return { ok: true, implementation: exact };
       }
-      const anyRevision = [...entries.keys()].find((candidate) =>
-        candidate.startsWith(`${reference.componentId}@`),
-      );
-      if (anyRevision !== undefined) {
+      const registeredRevision = [...revisions.keys()].sort()[0];
+      if (registeredRevision !== undefined) {
         return {
           ok: false,
           code: 'COMPONENT_REVISION_MISMATCH',
-          message: `Component '${reference.componentId}' is registered at '${anyRevision.split('@')[1]}', not at declared revision '${reference.revision}'.`,
+          message: `Component '${reference.componentId}' is registered at revision '${registeredRevision}', not at declared revision '${reference.revision}'.`,
         };
       }
       return {
@@ -158,22 +193,25 @@ export function createComponentRegistry(registryId: string, revision: string): C
       };
     },
     identity() {
-      return {
+      // The frozen identity snapshot faithfully lists every registered
+      // (componentId, revision) pair — ids and revisions are reported
+      // verbatim, never parsed out of a combined key.
+      const components: { componentId: string; revision: string }[] = [];
+      for (const [componentId, revisions] of entries) {
+        for (const revision of revisions.keys()) {
+          components.push({ componentId, revision });
+        }
+      }
+      components.sort(
+        (a, b) =>
+          (a.componentId < b.componentId ? -1 : a.componentId > b.componentId ? 1 : 0) ||
+          (a.revision < b.revision ? -1 : a.revision > b.revision ? 1 : 0),
+      );
+      return Object.freeze({
         registryId,
         revision,
-        components: Object.freeze(
-          [...entries.keys()]
-            .map((key) => {
-              const [componentId, componentRevision] = key.split('@');
-              return { componentId: componentId ?? '', revision: componentRevision ?? '' };
-            })
-            .sort(
-              (a, b) =>
-                (a.componentId < b.componentId ? -1 : a.componentId > b.componentId ? 1 : 0) ||
-                (a.revision < b.revision ? -1 : a.revision > b.revision ? 1 : 0),
-            ),
-        ),
-      };
+        components: Object.freeze(components),
+      });
     },
   };
 }

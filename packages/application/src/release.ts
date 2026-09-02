@@ -25,11 +25,38 @@ export type ReleaseIssueCode =
   | 'RELEASE_EMBEDDED_VALUE_FIELD'
   | 'RELEASE_EMPTY_ID'
   | 'RELEASE_EMPTY_REVISION'
+  | 'RELEASE_INVALID_IDENTIFIER'
   | 'RELEASE_UNKNOWN_SCHEMA'
   | 'RELEASE_APPLICATION_MISMATCH'
+  | 'RELEASE_RENDERER_MISMATCH'
+  | 'RELEASE_COMPONENT_REGISTRY_MISMATCH'
+  | 'RELEASE_COMPONENT_MISMATCH'
+  | 'RELEASE_DATA_ADAPTER_MISMATCH'
+  | 'RELEASE_ACTIVATION_MISMATCH'
   | 'RELEASE_COMPATIBILITY_UNPARSEABLE'
   | 'RELEASE_COMPATIBILITY_UNMET'
+  | 'RELEASE_COMPILATION_FAILED'
   | 'RELEASE_PROVENANCE_UNSAFE';
+
+/**
+ * The ACTUAL supplied bindings a release is cross-checked against
+ * (MED-04-G remediation): renderer identity, component-registry identity
+ * with its exact component list, application-data adapter identity, and the
+ * activation identity currently selected (when the release references an
+ * exact activation). A release must compile against these real identities,
+ * not merely its own self-declared text.
+ */
+export interface CompileReleaseContext {
+  readonly renderer?: { readonly id: string; readonly revision: string };
+  readonly componentRegistry?: {
+    readonly registryId: string;
+    readonly revision: string;
+    readonly components: readonly { readonly componentId: string; readonly revision: string }[];
+  };
+  readonly dataAdapter?: { readonly id: string; readonly revision: string };
+  /** The activation version currently selected for the bound application. */
+  readonly selectedActivationVersion?: string;
+}
 
 export interface ReleaseIssue {
   readonly code: ReleaseIssueCode;
@@ -98,6 +125,31 @@ function sha256(payload: string): string {
 export function compileApplicationRelease(
   release: ApplicationRelease,
   plan: ApplicationPlan,
+  context: CompileReleaseContext = {},
+): CompileReleaseResult {
+  // Compilation NEVER throws for invalid releases (LOW-04-B): hostile
+  // getters, proxies, invalid prototypes, and unsupported values are
+  // converted into structured safe diagnostics.
+  try {
+    return compileReleaseChecked(release, plan, context);
+  } catch {
+    return {
+      ok: false,
+      issues: [
+        {
+          code: 'RELEASE_COMPILATION_FAILED',
+          message:
+            'The release could not be processed (hostile getter, proxy, or invalid prototype); compilation fails safely with this structured diagnostic.',
+        },
+      ],
+    };
+  }
+}
+
+function compileReleaseChecked(
+  release: ApplicationRelease,
+  plan: ApplicationPlan,
+  context: CompileReleaseContext,
 ): CompileReleaseResult {
   const issues: ReleaseIssue[] = [];
   const check = (
@@ -192,12 +244,49 @@ export function compileApplicationRelease(
       'Renderer id must be a non-empty string.',
       'release.renderer.id',
     );
+    if (
+      typeof renderer.id === 'string' &&
+      renderer.id.length > 0 &&
+      renderer.id.trim().length === 0
+    ) {
+      issues.push({
+        code: 'RELEASE_INVALID_IDENTIFIER',
+        message: 'Renderer id must not be whitespace-only.',
+        path: 'release.renderer.id',
+      });
+    }
     check(
       typeof renderer.revision === 'string' && renderer.revision.length > 0,
       'RELEASE_EMPTY_REVISION',
       'Renderer revision must be a non-empty string.',
       'release.renderer.revision',
     );
+    if (
+      typeof renderer.revision === 'string' &&
+      renderer.revision.length > 0 &&
+      renderer.revision.trim().length === 0
+    ) {
+      issues.push({
+        code: 'RELEASE_INVALID_IDENTIFIER',
+        message: 'Renderer revision must not be whitespace-only.',
+        path: 'release.renderer.revision',
+      });
+    }
+    // Cross-check the renderer against the ACTUAL supplied renderer (MED-04-G).
+    if (context.renderer !== undefined) {
+      check(
+        renderer.id === context.renderer.id,
+        'RELEASE_RENDERER_MISMATCH',
+        `Release binds renderer '${String(renderer.id)}' but the supplied renderer is '${context.renderer.id}'.`,
+        'release.renderer.id',
+      );
+      check(
+        renderer.revision === context.renderer.revision,
+        'RELEASE_RENDERER_MISMATCH',
+        `Release binds renderer revision '${String(renderer.revision)}' but the supplied renderer is revision '${context.renderer.revision}'.`,
+        'release.renderer.revision',
+      );
+    }
   }
 
   // Component registry identity (optional).
@@ -222,6 +311,56 @@ export function compileApplicationRelease(
       'Component registry revision must be a non-empty string.',
       'release.components.revision',
     );
+    // Cross-check against the ACTUAL registry identity (MED-04-G): the
+    // declared registry id/revision and the EXACT component identity list
+    // (no missing components, no extra components, no mismatched
+    // revisions where exact binding is required).
+    if (context.componentRegistry !== undefined) {
+      const actual = context.componentRegistry;
+      check(
+        components.registryId === actual.registryId,
+        'RELEASE_COMPONENT_REGISTRY_MISMATCH',
+        `Release binds component registry '${String(components.registryId)}' but the supplied registry is '${actual.registryId}'.`,
+        'release.components.registryId',
+      );
+      check(
+        components.revision === actual.revision,
+        'RELEASE_COMPONENT_REGISTRY_MISMATCH',
+        `Release binds component registry revision '${String(components.revision)}' but the supplied registry is revision '${actual.revision}'.`,
+        'release.components.revision',
+      );
+      const declaredComponents = new Map(
+        (components.components ?? []).map((entry) => [entry.componentId, entry.revision]),
+      );
+      const actualComponents = new Map(
+        actual.components.map((entry) => [entry.componentId, entry.revision]),
+      );
+      for (const [componentId, declaredRevision] of declaredComponents) {
+        const actualRevision = actualComponents.get(componentId);
+        if (actualRevision === undefined) {
+          issues.push({
+            code: 'RELEASE_COMPONENT_MISMATCH',
+            message: `Release binds component '${componentId}' which is not in the supplied registry.`,
+            path: `release.components.components.${componentId}`,
+          });
+        } else if (actualRevision !== declaredRevision) {
+          issues.push({
+            code: 'RELEASE_COMPONENT_MISMATCH',
+            message: `Release binds component '${componentId}' revision '${declaredRevision}' but the supplied registry declares '${actualRevision}'.`,
+            path: `release.components.components.${componentId}`,
+          });
+        }
+      }
+      for (const componentId of actualComponents.keys()) {
+        if (!declaredComponents.has(componentId)) {
+          issues.push({
+            code: 'RELEASE_COMPONENT_MISMATCH',
+            message: `The supplied registry contains component '${componentId}' which the release does not bind.`,
+            path: 'release.components.components',
+          });
+        }
+      }
+    }
   }
 
   // Data-adapter compatibility.
@@ -252,6 +391,21 @@ export function compileApplicationRelease(
       'Data adapter revision must be a non-empty string.',
       'release.dataAdapter.revision',
     );
+    // Cross-check against the ACTUAL supplied data adapter (MED-04-G).
+    if (context.dataAdapter !== undefined) {
+      check(
+        dataAdapter.id === context.dataAdapter.id,
+        'RELEASE_DATA_ADAPTER_MISMATCH',
+        `Release binds data adapter '${String(dataAdapter.id)}' but the supplied adapter is '${context.dataAdapter.id}'.`,
+        'release.dataAdapter.id',
+      );
+      check(
+        dataAdapter.revision === context.dataAdapter.revision,
+        'RELEASE_DATA_ADAPTER_MISMATCH',
+        `Release binds data adapter revision '${String(dataAdapter.revision)}' but the supplied adapter is revision '${context.dataAdapter.revision}'.`,
+        'release.dataAdapter.revision',
+      );
+    }
   }
 
   // Compatibility range must be parseable AND satisfiable by this Vict.
@@ -296,6 +450,17 @@ export function compileApplicationRelease(
         'Activation reference must carry a non-empty activationVersion.',
         'release.activation.activationVersion',
       );
+      // Cross-check the EXACT activation reference against the identity the
+      // deployment actually selected (MED-04-G): a stale activation binding
+      // is rejected instead of silently resolving to a newer activation.
+      if (context.selectedActivationVersion !== undefined) {
+        check(
+          activation.activationVersion === context.selectedActivationVersion,
+          'RELEASE_ACTIVATION_MISMATCH',
+          `Release binds activation '${String(activation.activationVersion)}' but the selected activation is '${context.selectedActivationVersion}'.`,
+          'release.activation.activationVersion',
+        );
+      }
     } else if (activation.kind === 'policy') {
       check(
         activation.selection === 'latest',
@@ -312,7 +477,11 @@ export function compileApplicationRelease(
     }
   }
 
-  // Provenance: safe fields only — never secrets, timestamps, or machine paths.
+  // Provenance: safe fields only — never secrets, timestamps, or machine
+  // paths. Prose values are length-bounded safe provenance text; resolved
+  // secrets never enter manifests or release identity, and this compiler
+  // makes NO claim that arbitrary prose can be automatically proven
+  // secret-free.
   const provenance = release.provenance;
   if (provenance !== undefined) {
     for (const key of Object.keys(provenance)) {
@@ -320,6 +489,21 @@ export function compileApplicationRelease(
         issues.push({
           code: VALUE_LIKE.has(key) ? 'RELEASE_EMBEDDED_VALUE_FIELD' : 'RELEASE_UNKNOWN_FIELD',
           message: `Field '${key}' at 'release.provenance' is not a safe provenance field.`,
+          path: `release.provenance.${key}`,
+        });
+        continue;
+      }
+      const value = (provenance as Record<string, unknown>)[key];
+      if (typeof value !== 'string') {
+        issues.push({
+          code: 'RELEASE_PROVENANCE_UNSAFE',
+          message: `Provenance field '${key}' must be a safe prose string.`,
+          path: `release.provenance.${key}`,
+        });
+      } else if (value.trim().length === 0 || value.length > 200) {
+        issues.push({
+          code: 'RELEASE_PROVENANCE_UNSAFE',
+          message: `Provenance field '${key}' must be a non-empty prose string of at most 200 characters.`,
           path: `release.provenance.${key}`,
         });
       }
@@ -339,7 +523,10 @@ export function compileApplicationRelease(
     return { ok: false, issues };
   }
 
-  const manifest = deepFreeze(release);
+  // Defensive capture: clone then freeze. The caller's release object is
+  // NEVER frozen or mutated, and later mutation of the input cannot change
+  // the compiled release's declared identity (LOW-04-F remediation).
+  const manifest = deepFreeze(cloneForFreeze(release));
   return {
     ok: true,
     release: Object.freeze({ manifest, releaseVersion: computeReleaseVersion(manifest) }),
@@ -359,6 +546,21 @@ function deepFreeze<T>(value: T): T {
       deepFreeze((value as Record<string, unknown>)[key]);
     }
     Object.freeze(value);
+  }
+  return value;
+}
+
+/** Shallow-structural clone of plain release data (no functions expected). */
+function cloneForFreeze<T>(value: T): T {
+  if (Array.isArray(value)) {
+    return value.map(cloneForFreeze) as unknown as T;
+  }
+  if (value !== null && typeof value === 'object') {
+    const out: Record<string, unknown> = {};
+    for (const [key, item] of Object.entries(value as Record<string, unknown>)) {
+      out[key] = cloneForFreeze(item);
+    }
+    return out as unknown as T;
   }
   return value;
 }

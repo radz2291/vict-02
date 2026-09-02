@@ -16,8 +16,17 @@ import { RendererDiagnostic } from './renderer.js';
  *    unsupported-role reporting, never silent omission);
  * 4. unknown components and revision mismatches fail with structured
  *    diagnostics BEFORE any unsafe rendering;
- * 5. action failures surface as SAFE mapped failures — a canary thrown by
- *    the action must never appear in the rendered output.
+ * 5. action failures surface as SAFE mapped failures — canaries thrown by
+ *    (or inside) the action, including nested causes and rejected
+ *    promises, must never appear in `error.message`, stacks, causes,
+ *    enumerable details, serialized output, or the DOM; the declared safe
+ *    failure state must render; the dispatcher rejection is CAUGHT (no
+ *    unhandled rejection ever exists).
+ *
+ * The action-canary scenario is MANDATORY for renderers that support the
+ * 'action' role (LOW-04-E remediation): `buildFailingActionPlan`,
+ * `serializeOutput`, `triggerAction`, and `getFailureStateText` may no
+ * longer be omitted to skip it.
  */
 
 export interface RendererConformanceFixture {
@@ -29,15 +38,28 @@ export interface RendererConformanceFixture {
   /** Fresh bindings per scenario. */
   readonly makeBindings: () => RendererBindings;
   /**
-   * Optional serializer for the rendered output (renderer-specific), used
-   * for the action-canary leakage scan.
+   * Serializer for the rendered output (renderer-specific), used for the
+   * action-canary leakage scan. REQUIRED when the renderer supports the
+   * 'action' role.
    */
   readonly serializeOutput?: (output: unknown) => string;
   /**
-   * Optional plan that renders an action surface whose dispatch rejects
-   * with the canary (for the safe-failure mapping scan).
+   * Plan that renders an action surface whose dispatch rejects with the
+   * canary (for the safe-failure mapping scan). REQUIRED when the renderer
+   * supports the 'action' role.
    */
   readonly buildFailingActionPlan?: () => ApplicationPlan;
+  /**
+   * Trigger an action invocation through the RENDERED output (e.g. a real
+   * DOM click). REQUIRED with `buildFailingActionPlan` so the canary scan
+   * exercises the renderer's real invocation path.
+   */
+  readonly triggerAction?: (output: unknown) => void | Promise<void>;
+  /**
+   * Read the renderer's observable failure-state text (e.g. the declared
+   * safe failure surface). REQUIRED with `buildFailingActionPlan`.
+   */
+  readonly getFailureStateText?: (output: unknown) => string | undefined;
 }
 
 const ALL_ROLES: readonly SurfaceRole[] = ['text', 'view', 'form', 'action', 'component', 'states'];
@@ -46,8 +68,59 @@ function fail(message: string): never {
   throw new Error(`[renderer conformance: ${message}]`);
 }
 
-export function runRendererConformanceSuite(fixture: RendererConformanceFixture): void {
+/** Deeply serialize every observable error surface (message, stack, cause, details). */
+function observableErrorSurface(error: unknown): string {
+  const parts: string[] = [];
+  let current: unknown = error;
+  for (let depth = 0; depth < 8 && current !== undefined && current !== null; depth += 1) {
+    if (current instanceof Error) {
+      parts.push(current.name, current.message, current.stack ?? '');
+      const details = (current as { details?: unknown }).details;
+      if (details !== undefined) {
+        try {
+          parts.push(
+            JSON.stringify(details, (_key, value) =>
+              typeof value === 'function' ? undefined : value,
+            ),
+          );
+        } catch {
+          parts.push(String(details));
+        }
+      }
+      current = (current as { cause?: unknown }).cause;
+      continue;
+    }
+    try {
+      parts.push(
+        JSON.stringify(current, (_key, value) => (typeof value === 'function' ? undefined : value)),
+      );
+    } catch {
+      parts.push(String(current));
+    }
+    break;
+  }
+  return parts.filter((part) => part !== undefined && part.length > 0).join(' | ');
+}
+
+/**
+ * Run the shared renderer conformance suite against one fixture. Throws on
+ * the first failed invariant (like the other shared suites).
+ */
+export async function runRendererConformanceSuite(
+  fixture: RendererConformanceFixture,
+): Promise<void> {
   const { renderer } = fixture;
+  const supportsActions = renderer.supportedSurfaceRoles.includes('action');
+  const serialize = fixture.serializeOutput;
+
+  if (
+    supportsActions &&
+    (fixture.buildFailingActionPlan === undefined || serialize === undefined)
+  ) {
+    fail(
+      "renderers that support the 'action' role must supply buildFailingActionPlan and serializeOutput so the hostile-action canary scenario actually runs",
+    );
+  }
 
   // Declared coverage must be a subset of the schema roles.
   for (const role of renderer.supportedSurfaceRoles) {
@@ -140,36 +213,95 @@ export function runRendererConformanceSuite(fixture: RendererConformanceFixture)
     }
   }
 
-  // 5. Action failures map to SAFE failures; the canary never surfaces.
-  if (
-    fixture.buildFailingActionPlan !== undefined &&
-    renderer.supportedSurfaceRoles.includes('action')
-  ) {
+  // 5. Action failures map to SAFE failures; the canary never surfaces —
+  // through a thrown diagnostic, error.message/stack/cause/details,
+  // serialized output, an UNHANDLED REJECTION, or the rendered DOM.
+  if (supportsActions && fixture.buildFailingActionPlan !== undefined && serialize !== undefined) {
     const CANARY = 'RA4-RENDERER-ACTION-CANARY';
-    const failingBindings: RendererBindings = {
-      components: fixture.makeBindings().components,
-      dispatch: {
-        execute: async () => {
-          throw new Error(`hostile action failure ${CANARY}`);
+    const hostileDispatchers: { readonly name: string; readonly execute: () => Promise<never> }[] =
+      [
+        {
+          name: 'synchronous throw',
+          execute: () => {
+            throw new Error(`hostile action failure ${CANARY}`);
+          },
         },
-      },
-    };
-    let output: unknown;
-    try {
-      const renderedFailing = renderer.render(fixture.buildFailingActionPlan(), failingBindings);
-      output = renderedFailing.output;
-      renderedFailing.unmount();
-    } catch (error) {
-      // Renderers MAY throw safe diagnostics for action surfaces, but the
-      // diagnostic must not carry the canary either.
-      if (JSON.stringify(error).includes(CANARY)) {
-        fail('action canary leaked through a renderer diagnostic');
+        {
+          name: 'rejected promise',
+          execute: async () => {
+            throw new Error(`hostile action failure ${CANARY}`);
+          },
+        },
+        {
+          name: 'nested cause',
+          execute: async () => {
+            throw new Error('outer', {
+              cause: new Error(`hostile action failure ${CANARY}`, {
+                cause: new Error(`deep ${CANARY}`),
+              }),
+            });
+          },
+        },
+      ];
+
+    for (const hostile of hostileDispatchers) {
+      const unhandled: unknown[] = [];
+      const handler = (reason: unknown): void => {
+        unhandled.push(reason);
+      };
+      const hasProcess = typeof process !== 'undefined' && typeof process.on === 'function';
+      if (hasProcess) {
+        process.on('unhandledRejection', handler);
       }
-    }
-    if (fixture.serializeOutput !== undefined && output !== undefined) {
-      const serialized = fixture.serializeOutput(output);
-      if (serialized.includes(CANARY)) {
-        fail('action canary leaked into rendered output');
+      let output: unknown;
+      try {
+        const renderedFailing = renderer.render(fixture.buildFailingActionPlan(), {
+          components: fixture.makeBindings().components,
+          dispatch: {
+            execute: hostile.execute as unknown as RendererBindings['dispatch']['execute'],
+          },
+        });
+        output = renderedFailing.output;
+        // Invoke the action through the renderer's real trigger when the
+        // fixture supplies one (a real click in the Svelte proof).
+        if (fixture.triggerAction !== undefined) {
+          await fixture.triggerAction(output);
+        }
+        renderedFailing.unmount();
+      } catch (error) {
+        // Renderers MAY throw safe diagnostics for action surfaces, but the
+        // diagnostic must not carry the canary in ANY observable surface.
+        if (observableErrorSurface(error).includes(CANARY)) {
+          fail(`action canary leaked through a renderer diagnostic (${hostile.name})`);
+        }
+      }
+      // Give pending rejections a full macrotask to surface as unhandled.
+      await new Promise<void>((resolve) => {
+        setTimeout(resolve, 10);
+      });
+      if (hasProcess) {
+        process.off('unhandledRejection', handler);
+      }
+      for (const reason of unhandled) {
+        if (observableErrorSurface(reason).includes(CANARY)) {
+          fail(`a dispatcher rejection became an UNHANDLED REJECTION (${hostile.name})`);
+        }
+      }
+      // The serialized output and the declared failure state must never
+      // contain the canary; the declared safe failure state must render.
+      if (output !== undefined) {
+        if (serialize(output).includes(CANARY)) {
+          fail(`action canary leaked into rendered output (${hostile.name})`);
+        }
+        if (fixture.getFailureStateText !== undefined) {
+          const failureText = fixture.getFailureStateText(output);
+          if (failureText === undefined || failureText.length === 0) {
+            fail(`the declared safe failure state did not render (${hostile.name})`);
+          }
+          if (failureText.includes(CANARY)) {
+            fail(`the failure state leaked the canary (${hostile.name})`);
+          }
+        }
       }
     }
   }

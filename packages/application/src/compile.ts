@@ -31,6 +31,9 @@ export type ApplicationIssueCode =
   | 'APPLICATION_EMBEDDED_VALUE_FIELD'
   | 'APPLICATION_EMPTY_ID'
   | 'APPLICATION_EMPTY_REVISION'
+  | 'APPLICATION_INVALID_IDENTIFIER'
+  | 'APPLICATION_NON_CANONICAL_VALUE'
+  | 'APPLICATION_COMPILATION_FAILED'
   | 'APPLICATION_UNKNOWN_SCHEMA'
   | 'DUPLICATE_ROUTE_ID'
   | 'DUPLICATE_ROUTE_PATH'
@@ -218,6 +221,11 @@ function isPlainObject(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
 
+/** True for a non-empty, non-whitespace-only identifier. */
+function isValidIdentifier(value: unknown): value is string {
+  return typeof value === 'string' && value.trim().length > 0;
+}
+
 class Collector {
   readonly #issues: ApplicationIssue[] = [];
 
@@ -267,37 +275,160 @@ class Collector {
 /* Canonicalization and identity                                       */
 /* ------------------------------------------------------------------ */
 
+/**
+ * Structured rejection for values outside the canonical serializable
+ * domain (MED-04-F remediation). The compiler NEVER silently coerces
+ * NaN, ±Infinity, negative zero, BigInt, Date, functions, symbols,
+ * sparse arrays, cyclic structures, unsupported prototypes, or throwing
+ * getters/proxies into `null`, strings, or omissions — ambiguous
+ * `applicationVersion` values are impossible because out-of-domain
+ * definitions fail compilation.
+ */
+export class CanonicalIdentityError extends Error {
+  readonly code: 'NON_CANONICAL_VALUE' | 'CYCLIC_STRUCTURE';
+  readonly path: string;
+
+  constructor(code: 'NON_CANONICAL_VALUE' | 'CYCLIC_STRUCTURE', message: string, path: string) {
+    super(message);
+    this.name = 'CanonicalIdentityError';
+    this.code = code;
+    this.path = path;
+  }
+}
+
 /** Stable JSON: recursively sorted object keys, arrays preserved in order. */
 export function stableJson(value: unknown): string {
   return JSON.stringify(canonicalize(value));
 }
 
-function canonicalize(value: unknown): unknown {
-  if (value === null || value === undefined) {
+function canonicalize(value: unknown, path: string = '(root)'): unknown {
+  if (value === null) {
     return null;
   }
-  if (typeof value === 'bigint') {
-    return value.toString();
+  const type = typeof value;
+  if (type === 'string' || type === 'boolean') {
+    return value;
+  }
+  if (type === 'number') {
+    if (!Number.isFinite(value)) {
+      throw new CanonicalIdentityError(
+        'NON_CANONICAL_VALUE',
+        `The canonical serializable domain rejects the non-finite number ${String(value)} at '${path}'.`,
+        path,
+      );
+    }
+    if (Object.is(value, -0)) {
+      throw new CanonicalIdentityError(
+        'NON_CANONICAL_VALUE',
+        `The canonical serializable domain rejects negative zero at '${path}' (use 0).`,
+        path,
+      );
+    }
+    return value;
+  }
+  if (type === 'bigint') {
+    throw new CanonicalIdentityError(
+      'NON_CANONICAL_VALUE',
+      `The canonical serializable domain rejects a BigInt at '${path}' (declare a number or string instead).`,
+      path,
+    );
+  }
+  if (type === 'function') {
+    throw new CanonicalIdentityError(
+      'NON_CANONICAL_VALUE',
+      `The canonical serializable domain rejects a function at '${path}'.`,
+      path,
+    );
+  }
+  if (type === 'symbol') {
+    throw new CanonicalIdentityError(
+      'NON_CANONICAL_VALUE',
+      `The canonical serializable domain rejects a symbol at '${path}'.`,
+      path,
+    );
+  }
+  if (type === 'undefined') {
+    throw new CanonicalIdentityError(
+      'NON_CANONICAL_VALUE',
+      `The canonical serializable domain rejects undefined at '${path}' (omit the field or use null).`,
+      path,
+    );
   }
   if (value instanceof Date) {
-    return value.toISOString();
+    throw new CanonicalIdentityError(
+      'NON_CANONICAL_VALUE',
+      `The canonical serializable domain rejects a Date object at '${path}' (declare an ISO string instead).`,
+      path,
+    );
+  }
+  const seen = canonicalSeenStack;
+  if (seen.has(value as object)) {
+    throw new CanonicalIdentityError(
+      'CYCLIC_STRUCTURE',
+      `The value at '${path}' is part of a cyclic structure; cyclic values cannot be canonicalized.`,
+      path,
+    );
   }
   if (Array.isArray(value)) {
-    return value.map(canonicalize);
+    if (value.length !== new Set(value.keys()).size) {
+      throw new CanonicalIdentityError(
+        'NON_CANONICAL_VALUE',
+        `The canonical serializable domain rejects a sparse array at '${path}'.`,
+        path,
+      );
+    }
+    seen.add(value as object);
+    try {
+      return (value as unknown[]).map((item, index) => canonicalize(item, `${path}[${index}]`));
+    } finally {
+      seen.delete(value as object);
+    }
   }
-  if (typeof value === 'object') {
-    const source = value as Record<string, unknown>;
+  const proto = Object.getPrototypeOf(value as object);
+  if (proto !== Object.prototype && proto !== null) {
+    throw new CanonicalIdentityError(
+      'NON_CANONICAL_VALUE',
+      `The canonical serializable domain rejects an object with an unsupported prototype at '${path}'.`,
+      path,
+    );
+  }
+  const source = value as Record<string, unknown>;
+  let keys: string[];
+  try {
+    keys = Object.keys(source);
+  } catch {
+    throw new CanonicalIdentityError(
+      'NON_CANONICAL_VALUE',
+      `The value at '${path}' could not be enumerated (hostile getter or proxy); identity inputs must be plain data.`,
+      path,
+    );
+  }
+  seen.add(value as object);
+  try {
     const out: Record<string, unknown> = {};
-    for (const key of Object.keys(source).sort()) {
-      const item = source[key];
+    for (const key of keys.sort()) {
+      let item: unknown;
+      try {
+        item = source[key];
+      } catch {
+        throw new CanonicalIdentityError(
+          'NON_CANONICAL_VALUE',
+          `Reading field '${key}' at '${path}' threw (hostile getter); identity inputs must be plain data.`,
+          `${path}.${key}`,
+        );
+      }
       if (item !== undefined) {
-        out[key] = canonicalize(item);
+        out[key] = canonicalize(item, `${path}.${key}`);
       }
     }
     return out;
+  } finally {
+    seen.delete(value as object);
   }
-  return value;
 }
+
+/** Cycle-detection scratch set (per canonicalize call tree). */
+const canonicalSeenStack = new Set<object>();
 
 /** Pure-TS SHA-256 (byte-identical to node:crypto; browser-safe). */
 function sha256Hex(payload: string): string {
@@ -460,311 +591,378 @@ export interface ApplicationPlan {
 
 /** Compile one application. Never throws for invalid definitions. */
 export function compileApplication(input: CompileApplicationInput): CompileApplicationResult {
-  const collector = new Collector();
-  const surfaceResolutions: SurfaceResolution[] = [];
-  const routeScreenResolutions: RouteScreenResolution[] = [];
-  const application = input.application;
+  // Compilation NEVER throws for invalid definitions (LOW-04-B): hostile
+  // getters, proxies, invalid prototypes, and unsupported values are
+  // converted into structured safe diagnostics.
+  try {
+    const collector = new Collector();
+    const surfaceResolutions: SurfaceResolution[] = [];
+    const routeScreenResolutions: RouteScreenResolution[] = [];
+    const application = input.application;
 
-  if (!isPlainObject(application)) {
-    return {
-      ok: false,
-      issues: [
-        { code: 'APPLICATION_EMPTY_ID', message: 'Application definition must be an object.' },
-      ],
-    };
-  }
-  collector.unknownFields(application, APPLICATION_FIELDS, 'application');
-
-  if (typeof application.schema !== 'string') {
-    collector.add(
-      'APPLICATION_UNKNOWN_SCHEMA',
-      'Application definition must declare its schema marker.',
-      'application.schema',
-    );
-  } else if (application.schema !== APPLICATION_DEFINITION_SCHEMA) {
-    collector.add(
-      'APPLICATION_UNKNOWN_SCHEMA',
-      `Application schema '${String(application.schema)}' is not supported by this compiler.`,
-      'application.schema',
-    );
-  }
-  if (typeof application.id !== 'string' || application.id.length === 0) {
-    collector.add(
-      'APPLICATION_EMPTY_ID',
-      'Application id must be a non-empty string.',
-      'application.id',
-    );
-  }
-  if (typeof application.revision !== 'string' || application.revision.length === 0) {
-    collector.add(
-      'APPLICATION_EMPTY_REVISION',
-      'Application revision must be a non-empty string.',
-      'application.revision',
-    );
-  }
-
-  // ---- Provided bindings -------------------------------------------------
-  const providedResources = new Map<string, ResourceDefinition>();
-  for (const resource of input.resources) {
-    collector.unknownFields(resource, RESOURCE_DEF_FIELDS, `resources[${resource.id}]`);
-    for (const field of resource.fields) {
-      collector.unknownFields(
-        field,
-        RESOURCE_FIELD_FIELDS,
-        `resources[${resource.id}].fields[${field.name}]`,
-      );
+    if (!isPlainObject(application)) {
+      return {
+        ok: false,
+        issues: [
+          { code: 'APPLICATION_EMPTY_ID', message: 'Application definition must be an object.' },
+        ],
+      };
     }
-    if (providedResources.has(resource.id)) {
+    collector.unknownFields(application, APPLICATION_FIELDS, 'application');
+
+    if (typeof application.schema !== 'string') {
       collector.add(
-        'DUPLICATE_RESOURCE_REFERENCE',
-        `Resource '${resource.id}' is provided more than once.`,
-        `resources[${resource.id}]`,
+        'APPLICATION_UNKNOWN_SCHEMA',
+        'Application definition must declare its schema marker.',
+        'application.schema',
       );
-      continue;
+    } else if (application.schema !== APPLICATION_DEFINITION_SCHEMA) {
+      collector.add(
+        'APPLICATION_UNKNOWN_SCHEMA',
+        `Application schema '${String(application.schema)}' is not supported by this compiler.`,
+        'application.schema',
+      );
     }
-    providedResources.set(resource.id, resource);
-  }
-  const providedContracts = new Map<string, string>();
-  for (const contract of input.contracts ?? []) {
-    providedContracts.set(contract.id, contract.revision);
-  }
-  const providedCapabilities = new Map<string, string>();
-  for (const capability of input.capabilities ?? []) {
-    providedCapabilities.set(capability.id, capability.revision);
-  }
-  const providedComponents = new Map<string, string>();
-  for (const component of input.components ?? []) {
-    providedComponents.set(component.componentId, component.revision);
-  }
+    if (typeof application.id !== 'string' || application.id.length === 0) {
+      collector.add(
+        'APPLICATION_EMPTY_ID',
+        'Application id must be a non-empty string.',
+        'application.id',
+      );
+    } else if (!isValidIdentifier(application.id)) {
+      collector.add(
+        'APPLICATION_INVALID_IDENTIFIER',
+        'Application id must not be whitespace-only.',
+        'application.id',
+      );
+    }
+    if (typeof application.revision !== 'string' || application.revision.length === 0) {
+      collector.add(
+        'APPLICATION_EMPTY_REVISION',
+        'Application revision must be a non-empty string.',
+        'application.revision',
+      );
+    } else if (!isValidIdentifier(application.revision)) {
+      collector.add(
+        'APPLICATION_INVALID_IDENTIFIER',
+        'Application revision must not be whitespace-only.',
+        'application.revision',
+      );
+    }
 
-  // ---- Routes (ordered navigation) ----------------------------------------
-  const routeIds = new Set<string>();
-  const routePaths = new Set<string>();
-  for (const route of application.routes) {
-    collector.unknownFields(route, ROUTE_FIELDS, `application.routes[${route.id}]`);
-    if (routeIds.has(route.id)) {
-      collector.add(
-        'DUPLICATE_ROUTE_ID',
-        `Route id '${route.id}' is declared more than once.`,
-        `application.routes[${route.id}]`,
-      );
-    }
-    routeIds.add(route.id);
-    if (routePaths.has(route.path)) {
-      collector.add(
-        'DUPLICATE_ROUTE_PATH',
-        `Route path '${route.path}' is declared more than once.`,
-        `application.routes[${route.id}]`,
-      );
-    }
-    routePaths.add(route.path);
-    if (route.nav !== undefined) {
-      collector.unknownFields(route.nav, NAV_FIELDS, `application.routes[${route.id}].nav`);
-    }
-    // Route->screen resolution is checked after the screens map is built.
-    routeScreenResolutions.push((collector, screens: ReadonlyMap<string, ScreenDefinition>) => {
-      if (!screens.has(route.screenId)) {
-        collector.add(
-          'UNKNOWN_ROUTE_SCREEN',
-          `Route '${route.id}' targets unknown screen '${route.screenId}'.`,
-          `application.routes[${route.id}].screenId`,
+    // ---- Provided bindings -------------------------------------------------
+    const providedResources = new Map<string, ResourceDefinition>();
+    for (const resource of input.resources) {
+      collector.unknownFields(resource, RESOURCE_DEF_FIELDS, `resources[${resource.id}]`);
+      for (const field of resource.fields) {
+        collector.unknownFields(
+          field,
+          RESOURCE_FIELD_FIELDS,
+          `resources[${resource.id}].fields[${field.name}]`,
         );
       }
-    });
-  }
-
-  // ---- Screens --------------------------------------------------------------
-  const screensById = new Map<string, ScreenDefinition>();
-  const surfaceIds = new Set<string>();
-  for (const screen of application.screens) {
-    collector.unknownFields(screen, SCREEN_FIELDS, `application.screens[${screen.id}]`);
-    if (screensById.has(screen.id)) {
-      collector.add(
-        'DUPLICATE_SCREEN_ID',
-        `Screen id '${screen.id}' is declared more than once.`,
-        `application.screens[${screen.id}]`,
-      );
-      continue;
-    }
-    screensById.set(screen.id, screen);
-    const regionNames = new Set<string>();
-    for (const region of screen.layout) {
-      collector.unknownFields(
-        region,
-        REGION_FIELDS,
-        `application.screens[${screen.id}].layout[${region.name}]`,
-      );
-      if (regionNames.has(region.name)) {
+      if (providedResources.has(resource.id)) {
         collector.add(
-          'DUPLICATE_REGION_NAME',
-          `Region '${region.name}' is declared more than once on screen '${screen.id}'.`,
+          'DUPLICATE_RESOURCE_REFERENCE',
+          `Resource '${resource.id}' is provided more than once.`,
+          `resources[${resource.id}]`,
+        );
+        continue;
+      }
+      providedResources.set(resource.id, resource);
+    }
+    const providedContracts = new Map<string, string>();
+    for (const contract of input.contracts ?? []) {
+      providedContracts.set(contract.id, contract.revision);
+    }
+    const providedCapabilities = new Map<string, string>();
+    for (const capability of input.capabilities ?? []) {
+      providedCapabilities.set(capability.id, capability.revision);
+    }
+    const providedComponents = new Map<string, string>();
+    for (const component of input.components ?? []) {
+      providedComponents.set(component.componentId, component.revision);
+    }
+
+    // ---- Routes (ordered navigation) ----------------------------------------
+    const routeIds = new Set<string>();
+    const routePaths = new Set<string>();
+    for (const route of application.routes) {
+      collector.unknownFields(route, ROUTE_FIELDS, `application.routes[${route.id}]`);
+      if (routeIds.has(route.id)) {
+        collector.add(
+          'DUPLICATE_ROUTE_ID',
+          `Route id '${route.id}' is declared more than once.`,
+          `application.routes[${route.id}]`,
+        );
+      }
+      routeIds.add(route.id);
+      if (routePaths.has(route.path)) {
+        collector.add(
+          'DUPLICATE_ROUTE_PATH',
+          `Route path '${route.path}' is declared more than once.`,
+          `application.routes[${route.id}]`,
+        );
+      }
+      routePaths.add(route.path);
+      if (route.nav !== undefined) {
+        collector.unknownFields(route.nav, NAV_FIELDS, `application.routes[${route.id}].nav`);
+        // Reachable numeric identity fields are value-checked (MED-04-F): a
+        // NaN/Infinity order would silently coerce under canonicalization and
+        // create ambiguous identity.
+        if (
+          route.nav.order !== undefined &&
+          (typeof route.nav.order !== 'number' ||
+            !Number.isFinite(route.nav.order) ||
+            Object.is(route.nav.order, -0))
+        ) {
+          collector.add(
+            'APPLICATION_NON_CANONICAL_VALUE',
+            `Route '${route.id}' nav.order must be a finite number (received ${describeReceivedType(route.nav.order)}).`,
+            `application.routes[${route.id}].nav.order`,
+          );
+        }
+      }
+      // Route->screen resolution is checked after the screens map is built.
+      routeScreenResolutions.push((collector, screens: ReadonlyMap<string, ScreenDefinition>) => {
+        if (!screens.has(route.screenId)) {
+          collector.add(
+            'UNKNOWN_ROUTE_SCREEN',
+            `Route '${route.id}' targets unknown screen '${route.screenId}'.`,
+            `application.routes[${route.id}].screenId`,
+          );
+        }
+      });
+    }
+
+    // ---- Screens --------------------------------------------------------------
+    const screensById = new Map<string, ScreenDefinition>();
+    const surfaceIds = new Set<string>();
+    for (const screen of application.screens) {
+      collector.unknownFields(screen, SCREEN_FIELDS, `application.screens[${screen.id}]`);
+      if (screensById.has(screen.id)) {
+        collector.add(
+          'DUPLICATE_SCREEN_ID',
+          `Screen id '${screen.id}' is declared more than once.`,
+          `application.screens[${screen.id}]`,
+        );
+        continue;
+      }
+      screensById.set(screen.id, screen);
+      const regionNames = new Set<string>();
+      for (const region of screen.layout) {
+        collector.unknownFields(
+          region,
+          REGION_FIELDS,
           `application.screens[${screen.id}].layout[${region.name}]`,
         );
-      }
-      regionNames.add(region.name);
-      for (const surface of region.surfaces) {
-        collectSurface(
-          collector,
-          surface,
-          `application.screens[${screen.id}]`,
-          surfaceIds,
-          surfaceResolutions,
-        );
-      }
-    }
-    const states = screen.states;
-    if (states !== undefined) {
-      collector.unknownFields(states, STATES_FIELDS, `application.screens[${screen.id}].states`);
-      for (const [name, surface] of Object.entries(states)) {
-        if (surface !== undefined) {
+        if (regionNames.has(region.name)) {
+          collector.add(
+            'DUPLICATE_REGION_NAME',
+            `Region '${region.name}' is declared more than once on screen '${screen.id}'.`,
+            `application.screens[${screen.id}].layout[${region.name}]`,
+          );
+        }
+        regionNames.add(region.name);
+        for (const surface of region.surfaces) {
           collectSurface(
             collector,
             surface,
-            `application.screens[${screen.id}].states.${name}`,
+            `application.screens[${screen.id}]`,
             surfaceIds,
             surfaceResolutions,
           );
         }
       }
-    }
-  }
-  // Route->screen targets are resolved now that the screens map is complete.
-  for (const routeCheck of routeScreenResolutions) {
-    routeCheck(collector, screensById);
-  }
-
-  // ---- Views / forms / actions ------------------------------------------------
-  const viewIds = new Set<string>();
-  const viewsById = new Map<string, ViewBinding>();
-  for (const view of application.views ?? []) {
-    collector.unknownFields(view, VIEW_FIELDS, `application.views[${view.viewId}]`);
-    if (viewIds.has(view.viewId)) {
-      collector.add(
-        'DUPLICATE_VIEW_ID',
-        `View '${view.viewId}' is declared more than once.`,
-        `application.views[${view.viewId}]`,
-      );
-      continue;
-    }
-    viewIds.add(view.viewId);
-    viewsById.set(view.viewId, view);
-    collectResourceReference(
-      collector,
-      application,
-      view.resourceId,
-      view.resourceRevision,
-      providedResources,
-      `application.views[${view.viewId}]`,
-    );
-    for (const field of view.fields ?? []) {
-      checkCatalogueField(
-        collector,
-        providedResources.get(view.resourceId),
-        field,
-        `application.views[${view.viewId}].fields`,
-      );
-    }
-  }
-
-  const formIds = new Set<string>();
-  const formsById = new Map<string, FormBinding>();
-  for (const form of application.forms ?? []) {
-    collector.unknownFields(form, FORM_FIELDS, `application.forms[${form.formId}]`);
-    if (formIds.has(form.formId)) {
-      collector.add(
-        'DUPLICATE_FORM_ID',
-        `Form '${form.formId}' is declared more than once.`,
-        `application.forms[${form.formId}]`,
-      );
-      continue;
-    }
-    formIds.add(form.formId);
-    formsById.set(form.formId, form);
-    collectResourceReference(
-      collector,
-      application,
-      form.resourceId,
-      form.resourceRevision,
-      providedResources,
-      `application.forms[${form.formId}]`,
-    );
-    checkContractReference(
-      collector,
-      providedContracts,
-      form.inputContractId,
-      form.inputContractRevision,
-      `application.forms[${form.formId}].inputContractId`,
-    );
-    for (const field of form.fields) {
-      collector.unknownFields(
-        field,
-        FORM_FIELD_FIELDS,
-        `application.forms[${form.formId}].fields[${field.name}]`,
-      );
-      checkCatalogueField(
-        collector,
-        providedResources.get(form.resourceId),
-        field.name,
-        `application.forms[${form.formId}].fields`,
-      );
-    }
-  }
-
-  const actionIds = new Set<string>();
-  const actionsById = new Map<string, ActionDefinition>();
-  for (const action of application.actions) {
-    collector.unknownFields(
-      action,
-      ACTION_FIELDS.get(action.kind) ?? ACTION_BASE_FIELDS,
-      `application.actions[${action.id}]`,
-    );
-    if (actionIds.has(action.id)) {
-      collector.add(
-        'DUPLICATE_ACTION_ID',
-        `Action '${action.id}' is declared more than once.`,
-        `application.actions[${action.id}]`,
-      );
-      continue;
-    }
-    actionIds.add(action.id);
-    actionsById.set(action.id, action);
-    if (!ACTION_FIELDS.has(action.kind)) {
-      collector.add(
-        'UNKNOWN_SURFACE_ROLE',
-        `Action '${action.id}' declares unknown kind '${String((action as { kind?: unknown }).kind)}'.`,
-        `application.actions[${action.id}].kind`,
-      );
-      continue;
-    }
-    if (action.kind === 'navigation') {
-      if (!routeIds.has(action.routeId)) {
-        collector.add(
-          'UNKNOWN_ROUTE_REFERENCE',
-          `Navigation action '${action.id}' targets unknown route '${action.routeId}'.`,
-          `application.actions[${action.id}].routeId`,
-        );
+      const states = screen.states;
+      if (states !== undefined) {
+        collector.unknownFields(states, STATES_FIELDS, `application.screens[${screen.id}].states`);
+        for (const [name, surface] of Object.entries(states)) {
+          if (surface !== undefined) {
+            collectSurface(
+              collector,
+              surface,
+              `application.screens[${screen.id}].states.${name}`,
+              surfaceIds,
+              surfaceResolutions,
+            );
+          }
+        }
       }
-    } else if (action.kind === 'query' || action.kind === 'mutation') {
+    }
+    // Route->screen targets are resolved now that the screens map is complete.
+    for (const routeCheck of routeScreenResolutions) {
+      routeCheck(collector, screensById);
+    }
+
+    // ---- Views / forms / actions ------------------------------------------------
+    const viewIds = new Set<string>();
+    const viewsById = new Map<string, ViewBinding>();
+    for (const view of application.views ?? []) {
+      collector.unknownFields(view, VIEW_FIELDS, `application.views[${view.viewId}]`);
+      if (viewIds.has(view.viewId)) {
+        collector.add(
+          'DUPLICATE_VIEW_ID',
+          `View '${view.viewId}' is declared more than once.`,
+          `application.views[${view.viewId}]`,
+        );
+        continue;
+      }
+      viewIds.add(view.viewId);
+      viewsById.set(view.viewId, view);
       collectResourceReference(
         collector,
         application,
-        action.resourceId,
-        action.resourceRevision,
+        view.resourceId,
+        view.resourceRevision,
         providedResources,
+        `application.views[${view.viewId}]`,
+      );
+      for (const field of view.fields ?? []) {
+        checkCatalogueField(
+          collector,
+          providedResources.get(view.resourceId),
+          field,
+          `application.views[${view.viewId}].fields`,
+        );
+      }
+    }
+
+    const formIds = new Set<string>();
+    const formsById = new Map<string, FormBinding>();
+    for (const form of application.forms ?? []) {
+      collector.unknownFields(form, FORM_FIELDS, `application.forms[${form.formId}]`);
+      if (formIds.has(form.formId)) {
+        collector.add(
+          'DUPLICATE_FORM_ID',
+          `Form '${form.formId}' is declared more than once.`,
+          `application.forms[${form.formId}]`,
+        );
+        continue;
+      }
+      formIds.add(form.formId);
+      formsById.set(form.formId, form);
+      collectResourceReference(
+        collector,
+        application,
+        form.resourceId,
+        form.resourceRevision,
+        providedResources,
+        `application.forms[${form.formId}]`,
+      );
+      checkContractReference(
+        collector,
+        providedContracts,
+        form.inputContractId,
+        form.inputContractRevision,
+        `application.forms[${form.formId}].inputContractId`,
+      );
+      for (const field of form.fields) {
+        collector.unknownFields(
+          field,
+          FORM_FIELD_FIELDS,
+          `application.forms[${form.formId}].fields[${field.name}]`,
+        );
+        checkCatalogueField(
+          collector,
+          providedResources.get(form.resourceId),
+          field.name,
+          `application.forms[${form.formId}].fields`,
+        );
+      }
+    }
+
+    const actionIds = new Set<string>();
+    const actionsById = new Map<string, ActionDefinition>();
+    for (const action of application.actions) {
+      collector.unknownFields(
+        action,
+        ACTION_FIELDS.get(action.kind) ?? ACTION_BASE_FIELDS,
         `application.actions[${action.id}]`,
       );
-      if (action.kind === 'mutation') {
-        const resource = providedResources.get(action.resourceId);
-        const declared = resource?.mutations?.some((mutation) => mutation.op === action.op);
-        if (resource !== undefined && action.resourceRevision === resource.revision && !declared) {
+      if (actionIds.has(action.id)) {
+        collector.add(
+          'DUPLICATE_ACTION_ID',
+          `Action '${action.id}' is declared more than once.`,
+          `application.actions[${action.id}]`,
+        );
+        continue;
+      }
+      actionIds.add(action.id);
+      actionsById.set(action.id, action);
+      if (!ACTION_FIELDS.has(action.kind)) {
+        collector.add(
+          'UNKNOWN_SURFACE_ROLE',
+          `Action '${action.id}' declares unknown kind '${String((action as { kind?: unknown }).kind)}'.`,
+          `application.actions[${action.id}].kind`,
+        );
+        continue;
+      }
+      if (action.kind === 'navigation') {
+        if (!routeIds.has(action.routeId)) {
           collector.add(
-            'MUTATION_NOT_DECLARED',
-            `Mutation action '${action.id}' uses op '${action.op}' which resource '${action.resourceId}' does not declare.`,
-            `application.actions[${action.id}].op`,
+            'UNKNOWN_ROUTE_REFERENCE',
+            `Navigation action '${action.id}' targets unknown route '${action.routeId}'.`,
+            `application.actions[${action.id}].routeId`,
           );
         }
-      }
-      if (action.inputContractId !== undefined) {
+      } else if (action.kind === 'query' || action.kind === 'mutation') {
+        collectResourceReference(
+          collector,
+          application,
+          action.resourceId,
+          action.resourceRevision,
+          providedResources,
+          `application.actions[${action.id}]`,
+        );
+        if (action.kind === 'mutation') {
+          const resource = providedResources.get(action.resourceId);
+          const declared = resource?.mutations?.some((mutation) => mutation.op === action.op);
+          if (
+            resource !== undefined &&
+            action.resourceRevision === resource.revision &&
+            !declared
+          ) {
+            collector.add(
+              'MUTATION_NOT_DECLARED',
+              `Mutation action '${action.id}' uses op '${action.op}' which resource '${action.resourceId}' does not declare.`,
+              `application.actions[${action.id}].op`,
+            );
+          }
+        }
+        if (action.inputContractId !== undefined) {
+          checkContractReference(
+            collector,
+            providedContracts,
+            action.inputContractId,
+            action.inputContractRevision,
+            `application.actions[${action.id}].inputContractId`,
+          );
+        }
+        if (action.outputContractId !== undefined) {
+          checkContractReference(
+            collector,
+            providedContracts,
+            action.outputContractId,
+            action.outputContractRevision,
+            `application.actions[${action.id}].outputContractId`,
+          );
+        }
+      } else if (action.kind === 'capability') {
+        const expectedRevision = providedCapabilities.get(action.capabilityId);
+        if (expectedRevision === undefined) {
+          collector.add(
+            'UNKNOWN_CAPABILITY_REFERENCE',
+            `Capability action '${action.id}' references unknown capability '${action.capabilityId}'.`,
+            `application.actions[${action.id}].capabilityId`,
+          );
+        } else if (expectedRevision !== action.capabilityRevision) {
+          collector.add(
+            'CAPABILITY_REVISION_MISMATCH',
+            `Capability action '${action.id}' references capability '${action.capabilityId}' revision '${action.capabilityRevision}' but the runtime declares '${expectedRevision}'.`,
+            `application.actions[${action.id}].capabilityRevision`,
+          );
+        }
         checkContractReference(
           collector,
           providedContracts,
@@ -772,218 +970,247 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
           action.inputContractRevision,
           `application.actions[${action.id}].inputContractId`,
         );
-      }
-      if (action.outputContractId !== undefined) {
-        checkContractReference(
-          collector,
-          providedContracts,
-          action.outputContractId,
-          action.outputContractRevision,
-          `application.actions[${action.id}].outputContractId`,
-        );
-      }
-    } else if (action.kind === 'capability') {
-      const expectedRevision = providedCapabilities.get(action.capabilityId);
-      if (expectedRevision === undefined) {
-        collector.add(
-          'UNKNOWN_CAPABILITY_REFERENCE',
-          `Capability action '${action.id}' references unknown capability '${action.capabilityId}'.`,
-          `application.actions[${action.id}].capabilityId`,
-        );
-      } else if (expectedRevision !== action.capabilityRevision) {
-        collector.add(
-          'CAPABILITY_REVISION_MISMATCH',
-          `Capability action '${action.id}' references capability '${action.capabilityId}' revision '${action.capabilityRevision}' but the runtime declares '${expectedRevision}'.`,
-          `application.actions[${action.id}].capabilityRevision`,
-        );
-      }
-      checkContractReference(
-        collector,
-        providedContracts,
-        action.inputContractId,
-        action.inputContractRevision,
-        `application.actions[${action.id}].inputContractId`,
-      );
-      if (action.outputContractId !== undefined) {
-        checkContractReference(
-          collector,
-          providedContracts,
-          action.outputContractId,
-          action.outputContractRevision,
-          `application.actions[${action.id}].outputContractId`,
-        );
-      }
-    } else if (action.kind === 'local') {
-      if (action.inputContractId !== undefined) {
-        checkContractReference(
-          collector,
-          providedContracts,
-          action.inputContractId,
-          undefined,
-          `application.actions[${action.id}].inputContractId`,
-        );
-      }
-    }
-  }
-
-  // ---- Referenced resources + components --------------------------------------
-  const resourceReferences = new Set<string>();
-  for (const reference of application.resources) {
-    collector.unknownFields(
-      reference,
-      RESOURCE_REF_FIELDS,
-      `application.resources[${reference.resourceId}]`,
-    );
-    if (resourceReferences.has(reference.resourceId)) {
-      collector.add(
-        'DUPLICATE_RESOURCE_REFERENCE',
-        `Resource '${reference.resourceId}' is referenced more than once.`,
-        `application.resources[${reference.resourceId}]`,
-      );
-      continue;
-    }
-    resourceReferences.add(reference.resourceId);
-    const provided = providedResources.get(reference.resourceId);
-    if (provided === undefined) {
-      collector.add(
-        'UNKNOWN_RESOURCE',
-        `Application references resource '${reference.resourceId}' which was not provided.`,
-        `application.resources[${reference.resourceId}]`,
-      );
-    } else if (provided.revision !== reference.revision) {
-      collector.add(
-        'RESOURCE_REVISION_MISMATCH',
-        `Application references resource '${reference.resourceId}' revision '${reference.revision}' but the provided definition is '${provided.revision}'.`,
-        `application.resources[${reference.resourceId}]`,
-      );
-    } else {
-      // Explicit contract references of the resource must resolve.
-      for (const [role, contractId] of [
-        ['input', provided.inputContract],
-        ['output', provided.outputContract],
-      ] as const) {
-        if (contractId !== undefined && !providedContracts.has(contractId)) {
-          collector.add(
-            'UNKNOWN_CONTRACT_REFERENCE',
-            `Resource '${reference.resourceId}' ${role} contract '${contractId}' is unknown.`,
-            `resources[${reference.resourceId}]`,
+        if (action.outputContractId !== undefined) {
+          checkContractReference(
+            collector,
+            providedContracts,
+            action.outputContractId,
+            action.outputContractRevision,
+            `application.actions[${action.id}].outputContractId`,
+          );
+        }
+      } else if (action.kind === 'local') {
+        if (action.inputContractId !== undefined) {
+          checkContractReference(
+            collector,
+            providedContracts,
+            action.inputContractId,
+            undefined,
+            `application.actions[${action.id}].inputContractId`,
           );
         }
       }
     }
-  }
 
-  const componentRefs = new Map<string, string>();
-  for (const component of application.components ?? []) {
-    collector.unknownFields(
-      component,
-      COMPONENT_FIELDS,
-      `application.components[${component.componentId}]`,
-    );
-    if (componentRefs.has(component.componentId)) {
-      collector.add(
-        'DUPLICATE_COMPONENT_REFERENCE',
-        `Component '${component.componentId}' is referenced more than once.`,
+    // ---- Referenced resources + components --------------------------------------
+    const resourceReferences = new Set<string>();
+    for (const reference of application.resources) {
+      collector.unknownFields(
+        reference,
+        RESOURCE_REF_FIELDS,
+        `application.resources[${reference.resourceId}]`,
+      );
+      if (resourceReferences.has(reference.resourceId)) {
+        collector.add(
+          'DUPLICATE_RESOURCE_REFERENCE',
+          `Resource '${reference.resourceId}' is referenced more than once.`,
+          `application.resources[${reference.resourceId}]`,
+        );
+        continue;
+      }
+      resourceReferences.add(reference.resourceId);
+      const provided = providedResources.get(reference.resourceId);
+      if (provided === undefined) {
+        collector.add(
+          'UNKNOWN_RESOURCE',
+          `Application references resource '${reference.resourceId}' which was not provided.`,
+          `application.resources[${reference.resourceId}]`,
+        );
+      } else if (provided.revision !== reference.revision) {
+        collector.add(
+          'RESOURCE_REVISION_MISMATCH',
+          `Application references resource '${reference.resourceId}' revision '${reference.revision}' but the provided definition is '${provided.revision}'.`,
+          `application.resources[${reference.resourceId}]`,
+        );
+      } else {
+        // Explicit contract references of the resource must resolve.
+        for (const [role, contractId] of [
+          ['input', provided.inputContract],
+          ['output', provided.outputContract],
+        ] as const) {
+          if (contractId !== undefined && !providedContracts.has(contractId)) {
+            collector.add(
+              'UNKNOWN_CONTRACT_REFERENCE',
+              `Resource '${reference.resourceId}' ${role} contract '${contractId}' is unknown.`,
+              `resources[${reference.resourceId}]`,
+            );
+          }
+        }
+      }
+    }
+
+    const componentRefs = new Map<string, string>();
+    for (const component of application.components ?? []) {
+      collector.unknownFields(
+        component,
+        COMPONENT_FIELDS,
         `application.components[${component.componentId}]`,
       );
-      continue;
+      if (componentRefs.has(component.componentId)) {
+        collector.add(
+          'DUPLICATE_COMPONENT_REFERENCE',
+          `Component '${component.componentId}' is referenced more than once.`,
+          `application.components[${component.componentId}]`,
+        );
+        continue;
+      }
+      componentRefs.set(component.componentId, component.revision);
+      const provided = providedComponents.get(component.componentId);
+      if (provided === undefined) {
+        collector.add(
+          'UNKNOWN_COMPONENT_REFERENCE',
+          `Application references component '${component.componentId}' which is not in the registry.`,
+          `application.components[${component.componentId}]`,
+        );
+      } else if (provided !== component.revision) {
+        collector.add(
+          'COMPONENT_REVISION_MISMATCH',
+          `Application references component '${component.componentId}' revision '${component.revision}' but the registry declares '${provided}'.`,
+          `application.components[${component.componentId}]`,
+        );
+      }
     }
-    componentRefs.set(component.componentId, component.revision);
-    const provided = providedComponents.get(component.componentId);
-    if (provided === undefined) {
-      collector.add(
-        'UNKNOWN_COMPONENT_REFERENCE',
-        `Application references component '${component.componentId}' which is not in the registry.`,
-        `application.components[${component.componentId}]`,
-      );
-    } else if (provided !== component.revision) {
-      collector.add(
-        'COMPONENT_REVISION_MISMATCH',
-        `Application references component '${component.componentId}' revision '${component.revision}' but the registry declares '${provided}'.`,
-        `application.components[${component.componentId}]`,
-      );
+
+    // ---- Cross-references from surfaces (deferred until the maps exist) --------
+    for (const resolution of surfaceResolutions) {
+      resolution(collector, {
+        viewsById,
+        formsById,
+        actionsById,
+        routeIds,
+        componentRefs,
+      });
     }
-  }
 
-  // ---- Cross-references from surfaces (deferred until the maps exist) --------
-  for (const resolution of surfaceResolutions) {
-    resolution(collector, {
-      viewsById,
-      formsById,
-      actionsById,
-      routeIds,
-      componentRefs,
-    });
-  }
-
-  const issues = collector.sorted();
-  if (issues.length > 0) {
-    return { ok: false, issues };
-  }
-
-  // ---- Assemble the immutable plan --------------------------------------------
-  const manifest = deepFreeze(canonicalApplicationManifest(application)) as Record<string, unknown>;
-  const applicationVersion = computeApplicationVersion({ application, resources: input.resources });
-
-  const screensFrozen: Record<string, Readonly<ScreenDefinition>> = {};
-  for (const screen of application.screens) {
-    screensFrozen[screen.id] = deepFreeze(screen);
-  }
-  const viewsFrozen: Record<string, Readonly<ViewBinding>> = {};
-  for (const view of application.views ?? []) {
-    viewsFrozen[view.viewId] = deepFreeze(view);
-  }
-  const formsFrozen: Record<string, Readonly<FormBinding>> = {};
-  for (const form of application.forms ?? []) {
-    formsFrozen[form.formId] = deepFreeze(form);
-  }
-  const actionsFrozen: Record<string, Readonly<ActionDefinition>> = {};
-  for (const action of application.actions) {
-    actionsFrozen[action.id] = deepFreeze(action);
-  }
-  const resourcesFrozen: Record<string, Readonly<ResourceDefinition>> = {};
-  for (const reference of application.resources) {
-    const resource = providedResources.get(reference.resourceId);
-    if (resource !== undefined) {
-      resourcesFrozen[resource.id] = deepFreeze(resource);
+    const issues = collector.sorted();
+    if (issues.length > 0) {
+      return { ok: false, issues };
     }
-  }
-  const routesFrozen = deepFreeze(
-    application.routes.map((route) => ({
-      route,
-      screen: screensById.get(route.screenId) as ScreenDefinition,
-    })),
-  );
 
-  const plan: ApplicationPlan = Object.freeze({
-    applicationId: application.id,
-    applicationRevision: application.revision,
-    applicationVersion,
-    manifest,
-    routes: routesFrozen,
-    screens: Object.freeze(screensFrozen),
-    views: Object.freeze(viewsFrozen),
-    forms: Object.freeze(formsFrozen),
-    actions: Object.freeze(actionsFrozen),
-    resources: Object.freeze(resourcesFrozen),
-    components: deepFreeze([...(application.components ?? [])]),
-    toJSON(): Record<string, unknown> {
+    // ---- Assemble the immutable plan --------------------------------------------
+    // Identity inputs are canonicalized STRICTLY: any out-of-domain value
+    // (NaN, Infinity, -0, BigInt, Date, function, symbol, sparse array,
+    // cyclic structure, exotic prototype, throwing getter/proxy) fails
+    // compilation with a structured diagnostic — no ambiguous
+    // applicationVersion is ever produced (MED-04-F).
+    let manifest: Record<string, unknown>;
+    let applicationVersion: string;
+    try {
+      manifest = deepFreeze(cloneForFreeze(canonicalApplicationManifest(application))) as Record<
+        string,
+        unknown
+      >;
+      applicationVersion = computeApplicationVersion({ application, resources: input.resources });
+    } catch (error) {
+      if (error instanceof CanonicalIdentityError) {
+        return {
+          ok: false,
+          issues: [
+            {
+              code: 'APPLICATION_NON_CANONICAL_VALUE',
+              message: error.message,
+              ...(error.path !== '(root)' ? { path: error.path } : {}),
+            },
+          ],
+        };
+      }
       return {
-        applicationId: application.id,
-        applicationRevision: application.revision,
-        applicationVersion,
-        manifest: canonicalApplicationManifest(application),
-        routes: routesFrozen,
-        screens: screensFrozen,
-        views: viewsFrozen,
-        forms: formsFrozen,
-        actions: actionsFrozen,
-        resources: resourcesFrozen,
-        components: [...(application.components ?? [])],
+        ok: false,
+        issues: [
+          {
+            code: 'APPLICATION_COMPILATION_FAILED',
+            message:
+              'The application definition could not be canonicalized; identity inputs must be plain, finite, acyclic data.',
+          },
+        ],
       };
-    },
-  });
-  return { ok: true, plan };
+    }
+
+    // Deep-copy then freeze: compilers operate on DEFENSIVE COPIES and never
+    // freeze or mutate caller-owned objects (LOW-04-F remediation).
+    const screensFrozen: Record<string, Readonly<ScreenDefinition>> = {};
+    for (const screen of application.screens) {
+      screensFrozen[screen.id] = deepFreezeClone(screen);
+    }
+    const viewsFrozen: Record<string, Readonly<ViewBinding>> = {};
+    for (const view of application.views ?? []) {
+      viewsFrozen[view.viewId] = deepFreezeClone(view);
+    }
+    const formsFrozen: Record<string, Readonly<FormBinding>> = {};
+    for (const form of application.forms ?? []) {
+      formsFrozen[form.formId] = deepFreezeClone(form);
+    }
+    const actionsFrozen: Record<string, Readonly<ActionDefinition>> = {};
+    for (const action of application.actions) {
+      actionsFrozen[action.id] = deepFreezeClone(action);
+    }
+    const resourcesFrozen: Record<string, Readonly<ResourceDefinition>> = {};
+    for (const reference of application.resources) {
+      const resource = providedResources.get(reference.resourceId);
+      if (resource !== undefined) {
+        resourcesFrozen[resource.id] = deepFreezeClone(resource);
+      }
+    }
+    const routesFrozen = deepFreeze(
+      application.routes.map((route) => ({
+        route: cloneForFreeze(route),
+        screen: cloneForFreeze(screensById.get(route.screenId) as ScreenDefinition),
+      })),
+    );
+
+    const plan: ApplicationPlan = Object.freeze({
+      applicationId: application.id,
+      applicationRevision: application.revision,
+      applicationVersion,
+      manifest,
+      routes: routesFrozen,
+      screens: Object.freeze(screensFrozen),
+      views: Object.freeze(viewsFrozen),
+      forms: Object.freeze(formsFrozen),
+      actions: Object.freeze(actionsFrozen),
+      resources: Object.freeze(resourcesFrozen),
+      components: deepFreeze([...(application.components ?? [])].map(cloneForFreeze)),
+      toJSON(): Record<string, unknown> {
+        return {
+          applicationId: application.id,
+          applicationRevision: application.revision,
+          applicationVersion,
+          manifest: canonicalApplicationManifest(application),
+          routes: routesFrozen,
+          screens: screensFrozen,
+          views: viewsFrozen,
+          forms: formsFrozen,
+          actions: actionsFrozen,
+          resources: resourcesFrozen,
+          components: [...(application.components ?? [])],
+        };
+      },
+    });
+    return { ok: true, plan };
+  } catch (error) {
+    if (error instanceof CanonicalIdentityError) {
+      return {
+        ok: false,
+        issues: [
+          {
+            code: 'APPLICATION_NON_CANONICAL_VALUE',
+            message: error.message,
+            ...(error.path !== '(root)' ? { path: error.path } : {}),
+          },
+        ],
+      };
+    }
+    return {
+      ok: false,
+      issues: [
+        {
+          code: 'APPLICATION_COMPILATION_FAILED',
+          message:
+            'The application definition could not be processed (hostile getter, proxy, or invalid prototype); compilation fails safely with this structured diagnostic.',
+        },
+      ],
+    };
+  }
 }
 
 /* ------------------------------------------------------------------ */
@@ -1195,4 +1422,35 @@ function deepFreeze<T>(value: T): T {
     Object.freeze(value);
   }
   return value;
+}
+
+/** Shallow-structural clone of plain data (functions by reference). */
+function cloneForFreeze<T>(value: T): T {
+  if (Array.isArray(value)) {
+    return value.map(cloneForFreeze) as unknown as T;
+  }
+  if (value !== null && typeof value === 'object' && !(value instanceof Date)) {
+    const proto = Object.getPrototypeOf(value);
+    if (proto !== Object.prototype && proto !== null) {
+      return value; // non-plain objects are retained as-is (declarations only)
+    }
+    const out: Record<string, unknown> = {};
+    for (const [key, item] of Object.entries(value as Record<string, unknown>)) {
+      out[key] = cloneForFreeze(item);
+    }
+    return out as unknown as T;
+  }
+  return value;
+}
+
+/** Clone then deep-freeze: the caller's object is never frozen or mutated. */
+function deepFreezeClone<T>(value: T): T {
+  return deepFreeze(cloneForFreeze(value));
+}
+
+/** Safe type description for a diagnostic (never the value itself). */
+function describeReceivedType(value: unknown): string {
+  if (value === null) return 'null';
+  if (Array.isArray(value)) return 'array';
+  return typeof value;
 }

@@ -126,9 +126,9 @@ function makeReferenceRenderer(): ApplicationRenderer {
 }
 
 describe('Stage 04: shared renderer conformance suite (reference renderer)', () => {
-  it('passes the shared suite and honestly rejects unsupported roles', () => {
+  it('passes the shared suite and honestly rejects unsupported roles', async () => {
     const renderer = makeReferenceRenderer();
-    expect(() =>
+    await expect(
       runRendererConformanceSuite({
         renderer,
         basePlan: compilePlanWithSurface('text'),
@@ -137,8 +137,12 @@ describe('Stage 04: shared renderer conformance suite (reference renderer)', () 
           components: createComponentRegistry('registry.test', '1'),
           dispatch: { execute: async () => ({ ok: true as const, value: null }) },
         }),
+        // The reference renderer supports the action role: the hostile-action
+        // canary scenario is mandatory and must actually run (LOW-04-E).
+        buildFailingActionPlan: () => compilePlanWithSurface('action'),
+        serializeOutput: (output) => String(output),
       }),
-    ).not.toThrow();
+    ).resolves.toBeUndefined();
 
     // The probe behavior is directly observable: an unsupported role throws
     // a structured diagnostic, never silently renders.
