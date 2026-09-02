@@ -15,7 +15,9 @@ audit can do that. Stage 05 has not begun.
 | --- | --- |
 | Required starting commit | `9678b260eb8477a7616bdf9cc3f038066dbcdbb5` (== `origin/main` after fetch; local main fast-forwarded from `810144f` through the two owner doc commits `d2ca3b4`, `9678b26`) |
 | Stage 03 disposition at start | VERIFIED WITH NON-BLOCKING ISSUES — STAGE 04 PERMITTED |
-| Final remote SHA | pushed to `main` (see Commit section; recorded exactly at push time) |
+| Implementation commit | `5897c69` — feat(stage-04): capability and application authoring foundation |
+| Fixture commit | `882e4ff` — fix(stage-04): include the SQLite parser-throw close/reopen fixture (the staging pass initially missed this one new test file; caught by the fresh-clone count reconciliation) |
+| **Final remote SHA** | **`882e4ff32ed427a0959816cecdde956791e20a30`** (== `origin/main` == local HEAD after push) |
 | Owner worktree changes | PRESERVED untouched: moved documents (root `VICT-STAGE-02-*` → `docs/report/`, `docs/nightly/*` → `docs/report/`), `docs/handoff/VICT-STAGE-02-INDEPENDENT-VERIFICATION-HANDOFF.md`, `docs/handoff/VICT-STAGE-03-HANDOFF.md`, `VICT-v0.2.0-architecture-update.zip`. No reset, no discard, no history rewrite, fast-forward pushes only. |
 
 ## Architecture implemented
@@ -368,11 +370,36 @@ npm 10.9.2. Commands run from the working tree at the listed order after
    `@vict/kernel`, Svelte, or Zod module references (comments stripped;
    imports are the dependency).
 
-### Fresh clone
+### Fresh clone (post-push)
 
-After pushing, the complete ladder was reproduced from a temporary fresh
-clone of `origin/main` with no pre-existing `dist` artifacts (results
-recorded in the addendum section below).
+A temporary fresh clone of `origin/main` (`882e4ff`) with NO pre-existing
+`dist` artifacts (verified by directory listing before `npm ci`) reproduced
+the complete ladder on Node v22.13.1 / npm 10.9.2, win32-x64:
+
+| Command | Exit | Observed result |
+| --- | --- | --- |
+| `git status --short` (at clone) | 0 | clean tree, no artifacts |
+| `npm ci` | 0 | clean install |
+| `npm run typecheck` (BEFORE build) | 0 | strict, no stale-dist dependency |
+| `npm run lint` | 0 | 0 problems |
+| `npm run format:check` | 0 | all files Prettier-clean |
+| `npm run build` | 0 | all six packages build |
+| `npm run test:unit` | 0 | 38 files / **409 tests passed** |
+| `npm run test:integration` | 0 | **4 tests passed** |
+| `npm test` | 0 | 38 files / **413 tests passed** |
+| `npm run verify:consumer` | 0 | packed neutral + Zod + SQLite orchestration consumers |
+| `npm run verify:stage2` | 0 | Stage 02 closure intact |
+| `npm run verify:stage3` | 0 | Stage 03 closure intact |
+| `npm run verify:stage4` | 0 | isolated packed consumers + proof PASSED |
+| `npm run example` | 0 | ARA proof: 13 ordered events |
+| `npm run bench` | 0 | 3 nodes / 2 edges / 10 events per completed run |
+| `npm run example:application` | 0 | SvelteKit proof build + **10/10 DOM tests** |
+| `git diff --check` | 0 | no whitespace errors |
+| `git status --short` (after ladder) | 0 | clean |
+
+The fresh-clone count reconciliation caught and corrected one staging
+omission (the SQLite parser-throw fixture, commit `882e4ff`); after the
+fix the fresh clone matches the working tree exactly (413 tests).
 
 ## Regression matrix
 
@@ -512,6 +539,8 @@ YES
 
 ## Addendum — fresh-clone verification (post-push)
 
-Recorded after pushing `main`; a temporary fresh clone of `origin/main`
-with no pre-existing `dist` artifacts reproduced the ladder (see the
-final push section of this commit series for the exact SHA).
+Recorded after pushing `main`: the temporary fresh clone of `origin/main`
+at `882e4ff32ed427a0959816cecdde956791e20a30` reproduced the COMPLETE
+ladder from a clean tree with no pre-existing `dist` artifacts — every
+command exit 0 (see the Fresh clone table above). The temporary clone was
+removed after verification.
