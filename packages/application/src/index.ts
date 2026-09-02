@@ -21,6 +21,7 @@ export {
   computeReleaseVersion,
 } from './release.js';
 export type {
+  CompileReleaseContext,
   CompileReleaseResult,
   FrozenApplicationRelease,
   ReleaseIssue,

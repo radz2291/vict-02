@@ -95,11 +95,14 @@ export interface RegistryStagingArea {
  * identity. Live maps are never exposed: consumers receive descriptors or
  * frozen copies.
  *
- * Atomic batch installation (HIGH-04-A): `installBatch` stages every
+ * Atomic registration (HIGH-04-A / LOW-RE-3): `installBatch` stages every
  * contract/capability/double against a staging overlay WITHOUT mutating any
  * live map, and commits the complete batch only when every step succeeds.
- * Any failure leaves the registry byte-for-byte semantically unchanged —
- * there is no best-effort rollback of partially registered entries.
+ * The direct public `registerCapability` path uses the SAME staging
+ * mechanism (capability + embedded contracts staged together), so ANY
+ * failure — including a contract conflict — leaves the registry
+ * byte-for-byte semantically unchanged. There is no best-effort rollback
+ * of partially registered entries.
  */
 export class CapabilityRegistry {
   readonly #authority: CapabilityAuthority | undefined;
@@ -210,6 +213,35 @@ export class CapabilityRegistry {
   // ---- Registration -------------------------------------------------------
 
   registerCapability(definition: CapabilityDefinition): void {
+    if (this.#staging !== undefined) {
+      // Inside a batch (pack installation or the atomic direct path below):
+      // stage the effective registration without touching any live map.
+      this.#stageCapability(definition);
+      return;
+    }
+    // LOW-RE-3 remediation: the direct public path is ATOMIC. The
+    // capability AND its embedded contracts are staged together (all
+    // validation and collision checks run against live + staged state) and
+    // the complete registration commits only when every step succeeds. A
+    // capability-identity or contract collision leaves the registry
+    // semantically unchanged, and the same corrected registration is
+    // retryable. Pack installation keeps its own outer batch; this path
+    // never nests a second batch.
+    this.installBatch(() => {
+      this.#stageCapability(definition);
+      // Capability-embedded contracts are published under their own ids so
+      // the kernel can validate against them at execution time.
+      if (definition.input) {
+        this.registerContract(definition.input);
+      }
+      if (definition.output) {
+        this.registerContract(definition.output);
+      }
+    });
+  }
+
+  /** Validate, gate, and stage one capability registration (no live mutation). */
+  #stageCapability(definition: CapabilityDefinition): void {
     this.#validateCapabilityDefinition(definition);
     if (this.#capabilityRevisions.get(definition.id)?.has(definition.revision)) {
       throw new VictRuntimeError(
@@ -237,14 +269,6 @@ export class CapabilityRegistry {
         }
       : (definition as CapabilityDefinition<unknown, unknown>);
     this.#commitCapability(definition.id, definition.revision, effective);
-    // Capability-embedded contracts are published under their own ids so the
-    // kernel can validate against them at execution time.
-    if (definition.input) {
-      this.registerContract(definition.input);
-    }
-    if (definition.output) {
-      this.registerContract(definition.output);
-    }
   }
 
   /** Commit one capability registration to live or staged storage. */

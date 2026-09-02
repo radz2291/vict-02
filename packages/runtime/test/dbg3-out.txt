@@ -1,1 +1,0 @@
-VictStoreError: The manifest capabilitySetVersion does not match its bindings.

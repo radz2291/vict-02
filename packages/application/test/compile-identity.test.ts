@@ -425,9 +425,21 @@ describe('Stage 04: application release', () => {
     };
   }
 
+  function context(rendererRevision = '1') {
+    return {
+      renderer: { id: 'renderer.svelte-proof', revision: rendererRevision },
+      componentRegistry: {
+        registryId: 'registry.proof',
+        revision: '1',
+        components: [{ componentId: 'cmp.badge', revision: '1' }],
+      },
+      dataAdapter: { id: 'vict.in-memory-data', revision: '1' },
+    };
+  }
+
   it('compiles a valid release with an identity DISTINCT from applicationVersion', () => {
     const plan = compileValid();
-    const result = compileApplicationRelease(release(plan), plan);
+    const result = compileApplicationRelease(release(plan), plan, context());
     expect(result.ok).toBe(true);
     if (!result.ok) return;
     expect(result.release.releaseVersion).toMatch(/^v1_[0-9a-f]{64}$/);
@@ -437,8 +449,8 @@ describe('Stage 04: application release', () => {
 
   it('renderer/adapter revision changes alter release identity but NOT applicationVersion', () => {
     const plan = compileValid();
-    const first = compileApplicationRelease(release(plan, '1'), plan);
-    const second = compileApplicationRelease(release(plan, '2'), plan);
+    const first = compileApplicationRelease(release(plan, '1'), plan, context());
+    const second = compileApplicationRelease(release(plan, '2'), plan, context('2'));
     expect(first.ok && second.ok).toBe(true);
     if (first.ok && second.ok) {
       expect(first.release.releaseVersion).not.toBe(second.release.releaseVersion);
@@ -452,7 +464,7 @@ describe('Stage 04: application release', () => {
     const plan = compileValid();
     const wrong = release(plan);
     (wrong as { applicationVersion: string }).applicationVersion = 'v1_deadbeef';
-    const result = compileApplicationRelease(wrong, plan);
+    const result = compileApplicationRelease(wrong, plan, context());
     expect(result.ok).toBe(false);
     if (!result.ok) {
       expect(result.issues.map((issue) => issue.code)).toContain('RELEASE_APPLICATION_MISMATCH');
@@ -463,7 +475,7 @@ describe('Stage 04: application release', () => {
       author: 'x',
       buildPath: '/Users/secret/path',
     };
-    const result2 = compileApplicationRelease(unsafe, plan);
+    const result2 = compileApplicationRelease(unsafe, plan, context());
     expect(result2.ok).toBe(false);
     if (!result2.ok) {
       expect(result2.issues.map((issue) => issue.code)).toContain('RELEASE_EMBEDDED_VALUE_FIELD');
@@ -471,7 +483,7 @@ describe('Stage 04: application release', () => {
 
     const unknownField = release(plan) as Record<string, unknown>;
     unknownField.secrets = { apiKey: 'hunter2' };
-    const result3 = compileApplicationRelease(unknownField as never, plan);
+    const result3 = compileApplicationRelease(unknownField as never, plan, context());
     expect(result3.ok).toBe(false);
     if (!result3.ok) {
       expect(JSON.stringify(result3.issues)).not.toContain('hunter2');
@@ -479,8 +491,8 @@ describe('Stage 04: application release', () => {
 
     // Deterministic identity.
     const okPlan = compileValid();
-    const a = compileApplicationRelease(release(okPlan), okPlan);
-    const b = compileApplicationRelease(release(okPlan), okPlan);
+    const a = compileApplicationRelease(release(okPlan), okPlan, context());
+    const b = compileApplicationRelease(release(okPlan), okPlan, context());
     if (a.ok && b.ok) {
       expect(a.release.releaseVersion).toBe(b.release.releaseVersion);
       expect(a.release.releaseVersion).toBe(computeReleaseVersion(a.release.manifest));

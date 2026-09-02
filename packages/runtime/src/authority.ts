@@ -25,10 +25,17 @@ import { VictRuntimeError } from './errors.js';
  *   caller's arrays. Mutating a raw definition's `permissions` array after
  *   registration (or after activation) cannot change enforcement.
  * - Every configuration/secret name is resolved AT MOST ONCE per
- *   invocation. Required names are resolved eagerly into an
- *   invocation-scoped cache; optional declared names resolve lazily once
- *   per name and are then cached. The handler's scoped reader returns the
- *   SAME checked value — the check and the use are one consistent read.
+ *   invocation. Required names are resolved eagerly into the invocation's
+ *   own cache; optional declared names resolve lazily once per name and
+ *   are then cached for the REMAINDER OF THAT INVOCATION ONLY. The
+ *   handler's scoped reader returns the SAME checked value — the check and
+ *   the use are one consistent read.
+ * - The value caches and their resolver functions live INSIDE the
+ *   per-invocation execution boundary (HIGH-04-D remediation): every
+ *   invocation creates fresh private caches, so rotated configuration and
+ *   secret values are re-read on the next invocation, a rejected provider
+ *   promise can never poison a later invocation, and concurrent
+ *   invocations never share cached values or promises.
  * - Provider exceptions are converted into sanitized, stable authority
  *   failures; the provider's message never propagates.
  * - Resolved values never enter events, traces, history, or activation
@@ -146,10 +153,6 @@ export function gateCapabilityInvoke(
   const configNames = new Set([...names.configuration, ...names.requiredConfiguration]);
   const secretNames = new Set([...names.secrets, ...names.requiredSecrets]);
 
-  // Invocation-scoped caches: each requested name is resolved AT MOST ONCE.
-  let configCache: Map<string, { value: unknown }> | undefined;
-  const secretCache = new Map<string, Promise<string | undefined>>();
-
   const unavailableConfiguration = (name: string, reason: string): VictRuntimeError =>
     new VictRuntimeError(
       'VICT_RUNTIME_CONFIGURATION_UNAVAILABLE',
@@ -163,43 +166,55 @@ export function gateCapabilityInvoke(
       { capabilityId, secretName: name },
     );
 
-  /** Resolve a configuration name at most once per invocation. */
-  const resolveConfiguration = (name: string): unknown => {
-    const cached = configCache?.get(name);
-    if (cached !== undefined) {
-      return cached.value;
-    }
-    let value: unknown;
-    try {
-      value = authority.configuration?.get(name);
-    } catch {
-      // Provider exceptions are sanitized into stable authority failures;
-      // the provider's message never propagates.
-      throw unavailableConfiguration(name, 'the configuration provider failed.');
-    }
-    configCache ??= new Map();
-    configCache.set(name, { value });
-    return value;
-  };
-
-  /** Resolve a secret name at most once per invocation (promise-cached). */
-  const resolveSecret = (name: string): Promise<string | undefined> => {
-    const cached = secretCache.get(name);
-    if (cached !== undefined) {
-      return cached;
-    }
-    const pending = (async (): Promise<string | undefined> => {
-      try {
-        return await authority.secrets?.get(name);
-      } catch {
-        throw unavailableSecret(name, 'the secret provider failed.');
-      }
-    })();
-    secretCache.set(name, pending);
-    return pending;
-  };
-
   return async (input: unknown, context: CapabilityContext): Promise<unknown> => {
+    // ---- Per-invocation private caches (HIGH-04-D) ------------------------
+    // These caches and the resolvers below are declared INSIDE the
+    // invocation function: every invocation gets fresh private caches, so
+    // - required/optional values are re-resolved on the NEXT invocation
+    //   (rotation is observed);
+    // - a rejected provider promise dies with this invocation (a later
+    //   invocation retries the provider and can recover);
+    // - concurrent invocations never share cached values or promises.
+    // The `{ value }` wrapper keeps a resolved `undefined` distinguishable
+    // from 'not yet read'.
+    const configCache = new Map<string, { value: unknown }>();
+    const secretCache = new Map<string, Promise<string | undefined>>();
+
+    /** Resolve a configuration name at most once per invocation. */
+    const resolveConfiguration = (name: string): unknown => {
+      const cached = configCache.get(name);
+      if (cached !== undefined) {
+        return cached.value;
+      }
+      let value: unknown;
+      try {
+        value = authority.configuration?.get(name);
+      } catch {
+        // Provider exceptions are sanitized into stable authority failures;
+        // the provider's message never propagates.
+        throw unavailableConfiguration(name, 'the configuration provider failed.');
+      }
+      configCache.set(name, { value });
+      return value;
+    };
+
+    /** Resolve a secret name at most once per invocation (promise-cached). */
+    const resolveSecret = (name: string): Promise<string | undefined> => {
+      const cached = secretCache.get(name);
+      if (cached !== undefined) {
+        return cached;
+      }
+      const pending = (async (): Promise<string | undefined> => {
+        try {
+          return await authority.secrets?.get(name);
+        } catch {
+          throw unavailableSecret(name, 'the secret provider failed.');
+        }
+      })();
+      secretCache.set(name, pending);
+      return pending;
+    };
+
     // ---- Permission gate: fail BEFORE the handler runs -------------------
     for (const permissionId of names.permissions) {
       if (!grants.has(permissionId)) {
@@ -212,7 +227,7 @@ export function gateCapabilityInvoke(
     }
 
     // ---- Eager required configuration/secret resolution ------------------
-    // The resolved values are kept in the invocation-scoped caches below;
+    // The resolved values are kept in THIS invocation's private caches;
     // the handler's scoped readers return the SAME checked values.
     for (const name of names.requiredConfiguration) {
       if (authority.configuration === undefined) {
@@ -244,7 +259,8 @@ export function gateCapabilityInvoke(
               `it is not declared by capability '${capabilityId}'; undeclared configuration is unavailable.`,
             );
           }
-          // Optional names resolve lazily ONCE and are then cached.
+          // Optional names resolve lazily ONCE per invocation and are then
+          // cached for the remainder of THIS invocation only.
           return resolveConfiguration(name);
         },
       };
@@ -261,7 +277,8 @@ export function gateCapabilityInvoke(
               ),
             );
           }
-          // Optional names resolve lazily ONCE and are then cached.
+          // Optional names resolve lazily ONCE per invocation and are then
+          // cached for the remainder of THIS invocation only.
           return resolveSecret(name);
         },
       };

@@ -491,6 +491,96 @@ export async function runApplicationDataAdapterSuite(
       fail(`unknown projection produced the wrong code: ${String(badProjection.code)}`);
     }
   }
+  // ---- 14. Closed query-request schema (LOW-RE-4) -------------------------
+  {
+    const adapter = fixture.create(seeded);
+    // Unknown top-level field is rejected (never silently ignored).
+    const hostile: Record<string, unknown> = { op: 'list', resourceId: resource.id };
+    hostile['$where'] = 'CANARY-HOSTILE-KEY';
+    const rejected = await adapter.query(hostile as never, fixture.readContext);
+    if (rejected.ok) {
+      fail('an unknown top-level query-request field was silently ignored');
+    }
+    if (rejected.code !== 'DATA_INVALID_REQUEST') {
+      fail(`unknown query field produced the wrong code: ${String(rejected.code)}`);
+    }
+    if (JSON.stringify(rejected).includes('CANARY-HOSTILE-KEY')) {
+      fail('the query diagnostic echoed the hostile key');
+    }
+    // Every other exotic top-level field is rejected the same way.
+    const exotic: Record<string, unknown> = { op: 'list', resourceId: resource.id };
+    exotic['__proto__-probe'] = { malicious: true };
+    const exoticResult = await adapter.query(exotic as never, fixture.readContext);
+    if (exoticResult.ok || exoticResult.code !== 'DATA_INVALID_REQUEST') {
+      fail(`an exotic top-level query field was not rejected: ${JSON.stringify(exoticResult)}`);
+    }
+    // Legitimate requests still succeed (strictness did not overclose).
+    const legit = await adapter.query({ op: 'list', resourceId: resource.id }, fixture.readContext);
+    if (!legit.ok) {
+      fail(`the closed request schema rejected a legitimate request: ${JSON.stringify(legit)}`);
+    }
+  }
+
+  // ---- 15. Declared filter-value type is runtime-enforced (LOW-RE-4) -------
+  {
+    const adapter = fixture.create(seeded);
+    const filterField = sortableField(resource);
+    const hostileValues: unknown[] = [
+      { $ne: null },
+      { nested: { deep: 'CANARY-HOSTILE-VALUE' } },
+      ['array'],
+      null,
+      undefined,
+      Number.NaN,
+      Number.POSITIVE_INFINITY,
+      Number.NEGATIVE_INFINITY,
+      -0,
+      () => 'fn',
+      10n,
+      Symbol('sym'),
+    ];
+    for (const hostileValue of hostileValues) {
+      const request: Record<string, unknown> = {
+        op: 'list',
+        resourceId: resource.id,
+        filters: { [filterField]: hostileValue },
+      };
+      const rejected = await adapter.query(request as never, fixture.readContext);
+      if (rejected.ok) {
+        fail(`a non-primitive filter value was accepted: ${String(typeof hostileValue)}`);
+      }
+      if (rejected.code !== 'DATA_INVALID_REQUEST') {
+        fail(`non-primitive filter value produced the wrong code: ${String(rejected.code)}`);
+      }
+      const serialized = JSON.stringify(rejected, () => '');
+      if (serialized.includes('$ne') || serialized.includes('CANARY-HOSTILE-VALUE')) {
+        fail('the filter diagnostic echoed the hostile value');
+      }
+    }
+    // A malformed filters container (array/string) is rejected.
+    for (const malformed of [['x'], 'x', 42, null] as unknown[]) {
+      const request: Record<string, unknown> = {
+        op: 'list',
+        resourceId: resource.id,
+        filters: malformed,
+      };
+      const rejected = await adapter.query(request as never, fixture.readContext);
+      if (rejected.ok || rejected.code !== 'DATA_INVALID_REQUEST') {
+        fail('a malformed filters object was not rejected');
+      }
+    }
+    // Primitive-equality query semantics are preserved: an exact primitive
+    // filter still returns exactly the matching rows.
+    const firstIdentity = String(seeded[0]?.[resource.identity.key]);
+    const filtered = await adapter.query(
+      { op: 'list', resourceId: resource.id, filters: { [resource.identity.key]: firstIdentity } },
+      fixture.readContext,
+    );
+    if (!filtered.ok || filtered.rows?.length !== 1) {
+      fail(`primitive-equality filtering broke: ${JSON.stringify(filtered)}`);
+    }
+  }
+
   // ---- 6. Caller definitions never mutated ------------------------------------
   {
     const before = JSON.stringify(resource);

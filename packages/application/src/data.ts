@@ -132,6 +132,37 @@ function isSerializableDomain(value: unknown): boolean {
   return true;
 }
 
+/**
+ * The closed field set of a query request (LOW-RE-4 remediation): unknown
+ * top-level query-request fields are REJECTED at runtime — the request
+ * schema is closed, never silently narrowed.
+ */
+const QUERY_REQUEST_FIELDS: ReadonlySet<string> = new Set([
+  'op',
+  'resourceId',
+  'filters',
+  'sort',
+  'limit',
+  'offset',
+  'projection',
+  'id',
+]);
+
+/**
+ * A declared public filter value: EXACTLY string, finite canonical number,
+ * or boolean (LOW-RE-4 remediation). Objects, arrays, null, undefined,
+ * non-finite numbers, negative zero, functions, BigInt, and symbols are
+ * rejected — the declared `string | number | boolean` filter type is
+ * runtime-enforced, not merely documented.
+ */
+function isCanonicalFilterValue(value: unknown): boolean {
+  return (
+    typeof value === 'string' ||
+    typeof value === 'boolean' ||
+    (typeof value === 'number' && Number.isFinite(value) && !Object.is(value, -0))
+  );
+}
+
 /** Stable safe comparison of primitive field values for filters/sort. */
 function compareValues(a: unknown, b: unknown): number {
   if (a === b) return 0;
@@ -379,6 +410,16 @@ export function createInMemoryApplicationData(
       if (denied !== undefined) {
         return denied;
       }
+      // Closed query-request schema (LOW-RE-4): unknown top-level fields are
+      // rejected with a safe diagnostic that never echoes the hostile key.
+      for (const key of Object.keys(request)) {
+        if (!QUERY_REQUEST_FIELDS.has(key)) {
+          return fail(
+            'DATA_INVALID_REQUEST',
+            'The query request contains a field outside the closed query-request schema; unknown fields are rejected.',
+          );
+        }
+      }
       const invalidLimit = checkBound(request.limit, 'limit');
       if (invalidLimit !== undefined) {
         return invalidLimit;
@@ -406,15 +447,35 @@ export function createInMemoryApplicationData(
         return fail('DATA_INVALID_REQUEST', 'The query op must be "list" or "get".');
       }
       let list = [...table.values()];
+      if (
+        request.filters !== undefined &&
+        (typeof request.filters !== 'object' ||
+          request.filters === null ||
+          Array.isArray(request.filters))
+      ) {
+        return fail(
+          'DATA_INVALID_REQUEST',
+          'filters must be a plain object of primitive values when present.',
+        );
+      }
       for (const [field, expected] of Object.entries(request.filters ?? {})) {
         if (!resource.fields.some((candidate) => candidate.name === field)) {
           return fail(
             'DATA_UNSUPPORTED_QUERY',
-            `Filter field '${field}' is not in the catalogue of the requested resource.`,
+            'A filter field is not in the catalogue of the requested resource.',
           );
         }
-        if (!isSerializableDomain(expected)) {
-          return fail('DATA_INVALID_REQUEST', 'Filter values must be serializable primitives.');
+        // The declared public filter type is runtime-enforced (LOW-RE-4):
+        // values must be EXACTLY string, finite canonical number, or
+        // boolean. Objects, arrays, null, undefined, non-finite numbers,
+        // negative zero, functions, and exotic values are rejected with a
+        // safe diagnostic that never echoes the hostile value. Comparison
+        // semantics remain primitive equality.
+        if (!isCanonicalFilterValue(expected)) {
+          return fail(
+            'DATA_INVALID_REQUEST',
+            'Filter values must be exactly string, finite number, or boolean, matching the declared public filter type.',
+          );
         }
         list = list.filter((row) => compareValues(row[field], expected) === 0);
       }

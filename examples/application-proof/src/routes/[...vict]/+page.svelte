@@ -4,16 +4,16 @@
   // the declared screen — the compiled plan (built server-side from the
   // neutral definition) drives the host, and every action crosses the
   // /api/act server boundary where authorization and effect policy live.
-  import { createComponentRegistry } from '@vict/application/renderer';
-  import Badge from '$lib/host/components/Badge.svelte';
+  import { createProofComponentRegistry } from '$lib/host/proof-renderer.js';
   import ApplicationHost from '$lib/host/ApplicationHost.svelte';
 
   let { data }: { data: { plan: Record<string, unknown>; rows: Record<string, unknown>[] } } = $props();
 
   // The trusted local component registry lives OUTSIDE the serializable
-  // definition; the plan carries only cmp.badge@1.
-  const registry = createComponentRegistry('registry.proof', '1');
-  registry.register({ componentId: 'cmp.badge', revision: '1', implementation: Badge });
+  // definition; the plan carries only cmp.badge@1. The registry factory is
+  // shared with the server-side release compilation so the deployed
+  // component identity always comes from the SAME actual registry.
+  const registry = createProofComponentRegistry();
 
   const dispatch = async (
     actionId: string,

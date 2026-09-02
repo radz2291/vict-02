@@ -283,6 +283,19 @@ describe('MED-04-G: releases cross-check actual supplied bindings', () => {
       { selectedActivationVersion: 'v1_current' },
       'RELEASE_ACTIVATION_MISMATCH',
     );
+    // An exact activation reference WITHOUT a selected activation version
+    // fails closed (RE-AUDIT MED-04-G-R): no mismatch code, no compile.
+    const missingActivationContext = compileApplicationRelease(
+      makeRelease(plan, { activation: { kind: 'reference', activationVersion: 'v1_any' } }),
+      plan,
+      base as never,
+    );
+    if (missingActivationContext.ok) {
+      throw new Error('an exact activation compiled without a selected activation version');
+    }
+    expect(missingActivationContext.issues.map((issue) => issue.code)).toEqual([
+      'RELEASE_BINDING_CONTEXT_REQUIRED',
+    ]);
   });
 
   it('later live registry mutation does not change the compiled release identity', () => {
@@ -329,7 +342,10 @@ describe('MED-04-G: releases cross-check actual supplied bindings', () => {
         throw new Error('hostile getter canary RELEASE-1');
       },
     });
-    const result = compileApplicationRelease(hostile, plan, {});
+    const result = compileApplicationRelease(hostile, plan, {
+      renderer: { id: 'renderer.svelte-proof', revision: '1' },
+      dataAdapter: { id: 'vict.in-memory-data', revision: '1' },
+    });
     expect(result.ok).toBe(false);
     if (!result.ok) {
       expect(result.issues.map((issue) => issue.code)).toContain('RELEASE_COMPILATION_FAILED');
@@ -345,7 +361,10 @@ describe('MED-04-G: releases cross-check actual supplied bindings', () => {
         provenance: { author: '   ' },
       }),
       plan,
-      {},
+      {
+        renderer: { id: 'renderer.svelte-proof', revision: '1' },
+        dataAdapter: { id: 'vict.in-memory-data', revision: '1' },
+      },
     );
     expect(bad.ok).toBe(false);
     if (!bad.ok) {
@@ -356,7 +375,10 @@ describe('MED-04-G: releases cross-check actual supplied bindings', () => {
   it('the compiled release deep-freezes the manifest without freezing the CALLER object', () => {
     const plan = compileProbePlan();
     const releaseInput = makeRelease(plan);
-    const result = compileApplicationRelease(releaseInput, plan, {});
+    const result = compileApplicationRelease(releaseInput, plan, {
+      renderer: { id: 'renderer.svelte-proof', revision: '1' },
+      dataAdapter: { id: 'vict.in-memory-data', revision: '1' },
+    });
     expect(result.ok).toBe(true);
     if (result.ok) {
       expect(Object.isFrozen(result.release.manifest)).toBe(true);

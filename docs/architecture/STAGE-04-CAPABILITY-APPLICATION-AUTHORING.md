@@ -227,7 +227,9 @@ rejected with `APPLICATION_EMBEDDED_VALUE_FIELD` /
   applicationVersion, renderer id/revision, component-registry identity,
   data-adapter compatibility, public Vict compatibility range, activation
   reference OR explicit `latest` selection policy, provenance (safe fields
-  only — machine paths/secret-like fields rejected).
+  only — machine paths/secret-like fields rejected). Compilation requires
+  the mandatory binding verification context of §5 (fail-closed
+  `RELEASE_BINDING_CONTEXT_REQUIRED` when omitted, partial, or invalid).
 
 Actions have explicit kinds: `local` (presentation only), `navigation`,
 `query`, `mutation`, `capability` (real Vict behavior through the runtime).

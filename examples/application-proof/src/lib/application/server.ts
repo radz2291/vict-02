@@ -1,11 +1,14 @@
 import { defineCapability } from '@vict/sdk';
-import { createInMemoryApplicationData } from '@vict/application';
-import type {
-  ActionResult,
-  ApplicationDataAdapter,
+import {
+  createInMemoryApplicationData,
+  type ApplicationDataAdapter,
+  type ActionResult,
+  type FrozenApplicationRelease,
 } from '@vict/application';
 import { createRuntime } from '@vict/runtime';
-import { noteInputContract, noteResource, summaryOutputContract } from './definition.js';
+import { compileProofPlan, noteInputContract, noteResource, summaryOutputContract } from './definition.js';
+import { compileProofRelease } from './release.js';
+import { createProofComponentRegistry, createProofRenderer } from '$lib/host/proof-renderer.js';
 
 /**
  * The proof's in-process application server (local modular monolith).
@@ -66,10 +69,11 @@ export function createProofServer() {
   /** The compiled plan (immutable) shared with the generic host. */
   const activeGraphId = 'g.proof.summarize';
   let activationReady = false;
+  let selectedActivationVersion: string | undefined;
 
-  const ensureActivation = async (): Promise<void> => {
+  const ensureActivation = async (): Promise<string> => {
     if (activationReady) {
-      return;
+      return selectedActivationVersion as string;
     }
     const activation = await runtime.activate({
       id: activeGraphId,
@@ -80,7 +84,9 @@ export function createProofServer() {
     if (!activation.ok) {
       throw new Error('proof capability activation failed');
     }
+    selectedActivationVersion = activation.activationVersion;
     activationReady = true;
+    return selectedActivationVersion;
   };
 
   /**
@@ -146,6 +152,24 @@ export function createProofServer() {
     }
   };
 
+  /**
+   * The proof's compiled release: identities are taken from the ACTUAL
+   * renderer, component registry, adapter, and activation selection —
+   * never copied from the manifest (RE-AUDIT MED-04-G-R trust boundary).
+   */
+  let compiledRelease: FrozenApplicationRelease | undefined;
+  const release = async (): Promise<FrozenApplicationRelease> => {
+    const activationVersion = await ensureActivation();
+    compiledRelease ??= compileProofRelease({
+      plan: compileProofPlan(),
+      renderer: createProofRenderer(dispatch),
+      componentRegistry: createProofComponentRegistry(),
+      dataAdapter: data as Pick<ApplicationDataAdapter, 'id' | 'revision'>,
+      selectedActivationVersion: activationVersion,
+    });
+    return compiledRelease;
+  };
+
   const listNotes = async () => {
     const result = await data.query(
       { op: 'list', resourceId: 'notes', sort: [{ field: 'title', direction: 'asc' }] },
@@ -161,6 +185,8 @@ export function createProofServer() {
     runtime,
     dispatch,
     listNotes,
+    release,
+    dataAdapter: data as Pick<ApplicationDataAdapter, 'id' | 'revision'>,
     runCount: async (): Promise<number> => (await runtime.listRuns()).length,
   };
 }

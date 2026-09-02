@@ -2,6 +2,7 @@ import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { flushSync, mount, unmount } from 'svelte';
 import { describe, expect, it, vi } from 'vitest';
+import { compileApplicationRelease } from '@vict/application';
 import { createComponentRegistry } from '@vict/application/renderer';
 import Badge from '$lib/host/components/Badge.svelte';
 import ApplicationHost from '$lib/host/ApplicationHost.svelte';
@@ -11,6 +12,7 @@ import {
   summaryOutputContract,
 } from '$lib/application/definition';
 import { getProofServer } from '$lib/application/server';
+import { createProofComponentRegistry, createProofRenderer } from '$lib/host/proof-renderer';
 import { defineCapability } from '@vict/sdk';
 import { createRuntime } from '@vict/runtime';
 import * as pageServer from '../src/routes/[...vict]/+page.server';
@@ -34,8 +36,7 @@ import * as pageServer from '../src/routes/[...vict]/+page.server';
  */
 
 const proof = getProofServer();
-const registry = createComponentRegistry('registry.proof', '1');
-registry.register({ componentId: 'cmp.badge', revision: '1', implementation: Badge });
+const registry = createProofComponentRegistry();
 
 function renderHost(rows: Record<string, unknown>[] = []) {
   const target = document.createElement('div');
@@ -350,5 +351,55 @@ describe('Stage 04 audit remediation: unknown routes and output contracts', () =
       expect(run.status).toBe('failed');
       expect(String(run.error?.code)).toMatch(/CONTRACT/);
     });
+  });
+});
+
+describe('Stage 04 proof: the release compiles from ACTUAL deployment identities', () => {
+  it('the proof server compiles its release from the actual renderer, registry, adapter, and activation', async () => {
+    const release = await proof.release();
+    // Stable deterministic release identity.
+    expect(release.releaseVersion).toMatch(/^v1_[0-9a-f]{64}$/);
+    // The compiled manifest matches the ACTUAL deployment objects.
+    const registry = createProofComponentRegistry();
+    expect(release.manifest.renderer).toEqual({ id: 'renderer.svelte-proof', revision: '1' });
+    expect(release.manifest.components).toEqual(registry.identity());
+    expect(release.manifest.dataAdapter).toEqual({
+      id: proof.dataAdapter.id,
+      revision: proof.dataAdapter.revision,
+    });
+  });
+
+  it('the equality check is REAL: the real manifest vs a tampered context fails closed', async () => {
+    const compiled = await proof.release();
+    const plan = compileProofPlan();
+    const registry = createProofComponentRegistry();
+    // A hostile/broken deployment tool supplies a FALSE renderer identity:
+    // the real manifest must NOT compile against it (the context is the
+    // verification input — it is never copied out of the manifest).
+    const tampered = compileApplicationRelease(compiled.manifest, plan, {
+      renderer: { id: 'renderer.FALSE-DEPLOYMENT', revision: '1' },
+      componentRegistry: registry.identity(),
+      dataAdapter: proof.dataAdapter,
+      selectedActivationVersion: String(
+        (compiled.manifest.activation as { activationVersion: string }).activationVersion,
+      ),
+    });
+    expect(tampered.ok).toBe(false);
+    if (!tampered.ok) {
+      expect(tampered.issues.map((issue) => issue.code)).toContain('RELEASE_RENDERER_MISMATCH');
+    }
+    // The truthful context (the ACTUAL objects) compiles the same manifest.
+    const truthful = compileApplicationRelease(compiled.manifest, plan, {
+      renderer: createProofRenderer(async () => ({ ok: true as const, value: null })),
+      componentRegistry: registry.identity(),
+      dataAdapter: proof.dataAdapter,
+      selectedActivationVersion: String(
+        (compiled.manifest.activation as { activationVersion: string }).activationVersion,
+      ),
+    });
+    expect(truthful.ok).toBe(true);
+    if (truthful.ok) {
+      expect(truthful.release.releaseVersion).toBe(compiled.releaseVersion);
+    }
   });
 });

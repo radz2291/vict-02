@@ -420,6 +420,13 @@ const release = compileApplicationRelease(
     activation: { kind: 'policy', selection: 'latest' },
   },
   result.plan,
+  // RE-AUDIT MED-04-G-R: the binding context is MANDATORY and sourced from
+  // the actual deployment identities — never the manifest itself.
+  {
+    renderer: { id: 'r', revision: '1' },
+    componentRegistry: registry.identity(),
+    dataAdapter: { id: 'vict.in-memory-data', revision: '1' },
+  },
 );
 if (!release.ok) throw new Error('release should compile');
 if (release.release.releaseVersion === version) throw new Error('release identity must differ');

@@ -8,12 +8,12 @@ import {
   defineResource,
 } from '@vict/sdk';
 import { compileApplication } from '@vict/application';
-import { createComponentRegistry, RendererDiagnostic } from '@vict/application/renderer';
-import type { ApplicationPlan, ApplicationRenderer } from '@vict/application';
+import { RendererDiagnostic } from '@vict/application/renderer';
+import type { ApplicationPlan } from '@vict/application';
 import { runRendererConformanceSuite } from '@vict/application/testing';
-import Badge from '$lib/host/components/Badge.svelte';
-import ApplicationHost from '$lib/host/ApplicationHost.svelte';
 import { compileProofPlan } from '$lib/application/definition';
+import { createProofComponentRegistry, createProofRenderer } from '$lib/host/proof-renderer';
+import ApplicationHost from '$lib/host/ApplicationHost.svelte';
 
 /**
  * The Svelte proof host passes the SAME shared renderer conformance suite
@@ -26,53 +26,6 @@ import { compileProofPlan } from '$lib/application/definition';
  * inspection (not only `JSON.stringify`), zero unhandled rejections, and
  * the declared safe failure state actually rendered.
  */
-
-type DispatchFn = (actionId: string, input?: unknown) => Promise<{
-  ok: boolean;
-  value?: unknown;
-  code?: string;
-  message?: string;
-}>;
-
-/** A neutral ApplicationRenderer implemented by mounting the Svelte host. */
-function createSvelteProofRenderer(_dispatch: DispatchFn): ApplicationRenderer {
-  return {
-    id: 'renderer.svelte-proof',
-    revision: '1',
-    // The proof host implements these roles; standalone 'states' marker
-    // surfaces are NOT supported (states render through screen.states).
-    supportedSurfaceRoles: ['text', 'view', 'form', 'action', 'component'],
-    render(plan: ApplicationPlan, bindings) {
-      // Components come EXPLICITLY from the supplied bindings — the host
-      // never consults a global or implicit registry.
-      const target = document.createElement('div');
-      document.body.appendChild(target);
-      const instance = mount(ApplicationHost, {
-        target,
-        props: {
-          plan,
-          registry: bindings.components,
-          dispatch: bindings.dispatch.execute,
-          rows: [],
-        },
-      });
-      flushSync();
-      // Idempotent teardown (Svelte's unmount throws on the second call).
-      let unmounted = false;
-      return {
-        output: target,
-        unmount(): void {
-          if (unmounted) {
-            return;
-          }
-          unmounted = true;
-          unmount(instance);
-          target.remove();
-        },
-      };
-    },
-  };
-}
 
 const probeResource = defineResource({
   schema: RESOURCE_DEFINITION_SCHEMA,
@@ -151,15 +104,14 @@ describe('Stage 04 proof: the Svelte host passes the SHARED renderer conformance
   it('passes runRendererConformanceSuite including the mandatory hostile-action canary', async () => {
     await expect(
       runRendererConformanceSuite({
-        renderer: createSvelteProofRenderer(async () => ({ ok: true as const, value: null })),
+        renderer: createProofRenderer(async () => ({ ok: true as const, value: null })),
         basePlan: compileProofPlan(),
         buildProbePlan,
         // The hostile-action scenario: a plan rendering a REMOTE action
         // surface whose dispatch rejects with the canary.
         buildFailingActionPlan: () => buildProbePlan('action'),
         makeBindings: () => {
-          const components = createComponentRegistry('registry.proof', '1');
-          components.register({ componentId: 'cmp.badge', revision: '1', implementation: Badge });
+          const components = createProofComponentRegistry();
           return {
             components,
             dispatch: {
@@ -195,11 +147,11 @@ describe('Stage 04 proof: the Svelte host passes the SHARED renderer conformance
 
   // Directly observable: an unsupported role fails honestly.
   it('an unsupported role fails with a structured diagnostic', () => {
-    const renderer = createSvelteProofRenderer(async () => ({ ok: true as const, value: null }));
+    const renderer = createProofRenderer(async () => ({ ok: true as const, value: null }));
     const plan = buildProbePlan('states');
     expect(() =>
       renderer.render(plan, {
-        components: createComponentRegistry('registry.proof', '1'),
+        components: createProofComponentRegistry(),
         dispatch: { execute: async () => ({ ok: true as const, value: null }) },
       }),
     ).toThrowError(RendererDiagnostic);
@@ -218,11 +170,7 @@ describe('Stage 04 proof: the Svelte host passes the SHARED renderer conformance
       target,
       props: {
         plan: compileProofPlan(),
-        registry: (() => {
-          const registry = createComponentRegistry('registry.proof', '1');
-          registry.register({ componentId: 'cmp.badge', revision: '1', implementation: Badge });
-          return registry;
-        })(),
+        registry: createProofComponentRegistry(),
         dispatch: async () => {
           throw new Error(`hostile dispatcher failure ${CANARY}`);
         },
