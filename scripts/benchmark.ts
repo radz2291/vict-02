@@ -15,7 +15,7 @@
  *
  * Usage: npm run bench
  */
-import { defineCapability, defineGraph } from '@vict/sdk';
+import { defineCapability, defineGraph, neutralJsonContract } from '@vict/sdk';
 import { createRuntime } from '@vict/runtime';
 import { createSqliteStores } from '@vict/store-sqlite';
 import type { VictRuntime } from '@vict/runtime';
@@ -371,12 +371,16 @@ async function benchStage03(
       id: 'bench.route',
       revision: '1',
       effect: 'pure',
+      input: neutralJsonContract,
+      output: neutralJsonContract,
       invoke: (input: unknown) => ({ route: 'go', value: String(input) }),
     })
     .registerCapability({
       id: 'bench.branch',
       revision: '1',
       effect: 'pure',
+      input: neutralJsonContract,
+      output: neutralJsonContract,
       invoke: (input: unknown, context) =>
         `${String(input)}:${String(context.branch?.branchKey ?? '?')}`,
     })
@@ -384,12 +388,16 @@ async function benchStage03(
       id: 'bench.sink',
       revision: '1',
       effect: 'pure',
+      input: neutralJsonContract,
+      output: neutralJsonContract,
       invoke: (input: unknown) => String(input),
     })
     .registerCapability({
       id: 'bench.timer',
       revision: '1',
       effect: 'pure',
+      input: neutralJsonContract,
+      output: neutralJsonContract,
       invoke: (input: unknown) => String(input),
     });
 

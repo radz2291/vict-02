@@ -42,6 +42,30 @@ export const noteInputContract = defineContract<{ id: string; title: string }>({
   },
 });
 
+/**
+ * The declared OUTPUT contract of the proof's VICT capability. CONT-001:
+ * every executable capability declares BOTH an input and an output
+ * contract; invalid capability output must fail safely before reaching
+ * HTTP or the DOM.
+ */
+export const summaryOutputContract = defineContract<{ summary: string }>({
+  id: 'proof.summary.output',
+  revision: '1',
+  expected: '{ summary: string }',
+  parse: (input) => {
+    const candidate = input as { summary?: unknown } | null;
+    if (candidate !== null && typeof candidate === 'object' && typeof candidate.summary === 'string') {
+      return { ok: true as const, value: { summary: candidate.summary } };
+    }
+    return {
+      ok: false as const,
+      issues: [
+        { code: 'invalid_type', path: '(root)', message: 'a summary object is required' },
+      ],
+    };
+  },
+});
+
 export const noteResource = defineResource({
   schema: RESOURCE_DEFINITION_SCHEMA,
   id: 'notes',
@@ -183,6 +207,7 @@ export const proofApplication = defineApplication({
       capabilityId: 'proof.summarize',
       capabilityRevision: '1',
       inputContractId: 'proof.note.input',
+      outputContractId: 'proof.summary.output',
     },
   ],
   resources: [{ resourceId: 'notes', revision: '1' }],
@@ -192,7 +217,10 @@ export const proofApplication = defineApplication({
 
 /** Available contract/capability/component bindings for compilation. */
 export const proofBindings = {
-  contracts: [{ id: 'proof.note.input', revision: '1' }],
+  contracts: [
+    { id: 'proof.note.input', revision: '1' },
+    { id: 'proof.summary.output', revision: '1' },
+  ],
   capabilities: [{ id: 'proof.summarize', revision: '1' }],
   components: [{ componentId: 'cmp.badge', revision: '1' }],
 } as const;

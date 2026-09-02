@@ -256,9 +256,28 @@ const pack = defineCapabilityPack(
     id: 'author.pack',
     version: '1.0.0',
     victCompatibility: '^' + VICT_AUTHORING_COMPAT_VERSION,
-    capabilities: [{ id: 'author.echo', revision: '1', effect: 'pure' }],
+    capabilities: [
+      {
+        id: 'author.echo',
+        revision: '1',
+        effect: 'pure',
+        input: { contractId: 'author.text', revision: '1' },
+        output: { contractId: 'author.text', revision: '1' },
+      },
+    ],
+    contracts: [{ id: 'author.text', revision: '1' }],
   },
-  { capabilities: [{ id: 'author.echo', revision: '1', invoke: capability.invoke }] },
+  {
+    capabilities: [
+      {
+        id: 'author.echo',
+        revision: '1',
+        invoke: capability.invoke,
+        input: Text,
+        output: Text,
+      },
+    ],
+  },
 );
 
 const packResult = validateCapabilityPack(pack);

@@ -291,7 +291,7 @@ writeFileSync(
 );
 writeFileSync(
   join(orchDir, 'src', 'index.ts'),
-  `import { defineContract, defineGraph } from '@vict/sdk';
+  `import { defineContract, defineGraph, neutralJsonContract } from '@vict/sdk';
 import { createRuntime } from '@vict/runtime';
 import { createSqliteStores } from '@vict/store-sqlite';
 import type { RunResult } from '@vict/runtime';
@@ -317,12 +317,16 @@ runtime
     id: 'orch.route',
     revision: '1',
     effect: 'pure',
+    input: neutralJsonContract,
+    output: neutralJsonContract,
     invoke: (input: unknown) => ({ route: 'go', value: String(input) }),
   })
   .registerCapability({
     id: 'orch.branch',
     revision: '1',
     effect: 'pure',
+    input: neutralJsonContract,
+    output: neutralJsonContract,
     invoke: (input: unknown, context) =>
       String(input) + ':' + (context.branch?.branchKey ?? '?'),
   })
@@ -330,6 +334,8 @@ runtime
     id: 'orch.sink',
     revision: '1',
     effect: 'pure',
+    input: neutralJsonContract,
+    output: neutralJsonContract,
     invoke: (input: unknown) => String(input),
   });
 

@@ -1,12 +1,19 @@
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { flushSync, mount, unmount } from 'svelte';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { createComponentRegistry } from '@vict/application/renderer';
 import Badge from '$lib/host/components/Badge.svelte';
 import ApplicationHost from '$lib/host/ApplicationHost.svelte';
-import { compileProofPlan } from '$lib/application/definition';
+import {
+  compileProofPlan,
+  noteInputContract,
+  summaryOutputContract,
+} from '$lib/application/definition';
 import { getProofServer } from '$lib/application/server';
+import { defineCapability } from '@vict/sdk';
+import { createRuntime } from '@vict/runtime';
+import * as pageServer from '../src/routes/[...vict]/+page.server';
 
 /**
  * Stage 04 SvelteKit vertical proof — DOM-level, fully offline (happy-dom).
@@ -143,11 +150,16 @@ describe('Stage 04 proof: boundaries below the UI', () => {
     expect(after).toEqual([{ id: 'n1', title: 'alpha' }]);
   });
 
-  it('the local presentation action never becomes a graph node (no Vict run)', async () => {
+  it('the local action has NO server handler at all: the dispatcher refuses it', async () => {
+    // MED-04-G remediation: `act.clear` is kind:'local' and is handled
+    // entirely INSIDE the renderer boundary. The server dispatcher has no
+    // act.clear handler: anything that reaches it (a bug, a direct HTTP
+    // call) is refused as UNKNOWN_ACTION.
     const before = await proof.runCount();
     const result = await proof.dispatch('act.clear');
     const after = await proof.runCount();
-    expect(result.ok).toBe(true);
+    expect(result.ok).toBe(false);
+    expect(result.code).toBe('UNKNOWN_ACTION');
     expect(after).toBe(before); // zero durable runs created
   });
 
@@ -222,5 +234,121 @@ describe('Stage 04 proof: framework neutrality of the base declarations', () => 
         expect(line, `${file}: ${line}`).not.toContain('@vict/kernel');
       }
     }
+  });
+});
+
+describe('Stage 04 audit remediation: genuine local actions (MED-04-G)', () => {
+  it('clicking the local clear action produces ZERO dispatch/network/run/data effects', async () => {
+    const fetchCalls: unknown[] = [];
+    const fetchSpy = vi.spyOn(globalThis, 'fetch').mockImplementation(async (input) => {
+      fetchCalls.push(input);
+      throw new Error('NETWORK-CANARY: no network call may happen for a local action');
+    });
+    const dispatchSpy = vi.fn(async () => {
+      throw new Error('DISPATCH-CANARY: a local action must never reach the dispatcher');
+    });
+    const before = await proof.runCount();
+    const rowsBefore = await proof.listNotes();
+
+    const target = document.createElement('div');
+    document.body.appendChild(target);
+    const instance = mount(ApplicationHost, {
+      target,
+      props: {
+        plan: compileProofPlan(),
+        registry,
+        dispatch: dispatchSpy as unknown as typeof proof.dispatch,
+        rows: [],
+      },
+    });
+    flushSync();
+    try {
+      // Type into the form first: the local clear must reset it.
+      const idInput = target.querySelector<HTMLInputElement>('input[data-field="id"]');
+      const titleInput = target.querySelector<HTMLInputElement>('input[data-field="title"]');
+      expect(idInput && titleInput).toBeTruthy();
+      idInput!.value = 'typed-id';
+      titleInput!.value = 'typed-title';
+      // A REAL DOM click on the local action button.
+      const clearButton = target.querySelector<HTMLButtonElement>('button[data-surface="sa.clear"]');
+      expect(clearButton).not.toBeNull();
+      expect(clearButton!.getAttribute('data-action-kind')).toBe('local');
+      clearButton!.click();
+      await new Promise((resolve) => setTimeout(resolve, 20));
+      flushSync();
+      // Zero dispatcher calls, zero network calls, zero VICT runs, zero data ops.
+      expect(dispatchSpy).not.toHaveBeenCalled();
+      expect(fetchCalls).toHaveLength(0);
+      expect(await proof.runCount()).toBe(before);
+      expect(await proof.listNotes()).toEqual(rowsBefore);
+      // The declared local transition reset the transient form state.
+      expect(idInput!.value).toBe('');
+      expect(titleInput!.value).toBe('');
+    } finally {
+      unmount(instance);
+      target.remove();
+      fetchSpy.mockRestore();
+    }
+  });
+});
+
+describe('Stage 04 audit remediation: unknown routes and output contracts', () => {
+  it('unknown application routes return a structured not-found (HTTP 404)', async () => {
+    // The SvelteKit host returns a proper structured not-found outcome
+    // instead of silently rendering the first declared route (LOW-04-J).
+    // The declared route renders; ANY undeclared path is a structured 404.
+    await expect(
+      pageServer.load({ url: new URL('https://proof.local/') } as never),
+    ).resolves.toBeTruthy();
+    await expect(
+      pageServer.load({ url: new URL('https://proof.local/nonexistent-page') } as never),
+    ).rejects.toMatchObject({ status: expect.any(Number), body: expect.objectContaining({}) });
+    try {
+      await pageServer.load({ url: new URL('https://proof.local/attacker-path') } as never);
+      throw new Error('expected a 404 failure');
+    } catch (thrown) {
+      const httpError = thrown as { status?: number; body?: { message?: string } };
+      expect(httpError.status).toBe(404);
+      // The safe diagnostic does not echo the attacker-controlled path.
+      expect(httpError.body?.message ?? '').not.toContain('attacker-path');
+      expect(httpError.body?.message ?? '').toContain('404');
+    }
+  });
+
+  it('the proof capability action declares and enforces an OUTPUT contract (CONT-001)', () => {
+    // Structural evidence at the plan boundary: the capability action binds
+    // an output contract, and the capability declares both contracts.
+    const plan = compileProofPlan();
+    const action = plan.actions['act.summarize'];
+    expect(action).toBeDefined();
+    expect((action as { outputContractId?: string }).outputContractId).toBe(
+      'proof.summary.output',
+    );
+    // The runtime validates BOTH contracts: a hostile capability output
+    // fails the run safely before reaching HTTP or the DOM.
+    const hostile = defineCapability({
+      id: 'proof.hostile.output',
+      revision: '1',
+      effect: 'pure',
+      input: noteInputContract,
+      output: summaryOutputContract,
+      invoke: () => ({ summary: 12345 }) as unknown as { summary: string },
+    });
+    const runtime = createRuntime();
+    runtime.registerCapability(hostile);
+    runtime.registerContract(noteInputContract);
+    const activated = runtime.activate({
+      id: 'g.hostile',
+      entry: 'only',
+      nodes: [{ id: 'only', capability: 'proof.hostile.output', output: 'proof.summary.output' }],
+      edges: [],
+    });
+    return activated.then(async (activation) => {
+      expect(activation.ok).toBe(true);
+      if (!activation.ok) return;
+      const run = await runtime.run({ id: 'n1', title: 'hello' }, { mode: 'normal' });
+      expect(run.status).toBe('failed');
+      expect(String(run.error?.code)).toMatch(/CONTRACT/);
+    });
   });
 });

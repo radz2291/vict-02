@@ -1,3 +1,4 @@
+import { neutralJsonContract } from '@vict/sdk';
 import { createRuntime, createInMemoryStores } from '@vict/runtime';
 import type { VictRuntime } from '@vict/runtime';
 import type { KernelEvent } from '@vict/kernel';
@@ -70,6 +71,8 @@ function buildRuntime(
       id: 'route',
       revision: '1',
       effect: 'pure',
+      input: neutralJsonContract,
+      output: neutralJsonContract,
       invoke: (input: unknown) => {
         void input;
         return { route: 'prepare', value: 'approved-request' };
@@ -79,6 +82,8 @@ function buildRuntime(
       id: 'branch',
       revision: '1',
       effect: 'pure',
+      input: neutralJsonContract,
+      output: neutralJsonContract,
       invoke: async (input: unknown, context) => {
         // Barrier: prove real overlap rather than guessing from timing.
         state.overlap.active += 1;
@@ -93,18 +98,24 @@ function buildRuntime(
       id: 'onTimeout',
       revision: '1',
       effect: 'pure',
+      input: neutralJsonContract,
+      output: neutralJsonContract,
       invoke: () => 'timeout-path',
     })
     .registerCapability({
       id: 'onReject',
       revision: '1',
       effect: 'pure',
+      input: neutralJsonContract,
+      output: neutralJsonContract,
       invoke: () => 'rejected',
     })
     .registerCapability({
       id: 'apply',
       revision: '1',
       effect: 'write',
+      input: neutralJsonContract,
+      output: neutralJsonContract,
       idempotency: 'keyed',
       invoke: (input: unknown, context) => {
         const key = context.idempotencyKey as string;

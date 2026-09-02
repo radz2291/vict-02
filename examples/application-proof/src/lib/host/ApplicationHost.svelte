@@ -24,6 +24,10 @@
       };
     }[];
     views: Record<string, { viewId: string; fields?: string[] } | undefined>;
+    actions?: Record<
+      string,
+      { kind: string; id: string; revision?: string } | undefined
+    >;
     forms: Record<
       string,
       | {
@@ -125,15 +129,51 @@
       return;
     }
     lastAction = form.formId;
-    lastResult = await dispatch(form.submitActionId, { ...formValues });
+    lastResult = await safeDispatch(form.submitActionId, { ...formValues });
     if (lastResult.ok) {
       formValues = {};
     }
   }
 
-  async function runAction(actionId: string, input?: unknown): Promise<void> {
+  /**
+   * The ONLY path to the dispatcher. A rejection is CAUGHT here and mapped
+   * to a safe framework-generated result: the canary text of a hostile
+   * dispatcher never reaches the DOM, and no unhandled rejection exists.
+   */
+  async function safeDispatch(actionId: string, input?: unknown): Promise<ActionResult> {
+    try {
+      return await dispatch(actionId, input);
+    } catch {
+      return {
+        ok: false,
+        code: 'RENDERER_ACTION_FAILED',
+        message: 'The action could not be completed; this safe failure state is renderer-generated.',
+      };
+    }
+  }
+
+  /**
+   * `kind: 'local'` actions stay INSIDE the renderer boundary (APP-011 /
+   * MED-04-G remediation): the declared local transition is a transient
+   * view-state reset — zero network calls, zero dispatcher invocations,
+   * zero VICT runs, zero data operations. Arbitrary executable functions
+   * are never part of the Application Definition: only this one declared,
+   * serializable local transition exists.
+   */
+  function runLocalAction(actionId: string): void {
     lastAction = actionId;
-    lastResult = await dispatch(actionId, input);
+    lastResult = { ok: true, value: { local: 'reset-transient' } };
+    formValues = {};
+  }
+
+  async function runAction(actionId: string, input?: unknown): Promise<void> {
+    const action = plan.actions?.[actionId];
+    if (action?.kind === 'local') {
+      runLocalAction(actionId);
+      return;
+    }
+    lastAction = actionId;
+    lastResult = await safeDispatch(actionId, input);
   }
 
   const denied = $derived(lastResult !== null && !lastResult.ok && lastResult.code === 'DATA_UNAUTHORIZED');
@@ -199,7 +239,11 @@
             <button type="submit">Submit</button>
           </form>
         {:else if surface.role === 'action'}
-          <button data-surface={surface.id} onclick={() => void runAction(surface.actionId ?? '')}>
+          <button
+            data-surface={surface.id}
+            data-action-kind={plan.actions?.[surface.actionId ?? '']?.kind ?? 'unknown'}
+            onclick={() => void runAction(surface.actionId ?? '')}
+          >
             {surface.label}
           </button>
         {:else if surface.role === 'component'}
