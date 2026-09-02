@@ -1,11 +1,12 @@
 # Stage 03 — Durable Orchestration
 
-> **Authority:** `docs/VICT-SYSTEM-REFERENCE.md` v0.1.1
+> **Authority:** `docs/VICT-SYSTEM-REFERENCE.md` v0.2.0 (Stage 03 was
+> implemented against v0.1.1; the v0.2.0 Application Layer amendment does
+> not alter its accepted runtime semantics)
 > **Scope:** restart-safe branching, waits, signals, timers, retries,
 > cancellation, and bounded parallel work.
-> **Status:** implemented for independent audit (see
-> `docs/report/VICT-STAGE-03-REPORT.md`); statuses in the system reference
-> are updated only by the later independent disposition.
+> **Status:** independently verified with non-blocking issues at target
+> `810144f`; authoritative re-audit commit `d2ca3b4`; Stage 04 permitted.
 
 Stage 02 proved durable identity and sequential state. Stage 03 adds
 **durable continuity**:

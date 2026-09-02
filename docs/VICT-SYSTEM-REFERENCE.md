@@ -1,12 +1,12 @@
 # VICT System Reference
 
-> **Canonical title:** Vict Architecture and Operating Model — Authoritative System Reference  
-> **Document version:** 0.1.1  
-> **System generation:** Greenfield  
-> **Status:** Authoritative baseline; future features are individually marked  
-> **Last updated:** 2026-09-01 (Stage 2 independently verified; closure recorded)  
-> **Current delivery point:** Stages 1, 1.1, and 2 independently verified  
-> **Next permitted stage:** Stage 3 — durable orchestration (permitted by the Stage 2 independent audit; not yet implemented)
+> **Canonical title:** Vict Architecture and Operating Model — Authoritative System Reference<br>
+> **Document version:** 0.2.0<br>
+> **System generation:** Greenfield<br>
+> **Status:** Authoritative baseline; Application Layer amendment accepted; future features are individually marked<br>
+> **Last updated:** 2026-09-02 (Stage 3 independently verified with non-blocking issues; Application Layer amendment accepted)<br>
+> **Current delivery point:** Stages 1, 1.1, 2, and 3 independently verified<br>
+> **Next permitted stage:** Stage 4 — capability and application authoring foundation (permitted; not yet implemented)
 
 ---
 
@@ -66,25 +66,44 @@ Every material design item has both a maturity and a delivery status.
 | GOV-005 | Architecture changes MUST record rationale, affected IDs, compatibility impact, and migration impact. | Accepted | Planned |
 | GOV-006 | Legacy documents MAY inform decisions but MUST NOT impose legacy package or language structure. | Invariant | Verified |
 
+### 0.5 Accepted architecture amendment — Application Layer
+
+On 2026-09-02, after Stage 3 had established the durable execution foundation and before Stage 4 began, the product boundary was reviewed against Vict's intended outcome. The greenfield architecture correctly rejected the legacy grammar engine, mandatory `lang-*` package hierarchy, and YAML-first thesis, but it also left end-user application delivery as separately authored framework work. Under that plan, Vict would reliably execute an application without materially accelerating creation of the application surface itself.
+
+That omission is corrected in v0.2.0. Vict now includes a first-class **Application Definition and Delivery Layer** above the semantic/runtime foundation. It owns a framework-neutral structured application model; typed domain-resource and action bindings; application identity and release composition; a renderer contract; a SvelteKit reference renderer; scaffolding; and explicit custom-component escape hatches. It is distinct from Studio, which is an operator surface, and from capabilities, which remain executable behavior.
+
+This amendment:
+
+- adds product requirements PRD-007 and PRD-008, architecture requirements ARCH-007 through ARCH-009, and the APP requirement family;
+- extends the Application plane and target package responsibilities;
+- adds a dedicated Application Layer section;
+- revises unstarted Stages 4 onward so application authoring and delivery are proven before the real ARA product;
+- preserves every verified Stage 1–3 execution, identity, safety, and durability invariant;
+- creates no compatibility obligation to legacy `lang-app`, `lang-space`, `kit-svelte`, `app.yaml`, `layout.yaml`, or grammar packages; their useful concepts are research inputs only;
+- requires no migration of current code because the amendment is additive and no Application Layer package or public contract has yet shipped.
+
 ---
 
 ## 1. The complete idea
 
 Vict is a capability-oriented application runtime and control system for building software whose behavior can be inspected, versioned, simulated, changed, executed, and audited.
 
-The complete Vict package is not just an execution engine. It has five cooperating parts:
+The complete Vict package is not just an execution engine. It has six cooperating parts:
 
 1. **Semantic core:** contracts, capabilities, graphs, activations, and deterministic execution rules.
 2. **Operational runtime:** effects, persistence, retries, waits, cancellation, observability, and recovery.
-3. **Control plane:** safe inspection and change through proposals, validation, simulation, approval, activation, and rollback.
-4. **Developer and builder system:** SDKs, local tools, conformance tests, and a model-agnostic Builder Kit usable by Codex, Claude Code, Pi, a human developer, or another coding host.
-5. **Ecosystem and reference products:** reusable capability packs, adapters, proven playbooks, and ARA as the lighthouse application.
+3. **Application definition and delivery:** structured application, data, screen, layout, component, and action definitions rendered into a complete usable application with conventional-code escape hatches.
+4. **Control plane:** safe inspection and change through proposals, validation, simulation, approval, activation, and rollback.
+5. **Developer and builder system:** SDKs, local tools, conformance tests, and a model-agnostic Builder Kit usable by Codex, Claude Code, Pi, a human developer, or another coding host.
+6. **Ecosystem and reference products:** reusable capability packs, adapters, application templates, proven playbooks, and ARA as the lighthouse application.
 
 ```mermaid
 flowchart TB
-    APP["Applications and ARA"] --> IFACE["SDK, API, CLI, Studio"]
-    IFACE --> CONTROL["Vict Control Plane"]
-    IFACE --> RUNTIME["Vict Runtime"]
+    DEF["Application Definition"] --> APP["Renderer and Application Host"]
+    APP --> IFACE["SDK, API, CLI"]
+    STUDIO["Studio"] --> IFACE
+    IFACE --> CONTROL["Control Plane"]
+    IFACE --> RUNTIME["Runtime"]
     CONTROL --> KERNEL["Kernel and Activation"]
     RUNTIME --> KERNEL
     KERNEL --> BASE["Contracts and Authoring ABI"]
@@ -105,6 +124,8 @@ Vict should make these questions answerable:
 - Can a suspended run resume against the same semantics?
 - Can an operator diagnose failure without exposing sensitive payloads?
 - Can a human or coding agent extend the system without bypassing its rules?
+- Can one structured definition of behavior, domain data, and product surface produce a complete working application rather than only its backend?
+- Can that application be customized with ordinary framework components without forking or bypassing Vict semantics?
 
 ### 1.2 Non-goals
 
@@ -118,6 +139,8 @@ Vict is not:
 - a model-specific agent framework;
 - a microservice requirement;
 - a reason to replace normal TypeScript, Svelte, React, SQL, or infrastructure tools.
+- a promise that every game, 3D experience, animation, or pixel-specific marketing surface can be expressed without custom code;
+- a requirement that React, Svelte, or any renderer-specific type leak into the framework-neutral Application Definition.
 
 | ID | Requirement | Maturity | Delivery |
 |---|---|---|---|
@@ -127,6 +150,8 @@ Vict is not:
 | PRD-004 | Vict MUST remain usable locally before requiring distributed infrastructure. | Accepted | Verified |
 | PRD-005 | Vict SHOULD provide the same semantic model in local and server deployments. | Accepted | Planned |
 | PRD-006 | Vict MUST be model-agnostic at the builder and product-agent boundaries. | Invariant | Planned |
+| PRD-007 | Vict MUST materially accelerate creation of complete end-user applications, not only the reliable behavior behind them. | Invariant | Planned |
+| PRD-008 | A valid structured application definition plus its declared bindings MUST be sufficient for the reference toolchain to produce a runnable, useful default application. | Accepted | Planned |
 
 ---
 
@@ -144,6 +169,8 @@ Vict is not:
 10. **Extract ecosystems from evidence.** Capability packs and playbooks emerge from working applications and repeated patterns.
 11. **One semantic system.** CLI, API, Studio, and agents are interfaces to the same contracts, not separate products with divergent rules.
 12. **Verification is part of delivery.** A report is a claim; an audit and reproducible evidence establish status.
+13. **Front and back are first-class.** Structured behavior, domain resources, and product surfaces form one application model while retaining separate execution, data, and presentation responsibilities.
+14. **Structured core, code islands.** Common application structure renders directly from definitions; bespoke experiences enter through explicit versioned custom components rather than edits to generated framework internals.
 
 | ID | Requirement | Maturity | Delivery |
 |---|---|---|---|
@@ -153,6 +180,9 @@ Vict is not:
 | ARCH-004 | The architecture MUST permit a modular monolith and MUST NOT require premature microservices. | Invariant | Verified |
 | ARCH-005 | Serialization formats MUST remain secondary to the in-memory and API semantic model. | Invariant | Verified |
 | ARCH-006 | Package boundaries SHOULD follow stable responsibilities, not speculative product branding. | Accepted | In Progress |
+| ARCH-007 | The Application Layer MUST remain above and dependent on public Vict semantics; the kernel and runtime MUST NOT depend on a UI framework. | Invariant | Planned |
+| ARCH-008 | Product UI structure and renderer implementation MUST be separable so one neutral definition can support more than one renderer without changing execution semantics. | Accepted | Planned |
+| ARCH-009 | Application generation MUST preserve ordinary-code escape hatches and MUST NOT force presentation-only interactions into orchestration graphs. | Invariant | Planned |
 
 ---
 
@@ -176,6 +206,12 @@ Vict is not:
 | ChangeSet | Version-guarded proposed control-plane mutation |
 | Capability pack | Installable, documented group of related capabilities, contracts, configuration, permissions, tests, and doubles |
 | Playbook | Proven composition and operating guidance extracted from repeated working use |
+| Application definition | Framework-neutral structured declaration of an application's routes, screens, layouts, resources, views, actions, presentation, and component references |
+| Application version | Stable identity of one canonical Application Definition and its explicit referenced semantic revisions |
+| Application release | Deployable binding of an application version to a renderer/component set and compatible Vict runtime/API/activation policy |
+| Resource definition | Typed declaration of application-domain data, identity, relationships, queries, mutations, and presentation references without fixing one storage technology |
+| Renderer | Adapter that turns a validated Application Definition into a working product surface for a UI framework or platform |
+| Component registry | Versioned mapping from semantic component references to built-in or custom renderer implementations |
 | Builder Agent | External coding agent operating through the Builder Kit to modify Vict or an application repository |
 | Product Agent | Agent invoked as application behavior through a bounded capability and runtime permissions |
 | ARA | Vict’s reference application and performance/correctness lighthouse |
@@ -190,7 +226,7 @@ Vict has five logical planes. They can run in one process locally; separation de
 
 | Plane | Owns | Does not own |
 |---|---|---|
-| Application | Product UI, domain state, prompts, domain capabilities | Vict activation rules or operator authority |
+| Application | Structured application definitions, product UI, view state, domain state, prompts, domain capabilities, renderer/component composition | Vict activation rules, operator authority, or operational run persistence |
 | Execution | Runs, scheduling, effects, ports, persistence, events | Unreviewed definition mutation |
 | Control | ChangeSets, validation, approvals, activation selection, rollback | Application conversation logic |
 | Integration | Databases, model providers, tools, queues, humans, secrets | Kernel semantics |
@@ -233,7 +269,9 @@ Before a third-party capability ecosystem is stabilized, the SDK should become a
 flowchart TB
     CONTRACTS["@vict/contracts"] --> SDK["@vict/sdk"]
     SDK --> KERNEL["@vict/kernel"]
+    SDK --> APPMODEL["Application model/compiler"]
     KERNEL --> RUNTIME["@vict/runtime"]
+    APPMODEL --> RENDERER["Svelte renderer"]
     RUNTIME --> CONTROL["@vict/control"]
     RUNTIME --> SERVER["@vict/server"]
 ```
@@ -253,6 +291,9 @@ Dependency arrows mean “is imported by the next layer.” Exact package extrac
 | @vict/client | Typed transport client, if evidence supports extraction | Provisional | Not Scheduled |
 | @vict/cli | Local inspection, execution, verification, and operator commands | Accepted | Planned |
 | @vict/builder-kit | Agent/human repository context, tools, checks, and handoff protocol | Accepted | Planned |
+| application model/compiler | Framework-neutral definitions, validation, canonical identity, binding plans, and application release manifests | Accepted | Planned |
+| Svelte renderer and host | Canonical first renderer, SvelteKit shell, built-in component roles, and custom-component registry | Accepted | Planned |
+| application data adapters | Domain-resource persistence and query/mutation ports, kept separate from operational orchestration stores | Accepted | Planned |
 | capability packs | Domain integrations and reusable behavior | Accepted | Planned |
 | studio | Human control/inspection interface | Accepted | Planned |
 
@@ -263,6 +304,7 @@ Dependency arrows mean “is imported by the next layer.” Exact package extrac
 | ARCH-012 | Public packages MUST declare compatibility and use semantic versioning. | Accepted | Planned |
 | ARCH-013 | Internal dependency direction MUST keep the kernel independent of runtime adapters. | Invariant | Verified |
 | ARCH-014 | A future umbrella package MAY re-export stable APIs but MUST NOT become a hidden dependency cycle. | Provisional | Not Scheduled |
+| ARCH-015 | Logical Application Layer responsibilities MUST be proven before package names are stabilized; packages MUST NOT be created as empty framework abstractions. | Accepted | Planned |
 
 ---
 
@@ -674,6 +716,14 @@ Vict distinguishes operational workflow state from application/domain state.
 
 Interfaces are semantic ports. SQLite, Postgres, object storage, or a queue are adapters.
 
+Application state has three deliberately separate classes:
+
+- **view state** is transient presentation state owned by the application host;
+- **domain state** is durable product data accessed through typed resource/data ports and application capabilities;
+- **orchestration state** is Vict's operational run/token/attempt/wait state.
+
+The reference local deployment may use SQLite for both operational and domain persistence, but their schemas, ports, migrations, retention, and authority boundaries remain separate. A renderer or generated CRUD surface must never write Vict's operational tables directly.
+
 ### 12.2 Local durability
 
 Stage 2 introduces SQLite for identity and restart correctness while preserving the Stage 1 sequential execution semantics. It should not simultaneously add branching, waits, distributed workers, or Studio behavior.
@@ -736,6 +786,8 @@ Rollback selects a prior activation for future runs. It does not erase events, m
 | DATA-010 | The architecture MUST NOT require application domain state to use Vict event sourcing. | Invariant | Verified |
 | DATA-011 | Public configuration and type documentation for full retention MUST explicitly state the caller’s responsibility for retained content. | Accepted | Verified |
 | DATA-012 | Store read APIs SHOULD return immutable snapshots or defensive copies so callers cannot mutate canonical stored records by reference. | Accepted | Verified |
+| DATA-013 | Application-domain persistence MUST remain logically and physically separable from Vict operational persistence even when both use one database technology. | Invariant | Planned |
+| DATA-014 | Generated application data mutations MUST cross typed, authorized data/capability boundaries and MUST NOT write operational store records directly. | Invariant | Planned |
 
 ---
 
@@ -924,6 +976,7 @@ Primary use:
 
 - define contracts and capabilities;
 - define and validate graphs;
+- define and validate applications, resources, screens, views, actions, and renderer-neutral component references;
 - activate locally;
 - run or simulate;
 - inspect typed results;
@@ -953,6 +1006,7 @@ The CLI is a thin typed client and local developer surface. Expected commands in
 - validate/activate/run/simulate a graph;
 - inspect run/activation/events;
 - propose/validate/simulate/apply a ChangeSet;
+- validate, preview, scaffold, and build an Application Definition;
 - manage local adapters and migrations;
 - run conformance tests and benchmarks.
 
@@ -962,7 +1016,7 @@ MCP may expose bounded Vict operations to Builder or Product Agents. It is an ad
 
 ### 16.5 Studio
 
-Studio is a normal web application that consumes Vict APIs. It should visualize definitions, activations, runs, events, ChangeSets, approvals, and safe diagnostics. It does not need a Vict-specific UI language. Svelte, React, or another conventional framework is acceptable.
+Studio is an operator application that consumes Vict APIs. It visualizes definitions, activations, runs, events, ChangeSets, approvals, and safe diagnostics. It is not the Application Layer and is not a substitute for generated end-user applications. Studio may reuse the framework-neutral Application Definition and Svelte renderer where they fit, while retaining custom operator components where needed.
 
 ### 16.6 Event delivery
 
@@ -975,14 +1029,200 @@ Polling may be used in an early implementation. The accepted final direction all
 | API-003 | Event streaming MUST have resumable cursor semantics before it is relied on operationally. | Accepted | Planned |
 | API-004 | MCP MUST remain an adapter over bounded operations, not an alternate privileged backdoor. | Invariant | Planned |
 | API-005 | Application UIs MAY use ordinary framework components and direct domain APIs where Vict orchestration is not useful. | Invariant | Verified |
+| API-006 | Application Definition, local rendering, and future remote rendering MUST preserve the same typed resource/action identities and authorization boundary. | Accepted | Planned |
 
 ---
 
-## 17. Capability ecosystem, packs, and playbooks
+## 17. Application Definition and Delivery Layer
+
+The Application Layer turns Vict from a reliable application backend into a system that materially accelerates creation of the complete product. A valid structured definition of behavior bindings, domain resources, and product surfaces should yield a runnable, responsive, useful application before bespoke component work begins.
+
+The first product envelope is serious local-first workflow, data, and conversational software: workspaces, dashboards, forms, tables, charts, approvals, project/record management, conversation surfaces, and combinations of them. Games, 3D experiences, highly animated marketing surfaces, and other pixel-specific experiences remain possible through custom application code but are not promised as structure-only output.
+
+```mermaid
+flowchart TB
+    DEF["Application Definition"] --> COMPILE["Validate, canonicalize, bind"]
+    COMPILE --> PLAN["Immutable application plan"]
+    PLAN --> RENDER["Svelte renderer and host"]
+    PLAN --> ACTIONS["Resource and Vict actions"]
+    RENDER --> PRODUCT["Runnable application"]
+    ACTIONS --> PRODUCT
+```
+
+### 17.1 Ownership and boundary
+
+The Application Layer is a first-class Vict responsibility, not:
+
+- a capability (capabilities are executable behavior);
+- an orchestration graph (graphs describe meaningful durable control flow);
+- Studio (Studio operates Vict; the Application Layer creates end-user products);
+- a separate unrelated frontend framework;
+- a revival of the legacy grammar engine or mandatory `lang-*` hierarchy.
+
+It consumes public contracts, capability/action references, resource definitions, and runtime/control interfaces. The kernel and runtime never import a UI framework. A serialized application manifest contains declarations and stable references, not arbitrary executable functions.
+
+### 17.2 Authoring, canonicalization, and identity
+
+TypeScript is the primary authoring route. A canonical serializable representation supports storage, comparison, transport, inspection, and optional JSON/YAML authoring later. Serialization formats are alternate surfaces over one semantic model; none may create different behavior.
+
+An Application Definition includes, at minimum:
+
+- stable application ID and explicit revision;
+- route and navigation declarations;
+- screens, layouts, regions, responsive rules, and presentation metadata;
+- resource, query, mutation, and view references;
+- typed action bindings;
+- built-in and custom component references;
+- theme/design-token references;
+- safe default loading, empty, validation, denied, and failure states;
+- compatibility declarations for the application schema and consumed public Vict contracts.
+
+`applicationVersion` identifies the canonical definition and its explicit semantic references:
+
+```text
+applicationVersion = hash(
+  canonical application manifest
+  + referenced resource/view/action revisions
+  + referenced component IDs/revisions
+  + application schema marker
+)
+```
+
+It does not hash function text, framework internals, timestamps, object insertion order, or mutable runtime state. Custom component and handler semantics use explicit author/build revisions, following the same trust boundary as capabilities.
+
+### 17.3 Surface model
+
+The neutral surface model describes meaning and composition, not Svelte or React component types. It supports:
+
+- routes, redirects, navigation groups, breadcrumbs, and contextual actions;
+- screens composed from responsive layouts and named regions;
+- text/content, lists, record/detail views, forms, fields, tables, charts, status displays, tabs, dialogs, drawers, command/action surfaces, conversation feeds/inputs, and custom-component slots;
+- conditional visibility and enabled/disabled presentation driven by safe derived state;
+- loading, empty, validation, denied, partial, stale, and failure states;
+- theme tokens, density, typography, spacing, color roles, and renderer-owned accessibility behavior.
+
+Contracts remain the authority for data validation and decoding. Labels, help text, field order, widget choice, table columns, chart encoding, layout, and other presentation metadata belong to the Application Definition and must not pollute base contracts.
+
+The renderer must fail with structured diagnostics for unknown routes, regions, component roles, component revisions, resource/view/action references, incompatible contracts, or unsupported presentation properties. It must not silently omit an intended validation or action boundary.
+
+### 17.4 Resources and application-domain data
+
+A Resource Definition describes application-domain data without requiring one database or ORM. It may declare:
+
+- stable resource ID and revision;
+- identity and field contract references;
+- relationships and integrity rules;
+- supported list/detail queries, filters, sorting, pagination, and projections;
+- permitted create/update/delete or domain-specific mutations;
+- presentation references for default forms, tables, labels, and summaries;
+- authorization/effect metadata required by its operations.
+
+Resource definitions do not grant storage authority. A data adapter implements typed query/mutation ports, migrations, and transactions. Generated CRUD operations remain ordinary authorized read/write boundaries and must declare effects, validation, idempotency, and policy like hand-authored operations.
+
+The reference Application Layer provides a local SQLite domain-data adapter. Its schema and migration history are distinct from Vict's operational SQLite schema even when one deployment uses the same database technology. Other databases enter through conformance-tested adapters.
+
+### 17.5 Actions and state
+
+Application actions have explicit kinds:
+
+- **local/view:** update transient presentation state;
+- **navigation:** change route or screen context;
+- **query:** read a typed resource/view;
+- **mutation:** perform an authorized domain-data operation;
+- **capability/run:** invoke meaningful Vict-governed behavior or start a durable graph;
+- **signal/operator:** call an explicitly authorized runtime/control operation where the product permits it.
+
+Every non-local action declares its input/output contract references and observable state mapping. Effectful, durable, resumable, or governed work crosses Vict capability/runtime/control boundaries. Presentation-only interactions—opening a tab, sorting an already-loaded table, expanding a region—stay local and do not become graph nodes.
+
+The model distinguishes transient view state, durable application-domain state, and Vict orchestration state. No renderer may treat one as another or write operational records directly.
+
+### 17.6 Renderer contract and SvelteKit decision
+
+The Application Definition and compiler are framework-neutral. **SvelteKit is the canonical first renderer and application host.** Initial custom components are Svelte components registered through the neutral component-reference boundary.
+
+React is deferred until a genuine second consumer justifies another adapter. Adding a renderer must not change application, action, contract, permission, or runtime semantics. All renderers must pass the same conformance fixtures for routing, state mapping, actions, diagnostics, safe failures, and component resolution.
+
+The exact Svelte component library remains an implementation choice for Stage 5, but semantic component roles, application identity, and adapter conformance are Vict contracts rather than library-specific conventions.
+
+### 17.7 Hybrid delivery and customization
+
+Vict uses a hybrid delivery model:
+
+1. scaffold a conventional SvelteKit application host and configuration once;
+2. validate and render Application Definitions through the reference renderer;
+3. provide built-in components for common application roles;
+4. register bespoke Svelte components by stable ID/revision for custom regions;
+5. keep application-owned code, assets, and styles in explicit extension locations.
+
+The structured definition remains the source of truth for structured regions. Vict does not repeatedly overwrite generated route/component files and does not promise bidirectional round-tripping between edited generated code and the definition. Customization occurs through tokens, renderer overrides, component registration, and code islands with clear ownership.
+
+### 17.8 Application release and deployment
+
+An Application Release binds:
+
+- one `applicationVersion`;
+- renderer identity and revision;
+- the exact built-in/custom component registry revisions;
+- resource/data-adapter compatibility;
+- public Vict SDK/API/contract compatibility;
+- an activation reference or an explicit activation-selection policy for actions that start runs;
+- build/provenance metadata where available.
+
+Local modular-monolith delivery comes first: the SvelteKit host may consume the runtime and application-data adapter in one deployment. Later remote deployment uses typed client/API bindings while preserving the same Application Definition and authority rules.
+
+### 17.9 Security, privacy, and authority
+
+Visibility, disabled state, and route guards improve user experience but are not authorization. Every resource mutation, capability invocation, run operation, signal, approval, and operator action is re-authorized below the UI boundary.
+
+Application manifests may name configuration and secret references but never contain resolved secret values. Safe errors exposed to components follow the same non-echoing diagnostics policy as runtime errors. Built-in table, chart, form, and diagnostic components must not expose retained payloads or secret-bearing metadata by default.
+
+### 17.10 Reference proof
+
+The first complete Application Layer proof combines different surface and state types in one local application:
+
+- a conversation screen with message history and input;
+- a projects/records screen with search, sorting, pagination, and a table;
+- a contract-validated create/edit form;
+- a dashboard containing a chart;
+- responsive navigation and layout;
+- loading, empty, validation, denied, and safe failure states;
+- one durable Vict action and one ordinary local UI action;
+- separate local SQLite application-domain persistence;
+- one genuinely custom Svelte component;
+- restart and application-version change evidence.
+
+The proof passes only if one structured definition and its declared capability/data/component bindings produce the runnable application without manually constructing its route/page shell.
+
+| ID | Requirement | Maturity | Delivery |
+|---|---|---|---|
+| APP-001 | A valid Application Definition and declared bindings MUST produce a runnable useful default application through the reference toolchain without manual route/page-shell construction. | Invariant | Planned |
+| APP-002 | The Application Definition and compiler MUST be UI-framework-neutral; TypeScript is the primary authoring API and all serializations MUST map to one canonical semantic model. | Invariant | Planned |
+| APP-003 | `applicationVersion` MUST be deterministic, insertion-order independent, schema-marked, and based on canonical declarations plus explicit revisions rather than function text or framework internals. | Invariant | Planned |
+| APP-004 | An Application Release MUST identify its application, renderer, component registry, data-adapter, public Vict compatibility, and activation-binding semantics. | Accepted | Planned |
+| APP-005 | The neutral surface model MUST cover routes, navigation, responsive layouts, forms, tables, charts, conversation surfaces, actions, and explicit default states required by the reference proof. | Accepted | Planned |
+| APP-006 | Reference-rendered surfaces MUST provide accessible semantics and responsive defaults, with loading, empty, validation, denied, and safe failure behavior. | Accepted | Planned |
+| APP-007 | Presentation metadata MUST remain separate from base data contracts while referencing those contracts for validation. | Invariant | Planned |
+| APP-008 | Resource Definitions MUST expose typed storage-neutral identity, query, mutation, relationship, and presentation semantics. | Accepted | Planned |
+| APP-009 | Application-domain stores and migrations MUST remain separate from Vict operational stores and migrations. | Invariant | Planned |
+| APP-010 | Every non-local application action MUST have typed boundary references and MUST cross the applicable data, capability, runtime, or control authorization boundary. | Invariant | Planned |
+| APP-011 | Presentation-only interactions MUST remain local and MUST NOT be forced into Vict graphs. | Invariant | Planned |
+| APP-012 | UI visibility, disabled state, and route guards MUST NOT be treated as authoritative permission enforcement. | Invariant | Planned |
+| APP-013 | SvelteKit MUST be the first reference renderer; the core Application Definition MUST NOT expose Svelte-specific public types. | Accepted | Planned |
+| APP-014 | Bespoke UI MUST be supported through a versioned component registry and explicit code islands without requiring edits to generated framework internals. | Invariant | Planned |
+| APP-015 | The reference delivery model SHOULD scaffold the host once and render definitions without destructive repeated code generation or promised bidirectional source round-tripping. | Accepted | Planned |
+| APP-016 | Renderer and application-data adapters MUST pass shared semantic conformance suites. | Invariant | Planned |
+| APP-017 | The real ARA product MUST use the Application Layer for its structured product surface and MUST expose any missing abstraction rather than bypassing the layer silently. | Accepted | Planned |
+| APP-018 | Studio MUST remain conceptually distinct from the Application Layer, though it MAY reuse the same renderer and components where semantics fit. | Accepted | Planned |
+| APP-019 | A visual drag-and-drop authoring environment is deferred; if added, it MUST edit the same canonical Application Definition rather than create a parallel model. | Deferred | Not Scheduled |
+| APP-020 | Legacy `lang-app`, `lang-space`, `kit-svelte`, and YAML scaffolding MAY inform design but MUST NOT create compatibility obligations or a second runtime. | Invariant | Planned |
+
+---
+
+## 18. Capability ecosystem, packs, and playbooks
 
 Vict’s reusable ecosystem is organized around capabilities and proven compositions, not a family of mandatory “languages.”
 
-### 17.1 Capability pack
+### 18.1 Capability pack
 
 A pack manifest should eventually declare:
 
@@ -1013,21 +1253,23 @@ The exact serialization is provisional. The semantic content is accepted:
 - documentation, examples, conformance tests, and evaluations;
 - provenance/signature metadata when distribution requires it.
 
-### 17.2 Adapters
+### 18.2 Adapters
 
 Adapters implement runtime ports for databases, model providers, queues, tools, telemetry, and identity systems. They do not redefine kernel semantics.
 
-### 17.3 Playbooks
+### 18.3 Playbooks
 
 A playbook is extracted only after a composition works in real use and repeats. It may include graph templates, capabilities, configuration guidance, operational checks, evaluations, and migration notes. It is not a speculative catalog of every possible application pattern.
 
-### 17.4 Registry
+### 18.4 Registry
 
 A public/private registry, signing, trust policy, discovery, and dependency resolution are deferred until multiple real packs exist. Local workspace packages are sufficient first.
 
-### 17.5 Domain languages
+### 18.5 Domain languages
 
 A domain-specific authoring surface may later compile into standard Vict contracts, capabilities, and graphs. It must justify itself through repeated user value and cannot establish a parallel runtime.
+
+The accepted Application Definition is not a speculative domain language: it is the framework-neutral product-surface/data/action model required by PRD-007 and PRD-008. Optional domain syntaxes may compile into it later but may not replace or fork its canonical semantics.
 
 | ID | Requirement | Maturity | Delivery |
 |---|---|---|---|
@@ -1040,22 +1282,22 @@ A domain-specific authoring surface may later compile into standard Vict contrac
 
 ---
 
-## 18. Deployment and scale
+## 19. Deployment and scale
 
-### 18.1 Local-first topology
+### 19.1 Local-first topology
 
 The first operational deployment is a modular monolith:
 
 - one Node.js process or local service;
-- SQLite persistence;
+- SQLite operational persistence plus a separately owned application-domain schema/adapter;
 - in-process sequential worker;
 - local filesystem/object adapter where needed;
 - explicit adapters for models/tools;
-- CLI and optionally a small local UI.
+- SvelteKit application host/reference renderer and CLI.
 
 This is a production-quality semantic baseline, not a disposable architecture.
 
-### 18.2 Server topology
+### 19.2 Server topology
 
 When demand exists:
 
@@ -1077,7 +1319,7 @@ flowchart TB
     WORKERS --> EXT["Models, Tools, Domain Systems"]
 ```
 
-### 18.3 Scale invariants
+### 19.3 Scale invariants
 
 Moving from local to distributed deployment must not change:
 
@@ -1101,11 +1343,13 @@ Distributed execution adds ownership, leasing, partitioning, backpressure, and f
 
 ---
 
-## 19. ARA reference application
+## 20. ARA reference application
 
 ARA is the lighthouse product used to prove that Vict serves a real interactive application without making the runtime the product’s bottleneck.
 
-### 19.1 Fast path
+ARA is also the first real consumer of the Application Layer. Its conversation, projects/commitments, forms, records, dashboards, approvals, and custom interaction surfaces must use the structured application model where it fits. Bespoke components remain allowed, but ARA must expose missing Application Layer abstractions rather than silently rebuilding ordinary screens, routes, data binding, and actions outside Vict.
+
+### 20.1 Fast path
 
 ```mermaid
 flowchart LR
@@ -1117,7 +1361,7 @@ flowchart LR
 
 Graph nodes should represent meaningful boundaries such as context assembly, agent invocation, tool approval, durable commitments, and persistence. Token parsing, rendering helpers, and ordinary domain logic remain code.
 
-### 19.2 Extended paths
+### 20.2 Extended paths
 
 ARA should eventually demonstrate:
 
@@ -1129,8 +1373,10 @@ ARA should eventually demonstrate:
 - safe traces and cost/latency metrics;
 - activation change without corrupting in-flight work;
 - local restart recovery.
+- Application Definition version changes without losing domain or orchestration state;
+- generated/reference-rendered conversation, form, table, chart, navigation, and custom-component surfaces.
 
-### 19.3 Performance
+### 20.3 Performance
 
 Activation and compilation occur off the message hot path. ARA benchmarks separate:
 
@@ -1149,14 +1395,15 @@ Synthetic no-op benchmarks are useful for regression, not a substitute for reali
 | ARA-004 | ARA MUST provide deterministic offline fixtures for core verification. | Accepted | Verified |
 | ARA-005 | ARA MUST separately report orchestration, storage, provider, and end-to-end latency. | Accepted | Planned |
 | ARA-006 | ARA SHOULD be the first proving ground for reusable capability packs and playbooks. | Accepted | Planned |
+| ARA-007 | ARA MUST be the first real product proof of the Application Layer and MUST document any product surface that requires a deliberate custom-component escape hatch. | Accepted | Planned |
 
 ---
 
-## 20. Security and trust model
+## 21. Security and trust model
 
 Vict assumes definitions, handlers, agents, operators, inputs, and external systems can each be faulty or hostile.
 
-### 20.1 Security controls
+### 21.1 Security controls
 
 - actor authentication and scoped authorization;
 - environment separation;
@@ -1171,7 +1418,7 @@ Vict assumes definitions, handlers, agents, operators, inputs, and external syst
 - rate, cost, and resource limits;
 - sandboxing where untrusted code execution is ever supported.
 
-### 20.2 Trust facts
+### 21.2 Trust facts
 
 - A declared effect is not automatically truthful.
 - A content hash is not automatically a trusted signature.
@@ -1191,9 +1438,9 @@ Vict assumes definitions, handlers, agents, operators, inputs, and external syst
 
 ---
 
-## 21. Testing, evaluation, and evidence
+## 22. Testing, evaluation, and evidence
 
-### 21.1 Test layers
+### 22.1 Test layers
 
 | Layer | Purpose |
 |---|---|
@@ -1205,7 +1452,7 @@ Vict assumes definitions, handlers, agents, operators, inputs, and external syst
 | Performance | Regression envelopes with environment and workload disclosed |
 | Independent audit | Reproduce commands, inspect code, challenge claims, and issue a disposition |
 
-### 21.2 Required evidence for a stage
+### 22.2 Required evidence for a stage
 
 Every stage report must include:
 
@@ -1221,7 +1468,7 @@ Every stage report must include:
 
 An independent audit must not rely only on the report. It reads the implementation, reruns commands, verifies representative behaviors, checks scope, and classifies findings.
 
-### 21.3 Audit dispositions
+### 22.3 Audit dispositions
 
 - **PASS:** exit gate satisfied; minor non-gating observations allowed.
 - **PASS WITH ISSUES:** stage objective stands, but named corrective work is required or scheduled.
@@ -1242,9 +1489,9 @@ Only PASS, or an explicit owner decision accepting listed issues, permits the ne
 
 ---
 
-## 22. Development stages and exit gates
+## 23. Development stages and exit gates
 
-Stages are capability gates, not calendar promises. A “night” may complete part or all of one stage, but the architecture does not bend to the session length.
+Stages are capability gates, not calendar promises. A work session may complete part or all of one stage, but the architecture does not bend to session length.
 
 | Stage | Name | Current status | Core outcome |
 |---|---|---|---|
@@ -1252,14 +1499,15 @@ Stages are capability gates, not calendar promises. A “night” may complete p
 | 1 | Walking kernel | Verified with documented qualifications | Small end-to-end deterministic graph runtime |
 | 1.1 | Activation integrity and data safety | Verified with non-blocking issues | Pinned execution meaning and safe retained records |
 | 2 | Durable identity and stores | Verified | Restart-safe sequential runs on SQLite |
-| 3 | Durable orchestration | Planned | Waits, signals, timers, retries, cancellation, branching |
-| 4 | Capability platform | Planned | Stable authoring ABI, packs, adapters, config/secrets |
-| 5 | Control plane | Planned | Governed ChangeSets, approvals, activation operations |
-| 6 | Real ARA product | Planned | Reference application proves the complete runtime path |
-| 7 | Builder Kit and self-hosting | Planned | Model-agnostic agents extend Vict under bounded rules |
-| 8 | Studio, diagnosis, and controlled recovery | Planned | Operator experience and safe recovery |
-| 9 | Ecosystem and proven playbooks | Planned | Reusable packs and compositions |
-| 10 | Scale and cloud | Planned | Distributed, multi-tenant operational form |
+| 3 | Durable orchestration | Verified with non-blocking issues | Waits, signals, timers, retries, cancellation, branching |
+| 4 | Capability and application authoring foundation | Planned — next permitted | Stable SDK/packs plus neutral Application Definition, identity, bindings, and renderer contract |
+| 5 | Application delivery layer | Planned | SvelteKit renderer, scaffolder, built-in surfaces, domain-data adapter, and complete working application proof |
+| 6 | Control plane and API | Planned | Governed ChangeSets, approvals, activation operations, typed remote consumption |
+| 7 | Real ARA product | Planned | Reference application proves runtime and Application Layer together |
+| 8 | Builder Kit and self-hosting | Planned | Model-agnostic agents extend Vict and its applications under bounded rules |
+| 9 | Studio, diagnosis, and controlled recovery | Planned | Operator experience and safe recovery, reusing the Application Layer where appropriate |
+| 10 | Ecosystem and proven playbooks | Planned | Reusable packs, application templates, and proven compositions |
+| 11 | Scale and cloud | Planned | Distributed, multi-tenant operational form |
 
 ### Stage 0 — Constitution and greenfield boundary
 
@@ -1440,41 +1688,104 @@ Add real workflow continuity on top of proven storage.
 - branching/join order is specified and deterministic;
 - independent audit passes.
 
-### Stage 4 — Capability platform
+**Independent disposition — 2026-09-02**
+
+- **VERIFIED WITH NON-BLOCKING ISSUES — STAGE 04 PERMITTED.**
+- Final independently audited implementation target: `810144ff0327f8ffc3c7ca48b1dcad63dd901eaa`; remediation implementation commit `9a69fe1`; original independent audit commit `f8c8d5b`; independent re-audit record commit `d2ca3b4`.
+- The fresh re-audit independently closed all three original High defects and the Medium lint failure using new public-API probes, both in-memory and SQLite adapters, real close/reopen, real SQLite transaction fault injection, and negative controls against the defective implementation.
+- Verified semantics include durable waits/signals/timers, deterministic routing, bounded fan-out/join, retry and keyed-write reconciliation, irreversible ambiguity blocking, cancellation and late-result fencing, operator resolution, exact-activation recovery, and atomic fault boundaries.
+- The clean verification ladder passed with 345 unit tests, 4 integration tests, and 349 total tests; the full suite passed three consecutive runs, six real-process restart fixtures passed, ARA retained 13 events, and the three-node benchmark retained 10 events. Node 22.13.1 ran the full ladder; Node 24.10.0 passed lint, typecheck, format, and targeted adapter suites.
+- No Critical, High, or Medium findings remain.
+
+**Non-blocking carry-forward**
+
+1. A throwing author contract parser or hostile issue getter can leave a durable run silently re-claimed instead of committing a sanitized terminal failure.
+2. The compiler can silently ignore unknown node fields supplied by untyped JavaScript authors.
+3. Wait-level `timeoutMs` and `delayMs` do not currently reject zero/negative bounds: finite non-positive values produce immediately due timers; non-finite values fail closed later at the persisted-value boundary. This behavior is deterministic and non-wedging but requires explicit validation semantics and documentation.
+4. Completion-phase store faults are recovered safely after lease lapse but are not immediately surfaced by the worker loop.
+5. Non-cooperative in-flight capabilities retain the documented cooperative-cancellation race semantics.
+6. The full Stage 3 verification ladder was reproduced on Windows; POSIX Stage 3 execution remains environmental follow-up rather than a gating defect.
+
+### Stage 4 — Capability and application authoring foundation
 
 **Purpose**
 
-Make Vict safe and pleasant to extend without importing runtime internals.
+Stabilize the external authoring boundary for both executable behavior and complete application definitions without importing runtime or renderer internals.
 
 **Includes**
 
-- stable @vict/sdk authoring ABI and dependency-direction correction;
-- capability pack manifest and local loading;
-- config and secret descriptors/resolvers;
-- permission declarations;
-- adapter and pack conformance kit;
-- doubles/evaluations packaged with capabilities;
-- compatibility policy and documentation.
+- stable `@vict/sdk` authoring ABI and dependency-direction correction;
+- capability pack manifest, local loading, compatibility, configuration/secret descriptors, permission declarations, doubles, and evaluations;
+- neutral `ApplicationDefinition`, `ResourceDefinition`, view/action binding, presentation, and component-reference types;
+- application validation, canonicalization, `applicationVersion`, and Application Release manifest semantics;
+- framework-neutral renderer and application-data adapter contracts plus conformance fixtures;
+- a deliberately small SvelteKit vertical renderer proof to validate the neutral boundary before package/API stabilization;
+- closure of the Stage 3 authoring-boundary Low findings: sanitized terminal handling for throwing contract parsers, structured rejection of unknown node fields, and explicit wait-level timeout/delay bound validation;
+- compatibility policy, migration notes, and complete authoring documentation.
 
 **Excludes**
 
-- public marketplace;
-- untrusted in-process code loading;
+- the complete forms/tables/charts component suite and production application-data experience assigned to Stage 5;
+- React or another second renderer;
+- visual drag-and-drop authoring;
+- public marketplace or untrusted in-process code loading;
+- control-plane/API implementation;
 - speculative domain languages.
 
 **Exit gate**
 
-- an external workspace package defines contracts/capabilities without runtime dependency;
-- at least two real packs pass conformance and simulation suites;
+- an external workspace package defines contracts, capabilities, resources, and an Application Definition without importing runtime or Svelte internals;
+- at least two real capability packs pass conformance and simulation suites;
+- canonical application identity is stable across insertion order and changes when declared resource/action/component revisions change;
+- unknown routes, components, fields, resources, actions, and incompatible contract references fail with structured deterministic diagnostics;
+- a throwing supported contract parser produces a sanitized durable terminal outcome rather than a silent reclaim loop;
+- invalid wait-level timeout/delay bounds fail at compilation with a real stable diagnostic;
+- a minimal SvelteKit proof renders one defined route, typed form/view, local action, Vict action, and custom-component reference without manual page-shell construction;
 - secrets are never serialized into manifests or normal history;
-- compatibility failures are actionable;
+- renderer and app-data adapter contracts have reusable conformance fixtures;
 - independent audit passes.
 
-### Stage 5 — Control plane
+### Stage 5 — Application delivery layer
 
 **Purpose**
 
-Govern production behavior changes.
+Turn the neutral Stage 4 application model into a complete, responsive, customizable local application rather than leaving each product to rebuild its frontend and domain-data plumbing.
+
+**Includes**
+
+- canonical SvelteKit renderer and one-time application-host scaffolder;
+- built-in routes/navigation, responsive layouts, content, list/detail, forms/fields, tables, charts, tabs, dialogs/drawers, status/action, and conversation surface roles;
+- loading, empty, validation, denied, stale, partial, and safe failure states;
+- theme/design-token system and accessible renderer defaults;
+- versioned Svelte custom-component registry and explicit code-island ownership;
+- typed resource queries/mutations and a local SQLite application-domain adapter with migrations separate from operational stores;
+- generated safe CRUD behavior for declared simple resources, with effects and authorization enforced below the UI;
+- local preview/build commands, deterministic fixtures, renderer/data-adapter conformance, and packed-consumer verification;
+- the complete reference proof defined in Section 17.10.
+
+**Excludes**
+
+- React or another second renderer;
+- visual drag-and-drop authoring or generated-code round-trip guarantees;
+- remote multi-client control plane, multi-tenancy, or cloud deployment;
+- pixel-perfect generation for arbitrary games, 3D, or marketing experiences.
+
+**Exit gate**
+
+- one Application Definition plus its declared capability/resource/component bindings produces a runnable SvelteKit application without manually authored routes or page shells;
+- the proof contains conversation, records/projects table, validated create/edit form, chart dashboard, responsive navigation, safe default states, one durable Vict action, one local action, and one custom Svelte component;
+- application-domain data survives restart through the separate SQLite data adapter without touching operational tables;
+- changing an Application Definition produces the intended `applicationVersion`, while unchanged definitions build deterministically;
+- built-in and custom components receive only declared safe data/action surfaces;
+- malformed definitions and missing component/action/resource revisions fail with structured diagnostics rather than partial silent rendering;
+- renderer and data adapters pass shared conformance, accessibility, leakage, packaging, and fresh-consumer tests;
+- independent usability, architecture, and security audit passes.
+
+### Stage 6 — Control plane and API
+
+**Purpose**
+
+Govern production behavior and application-release changes, and expose typed remote consumption without changing the local semantic model.
 
 **Includes**
 
@@ -1482,9 +1793,10 @@ Govern production behavior changes.
 - ChangeSet lifecycle and optimistic concurrency;
 - validation and simulation evidence;
 - risk-based approvals;
-- activation publish/select/rollback;
+- activation and Application Release publish/select/rollback;
 - run cancel/signal/operator interventions;
-- audit events and typed API/CLI.
+- versioned HTTP and event interfaces, typed client boundary, audit events, and CLI;
+- remote resource/action bindings required for an Application Definition to operate through the same authority model.
 
 **Excludes**
 
@@ -1494,52 +1806,58 @@ Govern production behavior changes.
 
 **Exit gate**
 
-- no active behavior can be invisibly edited;
+- no active behavior or published Application Release can be invisibly edited;
 - stale-base ChangeSets fail safely;
-- permissions are enforced below UI/CLI;
+- permissions are enforced below application UI and CLI;
 - in-flight runs stay pinned across activation change/rollback;
-- every intervention is attributable;
+- application clients cannot bypass resource/action authorization;
+- event delivery has resumable cursor semantics;
+- every intervention and release change is attributable;
 - independent security-oriented audit passes.
 
-### Stage 6 — Real ARA reference product
+### Stage 7 — Real ARA reference product
 
 **Purpose**
 
-Prove product usefulness and expose missing abstractions.
+Prove product usefulness and expose missing runtime, capability, control-plane, and Application Layer abstractions through one real application.
 
 **Includes**
 
-- real conversation, memory/context, model and tool capabilities;
-- domain persistence;
+- real conversation, memory/context, model, and tool capabilities;
+- ARA Application Definition covering conversation, projects/commitments, forms, records/table, dashboard/chart, navigation, safe states, and custom components;
+- domain persistence through Application Layer resource/data bindings;
 - human approval flow;
 - commitments/projects/reminders or another validated durable path;
-- local deployment and operational dashboards;
-- realistic latency, cost, and failure evaluation.
+- local and typed-client deployment paths plus operational dashboards;
+- realistic latency, cost, usability, customization, and failure evaluation.
 
 **Excludes**
 
 - Builder Agent in the message path;
-- general marketplace claims.
+- general marketplace claims;
+- bypassing ordinary Application Layer surfaces merely to finish the reference product.
 
 **Exit gate**
 
-- an end-to-end user flow survives restart and version change;
+- an end-to-end user flow survives process restart, activation change, and application-version change;
 - sensitive tool action requires correct approval;
+- the product surface is substantially produced by the Application Definition, while every custom component is explicit and justified;
 - safe observability supports diagnosis;
-- Vict overhead is measured separately and stays within an accepted budget;
-- product code does not bypass core effect/change semantics;
-- independent audit passes.
+- Vict runtime and rendering overhead are measured separately and stay within accepted budgets;
+- product code does not bypass core effect/change/data/permission semantics;
+- independent product, architecture, usability, and security audit passes.
 
-### Stage 7 — Builder Kit and self-hosting
+### Stage 8 — Builder Kit and self-hosting
 
 **Purpose**
 
-Let coding agents extend Vict and Vict applications reproducibly.
+Let coding agents extend Vict and Vict applications reproducibly, including capabilities, Application Definitions, resources, and custom components.
 
 **Includes**
 
 - compact architecture/context pack generated from this reference;
 - typed repository and optional Vict control tools;
+- Application Layer authoring and preview tools exposed through the same bounded development protocol;
 - handoff/result/audit schemas;
 - permission profiles and stop conditions;
 - verification automation;
@@ -1548,46 +1866,50 @@ Let coding agents extend Vict and Vict applications reproducibly.
 **Excludes**
 
 - self-granted authority;
-- automatic production activation;
+- automatic production activation or Application Release publication;
 - product-agent access to repository tools.
 
 **Exit gate**
 
-- a fresh supported builder completes a bounded change from the same handoff;
+- a fresh supported builder completes a bounded capability plus application-surface change from the same handoff;
 - scope violations are prevented or detected;
+- generated and custom surface ownership remains clear;
 - all claims include reproducible evidence;
-- production activation remains separately authorized;
+- production activation/release publication remains separately authorized;
 - independent audit passes.
 
-### Stage 8 — Studio, diagnosis, and controlled recovery
+### Stage 9 — Studio, diagnosis, and controlled recovery
 
 **Purpose**
 
-Give humans a complete operating surface.
+Give humans a complete operating surface and reuse the Application Layer where its semantics fit without conflating operator and product authority.
 
 **Includes**
 
-- graph/activation/run/event inspection;
+- graph/activation/run/event/Application Release inspection;
 - ChangeSet review and approval;
 - safe payload/artifact access;
 - wait/timer/retry/cancel operations;
 - comparison, rollback selection, and compensation guidance;
-- pre-authorized mechanical recovery.
+- pre-authorized mechanical recovery;
+- reuse of renderer/layout/form/table/chart capabilities where appropriate, plus explicit custom operator components.
 
 **Excludes**
 
 - unbounded autonomous healer;
-- raw secret/payload exposure by default.
+- raw secret/payload exposure by default;
+- a second Studio-only application model.
 
 **Exit gate**
 
 - common incidents can be diagnosed from safe records;
 - high-impact controls enforce authorization and confirmation;
 - Studio and CLI produce the same semantic operations;
+- reused Application Layer surfaces preserve operator-specific authorization;
 - recovery actions are bounded and audited;
 - independent usability/security audit passes.
 
-### Stage 9 — Ecosystem and proven playbooks
+### Stage 10 — Ecosystem and proven playbooks
 
 **Purpose**
 
@@ -1596,6 +1918,7 @@ Package repeated value after real applications establish it.
 **Includes**
 
 - multiple production-proven capability packs;
+- proven application templates, component packs, renderer extensions, and data adapters;
 - playbook extraction and evaluations;
 - pack provenance/signing and registry only if distribution requires them;
 - compatibility and deprecation operations.
@@ -1603,40 +1926,42 @@ Package repeated value after real applications establish it.
 **Exit gate**
 
 - reusable units have at least two genuine consumers or explicit strategic justification;
-- installation cannot bypass effect/permission review;
+- installation cannot bypass effect/permission/component review;
+- application templates remain ordinary Application Definitions rather than parallel generators;
 - upgrades and rollback are tested;
 - playbooks include operating evidence, not only templates;
 - independent ecosystem/security audit passes.
 
-### Stage 10 — Scale and cloud
+### Stage 11 — Scale and cloud
 
 **Purpose**
 
-Operate the same semantics across distributed and multi-tenant infrastructure.
+Operate the same runtime, Application Layer, and authority semantics across distributed and multi-tenant infrastructure.
 
 **Includes**
 
-- Postgres and distributed store adapters;
+- Postgres and distributed operational/application-data adapters;
 - queues, leases, workers, timers, backpressure;
 - tenant identity/isolation;
 - encryption, quotas, usage/cost accounting;
+- distributed application hosting and release delivery;
 - horizontal scaling, backup, restore, and disaster recovery.
 
 **Exit gate**
 
-- local and distributed conformance results match;
-- chaos tests cover worker loss, duplicate delivery, partition, and restore;
-- tenant isolation and data lifecycle are audited;
+- local and distributed runtime, renderer-binding, and data-adapter conformance results match;
+- chaos tests cover worker loss, duplicate delivery, partition, release rollout, and restore;
+- tenant isolation and data lifecycle are audited across operational and application-domain stores;
 - service objectives and capacity limits are published;
 - independent operational/security audit passes.
 
 ---
 
-## 23. Current implementation status
+## 24. Current implementation status
 
 This section is deliberately factual and should be updated after every accepted audit.
 
-### 23.1 Verified baseline
+### 24.1 Verified baseline
 
 - Greenfield package family exists.
 - Contracts and capabilities carry explicit revisions; graphVersion, capabilitySetVersion, and activationVersion have independently verified canonical semantics.
@@ -1651,8 +1976,11 @@ This section is deliberately factual and should be updated after every accepted 
 - Durable write-ahead ordering (durable intent committed before capability invocation) is enforced through the kernel's beforeInvoke boundary and independently proven on both adapters; a completed three-node run performs seven durable transactions.
 - Store reads return deep-frozen immutable snapshots; persisted values follow a strict serialization domain; activations, selection, runs, and events are identity-cross-validated against canonical content.
 - The independent Stage 2 audit reproduced 221 tests (217 unit + 4 integration) and all verification commands from repository commit a1ccea1; disposition PASS — STAGE 03 PERMITTED.
+- Stage 3 adds verified durable orchestration on both store adapters: decision routing, durable attempts/tokens/checkpoints, waits and external signals, manual-clock timers, bounded retries, idempotent keyed-write reconciliation, cancellation/fencing, blocked operator resolution, bounded fan-out/join, exact-activation resume, real-process restart recovery, and SQLite atomic fault boundaries.
+- Durable joins validate their own declared contracts outside store transactions and commit canonical completion exactly once; suspended work resumes only through the exact pinned activation; irreversible or ambiguous unsafe effects block rather than blind-replay.
+- The final independent Stage 3 re-audit targeted commit `810144f`, reproduced the original defects as negative controls, closed every High/Medium finding, passed 345 unit plus 4 integration tests (349 total), six real-process fixtures, ARA's 13 events, and the benchmark's 10 events; authoritative re-audit record commit `d2ca3b4` permits Stage 4 with Low/Informational carry-forward only.
 
-### 23.2 Accepted carry-forward issues
+### 24.2 Accepted carry-forward issues
 
 The Stage 1.1 non-blocking carry-forward was closed during Stage 2 and verified by its independent audit: official contract freezing and activation-time immutability enforcement (CONT-008, VER-005, VER-007, VER-010 now Verified), the explicit full-retention caller-responsibility warning in public configuration/type documentation (DATA-011 now Verified), immutable store-read handover (DATA-012 now Verified), and cycle diagnostics that run independently of other compile issues in stable order (KERN-008 now Verified).
 
@@ -1661,15 +1989,19 @@ The following accepted notes remain visible rather than being hidden by the acce
 - **Low (test infrastructure, documented):** the SQLite adapter's injected pre-opened database handle is test/integration infrastructure; it does not apply the production pragma configuration automatically. Callers supplying their own handle own its pragma setup. The production durability path is `createSqliteStores({ path })`, which configures WAL, foreign keys, busy timeout, and synchronous=FULL (see the store architecture note).
 - **Accepted trust boundaries:** identity depends on authors/build tooling bumping revisions, and effect classifications are author-supplied.
 - **Accepted limitation:** trace key-name redaction is best-effort, but values are structurally omitted regardless of key name.
-- **Environmental (not a defect):** the full verification ladder and packed-consumer check have been executed on Windows (win32-x64) only; POSIX execution remains not verified.
+- **Low (Stage 3 author parser):** throwing author contract parsers/hostile issue getters can leave a durable run in a silent reclaim loop instead of committing a sanitized terminal failure. This must close before the external Stage 4 authoring ABI stabilizes.
+- **Low (Stage 3 compiler strictness):** unknown node fields can be silently ignored for untyped JavaScript authors. Stage 4 must provide structured strict-boundary diagnostics.
+- **Low (Stage 3 wait bounds):** wait-level finite zero/negative `timeoutMs` and `delayMs` values are not compiler-rejected and become immediately due. Stage 4 must define and enforce stable bound diagnostics; the false explanatory sub-claim in the remediation report is preserved with a post-re-audit correction.
+- **Informational:** completion-phase store faults recover safely after lease lapse but are not immediately surfaced by the worker loop; non-cooperative in-flight capability cancellation retains documented cooperative race semantics.
+- **Environmental (not a defect):** the full Stage 3 verification ladder and packed-consumer check were executed on Windows (win32-x64); Node 24 targeted checks passed, while POSIX Stage 3 execution remains not independently reproduced.
 
-### 23.3 Authorized next work
+### 24.3 Authorized next work
 
-Stage 2 durable identity and stores is independently verified (implementation commit `a1ccea1`; disposition PASS — STAGE 03 PERMITTED). The verified delivery comprises: semantic store ports and an in-memory store in @vict/runtime; a @vict/store-sqlite adapter on the built-in node:sqlite driver with versioned forward migrations; atomic run/event transitions (seven durable transactions per completed three-node run); durable write-ahead enforcement through the kernel beforeInvoke boundary; exact-activation restoration; explicit interrupted-run recovery to blocked without replay; strict persisted-value serialization; and the closed Stage 1.1 carry-forward items (contract immutability, retention documentation, store read encapsulation, and cycle diagnostics).
+Stage 3 durable orchestration is independently verified at target `810144f`; the authoritative re-audit is commit `d2ca3b4` with disposition **VERIFIED WITH NON-BLOCKING ISSUES — STAGE 04 PERMITTED**. The verified delivery comprises durable attempts/tokens/checkpoints, decision/fan-out/join routing, waits/signals/timers, bounded retry and reconciliation, cancellation/fencing, operator resolution, exact-activation resume, per-adapter semantic conformance, restart fixtures, and real SQLite fault-boundary atomicity.
 
-Stage 3 — durable orchestration — is the next permitted stage and has not been started: no waits, timers, branching, fan-out, durable retries, distributed workers, control plane, or Studio exist yet.
+Stage 4 — capability and application authoring foundation — is the next permitted stage and has not begun. It must implement the stable external capability-pack/SDK boundary together with the neutral Application Definition, resource/action/component contracts, application identity/release semantics, shared adapter conformance, a minimal SvelteKit vertical proof, and the three Stage 3 authoring-boundary Low corrections. It must stop before the complete Stage 5 renderer/component/data-delivery surface, control plane, real ARA product, Builder Kit, or Studio.
 
-### 23.4 Evidence documents
+### 24.4 Evidence documents
 
 - NIGHT-01-FOUNDATION.md — implementation handoff and original exit criteria.
 - VICT-NIGHT-01-REPORT.md — implementer report; useful but not independently authoritative.
@@ -1679,15 +2011,23 @@ Stage 3 — durable orchestration — is the next permitted stage and has not be
 - VICT-STAGE-02-REPORT.md — Stage 2 implementer report (implementation claim and verification evidence; superseded by the independent audit; maintained under docs/report/).
 - VICT-STAGE-02-CORRECTIVE-FINALIZATION-REPORT.md — corrective pass over the Stage 2 implementation: durable write-ahead enforcement, store identity/sequence validation, atomic publishAndSelect, strict persisted-value domain, portable packed-consumer verification; accepted by the independent audit.
 - VICT-STAGE-02-INDEPENDENT-AUDIT.md — independent adversarial verification of Stage 2 (fresh-clone reproduction, gated-store durability probe, per-adapter adversarial assertions, real SIGKILL restart probe, migration/corruption checks); authoritative Stage 2 disposition: PASS — STAGE 03 PERMITTED. Maintained under docs/report/.
+- STAGE-03-DURABLE-ORCHESTRATION.md — accepted Stage 3 runtime/storage semantics and operational limits; maintained under docs/architecture/.
+- VICT-STAGE-03-REPORT.md — Stage 3 implementer evidence with later post-audit amendments; not independently authoritative.
+- VICT-STAGE-03-INDEPENDENT-AUDIT.md — independent audit that found three High orchestration defects and the failed lint gate; authoritative historical blocker record at commit `f8c8d5b`.
+- VICT-STAGE-03-AUDIT-REMEDIATION-REPORT.md — implementer remediation claim for the audit findings, with a post-re-audit correction to its wait-bound explanation.
+- VICT-STAGE-03-INDEPENDENT-RE-AUDIT.md — fresh independent negative-control and adversarial verification of the corrected target; authoritative Stage 3 disposition **VERIFIED WITH NON-BLOCKING ISSUES — STAGE 04 PERMITTED**, committed as `d2ca3b4`.
 
 ---
 
-## 24. Rejected approaches
+## 25. Rejected approaches
 
 | Decision | Why rejected |
 |---|---|
 | Recreate the legacy engine/grammar/lang-* organization | Greenfield Vict should follow proven responsibilities, not historical package branding |
 | Treat YAML as the product thesis | Serialization is useful, but semantic APIs, identity, and runtime correctness matter more |
+| Leave every end-user application surface to separately hand-authored React/Svelte code | Produces a reliable backend but fails Vict's accepted complete-application product outcome |
+| Make Svelte types part of the canonical Application Definition | SvelteKit is the first renderer, not the framework-neutral semantic model |
+| Repeatedly generate editable framework files and promise bidirectional round-tripping | Creates competing sources of truth and destructive regeneration; Vict uses a rendered structured core plus explicit code islands |
 | Hash function.toString or schema-library internals | Unstable, environment-dependent, incomplete, and not trustworthy provenance |
 | Resolve handlers from a live registry during a run | Breaks activation identity, reproducibility, and suspended-run safety |
 | Persist full inputs/outputs/errors by default | Creates unnecessary privacy and secret-leakage risk |
@@ -1704,30 +2044,34 @@ Rejected decisions require an explicit architecture amendment to reconsider.
 
 ---
 
-## 25. Provisional and open decisions
+## 26. Provisional and open decisions
 
 These questions do not block the current stage.
 
 | ID | Question | Current direction | Decide by |
 |---|---|---|---|
 | OPEN-001 | Which SQLite implementation and migration library? | Decided for Stage 2: built-in `node:sqlite` with a hand-rolled forward migration runner (better-sqlite3 v13 segfaults on the supported runtime; v12 couples Node upgrades to native prebuilds). Engines floor raised explicitly to >=22.13.0. | Decided (Stage 2; audit-accepted) |
-| OPEN-002 | Exact durable control-node syntax? | Typed route keys, explicit wait/fan/join, bounded loop only | Stage 3 design |
+| OPEN-002 | Exact durable control-node syntax? | Decided and independently verified in Stage 3: typed route keys, explicit wait/fan/join, no dynamic/nested fan-out, no general loop | Decided (Stage 3; re-audit accepted) |
 | OPEN-003 | When should SDK dependency direction be refactored? | After activation integrity, before external capability ABI is declared stable | Stage 4 |
 | OPEN-004 | How is structural contract compatibility represented? | Exact ID/revision first; add conservative tooling only with evidence | Stage 4 |
-| OPEN-005 | What build provenance/signing format is required? | Optional build digest locally; formal signing when distribution begins | Stages 4/9 |
-| OPEN-006 | Which server transports are standard? | Versioned HTTP plus cursor events; SSE likely before WebSocket | Stage 5 |
-| OPEN-007 | How are run-state migrations expressed? | Explicit audited migration, never automatic activation substitution | Stage 3 or later |
-| OPEN-008 | When is Postgres/distributed execution justified? | After local ARA measures real concurrency and durability needs | Stage 10 |
-| OPEN-009 | Does @vict/client merit a package? | Extract only when more than one interface shares a stable transport client | Stage 5/6 |
-| OPEN-010 | Which isolation model supports third-party executable packs? | Workspace trust first; sandbox architecture before untrusted code | Stage 9 |
+| OPEN-005 | What build provenance/signing format is required? | Optional build digest locally; formal signing when distribution begins | Stages 4/10 |
+| OPEN-006 | Which server transports are standard? | Versioned HTTP plus cursor events; SSE likely before WebSocket | Stage 6 |
+| OPEN-007 | How are run-state migrations expressed? | Explicit audited migration, never automatic activation substitution | Stage 6 or later |
+| OPEN-008 | When is Postgres/distributed execution justified? | After local ARA measures real concurrency and durability needs | Stage 11 |
+| OPEN-009 | Does @vict/client merit a package? | Extract only when local Svelte hosting and remote application/Studio consumption share a stable transport client | Stages 6/7 |
+| OPEN-010 | Which isolation model supports third-party executable packs? | Workspace trust first; sandbox architecture before untrusted code | Stage 10 |
+| OPEN-011 | Which UI framework is the first renderer? | Decided: framework-neutral Application Definition with SvelteKit as the canonical first renderer; React requires a genuine second consumer | Decided (v0.2.0 amendment) |
+| OPEN-012 | Is application delivery generated source or runtime rendering? | Decided: one-time SvelteKit host scaffold plus definition-driven rendering and explicit custom code islands; no destructive repeated generation or promised round-trip | Decided (v0.2.0 amendment) |
+| OPEN-013 | Which Svelte component/chart libraries implement the reference semantic roles? | Select through Stage 5 evidence; library types must not enter the neutral Application Definition | Stage 5 design |
+| OPEN-014 | How are Resource Definitions migrated by the reference domain-data adapter? | Separate SQLite domain schema/migrations; exact migration API follows Stage 4 resource semantics and must not couple to operational migrations | Stages 4/5 |
 
 An open decision must not be filled in by convenience during unrelated implementation. The stage handoff either keeps it open or records an accepted decision.
 
 ---
 
-## 26. Governance and change procedure
+## 27. Governance and change procedure
 
-### 26.1 Before a stage
+### 27.1 Before a stage
 
 Create a bounded handoff that:
 
@@ -1739,7 +2083,7 @@ Create a bounded handoff that:
 - names data/security adversarial cases;
 - forbids work beyond the stage stop point.
 
-### 26.2 During implementation
+### 27.2 During implementation
 
 - Preserve unrelated user changes.
 - Record necessary architecture questions instead of silently deciding beyond scope.
@@ -1747,11 +2091,11 @@ Create a bounded handoff that:
 - Keep claims tied to observed evidence.
 - Do not mark the stage Verified.
 
-### 26.3 Independent audit
+### 27.3 Independent audit
 
 The auditor receives the handoff, report, repository path, and this reference. It must inspect source and tests, reproduce commands, run targeted adversarial checks, and reconcile every material claim.
 
-### 26.4 Disposition and update
+### 27.4 Disposition and update
 
 After audit:
 
@@ -1762,7 +2106,7 @@ After audit:
 5. increment this document version;
 6. derive the next handoff from the newly accepted baseline.
 
-### 26.5 Versioning this document
+### 27.5 Versioning this document
 
 - Patch: clarification or evidence/status update without changing accepted architecture.
 - Minor: accepted additive architecture or stage design.
@@ -1776,16 +2120,18 @@ Document history should be maintained in version control. Superseded content rem
 
 For every feature, answer these in order:
 
-1. **Meaning:** What contract, capability, graph, or control operation does it add?
-2. **Identity:** Which explicit revision and activation identity changes?
-3. **Authority:** Which actor and permission can invoke or change it?
-4. **Effect:** Is it pure, read, write, or irreversible?
-5. **State:** What survives restart and at what transaction boundary?
-6. **Data:** What is returned, retained, summarized, protected, or deleted?
-7. **Failure:** How do timeout, retry, cancellation, ambiguity, and compensation work?
-8. **Observation:** Which safe events and metrics prove what happened?
-9. **Simulation:** Which doubles or fixtures prove it without real effects?
-10. **Verification:** Which automated and independent evidence closes the requirement?
+1. **Meaning:** What contract, capability, graph, resource, action, component role, or control operation does it add?
+2. **Surface:** Which route, screen, layout, state, action, or custom component exposes it, and can the Application Definition express the common case?
+3. **Identity:** Which explicit graph, capability, contract, application, component, renderer, or release revision changes?
+4. **Authority:** Which actor and permission can invoke, view, or change it, and where is that enforced below the UI?
+5. **Effect:** Is it local presentation, pure, read, write, or irreversible?
+6. **State:** Is it view, domain, or orchestration state; what survives restart and at what transaction boundary?
+7. **Data:** What is returned, retained, summarized, protected, or deleted?
+8. **Failure:** How do validation, empty/denied/error states, timeout, retry, cancellation, ambiguity, and compensation work?
+9. **Observation:** Which safe events and metrics prove what happened?
+10. **Simulation:** Which doubles, renderer fixtures, or data-adapter fixtures prove it without real effects?
+11. **Customization:** Can bespoke behavior remain an explicit code island without forking generated/runtime-owned structure?
+12. **Verification:** Which automated and independent evidence closes the requirement?
 
 If one of these is unknown, label it provisional or keep the feature out of the current stage.
 
@@ -1832,6 +2178,7 @@ Do not mark your own work Verified.
 A proposed Vict feature belongs in the core only if at least one is true:
 
 - it defines stable execution meaning;
+- it defines stable framework-neutral application, resource, action, renderer, or release meaning shared by multiple products/adapters;
 - it protects an effect, authority, identity, or durability boundary;
 - multiple interfaces must share its semantics;
 - a real reference application proves the need.
@@ -1840,4 +2187,4 @@ Otherwise it probably belongs in an application, capability pack, adapter, devel
 
 ---
 
-**End of authoritative baseline v0.1.1**
+**End of authoritative baseline v0.2.0**

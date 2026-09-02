@@ -255,11 +255,11 @@ function planSuccess(input: PlanInput): PlannedCompletion {
       contractId: wait.contract ?? null,
       contractRevision: null,
       dueAt: null,
-      // The canonical manifest form normalizes an ABSENT timeout to `null`;
-      // only a declared positive `timeoutMs` creates a timeout deadline
-      // (`timeoutMs: 0` is rejected by the compiler). Both `undefined` and
-      // `null` therefore mean "no timeout": no wait-timeout timer is ever
-      // scheduled for a plain signal wait.
+      // The canonical manifest form normalizes an ABSENT timeout to `null`.
+      // Both `undefined` and `null` therefore mean "no timeout": no
+      // wait-timeout timer is scheduled for a plain signal wait. Declared
+      // finite values create a deadline; explicit wait-level bound validation
+      // is a Stage 3 Low carry-forward into the Stage 4 authoring boundary.
       timeoutAt:
         wait.timeoutMs !== undefined && wait.timeoutMs !== null ? input.now + wait.timeoutMs : null,
     };

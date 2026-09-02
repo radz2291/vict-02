@@ -19,6 +19,14 @@ This repository is the greenfield kernel with durable identity, stores, and
   orchestration proof (decision route, fork/join, durable signal wait,
   keyed-write retry/reconciliation across a restart boundary)
 
+Stages 1–3 are independently verified. The accepted next stage is the
+capability and application authoring foundation. Vict's target product now
+includes a framework-neutral Application Definition and Delivery Layer that
+turns structured behavior, domain-resource, screen/layout, component, and
+action declarations into a complete usable application. SvelteKit is the
+canonical first renderer; the current repository does **not** implement that
+layer yet. See `docs/VICT-SYSTEM-REFERENCE.md` v0.2.0 for the normative scope.
+
 ## Quick start
 
 ```bash
@@ -157,5 +165,7 @@ model, state diagrams, effect/ambiguity rules, and operational limits.
 - `docs/architecture/STAGE-03-DURABLE-ORCHESTRATION.md` — durable
   orchestration: tokens/attempts/waits, retries, cancellation, blocked
   resolution, exact-activation resume, checkpoint boundary
+- `docs/report/VICT-STAGE-03-INDEPENDENT-RE-AUDIT.md` — authoritative Stage
+  03 disposition: verified with non-blocking issues; Stage 04 permitted
 - `docs/handoff/VICT-STAGE-02-HANDOFF.md` — Stage 02 scope
 - `docs/handoff/VICT-STAGE-03-HANDOFF.md` — Stage 03 scope

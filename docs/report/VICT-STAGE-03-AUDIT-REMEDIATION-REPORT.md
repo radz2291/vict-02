@@ -89,6 +89,18 @@ BOTH `undefined` and `null` as "no timeout" and sets `timeoutAt: null`:
   behavior is identical before and after serialization/restart (proven by
   the close/reopen variant of the test).
 
+**Post-re-audit correction — 2026-09-02.** The null/absence fix and all
+HIGH-2 behavioral evidence remain valid, but the explanation above about
+non-positive declared wait bounds is inaccurate. The compiler validates the
+node-level capability timeout, not `wait.timeoutMs` or timer-wait `delayMs`.
+Finite zero/negative wait-level values currently activate and produce
+immediately-due timers; non-finite values fail later at the persisted-value
+boundary. `INVALID_TIMEOUT_POLICY` is not an implemented diagnostic code.
+The independent re-audit classified this as LOW-3 and carried explicit
+wait-level bound validation into Stage 4 before the external authoring ABI is
+stabilized. This amendment preserves the original implementation claim while
+correcting the accepted system record.
+
 **Timer-pump evidence** (shared suite, both adapters, deterministic manual
 clock `createManualOrchestrationClock` wired as both runtime clock and
 orchestration time port; no sleeps or wall-clock timing):
