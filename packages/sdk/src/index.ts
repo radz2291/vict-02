@@ -17,7 +17,7 @@
  */
 
 // ---- Neutral executable contracts and structured results -----------------
-export { defineContract, validateContractIdentity } from '@vict/contracts';
+export { defineContract, validateContractIdentity, neutralJsonContract } from '@vict/contracts';
 export type {
   Contract,
   ContractDefinition,
@@ -145,4 +145,7 @@ export {
   defineCapability,
   defineGraph,
   defineResource,
+  VictAuthoringError,
+  frozenCapture,
 } from './authoring.js';
+export type { AuthoringErrorCode } from './authoring.js';

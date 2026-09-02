@@ -10,6 +10,7 @@ import {
   VICT_AUTHORING_COMPAT_VERSION,
   validateCapabilityPack,
   defineCapabilityPack,
+  neutralJsonContract,
 } from '@vict/sdk';
 
 /**
@@ -81,6 +82,8 @@ describe('@vict/sdk authoring ABI (Stage 04)', () => {
       id: 'c',
       revision: '1',
       effect: 'pure',
+      input: neutralJsonContract,
+      output: neutralJsonContract,
       invoke: () => 'x',
     });
     expect(Object.isFrozen(capability)).toBe(true);
@@ -144,6 +147,7 @@ describe('@vict/sdk authoring ABI (Stage 04)', () => {
           revision: '1',
           effect: 'pure' as const,
           input: { contractId: 'pack.echo', revision: '1' },
+          output: { contractId: 'pack.echo', revision: '1' },
         },
       ],
       contracts: [{ id: 'pack.echo', revision: '1' }],
@@ -155,6 +159,7 @@ describe('@vict/sdk authoring ABI (Stage 04)', () => {
           revision: '1',
           invoke: () => 'ok',
           input: Echo,
+          output: Echo,
         },
       ],
     };

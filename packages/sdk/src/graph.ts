@@ -26,7 +26,15 @@ export interface RetryPolicy {
 
 /** Hard upper bound for `RetryPolicy.maxAttempts` (compiler-enforced). */
 export const RETRY_MAX_ATTEMPTS_LIMIT = 10;
-/** Hard upper bound for a single backoff delay, timeout, or timer delay (compiler-enforced): 7 days. */
+/**
+ * Operational upper bound for a single retry-backoff delay or a single
+ * capability-attempt timeout (compiler-enforced). This is an operational
+ * scheduling bound for bounded retry/timeout machinery — it does NOT apply
+ * to wait-level `timeoutMs`/`delayMs`, which support long-lived waits
+ * (approvals, reminders, delayed workflows) and accept any positive finite
+ * safe integer that stays within the safe persisted-timestamp domain at
+ * scheduling time.
+ */
 export const MAX_DELAY_MS_LIMIT = 7 * 24 * 60 * 60 * 1000;
 /** Hard upper bound for fork branch count (compiler-enforced). */
 export const MAX_BRANCH_COUNT = 64;
@@ -38,11 +46,15 @@ export interface SignalWaitDefinition {
   /** Optional contract the signal payload must pass before the wait resolves. */
   readonly contract?: string;
   /**
-   * Optional durable timeout in milliseconds. When present it must be a
-   * positive finite safe integer (zero, negative, fractional, NaN and
-   * infinite values are rejected at graph compilation with the stable
-   * `INVALID_WAIT_BOUND` diagnostic). A declared timeout requires a
-   * declared `timeout` edge.
+   * Optional durable timeout in milliseconds. When present (`undefined` or
+   * `null` means absent) it must be a positive finite safe integer in
+   * milliseconds (zero, negative, fractional, NaN and infinite values are
+   * rejected at graph compilation with the stable `INVALID_WAIT_BOUND`
+   * diagnostic). There is NO seven-day ceiling: waits support long-lived
+   * approvals, reminders, and delayed workflows. Durations whose scheduled
+   * deadline would exceed the safe persisted-timestamp domain are rejected
+   * structurally when the timer is scheduled. A declared timeout requires
+   * a declared `timeout` edge.
    */
   readonly timeoutMs?: number;
 }
@@ -51,8 +63,11 @@ export interface TimerWaitDefinition {
   readonly kind: 'timer';
   /**
    * Relative delay from the moment the wait becomes durable. Must be a
-   * positive finite safe integer (see `SignalWaitDefinition.timeoutMs`);
-   * compilation rejects anything else with `INVALID_WAIT_BOUND`.
+   * positive finite safe integer in milliseconds (see
+   * `SignalWaitDefinition.timeoutMs`); compilation rejects anything else
+   * with `INVALID_WAIT_BOUND`. Long-lived delays (days, months, a year)
+   * are supported; durations that would overflow the safe persisted
+   * timestamp domain are rejected when scheduled.
    */
   readonly delayMs: number;
 }

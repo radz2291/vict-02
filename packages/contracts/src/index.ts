@@ -13,7 +13,14 @@ export type {
   ContractResult,
   VictError,
 } from './types.js';
-export { defineContract, validateContractIdentity } from './define-contract.js';
+export {
+  defineContract,
+  validateContractIdentity,
+  isOfficialContract,
+  OFFICIAL_CONTRACT_BRAND,
+  brandOfficialContract,
+} from './define-contract.js';
+export { neutralJsonContract, NEUTRAL_JSON_CONTRACT_ID } from './neutral.js';
 export { ContractDefinitionError } from './errors.js';
 export type { ContractDefinitionErrorCode } from './errors.js';
 export { victError, errorSignalContract } from './error.js';

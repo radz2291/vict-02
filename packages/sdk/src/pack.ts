@@ -1,4 +1,5 @@
 import type { CapabilityDefinition, DoubleInvoke, EffectClass } from './capability.js';
+import { frozenCapture } from './authoring.js';
 import type { RetryPolicy } from './graph.js';
 
 /**
@@ -159,6 +160,8 @@ export type PackIssueCode =
   | 'PACK_EMPTY_ID'
   | 'PACK_INVALID_VERSION'
   | 'PACK_EMPTY_REVISION'
+  | 'PACK_INVALID_EFFECT'
+  | 'PACK_INVALID_NAME'
   | 'PACK_COMPATIBILITY_UNMET'
   | 'PACK_DUPLICATE_CAPABILITY'
   | 'PACK_DUPLICATE_CONTRACT'
@@ -167,12 +170,9 @@ export type PackIssueCode =
   | 'PACK_DUPLICATE_SECRET'
   | 'PACK_DUPLICATE_DOUBLE'
   | 'PACK_DUPLICATE_EVALUATION'
-  | 'PACK_MISSING_CAPABILITY'
   | 'PACK_MISSING_BINDING'
   | 'PACK_EXTRA_BINDING'
   | 'PACK_BINDING_REVISION_MISMATCH'
-  | 'PACK_BINDING_EFFECT_MISMATCH'
-  | 'PACK_BINDING_IDEMPOTENCY_MISMATCH'
   | 'PACK_BINDING_CONTRACT_MISMATCH'
   | 'PACK_UNKNOWN_CONTRACT_REFERENCE'
   | 'PACK_UNKNOWN_DOUBLE_TARGET'
@@ -284,6 +284,17 @@ function isPlainObject(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
 
+/** The complete, closed effect vocabulary (mirrors the runtime's registration gate). */
+const EFFECT_CLASSES: ReadonlySet<string> = new Set(['pure', 'read', 'write', 'irreversible']);
+
+/** Strict semantic-version syntax: `major.minor.patch`, numeric, no prerelease/build metadata. */
+const SEMVER_PATTERN = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/;
+
+/** True when a string is a non-empty, non-whitespace-only identifier. */
+function isValidIdentifier(value: unknown): value is string {
+  return typeof value === 'string' && value.trim().length > 0;
+}
+
 function checkRetry(collector: IssueCollector, retry: unknown, path: string): void {
   if (!isPlainObject(retry)) {
     collector.add('PACK_INVALID_RETRY', `Retry policy at '${path}' must be an object.`, path);
@@ -305,10 +316,16 @@ function checkRetry(collector: IssueCollector, retry: unknown, path: string): vo
  * and comparison operators (`>=`, `<=`, `>`, `<`, `=`), possibly combined
  * with spaces (logical AND). Returns false for anything it cannot parse —
  * compatibility failures are failures.
+ *
+ * Caret semantics follow standard semver for `0.x`:
+ * - `^1.2.3` matches `>=1.2.3 <2.0.0`;
+ * - `^0.2.3` matches `>=0.2.3 <0.3.0` (minor pins the range);
+ * - `^0.0.3` matches only `0.0.3` (patch pins the range).
+ * Prerelease and build-metadata suffixes never parse — they fail closed.
  */
 export function satisfiesCompatibilityRange(version: string, range: string): boolean {
   const parse = (input: string): [number, number, number] | undefined => {
-    const match = /^v?(\d+)\.(\d+)\.(\d+)$/.exec(input.trim());
+    const match = /^(\d+)\.(\d+)\.(\d+)$/.exec(input.trim());
     return match ? [Number(match[1]), Number(match[2]), Number(match[3])] : undefined;
   };
   const actual = parse(version);
@@ -334,11 +351,20 @@ export function satisfiesCompatibilityRange(version: string, range: string): boo
     const tilde = /^~v?(\d+)\.(\d+)\.(\d+)$/.exec(part);
     const op = /^(>=|<=|>|<|=)?v?(\d+)\.(\d+)\.(\d+)$/.exec(part);
     if (caret) {
+      const major = Number(caret[1]);
+      const minor = Number(caret[2]);
       const base = parse(`${caret[1]}.${caret[2]}.${caret[3]}`);
       if (!base) {
         return false;
       }
-      const upper: [number, number, number] = [Number(caret[1]) + 1, 0, 0];
+      // Standard semver caret: the leftmost NON-ZERO component pins the
+      // upper bound. ^0.0.x pins the patch; ^0.x.y pins the minor.
+      const upper: [number, number, number] =
+        major > 0
+          ? [major + 1, 0, 0]
+          : minor > 0
+            ? [0, minor + 1, 0]
+            : [0, 0, Number(caret[3]) + 1];
       if (compare(actual, base) < 0 || compare(actual, upper) >= 0) {
         return false;
       }
@@ -408,10 +434,23 @@ export function validateCapabilityPack(
   if (typeof manifest.id !== 'string' || manifest.id.length === 0) {
     collector.add('PACK_EMPTY_ID', 'Pack id must be a non-empty string.', 'manifest.id');
   }
+  if (
+    typeof manifest.id === 'string' &&
+    manifest.id.length > 0 &&
+    manifest.id.trim().length === 0
+  ) {
+    collector.add('PACK_INVALID_NAME', 'Pack id must not be whitespace-only.', 'manifest.id');
+  }
   if (typeof manifest.version !== 'string' || manifest.version.length === 0) {
     collector.add(
       'PACK_INVALID_VERSION',
       'Pack version must be a non-empty string.',
+      'manifest.version',
+    );
+  } else if (!SEMVER_PATTERN.test(manifest.version)) {
+    collector.add(
+      'PACK_INVALID_VERSION',
+      `Pack version '${manifest.version}' is not a semantic version; use 'major.minor.patch' (e.g. '1.0.0').`,
       'manifest.version',
     );
   }
@@ -430,6 +469,14 @@ export function validateCapabilityPack(
       collector.add(
         'PACK_EMPTY_ID',
         'Declared contract id must be non-empty.',
+        'manifest.contracts',
+      );
+      continue;
+    }
+    if (contract.id.trim().length === 0) {
+      collector.add(
+        'PACK_INVALID_NAME',
+        'Declared contract id must not be whitespace-only.',
         'manifest.contracts',
       );
       continue;
@@ -460,6 +507,14 @@ export function validateCapabilityPack(
       collector.add('PACK_EMPTY_ID', 'Permission id must be non-empty.', 'manifest.permissions');
       continue;
     }
+    if (permission.id.trim().length === 0) {
+      collector.add(
+        'PACK_INVALID_NAME',
+        'Permission id must not be whitespace-only.',
+        'manifest.permissions',
+      );
+      continue;
+    }
     if (declaredPermissions.has(permission.id)) {
       collector.add(
         'PACK_DUPLICATE_PERMISSION',
@@ -479,6 +534,14 @@ export function validateCapabilityPack(
       collector.add(
         'PACK_UNKNOWN_CONFIGURATION',
         'Configuration descriptor name must be non-empty.',
+        'manifest.configuration',
+      );
+      continue;
+    }
+    if (config.name.trim().length === 0) {
+      collector.add(
+        'PACK_INVALID_NAME',
+        'Configuration name must not be whitespace-only.',
         'manifest.configuration',
       );
       continue;
@@ -517,6 +580,14 @@ export function validateCapabilityPack(
       );
       continue;
     }
+    if (secret.name.trim().length === 0) {
+      collector.add(
+        'PACK_INVALID_NAME',
+        'Secret name must not be whitespace-only.',
+        'manifest.secrets',
+      );
+      continue;
+    }
     if (declaredSecrets.has(secret.name)) {
       collector.add(
         'PACK_DUPLICATE_SECRET',
@@ -550,6 +621,58 @@ export function validateCapabilityPack(
         capPath,
       );
       continue;
+    }
+    if (capability.revision.trim().length === 0) {
+      collector.add(
+        'PACK_EMPTY_REVISION',
+        `Capability '${capability.id}' must declare a non-whitespace revision.`,
+        capPath,
+      );
+      continue;
+    }
+    if (!EFFECT_CLASSES.has(capability.effect)) {
+      collector.add(
+        'PACK_INVALID_EFFECT',
+        `Capability '${capability.id}' declares effect '${String(capability.effect)}', which is not in the closed effect vocabulary ('pure', 'read', 'write', 'irreversible').`,
+        `${capPath}.effect`,
+      );
+    }
+    // CONT-001: every executable capability must declare BOTH an input and
+    // an output contract. Pack validation fails closed before any binding
+    // can register a contract-less capability.
+    if (capability.input === undefined) {
+      collector.add(
+        'PACK_MISSING_BINDING',
+        `Capability '${capability.id}' must declare an input contract (CONT-001: every executable capability declares both input and output contracts).`,
+        `${capPath}.input`,
+      );
+    }
+    if (capability.output === undefined) {
+      collector.add(
+        'PACK_MISSING_BINDING',
+        `Capability '${capability.id}' must declare an output contract (CONT-001: every executable capability declares both input and output contracts).`,
+        `${capPath}.output`,
+      );
+    }
+    for (const listName of [
+      'permissions',
+      'configuration',
+      'requiredConfiguration',
+      'secrets',
+      'requiredSecrets',
+    ] as const) {
+      const list = capability[listName];
+      if (list !== undefined) {
+        for (const entry of list) {
+          if (!isValidIdentifier(entry)) {
+            collector.add(
+              'PACK_INVALID_NAME',
+              `Capability '${capability.id}' declares an invalid ${listName} entry (non-string or whitespace-only).`,
+              `${capPath}.${listName}`,
+            );
+          }
+        }
+      }
     }
     if (declaredCapabilities.has(capability.id)) {
       collector.add(
@@ -661,6 +784,7 @@ export function validateCapabilityPack(
   }
 
   // ---- Bindings cross-validation -----------------------------------------
+  const declaredDoublesRaw = new Set((manifest.doubles ?? []).map((entry) => entry.capabilityId));
   const seenBindings = new Set<string>();
   const boundIds = new Set<string>();
   for (const binding of bindings.capabilities ?? []) {
@@ -778,6 +902,16 @@ export function validateCapabilityPack(
         doublePath,
       );
     }
+    // An EXTRA double binding the manifest never declared is rejected:
+    // doubles are part of the pack's declared simulation policy, not an
+    // installation-time side channel.
+    if (!declaredDoublesRaw.has(double.capabilityId)) {
+      collector.add(
+        'PACK_EXTRA_BINDING',
+        `Binding supplies a double for '${double.capabilityId}' that the manifest does not declare.`,
+        doublePath,
+      );
+    }
   }
   const declaredDoubles = new Map<string, string>();
   for (const double of manifest.doubles ?? []) {
@@ -826,32 +960,6 @@ export function validateCapabilityPack(
 /* Factory                                                             */
 /* ------------------------------------------------------------------ */
 
-function frozenCopy<T>(value: T): T {
-  if (typeof value === 'function') {
-    return value;
-  }
-  if (Array.isArray(value)) {
-    return Object.freeze(value.map((item) => frozenCopy(item))) as unknown as T;
-  }
-  if (value !== null && typeof value === 'object') {
-    // Contract-like objects (with a `parse` callable) and already-frozen
-    // objects are ATOMIC: captured by reference so shared contract identity
-    // is preserved exactly as authored. Frozen contracts from
-    // `defineContract`/adapters therefore keep their object identity when a
-    // capability definition is captured.
-    const candidate = value as Record<string, unknown>;
-    if (Object.isFrozen(value) || typeof candidate.parse === 'function') {
-      return value;
-    }
-    const out: Record<string, unknown> = {};
-    for (const [key, item] of Object.entries(value as Record<string, unknown>)) {
-      out[key] = frozenCopy(item);
-    }
-    return Object.freeze(out) as unknown as T;
-  }
-  return value;
-}
-
 /**
  * Define a capability pack. Returns a pack whose manifest and binding
  * STRUCTURE are frozen deep copies: mutating the original manifest/binding
@@ -863,7 +971,7 @@ export function defineCapabilityPack(
   bindings: CapabilityPackBindings,
 ): CapabilityPack {
   return Object.freeze({
-    manifest: frozenCopy(manifest),
-    bindings: frozenCopy(bindings),
+    manifest: frozenCapture(manifest),
+    bindings: frozenCapture(bindings),
   });
 }

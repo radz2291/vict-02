@@ -1,5 +1,5 @@
 import type { ZodType } from 'zod';
-import { validateContractIdentity } from '../define-contract.js';
+import { brandOfficialContract, validateContractIdentity } from '../define-contract.js';
 import { toSafeIssue } from '../issue-mapping.js';
 import type { Contract, ContractResult } from '../types.js';
 
@@ -61,5 +61,5 @@ export function defineZodContract<T>(
       };
     },
   };
-  return Object.freeze(contract);
+  return brandOfficialContract(contract);
 }
