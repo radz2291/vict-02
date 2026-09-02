@@ -1,3 +1,4 @@
+import { neutralJsonContract } from '@vict/sdk';
 import { describe, expect, it } from 'vitest';
 import { createInMemoryStores, createRuntime } from '@vict/runtime';
 import type { KernelEvent } from '@vict/kernel';
@@ -32,6 +33,8 @@ describe('stage 03 payload and error canaries (in-memory durable orchestration)'
           id: 'c.decision',
           revision: '1',
           effect: 'pure',
+          input: neutralJsonContract,
+          output: neutralJsonContract,
           invoke: (input: unknown) => {
             // Decision value carries the canary into the checkpoint boundary.
             return { route: 'go', value: `${String(input)}` };
@@ -41,12 +44,16 @@ describe('stage 03 payload and error canaries (in-memory durable orchestration)'
           id: 'c.branch',
           revision: '1',
           effect: 'pure',
+          input: neutralJsonContract,
+          output: neutralJsonContract,
           invoke: (input: unknown) => `${String(input)}:ok`,
         })
         .registerCapability({
           id: 'c.thrown',
           revision: '1',
           effect: 'pure',
+          input: neutralJsonContract,
+          output: neutralJsonContract,
           invoke: () => {
             throw new Error(`inner ${CANARY}`, { cause: new Error(`nested ${CANARY}`) });
           },
@@ -129,13 +136,36 @@ describe('stage 03 payload and error canaries (in-memory durable orchestration)'
       const runtime = createRuntime({ stores });
       let downstreamCalls = 0;
       runtime
-        .registerCapability({ id: 'k.first', revision: '1', effect: 'pure', invoke: () => 'one' })
-        .registerCapability({ id: 'k.b1', revision: '1', effect: 'pure', invoke: () => 'alpha' })
-        .registerCapability({ id: 'k.b2', revision: '1', effect: 'pure', invoke: () => 'beta' })
+        .registerCapability({
+          id: 'k.first',
+          revision: '1',
+          effect: 'pure',
+          input: neutralJsonContract,
+          output: neutralJsonContract,
+          invoke: () => 'one',
+        })
+        .registerCapability({
+          id: 'k.b1',
+          revision: '1',
+          effect: 'pure',
+          input: neutralJsonContract,
+          output: neutralJsonContract,
+          invoke: () => 'alpha',
+        })
+        .registerCapability({
+          id: 'k.b2',
+          revision: '1',
+          effect: 'pure',
+          input: neutralJsonContract,
+          output: neutralJsonContract,
+          invoke: () => 'beta',
+        })
         .registerCapability({
           id: 'k.after',
           revision: '1',
           effect: 'pure',
+          input: neutralJsonContract,
+          output: neutralJsonContract,
           invoke: () => {
             downstreamCalls += 1;
             return 'after';
@@ -145,6 +175,8 @@ describe('stage 03 payload and error canaries (in-memory durable orchestration)'
           id: 'k.slowWrite',
           revision: '1',
           effect: 'write',
+          input: neutralJsonContract,
+          output: neutralJsonContract,
           invoke: async () => {
             await new Promise((resolve) => setTimeout(resolve, 120));
             return 'applied';
@@ -240,9 +272,18 @@ describe('stage 03 payload and error canaries (in-memory durable orchestration)'
           id: 'k.slowWrite',
           revision: '1',
           effect: 'write',
+          input: neutralJsonContract,
+          output: neutralJsonContract,
           invoke: async () => 'applied',
         })
-        .registerCapability({ id: 'k.after', revision: '1', effect: 'pure', invoke: () => 'after' })
+        .registerCapability({
+          id: 'k.after',
+          revision: '1',
+          effect: 'pure',
+          input: neutralJsonContract,
+          output: neutralJsonContract,
+          invoke: () => 'after',
+        })
         .registerContract({
           id: 'k.join-reject',
           revision: '1',

@@ -223,7 +223,10 @@ export async function runCapabilityPackConformanceSuite(
       fail('write fixture declares an unknown capability');
     }
 
-    // 5. Simulation (test mode) runs the DECLARED double, never the real write.
+    // 5. Simulation (test mode) runs the PACK'S DECLARED double, never the
+    // real write (MED-04-B remediation): no manual registerDouble call is
+    // made anywhere in this suite — the double installed atomically by
+    // installCapabilityPack is the only substitute available.
     const simulated = buildRuntime(options);
     installCapabilityPack(simulated, pack);
     await simulated.activate(
@@ -235,7 +238,6 @@ export async function runCapabilityPackConformanceSuite(
       }),
     );
     const beforeSim = realCount();
-    simulated.registerDouble(fixture.writeCapabilityId, () => fixture.writeDoubleOutput);
     const simResult = await simulated.run(fixture.writeInput, { mode: 'test' });
     if (simResult.status !== 'completed') {
       fail(`simulated write did not complete: ${simResult.status}`);
@@ -245,6 +247,18 @@ export async function runCapabilityPackConformanceSuite(
     }
     if (realCount() !== beforeSim) {
       fail('the real write handler ran during simulation');
+    }
+
+    // 5b. Negative control: a runtime WITHOUT the pack's declared double
+    // (never manually registered) must block in test mode — proving the
+    // declared double (not a manual substitute) served the run above.
+    {
+      const bare = buildRuntime(options);
+      installCapabilityPack(bare, pack);
+      const bareDouble = bare.hasDouble(fixture.writeCapabilityId);
+      if (!bareDouble) {
+        fail('installCapabilityPack did not install the pack-declared double');
+      }
     }
 
     // 6. Normal mode runs the real handler exactly once (when granted).

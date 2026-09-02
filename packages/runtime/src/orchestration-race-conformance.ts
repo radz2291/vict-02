@@ -1,3 +1,4 @@
+import { neutralJsonContract } from '@vict/sdk';
 import type { VictRuntime } from './runtime.js';
 import type {
   ClaimPlanner,
@@ -126,6 +127,8 @@ export function runOrchestrationRaceSuite(
         id: 'hold',
         revision: '1',
         effect: 'pure',
+        input: neutralJsonContract,
+        output: neutralJsonContract,
         invoke: () => 'x',
       });
       const activated = await runtime.activate({
@@ -188,6 +191,8 @@ export function runOrchestrationRaceSuite(
           id: 'hold',
           revision: '1',
           effect: 'pure',
+          input: neutralJsonContract,
+          output: neutralJsonContract,
           invoke: () => 'x',
         });
         const activated = await runtime.activate({
@@ -291,6 +296,8 @@ export function runOrchestrationRaceSuite(
           id: 'probe',
           revision: '1',
           effect: 'pure',
+          input: neutralJsonContract,
+          output: neutralJsonContract,
           invoke: async (input: unknown, context) => {
             const snapshot = await fixture.orchestration.getOrchestrationSnapshot(context.runId);
             const attempt = snapshot?.attempts.find(
@@ -335,11 +342,20 @@ export function runOrchestrationRaceSuite(
         let downstreamCalls = 0;
         let timedOutCalls = 0;
         runtime
-          .registerCapability({ id: 'first', revision: '1', effect: 'pure', invoke: () => 'one' })
+          .registerCapability({
+            id: 'first',
+            revision: '1',
+            effect: 'pure',
+            input: neutralJsonContract,
+            output: neutralJsonContract,
+            invoke: () => 'one',
+          })
           .registerCapability({
             id: 'second',
             revision: '1',
             effect: 'pure',
+            input: neutralJsonContract,
+            output: neutralJsonContract,
             invoke: (input: unknown) => {
               downstreamCalls += 1;
               return `got:${String(input)}`;
@@ -349,6 +365,8 @@ export function runOrchestrationRaceSuite(
             id: 'timedOut',
             revision: '1',
             effect: 'pure',
+            input: neutralJsonContract,
+            output: neutralJsonContract,
             invoke: () => {
               timedOutCalls += 1;
               return 'timed-out-path';
@@ -417,11 +435,20 @@ export function runOrchestrationRaceSuite(
         let downstreamCalls = 0;
         let timedOutCalls = 0;
         runtime
-          .registerCapability({ id: 'first', revision: '1', effect: 'pure', invoke: () => 'one' })
+          .registerCapability({
+            id: 'first',
+            revision: '1',
+            effect: 'pure',
+            input: neutralJsonContract,
+            output: neutralJsonContract,
+            invoke: () => 'one',
+          })
           .registerCapability({
             id: 'second',
             revision: '1',
             effect: 'pure',
+            input: neutralJsonContract,
+            output: neutralJsonContract,
             invoke: () => {
               downstreamCalls += 1;
               return 'success-path';
@@ -431,6 +458,8 @@ export function runOrchestrationRaceSuite(
             id: 'timedOut',
             revision: '1',
             effect: 'pure',
+            input: neutralJsonContract,
+            output: neutralJsonContract,
             invoke: () => {
               timedOutCalls += 1;
               return 'timed-out-path';
@@ -508,6 +537,8 @@ export function runOrchestrationRaceSuite(
           id: 'keyedSlow',
           revision: '1',
           effect: 'write',
+          input: neutralJsonContract,
+          output: neutralJsonContract,
           idempotency: 'keyed',
           invoke: async (input: unknown, context) => {
             attempts += 1;
@@ -599,6 +630,8 @@ export function runOrchestrationRaceSuite(
         id: 'slowIrreversible',
         revision: '1',
         effect: 'irreversible',
+        input: neutralJsonContract,
+        output: neutralJsonContract,
         invoke: async () => {
           invokeCount += 1;
           invokedResolve?.();
@@ -628,6 +661,8 @@ export function runOrchestrationRaceSuite(
         id: 'slowIrreversible',
         revision: '1',
         effect: 'irreversible',
+        input: neutralJsonContract,
+        output: neutralJsonContract,
         invoke: async () => 'done',
       });
       const denied = await operatorRuntime.resolveBlocked({
@@ -652,11 +687,20 @@ export function runOrchestrationRaceSuite(
         const runtime = fixture.runtime;
         let downstream = 0;
         runtime
-          .registerCapability({ id: 'first', revision: '1', effect: 'pure', invoke: () => 'one' })
+          .registerCapability({
+            id: 'first',
+            revision: '1',
+            effect: 'pure',
+            input: neutralJsonContract,
+            output: neutralJsonContract,
+            invoke: () => 'one',
+          })
           .registerCapability({
             id: 'second',
             revision: '1',
             effect: 'pure',
+            input: neutralJsonContract,
+            output: neutralJsonContract,
             invoke: (input: unknown) => {
               downstream += 1;
               return `got:${String(input)}`;
@@ -710,11 +754,20 @@ export function runOrchestrationRaceSuite(
         const { runtime, orchestration } = fixture;
         let downstreamCalls = 0;
         runtime
-          .registerCapability({ id: 'start', revision: '1', effect: 'pure', invoke: () => 'seed' })
+          .registerCapability({
+            id: 'start',
+            revision: '1',
+            effect: 'pure',
+            input: neutralJsonContract,
+            output: neutralJsonContract,
+            invoke: () => 'seed',
+          })
           .registerCapability({
             id: 'next',
             revision: '1',
             effect: 'pure',
+            input: neutralJsonContract,
+            output: neutralJsonContract,
             invoke: () => {
               downstreamCalls += 1;
               return 'next';
@@ -837,11 +890,20 @@ export function runOrchestrationRaceSuite(
         let abortedObserved = false;
         let downstreamCalls = 0;
         runtime
-          .registerCapability({ id: 'first', revision: '1', effect: 'pure', invoke: () => 'one' })
+          .registerCapability({
+            id: 'first',
+            revision: '1',
+            effect: 'pure',
+            input: neutralJsonContract,
+            output: neutralJsonContract,
+            invoke: () => 'one',
+          })
           .registerCapability({
             id: 'abortable',
             revision: '1',
             effect: 'pure',
+            input: neutralJsonContract,
+            output: neutralJsonContract,
             invoke: (input: unknown, context) =>
               new Promise<string>((resolve, reject) => {
                 const signal = context.abortSignal;
@@ -866,6 +928,8 @@ export function runOrchestrationRaceSuite(
             id: 'after',
             revision: '1',
             effect: 'pure',
+            input: neutralJsonContract,
+            output: neutralJsonContract,
             invoke: () => {
               downstreamCalls += 1;
               return 'after';
@@ -929,12 +993,28 @@ export function runOrchestrationRaceSuite(
           releaseSlow = resolve;
         });
         runtime
-          .registerCapability({ id: 'first', revision: '1', effect: 'pure', invoke: () => 'one' })
-          .registerCapability({ id: 'fast', revision: '1', effect: 'pure', invoke: () => 'fast' })
+          .registerCapability({
+            id: 'first',
+            revision: '1',
+            effect: 'pure',
+            input: neutralJsonContract,
+            output: neutralJsonContract,
+            invoke: () => 'one',
+          })
+          .registerCapability({
+            id: 'fast',
+            revision: '1',
+            effect: 'pure',
+            input: neutralJsonContract,
+            output: neutralJsonContract,
+            invoke: () => 'fast',
+          })
           .registerCapability({
             id: 'slow',
             revision: '1',
             effect: 'pure',
+            input: neutralJsonContract,
+            output: neutralJsonContract,
             invoke: (input: unknown, context) =>
               new Promise<string>((resolve) => {
                 context.abortSignal?.addEventListener('abort', () => resolve('aborted'), {
@@ -948,6 +1028,8 @@ export function runOrchestrationRaceSuite(
             id: 'after',
             revision: '1',
             effect: 'pure',
+            input: neutralJsonContract,
+            output: neutralJsonContract,
             invoke: () => 'after',
           });
         const activated = await runtime.activate({
@@ -1011,11 +1093,20 @@ export function runOrchestrationRaceSuite(
         const runtime = fixture.runtime;
         let downstreamCalls = 0;
         runtime
-          .registerCapability({ id: 'first', revision: '1', effect: 'pure', invoke: () => 'one' })
+          .registerCapability({
+            id: 'first',
+            revision: '1',
+            effect: 'pure',
+            input: neutralJsonContract,
+            output: neutralJsonContract,
+            invoke: () => 'one',
+          })
           .registerCapability({
             id: 'second',
             revision: '1',
             effect: 'pure',
+            input: neutralJsonContract,
+            output: neutralJsonContract,
             invoke: () => {
               downstreamCalls += 1;
               return 'second';
@@ -1071,11 +1162,20 @@ export function runOrchestrationRaceSuite(
           releaseSlow = resolve;
         });
         runtime
-          .registerCapability({ id: 'first', revision: '1', effect: 'pure', invoke: () => 'one' })
+          .registerCapability({
+            id: 'first',
+            revision: '1',
+            effect: 'pure',
+            input: neutralJsonContract,
+            output: neutralJsonContract,
+            invoke: () => 'one',
+          })
           .registerCapability({
             id: 'boom',
             revision: '1',
             effect: 'pure',
+            input: neutralJsonContract,
+            output: neutralJsonContract,
             invoke: () => {
               throw new Error('SECRET-CAUSE-SHOULD-NOT-LEAK');
             },
@@ -1084,6 +1184,8 @@ export function runOrchestrationRaceSuite(
             id: 'slow',
             revision: '1',
             effect: 'pure',
+            input: neutralJsonContract,
+            output: neutralJsonContract,
             invoke: (input: unknown, context) =>
               new Promise<string>((resolve) => {
                 context.abortSignal?.addEventListener('abort', () => resolve('aborted'), {
@@ -1097,6 +1199,8 @@ export function runOrchestrationRaceSuite(
             id: 'after',
             revision: '1',
             effect: 'pure',
+            input: neutralJsonContract,
+            output: neutralJsonContract,
             invoke: () => {
               downstreamCalls += 1;
               return 'after';
@@ -1155,6 +1259,8 @@ export function runOrchestrationRaceSuite(
           id: 'slowWrite',
           revision: '1',
           effect: 'write',
+          input: neutralJsonContract,
+          output: neutralJsonContract,
           invoke: async () => {
             invokeCount += 1;
             await settle(120);
@@ -1165,6 +1271,8 @@ export function runOrchestrationRaceSuite(
           id: 'after',
           revision: '1',
           effect: 'pure',
+          input: neutralJsonContract,
+          output: neutralJsonContract,
           invoke: (input: unknown) => `after:${JSON.stringify(input)}`,
         });
         runtime.registerContract({
@@ -1209,6 +1317,8 @@ export function runOrchestrationRaceSuite(
             id: 'slowWrite',
             revision: '1',
             effect: 'write',
+            input: neutralJsonContract,
+            output: neutralJsonContract,
             invoke: async () => {
               invokeCount += 1;
               return 'applied';
@@ -1218,6 +1328,8 @@ export function runOrchestrationRaceSuite(
             id: 'after',
             revision: '1',
             effect: 'pure',
+            input: neutralJsonContract,
+            output: neutralJsonContract,
             invoke: (input: unknown) => `after:${JSON.stringify(input)}`,
           })
           .registerContract({

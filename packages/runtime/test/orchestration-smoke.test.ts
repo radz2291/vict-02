@@ -1,3 +1,4 @@
+import { neutralJsonContract } from '@vict/sdk';
 import { createRuntime } from '@vict/runtime';
 import type { KernelEvent } from '@vict/kernel';
 import { describe, expect, it } from 'vitest';
@@ -24,6 +25,8 @@ describe('stage 03 orchestration smoke (in-memory)', () => {
         id: 'route',
         revision: '1',
         effect: 'pure',
+        input: neutralJsonContract,
+        output: neutralJsonContract,
         invoke: (input: unknown) => {
           routeCalls += 1;
           return { route: 'split', value: String(input) };
@@ -33,6 +36,8 @@ describe('stage 03 orchestration smoke (in-memory)', () => {
         id: 'branchA',
         revision: '1',
         effect: 'pure',
+        input: neutralJsonContract,
+        output: neutralJsonContract,
         invoke: (input: unknown) => {
           branchACalls += 1;
           return `A:${String(input)}`;
@@ -42,6 +47,8 @@ describe('stage 03 orchestration smoke (in-memory)', () => {
         id: 'branchB',
         revision: '1',
         effect: 'pure',
+        input: neutralJsonContract,
+        output: neutralJsonContract,
         invoke: (input: unknown) => {
           branchBCalls += 1;
           return `B:${String(input)}`;
@@ -51,18 +58,24 @@ describe('stage 03 orchestration smoke (in-memory)', () => {
         id: 'waitCap',
         revision: '1',
         effect: 'pure',
+        input: neutralJsonContract,
+        output: neutralJsonContract,
         invoke: (input: unknown) => input,
       })
       .registerCapability({
         id: 'afterWait',
         revision: '1',
         effect: 'pure',
+        input: neutralJsonContract,
+        output: neutralJsonContract,
         invoke: (input: unknown) => input,
       })
       .registerCapability({
         id: 'keyedWrite',
         revision: '1',
         effect: 'write',
+        input: neutralJsonContract,
+        output: neutralJsonContract,
         idempotency: 'keyed',
         invoke: (input: unknown, context) => {
           writeCalls.push(`${context.idempotencyKey}:${String(input)}`);

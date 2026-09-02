@@ -31,6 +31,19 @@ export interface ActivationManifestBinding {
   readonly output: { readonly id: string; readonly revision: string } | null;
   /** Declared idempotency semantics ('keyed'); omitted when undeclared. */
   readonly idempotency?: 'keyed';
+  /**
+   * Stage 04: execution-affecting authority declarations (declared names
+   * only — never resolved values and never runtime grants). Participates
+   * in the capability-set identity; omitted when the capability declares
+   * no authority names.
+   */
+  readonly authority?: {
+    readonly permissions?: readonly string[];
+    readonly configuration?: readonly string[];
+    readonly requiredConfiguration?: readonly string[];
+    readonly secrets?: readonly string[];
+    readonly requiredSecrets?: readonly string[];
+  };
 }
 
 /** One control-node declaration captured by a Stage 03 activation manifest. */

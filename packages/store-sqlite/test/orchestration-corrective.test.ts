@@ -1,3 +1,4 @@
+import { neutralJsonContract } from '@vict/sdk';
 import { describe, expect, it } from 'vitest';
 import { mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
@@ -87,6 +88,8 @@ describe('orchestration SQLite corrective evidence', () => {
             id: 'first',
             revision: '1',
             effect: 'pure',
+            input: neutralJsonContract,
+            output: neutralJsonContract,
             invoke: () => 'one',
           });
           const activated = await runtime.activate({
@@ -140,6 +143,8 @@ describe('orchestration SQLite corrective evidence', () => {
             id: 'hold',
             revision: '1',
             effect: 'pure',
+            input: neutralJsonContract,
+            output: neutralJsonContract,
             invoke: () => 'x',
           });
           const activated = await runtime.activate({
@@ -233,6 +238,8 @@ describe('orchestration SQLite corrective evidence', () => {
             id: 'hold',
             revision: '1',
             effect: 'pure',
+            input: neutralJsonContract,
+            output: neutralJsonContract,
             invoke: () => 'x',
           });
           const activated = await runtime.activate({
@@ -340,11 +347,20 @@ describe('orchestration SQLite corrective evidence', () => {
         try {
           const runtime = createRuntime({ stores });
           runtime
-            .registerCapability({ id: 'first', revision: '1', effect: 'pure', invoke: () => 'one' })
+            .registerCapability({
+              id: 'first',
+              revision: '1',
+              effect: 'pure',
+              input: neutralJsonContract,
+              output: neutralJsonContract,
+              invoke: () => 'one',
+            })
             .registerCapability({
               id: 'second',
               revision: '1',
               effect: 'pure',
+              input: neutralJsonContract,
+              output: neutralJsonContract,
               invoke: (input: unknown) => `got:${String(input)}`,
             })
             .registerContract(stringContract);
@@ -437,11 +453,20 @@ describe('orchestration SQLite corrective evidence', () => {
         try {
           const runtime = createRuntime({ stores });
           runtime
-            .registerCapability({ id: 'first', revision: '1', effect: 'pure', invoke: () => 'one' })
+            .registerCapability({
+              id: 'first',
+              revision: '1',
+              effect: 'pure',
+              input: neutralJsonContract,
+              output: neutralJsonContract,
+              invoke: () => 'one',
+            })
             .registerCapability({
               id: 'second',
               revision: '1',
               effect: 'pure',
+              input: neutralJsonContract,
+              output: neutralJsonContract,
               invoke: (input: unknown) => `got:${String(input)}`,
             })
             .registerContract(stringContract);
@@ -540,11 +565,20 @@ describe('orchestration SQLite corrective evidence', () => {
         try {
           const runtime = createRuntime({ stores });
           runtime
-            .registerCapability({ id: 'first', revision: '1', effect: 'pure', invoke: () => 'one' })
+            .registerCapability({
+              id: 'first',
+              revision: '1',
+              effect: 'pure',
+              input: neutralJsonContract,
+              output: neutralJsonContract,
+              invoke: () => 'one',
+            })
             .registerCapability({
               id: 'second',
               revision: '1',
               effect: 'pure',
+              input: neutralJsonContract,
+              output: neutralJsonContract,
               invoke: (input: unknown) => `got:${String(input)}`,
             })
             .registerContract(stringContract);
@@ -628,13 +662,36 @@ describe('orchestration SQLite corrective evidence', () => {
         try {
           const runtime = createRuntime({ stores });
           runtime
-            .registerCapability({ id: 'first', revision: '1', effect: 'pure', invoke: () => 'one' })
-            .registerCapability({ id: 'b1', revision: '1', effect: 'pure', invoke: () => 'alpha' })
-            .registerCapability({ id: 'b2', revision: '1', effect: 'pure', invoke: () => 'beta' })
+            .registerCapability({
+              id: 'first',
+              revision: '1',
+              effect: 'pure',
+              input: neutralJsonContract,
+              output: neutralJsonContract,
+              invoke: () => 'one',
+            })
+            .registerCapability({
+              id: 'b1',
+              revision: '1',
+              effect: 'pure',
+              input: neutralJsonContract,
+              output: neutralJsonContract,
+              invoke: () => 'alpha',
+            })
+            .registerCapability({
+              id: 'b2',
+              revision: '1',
+              effect: 'pure',
+              input: neutralJsonContract,
+              output: neutralJsonContract,
+              invoke: () => 'beta',
+            })
             .registerCapability({
               id: 'after',
               revision: '1',
               effect: 'pure',
+              input: neutralJsonContract,
+              output: neutralJsonContract,
               invoke: () => 'after',
             })
             .registerContract(stringContract);
@@ -791,13 +848,36 @@ describe('orchestration SQLite corrective evidence', () => {
         try {
           const runtime = createRuntime({ stores });
           runtime
-            .registerCapability({ id: 'first', revision: '1', effect: 'pure', invoke: () => 'one' })
-            .registerCapability({ id: 'b1', revision: '1', effect: 'pure', invoke: () => 'alpha' })
-            .registerCapability({ id: 'b2', revision: '1', effect: 'pure', invoke: () => 'beta' })
+            .registerCapability({
+              id: 'first',
+              revision: '1',
+              effect: 'pure',
+              input: neutralJsonContract,
+              output: neutralJsonContract,
+              invoke: () => 'one',
+            })
+            .registerCapability({
+              id: 'b1',
+              revision: '1',
+              effect: 'pure',
+              input: neutralJsonContract,
+              output: neutralJsonContract,
+              invoke: () => 'alpha',
+            })
+            .registerCapability({
+              id: 'b2',
+              revision: '1',
+              effect: 'pure',
+              input: neutralJsonContract,
+              output: neutralJsonContract,
+              invoke: () => 'beta',
+            })
             .registerCapability({
               id: 'after',
               revision: '1',
               effect: 'pure',
+              input: neutralJsonContract,
+              output: neutralJsonContract,
               invoke: () => 'after',
             })
             .registerContract(stringContract);
@@ -1033,6 +1113,8 @@ describe('orchestration SQLite corrective evidence', () => {
           id: 'flakyWrite',
           revision: '1',
           effect: 'write',
+          input: neutralJsonContract,
+          output: neutralJsonContract,
           idempotency: 'keyed',
           invoke: (input: unknown, context) => {
             if (calls === 0) {
@@ -1047,6 +1129,8 @@ describe('orchestration SQLite corrective evidence', () => {
           id: 'flaky',
           revision: '1',
           effect: 'pure',
+          input: neutralJsonContract,
+          output: neutralJsonContract,
           invoke: (input: unknown, context) => {
             if (calls === 0) {
               calls += 1;
@@ -1089,6 +1173,8 @@ describe('orchestration SQLite corrective evidence', () => {
           id: 'flaky',
           revision: '1',
           effect: 'pure',
+          input: neutralJsonContract,
+          output: neutralJsonContract,
           invoke: (input: unknown) => `ok:${String(input)}`,
         });
         await settle(550); // the 500ms backoff elapses while offline
@@ -1137,11 +1223,20 @@ describe('orchestration SQLite corrective evidence', () => {
           ],
         };
         const registerA = (rt: ReturnType<typeof createRuntime>): void => {
-          rt.registerCapability({ id: 'first', revision: '1', effect: 'pure', invoke: () => 'one' })
+          rt.registerCapability({
+            id: 'first',
+            revision: '1',
+            effect: 'pure',
+            input: neutralJsonContract,
+            output: neutralJsonContract,
+            invoke: () => 'one',
+          })
             .registerCapability({
               id: 'second',
               revision: '1',
               effect: 'pure',
+              input: neutralJsonContract,
+              output: neutralJsonContract,
               invoke: (input: unknown) => `got:${String(input)}`,
             })
             .registerContract(stringContract);
@@ -1163,6 +1258,8 @@ describe('orchestration SQLite corrective evidence', () => {
             id: 'first',
             revision: '2',
             effect: 'pure',
+            input: neutralJsonContract,
+            output: neutralJsonContract,
             invoke: () => 'one-v2',
           });
           const activatedB = await runtime.activate(waitGraph as never);
@@ -1190,17 +1287,28 @@ describe('orchestration SQLite corrective evidence', () => {
           const stores = createSqliteStores({ path: db });
           const runtime = createRuntime({ stores });
           runtime
-            .registerCapability({ id: 'first', revision: '1', effect: 'pure', invoke: () => 'one' })
+            .registerCapability({
+              id: 'first',
+              revision: '1',
+              effect: 'pure',
+              input: neutralJsonContract,
+              output: neutralJsonContract,
+              invoke: () => 'one',
+            })
             .registerCapability({
               id: 'first',
               revision: '2',
               effect: 'pure',
+              input: neutralJsonContract,
+              output: neutralJsonContract,
               invoke: () => 'one-v2',
             })
             .registerCapability({
               id: 'second',
               revision: '1',
               effect: 'pure',
+              input: neutralJsonContract,
+              output: neutralJsonContract,
               invoke: (input: unknown) => `got2:${String(input)}`,
             })
             .registerContract(stringContract);
@@ -1213,17 +1321,28 @@ describe('orchestration SQLite corrective evidence', () => {
           const stores2 = createSqliteStores({ path: db });
           const runtime2 = createRuntime({ stores: stores2 });
           runtime2
-            .registerCapability({ id: 'first', revision: '1', effect: 'pure', invoke: () => 'one' })
+            .registerCapability({
+              id: 'first',
+              revision: '1',
+              effect: 'pure',
+              input: neutralJsonContract,
+              output: neutralJsonContract,
+              invoke: () => 'one',
+            })
             .registerCapability({
               id: 'first',
               revision: '2',
               effect: 'pure',
+              input: neutralJsonContract,
+              output: neutralJsonContract,
               invoke: () => 'one-v2',
             })
             .registerCapability({
               id: 'second',
               revision: '1',
               effect: 'pure',
+              input: neutralJsonContract,
+              output: neutralJsonContract,
               invoke: (input: unknown) => `got2:${String(input)}`,
             })
             .registerContract(stringContract);
@@ -1250,12 +1369,16 @@ describe('orchestration SQLite corrective evidence', () => {
               id: 'first',
               revision: '2',
               effect: 'pure',
+              input: neutralJsonContract,
+              output: neutralJsonContract,
               invoke: () => 'one-v2',
             })
             .registerCapability({
               id: 'second',
               revision: '1',
               effect: 'pure',
+              input: neutralJsonContract,
+              output: neutralJsonContract,
               invoke: (input: unknown) => `got2:${String(input)}`,
             })
             .registerContract(stringContract);
@@ -1312,12 +1435,16 @@ describe('orchestration SQLite corrective evidence', () => {
               id: 'k.first',
               revision: '1',
               effect: 'pure',
+              input: neutralJsonContract,
+              output: neutralJsonContract,
               invoke: () => 'go',
             })
             .registerCapability({
               id: 'k.echo',
               revision: '1',
               effect: 'pure',
+              input: neutralJsonContract,
+              output: neutralJsonContract,
               invoke: (input: unknown) => `echo:${String(input)}`,
             })
             .registerContract({
@@ -1371,12 +1498,16 @@ describe('orchestration SQLite corrective evidence', () => {
                 id: 'k.first',
                 revision: '1',
                 effect: 'pure',
+                input: neutralJsonContract,
+                output: neutralJsonContract,
                 invoke: () => 'go',
               })
               .registerCapability({
                 id: 'k.echo',
                 revision: '1',
                 effect: 'pure',
+                input: neutralJsonContract,
+                output: neutralJsonContract,
                 invoke: (input: unknown) => `echo:${String(input)}`,
               })
               .registerContract({
@@ -1453,6 +1584,8 @@ describe('orchestration SQLite corrective evidence', () => {
             id: 'noop',
             revision: '1',
             effect: 'pure',
+            input: neutralJsonContract,
+            output: neutralJsonContract,
             invoke: () => 'x',
           });
           const activated = await runtime.activate({
@@ -1611,12 +1744,16 @@ describe('orchestration SQLite corrective evidence', () => {
               id: 'guarded',
               revision: '1',
               effect: 'irreversible',
+              input: neutralJsonContract,
+              output: neutralJsonContract,
               invoke: () => 'never',
             });
             rt.registerCapability({
               id: 'after',
               revision: '1',
               effect: 'pure',
+              input: neutralJsonContract,
+              output: neutralJsonContract,
               invoke: () => 'after',
             });
             rt.registerContract({
@@ -1712,6 +1849,8 @@ describe('orchestration SQLite corrective evidence', () => {
             id: 'final',
             revision: '1',
             effect: 'pure',
+            input: neutralJsonContract,
+            output: neutralJsonContract,
             invoke: () => 'done',
           });
           const activated = await runtime.activate({

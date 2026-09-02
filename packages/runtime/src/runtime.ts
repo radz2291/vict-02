@@ -36,8 +36,9 @@ import type {
   KernelPorts,
   KernelRunOutput,
 } from '@vict/kernel';
+import { NEUTRAL_JSON_CONTRACT_ID } from '@vict/contracts';
 import type { Contract, ContractResult, VictError } from '@vict/contracts';
-import { CapabilityRegistry } from './registry.js';
+import { CapabilityRegistry, type RegisteredDouble } from './registry.js';
 import type { FrozenCapabilityBinding } from './registry.js';
 import { decideEffectAuthorization } from './effect-policy.js';
 import type { EffectPolicyOverrides } from './effect-policy.js';
@@ -629,14 +630,36 @@ export class VictRuntime {
     return this;
   }
 
+  /**
+   * Install a batch atomically (used by `installCapabilityPack`). Stages
+   * every contract/capability/double and commits only on full success.
+   */
+  installCapabilityPackBatch(
+    install: (staging: {
+      registerContract(contract: Parameters<CapabilityRegistry['registerContract']>[0]): void;
+      registerCapability(definition: CapabilityDefinition): void;
+      registerDouble(
+        capabilityId: string,
+        invoke: DoubleInvoke,
+        options?: { readonly modes?: readonly ('test' | 'simulate')[] },
+      ): void;
+    }) => void,
+  ): void {
+    this.#registry.installBatch(install);
+  }
+
   registerContract(contract: Parameters<CapabilityRegistry['registerContract']>[0]): this {
     this.#registry.registerContract(contract);
     return this;
   }
 
   /** Register a test double. Duplicate registration is rejected; use `replaceDouble`. */
-  registerDouble(capabilityId: string, invoke: DoubleInvoke): this {
-    this.#registry.registerDouble(capabilityId, invoke);
+  registerDouble(
+    capabilityId: string,
+    invoke: DoubleInvoke,
+    options: { readonly modes?: readonly ('test' | 'simulate')[] } = {},
+  ): this {
+    this.#registry.registerDouble(capabilityId, invoke, options);
     return this;
   }
 
@@ -644,6 +667,16 @@ export class VictRuntime {
   replaceDouble(capabilityId: string, invoke: DoubleInvoke): this {
     this.#registry.replaceDouble(capabilityId, invoke);
     return this;
+  }
+
+  /** True when a test double is registered for the capability. */
+  hasDouble(capabilityId: string): boolean {
+    return this.#registry.hasDouble(capabilityId);
+  }
+
+  /** The eligible modes of a registered test double (undefined when none is registered). */
+  getDoubleModes(capabilityId: string): ReadonlySet<'test' | 'simulate'> | undefined {
+    return this.#registry.getDoubleModes(capabilityId);
   }
 
   /**
@@ -1056,6 +1089,9 @@ export class VictRuntime {
             inputRevision: live.input?.revision,
             outputContractId: live.output?.id,
             outputRevision: live.output?.revision,
+            ...(descriptorAuthorityOf(live) !== undefined
+              ? { authority: descriptorAuthorityOf(live) }
+              : {}),
           }),
         );
       }
@@ -1088,12 +1124,19 @@ export class VictRuntime {
           inputRevision: binding.inputRevision,
           outputContractId: binding.outputContractId,
           outputRevision: binding.outputRevision,
+          ...(binding.idempotency !== undefined ? { idempotency: binding.idempotency } : {}),
+          ...(binding.authority !== undefined ? { authority: binding.authority } : {}),
         };
       },
     };
     const contractEnvironment: ContractEnvironment = {
       has: (contractId) => frozenContracts.has(contractId),
-      isCompatible: (from, to) => from === undefined || to === undefined || from === to,
+      isCompatible: (from, to) =>
+        from === undefined ||
+        to === undefined ||
+        from === to ||
+        from === NEUTRAL_JSON_CONTRACT_ID ||
+        to === NEUTRAL_JSON_CONTRACT_ID,
       // Hand the kernel a frozen object whose parse is the captured callable.
       get: (contractId) => {
         const captured = frozenContracts.get(contractId);
@@ -1168,6 +1211,9 @@ export class VictRuntime {
         output:
           outputId === undefined ? null : { id: outputId, revision: outputRevision ?? 'unknown' },
         ...(live.idempotency === undefined ? {} : { idempotency: live.idempotency }),
+        ...(descriptorAuthorityOf(live) !== undefined
+          ? { authority: descriptorAuthorityOf(live) }
+          : {}),
       });
       recordContract(live.input?.id);
       recordContract(live.output?.id);
@@ -1255,7 +1301,7 @@ export class VictRuntime {
 
   #buildPorts(
     snapshot: ActivationSnapshot,
-    doubles: ReadonlyMap<string, DoubleInvoke>,
+    doubles: ReadonlyMap<string, RegisteredDouble>,
     overrides: EffectPolicyOverrides,
     onEvent: ((event: KernelEvent) => void) | undefined,
     runId: string | undefined,
@@ -1278,13 +1324,27 @@ export class VictRuntime {
       policy: {
         authorize(request): EffectAuthorizationDecision {
           const decision = decideEffectAuthorization(request, overrides);
-          if (decision.allowed && decision.useDouble && !doubles.has(request.capabilityId)) {
-            return {
-              allowed: false,
-              useDouble: false,
-              reason: `Effect class '${request.effect}' requires a registered test double in '${request.mode}' mode and none is registered.`,
-              remediation: `Register a test double for capability '${request.capabilityId}' with runtime.registerDouble().`,
-            };
+          if (decision.allowed && decision.useDouble) {
+            const registered = doubles.get(request.capabilityId);
+            if (registered === undefined) {
+              return {
+                allowed: false,
+                useDouble: false,
+                reason: `Effect class '${request.effect}' requires a registered test double in '${request.mode}' mode and none is registered.`,
+                remediation: `Register a test double for capability '${request.capabilityId}' with runtime.registerDouble().`,
+              };
+            }
+            // A pack-declared double is eligible ONLY in its declared modes.
+            // A double declared only for 'test' never runs in 'simulate', and
+            // doubles never run in 'normal' mode (the policy never asks).
+            if (!registered.modes.has(request.mode as 'test' | 'simulate')) {
+              return {
+                allowed: false,
+                useDouble: false,
+                reason: `The registered test double for capability '${request.capabilityId}' is not eligible in '${request.mode}' mode (eligible modes: ${[...registered.modes].sort().join(', ')}).`,
+                remediation: `Register a double eligible in '${request.mode}' mode, or run in a mode the double declares.`,
+              };
+            }
           }
           return decision;
         },
@@ -1292,7 +1352,7 @@ export class VictRuntime {
       capabilities: {
         async invoke(capabilityId, input, context) {
           const useDouble = context.useDouble;
-          const double = useDouble ? doubles.get(capabilityId) : undefined;
+          const double = useDouble ? doubles.get(capabilityId)?.invoke : undefined;
           const binding = useDouble ? undefined : bindings.get(capabilityId);
           const invocationContext: CapabilityContext = {
             runId: context.runId,
@@ -1570,4 +1630,41 @@ function randomId(): string {
 /** Create a runtime instance. Application code should use the `@vict/sdk` facade instead. */
 export function createRuntime(options: VictRuntimeOptions = {}): VictRuntime {
   return new VictRuntime(options);
+}
+
+/**
+ * Snapshot the execution-affecting authority declarations of a live
+ * capability definition (declared names only — never resolved values and
+ * never runtime grants). Used by activation snapshots so runNode's isolated
+ * compile reproduces the exact capability-set identity.
+ */
+function descriptorAuthorityOf(
+  definition: CapabilityDefinition,
+): import('@vict/kernel').CapabilityDescriptor['authority'] {
+  const has = (names: readonly string[] | undefined): boolean =>
+    names !== undefined && names.length > 0;
+  if (
+    !has(definition.permissions) &&
+    !has(definition.configuration) &&
+    !has(definition.requiredConfiguration) &&
+    !has(definition.secrets) &&
+    !has(definition.requiredSecrets)
+  ) {
+    return undefined;
+  }
+  return {
+    ...(has(definition.permissions)
+      ? { permissions: Object.freeze([...(definition.permissions ?? [])]) }
+      : {}),
+    ...(has(definition.configuration)
+      ? { configuration: Object.freeze([...(definition.configuration ?? [])]) }
+      : {}),
+    ...(has(definition.requiredConfiguration)
+      ? { requiredConfiguration: Object.freeze([...(definition.requiredConfiguration ?? [])]) }
+      : {}),
+    ...(has(definition.secrets) ? { secrets: Object.freeze([...(definition.secrets ?? [])]) } : {}),
+    ...(has(definition.requiredSecrets)
+      ? { requiredSecrets: Object.freeze([...(definition.requiredSecrets ?? [])]) }
+      : {}),
+  };
 }

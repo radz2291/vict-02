@@ -1,3 +1,4 @@
+import { neutralJsonContract } from '@vict/sdk';
 import type { OrchestrationStore } from './orchestration-store-types.js';
 import type { VictRuntime } from './runtime.js';
 import { decideEffectAuthorization } from './effect-policy.js';
@@ -214,6 +215,8 @@ export function runOrchestrationConformanceSuite(
           id: 'route',
           revision: '1',
           effect: 'pure',
+          input: neutralJsonContract,
+          output: neutralJsonContract,
           invoke: (input: unknown) => {
             routeCalls += 1;
             return { route: 'L', value: String(input) };
@@ -223,18 +226,24 @@ export function runOrchestrationConformanceSuite(
           id: 'left',
           revision: '1',
           effect: 'pure',
+          input: neutralJsonContract,
+          output: neutralJsonContract,
           invoke: (input: unknown) => `L:${String(input)}`,
         })
         .registerCapability({
           id: 'right',
           revision: '1',
           effect: 'pure',
+          input: neutralJsonContract,
+          output: neutralJsonContract,
           invoke: (input: unknown) => `R:${String(input)}`,
         })
         .registerCapability({
           id: 'sink',
           revision: '1',
           effect: 'pure',
+          input: neutralJsonContract,
+          output: neutralJsonContract,
           invoke: (input: unknown) => String(input),
         })
         .registerContract(stringContract('conf-string'));
@@ -265,12 +274,16 @@ export function runOrchestrationConformanceSuite(
             id: 'first',
             revision: '1',
             effect: 'pure',
+            input: neutralJsonContract,
+            output: neutralJsonContract,
             invoke: (input: unknown) => input,
           })
           .registerCapability({
             id: 'branch',
             revision: '1',
             effect: 'pure',
+            input: neutralJsonContract,
+            output: neutralJsonContract,
             invoke: async (input: unknown) => {
               branchCalls += 1;
               overlap.active += 1;
@@ -284,6 +297,8 @@ export function runOrchestrationConformanceSuite(
             id: 'sink',
             revision: '1',
             effect: 'pure',
+            input: neutralJsonContract,
+            output: neutralJsonContract,
             invoke: (input: unknown) => input,
           })
           .registerContract(recordContract('conf-record'));
@@ -317,6 +332,8 @@ export function runOrchestrationConformanceSuite(
             id: 'first',
             revision: '1',
             effect: 'pure',
+            input: neutralJsonContract,
+            output: neutralJsonContract,
             invoke: () => {
               firstCalls += 1;
               return 'one';
@@ -326,6 +343,8 @@ export function runOrchestrationConformanceSuite(
             id: 'second',
             revision: '1',
             effect: 'pure',
+            input: neutralJsonContract,
+            output: neutralJsonContract,
             invoke: (input: unknown) => {
               secondCalls += 1;
               return `got:${String(input)}`;
@@ -405,11 +424,20 @@ export function runOrchestrationConformanceSuite(
         const runtime = fixture.runtime;
         let secondCalls = 0;
         runtime
-          .registerCapability({ id: 'first', revision: '1', effect: 'pure', invoke: () => 'one' })
+          .registerCapability({
+            id: 'first',
+            revision: '1',
+            effect: 'pure',
+            input: neutralJsonContract,
+            output: neutralJsonContract,
+            invoke: () => 'one',
+          })
           .registerCapability({
             id: 'second',
             revision: '1',
             effect: 'pure',
+            input: neutralJsonContract,
+            output: neutralJsonContract,
             invoke: (input: unknown) => {
               secondCalls += 1;
               return `after:${String(input)}`;
@@ -454,6 +482,8 @@ export function runOrchestrationConformanceSuite(
           id: 'flaky',
           revision: '1',
           effect: 'pure',
+          input: neutralJsonContract,
+          output: neutralJsonContract,
           invoke: (input: unknown, context) => {
             attempts.push(context.idempotencyKey ?? '(none)');
             calls += 1;
@@ -504,6 +534,8 @@ export function runOrchestrationConformanceSuite(
           id: 'first',
           revision: '1',
           effect: 'pure',
+          input: neutralJsonContract,
+          output: neutralJsonContract,
           invoke: () => {
             invokeCount += 1;
             return 'one';
@@ -513,6 +545,8 @@ export function runOrchestrationConformanceSuite(
           id: 'second',
           revision: '1',
           effect: 'pure',
+          input: neutralJsonContract,
+          output: neutralJsonContract,
           invoke: () => {
             invokeCount += 1;
             return 'two';
@@ -558,6 +592,8 @@ export function runOrchestrationConformanceSuite(
           id: 'slowWrite',
           revision: '1',
           effect: 'write',
+          input: neutralJsonContract,
+          output: neutralJsonContract,
           invoke: async () => {
             invokeCount += 1;
             await new Promise((resolve) => setTimeout(resolve, 200));
@@ -583,17 +619,28 @@ export function runOrchestrationConformanceSuite(
     try {
       const runtime = fixture.runtime;
       runtime
-        .registerCapability({ id: 'first', revision: '1', effect: 'pure', invoke: () => 'one' })
+        .registerCapability({
+          id: 'first',
+          revision: '1',
+          effect: 'pure',
+          input: neutralJsonContract,
+          output: neutralJsonContract,
+          invoke: () => 'one',
+        })
         .registerCapability({
           id: 'second',
           revision: '1',
           effect: 'pure',
+          input: neutralJsonContract,
+          output: neutralJsonContract,
           invoke: (input: unknown) => `got:${String(input)}`,
         })
         .registerCapability({
           id: 'second2',
           revision: '1',
           effect: 'pure',
+          input: neutralJsonContract,
+          output: neutralJsonContract,
           invoke: (input: unknown) => `got2:${String(input)}`,
         })
         .registerContract(stringContract('conf-string'));
@@ -610,6 +657,8 @@ export function runOrchestrationConformanceSuite(
         id: 'first',
         revision: '2',
         effect: 'pure',
+        input: neutralJsonContract,
+        output: neutralJsonContract,
         invoke: () => 'one-v2',
       });
       const activatedB = await runtime.activate(signalWaitGraph());

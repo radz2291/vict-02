@@ -1,3 +1,4 @@
+import { neutralJsonContract } from '@vict/contracts';
 import { writeFileSync, readFileSync, existsSync } from 'node:fs';
 import { createSqliteStores } from '@vict/store-sqlite';
 import { createRuntime } from '@vict/runtime';
@@ -64,6 +65,8 @@ function registerCommon(): void {
     id: 'first',
     revision: '1',
     effect: 'pure',
+    input: neutralJsonContract,
+    output: neutralJsonContract,
     invoke: () => 'one',
   });
 }
@@ -75,6 +78,8 @@ async function main(): Promise<void> {
       id: 'second',
       revision: '1',
       effect: 'pure',
+      input: neutralJsonContract,
+      output: neutralJsonContract,
       invoke: (input: unknown) => `got:${String(input)}`,
     });
     const definition =
@@ -130,6 +135,8 @@ async function main(): Promise<void> {
       id: 'second',
       revision: '1',
       effect: 'pure',
+      input: neutralJsonContract,
+      output: neutralJsonContract,
       invoke: (input: unknown) => `got:${String(input)}`,
     });
     const state = JSON.parse(await await_readState()) as { runId: string; waitId: string | null };
@@ -175,6 +182,8 @@ async function main(): Promise<void> {
       id: 'hang',
       revision: '1',
       effect: 'pure',
+      input: neutralJsonContract,
+      output: neutralJsonContract,
       invoke: async () => {
         // Notify the parent that durable intent has committed and the
         // handler is in flight, then never return. The interval keeps the
@@ -226,6 +235,8 @@ async function main(): Promise<void> {
       revision: '1',
       effect: 'write',
       idempotency: 'keyed',
+      input: neutralJsonContract,
+      output: neutralJsonContract,
       invoke: async (input: unknown, context) => {
         const key = context.idempotencyKey as string;
         const ledger = readLedger();
@@ -278,6 +289,8 @@ async function main(): Promise<void> {
         id: 'hang',
         revision: '1',
         effect: 'pure',
+        input: neutralJsonContract,
+        output: neutralJsonContract,
         invoke: (input: unknown) => `recovered:${String(input)}`,
       });
     } else {
@@ -286,6 +299,8 @@ async function main(): Promise<void> {
         revision: '1',
         effect: 'write',
         idempotency: 'keyed',
+        input: neutralJsonContract,
+        output: neutralJsonContract,
         invoke: (input: unknown, context) => {
           const ledger = JSON.parse(readFileSync(`${statePath}.ledger`, 'utf8')) as Record<
             string,
@@ -349,12 +364,16 @@ async function main(): Promise<void> {
         id: 'jstart',
         revision: '1',
         effect: 'pure',
+        input: neutralJsonContract,
+        output: neutralJsonContract,
         invoke: () => 'seed',
       })
       .registerCapability({
         id: 'branchA',
         revision: '1',
         effect: 'pure',
+        input: neutralJsonContract,
+        output: neutralJsonContract,
         invoke: () => {
           bump('branchA');
           return 'alpha';
@@ -364,6 +383,8 @@ async function main(): Promise<void> {
         id: 'branchB',
         revision: '1',
         effect: 'pure',
+        input: neutralJsonContract,
+        output: neutralJsonContract,
         invoke: (input: unknown, context) => {
           bump('branchB');
           // Durable intent has committed; the handler now hangs so the
@@ -378,6 +399,8 @@ async function main(): Promise<void> {
         id: 'after',
         revision: '1',
         effect: 'pure',
+        input: neutralJsonContract,
+        output: neutralJsonContract,
         invoke: (input: unknown) => `after:${JSON.stringify(input)}`,
       });
     const activated = await runtime.activate({
@@ -441,11 +464,20 @@ async function main(): Promise<void> {
       },
     });
     runtime
-      .registerCapability({ id: 'jstart', revision: '1', effect: 'pure', invoke: () => 'seed' })
+      .registerCapability({
+        id: 'jstart',
+        revision: '1',
+        effect: 'pure',
+        input: neutralJsonContract,
+        output: neutralJsonContract,
+        invoke: () => 'seed',
+      })
       .registerCapability({
         id: 'branchA',
         revision: '1',
         effect: 'pure',
+        input: neutralJsonContract,
+        output: neutralJsonContract,
         invoke: () => {
           bump('branchA');
           return 'alpha';
@@ -455,6 +487,8 @@ async function main(): Promise<void> {
         id: 'branchB',
         revision: '1',
         effect: 'pure',
+        input: neutralJsonContract,
+        output: neutralJsonContract,
         invoke: () => {
           bump('branchB');
           return 'beta';
@@ -464,6 +498,8 @@ async function main(): Promise<void> {
         id: 'after',
         revision: '1',
         effect: 'pure',
+        input: neutralJsonContract,
+        output: neutralJsonContract,
         invoke: (input: unknown) => `after:${JSON.stringify(input)}`,
       });
     await new Promise((resolve) => setTimeout(resolve, 1500)); // lease expiry + WAL settle
@@ -521,11 +557,20 @@ async function main(): Promise<void> {
       },
     });
     runtime
-      .registerCapability({ id: 'jstart', revision: '1', effect: 'pure', invoke: () => 'seed' })
+      .registerCapability({
+        id: 'jstart',
+        revision: '1',
+        effect: 'pure',
+        input: neutralJsonContract,
+        output: neutralJsonContract,
+        invoke: () => 'seed',
+      })
       .registerCapability({
         id: 'branchA',
         revision: '1',
         effect: 'pure',
+        input: neutralJsonContract,
+        output: neutralJsonContract,
         invoke: () => {
           bump('branchA');
           return 'alpha';
@@ -535,6 +580,8 @@ async function main(): Promise<void> {
         id: 'branchB',
         revision: '1',
         effect: 'pure',
+        input: neutralJsonContract,
+        output: neutralJsonContract,
         invoke: () => {
           bump('branchB');
           return 'beta';

@@ -1,3 +1,4 @@
+import { neutralJsonContract } from '@vict/sdk';
 import { describe, expect, it } from 'vitest';
 import { createInMemoryStores, createRuntime, VictStoreError } from '@vict/runtime';
 import type { TransitionFaultHooks } from '@vict/runtime';
@@ -74,11 +75,20 @@ const WAIT_GRAPH = {
 
 function registerCapabilities(runtime: ReturnType<typeof createRuntime>): void {
   runtime
-    .registerCapability({ id: 'c.first', revision: '1', effect: 'pure', invoke: () => 'one' })
+    .registerCapability({
+      id: 'c.first',
+      revision: '1',
+      effect: 'pure',
+      input: neutralJsonContract,
+      output: neutralJsonContract,
+      invoke: () => 'one',
+    })
     .registerCapability({
       id: 'c.second',
       revision: '1',
       effect: 'pure',
+      input: neutralJsonContract,
+      output: neutralJsonContract,
       invoke: (input: unknown) => `two:${String(input)}`,
     });
 }

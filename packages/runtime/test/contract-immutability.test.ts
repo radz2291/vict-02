@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import { z } from 'zod';
-import { defineCapability, defineContract, defineGraph } from '@vict/sdk';
+import { defineCapability, defineContract, defineGraph, neutralJsonContract } from '@vict/sdk';
 import { defineZodContract } from '@vict/sdk/zod';
 import { createRuntime } from '@vict/runtime';
 import type { Contract, ContractResult } from '@vict/contracts';
@@ -121,6 +121,7 @@ describe('contract immutability at the activation boundary', () => {
       revision: '1',
       effect: 'pure' as const,
       input: contractV1,
+      output: neutralJsonContract,
       invoke: (input: { count: number }) => ({ count: input.count * 10 }),
     };
     const runtime = createRuntime();
@@ -144,6 +145,7 @@ describe('contract immutability at the activation boundary', () => {
       revision: '2',
       effect: 'pure' as const,
       input: contractV2,
+      output: neutralJsonContract,
       invoke: (input: { count: number }) => ({ count: input.count * 10 }),
     };
     // A new runtime instance models the deliberate re-binding: the registry
@@ -173,6 +175,8 @@ describe('contract immutability at the activation boundary', () => {
       id: 'ci.encapsulation',
       revision: '1',
       effect: 'pure',
+      input: neutralJsonContract,
+      output: neutralJsonContract,
       invoke: (input: unknown) => input,
     });
     const runtime = createRuntime();

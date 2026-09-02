@@ -231,6 +231,21 @@ function planSuccess(input: PlanInput): PlannedCompletion {
     const wait = node.wait as SignalWaitDefinition | TimerWaitDefinition;
     const waitId = waitIdFor(claim.token.runId, claim.token.lineage, node.id);
     if (wait.kind === 'timer') {
+      // Scheduling-time overflow guard: the deadline must stay inside the
+      // safe persisted-timestamp domain. Compilation already rejects
+      // non-positive/fractional/NaN/Infinite delays; an enormous (but
+      // compile-valid) delay combined with the current time could still
+      // overflow `Number.MAX_SAFE_INTEGER`, which fails structurally here
+      // instead of persisting an unusable timestamp.
+      const dueAt = input.now + wait.delayMs;
+      if (!Number.isSafeInteger(dueAt)) {
+        return {
+          kind: 'invalid',
+          error: invalidOutcome(
+            `Timer wait node '${node.id}' declares delayMs ${wait.delayMs}, which would schedule a deadline outside the safe persisted-timestamp domain; the run cannot park on this wait.`,
+          ),
+        };
+      }
       const command: NewWaitCommand = {
         waitId,
         nodeId: node.id,
@@ -238,13 +253,25 @@ function planSuccess(input: PlanInput): PlannedCompletion {
         signalName: null,
         contractId: null,
         contractRevision: null,
-        dueAt: input.now + wait.delayMs,
+        dueAt,
         timeoutAt: null,
       };
       return {
         kind: 'transition',
         continuation: { kind: 'wait', wait: command },
         runStatus: 'waiting',
+      };
+    }
+    // Same overflow guard for a declared wait timeout (absent when
+    // `undefined` or `null`).
+    const timeoutAt =
+      wait.timeoutMs !== undefined && wait.timeoutMs !== null ? input.now + wait.timeoutMs : null;
+    if (timeoutAt !== null && !Number.isSafeInteger(timeoutAt)) {
+      return {
+        kind: 'invalid',
+        error: invalidOutcome(
+          `Signal wait node '${node.id}' declares timeoutMs ${String(wait.timeoutMs)}, which would schedule a deadline outside the safe persisted-timestamp domain; the run cannot park on this wait.`,
+        ),
       };
     }
     const command: NewWaitCommand = {
@@ -256,12 +283,9 @@ function planSuccess(input: PlanInput): PlannedCompletion {
       contractRevision: null,
       dueAt: null,
       // The canonical manifest form normalizes an ABSENT timeout to `null`.
-      // Both `undefined` and `null` therefore mean "no timeout": no
-      // wait-timeout timer is scheduled for a plain signal wait. Declared
-      // finite values create a deadline; explicit wait-level bound validation
-      // is a Stage 3 Low carry-forward into the Stage 4 authoring boundary.
-      timeoutAt:
-        wait.timeoutMs !== undefined && wait.timeoutMs !== null ? input.now + wait.timeoutMs : null,
+      // Both `undefined` and `null` mean "no timeout": no wait-timeout timer
+      // is scheduled for a plain signal wait.
+      timeoutAt,
     };
     return {
       kind: 'transition',

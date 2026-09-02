@@ -18,6 +18,7 @@ import { writeFileSync, existsSync } from 'node:fs';
 import { createRuntime } from '../../../runtime/src/index.js';
 import type { RestorationResult } from '../../../runtime/src/index.js';
 import { createSqliteStores } from '../../src/index.js';
+import { neutralJsonContract } from '../../../contracts/src/index.js';
 import { defineZodContract } from '../../../contracts/src/zod/index.js';
 import { z } from 'zod';
 
@@ -48,6 +49,8 @@ const OTHER_CAPABILITY = {
   id: 'mm.other',
   revision: '1',
   effect: 'pure' as const,
+  input: neutralJsonContract,
+  output: neutralJsonContract,
   invoke: (input: unknown) => input,
 };
 

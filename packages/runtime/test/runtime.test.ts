@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { z } from 'zod';
-import { defineCapability, defineGraph, errorSignalContract } from '@vict/sdk';
+import { defineCapability, defineGraph, errorSignalContract, neutralJsonContract } from '@vict/sdk';
 import { defineZodContract } from '@vict/sdk/zod';
 import { createRuntime } from '@vict/runtime';
 
@@ -134,6 +134,8 @@ describe('runtime activation and configuration', () => {
         id: 't.bad',
         revision: '',
         effect: 'pure',
+        input: neutralJsonContract,
+        output: neutralJsonContract,
         invoke: (input) => input,
       }),
     ).toThrowError(/revision/);
@@ -142,6 +144,8 @@ describe('runtime activation and configuration', () => {
         id: 't.bad',
         revision: undefined as unknown as string,
         effect: 'pure',
+        input: neutralJsonContract,
+        output: neutralJsonContract,
         invoke: (input) => input,
       }),
     ).toThrowError(/revision/);

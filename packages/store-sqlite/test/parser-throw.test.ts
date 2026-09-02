@@ -1,3 +1,4 @@
+import { neutralJsonContract } from '@vict/sdk';
 import { createRuntime } from '@vict/runtime';
 import type { KernelEvent } from '@vict/kernel';
 import { createSqliteStores } from '@vict/store-sqlite';
@@ -40,12 +41,16 @@ function registerArtifacts(runtime: RegisterArtifacts['runtime']): void {
     id: 'seed',
     revision: '1',
     effect: 'pure',
+    input: neutralJsonContract,
+    output: neutralJsonContract,
     invoke: (input: unknown) => input,
   });
   runtime.registerCapability({
     id: 'downstream',
     revision: '1',
     effect: 'pure',
+    input: neutralJsonContract,
+    output: neutralJsonContract,
     invoke: (input: unknown) => input,
   });
 }

@@ -1,3 +1,4 @@
+import { neutralJsonContract } from '@vict/sdk';
 import type { KernelEvent } from '@vict/kernel';
 import { SAFE_ISSUE_CODES } from '@vict/contracts';
 import type { ContractIssue } from '@vict/contracts';
@@ -179,18 +180,36 @@ export function runOrchestrationCanarySuite(
         const { runtime, orchestration } = fixture;
         let downstreamCalls = 0;
         runtime
-          .registerCapability({ id: 'c.first', revision: '1', effect: 'pure', invoke: () => 's' })
+          .registerCapability({
+            id: 'c.first',
+            revision: '1',
+            effect: 'pure',
+            input: neutralJsonContract,
+            output: neutralJsonContract,
+            invoke: () => 's',
+          })
           .registerCapability({
             id: 'c.b1',
             revision: '1',
             effect: 'pure',
+            input: neutralJsonContract,
+            output: neutralJsonContract,
             invoke: () => 'ALPHA',
           })
-          .registerCapability({ id: 'c.b2', revision: '1', effect: 'pure', invoke: () => 'BETA' })
+          .registerCapability({
+            id: 'c.b2',
+            revision: '1',
+            effect: 'pure',
+            input: neutralJsonContract,
+            output: neutralJsonContract,
+            invoke: () => 'BETA',
+          })
           .registerCapability({
             id: 'c.after',
             revision: '1',
             effect: 'pure',
+            input: neutralJsonContract,
+            output: neutralJsonContract,
             invoke: () => {
               downstreamCalls += 1;
               return 'after';
@@ -235,19 +254,30 @@ export function runOrchestrationCanarySuite(
         const { runtime, orchestration } = fixture;
         let downstreamCalls = 0;
         runtime
-          .registerCapability({ id: 'p.first', revision: '1', effect: 'pure', invoke: () => 's' })
+          .registerCapability({
+            id: 'p.first',
+            revision: '1',
+            effect: 'pure',
+            input: neutralJsonContract,
+            output: neutralJsonContract,
+            invoke: () => 's',
+          })
           // Branch outputs carry the canary as a DYNAMIC OBJECT KEY: the
           // canonical join payload itself contains the secret key name.
           .registerCapability({
             id: 'p.b',
             revision: '1',
             effect: 'pure',
+            input: neutralJsonContract,
+            output: neutralJsonContract,
             invoke: () => ({ [CANARY]: 'value' }),
           })
           .registerCapability({
             id: 'p.after',
             revision: '1',
             effect: 'pure',
+            input: neutralJsonContract,
+            output: neutralJsonContract,
             invoke: () => {
               downstreamCalls += 1;
               return 'after';
@@ -307,6 +337,8 @@ export function runOrchestrationCanarySuite(
           id: 'i.guarded',
           revision: '1',
           effect: 'pure',
+          input: neutralJsonContract,
+          output: neutralJsonContract,
           invoke: () => {
             invoked += 1;
             return 'ran';
@@ -343,11 +375,20 @@ export function runOrchestrationCanarySuite(
     try {
       const { runtime, orchestration } = fixture;
       runtime
-        .registerCapability({ id: 's.first', revision: '1', effect: 'pure', invoke: () => 'go' })
+        .registerCapability({
+          id: 's.first',
+          revision: '1',
+          effect: 'pure',
+          input: neutralJsonContract,
+          output: neutralJsonContract,
+          invoke: () => 'go',
+        })
         .registerCapability({
           id: 's.echo',
           revision: '1',
           effect: 'pure',
+          input: neutralJsonContract,
+          output: neutralJsonContract,
           invoke: (input: unknown) => `echo:${String(input)}`,
         })
         .registerContract({
@@ -433,11 +474,20 @@ export function runOrchestrationCanarySuite(
       try {
         const { runtime, orchestration } = fixture;
         runtime
-          .registerCapability({ id: 'v.first', revision: '1', effect: 'pure', invoke: () => 'go' })
+          .registerCapability({
+            id: 'v.first',
+            revision: '1',
+            effect: 'pure',
+            input: neutralJsonContract,
+            output: neutralJsonContract,
+            invoke: () => 'go',
+          })
           .registerCapability({
             id: 'v.after',
             revision: '1',
             effect: 'pure',
+            input: neutralJsonContract,
+            output: neutralJsonContract,
             invoke: () => 'after',
           })
           // Hostile wait-payload contract: canary in every issue position
@@ -509,11 +559,20 @@ export function runOrchestrationCanarySuite(
     try {
       const { runtime, orchestration } = fixture;
       runtime
-        .registerCapability({ id: 'm.first', revision: '1', effect: 'pure', invoke: () => 'go' })
+        .registerCapability({
+          id: 'm.first',
+          revision: '1',
+          effect: 'pure',
+          input: neutralJsonContract,
+          output: neutralJsonContract,
+          invoke: () => 'go',
+        })
         .registerCapability({
           id: 'm.after',
           revision: '1',
           effect: 'pure',
+          input: neutralJsonContract,
+          output: neutralJsonContract,
           invoke: () => 'after',
         });
       const activated = await runtime.activate({
@@ -588,6 +647,8 @@ export function runOrchestrationCanarySuite(
         id: 'e.keyedWrite',
         revision: '1',
         effect: 'write',
+        input: neutralJsonContract,
+        output: neutralJsonContract,
         idempotency: 'keyed',
         invoke: (input: unknown, context) => {
           // Disposable external-effect ledger: records the mutation,
@@ -646,9 +707,18 @@ export function runOrchestrationCanarySuite(
           id: 'o.blocked',
           revision: '1',
           effect: 'irreversible',
+          input: neutralJsonContract,
+          output: neutralJsonContract,
           invoke: () => 'never',
         })
-        .registerCapability({ id: 'o.after', revision: '1', effect: 'pure', invoke: () => 'x' })
+        .registerCapability({
+          id: 'o.after',
+          revision: '1',
+          effect: 'pure',
+          input: neutralJsonContract,
+          output: neutralJsonContract,
+          invoke: () => 'x',
+        })
         .registerContract({
           id: 'o.hostile-output',
           revision: '1',
@@ -694,6 +764,8 @@ export function runOrchestrationCanarySuite(
         id: 'o.blocked',
         revision: '1',
         effect: 'irreversible',
+        input: neutralJsonContract,
+        output: neutralJsonContract,
         invoke: () => 'never',
       });
       operator.registerContract({

@@ -1,3 +1,4 @@
+import { neutralJsonContract } from '@vict/sdk';
 import type { VictRuntime } from './runtime.js';
 import type {
   ConformanceExpect,
@@ -606,23 +607,36 @@ function registerFlow(
   },
 ): void {
   runtime
-    .registerCapability({ id: 'start', revision: '1', effect: 'pure', invoke: () => 'seed' })
+    .registerCapability({
+      id: 'start',
+      revision: '1',
+      effect: 'pure',
+      input: neutralJsonContract,
+      output: neutralJsonContract,
+      invoke: () => 'seed',
+    })
     .registerCapability({
       id: 'branchA',
       revision: '1',
       effect: 'pure',
+      input: neutralJsonContract,
+      output: neutralJsonContract,
       invoke: options.branchA ?? (() => CANARY_A),
     })
     .registerCapability({
       id: 'branchB',
       revision: '1',
       effect: 'pure',
+      input: neutralJsonContract,
+      output: neutralJsonContract,
       invoke: options.branchB ?? (() => CANARY_B),
     })
     .registerCapability({
       id: 'after',
       revision: '1',
       effect: 'pure',
+      input: neutralJsonContract,
+      output: neutralJsonContract,
       invoke: options.after ?? ((input: unknown) => `processed:${JSON.stringify(input)}`),
     });
   if (options.joinContract !== undefined) {

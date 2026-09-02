@@ -1,3 +1,4 @@
+import { neutralJsonContract } from '@vict/sdk';
 import type { KernelEvent } from '@vict/kernel';
 import type { ManualOrchestrationClock } from './orchestration-race-conformance.js';
 import type { OrchestrationStore } from './orchestration-store-types.js';
@@ -92,12 +93,16 @@ export function runOrchestrationRemediationSuite(
             id: 'r-seed',
             revision: '1',
             effect: 'pure',
+            input: neutralJsonContract,
+            output: neutralJsonContract,
             invoke: (i: unknown) => i,
           })
           .registerCapability({
             id: 'r-mid',
             revision: '1',
             effect: 'pure',
+            input: neutralJsonContract,
+            output: neutralJsonContract,
             invoke: (i: unknown) => {
               midCalls += 1;
               return i;
@@ -107,6 +112,8 @@ export function runOrchestrationRemediationSuite(
             id: 'r-done',
             revision: '1',
             effect: 'pure',
+            input: neutralJsonContract,
+            output: neutralJsonContract,
             invoke: (i: unknown) => {
               doneCalls += 1;
               return i;
@@ -237,18 +244,24 @@ export function runOrchestrationRemediationSuite(
             id: 'r-seed',
             revision: '1',
             effect: 'pure',
+            input: neutralJsonContract,
+            output: neutralJsonContract,
             invoke: (i: unknown) => i,
           })
           .registerCapability({
             id: 'r-mid',
             revision: '1',
             effect: 'pure',
+            input: neutralJsonContract,
+            output: neutralJsonContract,
             invoke: (i: unknown) => i,
           })
           .registerCapability({
             id: 'r-done',
             revision: '1',
             effect: 'pure',
+            input: neutralJsonContract,
+            output: neutralJsonContract,
             invoke: (i: unknown) => i,
           });
         const activated = await runtime.activate({
@@ -282,18 +295,24 @@ export function runOrchestrationRemediationSuite(
             id: 'r-seed',
             revision: '1',
             effect: 'pure',
+            input: neutralJsonContract,
+            output: neutralJsonContract,
             invoke: (i: unknown) => i,
           })
           .registerCapability({
             id: 'r-mid',
             revision: '1',
             effect: 'pure',
+            input: neutralJsonContract,
+            output: neutralJsonContract,
             invoke: (i: unknown) => i,
           })
           .registerCapability({
             id: 'r-done',
             revision: '1',
             effect: 'pure',
+            input: neutralJsonContract,
+            output: neutralJsonContract,
             invoke: (i: unknown) => i,
           });
         const signal1 = await reopened.runtime.signal({
@@ -359,12 +378,16 @@ export function runOrchestrationRemediationSuite(
             id: 'r-seed',
             revision: '1',
             effect: 'pure',
+            input: neutralJsonContract,
+            output: neutralJsonContract,
             invoke: (i: unknown) => i,
           })
           .registerCapability({
             id: 'r-done',
             revision: '1',
             effect: 'pure',
+            input: neutralJsonContract,
+            output: neutralJsonContract,
             invoke: (i: unknown) => {
               doneCalls += 1;
               return i;
@@ -430,12 +453,16 @@ export function runOrchestrationRemediationSuite(
             id: 'r-seed',
             revision: '1',
             effect: 'pure',
+            input: neutralJsonContract,
+            output: neutralJsonContract,
             invoke: (i: unknown) => i,
           })
           .registerCapability({
             id: 'r-done',
             revision: '1',
             effect: 'pure',
+            input: neutralJsonContract,
+            output: neutralJsonContract,
             invoke: (i: unknown) => {
               doneCalls += 1;
               return i;
@@ -479,12 +506,16 @@ export function runOrchestrationRemediationSuite(
             id: 'r-seed',
             revision: '1',
             effect: 'pure',
+            input: neutralJsonContract,
+            output: neutralJsonContract,
             invoke: (i: unknown) => i,
           })
           .registerCapability({
             id: 'r-done',
             revision: '1',
             effect: 'pure',
+            input: neutralJsonContract,
+            output: neutralJsonContract,
             invoke: (i: unknown) => {
               doneCalls += 1;
               return i;
@@ -494,6 +525,8 @@ export function runOrchestrationRemediationSuite(
             id: 'r-fallback',
             revision: '1',
             effect: 'pure',
+            input: neutralJsonContract,
+            output: neutralJsonContract,
             invoke: (i: unknown) => {
               fallbackCalls += 1;
               return i;
@@ -561,6 +594,8 @@ export function runOrchestrationRemediationSuite(
             id: 'r-slow-write',
             revision: '1',
             effect: 'write',
+            input: neutralJsonContract,
+            output: neutralJsonContract,
             invoke: async () => {
               invokeCount += 1;
               await gate;
@@ -571,6 +606,8 @@ export function runOrchestrationRemediationSuite(
             id: 'r-after',
             revision: '1',
             effect: 'pure',
+            input: neutralJsonContract,
+            output: neutralJsonContract,
             invoke: (i: unknown) => i,
           });
         const activated = await stores.runtime.activate({
@@ -621,12 +658,16 @@ export function runOrchestrationRemediationSuite(
             id: 'r-slow-write',
             revision: '1',
             effect: 'write',
+            input: neutralJsonContract,
+            output: neutralJsonContract,
             invoke: async () => 'applied',
           })
           .registerCapability({
             id: 'r-after',
             revision: '1',
             effect: 'pure',
+            input: neutralJsonContract,
+            output: neutralJsonContract,
             invoke: (i: unknown) => i,
           });
         // Stale resolution (fresh ID, wrong expected revision) is rejected

@@ -1,3 +1,4 @@
+import { neutralJsonContract } from '@vict/sdk';
 import { createInMemoryStores, createRuntime } from '@vict/runtime';
 import type { KernelEvent } from '@vict/kernel';
 import { describe, expect, it } from 'vitest';
@@ -66,12 +67,16 @@ describe('Stage 04 LOW-1: throwing contract parsers fail safely (sequential engi
         id: 'seed',
         revision: '1',
         effect: 'pure',
+        input: neutralJsonContract,
+        output: neutralJsonContract,
         invoke: (input: unknown) => input,
       })
       .registerCapability({
         id: 'downstream',
         revision: '1',
         effect: 'pure',
+        input: neutralJsonContract,
+        output: neutralJsonContract,
         invoke: (input: unknown) => {
           downstreamCalls += 1;
           return input;
@@ -119,12 +124,16 @@ describe('Stage 04 LOW-1: throwing contract parsers fail safely (sequential engi
         id: 'seed',
         revision: '1',
         effect: 'pure',
+        input: neutralJsonContract,
+        output: neutralJsonContract,
         invoke: () => CANARY,
       })
       .registerCapability({
         id: 'downstream',
         revision: '1',
         effect: 'pure',
+        input: neutralJsonContract,
+        output: neutralJsonContract,
         invoke: (input: unknown) => {
           downstreamCalls += 1;
           return input;
@@ -161,6 +170,8 @@ describe('Stage 04 LOW-1: throwing contract parsers fail safely (sequential engi
       id: 'seed',
       revision: '1',
       effect: 'pure',
+      input: neutralJsonContract,
+      output: neutralJsonContract,
       invoke: (input: unknown) => input,
     });
     await runtime.activate({
@@ -202,12 +213,16 @@ describe('Stage 04 LOW-1: throwing contract parsers fail safely (durable engine,
         id: 'seed',
         revision: '1',
         effect: 'pure',
+        input: neutralJsonContract,
+        output: neutralJsonContract,
         invoke: (input: unknown) => input,
       })
       .registerCapability({
         id: 'downstream',
         revision: '1',
         effect: 'pure',
+        input: neutralJsonContract,
+        output: neutralJsonContract,
         invoke: (input: unknown) => {
           downstreamCalls += 1;
           return input;
@@ -277,12 +292,16 @@ describe('Stage 04 LOW-1: throwing contract parsers fail safely (durable engine,
         id: 'seed',
         revision: '1',
         effect: 'pure',
+        input: neutralJsonContract,
+        output: neutralJsonContract,
         invoke: () => 'ok',
       })
       .registerCapability({
         id: 'downstream',
         revision: '1',
         effect: 'pure',
+        input: neutralJsonContract,
+        output: neutralJsonContract,
         invoke: (input: unknown) => {
           downstreamCalls += 1;
           return input;
@@ -332,6 +351,8 @@ describe('Stage 04 LOW-1: throwing contract parsers fail safely (durable engine,
         id: 'pure',
         revision: '1',
         effect: 'pure',
+        input: neutralJsonContract,
+        output: neutralJsonContract,
         invoke: (input: unknown) => input,
       });
     const activation = await runtime.activate({
