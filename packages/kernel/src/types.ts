@@ -94,6 +94,19 @@ export interface CapabilityDescriptor {
   readonly inputRevision?: string;
   readonly outputContractId?: string;
   readonly outputRevision?: string;
+  /**
+   * Stage 04: execution-affecting authority declarations (declared
+   * permission/configuration/secret NAMES, never values or grants).
+   * Participates in capability-set and activation identity when non-empty,
+   * just as effect/idempotency/contract metadata does.
+   */
+  readonly authority?: {
+    readonly permissions?: readonly string[];
+    readonly configuration?: readonly string[];
+    readonly requiredConfiguration?: readonly string[];
+    readonly secrets?: readonly string[];
+    readonly requiredSecrets?: readonly string[];
+  };
 }
 
 export interface CapabilityIndex {

@@ -710,16 +710,16 @@ export function compileGraph(input: CompileGraphInput): CompileResult {
         const waitTimeoutMs = wait.timeoutMs ?? undefined;
         const waitContract = (wait as { contract?: string | null }).contract ?? undefined;
         const hasTimeoutEdge = timeoutTargets.has(node.id);
-        // Stage 04 (LOW-3): one exact bound rule for wait-level timeouts.
-        // Rejected HERE at compilation — never deferred to persistence or
-        // timer pumping. `undefined`/`null` mean absent.
-        if (
-          waitTimeoutMs !== undefined &&
-          (!isValidMsBound(waitTimeoutMs) || waitTimeoutMs > MAX_DELAY_MS_LIMIT)
-        ) {
+        // One exact bound rule for wait-level timeouts: `undefined`/`null`
+        // mean absent; a present value must be a positive finite safe
+        // integer in milliseconds. There is NO seven-day ceiling — waits
+        // support long-lived approvals, reminders, and delayed workflows.
+        // Overflow beyond the safe persisted-timestamp domain is rejected
+        // structurally when the timer is scheduled.
+        if (waitTimeoutMs !== undefined && !isValidMsBound(waitTimeoutMs)) {
           issues.push({
             code: 'INVALID_WAIT_BOUND',
-            message: `Signal wait '${node.id}' declares timeoutMs ${JSON.stringify(wait.timeoutMs)}; when present it must be a positive finite safe integer (ms), bounded by ${MAX_DELAY_MS_LIMIT}.`,
+            message: `Signal wait '${node.id}' declares timeoutMs ${JSON.stringify(wait.timeoutMs)}; when present it must be a positive finite safe integer (ms).`,
             nodeIds: [node.id],
           });
         }
@@ -741,12 +741,14 @@ export function compileGraph(input: CompileGraphInput): CompileResult {
           issues.push(...checkWaitContract(node.id, waitContract, contracts));
         }
       } else {
-        // Timer wait: the delay bound follows the SAME exact rule (Stage 04).
+        // Timer wait: the SAME rule as signal-wait timeouts — a positive
+        // finite safe integer, with NO seven-day ceiling (long-lived waits
+        // are supported). Overflow is rejected at scheduling time.
         const delayMs = (wait as { delayMs?: unknown }).delayMs;
-        if (!isValidMsBound(delayMs) || delayMs > MAX_DELAY_MS_LIMIT) {
+        if (!isValidMsBound(delayMs)) {
           issues.push({
             code: 'INVALID_WAIT_BOUND',
-            message: `Timer wait node '${node.id}' declares delayMs ${JSON.stringify(delayMs)}; it must be a positive finite safe integer (ms), bounded by ${MAX_DELAY_MS_LIMIT}.`,
+            message: `Timer wait node '${node.id}' declares delayMs ${JSON.stringify(delayMs)}; it must be a positive finite safe integer (ms).`,
             nodeIds: [node.id],
           });
         }
@@ -1180,6 +1182,7 @@ export function compileGraph(input: CompileGraphInput): CompileResult {
       output:
         outputId === undefined ? null : { id: outputId, revision: outputRevision ?? 'unknown' },
       ...(descriptor.idempotency === undefined ? {} : { idempotency: descriptor.idempotency }),
+      ...(descriptor.authority === undefined ? {} : { authority: descriptor.authority }),
     });
   }
   const capabilitySetVersion = computeCapabilitySetVersion(bindings);

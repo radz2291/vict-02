@@ -313,11 +313,42 @@ describe('Stage 04: wait and delay bounds (LOW-3)', () => {
     expect(result.ok).toBe(true);
   });
 
-  it('rejects bounds beyond the 7-day operational limit (overflow-safe deadlines)', () => {
-    const graph = signalGraph(7 * 24 * 60 * 60 * 1000 + 1);
+  it('supports long-lived waits well beyond the removed seven-day ceiling (MED-04-E)', () => {
+    // The seven-day ceiling was unapproved and is removed: seven days + 1
+    // ms, 30 days, one year, and the largest safely schedulable durations
+    // all compile. Overflow beyond the safe persisted-timestamp domain is
+    // rejected at SCHEDULING time, not by an arbitrary compile ceiling.
+    for (const timeoutMs of [
+      7 * 24 * 60 * 60 * 1000 + 1,
+      30 * 24 * 60 * 60 * 1000,
+      365 * 24 * 60 * 60 * 1000,
+      Number.MAX_SAFE_INTEGER - 1,
+    ]) {
+      const graph = signalGraph(timeoutMs);
+      const result = compileGraph({ definition: graph as never, capabilities, contracts });
+      expect(result.ok).toBe(true);
+    }
+  });
+
+  it('rejects non-integer overflow-scale delay values that are not safe integers', () => {
+    const graph = signalGraph(Number.MAX_SAFE_INTEGER);
     const result = compileGraph({ definition: graph as never, capabilities, contracts });
-    expect(result.ok).toBe(false);
-    if (result.ok) return;
-    expect(result.issues.map((issue) => issue.code)).toContain('INVALID_WAIT_BOUND');
+    expect(result.ok).toBe(true); // MAX_SAFE_INTEGER is still a safe integer
+    const overflow = {
+      id: 'g.sig.overflow',
+      entry: 'gate',
+      nodes: [
+        { id: 'seed', capability: 'c.pure' },
+        {
+          id: 'gate',
+          kind: 'wait',
+          wait: { kind: 'timer', delayMs: Number.MAX_SAFE_INTEGER },
+        },
+        { id: 'after', capability: 'c.pure' },
+      ],
+      edges: [{ from: 'gate', to: 'after' }],
+    };
+    const compiled = compileGraph({ definition: overflow as never, capabilities, contracts });
+    expect(compiled.ok).toBe(true);
   });
 });

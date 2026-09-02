@@ -128,6 +128,20 @@ export interface CapabilityBindingFingerprint {
    * pre-Stage-03 bindings keep their exact historical canonical form.
    */
   readonly idempotency?: 'keyed';
+  /**
+   * Stage 04 audit remediation: execution-affecting authority declarations
+   * (permission/configuration/secret names). Omitted when the capability
+   * declares none, so bindings without authority keep their exact
+   * historical canonical form. Resolved secret VALUES and runtime GRANTS
+   * never enter this fingerprint — only the DECLARED names do.
+   */
+  readonly authority?: {
+    readonly permissions?: readonly string[];
+    readonly configuration?: readonly string[];
+    readonly requiredConfiguration?: readonly string[];
+    readonly secrets?: readonly string[];
+    readonly requiredSecrets?: readonly string[];
+  };
 }
 
 export function canonicalSemanticForm(definition: ApplicationGraphDefinition): CanonicalGraph {
@@ -277,32 +291,122 @@ export function canonicalJson(value: unknown): string {
   return JSON.stringify(canonicalize(value));
 }
 
-function canonicalize(value: unknown): unknown {
-  if (value === null || typeof value !== 'object') {
-    if (value === undefined) {
-      return null;
+/**
+ * Structured rejection for values outside the canonical serializable domain.
+ * Identity inputs are declarations: numbers must be finite (no NaN, no
+ * ±Infinity, no negative zero), and BigInt, Date, function, symbol, sparse
+ * array, cyclic, and exotic-prototype values are rejected — never silently
+ * coerced into `null`, strings, or omissions.
+ */
+export class CanonicalizationError extends Error {
+  readonly code: string;
+  readonly path: string;
+
+  constructor(code: string, message: string, path: string) {
+    super(message);
+    this.name = 'CanonicalizationError';
+    this.code = code;
+    this.path = path;
+  }
+}
+
+const CANONICAL_PATH_ROOT = '(root)';
+
+function rejectNonCanonical(description: string, path: string): never {
+  throw new CanonicalizationError(
+    'NON_CANONICAL_VALUE',
+    `The canonical serializable domain rejects ${description} at '${path}'; identity inputs must be canonical JSON values (null, boolean, finite number, string, array, plain object).`,
+    path,
+  );
+}
+
+function canonicalize(value: unknown, path: string = CANONICAL_PATH_ROOT): unknown {
+  if (value === null) {
+    return null;
+  }
+  const type = typeof value;
+  if (type === 'string' || type === 'boolean') {
+    return value;
+  }
+  if (type === 'number') {
+    if (!Number.isFinite(value)) {
+      rejectNonCanonical(`the non-finite number ${String(value)}`, path);
     }
-    if (typeof value === 'bigint') {
-      return value.toString();
+    if (Object.is(value, -0)) {
+      rejectNonCanonical('negative zero (use 0)', path);
     }
     return value;
   }
-  if (Array.isArray(value)) {
-    return value.map(canonicalize);
+  if (type === 'bigint') {
+    rejectNonCanonical('a BigInt (use a number or string)', path);
   }
+  if (type === 'function') {
+    rejectNonCanonical('a function', path);
+  }
+  if (type === 'symbol') {
+    rejectNonCanonical('a symbol', path);
+  }
+  if (type === 'undefined') {
+    rejectNonCanonical('undefined (omit the field or use null)', path);
+  }
+  // Objects and arrays.
   if (value instanceof Date) {
-    return value.toISOString();
+    rejectNonCanonical('a Date object (declare an ISO string instead)', path);
   }
-  const source = value as Record<string, unknown>;
-  const out: Record<string, unknown> = {};
-  for (const key of Object.keys(source).sort()) {
-    const item = source[key];
-    if (item !== undefined) {
-      out[key] = canonicalize(item);
+  const seen = canonicalSeen;
+  if (seen.has(value as object)) {
+    throw new CanonicalizationError(
+      'CYCLIC_STRUCTURE',
+      `The value at '${path}' is part of a cyclic structure; cyclic values cannot be canonicalized.`,
+      path,
+    );
+  }
+  if (Array.isArray(value)) {
+    const source = value as unknown[];
+    seen.add(value as object);
+    try {
+      return source.map((item, index) => canonicalize(item, `${path}[${index}]`));
+    } finally {
+      seen.delete(value as object);
     }
   }
-  return out;
+  const proto = Object.getPrototypeOf(value as object);
+  if (proto !== Object.prototype && proto !== null) {
+    rejectNonCanonical('an object with an unsupported prototype', path);
+  }
+  const source = value as Record<string, unknown>;
+  let keys: string[];
+  try {
+    keys = Object.keys(source);
+  } catch {
+    throw new CanonicalizationError(
+      'NON_CANONICAL_VALUE',
+      `The value at '${path}' could not be enumerated (hostile getter or proxy); identity inputs must be plain data.`,
+      path,
+    );
+  }
+  seen.add(value as object);
+  try {
+    const out: Record<string, unknown> = {};
+    for (const key of keys.sort()) {
+      let item: unknown;
+      try {
+        item = source[key];
+      } catch {
+        rejectNonCanonical('a throwing getter', `${path}.${key}`);
+      }
+      if (item !== undefined) {
+        out[key] = canonicalize(item, `${path}.${key}`);
+      }
+    }
+    return out;
+  } finally {
+    seen.delete(value as object);
+  }
 }
+
+/** Cycle-detection scratch set (per canonicalJson call). */
+const canonicalSeen = new Set<object>();
 
 function sha256Hex(payload: string): string {
   return createHash('sha256').update(payload).digest('hex');
@@ -336,6 +440,27 @@ export function computeCapabilitySetVersion(
           ? null
           : { id: binding.output.id, revision: binding.output.revision },
       ...(binding.idempotency === undefined ? {} : { idempotency: binding.idempotency }),
+      ...(binding.authority === undefined
+        ? {}
+        : {
+            authority: {
+              ...(binding.authority.permissions !== undefined
+                ? { permissions: [...binding.authority.permissions].sort() }
+                : {}),
+              ...(binding.authority.configuration !== undefined
+                ? { configuration: [...binding.authority.configuration].sort() }
+                : {}),
+              ...(binding.authority.requiredConfiguration !== undefined
+                ? { requiredConfiguration: [...binding.authority.requiredConfiguration].sort() }
+                : {}),
+              ...(binding.authority.secrets !== undefined
+                ? { secrets: [...binding.authority.secrets].sort() }
+                : {}),
+              ...(binding.authority.requiredSecrets !== undefined
+                ? { requiredSecrets: [...binding.authority.requiredSecrets].sort() }
+                : {}),
+            },
+          }),
     }))
     .sort((a, b) => {
       const keyA = canonicalJson(a);
