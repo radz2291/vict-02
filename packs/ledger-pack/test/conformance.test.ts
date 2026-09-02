@@ -5,6 +5,7 @@ import {
   defineGraph,
   VICT_AUTHORING_COMPAT_VERSION,
   validateCapabilityPack,
+  neutralJsonContract,
 } from '@vict/sdk';
 import { describe, expect, it } from 'vitest';
 import {
@@ -67,6 +68,8 @@ describe('capability pack conformance: vict.example.ledger (write)', () => {
       id: 'probe.undeclared',
       revision: '1',
       effect: 'pure',
+      input: neutralJsonContract,
+      output: neutralJsonContract,
       invoke: async (_input: unknown, context) => {
         // Declared NOTHING: readers must be absent entirely.
         expect(context.config).toBeUndefined();
