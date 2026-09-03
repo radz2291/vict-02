@@ -19,6 +19,7 @@
       "@vict/application": ["./packages/application/src/index.ts"],
       "@vict/application/*": ["./packages/application/src/*"],
       "@vict/application/testing": ["./packages/application/src/testing.ts"],
+      "@vict/application/renderer": ["./packages/application/src/renderer.ts"],
       "@vict/sdk": ["./packages/sdk/src/index.ts"],
       "@vict/sdk/*": ["./packages/sdk/src/*"],
       "@vict/sdk/zod": ["./packages/sdk/src/zod.ts"]
