@@ -96,6 +96,9 @@ function makeReferenceRenderer(): ApplicationRenderer {
     render(plan: ApplicationPlan, bindings: RendererBindings): RenderedApplication {
       const parts: string[] = [];
       for (const { screen } of plan.routes) {
+        if (screen === null) {
+          continue;
+        }
         for (const region of screen.layout) {
           for (const surface of region.surfaces) {
             if (!supported.includes(surface.role)) {
@@ -163,6 +166,9 @@ describe('Stage 04: shared renderer conformance suite (reference renderer)', () 
       supportedSurfaceRoles: ['text', 'action', 'component'],
       render(plan, bindings) {
         for (const { screen } of plan.routes) {
+          if (screen === null) {
+            continue;
+          }
           for (const region of screen.layout) {
             for (const surface of region.surfaces) {
               if (surface.role === 'component') {

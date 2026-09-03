@@ -62,7 +62,28 @@ export interface RendererConformanceFixture {
   readonly getFailureStateText?: (output: unknown) => string | undefined;
 }
 
-const ALL_ROLES: readonly SurfaceRole[] = ['text', 'view', 'form', 'action', 'component', 'states'];
+/**
+ * The complete role vocabulary: the Stage 04 foundation roles plus the
+ * Stage 05 delivery roles. Every declared renderer role must be a member;
+ * every role OUTSIDE a renderer's declared coverage must fail honestly.
+ */
+const ALL_ROLES: readonly SurfaceRole[] = [
+  'text',
+  'view',
+  'form',
+  'action',
+  'component',
+  'states',
+  'list',
+  'table',
+  'detail',
+  'chart',
+  'status',
+  'tabs',
+  'dialog',
+  'drawer',
+  'conversation',
+];
 
 function fail(message: string): never {
   throw new Error(`[renderer conformance: ${message}]`);
@@ -263,9 +284,31 @@ export async function runRendererConformanceSuite(
         });
         output = renderedFailing.output;
         // Invoke the action through the renderer's real trigger when the
-        // fixture supplies one (a real click in the Svelte proof).
+        // fixture supplies one (a real click in the Svelte renderer).
         if (fixture.triggerAction !== undefined) {
           await fixture.triggerAction(output);
+        }
+        // Give pending rejections a full macrotask to surface as unhandled
+        // BEFORE the teardown, and inspect the LIVE output: the failure
+        // state must actually be present in the mounted DOM (Svelte 5's
+        // unmount detaches rendered content, so post-teardown inspection
+        // would be vacuous).
+        await new Promise<void>((resolve) => {
+          setTimeout(resolve, 10);
+        });
+        if (output !== undefined) {
+          if (serialize(output).includes(CANARY)) {
+            fail(`action canary leaked into rendered output (${hostile.name})`);
+          }
+          if (fixture.getFailureStateText !== undefined) {
+            const failureText = fixture.getFailureStateText(output);
+            if (failureText === undefined || failureText.length === 0) {
+              fail(`the declared safe failure state did not render (${hostile.name})`);
+            }
+            if (failureText.includes(CANARY)) {
+              fail(`the failure state leaked the canary (${hostile.name})`);
+            }
+          }
         }
         renderedFailing.unmount();
       } catch (error) {
@@ -275,32 +318,12 @@ export async function runRendererConformanceSuite(
           fail(`action canary leaked through a renderer diagnostic (${hostile.name})`);
         }
       }
-      // Give pending rejections a full macrotask to surface as unhandled.
-      await new Promise<void>((resolve) => {
-        setTimeout(resolve, 10);
-      });
       if (hasProcess) {
         process.off('unhandledRejection', handler);
       }
       for (const reason of unhandled) {
         if (observableErrorSurface(reason).includes(CANARY)) {
           fail(`a dispatcher rejection became an UNHANDLED REJECTION (${hostile.name})`);
-        }
-      }
-      // The serialized output and the declared failure state must never
-      // contain the canary; the declared safe failure state must render.
-      if (output !== undefined) {
-        if (serialize(output).includes(CANARY)) {
-          fail(`action canary leaked into rendered output (${hostile.name})`);
-        }
-        if (fixture.getFailureStateText !== undefined) {
-          const failureText = fixture.getFailureStateText(output);
-          if (failureText === undefined || failureText.length === 0) {
-            fail(`the declared safe failure state did not render (${hostile.name})`);
-          }
-          if (failureText.includes(CANARY)) {
-            fail(`the failure state leaked the canary (${hostile.name})`);
-          }
         }
       }
     }

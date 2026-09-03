@@ -1,5 +1,6 @@
 export {
   APPLICATION_IDENTITY_SCHEMA,
+  APPLICATION_IDENTITY_SCHEMA_V2,
   compileApplication,
   canonicalApplicationManifest,
   computeApplicationVersion,
@@ -49,5 +50,6 @@ export type {
   ApplicationDataQueryRequest,
   ApplicationDataRequestContext,
   ApplicationDataResult,
+  DataSearch,
   DataSort,
 } from './data.js';

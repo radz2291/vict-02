@@ -1,0 +1,29 @@
+{
+  "name": "@vict/appdata-sqlite",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Production SQLite application-domain data adapter for the neutral Application Data port, with a separate versioned application-domain migration API. Uses the built-in node:sqlite driver. Application-domain tables and migrations are structurally separate from Vict operational stores.",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@vict/application": "0.1.0",
+    "@vict/contracts": "0.1.0",
+    "@vict/sdk": "0.1.0"
+  },
+  "engines": {
+    "node": ">=22.13.0"
+  }
+}

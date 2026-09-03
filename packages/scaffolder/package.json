@@ -1,0 +1,27 @@
+{
+  "name": "@vict/scaffolder",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "One-time SvelteKit application-host scaffolder for Vict: deterministic, non-destructive, path-safe, idempotent. Generates the generic VICT host, extension locations (code islands), and required configuration. Never overwrites application-owned files and never regenerates ordinary application code.",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "bin": {
+    "vict-scaffold": "./dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "engines": {
+    "node": ">=22.13.0"
+  }
+}

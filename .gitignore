@@ -10,6 +10,9 @@ coverage/
 *.sqlite
 *.sqlite-wal
 *.sqlite-shm
-# SvelteKit application proof artifacts
+# SvelteKit application artifacts
 .svelte-kit/
 examples/application-proof/build/
+examples/reference-app/build/
+# Reference application local domain database
+examples/reference-app/.data/

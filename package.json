@@ -14,7 +14,7 @@
   ],
   "scripts": {
     "bench": "tsx scripts/benchmark.ts",
-    "build": "npm run build -w @vict/contracts && npm run build -w @vict/sdk && npm run build -w @vict/kernel && npm run build -w @vict/runtime && npm run build -w @vict/store-sqlite && npm run build -w @vict/application",
+    "build": "npm run build -w @vict/contracts && npm run build -w @vict/sdk && npm run build -w @vict/kernel && npm run build -w @vict/runtime && npm run build -w @vict/store-sqlite && npm run build -w @vict/application && npm run build -w @vict/appdata-sqlite && npm run build -w @vict/renderer-svelte && npm run build -w @vict/scaffolder",
     "example": "tsx examples/ara-proof/src/main.ts",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
@@ -27,14 +27,18 @@
     "verify:stage2": "node scripts/verify-stage2.mjs",
     "verify:stage3": "node scripts/verify-stage3.mjs",
     "example:application": "npm run build -w application-proof && npm run test -w application-proof",
-    "verify:stage4": "node scripts/verify-stage4.mjs"
+    "verify:stage4": "node scripts/verify-stage4.mjs",
+    "verify:stage5": "node scripts/verify-stage5.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@sveltejs/vite-plugin-svelte": "^5.1.1",
     "@types/node": "^26.4.0",
     "eslint": "^10.9.1",
     "globals": "^17.11.0",
+    "happy-dom": "^15.11.7",
     "prettier": "^3.9.6",
+    "svelte": "^5.57.0",
     "tsx": "^4.23.13",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.68.0",

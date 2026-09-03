@@ -1,6 +1,19 @@
 import type { ResourceDefinition } from '@vict/sdk';
 import type { ApplicationDataAdapter, ApplicationDataRequestContext } from './data.js';
 
+/** Every observable surface of an adapter result (message + serialized shape). */
+function observableResultSurface(result: {
+  readonly ok: boolean;
+  readonly code?: string;
+  readonly message?: string;
+}): string {
+  try {
+    return `${result.code ?? ''} ${result.message ?? ''} ${JSON.stringify(result)}`;
+  } catch {
+    return String(result);
+  }
+}
+
 /**
  * Shared application-data adapter conformance suite (Stage 04).
  *
@@ -578,6 +591,187 @@ export async function runApplicationDataAdapterSuite(
     );
     if (!filtered.ok || filtered.rows?.length !== 1) {
       fail(`primitive-equality filtering broke: ${JSON.stringify(filtered)}`);
+    }
+  }
+
+  // ---- 16. Declared search (Stage 05) -----------------------------------------
+  {
+    const adapter = fixture.create(seeded);
+    const searchField = sortableField(resource);
+    const firstValue = String((seeded[0] as Record<string, unknown>)[searchField] ?? '');
+    if (firstValue.length > 0) {
+      const found = await adapter.query(
+        {
+          op: 'list',
+          resourceId: resource.id,
+          search: { text: firstValue, fields: [searchField] },
+        },
+        fixture.readContext,
+      );
+      if (!found.ok || found.total !== 1 || found.rows?.length !== 1) {
+        fail(`declared search did not find exactly the matching row: ${JSON.stringify(found)}`);
+      }
+      const caseFold = await adapter.query(
+        {
+          op: 'list',
+          resourceId: resource.id,
+          search: { text: firstValue.toUpperCase(), fields: [searchField] },
+        },
+        fixture.readContext,
+      );
+      if (!caseFold.ok || caseFold.total !== 1) {
+        fail('declared search is not case-insensitive');
+      }
+    }
+    const unknownField = await adapter.query(
+      {
+        op: 'list',
+        resourceId: resource.id,
+        search: { text: 'x', fields: ['not_a_field'] },
+      },
+      fixture.readContext,
+    );
+    if (unknownField.ok || unknownField.code !== 'DATA_UNSUPPORTED_QUERY') {
+      fail(`search across an unknown field was not rejected: ${JSON.stringify(unknownField)}`);
+    }
+    const oversized = await adapter.query(
+      {
+        op: 'list',
+        resourceId: resource.id,
+        search: { text: 'x'.repeat(201), fields: [searchField] },
+      },
+      fixture.readContext,
+    );
+    if (oversized.ok || oversized.code !== 'DATA_INVALID_REQUEST') {
+      fail('oversized search text was not rejected');
+    }
+    // A search value that matches zero rows is a valid empty result.
+    const none = await adapter.query(
+      {
+        op: 'list',
+        resourceId: resource.id,
+        search: { text: 'zzz-no-such-row-zzz', fields: [searchField] },
+      },
+      fixture.readContext,
+    );
+    if (!none.ok || none.total !== 0) {
+      fail(`a non-matching search must be a valid empty result: ${JSON.stringify(none)}`);
+    }
+  }
+
+  // ---- 17. Hostile containers produce stable, NON-ECHOING diagnostics ------
+  // (Stage 05 acceptance item for LOW-C-1; both adapters must pass.)
+  {
+    const CANARY = 'LOW-C-1-HOSTILE-CONTAINER-CANARY';
+    const adapter = fixture.create(seeded);
+    const filterField = sortableField(resource);
+    const hostileContainers: Record<string, unknown>[] = [];
+    // 1. container whose enumeration throws;
+    hostileContainers.push(
+      new Proxy(
+        {},
+        {
+          ownKeys() {
+            throw new Error(`HOSTILE-ENUM ${CANARY}`);
+          },
+          getOwnPropertyDescriptor() {
+            throw new Error(`HOSTILE-DESC ${CANARY}`);
+          },
+        },
+      ),
+    );
+    // 2. container whose property READS throw;
+    hostileContainers.push(
+      new Proxy(
+        { [filterField]: 'x' },
+        {
+          get(target, prop) {
+            if (prop === filterField) {
+              throw new Error(`HOSTILE-GET ${CANARY}`);
+            }
+            return Reflect.get(target, prop);
+          },
+        },
+      ),
+    );
+    // 3. a REVOKED proxy;
+    const { proxy, revoke } = Proxy.revocable({ [filterField]: 'x' }, {});
+    revoke();
+    hostileContainers.push(proxy);
+    // 4. a cyclic container with a hostile getter inside;
+    const cyclic: Record<string, unknown> = { [filterField]: 'x' };
+    cyclic['self'] = cyclic;
+    Object.defineProperty(cyclic, 'boom', {
+      get() {
+        throw new Error(`HOSTILE-CYCLE ${CANARY}`);
+      },
+      enumerable: true,
+    });
+    hostileContainers.push(cyclic);
+    // 5. an unsupported exotic prototype.
+    class Exotic {
+      get [filterField](): string {
+        throw new Error(`HOSTILE-PROTO ${CANARY}`);
+      }
+    }
+    hostileContainers.push(new Exotic());
+
+    for (const [index, hostile] of hostileContainers.entries()) {
+      const rejected = await adapter.query(
+        {
+          op: 'list',
+          resourceId: resource.id,
+          filters: hostile as never,
+        },
+        fixture.readContext,
+      );
+      if (rejected.ok) {
+        fail(`hostile filters container ${index} was accepted`);
+      }
+      if (rejected.code !== 'DATA_INVALID_REQUEST' && rejected.code !== 'DATA_UNSUPPORTED_QUERY') {
+        fail(
+          `hostile filters container ${index} produced the wrong code: ${String(rejected.code)}`,
+        );
+      }
+      const observable = observableResultSurface(rejected);
+      if (observable.includes(CANARY) || observable.includes('HOSTILE-')) {
+        fail(`hostile filters container ${index} leaked its raw message: ${observable}`);
+      }
+    }
+
+    // Mutation side: a hostile input container is also a structured
+    // rejection, never a raw adapter exception.
+    const hostileInput = new Proxy(
+      {},
+      {
+        ownKeys() {
+          throw new Error(`HOSTILE-INPUT ${CANARY}`);
+        },
+      },
+    );
+    const rejectedMutation = await adapter.mutate(
+      {
+        resourceId: resource.id,
+        op: 'update',
+        id: String(seeded[0]?.[resource.identity.key]),
+        input: hostileInput,
+      },
+      fixture.writeContext,
+    );
+    if (rejectedMutation.ok) {
+      fail('a hostile mutation input container was accepted');
+    }
+    if (observableResultSurface(rejectedMutation).includes(CANARY)) {
+      fail('a hostile mutation input leaked its raw message');
+    }
+
+    // Legitimate traffic still works after the hostile attempts (fail-closed,
+    // never fail-stuck).
+    const legit = await adapter.query({ op: 'list', resourceId: resource.id }, fixture.readContext);
+    if (!legit.ok || legit.total !== seeded.length) {
+      fail(
+        `the adapter stopped serving legitimate traffic after hostile input: ${JSON.stringify(legit)}`,
+      );
     }
   }
 

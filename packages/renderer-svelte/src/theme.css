@@ -1,0 +1,489 @@
+/* ==========================================================================
+   Vict renderer — semantic theme tokens (renderer-owned CSS variables).
+   Applications customize tokens through the neutral Application Definition
+   theme declaration; raw CSS never crosses the neutral boundary.
+   ========================================================================== */
+
+:root {
+  /* Color roles (WCAG AA contrast against their paired surfaces). */
+  --vict-color-bg: #f5f6f8;
+  --vict-color-surface: #ffffff;
+  --vict-color-text: #17202a;
+  --vict-color-textMuted: #5a6673;
+  --vict-color-accent: #3b5bdb;
+  --vict-color-accentContrast: #ffffff;
+  --vict-color-border: #d5dae1;
+  --vict-color-danger: #b02a37;
+  --vict-color-warning: #8a5a00;
+  --vict-color-success: #1e7145;
+  --vict-color-info: #1c5f8a;
+  --vict-color-focusRing: #3b5bdb;
+
+  /* Typography. */
+  --vict-font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --vict-font-sizeBase: 16px;
+
+  /* Layout. */
+  --vict-spacing-unit: 8px;
+  --vict-radius-base: 8px;
+  --vict-density: 1;
+
+  /* Elevation. */
+  --vict-elevation-low: 0 1px 2px rgba(23, 32, 42, 0.08);
+  --vict-elevation-high: 0 8px 24px rgba(23, 32, 42, 0.18);
+}
+
+/* The application root container: tokens apply to the Vict subtree only,
+   so a Vict application can coexist with an arbitrary host page. */
+.vict-app {
+  font-family: var(--vict-font-family);
+  font-size: var(--vict-font-sizeBase);
+  color: var(--vict-color-text);
+  background: var(--vict-color-bg);
+  min-height: 100vh;
+  line-height: 1.5;
+}
+
+.vict-app *,
+.vict-app *::before,
+.vict-app *::after {
+  box-sizing: border-box;
+}
+
+/* Visible focus indication everywhere. */
+.vict-app :focus-visible {
+  outline: 2px solid var(--vict-color-focusRing);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Reduced-motion behavior. */
+@media (prefers-reduced-motion: reduce) {
+  .vict-app *,
+  .vict-app *::before,
+  .vict-app *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Shell and responsive navigation
+   -------------------------------------------------------------------------- */
+
+.vict-shell {
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1fr);
+  grid-template-areas: 'nav header' 'nav main';
+  min-height: 100vh;
+}
+
+.vict-header {
+  grid-area: header;
+  display: flex;
+  align-items: center;
+  gap: calc(var(--vict-spacing-unit) * 2);
+  padding: calc(var(--vict-spacing-unit) * 2) calc(var(--vict-spacing-unit) * 4);
+  background: var(--vict-color-surface);
+  border-bottom: 1px solid var(--vict-color-border);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.vict-header h1 {
+  font-size: 1.15rem;
+  margin: 0;
+}
+
+.vict-nav {
+  grid-area: nav;
+  background: var(--vict-color-surface);
+  border-right: 1px solid var(--vict-color-border);
+  padding: calc(var(--vict-spacing-unit) * 3);
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--vict-spacing-unit) * 1.5);
+}
+
+.vict-nav-group-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--vict-color-textMuted);
+  margin: calc(var(--vict-spacing-unit) * 2) 0 calc(var(--vict-spacing-unit) * 0.5);
+}
+
+.vict-nav-link {
+  display: block;
+  padding: calc(var(--vict-spacing-unit) * 1) calc(var(--vict-spacing-unit) * 1.5);
+  border-radius: var(--vict-radius-base);
+  color: var(--vict-color-text);
+  text-decoration: none;
+}
+
+.vict-nav-link:hover {
+  background: var(--vict-color-bg);
+}
+
+.vict-nav-link[aria-current='page'] {
+  background: var(--vict-color-accent);
+  color: var(--vict-color-accentContrast);
+}
+
+.vict-main {
+  grid-area: main;
+  padding: calc(var(--vict-spacing-unit) * 4);
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.vict-region {
+  margin-bottom: calc(var(--vict-spacing-unit) * 4);
+}
+
+/* Mobile: single column, collapsible navigation. */
+@media (max-width: 719px) {
+  .vict-shell {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: 'header' 'main';
+  }
+  .vict-nav {
+    position: static;
+    border-right: none;
+    border-bottom: 1px solid var(--vict-color-border);
+  }
+  .vict-main {
+    padding: calc(var(--vict-spacing-unit) * 3);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Shared control styling
+   -------------------------------------------------------------------------- */
+
+.vict-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(var(--vict-spacing-unit) * 1);
+  padding: calc(var(--vict-spacing-unit) * 1) calc(var(--vict-spacing-unit) * 2.5);
+  border-radius: var(--vict-radius-base);
+  border: 1px solid var(--vict-color-accent);
+  background: var(--vict-color-accent);
+  color: var(--vict-color-accentContrast);
+  font: inherit;
+  cursor: pointer;
+}
+
+.vict-btn:hover {
+  filter: brightness(1.08);
+}
+
+.vict-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  filter: none;
+}
+
+.vict-btn--secondary {
+  background: var(--vict-color-surface);
+  color: var(--vict-color-accent);
+}
+
+.vict-btn--danger {
+  background: var(--vict-color-danger);
+  border-color: var(--vict-color-danger);
+  color: #ffffff;
+}
+
+.vict-input,
+.vict-select,
+.vict-textarea {
+  font: inherit;
+  padding: calc(var(--vict-spacing-unit) * 1) calc(var(--vict-spacing-unit) * 1.5);
+  border: 1px solid var(--vict-color-border);
+  border-radius: var(--vict-radius-base);
+  background: var(--vict-color-surface);
+  color: var(--vict-color-text);
+  width: 100%;
+}
+
+.vict-input[aria-invalid='true'] {
+  border-color: var(--vict-color-danger);
+}
+
+.vict-field {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--vict-spacing-unit) * 0.5);
+  margin-bottom: calc(var(--vict-spacing-unit) * 2);
+  max-width: 26rem;
+}
+
+.vict-field-label {
+  font-weight: 600;
+}
+
+.vict-field-error {
+  color: var(--vict-color-danger);
+  font-size: 0.875rem;
+}
+
+/* --------------------------------------------------------------------------
+   Cards, tables, lists, states
+   -------------------------------------------------------------------------- */
+
+.vict-card {
+  background: var(--vict-color-surface);
+  border: 1px solid var(--vict-color-border);
+  border-radius: var(--vict-radius-base);
+  box-shadow: var(--vict-elevation-low);
+  padding: calc(var(--vict-spacing-unit) * 3);
+}
+
+.vict-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--vict-color-surface);
+  border: 1px solid var(--vict-color-border);
+  border-radius: var(--vict-radius-base);
+  overflow: hidden;
+}
+
+.vict-table th,
+.vict-table td {
+  text-align: left;
+  padding: calc(var(--vict-spacing-unit) * 1.5) calc(var(--vict-spacing-unit) * 2);
+  border-bottom: 1px solid var(--vict-color-border);
+}
+
+.vict-table th {
+  background: var(--vict-color-bg);
+  font-weight: 600;
+}
+
+.vict-table-sort {
+  background: none;
+  border: none;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  color: inherit;
+}
+
+.vict-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--vict-spacing-unit) * 1);
+}
+
+.vict-list-item {
+  background: var(--vict-color-surface);
+  border: 1px solid var(--vict-color-border);
+  border-radius: var(--vict-radius-base);
+  padding: calc(var(--vict-spacing-unit) * 2);
+}
+
+.vict-state {
+  padding: calc(var(--vict-spacing-unit) * 2) calc(var(--vict-spacing-unit) * 3);
+  border-radius: var(--vict-radius-base);
+  background: var(--vict-color-surface);
+  border: 1px dashed var(--vict-color-border);
+  color: var(--vict-color-textMuted);
+}
+
+.vict-alert {
+  padding: calc(var(--vict-spacing-unit) * 2) calc(var(--vict-spacing-unit) * 3);
+  border-radius: var(--vict-radius-base);
+  border-left: 4px solid var(--vict-color-danger);
+  background: var(--vict-color-surface);
+}
+
+.vict-alert--denied {
+  border-left-color: var(--vict-color-warning);
+}
+
+/* --------------------------------------------------------------------------
+   Status tones
+   -------------------------------------------------------------------------- */
+
+.vict-status {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(var(--vict-spacing-unit) * 1);
+  padding: calc(var(--vict-spacing-unit) * 0.5) calc(var(--vict-spacing-unit) * 2);
+  border-radius: 999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border: 1px solid var(--vict-color-border);
+  background: var(--vict-color-surface);
+}
+
+.vict-status::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--vict-color-textMuted);
+}
+
+.vict-status--success {
+  color: var(--vict-color-success);
+  border-color: var(--vict-color-success);
+}
+.vict-status--success::before {
+  background: var(--vict-color-success);
+}
+
+.vict-status--warning {
+  color: var(--vict-color-warning);
+  border-color: var(--vict-color-warning);
+}
+.vict-status--warning::before {
+  background: var(--vict-color-warning);
+}
+
+.vict-status--danger {
+  color: var(--vict-color-danger);
+  border-color: var(--vict-color-danger);
+}
+.vict-status--danger::before {
+  background: var(--vict-color-danger);
+}
+
+.vict-status--info {
+  color: var(--vict-color-info);
+  border-color: var(--vict-color-info);
+}
+.vict-status--info::before {
+  background: var(--vict-color-info);
+}
+
+/* --------------------------------------------------------------------------
+   Tabs, dialogs, drawers, conversation
+   -------------------------------------------------------------------------- */
+
+.vict-tabs [role='tab'] {
+  font: inherit;
+  padding: calc(var(--vict-spacing-unit) * 1) calc(var(--vict-spacing-unit) * 2);
+  border: 1px solid transparent;
+  border-bottom: none;
+  background: none;
+  cursor: pointer;
+  border-radius: var(--vict-radius-base) var(--vict-radius-base) 0 0;
+  color: var(--vict-color-textMuted);
+}
+
+.vict-tabs [role='tab'][aria-selected='true'] {
+  background: var(--vict-color-surface);
+  border-color: var(--vict-color-border);
+  color: var(--vict-color-text);
+  font-weight: 600;
+}
+
+.vict-tablist {
+  display: flex;
+  gap: calc(var(--vict-spacing-unit) * 0.5);
+  border-bottom: 1px solid var(--vict-color-border);
+}
+
+.vict-tabpanel {
+  background: var(--vict-color-surface);
+  border: 1px solid var(--vict-color-border);
+  border-top: none;
+  padding: calc(var(--vict-spacing-unit) * 3);
+}
+
+.vict-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(23, 32, 42, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+
+.vict-overlay--drawer {
+  align-items: stretch;
+  justify-content: flex-end;
+}
+
+.vict-dialog {
+  background: var(--vict-color-surface);
+  border-radius: var(--vict-radius-base);
+  box-shadow: var(--vict-elevation-high);
+  padding: calc(var(--vict-spacing-unit) * 4);
+  max-width: min(32rem, 92vw);
+  max-height: 86vh;
+  overflow: auto;
+}
+
+.vict-drawer {
+  background: var(--vict-color-surface);
+  width: min(24rem, 92vw);
+  height: 100%;
+  box-shadow: var(--vict-elevation-high);
+  padding: calc(var(--vict-spacing-unit) * 4);
+  overflow: auto;
+}
+
+.vict-conversation {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--vict-spacing-unit) * 2);
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.vict-conversation-message {
+  border: 1px solid var(--vict-color-border);
+  background: var(--vict-color-surface);
+  border-radius: var(--vict-radius-base);
+  padding: calc(var(--vict-spacing-unit) * 2);
+  max-width: 85%;
+}
+
+.vict-conversation-message--user {
+  align-self: flex-end;
+  border-color: var(--vict-color-accent);
+}
+
+.vict-conversation-message--assistant {
+  align-self: flex-start;
+}
+
+.vict-conversation-meta {
+  font-size: 0.75rem;
+  color: var(--vict-color-textMuted);
+  margin-bottom: calc(var(--vict-spacing-unit) * 0.5);
+}
+
+/* --------------------------------------------------------------------------
+   Chart
+   -------------------------------------------------------------------------- */
+
+.vict-chart {
+  width: 100%;
+  height: auto;
+}
+
+.vict-chart .vict-bar {
+  fill: var(--vict-color-accent);
+}
+
+.vict-chart text {
+  fill: var(--vict-color-text);
+  font-size: 12px;
+}
+
+.vict-chart-gridline {
+  stroke: var(--vict-color-border);
+  stroke-width: 1;
+}

@@ -107,15 +107,20 @@ export type {
 // ---- Application / Resource / Release definitions ---------------------------
 export {
   APPLICATION_DEFINITION_SCHEMA,
+  APPLICATION_DEFINITION_SCHEMA_V2,
   APPLICATION_RELEASE_SCHEMA,
   RESOURCE_DEFINITION_SCHEMA,
+  THEME_TOKEN_NAMES,
 } from './application.js';
 export type {
   ActionDefinition,
   ApplicationCompatibility,
   ApplicationDefinition,
   ApplicationRelease,
+  BreadcrumbItem,
+  ChartKind,
   ComponentReference,
+  DisabledCondition,
   FormBinding,
   FormField,
   ReleaseActivation,
@@ -133,8 +138,15 @@ export type {
   ScreenDefinition,
   ScreenRegion,
   ScreenStates,
+  StatusTone,
+  StatusToneMapping,
   Surface,
+  SurfaceCondition,
   SurfaceRole,
+  TabDefinition,
+  TableColumn,
+  ThemeDeclaration,
+  ThemeTokenAssignment,
   ViewBinding,
 } from './application.js';
 

@@ -1,0 +1,402 @@
+# Stage 05 — Application Delivery
+
+> **Authority:** `docs/VICT-SYSTEM-REFERENCE.md` v0.2.2 (Stage 05 implements
+> the Application delivery layer defined in §17 and stage-gated in §23;
+> OPEN-013 and OPEN-014 are decided here through evidence).
+> **Scope:** the canonical SvelteKit renderer and generic application host,
+> the one-time application-host scaffolder, the complete neutral surface
+> vocabulary (`vict.application@2`), the theme/design-token system, the
+> versioned Svelte custom-component registry model, the production SQLite
+ * application-domain adapter with its separate migration API, safe generated
+> CRUD, and the complete reference application proof of §17.10.
+> **Status:** implemented; NOT independently verified. Formal requirement
+> promotion and stage closure occur only after independent audit acceptance.
+
+Stage 04 proved the neutral authoring foundation (authoring ABI, capability
+packs, `@vict/application` identity/compilation, renderer/data ports, and a
+minimal vertical proof). Stage 05 turns that foundation into complete,
+responsive, customizable application delivery: one neutral definition plus
+explicit bindings produces a full runnable application without hand-authored
+routes or page shells.
+
+## 1. Package and dependency structure
+
+```text
+@vict/contracts
+       ↓
+@vict/sdk                 (framework-neutral Application/Resource/Release definitions)
+       ↓
+@vict/kernel
+       ↓
+@vict/runtime
+       ↓
+@vict/store-sqlite        (Vict OPERATIONAL stores — unchanged)
+
+@vict/contracts + @vict/sdk
+       ↓
+@vict/application         (neutral model, compiler, identity, ports, conformance suites)
+       ↓                  ↓
+@vict/renderer-svelte     @vict/appdata-sqlite      @vict/scaffolder
+(Svelte renderer/host)    (SQLite app-data adapter) (one-time host scaffolder)
+       ↓
+examples/reference-app    (complete §17.10 reference proof)
+```
+
+New packages and their boundaries:
+
+| Package | Responsibility | Depends on |
+|---|---|---|
+| `@vict/renderer-svelte` | Canonical Svelte renderer: generic `VitApp` host, built-in role components, responsive navigation, theme tokens, accessible defaults | `@vict/application`, `@vict/sdk`, `svelte` (peer) |
+| `@vict/appdata-sqlite` | Production SQLite application-domain adapter + separate versioned application-domain migrations | `@vict/application`, `@vict/contracts`, `@vict/sdk` (built-in `node:sqlite`) |
+| `@vict/scaffolder` | One-time deterministic SvelteKit host scaffolder | (none — pure Node) |
+
+Boundary rules enforced and tested:
+
+- `@vict/application` remains framework-neutral and browser-safe. Its
+  declarations reference NO Svelte, SvelteKit, SQLite, Zod, runtime, or
+  kernel types (the Stage 04 structural scans continue to pass).
+- Svelte dependencies exist ONLY in `@vict/renderer-svelte` (and the SvelteKit
+  application examples, which are consumers).
+- SQLite dependencies exist ONLY in `@vict/appdata-sqlite` (the operational
+  `@vict/store-sqlite` remains below the runtime, untouched).
+- Renderer components receive only: the immutable plan, the supplied
+  component registry, the action dispatcher, route data, and declared
+  primitive props. No renderer component receives runtime instances, stores,
+  secret providers, or unrestricted registries.
+- Application-domain persistence is physically and logically separate from
+  Vict operational persistence (see §10).
+
+## 2. Neutral application schema and version compatibility
+
+### 2.1 Schema markers
+
+- `vict.application@1` — UNCHANGED. Stage 04 definitions compile with their
+  exact Stage 04 accepted shapes, validation semantics, and identity vectors
+  (`APPLICATION_IDENTITY_SCHEMA = vict.application-identity@1` remains
+  byte-identical; the existing identity tests pass unchanged).
+- `vict.application@2` — NEW. The Stage 05 delivery vocabulary. The schema
+  marker is validated and participates in application identity, so a @2
+  definition can never alias a @1 identity.
+- Identity markers: `@1` definitions hash under
+  `vict.application-identity@1`; `@2` definitions hash under
+  `vict.application-identity@2`. The canonicalization algorithm is the same
+  stable sorted-key form; the explicit marker documents that the accepted
+  manifest SHAPE is materially extended.
+
+### 2.2 The @2 surface vocabulary
+
+Routes and screens:
+
+- Route paths: static segments and single `:name` parameters only
+  (`/projects/:id`), validated by the compiler (`ROUTE_PATH_INVALID`).
+- Redirect routes (`redirect: <routeId>`): `screenId` must be absent; the
+  target must exist; redirect chains must terminate (`ROUTE_REDIRECT_INVALID`,
+  `ROUTE_REDIRECT_CYCLE`). The renderer resolves redirects deterministically
+  on both server and client.
+- Screens gain `breadcrumbs` (contextual navigation with validated route
+  references) and the `stale`/`partial` safe states.
+
+Surfaces (all optional `visibleWhen` condition on every surface):
+
+| Role | Purpose | Key fields |
+|---|---|---|
+| `text` | Structured content | `level` (heading 1–6) |
+| `view` | Simple bound table of view rows | `viewId` |
+| `form` | Contract-validated create/edit form | `formId` |
+| `action` | Command button | `actionId`, `label`, `disabledWhen` |
+| `component` | Custom code-island slot | `componentId`, `revision`, bounded primitive `props` |
+| `states` | State-marker surface | `viewId` |
+| `list` | Semantic list rendering | `titleField`, `secondaryField`, `emptyMessage` |
+| `table` | Searchable/sortable/paginated records table | `columns`, `queryActionId`, `searchFields`, `filterFields`, `pageSize` |
+| `detail` | Record detail of the route's resolved record | `fields`, `emptyMessage` |
+| `chart` | Accessible SVG chart | `kind` (bar/line), `xField`, `yField`, `summary`, `title` |
+| `status` | Semantic status indicator | `value` XOR `field`, `tones` mapping |
+| `tabs` | Tabbed content container | ordered `tabs[].{name,label,surfaces}` |
+| `dialog` / `drawer` | Overlay interactions with nested content | `title`, `triggerLabel`, `content` |
+| `conversation` | Conversation feed + validated input | `messageField`, `authorField`, `participantField`, `sendActionId`, `inputLabel` |
+
+Conditions (`SurfaceCondition`): exactly one of `viewNonEmpty` (viewId),
+`viewEmpty` (viewId), `paramEquals` (`{name, value}`). Conditions read ONLY
+route parameters and loaded view row counts — no expressions, so no
+executable logic can enter the definition. Disabled state
+(`DisabledCondition.paramMissing`) is presentation only and NEVER
+authorization (APP-012); every action is re-authorized below the UI.
+
+Tables and search: a table declares `queryActionId` (must reference a
+declared `query` action) plus `searchFields`/`filterFields` (validated
+against the bound view). Search crosses the data port's declared, closed
+`search` capability (`{ text, fields }`, bounded plain text, case-insensitive
+substring) — never a query language.
+
+Theme: `theme` may be a plain reference string (@1 shape) or a @2
+`{ reference?, tokens? }` declaration whose token names come from the closed
+`THEME_TOKEN_NAMES` vocabulary (color roles, typography, spacing, radius,
+density, elevation, focus ring) and whose values are validated safe strings
+(no CSS structure, no `url()`, no `@import`, no `expression()`) — a
+definition can never inject executable CSS.
+
+All @2 validation is closed-field: unknown fields at every boundary produce
+structured, path-sorted diagnostics; hostile containers fail with structured
+diagnostics; compilation never throws for invalid definitions.
+
+## 3. Renderer model (`@vict/renderer-svelte`)
+
+- The generic `VitApp` host renders EVERY supported built-in role from the
+  immutable plan. There is exactly one generic catch-all host page in the
+  reference application (`src/routes/[...vict]/+page.svelte`) and one in
+  every generated host; no per-screen route or page-shell source exists.
+- Reactivity: every prop-derived value (plan, path, rows, registry,
+  viewData, record) is computed through Svelte 5 `$derived`/`$state`
+  reactive props. Route/plan/data/registry updates propagate WITHOUT
+  remounting; there is no stale route or component resolution. The Stage 04
+  `state_referenced_locally` carry-forward is closed at the source: the
+  renderer package and the reference application build with ZERO Svelte
+  warnings (enforced in `verify:stage5`; warnings fail the build check —
+  they are never suppressed or filtered).
+- Structural validation (`validatePlanForRenderer`) runs before any
+  rendering: unsupported roles fail with `RENDERER_UNSUPPORTED_ROLE`; unknown
+  components fail with `RENDERER_UNKNOWN_COMPONENT` /
+  `RENDERER_COMPONENT_RESOLUTION_FAILED` before unsafe rendering. On a
+  registry/plan UPDATE that no longer resolves, the host renders an explicit
+  structured failure panel — never stale content, never silent omission.
+- Action dispatch: `kind: 'local'` actions execute entirely inside the
+  renderer (zero dispatcher calls — tested); `kind: 'navigation'` performs
+  client-side navigation via the supplied `navigate` hook (SvelteKit `goto`
+  in the host); query/mutation/capability actions cross the dispatcher where
+  authorization/effect policy live below the UI. Dispatcher rejections are
+  caught and mapped to safe framework-generated failure states; no unhandled
+  rejection exists and no raw error content reaches the DOM.
+- Renderer identity (`renderer.svelte-kit@5.0.0`) participates ONLY in
+  release identity, never application identity.
+
+## 4. Built-in roles, states, and theming
+
+The renderer implements the complete Stage 05 vocabulary (§2.2): text with
+heading levels, view tables, lists, records tables (search, exact-match
+filters, sortable columns with `aria-sort`, pagination), record details,
+forms (prefill/edit via route record + identity), charts (renderer-owned
+SVG), status indicators (semantic tones), tabs (roving-tabindex keyboard
+model), dialogs/drawers (focus trap, Escape, focus restore), conversation
+(distinct participant roles), custom component slots, breadcrumbs, and the
+`states` marker.
+
+Safe states: `loading`, `empty`, `validation`, `denied`, `failure` (declared
+per screen, renderer-generated fallbacks otherwise), plus `stale` and
+`partial` (@2), rendered as live-region announcements.
+
+Theme tokens are renderer-owned CSS custom properties
+(`--vict-color-accent`, …) defined in `theme.css`; a definition's token
+assignments are applied as inline CSS variables on the host element
+(scope-safe coexistence with any host page). Reduced motion, visible focus,
+AA-contrast tokens, and responsive breakpoints are built in.
+
+## 5. Component registry and code islands
+
+The Stage 04 versioned component registry is unchanged (structural id +
+revision keys, duplicate rejection, frozen identity snapshots). Stage 05
+adds the ownership rules:
+
+- Registration requires a stable component id and a non-empty explicit
+  revision; resolution is exact (no aliasing) and tested against
+  post-registration mutation and revision drift.
+- The registry lives OUTSIDE the serializable manifest; the plan carries
+  only id/revision references. Changing a component's revision changes the
+  registry and release identity while application identity is unchanged
+  (tested in the reference application suites).
+- Registered components receive ONLY declared primitive props. The reference
+  proof's `cmp.health@1` island is registered in
+  `src/lib/components/registry.ts` (author-owned code island).
+
+## 6. Scaffolder (`@vict/scaffolder`)
+
+One-time SvelteKit application-host scaffolder:
+
+- Deterministic: identical options produce byte-identical files (sorted
+  manifest, LF newlines, no timestamps) — directly tested.
+- Non-destructive: existing files conflict (`conflict` + explicit file list)
+  instead of any overwrite; author-owned code islands
+  (`src/lib/components/**`) are never touched — directly tested.
+- Path-safe: absolute targets only; traversal and symlink/junction escape
+  attempts are refused with structured reasons — directly tested (junctions
+  on Windows).
+- Idempotent: rerunning without changes reports `unchanged`.
+- Ownership: the scaffolder owns the initial generic host; application
+  authors own `definition.ts`, `application-server.ts`, and
+  `src/lib/components/` islands. Subsequent definition changes render
+  dynamically; VICT never regenerates or overwrites ordinary application
+  code. No bidirectional round trip is promised.
+- Packed verification: `verify:stage5` packs the full renderer stack,
+  installs the packed scaffolder in an isolated consumer, generates a host,
+  points its dependencies at the packed tarballs, installs, and BUILDS the
+  generated project in isolation.
+
+## 7. Action dispatch boundaries
+
+Action kinds and their boundaries (all directly tested):
+
+| Kind | Path | Server dispatcher |
+|---|---|---|
+| `local` | Renderer-only view transition | NEVER reached (no handler exists; sending one to `/api/act` is an `UNSUPPORTED_ACTION` rejection) |
+| `navigation` | Client-side route change via the navigate hook | never crossed |
+| `query` | Typed resource read through the data port | authorized read context, closed request schema |
+| `mutation` | Typed resource mutation | authorization → contract validation → effect policy → durable transaction |
+| `capability` | Real Vict run (`runtime.activate`/`runtime.run`) | declared input AND output contracts crossed inside the runtime |
+
+Every generated CRUD operation follows
+`UI intent → typed action/data boundary → authorization → contract
+validation → effect policy → durable mutation`. Hidden or disabled buttons
+are never enforcement: the reference proof's admin delete is VISIBLE but
+denied at the boundary (`DATA_UNAUTHORIZED`), and the renderer's safe-denied
+state merely reports it.
+
+Stage 06 signal/operator kinds are NOT implemented; unknown action kinds are
+rejected honestly (`UNSUPPORTED_ACTION`).
+
+## 8. Application-data adapter (`@vict/appdata-sqlite`)
+
+- Implements the storage-neutral `ApplicationDataAdapter` port with an
+  explicit authorization/effect context on every call.
+- Physical mapping: resource rows live in `appdata_<resource>` (validated
+  lowercase snake_case mapping), one `identity TEXT PRIMARY KEY` plus a
+  canonical-JSON `data` column. Filters, sorting, and search cross validated
+  catalogue fields as parameterized `json_extract` expressions; every VALUE
+  is bound. No hostile author or caller string ever becomes SQL (injection
+  suites prove it).
+- Operations: list (filters, search, sort, pagination, total), get,
+  create/update/delete with declared-contract input/output validation,
+  required/type enforcement, one strict unknown-field policy, defensive
+  returned copies, atomic `BEGIN IMMEDIATE` transactions.
+- Idempotency: keys are scoped `resourceId::op::key`, recorded in the SAME
+  transaction as the row they reconcile (`vict_appdata_idempotency`), never
+  consumed by failed transactions, never reconciled across different
+  payloads or resources; the same key with a different canonical request is
+  the stable `DATA_IDEMPOTENCY_CONFLICT`.
+- Durability pragmas (WAL, `synchronous=FULL`, foreign keys, busy timeout)
+  are applied at open and verified by pragma reads in tests.
+- Production default adapter wiring lives in the reference app's
+  `application-server.sqlite.ts`; the server core accepts any conforming
+  adapter (the port boundary).
+
+## 9. Search capability (data-port extension)
+
+The closed query-request schema gains `search: { text, fields }`:
+case-insensitive substring matching on declared catalogue fields, bounded
+plain text (≤200 chars, ≤16 fields), wildcard-escaped in SQL
+(`LIKE ... ESCAPE '\'`), and primitive-equality semantics preserved for
+filters. The in-memory reference adapter implements IDENTICAL semantics; the
+shared conformance suite covers search for both adapters.
+
+## 10. Migration model (OPEN-014 decision) and store separation
+
+**Decision:** the reference application-domain adapter implements an
+explicit, versioned, transactional migration API that is structurally
+separate from Vict operational migrations.
+
+- `ApplicationDataMigration { id, version, name, statements }` — stable id,
+  strictly ascending integer version; duplicates (id or version) fail with
+  `APPDATA_MIGRATION_CONFLICT`; out-of-order declarations fail.
+- Each migration runs in one transaction with its bookkeeping row
+  (`vict_appdata_migrations`); an injected failure rolls back cleanly and
+  the recorded history stays truthful (directly tested with invalid SQL).
+- A database recorded at a version the adapter does not know fails closed
+  (`APPDATA_FUTURE_SCHEMA`).
+- `migrationsFromResources(resources, version)` derives the common bootstrap
+  (CREATE TABLE per resource). Resource-definition changes NEVER silently
+  rewrite physical tables: schema evolution is always an explicit new
+  migration. Physical schema versions are independent of application
+  revisions, resource revisions, and `applicationVersion`.
+- Physical namespaces are disjoint from operational tables: application
+  tables are `appdata_*`; bookkeeping is `vict_appdata_migrations` and
+  `vict_appdata_idempotency`. The reference proof uses a SEPARATE database
+  file from any operational store; a test asserts an application-domain-only
+  database contains NO operational tables, and migration history never
+  enters `vict_schema_migration`.
+- Restart safety is proven with REAL process boundaries: a child process
+  writes rows and exits; a fresh process reopens the same file, finds every
+  row, and reconciles keyed idempotency without duplicates (package test),
+  and the built reference application is SIGKILLed and restarted over the
+  same SQLite file with all rows intact (HTTP suite).
+
+## 11. Authorization, security, and leakage boundaries
+
+- UI visibility, disabled state, and route guards are presentation only;
+  every operation is re-authorized below the UI (adapter context or runtime
+  effect policy).
+- Hostile input (throwing getters, revoked proxies, enumeration traps,
+  cyclic containers, exotic prototypes) anywhere in a query/mutation request
+  produces the SAME stable, non-echoing structured diagnostics on BOTH
+  adapters — the LOW-C-1 carry-forward is closed with permanent shared
+  conformance coverage (scenario 17 of `runApplicationDataAdapterSuite`).
+- Canaries (labels, route parameters, form input, validation messages,
+  data-adapter failures, SQLite failures, component props, nested causes,
+  hostile property names) are asserted absent from HTTP error bodies, SSR
+  output, rendered DOM, diagnostics, and persisted metadata. Intended
+  application data is distinguished from diagnostic propagation in tests.
+- No `{@html}`, no raw-HTML feature, no network/CDN/telemetry dependency:
+  rendering is fully offline and deterministic.
+
+## 12. Identity and release model
+
+- `applicationVersion` (identity markers per §2.1) changes when effective
+  application declarations change; renderer revisions NEVER affect it.
+- Release identity remains distinct: renderer revision, component-registry
+  revision/component list, and application-data adapter identity affect ONLY
+  the release. The reference release compiles from ACTUAL binding snapshots
+  (real renderer instance, real registry identity snapshot, real adapter)
+  with the mandatory fail-closed binding context; mismatched real binding
+  context fails closed (`RELEASE_COMPONENT_MISMATCH`, adapter/revision
+  mismatch, activation-reference checks).
+- All distinctions are covered by permanent tests in `@vict/application`
+  and the reference application's identity suite.
+
+## 13. OPEN-013 decision (component/chart libraries)
+
+**Decision: renderer-owned native components; no external UI/chart library.**
+
+The built-in roles are implemented as renderer-owned Svelte 5 components
+with semantic tokens; the chart is a renderer-owned SVG component with an
+accessible `role="img"` summary and a data-table alternative. Evaluation
+against the required criteria:
+
+- License/maintenance/weight: zero third-party UI/chart dependencies; no
+  supply-chain surface, no bundle weight beyond the renderer itself.
+- Svelte 5/SSR compatibility: renderer-owned components compile under the
+  Svelte 5 toolchain and SSR by construction (the reference app builds and
+  serves server-side).
+- Accessibility: the chart carries an accessible summary and a data-table
+  equivalent; axe scans of the real rendered application are clean.
+- Offline/determinism: no CDN, no telemetry; chart geometry is deterministic
+  from data.
+- Boundary: NO component- or chart-library types exist anywhere in
+  `@vict/application` or `@vict/sdk`.
+- Customization/theming: everything is token-driven.
+- Packed behavior: the renderer packs and builds in isolated consumers
+  (verify:stage5).
+
+## 14. Known limitations and explicit exclusions
+
+- React and additional renderers remain deferred (per the reference).
+- The neutral model does not yet express derived/aggregate views; computed
+  dashboard summaries are produced by a declared capability into real
+  application-domain rows (documented pattern used by the reference proof).
+- Table exact-match filters are equality-only; the data port deliberately
+  has no query language.
+- The scaffolder does not regenerate or upgrade hosts; host upgrades are
+  manual (documented ownership model).
+- Charts render bar/line kinds only; more encodings require either new
+  neutral vocabulary or custom components.
+- `prefers-reduced-motion` and focus behavior are covered in CSS and
+  real-browser tests on the delivered components; broader automated
+  accessibility coverage (screen-reader UX) remains manual.
+- No multi-tenancy, remote control plane, or cloud deployment (Stage 6+).
+
+## 15. Stage 05 verification entry points
+
+- Root aggregate: `npm run verify:stage5`.
+- Reference application suites: `npm run test -w reference-app`.
+- Renderer conformance: `@vict/application/testing` shared suite, run in the
+  renderer project of the root vitest config.
+- Data conformance: shared suite applied to BOTH adapters (in-memory and
+  SQLite) in `packages/appdata-sqlite/test/conformance.test.ts`.
+- The authoritative command ladder and observed evidence are recorded in
+  `docs/report/VICT-STAGE-05-REPORT.md`.

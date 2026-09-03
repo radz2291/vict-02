@@ -1,4 +1,8 @@
-import { APPLICATION_DEFINITION_SCHEMA } from '@vict/sdk';
+import {
+  APPLICATION_DEFINITION_SCHEMA,
+  APPLICATION_DEFINITION_SCHEMA_V2,
+  THEME_TOKEN_NAMES,
+} from '@vict/sdk';
 import { sha256 } from './sha256.js';
 import type {
   ActionDefinition,
@@ -8,6 +12,7 @@ import type {
   ResourceDefinition,
   ScreenDefinition,
   Surface,
+  ThemeDeclaration,
   ViewBinding,
 } from '@vict/sdk';
 
@@ -45,6 +50,7 @@ export type ApplicationIssueCode =
   | 'DUPLICATE_ACTION_ID'
   | 'DUPLICATE_RESOURCE_REFERENCE'
   | 'DUPLICATE_COMPONENT_REFERENCE'
+  | 'DUPLICATE_TAB_NAME'
   | 'UNKNOWN_ROUTE_SCREEN'
   | 'UNKNOWN_ROUTE_REFERENCE'
   | 'UNKNOWN_VIEW_REFERENCE'
@@ -62,7 +68,23 @@ export type ApplicationIssueCode =
   | 'UNKNOWN_COMPONENT_REFERENCE'
   | 'COMPONENT_REVISION_MISMATCH'
   | 'UNKNOWN_SURFACE_ROLE'
-  | 'MUTATION_NOT_DECLARED';
+  | 'MUTATION_NOT_DECLARED'
+  | 'ROUTE_PATH_INVALID'
+  | 'ROUTE_REDIRECT_INVALID'
+  | 'ROUTE_REDIRECT_CYCLE'
+  | 'ROUTE_SCREEN_REQUIRED'
+  | 'UNKNOWN_BREADCRUMB_ROUTE'
+  | 'INVALID_SURFACE_CONDITION'
+  | 'INVALID_SURFACE_DISABLED_CONDITION'
+  | 'INVALID_THEME_TOKEN'
+  | 'INVALID_THEME_TOKEN_VALUE'
+  | 'INVALID_SURFACE_DECLARATION'
+  | 'INVALID_TABLE_DECLARATION'
+  | 'INVALID_CHART_DECLARATION'
+  | 'INVALID_STATUS_DECLARATION'
+  | 'INVALID_TABS_DECLARATION'
+  | 'INVALID_CONVERSATION_DECLARATION'
+  | 'INVALID_ACTION_BINDING';
 
 export interface ApplicationIssue {
   readonly code: ApplicationIssueCode;
@@ -109,8 +131,12 @@ const APPLICATION_FIELDS: ReadonlySet<string> = new Set([
 ]);
 
 const ROUTE_FIELDS: ReadonlySet<string> = new Set(['id', 'path', 'screenId', 'nav']);
+/** @2 adds redirect routes (screenId optional, redirect target validated). */
+const ROUTE_FIELDS_V2: ReadonlySet<string> = new Set([...ROUTE_FIELDS, 'redirect']);
 const NAV_FIELDS: ReadonlySet<string> = new Set(['label', 'group', 'order']);
 const SCREEN_FIELDS: ReadonlySet<string> = new Set(['id', 'title', 'layout', 'states']);
+/** @2 adds contextual breadcrumb navigation on screens. */
+const SCREEN_FIELDS_V2: ReadonlySet<string> = new Set([...SCREEN_FIELDS, 'breadcrumbs']);
 const REGION_FIELDS: ReadonlySet<string> = new Set(['name', 'surfaces']);
 const STATES_FIELDS: ReadonlySet<string> = new Set([
   'loading',
@@ -119,6 +145,8 @@ const STATES_FIELDS: ReadonlySet<string> = new Set([
   'denied',
   'failure',
 ]);
+/** @2 adds the stale and partial states. */
+const STATES_FIELDS_V2: ReadonlySet<string> = new Set([...STATES_FIELDS, 'stale', 'partial']);
 const VIEW_FIELDS: ReadonlySet<string> = new Set([
   'viewId',
   'resourceId',
@@ -189,6 +217,131 @@ const SURFACE_FIELDS: ReadonlyMap<Surface['role'], ReadonlySet<string>> = new Ma
   ['component', new Set([...SURFACE_COMMON_FIELDS, 'componentId', 'revision', 'props'])],
   ['states', new Set([...SURFACE_COMMON_FIELDS, 'viewId'])],
 ]);
+
+/** The closed @2 surface field sets (Stage 05 delivery vocabulary). */
+const CONDITION_FIELDS: ReadonlySet<string> = new Set(['viewNonEmpty', 'viewEmpty', 'paramEquals']);
+const CONDITION_PARAM_EQUALS_FIELDS: ReadonlySet<string> = new Set(['name', 'value']);
+const DISABLED_CONDITION_FIELDS: ReadonlySet<string> = new Set(['paramMissing']);
+const BREADCRUMB_FIELDS: ReadonlySet<string> = new Set(['label', 'routeId']);
+const STAGE04_SURFACE_FIELD_SETS = SURFACE_FIELDS;
+const SURFACE_FIELDS_V2: ReadonlyMap<Surface['role'], ReadonlySet<string>> = new Map([
+  [
+    'text',
+    new Set([
+      ...(STAGE04_SURFACE_FIELD_SETS.get('text') as ReadonlySet<string>),
+      'level',
+      'visibleWhen',
+    ]),
+  ],
+  [
+    'view',
+    new Set([...(STAGE04_SURFACE_FIELD_SETS.get('view') as ReadonlySet<string>), 'visibleWhen']),
+  ],
+  [
+    'form',
+    new Set([...(STAGE04_SURFACE_FIELD_SETS.get('form') as ReadonlySet<string>), 'visibleWhen']),
+  ],
+  [
+    'action',
+    new Set([
+      ...(STAGE04_SURFACE_FIELD_SETS.get('action') as ReadonlySet<string>),
+      'disabledWhen',
+      'visibleWhen',
+    ]),
+  ],
+  [
+    'component',
+    new Set([
+      ...(STAGE04_SURFACE_FIELD_SETS.get('component') as ReadonlySet<string>),
+      'visibleWhen',
+    ]),
+  ],
+  [
+    'states',
+    new Set([...(STAGE04_SURFACE_FIELD_SETS.get('states') as ReadonlySet<string>), 'visibleWhen']),
+  ],
+  [
+    'list',
+    new Set([
+      ...SURFACE_COMMON_FIELDS,
+      'viewId',
+      'titleField',
+      'secondaryField',
+      'emptyMessage',
+      'visibleWhen',
+    ]),
+  ],
+  [
+    'table',
+    new Set([
+      ...SURFACE_COMMON_FIELDS,
+      'viewId',
+      'columns',
+      'queryActionId',
+      'searchFields',
+      'filterFields',
+      'pageSize',
+      'emptyMessage',
+      'visibleWhen',
+    ]),
+  ],
+  [
+    'detail',
+    new Set([...SURFACE_COMMON_FIELDS, 'viewId', 'fields', 'emptyMessage', 'visibleWhen']),
+  ],
+  [
+    'chart',
+    new Set([
+      ...SURFACE_COMMON_FIELDS,
+      'viewId',
+      'kind',
+      'xField',
+      'yField',
+      'summary',
+      'title',
+      'visibleWhen',
+    ]),
+  ],
+  ['status', new Set([...SURFACE_COMMON_FIELDS, 'value', 'field', 'tones', 'visibleWhen'])],
+  ['tabs', new Set([...SURFACE_COMMON_FIELDS, 'tabs', 'visibleWhen'])],
+  [
+    'dialog',
+    new Set([...SURFACE_COMMON_FIELDS, 'title', 'triggerLabel', 'content', 'visibleWhen']),
+  ],
+  [
+    'drawer',
+    new Set([...SURFACE_COMMON_FIELDS, 'title', 'triggerLabel', 'content', 'visibleWhen']),
+  ],
+  [
+    'conversation',
+    new Set([
+      ...SURFACE_COMMON_FIELDS,
+      'viewId',
+      'messageField',
+      'authorField',
+      'participantField',
+      'sendActionId',
+      'inputLabel',
+      'inputPlaceholder',
+      'emptyMessage',
+      'visibleWhen',
+    ]),
+  ],
+]);
+const TAB_FIELDS: ReadonlySet<string> = new Set(['name', 'label', 'surfaces']);
+const TABLE_COLUMN_FIELDS: ReadonlySet<string> = new Set(['field', 'label', 'sortable']);
+const STATUS_TONES: ReadonlySet<string> = new Set([
+  'success',
+  'warning',
+  'danger',
+  'info',
+  'neutral',
+]);
+const CHART_KINDS: ReadonlySet<string> = new Set(['bar', 'line']);
+/** Route path segment: a static segment or a single `:name` parameter. */
+const PATH_SEGMENT = /^[A-Za-z0-9_-]+$/;
+/** Safe theme token value: no CSS structure, no url(), bounded length. */
+const THEME_TOKEN_VALUE_SAFE = /^[^{};<>]*$/;
 const RESOURCE_DEF_FIELDS: ReadonlySet<string> = new Set([
   'schema',
   'id',
@@ -439,6 +592,21 @@ function sha256Hex(payload: string): string {
 export const APPLICATION_IDENTITY_SCHEMA = 'vict.application-identity@1';
 
 /**
+ * The identity-schema marker for Stage 05 (`vict.application@2`)
+ * definitions. The @2 marker is explicit because the accepted manifest
+ * SHAPE is materially extended; the canonicalization ALGORITHM is the same
+ * stable sorted-key form. @1 identity vectors remain byte-identical.
+ */
+export const APPLICATION_IDENTITY_SCHEMA_V2 = 'vict.application-identity@2';
+
+/** Resolve the identity marker for an application schema. */
+function identitySchemaFor(applicationSchema: string): string {
+  return applicationSchema === 'vict.application@2'
+    ? APPLICATION_IDENTITY_SCHEMA_V2
+    : APPLICATION_IDENTITY_SCHEMA;
+}
+
+/**
  * Sort SET-LIKE collections by id and PRESERVE meaningful ordered arrays
  * (navigation routes, layout regions, ordered surfaces, form fields).
  * Insertion order of set-like declarations therefore never affects identity,
@@ -544,7 +712,7 @@ export function computeApplicationVersion(input: {
 
   return `v1_${sha256Hex(
     stableJson({
-      schema: APPLICATION_IDENTITY_SCHEMA,
+      schema: identitySchemaFor(application.schema),
       applicationSchema: application.schema,
       manifest: canonicalApplicationManifest(application),
       referencedResources,
@@ -574,10 +742,10 @@ export interface ApplicationPlan {
   readonly applicationVersion: string;
   /** Canonical (set-like sorted, meaningful order preserved) manifest. */
   readonly manifest: Readonly<Record<string, unknown>>;
-  /** Resolved routes in NAVIGATION order with their screens. */
+  /** Resolved routes in NAVIGATION order with their screens (null for @2 redirect routes). */
   readonly routes: readonly {
     readonly route: Readonly<ApplicationDefinition['routes'][number]>;
-    readonly screen: Readonly<ScreenDefinition>;
+    readonly screen: Readonly<ScreenDefinition> | null;
   }[];
   readonly screens: Readonly<Record<string, Readonly<ScreenDefinition>>>;
   readonly views: Readonly<Record<string, Readonly<ViewBinding>>>;
@@ -599,6 +767,13 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
     const surfaceResolutions: SurfaceResolution[] = [];
     const routeScreenResolutions: RouteScreenResolution[] = [];
     const application = input.application;
+    // The @2 schema marker selects the EXTENDED closed field sets and the
+    // Stage 05 validation rules. @1 definitions keep their exact Stage 04
+    // accepted shape and semantics (schema-marker compatibility path).
+    const isV2 = application.schema === 'vict.application@2';
+    const routeFields = isV2 ? ROUTE_FIELDS_V2 : ROUTE_FIELDS;
+    const screenFields = isV2 ? SCREEN_FIELDS_V2 : SCREEN_FIELDS;
+    const statesFields = isV2 ? STATES_FIELDS_V2 : STATES_FIELDS;
 
     if (!isPlainObject(application)) {
       return {
@@ -616,7 +791,10 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
         'Application definition must declare its schema marker.',
         'application.schema',
       );
-    } else if (application.schema !== APPLICATION_DEFINITION_SCHEMA) {
+    } else if (
+      application.schema !== APPLICATION_DEFINITION_SCHEMA &&
+      application.schema !== APPLICATION_DEFINITION_SCHEMA_V2
+    ) {
       collector.add(
         'APPLICATION_UNKNOWN_SCHEMA',
         `Application schema '${String(application.schema)}' is not supported by this compiler.`,
@@ -687,8 +865,9 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
     // ---- Routes (ordered navigation) ----------------------------------------
     const routeIds = new Set<string>();
     const routePaths = new Set<string>();
+    const redirectTargets = new Map<string, string>();
     for (const route of application.routes) {
-      collector.unknownFields(route, ROUTE_FIELDS, `application.routes[${route.id}]`);
+      collector.unknownFields(route, routeFields, `application.routes[${route.id}]`);
       if (routeIds.has(route.id)) {
         collector.add(
           'DUPLICATE_ROUTE_ID',
@@ -705,6 +884,64 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
         );
       }
       routePaths.add(route.path);
+      if (isV2) {
+        // Stage 05 route-path grammar: leading slash, static segments and
+        // single `:name` parameters only — the renderer's deterministic
+        // matcher cannot accept anything else.
+        if (typeof route.path !== 'string' || !route.path.startsWith('/')) {
+          collector.add(
+            'ROUTE_PATH_INVALID',
+            `Route '${route.id}' path must start with '/'.`,
+            `application.routes[${route.id}].path`,
+          );
+        } else {
+          const segments = route.path
+            .slice(1)
+            .split('/')
+            .filter((segment) => segment.length > 0);
+          const paramNames = new Set<string>();
+          for (const segment of segments) {
+            const isParam = segment.startsWith(':');
+            const name = isParam ? segment.slice(1) : segment;
+            if (name.length === 0 || !PATH_SEGMENT.test(name)) {
+              collector.add(
+                'ROUTE_PATH_INVALID',
+                `Route '${route.id}' path segment '${segment}' is not a valid static segment or ':name' parameter.`,
+                `application.routes[${route.id}].path`,
+              );
+            } else if (isParam) {
+              if (paramNames.has(name)) {
+                collector.add(
+                  'ROUTE_PATH_INVALID',
+                  `Route '${route.id}' path declares the parameter ':${name}' more than once.`,
+                  `application.routes[${route.id}].path`,
+                );
+              }
+              paramNames.add(name);
+            }
+          }
+        }
+        // Redirect routes: screenId must be ABSENT; the target is validated
+        // after the full route set is known (missing target + cycles).
+        if (route.redirect !== undefined) {
+          if (typeof route.redirect !== 'string' || route.redirect.length === 0) {
+            collector.add(
+              'ROUTE_REDIRECT_INVALID',
+              `Route '${route.id}' redirect must be a non-empty route id when present.`,
+              `application.routes[${route.id}].redirect`,
+            );
+          } else {
+            redirectTargets.set(route.id, route.redirect);
+          }
+          if (route.screenId !== undefined) {
+            collector.add(
+              'ROUTE_REDIRECT_INVALID',
+              `Route '${route.id}' declares both a redirect and a screen; a redirect route renders no screen.`,
+              `application.routes[${route.id}].screenId`,
+            );
+          }
+        }
+      }
       if (route.nav !== undefined) {
         collector.unknownFields(route.nav, NAV_FIELDS, `application.routes[${route.id}].nav`);
         // Reachable numeric identity fields are value-checked (MED-04-F): a
@@ -724,7 +961,19 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
         }
       }
       // Route->screen resolution is checked after the screens map is built.
+      // @2 redirect routes are exempt: they declare no screen at all.
       routeScreenResolutions.push((collector, screens: ReadonlyMap<string, ScreenDefinition>) => {
+        if (isV2 && route.redirect !== undefined) {
+          return;
+        }
+        if (route.screenId === undefined) {
+          collector.add(
+            'ROUTE_SCREEN_REQUIRED',
+            `Route '${route.id}' must declare a screen${isV2 ? ' or a redirect' : ''}.`,
+            `application.routes[${route.id}].screenId`,
+          );
+          return;
+        }
         if (!screens.has(route.screenId)) {
           collector.add(
             'UNKNOWN_ROUTE_SCREEN',
@@ -734,12 +983,55 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
         }
       });
     }
+    if (isV2 && redirectTargets.size > 0) {
+      // Redirect targets must exist; redirect chains must terminate. The
+      // chain walk is bounded by the route count, so cycles fail with a
+      // structured diagnostic instead of looping.
+      for (const [sourceId, firstTarget] of redirectTargets) {
+        let current = firstTarget;
+        const visited = new Set<string>([sourceId]);
+        let ok = true;
+        for (let hop = 0; hop <= redirectTargets.size + 1; hop += 1) {
+          if (!routeIds.has(current)) {
+            collector.add(
+              'ROUTE_REDIRECT_INVALID',
+              `Route '${sourceId}' redirects to unknown route '${current}'.`,
+              `application.routes[${sourceId}].redirect`,
+            );
+            ok = false;
+            break;
+          }
+          if (visited.has(current)) {
+            collector.add(
+              'ROUTE_REDIRECT_CYCLE',
+              `Route '${sourceId}' takes part in a redirect cycle.`,
+              `application.routes[${sourceId}].redirect`,
+            );
+            ok = false;
+            break;
+          }
+          visited.add(current);
+          const next = redirectTargets.get(current);
+          if (next === undefined) {
+            break;
+          }
+          current = next;
+        }
+        if (ok && visited.size > redirectTargets.size + 1) {
+          collector.add(
+            'ROUTE_REDIRECT_CYCLE',
+            `Route '${sourceId}' takes part in a redirect cycle.`,
+            `application.routes[${sourceId}].redirect`,
+          );
+        }
+      }
+    }
 
     // ---- Screens --------------------------------------------------------------
     const screensById = new Map<string, ScreenDefinition>();
     const surfaceIds = new Set<string>();
     for (const screen of application.screens) {
-      collector.unknownFields(screen, SCREEN_FIELDS, `application.screens[${screen.id}]`);
+      collector.unknownFields(screen, screenFields, `application.screens[${screen.id}]`);
       if (screensById.has(screen.id)) {
         collector.add(
           'DUPLICATE_SCREEN_ID',
@@ -749,6 +1041,29 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
         continue;
       }
       screensById.set(screen.id, screen);
+      if (isV2 && screen.breadcrumbs !== undefined) {
+        for (const [index, crumb] of screen.breadcrumbs.entries()) {
+          collector.unknownFields(
+            crumb,
+            BREADCRUMB_FIELDS,
+            `application.screens[${screen.id}].breadcrumbs[${index}]`,
+          );
+          if (typeof crumb.label !== 'string' || crumb.label.length === 0) {
+            collector.add(
+              'INVALID_SURFACE_DECLARATION',
+              `Breadcrumb ${index} of screen '${screen.id}' must declare a non-empty label.`,
+              `application.screens[${screen.id}].breadcrumbs[${index}].label`,
+            );
+          }
+          if (crumb.routeId !== undefined && !routeIds.has(crumb.routeId)) {
+            collector.add(
+              'UNKNOWN_BREADCRUMB_ROUTE',
+              `Breadcrumb ${index} of screen '${screen.id}' references unknown route '${crumb.routeId}'.`,
+              `application.screens[${screen.id}].breadcrumbs[${index}].routeId`,
+            );
+          }
+        }
+      }
       const regionNames = new Set<string>();
       for (const region of screen.layout) {
         collector.unknownFields(
@@ -771,12 +1086,13 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
             `application.screens[${screen.id}]`,
             surfaceIds,
             surfaceResolutions,
+            isV2,
           );
         }
       }
       const states = screen.states;
       if (states !== undefined) {
-        collector.unknownFields(states, STATES_FIELDS, `application.screens[${screen.id}].states`);
+        collector.unknownFields(states, statesFields, `application.screens[${screen.id}].states`);
         for (const [name, surface] of Object.entries(states)) {
           if (surface !== undefined) {
             collectSurface(
@@ -785,6 +1101,7 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
               `application.screens[${screen.id}].states.${name}`,
               surfaceIds,
               surfaceResolutions,
+              isV2,
             );
           }
         }
@@ -1071,6 +1388,71 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
       }
     }
 
+    // ---- Theme tokens (@2) -------------------------------------------------------
+    if (isV2 && application.theme !== undefined && typeof application.theme === 'object') {
+      const theme = application.theme as ThemeDeclaration;
+      const themeFields = new Set(['reference', 'tokens']);
+      collector.unknownFields(theme, themeFields, 'application.theme');
+      if (
+        theme.reference !== undefined &&
+        (typeof theme.reference !== 'string' || theme.reference.trim().length === 0)
+      ) {
+        collector.add(
+          'INVALID_THEME_TOKEN',
+          'The theme reference must be a non-empty, non-whitespace string when present.',
+          'application.theme.reference',
+        );
+      }
+      if (theme.tokens !== undefined) {
+        if (!Array.isArray(theme.tokens)) {
+          collector.add(
+            'INVALID_THEME_TOKEN',
+            'Theme tokens must be an array of { name, value } assignments against the closed token vocabulary.',
+            'application.theme.tokens',
+          );
+        } else {
+          const seenTokens = new Set<string>();
+          for (const [index, assignment] of theme.tokens.entries()) {
+            const path = `application.theme.tokens[${index}]`;
+            collector.unknownFields(assignment, new Set(['name', 'value']), path);
+            if (
+              typeof assignment.name !== 'string' ||
+              !THEME_TOKEN_NAMES.includes(assignment.name)
+            ) {
+              collector.add(
+                'INVALID_THEME_TOKEN',
+                'Theme token name is outside the closed semantic token vocabulary.',
+                `${path}.name`,
+              );
+            } else if (seenTokens.has(assignment.name)) {
+              collector.add(
+                'INVALID_THEME_TOKEN',
+                `Theme token '${assignment.name}' is assigned more than once.`,
+                `${path}.name`,
+              );
+            } else {
+              seenTokens.add(assignment.name);
+            }
+            if (
+              typeof assignment.value !== 'string' ||
+              assignment.value.length === 0 ||
+              assignment.value.length > 200 ||
+              !THEME_TOKEN_VALUE_SAFE.test(assignment.value) ||
+              /url\s*\(/i.test(assignment.value) ||
+              /@\s*import/i.test(assignment.value) ||
+              /expression\s*\(/i.test(assignment.value)
+            ) {
+              collector.add(
+                'INVALID_THEME_TOKEN_VALUE',
+                'Theme token values must be short plain CSS variable values; CSS structure, url(), imports, and expressions are rejected.',
+                `${path}.value`,
+              );
+            }
+          }
+        }
+      }
+    }
+
     // ---- Cross-references from surfaces (deferred until the maps exist) --------
     for (const resolution of surfaceResolutions) {
       resolution(collector, {
@@ -1079,6 +1461,7 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
         actionsById,
         routeIds,
         componentRefs,
+        resources: providedResources,
       });
     }
 
@@ -1154,7 +1537,10 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
     const routesFrozen = deepFreeze(
       application.routes.map((route) => ({
         route: cloneForFreeze(route),
-        screen: cloneForFreeze(screensById.get(route.screenId) as ScreenDefinition),
+        screen:
+          route.screenId !== undefined
+            ? cloneForFreeze(screensById.get(route.screenId) as ScreenDefinition)
+            : null,
       })),
     );
 
@@ -1230,6 +1616,7 @@ type SurfaceResolution = (
     readonly actionsById: ReadonlyMap<string, ActionDefinition>;
     readonly routeIds: ReadonlySet<string>;
     readonly componentRefs: ReadonlyMap<string, string>;
+    readonly resources: ReadonlyMap<string, ResourceDefinition>;
   },
 ) => void;
 
@@ -1249,6 +1636,7 @@ function resolveSurfaceLater(
             `${path}.viewId`,
           );
         }
+        collectConditionIssues(collector, surface, path, maps);
         break;
       }
       case 'form': {
@@ -1259,6 +1647,7 @@ function resolveSurfaceLater(
             `${path}.formId`,
           );
         }
+        collectConditionIssues(collector, surface, path, maps);
         break;
       }
       case 'action': {
@@ -1269,6 +1658,24 @@ function resolveSurfaceLater(
             `${path}.actionId`,
           );
         }
+        if (surface.disabledWhen !== undefined) {
+          collector.unknownFields(
+            surface.disabledWhen,
+            DISABLED_CONDITION_FIELDS,
+            `${path}.disabledWhen`,
+          );
+          if (
+            typeof surface.disabledWhen.paramMissing !== 'string' ||
+            surface.disabledWhen.paramMissing.length === 0
+          ) {
+            collector.add(
+              'INVALID_SURFACE_DISABLED_CONDITION',
+              `Action surface '${surface.id}' disabledWhen.paramMissing must be a non-empty route-parameter name.`,
+              `${path}.disabledWhen`,
+            );
+          }
+        }
+        collectConditionIssues(collector, surface, path, maps);
         break;
       }
       case 'component': {
@@ -1286,13 +1693,334 @@ function resolveSurfaceLater(
             `${path}.revision`,
           );
         }
+        collectConditionIssues(collector, surface, path, maps);
         break;
       }
-      case 'text':
+      case 'text': {
+        if (
+          surface.level !== undefined &&
+          (typeof surface.level !== 'number' ||
+            !Number.isSafeInteger(surface.level) ||
+            surface.level < 1 ||
+            surface.level > 6)
+        ) {
+          collector.add(
+            'INVALID_SURFACE_DECLARATION',
+            `Text surface '${surface.id}' level must be an integer between 1 and 6 when present.`,
+            `${path}.level`,
+          );
+        }
+        collectConditionIssues(collector, surface, path, maps);
+        break;
+      }
+      case 'list': {
+        collectViewFieldIssues(
+          collector,
+          maps,
+          surface.id,
+          surface.viewId,
+          [
+            ['titleField', surface.titleField],
+            ['secondaryField', surface.secondaryField],
+          ],
+          path,
+        );
+        collectConditionIssues(collector, surface, path, maps);
+        break;
+      }
+      case 'table': {
+        if (
+          surface.pageSize !== undefined &&
+          (typeof surface.pageSize !== 'number' ||
+            !Number.isSafeInteger(surface.pageSize) ||
+            surface.pageSize <= 0)
+        ) {
+          collector.add(
+            'INVALID_TABLE_DECLARATION',
+            `Table surface '${surface.id}' pageSize must be a positive safe integer when present.`,
+            `${path}.pageSize`,
+          );
+        }
+        if (surface.columns !== undefined) {
+          for (const [index, column] of surface.columns.entries()) {
+            collector.unknownFields(column, TABLE_COLUMN_FIELDS, `${path}.columns[${index}]`);
+          }
+          collectViewFieldIssues(
+            collector,
+            maps,
+            surface.id,
+            surface.viewId,
+            surface.columns.map(
+              (column, index) => [`columns[${index}].field`, column.field] as const,
+            ),
+            path,
+          );
+        }
+        if (surface.searchFields !== undefined) {
+          collectViewFieldIssues(
+            collector,
+            maps,
+            surface.id,
+            surface.viewId,
+            surface.searchFields.map((field, index) => [`searchFields[${index}]`, field] as const),
+            path,
+          );
+        }
+        if (surface.filterFields !== undefined) {
+          collectViewFieldIssues(
+            collector,
+            maps,
+            surface.id,
+            surface.viewId,
+            surface.filterFields.map((field, index) => [`filterFields[${index}]`, field] as const),
+            path,
+          );
+        }
+        if (surface.queryActionId !== undefined) {
+          const action = maps.actionsById.get(surface.queryActionId);
+          if (action === undefined) {
+            collector.add(
+              'UNKNOWN_ACTION_REFERENCE',
+              `Table surface '${surface.id}' references unknown query action '${surface.queryActionId}'.`,
+              `${path}.queryActionId`,
+            );
+          } else if (action.kind !== 'query') {
+            collector.add(
+              'INVALID_ACTION_BINDING',
+              `Table surface '${surface.id}' queryActionId must reference a query action; '${surface.queryActionId}' is a '${action.kind}' action.`,
+              `${path}.queryActionId`,
+            );
+          }
+        }
+        collectConditionIssues(collector, surface, path, maps);
+        break;
+      }
+      case 'detail': {
+        collectViewFieldIssues(
+          collector,
+          maps,
+          surface.id,
+          surface.viewId,
+          (surface.fields ?? []).map((field, index) => [`fields[${index}]`, field] as const),
+          path,
+        );
+        collectConditionIssues(collector, surface, path, maps);
+        break;
+      }
+      case 'chart': {
+        if (typeof surface.kind !== 'string' || !CHART_KINDS.has(surface.kind)) {
+          collector.add(
+            'INVALID_CHART_DECLARATION',
+            `Chart surface '${surface.id}' kind must be one of: bar, line.`,
+            `${path}.kind`,
+          );
+        }
+        if (!maps.viewsById.has(surface.viewId)) {
+          collector.add(
+            'UNKNOWN_VIEW_REFERENCE',
+            `Surface '${surface.id}' references unknown view '${surface.viewId}'.`,
+            `${path}.viewId`,
+          );
+        }
+        if (typeof surface.summary !== 'string' || surface.summary.length === 0) {
+          collector.add(
+            'INVALID_CHART_DECLARATION',
+            `Chart surface '${surface.id}' must declare a non-empty accessible summary.`,
+            `${path}.summary`,
+          );
+        }
+        collectViewFieldIssues(
+          collector,
+          maps,
+          surface.id,
+          surface.viewId,
+          [
+            ['xField', surface.xField],
+            ['yField', surface.yField],
+          ],
+          path,
+        );
+        collectConditionIssues(collector, surface, path, maps);
+        break;
+      }
+      case 'status': {
+        if (surface.value !== undefined && surface.field !== undefined) {
+          collector.add(
+            'INVALID_STATUS_DECLARATION',
+            `Status surface '${surface.id}' must declare a static value or a record field, not both.`,
+            path,
+          );
+        }
+        if (surface.value === undefined && surface.field === undefined) {
+          collector.add(
+            'INVALID_STATUS_DECLARATION',
+            `Status surface '${surface.id}' must declare either a static value or a record field.`,
+            path,
+          );
+        }
+        if (surface.tones !== undefined) {
+          for (const [value, tone] of Object.entries(surface.tones)) {
+            if (value.length === 0 || !STATUS_TONES.has(tone)) {
+              collector.add(
+                'INVALID_STATUS_DECLARATION',
+                `Status surface '${surface.id}' declares an invalid tone mapping.`,
+                `${path}.tones`,
+              );
+              break;
+            }
+          }
+        }
+        collectConditionIssues(collector, surface, path, maps);
+        break;
+      }
+      case 'tabs': {
+        collectConditionIssues(collector, surface, path, maps);
+        break;
+      }
+      case 'dialog':
+      case 'drawer': {
+        collectConditionIssues(collector, surface, path, maps);
+        break;
+      }
+      case 'conversation': {
+        if (!maps.viewsById.has(surface.viewId)) {
+          collector.add(
+            'UNKNOWN_VIEW_REFERENCE',
+            `Surface '${surface.id}' references unknown view '${surface.viewId}'.`,
+            `${path}.viewId`,
+          );
+        }
+        collectViewFieldIssues(
+          collector,
+          maps,
+          surface.id,
+          surface.viewId,
+          [
+            ['messageField', surface.messageField],
+            ['authorField', surface.authorField],
+            ['participantField', surface.participantField],
+          ],
+          path,
+        );
+        const sendAction = maps.actionsById.get(surface.sendActionId);
+        if (sendAction === undefined) {
+          collector.add(
+            'UNKNOWN_ACTION_REFERENCE',
+            `Conversation surface '${surface.id}' references unknown send action '${surface.sendActionId}'.`,
+            `${path}.sendActionId`,
+          );
+        } else if (sendAction.kind !== 'mutation' && sendAction.kind !== 'capability') {
+          collector.add(
+            'INVALID_ACTION_BINDING',
+            `Conversation surface '${surface.id}' sendActionId must reference a mutation or capability action; '${surface.sendActionId}' is a '${sendAction.kind}' action.`,
+            `${path}.sendActionId`,
+          );
+        }
+        collectConditionIssues(collector, surface, path, maps);
+        break;
+      }
       default:
         break;
     }
   });
+}
+
+/** Validate one surface's optional visibleWhen condition against the maps. */
+function collectConditionIssues(
+  collector: Collector,
+  surface: { readonly id: string; readonly visibleWhen?: Surface['visibleWhen'] },
+  path: string,
+  maps: {
+    readonly viewsById: ReadonlyMap<string, ViewBinding>;
+  },
+): void {
+  const condition = surface.visibleWhen;
+  if (condition === undefined) {
+    return;
+  }
+  collector.unknownFields(condition, CONDITION_FIELDS, `${path}.visibleWhen`);
+  const declared = ['viewNonEmpty', 'viewEmpty', 'paramEquals'].filter(
+    (key) => (condition as Record<string, unknown>)[key] !== undefined,
+  );
+  if (declared.length !== 1) {
+    collector.add(
+      'INVALID_SURFACE_CONDITION',
+      `Surface '${surface.id}' visibleWhen must declare exactly one condition (viewNonEmpty, viewEmpty, or paramEquals).`,
+      `${path}.visibleWhen`,
+    );
+    return;
+  }
+  if (condition.viewNonEmpty !== undefined) {
+    if (!maps.viewsById.has(condition.viewNonEmpty)) {
+      collector.add(
+        'UNKNOWN_VIEW_REFERENCE',
+        `Surface '${surface.id}' visibleWhen references unknown view '${condition.viewNonEmpty}'.`,
+        `${path}.visibleWhen.viewNonEmpty`,
+      );
+    }
+  } else if (condition.viewEmpty !== undefined) {
+    if (!maps.viewsById.has(condition.viewEmpty)) {
+      collector.add(
+        'UNKNOWN_VIEW_REFERENCE',
+        `Surface '${surface.id}' visibleWhen references unknown view '${condition.viewEmpty}'.`,
+        `${path}.visibleWhen.viewEmpty`,
+      );
+    }
+  } else if (condition.paramEquals !== undefined) {
+    collector.unknownFields(
+      condition.paramEquals,
+      CONDITION_PARAM_EQUALS_FIELDS,
+      `${path}.visibleWhen.paramEquals`,
+    );
+    if (
+      typeof condition.paramEquals.name !== 'string' ||
+      condition.paramEquals.name.length === 0 ||
+      typeof condition.paramEquals.value !== 'string'
+    ) {
+      collector.add(
+        'INVALID_SURFACE_CONDITION',
+        `Surface '${surface.id}' visibleWhen.paramEquals must declare a non-empty parameter name and a string value.`,
+        `${path}.visibleWhen.paramEquals`,
+      );
+    }
+  }
+}
+
+/**
+ * Validate that surface-bound fields exist in the bound view's projection
+ * (falling back to the resource's explicit field catalogue when the view
+ * does not narrow fields).
+ */
+function collectViewFieldIssues(
+  collector: Collector,
+  maps: {
+    readonly viewsById: ReadonlyMap<string, ViewBinding>;
+    readonly resources: ReadonlyMap<string, ResourceDefinition>;
+  },
+  surfaceId: string,
+  viewId: string,
+  fields: readonly (readonly [string, string | undefined])[],
+  path: string,
+): void {
+  const view = maps.viewsById.get(viewId);
+  if (view === undefined) {
+    return; // unknown-view already diagnosed
+  }
+  const resource = maps.resources.get(view.resourceId);
+  for (const [fieldPath, fieldName] of fields) {
+    if (fieldName === undefined) {
+      continue;
+    }
+    const inProjection = view.fields === undefined || view.fields.includes(fieldName);
+    const inCatalogue = resource === undefined || resource.fields.some((f) => f.name === fieldName);
+    if (!inProjection || !inCatalogue) {
+      collector.add(
+        'UNKNOWN_FIELD',
+        `Surface '${surfaceId}' field '${fieldName}' is not part of view '${viewId}' or the bound resource catalogue.`,
+        `${path}.${fieldPath}`,
+      );
+    }
+  }
 }
 
 function collectSurface(
@@ -1301,9 +2029,10 @@ function collectSurface(
   screenPath: string,
   surfaceIds: Set<string>,
   resolutions: SurfaceResolution[],
+  isV2: boolean = false,
 ): void {
   const path = `${screenPath} (surface '${surface.id}')`;
-  const allowed = SURFACE_FIELDS.get(surface.role);
+  const allowed = (isV2 ? SURFACE_FIELDS_V2 : SURFACE_FIELDS).get(surface.role);
   if (allowed === undefined) {
     collector.add(
       'UNKNOWN_SURFACE_ROLE',
@@ -1321,6 +2050,95 @@ function collectSurface(
   }
   surfaceIds.add(surface.id);
   collector.unknownFields(surface, allowed, path);
+  if (isV2 && surface.visibleWhen !== undefined) {
+    if (typeof surface.visibleWhen !== 'object' || surface.visibleWhen === null) {
+      collector.add(
+        'INVALID_SURFACE_CONDITION',
+        `Surface '${surface.id}' visibleWhen must be an object with exactly one condition.`,
+        `${path}.visibleWhen`,
+      );
+    }
+  }
+  if (isV2) {
+    // Nested content surfaces of tabs/dialogs/drawers are validated with the
+    // SAME closed field sets, surface-id uniqueness, and deferred
+    // cross-reference checks as top-level surfaces.
+    if (surface.role === 'tabs') {
+      if (!Array.isArray(surface.tabs) || surface.tabs.length === 0) {
+        collector.add(
+          'INVALID_TABS_DECLARATION',
+          `Tabs surface '${surface.id}' must declare a non-empty tabs array.`,
+          `${path}.tabs`,
+        );
+      } else {
+        const tabNames = new Set<string>();
+        for (const [index, tab] of surface.tabs.entries()) {
+          const tabPath = `${path}.tabs[${index}]`;
+          collector.unknownFields(tab, TAB_FIELDS, tabPath);
+          if (typeof tab.name !== 'string' || tab.name.length === 0) {
+            collector.add(
+              'INVALID_TABS_DECLARATION',
+              `Tab ${index} of surface '${surface.id}' must declare a non-empty name.`,
+              `${tabPath}.name`,
+            );
+          } else if (tabNames.has(tab.name)) {
+            collector.add(
+              'DUPLICATE_TAB_NAME',
+              `Tab name '${tab.name}' is declared more than once on surface '${surface.id}'.`,
+              `${tabPath}.name`,
+            );
+          } else {
+            tabNames.add(tab.name);
+          }
+          if (typeof tab.label !== 'string' || tab.label.length === 0) {
+            collector.add(
+              'INVALID_TABS_DECLARATION',
+              `Tab ${index} of surface '${surface.id}' must declare a non-empty label.`,
+              `${tabPath}.label`,
+            );
+          }
+          if (Array.isArray(tab.surfaces)) {
+            for (const nested of tab.surfaces) {
+              collectSurface(
+                collector,
+                nested,
+                `${path}.tabs[${index}]`,
+                surfaceIds,
+                resolutions,
+                true,
+              );
+            }
+          }
+        }
+      }
+    } else if (surface.role === 'dialog' || surface.role === 'drawer') {
+      if (typeof surface.title !== 'string' || surface.title.length === 0) {
+        collector.add(
+          'INVALID_SURFACE_DECLARATION',
+          `${surface.role} surface '${surface.id}' must declare a non-empty title.`,
+          `${path}.title`,
+        );
+      }
+      if (typeof surface.triggerLabel !== 'string' || surface.triggerLabel.length === 0) {
+        collector.add(
+          'INVALID_SURFACE_DECLARATION',
+          `${surface.role} surface '${surface.id}' must declare a non-empty triggerLabel.`,
+          `${path}.triggerLabel`,
+        );
+      }
+      if (!Array.isArray(surface.content) || surface.content.length === 0) {
+        collector.add(
+          'INVALID_SURFACE_DECLARATION',
+          `${surface.role} surface '${surface.id}' must declare non-empty content surfaces.`,
+          `${path}.content`,
+        );
+      } else {
+        for (const nested of surface.content) {
+          collectSurface(collector, nested, path, surfaceIds, resolutions, true);
+        }
+      }
+    }
+  }
   resolveSurfaceLater(surface, path, resolutions);
 }
 

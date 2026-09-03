@@ -28,10 +28,37 @@ This repository is the greenfield kernel with durable identity, stores, and
   one neutral Application Definition rendered by a generic catch-all host
   with a typed view, contract-validated form, local action, real VICT
   capability action, and a custom component resolved by id/revision
+- `packages/renderer-svelte` — Stage 05 canonical SvelteKit renderer:
+  generic application host (`VitApp`), built-in role components (tables,
+  charts, forms, tabs, dialogs/drawers, status, conversation, …),
+  responsive navigation, semantic theme tokens, accessible defaults
+- `packages/appdata-sqlite` — Stage 05 production SQLite
+  application-domain data adapter with a separate versioned
+  application-domain migration API (built-in `node:sqlite`)
+- `packages/scaffolder` — Stage 05 one-time SvelteKit application-host
+  scaffolder (deterministic, non-destructive, path-safe, idempotent)
+- `examples/reference-app` — Stage 05 complete reference application:
+  one neutral `vict.application@2` definition plus explicit
+  renderer/component-registry/SQLite-data/runtime bindings producing the
+  full working application (dashboard with chart, conversation with a
+  durable VICT processing action, searchable/sortable/paginated records
+  table, validated create/edit forms, tabs, dialog/drawer, status,
+  custom component island, theme-token customization, and the complete
+  safe-state vocabulary)
 
-Stages 1–3 are independently verified. Stage 4 — the capability and
-application authoring foundation — is implemented and awaiting independent
-audit: the SDK is now a lightweight authoring ABI below the kernel and
+Stages 1–4 are independently verified (Stage 4 disposition:
+VERIFIED WITH NON-BLOCKING ISSUES — STAGE 05 PERMITTED). Stage 5 — the
+application delivery layer — is implemented and awaiting independent
+audit: the canonical SvelteKit renderer, the one-time host scaffolder, the
+extended `vict.application@2` surface vocabulary, the SQLite
+application-domain adapter with separate migrations (OPEN-014), and the
+complete §17.10 reference proof. Renderer and application builds are
+warning-free; accessibility and real-browser (desktop + mobile) scenarios
+are automated. See
+`docs/architecture/STAGE-05-APPLICATION-DELIVERY.md` and
+`docs/report/VICT-STAGE-05-REPORT.md`.
+
+Stage 4 details — the capability and application authoring foundation: the SDK is now a lightweight authoring ABI below the kernel and
 runtime (`@vict/contracts → @vict/sdk → @vict/kernel → @vict/runtime`),
 capability packs install explicitly with least-authority permissions,
 configuration and secret resolution, and a framework-neutral
@@ -56,8 +83,14 @@ npm run verify:stage3  # Stage 03 aggregate verification (conformance,
 npm run verify:stage4  # Stage 04 aggregate verification (authoring ABI,
                        # packs, application model, isolated packed
                        # consumers, SvelteKit proof)
-npm run example:application  # build + DOM-level tests for the SvelteKit
-                             # application proof
+npm run verify:stage5  # Stage 05 aggregate verification (renderer + SQLite
+                       # application-data conformance, migration/restart
+                       # fixtures, warning-free SvelteKit builds, complete
+                       # reference application proof incl. real-process
+                       # HTTP and real-browser scenarios, packed
+                       # scaffolder consumer)
+npm run example:application  # build + DOM-level tests for the Stage 04
+                             # SvelteKit application proof
 ```
 
 ## Durable local store quick start

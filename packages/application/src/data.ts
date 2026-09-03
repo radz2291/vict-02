@@ -26,10 +26,22 @@ export interface DataSort {
   readonly direction: 'asc' | 'desc';
 }
 
+/**
+ * Declared substring search across catalogue fields (Stage 05). Matching is
+ * deterministic and case-insensitive on the primitive string form of the
+ * stored values. Fields must be in the resource catalogue; the text is a
+ * bounded plain string — never a query language.
+ */
+export interface DataSearch {
+  readonly text: string;
+  readonly fields: readonly string[];
+}
+
 export interface ApplicationDataQueryRequest {
   readonly op: 'list' | 'get';
   readonly resourceId: string;
   readonly filters?: Readonly<Record<string, string | number | boolean>>;
+  readonly search?: DataSearch;
   readonly sort?: readonly DataSort[];
   readonly limit?: number;
   readonly offset?: number;
@@ -141,12 +153,17 @@ const QUERY_REQUEST_FIELDS: ReadonlySet<string> = new Set([
   'op',
   'resourceId',
   'filters',
+  'search',
   'sort',
   'limit',
   'offset',
   'projection',
   'id',
 ]);
+
+/** Bounds of the declared search capability (Stage 05). */
+const SEARCH_TEXT_MAX_LENGTH = 200;
+const SEARCH_FIELDS_MAX_COUNT = 16;
 
 /**
  * A declared public filter value: EXACTLY string, finite canonical number,
@@ -195,6 +212,13 @@ function compareValues(a: unknown, b: unknown): number {
  * request reconciles to the committed result; the same key with different
  * input fails with the stable `DATA_IDEMPOTENCY_CONFLICT`; ops whose
  * declaration does not accept keys reject supplied keys.
+ *
+ * Hostile-container policy (Stage 05, closes LOW-C-1 for the reference
+ * adapter): throwing getters, revoked proxies, proxy enumeration traps,
+ * cyclic containers, and unsupported prototypes anywhere inside a query or
+ * mutation request are converted into STABLE, NON-ECHOING structured
+ * diagnostics — the raw thrown message, nested causes, and canary values
+ * never escape the boundary.
  */
 export function createInMemoryApplicationData(
   resources: readonly ResourceDefinition[],
@@ -394,321 +418,415 @@ export function createInMemoryApplicationData(
     });
   };
 
+  /** Stable safe diagnostic for any hostile container failure (never echoes). */
+  const hostileRequest = (): ApplicationDataResult =>
+    fail(
+      'DATA_INVALID_REQUEST',
+      'The request could not be processed safely; hostile containers (throwing getters, revoked proxies, cyclic structures, or unsupported prototypes) are rejected with this stable diagnostic.',
+    );
+
   return {
     id: options.id ?? 'vict.in-memory-data',
     revision: options.revision ?? '1',
 
-    async query(request, context) {
-      if (request === undefined || request === null || typeof request !== 'object') {
-        return fail('DATA_INVALID_REQUEST', 'The query request must be an object.');
+    async query(rawRequest, context) {
+      try {
+        return await queryRequest(rawRequest, context);
+      } catch {
+        // Any throw escaping request processing (hostile getter, revoked
+        // proxy, enumeration trap, cyclic container, unsupported prototype)
+        // becomes the SAME stable, non-echoing structured diagnostic.
+        return hostileRequest();
       }
-      const resource = resources.find((candidate) => candidate.id === request.resourceId);
-      if (resource === undefined) {
-        return fail('DATA_UNKNOWN_RESOURCE', 'The requested resource is not declared.');
+    },
+
+    async mutate(rawRequest, context) {
+      try {
+        return await mutateRequest(rawRequest, context);
+      } catch {
+        return hostileRequest();
       }
-      const denied = authorize(resource, 'read', context);
-      if (denied !== undefined) {
-        return denied;
+    },
+  };
+
+  async function queryRequest(
+    request: ApplicationDataQueryRequest,
+    context: ApplicationDataRequestContext,
+  ): Promise<ApplicationDataResult> {
+    if (request === undefined || request === null || typeof request !== 'object') {
+      return fail('DATA_INVALID_REQUEST', 'The query request must be an object.');
+    }
+    const resource = resources.find((candidate) => candidate.id === request.resourceId);
+    if (resource === undefined) {
+      return fail('DATA_UNKNOWN_RESOURCE', 'The requested resource is not declared.');
+    }
+    const denied = authorize(resource, 'read', context);
+    if (denied !== undefined) {
+      return denied;
+    }
+    // Closed query-request schema (LOW-RE-4): unknown top-level fields are
+    // rejected with a safe diagnostic that never echoes the hostile key.
+    for (const key of Object.keys(request)) {
+      if (!QUERY_REQUEST_FIELDS.has(key)) {
+        return fail(
+          'DATA_INVALID_REQUEST',
+          'The query request contains a field outside the closed query-request schema; unknown fields are rejected.',
+        );
       }
-      // Closed query-request schema (LOW-RE-4): unknown top-level fields are
-      // rejected with a safe diagnostic that never echoes the hostile key.
-      for (const key of Object.keys(request)) {
-        if (!QUERY_REQUEST_FIELDS.has(key)) {
-          return fail(
-            'DATA_INVALID_REQUEST',
-            'The query request contains a field outside the closed query-request schema; unknown fields are rejected.',
-          );
-        }
+    }
+    const invalidLimit = checkBound(request.limit, 'limit');
+    if (invalidLimit !== undefined) {
+      return invalidLimit;
+    }
+    const invalidOffset = checkBound(request.offset, 'offset');
+    if (invalidOffset !== undefined) {
+      return invalidOffset;
+    }
+    const table = rows.get(resource.id) ?? new Map();
+    if (request.op === 'get') {
+      if (typeof request.id !== 'string' || request.id.length === 0) {
+        return fail('DATA_INVALID_REQUEST', 'get requires a non-empty id.');
       }
-      const invalidLimit = checkBound(request.limit, 'limit');
-      if (invalidLimit !== undefined) {
-        return invalidLimit;
+      const row = table.get(request.id);
+      if (row === undefined) {
+        return fail('DATA_UNKNOWN_IDENTITY', 'No row with the requested identity exists.');
       }
-      const invalidOffset = checkBound(request.offset, 'offset');
-      if (invalidOffset !== undefined) {
-        return invalidOffset;
+      const projection = checkProjection(resource, request.projection);
+      if (projection !== undefined) {
+        return projection;
       }
-      const table = rows.get(resource.id) ?? new Map();
-      if (request.op === 'get') {
-        if (typeof request.id !== 'string' || request.id.length === 0) {
-          return fail('DATA_INVALID_REQUEST', 'get requires a non-empty id.');
-        }
-        const row = table.get(request.id);
-        if (row === undefined) {
-          return fail('DATA_UNKNOWN_IDENTITY', 'No row with the requested identity exists.');
-        }
-        const projection = checkProjection(resource, request.projection);
-        if (projection !== undefined) {
-          return projection;
-        }
-        return { ok: true, row: project(deepCopy(row), request.projection) };
-      }
-      if (request.op !== 'list') {
-        return fail('DATA_INVALID_REQUEST', 'The query op must be "list" or "get".');
-      }
-      let list = [...table.values()];
-      if (
-        request.filters !== undefined &&
-        (typeof request.filters !== 'object' ||
-          request.filters === null ||
-          Array.isArray(request.filters))
-      ) {
+      return { ok: true, row: project(deepCopy(row), request.projection) };
+    }
+    if (request.op !== 'list') {
+      return fail('DATA_INVALID_REQUEST', 'The query op must be "list" or "get".');
+    }
+    let list = [...table.values()];
+    if (
+      request.filters !== undefined &&
+      (typeof request.filters !== 'object' ||
+        request.filters === null ||
+        Array.isArray(request.filters))
+    ) {
+      return fail(
+        'DATA_INVALID_REQUEST',
+        'filters must be a plain object of primitive values when present.',
+      );
+    }
+    if (request.filters !== undefined) {
+      // The filters container must be a PLAIN object: exotic prototypes are
+      // rejected structurally (hostile getters on prototypes are a known
+      // evasion; the declared domain is plain data).
+      const proto = Object.getPrototypeOf(request.filters);
+      if (proto !== Object.prototype && proto !== null) {
         return fail(
           'DATA_INVALID_REQUEST',
           'filters must be a plain object of primitive values when present.',
         );
       }
-      for (const [field, expected] of Object.entries(request.filters ?? {})) {
+    }
+    for (const [field, expected] of Object.entries(request.filters ?? {})) {
+      if (!resource.fields.some((candidate) => candidate.name === field)) {
+        return fail(
+          'DATA_UNSUPPORTED_QUERY',
+          'A filter field is not in the catalogue of the requested resource.',
+        );
+      }
+      // The declared public filter type is runtime-enforced (LOW-RE-4):
+      // values must be EXACTLY string, finite canonical number, or
+      // boolean. Objects, arrays, null, undefined, non-finite numbers,
+      // negative zero, functions, and exotic values are rejected with a
+      // safe diagnostic that never echoes the hostile value. Comparison
+      // semantics remain primitive equality.
+      if (!isCanonicalFilterValue(expected)) {
+        return fail(
+          'DATA_INVALID_REQUEST',
+          'Filter values must be exactly string, finite number, or boolean, matching the declared public filter type.',
+        );
+      }
+      list = list.filter((row) => compareValues(row[field], expected) === 0);
+    }
+    // Declared substring search (Stage 05): deterministic, case-insensitive,
+    // catalogue-checked fields, bounded plain text — never a query language.
+    if (request.search !== undefined) {
+      const search = request.search as DataSearch;
+      if (typeof search !== 'object' || search === null || Array.isArray(search)) {
+        return fail(
+          'DATA_INVALID_REQUEST',
+          'search must be a { text, fields } object when present.',
+        );
+      }
+      if (
+        typeof search.text !== 'string' ||
+        search.text.length === 0 ||
+        search.text.length > SEARCH_TEXT_MAX_LENGTH
+      ) {
+        return fail(
+          'DATA_INVALID_REQUEST',
+          `search.text must be a non-empty string of at most ${SEARCH_TEXT_MAX_LENGTH} characters.`,
+        );
+      }
+      if (
+        !Array.isArray(search.fields) ||
+        search.fields.length === 0 ||
+        search.fields.length > SEARCH_FIELDS_MAX_COUNT ||
+        search.fields.some((field) => typeof field !== 'string')
+      ) {
+        return fail(
+          'DATA_INVALID_REQUEST',
+          `search.fields must be a non-empty array of at most ${SEARCH_FIELDS_MAX_COUNT} field names.`,
+        );
+      }
+      for (const field of search.fields) {
         if (!resource.fields.some((candidate) => candidate.name === field)) {
           return fail(
             'DATA_UNSUPPORTED_QUERY',
-            'A filter field is not in the catalogue of the requested resource.',
+            'A search field is not in the catalogue of the requested resource.',
           );
         }
-        // The declared public filter type is runtime-enforced (LOW-RE-4):
-        // values must be EXACTLY string, finite canonical number, or
-        // boolean. Objects, arrays, null, undefined, non-finite numbers,
-        // negative zero, functions, and exotic values are rejected with a
-        // safe diagnostic that never echoes the hostile value. Comparison
-        // semantics remain primitive equality.
-        if (!isCanonicalFilterValue(expected)) {
-          return fail(
-            'DATA_INVALID_REQUEST',
-            'Filter values must be exactly string, finite number, or boolean, matching the declared public filter type.',
-          );
-        }
-        list = list.filter((row) => compareValues(row[field], expected) === 0);
       }
-      for (const sort of [...(request.sort ?? [])].reverse()) {
-        if (!resource.fields.some((candidate) => candidate.name === sort.field)) {
-          return fail(
-            'DATA_UNSUPPORTED_QUERY',
-            'Sort field is not in the catalogue of the requested resource.',
-          );
+      const needle = search.text.toLowerCase();
+      list = list.filter((row) =>
+        search.fields.some((field) => {
+          const value = row[field];
+          if (value === undefined || value === null || typeof value === 'object') {
+            return false;
+          }
+          return String(value).toLowerCase().includes(needle);
+        }),
+      );
+    }
+    for (const sort of [...(request.sort ?? [])].reverse()) {
+      if (!resource.fields.some((candidate) => candidate.name === sort.field)) {
+        return fail(
+          'DATA_UNSUPPORTED_QUERY',
+          'Sort field is not in the catalogue of the requested resource.',
+        );
+      }
+      list = [...list].sort((a, b) => {
+        const cmp = compareValues(a[sort.field], b[sort.field]);
+        return sort.direction === 'desc' ? -cmp : cmp;
+      });
+    }
+    const total = list.length;
+    const offset = request.offset ?? 0;
+    const limit = request.limit ?? list.length;
+    list = list.slice(offset, offset + limit);
+    const projection = checkProjection(resource, request.projection);
+    if (projection !== undefined) {
+      return projection;
+    }
+    return {
+      ok: true,
+      rows: list.map((row) => project(deepCopy(row), request.projection)),
+      total,
+    };
+  }
+
+  async function mutateRequest(
+    request: ApplicationDataMutationRequest,
+    context: ApplicationDataRequestContext,
+  ): Promise<ApplicationDataResult> {
+    if (request === undefined || request === null || typeof request !== 'object') {
+      return fail('DATA_INVALID_REQUEST', 'The mutation request must be an object.');
+    }
+    const resource = resources.find((candidate) => candidate.id === request.resourceId);
+    if (resource === undefined) {
+      return fail('DATA_UNKNOWN_RESOURCE', 'The requested resource is not declared.');
+    }
+    const denied = authorize(resource, 'write', context);
+    if (denied !== undefined) {
+      return denied;
+    }
+    const mutation = resource.mutations?.find((candidate) => candidate.op === request.op);
+    if (mutation === undefined) {
+      return fail(
+        'DATA_MUTATION_NOT_DECLARED',
+        'The requested mutation is not declared by the resource.',
+      );
+    }
+    for (const permissionId of mutation.permissions ?? []) {
+      if (!context.permissions.includes(permissionId)) {
+        return fail('DATA_UNAUTHORIZED', `The mutation requires permission '${permissionId}'.`);
+      }
+    }
+    // Idempotency-key semantics: only mutations whose declaration accepts
+    // keys (`idempotency: 'keyed'`) may receive one; anything else is a
+    // stable rejection, never a silent ignore.
+    if (request.idempotencyKey !== undefined && mutation.idempotency !== 'keyed') {
+      return fail(
+        'DATA_INVALID_REQUEST',
+        `Mutation '${request.op}' does not accept idempotency keys; remove the key or declare keyed idempotency for the mutation.`,
+      );
+    }
+    const table = rows.get(resource.id) ?? new Map();
+    if (request.op === 'create') {
+      const input = request.input;
+      if (
+        input === undefined ||
+        input === null ||
+        Array.isArray(input) ||
+        typeof input !== 'object'
+      ) {
+        return fail('DATA_INVALID_INPUT', 'create requires a plain-object input.');
+      }
+      const domain = checkInputDomain(input);
+      if (domain !== undefined) {
+        return domain;
+      }
+      // Declared contract boundary: the adapter itself parses the input
+      // through the declared exact contract — direct adapter calls
+      // preserve their own typed boundary.
+      const parsed = parseDeclaredInput(resource, request.op, input);
+      if (parsed.result !== undefined) {
+        return parsed.result;
+      }
+      const record = parsed.value as Record<string, unknown>;
+      // One strict unknown-field policy for create AND update.
+      const unknownField = checkCatalogue(resource, record);
+      if (unknownField !== undefined) {
+        return unknownField;
+      }
+      for (const field of resource.fields) {
+        if (field.required === true && record[field.name] === undefined) {
+          return fail('DATA_INVALID_INPUT', `Field '${field.name}' is required by the resource.`);
         }
-        list = [...list].sort((a, b) => {
-          const cmp = compareValues(a[sort.field], b[sort.field]);
-          return sort.direction === 'desc' ? -cmp : cmp;
+        // Declared field types are enforced (no silent wrong-type rows).
+        const typeMismatch = checkFieldType(field, record[field.name]);
+        if (typeMismatch !== undefined) {
+          return typeMismatch;
+        }
+      }
+      if (
+        typeof record[resource.identity.key] !== 'string' ||
+        (record[resource.identity.key] as string).length === 0
+      ) {
+        return fail(
+          'DATA_INVALID_INPUT',
+          `create requires the identity field '${resource.identity.key}' as a non-empty string.`,
+        );
+      }
+      const identity = record[resource.identity.key] as string;
+      // Idempotency reconciliation (scoped by resource + op + key):
+      // failed mutations never consumed the key, so a retry with the SAME
+      // canonical request reconciles; the same key with DIFFERENT input
+      // is a stable conflict.
+      if (request.idempotencyKey !== undefined && mutation.idempotency === 'keyed') {
+        const scopeKey = `${resource.id}::${request.op}::${request.idempotencyKey}`;
+        const prior = idempotency.get(scopeKey);
+        if (prior !== undefined) {
+          const fingerprintNow = fingerprint(request, record);
+          if (prior.fingerprint !== fingerprintNow) {
+            return fail(
+              'DATA_IDEMPOTENCY_CONFLICT',
+              'The idempotency key was already used with a different request; a key reconciles only its original canonical request.',
+            );
+          }
+          const existing = table.get(prior.identity);
+          return { ok: true, row: existing === undefined ? {} : deepCopy(existing) };
+        }
+      }
+      if (table.has(identity)) {
+        return fail('DATA_INVALID_INPUT', 'A row with the requested identity already exists.');
+      }
+      // Retain a defensive deep copy of the VALIDATED input; unknown or
+      // hostile fields were rejected above and are never persisted.
+      const stored = deepCopy(record);
+      table.set(identity, stored);
+      if (request.idempotencyKey !== undefined && mutation.idempotency === 'keyed') {
+        const scopeKey = `${resource.id}::${request.op}::${request.idempotencyKey}`;
+        idempotency.set(scopeKey, {
+          identity,
+          fingerprint: fingerprint(request, record),
         });
       }
-      const total = list.length;
-      const offset = request.offset ?? 0;
-      const limit = request.limit ?? list.length;
-      list = list.slice(offset, offset + limit);
-      const projection = checkProjection(resource, request.projection);
-      if (projection !== undefined) {
-        return projection;
+      const outputFailure = validateDeclaredOutput(resource, request.op, stored);
+      if (outputFailure !== undefined) {
+        // The committed row failed its declared output contract: roll the
+        // mutation back rather than return an unvalidated result.
+        table.delete(identity);
+        return outputFailure;
       }
-      return {
-        ok: true,
-        rows: list.map((row) => project(deepCopy(row), request.projection)),
-        total,
-      };
-    },
-
-    async mutate(request, context) {
-      if (request === undefined || request === null || typeof request !== 'object') {
-        return fail('DATA_INVALID_REQUEST', 'The mutation request must be an object.');
+      return { ok: true, row: deepCopy(stored) };
+    }
+    if (request.op === 'update') {
+      if (typeof request.id !== 'string' || request.id.length === 0) {
+        return fail('DATA_INVALID_REQUEST', 'update requires a non-empty id.');
       }
-      const resource = resources.find((candidate) => candidate.id === request.resourceId);
-      if (resource === undefined) {
-        return fail('DATA_UNKNOWN_RESOURCE', 'The requested resource is not declared.');
+      if (!table.has(request.id)) {
+        return fail('DATA_UNKNOWN_IDENTITY', 'No row with the requested identity exists.');
       }
-      const denied = authorize(resource, 'write', context);
-      if (denied !== undefined) {
-        return denied;
+      const input = request.input;
+      if (
+        input === undefined ||
+        input === null ||
+        Array.isArray(input) ||
+        typeof input !== 'object'
+      ) {
+        return fail('DATA_INVALID_INPUT', 'update requires a plain-object input.');
       }
-      const mutation = resource.mutations?.find((candidate) => candidate.op === request.op);
-      if (mutation === undefined) {
-        return fail(
-          'DATA_MUTATION_NOT_DECLARED',
-          'The requested mutation is not declared by the resource.',
-        );
+      const domain = checkInputDomain(input);
+      if (domain !== undefined) {
+        return domain;
       }
-      for (const permissionId of mutation.permissions ?? []) {
-        if (!context.permissions.includes(permissionId)) {
-          return fail('DATA_UNAUTHORIZED', `The mutation requires permission '${permissionId}'.`);
-        }
+      const parsed = parseDeclaredInput(resource, request.op, input);
+      if (parsed.result !== undefined) {
+        return parsed.result;
       }
-      // Idempotency-key semantics: only mutations whose declaration accepts
-      // keys (`idempotency: 'keyed'`) may receive one; anything else is a
-      // stable rejection, never a silent ignore.
-      if (request.idempotencyKey !== undefined && mutation.idempotency !== 'keyed') {
-        return fail(
-          'DATA_INVALID_REQUEST',
-          `Mutation '${request.op}' does not accept idempotency keys; remove the key or declare keyed idempotency for the mutation.`,
-        );
+      const record = parsed.value as Record<string, unknown>;
+      const unknownField = checkCatalogue(resource, record);
+      if (unknownField !== undefined) {
+        return unknownField;
       }
-      const table = rows.get(resource.id) ?? new Map();
-      if (request.op === 'create') {
-        const input = request.input;
-        if (
-          input === undefined ||
-          input === null ||
-          Array.isArray(input) ||
-          typeof input !== 'object'
-        ) {
-          return fail('DATA_INVALID_INPUT', 'create requires a plain-object input.');
-        }
-        const domain = checkInputDomain(input);
-        if (domain !== undefined) {
-          return domain;
-        }
-        // Declared contract boundary: the adapter itself parses the input
-        // through the declared exact contract — direct adapter calls
-        // preserve their own typed boundary.
-        const parsed = parseDeclaredInput(resource, request.op, input);
-        if (parsed.result !== undefined) {
-          return parsed.result;
-        }
-        const record = parsed.value as Record<string, unknown>;
-        // One strict unknown-field policy for create AND update.
-        const unknownField = checkCatalogue(resource, record);
-        if (unknownField !== undefined) {
-          return unknownField;
-        }
-        for (const field of resource.fields) {
-          if (field.required === true && record[field.name] === undefined) {
-            return fail('DATA_INVALID_INPUT', `Field '${field.name}' is required by the resource.`);
-          }
-          // Declared field types are enforced (no silent wrong-type rows).
+      for (const field of resource.fields) {
+        if (record[field.name] !== undefined) {
           const typeMismatch = checkFieldType(field, record[field.name]);
           if (typeMismatch !== undefined) {
             return typeMismatch;
           }
         }
-        if (
-          typeof record[resource.identity.key] !== 'string' ||
-          (record[resource.identity.key] as string).length === 0
-        ) {
-          return fail(
-            'DATA_INVALID_INPUT',
-            `create requires the identity field '${resource.identity.key}' as a non-empty string.`,
-          );
-        }
-        const identity = record[resource.identity.key] as string;
-        // Idempotency reconciliation (scoped by resource + op + key):
-        // failed mutations never consumed the key, so a retry with the SAME
-        // canonical request reconciles; the same key with DIFFERENT input
-        // is a stable conflict.
-        if (request.idempotencyKey !== undefined && mutation.idempotency === 'keyed') {
-          const scopeKey = `${resource.id}::${request.op}::${request.idempotencyKey}`;
-          const prior = idempotency.get(scopeKey);
-          if (prior !== undefined) {
-            const fingerprintNow = fingerprint(request, record);
-            if (prior.fingerprint !== fingerprintNow) {
-              return fail(
-                'DATA_IDEMPOTENCY_CONFLICT',
-                'The idempotency key was already used with a different request; a key reconciles only its original canonical request.',
-              );
-            }
-            const existing = table.get(prior.identity);
-            return { ok: true, row: existing === undefined ? {} : deepCopy(existing) };
-          }
-        }
-        if (table.has(identity)) {
-          return fail('DATA_INVALID_INPUT', 'A row with the requested identity already exists.');
-        }
-        // Retain a defensive deep copy of the VALIDATED input; unknown or
-        // hostile fields were rejected above and are never persisted.
-        const stored = deepCopy(record);
-        table.set(identity, stored);
-        if (request.idempotencyKey !== undefined && mutation.idempotency === 'keyed') {
-          const scopeKey = `${resource.id}::${request.op}::${request.idempotencyKey}`;
-          idempotency.set(scopeKey, {
-            identity,
-            fingerprint: fingerprint(request, record),
-          });
-        }
-        const outputFailure = validateDeclaredOutput(resource, request.op, stored);
-        if (outputFailure !== undefined) {
-          // The committed row failed its declared output contract: roll the
-          // mutation back rather than return an unvalidated result.
-          table.delete(identity);
-          return outputFailure;
-        }
-        return { ok: true, row: deepCopy(stored) };
       }
-      if (request.op === 'update') {
-        if (typeof request.id !== 'string' || request.id.length === 0) {
-          return fail('DATA_INVALID_REQUEST', 'update requires a non-empty id.');
-        }
-        if (!table.has(request.id)) {
-          return fail('DATA_UNKNOWN_IDENTITY', 'No row with the requested identity exists.');
-        }
-        const input = request.input;
-        if (
-          input === undefined ||
-          input === null ||
-          Array.isArray(input) ||
-          typeof input !== 'object'
-        ) {
-          return fail('DATA_INVALID_INPUT', 'update requires a plain-object input.');
-        }
-        const domain = checkInputDomain(input);
-        if (domain !== undefined) {
-          return domain;
-        }
-        const parsed = parseDeclaredInput(resource, request.op, input);
-        if (parsed.result !== undefined) {
-          return parsed.result;
-        }
-        const record = parsed.value as Record<string, unknown>;
-        const unknownField = checkCatalogue(resource, record);
-        if (unknownField !== undefined) {
-          return unknownField;
-        }
-        for (const field of resource.fields) {
-          if (record[field.name] !== undefined) {
-            const typeMismatch = checkFieldType(field, record[field.name]);
-            if (typeMismatch !== undefined) {
-              return typeMismatch;
-            }
-          }
-        }
-        if (request.idempotencyKey !== undefined) {
-          return fail(
-            'DATA_INVALID_REQUEST',
-            `Mutation '${request.op}' does not accept idempotency keys.`,
-          );
-        }
-        const existing = table.get(request.id) as Record<string, unknown>;
-        const updated: Record<string, unknown> = deepCopy({ ...existing });
-        for (const [key, value] of Object.entries(record)) {
-          if (resource.fields.some((field) => field.name === key)) {
-            updated[key] = deepCopy(value);
-          }
-        }
-        table.set(request.id, updated);
-        const outputFailure = validateDeclaredOutput(resource, request.op, updated);
-        if (outputFailure !== undefined) {
-          table.set(request.id, existing);
-          return outputFailure;
-        }
-        return { ok: true, row: deepCopy(updated) };
+      if (request.idempotencyKey !== undefined) {
+        return fail(
+          'DATA_INVALID_REQUEST',
+          `Mutation '${request.op}' does not accept idempotency keys.`,
+        );
       }
-      if (request.op === 'delete') {
-        if (typeof request.id !== 'string' || request.id.length === 0) {
-          return fail('DATA_INVALID_REQUEST', 'delete requires a non-empty id.');
+      const existing = table.get(request.id) as Record<string, unknown>;
+      const updated: Record<string, unknown> = deepCopy({ ...existing });
+      for (const [key, value] of Object.entries(record)) {
+        if (resource.fields.some((field) => field.name === key)) {
+          updated[key] = deepCopy(value);
         }
-        if (request.idempotencyKey !== undefined) {
-          return fail(
-            'DATA_INVALID_REQUEST',
-            `Mutation '${request.op}' does not accept idempotency keys.`,
-          );
-        }
-        if (!table.has(request.id)) {
-          return fail('DATA_UNKNOWN_IDENTITY', 'No row with the requested identity exists.');
-        }
-        table.delete(request.id);
-        return { ok: true };
       }
-      return fail(
-        'DATA_MUTATION_NOT_DECLARED',
-        'The requested mutation is not declared by the resource.',
-      );
-    },
-  };
+      table.set(request.id, updated);
+      const outputFailure = validateDeclaredOutput(resource, request.op, updated);
+      if (outputFailure !== undefined) {
+        table.set(request.id, existing);
+        return outputFailure;
+      }
+      return { ok: true, row: deepCopy(updated) };
+    }
+    if (request.op === 'delete') {
+      if (typeof request.id !== 'string' || request.id.length === 0) {
+        return fail('DATA_INVALID_REQUEST', 'delete requires a non-empty id.');
+      }
+      if (request.idempotencyKey !== undefined) {
+        return fail(
+          'DATA_INVALID_REQUEST',
+          `Mutation '${request.op}' does not accept idempotency keys.`,
+        );
+      }
+      if (!table.has(request.id)) {
+        return fail('DATA_UNKNOWN_IDENTITY', 'No row with the requested identity exists.');
+      }
+      table.delete(request.id);
+      return { ok: true };
+    }
+    return fail(
+      'DATA_MUTATION_NOT_DECLARED',
+      'The requested mutation is not declared by the resource.',
+    );
+  }
 
   /** Strict unknown-field policy shared by create and update. */
   function checkCatalogue(
