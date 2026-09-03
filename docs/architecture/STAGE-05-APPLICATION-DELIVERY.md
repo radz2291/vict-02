@@ -70,10 +70,17 @@ Boundary rules enforced and tested:
 
 ### 2.1 Schema markers
 
-- `vict.application@1` — UNCHANGED. Stage 04 definitions compile with their
-  exact Stage 04 accepted shapes, validation semantics, and identity vectors
+- `vict.application@1` — canonicalization, identity, ordering semantics and
+  accepted SHAPES unchanged. Stage 04 definitions compile with their exact
+  Stage 04 identity vectors
   (`APPLICATION_IDENTITY_SCHEMA = vict.application-identity@1` remains
-  byte-identical; the existing identity tests pass unchanged).
+  byte-identical; the existing identity tests pass unchanged, and the Stage 05
+  final-correction test suite pins both the `@1` and `@2` identity vectors to
+  the exact bytes produced before the correction). One validation change
+  applies to BOTH markers (see §2.3): members the authoring model has ALWAYS
+  declared required are now enforced by the runtime compiler — this is a bug
+  fix against the declared schema, not a new schema version, so the schema
+  markers themselves are unchanged and `vict.application@3` does not exist.
 - `vict.application@2` — NEW. The Stage 05 delivery vocabulary. The schema
   marker is validated and participates in application identity, so a @2
   definition can never alias a @1 identity.
@@ -138,6 +145,55 @@ definition can never inject executable CSS.
 All @2 validation is closed-field: unknown fields at every boundary produce
 structured, path-sorted diagnostics; hostile containers fail with structured
 diagnostics; compilation never throws for invalid definitions.
+
+### 2.3 Runtime required-member enforcement (final exit-gate correction)
+
+The Stage 05 independent re-audit retained LOW-05-A: the runtime compiler
+accepted objects that omit members the public authoring model declares
+REQUIRED (an action without its `revision`, a route without its `id`, a
+screen without its `title` — identically for `@1` and `@2`). The exit gate
+requires malformed definitions to fail with structured diagnostics, so the
+compiler now enforces every required member of every public structure that
+enters compilation, for BOTH schema markers:
+
+- ids and id-like references (`route.id`, `screen.id`, `surface.id`,
+  `view.viewId`, `form.formId`, `action.id`, `resourceId`, `componentId`,
+  `form.field.name`, …) must be non-empty, non-whitespace strings
+  (`APPLICATION_EMPTY_ID` / `APPLICATION_INVALID_IDENTIFIER`);
+- every declared revision (application, action, view, form, resource
+  reference, component reference, capability reference) must be a non-empty,
+  non-whitespace stable string (`APPLICATION_EMPTY_REVISION` /
+  `APPLICATION_INVALID_IDENTIFIER`) — a missing revision is never defaulted;
+- required collections (application `routes`/`screens`/`actions`/`resources`,
+  screen `layout`, region `surfaces`, form `fields`) must be present arrays
+  (`APPLICATION_REQUIRED_MEMBER`);
+- required names and labels (screen `title`, `nav.label`, region `name`, form
+  field `label`, text `content`, action-surface `label`, list `titleField`,
+  chart `xField`/`yField`, conversation `messageField`/`authorField`/
+  `inputLabel`, table `columns[].field`, tab `surfaces`) must be present,
+  correctly typed and non-empty (`APPLICATION_REQUIRED_MEMBER` or the
+  structure-specific `INVALID_*_DECLARATION` code);
+- required cross-references are validated: a form's `submitActionId` must
+  reference a DECLARED action (`UNKNOWN_FORM_ACTION` — the previously unused
+  code), mutation/capability actions require `inputContractId`, list/table/
+  detail surfaces must reference declared views (`UNKNOWN_VIEW_REFERENCE`),
+  and provided resource definitions must declare their schema marker, id,
+  revision, identity key and field catalogue with typed fields.
+
+Multiple issues are reported together in stable path order; property
+insertion order never affects diagnostics; invalid input never produces a
+partial plan or an `applicationVersion`; throwing getters, revoked proxies
+and hostile enumeration fail closed without raw exceptions or echoed values.
+
+**Compatibility decision.** This is a validation bug fix against the schema
+the authoring API always declared — not a new schema version. Schema markers,
+canonicalization, ordering semantics, optional-member behavior and renderer
+behavior for valid plans are unchanged; valid `@1` and `@2` definitions
+compile with byte-identical canonical manifests and identity vectors
+(permanent vector tests pin the exact pre-correction bytes). Definitions that
+omitted required members were never valid under the declared model; they may
+now be rejected. Previously accepted malformed objects therefore fail
+compilation at the runtime boundary exactly as the exit gate requires.
 
 ## 3. Renderer model (`@vict/renderer-svelte`)
 
