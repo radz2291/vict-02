@@ -22,8 +22,10 @@ Stage 06 and Mastra work were NOT begun.
 | --- | --- |
 | Required starting SHA (`origin/main` at start) | `11e26447d645326aebf6560e3963476449fa840e` |
 | Remediation implementation (re-verified in ancestry) | `d346badd1d042afb61f6e36847b0716116bc4dd7` |
-| Implementation commit (this correction) | *(recorded after commit)* |
-| Documentation commit (this correction) | *(recorded after commit)* |
+| Implementation commit (this correction) | `23930e7` (`fix(stage-05): enforce application required members`) |
+| Documentation commit (this correction) | `1dc9083` (`docs(stage-05): record final exit-gate correction`) |
+| Test-file formatting fixup | `0a842f9` (`fix(stage-05): format the required-member test file`) |
+| Final remote tip after push (fast-forward `11e2644..0a842f9`) | `0a842f9e1e7b610b516abe52c550edc9231c6963` |
 
 `origin/main` was fetched and confirmed exactly equal to the required
 starting SHA before any change. The complete Stage 05 implementation, audit,
@@ -279,13 +281,36 @@ correction (including three consecutive full-suite runs).
 
 ## Fresh-clone and packed-consumer evidence
 
-Performed after pushing the correction commits (see "Post-push fresh-clone
-verification" in the completion response of this pass): fresh clone of the
-pushed remote tip into a temporary directory, clean initial tree, no
-generated `dist`, `typecheck` before `build`, the complete verification
-ladder, repeated required-member suites, the packed-JavaScript consumer
-rejection probe (via `verify:stage5`), `git diff --check`, clean status,
-clone removed.
+Performed after pushing the correction commits. Fresh `git clone` of the
+pushed remote tip `0a842f9e1e7b610b516abe52c550edc9231c6963` into a
+temporary directory:
+
+| Check | Result |
+| --- | --- |
+| Initial tree clean (`git status --short` empty) | yes |
+| No generated `dist` before build | yes (0) |
+| `npm ci` | 0 |
+| `npm run typecheck` (BEFORE build, no dist) | 0 |
+| `npm run format:check` / `npm run lint` | 0 / 0 |
+| `npm run build` | 0 (9 packages) |
+| `npm run test:unit` | 0 (54 files / 1329 tests) |
+| `npm run test:integration` | 0 (4 tests) |
+| `npm test` | 0 (58 files / 1378 tests) |
+| Required-member suite ×3 consecutive | 0, 0, 0 (767/767 each) |
+| `verify:consumer` / `verify:stage2` / `verify:stage3` / `verify:stage4` | 0 / 0 / 0 / 0 |
+| `verify:stage5` | 0 — ALL checks passed, including the packed-consumer required-member probe: a plain-JavaScript consumer of the PACKED emitted compiler rejects action-without-`revision`, route-without-`id`, screen-without-`title`, and still compiles valid `@1`/`@2` definitions with an `applicationVersion` |
+| `npm run example` | 0 — exactly 13 ordered ARA events |
+| `npm run bench` | 0 — 10 events per completed run |
+| `npm run example:application` | 0 — Stage 04 proof 17/17 |
+| `git diff --check` | 0 |
+| Clone clean afterwards | yes; clone removed |
+
+One pre-push iteration detail, recorded for accuracy: the first pushed tip
+(`1dc9083`) failed only `format:check` in the fresh clone (two lines of the
+new test file needed a prettier pass after a late typecheck cast fix);
+`0a842f9` is the formatting-only fixup, and the full ladder above was
+executed against it. No history rewrite occurred (normal fast-forward
+pushes only: `11e2644..1dc9083`, then `1dc9083..0a842f9`).
 
 ## Remaining genuine limitations
 
