@@ -1,15 +1,17 @@
 # Stage 04 — Capability and Application Authoring Foundation
 
-> **Authority:** `docs/VICT-SYSTEM-REFERENCE.md` v0.2.0 (Stage 04 implements
+> **Authority:** `docs/VICT-SYSTEM-REFERENCE.md` v0.2.1 (Stage 04 implements
 > the accepted Application Layer amendment and OPEN-003/OPEN-004 decisions)
 > **Scope:** the stable external authoring boundary for executable behavior
 > (contracts, capabilities, graphs, capability packs) and for application
 > structure (Application/Resource/Release Definitions, canonical identity,
 > renderer and application-data ports), plus a minimal SvelteKit vertical
 > proof.
-> **Status:** implemented; NOT independently verified. Stage 04 is not
-> marked `Verified` in the system reference — only an accepted independent
-> audit can do that.
+> **Status:** implemented and independently verified with non-blocking
+> issues — **STAGE 05 PERMITTED** (independent closure audit
+> `docs/report/VICT-STAGE-04-INDEPENDENT-CLOSURE-AUDIT.md`, commit
+> `83c97b4`, against final implementation `29c5a9d`; disposition recorded
+> in system reference v0.2.1).
 
 Stage 03 proved durable orchestration and permitted Stage 04 with three
 authoring-boundary Low findings. Stage 04 closes those findings, corrects
@@ -133,6 +135,17 @@ executable bindings.
   validated; `^0.x.y` follows standard semver (minor pins the range);
   invalid and prerelease ranges fail closed. No remote loading, no package
   installation, no untrusted execution.
+- **Direct capability registration is atomic (LOW-RE-3).** The public
+  `registerCapability` path stages the capability and its embedded
+  contracts through the SAME registry-level batch mechanism used by pack
+  installation (`CapabilityRegistry.installBatch`); every validation and
+  collision check runs against live + staged state, and the batch commits
+  only when all of them succeed. A capability-identity, input-contract,
+  output-contract, both-contracts, staged-then-failed, or hostile-contract
+  failure leaves the registry semantically unchanged (activation observes
+  no partial definition), the corrected registration retries successfully,
+  and pack installation keeps its atomicity with no nested-staging defect.
+  Registration order does not change activation identity.
 - **Co-installation rules (same contract id/revision, different objects):**
   two packs that bind DIFFERENT contract objects under the SAME contract
   id/revision cannot be co-installed — whichever installation runs second
@@ -165,14 +178,24 @@ executable bindings.
   configured.
 - Required configuration/secret names resolve eagerly BEFORE invocation
   (`VICT_RUNTIME_CONFIGURATION_UNAVAILABLE` /
-  `VICT_RUNTIME_SECRET_UNAVAILABLE` when absent or unprovisioned). Each
-  name is resolved AT MOST ONCE per invocation: required names resolve
-  eagerly into an invocation-scoped cache, optional declared names resolve
-  lazily once per name and are then cached. The handler's scoped reader
-  returns the SAME checked value — check and use are one consistent read
-  (TOCTOU removed, LOW-04-H). Provider exceptions become sanitized stable
-  authority failures; resolved values never enter events, traces, history,
-  or activation identity.
+  `VICT_RUNTIME_SECRET_UNAVAILABLE` when absent or unprovisioned). The
+  configuration and secret value caches AND their resolver functions are
+  created PER INVOCATION, inside the per-invocation execution boundary —
+  never per capability or per runtime (HIGH-04-D). Each name is resolved
+  AT MOST ONCE per invocation: required names resolve eagerly into that
+  invocation's private cache; optional declared names resolve lazily once
+  per name and are then cached for the remainder of that invocation only.
+  Repeated reads therefore deduplicate ONLY within one invocation;
+  sequential invocations each re-resolve (rotation is observable), and
+  concurrent invocations never share cached values or in-flight promises.
+  A transient provider failure — a thrown configuration read or a rejected
+  secret promise — fails only the current invocation with a sanitized
+  stable authority error and cannot poison later invocations: once the
+  provider recovers, the next invocation resolves fresh values on every
+  engine (sequential, durable in-memory, and SQLite). The handler's scoped
+  reader returns the SAME checked value — check and use are one consistent
+  read (TOCTOU removed, LOW-04-H). Resolved values never enter events,
+  traces, history, or activation identity.
 - Authority declarations are executable semantics: at registration every
   name is validated (non-empty, non-whitespace, no duplicates) and the
   declaration arrays are COPIED + FROZEN. The invocation gate closes over
@@ -269,6 +292,32 @@ remains Stage 05 scope.
   enumeration, invalid prototypes, unsupported value types) is converted
   into structured safe diagnostics — compilation NEVER throws for invalid
   definitions or releases; and
+- release compilation requires a COMPLETE binding context
+  (`CompileReleaseContext`) as a mandatory argument: an omitted, partial,
+  malformed, or hostile (throwing-getter/proxy) context fails closed with
+  the stable `RELEASE_BINDING_CONTEXT_REQUIRED` (or structured
+  `RELEASE_COMPILATION_FAILED`) diagnostic — compilation never throws raw
+  and never compiles silently, and no diagnostic echoes the received
+  values (RE-AUDIT MED-04-G-R). Within the context: renderer and
+  data-adapter identities are ALWAYS supplied and always cross-checked;
+  component-registry identity (the frozen identity snapshot plus the exact
+  component identity list) is supplied WHENEVER the release declares
+  components (a supplied-but-invalid optional value also fails closed);
+  exact activation references require the selected activation version
+  (stale references are rejected with `RELEASE_ACTIVATION_MISMATCH`),
+  while `latest` selection policies keep their documented deferred
+  behavior and require nothing.
+- release declarations are CLAIMS, not proof: the manifest's renderer,
+  component-registry, data-adapter, and activation text is never trusted
+  on its own, and deployment composition MUST source the verification
+  descriptors from the ACTUAL selected objects — the real renderer, the
+  component registry's identity snapshot, the real application-data
+  adapter, and the selected activation — never by copying values back out
+  of the manifest. VICT checks equality of the SUPPLIED snapshots; it
+  cannot prove that hostile deployment tooling supplied truthful ones
+  (accepted trust boundary, documented in `CompileReleaseContext`). The
+  Stage 04 proof compiles its release from its ACTUAL renderer, component
+  registry, data adapter, and selected activation (tamper-tested).
 - release bindings are cross-checked against the ACTUAL supplied
   identities (MED-04-G): renderer id/revision, component-registry
   id/revision and its exact component identity list (missing/extra/
@@ -385,7 +434,21 @@ enter either identity (unsafe provenance fields are rejected).
   rejected, seeds/inputs/outputs are deep-copy isolated (nested mutation
   probes cannot reach stored state), and invalid limits/offsets/
   projections fail structurally without echoing attacker-controlled
-  values. `createInMemoryApplicationData` is the Stage 04 reference
+  values. Query requests have a CLOSED runtime schema: unknown top-level
+  fields are rejected with `DATA_INVALID_REQUEST` and never echoed;
+  `filters` values are restricted to the primitive filter domain — exactly
+  `string`, a finite canonical `number` (no `-0`), or `boolean` — and
+  objects (including `{ $ne: ... }`), arrays, `null`, `undefined`,
+  non-finite numbers, functions, BigInt, and symbols are rejected with
+  safe non-echoing diagnostics, as are malformed `filters` containers
+  (LOW-RE-4). Matching remains primitive equality; no query-language or
+  operator semantics exist. Known Low residue (LOW-C-1): a hostile getter
+  or hostile Proxy inside an in-process `filters` container can produce a
+  raw rejection rather than a structured diagnostic — fail-closed and not
+  remotely reachable; Stage 05's production adapter must convert hostile
+  query/mutation request processing failures into stable, non-echoing
+  structured diagnostics and add permanent hostile-input conformance
+  coverage. `createInMemoryApplicationData` is the Stage 04 reference
   adapter; the production SQLite domain-data adapter is explicitly Stage 05.
 
 Application data remains separate from Vict operational stores at the
@@ -447,7 +510,9 @@ pinning/TOCTOU, component/release identity, capability strictness,
 canonical identity domain, application-data semantics, renderer local
 actions and hostile-input canaries). Corrections are documented in
 `docs/report/VICT-STAGE-04-AUDIT-REMEDIATION-REPORT.md`. Stage 04 remains
-NOT independently verified — a focused independent re-audit decides.
+NOT independently verified at this point in history — a focused independent
+re-audit decides. (Historical status: superseded by the focused re-audit,
+the final remediation, and the independent closure audit — see §13.)
 
 ## 10. Stage 03 Low findings closed
 
@@ -541,3 +606,55 @@ renderer/data-adapter packed verification, and the complete §17.10
 reference proof. Stage 04 stops at the authoring foundation, the neutral
 contracts with conformance fixtures, and the minimal vertical proof.
 No Stage 05 work has begun.
+
+## 13. Independent closure
+
+The independent disposition is **VERIFIED WITH NON-BLOCKING ISSUES —
+STAGE 05 PERMITTED**, recorded by
+`docs/report/VICT-STAGE-04-INDEPENDENT-CLOSURE-AUDIT.md` (commit
+`83c97b4`), run against final implementation `29c5a9d` and the final
+remediation report `d51818c` in a fresh clone. The closure audit
+re-verified both re-audit blockers (HIGH-04-D, RE-AUDIT MED-04-G-R) with
+fresh adversarial probes and reproduced them as negative controls at
+`77e4dee`, closed LOW-RE-1 through LOW-RE-4, and reproduced the complete
+verification ladder in the fresh clone: 535 unit tests plus 4 integration
+tests (539 total) passing three consecutive runs, the application proof at
+17/17, ARA at exactly 13 events, and the benchmark at exactly 10 events
+per completed run. No Critical, High, or Medium findings remain.
+
+Two new Low findings were recorded:
+
+- **LOW-C-1 (open — Stage 05 acceptance item):** a hostile getter or
+  hostile Proxy in an in-process query `filters` container produces a raw
+  rejection instead of a structured diagnostic. It is fail-closed (no rows
+  return; authorization has already completed) and not remotely reachable
+  through the current proof. Stage 05's production SQLite
+  application-domain adapter must convert hostile query/mutation request
+  processing failures into stable, non-echoing structured diagnostics, and
+  permanent conformance coverage for throwing getters and hostile proxies
+  must be added. Stage 04 production code is intentionally not modified
+  during closure.
+- **LOW-C-2 (closed by this document):** the final remediation report's
+  file-change list overstated which architecture sections that pass had
+  updated — the actual remediation diff for this document contained ONLY
+  the two §4 lines making the binding context mandatory (no §3.1 rewrite,
+  no §9 changes, and no §9.2 existed). The historical report is preserved
+  unchanged. The clarifications now present in §3 (atomic direct
+  registration), §3.1 (per-invocation caches and resolvers), §5 (complete
+  binding context; declarations are claims), and §8 (closed query schema
+  and primitive filter domain) are added at documentation closure and were
+  NOT present in the earlier remediation commit.
+
+Accepted informational boundaries are unchanged: supplied binding
+snapshots cannot prove hostile deployment tooling truthful; identity
+depends on declared revisions and author/build discipline; Node 24 and a
+second operating system were unavailable for closure-audit execution (a
+second Node runtime, v22.22.3, provided partial targeted mitigation); and
+the existing Stage 03 informational carry-forwards remain unchanged.
+
+Stage 04 commit/audit history (preserved, not rewritten):
+`0f84d2e` (initial audited implementation) → `4ed8686` (original
+independent audit) → `77e4dee` (first remediation target) → `a124f37`
+(focused independent re-audit) → `29c5a9d` (final remediation
+implementation) → `d51818c` (final remediation report) → `83c97b4`
+(independent closure audit).
