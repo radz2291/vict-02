@@ -1,10 +1,10 @@
 # VICT System Reference
 
 > **Canonical title:** Vict Architecture and Operating Model — Authoritative System Reference<br>
-> **Document version:** 0.2.1<br>
+> **Document version:** 0.2.2<br>
 > **System generation:** Greenfield<br>
 > **Status:** Authoritative baseline; Application Layer amendment accepted; future features are individually marked<br>
-> **Last updated:** 2026-09-03 (Stage 4 independently verified with non-blocking issues)<br>
+> **Last updated:** 2026-09-03 (post-closure consistency reconciliation: current package topology, package responsibilities, Stage 3 carry-forward wording, and open decisions aligned with the verified Stage 4 closure; Stage 4 independently verified with non-blocking issues)<br>
 > **Current delivery point:** Stages 1, 1.1, 2, 3, and 4 independently verified<br>
 > **Next permitted stage:** Stage 5 — Application delivery layer (permitted; not implemented)
 
@@ -240,30 +240,53 @@ The boundary between definition and activation is a trust boundary. The boundary
 
 ### 5.1 Current verified package topology
 
-Stage 1 established these greenfield packages:
+Stages 1 through 4 established this verified greenfield package set and proofs:
 
 | Package | Current responsibility | Status |
 |---|---|---|
-| @vict/contracts | Contracts and validation primitives | Verified with Stage 1 qualifications |
-| @vict/kernel | Graph validation and activation semantics | Verified with Stage 1 qualifications |
-| @vict/runtime | In-memory execution, registry, effects, traces | Verified with Stage 1 qualifications |
-| @vict/sdk | Public convenience facade over lower packages | Verified with Stage 1 qualifications |
-| examples/ara-proof | Deterministic offline walking proof | Verified |
+| @vict/contracts | Schema-neutral contract protocol, safe issues, stable references | Verified with Stage 1 qualifications |
+| @vict/sdk | Lightweight capability/graph/application/pack authoring ABI and public types | Verified (Stage 4) |
+| @vict/kernel | Pure validation, canonicalization, activation semantics, authoring diagnostics | Verified through Stage 4 |
+| @vict/runtime | Execution, effects, registry, least-authority authority gating, durable coordination, atomic capability/pack registration | Verified through Stage 4 |
+| @vict/store-sqlite | SQLite operational stores (built-in node:sqlite, WAL, versioned migrations) | Verified (Stage 2) |
+| @vict/application | Framework-neutral Application/Resource/Release model, canonical identity, release compilation, renderer/component/data ports and shared conformance fixtures | Verified (Stage 4) |
+| packs/notes-pack, packs/ledger-pack | Two verified local capability packs under the shared pack-conformance suite | Verified (Stage 4) |
+| examples/ara-proof | Deterministic offline walking proof (13 events) | Verified |
+| examples/application-proof | Minimal real SvelteKit vertical proof of the neutral boundary (local, data, and Vict actions) | Verified (Stage 4; not the Stage 5 production renderer) |
 
-The current import direction is:
+The verified import direction is acyclic:
 
-```mermaid
-flowchart LR
-    C["@vict/contracts"] --> K["@vict/kernel"]
-    K --> R["@vict/runtime"]
-    R --> S["@vict/sdk"]
+```text
+@vict/contracts
+       ↓
+@vict/sdk
+       ↓
+@vict/kernel
+       ↓
+@vict/runtime
+       ↓
+@vict/store-sqlite
 ```
 
-This is valid for the walking kernel, but it makes the current SDK a top-level facade rather than a lightweight authoring ABI.
+The application branch is separate from the execution spine:
+
+```text
+@vict/contracts ─┐
+                 ├→ @vict/application
+@vict/sdk ───────┘
+```
+
+- `@vict/sdk` is the lightweight authoring ABI; it depends directly only on `@vict/contracts` (plus an optional `zod` peer for the `./zod` subpath) and no longer depends on, or re-exports, the runtime.
+- `@vict/kernel` and `@vict/runtime` consume the SDK's authoring declarations; runtime composition APIs are imported explicitly from `@vict/runtime`.
+- `@vict/application` depends only on `@vict/contracts` and `@vict/sdk`; it remains browser-safe and independent of the runtime, SQLite, Svelte, and Zod.
+- `@vict/store-sqlite` remains below the runtime.
+- The graph is acyclic and is verified through package inspection, the build, and isolated packed consumers (`verify:consumer` / `verify:stage4`).
+
+The Stage 5 production SvelteKit renderer/component suite, the host scaffolder, and the SQLite application-domain adapter are NOT implemented; §5.2 remains the accepted target those stages continue toward.
 
 ### 5.2 Accepted target topology
 
-Before a third-party capability ecosystem is stabilized, the SDK should become a lightweight authoring layer that capability packs can import without depending on the runtime.
+The SDK authoring-ABI part of this target is now verified (Stage 4): `@vict/sdk` is a lightweight authoring layer that capability packs import without depending on the runtime. The remaining packages in the diagram are accepted targets and remain stage-gated.
 
 ```mermaid
 flowchart TB
@@ -283,7 +306,7 @@ Dependency arrows mean “is imported by the next layer.” Exact package extrac
 | Package or area | Responsibility | Maturity | Delivery |
 |---|---|---|---|
 | @vict/contracts | Schema-neutral contract protocol, safe issues, stable references | Accepted | In Progress |
-| @vict/sdk | Capability/graph authoring ABI and public types | Accepted | Planned |
+| @vict/sdk | Capability/graph/application/pack authoring ABI and public types | Accepted | Verified |
 | @vict/kernel | Pure validation, canonicalization, activation, planning | Invariant | In Progress |
 | @vict/runtime | Execution, effects, scheduling, ports, durable coordination | Invariant | In Progress |
 | @vict/control | ChangeSet lifecycle, policies, approvals, activation management | Accepted | Planned |
@@ -291,10 +314,10 @@ Dependency arrows mean “is imported by the next layer.” Exact package extrac
 | @vict/client | Typed transport client, if evidence supports extraction | Provisional | Not Scheduled |
 | @vict/cli | Local inspection, execution, verification, and operator commands | Accepted | Planned |
 | @vict/builder-kit | Agent/human repository context, tools, checks, and handoff protocol | Accepted | Planned |
-| application model/compiler | Framework-neutral definitions, validation, canonical identity, binding plans, and application release manifests | Accepted | Planned |
-| Svelte renderer and host | Canonical first renderer, SvelteKit shell, built-in component roles, and custom-component registry | Accepted | Planned |
-| application data adapters | Domain-resource persistence and query/mutation ports, kept separate from operational orchestration stores | Accepted | Planned |
-| capability packs | Domain integrations and reusable behavior | Accepted | Planned |
+| application model/compiler (implemented as @vict/application) | Framework-neutral definitions, validation, canonical identity, binding plans, and application release manifests | Accepted | Verified |
+| Svelte renderer and host | Canonical first renderer, SvelteKit shell, built-in component roles, and custom-component registry (only the minimal Stage 4 vertical proof exists; the production component suite and host scaffolder remain Stage 5) | Accepted | In Progress |
+| application data adapters | Domain-resource persistence and query/mutation ports, kept separate from operational orchestration stores (neutral port, shared conformance suite, and in-memory reference adapter verified; the production SQLite adapter and its migrations remain Stage 5) | Accepted | In Progress |
+| capability packs | Capability-pack manifest, local atomic installation, and shared conformance foundation (the broader reusable domain ecosystem remains a later-stage concern) | Accepted | Verified |
 | studio | Human control/inspection interface | Accepted | Planned |
 
 | ID | Requirement | Maturity | Delivery |
@@ -1697,11 +1720,16 @@ Add real workflow continuity on top of proven storage.
 - The clean verification ladder passed with 345 unit tests, 4 integration tests, and 349 total tests; the full suite passed three consecutive runs, six real-process restart fixtures passed, ARA retained 13 events, and the three-node benchmark retained 10 events. Node 22.13.1 ran the full ladder; Node 24.10.0 passed lint, typecheck, format, and targeted adapter suites.
 - No Critical, High, or Medium findings remain.
 
-**Non-blocking carry-forward**
+**Non-blocking carry-forward (statuses reconciled after the verified Stage 4 closure)**
 
-1. A throwing author contract parser or hostile issue getter can leave a durable run silently re-claimed instead of committing a sanitized terminal failure.
-2. The compiler can silently ignore unknown node fields supplied by untyped JavaScript authors.
-3. Wait-level `timeoutMs` and `delayMs` do not currently reject zero/negative bounds: finite non-positive values produce immediately due timers; non-finite values fail closed later at the persisted-value boundary. This behavior is deterministic and non-wedging but requires explicit validation semantics and documentation.
+Closed by verified Stage 04 — authoritative closure-audit record `83c97b4` and the Stage 4 independent disposition below; the original Stage 3 re-audit wording above is preserved unchanged:
+
+1. Throwing author contract parser / hostile issue getter — CLOSED in Stage 04: every supported validation boundary now commits a sanitized terminal failure (sequential, durable in-memory, and SQLite engines, including close/reopen) instead of a silent reclaim loop.
+2. Unknown node fields supplied by untyped JavaScript authors — CLOSED in Stage 04: graph, node, edge, wait, and retry boundaries reject unknown fields with structured, path-sorted, insertion-order-independent diagnostics (application/pack/release boundaries were closed at their own schemas).
+3. Wait-level `timeoutMs`/`delayMs` bound validation — CLOSED in Stage 04: present bounds must be positive finite safe integers, enforced at graph compilation with the stable `INVALID_WAIT_BOUND` diagnostic (no ceiling; scheduling-time overflow fails structurally).
+
+Still open or informational:
+
 4. Completion-phase store faults are recovered safely after lease lapse but are not immediately surfaced by the worker loop.
 5. Non-cooperative in-flight capabilities retain the documented cooperative-cancellation race semantics.
 6. The full Stage 3 verification ladder was reproduced on Windows; POSIX Stage 3 execution remains environmental follow-up rather than a gating defect.
@@ -2021,6 +2049,7 @@ The following accepted notes remain visible rather than being hidden by the acce
 - **Accepted limitation:** trace key-name redaction is best-effort, but values are structurally omitted regardless of key name.
 - **Closed during Stage 4 (verified by the independent closure audit):** all three Stage 3 authoring-boundary Low carry-forwards are closed. Throwing author contract parsers and hostile issue getters now commit a sanitized terminal failure on every supported boundary (sequential, durable in-memory, SQLite, including close/reopen) instead of a silent reclaim loop; unknown authoring fields on graph/node/edge/wait/retry and application/pack/release boundaries are rejected with structured, path-sorted, insertion-order-independent diagnostics; and wait-level `timeoutMs`/`delayMs` bounds are enforced at compilation with the stable `INVALID_WAIT_BOUND` diagnostic (positive finite safe integers; no ceiling; scheduling-time overflow fails structurally).
 - **Low (LOW-C-1, Stage 5 acceptance item):** a hostile getter or hostile Proxy in an in-process query `filters` container can produce a raw rejection (carrying the hostile message) rather than a structured diagnostic in the reference application-data adapter. It is fail-closed (no rows return; authorization has already completed) and not remotely reachable through the current proof. Stage 5's production SQLite application-domain adapter MUST convert hostile query/mutation request processing failures into stable, non-echoing structured diagnostics, and permanent conformance coverage for throwing getters and hostile proxies MUST be added. Stage 4 production code is not modified for this during closure.
+- **Stage 5 acceptance item (Svelte reactivity warnings, reproduced during the v0.2.2 reconciliation):** the Stage 4 minimal single-route SvelteKit proof passes 17/17 with exit 0 while emitting Svelte `state_referenced_locally` warnings for the initial captures of `plan`, `path`, and `registry` in the proof host. This is non-blocking for Stage 4's minimal proof. Stage 5's production renderer MUST react correctly when route, plan, rows, or registry inputs change; client-side navigation MUST NOT retain a stale route or component resolution; the Stage 5 application build MUST be free of these Svelte reactivity warnings; and permanent tests MUST update renderer inputs without forcing a complete remount. The Stage 4 proof implementation is intentionally not modified during reconciliation.
 - **Low (LOW-C-2, closed at documentation closure):** the final remediation report's file-change list overstated which architecture-document sections that pass had updated (the actual remediation diff for the architecture document contained only the two §4 lines making the binding context mandatory). The historical report is preserved unchanged; the architecture document itself now explicitly documents the per-invocation caches/resolvers, the mandatory release-binding context, atomic direct registration, and the strict query boundary, and records the closure disposition.
 - **Accepted trust boundary (release bindings):** VICT checks equality of SUPPLIED binding snapshots and cannot prove that hostile deployment tooling supplied truthful ones; deployment composition must source verification descriptors from the actual selected renderer, component-registry identity snapshot, application-data adapter, and selected activation.
 - **Informational (Stage 3, unchanged):** completion-phase store faults recover safely after lease lapse but are not immediately surfaced by the worker loop; non-cooperative in-flight capability cancellation retains documented cooperative race semantics.
@@ -2092,8 +2121,8 @@ These questions do not block the current stage.
 |---|---|---|---|
 | OPEN-001 | Which SQLite implementation and migration library? | Decided for Stage 2: built-in `node:sqlite` with a hand-rolled forward migration runner (better-sqlite3 v13 segfaults on the supported runtime; v12 couples Node upgrades to native prebuilds). Engines floor raised explicitly to >=22.13.0. | Decided (Stage 2; audit-accepted) |
 | OPEN-002 | Exact durable control-node syntax? | Decided and independently verified in Stage 3: typed route keys, explicit wait/fan/join, no dynamic/nested fan-out, no general loop | Decided (Stage 3; re-audit accepted) |
-| OPEN-003 | When should SDK dependency direction be refactored? | After activation integrity, before external capability ABI is declared stable | Stage 4 |
-| OPEN-004 | How is structural contract compatibility represented? | Exact ID/revision first; add conservative tooling only with evidence | Stage 4 |
+| OPEN-003 | When should SDK dependency direction be refactored? | Decided in Stage 4: `@vict/sdk` is the lightweight authoring ABI and depends directly only on `@vict/contracts`; kernel and runtime consume the SDK's authoring declarations; runtime composition remains explicitly imported from `@vict/runtime`; the acyclic direction is verified by package inspection, the build, and isolated packed consumers | Decided (Stage 4; audit-accepted) |
+| OPEN-004 | How is structural contract compatibility represented? | Decided in Stage 4: exact contract ID and revision remain the default compatibility rule; compatibility is never inferred from TypeScript structure, Zod internals, or runtime implementation; `vict.neutral.json` is an explicit bounded edge-compatibility exception that permits routing but does not bypass validation — every downstream capability still executes its own declared input contract, and incompatible specific-to-specific contracts remain rejected | Decided (Stage 4; audit-accepted) |
 | OPEN-005 | What build provenance/signing format is required? | Optional build digest locally; formal signing when distribution begins | Stages 4/10 |
 | OPEN-006 | Which server transports are standard? | Versioned HTTP plus cursor events; SSE likely before WebSocket | Stage 6 |
 | OPEN-007 | How are run-state migrations expressed? | Explicit audited migration, never automatic activation substitution | Stage 6 or later |
@@ -2103,7 +2132,7 @@ These questions do not block the current stage.
 | OPEN-011 | Which UI framework is the first renderer? | Decided: framework-neutral Application Definition with SvelteKit as the canonical first renderer; React requires a genuine second consumer | Decided (v0.2.0 amendment) |
 | OPEN-012 | Is application delivery generated source or runtime rendering? | Decided: one-time SvelteKit host scaffold plus definition-driven rendering and explicit custom code islands; no destructive repeated generation or promised round-trip | Decided (v0.2.0 amendment) |
 | OPEN-013 | Which Svelte component/chart libraries implement the reference semantic roles? | Select through Stage 5 evidence; library types must not enter the neutral Application Definition | Stage 5 design |
-| OPEN-014 | How are Resource Definitions migrated by the reference domain-data adapter? | Separate SQLite domain schema/migrations; exact migration API follows Stage 4 resource semantics and must not couple to operational migrations | Stages 4/5 |
+| OPEN-014 | How are Resource Definitions migrated by the reference domain-data adapter? | Separate SQLite domain schema/migrations; the exact migration API builds on the verified Stage 4 resource semantics and must not couple to operational migrations | Stage 5 |
 
 An open decision must not be filled in by convenience during unrelated implementation. The stage handoff either keeps it open or records an accepted decision.
 
@@ -2227,4 +2256,4 @@ Otherwise it probably belongs in an application, capability pack, adapter, devel
 
 ---
 
-**End of authoritative baseline v0.2.1**
+**End of authoritative baseline v0.2.2**
