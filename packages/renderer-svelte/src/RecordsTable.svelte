@@ -23,7 +23,6 @@
   interface QueryPayload {
     readonly filters?: Record<string, string>;
     readonly search?: { readonly text: string; readonly fields: readonly string[] };
-    readonly search?: { readonly text: string; readonly fields: readonly string[] };
     readonly sort?: readonly { readonly field: string; readonly direction: 'asc' | 'desc' }[];
     readonly limit?: number;
     readonly offset?: number;

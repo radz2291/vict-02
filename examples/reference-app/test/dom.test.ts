@@ -111,6 +111,51 @@ describe('reference application DOM rendering', () => {
     expect(nameInput?.value).toBe('Alpha');
   });
 
+  it('prefilled edit form submits typed numeric values (HIGH-05-A regression)', async () => {
+    const { server } = makeServer();
+    const route = await server.loadRoute('/projects/alpha-1');
+    if (route === null) {
+      throw new Error('route not found');
+    }
+    const captured: { actionId: string; input: unknown }[] = [];
+    const instance = renderVictApplication({
+      plan: route.plan,
+      registry: createReferenceRegistry(),
+      dispatch: async (actionId: string, input?: unknown) => {
+        captured.push({ actionId, input });
+        return server.dispatch(actionId, input);
+      },
+      path: '/projects/alpha-1',
+      viewData: route.viewData as never,
+      record: route.record,
+    });
+    mounted.push(instance);
+    // Edit form (second tab panel): change ONLY the name, leave the numeric
+    // field untouched, submit through the real form event.
+    const nameInput = instance.output.querySelector<HTMLInputElement>('input[name="name"]');
+    expect(nameInput?.value).toBe('Alpha');
+    nameInput!.value = 'Alpha (edited)';
+    nameInput!.dispatchEvent(new window.Event('input', { bubbles: true }));
+    flushSync();
+    const editForm = instance.output.querySelector('form[data-surface="fm.project-edit"]');
+    expect(editForm).not.toBeNull();
+    editForm!.dispatchEvent(new window.Event('submit', { bubbles: true, cancelable: true }));
+    flushSync();
+    await new Promise((resolve) => setTimeout(resolve, 20));
+    expect(captured.length).toBe(1);
+    expect(captured[0].actionId).toBe('act.updateProject');
+    const input = captured[0].input as Record<string, unknown>;
+    // The untouched numeric prefill is dispatched as a NUMBER.
+    expect(typeof input.budget).toBe('number');
+    expect(input.budget).toBe(100);
+    expect(input.name).toBe('Alpha (edited)');
+    expect(input.__identity).toBe('alpha-1');
+    // The dispatch succeeds across the real boundary (no CONTRACT_REJECTED).
+    expect(await server.dispatch('act.queryProjects', { filters: { status: 'active' } })).toEqual(
+      expect.objectContaining({ ok: true }),
+    );
+  });
+
   it('renders the conversation with participant roles and input', async () => {
     const { instance, server } = await mountApp('/conversation');
     expect(instance.output.querySelector('[data-testid="conversation-input"]')).not.toBeNull();

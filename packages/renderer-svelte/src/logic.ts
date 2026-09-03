@@ -343,6 +343,26 @@ export function validatePlanForRenderer(
   }
 }
 
+/**
+ * The closed heading vocabulary for the `text` role. The emitted tag name
+ * can ONLY come from this compiler-validated closed set (declared `level`
+ * 1–6); arbitrary element injection is impossible because no other value
+ * can ever reach the element name.
+ */
+const HEADING_TAGS: readonly string[] = Object.freeze(['h1', 'h2', 'h3', 'h4', 'h5', 'h6']);
+
+/**
+ * Map a declared text `level` (1–6) to its heading tag from the closed
+ * vocabulary. Unleveled (or out-of-vocabulary) text renders as a
+ * non-heading paragraph, exactly as documented.
+ */
+export function headingTagForLevel(level: unknown): string | null {
+  if (typeof level !== 'number' || !Number.isSafeInteger(level) || level < 1 || level > 6) {
+    return null;
+  }
+  return HEADING_TAGS[level - 1] ?? null;
+}
+
 /** The complete Stage 05 built-in role vocabulary. */
 export const BUILT_IN_ROLES: readonly SurfaceRole[] = [
   'text',

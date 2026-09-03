@@ -119,6 +119,45 @@
   });
 
   let mobileNavOpen = $state(false);
+  let navToggle = $state<HTMLButtonElement | null>(null);
+
+  // Mobile navigation policy (MED-05-A remediation): the menu CLOSES when
+  // the application navigates to another screen, so the in-flow nav panel
+  // never surprises the user on the new screen; it stays open while the
+  // user interacts within the current screen. The layout policy itself is
+  // declared in theme.css (the nav is an explicit mobile grid row — never
+  // an implicitly placed column).
+
+  $effect(() => {
+    void path;
+    mobileNavOpen = false;
+  });
+
+  function closeMobileNav(): void {
+    mobileNavOpen = false;
+    // Keyboard users return to the menu control after closing.
+    navToggle?.focus();
+  }
+
+  // Keyboard policy: Escape closes the open mobile navigation and returns
+  // focus to the menu control. Only Escape raised INSIDE the open nav (or
+  // on the menu control itself) reacts, so overlays keep their own Escape
+  // semantics.
+  function windowKeydown(event: KeyboardEvent): void {
+    if (!mobileNavOpen || event.key !== 'Escape') {
+      return;
+    }
+    const target = event.target;
+    if (!(target instanceof Element)) {
+      return;
+    }
+    const insideNav = target.closest('#vict-nav') !== null;
+    const onToggle = target.classList.contains('vict-nav-toggle');
+    if (insideNav || onToggle) {
+      event.preventDefault();
+      closeMobileNav();
+    }
+  }
 
   // ---- Action state ------------------------------------------------------
   let lastResult = $state<ActionResult | null>(null);
@@ -245,6 +284,7 @@
             class="vict-btn vict-btn--secondary vict-nav-toggle"
             aria-expanded={mobileNavOpen}
             aria-controls="vict-nav"
+            bind:this={navToggle}
             onclick={() => (mobileNavOpen = !mobileNavOpen)}
           >
             ☰ Menu
@@ -350,6 +390,8 @@
   </div>
   {/if}
 </div>
+
+<svelte:window onkeydown={windowKeydown} />
 
 <style>
   .vict-nav-toggle {

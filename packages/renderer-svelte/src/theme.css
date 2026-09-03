@@ -144,11 +144,20 @@
   margin-bottom: calc(var(--vict-spacing-unit) * 4);
 }
 
-/* Mobile: single column, collapsible navigation. */
+/* Mobile: single column, collapsible navigation.
+
+   The navigation is an EXPLICIT grid row ('header' 'nav' 'main') so the
+   opened panel is placed between the header and the main content — never
+   auto-placed into an implicit column, which would squeeze the main
+   content into an unusable width (MED-05-A remediation). The desktop
+   `grid-area: nav` assignment keeps matching the declared mobile area
+   name, so no implicit track is ever created at any breakpoint. When the
+   menu is closed the nav is `display: none` and its row collapses to
+   zero height. */
 @media (max-width: 719px) {
   .vict-shell {
     grid-template-columns: minmax(0, 1fr);
-    grid-template-areas: 'header' 'main';
+    grid-template-areas: 'header' 'nav' 'main';
   }
   .vict-nav {
     position: static;

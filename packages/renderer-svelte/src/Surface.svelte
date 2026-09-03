@@ -7,7 +7,7 @@
    */
   import type { ComponentRegistry } from '@vict/application/renderer';
   import type { VictPlanView, PlanSurface } from './logic.js';
-  import { isVisible, isDisabled, type ViewDatum, type ActionResult } from './logic.js';
+  import { isVisible, isDisabled, headingTagForLevel, type ViewDatum, type ActionResult } from './logic.js';
   import RecordsTable from './RecordsTable.svelte';
   import ChartSurface from './ChartSurface.svelte';
   import ConversationSurface from './ConversationSurface.svelte';
@@ -122,8 +122,11 @@
 {#snippet renderSurface(sn: PlanSurface)}
   {#if isVisible(sn, context)}
     {#if sn.role === 'text'}
-      {#if typeof sn.level === 'number' && sn.level >= 1 && sn.level <= 6}
-        <h2 class="vict-text" data-surface={sn.id}>{String(sn.content)}</h2>
+      {@const headingTag = headingTagForLevel(sn.level)}
+      {#if headingTag !== null}
+        <!-- The tag name comes ONLY from the compiler-validated closed
+             heading vocabulary (logic.ts HEADING_TAGS) — never arbitrary. -->
+        <svelte:element this={headingTag} class="vict-text" data-surface={sn.id}>{String(sn.content)}</svelte:element>
       {:else}
         <p class="vict-text" data-surface={sn.id}>{String(sn.content)}</p>
       {/if}
