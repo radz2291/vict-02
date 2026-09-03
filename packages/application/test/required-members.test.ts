@@ -1430,7 +1430,10 @@ describe('diagnostics are deterministic, path-sorted and non-echoing', () => {
       unknown
     >[];
     (screen[0] as Record<string, unknown>).title = null;
-    const view = (input.application as unknown as Record<string, unknown>).views as Record<string, unknown>[];
+    const view = (input.application as unknown as Record<string, unknown>).views as Record<
+      string,
+      unknown
+    >[];
     (view[0] as Record<string, unknown>).resourceRevision = {
       toString: () => 'SECRET-canary-string',
       valueOf: () => 'SECRET-canary-string',
@@ -1452,7 +1455,9 @@ describe('diagnostics are deterministic, path-sorted and non-echoing', () => {
 
   it('invalid input never receives an applicationVersion (no partial plan)', () => {
     const input = freshInput(APPLICATION_DEFINITION_SCHEMA);
-    ((input.application as unknown as Record<string, unknown>).actions as Record<string, unknown>[])[1] = {
+    (
+      (input.application as unknown as Record<string, unknown>).actions as Record<string, unknown>[]
+    )[1] = {
       kind: 'navigation',
       id: 'act.nav2',
     };
