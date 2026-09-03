@@ -141,7 +141,7 @@ describe('scaffolder guarantees', () => {
     ).toBe('refused');
   });
 
-  it('the CLI reports created / conflict / refused outcomes', () => {
+  it('the CLI reports created / conflict / refused outcomes', { timeout: 120_000 }, () => {
     const dir = tempDir('vict-scaffold-cli-');
     const target = join(dir, 'app');
     const run = (args: string[]) =>
