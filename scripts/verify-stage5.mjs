@@ -18,7 +18,11 @@
  *     passes its definition/DOM/real-process-HTTP(restart)/REAL-browser
  *     (desktop + mobile, axe accessibility) suites;
  *   - the scaffolder generates a runnable host from PACKED TARBALLS and the
- *     generated project installs and builds in isolation.
+ *     generated project installs and builds in isolation;
+ *   - a plain-JavaScript consumer of the PACKED compiler rejects malformed
+ *     definitions missing required members (action revision, route id,
+ *     screen title — Stage 05 final exit-gate correction, LOW-05-A) and
+ *     still compiles valid @1/@2 definitions with an applicationVersion.
  */
 import { spawnSync } from 'node:child_process';
 import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
@@ -64,6 +68,84 @@ function check(condition, label) {
     failures += 1;
   }
 }
+
+/**
+ * Runtime-boundary probe executed INSIDE the packed consumer (plain
+ * JavaScript, emitted dist output — no TypeScript, no workspace sources).
+ * Exits non-zero on any violation; never mutates anything.
+ */
+const REQUIRED_MEMBERS_PROBE = `
+import { compileApplication } from '@vict/application';
+import { APPLICATION_DEFINITION_SCHEMA, APPLICATION_DEFINITION_SCHEMA_V2 } from '@vict/sdk';
+
+function base(schema) {
+  return {
+    schema,
+    id: 'app.packed-probe',
+    revision: '1',
+    routes: [{ id: 'home', path: '/', screenId: 's.main' }],
+    screens: [{
+      id: 's.main',
+      title: 'Main',
+      layout: [{ name: 'main', surfaces: [{ role: 'text', id: 't.hi', content: 'hello' }] }],
+    }],
+    actions: [{ kind: 'local', id: 'act.ok', revision: '1' }],
+    resources: [],
+  };
+}
+
+function assertRejected(schema, mutate, expectedCode) {
+  const application = mutate(base(schema));
+  const result = compileApplication({ application, resources: [] });
+  if (result.ok) {
+    console.error(
+      'packed probe FAIL: malformed definition was ACCEPTED (' + expectedCode + ')',
+    );
+    process.exit(1);
+  }
+  const codes = result.issues.map((issue) => issue.code);
+  if (!codes.includes(expectedCode)) {
+    console.error(
+      'packed probe FAIL: expected ' + expectedCode + ', got ' + JSON.stringify(result.issues),
+    );
+    process.exit(1);
+  }
+}
+
+assertRejected(
+  APPLICATION_DEFINITION_SCHEMA,
+  (app) => ({ ...app, actions: [{ kind: 'local', id: 'act.broken' }] }),
+  'APPLICATION_EMPTY_REVISION',
+);
+assertRejected(
+  APPLICATION_DEFINITION_SCHEMA_V2,
+  (app) => ({ ...app, routes: [{ path: '/', screenId: 's.main' }] }),
+  'APPLICATION_EMPTY_ID',
+);
+assertRejected(
+  APPLICATION_DEFINITION_SCHEMA_V2,
+  (app) => ({
+    ...app,
+    screens: [{ id: 's.main', layout: app.screens[0].layout }],
+  }),
+  'APPLICATION_REQUIRED_MEMBER',
+);
+
+for (const schema of [APPLICATION_DEFINITION_SCHEMA, APPLICATION_DEFINITION_SCHEMA_V2]) {
+  const result = compileApplication({ application: base(schema), resources: [] });
+  if (!result.ok) {
+    console.error(
+      'packed probe FAIL: valid definition rejected: ' + JSON.stringify(result.issues),
+    );
+    process.exit(1);
+  }
+  if (!/^v1_[0-9a-f]{64}$/.test(result.plan.applicationVersion)) {
+    console.error('packed probe FAIL: invalid applicationVersion');
+    process.exit(1);
+  }
+}
+console.log('packed required-member probe: all assertions passed');
+`;
 
 // 1. Required build prerequisites (all packages, fresh emit).
 step('build all packages', npm, ['run', 'build'], { timeout: 600_000, shell });
@@ -191,7 +273,18 @@ function packedScaffolderCheck() {
     }
     writeFileSync(pkgPath, JSON.stringify(pkg, null, 2));
 
-    const install = run(npm, ['install', '--no-audit', '--no-fund'], {
+    // --legacy-peer-deps works around an npm 10.9.2 arborist crash
+    // ("Cannot read properties of null (reading 'edgesOut')" in
+    // #loadPeerSet) triggered by vitest 4.x's OPTIONAL browser-provider
+    // peer ranges (`*` -> current @vitest/browser-* 5.x metadata). The
+    // crash reproduces with a pristine `npm install` of ONLY the standard
+    // devDependencies (no Vict packages), so it is environmental, not a
+    // property of the packed artifacts. The flag changes only the peer
+    // RESOLUTION strategy: every real peer of the generated host (vite,
+    // svelte, vitest, kit) is already an explicit devDependency, and the
+    // check still requires the packed tarballs to install and the host to
+    // build from them.
+    const install = run(npm, ['install', '--no-audit', '--no-fund', '--legacy-peer-deps'], {
       cwd: target,
       capture: true,
       shell,
@@ -210,6 +303,27 @@ function packedScaffolderCheck() {
     if (build.status !== 0) {
       console.error(build.stdout?.slice(-3000));
       console.error(build.stderr?.slice(-3000));
+    }
+
+    // 5b. Packed-consumer required-member probe (Stage 05 final exit-gate
+    // correction, LOW-05-A closure): a plain-JavaScript consumer of the
+    // PACKED, EMITTED compiler must reject malformed definitions that omit
+    // required members (action revision, route id, screen title) and must
+    // still compile a valid definition with an applicationVersion.
+    const probePath = join(target, 'vict-required-members-probe.mjs');
+    writeFileSync(probePath, REQUIRED_MEMBERS_PROBE);
+    const probe = run(process.execPath, [probePath], {
+      cwd: target,
+      capture: true,
+      timeout: 300_000,
+    });
+    check(
+      probe.status === 0,
+      'packed-consumer: emitted compiler rejects missing required members (action revision, route id, screen title) and compiles valid definitions',
+    );
+    if (probe.status !== 0) {
+      console.error(probe.stdout?.slice(-3000));
+      console.error(probe.stderr?.slice(-3000));
     }
   } finally {
     rmSync(work, { recursive: true, force: true });

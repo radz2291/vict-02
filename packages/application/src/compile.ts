@@ -1,6 +1,7 @@
 import {
   APPLICATION_DEFINITION_SCHEMA,
   APPLICATION_DEFINITION_SCHEMA_V2,
+  RESOURCE_DEFINITION_SCHEMA,
   THEME_TOKEN_NAMES,
 } from '@vict/sdk';
 import { sha256 } from './sha256.js';
@@ -37,6 +38,7 @@ export type ApplicationIssueCode =
   | 'APPLICATION_EMPTY_ID'
   | 'APPLICATION_EMPTY_REVISION'
   | 'APPLICATION_INVALID_IDENTIFIER'
+  | 'APPLICATION_REQUIRED_MEMBER'
   | 'APPLICATION_NON_CANONICAL_VALUE'
   | 'APPLICATION_COMPILATION_FAILED'
   | 'APPLICATION_UNKNOWN_SCHEMA'
@@ -357,6 +359,14 @@ const RESOURCE_DEF_FIELDS: ReadonlySet<string> = new Set([
   'authorization',
 ]);
 const RESOURCE_FIELD_FIELDS: ReadonlySet<string> = new Set(['name', 'type', 'required', 'label']);
+/** Closed primitive field-type vocabulary of the resource field catalogue. */
+const RESOURCE_FIELD_TYPES: ReadonlySet<string> = new Set([
+  'string',
+  'number',
+  'boolean',
+  'date',
+  'json',
+]);
 /** Field names that signal an embedded secret/config value where only references are allowed. */
 const VALUE_LIKE_FIELD_NAMES: ReadonlySet<string> = new Set([
   'secrets',
@@ -370,13 +380,129 @@ const VALUE_LIKE_FIELD_NAMES: ReadonlySet<string> = new Set([
   'apiKey',
 ]);
 
-function isPlainObject(value: unknown): value is Record<string, unknown> {
+/**
+ * Plain-object check. Deliberately a plain boolean predicate (no type
+ * narrowing): declared definition types carry the member types, and the
+ * `Record<string, unknown>` narrowing would widen validated member reads
+ * back to `unknown` at call sites that already type-checked.
+ */
+function isPlainObject(value: unknown): boolean {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
 
 /** True for a non-empty, non-whitespace-only identifier. */
 function isValidIdentifier(value: unknown): value is string {
   return typeof value === 'string' && value.trim().length > 0;
+}
+
+/**
+ * Path label for a collection entry keyed by an id member (LOW-05-A
+ * remediation). Valid string ids render exactly as before; anything else
+ * renders as a safe type description so hostile values are never echoed
+ * into diagnostic paths.
+ */
+function entryKeyLabel(value: unknown): string {
+  return typeof value === 'string' ? value : describeReceivedType(value);
+}
+
+/** Safe received-value description for messages ('absent' instead of echoing). */
+function describeReceived(value: unknown): string {
+  return value === undefined ? 'absent' : describeReceivedType(value);
+}
+
+/**
+ * Required identifier-grade string member (`id`, `resourceId`, …).
+ *
+ * Emits `APPLICATION_EMPTY_ID` for absent/null/wrong-type/empty values and
+ * `APPLICATION_INVALID_IDENTIFIER` for whitespace-only values — exactly the
+ * same convention the compiler has always applied to the application root
+ * `id`. Returns true only for a valid identifier; callers skip downstream
+ * reference checks for invalid members so no misleading secondary
+ * diagnostics are produced.
+ */
+function requireIdentifierMember(
+  collector: Collector,
+  container: object,
+  key: string,
+  path: string,
+  subject: string,
+): boolean {
+  const value = (container as Record<string, unknown>)[key];
+  if (typeof value !== 'string' || value.length === 0) {
+    collector.add(
+      'APPLICATION_EMPTY_ID',
+      `${subject} must be a non-empty string (received ${describeReceived(value)}).`,
+      path,
+    );
+    return false;
+  }
+  if (!isValidIdentifier(value)) {
+    collector.add(
+      'APPLICATION_INVALID_IDENTIFIER',
+      `${subject} must not be whitespace-only.`,
+      path,
+    );
+    return false;
+  }
+  return true;
+}
+
+/**
+ * Required revision-grade string member. Emits `APPLICATION_EMPTY_REVISION`
+ * for absent/null/wrong-type/empty values and `APPLICATION_INVALID_IDENTIFIER`
+ * for whitespace-only values — the same convention as the application root
+ * `revision`. Revisions required by the declared model are non-empty stable
+ * strings; a missing revision is never silently defaulted.
+ */
+function requireRevisionMember(
+  collector: Collector,
+  container: object,
+  key: string,
+  path: string,
+  subject: string,
+): boolean {
+  const value = (container as Record<string, unknown>)[key];
+  if (typeof value !== 'string' || value.length === 0) {
+    collector.add(
+      'APPLICATION_EMPTY_REVISION',
+      `${subject} must be a non-empty string (received ${describeReceived(value)}).`,
+      path,
+    );
+    return false;
+  }
+  if (!isValidIdentifier(value)) {
+    collector.add(
+      'APPLICATION_INVALID_IDENTIFIER',
+      `${subject} must not be whitespace-only.`,
+      path,
+    );
+    return false;
+  }
+  return true;
+}
+
+/** Required non-empty plain-string member with no more specific existing
+ * diagnostic code (`APPLICATION_REQUIRED_MEMBER`, or the structure-specific
+ * `INVALID_*_DECLARATION` code where one exists).
+ */
+function requireNonEmptyStringMember(
+  collector: Collector,
+  container: object,
+  key: string,
+  path: string,
+  subject: string,
+  code: ApplicationIssueCode = 'APPLICATION_REQUIRED_MEMBER',
+): boolean {
+  const value = (container as Record<string, unknown>)[key];
+  if (typeof value !== 'string' || value.length === 0) {
+    collector.add(
+      code,
+      `${subject} must be a non-empty string (received ${describeReceived(value)}).`,
+      path,
+    );
+    return false;
+  }
+  return true;
 }
 
 class Collector {
@@ -828,62 +954,267 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
       );
     }
 
-    // ---- Provided bindings -------------------------------------------------
-    const providedResources = new Map<string, ResourceDefinition>();
-    for (const resource of input.resources) {
-      collector.unknownFields(resource, RESOURCE_DEF_FIELDS, `resources[${resource.id}]`);
-      for (const field of resource.fields) {
-        collector.unknownFields(
-          field,
-          RESOURCE_FIELD_FIELDS,
-          `resources[${resource.id}].fields[${field.name}]`,
+    // ---- Required collections (LOW-05-A remediation) -----------------------
+    // The declared Application Definition model requires routes, screens,
+    // actions and resources. Missing or non-array collections previously
+    // surfaced only as the generic APPLICATION_COMPILATION_FAILED diagnostic
+    // (or not at all); they now fail with a precise structured diagnostic.
+    for (const key of ['routes', 'screens', 'actions', 'resources'] as const) {
+      if (!Array.isArray(application[key])) {
+        collector.add(
+          'APPLICATION_REQUIRED_MEMBER',
+          `Application definition must declare a ${key} array (received ${describeReceived(application[key])}).`,
+          `application.${key}`,
         );
       }
-      if (providedResources.has(resource.id)) {
+    }
+    // Optional set-like collections must at least be arrays when declared
+    // (previously a non-array primitive silently enumerated as empty or
+    // vanished during canonicalization).
+    for (const key of ['views', 'forms', 'components'] as const) {
+      const value = application[key];
+      if (value !== undefined && !Array.isArray(value)) {
         collector.add(
-          'DUPLICATE_RESOURCE_REFERENCE',
-          `Resource '${resource.id}' is provided more than once.`,
-          `resources[${resource.id}]`,
+          'APPLICATION_REQUIRED_MEMBER',
+          `Application ${key} must be an array when declared (received ${describeReceived(value)}).`,
+          `application.${key}`,
+        );
+      }
+    }
+    if (
+      application.compatibility !== undefined &&
+      isPlainObject(application.compatibility) &&
+      !requireNonEmptyStringMember(
+        collector,
+        application.compatibility,
+        'applicationSchema',
+        'application.compatibility.applicationSchema',
+        'Application compatibility applicationSchema',
+      )
+    ) {
+      // diagnostic already recorded
+    }
+    const routes = Array.isArray(application.routes) ? application.routes : [];
+    const screens = Array.isArray(application.screens) ? application.screens : [];
+    const declaredActions = Array.isArray(application.actions) ? application.actions : [];
+    const declaredResources = Array.isArray(application.resources) ? application.resources : [];
+    const declaredViews = Array.isArray(application.views) ? application.views : [];
+    const declaredForms = Array.isArray(application.forms) ? application.forms : [];
+    const declaredComponents = Array.isArray(application.components) ? application.components : [];
+
+    // ---- Provided bindings -------------------------------------------------
+    const providedResources = new Map<string, ResourceDefinition>();
+    for (const [resourceIndex, resource] of input.resources.entries()) {
+      if (!isPlainObject(resource)) {
+        collector.add(
+          'APPLICATION_REQUIRED_MEMBER',
+          `Resource definitions must be plain objects (received ${describeReceivedType(resource)}).`,
+          `resources[${resourceIndex}]`,
         );
         continue;
       }
-      providedResources.set(resource.id, resource);
+      collector.unknownFields(resource, RESOURCE_DEF_FIELDS, `resources[${resource.id}]`);
+      // Resource definitions enter compilation with their own declared
+      // required members (schema marker, id, revision, identity key, field
+      // catalogue). Presence was previously unchecked.
+      if (typeof resource.schema !== 'string' || resource.schema !== RESOURCE_DEFINITION_SCHEMA) {
+        collector.add(
+          'APPLICATION_UNKNOWN_SCHEMA',
+          `Resource '${entryKeyLabel(resource.id)}' must declare the '${RESOURCE_DEFINITION_SCHEMA}' schema marker.`,
+          `resources[${entryKeyLabel(resource.id)}].schema`,
+        );
+      }
+      const resourceIdValid = requireIdentifierMember(
+        collector,
+        resource,
+        'id',
+        `resources[${entryKeyLabel(resource.id)}].id`,
+        'Resource id',
+      );
+      const resourceRevisionValid = requireRevisionMember(
+        collector,
+        resource,
+        'revision',
+        `resources[${entryKeyLabel(resource.id)}].revision`,
+        'Resource revision',
+      );
+      if (!isPlainObject(resource.identity)) {
+        collector.add(
+          'APPLICATION_REQUIRED_MEMBER',
+          `Resource identity must declare an identity key object (received ${describeReceived(resource.identity)}).`,
+          `resources[${entryKeyLabel(resource.id)}].identity`,
+        );
+      } else {
+        requireNonEmptyStringMember(
+          collector,
+          resource.identity,
+          'key',
+          `resources[${entryKeyLabel(resource.id)}].identity.key`,
+          'Resource identity key',
+        );
+      }
+      if (!Array.isArray(resource.fields)) {
+        collector.add(
+          'APPLICATION_REQUIRED_MEMBER',
+          `Resource fields must be an array (received ${describeReceived(resource.fields)}).`,
+          `resources[${entryKeyLabel(resource.id)}].fields`,
+        );
+      } else {
+        for (const [fieldIndex, field] of resource.fields.entries()) {
+          if (!isPlainObject(field)) {
+            collector.add(
+              'APPLICATION_REQUIRED_MEMBER',
+              `Resource field declarations must be plain objects (received ${describeReceivedType(field)}).`,
+              `resources[${entryKeyLabel(resource.id)}].fields[${fieldIndex}]`,
+            );
+            continue;
+          }
+          collector.unknownFields(
+            field,
+            RESOURCE_FIELD_FIELDS,
+            `resources[${resource.id}].fields[${field.name}]`,
+          );
+          requireIdentifierMember(
+            collector,
+            field,
+            'name',
+            `resources[${entryKeyLabel(resource.id)}].fields[${fieldIndex}].name`,
+            'Resource field name',
+          );
+          if (typeof field.type !== 'string' || !RESOURCE_FIELD_TYPES.has(field.type)) {
+            collector.add(
+              'APPLICATION_REQUIRED_MEMBER',
+              `Resource field type must be one of: string, number, boolean, date, json (received ${describeReceived(field.type)}).`,
+              `resources[${entryKeyLabel(resource.id)}].fields[${fieldIndex}].type`,
+            );
+          }
+        }
+      }
+      if (resourceIdValid && resourceRevisionValid) {
+        if (providedResources.has(resource.id)) {
+          collector.add(
+            'DUPLICATE_RESOURCE_REFERENCE',
+            `Resource '${resource.id}' is provided more than once.`,
+            `resources[${resource.id}]`,
+          );
+          continue;
+        }
+        providedResources.set(resource.id, resource);
+      }
     }
     const providedContracts = new Map<string, string>();
-    for (const contract of input.contracts ?? []) {
-      providedContracts.set(contract.id, contract.revision);
+    for (const [contractIndex, contract] of (input.contracts ?? []).entries()) {
+      const idValid = requireIdentifierMember(
+        collector,
+        contract,
+        'id',
+        `contracts[${contractIndex}].id`,
+        'Contract registry id',
+      );
+      const revisionValid = requireRevisionMember(
+        collector,
+        contract,
+        'revision',
+        `contracts[${contractIndex}].revision`,
+        'Contract registry revision',
+      );
+      if (idValid && revisionValid) {
+        providedContracts.set(contract.id, contract.revision);
+      }
     }
     const providedCapabilities = new Map<string, string>();
-    for (const capability of input.capabilities ?? []) {
-      providedCapabilities.set(capability.id, capability.revision);
+    for (const [capabilityIndex, capability] of (input.capabilities ?? []).entries()) {
+      const idValid = requireIdentifierMember(
+        collector,
+        capability,
+        'id',
+        `capabilities[${capabilityIndex}].id`,
+        'Capability registry id',
+      );
+      const revisionValid = requireRevisionMember(
+        collector,
+        capability,
+        'revision',
+        `capabilities[${capabilityIndex}].revision`,
+        'Capability registry revision',
+      );
+      if (idValid && revisionValid) {
+        providedCapabilities.set(capability.id, capability.revision);
+      }
     }
     const providedComponents = new Map<string, string>();
-    for (const component of input.components ?? []) {
-      providedComponents.set(component.componentId, component.revision);
+    for (const [componentIndex, component] of (input.components ?? []).entries()) {
+      const idValid = requireIdentifierMember(
+        collector,
+        component,
+        'componentId',
+        `components[${componentIndex}].componentId`,
+        'Component registry id',
+      );
+      const revisionValid = requireRevisionMember(
+        collector,
+        component,
+        'revision',
+        `components[${componentIndex}].revision`,
+        'Component registry revision',
+      );
+      if (idValid && revisionValid) {
+        providedComponents.set(component.componentId, component.revision);
+      }
     }
 
     // ---- Routes (ordered navigation) ----------------------------------------
     const routeIds = new Set<string>();
     const routePaths = new Set<string>();
     const redirectTargets = new Map<string, string>();
-    for (const route of application.routes) {
-      collector.unknownFields(route, routeFields, `application.routes[${route.id}]`);
-      if (routeIds.has(route.id)) {
+    for (const route of routes) {
+      if (!isPlainObject(route)) {
         collector.add(
-          'DUPLICATE_ROUTE_ID',
-          `Route id '${route.id}' is declared more than once.`,
-          `application.routes[${route.id}]`,
+          'APPLICATION_REQUIRED_MEMBER',
+          `Route declarations must be plain objects (received ${describeReceivedType(route)}).`,
+          `application.routes[${entryKeyLabel((route as { id?: unknown })?.id)}]`,
         );
+        continue;
       }
-      routeIds.add(route.id);
-      if (routePaths.has(route.path)) {
+      const routePath = `application.routes[${entryKeyLabel(route.id)}]`;
+      collector.unknownFields(route, routeFields, routePath);
+      // Route id and path are required members of the declared model
+      // (LOW-05-A closure): a route missing its id was previously accepted
+      // with 'undefined' keys and broken duplicate detection.
+      const idValid = requireIdentifierMember(
+        collector,
+        route,
+        'id',
+        `${routePath}.id`,
+        'Route id',
+      );
+      if (idValid) {
+        if (routeIds.has(route.id)) {
+          collector.add(
+            'DUPLICATE_ROUTE_ID',
+            `Route id '${route.id}' is declared more than once.`,
+            routePath,
+          );
+        }
+        routeIds.add(route.id);
+      }
+      const pathValid = typeof route.path === 'string';
+      if (!pathValid) {
         collector.add(
-          'DUPLICATE_ROUTE_PATH',
-          `Route path '${route.path}' is declared more than once.`,
-          `application.routes[${route.id}]`,
+          'ROUTE_PATH_INVALID',
+          `Route ${idValid ? `'${route.id}' ` : ''}must declare a path string (received ${describeReceived(route.path)}).`,
+          `${routePath}.path`,
         );
+      } else {
+        if (routePaths.has(route.path)) {
+          collector.add(
+            'DUPLICATE_ROUTE_PATH',
+            `Route path '${route.path}' is declared more than once.`,
+            routePath,
+          );
+        }
+        routePaths.add(route.path);
       }
-      routePaths.add(route.path);
       if (isV2) {
         // Stage 05 route-path grammar: leading slash, static segments and
         // single `:name` parameters only — the renderer's deterministic
@@ -898,7 +1229,7 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
           const segments = route.path
             .slice(1)
             .split('/')
-            .filter((segment) => segment.length > 0);
+            .filter((segment: string) => segment.length > 0);
           const paramNames = new Set<string>();
           for (const segment of segments) {
             const isParam = segment.startsWith(':');
@@ -943,21 +1274,38 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
         }
       }
       if (route.nav !== undefined) {
-        collector.unknownFields(route.nav, NAV_FIELDS, `application.routes[${route.id}].nav`);
-        // Reachable numeric identity fields are value-checked (MED-04-F): a
-        // NaN/Infinity order would silently coerce under canonicalization and
-        // create ambiguous identity.
-        if (
-          route.nav.order !== undefined &&
-          (typeof route.nav.order !== 'number' ||
-            !Number.isFinite(route.nav.order) ||
-            Object.is(route.nav.order, -0))
-        ) {
+        if (!isPlainObject(route.nav)) {
           collector.add(
-            'APPLICATION_NON_CANONICAL_VALUE',
-            `Route '${route.id}' nav.order must be a finite number (received ${describeReceivedType(route.nav.order)}).`,
-            `application.routes[${route.id}].nav.order`,
+            'APPLICATION_REQUIRED_MEMBER',
+            `Route nav must be an object when declared (received ${describeReceivedType(route.nav)}).`,
+            `${routePath}.nav`,
           );
+        } else {
+          collector.unknownFields(route.nav, NAV_FIELDS, `${routePath}.nav`);
+          // nav.label is a required member of the declared navigation entry
+          // model; it was previously accepted even when absent.
+          requireNonEmptyStringMember(
+            collector,
+            route.nav,
+            'label',
+            `${routePath}.nav.label`,
+            `Route ${idValid ? `'${route.id}' ` : ''}nav label`,
+          );
+          // Reachable numeric identity fields are value-checked (MED-04-F): a
+          // NaN/Infinity order would silently coerce under canonicalization and
+          // create ambiguous identity.
+          if (
+            route.nav.order !== undefined &&
+            (typeof route.nav.order !== 'number' ||
+              !Number.isFinite(route.nav.order) ||
+              Object.is(route.nav.order, -0))
+          ) {
+            collector.add(
+              'APPLICATION_NON_CANONICAL_VALUE',
+              `Route '${route.id}' nav.order must be a finite number (received ${describeReceivedType(route.nav.order)}).`,
+              `${routePath}.nav.order`,
+            );
+          }
         }
       }
       // Route->screen resolution is checked after the screens map is built.
@@ -1030,17 +1378,45 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
     // ---- Screens --------------------------------------------------------------
     const screensById = new Map<string, ScreenDefinition>();
     const surfaceIds = new Set<string>();
-    for (const screen of application.screens) {
-      collector.unknownFields(screen, screenFields, `application.screens[${screen.id}]`);
-      if (screensById.has(screen.id)) {
+    for (const screen of screens) {
+      if (!isPlainObject(screen)) {
         collector.add(
-          'DUPLICATE_SCREEN_ID',
-          `Screen id '${screen.id}' is declared more than once.`,
-          `application.screens[${screen.id}]`,
+          'APPLICATION_REQUIRED_MEMBER',
+          `Screen declarations must be plain objects (received ${describeReceivedType(screen)}).`,
+          `application.screens[${entryKeyLabel((screen as { id?: unknown })?.id)}]`,
         );
         continue;
       }
-      screensById.set(screen.id, screen);
+      const screenPath = `application.screens[${entryKeyLabel(screen.id)}]`;
+      collector.unknownFields(screen, screenFields, screenPath);
+      // Screen id and title are required members of the declared model
+      // (LOW-05-A closure): a screen missing its title was previously accepted
+      // silently.
+      const screenIdValid = requireIdentifierMember(
+        collector,
+        screen,
+        'id',
+        `${screenPath}.id`,
+        'Screen id',
+      );
+      if (screenIdValid) {
+        if (screensById.has(screen.id)) {
+          collector.add(
+            'DUPLICATE_SCREEN_ID',
+            `Screen id '${screen.id}' is declared more than once.`,
+            screenPath,
+          );
+          continue;
+        }
+        screensById.set(screen.id, screen);
+      }
+      requireNonEmptyStringMember(
+        collector,
+        screen,
+        'title',
+        `${screenPath}.title`,
+        'Screen title',
+      );
       if (isV2 && screen.breadcrumbs !== undefined) {
         for (const [index, crumb] of screen.breadcrumbs.entries()) {
           collector.unknownFields(
@@ -1064,45 +1440,77 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
           }
         }
       }
-      const regionNames = new Set<string>();
-      for (const region of screen.layout) {
-        collector.unknownFields(
-          region,
-          REGION_FIELDS,
-          `application.screens[${screen.id}].layout[${region.name}]`,
+      if (!Array.isArray(screen.layout)) {
+        collector.add(
+          'APPLICATION_REQUIRED_MEMBER',
+          `Screen layout must be an array (received ${describeReceived(screen.layout)}).`,
+          `${screenPath}.layout`,
         );
-        if (regionNames.has(region.name)) {
-          collector.add(
-            'DUPLICATE_REGION_NAME',
-            `Region '${region.name}' is declared more than once on screen '${screen.id}'.`,
-            `application.screens[${screen.id}].layout[${region.name}]`,
-          );
-        }
-        regionNames.add(region.name);
-        for (const surface of region.surfaces) {
-          collectSurface(
+      } else {
+        const regionNames = new Set<string>();
+        for (const region of screen.layout) {
+          if (!isPlainObject(region)) {
+            collector.add(
+              'APPLICATION_REQUIRED_MEMBER',
+              `Layout region declarations must be plain objects (received ${describeReceivedType(region)}).`,
+              `${screenPath}.layout[${entryKeyLabel((region as { name?: unknown })?.name)}]`,
+            );
+            continue;
+          }
+          const regionPath = `${screenPath}.layout[${entryKeyLabel(region.name)}]`;
+          collector.unknownFields(region, REGION_FIELDS, regionPath);
+          const regionName = region.name;
+          const regionNameValid = requireNonEmptyStringMember(
             collector,
-            surface,
-            `application.screens[${screen.id}]`,
-            surfaceIds,
-            surfaceResolutions,
-            isV2,
+            region,
+            'name',
+            `${regionPath}.name`,
+            'Region name',
           );
+          if (regionNameValid && typeof regionName === 'string') {
+            if (regionNames.has(regionName)) {
+              collector.add(
+                'DUPLICATE_REGION_NAME',
+                `Region '${regionName}' is declared more than once on screen '${screen.id}'.`,
+                regionPath,
+              );
+            }
+            regionNames.add(regionName);
+          }
+          if (!Array.isArray(region.surfaces)) {
+            collector.add(
+              'APPLICATION_REQUIRED_MEMBER',
+              `Region surfaces must be an array (received ${describeReceived(region.surfaces)}).`,
+              `${regionPath}.surfaces`,
+            );
+            continue;
+          }
+          for (const surface of region.surfaces) {
+            collectSurface(collector, surface, screenPath, surfaceIds, surfaceResolutions, isV2);
+          }
         }
       }
       const states = screen.states;
       if (states !== undefined) {
-        collector.unknownFields(states, statesFields, `application.screens[${screen.id}].states`);
-        for (const [name, surface] of Object.entries(states)) {
-          if (surface !== undefined) {
-            collectSurface(
-              collector,
-              surface,
-              `application.screens[${screen.id}].states.${name}`,
-              surfaceIds,
-              surfaceResolutions,
-              isV2,
-            );
+        if (!isPlainObject(states)) {
+          collector.add(
+            'APPLICATION_REQUIRED_MEMBER',
+            `Screen states must be an object when declared (received ${describeReceivedType(states)}).`,
+            `${screenPath}.states`,
+          );
+        } else {
+          collector.unknownFields(states, statesFields, `${screenPath}.states`);
+          for (const [name, surface] of Object.entries(states)) {
+            if (surface !== undefined) {
+              collectSurface(
+                collector,
+                surface as Surface,
+                `${screenPath}.states.${name}`,
+                surfaceIds,
+                surfaceResolutions,
+                isV2,
+              );
+            }
           }
         }
       }
@@ -1115,26 +1523,58 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
     // ---- Views / forms / actions ------------------------------------------------
     const viewIds = new Set<string>();
     const viewsById = new Map<string, ViewBinding>();
-    for (const view of application.views ?? []) {
-      collector.unknownFields(view, VIEW_FIELDS, `application.views[${view.viewId}]`);
-      if (viewIds.has(view.viewId)) {
-        collector.add(
-          'DUPLICATE_VIEW_ID',
-          `View '${view.viewId}' is declared more than once.`,
+    for (const view of declaredViews) {
+      collector.unknownFields(
+        view,
+        VIEW_FIELDS,
+        `application.views[${entryKeyLabel(view.viewId)}]`,
+      );
+      // viewId, resourceId and resourceRevision are required members of the
+      // declared view-binding model; a missing viewId was previously accepted
+      // with an 'undefined' key.
+      const viewIdValid = requireIdentifierMember(
+        collector,
+        view,
+        'viewId',
+        `application.views[${entryKeyLabel(view.viewId)}].viewId`,
+        'View id',
+      );
+      if (viewIdValid) {
+        if (viewIds.has(view.viewId)) {
+          collector.add(
+            'DUPLICATE_VIEW_ID',
+            `View '${view.viewId}' is declared more than once.`,
+            `application.views[${view.viewId}]`,
+          );
+          continue;
+        }
+        viewIds.add(view.viewId);
+        viewsById.set(view.viewId, view);
+      }
+      const resourceIdValid = requireIdentifierMember(
+        collector,
+        view,
+        'resourceId',
+        `application.views[${entryKeyLabel(view.viewId)}].resourceId`,
+        'View resourceId',
+      );
+      const resourceRevisionValid = requireRevisionMember(
+        collector,
+        view,
+        'resourceRevision',
+        `application.views[${entryKeyLabel(view.viewId)}].resourceRevision`,
+        'View resourceRevision',
+      );
+      if (resourceIdValid && resourceRevisionValid) {
+        collectResourceReference(
+          collector,
+          application,
+          view.resourceId,
+          view.resourceRevision,
+          providedResources,
           `application.views[${view.viewId}]`,
         );
-        continue;
       }
-      viewIds.add(view.viewId);
-      viewsById.set(view.viewId, view);
-      collectResourceReference(
-        collector,
-        application,
-        view.resourceId,
-        view.resourceRevision,
-        providedResources,
-        `application.views[${view.viewId}]`,
-      );
       for (const field of view.fields ?? []) {
         checkCatalogueField(
           collector,
@@ -1147,95 +1587,253 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
 
     const formIds = new Set<string>();
     const formsById = new Map<string, FormBinding>();
-    for (const form of application.forms ?? []) {
-      collector.unknownFields(form, FORM_FIELDS, `application.forms[${form.formId}]`);
-      if (formIds.has(form.formId)) {
-        collector.add(
-          'DUPLICATE_FORM_ID',
-          `Form '${form.formId}' is declared more than once.`,
+    /** Deferred form submitActionId checks (run once the actions map exists). */
+    const formActionResolutions: ((
+      collector: Collector,
+      actionsById: ReadonlyMap<string, ActionDefinition>,
+    ) => void)[] = [];
+    for (const form of declaredForms) {
+      collector.unknownFields(
+        form,
+        FORM_FIELDS,
+        `application.forms[${entryKeyLabel(form.formId)}]`,
+      );
+      // formId, resourceId, resourceRevision, inputContractId, fields and
+      // submitActionId are required members of the declared form-binding
+      // model; a missing formId was previously accepted silently.
+      const formIdValid = requireIdentifierMember(
+        collector,
+        form,
+        'formId',
+        `application.forms[${entryKeyLabel(form.formId)}].formId`,
+        'Form id',
+      );
+      if (formIdValid) {
+        if (formIds.has(form.formId)) {
+          collector.add(
+            'DUPLICATE_FORM_ID',
+            `Form '${form.formId}' is declared more than once.`,
+            `application.forms[${form.formId}]`,
+          );
+          continue;
+        }
+        formIds.add(form.formId);
+        formsById.set(form.formId, form);
+      }
+      const formPath = `application.forms[${entryKeyLabel(form.formId)}]`;
+      const resourceIdValid = requireIdentifierMember(
+        collector,
+        form,
+        'resourceId',
+        `${formPath}.resourceId`,
+        'Form resourceId',
+      );
+      const resourceRevisionValid = requireRevisionMember(
+        collector,
+        form,
+        'resourceRevision',
+        `${formPath}.resourceRevision`,
+        'Form resourceRevision',
+      );
+      if (resourceIdValid && resourceRevisionValid) {
+        collectResourceReference(
+          collector,
+          application,
+          form.resourceId,
+          form.resourceRevision,
+          providedResources,
           `application.forms[${form.formId}]`,
         );
-        continue;
       }
-      formIds.add(form.formId);
-      formsById.set(form.formId, form);
-      collectResourceReference(
+      const inputContractValid = requireIdentifierMember(
         collector,
-        application,
-        form.resourceId,
-        form.resourceRevision,
-        providedResources,
-        `application.forms[${form.formId}]`,
+        form,
+        'inputContractId',
+        `${formPath}.inputContractId`,
+        'Form inputContractId',
       );
-      checkContractReference(
-        collector,
-        providedContracts,
-        form.inputContractId,
-        form.inputContractRevision,
-        `application.forms[${form.formId}].inputContractId`,
-      );
-      for (const field of form.fields) {
-        collector.unknownFields(
-          field,
-          FORM_FIELD_FIELDS,
-          `application.forms[${form.formId}].fields[${field.name}]`,
-        );
-        checkCatalogueField(
+      if (inputContractValid) {
+        checkContractReference(
           collector,
-          providedResources.get(form.resourceId),
-          field.name,
-          `application.forms[${form.formId}].fields`,
+          providedContracts,
+          form.inputContractId,
+          form.inputContractRevision,
+          `application.forms[${form.formId}].inputContractId`,
         );
+      }
+      if (!Array.isArray(form.fields)) {
+        collector.add(
+          'APPLICATION_REQUIRED_MEMBER',
+          `Form fields must be an array (received ${describeReceived(form.fields)}).`,
+          `${formPath}.fields`,
+        );
+      } else {
+        for (const field of form.fields) {
+          if (!isPlainObject(field)) {
+            collector.add(
+              'APPLICATION_REQUIRED_MEMBER',
+              `Form field declarations must be plain objects (received ${describeReceivedType(field)}).`,
+              `${formPath}.fields[?]`,
+            );
+            continue;
+          }
+          const fieldPath = `${formPath}.fields[${entryKeyLabel(field.name)}]`;
+          collector.unknownFields(field, FORM_FIELD_FIELDS, fieldPath);
+          requireIdentifierMember(collector, field, 'name', `${fieldPath}.name`, 'Form field name');
+          requireNonEmptyStringMember(
+            collector,
+            field,
+            'label',
+            `${fieldPath}.label`,
+            'Form field label',
+          );
+          checkCatalogueField(
+            collector,
+            providedResources.get(form.resourceId),
+            field.name,
+            `${formPath}.fields`,
+          );
+        }
+      }
+      const submitActionValid = requireIdentifierMember(
+        collector,
+        form,
+        'submitActionId',
+        `${formPath}.submitActionId`,
+        'Form submitActionId',
+      );
+      if (submitActionValid) {
+        // The submit action must reference a DECLARED action. This
+        // cross-reference was previously not validated at all
+        // (UNKNOWN_FORM_ACTION existed unused).
+        formActionResolutions.push((issueCollector, actionsMap) => {
+          if (!actionsMap.has(form.submitActionId)) {
+            issueCollector.add(
+              'UNKNOWN_FORM_ACTION',
+              `Form '${form.formId}' submitActionId references unknown action '${form.submitActionId}'.`,
+              `${formPath}.submitActionId`,
+            );
+          }
+        });
       }
     }
 
     const actionIds = new Set<string>();
     const actionsById = new Map<string, ActionDefinition>();
-    for (const action of application.actions) {
-      collector.unknownFields(
-        action,
-        ACTION_FIELDS.get(action.kind) ?? ACTION_BASE_FIELDS,
-        `application.actions[${action.id}]`,
-      );
-      if (actionIds.has(action.id)) {
+    for (const action of declaredActions) {
+      if (!isPlainObject(action)) {
         collector.add(
-          'DUPLICATE_ACTION_ID',
-          `Action '${action.id}' is declared more than once.`,
-          `application.actions[${action.id}]`,
+          'APPLICATION_REQUIRED_MEMBER',
+          `Action declarations must be plain objects (received ${describeReceivedType(action)}).`,
+          `application.actions[${entryKeyLabel((action as { id?: unknown })?.id)}]`,
         );
         continue;
       }
-      actionIds.add(action.id);
-      actionsById.set(action.id, action);
+      const actionPath = `application.actions[${entryKeyLabel(action.id)}]`;
+      collector.unknownFields(
+        action,
+        ACTION_FIELDS.get(action.kind) ?? ACTION_BASE_FIELDS,
+        actionPath,
+      );
+      // id and revision are required members of EVERY declared action
+      // (LOW-05-A closure): an action without its revision was previously
+      // accepted silently and received an applicationVersion.
+      const actionIdValid = requireIdentifierMember(
+        collector,
+        action,
+        'id',
+        `${actionPath}.id`,
+        'Action id',
+      );
+      requireRevisionMember(
+        collector,
+        action,
+        'revision',
+        `${actionPath}.revision`,
+        'Action revision',
+      );
+      if (actionIdValid) {
+        if (actionIds.has(action.id)) {
+          collector.add(
+            'DUPLICATE_ACTION_ID',
+            `Action '${action.id}' is declared more than once.`,
+            actionPath,
+          );
+          continue;
+        }
+        actionIds.add(action.id);
+        actionsById.set(action.id, action);
+      }
       if (!ACTION_FIELDS.has(action.kind)) {
         collector.add(
           'UNKNOWN_SURFACE_ROLE',
           `Action '${action.id}' declares unknown kind '${String((action as { kind?: unknown }).kind)}'.`,
-          `application.actions[${action.id}].kind`,
+          `${actionPath}.kind`,
         );
         continue;
       }
       if (action.kind === 'navigation') {
-        if (!routeIds.has(action.routeId)) {
+        const routeIdValid = requireIdentifierMember(
+          collector,
+          action,
+          'routeId',
+          `${actionPath}.routeId`,
+          'Navigation action routeId',
+        );
+        if (routeIdValid && !routeIds.has(action.routeId)) {
           collector.add(
             'UNKNOWN_ROUTE_REFERENCE',
             `Navigation action '${action.id}' targets unknown route '${action.routeId}'.`,
-            `application.actions[${action.id}].routeId`,
+            `${actionPath}.routeId`,
           );
         }
       } else if (action.kind === 'query' || action.kind === 'mutation') {
-        collectResourceReference(
+        const resourceIdValid = requireIdentifierMember(
           collector,
-          application,
-          action.resourceId,
-          action.resourceRevision,
-          providedResources,
-          `application.actions[${action.id}]`,
+          action,
+          'resourceId',
+          `${actionPath}.resourceId`,
+          'Action resourceId',
         );
+        const resourceRevisionValid = requireRevisionMember(
+          collector,
+          action,
+          'resourceRevision',
+          `${actionPath}.resourceRevision`,
+          'Action resourceRevision',
+        );
+        if (resourceIdValid && resourceRevisionValid) {
+          collectResourceReference(
+            collector,
+            application,
+            action.resourceId,
+            action.resourceRevision,
+            providedResources,
+            `application.actions[${action.id}]`,
+          );
+        }
         if (action.kind === 'mutation') {
+          const opValid = requireNonEmptyStringMember(
+            collector,
+            action,
+            'op',
+            `${actionPath}.op`,
+            'Mutation action op',
+          );
+          // op is a stable operation NAME: a whitespace-only value is
+          // malformed the same way a whitespace-only identifier is.
+          if (opValid && !isValidIdentifier(action.op as string)) {
+            collector.add(
+              'APPLICATION_INVALID_IDENTIFIER',
+              'Mutation action op must not be whitespace-only.',
+              `${actionPath}.op`,
+            );
+          }
           const resource = providedResources.get(action.resourceId);
-          const declared = resource?.mutations?.some((mutation) => mutation.op === action.op);
+          const declared =
+            opValid && resource?.mutations?.some((mutation) => mutation.op === action.op);
           if (
+            opValid &&
             resource !== undefined &&
             action.resourceRevision === resource.revision &&
             !declared
@@ -1243,11 +1841,29 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
             collector.add(
               'MUTATION_NOT_DECLARED',
               `Mutation action '${action.id}' uses op '${action.op}' which resource '${action.resourceId}' does not declare.`,
-              `application.actions[${action.id}].op`,
+              `${actionPath}.op`,
+            );
+          }
+          // inputContractId is REQUIRED on mutations by the declared model;
+          // it was previously only checked when present.
+          const inputContractValid = requireIdentifierMember(
+            collector,
+            action,
+            'inputContractId',
+            `${actionPath}.inputContractId`,
+            'Mutation action inputContractId',
+          );
+          if (inputContractValid) {
+            checkContractReference(
+              collector,
+              providedContracts,
+              action.inputContractId,
+              action.inputContractRevision,
+              `application.actions[${action.id}].inputContractId`,
             );
           }
         }
-        if (action.inputContractId !== undefined) {
+        if (action.kind === 'query' && action.inputContractId !== undefined) {
           checkContractReference(
             collector,
             providedContracts,
@@ -1266,27 +1882,54 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
           );
         }
       } else if (action.kind === 'capability') {
-        const expectedRevision = providedCapabilities.get(action.capabilityId);
-        if (expectedRevision === undefined) {
+        const capabilityIdValid = requireIdentifierMember(
+          collector,
+          action,
+          'capabilityId',
+          `${actionPath}.capabilityId`,
+          'Capability action capabilityId',
+        );
+        const capabilityRevisionValid = requireRevisionMember(
+          collector,
+          action,
+          'capabilityRevision',
+          `${actionPath}.capabilityRevision`,
+          'Capability action capabilityRevision',
+        );
+        const expectedRevision = capabilityIdValid
+          ? providedCapabilities.get(action.capabilityId)
+          : undefined;
+        if (capabilityIdValid && expectedRevision === undefined) {
           collector.add(
             'UNKNOWN_CAPABILITY_REFERENCE',
             `Capability action '${action.id}' references unknown capability '${action.capabilityId}'.`,
-            `application.actions[${action.id}].capabilityId`,
+            `${actionPath}.capabilityId`,
           );
-        } else if (expectedRevision !== action.capabilityRevision) {
+        } else if (capabilityRevisionValid && expectedRevision !== action.capabilityRevision) {
           collector.add(
             'CAPABILITY_REVISION_MISMATCH',
             `Capability action '${action.id}' references capability '${action.capabilityId}' revision '${action.capabilityRevision}' but the runtime declares '${expectedRevision}'.`,
-            `application.actions[${action.id}].capabilityRevision`,
+            `${actionPath}.capabilityRevision`,
           );
         }
-        checkContractReference(
+        // inputContractId is REQUIRED on capability actions by the declared
+        // model; it was previously only checked when present.
+        const inputContractValid = requireIdentifierMember(
           collector,
-          providedContracts,
-          action.inputContractId,
-          action.inputContractRevision,
-          `application.actions[${action.id}].inputContractId`,
+          action,
+          'inputContractId',
+          `${actionPath}.inputContractId`,
+          'Capability action inputContractId',
         );
+        if (inputContractValid) {
+          checkContractReference(
+            collector,
+            providedContracts,
+            action.inputContractId,
+            action.inputContractRevision,
+            `application.actions[${action.id}].inputContractId`,
+          );
+        }
         if (action.outputContractId !== undefined) {
           checkContractReference(
             collector,
@@ -1308,36 +1951,69 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
         }
       }
     }
+    // Form submitActionId references are resolved now that the actions map
+    // is complete.
+    for (const formActionResolution of formActionResolutions) {
+      formActionResolution(collector, actionsById);
+    }
 
     // ---- Referenced resources + components --------------------------------------
     const resourceReferences = new Set<string>();
-    for (const reference of application.resources) {
-      collector.unknownFields(
+    for (const reference of declaredResources) {
+      if (!isPlainObject(reference)) {
+        collector.add(
+          'APPLICATION_REQUIRED_MEMBER',
+          `Resource references must be plain objects (received ${describeReceivedType(reference)}).`,
+          `application.resources[${entryKeyLabel((reference as { resourceId?: unknown })?.resourceId)}]`,
+        );
+        continue;
+      }
+      const referencePath = `application.resources[${entryKeyLabel(reference.resourceId)}]`;
+      collector.unknownFields(reference, RESOURCE_REF_FIELDS, referencePath);
+      // resourceId and revision are required members of the declared
+      // resource-reference model; revision was previously allowed to be
+      // absent (matching only when the provided revision was absent too).
+      const referenceIdValid = requireIdentifierMember(
+        collector,
         reference,
-        RESOURCE_REF_FIELDS,
-        `application.resources[${reference.resourceId}]`,
+        'resourceId',
+        `${referencePath}.resourceId`,
+        'Resource reference id',
       );
+      const referenceRevisionValid = requireRevisionMember(
+        collector,
+        reference,
+        'revision',
+        `${referencePath}.revision`,
+        'Resource reference revision',
+      );
+      if (!referenceIdValid) {
+        continue;
+      }
       if (resourceReferences.has(reference.resourceId)) {
         collector.add(
           'DUPLICATE_RESOURCE_REFERENCE',
           `Resource '${reference.resourceId}' is referenced more than once.`,
-          `application.resources[${reference.resourceId}]`,
+          referencePath,
         );
         continue;
       }
       resourceReferences.add(reference.resourceId);
+      if (!referenceRevisionValid) {
+        continue;
+      }
       const provided = providedResources.get(reference.resourceId);
       if (provided === undefined) {
         collector.add(
           'UNKNOWN_RESOURCE',
           `Application references resource '${reference.resourceId}' which was not provided.`,
-          `application.resources[${reference.resourceId}]`,
+          referencePath,
         );
       } else if (provided.revision !== reference.revision) {
         collector.add(
           'RESOURCE_REVISION_MISMATCH',
           `Application references resource '${reference.resourceId}' revision '${reference.revision}' but the provided definition is '${provided.revision}'.`,
-          `application.resources[${reference.resourceId}]`,
+          referencePath,
         );
       } else {
         // Explicit contract references of the resource must resolve.
@@ -1357,39 +2033,69 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
     }
 
     const componentRefs = new Map<string, string>();
-    for (const component of application.components ?? []) {
-      collector.unknownFields(
+    for (const component of declaredComponents) {
+      const componentPath = `application.components[${entryKeyLabel(component.componentId)}]`;
+      collector.unknownFields(component, COMPONENT_FIELDS, componentPath);
+      // componentId and revision are required members of the declared
+      // component-reference model.
+      const componentIdValid = requireIdentifierMember(
+        collector,
         component,
-        COMPONENT_FIELDS,
-        `application.components[${component.componentId}]`,
+        'componentId',
+        `${componentPath}.componentId`,
+        'Component reference id',
       );
+      const componentRevisionValid = requireRevisionMember(
+        collector,
+        component,
+        'revision',
+        `${componentPath}.revision`,
+        'Component reference revision',
+      );
+      if (!componentIdValid) {
+        continue;
+      }
       if (componentRefs.has(component.componentId)) {
         collector.add(
           'DUPLICATE_COMPONENT_REFERENCE',
           `Component '${component.componentId}' is referenced more than once.`,
-          `application.components[${component.componentId}]`,
+          componentPath,
         );
         continue;
       }
-      componentRefs.set(component.componentId, component.revision);
+      if (componentRevisionValid) {
+        componentRefs.set(component.componentId, component.revision);
+      }
       const provided = providedComponents.get(component.componentId);
       if (provided === undefined) {
         collector.add(
           'UNKNOWN_COMPONENT_REFERENCE',
           `Application references component '${component.componentId}' which is not in the registry.`,
-          `application.components[${component.componentId}]`,
+          componentPath,
         );
-      } else if (provided !== component.revision) {
+      } else if (componentRevisionValid && provided !== component.revision) {
         collector.add(
           'COMPONENT_REVISION_MISMATCH',
           `Application references component '${component.componentId}' revision '${component.revision}' but the registry declares '${provided}'.`,
-          `application.components[${component.componentId}]`,
+          componentPath,
         );
       }
     }
 
     // ---- Theme tokens (@2) -------------------------------------------------------
-    if (isV2 && application.theme !== undefined && typeof application.theme === 'object') {
+    if (isV2 && application.theme !== undefined) {
+      // The declared @2 theme model is a reference string OR a closed
+      // { reference, tokens } declaration; any other type was previously
+      // silently dropped from the canonical manifest.
+      if (typeof application.theme !== 'string' && !isPlainObject(application.theme)) {
+        collector.add(
+          'INVALID_THEME_TOKEN',
+          `The theme declaration must be a reference string or an object (received ${describeReceivedType(application.theme)}).`,
+          'application.theme',
+        );
+      }
+    }
+    if (isV2 && application.theme !== undefined && isPlainObject(application.theme)) {
       const theme = application.theme as ThemeDeclaration;
       const themeFields = new Set(['reference', 'tokens']);
       collector.unknownFields(theme, themeFields, 'application.theme');
@@ -1625,6 +2331,9 @@ function resolveSurfaceLater(
   path: string,
   resolutions: SurfaceResolution[],
 ): void {
+  if (!isPlainObject(surface)) {
+    return; // non-object surfaces are already diagnosed by collectSurface
+  }
   resolutions.push((collector, maps) => {
     switch (surface.role) {
       case 'view':
@@ -1658,6 +2367,16 @@ function resolveSurfaceLater(
             `${path}.actionId`,
           );
         }
+        // label is a required member of the declared action-surface model;
+        // it was previously accepted even when absent.
+        requireNonEmptyStringMember(
+          collector,
+          surface,
+          'label',
+          `${path}.label`,
+          `Action surface '${surface.id}' label`,
+          'INVALID_SURFACE_DECLARATION',
+        );
         if (surface.disabledWhen !== undefined) {
           collector.unknownFields(
             surface.disabledWhen,
@@ -1679,6 +2398,16 @@ function resolveSurfaceLater(
         break;
       }
       case 'component': {
+        // revision is a required member of the declared component-surface
+        // model; check it before the registry comparison so a missing
+        // revision gets the precise diagnostic.
+        const surfaceRevisionValid = requireRevisionMember(
+          collector,
+          surface,
+          'revision',
+          `${path}.revision`,
+          `Component surface '${surface.id}' revision`,
+        );
         const declared = maps.componentRefs.get(surface.componentId);
         if (declared === undefined) {
           collector.add(
@@ -1686,7 +2415,7 @@ function resolveSurfaceLater(
             `Component surface '${surface.id}' references unknown component '${surface.componentId}'.`,
             `${path}.componentId`,
           );
-        } else if (declared !== surface.revision) {
+        } else if (surfaceRevisionValid && declared !== surface.revision) {
           collector.add(
             'COMPONENT_REVISION_MISMATCH',
             `Component surface '${surface.id}' references component '${surface.componentId}' revision '${surface.revision}' but the application declares '${declared}'.`,
@@ -1697,6 +2426,16 @@ function resolveSurfaceLater(
         break;
       }
       case 'text': {
+        // content is a required member of the declared text-surface model;
+        // it was previously accepted even when absent.
+        requireNonEmptyStringMember(
+          collector,
+          surface,
+          'content',
+          `${path}.content`,
+          `Text surface '${surface.id}' content`,
+          'INVALID_SURFACE_DECLARATION',
+        );
         if (
           surface.level !== undefined &&
           (typeof surface.level !== 'number' ||
@@ -1714,13 +2453,32 @@ function resolveSurfaceLater(
         break;
       }
       case 'list': {
+        // list surfaces must reference a DECLARED view (previously only the
+        // view/states/chart/conversation roles checked this).
+        if (!maps.viewsById.has(surface.viewId)) {
+          collector.add(
+            'UNKNOWN_VIEW_REFERENCE',
+            `Surface '${surface.id}' references unknown view '${surface.viewId}'.`,
+            `${path}.viewId`,
+          );
+        }
+        // titleField is a required member of the declared list-surface model;
+        // it was previously silently skipped when absent.
+        const titleFieldValid = requireNonEmptyStringMember(
+          collector,
+          surface,
+          'titleField',
+          `${path}.titleField`,
+          `List surface '${surface.id}' titleField`,
+          'INVALID_SURFACE_DECLARATION',
+        );
         collectViewFieldIssues(
           collector,
           maps,
           surface.id,
           surface.viewId,
           [
-            ['titleField', surface.titleField],
+            ...(titleFieldValid ? [['titleField', surface.titleField] as const] : []),
             ['secondaryField', surface.secondaryField],
           ],
           path,
@@ -1729,6 +2487,14 @@ function resolveSurfaceLater(
         break;
       }
       case 'table': {
+        // table surfaces must reference a DECLARED view.
+        if (!maps.viewsById.has(surface.viewId)) {
+          collector.add(
+            'UNKNOWN_VIEW_REFERENCE',
+            `Surface '${surface.id}' references unknown view '${surface.viewId}'.`,
+            `${path}.viewId`,
+          );
+        }
         if (
           surface.pageSize !== undefined &&
           (typeof surface.pageSize !== 'number' ||
@@ -1743,7 +2509,26 @@ function resolveSurfaceLater(
         }
         if (surface.columns !== undefined) {
           for (const [index, column] of surface.columns.entries()) {
-            collector.unknownFields(column, TABLE_COLUMN_FIELDS, `${path}.columns[${index}]`);
+            const columnPath = `${path}.columns[${index}]`;
+            collector.unknownFields(column, TABLE_COLUMN_FIELDS, columnPath);
+            // column.field is a required member of the declared table-column
+            // model; it was previously silently skipped when absent.
+            if (!isPlainObject(column)) {
+              collector.add(
+                'INVALID_TABLE_DECLARATION',
+                `Table columns must be plain objects (received ${describeReceivedType(column)}).`,
+                columnPath,
+              );
+              continue;
+            }
+            requireNonEmptyStringMember(
+              collector,
+              column,
+              'field',
+              `${columnPath}.field`,
+              `Table surface '${surface.id}' column field`,
+              'INVALID_TABLE_DECLARATION',
+            );
           }
           collectViewFieldIssues(
             collector,
@@ -1796,6 +2581,14 @@ function resolveSurfaceLater(
         break;
       }
       case 'detail': {
+        // detail surfaces must reference a DECLARED view.
+        if (!maps.viewsById.has(surface.viewId)) {
+          collector.add(
+            'UNKNOWN_VIEW_REFERENCE',
+            `Surface '${surface.id}' references unknown view '${surface.viewId}'.`,
+            `${path}.viewId`,
+          );
+        }
         collectViewFieldIssues(
           collector,
           maps,
@@ -1829,17 +2622,34 @@ function resolveSurfaceLater(
             `${path}.summary`,
           );
         }
-        collectViewFieldIssues(
-          collector,
-          maps,
-          surface.id,
-          surface.viewId,
-          [
-            ['xField', surface.xField],
-            ['yField', surface.yField],
-          ],
-          path,
-        );
+        // xField and yField are required members of the declared chart-surface
+        // model; they were previously silently skipped when absent.
+        const chartFields: (readonly [string, string | undefined])[] = [];
+        if (
+          requireNonEmptyStringMember(
+            collector,
+            surface,
+            'xField',
+            `${path}.xField`,
+            `Chart surface '${surface.id}' xField`,
+            'INVALID_CHART_DECLARATION',
+          )
+        ) {
+          chartFields.push(['xField', surface.xField]);
+        }
+        if (
+          requireNonEmptyStringMember(
+            collector,
+            surface,
+            'yField',
+            `${path}.yField`,
+            `Chart surface '${surface.id}' yField`,
+            'INVALID_CHART_DECLARATION',
+          )
+        ) {
+          chartFields.push(['yField', surface.yField]);
+        }
+        collectViewFieldIssues(collector, maps, surface.id, surface.viewId, chartFields, path);
         collectConditionIssues(collector, surface, path, maps);
         break;
       }
@@ -1890,16 +2700,49 @@ function resolveSurfaceLater(
             `${path}.viewId`,
           );
         }
+        // messageField, authorField and inputLabel are required members of
+        // the declared conversation-surface model; they were previously
+        // silently skipped/accepted when absent.
+        const conversationFields: (readonly [string, string | undefined])[] = [];
+        if (
+          requireNonEmptyStringMember(
+            collector,
+            surface,
+            'messageField',
+            `${path}.messageField`,
+            `Conversation surface '${surface.id}' messageField`,
+            'INVALID_CONVERSATION_DECLARATION',
+          )
+        ) {
+          conversationFields.push(['messageField', surface.messageField]);
+        }
+        if (
+          requireNonEmptyStringMember(
+            collector,
+            surface,
+            'authorField',
+            `${path}.authorField`,
+            `Conversation surface '${surface.id}' authorField`,
+            'INVALID_CONVERSATION_DECLARATION',
+          )
+        ) {
+          conversationFields.push(['authorField', surface.authorField]);
+        }
+        requireNonEmptyStringMember(
+          collector,
+          surface,
+          'inputLabel',
+          `${path}.inputLabel`,
+          `Conversation surface '${surface.id}' inputLabel`,
+          'INVALID_CONVERSATION_DECLARATION',
+        );
+        conversationFields.push(['participantField', surface.participantField]);
         collectViewFieldIssues(
           collector,
           maps,
           surface.id,
           surface.viewId,
-          [
-            ['messageField', surface.messageField],
-            ['authorField', surface.authorField],
-            ['participantField', surface.participantField],
-          ],
+          conversationFields,
           path,
         );
         const sendAction = maps.actionsById.get(surface.sendActionId);
@@ -2012,7 +2855,10 @@ function collectViewFieldIssues(
       continue;
     }
     const inProjection = view.fields === undefined || view.fields.includes(fieldName);
-    const inCatalogue = resource === undefined || resource.fields.some((f) => f.name === fieldName);
+    const inCatalogue =
+      resource === undefined ||
+      !Array.isArray(resource.fields) ||
+      resource.fields.some((f) => f.name === fieldName);
     if (!inProjection || !inCatalogue) {
       collector.add(
         'UNKNOWN_FIELD',
@@ -2031,7 +2877,15 @@ function collectSurface(
   resolutions: SurfaceResolution[],
   isV2: boolean = false,
 ): void {
-  const path = `${screenPath} (surface '${surface.id}')`;
+  if (!isPlainObject(surface)) {
+    collector.add(
+      'INVALID_SURFACE_DECLARATION',
+      `Surface declarations must be plain objects (received ${describeReceivedType(surface)}).`,
+      `${screenPath}.surfaces`,
+    );
+    return;
+  }
+  const path = `${screenPath} (surface '${entryKeyLabel(surface.id)}')`;
   const allowed = (isV2 ? SURFACE_FIELDS_V2 : SURFACE_FIELDS).get(surface.role);
   if (allowed === undefined) {
     collector.add(
@@ -2041,14 +2895,25 @@ function collectSurface(
     );
     return;
   }
-  if (surfaceIds.has(surface.id)) {
-    collector.add(
-      'DUPLICATE_SURFACE_ID',
-      `Surface id '${surface.id}' is declared more than once.`,
-      path,
-    );
+  // id is a required member of EVERY surface (LOW-05-A closure): a surface
+  // missing its id was previously accepted with an 'undefined' key.
+  const surfaceIdValid = requireIdentifierMember(
+    collector,
+    surface,
+    'id',
+    `${path}.id`,
+    'Surface id',
+  );
+  if (surfaceIdValid) {
+    if (surfaceIds.has(surface.id)) {
+      collector.add(
+        'DUPLICATE_SURFACE_ID',
+        `Surface id '${surface.id}' is declared more than once.`,
+        path,
+      );
+    }
+    surfaceIds.add(surface.id);
   }
-  surfaceIds.add(surface.id);
   collector.unknownFields(surface, allowed, path);
   if (isV2 && surface.visibleWhen !== undefined) {
     if (typeof surface.visibleWhen !== 'object' || surface.visibleWhen === null) {
@@ -2074,6 +2939,14 @@ function collectSurface(
         const tabNames = new Set<string>();
         for (const [index, tab] of surface.tabs.entries()) {
           const tabPath = `${path}.tabs[${index}]`;
+          if (!isPlainObject(tab)) {
+            collector.add(
+              'INVALID_TABS_DECLARATION',
+              `Tab declarations must be plain objects (received ${describeReceivedType(tab)}).`,
+              tabPath,
+            );
+            continue;
+          }
           collector.unknownFields(tab, TAB_FIELDS, tabPath);
           if (typeof tab.name !== 'string' || tab.name.length === 0) {
             collector.add(
@@ -2108,6 +2981,14 @@ function collectSurface(
                 true,
               );
             }
+          } else {
+            // surfaces is a required member of the declared tab model; a
+            // missing/non-array value was previously silently ignored.
+            collector.add(
+              'INVALID_TABS_DECLARATION',
+              `Tab ${index} of surface '${surface.id}' must declare a surfaces array (received ${describeReceived(tab.surfaces)}).`,
+              `${tabPath}.surfaces`,
+            );
           }
         }
       }
@@ -2154,7 +3035,9 @@ function collectResourceReference(
   provided: ReadonlyMap<string, ResourceDefinition>,
   path: string,
 ): void {
-  const declared = application.resources.find((entry) => entry.resourceId === resourceId);
+  const declared = Array.isArray(application.resources)
+    ? application.resources.find((entry) => entry.resourceId === resourceId)
+    : undefined;
   if (declared === undefined) {
     collector.add(
       'UNKNOWN_RESOURCE_REFERENCE',
@@ -2187,9 +3070,14 @@ function checkCatalogueField(
   fieldName: string | { readonly name: string },
   path: string,
 ): void {
-  const name = typeof fieldName === 'string' ? fieldName : fieldName.name;
+  const name = typeof fieldName === 'string' ? fieldName : fieldName?.name;
   if (resource === undefined) {
     return; // unknown-resource already diagnosed
+  }
+  // A non-string field name (or a resource with a malformed catalogue) is
+  // rejected by the required-member diagnostics; never re-diagnose it here.
+  if (typeof name !== 'string' || !Array.isArray(resource.fields)) {
+    return;
   }
   if (!resource.fields.some((field) => field.name === name)) {
     collector.add(

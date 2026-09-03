@@ -43,6 +43,34 @@ export const noteInputContract = defineContract<{ id: string; title: string }>({
 });
 
 /**
+ * The declared input contract of the admin delete action. The ActionDefinition
+ * model requires every mutation action to declare an input contract; a delete
+ * takes only the identity of the row it targets.
+ */
+export const noteDeleteInputContract = defineContract<{ id: string }>({
+  id: 'proof.note.delete',
+  revision: '1',
+  expected: '{ id: string }',
+  parse: (input) => {
+    const candidate = input as { id?: unknown } | null;
+    if (
+      candidate !== null &&
+      typeof candidate === 'object' &&
+      typeof candidate.id === 'string' &&
+      candidate.id.length > 0
+    ) {
+      return { ok: true as const, value: { id: candidate.id } };
+    }
+    return {
+      ok: false as const,
+      issues: [
+        { code: 'invalid_type', path: '(root)', message: 'the id of the note to delete is required' },
+      ],
+    };
+  },
+});
+
+/**
  * The declared OUTPUT contract of the proof's VICT capability. CONT-001:
  * every executable capability declares BOTH an input and an output
  * contract; invalid capability output must fail safely before reaching
@@ -199,6 +227,7 @@ export const proofApplication = defineApplication({
       resourceId: 'notes',
       resourceRevision: '1',
       op: 'delete',
+      inputContractId: 'proof.note.delete',
     },
     {
       kind: 'capability',
@@ -219,6 +248,7 @@ export const proofApplication = defineApplication({
 export const proofBindings = {
   contracts: [
     { id: 'proof.note.input', revision: '1' },
+    { id: 'proof.note.delete', revision: '1' },
     { id: 'proof.summary.output', revision: '1' },
   ],
   capabilities: [{ id: 'proof.summarize', revision: '1' }],
