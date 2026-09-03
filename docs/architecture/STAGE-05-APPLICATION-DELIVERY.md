@@ -166,6 +166,15 @@ diagnostics; compilation never throws for invalid definitions.
   authorization/effect policy live below the UI. Dispatcher rejections are
   caught and mapped to safe framework-generated failure states; no unhandled
   rejection exists and no raw error content reaches the DOM.
+- Form values are normalized by ONE centralized, type-aware model
+  (`form-values.ts`): prefill and submit both convert at the DECLARED
+  widget boundary, driven only by the field/widget metadata (the renderer
+  never infers types from field names). Untouched numeric prefills stay
+  numbers without any input event (`0` stays `0`, distinguishable from
+  empty/absent); booleans carry their documented domain; invalid numeric
+  input never becomes `NaN`/infinity, never dispatches, and produces a
+  safe field-local error instead. Create and edit forms share the exact
+  same policy (Stage 05 audit remediation, HIGH-05-A).
 - Renderer identity (`renderer.svelte-kit@5.0.0`) participates ONLY in
   release identity, never application identity.
 
@@ -184,11 +193,23 @@ Safe states: `loading`, `empty`, `validation`, `denied`, `failure` (declared
 per screen, renderer-generated fallbacks otherwise), plus `stale` and
 `partial` (@2), rendered as live-region announcements.
 
+Heading semantics: a `text` surface with a declared `level` (1–6) emits the
+matching `h1`–`h6` element from the compiler-validated closed vocabulary;
+unleveled text renders as a non-heading paragraph.
+
 Theme tokens are renderer-owned CSS custom properties
 (`--vict-color-accent`, …) defined in `theme.css`; a definition's token
 assignments are applied as inline CSS variables on the host element
 (scope-safe coexistence with any host page). Reduced motion, visible focus,
-AA-contrast tokens, and responsive breakpoints are built in.
+AA-contrast tokens, and responsive breakpoints are built in. Below the
+720 px breakpoint the shell is a single explicit column
+(`'header' 'nav' 'main'`): the opened mobile navigation is an in-flow panel
+placed between the header and the main content — never an implicitly
+auto-placed grid column — so the main content keeps its full width with the
+menu open. The mobile navigation POLICY is: the menu closes when the
+application navigates to another screen (and stays open while the user
+interacts within the current screen), and Escape inside the open menu (or on
+the menu control) closes it and restores focus to the control.
 
 ## 5. Component registry and code islands
 
