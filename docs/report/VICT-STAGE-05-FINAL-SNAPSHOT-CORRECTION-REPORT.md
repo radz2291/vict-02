@@ -240,9 +240,9 @@ nondeterministic loaded failure):
   (`runChild([…], 3000, { killSignal: 'SIGKILL' })` at lines 149, 197,
   241–242) — the kill decision is elapsed-time based. The corrected tree
   contains zero live elapsed kills (the only `3000` occurrences are
-  documentation comments) and eight `spawnUntilReady`/`await child.ready`
-  readiness-decision sites — the kill is invoked strictly after readiness
-  resolution.
+  documentation comments) and three `spawnUntilReady` call sites with their
+  three `await child.ready` readiness waits (plus import and documentation
+  references) — the kill is invoked strictly after readiness resolution.
 - Deterministic harness-level probe (temporary, scaled timings, run once
   and removed): a synthetic child writes its fsynced checkpoint at 400 ms
   and emits readiness at 500 ms. Baseline-style decision — fixed 200 ms
