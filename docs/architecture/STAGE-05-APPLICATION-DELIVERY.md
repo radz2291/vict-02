@@ -272,7 +272,12 @@ hashing:
   built entirely from defensive VICT-owned captures that are deep-frozen;
   `plan.toJSON()` serves the same captured copies instead of re-reading the
   caller's live objects, so a later caller mutation can never change a
-  compiled plan, manifest, or `applicationVersion`. Rejected hostile/exotic
+  compiled plan, manifest, or `applicationVersion`. The plan-level scalar
+  identity fields (`applicationId`, `applicationRevision`,
+  `applicationVersion`) are likewise captured into immutable local values
+  at successful compilation and are the ONLY source used by both the plan
+  object and its serializer, so plan scalars, manifest identity, and every
+  serialization always agree. Rejected hostile/exotic
   inputs are left unchanged and unfrozen, and no plan or
   `applicationVersion` exists when any capture fails.
 
