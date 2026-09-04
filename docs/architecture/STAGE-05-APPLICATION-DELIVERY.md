@@ -1,16 +1,20 @@
 # Stage 05 — Application Delivery
 
-> **Authority:** `docs/VICT-SYSTEM-REFERENCE.md` v0.2.2 (Stage 05 implements
+> **Authority:** `docs/VICT-SYSTEM-REFERENCE.md` v0.2.3 (Stage 05 implements
 > the Application delivery layer defined in §17 and stage-gated in §23;
 > OPEN-013 and OPEN-014 are decided here through evidence).
 > **Scope:** the canonical SvelteKit renderer and generic application host,
 > the one-time application-host scaffolder, the complete neutral surface
 > vocabulary (`vict.application@2`), the theme/design-token system, the
 > versioned Svelte custom-component registry model, the production SQLite
- * application-domain adapter with its separate migration API, safe generated
+> application-domain adapter with its separate migration API, safe generated
 > CRUD, and the complete reference application proof of §17.10.
-> **Status:** implemented; NOT independently verified. Formal requirement
-> promotion and stage closure occur only after independent audit acceptance.
+> **Status:** Verified with non-blocking issues (formal closure 2026-09-04).
+> Final audited implementation target: `070147eedb23c3f9857a62509a41412bd703357d`.
+> Final independent closure audit: commit `2f8233c`
+> (`docs/report/VICT-STAGE-05-FINAL-INDEPENDENT-CLOSURE-AUDIT.md`), which is
+> authoritative for the closure disposition. See §16 for the final
+> independent disposition.
 
 Stage 04 proved the neutral authoring foundation (authoring ABI, capability
 packs, `@vict/application` identity/compilation, renderer/data ports, and a
@@ -573,4 +577,149 @@ against the required criteria:
 - Data conformance: shared suite applied to BOTH adapters (in-memory and
   SQLite) in `packages/appdata-sqlite/test/conformance.test.ts`.
 - The authoritative command ladder and observed evidence are recorded in
-  `docs/report/VICT-STAGE-05-REPORT.md`.
+  `docs/report/VICT-STAGE-05-REPORT.md` (implementer claim) and independently
+  verified by `docs/report/VICT-STAGE-05-FINAL-INDEPENDENT-CLOSURE-AUDIT.md`,
+  which is authoritative for the closure disposition.
+
+## 16. Final independent disposition (formal closure — 2026-09-04)
+
+**Status: Verified with non-blocking issues. The Stage 05 exit gate is
+satisfied and Stage 05 is formally closed.** The authoritative disposition is
+the final independent closure audit
+(`docs/report/VICT-STAGE-05-FINAL-INDEPENDENT-CLOSURE-AUDIT.md`, commit
+`2f8233c`), which audited the final implementation target `070147e`
+(`070147eedb23c3f9857a62509a41412bd703357d`) on a fresh clone with snapshot
+negative controls against the pre-correction tip `4aead149`, readiness-barrier
+probes, and independent restart-recovery probes through the real worker
+fixtures.
+
+### 16.1 Exit gate — satisfied
+
+Every §-exit-gate condition is independently evidenced: one Application
+Definition plus declared bindings produces a runnable SvelteKit application
+without manually authored routes or page shells; the §17.10 proof contains
+conversation, records/projects tables, validated create/edit forms, a chart
+dashboard, responsive navigation, safe default states, one durable Vict
+action, one local action, and one custom Svelte component; application-domain
+data survives restart through the separate SQLite adapter without touching
+operational tables; changed definitions produce the intended
+`applicationVersion` while unchanged definitions build deterministically;
+built-in and custom components receive only declared safe data/action
+surfaces; malformed definitions and missing revisions fail with structured
+diagnostics rather than partial silent rendering; renderer and data adapters
+pass shared conformance, accessibility, leakage, packaging, and
+fresh-consumer checks; and the independent audit accepted the delivery.
+
+### 16.2 Final observed baseline (prescribed sequential execution)
+
+```text
+Unit:         57 files / 1436 tests
+Renderer:      3 files / 45 tests
+Integration:   1 file / 4 tests
+Full suite:   61 files / 1485 tests
+ARA proof:    exactly 13 ordered events
+Benchmark:    exactly 10 events per completed run
+Stage 04 application proof: 17/17
+```
+
+The Svelte reference build remains warning-free (Svelte warning checks are
+enforced, never suppressed). `git diff --check` is clean.
+
+### 16.3 Principal verified behaviors
+
+- `vict.application@1` compatibility with byte-identical legacy identity
+  vectors, and the `vict.application@2` delivery vocabulary.
+- Strict required-member and canonical-input validation: only dense, plain,
+  canonical data enters compilation; sparse arrays, inherited,
+  non-enumerable, accessor, and symbol-keyed members, exotic prototypes,
+  and hostile/revoked proxies are rejected structurally with stable,
+  non-echoing diagnostics; no partial plan or `applicationVersion` exists
+  for invalid input.
+- Deterministic, collision-resistant `applicationVersion`; two definitions
+  can never share one identity through an empty canonical declaration.
+- Immutable, caller-independent compiled plans and serialization: plan
+  scalars, manifest identity, serialization bytes, and `applicationVersion`
+  are mutually consistent after arbitrary caller mutation; no caller object
+  is frozen, mutated, or retained by reference; serializations are
+  byte-identical across repeats.
+- Canonical Svelte 5 renderer and generic application host: one generic
+  catch-all route per host; reactivity through `$derived`/`$state` with no
+  stale route or component resolution and no remount-forced updates.
+- Routes, navigation, and responsive layouts, including the explicit
+  in-flow mobile navigation panel and its close-on-navigate/Escape policy.
+- Forms, records, tables, search, charts, tabs, dialogs, drawers, status,
+  action and conversation surfaces, with the centralized type-aware
+  form-value model (untouched numeric prefills stay numbers; invalid numeric
+  input never dispatches).
+- Safe loading, empty, validation, denied, stale, partial and failure
+  states; hidden/disabled UI is never enforcement — operations are
+  re-authorized below the UI (visible-but-denied admin delete proven).
+- Theme tokens and versioned custom-component code islands receiving only
+  bounded primitive props (frozen VICT-owned copies).
+- One-time deterministic non-destructive scaffolder: byte-identical output,
+  conflict detection instead of overwrite, path-safety (including Windows
+  junctions), idempotent reruns, author-owned code islands untouched.
+- Production SQLite application-domain adapter: parameterized `json_extract`
+  access (no hostile string ever becomes SQL), strict unknown-field policy,
+  defensive returned copies, atomic `BEGIN IMMEDIATE` transactions,
+  transactional idempotency keys, and durability pragmas verified by pragma
+  reads.
+- Application-domain migrations: explicit, versioned, transactional, with
+  bookkeeping (`vict_appdata_migrations`) and `appdata_*` namespaces
+  disjoint from operational migrations and tables; future-schema databases
+  fail closed; evolution is never an inferred destructive rewrite.
+- Typed, authorized query/mutation/action boundaries across `local`,
+  `navigation`, `query`, `mutation`, and `capability` kinds; Stage 06
+  kinds are honestly rejected (`UNSUPPORTED_ACTION`).
+- Restart and real-process SIGKILL recovery evidence: each corrected fixture
+  emits an exact readiness sentinel only after its fsynced durable
+  checkpoint; the partial-fan-out fixture becomes ready only after the
+  completed sibling branch is durably recorded; recovery never re-invokes
+  completed work, never duplicates durable facts, and keeps event/ledger
+  counts exactly-once. No elapsed-time kill trigger remains in the three
+  corrected scenarios.
+- Warning-free Svelte build (Stage 04 `state_referenced_locally`
+  carry-forward closed at the source), real-browser responsive and
+  accessibility checks (including axe scans), and packed-consumer plus
+  generated-host build verification (`verify:consumer`, `verify:stage5`).
+
+### 16.4 Findings carried at closure (all non-blocking)
+
+- **AUDIT-F1 — Low (test-infrastructure hygiene):** the scaffolder's
+  real-build test uses the shared repository-local `.tmp-scaffold-check`
+  path and can race if two independent Vitest processes execute that test
+  simultaneously in one checkout. The prescribed sequential verification
+  ladder passes; the finding never occurred in prescribed execution, does
+  not control crash timing, and involves no corrected file. Carried as
+  Stage 06 hygiene: switch the test to a unique `mkdtemp` directory per
+  process. NOT fixed in this closure.
+- **Environmental (AUDIT-F2):** Node 24 and a second operating system were
+  unavailable for the final closure audit (all evidence Windows 11 /
+  win32-x64 / Node v22.13.1); no cross-platform or Node-24 coverage is
+  claimed.
+- **Informational (AUDIT-F3):** the unchanged Stage 02 diagnostic sleep is
+  not a crash trigger — its kills are poll-gated on durable events.
+- **Informational (AUDIT-F4):** Node 22 emits the existing `node:sqlite`
+  experimental warning; cosmetic and pre-existing.
+- Existing accepted Stage 03 informational limitations remain unchanged.
+- Declared revisions, binding provenance, and supplied deployment snapshots
+  retain their documented trust boundaries.
+- Documented product limitations remain honest (§14): bar/line charts only,
+  equality-only filters, manual host upgrades, no second renderer, and no
+  claim of manual screen-reader certification.
+
+No Critical, High, or Medium findings remain. Earlier audit findings (the
+original application-delivery blockers, the required-member finding, the
+canonical-input exit-gate violations, and the live-root serialization
+defect) were remediated and independently verified; their reports are
+preserved unchanged as historical evidence.
+
+### 16.5 Closure and what comes next
+
+- **Stage 05 is closed** (2026-09-04) as Verified with non-blocking issues.
+- **Stage 06 is permitted but has not begun.**
+- The next separate task is the **Mastra/ARA architecture amendment**, which
+  is governed independently of this closure. A Stage 06 implementation
+  handoff must be generated from the amended system reference rather than
+  from the pre-amendment Stage 6 description; no Mastra-specific design or
+  Stage 06 implementation is authorized until that amendment is accepted.

@@ -1,12 +1,12 @@
 # VICT System Reference
 
 > **Canonical title:** Vict Architecture and Operating Model — Authoritative System Reference<br>
-> **Document version:** 0.2.2<br>
+> **Document version:** 0.2.3<br>
 > **System generation:** Greenfield<br>
 > **Status:** Authoritative baseline; Application Layer amendment accepted; future features are individually marked<br>
-> **Last updated:** 2026-09-03 (post-closure consistency reconciliation: current package topology, package responsibilities, Stage 3 carry-forward wording, and open decisions aligned with the verified Stage 4 closure; Stage 4 independently verified with non-blocking issues)<br>
-> **Current delivery point:** Stages 1, 1.1, 2, 3, and 4 independently verified<br>
-> **Next permitted stage:** Stage 5 — Application delivery layer (permitted; not implemented)
+> **Last updated:** 2026-09-04 (Stage 05 formal verified closure: Stage 05 independently verified with non-blocking issues; package topology, requirement statuses, carry-forward items, and open decisions reconciled with the final independent closure audit)<br>
+> **Current delivery point:** Stages 1, 1.1, 2, 3, 4, and 5 independently verified; Stage 05 closed with non-blocking issues<br>
+> **Next permitted stage:** Stage 6 — Control plane and API (permitted; not implemented; paused behind the separately governed Mastra/ARA architecture amendment, from which a new Stage 06 handoff must be generated)
 
 ---
 
@@ -150,8 +150,8 @@ Vict is not:
 | PRD-004 | Vict MUST remain usable locally before requiring distributed infrastructure. | Accepted | Verified |
 | PRD-005 | Vict SHOULD provide the same semantic model in local and server deployments. | Accepted | Planned |
 | PRD-006 | Vict MUST be model-agnostic at the builder and product-agent boundaries. | Invariant | Planned |
-| PRD-007 | Vict MUST materially accelerate creation of complete end-user applications, not only the reliable behavior behind them. | Invariant | Planned |
-| PRD-008 | A valid structured application definition plus its declared bindings MUST be sufficient for the reference toolchain to produce a runnable, useful default application. | Accepted | Planned |
+| PRD-007 | Vict MUST materially accelerate creation of complete end-user applications, not only the reliable behavior behind them. | Invariant | Verified |
+| PRD-008 | A valid structured application definition plus its declared bindings MUST be sufficient for the reference toolchain to produce a runnable, useful default application. | Accepted | Verified |
 
 ---
 
@@ -240,7 +240,7 @@ The boundary between definition and activation is a trust boundary. The boundary
 
 ### 5.1 Current verified package topology
 
-Stages 1 through 4 established this verified greenfield package set and proofs:
+Stages 1 through 5 established this verified greenfield package set and proofs:
 
 | Package | Current responsibility | Status |
 |---|---|---|
@@ -249,10 +249,14 @@ Stages 1 through 4 established this verified greenfield package set and proofs:
 | @vict/kernel | Pure validation, canonicalization, activation semantics, authoring diagnostics | Verified through Stage 4 |
 | @vict/runtime | Execution, effects, registry, least-authority authority gating, durable coordination, atomic capability/pack registration | Verified through Stage 4 |
 | @vict/store-sqlite | SQLite operational stores (built-in node:sqlite, WAL, versioned migrations) | Verified (Stage 2) |
-| @vict/application | Framework-neutral Application/Resource/Release model, canonical identity, release compilation, renderer/component/data ports and shared conformance fixtures | Verified (Stage 4) |
+| @vict/application | Framework-neutral Application/Resource/Release model, canonical identity, release compilation, renderer/component/data ports and shared conformance fixtures | Verified (Stage 4; required-member, canonical-input, and serialized-plan-identity corrections verified through Stage 5) |
+| @vict/renderer-svelte | Canonical Svelte 5 renderer: generic VitApp host, built-in role components, responsive navigation, theme tokens, accessible defaults | Verified (Stage 5) |
+| @vict/appdata-sqlite | Production SQLite application-domain adapter with explicit versioned application-domain migrations separate from operational migrations | Verified (Stage 5) |
+| @vict/scaffolder | One-time deterministic non-destructive SvelteKit application-host scaffolder | Verified (Stage 5) |
 | packs/notes-pack, packs/ledger-pack | Two verified local capability packs under the shared pack-conformance suite | Verified (Stage 4) |
 | examples/ara-proof | Deterministic offline walking proof (13 events) | Verified |
 | examples/application-proof | Minimal real SvelteKit vertical proof of the neutral boundary (local, data, and Vict actions) | Verified (Stage 4; not the Stage 5 production renderer) |
+| examples/reference-app | Complete Stage 05 application-delivery proof of §17.10 (renderer, scaffolder output ownership, SQLite application-domain adapter, real Vict action) | Verified (Stage 5) |
 
 The verified import direction is acyclic:
 
@@ -280,9 +284,8 @@ The application branch is separate from the execution spine:
 - `@vict/kernel` and `@vict/runtime` consume the SDK's authoring declarations; runtime composition APIs are imported explicitly from `@vict/runtime`.
 - `@vict/application` depends only on `@vict/contracts` and `@vict/sdk`; it remains browser-safe and independent of the runtime, SQLite, Svelte, and Zod.
 - `@vict/store-sqlite` remains below the runtime.
-- The graph is acyclic and is verified through package inspection, the build, and isolated packed consumers (`verify:consumer` / `verify:stage4`).
-
-The Stage 5 production SvelteKit renderer/component suite, the host scaffolder, and the SQLite application-domain adapter are NOT implemented; §5.2 remains the accepted target those stages continue toward.
+- The application branch (`@vict/application` plus the Stage 5 renderer, application-data adapter, and scaffolder packages) remains browser-safe above `@vict/contracts`/`@vict/sdk`/`@vict/application`; Svelte dependencies exist only in `@vict/renderer-svelte` and the SvelteKit example consumers, and SQLite dependencies only in `@vict/appdata-sqlite` and the operational `@vict/store-sqlite`. The kernel and runtime remain independent of Svelte and application rendering. Application-domain tables and migrations remain physically separate from operational stores and migrations.
+- The graph is acyclic and is verified through package inspection, the build, and isolated packed consumers (`verify:consumer` / `verify:stage4` / `verify:stage5`).
 
 ### 5.2 Accepted target topology
 
@@ -315,8 +318,9 @@ Dependency arrows mean “is imported by the next layer.” Exact package extrac
 | @vict/cli | Local inspection, execution, verification, and operator commands | Accepted | Planned |
 | @vict/builder-kit | Agent/human repository context, tools, checks, and handoff protocol | Accepted | Planned |
 | application model/compiler (implemented as @vict/application) | Framework-neutral definitions, validation, canonical identity, binding plans, and application release manifests | Accepted | Verified |
-| Svelte renderer and host | Canonical first renderer, SvelteKit shell, built-in component roles, and custom-component registry (only the minimal Stage 4 vertical proof exists; the production component suite and host scaffolder remain Stage 5) | Accepted | In Progress |
-| application data adapters | Domain-resource persistence and query/mutation ports, kept separate from operational orchestration stores (neutral port, shared conformance suite, and in-memory reference adapter verified; the production SQLite adapter and its migrations remain Stage 5) | Accepted | In Progress |
+| Svelte renderer and host | Canonical first renderer, SvelteKit shell, built-in component roles, and custom-component registry — verified as `@vict/renderer-svelte` plus the generic application host used by the reference application and generated hosts | Accepted | Verified |
+| application data adapters | Domain-resource persistence and query/mutation ports, kept separate from operational orchestration stores (neutral port, shared conformance suite, in-memory reference adapter, and the production SQLite adapter `@vict/appdata-sqlite` with separate application-domain migrations) | Accepted | Verified |
+| application host scaffolder | One-time deterministic non-destructive SvelteKit host scaffolding — verified as `@vict/scaffolder` | Accepted | Verified |
 | capability packs | Capability-pack manifest, local atomic installation, and shared conformance foundation (the broader reusable domain ecosystem remains a later-stage concern) | Accepted | Verified |
 | studio | Human control/inspection interface | Accepted | Planned |
 
@@ -809,8 +813,8 @@ Rollback selects a prior activation for future runs. It does not erase events, m
 | DATA-010 | The architecture MUST NOT require application domain state to use Vict event sourcing. | Invariant | Verified |
 | DATA-011 | Public configuration and type documentation for full retention MUST explicitly state the caller’s responsibility for retained content. | Accepted | Verified |
 | DATA-012 | Store read APIs SHOULD return immutable snapshots or defensive copies so callers cannot mutate canonical stored records by reference. | Accepted | Verified |
-| DATA-013 | Application-domain persistence MUST remain logically and physically separable from Vict operational persistence even when both use one database technology. | Invariant | Planned |
-| DATA-014 | Generated application data mutations MUST cross typed, authorized data/capability boundaries and MUST NOT write operational store records directly. | Invariant | Planned |
+| DATA-013 | Application-domain persistence MUST remain logically and physically separable from Vict operational persistence even when both use one database technology. | Invariant | Verified |
+| DATA-014 | Generated application data mutations MUST cross typed, authorized data/capability boundaries and MUST NOT write operational store records directly. | Invariant | Verified |
 
 ---
 
@@ -1165,7 +1169,7 @@ The Application Definition and compiler are framework-neutral. **SvelteKit is th
 
 React is deferred until a genuine second consumer justifies another adapter. Adding a renderer must not change application, action, contract, permission, or runtime semantics. All renderers must pass the same conformance fixtures for routing, state mapping, actions, diagnostics, safe failures, and component resolution.
 
-The exact Svelte component library remains an implementation choice for Stage 5, but semantic component roles, application identity, and adapter conformance are Vict contracts rather than library-specific conventions.
+The Stage 5 evidence decided the component-library question (OPEN-013): the built-in roles are renderer-owned native Svelte components with accessible SVG charts, and no external component or chart library enters the neutral Application Definition. Semantic component roles, application identity, and adapter conformance remain Vict contracts rather than library-specific conventions.
 
 ### 17.7 Hybrid delivery and customization
 
@@ -1218,21 +1222,21 @@ The proof passes only if one structured definition and its declared capability/d
 
 | ID | Requirement | Maturity | Delivery |
 |---|---|---|---|
-| APP-001 | A valid Application Definition and declared bindings MUST produce a runnable useful default application through the reference toolchain without manual route/page-shell construction. | Invariant | Planned |
+| APP-001 | A valid Application Definition and declared bindings MUST produce a runnable useful default application through the reference toolchain without manual route/page-shell construction. | Invariant | Verified |
 | APP-002 | The Application Definition and compiler MUST be UI-framework-neutral; TypeScript is the primary authoring API and all serializations MUST map to one canonical semantic model. | Invariant | Verified |
 | APP-003 | `applicationVersion` MUST be deterministic, insertion-order independent, schema-marked, and based on canonical declarations plus explicit revisions rather than function text or framework internals. | Invariant | Verified |
 | APP-004 | An Application Release MUST identify its application, renderer, component registry, data-adapter, public Vict compatibility, and activation-binding semantics. | Accepted | Verified |
-| APP-005 | The neutral surface model MUST cover routes, navigation, responsive layouts, forms, tables, charts, conversation surfaces, actions, and explicit default states required by the reference proof. | Accepted | Planned |
-| APP-006 | Reference-rendered surfaces MUST provide accessible semantics and responsive defaults, with loading, empty, validation, denied, and safe failure behavior. | Accepted | Planned |
+| APP-005 | The neutral surface model MUST cover routes, navigation, responsive layouts, forms, tables, charts, conversation surfaces, actions, and explicit default states required by the reference proof. | Accepted | Verified |
+| APP-006 | Reference-rendered surfaces MUST provide accessible semantics and responsive defaults, with loading, empty, validation, denied, and safe failure behavior. | Accepted | Verified |
 | APP-007 | Presentation metadata MUST remain separate from base data contracts while referencing those contracts for validation. | Invariant | Verified |
 | APP-008 | Resource Definitions MUST expose typed storage-neutral identity, query, mutation, relationship, and presentation semantics. | Accepted | Verified |
-| APP-009 | Application-domain stores and migrations MUST remain separate from Vict operational stores and migrations. | Invariant | Planned |
+| APP-009 | Application-domain stores and migrations MUST remain separate from Vict operational stores and migrations. | Invariant | Verified |
 | APP-010 | Every non-local application action MUST have typed boundary references and MUST cross the applicable data, capability, runtime, or control authorization boundary. | Invariant | Verified |
 | APP-011 | Presentation-only interactions MUST remain local and MUST NOT be forced into Vict graphs. | Invariant | Verified |
 | APP-012 | UI visibility, disabled state, and route guards MUST NOT be treated as authoritative permission enforcement. | Invariant | Verified |
 | APP-013 | SvelteKit MUST be the first reference renderer; the core Application Definition MUST NOT expose Svelte-specific public types. | Accepted | Verified |
 | APP-014 | Bespoke UI MUST be supported through a versioned component registry and explicit code islands without requiring edits to generated framework internals. | Invariant | Verified |
-| APP-015 | The reference delivery model SHOULD scaffold the host once and render definitions without destructive repeated code generation or promised bidirectional source round-tripping. | Accepted | Planned |
+| APP-015 | The reference delivery model SHOULD scaffold the host once and render definitions without destructive repeated code generation or promised bidirectional source round-tripping. | Accepted | Verified |
 | APP-016 | Renderer and application-data adapters MUST pass shared semantic conformance suites. | Invariant | Verified |
 | APP-017 | The real ARA product MUST use the Application Layer for its structured product surface and MUST expose any missing abstraction rather than bypassing the layer silently. | Accepted | Planned |
 | APP-018 | Studio MUST remain conceptually distinct from the Application Layer, though it MAY reuse the same renderer and components where semantics fit. | Accepted | Planned |
@@ -1524,8 +1528,8 @@ Stages are capability gates, not calendar promises. A work session may complete 
 | 2 | Durable identity and stores | Verified | Restart-safe sequential runs on SQLite |
 | 3 | Durable orchestration | Verified with non-blocking issues | Waits, signals, timers, retries, cancellation, branching |
 | 4 | Capability and application authoring foundation | Verified with non-blocking issues | Stable SDK/packs plus neutral Application Definition, identity, bindings, and renderer contract |
-| 5 | Application delivery layer | Planned — next permitted | SvelteKit renderer, scaffolder, built-in surfaces, domain-data adapter, and complete working application proof |
-| 6 | Control plane and API | Planned | Governed ChangeSets, approvals, activation operations, typed remote consumption |
+| 5 | Application delivery layer | Verified with non-blocking issues | SvelteKit renderer, scaffolder, built-in surfaces, domain-data adapter, and complete working application proof |
+| 6 | Control plane and API | Planned — next permitted after architecture amendment | Governed ChangeSets, approvals, activation operations, typed remote consumption |
 | 7 | Real ARA product | Planned | Reference application proves runtime and Application Layer together |
 | 8 | Builder Kit and self-hosting | Planned | Model-agnostic agents extend Vict and its applications under bounded rules |
 | 9 | Studio, diagnosis, and controlled recovery | Planned | Operator experience and safe recovery, reusing the Application Layer where appropriate |
@@ -1796,9 +1800,9 @@ d51818c  final remediation report
 83c97b4  independent closure audit
 ```
 
-**Non-blocking carry-forward into Stage 5**
+**Non-blocking carry-forward into Stage 5** (statuses reconciled after the verified Stage 05 closure; the Stage 4 audit-era descriptions above are preserved unchanged in the reports)
 
-1. **LOW-C-1 (Low):** a hostile getter or hostile Proxy in an in-process query `filters` container can produce a raw rejection carrying the hostile message rather than a structured diagnostic in the reference application-data adapter. It is fail-closed (no rows return; authorization has already completed) and not remotely reachable through the current proof. Stage 5's production SQLite application-domain adapter MUST convert hostile query/mutation request processing failures into stable, non-echoing structured diagnostics, and permanent conformance coverage MUST be added for throwing getters and hostile proxies. This is a Stage 5 acceptance item, not a reason to modify Stage 4 production code.
+1. **LOW-C-1 (Low) — CLOSED in Stage 05:** a hostile getter or hostile Proxy in an in-process query `filters` container can produce a raw rejection carrying the hostile message rather than a structured diagnostic in the reference application-data adapter. It was fail-closed (no rows return; authorization has already completed) and not remotely reachable through the current proof. The Stage 05 production SQLite application-domain adapter converts hostile query/mutation request processing failures into stable, non-echoing structured diagnostics, and permanent shared-conformance coverage for throwing getters and hostile proxies was added (verified by the Stage 05 independent closure audit). No Stage 4 production code was modified for this.
 2. **LOW-C-2 (Low, closed at documentation closure):** the final remediation report's file-change list overstated which architecture-document sections that pass had updated. The historical report is preserved unchanged; the architecture document itself now explicitly documents the invocation-scoped caches and resolvers, the mandatory release-binding context, atomic direct registration, and the strict query boundary, and records this disposition.
 3. **Accepted informational boundaries (unchanged):** supplied binding snapshots cannot prove hostile deployment tooling truthful; identity depends on declared revisions and author/build discipline; Node 24 and second-OS closure-audit execution were unavailable (a second Node runtime, v22.22.3, provided partial targeted mitigation); and the existing Stage 3 informational carry-forwards remain unchanged.
 
@@ -1837,6 +1841,96 @@ Turn the neutral Stage 4 application model into a complete, responsive, customiz
 - malformed definitions and missing component/action/resource revisions fail with structured diagnostics rather than partial silent rendering;
 - renderer and data adapters pass shared conformance, accessibility, leakage, packaging, and fresh-consumer tests;
 - independent usability, architecture, and security audit passes.
+
+**Independent disposition — 2026-09-04**
+
+- **VERIFIED WITH NON-BLOCKING ISSUES — FORMAL CLOSURE PERMITTED.**
+- Stage 05 is formally closed as of 2026-09-04. The authoritative closure disposition is the final independent closure audit committed as `2f8233c`, which audited the final implementation target `070147e` on a fresh clone.
+- The complete verification ladder passed in prescribed sequential execution: 57 unit files / 1436 unit tests, 3 renderer files / 45 renderer tests, 1 integration file / 4 integration tests, and a full suite of 61 files / 1485 tests; the ARA proof retained exactly 13 ordered events; the benchmark retained exactly 10 events per completed run; the Stage 04 application proof passed 17/17; and the Svelte reference build remained warning-free.
+- No Critical, High, or Medium findings remain. One Low test-infrastructure hygiene finding (AUDIT-F1, the scaffolder shared-temp-path race) and several informational/environmental limitations are recorded below and do not block closure.
+
+**Stage 05 evidence chain (preserved, not rewritten)**
+
+| Milestone | SHA |
+| --- | --- |
+| Initial Stage 05 implementation | `03a04a96a3c11be641305bf035033a83d6ef82f0` |
+| Initial independent audit | `53a8ec1b1e4ee4db7578681502de1d7559e04a7b` |
+| Application-delivery remediation | `d346badd1d042afb61f6e36847b0716116bc4dd7` |
+| Focused independent re-audit | `11e26447d645326aebf6560e3963476449fa840e` |
+| Required-member correction tip | `9fa89e4177654ea04399e3191469041107be77cb` |
+| Required-member closure audit | `50d46feb93d44f93a7e92cce862cac85c7d8525b` |
+| Canonical-input correction | `8ecb9aff8687e8059f78df1eb8c5bfc0b4053613` |
+| Canonical-identity documentation tip | `c4cb79beee3ed3d229084367a846bd2be3f9cf33` |
+| Canonical-identity closure re-audit | `4aead149bf8e647f8cf1e2df57a90fea6c45fa5d` |
+| Snapshot-consistency correction | `b9b7eaaf3706d0fbbf93774800e0261869849896` |
+| Crash-fixture readiness correction | `9cf61ee8268d99c438e795f250055ed56dbea4a5` |
+| Final audited implementation target | `070147eedb23c3f9857a62509a41412bd703357d` |
+| Final independent closure audit | `2f8233c6eddfec6a172f1486c373cce950f138ea` |
+
+**Independently verified Stage 05 delivery**
+
+- `vict.application@1` compatibility and the `vict.application@2` delivery vocabulary (redirect routes, breadcrumbs, lists, tables, details, charts, status, tabs, dialogs/drawers, conversation, stale/partial states, theme tokens).
+- Strict required-member and canonical-input validation: dense plain canonical data only, structural rejection of sparse arrays, inherited/non-enumerable/accessor members, exotic prototypes and hostile proxies, with stable non-echoing diagnostics.
+- Deterministic, collision-resistant `applicationVersion`; valid `@1`/`@2` identity vectors are byte-identical to their pre-correction values.
+- Immutable, caller-independent compiled plans and serialization: plan scalars, manifest identity, serialization bytes and `applicationVersion` never contradict each other and never move with later caller mutation; no caller object is frozen or retained by reference.
+- The canonical Svelte 5 renderer and generic application host with one generic catch-all route and no per-screen page shells.
+- Built-in routes, navigation, and responsive layouts, including the corrected mobile-navigation layout and close-on-navigate/Escape policy.
+- Forms, records, tables, search, charts, tabs, dialogs, drawers, status, action and conversation surfaces, with the centralized type-aware form-value model (untouched numeric prefills stay numbers).
+- Safe loading, empty, validation, denied, stale, partial and failure states, with authorization always enforced below the UI.
+- Theme tokens and versioned custom-component code islands with bounded primitive props.
+- The one-time deterministic non-destructive scaffolder (path-safe, idempotent, code-island ownership).
+- The production SQLite application-domain adapter with parameterized access, strict idempotency, durability pragmas, and real injection/hostile-input coverage.
+- Application-domain migrations explicitly versioned and transactional, with bookkeeping and namespaces separate from operational migrations and tables.
+- Typed, authorized query/mutation/action boundaries (local, navigation, query, mutation, capability) with hidden/disabled UI never treated as enforcement.
+- Restart and real-process SIGKILL recovery evidence: readiness sentinels emitted only after fsynced durable checkpoints, including the partial-fan-out fixture that becomes ready only after the completed sibling branch is durably recorded; recovery never re-invokes completed work or duplicates durable facts.
+- Warning-free Svelte build (reactivity carried by `$derived`/`$state`; the Stage 04 `state_referenced_locally` carry-forward closed at the source).
+- Real-browser responsive and accessibility checks, including axe scans of the rendered application.
+- Packed-consumer and generated-host build verification (`verify:consumer`, `verify:stage5` packs the renderer/scaffolder/adapter chain and builds the generated host in isolation).
+
+**Final observed baseline**
+
+```text
+Unit:         57 files / 1436 tests
+Renderer:      3 files / 45 tests
+Integration:   1 file / 4 tests
+Full suite:   61 files / 1485 tests
+ARA proof:    exactly 13 ordered events
+Benchmark:    exactly 10 events per completed run
+Stage 04 application proof: 17/17
+```
+
+**Requirement reconciliation evidence (why each promotion is direct)**
+
+- **PRD-007** — the §17.10 reference proof proves that one structured definition plus declared bindings produces a complete working application (conversation, records table, validated forms, chart dashboard, responsive navigation, safe states, custom component) rather than only the behavior behind it.
+- **PRD-008 / APP-001** — the reference application runs without manually authored routes or page shells: one generic catch-all host renders every screen from the compiled plan, proven by the reference suites and the independently built generated host.
+- **DATA-013 / APP-009** — the production `@vict/appdata-sqlite` adapter uses `appdata_*` namespaces and its own `vict_appdata_migrations` bookkeeping, disjoint from operational tables and `vict_schema_migration`; a test proves an application-domain-only database contains no operational tables, and restart evidence runs over a separate database file.
+- **DATA-014** — generated CRUD crosses the typed query/mutation action boundaries with authorization and contract validation below the UI; the admin-delete proof shows a visible-but-denied operation rejected at the boundary (`DATA_UNAUTHORIZED`), and no generated path writes operational records directly.
+- **APP-005** — the shipped neutral surface vocabulary and renderer cover routes, navigation, responsive layouts, forms, tables, charts, conversation surfaces, actions, and the declared default states exercised by the reference proof.
+- **APP-006** — accessible semantics (heading levels, `aria-sort`, roving-tabindex tabs, focus-trapped dialogs, live-region state announcements, AA-contrast tokens, reduced motion) and responsive defaults are implemented and checked by real-browser and axe evidence, with loading/empty/validation/denied/stale/partial/failure states rendered.
+- **APP-015** — `@vict/scaffolder` scaffolds the host exactly once, deterministically, non-destructively (conflict detection, never overwrite; code islands untouched) and is idempotent; no bidirectional round-tripping is claimed.
+
+**Closed carry-forward items**
+
+The following were closed by verified Stage 05 evidence:
+
+- Stage 04 **LOW-C-1** — hostile getter/Proxy application-data diagnostics now produce stable, non-echoing structured diagnostics with permanent shared-conformance coverage (scenario 17 of the shared adapter suite).
+- Stage 04 Svelte `state_referenced_locally` warning and stale-input concern — the renderer computes all prop-derived values through `$derived`/`$state`, navigation never retains stale resolution, and the build is warning-free by enforced check.
+- The untouched numeric edit-form typing defect — centralized type-aware form-value conversion keeps untouched numeric prefills numeric and never dispatches `NaN`/infinity.
+- The mobile navigation grid/layout defect — the opened menu is an explicit in-flow panel; the main content keeps its full width.
+- Required action revisions and all other required application members — enforced at the runtime compiler for both schema markers.
+- Sparse-array, inherited-member, non-enumerable-member, and canonical-identity collisions — rejected structurally at the single canonical-input boundary, so two definitions can never share one identity through an empty canonical declaration.
+- Caller freezing/aliasing and live-root serialization inconsistency — plans are built from eager, deep-frozen VICT-owned captures; `toJSON()` reads only captured scalars and frozen clones.
+- Fixed elapsed-time SIGKILL coordination in the three corrected restart fixtures — readiness-gated kills with exact sentinels after fsynced durable checkpoints.
+
+**Remaining non-blocking notes (unchanged, honest)**
+
+- **AUDIT-F1 — Low:** the scaffolder's real-build test uses the shared repository-local `.tmp-scaffold-check` path and can race if two independent Vitest processes execute that test simultaneously in one checkout. The prescribed sequential verification ladder passes. Carry this as test-infrastructure hygiene for Stage 06; the later correction should use a unique `mkdtemp` directory per process.
+- **Environmental:** Node 24 and a second operating system were unavailable for the final closure audit (all evidence Windows 11 / win32-x64 / Node v22.13.1).
+- **Informational:** the unchanged Stage 02 diagnostic sleep is not a crash trigger (its kills are poll-gated on durable events).
+- **Informational:** Node 22 emits the existing `node:sqlite` experimental warning.
+- The existing accepted Stage 03 informational limitations remain unchanged.
+- Declared revisions, binding provenance, and supplied deployment snapshots retain their documented trust boundaries.
+- Stage 05 renderer/product limitations documented in its architecture record remain honest: bar/line charts only, equality-only filters, manual host upgrades, no second renderer, and no claim of manual screen-reader certification.
 
 ### Stage 6 — Control plane and API
 
@@ -2037,6 +2131,7 @@ This section is deliberately factual and should be updated after every accepted 
 - Durable joins validate their own declared contracts outside store transactions and commit canonical completion exactly once; suspended work resumes only through the exact pinned activation; irreversible or ambiguous unsafe effects block rather than blind-replay.
 - The final independent Stage 3 re-audit targeted commit `810144f`, reproduced the original defects as negative controls, closed every High/Medium finding, passed 345 unit plus 4 integration tests (349 total), six real-process fixtures, ARA's 13 events, and the benchmark's 10 events; authoritative re-audit record commit `d2ca3b4` permits Stage 4 with Low/Informational carry-forward only.
 - Stage 4 adds the independently verified capability/application authoring foundation: the stable authoring-focused `@vict/sdk` ABI with the corrected contracts-only dependency direction; capability packs with atomic pack installation AND atomic direct capability registration; least-authority permission/configuration/secret gating with genuinely invocation-scoped authority caches and resolvers (proven on the sequential, durable in-memory, and SQLite engines, including rotation, transient-failure recovery, and concurrency); strict closed capability contracts, effect vocabulary, authority declarations, and immutable authoring captures; the framework-neutral, browser-safe `@vict/application` package with closed Application/Resource/Release schemas, deterministic `applicationVersion` and `releaseVersion`, mandatory fail-closed release-binding verification against actual deployment identities, a neutral renderer contract, a structurally keyed versioned component registry, a storage-neutral application-data port with closed request schemas and primitive filter domains, and shared renderer/data-adapter conformance suites; and a real SvelteKit vertical proof exercising local, data, and Vict actions with authorization enforced below the UI.
+- Stage 5 adds the independently verified application delivery layer at final audited implementation target `070147e`: the `vict.application@2` delivery vocabulary with strict `@1` compatibility and byte-identical legacy identity vectors; strict required-member and canonical-input validation (dense plain canonical data only; sparse arrays, inherited/non-enumerable/accessor members, exotic prototypes, and hostile proxies rejected structurally); deterministic, collision-resistant `applicationVersion`; immutable caller-independent compiled plans whose scalars, manifest identity, serialization bytes, and version never contradict each other; the canonical Svelte 5 renderer (`@vict/renderer-svelte`) and generic application host with routes, navigation, responsive layouts, forms, records, tables, search, charts, tabs, dialogs, drawers, status, action and conversation surfaces, safe loading/empty/validation/denied/stale/partial/failure states, theme tokens, and versioned custom-component code islands; the one-time deterministic non-destructive scaffolder (`@vict/scaffolder`); the production SQLite application-domain adapter (`@vict/appdata-sqlite`) with typed authorized query/mutation/action boundaries, strict idempotency, and application-domain migrations explicitly separate from operational migrations; readiness-gated real-process SIGKILL restart evidence; a warning-free Svelte build; real-browser responsive and accessibility checks; and packed-consumer plus generated-host build verification. Observed closure baseline: 57 unit files / 1436 tests, 3 renderer files / 45 tests, 1 integration file / 4 tests, 61 files / 1485 total; ARA exactly 13 ordered events; benchmark exactly 10 events per completed run; Stage 04 application proof 17/17. Disposition: VERIFIED WITH NON-BLOCKING ISSUES — formal closure permitted and performed 2026-09-04.
 
 ### 24.2 Accepted carry-forward issues
 
@@ -2048,12 +2143,14 @@ The following accepted notes remain visible rather than being hidden by the acce
 - **Accepted trust boundaries:** identity depends on authors/build tooling bumping revisions, and effect classifications are author-supplied.
 - **Accepted limitation:** trace key-name redaction is best-effort, but values are structurally omitted regardless of key name.
 - **Closed during Stage 4 (verified by the independent closure audit):** all three Stage 3 authoring-boundary Low carry-forwards are closed. Throwing author contract parsers and hostile issue getters now commit a sanitized terminal failure on every supported boundary (sequential, durable in-memory, SQLite, including close/reopen) instead of a silent reclaim loop; unknown authoring fields on graph/node/edge/wait/retry and application/pack/release boundaries are rejected with structured, path-sorted, insertion-order-independent diagnostics; and wait-level `timeoutMs`/`delayMs` bounds are enforced at compilation with the stable `INVALID_WAIT_BOUND` diagnostic (positive finite safe integers; no ceiling; scheduling-time overflow fails structurally).
-- **Low (LOW-C-1, Stage 5 acceptance item):** a hostile getter or hostile Proxy in an in-process query `filters` container can produce a raw rejection (carrying the hostile message) rather than a structured diagnostic in the reference application-data adapter. It is fail-closed (no rows return; authorization has already completed) and not remotely reachable through the current proof. Stage 5's production SQLite application-domain adapter MUST convert hostile query/mutation request processing failures into stable, non-echoing structured diagnostics, and permanent conformance coverage for throwing getters and hostile proxies MUST be added. Stage 4 production code is not modified for this during closure.
-- **Stage 5 acceptance item (Svelte reactivity warnings, reproduced during the v0.2.2 reconciliation):** the Stage 4 minimal single-route SvelteKit proof passes 17/17 with exit 0 while emitting Svelte `state_referenced_locally` warnings for the initial captures of `plan`, `path`, and `registry` in the proof host. This is non-blocking for Stage 4's minimal proof. Stage 5's production renderer MUST react correctly when route, plan, rows, or registry inputs change; client-side navigation MUST NOT retain a stale route or component resolution; the Stage 5 application build MUST be free of these Svelte reactivity warnings; and permanent tests MUST update renderer inputs without forcing a complete remount. The Stage 4 proof implementation is intentionally not modified during reconciliation.
+- **Low (LOW-C-1, Stage 5 acceptance item) — CLOSED in Stage 05 (verified by the independent closure audit):** a hostile getter or hostile Proxy in an in-process query `filters` container could produce a raw rejection (carrying the hostile message) rather than a structured diagnostic in the reference application-data adapter. It was fail-closed (no rows return; authorization has already completed) and not remotely reachable through the current proof. The Stage 05 production SQLite application-domain adapter now converts hostile query/mutation request processing failures into stable, non-echoing structured diagnostics, and permanent conformance coverage for throwing getters and hostile proxies was added to the shared adapter suite. Stage 4 production code was not modified for this.
+- **Stage 5 acceptance item (Svelte reactivity warnings, reproduced during the v0.2.2 reconciliation) — CLOSED in Stage 05 (verified by the independent closure audit):** the Stage 4 minimal single-route SvelteKit proof emitted Svelte `state_referenced_locally` warnings for the initial captures of `plan`, `path`, and `registry` in the proof host. The Stage 05 renderer computes every prop-derived value (plan, path, rows, registry, viewData, record) through `$derived`/`$state` reactive props, so route/plan/data/registry updates propagate without remounting and client-side navigation never retains a stale route or component resolution; the Stage 5 application build is free of these warnings by enforced (never suppressed) check, and permanent tests update renderer inputs without forcing a complete remount. The Stage 4 proof implementation was not modified.
 - **Low (LOW-C-2, closed at documentation closure):** the final remediation report's file-change list overstated which architecture-document sections that pass had updated (the actual remediation diff for the architecture document contained only the two §4 lines making the binding context mandatory). The historical report is preserved unchanged; the architecture document itself now explicitly documents the per-invocation caches/resolvers, the mandatory release-binding context, atomic direct registration, and the strict query boundary, and records the closure disposition.
 - **Accepted trust boundary (release bindings):** VICT checks equality of SUPPLIED binding snapshots and cannot prove that hostile deployment tooling supplied truthful ones; deployment composition must source verification descriptors from the actual selected renderer, component-registry identity snapshot, application-data adapter, and selected activation.
 - **Informational (Stage 3, unchanged):** completion-phase store faults recover safely after lease lapse but are not immediately surfaced by the worker loop; non-cooperative in-flight capability cancellation retains documented cooperative race semantics.
-- **Environmental (not a defect):** the full Stage 3 verification ladder and packed-consumer check were executed on Windows (win32-x64); Node 24 targeted checks passed, while POSIX Stage 3 execution remains not independently reproduced. Node 24 and a second operating system were likewise unavailable for the Stage 4 remediation and independent closure audit; a second Node runtime (v22.22.3) provided partial targeted mitigation, recorded as an environmental limitation rather than a defect.
+- **Environmental (not a defect):** the full Stage 3 verification ladder and packed-consumer check were executed on Windows (win32-x64); Node 24 targeted checks passed, while POSIX Stage 3 execution remains not independently reproduced. Node 24 and a second operating system were likewise unavailable for the Stage 4 remediation, the Stage 5 correction audits, and the final Stage 5 closure audit; a second Node runtime (v22.22.3) provided partial targeted mitigation at Stage 4, recorded as an environmental limitation rather than a defect.
+- **Low (AUDIT-F1, test-infrastructure hygiene, carried into Stage 06):** the scaffolder's real-build test uses the shared repository-local `.tmp-scaffold-check` path and can race if two independent Vitest processes execute that test simultaneously in one checkout. The prescribed sequential verification ladder passes; the finding does not touch identity, durability, or crash timing. A later correction should use a unique `mkdtemp` directory per process.
+- **Informational (Stage 05, unchanged):** the unchanged Stage 02 diagnostic sleep is not a crash trigger (its kills are poll-gated on durable events); Node 22 emits the existing `node:sqlite` experimental warning.
 
 ### 24.3 Authorized next work
 
@@ -2061,7 +2158,9 @@ Stage 3 durable orchestration is independently verified at target `810144f`; the
 
 Stage 4 — capability and application authoring foundation — is independently verified at final implementation `29c5a9d`, with the final remediation report at `d51818c` and the independent closure audit at `83c97b4`, disposition **VERIFIED WITH NON-BLOCKING ISSUES — STAGE 05 PERMITTED**. The verified delivery comprises the stable authoring-focused `@vict/sdk` ABI, atomic capability-pack and direct capability registration, least-authority authority gating with genuinely invocation-scoped configuration/secret caches, strict capability contracts/effects/authority declarations and immutable captures, the framework-neutral browser-safe `@vict/application` model with deterministic application and release identities and mandatory release-binding verification, shared renderer/data-adapter conformance, the real SvelteKit vertical proof with local, data, and Vict actions, and the three closed Stage 3 authoring-boundary Low carry-forwards.
 
-Stage 5 — Application delivery layer — is the next permitted stage and has not begun. Only Stage 5's accepted scope is authorized: the canonical SvelteKit renderer and one-time application-host scaffolder; built-in routes/navigation, responsive layouts, and the forms/tables/charts/tabs/dialogs/status/conversation surface roles with loading, empty, validation, denied, stale, partial, and safe failure states; the theme/design-token system and accessible renderer defaults; the versioned Svelte custom-component registry and explicit code-island ownership; typed resource queries/mutations over a local SQLite application-domain adapter with migrations separate from operational stores; generated safe CRUD with effects and authorization enforced below the UI; local preview/build commands, renderer/data-adapter conformance, and packed-consumer verification; and the complete §17.10 reference proof. Stage 5 must also close the carried-forward LOW-C-1 structured-diagnostics requirement and add hostile-getter/hostile-proxy conformance coverage as acceptance items. Stage 6 and later work remains blocked behind its own stage gate.
+Stage 5 — application delivery layer — is independently verified and formally closed (2026-09-04) at final audited implementation target `070147e`, with the final independent closure audit at `2f8233c`, disposition **VERIFIED WITH NON-BLOCKING ISSUES**. The verified delivery comprises the `vict.application@2` delivery vocabulary with strict `@1` compatibility; strict required-member and canonical-input validation; deterministic, collision-resistant `applicationVersion`; immutable caller-independent compiled plans and serialization; the canonical Svelte 5 renderer and generic application host; routes, navigation and responsive layouts; forms, records, tables, search, charts, tabs, dialogs, drawers, status, action and conversation surfaces; safe loading, empty, validation, denied, stale, partial and failure states; theme tokens and versioned custom-component code islands; the one-time deterministic non-destructive scaffolder; the production SQLite application-domain adapter with application-domain migrations separate from operational migrations; typed, authorized query/mutation/action boundaries; restart and real-process SIGKILL recovery evidence; a warning-free Svelte build; real-browser responsive and accessibility checks; and packed-consumer and generated-host build verification. The observed closure baseline is 57 unit files / 1436 tests, 3 renderer files / 45 tests, 1 integration file / 4 tests, 61 files / 1485 total, ARA exactly 13 ordered events, benchmark exactly 10 events per completed run, and Stage 04 application proof 17/17.
+
+Stage 06 — Control plane and API — is the next permitted stage and has NOT been implemented. Stage 06 implementation remains paused until the separately governed **Mastra/ARA architecture amendment** is drafted and accepted, and a new Stage 06 implementation handoff has been generated from the amended reference rather than from the pre-amendment Stage 06 description below. Until that amendment exists, no Mastra-specific design, transport decision, or Stage 06 implementation work is authorized; the historical Stage 6 section in §23 remains the pre-amendment description and is superseded for handoff purposes once the amendment is accepted.
 
 ### 24.4 Evidence documents
 
@@ -2085,6 +2184,17 @@ Stage 5 — Application delivery layer — is the next permitted stage and has n
 - VICT-STAGE-04-INDEPENDENT-RE-AUDIT.md — focused independent re-audit that found the remediation's new HIGH-04-D authority-cache defect and the opt-in release-binding cross-check (RE-AUDIT MED-04-G-R); authoritative blocker record at commit `a124f37`.
 - VICT-STAGE-04-FINAL-REMEDIATION-REPORT.md — final remediation claim closing both re-audit blockers and the Low residues LOW-RE-1 through LOW-RE-4 with observed counts (48 files / 535 unit, 1 file / 4 integration, 539 total); preserved unchanged.
 - VICT-STAGE-04-INDEPENDENT-CLOSURE-AUDIT.md — independent closure audit verifying the final remediation in a fresh clone with new adversarial probes and `77e4dee` negative controls; authoritative Stage 4 disposition **VERIFIED WITH NON-BLOCKING ISSUES — STAGE 05 PERMITTED**, committed as `83c97b4`.
+- STAGE-05-APPLICATION-DELIVERY.md — accepted Stage 05 application-delivery semantics and decisions (§2 schema compatibility, §10 migration model, §13 OPEN-013 decision); updated at formal closure with the final independent-disposition section; maintained under docs/architecture/.
+- VICT-STAGE-05-REPORT.md — Stage 05 implementer evidence with the command ladder and observed counts; historical implementer claim, superseded by the final independent closure audit.
+- VICT-STAGE-05-INDEPENDENT-AUDIT.md — original independent audit that found application-delivery blockers; authoritative historical blocker record at commit `53a8ec1`.
+- VICT-STAGE-05-AUDIT-REMEDIATION-REPORT.md — implementer remediation claim for the original audit findings; preserved unchanged.
+- VICT-STAGE-05-INDEPENDENT-RE-AUDIT.md — focused independent re-audit of the remediated delivery; historical record at commit `11e2644`.
+- VICT-STAGE-05-FINAL-CORRECTION-REPORT.md — implementer claim closing the retained required-member finding (LOW-05-A); historical remediation record whose tip is `9fa89e4`.
+- VICT-STAGE-05-INDEPENDENT-CLOSURE-AUDIT.md — independent closure audit accepting the required-member correction; historical record at commit `50d46fe`.
+- VICT-STAGE-05-CLOSURE-BLOCKER-REMEDIATION-REPORT.md — implementer claim establishing the strict canonical-input boundary after the closure audit's misclassified identity defects were re-produced as exit-gate violations; historical remediation record (correction tip `8ecb9af`, documentation tip `c4cb79b`).
+- VICT-STAGE-05-INDEPENDENT-CLOSURE-RE-AUDIT.md — independent closure re-audit of the canonical-input correction; historical record at commit `4aead14`.
+- VICT-STAGE-05-FINAL-SNAPSHOT-CORRECTION-REPORT.md — implementer claim correcting the live-root serialization inconsistency (pinned plan identity) and the fixed-delay crash fixtures; historical remediation record (tips `b9b7eaa`, `9cf61ee`, `070147e`).
+- VICT-STAGE-05-FINAL-INDEPENDENT-CLOSURE-AUDIT.md — final independent closure audit of target `070147e` on a fresh clone, with snapshot negative controls, readiness-barrier probes, and independent restart recovery probes; **authoritative Stage 05 disposition: VERIFIED WITH NON-BLOCKING ISSUES — FORMAL CLOSURE PERMITTED**, committed as `2f8233c`. All earlier Stage 05 blocker and remediation reports above are preserved as historical evidence.
 
 ---
 
@@ -2131,8 +2241,8 @@ These questions do not block the current stage.
 | OPEN-010 | Which isolation model supports third-party executable packs? | Workspace trust first; sandbox architecture before untrusted code | Stage 10 |
 | OPEN-011 | Which UI framework is the first renderer? | Decided: framework-neutral Application Definition with SvelteKit as the canonical first renderer; React requires a genuine second consumer | Decided (v0.2.0 amendment) |
 | OPEN-012 | Is application delivery generated source or runtime rendering? | Decided: one-time SvelteKit host scaffold plus definition-driven rendering and explicit custom code islands; no destructive repeated generation or promised round-trip | Decided (v0.2.0 amendment) |
-| OPEN-013 | Which Svelte component/chart libraries implement the reference semantic roles? | Select through Stage 5 evidence; library types must not enter the neutral Application Definition | Stage 5 design |
-| OPEN-014 | How are Resource Definitions migrated by the reference domain-data adapter? | Separate SQLite domain schema/migrations; the exact migration API builds on the verified Stage 4 resource semantics and must not couple to operational migrations | Stage 5 |
+| OPEN-013 | Which Svelte component/chart libraries implement the reference semantic roles? | Decided in Stage 5: renderer-owned native Svelte components and accessible renderer-owned SVG charts; NO external component or chart library enters the neutral model — no component-/chart-library types exist in `@vict/application` or `@vict/sdk` | Decided (Stage 05; audit-accepted) |
+| OPEN-014 | How are Resource Definitions migrated by the reference domain-data adapter? | Decided in Stage 5: explicit versioned transactional application-domain migrations (`vict_appdata_migrations` bookkeeping) structurally separate from operational migrations; schema evolution is always an explicit new migration, never a destructive inferred rewrite | Decided (Stage 05; audit-accepted) |
 
 An open decision must not be filled in by convenience during unrelated implementation. The stage handoff either keeps it open or records an accepted decision.
 
@@ -2256,4 +2366,4 @@ Otherwise it probably belongs in an application, capability pack, adapter, devel
 
 ---
 
-**End of authoritative baseline v0.2.2**
+**End of authoritative baseline v0.2.3**
