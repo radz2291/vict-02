@@ -2536,15 +2536,28 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
       })),
     );
 
+    // ---- Captured plan identity (snapshot semantics) --------------------------
+    // ALL plan-level scalar identity fields are captured into immutable,
+    // VICT-owned locals at successful compilation. The plan object AND its
+    // toJSON() serializer read ONLY these captured values — never the
+    // caller-owned application object — so mutating any root property (id,
+    // revision, name, theme, compatibility, …) after compilation changes
+    // nothing, and plan scalars, manifest identity, and serialized identity
+    // always agree (Stage 05 final snapshot correction).
+    const applicationId: string = application.id;
+    const applicationRevision: string = application.revision;
+    const applicationVersionCaptured: string = applicationVersion;
+
     // The plan is built ENTIRELY from captured VICT-owned copies: neither the
     // manifest, the routes/screens/views/forms/actions/resources/components
     // captures, nor toJSON() ever read a caller-owned object again, so later
     // caller mutation cannot change the compiled plan, its manifest, or its
-    // identity (Stage 05 closure remediation, Blocker D).
+    // identity (Stage 05 closure remediation, Blocker D; final snapshot
+    // correction extends the same guarantee to the scalar identity fields).
     const plan: ApplicationPlan = Object.freeze({
-      applicationId: application.id,
-      applicationRevision: application.revision,
-      applicationVersion,
+      applicationId,
+      applicationRevision,
+      applicationVersion: applicationVersionCaptured,
       manifest,
       routes: routesFrozen,
       screens: Object.freeze(screensFrozen),
@@ -2555,9 +2568,9 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
       components: componentsFrozen,
       toJSON(): Record<string, unknown> {
         return {
-          applicationId: application.id,
-          applicationRevision: application.revision,
-          applicationVersion,
+          applicationId,
+          applicationRevision,
+          applicationVersion: applicationVersionCaptured,
           manifest,
           routes: routesFrozen,
           screens: screensFrozen,
