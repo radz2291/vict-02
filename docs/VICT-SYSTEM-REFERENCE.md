@@ -1,12 +1,12 @@
 # VICT System Reference
 
 > **Canonical title:** Vict Architecture and Operating Model — Authoritative System Reference<br>
-> **Document version:** 0.3.0<br>
+> **Document version:** 0.3.1<br>
 > **System generation:** Greenfield<br>
-> **Status:** Authoritative baseline; Mastra/ARA integration amendment accepted (v0.3.0); future features are individually marked<br>
-> **Last updated:** 2026-09-04 (Mastra/ARA integration amendment: Mastra accepted as the canonical first product-agent framework behind a neutral VICT boundary; AI-001..AI-015 and MSTR-001..MSTR-010 added; Stage 06/07 revised; §5.1 browser-safety and §5.2 stage-gate wording corrected; no verified Stage 01–05 status changed)<br>
-> **Current delivery point:** Stages 1, 1.1, 2, 3, 4, and 5 independently verified; Stage 05 closed with non-blocking issues; Mastra/ARA amendment accepted<br>
-> **Next permitted stage:** Stage 6 — Control plane, API, and product-agent integration foundation (permitted; not implemented; a new Stage 06 handoff MUST be generated from this v0.3.0 baseline and `docs/architecture/MASTRA-ARA-INTEGRATION.md`)
+> **Status:** Authoritative baseline; Mastra/ARA integration amendment accepted (v0.3.0) and finalized by the v0.3.1 pre-implementation correction; future features are individually marked<br>
+> **Last updated:** 2026-09-04 (v0.3.1 — Mastra/ARA finalization: complete agent executable identity and snapshot semantics; local data-protection baseline moved into Stage 06 and the declared deployment envelope into Stage 07; primary-source ledger; Stage 06 divided into 06A/06B delivery increments under one final exit gate; no verified Stage 01–05 status changed; no implementation claimed)<br>
+> **Current delivery point:** Stages 1, 1.1, 2, 3, 4, and 5 independently verified; Stage 05 closed with non-blocking issues; Mastra/ARA amendment accepted and finalized (v0.3.1)<br>
+> **Next permitted stage:** Stage 6 — Control plane, API, and product-agent integration foundation (Planned — next permitted; not implemented; a new Stage 06 handoff MUST be generated from this v0.3.1 baseline and `docs/architecture/MASTRA-ARA-INTEGRATION.md`, beginning with the Stage 06A foundation increment)
 
 ---
 
@@ -41,30 +41,30 @@ Code is evidence of what exists; it does not silently redefine what Vict is inte
 
 Every material design item has both a maturity and a delivery status.
 
-| Dimension | Value | Meaning |
-|---|---|---|
-| Maturity | Invariant | Foundational rule; changing it redefines Vict |
-| Maturity | Accepted | Chosen design; implementation may still be pending |
-| Maturity | Provisional | Direction is useful, but details require evidence |
-| Maturity | Deferred | Intentionally postponed and not a present dependency |
-| Maturity | Rejected | Explicitly outside the architecture |
-| Delivery | Verified | Independently checked in code and tests |
-| Delivery | In Progress | Being implemented; no completion claim yet |
-| Delivery | Planned | In an accepted future stage |
-| Delivery | Not Scheduled | Recognized but not assigned to a stage |
+| Dimension | Value         | Meaning                                              |
+| --------- | ------------- | ---------------------------------------------------- |
+| Maturity  | Invariant     | Foundational rule; changing it redefines Vict        |
+| Maturity  | Accepted      | Chosen design; implementation may still be pending   |
+| Maturity  | Provisional   | Direction is useful, but details require evidence    |
+| Maturity  | Deferred      | Intentionally postponed and not a present dependency |
+| Maturity  | Rejected      | Explicitly outside the architecture                  |
+| Delivery  | Verified      | Independently checked in code and tests              |
+| Delivery  | In Progress   | Being implemented; no completion claim yet           |
+| Delivery  | Planned       | In an accepted future stage                          |
+| Delivery  | Not Scheduled | Recognized but not assigned to a stage               |
 
 “Implemented” is not equivalent to “Verified.” Only an independent audit can change delivery status to Verified.
 
 ### 0.4 Governing requirements
 
-| ID | Requirement | Maturity | Delivery |
-|---|---|---|---|
-| GOV-001 | This document MUST be the architectural source of truth for greenfield Vict. | Invariant | Verified |
-| GOV-002 | Handoffs MUST reference requirement IDs and MUST NOT create competing architecture. | Accepted | Planned |
-| GOV-003 | Each stage MUST end with implementation, independent audit, disposition, and reference update. | Invariant | In Progress |
-| GOV-004 | Future behavior MUST NOT be described as current until independently verified. | Invariant | Verified |
-| GOV-005 | Architecture changes MUST record rationale, affected IDs, compatibility impact, and migration impact. | Accepted | Planned |
-| GOV-006 | Legacy documents MAY inform decisions but MUST NOT impose legacy package or language structure. | Invariant | Verified |
+| ID      | Requirement                                                                                           | Maturity  | Delivery    |
+| ------- | ----------------------------------------------------------------------------------------------------- | --------- | ----------- |
+| GOV-001 | This document MUST be the architectural source of truth for greenfield Vict.                          | Invariant | Verified    |
+| GOV-002 | Handoffs MUST reference requirement IDs and MUST NOT create competing architecture.                   | Accepted  | Planned     |
+| GOV-003 | Each stage MUST end with implementation, independent audit, disposition, and reference update.        | Invariant | In Progress |
+| GOV-004 | Future behavior MUST NOT be described as current until independently verified.                        | Invariant | Verified    |
+| GOV-005 | Architecture changes MUST record rationale, affected IDs, compatibility impact, and migration impact. | Accepted  | Planned     |
+| GOV-006 | Legacy documents MAY inform decisions but MUST NOT impose legacy package or language structure.       | Invariant | Verified    |
 
 ### 0.5 Accepted architecture amendment — Application Layer
 
@@ -101,6 +101,72 @@ VICT authorizes, commits, governs and presents product behavior.
 - **Stages revised:** Stage 6 becomes "Control plane, API, and product-agent integration foundation" (integration, tool bridge, identity snapshots, streaming, offline fixtures, AUDIT-F1 hygiene); Stage 7 becomes the Mastra-backed real ARA product (§23).
 - **Documentation consistency corrections (not reopened Stage 05 findings):** §5.1 now states the accurate browser-safety boundary of the application branch, and §5.2 now distinguishes verified Stage 05 packages from future stage-gated targets.
 - Every new requirement is marked Accepted/Planned — **nothing Mastra-related is Verified**; Stage 06 remains not implemented; no Mastra dependency is added by this amendment; Stage 01–05 verified statuses are unchanged.
+
+### 0.7 Correction v0.3.1 — Mastra/ARA finalization (pre-implementation)
+
+Independent review of v0.3.0 found architectural ambiguities that are
+closed here BEFORE Stage 06 implementation begins. v0.3.1 is a
+**consistency and safety correction** to v0.3.0 — no verified Stage 01–05
+status changes, no implementation is claimed, no dependency is described
+as installed, and the central rule is unchanged:
+
+```text
+Mastra reasons and coordinates AI work.
+VICT authorizes, commits, governs and presents product behavior.
+```
+
+1. **Complete agent executable identity (§6 of the amendment; AI-003,
+   AI-004, MSTR-002).** `agentProfileVersion` now covers EVERY
+   runtime-affecting profile component — agent and instructions IDs and
+   revisions, model profile incl. model router/provider intent,
+   generation defaults and bounded options, stop/iteration/tool-call/loop
+   policy, memory policy, ordered processor and guardrail chains,
+   structured-output contract (when enabled), sorted Mastra-native
+   helper-tool references, sorted VICT capability references, sorted
+   subagent/AI-internal workflow references (when enabled), and an
+   adapter compatibility marker including every runtime-affecting pinned
+   `@mastra/*` version actually used. Set-like collections sort
+   canonically; order-sensitive chains preserve declared order; profile
+   data is strict canonical data (functions, accessors, inherited fields,
+   sparse arrays, timestamps, random values, and secrets rejected;
+   function bodies never hashed). Activation deep-captures an immutable
+   snapshot; in-flight turns never consult live Mastra objects; helper
+   tools are pure/presentation-local only and fully versioned
+   (amendment §6.5).
+2. **Local data-protection baseline moved earlier (amendment §8.1–§8.3;
+   MSTR-003, MSTR-008, MSTR-011, MSTR-012; OPEN-017 split).** Stage 06's
+   foundation increment must specify and test credential isolation,
+   payload-safe tracing, explicit retention bounds with an actually
+   executed pruning mechanism, governed deletion/export with cross-store
+   reconciliation, store-file placement and permissions, backup/export
+   disclosure, canary leakage tests, and data classification. Stage 07
+   must declare its deployment envelope — local-first, single actor,
+   single application process, non-multi-tenant, file-backed — and prove
+   the protections in real use before the product is called usable for
+   real cases. Only managed/cloud-scale protections (encryption-at-rest,
+   KMS/rotation, multi-tenant isolation, cloud secret management,
+   production topology, dedicated observability infrastructure, formal
+   backup encryption/DR) remain deferred to Stage 11.
+3. **Primary-source ledger (amendment §2.4).** Link-level traceability
+   for every material Mastra dependency claim, with the
+   documented-versus-verified rule restated and Standard Schema /
+   Standard JSON Schema / JSON Schema terminology disambiguated.
+4. **Stage 06 delivery split (amendment §12.1).** Stage 06 remains one
+   formal stage with one final exit gate, implemented as two sequential
+   independently reviewed increments: **Stage 06A — Product-agent
+   foundation** (neutral declarations, strict profile schema, complete
+   identity, snapshots, pinned adapter foundation, offline model fixture,
+   helper-tool restrictions, storage boundary, data-protection baseline,
+   package isolation, upgrade harness, AUDIT-F1 hygiene) and
+   **Stage 06B — Control plane and governed remote execution**
+   (ChangeSets/approvals/release governance, actor boundary, HTTP
+   commands, resumable SSE with the final `vict.agent-stream@1` field
+   schema, tool bridge, approval suspension/resume, cancellation,
+   reconnect/dedupe, restart reconciliation, retention/leakage
+   verification, CLI and remote bindings, adversarial security testing).
+   Stage 06 is marked Verified only after both increments and the full
+   exit gate pass a final independent audit. Stages 07–11 are NOT
+   renumbered; Stage 07 remains blocked behind formal Stage 06 closure.
 
 ---
 
@@ -164,16 +230,16 @@ Vict is not:
 - a promise that every game, 3D experience, animation, or pixel-specific marketing surface can be expressed without custom code;
 - a requirement that React, Svelte, or any renderer-specific type leak into the framework-neutral Application Definition.
 
-| ID | Requirement | Maturity | Delivery |
-|---|---|---|---|
-| PRD-001 | Vict MUST make active application behavior inspectable and version-addressable. | Invariant | In Progress |
-| PRD-002 | Vict MUST separate proposed behavior from activated behavior. | Invariant | Planned |
-| PRD-003 | Vict MUST support ordinary code and UI frameworks without forcing artificial graph nodes. | Invariant | Verified |
-| PRD-004 | Vict MUST remain usable locally before requiring distributed infrastructure. | Accepted | Verified |
-| PRD-005 | Vict SHOULD provide the same semantic model in local and server deployments. | Accepted | Planned |
-| PRD-006 | Vict MUST be model-agnostic at the builder and product-agent boundaries. | Invariant | Planned |
-| PRD-007 | Vict MUST materially accelerate creation of complete end-user applications, not only the reliable behavior behind them. | Invariant | Verified |
-| PRD-008 | A valid structured application definition plus its declared bindings MUST be sufficient for the reference toolchain to produce a runnable, useful default application. | Accepted | Verified |
+| ID      | Requirement                                                                                                                                                            | Maturity  | Delivery    |
+| ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- | ----------- |
+| PRD-001 | Vict MUST make active application behavior inspectable and version-addressable.                                                                                        | Invariant | In Progress |
+| PRD-002 | Vict MUST separate proposed behavior from activated behavior.                                                                                                          | Invariant | Planned     |
+| PRD-003 | Vict MUST support ordinary code and UI frameworks without forcing artificial graph nodes.                                                                              | Invariant | Verified    |
+| PRD-004 | Vict MUST remain usable locally before requiring distributed infrastructure.                                                                                           | Accepted  | Verified    |
+| PRD-005 | Vict SHOULD provide the same semantic model in local and server deployments.                                                                                           | Accepted  | Planned     |
+| PRD-006 | Vict MUST be model-agnostic at the builder and product-agent boundaries.                                                                                               | Invariant | Planned     |
+| PRD-007 | Vict MUST materially accelerate creation of complete end-user applications, not only the reliable behavior behind them.                                                | Invariant | Verified    |
+| PRD-008 | A valid structured application definition plus its declared bindings MUST be sufficient for the reference toolchain to produce a runnable, useful default application. | Accepted  | Verified    |
 
 ---
 
@@ -194,54 +260,54 @@ Vict is not:
 13. **Front and back are first-class.** Structured behavior, domain resources, and product surfaces form one application model while retaining separate execution, data, and presentation responsibilities.
 14. **Structured core, code islands.** Common application structure renders directly from definitions; bespoke experiences enter through explicit versioned custom components rather than edits to generated framework internals.
 
-| ID | Requirement | Maturity | Delivery |
-|---|---|---|---|
-| ARCH-001 | The kernel MUST perform no filesystem, network, database, model, clock, or random I/O directly. | Invariant | Verified |
-| ARCH-002 | External operations MUST enter through explicit runtime ports or capabilities. | Invariant | In Progress |
-| ARCH-003 | The control plane and execution data plane MUST have distinct responsibilities and permissions. | Invariant | Planned |
-| ARCH-004 | The architecture MUST permit a modular monolith and MUST NOT require premature microservices. | Invariant | Verified |
-| ARCH-005 | Serialization formats MUST remain secondary to the in-memory and API semantic model. | Invariant | Verified |
-| ARCH-006 | Package boundaries SHOULD follow stable responsibilities, not speculative product branding. | Accepted | In Progress |
-| ARCH-007 | The Application Layer MUST remain above and dependent on public Vict semantics; the kernel and runtime MUST NOT depend on a UI framework. | Invariant | Verified |
-| ARCH-008 | Product UI structure and renderer implementation MUST be separable so one neutral definition can support more than one renderer without changing execution semantics. | Accepted | Verified |
-| ARCH-009 | Application generation MUST preserve ordinary-code escape hatches and MUST NOT force presentation-only interactions into orchestration graphs. | Invariant | Verified |
+| ID       | Requirement                                                                                                                                                           | Maturity  | Delivery    |
+| -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- | ----------- |
+| ARCH-001 | The kernel MUST perform no filesystem, network, database, model, clock, or random I/O directly.                                                                       | Invariant | Verified    |
+| ARCH-002 | External operations MUST enter through explicit runtime ports or capabilities.                                                                                        | Invariant | In Progress |
+| ARCH-003 | The control plane and execution data plane MUST have distinct responsibilities and permissions.                                                                       | Invariant | Planned     |
+| ARCH-004 | The architecture MUST permit a modular monolith and MUST NOT require premature microservices.                                                                         | Invariant | Verified    |
+| ARCH-005 | Serialization formats MUST remain secondary to the in-memory and API semantic model.                                                                                  | Invariant | Verified    |
+| ARCH-006 | Package boundaries SHOULD follow stable responsibilities, not speculative product branding.                                                                           | Accepted  | In Progress |
+| ARCH-007 | The Application Layer MUST remain above and dependent on public Vict semantics; the kernel and runtime MUST NOT depend on a UI framework.                             | Invariant | Verified    |
+| ARCH-008 | Product UI structure and renderer implementation MUST be separable so one neutral definition can support more than one renderer without changing execution semantics. | Accepted  | Verified    |
+| ARCH-009 | Application generation MUST preserve ordinary-code escape hatches and MUST NOT force presentation-only interactions into orchestration graphs.                        | Invariant | Verified    |
 
 ---
 
 ## 3. Canonical vocabulary
 
-| Term | Meaning |
-|---|---|
-| Contract | A schema-neutral, versioned boundary that validates or decodes a value and returns safe structured failure |
-| Capability | A named, revisioned unit of executable application behavior with declared contracts and effect class |
-| Capability registry | Mutable authoring/development collection from which an activation may resolve capabilities |
-| Graph definition | Versionable orchestration declaration containing meaningful nodes and routes |
-| Kernel | Pure logic that validates graphs, resolves declarations, computes identity, and produces executable plans |
-| Activation | Immutable snapshot of a graph plus the exact capability and contract revisions it resolves |
-| Run | One execution pinned to one activation |
-| Node attempt | One bounded attempt to execute a node in a run |
-| Effect | Declared external-impact class: pure, read, write, or irreversible |
-| Double | Explicit substitute used for simulation or tests |
-| Port | Runtime-owned interface to an external concern such as time, persistence, secrets, models, or tools |
-| Event | Append-only operational fact about a run, change, approval, or system action |
-| Run record | Current summarized operational state of a run, derived or updated transactionally with events |
-| ChangeSet | Version-guarded proposed control-plane mutation |
-| Capability pack | Installable, documented group of related capabilities, contracts, configuration, permissions, tests, and doubles |
-| Playbook | Proven composition and operating guidance extracted from repeated working use |
-| Application definition | Framework-neutral structured declaration of an application's routes, screens, layouts, resources, views, actions, presentation, and component references |
-| Application version | Stable identity of one canonical Application Definition and its explicit referenced semantic revisions |
-| Application release | Deployable binding of an application version to a renderer/component set and compatible Vict runtime/API/activation policy |
-| Resource definition | Typed declaration of application-domain data, identity, relationships, queries, mutations, and presentation references without fixing one storage technology |
-| Renderer | Adapter that turns a validated Application Definition into a working product surface for a UI framework or platform |
-| Component registry | Versioned mapping from semantic component references to built-in or custom renderer implementations |
-| Builder Agent | External coding agent operating through the Builder Kit to modify Vict or an application repository |
-| Product Agent | Agent invoked as application behavior through a bounded capability and runtime permissions |
-| Product-agent boundary | The neutral, versioned interface (port, normalized stream contract, activation snapshot) between VICT and any agent framework; Mastra exists only behind it |
-| Agent profile | The VICT-authored, revision-addressable definition of a product agent: instructions revision, model profile, memory policy, tool allowlist, adapter compatibility |
-| Agent profile version | Deterministic hash (`agentProfileVersion`) of the declared profile components — the executable identity of an agent definition |
-| Tool bridge | The only path from a Mastra tool request to VICT-governed execution: schema → bound capability → authority → contract → effect/approval policy → execution → sanitized result |
-| AI subsystem | The server-side, in-process composition where Mastra runs under VICT governance; never a privileged control plane |
-| ARA | Vict’s reference application and performance/correctness lighthouse |
+| Term                   | Meaning                                                                                                                                                                       |
+| ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Contract               | A schema-neutral, versioned boundary that validates or decodes a value and returns safe structured failure                                                                    |
+| Capability             | A named, revisioned unit of executable application behavior with declared contracts and effect class                                                                          |
+| Capability registry    | Mutable authoring/development collection from which an activation may resolve capabilities                                                                                    |
+| Graph definition       | Versionable orchestration declaration containing meaningful nodes and routes                                                                                                  |
+| Kernel                 | Pure logic that validates graphs, resolves declarations, computes identity, and produces executable plans                                                                     |
+| Activation             | Immutable snapshot of a graph plus the exact capability and contract revisions it resolves                                                                                    |
+| Run                    | One execution pinned to one activation                                                                                                                                        |
+| Node attempt           | One bounded attempt to execute a node in a run                                                                                                                                |
+| Effect                 | Declared external-impact class: pure, read, write, or irreversible                                                                                                            |
+| Double                 | Explicit substitute used for simulation or tests                                                                                                                              |
+| Port                   | Runtime-owned interface to an external concern such as time, persistence, secrets, models, or tools                                                                           |
+| Event                  | Append-only operational fact about a run, change, approval, or system action                                                                                                  |
+| Run record             | Current summarized operational state of a run, derived or updated transactionally with events                                                                                 |
+| ChangeSet              | Version-guarded proposed control-plane mutation                                                                                                                               |
+| Capability pack        | Installable, documented group of related capabilities, contracts, configuration, permissions, tests, and doubles                                                              |
+| Playbook               | Proven composition and operating guidance extracted from repeated working use                                                                                                 |
+| Application definition | Framework-neutral structured declaration of an application's routes, screens, layouts, resources, views, actions, presentation, and component references                      |
+| Application version    | Stable identity of one canonical Application Definition and its explicit referenced semantic revisions                                                                        |
+| Application release    | Deployable binding of an application version to a renderer/component set and compatible Vict runtime/API/activation policy                                                    |
+| Resource definition    | Typed declaration of application-domain data, identity, relationships, queries, mutations, and presentation references without fixing one storage technology                  |
+| Renderer               | Adapter that turns a validated Application Definition into a working product surface for a UI framework or platform                                                           |
+| Component registry     | Versioned mapping from semantic component references to built-in or custom renderer implementations                                                                           |
+| Builder Agent          | External coding agent operating through the Builder Kit to modify Vict or an application repository                                                                           |
+| Product Agent          | Agent invoked as application behavior through a bounded capability and runtime permissions                                                                                    |
+| Product-agent boundary | The neutral, versioned interface (port, normalized stream contract, activation snapshot) between VICT and any agent framework; Mastra exists only behind it                   |
+| Agent profile          | The VICT-authored, revision-addressable definition of a product agent: instructions revision, model profile, memory policy, tool allowlist, adapter compatibility             |
+| Agent profile version  | Deterministic hash (`agentProfileVersion`) of the declared profile components — the executable identity of an agent definition                                                |
+| Tool bridge            | The only path from a Mastra tool request to VICT-governed execution: schema → bound capability → authority → contract → effect/approval policy → execution → sanitized result |
+| AI subsystem           | The server-side, in-process composition where Mastra runs under VICT governance; never a privileged control plane                                                             |
+| ARA                    | Vict’s reference application and performance/correctness lighthouse                                                                                                           |
 
 Terms are part of the public mental model. New synonyms should not be introduced casually.
 
@@ -251,13 +317,13 @@ Terms are part of the public mental model. New synonyms should not be introduced
 
 Vict has five logical planes. They can run in one process locally; separation describes responsibility and authority, not mandatory deployment.
 
-| Plane | Owns | Does not own |
-|---|---|---|
+| Plane       | Owns                                                                                                                                   | Does not own                                                              |
+| ----------- | -------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
 | Application | Structured application definitions, product UI, view state, domain state, prompts, domain capabilities, renderer/component composition | Vict activation rules, operator authority, or operational run persistence |
-| Execution | Runs, scheduling, effects, ports, persistence, events | Unreviewed definition mutation |
-| Control | ChangeSets, validation, approvals, activation selection, rollback | Application conversation logic |
-| Integration | Databases, model providers, tools, queues, humans, secrets | Kernel semantics |
-| Development | SDK, Builder Kit, tests, audits, package publishing | Runtime production authority by default |
+| Execution   | Runs, scheduling, effects, ports, persistence, events                                                                                  | Unreviewed definition mutation                                            |
+| Control     | ChangeSets, validation, approvals, activation selection, rollback                                                                      | Application conversation logic                                            |
+| Integration | Databases, model providers, tools, queues, humans, secrets                                                                             | Kernel semantics                                                          |
+| Development | SDK, Builder Kit, tests, audits, package publishing                                                                                    | Runtime production authority by default                                   |
 
 The boundary between definition and activation is a trust boundary. The boundary between runtime and external ports is an effect boundary. The boundary between Builder Agent and production is an authority boundary.
 
@@ -271,21 +337,21 @@ Since v0.3.0 the **bounded AI subsystem** (Mastra behind the neutral product-age
 
 Stages 1 through 5 established this verified greenfield package set and proofs:
 
-| Package | Current responsibility | Status |
-|---|---|---|
-| @vict/contracts | Schema-neutral contract protocol, safe issues, stable references | Verified with Stage 1 qualifications |
-| @vict/sdk | Lightweight capability/graph/application/pack authoring ABI and public types | Verified (Stage 4) |
-| @vict/kernel | Pure validation, canonicalization, activation semantics, authoring diagnostics | Verified through Stage 4 |
-| @vict/runtime | Execution, effects, registry, least-authority authority gating, durable coordination, atomic capability/pack registration | Verified through Stage 4 |
-| @vict/store-sqlite | SQLite operational stores (built-in node:sqlite, WAL, versioned migrations) | Verified (Stage 2) |
-| @vict/application | Framework-neutral Application/Resource/Release model, canonical identity, release compilation, renderer/component/data ports and shared conformance fixtures | Verified (Stage 4; required-member, canonical-input, and serialized-plan-identity corrections verified through Stage 5) |
-| @vict/renderer-svelte | Canonical Svelte 5 renderer: generic VitApp host, built-in role components, responsive navigation, theme tokens, accessible defaults | Verified (Stage 5) |
-| @vict/appdata-sqlite | Production SQLite application-domain adapter with explicit versioned application-domain migrations separate from operational migrations | Verified (Stage 5) |
-| @vict/scaffolder | One-time deterministic non-destructive SvelteKit application-host scaffolder | Verified (Stage 5) |
-| packs/notes-pack, packs/ledger-pack | Two verified local capability packs under the shared pack-conformance suite | Verified (Stage 4) |
-| examples/ara-proof | Deterministic offline walking proof (13 events) | Verified |
-| examples/application-proof | Minimal real SvelteKit vertical proof of the neutral boundary (local, data, and Vict actions) | Verified (Stage 4; not the Stage 5 production renderer) |
-| examples/reference-app | Complete Stage 05 application-delivery proof of §17.10 (renderer, scaffolder output ownership, SQLite application-domain adapter, real Vict action) | Verified (Stage 5) |
+| Package                             | Current responsibility                                                                                                                                       | Status                                                                                                                  |
+| ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------- |
+| @vict/contracts                     | Schema-neutral contract protocol, safe issues, stable references                                                                                             | Verified with Stage 1 qualifications                                                                                    |
+| @vict/sdk                           | Lightweight capability/graph/application/pack authoring ABI and public types                                                                                 | Verified (Stage 4)                                                                                                      |
+| @vict/kernel                        | Pure validation, canonicalization, activation semantics, authoring diagnostics                                                                               | Verified through Stage 4                                                                                                |
+| @vict/runtime                       | Execution, effects, registry, least-authority authority gating, durable coordination, atomic capability/pack registration                                    | Verified through Stage 4                                                                                                |
+| @vict/store-sqlite                  | SQLite operational stores (built-in node:sqlite, WAL, versioned migrations)                                                                                  | Verified (Stage 2)                                                                                                      |
+| @vict/application                   | Framework-neutral Application/Resource/Release model, canonical identity, release compilation, renderer/component/data ports and shared conformance fixtures | Verified (Stage 4; required-member, canonical-input, and serialized-plan-identity corrections verified through Stage 5) |
+| @vict/renderer-svelte               | Canonical Svelte 5 renderer: generic VitApp host, built-in role components, responsive navigation, theme tokens, accessible defaults                         | Verified (Stage 5)                                                                                                      |
+| @vict/appdata-sqlite                | Production SQLite application-domain adapter with explicit versioned application-domain migrations separate from operational migrations                      | Verified (Stage 5)                                                                                                      |
+| @vict/scaffolder                    | One-time deterministic non-destructive SvelteKit application-host scaffolder                                                                                 | Verified (Stage 5)                                                                                                      |
+| packs/notes-pack, packs/ledger-pack | Two verified local capability packs under the shared pack-conformance suite                                                                                  | Verified (Stage 4)                                                                                                      |
+| examples/ara-proof                  | Deterministic offline walking proof (13 events)                                                                                                              | Verified                                                                                                                |
+| examples/application-proof          | Minimal real SvelteKit vertical proof of the neutral boundary (local, data, and Vict actions)                                                                | Verified (Stage 4; not the Stage 5 production renderer)                                                                 |
+| examples/reference-app              | Complete Stage 05 application-delivery proof of §17.10 (renderer, scaffolder output ownership, SQLite application-domain adapter, real Vict action)          | Verified (Stage 5)                                                                                                      |
 
 The verified import direction is acyclic:
 
@@ -337,33 +403,33 @@ Dependency arrows mean “is imported by the next layer.” Exact package extrac
 
 ### 5.3 Target package responsibilities
 
-| Package or area | Responsibility | Maturity | Delivery |
-|---|---|---|---|
-| @vict/contracts | Schema-neutral contract protocol, safe issues, stable references | Accepted | In Progress |
-| @vict/sdk | Capability/graph/application/pack authoring ABI and public types | Accepted | Verified |
-| @vict/kernel | Pure validation, canonicalization, activation, planning | Invariant | In Progress |
-| @vict/runtime | Execution, effects, scheduling, ports, durable coordination | Invariant | In Progress |
-| @vict/control | ChangeSet lifecycle, policies, approvals, activation management | Accepted | Planned |
-| @vict/server | HTTP/event transport and server composition | Provisional | Planned |
-| @vict/client | Typed transport client, if evidence supports extraction | Provisional | Not Scheduled |
-| @vict/mastra (optional adapter) | Mastra-backed implementation of the neutral ProductAgent boundary: pinned Mastra versions, tool bridge, stream normalization, agent-profile snapshots; imports runtime/application side, never imported by neutral packages (see `docs/architecture/MASTRA-ARA-INTEGRATION.md`) | Accepted | Planned |
-| @vict/cli | Local inspection, execution, verification, and operator commands | Accepted | Planned |
-| @vict/builder-kit | Agent/human repository context, tools, checks, and handoff protocol | Accepted | Planned |
-| application model/compiler (implemented as @vict/application) | Framework-neutral definitions, validation, canonical identity, binding plans, and application release manifests | Accepted | Verified |
-| Svelte renderer and host | Canonical first renderer, SvelteKit shell, built-in component roles, and custom-component registry — verified as `@vict/renderer-svelte` plus the generic application host used by the reference application and generated hosts | Accepted | Verified |
-| application data adapters | Domain-resource persistence and query/mutation ports, kept separate from operational orchestration stores (neutral port, shared conformance suite, in-memory reference adapter, and the production SQLite adapter `@vict/appdata-sqlite` with separate application-domain migrations) | Accepted | Verified |
-| application host scaffolder | One-time deterministic non-destructive SvelteKit host scaffolding — verified as `@vict/scaffolder` | Accepted | Verified |
-| capability packs | Capability-pack manifest, local atomic installation, and shared conformance foundation (the broader reusable domain ecosystem remains a later-stage concern) | Accepted | Verified |
-| studio | Human control/inspection interface | Accepted | Planned |
+| Package or area                                               | Responsibility                                                                                                                                                                                                                                                                        | Maturity    | Delivery      |
+| ------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- | ------------- |
+| @vict/contracts                                               | Schema-neutral contract protocol, safe issues, stable references                                                                                                                                                                                                                      | Accepted    | In Progress   |
+| @vict/sdk                                                     | Capability/graph/application/pack authoring ABI and public types                                                                                                                                                                                                                      | Accepted    | Verified      |
+| @vict/kernel                                                  | Pure validation, canonicalization, activation, planning                                                                                                                                                                                                                               | Invariant   | In Progress   |
+| @vict/runtime                                                 | Execution, effects, scheduling, ports, durable coordination                                                                                                                                                                                                                           | Invariant   | In Progress   |
+| @vict/control                                                 | ChangeSet lifecycle, policies, approvals, activation management                                                                                                                                                                                                                       | Accepted    | Planned       |
+| @vict/server                                                  | HTTP/event transport and server composition                                                                                                                                                                                                                                           | Provisional | Planned       |
+| @vict/client                                                  | Typed transport client, if evidence supports extraction                                                                                                                                                                                                                               | Provisional | Not Scheduled |
+| @vict/mastra (optional adapter)                               | Mastra-backed implementation of the neutral ProductAgent boundary: pinned Mastra versions, tool bridge, stream normalization, agent-profile snapshots; imports runtime/application side, never imported by neutral packages (see `docs/architecture/MASTRA-ARA-INTEGRATION.md`)       | Accepted    | Planned       |
+| @vict/cli                                                     | Local inspection, execution, verification, and operator commands                                                                                                                                                                                                                      | Accepted    | Planned       |
+| @vict/builder-kit                                             | Agent/human repository context, tools, checks, and handoff protocol                                                                                                                                                                                                                   | Accepted    | Planned       |
+| application model/compiler (implemented as @vict/application) | Framework-neutral definitions, validation, canonical identity, binding plans, and application release manifests                                                                                                                                                                       | Accepted    | Verified      |
+| Svelte renderer and host                                      | Canonical first renderer, SvelteKit shell, built-in component roles, and custom-component registry — verified as `@vict/renderer-svelte` plus the generic application host used by the reference application and generated hosts                                                      | Accepted    | Verified      |
+| application data adapters                                     | Domain-resource persistence and query/mutation ports, kept separate from operational orchestration stores (neutral port, shared conformance suite, in-memory reference adapter, and the production SQLite adapter `@vict/appdata-sqlite` with separate application-domain migrations) | Accepted    | Verified      |
+| application host scaffolder                                   | One-time deterministic non-destructive SvelteKit host scaffolding — verified as `@vict/scaffolder`                                                                                                                                                                                    | Accepted    | Verified      |
+| capability packs                                              | Capability-pack manifest, local atomic installation, and shared conformance foundation (the broader reusable domain ecosystem remains a later-stage concern)                                                                                                                          | Accepted    | Verified      |
+| studio                                                        | Human control/inspection interface                                                                                                                                                                                                                                                    | Accepted    | Planned       |
 
-| ID | Requirement | Maturity | Delivery |
-|---|---|---|---|
-| ARCH-010 | Capability authors MUST NOT need to import the full runtime to define capabilities. | Accepted | Verified |
-| ARCH-011 | Packages MUST NOT be created solely as placeholders for hypothetical services. | Invariant | Verified |
-| ARCH-012 | Public packages MUST declare compatibility and use semantic versioning. | Accepted | Planned |
-| ARCH-013 | Internal dependency direction MUST keep the kernel independent of runtime adapters. | Invariant | Verified |
-| ARCH-014 | A future umbrella package MAY re-export stable APIs but MUST NOT become a hidden dependency cycle. | Provisional | Not Scheduled |
-| ARCH-015 | Logical Application Layer responsibilities MUST be proven before package names are stabilized; packages MUST NOT be created as empty framework abstractions. | Accepted | Verified |
+| ID       | Requirement                                                                                                                                                  | Maturity    | Delivery      |
+| -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------- | ------------- |
+| ARCH-010 | Capability authors MUST NOT need to import the full runtime to define capabilities.                                                                          | Accepted    | Verified      |
+| ARCH-011 | Packages MUST NOT be created solely as placeholders for hypothetical services.                                                                               | Invariant   | Verified      |
+| ARCH-012 | Public packages MUST declare compatibility and use semantic versioning.                                                                                      | Accepted    | Planned       |
+| ARCH-013 | Internal dependency direction MUST keep the kernel independent of runtime adapters.                                                                          | Invariant   | Verified      |
+| ARCH-014 | A future umbrella package MAY re-export stable APIs but MUST NOT become a hidden dependency cycle.                                                           | Provisional | Not Scheduled |
+| ARCH-015 | Logical Application Layer responsibilities MUST be proven before package names are stabilized; packages MUST NOT be created as empty framework abstractions. | Accepted    | Verified      |
 
 ---
 
@@ -375,20 +441,18 @@ A conceptual public shape is:
 
 ```ts
 type ContractIssue = {
-  code: string
-  path?: Array<string | number>
-  message?: string
-}
+  code: string;
+  path?: Array<string | number>;
+  message?: string;
+};
 
-type ContractResult<T> =
-  | { ok: true; value: T }
-  | { ok: false; issues: ContractIssue[] }
+type ContractResult<T> = { ok: true; value: T } | { ok: false; issues: ContractIssue[] };
 
 interface Contract<T> {
-  readonly id: string
-  readonly revision: string
-  parse(input: unknown): ContractResult<T>
-  describe?(): unknown
+  readonly id: string;
+  readonly revision: string;
+  parse(input: unknown): ContractResult<T>;
+  describe?(): unknown;
 }
 ```
 
@@ -417,15 +481,15 @@ Validation failures cross an observability boundary. Arbitrary custom messages c
 - make detailed developer diagnostics an explicit local or protected mode;
 - never embed raw invalid values in ordinary event history.
 
-| ID | Requirement | Maturity | Delivery |
-|---|---|---|---|
-| CONT-001 | Every executable capability MUST declare input and output contracts. | Invariant | Verified |
-| CONT-002 | Contracts MUST expose stable IDs and explicit revisions. | Accepted | Verified |
-| CONT-003 | The base contract protocol MUST be independent of a schema library. | Invariant | Verified |
-| CONT-004 | Parsing MUST return schema-neutral structured results. | Accepted | Verified |
-| CONT-005 | Raw third-party validation messages MUST NOT enter normal persisted traces unsanitized. | Invariant | Verified |
-| CONT-006 | A schema adapter MUST NOT leak its types into the base public declaration API. | Accepted | Verified |
-| CONT-007 | Contract compatibility beyond exact identity MUST remain conservative until formally defined. | Accepted | Planned |
+| ID       | Requirement                                                                                                                                                         | Maturity  | Delivery |
+| -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- | -------- |
+| CONT-001 | Every executable capability MUST declare input and output contracts.                                                                                                | Invariant | Verified |
+| CONT-002 | Contracts MUST expose stable IDs and explicit revisions.                                                                                                            | Accepted  | Verified |
+| CONT-003 | The base contract protocol MUST be independent of a schema library.                                                                                                 | Invariant | Verified |
+| CONT-004 | Parsing MUST return schema-neutral structured results.                                                                                                              | Accepted  | Verified |
+| CONT-005 | Raw third-party validation messages MUST NOT enter normal persisted traces unsanitized.                                                                             | Invariant | Verified |
+| CONT-006 | A schema adapter MUST NOT leak its types into the base public declaration API.                                                                                      | Accepted  | Verified |
+| CONT-007 | Contract compatibility beyond exact identity MUST remain conservative until formally defined.                                                                       | Accepted  | Planned  |
 | CONT-008 | Official contract factories/adapters MUST freeze returned contracts, and activation MUST prevent later caller-owned mutation from changing pinned parsing behavior. | Invariant | Verified |
 
 ---
@@ -438,12 +502,12 @@ Conceptually, a declaration contains:
 
 ```ts
 interface CapabilityDefinition<I, O> {
-  id: string
-  revision: string
-  input: Contract<I>
-  output: Contract<O>
-  effect: "pure" | "read" | "write" | "irreversible"
-  execute(input: I, context: CapabilityContext): Promise<O> | O
+  id: string;
+  revision: string;
+  input: Contract<I>;
+  output: Contract<O>;
+  effect: 'pure' | 'read' | 'write' | 'irreversible';
+  execute(input: I, context: CapabilityContext): Promise<O> | O;
 }
 ```
 
@@ -459,12 +523,12 @@ Replacement in a registry can affect a future activation. It cannot alter an exi
 
 ### 7.2 Effects
 
-| Effect | Meaning | Typical examples |
-|---|---|---|
-| pure | No observable external access; deterministic for explicit inputs and context | parsing, routing, formatting |
-| read | Reads external state without intended mutation | retrieval, database query, model inference when treated as an external read |
-| write | Mutates external or durable state and can usually be made idempotent or compensated | save message, create task |
-| irreversible | High-impact or practically non-reversible action requiring explicit policy | send funds, publish, destructive administrative action |
+| Effect       | Meaning                                                                             | Typical examples                                                            |
+| ------------ | ----------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| pure         | No observable external access; deterministic for explicit inputs and context        | parsing, routing, formatting                                                |
+| read         | Reads external state without intended mutation                                      | retrieval, database query, model inference when treated as an external read |
+| write        | Mutates external or durable state and can usually be made idempotent or compensated | save message, create task                                                   |
+| irreversible | High-impact or practically non-reversible action requiring explicit policy          | send funds, publish, destructive administrative action                      |
 
 Effect class is author-declared metadata and therefore a trust boundary. Later supply-chain controls may require review, signing, static policy, sandboxing, or organizational approval.
 
@@ -481,15 +545,15 @@ Capability context should expose only bounded interfaces:
 
 It must not expose a universal service locator or unrestricted control-plane mutation.
 
-| ID | Requirement | Maturity | Delivery |
-|---|---|---|---|
-| CAP-001 | Every capability MUST have a stable ID and explicit revision. | Accepted | Verified |
-| CAP-002 | Every capability MUST declare one effect class. | Invariant | Verified |
-| CAP-003 | Activated execution MUST resolve handlers from the pinned activation, not a live registry. | Invariant | Verified |
-| CAP-004 | Capability context MUST expose least-authority ports and identity. | Invariant | Verified |
-| CAP-005 | Capability revisions MUST change when executable semantics or declared boundary semantics change. | Accepted | Planned |
-| CAP-006 | Vict MUST NOT derive capability identity from function.toString or third-party schema internals. | Invariant | Verified |
-| CAP-007 | Registry replacement MUST be explicit and affect only subsequent activations. | Accepted | Verified |
+| ID      | Requirement                                                                                       | Maturity  | Delivery |
+| ------- | ------------------------------------------------------------------------------------------------- | --------- | -------- |
+| CAP-001 | Every capability MUST have a stable ID and explicit revision.                                     | Accepted  | Verified |
+| CAP-002 | Every capability MUST declare one effect class.                                                   | Invariant | Verified |
+| CAP-003 | Activated execution MUST resolve handlers from the pinned activation, not a live registry.        | Invariant | Verified |
+| CAP-004 | Capability context MUST expose least-authority ports and identity.                                | Invariant | Verified |
+| CAP-005 | Capability revisions MUST change when executable semantics or declared boundary semantics change. | Accepted  | Planned  |
+| CAP-006 | Vict MUST NOT derive capability identity from function.toString or third-party schema internals.  | Invariant | Verified |
+| CAP-007 | Registry replacement MUST be explicit and affect only subsequent activations.                     | Accepted  | Verified |
 
 ---
 
@@ -533,16 +597,16 @@ Before activation, the kernel validates at least:
 
 Activation may compile a definition into an internal execution plan. Compilation is off the hot path and may precompute routing, validation, and scheduling metadata. Internal plan shape is not a public contract.
 
-| ID | Requirement | Maturity | Delivery |
-|---|---|---|---|
-| KERN-001 | Kernel operations MUST be deterministic for the same explicit inputs. | Invariant | Verified |
-| KERN-002 | The kernel MUST reject structurally invalid graphs before activation. | Invariant | Verified |
-| KERN-003 | Graph nodes SHOULD represent observable orchestration or policy boundaries, not every internal call. | Invariant | Verified |
-| KERN-004 | Arbitrary cycles MUST NOT be accepted as implicit workflow semantics. | Accepted | Verified |
-| KERN-005 | Future iteration MUST be explicit, bounded, and durable. | Accepted | Planned |
-| KERN-006 | Branching SHOULD use declared typed route keys rather than a new general expression language. | Accepted | Planned |
-| KERN-007 | Compilation SHOULD occur at activation and MUST NOT be required per application message. | Accepted | Verified |
-| KERN-008 | Compiler diagnostics SHOULD report independently detectable structural issues in stable order, including cycles when other issues coexist. | Accepted | Verified |
+| ID       | Requirement                                                                                                                                | Maturity  | Delivery |
+| -------- | ------------------------------------------------------------------------------------------------------------------------------------------ | --------- | -------- |
+| KERN-001 | Kernel operations MUST be deterministic for the same explicit inputs.                                                                      | Invariant | Verified |
+| KERN-002 | The kernel MUST reject structurally invalid graphs before activation.                                                                      | Invariant | Verified |
+| KERN-003 | Graph nodes SHOULD represent observable orchestration or policy boundaries, not every internal call.                                       | Invariant | Verified |
+| KERN-004 | Arbitrary cycles MUST NOT be accepted as implicit workflow semantics.                                                                      | Accepted  | Verified |
+| KERN-005 | Future iteration MUST be explicit, bounded, and durable.                                                                                   | Accepted  | Planned  |
+| KERN-006 | Branching SHOULD use declared typed route keys rather than a new general expression language.                                              | Accepted  | Planned  |
+| KERN-007 | Compilation SHOULD occur at activation and MUST NOT be required per application message.                                                   | Accepted  | Verified |
+| KERN-008 | Compiler diagnostics SHOULD report independently detectable structural issues in stable order, including cycles when other issues coexist. | Accepted  | Verified |
 
 ---
 
@@ -606,18 +670,18 @@ The Stage 1.1 audit verified immutable capability bindings, frozen contracts pro
 - Suspended runs resume only if the exact activation and required capability artifacts can be resolved.
 - A migration is explicit and produces an audited transition; it is not an automatic version substitution.
 
-| ID | Requirement | Maturity | Delivery |
-|---|---|---|---|
-| VER-001 | graphVersion MUST represent graph declaration/topology and MUST NOT pretend to identify handler code. | Accepted | Verified |
-| VER-002 | capabilitySetVersion MUST cover effective capability and contract identities. | Accepted | Verified |
-| VER-003 | activationVersion MUST combine graphVersion and capabilitySetVersion under a versioned schema. | Accepted | Verified |
-| VER-004 | Canonical identity MUST use explicit revisions and stable manifests, never runtime function text. | Invariant | Verified |
-| VER-005 | Activations MUST be immutable. | Invariant | Verified |
-| VER-006 | Registry changes MUST require reactivation before affecting new production runs. | Invariant | Verified |
-| VER-007 | Every run MUST pin one immutable activation for its lifetime. | Invariant | Verified |
-| VER-008 | A suspended run MUST NOT silently resume against a substitute activation. | Invariant | Verified |
-| VER-009 | Build provenance MAY strengthen identity but MUST NOT replace semantic revisions. | Accepted | Planned |
-| VER-010 | Activation MUST capture contract parsing semantics by value or enforce equivalent immutability. | Invariant | Verified |
+| ID      | Requirement                                                                                           | Maturity  | Delivery |
+| ------- | ----------------------------------------------------------------------------------------------------- | --------- | -------- |
+| VER-001 | graphVersion MUST represent graph declaration/topology and MUST NOT pretend to identify handler code. | Accepted  | Verified |
+| VER-002 | capabilitySetVersion MUST cover effective capability and contract identities.                         | Accepted  | Verified |
+| VER-003 | activationVersion MUST combine graphVersion and capabilitySetVersion under a versioned schema.        | Accepted  | Verified |
+| VER-004 | Canonical identity MUST use explicit revisions and stable manifests, never runtime function text.     | Invariant | Verified |
+| VER-005 | Activations MUST be immutable.                                                                        | Invariant | Verified |
+| VER-006 | Registry changes MUST require reactivation before affecting new production runs.                      | Invariant | Verified |
+| VER-007 | Every run MUST pin one immutable activation for its lifetime.                                         | Invariant | Verified |
+| VER-008 | A suspended run MUST NOT silently resume against a substitute activation.                             | Invariant | Verified |
+| VER-009 | Build provenance MAY strengthen identity but MUST NOT replace semantic revisions.                     | Accepted  | Planned  |
+| VER-010 | Activation MUST capture contract parsing semantics by value or enforce equivalent immutability.       | Invariant | Verified |
 
 ---
 
@@ -694,16 +758,16 @@ Sequential deterministic execution is the baseline. Fan-out, workers, leases, an
 - event ordering rules;
 - bounded resource use.
 
-| ID | Requirement | Maturity | Delivery |
-|---|---|---|---|
-| RUN-001 | A run MUST be associated with exactly one activationVersion. | Invariant | Verified |
-| RUN-002 | Inputs and outputs MUST be contract-validated at declared boundaries. | Invariant | Verified |
-| RUN-003 | Scheduling semantics MUST be explicit and reproducible. | Invariant | In Progress |
-| RUN-004 | Nondeterministic values MUST enter through recordable ports or capability results. | Accepted | Planned |
-| RUN-005 | Cancellation MUST be cooperative, recorded, and propagated to child work. | Accepted | Planned |
-| RUN-006 | Retries MUST be bounded and classified; they MUST NOT blindly repeat irreversible work. | Invariant | Planned |
-| RUN-007 | Durable attempts MUST use idempotent ownership/transition rules. | Accepted | Planned |
-| RUN-008 | Persisted errors MUST use safe error classes and correlation identifiers. | Invariant | Verified |
+| ID      | Requirement                                                                             | Maturity  | Delivery    |
+| ------- | --------------------------------------------------------------------------------------- | --------- | ----------- |
+| RUN-001 | A run MUST be associated with exactly one activationVersion.                            | Invariant | Verified    |
+| RUN-002 | Inputs and outputs MUST be contract-validated at declared boundaries.                   | Invariant | Verified    |
+| RUN-003 | Scheduling semantics MUST be explicit and reproducible.                                 | Invariant | In Progress |
+| RUN-004 | Nondeterministic values MUST enter through recordable ports or capability results.      | Accepted  | Planned     |
+| RUN-005 | Cancellation MUST be cooperative, recorded, and propagated to child work.               | Accepted  | Planned     |
+| RUN-006 | Retries MUST be bounded and classified; they MUST NOT blindly repeat irreversible work. | Invariant | Planned     |
+| RUN-007 | Durable attempts MUST use idempotent ownership/transition rules.                        | Accepted  | Planned     |
+| RUN-008 | Persisted errors MUST use safe error classes and correlation identifiers.               | Invariant | Verified    |
 
 ---
 
@@ -711,12 +775,12 @@ Sequential deterministic execution is the baseline. Fan-out, workers, leases, an
 
 Vict separates the declared effect from the selected execution mode.
 
-| Effect | Normal mode | Simulation mode | Test mode |
-|---|---|---|---|
-| pure | Real handler allowed | Real handler allowed | Real handler allowed |
-| read | Allowed with permission | Safe double required by default | Safe double required by default |
-| write | Allowed with permission/idempotency policy | Safe double required | Safe double required |
-| irreversible | Explicit high-impact permission/approval | Safe double required | Safe double required |
+| Effect       | Normal mode                                | Simulation mode                 | Test mode                       |
+| ------------ | ------------------------------------------ | ------------------------------- | ------------------------------- |
+| pure         | Real handler allowed                       | Real handler allowed            | Real handler allowed            |
+| read         | Allowed with permission                    | Safe double required by default | Safe double required by default |
+| write        | Allowed with permission/idempotency policy | Safe double required            | Safe double required            |
+| irreversible | Explicit high-impact permission/approval   | Safe double required            | Safe double required            |
 
 A policy may be stricter, never silently weaker.
 
@@ -743,15 +807,15 @@ For writes, a capability should declare:
 
 For irreversible actions, approval and explicit intent must be recorded before execution.
 
-| ID | Requirement | Maturity | Delivery |
-|---|---|---|---|
-| EFF-001 | Runtime MUST enforce the capability’s declared effect against execution mode and permissions. | Invariant | Verified |
+| ID      | Requirement                                                                                                  | Maturity  | Delivery |
+| ------- | ------------------------------------------------------------------------------------------------------------ | --------- | -------- |
+| EFF-001 | Runtime MUST enforce the capability’s declared effect against execution mode and permissions.                | Invariant | Verified |
 | EFF-002 | Simulation/test MUST NOT execute real read, write, or irreversible handlers without an explicit safe policy. | Invariant | Verified |
-| EFF-003 | Missing required doubles MUST fail closed. | Invariant | Verified |
-| EFF-004 | Effective doubles MUST be snapshotted so mid-run registry mutation cannot change behavior. | Invariant | Verified |
-| EFF-005 | Irreversible production effects MUST require explicit elevated policy or approval. | Invariant | Planned |
-| EFF-006 | Write capabilities SHOULD define idempotency and ambiguity behavior before durable retry is enabled. | Accepted | Planned |
-| EFF-007 | Vict MUST NOT promise universal external exactly-once execution. | Invariant | Verified |
+| EFF-003 | Missing required doubles MUST fail closed.                                                                   | Invariant | Verified |
+| EFF-004 | Effective doubles MUST be snapshotted so mid-run registry mutation cannot change behavior.                   | Invariant | Verified |
+| EFF-005 | Irreversible production effects MUST require explicit elevated policy or approval.                           | Invariant | Planned  |
+| EFF-006 | Write capabilities SHOULD define idempotency and ambiguity behavior before durable retry is enabled.         | Accepted  | Planned  |
+| EFF-007 | Vict MUST NOT promise universal external exactly-once execution.                                             | Invariant | Verified |
 
 ---
 
@@ -761,17 +825,17 @@ Vict distinguishes operational workflow state from application/domain state.
 
 ### 12.1 Store responsibilities
 
-| Store/port | Responsibility |
-|---|---|
-| DefinitionStore | Mutable authored graph definitions and metadata |
-| ActivationCatalog | Immutable activations and artifact resolution metadata |
-| RunStore | Current run/attempt state and concurrency guards |
-| EventStore | Append-only operational and audit events |
-| WaitStore | Durable signal subscriptions and resumable continuations |
-| TimerStore | Due-time scheduling and claims |
-| AppStateStore | Domain-owned application state through scoped capability ports |
-| ArtifactStore | Large or separately retained inputs, outputs, files, and diagnostics |
-| SecretResolver | Runtime-only resolution of scoped secrets; never ordinary run payload storage |
+| Store/port        | Responsibility                                                                |
+| ----------------- | ----------------------------------------------------------------------------- |
+| DefinitionStore   | Mutable authored graph definitions and metadata                               |
+| ActivationCatalog | Immutable activations and artifact resolution metadata                        |
+| RunStore          | Current run/attempt state and concurrency guards                              |
+| EventStore        | Append-only operational and audit events                                      |
+| WaitStore         | Durable signal subscriptions and resumable continuations                      |
+| TimerStore        | Due-time scheduling and claims                                                |
+| AppStateStore     | Domain-owned application state through scoped capability ports                |
+| ArtifactStore     | Large or separately retained inputs, outputs, files, and diagnostics          |
+| SecretResolver    | Runtime-only resolution of scoped secrets; never ordinary run payload storage |
 
 Interfaces are semantic ports. SQLite, Postgres, object storage, or a queue are adapters.
 
@@ -802,11 +866,11 @@ Minimum durable records include:
 
 Every run selects one payload-retention policy:
 
-| Policy | Persisted content |
-|---|---|
-| none | Identifiers, status, safe codes, timings, sizes/hashes where safe |
-| summary | Safe bounded structural summaries; this is the default |
-| full | Full payloads in an explicitly protected store with access and lifecycle policy |
+| Policy  | Persisted content                                                               |
+| ------- | ------------------------------------------------------------------------------- |
+| none    | Identifiers, status, safe codes, timings, sizes/hashes where safe               |
+| summary | Safe bounded structural summaries; this is the default                          |
+| full    | Full payloads in an explicitly protected store with access and lifecycle policy |
 
 The immediate RunResult may return the actual output to the authorized caller. That does not imply full output persistence.
 
@@ -831,22 +895,22 @@ For a durable state transition, the adapter must atomically commit the run/attem
 
 Rollback selects a prior activation for future runs. It does not erase events, mutate completed runs, or undo external effects. Compensation is separate domain behavior represented by explicit capabilities and policy.
 
-| ID | Requirement | Maturity | Delivery |
-|---|---|---|---|
-| DATA-001 | Runtime persistence MUST be accessed through semantic store ports. | Invariant | Verified |
-| DATA-002 | Activations and operational events MUST be immutable once published. | Invariant | Verified |
-| DATA-003 | Run transition and event recording MUST be atomic or outbox-equivalent. | Accepted | Verified |
-| DATA-004 | Payload retention MUST support none, summary, and full policies. | Accepted | Verified |
-| DATA-005 | Summary MUST be the default retained payload policy. | Invariant | Verified |
-| DATA-006 | Full payload persistence MUST be explicit, access-controlled, and lifecycle-managed. | Invariant | Verified |
-| DATA-007 | Secrets MUST be resolved at runtime and MUST NOT be stored in normal run history. | Invariant | Verified |
-| DATA-008 | Resume MUST require the exact pinned activation or enter a blocked state. | Invariant | Verified |
-| DATA-009 | Rollback MUST affect future activation selection and MUST NOT claim to undo external effects. | Invariant | Planned |
-| DATA-010 | The architecture MUST NOT require application domain state to use Vict event sourcing. | Invariant | Verified |
-| DATA-011 | Public configuration and type documentation for full retention MUST explicitly state the caller’s responsibility for retained content. | Accepted | Verified |
-| DATA-012 | Store read APIs SHOULD return immutable snapshots or defensive copies so callers cannot mutate canonical stored records by reference. | Accepted | Verified |
+| ID       | Requirement                                                                                                                                                 | Maturity  | Delivery |
+| -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- | -------- |
+| DATA-001 | Runtime persistence MUST be accessed through semantic store ports.                                                                                          | Invariant | Verified |
+| DATA-002 | Activations and operational events MUST be immutable once published.                                                                                        | Invariant | Verified |
+| DATA-003 | Run transition and event recording MUST be atomic or outbox-equivalent.                                                                                     | Accepted  | Verified |
+| DATA-004 | Payload retention MUST support none, summary, and full policies.                                                                                            | Accepted  | Verified |
+| DATA-005 | Summary MUST be the default retained payload policy.                                                                                                        | Invariant | Verified |
+| DATA-006 | Full payload persistence MUST be explicit, access-controlled, and lifecycle-managed.                                                                        | Invariant | Verified |
+| DATA-007 | Secrets MUST be resolved at runtime and MUST NOT be stored in normal run history.                                                                           | Invariant | Verified |
+| DATA-008 | Resume MUST require the exact pinned activation or enter a blocked state.                                                                                   | Invariant | Verified |
+| DATA-009 | Rollback MUST affect future activation selection and MUST NOT claim to undo external effects.                                                               | Invariant | Planned  |
+| DATA-010 | The architecture MUST NOT require application domain state to use Vict event sourcing.                                                                      | Invariant | Verified |
+| DATA-011 | Public configuration and type documentation for full retention MUST explicitly state the caller’s responsibility for retained content.                      | Accepted  | Verified |
+| DATA-012 | Store read APIs SHOULD return immutable snapshots or defensive copies so callers cannot mutate canonical stored records by reference.                       | Accepted  | Verified |
 | DATA-013 | Application-domain persistence MUST remain logically and physically separable from Vict operational persistence even when both use one database technology. | Invariant | Verified |
-| DATA-014 | Generated application data mutations MUST cross typed, authorized data/capability boundaries and MUST NOT write operational store records directly. | Invariant | Verified |
+| DATA-014 | Generated application data mutations MUST cross typed, authorized data/capability boundaries and MUST NOT write operational store records directly.         | Invariant | Verified |
 
 ---
 
@@ -897,14 +961,14 @@ The operator or Studio should reconstruct:
 
 Automatic recovery is limited to pre-authorized mechanical actions such as bounded retry, lease reclaim, or restart resume. Semantic change, permission escalation, migration, or high-impact compensation requires control-plane policy and often human approval.
 
-| ID | Requirement | Maturity | Delivery |
-|---|---|---|---|
-| OBS-001 | Every event MUST identify run, activation, event schema, and ordering context. | Accepted | Verified |
-| OBS-002 | Ordinary events MUST store safe summaries rather than raw payloads. | Invariant | Verified |
-| OBS-003 | Metrics MUST be attributable to activationVersion. | Accepted | Planned |
-| OBS-004 | Diagnostic access to protected details MUST be separately authorized and audited. | Invariant | Planned |
-| OBS-005 | Automated recovery MUST remain within pre-authorized mechanical policies. | Invariant | Planned |
-| OBS-006 | Recovery MUST NOT silently mutate definitions, permissions, or pinned activations. | Invariant | Planned |
+| ID      | Requirement                                                                        | Maturity  | Delivery |
+| ------- | ---------------------------------------------------------------------------------- | --------- | -------- |
+| OBS-001 | Every event MUST identify run, activation, event schema, and ordering context.     | Accepted  | Verified |
+| OBS-002 | Ordinary events MUST store safe summaries rather than raw payloads.                | Invariant | Verified |
+| OBS-003 | Metrics MUST be attributable to activationVersion.                                 | Accepted  | Planned  |
+| OBS-004 | Diagnostic access to protected details MUST be separately authorized and audited.  | Invariant | Planned  |
+| OBS-005 | Automated recovery MUST remain within pre-authorized mechanical policies.          | Invariant | Planned  |
+| OBS-006 | Recovery MUST NOT silently mutate definitions, permissions, or pinned activations. | Invariant | Planned  |
 
 ---
 
@@ -943,15 +1007,15 @@ Direct invisible mutation of an active graph is not an administrative shortcut.
 
 Representative roles:
 
-| Role | Typical authority |
-|---|---|
-| Viewer | Inspect safe definitions, runs, and events |
-| Developer | Author definitions/capabilities and run local simulations |
-| Operator | Pause/resume/cancel runs, select approved activations, diagnose |
-| Approver | Approve designated effect or production changes |
-| Administrator | Manage policy, actors, and infrastructure |
+| Role          | Typical authority                                                 |
+| ------------- | ----------------------------------------------------------------- |
+| Viewer        | Inspect safe definitions, runs, and events                        |
+| Developer     | Author definitions/capabilities and run local simulations         |
+| Operator      | Pause/resume/cancel runs, select approved activations, diagnose   |
+| Approver      | Approve designated effect or production changes                   |
+| Administrator | Manage policy, actors, and infrastructure                         |
 | Builder Agent | Repository changes within an explicitly granted development scope |
-| Product Agent | Application capabilities only, with run-scoped permissions |
+| Product Agent | Application capabilities only, with run-scoped permissions        |
 
 Roles are policy inputs, not hard-coded universal organizational titles.
 
@@ -963,15 +1027,15 @@ Roles are policy inputs, not hard-coded universal organizational titles.
 - Migration of a suspended run is a separate explicit ChangeSet with compatibility checks.
 - Rollback selects a prior activation for future runs.
 
-| ID | Requirement | Maturity | Delivery |
-|---|---|---|---|
-| CTRL-001 | Production change MUST use an inspect/propose/validate/simulate/approve/commit workflow appropriate to risk. | Invariant | Planned |
-| CTRL-002 | Every ChangeSet MUST declare its expected base version and fail on conflict. | Invariant | Planned |
-| CTRL-003 | Commit MUST create or select an immutable activation; it MUST NOT edit one in place. | Invariant | Planned |
-| CTRL-004 | Approval policy MUST consider actor, environment, effect, and change risk. | Accepted | Planned |
-| CTRL-005 | In-flight runs MUST remain pinned unless an explicit migration is approved. | Invariant | Planned |
-| CTRL-006 | Rollback and compensation MUST be represented as different operations. | Invariant | Planned |
-| CTRL-007 | Operator interventions MUST emit audit events. | Invariant | Planned |
+| ID       | Requirement                                                                                                  | Maturity  | Delivery |
+| -------- | ------------------------------------------------------------------------------------------------------------ | --------- | -------- |
+| CTRL-001 | Production change MUST use an inspect/propose/validate/simulate/approve/commit workflow appropriate to risk. | Invariant | Planned  |
+| CTRL-002 | Every ChangeSet MUST declare its expected base version and fail on conflict.                                 | Invariant | Planned  |
+| CTRL-003 | Commit MUST create or select an immutable activation; it MUST NOT edit one in place.                         | Invariant | Planned  |
+| CTRL-004 | Approval policy MUST consider actor, environment, effect, and change risk.                                   | Accepted  | Planned  |
+| CTRL-005 | In-flight runs MUST remain pinned unless an explicit migration is approved.                                  | Invariant | Planned  |
+| CTRL-006 | Rollback and compensation MUST be represented as different operations.                                       | Invariant | Planned  |
+| CTRL-007 | Operator interventions MUST emit audit events.                                                               | Invariant | Planned  |
 
 ---
 
@@ -993,10 +1057,10 @@ This is portability by protocol: different coding agents can perform the same bo
 
 ### 15.1 Code plane versus Vict control plane
 
-| Plane | Builder action |
-|---|---|
-| Code plane | Edit TypeScript, tests, migrations, UI, documentation, and package manifests through repository tools |
-| Vict control plane | Inspect/propose/simulate approved runtime graph or policy changes through typed Vict tools |
+| Plane              | Builder action                                                                                        |
+| ------------------ | ----------------------------------------------------------------------------------------------------- |
+| Code plane         | Edit TypeScript, tests, migrations, UI, documentation, and package manifests through repository tools |
+| Vict control plane | Inspect/propose/simulate approved runtime graph or policy changes through typed Vict tools            |
 
 A builder may have one or both scopes. Repository write access does not imply production activation authority.
 
@@ -1014,48 +1078,50 @@ Since v0.3.0 the Product Agent is reached only through the **neutral product-age
 
 The Builder Agent is never placed in ARA’s normal conversational fast path.
 
-| ID | Requirement | Maturity | Delivery |
-|---|---|---|---|
-| AGNT-001 | Builder Kit MUST be usable by multiple agent hosts and humans. | Invariant | Planned |
-| AGNT-002 | A handoff MUST define scope, exclusions, requirements, commands, evidence, and stop conditions. | Accepted | In Progress |
-| AGNT-003 | Builder authority MUST be explicitly granted per environment and tool. | Invariant | Planned |
-| AGNT-004 | Repository write authority MUST NOT imply runtime production activation authority. | Invariant | Planned |
-| AGNT-005 | Product Agents MUST execute as bounded capabilities. | Invariant | Planned |
-| AGNT-006 | Product Agents MUST NOT receive Builder Kit or repository authority by default. | Invariant | Planned |
-| AGNT-007 | The ARA message fast path MUST NOT invoke the Builder Agent. | Invariant | Planned |
-| AGNT-008 | No agent may grant itself broader tools, secrets, approvals, or roles. | Invariant | Planned |
+| ID       | Requirement                                                                                     | Maturity  | Delivery    |
+| -------- | ----------------------------------------------------------------------------------------------- | --------- | ----------- |
+| AGNT-001 | Builder Kit MUST be usable by multiple agent hosts and humans.                                  | Invariant | Planned     |
+| AGNT-002 | A handoff MUST define scope, exclusions, requirements, commands, evidence, and stop conditions. | Accepted  | In Progress |
+| AGNT-003 | Builder authority MUST be explicitly granted per environment and tool.                          | Invariant | Planned     |
+| AGNT-004 | Repository write authority MUST NOT imply runtime production activation authority.              | Invariant | Planned     |
+| AGNT-005 | Product Agents MUST execute as bounded capabilities.                                            | Invariant | Planned     |
+| AGNT-006 | Product Agents MUST NOT receive Builder Kit or repository authority by default.                 | Invariant | Planned     |
+| AGNT-007 | The ARA message fast path MUST NOT invoke the Builder Agent.                                    | Invariant | Planned     |
+| AGNT-008 | No agent may grant itself broader tools, secrets, approvals, or roles.                          | Invariant | Planned     |
 
 ### 15.3 Product-agent integration requirements (v0.3.0 amendment)
 
 These cross-cutting families are added by the Mastra/ARA amendment. Full rationale and design live in `docs/architecture/MASTRA-ARA-INTEGRATION.md`. All rows are new — none is Verified.
 
-| ID | Requirement | Maturity | Delivery |
-|---|---|---|---|
-| AI-001 | VICT MUST expose product agents through a neutral, versioned ProductAgent boundary (port, stream contract, snapshot types) that product code can consume without Mastra types. | Accepted | Planned |
-| AI-002 | Core VICT packages (`@vict/contracts`, `@vict/sdk`, `@vict/kernel`, `@vict/runtime`, `@vict/application`, `@vict/renderer-svelte`, `@vict/appdata-sqlite`, `@vict/scaffolder`, `@vict/store-sqlite`) MUST remain free of Mastra dependencies and Mastra types; Mastra-specific code MAY exist only in the optional adapter package and product composition. | Invariant | Planned |
-| AI-003 | Agent definitions MUST be version-addressable through an explicit `agentProfileVersion` composed from declared schema marker, agent ID/revision, instructions revision, model-profile ID/revision, memory-policy ID/revision, allowed capability references, and adapter compatibility marker — never from function source, secrets, time, random values, framework internals, schema-library internals, mutable memory contents, or raw prompts/conversation payloads. | Invariant | Planned |
-| AI-004 | Every agent turn MUST capture an immutable activation-time binding snapshot, and in-flight runs MUST retain pinned agent/tool semantics; changed definitions apply only to later explicit activations, and the actual provider/model identity plus pinned Mastra/adapter versions are recorded on the run when known. | Invariant | Planned |
-| AI-005 | Model-facing tool availability MUST derive only from the VICT-pinned authority envelope of the activation snapshot; Mastra tool descriptions or configuration MUST NOT grant or widen authority. | Invariant | Planned |
-| AI-006 | Effectful tool calls MUST cross the VICT capability boundary — actor/authority check, authoritative VICT contract validation, effect/approval policy, durable intent where required — before execution, through the same boundary used by non-AI callers, with stable correlation and idempotency identities. | Invariant | Planned |
-| AI-007 | A product agent MUST NOT approve its own protected action; approval authority is human/policy only, recorded as VICT approval records bound to the exact capability reference and canonical arguments. | Invariant | Planned |
-| AI-008 | Mastra memory, VICT application-domain data, VICT operational history, and Mastra observability MUST remain separate stores with explicit retention/deletion/export policies and authenticated VICT-actor↔Mastra-resource identity mapping; cross-user memory access is prohibited; full prompts/messages MUST NOT be copied into default VICT run history; and atomic transactions across these stores MUST NOT be claimed. | Invariant | Planned |
-| AI-009 | The agent stream MUST be a versioned VICT-owned normalized event contract with per-stream monotonic sequence numbers, at-least-once delivery with client dedupe, cursor-based reconnect against authoritative turn state, durably retrievable completed messages, and durable milestone recording — and MUST NOT expose raw provider or Mastra chunk types or hidden chain-of-thought. | Invariant | Planned |
-| AI-010 | Cancellation MUST record durable VICT intent, propagate an AbortSignal into the AI subsystem where supported, terminate with an honest normalized event, and MUST NOT claim reversal of already committed effects. | Invariant | Planned |
-| AI-011 | Mastra trace IDs MUST be correlated with VICT run/turn/attempt IDs; AI observability and VICT operational observability MUST remain separate stores joined by correlation identifiers, with explicit sampling and payload-safe defaults. | Accepted | Planned |
-| AI-012 | Every product operation MUST have exactly one authority for retry, approval, and durable completion; Mastra suspension MUST NOT substitute for VICT approval, and VICT graphs remain authoritative for durable business orchestration. | Invariant | Planned |
-| AI-013 | The real ARA product MUST be a complete user-facing application delivered through the Application Layer (structured surfaces plus explicit versioned custom-component islands), meeting the minimum product specification of `docs/architecture/MASTRA-ARA-INTEGRATION.md` §11 with real-browser usability and accessibility evidence. | Accepted | Planned |
-| AI-014 | Prompts, instructions, retrieved memory, and tool outputs MUST be treated as untrusted data: they MUST NOT be able to modify the capability allowlist, grant permissions, change the pinned profile, or bypass re-authorization below the UI. | Invariant | Planned |
-| AI-015 | The initial deployment MUST keep Mastra server-side in process behind VICT-owned API/authentication boundaries; the product UI MUST NOT call privileged Mastra endpoints directly. | Invariant | Planned |
-| MSTR-001 | Mastra (`@mastra/core` + `@mastra/memory`) is the canonical first product-agent framework for ARA; VICT MUST NOT rebuild model-provider integration, the open-ended agent loop, the tool-selection loop, the streaming engine, conversation memory, semantic/working/observational memory, subagent mechanics, AI tracing, or evaluation machinery. | Accepted | Planned |
-| MSTR-002 | The adapter MUST pin exact Mastra package versions, record the adapter compatibility marker in every `agentProfileVersion` and run snapshot, and re-run Mastra-version conformance verification before an upgraded combination is accepted. | Accepted | Planned |
-| MSTR-003 | Initial ARA Mastra storage MUST use the officially supported file-backed `@mastra/libsql` store in a dedicated database file separate from VICT operational and application-domain stores, serving Mastra's memory/workflows/observability domains, with retention configured on the Mastra store. | Accepted | Planned |
-| MSTR-004 | Only envelope-derived capabilities become Mastra tools; the bridge performs authoritative VICT contract validation regardless of Mastra schema validation; missing approval suspends/blocks safely; decline returns a safe structured outcome; irreversible ambiguity fails closed; direct Mastra tools that perform production writes outside VICT and client-side tools that could bypass authorization are prohibited. | Invariant | Planned |
-| MSTR-005 | Mastra approval/suspension mechanisms MAY gate tool calls, but the authoritative approval record MUST be a VICT approval record; Mastra-side approval/resume MUST proceed only after VICT records the approval. | Invariant | Planned |
-| MSTR-006 | Mastra workflows MUST NOT bypass VICT governed orchestration: protected operations delegate through the capability bridge, Mastra suspension is not authorization, Mastra auto-restart MUST NOT re-drive work whose durable authority is VICT, and no cross-store atomicity is claimed. | Invariant | Planned |
-| MSTR-007 | The Mastra request context MUST be derived from the authenticated server-side VICT actor context; client-supplied fields MUST NOT be authoritative for identity, memory ownership, or dynamic agent configuration. | Invariant | Planned |
-| MSTR-008 | Mastra tracing MUST use payload-safe defaults (`hideInput`/`hideOutput` or pinned equivalent) with explicit sampling; full prompt/tool-payload tracing is an explicit protected opt-in with separate retention; traces are stored in the AI observability domain, not VICT operational history. | Accepted | Planned |
-| MSTR-009 | Mastra Studio MAY be used for development and AI inspection behind separate authentication; it MUST NOT be deployed as, or act as, a production control plane bypassing VICT authorization, approvals, or activation/release governance. | Invariant | Planned |
-| MSTR-010 | The Mastra integration MUST be verifiable offline: deterministic mock-model/integration fixtures against the pinned version, packed-consumer declaration checks proving neutral packages stay Mastra-free, and recovery/reconciliation tests for failures across the store boundary. | Accepted | Planned |
+| ID       | Requirement                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | Maturity  | Delivery |
+| -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- | -------- |
+| AI-001   | VICT MUST expose product agents through a neutral, versioned ProductAgent boundary (port, stream contract, snapshot types) that product code can consume without Mastra types.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | Accepted  | Planned  |
+| AI-002   | Core VICT packages (`@vict/contracts`, `@vict/sdk`, `@vict/kernel`, `@vict/runtime`, `@vict/application`, `@vict/renderer-svelte`, `@vict/appdata-sqlite`, `@vict/scaffolder`, `@vict/store-sqlite`) MUST remain free of Mastra dependencies and Mastra types; Mastra-specific code MAY exist only in the optional adapter package and product composition.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | Invariant | Planned  |
+| AI-003   | Agent definitions MUST be version-addressable through an explicit `agentProfileVersion` composed from strict canonical declared data covering every runtime-affecting component — profile schema marker; agent ID/revision; instructions ID/revision; model-profile ID/revision including model router/provider intent; generation defaults and bounded options; stop/iteration/tool-call/loop policy; memory-policy ID/revision; ordered processor and guardrail chains; structured-output contract reference (when enabled); sorted Mastra-native helper-tool references; sorted VICT capability references; sorted subagent/AI-internal workflow references (when enabled); and an adapter compatibility marker including every runtime-affecting pinned `@mastra/*` package version actually used. Set-like collections are canonically sorted; order-sensitive chains preserve declared order; function bodies are never hashed; and no runtime-affecting configuration is silently omitted. Identity MUST NOT be derived from function source or bodies, secrets, time, random values, framework internals, schema-library internals, mutable memory contents, or raw prompts/conversation payloads. | Invariant | Planned  |
+| AI-004   | Activation MUST resolve and deep-capture every revisioned profile component into an immutable VICT-owned snapshot, binding required function references without hashing or serializing their bodies; an in-flight turn MUST NOT retain or consult a live mutable Mastra `Agent`, registry, processor list, model profile, or tool map; changed definitions apply only after explicit reactivation; the snapshot records every runtime-affecting pinned `@mastra/*` version and the actual provider/model identity observed at execution when available; and provider credentials MUST NOT enter the profile, identity, snapshot, stream, trace, diagnostics, or any VICT/Mastra store.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | Invariant | Planned  |
+| AI-005   | Model-facing tool availability MUST derive only from the VICT-pinned authority envelope of the activation snapshot; Mastra tool descriptions or configuration MUST NOT grant or widen authority.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | Invariant | Planned  |
+| AI-006   | Effectful tool calls MUST cross the VICT capability boundary — actor/authority check, authoritative VICT contract validation, effect/approval policy, durable intent where required — before execution, through the same boundary used by non-AI callers, with stable correlation and idempotency identities.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              | Invariant | Planned  |
+| AI-007   | A product agent MUST NOT approve its own protected action; approval authority is human/policy only, recorded as VICT approval records bound to the exact capability reference and canonical arguments.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | Invariant | Planned  |
+| AI-008   | Mastra memory, VICT application-domain data, VICT operational history, and Mastra observability MUST remain separate stores with explicit retention/deletion/export policies and authenticated VICT-actor↔Mastra-resource identity mapping; cross-user memory access is prohibited; full prompts/messages MUST NOT be copied into default VICT run history; and atomic transactions across these stores MUST NOT be claimed.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | Invariant | Planned  |
+| AI-009   | The agent stream MUST be a versioned VICT-owned normalized event contract with per-stream monotonic sequence numbers, at-least-once delivery with client dedupe, cursor-based reconnect against authoritative turn state, durably retrievable completed messages, and durable milestone recording — and MUST NOT expose raw provider or Mastra chunk types or hidden chain-of-thought.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | Invariant | Planned  |
+| AI-010   | Cancellation MUST record durable VICT intent, propagate an AbortSignal into the AI subsystem where supported, terminate with an honest normalized event, and MUST NOT claim reversal of already committed effects.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | Invariant | Planned  |
+| AI-011   | Mastra trace IDs MUST be correlated with VICT run/turn/attempt IDs; AI observability and VICT operational observability MUST remain separate stores joined by correlation identifiers, with explicit sampling and payload-safe defaults.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | Accepted  | Planned  |
+| AI-012   | Every product operation MUST have exactly one authority for retry, approval, and durable completion; Mastra suspension MUST NOT substitute for VICT approval, and VICT graphs remain authoritative for durable business orchestration.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | Invariant | Planned  |
+| AI-013   | The real ARA product MUST be a complete user-facing application delivered through the Application Layer (structured surfaces plus explicit versioned custom-component islands), meeting the minimum product specification of `docs/architecture/MASTRA-ARA-INTEGRATION.md` §11 with real-browser usability and accessibility evidence.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | Accepted  | Planned  |
+| AI-014   | Prompts, instructions, retrieved memory, and tool outputs MUST be treated as untrusted data: they MUST NOT be able to modify the capability allowlist, grant permissions, change the pinned profile, or bypass re-authorization below the UI.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              | Invariant | Planned  |
+| AI-015   | The initial deployment MUST keep Mastra server-side in process behind VICT-owned API/authentication boundaries; the product UI MUST NOT call privileged Mastra endpoints directly.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | Invariant | Planned  |
+| MSTR-001 | Mastra (`@mastra/core` + `@mastra/memory`) is the canonical first product-agent framework for ARA; VICT MUST NOT rebuild model-provider integration, the open-ended agent loop, the tool-selection loop, the streaming engine, conversation memory, semantic/working/observational memory, subagent mechanics, AI tracing, or evaluation machinery.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | Accepted  | Planned  |
+| MSTR-002 | The adapter MUST pin exact Mastra package versions, resolve and record every runtime-affecting pinned `@mastra/*` version actually used in the adapter compatibility marker within `agentProfileVersion` and each run snapshot, and re-run the version-upgrade conformance harness before an upgraded combination is accepted.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | Accepted  | Planned  |
+| MSTR-003 | Initial ARA Mastra storage MUST use the officially supported file-backed `@mastra/libsql` store in a dedicated database file separate from VICT operational and application-domain stores, serving Mastra's memory/workflows/observability domains, accepted ONLY within the bounded local deployment envelope (local-first, single actor, single application process, non-multi-tenant, file-backed; amendment §8.2); retention MUST be configured AND an executed pruning mechanism tested; growth beyond the envelope requires an appropriate supported backend and security profile.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | Accepted  | Planned  |
+| MSTR-004 | Only envelope-derived capabilities become Mastra tools; the bridge performs authoritative VICT contract validation regardless of Mastra schema validation; missing approval suspends/blocks safely; decline returns a safe structured outcome; irreversible ambiguity fails closed; direct Mastra tools that perform production writes outside VICT and client-side tools that could bypass authorization are prohibited.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | Invariant | Planned  |
+| MSTR-005 | Mastra approval/suspension mechanisms MAY gate tool calls, but the authoritative approval record MUST be a VICT approval record; Mastra-side approval/resume MUST proceed only after VICT records the approval.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | Invariant | Planned  |
+| MSTR-006 | Mastra workflows MUST NOT bypass VICT governed orchestration: protected operations delegate through the capability bridge, Mastra suspension is not authorization, Mastra auto-restart MUST NOT re-drive work whose durable authority is VICT, and no cross-store atomicity is claimed.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | Invariant | Planned  |
+| MSTR-007 | The Mastra request context MUST be derived from the authenticated server-side VICT actor context; client-supplied fields MUST NOT be authoritative for identity, memory ownership, or dynamic agent configuration.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | Invariant | Planned  |
+| MSTR-008 | Mastra tracing MUST use payload-safe defaults (`hideInput`/`hideOutput` or pinned equivalent) with explicit sampling and explicit retention bounds; full prompt/tool-payload tracing is an explicit protected opt-in with separate retention; traces are stored in the AI observability domain, not VICT operational history; a dedicated high-volume observability backend is the documented growth path.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | Accepted  | Planned  |
+| MSTR-009 | Mastra Studio MAY be used for development and AI inspection behind separate authentication; it MUST NOT be deployed as, or act as, a production control plane bypassing VICT authorization, approvals, or activation/release governance.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | Invariant | Planned  |
+| MSTR-010 | The Mastra integration MUST be verifiable offline: deterministic mock-model/integration fixtures against the pinned version, packed-consumer declaration checks proving neutral packages stay Mastra-free, and recovery/reconciliation tests for failures across the store boundary.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | Accepted  | Planned  |
+| MSTR-011 | The local data-protection baseline MUST be specified and tested at the Stage 06 foundation increment: protected-only credential resolution; credentials never serialized into profiles, snapshots, prompts, messages, traces, streams, diagnostics, or any VICT/Mastra database; payload-safe tracing by default; explicit retention bounds with an actually executed (scheduled or manual) pruning mechanism; governed conversation deletion and export; cross-store deletion reconciliation; database files outside publicly served directories; documented local file ownership/permission expectations; backup and export disclosure; canary-based secret-leak tests; and explicit data classification for conversation messages, tool payloads, working memory, semantic memory, observational memory, traces, approvals, and operational summaries.                                                                                                                                                                                                                                                                                                                                                  | Invariant | Planned  |
+| MSTR-012 | Stage 07 MUST declare its supported deployment envelope and accept the initial `@mastra/libsql` profile only as local-first, single-actor, single-application-process, non-multi-tenant, and file-backed; it MUST NOT imply multi-process, multi-tenant, protected-cloud, or production-scale guarantees; and Stage 07 MUST prove retention/deletion/export/pruning in real use, non-web-accessible store files, absent secret canaries, credentials external to stored data, informed-user retention disclosure, and documented backup/recovery limitations before the product is called usable for real cases.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | Invariant | Planned  |
 
 ---
 
@@ -1118,14 +1184,14 @@ Polling may be used in an early implementation. The accepted final direction all
 
 **Agent-event decision (v0.3.0):** the product-agent conversation stream uses versioned HTTP commands plus a resumable SSE stream carrying the normalized `vict.agent-stream@1` events, with per-stream sequence numbers, at-least-once delivery, and cursor-based reconnect against authoritative turn state (AI-009). WebSocket/WebRTC is deferred until a realtime-voice requirement justifies a second channel (OPEN-018). Operational run-event delivery for control/inspection remains as described above.
 
-| ID | Requirement | Maturity | Delivery |
-|---|---|---|---|
-| API-001 | SDK, HTTP, CLI, MCP, and Studio MUST preserve the same core identities and permission semantics. | Invariant | Planned |
-| API-002 | Public mutation APIs SHOULD support idempotency and optimistic concurrency. | Accepted | Planned |
-| API-003 | Event streaming MUST have resumable cursor semantics before it is relied on operationally. | Accepted | Planned |
-| API-004 | MCP MUST remain an adapter over bounded operations, not an alternate privileged backdoor. | Invariant | Planned |
-| API-005 | Application UIs MAY use ordinary framework components and direct domain APIs where Vict orchestration is not useful. | Invariant | Verified |
-| API-006 | Application Definition, local rendering, and future remote rendering MUST preserve the same typed resource/action identities and authorization boundary. | Accepted | Planned |
+| ID      | Requirement                                                                                                                                              | Maturity  | Delivery |
+| ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- | -------- |
+| API-001 | SDK, HTTP, CLI, MCP, and Studio MUST preserve the same core identities and permission semantics.                                                         | Invariant | Planned  |
+| API-002 | Public mutation APIs SHOULD support idempotency and optimistic concurrency.                                                                              | Accepted  | Planned  |
+| API-003 | Event streaming MUST have resumable cursor semantics before it is relied on operationally.                                                               | Accepted  | Planned  |
+| API-004 | MCP MUST remain an adapter over bounded operations, not an alternate privileged backdoor.                                                                | Invariant | Planned  |
+| API-005 | Application UIs MAY use ordinary framework components and direct domain APIs where Vict orchestration is not useful.                                     | Invariant | Verified |
+| API-006 | Application Definition, local rendering, and future remote rendering MUST preserve the same typed resource/action identities and authorization boundary. | Accepted  | Planned  |
 
 ---
 
@@ -1289,28 +1355,28 @@ The first complete Application Layer proof combines different surface and state 
 
 The proof passes only if one structured definition and its declared capability/data/component bindings produce the runnable application without manually constructing its route/page shell.
 
-| ID | Requirement | Maturity | Delivery |
-|---|---|---|---|
-| APP-001 | A valid Application Definition and declared bindings MUST produce a runnable useful default application through the reference toolchain without manual route/page-shell construction. | Invariant | Verified |
-| APP-002 | The Application Definition and compiler MUST be UI-framework-neutral; TypeScript is the primary authoring API and all serializations MUST map to one canonical semantic model. | Invariant | Verified |
-| APP-003 | `applicationVersion` MUST be deterministic, insertion-order independent, schema-marked, and based on canonical declarations plus explicit revisions rather than function text or framework internals. | Invariant | Verified |
-| APP-004 | An Application Release MUST identify its application, renderer, component registry, data-adapter, public Vict compatibility, and activation-binding semantics. | Accepted | Verified |
-| APP-005 | The neutral surface model MUST cover routes, navigation, responsive layouts, forms, tables, charts, conversation surfaces, actions, and explicit default states required by the reference proof. | Accepted | Verified |
-| APP-006 | Reference-rendered surfaces MUST provide accessible semantics and responsive defaults, with loading, empty, validation, denied, and safe failure behavior. | Accepted | Verified |
-| APP-007 | Presentation metadata MUST remain separate from base data contracts while referencing those contracts for validation. | Invariant | Verified |
-| APP-008 | Resource Definitions MUST expose typed storage-neutral identity, query, mutation, relationship, and presentation semantics. | Accepted | Verified |
-| APP-009 | Application-domain stores and migrations MUST remain separate from Vict operational stores and migrations. | Invariant | Verified |
-| APP-010 | Every non-local application action MUST have typed boundary references and MUST cross the applicable data, capability, runtime, or control authorization boundary. | Invariant | Verified |
-| APP-011 | Presentation-only interactions MUST remain local and MUST NOT be forced into Vict graphs. | Invariant | Verified |
-| APP-012 | UI visibility, disabled state, and route guards MUST NOT be treated as authoritative permission enforcement. | Invariant | Verified |
-| APP-013 | SvelteKit MUST be the first reference renderer; the core Application Definition MUST NOT expose Svelte-specific public types. | Accepted | Verified |
-| APP-014 | Bespoke UI MUST be supported through a versioned component registry and explicit code islands without requiring edits to generated framework internals. | Invariant | Verified |
-| APP-015 | The reference delivery model SHOULD scaffold the host once and render definitions without destructive repeated code generation or promised bidirectional source round-tripping. | Accepted | Verified |
-| APP-016 | Renderer and application-data adapters MUST pass shared semantic conformance suites. | Invariant | Verified |
-| APP-017 | The real ARA product MUST use the Application Layer for its structured product surface and MUST expose any missing abstraction rather than bypassing the layer silently. | Accepted | Planned |
-| APP-018 | Studio MUST remain conceptually distinct from the Application Layer, though it MAY reuse the same renderer and components where semantics fit. | Accepted | Planned |
-| APP-019 | A visual drag-and-drop authoring environment is deferred; if added, it MUST edit the same canonical Application Definition rather than create a parallel model. | Deferred | Not Scheduled |
-| APP-020 | Legacy `lang-app`, `lang-space`, `kit-svelte`, and YAML scaffolding MAY inform design but MUST NOT create compatibility obligations or a second runtime. | Invariant | Verified |
+| ID      | Requirement                                                                                                                                                                                           | Maturity  | Delivery      |
+| ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- | ------------- |
+| APP-001 | A valid Application Definition and declared bindings MUST produce a runnable useful default application through the reference toolchain without manual route/page-shell construction.                 | Invariant | Verified      |
+| APP-002 | The Application Definition and compiler MUST be UI-framework-neutral; TypeScript is the primary authoring API and all serializations MUST map to one canonical semantic model.                        | Invariant | Verified      |
+| APP-003 | `applicationVersion` MUST be deterministic, insertion-order independent, schema-marked, and based on canonical declarations plus explicit revisions rather than function text or framework internals. | Invariant | Verified      |
+| APP-004 | An Application Release MUST identify its application, renderer, component registry, data-adapter, public Vict compatibility, and activation-binding semantics.                                        | Accepted  | Verified      |
+| APP-005 | The neutral surface model MUST cover routes, navigation, responsive layouts, forms, tables, charts, conversation surfaces, actions, and explicit default states required by the reference proof.      | Accepted  | Verified      |
+| APP-006 | Reference-rendered surfaces MUST provide accessible semantics and responsive defaults, with loading, empty, validation, denied, and safe failure behavior.                                            | Accepted  | Verified      |
+| APP-007 | Presentation metadata MUST remain separate from base data contracts while referencing those contracts for validation.                                                                                 | Invariant | Verified      |
+| APP-008 | Resource Definitions MUST expose typed storage-neutral identity, query, mutation, relationship, and presentation semantics.                                                                           | Accepted  | Verified      |
+| APP-009 | Application-domain stores and migrations MUST remain separate from Vict operational stores and migrations.                                                                                            | Invariant | Verified      |
+| APP-010 | Every non-local application action MUST have typed boundary references and MUST cross the applicable data, capability, runtime, or control authorization boundary.                                    | Invariant | Verified      |
+| APP-011 | Presentation-only interactions MUST remain local and MUST NOT be forced into Vict graphs.                                                                                                             | Invariant | Verified      |
+| APP-012 | UI visibility, disabled state, and route guards MUST NOT be treated as authoritative permission enforcement.                                                                                          | Invariant | Verified      |
+| APP-013 | SvelteKit MUST be the first reference renderer; the core Application Definition MUST NOT expose Svelte-specific public types.                                                                         | Accepted  | Verified      |
+| APP-014 | Bespoke UI MUST be supported through a versioned component registry and explicit code islands without requiring edits to generated framework internals.                                               | Invariant | Verified      |
+| APP-015 | The reference delivery model SHOULD scaffold the host once and render definitions without destructive repeated code generation or promised bidirectional source round-tripping.                       | Accepted  | Verified      |
+| APP-016 | Renderer and application-data adapters MUST pass shared semantic conformance suites.                                                                                                                  | Invariant | Verified      |
+| APP-017 | The real ARA product MUST use the Application Layer for its structured product surface and MUST expose any missing abstraction rather than bypassing the layer silently.                              | Accepted  | Planned       |
+| APP-018 | Studio MUST remain conceptually distinct from the Application Layer, though it MAY reuse the same renderer and components where semantics fit.                                                        | Accepted  | Planned       |
+| APP-019 | A visual drag-and-drop authoring environment is deferred; if added, it MUST edit the same canonical Application Definition rather than create a parallel model.                                       | Deferred  | Not Scheduled |
+| APP-020 | Legacy `lang-app`, `lang-space`, `kit-svelte`, and YAML scaffolding MAY inform design but MUST NOT create compatibility obligations or a second runtime.                                              | Invariant | Verified      |
 
 ---
 
@@ -1325,10 +1391,10 @@ A pack manifest should eventually declare:
 ```yaml
 id: vict.example.calendar
 version: 1.2.0
-victCompatibility: ">=0.x"
+victCompatibility: '>=0.x'
 capabilities:
   - id: calendar.event.create
-    revision: "3"
+    revision: '3'
     effect: write
 contracts: []
 permissions: []
@@ -1367,14 +1433,14 @@ A domain-specific authoring surface may later compile into standard Vict contrac
 
 The accepted Application Definition is not a speculative domain language: it is the framework-neutral product-surface/data/action model required by PRD-007 and PRD-008. Optional domain syntaxes may compile into it later but may not replace or fork its canonical semantics.
 
-| ID | Requirement | Maturity | Delivery |
-|---|---|---|---|
-| ECO-001 | Reusable ecosystem units SHOULD be capability packs with explicit manifests. | Accepted | Verified |
-| ECO-002 | Every distributable pack MUST include effects, permissions, compatibility, tests, and safe simulation strategy. | Accepted | Verified |
-| ECO-003 | Adapters MUST implement stable ports and MUST NOT change kernel semantics. | Invariant | Planned |
-| ECO-004 | Playbooks SHOULD be extracted from repeated proven implementations. | Accepted | Planned |
-| ECO-005 | A registry and signing system MUST be driven by real distribution needs, not created as an empty shell. | Deferred | Not Scheduled |
-| ECO-006 | A domain language MUST compile to standard Vict semantics and MUST NOT create a second execution engine. | Invariant | Not Scheduled |
+| ID      | Requirement                                                                                                     | Maturity  | Delivery      |
+| ------- | --------------------------------------------------------------------------------------------------------------- | --------- | ------------- |
+| ECO-001 | Reusable ecosystem units SHOULD be capability packs with explicit manifests.                                    | Accepted  | Verified      |
+| ECO-002 | Every distributable pack MUST include effects, permissions, compatibility, tests, and safe simulation strategy. | Accepted  | Verified      |
+| ECO-003 | Adapters MUST implement stable ports and MUST NOT change kernel semantics.                                      | Invariant | Planned       |
+| ECO-004 | Playbooks SHOULD be extracted from repeated proven implementations.                                             | Accepted  | Planned       |
+| ECO-005 | A registry and signing system MUST be driven by real distribution needs, not created as an empty shell.         | Deferred  | Not Scheduled |
+| ECO-006 | A domain language MUST compile to standard Vict semantics and MUST NOT create a second execution engine.        | Invariant | Not Scheduled |
 
 ---
 
@@ -1428,14 +1494,14 @@ Moving from local to distributed deployment must not change:
 
 Distributed execution adds ownership, leasing, partitioning, backpressure, and failure recovery; it does not create new product semantics.
 
-| ID | Requirement | Maturity | Delivery |
-|---|---|---|---|
-| DEP-001 | Vict MUST support a local modular-monolith deployment. | Invariant | Verified |
-| DEP-002 | SQLite SHOULD be the first durable adapter unless environment verification rejects it. | Accepted | Verified |
-| DEP-003 | Local and distributed adapters MUST pass the same semantic conformance suite. | Accepted | Planned |
-| DEP-004 | Microservices MUST NOT be required before independent scaling or ownership needs are demonstrated. | Invariant | Verified |
-| DEP-005 | Distributed workers MUST use durable claims, leases, idempotent transitions, and backpressure. | Accepted | Planned |
-| DEP-006 | Multi-tenancy, encryption policy, quotas, and cost accounting MUST precede shared cloud service claims. | Accepted | Planned |
+| ID      | Requirement                                                                                             | Maturity  | Delivery |
+| ------- | ------------------------------------------------------------------------------------------------------- | --------- | -------- |
+| DEP-001 | Vict MUST support a local modular-monolith deployment.                                                  | Invariant | Verified |
+| DEP-002 | SQLite SHOULD be the first durable adapter unless environment verification rejects it.                  | Accepted  | Verified |
+| DEP-003 | Local and distributed adapters MUST pass the same semantic conformance suite.                           | Accepted  | Planned  |
+| DEP-004 | Microservices MUST NOT be required before independent scaling or ownership needs are demonstrated.      | Invariant | Verified |
+| DEP-005 | Distributed workers MUST use durable claims, leases, idempotent transitions, and backpressure.          | Accepted  | Planned  |
+| DEP-006 | Multi-tenancy, encryption policy, quotas, and cost accounting MUST precede shared cloud service claims. | Accepted  | Planned  |
 
 ---
 
@@ -1489,16 +1555,16 @@ The Stage 07 ARA target is a complete user-facing assistant product: streaming c
 
 The structured surface (routes, navigation, thread lists, records, forms, tables, charts, shells) comes from the Application Definition; the advanced live conversation workspace may begin as an explicit versioned Svelte custom-component island. Islands never bypass typed actions, data boundaries, authorization, or release identity. Reusable conversation semantics migrate into the neutral Application Definition only after evidence. Svelte 5 remains the canonical renderer; React stays deferred. The full normative specification is `docs/architecture/MASTRA-ARA-INTEGRATION.md` §11 (AI-013, ARA-008).
 
-| ID | Requirement | Maturity | Delivery |
-|---|---|---|---|
-| ARA-001 | ARA MUST be a real consuming application, not a hidden alternate Vict runtime. | Invariant | Planned |
-| ARA-002 | Normal ARA conversation MUST use Product Agent capabilities and MUST NOT invoke Builder Agent tooling. | Invariant | Planned |
-| ARA-003 | ARA SHOULD keep graph nodes at meaningful product and effect boundaries. | Invariant | In Progress |
-| ARA-004 | ARA MUST provide deterministic offline fixtures for core verification. | Accepted | Verified |
-| ARA-005 | ARA MUST separately report orchestration, storage, provider, and end-to-end latency. | Accepted | Planned |
-| ARA-006 | ARA SHOULD be the first proving ground for reusable capability packs and playbooks. | Accepted | Planned |
-| ARA-007 | ARA MUST be the first real product proof of the Application Layer and MUST document any product surface that requires a deliberate custom-component escape hatch. | Accepted | Planned |
-| ARA-008 | The real ARA product MUST be a complete user-facing application — not an API demonstration — delivered through the Application Layer with the Mastra-backed agent subsystem, meeting the minimum product specification of `docs/architecture/MASTRA-ARA-INTEGRATION.md` §11. | Accepted | Planned |
+| ID      | Requirement                                                                                                                                                                                                                                                                  | Maturity  | Delivery    |
+| ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- | ----------- |
+| ARA-001 | ARA MUST be a real consuming application, not a hidden alternate Vict runtime.                                                                                                                                                                                               | Invariant | Planned     |
+| ARA-002 | Normal ARA conversation MUST use Product Agent capabilities and MUST NOT invoke Builder Agent tooling.                                                                                                                                                                       | Invariant | Planned     |
+| ARA-003 | ARA SHOULD keep graph nodes at meaningful product and effect boundaries.                                                                                                                                                                                                     | Invariant | In Progress |
+| ARA-004 | ARA MUST provide deterministic offline fixtures for core verification.                                                                                                                                                                                                       | Accepted  | Verified    |
+| ARA-005 | ARA MUST separately report orchestration, storage, provider, and end-to-end latency.                                                                                                                                                                                         | Accepted  | Planned     |
+| ARA-006 | ARA SHOULD be the first proving ground for reusable capability packs and playbooks.                                                                                                                                                                                          | Accepted  | Planned     |
+| ARA-007 | ARA MUST be the first real product proof of the Application Layer and MUST document any product surface that requires a deliberate custom-component escape hatch.                                                                                                            | Accepted  | Planned     |
+| ARA-008 | The real ARA product MUST be a complete user-facing application — not an API demonstration — delivered through the Application Layer with the Mastra-backed agent subsystem, meeting the minimum product specification of `docs/architecture/MASTRA-ARA-INTEGRATION.md` §11. | Accepted  | Planned     |
 
 ---
 
@@ -1529,15 +1595,15 @@ Vict assumes definitions, handlers, agents, operators, inputs, and external syst
 - A model-generated proposal is untrusted until validated and authorized.
 - Redaction after raw persistence is not equivalent to avoiding collection.
 
-| ID | Requirement | Maturity | Delivery |
-|---|---|---|---|
-| SEC-001 | Every control/runtime operation MUST execute as an authenticated actor in protected deployments. | Invariant | Planned |
-| SEC-002 | Authorization MUST be checked at the operation and effect boundary, not only in UI. | Invariant | Planned |
-| SEC-003 | Secrets MUST be scope-limited and omitted from ordinary prompts, traces, errors, and events. | Invariant | Planned |
-| SEC-004 | High-impact actions MUST support human or policy approval before effect execution. | Invariant | Planned |
-| SEC-005 | Installed third-party packs MUST be treated as executable supply-chain inputs. | Invariant | Planned |
-| SEC-006 | Untrusted arbitrary code MUST NOT run in-process without an explicit sandbox architecture. | Invariant | Verified |
-| SEC-007 | Shared cloud deployment MUST establish tenant isolation and data lifecycle controls first. | Invariant | Planned |
+| ID      | Requirement                                                                                      | Maturity  | Delivery |
+| ------- | ------------------------------------------------------------------------------------------------ | --------- | -------- |
+| SEC-001 | Every control/runtime operation MUST execute as an authenticated actor in protected deployments. | Invariant | Planned  |
+| SEC-002 | Authorization MUST be checked at the operation and effect boundary, not only in UI.              | Invariant | Planned  |
+| SEC-003 | Secrets MUST be scope-limited and omitted from ordinary prompts, traces, errors, and events.     | Invariant | Planned  |
+| SEC-004 | High-impact actions MUST support human or policy approval before effect execution.               | Invariant | Planned  |
+| SEC-005 | Installed third-party packs MUST be treated as executable supply-chain inputs.                   | Invariant | Planned  |
+| SEC-006 | Untrusted arbitrary code MUST NOT run in-process without an explicit sandbox architecture.       | Invariant | Verified |
+| SEC-007 | Shared cloud deployment MUST establish tenant isolation and data lifecycle controls first.       | Invariant | Planned  |
 
 ---
 
@@ -1545,15 +1611,15 @@ Vict assumes definitions, handlers, agents, operators, inputs, and external syst
 
 ### 22.1 Test layers
 
-| Layer | Purpose |
-|---|---|
-| Unit | Contract, canonicalization, graph validation, policy, scheduler, and state-machine rules |
-| Property/adversarial | Mutation, ordering, hash stability, malformed data, concurrency, leakage, and boundary cases |
-| Conformance | All store, port, pack, and transport adapters obey the same semantics |
-| Integration | Runtime plus real durable adapters, restart, cancellation, retry, and resume |
-| Reference application | ARA end-to-end product behavior, effects, approvals, and operations |
-| Performance | Regression envelopes with environment and workload disclosed |
-| Independent audit | Reproduce commands, inspect code, challenge claims, and issue a disposition |
+| Layer                 | Purpose                                                                                      |
+| --------------------- | -------------------------------------------------------------------------------------------- |
+| Unit                  | Contract, canonicalization, graph validation, policy, scheduler, and state-machine rules     |
+| Property/adversarial  | Mutation, ordering, hash stability, malformed data, concurrency, leakage, and boundary cases |
+| Conformance           | All store, port, pack, and transport adapters obey the same semantics                        |
+| Integration           | Runtime plus real durable adapters, restart, cancellation, retry, and resume                 |
+| Reference application | ARA end-to-end product behavior, effects, approvals, and operations                          |
+| Performance           | Regression envelopes with environment and workload disclosed                                 |
+| Independent audit     | Reproduce commands, inspect code, challenge claims, and issue a disposition                  |
 
 ### 22.2 Required evidence for a stage
 
@@ -1580,15 +1646,15 @@ An independent audit must not rely only on the report. It reads the implementati
 
 Only PASS, or an explicit owner decision accepting listed issues, permits the next stage.
 
-| ID | Requirement | Maturity | Delivery |
-|---|---|---|---|
+| ID       | Requirement                                                                                          | Maturity  | Delivery    |
+| -------- | ---------------------------------------------------------------------------------------------------- | --------- | ----------- |
 | TEST-001 | Every normative invariant implemented by a stage MUST have direct automated evidence where feasible. | Invariant | In Progress |
-| TEST-002 | Tests MUST include negative paths and mutation/adversarial cases, not only happy paths. | Invariant | In Progress |
-| TEST-003 | Performance claims MUST state workload, environment, sample count, and measured boundary. | Accepted | Verified |
-| TEST-004 | Reports MUST use observed counts and MUST NOT copy stale expectations. | Invariant | Verified |
-| TEST-005 | Independent audit MUST inspect code and reproduce material evidence. | Invariant | Verified |
-| TEST-006 | Durable stages MUST include process-restart and corrupted/incomplete-state tests. | Invariant | Verified |
-| TEST-007 | Security-sensitive stages MUST include explicit leakage and permission tests. | Invariant | Verified |
+| TEST-002 | Tests MUST include negative paths and mutation/adversarial cases, not only happy paths.              | Invariant | In Progress |
+| TEST-003 | Performance claims MUST state workload, environment, sample count, and measured boundary.            | Accepted  | Verified    |
+| TEST-004 | Reports MUST use observed counts and MUST NOT copy stale expectations.                               | Invariant | Verified    |
+| TEST-005 | Independent audit MUST inspect code and reproduce material evidence.                                 | Invariant | Verified    |
+| TEST-006 | Durable stages MUST include process-restart and corrupted/incomplete-state tests.                    | Invariant | Verified    |
+| TEST-007 | Security-sensitive stages MUST include explicit leakage and permission tests.                        | Invariant | Verified    |
 
 ---
 
@@ -1596,21 +1662,21 @@ Only PASS, or an explicit owner decision accepting listed issues, permits the ne
 
 Stages are capability gates, not calendar promises. A work session may complete part or all of one stage, but the architecture does not bend to session length.
 
-| Stage | Name | Current status | Core outcome |
-|---|---|---|---|
-| 0 | Constitution and greenfield boundary | Complete | New source of truth and no legacy coupling |
-| 1 | Walking kernel | Verified with documented qualifications | Small end-to-end deterministic graph runtime |
-| 1.1 | Activation integrity and data safety | Verified with non-blocking issues | Pinned execution meaning and safe retained records |
-| 2 | Durable identity and stores | Verified | Restart-safe sequential runs on SQLite |
-| 3 | Durable orchestration | Verified with non-blocking issues | Waits, signals, timers, retries, cancellation, branching |
-| 4 | Capability and application authoring foundation | Verified with non-blocking issues | Stable SDK/packs plus neutral Application Definition, identity, bindings, and renderer contract |
-| 5 | Application delivery layer | Verified with non-blocking issues | SvelteKit renderer, scaffolder, built-in surfaces, domain-data adapter, and complete working application proof |
-| 6 | Control plane, API, and product-agent integration foundation | Planned — next; handoff to be generated from v0.3.0 | Governed ChangeSets, approvals, activation operations, typed remote consumption, plus the neutral product-agent boundary, Mastra adapter foundation, tool bridge, and agent-stream contract |
-| 7 | Real Mastra-backed ARA product | Planned | Real assistant product proves runtime, Application Layer, and the Mastra integration together |
-| 8 | Builder Kit and self-hosting | Planned | Model-agnostic agents extend Vict and its applications under bounded rules |
-| 9 | Studio, diagnosis, and controlled recovery | Planned | Operator experience and safe recovery, reusing the Application Layer where appropriate |
-| 10 | Ecosystem and proven playbooks | Planned | Reusable packs, application templates, and proven compositions |
-| 11 | Scale and cloud | Planned | Distributed, multi-tenant operational form |
+| Stage | Name                                                         | Current status                                                        | Core outcome                                                                                                                                                                                                                                                                          |
+| ----- | ------------------------------------------------------------ | --------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 0     | Constitution and greenfield boundary                         | Complete                                                              | New source of truth and no legacy coupling                                                                                                                                                                                                                                            |
+| 1     | Walking kernel                                               | Verified with documented qualifications                               | Small end-to-end deterministic graph runtime                                                                                                                                                                                                                                          |
+| 1.1   | Activation integrity and data safety                         | Verified with non-blocking issues                                     | Pinned execution meaning and safe retained records                                                                                                                                                                                                                                    |
+| 2     | Durable identity and stores                                  | Verified                                                              | Restart-safe sequential runs on SQLite                                                                                                                                                                                                                                                |
+| 3     | Durable orchestration                                        | Verified with non-blocking issues                                     | Waits, signals, timers, retries, cancellation, branching                                                                                                                                                                                                                              |
+| 4     | Capability and application authoring foundation              | Verified with non-blocking issues                                     | Stable SDK/packs plus neutral Application Definition, identity, bindings, and renderer contract                                                                                                                                                                                       |
+| 5     | Application delivery layer                                   | Verified with non-blocking issues                                     | SvelteKit renderer, scaffolder, built-in surfaces, domain-data adapter, and complete working application proof                                                                                                                                                                        |
+| 6     | Control plane, API, and product-agent integration foundation | Planned — next; handoff to be generated from v0.3.1 (Stage 06A first) | Governed ChangeSets, approvals, activation operations, typed remote consumption, plus the neutral product-agent boundary, Mastra adapter foundation, tool bridge, and agent-stream contract (two increments: 06A foundation, 06B control plane/remote execution; one final exit gate) |
+| 7     | Real Mastra-backed ARA product                               | Planned                                                               | Real assistant product proves runtime, Application Layer, and the Mastra integration together                                                                                                                                                                                         |
+| 8     | Builder Kit and self-hosting                                 | Planned                                                               | Model-agnostic agents extend Vict and its applications under bounded rules                                                                                                                                                                                                            |
+| 9     | Studio, diagnosis, and controlled recovery                   | Planned                                                               | Operator experience and safe recovery, reusing the Application Layer where appropriate                                                                                                                                                                                                |
+| 10    | Ecosystem and proven playbooks                               | Planned                                                               | Reusable packs, application templates, and proven compositions                                                                                                                                                                                                                        |
+| 11    | Scale and cloud                                              | Planned                                                               | Distributed, multi-tenant operational form                                                                                                                                                                                                                                            |
 
 ### Stage 0 — Constitution and greenfield boundary
 
@@ -1927,21 +1993,21 @@ Turn the neutral Stage 4 application model into a complete, responsive, customiz
 
 **Stage 05 evidence chain (preserved, not rewritten)**
 
-| Milestone | SHA |
-| --- | --- |
-| Initial Stage 05 implementation | `03a04a96a3c11be641305bf035033a83d6ef82f0` |
-| Initial independent audit | `53a8ec1b1e4ee4db7578681502de1d7559e04a7b` |
-| Application-delivery remediation | `d346badd1d042afb61f6e36847b0716116bc4dd7` |
-| Focused independent re-audit | `11e26447d645326aebf6560e3963476449fa840e` |
-| Required-member correction tip | `9fa89e4177654ea04399e3191469041107be77cb` |
-| Required-member closure audit | `50d46feb93d44f93a7e92cce862cac85c7d8525b` |
-| Canonical-input correction | `8ecb9aff8687e8059f78df1eb8c5bfc0b4053613` |
+| Milestone                            | SHA                                        |
+| ------------------------------------ | ------------------------------------------ |
+| Initial Stage 05 implementation      | `03a04a96a3c11be641305bf035033a83d6ef82f0` |
+| Initial independent audit            | `53a8ec1b1e4ee4db7578681502de1d7559e04a7b` |
+| Application-delivery remediation     | `d346badd1d042afb61f6e36847b0716116bc4dd7` |
+| Focused independent re-audit         | `11e26447d645326aebf6560e3963476449fa840e` |
+| Required-member correction tip       | `9fa89e4177654ea04399e3191469041107be77cb` |
+| Required-member closure audit        | `50d46feb93d44f93a7e92cce862cac85c7d8525b` |
+| Canonical-input correction           | `8ecb9aff8687e8059f78df1eb8c5bfc0b4053613` |
 | Canonical-identity documentation tip | `c4cb79beee3ed3d229084367a846bd2be3f9cf33` |
-| Canonical-identity closure re-audit | `4aead149bf8e647f8cf1e2df57a90fea6c45fa5d` |
-| Snapshot-consistency correction | `b9b7eaaf3706d0fbbf93774800e0261869849896` |
-| Crash-fixture readiness correction | `9cf61ee8268d99c438e795f250055ed56dbea4a5` |
-| Final audited implementation target | `070147eedb23c3f9857a62509a41412bd703357d` |
-| Final independent closure audit | `2f8233c6eddfec6a172f1486c373cce950f138ea` |
+| Canonical-identity closure re-audit  | `4aead149bf8e647f8cf1e2df57a90fea6c45fa5d` |
+| Snapshot-consistency correction      | `b9b7eaaf3706d0fbbf93774800e0261869849896` |
+| Crash-fixture readiness correction   | `9cf61ee8268d99c438e795f250055ed56dbea4a5` |
+| Final audited implementation target  | `070147eedb23c3f9857a62509a41412bd703357d` |
+| Final independent closure audit      | `2f8233c6eddfec6a172f1486c373cce950f138ea` |
 
 **Independently verified Stage 05 delivery**
 
@@ -2012,9 +2078,14 @@ The following were closed by verified Stage 05 evidence:
 
 **Purpose**
 
-Govern production behavior and application-release changes, expose typed remote consumption, and establish the neutral product-agent integration boundary with Mastra behind it — without changing the local semantic model. This stage implements the v0.3.0 Mastra/ARA amendment (`docs/architecture/MASTRA-ARA-INTEGRATION.md`); its handoff must be generated from that baseline.
+Govern production behavior and application-release changes, expose typed remote consumption, and establish the neutral product-agent integration boundary with Mastra behind it — without changing the local semantic model. This stage implements the Mastra/ARA amendment (`docs/architecture/MASTRA-ARA-INTEGRATION.md`); its handoff must be generated from the v0.3.1 baseline.
 
-**Includes**
+**Delivery structure — one stage, two increments.** Stage 06 is ONE formal architectural stage with ONE final exit gate, implemented as two sequential, independently reviewed delivery increments (a delivery strategy; Stages 07–11 are not renumbered):
+
+- **Stage 06A — Product-agent foundation:** neutral `ProductAgent` declarations; the strict agent-profile schema; the complete deterministic `agentProfileVersion` (every runtime-affecting component per amendment §6.1); immutable profile/activation/run snapshots; the pinned `@vict/mastra` adapter foundation; the offline deterministic model fixture; Mastra-native helper-tool restrictions (amendment §6.5); the memory/storage configuration boundary; the local data-protection baseline (MSTR-011); package isolation and Mastra-free neutral declarations; the Mastra version-upgrade conformance harness; and the AUDIT-F1 scaffolder `mkdtemp` hygiene correction. Stage 06A receives an independent audit before Stage 06B begins.
+- **Stage 06B — Control plane and governed remote execution:** ChangeSets, approvals, activation and release governance; the authenticated actor/role boundary; versioned HTTP commands; resumable SSE with the final `vict.agent-stream@1` field schema (OPEN-015 closes here); the VICT capability-to-Mastra tool bridge; approval suspension/resume; cancellation; cursor reconnect and client deduplication; cross-store restart reconciliation; retention and leakage verification; correlation across VICT and Mastra; CLI and remote Application Layer bindings; and security-focused adversarial testing.
+
+**Includes (across both increments)**
 
 - actors, roles, and scoped authorization;
 - ChangeSet lifecycle and optimistic concurrency;
@@ -2025,10 +2096,12 @@ Govern production behavior and application-release changes, expose typed remote 
 - versioned HTTP command interface;
 - the resumable agent/event streaming contract (`vict.agent-stream@1`) with cancellation and reconnect semantics;
 - the neutral product-agent boundary: `ProductAgent` port, normalized stream events, and snapshot types in Mastra-free packages;
-- the Mastra adapter foundation (`@vict/mastra`, pinned versions, adapter compatibility marker);
+- the Mastra adapter foundation (`@vict/mastra`, pinned versions, adapter compatibility marker covering every runtime-affecting pinned `@mastra/*` package);
 - the VICT capability-to-Mastra tool bridge with effect/approval gating and no model self-approval;
-- agent profile identity (`agentProfileVersion`) and immutable activation/run snapshots;
-- memory/data/operational/observability store separation with retention policies;
+- agent profile identity (`agentProfileVersion` over the complete §6.1 component set, including generation defaults, stop/loop policy, ordered processor/guardrail chains, helper tools, subagent/workflow references, and structured output when enabled) and immutable activation/run snapshots with no live Mastra objects in flight;
+- Mastra-native helper tools restricted to pure/presentation-local, versioned, contract-bound, snapshot-pinned use (amendment §6.5);
+- memory/data/operational/observability store separation with explicit retention bounds;
+- the local data-protection baseline specified and tested (MSTR-011): credential isolation, executed pruning, governed deletion/export with cross-store reconciliation, store-file placement and permissions, backup/export disclosure, canary leakage tests, and data classification;
 - correlation across VICT and Mastra identities;
 - an offline deterministic Mastra integration fixture or mock-model proof (no provider credentials in tests);
 - packed-consumer/declaration verification proving core packages remain Mastra-free;
@@ -2045,18 +2118,19 @@ Govern production behavior and application-release changes, expose typed remote 
 - multi-tenant cloud product;
 - autonomous production mutation.
 
-**Exit gate**
+**Exit gate (final; Stage 06 is marked Verified only after 06A and 06B are complete and this full gate passes an independent audit)**
 
 - no active behavior or published Application Release can be invisibly edited;
 - stale-base ChangeSets fail safely;
 - permissions are enforced below application UI and CLI;
-- in-flight runs stay pinned across activation change/rollback, including pinned agent-profile semantics;
+- in-flight runs stay pinned across activation change/rollback, including pinned agent-profile semantics with no live Mastra object consulted during a turn;
 - application clients cannot bypass resource/action authorization, and the product UI cannot reach Mastra endpoints directly;
 - tool-bridge authorization is proven: out-of-envelope tools are absent, model-supplied names/arguments are validated at the VICT boundary, protected effects cross the same boundary as non-AI callers, a model cannot approve its own action, missing approval suspends/blocks durably, decline returns a safe structured outcome, and irreversible ambiguity fails closed;
 - agent streaming has resumable cursor semantics with sequence numbers, at-least-once delivery, dedupe, and backpressure behavior;
 - cancellation records durable intent, propagates AbortSignal, and never claims reversal of committed effects;
-- `agentProfileVersion` is stable and sensitive to the declared inputs and insensitive to the forbidden ones; snapshots are immutable;
-- retention canaries prove no secret, raw provider error, or full prompt reaches streams, traces, or default run history;
+- `agentProfileVersion` is stable and sensitive to the declared inputs and insensitive to the forbidden ones; the profile schema covers every runtime-affecting component (nothing silently omitted); snapshots are immutable and record all pinned runtime versions;
+- the local data-protection baseline (MSTR-011) is proven: credentials isolated and never serialized into stored or observable surfaces; pruning actually executes; governed deletion/export reconciles across stores; store files sit outside publicly served directories; data classification and backup/export disclosure exist;
+- retention canaries prove no secret, raw provider error, or full prompt reaches streams, traces, AI stores, or default run history;
 - restart/reconciliation tests across the VICT/Mastra store boundary resolve to the VICT-authoritative view without duplicate effects or lost approvals;
 - event delivery has resumable cursor semantics;
 - every intervention and release change is attributable;
@@ -2072,6 +2146,8 @@ Deliver the real ARA product on the Stage 06 integration foundation: a complete,
 
 - real model-provider configuration (pinned model profile; credentials only in protected operator configuration, never in tests);
 - Mastra agent and memory under pinned versions with explicit memory policies;
+- the DECLARED deployment envelope (MSTR-012): local-first, single actor, single application process, non-multi-tenant, file-backed — stated in product documentation and the Stage 07 report; exceeding it (multi-process or externally hosted production) requires adopting an appropriate supported backend and security profile instead of extending the libSQL claim;
+- data-protection proof in real use (MSTR-012): retention, deletion, export, and pruning exercised end to end; store files not web-accessible; secret canaries absent from every retained and observable surface; provider credentials external to stored application data; clear user-facing information about what conversational data is retained and how to delete/export it; documented backup/recovery behavior and limitations;
 - VICT-governed tool capabilities for ARA's real domain actions;
 - the complete ARA Application Definition covering conversation, projects/commitments, reminders, forms, records/tables, dashboard/chart, navigation, and safe states;
 - a robust assistant UI meeting the §20.4/`MASTRA-ARA-INTEGRATION.md` §11 minimum specification: streaming rendering, tool-activity states, approval cards, stop/retry/regenerate, explicit edit/resend/branch history rules, attachments/citations where supported, usage/provider status, reconnect and restart recovery, full loading/offline/empty/denied/partial/error states, responsive layouts, keyboard accessibility and screen-reader semantics, real-browser usability and performance evidence, theme customization, and explicit extension points;
@@ -2086,12 +2162,13 @@ Deliver the real ARA product on the Stage 06 integration foundation: a complete,
 - Builder Agent in the message path;
 - general marketplace claims;
 - bypassing ordinary Application Layer surfaces merely to finish the reference product;
-- multi-tenant cloud claims.
+- multi-tenant, multi-process, or cloud-production claims under the initial libSQL envelope (MSTR-012).
 
 **Exit gate**
 
 - an end-to-end user flow survives process restart, activation change, and application-version change;
 - a sensitive tool action requires correct approval and cannot proceed without it;
+- the declared deployment envelope (MSTR-012) is documented and honored, with the deployment-envelope data-protection proofs (MSTR-012) demonstrated in real use;
 - the product surface is substantially produced by the Application Definition, while every custom component is explicit and justified;
 - the assistant experience meets the §11 minimum specification in real-browser use, including reconnect and restart recovery;
 - safe observability supports diagnosis with per-boundary latency/cost reporting;
@@ -2261,7 +2338,7 @@ Stage 4 — capability and application authoring foundation — is independently
 
 Stage 5 — application delivery layer — is independently verified and formally closed (2026-09-04) at final audited implementation target `070147e`, with the final independent closure audit at `2f8233c`, disposition **VERIFIED WITH NON-BLOCKING ISSUES**. The verified delivery comprises the `vict.application@2` delivery vocabulary with strict `@1` compatibility; strict required-member and canonical-input validation; deterministic, collision-resistant `applicationVersion`; immutable caller-independent compiled plans and serialization; the canonical Svelte 5 renderer and generic application host; routes, navigation and responsive layouts; forms, records, tables, search, charts, tabs, dialogs, drawers, status, action and conversation surfaces; safe loading, empty, validation, denied, stale, partial and failure states; theme tokens and versioned custom-component code islands; the one-time deterministic non-destructive scaffolder; the production SQLite application-domain adapter with application-domain migrations separate from operational migrations; typed, authorized query/mutation/action boundaries; restart and real-process SIGKILL recovery evidence; a warning-free Svelte build; real-browser responsive and accessibility checks; and packed-consumer and generated-host build verification. The observed closure baseline is 57 unit files / 1436 tests, 3 renderer files / 45 tests, 1 integration file / 4 tests, 61 files / 1485 total, ARA exactly 13 ordered events, benchmark exactly 10 events per completed run, and Stage 04 application proof 17/17.
 
-Stage 06 — Control plane, API, and product-agent integration foundation — is the next permitted stage and has NOT been implemented. The **Mastra/ARA architecture amendment is now accepted** as this reference v0.3.0 together with `docs/architecture/MASTRA-ARA-INTEGRATION.md`: Mastra is the canonical first product-agent framework behind the neutral VICT boundary, the transport and storage decisions are recorded, and the Stage 6/7 definitions in §23 supersede the pre-amendment descriptions for handoff purposes. A new Stage 06 implementation handoff MUST now be generated from the v0.3.0 baseline. Until that handoff exists, no Stage 06 implementation work has begun; nothing Mastra-related is Verified, and no Mastra dependency exists in the repository.
+Stage 06 — Control plane, API, and product-agent integration foundation — is the next permitted stage and has NOT been implemented. The **Mastra/ARA architecture amendment is accepted and finalized** as this reference v0.3.1 together with `docs/architecture/MASTRA-ARA-INTEGRATION.md` (v0.3.1 records the pre-implementation consistency and safety correction: complete agent executable identity, the Stage 06/07 data-protection split with the declared local deployment envelope, the primary-source ledger, and the Stage 06A/06B delivery split under one final exit gate). A new Stage 06 implementation handoff MUST now be generated from the v0.3.1 baseline, beginning with the Stage 06A foundation increment. Until that handoff exists, no Stage 06 implementation work has begun; nothing Mastra-related is Verified, and no Mastra dependency exists in the repository.
 
 ### 24.4 Evidence documents
 
@@ -2296,30 +2373,30 @@ Stage 06 — Control plane, API, and product-agent integration foundation — is
 - VICT-STAGE-05-INDEPENDENT-CLOSURE-RE-AUDIT.md — independent closure re-audit of the canonical-input correction; historical record at commit `4aead14`.
 - VICT-STAGE-05-FINAL-SNAPSHOT-CORRECTION-REPORT.md — implementer claim correcting the live-root serialization inconsistency (pinned plan identity) and the fixed-delay crash fixtures; historical remediation record (tips `b9b7eaa`, `9cf61ee`, `070147e`).
 - VICT-STAGE-05-FINAL-INDEPENDENT-CLOSURE-AUDIT.md — final independent closure audit of target `070147e` on a fresh clone, with snapshot negative controls, readiness-barrier probes, and independent restart recovery probes; **authoritative Stage 05 disposition: VERIFIED WITH NON-BLOCKING ISSUES — FORMAL CLOSURE PERMITTED**, committed as `2f8233c`. All earlier Stage 05 blocker and remediation reports above are preserved as historical evidence.
-- MASTRA-ARA-INTEGRATION.md — the accepted v0.3.0 Mastra/ARA integration amendment record: product decision, ownership matrix, Mastra-versus-VICT orchestration boundary, neutral product-agent boundary, agent identity, tool bridge, memory/storage/observability separation, streaming/transport decision, security composition, real ARA product target, revised Stage 06/07, and the AI/MSTR requirement families; normative for Stage 06+; maintained under docs/architecture/.
+- MASTRA-ARA-INTEGRATION.md — the accepted Mastra/ARA integration amendment record (v0.3.0, finalized by the v0.3.1 pre-implementation correction): product decision, ownership matrix, Mastra-versus-VICT orchestration boundary, neutral product-agent boundary, complete agent executable identity and snapshot semantics (§6), Mastra-native helper-tool policy, tool bridge, memory/storage/observability separation with the local data-protection baseline and declared deployment envelope (§8), streaming/transport decision, security composition, primary-source ledger (§2.4), real ARA product target, Stage 06A/06B delivery split and revised Stage 06/07, and the AI/MSTR requirement families; normative for Stage 06+; maintained under docs/architecture/.
 
 ---
 
 ## 25. Rejected approaches
 
-| Decision | Why rejected |
-|---|---|
-| Recreate the legacy engine/grammar/lang-* organization | Greenfield Vict should follow proven responsibilities, not historical package branding |
-| Treat YAML as the product thesis | Serialization is useful, but semantic APIs, identity, and runtime correctness matter more |
-| Leave every end-user application surface to separately hand-authored React/Svelte code | Produces a reliable backend but fails Vict's accepted complete-application product outcome |
-| Make Svelte types part of the canonical Application Definition | SvelteKit is the first renderer, not the framework-neutral semantic model |
-| Repeatedly generate editable framework files and promise bidirectional round-tripping | Creates competing sources of truth and destructive regeneration; Vict uses a rendered structured core plus explicit code islands |
-| Hash function.toString or schema-library internals | Unstable, environment-dependent, incomplete, and not trustworthy provenance |
-| Resolve handlers from a live registry during a run | Breaks activation identity, reproducibility, and suspended-run safety |
-| Persist full inputs/outputs/errors by default | Creates unnecessary privacy and secret-leakage risk |
-| Silently execute real effects when a simulation double is absent | Violates fail-closed simulation |
-| Put the Builder Agent in ARA’s conversation path | Adds latency, authority, and failure risk to product operation |
-| Let an agent directly edit active production behavior | Bypasses review, concurrency control, simulation, approval, and audit |
-| Claim rollback reverses external side effects | Activation selection and domain compensation are different operations |
-| Require two servers, polling, or microservices as the final architecture | Deployment mechanics should follow demand and preserve the same semantics |
-| Force every function or UI interaction into a graph node | Produces noise and weakens graphs as meaningful operational models |
-| Build an autonomous healer before durable correctness | Recovery without identity, idempotency, and authority boundaries is unsafe |
-| Create a theoretical marketplace/playbook catalog before real reuse | Ecosystem structure should be extracted from evidence |
+| Decision                                                                               | Why rejected                                                                                                                     |
+| -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| Recreate the legacy engine/grammar/lang-* organization                                 | Greenfield Vict should follow proven responsibilities, not historical package branding                                           |
+| Treat YAML as the product thesis                                                       | Serialization is useful, but semantic APIs, identity, and runtime correctness matter more                                        |
+| Leave every end-user application surface to separately hand-authored React/Svelte code | Produces a reliable backend but fails Vict's accepted complete-application product outcome                                       |
+| Make Svelte types part of the canonical Application Definition                         | SvelteKit is the first renderer, not the framework-neutral semantic model                                                        |
+| Repeatedly generate editable framework files and promise bidirectional round-tripping  | Creates competing sources of truth and destructive regeneration; Vict uses a rendered structured core plus explicit code islands |
+| Hash function.toString or schema-library internals                                     | Unstable, environment-dependent, incomplete, and not trustworthy provenance                                                      |
+| Resolve handlers from a live registry during a run                                     | Breaks activation identity, reproducibility, and suspended-run safety                                                            |
+| Persist full inputs/outputs/errors by default                                          | Creates unnecessary privacy and secret-leakage risk                                                                              |
+| Silently execute real effects when a simulation double is absent                       | Violates fail-closed simulation                                                                                                  |
+| Put the Builder Agent in ARA’s conversation path                                       | Adds latency, authority, and failure risk to product operation                                                                   |
+| Let an agent directly edit active production behavior                                  | Bypasses review, concurrency control, simulation, approval, and audit                                                            |
+| Claim rollback reverses external side effects                                          | Activation selection and domain compensation are different operations                                                            |
+| Require two servers, polling, or microservices as the final architecture               | Deployment mechanics should follow demand and preserve the same semantics                                                        |
+| Force every function or UI interaction into a graph node                               | Produces noise and weakens graphs as meaningful operational models                                                               |
+| Build an autonomous healer before durable correctness                                  | Recovery without identity, idempotency, and authority boundaries is unsafe                                                       |
+| Create a theoretical marketplace/playbook catalog before real reuse                    | Ecosystem structure should be extracted from evidence                                                                            |
 
 Rejected decisions require an explicit architecture amendment to reconsider.
 
@@ -2329,26 +2406,26 @@ Rejected decisions require an explicit architecture amendment to reconsider.
 
 These questions do not block the current stage.
 
-| ID | Question | Current direction | Decide by |
-|---|---|---|---|
-| OPEN-001 | Which SQLite implementation and migration library? | Decided for Stage 2: built-in `node:sqlite` with a hand-rolled forward migration runner (better-sqlite3 v13 segfaults on the supported runtime; v12 couples Node upgrades to native prebuilds). Engines floor raised explicitly to >=22.13.0. | Decided (Stage 2; audit-accepted) |
-| OPEN-002 | Exact durable control-node syntax? | Decided and independently verified in Stage 3: typed route keys, explicit wait/fan/join, no dynamic/nested fan-out, no general loop | Decided (Stage 3; re-audit accepted) |
-| OPEN-003 | When should SDK dependency direction be refactored? | Decided in Stage 4: `@vict/sdk` is the lightweight authoring ABI and depends directly only on `@vict/contracts`; kernel and runtime consume the SDK's authoring declarations; runtime composition remains explicitly imported from `@vict/runtime`; the acyclic direction is verified by package inspection, the build, and isolated packed consumers | Decided (Stage 4; audit-accepted) |
-| OPEN-004 | How is structural contract compatibility represented? | Decided in Stage 4: exact contract ID and revision remain the default compatibility rule; compatibility is never inferred from TypeScript structure, Zod internals, or runtime implementation; `vict.neutral.json` is an explicit bounded edge-compatibility exception that permits routing but does not bypass validation — every downstream capability still executes its own declared input contract, and incompatible specific-to-specific contracts remain rejected | Decided (Stage 4; audit-accepted) |
-| OPEN-005 | What build provenance/signing format is required? | Optional build digest locally; formal signing when distribution begins | Stages 4/10 |
-| OPEN-006 | Which server transports are standard? | Versioned HTTP plus cursor events. Decided for the product-agent conversation stream in v0.3.0: HTTP commands plus resumable SSE carrying the normalized `vict.agent-stream@1` contract (`docs/architecture/MASTRA-ARA-INTEGRATION.md` §9); WebSocket/WebRTC deferred for realtime voice (OPEN-018) | Agent stream decided (v0.3.0); operational event transport finalized in Stage 6 |
-| OPEN-007 | How are run-state migrations expressed? | Explicit audited migration, never automatic activation substitution | Stage 6 or later |
-| OPEN-008 | When is Postgres/distributed execution justified? | After local ARA measures real concurrency and durability needs | Stage 11 |
-| OPEN-009 | Does @vict/client merit a package? | Extract only when local Svelte hosting and remote application/Studio consumption share a stable transport client | Stages 6/7 |
-| OPEN-010 | Which isolation model supports third-party executable packs? | Workspace trust first; sandbox architecture before untrusted code | Stage 10 |
-| OPEN-011 | Which UI framework is the first renderer? | Decided: framework-neutral Application Definition with SvelteKit as the canonical first renderer; React requires a genuine second consumer | Decided (v0.2.0 amendment) |
-| OPEN-012 | Is application delivery generated source or runtime rendering? | Decided: one-time SvelteKit host scaffold plus definition-driven rendering and explicit custom code islands; no destructive repeated generation or promised round-trip | Decided (v0.2.0 amendment) |
-| OPEN-013 | Which Svelte component/chart libraries implement the reference semantic roles? | Decided in Stage 5: renderer-owned native Svelte components and accessible renderer-owned SVG charts; NO external component or chart library enters the neutral model — no component-/chart-library types exist in `@vict/application` or `@vict/sdk` | Decided (Stage 05; audit-accepted) |
-| OPEN-014 | How are Resource Definitions migrated by the reference domain-data adapter? | Decided in Stage 5: explicit versioned transactional application-domain migrations (`vict_appdata_migrations` bookkeeping) structurally separate from operational migrations; schema evolution is always an explicit new migration, never a destructive inferred rewrite | Decided (Stage 05; audit-accepted) |
-| OPEN-015 | Exact field-level schema of `vict.agent-stream@1` and the neutral `ProductAgent` port signatures | Marker name and normalized event set accepted in v0.3.0; field-level details are finalized in the Stage 06 handoff/implementation | Stage 6 |
-| OPEN-016 | Real model provider, model profile, and any provider-scale storage move for ARA | Local file-backed `@mastra/libsql` decided (MSTR-003); provider account/model choice and any `@mastra/pg` move are Stage 07 product/scale decisions | Stage 7 |
-| OPEN-017 | Encryption-at-rest and secret policy for Mastra memory/observability stores | Local-first single-actor deployment treats store files as local trust (Stage 03 local-trust boundary); an explicit encryption/secret policy is REQUIRED before any protected or multi-user production use | Stage 11 (before any protected cloud use) |
-| OPEN-018 | Realtime voice transport (WebSocket/WebRTC) | Deferred until realtime voice is a genuine product requirement; MUST NOT distort the accepted HTTP+SSE text transport | Stage 7+ on demonstrated demand |
+| ID       | Question                                                                                                                                                                                                                  | Current direction                                                                                                                                                                                                                                                                                                                                                                                                                                                        | Decide by                                                                       |
+| -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------- |
+| OPEN-001 | Which SQLite implementation and migration library?                                                                                                                                                                        | Decided for Stage 2: built-in `node:sqlite` with a hand-rolled forward migration runner (better-sqlite3 v13 segfaults on the supported runtime; v12 couples Node upgrades to native prebuilds). Engines floor raised explicitly to >=22.13.0.                                                                                                                                                                                                                            | Decided (Stage 2; audit-accepted)                                               |
+| OPEN-002 | Exact durable control-node syntax?                                                                                                                                                                                        | Decided and independently verified in Stage 3: typed route keys, explicit wait/fan/join, no dynamic/nested fan-out, no general loop                                                                                                                                                                                                                                                                                                                                      | Decided (Stage 3; re-audit accepted)                                            |
+| OPEN-003 | When should SDK dependency direction be refactored?                                                                                                                                                                       | Decided in Stage 4: `@vict/sdk` is the lightweight authoring ABI and depends directly only on `@vict/contracts`; kernel and runtime consume the SDK's authoring declarations; runtime composition remains explicitly imported from `@vict/runtime`; the acyclic direction is verified by package inspection, the build, and isolated packed consumers                                                                                                                    | Decided (Stage 4; audit-accepted)                                               |
+| OPEN-004 | How is structural contract compatibility represented?                                                                                                                                                                     | Decided in Stage 4: exact contract ID and revision remain the default compatibility rule; compatibility is never inferred from TypeScript structure, Zod internals, or runtime implementation; `vict.neutral.json` is an explicit bounded edge-compatibility exception that permits routing but does not bypass validation — every downstream capability still executes its own declared input contract, and incompatible specific-to-specific contracts remain rejected | Decided (Stage 4; audit-accepted)                                               |
+| OPEN-005 | What build provenance/signing format is required?                                                                                                                                                                         | Optional build digest locally; formal signing when distribution begins                                                                                                                                                                                                                                                                                                                                                                                                   | Stages 4/10                                                                     |
+| OPEN-006 | Which server transports are standard?                                                                                                                                                                                     | Versioned HTTP plus cursor events. Decided for the product-agent conversation stream in v0.3.0: HTTP commands plus resumable SSE carrying the normalized `vict.agent-stream@1` contract (`docs/architecture/MASTRA-ARA-INTEGRATION.md` §9); WebSocket/WebRTC deferred for realtime voice (OPEN-018)                                                                                                                                                                      | Agent stream decided (v0.3.0); operational event transport finalized in Stage 6 |
+| OPEN-007 | How are run-state migrations expressed?                                                                                                                                                                                   | Explicit audited migration, never automatic activation substitution                                                                                                                                                                                                                                                                                                                                                                                                      | Stage 6 or later                                                                |
+| OPEN-008 | When is Postgres/distributed execution justified?                                                                                                                                                                         | After local ARA measures real concurrency and durability needs                                                                                                                                                                                                                                                                                                                                                                                                           | Stage 11                                                                        |
+| OPEN-009 | Does @vict/client merit a package?                                                                                                                                                                                        | Extract only when local Svelte hosting and remote application/Studio consumption share a stable transport client                                                                                                                                                                                                                                                                                                                                                         | Stages 6/7                                                                      |
+| OPEN-010 | Which isolation model supports third-party executable packs?                                                                                                                                                              | Workspace trust first; sandbox architecture before untrusted code                                                                                                                                                                                                                                                                                                                                                                                                        | Stage 10                                                                        |
+| OPEN-011 | Which UI framework is the first renderer?                                                                                                                                                                                 | Decided: framework-neutral Application Definition with SvelteKit as the canonical first renderer; React requires a genuine second consumer                                                                                                                                                                                                                                                                                                                               | Decided (v0.2.0 amendment)                                                      |
+| OPEN-012 | Is application delivery generated source or runtime rendering?                                                                                                                                                            | Decided: one-time SvelteKit host scaffold plus definition-driven rendering and explicit custom code islands; no destructive repeated generation or promised round-trip                                                                                                                                                                                                                                                                                                   | Decided (v0.2.0 amendment)                                                      |
+| OPEN-013 | Which Svelte component/chart libraries implement the reference semantic roles?                                                                                                                                            | Decided in Stage 5: renderer-owned native Svelte components and accessible renderer-owned SVG charts; NO external component or chart library enters the neutral model — no component-/chart-library types exist in `@vict/application` or `@vict/sdk`                                                                                                                                                                                                                    | Decided (Stage 05; audit-accepted)                                              |
+| OPEN-014 | How are Resource Definitions migrated by the reference domain-data adapter?                                                                                                                                               | Decided in Stage 5: explicit versioned transactional application-domain migrations (`vict_appdata_migrations` bookkeeping) structurally separate from operational migrations; schema evolution is always an explicit new migration, never a destructive inferred rewrite                                                                                                                                                                                                 | Decided (Stage 05; audit-accepted)                                              |
+| OPEN-015 | Exact field-level schema of `vict.agent-stream@1` and the neutral `ProductAgent` port signatures                                                                                                                          | Marker name and normalized event set accepted in v0.3.0; field-level details are finalized in the Stage 06B increment/implementation                                                                                                                                                                                                                                                                                                                                     | Stage 6B                                                                        |
+| OPEN-016 | Real model provider, model profile, and any provider-scale storage move for ARA                                                                                                                                           | Local file-backed `@mastra/libsql` decided under the declared local envelope (MSTR-003/012); provider account/model choice and any backend move are Stage 07 product/scale decisions                                                                                                                                                                                                                                                                                     | Stage 7                                                                         |
+| OPEN-017 | Managed encryption-at-rest, KMS/key rotation, multi-tenant isolation, cloud secret-manager integration, production database topology, dedicated high-volume observability infrastructure, and formal backup encryption/DR | Split in v0.3.1: the local data-protection baseline (credential isolation, retention bounds with executed pruning, governed deletion/export, reconciliation, file placement, classification, canaries) is REQUIRED at the Stage 06 foundation increment (MSTR-011); the declared deployment envelope and its real-use proofs are REQUIRED at Stage 07 (MSTR-012). Only managed/cloud-scale protections remain deferred to here                                           | Stage 11 (before any protected or multi-tenant cloud use)                       |
+| OPEN-018 | Realtime voice transport (WebSocket/WebRTC)                                                                                                                                                                               | Deferred until realtime voice is a genuine product requirement; MUST NOT distort the accepted HTTP+SSE text transport                                                                                                                                                                                                                                                                                                                                                    | Stage 7+ on demonstrated demand                                                 |
 
 An open decision must not be filled in by convenience during unrelated implementation. The stage handoff either keeps it open or records an accepted decision.
 
@@ -2430,28 +2507,36 @@ Repository: <absolute path>
 Verified baseline: <stage and audit>
 
 ## Objective
+
 One bounded outcome.
 
 ## Requirements
+
 - <stable requirement IDs>
 
 ## In scope
+
 - Exact behaviors and packages.
 
 ## Out of scope
+
 - Explicit stop boundaries.
 
 ## Required implementation evidence
+
 - Commands, tests, adversarial cases, benchmark conditions.
 
 ## Autonomy
+
 - Permitted tools and decisions.
 - Conditions requiring a stop.
 
 ## Deliverables
+
 - Code, tests, docs, and factual report.
 
 ## Exit gate
+
 - Observable pass/fail criteria.
 
 Do not start the next stage.
@@ -2472,4 +2557,4 @@ Otherwise it probably belongs in an application, capability pack, adapter, devel
 
 ---
 
-**End of authoritative baseline v0.3.0**
+**End of authoritative baseline v0.3.1**
