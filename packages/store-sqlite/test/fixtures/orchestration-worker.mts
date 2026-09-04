@@ -1,7 +1,8 @@
 import { neutralJsonContract } from '@vict/contracts';
-import { writeFileSync, readFileSync, existsSync } from 'node:fs';
+import { readFileSync, existsSync, writeFileSync } from 'node:fs';
 import { createSqliteStores } from '@vict/store-sqlite';
 import { createRuntime } from '@vict/runtime';
+import { durableWrite, emitReady } from './readiness.js';
 
 /**
  * Orchestration restart worker (Stage 03 adversarial fixtures, handoff
@@ -20,6 +21,16 @@ import { createRuntime } from '@vict/runtime';
  * - `resume-join` reopen after the partial fan-out crash; completed branches are not re-invoked; the join validates once
  * - `start-join-terminal` park a branch at a signal wait feeding a TERMINAL join, exit
  * - `signal-join-terminal` reopen, signal, terminal join validates + completes with the canonical output
+ *
+ * Crash-fixtures readiness barrier (Stage 03 fixture documentation, final
+ * snapshot-correction pass): the three kill stages (`start-hang`,
+ * `hang-write`, `start-join-partial`) write their durable checkpoint first
+ * (fsynced via `durableWrite`) and ONLY THEN emit an explicit readiness
+ * sentinel on stdout (`emitReady`). The parent kills — with a real SIGKILL
+ * — only after observing that sentinel. No elapsed-time deadline decides
+ * when the child dies; a bounded parent-side timeout remains purely as a
+ * failure guard for "readiness was never reached". This documents fixture
+ * coordination only; no production orchestration behavior is involved.
  */
 
 const [stage, dbPath, statePath] = process.argv.slice(2);
@@ -34,7 +45,9 @@ async function await_readState(): Promise<string> {
 }
 
 function writeState(state: Record<string, unknown>): void {
-  writeFileSync(statePath, JSON.stringify(state));
+  // Durable (fsynced): a readiness signal emitted after this returns is
+  // causally after the on-disk checkpoint.
+  durableWrite(statePath, JSON.stringify(state));
 }
 
 const stringContract = {
@@ -191,6 +204,9 @@ async function main(): Promise<void> {
         writeState({ hanging: true });
         // Stay referenced: the parent's kill must be the real crash.
         setInterval(() => undefined, 1_000_000);
+        // Readiness barrier: emitted ONLY AFTER the durable checkpoint
+        // above; the parent kills only after observing this sentinel.
+        emitReady('start-hang');
         await new Promise(() => undefined);
       },
     });
@@ -228,7 +244,9 @@ async function main(): Promise<void> {
       >;
     };
     const writeLedger = (ledger: Record<string, { count: number; result: string }>): void => {
-      writeFileSync(ledgerPath, JSON.stringify(ledger));
+      // Durable (fsynced): a readiness signal emitted after this returns is
+      // causally after the on-disk external ledger entry.
+      durableWrite(ledgerPath, JSON.stringify(ledger));
     };
     runtime.registerCapability({
       id: 'keyedWrite',
@@ -251,6 +269,9 @@ async function main(): Promise<void> {
         writeLedger(ledger);
         const keepAlive = setInterval(() => undefined, 1_000_000);
         void keepAlive;
+        // Readiness barrier: emitted ONLY AFTER the durable external ledger
+        // entry above; the parent kills only after observing this sentinel.
+        emitReady('hang-write');
         await new Promise(() => undefined);
         return 'unreachable';
       },
@@ -337,7 +358,9 @@ async function main(): Promise<void> {
         ? (JSON.parse(readFileSync(ledgerPath, 'utf8')) as Record<string, number>)
         : {};
       ledger[key] = (ledger[key] ?? 0) + 1;
-      writeFileSync(ledgerPath, JSON.stringify(ledger));
+      // Durable (fsynced): part of the checkpoint sequence that must exist
+      // before the kill-stage readiness signal can be emitted.
+      durableWrite(ledgerPath, JSON.stringify(ledger));
     };
     registerCommon();
     runtime.registerContract({
@@ -387,12 +410,40 @@ async function main(): Promise<void> {
         output: neutralJsonContract,
         invoke: (input: unknown, context) => {
           bump('branchB');
-          // Durable intent has committed; the handler now hangs so the
-          // parent's SIGKILL is a real mid-fan-out crash.
-          writeState({ hanging: true, runId: context.runId });
-          setInterval(() => undefined, 1_000_000);
-          void input;
-          return new Promise<string>(() => undefined);
+          // The fixture's scenario is: branch 'a' completes DURABLY, branch
+          // 'b' hangs. Killing exactly when branch 'b' hangs could otherwise
+          // catch branch 'a' mid-attempt (invoked but not yet committed),
+          // so the readiness signal must also be causally after branch
+          // 'a''s durable branch.completed event. Wait for that evidence
+          // (bounded), then checkpoint, emit readiness, and hang.
+          const waitForBranchACompletion = async (): Promise<void> => {
+            const deadline = Date.now() + 30_000;
+            for (;;) {
+              const events = await stores.orchestration.listOrchestrationEvents(context.runId);
+              if (events.some((event) => event.type === 'branch.completed')) {
+                return;
+              }
+              if (Date.now() > deadline) {
+                throw new Error(
+                  'fixture: branch a did not durably complete before the hang window',
+                );
+              }
+              await new Promise((resolve) => setTimeout(resolve, 5));
+            }
+          };
+          return waitForBranchACompletion().then(() => {
+            // Durable intent has committed; the handler now hangs so the
+            // parent's SIGKILL is a real mid-fan-out crash.
+            writeState({ hanging: true, runId: context.runId });
+            setInterval(() => undefined, 1_000_000);
+            void input;
+            // Readiness barrier: emitted ONLY AFTER branch 'a''s durable
+            // completion, branch 'b''s durable ledger bump, and the durable
+            // state checkpoint above; the parent kills only after observing
+            // this sentinel.
+            emitReady('start-join-partial');
+            return new Promise<string>(() => undefined);
+          });
         },
       })
       .registerCapability({

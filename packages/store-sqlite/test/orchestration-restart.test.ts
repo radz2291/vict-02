@@ -5,6 +5,7 @@ import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { rm } from 'node:fs/promises';
+import { spawnUntilReady } from './helpers/readiness-child.js';
 
 /**
  * Cleanup after a SIGKILLed child: on Windows the killed process's
@@ -39,6 +40,20 @@ import { DatabaseSync } from 'node:sqlite';
  * a fresh process reopens the same database, resolves the EXACT pinned
  * activation, and continues only the work that policy and identity make
  * safe — once at the VICT transition boundary.
+ *
+ * Kill coordination (Stage 03 fixture documentation, final
+ * snapshot-correction pass): the three SIGKILL scenarios previously killed
+ * the child at a FIXED elapsed deadline (`spawnSync(..., 3000,
+ * { killSignal: 'SIGKILL' })`). Under parallel-suite load the child could
+ * still be booting when the deadline elapsed, so it died before its durable
+ * checkpoint existed and the parent's state read failed with ENOENT — the
+ * LOW-05-B occurrence captured by the Stage 05 closure re-audit. The kill
+ * decision is now an explicit readiness barrier: the child emits a stdout
+ * sentinel strictly AFTER its fsynced checkpoint write, and the parent
+ * kills only after observing it. A bounded parent-side timeout remains
+ * purely as a failure guard for "readiness was never reached". The real
+ * SIGKILL, real child process, real SQLite reopen, and exact recovery
+ * semantics are unchanged; no production runtime source is involved.
  */
 
 const HERE = resolve(fileURLToPath(import.meta.url), '..');
@@ -145,15 +160,26 @@ describe('orchestration restart and crash (real subprocess boundaries)', () => {
       try {
         const db = join(dir, 'crash.db');
         const state = join(dir, 'state.json');
-        // Spawn the hanging child asynchronously; kill -9 after the handler is in flight.
-        const child = runChild([WORKER, 'start-hang', db, state], 3000, { killSignal: 'SIGKILL' });
-        // The child must have died from SIGKILL (or timeout kill) mid-invocation.
-        expect(child.status === null || child.status !== 0).toBeTruthy();
+        // Readiness barrier: the parent starts the real child and kills it
+        // ONLY after the child durably wrote its checkpoint and emitted the
+        // explicit readiness sentinel — never because an elapsed deadline
+        // fired. The bounded timeout inside spawnUntilReady is a failure
+        // guard for "readiness was never reached", not coordination.
+        const child = spawnUntilReady(
+          ['--import', 'tsx', WORKER, 'start-hang', db, state],
+          'start-hang',
+        );
+        await child.ready;
+        // Causal proof: the durable checkpoint exists BEFORE the kill.
         const stateData = JSON.parse(await readFile(state, 'utf8')) as {
           runId: string;
           hanging: boolean;
         };
         expect(stateData.hanging).toBe(true);
+        // The real crash: parent-side SIGKILL mid-invocation.
+        child.child.kill('SIGKILL');
+        const killed = await child.result;
+        expect(killed.signal).toBe('SIGKILL');
         await writeFile(state, JSON.stringify({ runId: stateData.runId }));
 
         // A fresh process recovers: pure recompute is policy-permitted.
@@ -194,8 +220,23 @@ describe('orchestration restart and crash (real subprocess boundaries)', () => {
       try {
         const db = join(dir, 'crash.db');
         const state = join(dir, 'state.json');
-        const child = runChild([WORKER, 'hang-write', db, state], 3000, { killSignal: 'SIGKILL' });
-        expect(child.status === null || child.status !== 0).toBeTruthy();
+        // Readiness barrier: kill ONLY after the durable external ledger
+        // entry exists and the readiness sentinel was observed.
+        const child = spawnUntilReady(
+          ['--import', 'tsx', WORKER, 'hang-write', db, state],
+          'hang-write',
+        );
+        await child.ready;
+        // Causal proof: the external mutation is durable BEFORE the kill.
+        const earlyLedger = JSON.parse(await readFile(`${state}.ledger`, 'utf8')) as Record<
+          string,
+          { count: number; result: string }
+        >;
+        expect(Object.values(earlyLedger).filter((entry) => entry.count === 1).length).toBe(1);
+        // The real crash: parent-side SIGKILL before the VICT completion commit.
+        child.child.kill('SIGKILL');
+        const killed = await child.result;
+        expect(killed.signal).toBe('SIGKILL');
 
         // Fresh process: recover with the SAME key; the external ledger reconciles.
         const b = runChild([WORKER, 'recover-write', db, state]);
@@ -238,15 +279,24 @@ describe('orchestration restart and crash (real subprocess boundaries)', () => {
       try {
         const db = join(dir, 'join.db');
         const state = join(dir, 'state.json');
-        const child = runChild([WORKER, 'start-join-partial', db, state], 3000, {
-          killSignal: 'SIGKILL',
-        });
-        expect(child.status === null || child.status !== 0).toBeTruthy();
+        // Readiness barrier: kill ONLY after branchB's durable ledger bump
+        // and state checkpoint exist and the readiness sentinel was seen.
+        const child = spawnUntilReady(
+          ['--import', 'tsx', WORKER, 'start-join-partial', db, state],
+          'start-join-partial',
+        );
+        await child.ready;
+        // Causal proof: the durable checkpoints exist BEFORE the kill.
         const stateData = JSON.parse(await readFile(state, 'utf8')) as {
           runId: string;
           hanging: boolean;
         };
         expect(stateData.hanging).toBe(true);
+        expect(stateData.runId).toBeTruthy();
+        // The real crash: parent-side SIGKILL mid-fan-out.
+        child.child.kill('SIGKILL');
+        const killed = await child.result;
+        expect(killed.signal).toBe('SIGKILL');
 
         // Fresh process: only the interrupted safe work resumes.
         const b = runChild([WORKER, 'resume-join', db, state]);
