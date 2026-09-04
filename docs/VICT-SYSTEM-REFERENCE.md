@@ -1,12 +1,12 @@
 # VICT System Reference
 
 > **Canonical title:** Vict Architecture and Operating Model — Authoritative System Reference<br>
-> **Document version:** 0.2.3<br>
+> **Document version:** 0.3.0<br>
 > **System generation:** Greenfield<br>
-> **Status:** Authoritative baseline; Application Layer amendment accepted; future features are individually marked<br>
-> **Last updated:** 2026-09-04 (Stage 05 formal verified closure: Stage 05 independently verified with non-blocking issues; package topology, requirement statuses, carry-forward items, and open decisions reconciled with the final independent closure audit)<br>
-> **Current delivery point:** Stages 1, 1.1, 2, 3, 4, and 5 independently verified; Stage 05 closed with non-blocking issues<br>
-> **Next permitted stage:** Stage 6 — Control plane and API (permitted; not implemented; paused behind the separately governed Mastra/ARA architecture amendment, from which a new Stage 06 handoff must be generated)
+> **Status:** Authoritative baseline; Mastra/ARA integration amendment accepted (v0.3.0); future features are individually marked<br>
+> **Last updated:** 2026-09-04 (Mastra/ARA integration amendment: Mastra accepted as the canonical first product-agent framework behind a neutral VICT boundary; AI-001..AI-015 and MSTR-001..MSTR-010 added; Stage 06/07 revised; §5.1 browser-safety and §5.2 stage-gate wording corrected; no verified Stage 01–05 status changed)<br>
+> **Current delivery point:** Stages 1, 1.1, 2, 3, 4, and 5 independently verified; Stage 05 closed with non-blocking issues; Mastra/ARA amendment accepted<br>
+> **Next permitted stage:** Stage 6 — Control plane, API, and product-agent integration foundation (permitted; not implemented; a new Stage 06 handoff MUST be generated from this v0.3.0 baseline and `docs/architecture/MASTRA-ARA-INTEGRATION.md`)
 
 ---
 
@@ -82,6 +82,26 @@ This amendment:
 - creates no compatibility obligation to legacy `lang-app`, `lang-space`, `kit-svelte`, `app.yaml`, `layout.yaml`, or grammar packages; their useful concepts are research inputs only;
 - requires no migration of current code because the amendment is additive and no Application Layer package or public contract has yet shipped.
 
+### 0.6 Accepted architecture amendment — Mastra/ARA integration (v0.3.0)
+
+On 2026-09-04, after the verified closure of Stage 05 and before any Stage 06 implementation, the product-agent boundary was decided. The real ARA product needs a production-grade agent framework for model-provider integration, the open-ended reasoning loop, tool selection, streaming, conversation memory, and AI observability; rebuilding those inside VICT would duplicate a fast-moving external framework, while adopting one naively would surrender VICT's safety, durability, identity, application-delivery, and governance responsibilities.
+
+The amendment resolves this with a strict ownership split, fully specified in `docs/architecture/MASTRA-ARA-INTEGRATION.md` (normative for Stages 06–07):
+
+```text
+Mastra reasons and coordinates AI work.
+VICT authorizes, commits, governs and presents product behavior.
+```
+
+- **Mastra is accepted as the canonical first product-agent framework** for the real ARA product (MSTR-001). VICT will not rebuild Mastra's model-provider integration, open-ended agent loop, tool-selection loop, streaming engine, conversation memory, semantic/working/observational memory, subagent mechanics, AI tracing, or evaluation machinery.
+- **VICT core remains Mastra-neutral.** A neutral `ProductAgent` boundary (port, versioned `vict.agent-stream@1` event contract, activation-time snapshot semantics) is added; Mastra types may exist only inside an optional adapter package (`@vict/mastra`, Planned) and product composition (AI-001..AI-015, MSTR-001..MSTR-010).
+- **Authority is unchanged.** VICT remains the sole authority for effects, approvals, retries, durable completion, actor identity, releases, and audit history; a Mastra tool bridge is the only path from model tool selection to VICT-governed execution; a model can never approve its own protected action; Mastra suspension is never authorization.
+- **Stores stay separate.** Mastra memory, VICT application-domain data, VICT operational history, and Mastra observability are four separate storage domains joined by correlation IDs, with explicit retention/deletion/export policies and no claimed cross-store atomicity. Initial Mastra store: the officially supported file-backed `@mastra/libsql` adapter (MSTR-003).
+- **Streaming/transport decided:** a VICT-owned normalized agent-stream contract with sequence numbers, at-least-once delivery, and cursor reconnect, delivered as HTTP commands plus resumable SSE (AI-009); WebSocket/WebRTC deferred until realtime voice justifies it (OPEN-018).
+- **Stages revised:** Stage 6 becomes "Control plane, API, and product-agent integration foundation" (integration, tool bridge, identity snapshots, streaming, offline fixtures, AUDIT-F1 hygiene); Stage 7 becomes the Mastra-backed real ARA product (§23).
+- **Documentation consistency corrections (not reopened Stage 05 findings):** §5.1 now states the accurate browser-safety boundary of the application branch, and §5.2 now distinguishes verified Stage 05 packages from future stage-gated targets.
+- Every new requirement is marked Accepted/Planned — **nothing Mastra-related is Verified**; Stage 06 remains not implemented; no Mastra dependency is added by this amendment; Stage 01–05 verified statuses are unchanged.
+
 ---
 
 ## 1. The complete idea
@@ -96,6 +116,7 @@ The complete Vict package is not just an execution engine. It has six cooperatin
 4. **Control plane:** safe inspection and change through proposals, validation, simulation, approval, activation, and rollback.
 5. **Developer and builder system:** SDKs, local tools, conformance tests, and a model-agnostic Builder Kit usable by Codex, Claude Code, Pi, a human developer, or another coding host.
 6. **Ecosystem and reference products:** reusable capability packs, adapters, application templates, proven playbooks, and ARA as the lighthouse application.
+7. **Product-agent subsystem (composed, not core):** the bounded AI subsystem of a real product. Since v0.3.0 this is accepted as Mastra operating behind the neutral VICT ProductAgent boundary — VICT never rebuilds it and never lets it own authority (see §0.6 and `docs/architecture/MASTRA-ARA-INTEGRATION.md`).
 
 ```mermaid
 flowchart TB
@@ -108,6 +129,7 @@ flowchart TB
     RUNTIME --> KERNEL
     KERNEL --> BASE["Contracts and Authoring ABI"]
     RUNTIME --> PORTS["Stores, Models, Tools, Human Ports"]
+    RUNTIME -.-> AI["Bounded AI subsystem — Mastra via @vict/mastra (planned; governed by VICT)"]
 ```
 
 Vict behaves like an application operating system in a precise, limited sense: it supplies stable execution, identity, effect, state, change, and observability semantics above ordinary operating systems and infrastructure. It is not a general-purpose OS, a programming language replacement, or a universal distributed-computing layer.
@@ -136,7 +158,7 @@ Vict is not:
 - a new general-purpose language;
 - an autonomous production “healer” with unbounded mutation authority;
 - a guarantee of exactly-once effects across arbitrary external systems;
-- a model-specific agent framework;
+- a model-specific agent framework in VICT core (the core stays agent-framework-neutral; since v0.3.0 the real ARA product composes Mastra behind the neutral ProductAgent boundary, which keeps VICT itself model- and framework-agnostic);
 - a microservice requirement;
 - a reason to replace normal TypeScript, Svelte, React, SQL, or infrastructure tools.
 - a promise that every game, 3D experience, animation, or pixel-specific marketing surface can be expressed without custom code;
@@ -214,6 +236,11 @@ Vict is not:
 | Component registry | Versioned mapping from semantic component references to built-in or custom renderer implementations |
 | Builder Agent | External coding agent operating through the Builder Kit to modify Vict or an application repository |
 | Product Agent | Agent invoked as application behavior through a bounded capability and runtime permissions |
+| Product-agent boundary | The neutral, versioned interface (port, normalized stream contract, activation snapshot) between VICT and any agent framework; Mastra exists only behind it |
+| Agent profile | The VICT-authored, revision-addressable definition of a product agent: instructions revision, model profile, memory policy, tool allowlist, adapter compatibility |
+| Agent profile version | Deterministic hash (`agentProfileVersion`) of the declared profile components — the executable identity of an agent definition |
+| Tool bridge | The only path from a Mastra tool request to VICT-governed execution: schema → bound capability → authority → contract → effect/approval policy → execution → sanitized result |
+| AI subsystem | The server-side, in-process composition where Mastra runs under VICT governance; never a privileged control plane |
 | ARA | Vict’s reference application and performance/correctness lighthouse |
 
 Terms are part of the public mental model. New synonyms should not be introduced casually.
@@ -233,6 +260,8 @@ Vict has five logical planes. They can run in one process locally; separation de
 | Development | SDK, Builder Kit, tests, audits, package publishing | Runtime production authority by default |
 
 The boundary between definition and activation is a trust boundary. The boundary between runtime and external ports is an effect boundary. The boundary between Builder Agent and production is an authority boundary.
+
+Since v0.3.0 the **bounded AI subsystem** (Mastra behind the neutral product-agent boundary) runs inside a product composition spanning the Application and Integration planes. It is not a sixth plane: it holds no plane-level authority. It receives actor identity and effect/approval decisions from the VICT server boundary below the UI, records durable facts in VICT stores, and never exposes an alternate control surface (Mastra Studio included) to production governance.
 
 ---
 
@@ -284,12 +313,12 @@ The application branch is separate from the execution spine:
 - `@vict/kernel` and `@vict/runtime` consume the SDK's authoring declarations; runtime composition APIs are imported explicitly from `@vict/runtime`.
 - `@vict/application` depends only on `@vict/contracts` and `@vict/sdk`; it remains browser-safe and independent of the runtime, SQLite, Svelte, and Zod.
 - `@vict/store-sqlite` remains below the runtime.
-- The application branch (`@vict/application` plus the Stage 5 renderer, application-data adapter, and scaffolder packages) remains browser-safe above `@vict/contracts`/`@vict/sdk`/`@vict/application`; Svelte dependencies exist only in `@vict/renderer-svelte` and the SvelteKit example consumers, and SQLite dependencies only in `@vict/appdata-sqlite` and the operational `@vict/store-sqlite`. The kernel and runtime remain independent of Svelte and application rendering. Application-domain tables and migrations remain physically separate from operational stores and migrations.
+- Package browser/node safety of the application branch is per package: `@vict/application` is browser-safe and framework-neutral; `@vict/renderer-svelte` supports both browser and SSR composition with Svelte as a peer; `@vict/appdata-sqlite` is Node/server-side; `@vict/scaffolder` is Node-side build tooling. The kernel and runtime remain independent of Svelte and application rendering. Svelte dependencies exist only in `@vict/renderer-svelte` and the SvelteKit example consumers, and SQLite dependencies only in `@vict/appdata-sqlite` and the operational `@vict/store-sqlite`. Application-domain tables and migrations remain physically separate from operational stores and migrations.
 - The graph is acyclic and is verified through package inspection, the build, and isolated packed consumers (`verify:consumer` / `verify:stage4` / `verify:stage5`).
 
 ### 5.2 Accepted target topology
 
-The SDK authoring-ABI part of this target is now verified (Stage 4): `@vict/sdk` is a lightweight authoring layer that capability packs import without depending on the runtime. The remaining packages in the diagram are accepted targets and remain stage-gated.
+The SDK authoring-ABI part of this target is now verified (Stage 4): `@vict/sdk` is a lightweight authoring layer that capability packs import without depending on the runtime. The Stage 05 application-delivery packages in and beside this diagram — `@vict/application` (application model/compiler), the Svelte renderer and host (`@vict/renderer-svelte`), the application-data adapter (`@vict/appdata-sqlite`), and the scaffolder (`@vict/scaffolder`) — are also verified. The remaining future packages in the diagram (`@vict/control`, `@vict/server`, `@vict/client`, Builder Kit, Studio) are accepted targets and remain stage-gated. Since v0.3.0, `@vict/mastra` (the optional Mastra adapter) is an accepted product-composition target that imports the runtime/application side; no neutral package imports it.
 
 ```mermaid
 flowchart TB
@@ -300,6 +329,8 @@ flowchart TB
     APPMODEL --> RENDERER["Svelte renderer"]
     RUNTIME --> CONTROL["@vict/control"]
     RUNTIME --> SERVER["@vict/server"]
+    RUNTIME --> MASTRA["@vict/mastra adapter (planned; optional)"]
+    APPMODEL --> MASTRA
 ```
 
 Dependency arrows mean “is imported by the next layer.” Exact package extraction is stage-gated; these names express ownership, not a requirement to create empty packages now.
@@ -315,6 +346,7 @@ Dependency arrows mean “is imported by the next layer.” Exact package extrac
 | @vict/control | ChangeSet lifecycle, policies, approvals, activation management | Accepted | Planned |
 | @vict/server | HTTP/event transport and server composition | Provisional | Planned |
 | @vict/client | Typed transport client, if evidence supports extraction | Provisional | Not Scheduled |
+| @vict/mastra (optional adapter) | Mastra-backed implementation of the neutral ProductAgent boundary: pinned Mastra versions, tool bridge, stream normalization, agent-profile snapshots; imports runtime/application side, never imported by neutral packages (see `docs/architecture/MASTRA-ARA-INTEGRATION.md`) | Accepted | Planned |
 | @vict/cli | Local inspection, execution, verification, and operator commands | Accepted | Planned |
 | @vict/builder-kit | Agent/human repository context, tools, checks, and handoff protocol | Accepted | Planned |
 | application model/compiler (implemented as @vict/application) | Framework-neutral definitions, validation, canonical identity, binding plans, and application release manifests | Accepted | Verified |
@@ -978,6 +1010,8 @@ The Product Agent is ordinary application behavior:
 - its external actions obey effect policy;
 - it cannot edit Vict’s code or grant itself control-plane permissions.
 
+Since v0.3.0 the Product Agent is reached only through the **neutral product-agent boundary**: product code consumes a `ProductAgent` port, a versioned normalized stream contract, and activation-time agent-profile snapshots, none of which expose Mastra types (AI-001). The Mastra-backed implementation lives in the optional `@vict/mastra` adapter and composes pinned Mastra agents, memory, and tool bridges inside the server-side bounded AI subsystem (AI-002, AI-015). The open-ended reasoning loop and model-selected tool sequences belong to Mastra inside that subsystem; VICT records durable milestones and keeps sole authority over effects, approvals, retries, and durable completion (AI-006, AI-007, AI-012). `agentProfileVersion` gives every executable agent definition the same identity discipline as graphs, capabilities, and applications (AI-003, AI-004).
+
 The Builder Agent is never placed in ARA’s normal conversational fast path.
 
 | ID | Requirement | Maturity | Delivery |
@@ -990,6 +1024,38 @@ The Builder Agent is never placed in ARA’s normal conversational fast path.
 | AGNT-006 | Product Agents MUST NOT receive Builder Kit or repository authority by default. | Invariant | Planned |
 | AGNT-007 | The ARA message fast path MUST NOT invoke the Builder Agent. | Invariant | Planned |
 | AGNT-008 | No agent may grant itself broader tools, secrets, approvals, or roles. | Invariant | Planned |
+
+### 15.3 Product-agent integration requirements (v0.3.0 amendment)
+
+These cross-cutting families are added by the Mastra/ARA amendment. Full rationale and design live in `docs/architecture/MASTRA-ARA-INTEGRATION.md`. All rows are new — none is Verified.
+
+| ID | Requirement | Maturity | Delivery |
+|---|---|---|---|
+| AI-001 | VICT MUST expose product agents through a neutral, versioned ProductAgent boundary (port, stream contract, snapshot types) that product code can consume without Mastra types. | Accepted | Planned |
+| AI-002 | Core VICT packages (`@vict/contracts`, `@vict/sdk`, `@vict/kernel`, `@vict/runtime`, `@vict/application`, `@vict/renderer-svelte`, `@vict/appdata-sqlite`, `@vict/scaffolder`, `@vict/store-sqlite`) MUST remain free of Mastra dependencies and Mastra types; Mastra-specific code MAY exist only in the optional adapter package and product composition. | Invariant | Planned |
+| AI-003 | Agent definitions MUST be version-addressable through an explicit `agentProfileVersion` composed from declared schema marker, agent ID/revision, instructions revision, model-profile ID/revision, memory-policy ID/revision, allowed capability references, and adapter compatibility marker — never from function source, secrets, time, random values, framework internals, schema-library internals, mutable memory contents, or raw prompts/conversation payloads. | Invariant | Planned |
+| AI-004 | Every agent turn MUST capture an immutable activation-time binding snapshot, and in-flight runs MUST retain pinned agent/tool semantics; changed definitions apply only to later explicit activations, and the actual provider/model identity plus pinned Mastra/adapter versions are recorded on the run when known. | Invariant | Planned |
+| AI-005 | Model-facing tool availability MUST derive only from the VICT-pinned authority envelope of the activation snapshot; Mastra tool descriptions or configuration MUST NOT grant or widen authority. | Invariant | Planned |
+| AI-006 | Effectful tool calls MUST cross the VICT capability boundary — actor/authority check, authoritative VICT contract validation, effect/approval policy, durable intent where required — before execution, through the same boundary used by non-AI callers, with stable correlation and idempotency identities. | Invariant | Planned |
+| AI-007 | A product agent MUST NOT approve its own protected action; approval authority is human/policy only, recorded as VICT approval records bound to the exact capability reference and canonical arguments. | Invariant | Planned |
+| AI-008 | Mastra memory, VICT application-domain data, VICT operational history, and Mastra observability MUST remain separate stores with explicit retention/deletion/export policies and authenticated VICT-actor↔Mastra-resource identity mapping; cross-user memory access is prohibited; full prompts/messages MUST NOT be copied into default VICT run history; and atomic transactions across these stores MUST NOT be claimed. | Invariant | Planned |
+| AI-009 | The agent stream MUST be a versioned VICT-owned normalized event contract with per-stream monotonic sequence numbers, at-least-once delivery with client dedupe, cursor-based reconnect against authoritative turn state, durably retrievable completed messages, and durable milestone recording — and MUST NOT expose raw provider or Mastra chunk types or hidden chain-of-thought. | Invariant | Planned |
+| AI-010 | Cancellation MUST record durable VICT intent, propagate an AbortSignal into the AI subsystem where supported, terminate with an honest normalized event, and MUST NOT claim reversal of already committed effects. | Invariant | Planned |
+| AI-011 | Mastra trace IDs MUST be correlated with VICT run/turn/attempt IDs; AI observability and VICT operational observability MUST remain separate stores joined by correlation identifiers, with explicit sampling and payload-safe defaults. | Accepted | Planned |
+| AI-012 | Every product operation MUST have exactly one authority for retry, approval, and durable completion; Mastra suspension MUST NOT substitute for VICT approval, and VICT graphs remain authoritative for durable business orchestration. | Invariant | Planned |
+| AI-013 | The real ARA product MUST be a complete user-facing application delivered through the Application Layer (structured surfaces plus explicit versioned custom-component islands), meeting the minimum product specification of `docs/architecture/MASTRA-ARA-INTEGRATION.md` §11 with real-browser usability and accessibility evidence. | Accepted | Planned |
+| AI-014 | Prompts, instructions, retrieved memory, and tool outputs MUST be treated as untrusted data: they MUST NOT be able to modify the capability allowlist, grant permissions, change the pinned profile, or bypass re-authorization below the UI. | Invariant | Planned |
+| AI-015 | The initial deployment MUST keep Mastra server-side in process behind VICT-owned API/authentication boundaries; the product UI MUST NOT call privileged Mastra endpoints directly. | Invariant | Planned |
+| MSTR-001 | Mastra (`@mastra/core` + `@mastra/memory`) is the canonical first product-agent framework for ARA; VICT MUST NOT rebuild model-provider integration, the open-ended agent loop, the tool-selection loop, the streaming engine, conversation memory, semantic/working/observational memory, subagent mechanics, AI tracing, or evaluation machinery. | Accepted | Planned |
+| MSTR-002 | The adapter MUST pin exact Mastra package versions, record the adapter compatibility marker in every `agentProfileVersion` and run snapshot, and re-run Mastra-version conformance verification before an upgraded combination is accepted. | Accepted | Planned |
+| MSTR-003 | Initial ARA Mastra storage MUST use the officially supported file-backed `@mastra/libsql` store in a dedicated database file separate from VICT operational and application-domain stores, serving Mastra's memory/workflows/observability domains, with retention configured on the Mastra store. | Accepted | Planned |
+| MSTR-004 | Only envelope-derived capabilities become Mastra tools; the bridge performs authoritative VICT contract validation regardless of Mastra schema validation; missing approval suspends/blocks safely; decline returns a safe structured outcome; irreversible ambiguity fails closed; direct Mastra tools that perform production writes outside VICT and client-side tools that could bypass authorization are prohibited. | Invariant | Planned |
+| MSTR-005 | Mastra approval/suspension mechanisms MAY gate tool calls, but the authoritative approval record MUST be a VICT approval record; Mastra-side approval/resume MUST proceed only after VICT records the approval. | Invariant | Planned |
+| MSTR-006 | Mastra workflows MUST NOT bypass VICT governed orchestration: protected operations delegate through the capability bridge, Mastra suspension is not authorization, Mastra auto-restart MUST NOT re-drive work whose durable authority is VICT, and no cross-store atomicity is claimed. | Invariant | Planned |
+| MSTR-007 | The Mastra request context MUST be derived from the authenticated server-side VICT actor context; client-supplied fields MUST NOT be authoritative for identity, memory ownership, or dynamic agent configuration. | Invariant | Planned |
+| MSTR-008 | Mastra tracing MUST use payload-safe defaults (`hideInput`/`hideOutput` or pinned equivalent) with explicit sampling; full prompt/tool-payload tracing is an explicit protected opt-in with separate retention; traces are stored in the AI observability domain, not VICT operational history. | Accepted | Planned |
+| MSTR-009 | Mastra Studio MAY be used for development and AI inspection behind separate authentication; it MUST NOT be deployed as, or act as, a production control plane bypassing VICT authorization, approvals, or activation/release governance. | Invariant | Planned |
+| MSTR-010 | The Mastra integration MUST be verifiable offline: deterministic mock-model/integration fixtures against the pinned version, packed-consumer declaration checks proving neutral packages stay Mastra-free, and recovery/reconciliation tests for failures across the store boundary. | Accepted | Planned |
 
 ---
 
@@ -1019,6 +1085,7 @@ The future server interface should cover:
 - activations and selection;
 - run start, inspect, cancel, signal, and retry where permitted;
 - event streaming;
+- agent turns: start/cancel/approve/decline commands plus the resumable normalized agent-stream contract (`vict.agent-stream@1`, HTTP commands + resumable SSE per the v0.3.0 amendment);
 - ChangeSets and approvals;
 - protected artifact access;
 - health and compatibility information.
@@ -1048,6 +1115,8 @@ Studio is an operator application that consumes Vict APIs. It visualizes definit
 ### 16.6 Event delivery
 
 Polling may be used in an early implementation. The accepted final direction allows server-sent events or WebSockets for live operational updates while retaining resumable cursor-based event retrieval.
+
+**Agent-event decision (v0.3.0):** the product-agent conversation stream uses versioned HTTP commands plus a resumable SSE stream carrying the normalized `vict.agent-stream@1` events, with per-stream sequence numbers, at-least-once delivery, and cursor-based reconnect against authoritative turn state (AI-009). WebSocket/WebRTC is deferred until a realtime-voice requirement justifies a second channel (OPEN-018). Operational run-event delivery for control/inspection remains as described above.
 
 | ID | Requirement | Maturity | Delivery |
 |---|---|---|---|
@@ -1414,6 +1483,12 @@ Activation and compilation occur off the message hot path. ARA benchmarks separa
 
 Synthetic no-op benchmarks are useful for regression, not a substitute for realistic reference flows.
 
+### 20.4 The real ARA product (Mastra-backed, v0.3.0)
+
+The Stage 07 ARA target is a complete user-facing assistant product: streaming conversation with thread management (create, rename, archive/delete, search), markdown/code rendering with copy actions, tool activity and result states, approval cards for protected actions bound to their exact capability and arguments, stop/retry/regenerate and safe failure recovery, explicit edit/resend/branch history rules, attachments/citations where supported, usage and provider status without secret leakage, reconnect and process-restart recovery, full loading/offline/empty/denied/partial/error states, responsive desktop/tablet/mobile layouts, keyboard accessibility and screen-reader semantics, real-browser usability evidence, theme customization, and explicit extension points.
+
+The structured surface (routes, navigation, thread lists, records, forms, tables, charts, shells) comes from the Application Definition; the advanced live conversation workspace may begin as an explicit versioned Svelte custom-component island. Islands never bypass typed actions, data boundaries, authorization, or release identity. Reusable conversation semantics migrate into the neutral Application Definition only after evidence. Svelte 5 remains the canonical renderer; React stays deferred. The full normative specification is `docs/architecture/MASTRA-ARA-INTEGRATION.md` §11 (AI-013, ARA-008).
+
 | ID | Requirement | Maturity | Delivery |
 |---|---|---|---|
 | ARA-001 | ARA MUST be a real consuming application, not a hidden alternate Vict runtime. | Invariant | Planned |
@@ -1423,6 +1498,7 @@ Synthetic no-op benchmarks are useful for regression, not a substitute for reali
 | ARA-005 | ARA MUST separately report orchestration, storage, provider, and end-to-end latency. | Accepted | Planned |
 | ARA-006 | ARA SHOULD be the first proving ground for reusable capability packs and playbooks. | Accepted | Planned |
 | ARA-007 | ARA MUST be the first real product proof of the Application Layer and MUST document any product surface that requires a deliberate custom-component escape hatch. | Accepted | Planned |
+| ARA-008 | The real ARA product MUST be a complete user-facing application — not an API demonstration — delivered through the Application Layer with the Mastra-backed agent subsystem, meeting the minimum product specification of `docs/architecture/MASTRA-ARA-INTEGRATION.md` §11. | Accepted | Planned |
 
 ---
 
@@ -1529,8 +1605,8 @@ Stages are capability gates, not calendar promises. A work session may complete 
 | 3 | Durable orchestration | Verified with non-blocking issues | Waits, signals, timers, retries, cancellation, branching |
 | 4 | Capability and application authoring foundation | Verified with non-blocking issues | Stable SDK/packs plus neutral Application Definition, identity, bindings, and renderer contract |
 | 5 | Application delivery layer | Verified with non-blocking issues | SvelteKit renderer, scaffolder, built-in surfaces, domain-data adapter, and complete working application proof |
-| 6 | Control plane and API | Planned — next permitted after architecture amendment | Governed ChangeSets, approvals, activation operations, typed remote consumption |
-| 7 | Real ARA product | Planned | Reference application proves runtime and Application Layer together |
+| 6 | Control plane, API, and product-agent integration foundation | Planned — next; handoff to be generated from v0.3.0 | Governed ChangeSets, approvals, activation operations, typed remote consumption, plus the neutral product-agent boundary, Mastra adapter foundation, tool bridge, and agent-stream contract |
+| 7 | Real Mastra-backed ARA product | Planned | Real assistant product proves runtime, Application Layer, and the Mastra integration together |
 | 8 | Builder Kit and self-hosting | Planned | Model-agnostic agents extend Vict and its applications under bounded rules |
 | 9 | Studio, diagnosis, and controlled recovery | Planned | Operator experience and safe recovery, reusing the Application Layer where appropriate |
 | 10 | Ecosystem and proven playbooks | Planned | Reusable packs, application templates, and proven compositions |
@@ -1932,11 +2008,11 @@ The following were closed by verified Stage 05 evidence:
 - Declared revisions, binding provenance, and supplied deployment snapshots retain their documented trust boundaries.
 - Stage 05 renderer/product limitations documented in its architecture record remain honest: bar/line charts only, equality-only filters, manual host upgrades, no second renderer, and no claim of manual screen-reader certification.
 
-### Stage 6 — Control plane and API
+### Stage 6 — Control plane, API, and product-agent integration foundation
 
 **Purpose**
 
-Govern production behavior and application-release changes, and expose typed remote consumption without changing the local semantic model.
+Govern production behavior and application-release changes, expose typed remote consumption, and establish the neutral product-agent integration boundary with Mastra behind it — without changing the local semantic model. This stage implements the v0.3.0 Mastra/ARA amendment (`docs/architecture/MASTRA-ARA-INTEGRATION.md`); its handoff must be generated from that baseline.
 
 **Includes**
 
@@ -1946,57 +2022,82 @@ Govern production behavior and application-release changes, and expose typed rem
 - risk-based approvals;
 - activation and Application Release publish/select/rollback;
 - run cancel/signal/operator interventions;
-- versioned HTTP and event interfaces, typed client boundary, audit events, and CLI;
-- remote resource/action bindings required for an Application Definition to operate through the same authority model.
+- versioned HTTP command interface;
+- the resumable agent/event streaming contract (`vict.agent-stream@1`) with cancellation and reconnect semantics;
+- the neutral product-agent boundary: `ProductAgent` port, normalized stream events, and snapshot types in Mastra-free packages;
+- the Mastra adapter foundation (`@vict/mastra`, pinned versions, adapter compatibility marker);
+- the VICT capability-to-Mastra tool bridge with effect/approval gating and no model self-approval;
+- agent profile identity (`agentProfileVersion`) and immutable activation/run snapshots;
+- memory/data/operational/observability store separation with retention policies;
+- correlation across VICT and Mastra identities;
+- an offline deterministic Mastra integration fixture or mock-model proof (no provider credentials in tests);
+- packed-consumer/declaration verification proving core packages remain Mastra-free;
+- remote resource/action bindings required for an Application Definition to operate through the same authority model;
+- audit events, CLI, and the AUDIT-F1 scaffolder test-hygiene correction using a unique per-process `mkdtemp` directory.
 
 **Excludes**
 
-- autonomous production mutation;
-- rich Studio authoring;
-- multi-tenant cloud product.
+- the full real ARA product and rich production conversation UI (Stage 7);
+- an autonomous builder agent;
+- direct provider credentials in tests;
+- a parallel ungoverned Mastra API or Mastra Studio as a production control plane;
+- replacing VICT orchestration with Mastra workflows;
+- multi-tenant cloud product;
+- autonomous production mutation.
 
 **Exit gate**
 
 - no active behavior or published Application Release can be invisibly edited;
 - stale-base ChangeSets fail safely;
 - permissions are enforced below application UI and CLI;
-- in-flight runs stay pinned across activation change/rollback;
-- application clients cannot bypass resource/action authorization;
+- in-flight runs stay pinned across activation change/rollback, including pinned agent-profile semantics;
+- application clients cannot bypass resource/action authorization, and the product UI cannot reach Mastra endpoints directly;
+- tool-bridge authorization is proven: out-of-envelope tools are absent, model-supplied names/arguments are validated at the VICT boundary, protected effects cross the same boundary as non-AI callers, a model cannot approve its own action, missing approval suspends/blocks durably, decline returns a safe structured outcome, and irreversible ambiguity fails closed;
+- agent streaming has resumable cursor semantics with sequence numbers, at-least-once delivery, dedupe, and backpressure behavior;
+- cancellation records durable intent, propagates AbortSignal, and never claims reversal of committed effects;
+- `agentProfileVersion` is stable and sensitive to the declared inputs and insensitive to the forbidden ones; snapshots are immutable;
+- retention canaries prove no secret, raw provider error, or full prompt reaches streams, traces, or default run history;
+- restart/reconciliation tests across the VICT/Mastra store boundary resolve to the VICT-authoritative view without duplicate effects or lost approvals;
 - event delivery has resumable cursor semantics;
 - every intervention and release change is attributable;
 - independent security-oriented audit passes.
 
-### Stage 7 — Real ARA reference product
+### Stage 7 — Real Mastra-backed ARA product
 
 **Purpose**
 
-Prove product usefulness and expose missing runtime, capability, control-plane, and Application Layer abstractions through one real application.
+Deliver the real ARA product on the Stage 06 integration foundation: a complete, robust, user-facing assistant application that proves product usefulness and exposes missing runtime, capability, control-plane, and Application Layer abstractions through one real product.
 
 **Includes**
 
-- real conversation, memory/context, model, and tool capabilities;
-- ARA Application Definition covering conversation, projects/commitments, forms, records/table, dashboard/chart, navigation, safe states, and custom components;
-- domain persistence through Application Layer resource/data bindings;
-- human approval flow;
-- commitments/projects/reminders or another validated durable path;
-- local and typed-client deployment paths plus operational dashboards;
-- realistic latency, cost, usability, customization, and failure evaluation.
+- real model-provider configuration (pinned model profile; credentials only in protected operator configuration, never in tests);
+- Mastra agent and memory under pinned versions with explicit memory policies;
+- VICT-governed tool capabilities for ARA's real domain actions;
+- the complete ARA Application Definition covering conversation, projects/commitments, reminders, forms, records/tables, dashboard/chart, navigation, and safe states;
+- a robust assistant UI meeting the §20.4/`MASTRA-ARA-INTEGRATION.md` §11 minimum specification: streaming rendering, tool-activity states, approval cards, stop/retry/regenerate, explicit edit/resend/branch history rules, attachments/citations where supported, usage/provider status, reconnect and restart recovery, full loading/offline/empty/denied/partial/error states, responsive layouts, keyboard accessibility and screen-reader semantics, real-browser usability and performance evidence, theme customization, and explicit extension points;
+- real application-domain resources through Application Layer resource/data bindings;
+- the human approval flow end to end;
+- latency, cost, usability, and security evidence with separate measurement for UI transport, VICT, Mastra, provider, and tools;
+- explicit justification for every custom-component island;
+- independent product, architecture, security, UI, and accessibility audits.
 
 **Excludes**
 
 - Builder Agent in the message path;
 - general marketplace claims;
-- bypassing ordinary Application Layer surfaces merely to finish the reference product.
+- bypassing ordinary Application Layer surfaces merely to finish the reference product;
+- multi-tenant cloud claims.
 
 **Exit gate**
 
 - an end-to-end user flow survives process restart, activation change, and application-version change;
-- sensitive tool action requires correct approval;
+- a sensitive tool action requires correct approval and cannot proceed without it;
 - the product surface is substantially produced by the Application Definition, while every custom component is explicit and justified;
-- safe observability supports diagnosis;
+- the assistant experience meets the §11 minimum specification in real-browser use, including reconnect and restart recovery;
+- safe observability supports diagnosis with per-boundary latency/cost reporting;
 - Vict runtime and rendering overhead are measured separately and stay within accepted budgets;
 - product code does not bypass core effect/change/data/permission semantics;
-- independent product, architecture, usability, and security audit passes.
+- independent product, architecture, security, UI, and accessibility audits pass.
 
 ### Stage 8 — Builder Kit and self-hosting
 
@@ -2160,7 +2261,7 @@ Stage 4 — capability and application authoring foundation — is independently
 
 Stage 5 — application delivery layer — is independently verified and formally closed (2026-09-04) at final audited implementation target `070147e`, with the final independent closure audit at `2f8233c`, disposition **VERIFIED WITH NON-BLOCKING ISSUES**. The verified delivery comprises the `vict.application@2` delivery vocabulary with strict `@1` compatibility; strict required-member and canonical-input validation; deterministic, collision-resistant `applicationVersion`; immutable caller-independent compiled plans and serialization; the canonical Svelte 5 renderer and generic application host; routes, navigation and responsive layouts; forms, records, tables, search, charts, tabs, dialogs, drawers, status, action and conversation surfaces; safe loading, empty, validation, denied, stale, partial and failure states; theme tokens and versioned custom-component code islands; the one-time deterministic non-destructive scaffolder; the production SQLite application-domain adapter with application-domain migrations separate from operational migrations; typed, authorized query/mutation/action boundaries; restart and real-process SIGKILL recovery evidence; a warning-free Svelte build; real-browser responsive and accessibility checks; and packed-consumer and generated-host build verification. The observed closure baseline is 57 unit files / 1436 tests, 3 renderer files / 45 tests, 1 integration file / 4 tests, 61 files / 1485 total, ARA exactly 13 ordered events, benchmark exactly 10 events per completed run, and Stage 04 application proof 17/17.
 
-Stage 06 — Control plane and API — is the next permitted stage and has NOT been implemented. Stage 06 implementation remains paused until the separately governed **Mastra/ARA architecture amendment** is drafted and accepted, and a new Stage 06 implementation handoff has been generated from the amended reference rather than from the pre-amendment Stage 06 description below. Until that amendment exists, no Mastra-specific design, transport decision, or Stage 06 implementation work is authorized; the historical Stage 6 section in §23 remains the pre-amendment description and is superseded for handoff purposes once the amendment is accepted.
+Stage 06 — Control plane, API, and product-agent integration foundation — is the next permitted stage and has NOT been implemented. The **Mastra/ARA architecture amendment is now accepted** as this reference v0.3.0 together with `docs/architecture/MASTRA-ARA-INTEGRATION.md`: Mastra is the canonical first product-agent framework behind the neutral VICT boundary, the transport and storage decisions are recorded, and the Stage 6/7 definitions in §23 supersede the pre-amendment descriptions for handoff purposes. A new Stage 06 implementation handoff MUST now be generated from the v0.3.0 baseline. Until that handoff exists, no Stage 06 implementation work has begun; nothing Mastra-related is Verified, and no Mastra dependency exists in the repository.
 
 ### 24.4 Evidence documents
 
@@ -2195,6 +2296,7 @@ Stage 06 — Control plane and API — is the next permitted stage and has NOT b
 - VICT-STAGE-05-INDEPENDENT-CLOSURE-RE-AUDIT.md — independent closure re-audit of the canonical-input correction; historical record at commit `4aead14`.
 - VICT-STAGE-05-FINAL-SNAPSHOT-CORRECTION-REPORT.md — implementer claim correcting the live-root serialization inconsistency (pinned plan identity) and the fixed-delay crash fixtures; historical remediation record (tips `b9b7eaa`, `9cf61ee`, `070147e`).
 - VICT-STAGE-05-FINAL-INDEPENDENT-CLOSURE-AUDIT.md — final independent closure audit of target `070147e` on a fresh clone, with snapshot negative controls, readiness-barrier probes, and independent restart recovery probes; **authoritative Stage 05 disposition: VERIFIED WITH NON-BLOCKING ISSUES — FORMAL CLOSURE PERMITTED**, committed as `2f8233c`. All earlier Stage 05 blocker and remediation reports above are preserved as historical evidence.
+- MASTRA-ARA-INTEGRATION.md — the accepted v0.3.0 Mastra/ARA integration amendment record: product decision, ownership matrix, Mastra-versus-VICT orchestration boundary, neutral product-agent boundary, agent identity, tool bridge, memory/storage/observability separation, streaming/transport decision, security composition, real ARA product target, revised Stage 06/07, and the AI/MSTR requirement families; normative for Stage 06+; maintained under docs/architecture/.
 
 ---
 
@@ -2234,7 +2336,7 @@ These questions do not block the current stage.
 | OPEN-003 | When should SDK dependency direction be refactored? | Decided in Stage 4: `@vict/sdk` is the lightweight authoring ABI and depends directly only on `@vict/contracts`; kernel and runtime consume the SDK's authoring declarations; runtime composition remains explicitly imported from `@vict/runtime`; the acyclic direction is verified by package inspection, the build, and isolated packed consumers | Decided (Stage 4; audit-accepted) |
 | OPEN-004 | How is structural contract compatibility represented? | Decided in Stage 4: exact contract ID and revision remain the default compatibility rule; compatibility is never inferred from TypeScript structure, Zod internals, or runtime implementation; `vict.neutral.json` is an explicit bounded edge-compatibility exception that permits routing but does not bypass validation — every downstream capability still executes its own declared input contract, and incompatible specific-to-specific contracts remain rejected | Decided (Stage 4; audit-accepted) |
 | OPEN-005 | What build provenance/signing format is required? | Optional build digest locally; formal signing when distribution begins | Stages 4/10 |
-| OPEN-006 | Which server transports are standard? | Versioned HTTP plus cursor events; SSE likely before WebSocket | Stage 6 |
+| OPEN-006 | Which server transports are standard? | Versioned HTTP plus cursor events. Decided for the product-agent conversation stream in v0.3.0: HTTP commands plus resumable SSE carrying the normalized `vict.agent-stream@1` contract (`docs/architecture/MASTRA-ARA-INTEGRATION.md` §9); WebSocket/WebRTC deferred for realtime voice (OPEN-018) | Agent stream decided (v0.3.0); operational event transport finalized in Stage 6 |
 | OPEN-007 | How are run-state migrations expressed? | Explicit audited migration, never automatic activation substitution | Stage 6 or later |
 | OPEN-008 | When is Postgres/distributed execution justified? | After local ARA measures real concurrency and durability needs | Stage 11 |
 | OPEN-009 | Does @vict/client merit a package? | Extract only when local Svelte hosting and remote application/Studio consumption share a stable transport client | Stages 6/7 |
@@ -2243,6 +2345,10 @@ These questions do not block the current stage.
 | OPEN-012 | Is application delivery generated source or runtime rendering? | Decided: one-time SvelteKit host scaffold plus definition-driven rendering and explicit custom code islands; no destructive repeated generation or promised round-trip | Decided (v0.2.0 amendment) |
 | OPEN-013 | Which Svelte component/chart libraries implement the reference semantic roles? | Decided in Stage 5: renderer-owned native Svelte components and accessible renderer-owned SVG charts; NO external component or chart library enters the neutral model — no component-/chart-library types exist in `@vict/application` or `@vict/sdk` | Decided (Stage 05; audit-accepted) |
 | OPEN-014 | How are Resource Definitions migrated by the reference domain-data adapter? | Decided in Stage 5: explicit versioned transactional application-domain migrations (`vict_appdata_migrations` bookkeeping) structurally separate from operational migrations; schema evolution is always an explicit new migration, never a destructive inferred rewrite | Decided (Stage 05; audit-accepted) |
+| OPEN-015 | Exact field-level schema of `vict.agent-stream@1` and the neutral `ProductAgent` port signatures | Marker name and normalized event set accepted in v0.3.0; field-level details are finalized in the Stage 06 handoff/implementation | Stage 6 |
+| OPEN-016 | Real model provider, model profile, and any provider-scale storage move for ARA | Local file-backed `@mastra/libsql` decided (MSTR-003); provider account/model choice and any `@mastra/pg` move are Stage 07 product/scale decisions | Stage 7 |
+| OPEN-017 | Encryption-at-rest and secret policy for Mastra memory/observability stores | Local-first single-actor deployment treats store files as local trust (Stage 03 local-trust boundary); an explicit encryption/secret policy is REQUIRED before any protected or multi-user production use | Stage 11 (before any protected cloud use) |
+| OPEN-018 | Realtime voice transport (WebSocket/WebRTC) | Deferred until realtime voice is a genuine product requirement; MUST NOT distort the accepted HTTP+SSE text transport | Stage 7+ on demonstrated demand |
 
 An open decision must not be filled in by convenience during unrelated implementation. The stage handoff either keeps it open or records an accepted decision.
 
@@ -2366,4 +2472,4 @@ Otherwise it probably belongs in an application, capability pack, adapter, devel
 
 ---
 
-**End of authoritative baseline v0.2.3**
+**End of authoritative baseline v0.3.0**
