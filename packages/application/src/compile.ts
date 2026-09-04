@@ -505,6 +505,38 @@ function requireNonEmptyStringMember(
   return true;
 }
 
+/** Required DISPLAY string (screen/dialog/drawer titles, labels, region
+ * names, text content, chart summaries — AUDIT-LOW-3 remediation).
+ * Whitespace-only values are malformed input exactly like an empty value and
+ * reuse the SAME diagnostic code as the containing site; previously they were
+ * accepted although no renderer can meaningfully display them. Applies to
+ * required display text only — identifiers/revisions keep the stricter
+ * identifier rule and optional display members stay optional.
+ */
+function requireDisplayStringMember(
+  collector: Collector,
+  container: object,
+  key: string,
+  path: string,
+  subject: string,
+  code: ApplicationIssueCode = 'APPLICATION_REQUIRED_MEMBER',
+): boolean {
+  const value = (container as Record<string, unknown>)[key];
+  if (typeof value !== 'string' || value.length === 0) {
+    collector.add(
+      code,
+      `${subject} must be a non-empty string (received ${describeReceived(value)}).`,
+      path,
+    );
+    return false;
+  }
+  if (value.trim().length === 0) {
+    collector.add(code, `${subject} must not be whitespace-only.`, path);
+    return false;
+  }
+  return true;
+}
+
 class Collector {
   readonly #issues: ApplicationIssue[] = [];
 
@@ -548,6 +580,231 @@ class Collector {
       return pathA < pathB ? -1 : 1;
     });
   }
+}
+
+/* ------------------------------------------------------------------ */
+/* Canonical input boundary                                            */
+/* ------------------------------------------------------------------ */
+
+/**
+ * ONE strict canonical-input boundary (Stage 05 closure-blocker
+ * remediation).
+ *
+ * Everything that enters `compileApplication` — the application definition
+ * and every provided resource/contract/capability/component binding — is
+ * structurally validated as PLAIN CANONICAL DATA before any semantic
+ * validation, canonicalization, plan construction, or identity hashing:
+ *
+ * - objects must have `Object.prototype` or `null` as their direct
+ *   prototype (class instances, Dates, Maps, … are rejected);
+ * - every semantic member must be an OWN ENUMERABLE string-keyed DATA
+ *   property. Inherited members, non-enumerable members, accessor fields
+ *   and symbol-keyed fields are rejected: executable or hidden semantics
+ *   can never enter a declaration, so two definitions can never share one
+ *   identity through an empty canonical declaration;
+ * - arrays must be DENSE, with an own element at every numeric index below
+ *   `length`, no unsupported additional enumerable properties, and no
+ *   non-enumerable index descriptors. A real `null` element stays valid and
+ *   distinguishable from an absent slot;
+ * - numbers must be finite and not negative zero; BigInt, symbol, function
+ *   values and `undefined` array elements are rejected (`undefined` object
+ *   members keep their established meaning: absent);
+ * - reflection that throws (hostile or revoked proxies) fails closed with a
+ *   structured, non-echoing diagnostic; accessors are rejected by
+ *   DESCRIPTOR inspection and are never invoked to validate them.
+ *
+ * The walk is total: it never throws and never invokes a getter. When it
+ * reports no issues, semantic validation, canonical-manifest construction,
+ * defensive plan copying and identity hashing operate over exactly the same
+ * accepted semantic data — it is impossible for one stage to read a value
+ * that a later stage silently omits or reinterprets.
+ */
+function collectCanonicalInputIssues(input: CompileApplicationInput): readonly ApplicationIssue[] {
+  const collector = new Collector();
+  const seen = new Set<object>();
+
+  const reject = (path: string, reason: string): void => {
+    collector.add(
+      'APPLICATION_NON_CANONICAL_VALUE',
+      `The canonical input boundary rejects ${reason} at '${path}'; definition inputs must be plain, own-enumerable canonical data.`,
+      path,
+    );
+  };
+
+  const walk = (value: unknown, path: string): void => {
+    if (value === null) {
+      return; // a real null is valid canonical data (distinct from an absent slot)
+    }
+    const type = typeof value;
+    if (type === 'string' || type === 'boolean') {
+      return;
+    }
+    if (type === 'number') {
+      if (!Number.isFinite(value)) {
+        reject(path, 'a non-finite number (NaN and Infinity are outside the canonical domain)');
+      } else if (Object.is(value, -0)) {
+        reject(path, 'negative zero (use 0)');
+      }
+      return;
+    }
+    if (type === 'undefined') {
+      return; // an undefined OBJECT member means absent; undefined ARRAY elements are rejected below
+    }
+    if (type === 'bigint') {
+      reject(path, 'a BigInt value (declare a number or string instead)');
+      return;
+    }
+    if (type === 'function') {
+      reject(path, 'a function value');
+      return;
+    }
+    if (type === 'symbol') {
+      reject(path, 'a symbol value');
+      return;
+    }
+
+    // Object or array.
+    if (seen.has(value as object)) {
+      reject(path, 'a cyclic structure');
+      return;
+    }
+    let descriptors: Record<string | symbol, PropertyDescriptor>;
+    try {
+      descriptors = Object.getOwnPropertyDescriptors(value as object) as Record<
+        string | symbol,
+        PropertyDescriptor
+      >;
+    } catch {
+      reject(
+        path,
+        'a value whose property descriptors could not be inspected (hostile or revoked proxy)',
+      );
+      return;
+    }
+
+    if (Array.isArray(value)) {
+      const array = value as unknown[];
+      seen.add(array);
+      try {
+        for (const key of Reflect.ownKeys(descriptors)) {
+          const descriptor = descriptors[key] as PropertyDescriptor;
+          if (typeof key === 'symbol') {
+            reject(`${path}[(symbol)]`, 'a symbol-keyed array property');
+            continue;
+          }
+          if (key === 'length') {
+            continue; // the internal, non-enumerable length member
+          }
+          if (descriptor.get !== undefined || descriptor.set !== undefined) {
+            reject(`${path}[${key}]`, 'an accessor array element');
+            continue;
+          }
+          if (!isCanonicalArrayIndex(key, array.length)) {
+            reject(`${path}.${key}`, 'an unsupported additional array property');
+            continue;
+          }
+          if (!descriptor.enumerable) {
+            reject(`${path}[${key}]`, 'a non-enumerable array element');
+          }
+        }
+        for (let index = 0; index < array.length; index += 1) {
+          if (!Object.prototype.hasOwnProperty.call(descriptors, String(index))) {
+            reject(`${path}[${index}]`, 'a sparse array slot (declare an explicit null instead)');
+            continue;
+          }
+          let item: unknown;
+          try {
+            item = array[index];
+          } catch {
+            reject(
+              `${path}[${index}]`,
+              'an array element that could not be read (hostile getter or proxy)',
+            );
+            continue;
+          }
+          if (item === undefined) {
+            // Positional data has no "absent" meaning: an undefined element is
+            // rejected exactly like a hole (canonicalize rejects it too).
+            reject(`${path}[${index}]`, 'an undefined array element (declare an explicit null)');
+            continue;
+          }
+          walk(item, `${path}[${index}]`);
+        }
+      } finally {
+        seen.delete(array);
+      }
+      return;
+    }
+
+    let proto: object | null;
+    try {
+      proto = Object.getPrototypeOf(value as object);
+    } catch {
+      reject(path, 'a value whose prototype could not be inspected (hostile or revoked proxy)');
+      return;
+    }
+    if (proto !== Object.prototype && proto !== null) {
+      reject(path, 'an object with an unsupported prototype');
+      return;
+    }
+    seen.add(value as object);
+    try {
+      for (const key of Reflect.ownKeys(descriptors)) {
+        const descriptor = descriptors[key] as PropertyDescriptor;
+        if (typeof key === 'symbol') {
+          reject(`${path}[(symbol)]`, 'a symbol-keyed declaration field');
+          continue;
+        }
+        if (descriptor.get !== undefined || descriptor.set !== undefined) {
+          // Rejected by descriptor inspection; the accessor is never invoked.
+          reject(`${path}.${key}`, 'an accessor declaration field');
+          continue;
+        }
+        if (!descriptor.enumerable) {
+          reject(`${path}.${key}`, 'a non-enumerable declaration field');
+          continue;
+        }
+        let item: unknown;
+        try {
+          item = (value as Record<string, unknown>)[key];
+        } catch {
+          reject(path, `the field '${key}' could not be read (hostile getter or proxy)`);
+          continue;
+        }
+        walk(item, `${path}.${key}`);
+      }
+    } finally {
+      seen.delete(value as object);
+    }
+  };
+
+  walk(input.application, 'application');
+  // A non-array collection is diagnosed by the existing required-member
+  // checks; an ARRAY collection (top-level bindings) is walked as an array so
+  // its own density/descriptor rules apply to it too.
+  walkCollection(input.resources, 'resources', walk);
+  if (input.contracts !== undefined) walkCollection(input.contracts, 'contracts', walk);
+  if (input.capabilities !== undefined) walkCollection(input.capabilities, 'capabilities', walk);
+  if (input.components !== undefined) walkCollection(input.components, 'components', walk);
+  return collector.sorted();
+}
+
+function walkCollection(
+  items: readonly unknown[],
+  label: string,
+  walk: (value: unknown, path: string) => void,
+): void {
+  if (Array.isArray(items)) {
+    walk(items, label);
+  }
+}
+
+/** True for '0', '1', … below length — never '01', '1.0' or out-of-range keys. */
+function isCanonicalArrayIndex(key: string, length: number): boolean {
+  if (!/^(0|[1-9][0-9]*)$/.test(key)) {
+    return false;
+  }
+  return Number(key) < length;
 }
 
 /* ------------------------------------------------------------------ */
@@ -649,10 +906,30 @@ function canonicalize(value: unknown, path: string = '(root)'): unknown {
     );
   }
   if (Array.isArray(value)) {
-    if (value.length !== new Set(value.keys()).size) {
+    // Dense-array requirement (AUDIT-LOW-1 remediation, fixed in the
+    // canonicalization implementation itself): Array.prototype.keys() yields
+    // every numeric index including holes, so the previous
+    // `length !== new Set(keys()).size` guard could never fire and holes
+    // silently canonicalized to `null` — a sparse array and an explicit-null
+    // array could share one identity. Holes are now detected by own-property
+    // presence and rejected.
+    try {
+      for (let index = 0; index < (value as unknown[]).length; index += 1) {
+        if (!Object.prototype.hasOwnProperty.call(value, index)) {
+          throw new CanonicalIdentityError(
+            'NON_CANONICAL_VALUE',
+            `The canonical serializable domain rejects a sparse array at '${path}'.`,
+            path,
+          );
+        }
+      }
+    } catch (error) {
+      if (error instanceof CanonicalIdentityError) {
+        throw error;
+      }
       throw new CanonicalIdentityError(
         'NON_CANONICAL_VALUE',
-        `The canonical serializable domain rejects a sparse array at '${path}'.`,
+        `The array at '${path}' could not be inspected (hostile getter or proxy); identity inputs must be plain data.`,
         path,
       );
     }
@@ -889,6 +1166,15 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
   // getters, proxies, invalid prototypes, and unsupported values are
   // converted into structured safe diagnostics.
   try {
+    // ONE strict canonical-input boundary (Stage 05 closure remediation):
+    // inherited, hidden, sparse, accessor-backed and otherwise exotic input
+    // is rejected structurally BEFORE any semantic validation, so validation,
+    // canonicalization, defensive copying and identity can never disagree
+    // about what the definition says.
+    const structuralIssues = collectCanonicalInputIssues(input);
+    if (structuralIssues.length > 0) {
+      return { ok: false, issues: structuralIssues };
+    }
     const collector = new Collector();
     const surfaceResolutions: SurfaceResolution[] = [];
     const routeScreenResolutions: RouteScreenResolution[] = [];
@@ -1284,7 +1570,7 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
           collector.unknownFields(route.nav, NAV_FIELDS, `${routePath}.nav`);
           // nav.label is a required member of the declared navigation entry
           // model; it was previously accepted even when absent.
-          requireNonEmptyStringMember(
+          requireDisplayStringMember(
             collector,
             route.nav,
             'label',
@@ -1410,13 +1696,7 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
         }
         screensById.set(screen.id, screen);
       }
-      requireNonEmptyStringMember(
-        collector,
-        screen,
-        'title',
-        `${screenPath}.title`,
-        'Screen title',
-      );
+      requireDisplayStringMember(collector, screen, 'title', `${screenPath}.title`, 'Screen title');
       if (isV2 && screen.breadcrumbs !== undefined) {
         for (const [index, crumb] of screen.breadcrumbs.entries()) {
           collector.unknownFields(
@@ -1424,13 +1704,14 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
             BREADCRUMB_FIELDS,
             `application.screens[${screen.id}].breadcrumbs[${index}]`,
           );
-          if (typeof crumb.label !== 'string' || crumb.label.length === 0) {
-            collector.add(
-              'INVALID_SURFACE_DECLARATION',
-              `Breadcrumb ${index} of screen '${screen.id}' must declare a non-empty label.`,
-              `application.screens[${screen.id}].breadcrumbs[${index}].label`,
-            );
-          }
+          requireDisplayStringMember(
+            collector,
+            crumb,
+            'label',
+            `application.screens[${screen.id}].breadcrumbs[${index}].label`,
+            `Breadcrumb ${index} of screen '${screen.id}' label`,
+            'INVALID_SURFACE_DECLARATION',
+          );
           if (crumb.routeId !== undefined && !routeIds.has(crumb.routeId)) {
             collector.add(
               'UNKNOWN_BREADCRUMB_ROUTE',
@@ -1460,7 +1741,7 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
           const regionPath = `${screenPath}.layout[${entryKeyLabel(region.name)}]`;
           collector.unknownFields(region, REGION_FIELDS, regionPath);
           const regionName = region.name;
-          const regionNameValid = requireNonEmptyStringMember(
+          const regionNameValid = requireDisplayStringMember(
             collector,
             region,
             'name',
@@ -1680,7 +1961,7 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
           const fieldPath = `${formPath}.fields[${entryKeyLabel(field.name)}]`;
           collector.unknownFields(field, FORM_FIELD_FIELDS, fieldPath);
           requireIdentifierMember(collector, field, 'name', `${fieldPath}.name`, 'Form field name');
-          requireNonEmptyStringMember(
+          requireDisplayStringMember(
             collector,
             field,
             'label',
@@ -2216,7 +2497,12 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
     }
 
     // Deep-copy then freeze: compilers operate on DEFENSIVE COPIES and never
-    // freeze or mutate caller-owned objects (LOW-04-F remediation).
+    // freeze or mutate caller-owned objects (LOW-04-F remediation). After the
+    // canonical-input boundary every captured object is plain, so every
+    // capture below is a fresh VICT-owned copy; capture failures cannot
+    // occur silently — any unexpected failure surfaces as a structured
+    // diagnostic and no plan or applicationVersion is produced.
+    const componentsFrozen = deepFreeze([...(application.components ?? [])].map(cloneForFreeze));
     const screensFrozen: Record<string, Readonly<ScreenDefinition>> = {};
     for (const screen of application.screens) {
       screensFrozen[screen.id] = deepFreezeClone(screen);
@@ -2250,6 +2536,11 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
       })),
     );
 
+    // The plan is built ENTIRELY from captured VICT-owned copies: neither the
+    // manifest, the routes/screens/views/forms/actions/resources/components
+    // captures, nor toJSON() ever read a caller-owned object again, so later
+    // caller mutation cannot change the compiled plan, its manifest, or its
+    // identity (Stage 05 closure remediation, Blocker D).
     const plan: ApplicationPlan = Object.freeze({
       applicationId: application.id,
       applicationRevision: application.revision,
@@ -2261,20 +2552,20 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
       forms: Object.freeze(formsFrozen),
       actions: Object.freeze(actionsFrozen),
       resources: Object.freeze(resourcesFrozen),
-      components: deepFreeze([...(application.components ?? [])].map(cloneForFreeze)),
+      components: componentsFrozen,
       toJSON(): Record<string, unknown> {
         return {
           applicationId: application.id,
           applicationRevision: application.revision,
           applicationVersion,
-          manifest: canonicalApplicationManifest(application),
+          manifest,
           routes: routesFrozen,
           screens: screensFrozen,
           views: viewsFrozen,
           forms: formsFrozen,
           actions: actionsFrozen,
           resources: resourcesFrozen,
-          components: [...(application.components ?? [])],
+          components: componentsFrozen,
         };
       },
     });
@@ -2369,7 +2660,7 @@ function resolveSurfaceLater(
         }
         // label is a required member of the declared action-surface model;
         // it was previously accepted even when absent.
-        requireNonEmptyStringMember(
+        requireDisplayStringMember(
           collector,
           surface,
           'label',
@@ -2428,7 +2719,7 @@ function resolveSurfaceLater(
       case 'text': {
         // content is a required member of the declared text-surface model;
         // it was previously accepted even when absent.
-        requireNonEmptyStringMember(
+        requireDisplayStringMember(
           collector,
           surface,
           'content',
@@ -2615,13 +2906,14 @@ function resolveSurfaceLater(
             `${path}.viewId`,
           );
         }
-        if (typeof surface.summary !== 'string' || surface.summary.length === 0) {
-          collector.add(
-            'INVALID_CHART_DECLARATION',
-            `Chart surface '${surface.id}' must declare a non-empty accessible summary.`,
-            `${path}.summary`,
-          );
-        }
+        requireDisplayStringMember(
+          collector,
+          surface,
+          'summary',
+          `${path}.summary`,
+          `Chart surface '${surface.id}' summary`,
+          'INVALID_CHART_DECLARATION',
+        );
         // xField and yField are required members of the declared chart-surface
         // model; they were previously silently skipped when absent.
         const chartFields: (readonly [string, string | undefined])[] = [];
@@ -2728,7 +3020,7 @@ function resolveSurfaceLater(
         ) {
           conversationFields.push(['authorField', surface.authorField]);
         }
-        requireNonEmptyStringMember(
+        requireDisplayStringMember(
           collector,
           surface,
           'inputLabel',
@@ -2869,6 +3161,53 @@ function collectViewFieldIssues(
   }
 }
 
+/**
+ * Declared component-prop domain (Stage 05 closure remediation).
+ *
+ * The public authoring model declares component-surface `props` as
+ * `Readonly<Record<string, string | number | boolean>>`: absent, or a plain
+ * own-enumerable object whose values are exactly strings, finite canonical
+ * numbers (negative zero excluded) or booleans. Structural exotica
+ * (accessors, inherited semantics, symbol keys, sparse arrays, NaN,
+ * ±Infinity, -0, BigInt, functions, Dates, hostile proxies) are already
+ * rejected by the canonical input boundary; this check enforces the
+ * DECLARED bounded domain on top of it — `null`/array containers, nested
+ * objects, and `undefined` values are rejected with a stable structured
+ * diagnostic carrying a safe path. Property values are never echoed into
+ * diagnostics (only safe type descriptions); valid primitive props keep
+ * their exact established canonical bytes and behavior.
+ */
+function collectComponentPropsIssues(
+  collector: Collector,
+  surfaceId: string,
+  props: unknown,
+  path: string,
+): void {
+  if (props === null || typeof props !== 'object' || Array.isArray(props)) {
+    collector.add(
+      'INVALID_SURFACE_DECLARATION',
+      `Component surface '${surfaceId}' props must be a plain object of primitive values when present (received ${describeReceivedType(props)}).`,
+      path,
+    );
+    return;
+  }
+  const source = props as Record<string, unknown>;
+  for (const key of Object.keys(source).sort()) {
+    const value = source[key];
+    const inDomain =
+      typeof value === 'string' ||
+      (typeof value === 'number' && Number.isFinite(value) && !Object.is(value, -0)) ||
+      typeof value === 'boolean';
+    if (!inDomain) {
+      collector.add(
+        'INVALID_SURFACE_DECLARATION',
+        `Component surface '${surfaceId}' prop values must be strings, finite numbers (excluding negative zero), or booleans (received ${describeReceived(value)}).`,
+        `${path}.${key}`,
+      );
+    }
+  }
+}
+
 function collectSurface(
   collector: Collector,
   surface: Surface,
@@ -2915,6 +3254,17 @@ function collectSurface(
     surfaceIds.add(surface.id);
   }
   collector.unknownFields(surface, allowed, path);
+  // Declared component-prop domain (Stage 05 closure remediation): custom
+  // components receive ONLY declared safe data surfaces — bounded primitive
+  // props — so the declared domain is enforced at both markers.
+  if (surface.role === 'component' && surface.props !== undefined) {
+    collectComponentPropsIssues(
+      collector,
+      entryKeyLabel(surface.id),
+      surface.props,
+      `${path}.props`,
+    );
+  }
   if (isV2 && surface.visibleWhen !== undefined) {
     if (typeof surface.visibleWhen !== 'object' || surface.visibleWhen === null) {
       collector.add(
@@ -2963,13 +3313,14 @@ function collectSurface(
           } else {
             tabNames.add(tab.name);
           }
-          if (typeof tab.label !== 'string' || tab.label.length === 0) {
-            collector.add(
-              'INVALID_TABS_DECLARATION',
-              `Tab ${index} of surface '${surface.id}' must declare a non-empty label.`,
-              `${tabPath}.label`,
-            );
-          }
+          requireDisplayStringMember(
+            collector,
+            tab,
+            'label',
+            `${tabPath}.label`,
+            `Tab ${index} of surface '${surface.id}' label`,
+            'INVALID_TABS_DECLARATION',
+          );
           if (Array.isArray(tab.surfaces)) {
             for (const nested of tab.surfaces) {
               collectSurface(
@@ -2993,20 +3344,22 @@ function collectSurface(
         }
       }
     } else if (surface.role === 'dialog' || surface.role === 'drawer') {
-      if (typeof surface.title !== 'string' || surface.title.length === 0) {
-        collector.add(
-          'INVALID_SURFACE_DECLARATION',
-          `${surface.role} surface '${surface.id}' must declare a non-empty title.`,
-          `${path}.title`,
-        );
-      }
-      if (typeof surface.triggerLabel !== 'string' || surface.triggerLabel.length === 0) {
-        collector.add(
-          'INVALID_SURFACE_DECLARATION',
-          `${surface.role} surface '${surface.id}' must declare a non-empty triggerLabel.`,
-          `${path}.triggerLabel`,
-        );
-      }
+      requireDisplayStringMember(
+        collector,
+        surface,
+        'title',
+        `${path}.title`,
+        `${surface.role} surface '${surface.id}' title`,
+        'INVALID_SURFACE_DECLARATION',
+      );
+      requireDisplayStringMember(
+        collector,
+        surface,
+        'triggerLabel',
+        `${path}.triggerLabel`,
+        `${surface.role} surface '${surface.id}' triggerLabel`,
+        'INVALID_SURFACE_DECLARATION',
+      );
       if (!Array.isArray(surface.content) || surface.content.length === 0) {
         collector.add(
           'INVALID_SURFACE_DECLARATION',
@@ -3130,16 +3483,27 @@ function deepFreeze<T>(value: T): T {
   return value;
 }
 
-/** Shallow-structural clone of plain data (functions by reference). */
+/**
+ * Structural clone of plain canonical data (Stage 05 closure remediation).
+ *
+ * After the canonical-input boundary every accepted declaration object is
+ * plain own-enumerable data, so this clone ALWAYS returns a fresh
+ * VICT-owned plain object/array and never returns a caller-owned reference.
+ * The following deepFreeze can therefore never freeze or mutate caller-owned
+ * state, and a later mutation of a caller object can never reach a compiled
+ * plan. (The previous implementation returned non-plain caller objects
+ * as-is, which deepFreeze then froze in place — a caller-ownership
+ * violation.)
+ */
 function cloneForFreeze<T>(value: T): T {
   if (Array.isArray(value)) {
-    return value.map(cloneForFreeze) as unknown as T;
-  }
-  if (value !== null && typeof value === 'object' && !(value instanceof Date)) {
-    const proto = Object.getPrototypeOf(value);
-    if (proto !== Object.prototype && proto !== null) {
-      return value; // non-plain objects are retained as-is (declarations only)
+    const out: unknown[] = [];
+    for (const item of value) {
+      out.push(cloneForFreeze(item));
     }
+    return out as unknown as T;
+  }
+  if (value !== null && typeof value === 'object') {
     const out: Record<string, unknown> = {};
     for (const [key, item] of Object.entries(value as Record<string, unknown>)) {
       out[key] = cloneForFreeze(item);

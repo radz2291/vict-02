@@ -1534,3 +1534,323 @@ describe('valid vict.application@1 and @2 definitions keep their exact identity'
     ).not.toBe(VECTOR_V2);
   });
 });
+
+/* ------------------------------------------------------------------ */
+/* AUDIT-LOW-3: whitespace-only required display text is malformed     */
+/* ------------------------------------------------------------------ */
+
+describe('AUDIT-LOW-3: whitespace-only required display strings are rejected', () => {
+  for (const schema of [APPLICATION_DEFINITION_SCHEMA, APPLICATION_DEFINITION_SCHEMA_V2]) {
+    const v = schema === APPLICATION_DEFINITION_SCHEMA ? '@1' : '@2';
+
+    rejectCase(
+      schema,
+      `${v} whitespace-only screen title`,
+      'application.screens.0',
+      'title',
+      '   ',
+      'APPLICATION_REQUIRED_MEMBER',
+      'application.screens[s.dashboard].title',
+    );
+    rejectCase(
+      schema,
+      `${v} whitespace-only nav label`,
+      'application.routes.0.nav',
+      'label',
+      '   ',
+      'APPLICATION_REQUIRED_MEMBER',
+      'application.routes[home].nav.label',
+    );
+    rejectCase(
+      schema,
+      `${v} whitespace-only region name`,
+      'application.screens.0.layout.0',
+      'name',
+      '   ',
+      'APPLICATION_REQUIRED_MEMBER',
+      'application.screens[s.dashboard].layout[   ].name',
+    );
+    rejectCase(
+      schema,
+      `${v} whitespace-only form field label`,
+      'application.forms.0.fields.0',
+      'label',
+      '   ',
+      'APPLICATION_REQUIRED_MEMBER',
+      'application.forms[f.item].fields[title].label',
+    );
+    rejectCase(
+      schema,
+      `${v} whitespace-only text content`,
+      'application.screens.0.layout.0.surfaces.0',
+      'content',
+      '   ',
+      'INVALID_SURFACE_DECLARATION',
+      "application.screens[s.dashboard] (surface 't.intro').content",
+    );
+    rejectCase(
+      schema,
+      `${v} whitespace-only action surface label`,
+      schema === APPLICATION_DEFINITION_SCHEMA
+        ? 'application.screens.1.layout.0.surfaces.1'
+        : 'application.screens.1.layout.0.surfaces.2',
+      'label',
+      '   ',
+      'INVALID_SURFACE_DECLARATION',
+      "application.screens[s.items] (surface 'a.refresh').label",
+    );
+  }
+
+  // @2-only display vocabulary.
+  rejectCase(
+    APPLICATION_DEFINITION_SCHEMA_V2,
+    '@2 whitespace-only chart summary',
+    'application.screens.0.layout.0.surfaces.3',
+    'summary',
+    '   ',
+    'INVALID_CHART_DECLARATION',
+    "application.screens[s.dashboard] (surface 'ch.qty').summary",
+  );
+  rejectCase(
+    APPLICATION_DEFINITION_SCHEMA_V2,
+    '@2 whitespace-only dialog title',
+    'application.screens.2.layout.1.surfaces.0',
+    'title',
+    '   ',
+    'INVALID_SURFACE_DECLARATION',
+    "application.screens[s.item-detail] (surface 'dlg.help').title",
+  );
+  rejectCase(
+    APPLICATION_DEFINITION_SCHEMA_V2,
+    '@2 whitespace-only dialog triggerLabel',
+    'application.screens.2.layout.1.surfaces.0',
+    'triggerLabel',
+    '   ',
+    'INVALID_SURFACE_DECLARATION',
+    "application.screens[s.item-detail] (surface 'dlg.help').triggerLabel",
+  );
+  rejectCase(
+    APPLICATION_DEFINITION_SCHEMA_V2,
+    '@2 whitespace-only drawer title',
+    'application.screens.2.layout.1.surfaces.1',
+    'title',
+    '\t\n ',
+    'INVALID_SURFACE_DECLARATION',
+    "application.screens[s.item-detail] (surface 'dr.log').title",
+  );
+  rejectCase(
+    APPLICATION_DEFINITION_SCHEMA_V2,
+    '@2 whitespace-only tab label',
+    'application.screens.2.layout.0.surfaces.2.tabs.0',
+    'label',
+    '   ',
+    'INVALID_TABS_DECLARATION',
+    "application.screens[s.item-detail] (surface 'tabs.extra').tabs[0].label",
+  );
+  rejectCase(
+    APPLICATION_DEFINITION_SCHEMA_V2,
+    '@2 whitespace-only conversation inputLabel',
+    'application.screens.2.layout.1.surfaces.3',
+    'inputLabel',
+    '   ',
+    'INVALID_CONVERSATION_DECLARATION',
+    "application.screens[s.item-detail] (surface 'cv.chat').inputLabel",
+  );
+
+  it('a whitespace-only breadcrumb label is rejected with a structured diagnostic (@2)', () => {
+    const input = freshInput(APPLICATION_DEFINITION_SCHEMA_V2);
+    const crumbs = (
+      (input.application as unknown as Record<string, unknown>).screens as Record<string, unknown>[]
+    )[0]!.breadcrumbs as Record<string, unknown>[];
+    (crumbs[0] as Record<string, unknown>).label = '   ';
+    expectRejected(
+      input,
+      'INVALID_SURFACE_DECLARATION',
+      'application.screens[s.dashboard].breadcrumbs[0].label',
+    );
+  });
+
+  it('a whitespace-only display string never receives an applicationVersion (@2)', () => {
+    const input = freshInput(APPLICATION_DEFINITION_SCHEMA_V2);
+    (
+      (input.application as unknown as Record<string, unknown>).screens as Record<string, unknown>[]
+    )[0]!.title = '   ';
+    const result = compileApplication(input);
+    expect(result.ok).toBe(false);
+    expect(JSON.stringify(result)).not.toContain('applicationVersion');
+  });
+});
+
+/* ------------------------------------------------------------------ */
+/* AUDIT-LOW-4: status, dialog/drawer, breadcrumb, surface references  */
+/* ------------------------------------------------------------------ */
+
+describe('AUDIT-LOW-4: required structures previously without permanent coverage', () => {
+  // Status surface: exactly one of value XOR field (@2).
+  const v2 = APPLICATION_DEFINITION_SCHEMA_V2;
+  rejectCase(
+    v2,
+    '@2 status with both value and field',
+    'application.screens.0.layout.0.surfaces.2',
+    'field',
+    'status',
+    'INVALID_STATUS_DECLARATION',
+    "application.screens[s.dashboard] (surface 'st.ok')",
+  );
+  rejectCase(
+    v2,
+    '@2 status with neither value nor field',
+    'application.screens.0.layout.0.surfaces.2',
+    'value',
+    undefined,
+    'INVALID_STATUS_DECLARATION',
+    "application.screens[s.dashboard] (surface 'st.ok')",
+  );
+
+  // Dialog / drawer required members (@2).
+  for (const [index, id] of [
+    [0, 'dlg.help'],
+    [1, 'dr.log'],
+  ] as const) {
+    for (const key of ['title', 'triggerLabel'] as const) {
+      rejectCase(
+        v2,
+        `@2 ${id} ${key} absent`,
+        `application.screens.2.layout.1.surfaces.${index}`,
+        key,
+        undefined,
+        'INVALID_SURFACE_DECLARATION',
+        `application.screens[s.item-detail] (surface '${id}').${key}`,
+      );
+    }
+    rejectCase(
+      v2,
+      `@2 ${id} empty content`,
+      `application.screens.2.layout.1.surfaces.${index}`,
+      'content',
+      [],
+      'INVALID_SURFACE_DECLARATION',
+      `application.screens[s.item-detail] (surface '${id}').content`,
+    );
+  }
+
+  // Breadcrumb required members and route references (@2).
+  it('a breadcrumb without a label is rejected with a structured diagnostic (@2)', () => {
+    const input = freshInput(v2);
+    const crumbs = (
+      (input.application as unknown as Record<string, unknown>).screens as Record<string, unknown>[]
+    )[0]!.breadcrumbs as Record<string, unknown>[];
+    delete (crumbs[0] as Record<string, unknown>).label;
+    expectRejected(
+      input,
+      'INVALID_SURFACE_DECLARATION',
+      'application.screens[s.dashboard].breadcrumbs[0].label',
+    );
+  });
+
+  it('a breadcrumb referencing an unknown route is rejected (@2)', () => {
+    const input = freshInput(v2);
+    const crumbs = (
+      (input.application as unknown as Record<string, unknown>).screens as Record<string, unknown>[]
+    )[0]!.breadcrumbs as Record<string, unknown>[];
+    (crumbs[0] as Record<string, unknown>).routeId = 'route.missing';
+    expectRejected(
+      input,
+      'UNKNOWN_BREADCRUMB_ROUTE',
+      'application.screens[s.dashboard].breadcrumbs[0].routeId',
+    );
+  });
+
+  // Surface-level references must resolve (both markers where applicable).
+  for (const schema of [APPLICATION_DEFINITION_SCHEMA, APPLICATION_DEFINITION_SCHEMA_V2]) {
+    const v = schema === APPLICATION_DEFINITION_SCHEMA ? '@1' : '@2';
+    const viewSurface = 'application.screens.0.layout.0.surfaces.1';
+    const formSurface = 'application.screens.1.layout.0.surfaces.0';
+    const actionSurface =
+      schema === APPLICATION_DEFINITION_SCHEMA
+        ? 'application.screens.1.layout.0.surfaces.1'
+        : 'application.screens.1.layout.0.surfaces.2';
+    const componentSurface =
+      schema === APPLICATION_DEFINITION_SCHEMA
+        ? 'application.screens.2.layout.0.surfaces.0'
+        : 'application.screens.2.layout.0.surfaces.1';
+
+    rejectCase(
+      schema,
+      `${v} view surface viewId absent`,
+      viewSurface,
+      'viewId',
+      undefined,
+      'UNKNOWN_VIEW_REFERENCE',
+      "application.screens[s.dashboard] (surface 'v.rows').viewId",
+    );
+    if (schema === APPLICATION_DEFINITION_SCHEMA) {
+      // The @1 fixture declares its form surface on s.items; the @2 form
+      // surface is covered by the bespoke substitution case below.
+      rejectCase(
+        schema,
+        `${v} form surface formId absent`,
+        formSurface,
+        'formId',
+        undefined,
+        'UNKNOWN_FORM_REFERENCE',
+        "application.screens[s.items] (surface 'f.create').formId",
+      );
+    }
+    rejectCase(
+      schema,
+      `${v} action surface actionId absent`,
+      actionSurface,
+      'actionId',
+      undefined,
+      'UNKNOWN_ACTION_REFERENCE',
+      "application.screens[s.items] (surface 'a.refresh').actionId",
+    );
+    rejectCase(
+      schema,
+      `${v} component surface componentId absent`,
+      componentSurface,
+      'componentId',
+      undefined,
+      'UNKNOWN_COMPONENT_REFERENCE',
+      "application.screens[s.item-detail] (surface 'c.badge').componentId",
+    );
+  }
+
+  it('a @2 form surface without a resolvable formId is rejected (@2)', () => {
+    const input = freshInput(v2);
+    (
+      (
+        (input.application as unknown as Record<string, unknown>).screens as Record<
+          string,
+          unknown
+        >[]
+      )[1]!.layout as Record<string, unknown>[]
+    )[0]!.surfaces = [{ role: 'form', id: 'f.create' }];
+    expectRejected(
+      input,
+      'UNKNOWN_FORM_REFERENCE',
+      "application.screens[s.items] (surface 'f.create').formId",
+    );
+  });
+
+  // @2-only surface references.
+  rejectCase(
+    v2,
+    '@2 states surface viewId absent',
+    'application.screens.2.layout.1.surfaces.2',
+    'viewId',
+    undefined,
+    'UNKNOWN_VIEW_REFERENCE',
+    "application.screens[s.item-detail] (surface 'st.rows').viewId",
+  );
+  rejectCase(
+    v2,
+    '@2 conversation sendActionId absent',
+    'application.screens.2.layout.1.surfaces.3',
+    'sendActionId',
+    undefined,
+    'UNKNOWN_ACTION_REFERENCE',
+    "application.screens[s.item-detail] (surface 'cv.chat').sendActionId",
+  );
+});

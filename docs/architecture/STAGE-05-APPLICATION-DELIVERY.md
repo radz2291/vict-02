@@ -195,6 +195,94 @@ omitted required members were never valid under the declared model; they may
 now be rejected. Previously accepted malformed objects therefore fail
 compilation at the runtime boundary exactly as the exit gate requires.
 
+Required display strings (screen/dialog/drawer titles, `nav.label`, region
+`name`, form-field labels, action-surface labels, text `content`, chart
+`summary`, breadcrumb labels, tab labels, conversation `inputLabel`) must be
+more than empty: a whitespace-only value is malformed input and reuses the
+SAME diagnostic code as an empty value at each site (closure remediation of
+audit finding AUDIT-LOW-3; it changes only previously malformed definitions
+— no schema marker, canonical byte, or valid definition is affected).
+
+Diagnostic-code policy for surface-level references (audit finding
+AUDIT-INFO-1, retained deliberately): an absent surface-level reference id
+(`viewId`, `formId`, `actionId`, `componentId`, `sendActionId`) is reported
+through the reference codes (`UNKNOWN_VIEW_REFERENCE`,
+`UNKNOWN_FORM_REFERENCE`, `UNKNOWN_ACTION_REFERENCE`,
+`UNKNOWN_COMPONENT_REFERENCE`) rather than `APPLICATION_EMPTY_ID`, because a
+reference key can never resolve from an absent value — enforcement is
+structurally guaranteed, the codes carry the more precise failure meaning,
+and the behavior is pinned by permanent tests. The codes are NOT cosmetic
+noise to be unified.
+
+### 2.4 Canonical input boundary (closure-blocker remediation)
+
+The independent closure audit misclassified two identity-boundary defects as
+Low; direct review re-produced them as exit-gate violations (an executable
+`local` and `navigation` action sharing ONE `applicationVersion` through
+empty canonical declarations, and a non-enumerable action compiling to an
+empty partial plan). The remediation establishes ONE strict canonical-input
+boundary at the front of `compileApplication` instead of scattered special
+cases. Everything that enters compilation — the application definition and
+every provided resource/contract/capability/component binding — is
+structurally validated as plain canonical data BEFORE any semantic
+validation, canonical manifest construction, plan construction, or identity
+hashing:
+
+- **Plain objects only.** Accepted objects have `Object.prototype` or `null`
+  as their direct prototype. Class instances, `Date`, `Map`, and every other
+  exotic prototype are rejected (`APPLICATION_NON_CANONICAL_VALUE`).
+- **Own enumerable data properties only.** Semantic members obtained through
+  a prototype chain, hidden behind non-enumerable own properties, supplied
+  through getters/setters, or keyed by symbols are rejected structurally.
+  Accessors are rejected by DESCRIPTOR inspection and are never invoked to
+  validate them; hostile or revoked proxies fail closed with structured,
+  non-echoing diagnostics (values and thrown messages never enter
+  diagnostics). It is impossible for validation to read semantics that
+  canonicalization or defensive copying later omits, so two definitions can
+  never share one identity through an empty canonical declaration.
+- **Dense arrays only.** Accepted arrays have an own element at every
+  numeric index below `length`, no unsupported additional enumerable
+  properties, and no non-enumerable index descriptors. A real `null` element
+  is valid and distinguishable from an absent slot. The sparse-array
+  detection defect (AUDIT-LOW-1: `Array.prototype.keys()` yields hole
+  indices, so the previous guard never fired and holes silently
+  canonicalized to `null`) is fixed in the canonicalization implementation
+  itself: holes are detected by own-property presence and rejected, so a
+  sparse value can never receive the same identity as its explicit-null
+  twin.
+- **Canonical numbers.** `NaN`, `±Infinity`, and negative zero are rejected
+  anywhere in the input (previously only along identity paths); `BigInt`,
+  `symbol`, `function`, and `undefined` array elements are rejected.
+  `undefined` object members keep their established meaning (absent).
+- **Bounded primitive component props.** A component surface's `props` is
+  absent, or a plain own-enumerable object whose values are exactly strings,
+  finite canonical numbers (negative zero excluded), or booleans — the
+  domain the public model always declared
+  (`Readonly<Record<string, string | number | boolean>>`). `null`/array
+  containers, nested objects, arrays, functions, symbols, `BigInt`,
+  `undefined`, `NaN`, `±Infinity`, negative zero, dates, sparse arrays,
+  inherited/non-enumerable/accessor members, exotic prototypes, and hostile
+  proxies are rejected with a stable structured diagnostic carrying a safe
+  path; property values are never echoed. Valid primitive props keep their
+  exact established canonical bytes.
+- **Defensive-copy semantics.** Compilation never freezes or mutates any
+  caller-owned object and never retains an accepted caller-owned mutable
+  object by reference (the previous `cloneForFreeze` returned non-plain
+  caller objects as-is, which `deepFreeze` then froze in place). Plans are
+  built entirely from defensive VICT-owned captures that are deep-frozen;
+  `plan.toJSON()` serves the same captured copies instead of re-reading the
+  caller's live objects, so a later caller mutation can never change a
+  compiled plan, manifest, or `applicationVersion`. Rejected hostile/exotic
+  inputs are left unchanged and unfrozen, and no plan or
+  `applicationVersion` exists when any capture fails.
+
+`npm`-registry advisories and the npm 10.9.2 arborist crash when installing
+`vitest` 4.x devDependencies (audit finding AUDIT-INFO-2) are environmental,
+independently attributed to vitest's optional browser-provider peer ranges,
+and require no production change; the `--legacy-peer-deps` scoping in
+`verify:stage5` remains documented and honestly scoped (the plain
+packed-consumer install path needs no workaround).
+
 ## 3. Renderer model (`@vict/renderer-svelte`)
 
 - The generic `VitApp` host renders EVERY supported built-in role from the
@@ -280,8 +368,12 @@ adds the ownership rules:
   only id/revision references. Changing a component's revision changes the
   registry and release identity while application identity is unchanged
   (tested in the reference application suites).
-- Registered components receive ONLY declared primitive props. The reference
-  proof's `cmp.health@1` island is registered in
+- Registered components receive ONLY declared primitive props: the compiler
+  enforces the bounded `props` domain (plain own-enumerable object of
+  strings, finite numbers and booleans — §2.4) and the plan delivers frozen
+  VICT-owned copies, so host code can never inject structured data, hostile
+  values, or live objects through props. The reference proof's
+  `cmp.health@1` island is registered in
   `src/lib/components/registry.ts` (author-owned code island).
 
 ## 6. Scaffolder (`@vict/scaffolder`)
