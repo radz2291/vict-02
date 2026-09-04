@@ -26,8 +26,8 @@ closure. Stage 06 has not begun.
 | --- | --- |
 | Required starting SHA (`HEAD == origin/main` after fast-forward) | `50d46feb93d44f93a7e92cce862cac85c7d8525b` |
 | Audited implementation under remediation (in ancestry) | `9fa89e4177654ea04399e3191469041107be77cb` |
-| Final implementation commit | (this repository, `fix(stage-05): enforce canonical application inputs`) |
-| Final documentation commit | (this repository, `docs(stage-05): record canonical boundary remediation`) |
+| Final implementation commit | `8ecb9af` (`fix(stage-05): enforce canonical application inputs`) |
+| Documentation commits | `680848c` (`docs(stage-05): record canonical boundary remediation`) and the fresh-clone evidence amendment recorded on top |
 | Final remote tip | see "Commit list and push confirmation" in the completion response |
 
 History is linear; only normal fast-forward pushes were used.
@@ -258,7 +258,7 @@ JavaScript only:
 
 | Command | Exit | Result |
 | --- | --- | --- |
-| `npm ci` | 0 | clean install |
+| `npm ci` | 0 | clean install (the fresh clone used plain `npm ci`, exit 0; the authoring workspace run used `--legacy-peer-deps` out of caution for the documented AUDIT-INFO-2 environment issue) |
 | `npm run typecheck` (before build) | 0 | strict, zero errors |
 | `npm run format:check` | 0 | all files formatted |
 | `npm run lint` | 0 | no findings |
@@ -285,6 +285,33 @@ tests + 3 renderer-project files / 45 tests + 1 integration file / 4 tests
 = 1475. No sleeps added, no warnings suppressed, no assertions weakened, no
 tests excluded. Node v22.13.1 (satisfies `>=22.13.0`); Node 24 and a second
 OS are NOT available in this environment — not executed, not claimed.
+
+### Fresh-clone verification (from the pushed implementation commit)
+
+A temporary fresh `git clone` of `origin/main` at `680848c` was created
+outside the workspace and the complete ladder re-run inside it:
+
+- initial `git status --short` empty; **zero** pre-existing `dist`
+  directories (verified by `find` before install/build); clone HEAD equal to
+  the pushed remote tip.
+- plain `npm ci` exit 0 (no npm workarounds needed for the workspace
+  install); `npm run typecheck` executed BEFORE `npm run build`, exit 0;
+  `format:check`, `lint`, `build` all exit 0.
+- `test:unit` 55 files / 1426 tests; `test:integration` 1 file / 4 tests;
+  `npm test` 59 files / 1475 tests — identical counts to the authoring
+  workspace.
+- `verify:consumer`, `verify:stage2`, `verify:stage3`, `verify:stage4`,
+  `verify:stage5` all exit 0 (`verify:stage5 — all checks passed`, full log
+  captured); `example` 13 ordered events; `bench` exit 0;
+  `example:application` exit 0 (Stage 04 proof 17/17).
+- Targeted suites reproduce the same results in the clone:
+  canonical-boundary 57/57, required-members 807/807, reference application
+  suite 4 files / 44 tests.
+- The packed-consumer probe run against the CLONE's tree (tarballs packed
+  from the clone, isolated consumer outside any workspace) passed 19/19
+  assertions plus the isolation checks.
+- Final `git status --short` empty; `git diff --check` clean; the clone was
+  removed afterwards.
 
 ## Remaining genuine limitations
 
