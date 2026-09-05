@@ -225,8 +225,11 @@ console.log('\n=== verify:stage6a — package inspection ===');
   }
   check(!neutralImportsAdapter, 'no neutral package imports @vict/mastra (acyclic direction)');
 
-  // Base neutral declarations contain no Mastra references.
-  const forbidden = ['@mastra/', 'Mastra', 'LibSQLStore', 'ZodType'];
+  // Base neutral declarations contain no Mastra references. The lowercase
+  // token is scanned too: after the 'memory-store' rename, no neutral
+  // emitted declaration may contain ANY Mastra-specific type or lifecycle
+  // token (including the former 'mastra-memory' step literal).
+  const forbidden = ['@mastra/', 'Mastra', 'mastra', 'LibSQLStore', 'ZodType'];
   let neutralViolation = '';
   for (const name of ['contracts', 'sdk', 'kernel', 'runtime']) {
     const distDir = join(repoRoot, 'packages', name, 'dist');
@@ -246,6 +249,30 @@ console.log('\n=== verify:stage6a — package inspection ===');
     neutralViolation === '',
     `neutral base declarations are Mastra-free ${neutralViolation ? `(violation: ${neutralViolation})` : ''}`,
   );
+}
+
+// ---- 1b. Dedicated-store path containment and POSIX permission suites ------
+console.log('\n=== verify:stage6a — dedicated-store storage path/permission suites ===');
+{
+  // The PERMANENT storage path/permission suites are part of the Stage 06A
+  // exit gate on EVERY platform: on POSIX they run their real symlink/
+  // permission assertions; on Windows the POSIX-only cases skip (with the
+  // junction coverage running instead). A Linux full-suite failure can no
+  // longer coexist with a silently passing Stage 06A verifier.
+  const storageSuites = [
+    'packages/mastra/test/storage.path.test.ts',
+    'packages/mastra/test/storage.permissions.posix.test.ts',
+  ];
+  const vitestEntry = join(repoRoot, 'node_modules', 'vitest', 'vitest.mjs');
+  const storage = run(process.execPath, [vitestEntry, 'run', ...storageSuites], {
+    capture: true,
+    timeout: 900_000,
+  });
+  check(storage.status === 0, 'storage path/permission suites pass on this platform');
+  if (storage.status !== 0) {
+    console.error(storage.stdout?.slice(-6000));
+    console.error(storage.stderr?.slice(-6000));
+  }
 }
 
 const work = mkdtempSync(join(tmpdir(), 'vict-stage6a-'));
@@ -669,7 +696,7 @@ try {
     );
     check(
       JSON.stringify(resumeResult.receipts) ===
-        JSON.stringify(['application-domain', 'mastra-memory']),
+        JSON.stringify(['application-domain', 'memory-store']),
       'fresh-process: exactly one receipt per step (no duplicates, no lost completion)',
     );
     check(

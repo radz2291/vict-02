@@ -59,6 +59,16 @@ export class VictStoreError extends Error {
   /**
    * Protected development-only cause (raw driver error). Never copy this
    * value into persisted data or ordinary public errors.
+   *
+   * DIAGNOSTIC-SAFETY SHAPE (enforced by construction, not convention):
+   * the property is defined NON-ENUMERABLE, NON-WRITABLE, and
+   * NON-CONFIGURABLE, so it is absent from `JSON.stringify(error)`,
+   * `Object.keys(error)`, object spread, structured-clone snapshots, and
+   * every ordinary serialized/persisted diagnostic surface. Authorized
+   * programmatic access (`error.driverCause`) for local development
+   * diagnostics still works. The raw cause is deliberately NOT copied to
+   * the standard `Error.cause` (which would create another observable
+   * serialization/persistence path).
    */
   readonly driverCause?: unknown;
 
@@ -72,7 +82,15 @@ export class VictStoreError extends Error {
     this.name = 'VictStoreError';
     this.code = code;
     this.details = details;
-    this.driverCause = driverCause;
+    // Define — never assign — the raw cause: enumerability is the property
+    // that leaks it into default serialization, so the safety boundary is
+    // enforced by the property's shape itself.
+    Object.defineProperty(this, 'driverCause', {
+      value: driverCause,
+      enumerable: false,
+      writable: false,
+      configurable: false,
+    });
   }
 }
 

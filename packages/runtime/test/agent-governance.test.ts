@@ -201,7 +201,7 @@ function governanceStoreConformance(
           'application-domain-deleted',
         );
         // With both receipts, completion is legal and receipt-backed.
-        await store.recordDeletionReceipt('vict-del-conv-2', 'mastra-memory', 200);
+        await store.recordDeletionReceipt('vict-del-conv-2', 'memory-store', 200);
         await store.updateDeletionIntentState('vict-del-conv-2', 'completed');
         expect((await store.getDeletionIntent('vict-del-conv-2'))?.state).toBe('completed');
         // The stepwise helper refuses skips directly.
@@ -231,7 +231,7 @@ function governanceStoreConformance(
         expect(
           assertDeletionStateTransitionWithReceipts('application-domain-deleted', 'completed', [
             { step: 'application-domain' },
-            { step: 'mastra-memory' },
+            { step: 'memory-store' },
           ]),
         ).toBeUndefined();
       } finally {
@@ -352,7 +352,7 @@ describe('conversation deletion reconciliation (MSTR-011, §8.1)', () => {
       actorId: 'actor-1',
     });
     expect(outcome.status).toBe('completed');
-    expect(outcome.completedSteps).toEqual(['application-domain', 'mastra-memory']);
+    expect(outcome.completedSteps).toEqual(['application-domain', 'memory-store']);
     expect(calls).toEqual(['domain:conv-1', 'memory:conv-1']);
     // Re-deleting the same conversation is idempotent: no new store calls.
     calls.length = 0;
@@ -394,7 +394,7 @@ describe('conversation deletion reconciliation (MSTR-011, §8.1)', () => {
     expect(final?.state).toBe('completed');
     expect(final?.receipts.map((receipt) => receipt.step)).toEqual([
       'application-domain',
-      'mastra-memory',
+      'memory-store',
     ]);
     expect(await governance.listOpenDeletionIntents()).toHaveLength(0);
   });

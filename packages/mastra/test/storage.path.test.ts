@@ -1,7 +1,10 @@
 import {
+  accessSync,
+  constants as fsConstants,
   existsSync,
   mkdirSync,
   mkdtempSync,
+  readdirSync,
   readFileSync,
   rmSync,
   statSync,
@@ -150,15 +153,32 @@ describe('dedicated store files cannot escape the store directory', () => {
     writeFileSync(outsideTarget, 'sentinel');
     mkdirSync(join(dataDir, 'mastra'), { recursive: true });
     symlinkSync(outsideTarget, join(dataDir, 'mastra', 'store.db'));
-    await expect(
-      createDedicatedMastraStore({
+    let rejection: unknown;
+    try {
+      await createDedicatedMastraStore({
         dataDir,
         fileName: 'store.db',
         retention: TEST_RETENTION,
-      }),
-    ).rejects.toThrow(/escape|contained/i);
-    // The outside target was never taken over as a Mastra store.
+      });
+      expect.unreachable();
+    } catch (error) {
+      rejection = error;
+    }
+    // The rejection is the STRUCTURED pre-open containment boundary —
+    // asserted by error type and stable code, never by incidental prose.
+    expect(rejection).toBeInstanceOf(VictMastraStorageError);
+    expect((rejection as VictMastraStorageError).code).toBe('VICT_MASTRA_STORAGE_PATH_ESCAPE');
+    // The stable diagnostic is non-echoing: the hostile target path and
+    // sentinel content never appear.
+    const message = (rejection as Error).message;
+    expect(message).not.toContain('captured.db');
+    expect(message).not.toContain('sentinel');
+    expect(message).not.toContain(outside);
+    // The outside sentinel was never taken over as a Mastra store.
     expect(readFileSync(outsideTarget, 'utf8')).toBe('sentinel');
+    // No database/WAL/SHM/journal files were created outside: the outside
+    // directory holds exactly the pre-existing sentinel and nothing else.
+    expect(readdirSync(outside).sort()).toEqual(['captured.db']);
   });
 
   it('a directory junction planted at the store dir is refused (Windows)', async () => {
@@ -314,19 +334,51 @@ describe('containment is proven BEFORE the database is opened or initialized', (
     }
     const dataDir = tempDir('vict-store-dirsym-');
     const outside = tempDir('vict-store-dirsym-out-');
-    mkdirSync(join(dataDir, 'mastra'), { recursive: true });
-    // data/mastra → outside: the database would be created OUTSIDE.
-    symlinkSync(outside, join(dataDir, 'mastra'));
-    await expect(
-      createDedicatedMastraStore({
+    // The outside directory starts EMPTY; an absent external database must
+    // remain absent (including sidecars).
+    const outsideBefore = readdirSync(outside).sort();
+    expect(outsideBefore).toEqual([]);
+    // FIXTURE SETUP (real POSIX, not a mocked path test): dataDir exists,
+    // the outside directory exists, and <dataDir>/mastra does NOT already
+    // exist — the symlink is created DIRECTLY at that path (creating a
+    // real directory there first would make the symlink itself fail with
+    // EEXIST before VICT is ever exercised).
+    mkdirSync(dataDir, { recursive: true });
+    symlinkSync(outside, join(dataDir, 'mastra'), 'dir');
+    let rejection: unknown;
+    try {
+      await createDedicatedMastraStore({
         dataDir,
         fileName: 'never-created.db',
         retention: TEST_RETENTION,
-      }),
-    ).rejects.toThrow(VictMastraStorageError);
-    // The absent external target was never created.
-    expect(existsSync(join(outside, 'never-created.db'))).toBe(false);
-    expect(existsSync(join(outside, 'mastra-store.db'))).toBe(false);
+      });
+      expect.unreachable();
+    } catch (error) {
+      rejection = error;
+    }
+    // The stable containment boundary (structured type + code, not prose).
+    expect(rejection).toBeInstanceOf(VictMastraStorageError);
+    expect((rejection as VictMastraStorageError).code).toBe('VICT_MASTRA_STORAGE_PATH_ESCAPE');
+    const message = (rejection as Error).message;
+    expect(message).not.toContain(outside);
+    // The absent external database (and its sidecars) remains absent.
+    for (const name of [
+      'never-created.db',
+      'mastra-store.db',
+      'mastra-store.db-wal',
+      'mastra-store.db-shm',
+      'mastra-store.db-journal',
+    ]) {
+      expect(existsSync(join(outside, name))).toBe(false);
+    }
+    // The outside directory remains entry-for-entry unchanged.
+    expect(readdirSync(outside).sort()).toEqual(outsideBefore);
+    // Fixture cleanup removes the symlink ITSELF and never recursively
+    // follows or deletes its target: after removing the data directory,
+    // the outside target is still intact and unchanged.
+    rmSync(dataDir, { recursive: true, force: true });
+    expect(existsSync(join(dataDir, 'mastra'))).toBe(false);
+    expect(readdirSync(outside).sort()).toEqual(outsideBefore);
   });
 
   it('a symlink planted at the database path is rejected before opening; an existing external SQLite database gains NO changes', async () => {
@@ -477,6 +529,35 @@ describe('containment is proven BEFORE the database is opened or initialized', (
   });
 });
 
+/**
+ * Snapshot the POSIX mode of a path (0 if the path does not exist).
+ * Sidecar modes are only asserted when the file EXISTS: the test must not
+ * require files SQLite does not create in the exercised mode.
+ */
+function posixMode(path: string): number {
+  try {
+    return statSync(path).mode & 0o777;
+  } catch {
+    return 0;
+  }
+}
+
+/** Assert the documented protected-store policy for one composed store. */
+function expectProtectedModes(dataDir: string, databasePath: string): void {
+  // Directory: owner-only, but TRAVERSABLE by the owner (0o700).
+  expect(posixMode(resolve(dataDir, 'mastra'))).toBe(0o700);
+  // Main database file: owner-only (0o600).
+  expect(posixMode(databasePath)).toBe(0o600);
+  // Every EXISTING SQLite sidecar (WAL/SHM/journal) is owner-only 0o600.
+  // Sidecars SQLite has not created in the exercised mode are not required.
+  for (const suffix of ['-wal', '-shm', '-journal']) {
+    const sidecar = `${databasePath}${suffix}`;
+    if (existsSync(sidecar)) {
+      expect(posixMode(sidecar), sidecar).toBe(0o600);
+    }
+  }
+}
+
 describe('protected-store permission policy (documented platform guarantees)', () => {
   it('applies owner-only modes automatically during composition (POSIX)', async () => {
     if (process.platform === 'win32') {
@@ -489,16 +570,95 @@ describe('protected-store permission policy (documented platform guarantees)', (
       retention: TEST_RETENTION,
     });
     try {
-      const dirMode = statSync(resolve(dataDir, 'mastra')).mode & 0o777;
-      const fileMode = statSync(dedicated.databasePath).mode & 0o777;
-      // Directory: owner-only, but TRAVERSABLE by the owner (0700).
-      expect(dirMode).toBe(0o700);
-      // Database file: owner-only (0600).
-      expect(fileMode).toBe(0o600);
+      expectProtectedModes(dataDir, dedicated.databasePath);
       // restrictPermissions() re-applies the same policy idempotently.
       dedicated.restrictPermissions();
-      expect(statSync(resolve(dataDir, 'mastra')).mode & 0o777).toBe(0o700);
-      expect(statSync(dedicated.databasePath).mode & 0o777).toBe(0o600);
+      expectProtectedModes(dataDir, dedicated.databasePath);
+    } finally {
+      await dedicated.close();
+    }
+  });
+
+  it('owner-only modes survive an actual memory write, restrictPermissions() re-application, and close/reopen (POSIX)', async () => {
+    if (process.platform === 'win32') {
+      return; // Windows: POSIX bits are not honored (documented ACL limitation)
+    }
+    const dataDir = tempDir('vict-store-perm-full-');
+    const first = await createDedicatedMastraStore({
+      dataDir,
+      fileName: 'store.db',
+      retention: TEST_RETENTION,
+    });
+    try {
+      // An ACTUAL memory write (the store is really used, not just
+      // initialized): modes must hold afterwards.
+      const domain = await first.store.getStore('memory');
+      await domain!.saveMessages({
+        messages: [
+          {
+            id: 'perm-write-1',
+            role: 'user',
+            createdAt: new Date(),
+            threadId: 'vict-conv-perm-proof',
+            resourceId: 'vict-actor-perm-actor-1',
+            content: {
+              format: 2 as const,
+              parts: [{ type: 'text' as const, text: 'permission probe' }],
+            },
+          } as never,
+        ],
+      });
+      expectProtectedModes(dataDir, first.databasePath);
+
+      // Re-application of restrictPermissions() (the documented idempotent
+      // re-application path) keeps every mode at the policy value.
+      first.restrictPermissions();
+      expectProtectedModes(dataDir, first.databasePath);
+      await first.close();
+
+      // Close/reopen: the reopened store re-proves containment and
+      // re-applies the policy; modes hold.
+      const second = await createDedicatedMastraStore({
+        dataDir,
+        fileName: 'store.db',
+        retention: TEST_RETENTION,
+      });
+      try {
+        expectProtectedModes(dataDir, second.databasePath);
+      } finally {
+        await second.close();
+      }
+    } finally {
+      await first.close().catch(() => {});
+    }
+  });
+
+  it('the owner can traverse and use the protected directory (0o700 is not 0o000) (POSIX)', async () => {
+    if (process.platform === 'win32') {
+      return; // Windows: POSIX bits are not honored (documented ACL limitation)
+    }
+    const dataDir = tempDir('vict-store-perm-trav-');
+    const dedicated = await createDedicatedMastraStore({
+      dataDir,
+      fileName: 'store.db',
+      retention: TEST_RETENTION,
+    });
+    try {
+      const storeDir = resolve(dataDir, 'mastra');
+      // The owner retains read/write/traverse on the protected directory.
+      accessSync(storeDir, fsConstants.R_OK | fsConstants.W_OK | fsConstants.X_OK);
+      // Directory listing works and contains the database file.
+      expect(readdirSync(storeDir)).toContain('store.db');
+      // The owner can create, read, and remove a file INSIDE the protected
+      // directory (0o700 preserves owner traversal; it is not 0o000). The
+      // probe file's own mode is the process umask's business — the
+      // owner-only policy is asserted on the STORE-owned files above, not
+      // on arbitrary caller-created files.
+      const probe = join(storeDir, 'owner-traversal-probe.txt');
+      writeFileSync(probe, 'owner-can-write');
+      expect(readFileSync(probe, 'utf8')).toBe('owner-can-write');
+      rmSync(probe, { force: true });
+      expect(existsSync(probe)).toBe(false);
     } finally {
       await dedicated.close();
     }

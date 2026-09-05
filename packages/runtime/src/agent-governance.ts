@@ -111,7 +111,7 @@ export function requireCredential(value: string | undefined, name: string): stri
 }
 
 /** The durable deletion step a receipt covers. */
-export type AgentDeletionStep = 'application-domain' | 'mastra-memory';
+export type AgentDeletionStep = 'application-domain' | 'memory-store';
 
 /** Deletion-intent lifecycle states. */
 export type AgentDeletionIntentState = 'pending' | 'application-domain-deleted' | 'completed';
@@ -155,6 +155,16 @@ export interface AgentGovernanceStore {
   /** Close underlying resources, if any (sync or async, per implementation). */
   close?(): Promise<void> | void;
 }
+
+/**
+ * The closed deletion-step domain. The in-memory reference store enforces
+ * the SAME receipt-step domain as the SQLite CHECK constraint so both
+ * stores reject unknown steps at their durable boundary (adapter parity).
+ */
+const DELETION_STEP_DOMAIN: ReadonlySet<string> = new Set<AgentDeletionStep>([
+  'application-domain',
+  'memory-store',
+]);
 
 const INTENT_STATE_ORDER: ReadonlyArray<AgentDeletionIntentState> = [
   'pending',
@@ -225,9 +235,9 @@ export function assertDeletionStateTransitionWithReceipts(
       "VICT_AGENT_DELETION_RECEIPT_REQUIRED: entering 'application-domain-deleted' requires the durable 'application-domain' receipt; refusing to advance without it.",
     );
   }
-  if (to === 'completed' && !(has('application-domain') && has('mastra-memory'))) {
+  if (to === 'completed' && !(has('application-domain') && has('memory-store'))) {
     throw new Error(
-      "VICT_AGENT_DELETION_RECEIPT_REQUIRED: entering 'completed' requires BOTH durable step receipts ('application-domain' and 'mastra-memory'); refusing to advance without them.",
+      "VICT_AGENT_DELETION_RECEIPT_REQUIRED: entering 'completed' requires BOTH durable step receipts ('application-domain' and 'memory-store'); refusing to advance without them.",
     );
   }
 }
@@ -352,6 +362,13 @@ export class InMemoryAgentGovernanceStore implements AgentGovernanceStore {
     step: AgentDeletionStep,
     at: number,
   ): Promise<void> {
+    // Closed step domain — mirrors the SQLite CHECK constraint so no store
+    // boundary ever accepts an unknown (e.g. legacy or fabricated) step.
+    if (typeof step !== 'string' || !DELETION_STEP_DOMAIN.has(step)) {
+      throw new Error(
+        'VICT_AGENT_DELETION_RECEIPT_STEP_INVALID: the deletion receipt step must be a governed durable step.',
+      );
+    }
     const record = this.#intents.get(intentId);
     if (record === undefined) {
       throw new Error('VICT_AGENT_DELETION_INTENT_MISSING');
@@ -364,7 +381,7 @@ export class InMemoryAgentGovernanceStore implements AgentGovernanceStore {
     // out-of-order receipt would fabricate durable progress and is
     // rejected.
     if (
-      step === 'mastra-memory' &&
+      step === 'memory-store' &&
       !record.receipts.some((receipt) => receipt.step === 'application-domain')
     ) {
       throw new Error(
@@ -544,18 +561,18 @@ export class ConversationDeletionCoordinator {
       if (current === undefined) {
         throw new Error('VICT_AGENT_DELETION_INTENT_MISSING');
       }
-      if (!current.receipts.some((receipt) => receipt.step === 'mastra-memory')) {
+      if (!current.receipts.some((receipt) => receipt.step === 'memory-store')) {
         const result = await this.#memory.deleteConversationThread(intent.conversationId);
         if (typeof result?.deleted !== 'boolean') {
           throw new Error('VICT_AGENT_DELETION_MEMORY_INVALID_RESULT');
         }
-        await this.#governance.recordDeletionReceipt(intentId, 'mastra-memory', this.#clock());
+        await this.#governance.recordDeletionReceipt(intentId, 'memory-store', this.#clock());
       }
       const after = await this.#governance.getDeletionIntent(intentId);
       if (
         after !== undefined &&
         after.receipts.some((receipt) => receipt.step === 'application-domain') &&
-        after.receipts.some((receipt) => receipt.step === 'mastra-memory') &&
+        after.receipts.some((receipt) => receipt.step === 'memory-store') &&
         after.state !== 'completed'
       ) {
         // Completion always passes through the intermediate state — the

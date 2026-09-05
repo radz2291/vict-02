@@ -228,16 +228,16 @@ describe('sqlite governance store — deletion state machine invariants', () => 
         state: 'pending',
         receipts: [],
       });
-      await expect(store.recordDeletionReceipt('i-order', 'mastra-memory', 10)).rejects.toThrow();
+      await expect(store.recordDeletionReceipt('i-order', 'memory-store', 10)).rejects.toThrow();
       // No receipt was recorded.
       expect((await store.getDeletionIntent('i-order'))?.receipts).toEqual([]);
       // The legal order succeeds and duplicates stay idempotent.
       await store.recordDeletionReceipt('i-order', 'application-domain', 20);
-      await store.recordDeletionReceipt('i-order', 'mastra-memory', 30);
-      await store.recordDeletionReceipt('i-order', 'mastra-memory', 31);
+      await store.recordDeletionReceipt('i-order', 'memory-store', 30);
+      await store.recordDeletionReceipt('i-order', 'memory-store', 31);
       expect((await store.getDeletionIntent('i-order'))?.receipts).toEqual([
         { step: 'application-domain', at: 20 },
-        { step: 'mastra-memory', at: 30 },
+        { step: 'memory-store', at: 30 },
       ]);
     } finally {
       store.close();

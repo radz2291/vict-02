@@ -332,7 +332,7 @@ export function createSqliteAgentGovernanceStore(
           // Receipt order mirrors the governed execution order (shared with
           // the in-memory store): the memory receipt requires the
           // application-domain receipt.
-          if (step === 'mastra-memory') {
+          if (step === 'memory-store') {
             const domainReceipt = db
               .prepare(
                 'SELECT step FROM vict_agent_deletion_receipt WHERE intent_id = ? AND step = ?;',

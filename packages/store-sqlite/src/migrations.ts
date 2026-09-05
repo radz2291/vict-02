@@ -298,6 +298,34 @@ export const SCHEMA_MIGRATIONS: readonly Migration[] = [
       );`,
     ],
   },
+  {
+    // Stage 06A Linux-closure correction: the deletion-step data literal
+    // 'mastra-memory' was renamed to the implementation-neutral
+    // 'memory-store' in every neutral type and emitted declaration. This
+    // is a DELIBERATE, DOCUMENTED one-time migration of pre-verification
+    // Stage 06A records — persisted receipt values are never silently
+    // reinterpreted: the rebuild copies every row exactly once, rewriting
+    // ONLY the step literal ('mastra-memory' → 'memory-store'), and
+    // preserves receipt identity (intent_id, step) and deterministic
+    // receipt ordering (ORDER BY step ASC keeps 'application-domain' first
+    // before and after the rename). A receipt value is never dropped or
+    // re-typed; databases that never stored the old literal are unchanged.
+    version: 4,
+    name: 'agent-governance-neutral-memory-store-step',
+    statements: [
+      `CREATE TABLE vict_agent_deletion_receipt_new (
+        intent_id TEXT NOT NULL REFERENCES vict_agent_deletion_intent(intent_id),
+        step TEXT NOT NULL CHECK (step IN ('application-domain', 'memory-store')),
+        at TEXT NOT NULL,
+        PRIMARY KEY (intent_id, step)
+      );`,
+      `INSERT INTO vict_agent_deletion_receipt_new (intent_id, step, at)
+        SELECT intent_id, CASE step WHEN 'mastra-memory' THEN 'memory-store' ELSE step END, at
+        FROM vict_agent_deletion_receipt;`,
+      `DROP TABLE vict_agent_deletion_receipt;`,
+      `ALTER TABLE vict_agent_deletion_receipt_new RENAME TO vict_agent_deletion_receipt;`,
+    ],
+  },
 ];
 
 /** The highest schema version this adapter understands. */

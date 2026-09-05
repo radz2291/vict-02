@@ -146,7 +146,7 @@ describe('agent governance store — sqlite', () => {
       expect(read?.receipts).toEqual([{ step: 'application-domain', at: 200 }]);
       expect(await store.listOpenDeletionIntents()).toHaveLength(1);
       await store.updateDeletionIntentState(intent.intentId, 'application-domain-deleted');
-      await store.recordDeletionReceipt(intent.intentId, 'mastra-memory', 300);
+      await store.recordDeletionReceipt(intent.intentId, 'memory-store', 300);
       await store.updateDeletionIntentState(intent.intentId, 'completed');
       expect(await store.listOpenDeletionIntents()).toHaveLength(0);
     } finally {

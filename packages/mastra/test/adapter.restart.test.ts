@@ -169,7 +169,7 @@ describe('fresh-process restart evidence (real subprocess boundaries)', () => {
       expect(resumeResult.intentState).toBe('completed');
       // Exactly one receipt per step: the domain receipt from before the
       // crash was NOT duplicated by the recovery.
-      expect(resumeResult.receipts).toEqual(['application-domain', 'mastra-memory']);
+      expect(resumeResult.receipts).toEqual(['application-domain', 'memory-store']);
       expect(resumeResult.remainingMessages).toBe(0);
     },
   );

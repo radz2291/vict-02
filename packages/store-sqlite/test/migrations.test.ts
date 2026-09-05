@@ -8,6 +8,7 @@ import {
   createSqliteStores,
   openDatabase,
   readSchemaVersion,
+  runMigrations,
   CURRENT_SCHEMA_VERSION,
 } from '@vict/store-sqlite';
 import { SCHEMA_MIGRATIONS } from '@vict/store-sqlite';
@@ -19,6 +20,89 @@ import { SCHEMA_MIGRATIONS } from '@vict/store-sqlite';
  * partially applied migration.
  */
 describe('sqlite schema migrations', () => {
+  it('migration 4 renames the pre-verification deletion-step literal deterministically (mastra-memory → memory-store)', async () => {
+    const dir = await mkdtemp(join(tmpdir(), 'vict-mig-v4-'));
+    try {
+      const path = join(dir, 'v4.db');
+      // Build a PRE-VERIFICATION Stage 06A database by applying only
+      // migrations 1–3 (the schema that still contains the 'mastra-memory'
+      // receipt literal), then record real deletion progress in it.
+      {
+        const handle = openDatabase({ path });
+        const db = handle.db;
+        try {
+          runMigrations(db, { migrations: SCHEMA_MIGRATIONS.slice(0, 3) });
+          db.prepare(
+            "INSERT INTO vict_agent_deletion_intent (intent_id, conversation_id, actor_id, state, created_at, updated_at) VALUES ('i-v4', 'conv-v4', 'actor-v4', 'application-domain-deleted', '2026-01-01T00:00:00.000Z', '2026-01-01T00:00:01.000Z');",
+          ).run();
+          db.prepare(
+            "INSERT INTO vict_agent_deletion_receipt (intent_id, step, at) VALUES ('i-v4', 'application-domain', '2026-01-01T00:00:00.500Z');",
+          ).run();
+          db.prepare(
+            "INSERT INTO vict_agent_deletion_receipt (intent_id, step, at) VALUES ('i-v4', 'mastra-memory', '2026-01-01T00:00:02.000Z');",
+          ).run();
+        } finally {
+          handle.close();
+        }
+      }
+      // Reopening runs migration 4 and brings the database to the current
+      // schema version.
+      const stores = createSqliteStores({ path });
+      try {
+        const db = new DatabaseSync(path);
+        try {
+          expect(readSchemaVersion(db)).toBe(CURRENT_SCHEMA_VERSION);
+          // The receipt VALUES were migrated deliberately and exactly:
+          // same intent, same timestamps, renamed step literal — and the
+          // deterministic receipt ordering (application-domain first) is
+          // preserved by the alphabetical step order.
+          const receipts = db
+            .prepare(
+              'SELECT intent_id, step, at FROM vict_agent_deletion_receipt ORDER BY step ASC;',
+            )
+            .all() as unknown as Array<{ intent_id: string; step: string; at: string }>;
+          expect(receipts).toEqual([
+            { intent_id: 'i-v4', step: 'application-domain', at: '2026-01-01T00:00:00.500Z' },
+            { intent_id: 'i-v4', step: 'memory-store', at: '2026-01-01T00:00:02.000Z' },
+          ]);
+          // The intent record itself is untouched by the token migration.
+          const intent = db
+            .prepare(
+              'SELECT intent_id, conversation_id, actor_id, state, created_at, updated_at FROM vict_agent_deletion_intent WHERE intent_id = ?;',
+            )
+            .get('i-v4') as unknown as Record<string, string>;
+          expect(intent).toEqual({
+            intent_id: 'i-v4',
+            conversation_id: 'conv-v4',
+            actor_id: 'actor-v4',
+            state: 'application-domain-deleted',
+            created_at: '2026-01-01T00:00:00.000Z',
+            updated_at: '2026-01-01T00:00:01.000Z',
+          });
+          // The OLD literal is now OUTSIDE the accepted step domain: the
+          // CHECK constraint rejects it (fail closed, no silent
+          // reinterpretation of legacy values in new writes).
+          db.prepare(
+            "INSERT INTO vict_agent_deletion_intent (intent_id, conversation_id, actor_id, state, created_at, updated_at) VALUES ('i-v4b', 'conv-v4b', 'actor-v4b', 'pending', '2026-01-01T00:00:03.000Z', '2026-01-01T00:00:03.000Z');",
+          ).run();
+          expect(() =>
+            db
+              .prepare(
+                "INSERT INTO vict_agent_deletion_receipt (intent_id, step, at) VALUES ('i-v4b', 'mastra-memory', '2026-01-01T00:00:04.000Z');",
+              )
+              .run(),
+          ).toThrow();
+        } finally {
+          db.close();
+        }
+      } finally {
+        await stores.dispose();
+      }
+    } finally {
+      await retryRm(dir);
+    }
+  });
+
   it('migrates a fresh database to the current version', async () => {
     const dir = await mkdtemp(join(tmpdir(), 'vict-mig-'));
     try {

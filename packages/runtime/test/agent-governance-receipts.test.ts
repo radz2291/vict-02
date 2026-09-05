@@ -105,7 +105,7 @@ function deletionReceiptConformance(
         );
         // The memory receipt alone can never exist without the domain
         // receipt — and with both, completion succeeds.
-        await store.recordDeletionReceipt('intent-both', 'mastra-memory', 20);
+        await store.recordDeletionReceipt('intent-both', 'memory-store', 20);
         await store.updateDeletionIntentState('intent-both', 'completed');
         expect((await store.getDeletionIntent('intent-both'))?.state).toBe('completed');
       } finally {
@@ -125,7 +125,7 @@ function deletionReceiptConformance(
           receipts: [],
         });
         await store.recordDeletionReceipt('intent-idem', 'application-domain', 10);
-        await store.recordDeletionReceipt('intent-idem', 'mastra-memory', 20);
+        await store.recordDeletionReceipt('intent-idem', 'memory-store', 20);
         // Same-state updates are idempotent no-ops.
         await store.updateDeletionIntentState('intent-idem', 'pending');
         await store.updateDeletionIntentState('intent-idem', 'application-domain-deleted');
@@ -138,7 +138,7 @@ function deletionReceiptConformance(
         await expect(store.updateDeletionIntentState('intent-idem', 'pending')).rejects.toThrow();
         expect(record?.receipts.map((receipt) => receipt.step)).toEqual([
           'application-domain',
-          'mastra-memory',
+          'memory-store',
         ]);
       } finally {
         await store.close?.();
@@ -225,7 +225,7 @@ describe('valid receipt-backed deletion and recovery still succeed on both adapt
         expect(record?.state).toBe('completed');
         expect(record?.receipts.map((receipt) => receipt.step)).toEqual([
           'application-domain',
-          'mastra-memory',
+          'memory-store',
         ]);
         // Re-deletion is a no-op (idempotent, no store touches).
         deleted.length = 0;
@@ -280,11 +280,34 @@ describe('deletion intent records keep their receipt ordering', () => {
       receipts: [],
     });
     await store.recordDeletionReceipt('i', 'application-domain', 2);
-    await store.recordDeletionReceipt('i', 'mastra-memory', 1);
+    await store.recordDeletionReceipt('i', 'memory-store', 1);
     const record: AgentDeletionIntentRecord | undefined = await store.getDeletionIntent('i');
     expect(record?.receipts.map((receipt) => receipt.step)).toEqual([
       'application-domain',
-      'mastra-memory',
+      'memory-store',
     ]);
+  });
+
+  it('unknown receipt steps are rejected at the in-memory durable boundary (parity with the SQLite CHECK)', async () => {
+    const store = new InMemoryAgentGovernanceStore();
+    await store.recordDeletionIntent({
+      intentId: 'i-domain',
+      conversationId: 'c',
+      actorId: 'a',
+      createdAt: 0,
+      state: 'pending',
+      receipts: [],
+    });
+    // The former pre-verification literal is no longer in the governed
+    // step domain, and neither is any arbitrary token.
+    await expect(
+      store.recordDeletionReceipt('i-domain', 'mastra-memory' as never, 1),
+    ).rejects.toThrow(/VICT_AGENT_DELETION_RECEIPT_STEP_INVALID/);
+    await expect(
+      store.recordDeletionReceipt('i-domain', 'made-up-step' as never, 2),
+    ).rejects.toThrow(/VICT_AGENT_DELETION_RECEIPT_STEP_INVALID/);
+    // The rejections left the record untouched.
+    const record: AgentDeletionIntentRecord | undefined = await store.getDeletionIntent('i-domain');
+    expect(record?.receipts).toEqual([]);
   });
 });
