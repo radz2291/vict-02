@@ -42,16 +42,19 @@ export {
 export type {
   DeterministicOfflineModel,
   OfflineModelRecord,
+  OfflineModelRecordedCallOptions,
   OfflineModelScript,
   OfflineModelStep,
   OfflineModelTextStep,
   OfflineModelToolCallStep,
+  OfflineModelToolChainStep,
   OfflineModelThrowStep,
 } from './offline-model.js';
 
 // ---- The ProductAgentPort implementation ------------------------------------
-export { MastraProductAgent } from './adapter.js';
+export { GUARDRAIL_REJECTED_CODE, MastraProductAgent, VictMastraAdapterError } from './adapter.js';
 export type {
+  MastraAdapterErrorCode,
   MastraAdapterMetadata,
   MastraProductAgentConfig,
   MastraTracingPolicy,
@@ -67,7 +70,9 @@ export type { HelperToolFailure, HelperToolFailureCode } from './helper-tools.js
 
 // ---- Dedicated storage (MSTR-003, §8.2 envelope) ----------------------------
 export {
+  assertPlainStoreFileName,
   createDedicatedMastraStore,
+  MAX_RETENTION_AGE_MS,
   resolveProtectedStoreDir,
   restrictStorePathPermissions,
   VictMastraStorageError,
@@ -78,6 +83,8 @@ export type { DedicatedMastraStore, DedicatedMastraStoreOptions } from './storag
 export {
   MastraConversationExportPort,
   MastraMemoryDeletionPort,
+  MastraThreadCoordinator,
+  MastraThreadFenceError,
   conversationIdForThreadId,
   executeMemoryPrune,
   mastraResourceIdForActor,

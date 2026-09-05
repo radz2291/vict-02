@@ -1,5 +1,5 @@
-import { mkdirSync, chmodSync } from 'node:fs';
-import { isAbsolute, resolve, dirname } from 'node:path';
+import { mkdirSync, chmodSync, realpathSync } from 'node:fs';
+import { isAbsolute, resolve, dirname, sep } from 'node:path';
 import { LibSQLStore } from '@mastra/libsql';
 
 /**
@@ -99,19 +99,47 @@ export class VictMastraStorageError extends Error {
   readonly code:
     | 'VICT_MASTRA_STORAGE_PATH_INVALID'
     | 'VICT_MASTRA_STORAGE_PATH_TRAVERSAL'
-    | 'VICT_MASTRA_STORAGE_PUBLIC_ROOT';
+    | 'VICT_MASTRA_STORAGE_PUBLIC_ROOT'
+    | 'VICT_MASTRA_STORAGE_PATH_ESCAPE'
+    | 'VICT_MASTRA_STORAGE_RETENTION_INVALID';
 
   constructor(
     code:
       | 'VICT_MASTRA_STORAGE_PATH_INVALID'
       | 'VICT_MASTRA_STORAGE_PATH_TRAVERSAL'
-      | 'VICT_MASTRA_STORAGE_PUBLIC_ROOT',
+      | 'VICT_MASTRA_STORAGE_PUBLIC_ROOT'
+      | 'VICT_MASTRA_STORAGE_PATH_ESCAPE'
+      | 'VICT_MASTRA_STORAGE_RETENTION_INVALID',
     message: string,
   ) {
     super(message);
     this.name = 'VictMastraStorageError';
     this.code = code;
   }
+}
+
+/**
+ * Validate an EXPLICIT retention bound (MSTR-011: retention is always
+ * explicit and bounded — unbounded silent persistence is forbidden).
+ * Values must be positive finite integers within the documented limit of
+ * ten years (3650 days in milliseconds).
+ */
+export const MAX_RETENTION_AGE_MS = 3_153_600_000_000;
+
+function assertRetentionBound(value: unknown, what: string): number {
+  if (
+    typeof value !== 'number' ||
+    !Number.isFinite(value) ||
+    !Number.isInteger(value) ||
+    value <= 0 ||
+    value > MAX_RETENTION_AGE_MS
+  ) {
+    throw new VictMastraStorageError(
+      'VICT_MASTRA_STORAGE_RETENTION_INVALID',
+      `${what} must be a positive finite integer of at most ${MAX_RETENTION_AGE_MS} ms (ten years); unbounded retention is never accepted.`,
+    );
+  }
+  return value;
 }
 
 /**
@@ -138,17 +166,23 @@ export interface DedicatedMastraStoreOptions {
    * Defaults to a `mastra` directory inside `dataDir`.
    */
   readonly dataDir: string;
-  /** Explicit database file name. Default `mastra-store.db`. */
+  /**
+   * Explicit database file name. MUST be a plain basename (default
+   * `mastra-store.db`): separators, drive prefixes, dot segments, NULs,
+   * and traversal are rejected, and the resolved path is proven to remain
+   * inside the dedicated store directory.
+   */
   readonly fileName?: string;
   /**
-   * Explicit retention bounds (MSTR-011: retention is always EXPLICIT).
-   * Ages are milliseconds; the adapter maps them onto the pinned store's
-   * retention policies.
+   * EXPLICIT retention bounds (MSTR-011). Every bound is required and is
+   * validated as a positive finite integer within the documented limit —
+   * unbounded silent persistence is forbidden. Ages are milliseconds; the
+   * adapter maps them onto the pinned store's retention policies.
    */
-  readonly retention?: {
-    readonly messagesMaxAgeMs?: number;
-    readonly threadsMaxAgeMs?: number;
-    readonly spansMaxAgeMs?: number;
+  readonly retention: {
+    readonly messagesMaxAgeMs: number;
+    readonly threadsMaxAgeMs: number;
+    readonly spansMaxAgeMs: number;
   };
 }
 
@@ -164,15 +198,95 @@ export interface DedicatedMastraStore {
 }
 
 /**
+ * Validate a store file name as a PLAIN BASENAME. Rejected: empty names,
+ * path separators (both POSIX and Windows forms, on every platform),
+ * drive prefixes, dot segments, NUL bytes, traversal, trailing dots/spaces
+ * (Windows resolution quirk), and over-long names. The only accepted shape
+ * is a single path segment such as `mastra-store.db`.
+ */
+export function assertPlainStoreFileName(fileName: string): string {
+  const invalid =
+    typeof fileName !== 'string' ||
+    fileName.length === 0 ||
+    fileName.length > 128 ||
+    fileName.includes('/') ||
+    fileName.includes('\\') ||
+    fileName.includes('\0') ||
+    fileName === '.' ||
+    fileName === '..' ||
+    fileName.startsWith('.') ||
+    /^[A-Za-z]:/.test(fileName) ||
+    fileName.endsWith('.') ||
+    fileName.endsWith(' ');
+  if (invalid) {
+    throw new VictMastraStorageError(
+      'VICT_MASTRA_STORAGE_PATH_INVALID',
+      'The store file name must be a plain basename without separators, drive prefixes, dot segments, NUL bytes, or traversal.',
+    );
+  }
+  return fileName;
+}
+
+/**
+ * Prove the database file remains INSIDE the dedicated store directory:
+ * the resolved parent must be the store directory itself, and after the
+ * store initializes, the file's REAL path (symlinks and junctions
+ * resolved) must still live within the store directory's REAL path. An
+ * escape — a swapped symlink, a junction, any redirection — fails closed.
+ */
+function assertDatabaseContained(
+  databasePath: string,
+  storeDir: string,
+  containmentRoot: string,
+): void {
+  // Compare NORMALIZED absolute forms (Windows may mix separators in the
+  // composed storeDir string).
+  if (dirname(resolve(databasePath)) !== resolve(storeDir)) {
+    throw new VictMastraStorageError(
+      'VICT_MASTRA_STORAGE_PATH_ESCAPE',
+      'The resolved database path escaped the dedicated store directory.',
+    );
+  }
+  let realFile: string;
+  let realRoot: string;
+  try {
+    realFile = realpathSync(databasePath);
+    realRoot = realpathSync(containmentRoot);
+  } catch (error) {
+    throw new VictMastraStorageError(
+      'VICT_MASTRA_STORAGE_PATH_ESCAPE',
+      `The database path could not be proven contained (realpath failed: ${error instanceof Error ? error.name : 'unknown'}).`,
+    );
+  }
+  // The REAL path (symlinks and junctions resolved) must remain inside the
+  // REAL composition-owned root. A store directory redirected by a symlink
+  // or junction to somewhere outside the composition data dir fails this
+  // proof even though the naive resolved path looked contained.
+  const contained =
+    realFile === realRoot ||
+    realFile.startsWith(realRoot.endsWith(sep) ? realRoot : realRoot + sep);
+  if (!contained) {
+    throw new VictMastraStorageError(
+      'VICT_MASTRA_STORAGE_PATH_ESCAPE',
+      'The database file resolved outside the composition-owned data directory (symlink or junction escape); refusing the store.',
+    );
+  }
+}
+
+/**
  * Compose the dedicated file-backed Mastra store. The URL is a `file:`
  * URL (the pinned LibSQLStore zero-service local path). The database is
  * physically distinct from VICT operational and application-domain SQLite
  * files: a dedicated directory inside the composition-owned data dir.
  *
+ * Retention bounds are REQUIRED and validated (positive finite integers
+ * within the documented limit): the composed store never persists without
+ * explicit bounds.
+ *
  * The returned store is FULLY INITIALIZED: the memory and observability
- * domains have applied their schema before the promise resolves, so no
- * later operation races a lazy in-flight migration (close/reopen and
- * fresh-process fixtures rely on this).
+ * domains have applied their schema before the promise resolves, and the
+ * database file has been proven (real path) to remain inside the dedicated
+ * store directory — symlink/junction escapes fail closed.
  */
 export async function createDedicatedMastraStore(
   options: DedicatedMastraStoreOptions,
@@ -180,38 +294,53 @@ export async function createDedicatedMastraStore(
   const dir = resolveProtectedStoreDir({ dataDir: options.dataDir });
   const storeDir = `${dir}${dir.endsWith('/') || dir.endsWith('\\') ? '' : '/'}mastra`;
   mkdirSync(storeDir, { recursive: true });
-  const fileName = options.fileName ?? 'mastra-store.db';
+  const fileName = assertPlainStoreFileName(options.fileName ?? 'mastra-store.db');
   const databasePath = resolve(storeDir, fileName);
 
-  const retention: Record<string, Record<string, { maxAge: string }>> = {};
-  if (options.retention?.messagesMaxAgeMs !== undefined) {
-    retention.memory = {
-      ...retention.memory,
-      messages: { maxAge: `${options.retention.messagesMaxAgeMs}ms` },
-    };
-  }
-  if (options.retention?.threadsMaxAgeMs !== undefined) {
-    retention.memory = {
-      ...retention.memory,
-      threads: { maxAge: `${options.retention.threadsMaxAgeMs}ms` },
-    };
-  }
-  if (options.retention?.spansMaxAgeMs !== undefined) {
-    retention.observability = {
-      ...retention.observability,
-      spans: { maxAge: `${options.retention.spansMaxAgeMs}ms` },
-    };
-  }
+  // Retention is REQUIRED and bounded (MSTR-011).
+  const messagesMaxAgeMs = assertRetentionBound(
+    options.retention?.messagesMaxAgeMs,
+    'The messages retention bound',
+  );
+  const threadsMaxAgeMs = assertRetentionBound(
+    options.retention?.threadsMaxAgeMs,
+    'The threads retention bound',
+  );
+  const spansMaxAgeMs = assertRetentionBound(
+    options.retention?.spansMaxAgeMs,
+    'The spans retention bound',
+  );
+  const retention: Record<string, Record<string, { maxAge: string }>> = {
+    memory: {
+      messages: { maxAge: `${messagesMaxAgeMs}ms` },
+      threads: { maxAge: `${threadsMaxAgeMs}ms` },
+    },
+    observability: { spans: { maxAge: `${spansMaxAgeMs}ms` } },
+  };
 
   const store = new LibSQLStore({
     id: 'vict-mastra-store',
     url: `file:${databasePath}`,
-    ...(Object.keys(retention).length > 0 ? { retention: retention as never } : {}),
+    retention: retention as never,
   });
 
   // Eager, awaited initialization: schema exists before any caller
   // proceeds (turn execution, close/reopen, fresh-process restoration).
   await store.init();
+  // Containment proof AFTER creation: a pre-planted symlink/junction (or
+  // any redirection) is resolved through realpath against the REAL
+  // composition-owned root — an escaped database fails closed and the
+  // store is closed before the error propagates.
+  try {
+    assertDatabaseContained(databasePath, storeDir, dir);
+  } catch (error) {
+    try {
+      await store.close();
+    } catch {
+      // the escape failure is primary; close errors never mask it
+    }
+    throw error;
+  }
   const memoryDomain = await store.getStore('memory');
   if (memoryDomain === undefined) {
     throw new VictMastraStorageError(

@@ -28,6 +28,13 @@ import { validProfileInput } from './fixtures.js';
  * memory persists in the dedicated store, and lifecycle operations work.
  */
 
+/** Bounded explicit retention shared by these fixtures (required, MSTR-011). */
+const TEST_RETENTION = {
+  messagesMaxAgeMs: 3_600_000,
+  threadsMaxAgeMs: 86_400_000,
+  spansMaxAgeMs: 3_600_000,
+} as const;
+
 const tempDirs: string[] = [];
 const closers: Array<() => Promise<void>> = [];
 const tempDir = (prefix: string): string => {
@@ -119,7 +126,13 @@ function helperToolArtifact(): AgentArtifact {
 function guardrailArtifact(
   check: (text: string) => { readonly ok: true } | { readonly ok: false; readonly code: string },
 ): AgentArtifact {
-  return { kind: 'guardrail', id: 'guardrail.length', revision: '1', check };
+  return {
+    kind: 'guardrail',
+    id: 'guardrail.length',
+    revision: '1',
+    check,
+    failureCodes: ['RESPONSE_TOO_LONG'],
+  };
 }
 
 interface Composition {
@@ -140,9 +153,9 @@ type ComposeOptions = Parameters<typeof createDeterministicOfflineModel>[0] & {
 };
 async function compose(options?: ComposeOptions): Promise<Composition> {
   const dir = options?.dir ?? tempDir('vict-mastra-e2e-');
-  const dedicated = await createDedicatedMastraStore({ dataDir: dir });
+  const dedicated = await createDedicatedMastraStore({ dataDir: dir, retention: TEST_RETENTION });
   closers.push(() => dedicated.close());
-  const registry = new AgentProfileRegistry();
+  const registry = new AgentProfileRegistry({ resolveCapabilityRevision: () => true });
 
   const artifacts: AgentArtifact[] = [
     {
@@ -287,7 +300,7 @@ describe('Mastra adapter end-to-end (real pinned Mastra Agent, offline)', () => 
 
     expect(existsSync(first.databasePath)).toBe(true);
     // Fresh store over the same file (fresh-process persistence model).
-    const reopened = await createDedicatedMastraStore({ dataDir: dir });
+    const reopened = await createDedicatedMastraStore({ dataDir: dir, retention: TEST_RETENTION });
     closers.push(() => reopened.close());
     const domain = await reopened.store.getStore('memory');
     const messages = await domain!.listMessages({ threadId: 'vict-conv-conv-9' });
@@ -388,10 +401,10 @@ describe('Mastra adapter end-to-end (real pinned Mastra Agent, offline)', () => 
     const dir = tempDir('vict-mastra-prune-');
     const dedicated = await createDedicatedMastraStore({
       dataDir: dir,
-      retention: { messagesMaxAgeMs: 10_000 },
+      retention: { messagesMaxAgeMs: 10_000, threadsMaxAgeMs: 20_000, spansMaxAgeMs: 10_000 },
     });
     closers.push(() => dedicated.close());
-    const registry = new AgentProfileRegistry();
+    const registry = new AgentProfileRegistry({ resolveCapabilityRevision: () => true });
     registry.installArtifacts([
       {
         kind: 'instructions',

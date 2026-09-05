@@ -34,13 +34,29 @@ export interface OfflineModelToolCallStep {
   readonly thenText: string;
 }
 
+/**
+ * A scripted CHAIN of tool calls: the fixture requests the first call whose
+ * tool name does not yet have a result in the prompt; once every call has a
+ * result it produces `thenText`. This drives deterministic multi-tool turns
+ * (maxToolCalls enforcement, per-turn budget scoping).
+ */
+export interface OfflineModelToolChainStep {
+  readonly kind: 'tool-chain';
+  readonly calls: ReadonlyArray<{
+    readonly toolName: string;
+    readonly args: Record<string, unknown>;
+  }>;
+  readonly thenText: string;
+}
+
 /** A scripted plain-text response. */
 export interface OfflineModelTextStep {
   readonly kind: 'text';
   readonly text: string;
 }
 
-export type OfflineModelStep = OfflineModelTextStep | OfflineModelToolCallStep;
+export type OfflineModelStep =
+  OfflineModelTextStep | OfflineModelToolCallStep | OfflineModelToolChainStep;
 
 /** A scripted throw: the fixture fails the stream with a canary-bearing error. */
 export interface OfflineModelThrowStep {
@@ -187,6 +203,7 @@ export function createDeterministicOfflineModel(options?: {
   const script = options?.script ?? {};
   const throwOnStep = options?.throwOnStep;
   let invocations = 0;
+  const recordedOptions: OfflineModelRecordedCallOptions[] = [];
 
   const model: DeterministicOfflineModel & OfflineModelRecord = {
     specificationVersion: 'v2' as const,
@@ -195,8 +212,10 @@ export function createDeterministicOfflineModel(options?: {
     supportedUrls: {} as Record<string, never>,
     providerModelIdentity: OFFLINE_MODEL_IDENTITY,
     invocationCount: () => invocations,
+    recordedCallOptions: () => recordedOptions,
     async doGenerate(callOptions: { readonly prompt: readonly FixturePromptMessage[] }) {
       invocations += 1;
+      recordedOptions.push(recordCallOptions(callOptions));
       const step: OfflineModelStep | OfflineModelThrowStep = script[
         lastUserText(callOptions.prompt)
       ] ?? { kind: 'text' as const, text: '' };
@@ -213,6 +232,7 @@ export function createDeterministicOfflineModel(options?: {
     },
     async doStream(callOptions: { readonly prompt: readonly FixturePromptMessage[] }) {
       invocations += 1;
+      recordedOptions.push(recordCallOptions(callOptions));
       const step: OfflineModelStep | OfflineModelThrowStep = script[
         lastUserText(callOptions.prompt)
       ] ?? { kind: 'text' as const, text: '' };
@@ -234,10 +254,38 @@ export function createDeterministicOfflineModel(options?: {
   return model;
 }
 
+/** Record only the generation-setting fields — never prompt payloads. */
+function recordCallOptions(callOptions: unknown): OfflineModelRecordedCallOptions {
+  const source = callOptions as {
+    temperature?: unknown;
+    topP?: unknown;
+    maxOutputTokens?: unknown;
+    maxRetries?: unknown;
+  };
+  const pick = (key: 'temperature' | 'topP' | 'maxOutputTokens' | 'maxRetries'): unknown =>
+    source[key] === undefined ? undefined : source[key];
+  return {
+    ...(pick('temperature') !== undefined ? { temperature: pick('temperature') } : {}),
+    ...(pick('topP') !== undefined ? { topP: pick('topP') } : {}),
+    ...(pick('maxOutputTokens') !== undefined ? { maxOutputTokens: pick('maxOutputTokens') } : {}),
+    ...(pick('maxRetries') !== undefined ? { maxRetries: pick('maxRetries') } : {}),
+  };
+}
+
+/** The generation-relevant call options recorded from one model invocation. */
+export interface OfflineModelRecordedCallOptions {
+  readonly temperature?: unknown;
+  readonly topP?: unknown;
+  readonly maxOutputTokens?: unknown;
+  readonly maxRetries?: unknown;
+}
+
 /** Recorded fixture metadata for the run snapshot. */
 export interface OfflineModelRecord {
   readonly providerModelIdentity: string;
   invocationCount(): number;
+  /** The generation settings the pinned boundary passed to each invocation. */
+  recordedCallOptions(): readonly OfflineModelRecordedCallOptions[];
 }
 
 async function enqueueScript(
@@ -274,23 +322,28 @@ async function enqueueScript(
     }
 
     if (step.kind === 'tool-call' && !promptHasToolResult(prompt, step.toolName)) {
-      const toolCallId = `offline-call-${step.toolName}`;
-      controller.enqueue({ type: 'tool-input-start', id: toolCallId, toolName: step.toolName });
-      const inputJson = JSON.stringify(step.args);
-      controller.enqueue({ type: 'tool-input-delta', id: toolCallId, delta: inputJson });
-      controller.enqueue({ type: 'tool-input-end', id: toolCallId });
-      controller.enqueue({
-        type: 'tool-call',
-        toolCallId,
-        toolName: step.toolName,
-        input: inputJson,
-      });
+      enqueueToolCall(controller, step.toolName, step.args);
       controller.enqueue({ type: 'finish', finishReason: 'tool-calls', usage: OFFLINE_USAGE });
       controller.close();
       return;
     }
 
-    const text = step.kind === 'tool-call' ? step.thenText : step.text;
+    if (step.kind === 'tool-chain') {
+      const pending = step.calls.find((call) => !promptHasToolResult(prompt, call.toolName));
+      if (pending !== undefined) {
+        enqueueToolCall(controller, pending.toolName, pending.args);
+        controller.enqueue({ type: 'finish', finishReason: 'tool-calls', usage: OFFLINE_USAGE });
+        controller.close();
+        return;
+      }
+    }
+
+    const text =
+      step.kind === 'tool-call'
+        ? step.thenText
+        : step.kind === 'tool-chain'
+          ? step.thenText
+          : step.text;
     controller.enqueue({ type: 'text-start', id: 'offline-text-1' });
     // Split deterministically into two deltas to prove ordering.
     const split = Math.ceil(text.length / 2);
@@ -305,6 +358,19 @@ async function enqueueScript(
   }
 }
 
+function enqueueToolCall(
+  controller: ReadableStreamDefaultController<FixtureStreamPart>,
+  toolName: string,
+  args: Record<string, unknown>,
+): void {
+  const toolCallId = `offline-call-${toolName}`;
+  controller.enqueue({ type: 'tool-input-start', id: toolCallId, toolName });
+  const inputJson = JSON.stringify(args);
+  controller.enqueue({ type: 'tool-input-delta', id: toolCallId, delta: inputJson });
+  controller.enqueue({ type: 'tool-input-end', id: toolCallId });
+  controller.enqueue({ type: 'tool-call', toolCallId, toolName, input: inputJson });
+}
+
 function renderStep(
   step: OfflineModelStep | OfflineModelThrowStep,
   prompt: readonly FixturePromptMessage[],
@@ -314,6 +380,11 @@ function renderStep(
   }
   if (step.kind === 'throw') {
     return '';
+  }
+  if (step.kind === 'tool-chain') {
+    return step.calls.every((call) => promptHasToolResult(prompt, call.toolName))
+      ? step.thenText
+      : '';
   }
   return promptHasToolResult(prompt, step.toolName) ? step.thenText : '';
 }

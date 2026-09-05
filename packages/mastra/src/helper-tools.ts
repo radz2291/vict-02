@@ -33,11 +33,29 @@ import type {
 export type HelperToolFailureCode =
   | 'VICT_HELPER_INPUT_CONTRACT_REJECTED'
   | 'VICT_HELPER_OUTPUT_CONTRACT_REJECTED'
-  | 'VICT_HELPER_EXECUTION_FAILED';
+  | 'VICT_HELPER_EXECUTION_FAILED'
+  | 'VICT_HELPER_TOOL_LIMIT_EXCEEDED';
 
 /** The result shape returned to the model for a failed helper invocation. */
 export interface HelperToolFailure {
   readonly victHelperFailure: HelperToolFailureCode;
+}
+
+/**
+ * Per-turn tool-budget gate (adapter-supplied). `'allowed'` consumes one
+ * call from the current turn's budget; `'denied'` blocks the invocation
+ * before the implementation is reached (and before any contract work).
+ * `'outside-turn'` means no active turn scope exists in this async context.
+ */
+export type HelperToolGateVerdict = 'allowed' | 'denied' | 'outside-turn';
+
+/** Sanitize one contract issue list into the stable non-echoing form: raw
+ * issue messages, payload-derived paths, expected/received values, and any
+ * extra properties NEVER propagate past this boundary. */
+function sanitizeContractIssues(
+  issues: ReadonlyArray<{ readonly path?: string; readonly message: string }>,
+): ReadonlyArray<{ readonly message: string }> {
+  return issues.length > 0 ? [{ message: 'vict-contract-rejected' }] : [];
 }
 
 /**
@@ -53,12 +71,23 @@ function standardSchemaFromNeutral(io: AgentHelperToolIO): unknown {
       version: 1,
       vendor: 'vict.contract',
       validate: (value: unknown) => {
-        const result = io.parse(value);
+        let result: ReturnType<AgentHelperToolIO['parse']>;
+        try {
+          result = io.parse(value);
+        } catch {
+          // A throwing parser is untrusted author code: its message and
+          // any nested cause are never retained or surfaced.
+          return {
+            issues: [{ message: 'vict-contract-rejected' }],
+          } as const;
+        }
         if (result.ok) {
           return { value: result.value } as const;
         }
+        // Shared contract-issue sanitizer: one stable message, no paths,
+        // no expected/received values, no extra properties.
         return {
-          issues: result.issues.map((issue) => ({ message: issue.message, path: issue.path })),
+          issues: sanitizeContractIssues(result.issues),
         } as const;
       },
       jsonSchema: {
@@ -82,6 +111,7 @@ function standardSchemaFromNeutral(io: AgentHelperToolIO): unknown {
  */
 export function bridgeHelperToolToMastra(
   artifact: AgentArtifactBinding<AgentHelperToolArtifact>,
+  gate?: () => HelperToolGateVerdict,
 ): unknown {
   const definition = artifact.artifact.definition;
   const inputIo = definition.input;
@@ -94,9 +124,36 @@ export function bridgeHelperToolToMastra(
     inputSchema: standardSchemaFromNeutral(inputIo),
     outputSchema: standardSchemaFromNeutral(outputIo),
     execute: async (inputData: unknown): Promise<unknown> => {
+      // 0. Per-turn tool budget gate: the current turn's remaining tool
+      // budget is consumed BEFORE any contract or implementation work. A
+      // denied (or out-of-scope) invocation NEVER reaches the
+      // implementation — `maxToolCalls: 0` prevents every invocation, and
+      // higher limits stop before invocation number `limit + 1`.
+      if (gate !== undefined) {
+        let verdict: HelperToolGateVerdict;
+        try {
+          verdict = gate();
+        } catch {
+          verdict = 'outside-turn';
+        }
+        if (verdict !== 'allowed') {
+          return {
+            victHelperFailure: 'VICT_HELPER_TOOL_LIMIT_EXCEEDED',
+          } satisfies HelperToolFailure;
+        }
+      }
       // 1. Authoritative VICT contract validation BEFORE invocation —
-      // contract-invalid input never invokes the implementation.
-      const parsedInput = inputIo.parse(inputData);
+      // contract-invalid input never invokes the implementation. A
+      // THROWING parser becomes the same sanitized structured failure; no
+      // raw issue message, path, or nested cause is ever read.
+      let parsedInput: ReturnType<AgentHelperToolIO['parse']>;
+      try {
+        parsedInput = inputIo.parse(inputData);
+      } catch {
+        return {
+          victHelperFailure: 'VICT_HELPER_INPUT_CONTRACT_REJECTED',
+        } satisfies HelperToolFailure;
+      }
       if (!parsedInput.ok) {
         return {
           victHelperFailure: 'VICT_HELPER_INPUT_CONTRACT_REJECTED',
@@ -108,12 +165,19 @@ export function bridgeHelperToolToMastra(
       } catch {
         // 2. Thrown canaries (secrets in messages, nested causes) never
         // leak: the throw is reduced to a stable code. Nothing from the
-        // error object is read or serialized.
+        // error object is read or serialized, and no cause is retained.
         return { victHelperFailure: 'VICT_HELPER_EXECUTION_FAILED' } satisfies HelperToolFailure;
       }
       // 3. Contract-invalid output fails safely: the raw result never
-      // reaches the model.
-      const parsedOutput = outputIo.parse(rawOutput);
+      // reaches the model. A throwing output parser fails safely too.
+      let parsedOutput: ReturnType<AgentHelperToolIO['parse']>;
+      try {
+        parsedOutput = outputIo.parse(rawOutput);
+      } catch {
+        return {
+          victHelperFailure: 'VICT_HELPER_OUTPUT_CONTRACT_REJECTED',
+        } satisfies HelperToolFailure;
+      }
       if (!parsedOutput.ok) {
         return {
           victHelperFailure: 'VICT_HELPER_OUTPUT_CONTRACT_REJECTED',
@@ -124,7 +188,16 @@ export function bridgeHelperToolToMastra(
   });
 }
 
-/** Map a helper-tool id to a deterministic, model-safe tool name. */
+/**
+ * Map a helper-tool id to a deterministic, model-safe tool name.
+ *
+ * The mapping is deterministic and collision-prone BY CONSTRUCTION (two
+ * distinct ids can normalize to the same tool name — punctuation
+ * normalization, underscore substitution, long-ID truncation, and the
+ * fallback name all alias). Collision DETECTION happens at adapter
+ * construction (before any agent is created) — see
+ * `MastraProductAgent`; this function never decides by itself.
+ */
 export function sanitizeToolName(id: string): string {
   const sanitized = id.replace(/[^A-Za-z0-9_-]/g, '_');
   return sanitized.length > 0 && sanitized.length <= 64 ? sanitized : 'helper_tool';

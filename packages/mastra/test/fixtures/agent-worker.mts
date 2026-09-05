@@ -17,6 +17,13 @@ import {
   MastraProductAgent,
 } from '@vict/mastra';
 import { AGENT_PROFILE_SCHEMA } from '@vict/sdk';
+
+/** Bounded explicit retention (required at composition, MSTR-011). */
+const TEST_RETENTION = {
+  messagesMaxAgeMs: 3_600_000,
+  threadsMaxAgeMs: 86_400_000,
+  spansMaxAgeMs: 3_600_000,
+} as const;
 import { durableWrite, emitReady, hang } from './readiness.js';
 
 /**
@@ -122,8 +129,8 @@ async function composeAdapter(dataDir: string): Promise<{
   registry: AgentProfileRegistry;
   activation: ReturnType<AgentProfileRegistry['activateAgentProfile']>;
 }> {
-  const dedicated = await createDedicatedMastraStore({ dataDir });
-  const registry = new AgentProfileRegistry();
+  const dedicated = await createDedicatedMastraStore({ dataDir, retention: TEST_RETENTION });
+  const registry = new AgentProfileRegistry({ resolveCapabilityRevision: () => true });
   registry.installArtifacts(artifacts());
   registry.registerProfile(profileInput());
   const activation = registry.activateAgentProfile({ id: 'agent.ara.offline', revision: '1' });
@@ -170,8 +177,8 @@ async function main(): Promise<void> {
       agentProfileVersion: activation.agentProfileVersion,
       agentId: 'agent.ara.offline',
       agentRevision: '1',
-      canonicalManifest: activation.profile.manifestJson,
-      artifacts: [{ kind: 'instructions', id: 'instructions.ara', revision: '1' }],
+      canonicalManifest: activation.canonicalManifestJson,
+      artifacts: activation.artifactList.map((entry) => ({ ...entry })),
       createdAt: activation.createdAt,
     });
     const state: WorkerState = {
@@ -190,7 +197,10 @@ async function main(): Promise<void> {
 
   if (stage === 'verify-memory') {
     const state = JSON.parse(readFileSync(statePath, 'utf8')) as WorkerState;
-    const dedicated = await createDedicatedMastraStore({ dataDir: state.dataDir });
+    const dedicated = await createDedicatedMastraStore({
+      dataDir: state.dataDir,
+      retention: TEST_RETENTION,
+    });
     const domain = await dedicated.store.getStore('memory');
     const messages = await domain!.listMessages({
       threadId: state.threadId,
@@ -221,7 +231,7 @@ async function main(): Promise<void> {
     if (record === undefined) {
       throw new Error('activation record missing');
     }
-    const registry = new AgentProfileRegistry();
+    const registry = new AgentProfileRegistry({ resolveCapabilityRevision: () => true });
     registry.installArtifacts(artifacts());
     registry.registerProfile(profileInput());
     const restored = registry.restoreActivation(record);
@@ -247,7 +257,7 @@ async function main(): Promise<void> {
     }
     // A "fresh process" that holds ONLY a NEWER profile revision and a
     // NEWER instructions revision: nothing may substitute.
-    const registry = new AgentProfileRegistry();
+    const registry = new AgentProfileRegistry({ resolveCapabilityRevision: () => true });
     const newer = artifacts().map((artifact) =>
       artifact.kind === 'instructions'
         ? { ...artifact, revision: '2', text: 'NEWER INSTRUCTIONS' }
@@ -276,7 +286,10 @@ async function main(): Promise<void> {
 
   if (stage === 'delete-partial') {
     const state = JSON.parse(readFileSync(statePath, 'utf8')) as WorkerState;
-    const dedicated = await createDedicatedMastraStore({ dataDir: state.dataDir });
+    const dedicated = await createDedicatedMastraStore({
+      dataDir: state.dataDir,
+      retention: TEST_RETENTION,
+    });
     void dedicated;
     const governance = createSqliteAgentGovernanceStore({ path: state.governanceDbPath });
     const coordinator = new ConversationDeletionCoordinator({
@@ -307,7 +320,10 @@ async function main(): Promise<void> {
 
   if (stage === 'delete-resume') {
     const state = JSON.parse(readFileSync(statePath, 'utf8')) as WorkerState;
-    const dedicated = await createDedicatedMastraStore({ dataDir: state.dataDir });
+    const dedicated = await createDedicatedMastraStore({
+      dataDir: state.dataDir,
+      retention: TEST_RETENTION,
+    });
     const governance = createSqliteAgentGovernanceStore({ path: state.governanceDbPath });
     const coordinator = new ConversationDeletionCoordinator({
       governance,

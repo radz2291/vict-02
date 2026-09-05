@@ -56,6 +56,13 @@ const CANARY_HELPER_ARG = 'canary-HELPERARG-11aa2';
 const CANARY_MEMORY = 'canary-MEMORY-52bb8';
 const CANARY_HOSTILE_KEY = 'canary-HOSTILEKEY-63cd1';
 
+/** Bounded explicit retention shared by these fixtures (required, MSTR-011). */
+const TEST_RETENTION = {
+  messagesMaxAgeMs: 3_600_000,
+  threadsMaxAgeMs: 86_400_000,
+  spansMaxAgeMs: 3_600_000,
+} as const;
+
 interface Composition {
   agent: MastraProductAgent;
   store: Awaited<ReturnType<typeof createDedicatedMastraStore>>['store'];
@@ -68,8 +75,8 @@ interface Composition {
 type SecurityComposeOptions = Parameters<typeof createDeterministicOfflineModel>[0];
 async function compose(options?: SecurityComposeOptions): Promise<Composition> {
   const dir = tempDir('vict-mastra-sec-');
-  const dedicated = await createDedicatedMastraStore({ dataDir: dir });
-  const registry = new AgentProfileRegistry();
+  const dedicated = await createDedicatedMastraStore({ dataDir: dir, retention: TEST_RETENTION });
+  const registry = new AgentProfileRegistry({ resolveCapabilityRevision: () => true });
   const helperToolLog: string[] = [];
   const definition: AgentHelperToolDefinition = {
     id: 'helper.uppercase',
@@ -204,6 +211,7 @@ describe('canary leakage — planted secrets never reach forbidden surfaces', ()
       await store.close();
       const reopened = await createDedicatedMastraStore({
         dataDir: tempDirs[tempDirs.length - 1]!,
+        retention: TEST_RETENTION,
       });
       try {
         const domain = await reopened.store.getStore('memory');
@@ -275,8 +283,8 @@ describe('canary leakage — planted secrets never reach forbidden surfaces', ()
 
   it('helper-tool thrown canaries (message and nested cause) never re-enter the model context', async () => {
     const dir = tempDir('vict-mastra-sec-throw-');
-    const dedicated = await createDedicatedMastraStore({ dataDir: dir });
-    const registry = new AgentProfileRegistry();
+    const dedicated = await createDedicatedMastraStore({ dataDir: dir, retention: TEST_RETENTION });
+    const registry = new AgentProfileRegistry({ resolveCapabilityRevision: () => true });
     const definition: AgentHelperToolDefinition = {
       id: 'helper.throwing',
       revision: '1',
@@ -507,7 +515,7 @@ describe('local file protection (MSTR-011)', () => {
 
   it('creates the dedicated mastra directory inside the composition data dir only', async () => {
     const dir = tempDir('vict-mastra-layout-');
-    const dedicated = await createDedicatedMastraStore({ dataDir: dir });
+    const dedicated = await createDedicatedMastraStore({ dataDir: dir, retention: TEST_RETENTION });
     try {
       expect(dedicated.databasePath.startsWith(resolve(dir))).toBe(true);
       expect(dedicated.databasePath.includes('mastra')).toBe(true);
