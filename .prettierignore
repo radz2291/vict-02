@@ -7,7 +7,4 @@ package-lock.json
 # (prettier has no svelte parser by default); build output is never formatted.
 examples/application-proof/
 examples/reference-app/build/
-# Owner-local agent content (untracked, owner-authored) sits outside the
-# repository's formatted surface; it is never modified by stage work.
-.pi/
 

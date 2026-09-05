@@ -323,10 +323,11 @@ try {
         'no @mastra/* package is installed in the neutral consumer',
       );
 
-      const profileProbe = [
+      const neutralProbeRuntime = [
         "import { defineAgentProfile, AGENT_PROFILE_SCHEMA } from '@vict/sdk';",
         "import { compileAgentProfile } from '@vict/kernel';",
         '',
+        '// Built EMITTED JavaScript, executed by plain Node (no tsx, no IPC).',
         'const profile = defineAgentProfile({',
         '  schema: AGENT_PROFILE_SCHEMA,',
         "  id: 'agent.packed.probe',",
@@ -342,23 +343,38 @@ try {
         'const first = compileAgentProfile(profile);',
         "if (!first.ok) { throw new Error('valid profile rejected: ' + JSON.stringify(first.issues)); }",
         'const second = compileAgentProfile(structuredClone(profile));',
-        'if (!second.ok || second.value.agentProfileVersion !== first.value.agentProfileVersion) {',
-        "  throw new Error('agentProfileVersion not deterministic');",
-        '}',
+        "if (!second.ok || second.value.agentProfileVersion !== first.value.agentProfileVersion) { throw new Error('agentProfileVersion not deterministic'); }",
         "const broken = compileAgentProfile({ ...structuredClone(profile), turnPolicy: { ...profile.turnPolicy, onLimit: 'anything-goes' } });",
         "if (broken.ok) { throw new Error('invalid profile accepted'); }",
+        '',
+        '// Credential-reference boundary (emitted JS, plain Node):',
+        '// providerCredentialVar is an environment-variable NAME only. An',
+        '// object carrying a unique secret canary must not compile and must',
+        '// not serialize anywhere.',
+        "const secretCanary = 'sk-packed-consumer-SECRET-9c31f';",
+        'const hostile = structuredClone(profile);',
+        'hostile.modelProfile.providerCredentialVar = { value: secretCanary };',
+        'const hostileResult = compileAgentProfile(hostile);',
+        "if (hostileResult.ok) { throw new Error('object providerCredentialVar accepted: an object containing a unique secret must not compile'); }",
+        "if (JSON.stringify(hostileResult).includes(secretCanary)) { throw new Error('secret canary leaked into diagnostics'); }",
+        'const valueHostile = structuredClone(profile);',
+        'valueHostile.modelProfile.providerCredentialVar = secretCanary;',
+        "if (compileAgentProfile(valueHostile).ok) { throw new Error('secret-bearing string accepted as providerCredentialVar'); }",
+        'const validName = structuredClone(profile);',
+        "validName.modelProfile.providerCredentialVar = 'OPENAI_API_KEY';",
+        "if (!compileAgentProfile(validName).ok) { throw new Error('valid env-var name rejected'); }",
+        '',
         "console.log('packed profile version ' + first.value.agentProfileVersion);",
       ].join('\n');
-      writeFileSync(join(neutralConsumer, 'probe.mts'), profileProbe);
-      const tsxCli = join(repoRoot, 'node_modules', 'tsx', 'dist', 'cli.mjs');
-      const probe = run(process.execPath, [tsxCli, 'probe.mts'], {
+      writeFileSync(join(neutralConsumer, 'probe.mjs'), neutralProbeRuntime);
+      const probe = run(process.execPath, ['probe.mjs'], {
         cwd: neutralConsumer,
         capture: true,
         timeout: 120_000,
       });
       check(
         probe.status === 0,
-        'neutral consumer compiles a valid profile and rejects an invalid one',
+        'emitted-JS packed consumer compiles a valid profile, rejects an invalid one, and rejects secret-bearing providerCredentialVar values (plain Node, no tsx)',
       );
       if (probe.status !== 0) {
         console.error(probe.stdout?.slice(-2000));
@@ -369,6 +385,32 @@ try {
           `profile identity has the canonical form (${probe.stdout?.trim()})`,
         );
       }
+      // Type-level evidence: the packed declarations type-check under
+      // strict TypeScript (skipLibCheck: false) via tsc alone.
+      writeFileSync(
+        join(neutralConsumer, 'probe.mts'),
+        [
+          "import { defineAgentProfile, AGENT_PROFILE_SCHEMA } from '@vict/sdk';",
+          "import { compileAgentProfile } from '@vict/kernel';",
+          '',
+          'const profile = defineAgentProfile({',
+          '  schema: AGENT_PROFILE_SCHEMA,',
+          "  id: 'agent.packed.probe',",
+          "  revision: '1',",
+          "  instructions: { id: 'instructions.packed', revision: '1' },",
+          "  modelProfile: { id: 'model.packed', revision: '1', routerModel: 'offline-fixture/deterministic-1', provider: 'offline-fixture' },",
+          '  generation: {},',
+          "  turnPolicy: { maxSteps: 4, maxToolCalls: 4, onLimit: 'fail-closed' },",
+          "  memoryPolicy: { id: 'memory-policy.packed', revision: '1' },",
+          "  adapter: { id: '@vict/mastra', revision: '1', runtimePackages: { '@mastra/core': '1.64.0' } },",
+          '});',
+          'const compiled = compileAgentProfile(profile);',
+          'if (!compiled.ok) { throw new Error(String(compiled.issues.length)); }',
+          'const version: string = compiled.value.agentProfileVersion;',
+          "if (!version.startsWith('v1_')) { throw new Error('bad version'); }",
+          '',
+        ].join('\n'),
+      );
       const tscBin = join(repoRoot, 'node_modules', 'typescript', 'bin', 'tsc');
       const typecheck = run(process.execPath, [tscBin, '-p', 'tsconfig.json'], {
         cwd: neutralConsumer,
@@ -458,7 +500,10 @@ try {
         "if (!harness.ok) { throw new Error('compatibility harness failed: ' + JSON.stringify(harness.checks)); }",
         '',
         'const dataDir = process.argv[2];',
-        'const dedicated = await createDedicatedMastraStore({ dataDir });',
+        'const dedicated = await createDedicatedMastraStore({',
+        '  dataDir,',
+        '  retention: { messagesMaxAgeMs: 3600000, threadsMaxAgeMs: 86400000, spansMaxAgeMs: 3600000 },',
+        '});',
         'const registry = new AgentProfileRegistry();',
         "registry.registerArtifact({ kind: 'instructions', id: 'instructions.packed', revision: '1', text: 'Be deterministic and brief.' });",
         "registry.registerArtifact({ kind: 'memory-policy', id: 'memory-policy.packed', revision: '1', config: { lastMessages: 10, workingMemory: { enabled: false }, semanticRecall: false } });",
