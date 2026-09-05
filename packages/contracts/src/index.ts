@@ -35,3 +35,25 @@ export {
   UNTRUSTED_ISSUE_CODE,
 } from './issue-mapping.js';
 export type { ObservableContractIssue, RawSchemaIssue, SafeIssueOptions } from './issue-mapping.js';
+
+// ---- Neutral product-agent stream contract (Stage 06A) ---------------------
+export { AGENT_STREAM_SCHEMA, AGENT_STREAM_EVENT_KINDS } from './agent-stream.js';
+export type {
+  AgentStreamContext,
+  AgentStreamEvent,
+  AgentStreamEventKind,
+  AgentStreamTextDelta,
+  AgentStreamContentCompleted,
+  AgentStreamToolRequested,
+  AgentStreamToolStarted,
+  AgentStreamToolAwaitingApproval,
+  AgentStreamToolCompleted,
+  AgentStreamToolFailed,
+  AgentStreamMemoryUpdated,
+  AgentStreamUsage,
+  AgentStreamUsageUpdated,
+  AgentStreamResponseStarted,
+  AgentStreamResponseCompleted,
+  AgentStreamResponseFailed,
+  AgentStreamResponseCancelled,
+} from './agent-stream.js';

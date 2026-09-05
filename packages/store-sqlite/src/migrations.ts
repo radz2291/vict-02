@@ -262,6 +262,42 @@ export const SCHEMA_MIGRATIONS: readonly Migration[] = [
       `CREATE INDEX idx_vict_branch_join ON vict_branch_result (run_id, fork_id);`,
     ],
   },
+  {
+    version: 3,
+    name: 'agent-governance',
+    statements: [
+      // Stage 06A agent-governance records. These tables live in the SAME
+      // operational database (deletion intents and activation identity are
+      // VICT operational audit data), remain disjoint from every existing
+      // operational table, and are additive only: no existing table or row
+      // is touched.
+      `CREATE TABLE vict_agent_activation (
+        activation_version TEXT PRIMARY KEY,
+        agent_profile_version TEXT NOT NULL,
+        agent_id TEXT NOT NULL,
+        agent_revision TEXT NOT NULL,
+        canonical_manifest TEXT NOT NULL,
+        artifacts TEXT NOT NULL,
+        created_at TEXT NOT NULL
+      );`,
+      `CREATE INDEX idx_vict_agent_activation_agent ON vict_agent_activation (agent_id, agent_revision);`,
+      `CREATE TABLE vict_agent_deletion_intent (
+        intent_id TEXT PRIMARY KEY,
+        conversation_id TEXT NOT NULL,
+        actor_id TEXT NOT NULL,
+        state TEXT NOT NULL CHECK (state IN ('pending', 'application-domain-deleted', 'completed')),
+        created_at TEXT NOT NULL,
+        updated_at TEXT NOT NULL
+      );`,
+      `CREATE INDEX idx_vict_agent_deletion_state ON vict_agent_deletion_intent (state);`,
+      `CREATE TABLE vict_agent_deletion_receipt (
+        intent_id TEXT NOT NULL REFERENCES vict_agent_deletion_intent(intent_id),
+        step TEXT NOT NULL CHECK (step IN ('application-domain', 'mastra-memory')),
+        at TEXT NOT NULL,
+        PRIMARY KEY (intent_id, step)
+      );`,
+    ],
+  },
 ];
 
 /** The highest schema version this adapter understands. */

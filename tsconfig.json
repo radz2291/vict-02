@@ -21,6 +21,7 @@
       "@vict/application/testing": ["./packages/application/src/testing.ts"],
       "@vict/application/renderer": ["./packages/application/src/renderer.ts"],
       "@vict/sdk": ["./packages/sdk/src/index.ts"],
+      "@vict/mastra": ["./packages/mastra/src/index.ts"],
       "@vict/sdk/*": ["./packages/sdk/src/*"],
       "@vict/sdk/zod": ["./packages/sdk/src/zod.ts"]
     }

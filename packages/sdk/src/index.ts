@@ -150,6 +150,18 @@ export type {
   ViewBinding,
 } from './application.js';
 
+// ---- Product-agent authoring vocabulary (Stage 06A) -------------------------
+export { AGENT_PROFILE_SCHEMA, defineAgentProfile } from './agent.js';
+export type {
+  AgentAdapterCompatibilityAuthoring,
+  AgentGenerationOptions,
+  AgentModelProfileAuthoring,
+  AgentProfileAuthoring,
+  AgentReference,
+  AgentTurnPolicy,
+  BoundAgentReference,
+} from './agent.js';
+
 // ---- Authoring factories (immutable by construction) ------------------------
 export {
   defineApplication,

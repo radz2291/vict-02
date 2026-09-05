@@ -10,6 +10,9 @@ export default tseslint.config(
       'coverage/**',
       '**/.svelte-kit/**',
       '**/build/**',
+      // Owner-local agent content (untracked, owner-authored) sits outside
+      // the repository's linted surface; it is never modified by stage work.
+      '.pi/**',
     ],
   },
   js.configs.recommended,

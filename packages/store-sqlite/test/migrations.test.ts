@@ -109,6 +109,9 @@ describe('sqlite schema migrations', () => {
       expect(tables.map((t) => t.name)).toEqual([
         'vict_activation',
         'vict_activation_selection',
+        'vict_agent_activation',
+        'vict_agent_deletion_intent',
+        'vict_agent_deletion_receipt',
         'vict_attempt',
         'vict_branch_result',
         'vict_cancellation_request',

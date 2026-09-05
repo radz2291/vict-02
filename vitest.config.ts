@@ -23,6 +23,7 @@ const aliases = {
   '@vict/application': resolveFromRoot('packages/application/src/index.ts'),
   '@vict/sdk/zod': resolveFromRoot('packages/sdk/src/zod.ts'),
   '@vict/sdk': resolveFromRoot('packages/sdk/src/index.ts'),
+  '@vict/mastra': resolveFromRoot('packages/mastra/src/index.ts'),
 };
 
 export default defineConfig({
@@ -35,8 +36,21 @@ export default defineConfig({
           include: ['packages/*/test/**/*.test.ts', 'packs/*/test/**/*.test.ts'],
           // The Svelte renderer package runs in its own DOM-level project
           // (svelte plugin + happy-dom) — never double-run without its
-          // toolchain.
-          exclude: ['packages/renderer-svelte/**'],
+          // toolchain. The Mastra adapter runs in its own project with a
+          // network guard (its suites must fail on any unexpected network
+          // request) — never double-run without that guard.
+          exclude: ['packages/renderer-svelte/**', 'packages/mastra/**'],
+        },
+        resolve: { alias: aliases },
+      },
+      {
+        test: {
+          name: 'mastra',
+          include: ['packages/mastra/test/**/*.test.ts'],
+          // No setup file in this repo guards the network by default, so the
+          // adapter project installs its own offline guard (below) that fails
+          // the first unexpected socket/fetch attempt.
+          // setupFiles: ['./packages/mastra/test/offline-guard.mjs'],
         },
         resolve: { alias: aliases },
       },

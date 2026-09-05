@@ -51,7 +51,19 @@ export type RuntimeErrorCode =
   // Stage 04 capability packs.
   | 'VICT_PACK_INVALID'
   | 'VICT_PACK_COMPATIBILITY_UNMET'
-  | 'VICT_PACK_DUPLICATE';
+  | 'VICT_PACK_DUPLICATE'
+  // Stage 06A product-agent boundary.
+  | 'VICT_AGENT_INVALID_ARTIFACT'
+  | 'VICT_AGENT_UNKNOWN_ARTIFACT_FIELD'
+  | 'VICT_AGENT_DUPLICATE_ARTIFACT'
+  | 'VICT_AGENT_HELPER_TOOL_NOT_PURE'
+  | 'VICT_AGENT_INVALID_PROFILE'
+  | 'VICT_AGENT_DUPLICATE_PROFILE'
+  | 'VICT_AGENT_REPLACE_CONFLICT'
+  | 'VICT_AGENT_PROFILE_NOT_FOUND'
+  | 'VICT_AGENT_ARTIFACT_MISSING'
+  | 'VICT_AGENT_ARTIFACT_REVISION_MISMATCH'
+  | 'VICT_AGENT_CAPABILITY_MISSING';
 
 /** Thrown only for programmer/configuration errors; data-level failures are structured values. */
 export class VictRuntimeError extends Error {

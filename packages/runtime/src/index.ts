@@ -116,3 +116,64 @@ export {
   assertStoredActivationReadable,
 } from './store-validation.js';
 export type { ActivationIdentity, RunIdentityColumns } from './store-validation.js';
+
+// ---- Product-agent boundary (Stage 06A) ------------------------------------
+export type {
+  AgentActivationRecord,
+  AgentActivationRestoreFailureCode,
+  AgentActivationRestoreResult,
+  AgentArtifact,
+  AgentArtifactBinding,
+  AgentArtifactKind,
+  AgentCredentialPort,
+  AgentHelperToolArtifact,
+  AgentHelperToolDefinition,
+  AgentHelperToolIO,
+  AgentInstructionsArtifact,
+  AgentMemoryPolicyArtifact,
+  AgentMemoryPolicyConfig,
+  AgentProcessorArtifact,
+  AgentGuardrailArtifact,
+  AgentProfileActivation,
+  AgentTurnExecutionContext,
+  AgentTurnOutcome,
+  AgentTurnRequest,
+  AgentWorkflowArtifact,
+  PinnedAgentTurnRunner,
+  ProductAgentPort,
+} from './agent-types.js';
+export {
+  AGENT_ACTIVATION_IDENTITY_SCHEMA,
+  AGENT_ACTIVATION_RECORD_SCHEMA,
+  pinAgentTurnRunner,
+} from './agent-types.js';
+export { AgentProfileRegistry } from './agent-registry.js';
+export type { AgentProfileRegistryOptions } from './agent-registry.js';
+export {
+  AgentCredentialError,
+  AgentConversationExportError,
+  ConversationDeletionCoordinator,
+  ConversationExportService,
+  InMemoryAgentGovernanceStore,
+  assertCredentialName,
+  assertDeletionStateTransition,
+  protectCredentialPort,
+  requireCredential,
+} from './agent-governance.js';
+export type {
+  AgentConversationDomainPort,
+  AgentConversationExport,
+  AgentConversationExportErrorCode,
+  AgentConversationExportMessage,
+  AgentConversationExportResult,
+  AgentConversationMemoryExportPort,
+  AgentCredentialErrorCode,
+  AgentDeletionIntentRecord,
+  AgentDeletionIntentState,
+  AgentDeletionOutcome,
+  AgentDeletionStep,
+  AgentDeletionStepReceipt,
+  AgentGovernanceStore,
+  AgentMemoryDeletionPort,
+  ConversationDeletionCoordinatorOptions,
+} from './agent-governance.js';

@@ -84,3 +84,13 @@ export {
 export { RETRY_MAX_ATTEMPTS_LIMIT, MAX_DELAY_MS_LIMIT, MAX_BRANCH_COUNT } from './types.js';
 export { summarizeOutput } from './summarize.js';
 export type { KernelErrorCode } from './errors.js';
+
+// ---- Product-agent profile compilation and identity (Stage 06A) ------------
+export { AGENT_PROFILE_IDENTITY_SCHEMA, compileAgentProfile } from './agent-profile.js';
+export type {
+  AgentProfileCompileResult,
+  AgentProfileIssue,
+  AgentProfileIssueCode,
+  CompiledAgentProfile,
+  FrozenAgentProfile,
+} from './agent-profile.js';

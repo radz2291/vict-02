@@ -14,7 +14,7 @@
   ],
   "scripts": {
     "bench": "tsx scripts/benchmark.ts",
-    "build": "npm run build -w @vict/contracts && npm run build -w @vict/sdk && npm run build -w @vict/kernel && npm run build -w @vict/runtime && npm run build -w @vict/store-sqlite && npm run build -w @vict/application && npm run build -w @vict/appdata-sqlite && npm run build -w @vict/renderer-svelte && npm run build -w @vict/scaffolder",
+    "build": "npm run build -w @vict/contracts && npm run build -w @vict/sdk && npm run build -w @vict/kernel && npm run build -w @vict/runtime && npm run build -w @vict/store-sqlite && npm run build -w @vict/application && npm run build -w @vict/appdata-sqlite && npm run build -w @vict/renderer-svelte && npm run build -w @vict/scaffolder && npm run build -w @vict/mastra",
     "example": "tsx examples/ara-proof/src/main.ts",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
@@ -28,7 +28,8 @@
     "verify:stage3": "node scripts/verify-stage3.mjs",
     "example:application": "npm run build -w application-proof && npm run test -w application-proof",
     "verify:stage4": "node scripts/verify-stage4.mjs",
-    "verify:stage5": "node scripts/verify-stage5.mjs"
+    "verify:stage5": "node scripts/verify-stage5.mjs",
+    "verify:stage6a": "node scripts/verify-stage6a.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

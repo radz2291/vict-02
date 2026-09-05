@@ -171,8 +171,15 @@ describe('generated project build (real SvelteKit build)', () => {
     'generates a project that type-checks and builds through the workspace',
     { timeout: 420_000 },
     () => {
-      const workDir = join(REPO_ROOT, '.tmp-scaffold-check');
-      rmSync(workDir, { recursive: true, force: true });
+      // AUDIT-F1 hygiene correction (Stage 06A): the real-build fixture used a
+      // shared repository-local `.tmp-scaffold-check` path that could race when
+      // two independent Vitest processes ran the suite in one checkout. The
+      // fixture now generates into a UNIQUE per-process `mkdtemp` directory
+      // (random suffix; never shared), still inside the repository root so
+      // the workspace toolchain resolves exactly as in production use;
+      // cleanup removes only that exact owned directory and never follows or
+      // removes junction/symlink targets.
+      const workDir = mkdtempSync(join(REPO_ROOT, '.tmp-scaffold-check-'));
       tempDirs.push(workDir);
       const target = join(workDir, 'app');
       const result = scaffoldVictApp({ targetDir: target, appName: 'Build Check App' });
@@ -208,4 +215,46 @@ describe('generated project build (real SvelteKit build)', () => {
       expect(existsSync(join(target, '.svelte-kit', 'output'))).toBe(true);
     },
   );
+});
+
+describe('scaffolder test-infrastructure concurrency (AUDIT-F1 regression)', () => {
+  it('real-build fixtures own unique per-process directories and never collide', () => {
+    // Two simulated "processes" each create their own mkdtemp directory with
+    // the SAME pattern the real-build fixture uses; the random mkdtemp
+    // suffixes must make them distinct (no shared path) and both must exist
+    // simultaneously without interfering with each other.
+    const processA = mkdtempSync(join(REPO_ROOT, '.tmp-scaffold-check-'));
+    const processB = mkdtempSync(join(REPO_ROOT, '.tmp-scaffold-check-'));
+    tempDirs.push(processA, processB);
+    expect(processA).not.toBe(processB);
+    expect(processA.startsWith(join(REPO_ROOT, '.tmp-scaffold-check-'))).toBe(true);
+    expect(processB.startsWith(join(REPO_ROOT, '.tmp-scaffold-check-'))).toBe(true);
+    expect(existsSync(processA)).toBe(true);
+    expect(existsSync(processB)).toBe(true);
+    // The old SHARED path (fixed name, no random suffix) must not be
+    // recreated by the test infrastructure.
+    expect(existsSync(join(REPO_ROOT, '.tmp-scaffold-check'))).toBe(false);
+  });
+
+  it('cleanup removes only the exact owned directory, never junction targets', () => {
+    const dir = tempDir('vict-scaffold-cleanup-');
+    const outside = tempDir('vict-scaffold-cleanup-out-');
+    const marker = join(outside, 'marker.txt');
+    writeFileSync(marker, 'AUTHOR CONTENT', 'utf8');
+    const linkPath = join(dir, 'linked');
+    try {
+      symlinkSync(outside, linkPath, 'junction');
+    } catch {
+      // Environmental: without symlink/junction privilege this specific
+      // negative case cannot be exercised; record and continue.
+      console.warn('skipping junction-cleanup case: symlink creation not permitted');
+      return;
+    }
+    // Remove ONLY the owned directory tree. The junction inside it is
+    // unlinked; its TARGET (and the author marker inside) must survive.
+    rmSync(dir, { recursive: true, force: true });
+    expect(existsSync(dir)).toBe(false);
+    expect(existsSync(outside)).toBe(true);
+    expect(readFileSync(marker, 'utf8')).toBe('AUTHOR CONTENT');
+  });
 });
