@@ -1,6 +1,8 @@
 import { DatabaseSync } from 'node:sqlite';
 import {
+  assertDeletionStateTransition,
   VictStoreError,
+  validateAgentActivationRecord,
   type AgentActivationRecord,
   type AgentDeletionIntentRecord,
   type AgentDeletionIntentState,
@@ -20,31 +22,21 @@ import { runMigrations } from './migrations.js';
  * every existing operational table (additive `vict_agent_*` schema,
  * migration version 3).
  *
- * Semantics shared with the in-memory implementation (conformance-tested):
+ * Semantics are SHARED with the in-memory implementation through the same
+ * invariant helpers (conformance-tested so the adapters cannot diverge):
+ * - activation records are structurally validated BEFORE persistence
+ *   (closed field sets, canonical versions, well-formed artifact entries);
  * - activation records are idempotent by `activationVersion`; same-version
  *   different-content is a collision (fail closed);
+ * - deletion intents must be recorded as `pending` with no receipts;
+ *   arbitrary initial states and fabricated receipts are rejected;
  * - deletion intents are idempotent by `intentId`; conflicting content is
  *   a collision;
  * - receipts are idempotent per (intentId, step) — a duplicate receipt is a
- *   no-op, never a duplicate row;
- * - intent state transitions are forward-only.
+ *   no-op, never a duplicate row; the memory receipt requires the
+ *   application-domain receipt (out-of-order receipts are rejected);
+ * - intent state transitions are forward-only AND stepwise (no skips).
  */
-
-/** The invariants enforced over stored records (structured, non-echoing). */
-function assertTransition(from: AgentDeletionIntentState, to: AgentDeletionIntentState): void {
-  const order: readonly AgentDeletionIntentState[] = [
-    'pending',
-    'application-domain-deleted',
-    'completed',
-  ];
-  if (order.indexOf(to) < order.indexOf(from)) {
-    throw new VictStoreError(
-      'VICT_STORE_INVARIANT',
-      'A deletion-intent state may only move forward; the requested transition would regress durable progress.',
-      { operation: 'agentGovernance.updateIntentState' },
-    );
-  }
-}
 
 interface IntentRow {
   intent_id: string;
@@ -168,6 +160,14 @@ export function createSqliteAgentGovernanceStore(
 
   return {
     async saveAgentActivation(record: AgentActivationRecord): Promise<void> {
+      const validation = validateAgentActivationRecord(record);
+      if (!validation.ok) {
+        throw new VictStoreError(
+          'VICT_STORE_INVALID_COMMAND',
+          `The activation record is malformed and was not persisted: ${validation.reason}`,
+          { operation: 'agentGovernance.saveActivation' },
+        );
+      }
       safeRun('agentGovernance.saveActivation', () =>
         inTransaction(db, () => {
           insertActivation(record);
@@ -209,6 +209,13 @@ export function createSqliteAgentGovernanceStore(
     },
 
     async recordDeletionIntent(record: AgentDeletionIntentRecord): Promise<void> {
+      if (record.state !== 'pending' || (record.receipts && record.receipts.length > 0)) {
+        throw new VictStoreError(
+          'VICT_STORE_INVALID_COMMAND',
+          'A deletion intent must be recorded as pending with no receipts; arbitrary initial states and fabricated receipts are rejected.',
+          { operation: 'agentGovernance.recordIntent' },
+        );
+      }
       safeRun('agentGovernance.recordIntent', () =>
         inTransaction(db, () => {
           const existing = db
@@ -297,6 +304,23 @@ export function createSqliteAgentGovernanceStore(
               { operation: 'agentGovernance.recordReceipt' },
             );
           }
+          // Receipt order mirrors the governed execution order (shared with
+          // the in-memory store): the memory receipt requires the
+          // application-domain receipt.
+          if (step === 'mastra-memory') {
+            const domainReceipt = db
+              .prepare(
+                'SELECT step FROM vict_agent_deletion_receipt WHERE intent_id = ? AND step = ?;',
+              )
+              .get(intentId, 'application-domain');
+            if (domainReceipt === undefined) {
+              throw new VictStoreError(
+                'VICT_STORE_INVALID_COMMAND',
+                'The memory step receipt requires the application-domain receipt to exist first.',
+                { operation: 'agentGovernance.recordReceipt' },
+              );
+            }
+          }
           // Idempotent: INSERT OR IGNORE makes a duplicate receipt a no-op
           // (primary key intent_id + step), never a duplicate row.
           db.prepare(
@@ -322,7 +346,7 @@ export function createSqliteAgentGovernanceStore(
               { operation: 'agentGovernance.updateIntentState' },
             );
           }
-          assertTransition(row.state, state);
+          assertDeletionStateTransition(row.state, state);
           db.prepare(
             'UPDATE vict_agent_deletion_intent SET state = ?, updated_at = ? WHERE intent_id = ?;',
           ).run(state, toIso(Date.now()), intentId);

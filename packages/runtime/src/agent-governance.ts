@@ -1,4 +1,6 @@
 import type { AgentActivationRecord, AgentCredentialPort } from './agent-types.js';
+import { validateAgentActivationRecord } from './agent-types.js';
+import { VictRuntimeError } from './errors.js';
 
 /**
  * Stage 06A — agent data-protection governance (MSTR-011).
@@ -146,16 +148,81 @@ const INTENT_STATE_ORDER: ReadonlyArray<AgentDeletionIntentState> = [
   'completed',
 ];
 
-/** Shared invariant enforcement for in-memory and SQLite stores. */
+/**
+ * Shared invariant enforcement for in-memory and SQLite stores.
+ *
+ * Transitions are forward-only AND stepwise: a state may only move to the
+ * IMMEDIATELY next state in the lifecycle. Skipped transitions (for example
+ * `pending` directly to `completed`) are rejected — completion always
+ * requires both durable step receipts, which a skipped transition would
+ * fabricate. Same-state updates are idempotent no-ops.
+ */
 export function assertDeletionStateTransition(
   from: AgentDeletionIntentState,
   to: AgentDeletionIntentState,
 ): void {
+  if (from === to) {
+    return; // idempotent no-op
+  }
   const fromIndex = INTENT_STATE_ORDER.indexOf(from);
   const toIndex = INTENT_STATE_ORDER.indexOf(to);
   if (toIndex < fromIndex) {
     throw new Error(
       `VICT_AGENT_DELETION_STATE_REGRESSION: refusing to move deletion intent from '${from}' back to '${to}'.`,
+    );
+  }
+  if (toIndex !== fromIndex + 1) {
+    throw new Error(
+      `VICT_AGENT_DELETION_STATE_SKIP: refusing to move deletion intent from '${from}' directly to '${to}'; completion requires each step's durable receipt.`,
+    );
+  }
+}
+
+/**
+ * Validate a deletion-intent record at the durable boundary (shared by the
+ * in-memory and SQLite stores). A NEW intent must start as `pending` with
+ * NO receipts — arbitrary initial states and fabricated receipts are
+ * rejected.
+ */
+export function assertDeletionIntentRecord(record: AgentDeletionIntentRecord): void {
+  if (typeof record.intentId !== 'string' || record.intentId.length === 0) {
+    throw new VictRuntimeError(
+      'VICT_AGENT_DELETION_INTENT_INVALID',
+      'A deletion intent requires a non-empty intentId.',
+    );
+  }
+  if (typeof record.conversationId !== 'string' || record.conversationId.length === 0) {
+    throw new VictRuntimeError(
+      'VICT_AGENT_DELETION_INTENT_INVALID',
+      'A deletion intent requires a non-empty conversationId.',
+    );
+  }
+  if (typeof record.actorId !== 'string' || record.actorId.length === 0) {
+    throw new VictRuntimeError(
+      'VICT_AGENT_DELETION_INTENT_INVALID',
+      'A deletion intent requires a non-empty actorId.',
+    );
+  }
+  if (
+    typeof record.createdAt !== 'number' ||
+    !Number.isFinite(record.createdAt) ||
+    record.createdAt < 0
+  ) {
+    throw new VictRuntimeError(
+      'VICT_AGENT_DELETION_INTENT_INVALID',
+      'A deletion intent requires a finite createdAt epoch-ms value.',
+    );
+  }
+  if (record.state !== 'pending') {
+    throw new VictRuntimeError(
+      'VICT_AGENT_DELETION_INTENT_INVALID',
+      `A deletion intent must be recorded in the 'pending' state; arbitrary initial states are rejected.`,
+    );
+  }
+  if (!Array.isArray(record.receipts) || record.receipts.length > 0) {
+    throw new VictRuntimeError(
+      'VICT_AGENT_DELETION_INTENT_INVALID',
+      'A new deletion intent must carry no receipts; fabricated receipts are rejected.',
     );
   }
 }
@@ -166,6 +233,13 @@ export class InMemoryAgentGovernanceStore implements AgentGovernanceStore {
   readonly #intents = new Map<string, AgentDeletionIntentRecord>();
 
   async saveAgentActivation(record: AgentActivationRecord): Promise<void> {
+    const validation = validateAgentActivationRecord(record);
+    if (!validation.ok) {
+      throw new VictRuntimeError(
+        'VICT_AGENT_ACTIVATION_RECORD_INVALID',
+        `The activation record is malformed and was not persisted: ${validation.reason}`,
+      );
+    }
     const existing = this.#activations.get(record.activationVersion);
     if (existing !== undefined) {
       if (JSON.stringify(existing) !== JSON.stringify(record)) {
@@ -184,6 +258,7 @@ export class InMemoryAgentGovernanceStore implements AgentGovernanceStore {
   }
 
   async recordDeletionIntent(record: AgentDeletionIntentRecord): Promise<void> {
+    assertDeletionIntentRecord(record);
     const existing = this.#intents.get(record.intentId);
     if (existing !== undefined) {
       if (
@@ -223,6 +298,18 @@ export class InMemoryAgentGovernanceStore implements AgentGovernanceStore {
     }
     if (record.receipts.some((receipt) => receipt.step === step)) {
       return; // idempotent: no duplicate receipt
+    }
+    // Receipt order mirrors the governed execution order: the memory step
+    // receipt can only exist after the application-domain receipt. An
+    // out-of-order receipt would fabricate durable progress and is
+    // rejected.
+    if (
+      step === 'mastra-memory' &&
+      !record.receipts.some((receipt) => receipt.step === 'application-domain')
+    ) {
+      throw new Error(
+        'VICT_AGENT_DELETION_RECEIPT_ORDER: the memory step receipt requires the application-domain receipt to exist first.',
+      );
     }
     const updated: AgentDeletionIntentRecord = {
       ...record,
@@ -382,9 +469,18 @@ export class ConversationDeletionCoordinator {
           throw new Error('VICT_AGENT_DELETION_DOMAIN_INVALID_RESULT');
         }
         await this.#governance.recordDeletionReceipt(intentId, 'application-domain', this.#clock());
+      }
+      // Advance stepwise (a crash may have left the durable state one step
+      // behind its receipts; same-state updates are idempotent no-ops).
+      const afterDomain = await this.#governance.getDeletionIntent(intentId);
+      if (afterDomain !== undefined && afterDomain.state === 'pending') {
         await this.#governance.updateDeletionIntentState(intentId, 'application-domain-deleted');
       }
-      if (!intent.receipts.some((receipt) => receipt.step === 'mastra-memory')) {
+      const current = await this.#governance.getDeletionIntent(intentId);
+      if (current === undefined) {
+        throw new Error('VICT_AGENT_DELETION_INTENT_MISSING');
+      }
+      if (!current.receipts.some((receipt) => receipt.step === 'mastra-memory')) {
         const result = await this.#memory.deleteConversationThread(intent.conversationId);
         if (typeof result?.deleted !== 'boolean') {
           throw new Error('VICT_AGENT_DELETION_MEMORY_INVALID_RESULT');
@@ -398,6 +494,9 @@ export class ConversationDeletionCoordinator {
         after.receipts.some((receipt) => receipt.step === 'mastra-memory') &&
         after.state !== 'completed'
       ) {
+        // Completion always passes through the intermediate state — the
+        // stepwise invariant forbids skipping it.
+        await this.#governance.updateDeletionIntentState(intentId, 'application-domain-deleted');
         await this.#governance.updateDeletionIntentState(intentId, 'completed');
       }
     }

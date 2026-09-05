@@ -63,7 +63,10 @@ export type RuntimeErrorCode =
   | 'VICT_AGENT_PROFILE_NOT_FOUND'
   | 'VICT_AGENT_ARTIFACT_MISSING'
   | 'VICT_AGENT_ARTIFACT_REVISION_MISMATCH'
-  | 'VICT_AGENT_CAPABILITY_MISSING';
+  | 'VICT_AGENT_CAPABILITY_MISSING'
+  | 'VICT_AGENT_CAPABILITY_RESOLVER_MISSING'
+  | 'VICT_AGENT_DELETION_INTENT_INVALID'
+  | 'VICT_AGENT_ACTIVATION_RECORD_INVALID';
 
 /** Thrown only for programmer/configuration errors; data-level failures are structured values. */
 export class VictRuntimeError extends Error {

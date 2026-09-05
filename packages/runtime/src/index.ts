@@ -120,6 +120,7 @@ export type { ActivationIdentity, RunIdentityColumns } from './store-validation.
 // ---- Product-agent boundary (Stage 06A) ------------------------------------
 export type {
   AgentActivationRecord,
+  AgentActivationRecordValidation,
   AgentActivationRestoreFailureCode,
   AgentActivationRestoreResult,
   AgentArtifact,
@@ -135,6 +136,7 @@ export type {
   AgentProcessorArtifact,
   AgentGuardrailArtifact,
   AgentProfileActivation,
+  AgentStructuredOutputContractArtifact,
   AgentTurnExecutionContext,
   AgentTurnOutcome,
   AgentTurnRequest,
@@ -146,6 +148,7 @@ export {
   AGENT_ACTIVATION_IDENTITY_SCHEMA,
   AGENT_ACTIVATION_RECORD_SCHEMA,
   pinAgentTurnRunner,
+  validateAgentActivationRecord,
 } from './agent-types.js';
 export { AgentProfileRegistry } from './agent-registry.js';
 export type { AgentProfileRegistryOptions } from './agent-registry.js';
@@ -156,6 +159,7 @@ export {
   ConversationExportService,
   InMemoryAgentGovernanceStore,
   assertCredentialName,
+  assertDeletionIntentRecord,
   assertDeletionStateTransition,
   protectCredentialPort,
   requireCredential,

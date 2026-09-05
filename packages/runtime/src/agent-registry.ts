@@ -10,9 +10,10 @@ import type {
   AgentProfileActivation,
   AgentProcessorArtifact,
   AgentGuardrailArtifact,
+  AgentStructuredOutputContractArtifact,
   AgentWorkflowArtifact,
 } from './agent-types.js';
-import { AGENT_ACTIVATION_IDENTITY_SCHEMA } from './agent-types.js';
+import { AGENT_ACTIVATION_IDENTITY_SCHEMA, validateAgentActivationRecord } from './agent-types.js';
 import { createHash } from 'node:crypto';
 import { canonicalJson, compileAgentProfile } from '@vict/kernel';
 import type { CompiledAgentProfile } from '@vict/kernel';
@@ -45,6 +46,10 @@ import { VictRuntimeError } from './errors.js';
 const MAX_TEXT_LENGTH = 64 * 1024;
 const WORKING_MEMORY_FIELDS: ReadonlySet<string> = new Set(['enabled', 'template']);
 
+/** Bounded pattern for author-declared guardrail failure codes. */
+const GUARDRAIL_CODE_PATTERN = /^[A-Z][A-Z0-9_]{0,31}$/;
+const MAX_GUARDRAIL_CODES = 16;
+
 /** Frozen deep copy of plain canonical data (validated before capture). */
 function frozenCopy<T>(value: T): T {
   if (Array.isArray(value)) {
@@ -58,6 +63,18 @@ function frozenCopy<T>(value: T): T {
     return Object.freeze(out) as unknown as T;
   }
   return value;
+}
+
+/**
+ * Defensive descriptor of an artifact: data is deep-copied and frozen;
+ * function references (helper executes, processor transforms, guardrail
+ * checks, contract parsers) are preserved BY REFERENCE and never copied or
+ * serialized. Every resolution returns a FRESH descriptor, so mutating a
+ * previously resolved value can never affect a later resolution or an
+ * activation, and the registry's internal objects are never exposed.
+ */
+function defensiveArtifactDescriptor<T extends AgentArtifact>(artifact: T): T {
+  return frozenCopy(artifact);
 }
 
 function requireId(id: unknown, what: string): string {
@@ -94,9 +111,23 @@ const HELPER_TOOL_FIELDS: ReadonlySet<string> = new Set([
 const HELPER_IO_FIELDS: ReadonlySet<string> = new Set(['id', 'revision', 'jsonSchema', 'parse']);
 
 /** Validate a helper-tool definition at the public registration boundary. */
-function validateHelperToolDefinition(definition: AgentHelperToolArtifact['definition']): void {
+function validateHelperToolDefinition(
+  artifactId: string,
+  artifactRevision: string,
+  definition: AgentHelperToolArtifact['definition'],
+): void {
   requireId(definition.id, `Helper tool`);
   requireRevision(definition.revision, `Helper tool '${String(definition.id)}'`);
+  // The artifact wrapper's id/revision must agree with the definition's
+  // own identity: a disagreement means the declared reference does not
+  // name the implementation that would execute.
+  if (definition.id !== artifactId || definition.revision !== artifactRevision) {
+    throw new VictRuntimeError(
+      'VICT_AGENT_INVALID_ARTIFACT',
+      `Helper tool artifact declares outer identity '${artifactId}' (revision '${artifactRevision}') but its definition declares '${definition.id}' (revision '${definition.revision}'); the outer id/revision must agree with the definition.`,
+      { artifactId },
+    );
+  }
   for (const key of Object.keys(definition as unknown as Record<string, unknown>)) {
     if (!HELPER_TOOL_FIELDS.has(key)) {
       throw new VictRuntimeError(
@@ -282,8 +313,11 @@ export class AgentProfileRegistry {
 
   // ---- Artifacts -----------------------------------------------------------
 
-  /** Register one artifact atomically; duplicates of the same (id, revision) fail. */
-  registerArtifact(artifact: AgentArtifact): void {
+  /**
+   * Validate one artifact and produce the normalized frozen internal
+   * capture — WITHOUT touching the registry. Throws on any invalid input.
+   */
+  #stage(artifact: AgentArtifact): AgentArtifact {
     switch (artifact.kind) {
       case 'instructions': {
         requireId(artifact.id, 'Instructions artifact');
@@ -299,35 +333,34 @@ export class AgentProfileRegistry {
             { artifactId: artifact.id },
           );
         }
-        this.#commit({
+        return Object.freeze({
           kind: 'instructions',
           id: artifact.id,
           revision: artifact.revision,
           text: artifact.text,
         });
-        return;
       }
       case 'memory-policy': {
         requireId(artifact.id, 'Memory-policy artifact');
         requireRevision(artifact.revision, `Memory policy '${artifact.id}'`);
         validateMemoryPolicyConfig(artifact.config, artifact.id);
-        this.#commit({
+        return Object.freeze({
           kind: 'memory-policy',
           id: artifact.id,
           revision: artifact.revision,
           config: frozenCopy(artifact.config),
         });
-        return;
       }
       case 'helper-tool': {
-        validateHelperToolDefinition(artifact.definition);
-        this.#commit({
+        requireId(artifact.id, 'Helper-tool artifact');
+        requireRevision(artifact.revision, `Helper tool '${artifact.id}'`);
+        validateHelperToolDefinition(artifact.id, artifact.revision, artifact.definition);
+        return Object.freeze({
           kind: 'helper-tool',
           id: artifact.id,
           revision: artifact.revision,
           definition: frozenCopy(artifact.definition),
         });
-        return;
       }
       case 'processor': {
         requireId(artifact.id, 'Processor artifact');
@@ -339,13 +372,12 @@ export class AgentProfileRegistry {
             { artifactId: artifact.id },
           );
         }
-        this.#commit({
+        return Object.freeze({
           kind: 'processor',
           id: artifact.id,
           revision: artifact.revision,
           transform: artifact.transform,
         });
-        return;
       }
       case 'guardrail': {
         requireId(artifact.id, 'Guardrail artifact');
@@ -357,13 +389,67 @@ export class AgentProfileRegistry {
             { artifactId: artifact.id },
           );
         }
-        this.#commit({
+        if (artifact.failureCodes !== undefined) {
+          if (
+            !Array.isArray(artifact.failureCodes) ||
+            artifact.failureCodes.length > MAX_GUARDRAIL_CODES
+          ) {
+            throw new VictRuntimeError(
+              'VICT_AGENT_INVALID_ARTIFACT',
+              `Guardrail '${artifact.id}' declares an invalid failureCodes set (at most ${MAX_GUARDRAIL_CODES} codes).`,
+              { artifactId: artifact.id },
+            );
+          }
+          const seen = new Set<string>();
+          for (const code of artifact.failureCodes) {
+            if (typeof code !== 'string' || !GUARDRAIL_CODE_PATTERN.test(code) || seen.has(code)) {
+              throw new VictRuntimeError(
+                'VICT_AGENT_INVALID_ARTIFACT',
+                `Guardrail '${artifact.id}' declares an invalid or duplicate failure code; codes must match ^[A-Z][A-Z0-9_]{0,31}$ and must not repeat.`,
+                { artifactId: artifact.id },
+              );
+            }
+            seen.add(code);
+          }
+        }
+        return Object.freeze({
           kind: 'guardrail',
           id: artifact.id,
           revision: artifact.revision,
           check: artifact.check,
+          ...(artifact.failureCodes !== undefined
+            ? { failureCodes: Object.freeze([...artifact.failureCodes]) }
+            : {}),
         });
-        return;
+      }
+      case 'structured-output-contract': {
+        requireId(artifact.id, 'Structured-output contract artifact');
+        requireRevision(artifact.revision, `Structured-output contract '${artifact.id}'`);
+        if (
+          typeof artifact.description !== 'string' ||
+          artifact.description.length === 0 ||
+          artifact.description.length > 512
+        ) {
+          throw new VictRuntimeError(
+            'VICT_AGENT_INVALID_ARTIFACT',
+            `Structured-output contract '${artifact.id}' requires a non-empty description of at most 512 characters.`,
+            { artifactId: artifact.id },
+          );
+        }
+        if (typeof artifact.parse !== 'function') {
+          throw new VictRuntimeError(
+            'VICT_AGENT_INVALID_ARTIFACT',
+            `Structured-output contract '${artifact.id}' must provide a parse callable.`,
+            { artifactId: artifact.id },
+          );
+        }
+        return Object.freeze({
+          kind: 'structured-output-contract',
+          id: artifact.id,
+          revision: artifact.revision,
+          description: artifact.description,
+          parse: artifact.parse,
+        });
       }
       case 'workflow': {
         requireId(artifact.id, 'Workflow artifact');
@@ -375,13 +461,12 @@ export class AgentProfileRegistry {
             { artifactId: artifact.id },
           );
         }
-        this.#commit({
+        return Object.freeze({
           kind: 'workflow',
           id: artifact.id,
           revision: artifact.revision,
           description: artifact.description,
         });
-        return;
       }
       default: {
         throw new VictRuntimeError(
@@ -392,128 +477,75 @@ export class AgentProfileRegistry {
     }
   }
 
-  /** Register many artifacts atomically: all-or-nothing. */
+  /** Register one artifact atomically; duplicates of the same (id, revision) fail. */
+  registerArtifact(artifact: AgentArtifact): void {
+    const staged = this.#stage(artifact);
+    if (this.#artifacts.has(artifactKey(staged))) {
+      throw new VictRuntimeError(
+        'VICT_AGENT_DUPLICATE_ARTIFACT',
+        `A ${staged.kind} artifact '${staged.id}' (revision '${staged.revision}') is already registered; use an intentional replacement API instead of re-registering.`,
+        { artifactId: staged.id, revision: staged.revision },
+      );
+    }
+    this.#artifacts.set(artifactKey(staged), staged);
+  }
+
+  /**
+   * Register many artifacts atomically: ALL or NOTHING.
+   *
+   * Preflight (before anything becomes observable):
+   * 1. every artifact is validated and staged;
+   * 2. every staged key is checked against the EXISTING registry content;
+   * 3. every staged key is checked against the OTHER staged entries
+   *    (intra-batch duplicates).
+   *
+   * If any artifact is invalid or conflicting, nothing from the batch is
+   * committed — the registry is byte-for-byte unchanged, and a corrected
+   * batch can be retried.
+   */
   installArtifacts(artifacts: readonly AgentArtifact[]): void {
     const staged: AgentArtifact[] = [];
     for (const artifact of artifacts) {
-      // Re-validate into the staging list WITHOUT touching live maps. A
-      // throw anywhere below leaves the registry byte-for-byte unchanged.
-      switch (artifact.kind) {
-        case 'instructions':
-          requireId(artifact.id, 'Instructions artifact');
-          requireRevision(artifact.revision, `Instructions '${artifact.id}'`);
-          if (
-            typeof artifact.text !== 'string' ||
-            artifact.text.length === 0 ||
-            artifact.text.length > MAX_TEXT_LENGTH
-          ) {
-            throw new VictRuntimeError(
-              'VICT_AGENT_INVALID_ARTIFACT',
-              `Instructions '${artifact.id}' require non-empty text.`,
-              { artifactId: artifact.id },
-            );
-          }
-          staged.push({
-            kind: 'instructions',
-            id: artifact.id,
-            revision: artifact.revision,
-            text: artifact.text,
-          });
-          break;
-        case 'memory-policy':
-          requireId(artifact.id, 'Memory-policy artifact');
-          requireRevision(artifact.revision, `Memory policy '${artifact.id}'`);
-          validateMemoryPolicyConfig(artifact.config, artifact.id);
-          staged.push({
-            kind: 'memory-policy',
-            id: artifact.id,
-            revision: artifact.revision,
-            config: frozenCopy(artifact.config),
-          });
-          break;
-        case 'helper-tool':
-          validateHelperToolDefinition(artifact.definition);
-          staged.push({
-            kind: 'helper-tool',
-            id: artifact.id,
-            revision: artifact.revision,
-            definition: frozenCopy(artifact.definition),
-          });
-          break;
-        case 'processor':
-          requireId(artifact.id, 'Processor artifact');
-          requireRevision(artifact.revision, `Processor '${artifact.id}'`);
-          if (typeof artifact.transform !== 'function') {
-            throw new VictRuntimeError(
-              'VICT_AGENT_INVALID_ARTIFACT',
-              `Processor '${artifact.id}' must provide a transform.`,
-            );
-          }
-          staged.push({
-            kind: 'processor',
-            id: artifact.id,
-            revision: artifact.revision,
-            transform: artifact.transform,
-          });
-          break;
-        case 'guardrail':
-          requireId(artifact.id, 'Guardrail artifact');
-          requireRevision(artifact.revision, `Guardrail '${artifact.id}'`);
-          if (typeof artifact.check !== 'function') {
-            throw new VictRuntimeError(
-              'VICT_AGENT_INVALID_ARTIFACT',
-              `Guardrail '${artifact.id}' must provide a check.`,
-            );
-          }
-          staged.push({
-            kind: 'guardrail',
-            id: artifact.id,
-            revision: artifact.revision,
-            check: artifact.check,
-          });
-          break;
-        case 'workflow':
-          requireId(artifact.id, 'Workflow artifact');
-          requireRevision(artifact.revision, `Workflow '${artifact.id}'`);
-          staged.push({
-            kind: 'workflow',
-            id: artifact.id,
-            revision: artifact.revision,
-            description: artifact.description,
-          });
-          break;
-        default:
-          throw new VictRuntimeError(
-            'VICT_AGENT_INVALID_ARTIFACT',
-            'An artifact requires a supported kind.',
-          );
+      staged.push(this.#stage(artifact));
+    }
+    const seen = new Set<string>();
+    for (const artifact of staged) {
+      const key = artifactKey(artifact);
+      if (this.#artifacts.has(key)) {
+        throw new VictRuntimeError(
+          'VICT_AGENT_DUPLICATE_ARTIFACT',
+          `A ${artifact.kind} artifact '${artifact.id}' (revision '${artifact.revision}') is already registered; the batch was rejected atomically and nothing from it was installed.`,
+          { artifactId: artifact.id, revision: artifact.revision },
+        );
       }
+      if (seen.has(key)) {
+        throw new VictRuntimeError(
+          'VICT_AGENT_DUPLICATE_ARTIFACT',
+          `The batch declares ${artifact.kind} '${artifact.id}' (revision '${artifact.revision}') more than once; the batch was rejected atomically and nothing from it was installed.`,
+          { artifactId: artifact.id, revision: artifact.revision },
+        );
+      }
+      seen.add(key);
     }
     for (const artifact of staged) {
-      this.#commit(artifact);
+      this.#artifacts.set(artifactKey(artifact), artifact);
     }
   }
 
-  /** Commit one validated artifact (fails on duplicate id+revision). */
-  #commit(artifact: AgentArtifact): void {
-    const key = `${artifact.kind}\u0000${artifact.id}\u0000${artifact.revision}`;
-    if (this.#artifacts.has(key)) {
-      throw new VictRuntimeError(
-        'VICT_AGENT_DUPLICATE_ARTIFACT',
-        `A ${artifact.kind} artifact '${artifact.id}' (revision '${artifact.revision}') is already registered; use an intentional replacement API instead of re-registering.`,
-        { artifactId: artifact.id, revision: artifact.revision },
-      );
-    }
-    this.#artifacts.set(key, artifact);
-  }
-
-  /** Resolve one artifact by kind + exact revision (missing → undefined). */
+  /**
+   * Resolve one artifact by kind + exact revision. The result is a FRESH
+   * defensive descriptor: data members are deep-copied and frozen, function
+   * references are preserved by reference, and the registry's internal
+   * objects are never exposed. Mutating a resolved value cannot alter a
+   * later resolution or an activation.
+   */
   resolveArtifact<T extends AgentArtifact>(
     kind: T['kind'],
     id: string,
     revision: string,
   ): T | undefined {
-    return this.#artifacts.get(`${kind}\u0000${id}\u0000${revision}`) as T | undefined;
+    const internal = this.#artifacts.get(`${kind}\u0000${id}\u0000${revision}`);
+    return internal === undefined ? undefined : (defensiveArtifactDescriptor(internal) as T);
   }
 
   // ---- Profiles -------------------------------------------------------------
@@ -611,8 +643,11 @@ export class AgentProfileRegistry {
 
   /**
    * Activate an agent profile: resolve EVERY revisioned component to its
-   * exact revision, verify the capability envelope, and capture an
-   * immutable snapshot. Missing or mismatched artifacts fail closed.
+   * exact revision — including a declared structured-output contract —
+   * verify the capability envelope (fail closed when a resolver is missing),
+   * and capture an immutable snapshot. Missing or mismatched artifacts fail
+   * closed; identity-only references are never treated as executable
+   * bindings.
    */
   activateAgentProfile(options: {
     readonly id: string;
@@ -650,6 +685,18 @@ export class AgentProfileRegistry {
       this.#resolveExact<AgentWorkflowArtifact>('workflow', reference),
     );
 
+    // A declared structured-output contract is an executable binding: it
+    // must resolve at its exact id + revision, and its actual parser
+    // semantics are captured by reference. A nonexistent or mismatched
+    // contract fails activation — the identity reference alone is never
+    // treated as a binding.
+    const structuredOutput = profile.structuredOutput
+      ? this.#resolveExact<AgentStructuredOutputContractArtifact>(
+          'structured-output-contract',
+          profile.structuredOutput.contract,
+        )
+      : undefined;
+
     // Sub-agents resolve to other registered agent profiles (exact revision).
     const subagents = (profile.subagents ?? []).map((reference) => {
       const sub = this.resolveProfile(reference.id, reference.revision);
@@ -663,8 +710,19 @@ export class AgentProfileRegistry {
       return { reference, agentProfileVersion: sub.agentProfileVersion };
     });
 
-    // Capability envelope: exact-revision existence (fail closed).
-    for (const reference of profile.capabilities ?? []) {
+    // Capability envelope: exact-revision existence, fail closed. A profile
+    // that DECLARES capability references but is activated WITHOUT an
+    // exact-revision resolver cannot prove its authority envelope and
+    // fails closed — the envelope is never silently accepted.
+    const declaredCapabilities = profile.capabilities ?? [];
+    if (declaredCapabilities.length > 0 && this.#options.resolveCapabilityRevision === undefined) {
+      throw new VictRuntimeError(
+        'VICT_AGENT_CAPABILITY_RESOLVER_MISSING',
+        `The profile declares ${declaredCapabilities.length} capability reference(s) but no exact-revision capability resolver is configured; the authority envelope cannot be proven and activation fails closed.`,
+        { agentId: profile.id },
+      );
+    }
+    for (const reference of declaredCapabilities) {
       const resolver = this.#options.resolveCapabilityRevision;
       if (resolver !== undefined && !resolver(reference.id, reference.revision)) {
         throw new VictRuntimeError(
@@ -682,67 +740,80 @@ export class AgentProfileRegistry {
       a.reference.id < b.reference.id ? -1 : a.reference.id > b.reference.id ? 1 : 0,
     );
 
+    // Adapter compatibility: the exact marker the activation was resolved
+    // under (defensive canonical copy of the compiled profile's marker).
+    const adapterCompatibility = frozenCopy({
+      id: profile.adapter.id,
+      revision: profile.adapter.revision,
+      runtimePackages: { ...profile.adapter.runtimePackages },
+    }) as AgentProfileActivation['adapterCompatibility'];
+
+    // Canonical ACTIVATION manifest (distinct from the profile manifest):
+    // covers the exact resolved executable activation — the profile
+    // identity, the adapter compatibility metadata, and every resolved
+    // artifact binding (including the structured-output contract,
+    // sub-agents, and the capability envelope). Canonically sorted;
+    // insertion order never matters.
+    const artifactList = [
+      {
+        kind: 'instructions' as const,
+        id: instructions.reference.id,
+        revision: instructions.reference.revision,
+      },
+      {
+        kind: 'memory-policy' as const,
+        id: memoryPolicy.reference.id,
+        revision: memoryPolicy.reference.revision,
+      },
+      ...(structuredOutput !== undefined
+        ? [
+            {
+              kind: 'structured-output-contract' as const,
+              id: structuredOutput.reference.id,
+              revision: structuredOutput.reference.revision,
+            },
+          ]
+        : []),
+      ...helperTools.map((binding) => ({
+        kind: 'helper-tool' as const,
+        id: binding.reference.id,
+        revision: binding.reference.revision,
+      })),
+      ...processors.map((binding) => ({
+        kind: 'processor' as const,
+        id: binding.reference.id,
+        revision: binding.reference.revision,
+      })),
+      ...guardrails.map((binding) => ({
+        kind: 'guardrail' as const,
+        id: binding.reference.id,
+        revision: binding.reference.revision,
+      })),
+      ...workflows.map((binding) => ({
+        kind: 'workflow' as const,
+        id: binding.reference.id,
+        revision: binding.reference.revision,
+      })),
+      ...subagents.map((binding) => ({
+        kind: 'subagent' as const,
+        id: binding.reference.id,
+        revision: binding.reference.revision,
+      })),
+      ...declaredCapabilities.map((reference) => ({
+        kind: 'capability' as const,
+        id: reference.id,
+        revision: reference.revision,
+      })),
+    ].sort(compareArtifactEntries);
+
     const manifest = {
       schema: AGENT_ACTIVATION_IDENTITY_SCHEMA,
       agentProfileVersion: compiled.agentProfileVersion,
-      artifacts: [
-        {
-          kind: 'instructions',
-          id: instructions.reference.id,
-          revision: instructions.reference.revision,
-        },
-        {
-          kind: 'memory-policy',
-          id: memoryPolicy.reference.id,
-          revision: memoryPolicy.reference.revision,
-        },
-        ...helperTools.map((binding) => ({
-          kind: 'helper-tool',
-          id: binding.reference.id,
-          revision: binding.reference.revision,
-        })),
-        ...processors.map((binding) => ({
-          kind: 'processor',
-          id: binding.reference.id,
-          revision: binding.reference.revision,
-        })),
-        ...guardrails.map((binding) => ({
-          kind: 'guardrail',
-          id: binding.reference.id,
-          revision: binding.reference.revision,
-        })),
-        ...workflows.map((binding) => ({
-          kind: 'workflow',
-          id: binding.reference.id,
-          revision: binding.reference.revision,
-        })),
-        ...subagents.map((binding) => ({
-          kind: 'subagent',
-          id: binding.reference.id,
-          revision: binding.reference.revision,
-        })),
-        ...(profile.capabilities ?? []).map((reference) => ({
-          kind: 'capability',
-          id: reference.id,
-          revision: reference.revision,
-        })),
-      ].sort((a, b) =>
-        a.kind === b.kind
-          ? a.id === b.id
-            ? a.revision < b.revision
-              ? -1
-              : a.revision > b.revision
-                ? 1
-                : 0
-            : a.id < b.id
-              ? -1
-              : 1
-          : a.kind < b.kind
-            ? -1
-            : 1,
-      ),
+      adapter: adapterCompatibility,
+      artifacts: artifactList,
     };
-    const activationVersion = `v1_${sha256Hex(canonicalJson(manifest))}`;
+    const manifestJson = canonicalJson(manifest);
+    const activationVersion = `v1_${sha256Hex(manifestJson)}`;
 
     const activation: AgentProfileActivation = frozenCopy({
       activationVersion,
@@ -753,20 +824,24 @@ export class AgentProfileRegistry {
       helperTools,
       processors,
       guardrails,
+      ...(structuredOutput !== undefined ? { structuredOutput } : {}),
       workflows,
       subagents,
       capabilities: frozenCopy(
-        (profile.capabilities ?? []).map((reference) => ({
+        declaredCapabilities.map((reference) => ({
           id: reference.id,
           revision: reference.revision,
         })),
       ),
+      adapterCompatibility,
+      canonicalManifestJson: manifestJson,
+      artifactList,
       createdAt: clock(),
     }) as unknown as AgentProfileActivation;
 
     // Frozen copy preserves function references (frozenCopy passes
-    // functions through) — execute/transform/check stay bound while all
-    // data becomes immutable.
+    // functions through) — execute/transform/check/parse stay bound while
+    // all data becomes immutable.
     return activation;
   }
 
@@ -802,23 +877,28 @@ export class AgentProfileRegistry {
 
   /**
    * Restore an activation from its persisted identity record: the record is
-   * identity, NOT executable code. Every artifact must re-resolve to the
-   * EXACT revision in this process; any missing or mismatched executable
-   * artifact fails closed (block — never substitute).
+   * identity, NOT executable code, and it is NEVER trusted on identity
+   * strings alone. Restoration:
+   *
+   * 1. structurally validates the record (closed field sets, canonical
+   *    version forms, well-formed artifact entries — extra or
+   *    secret-bearing injected fields fail);
+   * 2. re-activates from the exact pinned revision (re-resolving EVERY
+   *    artifact — a newer live definition never substitutes);
+   * 3. recomputes the canonical activation manifest and compares the
+   *    stored manifest BYTES exactly (tampered manifests fail);
+   * 4. compares both derived identities (profile + activation versions);
+   * 5. compares the stored artifact list against the reconstructed
+   *    activation for exact kind/id/revision equality in canonical order
+   *    (missing, additional, reordered, or inconsistent entries fail).
    */
   restoreActivation(record: AgentActivationRecord): AgentActivationRestoreResult {
-    if (
-      typeof record !== 'object' ||
-      record === null ||
-      record.recordSchema !== 'vict.agent-activation-record@1' ||
-      typeof record.activationVersion !== 'string' ||
-      typeof record.agentProfileVersion !== 'string' ||
-      typeof record.canonicalManifest !== 'string'
-    ) {
+    const structural = validateAgentActivationRecord(record);
+    if (!structural.ok) {
       return {
         ok: false,
         code: 'AGENT_ACTIVATION_CORRUPT_RECORD',
-        message: 'The persisted agent-activation record is missing required identity members.',
+        message: `The persisted agent-activation record is malformed: ${structural.reason}`,
       };
     }
     const compiled = this.#compiled.get(record.agentId)?.get(record.agentRevision);
@@ -866,10 +946,71 @@ export class AgentProfileRegistry {
           'The restored activation identity does not match the persisted record; refusing to substitute.',
       };
     }
+    // Tampered canonical bytes: the stored manifest must equal the
+    // recomputed manifest BYTE FOR BYTE.
+    if (activation.canonicalManifestJson !== record.canonicalManifest) {
+      return {
+        ok: false,
+        code: 'AGENT_ACTIVATION_CORRUPT_RECORD',
+        message:
+          'The stored canonical activation manifest does not match the reconstructed activation; refusing the record.',
+      };
+    }
+    // Exact artifact-list correspondence: kind/id/revision equality in the
+    // canonical order. Missing, additional, reordered-when-semantic, or
+    // otherwise inconsistent stored lists are rejected.
+    const stored = record.artifacts;
+    const reconstructed = activation.artifactList;
+    if (stored.length !== reconstructed.length) {
+      return {
+        ok: false,
+        code: 'AGENT_ACTIVATION_CORRUPT_RECORD',
+        message:
+          'The stored artifact list does not cover exactly the reconstructed activation artifacts; refusing the record.',
+      };
+    }
+    for (let index = 0; index < reconstructed.length; index += 1) {
+      const expected = reconstructed[index] as { kind: string; id: string; revision: string };
+      const found = stored[index] as { kind: string; id: string; revision: string };
+      if (
+        found.kind !== expected.kind ||
+        found.id !== expected.id ||
+        found.revision !== expected.revision
+      ) {
+        return {
+          ok: false,
+          code: 'AGENT_ACTIVATION_ARTIFACT_REVISION_MISMATCH',
+          message:
+            'The stored artifact list is inconsistent with the reconstructed activation (kind, id, revision, or order differs); refusing the record.',
+        };
+      }
+    }
     return { ok: true, activation };
   }
 }
 
 function sha256Hex(payload: string): string {
   return createHash('sha256').update(payload, 'utf8').digest('hex');
+}
+
+/** The registry-internal dedup key of one artifact (kind + id + revision). */
+function artifactKey(artifact: AgentArtifact): string {
+  return `${artifact.kind}\u0000${artifact.id}\u0000${artifact.revision}`;
+}
+
+/** Canonical order of activation-manifest artifact entries. */
+function compareArtifactEntries(
+  a: { readonly kind: string; readonly id: string; readonly revision: string },
+  b: { readonly kind: string; readonly id: string; readonly revision: string },
+): number {
+  if (a.kind !== b.kind) {
+    return a.kind < b.kind ? -1 : 1;
+  }
+  if (a.id !== b.id) {
+    return a.id < b.id ? -1 : 1;
+  }
+  if (a.revision === b.revision) {
+    return 0;
+  }
+  return a.revision < b.revision ? -1 : 1;
 }

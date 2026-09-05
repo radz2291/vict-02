@@ -23,8 +23,18 @@ import type { CompiledAgentProfile } from '@vict/kernel';
  * - changed definitions apply only after explicit re-activation.
  */
 
-/** Versioned marker of the agent-activation identity schema. */
-export const AGENT_ACTIVATION_IDENTITY_SCHEMA = 'vict.agent-activation@1';
+/**
+ * Versioned marker of the agent-activation identity schema.
+ *
+ * `@2` records the normative corrective change of the canonical activation
+ * manifest: it now covers the complete resolved executable activation —
+ * every artifact binding (including a declared structured-output contract)
+ * AND the adapter compatibility metadata (id, revision, and every pinned
+ * runtime package version). `@1` records cannot be accepted under `@2`
+ * because their stored manifest bytes cannot match the reconstructed
+ * activation; restoration fails closed instead of substituting.
+ */
+export const AGENT_ACTIVATION_IDENTITY_SCHEMA = 'vict.agent-activation@2';
 
 /** Versioned marker of persisted agent-activation records. */
 export const AGENT_ACTIVATION_RECORD_SCHEMA = 'vict.agent-activation-record@1';
@@ -39,7 +49,13 @@ export interface AgentArtifactBinding<B> {
 
 /** The kind of a registered agent artifact. */
 export type AgentArtifactKind =
-  'instructions' | 'memory-policy' | 'helper-tool' | 'processor' | 'guardrail' | 'workflow';
+  | 'instructions'
+  | 'memory-policy'
+  | 'helper-tool'
+  | 'processor'
+  | 'guardrail'
+  | 'structured-output-contract'
+  | 'workflow';
 
 /** One registered artifact (frozen capture). */
 export type AgentArtifact =
@@ -48,6 +64,7 @@ export type AgentArtifact =
   | AgentHelperToolArtifact
   | AgentProcessorArtifact
   | AgentGuardrailArtifact
+  | AgentStructuredOutputContractArtifact
   | AgentWorkflowArtifact;
 
 /** Instructions text bound to an exact revision. */
@@ -168,6 +185,42 @@ export interface AgentGuardrailArtifact {
   readonly check: (
     text: string,
   ) => { readonly ok: true } | { readonly ok: false; readonly code: string };
+  /**
+   * The closed set of failure codes this guardrail may return. Only a code
+   * declared here is embedded into the public VICT error code
+   * (`VICT_GUARDRAIL_<CODE>`); any other returned code — and any throw —
+   * maps to the single stable framework code `VICT_GUARDRAIL_REJECTED`,
+   * so arbitrary author strings can never enter the public error-code
+   * space. Declared codes must match `^[A-Z][A-Z0-9_]{0,31}$`.
+   */
+  readonly failureCodes?: readonly string[];
+}
+
+/**
+ * A structured-output contract bound to an exact revision. The `parse`
+ * callable IS the contract's actual parser semantics, captured by
+ * reference at activation (never hashed, never serialized). A profile that
+ * declares `structuredOutput` cannot activate unless the exact contract
+ * id+revision is registered — identity-only references are never treated
+ * as executable bindings.
+ */
+export interface AgentStructuredOutputContractArtifact {
+  readonly kind: 'structured-output-contract';
+  readonly id: string;
+  readonly revision: string;
+  /** Bounded human/author description (never surfaced as authority). */
+  readonly description: string;
+  /**
+   * The authoritative parser over completed model text. Throwing parsers
+   * are untrusted: the adapter reduces any throw to a sanitized structured
+   * failure; issue payloads never propagate raw.
+   */
+  readonly parse: (text: string) =>
+    | { readonly ok: true; readonly value: unknown }
+    | {
+        readonly ok: false;
+        readonly issues: ReadonlyArray<{ readonly path?: string; readonly message: string }>;
+      };
 }
 
 /**
@@ -201,6 +254,11 @@ export interface AgentProfileActivation {
   readonly processors: ReadonlyArray<AgentArtifactBinding<AgentProcessorArtifact>>;
   /** Resolved guardrail chain in declared order. */
   readonly guardrails: ReadonlyArray<AgentArtifactBinding<AgentGuardrailArtifact>>;
+  /**
+   * The resolved structured-output contract (exact revision) when the
+   * profile declares structured output; otherwise `undefined`.
+   */
+  readonly structuredOutput?: AgentArtifactBinding<AgentStructuredOutputContractArtifact>;
   /** Resolved AI-internal workflow declarations, canonically sorted by id. */
   readonly workflows: ReadonlyArray<AgentArtifactBinding<AgentWorkflowArtifact>>;
   /** Resolved sub-agent profile versions, canonically sorted by id. */
@@ -210,6 +268,23 @@ export interface AgentProfileActivation {
   }>;
   /** The capability authority envelope (exact revisions, canonically sorted). */
   readonly capabilities: readonly AgentReference[];
+  /**
+   * The exact adapter compatibility the activation was resolved under
+   * (defensive copy of the compiled profile's adapter marker).
+   */
+  readonly adapterCompatibility: {
+    readonly id: string;
+    readonly revision: string;
+    readonly runtimePackages: Readonly<Record<string, string>>;
+  };
+  /** The canonical activation manifest JSON (deterministic bytes). */
+  readonly canonicalManifestJson: string;
+  /** Every resolved artifact reference, canonically sorted (manifest order). */
+  readonly artifactList: ReadonlyArray<{
+    readonly kind: AgentArtifactKind | 'subagent' | 'capability';
+    readonly id: string;
+    readonly revision: string;
+  }>;
   /** Activation creation time from the injected clock (epoch ms). */
   readonly createdAt: number;
 }
@@ -225,7 +300,7 @@ export interface AgentActivationRecord {
   readonly canonicalManifest: string;
   /** Every resolved artifact reference, canonically sorted. */
   readonly artifacts: ReadonlyArray<{
-    readonly kind: AgentArtifactKind;
+    readonly kind: AgentArtifactKind | 'subagent' | 'capability';
     readonly id: string;
     readonly revision: string;
   }>;
@@ -239,6 +314,129 @@ export type AgentActivationRestoreFailureCode =
   | 'AGENT_ACTIVATION_ARTIFACT_MISSING'
   | 'AGENT_ACTIVATION_ARTIFACT_REVISION_MISMATCH'
   | 'AGENT_ACTIVATION_CORRUPT_RECORD';
+
+/**
+ * Structural validation result for a persisted activation record. Store
+ * adapters MUST run this before persistence so malformed, inconsistent, or
+ * secret-bearing records can never enter durable storage.
+ */
+export type AgentActivationRecordValidation =
+  { readonly ok: true } | { readonly ok: false; readonly reason: string };
+
+/**
+ * The closed field set of a persisted activation record. Any additional
+ * member — including a smuggled secret-bearing field — fails validation.
+ */
+const ACTIVATION_RECORD_FIELDS: ReadonlySet<string> = new Set([
+  'recordSchema',
+  'activationVersion',
+  'agentProfileVersion',
+  'agentId',
+  'agentRevision',
+  'canonicalManifest',
+  'artifacts',
+  'createdAt',
+]);
+
+const ACTIVATION_ARTIFACT_ENTRY_FIELDS: ReadonlySet<string> = new Set(['kind', 'id', 'revision']);
+
+const VERSION_STRING_PATTERN = /^v1_[0-9a-f]{64}$/;
+
+/**
+ * Validate the STRUCTURE of a persisted activation record (closed field
+ * sets, exact schema marker, canonical version forms, well-formed artifact
+ * entries with known kinds). This is the shared gate used by restoration
+ * AND by both store adapters before persistence; it does not resolve or
+ * trust identity — that happens only during restoration.
+ */
+export function validateAgentActivationRecord(record: unknown): AgentActivationRecordValidation {
+  if (typeof record !== 'object' || record === null || Array.isArray(record)) {
+    return { ok: false, reason: 'The activation record must be a plain object.' };
+  }
+  const candidate = record as Record<string, unknown>;
+  for (const key of Object.keys(candidate)) {
+    if (!ACTIVATION_RECORD_FIELDS.has(key)) {
+      return {
+        ok: false,
+        reason: `The activation record declares unknown field '${key}'; the record schema is closed.`,
+      };
+    }
+  }
+  if (candidate.recordSchema !== 'vict.agent-activation-record@1') {
+    return { ok: false, reason: 'The activation record schema marker is not recognized.' };
+  }
+  for (const key of ['activationVersion', 'agentProfileVersion'] as const) {
+    const value = candidate[key];
+    if (typeof value !== 'string' || !VERSION_STRING_PATTERN.test(value)) {
+      return {
+        ok: false,
+        reason: `The activation record '${key}' is not a canonical version string.`,
+      };
+    }
+  }
+  for (const key of ['agentId', 'agentRevision'] as const) {
+    const value = candidate[key];
+    if (typeof value !== 'string' || value.length === 0 || value.length > 128) {
+      return { ok: false, reason: `The activation record '${key}' is missing or malformed.` };
+    }
+  }
+  if (typeof candidate.canonicalManifest !== 'string' || candidate.canonicalManifest.length === 0) {
+    return { ok: false, reason: 'The activation record canonical manifest is missing.' };
+  }
+  if (
+    typeof candidate.createdAt !== 'number' ||
+    !Number.isFinite(candidate.createdAt) ||
+    candidate.createdAt < 0
+  ) {
+    return {
+      ok: false,
+      reason: 'The activation record createdAt is not a finite epoch-ms number.',
+    };
+  }
+  if (!Array.isArray(candidate.artifacts)) {
+    return { ok: false, reason: 'The activation record artifact list must be an array.' };
+  }
+  for (const entry of candidate.artifacts) {
+    if (typeof entry !== 'object' || entry === null || Array.isArray(entry)) {
+      return { ok: false, reason: 'The activation record artifact entries must be plain objects.' };
+    }
+    const artifact = entry as Record<string, unknown>;
+    for (const key of Object.keys(artifact)) {
+      if (!ACTIVATION_ARTIFACT_ENTRY_FIELDS.has(key)) {
+        return {
+          ok: false,
+          reason: `The activation record artifact entry declares unknown field '${key}'.`,
+        };
+      }
+    }
+    if (typeof artifact.kind !== 'string' || !VALID_RECORD_ARTIFACT_KINDS.has(artifact.kind)) {
+      return { ok: false, reason: 'The activation record artifact entry has an unknown kind.' };
+    }
+    for (const key of ['id', 'revision'] as const) {
+      const value = artifact[key];
+      if (typeof value !== 'string' || value.length === 0 || value.length > 128) {
+        return {
+          ok: false,
+          reason: `The activation record artifact entry '${key}' is missing or malformed.`,
+        };
+      }
+    }
+  }
+  return { ok: true };
+}
+
+/** Artifact kinds that may appear inside a persisted activation record. */
+const VALID_RECORD_ARTIFACT_KINDS: ReadonlySet<string> = new Set([
+  'instructions',
+  'memory-policy',
+  'helper-tool',
+  'processor',
+  'guardrail',
+  'structured-output-contract',
+  'workflow',
+  'subagent',
+  'capability',
+]);
 
 /** The result of restoring an activation identity. */
 export type AgentActivationRestoreResult =

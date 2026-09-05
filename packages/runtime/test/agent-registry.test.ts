@@ -69,10 +69,33 @@ function artifacts(): AgentArtifact[] {
 }
 
 function registryWith(overrides: Partial<AgentProfileAuthoring> = {}): AgentProfileRegistry {
-  const registry = new AgentProfileRegistry();
+  const registry = new AgentProfileRegistry({
+    // The fixture profile declares capability references; the corrected
+    // activation requires an exact-revision resolver (fail closed without
+    // one), so the fixture composition supplies one.
+    resolveCapabilityRevision: () => true,
+  });
   registry.installArtifacts(artifacts());
   registry.registerProfile(profileInput(overrides));
   return registry;
+}
+
+/** Build the canonical persisted record of one activation (corrected model). */
+function recordOf(
+  activation: ReturnType<AgentProfileRegistry['activateAgentProfile']>,
+  overrides: Record<string, unknown> = {},
+): Record<string, unknown> {
+  return {
+    recordSchema: 'vict.agent-activation-record@1',
+    activationVersion: activation.activationVersion,
+    agentProfileVersion: activation.agentProfileVersion,
+    agentId: 'agent.registry',
+    agentRevision: '1',
+    canonicalManifest: activation.canonicalManifestJson,
+    artifacts: activation.artifactList.map((entry) => ({ ...entry })),
+    createdAt: activation.createdAt,
+    ...overrides,
+  };
 }
 
 describe('agent profile registration', () => {
@@ -227,7 +250,7 @@ describe('agent profile registration', () => {
 
 describe('activation snapshots', () => {
   it('deep-captures an immutable snapshot; caller mutation after registration has no effect', () => {
-    const registry = new AgentProfileRegistry();
+    const registry = new AgentProfileRegistry({ resolveCapabilityRevision: () => true });
     const rawArtifacts = artifacts();
     registry.installArtifacts(rawArtifacts);
     registry.registerProfile(profileInput());
@@ -378,21 +401,7 @@ describe('restart restoration (Stage 02 model)', () => {
   it('restores the exact activation from its persisted identity record', () => {
     const registry = registryWith();
     const activation = registry.activateAgentProfile({ id: 'agent.registry', revision: '1' });
-    const record = {
-      recordSchema: 'vict.agent-activation-record@1' as const,
-      activationVersion: activation.activationVersion,
-      agentProfileVersion: activation.agentProfileVersion,
-      agentId: 'agent.registry',
-      agentRevision: '1',
-      canonicalManifest: activation.profile.manifestJson,
-      artifacts: [
-        { kind: 'instructions' as const, id: 'instructions.r', revision: '1' },
-        { kind: 'memory-policy' as const, id: 'memory-policy.r', revision: '1' },
-        { kind: 'helper-tool' as const, id: 'helper.r', revision: '1' },
-        { kind: 'capability' as const, id: 'cap.r', revision: '1' },
-      ],
-      createdAt: activation.createdAt,
-    };
+    const record = recordOf(activation);
     const restored = registry.restoreActivation(
       record as unknown as Parameters<AgentProfileRegistry['restoreActivation']>[0],
     );
@@ -406,27 +415,25 @@ describe('restart restoration (Stage 02 model)', () => {
 
   it('fails closed when the pinned profile is missing (no substitution by a newer revision)', () => {
     // Only revision 2 is registered in this "fresh process".
-    const fresh = new AgentProfileRegistry();
+    const fresh = new AgentProfileRegistry({ resolveCapabilityRevision: () => true });
     fresh.installArtifacts(artifacts());
     fresh.registerProfile(profileInput({ revision: '2' }));
-    // Simulate a record whose profile is genuinely the OLD revision.
+    // Simulate a record whose profile is genuinely the OLD revision. The
+    // identity strings keep the canonical version FORM so the record is
+    // structurally valid and the profile-level refusal is what fires.
     const old = compileAgentProfile(profileInput({ revision: '1' }));
     if (!old.ok) {
       throw new Error('expected ok');
     }
+    const fakeVersion = `v1_${'0'.repeat(64)}`;
     const record2 = {
-      recordSchema: 'vict.agent-activation-record@1' as const,
-      activationVersion: activationVersionOf(old.value.agentProfileVersion),
+      recordSchema: 'vict.agent-activation-record@1',
+      activationVersion: fakeVersion,
       agentProfileVersion: old.value.agentProfileVersion,
       agentId: 'agent.registry',
       agentRevision: '1',
       canonicalManifest: old.value.manifestJson,
-      artifacts: [
-        { kind: 'instructions' as const, id: 'instructions.r', revision: '1' },
-        { kind: 'memory-policy' as const, id: 'memory-policy.r', revision: '1' },
-        { kind: 'helper-tool' as const, id: 'helper.r', revision: '1' },
-        { kind: 'capability' as const, id: 'cap.r', revision: '1' },
-      ],
+      artifacts: [],
       createdAt: 0,
     };
     const result = fresh.restoreActivation(
@@ -443,7 +450,7 @@ describe('restart restoration (Stage 02 model)', () => {
     const registry = registryWith();
     const activation = registry.activateAgentProfile({ id: 'agent.registry', revision: '1' });
     // A fresh process that registered a NEWER instructions revision only.
-    const fresh = new AgentProfileRegistry();
+    const fresh = new AgentProfileRegistry({ resolveCapabilityRevision: () => true });
     fresh.registerArtifact({
       kind: 'instructions',
       id: 'instructions.r',
@@ -453,16 +460,7 @@ describe('restart restoration (Stage 02 model)', () => {
     fresh.registerArtifact(artifacts()[1]!);
     fresh.registerArtifact(artifacts()[2]!);
     fresh.registerProfile(profileInput());
-    const record = {
-      recordSchema: 'vict.agent-activation-record@1' as const,
-      activationVersion: activation.activationVersion,
-      agentProfileVersion: activation.agentProfileVersion,
-      agentId: 'agent.registry',
-      agentRevision: '1',
-      canonicalManifest: activation.profile.manifestJson,
-      artifacts: [{ kind: 'instructions' as const, id: 'instructions.r', revision: '1' }],
-      createdAt: 0,
-    };
+    const record = recordOf(activation);
     const result = fresh.restoreActivation(
       record as unknown as Parameters<AgentProfileRegistry['restoreActivation']>[0],
     );
@@ -483,9 +481,3 @@ describe('restart restoration (Stage 02 model)', () => {
     }
   });
 });
-
-function activationVersionOf(agentProfileVersion: string): string {
-  // Any deterministic string; the registry compares its own computed
-  // activation identity against this and fails closed on mismatch.
-  return `record-for-${agentProfileVersion}`;
-}

@@ -79,22 +79,49 @@ function governanceStoreConformance(
       }
     });
 
-    it('rejects deletion-state regressions', async () => {
+    it('rejects deletion-state regressions and skipped transitions', async () => {
       const store = makeStore();
       try {
+        // A NEW intent must be pending with no receipts — arbitrary initial
+        // states and fabricated receipts are rejected.
+        await expect(
+          store.recordDeletionIntent({
+            intentId: 'vict-del-fabricated',
+            conversationId: 'conv-fabricated',
+            actorId: 'actor-1',
+            createdAt: 100,
+            state: 'completed',
+            receipts: [],
+          }),
+        ).rejects.toThrow();
         await store.recordDeletionIntent({
           intentId: 'vict-del-conv-2',
           conversationId: 'conv-2',
           actorId: 'actor-1',
           createdAt: 100,
-          state: 'completed',
+          state: 'pending',
           receipts: [],
         });
+        // Same-state updates are idempotent no-ops.
+        await store.updateDeletionIntentState('vict-del-conv-2', 'pending');
+        await store.updateDeletionIntentState('vict-del-conv-2', 'application-domain-deleted');
+        // Regression from a recorded state is refused.
         await expect(
           store.updateDeletionIntentState('vict-del-conv-2', 'pending'),
         ).rejects.toThrow();
-        expect(assertDeletionStateTransition('pending', 'completed')).toBeUndefined();
+        // Completion from the intermediate state without the receipts is
+        // the store-level invariant surface; the stepwise helper refuses
+        // skips directly.
         expect(() => assertDeletionStateTransition('completed', 'pending')).toThrow();
+        // Stepwise: pending → completed skips the required intermediate
+        // state and is refused; the legal steps are accepted.
+        expect(() => assertDeletionStateTransition('pending', 'completed')).toThrow();
+        expect(
+          assertDeletionStateTransition('pending', 'application-domain-deleted'),
+        ).toBeUndefined();
+        expect(
+          assertDeletionStateTransition('application-domain-deleted', 'completed'),
+        ).toBeUndefined();
       } finally {
         await store.close?.();
       }
