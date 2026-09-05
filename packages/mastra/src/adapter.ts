@@ -19,7 +19,7 @@ import {
   sanitizeToolName,
   type HelperToolGateVerdict,
 } from './helper-tools.js';
-import type { MastraThreadCoordinator } from './memory.js';
+import { VictMastraCompositionError, type MastraThreadCoordinator } from './memory.js';
 
 /**
  * The Mastra-backed `ProductAgentPort` implementation (Stage 06A).
@@ -59,6 +59,7 @@ export type MastraAdapterErrorCode =
   | 'VICT_AGENT_STRUCTURED_OUTPUT_REJECTED'
   | 'VICT_AGENT_STRUCTURED_OUTPUT_FAILED'
   | 'VICT_AGENT_TOOL_LIMIT_EXCEEDED'
+  | 'VICT_AGENT_TURN_PERSISTENCE_UNCONFIRMED'
   | 'VICT_AGENT_GUARDRAIL_REJECTED'
   | 'VICT_AGENT_TURN_FAILED';
 
@@ -120,15 +121,33 @@ export interface MastraProductAgentConfig {
   readonly clock?: () => number;
   /**
    * The process-local thread coordinator shared with the governed deletion
-   * port. When wired, an in-flight turn holds its thread against deletion
+   * port. REQUIRED: an in-flight turn holds its thread against deletion
    * until the turn is fully settled (deletion fences the thread and waits),
    * and a turn starting on a fenced (deleted) thread is refused — so a
-   * completed deletion can never be undone by a still-running turn.
+   * completed deletion can never be undone by a still-running turn. An
+   * unfenced configuration violates the deletion guarantee and is REJECTED
+   * at construction (before any execution); the supported composition path
+   * (`createGovernedMemoryDeletionPort`) hands the SAME coordinator
+   * instance to both sides automatically.
    */
-  readonly threadCoordinator?: MastraThreadCoordinator;
+  readonly threadCoordinator: MastraThreadCoordinator;
 }
 
-/** The resolved, adapter-owned model metadata (recorded, never hashed). */
+/**
+ * Declared trust policy for model-supplied stream metadata:
+ * - a tool NAME is trusted metadata only when it matches a PINNED helper
+ *   tool of this activation; anything else (including model-fabricated
+ *   names) is normalized to the stable placeholder 'unknown' before it can
+ *   appear in normalized events;
+ * - a tool-CALL ID is a bounded correlation handle: only bounded safe
+ *   identifier characters are accepted; anything else is normalized to
+ *   'unknown'. Neither is ever used for authority decisions.
+ */
+const TOOL_CALL_ID_PATTERN = /^[A-Za-z0-9._:-]{1,128}$/;
+const UNTRUSTED_TOOL_METADATA_PLACEHOLDER = 'unknown';
+
+/**
+ * The resolved, adapter-owned model metadata (recorded, never hashed). */
 export interface MastraAdapterMetadata {
   /** The pinned activation identity the adapter is bound to. */
   readonly agentProfileVersion: string;
@@ -149,6 +168,25 @@ export interface MastraAdapterMetadata {
  * rejected before any model or store interaction.
  */
 function validateAndFreezeTracingPolicy(
+  policy: MastraTracingPolicy | undefined,
+): Readonly<Required<MastraTracingPolicy>> {
+  try {
+    return validateAndFreezeTracingPolicyUnsafe(policy);
+  } catch (error) {
+    if (error instanceof VictMastraAdapterError) {
+      throw error;
+    }
+    // Hostile getters/proxies (a property access that THROWS) are untrusted
+    // configuration: the failure is sanitized to the stable, non-echoing
+    // policy code — the raw error (and any canary it carries) never escapes.
+    throw new VictMastraAdapterError(
+      'VICT_AGENT_TRACE_POLICY_UNSAFE',
+      'The tracing policy could not be validated safely; hostile property access is rejected.',
+    );
+  }
+}
+
+function validateAndFreezeTracingPolicyUnsafe(
   policy: MastraTracingPolicy | undefined,
 ): Readonly<Required<MastraTracingPolicy>> {
   const resolved: {
@@ -325,7 +363,7 @@ export class MastraProductAgent implements ProductAgentPort {
   readonly #activation: AgentProfileActivation;
   /** Defensively captured configuration — caller mutation is invisible. */
   readonly #store: LibSQLStore;
-  readonly #threadCoordinator: MastraThreadCoordinator | undefined;
+  readonly #threadCoordinator: MastraThreadCoordinator;
   readonly #tracing: Readonly<Required<MastraTracingPolicy>>;
   readonly #agent: Agent;
   readonly #memory: Memory;
@@ -333,14 +371,22 @@ export class MastraProductAgent implements ProductAgentPort {
   readonly #metadata: Readonly<MastraAdapterMetadata>;
   /** Threads known for quiescence bookkeeping (ids only, never ownership). */
   readonly #knownThreads = new Set<string>();
+  /** The PINNED helper-tool names: the only trusted tool-name metadata. */
+  readonly #pinnedToolNames: ReadonlySet<string>;
   /**
    * Actor-aware ownership cache: threadId → the ONLY actor that may use it
    * (the resource binding). A thread bound to actor A is never usable by
    * actor B — neither through this cache nor through the store.
    */
   readonly #threadOwners = new Map<string, string>();
-  /** Per-turn tool-budget scope: counts never leak between turns. */
-  readonly #turnScope = new AsyncLocalStorage<{ remainingToolCalls: number }>();
+  /** Per-turn tool-budget scope: counts never leak between turns. The
+   * `budgetDenied` flag is the AUTHORITATIVE denial record — it is set at
+   * the gate itself and does not depend on any denial envelope surviving
+   * the helper's application output contract. */
+  readonly #turnScope = new AsyncLocalStorage<{
+    remainingToolCalls: number;
+    budgetDenied: boolean;
+  }>();
 
   private constructor(
     activation: AgentProfileActivation,
@@ -349,6 +395,15 @@ export class MastraProductAgent implements ProductAgentPort {
     metadata: MastraAdapterMetadata,
   ) {
     this.#activation = activation;
+    // Unfenced compositions are rejected BEFORE anything is constructed:
+    // without the shared coordinator an in-flight turn could persist
+    // messages after a completed deletion, silently violating the deletion
+    // guarantee.
+    if (config.threadCoordinator === undefined) {
+      throw new VictMastraCompositionError(
+        'The Mastra adapter requires the process-local thread coordinator shared with the governed deletion port; unfenced compositions are rejected before execution.',
+      );
+    }
     this.#store = config.store;
     this.#threadCoordinator = config.threadCoordinator;
     this.#tracing = validateAndFreezeTracingPolicy(config.tracing);
@@ -389,6 +444,7 @@ export class MastraProductAgent implements ProductAgentPort {
       toolNameOwner.set(toolName, binding.artifact.id);
       tools[toolName] = bridgeHelperToolToMastra(binding, () => this.#toolBudgetGate());
     }
+    this.#pinnedToolNames = new Set(Object.keys(tools));
 
     // The REAL pinned Mastra Agent, derived from the frozen snapshot, bound
     // to the ONE model instance the factory produced.
@@ -430,6 +486,14 @@ export class MastraProductAgent implements ProductAgentPort {
     activation: AgentProfileActivation,
     config: MastraProductAgentConfig,
   ): MastraProductAgent {
+    // 0. Deletion fencing is UNAVOIDABLE in supported composition: a
+    // configuration without the shared thread coordinator is rejected
+    // before any validation, factory call, or store interaction.
+    if (config.threadCoordinator === undefined) {
+      throw new VictMastraCompositionError(
+        'The Mastra adapter requires the process-local thread coordinator shared with the governed deletion port; unfenced compositions are rejected before execution.',
+      );
+    }
     // 1. Tracing safety first: an unsafe configuration never executes.
     validateAndFreezeTracingPolicy(config.tracing);
     // 2. Exact adapter-marker validation before anything is constructed.
@@ -469,7 +533,12 @@ export class MastraProductAgent implements ProductAgentPort {
    * context. Every helper-tool invocation consumes one call BEFORE any
    * contract or implementation work; `maxToolCalls: 0` denies every
    * invocation, and higher limits stop before invocation number
-   * `limit + 1`. A tool reached outside any turn scope is denied.
+   * `limit + 1`. A tool reached outside any turn scope is denied. Every
+   * denial is recorded in the AUTHORITATIVE per-turn state (the turn's
+   * scope) at the gate itself — the turn fails closed with the stable
+   * limit code even if the denial envelope never survives the helper's
+   * application output contract. A tool reached outside any turn scope is
+   * denied.
    */
   #toolBudgetGate(): HelperToolGateVerdict {
     const scope = this.#turnScope.getStore();
@@ -477,6 +546,7 @@ export class MastraProductAgent implements ProductAgentPort {
       return 'outside-turn';
     }
     if (scope.remainingToolCalls <= 0) {
+      scope.budgetDenied = true;
       return 'denied';
     }
     scope.remainingToolCalls -= 1;
@@ -544,32 +614,63 @@ export class MastraProductAgent implements ProductAgentPort {
   }
 
   /**
-   * Durable-presence barrier: poll the dedicated store until this turn's
-   * thread actually EXISTS with at least one persisted message (bounded).
-   * The pinned save queue is debounced with a documented staleness flush,
-   * so queue-idle checks can race the enqueue; durable presence is the
-   * property the deletion fence relies on.
+   * Durable message count for one thread (best-effort). Returns -1 when the
+   * count cannot be read (the barrier then falls back to requiring durable
+   * presence of at least one message; the deletion reconciliation rounds
+   * remain the backstop for straggler debounced saves).
    */
-  async #awaitDurableTurnPersistence(threadId: string, resourceId: string): Promise<void> {
+  async #durableMessageCount(threadId: string, resourceId: string): Promise<number> {
+    try {
+      const domain = await this.#store.getStore('memory');
+      if (domain === undefined) {
+        return -1;
+      }
+      const listed = await domain.listMessages({ threadId, resourceId });
+      return listed.messages.length;
+    } catch {
+      return -1;
+    }
+  }
+
+  /**
+   * Durable-presence barrier: poll the dedicated store until THIS turn's
+   * content is durably persisted — the thread exists AND at least one NEW
+   * message beyond the turn's baseline is present. Completion therefore
+   * depends on an actual persistence acknowledgement from the store, never
+   * on an arbitrary delay or on the presence of any historical message.
+   * The pinned save queue is debounced with a documented staleness flush,
+   * so queue-idle checks can race the enqueue; durable NEW presence is the
+   * property the deletion fence relies on. Bounded; never unbounded
+   * waiting. Returns `true` only when durable new presence was PROVEN.
+   */
+  async #awaitDurableTurnPersistence(
+    threadId: string,
+    resourceId: string,
+    baselineMessages: number,
+  ): Promise<boolean> {
     const domain = await this.#store.getStore('memory');
     if (domain === undefined) {
-      return;
+      return false;
     }
+    // Unknown baseline (read failure at turn start): require durable
+    // presence of at least one message.
+    const requiredCount = baselineMessages >= 0 ? baselineMessages : 0;
     for (let attempt = 0; attempt < 150; attempt += 1) {
       try {
         const thread = await domain.getThreadById({ threadId, resourceId });
         const listed = await domain.listMessages({ threadId, resourceId });
-        if (thread !== null && thread !== undefined && listed.messages.length > 0) {
-          return;
+        if (thread !== null && thread !== undefined && listed.messages.length > requiredCount) {
+          return true;
         }
       } catch {
         // transient read failure: keep polling within the bound
       }
       await new Promise((resolve) => setTimeout(resolve, 100));
     }
-    // Bounded: persistence could not be proven; documented honest barrier
-    // failure (the turn outcome is unaffected, but the deletion fence may
-    // reconcile stragglers).
+    // Bounded: persistence could NOT be proven; the caller fails the turn
+    // with VICT_AGENT_TURN_PERSISTENCE_UNCONFIRMED instead of emitting
+    // misleading success milestones.
+    return false;
   }
 
   get agentProfileVersion(): string {
@@ -582,9 +683,13 @@ export class MastraProductAgent implements ProductAgentPort {
     context: AgentTurnExecutionContext,
   ): Promise<AgentTurnOutcome> {
     // The whole turn runs inside its own tool-budget scope: counts are
-    // turn-local and can never leak between concurrent turns.
+    // turn-local and can never leak between concurrent turns; the
+    // authoritative denial flag lives in the same scope.
     return this.#turnScope.run(
-      { remainingToolCalls: this.#activation.profile.profile.turnPolicy.maxToolCalls },
+      {
+        remainingToolCalls: this.#activation.profile.profile.turnPolicy.maxToolCalls,
+        budgetDenied: false,
+      },
       () => this.#runTurnScoped(request, context),
     );
   }
@@ -643,13 +748,16 @@ export class MastraProductAgent implements ProductAgentPort {
 
     try {
       // 1. Neutral input processors (declared order) transform the input
-      // text. They are untrusted author code: any throw is a sanitized,
-      // deterministic turn failure — runTurn never rejects with a raw
-      // author message.
+      // text. They are untrusted author code: any throw — and any non-string
+      // transform result — is a sanitized, deterministic turn failure;
+      // runTurn never rejects with a raw author message.
       let inputText = request.input;
       try {
         for (const binding of this.#activation.processors) {
           inputText = binding.artifact.transform(inputText);
+          if (typeof inputText !== 'string') {
+            return turnFailure('VICT_AGENT_TURN_FAILED');
+          }
         }
       } catch {
         return turnFailure('VICT_AGENT_TURN_FAILED');
@@ -662,8 +770,15 @@ export class MastraProductAgent implements ProductAgentPort {
       // 2. The REAL pinned Mastra stream, memory-scoped by VICT identities.
       const memoryResource = `vict-actor-${request.actorId}`;
       let stream;
+      // Baseline durable message count for THIS turn's persistence barrier:
+      // completion must be proven by NEW durable content of this turn, never
+      // by the presence of any historical message. -1 = unknown (read
+      // failure); the barrier then requires durable presence of at least one
+      // message and the deletion reconciliation remains the backstop.
+      let baselineMessages = -1;
       try {
         const memoryThread = await this.#ensureThread(request.threadId, memoryResource);
+        baselineMessages = await this.#durableMessageCount(request.threadId, memoryResource);
         stream = await this.#agent.stream(inputText, {
           memory: { thread: memoryThread, resource: memoryResource },
           // Durable milestone discipline: messages flush to the dedicated
@@ -725,20 +840,34 @@ export class MastraProductAgent implements ProductAgentPort {
         for await (const chunk of stream.fullStream) {
           const type = (chunk as { type?: string }).type;
           const payload = (chunk as { payload?: Record<string, unknown> }).payload ?? {};
+          // Declared trust policy for model-supplied metadata: a tool NAME
+          // is trusted only when it matches a PINNED helper tool; a tool
+          // CALL ID must be a bounded safe identifier. Anything else is
+          // normalized to the stable placeholder before it can appear in
+          // normalized events (never forwarded as trusted metadata).
+          const trustToolName = (value: unknown): string => {
+            const raw = typeof value === 'string' ? value : '';
+            return this.#pinnedToolNames.has(raw) ? raw : UNTRUSTED_TOOL_METADATA_PLACEHOLDER;
+          };
+          const trustToolCallId = (value: unknown): string => {
+            const raw = typeof value === 'string' ? value : '';
+            return TOOL_CALL_ID_PATTERN.test(raw) ? raw : UNTRUSTED_TOOL_METADATA_PLACEHOLDER;
+          };
           switch (type) {
             case 'tool-call': {
-              const toolCallId = String(payload.toolCallId ?? 'unknown');
-              const toolName = String(payload.toolName ?? 'unknown');
+              const toolCallId = trustToolCallId(payload.toolCallId);
+              const toolName = trustToolName(payload.toolName);
               pendingToolCalls.set(toolCallId, toolName);
               emit({ kind: 'tool.requested', toolCallId, toolName });
               emit({ kind: 'tool.started', toolCallId, toolName });
               break;
             }
             case 'tool-result': {
-              const toolCallId = String(payload.toolCallId ?? 'unknown');
-              const toolName = String(
-                payload.toolName ?? pendingToolCalls.get(toolCallId) ?? 'unknown',
-              );
+              const toolCallId = trustToolCallId(payload.toolCallId);
+              const toolName =
+                trustToolName(payload.toolName) === UNTRUSTED_TOOL_METADATA_PLACEHOLDER
+                  ? (pendingToolCalls.get(toolCallId) ?? UNTRUSTED_TOOL_METADATA_PLACEHOLDER)
+                  : (payload.toolName as string);
               const result = payload.result as
                 { victHelperFailure?: string; error?: unknown } | undefined;
               // Mastra reports a schema-rejected tool input as a tool
@@ -760,12 +889,15 @@ export class MastraProductAgent implements ProductAgentPort {
             }
             case 'tool-error': {
               // A FAILED tool execution arrives as a tool-error chunk (for
-              // example, a contract-invalid input): the raw error payload is
-              // never forwarded — only the stable sanitized event.
-              const toolCallId = String(payload.toolCallId ?? 'unknown');
-              const toolName = String(
-                payload.toolName ?? pendingToolCalls.get(toolCallId) ?? 'unknown',
-              );
+              // example, a contract-invalid input, or a budget denial whose
+              // envelope could not survive the helper's output contract):
+              // the raw error payload is never forwarded — only the stable
+              // sanitized event.
+              const toolCallId = trustToolCallId(payload.toolCallId);
+              const toolName =
+                trustToolName(payload.toolName) === UNTRUSTED_TOOL_METADATA_PLACEHOLDER
+                  ? (pendingToolCalls.get(toolCallId) ?? UNTRUSTED_TOOL_METADATA_PLACEHOLDER)
+                  : (payload.toolName as string);
               emit({ kind: 'tool.failed', toolCallId, toolName, code: 'VICT_TOOL_FAILED' });
               break;
             }
@@ -827,11 +959,17 @@ export class MastraProductAgent implements ProductAgentPort {
 
       // 4. Structured-output contract (declared, exact revision): its
       // ACTUAL parser semantics — captured by reference at activation —
-      // run on the completed text. Failures are sanitized and stable.
+      // run on the completed text. Failures are sanitized and stable. The
+      // returned verdict object is UNTRUSTED author data: its property
+      // access happens inside the protected boundary, and a hostile getter
+      // collapses to the same sanitized failure instead of rejecting
+      // runTurn with a raw error.
       if (status === 'completed' && this.#activation.structuredOutput !== undefined) {
         try {
-          const verdict = this.#activation.structuredOutput.artifact.parse(completedText);
-          if (!verdict.ok) {
+          const verdict = this.#activation.structuredOutput.artifact.parse(completedText) as {
+            ok?: unknown;
+          };
+          if (verdict?.ok !== true) {
             status = 'failed';
             errorCode = 'VICT_AGENT_STRUCTURED_OUTPUT_REJECTED';
           }
@@ -842,27 +980,33 @@ export class MastraProductAgent implements ProductAgentPort {
       }
 
       // 5. Guardrails (declared order) check the completed text — fail
-      // closed. Guardrails are untrusted: a THROWING guardrail, and any
-      // code not declared in the artifact's closed failure-code set, maps
-      // to the single stable framework code. Arbitrary author codes are
-      // never embedded into public VICT error codes.
+      // closed. Guardrails are untrusted: a THROWING guardrail, a THROWING
+      // property access on its returned verdict, and any code not declared
+      // in the artifact's closed failure-code set all map to the single
+      // stable framework code. Arbitrary author strings and raw canaries
+      // are never embedded into public VICT error codes.
       if (status === 'completed') {
         for (const binding of this.#activation.guardrails) {
-          let verdict: { readonly ok: true } | { readonly ok: false; readonly code: string };
           try {
-            verdict = binding.artifact.check(completedText);
+            const verdict = binding.artifact.check(completedText) as {
+              ok?: unknown;
+              code?: unknown;
+            };
+            if (verdict?.ok !== true) {
+              status = 'failed';
+              const returnedCode = typeof verdict?.code === 'string' ? verdict.code : undefined;
+              const declared = binding.artifact.failureCodes;
+              errorCode =
+                returnedCode !== undefined &&
+                declared !== undefined &&
+                declared.includes(returnedCode)
+                  ? `VICT_GUARDRAIL_${returnedCode}`
+                  : GUARDRAIL_REJECTED_CODE;
+              break;
+            }
           } catch {
             status = 'failed';
             errorCode = GUARDRAIL_REJECTED_CODE;
-            break;
-          }
-          if (!verdict.ok) {
-            status = 'failed';
-            const declared = binding.artifact.failureCodes;
-            errorCode =
-              declared !== undefined && declared.includes(verdict.code)
-                ? `VICT_GUARDRAIL_${verdict.code}`
-                : GUARDRAIL_REJECTED_CODE;
             break;
           }
         }
@@ -870,10 +1014,16 @@ export class MastraProductAgent implements ProductAgentPort {
 
       // 6. The per-turn tool budget is enforced independently of the step
       // limit: the turn fails closed with a stable sanitized code when the
-      // budget blocked an invocation.
-      if (status === 'completed' && toolLimitExceeded) {
-        status = 'failed';
-        errorCode = 'VICT_AGENT_TOOL_LIMIT_EXCEEDED';
+      // budget blocked an invocation. The AUTHORITATIVE denial record is
+      // the turn scope's flag — set at the gate itself — so the failure
+      // does not depend on any denial envelope surviving the helper's
+      // application output contract.
+      if (status === 'completed') {
+        const scope = this.#turnScope.getStore();
+        if (toolLimitExceeded || scope?.budgetDenied === true) {
+          status = 'failed';
+          errorCode = 'VICT_AGENT_TOOL_LIMIT_EXCEEDED';
+        }
       }
 
       // 7. Terminal milestones + usage.
@@ -881,19 +1031,31 @@ export class MastraProductAgent implements ProductAgentPort {
         emit({ kind: 'usage.updated', usage });
       }
       if (status === 'completed') {
-        // Durable-before-terminal ordering: the conversation content is
-        // persisted (durably present in the dedicated store, not merely
-        // queue-idle) BEFORE the memory/completion milestones are emitted,
-        // so the milestones are truthful and the deletion fence cannot be
-        // released ahead of the data. Settle failures never fail an
-        // otherwise-complete turn.
+        // Durable-before-terminal ordering: the conversation content of
+        // THIS turn must be durably present in the dedicated store (a NEW
+        // message beyond this turn's baseline — never merely queue-idle,
+        // never merely any historical message) BEFORE the memory/completion
+        // milestones are emitted, so the milestones are truthful and the
+        // deletion fence cannot be released ahead of the data. A persistence
+        // failure is NEVER swallowed into a success milestone: the turn
+        // fails with the stable persistence code instead.
         this.#knownThreads.add(request.threadId);
+        let settled = true;
         try {
           await this.#memory.settled();
           await this.#awaitMemoryQuiescence();
-          await this.#awaitDurableTurnPersistence(request.threadId, memoryResource);
+          settled = false;
+          const durable = await this.#awaitDurableTurnPersistence(
+            request.threadId,
+            memoryResource,
+            baselineMessages,
+          );
+          settled = durable;
         } catch {
-          // documented: settle failure is not a turn failure
+          settled = false;
+        }
+        if (!settled) {
+          return turnFailure('VICT_AGENT_TURN_PERSISTENCE_UNCONFIRMED');
         }
         emit({ kind: 'memory.updated', threadId: request.threadId });
         emit({ kind: 'content.completed', text: completedText });

@@ -1,6 +1,7 @@
 import type {
   AgentConversationExport,
   AgentConversationMemoryExportPort,
+  AgentGovernanceStore,
   AgentMemoryDeletionPort,
 } from '@vict/runtime';
 import type { LibSQLStore } from '@mastra/libsql';
@@ -42,12 +43,27 @@ export interface MastraMemoryLifecycleOptions {
   /** Actor id that owns this composition (single-actor envelope). */
   readonly actorId: string;
   /**
-   * The process-local thread coordinator shared with the adapter. When
-   * wired, governed deletion fences the thread and waits for in-flight
-   * turns to fully settle BEFORE touching the store, so a completed
-   * deletion can never be partially undone by a still-running turn.
+   * The process-local thread coordinator shared with the adapter. REQUIRED:
+   * governed deletion fences the thread through THIS coordinator and waits
+   * for in-flight turns to fully settle BEFORE touching the store, so a
+   * completed deletion can never be partially undone by a still-running
+   * turn. A deletion port without the shared coordinator would violate the
+   * deletion guarantee and is rejected at construction — the supported
+   * composition always hands the SAME coordinator instance to the agent and
+   * to this port (`createGovernedMemoryDeletionPort`).
    */
-  readonly threadCoordinator?: MastraThreadCoordinator;
+  readonly threadCoordinator: MastraThreadCoordinator;
+}
+
+/** Structured, non-echoing composition failure. */
+export class VictMastraCompositionError extends Error {
+  readonly code: 'VICT_MASTRA_UNFENCED_COMPOSITION';
+
+  constructor(message: string) {
+    super(message);
+    this.name = 'VictMastraCompositionError';
+    this.code = 'VICT_MASTRA_UNFENCED_COMPOSITION';
+  }
 }
 
 /**
@@ -173,17 +189,24 @@ export class MastraMemoryDeletionPort implements AgentMemoryDeletionPort {
   readonly #options: MastraMemoryLifecycleOptions;
 
   constructor(options: MastraMemoryLifecycleOptions) {
+    // Unfenced compositions are rejected BEFORE any execution: without the
+    // shared coordinator, an in-flight turn could persist messages after a
+    // completed deletion.
+    if (options.threadCoordinator === undefined) {
+      throw new VictMastraCompositionError(
+        'The governed deletion port requires the process-local thread coordinator shared with the agent; unfenced compositions are rejected.',
+      );
+    }
     this.#options = options;
   }
 
   async deleteConversationThread(conversationId: string): Promise<{ readonly deleted: boolean }> {
     const threadId = mastraThreadIdForConversation(conversationId);
-    // Fence FIRST and wait for any in-flight turn on this thread to fully
-    // settle: after the deletion completes, no pending save of a turn can
-    // recreate messages, and new turns on the deleted thread are refused.
-    if (this.#options.threadCoordinator !== undefined) {
-      await this.#options.threadCoordinator.fence(threadId);
-    }
+    // Fence FIRST (always wired — the coordinator is required) and wait for
+    // any in-flight turn on this thread to fully settle: after the deletion
+    // completes, no pending save of a turn can recreate messages, and new
+    // turns on the deleted thread are refused.
+    await this.#options.threadCoordinator.fence(threadId);
     const domain = await this.#options.store.getStore('memory');
     if (domain === undefined) {
       throw new Error('VICT_MASTRA_MEMORY_DOMAIN_UNAVAILABLE');
@@ -227,6 +250,56 @@ export class MastraMemoryDeletionPort implements AgentMemoryDeletionPort {
       'VICT_MASTRA_MEMORY_DELETION_INCOMPLETE: the conversation thread did not reach a stable empty state within the reconciliation bound.',
     );
   }
+}
+
+/**
+ * Supported-composition helper: creates the governed memory deletion port
+ * TOGETHER WITH the process-local thread coordinator it must share with the
+ * agent. Hand `composition.coordinator` to `MastraProductAgent.create` (as
+ * `threadCoordinator`) and the same coordinator instance coordinates both
+ * sides automatically — an unfenced composition cannot be assembled through
+ * this path, and direct construction rejects a missing coordinator.
+ */
+export function createGovernedMemoryDeletionPort(options: {
+  readonly store: LibSQLStore;
+  readonly actorId: string;
+  readonly clock?: () => number;
+  /** A caller-supplied coordinator is REUSED (one instance shared). */
+  readonly threadCoordinator?: MastraThreadCoordinator;
+}): {
+  readonly coordinator: MastraThreadCoordinator;
+  readonly deletionPort: MastraMemoryDeletionPort;
+} {
+  const coordinator = options.threadCoordinator ?? new MastraThreadCoordinator();
+  const deletionPort = new MastraMemoryDeletionPort({
+    store: options.store,
+    ...(options.clock !== undefined ? { clock: options.clock } : {}),
+    actorId: options.actorId,
+    threadCoordinator: coordinator,
+  });
+  return { coordinator, deletionPort };
+}
+
+/**
+ * One-shot post-deletion behavior across restart (the composition's
+ * recovery step, not a scheduler): fence EVERY conversation whose deletion
+ * intent has durably reached `completed` in the governance store. After
+ * this returns, governed-deleted conversations refuse new turns in this
+ * process — deleted conversations stay deleted across reopen/recovery.
+ */
+export async function fenceCompletedDeletions(options: {
+  readonly coordinator: MastraThreadCoordinator;
+  readonly governance: AgentGovernanceStore;
+}): Promise<{ readonly fenced: number }> {
+  const intents = await options.governance.listDeletionIntents();
+  let fenced = 0;
+  for (const intent of intents) {
+    if (intent.state === 'completed') {
+      await options.coordinator.fence(mastraThreadIdForConversation(intent.conversationId));
+      fenced += 1;
+    }
+  }
+  return { fenced };
 }
 
 /**

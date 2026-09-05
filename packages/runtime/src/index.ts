@@ -161,6 +161,7 @@ export {
   assertCredentialName,
   assertDeletionIntentRecord,
   assertDeletionStateTransition,
+  assertDeletionStateTransitionWithReceipts,
   protectCredentialPort,
   requireCredential,
 } from './agent-governance.js';

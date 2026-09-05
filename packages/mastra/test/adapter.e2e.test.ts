@@ -15,6 +15,7 @@ import {
   MastraConversationExportPort,
   MastraMemoryDeletionPort,
   MastraProductAgent,
+  MastraThreadCoordinator,
   MASTRA_ADAPTER_COMPATIBILITY,
   executeMemoryPrune,
   mastraResourceIdForActor,
@@ -187,6 +188,7 @@ async function compose(options?: ComposeOptions): Promise<Composition> {
   });
   const agent = MastraProductAgent.create(activation, {
     store: dedicated.store,
+    threadCoordinator: new MastraThreadCoordinator(),
     modelFactory: () => model,
   });
   return {
@@ -356,7 +358,11 @@ describe('Mastra adapter end-to-end (real pinned Mastra Agent, offline)', () => 
         { activation },
       );
 
-      const memoryExport = new MastraConversationExportPort({ store, actorId: 'actor-42' });
+      const memoryExport = new MastraConversationExportPort({
+        store,
+        actorId: 'actor-42',
+        threadCoordinator: new MastraThreadCoordinator(),
+      });
       const service = new ConversationExportService({ memory: memoryExport });
       const result = await service.export({ conversationId: 'conv-7', actorId: 'actor-42' });
       expect(result.retained).toBe(false);
@@ -385,7 +391,11 @@ describe('Mastra adapter end-to-end (real pinned Mastra Agent, offline)', () => 
         { activation },
       );
 
-      const deletion = new MastraMemoryDeletionPort({ store, actorId: 'actor-1' });
+      const deletion = new MastraMemoryDeletionPort({
+        store,
+        actorId: 'actor-1',
+        threadCoordinator: new MastraThreadCoordinator(),
+      });
       expect((await deletion.deleteConversationThread('conv-5')).deleted).toBe(true);
       // Idempotent: second delete reports already-absent.
       expect((await deletion.deleteConversationThread('conv-5')).deleted).toBe(false);
@@ -427,6 +437,7 @@ describe('Mastra adapter end-to-end (real pinned Mastra Agent, offline)', () => 
     const activation = registry.activateAgentProfile({ id: 'agent.ara.offline', revision: '1' });
     const agent = MastraProductAgent.create(activation, {
       store: dedicated.store,
+      threadCoordinator: new MastraThreadCoordinator(),
       modelFactory: () =>
         createDeterministicOfflineModel({ script: { hi: { kind: 'text', text: 'PRUNE-CHECK' } } }),
     });

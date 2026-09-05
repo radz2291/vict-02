@@ -1,12 +1,15 @@
 import { describe, expect, it } from 'vitest';
 import {
   AgentCredentialError,
+  AgentProfileRegistry,
   ConversationDeletionCoordinator,
   ConversationExportService,
   InMemoryAgentGovernanceStore,
   assertDeletionStateTransition,
+  assertDeletionStateTransitionWithReceipts,
   protectCredentialPort,
   requireCredential,
+  type AgentActivationRecord,
   type AgentConversationDomainPort,
   type AgentGovernanceStore,
   type AgentMemoryDeletionPort,
@@ -19,6 +22,77 @@ import {
  * truthful partial status, idempotent recovery, and export policy.
  */
 
+/**
+ * Build a REAL activation record through the registry (never fabricated):
+ * the store boundary validates the record's canonical manifest, recomputes
+ * its identity, and cross-checks its fields, so conformance records must be
+ * produced by the actual activation pipeline.
+ */
+function realActivationRecord(agentId = 'agent.governance'): AgentActivationRecord {
+  const registry = new AgentProfileRegistry();
+  registry.registerArtifact({
+    kind: 'instructions',
+    id: 'instructions.governance',
+    revision: '1',
+    text: 'Governance conformance instructions.',
+  });
+  registry.registerArtifact({
+    kind: 'memory-policy',
+    id: 'memory-policy.governance',
+    revision: '1',
+    config: { lastMessages: 5, workingMemory: { enabled: false }, semanticRecall: false },
+  });
+  registry.registerArtifact({
+    kind: 'guardrail',
+    id: 'guardrail.governance',
+    revision: '1',
+    check: () => ({ ok: true as const }),
+  });
+  registry.registerProfile({
+    schema: 'vict.agent-profile@1' as const,
+    id: agentId,
+    revision: '1',
+    instructions: { id: 'instructions.governance', revision: '1' },
+    modelProfile: {
+      id: 'model.governance',
+      revision: '1',
+      routerModel: 'offline-fixture/deterministic-1',
+      provider: 'offline-fixture',
+    },
+    generation: {},
+    turnPolicy: { maxSteps: 2, maxToolCalls: 0, onLimit: 'fail-closed' as const },
+    memoryPolicy: { id: 'memory-policy.governance', revision: '1' },
+    guardrails: [{ id: 'guardrail.governance', revision: '1' }],
+    helperTools: [],
+    capabilities: [],
+    adapter: {
+      id: '@vict/mastra',
+      revision: '1',
+      runtimePackages: {
+        '@mastra/core': '1.64.0',
+        '@mastra/memory': '1.28.2',
+        '@mastra/libsql': '1.22.3',
+        '@mastra/observability': '1.17.5',
+      },
+    },
+  });
+  const activation = registry.activateAgentProfile({ id: agentId, revision: '1' });
+  return {
+    recordSchema: 'vict.agent-activation-record@1',
+    activationVersion: activation.activationVersion,
+    agentProfileVersion: activation.agentProfileVersion,
+    agentId,
+    agentRevision: '1',
+    canonicalManifest: activation.canonicalManifestJson,
+    artifacts: activation.artifactList.map((entry) => ({
+      kind: entry.kind,
+      id: entry.id,
+      revision: entry.revision,
+    })),
+    createdAt: activation.createdAt,
+  };
+}
+
 /** A conformance runner: every governance-store implementation must pass. */
 function governanceStoreConformance(
   name: string,
@@ -28,25 +102,26 @@ function governanceStoreConformance(
     it('persists and reads activation identity records idempotently', async () => {
       const store = makeStore();
       try {
-        const record = {
-          recordSchema: 'vict.agent-activation-record@1' as const,
-          activationVersion: 'v1_' + 'a'.repeat(64),
-          agentProfileVersion: 'v1_' + 'b'.repeat(64),
-          agentId: 'agent.x',
-          agentRevision: '1',
-          canonicalManifest: '{"json":true}',
-          artifacts: [{ kind: 'instructions' as const, id: 'i', revision: '1' }],
-          createdAt: 42,
-        };
+        const record = realActivationRecord();
         await store.saveAgentActivation(record);
         await store.saveAgentActivation(record); // idempotent republish
         const read = await store.getAgentActivation(record.activationVersion);
-        expect(read?.agentId).toBe('agent.x');
-        expect(read?.artifacts).toEqual([{ kind: 'instructions', id: 'i', revision: '1' }]);
+        expect(read?.agentId).toBe('agent.governance');
+        expect(read?.artifacts).toEqual(record.artifacts);
         // Same version, different content: collision (fail closed).
         await expect(store.saveAgentActivation({ ...record, agentId: 'other' })).rejects.toThrow(
           /collision/i,
         );
+        // A FABRICATED record (made-up version hash, made-up manifest) is
+        // rejected BEFORE storage: identity is recomputed from the manifest
+        // bytes and cross-checked.
+        const fabricated = {
+          ...record,
+          activationVersion: 'v1_' + 'a'.repeat(64),
+          canonicalManifest: '{"schema":"vict.agent-activation@3"}',
+        };
+        await expect(store.saveAgentActivation(fabricated)).rejects.toThrow();
+        expect(await store.getAgentActivation('v1_' + 'a'.repeat(64))).toBeUndefined();
         expect(await store.getAgentActivation('v1_' + 'c'.repeat(64))).toBeUndefined();
       } finally {
         await store.close?.();
@@ -104,14 +179,32 @@ function governanceStoreConformance(
         });
         // Same-state updates are idempotent no-ops.
         await store.updateDeletionIntentState('vict-del-conv-2', 'pending');
+        // Entering the intermediate state WITHOUT its durable receipt is
+        // rejected (receipt-free two-step bypass) and leaves the state
+        // unchanged.
+        await expect(
+          store.updateDeletionIntentState('vict-del-conv-2', 'application-domain-deleted'),
+        ).rejects.toThrow(/RECEIPT_REQUIRED/);
+        expect((await store.getDeletionIntent('vict-del-conv-2'))?.state).toBe('pending');
+        // With the durable receipt, the stepwise advance is legal.
+        await store.recordDeletionReceipt('vict-del-conv-2', 'application-domain', 150);
         await store.updateDeletionIntentState('vict-del-conv-2', 'application-domain-deleted');
         // Regression from a recorded state is refused.
         await expect(
           store.updateDeletionIntentState('vict-del-conv-2', 'pending'),
         ).rejects.toThrow();
-        // Completion from the intermediate state without the receipts is
-        // the store-level invariant surface; the stepwise helper refuses
-        // skips directly.
+        // Entering `completed` without BOTH receipts is rejected.
+        await expect(
+          store.updateDeletionIntentState('vict-del-conv-2', 'completed'),
+        ).rejects.toThrow(/RECEIPT_REQUIRED/);
+        expect((await store.getDeletionIntent('vict-del-conv-2'))?.state).toBe(
+          'application-domain-deleted',
+        );
+        // With both receipts, completion is legal and receipt-backed.
+        await store.recordDeletionReceipt('vict-del-conv-2', 'mastra-memory', 200);
+        await store.updateDeletionIntentState('vict-del-conv-2', 'completed');
+        expect((await store.getDeletionIntent('vict-del-conv-2'))?.state).toBe('completed');
+        // The stepwise helper refuses skips directly.
         expect(() => assertDeletionStateTransition('completed', 'pending')).toThrow();
         // Stepwise: pending → completed skips the required intermediate
         // state and is refused; the legal steps are accepted.
@@ -121,6 +214,25 @@ function governanceStoreConformance(
         ).toBeUndefined();
         expect(
           assertDeletionStateTransition('application-domain-deleted', 'completed'),
+        ).toBeUndefined();
+        // The receipt-enforced helper refuses the two-step receipt-free
+        // bypass at the FIRST transition.
+        expect(() =>
+          assertDeletionStateTransitionWithReceipts('pending', 'application-domain-deleted', []),
+        ).toThrow(/RECEIPT_REQUIRED/);
+        expect(() =>
+          assertDeletionStateTransitionWithReceipts('application-domain-deleted', 'completed', []),
+        ).toThrow(/RECEIPT_REQUIRED/);
+        expect(() =>
+          assertDeletionStateTransitionWithReceipts('application-domain-deleted', 'completed', [
+            { step: 'application-domain' },
+          ]),
+        ).toThrow(/RECEIPT_REQUIRED/);
+        expect(
+          assertDeletionStateTransitionWithReceipts('application-domain-deleted', 'completed', [
+            { step: 'application-domain' },
+            { step: 'mastra-memory' },
+          ]),
         ).toBeUndefined();
       } finally {
         await store.close?.();

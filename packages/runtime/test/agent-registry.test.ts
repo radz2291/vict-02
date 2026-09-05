@@ -1,6 +1,5 @@
 import { describe, expect, it } from 'vitest';
 import { AgentProfileRegistry, pinAgentTurnRunner, type AgentArtifact } from '../src/index.js';
-import { compileAgentProfile } from '@vict/kernel';
 import type { AgentProfileAuthoring } from '@vict/sdk';
 
 /**
@@ -414,30 +413,18 @@ describe('restart restoration (Stage 02 model)', () => {
   });
 
   it('fails closed when the pinned profile is missing (no substitution by a newer revision)', () => {
+    // A registry holding the OLD revision produces the REAL record first
+    // (real canonical manifest, real identity) — the record must be
+    // well-formed so the profile-level refusal is what fires.
+    const origin = registryWith();
+    const oldActivation = origin.activateAgentProfile({ id: 'agent.registry', revision: '1' });
+    const record = recordOf(oldActivation);
     // Only revision 2 is registered in this "fresh process".
     const fresh = new AgentProfileRegistry({ resolveCapabilityRevision: () => true });
     fresh.installArtifacts(artifacts());
     fresh.registerProfile(profileInput({ revision: '2' }));
-    // Simulate a record whose profile is genuinely the OLD revision. The
-    // identity strings keep the canonical version FORM so the record is
-    // structurally valid and the profile-level refusal is what fires.
-    const old = compileAgentProfile(profileInput({ revision: '1' }));
-    if (!old.ok) {
-      throw new Error('expected ok');
-    }
-    const fakeVersion = `v1_${'0'.repeat(64)}`;
-    const record2 = {
-      recordSchema: 'vict.agent-activation-record@1',
-      activationVersion: fakeVersion,
-      agentProfileVersion: old.value.agentProfileVersion,
-      agentId: 'agent.registry',
-      agentRevision: '1',
-      canonicalManifest: old.value.manifestJson,
-      artifacts: [],
-      createdAt: 0,
-    };
     const result = fresh.restoreActivation(
-      record2 as unknown as Parameters<AgentProfileRegistry['restoreActivation']>[0],
+      record as unknown as Parameters<AgentProfileRegistry['restoreActivation']>[0],
     );
     expect(result.ok).toBe(false);
     if (!result.ok) {

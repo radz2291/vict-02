@@ -47,13 +47,24 @@ export class AgentCredentialError extends Error {
   }
 }
 
-/** A credential name: non-empty printable string without value-like content. */
+/**
+ * A credential name: the accepted credential-reference policy is the SAME
+ * closed pattern the profile compiler enforces for
+ * `providerCredentialVar` — an environment-variable-style NAME matching
+ * `^[A-Za-z_][A-Za-z0-9_]*$` (at most 128 characters). Value-like inputs
+ * (separators, `=`, whitespace, secret content) are rejected BEFORE they
+ * reach any provider, and an invalid name is never echoed.
+ */
+const CREDENTIAL_NAME_PATTERN = /^[A-Za-z_][A-Za-z0-9_]*$/;
+const MAX_CREDENTIAL_NAME_LENGTH = 128;
+
+/** A credential name: validated against the accepted credential-reference policy. */
 export function assertCredentialName(name: string): void {
   if (
     typeof name !== 'string' ||
     name.length === 0 ||
-    name.length > 128 ||
-    !/^[\x21-\x7E]+$/.test(name)
+    name.length > MAX_CREDENTIAL_NAME_LENGTH ||
+    !CREDENTIAL_NAME_PATTERN.test(name)
   ) {
     throw new AgentCredentialError('(invalid credential name)');
   }
@@ -92,6 +103,7 @@ export function protectCredentialPort(port: AgentCredentialPort): AgentCredentia
 
 /** Stable non-echoing failure for a missing required credential. */
 export function requireCredential(value: string | undefined, name: string): string {
+  assertCredentialName(name);
   if (value === undefined) {
     throw new AgentCredentialError(name);
   }
@@ -138,8 +150,10 @@ export interface AgentGovernanceStore {
   recordDeletionReceipt(intentId: string, step: AgentDeletionStep, at: number): Promise<void>;
   /** Advance the intent state (forward-only; regressions fail). */
   updateDeletionIntentState(intentId: string, state: AgentDeletionIntentState): Promise<void>;
-  /** Close underlying resources, if any. */
-  close?(): Promise<void>;
+  /** List ALL deletion intents (open and completed), canonically ordered. */
+  listDeletionIntents(): Promise<readonly AgentDeletionIntentRecord[]>;
+  /** Close underlying resources, if any (sync or async, per implementation). */
+  close?(): Promise<void> | void;
 }
 
 const INTENT_STATE_ORDER: ReadonlyArray<AgentDeletionIntentState> = [
@@ -174,6 +188,46 @@ export function assertDeletionStateTransition(
   if (toIndex !== fromIndex + 1) {
     throw new Error(
       `VICT_AGENT_DELETION_STATE_SKIP: refusing to move deletion intent from '${from}' directly to '${to}'; completion requires each step's durable receipt.`,
+    );
+  }
+}
+
+/**
+ * Receipt-enforced transition validation (shared by in-memory and SQLite
+ * stores): a state may only advance when the receipt of the step it
+ * ENTERS is durably recorded.
+ *
+ * - entering `application-domain-deleted` requires the durable
+ *   `application-domain` receipt;
+ * - entering `completed` requires BOTH durable step receipts.
+ *
+ * The check reads the ACTUAL STORED receipts — the caller must pass the
+ * receipts exactly as they exist in the same store, and each store must
+ * perform the check and the state update ATOMICALLY (one synchronous
+ * critical section in memory; one transaction in SQLite). A receipt-free
+ * two-step bypass (`pending → application-domain-deleted → completed`)
+ * therefore fails at the FIRST transition and leaves the stored state
+ * unchanged.
+ */
+export function assertDeletionStateTransitionWithReceipts(
+  from: AgentDeletionIntentState,
+  to: AgentDeletionIntentState,
+  receipts: ReadonlyArray<{ readonly step: AgentDeletionStep }>,
+): void {
+  assertDeletionStateTransition(from, to);
+  if (from === to) {
+    return; // idempotent no-op: no new state is entered
+  }
+  const has = (step: AgentDeletionStep): boolean =>
+    receipts.some((receipt) => receipt.step === step);
+  if (to === 'application-domain-deleted' && !has('application-domain')) {
+    throw new Error(
+      "VICT_AGENT_DELETION_RECEIPT_REQUIRED: entering 'application-domain-deleted' requires the durable 'application-domain' receipt; refusing to advance without it.",
+    );
+  }
+  if (to === 'completed' && !(has('application-domain') && has('mastra-memory'))) {
+    throw new Error(
+      "VICT_AGENT_DELETION_RECEIPT_REQUIRED: entering 'completed' requires BOTH durable step receipts ('application-domain' and 'mastra-memory'); refusing to advance without them.",
     );
   }
 }
@@ -287,6 +341,12 @@ export class InMemoryAgentGovernanceStore implements AgentGovernanceStore {
       .map((record) => structuredCloneAgent(record));
   }
 
+  async listDeletionIntents(): Promise<readonly AgentDeletionIntentRecord[]> {
+    return [...this.#intents.values()]
+      .sort((a, b) => (a.intentId < b.intentId ? -1 : 1))
+      .map((record) => structuredCloneAgent(record));
+  }
+
   async recordDeletionReceipt(
     intentId: string,
     step: AgentDeletionStep,
@@ -322,11 +382,15 @@ export class InMemoryAgentGovernanceStore implements AgentGovernanceStore {
     intentId: string,
     state: AgentDeletionIntentState,
   ): Promise<void> {
+    // Atomic check-and-update: the transition is validated against the
+    // ACTUAL stored receipts inside the same synchronous critical section
+    // that performs the update, so no interleaving write can slip between
+    // the check and the update.
     const record = this.#intents.get(intentId);
     if (record === undefined) {
       throw new Error('VICT_AGENT_DELETION_INTENT_MISSING');
     }
-    assertDeletionStateTransition(record.state, state);
+    assertDeletionStateTransitionWithReceipts(record.state, state, record.receipts);
     this.#intents.set(intentId, { ...record, state });
   }
 }

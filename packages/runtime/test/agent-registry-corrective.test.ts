@@ -399,10 +399,14 @@ describe('the canonical activation manifest covers the complete resolved activat
       agentProfileVersion: string;
       adapter: { id: string; revision: string; runtimePackages: Record<string, string> };
       artifacts: Array<{ kind: string; id: string; revision: string }>;
+      subagents: Array<{ id: string; revision: string; agentProfileVersion: string }>;
     };
-    expect(manifest.schema).toBe('vict.agent-activation@2');
+    expect(manifest.schema).toBe('vict.agent-activation@3');
     expect(manifest.agentProfileVersion).toBe(activation.agentProfileVersion);
     expect(manifest.adapter).toEqual({ id: '@vict/mastra', revision: '1', runtimePackages: {} });
+    // Resolved subagent identities are part of the manifest (empty set here,
+    // canonically represented).
+    expect(manifest.subagents).toEqual([]);
     const kinds = manifest.artifacts.map((entry) => entry.kind).sort();
     expect(kinds).toEqual([
       'capability',
@@ -557,14 +561,18 @@ describe('restoreActivation rejects tampering independently', () => {
     const { code } = restoredWith((record) => {
       record.agentProfileVersion = `v1_${'a'.repeat(64)}`;
     });
-    expect(code).toBe('AGENT_ACTIVATION_PROFILE_MISMATCH');
+    // The shared record gate catches the record/manifest contradiction
+    // BEFORE any profile resolution happens.
+    expect(code).toBe('AGENT_ACTIVATION_CORRUPT_RECORD');
   });
 
   it('rejects a tampered activationVersion', () => {
     const { code } = restoredWith((record) => {
       record.activationVersion = `v1_${'b'.repeat(64)}`;
     });
-    expect(code).toBe('AGENT_ACTIVATION_ARTIFACT_REVISION_MISMATCH');
+    // The recomputed activation identity (hash of the manifest bytes) no
+    // longer matches the tampered record version.
+    expect(code).toBe('AGENT_ACTIVATION_CORRUPT_RECORD');
   });
 
   it('rejects malformed artifact entries', () => {

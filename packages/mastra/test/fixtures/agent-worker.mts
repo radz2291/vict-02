@@ -15,6 +15,7 @@ import {
   mastraThreadIdForConversation,
   MastraMemoryDeletionPort,
   MastraProductAgent,
+  MastraThreadCoordinator,
 } from '@vict/mastra';
 import { AGENT_PROFILE_SCHEMA } from '@vict/sdk';
 
@@ -136,6 +137,7 @@ async function composeAdapter(dataDir: string): Promise<{
   const activation = registry.activateAgentProfile({ id: 'agent.ara.offline', revision: '1' });
   const agent = MastraProductAgent.create(activation, {
     store: dedicated.store,
+    threadCoordinator: new MastraThreadCoordinator(),
     modelFactory: () =>
       createDeterministicOfflineModel({
         script: { 'Say the phrase': { kind: 'text', text: 'RESTART-PHRASE' } },
@@ -332,7 +334,11 @@ async function main(): Promise<void> {
           return { deleted: true };
         },
       },
-      memory: new MastraMemoryDeletionPort({ store: dedicated.store, actorId: 'actor-restart' }),
+      memory: new MastraMemoryDeletionPort({
+        store: dedicated.store,
+        actorId: 'actor-restart',
+        threadCoordinator: new MastraThreadCoordinator(),
+      }),
     });
     const report = await coordinator.recoverPending();
     // Idempotency: a second recovery changes nothing.

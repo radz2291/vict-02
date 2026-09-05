@@ -81,12 +81,15 @@ export type { DedicatedMastraStore, DedicatedMastraStoreOptions } from './storag
 
 // ---- Memory lifecycle (MSTR-011) ---------------------------------------------
 export {
+  createGovernedMemoryDeletionPort,
   MastraConversationExportPort,
   MastraMemoryDeletionPort,
   MastraThreadCoordinator,
   MastraThreadFenceError,
+  VictMastraCompositionError,
   conversationIdForThreadId,
   executeMemoryPrune,
+  fenceCompletedDeletions,
   mastraResourceIdForActor,
   mastraThreadIdForConversation,
 } from './memory.js';

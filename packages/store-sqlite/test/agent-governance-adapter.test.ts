@@ -3,11 +3,80 @@ import { mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterAll, describe, expect, it } from 'vitest';
+import { AgentProfileRegistry, type AgentActivationRecord } from '@vict/runtime';
 import {
   createSqliteAgentGovernanceStore,
   CURRENT_SCHEMA_VERSION,
   readSchemaVersion,
 } from '../src/index.js';
+
+/**
+ * Build a REAL activation record through the registry: the store boundary
+ * validates the canonical manifest and recomputes the record identity, so
+ * durable-conformance records must come from the actual activation
+ * pipeline (fabricated records are rejected before storage).
+ */
+function realActivationRecord(): AgentActivationRecord {
+  const registry = new AgentProfileRegistry();
+  registry.registerArtifact({
+    kind: 'instructions',
+    id: 'instructions.governance',
+    revision: '1',
+    text: 'Governance conformance instructions.',
+  });
+  registry.registerArtifact({
+    kind: 'memory-policy',
+    id: 'memory-policy.governance',
+    revision: '1',
+    config: { lastMessages: 5, workingMemory: { enabled: false }, semanticRecall: false },
+  });
+  registry.registerProfile({
+    schema: 'vict.agent-profile@1',
+    id: 'agent.governance.sqlite',
+    revision: '1',
+    instructions: { id: 'instructions.governance', revision: '1' },
+    modelProfile: {
+      id: 'model.governance',
+      revision: '1',
+      routerModel: 'offline-fixture/deterministic-1',
+      provider: 'offline-fixture',
+    },
+    generation: {},
+    turnPolicy: { maxSteps: 2, maxToolCalls: 0, onLimit: 'fail-closed' },
+    memoryPolicy: { id: 'memory-policy.governance', revision: '1' },
+    guardrails: [],
+    helperTools: [],
+    capabilities: [],
+    adapter: {
+      id: '@vict/mastra',
+      revision: '1',
+      runtimePackages: {
+        '@mastra/core': '1.64.0',
+        '@mastra/memory': '1.28.2',
+        '@mastra/libsql': '1.22.3',
+        '@mastra/observability': '1.17.5',
+      },
+    },
+  });
+  const activation = registry.activateAgentProfile({
+    id: 'agent.governance.sqlite',
+    revision: '1',
+  });
+  return {
+    recordSchema: 'vict.agent-activation-record@1',
+    activationVersion: activation.activationVersion,
+    agentProfileVersion: activation.agentProfileVersion,
+    agentId: activation.profile.profile.id,
+    agentRevision: activation.profile.profile.revision,
+    canonicalManifest: activation.canonicalManifestJson,
+    artifacts: activation.artifactList.map((entry) => ({
+      kind: entry.kind,
+      id: entry.id,
+      revision: entry.revision,
+    })),
+    createdAt: activation.createdAt,
+  };
+}
 
 /**
  * Stage 06A permanent regression: the SQLite agent-governance store —
@@ -36,20 +105,20 @@ describe('agent governance store — sqlite', () => {
   it('persists and reads activation identity records idempotently', async () => {
     const store = makeSqliteStore();
     try {
-      const record = {
-        recordSchema: 'vict.agent-activation-record@1' as const,
-        activationVersion: 'v1_' + 'a'.repeat(64),
-        agentProfileVersion: 'v1_' + 'b'.repeat(64),
-        agentId: 'agent.x',
-        agentRevision: '1',
-        canonicalManifest: '{"json":true}',
-        artifacts: [{ kind: 'instructions' as const, id: 'i', revision: '1' }],
-        createdAt: 42,
-      };
+      const record = realActivationRecord();
       await store.saveAgentActivation(record);
       await store.saveAgentActivation(record);
       const read = await store.getAgentActivation(record.activationVersion);
-      expect(read?.agentId).toBe('agent.x');
+      expect(read?.agentId).toBe('agent.governance.sqlite');
+      // A fabricated record (made-up hash/manifest) is rejected BEFORE
+      // storage — nothing persists under the fabricated version.
+      const fabricated = {
+        ...record,
+        activationVersion: 'v1_' + 'a'.repeat(64),
+        canonicalManifest: '{"schema":"vict.agent-activation@3"}',
+      };
+      await expect(store.saveAgentActivation(fabricated)).rejects.toThrow();
+      expect(await store.getAgentActivation('v1_' + 'a'.repeat(64))).toBeUndefined();
       await expect(store.saveAgentActivation({ ...record, agentId: 'other' })).rejects.toThrow(
         /different content/i,
       );

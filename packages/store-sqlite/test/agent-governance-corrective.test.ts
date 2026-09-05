@@ -4,7 +4,7 @@ import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { afterAll, describe, expect, it } from 'vitest';
 import { createSqliteAgentGovernanceStore } from '../src/index.js';
-import type { AgentActivationRecord } from '@vict/runtime';
+import { AgentProfileRegistry, type AgentActivationRecord } from '@vict/runtime';
 
 /**
  * Stage 06A corrective regressions — governance-record invariants on the
@@ -43,17 +43,63 @@ function makeSqliteStore(): ReturnType<typeof createSqliteAgentGovernanceStore> 
 }
 
 function validActivationRecord(): AgentActivationRecord {
+  // Built through the REAL activation pipeline: the store boundary
+  // recomputes the record identity from the canonical manifest bytes and
+  // cross-checks every field, so fabricated records cannot pass.
+  const registry = new AgentProfileRegistry();
+  registry.registerArtifact({
+    kind: 'instructions',
+    id: 'instructions.sqlite',
+    revision: '1',
+    text: 'SQLite conformance instructions.',
+  });
+  registry.registerArtifact({
+    kind: 'memory-policy',
+    id: 'memory-policy.sqlite',
+    revision: '1',
+    config: { lastMessages: 5, workingMemory: { enabled: false }, semanticRecall: false },
+  });
+  registry.registerProfile({
+    schema: 'vict.agent-profile@1',
+    id: 'agent.sqlite',
+    revision: '1',
+    instructions: { id: 'instructions.sqlite', revision: '1' },
+    modelProfile: {
+      id: 'model.governance',
+      revision: '1',
+      routerModel: 'offline-fixture/deterministic-1',
+      provider: 'offline-fixture',
+    },
+    generation: {},
+    turnPolicy: { maxSteps: 2, maxToolCalls: 0, onLimit: 'fail-closed' },
+    memoryPolicy: { id: 'memory-policy.sqlite', revision: '1' },
+    guardrails: [],
+    helperTools: [],
+    capabilities: [],
+    adapter: {
+      id: '@vict/mastra',
+      revision: '1',
+      runtimePackages: {
+        '@mastra/core': '1.64.0',
+        '@mastra/memory': '1.28.2',
+        '@mastra/libsql': '1.22.3',
+        '@mastra/observability': '1.17.5',
+      },
+    },
+  });
+  const activation = registry.activateAgentProfile({ id: 'agent.sqlite', revision: '1' });
   return {
     recordSchema: 'vict.agent-activation-record@1',
-    activationVersion: `v1_${'a'.repeat(64)}`,
-    agentProfileVersion: `v1_${'b'.repeat(64)}`,
+    activationVersion: activation.activationVersion,
+    agentProfileVersion: activation.agentProfileVersion,
     agentId: 'agent.sqlite',
     agentRevision: '1',
-    canonicalManifest: '{"schema":"vict.agent-activation@2"}',
-    artifacts: [
-      { kind: 'capability', id: 'cap.a', revision: '1' },
-      { kind: 'instructions', id: 'instructions.a', revision: '1' },
-    ],
+    canonicalManifest: activation.canonicalManifestJson,
+    artifacts: activation.artifactList.map((entry) => ({
+      kind: entry.kind,
+      id: entry.id,
+      revision: entry.revision,
+    })),
     createdAt: 42,
   };
 }

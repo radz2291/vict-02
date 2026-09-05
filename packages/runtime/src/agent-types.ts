@@ -1,3 +1,5 @@
+import { createHash } from 'node:crypto';
+import { canonicalJson } from '@vict/kernel';
 import type { AgentStreamEvent } from '@vict/contracts';
 import type { AgentReference, AgentProfileAuthoring } from '@vict/sdk';
 import type { CompiledAgentProfile } from '@vict/kernel';
@@ -33,8 +35,19 @@ import type { CompiledAgentProfile } from '@vict/kernel';
  * runtime package version). `@1` records cannot be accepted under `@2`
  * because their stored manifest bytes cannot match the reconstructed
  * activation; restoration fails closed instead of substituting.
+ *
+ * `@3` records the further normative boundary-remediation correction: the
+ * manifest now ALSO carries the RESOLVED identity of every referenced
+ * sub-agent profile (`subagents: [{id, revision, agentProfileVersion}]`,
+ * canonically sorted). A stored activation therefore pins not only WHICH
+ * sub-agent revision it referenced but WHAT that resolved child profile
+ * identity was at activation time; restoration under a changed child
+ * profile rejects the record instead of accepting a silently different
+ * resolved executable activation. `@2` records cannot be accepted under
+ * `@3` (their stored manifest bytes cannot match the reconstructed
+ * activation); restoration and persistence both fail closed.
  */
-export const AGENT_ACTIVATION_IDENTITY_SCHEMA = 'vict.agent-activation@2';
+export const AGENT_ACTIVATION_IDENTITY_SCHEMA = 'vict.agent-activation@3';
 
 /** Versioned marker of persisted agent-activation records. */
 export const AGENT_ACTIVATION_RECORD_SCHEMA = 'vict.agent-activation-record@1';
@@ -340,16 +353,84 @@ const ACTIVATION_RECORD_FIELDS: ReadonlySet<string> = new Set([
 
 const ACTIVATION_ARTIFACT_ENTRY_FIELDS: ReadonlySet<string> = new Set(['kind', 'id', 'revision']);
 
+/** The closed field set of the canonical activation manifest (identity @3). */
+const ACTIVATION_MANIFEST_FIELDS: ReadonlySet<string> = new Set([
+  'schema',
+  'agentProfileVersion',
+  'adapter',
+  'artifacts',
+  'subagents',
+]);
+
+/** The closed field set of the manifest adapter-compatibility entry. */
+const ACTIVATION_MANIFEST_ADAPTER_FIELDS: ReadonlySet<string> = new Set([
+  'id',
+  'revision',
+  'runtimePackages',
+]);
+
+/** The closed field set of one manifest subagent-identity entry. */
+const ACTIVATION_MANIFEST_SUBAGENT_FIELDS: ReadonlySet<string> = new Set([
+  'id',
+  'revision',
+  'agentProfileVersion',
+]);
+
 const VERSION_STRING_PATTERN = /^v1_[0-9a-f]{64}$/;
 
+/** Canonical order of activation-manifest artifact entries (mirror of the registry order). */
+function compareManifestArtifactEntries(
+  a: Record<string, unknown>,
+  b: Record<string, unknown>,
+): number {
+  if (a.kind !== b.kind) {
+    return (a.kind as string) < (b.kind as string) ? -1 : 1;
+  }
+  if (a.id !== b.id) {
+    return (a.id as string) < (b.id as string) ? -1 : 1;
+  }
+  if (a.revision === b.revision) {
+    return 0;
+  }
+  return (a.revision as string) < (b.revision as string) ? -1 : 1;
+}
+
 /**
- * Validate the STRUCTURE of a persisted activation record (closed field
- * sets, exact schema marker, canonical version forms, well-formed artifact
- * entries with known kinds). This is the shared gate used by restoration
- * AND by both store adapters before persistence; it does not resolve or
- * trust identity — that happens only during restoration.
+ * Validate a persisted activation record at the durable boundary (shared by
+ * restoration AND by every store adapter before persistence).
+ *
+ * STRUCTURAL validation: closed field sets, exact schema marker, canonical
+ * version forms, well-formed artifact entries with known kinds.
+ *
+ * CONTENT validation (the persistence-time gate): the canonical manifest is
+ * PARSED and validated against its closed schema; the manifest is recomputed
+ * into canonical form and compared byte-for-byte with the stored text; the
+ * activation identity is RECOMPUTED from the manifest bytes and cross-checked
+ * against the record's `activationVersion`; the manifest's profile version
+ * and artifact list are cross-checked against the record's own fields. A
+ * record with fabricated hashes, a fabricated or non-canonical manifest,
+ * contradictory identity fields, unknown manifest content, or hostile
+ * property access is rejected BEFORE storage — with stable, non-echoing
+ * diagnostics (no raw exceptions, no payload-derived text in reasons).
+ *
+ * This is structural/hash validation only: it does NOT resolve executable
+ * artifacts — that remains restoration's exclusive job (re-resolution plus
+ * byte-exact reconstruction comparison).
  */
 export function validateAgentActivationRecord(record: unknown): AgentActivationRecordValidation {
+  try {
+    return validateActivationRecordShape(record);
+  } catch {
+    // Hostile getters/proxies must never escape as raw exceptions, and no
+    // payload-derived text ever reaches the diagnostic.
+    return {
+      ok: false,
+      reason: 'The activation record could not be validated safely; hostile input is rejected.',
+    };
+  }
+}
+
+function validateActivationRecordShape(record: unknown): AgentActivationRecordValidation {
   if (typeof record !== 'object' || record === null || Array.isArray(record)) {
     return { ok: false, reason: 'The activation record must be a plain object.' };
   }
@@ -358,7 +439,7 @@ export function validateAgentActivationRecord(record: unknown): AgentActivationR
     if (!ACTIVATION_RECORD_FIELDS.has(key)) {
       return {
         ok: false,
-        reason: `The activation record declares unknown field '${key}'; the record schema is closed.`,
+        reason: 'The activation record declares unknown fields; the record schema is closed.',
       };
     }
   }
@@ -405,7 +486,7 @@ export function validateAgentActivationRecord(record: unknown): AgentActivationR
       if (!ACTIVATION_ARTIFACT_ENTRY_FIELDS.has(key)) {
         return {
           ok: false,
-          reason: `The activation record artifact entry declares unknown field '${key}'.`,
+          reason: 'The activation record artifact entry declares unknown fields.',
         };
       }
     }
@@ -420,6 +501,278 @@ export function validateAgentActivationRecord(record: unknown): AgentActivationR
           reason: `The activation record artifact entry '${key}' is missing or malformed.`,
         };
       }
+    }
+  }
+  return validateActivationManifestContent(candidate, candidate.canonicalManifest);
+}
+
+/**
+ * Content validation of the canonical manifest: closed schema, canonical
+ * bytes, recomputed identity, and record/manifest cross-checks. The input
+ * is plain parsed JSON (and the record's own validated fields), so no
+ * getter can run here; the caller's try/catch still bounds every access.
+ */
+function validateActivationManifestContent(
+  candidate: Record<string, unknown>,
+  manifestText: string,
+): AgentActivationRecordValidation {
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(manifestText);
+  } catch {
+    return { ok: false, reason: 'The activation record canonical manifest is not valid JSON.' };
+  }
+  if (typeof parsed !== 'object' || parsed === null || Array.isArray(parsed)) {
+    return {
+      ok: false,
+      reason: 'The activation record canonical manifest must be a JSON object.',
+    };
+  }
+  const manifest = parsed as Record<string, unknown>;
+  for (const key of Object.keys(manifest)) {
+    if (!ACTIVATION_MANIFEST_FIELDS.has(key)) {
+      return {
+        ok: false,
+        reason: 'The activation manifest declares unknown fields; the manifest schema is closed.',
+      };
+    }
+  }
+  if (manifest.schema !== AGENT_ACTIVATION_IDENTITY_SCHEMA) {
+    return { ok: false, reason: 'The activation manifest schema marker is not recognized.' };
+  }
+  if (
+    typeof manifest.agentProfileVersion !== 'string' ||
+    !VERSION_STRING_PATTERN.test(manifest.agentProfileVersion)
+  ) {
+    return {
+      ok: false,
+      reason: 'The activation manifest profile version is not a canonical version string.',
+    };
+  }
+  if (manifest.agentProfileVersion !== candidate.agentProfileVersion) {
+    return {
+      ok: false,
+      reason: 'The activation manifest profile version contradicts the record profile version.',
+    };
+  }
+  const adapterValidation = validateManifestAdapterEntry(manifest.adapter);
+  if (!adapterValidation.ok) {
+    return adapterValidation;
+  }
+  const artifactsValidation = validateManifestArtifacts(manifest.artifacts, candidate.artifacts);
+  if (!artifactsValidation.ok) {
+    return artifactsValidation;
+  }
+  const subagentsValidation = validateManifestSubagents(manifest.subagents);
+  if (!subagentsValidation.ok) {
+    return subagentsValidation;
+  }
+  // Canonical bytes: the stored manifest text must be EXACTLY the canonical
+  // serialization of its own parsed content.
+  let reserialized: string;
+  try {
+    reserialized = canonicalJson(parsed);
+  } catch {
+    return {
+      ok: false,
+      reason: 'The activation record canonical manifest is not canonical data.',
+    };
+  }
+  if (reserialized !== manifestText) {
+    return {
+      ok: false,
+      reason: 'The activation record canonical manifest is not in canonical form.',
+    };
+  }
+  // Identity recompute: the record version must be the canonical hash of
+  // the manifest bytes.
+  const recomputed = `v1_${createHash('sha256').update(manifestText, 'utf8').digest('hex')}`;
+  if (recomputed !== candidate.activationVersion) {
+    return {
+      ok: false,
+      reason: 'The activation record version does not match the recomputed activation identity.',
+    };
+  }
+  return { ok: true };
+}
+
+function validateManifestAdapterEntry(adapter: unknown): AgentActivationRecordValidation {
+  if (typeof adapter !== 'object' || adapter === null || Array.isArray(adapter)) {
+    return {
+      ok: false,
+      reason: 'The activation manifest adapter entry must be a plain object.',
+    };
+  }
+  const adapterRecord = adapter as Record<string, unknown>;
+  for (const key of Object.keys(adapterRecord)) {
+    if (!ACTIVATION_MANIFEST_ADAPTER_FIELDS.has(key)) {
+      return {
+        ok: false,
+        reason: 'The activation manifest adapter entry declares unknown fields.',
+      };
+    }
+  }
+  for (const key of ['id', 'revision'] as const) {
+    const value = adapterRecord[key];
+    if (typeof value !== 'string' || value.length === 0 || value.length > 128) {
+      return {
+        ok: false,
+        reason: `The activation manifest adapter '${key}' is missing or malformed.`,
+      };
+    }
+  }
+  const runtimePackages = adapterRecord.runtimePackages;
+  if (
+    typeof runtimePackages !== 'object' ||
+    runtimePackages === null ||
+    Array.isArray(runtimePackages)
+  ) {
+    return {
+      ok: false,
+      reason: 'The activation manifest adapter runtime packages must be a plain object.',
+    };
+  }
+  for (const key of Object.keys(runtimePackages as Record<string, unknown>)) {
+    const value = (runtimePackages as Record<string, unknown>)[key];
+    if (
+      key.length === 0 ||
+      key.length > 128 ||
+      typeof value !== 'string' ||
+      value.length === 0 ||
+      value.length > 128
+    ) {
+      return {
+        ok: false,
+        reason: 'The activation manifest adapter runtime package entries are malformed.',
+      };
+    }
+  }
+  return { ok: true };
+}
+
+function validateManifestArtifacts(
+  manifestArtifacts: unknown,
+  recordArtifacts: unknown,
+): AgentActivationRecordValidation {
+  if (!Array.isArray(manifestArtifacts)) {
+    return { ok: false, reason: 'The activation manifest artifact list must be an array.' };
+  }
+  if (!Array.isArray(recordArtifacts)) {
+    return { ok: false, reason: 'The activation record artifact list must be an array.' };
+  }
+  if (manifestArtifacts.length !== recordArtifacts.length) {
+    return {
+      ok: false,
+      reason: 'The activation manifest artifact list contradicts the record artifact list.',
+    };
+  }
+  for (let index = 0; index < manifestArtifacts.length; index += 1) {
+    const entry = manifestArtifacts[index];
+    if (typeof entry !== 'object' || entry === null || Array.isArray(entry)) {
+      return {
+        ok: false,
+        reason: 'The activation manifest artifact entries must be plain objects.',
+      };
+    }
+    const artifact = entry as Record<string, unknown>;
+    for (const key of Object.keys(artifact)) {
+      if (!ACTIVATION_ARTIFACT_ENTRY_FIELDS.has(key)) {
+        return {
+          ok: false,
+          reason: 'The activation manifest artifact entry declares unknown fields.',
+        };
+      }
+    }
+    if (typeof artifact.kind !== 'string' || !VALID_RECORD_ARTIFACT_KINDS.has(artifact.kind)) {
+      return { ok: false, reason: 'The activation manifest artifact entry has an unknown kind.' };
+    }
+    for (const key of ['id', 'revision'] as const) {
+      const value = artifact[key];
+      if (typeof value !== 'string' || value.length === 0 || value.length > 128) {
+        return {
+          ok: false,
+          reason: `The activation manifest artifact entry '${key}' is missing or malformed.`,
+        };
+      }
+    }
+    const recordEntry = recordArtifacts[index] as Record<string, unknown>;
+    if (
+      artifact.kind !== recordEntry.kind ||
+      artifact.id !== recordEntry.id ||
+      artifact.revision !== recordEntry.revision
+    ) {
+      return {
+        ok: false,
+        reason: 'The activation manifest artifact list contradicts the record artifact list.',
+      };
+    }
+    if (
+      index > 0 &&
+      compareManifestArtifactEntries(
+        manifestArtifacts[index - 1] as Record<string, unknown>,
+        artifact,
+      ) > 0
+    ) {
+      return {
+        ok: false,
+        reason: 'The activation manifest artifact list is not in canonical order.',
+      };
+    }
+  }
+  return { ok: true };
+}
+
+function validateManifestSubagents(subagents: unknown): AgentActivationRecordValidation {
+  // Resolved subagent identities: every referenced sub-agent's RESOLVED
+  // profile identity is part of the authoritative binding (closed fields,
+  // canonical versions, canonically sorted by id then revision).
+  if (!Array.isArray(subagents)) {
+    return { ok: false, reason: 'The activation manifest subagent list must be an array.' };
+  }
+  for (let index = 0; index < subagents.length; index += 1) {
+    const entry = subagents[index];
+    if (typeof entry !== 'object' || entry === null || Array.isArray(entry)) {
+      return {
+        ok: false,
+        reason: 'The activation manifest subagent entries must be plain objects.',
+      };
+    }
+    const subagent = entry as Record<string, unknown>;
+    for (const key of Object.keys(subagent)) {
+      if (!ACTIVATION_MANIFEST_SUBAGENT_FIELDS.has(key)) {
+        return {
+          ok: false,
+          reason: 'The activation manifest subagent entry declares unknown fields.',
+        };
+      }
+    }
+    for (const key of ['id', 'revision'] as const) {
+      const value = subagent[key];
+      if (typeof value !== 'string' || value.length === 0 || value.length > 128) {
+        return {
+          ok: false,
+          reason: `The activation manifest subagent entry '${key}' is missing or malformed.`,
+        };
+      }
+    }
+    if (
+      typeof subagent.agentProfileVersion !== 'string' ||
+      !VERSION_STRING_PATTERN.test(subagent.agentProfileVersion)
+    ) {
+      return {
+        ok: false,
+        reason:
+          'The activation manifest subagent resolved identity is not a canonical version string.',
+      };
+    }
+    if (
+      index > 0 &&
+      compareManifestArtifactEntries(subagents[index - 1] as Record<string, unknown>, subagent) > 0
+    ) {
+      return {
+        ok: false,
+        reason: 'The activation manifest subagent list is not in canonical order.',
+      };
     }
   }
   return { ok: true };

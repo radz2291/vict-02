@@ -1,6 +1,6 @@
 import { DatabaseSync } from 'node:sqlite';
 import {
-  assertDeletionStateTransition,
+  assertDeletionStateTransitionWithReceipts,
   VictStoreError,
   validateAgentActivationRecord,
   type AgentActivationRecord,
@@ -35,7 +35,16 @@ import { runMigrations } from './migrations.js';
  * - receipts are idempotent per (intentId, step) — a duplicate receipt is a
  *   no-op, never a duplicate row; the memory receipt requires the
  *   application-domain receipt (out-of-order receipts are rejected);
- * - intent state transitions are forward-only AND stepwise (no skips).
+ * - intent state transitions are forward-only AND stepwise (no skips), and
+ *   each transition is validated against the ACTUAL stored receipts inside
+ *   the SAME transaction that performs the update: entering
+ *   `application-domain-deleted` requires the durable application-domain
+ *   receipt and entering `completed` requires BOTH durable receipts, so a
+ *   receipt-free two-step bypass fails at the first transition and leaves
+ *   the stored state unchanged;
+ * - activation records are content-validated before persistence through the
+ *   shared `validateAgentActivationRecord` gate (closed manifest schema,
+ *   canonical bytes, recomputed identity, record/manifest cross-checks).
  */
 
 interface IntentRow {
@@ -287,6 +296,22 @@ export function createSqliteAgentGovernanceStore(
       });
     },
 
+    async listDeletionIntents(): Promise<readonly AgentDeletionIntentRecord[]> {
+      return safeRun('agentGovernance.listIntents', () => {
+        const rows = db
+          .prepare('SELECT * FROM vict_agent_deletion_intent ORDER BY intent_id ASC;')
+          .all() as unknown as IntentRow[];
+        return rows.map((row) => {
+          const receipts = db
+            .prepare(
+              'SELECT intent_id, step, at FROM vict_agent_deletion_receipt WHERE intent_id = ? ORDER BY step ASC;',
+            )
+            .all(row.intent_id) as unknown as ReceiptRow[];
+          return rowToIntent(row, receipts);
+        });
+      });
+    },
+
     async recordDeletionReceipt(
       intentId: string,
       step: AgentDeletionStep,
@@ -346,7 +371,33 @@ export function createSqliteAgentGovernanceStore(
               { operation: 'agentGovernance.updateIntentState' },
             );
           }
-          assertDeletionStateTransition(row.state, state);
+          // Receipt-enforced, ATOMIC check-and-update: the transition is
+          // validated against the receipts AS STORED in this same
+          // transaction, so an intent can only advance into a state whose
+          // governing receipts are durably present. No separate write can
+          // interleave between the read and the update.
+          const receipts = db
+            .prepare(
+              'SELECT intent_id, step, at FROM vict_agent_deletion_receipt WHERE intent_id = ? ORDER BY step ASC;',
+            )
+            .all(intentId) as unknown as ReceiptRow[];
+          try {
+            assertDeletionStateTransitionWithReceipts(
+              row.state,
+              state,
+              receipts.map((receipt) => ({ step: receipt.step as AgentDeletionStep })),
+            );
+          } catch (cause) {
+            // Surface the SAME stable, non-echoing invariant message as the
+            // in-memory store (adapter parity): the shared helper's text is
+            // framework-generated, never payload-derived.
+            if (cause instanceof Error && cause.message.startsWith('VICT_AGENT_DELETION_')) {
+              throw new VictStoreError('VICT_STORE_INVALID_COMMAND', cause.message, {
+                operation: 'agentGovernance.updateIntentState',
+              });
+            }
+            throw cause;
+          }
           db.prepare(
             'UPDATE vict_agent_deletion_intent SET state = ?, updated_at = ? WHERE intent_id = ?;',
           ).run(state, toIso(Date.now()), intentId);

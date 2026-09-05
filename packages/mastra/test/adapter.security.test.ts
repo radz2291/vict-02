@@ -12,6 +12,7 @@ import {
   createDedicatedMastraStore,
   createDeterministicOfflineModel,
   MastraProductAgent,
+  MastraThreadCoordinator,
   resolveProtectedStoreDir,
   VictMastraStorageError,
 } from '@vict/mastra';
@@ -159,6 +160,7 @@ async function compose(options?: SecurityComposeOptions): Promise<Composition> {
   });
   const agent = MastraProductAgent.create(activation, {
     store: dedicated.store,
+    threadCoordinator: new MastraThreadCoordinator(),
     modelFactory: () => fixture,
   });
   return {
@@ -336,6 +338,7 @@ describe('canary leakage — planted secrets never reach forbidden surfaces', ()
     const activation = registry.activateAgentProfile({ id: 'agent.ara.offline', revision: '1' });
     const agent = MastraProductAgent.create(activation, {
       store: dedicated.store,
+      threadCoordinator: new MastraThreadCoordinator(),
       modelFactory: () =>
         createDeterministicOfflineModel({
           script: {

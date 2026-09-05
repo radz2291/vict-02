@@ -150,9 +150,8 @@ async function composeFor(
   const agent = MastraProductAgent.create(activation, {
     store: options.store ?? dedicated.store,
     modelFactory: () => createDeterministicOfflineModel(),
-    ...(options.threadCoordinator !== undefined
-      ? { threadCoordinator: options.threadCoordinator }
-      : {}),
+    // Fencing is REQUIRED in supported composition (shared or fresh).
+    threadCoordinator: options.threadCoordinator ?? new MastraThreadCoordinator(),
   });
   return {
     agent,
@@ -363,7 +362,6 @@ describe('governed deletion versus in-flight turns (barrier-controlled fencing)'
       // persistence; only then can the deletion proceed.
       releaseModel?.();
       const turn = await turnPromise;
-      console.error('DBG-TURN', turn.status, turn.errorCode);
       expect(turn.status).toBe('completed');
       const deletion = deletionResult ?? (await deletionPromise);
       expect(deletion.status).toBe('completed');

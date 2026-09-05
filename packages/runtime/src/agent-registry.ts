@@ -698,6 +698,11 @@ export class AgentProfileRegistry {
       : undefined;
 
     // Sub-agents resolve to other registered agent profiles (exact revision).
+    // The RESOLVED child profile identity (its computed agentProfileVersion)
+    // becomes part of the authoritative activation binding below: a stored
+    // activation pins not only which child revision it referenced but what
+    // that child resolved to. A differently-resolved child profile can never
+    // silently restore under the same activation identity.
     const subagents = (profile.subagents ?? []).map((reference) => {
       const sub = this.resolveProfile(reference.id, reference.revision);
       if (sub === undefined) {
@@ -750,10 +755,28 @@ export class AgentProfileRegistry {
 
     // Canonical ACTIVATION manifest (distinct from the profile manifest):
     // covers the exact resolved executable activation — the profile
-    // identity, the adapter compatibility metadata, and every resolved
+    // identity, the adapter compatibility metadata, every resolved
     // artifact binding (including the structured-output contract,
-    // sub-agents, and the capability envelope). Canonically sorted;
+    // sub-agents, and the capability envelope), AND the resolved identity
+    // of every referenced sub-agent profile. Canonically sorted;
     // insertion order never matters.
+    const subagentIdentities = subagents
+      .map((binding) => ({
+        id: binding.reference.id,
+        revision: binding.reference.revision,
+        agentProfileVersion: binding.agentProfileVersion,
+      }))
+      .sort((a, b) =>
+        a.id < b.id
+          ? -1
+          : a.id > b.id
+            ? 1
+            : a.revision < b.revision
+              ? -1
+              : a.revision > b.revision
+                ? 1
+                : 0,
+      );
     const artifactList = [
       {
         kind: 'instructions' as const,
@@ -811,6 +834,7 @@ export class AgentProfileRegistry {
       agentProfileVersion: compiled.agentProfileVersion,
       adapter: adapterCompatibility,
       artifacts: artifactList,
+      subagents: subagentIdentities,
     };
     const manifestJson = canonicalJson(manifest);
     const activationVersion = `v1_${sha256Hex(manifestJson)}`;
@@ -885,12 +909,17 @@ export class AgentProfileRegistry {
    *    secret-bearing injected fields fail);
    * 2. re-activates from the exact pinned revision (re-resolving EVERY
    *    artifact — a newer live definition never substitutes);
-   * 3. recomputes the canonical activation manifest and compares the
-   *    stored manifest BYTES exactly (tampered manifests fail);
+   * 3. recomputes the canonical activation manifest (including the resolved
+   *    sub-agent identities) and compares the stored manifest BYTES exactly
+   *    (tampered manifests, and activations whose resolved sub-agent
+   *    profiles differ from the pinned ones, fail);
    * 4. compares both derived identities (profile + activation versions);
    * 5. compares the stored artifact list against the reconstructed
    *    activation for exact kind/id/revision equality in canonical order
-   *    (missing, additional, reordered, or inconsistent entries fail).
+   *    (missing, additional, reordered, or inconsistent entries fail);
+   * 6. preserves the stored activation `createdAt`: the restored snapshot
+   *    carries the PERSISTED creation time, never the current clock of the
+   *    restoring process.
    */
   restoreActivation(record: AgentActivationRecord): AgentActivationRestoreResult {
     const structural = validateAgentActivationRecord(record);
@@ -985,7 +1014,14 @@ export class AgentProfileRegistry {
         };
       }
     }
-    return { ok: true, activation };
+    // The restored snapshot carries the PERSISTED creation time: a
+    // restoration through a changed clock never rewrites when the
+    // activation was originally created.
+    const restored: AgentProfileActivation =
+      activation.createdAt === record.createdAt
+        ? activation
+        : (Object.freeze({ ...activation, createdAt: record.createdAt }) as AgentProfileActivation);
+    return { ok: true, activation: restored };
   }
 }
 

@@ -11,6 +11,7 @@ import {
   createDedicatedMastraStore,
   createDeterministicOfflineModel,
   MastraProductAgent,
+  MastraThreadCoordinator,
   MASTRA_ADAPTER_COMPATIBILITY,
   VictMastraAdapterError,
 } from '@vict/mastra';
@@ -172,6 +173,7 @@ async function compose(options: ComposeOptions = {}): Promise<{
   });
   const agent = MastraProductAgent.create(activation, {
     store: dedicated.store,
+    threadCoordinator: new MastraThreadCoordinator(),
     modelFactory: options.modelFactory ?? (() => fixture),
     ...(options.tracing !== undefined ? { tracing: options.tracing } : {}),
   });
@@ -241,6 +243,7 @@ describe('exact adapter compatibility validation (before execution)', () => {
       expect(() =>
         MastraProductAgent.create(activation, {
           store,
+          threadCoordinator: new MastraThreadCoordinator(),
           modelFactory: () => {
             factoryCalls += 1;
             return createDeterministicOfflineModel();
@@ -262,6 +265,7 @@ describe('exact adapter compatibility validation (before execution)', () => {
       expect(() =>
         MastraProductAgent.create(activation, {
           store,
+          threadCoordinator: new MastraThreadCoordinator(),
           modelFactory: () => {
             factoryCalls += 1;
             return createDeterministicOfflineModel();
@@ -291,6 +295,7 @@ describe('exact adapter compatibility validation (before execution)', () => {
       expect(() =>
         MastraProductAgent.create(mismatched, {
           store,
+          threadCoordinator: new MastraThreadCoordinator(),
           modelFactory: () => {
             factoryCalls += 1;
             return createDeterministicOfflineModel();
@@ -320,6 +325,7 @@ describe('model factory invocation and identity correspondence', () => {
       const activation = registry.activateAgentProfile({ id: base.id, revision: base.revision });
       const agent = MastraProductAgent.create(activation, {
         store: dedicated.store,
+        threadCoordinator: new MastraThreadCoordinator(),
         modelFactory: () => {
           factoryCalls += 1;
           const model = createDeterministicOfflineModel();
@@ -618,6 +624,7 @@ describe('unsafe tracing configurations are rejected BEFORE execution', () => {
         expect(() =>
           MastraProductAgent.create(activation, {
             store,
+            threadCoordinator: new MastraThreadCoordinator(),
             tracing: entry.tracing as never,
             modelFactory: () => {
               factoryCalls += 1;
@@ -681,6 +688,7 @@ describe('untrusted author callbacks: sanitized, deterministic failures', () => 
       const activation = registry.activateAgentProfile({ id: base.id, revision: base.revision });
       const agent = MastraProductAgent.create(activation, {
         store: dedicated.store,
+        threadCoordinator: new MastraThreadCoordinator(),
         modelFactory: () => createDeterministicOfflineModel(),
       });
       const outcome = await agent.runTurn(
@@ -913,6 +921,7 @@ describe('helper-tool Mastra name collisions', () => {
       expect(() =>
         MastraProductAgent.create(activation, {
           store: dedicated.store,
+          threadCoordinator: new MastraThreadCoordinator(),
           modelFactory: () => createDeterministicOfflineModel(),
         }),
       ).toThrow(/refusing to alias/);
@@ -958,6 +967,7 @@ describe('helper-tool Mastra name collisions', () => {
       expect(() =>
         MastraProductAgent.create(activation, {
           store: dedicated.store,
+          threadCoordinator: new MastraThreadCoordinator(),
           modelFactory: () => createDeterministicOfflineModel(),
         }),
       ).toThrow(/refusing to alias/);
@@ -982,6 +992,7 @@ describe('caller mutation after construction has no effect', () => {
       const tracing = { sampling: { type: 'always' }, hideInput: true, hideOutput: true };
       const agent = MastraProductAgent.create(activation, {
         store: dedicated.store,
+        threadCoordinator: new MastraThreadCoordinator(),
         modelFactory: () => createDeterministicOfflineModel(),
         tracing: tracing as never,
       });
