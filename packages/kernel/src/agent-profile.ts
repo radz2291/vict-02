@@ -43,6 +43,7 @@ export type AgentProfileIssueCode =
   | 'AGENT_PROFILE_EMPTY_ID'
   | 'AGENT_PROFILE_EMPTY_REVISION'
   | 'AGENT_PROFILE_INVALID_IDENTITY_MEMBER'
+  | 'AGENT_PROFILE_INVALID_CREDENTIAL_VAR'
   | 'AGENT_PROFILE_INVALID_ENUM'
   | 'AGENT_PROFILE_INVALID_BOUND'
   | 'AGENT_PROFILE_DUPLICATE_REFERENCE'
@@ -141,6 +142,28 @@ const MAX_PACKAGE_NAME_LENGTH = 214;
 const MAX_PACKAGE_VERSION_LENGTH = 64;
 const MAX_CHAIN_LENGTH = 64;
 const MAX_REFERENCE_SET_LENGTH = 256;
+
+/**
+ * A `providerCredentialVar` is the NAME of an environment variable that
+ * would hold a provider credential in a real deployment — never the
+ * credential value, never an object, never arbitrary text. The accepted
+ * shape is a bounded environment-variable identifier:
+ * `[A-Za-z_][A-Za-z0-9_]*` (at most 128 characters). Anything else —
+ * objects, arrays, whitespace, separators, secret-bearing strings — is
+ * rejected at this public boundary so no credential-carrying value can
+ * reach the identity manifest, an activation, or any store.
+ */
+const CREDENTIAL_VAR_PATTERN = /^[A-Za-z_][A-Za-z0-9_]*$/;
+const MAX_CREDENTIAL_VAR_LENGTH = 128;
+
+function isValidCredentialVarName(value: unknown): value is string {
+  return (
+    typeof value === 'string' &&
+    value.length > 0 &&
+    value.length <= MAX_CREDENTIAL_VAR_LENGTH &&
+    CREDENTIAL_VAR_PATTERN.test(value)
+  );
+}
 
 /* ------------------------------------------------------------------ */
 /* Canonical input boundary (strict, total, non-invoking)              */
@@ -733,6 +756,19 @@ function validateProfileSemantics(
           'AGENT_PROFILE_INVALID_IDENTITY_MEMBER',
           `'(profile).modelProfile.${member}' must be a non-empty printable string of at most ${limit} characters.`,
           `(profile).modelProfile.${member}`,
+        );
+      }
+    }
+    // providerCredentialVar is an environment-variable NAME only. Every
+    // non-conforming shape (objects, arrays, whitespace, separators,
+    // secret-bearing strings) is rejected with a stable, non-echoing
+    // diagnostic — the offending value is never reflected back.
+    if (modelProfile.providerCredentialVar !== undefined) {
+      if (!isValidCredentialVarName(modelProfile.providerCredentialVar)) {
+        collector.add(
+          'AGENT_PROFILE_INVALID_CREDENTIAL_VAR',
+          `'(profile).modelProfile.providerCredentialVar' must be an environment-variable name matching [A-Za-z_][A-Za-z0-9_]* (at most ${MAX_CREDENTIAL_VAR_LENGTH} characters); credential values and other shapes are never accepted.`,
+          '(profile).modelProfile.providerCredentialVar',
         );
       }
     }
