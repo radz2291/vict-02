@@ -2,8 +2,11 @@
 
 > **Authority:** `docs/VICT-SYSTEM-REFERENCE.md` v0.3.1 and
 > `docs/architecture/MASTRA-ARA-INTEGRATION.md` (normative for Stage 06).
-> **Status:** Implemented (Stage 06A increment). Not Verified — Stage 06A
-> awaits a fresh independent audit; Stage 06B has not begun.
+> **Status:** Implemented (Stage 06A increment, including the boundary
+> remediation recorded in
+> `docs/report/VICT-STAGE-06A-BOUNDARY-REMEDIATION-REPORT.md`). Not
+> Verified — Stage 06A awaits a fresh independent audit; Stage 06B has not
+> begun.
 > **Scope:** the neutral ProductAgent boundary, the strict agent-profile
 > schema and deterministic `agentProfileVersion`, immutable activation
 > snapshots, the pinned `@vict/mastra` adapter foundation with a
@@ -141,9 +144,17 @@ agentProfileVersion = 'v1_' + sha256(AGENT_PROFILE_IDENTITY_SCHEMA + 0x00 + cano
   tool, each processor/guardrail, each workflow, each sub-agent profile,
   and capability-envelope existence), deep-captures a frozen VICT-owned
   snapshot, and derives an `activationVersion` over the pinned artifact
-  fingerprint set (`vict.agent-activation@1`).
+  fingerprint set (`vict.agent-activation@3`).
 - Missing artifacts fail closed; a current definition never substitutes for
   a pinned older revision (`VICT_AGENT_ARTIFACT_REVISION_MISMATCH`).
+- The canonical activation manifest (`vict.agent-activation@3`, a boundary-
+  remediation correction of `@2`) additionally carries the RESOLVED
+  identity of every referenced sub-agent profile
+  (`subagents: [{id, revision, agentProfileVersion}]`, canonically
+  sorted): a stored activation pins not only WHICH child revision it
+  referenced but WHAT that child resolved to. This is already-computed
+  declarative identity — executable bodies are never hashed. `@1`/`@2`
+  records cannot be accepted under `@3` and fail closed.
 - Function references (helper `execute`, processor `transform`, guardrail
   `check`) are bound by reference into the frozen snapshot — never hashed,
   never serialized.
@@ -154,10 +165,17 @@ agentProfileVersion = 'v1_' + sha256(AGENT_PROFILE_IDENTITY_SCHEMA + 0x00 + cano
 - Restart model (Stage 02 discipline): the durable record is the identity
   record (`vict.agent-activation-record@1` — canonical manifest JSON plus
   the sorted artifact reference list), never executable code.
-  `restoreActivation` re-resolves every artifact in the fresh process and
-  compares BOTH the profile version and the derived activation version;
-  any mismatch returns a structured fail-closed result (record missing,
-  profile mismatch, artifact missing/revision mismatch, corrupt record).
+  `restoreActivation` re-resolves every artifact in the fresh process,
+  recomputes the canonical manifest (including resolved sub-agent
+  identities) and compares BOTH the profile version, the derived
+  activation version, and the manifest BYTES; any mismatch returns a
+  structured fail-closed result (record missing, profile mismatch, artifact
+  missing/revision mismatch, corrupt record). Both store adapters validate
+  the record's manifest content — closed schema, canonical bytes, recomputed
+  identity hash, record/manifest cross-checks — BEFORE persistence, so
+  fabricated records never enter storage. Restoration preserves the
+  stored `createdAt`: a restored activation carries the PERSISTED creation
+  time, never the restoring process's clock.
 
 ## 6. Actual adapter construction (`@vict/mastra`)
 
@@ -171,11 +189,24 @@ agentProfileVersion = 'v1_' + sha256(AGENT_PROFILE_IDENTITY_SCHEMA + 0x00 + cano
 - `runTurn` maps the real pinned stream chunks (`payload.text`,
   `payload.toolName`, `payload.stepResult.reason`, …) onto the neutral
   event union with gapless per-turn sequence numbers, emits durable
-  milestones only after the conversation content is persisted (durable-
-  before-terminal ordering), applies guardrails in declared order (fail
-  closed), propagates `AbortSignal`, records usage summaries, the Mastra
-  `traceId`, and the actually-observed provider/model identity as run
-  METADATA, and sanitizes every failure to `VICT_AGENT_TURN_FAILED`.
+  milestones only after THIS turn's NEW content is proven durably present
+  in the dedicated store (durable-before-terminal ordering; a persistence
+  failure surfaces as `VICT_AGENT_TURN_PERSISTENCE_UNCONFIRMED` and is
+  never swallowed into a success milestone), applies guardrails in declared
+  order (fail closed; a hostile verdict object is contained), propagates
+  `AbortSignal`, records usage summaries, the Mastra `traceId`, and the
+  actually-observed provider/model identity as run METADATA, and sanitizes
+  every failure to `VICT_AGENT_TURN_FAILED`.
+- Model-supplied stream metadata follows a declared trust policy: a tool
+  NAME is trusted only when it matches a PINNED helper tool of the
+  activation, and a tool-CALL ID must be a bounded safe identifier;
+  anything else is normalized to the stable placeholder `unknown` before it
+  can appear in normalized events.
+- The per-turn tool budget (`maxToolCalls`) is enforced at the budget gate,
+  and every denial is recorded in the AUTHORITATIVE per-turn state: a
+  denied turn fails with the stable `VICT_AGENT_TOOL_LIMIT_EXCEEDED` code
+  even when the denial envelope cannot survive the helper's application
+  output contract (Mastra would otherwise emit `tool-error`).
 
 ## 7. Offline model fixture (MSTR-010)
 
@@ -233,12 +264,16 @@ ids; no cross-store atomicity is claimed:
 ## 10. Credential boundary
 
 `protectCredentialPort` wraps the operator-provided provider: names are
-validated; every read passes through (no cache — rotation observed, failed
+validated against the accepted credential-reference policy — the SAME
+closed pattern the profile compiler enforces for `providerCredentialVar`
+(`^[A-Za-z_][A-Za-z0-9_]*$`, at most 128 characters) — so value-like inputs
+are rejected BEFORE they reach the provider, and an invalid name is never
+echoed; every read passes through (no cache — rotation observed, failed
 reads cannot poison later ones); provider exceptions collapse to
 `AgentCredentialError` (`VICT_AGENT_CREDENTIAL_UNAVAILABLE`) whose message
-carries only the credential NAME; `requireCredential` fails closed with the
-same stable code. Profiles store credential VARIABLE NAMES at most — never
-values. Tests plant a unique canary as the provider value and prove it
+carries only the validated credential NAME; `requireCredential` fails
+closed with the same stable code. Profiles store credential VARIABLE NAMES
+at most — never values. Tests plant a unique canary as the provider value and prove it
 appears on no event, outcome, memory message, trace span, or database byte.
 
 ## 11. Tracing safety
@@ -268,11 +303,23 @@ provider wrapper must sanitize provider errors at the model boundary
   injected port; the Mastra thread step through the adapter's
   ownership-scoped deletion port (messages explicitly deleted — the pinned
   schema has no cascading FKs — then the thread); a durable receipt per
-  step (idempotent per intent+step); forward-only state transitions;
-  `recoverPending()` resumes exactly the missing steps after crash or
-  process restart; re-deleting is a no-op; actor mismatch is refused.
-  Injected-failure tests cover every material boundary; recovery never
-  duplicates receipts, never loses completion, and never resurrects data.
+  step (idempotent per intent+step); forward-only state transitions
+  ENFORCED AGAINST THE DURABLE RECEIPTS at both store boundaries (entering
+  `application-domain-deleted` requires the application-domain receipt;
+  entering `completed` requires BOTH receipts; the check and the update are
+  atomic within each store); `recoverPending()` resumes exactly the missing
+  steps after crash or process restart; re-deleting is a no-op; actor
+  mismatch is refused. Injected-failure tests cover every material
+  boundary; recovery never duplicates receipts, never loses completion, and
+  never resurrects data.
+- Deletion fencing is UNAVOIDABLE in supported composition: both the
+  adapter and the governed deletion port REQUIRE the process-local
+  `MastraThreadCoordinator` at construction — an unfenced configuration is
+  rejected before any execution — and `createGovernedMemoryDeletionPort`
+  hands the SAME coordinator instance to both sides automatically.
+  Post-deletion behavior is explicit: deleted threads refuse new turns in
+  the fencing process, and `fenceCompletedDeletions` re-fences recovered
+  completed intents after reopen so deleted conversations stay deleted.
 - Export (`ConversationExportService`): explicit and actor-scoped
   (ownership mismatch → stable denial), returns only classification-policy
   fields with deterministic ordering, `retained: false` (the service keeps
@@ -285,11 +332,29 @@ provider wrapper must sanitize provider errors at the model boundary
 any `public`/`static`/`assets`/`www`/`htdocs` segment (store files are
 never web-accessible). `createDedicatedMastraStore` eagerly initializes the
 memory/observability schemas, places `mastra/mastra-store.db` inside the
-composition-owned data dir, and applies restrictive permissions where the
-platform honors them (owner-only POSIX modes; on Windows, POSIX bits are
-not honored and ACL configuration is operator responsibility — documented
-honestly, never claimed). Backup/export contents and reader responsibility
-are operator material per §10 and the classification table.
+composition-owned data dir, and applies the protected-store permission
+policy AUTOMATICALLY during composition.
+
+Containment and permissions (boundary-remediation semantics):
+
+- file names must be plain basenames; containment is proven BEFORE the
+  database is opened or initialized — the dedicated store directory's real
+  path must lie inside the composition data dir (rejecting a symlink or
+  junction planted at `<dataDir>/mastra`), and an existing database target
+  must be a contained regular file (rejecting a file redirection). A known
+  escape never creates or modifies anything outside the allowed root; the
+  post-open real-path proof is retained as defense in depth. The declared
+  trust boundary is the local single-process envelope: a concurrent local
+  process racing the composition is outside it and no protection is claimed
+  against that.
+- POSIX permissions: dedicated directory `0o700` (owner-only, traversal
+  preserved), database file and any existing SQLite sidecars `0o600`,
+  applied automatically; permission failures surface on POSIX. On Windows,
+  POSIX bits are not honored and ACL configuration is operator
+  responsibility — documented honestly, never claimed.
+- Retention bounds are required, validated, and bounded by the documented
+  TEN-YEAR limit (315_360_000_000 ms); pruning validates its inputs
+  against the same limit.
 
 ## 14. Deployment envelope (declared, not exceeded)
 
