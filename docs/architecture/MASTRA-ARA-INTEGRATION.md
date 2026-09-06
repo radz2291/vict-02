@@ -6,9 +6,15 @@
 > data-protection baseline, deployment envelope, primary-source ledger,
 > Stage 06A/06B delivery split), and is normative for Stage 06 and
 > Stage 07.
-> **Status:** Accepted architecture; Planned delivery. Nothing in this
-> document is implemented. No Mastra capability is Verified. Stage 06 has
-> not begun.
+> **Status:** Accepted architecture; Planned delivery at acceptance. —
+> Update (2026-09-06, documentation-only): the Stage 06A increment built on
+> this amendment has been implemented, independently verified with
+> non-blocking issues (final Linux closure audit at commit `8a554cb`), and
+> formally closed per `docs/VICT-SYSTEM-REFERENCE.md` v0.3.2; authoritative
+> delivery statuses for the AI/MSTR requirements below are maintained in
+> that reference (§15.3). The amendment body below is preserved as the
+> accepted v0.3.0/v0.3.1 record; Stage 06B and the full Stage 06 exit gate
+> remain open.
 > **Scope:** the canonical product-agent boundary between VICT and Mastra,
 > the ownership matrix, the tool bridge, agent identity and snapshot
 > semantics, memory/storage/observability separation, data-protection
@@ -1241,8 +1247,11 @@ initial libSQL envelope (§8.2).
 
 ## 13. Normative requirements
 
-New requirement families. Maturity is Accepted (chosen design) and
-delivery is Planned — **nothing here is Verified**. IDs are unique
+New requirement families. Maturity is Accepted (chosen design); at
+acceptance delivery was Planned — the authoritative delivery statuses are
+maintained in `docs/VICT-SYSTEM-REFERENCE.md` §15.3, where the Stage 06A
+independently verified subset (AI-001..AI-004, MSTR-002, MSTR-003,
+MSTR-008, MSTR-010, MSTR-011) is marked Verified since v0.3.2. IDs are unique
 across the reference.
 
 ### 13.1 Neutral product-agent architecture (AI)

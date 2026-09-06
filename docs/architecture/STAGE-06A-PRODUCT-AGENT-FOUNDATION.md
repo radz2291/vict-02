@@ -2,11 +2,14 @@
 
 > **Authority:** `docs/VICT-SYSTEM-REFERENCE.md` v0.3.1 and
 > `docs/architecture/MASTRA-ARA-INTEGRATION.md` (normative for Stage 06).
-> **Status:** Implemented (Stage 06A increment, including the boundary
-> remediation recorded in
-> `docs/report/VICT-STAGE-06A-BOUNDARY-REMEDIATION-REPORT.md`). Not
-> Verified — Stage 06A awaits a fresh independent audit; Stage 06B has not
-> begun.
+> **Status:** Verified with non-blocking issues — formally closed
+> (2026-09-06). The final independent Linux closure audit at commit
+> `8a554cb` verified implementation target `1ac9c18` with disposition
+> **VERIFIED WITH NON-BLOCKING ISSUES — STAGE 06A CLOSED — STAGE 06B
+> PERMITTED**; the authoritative closure record is
+> `docs/VICT-SYSTEM-REFERENCE.md` v0.3.2 (§0.8, §24.3). Stage 06B is
+> permitted but not implemented; the full Stage 06 exit gate remains
+> open. See §16 for the independent closure summary.
 > **Scope:** the neutral ProductAgent boundary, the strict agent-profile
 > schema and deterministic `agentProfileVersion`, immutable activation
 > snapshots, the pinned `@vict/mastra` adapter foundation with a
@@ -391,3 +394,64 @@ Stage 07).
   reconnect/dedupe, cross-store restart reconciliation in full, retention
   and leakage verification at scale, CLI/remote bindings, and adversarial
   security testing.
+
+---
+
+## 16. Independent closure (2026-09-06)
+
+The final independent Linux closure audit (commit `8a554cb`) verified the
+implementation target `1ac9c18` (documented at `c1a6a57`) and returned the
+authoritative disposition **VERIFIED WITH NON-BLOCKING ISSUES — STAGE 06A
+CLOSED — STAGE 06B PERMITTED**. Formal closure is recorded by
+`docs/VICT-SYSTEM-REFERENCE.md` v0.3.2; this section only summarizes it.
+
+- **Verification environment:** Ubuntu 24.04.4 under WSL2 (real Linux
+  kernel 6.6.87.2), native Linux x86_64 Node v24.19.0, native ext4
+  checkout, fresh clone, no provider credentials (offline fixture only).
+- **Counts:** 68 files / 1,605 unit tests; 1 file / 4 integration tests;
+  81 files / 1,777 complete project tests; `verify:stage6a` passed twice;
+  POSIX storage suites passed five consecutive times; driver-cause suite
+  passed five consecutive times; migration/governance suites passed three
+  consecutive times; ARA exactly 13 ordered events; benchmark exactly 10
+  events per completed run; Stage 05 application proof and real-browser
+  suite intact (44/44 including 13 real-browser tests;
+  `example:application` 17/17).
+- **Principal verified guarantees:** the neutral versioned product-agent
+  boundary; exact deterministic agent-profile identity; immutable
+  activation snapshots; resolved subagent identity pinning; fail-closed
+  activation restoration; pinned Mastra adapter versions; the offline
+  deterministic model fixture; mandatory governed deletion fencing;
+  receipt-backed cross-store deletion reconciliation; protected credential
+  resolution; payload-safe tracing and diagnostic sanitization; dedicated
+  Mastra storage; explicit retention with executed pruning; POSIX
+  containment and protected modes; transactional migration from
+  `mastra-memory` to the neutral `memory-store`; safe non-serializable raw
+  driver causes; and neutral packages and emitted declarations free of
+  Mastra dependencies and types.
+- **Findings:** Critical 0, High 0, Medium 0, Low 2, Informational 3. No
+  Stage 06A closure blocker remains. The two accepted Low findings are
+  carried explicitly into Stage 06B as early acceptance items:
+  - **LOW-06A-1 — SQLite invalid receipt-step silent no-op:** the CHECK
+    constraint keeps invalid receipt steps out of durable state, but
+    `INSERT OR IGNORE` makes an invalid or legacy step resolve
+    successfully while persisting nothing (the in-memory adapter rejects
+    the same input). Stage 06B must restore public adapter error-surface
+    parity before exposing governance through remote/control-plane APIs —
+    stable, non-echoing rejection, preserving duplicate-valid-receipt
+    idempotency.
+  - **LOW-06A-2 — incomplete Stage 06A verifier coverage:**
+    `verify:stage6a` gates the POSIX containment and permission suites but
+    does not directly gate the driver-cause suite or the migration
+    regression suites (the final audit ran and repeated them directly).
+    Before the final Stage 06 exit gate, the verifier must be extended so
+    driver-cause and migration regressions cannot be skipped.
+- **Scope honesty:** Stage 06B is permitted but NOT implemented — no
+  Stage 06B capability exists or is claimed. The full Stage 06 exit gate
+  remains open, and Stage 07 remains blocked until all of Stage 06,
+  including Stage 06B and the final exit gate, is independently verified
+  and formally closed. The informational limitations recorded during
+  Stage 06A (Stage 03 load-sensitive timing tests; WSL2-not-bare-metal;
+  Windows ACL best-effort; rollback-journal sidecars absent under WAL;
+  later-created sidecars relying on the enclosing `0700` directory; the
+  declared local-first single-actor single-process non-multi-tenant
+  envelope) remain documented and are not reopened.
