@@ -157,14 +157,31 @@ export interface AgentGovernanceStore {
 }
 
 /**
- * The closed deletion-step domain. The in-memory reference store enforces
- * the SAME receipt-step domain as the SQLite CHECK constraint so both
- * stores reject unknown steps at their durable boundary (adapter parity).
+ * The closed deletion-step domain. Both store adapters (in-memory and
+ * SQLite) enforce the SAME receipt-step domain at their API boundary so
+ * unknown (e.g. legacy or fabricated) steps are rejected with the same
+ * stable, non-echoing error BEFORE any mutation (adapter parity).
  */
-const DELETION_STEP_DOMAIN: ReadonlySet<string> = new Set<AgentDeletionStep>([
+export const DELETION_STEP_DOMAIN: ReadonlySet<string> = new Set<AgentDeletionStep>([
   'application-domain',
   'memory-store',
 ]);
+
+/** The exact stable, non-echoing rejection text shared by every adapter. */
+export const DELETION_RECEIPT_STEP_INVALID_MESSAGE =
+  'VICT_AGENT_DELETION_RECEIPT_STEP_INVALID: the deletion receipt step must be a governed durable step.';
+
+/**
+ * Validate one deletion-receipt step against the closed domain (shared by
+ * the in-memory and SQLite adapters). Invalid or legacy steps are rejected
+ * with the SAME stable, non-echoing error on every adapter, before any
+ * durable mutation occurs.
+ */
+export function assertDeletionReceiptStep(step: unknown): asserts step is AgentDeletionStep {
+  if (typeof step !== 'string' || !DELETION_STEP_DOMAIN.has(step)) {
+    throw new Error(DELETION_RECEIPT_STEP_INVALID_MESSAGE);
+  }
+}
 
 const INTENT_STATE_ORDER: ReadonlyArray<AgentDeletionIntentState> = [
   'pending',
@@ -362,13 +379,10 @@ export class InMemoryAgentGovernanceStore implements AgentGovernanceStore {
     step: AgentDeletionStep,
     at: number,
   ): Promise<void> {
-    // Closed step domain — mirrors the SQLite CHECK constraint so no store
-    // boundary ever accepts an unknown (e.g. legacy or fabricated) step.
-    if (typeof step !== 'string' || !DELETION_STEP_DOMAIN.has(step)) {
-      throw new Error(
-        'VICT_AGENT_DELETION_RECEIPT_STEP_INVALID: the deletion receipt step must be a governed durable step.',
-      );
-    }
+    // Closed step domain — enforced at the API boundary of BOTH adapters
+    // (shared helper), before any mutation, with the same stable,
+    // non-echoing error (adapter parity).
+    assertDeletionReceiptStep(step);
     const record = this.#intents.get(intentId);
     if (record === undefined) {
       throw new Error('VICT_AGENT_DELETION_INTENT_MISSING');

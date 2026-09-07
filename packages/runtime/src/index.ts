@@ -160,8 +160,11 @@ export {
   InMemoryAgentGovernanceStore,
   assertCredentialName,
   assertDeletionIntentRecord,
+  assertDeletionReceiptStep,
   assertDeletionStateTransition,
   assertDeletionStateTransitionWithReceipts,
+  DELETION_RECEIPT_STEP_INVALID_MESSAGE,
+  DELETION_STEP_DOMAIN,
   protectCredentialPort,
   requireCredential,
 } from './agent-governance.js';

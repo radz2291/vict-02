@@ -275,6 +275,42 @@ console.log('\n=== verify:stage6a — dedicated-store storage path/permission su
   }
 }
 
+// ---- 1c. Driver-cause safety and migration/governance regression suites -----
+// (Stage 06B correction of LOW-06A-2: the verifier now DIRECTLY gates the
+// driver-cause suite, the migration regression suite, and the governance
+// receipt/migration suites that the final Stage 06A closure audit had to
+// run by hand. These gates can no longer be skipped via the full-suite
+// ladder alone.)
+console.log('\n=== verify:stage6a — driver-cause and migration/governance regression suites (LOW-06A-2) ===');
+{
+  const vitestEntry = join(repoRoot, 'node_modules', 'vitest', 'vitest.mjs');
+  const regressionSuites = [
+    'packages/runtime/test/store-errors.driver-cause.test.ts',
+    'packages/store-sqlite/test/migrations.test.ts',
+    'packages/store-sqlite/test/stage2-migration.test.ts',
+    'packages/store-sqlite/test/agent-governance-adapter.test.ts',
+    'packages/store-sqlite/test/agent-governance-corrective.test.ts',
+    'packages/store-sqlite/test/agent-governance-receipt-steps.test.ts',
+    'packages/runtime/test/agent-governance.test.ts',
+    'packages/runtime/test/agent-governance-receipts.test.ts',
+  ];
+  for (const suite of regressionSuites) {
+    check(existsSync(join(repoRoot, suite)), `regression suite present: ${suite}`);
+  }
+  const regression = run(process.execPath, [vitestEntry, 'run', ...regressionSuites], {
+    capture: true,
+    timeout: 900_000,
+  });
+  check(
+    regression.status === 0,
+    'driver-cause + migration + governance regression suites pass (directly gated)',
+  );
+  if (regression.status !== 0) {
+    console.error(regression.stdout?.slice(-6000));
+    console.error(regression.stderr?.slice(-6000));
+  }
+}
+
 const work = mkdtempSync(join(tmpdir(), 'vict-stage6a-'));
 try {
   // ---- 2. Packed tarballs ------------------------------------------------------

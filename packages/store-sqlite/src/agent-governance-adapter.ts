@@ -1,6 +1,8 @@
 import { DatabaseSync } from 'node:sqlite';
 import {
   assertDeletionStateTransitionWithReceipts,
+  assertDeletionReceiptStep,
+  DELETION_RECEIPT_STEP_INVALID_MESSAGE,
   VictStoreError,
   validateAgentActivationRecord,
   type AgentActivationRecord,
@@ -253,6 +255,19 @@ export function createSqliteAgentGovernanceStore(
              VALUES (?, ?, ?, ?, ?, ?);`,
           ).run(record.intentId, record.conversationId, record.actorId, record.state, now, now);
           for (const receipt of record.receipts) {
+            // Closed step domain at the API boundary (LOW-06A-1): invalid
+            // or legacy receipt steps are rejected before any SQL mutation
+            // with the same stable, non-echoing error as the in-memory
+            // adapter; nothing is persisted.
+            try {
+              assertDeletionReceiptStep(receipt.step);
+            } catch {
+              throw new VictStoreError(
+                'VICT_STORE_INVALID_COMMAND',
+                DELETION_RECEIPT_STEP_INVALID_MESSAGE,
+                { operation: 'agentGovernance.recordIntent' },
+              );
+            }
             db.prepare(
               'INSERT OR IGNORE INTO vict_agent_deletion_receipt (intent_id, step, at) VALUES (?, ?, ?);',
             ).run(record.intentId, receipt.step, toIso(receipt.at));
@@ -317,6 +332,20 @@ export function createSqliteAgentGovernanceStore(
       step: AgentDeletionStep,
       at: number,
     ): Promise<void> {
+      // Closed step domain — validated at the API boundary BEFORE any SQL
+      // mutation (LOW-06A-1 correction). Invalid or legacy steps are
+      // rejected with the SAME stable, non-echoing error as the in-memory
+      // adapter; no database change occurs and `INSERT OR IGNORE` can no
+      // longer silently suppress a CHECK violation.
+      try {
+        assertDeletionReceiptStep(step);
+      } catch {
+        throw new VictStoreError(
+          'VICT_STORE_INVALID_COMMAND',
+          DELETION_RECEIPT_STEP_INVALID_MESSAGE,
+          { operation: 'agentGovernance.recordReceipt' },
+        );
+      }
       safeRun('agentGovernance.recordReceipt', () =>
         inTransaction(db, () => {
           const intent = db
@@ -341,7 +370,7 @@ export function createSqliteAgentGovernanceStore(
             if (domainReceipt === undefined) {
               throw new VictStoreError(
                 'VICT_STORE_INVALID_COMMAND',
-                'The memory step receipt requires the application-domain receipt to exist first.',
+                'VICT_AGENT_DELETION_RECEIPT_ORDER: the memory step receipt requires the application-domain receipt to exist first.',
                 { operation: 'agentGovernance.recordReceipt' },
               );
             }
