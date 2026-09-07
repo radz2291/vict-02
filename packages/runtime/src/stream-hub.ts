@@ -104,7 +104,11 @@ export class AgentStreamHub {
    * event.
    */
   async publish(event: AgentStreamEvent): Promise<AgentStreamEvent> {
-    const validation = validateAgentStreamEvent(event);
+    // Pre-validate the event STRUCTURE with a placeholder sequence (the
+    // durable ledger assigns the authoritative monotonic sequence next).
+    const { seq: _ignored, ...withoutSeq } = event as unknown as Record<string, unknown>;
+    void _ignored;
+    const validation = validateAgentStreamEvent({ ...withoutSeq, seq: 1 });
     if (!validation.ok) {
       throw new Error(
         `AGENT_STREAM_EVENT_INVALID: event rejected by the vict.agent-stream@1 schema (${validation.issues

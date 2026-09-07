@@ -191,7 +191,7 @@ export function runAgentControlConformanceSuite(
   factory: AgentControlConformanceFactory,
   runner: { describe: typeof describe; it: typeof it; expect: ExpectStatic },
 ): void {
-  const { describe: d, it: t, expect } = runner;
+  const { it: t, expect } = runner;
 
   // ---- ChangeSets ----------------------------------------------------------
   t(`[${factory.name}] changeset save/get round-trips and duplicate ids are rejected`, async () => {

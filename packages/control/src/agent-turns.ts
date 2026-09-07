@@ -306,6 +306,10 @@ export class AgentTurnService {
   }): Promise<AgentToolInvocationRecord> {
     const invocationId = this.#ids.invocationId();
     const now = this.#clock();
+    // The idempotency key is DETERMINISTIC over the logical invocation
+    // identity: the same turn + tool call + arguments + capability revision
+    // is ONE logical invocation across retries, resumes, and restarts.
+    const idempotencyKey = `${input.turnId}:${input.toolCallId}:${input.capabilityId}:${input.capabilityRevision}:${input.argDigest}`;
     return this.#stores.invocations.recordInvocationIntent({
       invocationId,
       turnId: input.turnId,
@@ -314,7 +318,7 @@ export class AgentTurnService {
       capabilityId: input.capabilityId,
       capabilityRevision: input.capabilityRevision,
       effect: input.effect,
-      idempotencyKey: this.#ids.idempotencyKey(),
+      idempotencyKey,
       actorId: input.actorId,
       argDigest: input.argDigest,
       argumentSummary: input.argumentSummary,
@@ -534,6 +538,7 @@ function failIds(): string {
 
 function boundedReason(reason: string): string {
   const bounded = reason.slice(0, 200);
+  // eslint-disable-next-line no-control-regex
   return /[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/.test(bounded)
     ? '(unsafe reason)'
     : bounded;

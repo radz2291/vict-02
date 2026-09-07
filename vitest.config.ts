@@ -24,6 +24,7 @@ const aliases = {
   '@vict/sdk/zod': resolveFromRoot('packages/sdk/src/zod.ts'),
   '@vict/sdk': resolveFromRoot('packages/sdk/src/index.ts'),
   '@vict/mastra': resolveFromRoot('packages/mastra/src/index.ts'),
+  '@vict/control': resolveFromRoot('packages/control/src/index.ts'),
 };
 
 export default defineConfig({

@@ -68,6 +68,30 @@ export {
 } from './helper-tools.js';
 export type { HelperToolFailure, HelperToolFailureCode } from './helper-tools.js';
 
+// ---- Governed capability tool bridge (Stage 06B, amendment §7) --------------
+export {
+  bridgeCapabilityToolToMastra,
+  buildCapabilityTools,
+  canonicalArgDigest,
+  defaultBridgePolicy,
+  runWithBridgeTurnScope,
+  safeArgumentSummary,
+  sanitizeCapabilityToolName,
+} from './tool-bridge.js';
+export type {
+  BridgeCapabilityPolicy,
+  BridgeTurnContext,
+  CapabilityBridgeDeps,
+  CapabilityInvoker,
+  CapabilityResolver,
+  CapabilityToolFailure,
+  CapabilityToolFailureCode,
+} from './tool-bridge.js';
+
+// ---- Turn executor composition (Stage 06B) -----------------------------------
+export { composeMastraTurnExecutor } from './turn-executor.js';
+export type { MastraTurnComposition, MastraTurnExecutorDeps } from './turn-executor.js';
+
 // ---- Dedicated storage (MSTR-003, §8.2 envelope) ----------------------------
 export {
   assertPlainStoreFileName,

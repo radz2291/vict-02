@@ -122,9 +122,9 @@ function receiptStepConformance(
       try {
         await seedIntent(store, 'intent-idem');
         // The memory step requires the application-domain receipt first.
-        await expect(
-          store.recordDeletionReceipt('intent-idem', 'memory-store', 2),
-        ).rejects.toThrow(/VICT_AGENT_DELETION_RECEIPT_ORDER/);
+        await expect(store.recordDeletionReceipt('intent-idem', 'memory-store', 2)).rejects.toThrow(
+          /VICT_AGENT_DELETION_RECEIPT_ORDER/,
+        );
         await store.recordDeletionReceipt('intent-idem', 'application-domain', 1);
         await store.recordDeletionReceipt('intent-idem', 'application-domain', 1);
         await store.recordDeletionReceipt('intent-idem', 'memory-store', 2);

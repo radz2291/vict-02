@@ -71,6 +71,7 @@ export function assertBoundedString(
     value.length > max ||
     // Control characters and other unsafe content are rejected; the value
     // itself is never echoed into diagnostics.
+    // eslint-disable-next-line no-control-regex
     /[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/.test(value)
   ) {
     throw new Error(
@@ -133,6 +134,9 @@ export const ROLE_SCOPES: Readonly<Record<ActorRole, readonly ActorScope[]>> = {
     'release.read',
     'activation.read',
     'run.read',
+    'agent.turn.start',
+    'agent.turn.cancel',
+    'agent.stream.read',
     'app.data.read',
     'audit.read',
   ],

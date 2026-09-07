@@ -11,7 +11,6 @@ import type {
   AgentTurnRecord,
   AgentTurnStore,
   ApplicationReleaseRecord,
-  ActorDirectory,
   ChangeSetApprovalDecision,
   ChangeSetRecord,
   ControlAuditEvent,

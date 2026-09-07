@@ -2,7 +2,6 @@ import { describe, expect, it } from 'vitest';
 import {
   ActorScopeDeniedError,
   authenticatedActorContext,
-  authoritativeScopes,
   createInMemoryAgentControlStores,
   InMemoryActorDirectory,
   type ActorRecord,
@@ -55,7 +54,13 @@ const OPERATIONS = [
 function makeService(clock: { value: number }) {
   const stores = createInMemoryAgentControlStores();
   const catalog: ActivationCatalog = createInMemoryStores().catalog;
-  const ids: Record<string, unknown> & { n: number; changesetId(): string; changesetApprovalId(): string; auditId(): string; releaseId(): string } = {
+  const ids: Record<string, unknown> & {
+    n: number;
+    changesetId(): string;
+    changesetApprovalId(): string;
+    auditId(): string;
+    releaseId(): string;
+  } = {
     n: 0,
     changesetId: (): string => `changeset-${(ids.n += 1)}`,
     changesetApprovalId: (): string => `csa-${(ids.n += 1)}`,
@@ -465,13 +470,3 @@ describe('agent-turn governance', () => {
     expect(summary.length).toBeLessThanOrEqual(121);
   });
 });
-
-function resolveActor(
-  directory: InMemoryActorDirectory,
-  actorId: string,
-): Promise<AuthenticatedActorContext> {
-  return (async () => {
-    const record = await directory.get(actorId);
-    return authenticatedActorContext(record, actorId);
-  })();
-}

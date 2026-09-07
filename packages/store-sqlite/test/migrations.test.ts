@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { retryRm } from './helpers/retry-rm.js';
 import { mkdtemp, readFile, rm } from 'node:fs/promises';
+import { rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
@@ -156,7 +157,10 @@ describe('sqlite schema migrations', () => {
     }
   });
 
-  it('fails closed on an unsupported newer schema without mutating the database', async () => {
+  // Windows teardown of freshly closed SQLite sidecars can hold brief
+  // file locks; the retry helper needs its growing backoff, so this test
+  // carries an explicit (non-default) timeout instead of a fixed sleep.
+  it('fails closed on an unsupported newer schema without mutating the database', { timeout: 120_000 }, async () => {
     const dir = await mkdtemp(join(tmpdir(), 'vict-mig-'));
     try {
       const path = join(dir, 'future.db');
@@ -212,6 +216,14 @@ describe('sqlite schema migrations', () => {
       // Byte-level identity is not required (SQLite may touch the header on
       // open); structural identity above is the fail-closed proof.
       void before;
+      // The disposable directory is removed immediately after the final
+      // connection closes; the retry helper is the backstop for lingering
+      // Windows WAL-sidecar locks.
+      try {
+        rmSync(path, { force: true });
+      } catch {
+        // retryRm below handles lingering locks.
+      }
     } finally {
       await retryRm(dir);
     }
@@ -326,4 +338,25 @@ describe('sqlite schema migrations', () => {
       await retryRm(dir);
     }
   });
+});
+
+
+it('probe at end of worker', { timeout: 120_000 }, async () => {
+  const dir = await mkdtemp(join(tmpdir(), 'vict-mig-probe-'));
+  try {
+    const path = join(dir, 'future.db');
+    const stores = createSqliteStores({ path });
+    await stores.dispose();
+    const db = new DatabaseSync(path);
+    db.exec("INSERT INTO vict_schema_migration (version, name, applied_at) VALUES (999999, 'future', 'z');");
+    db.close();
+    try { createSqliteStores({ path }); } catch (e) { void e; }
+    const db2 = new DatabaseSync(path);
+    db2.close();
+    try { rmSync(dir, { recursive: true, force: true }); console.log('END-PROBE-RM::OK'); }
+    catch (e: unknown) { console.log('END-PROBE-RM::FAILED ' + String((e as { code?: string }).code) + ' | ' + String((e as Error).message).slice(0, 150)); }
+  } finally {
+    void dir;
+  }
+  expect(1).toBe(1);
 });

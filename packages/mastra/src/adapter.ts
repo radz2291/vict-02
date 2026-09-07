@@ -19,6 +19,7 @@ import {
   sanitizeToolName,
   type HelperToolGateVerdict,
 } from './helper-tools.js';
+import { sanitizeCapabilityToolName } from './tool-bridge.js';
 import { VictMastraCompositionError, type MastraThreadCoordinator } from './memory.js';
 
 /**
@@ -131,6 +132,14 @@ export interface MastraProductAgentConfig {
    * instance to both sides automatically.
    */
   readonly threadCoordinator: MastraThreadCoordinator;
+  /**
+   * Stage 06B: the governed capability tools built by the VICT tool bridge
+   * from THIS activation's frozen authority envelope. The adapter verifies
+   * every provided tool name maps to a pinned envelope capability and
+   * rejects any collision with helper-tool names (fail closed at
+   * construction — never a silent overwrite or an authority widening).
+   */
+  readonly capabilityTools?: Readonly<Record<string, unknown>>;
 }
 
 /**
@@ -444,6 +453,30 @@ export class MastraProductAgent implements ProductAgentPort {
       toolNameOwner.set(toolName, binding.artifact.id);
       tools[toolName] = bridgeHelperToolToMastra(binding, () => this.#toolBudgetGate());
     }
+    // Stage 06B: governed capability tools from the frozen authority
+    // envelope. Every tool name MUST map to a pinned envelope capability
+    // (extra/unknown tools fail construction) and must never alias a helper
+    // tool name (VICT_MASTRA_TOOL_NAME_COLLISION).
+    const envelopeNames = new Set(
+      activation.capabilities.map((reference) => sanitizeCapabilityToolName(reference.id)),
+    );
+    for (const [toolName, tool] of Object.entries(config.capabilityTools ?? {})) {
+      if (!envelopeNames.has(toolName)) {
+        throw new VictMastraAdapterError(
+          'VICT_MASTRA_TOOL_NAME_COLLISION',
+          `A capability tool name does not map to any pinned authority-envelope capability; out-of-envelope tools are refused at construction.`,
+        );
+      }
+      const previous = toolNameOwner.get(toolName);
+      if (previous !== undefined) {
+        throw new VictMastraAdapterError(
+          'VICT_MASTRA_TOOL_NAME_COLLISION',
+          `Tools '${previous}' and the capability tool '${toolName}' collide on one Mastra tool name; refusing to alias.`,
+        );
+      }
+      toolNameOwner.set(toolName, 'capability:' + toolName);
+      tools[toolName] = tool;
+    }
     this.#pinnedToolNames = new Set(Object.keys(tools));
 
     // The REAL pinned Mastra Agent, derived from the frozen snapshot, bound
@@ -540,6 +573,16 @@ export class MastraProductAgent implements ProductAgentPort {
    * application output contract. A tool reached outside any turn scope is
    * denied.
    */
+  /**
+   * The per-turn capability-tool budget gate, shared with the governed
+   * tool bridge (Stage 06B): capability tool invocations consume the SAME
+   * turn-scoped budget as helper tools, and a denial blocks the protected
+   * effect BEFORE any durable intent or invocation.
+   */
+  capabilityBudgetGate(): HelperToolGateVerdict {
+    return this.#toolBudgetGate();
+  }
+
   #toolBudgetGate(): HelperToolGateVerdict {
     const scope = this.#turnScope.getStore();
     if (scope === undefined) {
@@ -700,7 +743,7 @@ export class MastraProductAgent implements ProductAgentPort {
   ): Promise<AgentTurnOutcome> {
     const events: AgentStreamEvent[] = [];
     const base = {
-      streamId: `vict-stream-${request.turnId}`,
+      streamId: context.streamId ?? `vict-stream-${request.turnId}`,
       turnId: request.turnId,
       threadId: request.threadId,
       actorId: request.actorId,
@@ -869,7 +912,12 @@ export class MastraProductAgent implements ProductAgentPort {
                   ? (pendingToolCalls.get(toolCallId) ?? UNTRUSTED_TOOL_METADATA_PLACEHOLDER)
                   : (payload.toolName as string);
               const result = payload.result as
-                { victHelperFailure?: string; error?: unknown } | undefined;
+                | {
+                    victHelperFailure?: string;
+                    victCapabilityFailure?: string;
+                    error?: unknown;
+                  }
+                | undefined;
               // Mastra reports a schema-rejected tool input as a tool
               // result carrying `{ error: true }` (with the sanitized
               // message from our Standard-Schema wrapper).
@@ -879,6 +927,18 @@ export class MastraProductAgent implements ProductAgentPort {
                 payload.isError === true;
               if (result?.victHelperFailure === 'VICT_HELPER_TOOL_LIMIT_EXCEEDED') {
                 toolLimitExceeded = true;
+              }
+              // Stage 06B: the governed capability bridge's structured safe
+              // denials (decline, awaiting timeout, authority denial) are
+              // honest tool failures with their stable non-echoing codes.
+              if (typeof result?.victCapabilityFailure === 'string') {
+                emit({
+                  kind: 'tool.failed',
+                  toolCallId,
+                  toolName,
+                  code: result.victCapabilityFailure,
+                });
+                break;
               }
               if (failed) {
                 emit({ kind: 'tool.failed', toolCallId, toolName, code: 'VICT_TOOL_FAILED' });

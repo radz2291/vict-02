@@ -19,7 +19,6 @@ import {
   type AgentTurnRecord,
   type AgentTurnStore,
   type ApplicationReleaseRecord,
-  type ActorRecord,
   type ChangeSetApprovalDecision,
   type ChangeSetRecord,
   type ControlAuditEvent,
@@ -843,7 +842,7 @@ export function createSqliteAgentControlStores(
       return transitionTurn(turnId, at, (status) => (status === 'intent' ? 'running' : undefined));
     },
 
-    async awaitApproval(turnId: string, at: number, approvalId: string): Promise<AgentTurnRecord> {
+    async awaitApproval(turnId: string, at: number, _approvalId: string): Promise<AgentTurnRecord> {
       return transitionTurn(turnId, at, (status) =>
         status === 'running' ? 'awaiting-approval' : undefined,
       );

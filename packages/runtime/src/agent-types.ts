@@ -835,6 +835,12 @@ export interface AgentTurnExecutionContext {
   readonly abortSignal?: AbortSignal;
   /** Normalized event sink (`vict.agent-stream@1` in-process surface). */
   readonly onEvent?: (event: AgentStreamEvent) => void;
+  /**
+   * The VICT stream identity (Stage 06B): when supplied, the adapter stamps
+   * every normalized event with it instead of deriving
+   * `vict-stream-<turnId>`; the durable stream ledger keys sequences by it.
+   */
+  readonly streamId?: string;
   /** VICT run identity for correlation, when the turn runs inside a run. */
   readonly victRunId?: string;
 }

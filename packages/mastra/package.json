@@ -27,7 +27,8 @@
     "@vict/kernel": "0.1.0",
     "@vict/runtime": "0.1.0",
     "@vict/sdk": "0.1.0",
-    "zod": "^3.25.76"
+    "zod": "^3.25.76",
+    "@vict/control": "0.1.0"
   },
   "engines": {
     "node": ">=22.13.0"

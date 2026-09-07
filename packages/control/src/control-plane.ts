@@ -175,7 +175,6 @@ export class ControlPlaneService {
     },
   ): Promise<ChangeSetRecord> {
     this.#assertScope(actor, 'changeset.revise');
-    const now = this.#clock();
     const updated = await this.#stores.control.reviseChangeSetContent(
       input.changesetId,
       (record) => {
