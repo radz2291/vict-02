@@ -61,7 +61,6 @@ export interface ControlPlaneServiceOptions {
     changesetId(): string;
     changesetApprovalId(): string;
     auditId(): string;
-    releaseId(): string;
   };
 }
 
@@ -109,7 +108,6 @@ export class ControlPlaneService {
       changesetId: options.ids?.changesetId ?? (() => failRandomIds()),
       changesetApprovalId: options.ids?.changesetApprovalId ?? (() => failRandomIds()),
       auditId: options.ids?.auditId ?? (() => failRandomIds()),
-      releaseId: () => failRandomIds(),
     };
   }
 

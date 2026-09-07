@@ -55,7 +55,8 @@ const OPERATIONS = [
 function makeService(clock: { value: number }) {
   const stores = createInMemoryAgentControlStores();
   const catalog: ActivationCatalog = createInMemoryStores().catalog;
-  const ids = {
+  const ids: Record<string, unknown> & { n: number; changesetId(): string; changesetApprovalId(): string; auditId(): string; releaseId(): string } = {
+    n: 0,
     changesetId: (): string => `changeset-${(ids.n += 1)}`,
     changesetApprovalId: (): string => `csa-${(ids.n += 1)}`,
     auditId: (): string => `audit-${(ids.n += 1)}`,
