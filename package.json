@@ -29,7 +29,8 @@
     "example:application": "npm run build -w application-proof && npm run test -w application-proof",
     "verify:stage4": "node scripts/verify-stage4.mjs",
     "verify:stage5": "node scripts/verify-stage5.mjs",
-    "verify:stage6a": "node scripts/verify-stage6a.mjs"
+    "verify:stage6a": "node scripts/verify-stage6a.mjs",
+    "verify:stage6b": "node scripts/verify-stage6b.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
