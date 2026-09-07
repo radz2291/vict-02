@@ -26,6 +26,7 @@ const aliases = {
   '@vict/mastra': resolveFromRoot('packages/mastra/src/index.ts'),
   '@vict/control': resolveFromRoot('packages/control/src/index.ts'),
   '@vict/server': resolveFromRoot('packages/server/src/index.ts'),
+  '@vict/cli': resolveFromRoot('packages/cli/src/index.ts'),
 };
 
 export default defineConfig({

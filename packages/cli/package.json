@@ -1,0 +1,28 @@
+{
+  "name": "@vict/cli",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Vict typed operator/developer CLI. Consumes the same versioned VICT command surface as HTTP (never SQLite directly); thin, Mastra-free, browser-independent.",
+  "bin": {
+    "vict": "./bin/vict.mjs"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "bin"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "devDependencies": {
+    "@vict/server": "0.1.0"
+  }
+}

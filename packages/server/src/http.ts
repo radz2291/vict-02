@@ -33,6 +33,7 @@ export type HttpErrorCode =
   | 'VICT_HTTP_BODY_TOO_LARGE'
   | 'VICT_HTTP_CONTENT_TYPE_INVALID'
   | 'VICT_HTTP_COMMAND_UNKNOWN'
+  | 'VICT_HTTP_FIELD_INVALID'
   | 'VICT_HTTP_RATE_BOUNDS';
 
 /** Structured transport error (safe body; never echoes raw content). */
@@ -85,6 +86,8 @@ function statusForError(code: string | undefined): number {
     case 'VICT_CONTROL_TURN_MISSING':
     case 'VICT_CONTROL_INVOCATION_MISSING':
     case 'VICT_CONTROL_APPROVAL_MISSING':
+    case 'VICT_STORE_ACTIVATION_NOT_FOUND':
+    case 'VICT_STORE_RELEASE_NOT_FOUND':
       return 404;
     case 'VICT_COMMAND_FIELD_INVALID':
     case 'VICT_CONTROL_ID_INVALID':
@@ -264,10 +267,6 @@ export function createVictHttpServer(options: VictHttpServerOptions): VictHttpSe
     // Everything else is a protected command endpoint.
     const actor = await authenticate(req);
 
-    const command = resolveCommand(req, path, url);
-    if (process.env.VICT_HTTP_DEBUG === '1') {
-      console.error('COMMAND::' + String(command));
-    }
     const isMutation = req.method === 'POST' || req.method === 'PUT' || req.method === 'DELETE';
     let body = '';
     if (req.method === 'POST' || req.method === 'PUT') {
@@ -295,17 +294,24 @@ export function createVictHttpServer(options: VictHttpServerOptions): VictHttpSe
     if (typeof parsed !== 'object' || parsed === null || Array.isArray(parsed)) {
       throw new HttpError('VICT_HTTP_BODY_MALFORMED', 400);
     }
-    const bodyPayload = (parsed as Record<string, unknown>).payload;
-    const payload =
-      typeof bodyPayload === 'object' && bodyPayload !== null && !Array.isArray(bodyPayload)
-        ? (bodyPayload as Record<string, unknown>)
+    let payload =
+      typeof (parsed as Record<string, unknown>).payload === 'object' &&
+      (parsed as Record<string, unknown>).payload !== null &&
+      !Array.isArray((parsed as Record<string, unknown>).payload)
+        ? ((parsed as Record<string, unknown>).payload as Record<string, unknown>)
         : {};
     if (Object.keys(payload).length > 64) {
       throw new HttpError('VICT_HTTP_RATE_BOUNDS', 400);
     }
+    // Dynamic instance routes inject the authoritative path identity into
+    // the bounded payload (path params win over client-supplied fields).
+    const resolved = resolveCommand(req, path, url, payload);
+    if (resolved.pathParams !== undefined) {
+      payload = { ...payload, ...resolved.pathParams };
+    }
     const idempotencyKey = req.headers['idempotency-key'];
     const outcome = await options.commandService.dispatch(actor, {
-      command: command as never,
+      command: resolved.command as never,
       payload,
       ...(typeof idempotencyKey === 'string' && isMutation ? { idempotencyKey } : {}),
     });
@@ -316,15 +322,26 @@ export function createVictHttpServer(options: VictHttpServerOptions): VictHttpSe
     sendJson(res, 200, outcomeBody(outcome));
   }
 
-  /** Resolve the command name from the request (closed route table). */
-  function resolveCommand(req: IncomingMessage, path: string, url: URL): string {
+  /** The resolved command plus authoritative path parameters. */
+  interface ResolvedRoute {
+    readonly command: string;
+    readonly pathParams?: Record<string, string>;
+  }
+
+  /** Resolve the command from the request (closed route table). */
+  function resolveCommand(
+    req: IncomingMessage,
+    path: string,
+    url: URL,
+    payload: Record<string, unknown>,
+  ): ResolvedRoute {
     // Explicit POST routes.
     const post = POST_ROUTES[path];
     if (post !== undefined) {
       if (req.method !== 'POST') {
         throw new HttpError('VICT_HTTP_METHOD_UNSUPPORTED', 405);
       }
-      return post();
+      return { command: post() };
     }
     // GET routes with fixed commands.
     const fixed = ROUTE_COMMANDS[path];
@@ -332,7 +349,7 @@ export function createVictHttpServer(options: VictHttpServerOptions): VictHttpSe
       if (req.method !== 'GET') {
         throw new HttpError('VICT_HTTP_METHOD_UNSUPPORTED', 405);
       }
-      return fixed;
+      return { command: fixed };
     }
     // Dynamic instance routes.
     const changesetMatch = /^\/vict\/v1\/changesets\/([A-Za-z0-9][A-Za-z0-9._:@-]{0,127})$/.exec(
@@ -342,25 +359,40 @@ export function createVictHttpServer(options: VictHttpServerOptions): VictHttpSe
       if (req.method !== 'GET') {
         throw new HttpError('VICT_HTTP_METHOD_UNSUPPORTED', 405);
       }
-      return 'changeset.get';
+      return { command: 'changeset.get', pathParams: { changesetId: changesetMatch[1] as string } };
     }
     const turnMatch = /^\/vict\/v1\/turns\/([A-Za-z0-9][A-Za-z0-9._:@-]{0,127})$/.exec(path);
     if (turnMatch !== null) {
       if (req.method !== 'GET') {
         throw new HttpError('VICT_HTTP_METHOD_UNSUPPORTED', 405);
       }
-      return 'agent.turn.get';
+      return { command: 'agent.turn.get', pathParams: { turnId: turnMatch[1] as string } };
     }
     const approvalMatch = /^\/vict\/v1\/approvals\/([A-Za-z0-9][A-Za-z0-9._:@-]{0,127})$/.exec(
       path,
     );
     if (approvalMatch !== null && req.method === 'POST') {
-      return 'agent.tool.decide';
+      // The decision is part of the closed route contract: the approve and
+      // decline commands are distinct in the versioned command surface.
+      const decision = payload['decision'];
+      if (decision === 'approved') {
+        return {
+          command: 'agent.tool.approve',
+          pathParams: { approvalId: approvalMatch[1] as string },
+        };
+      }
+      if (decision === 'declined') {
+        return {
+          command: 'agent.tool.decline',
+          pathParams: { approvalId: approvalMatch[1] as string },
+        };
+      }
+      throw new HttpError('VICT_HTTP_FIELD_INVALID', 400);
     }
     const streamInspect =
       /^\/vict\/v1\/streams\/([A-Za-z0-9][A-Za-z0-9._:@-]{0,127})\/inspect$/.exec(path);
     if (streamInspect !== null && req.method === 'GET') {
-      return 'stream.inspect';
+      return { command: 'stream.inspect', pathParams: { streamId: streamInspect[1] as string } };
     }
     throw new HttpError('VICT_HTTP_ROUTE_UNKNOWN', 404);
   }
