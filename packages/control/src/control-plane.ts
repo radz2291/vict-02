@@ -539,6 +539,29 @@ export class ControlPlaneService {
     return updated;
   }
 
+  /** Select one published activation for future runs (operator path; audited). */
+  async selectActivation(input: {
+    graphId: string;
+    activationVersion: string;
+  }): Promise<{ graphId: string; activationVersion: string; selectionRevision: number }> {
+    const selection = await this.#catalog.select({
+      graphId: input.graphId,
+      activationVersion: input.activationVersion,
+    });
+    await this.#audit(
+      'system',
+      'activation.selected',
+      'activation',
+      input.graphId,
+      input.activationVersion,
+    );
+    return {
+      graphId: selection.graphId,
+      activationVersion: selection.activationVersion,
+      selectionRevision: selection.selectionRevision,
+    };
+  }
+
   /** Read one ChangeSet. */
   async get(changesetId: string): Promise<ChangeSetRecord | undefined> {
     return this.#stores.control.getChangeSet(changesetId);

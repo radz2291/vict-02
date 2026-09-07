@@ -1,0 +1,28 @@
+{
+  "name": "@vict/server",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Vict server boundary (Stage 06B): authenticated actor composition, versioned HTTP commands, resumable SSE for vict.agent-stream@1, and the remote Application data/action adapter. Consumes neutral runtime/control/application ports; exposes no privileged agent-framework route.",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@vict/application": "0.1.0",
+    "@vict/contracts": "0.1.0",
+    "@vict/control": "0.1.0",
+    "@vict/runtime": "0.1.0",
+    "@vict/store-sqlite": "0.1.0"
+  }
+}
