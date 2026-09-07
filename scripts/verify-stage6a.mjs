@@ -281,7 +281,9 @@ console.log('\n=== verify:stage6a — dedicated-store storage path/permission su
 // receipt/migration suites that the final Stage 06A closure audit had to
 // run by hand. These gates can no longer be skipped via the full-suite
 // ladder alone.)
-console.log('\n=== verify:stage6a — driver-cause and migration/governance regression suites (LOW-06A-2) ===');
+console.log(
+  '\n=== verify:stage6a — driver-cause and migration/governance regression suites (LOW-06A-2) ===',
+);
 {
   const vitestEntry = join(repoRoot, 'node_modules', 'vitest', 'vitest.mjs');
   const regressionSuites = [
