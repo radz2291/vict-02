@@ -36,12 +36,27 @@ export {
 } from './issue-mapping.js';
 export type { ObservableContractIssue, RawSchemaIssue, SafeIssueOptions } from './issue-mapping.js';
 
-// ---- Neutral product-agent stream contract (Stage 06A) ---------------------
-export { AGENT_STREAM_SCHEMA, AGENT_STREAM_EVENT_KINDS } from './agent-stream.js';
+// ---- Neutral product-agent stream contract (Stage 06A; final field-level
+// schema finalized in Stage 06B — OPEN-015 decided) --------------------------
+export {
+  AGENT_STREAM_SCHEMA,
+  AGENT_STREAM_EVENT_KINDS,
+  AGENT_STREAM_DURABLE_KINDS,
+  AGENT_STREAM_TRANSIENT_KINDS,
+  AGENT_STREAM_ID_PATTERN,
+  AGENT_STREAM_SCHEMA_CODES,
+  AGENT_STREAM_CODE_PATTERN,
+  isValidAgentStreamId,
+  validateAgentStreamEvent,
+  assertAgentStreamEvent,
+} from './agent-stream.js';
 export type {
   AgentStreamContext,
   AgentStreamEvent,
   AgentStreamEventKind,
+  AgentStreamSchemaCode,
+  AgentStreamSchemaIssue,
+  AgentStreamValidationResult,
   AgentStreamTextDelta,
   AgentStreamContentCompleted,
   AgentStreamToolRequested,

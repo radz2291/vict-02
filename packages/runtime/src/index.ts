@@ -185,3 +185,81 @@ export type {
   AgentMemoryDeletionPort,
   ConversationDeletionCoordinatorOptions,
 } from './agent-governance.js';
+
+// ---- Stage 06B: control plane and governed remote execution ----------------
+export type {
+  ACTOR_SCOPES,
+  ApplicationReleaseContent,
+  ApplicationReleaseRecord,
+  AuthenticatedActorContext,
+  ActorDirectory,
+  ActorRecord,
+  ActorRole,
+  ActorScope,
+  ActorStatus,
+  AgentApprovalRecord,
+  AgentApprovalStatus,
+  AgentApprovalStore,
+  AgentControlStores,
+  AgentStreamLedgerEvent,
+  AgentStreamLedgerStore,
+  AgentToolInvocationRecord,
+  AgentToolInvocationStatus,
+  AgentToolInvocationStore,
+  AgentTurnCorrelation,
+  AgentTurnRecord,
+  AgentTurnStatus,
+  AgentTurnStore,
+  ChangeSetApprovalDecision,
+  ChangeSetBase,
+  ChangeSetRecord,
+  ChangeSetRiskClass,
+  ChangeSetSimulationEvidence,
+  ChangeSetStatus,
+  ChangeSetValidationEvidence,
+  ControlAuditAction,
+  ControlAuditEvent,
+  ControlPlaneStore,
+  ReleaseSelectionRecord,
+} from './control-types.js';
+export {
+  ACTOR_ROLES,
+  CHANGESET_SCHEMA,
+  CONTROL_AUDIT_ACTIONS,
+  CONTROL_ID_PATTERN,
+  ROLE_SCOPES,
+  AGENT_TURN_SCHEMA,
+  assertActorScope,
+  assertBoundedString,
+  assertControlId,
+  assertControlTimestamp,
+  authenticatedActorContext,
+  authoritativeScopes,
+  controlContentHash,
+  isDurableStreamKind,
+  streamEventPayloadOf,
+  validateApplicationReleaseContent,
+  validateChangeSetContent,
+  validateChangeSetOperation,
+} from './control-types.js';
+export { ActorScopeDeniedError, VictControlError } from './control-types.js';
+export {
+  createInMemoryAgentControlStores,
+  InMemoryActorDirectory,
+  InMemoryAgentApprovalStore,
+  InMemoryAgentStreamLedgerStore,
+  InMemoryAgentToolInvocationStore,
+  InMemoryAgentTurnStore,
+  InMemoryControlPlaneStore,
+} from './control-in-memory.js';
+export { AgentStreamHub } from './stream-hub.js';
+export type {
+  AgentStreamHubOptions,
+  AgentStreamReplay,
+  AgentStreamSubscriber,
+} from './stream-hub.js';
+export {
+  inMemoryAgentControlConformanceFactory,
+  runAgentControlConformanceSuite,
+} from './control-conformance.js';
+export type { AgentControlConformanceFactory } from './control-conformance.js';

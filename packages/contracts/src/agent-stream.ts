@@ -14,6 +14,15 @@
  * `vict.agent-stream@1` wire schema are finalized in Stage 06B (OPEN-015
  * stays open). Nothing here claims transport completeness.
  *
+ * Stage 06B (OPEN-015 DECIDED): the COMPLETE field-level schema below is
+ * the final frozen `vict.agent-stream@1` contract. Closed per-kind field
+ * sets, bounded namespace identifiers, strict monotonic sequences, and the
+ * transient/durable kind classification are validated by
+ * `validateAgentStreamEvent` / `assertAgentStreamEvent`. Unknown event
+ * kinds and unknown fields FAIL CLOSED. Compatibility/evolution rules for
+ * the frozen `@1` marker are documented in the module contract at the
+ * bottom of this file.
+ *
  * Payload-safety invariants (AI-009, §9.1):
  * - no raw provider or agent-framework chunk type is representable;
  * - no hidden chain-of-thought: reasoning content is never carried;
@@ -176,3 +185,286 @@ export const AGENT_STREAM_EVENT_KINDS = [
 ] as const;
 
 export type AgentStreamEventKind = (typeof AGENT_STREAM_EVENT_KINDS)[number];
+
+// ---- Final field-level schema (Stage 06B — OPEN-015 decided) ---------------
+
+/**
+ * Bounded namespace identifier: printable, non-empty, at most 128
+ * characters, no whitespace, no control characters, no leading/trailing
+ * separators. Used for stream, turn, thread, actor, run, trace, and tool-call
+ * identifiers crossing the `vict.agent-stream@1` boundary.
+ */
+export const AGENT_STREAM_ID_PATTERN = /^[A-Za-z0-9][A-Za-z0-9._:@-]{0,127}$/;
+
+/** Stable issue codes produced by the field-level validation. */
+export const AGENT_STREAM_SCHEMA_CODES = [
+  'AGENT_STREAM_UNKNOWN_KIND',
+  'AGENT_STREAM_UNKNOWN_FIELD',
+  'AGENT_STREAM_INVALID_ID',
+  'AGENT_STREAM_INVALID_SEQ',
+  'AGENT_STREAM_INVALID_FIELD',
+  'AGENT_STREAM_INVALID_CODE',
+  'AGENT_STREAM_INVALID_USAGE',
+  'AGENT_STREAM_NOT_OBJECT',
+] as const;
+
+export type AgentStreamSchemaCode = (typeof AGENT_STREAM_SCHEMA_CODES)[number];
+
+/** A structured, non-echoing schema issue (paths and codes only — never values). */
+export interface AgentStreamSchemaIssue {
+  readonly code: AgentStreamSchemaCode;
+  /** Field path of the offending member (e.g. `"tool.failed"`, `"seq"`). */
+  readonly path?: string;
+}
+
+/** The field-level validation result. */
+export type AgentStreamValidationResult =
+  | { readonly ok: true }
+  | { readonly ok: false; readonly issues: readonly AgentStreamSchemaIssue[] };
+
+/** Per-kind payloads keyed by the closed event vocabulary. */
+interface KindFields {
+  readonly fields: ReadonlySet<string>;
+  /** True when the kind is transient stream content (safe to coalesce). */
+  readonly transient: boolean;
+}
+
+const KIND_FIELDS: Readonly<Record<AgentStreamEventKind, KindFields>> = {
+  'response.started': { fields: new Set(['kind']), transient: false },
+  'text.delta': { fields: new Set(['kind', 'delta']), transient: true },
+  'content.completed': { fields: new Set(['kind', 'text']), transient: false },
+  'tool.requested': { fields: new Set(['kind', 'toolCallId', 'toolName']), transient: false },
+  'tool.started': { fields: new Set(['kind', 'toolCallId', 'toolName']), transient: false },
+  'tool.awaiting_approval': {
+    fields: new Set(['kind', 'toolCallId', 'toolName']),
+    transient: false,
+  },
+  'tool.completed': { fields: new Set(['kind', 'toolCallId', 'toolName']), transient: false },
+  'tool.failed': {
+    fields: new Set(['kind', 'toolCallId', 'toolName', 'code']),
+    transient: false,
+  },
+  'memory.updated': { fields: new Set(['kind', 'threadId']), transient: false },
+  'usage.updated': { fields: new Set(['kind', 'usage']), transient: false },
+  'response.completed': { fields: new Set(['kind']), transient: false },
+  'response.failed': { fields: new Set(['kind', 'code']), transient: false },
+  'response.cancelled': { fields: new Set(['kind']), transient: false },
+};
+
+/** The durable (persisted) kinds; every other kind is transient stream content. */
+export const AGENT_STREAM_DURABLE_KINDS: readonly AgentStreamEventKind[] =
+  AGENT_STREAM_EVENT_KINDS.filter((kind) => !KIND_FIELDS[kind].transient);
+
+/** The transient kinds: safe to coalesce under backpressure, never persisted by default. */
+export const AGENT_STREAM_TRANSIENT_KINDS: readonly AgentStreamEventKind[] =
+  AGENT_STREAM_EVENT_KINDS.filter((kind) => KIND_FIELDS[kind].transient);
+
+/** Stable sanitized failure-code shape used by `tool.failed` / `response.failed`. */
+export const AGENT_STREAM_CODE_PATTERN = /^VICT_[A-Z0-9_]{1,96}$/;
+
+/** The closed context field set carried by EVERY event. */
+const CONTEXT_FIELDS: ReadonlySet<string> = new Set([
+  'streamId',
+  'turnId',
+  'threadId',
+  'actorId',
+  'agentProfileVersion',
+  'traceId',
+  'victRunId',
+  'seq',
+]);
+
+/** Validate one bounded namespace identifier. */
+export function isValidAgentStreamId(value: unknown): value is string {
+  return typeof value === 'string' && AGENT_STREAM_ID_PATTERN.test(value);
+}
+
+function isValidOptionalId(value: unknown): boolean {
+  return value === undefined || isValidAgentStreamId(value);
+}
+
+function isPlainObject(value: unknown): value is Record<string, unknown> {
+  if (typeof value !== 'object' || value === null || Array.isArray(value)) {
+    return false;
+  }
+  const proto = Object.getPrototypeOf(value) as object | null;
+  return proto === Object.prototype || proto === null;
+}
+
+/**
+ * The FINAL field-level validation of one `vict.agent-stream@1` event.
+ * Fails closed on unknown event kinds, unknown fields (per kind AND in the
+ * common envelope), non-plain input, invalid identifiers, invalid
+ * sequences, and unsafe codes. Diagnostics carry codes and paths only —
+ * never event values (CONT-005 discipline at the stream boundary).
+ *
+ * Delivery remains at-least-once: sequence MONOTONICITY per stream is a
+ * stateful property enforced by the durable stream ledger (append gate),
+ * not by this structural validator.
+ */
+export function validateAgentStreamEvent(input: unknown): AgentStreamValidationResult {
+  const issues: AgentStreamSchemaIssue[] = [];
+  const reject = (code: AgentStreamSchemaCode, path?: string): void => {
+    issues.push(path === undefined ? { code } : { code, path });
+  };
+  if (!isPlainObject(input)) {
+    return { ok: false, issues: [{ code: 'AGENT_STREAM_NOT_OBJECT' }] };
+  }
+  const event = input as Record<string, unknown>;
+  const allowed = new Set(CONTEXT_FIELDS);
+  const kindValue = event.kind;
+  if (typeof kindValue !== 'string' || !Object.hasOwn(KIND_FIELDS, kindValue)) {
+    // Unknown kinds fail closed; the specific value is never echoed.
+    reject('AGENT_STREAM_UNKNOWN_KIND', 'kind');
+    return { ok: false, issues };
+  }
+  const kind = kindValue as AgentStreamEventKind;
+  for (const field of KIND_FIELDS[kind].fields) {
+    allowed.add(field);
+  }
+  for (const key of Object.keys(event)) {
+    if (!allowed.has(key)) {
+      reject('AGENT_STREAM_UNKNOWN_FIELD', `${kind}.${key}`);
+    }
+  }
+  if (issues.length > 0) {
+    return { ok: false, issues };
+  }
+  // Bounded namespace identifiers on every required identity field.
+  for (const idField of ['streamId', 'turnId', 'threadId', 'actorId'] as const) {
+    if (!isValidAgentStreamId(event[idField])) {
+      reject('AGENT_STREAM_INVALID_ID', idField);
+    }
+  }
+  if (!isValidOptionalId(event.traceId)) {
+    reject('AGENT_STREAM_INVALID_ID', 'traceId');
+  }
+  if (!isValidOptionalId(event.victRunId)) {
+    reject('AGENT_STREAM_INVALID_ID', 'victRunId');
+  }
+  if (
+    typeof event.agentProfileVersion !== 'string' ||
+    event.agentProfileVersion.length === 0 ||
+    event.agentProfileVersion.length > 256
+  ) {
+    reject('AGENT_STREAM_INVALID_ID', 'agentProfileVersion');
+  }
+  // Strictly positive safe-integer sequences (monotonic ordering is the
+  // ledger's per-stream stateful gate).
+  if (typeof event.seq !== 'number' || !Number.isSafeInteger(event.seq) || event.seq < 1) {
+    reject('AGENT_STREAM_INVALID_SEQ', 'seq');
+  }
+  // Kind-specific field validation.
+  switch (kind) {
+    case 'text.delta':
+      if (typeof event.delta !== 'string' || event.delta.length === 0) {
+        reject('AGENT_STREAM_INVALID_FIELD', 'text.delta.delta');
+      }
+      break;
+    case 'content.completed':
+      if (typeof event.text !== 'string' || event.text.length === 0) {
+        reject('AGENT_STREAM_INVALID_FIELD', 'content.completed.text');
+      }
+      break;
+    case 'tool.requested':
+    case 'tool.started':
+    case 'tool.awaiting_approval':
+    case 'tool.completed':
+      for (const field of ['toolCallId', 'toolName'] as const) {
+        if (!isValidAgentStreamId(event[field])) {
+          reject('AGENT_STREAM_INVALID_ID', `${kind}.${field}`);
+        }
+      }
+      break;
+    case 'tool.failed':
+      for (const field of ['toolCallId', 'toolName'] as const) {
+        if (!isValidAgentStreamId(event[field])) {
+          reject('AGENT_STREAM_INVALID_ID', `${kind}.${field}`);
+        }
+      }
+      if (typeof event.code !== 'string' || !AGENT_STREAM_CODE_PATTERN.test(event.code)) {
+        reject('AGENT_STREAM_INVALID_CODE', 'tool.failed.code');
+      }
+      break;
+    case 'memory.updated':
+      if (!isValidAgentStreamId(event.threadId)) {
+        reject('AGENT_STREAM_INVALID_ID', 'memory.updated.threadId');
+      }
+      break;
+    case 'usage.updated': {
+      const usage = event.usage as Record<string, unknown> | undefined;
+      if (
+        !isPlainObject(usage) ||
+        Object.keys(usage).length !== 3 ||
+        ['inputTokens', 'outputTokens', 'totalTokens'].some(
+          (field) =>
+            typeof usage[field] !== 'number' ||
+            !Number.isSafeInteger(usage[field]) ||
+            (usage[field] as number) < 0,
+        ) ||
+        (usage.totalTokens as number) !==
+          (usage.inputTokens as number) + (usage.outputTokens as number)
+      ) {
+        reject('AGENT_STREAM_INVALID_USAGE', 'usage.updated.usage');
+      }
+      break;
+    }
+    case 'response.failed':
+      if (typeof event.code !== 'string' || !AGENT_STREAM_CODE_PATTERN.test(event.code)) {
+        reject('AGENT_STREAM_INVALID_CODE', 'response.failed.code');
+      }
+      break;
+    default:
+      break;
+  }
+  return issues.length === 0 ? { ok: true } : { ok: false, issues };
+}
+
+/**
+ * Validate and THROW (fail closed) on any invalid event. The thrown error
+ * is a neutral `VictError`-style structural failure carrying only codes
+ * and paths.
+ */
+export function assertAgentStreamEvent(input: unknown): asserts input is AgentStreamEvent {
+  const result = validateAgentStreamEvent(input);
+  if (!result.ok) {
+    const error = new Error(
+      `AGENT_STREAM_EVENT_INVALID: the agent-stream event is not a valid ${AGENT_STREAM_SCHEMA} event (${result.issues
+        .map((issue) => issue.code)
+        .join(', ')}).`,
+    ) as Error & { readonly name: string; code: string };
+    error.name = 'AgentStreamSchemaError';
+    error.code = 'AGENT_STREAM_EVENT_INVALID';
+    throw error;
+  }
+}
+
+/**
+ * `vict.agent-stream@1` compatibility and evolution rules (frozen marker,
+ * Stage 06B — OPEN-015):
+ *
+ * 1. The `vict.agent-stream@1` marker is FROZEN: every event validated by
+ *    this module must remain byte-compatible with the schema above for the
+ *    lifetime of `@1`.
+ * 2. Additive evolution (a NEW event kind, a NEW optional context field,
+ *    or a NEW optional payload field) is delivered ONLY through a new
+ *    schema marker (`vict.agent-stream@2`) with its own closed validation
+ *    rule set — never by widening `@1` in place.
+ * 3. Consumers MUST treat unknown kinds and unknown fields as fatal
+ *    validation failures (fail closed); they MUST NOT forward unknown
+ *    content across the boundary. This makes forward evolution explicit:
+ *    an unmodified `@1` consumer fails on `@2` traffic instead of silently
+ *    misinterpreting it.
+ * 4. `text.delta` is transient stream content: delivery is at-least-once
+ *    and consecutive deltas MAY be coalesced under backpressure. All other
+ *    kinds are durable milestones that MUST NOT be dropped, reordered, or
+ *    coalesced, and (except `response.started`/`response.*` bookkeeping)
+ *    are persisted by the durable stream ledger by default.
+ * 5. Delivery is at-least-once with client deduplication by
+ *    (streamId, seq); sequence numbers are strictly monotonic per stream
+ *    and enforced by the durable ledger's append gate.
+ * 6. Raw provider/agent-framework chunk types, hidden chain-of-thought,
+ *    raw provider/capability errors, credentials, and full tool payloads
+ *    are NOT representable in `@1` and MUST never be smuggled through
+ *    optional fields (the closed field sets structurally prevent this).
+ */

@@ -326,6 +326,164 @@ export const SCHEMA_MIGRATIONS: readonly Migration[] = [
       `ALTER TABLE vict_agent_deletion_receipt_new RENAME TO vict_agent_deletion_receipt;`,
     ],
   },
+  {
+    // Stage 06B: control plane and governed remote execution. New
+    // operational tables for actors, ChangeSets + their approval decisions,
+    // Application Releases + selections, audit events, agent turns (with
+    // cancel-intent dedup), protected tool invocations (durable
+    // -before-invocation), VICT approval records, and the durable agent
+    // -stream ledger. Additive only; disjoint from every existing table.
+    version: 5,
+    name: 'agent-control-plane',
+    statements: [
+      `CREATE TABLE vict_actor (
+        actor_id TEXT PRIMARY KEY,
+        status TEXT NOT NULL CHECK (status IN ('active', 'disabled')),
+        roles TEXT NOT NULL,
+        created_at TEXT NOT NULL
+      );`,
+      `CREATE TABLE vict_changeset (
+        changeset_id TEXT PRIMARY KEY,
+        schema TEXT NOT NULL,
+        author_actor_id TEXT NOT NULL,
+        created_at TEXT NOT NULL,
+        base_json TEXT NOT NULL,
+        operations_json TEXT NOT NULL,
+        rationale TEXT NOT NULL,
+        risk_class TEXT NOT NULL CHECK (risk_class IN ('low', 'medium', 'high')),
+        required_approver_count INTEGER NOT NULL,
+        expires_at TEXT NOT NULL,
+        validation_json TEXT,
+        simulation_json TEXT,
+        content_hash TEXT NOT NULL,
+        status TEXT NOT NULL CHECK (status IN ('draft', 'approved', 'committed', 'declined', 'expired'))
+      );`,
+      `CREATE INDEX idx_vict_changeset_status ON vict_changeset (status);`,
+      `CREATE TABLE vict_changeset_approval (
+        approval_id TEXT PRIMARY KEY,
+        changeset_id TEXT NOT NULL REFERENCES vict_changeset(changeset_id),
+        content_hash TEXT NOT NULL,
+        approver_actor_id TEXT NOT NULL,
+        decision TEXT NOT NULL CHECK (decision IN ('approved', 'declined')),
+        decided_at TEXT NOT NULL,
+        UNIQUE (changeset_id, approver_actor_id)
+      );`,
+      `CREATE TABLE vict_release (
+        release_version TEXT PRIMARY KEY,
+        application_id TEXT NOT NULL,
+        application_version TEXT NOT NULL,
+        renderer_identity TEXT NOT NULL,
+        component_registry_identity TEXT NOT NULL,
+        data_adapter_identity TEXT NOT NULL,
+        activation_binding TEXT NOT NULL,
+        published_by_actor_id TEXT NOT NULL,
+        published_at TEXT NOT NULL,
+        content_hash TEXT NOT NULL
+      );`,
+      `CREATE INDEX idx_vict_release_app ON vict_release (application_id);`,
+      `CREATE TABLE vict_release_selection (
+        application_id TEXT NOT NULL,
+        selection_revision INTEGER NOT NULL,
+        release_version TEXT NOT NULL REFERENCES vict_release(release_version),
+        actor_id TEXT NOT NULL,
+        at TEXT NOT NULL,
+        reason TEXT NOT NULL CHECK (reason IN ('select', 'rollback')),
+        PRIMARY KEY (application_id, selection_revision)
+      );`,
+      `CREATE TABLE vict_audit_event (
+        audit_id TEXT PRIMARY KEY,
+        at TEXT NOT NULL,
+        actor_id TEXT NOT NULL,
+        action TEXT NOT NULL,
+        subject_type TEXT NOT NULL,
+        subject_id TEXT NOT NULL,
+        summary TEXT NOT NULL
+      );`,
+      `CREATE INDEX idx_vict_audit_subject ON vict_audit_event (subject_type, subject_id);`,
+      `CREATE TABLE vict_agent_turn (
+        turn_id TEXT PRIMARY KEY,
+        stream_id TEXT NOT NULL,
+        thread_id TEXT NOT NULL,
+        actor_id TEXT NOT NULL,
+        agent_profile_version TEXT NOT NULL,
+        activation_version TEXT,
+        application_release_version TEXT,
+        input_summary TEXT NOT NULL,
+        status TEXT NOT NULL CHECK (status IN ('intent', 'running', 'awaiting-approval', 'completed', 'failed', 'cancelled', 'blocked')),
+        created_at TEXT NOT NULL,
+        updated_at TEXT NOT NULL,
+        terminal_at TEXT,
+        error_code TEXT,
+        trace_id TEXT,
+        vict_run_id TEXT,
+        mastra_run_id TEXT
+      );`,
+      `CREATE INDEX idx_vict_agent_turn_status ON vict_agent_turn (status);`,
+      `CREATE TABLE vict_agent_turn_cancel (
+        turn_id TEXT NOT NULL REFERENCES vict_agent_turn(turn_id),
+        cancel_id TEXT NOT NULL,
+        actor_id TEXT NOT NULL,
+        reason_code TEXT NOT NULL,
+        at TEXT NOT NULL,
+        PRIMARY KEY (turn_id, cancel_id)
+      );`,
+      `CREATE TABLE vict_agent_tool_invocation (
+        invocation_id TEXT PRIMARY KEY,
+        turn_id TEXT NOT NULL REFERENCES vict_agent_turn(turn_id),
+        tool_call_id TEXT NOT NULL,
+        tool_name TEXT NOT NULL,
+        capability_id TEXT NOT NULL,
+        capability_revision TEXT NOT NULL,
+        effect TEXT NOT NULL CHECK (effect IN ('pure', 'read', 'write', 'irreversible')),
+        idempotency_key TEXT NOT NULL UNIQUE,
+        actor_id TEXT NOT NULL,
+        arg_digest TEXT NOT NULL,
+        argument_summary TEXT NOT NULL,
+        status TEXT NOT NULL CHECK (status IN ('intent', 'approved', 'running', 'completed', 'failed', 'declined', 'cancelled')),
+        created_at TEXT NOT NULL,
+        updated_at TEXT NOT NULL,
+        completed_at TEXT,
+        result_summary TEXT,
+        error_code TEXT
+      );`,
+      `CREATE INDEX idx_vict_invocation_turn ON vict_agent_tool_invocation (turn_id);`,
+      `CREATE TABLE vict_agent_approval (
+        approval_id TEXT PRIMARY KEY,
+        kind TEXT NOT NULL CHECK (kind = 'tool-invocation'),
+        turn_id TEXT NOT NULL REFERENCES vict_agent_turn(turn_id),
+        invocation_id TEXT NOT NULL UNIQUE,
+        tool_call_id TEXT NOT NULL,
+        tool_name TEXT NOT NULL,
+        capability_id TEXT NOT NULL,
+        capability_revision TEXT NOT NULL,
+        effect TEXT NOT NULL CHECK (effect IN ('pure', 'read', 'write', 'irreversible')),
+        actor_id TEXT NOT NULL,
+        agent_profile_version TEXT NOT NULL,
+        arg_digest TEXT NOT NULL,
+        environment TEXT NOT NULL,
+        required_approver_role TEXT NOT NULL,
+        status TEXT NOT NULL CHECK (status IN ('pending', 'approved', 'declined', 'expired')),
+        created_at TEXT NOT NULL,
+        expires_at TEXT NOT NULL,
+        decided_at TEXT,
+        approver_actor_id TEXT,
+        decision_reason TEXT
+      );`,
+      `CREATE INDEX idx_vict_approval_status ON vict_agent_approval (status);`,
+      `CREATE TABLE vict_agent_stream (
+        stream_id TEXT PRIMARY KEY,
+        last_seq INTEGER NOT NULL
+      );`,
+      `CREATE TABLE vict_agent_stream_event (
+        stream_id TEXT NOT NULL REFERENCES vict_agent_stream(stream_id),
+        seq INTEGER NOT NULL,
+        kind TEXT NOT NULL,
+        payload TEXT NOT NULL,
+        created_at TEXT NOT NULL,
+        PRIMARY KEY (stream_id, seq)
+      );`,
+    ],
+  },
 ];
 
 /** The highest schema version this adapter understands. */

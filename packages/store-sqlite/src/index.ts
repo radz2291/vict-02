@@ -12,3 +12,8 @@ export {
   SCHEMA_MIGRATIONS,
 } from './migrations.js';
 export type { Migration } from './migrations.js';
+export { createSqliteAgentControlStores } from './agent-control-adapter.js';
+export type {
+  SqliteAgentControlOptions,
+  SqliteAgentControlStoreSet,
+} from './agent-control-adapter.js';

@@ -1,5 +1,5 @@
 import { DatabaseSync } from 'node:sqlite';
-import { VictStoreError } from '@vict/runtime';
+import { VictControlError, VictStoreError } from '@vict/runtime';
 
 /**
  * Thin, safe wrapper over the built-in `node:sqlite` driver.
@@ -75,7 +75,9 @@ export function safeRun<T>(operation: string, run: () => T): T {
   try {
     return run();
   } catch (cause) {
-    if (cause instanceof VictStoreError) {
+    // Stable, non-echoing VICT control errors pass through unchanged (the
+    // Stage 06B semantic codes are part of the public error surface).
+    if (cause instanceof VictStoreError || cause instanceof VictControlError) {
       throw cause;
     }
     const { code, message } = classify(cause);
