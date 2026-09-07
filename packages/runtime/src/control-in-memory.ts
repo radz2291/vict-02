@@ -102,6 +102,37 @@ export class InMemoryControlPlaneStore implements ControlPlaneStore {
     return structuredCloneControl(updated);
   }
 
+  async reviseChangeSetContent(
+    changesetId: string,
+    revise: (record: ChangeSetRecord) => ChangeSetRecord,
+  ): Promise<ChangeSetRecord> {
+    const entry = this.#changesets.get(changesetId);
+    if (entry === undefined) {
+      throw new VictControlError('VICT_CONTROL_CHANGESET_MISSING', 'The ChangeSet does not exist.');
+    }
+    const updated = revise(structuredCloneControl(entry.record));
+    if (updated.changesetId !== changesetId) {
+      throw new VictControlError(
+        'VICT_CONTROL_CHANGESET_IMMUTABLE_ID',
+        'A ChangeSet update may not change its changesetId.',
+      );
+    }
+    if (updated.contentHash === entry.record.contentHash) {
+      throw new VictControlError(
+        'VICT_CONTROL_REVISION_NOT_CHANGED',
+        'A content revision must change the immutable content identity.',
+      );
+    }
+    if (updated.validation !== undefined || updated.simulation !== undefined) {
+      throw new VictControlError(
+        'VICT_CONTROL_EVIDENCE_NOT_INVALIDATED',
+        'A content revision must reset validation and simulation evidence.',
+      );
+    }
+    entry.record = structuredCloneControl(updated);
+    return structuredCloneControl(updated);
+  }
+
   async recordChangeSetApproval(decision: ChangeSetApprovalDecision): Promise<void> {
     const key = `${decision.changesetId}\u0000${decision.approverActorId}`;
     const existing = this.#approvals.get(key);

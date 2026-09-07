@@ -187,8 +187,8 @@ export type {
 } from './agent-governance.js';
 
 // ---- Stage 06B: control plane and governed remote execution ----------------
+export { ACTOR_SCOPES, CHANGESET_BASE_NONE } from './control-types.js';
 export type {
-  ACTOR_SCOPES,
   ApplicationReleaseContent,
   ApplicationReleaseRecord,
   AuthenticatedActorContext,

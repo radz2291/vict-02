@@ -410,6 +410,70 @@ export function createSqliteAgentControlStores(
       );
     },
 
+    async reviseChangeSetContent(
+      changesetId: string,
+      revise: (record: ChangeSetRecord) => ChangeSetRecord,
+    ): Promise<ChangeSetRecord> {
+      return safeRun('control.reviseChangeSetContent', () =>
+        inTransaction(db, () => {
+          const row = db
+            .prepare('SELECT * FROM vict_changeset WHERE changeset_id = ?;')
+            .get(changesetId) as unknown as ChangeSetRow | undefined;
+          if (row === undefined) {
+            throw new VictControlError(
+              'VICT_CONTROL_CHANGESET_MISSING',
+              'The ChangeSet does not exist.',
+            );
+          }
+          const current = rowToChangeSet(row);
+          const updated = revise(current);
+          if (updated.changesetId !== changesetId) {
+            throw new VictControlError(
+              'VICT_CONTROL_CHANGESET_IMMUTABLE_ID',
+              'A ChangeSet update may not change its changesetId.',
+            );
+          }
+          if (updated.contentHash === current.contentHash) {
+            throw new VictControlError(
+              'VICT_CONTROL_REVISION_NOT_CHANGED',
+              'A content revision must change the immutable content identity.',
+            );
+          }
+          if (updated.validation !== undefined || updated.simulation !== undefined) {
+            throw new VictControlError(
+              'VICT_CONTROL_EVIDENCE_NOT_INVALIDATED',
+              'A content revision must reset validation and simulation evidence.',
+            );
+          }
+          if (updated.status !== 'draft' && updated.status !== 'approved') {
+            throw new VictControlError(
+              'VICT_CONTROL_CHANGESET_NOT_DRAFT',
+              'Only a draft or approved ChangeSet may be revised.',
+            );
+          }
+          db.prepare(
+            `UPDATE vict_changeset SET base_json = ?, operations_json = ?, rationale = ?, risk_class = ?,
+             required_approver_count = ?, expires_at = ?, validation_json = NULL, simulation_json = NULL,
+             content_hash = ?, status = ? WHERE changeset_id = ?;`,
+          ).run(
+            JSON.stringify(updated.base),
+            JSON.stringify(updated.operations),
+            updated.rationale,
+            updated.riskClass,
+            updated.requiredApproverCount,
+            toIso(updated.expiresAt),
+            updated.contentHash,
+            'draft',
+            changesetId,
+          );
+          const refreshed = db
+            .prepare('SELECT * FROM vict_changeset WHERE changeset_id = ?;')
+            .get(changesetId) as unknown as ChangeSetRow;
+          return rowToChangeSet(refreshed);
+        }),
+      );
+    },
+
     async recordChangeSetApproval(decision: ChangeSetApprovalDecision): Promise<void> {
       safeRun('control.recordChangeSetApproval', () =>
         inTransaction(db, () => {

@@ -1,0 +1,25 @@
+{
+  "name": "@vict/control",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Vict control plane: authenticated actor boundary, ChangeSet lifecycle with immutable content identity and approvals, activation and Application Release governance, agent-turn governance with durable approvals and cancellation, and audit events. Depends on the neutral runtime ports; transport-free.",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@vict/contracts": "0.1.0",
+    "@vict/runtime": "0.1.0"
+  }
+}

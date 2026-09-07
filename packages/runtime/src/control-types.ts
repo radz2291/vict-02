@@ -376,6 +376,9 @@ export interface ChangeSetRecord {
   readonly status: ChangeSetStatus;
 }
 
+/** The sentinel base version meaning 'no version is currently selected'. */
+export const CHANGESET_BASE_NONE = 'none';
+
 /** The expected base identity/version of a ChangeSet. */
 export interface ChangeSetBase {
   readonly kind: 'activation' | 'release';
@@ -415,7 +418,13 @@ export function validateChangeSetOperation(operation: unknown): ChangeSetOperati
       if (field === 'kind') {
         continue;
       }
-      assertControlId(candidate[field], `operation.${field}`);
+      const value = candidate[field];
+      if (typeof value !== 'string') {
+        // Non-string fields (e.g. release content) are validated by their
+        // dedicated closed-schema validator.
+        continue;
+      }
+      assertControlId(value, `operation.${field}`);
     }
   };
   switch (kind) {
@@ -587,6 +596,15 @@ export interface ControlPlaneStore {
   updateChangeSet(
     changesetId: string,
     update: (record: ChangeSetRecord) => ChangeSetRecord,
+  ): Promise<ChangeSetRecord>;
+  /**
+   * Revise a ChangeSet's CONTENT (draft/approved only): the update may
+   * derive a NEW immutable content identity; the implementation must reset
+   * validation/simulation evidence atomically with the new content.
+   */
+  reviseChangeSetContent(
+    changesetId: string,
+    revise: (record: ChangeSetRecord) => ChangeSetRecord,
   ): Promise<ChangeSetRecord>;
   recordChangeSetApproval(decision: ChangeSetApprovalDecision): Promise<void>;
   listChangeSetApprovals(changesetId: string): Promise<readonly ChangeSetApprovalDecision[]>;
