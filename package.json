@@ -14,7 +14,7 @@
   ],
   "scripts": {
     "bench": "tsx scripts/benchmark.ts",
-    "build": "npm run build -w @vict/contracts && npm run build -w @vict/sdk && npm run build -w @vict/kernel && npm run build -w @vict/runtime && npm run build -w @vict/store-sqlite && npm run build -w @vict/application && npm run build -w @vict/appdata-sqlite && npm run build -w @vict/renderer-svelte && npm run build -w @vict/scaffolder && npm run build -w @vict/mastra",
+    "build": "npm run build -w @vict/contracts && npm run build -w @vict/sdk && npm run build -w @vict/kernel && npm run build -w @vict/runtime && npm run build -w @vict/store-sqlite && npm run build -w @vict/control && npm run build -w @vict/application && npm run build -w @vict/appdata-sqlite && npm run build -w @vict/renderer-svelte && npm run build -w @vict/scaffolder && npm run build -w @vict/mastra",
     "example": "tsx examples/ara-proof/src/main.ts",
     "format": "prettier --write .",
     "format:check": "prettier --check .",

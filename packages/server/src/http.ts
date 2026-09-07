@@ -246,7 +246,24 @@ export function createVictHttpServer(options: VictHttpServerOptions): VictHttpSe
     const streamMatch = /^\/vict\/v1\/streams\/([A-Za-z0-9][A-Za-z0-9._:@-]{0,127})$/.exec(path);
     if (streamMatch !== null && req.method === 'GET') {
       const actor = await authenticate(req);
-      await handleSse(req, res, actor, streamMatch[1] as string, url);
+      try {
+        await handleSse(req, res, actor, streamMatch[1] as string, url);
+      } catch (error) {
+        // Headers may already be flushed: end the stream cleanly instead
+        // of leaving the socket half-open.
+        if (!res.writableEnded) {
+          try {
+            if (res.headersSent) {
+              res.end();
+            } else {
+              sendJson(res, 500, { ok: false, code: 'VICT_HTTP_INTERNAL' });
+            }
+          } catch {
+            res.destroy();
+          }
+        }
+        void error;
+      }
       return;
     }
 
