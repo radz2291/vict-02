@@ -1,5 +1,5 @@
 import { createTool } from '@mastra/core/tools';
-import { createHash } from 'node:crypto';
+import { createHash, randomUUID } from 'node:crypto';
 import { AsyncLocalStorage } from 'node:async_hooks';
 import { toCanonicalJson, VictControlError } from '@vict/runtime';
 import type {
@@ -74,11 +74,15 @@ export interface CapabilityToolFailure {
  * The structured TERMINAL REPLAY envelope: an invocation that is already
  * durably terminal NEVER passes through capability invocation again. The
  * replay returns the stable safe disposition of the existing record —
- * never a second effect, never a raw operational payload.
+ * never a second effect, never a raw operational payload. The
+ * `in_progress` disposition is the NON-terminal duplicate report: a
+ * caller whose invocation identity is claimed by a LIVE owner reports the
+ * observed attempt truthfully without mutating it.
  */
 export interface CapabilityToolReplay {
   readonly victCapabilityReplay: {
-    readonly disposition: 'completed' | 'failed' | 'declined' | 'cancelled' | 'outcome_unknown';
+    readonly disposition:
+      'completed' | 'failed' | 'declined' | 'cancelled' | 'outcome_unknown' | 'in_progress';
     /** The durable invocation the replay is bound to. */
     readonly invocationId: string;
     /** Safe bounded result summary (structural shape only), when the
@@ -133,19 +137,7 @@ export interface CapabilityBridgeDeps {
   readonly resolveCapability: CapabilityResolver;
   /** The capability invocation boundary (authority-gated). */
   readonly invoke: CapabilityInvoker;
-  /**
-   * Allocate (or re-read) the DURABLE turn-execution tool slot for one
-   * logical tool request — the stable tool-call identity source when the
-   * framework does not supply a valid `toolCallId` (allocated BEFORE the
-   * invocation, reused after restart; never time, process counters, or
-   * current row counts).
-   */
-  allocateTurnToolSlot?(input: {
-    turnId: string;
-    toolName: string;
-    argDigest: string;
-  }): Promise<{ readonly toolCallId: string }>;
-  /** Durable-before-invocation intent recording. */
+  /** Durable-before-invocation intent recording (idempotent by identity). */
   recordInvocationIntent(input: {
     turnId: string;
     toolCallId: string;
@@ -156,6 +148,55 @@ export interface CapabilityBridgeDeps {
     actorId: string;
     argDigest: string;
     argumentSummary: string;
+  }): Promise<AgentToolInvocationRecord>;
+  /**
+   * CLAIM the invocation attempt for ONE live owner (intent/approved →
+   * running, stamped with the attempt fence + generation). A second claim
+   * fails with `VICT_CONTROL_INVOCATION_OWNER_ACTIVE`: the caller is the
+   * duplicate of a live owner and never mutates the record.
+   */
+  claimInvocationRun(command: {
+    invocationId: string;
+    fenceToken: string;
+    ownerIdentity: string;
+    at: number;
+  }): Promise<AgentToolInvocationRecord>;
+  /**
+   * FENCED terminal settlement: accepted ONLY from `running` under the
+   * EXACT fence token (the current owner). Normal success is returned by
+   * the bridge ONLY after this exact durable `completed` transition is
+   * confirmed; a stale owner (fence mismatch) can never settle.
+   */
+  settleInvocationRun(command: {
+    invocationId: string;
+    fenceToken: string;
+    status: 'completed' | 'failed' | 'outcome_unknown';
+    at: number;
+    resultSummary?: string;
+    errorCode?: string;
+  }): Promise<AgentToolInvocationRecord>;
+  /**
+   * PRE-RUNNING terminal settlement (`failed`|`declined`|`cancelled`):
+   * exact-binding idempotent; a claimed (`running`) record is never
+   * touched.
+   */
+  settleInvocationPending(command: {
+    invocationId: string;
+    status: 'failed' | 'declined' | 'cancelled';
+    at: number;
+    errorCode?: string;
+  }): Promise<AgentToolInvocationRecord>;
+  /**
+   * Conservative reconciliation of an ABANDONED `running` attempt (its
+   * owner is provably lost): fences it to the terminal, NON-REPLAYABLE
+   * `outcome_unknown` without executing anything; accepted only on the
+   * exact observed running state + fence binding.
+   */
+  reconcileAbandonedRun(command: {
+    invocationId: string;
+    observedFenceToken: string;
+    reconciledFenceToken: string;
+    at: number;
   }): Promise<AgentToolInvocationRecord>;
   /** Durable pending approval creation + turn suspension (awaiting-approval). */
   requestApproval(input: {
@@ -342,6 +383,10 @@ export function bridgeCapabilityToolToMastra(
         toolCallId?: unknown;
         abortSignal?: unknown;
         requestContext?: { get?: (key: string) => unknown };
+        /** The pinned Mastra Tool wrapper organizes AGENT executions with
+         * the occurrence identity nested under `agent` (the top-level
+         * field remains the direct-call surface). */
+        agent?: { toolCallId?: unknown };
       },
     ): Promise<unknown> => {
       // ---- 0. Turn scope (authenticated actor + turn identity) -----------
@@ -378,16 +423,21 @@ export function bridgeCapabilityToolToMastra(
         } satisfies CapabilityToolFailure;
       }
       let toolCallId: string | undefined;
-      if (
-        typeof executionContext.toolCallId === 'string' &&
-        /^[A-Za-z0-9._:-]{1,128}$/.test(executionContext.toolCallId)
-      ) {
-        toolCallId = executionContext.toolCallId;
+      // The occurrence identity is the FRAMEWORK-SUPPLIED tool-call id: the
+      // pinned Mastra Tool wrapper carries it at the top level for direct
+      // calls and under `agent` for agent-loop executions. Both surfaces are
+      // read; anything malformed fails closed below.
+      const identitySurfaces = [executionContext.toolCallId, executionContext.agent?.toolCallId];
+      for (const candidate of identitySurfaces) {
+        if (typeof candidate === 'string' && /^[A-Za-z0-9._:-]{1,128}$/.test(candidate)) {
+          toolCallId = candidate;
+          break;
+        }
       }
       // NOTE: when the framework supplies no valid tool-call identity, the
-      // STABLE identity is resolved below from the DURABLE turn-execution
-      // slot (allocated before the invocation, reused after restart). Time,
-      // process counters, and current-row counts are never used.
+      // bridge fails CLOSED (VICT_CAPABILITY_TOOL_IDENTITY_REQUIRED) before
+      // any durable work — occurrence identity is never inferred from
+      // arguments, time, process counters, or row counts.
       // ---- 2. Authenticated actor + authority check ----------------------
       // The turn's authenticated actor is the only authority source; a
       // mismatch (hostile request context) fails closed.
@@ -414,37 +464,41 @@ export function bridgeCapabilityToolToMastra(
       }
       const effectiveInput =
         parsedInput !== undefined && parsedInput.ok ? parsedInput.value : inputData;
-      const argDigest = canonicalArgDigest(effectiveInput);
+      // The canonical digest and the safe summary are computed under a
+      // guard: hostile argument containers (throwing getters/traps) are
+      // rejected with ONE stable non-echoing failure — never a raw error.
+      let argDigest: string;
+      let argumentSummary: string;
+      try {
+        argDigest = canonicalArgDigest(effectiveInput);
+        argumentSummary = safeArgumentSummary(effectiveInput);
+      } catch {
+        return {
+          victCapabilityFailure: 'VICT_CAPABILITY_INPUT_CONTRACT_REJECTED',
+        } satisfies CapabilityToolFailure;
+      }
       if (toolCallId === undefined) {
-        // ---- R2: the durable turn-execution slot resolves the stable
-        // tool-call identity (allocated before the invocation, reused on
-        // retry/restart). If no durable slot allocation is available the
-        // bridge fails CLOSED — a drifting identity would break the
-        // exactly-once contract.
-        if (deps.allocateTurnToolSlot === undefined) {
-          return {
-            victCapabilityFailure: 'VICT_CAPABILITY_TOOL_IDENTITY_REQUIRED',
-          } satisfies CapabilityToolFailure;
-        }
-        toolCallId = (
-          await deps.allocateTurnToolSlot({
-            turnId: turn.turnId,
-            toolName: capabilityId,
-            argDigest,
-          })
-        ).toolCallId;
+        // ---- TOOL-CALL OCCURRENCE IDENTITY (fail closed) -----------------
+        // The framework-supplied `toolCallId` IS the occurrence identity.
+        // A call with no stable occurrence identity is refused BEFORE any
+        // durable intent, approval request, or capability invocation:
+        // occurrence identity is NEVER inferred from the arguments alone —
+        // a digest-only key cannot distinguish a retry from a second
+        // legitimate identical call, so inferring from arguments would
+        // alias distinct occurrences (and silently drop effects).
+        return {
+          victCapabilityFailure: 'VICT_CAPABILITY_TOOL_IDENTITY_REQUIRED',
+        } satisfies CapabilityToolFailure;
       }
       /**
        * ---- 4. Durable intent (durable BEFORE invocation; always) ---------
        * The intent is idempotent over the logical invocation identity: a
-       * retry/resume/restart with the same tool-call identity and digest
-       * resolves to the SAME durable invocation record (exactly-once).
-       * A record already in `outcome_unknown` (an effect whose terminal
-       * persistence failed, or an expired running attempt reconciled to a
-       * fenced state) is NEVER re-invoked: the fenced, non-replay failure
-       * is returned to the model instead.
+       * retry/resume/restart with the same tool-call occurrence identity
+       * and digest resolves to the SAME durable invocation record
+       * (exactly-once). The idempotent re-record is ALSO the truthful
+       * re-read primitive used after every arbitration conflict below.
        */
-      const invocation = await recordInvocationIntentIdempotent(deps, {
+      const intentInput = {
         turnId: turn.turnId,
         toolCallId,
         toolName: capabilityId,
@@ -453,276 +507,131 @@ export function bridgeCapabilityToolToMastra(
         effect,
         actorId: turn.actorId,
         argDigest,
-        argumentSummary: safeArgumentSummary(effectiveInput),
-      });
-      if (invocation.status !== 'intent' && invocation.status !== 'approved') {
-        // ---- TERMINAL REPLAY (R1): an invocation that is already durably
-        // terminal NEVER passes through capability invocation again. Each
-        // terminal state has an explicit, stable replay behavior:
-        if (invocation.status === 'running') {
-          // EXPIRED-RUNNING RECONCILIATION before any retry (fenced,
-          // non-replay): a re-entry on the SAME logical invocation identity
-          // while a previous attempt is (or was) in-flight means the earlier
-          // attempt's terminal state is unverifiable — the effect MAY have
-          // happened. The record is reconciled to the truthful fenced
-          // `outcome_unknown` state (never re-invoked, never replayed) and
-          // the model receives the structured recoverable failure. External
-          // adapters deduplicate through the propagated durable idempotency
-          // key; a later terminal result from the original attempt is fenced
-          // and cannot resurrect a normal completion.
-          await tryTransitionInvocation(
-            deps,
-            invocation.invocationId,
-            'outcome_unknown',
-            clock(),
-            undefined,
-            'VICT_CAPABILITY_FENCED_RUNNING_RETRY',
-          );
-          return {
-            victCapabilityFailure: 'VICT_CAPABILITY_OUTCOME_UNKNOWN',
-          } satisfies CapabilityToolFailure;
-        }
-        if (
-          invocation.status === 'failed' ||
-          invocation.status === 'declined' ||
-          invocation.status === 'cancelled' ||
-          invocation.status === 'outcome_unknown'
-        ) {
-          // STABLE SAFE DISPOSITION REPLAY: failed/declined/cancelled and
-          // fenced outcome-unknown records replay their stable safe
-          // disposition WITHOUT invoking the capability again.
-          const code: CapabilityToolFailureCode =
-            invocation.status === 'failed'
-              ? 'VICT_CAPABILITY_INVOCATION_FAILED'
-              : invocation.status === 'declined'
-                ? 'VICT_CAPABILITY_DECLINED'
-                : invocation.status === 'cancelled'
-                  ? 'VICT_CAPABILITY_CANCELLED'
-                  : 'VICT_CAPABILITY_OUTCOME_UNKNOWN';
-          return {
-            victCapabilityFailure: code,
-          } satisfies CapabilityToolFailure;
-        }
-        // `completed`: a completed retry returns a STABLE SAFE RESULT
-        // reconstructed from the durable terminal record — never a second
-        // effect, never the raw capability output (the durable record
-        // retains only the safe shape summary through the explicitly safe
-        // result-summary boundary).
-        return {
-          victCapabilityReplay: {
-            disposition: 'completed',
-            invocationId: invocation.invocationId,
-            ...(invocation.resultSummary !== undefined
-              ? { resultSummary: invocation.resultSummary }
-              : {}),
-          },
-        } satisfies CapabilityToolReplay;
-      }
-      // ---- 5. Effect and approval policy ---------------------------------
-      if (policy.requiresApproval) {
-        // Check for an ALREADY-valid approval (idempotent retries after
-        // restart/retry reuse the same logical invocation identity).
-        const existing = await deps.findExistingApproval?.(invocation.invocationId);
-        let approvalId = existing;
-        if (approvalId === undefined) {
-          const created = await deps.requestApproval({
-            invocation,
-            agentProfileVersion: turn.agentProfileVersion,
-            expiresAt: clock() + (deps.approvalExpiryMs ?? 900_000),
+        argumentSummary,
+      } as const;
+      const rereadInvocation = (): Promise<AgentToolInvocationRecord> =>
+        recordInvocationIntentIdempotent(deps, intentInput);
+      let current = await rereadInvocation();
+
+      /**
+       * ---- 5. Attempt-ownership dispatch (bounded arbitration) -----------
+       * Exactly ONE live owner exists per invocation attempt (the durable
+       * claim below is the single ownership gate):
+       *
+       * - `running`: this caller is a DUPLICATE. It NEVER mutates the
+       *   record: with a same-process live owner it AWAITS the owner's
+       *   settlement and replays the truthful terminal disposition (a
+       *   cancelled waiter receives the non-terminal `in_progress`
+       *   report); with no live owner in this process the attempt is
+       *   conservatively reconciled to the fenced, NON-REPLAYABLE
+       *   `outcome_unknown` (owner loss across a process life) without
+       *   executing anything.
+       * - terminal: the stable safe disposition replay (never a second
+       *   effect, never raw capability output).
+       * - `intent`/`approved`: this caller is the OWNER CANDIDATE — it
+       *   runs the approval policy (if any) and then CLAIMS the attempt;
+       *   exactly one claim wins per generation.
+       */
+      for (let round = 0; round < 6; round += 1) {
+        if (current.status === 'running') {
+          return resolveRunningDuplicate(deps, current, {
+            abortSignal: turn.abortSignal,
+            clock,
+            rereadInvocation,
           });
-          approvalId = created.approvalId;
-          // Durable `tool.awaiting_approval` milestone (safe identity fields
-          // only). The milestone is AWAITED so durable events stay ordered
-          // and exactly once relative to the approval record; a persistence
-          // failure here fails the tool closed BEFORE any effect exists.
-          if (deps.emitAwaitingApproval !== undefined) {
-            await deps.emitAwaitingApproval({
-              kind: 'tool.awaiting_approval',
-              streamId: turn.streamId,
-              turnId: turn.turnId,
-              threadId: readThreadId(),
-              actorId: turn.actorId,
-              agentProfileVersion: turn.agentProfileVersion,
-              seq: 0,
-              toolCallId,
-              toolName: capabilityId,
-              victInvocationId: invocation.invocationId,
-            } as unknown as AgentStreamEvent);
+        }
+        if (current.status !== 'intent' && current.status !== 'approved') {
+          // TERMINAL REPLAY: an invocation that is already durably terminal
+          // NEVER passes through capability invocation again.
+          return stableDispositionEnvelope(current);
+        }
+        // ---- OWNER CANDIDATE: pre-running (intent | approved) ------------
+        if (policy.requiresApproval) {
+          const gate = await runApprovalGate(deps, current, {
+            policy,
+            turn,
+            toolCallId,
+            capabilityId,
+            capabilityRevision,
+            argDigest,
+            effect,
+            clock,
+          });
+          if (gate.kind === 'return') {
+            return gate.envelope;
+          }
+          if (gate.kind === 'arbitrate') {
+            // A fenced/idempotent conflict while settling the approval
+            // outcome: re-read the truthful durable state and re-dispatch.
+            current = await rereadInvocation();
+            continue;
+          }
+          // Consumption winner: the durable pre-run state is `approved`.
+          try {
+            await deps.updateInvocationStatus({
+              invocationId: current.invocationId,
+              status: 'approved',
+              at: clock(),
+            });
+          } catch (error) {
+            if (
+              error instanceof VictControlError &&
+              (error.code === 'VICT_CONTROL_INVOCATION_TERMINAL' ||
+                error.code === 'VICT_CONTROL_INVOCATION_REGRESSION' ||
+                error.code === 'VICT_CONTROL_INVOCATION_OWNER_ACTIVE')
+            ) {
+              current = await rereadInvocation();
+              continue;
+            }
+            throw error;
           }
         }
-        // Wait for the durable decision (VICT approval record commits
-        // BEFORE any Mastra resume of the effect). Cancellation and expiry
-        // end the wait without invoking the capability.
-        const decision = await awaitApprovalDecision(deps, approvalId, {
-          clock,
-          pollIntervalMs: deps.pollIntervalMs ?? 25,
-          expiryAt: clock() + (deps.approvalExpiryMs ?? 900_000),
-          abortSignal: turn.abortSignal,
-        });
-        if (decision.status === 'declined') {
-          await transitionInvocation(
-            deps,
-            invocation.invocationId,
-            'declined',
-            clock(),
-            undefined,
-            'VICT_TOOL_DECLINED',
-          );
-          return {
-            victCapabilityFailure: 'VICT_CAPABILITY_DECLINED',
-          } satisfies CapabilityToolFailure;
-        }
-        if (decision.status === 'expired' || decision.status === 'timeout') {
-          await transitionInvocation(
-            deps,
-            invocation.invocationId,
-            'failed',
-            clock(),
-            undefined,
-            'VICT_APPROVAL_EXPIRED',
-          );
-          return {
-            victCapabilityFailure: 'VICT_CAPABILITY_AWAITING_APPROVAL_TIMED_OUT',
-          } satisfies CapabilityToolFailure;
-        }
-        if (decision.status === 'cancelled') {
-          await transitionInvocation(
-            deps,
-            invocation.invocationId,
-            'cancelled',
-            clock(),
-            undefined,
-            'VICT_TURN_CANCELLED',
-          );
-          return {
-            victCapabilityFailure: 'VICT_CAPABILITY_CANCELLED',
-          } satisfies CapabilityToolFailure;
-        }
-        // Exact-binding consumption: any wrong identity is denied.
-        const consumed = await deps.consumeApproval({
-          approvalId,
-          actorId: turn.actorId,
-          agentProfileVersion: turn.agentProfileVersion,
-          capabilityId,
-          capabilityRevision,
-          turnId: turn.turnId,
-          toolCallId,
-          invocationId: invocation.invocationId,
-          argDigest,
-          effect,
-          at: clock(),
-        });
-        if (!consumed.approved) {
-          await transitionInvocation(
-            deps,
-            invocation.invocationId,
-            'failed',
-            clock(),
-            undefined,
-            consumed.reasonCode,
-          );
-          return {
-            victCapabilityFailure: 'VICT_CAPABILITY_AUTHORITY_DENIED',
-          } satisfies CapabilityToolFailure;
-        }
-        await transitionInvocation(deps, invocation.invocationId, 'approved', clock());
-      }
-      // ---- 6. Capability invocation (durable intent already recorded) ----
-      await transitionInvocation(deps, invocation.invocationId, 'running', clock());
-      // The stable durable idempotency key is propagated into the capability
-      // invocation context so EXTERNAL adapters can deduplicate their own
-      // effects after retries and restarts (one logical effect per key).
-      let rawOutput: unknown;
-      try {
-        rawOutput = await deps.invoke(definition, effectiveInput, {
-          signal: turn.abortSignal,
-          victIdempotencyKey: invocation.idempotencyKey,
-          victInvocationId: invocation.invocationId,
-          victTurnId: turn.turnId,
-          victToolCallId: toolCallId,
-          victActorId: turn.actorId,
-        } as Partial<CapabilityContext>);
-      } catch {
-        // A capability that THREW may already have performed its effect
-        // (the throw could have happened after the effect): the truthful
-        // disposition is the fenced, NON-replayable `outcome_unknown` —
-        // never an ordinarily retriable `failed` invocation (R1).
-        await transitionInvocation(
-          deps,
-          invocation.invocationId,
-          'outcome_unknown',
-          clock(),
-          undefined,
-          'VICT_CAPABILITY_OUTCOME_UNKNOWN',
-        );
-        return {
-          victCapabilityFailure: 'VICT_CAPABILITY_OUTCOME_UNKNOWN',
-        } satisfies CapabilityToolFailure;
-      }
-      // ---- 7. Authoritative output-contract validation --------------------
-      if (outputContract !== undefined) {
+        // ---- 6. CLAIM the attempt (single ownership gate) ----------------
+        // The live-owner registration is established BEFORE the durable
+        // claim so a duplicate that observes `running` always finds the
+        // same-process owner (never a false "abandoned" inference).
+        const registration = registerLiveRun(current.invocationId);
         try {
-          const parsed = outputContract.parse(rawOutput);
-          if (!parsed.ok) {
-            // The capability RAN — the effect may exist even though the
-            // output violated its contract: the truthful disposition is
-            // the fenced, NON-replayable `outcome_unknown` (R1).
-            await transitionInvocation(
-              deps,
-              invocation.invocationId,
-              'outcome_unknown',
-              clock(),
-              undefined,
-              'VICT_CAPABILITY_OUTPUT_CONTRACT_REJECTED',
-            );
-            return {
-              victCapabilityFailure: 'VICT_CAPABILITY_OUTPUT_CONTRACT_REJECTED',
-            } satisfies CapabilityToolFailure;
+          let claimed: AgentToolInvocationRecord;
+          try {
+            claimed = await deps.claimInvocationRun({
+              invocationId: current.invocationId,
+              fenceToken: registration.fenceToken,
+              ownerIdentity: BRIDGE_OWNER_IDENTITY,
+              at: clock(),
+            });
+          } catch (error) {
+            if (
+              error instanceof VictControlError &&
+              (error.code === 'VICT_CONTROL_INVOCATION_OWNER_ACTIVE' ||
+                error.code === 'VICT_CONTROL_INVOCATION_TERMINAL' ||
+                error.code === 'VICT_CONTROL_INVOCATION_REGRESSION')
+            ) {
+              // Lost claim arbitration: re-read and re-dispatch truthfully.
+              current = await rereadInvocation();
+              continue;
+            }
+            throw error;
           }
-          rawOutput = parsed.value;
-        } catch {
-          await transitionInvocation(
-            deps,
-            invocation.invocationId,
-            'outcome_unknown',
-            clock(),
-            undefined,
-            'VICT_CAPABILITY_OUTPUT_CONTRACT_REJECTED',
-          );
-          return {
-            victCapabilityFailure: 'VICT_CAPABILITY_OUTPUT_CONTRACT_REJECTED',
-          } satisfies CapabilityToolFailure;
+          return await executeOwnedAttempt(deps, claimed, {
+            definition,
+            effectiveInput,
+            outputContract,
+            turn,
+            toolCallId,
+            idempotencyKey: current.idempotencyKey,
+            fenceToken: registration.fenceToken,
+            clock,
+          });
+        } finally {
+          registration.settle();
         }
       }
-      // ---- Terminal persistence: TRUTHFUL under failure ------------------
-      // The capability effect may already exist at this point. A store
-      // failure while recording the terminal state must NOT surface as a
-      // normal completion: the invocation enters the truthful durable
-      // `outcome_unknown` state and the model receives the structured
-      // recoverable failure instead of the capability output.
-      try {
-        await transitionInvocation(
-          deps,
-          invocation.invocationId,
-          'completed',
-          clock(),
-          safeArgumentSummary(rawOutput),
-        );
-      } catch {
-        await tryTransitionInvocation(
-          deps,
-          invocation.invocationId,
-          'outcome_unknown',
-          clock(),
-          undefined,
-          'VICT_CAPABILITY_OUTCOME_UNKNOWN',
-        );
-        return {
-          victCapabilityFailure: 'VICT_CAPABILITY_OUTCOME_UNKNOWN',
-        } satisfies CapabilityToolFailure;
-      }
-      // ---- 8. Sanitized result to Mastra ----------------------------------
-      return rawOutput;
+      // Arbitration never converged (impossible under the bounded state
+      // machine): fail closed with the stable non-replayable failure.
+      return {
+        victCapabilityFailure: 'VICT_CAPABILITY_OUTCOME_UNKNOWN',
+      } satisfies CapabilityToolFailure;
     },
   });
 }
@@ -825,84 +734,454 @@ async function awaitApprovalDecision(
 /**
  * Record the invocation intent with EXACTLY-ONCE semantics: a retry,
  * resume, or restart that reaches the same logical invocation identity
- * (idempotency key) resolves to the EXISTING durable record. Only a
- * recognized digest-collision is a real conflict; other store failures
- * propagate (fail closed) instead of being swallowed.
+ * (idempotency key) resolves to the EXISTING durable record. A recognized
+ * digest-collision — and every other store failure — propagates (fail
+ * closed); nothing is ever swallowed here.
  */
 async function recordInvocationIntentIdempotent(
   deps: CapabilityBridgeDeps,
   input: Parameters<CapabilityBridgeDeps['recordInvocationIntent']>[0],
 ): Promise<AgentToolInvocationRecord> {
-  try {
-    return await deps.recordInvocationIntent(input);
-  } catch (error) {
-    if (
-      error instanceof VictControlError &&
-      error.code === 'VICT_CONTROL_INVOCATION_KEY_COLLISION'
-    ) {
-      // The collision path can only mean a different digest under the same
-      // logical key — a hostile/changed retry that must fail closed.
-      throw error;
-    }
-    throw error;
-  }
+  return deps.recordInvocationIntent(input);
 }
 
 /**
- * Durable invocation transition with FENCED-RETRY recognition: only
- * explicitly recognized terminal-fenced/idempotent outcomes are safe to
- * treat as already-applied; ANY other store failure propagates (fail
- * closed) instead of being silently swallowed.
+ * Durable invocation transition with EXPLICIT conflict recognition (used
+ * ONLY for the observability `approved` step): recognized terminal-fenced /
+ * owner-active / regression conflicts are re-read + re-dispatched by the
+ * caller (never silently swallowed); ANY other store failure propagates
+ * (fail closed).
  */
-async function transitionInvocation(
-  deps: CapabilityBridgeDeps,
-  invocationId: string,
-  status:
-    'approved' | 'running' | 'completed' | 'failed' | 'declined' | 'cancelled' | 'outcome_unknown',
-  at: number,
-  resultSummary?: string,
-  errorCode?: string,
-): Promise<void> {
-  try {
-    await deps.updateInvocationStatus({
-      invocationId,
-      status,
-      at,
-      ...(resultSummary !== undefined ? { resultSummary } : {}),
-      ...(errorCode !== undefined ? { errorCode } : {}),
-    });
-  } catch (error) {
-    // Recognized idempotent/fenced outcomes ONLY: a late duplicate of a
-    // transition that is already durably recorded (terminal fencing) or a
-    // forward-only regression on an exactly-once retry is safe to ignore.
-    if (
-      error instanceof VictControlError &&
-      (error.code === 'VICT_CONTROL_INVOCATION_TERMINAL' ||
-        error.code === 'VICT_CONTROL_INVOCATION_REGRESSION')
-    ) {
-      return;
-    }
-    // Everything else is a REAL durable failure and must never be swallowed.
-    throw error;
+function isArbitrationConflict(error: unknown): error is VictControlError {
+  return (
+    error instanceof VictControlError &&
+    (error.code === 'VICT_CONTROL_INVOCATION_TERMINAL' ||
+      error.code === 'VICT_CONTROL_INVOCATION_REGRESSION' ||
+      error.code === 'VICT_CONTROL_INVOCATION_OWNER_ACTIVE')
+  );
+}
+
+// ---- Live-owner registry (single-process envelope) -------------------------
+
+/**
+ * The process-local registry of LIVE attempt owners, keyed by invocation
+ * id. Within the accepted single-process/local deployment envelope this is
+ * the authoritative liveness proof: a duplicate that observes a `running`
+ * record either finds the live owner here (and AWAITS it, never mutating
+ * its state) or — when no live owner exists in this process — treats the
+ * attempt as abandoned across a process life and reconciles it
+ * conservatively to the fenced, non-replayable `outcome_unknown`.
+ */
+interface LiveRunRegistration {
+  readonly fenceToken: string;
+  /** Resolves exactly once when the owning attempt settles. */
+  readonly settled: Promise<void>;
+}
+
+const liveRuns = new Map<string, LiveRunRegistration>();
+let fenceCounter = 0;
+
+/** Stable per-process owner identity (never a credential, never a payload). */
+const BRIDGE_OWNER_IDENTITY = `vict-tool-bridge:${process.pid}:${randomUUID()}`;
+
+function nextFenceToken(): string {
+  fenceCounter += 1;
+  return `fence-${process.pid}-${fenceCounter}-${randomUUID()}`;
+}
+
+/**
+ * Register THIS caller as the candidate owner of the invocation BEFORE the
+ * durable claim: a duplicate that observes the claimed `running` state can
+ * then always find the same-process owner (never a false "abandoned"
+ * inference for a live attempt).
+ */
+function registerLiveRun(invocationId: string): {
+  readonly fenceToken: string;
+  readonly settle: () => void;
+} {
+  // Concurrent candidates of ONE invocation SHARE the incumbent
+  // registration (created before the first claim): exactly one owner signal
+  // exists per invocation, so a duplicate always finds the live owner and
+  // an owner's signal is never overwritten by a losing candidate.
+  const existing = liveRuns.get(invocationId);
+  if (existing !== undefined) {
+    return { fenceToken: existing.fenceToken, settle: (): void => undefined };
+  }
+  let resolveSettled!: () => void;
+  const settled = new Promise<void>((resolve) => {
+    resolveSettled = resolve;
+  });
+  const fenceToken = nextFenceToken();
+  liveRuns.set(invocationId, { fenceToken, settled });
+  return {
+    fenceToken,
+    settle: (): void => {
+      const current = liveRuns.get(invocationId);
+      if (current !== undefined && current.fenceToken === fenceToken) {
+        liveRuns.delete(invocationId);
+      }
+      resolveSettled();
+    },
+  };
+}
+
+/**
+ * The stable envelope for an OBSERVED durable state (terminal replay or
+ * truthful in-progress report). Explicit replay/recovery dispositions only:
+ * a completed replay is the bounded, structural result SUMMARY — never the
+ * raw capability output, never a satisfiable new execution result.
+ */
+function stableDispositionEnvelope(
+  record: AgentToolInvocationRecord,
+): CapabilityToolFailure | CapabilityToolReplay {
+  switch (record.status) {
+    case 'completed':
+      return {
+        victCapabilityReplay: {
+          disposition: 'completed',
+          invocationId: record.invocationId,
+          ...(record.resultSummary !== undefined ? { resultSummary: record.resultSummary } : {}),
+        },
+      } satisfies CapabilityToolReplay;
+    case 'failed':
+      return {
+        victCapabilityFailure: 'VICT_CAPABILITY_INVOCATION_FAILED',
+      } satisfies CapabilityToolFailure;
+    case 'declined':
+      return {
+        victCapabilityFailure: 'VICT_CAPABILITY_DECLINED',
+      } satisfies CapabilityToolFailure;
+    case 'cancelled':
+      return {
+        victCapabilityFailure: 'VICT_CAPABILITY_CANCELLED',
+      } satisfies CapabilityToolFailure;
+    case 'outcome_unknown':
+      return {
+        victCapabilityFailure: 'VICT_CAPABILITY_OUTCOME_UNKNOWN',
+      } satisfies CapabilityToolFailure;
+    case 'running':
+      return {
+        victCapabilityReplay: {
+          disposition: 'in_progress',
+          invocationId: record.invocationId,
+        },
+      } satisfies CapabilityToolReplay;
+    default:
+      // Defensive: an unobservable state is reported truthfully ambiguous.
+      return {
+        victCapabilityFailure: 'VICT_CAPABILITY_OUTCOME_UNKNOWN',
+      } satisfies CapabilityToolFailure;
   }
 }
 
-/** Best-effort transition wrapper (boolean success; never throws). */
-async function tryTransitionInvocation(
+interface DuplicateContext {
+  readonly abortSignal: AbortSignal | undefined;
+  readonly clock: () => number;
+  readonly rereadInvocation: () => Promise<AgentToolInvocationRecord>;
+}
+
+/**
+ * Resolve a DUPLICATE observation of a claimed (`running`) attempt WITHOUT
+ * mutating it:
+ *
+ * - same-process live owner → await the owner's settlement (bounded by the
+ *   owner's own execution) and replay the truthful terminal disposition; a
+ *   cancelled waiter receives the non-terminal `in_progress` report;
+ * - no live owner in this process → the claim came from a previous process
+ *   life (or a lost registry): reconcile conservatively to the fenced,
+ *   NON-REPLAYABLE `outcome_unknown` without executing anything. The
+ *   reconciliation is exact-binding: accepted only while the observed
+ *   durable state is exactly the running attempt under the observed fence.
+ */
+async function resolveRunningDuplicate(
   deps: CapabilityBridgeDeps,
-  invocationId: string,
-  status:
-    'approved' | 'running' | 'completed' | 'failed' | 'declined' | 'cancelled' | 'outcome_unknown',
-  at: number,
-  resultSummary?: string,
-  errorCode?: string,
-): Promise<boolean> {
-  try {
-    await transitionInvocation(deps, invocationId, status, at, resultSummary, errorCode);
-    return true;
-  } catch {
-    return false;
+  record: AgentToolInvocationRecord,
+  context: DuplicateContext,
+): Promise<CapabilityToolFailure | CapabilityToolReplay> {
+  const live = liveRuns.get(record.invocationId);
+  if (live !== undefined) {
+    if (context.abortSignal !== undefined) {
+      // A cancelled waiter must not wait forever: race the owner's
+      // settlement against the abort signal (the re-read below still
+      // reports the truthful state whatever the race outcome was).
+      const abortWaiter = new Promise<void>((resolve) => {
+        const signal = context.abortSignal as AbortSignal;
+        if (signal.aborted) {
+          resolve();
+          return;
+        }
+        signal.addEventListener('abort', () => resolve(), { once: true });
+      });
+      await Promise.race([live.settled, abortWaiter]);
+    } else {
+      // No abort surface: await the owner's settlement (bounded by the
+      // owner's own execution).
+      await live.settled;
+    }
+    const after = await context.rereadInvocation();
+    return stableDispositionEnvelope(after);
   }
+  // No live owner in THIS process: the attempt is treated as abandoned
+  // (owner loss across a process life). NEVER re-execute the effect and
+  // NEVER fabricate a completion.
+  try {
+    await deps.reconcileAbandonedRun({
+      invocationId: record.invocationId,
+      observedFenceToken: record.runFenceToken ?? '',
+      reconciledFenceToken: nextFenceToken(),
+      at: context.clock(),
+    });
+  } catch {
+    // Lost the reconciliation race (another duplicate reconciled first, or
+    // the state moved): report the re-read OBSERVED state truthfully.
+  }
+  const after = await context.rereadInvocation();
+  return stableDispositionEnvelope(after);
+}
+
+interface ApprovalGateContext {
+  readonly policy: BridgeCapabilityPolicy;
+  readonly turn: BridgeTurnContext;
+  readonly toolCallId: string;
+  readonly capabilityId: string;
+  readonly capabilityRevision: string;
+  readonly argDigest: string;
+  readonly effect: EffectClass;
+  readonly clock: () => number;
+}
+
+type ApprovalGateResult =
+  | { readonly kind: 'proceed' }
+  | { readonly kind: 'arbitrate' }
+  | { readonly kind: 'return'; readonly envelope: CapabilityToolFailure | CapabilityToolReplay };
+
+/**
+ * The approval gate for the OWNER CANDIDATE (pre-running). All durable
+ * settlements go through the EXACT-BINDING pre-running settle command; a
+ * denied consumption mutates NOTHING (the winning consumer will claim the
+ * attempt; the denied caller is a duplicate, not an owner).
+ */
+async function runApprovalGate(
+  deps: CapabilityBridgeDeps,
+  invocation: AgentToolInvocationRecord,
+  context: ApprovalGateContext,
+): Promise<ApprovalGateResult> {
+  const { turn, clock } = context;
+  // Check for an ALREADY-valid approval (idempotent retries after
+  // restart/retry reuse the same logical invocation identity).
+  const existing = await deps.findExistingApproval?.(invocation.invocationId);
+  let approvalId = existing;
+  if (approvalId === undefined) {
+    const created = await deps.requestApproval({
+      invocation,
+      agentProfileVersion: turn.agentProfileVersion,
+      expiresAt: clock() + (deps.approvalExpiryMs ?? 900_000),
+    });
+    approvalId = created.approvalId;
+    // Durable `tool.awaiting_approval` milestone (safe identity fields
+    // only). The milestone is AWAITED so durable events stay ordered and
+    // exactly once relative to the approval record; a persistence failure
+    // here fails the tool closed BEFORE any effect exists.
+    if (deps.emitAwaitingApproval !== undefined) {
+      await deps.emitAwaitingApproval({
+        kind: 'tool.awaiting_approval',
+        streamId: turn.streamId,
+        turnId: turn.turnId,
+        threadId: readThreadId(),
+        actorId: turn.actorId,
+        agentProfileVersion: turn.agentProfileVersion,
+        seq: 0,
+        toolCallId: context.toolCallId,
+        toolName: context.capabilityId,
+        victInvocationId: invocation.invocationId,
+      } as unknown as AgentStreamEvent);
+    }
+  }
+  // Wait for the durable decision (VICT approval record commits BEFORE any
+  // Mastra resume of the effect). Cancellation and expiry end the wait
+  // without invoking the capability.
+  const decision = await awaitApprovalDecision(deps, approvalId, {
+    clock,
+    pollIntervalMs: deps.pollIntervalMs ?? 25,
+    expiryAt: clock() + (deps.approvalExpiryMs ?? 900_000),
+    abortSignal: turn.abortSignal,
+  });
+  const settlePending = async (
+    status: 'failed' | 'declined' | 'cancelled',
+    errorCode: string | undefined,
+  ): Promise<ApprovalGateResult> => {
+    try {
+      await deps.settleInvocationPending({
+        invocationId: invocation.invocationId,
+        status,
+        at: clock(),
+        ...(errorCode !== undefined ? { errorCode } : {}),
+      });
+    } catch (error) {
+      if (isArbitrationConflict(error)) {
+        // A claimed record (OWNER_ACTIVE) or a conflicting terminal state:
+        // the caller re-reads and re-dispatches truthfully.
+        return { kind: 'arbitrate' } as const;
+      }
+      throw error;
+    }
+    return { kind: 'arbitrate' } as const;
+  };
+  if (decision.status === 'declined') {
+    // The declined settlement either lands (exact-binding idempotent) or
+    // the durable state is owned elsewhere; either way the caller re-reads
+    // and replays the truthful durable disposition.
+    return settlePending('declined', 'VICT_TOOL_DECLINED');
+  }
+  if (decision.status === 'expired' || decision.status === 'timeout') {
+    return settlePending('failed', 'VICT_APPROVAL_EXPIRED');
+  }
+  if (decision.status === 'cancelled') {
+    return settlePending('cancelled', 'VICT_TURN_CANCELLED');
+  }
+  // Exact-binding consumption: any wrong identity is denied. The DENIED
+  // caller is not the owner — it mutates nothing and receives the stable
+  // denial (the winning consumer proceeds to claim the attempt).
+  const consumed = await deps.consumeApproval({
+    approvalId,
+    actorId: turn.actorId,
+    agentProfileVersion: turn.agentProfileVersion,
+    capabilityId: context.capabilityId,
+    capabilityRevision: context.capabilityRevision,
+    turnId: turn.turnId,
+    toolCallId: context.toolCallId,
+    invocationId: invocation.invocationId,
+    argDigest: context.argDigest,
+    effect: context.effect,
+    at: clock(),
+  });
+  if (!consumed.approved) {
+    return {
+      kind: 'return',
+      envelope: {
+        victCapabilityFailure: 'VICT_CAPABILITY_AUTHORITY_DENIED',
+      } satisfies CapabilityToolFailure,
+    } as const;
+  }
+  return { kind: 'proceed' } as const;
+}
+
+interface OwnedAttemptContext {
+  readonly definition: CapabilityDefinition<unknown, unknown>;
+  readonly effectiveInput: unknown;
+  readonly outputContract: { parse: (value: unknown) => unknown } | undefined;
+  readonly turn: BridgeTurnContext;
+  readonly toolCallId: string;
+  readonly idempotencyKey: string;
+  readonly fenceToken: string;
+  readonly clock: () => number;
+}
+
+/**
+ * Execute ONE owned attempt under its EXACT fence: capability invocation,
+ * authoritative output-contract validation, and the fenced terminal
+ * settlement.
+ *
+ * Normal success is returned ONLY after the exact durable `completed`
+ * transition is confirmed under this attempt's fence. A capability throw,
+ * an output-contract violation, or ANY completion-persistence failure is
+ * the truthful fenced, NON-replayable `outcome_unknown` — the model never
+ * receives a normal success (and never the raw output) for an invocation
+ * whose durable completion is unconfirmed.
+ */
+async function executeOwnedAttempt(
+  deps: CapabilityBridgeDeps,
+  claimed: AgentToolInvocationRecord,
+  context: OwnedAttemptContext,
+): Promise<unknown> {
+  const invocationId = claimed.invocationId;
+  const fenceToken = context.fenceToken;
+  const settleUnknown = async (
+    modelCode: CapabilityToolFailureCode,
+    errorCode: string,
+  ): Promise<CapabilityToolFailure> => {
+    try {
+      await deps.settleInvocationRun({
+        invocationId,
+        fenceToken,
+        status: 'outcome_unknown',
+        at: context.clock(),
+        errorCode,
+      });
+    } catch {
+      // Even the fenced fallback failed: the model still receives the
+      // truthful non-replayable failure — never the raw output.
+    }
+    return {
+      victCapabilityFailure: modelCode,
+    } satisfies CapabilityToolFailure;
+  };
+  // The stable durable idempotency key is propagated into the capability
+  // invocation context so EXTERNAL adapters can deduplicate their own
+  // effects after retries and restarts (one logical effect per key).
+  let rawOutput: unknown;
+  try {
+    rawOutput = await deps.invoke(context.definition, context.effectiveInput, {
+      signal: context.turn.abortSignal,
+      victIdempotencyKey: context.idempotencyKey,
+      victInvocationId: invocationId,
+      victTurnId: context.turn.turnId,
+      victToolCallId: context.toolCallId,
+      victActorId: context.turn.actorId,
+    } as Partial<CapabilityContext>);
+  } catch {
+    // A capability that THREW may already have performed its effect (the
+    // throw could have happened after the effect): the truthful disposition
+    // is the fenced, NON-replayable `outcome_unknown` — never an ordinarily
+    // retriable `failed` invocation.
+    return settleUnknown('VICT_CAPABILITY_OUTCOME_UNKNOWN', 'VICT_CAPABILITY_OUTCOME_UNKNOWN');
+  }
+  // ---- Authoritative output-contract validation ---------------------------
+  if (context.outputContract !== undefined) {
+    try {
+      const parsed = context.outputContract.parse(rawOutput) as {
+        ok: boolean;
+        value?: unknown;
+      };
+      if (!parsed.ok) {
+        // The capability RAN — the effect may exist even though the output
+        // violated its contract: the truthful disposition is the fenced,
+        // NON-replayable `outcome_unknown`.
+        return settleUnknown(
+          'VICT_CAPABILITY_OUTPUT_CONTRACT_REJECTED',
+          'VICT_CAPABILITY_OUTPUT_CONTRACT_REJECTED',
+        );
+      }
+      rawOutput = parsed.value;
+    } catch {
+      return settleUnknown(
+        'VICT_CAPABILITY_OUTPUT_CONTRACT_REJECTED',
+        'VICT_CAPABILITY_OUTPUT_CONTRACT_REJECTED',
+      );
+    }
+  }
+  // ---- FENCED completed settlement ---------------------------------------
+  let resultSummary: string;
+  try {
+    resultSummary = safeArgumentSummary(rawOutput);
+  } catch {
+    return settleUnknown('VICT_CAPABILITY_OUTCOME_UNKNOWN', 'VICT_CAPABILITY_OUTCOME_UNKNOWN');
+  }
+  try {
+    await deps.settleInvocationRun({
+      invocationId,
+      fenceToken,
+      status: 'completed',
+      at: context.clock(),
+      resultSummary,
+    });
+  } catch {
+    // Completion-persistence ambiguity: the exact durable `completed`
+    // transition was NOT confirmed — never return normal success.
+    return settleUnknown('VICT_CAPABILITY_OUTCOME_UNKNOWN', 'VICT_CAPABILITY_OUTCOME_UNKNOWN');
+  }
+  // ---- Sanitized result to Mastra (confirmed durable completion) ----------
+  return rawOutput;
 }
 
 /** The turn-scoped async context (set by the turn executor around the stream). */

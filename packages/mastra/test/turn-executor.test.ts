@@ -213,7 +213,10 @@ async function compose(script: OfflineScript): Promise<Composition> {
         turnServiceRef.current?.recordToolInvocationIntent(
           input,
         ) as Promise<AgentToolInvocationRecord>,
-      allocateTurnToolSlot: async (input) => stores.invocations.allocateTurnToolSlot(input),
+      claimInvocationRun: (command) => stores.invocations.claimInvocationRun(command),
+      settleInvocationRun: (command) => stores.invocations.settleInvocationRun(command),
+      settleInvocationPending: (command) => stores.invocations.settleInvocationPending(command),
+      reconcileAbandonedRun: (command) => stores.invocations.reconcileAbandonedRun(command),
       requestApproval: (input) =>
         turnServiceRef.current?.requestApproval(input) as Promise<AgentApprovalRecord>,
       consumeApproval: (binding) =>

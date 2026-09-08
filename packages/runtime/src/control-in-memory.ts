@@ -773,6 +773,177 @@ export class InMemoryAgentToolInvocationStore implements AgentToolInvocationStor
       .sort((a, b) => (a.invocationId < b.invocationId ? -1 : 1))
       .map((record) => structuredCloneControl(record));
   }
+
+  async claimInvocationRun(command: {
+    invocationId: string;
+    fenceToken: string;
+    ownerIdentity: string;
+    at: number;
+  }): Promise<AgentToolInvocationRecord> {
+    const record = this.#invocations.get(command.invocationId);
+    if (record === undefined) {
+      throw new VictControlError(
+        'VICT_CONTROL_INVOCATION_MISSING',
+        'The invocation does not exist.',
+      );
+    }
+    if (record.status === 'running') {
+      // Exactly one live owner: a second claim is the duplicate of the
+      // current owner and NEVER mutates the record.
+      throw new VictControlError(
+        'VICT_CONTROL_INVOCATION_OWNER_ACTIVE',
+        'The invocation attempt is already claimed by a live owner.',
+      );
+    }
+    if (record.status !== 'intent' && record.status !== 'approved') {
+      throw new VictControlError(
+        'VICT_CONTROL_INVOCATION_TERMINAL',
+        'The invocation is already terminal; no new attempt can be claimed.',
+      );
+    }
+    const updated: AgentToolInvocationRecord = {
+      ...record,
+      status: 'running',
+      updatedAt: command.at,
+      runFenceToken: command.fenceToken,
+      runFenceAt: command.at,
+      runOwnerIdentity: command.ownerIdentity,
+      runGeneration: (record.runGeneration ?? 0) + 1,
+    };
+    this.#invocations.set(command.invocationId, updated);
+    return structuredCloneControl(updated);
+  }
+
+  async settleInvocationRun(command: {
+    invocationId: string;
+    fenceToken: string;
+    status: 'completed' | 'failed' | 'outcome_unknown';
+    at: number;
+    resultSummary?: string;
+    errorCode?: string;
+  }): Promise<AgentToolInvocationRecord> {
+    const record = this.#invocations.get(command.invocationId);
+    if (record === undefined) {
+      throw new VictControlError(
+        'VICT_CONTROL_INVOCATION_MISSING',
+        'The invocation does not exist.',
+      );
+    }
+    // The EXACT attempt binding comes first: a stale owner (an earlier
+    // fence token, e.g. after reconciliation re-fenced the record) can
+    // never settle — not even idempotently — a later generation.
+    if ((record.runFenceToken ?? undefined) !== command.fenceToken) {
+      throw new VictControlError(
+        'VICT_CONTROL_INVOCATION_FENCE_MISMATCH',
+        'The settlement fence does not bind the current attempt owner.',
+      );
+    }
+    if (record.status === 'running') {
+      const updated: AgentToolInvocationRecord = {
+        ...record,
+        status: command.status,
+        updatedAt: command.at,
+        completedAt: command.at,
+        ...(command.resultSummary !== undefined ? { resultSummary: command.resultSummary } : {}),
+        ...(command.errorCode !== undefined ? { errorCode: command.errorCode } : {}),
+      };
+      this.#invocations.set(command.invocationId, updated);
+      return structuredCloneControl(updated);
+    }
+    // Terminal idempotency ONLY on the exact requested state and binding.
+    if (
+      record.status === command.status &&
+      record.errorCode === command.errorCode &&
+      record.resultSummary === command.resultSummary
+    ) {
+      return structuredCloneControl(record);
+    }
+    throw new VictControlError(
+      'VICT_CONTROL_INVOCATION_TERMINAL',
+      'The invocation is already terminal with a different settlement.',
+    );
+  }
+
+  async settleInvocationPending(command: {
+    invocationId: string;
+    status: 'failed' | 'declined' | 'cancelled';
+    at: number;
+    errorCode?: string;
+  }): Promise<AgentToolInvocationRecord> {
+    const record = this.#invocations.get(command.invocationId);
+    if (record === undefined) {
+      throw new VictControlError(
+        'VICT_CONTROL_INVOCATION_MISSING',
+        'The invocation does not exist.',
+      );
+    }
+    if (record.status === 'running') {
+      // A claimed (live-owned) attempt is never touched by a late
+      // pre-running settlement.
+      throw new VictControlError(
+        'VICT_CONTROL_INVOCATION_OWNER_ACTIVE',
+        'The invocation attempt is claimed by a live owner.',
+      );
+    }
+    if (record.status === 'intent' || record.status === 'approved') {
+      const updated: AgentToolInvocationRecord = {
+        ...record,
+        status: command.status,
+        updatedAt: command.at,
+        completedAt: command.at,
+        ...(command.errorCode !== undefined ? { errorCode: command.errorCode } : {}),
+      };
+      this.#invocations.set(command.invocationId, updated);
+      return structuredCloneControl(updated);
+    }
+    // Terminal idempotency ONLY on the exact requested state and binding.
+    if (record.status === command.status && record.errorCode === command.errorCode) {
+      return structuredCloneControl(record);
+    }
+    throw new VictControlError(
+      'VICT_CONTROL_INVOCATION_TERMINAL',
+      'The invocation is already terminal with a different disposition.',
+    );
+  }
+
+  async reconcileAbandonedRun(command: {
+    invocationId: string;
+    observedFenceToken: string;
+    reconciledFenceToken: string;
+    at: number;
+  }): Promise<AgentToolInvocationRecord> {
+    const record = this.#invocations.get(command.invocationId);
+    if (record === undefined) {
+      throw new VictControlError(
+        'VICT_CONTROL_INVOCATION_MISSING',
+        'The invocation does not exist.',
+      );
+    }
+    // Exact observed-state binding: only a genuinely running attempt under
+    // the exact observed fence is reconciled. Anything else is refused
+    // (idempotent truthfulness, never a state-changing guess).
+    if (
+      record.status !== 'running' ||
+      (record.runFenceToken ?? '') !== command.observedFenceToken
+    ) {
+      throw new VictControlError(
+        'VICT_CONTROL_INVOCATION_FENCE_MISMATCH',
+        'The observed durable state is not the abandoned attempt requested.',
+      );
+    }
+    const updated: AgentToolInvocationRecord = {
+      ...record,
+      status: 'outcome_unknown',
+      updatedAt: command.at,
+      completedAt: command.at,
+      errorCode: 'VICT_CONTROL_INVOCATION_RUN_RECONCILED',
+      runFenceToken: command.reconciledFenceToken,
+      runFenceAt: command.at,
+      runGeneration: (record.runGeneration ?? 0) + 1,
+    };
+    this.#invocations.set(command.invocationId, updated);
+    return structuredCloneControl(updated);
+  }
 }
 
 // ---- Approvals ---------------------------------------------------------------

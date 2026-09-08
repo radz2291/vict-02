@@ -329,10 +329,22 @@ async function fixture(): Promise<number> {
         turnServiceRef.current?.recordToolInvocationIntent(
           input,
         ) as Promise<AgentToolInvocationRecord>,
-      allocateTurnToolSlot: async (input) =>
+      claimInvocationRun: (command) =>
         controlStores !== undefined
-          ? controlStores.invocations.allocateTurnToolSlot(input)
-          : { toolCallId: 'slot-0-unavailable' },
+          ? controlStores.invocations.claimInvocationRun(command)
+          : Promise.reject(new Error('stores unavailable')),
+      settleInvocationRun: (command) =>
+        controlStores !== undefined
+          ? controlStores.invocations.settleInvocationRun(command)
+          : Promise.reject(new Error('stores unavailable')),
+      settleInvocationPending: (command) =>
+        controlStores !== undefined
+          ? controlStores.invocations.settleInvocationPending(command)
+          : Promise.reject(new Error('stores unavailable')),
+      reconcileAbandonedRun: (command) =>
+        controlStores !== undefined
+          ? controlStores.invocations.reconcileAbandonedRun(command)
+          : Promise.reject(new Error('stores unavailable')),
       requestApproval: (input) =>
         turnServiceRef.current?.requestApproval(input) as Promise<AgentApprovalRecord>,
       consumeApproval: (binding) =>

@@ -160,7 +160,10 @@ async function makeFixture(
       return gatedInvoke(input, context as never) as Promise<unknown>;
     },
     recordInvocationIntent: (input) => turnService.recordToolInvocationIntent(input),
-    allocateTurnToolSlot: async (input) => await stores.invocations.allocateTurnToolSlot(input),
+    claimInvocationRun: (command) => stores.invocations.claimInvocationRun(command),
+    settleInvocationRun: (command) => stores.invocations.settleInvocationRun(command),
+    settleInvocationPending: (command) => stores.invocations.settleInvocationPending(command),
+    reconcileAbandonedRun: (command) => stores.invocations.reconcileAbandonedRun(command),
     requestApproval: (input) => turnService.requestApproval(input),
     consumeApproval: (binding) => turnService.consumeApproval(binding),
     updateInvocationStatus: (command) => stores.invocations.updateInvocationStatus(command),
@@ -287,8 +290,10 @@ describe('governed capability tool bridge', () => {
     expect(invocations[0]?.status).toBe('completed');
     // The result summary is framework metadata only: shape, never values/keys.
     expect(invocations[0]?.resultSummary).toMatch(/^object\(\d+ fields\)$/);
-    // No full payloads in the durable record: safe bounded summaries only.
-    expect(JSON.stringify(invocations[0]).length).toBeLessThan(600);
+    // No full payloads in the durable record: safe bounded summaries and
+    // bounded identity/fence metadata only (the attempt fence adds ~200
+    // bounded chars; payload content would add far more).
+    expect(JSON.stringify(invocations[0]).length).toBeLessThan(900);
   });
 
   it('authoritative input-contract rejection never invokes the implementation', async () => {

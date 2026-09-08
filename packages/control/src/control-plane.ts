@@ -23,6 +23,8 @@ import {
 } from '@vict/runtime';
 import {
   authenticatedActorContext,
+  captureClosedControlArray,
+  captureClosedControlRecord,
   CHANGESET_BASE_NONE,
   CHANGESET_SCHEMA,
   VictControlError,
@@ -119,7 +121,14 @@ export function resolveActorContext(
   })();
 }
 
-/** One ChangeSet proposal input (validated; content hash derived). */
+/** One ChangeSet proposal input (validated; content hash derived).
+ *
+ * SAFETY: the COMPLETE untrusted input object is captured through guarded
+ * descriptors before any member is read (exact closed field set; accessors,
+ * symbols, and hostile/revoked containers are rejected with ONE stable
+ * non-echoing error) — a direct package caller can never invoke a getter on
+ * this boundary either.
+ */
 export interface ProposeChangeSetInput {
   readonly changesetId: string;
   readonly base: ChangeSetRecord['base'];
@@ -129,6 +138,27 @@ export interface ProposeChangeSetInput {
   readonly requiredApproverCount: number;
   readonly expiresAt: number;
 }
+
+/** The exact closed field set of the direct propose entry point. */
+const PROPOSE_INPUT_FIELDS: readonly string[] = [
+  'changesetId',
+  'base',
+  'operations',
+  'rationale',
+  'riskClass',
+  'requiredApproverCount',
+  'expiresAt',
+];
+
+/** The exact closed field set of the direct revise entry point. */
+const REVISE_INPUT_FIELDS: readonly string[] = [
+  'changesetId',
+  'operations',
+  'rationale',
+  'riskClass',
+  'requiredApproverCount',
+  'expiresAt',
+];
 
 export class ControlPlaneService {
   readonly #stores: AgentControlStores;
@@ -159,19 +189,35 @@ export class ControlPlaneService {
     input: ProposeChangeSetInput,
   ): Promise<ChangeSetRecord> {
     this.#assertScope(actor, 'changeset.propose');
+    // The DIRECT package entry point captures the complete untrusted input
+    // BEFORE reading any member: hostile getters on ANY outer field never
+    // run, and no raw exception can cross this boundary.
+    const captured = captureClosedControlRecord(
+      input,
+      'ChangeSet proposal',
+      PROPOSE_INPUT_FIELDS,
+    ) as {
+      changesetId: unknown;
+      base: unknown;
+      operations: unknown;
+      rationale: unknown;
+      riskClass: unknown;
+      requiredApproverCount: unknown;
+      expiresAt: unknown;
+    };
     const validated = validateChangeSetContent({
-      changesetId: input.changesetId,
+      changesetId: captured.changesetId,
       authorActorId: actor.actorId,
       createdAt: this.#clock(),
-      base: input.base,
-      operations: input.operations,
-      rationale: input.rationale,
-      riskClass: input.riskClass,
-      requiredApproverCount: input.requiredApproverCount,
-      expiresAt: input.expiresAt,
+      base: captured.base,
+      operations: captureClosedControlArray(captured.operations, 'ChangeSet operation list', 64),
+      rationale: captured.rationale,
+      riskClass: captured.riskClass,
+      requiredApproverCount: captured.requiredApproverCount,
+      expiresAt: captured.expiresAt,
     });
     const record: ChangeSetRecord = {
-      changesetId: input.changesetId,
+      changesetId: validated.changesetId,
       schema: CHANGESET_SCHEMA,
       authorActorId: actor.actorId,
       createdAt: this.#clock(),
@@ -214,55 +260,75 @@ export class ControlPlaneService {
     },
   ): Promise<ChangeSetRecord> {
     this.#assertScope(actor, 'changeset.revise');
-    const updated = await this.#stores.control.reviseChangeSetContent(
-      input.changesetId,
-      (record) => {
-        if (record.status !== 'draft' && record.status !== 'approved') {
-          throw new VictControlError(
-            'VICT_CONTROL_CHANGESET_NOT_DRAFT',
-            'Only a draft or approved ChangeSet may be revised.',
-          );
-        }
-        if (record.authorActorId !== actor.actorId) {
-          throw new VictControlError(
-            'VICT_CONTROL_CHANGESET_AUTHOR_MISMATCH',
-            'Only the author actor may revise a draft ChangeSet.',
-          );
-        }
-        const validated = validateChangeSetContent({
-          changesetId: record.changesetId,
-          authorActorId: record.authorActorId,
-          createdAt: record.createdAt,
-          base: record.base,
-          operations: input.operations,
-          rationale: input.rationale,
-          riskClass: input.riskClass,
-          requiredApproverCount: input.requiredApproverCount,
-          expiresAt: input.expiresAt,
-        });
-        // Changing content invalidates earlier evidence and approvals: the
-        // new record carries NO evidence and approvals for the OLD content
-        // hash can never satisfy the new one.
-        return {
-          ...record,
-          base: validated.base,
-          operations: validated.operations,
-          rationale: validated.rationale,
-          riskClass: validated.riskClass,
-          requiredApproverCount: validated.requiredApproverCount,
-          expiresAt: validated.expiresAt,
-          validation: undefined,
-          simulation: undefined,
-          contentHash: validated.contentHash,
-          status: 'draft',
-        };
-      },
+    // Same direct-boundary capture discipline as `propose`: the untrusted
+    // input is captured before any member is read.
+    const captured = captureClosedControlRecord(
+      input,
+      'ChangeSet revision',
+      REVISE_INPUT_FIELDS,
+    ) as {
+      changesetId: unknown;
+      operations: unknown;
+      rationale: unknown;
+      riskClass: unknown;
+      requiredApproverCount: unknown;
+      expiresAt: unknown;
+    };
+    const capturedOperations = captureClosedControlArray(
+      captured.operations,
+      'ChangeSet operation list',
+      64,
     );
+    if (typeof captured.changesetId !== 'string') {
+      throw new VictControlError('VICT_CONTROL_FIELD_INVALID', 'the ChangeSet id is malformed.');
+    }
+    const changesetId: string = captured.changesetId;
+    const updated = await this.#stores.control.reviseChangeSetContent(changesetId, (record) => {
+      if (record.status !== 'draft' && record.status !== 'approved') {
+        throw new VictControlError(
+          'VICT_CONTROL_CHANGESET_NOT_DRAFT',
+          'Only a draft or approved ChangeSet may be revised.',
+        );
+      }
+      if (record.authorActorId !== actor.actorId) {
+        throw new VictControlError(
+          'VICT_CONTROL_CHANGESET_AUTHOR_MISMATCH',
+          'Only the author actor may revise a draft ChangeSet.',
+        );
+      }
+      const validated = validateChangeSetContent({
+        changesetId: record.changesetId,
+        authorActorId: record.authorActorId,
+        createdAt: record.createdAt,
+        base: record.base,
+        operations: capturedOperations,
+        rationale: captured.rationale,
+        riskClass: captured.riskClass,
+        requiredApproverCount: captured.requiredApproverCount,
+        expiresAt: captured.expiresAt,
+      });
+      // Changing content invalidates earlier evidence and approvals: the
+      // new record carries NO evidence and approvals for the OLD content
+      // hash can never satisfy the new one.
+      return {
+        ...record,
+        base: validated.base,
+        operations: validated.operations,
+        rationale: validated.rationale,
+        riskClass: validated.riskClass,
+        requiredApproverCount: validated.requiredApproverCount,
+        expiresAt: validated.expiresAt,
+        validation: undefined,
+        simulation: undefined,
+        contentHash: validated.contentHash,
+        status: 'draft',
+      };
+    });
     await this.#audit(
       actor.actorId,
       'changeset.revised',
       'changeset',
-      input.changesetId,
+      changesetId,
       'content revised',
     );
     return updated;

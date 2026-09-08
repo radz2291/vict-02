@@ -103,7 +103,11 @@ function makeChangeSetRecord(
   overrides: Record<string, unknown> = {},
   contentOverrides: Record<string, unknown> = {},
 ): ChangeSetRecord {
-  const content = changesetContentFixture(contentOverrides);
+  const content = changesetContentFixture(contentOverrides) as {
+    changesetId: string;
+    authorActorId: string;
+    createdAt: number;
+  };
   const validated = validateChangeSetContent(content);
   return {
     changesetId: content.changesetId,
@@ -1044,6 +1048,108 @@ export function runAgentControlConformanceSuite(
             errorCode: 'LATE',
           }),
         ).rejects.toThrow(/terminal|fenced/i);
+      } finally {
+        await stores.dispose();
+      }
+    },
+  );
+
+  t(
+    `[${factory.name}] invocation attempt fences: one live owner, exact settlement binding, stale owners refused, conservative reconciliation`,
+    async () => {
+      const stores = await factory.create();
+      try {
+        await stores.turns.createTurnIntent(makeTurnFixture('turn-cf-fence'));
+        const invocation = makeInvocationFixture('inv-cf-fence', 'turn-cf-fence');
+        await stores.invocations.recordInvocationIntent(invocation);
+        // Generation 1 owner claims (intent → running, stamped with the
+        // attempt fence).
+        const claimed = await stores.invocations.claimInvocationRun({
+          invocationId: 'inv-cf-fence',
+          fenceToken: 'fence-cf-1',
+          ownerIdentity: 'owner-A',
+          at: 1200,
+        });
+        expect(claimed.status).toBe('running');
+        expect(claimed.runGeneration).toBe(1);
+        expect(claimed.runFenceToken).toBe('fence-cf-1');
+        // A SECOND claim on the live attempt is refused (duplicate) and the
+        // record stays untouched.
+        await expect(
+          stores.invocations.claimInvocationRun({
+            invocationId: 'inv-cf-fence',
+            fenceToken: 'fence-cf-2-claim',
+            ownerIdentity: 'owner-B',
+            at: 1210,
+          }),
+        ).rejects.toThrow(/live owner/);
+        // A settlement under a STALE fence is refused.
+        await expect(
+          stores.invocations.settleInvocationRun({
+            invocationId: 'inv-cf-fence',
+            fenceToken: 'fence-cf-stale',
+            status: 'completed',
+            at: 1220,
+            resultSummary: 'stale',
+          }),
+        ).rejects.toThrow(/fence/i);
+        // Reconciliation is EXACT-BINDING: the wrong observed fence fails.
+        await expect(
+          stores.invocations.reconcileAbandonedRun({
+            invocationId: 'inv-cf-fence',
+            observedFenceToken: 'fence-cf-wrong',
+            reconciledFenceToken: 'fence-cf-rec',
+            at: 1230,
+          }),
+        ).rejects.toThrow(/abandoned attempt/i);
+        // The exact observed binding fences the abandoned attempt to the
+        // NON-REPLAYABLE outcome_unknown and advances the generation.
+        const reconciled = await stores.invocations.reconcileAbandonedRun({
+          invocationId: 'inv-cf-fence',
+          observedFenceToken: 'fence-cf-1',
+          reconciledFenceToken: 'fence-cf-rec',
+          at: 1240,
+        });
+        expect(reconciled.status).toBe('outcome_unknown');
+        expect(reconciled.runGeneration).toBe(2);
+        // The STALE owner (generation 1) can never settle the later
+        // generation — not even idempotently.
+        await expect(
+          stores.invocations.settleInvocationRun({
+            invocationId: 'inv-cf-fence',
+            fenceToken: 'fence-cf-1',
+            status: 'outcome_unknown',
+            at: 1250,
+          }),
+        ).rejects.toThrow(/fence/i);
+        // A SECOND reconciliation is refused: the observed binding moved.
+        await expect(
+          stores.invocations.reconcileAbandonedRun({
+            invocationId: 'inv-cf-fence',
+            observedFenceToken: 'fence-cf-1',
+            reconciledFenceToken: 'fence-cf-rec-2',
+            at: 1260,
+          }),
+        ).rejects.toThrow(/abandoned attempt/i);
+        // The current fence settles with the exact binding.
+        const settled = await stores.invocations.settleInvocationRun({
+          invocationId: 'inv-cf-fence',
+          fenceToken: 'fence-cf-rec',
+          status: 'outcome_unknown',
+          at: 1270,
+          errorCode: 'VICT_CONTROL_INVOCATION_RUN_RECONCILED',
+        });
+        expect(settled.status).toBe('outcome_unknown');
+        // A DIFFERENT terminal settlement under the same fence conflicts.
+        await expect(
+          stores.invocations.settleInvocationRun({
+            invocationId: 'inv-cf-fence',
+            fenceToken: 'fence-cf-rec',
+            status: 'failed',
+            at: 1280,
+            errorCode: 'CONFLICTING',
+          }),
+        ).rejects.toThrow(/terminal/i);
       } finally {
         await stores.dispose();
       }

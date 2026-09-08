@@ -250,6 +250,16 @@ runVitestSuites('Stage 06B final reliability suites (R1-R6, activation CAS, clos
   'packages/server/test/command-reliability.test.ts',
 ]);
 
+runVitestSuites(
+  'Stage 06B final boundary correction suites (capture boundary, live-owner fencing, occurrence identity, real-process recovery)',
+  [
+    'packages/runtime/test/changeset-capture-boundary.test.ts',
+    'packages/mastra/test/tool-bridge-ownership.test.ts',
+    'packages/mastra/test/occurrence-identity-pipeline.test.ts',
+    'packages/store-sqlite/test/invocation-fencing.test.ts',
+  ],
+);
+
 runVitestSuites('public-API authorization matrix (real HTTP)', [
   'packages/server/test/authorization-matrix.test.ts',
 ]);

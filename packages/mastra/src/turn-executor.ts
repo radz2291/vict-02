@@ -56,12 +56,16 @@ export function composeMastraTurnExecutor(deps: MastraTurnExecutorDeps): MastraT
 
   const capabilityTools = buildCapabilityTools(deps.activation, {
     ...deps.capabilityBridge,
-    // Durable turn-execution tool slot: the stable tool-call identity
-    // source when the framework supplies no valid toolCallId (allocated
-    // BEFORE the invocation and reused after restart — never row counts,
-    // clocks, or process counters).
-    allocateTurnToolSlot: async (input: { turnId: string; toolName: string; argDigest: string }) =>
-      deps.stores.invocations.allocateTurnToolSlot(input),
+    // Live-owner attempt fencing (single-process envelope): the durable
+    // claim is the single ownership gate; settlements are EXACT-BINDING on
+    // the attempt fence, and an abandoned running attempt is reconciled
+    // conservatively to the fenced, non-replayable outcome_unknown.
+    claimInvocationRun: async (command) => deps.stores.invocations.claimInvocationRun(command),
+    settleInvocationRun: async (command) => deps.stores.invocations.settleInvocationRun(command),
+    settleInvocationPending: async (command) =>
+      deps.stores.invocations.settleInvocationPending(command),
+    reconcileAbandonedRun: async (command) =>
+      deps.stores.invocations.reconcileAbandonedRun(command),
     // The durable awaiting-approval milestone is AWAITED: it is part of the
     // governed durable ordering and never fire-and-forget. A persistence
     // failure fails the tool closed BEFORE any effect exists (the approval

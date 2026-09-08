@@ -27,9 +27,11 @@ import {
  *   safe disposition without invoking;
  * - a capability that THREW (or whose output violated its contract) is
  *   fenced as outcome_unknown and never becomes ordinarily retriable;
- * - without a framework toolCallId, the durable turn-execution slot
- *   derives ONE identity across retries (and never drifts with the
- *   durable row count).
+ * - the framework-supplied toolCallId IS the occurrence identity: without
+ *   one the bridge fails closed (VICT_CAPABILITY_TOOL_IDENTITY_REQUIRED)
+ *   with zero durable/effectful work, and a retry of the SAME occurrence
+ *   identity reuses ONE identity and executes at most once. Occurrence
+ *   identity is never inferred from arguments alone.
  */
 
 function neutralContract(id: string, ok: (value: unknown) => boolean): Contract<unknown> {
@@ -135,10 +137,10 @@ async function makeFixture(capability: CapabilityDefinition = makeCapability()):
       return (resolved.invoke ?? definition.invoke)(input, {} as never) as unknown;
     },
     recordInvocationIntent: (input) => turnService.recordToolInvocationIntent(input),
-    allocateTurnToolSlot: async (input) => {
-      const allocation = await stores.invocations.allocateTurnToolSlot(input);
-      return { toolCallId: allocation.toolCallId };
-    },
+    claimInvocationRun: (command) => stores.invocations.claimInvocationRun(command),
+    settleInvocationRun: (command) => stores.invocations.settleInvocationRun(command),
+    settleInvocationPending: (command) => stores.invocations.settleInvocationPending(command),
+    reconcileAbandonedRun: (command) => stores.invocations.reconcileAbandonedRun(command),
     requestApproval: (input) => turnService.requestApproval(input),
     consumeApproval: (binding) => turnService.consumeApproval(binding),
     updateInvocationStatus: (command) => stores.invocations.updateInvocationStatus(command),
@@ -350,46 +352,51 @@ describe('R1: a terminal invocation never passes through capability invocation a
   });
 });
 
-describe('R2: one identity and one effect across retries without a framework toolCallId', () => {
-  it('two executions WITHOUT a valid toolCallId derive ONE stable slot identity', async () => {
+describe('R2: tool-call occurrence identity (fail closed without a framework id)', () => {
+  it('a call WITHOUT a valid framework toolCallId fails closed with ZERO durable/effectful work', async () => {
     const fixture = await makeFixture(
       makeCapability({ id: 'cap.notes.read', revision: '3', effect: 'read' }),
     );
     await seedTurn(fixture);
     const before = await fixture.stores.invocations.listInvocationsForTurn(SCOPE.turnId);
-    expect(before).toHaveLength(0); // zero rows: the old fallback derived t1
-    // NO toolCallId supplied AND no framework identity: the durable
-    // turn-execution slot resolves the stable identity.
+    expect(before).toHaveLength(0);
+    // NO valid toolCallId supplied: the bridge refuses BEFORE any durable
+    // intent, approval, or capability invocation — occurrence identity is
+    // NEVER inferred from the arguments alone (a digest-only key cannot
+    // distinguish a retry from a second legitimate identical call).
     const exec = toolExecutorFor(fixture, SCOPE, undefined, 'cap.notes.read');
-    const first = (await exec({ text: 'slot-probe' })) as Record<string, unknown>;
-    expect(first).toEqual({ saved: true, echo: { text: 'slot-probe' } });
+    const result = (await exec({ text: 'slot-probe' })) as Record<string, unknown>;
+    expect(result.victCapabilityFailure).toBe('VICT_CAPABILITY_TOOL_IDENTITY_REQUIRED');
+    expect(fixture.effectCount()).toBe(0);
+    expect(await fixture.stores.invocations.listInvocationsForTurn(SCOPE.turnId)).toHaveLength(0);
+    // Also refused for a malformed (non-identifier) toolCallId.
+    const hostile = toolExecutorFor(fixture, SCOPE, 'bad id with spaces', 'cap.notes.read');
+    const denied = (await hostile({ text: 'slot-probe' })) as Record<string, unknown>;
+    expect(denied.victCapabilityFailure).toBe('VICT_CAPABILITY_TOOL_IDENTITY_REQUIRED');
+    expect(fixture.effectCount()).toBe(0);
+    expect(await fixture.stores.invocations.listInvocationsForTurn(SCOPE.turnId)).toHaveLength(0);
+  });
+
+  it('a retry of the SAME occurrence identity reuses ONE identity and executes at most once', async () => {
+    const fixture = await makeFixture(
+      makeCapability({ id: 'cap.notes.read', revision: '3', effect: 'read' }),
+    );
+    await seedTurn(fixture);
+    const exec = toolExecutorFor(fixture, SCOPE, 'call-occurrence-1', 'cap.notes.read');
+    const first = (await exec({ text: 'occurrence-probe' })) as Record<string, unknown>;
+    expect(first).toEqual({ saved: true, echo: { text: 'occurrence-probe' } });
     const mid = await fixture.stores.invocations.listInvocationsForTurn(SCOPE.turnId);
     expect(mid).toHaveLength(1);
-    expect(mid[0]?.toolCallId).toMatch(/^slot-\d+-[0-9a-f]{12}$/);
-    // The second execution — AFTER an intent exists (the drift trigger for
-    // the old row-count fallback) — reuses the SAME identity: one record,
-    // one effect, replayed.
-    const second = (await exec({ text: 'slot-probe' })) as Record<string, unknown>;
+    expect(mid[0]?.toolCallId).toBe('call-occurrence-1');
+    // The retry of the SAME occurrence identity (same toolCallId + args)
+    // resolves to the SAME durable invocation: one record, one effect.
+    const second = (await exec({ text: 'occurrence-probe' })) as Record<string, unknown>;
     expect(second.victCapabilityReplay).toBeDefined();
     expect((second.victCapabilityReplay as Record<string, unknown>).invocationId).toBe(
       mid[0]?.invocationId,
     );
     const after = await fixture.stores.invocations.listInvocationsForTurn(SCOPE.turnId);
     expect(after).toHaveLength(1);
-    expect(after[0]?.toolCallId).toBe(mid[0]?.toolCallId);
     expect(fixture.effectCount()).toBe(1);
-  });
-
-  it('a retry with DIFFERENT canonical arguments allocates a DIFFERENT slot (no cross-request reuse)', async () => {
-    const fixture = await makeFixture(
-      makeCapability({ id: 'cap.notes.read', revision: '3', effect: 'read' }),
-    );
-    await seedTurn(fixture);
-    const exec = toolExecutorFor(fixture, SCOPE, undefined, 'cap.notes.read');
-    await exec({ text: 'first-args' });
-    await exec({ text: 'second-args' });
-    const invocations = await fixture.stores.invocations.listInvocationsForTurn(SCOPE.turnId);
-    expect(invocations).toHaveLength(2);
-    expect(invocations[0]?.toolCallId).not.toBe(invocations[1]?.toolCallId);
   });
 });

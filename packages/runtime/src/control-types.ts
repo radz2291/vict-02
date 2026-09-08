@@ -590,12 +590,23 @@ const CHANGESET_BASE_FIELDS: readonly string[] = ['kind', 'subjectId', 'expected
  * The returned capture is a freshly allocated plain object owned by VICT
  * (the caller's object is never retained, frozen, or mutated).
  */
-function captureClosedControlRecord(
+export function captureClosedControlRecord(
   raw: unknown,
   field: string,
   allowed: readonly string[] | undefined,
 ): Record<string, unknown> {
-  if (typeof raw !== 'object' || raw === null || Array.isArray(raw)) {
+  // Every inspection primitive — including `Array.isArray`, which THROWS on
+  // a revoked Proxy — is guarded: no raw exception ever crosses the boundary.
+  let arrayLike: boolean;
+  try {
+    arrayLike = Array.isArray(raw);
+  } catch {
+    throw new VictControlError(
+      'VICT_CONTROL_STRUCTURE_INVALID',
+      `The ${field} could not be inspected; hostile containers are rejected.`,
+    );
+  }
+  if (typeof raw !== 'object' || raw === null || arrayLike) {
     throw new VictControlError(
       'VICT_CONTROL_STRUCTURE_INVALID',
       `The ${field} must be a plain object with a closed field set.`,
@@ -668,6 +679,145 @@ function captureClosedControlRecord(
         `The ${field} is missing a required member of the closed structure.`,
       );
     }
+  }
+  return capture;
+}
+
+/**
+ * Capture a CLOSED dense array without ever invoking caller code:
+ *
+ * - the value must be a REAL array (`Array.isArray` under a guard — a
+ *   revoked Proxy throws there — whose prototype is exactly
+ *   `Array.prototype`);
+ * - the `length` is read through its OWN DESCRIPTOR under a guard (never a
+ *   `get`, which would be a caller-controlled trap): it must be an own
+ *   DATA property carrying a safe integer within [1, maxLength];
+ * - `Reflect.ownKeys` (guarded) must declare EXACTLY the length and the
+ *   dense index keys: extra string or symbol properties, sparse holes,
+ *   non-enumerable indices, accessors, and hostile enumeration/descriptor
+ *   traps are ALL rejected;
+ * - elements are captured exclusively through their guarded own property
+ *   DESCRIPTORS (enumerable data properties only) — caller `.map()`,
+ *   iterators, getters, and index `get` traps are never consulted.
+ *
+ * The returned array is freshly allocated and owned by VICT (the caller's
+ * array is never retained, frozen, or aliased).
+ */
+export function captureClosedControlArray(
+  raw: unknown,
+  field: string,
+  maxLength: number,
+): readonly unknown[] {
+  let arrayLike: boolean;
+  try {
+    arrayLike = Array.isArray(raw);
+  } catch {
+    throw new VictControlError(
+      'VICT_CONTROL_STRUCTURE_INVALID',
+      `The ${field} could not be inspected; hostile containers are rejected.`,
+    );
+  }
+  if (!arrayLike) {
+    throw new VictControlError(
+      'VICT_CONTROL_STRUCTURE_INVALID',
+      `The ${field} must be an array with a closed dense structure.`,
+    );
+  }
+  let prototype: object | null;
+  try {
+    prototype = Object.getPrototypeOf(raw as object);
+  } catch {
+    throw new VictControlError(
+      'VICT_CONTROL_STRUCTURE_INVALID',
+      `The ${field} could not be inspected; hostile containers are rejected.`,
+    );
+  }
+  if (prototype !== Array.prototype) {
+    throw new VictControlError(
+      'VICT_CONTROL_STRUCTURE_INVALID',
+      `The ${field} must be a plain array; exotic prototypes are rejected.`,
+    );
+  }
+  // The length is inspected through its guarded own DESCRIPTOR — never a
+  // caller-controlled `get`.
+  let lengthDescriptor: PropertyDescriptor | undefined;
+  try {
+    lengthDescriptor = Object.getOwnPropertyDescriptor(raw as object, 'length');
+  } catch {
+    throw new VictControlError(
+      'VICT_CONTROL_STRUCTURE_INVALID',
+      `The ${field} could not be inspected; hostile containers are rejected.`,
+    );
+  }
+  if (
+    lengthDescriptor === undefined ||
+    lengthDescriptor.get !== undefined ||
+    lengthDescriptor.set !== undefined ||
+    typeof lengthDescriptor.value !== 'number' ||
+    !Number.isSafeInteger(lengthDescriptor.value) ||
+    lengthDescriptor.value < 1 ||
+    lengthDescriptor.value > maxLength
+  ) {
+    throw new VictControlError(
+      'VICT_CONTROL_STRUCTURE_INVALID',
+      `The ${field} length is outside the closed bounded structure.`,
+    );
+  }
+  const length = lengthDescriptor.value;
+  // The declared key set must be EXACTLY the dense index set plus length.
+  let ownKeys: PropertyKey[];
+  try {
+    ownKeys = Reflect.ownKeys(raw as object);
+  } catch {
+    throw new VictControlError(
+      'VICT_CONTROL_STRUCTURE_INVALID',
+      `The ${field} could not be enumerated; hostile containers are rejected.`,
+    );
+  }
+  const expectedKeys = new Set<PropertyKey>(['length']);
+  for (let index = 0; index < length; index += 1) {
+    expectedKeys.add(String(index));
+  }
+  if (ownKeys.length !== expectedKeys.size) {
+    throw new VictControlError(
+      'VICT_CONTROL_STRUCTURE_INVALID',
+      `The ${field} declares members outside the closed dense structure.`,
+    );
+  }
+  for (const key of ownKeys) {
+    if (!expectedKeys.has(key)) {
+      throw new VictControlError(
+        'VICT_CONTROL_STRUCTURE_INVALID',
+        `The ${field} declares a member outside the closed dense structure.`,
+      );
+    }
+  }
+  // Dense capture: every index must be an OWN ENUMERABLE DATA property read
+  // through its guarded descriptor (accessors, holes, and non-enumerable
+  // indices are rejected; caller getters are never invoked).
+  const capture: unknown[] = new Array(length);
+  for (let index = 0; index < length; index += 1) {
+    let descriptor: PropertyDescriptor | undefined;
+    try {
+      descriptor = Object.getOwnPropertyDescriptor(raw as object, String(index));
+    } catch {
+      throw new VictControlError(
+        'VICT_CONTROL_STRUCTURE_INVALID',
+        `The ${field} could not be inspected; hostile containers are rejected.`,
+      );
+    }
+    if (
+      descriptor === undefined ||
+      descriptor.get !== undefined ||
+      descriptor.set !== undefined ||
+      descriptor.enumerable !== true
+    ) {
+      throw new VictControlError(
+        'VICT_CONTROL_STRUCTURE_INVALID',
+        `The ${field} must be a dense array of own enumerable data elements.`,
+      );
+    }
+    capture[index] = descriptor.value;
   }
   return capture;
 }
@@ -797,18 +947,33 @@ export function validateApplicationReleaseContent(content: unknown): Application
   };
 }
 
-/** Validate a full ChangeSet authoring input and derive its content hash. */
-export function validateChangeSetContent(input: {
+/** The exact declared members of the ChangeSet authoring input envelope. */
+const CHANGESET_CONTENT_INPUT_FIELDS: readonly string[] = [
+  'changesetId',
+  'authorActorId',
+  'createdAt',
+  'base',
+  'operations',
+  'rationale',
+  'riskClass',
+  'requiredApproverCount',
+  'expiresAt',
+];
+
+/** Validate a full ChangeSet authoring input and derive its content hash.
+ *
+ * The COMPLETE untrusted runtime input is CAPTURED at this boundary before
+ * any member is read: the outer envelope must be a plain object with the
+ * EXACT closed field set, and `base`, the operation list, and every
+ * operation are captured through guarded descriptors (no caller getter,
+ * iterator, `.map()`, or other caller-controlled behavior is ever
+ * consulted; hostile/revoked proxies, sparse arrays, accessors, symbols,
+ * non-enumerable members, and exotic prototypes are all rejected with ONE
+ * stable, non-echoing error). Only VICT-owned validated captures are
+ * hashed and returned; caller objects are never retained, frozen, or aliased.
+ */
+export function validateChangeSetContent(untrustedInput: unknown): {
   changesetId: string;
-  authorActorId: string;
-  createdAt: number;
-  base: ChangeSetBase;
-  operations: readonly unknown[];
-  rationale: string;
-  riskClass: ChangeSetRiskClass;
-  requiredApproverCount: number;
-  expiresAt: number;
-}): {
   base: ChangeSetBase;
   operations: readonly ChangeSetOperation[];
   rationale: string;
@@ -817,6 +982,42 @@ export function validateChangeSetContent(input: {
   expiresAt: number;
   contentHash: string;
 } {
+  // ---- 1. CAPTURE the complete outer envelope (closed field set) BEFORE
+  // any semantic inspection. Scalar members are captured by descriptor
+  // value too, so caller getters never run (a getter on ANY outer field —
+  // not only `base` — is rejected without being invoked).
+  const input = captureClosedControlRecord(
+    untrustedInput,
+    'ChangeSet authoring input',
+    CHANGESET_CONTENT_INPUT_FIELDS,
+  ) as {
+    changesetId: unknown;
+    authorActorId: unknown;
+    createdAt: unknown;
+    base: unknown;
+    operations: unknown;
+    rationale: unknown;
+    riskClass: unknown;
+    requiredApproverCount: unknown;
+    expiresAt: unknown;
+  };
+  if (typeof input.changesetId !== 'string') {
+    throw new VictControlError('VICT_CONTROL_FIELD_INVALID', 'the ChangeSet id is malformed.');
+  }
+  if (typeof input.authorActorId !== 'string') {
+    throw new VictControlError('VICT_CONTROL_FIELD_INVALID', 'the ChangeSet author is malformed.');
+  }
+  if (
+    typeof input.createdAt !== 'number' ||
+    !Number.isSafeInteger(input.createdAt) ||
+    typeof input.expiresAt !== 'number' ||
+    !Number.isSafeInteger(input.expiresAt)
+  ) {
+    throw new VictControlError(
+      'VICT_CONTROL_FIELD_INVALID',
+      'the ChangeSet timestamps are malformed.',
+    );
+  }
   assertControlId(input.changesetId, 'changesetId');
   assertControlId(input.authorActorId, 'authorActorId');
   assertControlTimestamp(input.createdAt, 'createdAt');
@@ -827,15 +1028,10 @@ export function validateChangeSetContent(input: {
       'a ChangeSet must expire after its creation.',
     );
   }
-  if (
-    typeof input.base !== 'object' ||
-    input.base === null ||
-    !['activation', 'release'].includes((input.base as ChangeSetBase).kind)
-  ) {
-    throw new VictControlError('VICT_CONTROL_FIELD_INVALID', 'the ChangeSet base is malformed.');
-  }
-  // The base is a CLOSED plain-data structure: exactly its declared members,
-  // exact string types, no accessors/symbols/hostile containers.
+  // ---- 2. The base is CAPTURED (closed plain-data structure: exactly its
+  // declared members, exact string types, no accessors/symbols/hostile
+  // containers) before semantic inspection — a hostile `base.kind` getter
+  // is never invoked and a revoked proxy never escapes a raw TypeError.
   const baseCapture = captureClosedControlRecord(
     input.base,
     'ChangeSet base',
@@ -857,29 +1053,24 @@ export function validateChangeSetContent(input: {
     subjectId: baseCapture.subjectId,
     expectedVersion: baseCapture.expectedVersion,
   };
-  if (
-    !Array.isArray(input.operations) ||
-    input.operations.length === 0 ||
-    input.operations.length > 64
-  ) {
-    throw new VictControlError(
-      'VICT_CONTROL_FIELD_INVALID',
-      'a ChangeSet must declare between 1 and 64 closed operations.',
-    );
+  // ---- 3. The operation list is CAPTURED as a closed dense array through
+  // guarded descriptors (never caller `.map()`/iterators); sparse arrays,
+  // extra/symbol properties, accessor or non-enumerable indices, exotic
+  // prototypes, and revoked/hostile proxies all fail with ONE stable error.
+  const operationsCapture = captureClosedControlArray(
+    input.operations,
+    'ChangeSet operation list',
+    64,
+  );
+  const operations: ChangeSetOperation[] = [];
+  for (const operation of operationsCapture) {
+    operations.push(validateChangeSetOperation(operation));
   }
-  // Sparse arrays are hostile captures, never operation lists: every index
-  // must be an OWN present member.
-  for (let index = 0; index < input.operations.length; index += 1) {
-    if (!Object.prototype.hasOwnProperty.call(input.operations, index)) {
-      throw new VictControlError(
-        'VICT_CONTROL_FIELD_INVALID',
-        'the ChangeSet operation list must be a dense array.',
-      );
-    }
+  if (typeof input.rationale !== 'string') {
+    throw new VictControlError('VICT_CONTROL_FIELD_INVALID', 'the rationale is malformed.');
   }
-  const operations = input.operations.map((operation) => validateChangeSetOperation(operation));
   assertBoundedString(input.rationale, 'rationale', 2000);
-  if (!['low', 'medium', 'high'].includes(input.riskClass)) {
+  if (input.riskClass !== 'low' && input.riskClass !== 'medium' && input.riskClass !== 'high') {
     throw new VictControlError(
       'VICT_CONTROL_FIELD_INVALID',
       'riskClass must be low, medium, or high.',
@@ -911,6 +1102,7 @@ export function validateChangeSetContent(input: {
     expiresAt: input.expiresAt,
   });
   return {
+    changesetId: input.changesetId,
     base,
     operations,
     rationale: input.rationale,
@@ -1195,7 +1387,15 @@ export interface TurnToolSlotAllocation {
   readonly argDigest: string;
 }
 
-/** One durable protected tool-invocation record. */
+/** One durable protected tool-invocation record.
+ *
+ * LIVE-OWNER FENCING (Stage 06B final boundary correction): the optional
+ * `runFence*` members are stamped by `claimInvocationRun` when ONE owner
+ * claims the invocation's execution attempt, carried through the durable
+ * `running` state, and required as EXACT BINDING on every fenced terminal
+ * settlement. `runGeneration` increments on every claim and on every
+ * reconciliation, so a stale owner can never settle a later generation.
+ */
 export interface AgentToolInvocationRecord {
   readonly invocationId: string;
   readonly turnId: string;
@@ -1218,6 +1418,14 @@ export interface AgentToolInvocationRecord {
   /** Safe bounded result summary — never full payloads. */
   readonly resultSummary: string | undefined;
   readonly errorCode: string | undefined;
+  /** The fence token of the CURRENT execution attempt (claim-bound). */
+  readonly runFenceToken?: string | undefined;
+  /** When the current attempt was claimed (epoch ms). */
+  readonly runFenceAt?: number | undefined;
+  /** The process identity that claimed the current attempt. */
+  readonly runOwnerIdentity?: string | undefined;
+  /** Monotonic attempt generation (incremented per claim/reconciliation). */
+  readonly runGeneration?: number;
 }
 
 /** The durable tool-invocation store port. */
@@ -1257,6 +1465,76 @@ export interface AgentToolInvocationStore {
     errorCode?: string;
   }): Promise<AgentToolInvocationRecord>;
   listInvocationsForTurn(turnId: string): Promise<readonly AgentToolInvocationRecord[]>;
+
+  /**
+   * CLAIM the invocation's execution attempt for ONE live owner: the durable
+   * status moves `intent`|`approved` → `running` and the record is stamped
+   * with the attempt fence (token, owner identity, claim time) and the next
+   * attempt generation. Exactly one claim per generation wins: a claim on an
+   * already-running record throws `VICT_CONTROL_INVOCATION_OWNER_ACTIVE`
+   * (the caller is the duplicate of a live owner) and a claim on a terminal
+   * record throws the stable terminal error. Duplicates NEVER mutate a
+   * live-owned record through any other command.
+   */
+  claimInvocationRun(command: {
+    invocationId: string;
+    fenceToken: string;
+    ownerIdentity: string;
+    at: number;
+  }): Promise<AgentToolInvocationRecord>;
+
+  /**
+   * FENCED terminal settlement (`completed` | `failed` | `outcome_unknown`):
+   * accepted ONLY from the durable `running` state while the observed fence
+   * token equals the command's fence token — the caller must be the CURRENT
+   * owner of the attempt. An exact rematch of the requested terminal state
+   * AND its binding (status + errorCode + resultSummary) under the SAME
+   * fence is idempotent; every other conflict fails with a structured,
+   * non-echoing error (`VICT_CONTROL_INVOCATION_FENCE_MISMATCH` for a stale
+   * owner, `VICT_CONTROL_INVOCATION_TERMINAL`/`REGRESSION` otherwise). A
+   * stale owner can never settle a later claim generation.
+   */
+  settleInvocationRun(command: {
+    invocationId: string;
+    fenceToken: string;
+    status: 'completed' | 'failed' | 'outcome_unknown';
+    at: number;
+    resultSummary?: string;
+    errorCode?: string;
+  }): Promise<AgentToolInvocationRecord>;
+
+  /**
+   * PRE-RUNNING terminal settlement (`failed` | `declined` | `cancelled`):
+   * applies only while the durable state is pre-running (`intent` or
+   * `approved`). An exact rematch (same status AND same errorCode) is
+   * idempotent; a conflict with a different terminal state or binding fails;
+   * a record already claimed (`running`) is never touched
+   * (`VICT_CONTROL_INVOCATION_OWNER_ACTIVE`).
+   */
+  settleInvocationPending(command: {
+    invocationId: string;
+    status: 'failed' | 'declined' | 'cancelled';
+    at: number;
+    errorCode?: string;
+  }): Promise<AgentToolInvocationRecord>;
+
+  /**
+   * Conservative reconciliation of an ABANDONED `running` attempt (its
+   * owner is provably lost — no live owner exists for the recorded claim):
+   * the record is fenced to the terminal, NON-REPLAYABLE `outcome_unknown`
+   * without executing anything. Accepted ONLY when the observed durable
+   * state is exactly `running` AND the observed fence token equals
+   * `observedFenceToken` (idempotent only on that exact binding); the fence
+   * advances to `reconciledFenceToken` and the generation increments, so a
+   * stale owner's later settlement fails. Every other observed state fails
+   * with a structured, non-echoing error.
+   */
+  reconcileAbandonedRun(command: {
+    invocationId: string;
+    observedFenceToken: string;
+    reconciledFenceToken: string;
+    at: number;
+  }): Promise<AgentToolInvocationRecord>;
 }
 
 // ---- VICT-authoritative approval records -------------------------------------

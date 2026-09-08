@@ -36,15 +36,24 @@ export interface OfflineModelToolCallStep {
 
 /**
  * A scripted CHAIN of tool calls: the fixture requests the first call whose
- * tool name does not yet have a result in the prompt; once every call has a
- * result it produces `thenText`. This drives deterministic multi-tool turns
- * (maxToolCalls enforcement, per-turn budget scoping).
+ * tool name has not yet produced ENOUGH results for its occurrence count —
+ * a call whose name appears twice in the chain (with identical or different
+ * arguments) is emitted as a SECOND DISTINCT occurrence with its own unique
+ * tool-call identity. Once every call has a result the fixture produces
+ * `thenText`. This drives deterministic multi-tool turns (maxToolCalls
+ * enforcement, per-turn budget scoping) and distinct-occurrence identity
+ * (two identical calls = two distinct tool-call occurrences).
  */
 export interface OfflineModelToolChainStep {
   readonly kind: 'tool-chain';
   readonly calls: ReadonlyArray<{
     readonly toolName: string;
     readonly args: Record<string, unknown>;
+    /** Optional EXPLICIT occurrence identity: when present, the fixture
+     * emits this exact tool-call id (a repeated id scripts a genuine
+     * duplicate-identity recurrence — a client/framework retry — through
+     * the REAL pinned agent loop). Absent → a fresh unique id. */
+    readonly toolCallId?: string;
   }>;
   readonly thenText: string;
 }
@@ -191,6 +200,20 @@ function promptHasToolResult(prompt: readonly FixturePromptMessage[], toolName: 
   );
 }
 
+/** Count the tool results recorded for one tool name in the prompt. */
+function promptToolResultCount(prompt: readonly FixturePromptMessage[], toolName: string): number {
+  return prompt.reduce((total, message) => {
+    if (message.role !== 'tool') {
+      return total;
+    }
+    return (
+      total +
+      message.content.filter((part) => part.type === 'tool-result' && part.toolName === toolName)
+        .length
+    );
+  }, 0);
+}
+
 /**
  * Create a deterministic offline model fixture. `script` maps the LAST
  * user message text to the scripted step. A missing script entry responds
@@ -199,10 +222,63 @@ function promptHasToolResult(prompt: readonly FixturePromptMessage[], toolName: 
 export function createDeterministicOfflineModel(options?: {
   readonly script?: OfflineModelScript;
   readonly throwOnStep?: OfflineModelThrowStep;
+  /** Observes each tool result the prompt carries back to the model (the
+   * REAL model-visible tool outputs — reported once per tool-call id). */
+  readonly onToolResult?: (event: {
+    readonly toolCallId: string;
+    readonly toolName: string;
+    readonly output: unknown;
+  }) => void;
 }): DeterministicOfflineModel & OfflineModelRecord {
   const script = options?.script ?? {};
   const throwOnStep = options?.throwOnStep;
+  const onToolResult = options?.onToolResult;
+  let reportedToolResultCount = 0;
+  const reportToolResults = (prompt: readonly FixturePromptMessage[]): void => {
+    if (onToolResult === undefined) {
+      return;
+    }
+    // The prompt accumulates append-only across steps: report every tool
+    // result that appeared since the previous step, in prompt order. A
+    // repeated id is a genuine duplicate-identity recurrence and is
+    // reported as its own occurrence.
+    const occurrences: Array<{
+      readonly toolCallId: string;
+      readonly toolName: string;
+      readonly output: unknown;
+    }> = [];
+    for (const message of prompt) {
+      if (message.role !== 'tool') {
+        continue;
+      }
+      for (const part of message.content) {
+        if (part.type === 'tool-result') {
+          occurrences.push({
+            toolCallId: part.toolCallId,
+            toolName: part.toolName,
+            output: part.output,
+          });
+        }
+      }
+    }
+    for (let index = reportedToolResultCount; index < occurrences.length; index += 1) {
+      onToolResult(
+        occurrences[index] as {
+          toolCallId: string;
+          toolName: string;
+          output: unknown;
+        },
+      );
+    }
+    reportedToolResultCount = occurrences.length;
+  };
   let invocations = 0;
+  // Monotonic per-fixture occurrence counter: every emitted tool call gets
+  // a UNIQUE stable occurrence identity (`offline-call-<tool>-<n>`), exactly
+  // like a real provider's per-call ids. Deterministic per fixture instance
+  // (same script → same ids in the same order), never reused for a
+  // different occurrence.
+  let toolCallOccurrence = 0;
   const recordedOptions: OfflineModelRecordedCallOptions[] = [];
 
   const model: DeterministicOfflineModel & OfflineModelRecord = {
@@ -233,6 +309,7 @@ export function createDeterministicOfflineModel(options?: {
     async doStream(callOptions: { readonly prompt: readonly FixturePromptMessage[] }) {
       invocations += 1;
       recordedOptions.push(recordCallOptions(callOptions));
+      reportToolResults(callOptions.prompt);
       const step: OfflineModelStep | OfflineModelThrowStep = script[
         lastUserText(callOptions.prompt)
       ] ?? { kind: 'text' as const, text: '' };
@@ -247,6 +324,10 @@ export function createDeterministicOfflineModel(options?: {
         step,
         callOptions.prompt,
         throwOnStep,
+        () => {
+          toolCallOccurrence += 1;
+          return toolCallOccurrence;
+        },
       );
       return { stream };
     },
@@ -293,6 +374,7 @@ async function enqueueScript(
   step: OfflineModelStep | OfflineModelThrowStep,
   prompt: readonly FixturePromptMessage[],
   throwOnStep: OfflineModelThrowStep | undefined,
+  nextOccurrence: () => number,
 ): Promise<void> {
   try {
     controller.enqueue({ type: 'stream-start', warnings: [] });
@@ -322,19 +404,33 @@ async function enqueueScript(
     }
 
     if (step.kind === 'tool-call' && !promptHasToolResult(prompt, step.toolName)) {
-      enqueueToolCall(controller, step.toolName, step.args);
+      enqueueToolCall(controller, step.toolName, step.args, nextOccurrence());
       controller.enqueue({ type: 'finish', finishReason: 'tool-calls', usage: OFFLINE_USAGE });
       controller.close();
       return;
     }
 
     if (step.kind === 'tool-chain') {
-      const pending = step.calls.find((call) => !promptHasToolResult(prompt, call.toolName));
-      if (pending !== undefined) {
-        enqueueToolCall(controller, pending.toolName, pending.args);
-        controller.enqueue({ type: 'finish', finishReason: 'tool-calls', usage: OFFLINE_USAGE });
-        controller.close();
-        return;
+      // The first call whose name has not yet produced ENOUGH results for
+      // its occurrence count within this chain: a repeated identical call
+      // is a SECOND DISTINCT occurrence (its own unique tool-call id), so
+      // two identical occurrences can execute twice while a retry of ONE
+      // occurrence identity stays one logical result.
+      for (let index = 0; index < step.calls.length; index += 1) {
+        const call = step.calls[index] as {
+          readonly toolName: string;
+          readonly args: Record<string, unknown>;
+          readonly toolCallId?: string;
+        };
+        const occurrencesSoFar = step.calls
+          .slice(0, index + 1)
+          .filter((entry) => entry.toolName === call.toolName).length;
+        if (promptToolResultCount(prompt, call.toolName) < occurrencesSoFar) {
+          enqueueToolCall(controller, call.toolName, call.args, nextOccurrence(), call.toolCallId);
+          controller.enqueue({ type: 'finish', finishReason: 'tool-calls', usage: OFFLINE_USAGE });
+          controller.close();
+          return;
+        }
       }
     }
 
@@ -362,8 +458,13 @@ function enqueueToolCall(
   controller: ReadableStreamDefaultController<FixtureStreamPart>,
   toolName: string,
   args: Record<string, unknown>,
+  occurrence: number,
+  explicitToolCallId?: string,
 ): void {
-  const toolCallId = `offline-call-${toolName}`;
+  // A UNIQUE occurrence identity per emitted call — never a per-tool-name
+  // constant (which would alias distinct identical occurrences). An
+  // explicit override scripts a DELIBERATE duplicate-identity recurrence.
+  const toolCallId = explicitToolCallId ?? `offline-call-${toolName}-${occurrence}`;
   controller.enqueue({ type: 'tool-input-start', id: toolCallId, toolName });
   const inputJson = JSON.stringify(args);
   controller.enqueue({ type: 'tool-input-delta', id: toolCallId, delta: inputJson });

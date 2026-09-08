@@ -701,6 +701,26 @@ export const SCHEMA_MIGRATIONS: readonly Migration[] = [
       );`,
     ],
   },
+  {
+    // Stage 06B final boundary correction (migration 9):
+    // - tool invocations carry the LIVE-OWNER attempt fence (token, claim
+    //   time, owner identity, monotonic generation) stamped by the claim
+    //   command, carried through `running`, and required as EXACT BINDING
+    //   on every fenced terminal settlement and reconciliation;
+    // - forward-only: columns are ADDED; existing rows default to
+    //   generation 0 with no fence (unclaimed), and the migration-8
+    //   turn-tool-slot table is intentionally PRESERVED (forward-compatible
+    //   durable allocation surface even though the bridge no longer needs
+    //   its ambiguous digest-only fallback).
+    version: 9,
+    name: 'stage-06b-final-boundary-correction',
+    statements: [
+      `ALTER TABLE vict_agent_tool_invocation ADD COLUMN run_fence_token TEXT;`,
+      `ALTER TABLE vict_agent_tool_invocation ADD COLUMN run_fence_at TEXT;`,
+      `ALTER TABLE vict_agent_tool_invocation ADD COLUMN run_owner_identity TEXT;`,
+      `ALTER TABLE vict_agent_tool_invocation ADD COLUMN run_generation INTEGER NOT NULL DEFAULT 0;`,
+    ],
+  },
 ];
 
 /** The highest schema version this adapter understands. */

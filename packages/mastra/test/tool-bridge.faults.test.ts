@@ -77,27 +77,37 @@ describe('tool-bridge phase fault injection (F10)', () => {
     void stores;
   });
 
-  it('recognized fenced outcomes are the ONLY swallowed store failures', async () => {
+  it('store-conflict recognition is EXPLICIT: no silent swallow helper remains, conflicts re-read + re-dispatch', async () => {
     const f = await makeFixture();
     void f;
-    // The transition helper distinguishes terminal-fenced/idempotent
-    // outcomes (safe to ignore on exactly-once retries) from REAL store
-    // failures (must propagate). This is a source-level contract pin: the
-    // ONLY codes the bridge tolerates are the two fenced codes.
+    // Source-level contract pin for the live-owner correction: the OLD
+    // silent swallow helper (transitionInvocation / tryTransitionInvocation
+    // — which blindly tolerated terminal/regression errors) is GONE. Store
+    // conflicts are recognized ONLY through the explicit arbitration
+    // matcher and are resolved by a truthful RE-READ and re-dispatch —
+    // never swallowed into a normal continuation.
     const { readFileSync } = await import('node:fs');
     const source = readFileSync('packages/mastra/src/tool-bridge.ts', 'utf8');
-    const tolerated = source.match(/VICT_CONTROL_INVOCATION_(TERMINAL|REGRESSION)/g) ?? [];
-    expect(tolerated.length).toBeGreaterThanOrEqual(2);
-    // Within the transition helper, no OTHER code is compared as a
-    // tolerated outcome in its catch path (the key-collision comparison in
-    // the intent helper RE-THROWS, so it is not a swallow).
-    const transitionStart = source.indexOf('async function transitionInvocation');
-    const transitionEnd = source.indexOf('async function tryTransitionInvocation');
-    const transitionSource = source.slice(transitionStart, transitionEnd);
-    const comparedCodes = transitionSource.match(/error\.code === '([A-Z_]+)'/g) ?? [];
-    expect(comparedCodes.length).toBe(2);
-    for (const entry of comparedCodes) {
-      expect(entry).toMatch(/TERMINAL|REGRESSION/);
+    expect(source.includes('async function tryTransitionInvocation')).toBe(false);
+    expect(source.includes('async function transitionInvocation')).toBe(false);
+    // The ONLY store-conflict codes the bridge ever compares are the three
+    // arbitration codes, and ONLY through the explicit matcher.
+    const matcherStart = source.indexOf('function isArbitrationConflict');
+    expect(matcherStart).toBeGreaterThan(0);
+    const matcher = source.slice(matcherStart, matcherStart + 900);
+    for (const code of [
+      'VICT_CONTROL_INVOCATION_TERMINAL',
+      'VICT_CONTROL_INVOCATION_REGRESSION',
+      'VICT_CONTROL_INVOCATION_OWNER_ACTIVE',
+    ]) {
+      expect(matcher).toContain(`'${code}'`);
+    }
+    const compared = [...source.matchAll(/error\.code === '([A-Z_]+)'/g)].map(
+      (entry) => entry[1] as string,
+    );
+    expect(compared.length).toBeGreaterThanOrEqual(3);
+    for (const code of compared) {
+      expect(code).toMatch(/^VICT_CONTROL_INVOCATION_(TERMINAL|REGRESSION|OWNER_ACTIVE)$/);
     }
   });
 

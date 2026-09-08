@@ -270,6 +270,10 @@ interface InvocationRow {
   completed_at: string | null;
   result_summary: string | null;
   error_code: string | null;
+  run_fence_token: string | null;
+  run_fence_at: string | null;
+  run_owner_identity: string | null;
+  run_generation: number | null;
 }
 
 function rowToInvocation(row: InvocationRow): AgentToolInvocationRecord {
@@ -291,6 +295,20 @@ function rowToInvocation(row: InvocationRow): AgentToolInvocationRecord {
     completedAt: optionalIso(row.completed_at),
     resultSummary: row.result_summary ?? undefined,
     errorCode: row.error_code ?? undefined,
+    // Attempt-fence members stay ABSENT for unclaimed rows (generation 0)
+    // so stored/returned records remain shape-stable with earlier adapters.
+    ...(row.run_fence_token !== null && row.run_fence_token !== undefined
+      ? { runFenceToken: row.run_fence_token }
+      : {}),
+    ...(row.run_fence_at !== null && row.run_fence_at !== undefined
+      ? { runFenceAt: fromIso(row.run_fence_at) }
+      : {}),
+    ...(row.run_owner_identity !== null && row.run_owner_identity !== undefined
+      ? { runOwnerIdentity: row.run_owner_identity }
+      : {}),
+    ...(row.run_generation !== null && row.run_generation !== undefined && row.run_generation !== 0
+      ? { runGeneration: row.run_generation }
+      : {}),
   };
 }
 
@@ -1727,6 +1745,228 @@ export function createSqliteAgentControlStores(
             terminal ? toIso(command.at) : row.completed_at,
             command.resultSummary ?? row.result_summary,
             command.errorCode ?? row.error_code,
+            command.invocationId,
+          );
+          const updated = db
+            .prepare('SELECT * FROM vict_agent_tool_invocation WHERE invocation_id = ?;')
+            .get(command.invocationId) as unknown as InvocationRow;
+          return rowToInvocation(updated);
+        }),
+      );
+    },
+
+    async claimInvocationRun(command: {
+      invocationId: string;
+      fenceToken: string;
+      ownerIdentity: string;
+      at: number;
+    }): Promise<AgentToolInvocationRecord> {
+      return safeRun('invocations.claimRun', () =>
+        inTransaction(db, () => {
+          const row = db
+            .prepare('SELECT * FROM vict_agent_tool_invocation WHERE invocation_id = ?;')
+            .get(command.invocationId) as unknown as InvocationRow | undefined;
+          if (row === undefined) {
+            throw new VictControlError(
+              'VICT_CONTROL_INVOCATION_MISSING',
+              'The invocation does not exist.',
+            );
+          }
+          const current = rowToInvocation(row);
+          if (current.status === 'running') {
+            // Exactly one live owner: a second claim is the duplicate of
+            // the current owner and NEVER mutates the row.
+            throw new VictControlError(
+              'VICT_CONTROL_INVOCATION_OWNER_ACTIVE',
+              'The invocation attempt is already claimed by a live owner.',
+            );
+          }
+          if (current.status !== 'intent' && current.status !== 'approved') {
+            throw new VictControlError(
+              'VICT_CONTROL_INVOCATION_TERMINAL',
+              'The invocation is already terminal; no new attempt can be claimed.',
+            );
+          }
+          db.prepare(
+            `UPDATE vict_agent_tool_invocation
+             SET status = 'running', updated_at = ?, run_fence_token = ?, run_fence_at = ?,
+                 run_owner_identity = ?, run_generation = run_generation + 1
+             WHERE invocation_id = ?;`,
+          ).run(
+            toIso(command.at),
+            command.fenceToken,
+            toIso(command.at),
+            command.ownerIdentity,
+            command.invocationId,
+          );
+          const updated = db
+            .prepare('SELECT * FROM vict_agent_tool_invocation WHERE invocation_id = ?;')
+            .get(command.invocationId) as unknown as InvocationRow;
+          return rowToInvocation(updated);
+        }),
+      );
+    },
+
+    async settleInvocationRun(command: {
+      invocationId: string;
+      fenceToken: string;
+      status: 'completed' | 'failed' | 'outcome_unknown';
+      at: number;
+      resultSummary?: string;
+      errorCode?: string;
+    }): Promise<AgentToolInvocationRecord> {
+      return safeRun('invocations.settleRun', () =>
+        inTransaction(db, () => {
+          const row = db
+            .prepare('SELECT * FROM vict_agent_tool_invocation WHERE invocation_id = ?;')
+            .get(command.invocationId) as unknown as InvocationRow | undefined;
+          if (row === undefined) {
+            throw new VictControlError(
+              'VICT_CONTROL_INVOCATION_MISSING',
+              'The invocation does not exist.',
+            );
+          }
+          const current = rowToInvocation(row);
+          // The EXACT attempt binding comes first: a stale owner (an
+          // earlier fence token, e.g. after reconciliation re-fenced the
+          // record) can never settle — not even idempotently — a later
+          // generation.
+          if ((current.runFenceToken ?? undefined) !== command.fenceToken) {
+            throw new VictControlError(
+              'VICT_CONTROL_INVOCATION_FENCE_MISMATCH',
+              'The settlement fence does not bind the current attempt owner.',
+            );
+          }
+          if (current.status === 'running') {
+            db.prepare(
+              `UPDATE vict_agent_tool_invocation
+               SET status = ?, updated_at = ?, completed_at = ?, result_summary = ?, error_code = ?
+               WHERE invocation_id = ?;`,
+            ).run(
+              command.status,
+              toIso(command.at),
+              toIso(command.at),
+              command.resultSummary ?? row.result_summary,
+              command.errorCode ?? row.error_code,
+              command.invocationId,
+            );
+            const updated = db
+              .prepare('SELECT * FROM vict_agent_tool_invocation WHERE invocation_id = ?;')
+              .get(command.invocationId) as unknown as InvocationRow;
+            return rowToInvocation(updated);
+          }
+          // Terminal idempotency ONLY on the exact requested state + binding.
+          if (
+            current.status === command.status &&
+            current.errorCode === command.errorCode &&
+            current.resultSummary === command.resultSummary
+          ) {
+            return current;
+          }
+          throw new VictControlError(
+            'VICT_CONTROL_INVOCATION_TERMINAL',
+            'The invocation is already terminal with a different settlement.',
+          );
+        }),
+      );
+    },
+
+    async settleInvocationPending(command: {
+      invocationId: string;
+      status: 'failed' | 'declined' | 'cancelled';
+      at: number;
+      errorCode?: string;
+    }): Promise<AgentToolInvocationRecord> {
+      return safeRun('invocations.settlePending', () =>
+        inTransaction(db, () => {
+          const row = db
+            .prepare('SELECT * FROM vict_agent_tool_invocation WHERE invocation_id = ?;')
+            .get(command.invocationId) as unknown as InvocationRow | undefined;
+          if (row === undefined) {
+            throw new VictControlError(
+              'VICT_CONTROL_INVOCATION_MISSING',
+              'The invocation does not exist.',
+            );
+          }
+          const current = rowToInvocation(row);
+          if (current.status === 'running') {
+            // A claimed (live-owned) attempt is never touched by a late
+            // pre-running settlement.
+            throw new VictControlError(
+              'VICT_CONTROL_INVOCATION_OWNER_ACTIVE',
+              'The invocation attempt is claimed by a live owner.',
+            );
+          }
+          if (current.status === 'intent' || current.status === 'approved') {
+            db.prepare(
+              `UPDATE vict_agent_tool_invocation
+               SET status = ?, updated_at = ?, completed_at = ?, error_code = ?
+               WHERE invocation_id = ?;`,
+            ).run(
+              command.status,
+              toIso(command.at),
+              toIso(command.at),
+              command.errorCode ?? row.error_code,
+              command.invocationId,
+            );
+            const updated = db
+              .prepare('SELECT * FROM vict_agent_tool_invocation WHERE invocation_id = ?;')
+              .get(command.invocationId) as unknown as InvocationRow;
+            return rowToInvocation(updated);
+          }
+          // Terminal idempotency ONLY on the exact requested state + binding.
+          if (current.status === command.status && current.errorCode === command.errorCode) {
+            return current;
+          }
+          throw new VictControlError(
+            'VICT_CONTROL_INVOCATION_TERMINAL',
+            'The invocation is already terminal with a different disposition.',
+          );
+        }),
+      );
+    },
+
+    async reconcileAbandonedRun(command: {
+      invocationId: string;
+      observedFenceToken: string;
+      reconciledFenceToken: string;
+      at: number;
+    }): Promise<AgentToolInvocationRecord> {
+      return safeRun('invocations.reconcileAbandoned', () =>
+        inTransaction(db, () => {
+          const row = db
+            .prepare('SELECT * FROM vict_agent_tool_invocation WHERE invocation_id = ?;')
+            .get(command.invocationId) as unknown as InvocationRow | undefined;
+          if (row === undefined) {
+            throw new VictControlError(
+              'VICT_CONTROL_INVOCATION_MISSING',
+              'The invocation does not exist.',
+            );
+          }
+          const current = rowToInvocation(row);
+          // Exact observed-state binding: only a genuinely running attempt
+          // under the exact observed fence is reconciled (conservative,
+          // never a state-changing guess; the effect is never re-executed).
+          if (
+            current.status !== 'running' ||
+            (current.runFenceToken ?? '') !== command.observedFenceToken
+          ) {
+            throw new VictControlError(
+              'VICT_CONTROL_INVOCATION_FENCE_MISMATCH',
+              'The observed durable state is not the abandoned attempt requested.',
+            );
+          }
+          db.prepare(
+            `UPDATE vict_agent_tool_invocation
+             SET status = 'outcome_unknown', updated_at = ?, completed_at = ?, error_code = ?,
+                 run_fence_token = ?, run_fence_at = ?, run_generation = run_generation + 1
+             WHERE invocation_id = ?;`,
+          ).run(
+            toIso(command.at),
+            toIso(command.at),
+            'VICT_CONTROL_INVOCATION_RUN_RECONCILED',
+            command.reconciledFenceToken,
+            toIso(command.at),
             command.invocationId,
           );
           const updated = db

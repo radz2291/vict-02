@@ -247,6 +247,8 @@ export {
   assertControlTimestamp,
   authenticatedActorContext,
   authoritativeScopes,
+  captureClosedControlArray,
+  captureClosedControlRecord,
   controlContentHash,
   isDurableStreamKind,
   streamEventPayloadOf,

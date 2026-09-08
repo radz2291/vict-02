@@ -4,6 +4,7 @@ import {
   validateChangeSetContent,
   validateChangeSetOperation,
   VictControlError,
+  type ChangeSetBase,
 } from '@vict/runtime';
 
 /**
@@ -22,7 +23,7 @@ const VALID_ACTIVATION_OP = {
   activationVersion: 'v2-rel',
 };
 
-const VALID_BASE: Parameters<typeof validateChangeSetContent>[0]['base'] = {
+const VALID_BASE: ChangeSetBase = {
   kind: 'release',
   subjectId: 'app.rel',
   expectedVersion: 'none',
@@ -175,9 +176,7 @@ describe('R6: malformed ChangeSet operations are rejected (negative controls)', 
         changesetId: 'cs.rel.base',
         authorActorId: 'actor.rel',
         createdAt: 1000,
-        base: { kind: 'release', subjectId: 'app.rel' } as unknown as Parameters<
-          typeof validateChangeSetContent
-        >[0]['base'],
+        base: { kind: 'release', subjectId: 'app.rel' } as unknown as ChangeSetBase,
         operations: [VALID_ACTIVATION_OP],
         rationale: 'r',
         riskClass: 'low',
@@ -195,7 +194,7 @@ describe('R6: malformed ChangeSet operations are rejected (negative controls)', 
           subjectId: 'app.rel',
           expectedVersion: 'none',
           smuggled: 1,
-        } as unknown as Parameters<typeof validateChangeSetContent>[0]['base'],
+        } as unknown as ChangeSetBase,
         operations: [VALID_ACTIVATION_OP],
         rationale: 'r',
         riskClass: 'low',
@@ -212,7 +211,7 @@ describe('R6: malformed ChangeSet operations are rejected (negative controls)', 
           kind: 'release',
           subjectId: 'app.rel',
           expectedVersion: 9,
-        } as unknown as Parameters<typeof validateChangeSetContent>[0]['base'],
+        } as unknown as ChangeSetBase,
         operations: [VALID_ACTIVATION_OP],
         rationale: 'r',
         riskClass: 'low',
