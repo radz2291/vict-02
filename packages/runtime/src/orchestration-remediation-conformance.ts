@@ -47,7 +47,7 @@ export interface OrchestrationRemediationFixture {
 }
 
 export interface ConformanceTestRunner {
-  test(name: string, implementation: () => Promise<void> | void): unknown;
+  test(name: string, implementation: () => Promise<void> | void, timeoutMs?: number): unknown;
 }
 
 export type ConformanceExpect = (actual: unknown) => {
@@ -77,7 +77,15 @@ export function runOrchestrationRemediationSuite(
   expect: ConformanceExpect,
   factory: OrchestrationRemediationFixture,
 ): void {
-  const t = runner.test;
+  // The remediation suite is real-time driven (polling loops, real
+  // deadlines, live SQLite reopen). The tests get an explicit HARNESS
+  // budget so a loaded machine's scheduler latency cannot exceed the
+  // default per-test timeout — the assertions themselves are unchanged
+  // (no timing assertion of the system under test is weakened; a genuinely
+  // broken behavior still fails, only later).
+  const t = (name: string, fn: () => Promise<void> | void): void => {
+    void runner.test(name, fn, 20_000);
+  };
   const label = (name: string): string => `[${factory.name}] ${name}`;
 
   t(

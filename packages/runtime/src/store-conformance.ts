@@ -45,7 +45,7 @@ export interface ConformanceExpect {
 }
 
 export interface ConformanceTestRunner {
-  test(name: string, fn: () => Promise<void> | void): void;
+  test(name: string, fn: () => Promise<void> | void, timeoutMs?: number): void;
   expect: ConformanceExpect;
 }
 
