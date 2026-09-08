@@ -14,13 +14,7 @@
 
 import { readFileSync, statSync } from 'node:fs';
 import { VictCliError, VictHttpClient } from './client.js';
-import {
-  CLI_COMMANDS,
-  fillPath,
-  payloadToQuery,
-  buildPayload,
-  type CliCommandSpec,
-} from './commands.js';
+import { buildPayload, CLI_COMMANDS, fillPath, type CliCommandSpec } from './commands.js';
 
 export interface VictCliIo {
   readonly stdout: (line: string) => void;

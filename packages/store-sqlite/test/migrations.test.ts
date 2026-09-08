@@ -160,74 +160,90 @@ describe('sqlite schema migrations', () => {
   // Windows teardown of freshly closed SQLite sidecars can hold brief
   // file locks; the retry helper needs its growing backoff, so this test
   // carries an explicit (non-default) timeout instead of a fixed sleep.
-  it('fails closed on an unsupported newer schema without mutating the database', { timeout: 120_000 }, async () => {
-    const dir = await mkdtemp(join(tmpdir(), 'vict-mig-'));
-    try {
-      const path = join(dir, 'future.db');
-      const stores = createSqliteStores({ path });
-      await stores.dispose();
-
-      // Simulate a database written by a future Vict version.
-      const before = await readFile(path);
-      const db = new DatabaseSync(path);
-      db.exec(
-        "INSERT INTO vict_schema_migration (version, name, applied_at) VALUES (999999, 'future', '2026-01-01T00:00:00.000Z');",
-      );
-      db.close();
-
-      let error: { code?: string } | undefined;
+  it(
+    'fails closed on an unsupported newer schema without mutating the database',
+    { timeout: 120_000 },
+    async () => {
+      const dir = await mkdtemp(join(tmpdir(), 'vict-mig-'));
       try {
-        createSqliteStores({ path });
-      } catch (cause) {
-        error = cause as { code?: string };
-      }
-      expect(error?.code).toBe('VICT_STORE_UNSUPPORTED_SCHEMA');
+        const path = join(dir, 'future.db');
+        const stores = createSqliteStores({ path });
+        await stores.dispose();
 
-      // Fail closed: the file was not modified by the rejected open.
-      const db2 = new DatabaseSync(path);
-      const row = db2.prepare('SELECT MAX(version) AS v FROM vict_schema_migration;').get() as {
-        v: number;
-      };
-      expect(row.v).toBe(999999);
-      const tables = db2
-        .prepare(
-          "SELECT name FROM sqlite_master WHERE type = 'table' AND name LIKE 'vict%' ORDER BY name;",
-        )
-        .all() as unknown as { name: string }[];
-      expect(tables.map((t) => t.name)).toEqual([
-        'vict_activation',
-        'vict_activation_selection',
-        'vict_agent_activation',
-        'vict_agent_deletion_intent',
-        'vict_agent_deletion_receipt',
-        'vict_attempt',
-        'vict_branch_result',
-        'vict_cancellation_request',
-        'vict_operator_resolution',
-        'vict_run',
-        'vict_run_event',
-        'vict_schema_migration',
-        'vict_signal_receipt',
-        'vict_timer',
-        'vict_token',
-        'vict_wait',
-      ]);
-      db2.close();
-      // Byte-level identity is not required (SQLite may touch the header on
-      // open); structural identity above is the fail-closed proof.
-      void before;
-      // The disposable directory is removed immediately after the final
-      // connection closes; the retry helper is the backstop for lingering
-      // Windows WAL-sidecar locks.
-      try {
-        rmSync(path, { force: true });
-      } catch {
-        // retryRm below handles lingering locks.
+        // Simulate a database written by a future Vict version.
+        const before = await readFile(path);
+        const db = new DatabaseSync(path);
+        db.exec(
+          "INSERT INTO vict_schema_migration (version, name, applied_at) VALUES (999999, 'future', '2026-01-01T00:00:00.000Z');",
+        );
+        db.close();
+
+        let error: { code?: string } | undefined;
+        try {
+          createSqliteStores({ path });
+        } catch (cause) {
+          error = cause as { code?: string };
+        }
+        expect(error?.code).toBe('VICT_STORE_UNSUPPORTED_SCHEMA');
+
+        // Fail closed: the file was not modified by the rejected open.
+        const db2 = new DatabaseSync(path);
+        const row = db2.prepare('SELECT MAX(version) AS v FROM vict_schema_migration;').get() as {
+          v: number;
+        };
+        expect(row.v).toBe(999999);
+        const tables = db2
+          .prepare(
+            "SELECT name FROM sqlite_master WHERE type = 'table' AND name LIKE 'vict%' ORDER BY name;",
+          )
+          .all() as unknown as { name: string }[];
+        expect(tables.map((t) => t.name)).toEqual([
+          'vict_activation',
+          'vict_activation_selection',
+          'vict_actor',
+          'vict_agent_activation',
+          'vict_agent_approval',
+          'vict_agent_deletion_intent',
+          'vict_agent_deletion_receipt',
+          'vict_agent_stream',
+          'vict_agent_stream_event',
+          'vict_agent_tool_invocation',
+          'vict_agent_turn',
+          'vict_agent_turn_cancel',
+          'vict_attempt',
+          'vict_audit_event',
+          'vict_branch_result',
+          'vict_cancellation_request',
+          'vict_changeset',
+          'vict_changeset_approval',
+          'vict_operator_resolution',
+          'vict_release',
+          'vict_release_selection',
+          'vict_run',
+          'vict_run_event',
+          'vict_schema_migration',
+          'vict_signal_receipt',
+          'vict_timer',
+          'vict_token',
+          'vict_wait',
+        ]);
+        db2.close();
+        // Byte-level identity is not required (SQLite may touch the header on
+        // open); structural identity above is the fail-closed proof.
+        void before;
+        // The disposable directory is removed immediately after the final
+        // connection closes; the retry helper is the backstop for lingering
+        // Windows WAL-sidecar locks.
+        try {
+          rmSync(path, { force: true });
+        } catch {
+          // retryRm below handles lingering locks.
+        }
+      } finally {
+        await retryRm(dir);
       }
-    } finally {
-      await retryRm(dir);
-    }
-  });
+    },
+  );
 
   it('a partially applied migration does not leave a falsely advanced version', async () => {
     const dir = await mkdtemp(join(tmpdir(), 'vict-mig-'));
@@ -340,7 +356,6 @@ describe('sqlite schema migrations', () => {
   });
 });
 
-
 it('probe at end of worker', { timeout: 120_000 }, async () => {
   const dir = await mkdtemp(join(tmpdir(), 'vict-mig-probe-'));
   try {
@@ -348,13 +363,28 @@ it('probe at end of worker', { timeout: 120_000 }, async () => {
     const stores = createSqliteStores({ path });
     await stores.dispose();
     const db = new DatabaseSync(path);
-    db.exec("INSERT INTO vict_schema_migration (version, name, applied_at) VALUES (999999, 'future', 'z');");
+    db.exec(
+      "INSERT INTO vict_schema_migration (version, name, applied_at) VALUES (999999, 'future', 'z');",
+    );
     db.close();
-    try { createSqliteStores({ path }); } catch (e) { void e; }
+    try {
+      createSqliteStores({ path });
+    } catch (e) {
+      void e;
+    }
     const db2 = new DatabaseSync(path);
     db2.close();
-    try { rmSync(dir, { recursive: true, force: true }); console.log('END-PROBE-RM::OK'); }
-    catch (e: unknown) { console.log('END-PROBE-RM::FAILED ' + String((e as { code?: string }).code) + ' | ' + String((e as Error).message).slice(0, 150)); }
+    try {
+      rmSync(dir, { recursive: true, force: true });
+      console.log('END-PROBE-RM::OK');
+    } catch (e: unknown) {
+      console.log(
+        'END-PROBE-RM::FAILED ' +
+          String((e as { code?: string }).code) +
+          ' | ' +
+          String((e as Error).message).slice(0, 150),
+      );
+    }
   } finally {
     void dir;
   }

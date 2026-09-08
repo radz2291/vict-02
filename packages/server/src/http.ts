@@ -136,7 +136,6 @@ function readBody(req: IncomingMessage, res: ServerResponse): Promise<string> {
   return new Promise((resolve, reject) => {
     const chunks: Buffer[] = [];
     let size = 0;
-    let tooLarge = false;
     req.on('data', (chunk: Buffer) => {
       size += chunk.length;
       if (size > MAX_BODY_BYTES) {
@@ -202,7 +201,7 @@ const POST_ROUTES: Readonly<Record<string, () => string>> = {
 
 /** Create the composed VICT HTTP + SSE server (not yet listening). */
 export function createVictHttpServer(options: VictHttpServerOptions): VictHttpServer {
-  let boundPort = 0;
+  const boundPort = 0;
   const server =
     options.server ??
     createServer((req, res) => {
@@ -285,7 +284,7 @@ export function createVictHttpServer(options: VictHttpServerOptions): VictHttpSe
     const actor = await authenticate(req);
 
     const isMutation = req.method === 'POST' || req.method === 'PUT' || req.method === 'DELETE';
-    let body = '';
+    let body: string;
     if (req.method === 'POST' || req.method === 'PUT') {
       const contentType = req.headers['content-type'];
       if (contentType === undefined || !contentType.includes('application/json')) {

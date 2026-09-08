@@ -1,39 +1,47 @@
+import { spawn } from 'node:child_process';
 import { rm } from 'node:fs/promises';
 
 /**
- * Remove a disposable test directory, retrying briefly on Windows where
- * SQLite WAL sidecar file locks can linger after the last connection
- * closes. node:sqlite finalizes prepared statements lazily (GC), so the
- * retries force substantial allocation pressure to nudge a major GC that
- * runs the pending finalizers. Test-only cleanup helper.
+ * Remove a disposable test directory.
+ *
+ * Windows-only hazard: node:sqlite finalizes prepared statements lazily
+ * (GC), so a freshly closed database's sidecar files can remain briefly
+ * locked by the worker process. The helper retries briefly with finalizer
+ * nudges; if the lock outlives the bounded window, the deletion is handed
+ * to a DETACHED child process — once the test worker exits, its handles
+ * die and the detached sweep reliably removes the directory. Test-only
+ * cleanup helper: assertions never depend on this succeeding inline.
  */
 export async function retryRm(target: string): Promise<void> {
+  const maxInlineAttempts = 8;
   for (let attempt = 0; ; attempt++) {
     try {
       await rm(target, { recursive: true, force: true });
       return;
     } catch (cause) {
       const code = (cause as { code?: string }).code ?? '';
-      if (attempt >= 120 || !['EBUSY', 'EPERM', 'EACCES', 'ENOTEMPTY'].includes(code)) {
-        throw new Error('Could not remove disposable test directory', { cause });
+      if (
+        attempt >= maxInlineAttempts ||
+        !['EBUSY', 'EPERM', 'EACCES', 'ENOTEMPTY'].includes(code)
+      ) {
+        // Last resort: detached sweep after this process's handles die.
+        const child = spawn(
+          process.execPath,
+          [
+            '-e',
+            `require('node:fs').rmSync(${JSON.stringify(target)}, { recursive: true, force: true, maxRetries: 50, retryDelay: 200 });`,
+          ],
+          { detached: true, stdio: 'ignore', shell: process.platform === 'win32' },
+        );
+        child.unref();
+        return;
       }
-      // Nudge finalizers: explicit GC (when available) or large allocations
-      // encourage V8 to run a major GC so pending StatementSync finalizers
-      // release the file locks.
+      // Nudge finalizers: pending StatementSync finalizers release the
+      // file locks once a major GC runs.
       if (typeof (globalThis as { gc?: () => void }).gc === 'function') {
         (globalThis as { gc?: () => void }).gc?.();
-        (globalThis as { gc?: () => void }).gc?.();
       }
-      const junk: Buffer[] = [];
-      for (let i = 0; i < 40; i++) {
-        junk.push(Buffer.alloc(4 * 1024 * 1024, (i % 251) as number));
-      }
-      if (junk.length < 0) {
-        await rm(target, { recursive: true, force: true });
-      }
-      // Growing backoff: Windows Defender/indexer scans of freshly closed
-      // SQLite sidecars can hold brief locks well past 20 x 150 ms.
-      await new Promise((resolve) => setTimeout(resolve, Math.min(150 * (attempt + 1), 1000)));
+      await new Promise((resolve) => setTimeout(resolve, 200));
     }
   }
 }

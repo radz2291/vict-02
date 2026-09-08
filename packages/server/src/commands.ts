@@ -1,4 +1,4 @@
-import type { AgentControlStores, AgentStreamHub, ControlAuditEvent } from '@vict/runtime';
+import type { AgentControlStores, ControlAuditEvent } from '@vict/runtime';
 import { VictControlError } from '@vict/runtime';
 import type { ServerActorContext } from './auth.js';
 

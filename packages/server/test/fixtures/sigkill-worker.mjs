@@ -33,7 +33,7 @@ const readyFile = args.get('--ready-file');
 const effectsFile = args.get('--effects');
 
 const { createSqliteAgentControlStores } = await import('@vict/store-sqlite');
-const { AgentStreamHub, authenticatedActorContext, createInMemoryStores, InMemoryActorDirectory } =
+const { AgentStreamHub, createInMemoryStores, InMemoryActorDirectory } =
   await import('@vict/runtime');
 const { ControlPlaneService, AgentTurnService } = await import('@vict/control');
 const {
@@ -49,17 +49,6 @@ const TOKENS = {
   'vict-test-token-operator': 'actor-operator',
   'vict-test-token-approver': 'actor-approver',
 };
-
-function actorContext(actorId) {
-  const roles =
-    actorId === 'actor-user'
-      ? ['developer', 'approver', 'operator', 'administrator']
-      : actorId === 'actor-operator'
-        ? ['operator']
-        : ['approver'];
-  const record = { actorId, status: 'active', roles, createdAt: 0 };
-  return { ...authenticatedActorContext(record, actorId), presentedTokenKind: 'local-test' };
-}
 
 const stores = createSqliteAgentControlStores({ path: dbPath });
 const directory = new InMemoryActorDirectory();

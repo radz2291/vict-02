@@ -1,6 +1,6 @@
 import { afterAll, describe, expect, it } from 'vitest';
 import { AGENT_STREAM_SCHEMA, type AgentStreamEvent } from '@vict/contracts';
-import { bearer, httpFixture, userToken, TEST_ACTOR_TOKENS } from './fixtures.js';
+import { httpFixture } from './fixtures.js';
 import type { AgentControlStores } from '@vict/runtime';
 
 /**
@@ -267,8 +267,6 @@ describe('resumable SSE (real HTTP, vict.agent-stream@1)', () => {
       token: 'vict-test-token-approver',
     });
     expect(denied.status).toBe(403);
-    void TEST_ACTOR_TOKENS;
-    void userToken;
   });
 
   it('slow-client backpressure coalesces consecutive deltas and never drops non-delta events', async () => {

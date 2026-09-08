@@ -1,5 +1,21 @@
-import type { ExpectStatic } from 'vitest';
-import { describe, it } from 'vitest';
+/** Minimal test-runner seam: the caller supplies the framework bindings. */
+export interface ConformanceRunner {
+  describe(name: string, fn: () => void): void;
+  it(name: string, fn: () => Promise<void> | void): void;
+  expect<T>(actual: T): {
+    toBe(expected: T): void;
+    toEqual(expected: unknown): void;
+    toHaveLength(n: number): void;
+    toBeDefined(): void;
+    toContain(expected: unknown): void;
+    resolves: {
+      toEqual(expected: unknown): Promise<void>;
+      toBeDefined(): Promise<void>;
+      toBeUndefined(): Promise<void>;
+    };
+    rejects: { toThrow(pattern?: RegExp | string): Promise<void> };
+  };
+}
 import { createInMemoryAgentControlStores } from './control-in-memory.js';
 import type {
   AgentApprovalRecord,
@@ -189,7 +205,7 @@ function makeApprovalFixture(
 /** Build and run the conformance suite against one store factory. */
 export function runAgentControlConformanceSuite(
   factory: AgentControlConformanceFactory,
-  runner: { describe: typeof describe; it: typeof it; expect: ExpectStatic },
+  runner: ConformanceRunner,
 ): void {
   const { it: t, expect } = runner;
 

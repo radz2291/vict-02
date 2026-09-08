@@ -3,7 +3,6 @@ import {
   AgentStreamHub,
   type AgentControlStores,
 } from '@vict/runtime';
-import { authenticatedActorContext, type ActorRecord } from '@vict/runtime';
 import { ControlPlaneService } from '@vict/control';
 import {
   createLocalTestAuthenticator,
@@ -140,10 +139,12 @@ export async function get(
   const response = await fetch(`http://127.0.0.1:${port}${path}`, { headers });
   const text = await response.text();
   let body: Record<string, unknown> = {};
-  try {
-    body = text.length > 0 ? (JSON.parse(text) as Record<string, unknown>) : {};
-  } catch {
-    body = {};
+  if (text.length > 0) {
+    try {
+      body = JSON.parse(text) as Record<string, unknown>;
+    } catch {
+      body = {};
+    }
   }
   return { status: response.status, body, raw: text };
 }

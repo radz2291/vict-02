@@ -31,8 +31,6 @@ import { join, resolve } from 'node:path';
 
 const repoRoot = resolve(new URL('..', import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '$1'));
 let failures = 0;
-const shell = process.platform === 'win32';
-const npm = shell ? 'npm.cmd' : 'npm';
 
 function run(command, args, options = {}) {
   const result = spawnSync(command, args, {
@@ -98,13 +96,6 @@ console.log('\n=== verify:stage6b — package inspection (Stage 06B) ===');
     'packages/control/src',
     'packages/cli/src',
   ];
-  const forbidden = [
-    /@mastra\//,
-    /from '@vict\/mastra'/,
-    /from '@vict\/store-sqlite'/,
-    /node:sqlite/,
-    /better-sqlite3/,
-  ];
   let neutralClean = true;
   for (const dir of neutralDirs) {
     const result = run(
@@ -141,7 +132,6 @@ if (bad.length > 0) { console.error(bad.join(',')); process.exit(1); }
   // The server package composes stores only through declared interfaces;
   // it must not embed a second orchestration engine or a raw provider.
   const serverDir = join(repoRoot, 'packages/server/src');
-  const serverForbidden = [/@mastra\//, /from '@vict\/mastra'/, /openai/, /anthropic/];
   const serverResult = run(
     process.execPath,
     [

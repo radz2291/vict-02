@@ -42,15 +42,6 @@ function bounded(value: unknown, field: string, max = 128): string {
 }
 
 /** Hostile-container containment: any throw from a filter object is a stable error. */
-function containsHostile(value: unknown): value is Record<string, unknown> {
-  if (typeof value !== 'object' || value === null || Array.isArray(value)) {
-    throw new VictControlError(
-      'VICT_APPDATA_FILTER_INVALID',
-      'The filter container must be a plain object.',
-    );
-  }
-  return true;
-}
 
 /** The remote resource query boundary. */
 export async function remoteQuery(

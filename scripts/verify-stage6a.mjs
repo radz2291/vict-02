@@ -160,6 +160,7 @@ console.log('\n=== verify:stage6a — package inspection ===');
       '@mastra/memory',
       '@mastra/observability',
       '@vict/contracts',
+      '@vict/control',
       '@vict/kernel',
       '@vict/runtime',
       '@vict/sdk',
@@ -225,11 +226,20 @@ console.log('\n=== verify:stage6a — package inspection ===');
   }
   check(!neutralImportsAdapter, 'no neutral package imports @vict/mastra (acyclic direction)');
 
-  // Base neutral declarations contain no Mastra references. The lowercase
-  // token is scanned too: after the 'memory-store' rename, no neutral
-  // emitted declaration may contain ANY Mastra-specific type or lifecycle
-  // token (including the former 'mastra-memory' step literal).
-  const forbidden = ['@mastra/', 'Mastra', 'mastra', 'LibSQLStore', 'ZodType'];
+  // Base neutral declarations contain no Mastra-specific references. Since
+  // Stage 06B, neutral correlation identifiers (mastraResourceId,
+  // mastraRunId) legitimately contain the substring 'mastra'; the gate
+  // therefore matches Mastra-specific tokens (the @mastra scope, Mastra
+  // type identifiers, standalone 'mastra' tokens, the former
+  // 'mastra-memory' step literal) rather than any substring occurrence.
+  const forbiddenPatterns = [
+    /@mastra\//,
+    /\bMastra\b/,
+    /\bmastra\b/,
+    /mastra-memory/,
+    /\bLibSQLStore\b/,
+    /\bZodType\b/,
+  ];
   let neutralViolation = '';
   for (const name of ['contracts', 'sdk', 'kernel', 'runtime']) {
     const distDir = join(repoRoot, 'packages', name, 'dist');
@@ -237,10 +247,13 @@ console.log('\n=== verify:stage6a — package inspection ===');
       if (!entry.endsWith('.d.ts')) {
         continue;
       }
-      const content = readFileSync(join(distDir, entry), 'utf8');
-      for (const token of forbidden) {
-        if (content.includes(token)) {
-          neutralViolation = `@vict/${name}/dist/${entry} contains '${token}'`;
+      const raw = readFileSync(join(distDir, entry), 'utf8');
+      // Strip comments first: the gate inspects the emitted declaration
+      // surface (types/API), not documentation prose.
+      const content = raw.replace(/\/\*[\s\S]*?\*\//g, '').replace(/^\s*\/\/.*$/gm, '');
+      for (const pattern of forbiddenPatterns) {
+        if (pattern.test(content)) {
+          neutralViolation = `@vict/${name}/dist/${entry} contains ${String(pattern)}`;
         }
       }
     }
@@ -319,7 +332,7 @@ try {
   console.log('\n=== verify:stage6a — npm pack all packages ===');
   const neutralPackages = ['contracts', 'sdk', 'kernel', 'runtime'];
   const tarballs = {};
-  for (const name of [...neutralPackages, 'mastra']) {
+  for (const name of [...neutralPackages, 'control', 'mastra']) {
     const packageDir = resolve(repoRoot, 'packages', name);
     const pack = run(npm, ['pack', packageDir, '--pack-destination', work], {
       capture: true,
@@ -518,10 +531,13 @@ try {
           dependencies: {
             '@vict/mastra': `file:${tarballs['@vict/mastra']}`,
             ...Object.fromEntries(
-              ['@vict/contracts', '@vict/sdk', '@vict/kernel', '@vict/runtime'].map((name) => [
-                name,
-                `file:${tarballs[name]}`,
-              ]),
+              [
+                '@vict/contracts',
+                '@vict/control',
+                '@vict/sdk',
+                '@vict/kernel',
+                '@vict/runtime',
+              ].map((name) => [name, `file:${tarballs[name]}`]),
             ),
             ...pinned,
           },
