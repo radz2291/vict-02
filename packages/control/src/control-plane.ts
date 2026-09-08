@@ -17,6 +17,7 @@ import {
   ControlRunOperationOutcome,
   ControlRunRecord,
   ReleaseSelectionRecord,
+  VictStoreError,
   changeSetOperationIdentity,
   controlContentHash,
 } from '@vict/runtime';
@@ -856,13 +857,26 @@ export class ControlPlaneService {
     await this.#verifyCommitEvidence(record);
     // Prevalidate the COMPLETE operation set before ANY mutation.
     await this.#prevalidateOperations(record);
+    // Capture the base-subject guard from the SAME observed state that the
+    // stale-base check just verified: the guard is captured BEFORE the
+    // status CAS so two ChangeSets racing on one base can never both pass
+    // the absent-selection window.
+    let capturedBaseGuard:
+      { subjectId: string; expectedSelectionRevision: number | 'none' } | undefined;
+    if (record.base.kind === 'activation') {
+      const baseSelection = await this.#catalog.getSelection(record.base.subjectId);
+      capturedBaseGuard = {
+        subjectId: record.base.subjectId,
+        expectedSelectionRevision: baseSelection?.selectionRevision ?? 'none',
+      };
+    }
     // One winner: approved → applying is a durable compare-and-set.
     record = await this.#stores.control.compareAndSetChangeSetStatus({
       changesetId: record.changesetId,
       expectedStatus: 'approved',
       nextStatus: 'applying',
     });
-    return this.#resumeCommit(actor, record);
+    return this.#resumeCommit(actor, record, capturedBaseGuard);
   }
 
   /**
@@ -891,10 +905,13 @@ export class ControlPlaneService {
   async #resumeCommit(
     actor: AuthenticatedActorContext,
     record: ChangeSetRecord,
+    capturedBaseGuard?: { subjectId: string; expectedSelectionRevision: number | 'none' },
   ): Promise<{ record: ChangeSetRecord; applied: string[] }> {
     const receipts = await this.#stores.control.listOperationReceipts(record.changesetId);
     const receiptByIndex = new Map(receipts.map((receipt) => [receipt.operationIndex, receipt]));
-    const guards = await this.#projectOperationGuards(record);
+    const guards: (OperationGuard | undefined)[] = [
+      ...(await this.#projectOperationGuards(record, capturedBaseGuard)),
+    ];
     const applied: string[] = [];
     for (let index = 0; index < record.operations.length; index += 1) {
       const operation = record.operations[index] as ChangeSetOperation;
@@ -920,7 +937,9 @@ export class ControlPlaneService {
         }
         // PREPARED intent (crash between intent and settlement): verify the
         // target state — if the effect already exists, settle the receipt
-        // WITHOUT repeating it; otherwise re-apply through the fenced path.
+        // WITHOUT repeating it; otherwise re-apply through the fenced path
+        // with the RECEIPT's captured subject guard (verbatim), never a
+        // re-read of the moved live state.
         if (await this.#operationEffectExists(record, index, operation, operationDigest)) {
           await this.#stores.control.markOperationApplied({
             changesetId: record.changesetId,
@@ -929,6 +948,16 @@ export class ControlPlaneService {
           });
           applied.push(operation.kind);
           continue;
+        }
+        if (existing.guardJson !== undefined) {
+          try {
+            guards[index] = JSON.parse(existing.guardJson) as OperationGuard;
+          } catch {
+            throw new VictControlError(
+              'VICT_CONTROL_OPERATION_IDENTITY_CONFLICT',
+              'The prepared operation intent carries an unreadable subject guard.',
+            );
+          }
         }
       }
       if (existing === undefined) {
@@ -983,6 +1012,7 @@ export class ControlPlaneService {
    */
   async #projectOperationGuards(
     record: ChangeSetRecord,
+    capturedBaseGuard?: { subjectId: string; expectedSelectionRevision: number | 'none' },
   ): Promise<readonly (OperationGuard | undefined)[]> {
     const guards: (OperationGuard | undefined)[] = new Array(record.operations.length).fill(
       undefined,
@@ -999,7 +1029,15 @@ export class ControlPlaneService {
               ? operation.activationVersion
               : operation.targetActivationVersion;
           let expectedRevision: number | 'none';
-          if (activationProjected.has(operation.graphId)) {
+          if (
+            capturedBaseGuard !== undefined &&
+            capturedBaseGuard.subjectId === operation.graphId
+          ) {
+            // The base-subject guard was captured BEFORE the status CAS
+            // (from the same observed state the stale-base check
+            // verified) — never re-read after it.
+            expectedRevision = capturedBaseGuard.expectedSelectionRevision;
+          } else if (activationProjected.has(operation.graphId)) {
             expectedRevision = activationProjected.get(operation.graphId) as number | 'none';
           } else if (
             record.base.kind === 'activation' &&
@@ -1122,6 +1160,38 @@ export class ControlPlaneService {
     }
   }
 
+  /**
+   * Fenced activation selection: translates the store-level selection
+   * conflict into the stable stale-base control error (the loser of a
+   * base race receives a structured control-plane conflict, never a raw
+   * store error).
+   */
+  async #selectActivationFenced(
+    graphId: string,
+    activationVersion: string,
+    guard: OperationGuard | undefined,
+    operationDigest: string,
+  ) {
+    try {
+      return await this.#catalog.select({
+        graphId,
+        activationVersion,
+        ...(guard?.expectedSelectionRevision !== undefined
+          ? { expectedSelectionRevision: guard.expectedSelectionRevision }
+          : {}),
+        operationId: operationDigest,
+      });
+    } catch (error) {
+      if (error instanceof VictStoreError && error.code === 'VICT_STORE_SELECTION_CONFLICT') {
+        throw new VictControlError(
+          'VICT_CONTROL_BASE_STALE',
+          'The activation selection changed since the ChangeSet base was verified; the guarded selection lost the base race.',
+        );
+      }
+      throw error;
+    }
+  }
+
   /** Apply ONE closed operation under its operation identity and guard. */
   async #applyOperation(
     actor: AuthenticatedActorContext,
@@ -1132,14 +1202,12 @@ export class ControlPlaneService {
   ): Promise<void> {
     switch (operation.kind) {
       case 'select-activation': {
-        const selection = await this.#catalog.select({
-          graphId: operation.graphId,
-          activationVersion: operation.activationVersion,
-          ...(guard?.expectedSelectionRevision !== undefined
-            ? { expectedSelectionRevision: guard.expectedSelectionRevision }
-            : {}),
-          operationId: operationDigest,
-        });
+        const selection = await this.#selectActivationFenced(
+          operation.graphId,
+          operation.activationVersion,
+          guard,
+          operationDigest,
+        );
         await this.#auditWithId(
           this.#deterministicAuditId('activation.selected', operationDigest),
           actor.actorId,
@@ -1152,14 +1220,12 @@ export class ControlPlaneService {
         return;
       }
       case 'rollback-activation': {
-        const selection = await this.#catalog.select({
-          graphId: operation.graphId,
-          activationVersion: operation.targetActivationVersion,
-          ...(guard?.expectedSelectionRevision !== undefined
-            ? { expectedSelectionRevision: guard.expectedSelectionRevision }
-            : {}),
-          operationId: operationDigest,
-        });
+        const selection = await this.#selectActivationFenced(
+          operation.graphId,
+          operation.targetActivationVersion,
+          guard,
+          operationDigest,
+        );
         await this.#auditWithId(
           this.#deterministicAuditId('activation.rolled-back', operationDigest),
           actor.actorId,

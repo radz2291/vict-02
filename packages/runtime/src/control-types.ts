@@ -39,8 +39,9 @@ export const CONTROL_ID_PATTERN = /^[A-Za-z0-9][A-Za-z0-9._:@-]{0,127}$/;
 /** Validate one bounded namespace identifier (throws a stable error). */
 export function assertControlId(value: unknown, field: string): asserts value is string {
   if (typeof value !== 'string' || !CONTROL_ID_PATTERN.test(value)) {
-    throw new Error(
-      `VICT_CONTROL_ID_INVALID: ${field} must be a bounded namespace identifier (at most 128 characters; letters, digits, '.', '_', ':', '@', '-').`,
+    throw new VictControlError(
+      'VICT_CONTROL_ID_INVALID',
+      `${field} must be a bounded namespace identifier (at most 128 characters; letters, digits, '.', '_', ':', '@', '-').`,
     );
   }
 }
@@ -48,7 +49,10 @@ export function assertControlId(value: unknown, field: string): asserts value is
 /** Stable bounded safe-integer validation. */
 export function assertControlTimestamp(value: unknown, field: string): asserts value is number {
   if (typeof value !== 'number' || !Number.isSafeInteger(value) || value < 0) {
-    throw new Error(`VICT_CONTROL_TIMESTAMP_INVALID: ${field} must be a finite epoch-ms integer.`);
+    throw new VictControlError(
+      'VICT_CONTROL_TIMESTAMP_INVALID',
+      `${field} must be a finite epoch-ms integer.`,
+    );
   }
 }
 
@@ -236,7 +240,10 @@ export function authenticatedActorContext(
   // Mismatch between the authenticated identity and any requested actor id
   // is denied: the authenticated record is the only authority.
   if (actor === undefined || actor.status !== 'active' || actor.actorId !== requestedActorId) {
-    throw new Error('VICT_ACTOR_UNAUTHENTICATED: the actor could not be authenticated.');
+    throw new VictControlError(
+      'VICT_ACTOR_UNAUTHENTICATED',
+      'VICT_ACTOR_UNAUTHENTICATED: the actor could not be authenticated.',
+    );
   }
   assertControlId(actor.actorId, 'actorId');
   return {
@@ -283,15 +290,19 @@ export class InMemoryActorDirectory implements ActorDirectory {
   async upsert(record: ActorRecord): Promise<void> {
     assertControlId(record.actorId, 'actorId');
     if (record.status !== 'active' && record.status !== 'disabled') {
-      throw new Error('VICT_CONTROL_FIELD_INVALID: actor status must be active or disabled.');
+      throw new VictControlError(
+        'VICT_CONTROL_FIELD_INVALID',
+        'actor status must be active or disabled.',
+      );
     }
     if (!Array.isArray(record.roles)) {
-      throw new Error('VICT_CONTROL_FIELD_INVALID: actor roles must be an array.');
+      throw new VictControlError('VICT_CONTROL_FIELD_INVALID', 'actor roles must be an array.');
     }
     for (const role of record.roles) {
       if (!(ACTOR_ROLES as readonly string[]).includes(role)) {
-        throw new Error(
-          'VICT_CONTROL_FIELD_INVALID: actor roles must use the closed role vocabulary.',
+        throw new VictControlError(
+          'VICT_CONTROL_FIELD_INVALID',
+          'actor roles must use the closed role vocabulary.',
         );
       }
     }
@@ -811,14 +822,17 @@ export function validateChangeSetContent(input: {
   assertControlTimestamp(input.createdAt, 'createdAt');
   assertControlTimestamp(input.expiresAt, 'expiresAt');
   if (input.expiresAt <= input.createdAt) {
-    throw new Error('VICT_CONTROL_FIELD_INVALID: a ChangeSet must expire after its creation.');
+    throw new VictControlError(
+      'VICT_CONTROL_FIELD_INVALID',
+      'a ChangeSet must expire after its creation.',
+    );
   }
   if (
     typeof input.base !== 'object' ||
     input.base === null ||
     !['activation', 'release'].includes((input.base as ChangeSetBase).kind)
   ) {
-    throw new Error('VICT_CONTROL_FIELD_INVALID: the ChangeSet base is malformed.');
+    throw new VictControlError('VICT_CONTROL_FIELD_INVALID', 'the ChangeSet base is malformed.');
   }
   // The base is a CLOSED plain-data structure: exactly its declared members,
   // exact string types, no accessors/symbols/hostile containers.
@@ -828,13 +842,13 @@ export function validateChangeSetContent(input: {
     CHANGESET_BASE_FIELDS as readonly string[],
   );
   if (baseCapture.kind !== 'activation' && baseCapture.kind !== 'release') {
-    throw new Error('VICT_CONTROL_FIELD_INVALID: the ChangeSet base is malformed.');
+    throw new VictControlError('VICT_CONTROL_FIELD_INVALID', 'the ChangeSet base is malformed.');
   }
   if (
     typeof baseCapture.subjectId !== 'string' ||
     typeof baseCapture.expectedVersion !== 'string'
   ) {
-    throw new Error('VICT_CONTROL_FIELD_INVALID: the ChangeSet base is malformed.');
+    throw new VictControlError('VICT_CONTROL_FIELD_INVALID', 'the ChangeSet base is malformed.');
   }
   assertControlId(baseCapture.subjectId, 'base.subjectId');
   assertControlId(baseCapture.expectedVersion, 'base.expectedVersion');
@@ -848,23 +862,28 @@ export function validateChangeSetContent(input: {
     input.operations.length === 0 ||
     input.operations.length > 64
   ) {
-    throw new Error(
-      'VICT_CONTROL_FIELD_INVALID: a ChangeSet must declare between 1 and 64 closed operations.',
+    throw new VictControlError(
+      'VICT_CONTROL_FIELD_INVALID',
+      'a ChangeSet must declare between 1 and 64 closed operations.',
     );
   }
   // Sparse arrays are hostile captures, never operation lists: every index
   // must be an OWN present member.
   for (let index = 0; index < input.operations.length; index += 1) {
     if (!Object.prototype.hasOwnProperty.call(input.operations, index)) {
-      throw new Error(
-        'VICT_CONTROL_FIELD_INVALID: the ChangeSet operation list must be a dense array.',
+      throw new VictControlError(
+        'VICT_CONTROL_FIELD_INVALID',
+        'the ChangeSet operation list must be a dense array.',
       );
     }
   }
   const operations = input.operations.map((operation) => validateChangeSetOperation(operation));
   assertBoundedString(input.rationale, 'rationale', 2000);
   if (!['low', 'medium', 'high'].includes(input.riskClass)) {
-    throw new Error('VICT_CONTROL_FIELD_INVALID: riskClass must be low, medium, or high.');
+    throw new VictControlError(
+      'VICT_CONTROL_FIELD_INVALID',
+      'riskClass must be low, medium, or high.',
+    );
   }
   if (
     typeof input.requiredApproverCount !== 'number' ||
@@ -872,8 +891,9 @@ export function validateChangeSetContent(input: {
     input.requiredApproverCount < 1 ||
     input.requiredApproverCount > 8
   ) {
-    throw new Error(
-      'VICT_CONTROL_FIELD_INVALID: requiredApproverCount must be a safe integer between 1 and 8.',
+    throw new VictControlError(
+      'VICT_CONTROL_FIELD_INVALID',
+      'requiredApproverCount must be a safe integer between 1 and 8.',
     );
   }
   // The content identity is derived from the VALIDATED VICT-owned captures

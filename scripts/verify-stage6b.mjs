@@ -242,6 +242,14 @@ runVitestSuites('control-plane lifecycle, commit saga, authoritative evidence, a
   'packages/control/test/control-plane.test.ts',
 ]);
 
+runVitestSuites('Stage 06B final reliability suites (R1-R6, activation CAS, closed structures)', [
+  'packages/runtime/test/changeset-structure.test.ts',
+  'packages/control/test/control-plane-reliability.test.ts',
+  'packages/mastra/test/tool-bridge-reliability.test.ts',
+  'packages/store-sqlite/test/reliability-restart.test.ts',
+  'packages/server/test/command-reliability.test.ts',
+]);
+
 runVitestSuites('public-API authorization matrix (real HTTP)', [
   'packages/server/test/authorization-matrix.test.ts',
 ]);
