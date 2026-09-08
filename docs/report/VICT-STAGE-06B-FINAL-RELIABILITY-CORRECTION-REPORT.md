@@ -15,8 +15,8 @@ Stage 06B verifier had already passed at the starting SHA.
 | Marker | SHA |
 | --- | --- |
 | Required starting SHA (= `origin/main` at start) | `d1bf385eb0e0c8052a05f8af195600565bf2c86b` |
-| Implementation SHA (last code/test commit) | `944bcdc1190a6c0c826fb27019bfef681c62f39a` |
-| Final remote SHA (after the report commit; fast-forward) | `1e8f2ec8178c5f812d00acf547305e71f93ec006` |
+| Implementation SHA (last code/test commit of this correction) | `944bcdc1190a6c0c826fb27019bfef681c62f39a` |
+| Final remote SHA | the head of `origin/main` after the final fast-forward push (see §10; this report is part of that push, so the exact value is read back from the remote — `git rev-parse origin/main` — rather than self-embedded here) |
 
 Commit chain (fast-forward only, no rewrites):
 
@@ -266,6 +266,14 @@ Correction:
   mutation-time fencing (a state change between evidence creation and
   commit still blocks the commit — tested for release and activation
   subjects, with state changes in between).
+
+### Final remote SHA
+
+```text
+git fetch origin main && git rev-parse origin/main
+→ b4e5fe76d2e6b87e1e7c37ab3ed2ebf6b593793a   (head of main at completion;
+   fast-forward from d1bf385; this report is carried by that push)
+```
 
 ## 10. Verification evidence
 
