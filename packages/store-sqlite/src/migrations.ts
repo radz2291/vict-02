@@ -612,6 +612,69 @@ export const SCHEMA_MIGRATIONS: readonly Migration[] = [
       );`,
     ],
   },
+  {
+    // Stage 06B final audit-readiness correction (migration 7):
+    // - operation receipts become a TWO-STATE protocol record (prepared
+    //   intent -> applied) with the serialized subject guard;
+    // - command idempotency receipts are NAMESPACED by (actor, command,
+    //   key) and carry the crash-recovery lease (owner, lease_until,
+    //   attempts);
+    // - release selections carry the ChangeSet operation identity
+    //   (idempotency/fencing anchor);
+    // - governance runs carry the safe simulation detail record.
+    version: 7,
+    name: 'stage-06b-final-audit-readiness-correction',
+    statements: [
+      `CREATE TABLE vict_changeset_operation_receipt_v7 (
+        changeset_id TEXT NOT NULL,
+        operation_index INTEGER NOT NULL,
+        operation_kind TEXT NOT NULL,
+        operation_digest TEXT NOT NULL,
+        effect_ref TEXT NOT NULL,
+        actor_id TEXT NOT NULL,
+        applied_at TEXT NOT NULL,
+        state TEXT NOT NULL CHECK (state IN ('prepared', 'applied')),
+        guard_json TEXT,
+        PRIMARY KEY (changeset_id, operation_index)
+      );`,
+      // Historical receipts are all `applied` (the v6 table only recorded
+      // post-effect receipts).
+      `INSERT INTO vict_changeset_operation_receipt_v7
+        (changeset_id, operation_index, operation_kind, operation_digest, effect_ref, actor_id, applied_at, state, guard_json)
+      SELECT changeset_id, operation_index, operation_kind, operation_digest, effect_ref, actor_id, applied_at, 'applied', NULL
+      FROM vict_changeset_operation_receipt;`,
+      `DROP TABLE vict_changeset_operation_receipt;`,
+      `ALTER TABLE vict_changeset_operation_receipt_v7 RENAME TO vict_changeset_operation_receipt;`,
+      `CREATE TABLE vict_command_idempotency_v7 (
+        actor_id TEXT NOT NULL,
+        command TEXT NOT NULL,
+        idempotency_key TEXT NOT NULL,
+        request_digest TEXT NOT NULL,
+        status TEXT NOT NULL CHECK (status IN ('pending', 'completed', 'failed')),
+        response_code TEXT,
+        result_json TEXT,
+        created_at TEXT NOT NULL,
+        settled_at TEXT,
+        owner TEXT,
+        lease_until TEXT,
+        attempts INTEGER NOT NULL DEFAULT 0,
+        PRIMARY KEY (actor_id, command, idempotency_key)
+      );`,
+      // Historical receipts migrate into their (actor, command, key)
+      // namespace with a settled (expired) lease profile.
+      `INSERT INTO vict_command_idempotency_v7
+        (actor_id, command, idempotency_key, request_digest, status, response_code, result_json, created_at, settled_at, owner, lease_until, attempts)
+      SELECT actor_id, command, idempotency_key, request_digest, status, response_code, result_json, created_at, settled_at, NULL, NULL, 1
+      FROM vict_command_idempotency;`,
+      `DROP TABLE vict_command_idempotency;`,
+      `ALTER TABLE vict_command_idempotency_v7 RENAME TO vict_command_idempotency;`,
+      `ALTER TABLE vict_release_selection ADD COLUMN operation_id TEXT;`,
+      `CREATE UNIQUE INDEX idx_vict_release_selection_operation
+        ON vict_release_selection (application_id, operation_id)
+        WHERE operation_id IS NOT NULL;`,
+      `ALTER TABLE vict_control_run ADD COLUMN detail_json TEXT;`,
+    ],
+  },
 ];
 
 /** The highest schema version this adapter understands. */

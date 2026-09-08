@@ -221,10 +221,13 @@ export type {
   ChangeSetValidationEvidence,
   CommandIdempotencyReceipt,
   CommandIdempotencyStore,
+  CommandIdempotencyName,
   ControlAuditAction,
   ControlAuditEvent,
   ControlPlaneStore,
+  ControlRunDetail,
   ControlRunKind,
+  ControlRunOperationOutcome,
   ControlRunRecord,
   ReleaseSelectionRecord,
 } from './control-types.js';
@@ -248,6 +251,8 @@ export {
   validateApplicationReleaseContent,
   validateChangeSetContent,
   validateChangeSetOperation,
+  validateStreamLedgerAppend,
+  changeSetOperationIdentity,
 } from './control-types.js';
 export { ActorScopeDeniedError, VictControlError } from './control-types.js';
 export {
@@ -264,6 +269,7 @@ export { AgentStreamHub } from './stream-hub.js';
 export type {
   AgentStreamHubOptions,
   AgentStreamReplay,
+  AgentStreamReplayStatus,
   AgentStreamSubscriber,
 } from './stream-hub.js';
 export {

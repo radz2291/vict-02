@@ -7,7 +7,12 @@ export interface ConformanceRunner {
     toEqual(expected: unknown): void;
     toHaveLength(n: number): void;
     toBeDefined(): void;
+    toBeUndefined(): void;
     toContain(expected: unknown): void;
+    not: {
+      toContain(expected: unknown): void;
+      toBe(expected: T): void;
+    };
     resolves: {
       toEqual(expected: unknown): Promise<void>;
       toBeDefined(): Promise<void>;
@@ -256,14 +261,36 @@ export function runAgentControlConformanceSuite(
         effectRef,
         actorId: 'actor-author',
         appliedAt: 6000 + index,
+        state: 'applied' as const,
+        guardJson: undefined,
       });
+      // The two-state operation protocol: a PREPARED intent is recorded
+      // first; conflicting content under the SAME identity fails closed;
+      // the applied state settles it idempotently.
+      const intent = {
+        ...receipt(0, 'op:digest-0'),
+        state: 'prepared' as const,
+        guardJson: '{"expectedBaseVersion":"release-cf-1"}',
+      };
+      expect(await stores.control.recordOperationIntent(intent)).toBe('recorded');
+      expect(await stores.control.recordOperationIntent(intent)).toBe('exists'); // idempotent
+      await expect(
+        stores.control.recordOperationIntent({
+          ...intent,
+          operationDigest: 'digest-DIFFERENT',
+        }),
+      ).rejects.toThrow(/conflicting content fails closed|different content/i);
+      const marked = await stores.control.markOperationApplied({
+        changesetId: 'changeset-cf-1',
+        operationIndex: 0,
+        at: 6100,
+      });
+      expect(marked.state).toBe('applied');
       await stores.control.recordOperationReceipt(receipt(1, 'effect:b'));
-      await stores.control.recordOperationReceipt(receipt(0, 'effect:a'));
-      await stores.control.recordOperationReceipt(receipt(0, 'effect:a')); // idempotent
       const list = await stores.control.listOperationReceipts('changeset-cf-1');
       expect(list.map((entry) => entry.operationIndex)).toEqual([0, 1]);
       await expect(
-        stores.control.recordOperationReceipt(receipt(0, 'effect:CHANGED')),
+        stores.control.recordOperationReceipt({ ...receipt(0, 'effect:a'), appliedAt: 9999 }),
       ).rejects.toThrow(/different content/);
     } finally {
       await stores.dispose();
@@ -302,54 +329,370 @@ export function runAgentControlConformanceSuite(
     },
   );
 
-  t(`[${factory.name}] command idempotency: claim/complete/fail with one winner`, async () => {
-    const stores = await factory.create();
-    try {
-      const receipt = {
-        idempotencyKey: 'key-cf-1',
-        actorId: 'actor-author',
-        command: 'changeset.propose',
-        requestDigest: 'digest-cf-1',
-        status: 'pending',
-        responseCode: undefined,
-        resultJson: undefined,
-        createdAt: 7000,
-        settledAt: undefined,
-      } as const;
-      expect(await stores.commandIdempotency.claimReceipt(receipt)).toBe('claimed');
-      expect(await stores.commandIdempotency.claimReceipt(receipt)).toBe('exists');
-      await stores.commandIdempotency.completeReceipt({
-        idempotencyKey: 'key-cf-1',
-        resultJson: '{"applied":["select-release"]}',
-        at: 7001,
-      });
-      const completed = await stores.commandIdempotency.getReceipt('key-cf-1');
-      expect(completed?.status).toBe('completed');
-      expect(completed?.resultJson).toBe('{"applied":["select-release"]}');
-      // A settled receipt is never overwritten.
-      await stores.commandIdempotency.failReceipt({
-        idempotencyKey: 'key-cf-1',
-        responseCode: 'VICT_X',
-        at: 7002,
-      });
-      expect((await stores.commandIdempotency.getReceipt('key-cf-1'))?.status).toBe('completed');
-      // A failure disposition round-trips.
-      await stores.commandIdempotency.claimReceipt({
-        ...receipt,
-        idempotencyKey: 'key-cf-2',
-      });
-      await stores.commandIdempotency.failReceipt({
-        idempotencyKey: 'key-cf-2',
-        responseCode: 'VICT_CONTROL_CHANGESET_EXISTS',
-        at: 7003,
-      });
-      const failed = await stores.commandIdempotency.getReceipt('key-cf-2');
-      expect(failed?.status).toBe('failed');
-      expect(failed?.responseCode).toBe('VICT_CONTROL_CHANGESET_EXISTS');
-    } finally {
-      await stores.dispose();
-    }
-  });
+  t(
+    `[${factory.name}] command idempotency: namespaced claim/complete/fail with one winner`,
+    async () => {
+      const stores = await factory.create();
+      try {
+        const receipt = {
+          idempotencyKey: 'key-cf-1',
+          actorId: 'actor-author',
+          command: 'changeset.propose',
+          requestDigest: 'digest-cf-1',
+          status: 'pending',
+          responseCode: undefined,
+          resultJson: undefined,
+          createdAt: 7000,
+          settledAt: undefined,
+          owner: 'svc-cf-1',
+          leaseUntil: 8000,
+          attempts: 1,
+        } as const;
+        expect(await stores.commandIdempotency.claimReceipt(receipt)).toBe('claimed');
+        expect(await stores.commandIdempotency.claimReceipt(receipt)).toBe('exists');
+        await stores.commandIdempotency.completeReceipt({
+          actorId: 'actor-author',
+          command: 'changeset.propose',
+          idempotencyKey: 'key-cf-1',
+          resultJson: '{"changesetId":"changeset-cf-1","status":"draft"}',
+          at: 7001,
+        });
+        const completed = await stores.commandIdempotency.getReceipt({
+          actorId: 'actor-author',
+          command: 'changeset.propose',
+          idempotencyKey: 'key-cf-1',
+        });
+        expect(completed?.status).toBe('completed');
+        expect(completed?.resultJson).toBe('{"changesetId":"changeset-cf-1","status":"draft"}');
+        // A settled receipt is never overwritten.
+        await stores.commandIdempotency.failReceipt({
+          actorId: 'actor-author',
+          command: 'changeset.propose',
+          idempotencyKey: 'key-cf-1',
+          responseCode: 'VICT_X',
+          at: 7002,
+        });
+        expect(
+          (
+            await stores.commandIdempotency.getReceipt({
+              actorId: 'actor-author',
+              command: 'changeset.propose',
+              idempotencyKey: 'key-cf-1',
+            })
+          )?.status,
+        ).toBe('completed');
+        // A failure disposition round-trips.
+        await stores.commandIdempotency.claimReceipt({
+          ...receipt,
+          idempotencyKey: 'key-cf-2',
+        });
+        await stores.commandIdempotency.failReceipt({
+          actorId: 'actor-author',
+          command: 'changeset.propose',
+          idempotencyKey: 'key-cf-2',
+          responseCode: 'VICT_CONTROL_CHANGESET_EXISTS',
+          at: 7003,
+        });
+        const failed = await stores.commandIdempotency.getReceipt({
+          actorId: 'actor-author',
+          command: 'changeset.propose',
+          idempotencyKey: 'key-cf-2',
+        });
+        expect(failed?.status).toBe('failed');
+        expect(failed?.responseCode).toBe('VICT_CONTROL_CHANGESET_EXISTS');
+      } finally {
+        await stores.dispose();
+      }
+    },
+  );
+
+  t(
+    `[${factory.name}] command idempotency: NAMESPACED by actor+command — the same key never interferes across actors or commands`,
+    async () => {
+      const stores = await factory.create();
+      try {
+        const base = {
+          idempotencyKey: 'shared-key',
+          actorId: 'actor-a',
+          command: 'changeset.propose',
+          requestDigest: 'digest-a',
+          status: 'pending' as const,
+          responseCode: undefined,
+          resultJson: undefined,
+          createdAt: 7000,
+          settledAt: undefined,
+          owner: 'svc-a',
+          leaseUntil: 9000,
+          attempts: 1,
+        };
+        expect(await stores.commandIdempotency.claimReceipt(base)).toBe('claimed');
+        // A second actor claiming the SAME client-generated key is a
+        // DIFFERENT namespace: claimed, never conflicts, never sees a's
+        // receipt.
+        expect(
+          await stores.commandIdempotency.claimReceipt({
+            ...base,
+            actorId: 'actor-b',
+            requestDigest: 'digest-b',
+          }),
+        ).toBe('claimed');
+        // The same key under a different command is also a different
+        // namespace.
+        expect(
+          await stores.commandIdempotency.claimReceipt({
+            ...base,
+            command: 'release.select',
+          }),
+        ).toBe('claimed');
+        await stores.commandIdempotency.completeReceipt({
+          actorId: 'actor-a',
+          command: 'changeset.propose',
+          idempotencyKey: 'shared-key',
+          resultJson: '{"changesetId":"cs-a"}',
+          at: 7001,
+        });
+        const a = await stores.commandIdempotency.getReceipt({
+          actorId: 'actor-a',
+          command: 'changeset.propose',
+          idempotencyKey: 'shared-key',
+        });
+        const b = await stores.commandIdempotency.getReceipt({
+          actorId: 'actor-b',
+          command: 'changeset.propose',
+          idempotencyKey: 'shared-key',
+        });
+        expect(a?.status).toBe('completed');
+        expect(b?.status).toBe('pending');
+      } finally {
+        await stores.dispose();
+      }
+    },
+  );
+
+  t(
+    `[${factory.name}] command idempotency: pending leases recover — expired claims are taken over, live claims are protected, retryable failures release`,
+    async () => {
+      const stores = await factory.create();
+      try {
+        await stores.commandIdempotency.claimReceipt({
+          idempotencyKey: 'lease-key',
+          actorId: 'actor-author',
+          command: 'changeset.commit',
+          requestDigest: 'digest-lease',
+          status: 'pending',
+          responseCode: undefined,
+          resultJson: undefined,
+          createdAt: 7000,
+          settledAt: undefined,
+          owner: 'svc-crashed',
+          leaseUntil: 7050,
+          attempts: 1,
+        });
+        // A live lease is protected.
+        expect(
+          await stores.commandIdempotency.takeOverExpiredLease({
+            actorId: 'actor-author',
+            command: 'changeset.commit',
+            idempotencyKey: 'lease-key',
+            owner: 'svc-retry',
+            leaseUntil: 7100,
+            at: 7049,
+          }),
+        ).toBe('not-expired');
+        // After expiry the crashed claim is taken over (attempt counter
+        // incremented) — the key is never stuck as in-progress forever.
+        expect(
+          await stores.commandIdempotency.takeOverExpiredLease({
+            actorId: 'actor-author',
+            command: 'changeset.commit',
+            idempotencyKey: 'lease-key',
+            owner: 'svc-retry',
+            leaseUntil: 7150,
+            at: 7051,
+          }),
+        ).toBe('taken');
+        const taken = await stores.commandIdempotency.getReceipt({
+          actorId: 'actor-author',
+          command: 'changeset.commit',
+          idempotencyKey: 'lease-key',
+        });
+        expect(taken?.owner).toBe('svc-retry');
+        expect(taken?.attempts).toBe(2);
+        // A retryable infrastructure failure RELEASES the claim.
+        await stores.commandIdempotency.releaseReceipt({
+          actorId: 'actor-author',
+          command: 'changeset.commit',
+          idempotencyKey: 'lease-key',
+          at: 7052,
+        });
+        expect(
+          await stores.commandIdempotency.getReceipt({
+            actorId: 'actor-author',
+            command: 'changeset.commit',
+            idempotencyKey: 'lease-key',
+          }),
+        ).toBeUndefined();
+      } finally {
+        await stores.dispose();
+      }
+    },
+  );
+
+  t(
+    `[${factory.name}] release selection: operation-identity idempotency and the SUBJECT-LEVEL base CAS`,
+    async () => {
+      const stores = await factory.create();
+      try {
+        await stores.control.publishRelease(makeReleaseFixture('release-sel-1'));
+        await stores.control.publishRelease(makeReleaseFixture('release-sel-2'));
+        await stores.control.publishRelease(makeReleaseFixture('release-sel-3'));
+        await stores.control.selectRelease({
+          applicationId: 'app.cf',
+          releaseVersion: 'release-sel-1',
+          actorId: 'actor-author',
+          at: 100,
+          reason: 'select',
+        });
+        // Operation identity: re-application returns the ORIGINAL revision
+        // without adding another selection; conflicting content under the
+        // same identity fails closed.
+        const first = await stores.control.selectRelease({
+          applicationId: 'app.cf',
+          releaseVersion: 'release-sel-2',
+          actorId: 'actor-author',
+          at: 200,
+          reason: 'select',
+          operationId: 'op-sel-1',
+          expectedBaseVersion: 'release-sel-1',
+        });
+        const again = await stores.control.selectRelease({
+          applicationId: 'app.cf',
+          releaseVersion: 'release-sel-2',
+          actorId: 'actor-author',
+          at: 300,
+          reason: 'select',
+          operationId: 'op-sel-1',
+          expectedBaseVersion: 'release-sel-2',
+        });
+        expect(again.selectionRevision).toBe(first.selectionRevision);
+        const selections = await stores.control.listReleaseSelections('app.cf');
+        expect(selections).toHaveLength(2); // seed + exactly ONE operation selection
+        expect(selections.at(-1)?.operationId).toBe('op-sel-1');
+        await expect(
+          stores.control.selectRelease({
+            applicationId: 'app.cf',
+            releaseVersion: 'release-sel-3',
+            actorId: 'actor-author',
+            at: 400,
+            reason: 'select',
+            operationId: 'op-sel-1',
+          }),
+        ).rejects.toThrow(/conflicting content fails closed/i);
+        // Base CAS: a second writer fencing on the SAME base loses with the
+        // stable stale-base conflict and NO effect.
+        await expect(
+          stores.control.selectRelease({
+            applicationId: 'app.cf',
+            releaseVersion: 'release-sel-3',
+            actorId: 'actor-2',
+            at: 500,
+            reason: 'select',
+            operationId: 'op-sel-2',
+            expectedBaseVersion: 'release-sel-1',
+          }),
+        ).rejects.toThrow(/base changed|exactly one concurrent/i);
+        expect(await stores.control.listReleaseSelections('app.cf')).toHaveLength(2);
+        // The winner fencing on the CURRENT base succeeds.
+        await stores.control.selectRelease({
+          applicationId: 'app.cf',
+          releaseVersion: 'release-sel-3',
+          actorId: 'actor-2',
+          at: 600,
+          reason: 'select',
+          operationId: 'op-sel-3',
+          expectedBaseVersion: 'release-sel-2',
+        });
+        expect((await stores.control.getSelectedRelease('app.cf'))?.releaseVersion).toBe(
+          'release-sel-3',
+        );
+      } finally {
+        await stores.dispose();
+      }
+    },
+  );
+
+  t(
+    `[${factory.name}] stream ledger STORE-BOUNDARY validation: hostile writes are rejected without mutating sequence state`,
+    async () => {
+      const stores = await factory.create();
+      try {
+        const context =
+          '"actorId":"actor-author","agentProfileVersion":"p","threadId":"thread-gate","turnId":"turn-gate"';
+        // Seed one valid event so a rejected append must leave seq at 1.
+        await stores.streamLedger.appendEvent({
+          streamId: 'stream-gate',
+          kind: 'response.started',
+          payload: `{"actorId":"actor-author","agentProfileVersion":"p","kind":"response.started","threadId":"thread-gate","turnId":"turn-gate"}`,
+          at: 1000,
+        });
+        expect(await stores.streamLedger.latestSeq('stream-gate')).toBe(1);
+        // Unknown kind.
+        await expect(
+          stores.streamLedger.appendEvent({
+            streamId: 'stream-gate',
+            kind: 'evil.kind' as never,
+            payload: `{"actorId":"actor-author","agentProfileVersion":"p","kind":"evil.kind","secret":"LEDGER-CANARY-GATE","threadId":"thread-gate","turnId":"turn-gate"}`,
+            at: 1001,
+          }),
+        ).rejects.toThrow(/vict.agent-stream@1|kind/);
+        // Declared kind mismatched with the payload kind.
+        await expect(
+          stores.streamLedger.appendEvent({
+            streamId: 'stream-gate',
+            kind: 'response.completed',
+            payload: `{"actorId":"actor-author","agentProfileVersion":"p","code":"VICT_X","kind":"response.failed","threadId":"thread-gate","turnId":"turn-gate"}`,
+            at: 1002,
+          }),
+        ).rejects.toThrow(/kind/);
+        // Non-canonical JSON.
+        await expect(
+          stores.streamLedger.appendEvent({
+            streamId: 'stream-gate',
+            kind: 'response.completed',
+            payload: `{  "kind" :  "response.completed",  ${context}}`,
+            at: 1003,
+          }),
+        ).rejects.toThrow(/canonical/);
+        // Raw text in content.completed (contentRef discipline).
+        await expect(
+          stores.streamLedger.appendEvent({
+            streamId: 'stream-gate',
+            kind: 'content.completed',
+            payload: `{"actorId":"actor-author","agentProfileVersion":"p","kind":"content.completed","text":"raw secret content","threadId":"thread-gate","turnId":"turn-gate"}`,
+            at: 1004,
+          }),
+        ).rejects.toThrow(/vict.agent-stream@1|UNKNOWN_FIELD|CONTENT_REF|kind/);
+        // Malformed correlation id.
+        await expect(
+          stores.streamLedger.appendEvent({
+            streamId: 'stream-gate',
+            kind: 'response.completed',
+            payload: `{"actorId":"actor-author","agentProfileVersion":"p","kind":"response.completed","threadId":"thread-gate","turnId":"turn-gate","victRunId":"bad id with spaces"}`,
+            at: 1005,
+          }),
+        ).rejects.toThrow(/vict.agent-stream@1|INVALID_ID/);
+        // NOTHING mutated: the sequence state and rows are unchanged and no
+        // canary reached storage.
+        expect(await stores.streamLedger.latestSeq('stream-gate')).toBe(1);
+        expect((await stores.streamLedger.listEventsFrom('stream-gate', 0)).length).toBe(1);
+        for (const row of await stores.streamLedger.listEventsFrom('stream-gate', 0)) {
+          expect(row.payload).not.toContain('LEDGER-CANARY-GATE');
+        }
+      } finally {
+        await stores.dispose();
+      }
+    },
+  );
 
   // ---- ChangeSets ----------------------------------------------------------
   t(`[${factory.name}] changeset save/get round-trips and duplicate ids are rejected`, async () => {
@@ -714,19 +1057,22 @@ export function runAgentControlConformanceSuite(
         const first = await stores.streamLedger.appendEvent({
           streamId: 'stream-cf',
           kind: 'response.started',
-          payload: '{"kind":"response.started"}',
+          payload:
+            '{"actorId":"actor-author","agentProfileVersion":"p","kind":"response.started","threadId":"thread-cf","turnId":"turn-cf"}',
           at: 1000,
         });
         const delta = await stores.streamLedger.appendEvent({
           streamId: 'stream-cf',
           kind: 'text.delta',
-          payload: '{"kind":"text.delta","delta":"he"}',
+          payload:
+            '{"actorId":"actor-author","agentProfileVersion":"p","delta":"he","kind":"text.delta","threadId":"thread-cf","turnId":"turn-cf"}',
           at: 1001,
         });
         const third = await stores.streamLedger.appendEvent({
           streamId: 'stream-cf',
           kind: 'content.completed',
-          payload: '{"kind":"content.completed","text":"hello"}',
+          payload:
+            '{"actorId":"actor-author","agentProfileVersion":"p","contentRef":"conversation:vict-actor-actor-author/thread-cf/turn-cf","kind":"content.completed","threadId":"thread-cf","turnId":"turn-cf"}',
           at: 1002,
         });
         expect(first.seq).toBe(1);
@@ -739,8 +1085,17 @@ export function runAgentControlConformanceSuite(
         const rows = await stores.streamLedger.listEventsFrom('stream-cf', 0);
         expect(rows.map((row) => row.seq)).toEqual([1, 3]);
         expect((rows as readonly AgentStreamLedgerEvent[])[1]?.payload).toBe(
-          '{"kind":"content.completed","text":"hello"}',
+          '{"actorId":"actor-author","agentProfileVersion":"p","contentRef":"conversation:vict-actor-actor-author/thread-cf/turn-cf","kind":"content.completed","threadId":"thread-cf","turnId":"turn-cf"}',
         );
+        // Paged reads return the SAME rows (bounded replay paging).
+        const page1 = await stores.streamLedger.listEventsFrom('stream-cf', 0, 1);
+        const page2 = await stores.streamLedger.listEventsFrom(
+          'stream-cf',
+          page1.at(-1)?.seq ?? 0,
+          10,
+        );
+        expect(page1.map((row) => row.seq)).toEqual([1]);
+        expect(page2.map((row) => row.seq)).toEqual([3]);
         expect((await stores.streamLedger.listEventsFrom('stream-cf', 3)).length).toBe(0);
       } finally {
         await stores.dispose();
@@ -785,13 +1140,14 @@ export function runAgentControlConformanceSuite(
           streamId: 'stream-reopen',
           kind: 'content.completed',
           payload:
-            '{"kind":"content.completed","turnId":"turn-reopen","threadId":"thread-reopen","actorId":"actor-author","agentProfileVersion":"p","contentRef":"conversation:vict-actor-actor-author/thread-reopen/turn-reopen"}',
+            '{"actorId":"actor-author","agentProfileVersion":"p","contentRef":"conversation:vict-actor-actor-author/thread-reopen/turn-reopen","kind":"content.completed","threadId":"thread-reopen","turnId":"turn-reopen"}',
           at: 1400,
         });
         await stores.streamLedger.appendEvent({
           streamId: 'stream-reopen',
           kind: 'text.delta',
-          payload: '{"kind":"text.delta","delta":"gone"}',
+          payload:
+            '{"actorId":"actor-author","agentProfileVersion":"p","delta":"gone","kind":"text.delta","threadId":"thread-reopen","turnId":"turn-reopen"}',
           at: 1401,
         });
         // A durable idempotency receipt must survive the close/reopen too.
@@ -802,9 +1158,12 @@ export function runAgentControlConformanceSuite(
           requestDigest: 'digest-reopen',
           status: 'completed',
           responseCode: undefined,
-          resultJson: '{"ok":true}',
+          resultJson: '{"changesetId":"changeset-reopen"}',
           createdAt: 1402,
           settledAt: 1403,
+          owner: undefined,
+          leaseUntil: undefined,
+          attempts: 1,
         });
         await stores.dispose();
 
@@ -824,9 +1183,13 @@ export function runAgentControlConformanceSuite(
           const rows = await reopened.streamLedger.listEventsFrom('stream-reopen', 0);
           expect(rows.map((row) => row.kind)).toEqual(['content.completed']);
           expect(await reopened.streamLedger.latestSeq('stream-reopen')).toBe(2);
-          const receipt = await reopened.commandIdempotency.getReceipt('key-reopen');
+          const receipt = await reopened.commandIdempotency.getReceipt({
+            actorId: 'actor-author',
+            command: 'changeset.propose',
+            idempotencyKey: 'key-reopen',
+          });
           expect(receipt?.status).toBe('completed');
-          expect(receipt?.resultJson).toBe('{"ok":true}');
+          expect(receipt?.resultJson).toBe('{"changesetId":"changeset-reopen"}');
         } finally {
           await reopened.dispose();
         }

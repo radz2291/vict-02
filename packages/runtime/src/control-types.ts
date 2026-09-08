@@ -1,5 +1,9 @@
 import { createHash } from 'node:crypto';
-import type { AgentStreamEventKind } from '@vict/contracts';
+import {
+  validateAgentStreamEvent,
+  type AgentStreamEvent,
+  type AgentStreamEventKind,
+} from '@vict/contracts';
 import type { EffectClass } from '@vict/kernel';
 import { toCanonicalJson } from './serialization.js';
 
@@ -454,20 +458,82 @@ export interface ControlRunRecord {
   readonly outcome: 'passed' | 'failed' | 'blocked';
   /** Epoch-ms execution time from the injected clock. */
   readonly createdAt: number;
+  /** Simulation-run detail: the exact simulation inputs, per-operation
+   * identities and outcomes of the sandboxed execution (IDs and outcomes
+   * only — never payloads). Validation runs carry `undefined`. */
+  readonly detail?: ControlRunDetail;
 }
 
-/** One durable receipt of a single applied ChangeSet operation (saga). */
+/** Per-operation simulation outcome (operation identity + outcome only). */
+export interface ControlRunOperationOutcome {
+  readonly operationIndex: number;
+  readonly operationDigest: string;
+  readonly outcome: 'applied' | 'failed' | 'blocked';
+  /** Stable sanitized code when not applied. */
+  readonly code?: string;
+}
+
+/** The safe detail record of an executed simulation run. */
+export interface ControlRunDetail {
+  readonly simulator: string;
+  /** The exact sandbox inputs: the subject base and activation/release
+   * inputs derived from durable state at simulation time (IDs only). */
+  readonly inputs: {
+    readonly base: ChangeSetBase;
+    readonly operationIdentities: readonly string[];
+  };
+  readonly operations: readonly ControlRunOperationOutcome[];
+}
+
+/** One durable receipt of a single applied ChangeSet operation (saga).
+ *
+ * The receipt is written in TWO states that make the external effect
+ * exactly-once even across a crash between effect and receipt:
+ *
+ * - `prepared`: the durable OPERATION INTENT, recorded BEFORE the effect
+ *   runs. It carries the stable operation identity and the subject guard
+ *   (fencing data) captured at prevalidation.
+ * - `applied`: recorded after the effect (atomically with it where the
+ *   effect shares the store's transaction boundary).
+ *
+ * Recovery verifies the TARGET state for prepared intents (a selection
+ * with the same operation identity already applied) and never repeats the
+ * effect: it either confirms the target state and marks the receipt
+ * applied, or re-applies through the same idempotent/fenced effect path.
+ */
 export interface ChangeSetOperationReceipt {
   readonly changesetId: string;
   /** Zero-based index of the operation inside the ChangeSet. */
   readonly operationIndex: number;
   readonly operationKind: ChangeSetOperation['kind'];
-  /** Content identity of the exact operation that was applied. */
+  /** Stable operation identity: derived from ChangeSet ID, content hash,
+   * operation index, and the exact operation content. */
   readonly operationDigest: string;
   /** Stable identity of the applied effect (idempotency anchor). */
   readonly effectRef: string;
   readonly actorId: string;
   readonly appliedAt: number;
+  /** `prepared` (intent, pre-effect) or `applied` (post-effect). */
+  readonly state: 'prepared' | 'applied';
+  /** Serialized subject guard (expected base/selection revision) captured
+   * at intent time; re-used verbatim by idempotent re-application. */
+  readonly guardJson: string | undefined;
+}
+
+/** Derive the stable operation identity for one ChangeSet operation. */
+export function changeSetOperationIdentity(input: {
+  changesetId: string;
+  contentHash: string;
+  operationIndex: number;
+  operation: ChangeSetOperation;
+}): string {
+  return controlContentHash({
+    domain: 'vict.changeset-operation@1',
+    changesetId: input.changesetId,
+    contentHash: input.contentHash,
+    operationIndex: input.operationIndex,
+    operation: input.operation,
+  });
 }
 
 /** Validate the structural shape of one ChangeSet operation (fail closed). */
@@ -685,10 +751,21 @@ export interface ControlPlaneStore {
   getControlRun(runId: string): Promise<ControlRunRecord | undefined>;
 
   /**
-   * Durable saga receipts for applied ChangeSet operations (idempotent by
-   * (changesetId, operationIndex)). Recovery completes a commit exactly
-   * once by skipping operations that already carry a receipt.
+   * Durable saga receipts for applied ChangeSet operations. The protocol
+   * is: record the PREPARED intent (idempotent by (changesetId, index);
+   * conflicting content under the same identity fails closed) BEFORE the
+   * effect, then record the APPLIED state after the effect (atomically
+   * with it where effect and receipt share a transaction). Recovery skips
+   * operations whose receipt is `applied` and VERIFIES target state for
+   * `prepared` intents — it never manufactures a receipt merely because
+   * the operation was supposed to run.
    */
+  recordOperationIntent(receipt: ChangeSetOperationReceipt): Promise<'recorded' | 'exists'>;
+  markOperationApplied(input: {
+    changesetId: string;
+    operationIndex: number;
+    at: number;
+  }): Promise<ChangeSetOperationReceipt>;
   recordOperationReceipt(receipt: ChangeSetOperationReceipt): Promise<void>;
   listOperationReceipts(changesetId: string): Promise<readonly ChangeSetOperationReceipt[]>;
 
@@ -706,15 +783,49 @@ export interface ControlPlaneStore {
   publishRelease(record: ApplicationReleaseRecord): Promise<void>;
   getRelease(releaseVersion: string): Promise<ApplicationReleaseRecord | undefined>;
   listReleases(applicationId: string): Promise<readonly ApplicationReleaseRecord[]>;
+  /**
+   * Select one release with the operation protocol: `operationId` is the
+   * idempotency/fencing key (re-application returns the ORIGINAL selection
+   * revision without adding another one; conflicting content under the
+   * same identity fails closed) and `expectedBaseVersion` is the
+   * SUBJECT-LEVEL base guard (the currently selected release version for
+   * the application; `'none'`-equivalent when no version is selected).
+   * The guard is evaluated ATOMICALLY inside the selection mutation — two
+   * ChangeSets racing on one base produce exactly one winner, and the
+   * loser receives `VICT_CONTROL_BASE_STALE` with NO effects.
+   */
   selectRelease(command: {
     applicationId: string;
     releaseVersion: string;
     actorId: string;
     at: number;
     reason: 'select' | 'rollback';
+    readonly operationId?: string;
+    readonly expectedBaseVersion?: string;
   }): Promise<{ selectionRevision: number }>;
   getSelectedRelease(applicationId: string): Promise<ApplicationReleaseRecord | undefined>;
   listReleaseSelections(applicationId: string): Promise<readonly ReleaseSelectionRecord[]>;
+  /**
+   * OPTIONAL atomic composition: publish the release, apply the guarded
+   * selection, and record the APPLIED operation receipt in ONE durable
+   * transaction (closes the effect/receipt dual-write gap where the
+   * effect shares the store). Implementations without a shared
+   * transaction boundary may omit it; the service then uses the
+   * intent → effect → applied protocol.
+   */
+  applyReleaseOperation?(input: {
+    release: ApplicationReleaseRecord;
+    selection: {
+      applicationId: string;
+      releaseVersion: string;
+      actorId: string;
+      at: number;
+      reason: 'select' | 'rollback';
+      operationId: string;
+      expectedBaseVersion?: string;
+    };
+    receipt: ChangeSetOperationReceipt;
+  }): Promise<{ selectionRevision: number }>;
 
   appendAuditEvent(event: ControlAuditEvent): Promise<void>;
   listAuditEvents(subject: {
@@ -751,6 +862,9 @@ export interface ReleaseSelectionRecord {
   readonly at: number;
   /** `select` or `rollback` — distinct, attributable operations. */
   readonly reason: 'select' | 'rollback';
+  /** The ChangeSet operation identity that produced this selection, when
+   * selection ran under the operation protocol (idempotency anchor). */
+  readonly operationId?: string;
 }
 
 /** One attributable audit event (safe summaries only). */
@@ -1004,8 +1118,16 @@ export interface AgentStreamLedgerStore {
     at: number;
   }): Promise<{ seq: number; persisted: boolean }>;
   latestSeq(streamId: string): Promise<number>;
-  /** Durable events after the given sequence, in sequence order. */
-  listEventsFrom(streamId: string, afterSeq: number): Promise<readonly AgentStreamLedgerEvent[]>;
+  /**
+   * Durable events after the given sequence, in sequence order. The
+   * optional `limit` bounds one read (paged replay); implementations MUST
+   * accept calls without it.
+   */
+  listEventsFrom(
+    streamId: string,
+    afterSeq: number,
+    limit?: number,
+  ): Promise<readonly AgentStreamLedgerEvent[]>;
   listStreamIds(): Promise<readonly string[]>;
 }
 
@@ -1022,9 +1144,18 @@ export function isDurableStreamKind(kind: AgentStreamEventKind): boolean {
 export const COMMAND_IDEMPOTENCY_KEY_PATTERN = /^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$/;
 
 /**
- * One durable command-idempotency receipt. A receipt binds the idempotency
- * key to the authenticated actor, the command kind, the canonical request
- * digest, and the durable result or terminal disposition.
+ * One durable command-idempotency receipt. Receipts are NAMESPACED by
+ * (authenticated actor, command, idempotency key): two actors using the
+ * same client-generated key never interfere, and the canonical request
+ * digest is bound INSIDE that namespace.
+ *
+ * A `pending` receipt carries a durable LEASE (owner + expiry): the
+ * claiming process renews/holds the lease while executing. A crash leaves
+ * the lease to expire, after which a retrying caller may take the claim
+ * over (attempt counter incremented) instead of the key being stuck as
+ * in-progress forever. A `failed` receipt is a DETERMINISTIC command
+ * failure (stable code, replayed); retryable infrastructure failures are
+ * RELEASED instead so a retry re-executes truthfully.
  */
 export interface CommandIdempotencyReceipt {
   readonly idempotencyKey: string;
@@ -1035,23 +1166,85 @@ export interface CommandIdempotencyReceipt {
   readonly status: 'pending' | 'completed' | 'failed';
   /** Stable failure code when status is `failed`. */
   readonly responseCode: string | undefined;
-  /** Canonical JSON of the durable result when status is `completed`. */
+  /** SAFE per-command replay projection (identifiers/codes only — never
+   * full command responses). */
   readonly resultJson: string | undefined;
   readonly createdAt: number;
   readonly settledAt: number | undefined;
+  /** The lease owner (process/instance token) while `pending`. */
+  readonly owner: string | undefined;
+  /** Epoch-ms lease expiry while `pending` (crash-recovery bound). */
+  readonly leaseUntil: number | undefined;
+  /** How many times the claim has been (re-)taken (lease takeovers). */
+  readonly attempts: number;
 }
 
-/** The durable command-idempotency store port (one winner per key). */
+/** The namespaced lookup key of one receipt. */
+export interface CommandIdempotencyName {
+  readonly actorId: string;
+  readonly command: string;
+  readonly idempotencyKey: string;
+}
+
+/** The durable command-idempotency store port (one winner per namespace). */
 export interface CommandIdempotencyStore {
   /**
-   * Insert-if-absent. Returns `claimed` for exactly one concurrent caller
-   * (the winner); every other caller receives `exists` with the existing
-   * durable receipt.
+   * Insert-if-absent within the (actor, command, key) namespace. Returns
+   * `claimed` for exactly one concurrent caller (the winner); every other
+   * caller receives `exists` with the durable receipt.
    */
   claimReceipt(record: CommandIdempotencyReceipt): Promise<'claimed' | 'exists'>;
-  getReceipt(idempotencyKey: string): Promise<CommandIdempotencyReceipt | undefined>;
-  completeReceipt(input: { idempotencyKey: string; resultJson: string; at: number }): Promise<void>;
-  failReceipt(input: { idempotencyKey: string; responseCode: string; at: number }): Promise<void>;
+  getReceipt(name: CommandIdempotencyName): Promise<CommandIdempotencyReceipt | undefined>;
+  /**
+   * Cross-command key reuse check: the receipt bound to (actor, key) under
+   * ANY command kind, if one exists. The command-service policy layer uses
+   * this to turn a client reusing one Idempotency-Key across DIFFERENT
+   * commands into a stable conflict without relying on per-command
+   * namespaces alone.
+   */
+  findReceiptByActorKey(input: {
+    actorId: string;
+    idempotencyKey: string;
+  }): Promise<CommandIdempotencyReceipt | undefined>;
+  completeReceipt(input: {
+    actorId: string;
+    command: string;
+    idempotencyKey: string;
+    resultJson: string;
+    at: number;
+  }): Promise<void>;
+  failReceipt(input: {
+    actorId: string;
+    command: string;
+    idempotencyKey: string;
+    responseCode: string;
+    at: number;
+  }): Promise<void>;
+  /**
+   * Release a `pending` claim WITHOUT a terminal disposition — used for
+   * RETRYABLE infrastructure failures so they are never permanently
+   * confused with deterministic command failures. The key becomes
+   * claimable again.
+   */
+  releaseReceipt(input: {
+    actorId: string;
+    command: string;
+    idempotencyKey: string;
+    at: number;
+  }): Promise<void>;
+  /**
+   * Crash recovery: take over an EXPIRED pending lease. Returns `taken`
+   * (the caller is the new owner; attempts incremented), `not-expired`
+   * (the previous owner may still be executing), or `missing`.
+   */
+  takeOverExpiredLease(input: {
+    actorId: string;
+    command: string;
+    idempotencyKey: string;
+    owner: string;
+    leaseUntil: number;
+    at: number;
+  }): Promise<'taken' | 'not-expired' | 'missing'>;
 }
 
 /** The composed control-plane store set. */
@@ -1086,4 +1279,79 @@ export function streamEventPayloadOf(event: object): string {
     payload[key] = value;
   }
   return toCanonicalJson(payload);
+}
+
+// ---- The stream-ledger append gate (store-boundary schema enforcement) ------
+
+/**
+ * Validate ONE append against the final `vict.agent-stream@1` schema at
+ * the STORE boundary — before any sequence state is incremented or any
+ * storage mutated. The RAW ledger ports are the last line of defense:
+ * plain-JavaScript callers cannot bypass the schema through them.
+ *
+ * Enforced here:
+ * - the payload is a JSON object in CANONICAL form (non-canonical JSON is
+ *   rejected, not silently re-serialized);
+ * - the declared kind is inside the closed vocabulary and matches the
+ *   payload's `kind` member;
+ * - the reconstructed event (payload + stream identity + the sequence that
+ *   WOULD be assigned) passes the complete field-level schema (unknown
+ *   kinds/fields, malformed correlation IDs, unsafe codes, raw text in
+ *   `content.completed`, invalid usage — all fail closed).
+ *
+ * Errors are stable and non-echoing: `VICT_STREAM_EVENT_INVALID` carries
+ * schema issue CODES only, never the rejected values.
+ */
+export function validateStreamLedgerAppend(command: {
+  streamId: string;
+  kind: AgentStreamEventKind;
+  payload: string;
+  assignedSeq: number;
+}): AgentStreamEvent {
+  assertControlId(command.streamId, 'streamId');
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(command.payload);
+  } catch {
+    throw new VictControlError(
+      'VICT_STREAM_EVENT_INVALID',
+      'The stream event payload is not valid JSON; the ledger rejects it without persisting anything.',
+    );
+  }
+  if (typeof parsed !== 'object' || parsed === null || Array.isArray(parsed)) {
+    throw new VictControlError(
+      'VICT_STREAM_EVENT_INVALID',
+      'The stream event payload must be a JSON object.',
+    );
+  }
+  // Canonical-form enforcement: the stored payload must be the canonical
+  // serialization of its own content (no key-order drift, no whitespace).
+  if (toCanonicalJson(parsed) !== command.payload) {
+    throw new VictControlError(
+      'VICT_STREAM_EVENT_INVALID',
+      'The stream event payload is not canonical JSON; persisting it would break byte-stable replay.',
+    );
+  }
+  const candidate = parsed as Record<string, unknown>;
+  if (candidate['kind'] !== command.kind) {
+    throw new VictControlError(
+      'VICT_STREAM_EVENT_INVALID',
+      'The payload kind does not match the declared event kind.',
+    );
+  }
+  const event = {
+    ...candidate,
+    streamId: command.streamId,
+    seq: command.assignedSeq,
+  } as unknown as AgentStreamEvent;
+  const validation = validateAgentStreamEvent(event);
+  if (!validation.ok) {
+    throw new VictControlError(
+      'VICT_STREAM_EVENT_INVALID',
+      `The event is not a valid vict.agent-stream@1 event (${validation.issues
+        .map((issue) => issue.code)
+        .join(', ')}).`,
+    );
+  }
+  return event;
 }

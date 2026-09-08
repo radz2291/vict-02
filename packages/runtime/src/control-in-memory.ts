@@ -17,12 +17,17 @@ import type {
   ChangeSetStatus,
   CommandIdempotencyReceipt,
   CommandIdempotencyStore,
+  CommandIdempotencyName,
   ControlAuditEvent,
   ControlPlaneStore,
   ControlRunRecord,
   ReleaseSelectionRecord,
 } from './control-types.js';
-import { VictControlError } from './control-types.js';
+import {
+  VictControlError,
+  CHANGESET_BASE_NONE,
+  validateStreamLedgerAppend,
+} from './control-types.js';
 
 /**
  * Stage 06B in-memory reference implementations of the neutral control
@@ -187,6 +192,47 @@ export class InMemoryControlPlaneStore implements ControlPlaneStore {
     return found === undefined ? undefined : structuredCloneControl(found);
   }
 
+  async recordOperationIntent(receipt: ChangeSetOperationReceipt): Promise<'recorded' | 'exists'> {
+    const key = `${receipt.changesetId}\u0000${receipt.operationIndex}`;
+    const existing = this.#operationReceipts.get(key);
+    if (existing !== undefined) {
+      if (existing.operationDigest !== receipt.operationDigest) {
+        throw new VictControlError(
+          'VICT_CONTROL_OPERATION_IDENTITY_CONFLICT',
+          'The operation identity already exists with different content; conflicting content fails closed.',
+        );
+      }
+      return 'exists'; // idempotent re-intent
+    }
+    this.#operationReceipts.set(key, structuredCloneControl(receipt));
+    return 'recorded';
+  }
+
+  async markOperationApplied(input: {
+    changesetId: string;
+    operationIndex: number;
+    at: number;
+  }): Promise<ChangeSetOperationReceipt> {
+    const key = `${input.changesetId}\u0000${input.operationIndex}`;
+    const existing = this.#operationReceipts.get(key);
+    if (existing === undefined) {
+      throw new VictControlError(
+        'VICT_CONTROL_OPERATION_RECEIPT_MISSING',
+        'No prepared operation intent exists for this operation index.',
+      );
+    }
+    if (existing.state === 'applied') {
+      return structuredCloneControl(existing); // idempotent
+    }
+    const updated: ChangeSetOperationReceipt = {
+      ...existing,
+      state: 'applied',
+      appliedAt: input.at,
+    };
+    this.#operationReceipts.set(key, updated);
+    return structuredCloneControl(updated);
+  }
+
   async recordOperationReceipt(receipt: ChangeSetOperationReceipt): Promise<void> {
     const key = `${receipt.changesetId}\u0000${receipt.operationIndex}`;
     const existing = this.#operationReceipts.get(key);
@@ -246,6 +292,32 @@ export class InMemoryControlPlaneStore implements ControlPlaneStore {
     this.#releases.set(record.releaseVersion, structuredCloneControl(record));
   }
 
+  async applyReleaseOperation(input: {
+    release: ApplicationReleaseRecord;
+    selection: {
+      applicationId: string;
+      releaseVersion: string;
+      actorId: string;
+      at: number;
+      reason: 'select' | 'rollback';
+      operationId: string;
+      expectedBaseVersion?: string;
+    };
+    receipt: ChangeSetOperationReceipt;
+  }): Promise<{ selectionRevision: number }> {
+    // In-memory composition: the three steps run inside ONE synchronous
+    // critical section (no await between effect and receipt), so the
+    // effect/receipt dual-write window cannot interleave.
+    await this.publishRelease(input.release);
+    const selection = await this.selectRelease(input.selection);
+    await this.markOperationApplied({
+      changesetId: input.receipt.changesetId,
+      operationIndex: input.receipt.operationIndex,
+      at: input.receipt.appliedAt,
+    });
+    return selection;
+  }
+
   async getRelease(releaseVersion: string): Promise<ApplicationReleaseRecord | undefined> {
     const found = this.#releases.get(releaseVersion);
     return found === undefined ? undefined : structuredCloneControl(found);
@@ -264,6 +336,8 @@ export class InMemoryControlPlaneStore implements ControlPlaneStore {
     actorId: string;
     at: number;
     reason: 'select' | 'rollback';
+    readonly operationId?: string;
+    readonly expectedBaseVersion?: string;
   }): Promise<{ selectionRevision: number }> {
     const existing = this.#releases.get(command.releaseVersion);
     if (existing === undefined || existing.applicationId !== command.applicationId) {
@@ -271,6 +345,44 @@ export class InMemoryControlPlaneStore implements ControlPlaneStore {
         'VICT_CONTROL_RELEASE_MISSING',
         'The release version does not exist for this application.',
       );
+    }
+    // Operation-identity idempotency: re-application returns the ORIGINAL
+    // selection revision without adding another one; conflicting content
+    // under the same identity fails closed.
+    if (command.operationId !== undefined) {
+      const selections = this.#selections.get(command.applicationId) ?? [];
+      const existingOp = selections.find(
+        (selection) =>
+          selection.operationId !== undefined &&
+          selection.operationId === command.operationId &&
+          selection.reason === command.reason,
+      );
+      if (existingOp !== undefined) {
+        if (existingOp.releaseVersion !== command.releaseVersion) {
+          throw new VictControlError(
+            'VICT_CONTROL_OPERATION_IDENTITY_CONFLICT',
+            'The operation identity already applied a different release; conflicting content fails closed.',
+          );
+        }
+        return { selectionRevision: existingOp.selectionRevision };
+      }
+    }
+    // SUBJECT-LEVEL base guard, evaluated in the same synchronous critical
+    // section as the append (two racing ChangeSets on one base: exactly one
+    // winner; the loser receives the stable stale-base conflict).
+    if (command.expectedBaseVersion !== undefined) {
+      const selected = await this.getSelectedRelease(command.applicationId);
+      const selectedVersion = selected?.releaseVersion;
+      const expected =
+        command.expectedBaseVersion === CHANGESET_BASE_NONE
+          ? undefined
+          : command.expectedBaseVersion;
+      if (selectedVersion !== expected) {
+        throw new VictControlError(
+          'VICT_CONTROL_BASE_STALE',
+          'The subject base changed before the selection was applied; exactly one concurrent ChangeSet may win the base.',
+        );
+      }
     }
     const selections = this.#selections.get(command.applicationId) ?? [];
     const selectionRevision = selections.length + 1;
@@ -758,7 +870,14 @@ export class InMemoryAgentApprovalStore implements AgentApprovalStore {
 
 // ---- Stream ledger -----------------------------------------------------------
 
-/** In-memory AgentStreamLedgerStore (per-stream monotonic sequences). */
+/** In-memory AgentStreamLedgerStore (per-stream monotonic sequences).
+ *
+ * The RAW ledger port enforces the final `vict.agent-stream@1` schema at
+ * the store boundary: plain-JS callers cannot persist unknown kinds,
+ * non-canonical payloads, or mismatched content. Validation happens
+ * BEFORE any sequence state or storage mutates, so a rejected write
+ * leaves the stream exactly as before.
+ */
 export class InMemoryAgentStreamLedgerStore implements AgentStreamLedgerStore {
   readonly #streams = new Map<string, number>();
   readonly #events = new Map<string, AgentStreamLedgerEvent[]>();
@@ -769,7 +888,15 @@ export class InMemoryAgentStreamLedgerStore implements AgentStreamLedgerStore {
     payload: string;
     at: number;
   }): Promise<{ seq: number; persisted: boolean }> {
+    // The gate: compute the sequence that WOULD be assigned and validate
+    // the full event BEFORE incrementing any state.
     const next = (this.#streams.get(command.streamId) ?? 0) + 1;
+    validateStreamLedgerAppend({
+      streamId: command.streamId,
+      kind: command.kind,
+      payload: command.payload,
+      assignedSeq: next,
+    });
     this.#streams.set(command.streamId, next);
     const persisted = isDurableStreamKind(command.kind);
     if (persisted) {
@@ -793,10 +920,11 @@ export class InMemoryAgentStreamLedgerStore implements AgentStreamLedgerStore {
   async listEventsFrom(
     streamId: string,
     afterSeq: number,
+    limit?: number,
   ): Promise<readonly AgentStreamLedgerEvent[]> {
-    return (this.#events.get(streamId) ?? [])
-      .filter((event) => event.seq > afterSeq)
-      .map((event) => structuredCloneControl(event));
+    const matched = (this.#events.get(streamId) ?? []).filter((event) => event.seq > afterSeq);
+    const bounded = limit !== undefined ? matched.slice(0, Math.max(0, limit)) : matched;
+    return bounded.map((event) => structuredCloneControl(event));
   }
 
   async listStreamIds(): Promise<readonly string[]> {
@@ -806,34 +934,62 @@ export class InMemoryAgentStreamLedgerStore implements AgentStreamLedgerStore {
 
 // ---- Command idempotency ------------------------------------------------------
 
-/** In-memory CommandIdempotencyStore (one winner per key; single critical section). */
+// ---- Command idempotency ------------------------------------------------------
+
+/**
+ * In-memory CommandIdempotencyStore. Receipts are NAMESPACED by
+ * (actor, command, key); `pending` receipts carry a durable lease
+ * (owner + expiry + attempts) so a crashed claimer never sticks the key:
+ * a retrying caller takes the expired lease over. Deterministic failures
+ * settle `failed` (replayed); retryable failures RELEASE the claim.
+ */
 export class InMemoryCommandIdempotencyStore implements CommandIdempotencyStore {
   readonly #receipts = new Map<string, CommandIdempotencyReceipt>();
 
+  static #name(receipt: { actorId: string; command: string; idempotencyKey: string }): string {
+    return `${receipt.actorId}\u0000${receipt.command}\u0000${receipt.idempotencyKey}`;
+  }
+
   async claimReceipt(record: CommandIdempotencyReceipt): Promise<'claimed' | 'exists'> {
-    const existing = this.#receipts.get(record.idempotencyKey);
+    const key = InMemoryCommandIdempotencyStore.#name(record);
+    const existing = this.#receipts.get(key);
     if (existing !== undefined) {
       return 'exists';
     }
-    this.#receipts.set(record.idempotencyKey, structuredCloneControl(record));
+    this.#receipts.set(key, structuredCloneControl(record));
     return 'claimed';
   }
 
-  async getReceipt(idempotencyKey: string): Promise<CommandIdempotencyReceipt | undefined> {
-    const found = this.#receipts.get(idempotencyKey);
+  async getReceipt(name: CommandIdempotencyName): Promise<CommandIdempotencyReceipt | undefined> {
+    const found = this.#receipts.get(InMemoryCommandIdempotencyStore.#name(name));
     return found === undefined ? undefined : structuredCloneControl(found);
   }
 
+  async findReceiptByActorKey(input: {
+    actorId: string;
+    idempotencyKey: string;
+  }): Promise<CommandIdempotencyReceipt | undefined> {
+    for (const receipt of this.#receipts.values()) {
+      if (receipt.actorId === input.actorId && receipt.idempotencyKey === input.idempotencyKey) {
+        return structuredCloneControl(receipt);
+      }
+    }
+    return undefined;
+  }
+
   async completeReceipt(input: {
+    actorId: string;
+    command: string;
     idempotencyKey: string;
     resultJson: string;
     at: number;
   }): Promise<void> {
-    const found = this.#receipts.get(input.idempotencyKey);
+    const key = InMemoryCommandIdempotencyStore.#name(input);
+    const found = this.#receipts.get(key);
     if (found === undefined) {
       throw new VictControlError(
         'VICT_IDEMPOTENCY_RECEIPT_MISSING',
-        'No idempotency receipt exists for this key.',
+        'No idempotency receipt exists for this key namespace.',
       );
     }
     if (found.status === 'pending') {
@@ -842,21 +998,26 @@ export class InMemoryCommandIdempotencyStore implements CommandIdempotencyStore 
         status: 'completed',
         resultJson: input.resultJson,
         settledAt: input.at,
+        owner: undefined,
+        leaseUntil: undefined,
       };
-      this.#receipts.set(input.idempotencyKey, structuredCloneControl(updated));
+      this.#receipts.set(key, structuredCloneControl(updated));
     }
   }
 
   async failReceipt(input: {
+    actorId: string;
+    command: string;
     idempotencyKey: string;
     responseCode: string;
     at: number;
   }): Promise<void> {
-    const found = this.#receipts.get(input.idempotencyKey);
+    const key = InMemoryCommandIdempotencyStore.#name(input);
+    const found = this.#receipts.get(key);
     if (found === undefined) {
       throw new VictControlError(
         'VICT_IDEMPOTENCY_RECEIPT_MISSING',
-        'No idempotency receipt exists for this key.',
+        'No idempotency receipt exists for this key namespace.',
       );
     }
     if (found.status === 'pending') {
@@ -865,9 +1026,56 @@ export class InMemoryCommandIdempotencyStore implements CommandIdempotencyStore 
         status: 'failed',
         responseCode: input.responseCode,
         settledAt: input.at,
+        owner: undefined,
+        leaseUntil: undefined,
       };
-      this.#receipts.set(input.idempotencyKey, structuredCloneControl(updated));
+      this.#receipts.set(key, structuredCloneControl(updated));
     }
+  }
+
+  async releaseReceipt(input: {
+    actorId: string;
+    command: string;
+    idempotencyKey: string;
+    at: number;
+  }): Promise<void> {
+    const key = InMemoryCommandIdempotencyStore.#name(input);
+    const found = this.#receipts.get(key);
+    if (found === undefined) {
+      return;
+    }
+    if (found.status === 'pending') {
+      this.#receipts.delete(key); // claimable again (retryable failure)
+    }
+  }
+
+  async takeOverExpiredLease(input: {
+    actorId: string;
+    command: string;
+    idempotencyKey: string;
+    owner: string;
+    leaseUntil: number;
+    at: number;
+  }): Promise<'taken' | 'not-expired' | 'missing'> {
+    const key = InMemoryCommandIdempotencyStore.#name(input);
+    const found = this.#receipts.get(key);
+    if (found === undefined) {
+      return 'missing';
+    }
+    if (found.status !== 'pending') {
+      return 'not-expired'; // settled: replay path handles it
+    }
+    if ((found.leaseUntil ?? 0) > input.at) {
+      return 'not-expired'; // the previous owner may still be executing
+    }
+    const updated: CommandIdempotencyReceipt = {
+      ...found,
+      owner: input.owner,
+      leaseUntil: input.leaseUntil,
+      attempts: found.attempts + 1,
+    };
+    this.#receipts.set(key, structuredCloneControl(updated));
+    return 'taken';
   }
 }
 

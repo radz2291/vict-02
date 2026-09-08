@@ -5,6 +5,7 @@ import {
   isDurableStreamKind,
   VictControlError,
   validateAgentActivationRecord,
+  validateStreamLedgerAppend,
   type ActorDirectory,
   type AgentActivationRecord,
   type AgentApprovalRecord,
@@ -23,6 +24,7 @@ import {
   type ChangeSetOperationReceipt,
   type ChangeSetRecord,
   type ChangeSetStatus,
+  type CommandIdempotencyName,
   type CommandIdempotencyReceipt,
   type CommandIdempotencyStore,
   type ControlAuditEvent,
@@ -118,6 +120,7 @@ interface ControlRunRow {
   actor_id: string;
   outcome: string;
   created_at: string;
+  detail_json: string | null;
 }
 
 function rowToControlRun(row: ControlRunRow): ControlRunRecord {
@@ -132,6 +135,10 @@ function rowToControlRun(row: ControlRunRow): ControlRunRecord {
     actorId: row.actor_id,
     outcome: row.outcome as ControlRunRecord['outcome'],
     createdAt: fromIso(row.created_at),
+    detail:
+      row.detail_json === null
+        ? undefined
+        : (JSON.parse(row.detail_json) as ControlRunRecord['detail']),
   };
 }
 
@@ -143,6 +150,8 @@ interface OperationReceiptRow {
   effect_ref: string;
   actor_id: string;
   applied_at: string;
+  state: string;
+  guard_json: string | null;
 }
 
 function rowToOperationReceipt(row: OperationReceiptRow): ChangeSetOperationReceipt {
@@ -154,19 +163,24 @@ function rowToOperationReceipt(row: OperationReceiptRow): ChangeSetOperationRece
     effectRef: row.effect_ref,
     actorId: row.actor_id,
     appliedAt: fromIso(row.applied_at),
+    state: row.state as ChangeSetOperationReceipt['state'],
+    guardJson: row.guard_json ?? undefined,
   };
 }
 
 interface IdempotencyRow {
-  idempotency_key: string;
   actor_id: string;
   command: string;
+  idempotency_key: string;
   request_digest: string;
   status: string;
   response_code: string | null;
   result_json: string | null;
   created_at: string;
   settled_at: string | null;
+  owner: string | null;
+  lease_until: string | null;
+  attempts: number;
 }
 
 function rowToIdempotencyReceipt(row: IdempotencyRow): CommandIdempotencyReceipt {
@@ -180,6 +194,9 @@ function rowToIdempotencyReceipt(row: IdempotencyRow): CommandIdempotencyReceipt
     resultJson: row.result_json ?? undefined,
     createdAt: fromIso(row.created_at),
     settledAt: optionalIso(row.settled_at),
+    owner: row.owner ?? undefined,
+    leaseUntil: optionalIso(row.lease_until),
+    attempts: row.attempts,
   };
 }
 
@@ -392,6 +409,88 @@ export function createSqliteAgentControlStores(
 
   const actors: ActorDirectory = new InMemoryActorDirectoryFallback();
 
+  /**
+   * The guarded release selection executed inside an ALREADY-ACTIVE
+   * transaction (no nested BEGIN): operation-identity idempotency, the
+   * subject-level base CAS, and the monotonic revision append.
+   */
+  function selectReleaseInTransaction(command: {
+    applicationId: string;
+    releaseVersion: string;
+    actorId: string;
+    at: number;
+    reason: 'select' | 'rollback';
+    readonly operationId?: string;
+    readonly expectedBaseVersion?: string;
+  }): { selectionRevision: number } {
+    const release = db
+      .prepare('SELECT application_id FROM vict_release WHERE release_version = ?;')
+      .get(command.releaseVersion) as { application_id: string } | undefined;
+    if (release === undefined || release.application_id !== command.applicationId) {
+      throw new VictControlError(
+        'VICT_CONTROL_RELEASE_MISSING',
+        'The release version does not exist for this application.',
+      );
+    }
+    // Operation-identity idempotency: re-application returns the ORIGINAL
+    // selection revision without adding another one; conflicting content
+    // under the same identity fails closed.
+    if (command.operationId !== undefined) {
+      const existingOp = db
+        .prepare(
+          'SELECT release_version, selection_revision FROM vict_release_selection WHERE application_id = ? AND operation_id = ? AND reason = ?;',
+        )
+        .get(command.applicationId, command.operationId, command.reason) as
+        { release_version: string; selection_revision: number } | undefined;
+      if (existingOp !== undefined) {
+        if (existingOp.release_version !== command.releaseVersion) {
+          throw new VictControlError(
+            'VICT_CONTROL_OPERATION_IDENTITY_CONFLICT',
+            'The operation identity already applied a different release; conflicting content fails closed.',
+          );
+        }
+        return { selectionRevision: existingOp.selection_revision };
+      }
+    }
+    // SUBJECT-LEVEL base guard, evaluated in the SAME transaction as the
+    // append: two ChangeSets racing on one base produce exactly one winner;
+    // the loser receives the stable stale-base conflict with NO effects.
+    if (command.expectedBaseVersion !== undefined) {
+      const current = db
+        .prepare(
+          'SELECT release_version FROM vict_release_selection WHERE application_id = ? ORDER BY selection_revision DESC LIMIT 1;',
+        )
+        .get(command.applicationId) as { release_version: string } | undefined;
+      const selectedVersion = current?.release_version;
+      const expected =
+        command.expectedBaseVersion === 'none' ? undefined : command.expectedBaseVersion;
+      if (selectedVersion !== expected) {
+        throw new VictControlError(
+          'VICT_CONTROL_BASE_STALE',
+          'The subject base changed before the selection was applied; exactly one concurrent ChangeSet may win the base.',
+        );
+      }
+    }
+    const latest = db
+      .prepare(
+        'SELECT MAX(selection_revision) AS revision FROM vict_release_selection WHERE application_id = ?;',
+      )
+      .get(command.applicationId) as { revision: number | null };
+    const selectionRevision = (latest.revision ?? 0) + 1;
+    db.prepare(
+      'INSERT INTO vict_release_selection (application_id, selection_revision, release_version, actor_id, at, reason, operation_id) VALUES (?, ?, ?, ?, ?, ?, ?);',
+    ).run(
+      command.applicationId,
+      selectionRevision,
+      command.releaseVersion,
+      command.actorId,
+      toIso(command.at),
+      command.reason,
+      command.operationId ?? null,
+    );
+    return { selectionRevision };
+  }
+
   const control: ControlPlaneStore = {
     async saveChangeSet(record: ChangeSetRecord): Promise<void> {
       safeRun('control.saveChangeSet', () =>
@@ -509,8 +608,8 @@ export function createSqliteAgentControlStores(
           db.prepare(
             `INSERT INTO vict_control_run
               (run_id, kind, changeset_id, content_hash, base_json, operations_json,
-               runner_profile, actor_id, outcome, created_at)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`,
+               runner_profile, actor_id, outcome, created_at, detail_json)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`,
           ).run(
             record.runId,
             record.kind,
@@ -522,6 +621,7 @@ export function createSqliteAgentControlStores(
             record.actorId,
             record.outcome,
             toIso(record.createdAt),
+            record.detail === undefined ? null : JSON.stringify(record.detail),
           );
         }),
       );
@@ -538,6 +638,79 @@ export function createSqliteAgentControlStores(
       });
     },
 
+    async recordOperationIntent(
+      receipt: ChangeSetOperationReceipt,
+    ): Promise<'recorded' | 'exists'> {
+      return safeRun('control.recordOperationIntent', () =>
+        inTransaction(db, () => {
+          const existing = db
+            .prepare(
+              'SELECT * FROM vict_changeset_operation_receipt WHERE changeset_id = ? AND operation_index = ?;',
+            )
+            .get(receipt.changesetId, receipt.operationIndex) as OperationReceiptRow | undefined;
+          if (existing !== undefined) {
+            if (existing.operation_digest !== receipt.operationDigest) {
+              throw new VictControlError(
+                'VICT_CONTROL_OPERATION_IDENTITY_CONFLICT',
+                'The operation identity already exists with different content; conflicting content fails closed.',
+              );
+            }
+            return 'exists' as const; // idempotent re-intent
+          }
+          db.prepare(
+            `INSERT INTO vict_changeset_operation_receipt
+              (changeset_id, operation_index, operation_kind, operation_digest, effect_ref, actor_id, applied_at, state, guard_json)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);`,
+          ).run(
+            receipt.changesetId,
+            receipt.operationIndex,
+            receipt.operationKind,
+            receipt.operationDigest,
+            receipt.effectRef,
+            receipt.actorId,
+            toIso(receipt.appliedAt),
+            receipt.state,
+            receipt.guardJson ?? null,
+          );
+          return 'recorded' as const;
+        }),
+      );
+    },
+
+    async markOperationApplied(input: {
+      changesetId: string;
+      operationIndex: number;
+      at: number;
+    }): Promise<ChangeSetOperationReceipt> {
+      return safeRun('control.markOperationApplied', () =>
+        inTransaction(db, () => {
+          const existing = db
+            .prepare(
+              'SELECT * FROM vict_changeset_operation_receipt WHERE changeset_id = ? AND operation_index = ?;',
+            )
+            .get(input.changesetId, input.operationIndex) as OperationReceiptRow | undefined;
+          if (existing === undefined) {
+            throw new VictControlError(
+              'VICT_CONTROL_OPERATION_RECEIPT_MISSING',
+              'No prepared operation intent exists for this operation index.',
+            );
+          }
+          if (existing.state === 'applied') {
+            return rowToOperationReceipt(existing); // idempotent
+          }
+          db.prepare(
+            "UPDATE vict_changeset_operation_receipt SET state = 'applied', applied_at = ? WHERE changeset_id = ? AND operation_index = ?;",
+          ).run(toIso(input.at), input.changesetId, input.operationIndex);
+          const updated = db
+            .prepare(
+              'SELECT * FROM vict_changeset_operation_receipt WHERE changeset_id = ? AND operation_index = ?;',
+            )
+            .get(input.changesetId, input.operationIndex) as unknown as OperationReceiptRow;
+          return rowToOperationReceipt(updated);
+        }),
+      );
+    },
+
     async recordOperationReceipt(receipt: ChangeSetOperationReceipt): Promise<void> {
       safeRun('control.recordOperationReceipt', () =>
         inTransaction(db, () => {
@@ -552,6 +725,7 @@ export function createSqliteAgentControlStores(
               existing.operation_digest === receipt.operationDigest &&
               existing.effect_ref === receipt.effectRef &&
               existing.actor_id === receipt.actorId &&
+              existing.state === receipt.state &&
               fromIso(existing.applied_at) === receipt.appliedAt;
             if (!same) {
               throw new VictControlError(
@@ -563,8 +737,8 @@ export function createSqliteAgentControlStores(
           }
           db.prepare(
             `INSERT INTO vict_changeset_operation_receipt
-              (changeset_id, operation_index, operation_kind, operation_digest, effect_ref, actor_id, applied_at)
-            VALUES (?, ?, ?, ?, ?, ?, ?);`,
+              (changeset_id, operation_index, operation_kind, operation_digest, effect_ref, actor_id, applied_at, state, guard_json)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);`,
           ).run(
             receipt.changesetId,
             receipt.operationIndex,
@@ -573,6 +747,8 @@ export function createSqliteAgentControlStores(
             receipt.effectRef,
             receipt.actorId,
             toIso(receipt.appliedAt),
+            receipt.state,
+            receipt.guardJson ?? null,
           );
         }),
       );
@@ -837,37 +1013,94 @@ export function createSqliteAgentControlStores(
       actorId: string;
       at: number;
       reason: 'select' | 'rollback';
+      readonly operationId?: string;
+      readonly expectedBaseVersion?: string;
     }): Promise<{ selectionRevision: number }> {
       return safeRun('control.selectRelease', () =>
+        inTransaction(db, () => selectReleaseInTransaction(command)),
+      );
+    },
+
+    async applyReleaseOperation(input: {
+      release: ApplicationReleaseRecord;
+      selection: {
+        applicationId: string;
+        releaseVersion: string;
+        actorId: string;
+        at: number;
+        reason: 'select' | 'rollback';
+        operationId: string;
+        expectedBaseVersion?: string;
+      };
+      receipt: ChangeSetOperationReceipt;
+    }): Promise<{ selectionRevision: number }> {
+      // The publication, the guarded selection, AND the applied operation
+      // receipt commit in ONE durable transaction: a crash between the
+      // external effect and the receipt is structurally impossible here.
+      return safeRun('control.applyReleaseOperation', () =>
         inTransaction(db, () => {
-          const release = db
-            .prepare('SELECT application_id FROM vict_release WHERE release_version = ?;')
-            .get(command.releaseVersion) as { application_id: string } | undefined;
-          if (release === undefined || release.application_id !== command.applicationId) {
-            throw new VictControlError(
-              'VICT_CONTROL_RELEASE_MISSING',
-              'The release version does not exist for this application.',
+          const existingRelease = db
+            .prepare('SELECT * FROM vict_release WHERE release_version = ?;')
+            .get(input.release.releaseVersion) as ReleaseRow | undefined;
+          if (existingRelease !== undefined) {
+            const matches =
+              JSON.stringify(rowToRelease(existingRelease)) === JSON.stringify(input.release);
+            if (!matches) {
+              throw new VictControlError(
+                'VICT_CONTROL_RELEASE_COLLISION',
+                'A release with this version exists with different content (immutability guard).',
+              );
+            }
+          } else {
+            db.prepare(
+              `INSERT INTO vict_release
+                (release_version, application_id, application_version, renderer_identity,
+                 component_registry_identity, data_adapter_identity, activation_binding,
+                 published_by_actor_id, published_at, content_hash)
+              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`,
+            ).run(
+              input.release.releaseVersion,
+              input.release.applicationId,
+              input.release.applicationVersion,
+              input.release.rendererIdentity,
+              input.release.componentRegistryIdentity,
+              input.release.dataAdapterIdentity,
+              input.release.activationBinding,
+              input.release.publishedByActorId,
+              toIso(input.release.publishedAt),
+              input.release.contentHash,
             );
           }
-          const latest = db
+          const intent = db
             .prepare(
-              'SELECT MAX(selection_revision) AS revision FROM vict_release_selection WHERE application_id = ?;',
+              'SELECT operation_digest FROM vict_changeset_operation_receipt WHERE changeset_id = ? AND operation_index = ?;',
             )
-            .get(command.applicationId) as { revision: number | null };
-          const selectionRevision = (latest.revision ?? 0) + 1;
+            .get(input.receipt.changesetId, input.receipt.operationIndex) as
+            { operation_digest: string } | undefined;
+          if (intent === undefined) {
+            throw new VictControlError(
+              'VICT_CONTROL_OPERATION_RECEIPT_MISSING',
+              'The prepared operation intent must exist before the effect is applied.',
+            );
+          }
+          if (intent.operation_digest !== input.receipt.operationDigest) {
+            throw new VictControlError(
+              'VICT_CONTROL_OPERATION_IDENTITY_CONFLICT',
+              'The prepared operation intent carries different content; conflicting content fails closed.',
+            );
+          }
+          // The guarded selection runs inside THIS transaction (no nested
+          // transaction), then the receipt is marked applied — one durable
+          // commit for publication + selection + receipt.
+          const selection = selectReleaseInTransaction(input.selection);
           db.prepare(
-            `INSERT INTO vict_release_selection
-              (application_id, selection_revision, release_version, actor_id, at, reason)
-            VALUES (?, ?, ?, ?, ?, ?);`,
+            "UPDATE vict_changeset_operation_receipt SET state = 'applied', applied_at = ? WHERE changeset_id = ? AND operation_index = ?;",
           ).run(
-            command.applicationId,
-            selectionRevision,
-            command.releaseVersion,
-            command.actorId,
-            toIso(command.at),
-            command.reason,
+            toIso(input.receipt.appliedAt),
+            input.receipt.changesetId,
+            input.receipt.operationIndex,
           );
-          return { selectionRevision };
+          return selection;
         }),
       );
     },
@@ -903,6 +1136,7 @@ export function createSqliteAgentControlStores(
           actor_id: string;
           at: string;
           reason: string;
+          operation_id: string | null;
         }[];
         return rows.map((row) => ({
           applicationId: row.application_id,
@@ -911,6 +1145,7 @@ export function createSqliteAgentControlStores(
           actorId: row.actor_id,
           at: fromIso(row.at),
           reason: row.reason as ReleaseSelectionRecord['reason'],
+          operationId: row.operation_id ?? undefined,
         }));
       });
     },
@@ -1642,6 +1877,17 @@ export function createSqliteAgentControlStores(
           const current = db
             .prepare('SELECT last_seq FROM vict_agent_stream WHERE stream_id = ?;')
             .get(command.streamId) as { last_seq: number } | undefined;
+          const next = (current?.last_seq ?? 0) + 1;
+          // STORE-BOUNDARY SCHEMA GATE: the full vict.agent-stream@1 event is
+          // validated BEFORE any sequence state or row is written. A rejected
+          // write leaves the stream exactly as before (plain-JS callers
+          // cannot bypass the schema through the raw ledger port).
+          validateStreamLedgerAppend({
+            streamId: command.streamId,
+            kind: command.kind,
+            payload: command.payload,
+            assignedSeq: next,
+          });
           if (current === undefined) {
             db.prepare('INSERT INTO vict_agent_stream (stream_id, last_seq) VALUES (?, 1);').run(
               command.streamId,
@@ -1651,7 +1897,6 @@ export function createSqliteAgentControlStores(
               'UPDATE vict_agent_stream SET last_seq = last_seq + 1 WHERE stream_id = ?;',
             ).run(command.streamId);
           }
-          const next = (current?.last_seq ?? 0) + 1;
           const persisted = isDurableStreamKind(command.kind);
           if (persisted) {
             db.prepare(
@@ -1676,14 +1921,29 @@ export function createSqliteAgentControlStores(
     async listEventsFrom(
       streamId: string,
       afterSeq: number,
+      limit?: number,
     ): Promise<readonly AgentStreamLedgerEvent[]> {
       return safeRun('ledger.listFrom', () => {
-        const rows = db
-          .prepare(
-            'SELECT stream_id, seq, kind, payload, created_at FROM vict_agent_stream_event WHERE stream_id = ? AND seq > ? ORDER BY seq ASC;',
-          )
-          .all(streamId, afterSeq) as unknown as StreamEventRow[];
-        return rows.map((row) => rowToLedgerEvent(row));
+        const bounded =
+          limit !== undefined && limit >= 0
+            ? 'SELECT stream_id, seq, kind, payload, created_at FROM vict_agent_stream_event WHERE stream_id = ? AND seq > ? ORDER BY seq ASC LIMIT ?;'
+            : 'SELECT stream_id, seq, kind, payload, created_at FROM vict_agent_stream_event WHERE stream_id = ? AND seq > ? ORDER BY seq ASC;';
+        const rows = (limit !== undefined && limit >= 0
+          ? db.prepare(bounded).all(streamId, afterSeq, limit)
+          : db.prepare(bounded).all(streamId, afterSeq)) as unknown as StreamEventRow[];
+        // Rows are validated against their declared kind on READ too: a
+        // corrupted or foreign row fails closed instead of crossing the
+        // boundary.
+        return rows.map((row) => {
+          const event = rowToLedgerEvent(row);
+          validateStreamLedgerAppend({
+            streamId: event.streamId,
+            kind: event.kind,
+            payload: event.payload,
+            assignedSeq: event.seq,
+          });
+          return event;
+        });
       });
     },
 
@@ -1702,36 +1962,44 @@ export function createSqliteAgentControlStores(
       return safeRun('idempotency.claim', () =>
         inTransaction(db, () => {
           const existing = db
-            .prepare('SELECT * FROM vict_command_idempotency WHERE idempotency_key = ?;')
-            .get(record.idempotencyKey) as IdempotencyRow | undefined;
+            .prepare(
+              'SELECT * FROM vict_command_idempotency WHERE actor_id = ? AND command = ? AND idempotency_key = ?;',
+            )
+            .get(record.actorId, record.command, record.idempotencyKey) as
+            IdempotencyRow | undefined;
           if (existing !== undefined) {
             return 'exists' as const;
           }
           db.prepare(
             `INSERT INTO vict_command_idempotency
-              (idempotency_key, actor_id, command, request_digest, status, response_code, result_json, created_at, settled_at)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);`,
+              (actor_id, command, idempotency_key, request_digest, status, response_code, result_json, created_at, settled_at, owner, lease_until, attempts)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`,
           ).run(
-            record.idempotencyKey,
             record.actorId,
             record.command,
+            record.idempotencyKey,
             record.requestDigest,
             record.status,
             record.responseCode ?? null,
             record.resultJson ?? null,
             toIso(record.createdAt),
             record.settledAt === undefined ? null : toIso(record.settledAt),
+            record.owner ?? null,
+            record.leaseUntil === undefined ? null : toIso(record.leaseUntil),
+            record.attempts,
           );
           return 'claimed' as const;
         }),
       );
     },
 
-    async getReceipt(idempotencyKey: string): Promise<CommandIdempotencyReceipt | undefined> {
+    async getReceipt(name: CommandIdempotencyName): Promise<CommandIdempotencyReceipt | undefined> {
       return safeRun('idempotency.get', () => {
         const row = db
-          .prepare('SELECT * FROM vict_command_idempotency WHERE idempotency_key = ?;')
-          .get(idempotencyKey) as IdempotencyRow | undefined;
+          .prepare(
+            'SELECT * FROM vict_command_idempotency WHERE actor_id = ? AND command = ? AND idempotency_key = ?;',
+          )
+          .get(name.actorId, name.command, name.idempotencyKey) as IdempotencyRow | undefined;
         if (row === undefined) {
           return undefined;
         }
@@ -1739,7 +2007,23 @@ export function createSqliteAgentControlStores(
       });
     },
 
+    async findReceiptByActorKey(input: {
+      actorId: string;
+      idempotencyKey: string;
+    }): Promise<CommandIdempotencyReceipt | undefined> {
+      return safeRun('idempotency.findByActorKey', () => {
+        const row = db
+          .prepare(
+            'SELECT * FROM vict_command_idempotency WHERE actor_id = ? AND idempotency_key = ? LIMIT 1;',
+          )
+          .get(input.actorId, input.idempotencyKey) as IdempotencyRow | undefined;
+        return row === undefined ? undefined : rowToIdempotencyReceipt(row);
+      });
+    },
+
     async completeReceipt(input: {
+      actorId: string;
+      command: string;
       idempotencyKey: string;
       resultJson: string;
       at: number;
@@ -1747,24 +2031,34 @@ export function createSqliteAgentControlStores(
       safeRun('idempotency.complete', () =>
         inTransaction(db, () => {
           const row = db
-            .prepare('SELECT * FROM vict_command_idempotency WHERE idempotency_key = ?;')
-            .get(input.idempotencyKey) as IdempotencyRow | undefined;
+            .prepare(
+              'SELECT * FROM vict_command_idempotency WHERE actor_id = ? AND command = ? AND idempotency_key = ?;',
+            )
+            .get(input.actorId, input.command, input.idempotencyKey) as IdempotencyRow | undefined;
           if (row === undefined) {
             throw new VictControlError(
               'VICT_IDEMPOTENCY_RECEIPT_MISSING',
-              'No idempotency receipt exists for this key.',
+              'No idempotency receipt exists for this key namespace.',
             );
           }
           if (row.status === 'pending') {
             db.prepare(
-              'UPDATE vict_command_idempotency SET status = ?, result_json = ?, settled_at = ? WHERE idempotency_key = ?;',
-            ).run('completed', input.resultJson, toIso(input.at), input.idempotencyKey);
+              "UPDATE vict_command_idempotency SET status = 'completed', result_json = ?, settled_at = ?, owner = NULL, lease_until = NULL WHERE actor_id = ? AND command = ? AND idempotency_key = ?;",
+            ).run(
+              input.resultJson,
+              toIso(input.at),
+              input.actorId,
+              input.command,
+              input.idempotencyKey,
+            );
           }
         }),
       );
     },
 
     async failReceipt(input: {
+      actorId: string;
+      command: string;
       idempotencyKey: string;
       responseCode: string;
       at: number;
@@ -1772,19 +2066,84 @@ export function createSqliteAgentControlStores(
       safeRun('idempotency.fail', () =>
         inTransaction(db, () => {
           const row = db
-            .prepare('SELECT * FROM vict_command_idempotency WHERE idempotency_key = ?;')
-            .get(input.idempotencyKey) as IdempotencyRow | undefined;
+            .prepare(
+              'SELECT * FROM vict_command_idempotency WHERE actor_id = ? AND command = ? AND idempotency_key = ?;',
+            )
+            .get(input.actorId, input.command, input.idempotencyKey) as IdempotencyRow | undefined;
           if (row === undefined) {
             throw new VictControlError(
               'VICT_IDEMPOTENCY_RECEIPT_MISSING',
-              'No idempotency receipt exists for this key.',
+              'No idempotency receipt exists for this key namespace.',
             );
           }
           if (row.status === 'pending') {
             db.prepare(
-              'UPDATE vict_command_idempotency SET status = ?, response_code = ?, settled_at = ? WHERE idempotency_key = ?;',
-            ).run('failed', input.responseCode, toIso(input.at), input.idempotencyKey);
+              "UPDATE vict_command_idempotency SET status = 'failed', response_code = ?, settled_at = ?, owner = NULL, lease_until = NULL WHERE actor_id = ? AND command = ? AND idempotency_key = ?;",
+            ).run(
+              input.responseCode,
+              toIso(input.at),
+              input.actorId,
+              input.command,
+              input.idempotencyKey,
+            );
           }
+        }),
+      );
+    },
+
+    async releaseReceipt(input: {
+      actorId: string;
+      command: string;
+      idempotencyKey: string;
+      at: number;
+    }): Promise<void> {
+      safeRun('idempotency.release', () =>
+        inTransaction(db, () => {
+          // A RETRYABLE infrastructure failure must not be permanently
+          // confused with a deterministic command failure: the pending
+          // claim is removed so a retry can re-execute truthfully.
+          db.prepare(
+            "DELETE FROM vict_command_idempotency WHERE actor_id = ? AND command = ? AND idempotency_key = ? AND status = 'pending';",
+          ).run(input.actorId, input.command, input.idempotencyKey);
+        }),
+      );
+    },
+
+    async takeOverExpiredLease(input: {
+      actorId: string;
+      command: string;
+      idempotencyKey: string;
+      owner: string;
+      leaseUntil: number;
+      at: number;
+    }): Promise<'taken' | 'not-expired' | 'missing'> {
+      return safeRun('idempotency.leaseTakeover', () =>
+        inTransaction(db, () => {
+          const row = db
+            .prepare(
+              'SELECT * FROM vict_command_idempotency WHERE actor_id = ? AND command = ? AND idempotency_key = ?;',
+            )
+            .get(input.actorId, input.command, input.idempotencyKey) as IdempotencyRow | undefined;
+          if (row === undefined) {
+            return 'missing' as const;
+          }
+          if (row.status !== 'pending') {
+            return 'not-expired' as const; // settled: replay path handles it
+          }
+          const leaseUntil = optionalIso(row.lease_until) ?? 0;
+          if (leaseUntil > input.at) {
+            return 'not-expired' as const; // the previous owner may still run
+          }
+          db.prepare(
+            'UPDATE vict_command_idempotency SET owner = ?, lease_until = ?, attempts = attempts + 1 WHERE actor_id = ? AND command = ? AND idempotency_key = ?;',
+          ).run(
+            input.owner,
+            toIso(input.leaseUntil),
+            input.actorId,
+            input.command,
+            input.idempotencyKey,
+          );
+          return 'taken' as const;
         }),
       );
     },
