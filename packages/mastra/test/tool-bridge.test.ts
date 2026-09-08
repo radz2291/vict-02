@@ -160,6 +160,8 @@ async function makeFixture(
       return gatedInvoke(input, context as never) as Promise<unknown>;
     },
     recordInvocationIntent: (input) => turnService.recordToolInvocationIntent(input),
+    getTurnInvocationOrdinal: async (turnId) =>
+      (await stores.invocations.listInvocationsForTurn(turnId)).length,
     requestApproval: (input) => turnService.requestApproval(input),
     consumeApproval: (binding) => turnService.consumeApproval(binding),
     updateInvocationStatus: (command) => stores.invocations.updateInvocationStatus(command),
@@ -284,7 +286,8 @@ describe('governed capability tool bridge', () => {
     const invocations = await fixture.stores.invocations.listInvocationsForTurn(SCOPE.turnId);
     expect(invocations).toHaveLength(1);
     expect(invocations[0]?.status).toBe('completed');
-    expect(invocations[0]?.resultSummary).toContain('saved');
+    // The result summary is framework metadata only: shape, never values/keys.
+    expect(invocations[0]?.resultSummary).toMatch(/^object\(\d+ fields\)$/);
     // No full payloads in the durable record: safe bounded summaries only.
     expect(JSON.stringify(invocations[0]).length).toBeLessThan(600);
   });

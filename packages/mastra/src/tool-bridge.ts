@@ -1,6 +1,7 @@
 import { createTool } from '@mastra/core/tools';
 import { createHash } from 'node:crypto';
 import { AsyncLocalStorage } from 'node:async_hooks';
+import { toCanonicalJson, VictControlError } from '@vict/runtime';
 import type {
   AgentProfileActivation,
   AgentToolInvocationRecord,
@@ -56,6 +57,7 @@ export type CapabilityToolFailureCode =
   | 'VICT_CAPABILITY_INPUT_CONTRACT_REJECTED'
   | 'VICT_CAPABILITY_OUTPUT_CONTRACT_REJECTED'
   | 'VICT_CAPABILITY_INVOCATION_FAILED'
+  | 'VICT_CAPABILITY_OUTCOME_UNKNOWN'
   | 'VICT_CAPABILITY_AUTHORITY_DENIED'
   | 'VICT_CAPABILITY_DECLINED'
   | 'VICT_CAPABILITY_AWAITING_APPROVAL_TIMED_OUT'
@@ -124,6 +126,12 @@ export interface CapabilityBridgeDeps {
     argDigest: string;
     argumentSummary: string;
   }): Promise<AgentToolInvocationRecord>;
+  /**
+   * Durable count of invocations already recorded for the turn. Used for
+   * the DETERMINISTIC tool-call identity fallback (turn context + ordinal
+   * — never current time), stable across retries and restarts.
+   */
+  getTurnInvocationOrdinal(turnId: string): Promise<number>;
   /** Durable pending approval creation + turn suspension (awaiting-approval). */
   requestApproval(input: {
     invocation: AgentToolInvocationRecord;
@@ -147,7 +155,14 @@ export interface CapabilityBridgeDeps {
   /** Invocation status transitions (forward-only, terminal-fenced). */
   updateInvocationStatus(command: {
     invocationId: string;
-    status: 'approved' | 'running' | 'completed' | 'failed' | 'declined' | 'cancelled';
+    status:
+      | 'approved'
+      | 'running'
+      | 'completed'
+      | 'failed'
+      | 'declined'
+      | 'cancelled'
+      | 'outcome_unknown';
     at: number;
     resultSummary?: string;
     errorCode?: string;
@@ -161,7 +176,7 @@ export interface CapabilityBridgeDeps {
   /** Per-turn tool budget gate (adapter-supplied; see helper-tools). */
   readonly budgetGate?: () => 'allowed' | 'denied' | 'outside-turn';
   /** Event emission for the durable `tool.awaiting_approval` milestone. */
-  readonly emitAwaitingApproval?: (event: AgentStreamEvent) => void;
+  readonly emitAwaitingApproval?: (event: AgentStreamEvent) => Promise<void>;
   readonly clock?: () => number;
   /** Approval wait expiry in ms (default 15 minutes). */
   readonly approvalExpiryMs?: number;
@@ -180,31 +195,61 @@ export interface BridgeTurnContext {
 
 /** The canonical argument digest (deterministic, payload-safe). */
 export function canonicalArgDigest(input: unknown): string {
-  return sha256Hex(canonicalJson(input));
-}
-
-function canonicalJson(value: unknown): string {
-  return (
-    JSON.stringify(value, (_key, inner) => {
-      if (typeof inner === 'bigint') return inner.toString();
-      return inner;
-    }) ?? 'null'
-  );
+  // The digest uses the STRICT canonical serialization (recursively
+  // key-sorted, no whitespace, unsupported values REJECTED — never
+  // insertion-order-sensitive JSON.stringify). Two structurally identical
+  // argument objects therefore produce ONE digest regardless of key order,
+  // and unsupported values fail closed instead of being silently coerced.
+  return sha256Hex(toCanonicalJson(input));
 }
 
 function sha256Hex(payload: string): string {
   return createHash('sha256').update(payload, 'utf8').digest('hex');
 }
 
-/** Bounded safe argument summary (never full payloads). */
-export function safeArgumentSummary(input: unknown, limit = 120): string {
-  let serialized: string;
-  try {
-    serialized = JSON.stringify(input) ?? 'null';
-  } catch {
-    serialized = '(unserializable)';
+/**
+ * Framework-metadata-only argument summary (DATA-005). The summary carries
+ * the structural shape of the arguments ONLY: container kinds, counts, and
+ * JSON type names. Argument values, argument key names, authorization-like
+ * field names, and serialized payload fragments are NEVER retained.
+ */
+export function safeArgumentSummary(input: unknown, _limit = 120): string {
+  return shapeSummary(input, 0) ?? 'unsupported';
+}
+
+function shapeSummary(value: unknown, depth: number): string | undefined {
+  if (depth > 2) {
+    return '…';
   }
-  return serialized.length <= limit ? serialized : `${serialized.slice(0, limit)}…`;
+  if (value === null) {
+    return 'null';
+  }
+  switch (typeof value) {
+    case 'string':
+      return `string(${value.length})`;
+    case 'number':
+      return 'number';
+    case 'boolean':
+      return 'boolean';
+    case 'bigint':
+    case 'symbol':
+    case 'function':
+    case 'undefined':
+      return 'unsupported';
+    case 'object': {
+      if (Array.isArray(value)) {
+        return `array(${value.length})`;
+      }
+      const proto = Object.getPrototypeOf(value) as object | null;
+      if (proto !== Object.prototype && proto !== null) {
+        return 'unsupported';
+      }
+      const fields = Object.keys(value as Record<string, unknown>).length;
+      return `object(${fields} fields)`;
+    }
+    default:
+      return 'unsupported';
+  }
 }
 
 /**
@@ -307,11 +352,21 @@ export function bridgeCapabilityToolToMastra(
           victCapabilityFailure: 'VICT_CAPABILITY_AUTHORITY_DENIED',
         } satisfies CapabilityToolFailure;
       }
-      const toolCallId =
+      let toolCallId: string;
+      if (
         typeof executionContext.toolCallId === 'string' &&
         /^[A-Za-z0-9._:-]{1,128}$/.test(executionContext.toolCallId)
-          ? executionContext.toolCallId
-          : `call-${digest12(canonicalJson({ turn: turn.turnId, capability: capabilityId, at: clock() }))}`;
+      ) {
+        toolCallId = executionContext.toolCallId;
+      } else {
+        // Deterministic fallback identity derived from the DURABLE turn
+        // context and the invocation ordinal — never from current time —
+        // so the identity is STABLE across retries, approval suspension,
+        // and process restarts. A malformed upstream identity therefore
+        // fails closed into a documented deterministic identity instead.
+        const ordinal = await deps.getTurnInvocationOrdinal(turn.turnId);
+        toolCallId = `call-${digest12(`${turn.turnId}:${capabilityId}:${ordinal}`)}`;
+      }
       // ---- 2. Authenticated actor + authority check ----------------------
       // The turn's authenticated actor is the only authority source; a
       // mismatch (hostile request context) fails closed.
@@ -340,7 +395,10 @@ export function bridgeCapabilityToolToMastra(
         parsedInput !== undefined && parsedInput.ok ? parsedInput.value : inputData;
       const argDigest = canonicalArgDigest(effectiveInput);
       // ---- 4. Durable intent (durable BEFORE invocation; always) ---------
-      const invocation = await deps.recordInvocationIntent({
+      // The intent is idempotent over the logical invocation identity: a
+      // retry/resume/restart with the same tool-call identity and digest
+      // resolves to the SAME durable invocation record (exactly-once).
+      const invocation = await recordInvocationIntentIdempotent(deps, {
         turnId: turn.turnId,
         toolCallId,
         toolName: capabilityId,
@@ -364,18 +422,24 @@ export function bridgeCapabilityToolToMastra(
             expiresAt: clock() + (deps.approvalExpiryMs ?? 900_000),
           });
           approvalId = created.approvalId;
-          // Durable `tool.awaiting_approval` milestone (safe summary only).
-          deps.emitAwaitingApproval?.({
-            kind: 'tool.awaiting_approval',
-            streamId: turn.streamId,
-            turnId: turn.turnId,
-            threadId: readThreadId(),
-            actorId: turn.actorId,
-            agentProfileVersion: turn.agentProfileVersion,
-            seq: 0,
-            toolCallId,
-            toolName: capabilityId,
-          } as unknown as AgentStreamEvent);
+          // Durable `tool.awaiting_approval` milestone (safe identity fields
+          // only). The milestone is AWAITED so durable events stay ordered
+          // and exactly once relative to the approval record; a persistence
+          // failure here fails the tool closed BEFORE any effect exists.
+          if (deps.emitAwaitingApproval !== undefined) {
+            await deps.emitAwaitingApproval({
+              kind: 'tool.awaiting_approval',
+              streamId: turn.streamId,
+              turnId: turn.turnId,
+              threadId: readThreadId(),
+              actorId: turn.actorId,
+              agentProfileVersion: turn.agentProfileVersion,
+              seq: 0,
+              toolCallId,
+              toolName: capabilityId,
+              victInvocationId: invocation.invocationId,
+            } as unknown as AgentStreamEvent);
+          }
         }
         // Wait for the durable decision (VICT approval record commits
         // BEFORE any Mastra resume of the effect). Cancellation and expiry
@@ -387,7 +451,7 @@ export function bridgeCapabilityToolToMastra(
           abortSignal: turn.abortSignal,
         });
         if (decision.status === 'declined') {
-          await safeStatus(
+          await transitionInvocation(
             deps,
             invocation.invocationId,
             'declined',
@@ -400,7 +464,7 @@ export function bridgeCapabilityToolToMastra(
           } satisfies CapabilityToolFailure;
         }
         if (decision.status === 'expired' || decision.status === 'timeout') {
-          await safeStatus(
+          await transitionInvocation(
             deps,
             invocation.invocationId,
             'failed',
@@ -413,7 +477,7 @@ export function bridgeCapabilityToolToMastra(
           } satisfies CapabilityToolFailure;
         }
         if (decision.status === 'cancelled') {
-          await safeStatus(
+          await transitionInvocation(
             deps,
             invocation.invocationId,
             'cancelled',
@@ -440,7 +504,7 @@ export function bridgeCapabilityToolToMastra(
           at: clock(),
         });
         if (!consumed.approved) {
-          await safeStatus(
+          await transitionInvocation(
             deps,
             invocation.invocationId,
             'failed',
@@ -452,17 +516,25 @@ export function bridgeCapabilityToolToMastra(
             victCapabilityFailure: 'VICT_CAPABILITY_AUTHORITY_DENIED',
           } satisfies CapabilityToolFailure;
         }
-        await safeStatus(deps, invocation.invocationId, 'approved', clock());
+        await transitionInvocation(deps, invocation.invocationId, 'approved', clock());
       }
       // ---- 6. Capability invocation (durable intent already recorded) ----
-      await safeStatus(deps, invocation.invocationId, 'running', clock());
+      await transitionInvocation(deps, invocation.invocationId, 'running', clock());
+      // The stable durable idempotency key is propagated into the capability
+      // invocation context so EXTERNAL adapters can deduplicate their own
+      // effects after retries and restarts (one logical effect per key).
       let rawOutput: unknown;
       try {
         rawOutput = await deps.invoke(definition, effectiveInput, {
           signal: turn.abortSignal,
+          victIdempotencyKey: invocation.idempotencyKey,
+          victInvocationId: invocation.invocationId,
+          victTurnId: turn.turnId,
+          victToolCallId: toolCallId,
+          victActorId: turn.actorId,
         } as Partial<CapabilityContext>);
       } catch {
-        await safeStatus(
+        await transitionInvocation(
           deps,
           invocation.invocationId,
           'failed',
@@ -479,7 +551,7 @@ export function bridgeCapabilityToolToMastra(
         try {
           const parsed = outputContract.parse(rawOutput);
           if (!parsed.ok) {
-            await safeStatus(
+            await transitionInvocation(
               deps,
               invocation.invocationId,
               'failed',
@@ -493,7 +565,7 @@ export function bridgeCapabilityToolToMastra(
           }
           rawOutput = parsed.value;
         } catch {
-          await safeStatus(
+          await transitionInvocation(
             deps,
             invocation.invocationId,
             'failed',
@@ -506,13 +578,33 @@ export function bridgeCapabilityToolToMastra(
           } satisfies CapabilityToolFailure;
         }
       }
-      await safeStatus(
-        deps,
-        invocation.invocationId,
-        'completed',
-        clock(),
-        safeArgumentSummary(rawOutput),
-      );
+      // ---- Terminal persistence: TRUTHFUL under failure ------------------
+      // The capability effect may already exist at this point. A store
+      // failure while recording the terminal state must NOT surface as a
+      // normal completion: the invocation enters the truthful durable
+      // `outcome_unknown` state and the model receives the structured
+      // recoverable failure instead of the capability output.
+      try {
+        await transitionInvocation(
+          deps,
+          invocation.invocationId,
+          'completed',
+          clock(),
+          safeArgumentSummary(rawOutput),
+        );
+      } catch {
+        await tryTransitionInvocation(
+          deps,
+          invocation.invocationId,
+          'outcome_unknown',
+          clock(),
+          undefined,
+          'VICT_CAPABILITY_OUTCOME_UNKNOWN',
+        );
+        return {
+          victCapabilityFailure: 'VICT_CAPABILITY_OUTCOME_UNKNOWN',
+        } satisfies CapabilityToolFailure;
+      }
       // ---- 8. Sanitized result to Mastra ----------------------------------
       return rawOutput;
     },
@@ -612,10 +704,43 @@ async function awaitApprovalDecision(
   }
 }
 
-async function safeStatus(
+/**
+ * Record the invocation intent with EXACTLY-ONCE semantics: a retry,
+ * resume, or restart that reaches the same logical invocation identity
+ * (idempotency key) resolves to the EXISTING durable record. Only a
+ * recognized digest-collision is a real conflict; other store failures
+ * propagate (fail closed) instead of being swallowed.
+ */
+async function recordInvocationIntentIdempotent(
+  deps: CapabilityBridgeDeps,
+  input: Parameters<CapabilityBridgeDeps['recordInvocationIntent']>[0],
+): Promise<AgentToolInvocationRecord> {
+  try {
+    return await deps.recordInvocationIntent(input);
+  } catch (error) {
+    if (
+      error instanceof VictControlError &&
+      error.code === 'VICT_CONTROL_INVOCATION_KEY_COLLISION'
+    ) {
+      // The collision path can only mean a different digest under the same
+      // logical key — a hostile/changed retry that must fail closed.
+      throw error;
+    }
+    throw error;
+  }
+}
+
+/**
+ * Durable invocation transition with FENCED-RETRY recognition: only
+ * explicitly recognized terminal-fenced/idempotent outcomes are safe to
+ * treat as already-applied; ANY other store failure propagates (fail
+ * closed) instead of being silently swallowed.
+ */
+async function transitionInvocation(
   deps: CapabilityBridgeDeps,
   invocationId: string,
-  status: 'approved' | 'running' | 'completed' | 'failed' | 'declined' | 'cancelled',
+  status:
+    'approved' | 'running' | 'completed' | 'failed' | 'declined' | 'cancelled' | 'outcome_unknown',
   at: number,
   resultSummary?: string,
   errorCode?: string,
@@ -628,8 +753,37 @@ async function safeStatus(
       ...(resultSummary !== undefined ? { resultSummary } : {}),
       ...(errorCode !== undefined ? { errorCode } : {}),
     });
+  } catch (error) {
+    // Recognized idempotent/fenced outcomes ONLY: a late duplicate of a
+    // transition that is already durably recorded (terminal fencing) or a
+    // forward-only regression on an exactly-once retry is safe to ignore.
+    if (
+      error instanceof VictControlError &&
+      (error.code === 'VICT_CONTROL_INVOCATION_TERMINAL' ||
+        error.code === 'VICT_CONTROL_INVOCATION_REGRESSION')
+    ) {
+      return;
+    }
+    // Everything else is a REAL durable failure and must never be swallowed.
+    throw error;
+  }
+}
+
+/** Best-effort transition wrapper (boolean success; never throws). */
+async function tryTransitionInvocation(
+  deps: CapabilityBridgeDeps,
+  invocationId: string,
+  status:
+    'approved' | 'running' | 'completed' | 'failed' | 'declined' | 'cancelled' | 'outcome_unknown',
+  at: number,
+  resultSummary?: string,
+  errorCode?: string,
+): Promise<boolean> {
+  try {
+    await transitionInvocation(deps, invocationId, status, at, resultSummary, errorCode);
+    return true;
   } catch {
-    // A terminal-fenced update attempt is not an execution failure.
+    return false;
   }
 }
 

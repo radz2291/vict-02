@@ -1118,7 +1118,17 @@ export class MastraProductAgent implements ProductAgentPort {
           return turnFailure('VICT_AGENT_TURN_PERSISTENCE_UNCONFIRMED');
         }
         emit({ kind: 'memory.updated', threadId: request.threadId });
-        emit({ kind: 'content.completed', text: completedText });
+        // Durable content milestones carry a bounded REFERENCE to the
+        // completed content inside the designated, actor-authorized
+        // conversation store (vict-actor-<actorId> resource, thread+turn
+        // address) — never the content itself. The full text was already
+        // durably persisted to that store above (durable-before-milestone),
+        // so authorized readers reconstruct it from the authoritative
+        // conversation domain under its retention/deletion/export policy.
+        emit({
+          kind: 'content.completed',
+          contentRef: `conversation:vict-actor-${request.actorId}/${request.threadId}/${request.turnId}`,
+        });
         emit({ kind: 'response.completed' });
         return {
           status,

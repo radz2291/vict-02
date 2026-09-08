@@ -213,6 +213,8 @@ async function compose(script: OfflineScript): Promise<Composition> {
         turnServiceRef.current?.recordToolInvocationIntent(
           input,
         ) as Promise<AgentToolInvocationRecord>,
+      getTurnInvocationOrdinal: async (turnId) =>
+        stores.invocations.listInvocationsForTurn(turnId).then((rows) => rows.length),
       requestApproval: (input) =>
         turnServiceRef.current?.requestApproval(input) as Promise<AgentApprovalRecord>,
       consumeApproval: (binding) =>
@@ -289,7 +291,8 @@ describe('governed agent-turn execution (real pinned Mastra, offline)', () => {
         const invocations = await stores.invocations.listInvocationsForTurn(started.turn.turnId);
         expect(invocations).toHaveLength(1);
         expect(invocations[0]?.status).toBe('completed');
-        expect(invocations[0]?.resultSummary).toContain('saved');
+        // The result summary is framework metadata only: shape, never values/keys.
+        expect(invocations[0]?.resultSummary).toMatch(/^object\(\d+ fields\)$/);
         // The durable stream ledger carries the awaiting-approval milestone.
         const ledgerRows = await stores.streamLedger.listEventsFrom(started.turn.streamId, 0);
         const kinds = ledgerRows.map((row) => row.kind);

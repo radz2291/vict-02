@@ -56,13 +56,17 @@ export function composeMastraTurnExecutor(deps: MastraTurnExecutorDeps): MastraT
 
   const capabilityTools = buildCapabilityTools(deps.activation, {
     ...deps.capabilityBridge,
-    emitAwaitingApproval: (event: AgentStreamEvent) => {
-      // Fire-and-forget publication: the DURABLE awaiting state is the
-      // pending approval record + the turn's awaiting-approval state; the
-      // stream milestone is secondary (its persistence failure never
-      // blocks the governed flow and never leaks content).
-      void emit(event).catch(() => undefined);
+    // The durable awaiting-approval milestone is AWAITED: it is part of the
+    // governed durable ordering and never fire-and-forget. A persistence
+    // failure fails the tool closed BEFORE any effect exists (the approval
+    // record and the awaiting-approval milestone stay consistent).
+    emitAwaitingApproval: async (event: AgentStreamEvent) => {
+      await emit(event);
     },
+    // Durable ordinal of the turn's recorded invocations — the deterministic
+    // tool-call identity fallback input (turn context + ordinal, no clocks).
+    getTurnInvocationOrdinal: async (turnId: string) =>
+      (await deps.stores.invocations.listInvocationsForTurn(turnId)).length,
   });
 
   const productAgent = MastraProductAgent.create(deps.activation, {
@@ -90,6 +94,11 @@ export function composeMastraTurnExecutor(deps: MastraTurnExecutorDeps): MastraT
       readonly text?: string;
       readonly errorCode?: string;
     }> => {
+      // Durable milestones are AWAITED, in order, exactly once: every
+      // publication promise is retained and awaited after the turn settles.
+      // A durable publication failure is NEVER swallowed: it makes the turn
+      // outcome truthfully failed instead of silently dropping a milestone.
+      const pendingPublications: Promise<void>[] = [];
       const outcome = await runWithBridgeTurnScope(
         {
           turnId: command.turnId,
@@ -112,16 +121,32 @@ export function composeMastraTurnExecutor(deps: MastraTurnExecutorDeps): MastraT
               abortSignal: handle.abortSignal,
               streamId: command.streamId,
               onEvent: (event: AgentStreamEvent) => {
-                void emit(event).catch(() => undefined);
+                pendingPublications.push(emit(event));
               },
             },
           ),
       );
+      // Await the publications IN ORDER (they were queued in emission order;
+      // the hub's per-stream sequencing preserves the durable ordering).
+      let publicationFailure = false;
+      for (const publication of pendingPublications) {
+        try {
+          await publication;
+        } catch {
+          publicationFailure = true;
+        }
+      }
       // Correlation: record the Mastra trace identity on the VICT turn
       // record (IDs only — never payloads).
       await deps.stores.turns.recordTurnCorrelation(command.turnId, {
         ...(outcome.traceId !== undefined ? { traceId: outcome.traceId } : {}),
       });
+      if (publicationFailure && outcome.status === 'completed') {
+        // A completed turn with a durably unrecorded milestone is NOT a
+        // normal completion: report the truthful persistence failure (the
+        // turn store records the same status through the terminal gate).
+        return { status: 'failed', errorCode: 'VICT_TURN_STREAM_PERSISTENCE_FAILED' };
+      }
       return {
         status: outcome.status,
         ...(outcome.text !== undefined ? { text: outcome.text } : {}),
