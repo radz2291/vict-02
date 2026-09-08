@@ -12,7 +12,7 @@ import {
 } from '@vict/runtime';
 import { AgentProfileRegistry } from '@vict/runtime';
 import { createSqliteAgentControlStores } from '@vict/store-sqlite';
-import { ControlPlaneService } from '@vict/control';
+import { ControlPlaneService, createControlPlaneSandboxSimulator } from '@vict/control';
 import {
   MASTRA_ADAPTER_COMPATIBILITY,
   createDeterministicOfflineModel,
@@ -357,6 +357,10 @@ async function fixture(): Promise<number> {
     stores: controlStores,
     catalog: createInMemoryStores().catalog,
     clock: () => Date.now(),
+    simulator: createControlPlaneSandboxSimulator({
+      stores: controlStores,
+      catalog: createInMemoryStores().catalog,
+    }),
     ids: {
       changesetId: () => `cs-${(auditN += 1)}`,
       changesetApprovalId: () => `csa-${(auditN += 1)}`,

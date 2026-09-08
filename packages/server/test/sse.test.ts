@@ -8,7 +8,7 @@ import {
   AgentStreamHub,
   type AgentControlStores,
 } from '@vict/runtime';
-import { ControlPlaneService } from '@vict/control';
+import { ControlPlaneService, createControlPlaneSandboxSimulator } from '@vict/control';
 import {
   createLocalTestAuthenticator,
   createServerAuthenticator,
@@ -493,6 +493,7 @@ describe('resumable SSE (real HTTP, vict.agent-stream@1)', () => {
       stores,
       catalog,
       clock: () => Date.now(),
+      simulator: createControlPlaneSandboxSimulator({ stores, catalog }),
       ids: {
         changesetId: () => `cs-${(n += 1)}`,
         changesetApprovalId: () => `csa-${(n += 1)}`,

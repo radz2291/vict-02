@@ -12,7 +12,7 @@ import {
   type ActorRecord,
 } from '@vict/runtime';
 import { createSqliteAgentControlStores } from '@vict/store-sqlite';
-import { ControlPlaneService } from '@vict/control';
+import { ControlPlaneService, createControlPlaneSandboxSimulator } from '@vict/control';
 import {
   createLocalTestAuthenticator,
   createServerAuthenticator,
@@ -122,7 +122,9 @@ describe('durable command idempotency — in-memory stores', () => {
       idempotencyKey: 'key-b',
     });
     expect(commandConflict).toEqual({ ok: false, code: 'VICT_COMMAND_IDEMPOTENCY_CONFLICT' });
-    const actorConflict = await service.dispatch(
+    // Receipts bind ACTOR: a different actor's client-generated key is an
+    // independent namespace and never conflicts with another actor's key.
+    const otherActor = await service.dispatch(
       {
         ...authenticatedActorContext(
           { actorId: 'actor-other', status: 'active', roles: ['administrator'], createdAt: 0 },
@@ -136,7 +138,17 @@ describe('durable command idempotency — in-memory stores', () => {
         idempotencyKey: 'key-b',
       },
     );
-    expect(actorConflict).toEqual({ ok: false, code: 'VICT_COMMAND_IDEMPOTENCY_CONFLICT' });
+    expect(otherActor.ok).toBe(true);
+    expect(
+      (
+        await stores.commandIdempotency.getReceipt({
+          actorId: 'actor-other',
+          command: 'changeset.propose',
+          idempotencyKey: 'key-b',
+        })
+      )?.status,
+    ).toBe('completed');
+    expect((await stores.control.listChangeSets()).length).toBe(2);
   });
 
   it('a malformed key is rejected before any effect (closed bounded format)', async () => {
@@ -185,7 +197,11 @@ describe('durable command idempotency — in-memory stores', () => {
     });
     expect(retry).toEqual({ ok: false, code: 'VICT_CONTROL_CHANGESET_EXISTS' });
     // Exactly ONE receipt exists for the second key, and it is terminal.
-    const receipt = await stores.commandIdempotency.getReceipt('key-dup-2');
+    const receipt = await stores.commandIdempotency.getReceipt({
+      actorId: 'actor-admin',
+      command: 'changeset.propose',
+      idempotencyKey: 'key-dup-2',
+    });
     expect(receipt?.status).toBe('failed');
     expect(receipt?.responseCode).toBe('VICT_CONTROL_CHANGESET_EXISTS');
   });
@@ -340,6 +356,7 @@ describe('durable command idempotency over REAL HTTP (agent.turn.start retries)'
       stores,
       catalog,
       clock: () => Date.now(),
+      simulator: createControlPlaneSandboxSimulator({ stores, catalog }),
       ids: {
         changesetId: () => `cs-${++n}`,
         changesetApprovalId: () => `csa-${++n}`,
@@ -415,6 +432,7 @@ function commandService(stores: ReturnType<typeof createInMemoryAgentControlStor
     stores,
     catalog,
     clock: () => Date.now(),
+    simulator: createControlPlaneSandboxSimulator({ stores, catalog }),
     ids: {
       changesetId: () => `cs-gen-${++n}`,
       changesetApprovalId: () => `csa-${++n}`,

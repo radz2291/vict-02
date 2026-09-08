@@ -62,6 +62,7 @@ export type CapabilityToolFailureCode =
   | 'VICT_CAPABILITY_DECLINED'
   | 'VICT_CAPABILITY_AWAITING_APPROVAL_TIMED_OUT'
   | 'VICT_CAPABILITY_CANCELLED'
+  | 'VICT_CAPABILITY_TOOL_IDENTITY_REQUIRED'
   | 'VICT_CAPABILITY_TOOL_LIMIT_EXCEEDED';
 
 /** The structured safe result returned to the model. */
@@ -127,9 +128,11 @@ export interface CapabilityBridgeDeps {
     argumentSummary: string;
   }): Promise<AgentToolInvocationRecord>;
   /**
-   * Durable count of invocations already recorded for the turn. Used for
-   * the DETERMINISTIC tool-call identity fallback (turn context + ordinal
-   * — never current time), stable across retries and restarts.
+   * Durable count of invocations already recorded for the turn. Retained
+   * for diagnostics/limits ONLY — tool-call identity NO LONGER derives
+   * from it (a count-based fallback drifts after a restart once an intent
+   * exists). A missing or malformed framework `toolCallId` now fails
+   * closed instead of falling back.
    */
   getTurnInvocationOrdinal(turnId: string): Promise<number>;
   /** Durable pending approval creation + turn suspension (awaiting-approval). */
@@ -359,13 +362,21 @@ export function bridgeCapabilityToolToMastra(
       ) {
         toolCallId = executionContext.toolCallId;
       } else {
-        // Deterministic fallback identity derived from the DURABLE turn
-        // context and the invocation ordinal — never from current time —
-        // so the identity is STABLE across retries, approval suspension,
-        // and process restarts. A malformed upstream identity therefore
-        // fails closed into a documented deterministic identity instead.
+        // DOCUMENTED deterministic fallback identity (framework `toolCallId`
+        // unavailable in this Mastra invocation path): derived from the
+        // DURABLE turn context (server-generated turn id) and the DURABLE
+        // recorded-invocation ordinal — read from the durable invocation
+        // store, never from a process counter and never from current time.
+        // The identity is therefore stable across process restarts (the
+        // ordinal comes from durable rows) and the recorded intent keeps
+        // retries/resumes on the SAME logical invocation; a missing intent
+        // (crash before record) re-derives the same ordinal and the same
+        // identity. A raw time-based or process-count-based identity is
+        // never used.
         const ordinal = await deps.getTurnInvocationOrdinal(turn.turnId);
-        toolCallId = `call-${digest12(`${turn.turnId}:${capabilityId}:${ordinal}`)}`;
+        toolCallId = /^[A-Za-z0-9._:-]{1,96}$/.test(turn.turnId)
+          ? `${turn.turnId}-t${ordinal + 1}`
+          : `turn-t${ordinal + 1}-${sha256Hex(turn.turnId).slice(0, 16)}`;
       }
       // ---- 2. Authenticated actor + authority check ----------------------
       // The turn's authenticated actor is the only authority source; a
@@ -394,10 +405,16 @@ export function bridgeCapabilityToolToMastra(
       const effectiveInput =
         parsedInput !== undefined && parsedInput.ok ? parsedInput.value : inputData;
       const argDigest = canonicalArgDigest(effectiveInput);
-      // ---- 4. Durable intent (durable BEFORE invocation; always) ---------
-      // The intent is idempotent over the logical invocation identity: a
-      // retry/resume/restart with the same tool-call identity and digest
-      // resolves to the SAME durable invocation record (exactly-once).
+      /**
+       * ---- 4. Durable intent (durable BEFORE invocation; always) ---------
+       * The intent is idempotent over the logical invocation identity: a
+       * retry/resume/restart with the same tool-call identity and digest
+       * resolves to the SAME durable invocation record (exactly-once).
+       * A record already in `outcome_unknown` (an effect whose terminal
+       * persistence failed, or an expired running attempt reconciled to a
+       * fenced state) is NEVER re-invoked: the fenced, non-replay failure
+       * is returned to the model instead.
+       */
       const invocation = await recordInvocationIntentIdempotent(deps, {
         turnId: turn.turnId,
         toolCallId,
@@ -409,6 +426,34 @@ export function bridgeCapabilityToolToMastra(
         argDigest,
         argumentSummary: safeArgumentSummary(effectiveInput),
       });
+      if (invocation.status === 'outcome_unknown') {
+        return {
+          victCapabilityFailure: 'VICT_CAPABILITY_OUTCOME_UNKNOWN',
+        } satisfies CapabilityToolFailure;
+      }
+      if (invocation.status === 'running') {
+        // EXPIRED-RUNNING RECONCILIATION before any retry (fenced,
+        // non-replay): a re-entry on the SAME logical invocation identity
+        // while a previous attempt is (or was) in-flight means the earlier
+        // attempt's terminal state is unverifiable — the effect MAY have
+        // happened. The record is reconciled to the truthful fenced
+        // `outcome_unknown` state (never re-invoked, never replayed) and
+        // the model receives the structured recoverable failure. External
+        // adapters deduplicate through the propagated durable idempotency
+        // key; a later terminal result from the original attempt is fenced
+        // and cannot resurrect a normal completion.
+        await tryTransitionInvocation(
+          deps,
+          invocation.invocationId,
+          'outcome_unknown',
+          clock(),
+          undefined,
+          'VICT_CAPABILITY_FENCED_RUNNING_RETRY',
+        );
+        return {
+          victCapabilityFailure: 'VICT_CAPABILITY_OUTCOME_UNKNOWN',
+        } satisfies CapabilityToolFailure;
+      }
       // ---- 5. Effect and approval policy ---------------------------------
       if (policy.requiresApproval) {
         // Check for an ALREADY-valid approval (idempotent retries after
@@ -825,10 +870,6 @@ function readRequestActor(context: {
 }): string | undefined {
   const value = context.requestContext?.get?.('victActorId');
   return typeof value === 'string' ? value : undefined;
-}
-
-function digest12(payload: string): string {
-  return sha256Hex(payload).slice(0, 12);
 }
 
 function sleep(ms: number): Promise<void> {

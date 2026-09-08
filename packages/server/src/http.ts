@@ -401,10 +401,22 @@ export function createVictHttpServer(options: VictHttpServerOptions): VictHttpSe
     } catch {
       throw new HttpError('VICT_HTTP_BODY_MALFORMED', 400);
     }
+    // The COMPLETE body envelope is validated — not only its payload
+    // member. The closed top-level field set is `payload` plus the exact
+    // schema marker; unknown top-level fields fail closed.
     if (typeof parsed !== 'object' || parsed === null || Array.isArray(parsed)) {
       throw new HttpError('VICT_HTTP_BODY_MALFORMED', 400);
     }
-    let payload: unknown = (parsed as Record<string, unknown>).payload;
+    const envelope = parsed as Record<string, unknown>;
+    for (const key of Object.keys(envelope)) {
+      if (key !== 'payload' && key !== 'schema') {
+        throw new HttpError('VICT_HTTP_BODY_MALFORMED', 400);
+      }
+    }
+    if (envelope.schema !== undefined && envelope.schema !== 'vict.command@1') {
+      throw new HttpError('VICT_HTTP_BODY_MALFORMED', 400);
+    }
+    let payload: unknown = envelope.payload;
     if (payload === undefined) {
       payload = {};
     }
@@ -576,7 +588,9 @@ export function createVictHttpServer(options: VictHttpServerOptions): VictHttpSe
       lastSeq = decoded.lastSeq;
     }
     // ---- Replay bounds BEFORE streaming (response-mechanism disclosure) --
-    const replay = await options.hub.replay({ streamId, lastSeq });
+    // Bounded-memory status: the ledger high-watermark plus exact
+    // transient-gap detection — no replay materialization.
+    const replay = await options.hub.replayStatus({ streamId, lastSeq });
     res.writeHead(200, {
       'content-type': 'text/event-stream; charset=utf-8',
       'cache-control': 'no-cache',
@@ -595,8 +609,7 @@ export function createVictHttpServer(options: VictHttpServerOptions): VictHttpSe
     res.write(': connected\n\n');
     openStreams.add(res);
     let closed = false;
-    let drainScheduled = false;
-    let terminalReached = false;
+    let overflowed = false;
 
     const finish = (): void => {
       if (!closed) {
@@ -607,81 +620,132 @@ export function createVictHttpServer(options: VictHttpServerOptions): VictHttpSe
       }
     };
 
-    /** Serialize one frame as a closed wire envelope (validated; fail closed). */
+    /** Serialize one frame as a closed wire envelope (validated; fail closed).
+     *
+     * Every SSE `id:` carries the SAME full cursor format the reconnect
+     * parser accepts (`v1:<streamId>:<seq>`), so a browser's automatic
+     * `Last-Event-ID` reconnects WITHOUT any client rewriting.
+     */
     const serializeFrame = (event: AgentStreamEvent): string => {
       const frame = { schema: AGENT_STREAM_SCHEMA, ...event };
       // Every server-emitted frame conforms to the ONE closed wire-envelope
       // validator — including frames reconstructed from durable rows.
       assertAgentStreamWireEnvelope(frame);
-      return `id: ${event.seq}\nevent: ${event.kind}\ndata: ${JSON.stringify(frame)}\n\n`;
+      return `id: ${encodeStreamCursor(streamId, event.seq)}\nevent: ${event.kind}\ndata: ${JSON.stringify(frame)}\n\n`;
     };
 
-    /** Write until backpressure; returns false when the socket is saturated. */
-    const writeFrames = (events: readonly AgentStreamEvent[]): boolean => {
-      for (const event of events) {
-        if (TERMINAL_EVENT_KINDS.has(event.kind)) {
-          terminalReached = true;
-        }
-        try {
-          res.write(serializeFrame(event));
-        } catch {
-          finish();
-          return false;
-        }
-      }
-      return res.writableNeedDrain !== true;
-    };
+    /**
+     * The transport's OWN bounded frame queue. Backpressure NEVER discards:
+     * `response.write() === false` means the bytes were ACCEPTED — the
+     * saturated socket's frames wait in this queue and are pumped one by
+     * one, in order, after `drain` (per-event identity preserved; the
+     * byte-level transport NEVER coalesces). The hub's coalescing pending
+     * queue remains the recovery path for a subscriber that signals its
+     * own saturation, and its pulled events are re-enqueued here in order.
+     */
+    const FRAME_QUEUE_LIMIT = 4096;
+    const frameQueue: AgentStreamEvent[] = [];
+    let pumping = false;
+    let terminalWritten = false;
 
     const subscriberId = `sse-${actor.actorId}-${Math.random().toString(36).slice(2, 10)}`;
-    // The authorized replay is written BEFORE the live subscription: Node
-    // buffers accepted bytes, so the full replay is always written (never
-    // discarded on backpressure — the `drain` event resumes live delivery).
-    writeFrames(replay.events);
-    if (terminalReached) {
-      // The turn became terminal within the replay: close cleanly after it.
-      finish();
-      return;
-    }
-    // The subscription is anchored AT the replay cursor: the hub delivers
-    // only NEW events, and its pending queue + `drain` pump carry any live
-    // backpressure.
-    await options.hub.subscribe(
-      streamId,
-      {
-        subscriberId,
-        deliver: (event) => writeFrames([event]),
+    const subscriber = {
+      subscriberId,
+      // The hub delivers the ordered backlog + live events through this
+      // single door: replay and live delivery share ONE ordering path, and
+      // a saturated socket buffers (never discards) in the transport's
+      // bounded queue until `drain`.
+      deliver: (event: AgentStreamEvent): boolean => {
+        if (closed) {
+          return false;
+        }
+        if (frameQueue.length >= FRAME_QUEUE_LIMIT) {
+          // Hard bound: EXPLICIT recoverable overflow — detach and let the
+          // client reconnect from its last acknowledged `Last-Event-ID`
+          // (never silent loss, never unbounded memory).
+          overflowed = true;
+          return false;
+        }
+        frameQueue.push(event);
+        void pump();
+        return true;
       },
-      { lastSeq: replay.newestSeq },
-    );
-    const pump = (): void => {
-      if (closed || drainScheduled) {
+      // EXPLICIT recoverable overflow policy: the bounded pending queue
+      // overflowed — detach and let the client reconnect from its last
+      // acknowledged `Last-Event-ID` (never silent loss).
+      onOverflow: (): void => {
+        overflowed = true;
+      },
+    };
+
+    const awaitDrain = (): Promise<void> =>
+      new Promise<void>((resolve) => {
+        if (closed || !res.writableNeedDrain) {
+          resolve();
+          return;
+        }
+        res.once('drain', () => resolve());
+      });
+
+    const pump = async (): Promise<void> => {
+      if (pumping || closed) {
         return;
       }
-      drainScheduled = true;
-      setImmediate(() => {
-        drainScheduled = false;
-        if (closed) {
-          return;
+      pumping = true;
+      try {
+        for (;;) {
+          while (frameQueue.length > 0) {
+            if (res.writableNeedDrain) {
+              await awaitDrain();
+              if (closed) {
+                return;
+              }
+            }
+            const event = frameQueue.shift()!;
+            try {
+              res.write(serializeFrame(event));
+            } catch {
+              finish();
+              return;
+            }
+            if (TERMINAL_EVENT_KINDS.has(event.kind)) {
+              terminalWritten = true;
+            }
+          }
+          if (terminalWritten) {
+            // The terminal event (and everything before it) was written in
+            // order; close cleanly after it.
+            finish();
+            return;
+          }
+          if (overflowed) {
+            finish();
+            return;
+          }
+          // Recover hub-pended events (slow-subscriber mode) in order.
+          const pending = options.hub.pull(streamId, subscriberId);
+          if (pending.length === 0) {
+            return;
+          }
+          for (const event of pending) {
+            frameQueue.push(event);
+          }
         }
-        const pending = options.hub.pull(streamId, subscriberId);
-        const flushed = writeFrames(pending);
-        if (terminalReached) {
-          // The terminal event (and everything before it) has been written;
-          // close the stream cleanly after the turn became terminal.
-          finish();
-          return;
-        }
-        if (!flushed) {
-          return; // the next `drain` re-schedules the pump
-        }
-      });
+      } finally {
+        pumping = false;
+      }
     };
+
+    // The subscription is registered BEFORE the ledger read inside the hub,
+    // so no publish can fall into a replay/live gap. The backlog arrives
+    // through `deliver` (the transport queue) and is pumped in order.
+    await options.hub.subscribe(streamId, subscriber, { lastSeq });
+    void pump();
     res.on('drain', () => {
       // `response.write() === false` means the bytes were ACCEPTED; resume
       // delivery only when the socket has drained.
-      pump();
+      void pump();
     });
-    pump();
     req.on('close', () => {
       finish();
     });

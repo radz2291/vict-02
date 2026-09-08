@@ -599,6 +599,54 @@ describe('governed capability tool bridge', () => {
     const turn = await fixture.stores.turns.getTurn(SCOPE.turnId);
     expect(turn?.status).toBe('cancelled');
   });
+
+  it('an expired RUNNING attempt reconciles to a fenced non-replay state before any retry', async () => {
+    // A previous attempt is durably RUNNING (its process died between the
+    // effect and terminal persistence, and BOTH the completion and the
+    // outcome_unknown transitions were lost). The retry on the SAME logical
+    // invocation identity must NEVER re-invoke: the record is reconciled to
+    // the truthful fenced `outcome_unknown` state before the retry.
+    const fixture = await makeFixture();
+    const input = { text: 'retry' };
+    await fixture.turnService.recordToolInvocationIntent({
+      turnId: SCOPE.turnId,
+      toolCallId: 'call-1',
+      toolName: 'cap.notes.write',
+      capabilityId: 'cap.notes.write',
+      capabilityRevision: '3',
+      effect: 'write',
+      actorId: SCOPE.actorId,
+      argDigest: canonicalArgDigest(input),
+      argumentSummary: 'safe',
+    });
+    // The lost attempt is in-flight (the effect MAY exist externally).
+    const existing = await fixture.stores.invocations.getInvocationByIdempotencyKey(
+      `${SCOPE.turnId}:call-1:cap.notes.write:3:${canonicalArgDigest(input)}`,
+    );
+    expect(existing?.status).toBe('intent');
+    await fixture.stores.invocations.updateInvocationStatus({
+      invocationId: existing!.invocationId,
+      status: 'running',
+      at: 20,
+    });
+    // The retry reconciles BEFORE any effect: fenced, non-replay.
+    const exec = toolExecutorFor(fixture, ACTIVATION_MOCK, SCOPE);
+    const result = (await exec(input)) as { victCapabilityFailure?: string };
+    expect(result.victCapabilityFailure).toBe('VICT_CAPABILITY_OUTCOME_UNKNOWN');
+    expect(fixture.invokeProbe().called).toBe(0);
+    const fenced = await fixture.stores.invocations.getInvocation(existing!.invocationId);
+    expect(fenced?.status).toBe('outcome_unknown');
+    // The fenced state is terminal: a late truthful result cannot flip it
+    // back into a normal completion.
+    await expect(
+      fixture.stores.invocations.updateInvocationStatus({
+        invocationId: existing!.invocationId,
+        status: 'completed',
+        at: 30,
+        resultSummary: 'late',
+      }),
+    ).rejects.toThrow(/terminal/i);
+  });
 });
 
 /** A canonical turn fixture for the scope identity. */

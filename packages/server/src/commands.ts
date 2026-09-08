@@ -1,6 +1,11 @@
 import { createHash } from 'node:crypto';
 import type { AgentControlStores, ControlAuditEvent } from '@vict/runtime';
-import { COMMAND_IDEMPOTENCY_KEY_PATTERN, toCanonicalJson, VictControlError } from '@vict/runtime';
+import {
+  COMMAND_IDEMPOTENCY_KEY_PATTERN,
+  toCanonicalJson,
+  VictControlError,
+  type CommandIdempotencyReceipt,
+} from '@vict/runtime';
 import type { ServerActorContext } from './auth.js';
 
 /**
@@ -10,18 +15,32 @@ import type { ServerActorContext } from './auth.js';
  * caller bypasses governance. Properties enforced HERE (below the
  * transport, fail closed):
  *
- * - AUTHORIZATION MATRIX: every public command declares its required scope
- *   from the closed scope vocabulary and every authenticated actor is
- *   asserted against it BEFORE any store access;
- * - CLOSED PAYLOAD SCHEMAS: every command declares its exact payload field
- *   set; unknown fields and non-object payloads are rejected (never
- *   silently converted to `{}`);
+ * - ONE command registry: authorization scope, closed payload field set,
+ *   and the mutation/idempotency policy are declared TOGETHER per command,
+ *   so the command list, the scope matrix, and the mutation list cannot
+ *   silently diverge;
+ * - AUTHORIZATION MATRIX: every command's required scope is asserted from
+ *   the closed scope vocabulary BEFORE any store access;
+ * - CLOSED PAYLOAD SCHEMAS: unknown fields and non-object payloads are
+ *   rejected (never silently converted to `{}`); payloads are canonicalized
+ *   ONCE into plain data (own enumerable properties only — accessors,
+ *   proxies that throw, and enumeration traps fail with a stable,
+ *   non-echoing error) and that SAME canonical form is used for the
+ *   request digest and for execution;
  * - DURABLE COMMAND IDEMPOTENCY: every state-changing command requires a
- *   bounded `Idempotency-Key`; the receipt binds actor + command kind +
- *   canonical request digest + durable result/terminal disposition, so the
- *   same logical command returns the original result without repeating
- *   effects, a conflicting key fails with a stable error, and concurrent
- *   duplicates have exactly one winner;
+ *   bounded `Idempotency-Key`; receipts are NAMESPACED by (authenticated
+ *   actor, command, key) and bind the canonical request digest. A pending
+ *   receipt carries a durable LEASE (owner + expiry): concurrent
+ *   duplicates answer `IN_PROGRESS`, a crashed claim's expired lease is
+ *   taken over on retry (fenced re-execution through the domain's own
+ *   idempotency), deterministic failures settle `failed` and replay, and
+ *   retryable infrastructure failures RELEASE the claim instead of being
+ *   permanently confused with command failure;
+ * - SAFE RECEIPT RETENTION: receipts store a per-command SAFE replay
+ *   projection (stable codes, identifiers, content references) — never the
+ *   full command response, rationale, application rows, model content, or
+ *   tool data. An authorized replay result is reconstructed from its
+ *   authoritative domain when necessary;
  * - stable, structured, non-echoing errors.
  */
 
@@ -60,121 +79,145 @@ export const VICT_COMMANDS = [
 export type VictCommandName = (typeof VICT_COMMANDS)[number];
 
 /**
- * The AUTHORIZATION MATRIX: the exact required scope (from the closed
- * `ACTOR_SCOPES` vocabulary) for every public command. Commands listed in
- * `AUTHENTICATED_ANY_SCOPE` require an authenticated actor but no specific
- * scope (identity/health introspection). Default policy remains denial:
- * a command absent from both tables does not exist.
+ * The ONE command registry: every command declares its required scope
+ * (closed vocabulary; `*` = authenticated any), its exact payload field
+ * set, and whether it MUTATES durable state (creates runs, audits,
+ * receipts, approvals, effects, or mutations) and is therefore governed by
+ * durable idempotency. Default policy remains denial: a command absent
+ * from this table does not exist.
  */
-const COMMAND_SCOPES: Readonly<Record<VictCommandName, string>> = {
-  'health.inspect': '*',
-  'compatibility.inspect': '*',
-  'actor.whoami': '*',
-  'changeset.propose': 'changeset.propose',
-  'changeset.revise': 'changeset.revise',
-  'changeset.execute-check': 'changeset.propose',
-  'changeset.attach-evidence': 'changeset.propose',
-  'changeset.decide': 'changeset.approve',
-  'changeset.commit': 'changeset.commit',
-  'changeset.get': 'changeset.read',
-  'changeset.list': 'changeset.read',
-  'release.publish': 'release.publish',
-  'release.select': 'release.select',
-  'release.rollback': 'release.select',
-  'release.get-selected': 'release.read',
-  'activation.select': 'activation.select',
-  'run.cancel': 'run.cancel',
-  'agent.turn.start': 'agent.turn.start',
-  'agent.turn.cancel': 'agent.turn.cancel',
-  'agent.turn.get': 'run.read',
-  'agent.tool.approve': 'agent.tool.approve',
-  'agent.tool.decline': 'agent.tool.decline',
-  'stream.inspect': 'agent.stream.read',
-  'app.data.query': 'app.data.read',
-  'app.data.mutate': 'app.data.write',
-  'app.data.action': 'app.data.write',
-};
-
-/** The state-changing commands governed by durable idempotency. */
-const MUTATION_COMMANDS: ReadonlySet<string> = new Set([
-  'changeset.propose',
-  'changeset.revise',
-  'changeset.attach-evidence',
-  'changeset.decide',
-  'changeset.commit',
-  'release.publish',
-  'release.select',
-  'release.rollback',
-  'activation.select',
-  'run.cancel',
-  'agent.turn.start',
-  'agent.turn.cancel',
-  'agent.tool.approve',
-  'agent.tool.decline',
-  'app.data.mutate',
-]);
-
-/** True when the command mutates durable state (idempotency-governed). */
-export function isMutationCommand(command: string): boolean {
-  return MUTATION_COMMANDS.has(command);
+interface CommandSpec {
+  readonly scope: string;
+  readonly fields: readonly string[];
+  readonly mutation: boolean;
 }
 
-/**
- * The closed per-command payload field sets. Unknown fields and non-object
- * payloads are rejected with `VICT_COMMAND_PAYLOAD_INVALID`; declared
- * fields are validated per command below.
- */
-const COMMAND_PAYLOAD_FIELDS: Readonly<Record<VictCommandName, readonly string[]>> = {
-  'health.inspect': [],
-  'compatibility.inspect': [],
-  'actor.whoami': [],
-  'changeset.propose': [
-    'changesetId',
-    'base',
-    'operations',
-    'rationale',
-    'riskClass',
-    'requiredApproverCount',
-    'expiresAt',
-  ],
-  'changeset.revise': [
-    'changesetId',
-    'operations',
-    'rationale',
-    'riskClass',
-    'requiredApproverCount',
-    'expiresAt',
-  ],
-  'changeset.execute-check': ['changesetId', 'kind'],
-  'changeset.attach-evidence': ['changesetId', 'kind', 'runId'],
-  'changeset.decide': ['changesetId', 'decision', 'reason'],
-  'changeset.commit': ['changesetId'],
-  'changeset.get': ['changesetId'],
-  'changeset.list': [],
-  'release.publish': [
-    'releaseVersion',
-    'applicationId',
-    'applicationVersion',
-    'rendererIdentity',
-    'componentRegistryIdentity',
-    'dataAdapterIdentity',
-    'activationBinding',
-  ],
-  'release.select': ['applicationId', 'releaseVersion'],
-  'release.rollback': ['applicationId', 'targetReleaseVersion'],
-  'release.get-selected': ['applicationId'],
-  'activation.select': ['graphId', 'activationVersion'],
-  'run.cancel': ['runId', 'reasonCode'],
-  'agent.turn.start': ['threadId', 'input', 'applicationReleaseVersion'],
-  'agent.turn.cancel': ['turnId', 'reasonCode'],
-  'agent.turn.get': ['turnId'],
-  'agent.tool.approve': ['approvalId', 'reason', 'decision'],
-  'agent.tool.decline': ['approvalId', 'reason', 'decision'],
-  'stream.inspect': ['streamId'],
-  'app.data.query': ['resourceId', 'releaseVersion', 'filters'],
-  'app.data.mutate': ['resourceId', 'releaseVersion', 'expectedRevision', 'actionKind'],
-  'app.data.action': ['resourceId', 'releaseVersion', 'expectedRevision', 'actionKind'],
+const COMMAND_REGISTRY: Readonly<Record<VictCommandName, CommandSpec>> = {
+  'health.inspect': { scope: '*', fields: [], mutation: false },
+  'compatibility.inspect': { scope: '*', fields: [], mutation: false },
+  'actor.whoami': { scope: '*', fields: [], mutation: false },
+  'changeset.propose': {
+    scope: 'changeset.propose',
+    fields: [
+      'changesetId',
+      'base',
+      'operations',
+      'rationale',
+      'riskClass',
+      'requiredApproverCount',
+      'expiresAt',
+    ],
+    mutation: true,
+  },
+  'changeset.revise': {
+    scope: 'changeset.revise',
+    fields: [
+      'changesetId',
+      'operations',
+      'rationale',
+      'riskClass',
+      'requiredApproverCount',
+      'expiresAt',
+    ],
+    mutation: true,
+  },
+  // Creates a durable control run: mutation-governed.
+  'changeset.execute-check': {
+    scope: 'changeset.propose',
+    fields: ['changesetId', 'kind'],
+    mutation: true,
+  },
+  'changeset.attach-evidence': {
+    scope: 'changeset.propose',
+    fields: ['changesetId', 'kind', 'runId'],
+    mutation: true,
+  },
+  'changeset.decide': {
+    scope: 'changeset.approve',
+    fields: ['changesetId', 'decision', 'reason'],
+    mutation: true,
+  },
+  'changeset.commit': { scope: 'changeset.commit', fields: ['changesetId'], mutation: true },
+  'changeset.get': { scope: 'changeset.read', fields: ['changesetId'], mutation: false },
+  'changeset.list': { scope: 'changeset.read', fields: [], mutation: false },
+  'release.publish': {
+    scope: 'release.publish',
+    fields: [
+      'releaseVersion',
+      'applicationId',
+      'applicationVersion',
+      'rendererIdentity',
+      'componentRegistryIdentity',
+      'dataAdapterIdentity',
+      'activationBinding',
+    ],
+    mutation: true,
+  },
+  'release.select': {
+    scope: 'release.select',
+    fields: ['applicationId', 'releaseVersion'],
+    mutation: true,
+  },
+  'release.rollback': {
+    scope: 'release.select',
+    fields: ['applicationId', 'targetReleaseVersion'],
+    mutation: true,
+  },
+  'release.get-selected': { scope: 'release.read', fields: ['applicationId'], mutation: false },
+  'activation.select': {
+    scope: 'activation.select',
+    fields: ['graphId', 'activationVersion'],
+    mutation: true,
+  },
+  'run.cancel': { scope: 'run.cancel', fields: ['runId', 'reasonCode'], mutation: true },
+  'agent.turn.start': {
+    scope: 'agent.turn.start',
+    fields: ['threadId', 'input', 'applicationReleaseVersion'],
+    mutation: true,
+  },
+  'agent.turn.cancel': {
+    scope: 'agent.turn.cancel',
+    fields: ['turnId', 'reasonCode'],
+    mutation: true,
+  },
+  'agent.turn.get': { scope: 'run.read', fields: ['turnId'], mutation: false },
+  'agent.tool.approve': {
+    scope: 'agent.tool.approve',
+    fields: ['approvalId', 'reason', 'decision'],
+    mutation: true,
+  },
+  'agent.tool.decline': {
+    scope: 'agent.tool.decline',
+    fields: ['approvalId', 'reason', 'decision'],
+    mutation: true,
+  },
+  'stream.inspect': { scope: 'agent.stream.read', fields: ['streamId'], mutation: false },
+  'app.data.query': {
+    scope: 'app.data.read',
+    fields: ['resourceId', 'releaseVersion', 'filters'],
+    mutation: false,
+  },
+  'app.data.mutate': {
+    scope: 'app.data.write',
+    fields: ['resourceId', 'releaseVersion', 'expectedRevision', 'actionKind'],
+    mutation: true,
+  },
+  'app.data.action': {
+    scope: 'app.data.write',
+    fields: ['resourceId', 'releaseVersion', 'expectedRevision', 'actionKind'],
+    mutation: true,
+  },
 };
+
+/**
+ * True when the command mutates durable state (idempotency-governed).
+ * Derived from the ONE registry — the mutation policy can never silently
+ * diverge from the command list.
+ */
+export function isMutationCommand(command: string): boolean {
+  const spec = (COMMAND_REGISTRY as Record<string, CommandSpec | undefined>)[command];
+  return spec?.mutation === true;
+}
 
 /** A closed, versioned command request. */
 export interface VictCommandRequest {
@@ -211,6 +254,14 @@ export interface VictCommandServiceOptions {
   readonly clock?: () => number;
   /** The remote Application data/action boundary. */
   readonly appData?: AppDataPort;
+  /**
+   * Durable lease duration for pending idempotency claims (default
+   * 60_000 ms). A crashed claimer's lease expires and the key becomes
+   * recoverable.
+   */
+  readonly idempotencyLeaseMs?: number;
+  /** The lease owner token (defaults to a per-service instance token). */
+  readonly idempotencyOwner?: string;
 }
 
 /** The subset of AgentTurnService the dispatcher uses. */
@@ -261,12 +312,107 @@ function boundedString(value: unknown, field: string, max: number): string {
   return value;
 }
 
-/** Canonical digest over the exact request payload (stable, payload-safe). */
-function requestDigest(payload: Record<string, unknown>): string {
+/** Canonical digest over the EXACT canonical request payload. */
+function requestDigest(canonicalPayload: Record<string, unknown>): string {
   return createHash('sha256')
-    .update(`vict.command@1\u0000${toCanonicalJson(payload)}`, 'utf8')
+    .update(`vict.command@1\u0000${toCanonicalJson(canonicalPayload)}`, 'utf8')
     .digest('hex');
 }
+
+/**
+ * Canonicalize one command payload into PLAIN data, exactly once, before
+ * any digest or execution:
+ *
+ * - only OWN ENUMERABLE properties cross the boundary (inherited fields
+ *   and non-enumerable state are dropped);
+ * - accessor properties (getters/setters) are REJECTED — reading them
+ *   would invoke hostile code and could leak or mutate;
+ * - property enumeration or reads that THROW (proxies, traps) fail with a
+ *   stable non-echoing error instead of a raw exception;
+ * - nested values must be plain objects, arrays, or JSON scalars.
+ */
+function canonicalPlainPayload(raw: unknown, depth = 0): Record<string, unknown> {
+  if (depth > 8) {
+    throw new VictControlError(
+      'VICT_COMMAND_PAYLOAD_INVALID',
+      'The command payload nests too deeply.',
+    );
+  }
+  if (typeof raw !== 'object' || raw === null || Array.isArray(raw)) {
+    throw new VictControlError(
+      'VICT_COMMAND_PAYLOAD_INVALID',
+      'The command payload must be a plain object; non-object payloads are never silently converted.',
+    );
+  }
+  let keys: string[];
+  try {
+    keys = Object.keys(raw);
+  } catch {
+    throw new VictControlError(
+      'VICT_COMMAND_PAYLOAD_INVALID',
+      'The command payload could not be enumerated; hostile containers are rejected.',
+    );
+  }
+  const result: Record<string, unknown> = {};
+  for (const key of keys) {
+    let descriptor: PropertyDescriptor | undefined;
+    let value: unknown;
+    try {
+      descriptor = Object.getOwnPropertyDescriptor(raw, key);
+      if (descriptor === undefined) {
+        throw new Error('own descriptor missing');
+      }
+      if (descriptor.get !== undefined || descriptor.set !== undefined) {
+        throw new Error('accessor property');
+      }
+      value = descriptor.value;
+    } catch {
+      throw new VictControlError(
+        'VICT_COMMAND_PAYLOAD_INVALID',
+        'The command payload declares an accessor or unreadable property; hostile containers are rejected.',
+      );
+    }
+    result[key] = canonicalPlainValue(value, depth);
+  }
+  return result;
+}
+
+function canonicalPlainValue(value: unknown, depth: number): unknown {
+  if (
+    value === null ||
+    typeof value === 'string' ||
+    typeof value === 'boolean' ||
+    typeof value === 'number'
+  ) {
+    if (typeof value === 'number' && !Number.isFinite(value)) {
+      throw new VictControlError(
+        'VICT_COMMAND_PAYLOAD_INVALID',
+        'The command payload contains a non-finite number.',
+      );
+    }
+    return value;
+  }
+  if (Array.isArray(value)) {
+    const out: unknown[] = [];
+    for (let index = 0; index < value.length; index += 1) {
+      let item: unknown;
+      try {
+        item = (value as unknown[])[index];
+      } catch {
+        throw new VictControlError(
+          'VICT_COMMAND_PAYLOAD_INVALID',
+          'The command payload contains an unreadable array entry.',
+        );
+      }
+      out.push(canonicalPlainValue(item, depth + 1));
+    }
+    return out;
+  }
+  return canonicalPlainPayload(value, depth + 1);
+}
+
+/** Deterministic owner token for this service instance (lease holder). */
+let serviceInstanceCounter = 0;
 
 /**
  * The versioned command dispatcher: transport-free and shared by HTTP and
@@ -276,9 +422,14 @@ function requestDigest(payload: Record<string, unknown>): string {
  */
 export class VictCommandService {
   readonly #options: VictCommandServiceOptions;
+  readonly #owner: string;
+  readonly #leaseMs: number;
 
   constructor(options: VictCommandServiceOptions) {
     this.#options = options;
+    this.#leaseMs = options.idempotencyLeaseMs ?? 60_000;
+    serviceInstanceCounter += 1;
+    this.#owner = options.idempotencyOwner ?? `svc-${process.pid}-${serviceInstanceCounter}`;
   }
 
   /** Dispatch one command (closed schemas; durable idempotency; safe errors). */
@@ -290,31 +441,39 @@ export class VictCommandService {
     if (!(VICT_COMMANDS as readonly string[]).includes(command)) {
       return { ok: false, code: 'VICT_COMMAND_UNKNOWN' };
     }
-    // ---- Closed payload schema (fail closed on unknown/non-object) ------
-    const payload = this.#validatedPayload(command, request.payload);
+    // ---- Canonical plain payload (ONE form for digest AND execution) ----
+    // Hostile direct callers (getters, proxies, enumeration traps) fail
+    // with the stable structured error, never a raw exception.
+    let payload: Record<string, unknown>;
+    try {
+      payload = canonicalPlainPayload(request.payload);
+    } catch (error) {
+      if (error instanceof VictControlError) {
+        throw error;
+      }
+      throw new VictControlError(
+        'VICT_COMMAND_PAYLOAD_INVALID',
+        'The command payload could not be canonicalized; hostile containers are rejected.',
+      );
+    }
+    // ---- Closed payload schema (fail closed on unknown fields) ----------
+    this.#assertPayloadFields(command, payload);
     // ---- Authorization matrix (BELOW the transport; default deny) -------
-    const requiredScope = COMMAND_SCOPES[command];
-    if (requiredScope !== '*') {
-      assertCommandScope(actor, requiredScope);
+    const spec = COMMAND_REGISTRY[command];
+    if (spec.scope !== '*') {
+      assertCommandScope(actor, spec.scope);
     }
     // ---- Durable idempotency policy for state-changing commands ---------
-    if (isMutationCommand(command)) {
+    if (spec.mutation) {
       return this.#dispatchIdempotent(actor, command, payload, request.idempotencyKey);
     }
     return this.#execute(actor, command, payload, request.idempotencyKey);
   }
 
   /** Validate the payload against the command's closed field set. */
-  #validatedPayload(command: VictCommandName, raw: unknown): Record<string, unknown> {
-    if (typeof raw !== 'object' || raw === null || Array.isArray(raw)) {
-      throw new VictControlError(
-        'VICT_COMMAND_PAYLOAD_INVALID',
-        'The command payload must be a plain object; non-object payloads are never silently converted.',
-      );
-    }
-    const allowed = COMMAND_PAYLOAD_FIELDS[command];
-    const candidate = raw as Record<string, unknown>;
-    for (const key of Object.keys(candidate)) {
+  #assertPayloadFields(command: VictCommandName, payload: Record<string, unknown>): void {
+    const allowed = COMMAND_REGISTRY[command].fields;
+    for (const key of Object.keys(payload)) {
       if (!allowed.includes(key)) {
         throw new VictControlError(
           'VICT_COMMAND_PAYLOAD_INVALID',
@@ -322,12 +481,16 @@ export class VictCommandService {
         );
       }
     }
-    return candidate;
   }
 
   /**
    * The durable idempotency boundary for one state-changing command:
-   * claim → execute → settle, with stable conflict semantics.
+   * namespaced claim (actor + command + key) with a durable lease →
+   * execute → settle. Deterministic failures settle `failed` (replayed);
+   * retryable infrastructure failures RELEASE the claim. A crashed
+   * claimer's expired lease is taken over on retry; the re-execution is
+   * FENCED by the domain's own idempotency (turn intents, commit saga
+   * receipts, selection operation identities, content-identity guards).
    */
   async #dispatchIdempotent(
     actor: ServerActorContext,
@@ -347,7 +510,8 @@ export class VictCommandService {
     const digest = requestDigest(payload);
     const store = this.#options.stores.commandIdempotency;
     const now = this.#options.clock ?? (() => Date.now());
-    const existing = await store.getReceipt(idempotencyKey);
+    const namespace = { actorId: actor.actorId, command, idempotencyKey };
+    const existing = await store.getReceipt(namespace);
     if (existing !== undefined) {
       // The receipt binds actor + command kind + request digest.
       if (
@@ -358,59 +522,177 @@ export class VictCommandService {
         return { ok: false, code: 'VICT_COMMAND_IDEMPOTENCY_CONFLICT' };
       }
       if (existing.status === 'pending') {
-        // A concurrent duplicate: exactly one winner is executing; the
-        // loser receives the stable in-progress conflict.
-        return { ok: false, code: 'VICT_COMMAND_IDEMPOTENCY_IN_PROGRESS' };
-      }
-      if (existing.status === 'failed') {
+        // Crash recovery: an EXPIRED lease may be taken over; a live lease
+        // answers the stable in-progress conflict.
+        const takeover = await store.takeOverExpiredLease({
+          actorId: actor.actorId,
+          command,
+          idempotencyKey,
+          owner: this.#owner,
+          leaseUntil: now() + this.#leaseMs,
+          at: now(),
+        });
+        if (takeover === 'not-expired') {
+          return { ok: false, code: 'VICT_COMMAND_IDEMPOTENCY_IN_PROGRESS' };
+        }
+        // `taken`: fall through to fenced re-execution as the new owner.
+      } else if (existing.status === 'failed') {
         return { ok: false, code: existing.responseCode ?? 'VICT_COMMAND_FAILED' };
+      } else {
+        return this.#replayResult(actor, command, existing);
       }
-      return { ok: true, data: JSON.parse(existing.resultJson ?? '{}') as Record<string, unknown> };
-    }
-    const claim = await store.claimReceipt({
-      idempotencyKey,
-      actorId: actor.actorId,
-      command,
-      requestDigest: digest,
-      status: 'pending',
-      responseCode: undefined,
-      resultJson: undefined,
-      createdAt: now(),
-      settledAt: undefined,
-    });
-    if (claim === 'exists') {
-      // Lost the concurrent race: re-read the receipt for the truthful
-      // disposition (the winner may have settled in the meantime).
-      const raced = await store.getReceipt(idempotencyKey);
-      if (
-        raced !== undefined &&
-        (raced.actorId !== actor.actorId ||
-          raced.command !== command ||
-          raced.requestDigest !== digest)
-      ) {
+    } else {
+      // Cross-command key reuse: the same actor reusing ONE Idempotency-Key
+      // for a DIFFERENT command is a client bug and a stable conflict — the
+      // key is not silently re-namespaced into a second logical request.
+      const reused = await store.findReceiptByActorKey({ actorId: actor.actorId, idempotencyKey });
+      if (reused !== undefined && reused.command !== command) {
         return { ok: false, code: 'VICT_COMMAND_IDEMPOTENCY_CONFLICT' };
       }
-      if (raced !== undefined && raced.status === 'completed') {
-        return { ok: true, data: JSON.parse(raced.resultJson ?? '{}') as Record<string, unknown> };
+      const claim = await store.claimReceipt({
+        idempotencyKey,
+        actorId: actor.actorId,
+        command,
+        requestDigest: digest,
+        status: 'pending',
+        responseCode: undefined,
+        resultJson: undefined,
+        createdAt: now(),
+        settledAt: undefined,
+        owner: this.#owner,
+        leaseUntil: now() + this.#leaseMs,
+        attempts: 1,
+      });
+      if (claim === 'exists') {
+        // Lost the concurrent race: re-read for the truthful disposition.
+        const raced = await store.getReceipt(namespace);
+        if (
+          raced !== undefined &&
+          (raced.actorId !== actor.actorId ||
+            raced.command !== command ||
+            raced.requestDigest !== digest)
+        ) {
+          return { ok: false, code: 'VICT_COMMAND_IDEMPOTENCY_CONFLICT' };
+        }
+        if (raced !== undefined && raced.status === 'completed') {
+          return this.#replayResult(actor, command, raced);
+        }
+        if (raced !== undefined && raced.status === 'failed') {
+          return { ok: false, code: raced.responseCode ?? 'VICT_COMMAND_FAILED' };
+        }
+        return { ok: false, code: 'VICT_COMMAND_IDEMPOTENCY_IN_PROGRESS' };
       }
-      return { ok: false, code: 'VICT_COMMAND_IDEMPOTENCY_IN_PROGRESS' };
     }
     try {
       const outcome = await this.#execute(actor, command, payload, idempotencyKey);
       if (outcome.ok) {
         await store.completeReceipt({
+          actorId: actor.actorId,
+          command,
           idempotencyKey,
-          resultJson: JSON.stringify(outcome.data),
+          resultJson: JSON.stringify(safeResultProjection(command, outcome.data)),
           at: now(),
         });
       } else {
-        await store.failReceipt({ idempotencyKey, responseCode: outcome.code, at: now() });
+        await store.failReceipt({
+          actorId: actor.actorId,
+          command,
+          idempotencyKey,
+          responseCode: outcome.code,
+          at: now(),
+        });
       }
       return outcome;
     } catch (error) {
-      const code = error instanceof VictControlError ? error.code : 'VICT_COMMAND_FAILED';
-      await store.failReceipt({ idempotencyKey, responseCode: code, at: now() });
+      if (error instanceof VictControlError) {
+        // Deterministic command failure: durable, stable, replayed.
+        await store
+          .failReceipt({
+            actorId: actor.actorId,
+            command,
+            idempotencyKey,
+            responseCode: error.code,
+            at: now(),
+          })
+          .catch(() => undefined);
+        throw error;
+      }
+      // RETRYABLE infrastructure failure: release the claim so a retry can
+      // re-execute truthfully — never permanently confused with a
+      // deterministic command failure.
+      await store
+        .releaseReceipt({ actorId: actor.actorId, command, idempotencyKey, at: now() })
+        .catch(() => undefined);
       throw error;
+    }
+  }
+
+  /**
+   * Reconstruct an authorized replay result from its authoritative domain
+   * where possible, using the SAFE projection stored in the receipt. The
+   * projection itself never carries payloads; a replayed result that
+   * requires the full record is re-derived under the CURRENT actor's
+   * authorization (actor-scoped reads — never a data leak).
+   */
+  async #replayResult(
+    actor: ServerActorContext,
+    command: VictCommandName,
+    receipt: CommandIdempotencyReceipt,
+  ): Promise<VictCommandOutcome> {
+    let projection: Record<string, unknown>;
+    try {
+      projection =
+        receipt.resultJson === undefined
+          ? {}
+          : (JSON.parse(receipt.resultJson) as Record<string, unknown>);
+    } catch {
+      projection = {};
+    }
+    const changesetId = projection['changesetId'];
+    if (
+      typeof changesetId === 'string' &&
+      (await this.#authorizedChangeset(actor, changesetId)) !== undefined
+    ) {
+      const record = await this.#authorizedChangeset(actor, changesetId);
+      if (record !== undefined) {
+        return { ok: true, data: { changeset: record } };
+      }
+    }
+    const releaseVersion = projection['releaseVersion'];
+    if (
+      typeof releaseVersion === 'string' &&
+      typeof projection['applicationId'] === 'string' &&
+      (command === 'release.select' || command === 'release.rollback')
+    ) {
+      const release = await this.#options.stores.control.getRelease(releaseVersion);
+      if (release !== undefined) {
+        return {
+          ok: true,
+          data: {
+            selection: {
+              applicationId: projection['applicationId'],
+              releaseVersion,
+              selectionRevision: projection['selectionRevision'],
+            },
+          },
+        };
+      }
+    }
+    // Generic safe-projection replay (identifiers and stable codes only).
+    return { ok: true, data: projection };
+  }
+
+  /** Actor-scoped ChangeSet read for replay reconstruction. */
+  async #authorizedChangeset(actor: ServerActorContext, changesetId: string) {
+    const get = this.#options.controlPlane.get;
+    if (get === undefined) {
+      return undefined;
+    }
+    try {
+      return (await get.call(this.#options.controlPlane, actor, changesetId)) as
+        Record<string, unknown> | undefined;
+    } catch {
+      return undefined;
     }
   }
 
@@ -675,6 +957,131 @@ export class VictCommandService {
       ),
       reasonCode: typeof payload.reasonCode === 'string' ? payload.reasonCode : 'operator',
     })) as Record<string, unknown>;
+  }
+}
+
+/**
+ * The SAFE per-command replay projection stored in the durable receipt.
+ * Only stable codes, safe identifiers, and content references are
+ * retained — NEVER full command responses, rationale text, application
+ * rows, model content, tool data, or unrestricted payloads. An authorized
+ * replay that needs the full record re-derives it from the authoritative
+ * domain under the current actor's authorization.
+ */
+function safeResultProjection(
+  command: VictCommandName,
+  data: Record<string, unknown>,
+): Record<string, unknown> {
+  const pick = (
+    source: Record<string, unknown>,
+    fields: readonly string[],
+  ): Record<string, unknown> => {
+    const out: Record<string, unknown> = {};
+    for (const field of fields) {
+      const value = source[field];
+      if (
+        value !== undefined &&
+        (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean')
+      ) {
+        out[field] = value;
+      }
+    }
+    return out;
+  };
+  switch (command) {
+    case 'changeset.propose':
+    case 'changeset.revise': {
+      const changeset = (data['changeset'] ?? {}) as Record<string, unknown>;
+      return {
+        command,
+        ...pick(changeset, ['changesetId', 'contentHash', 'status']),
+      };
+    }
+    case 'changeset.execute-check': {
+      const run = (data['run'] ?? {}) as Record<string, unknown>;
+      return { command, ...pick(run, ['runId', 'kind', 'outcome']) };
+    }
+    case 'changeset.attach-evidence': {
+      const changeset = (data['changeset'] ?? {}) as Record<string, unknown>;
+      const validation = (changeset['validation'] ?? undefined) as
+        Record<string, unknown> | undefined;
+      const simulation = (changeset['simulation'] ?? undefined) as
+        Record<string, unknown> | undefined;
+      return {
+        command,
+        changesetId: changeset['changesetId'],
+        ...(validation !== undefined && typeof validation === 'object'
+          ? { validationOutcome: validation['outcome'] }
+          : {}),
+        ...(simulation !== undefined && typeof simulation === 'object'
+          ? { simulationOutcome: simulation['outcome'] }
+          : {}),
+      };
+    }
+    case 'changeset.decide': {
+      const result = (data['result'] ?? {}) as Record<string, unknown>;
+      const decision = (result['decision'] ?? undefined) as Record<string, unknown> | undefined;
+      return {
+        command,
+        changesetId: result['changesetId'],
+        ...(decision !== undefined && typeof decision === 'object'
+          ? pick(decision, ['decision'])
+          : {}),
+      };
+    }
+    case 'changeset.commit': {
+      const result = (data['result'] ?? {}) as Record<string, unknown>;
+      const record = (result['record'] ?? {}) as Record<string, unknown>;
+      const applied = Array.isArray(result['applied'])
+        ? (result['applied'] as unknown[]).length
+        : undefined;
+      return {
+        command,
+        changesetId: record['changesetId'],
+        status: record['status'],
+        ...(applied !== undefined ? { appliedCount: applied } : {}),
+      };
+    }
+    case 'release.publish': {
+      const release = (data['release'] ?? {}) as Record<string, unknown>;
+      return { command, ...pick(release, ['releaseVersion', 'applicationId', 'contentHash']) };
+    }
+    case 'release.select':
+    case 'release.rollback': {
+      const selection = (data['selection'] ?? {}) as Record<string, unknown>;
+      return {
+        command,
+        ...pick(selection, ['applicationId', 'releaseVersion', 'selectionRevision']),
+      };
+    }
+    case 'activation.select': {
+      const selection = (data['selection'] ?? {}) as Record<string, unknown>;
+      return { command, ...pick(selection, ['graphId', 'activationVersion', 'selectionRevision']) };
+    }
+    case 'run.cancel': {
+      return { command, ...pick(data, ['runId', 'status']) };
+    }
+    case 'agent.turn.start':
+      return { command, ...pick(data, ['turnId', 'streamId']) };
+    case 'agent.turn.cancel': {
+      const result = (data['result'] ?? {}) as Record<string, unknown>;
+      return { command, ...pick(result, ['turnId', 'status']) };
+    }
+    case 'agent.tool.approve':
+    case 'agent.tool.decline': {
+      const approval = (data['approval'] ?? {}) as Record<string, unknown>;
+      return { command, ...pick(approval, ['approvalId', 'status']) };
+    }
+    case 'app.data.mutate':
+    case 'app.data.action':
+      // Application mutation results live in the AUTHORITATIVE application
+      // domain: only the requested identities are referenced here.
+      return {
+        command,
+        ...pick(data, ['resourceId', 'releaseVersion']),
+      };
+    default:
+      return { command };
   }
 }
 

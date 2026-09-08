@@ -3,7 +3,7 @@ import {
   AgentStreamHub,
   type AgentControlStores,
 } from '@vict/runtime';
-import { ControlPlaneService } from '@vict/control';
+import { ControlPlaneService, createControlPlaneSandboxSimulator } from '@vict/control';
 import {
   createLocalTestAuthenticator,
   createServerAuthenticator,
@@ -97,6 +97,7 @@ export async function httpFixture(): Promise<HttpFixture> {
     stores,
     catalog,
     clock: () => Date.now(),
+    simulator: createControlPlaneSandboxSimulator({ stores, catalog }),
     ids: {
       changesetId: () => `cs-${(ids.n += 1)}`,
       changesetApprovalId: () => `csa-${(ids.n += 1)}`,

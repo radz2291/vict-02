@@ -9,7 +9,11 @@ import {
   InMemoryActorDirectory,
   type ActorDirectory,
 } from '@vict/runtime';
-import { ControlPlaneService, AgentTurnService } from '@vict/control';
+import {
+  createControlPlaneSandboxSimulator,
+  ControlPlaneService,
+  AgentTurnService,
+} from '@vict/control';
 import { createSqliteAgentControlStores } from '@vict/store-sqlite';
 import {
   createLocalTestAuthenticator,
@@ -79,7 +83,12 @@ async function fixture() {
   });
   const hub = new AgentStreamHub({ ledger: stores.streamLedger, clock: () => Date.now() });
   const catalog = createInMemoryStores().catalog;
-  const controlPlane = new ControlPlaneService({ stores, catalog, clock: () => Date.now() });
+  const controlPlane = new ControlPlaneService({
+    stores,
+    catalog,
+    clock: () => Date.now(),
+    simulator: createControlPlaneSandboxSimulator({ stores, catalog }),
+  });
   const turnService = new AgentTurnService({ stores, clock: () => Date.now() });
   const commandService = new VictCommandService({
     stores,
@@ -291,14 +300,8 @@ describe('canary leakage matrix (real HTTP + durable SQLite)', () => {
     await stores!.streamLedger.appendEvent({
       streamId: 'stream-canary',
       kind: 'content.completed',
-      payload: JSON.stringify({
-        kind: 'content.completed',
-        turnId: 'turn-canary-1',
-        threadId: 'thread-canary',
-        actorId: 'actor-user',
-        agentProfileVersion: 'profile-canary-1',
-        contentRef: 'conversation:vict-actor-actor-user/thread-canary/turn-canary-1',
-      }),
+      payload:
+        '{"actorId":"actor-user","agentProfileVersion":"profile-canary-1","contentRef":"conversation:vict-actor-actor-user/thread-canary/turn-canary-1","kind":"content.completed","threadId":"thread-canary","turnId":"turn-canary-1"}',
       at: Date.now(),
     });
     const response = await fetch(

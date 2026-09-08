@@ -35,7 +35,8 @@ const effectsFile = args.get('--effects');
 const { createSqliteAgentControlStores } = await import('@vict/store-sqlite');
 const { AgentStreamHub, createInMemoryStores, InMemoryActorDirectory } =
   await import('@vict/runtime');
-const { ControlPlaneService, AgentTurnService } = await import('@vict/control');
+const { ControlPlaneService, AgentTurnService, createControlPlaneSandboxSimulator } =
+  await import('@vict/control');
 const {
   createLocalTestAuthenticator,
   createServerAuthenticator,
@@ -67,7 +68,12 @@ for (const actorId of ['actor-user', 'actor-operator', 'actor-approver']) {
 }
 const hub = new AgentStreamHub({ ledger: stores.streamLedger, clock: () => Date.now() });
 const catalog = createInMemoryStores().catalog;
-const controlPlane = new ControlPlaneService({ stores, catalog, clock: () => Date.now() });
+const controlPlane = new ControlPlaneService({
+  stores,
+  catalog,
+  clock: () => Date.now(),
+  simulator: createControlPlaneSandboxSimulator({ stores, catalog }),
+});
 const turnService = new AgentTurnService({
   stores,
   clock: () => Date.now(),
