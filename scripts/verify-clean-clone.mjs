@@ -95,10 +95,44 @@ try {
     'zero-artifact clone: no node_modules present',
   );
 
-  run('npm', ['ci', '--no-audit', '--no-fund'], cloneDir, '1/4 npm ci');
-  run('npm', ['run', 'typecheck'], cloneDir, '2/4 npm run typecheck (BEFORE any build, no dist)');
-  run('npm', ['run', 'build'], cloneDir, '3/4 npm run build');
-  run('npm', ['run', 'verify:stage6b'], cloneDir, '4/4 npm run verify:stage6b');
+  run('npm', ['ci', '--no-audit', '--no-fund'], cloneDir, '1/6 npm ci');
+  run('npm', ['run', 'typecheck'], cloneDir, '2/6 npm run typecheck (BEFORE any build, no dist)');
+  run('npm', ['run', 'build'], cloneDir, '3/6 npm run build');
+  // Build and verification must not alter tracked files, executable modes,
+  // or leave generated artifacts: the working tree stays byte-clean.
+  const afterBuild = spawnSync('git', ['-C', cloneDir, 'status', '--porcelain'], {
+    encoding: 'utf8',
+    shell: true,
+  });
+  check(
+    afterBuild.status === 0 && afterBuild.stdout.trim() === '',
+    `build leaves NO tracked changes or generated artifacts (status: ${JSON.stringify(afterBuild.stdout.trim())})`,
+  );
+  run('npm', ['run', 'verify:stage6b'], cloneDir, '4/6 npm run verify:stage6b');
+  const afterVerify = spawnSync('git', ['-C', cloneDir, 'status', '--porcelain'], {
+    encoding: 'utf8',
+    shell: true,
+  });
+  check(
+    afterVerify.status === 0 && afterVerify.stdout.trim() === '',
+    `verification leaves NO tracked changes or generated artifacts (status: ${JSON.stringify(afterVerify.stdout.trim())})`,
+  );
+  // The tracked executable modes are unchanged by the whole sequence.
+  const modesIndex = spawnSync('git', ['-C', cloneDir, 'ls-files', '-s', 'packages/cli/bin'], {
+    encoding: 'utf8',
+    shell: true,
+  });
+  const modesHead = spawnSync('git', ['-C', cloneDir, 'ls-tree', 'HEAD', 'packages/cli/bin/'], {
+    encoding: 'utf8',
+    shell: true,
+  });
+  const indexModes = modesIndex.stdout.match(/\b100(?:644|755)\b/g) ?? [];
+  const headModes = modesHead.stdout.match(/\b100(?:644|755)\b/g) ?? [];
+  check(
+    indexModes.length === headModes.length &&
+      indexModes.every((mode, index) => mode === headModes[index]),
+    `tracked executable modes unchanged (index: ${indexModes.join(',')} vs HEAD: ${headModes.join(',')})`,
+  );
 } finally {
   rmSync(cloneDir, { recursive: true, force: true, retryDelay: 300, maxRetries: 10 });
 }

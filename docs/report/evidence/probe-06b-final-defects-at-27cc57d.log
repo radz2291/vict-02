@@ -1,0 +1,54 @@
+# Stage 06B final audit-readiness correction — defect probes at the starting SHA
+# Starting SHA: 27cc57df7b6dae9f207cdac6ca29b5d9da9bef87 (origin/main confirmed)
+# Environment: Windows x64 (dev machine; authoritative ladder runs on Linux x86_64 + Node 24)
+# All DEFECT-CONFIRMED lines below FAIL at the starting SHA and must PASS after correction.
+# Probe scripts are temporary and were removed after evidence capture (the log remains).
+
+==== $ npx tsx tmp-probes/probe-stream.mjs ====
+PROBE P1 events: 1,3
+PROBE P1 olderThanBuffer: false
+DEFECT-CONFIRMED P1: {"events":[1,3],"olderThanBuffer":false}
+DEFECT-CONFIRMED P2: {"error":"TypeError: Cannot assign to read only property 'delta' of object '#<Object>'"}
+PROBE P3 drained kinds: text.delta
+DEFECT-CONFIRMED P3: {"drained":["text.delta"],"terminalLost":true}
+PROBE P7 in-memory accepted: {"seq":1,"persisted":true}
+DEFECT-CONFIRMED P7-in-memory: {"persisted":1,"seq":1}
+
+==== $ npx tsx tmp-probes/probe-sqlite-ledger.mjs ====
+PROBE P7-sqlite accepted: {"seq":1,"persisted":true}
+PROBE P7-sqlite rows: 1
+DEFECT-CONFIRMED P7-sqlite: secret persisted in DB bytes
+
+==== $ npx tsx tmp-probes/probe-changeset.mjs ====
+PROBE P5 commit failure surfaced as: thrown
+PROBE P5 after failure: selection revisions [1,2], receipts 0
+PROBE P5 recovery: {"completed":1,"interrupted":[]}
+PROBE P5 after recovery: selection revisions [1,2,3], receipts 1
+PROBE P6 commits fulfilled: 2/2; selections applied: [release-r1@1,release-r2@2,release-r3@3]
+DEFECT-CONFIRMED P6: both commits fulfilled and both selections applied on one base
+
+==== $ npx tsx tmp-probes/probe-idempotency.mjs ====
+PROBE P8 isMutationCommand('changeset.execute-check') = false
+PROBE P8 isMutationCommand('app.data.action') = false
+DEFECT-CONFIRMED P8a: mutating commands are not classified as mutations
+PROBE P8 propose ok: true
+PROBE P8 receipt resultJson contains secret: true
+DEFECT-CONFIRMED P8b: full ChangeSet response (with rationale secret) stored in the receipt
+PROBE P9 first dispatch: {"thrown":"Error: INJECTED: process dies before settlement"}
+PROBE P9 durable receipt after crash: status=pending
+PROBE P9 retry outcome: VICT_COMMAND_IDEMPOTENCY_IN_PROGRESS
+DEFECT-CONFIRMED P9: crashed pending receipt leaves the key permanently stuck as IN_PROGRESS
+
+==== $ npx tsx tmp-probes/probe-wire.mjs ====
+DEFECT-CONFIRMED P12a: raw exception escaped the dispatcher: TypeError: hostile getter fired: HOSTILE-GETTER-VALUE-kk31
+PROBE P12b unknown top-level field status: 200 ok=true
+DEFECT-CONFIRMED P12b: unknown top-level body field accepted (envelope not validated)
+PROBE P4 SSE frame emitted: id: 1
+PROBE P4 emitted id decodable by the reconnect parser: undefined
+DEFECT-CONFIRMED P4: browser Last-Event-ID replay is impossible (id format mismatch)
+
+==== $ npx tsx tmp-probes/probe-tool-identity.mjs ====
+PROBE P11 identity before restart (ordinal 0): call-6104b56075c6
+PROBE P11 identity after restart  (ordinal 1): call-65693f745a41
+DEFECT-CONFIRMED P11: fallback tool-call identity drifts after restart (derived from current invocation count)
+

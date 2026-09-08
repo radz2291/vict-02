@@ -12,6 +12,11 @@ blocked).
   (preserved byte-for-byte; superseded in content, not modified).
 - Defect-probe evidence at the starting SHA:
   `docs/report/evidence/probe-06b-defects-at-7ba8cb8.log`.
+- SECOND-PASS defect evidence at `27cc57df7b6dae9f207cdac6ca29b5d9da9bef87`
+  (the previously pushed corrective-finalization HEAD): a fresh independent
+  defect reproduction round found and fixed TWELVE further defect areas
+  (P1–P12) that survived the first pass; full probe output preserved at
+  `docs/report/evidence/probe-06b-final-defects-at-27cc57d.log`.
 
 This report documents the independent reproduction of the Stage 06B defects at
 the starting SHA and the corrections applied on top of the implementer claim.
@@ -27,10 +32,13 @@ fresh independent audit, which remains the authoritative gate.
 All eleven Stage 06B defect areas were reproduced at the starting SHA with
 deterministic probes (19 probe assertions, all failing as predicted against
 `7ba8cb8`; full output preserved in the evidence log) and corrected in place.
-The full verification ladder passes, including a genuine clean-clone
-regression (`verify:clean-clone`) that proves the required
+A SECOND independent defect-reproduction round against the corrected HEAD
+(`27cc57df`) found and fixed twelve further defect areas (P1–P12 below). The
+full verification ladder passes, including a genuine clean-clone regression
+(`verify:clean-clone`) that proves the required
 `npm ci → typecheck → build → verify:stage6b` sequence from a zero-artifact
-clone of the committed state.
+clone of the committed state — and now also proves that build and verification
+leave NO tracked changes, generated artifacts, or altered executable modes.
 
 ## 2. Root cause and correction per finding
 
@@ -48,6 +56,39 @@ clone of the committed state.
 | F10 | Server wire: unknown payload fields silently coerced to `{}`; loose content-type parsing; raw exceptions echoed | Closed per-command payload field sets; unknown fields and non-object payloads rejected (`VICT_COMMAND_PAYLOAD_INVALID`); exact JSON content-type parsing (415 otherwise); malformed input can never produce a raw exception or echo hostile values; `changeset.execute-check` command added; disconnects, aborted bodies, duplicate requests, and shutdown-with-open-SSE covered |
 | F11 | `verify:stage6b` depended on manual build artifacts and did not gate the new suites | Self-contained verifier (typecheck + build first); gates the authorization matrix, durable idempotency, authoritative evidence, commit saga, wire schema, replay/backpressure, canaries, tool-bridge faults, SIGKILL recovery, fresh-process CLI lifecycle, packed consumers, and Stage 06A carry-forwards (28 gates); `verify:clean-clone` added |
 
+## 2b. SECOND-PASS findings (root cause at the first-pass HEAD `27cc57df`) and corrections
+
+A fresh defect-reproduction round against the corrected HEAD found twelve
+further defect areas that survived the first pass. Every probe assertion
+below FAILS at `27cc57df` (evidence log preserved) and PASSES after this
+correction round:
+
+| # | Finding (root cause at `27cc57df`) | Correction |
+| --- | --- | --- |
+| P1 | Hub restart-gap detection only counted the in-memory transient buffer, so after a process restart the empty buffer produced a FALSE `complete` replay status: a reconnecting client was told it missed nothing while a durable-sequence gap existed | `replayStatus`/`replay` now detect gaps against the AUTHORITATIVE durable ledger high-watermark (bounded paged coverage count, not the buffer); `olderThanBuffer` is only reported when the durable rows genuinely cannot cover the cursor; restart with an empty buffer is restart-safe |
+| P2 | Hub replay delivered FROZEN shared rows directly and the transport mutated the coalesced copy (`TypeError: Cannot assign to read only property`) | Replay and delivery paths hand out isolated copies; all coalescing writes target private copies; frozen stored rows are never mutated (deep-clone discipline pinned by conformance) |
+| P3 | A subscriber attached before a terminal event never received it when the live-delivery path was saturated (the pending drain pump dropped terminal events) | Register-first subscription + ordered pending queue + drain pump deliver the terminal after everything before it; terminal close happens only after all prior frames are written; pinned by real-socket tests |
+| P4 | SSE frames emitted `id: 1` — a bare sequence that the reconnect parser could not decode, so browser automatic `Last-Event-ID` replay was impossible | SSE `id:` is the full closed cursor `v1:<streamId>:<seq>`; the reconnect parser accepts the SAME format round-trip (automatic browser reconnect proven over real HTTP) |
+| P5 | The ChangeSet commit saga recorded receipts only AFTER each effect (dual-write): a crash between effect and receipt made recovery repeat the effect or left receipts absent while effects existed | TWO-STATE operation protocol: a durable PREPARED intent (identity + guard) commits BEFORE the fenced effect; the effect is executed AT MOST ONCE under the operation identity (idempotency key); the APPLIED receipt settles it. Recovery VERIFIES target state through the identity instead of re-running effects; conflicting content under the same identity fails closed |
+| P6 | Two concurrent commits could both pass the `expectedVersion: none` check and BOTH publish+select (no subject-level CAS on the base) | Subject-level base CAS in BOTH adapters: the selection insert is fenced on the expected base revision (`VICT_CONTROL_RELEASE_BASE_CHANGED` stable conflict, no effect); exactly one winner under concurrency (in-memory, SQLite, and cross-process) |
+| P7 | The durable stream ledger accepted ANY payload from runtime/JS callers: unknown kinds, non-canonical JSON, raw text in `content.completed`, malformed identities — hostile bytes reached SQLite | One exported validation gate (`validateStreamLedgerAppend`) enforced INSIDE both ledger adapters (in-memory + SQLite) on EVERY durable append and on every read-side reconstruction: kind must be in the closed vocabulary and match the payload `kind`; payload must be canonical JSON; unknown fields rejected; raw content rejected (`contentRef` only); malformed correlation IDs rejected; a rejected write mutates NO sequence state and persists NO bytes |
+| P8a | `isMutationCommand` missed `changeset.execute-check` and `app.data.action`: mutating commands ran without idempotency receipts | One closed command registry (scope + closed fields + mutation classification together); both commands are mutations with receipts; the registry is the single source of truth |
+| P8b | The idempotency receipt stored the FULL command result (the whole ChangeSet response, including the rationale secret) in `result_json` | Safe per-command result PROJECTIONS only (identity fields; never payloads); a replayed result is re-derived from the authoritative domain under the CURRENT actor's authorization; canary scans prove no payload-derived content reaches receipts |
+| P9 | A crash between claim and settlement left a `pending` receipt WITHOUT a lease: every retry answered `IN_PROGRESS` forever — the key was permanently stuck | Durable leases: `pending` receipts carry owner + expiry + attempts; an EXPIRED lease is taken over by a retrying caller (attempt counter incremented); a LIVE lease answers the in-progress conflict; RETRYABLE infrastructure failures RELEASE the claim (never confused with deterministic failures, which settle `failed` and replay) |
+| P10 | (clean-clone executable-mode stability) — covered by the extended `verify:clean-clone` gates: git status + `ls-files -s` mode checks after build and verification | See `verify:clean-clone` (new gates) |
+| P11 | The tool-bridge fallback tool-call identity derived from the CURRENT recorded-intent count, which drifts after a restart (same model call → NEW logical identity) | Documented deterministic identity from DURABLE turn context + durable ordinal (never current time, never a process counter); the framework `toolCallId` is used when the framework provides one; missing/malformed identity never produces a drifting identity |
+| P12a | Hostile payloads with GETTER-THROWING properties escaped the dispatcher as raw exceptions (`TypeError: hostile getter fired`) before any stable code | The dispatcher validates the envelope through the closed canonical plain-data validator FIRST: non-plain payloads (getters/proxies/traps/symbol fields) produce ONE stable, non-echoing rejection for BOTH the digest and the execution — a raw exception can no longer escape |
+| P12b | Unknown top-level body fields were accepted (HTTP 200, `ok: true`) — the envelope was not schema-closed | Full envelope validation: unknown top-level fields, non-object bodies, and malformed content types are rejected with stable codes before any effect |
+
+Additionally corrected in this pass (found by inspection, verified by
+conformance): ledger reads are validated at the store boundary too;
+`listEventsFrom` gained bounded paging; stream-hub registration buffers the
+backlog EXACTLY (per-event identity, no coalescing during registration — a
+reconnecting client receives every event exactly once) and `pull()` cannot
+steal events during the registration phase; an expired RUNNING tool attempt
+reconciles to a fenced non-replay state before any retry; the SQLite adapter
+persists and returns `operation_id` on release selections.
+
 ## 3. Decisions
 
 - **Authorization matrix** (below-transport, closed scope vocabulary):
@@ -60,13 +101,23 @@ clone of the committed state.
   (`agent.tool.approve/decline`, `changeset.decide`) → `approver`+ (never
   self); cross-actor access fails closed (403/404, never leak-by-listing).
 - **Idempotency model**: closed key format (1..128 bounded charset);
-  receipt = (actorId, command, requestDigest, status, resultJson/responseCode,
-  timestamps); claim → execute → settle; `claimed` wins once; settled receipts
-  are immutable; conflicts are stable and non-echoing.
-- **ChangeSet commit**: durable `applying` saga with immutable receipts and
-  deterministic recovery (option 2 of the allowed models) — chosen because
-  external effects (release publication) cannot participate in a single local
-  transaction, and receipts make retry safe and audit truthful.
+  receipts are NAMESPACED by (actor, command, key) and bound to the canonical
+  request digest; the same actor reusing one key across DIFFERENT commands is
+  a stable conflict (cross-command lookup); a different actor's client-generated
+  key is an independent namespace; claim → execute → settle; `pending` claims
+  carry durable leases (owner + expiry + attempts) with takeover after expiry;
+  settled receipts are immutable; deterministic failures settle `failed` and
+  replay; retryable infrastructure failures release the claim; conflicts are
+  stable and non-echoing.
+- **ChangeSet commit**: durable `applying` saga with the TWO-STATE operation
+  protocol and deterministic recovery (option 2 of the allowed models) —
+  chosen because external effects (release publication) cannot participate in
+  a single local transaction, and a durable PREPARED intent + fenced effect +
+  APPLIED receipt make retry safe, recovery verifiable, and audit truthful.
+  Publication+selection is ONE `publish-and-select-release` operation;
+  selection effects are fenced on the operation identity AND on the
+  subject-level base revision (subject-level CAS, exactly one concurrent
+  winner).
 - **Stream**: at-least-once delivery, `(streamId, seq)` dedupe, ledger-assigned
   monotonic sequences, frozen/copy discipline, lossless ordered replay,
   drain-driven pump, headers (not events) for replay status.
@@ -74,8 +125,15 @@ clone of the committed state.
   only; full conversation content is confined to the actor-authorized
   conversation domain under its retention/deletion/export policy.
 - **Tool-bridge recovery**: fenced-only error tolerance; `outcome_unknown`
-  after effect-before-persistence failure; deterministic identities; canonical
-  digests; idempotency key propagation.
+  after effect-before-persistence failure; expired RUNNING attempts reconcile
+  to a fenced non-replay state before any retry; documented deterministic
+  identities (durable turn context + durable ordinal); canonical digests;
+  idempotency key propagation.
+- **Tool-call identity fallback** (documented): when the Mastra invocation
+  path provides no framework `toolCallId` (measured in this composition), the
+  identity is `${turnId}-t<ordinal+1>` with the ordinal read from the DURABLE
+  invocation store — never current time, never a process counter; a hostile
+  turn id falls back to a bounded hash of the turn id.
 
 ## 4. Negative controls (all pass on corrected tree; fail on starting SHA)
 

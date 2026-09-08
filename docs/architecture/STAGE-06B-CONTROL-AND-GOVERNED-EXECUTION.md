@@ -154,17 +154,25 @@ draft ──approve──▶ approved ──commit──▶ committed
   simulation); missing, failed, stale or mismatched evidence blocks
   commit with structured diagnostics. Fabricated and replayed evidence
   cannot authorize a commit (permanent negative controls).
-- Commit is a durable saga: the full operation set is prevalidated, the
-  status moves `approved → applying → committed` under a
-  compare-and-set (exactly one concurrent winner), each applied
-  operation writes an immutable receipt
-  (`vict_changeset_operation_receipt`) before the next starts, and
-  recovery (`recoverChangeSetCommits`) replays from the receipts after a
-  crash — already-applied operations are never repeated, and no failure
-  leaves a falsely final state (a half-applied ChangeSet stays
-  `applying`, externally visible as not-final). Release publication and
-  selection are one `publish-and-select-release` operation, never an
-  untracked two-step partial update. Audit records agree with the
+- Commit is a durable saga with the TWO-STATE operation protocol: the full
+  operation set is prevalidated, the status moves
+  `approved → applying → committed` under a compare-and-set (exactly one
+  concurrent winner), and EACH operation commits a durable PREPARED intent
+  (operation identity = changeset + index + kind + canonical operation
+  digest + guard, including the expected base version) BEFORE its fenced
+  effect executes AT MOST ONCE under that identity, then settles an APPLIED
+  receipt. A conflicting operation under the same identity (different
+  digest or guard) fails closed; an already-applied identity is never
+  re-executed (recovery VERIFIES the recorded target state instead of
+  re-running the effect); release selection is additionally fenced on the
+  SUBJECT-level base revision (subject-level CAS: exactly one concurrent
+  winner; a loser receives the stable `VICT_CONTROL_RELEASE_BASE_CHANGED`
+  conflict with no effect). Recovery (`recoverChangeSetCommits`) replays
+  from receipts after a crash — already-applied operations are never
+  repeated, and no failure leaves a falsely final state (a half-applied
+  ChangeSet stays `applying`, externally visible as not-final). Release
+  publication and selection are one `publish-and-select-release` operation,
+  never an untracked two-step partial update. Audit records agree with the
   actually-committed state.
 - Stale-base proposals fail without mutation; approval binds to the exact
   content hash; revising content invalidates evidence and approvals;
@@ -207,14 +215,20 @@ winner; restart between VICT approval and Mastra resume reconciles safely.
   raw exception or echo hostile values.
 - Durable command idempotency for ALL state-changing commands: a
   validated `Idempotency-Key` header (closed bounded format) creates a
-  durable receipt bound to (actor, command, canonical request digest).
-  Same actor/command/key/digest replays the original durable result
-  without repeating effects; the same key with a different command or
-  digest is a stable conflict (`VICT_COMMAND_IDEMPOTENCY_CONFLICT`); a
-  still-running duplicate answers `VICT_COMMAND_IDEMPOTENCY_IN_PROGRESS`.
-  Receipts survive SQLite close/reopen and process restart; concurrent
-  duplicates have exactly one winner. `agent.turn.start` retries never
-  create multiple turns.
+  durable receipt NAMESPACED by (actor, command, key) and bound to the
+  canonical request digest. Same actor/command/key/digest replays the
+  original durable result without repeating effects; the same key reused by
+  the same actor for a DIFFERENT command is a stable conflict
+  (`VICT_COMMAND_IDEMPOTENCY_CONFLICT`; a different actor's client-generated
+  key is an independent namespace); a still-running duplicate answers
+  `VICT_COMMAND_IDEMPOTENCY_IN_PROGRESS` while its lease is live, and an
+  EXPIRED pending lease is taken over by the retrying caller (owner +
+  attempts recorded); deterministic failures settle `failed` and replay;
+  retryable infrastructure failures release the claim. Receipts store SAFE
+  per-command result projections only (never full payloads). Receipts
+  survive SQLite close/reopen and process restart; concurrent duplicates
+  have exactly one winner. `agent.turn.start` retries never create multiple
+  turns.
 - Bounded request bodies (256 KiB), bounded payloads (≤64 fields),
   stable status mapping (401/403/404/409/400/413/415/500), no raw
   exception or secret echo, no privileged agent-framework route.
@@ -228,16 +242,29 @@ winner; restart between VICT approval and Mastra resume reconciles safely.
   future sequences → 409); replay status is exposed through defined
   response headers (`x-vict-replay-bounded`, `x-vict-stream-newest-seq`,
   `x-vict-stream-cursor`), never through undeclared event kinds.
-- Replay is lossless and ordered: replayed durable rows are written
-  before live subscription is attached, anchored at the cursor, and the
-  full authorized replay is delivered in order — Node backpressure is
-  honored (`response.write() === false` awaits `drain`; nothing is
-  discarded). Coalescing may combine consecutive `text.delta` only on
-  private copies; stored/delivered events are frozen or copied so no
-  object is shared-and-mutated between queues and the replay buffer;
-  durable/control/terminal events are never dropped. A subscriber that
-  attaches before a turn becomes terminal still receives the terminal
+- Replay is lossless and ordered: replay and live delivery share ONE
+  ordered path (register-first subscription, then the ordered backlog),
+  anchored at the cursor, and the full authorized replay is delivered in
+  order — Node backpressure is honored (`response.write() === false` means
+  the bytes were ACCEPTED; the saturated socket's frames wait in the
+  transport's bounded queue and are pumped one by one, in order, after
+  `drain`; nothing is discarded and the transport never coalesces).
+  Every SSE frame carries `id: v1:<streamId>:<seq>`, so a browser's
+  automatic `Last-Event-ID` reconnects without client rewriting. The HUB's
+  coalescing applies to consecutive `text.delta` ONLY for a subscriber that
+  signaled saturation, only on private copies, and never during the
+  registration phase (a connecting client receives every event exactly
+  once, with per-event identity); stored/delivered events are frozen or
+  copied so no object is shared-and-mutated between queues and the replay
+  buffer; durable/control/terminal events are never dropped. A subscriber
+  that attaches before a turn becomes terminal still receives the terminal
   event and a clean close. WebSocket/WebRTC are not used.
+- Durable ledger writes are validated at the store boundary: BOTH ledger
+  adapters (in-memory and SQLite) reject unknown kinds, kind/payload
+  mismatches, non-canonical JSON, unknown fields, raw content in
+  `content.completed` milestones, and malformed correlation IDs — including
+  calls from plain JavaScript — without mutating sequence state or
+  persisting any bytes; reads reconstruct events through the same gate.
 - Remote Application data adapter: queries/mutations preserve declared
   resource/revision/release identities; actions stay client-local and
   cannot be dispatched remotely (`VICT_APPDATA_LOCAL_ACTION_DENIED`);
@@ -275,16 +302,19 @@ persistence failed, the invocation enters the truthful `outcome_unknown`
 state instead of reporting normal completion.
 
 Tool-call identity is deterministic: a missing/malformed upstream tool-call
-identity falls back to an identity derived from the durable turn context
-and a per-turn invocation ordinal (never the clock), stable across retry,
-approval suspension and restart. Argument digests are computed over a
-canonical JSON form (key-order invariant; unsupported values are rejected,
-not silently coerced). The durable idempotency key is propagated into the
-capability invocation context so external adapters can deduplicate after
-restart. Durable milestones are awaited, ordered and exactly-once; a lost
-milestone fails the turn with `VICT_TURN_STREAM_PERSISTENCE_FAILED`.
-Suspension (agent-framework-level waiting) is a waiting mechanism, never
-authorization: the VICT approval record commits before resume.
+identity falls back to an identity derived from the durable turn context and
+the DURABLE per-turn invocation ordinal (never current time, never a process
+counter), stable across retry, approval suspension and restart. An expired
+RUNNING attempt on the same logical invocation identity reconciles to the
+fenced non-replay `outcome_unknown` state BEFORE any retry. Argument digests
+are computed over a canonical JSON form (key-order invariant; unsupported
+values are rejected, not silently coerced). The durable idempotency key is
+propagated into the capability invocation context so external adapters can
+deduplicate after restart. Durable milestones are awaited, ordered and
+exactly-once; a lost milestone fails the turn with
+`VICT_TURN_STREAM_PERSISTENCE_FAILED`. Suspension (agent-framework-level
+waiting) is a waiting mechanism, never authorization: the VICT approval
+record commits before resume.
 
 ## 7. Cancellation and restart reconciliation
 

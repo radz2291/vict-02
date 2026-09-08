@@ -10,6 +10,10 @@ export default tseslint.config(
       'coverage/**',
       '**/.svelte-kit/**',
       '**/build/**',
+      // Owner-local tooling (never delivered code, never committed).
+      '.pi/**',
+      // Temporary probe scratch space (removed before finalization).
+      'tmp-probes/**',
     ],
   },
   js.configs.recommended,
