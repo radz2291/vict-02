@@ -27,9 +27,17 @@ the starting SHA and the corrections applied on top of the implementer claim.
 Implementation and documentation SHAs: `ffadb7f` (build integrity),
 `db92a8d` (contracts/runtime), `62ec397` (SQLite), `18bd631` (control),
 `1523de7` (Mastra bridge), `a1b8dd8` (server/CLI), `8d8c46a` (docs) — pushed
-to `origin/main` as a single fast-forward `7ba8cb8..8d8c46a`. It is an
-implementer claim only: every statement below is falsifiable by the
-fresh independent audit, which remains the authoritative gate.
+to `origin/main` as a single fast-forward `7ba8cb8..8d8c46a`.
+
+SECOND-PASS commit chain (fast-forward `27cc57d..3fae803`, final remote
+`origin/main` = `3fae803352d5bb7ea96b019909baea6ae0379a57`): `98e807a`
+(store-boundary + hub + idempotency ports + SQLite migration 7), `d9de1c7`
+(control plane two-state saga + simulator), `0147965` (Mastra bridge + server
+wire), `a87a37b` (docs + verifier gates), `d40f417` (P10 bin mode),
+`3546aba` (HIGH-3 harness budget), `3fae803` (Linux evidence). No
+force-push, no rebase, no history rewrite. It is an implementer claim only:
+every statement below is falsifiable by the fresh independent audit, which
+remains the authoritative gate.
 
 ## 1. Outcome
 
