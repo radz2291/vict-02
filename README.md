@@ -37,6 +37,17 @@ This repository is the greenfield kernel with durable identity, stores, and
   application-domain migration API (built-in `node:sqlite`)
 - `packages/scaffolder` — Stage 05 one-time SvelteKit application-host
   scaffolder (deterministic, non-destructive, path-safe, idempotent)
+- `packages/mastra` — Stage 06A optional Mastra adapter over the neutral
+  ProductAgent boundary (pinned Mastra versions, governed tool bridge,
+  durable approvals, cancellation/reconciliation, offline model fixture)
+- `packages/control` — Stage 06B control plane: actors/roles/scopes,
+  ChangeSets with immutable content identity, approvals, activation and
+  Application Release governance, agent-turn governance, audit events
+- `packages/server` — Stage 06B VICT-owned server boundary: versioned
+  HTTP commands, resumable SSE for `vict.agent-stream@1`, authenticated
+  actor composition, remote Application data adapter
+- `packages/cli` — Stage 06B typed operator/developer commands over the
+  shared versioned command surface (no direct store access)
 - `examples/reference-app` — Stage 05 complete reference application:
   one neutral `vict.application@2` definition plus explicit
   renderer/component-registry/SQLite-data/runtime bindings producing the
@@ -48,15 +59,41 @@ This repository is the greenfield kernel with durable identity, stores, and
 
 Stages 1–4 are independently verified (Stage 4 disposition:
 VERIFIED WITH NON-BLOCKING ISSUES — STAGE 05 PERMITTED). Stage 5 — the
-application delivery layer — is implemented and awaiting independent
-audit: the canonical SvelteKit renderer, the one-time host scaffolder, the
-extended `vict.application@2` surface vocabulary, the SQLite
-application-domain adapter with separate migrations (OPEN-014), and the
-complete §17.10 reference proof. Renderer and application builds are
-warning-free; accessibility and real-browser (desktop + mobile) scenarios
-are automated. See
+application delivery layer — is independently verified and formally
+closed (2026-09-04, VERIFIED WITH NON-BLOCKING ISSUES): the canonical
+SvelteKit renderer, the one-time host scaffolder, the extended
+`vict.application@2` surface vocabulary, the SQLite application-domain
+adapter with separate migrations (OPEN-014), and the complete §17.10
+reference proof. Renderer and application builds are warning-free;
+accessibility and real-browser (desktop + mobile) scenarios are
+automated. See
 `docs/architecture/STAGE-05-APPLICATION-DELIVERY.md` and
 `docs/report/VICT-STAGE-05-REPORT.md`.
+
+Stage 6 — control plane, API, and product-agent integration — is one
+formal stage with two increments. **Stage 06A (product-agent foundation)
+is independently verified and formally closed** (2026-09-06, disposition
+VERIFIED WITH NON-BLOCKING ISSUES — STAGE 06A CLOSED — STAGE 06B
+PERMITTED): the neutral versioned product-agent boundary, the pinned
+Mastra adapter (`@vict/mastra`: `@mastra/core` 1.64.0, memory 1.28.2,
+libsql 1.22.3, observability 1.17.5) with the deterministic offline model
+fixture, governed deletion fencing with receipt-backed reconciliation,
+dedicated Mastra storage with retention/pruning, and POSIX containment.
+**Stage 06B (control plane and governed remote execution) is implemented
+and awaiting fresh independent audit**: actors/roles/scopes with
+default-deny, ChangeSets with immutable content identity and
+content-hash-bound approvals, activation and Application Release
+publish/select/rollback governance (`@vict/control`), the final
+`vict.agent-stream@1` field-level schema (OPEN-015 decided), versioned
+HTTP commands and resumable SSE (`@vict/server`), the governed capability
+tool bridge with durable approvals, cancellation and restart
+reconciliation (`@vict/mastra`), remote Application data bindings, and
+the typed operator CLI (`@vict/cli`) — proven by real child-process
+SIGKILL fixtures and an adversarial canary leakage matrix, gated by
+`verify:stage6b`. Stage 06 remains In Progress and is not yet Verified;
+Stage 07 remains blocked. See
+`docs/architecture/STAGE-06B-CONTROL-AND-GOVERNED-EXECUTION.md` and
+`docs/report/VICT-STAGE-06B-REPORT.md`.
 
 Stage 4 details — the capability and application authoring foundation: the SDK is now a lightweight authoring ABI below the kernel and
 runtime (`@vict/contracts → @vict/sdk → @vict/kernel → @vict/runtime`),
@@ -89,6 +126,12 @@ npm run verify:stage5  # Stage 05 aggregate verification (renderer + SQLite
                        # reference application proof incl. real-process
                        # HTTP and real-browser scenarios, packed
                        # scaffolder consumer)
+npm run verify:stage6a  # Stage 06A aggregate verification (product-agent
+                        # foundation: adapter, deletion fencing, storage,
+                        # containment, packed adapter consumer)
+npm run verify:stage6b  # Stage 06B aggregate verification (control plane,
+                        # actor boundary, HTTP/SSE, CLI, SIGKILL fixtures,
+                        # canary matrix, conformance parity)
 npm run example:application  # build + DOM-level tests for the Stage 04
                              # SvelteKit application proof
 ```

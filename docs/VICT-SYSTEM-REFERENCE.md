@@ -3,8 +3,8 @@
 > **Canonical title:** Vict Architecture and Operating Model — Authoritative System Reference<br>
 > **Document version:** 0.3.2<br>
 > **System generation:** Greenfield<br>
-> **Status:** Authoritative baseline; Mastra/ARA integration amendment accepted (v0.3.0), finalized by the v0.3.1 pre-implementation correction, and extended by the v0.3.2 documentation-only Stage 06A formal closure; future features are individually marked<br>
-> **Last updated:** 2026-09-06 (v0.3.2 — Stage 06A formal closure from the final independent Linux audit: Stage 06A disposition VERIFIED WITH NON-BLOCKING ISSUES and formally closed; nine AI/MSTR requirement families promoted to Verified; two accepted Low findings carried into Stage 06B as early acceptance items; documentation-only — no production code, tests, packages, migrations, examples, fixtures, verification scripts, or historical reports changed)<br>
+> **Status:** Authoritative baseline; Mastra/ARA integration amendment accepted (v0.3.0), finalized by the v0.3.1 pre-implementation correction, extended by the v0.3.2 Stage 06A formal closure, and extended by the v0.3.3 Stage 06B implementation record; future features are individually marked<br>
+> **Last updated:** 2026-09-08 (v0.3.3 — Stage 06B implemented and awaiting fresh independent audit: LOW-06A carry-forwards closed, `vict.agent-stream@1` finalized with OPEN-015 decided, `@vict/control` / `@vict/server` / `@vict/cli` delivered, governed `@vict/mastra` tool bridge, durable approvals and cancellation, resumable SSE, remote Application bindings, SIGKILL fixtures, canary matrix, `verify:stage6b` aggregate. Documentation update — no requirement row promoted to Verified; Stage 06 remains In Progress; Stage 07 remains blocked)<br>
 > **Current delivery point:** Stages 1, 1.1, 2, 3, 4, and 5 independently verified and closed; Stage 05 closed with non-blocking issues; Mastra/ARA amendment accepted and finalized (v0.3.1); Stage 06 In Progress — Stage 06A independently verified with non-blocking issues and formally closed; Stage 06B permitted but not implemented<br>
 > **Next permitted stage:** Stage 6B — Control plane and governed remote execution (permitted, not implemented: Stage 06A passed its final independent Linux closure audit and is formally closed, so Stage 06B may begin under normal Stage 06 governance; the full Stage 06 exit gate remains open until 06B is complete and independently audited. The Stage 06 handoff was generated from the v0.3.1 baseline and `docs/architecture/MASTRA-ARA-INTEGRATION.md`; the Stage 06A foundation increment is delivered in `docs/architecture/STAGE-06A-PRODUCT-AGENT-FOUNDATION.md` with the complete evidence chain and closure disposition recorded in §0.8 and §24.3 of this reference)
 
@@ -182,6 +182,31 @@ as existing. The complete closure disposition, evidence chain, verified
 behavior, and carried findings are recorded in §24.3. Stage 06 as a whole
 remains **In Progress** until Stage 06B and the full Stage 06 exit gate
 are independently verified and formally closed.
+
+### 0.9 Implementation increment v0.3.3 — Stage 06B implemented (documentation update)
+
+Stage 06B — control plane and governed remote execution — is implemented
+on top of the Stage 06A closure point, and this v0.3.3 update records the
+increment in §5 (package inventory), §24.3 (implementation record), and
+§24.4 (evidence documents). The Stage 06A closure disposition and all
+historical audits are unchanged. The delivered increment comprises the
+closed LOW-06A carry-forwards, the final `vict.agent-stream@1` schema
+(OPEN-015 decided), the `@vict/control`, `@vict/server`, and `@vict/cli`
+packages, the governed `@vict/mastra` tool bridge, durable approvals and
+cancellation, resumable SSE, remote Application bindings, SIGKILL
+cross-store fixtures, and the adversarial canary matrix, gated by the new
+`verify:stage6b` aggregate. This is an implementation record: **Stage 06B
+is not yet independently audited**, no Stage 06B requirement is Verified,
+and the full Stage 06 exit gate remains open.
+
+The authoritative status statement:
+
+```text
+Stage 06A independently verified and closed.
+Stage 06B implemented and awaiting fresh independent audit.
+Stage 06 remains In Progress and is not yet Verified.
+Stage 07 remains blocked.
+```
 
 ---
 
@@ -367,6 +392,10 @@ Stages 1 through 5 established this verified greenfield package set and proofs:
 | examples/ara-proof                  | Deterministic offline walking proof (13 events)                                                                                                              | Verified                                                                                                                |
 | examples/application-proof          | Minimal real SvelteKit vertical proof of the neutral boundary (local, data, and Vict actions)                                                                | Verified (Stage 4; not the Stage 5 production renderer)                                                                 |
 | examples/reference-app              | Complete Stage 05 application-delivery proof of §17.10 (renderer, scaffolder output ownership, SQLite application-domain adapter, real Vict action)          | Verified (Stage 5)                                                                                                      |
+| @vict/mastra                        | Mastra-backed implementation of the neutral ProductAgent boundary: pinned Mastra versions, tool bridge, stream normalization, agent-profile snapshots         | In Progress — Stage 06A adapter foundation independently verified; Stage 06B tool bridge and normalized remote execution pending |
+| @vict/control                       | Neutral control-plane ports and services: actors/roles/scopes, ChangeSets, approvals, activation and release governance, agent-turn governance, audit events   | In Progress (Stage 06B implementation; not yet independently audited)                                                    |
+| @vict/server                        | VICT-owned server boundary: versioned HTTP commands, resumable SSE for `vict.agent-stream@1`, authenticated actor composition, remote Application data adapter | In Progress (Stage 06B implementation; not yet independently audited)                                                    |
+| @vict/cli                           | Typed operator/developer CLI consuming the same versioned command surface (never stores directly)                                                              | In Progress (Stage 06B implementation; not yet independently audited)                                                    |
 
 The verified import direction is acyclic:
 
@@ -399,7 +428,7 @@ The application branch is separate from the execution spine:
 
 ### 5.2 Accepted target topology
 
-The SDK authoring-ABI part of this target is now verified (Stage 4): `@vict/sdk` is a lightweight authoring layer that capability packs import without depending on the runtime. The Stage 05 application-delivery packages in and beside this diagram — `@vict/application` (application model/compiler), the Svelte renderer and host (`@vict/renderer-svelte`), the application-data adapter (`@vict/appdata-sqlite`), and the scaffolder (`@vict/scaffolder`) — are also verified. The remaining future packages in the diagram (`@vict/control`, `@vict/server`, `@vict/client`, Builder Kit, Studio) are accepted targets and remain stage-gated. Since v0.3.0, `@vict/mastra` (the optional Mastra adapter) is an accepted product-composition target that imports the runtime/application side; no neutral package imports it.
+The SDK authoring-ABI part of this target is now verified (Stage 4): `@vict/sdk` is a lightweight authoring layer that capability packs import without depending on the runtime. The Stage 05 application-delivery packages in and beside this diagram — `@vict/application` (application model/compiler), the Svelte renderer and host (`@vict/renderer-svelte`), the application-data adapter (`@vict/appdata-sqlite`), and the scaffolder (`@vict/scaffolder`) — are also verified. With the Stage 06B increment, `@vict/control`, `@vict/server`, and `@vict/cli` now exist as implemented packages owned by Stage 06B (awaiting fresh independent audit; see §0.9), and `@vict/mastra` — the optional Mastra adapter accepted since v0.3.0 — is In Progress: the Stage 06A adapter foundation is independently verified, and the Stage 06B tool bridge and normalized remote execution are implemented but not yet audited. `@vict/client` remains an optional extraction if evidence supports it; Builder Kit and Studio remain stage-gated. No neutral package imports `@vict/mastra`.
 
 ```mermaid
 flowchart TB
@@ -410,7 +439,7 @@ flowchart TB
     APPMODEL --> RENDERER["Svelte renderer"]
     RUNTIME --> CONTROL["@vict/control"]
     RUNTIME --> SERVER["@vict/server"]
-    RUNTIME --> MASTRA["@vict/mastra adapter (planned; optional)"]
+    RUNTIME --> MASTRA["@vict/mastra adapter (In Progress; optional)"]
     APPMODEL --> MASTRA
 ```
 
@@ -424,11 +453,11 @@ Dependency arrows mean “is imported by the next layer.” Exact package extrac
 | @vict/sdk                                                     | Capability/graph/application/pack authoring ABI and public types                                                                                                                                                                                                                      | Accepted    | Verified      |
 | @vict/kernel                                                  | Pure validation, canonicalization, activation, planning                                                                                                                                                                                                                               | Invariant   | In Progress   |
 | @vict/runtime                                                 | Execution, effects, scheduling, ports, durable coordination                                                                                                                                                                                                                           | Invariant   | In Progress   |
-| @vict/control                                                 | ChangeSet lifecycle, policies, approvals, activation management                                                                                                                                                                                                                       | Accepted    | Planned       |
-| @vict/server                                                  | HTTP/event transport and server composition                                                                                                                                                                                                                                           | Provisional | Planned       |
+| @vict/control                                                 | ChangeSet lifecycle with immutable content identity, validation/simulation evidence, approvals, activation publish/select/rollback, Application Release governance, agent-turn governance with durable approvals, audit events                                                          | Accepted    | In Progress (Stage 06B) |
+| @vict/server                                                  | VICT-owned server boundary: versioned HTTP commands, resumable SSE for `vict.agent-stream@1`, authenticated actor composition, remote Application data/action adapter; no privileged agent-framework route                                                                               | Provisional | In Progress (Stage 06B) |
 | @vict/client                                                  | Typed transport client, if evidence supports extraction                                                                                                                                                                                                                               | Provisional | Not Scheduled |
-| @vict/mastra (optional adapter)                               | Mastra-backed implementation of the neutral ProductAgent boundary: pinned Mastra versions, tool bridge, stream normalization, agent-profile snapshots; imports runtime/application side, never imported by neutral packages (see `docs/architecture/MASTRA-ARA-INTEGRATION.md`)       | Accepted    | Planned       |
-| @vict/cli                                                     | Local inspection, execution, verification, and operator commands                                                                                                                                                                                                                      | Accepted    | Planned       |
+| @vict/mastra (optional adapter)                               | Mastra-backed implementation of the neutral ProductAgent boundary: pinned Mastra versions, tool bridge, stream normalization, agent-profile snapshots; imports runtime/application side, never imported by neutral packages (see `docs/architecture/MASTRA-ARA-INTEGRATION.md`)       | Accepted    | In Progress — Stage 06A adapter foundation independently verified; Stage 06B tool bridge and normalized remote execution pending |
+| @vict/cli                                                     | Typed operator/developer commands over the shared versioned command surface (HTTP); never reads stores directly                                                                                                                                                                       | Accepted    | In Progress (Stage 06B) |
 | @vict/builder-kit                                             | Agent/human repository context, tools, checks, and handoff protocol                                                                                                                                                                                                                   | Accepted    | Planned       |
 | application model/compiler (implemented as @vict/application) | Framework-neutral definitions, validation, canonical identity, binding plans, and application release manifests                                                                                                                                                                       | Accepted    | Verified      |
 | Svelte renderer and host                                      | Canonical first renderer, SvelteKit shell, built-in component roles, and custom-component registry — verified as `@vict/renderer-svelte` plus the generic application host used by the reference application and generated hosts                                                      | Accepted    | Verified      |
@@ -2364,7 +2393,7 @@ The two accepted non-blocking findings are carried explicitly into Stage 06B as 
 - **LOW-06A-1 — SQLite invalid receipt-step silent no-op:** the SQLite CHECK constraint prevents invalid receipt steps from persisting, so deletion state cannot advance without the required valid receipts, but `INSERT OR IGNORE` makes an invalid or legacy step resolve successfully while persisting nothing — the in-memory adapter rejects the same input explicitly. Non-blocking because no invalid durable data or false deletion completion occurs. Stage 06B MUST restore public adapter error-surface parity before exposing governance through remote/control-plane APIs: invalid receipt steps must produce a stable, non-echoing rejection rather than silent success, while duplicate-valid-receipt idempotency is preserved.
 - **LOW-06A-2 — incomplete Stage 06A verifier coverage:** `verify:stage6a` gates the POSIX containment and permission suites, but driver-cause safety is covered only by the unit/full ladder and the migration regression suites are not directly included in the verifier. Non-blocking because the final independent audit ran and repeated these suites directly. Before the final Stage 06 exit gate, the verifier MUST be extended so driver-cause and migration regressions cannot be skipped.
 
-Stage 06B is **permitted but not implemented** — no Stage 06B capability (control plane, HTTP commands, resumable SSE with the final `vict.agent-stream@1` field schema, tool bridge, approval flow, cancellation durability, cursor reconnect/dedupe, ChangeSets/release governance, remote bindings) is claimed as existing. The full Stage 06 exit gate remains open: Stage 06 is marked Verified only after Stage 06B is complete and the full gate passes an independent audit, and Stage 07 remains blocked until then.
+Stage 06B — control plane and governed remote execution — is now **implemented and awaiting fresh independent audit**. The implementation increment (starting from the Stage 06A closure point `b491ede`) delivers: the two accepted LOW-06A carry-forwards closed first (SQLite receipt-step rejection parity with shared conformance tests; `verify:stage6a` extended to directly gate driver-cause, migration, and governance regressions); the final `vict.agent-stream@1` field-level schema in `@vict/contracts` with OPEN-015 decided; the `@vict/control` package (actors/roles/scopes with default-deny, ChangeSets with immutable content identity, closed typed operations, evidence invalidation, content-hash-bound approvals, idempotent competing-commit semantics, activation publish/select/rollback, Application Release publish/select/rollback, agent-turn governance with durable-before-invocation tool intents, self-approval denial, exact-binding approval consumption, durable cancellation, restart reconciliation, audit events) with shared in-memory/SQLite conformance suites; the `@vict/mastra` governed capability tool bridge enforcing the nine-step authorization order against the pinned Mastra versions; the `@vict/server` boundary (versioned HTTP commands over real `node:http`, resumable SSE with `Last-Event-ID`/cursor replay and delta coalescing, authenticated actor composition with Mastra `resourceId` derived server-side, remote Application data adapter with hostile-container containment); the `@vict/cli` typed operator commands consuming the same versioned command surface; and real child-process SIGKILL fixtures plus an adversarial canary leakage matrix over HTTP, SSE, safe errors, durable stream rows, approval records, and raw SQLite DB/WAL/SHM bytes. The aggregate exit gate `verify:stage6b` passes. This increment is an implementation claim, NOT an independent verification: no Stage 06B requirement row is promoted to Verified, and the full Stage 06 exit gate remains open until a fresh independent audit passes. Stage 07 remains blocked. The implementation evidence is recorded in `docs/architecture/STAGE-06B-CONTROL-AND-GOVERNED-EXECUTION.md` and `docs/report/VICT-STAGE-06B-REPORT.md`.
 
 Retained informational limitations (verified architecture is not reopened): Stage 03's two load-sensitive real-time tests re-tripped once each in the audit's first-run full-suite executions and passed on every quiet re-run (unchanged Stage 03 files; governed clock-injection remains the recorded future direction); the Linux evidence is WSL2 (real Linux kernel, native ext4) and does not claim bare-metal certification; Windows ACL behavior remains documented best-effort; rollback-journal sidecars were absent under the exercised WAL configuration; sidecars created after the initial permission application rely on the enclosing `0700` directory unless permissions are reapplied; and Stage 06A is proven only within the declared local-first, single-actor, single-process, non-multi-tenant envelope — Stage 07 must still prove the real-use deployment envelope and product behavior (MSTR-012).
 
@@ -2390,6 +2419,8 @@ Retained informational limitations (verified architecture is not reopened): Stag
 - VICT-STAGE-04-INDEPENDENT-RE-AUDIT.md — focused independent re-audit that found the remediation's new HIGH-04-D authority-cache defect and the opt-in release-binding cross-check (RE-AUDIT MED-04-G-R); authoritative blocker record at commit `a124f37`.
 - VICT-STAGE-04-FINAL-REMEDIATION-REPORT.md — final remediation claim closing both re-audit blockers and the Low residues LOW-RE-1 through LOW-RE-4 with observed counts (48 files / 535 unit, 1 file / 4 integration, 539 total); preserved unchanged.
 - VICT-STAGE-04-INDEPENDENT-CLOSURE-AUDIT.md — independent closure audit verifying the final remediation in a fresh clone with new adversarial probes and `77e4dee` negative controls; authoritative Stage 4 disposition **VERIFIED WITH NON-BLOCKING ISSUES — STAGE 05 PERMITTED**, committed as `83c97b4`.
+- STAGE-06B-CONTROL-AND-GOVERNED-EXECUTION.md — accepted Stage 06B control-plane and governed-remote-execution semantics: `vict.agent-stream@1` final schema, ChangeSet/approval state machines, actor trust boundary, HTTP/SSE contracts, tool-bridge execution order, cancellation and reconciliation semantics (implementation record; awaiting independent audit). Maintained under docs/architecture/.
+- VICT-STAGE-06B-REPORT.md — Stage 06B implementer evidence with the verification ladder and observed counts; implementer claim, NOT independently authoritative.
 - STAGE-05-APPLICATION-DELIVERY.md — accepted Stage 05 application-delivery semantics and decisions (§2 schema compatibility, §10 migration model, §13 OPEN-013 decision); updated at formal closure with the final independent-disposition section; maintained under docs/architecture/.
 - VICT-STAGE-05-REPORT.md — Stage 05 implementer evidence with the command ladder and observed counts; historical implementer claim, superseded by the final independent closure audit.
 - VICT-STAGE-05-INDEPENDENT-AUDIT.md — original independent audit that found application-delivery blockers; authoritative historical blocker record at commit `53a8ec1`.
@@ -2592,4 +2623,4 @@ Otherwise it probably belongs in an application, capability pack, adapter, devel
 
 ---
 
-**End of authoritative baseline v0.3.2**
+**End of authoritative baseline v0.3.3**

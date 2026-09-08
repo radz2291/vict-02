@@ -12,9 +12,19 @@
 > non-blocking issues (final Linux closure audit at commit `8a554cb`), and
 > formally closed per `docs/VICT-SYSTEM-REFERENCE.md` v0.3.2; authoritative
 > delivery statuses for the AI/MSTR requirements below are maintained in
-> that reference (§15.3). The amendment body below is preserved as the
-> accepted v0.3.0/v0.3.1 record; Stage 06B and the full Stage 06 exit gate
-> remain open.
+> that reference (§15.3). — Update (2026-09-08, documentation-only): the
+> Stage 06B increment — control plane and governed remote execution — is
+> now implemented and awaiting fresh independent audit per
+> `docs/VICT-SYSTEM-REFERENCE.md` v0.3.3 and
+> `docs/architecture/STAGE-06B-CONTROL-AND-GOVERNED-EXECUTION.md`: the
+> governed tool bridge (§7) enforces the full nine-step authorization
+> order against the pinned Mastra versions; durable approvals, cancellation
+> and restart reconciliation are proven by real child-process SIGKILL
+> fixtures; the final `vict.agent-stream@1` field-level schema is decided
+> (OPEN-015 closed). This is an implementation record — no Stage 06B
+> requirement is Verified; the full Stage 06 exit gate remains open and
+> Stage 07 remains blocked. The amendment body below is preserved as the
+> accepted v0.3.0/v0.3.1 record.
 > **Scope:** the canonical product-agent boundary between VICT and Mastra,
 > the ownership matrix, the tool bridge, agent identity and snapshot
 > semantics, memory/storage/observability separation, data-protection
