@@ -4,6 +4,8 @@ import {
   COMMAND_IDEMPOTENCY_KEY_PATTERN,
   toCanonicalJson,
   VictControlError,
+  VICT_IDEMPOTENCY_FENCE_CONFLICT,
+  commandIdempotencyFenceToken,
   type CommandIdempotencyReceipt,
 } from '@vict/runtime';
 import type { ServerActorContext } from './auth.js';
@@ -411,6 +413,133 @@ function canonicalPlainValue(value: unknown, depth: number): unknown {
   return canonicalPlainPayload(value, depth + 1);
 }
 
+/**
+ * Capture the COMPLETE command request envelope as closed, VICT-owned
+ * plain data BEFORE any individual field is read:
+ *
+ * - only OWN, ENUMERABLE, STRING-KEYED data properties cross the
+ *   boundary — accessors (getters/setters), inherited members,
+ *   non-enumerable fields, and symbol keys are rejected (getters are
+ *   NEVER invoked — reading `request.command` off a hostile object before
+ *   validation would execute caller code);
+ * - exotic prototypes (class instances, hostile proxies over them) are
+ *   rejected; enumeration and descriptor reads that THROW (hostile
+ *   proxies, revoked Proxies, traps) fail with the stable structured
+ *   error instead of a raw exception;
+ * - the top-level field set is CLOSED: exactly `command`, `payload` and
+ *   `idempotencyKey` as declared by `vict.command@1` — unknown fields
+ *   fail;
+ * - `payload` is captured recursively as plain data (same discipline)
+ *   and the captured VICT-owned request is the ONLY thing used for
+ *   authorization, digesting, and execution.
+ */
+const VICT_COMMAND_ENVELOPE_FIELDS = ['command', 'payload', 'idempotencyKey'] as const;
+
+function captureCommandEnvelope(raw: unknown): {
+  command: unknown;
+  payload: unknown;
+  idempotencyKey: unknown;
+} {
+  // `command` and `payload` are always required; `idempotencyKey` is
+  // conditionally required (state-changing commands enforce it below).
+  const capture = captureClosedRecord(raw, 'command request', VICT_COMMAND_ENVELOPE_FIELDS, [
+    'command',
+    'payload',
+  ]);
+  return {
+    command: capture.command,
+    payload: capture.payload,
+    idempotencyKey: capture.idempotencyKey,
+  };
+}
+
+/**
+ * Capture one closed plain-data record (the shared structural discipline
+ * for the direct dispatcher and HTTP boundaries).
+ */
+function captureClosedRecord(
+  raw: unknown,
+  field: string,
+  allowed: readonly string[],
+  required: readonly string[] = allowed,
+): Record<string, unknown> {
+  if (typeof raw !== 'object' || raw === null || Array.isArray(raw)) {
+    throw new VictControlError(
+      'VICT_COMMAND_REQUEST_INVALID',
+      `The ${field} must be a plain object with the closed vict.command@1 field set.`,
+    );
+  }
+  let prototype: object | null;
+  try {
+    prototype = Object.getPrototypeOf(raw);
+  } catch {
+    throw new VictControlError(
+      'VICT_COMMAND_REQUEST_INVALID',
+      `The ${field} could not be inspected; hostile containers are rejected.`,
+    );
+  }
+  if (prototype !== Object.prototype && prototype !== null) {
+    throw new VictControlError(
+      'VICT_COMMAND_REQUEST_INVALID',
+      `The ${field} must be a plain data record; exotic prototypes are rejected.`,
+    );
+  }
+  let ownKeys: PropertyKey[];
+  try {
+    ownKeys = Reflect.ownKeys(raw);
+  } catch {
+    throw new VictControlError(
+      'VICT_COMMAND_REQUEST_INVALID',
+      `The ${field} could not be enumerated; hostile containers are rejected.`,
+    );
+  }
+  const capture: Record<string, unknown> = {};
+  for (const key of ownKeys) {
+    if (typeof key !== 'string') {
+      throw new VictControlError(
+        'VICT_COMMAND_REQUEST_INVALID',
+        `The ${field} declares a symbol key; only plain data properties are accepted.`,
+      );
+    }
+    if (!allowed.includes(key)) {
+      throw new VictControlError(
+        'VICT_COMMAND_REQUEST_INVALID',
+        `The ${field} declares a field outside the closed vict.command@1 envelope.`,
+      );
+    }
+    let descriptor: PropertyDescriptor | undefined;
+    try {
+      descriptor = Object.getOwnPropertyDescriptor(raw, key);
+    } catch {
+      throw new VictControlError(
+        'VICT_COMMAND_REQUEST_INVALID',
+        `The ${field} could not be inspected; hostile containers are rejected.`,
+      );
+    }
+    if (
+      descriptor === undefined ||
+      descriptor.get !== undefined ||
+      descriptor.set !== undefined ||
+      descriptor.enumerable !== true
+    ) {
+      throw new VictControlError(
+        'VICT_COMMAND_REQUEST_INVALID',
+        `The ${field} declares an accessor, inherited, or non-enumerable member; only own enumerable data properties are accepted.`,
+      );
+    }
+    capture[key] = descriptor.value;
+  }
+  for (const member of required) {
+    if (!(member in capture)) {
+      throw new VictControlError(
+        'VICT_COMMAND_REQUEST_INVALID',
+        `The ${field} is missing a required member of the closed envelope.`,
+      );
+    }
+  }
+  return capture;
+}
+
 /** Deterministic owner token for this service instance (lease holder). */
 let serviceInstanceCounter = 0;
 
@@ -437,16 +566,42 @@ export class VictCommandService {
     actor: ServerActorContext,
     request: VictCommandRequest,
   ): Promise<VictCommandOutcome> {
-    const command = request.command;
-    if (!(VICT_COMMANDS as readonly string[]).includes(command)) {
+    // ---- Closed envelope capture (BEFORE any field read) ----------------
+    // The COMPLETE request envelope is validated and captured as VICT-owned
+    // plain data first: a throwing getter on `command` (or any other
+    // member) never executes; unknown top-level fields never enter. The
+    // captured request is the ONLY thing used below (authorization,
+    // digesting, execution) — the caller's object is never retained.
+    let captured: {
+      command: unknown;
+      payload: unknown;
+      idempotencyKey: unknown;
+    };
+    try {
+      captured = captureCommandEnvelope(request);
+    } catch (error) {
+      if (error instanceof VictControlError) {
+        throw error;
+      }
+      throw new VictControlError(
+        'VICT_COMMAND_REQUEST_INVALID',
+        'The command request could not be captured; hostile containers are rejected.',
+      );
+    }
+    const commandName = captured.command;
+    if (
+      typeof commandName !== 'string' ||
+      !(VICT_COMMANDS as readonly string[]).includes(commandName)
+    ) {
       return { ok: false, code: 'VICT_COMMAND_UNKNOWN' };
     }
+    const command = commandName as VictCommandName;
     // ---- Canonical plain payload (ONE form for digest AND execution) ----
     // Hostile direct callers (getters, proxies, enumeration traps) fail
     // with the stable structured error, never a raw exception.
     let payload: Record<string, unknown>;
     try {
-      payload = canonicalPlainPayload(request.payload);
+      payload = canonicalPlainPayload(captured.payload);
     } catch (error) {
       if (error instanceof VictControlError) {
         throw error;
@@ -465,9 +620,9 @@ export class VictCommandService {
     }
     // ---- Durable idempotency policy for state-changing commands ---------
     if (spec.mutation) {
-      return this.#dispatchIdempotent(actor, command, payload, request.idempotencyKey);
+      return this.#dispatchIdempotent(actor, command, payload, captured.idempotencyKey);
     }
-    return this.#execute(actor, command, payload, request.idempotencyKey);
+    return this.#execute(actor, command, payload, captured.idempotencyKey);
   }
 
   /** Validate the payload against the command's closed field set. */
@@ -511,6 +666,11 @@ export class VictCommandService {
     const store = this.#options.stores.commandIdempotency;
     const now = this.#options.clock ?? (() => Date.now());
     const namespace = { actorId: actor.actorId, command, idempotencyKey };
+    // The settlement fence token of the claim generation THIS execution
+    // owns: completion, deterministic failure, and release all present
+    // exactly this token. A stale owner's settlement fails with a stable
+    // conflict and never mutates the current claim.
+    let fenceToken: string | undefined;
     const existing = await store.getReceipt(namespace);
     if (existing !== undefined) {
       // The receipt binds actor + command kind + request digest.
@@ -532,10 +692,12 @@ export class VictCommandService {
           leaseUntil: now() + this.#leaseMs,
           at: now(),
         });
-        if (takeover === 'not-expired') {
+        if (takeover.outcome === 'not-expired') {
           return { ok: false, code: 'VICT_COMMAND_IDEMPOTENCY_IN_PROGRESS' };
         }
-        // `taken`: fall through to fenced re-execution as the new owner.
+        // `taken`: fall through to fenced re-execution as the new owner
+        // (with the takeover's NEW settlement fence token).
+        fenceToken = takeover.outcome === 'taken' ? takeover.fenceToken : undefined;
       } else if (existing.status === 'failed') {
         return { ok: false, code: existing.responseCode ?? 'VICT_COMMAND_FAILED' };
       } else {
@@ -549,6 +711,13 @@ export class VictCommandService {
       if (reused !== undefined && reused.command !== command) {
         return { ok: false, code: 'VICT_COMMAND_IDEMPOTENCY_CONFLICT' };
       }
+      const claimFenceToken = commandIdempotencyFenceToken({
+        actorId: actor.actorId,
+        command,
+        idempotencyKey,
+        owner: this.#owner,
+        attempts: 1,
+      });
       const claim = await store.claimReceipt({
         idempotencyKey,
         actorId: actor.actorId,
@@ -562,6 +731,7 @@ export class VictCommandService {
         owner: this.#owner,
         leaseUntil: now() + this.#leaseMs,
         attempts: 1,
+        fenceToken: claimFenceToken,
       });
       if (claim === 'exists') {
         // Lost the concurrent race: re-read for the truthful disposition.
@@ -582,6 +752,16 @@ export class VictCommandService {
         }
         return { ok: false, code: 'VICT_COMMAND_IDEMPOTENCY_IN_PROGRESS' };
       }
+      // The fresh claim's settlement fence token.
+      fenceToken = claimFenceToken;
+    }
+    if (fenceToken === undefined) {
+      // Unreachable: every path that reaches execution owns a claim
+      // generation. Fail closed rather than settle unfenced.
+      throw new VictControlError(
+        'VICT_IDEMPOTENCY_FENCE_CONFLICT',
+        'No settlement fence token was allocated for this command execution.',
+      );
     }
     try {
       const outcome = await this.#execute(actor, command, payload, idempotencyKey);
@@ -592,6 +772,7 @@ export class VictCommandService {
           idempotencyKey,
           resultJson: JSON.stringify(safeResultProjection(command, outcome.data)),
           at: now(),
+          fenceToken,
         });
       } else {
         await store.failReceipt({
@@ -600,28 +781,37 @@ export class VictCommandService {
           idempotencyKey,
           responseCode: outcome.code,
           at: now(),
+          fenceToken,
         });
       }
       return outcome;
     } catch (error) {
       if (error instanceof VictControlError) {
-        // Deterministic command failure: durable, stable, replayed.
-        await store
-          .failReceipt({
-            actorId: actor.actorId,
-            command,
-            idempotencyKey,
-            responseCode: error.code,
-            at: now(),
-          })
-          .catch(() => undefined);
+        // Deterministic command failure: durable, stable, replayed. A
+        // fence conflict (a stale owner racing a takeover) is NEVER
+        // recorded as this command's disposition — the record belongs to
+        // the current claim owner.
+        if (error.code !== VICT_IDEMPOTENCY_FENCE_CONFLICT) {
+          await store
+            .failReceipt({
+              actorId: actor.actorId,
+              command,
+              idempotencyKey,
+              responseCode: error.code,
+              at: now(),
+              fenceToken,
+            })
+            .catch(() => undefined);
+        }
         throw error;
       }
       // RETRYABLE infrastructure failure: release the claim so a retry can
       // re-execute truthfully — never permanently confused with a
-      // deterministic command failure.
+      // deterministic command failure. A fence conflict here means the
+      // claim changed owners mid-flight; the release is skipped (never
+      // touches the current owner's live claim).
       await store
-        .releaseReceipt({ actorId: actor.actorId, command, idempotencyKey, at: now() })
+        .releaseReceipt({ actorId: actor.actorId, command, idempotencyKey, at: now(), fenceToken })
         .catch(() => undefined);
       throw error;
     }
