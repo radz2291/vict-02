@@ -484,6 +484,134 @@ export const SCHEMA_MIGRATIONS: readonly Migration[] = [
       );`,
     ],
   },
+  {
+    version: 6,
+    name: 'control-plane-corrective',
+    statements: [
+      // Preserve the approval child rows before the parent rebuild (the
+      // child REFERENCES vict_changeset, so the parent cannot be dropped
+      // while child rows exist under PRAGMA foreign_keys = ON).
+      `CREATE TABLE vict_changeset_approval_preserved AS
+      SELECT approval_id, changeset_id, content_hash, approver_actor_id, decision, decided_at
+      FROM vict_changeset_approval;`,
+      `DROP TABLE vict_changeset_approval;`,
+      // The ChangeSet status vocabulary gains the DURABLE, non-final
+      // `applying` state (commit saga). SQLite CHECK constraints cannot be
+      // altered in place, so the table is rebuilt under a transaction with
+      // every row preserved byte-identically.
+      `CREATE TABLE vict_changeset_new (
+        changeset_id TEXT PRIMARY KEY,
+        schema TEXT NOT NULL,
+        author_actor_id TEXT NOT NULL,
+        created_at TEXT NOT NULL,
+        base_json TEXT NOT NULL,
+        operations_json TEXT NOT NULL,
+        rationale TEXT NOT NULL,
+        risk_class TEXT NOT NULL CHECK (risk_class IN ('low', 'medium', 'high')),
+        required_approver_count INTEGER NOT NULL,
+        expires_at TEXT NOT NULL,
+        validation_json TEXT,
+        simulation_json TEXT,
+        content_hash TEXT NOT NULL,
+        status TEXT NOT NULL CHECK (status IN ('draft', 'approved', 'applying', 'committed', 'declined', 'expired'))
+      );`,
+      `INSERT INTO vict_changeset_new
+        (changeset_id, schema, author_actor_id, created_at, base_json, operations_json,
+         rationale, risk_class, required_approver_count, expires_at, validation_json,
+         simulation_json, content_hash, status)
+      SELECT changeset_id, schema, author_actor_id, created_at, base_json, operations_json,
+         rationale, risk_class, required_approver_count, expires_at, validation_json,
+         simulation_json, content_hash, status
+      FROM vict_changeset;`,
+      `DROP TABLE vict_changeset;`,
+      `ALTER TABLE vict_changeset_new RENAME TO vict_changeset;`,
+      `CREATE INDEX idx_vict_changeset_status ON vict_changeset (status);`,
+      // Recreate the approval child table and restore its rows exactly.
+      `CREATE TABLE vict_changeset_approval (
+        approval_id TEXT PRIMARY KEY,
+        changeset_id TEXT NOT NULL REFERENCES vict_changeset(changeset_id),
+        content_hash TEXT NOT NULL,
+        approver_actor_id TEXT NOT NULL,
+        decision TEXT NOT NULL CHECK (decision IN ('approved', 'declined')),
+        decided_at TEXT NOT NULL,
+        UNIQUE (changeset_id, approver_actor_id)
+      );`,
+      `INSERT INTO vict_changeset_approval
+        (approval_id, changeset_id, content_hash, approver_actor_id, decision, decided_at)
+      SELECT approval_id, changeset_id, content_hash, approver_actor_id, decision, decided_at
+      FROM vict_changeset_approval_preserved;`,
+      `DROP TABLE vict_changeset_approval_preserved;`,
+      // The tool-invocation status vocabulary gains the truthful terminal
+      // `outcome_unknown` state; same rebuild discipline.
+      `CREATE TABLE vict_agent_tool_invocation_new (
+        invocation_id TEXT PRIMARY KEY,
+        turn_id TEXT NOT NULL REFERENCES vict_agent_turn(turn_id),
+        tool_call_id TEXT NOT NULL,
+        tool_name TEXT NOT NULL,
+        capability_id TEXT NOT NULL,
+        capability_revision TEXT NOT NULL,
+        effect TEXT NOT NULL CHECK (effect IN ('pure', 'read', 'write', 'irreversible')),
+        idempotency_key TEXT NOT NULL UNIQUE,
+        actor_id TEXT NOT NULL,
+        arg_digest TEXT NOT NULL,
+        argument_summary TEXT NOT NULL,
+        status TEXT NOT NULL CHECK (status IN ('intent', 'approved', 'running', 'completed', 'failed', 'declined', 'cancelled', 'outcome_unknown')),
+        created_at TEXT NOT NULL,
+        updated_at TEXT NOT NULL,
+        completed_at TEXT,
+        result_summary TEXT,
+        error_code TEXT
+      );`,
+      `INSERT INTO vict_agent_tool_invocation_new
+        (invocation_id, turn_id, tool_call_id, tool_name, capability_id, capability_revision,
+         effect, idempotency_key, actor_id, arg_digest, argument_summary, status,
+         created_at, updated_at, completed_at, result_summary, error_code)
+      SELECT invocation_id, turn_id, tool_call_id, tool_name, capability_id, capability_revision,
+         effect, idempotency_key, actor_id, arg_digest, argument_summary, status,
+         created_at, updated_at, completed_at, result_summary, error_code
+      FROM vict_agent_tool_invocation;`,
+      `DROP TABLE vict_agent_tool_invocation;`,
+      `ALTER TABLE vict_agent_tool_invocation_new RENAME TO vict_agent_tool_invocation;`,
+      `CREATE INDEX idx_vict_invocation_turn ON vict_agent_tool_invocation (turn_id);`,
+      // Authoritative governance runs (trusted executed VICT boundary).
+      `CREATE TABLE vict_control_run (
+        run_id TEXT PRIMARY KEY,
+        kind TEXT NOT NULL CHECK (kind IN ('validation', 'simulation')),
+        changeset_id TEXT NOT NULL,
+        content_hash TEXT NOT NULL,
+        base_json TEXT NOT NULL,
+        operations_json TEXT NOT NULL,
+        runner_profile TEXT NOT NULL,
+        actor_id TEXT NOT NULL,
+        outcome TEXT NOT NULL CHECK (outcome IN ('passed', 'failed', 'blocked')),
+        created_at TEXT NOT NULL
+      );`,
+      `CREATE INDEX idx_vict_control_run_subject ON vict_control_run (changeset_id, kind);`,
+      // Durable saga receipts for applied ChangeSet operations.
+      `CREATE TABLE vict_changeset_operation_receipt (
+        changeset_id TEXT NOT NULL,
+        operation_index INTEGER NOT NULL,
+        operation_kind TEXT NOT NULL,
+        operation_digest TEXT NOT NULL,
+        effect_ref TEXT NOT NULL,
+        actor_id TEXT NOT NULL,
+        applied_at TEXT NOT NULL,
+        PRIMARY KEY (changeset_id, operation_index)
+      );`,
+      // Durable command idempotency receipts (one winner per key).
+      `CREATE TABLE vict_command_idempotency (
+        idempotency_key TEXT PRIMARY KEY,
+        actor_id TEXT NOT NULL,
+        command TEXT NOT NULL,
+        request_digest TEXT NOT NULL,
+        status TEXT NOT NULL CHECK (status IN ('pending', 'completed', 'failed')),
+        response_code TEXT,
+        result_json TEXT,
+        created_at TEXT NOT NULL,
+        settled_at TEXT
+      );`,
+    ],
+  },
 ];
 
 /** The highest schema version this adapter understands. */

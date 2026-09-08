@@ -20,9 +20,14 @@ import {
   type AgentTurnStore,
   type ApplicationReleaseRecord,
   type ChangeSetApprovalDecision,
+  type ChangeSetOperationReceipt,
   type ChangeSetRecord,
+  type ChangeSetStatus,
+  type CommandIdempotencyReceipt,
+  type CommandIdempotencyStore,
   type ControlAuditEvent,
   type ControlPlaneStore,
+  type ControlRunRecord,
   type ReleaseSelectionRecord,
 } from '@vict/runtime';
 import { inTransaction, openDatabase, safeRun, type OpenDatabase } from './driver.js';
@@ -99,6 +104,82 @@ function rowToChangeSet(row: ChangeSetRow): ChangeSetRecord {
         : (JSON.parse(row.simulation_json) as ChangeSetRecord['simulation']),
     contentHash: row.content_hash,
     status: row.status as ChangeSetRecord['status'],
+  };
+}
+
+interface ControlRunRow {
+  run_id: string;
+  kind: string;
+  changeset_id: string;
+  content_hash: string;
+  base_json: string;
+  operations_json: string;
+  runner_profile: string;
+  actor_id: string;
+  outcome: string;
+  created_at: string;
+}
+
+function rowToControlRun(row: ControlRunRow): ControlRunRecord {
+  return {
+    runId: row.run_id,
+    kind: row.kind as ControlRunRecord['kind'],
+    changesetId: row.changeset_id,
+    contentHash: row.content_hash,
+    base: JSON.parse(row.base_json) as ControlRunRecord['base'],
+    operations: JSON.parse(row.operations_json) as ControlRunRecord['operations'],
+    runnerProfile: row.runner_profile,
+    actorId: row.actor_id,
+    outcome: row.outcome as ControlRunRecord['outcome'],
+    createdAt: fromIso(row.created_at),
+  };
+}
+
+interface OperationReceiptRow {
+  changeset_id: string;
+  operation_index: number;
+  operation_kind: string;
+  operation_digest: string;
+  effect_ref: string;
+  actor_id: string;
+  applied_at: string;
+}
+
+function rowToOperationReceipt(row: OperationReceiptRow): ChangeSetOperationReceipt {
+  return {
+    changesetId: row.changeset_id,
+    operationIndex: row.operation_index,
+    operationKind: row.operation_kind as ChangeSetOperationReceipt['operationKind'],
+    operationDigest: row.operation_digest,
+    effectRef: row.effect_ref,
+    actorId: row.actor_id,
+    appliedAt: fromIso(row.applied_at),
+  };
+}
+
+interface IdempotencyRow {
+  idempotency_key: string;
+  actor_id: string;
+  command: string;
+  request_digest: string;
+  status: string;
+  response_code: string | null;
+  result_json: string | null;
+  created_at: string;
+  settled_at: string | null;
+}
+
+function rowToIdempotencyReceipt(row: IdempotencyRow): CommandIdempotencyReceipt {
+  return {
+    idempotencyKey: row.idempotency_key,
+    actorId: row.actor_id,
+    command: row.command,
+    requestDigest: row.request_digest,
+    status: row.status as CommandIdempotencyReceipt['status'],
+    responseCode: row.response_code ?? undefined,
+    resultJson: row.result_json ?? undefined,
+    createdAt: fromIso(row.created_at),
+    settledAt: optionalIso(row.settled_at),
   };
 }
 
@@ -364,6 +445,149 @@ export function createSqliteAgentControlStores(
           .prepare('SELECT * FROM vict_changeset ORDER BY changeset_id ASC;')
           .all() as unknown as ChangeSetRow[];
         return rows.map((row) => rowToChangeSet(row));
+      });
+    },
+
+    async compareAndSetChangeSetStatus(input: {
+      changesetId: string;
+      expectedStatus: ChangeSetStatus;
+      nextStatus: ChangeSetStatus;
+    }): Promise<ChangeSetRecord> {
+      return safeRun('control.compareAndSetChangeSetStatus', () =>
+        inTransaction(db, () => {
+          const row = db
+            .prepare('SELECT * FROM vict_changeset WHERE changeset_id = ?;')
+            .get(input.changesetId) as ChangeSetRow | undefined;
+          if (row === undefined) {
+            throw new VictControlError(
+              'VICT_CONTROL_CHANGESET_MISSING',
+              'The ChangeSet does not exist.',
+            );
+          }
+          if (row.status !== input.expectedStatus) {
+            throw new VictControlError(
+              'VICT_CONTROL_CHANGESET_STATUS_CONFLICT',
+              'The ChangeSet is not in the expected status; one concurrent transition already won.',
+            );
+          }
+          db.prepare(
+            'UPDATE vict_changeset SET status = ? WHERE changeset_id = ? AND status = ?;',
+          ).run(input.nextStatus, input.changesetId, input.expectedStatus);
+          const refreshed = db
+            .prepare('SELECT * FROM vict_changeset WHERE changeset_id = ?;')
+            .get(input.changesetId) as unknown as ChangeSetRow;
+          return rowToChangeSet(refreshed);
+        }),
+      );
+    },
+
+    async recordControlRun(record: ControlRunRecord): Promise<void> {
+      safeRun('control.recordControlRun', () =>
+        inTransaction(db, () => {
+          const existing = db
+            .prepare('SELECT * FROM vict_control_run WHERE run_id = ?;')
+            .get(record.runId) as ControlRunRow | undefined;
+          if (existing !== undefined) {
+            const same =
+              existing.kind === record.kind &&
+              existing.changeset_id === record.changesetId &&
+              existing.content_hash === record.contentHash &&
+              existing.operations_json === JSON.stringify(record.operations) &&
+              existing.runner_profile === record.runnerProfile &&
+              existing.actor_id === record.actorId &&
+              existing.outcome === record.outcome &&
+              existing.base_json === JSON.stringify(record.base) &&
+              fromIso(existing.created_at) === record.createdAt;
+            if (!same) {
+              throw new VictControlError(
+                'VICT_CONTROL_RUN_COLLISION',
+                'A governance run with this id already exists with different content.',
+              );
+            }
+            return;
+          }
+          db.prepare(
+            `INSERT INTO vict_control_run
+              (run_id, kind, changeset_id, content_hash, base_json, operations_json,
+               runner_profile, actor_id, outcome, created_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`,
+          ).run(
+            record.runId,
+            record.kind,
+            record.changesetId,
+            record.contentHash,
+            JSON.stringify(record.base),
+            JSON.stringify(record.operations),
+            record.runnerProfile,
+            record.actorId,
+            record.outcome,
+            toIso(record.createdAt),
+          );
+        }),
+      );
+    },
+
+    async getControlRun(runId: string): Promise<ControlRunRecord | undefined> {
+      return safeRun('control.getControlRun', () => {
+        const row = db.prepare('SELECT * FROM vict_control_run WHERE run_id = ?;').get(runId) as
+          ControlRunRow | undefined;
+        if (row === undefined) {
+          return undefined;
+        }
+        return rowToControlRun(row);
+      });
+    },
+
+    async recordOperationReceipt(receipt: ChangeSetOperationReceipt): Promise<void> {
+      safeRun('control.recordOperationReceipt', () =>
+        inTransaction(db, () => {
+          const existing = db
+            .prepare(
+              'SELECT * FROM vict_changeset_operation_receipt WHERE changeset_id = ? AND operation_index = ?;',
+            )
+            .get(receipt.changesetId, receipt.operationIndex) as OperationReceiptRow | undefined;
+          if (existing !== undefined) {
+            const same =
+              existing.operation_kind === receipt.operationKind &&
+              existing.operation_digest === receipt.operationDigest &&
+              existing.effect_ref === receipt.effectRef &&
+              existing.actor_id === receipt.actorId &&
+              fromIso(existing.applied_at) === receipt.appliedAt;
+            if (!same) {
+              throw new VictControlError(
+                'VICT_CONTROL_OPERATION_RECEIPT_COLLISION',
+                'An operation receipt already exists with different content.',
+              );
+            }
+            return; // idempotent re-record
+          }
+          db.prepare(
+            `INSERT INTO vict_changeset_operation_receipt
+              (changeset_id, operation_index, operation_kind, operation_digest, effect_ref, actor_id, applied_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?);`,
+          ).run(
+            receipt.changesetId,
+            receipt.operationIndex,
+            receipt.operationKind,
+            receipt.operationDigest,
+            receipt.effectRef,
+            receipt.actorId,
+            toIso(receipt.appliedAt),
+          );
+        }),
+      );
+    },
+
+    async listOperationReceipts(
+      changesetId: string,
+    ): Promise<readonly ChangeSetOperationReceipt[]> {
+      return safeRun('control.listOperationReceipts', () => {
+        const rows = db
+          .prepare(
+            'SELECT * FROM vict_changeset_operation_receipt WHERE changeset_id = ? ORDER BY operation_index ASC;',
+          )
+          .all(changesetId) as unknown as OperationReceiptRow[];
+        return rows.map((row) => rowToOperationReceipt(row));
       });
     },
 
@@ -1473,6 +1697,99 @@ export function createSqliteAgentControlStores(
     },
   };
 
+  const commandIdempotency: CommandIdempotencyStore = {
+    async claimReceipt(record: CommandIdempotencyReceipt): Promise<'claimed' | 'exists'> {
+      return safeRun('idempotency.claim', () =>
+        inTransaction(db, () => {
+          const existing = db
+            .prepare('SELECT * FROM vict_command_idempotency WHERE idempotency_key = ?;')
+            .get(record.idempotencyKey) as IdempotencyRow | undefined;
+          if (existing !== undefined) {
+            return 'exists' as const;
+          }
+          db.prepare(
+            `INSERT INTO vict_command_idempotency
+              (idempotency_key, actor_id, command, request_digest, status, response_code, result_json, created_at, settled_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);`,
+          ).run(
+            record.idempotencyKey,
+            record.actorId,
+            record.command,
+            record.requestDigest,
+            record.status,
+            record.responseCode ?? null,
+            record.resultJson ?? null,
+            toIso(record.createdAt),
+            record.settledAt === undefined ? null : toIso(record.settledAt),
+          );
+          return 'claimed' as const;
+        }),
+      );
+    },
+
+    async getReceipt(idempotencyKey: string): Promise<CommandIdempotencyReceipt | undefined> {
+      return safeRun('idempotency.get', () => {
+        const row = db
+          .prepare('SELECT * FROM vict_command_idempotency WHERE idempotency_key = ?;')
+          .get(idempotencyKey) as IdempotencyRow | undefined;
+        if (row === undefined) {
+          return undefined;
+        }
+        return rowToIdempotencyReceipt(row);
+      });
+    },
+
+    async completeReceipt(input: {
+      idempotencyKey: string;
+      resultJson: string;
+      at: number;
+    }): Promise<void> {
+      safeRun('idempotency.complete', () =>
+        inTransaction(db, () => {
+          const row = db
+            .prepare('SELECT * FROM vict_command_idempotency WHERE idempotency_key = ?;')
+            .get(input.idempotencyKey) as IdempotencyRow | undefined;
+          if (row === undefined) {
+            throw new VictControlError(
+              'VICT_IDEMPOTENCY_RECEIPT_MISSING',
+              'No idempotency receipt exists for this key.',
+            );
+          }
+          if (row.status === 'pending') {
+            db.prepare(
+              'UPDATE vict_command_idempotency SET status = ?, result_json = ?, settled_at = ? WHERE idempotency_key = ?;',
+            ).run('completed', input.resultJson, toIso(input.at), input.idempotencyKey);
+          }
+        }),
+      );
+    },
+
+    async failReceipt(input: {
+      idempotencyKey: string;
+      responseCode: string;
+      at: number;
+    }): Promise<void> {
+      safeRun('idempotency.fail', () =>
+        inTransaction(db, () => {
+          const row = db
+            .prepare('SELECT * FROM vict_command_idempotency WHERE idempotency_key = ?;')
+            .get(input.idempotencyKey) as IdempotencyRow | undefined;
+          if (row === undefined) {
+            throw new VictControlError(
+              'VICT_IDEMPOTENCY_RECEIPT_MISSING',
+              'No idempotency receipt exists for this key.',
+            );
+          }
+          if (row.status === 'pending') {
+            db.prepare(
+              'UPDATE vict_command_idempotency SET status = ?, response_code = ?, settled_at = ? WHERE idempotency_key = ?;',
+            ).run('failed', input.responseCode, toIso(input.at), input.idempotencyKey);
+          }
+        }),
+      );
+    },
+  };
+
   return {
     actors,
     control,
@@ -1480,6 +1797,7 @@ export function createSqliteAgentControlStores(
     invocations,
     approvals,
     streamLedger,
+    commandIdempotency,
     close(): void {
       handle.close();
     },
