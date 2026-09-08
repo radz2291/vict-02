@@ -56,6 +56,12 @@ export function composeMastraTurnExecutor(deps: MastraTurnExecutorDeps): MastraT
 
   const capabilityTools = buildCapabilityTools(deps.activation, {
     ...deps.capabilityBridge,
+    // Durable turn-execution tool slot: the stable tool-call identity
+    // source when the framework supplies no valid toolCallId (allocated
+    // BEFORE the invocation and reused after restart — never row counts,
+    // clocks, or process counters).
+    allocateTurnToolSlot: async (input: { turnId: string; toolName: string; argDigest: string }) =>
+      deps.stores.invocations.allocateTurnToolSlot(input),
     // The durable awaiting-approval milestone is AWAITED: it is part of the
     // governed durable ordering and never fire-and-forget. A persistence
     // failure fails the tool closed BEFORE any effect exists (the approval
@@ -63,10 +69,6 @@ export function composeMastraTurnExecutor(deps: MastraTurnExecutorDeps): MastraT
     emitAwaitingApproval: async (event: AgentStreamEvent) => {
       await emit(event);
     },
-    // Durable ordinal of the turn's recorded invocations — the deterministic
-    // tool-call identity fallback input (turn context + ordinal, no clocks).
-    getTurnInvocationOrdinal: async (turnId: string) =>
-      (await deps.stores.invocations.listInvocationsForTurn(turnId)).length,
   });
 
   const productAgent = MastraProductAgent.create(deps.activation, {

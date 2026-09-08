@@ -213,8 +213,7 @@ async function compose(script: OfflineScript): Promise<Composition> {
         turnServiceRef.current?.recordToolInvocationIntent(
           input,
         ) as Promise<AgentToolInvocationRecord>,
-      getTurnInvocationOrdinal: async (turnId) =>
-        stores.invocations.listInvocationsForTurn(turnId).then((rows) => rows.length),
+      allocateTurnToolSlot: async (input) => stores.invocations.allocateTurnToolSlot(input),
       requestApproval: (input) =>
         turnServiceRef.current?.requestApproval(input) as Promise<AgentApprovalRecord>,
       consumeApproval: (binding) =>

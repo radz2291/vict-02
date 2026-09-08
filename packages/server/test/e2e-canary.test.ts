@@ -329,8 +329,10 @@ async function fixture(): Promise<number> {
         turnServiceRef.current?.recordToolInvocationIntent(
           input,
         ) as Promise<AgentToolInvocationRecord>,
-      getTurnInvocationOrdinal: async (turnId) =>
-        (await controlStores?.invocations.listInvocationsForTurn(turnId))?.length ?? 0,
+      allocateTurnToolSlot: async (input) =>
+        controlStores !== undefined
+          ? controlStores.invocations.allocateTurnToolSlot(input)
+          : { toolCallId: 'slot-0-unavailable' },
       requestApproval: (input) =>
         turnServiceRef.current?.requestApproval(input) as Promise<AgentApprovalRecord>,
       consumeApproval: (binding) =>
@@ -458,8 +460,11 @@ describe('end-to-end canary: HTTP turn → offline model → governed bridge →
       const frames = await sse.text();
       // The live text deltas are the INTENTIONAL user-visible surface.
       expect(frames).toContain('text.delta');
-      // The tool failure crosses ONLY as its stable sanitized code.
-      expect(frames).toContain('VICT_CAPABILITY_INVOCATION_FAILED');
+      // The tool failure crosses ONLY as its stable sanitized code (the
+      // capability threw after possibly performing its effect: the
+      // truthful, fenced outcome_unknown code is disclosed).
+      expect(frames).toContain('VICT_CAPABILITY_OUTCOME_UNKNOWN');
+      expect(frames).not.toContain('VICT_CAPABILITY_INVOCATION_FAILED');
       // The completed-content milestone carries a REFERENCE, not the text.
       expect(frames).toContain('content.completed');
       expect(frames).toContain('conversation:vict-actor-actor-user/');
@@ -523,8 +528,10 @@ describe('end-to-end canary: HTTP turn → offline model → governed bridge →
       // ---- 8. Durable operational records: identities and digests only ----
       const invocations = await controlStores!.invocations.listInvocationsForTurn(turnId);
       expect(invocations.length).toBe(1);
-      expect(invocations[0]?.status).toBe('failed');
-      expect(invocations[0]?.errorCode).toBe('VICT_CAPABILITY_INVOCATION_FAILED');
+      // The capability threw (its effect is unverifiable): the truthful
+      // durable disposition is the fenced, non-replayable outcome_unknown.
+      expect(invocations[0]?.status).toBe('outcome_unknown');
+      expect(invocations[0]?.errorCode).toBe('VICT_CAPABILITY_OUTCOME_UNKNOWN');
       expect(invocations[0]?.argumentSummary).not.toContain(ARG_VALUE_CANARY);
       expect(invocations[0]?.argumentSummary).not.toContain(ARG_KEY_CANARY);
       const turnRecord = await controlStores!.turns.getTurn(turnId);

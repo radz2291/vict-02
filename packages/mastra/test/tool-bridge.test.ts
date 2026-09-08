@@ -160,8 +160,7 @@ async function makeFixture(
       return gatedInvoke(input, context as never) as Promise<unknown>;
     },
     recordInvocationIntent: (input) => turnService.recordToolInvocationIntent(input),
-    getTurnInvocationOrdinal: async (turnId) =>
-      (await stores.invocations.listInvocationsForTurn(turnId)).length,
+    allocateTurnToolSlot: async (input) => await stores.invocations.allocateTurnToolSlot(input),
     requestApproval: (input) => turnService.requestApproval(input),
     consumeApproval: (binding) => turnService.consumeApproval(binding),
     updateInvocationStatus: (command) => stores.invocations.updateInvocationStatus(command),
@@ -342,7 +341,9 @@ describe('governed capability tool bridge', () => {
     const result = (await exec({ text: 'x' })) as Record<string, unknown>;
     expect(result.victCapabilityFailure).toBe('VICT_CAPABILITY_OUTPUT_CONTRACT_REJECTED');
     const invocations = await fixture.stores.invocations.listInvocationsForTurn(SCOPE.turnId);
-    expect(invocations[0]?.status).toBe('failed');
+    // The capability RAN: the truthful disposition is the fenced,
+    // non-replayable outcome_unknown — never an ordinarily retriable failed.
+    expect(invocations[0]?.status).toBe('outcome_unknown');
     expect(invocations[0]?.errorCode).toBe('VICT_CAPABILITY_OUTPUT_CONTRACT_REJECTED');
   });
 
