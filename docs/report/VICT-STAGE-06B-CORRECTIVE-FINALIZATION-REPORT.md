@@ -17,6 +17,10 @@ blocked).
   defect reproduction round found and fixed TWELVE further defect areas
   (P1–P12) that survived the first pass; full probe output preserved at
   `docs/report/evidence/probe-06b-final-defects-at-27cc57d.log`.
+  P10 (tracked executable mode) was REPRODUCED ON LINUX (Node 24): `npm ci`
+  chmods `packages/cli/bin/vict.mjs` `100644 → 100755` and dirties the tree
+  (negative control at `a87a37b`); the fix tracks the mode (`d40f417`) and
+  the tree stays byte-clean through `npm ci → build → verify`.
 
 This report documents the independent reproduction of the Stage 06B defects at
 the starting SHA and the corrections applied on top of the implementer claim.
@@ -75,7 +79,7 @@ correction round:
 | P8a | `isMutationCommand` missed `changeset.execute-check` and `app.data.action`: mutating commands ran without idempotency receipts | One closed command registry (scope + closed fields + mutation classification together); both commands are mutations with receipts; the registry is the single source of truth |
 | P8b | The idempotency receipt stored the FULL command result (the whole ChangeSet response, including the rationale secret) in `result_json` | Safe per-command result PROJECTIONS only (identity fields; never payloads); a replayed result is re-derived from the authoritative domain under the CURRENT actor's authorization; canary scans prove no payload-derived content reaches receipts |
 | P9 | A crash between claim and settlement left a `pending` receipt WITHOUT a lease: every retry answered `IN_PROGRESS` forever — the key was permanently stuck | Durable leases: `pending` receipts carry owner + expiry + attempts; an EXPIRED lease is taken over by a retrying caller (attempt counter incremented); a LIVE lease answers the in-progress conflict; RETRYABLE infrastructure failures RELEASE the claim (never confused with deterministic failures, which settle `failed` and replay) |
-| P10 | (clean-clone executable-mode stability) — covered by the extended `verify:clean-clone` gates: git status + `ls-files -s` mode checks after build and verification | See `verify:clean-clone` (new gates) |
+| P10 | Build/verification altered tracked executable modes on Linux: `npm ci` chmods the workspace bin `packages/cli/bin/vict.mjs` `100644 → 100755` (REPRODUCED on Linux/Node 24 — the tree went dirty after `npm ci`) | The bin is tracked as executable (`100755`), so npm's linking chmod becomes a no-op; `verify:clean-clone` now gates git-status cleanliness AND `ls-files -s` mode stability after build and after verification |
 | P11 | The tool-bridge fallback tool-call identity derived from the CURRENT recorded-intent count, which drifts after a restart (same model call → NEW logical identity) | Documented deterministic identity from DURABLE turn context + durable ordinal (never current time, never a process counter); the framework `toolCallId` is used when the framework provides one; missing/malformed identity never produces a drifting identity |
 | P12a | Hostile payloads with GETTER-THROWING properties escaped the dispatcher as raw exceptions (`TypeError: hostile getter fired`) before any stable code | The dispatcher validates the envelope through the closed canonical plain-data validator FIRST: non-plain payloads (getters/proxies/traps/symbol fields) produce ONE stable, non-echoing rejection for BOTH the digest and the execution — a raw exception can no longer escape |
 | P12b | Unknown top-level body fields were accepted (HTTP 200, `ok: true`) — the envelope was not schema-closed | Full envelope validation: unknown top-level fields, non-object bodies, and malformed content types are rejected with stable codes before any effect |
@@ -163,6 +167,23 @@ persists and returns `operation_id` on release selections.
     before resume; effect EXACTLY once on retry; replayed invocation skipped;
     truthful terminal state (3 child-process fixtures).
 
+SECOND-PASS negative controls (at `27cc57df` / `a87a37b`):
+11. Ledger store-boundary: hostile direct writes (unknown kind, kind/payload
+    mismatch, non-canonical JSON, raw text milestone, malformed identity)
+    rejected by BOTH adapters with NO sequence mutation and NO secret bytes
+    in the SQLite database (probe P7 in the evidence log).
+12. Two concurrent commits on one base: BOTH fulfilled and BOTH selections
+    applied at `27cc57df` (P6); after correction exactly one winner and the
+    loser receives `VICT_CONTROL_RELEASE_BASE_CHANGED` with no effect.
+13. Idempotency: crashed `pending` receipt left the key permanently stuck
+    (P9); after correction an expired lease is taken over, a live lease is
+    protected, retryable failures release.
+14. Mutation classification: `changeset.execute-check`/`app.data.action`
+    unclassified (P8a) and full payloads in receipts (P8b); after correction
+    both classified, projections only.
+15. P10 mode drift: negative control at `a87a37b` (tree dirty after
+    `npm ci`), fixed at `d40f417` (tree clean through the whole ladder).
+
 ## 5. Files changed
 
 Production: root `package.json` + `tsconfig.json`; `@vict/contracts`
@@ -182,24 +203,27 @@ Docs: this report; `docs/architecture/STAGE-06B-CONTROL-AND-GOVERNED-EXECUTION.m
 (corrected behavior; historical reports untouched);
 `docs/VICT-SYSTEM-REFERENCE.md` document index entry only.
 
-## 6. Exact verification evidence (this machine: Windows, Node v22.x)
+## 6. Exact verification evidence
+
+### 6a. Windows dev machine (Node v22.13.1, win32)
 
 | Command | Result |
 | --- | --- |
-| `npm run typecheck` | exit 0 |
+| `npm run typecheck` | exit 0 (before build AND after build) |
+| `npm run format:check` / `npm run lint` | exit 0 / exit 0 (`.pi/` owner-local tooling excluded from lint scoping; the owner file itself is untouched) |
 | `npm run build` | exit 0 (0 TS errors; server/cli/control dist produced) |
-| `npm run test:unit` | exit 0 — 82 files / 1778 tests; 5 consecutive clean runs |
+| `npm run test:unit` | exit 0 — 82 files / 1786 tests (final second-pass state) |
 | `npm run test:integration` | exit 0 — 4 tests |
-| `npm test` (full) | exit 0 — 98 files (97 passed, 1 POSIX-only skipped on Windows), 1969 passed + 3 skipped; 3 consecutive clean runs |
+| `npm test` (full) | exit 0 — 98 files, 1978 passed + 3 skipped (POSIX-only suite skipped on Windows) |
 | `npm run verify:consumer` | exit 0 (isolated packed consumer) |
 | `npm run verify:stage2` … `verify:stage6a` | exit 0 each |
-| `npm run verify:stage6b` | exit 0 — ALL 28 GATES PASSED (after two earlier failing runs were diagnosed and fixed: Windows `spawnSync` of npm shims, and a TEST-side race reading the SIGKILL effects log before worker exit — production code unchanged for the latter) |
-| Stage 06B targeted suites ×5 | exit 0 ×5 — 17 files / 195 tests per run |
+| `npm run verify:stage6b` | exit 0 — ALL GATES PASSED |
+| Stage 06B targeted suites ×5 | exit 0 ×5 — 198 tests per run |
+| Concurrency/restart/fault-injection suites ×3 | exit 0 ×3 |
 | `npm run example` / `bench` / `example:application` | exit 0 / 0 / 0 (13 events; 10 events/run; 13 events) |
 | `npm audit --omit=dev` | exit 0 — found 0 vulnerabilities |
 | `git diff --check` | exit 0 — no whitespace errors |
-| `npm run lint` | exit 1 — ONLY the 2 pre-existing owner-file errors in `.pi/skills/mastra/scripts/provider-registry.mjs` (byte-identical to `7ba8cb8`; owner file untouched by policy) |
-| `npm run format:check` | exit 0 |
+| `npm run verify:clean-clone` | exit 0 — 38 gates (incl. artifact + mode stability) |
 
 One transient failure occurred in one early `test:unit` run (1 failed /
 1777 passed) whose per-test output was not captured; the identical suite then
@@ -208,15 +232,57 @@ cause is the F7 SIGKILL test-side race documented above (reproduced,
 instrumented, root-caused via worker-phase tracing, fixed, and re-verified
 with 12 consecutive clean dedicated runs); no production defect was involved.
 
+## 6b. Linux authoritative run (WSL2 Ubuntu 24.04, x86_64, Node v24.19.0)
+
+The full ladder was executed on a clean clone of the COMMITTED tree (git
+clone of the Windows repository into the Linux filesystem), from `npm ci`
+with zero artifacts, at the final implementation commit:
+
+| Command | Result |
+| --- | --- |
+| `npm ci` | exit 0 |
+| `npm run typecheck` (zero artifacts, before any build) | exit 0 |
+| `npm run format:check` | exit 0 |
+| `npm run lint` | exit 0 |
+| `npm run build` | exit 0 |
+| `npm run typecheck` (after build) | exit 0 |
+| `npm run test:unit` | exit 0 — 82 files / 1786 tests (12+ consecutive clean dedicated runs) |
+| `npm run test:integration` | exit 0 — 4 tests |
+| `npm test` (full, FINAL STATE) | exit 0 — 98 files / 1981 tests (the POSIX permissions suite EXECUTES on Linux; not skipped) |
+| `npm run verify:consumer` | exit 0 |
+| `npm run verify:stage2..stage4, stage6a` | exit 0 each |
+| `npm run verify:stage5` | exit 0 (headless Chrome-for-Testing provisioned via `VICT_BROWSER_PATH`; the first run failed ONLY because no browser was installed in that environment — a documented environment dependency of the reference-app browser scenario) |
+| `npm run verify:stage6b` (final state) | exit 0 — ALL GATES PASSED |
+| Targeted deterministic suites ×1 (final state) | exit 0 — 195 tests |
+| Concurrency/restart/fault-injection suites ×3 (final state) | exit 0 ×3 |
+| `npm run example` / `bench` / `example:application` | exit 0 / 0 / 0 |
+| `npm audit --omit=dev` | exit 0 — found 0 vulnerabilities (two earlier runs failed with `audit endpoint returned an error` — a TRANSIENT WSL network failure reaching the audit endpoint BEFORE any vulnerability evaluation; the subsequent identical run passed) |
+| `git diff --check` | exit 0 |
+| `git status --short` (after the FULL ladder) | EMPTY — no tracked changes, no generated artifacts, no mode drift (P10 fixed) |
+| `npm run verify:clean-clone` (Linux) | exit 0 — 38 gates |
+| `npm test` full ×3 (pre-final intermediate state `a87a37b`) | exit 0, 0, 1 — the third run's single failure was HIGH-3 (orchestration remediation, real-time polling suite) exceeding vitest's 5s default under full-suite worker load; CORRECTED at `3546aba` (explicit 20s harness budget; assertion content unchanged; the same test failed identically at the Windows baseline BEFORE this correction round, and passed 4/4 dedicated Linux runs) |
+
+Diagnostic note (preserved per the no-silent-rerun rule): the ONE
+un-reproduced `test:unit` failure on the very first Linux run (1 failed /
+1785 passed) — its per-test output was lost because the WSL VM restarted
+between sessions and `/tmp` is volatile; the identical suite then passed
+22+ consecutive dedicated Linux runs and every subsequent full-suite run.
+It is recorded as an unreproduced single occurrence, NOT dismissed as
+environmental without evidence; the fresh independent audit should observe
+the suites directly.
+
 ## 7. Fresh-clone and packed-consumer evidence
 
 - `npm run verify:clean-clone` clones the COMMITTED repository state into a
   temp dir, asserts zero artifacts (no `dist`, no `node_modules`), then runs
   `npm ci` → `npm run typecheck` (before any build) → `npm run build` →
-  `npm run verify:stage6b`. At `7ba8cb8` this sequence failed exactly as the
-  F1 probes predicted; on the corrected committed tree (`8d8c46a`) it PASSED
-  in full (exit 0, all gates: clone, zero-artifact, ci, typecheck-before-build,
-  build, verify:stage6b).
+  git-cleanliness checks → `npm run verify:stage6b` → git-cleanliness +
+  executable-mode-stability checks. At `7ba8cb8` this sequence failed exactly
+  as the F1 probes predicted; on the corrected committed tree it PASSED in
+  full on BOTH Windows (Node 22) and Linux (Node 24) — 38 gates, exit 0.
+- P10 negative control on Linux: at `a87a37b` (pre-fix) `npm ci` left the
+  tree DIRTY (packages/cli/bin/vict.mjs, mode 100644 → 100755); at the fix
+  `d40f417` the identical sequence leaves the tree byte-clean.
 - `verify:consumer` proves a packed external consumer resolves the built
   package graph; `verify:stage6b` additionally asserts server/cli/control
   dist artifacts exist after build.
@@ -225,12 +291,15 @@ with 12 consecutive clean dedicated runs); no production defect was involved.
 
 - This is an implementer claim. The fresh independent Stage 06 audit has NOT
   run; the full Stage 06 exit gate is open; Stage 07 remains blocked.
-- The authoritative ladder environment is Linux x86_64 with Node ≥ 22.13
-  (Node 24 preferred where available); this run executed on Windows with
-  Node 22.x. The POSIX-only permissions suite is skipped on Windows by design
-  and must execute on Linux in the independent audit.
-- The two pre-existing owner-file lint errors in `.pi/` are preserved
-  untouched (owner files are outside this stage's scope).
+- The authoritative ladder ran on BOTH Windows (Node 22.13.1) AND Linux
+  x86_64 (WSL2 Ubuntu 24.04, Node v24.19.0), including the POSIX-only
+  permissions suite (executes on Linux only).
+- The stage5 reference-app browser scenario requires a Chrome/Edge
+  executable; in the WSL environment it was provisioned through
+  `VICT_BROWSER_PATH` (Chrome-for-Testing headless shell). This is a
+  documented environment dependency of that example, not a product defect.
+- The `.pi/` owner-local directory is preserved untouched and excluded from
+  lint scoping only (no delivered code, not committed).
 - The deterministic local test authenticator is not a production identity
   provider; the single-process, local-first envelope is unchanged; no real
   model provider, no real LLM API key, no WebSocket/WebRTC transport.
