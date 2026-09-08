@@ -6,6 +6,7 @@ import { MastraProductAgent } from './adapter.js';
 import type { MastraProductAgentConfig } from './adapter.js';
 import {
   buildCapabilityTools,
+  createCapabilityLiveRunRegistry,
   runWithBridgeTurnScope,
   type CapabilityBridgeDeps,
 } from './tool-bridge.js';
@@ -54,8 +55,17 @@ export function composeMastraTurnExecutor(deps: MastraTurnExecutorDeps): MastraT
     await deps.hub.publish(event);
   };
 
+  // ONE live-owner registry per composition (store domain): two
+  // independent compositions in one process with colliding local
+  // invocation ids must never share or await each other's live-owner
+  // registrations. With no live owner in its own composition, a duplicate
+  // reconciles the attempt conservatively (fail closed) — never against
+  // another composition's owner.
+  const liveRunRegistry =
+    deps.capabilityBridge.liveRunRegistry ?? createCapabilityLiveRunRegistry();
   const capabilityTools = buildCapabilityTools(deps.activation, {
     ...deps.capabilityBridge,
+    liveRunRegistry,
     // Live-owner attempt fencing (single-process envelope): the durable
     // claim is the single ownership gate; settlements are EXACT-BINDING on
     // the attempt fence, and an abandoned running attempt is reconciled

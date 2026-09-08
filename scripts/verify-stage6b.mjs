@@ -260,6 +260,14 @@ runVitestSuites(
   ],
 );
 
+runVitestSuites(
+  'Stage 06B tool-state truthfulness correction suites (truthful terminal mapping, duplicate-cancellation policy, cross-composition liveness, real-path normalization)',
+  [
+    'packages/mastra/test/tool-bridge.truthfulness.test.ts',
+    'packages/mastra/test/tool-state-normalization.test.ts',
+  ],
+);
+
 runVitestSuites('public-API authorization matrix (real HTTP)', [
   'packages/server/test/authorization-matrix.test.ts',
 ]);
@@ -276,6 +284,8 @@ runVitestSuites('governed Mastra tool bridge, turn executor, phase fault injecti
   'packages/mastra/test/tool-bridge.test.ts',
   'packages/mastra/test/tool-bridge.faults.test.ts',
   'packages/mastra/test/turn-executor.test.ts',
+  'packages/mastra/test/tool-bridge.truthfulness.test.ts',
+  'packages/mastra/test/tool-state-normalization.test.ts',
 ]);
 
 // ---- 7. Real-HTTP server suites ----------------------------------------------

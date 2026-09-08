@@ -73,7 +73,10 @@ export {
   bridgeCapabilityToolToMastra,
   buildCapabilityTools,
   canonicalArgDigest,
+  createCapabilityLiveRunRegistry,
   defaultBridgePolicy,
+  normalizeCapabilityToolResultEvent,
+  parseCapabilityReplayEnvelope,
   runWithBridgeTurnScope,
   safeArgumentSummary,
   sanitizeCapabilityToolName,
@@ -83,9 +86,13 @@ export type {
   BridgeTurnContext,
   CapabilityBridgeDeps,
   CapabilityInvoker,
+  CapabilityLiveRunRegistry,
+  CapabilityReplayVerdict,
   CapabilityResolver,
+  CapabilityToolEventVerdict,
   CapabilityToolFailure,
   CapabilityToolFailureCode,
+  ValidCapabilityReplay,
 } from './tool-bridge.js';
 
 // ---- Turn executor composition (Stage 06B) -----------------------------------

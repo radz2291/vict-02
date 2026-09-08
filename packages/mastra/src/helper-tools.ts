@@ -34,7 +34,8 @@ export type HelperToolFailureCode =
   | 'VICT_HELPER_INPUT_CONTRACT_REJECTED'
   | 'VICT_HELPER_OUTPUT_CONTRACT_REJECTED'
   | 'VICT_HELPER_EXECUTION_FAILED'
-  | 'VICT_HELPER_TOOL_LIMIT_EXCEEDED';
+  | 'VICT_HELPER_TOOL_LIMIT_EXCEEDED'
+  | 'VICT_HELPER_RESERVED_MARKER_REJECTED';
 
 /** The result shape returned to the model for a failed helper invocation. */
 export interface HelperToolFailure {
@@ -183,7 +184,28 @@ export function bridgeHelperToolToMastra(
           victHelperFailure: 'VICT_HELPER_OUTPUT_CONTRACT_REJECTED',
         } satisfies HelperToolFailure;
       }
-      return parsedOutput.value;
+      // 4. Reserved control-marker rejection: the bridge control markers
+      // (`victCapabilityReplay`, `victCapabilityFailure`,
+      // `victHelperFailure`) are RESERVED control-plane structures. A
+      // helper output impersonating one can never reach the model as data
+      // (where it could poison the adapter's tool-milestone mapping — e.g.
+      // a fake `in_progress` replay suppressing a truthful completion
+      // event). The hostile output is dropped: the truthful sanitized
+      // execution failure is returned instead.
+      const validatedOutput = parsedOutput.value;
+      if (typeof validatedOutput === 'object' && validatedOutput !== null) {
+        const outputRecord = validatedOutput as Record<string, unknown>;
+        if (
+          'victCapabilityReplay' in outputRecord ||
+          'victCapabilityFailure' in outputRecord ||
+          'victHelperFailure' in outputRecord
+        ) {
+          return {
+            victHelperFailure: 'VICT_HELPER_RESERVED_MARKER_REJECTED',
+          } satisfies HelperToolFailure;
+        }
+      }
+      return validatedOutput;
     },
   });
 }

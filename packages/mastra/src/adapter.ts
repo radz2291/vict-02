@@ -19,7 +19,7 @@ import {
   sanitizeToolName,
   type HelperToolGateVerdict,
 } from './helper-tools.js';
-import { sanitizeCapabilityToolName } from './tool-bridge.js';
+import { normalizeCapabilityToolResultEvent, sanitizeCapabilityToolName } from './tool-bridge.js';
 import { VictMastraCompositionError, type MastraThreadCoordinator } from './memory.js';
 
 /**
@@ -878,6 +878,39 @@ export class MastraProductAgent implements ProductAgentPort {
       let errorCode: string | undefined;
       let toolLimitExceeded = false;
       const pendingToolCalls = new Map<string, string>();
+      // Occurrence terminal-milestone discipline (Stage 06B tool-state
+      // truthfulness): the FIRST terminal milestone for a tool-call
+      // occurrence identity is FINAL. A later result for the same
+      // occurrence can never add a contradicting terminal (both
+      // `tool.failed` AND `tool.completed` for one logical occurrence is
+      // impossible by construction) nor a duplicate one. Non-terminal
+      // reports (`in_progress`) never enter this map — the occurrence's
+      // terminal milestone stays reserved for the owner's truthful
+      // settlement. A call with an unusable identity shares the stable
+      // placeholder id; for indistinguishable occurrences first-terminal-
+      // wins is the only coherent rule.
+      const settledToolCalls = new Map<string, 'completed' | 'failed'>();
+      const emitToolTerminal = (
+        toolCallId: string,
+        toolName: string,
+        terminal: 'completed' | 'failed',
+        code?: string,
+      ): void => {
+        if (settledToolCalls.has(toolCallId)) {
+          return;
+        }
+        settledToolCalls.set(toolCallId, terminal);
+        if (terminal === 'completed') {
+          emit({ kind: 'tool.completed', toolCallId, toolName });
+        } else {
+          emit({
+            kind: 'tool.failed',
+            toolCallId,
+            toolName,
+            code: code ?? 'VICT_TOOL_FAILED',
+          });
+        }
+      };
 
       try {
         for await (const chunk of stream.fullStream) {
@@ -928,22 +961,54 @@ export class MastraProductAgent implements ProductAgentPort {
               if (result?.victHelperFailure === 'VICT_HELPER_TOOL_LIMIT_EXCEEDED') {
                 toolLimitExceeded = true;
               }
+              // Stage 06B tool-state truthfulness: the governed capability
+              // bridge's results are normalized through ONE closed mapping
+              // (the same function the bridge-level suites pin). A replay
+              // envelope is validated structurally at this boundary:
+              // `completed` → tool.completed; failed/declined/cancelled/
+              // outcome_unknown → tool.failed with the stable safe code;
+              // `in_progress` → NONTERMINAL (a running, unresolved, or
+              // ambiguous invocation NEVER produces a terminal event —
+              // zero tool.completed while the durable status is running);
+              // unknown/malformed/contradictory envelopes → tool.failed
+              // (fail closed, never completion, no envelope content
+              // forwarded — events carry stable codes only).
+              const capabilityEvent = normalizeCapabilityToolResultEvent(result);
+              if (capabilityEvent.kind !== 'not-capability') {
+                if (capabilityEvent.kind === 'completed' && failed) {
+                  // A hostile/contradictory chunk (completion content on a
+                  // failure-marked result) can never normalize as
+                  // completion: fail closed.
+                  emitToolTerminal(
+                    toolCallId,
+                    toolName,
+                    'failed',
+                    'VICT_CAPABILITY_OUTCOME_UNKNOWN',
+                  );
+                  break;
+                }
+                if (capabilityEvent.kind === 'completed') {
+                  emitToolTerminal(toolCallId, toolName, 'completed');
+                } else if (capabilityEvent.kind === 'failed') {
+                  emitToolTerminal(toolCallId, toolName, 'failed', capabilityEvent.code);
+                }
+                // `nonterminal` (the `in_progress` replay): the documented
+                // non-terminal policy — no terminal event is emitted; the
+                // occurrence's milestone stays open for the owner's
+                // truthful settlement.
+                break;
+              }
               // Stage 06B: the governed capability bridge's structured safe
               // denials (decline, awaiting timeout, authority denial) are
               // honest tool failures with their stable non-echoing codes.
               if (typeof result?.victCapabilityFailure === 'string') {
-                emit({
-                  kind: 'tool.failed',
-                  toolCallId,
-                  toolName,
-                  code: result.victCapabilityFailure,
-                });
+                emitToolTerminal(toolCallId, toolName, 'failed', result.victCapabilityFailure);
                 break;
               }
               if (failed) {
-                emit({ kind: 'tool.failed', toolCallId, toolName, code: 'VICT_TOOL_FAILED' });
+                emitToolTerminal(toolCallId, toolName, 'failed', 'VICT_TOOL_FAILED');
               } else {
-                emit({ kind: 'tool.completed', toolCallId, toolName });
+                emitToolTerminal(toolCallId, toolName, 'completed');
               }
               break;
             }
@@ -958,7 +1023,7 @@ export class MastraProductAgent implements ProductAgentPort {
                 trustToolName(payload.toolName) === UNTRUSTED_TOOL_METADATA_PLACEHOLDER
                   ? (pendingToolCalls.get(toolCallId) ?? UNTRUSTED_TOOL_METADATA_PLACEHOLDER)
                   : (payload.toolName as string);
-              emit({ kind: 'tool.failed', toolCallId, toolName, code: 'VICT_TOOL_FAILED' });
+              emitToolTerminal(toolCallId, toolName, 'failed', 'VICT_TOOL_FAILED');
               break;
             }
             case 'text-delta': {

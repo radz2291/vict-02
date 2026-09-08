@@ -49,7 +49,19 @@ import type { CapabilityDefinition, CapabilityContext, EffectClass } from '@vict
  *   distinct from the requesting actor and hold the approval scope —
  *   enforced in the turn governance service);
  * - tool arguments/results/errors never leak beyond explicitly safe
- *   summaries; raw capability errors and secrets never re-enter the model.
+ *   summaries; raw capability errors and secrets never re-enter the model;
+ * - TOOL-STATE TRUTHFULNESS: `tool.completed` is normalized ONLY for a
+ *   durably confirmed completion (the owner's own confirmed settlement,
+ *   or a replay bound to an already-`completed` invocation). A running,
+ *   unresolved, or ambiguous invocation never produces a terminal event:
+ *   the `in_progress` duplicate report is non-terminal by policy, invalid
+ *   or contradictory replay envelopes fail closed
+ *   (`VICT_CAPABILITY_OUTCOME_UNKNOWN`), and one logical occurrence can
+ *   never acquire contradictory terminal milestones (first terminal
+ *   wins). Bridge control markers are reserved and rejected in tool
+ *   outputs, and the live-owner registry is scoped per composition so
+ *   colliding local invocation ids across store domains can never alias
+ *   liveness.
  */
 
 /** Stable sanitized bridge failure codes returned to the model (never raw content). */
@@ -90,6 +102,176 @@ export interface CapabilityToolReplay {
      * returned as an unrestricted operational payload. */
     readonly resultSummary?: string;
   };
+}
+
+/** The closed set of replay dispositions the bridge can ever produce. */
+const REPLAY_DISPOSITIONS: ReadonlySet<string> = new Set([
+  'completed',
+  'failed',
+  'declined',
+  'cancelled',
+  'outcome_unknown',
+  'in_progress',
+]);
+
+/** A validated replay envelope: structural shape and disposition verified. */
+export type ValidCapabilityReplay = {
+  readonly kind: 'valid';
+  readonly disposition:
+    'completed' | 'failed' | 'declined' | 'cancelled' | 'outcome_unknown' | 'in_progress';
+  readonly invocationId: string;
+};
+
+/** The replay-envelope validation verdict at the adapter boundary. */
+export type CapabilityReplayVerdict =
+  { readonly kind: 'not-a-replay' } | ValidCapabilityReplay | { readonly kind: 'invalid' };
+
+const SAFE_ID_PATTERN = /^[A-Za-z0-9._:-]{1,128}$/;
+const MAX_RESULT_SUMMARY_LENGTH = 512;
+
+/**
+ * Validate a replay envelope at the ADAPTER boundary (fail closed).
+ *
+ * `tool.completed` may be normalized ONLY from a structurally valid
+ * envelope whose durable meaning is a confirmed completion. Anything
+ * unknown, malformed, unsupported, or contradictory is `invalid` and MUST
+ * be normalized as a safe failure — never as completion, and with no
+ * envelope content forwarded (events carry stable codes only).
+ *
+ * A result is `not-a-replay` when it carries no replay marker at all
+ * (ordinary results, helper results, and structured failure envelopes).
+ * A result carrying BOTH control markers is hostile: `invalid`.
+ */
+export function parseCapabilityReplayEnvelope(result: unknown): CapabilityReplayVerdict {
+  if (typeof result !== 'object' || result === null || Array.isArray(result)) {
+    return { kind: 'not-a-replay' } as const;
+  }
+  const record = result as Record<string, unknown>;
+  if (!('victCapabilityReplay' in record)) {
+    return { kind: 'not-a-replay' } as const;
+  }
+  if (typeof record.victCapabilityFailure === 'string') {
+    // Contradictory control markers on one result: fail closed.
+    return { kind: 'invalid' } as const;
+  }
+  const envelope = record.victCapabilityReplay;
+  if (typeof envelope !== 'object' || envelope === null || Array.isArray(envelope)) {
+    return { kind: 'invalid' } as const;
+  }
+  const proto = Object.getPrototypeOf(envelope) as object | null;
+  if (proto !== Object.prototype && proto !== null) {
+    // A classed/proxied envelope is not a bridge-produced structure.
+    return { kind: 'invalid' } as const;
+  }
+  const fields = envelope as Record<string, unknown>;
+  for (const key of Object.keys(fields)) {
+    if (key !== 'disposition' && key !== 'invocationId' && key !== 'resultSummary') {
+      // Closed structure: unknown envelope members are rejected, never
+      // interpreted (nothing unknown can ever become completion).
+      return { kind: 'invalid' } as const;
+    }
+  }
+  const disposition = fields.disposition;
+  if (typeof disposition !== 'string' || !REPLAY_DISPOSITIONS.has(disposition)) {
+    return { kind: 'invalid' } as const;
+  }
+  const invocationId = fields.invocationId;
+  if (typeof invocationId !== 'string' || !SAFE_ID_PATTERN.test(invocationId)) {
+    return { kind: 'invalid' } as const;
+  }
+  const resultSummary = fields.resultSummary;
+  if (
+    resultSummary !== undefined &&
+    (typeof resultSummary !== 'string' || resultSummary.length > MAX_RESULT_SUMMARY_LENGTH)
+  ) {
+    return { kind: 'invalid' } as const;
+  }
+  return {
+    kind: 'valid',
+    disposition,
+    invocationId,
+  } as ValidCapabilityReplay;
+}
+
+/**
+ * The EXACT normalization of a capability-bridge tool result into an
+ * agent-stream tool milestone (vict.agent-stream@1).
+ *
+ * `tool.completed` means the tool (the durable capability invocation)
+ * FINISHED. The mapping is total over the bridge's closed result
+ * vocabulary and enforces the Stage 06B tool-state truthfulness
+ * invariants:
+ *
+ * - `completed` replay → `tool.completed` (the durable invocation is
+ *   already terminal-completed, or this is the owner's own confirmed
+ *   completion result);
+ * - `failed` | `declined` | `cancelled` | `outcome_unknown` replays →
+ *   `tool.failed` with the corresponding stable safe code;
+ * - `in_progress` replay → NONTERMINAL: a running, unresolved, or
+ *   ambiguous invocation NEVER produces a terminal event — the
+ *   occurrence's terminal milestone stays reserved for the owner's
+ *   truthful settlement (the documented duplicate-cancellation policy:
+ *   a cancelled duplicate waiter receives exactly this non-terminal
+ *   report and no terminal event is fabricated for it);
+ * - invalid / malformed / contradictory envelopes → `tool.failed` with
+ *   `VICT_CAPABILITY_OUTCOME_UNKNOWN` (fail closed, never completion,
+ *   no envelope content forwarded);
+ * - anything without a capability-bridge marker → `not-capability`
+ *   (helper results and ordinary results keep their existing handling).
+ */
+export type CapabilityToolEventVerdict =
+  | { readonly kind: 'not-capability' }
+  | { readonly kind: 'completed' }
+  | { readonly kind: 'failed'; readonly code: CapabilityToolFailureCode }
+  | { readonly kind: 'nonterminal' };
+
+/**
+ * Normalize ONE capability-bridge tool result into its stream milestone
+ * verdict. This is the SINGLE mapping function the adapter's real
+ * tool-result normalization path uses (no second mapping exists).
+ */
+export function normalizeCapabilityToolResultEvent(result: unknown): CapabilityToolEventVerdict {
+  if (typeof result !== 'object' || result === null || Array.isArray(result)) {
+    return { kind: 'not-capability' } as const;
+  }
+  const record = result as Record<string, unknown>;
+  const hasReplayMarker = 'victCapabilityReplay' in record;
+  const hasFailureMarker = 'victCapabilityFailure' in record;
+  if (!hasReplayMarker && !hasFailureMarker) {
+    return { kind: 'not-capability' } as const;
+  }
+  if (typeof record.victCapabilityFailure === 'string') {
+    if (hasReplayMarker) {
+      // Contradictory control markers on one result: fail closed.
+      return { kind: 'failed', code: 'VICT_CAPABILITY_OUTCOME_UNKNOWN' } as const;
+    }
+    return {
+      kind: 'failed',
+      code: record.victCapabilityFailure as CapabilityToolFailureCode,
+    } as const;
+  }
+  const verdict = parseCapabilityReplayEnvelope(record);
+  if (verdict.kind !== 'valid') {
+    // A replay marker that does not validate strictly — or a malformed
+    // failure marker — is fail closed: a safe failure, never completion.
+    return { kind: 'failed', code: 'VICT_CAPABILITY_OUTCOME_UNKNOWN' } as const;
+  }
+  switch (verdict.disposition) {
+    case 'completed':
+      return { kind: 'completed' } as const;
+    case 'failed':
+      return { kind: 'failed', code: 'VICT_CAPABILITY_INVOCATION_FAILED' } as const;
+    case 'declined':
+      return { kind: 'failed', code: 'VICT_CAPABILITY_DECLINED' } as const;
+    case 'cancelled':
+      return { kind: 'failed', code: 'VICT_CAPABILITY_CANCELLED' } as const;
+    case 'outcome_unknown':
+      return { kind: 'failed', code: 'VICT_CAPABILITY_OUTCOME_UNKNOWN' } as const;
+    case 'in_progress':
+      // THE truthfulness rule: a still-running durable invocation is
+      // never represented as completed (or as any terminal event).
+      return { kind: 'nonterminal' } as const;
+  }
 }
 
 /** The effect/approval policy derived for one pinned envelope entry. */
@@ -241,6 +423,13 @@ export interface CapabilityBridgeDeps {
   ): Promise<{ status: AgentApprovalRecord['status'] } | undefined>;
   /** Per-turn tool budget gate (adapter-supplied; see helper-tools). */
   readonly budgetGate?: () => 'allowed' | 'denied' | 'outside-turn';
+  /**
+   * The composition-scoped live-owner registry. When omitted, the bridge
+   * creates a PRIVATE registry for the built tool set — registries are
+   * never shared across compositions (colliding local invocation ids in
+   * one process must never alias liveness across store domains).
+   */
+  readonly liveRunRegistry?: CapabilityLiveRunRegistry;
   /** Event emission for the durable `tool.awaiting_approval` milestone. */
   readonly emitAwaitingApproval?: (event: AgentStreamEvent) => Promise<void>;
   readonly clock?: () => number;
@@ -330,6 +519,11 @@ export function buildCapabilityTools(
 ): Record<string, unknown> {
   const tools: Record<string, unknown> = {};
   const nameOwner = new Map<string, string>();
+  // ONE live-owner registry per built tool set (i.e. per composition):
+  // every tool of this activation shares it, and it is never shared with
+  // any other composition (colliding local invocation ids across store
+  // domains must never alias liveness).
+  const liveRunRegistry = deps.liveRunRegistry ?? createCapabilityLiveRunRegistry();
   for (const reference of activation.capabilities) {
     const definition = deps.resolveCapability(reference.id, reference.revision);
     if (definition === undefined) {
@@ -346,7 +540,7 @@ export function buildCapabilityTools(
       );
     }
     nameOwner.set(toolName, definition.id);
-    tools[toolName] = bridgeCapabilityToolToMastra(activation, definition, deps);
+    tools[toolName] = bridgeCapabilityToolToMastra(activation, definition, deps, liveRunRegistry);
   }
   return tools;
 }
@@ -361,6 +555,7 @@ export function bridgeCapabilityToolToMastra(
   activation: AgentProfileActivation,
   definition: CapabilityDefinition<unknown, unknown>,
   deps: CapabilityBridgeDeps,
+  liveRunRegistry: CapabilityLiveRunRegistry = createCapabilityLiveRunRegistry(),
 ): unknown {
   const capabilityId = definition.id;
   const capabilityRevision = definition.revision;
@@ -519,10 +714,10 @@ export function bridgeCapabilityToolToMastra(
        * claim below is the single ownership gate):
        *
        * - `running`: this caller is a DUPLICATE. It NEVER mutates the
-       *   record: with a same-process live owner it AWAITS the owner's
+       *   record: with a same-composition live owner it AWAITS the owner's
        *   settlement and replays the truthful terminal disposition (a
        *   cancelled waiter receives the non-terminal `in_progress`
-       *   report); with no live owner in this process the attempt is
+       *   report); with no live owner in this composition the attempt is
        *   conservatively reconciled to the fenced, NON-REPLAYABLE
        *   `outcome_unknown` (owner loss across a process life) without
        *   executing anything.
@@ -537,6 +732,7 @@ export function bridgeCapabilityToolToMastra(
           return resolveRunningDuplicate(deps, current, {
             abortSignal: turn.abortSignal,
             clock,
+            liveRunRegistry,
             rereadInvocation,
           });
         }
@@ -589,8 +785,8 @@ export function bridgeCapabilityToolToMastra(
         // ---- 6. CLAIM the attempt (single ownership gate) ----------------
         // The live-owner registration is established BEFORE the durable
         // claim so a duplicate that observes `running` always finds the
-        // same-process owner (never a false "abandoned" inference).
-        const registration = registerLiveRun(current.invocationId);
+        // same-composition owner (never a false "abandoned" inference).
+        const registration = liveRunRegistry.register(current.invocationId);
         try {
           let claimed: AgentToolInvocationRecord;
           try {
@@ -761,69 +957,96 @@ function isArbitrationConflict(error: unknown): error is VictControlError {
   );
 }
 
-// ---- Live-owner registry (single-process envelope) -------------------------
+// ---- Live-owner registry (composition-scoped, single-process envelope) ----
 
 /**
- * The process-local registry of LIVE attempt owners, keyed by invocation
- * id. Within the accepted single-process/local deployment envelope this is
- * the authoritative liveness proof: a duplicate that observes a `running`
- * record either finds the live owner here (and AWAITS it, never mutating
- * its state) or — when no live owner exists in this process — treats the
- * attempt as abandoned across a process life and reconciles it
- * conservatively to the fenced, non-replayable `outcome_unknown`.
+ * One registered LIVE attempt owner: the fence token the attempt was
+ * claimed under and the signal that resolves exactly once when the owning
+ * attempt settles.
  */
-interface LiveRunRegistration {
+export interface CapabilityLiveRunRegistration {
   readonly fenceToken: string;
   /** Resolves exactly once when the owning attempt settles. */
   readonly settled: Promise<void>;
 }
 
-const liveRuns = new Map<string, LiveRunRegistration>();
-let fenceCounter = 0;
-
-/** Stable per-process owner identity (never a credential, never a payload). */
-const BRIDGE_OWNER_IDENTITY = `vict-tool-bridge:${process.pid}:${randomUUID()}`;
-
-function nextFenceToken(): string {
-  fenceCounter += 1;
-  return `fence-${process.pid}-${fenceCounter}-${randomUUID()}`;
+/**
+ * The composition-scoped registry of LIVE attempt owners. Within the
+ * accepted single-process/local deployment envelope this is the
+ * authoritative liveness proof FOR ONE BRIDGE COMPOSITION (one durable
+ * store domain): a duplicate that observes a `running` record either
+ * finds the live owner HERE (and AWAITS it, never mutating its state) or
+ * — when no live owner exists in this composition — treats the attempt as
+ * abandoned and reconciles it conservatively to the fenced, non-replayable
+ * `outcome_unknown`.
+ *
+ * The registry is deliberately scoped per composition (never a
+ * module-global map keyed only by `invocationId`): two independent
+ * compositions with two independent stores running in ONE process can
+ * produce COLLIDING local invocation ids — a shared key would alias their
+ * liveness (one composition would await, or fence-share with, the OTHER
+ * composition's owner). Composition scoping makes the collision
+ * impossible: each composition only ever observes its own owners.
+ */
+export interface CapabilityLiveRunRegistry {
+  /**
+   * Register THIS caller as the candidate owner of the invocation BEFORE
+   * the durable claim. Concurrent candidates of ONE invocation SHARE the
+   * incumbent registration (created before the first claim): exactly one
+   * owner signal exists per invocation, so a duplicate always finds the
+   * live owner and an owner's signal is never overwritten by a losing
+   * candidate.
+   */
+  readonly register: (invocationId: string) => {
+    readonly fenceToken: string;
+    readonly settle: () => void;
+  };
+  /** The live registration for an invocation, if one exists. */
+  readonly inspect: (invocationId: string) => CapabilityLiveRunRegistration | undefined;
 }
 
 /**
- * Register THIS caller as the candidate owner of the invocation BEFORE the
- * durable claim: a duplicate that observes the claimed `running` state can
- * then always find the same-process owner (never a false "abandoned"
- * inference for a live attempt).
+ * Create the live-owner registry for ONE bridge composition. Every
+ * composition gets its own registry (injected through
+ * `CapabilityBridgeDeps.liveRunRegistry` by the turn-executor
+ * composition); registries are never shared across compositions.
  */
-function registerLiveRun(invocationId: string): {
-  readonly fenceToken: string;
-  readonly settle: () => void;
-} {
-  // Concurrent candidates of ONE invocation SHARE the incumbent
-  // registration (created before the first claim): exactly one owner signal
-  // exists per invocation, so a duplicate always finds the live owner and
-  // an owner's signal is never overwritten by a losing candidate.
-  const existing = liveRuns.get(invocationId);
-  if (existing !== undefined) {
-    return { fenceToken: existing.fenceToken, settle: (): void => undefined };
-  }
-  let resolveSettled!: () => void;
-  const settled = new Promise<void>((resolve) => {
-    resolveSettled = resolve;
-  });
-  const fenceToken = nextFenceToken();
-  liveRuns.set(invocationId, { fenceToken, settled });
+export function createCapabilityLiveRunRegistry(): CapabilityLiveRunRegistry {
+  const liveRuns = new Map<string, CapabilityLiveRunRegistration>();
+  let fenceCounter = 0;
+  const nextFenceToken = (): string => {
+    fenceCounter += 1;
+    return `fence-${process.pid}-${fenceCounter}-${randomUUID()}`;
+  };
   return {
-    fenceToken,
-    settle: (): void => {
-      const current = liveRuns.get(invocationId);
-      if (current !== undefined && current.fenceToken === fenceToken) {
-        liveRuns.delete(invocationId);
+    register(invocationId) {
+      const existing = liveRuns.get(invocationId);
+      if (existing !== undefined) {
+        return { fenceToken: existing.fenceToken, settle: (): void => undefined };
       }
-      resolveSettled();
+      let resolveSettled!: () => void;
+      const settled = new Promise<void>((resolve) => {
+        resolveSettled = resolve;
+      });
+      const fenceToken = nextFenceToken();
+      liveRuns.set(invocationId, { fenceToken, settled });
+      return {
+        fenceToken,
+        settle: (): void => {
+          const current = liveRuns.get(invocationId);
+          if (current !== undefined && current.fenceToken === fenceToken) {
+            liveRuns.delete(invocationId);
+          }
+          resolveSettled();
+        },
+      };
     },
+    inspect: (invocationId) => liveRuns.get(invocationId),
   };
 }
+
+/** Stable per-process owner identity (never a credential, never a payload). */
+const BRIDGE_OWNER_IDENTITY = `vict-tool-bridge:${process.pid}:${randomUUID()}`;
 
 /**
  * The stable envelope for an OBSERVED durable state (terminal replay or
@@ -877,6 +1100,7 @@ function stableDispositionEnvelope(
 interface DuplicateContext {
   readonly abortSignal: AbortSignal | undefined;
   readonly clock: () => number;
+  readonly liveRunRegistry: CapabilityLiveRunRegistry;
   readonly rereadInvocation: () => Promise<AgentToolInvocationRecord>;
 }
 
@@ -884,13 +1108,18 @@ interface DuplicateContext {
  * Resolve a DUPLICATE observation of a claimed (`running`) attempt WITHOUT
  * mutating it:
  *
- * - same-process live owner → await the owner's settlement (bounded by the
- *   owner's own execution) and replay the truthful terminal disposition; a
- *   cancelled waiter receives the non-terminal `in_progress` report;
- * - no live owner in this process → the claim came from a previous process
- *   life (or a lost registry): reconcile conservatively to the fenced,
- *   NON-REPLAYABLE `outcome_unknown` without executing anything. The
- *   reconciliation is exact-binding: accepted only while the observed
+ * - same-composition live owner → await the owner's settlement (bounded by
+ *   the owner's own execution) and replay the truthful terminal
+ *   disposition; a cancelled waiter receives the non-terminal
+ *   `in_progress` report — the documented duplicate-cancellation policy:
+ *   the owner is never mutated or cancelled, no false terminal disposition
+ *   is produced, and the non-terminal report is normalized by the adapter
+ *   as an OPEN milestone (no terminal tool event) so the occurrence's
+ *   terminal milestone stays reserved for the owner's truthful settlement;
+ * - no live owner in this composition → the claim came from a previous
+ *   process life (or a lost registry): reconcile conservatively to the
+ *   fenced, NON-REPLAYABLE `outcome_unknown` without executing anything.
+ *   The reconciliation is exact-binding: accepted only while the observed
  *   durable state is exactly the running attempt under the observed fence.
  */
 async function resolveRunningDuplicate(
@@ -898,7 +1127,7 @@ async function resolveRunningDuplicate(
   record: AgentToolInvocationRecord,
   context: DuplicateContext,
 ): Promise<CapabilityToolFailure | CapabilityToolReplay> {
-  const live = liveRuns.get(record.invocationId);
+  const live = context.liveRunRegistry.inspect(record.invocationId);
   if (live !== undefined) {
     if (context.abortSignal !== undefined) {
       // A cancelled waiter must not wait forever: race the owner's
@@ -928,7 +1157,7 @@ async function resolveRunningDuplicate(
     await deps.reconcileAbandonedRun({
       invocationId: record.invocationId,
       observedFenceToken: record.runFenceToken ?? '',
-      reconciledFenceToken: nextFenceToken(),
+      reconciledFenceToken: `fence-reconcile-${process.pid}-${randomUUID()}`,
       at: context.clock(),
     });
   } catch {
@@ -1157,6 +1386,29 @@ async function executeOwnedAttempt(
       return settleUnknown(
         'VICT_CAPABILITY_OUTPUT_CONTRACT_REJECTED',
         'VICT_CAPABILITY_OUTPUT_CONTRACT_REJECTED',
+      );
+    }
+  }
+  // ---- Reserved control-marker rejection ---------------------------------
+  // The bridge's control markers (`victCapabilityReplay`,
+  // `victCapabilityFailure`) and the helper bridge's marker are RESERVED:
+  // a capability whose output impersonates a control envelope can never
+  // have that output returned as a normal result — it would poison the
+  // adapter's milestone mapping (a fake `in_progress` would suppress the
+  // truthful completion event; a fake failure marker would contradict the
+  // durable completed state). The truthful disposition is the fenced,
+  // NON-replayable `outcome_unknown`; the hostile object is dropped
+  // (nothing from it is forwarded or summarized).
+  if (typeof rawOutput === 'object' && rawOutput !== null) {
+    const outputRecord = rawOutput as Record<string, unknown>;
+    if (
+      'victCapabilityReplay' in outputRecord ||
+      'victCapabilityFailure' in outputRecord ||
+      'victHelperFailure' in outputRecord
+    ) {
+      return settleUnknown(
+        'VICT_CAPABILITY_OUTCOME_UNKNOWN',
+        'VICT_CAPABILITY_RESERVED_MARKER_REJECTED',
       );
     }
   }
