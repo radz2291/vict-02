@@ -20,8 +20,14 @@ export { ControlPlaneService, assertScopeForActor, resolveActorContext } from '.
 export type {
   ActorAuthority,
   ApplicationReleaseRecordContent,
+  ChangeSetSimulator,
+  OperationGuard,
   ProposeChangeSetInput,
 } from './control-plane.js';
+export {
+  SANDBOX_SIMULATOR_ID,
+  createControlPlaneSandboxSimulator,
+} from './control-plane-simulation.js';
 export type {
   AgentTurnExecutor,
   AgentTurnServiceOptions,

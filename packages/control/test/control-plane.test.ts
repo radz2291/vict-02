@@ -10,6 +10,7 @@ import { createInMemoryStores, type ActivationCatalog } from '@vict/runtime';
 import {
   assertScopeForActor,
   ControlPlaneService,
+  createControlPlaneSandboxSimulator,
   AgentTurnService,
   safeInputSummary,
 } from '../src/index.js';
@@ -69,10 +70,12 @@ function makeService(clock: { value: number }) {
   };
   ids.n = 0;
   const clockFn = (): number => (clock.value += 1);
+  const simulator = createControlPlaneSandboxSimulator({ stores, catalog });
   const service = new ControlPlaneService({
     stores,
     catalog,
     clock: clockFn,
+    simulator,
     ids: {
       changesetId: ids.changesetId,
       changesetApprovalId: ids.changesetApprovalId,
@@ -597,27 +600,31 @@ describe('ChangeSet commit saga (durable applying; F6)', () => {
       runId: run.runId,
     });
     await service.decide(approver, { changesetId: 'changeset-saga', decision: 'approved' });
-    // Simulate a SIGKILL after the durable CAS to `applying` and after the
-    // FIRST operation receipt, before the second: the truthful durable state
-    // is `applying` with exactly one receipt.
-    await stores.control.compareAndSetChangeSetStatus({
-      changesetId: 'changeset-saga',
-      expectedStatus: 'approved',
-      nextStatus: 'applying',
-    });
-    await stores.control.recordOperationReceipt({
-      changesetId: 'changeset-saga',
-      operationIndex: 0,
-      operationKind: 'publish-and-select-release',
-      operationDigest: 'digest-op-0',
-      effectRef: 'release:app.saga@release-saga-a',
-      actorId: author.actorId,
-      appliedAt: 500,
-    });
+    // REAL fault injection at the effect boundary of the SECOND operation
+    // (never a manually inserted receipt): operation 0 applies fully
+    // (intent + effect + applied receipt); operation 1's intent is durable
+    // but its effect fails — the truthful durable state is `applying` with
+    // exactly one APPLIED receipt and one PREPARED intent.
+    const realSelect = stores.control.selectRelease.bind(stores.control);
+    let selectFailures = 0;
+    stores.control.selectRelease = async (command) => {
+      if (command.releaseVersion === 'release-saga-b' && selectFailures === 0) {
+        selectFailures += 1;
+        throw new Error('INJECTED: process dies before the second effect completes');
+      }
+      return realSelect(command);
+    };
+    await expect(service.commit(author, { changesetId: 'changeset-saga' })).rejects.toThrow(
+      /INJECTED/,
+    );
     const interrupted = await service.get(author, 'changeset-saga');
     expect(interrupted?.status).toBe('applying');
-    // Recovery deterministically completes the commit from receipts: the
-    // recorded operation is NOT repeated, the remaining one executes once.
+    const receiptsAfterCrash = await stores.control.listOperationReceipts('changeset-saga');
+    expect(receiptsAfterCrash.map((receipt) => receipt.state)).toEqual(['applied', 'prepared']);
+    const selectionsAfterCrash = await stores.control.listReleaseSelections('app.saga');
+    expect(selectionsAfterCrash).toHaveLength(1); // exactly ONE logical effect so far
+    // Recovery VERIFIES target state and completes the saga: operation 0 is
+    // never repeated, operation 1's fenced effect executes exactly once.
     const recovery = await service.recoverChangeSetCommits();
     expect(recovery.completed).toBe(1);
     expect(recovery.interrupted).toEqual([]);
@@ -626,10 +633,15 @@ describe('ChangeSet commit saga (durable applying; F6)', () => {
     // The final selection is the SECOND operation's effect (exactly once).
     const selected = await service.getSelectedRelease(author, 'app.saga');
     expect(selected?.releaseVersion).toBe('release-saga-b');
+    const selectionsAfterRecovery = await stores.control.listReleaseSelections('app.saga');
+    expect(selectionsAfterRecovery.map((s) => s.releaseVersion)).toEqual([
+      'release-saga-a',
+      'release-saga-b',
+    ]);
     // Recovery is idempotent: a second pass finds nothing to do.
     const again = await service.recoverChangeSetCommits();
     expect(again.completed).toBe(0);
-    // Audit agrees with actual committed state.
+    // Audit agrees with actual committed state (idempotent emission).
     const actions = (await service.auditTrail({ subjectId: 'changeset-saga' })).map(
       (event) => event.action,
     );

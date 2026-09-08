@@ -6,19 +6,23 @@ import {
   ApplicationReleaseRecord,
   ChangeSetApprovalDecision,
   ChangeSetOperation,
+  ChangeSetOperationReceipt,
   ChangeSetRecord,
   ChangeSetSimulationEvidence,
   ChangeSetValidationEvidence,
   ControlAuditEvent,
+  ControlRunDetail,
   ControlRunKind,
+  ControlRunOperationOutcome,
   ControlRunRecord,
   ReleaseSelectionRecord,
+  changeSetOperationIdentity,
+  controlContentHash,
 } from '@vict/runtime';
 import {
   authenticatedActorContext,
   CHANGESET_BASE_NONE,
   CHANGESET_SCHEMA,
-  controlContentHash,
   VictControlError,
   validateApplicationReleaseContent,
   validateChangeSetContent,
@@ -66,6 +70,12 @@ export interface ControlPlaneServiceOptions {
     auditId(): string;
     controlRunId(): string;
   };
+  /**
+   * The safe simulation boundary for `simulation` runs. When absent,
+   * simulation runs are BLOCKED (never passed): a second copy of
+   * prevalidation is not simulation evidence.
+   */
+  readonly simulator?: ChangeSetSimulator;
 }
 
 /** The authoritative actor resolution input (server-side truth only). */
@@ -76,7 +86,19 @@ export interface ActorAuthority {
   readonly actorId: string;
 }
 
-/** Resolve the authoritative context or fail closed. */
+/**
+ * The subject-level guard carried by one operation: the expected base
+ * version (release subjects) or the expected selection revision
+ * (activation subjects) that must hold AT THE TARGET MUTATION. This is
+ * the fencing data that makes two ChangeSets racing on ONE base produce
+ * exactly one winner.
+ */
+export interface OperationGuard {
+  readonly expectedBaseVersion?: string;
+  readonly expectedSelectionRevision?: number;
+}
+
+/** Resolve the authoritative actor context or fail closed. */
 export function resolveActorContext(
   directory: ActorDirectory,
   actorId: string,
@@ -103,11 +125,13 @@ export class ControlPlaneService {
   readonly #catalog: ActivationCatalog;
   readonly #clock: () => number;
   readonly #ids: Required<NonNullable<ControlPlaneServiceOptions['ids']>>;
+  readonly #simulator: ChangeSetSimulator | undefined;
 
   constructor(options: ControlPlaneServiceOptions) {
     this.#stores = options.stores;
     this.#catalog = options.catalog;
     this.#clock = options.clock ?? (() => Date.now());
+    this.#simulator = options.simulator;
     this.#ids = {
       changesetId: options.ids?.changesetId ?? (() => failRandomIds()),
       changesetApprovalId: options.ids?.changesetApprovalId ?? (() => failRandomIds()),
@@ -391,12 +415,23 @@ export class ControlPlaneService {
   static readonly RUNNER_PROFILE = 'vict.control-plane@1';
 
   /**
-   * Execute ONE authoritative governance run (validation or simulation)
-   * through the trusted VICT boundary and record it durably. The run
-   * deterministically prevalidates the ChangeSet's full operation set
-   * against the CURRENT durable state; callers cannot fabricate run
-   * identities, outcomes, or timestamps — they can only execute a run and
-   * reference its stable id afterwards.
+   * Execute ONE authoritative governance run through the trusted VICT
+   * boundary and record it durably. The two run kinds are genuinely
+   * DIFFERENT executions:
+   *
+   * - `validation` performs the defined structural, identity,
+   *   compatibility, stale-base and policy checks (authoritative
+   *   prevalidation of the complete operation set against current durable
+   *   state);
+   * - `simulation` EXECUTES the proposed behavior through the composed
+   *   safe simulation boundary (real doubles, no irreversible effects) and
+   *   records the exact run identity, activation/release inputs, operation
+   *   identities, per-operation outcomes and the simulator/profile version.
+   *   Without a composed simulator the run is BLOCKED — never silently
+   *   replaced by a copy of validation.
+   *
+   * Callers cannot fabricate run identities, outcomes, or timestamps —
+   * they can only execute a run and reference its stable id afterwards.
    */
   async executeChangeSetCheck(
     actor: AuthenticatedActorContext,
@@ -414,22 +449,62 @@ export class ControlPlaneService {
         'Governance runs execute against draft ChangeSets only.',
       );
     }
-    // Authoritative prevalidation of the COMPLETE operation set against the
-    // current durable state (never a caller claim).
-    let outcome: ControlRunRecord['outcome'] = 'passed';
-    try {
-      await this.#prevalidateOperations(record);
-    } catch (error) {
-      if (
-        error instanceof VictControlError &&
-        (error.code === 'VICT_CONTROL_RELEASE_MISSING' ||
-          error.code === 'VICT_CONTROL_BASE_STALE' ||
-          error.code === 'VICT_CONTROL_RELEASE_INVALID' ||
-          error.code === 'VICT_CONTROL_OPERATION_INVALID')
-      ) {
+    const operationIdentities = record.operations.map((operation, index) =>
+      changeSetOperationIdentity({
+        changesetId: record.changesetId,
+        contentHash: record.contentHash,
+        operationIndex: index,
+        operation,
+      }),
+    );
+    let outcome: ControlRunRecord['outcome'];
+    let detail: ControlRunDetail | undefined;
+    if (input.kind === 'validation') {
+      // Authoritative prevalidation of the COMPLETE operation set against
+      // the current durable state (never a caller claim).
+      outcome = 'passed';
+      try {
+        await this.#prevalidateOperations(record);
+      } catch (error) {
+        if (
+          error instanceof VictControlError &&
+          (error.code === 'VICT_CONTROL_RELEASE_MISSING' ||
+            error.code === 'VICT_CONTROL_BASE_STALE' ||
+            error.code === 'VICT_CONTROL_RELEASE_INVALID' ||
+            error.code === 'VICT_CONTROL_OPERATION_INVALID')
+        ) {
+          outcome = 'blocked';
+        } else {
+          throw error;
+        }
+      }
+    } else {
+      // SIMULATION: real execution through the safe simulation boundary.
+      if (this.#simulator === undefined) {
+        // No simulator composed: simulation is BLOCKED (fail closed) —
+        // validation is never accepted as a substitute.
         outcome = 'blocked';
+        detail = {
+          simulator: 'unavailable',
+          inputs: { base: record.base, operationIdentities },
+          operations: record.operations.map((operation, index) => ({
+            operationIndex: index,
+            operationDigest: operationIdentities[index] as string,
+            outcome: 'blocked' as const,
+            code: 'VICT_CONTROL_SIMULATOR_UNAVAILABLE',
+          })),
+        };
       } else {
-        throw error;
+        const simulation = await this.#simulator.simulate({
+          record,
+          operationIdentities,
+        });
+        outcome = simulation.outcome;
+        detail = {
+          simulator: this.#simulator.simulatorId,
+          inputs: { base: record.base, operationIdentities },
+          operations: simulation.operations,
+        };
       }
     }
     const run: ControlRunRecord = {
@@ -443,6 +518,7 @@ export class ControlPlaneService {
       actorId: actor.actorId,
       outcome,
       createdAt: this.#clock(),
+      ...(detail !== undefined ? { detail } : {}),
     };
     await this.#stores.control.recordControlRun(run);
     await this.#audit(
@@ -736,7 +812,26 @@ export class ControlPlaneService {
 
   /**
    * Continue (or complete) an `applying` saga: apply exactly the operations
-   * that do not yet carry a durable receipt, then advance to `committed`.
+   * that do not yet carry an APPLIED durable receipt, then advance to
+   * `committed`.
+   *
+   * Operation protocol (exactly-once across crashes):
+   *
+   * 1. PREPARED INTENT before the effect: every operation gets a durable
+   *    receipt row (`prepared`) whose identity derives from ChangeSet ID,
+   *    content hash, operation index and the exact operation content. The
+   *    row carries the subject guard (fencing data) captured from the
+   *    projected base state.
+   * 2. FENCED EFFECT: the target mutation accepts the operation identity
+   *    as its idempotency key and the subject guard as its CAS —
+   *    re-application returns the ORIGINAL result without adding another
+   *    selection revision or audit event; conflicting content under the
+   *    same identity fails closed.
+   * 3. APPLIED receipt: recorded after the effect (atomically with it
+   *    where effect and receipt share the store's transaction boundary).
+   * 4. Recovery VERIFIES target state for prepared intents — it never
+   *    manufactures a receipt merely because the operation was supposed
+   *    to run.
    */
   async #resumeCommit(
     actor: AuthenticatedActorContext,
@@ -744,23 +839,63 @@ export class ControlPlaneService {
   ): Promise<{ record: ChangeSetRecord; applied: string[] }> {
     const receipts = await this.#stores.control.listOperationReceipts(record.changesetId);
     const receiptByIndex = new Map(receipts.map((receipt) => [receipt.operationIndex, receipt]));
+    const guards = await this.#projectOperationGuards(record);
     const applied: string[] = [];
     for (let index = 0; index < record.operations.length; index += 1) {
       const operation = record.operations[index] as ChangeSetOperation;
+      const operationDigest = changeSetOperationIdentity({
+        changesetId: record.changesetId,
+        contentHash: record.contentHash,
+        operationIndex: index,
+        operation,
+      });
       const existing = receiptByIndex.get(index);
       if (existing !== undefined) {
-        applied.push(existing.operationKind);
-        continue;
+        // The durable intent binds the EXACT operation content: conflicting
+        // content under the same identity fails closed.
+        if (existing.operationDigest !== operationDigest) {
+          throw new VictControlError(
+            'VICT_CONTROL_OPERATION_IDENTITY_CONFLICT',
+            'The durable operation intent carries different content; conflicting content fails closed.',
+          );
+        }
+        if (existing.state === 'applied') {
+          applied.push(operation.kind);
+          continue;
+        }
+        // PREPARED intent (crash between intent and settlement): verify the
+        // target state — if the effect already exists, settle the receipt
+        // WITHOUT repeating it; otherwise re-apply through the fenced path.
+        if (await this.#operationEffectExists(record, index, operation, operationDigest)) {
+          await this.#stores.control.markOperationApplied({
+            changesetId: record.changesetId,
+            operationIndex: index,
+            at: this.#clock(),
+          });
+          applied.push(operation.kind);
+          continue;
+        }
       }
-      const effectRef = await this.#applyOperation(actor, operation);
-      await this.#stores.control.recordOperationReceipt({
+      if (existing === undefined) {
+        // Durable intent BEFORE the effect.
+        await this.#stores.control.recordOperationIntent({
+          changesetId: record.changesetId,
+          operationIndex: index,
+          operationKind: operation.kind,
+          operationDigest,
+          effectRef: `op:${operationDigest}`,
+          actorId: actor.actorId,
+          appliedAt: this.#clock(),
+          state: 'prepared',
+          guardJson: guards[index] === undefined ? undefined : JSON.stringify(guards[index]),
+        });
+      }
+      // Fenced effect (operation identity = idempotency key; guard = CAS).
+      await this.#applyOperation(actor, record, operation, guards[index], operationDigest);
+      await this.#stores.control.markOperationApplied({
         changesetId: record.changesetId,
         operationIndex: index,
-        operationKind: operation.kind,
-        operationDigest: controlContentHash(operation),
-        effectRef,
-        actorId: actor.actorId,
-        appliedAt: this.#clock(),
+        at: this.#clock(),
       });
       applied.push(operation.kind);
     }
@@ -769,8 +904,12 @@ export class ControlPlaneService {
       expectedStatus: 'applying',
       nextStatus: 'committed',
     });
-    await this.#audit(
-      actor.actorId,
+    // The commit audit is IDEMPOTENT under the same operation set: its id
+    // derives from the changeset identity, so a crash during audit emission
+    // and a recovery re-emission produce ONE attributable outcome.
+    await this.#auditWithId(
+      this.#deterministicAuditId('changeset.committed', record.changesetId, record.contentHash),
+      record.authorActorId,
       'changeset.committed',
       'changeset',
       record.changesetId,
@@ -779,39 +918,190 @@ export class ControlPlaneService {
     return { record, applied };
   }
 
-  /** Apply ONE closed operation; returns its stable effect identity. */
+  /**
+   * Project the subject-level guards for every operation index. The FIRST
+   * operation that touches the base subject is fenced on the ChangeSet's
+   * expected base (version or selection revision, read at projection time);
+   * subsequent operations on the same subject are fenced on the projected
+   * state after their predecessors. Subjects other than the ChangeSet base
+   * are not fenced (the base covers exactly one subject).
+   */
+  async #projectOperationGuards(
+    record: ChangeSetRecord,
+  ): Promise<readonly (OperationGuard | undefined)[]> {
+    const guards: (OperationGuard | undefined)[] = new Array(record.operations.length).fill(
+      undefined,
+    );
+    const releaseProjected = new Map<string, string | undefined>();
+    const activationProjected = new Map<string, number>();
+    for (let index = 0; index < record.operations.length; index += 1) {
+      const operation = record.operations[index] as ChangeSetOperation;
+      switch (operation.kind) {
+        case 'select-activation':
+        case 'rollback-activation': {
+          const target =
+            operation.kind === 'select-activation'
+              ? operation.activationVersion
+              : operation.targetActivationVersion;
+          let expectedRevision: number | undefined;
+          if (activationProjected.has(operation.graphId)) {
+            expectedRevision = activationProjected.get(operation.graphId);
+          } else if (
+            record.base.kind === 'activation' &&
+            record.base.subjectId === operation.graphId
+          ) {
+            const selection = await this.#catalog.getSelection(operation.graphId);
+            expectedRevision = selection?.selectionRevision;
+          } else {
+            expectedRevision = undefined; // not the base subject: unfenced
+          }
+          guards[index] = { expectedSelectionRevision: expectedRevision };
+          const current = activationProjected.has(operation.graphId)
+            ? (activationProjected.get(operation.graphId) ?? 0)
+            : ((await this.#catalog.getSelection(operation.graphId))?.selectionRevision ?? 0);
+          void target;
+          activationProjected.set(
+            operation.graphId,
+            expectedRevision === undefined ? current + 1 : expectedRevision + 1,
+          );
+          break;
+        }
+        case 'publish-and-select-release': {
+          const appId = operation.release.applicationId;
+          let expected: string | undefined;
+          if (releaseProjected.has(appId)) {
+            expected = releaseProjected.get(appId);
+          } else if (record.base.kind === 'release' && record.base.subjectId === appId) {
+            expected = record.base.expectedVersion;
+          } else {
+            expected = undefined;
+          }
+          guards[index] = { expectedBaseVersion: expected };
+          releaseProjected.set(appId, operation.release.releaseVersion);
+          break;
+        }
+        case 'select-release': {
+          let expected: string | undefined;
+          if (releaseProjected.has(operation.applicationId)) {
+            expected = releaseProjected.get(operation.applicationId);
+          } else if (
+            record.base.kind === 'release' &&
+            record.base.subjectId === operation.applicationId
+          ) {
+            expected = record.base.expectedVersion;
+          } else {
+            expected = undefined;
+          }
+          guards[index] = { expectedBaseVersion: expected };
+          releaseProjected.set(operation.applicationId, operation.releaseVersion);
+          break;
+        }
+        case 'rollback-release': {
+          let expected: string | undefined;
+          if (releaseProjected.has(operation.applicationId)) {
+            expected = releaseProjected.get(operation.applicationId);
+          } else if (
+            record.base.kind === 'release' &&
+            record.base.subjectId === operation.applicationId
+          ) {
+            expected = record.base.expectedVersion;
+          } else {
+            expected = undefined;
+          }
+          guards[index] = { expectedBaseVersion: expected };
+          releaseProjected.set(operation.applicationId, operation.targetReleaseVersion);
+          break;
+        }
+      }
+    }
+    return guards;
+  }
+
+  /**
+   * Verification-only check for a PREPARED intent whose effect may have
+   * completed before the crash: the target state itself must show the
+   * operation's effect (selection with the same operation identity, or a
+   * selection already pointing at the target activation).
+   */
+  async #operationEffectExists(
+    record: ChangeSetRecord,
+    index: number,
+    operation: ChangeSetOperation,
+    operationDigest: string,
+  ): Promise<boolean> {
+    void index;
+    switch (operation.kind) {
+      case 'select-activation':
+      case 'rollback-activation': {
+        const target =
+          operation.kind === 'select-activation'
+            ? operation.activationVersion
+            : operation.targetActivationVersion;
+        const selection = await this.#catalog.getSelection(operation.graphId);
+        return selection?.activationVersion === target;
+      }
+      case 'publish-and-select-release':
+      case 'select-release':
+      case 'rollback-release': {
+        const appId =
+          operation.kind === 'publish-and-select-release'
+            ? operation.release.applicationId
+            : operation.applicationId;
+        // The selection is the LAST step of every release operation: a
+        // selection row carrying this operation identity proves the whole
+        // operation completed (publication happened before it).
+        const selections = await this.#stores.control.listReleaseSelections(appId);
+        return selections.some((selection) => selection.operationId === operationDigest);
+      }
+    }
+  }
+
+  /** Apply ONE closed operation under its operation identity and guard. */
   async #applyOperation(
     actor: AuthenticatedActorContext,
+    record: ChangeSetRecord,
     operation: ChangeSetOperation,
-  ): Promise<string> {
+    guard: OperationGuard | undefined,
+    operationDigest: string,
+  ): Promise<void> {
     switch (operation.kind) {
       case 'select-activation': {
         const selection = await this.#catalog.select({
           graphId: operation.graphId,
           activationVersion: operation.activationVersion,
+          ...(guard?.expectedSelectionRevision !== undefined
+            ? { expectedSelectionRevision: guard.expectedSelectionRevision }
+            : {}),
         });
-        await this.#audit(
+        await this.#auditWithId(
+          this.#deterministicAuditId('activation.selected', operationDigest),
           actor.actorId,
           'activation.selected',
           'activation',
           operation.graphId,
           operation.activationVersion,
         );
-        return `activation:${operation.graphId}@${selection.activationVersion}`;
+        void selection;
+        return;
       }
       case 'rollback-activation': {
         const selection = await this.#catalog.select({
           graphId: operation.graphId,
           activationVersion: operation.targetActivationVersion,
+          ...(guard?.expectedSelectionRevision !== undefined
+            ? { expectedSelectionRevision: guard.expectedSelectionRevision }
+            : {}),
         });
-        await this.#audit(
+        await this.#auditWithId(
+          this.#deterministicAuditId('activation.rolled-back', operationDigest),
           actor.actorId,
           'activation.rolled-back',
           'activation',
           operation.graphId,
           operation.targetActivationVersion,
         );
-        return `activation:${operation.graphId}@${selection.activationVersion}`;
+        void selection;
+        return;
       }
       case 'publish-and-select-release': {
         const content = validateApplicationReleaseContent(operation.release);
@@ -821,27 +1111,46 @@ export class ControlPlaneService {
           publishedAt: this.#clock(),
           contentHash: controlContentHash(content),
         };
-        // Publish is idempotent by content identity; select is a monotonic
-        // selection record. If the process dies between the two, the op has
-        // NO receipt yet, so recovery re-executes the whole op without
-        // duplicating the publish (immutability guard) and completes the
-        // selection.
-        await this.#stores.control.publishRelease(release);
-        await this.#stores.control.selectRelease({
+        const selection = {
           applicationId: release.applicationId,
           releaseVersion: release.releaseVersion,
           actorId: actor.actorId,
           at: this.#clock(),
-          reason: 'select',
-        });
-        await this.#audit(
+          reason: 'select' as const,
+          operationId: operationDigest,
+          ...(guard?.expectedBaseVersion !== undefined
+            ? { expectedBaseVersion: guard.expectedBaseVersion }
+            : {}),
+        };
+        if (this.#stores.control.applyReleaseOperation !== undefined) {
+          // ATOMIC composition (where effect and receipt share SQLite):
+          // publication + guarded selection + applied receipt in ONE
+          // durable transaction — the dual-write gap is structurally closed.
+          const intent = await this.#preparedIntent(record, operationDigest);
+          if (intent === undefined) {
+            throw new VictControlError(
+              'VICT_CONTROL_OPERATION_RECEIPT_MISSING',
+              'The prepared operation intent must exist before the effect is applied.',
+            );
+          }
+          await this.#stores.control.applyReleaseOperation({
+            release,
+            selection,
+            receipt: intent,
+          });
+        } else {
+          await this.#stores.control.publishRelease(release);
+          await this.#stores.control.selectRelease(selection);
+        }
+        await this.#auditWithId(
+          this.#deterministicAuditId('release.published', operationDigest),
           actor.actorId,
           'release.published',
           'release',
           release.releaseVersion,
           release.applicationId,
         );
-        return `release:${release.applicationId}@${release.releaseVersion}`;
+        return;
       }
       case 'select-release': {
         await this.#stores.control.selectRelease({
@@ -850,15 +1159,20 @@ export class ControlPlaneService {
           actorId: actor.actorId,
           at: this.#clock(),
           reason: 'select',
+          operationId: operationDigest,
+          ...(guard?.expectedBaseVersion !== undefined
+            ? { expectedBaseVersion: guard.expectedBaseVersion }
+            : {}),
         });
-        await this.#audit(
+        await this.#auditWithId(
+          this.#deterministicAuditId('release.selected', operationDigest),
           actor.actorId,
           'release.selected',
           'release',
           operation.releaseVersion,
           operation.applicationId,
         );
-        return `release-selection:${operation.applicationId}@${operation.releaseVersion}`;
+        return;
       }
       case 'rollback-release': {
         await this.#stores.control.selectRelease({
@@ -867,24 +1181,46 @@ export class ControlPlaneService {
           actorId: actor.actorId,
           at: this.#clock(),
           reason: 'rollback',
+          operationId: operationDigest,
+          ...(guard?.expectedBaseVersion !== undefined
+            ? { expectedBaseVersion: guard.expectedBaseVersion }
+            : {}),
         });
-        await this.#audit(
+        await this.#auditWithId(
+          this.#deterministicAuditId('release.rolled-back', operationDigest),
           actor.actorId,
           'release.rolled-back',
           'release',
           operation.targetReleaseVersion,
           operation.applicationId,
         );
-        return `release-selection:${operation.applicationId}@${operation.targetReleaseVersion}`;
+        return;
       }
     }
   }
 
   /**
-   * Deterministic recovery: every `applying` ChangeSet is completed from
-   * its durable operation receipts (or reports the truthful interrupted
-   * state when an operation can no longer be applied). Called at
-   * composition/reconciliation time; idempotent.
+   * Read the durable PREPARED intent for one operation (fail closed when
+   * missing; the caller knows the owning ChangeSet through `record`).
+   */
+  async #preparedIntent(
+    record: ChangeSetRecord,
+    operationDigest: string,
+  ): Promise<ChangeSetOperationReceipt | undefined> {
+    const receipts = await this.#stores.control.listOperationReceipts(record.changesetId);
+    return receipts.find(
+      (receipt) => receipt.operationDigest === operationDigest && receipt.state === 'prepared',
+    );
+  }
+
+  /**
+   * Deterministic recovery: every `applying` ChangeSet is completed through
+   * the SAME operation protocol as a live commit (prepared intents, fenced
+   * idempotent effects, target-state verification) or reports the truthful
+   * interrupted state when an operation can no longer be applied (for
+   * example a lost base race). Called at composition/reconciliation time;
+   * idempotent. Recovery NEVER manufactures a receipt: an applied receipt
+   * exists only when the target state verifies it.
    */
   async recoverChangeSetCommits(): Promise<{
     readonly completed: number;
@@ -899,46 +1235,14 @@ export class ControlPlaneService {
         // Recovery continues the saga with the AUTHORING system identity:
         // receipts carry the committing actor; recovery adds no new effects
         // beyond the recorded operation set.
-        const receipts = await this.#stores.control.listOperationReceipts(record.changesetId);
-        const receiptByIndex = new Map(receipts.map((entry) => [entry.operationIndex, entry]));
-        for (let index = 0; index < record.operations.length; index += 1) {
-          const operation = record.operations[index] as ChangeSetOperation;
-          if (receiptByIndex.has(index)) {
-            continue;
-          }
-          // Recovery applies operations as a system continuation of the
-          // original authorized commit (the decision was already made and
-          // durably recorded; the effects are the approved operation set).
-          const effectRef = await this.#applyOperation(
-            {
-              actorId: record.authorActorId,
-              roles: [],
-              scopes: [],
-              mastraResourceId: `vict-actor-${record.authorActorId}`,
-            },
-            operation,
-          );
-          await this.#stores.control.recordOperationReceipt({
-            changesetId: record.changesetId,
-            operationIndex: index,
-            operationKind: operation.kind,
-            operationDigest: controlContentHash(operation),
-            effectRef,
+        await this.#resumeCommit(
+          {
             actorId: record.authorActorId,
-            appliedAt: this.#clock(),
-          });
-        }
-        await this.#stores.control.compareAndSetChangeSetStatus({
-          changesetId: record.changesetId,
-          expectedStatus: 'applying',
-          nextStatus: 'committed',
-        });
-        await this.#audit(
-          record.authorActorId,
-          'changeset.committed',
-          'changeset',
-          record.changesetId,
-          `${record.operations.length} operation(s) completed by recovery`,
+            roles: [],
+            scopes: [],
+            mastraResourceId: `vict-actor-${record.authorActorId}`,
+          },
+          record,
         );
         completed += 1;
       } catch (error) {
@@ -1190,6 +1494,36 @@ export class ControlPlaneService {
     await this.#stores.control.appendAuditEvent(event);
   }
 
+  /**
+   * Deterministic audit idempotency anchor: the SAME logical operation (or
+   * commit) always maps to the SAME audit id, so a crash during emission
+   * plus a recovery re-emission produce exactly ONE attributable outcome.
+   */
+  #deterministicAuditId(...identity: readonly string[]): string {
+    return `audit-${controlContentHash({ domain: 'vict.control-audit@1', identity })}`;
+  }
+
+  /** Emit an audit event with an EXPLICIT (deterministic) id. */
+  async #auditWithId(
+    auditId: string,
+    actorId: string,
+    action: ControlAuditAction,
+    subjectType: string,
+    subjectId: string,
+    summary: string,
+  ): Promise<void> {
+    const event: ControlAuditEvent = {
+      auditId,
+      at: this.#clock(),
+      actorId,
+      action,
+      subjectType,
+      subjectId,
+      summary,
+    };
+    await this.#stores.control.appendAuditEvent(event);
+  }
+
   #assertScope(
     actor: AuthenticatedActorContext,
     scope: Parameters<typeof assertScopeForActor>[1],
@@ -1209,6 +1543,25 @@ export type ApplicationReleaseRecordContent = Pick<
   | 'dataAdapterIdentity'
   | 'activationBinding'
 >;
+
+/**
+ * The safe simulation boundary: executes a proposed ChangeSet through REAL
+ * safe doubles (no irreversible effects) and reports per-operation
+ * outcomes. Composed explicitly; a deployment without a simulator BLOCKS
+ * simulation runs instead of passing them.
+ */
+export interface ChangeSetSimulator {
+  /** Stable simulator identity recorded in the run detail. */
+  readonly simulatorId: string;
+  simulate(input: {
+    record: ChangeSetRecord;
+    /** The stable operation identities the run covers. */
+    operationIdentities: readonly string[];
+  }): Promise<{
+    outcome: 'passed' | 'failed' | 'blocked';
+    operations: readonly ControlRunOperationOutcome[];
+  }>;
+}
 
 /** Scope enforcement below every layer (fail closed). */
 export function assertScopeForActor(actor: AuthenticatedActorContext, scope: ActorScope): void {
