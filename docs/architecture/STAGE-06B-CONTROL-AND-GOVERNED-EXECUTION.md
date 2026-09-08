@@ -1,8 +1,12 @@
 # Stage 06B — Control Plane and Governed Remote Execution
 
-Status: implemented, awaiting fresh independent audit (not Verified).
+Status: corrected corrective-finalization increment, awaiting fresh
+independent audit (not Verified).
 Parent reference: `docs/VICT-SYSTEM-REFERENCE.md` (§0.9, §5, §24.3).
-Companion report: `docs/report/VICT-STAGE-06B-REPORT.md`.
+Companion reports: `docs/report/VICT-STAGE-06B-REPORT.md` (original
+implementation claim, preserved byte-for-byte) and
+`docs/report/VICT-STAGE-06B-CORRECTIVE-FINALIZATION-REPORT.md`
+(defect reproduction and corrections on top of it).
 
 Stage 06B turns the Stage 06A product-agent foundation into a governed,
 remotely drivable system: an authenticated actor boundary, ChangeSet and
@@ -63,6 +67,19 @@ Mastra-free, field-level, fail-closed:
   codes and paths only — never values.
 - `text.delta` is the only transient kind (safe to coalesce); every other
   kind is durable and persisted by the stream ledger.
+- Correlation identities on the envelope where applicable:
+  `activationVersion`, `mastraRunId`, `victInvocationId`,
+  `victAttemptId` (optional, ID-only, never payload copies).
+- `content.completed` carries `contentRef` — a closed-pattern reference
+  into the actor-authorized conversation domain
+  (`conversation:vict-actor-<actorId>/<threadId>/<turnId>`) — never the
+  full assistant text; the operational ledger retains the reference only.
+- One closed exported wire-envelope validator
+  (`validateAgentStreamWireEnvelope` / `assertAgentStreamWireEnvelope`)
+  strips the accepted `schema` marker field and validates the remaining
+  event against the schema; every server-emitted SSE frame conforms to
+  it, including writes from plain JavaScript (runtime validation on the
+  durable write path).
 - Compatibility and evolution rules for the frozen `@1` marker: new
   optional envelope IDs may be added; no field is removed or re-typed; new
   kinds require a `@2` marker; consumers must ignore nothing — unknown
@@ -88,6 +105,21 @@ cross the boundary; failures surface as stable sanitized codes
 - Default policy is denial: every service method asserts the required
   scope below the HTTP/CLI layers (`ROLE_SCOPES`; administrator is a
   superset, not a special case).
+- Authorization is additionally enforced in the shared command dispatcher
+  below the HTTP transport: every public command is mapped to a closed
+  scope (`COMMAND_SCOPES`; `health.inspect`, `compatibility.inspect` and
+  `actor.whoami` require only authentication), so a route-handler bug
+  cannot widen authority.
+- Reads are actor-scoped: `stream.inspect`, `changeset.get`/`list`,
+  `agent.turn.get`, and selected-release reads return only records the
+  actor owns or is explicitly privileged to see; cross-actor reads fail
+  closed (403/404, never a data leak).
+- `activation.select` attributes the authenticated actor as the selecting
+  actor; the synthetic `"system"` attribution no longer exists.
+- SSE subscription and replay are authorized: the stream's turn must
+  exist, be owned by the actor (or the actor holds the privileged
+  inspection scope), otherwise the endpoint answers 404/403 — durable
+  stream rows without a valid turn owner are never treated as public.
 - Errors use stable codes and never echo credentials, tokens, or hostile
   values.
 
@@ -110,6 +142,30 @@ draft ──approve──▶ approved ──commit──▶ committed
   `rollback-activation`, `publish-and-select-release`, `link-capability`),
   bounded rationale, validation/simulation evidence, risk class, required
   approver count, expiry, and an immutable `contentHash`.
+- Evidence is authoritative: validation/simulation evidence is attached
+  only as a reference to a durable control run that the trusted boundary
+  itself executed (`executeChangeSetCheck` under the
+  `vict.control-plane@1` runner profile); the service derives outcome,
+  run identity, content hash, base identity and timestamps from the
+  stored run record — a caller cannot fabricate `passed`, `runId`,
+  timestamps or outcomes. Revising a ChangeSet invalidates prior runs
+  with the evidence. Commit requires the evidence mandated by the
+  risk/effect policy (low risk: validation; medium/high: validation AND
+  simulation); missing, failed, stale or mismatched evidence blocks
+  commit with structured diagnostics. Fabricated and replayed evidence
+  cannot authorize a commit (permanent negative controls).
+- Commit is a durable saga: the full operation set is prevalidated, the
+  status moves `approved → applying → committed` under a
+  compare-and-set (exactly one concurrent winner), each applied
+  operation writes an immutable receipt
+  (`vict_changeset_operation_receipt`) before the next starts, and
+  recovery (`recoverChangeSetCommits`) replays from the receipts after a
+  crash — already-applied operations are never repeated, and no failure
+  leaves a falsely final state (a half-applied ChangeSet stays
+  `applying`, externally visible as not-final). Release publication and
+  selection are one `publish-and-select-release` operation, never an
+  untracked two-step partial update. Audit records agree with the
+  actually-committed state.
 - Stale-base proposals fail without mutation; approval binds to the exact
   content hash; revising content invalidates evidence and approvals;
   commit is idempotent; competing commits produce one truthful winner;
@@ -137,24 +193,51 @@ winner; restart between VICT approval and Mastra resume reconciles safely.
 `@vict/server` composes a real `node:http` server (`vict.command@1`):
 
 - Closed command list (`health.inspect`, `compatibility.inspect`,
-  `actor.whoami`, `changeset.propose/revise/attach-evidence/decide/commit/
-  get/list`, `release.publish/select/rollback/get-selected`,
-  `activation.select`, `run.cancel`, `agent.turn.start/cancel/get`,
-  `agent.tool.approve/decline`, `stream.inspect`, `app.data.*`).
-- Bounded request bodies (256 KiB), bounded payloads (≤64 fields), strict
-  content-type handling, stable status mapping (401/403/404/409/400/413/
-  415/500), mutation idempotency keys, dynamic route path parameters
-  injected authoritatively into payloads, no raw exception or secret echo,
-  no privileged agent-framework route.
+  `actor.whoami`, `changeset.propose/revise/attach-evidence/decide/
+  execute-check/commit/get/list`, `release.publish/select/rollback/
+  get-selected`, `activation.select`, `run.cancel`,
+  `agent.turn.start/cancel/get`, `agent.tool.approve/decline`,
+  `stream.inspect`, `app.data.*`).
+- Closed payload schemas: every command declares an exact field set;
+  unknown fields and non-object payloads are rejected
+  (`VICT_COMMAND_PAYLOAD_INVALID`) instead of being silently coerced to
+  `{}`; dynamic route path parameters are injected authoritatively.
+- Exact `Content-Type` parsing: only exact JSON content types are
+  accepted as JSON (`415` otherwise); malformed input can never cause a
+  raw exception or echo hostile values.
+- Durable command idempotency for ALL state-changing commands: a
+  validated `Idempotency-Key` header (closed bounded format) creates a
+  durable receipt bound to (actor, command, canonical request digest).
+  Same actor/command/key/digest replays the original durable result
+  without repeating effects; the same key with a different command or
+  digest is a stable conflict (`VICT_COMMAND_IDEMPOTENCY_CONFLICT`); a
+  still-running duplicate answers `VICT_COMMAND_IDEMPOTENCY_IN_PROGRESS`.
+  Receipts survive SQLite close/reopen and process restart; concurrent
+  duplicates have exactly one winner. `agent.turn.start` retries never
+  create multiple turns.
+- Bounded request bodies (256 KiB), bounded payloads (≤64 fields),
+  stable status mapping (401/403/404/409/400/413/415/500), no raw
+  exception or secret echo, no privileged agent-framework route.
+- Lifecycle correctness: `port()` returns the real bound port;
+  `close()` awaits actual shutdown and terminates open SSE
+  connections.
 - Resumable SSE (`GET /vict/v1/streams/:id`): `text/event-stream`, SSE
   event IDs derived from the stream sequence, `Last-Event-ID` and explicit
-  `?cursor=` reconnect, duplicate-safe replay of durable rows plus
-  in-buffer transient deltas, coalescing of consecutive `text.delta` only
-  (non-delta events are never dropped or reordered), bounded buffering
-  with slow-subscriber backpressure, clean completion, rejection of
-  malformed/future/cross-actor cursors, and a
-  `cursor-older-than-buffer` disclosure that points clients at
-  authoritative durable state. WebSocket/WebRTC are not used.
+  `?cursor=` reconnect using the closed cursor format
+  `v1:<streamId>:<seq>` (cross-stream cursors → 403, malformed → 400,
+  future sequences → 409); replay status is exposed through defined
+  response headers (`x-vict-replay-bounded`, `x-vict-stream-newest-seq`,
+  `x-vict-stream-cursor`), never through undeclared event kinds.
+- Replay is lossless and ordered: replayed durable rows are written
+  before live subscription is attached, anchored at the cursor, and the
+  full authorized replay is delivered in order — Node backpressure is
+  honored (`response.write() === false` awaits `drain`; nothing is
+  discarded). Coalescing may combine consecutive `text.delta` only on
+  private copies; stored/delivered events are frozen or copied so no
+  object is shared-and-mutated between queues and the replay buffer;
+  durable/control/terminal events are never dropped. A subscriber that
+  attaches before a turn becomes terminal still receives the terminal
+  event and a clean close. WebSocket/WebRTC are not used.
 - Remote Application data adapter: queries/mutations preserve declared
   resource/revision/release identities; actions stay client-local and
   cannot be dispatched remotely (`VICT_APPDATA_LOCAL_ACTION_DENIED`);
@@ -183,10 +266,24 @@ become model-facing tools; tool names/descriptions cannot widen authority;
 prompt injection, memory content, and model output cannot add tools,
 permissions, roles, or secrets; missing/extra/stale/wrong-revision tools
 fail closed; contract validation remains authoritative even if the agent
-framework's schema validation passed. The idempotency key is deterministic
-over `(turnId, toolCallId, capabilityId, capabilityRevision, argDigest)`,
-so retries, resumes, and restarts see ONE logical invocation. Suspension
-(agent-framework-level waiting) is a waiting mechanism, never
+framework's schema validation passed.
+
+Store failures are never silently swallowed: invocation state transitions
+tolerate only explicitly recognized stale/fenced/idempotent outcomes; any
+other store error propagates. If an external effect occurred but terminal
+persistence failed, the invocation enters the truthful `outcome_unknown`
+state instead of reporting normal completion.
+
+Tool-call identity is deterministic: a missing/malformed upstream tool-call
+identity falls back to an identity derived from the durable turn context
+and a per-turn invocation ordinal (never the clock), stable across retry,
+approval suspension and restart. Argument digests are computed over a
+canonical JSON form (key-order invariant; unsupported values are rejected,
+not silently coerced). The durable idempotency key is propagated into the
+capability invocation context so external adapters can deduplicate after
+restart. Durable milestones are awaited, ordered and exactly-once; a lost
+milestone fails the turn with `VICT_TURN_STREAM_PERSISTENCE_FAILED`.
+Suspension (agent-framework-level waiting) is a waiting mechanism, never
 authorization: the VICT approval record commits before resume.
 
 ## 7. Cancellation and restart reconciliation
@@ -228,17 +325,58 @@ reaches only its authorized recipient and designated stores. The Stage 06A
 pruning, deletion, export, file-containment, and permission suites are
 retained and re-run in the ladder.
 
+Retention is enforced at the source:
+
+- prompt summaries are metadata-only (event kind + length, e.g.
+  `user-input:length=N`) — never prompt text, samples, or payload-derived
+  key names;
+- tool-argument summaries are shape-only metadata — never argument
+  values, key names, or serialized payload fragments (keys/secret names
+  included);
+- the operational stream ledger never stores full assistant content;
+  `content.completed` milestones carry a `contentRef` into the
+  actor-authorized conversation domain, which owns full content under
+  its retention/deletion/export policy;
+- approval `reason` is retained only inside the approval record itself,
+  not copied into stream events or HTTP errors.
+
+A true end-to-end canary test (`packages/server/test/e2e-canary.test.ts`)
+drives authenticated HTTP turn → deterministic offline Mastra model →
+real governed tool bridge → VICT capability → SQLite stores → SSE, plants
+unique canaries in prompt text, model output, tool argument keys/values,
+the capability-thrown error and nested cause, the credential name/value,
+and approval metadata, then scans serialized HTTP errors, unauthorized
+responses, SSE metadata and events, operational rows, history, traces and
+every SQLite DB/WAL/SHM byte. Intentionally authorized surfaces (the
+conversation domain record, the approval record's own reason field, and
+the live/user-visible application output) are explicitly identified in
+the test.
+
 ## 9. Verification
 
-`verify:stage6b` (aggregate exit gate) covers: package inspection (real
-behavior, dependency direction, Mastra-freedom of neutral/transport
+`verify:stage6b` (aggregate exit gate) is self-contained: it first runs
+`npm run typecheck` and `npm run build` (so it is valid from a
+zero-artifact clean clone and builds every workspace it consumes,
+including `@vict/server` and `@vict/cli`), then gates: package inspection
+(real behavior, dependency direction, Mastra-freedom of neutral/transport
 packages, pinned versions, CLI store-freedom); runtime + SQLite
-conformance parity incl. close/reopen; control-plane lifecycle suites;
-governed tool-bridge/executor suites; real-HTTP command/SSE/CLI suites;
-SIGKILL and canary fixtures; a fresh-process SQLite server driven end-to-end
-by the CLI; and the Stage 06A driver-cause/receipt regression suites.
-Observed results and the full ladder are recorded in
-`docs/report/VICT-STAGE-06B-REPORT.md`.
+conformance parity incl. close/reopen and the corrective-finalization
+stores (control runs, operation receipts, CAS status transitions, command
+idempotency); control-plane lifecycle suites incl. the commit saga and
+authoritative evidence; the public-API authorization matrix over real
+HTTP; durable command idempotency (in-memory + SQLite + HTTP); governed
+tool-bridge/executor suites incl. phase fault injection; real-HTTP
+command/SSE/CLI suites incl. real-socket forced-backpressure replay;
+SIGKILL, canary and end-to-end canary fixtures; a fresh-process SQLite
+server driven end-to-end by the CLI; and the Stage 06A
+driver-cause/receipt regression suites.
+
+A clean-clone regression (`npm run verify:clean-clone`) proves the exact
+required sequence from a genuine fresh clone of the committed state:
+`npm ci` → `npm run typecheck` (before any build, no `dist`) →
+`npm run build` → `npm run verify:stage6b`. Observed results and the full
+ladder are recorded in
+`docs/report/VICT-STAGE-06B-CORRECTIVE-FINALIZATION-REPORT.md`.
 
 ## 10. Genuine limitations
 

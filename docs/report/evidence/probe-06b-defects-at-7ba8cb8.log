@@ -1,0 +1,82 @@
+module body start
+loop start
+probe F3a ... REPRODUCED
+probe F3b ... REPRODUCED
+probe F3c ... REPRODUCED
+probe F4 ... REPRODUCED
+probe F5a ... REPRODUCED
+probe F6 ... REPRODUCED
+probe F7 ... REPRODUCED
+probe F8a ... REPRODUCED
+probe F8b ... REPRODUCED
+probe F9a ... REPRODUCED
+probe F9b ... REPRODUCED
+probe F10a ... REPRODUCED
+probe F10b ... REPRODUCED
+probe F10c ... REPRODUCED
+probe F11a ... REPRODUCED
+probe F11b ... REPRODUCED
+probe F11c ... REPRODUCED
+probe F12a ... REPRODUCED
+probe F8c ... REPRODUCED
+
+=== Stage 06B defect probes (starting SHA 7ba8cb8) ===
+
+[REPRODUCED] F3a: activation.select runs WITHOUT any authorization scope check and attributes selections to synthetic "system"
+    -> no-scope actor was NOT denied (status 500 — store execution attempted); selectActivation(input) has no actor parameter and audits as 'system'
+
+[REPRODUCED] F3b: stream.inspect reveals stream identifiers belonging to other actors
+    -> cross-actor stream id disclosed: ["stream-other-actor"]
+
+[REPRODUCED] F3c: changeset.get returns ok:true with empty object for a missing changeset
+    -> missing changeset read returned 200 ok:true changeset:{}
+
+[REPRODUCED] F4: HTTP Idempotency-Key does not govern execution: same key twice creates TWO ChangeSets... (probe via run.cancel-free path: changeset.propose is state-changing)
+    -> same key, different payload -> 2 ChangeSets created (no durable receipt exists)
+
+[REPRODUCED] F5a: fabricated validation/simulation evidence (caller-chosen runId/outcome/timestamp) is accepted and authorizes commit
+    -> fabricated evidence accepted; high-risk commit succeeds with zero evidence
+
+[REPRODUCED] F6: two-operation ChangeSet: operation 1 applies, operation 2 fails -> ChangeSet stays "approved" with partial external state (no atomicity/resumability)
+    -> commit failed op2; status=approved; partial external state applied (rel-ok-1 selected) with no durable applying marker or receipts
+
+[REPRODUCED] F7: SSE emits undeclared "replay.bounded" frames and a "schema" field the validator rejects; wire frames have no exported closed validator
+    -> server-emitted frame rejected by the contract validator ([{"code":"AGENT_STREAM_UNKNOWN_FIELD","path":"response.completed.schema"}]); undeclared replay.bounded frame emitted
+
+[REPRODUCED] F8a: port() returns 0 (not the real bound port)
+    -> port()=0 but the server actually listens on 54132
+
+[REPRODUCED] F8b: SSE treated as PUBLIC when no durable turn row matches the stream
+    -> SSE opened for a stream with NO durable turn ownership record (treated as public)
+
+[REPRODUCED] F9a: turn inputSummary retains the raw prompt prefix (payload-derived retention)
+    -> safeInputSummary returns raw prompt text: "PROMPT-CANARY-9f2a confidential patient record 8842"
+
+[REPRODUCED] F9b: tool argument summaries retain argument values and key names
+    -> safeArgumentSummary returns serialized arguments: "{\"apiKeyValue\":\"SECRET-CANARY-44bb\",\"userId\":\"user-777\"}"
+
+[REPRODUCED] F10a: tool-bridge swallows ALL durable store failures during invocation transitions (safeStatus catch {})
+    -> safeStatus catches every store failure; capability invoked even when terminal persistence fails (normal completion reported)
+
+[REPRODUCED] F10b: canonical argument digest uses insertion-order-sensitive JSON.stringify
+    -> same logical arguments, different key order -> different digests (43258cff vs 3fb75453)
+
+[REPRODUCED] F10c: tool-call identity fallback derives from current time (non-deterministic)
+    -> missing toolCallId falls back to a digest over {turn, capability, at: clock()} — unstable across retries
+
+[REPRODUCED] F11a: non-object payloads are silently converted to {}
+    -> non-object payloads silently converted to {}: string payload produced changesetId=undefined field error; array payload executed whoami (200)
+
+[REPRODUCED] F11b: unknown payload fields are accepted (no closed command schemas)
+    -> whoami executed with undeclared fields hostileUnknownField/another (no closed payload schema)
+
+[REPRODUCED] F11c: Content-Type parsing uses substring matching
+    -> content-type check is !contentType.includes('application/json') — e.g. 'text/plain-application/json' or 'application/json-bad' would pass
+
+[REPRODUCED] F12a: hub mutates event objects shared between subscriber queue and replay buffer
+    -> the delivered event and the buffered replay event are the same object (identity ===); pending coalescing mutates shared objects in place
+
+[REPRODUCED] F8c: subscribe() DISCARDS remaining replay on backpressure instead of buffering
+    -> replay rows 3-4 were discarded on backpressure (delivered=response.started,memory.updated); the subscriber permanently loses them
+
+Reproduced: 19/19
