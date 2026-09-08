@@ -15,8 +15,8 @@ Stage 06B verifier had already passed at the starting SHA.
 | Marker | SHA |
 | --- | --- |
 | Required starting SHA (= `origin/main` at start) | `d1bf385eb0e0c8052a05f8af195600565bf2c86b` |
-| Implementation (final local) SHA | `944bcdc` (full: printed by `git rev-parse HEAD` at push time; commit chain below) |
-| Final remote SHA | pushed fast-forward from the implementation SHA (see §10) |
+| Implementation SHA (last code/test commit) | `944bcdc1190a6c0c826fb27019bfef681c62f39a` |
+| Final remote SHA (after the report commit; fast-forward) | `1e8f2ec8178c5f812d00acf547305e71f93ec006` |
 
 Commit chain (fast-forward only, no rewrites):
 
