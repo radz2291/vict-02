@@ -15,7 +15,11 @@ blocked).
 
 This report documents the independent reproduction of the Stage 06B defects at
 the starting SHA and the corrections applied on top of the implementer claim.
-It is an implementer claim only: every statement below is falsifiable by the
+Implementation and documentation SHAs: `ffadb7f` (build integrity),
+`db92a8d` (contracts/runtime), `62ec397` (SQLite), `18bd631` (control),
+`1523de7` (Mastra bridge), `a1b8dd8` (server/CLI), `8d8c46a` (docs) — pushed
+to `origin/main` as a single fast-forward `7ba8cb8..8d8c46a`. It is an
+implementer claim only: every statement below is falsifiable by the
 fresh independent audit, which remains the authoritative gate.
 
 ## 1. Outcome
@@ -152,7 +156,9 @@ with 12 consecutive clean dedicated runs); no production defect was involved.
   temp dir, asserts zero artifacts (no `dist`, no `node_modules`), then runs
   `npm ci` → `npm run typecheck` (before any build) → `npm run build` →
   `npm run verify:stage6b`. At `7ba8cb8` this sequence failed exactly as the
-  F1 probes predicted; on the corrected committed tree it must pass in full.
+  F1 probes predicted; on the corrected committed tree (`8d8c46a`) it PASSED
+  in full (exit 0, all gates: clone, zero-artifact, ci, typecheck-before-build,
+  build, verify:stage6b).
 - `verify:consumer` proves a packed external consumer resolves the built
   package graph; `verify:stage6b` additionally asserts server/cli/control
   dist artifacts exist after build.
