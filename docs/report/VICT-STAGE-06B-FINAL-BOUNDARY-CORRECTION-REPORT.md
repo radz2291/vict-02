@@ -426,10 +426,11 @@ documentation SHA  : the docs(stage-06b) commit that carries this report
                      and the architecture-document update (its exact value
                      is this file's own commit; see `git log -- docs/report/
                      VICT-STAGE-06B-FINAL-BOUNDARY-CORRECTION-REPORT.md`)
-final remote head  : pushed to origin/main by fast-forward; the completion
-                     response records the exact post-push head (see
-                     also the follow-up docs commit recording the
-                     completion-time remote head)
+final remote head  : the completion-time remote head at the time of this
+                     record is af4d85a (this report's own documentation
+                     commit); the push is a fast-forward from that head,
+                     so the post-push origin/main is the commit carrying
+                     this record
 starting SHA       : 8bc8da1177df8ec998efe152d1ed30f0b62c7342 (see §1)
 ```
 
