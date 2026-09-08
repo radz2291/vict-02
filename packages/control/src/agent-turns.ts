@@ -524,9 +524,14 @@ export class AgentTurnService {
   }
 }
 
-/** Bounded safe summary of user input (never the full prompt). */
-export function safeInputSummary(input: string, limit: number): string {
-  return input.length <= limit ? input : `${input.slice(0, limit)}…`;
+/**
+ * Framework-metadata-only summary of user input (DATA-005). The summary is
+ * derived from the transport envelope ONLY — never the prompt text, never
+ * samples, never payload-derived key names, never a reversible digest of
+ * the content.
+ */
+export function safeInputSummary(input: string, _limit: number): string {
+  return `user-input:length=${input.length}`;
 }
 
 function failIds(): string {

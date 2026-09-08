@@ -5,10 +5,13 @@ import {
   AgentControlStores,
   ApplicationReleaseRecord,
   ChangeSetApprovalDecision,
+  ChangeSetOperation,
   ChangeSetRecord,
   ChangeSetSimulationEvidence,
   ChangeSetValidationEvidence,
   ControlAuditEvent,
+  ControlRunKind,
+  ControlRunRecord,
   ReleaseSelectionRecord,
 } from '@vict/runtime';
 import {
@@ -56,11 +59,12 @@ export interface ControlPlaneServiceOptions {
   readonly catalog: ActivationCatalog;
   /** Injected clock (epoch ms). */
   readonly clock?: () => number;
-  /** Injected id factory (changeset, approval, audit ids). */
+  /** Injected id factory (changeset, approval, audit, run ids). */
   readonly ids?: {
     changesetId(): string;
     changesetApprovalId(): string;
     auditId(): string;
+    controlRunId(): string;
   };
 }
 
@@ -108,6 +112,7 @@ export class ControlPlaneService {
       changesetId: options.ids?.changesetId ?? (() => failRandomIds()),
       changesetApprovalId: options.ids?.changesetApprovalId ?? (() => failRandomIds()),
       auditId: options.ids?.auditId ?? (() => failRandomIds()),
+      controlRunId: options.ids?.controlRunId ?? (() => failRandomIds()),
     };
   }
 
@@ -229,42 +234,71 @@ export class ControlPlaneService {
     return updated;
   }
 
-  /** Attach validation evidence (draft only; attributable). */
+  /** Attach authoritative validation evidence (draft only; attributable).
+   *
+   * The caller supplies ONLY the identity of an executed run. The evidence
+   * record itself (outcome, timestamps, content hash, base binding, runner
+   * profile, actor) is DERIVED from the authoritative stored run — a caller
+   * can never fabricate `passed`, run outcomes, or timestamps.
+   */
   async attachValidationEvidence(
     actor: AuthenticatedActorContext,
-    input: { changesetId: string; evidence: ChangeSetValidationEvidence },
+    input: { changesetId: string; runId: string },
   ): Promise<ChangeSetRecord> {
     this.#assertScope(actor, 'changeset.propose');
-    const updated = await this.#stores.control.updateChangeSet(input.changesetId, (record) => {
-      this.#assertDraft(record, input.changesetId);
-      return { ...record, validation: input.evidence };
+    const record = await this.#requireChangeSet(input.changesetId);
+    const run = await this.#verifyEvidenceBinding(actor, record, 'validation', input.runId);
+    const evidence: ChangeSetValidationEvidence = {
+      runId: run.runId,
+      outcome: run.outcome === 'passed' ? 'passed' : 'failed',
+      recordedAt: run.createdAt,
+      contentHash: run.contentHash,
+      base: run.base,
+      runnerProfile: run.runnerProfile,
+      actorId: run.actorId,
+    };
+    const updated = await this.#stores.control.updateChangeSet(input.changesetId, (current) => {
+      this.#assertDraft(current, input.changesetId);
+      return { ...current, validation: evidence };
     });
     await this.#audit(
       actor.actorId,
       'changeset.evidence-attached',
       'changeset',
       input.changesetId,
-      'validation evidence',
+      'validation evidence derived from an executed run',
     );
     return updated;
   }
 
-  /** Attach simulation evidence (draft only; attributable). */
+  /** Attach authoritative simulation evidence (draft only; attributable).
+   * See `attachValidationEvidence` for the binding contract. */
   async attachSimulationEvidence(
     actor: AuthenticatedActorContext,
-    input: { changesetId: string; evidence: ChangeSetSimulationEvidence },
+    input: { changesetId: string; runId: string },
   ): Promise<ChangeSetRecord> {
     this.#assertScope(actor, 'changeset.propose');
-    const updated = await this.#stores.control.updateChangeSet(input.changesetId, (record) => {
-      this.#assertDraft(record, input.changesetId);
-      return { ...record, simulation: input.evidence };
+    const record = await this.#requireChangeSet(input.changesetId);
+    const run = await this.#verifyEvidenceBinding(actor, record, 'simulation', input.runId);
+    const evidence: ChangeSetSimulationEvidence = {
+      runId: run.runId,
+      outcome: run.outcome === 'passed' ? 'passed' : run.outcome,
+      recordedAt: run.createdAt,
+      contentHash: run.contentHash,
+      base: run.base,
+      runnerProfile: run.runnerProfile,
+      actorId: run.actorId,
+    };
+    const updated = await this.#stores.control.updateChangeSet(input.changesetId, (current) => {
+      this.#assertDraft(current, input.changesetId);
+      return { ...current, simulation: evidence };
     });
     await this.#audit(
       actor.actorId,
       'changeset.evidence-attached',
       'changeset',
       input.changesetId,
-      'simulation evidence',
+      'simulation evidence derived from an executed run',
     );
     return updated;
   }
@@ -351,9 +385,286 @@ export class ControlPlaneService {
   }
 
   /**
+   * The runner/profile identity of THIS trusted VICT boundary. Every
+   * authoritative governance run executed here is recorded with it.
+   */
+  static readonly RUNNER_PROFILE = 'vict.control-plane@1';
+
+  /**
+   * Execute ONE authoritative governance run (validation or simulation)
+   * through the trusted VICT boundary and record it durably. The run
+   * deterministically prevalidates the ChangeSet's full operation set
+   * against the CURRENT durable state; callers cannot fabricate run
+   * identities, outcomes, or timestamps — they can only execute a run and
+   * reference its stable id afterwards.
+   */
+  async executeChangeSetCheck(
+    actor: AuthenticatedActorContext,
+    input: {
+      changesetId: string;
+      kind: ControlRunKind;
+      runId?: string;
+    },
+  ): Promise<ControlRunRecord> {
+    this.#assertScope(actor, 'changeset.propose');
+    const record = await this.#requireChangeSet(input.changesetId);
+    if (record.status !== 'draft') {
+      throw new VictControlError(
+        'VICT_CONTROL_CHANGESET_NOT_DRAFT',
+        'Governance runs execute against draft ChangeSets only.',
+      );
+    }
+    // Authoritative prevalidation of the COMPLETE operation set against the
+    // current durable state (never a caller claim).
+    let outcome: ControlRunRecord['outcome'] = 'passed';
+    try {
+      await this.#prevalidateOperations(record);
+    } catch (error) {
+      if (
+        error instanceof VictControlError &&
+        (error.code === 'VICT_CONTROL_RELEASE_MISSING' ||
+          error.code === 'VICT_CONTROL_BASE_STALE' ||
+          error.code === 'VICT_CONTROL_RELEASE_INVALID' ||
+          error.code === 'VICT_CONTROL_OPERATION_INVALID')
+      ) {
+        outcome = 'blocked';
+      } else {
+        throw error;
+      }
+    }
+    const run: ControlRunRecord = {
+      runId: input.runId ?? this.#ids.controlRunId(),
+      kind: input.kind,
+      changesetId: record.changesetId,
+      contentHash: record.contentHash,
+      base: record.base,
+      operations: record.operations,
+      runnerProfile: ControlPlaneService.RUNNER_PROFILE,
+      actorId: actor.actorId,
+      outcome,
+      createdAt: this.#clock(),
+    };
+    await this.#stores.control.recordControlRun(run);
+    await this.#audit(
+      actor.actorId,
+      'changeset.evidence-attached',
+      'changeset',
+      record.changesetId,
+      `${input.kind} run executed (${outcome})`,
+    );
+    return run;
+  }
+
+  /**
+   * Verify that caller-presented evidence binds to an EXECUTED authoritative
+   * run with the exact subject identity. Rejections are structured and
+   * never echo the presented values.
+   */
+  async #verifyEvidenceBinding(
+    actor: AuthenticatedActorContext,
+    record: ChangeSetRecord,
+    kind: ControlRunKind,
+    runId: string,
+  ): Promise<ControlRunRecord> {
+    const run = await this.#stores.control.getControlRun(runId);
+    if (run === undefined) {
+      throw new VictControlError(
+        'VICT_CONTROL_EVIDENCE_NOT_AUTHORITATIVE',
+        'The referenced run was not executed by the trusted VICT boundary.',
+      );
+    }
+    if (run.kind !== kind) {
+      throw new VictControlError(
+        'VICT_CONTROL_EVIDENCE_NOT_AUTHORITATIVE',
+        'The referenced run kind does not match the evidence kind.',
+      );
+    }
+    if (run.changesetId !== record.changesetId) {
+      throw new VictControlError(
+        'VICT_CONTROL_EVIDENCE_SUBJECT_MISMATCH',
+        'The referenced run was executed for a different ChangeSet.',
+      );
+    }
+    if (run.contentHash !== record.contentHash) {
+      throw new VictControlError(
+        'VICT_CONTROL_EVIDENCE_CONTENT_MISMATCH',
+        'The referenced run was executed against different ChangeSet content.',
+      );
+    }
+    if (
+      run.base.subjectId !== record.base.subjectId ||
+      run.base.kind !== record.base.kind ||
+      run.base.expectedVersion !== record.base.expectedVersion
+    ) {
+      throw new VictControlError(
+        'VICT_CONTROL_EVIDENCE_BASE_MISMATCH',
+        'The referenced run was executed against a different base identity.',
+      );
+    }
+    if (run.runnerProfile !== ControlPlaneService.RUNNER_PROFILE) {
+      throw new VictControlError(
+        'VICT_CONTROL_EVIDENCE_NOT_AUTHORITATIVE',
+        'The referenced run was not executed by the composed VICT runner.',
+      );
+    }
+    if (run.actorId !== actor.actorId) {
+      throw new VictControlError(
+        'VICT_CONTROL_EVIDENCE_ACTOR_MISMATCH',
+        'The referenced run was executed for a different authenticated actor.',
+      );
+    }
+    return run;
+  }
+
+  /**
+   * The closed risk/effect evidence policy for commits. low-risk ChangeSets
+   * require an authoritative PASSED validation run; medium- and high-risk
+   * ChangeSets additionally require an authoritative PASSED simulation run.
+   */
+  #requiredEvidenceFor(record: ChangeSetRecord): readonly ControlRunKind[] {
+    switch (record.riskClass) {
+      case 'low':
+        return ['validation'];
+      case 'medium':
+      case 'high':
+        return ['validation', 'simulation'];
+    }
+  }
+
+  /** Verify commit-time evidence against the risk policy and stored runs. */
+  async #verifyCommitEvidence(record: ChangeSetRecord): Promise<void> {
+    const required = this.#requiredEvidenceFor(record);
+    for (const kind of required) {
+      const evidence = kind === 'validation' ? record.validation : record.simulation;
+      if (evidence === undefined) {
+        throw new VictControlError(
+          'VICT_CONTROL_EVIDENCE_MISSING',
+          `Commit requires an executed ${kind} run for this risk class (${record.riskClass}).`,
+        );
+      }
+      // The evidence must bind the CURRENT content hash and base.
+      if (evidence.contentHash !== record.contentHash) {
+        throw new VictControlError(
+          'VICT_CONTROL_EVIDENCE_STALE',
+          `The ${kind} evidence binds different ChangeSet content (revised proposals invalidate evidence).`,
+        );
+      }
+      if (
+        evidence.base.kind !== record.base.kind ||
+        evidence.base.subjectId !== record.base.subjectId ||
+        evidence.base.expectedVersion !== record.base.expectedVersion
+      ) {
+        throw new VictControlError(
+          'VICT_CONTROL_EVIDENCE_STALE',
+          `The ${kind} evidence binds a different base identity.`,
+        );
+      }
+      // The evidence must reference an authoritative executed run whose
+      // durable outcome was PASSED (replayed/fabricated evidence cannot
+      // authorize a commit).
+      const run = await this.#stores.control.getControlRun(evidence.runId);
+      if (
+        run === undefined ||
+        run.kind !== kind ||
+        run.changesetId !== record.changesetId ||
+        run.contentHash !== record.contentHash ||
+        run.runnerProfile !== ControlPlaneService.RUNNER_PROFILE
+      ) {
+        throw new VictControlError(
+          'VICT_CONTROL_EVIDENCE_NOT_AUTHORITATIVE',
+          `The ${kind} evidence does not reference a matching executed run.`,
+        );
+      }
+      if (run.outcome !== 'passed') {
+        throw new VictControlError(
+          'VICT_CONTROL_EVIDENCE_FAILED',
+          `The executed ${kind} run did not pass (${run.outcome}); commit is blocked.`,
+        );
+      }
+    }
+  }
+
+  /**
+   * Prevalidate the COMPLETE operation set against current durable state
+   * BEFORE any mutation. A commit that would fail mid-application must fail
+   * here instead, so no partial external state is ever created.
+   */
+  async #prevalidateOperations(record: ChangeSetRecord): Promise<void> {
+    for (const operation of record.operations) {
+      switch (operation.kind) {
+        case 'select-activation':
+        case 'rollback-activation': {
+          const target =
+            operation.kind === 'select-activation'
+              ? operation.activationVersion
+              : operation.targetActivationVersion;
+          const activation = await this.#catalog.get(target);
+          if (activation === undefined || activation.graphId !== operation.graphId) {
+            throw new VictControlError(
+              'VICT_CONTROL_OPERATION_INVALID',
+              'The referenced activation does not exist for this graph.',
+            );
+          }
+          break;
+        }
+        case 'publish-and-select-release': {
+          const content = validateApplicationReleaseContent(operation.release);
+          const existing = await this.#stores.control.getRelease(content.releaseVersion);
+          if (
+            existing !== undefined &&
+            existing.contentHash !==
+              controlContentHash({
+                ...content,
+                publishedByActorId: existing.publishedByActorId,
+                publishedAt: existing.publishedAt,
+              })
+          ) {
+            throw new VictControlError(
+              'VICT_CONTROL_RELEASE_COLLISION',
+              'A release with this version exists with different content.',
+            );
+          }
+          break;
+        }
+        case 'select-release':
+        case 'rollback-release': {
+          const target =
+            operation.kind === 'select-release'
+              ? operation.releaseVersion
+              : operation.targetReleaseVersion;
+          const release = await this.#stores.control.getRelease(target);
+          if (release === undefined || release.applicationId !== operation.applicationId) {
+            throw new VictControlError(
+              'VICT_CONTROL_RELEASE_MISSING',
+              'The referenced release does not exist for this application.',
+            );
+          }
+          break;
+        }
+      }
+    }
+  }
+
+  /**
    * Commit a ChangeSet: execute its closed operations against immutable
-   * versions. Commit is idempotent; a competing commit leaves the second
-   * caller with a truthful stale-base failure and NO mutation.
+   * versions as a DURABLE `applying` saga.
+   *
+   * Model (durable resumable — the affected state spans several stores, so
+   * no single transaction can span it):
+   *
+   * 1. Prevalidation: evidence policy, approvals, base staleness, and the
+   *    COMPLETE operation set are verified BEFORE any mutation.
+   * 2. One winner: the status is compare-and-set `approved` → `applying`;
+   *    a concurrent commit fails with a structured conflict (never two
+   *    logical applications).
+   * 3. Each applied operation records a durable, immutable operation
+   *    receipt; retries and recovery SKIP operations that already carry a
+   *    receipt, so no effect is ever repeated.
+   * 4. Once every operation carries a receipt, the status is advanced to
+   *    `committed`. No failure can leave a falsely final state: until step
+   *    4 completes, the truthful durable status is `applying`.
+   * 5. `recoverChangeSetCommits()` deterministically completes interrupted
+   *    commits after restart (SIGKILL) without duplication.
    */
   async commit(
     actor: AuthenticatedActorContext,
@@ -363,7 +674,12 @@ export class ControlPlaneService {
     let record = await this.#requireChangeSet(input.changesetId);
     // Idempotent commit.
     if (record.status === 'committed') {
-      return { record, applied: [] };
+      const receipts = await this.#stores.control.listOperationReceipts(record.changesetId);
+      return { record, applied: receipts.map((receipt) => receipt.operationKind) };
+    }
+    if (record.status === 'applying') {
+      // Resume an interrupted commit (durable saga continuation).
+      return this.#resumeCommit(actor, record);
     }
     if (record.status !== 'approved') {
       throw new VictControlError(
@@ -403,115 +719,236 @@ export class ControlPlaneService {
         `The ChangeSet base is stale: expected '${record.base.expectedVersion}'.`,
       );
     }
+    // Authoritative evidence policy — REQUIRED by risk class, verified
+    // against executed runs (missing, failed, stale, mismatched, or
+    // fabricated evidence blocks the commit with structured diagnostics).
+    await this.#verifyCommitEvidence(record);
+    // Prevalidate the COMPLETE operation set before ANY mutation.
+    await this.#prevalidateOperations(record);
+    // One winner: approved → applying is a durable compare-and-set.
+    record = await this.#stores.control.compareAndSetChangeSetStatus({
+      changesetId: record.changesetId,
+      expectedStatus: 'approved',
+      nextStatus: 'applying',
+    });
+    return this.#resumeCommit(actor, record);
+  }
+
+  /**
+   * Continue (or complete) an `applying` saga: apply exactly the operations
+   * that do not yet carry a durable receipt, then advance to `committed`.
+   */
+  async #resumeCommit(
+    actor: AuthenticatedActorContext,
+    record: ChangeSetRecord,
+  ): Promise<{ record: ChangeSetRecord; applied: string[] }> {
+    const receipts = await this.#stores.control.listOperationReceipts(record.changesetId);
+    const receiptByIndex = new Map(receipts.map((receipt) => [receipt.operationIndex, receipt]));
     const applied: string[] = [];
-    for (const operation of record.operations) {
-      switch (operation.kind) {
-        case 'select-activation': {
-          const selection = await this.#catalog.select({
-            graphId: operation.graphId,
-            activationVersion: operation.activationVersion,
-          });
-          applied.push(`select-activation:${selection.activationVersion}`);
-          await this.#audit(
-            actor.actorId,
-            'activation.selected',
-            'activation',
-            operation.graphId,
-            operation.activationVersion,
-          );
-          break;
-        }
-        case 'rollback-activation': {
-          const selection = await this.#catalog.select({
-            graphId: operation.graphId,
-            activationVersion: operation.targetActivationVersion,
-          });
-          applied.push(`rollback-activation:${selection.activationVersion}`);
-          await this.#audit(
-            actor.actorId,
-            'activation.rolled-back',
-            'activation',
-            operation.graphId,
-            operation.targetActivationVersion,
-          );
-          break;
-        }
-        case 'publish-and-select-release': {
-          const content = validateApplicationReleaseContent(operation.release);
-          const release: ApplicationReleaseRecord = {
-            ...content,
-            publishedByActorId: actor.actorId,
-            publishedAt: this.#clock(),
-            contentHash: controlContentHash(content),
-          };
-          await this.#stores.control.publishRelease(release);
-          await this.#stores.control.selectRelease({
-            applicationId: release.applicationId,
-            releaseVersion: release.releaseVersion,
-            actorId: actor.actorId,
-            at: this.#clock(),
-            reason: 'select',
-          });
-          applied.push(`publish-and-select-release:${release.releaseVersion}`);
-          await this.#audit(
-            actor.actorId,
-            'release.published',
-            'release',
-            release.releaseVersion,
-            release.applicationId,
-          );
-          break;
-        }
-        case 'select-release': {
-          await this.#stores.control.selectRelease({
-            applicationId: operation.applicationId,
-            releaseVersion: operation.releaseVersion,
-            actorId: actor.actorId,
-            at: this.#clock(),
-            reason: 'select',
-          });
-          applied.push(`select-release:${operation.releaseVersion}`);
-          await this.#audit(
-            actor.actorId,
-            'release.selected',
-            'release',
-            operation.releaseVersion,
-            operation.applicationId,
-          );
-          break;
-        }
-        case 'rollback-release': {
-          await this.#stores.control.selectRelease({
-            applicationId: operation.applicationId,
-            releaseVersion: operation.targetReleaseVersion,
-            actorId: actor.actorId,
-            at: this.#clock(),
-            reason: 'rollback',
-          });
-          applied.push(`rollback-release:${operation.targetReleaseVersion}`);
-          await this.#audit(
-            actor.actorId,
-            'release.rolled-back',
-            'release',
-            operation.targetReleaseVersion,
-            operation.applicationId,
-          );
-          break;
-        }
+    for (let index = 0; index < record.operations.length; index += 1) {
+      const operation = record.operations[index] as ChangeSetOperation;
+      const existing = receiptByIndex.get(index);
+      if (existing !== undefined) {
+        applied.push(existing.operationKind);
+        continue;
       }
+      const effectRef = await this.#applyOperation(actor, operation);
+      await this.#stores.control.recordOperationReceipt({
+        changesetId: record.changesetId,
+        operationIndex: index,
+        operationKind: operation.kind,
+        operationDigest: controlContentHash(operation),
+        effectRef,
+        actorId: actor.actorId,
+        appliedAt: this.#clock(),
+      });
+      applied.push(operation.kind);
     }
-    record = await this.#stores.control.updateChangeSet(record.changesetId, (current) => ({
-      ...current,
-      status: 'committed',
-    }));
+    record = await this.#stores.control.compareAndSetChangeSetStatus({
+      changesetId: record.changesetId,
+      expectedStatus: 'applying',
+      nextStatus: 'committed',
+    });
     await this.#audit(
       actor.actorId,
       'changeset.committed',
       'changeset',
       record.changesetId,
-      `${applied.length} operation(s) applied`,
+      `${record.operations.length} operation(s) applied exactly once`,
     );
     return { record, applied };
+  }
+
+  /** Apply ONE closed operation; returns its stable effect identity. */
+  async #applyOperation(
+    actor: AuthenticatedActorContext,
+    operation: ChangeSetOperation,
+  ): Promise<string> {
+    switch (operation.kind) {
+      case 'select-activation': {
+        const selection = await this.#catalog.select({
+          graphId: operation.graphId,
+          activationVersion: operation.activationVersion,
+        });
+        await this.#audit(
+          actor.actorId,
+          'activation.selected',
+          'activation',
+          operation.graphId,
+          operation.activationVersion,
+        );
+        return `activation:${operation.graphId}@${selection.activationVersion}`;
+      }
+      case 'rollback-activation': {
+        const selection = await this.#catalog.select({
+          graphId: operation.graphId,
+          activationVersion: operation.targetActivationVersion,
+        });
+        await this.#audit(
+          actor.actorId,
+          'activation.rolled-back',
+          'activation',
+          operation.graphId,
+          operation.targetActivationVersion,
+        );
+        return `activation:${operation.graphId}@${selection.activationVersion}`;
+      }
+      case 'publish-and-select-release': {
+        const content = validateApplicationReleaseContent(operation.release);
+        const release: ApplicationReleaseRecord = {
+          ...content,
+          publishedByActorId: actor.actorId,
+          publishedAt: this.#clock(),
+          contentHash: controlContentHash(content),
+        };
+        // Publish is idempotent by content identity; select is a monotonic
+        // selection record. If the process dies between the two, the op has
+        // NO receipt yet, so recovery re-executes the whole op without
+        // duplicating the publish (immutability guard) and completes the
+        // selection.
+        await this.#stores.control.publishRelease(release);
+        await this.#stores.control.selectRelease({
+          applicationId: release.applicationId,
+          releaseVersion: release.releaseVersion,
+          actorId: actor.actorId,
+          at: this.#clock(),
+          reason: 'select',
+        });
+        await this.#audit(
+          actor.actorId,
+          'release.published',
+          'release',
+          release.releaseVersion,
+          release.applicationId,
+        );
+        return `release:${release.applicationId}@${release.releaseVersion}`;
+      }
+      case 'select-release': {
+        await this.#stores.control.selectRelease({
+          applicationId: operation.applicationId,
+          releaseVersion: operation.releaseVersion,
+          actorId: actor.actorId,
+          at: this.#clock(),
+          reason: 'select',
+        });
+        await this.#audit(
+          actor.actorId,
+          'release.selected',
+          'release',
+          operation.releaseVersion,
+          operation.applicationId,
+        );
+        return `release-selection:${operation.applicationId}@${operation.releaseVersion}`;
+      }
+      case 'rollback-release': {
+        await this.#stores.control.selectRelease({
+          applicationId: operation.applicationId,
+          releaseVersion: operation.targetReleaseVersion,
+          actorId: actor.actorId,
+          at: this.#clock(),
+          reason: 'rollback',
+        });
+        await this.#audit(
+          actor.actorId,
+          'release.rolled-back',
+          'release',
+          operation.targetReleaseVersion,
+          operation.applicationId,
+        );
+        return `release-selection:${operation.applicationId}@${operation.targetReleaseVersion}`;
+      }
+    }
+  }
+
+  /**
+   * Deterministic recovery: every `applying` ChangeSet is completed from
+   * its durable operation receipts (or reports the truthful interrupted
+   * state when an operation can no longer be applied). Called at
+   * composition/reconciliation time; idempotent.
+   */
+  async recoverChangeSetCommits(): Promise<{
+    readonly completed: number;
+    readonly interrupted: readonly { changesetId: string; code: string }[];
+  }> {
+    const all = await this.#stores.control.listChangeSets();
+    const applyingRecords = all.filter((record) => record.status === 'applying');
+    let completed = 0;
+    const interrupted: { changesetId: string; code: string }[] = [];
+    for (const record of applyingRecords) {
+      try {
+        // Recovery continues the saga with the AUTHORING system identity:
+        // receipts carry the committing actor; recovery adds no new effects
+        // beyond the recorded operation set.
+        const receipts = await this.#stores.control.listOperationReceipts(record.changesetId);
+        const receiptByIndex = new Map(receipts.map((entry) => [entry.operationIndex, entry]));
+        for (let index = 0; index < record.operations.length; index += 1) {
+          const operation = record.operations[index] as ChangeSetOperation;
+          if (receiptByIndex.has(index)) {
+            continue;
+          }
+          // Recovery applies operations as a system continuation of the
+          // original authorized commit (the decision was already made and
+          // durably recorded; the effects are the approved operation set).
+          const effectRef = await this.#applyOperation(
+            {
+              actorId: record.authorActorId,
+              roles: [],
+              scopes: [],
+              mastraResourceId: `vict-actor-${record.authorActorId}`,
+            },
+            operation,
+          );
+          await this.#stores.control.recordOperationReceipt({
+            changesetId: record.changesetId,
+            operationIndex: index,
+            operationKind: operation.kind,
+            operationDigest: controlContentHash(operation),
+            effectRef,
+            actorId: record.authorActorId,
+            appliedAt: this.#clock(),
+          });
+        }
+        await this.#stores.control.compareAndSetChangeSetStatus({
+          changesetId: record.changesetId,
+          expectedStatus: 'applying',
+          nextStatus: 'committed',
+        });
+        await this.#audit(
+          record.authorActorId,
+          'changeset.committed',
+          'changeset',
+          record.changesetId,
+          `${record.operations.length} operation(s) completed by recovery`,
+        );
+        completed += 1;
+      } catch (error) {
+        interrupted.push({
+          changesetId: record.changesetId,
+          code: error instanceof VictControlError ? error.code : 'VICT_CONTROL_COMMIT_INTERRUPTED',
+        });
+      }
+    }
+    return { completed, interrupted };
   }
 
   /** Decline a draft ChangeSet (attributable; forward-only). */
@@ -539,17 +976,23 @@ export class ControlPlaneService {
     return updated;
   }
 
-  /** Select one published activation for future runs (operator path; audited). */
-  async selectActivation(input: {
-    graphId: string;
-    activationVersion: string;
-  }): Promise<{ graphId: string; activationVersion: string; selectionRevision: number }> {
+  /**
+   * Select one published activation for future runs (operator path).
+   * AUTHORIZATION REQUIRED: the caller's authenticated context must hold
+   * the `activation.select` scope, and the selection is attributed to the
+   * authenticated actor — never to a synthetic identity.
+   */
+  async selectActivation(
+    actor: AuthenticatedActorContext,
+    input: { graphId: string; activationVersion: string },
+  ): Promise<{ graphId: string; activationVersion: string; selectionRevision: number }> {
+    this.#assertScope(actor, 'activation.select');
     const selection = await this.#catalog.select({
       graphId: input.graphId,
       activationVersion: input.activationVersion,
     });
     await this.#audit(
-      'system',
+      actor.actorId,
       'activation.selected',
       'activation',
       input.graphId,
@@ -562,14 +1005,36 @@ export class ControlPlaneService {
     };
   }
 
-  /** Read one ChangeSet. */
-  async get(changesetId: string): Promise<ChangeSetRecord | undefined> {
-    return this.#stores.control.getChangeSet(changesetId);
+  /**
+   * Read one ChangeSet (actor-scoped): the author and holders of the
+   * privileged `operator.resolve` scope may read; other actors receive the
+   * SAME missing-record denial (no existence disclosure).
+   */
+  async get(
+    actor: AuthenticatedActorContext,
+    changesetId: string,
+  ): Promise<ChangeSetRecord | undefined> {
+    this.#assertScope(actor, 'changeset.read');
+    const record = await this.#stores.control.getChangeSet(changesetId);
+    if (record === undefined) {
+      return undefined;
+    }
+    if (record.authorActorId !== actor.actorId && !actor.scopes.includes('operator.resolve')) {
+      return undefined;
+    }
+    return record;
   }
 
-  /** List ChangeSets (safe records only). */
-  async list(): Promise<readonly ChangeSetRecord[]> {
-    return this.#stores.control.listChangeSets();
+  /** List ChangeSets visible to the actor (authored records; privileged
+   * `operator.resolve` holders see all). Identifiers of other actors are
+   * never disclosed to unprivileged callers. */
+  async list(actor: AuthenticatedActorContext): Promise<readonly ChangeSetRecord[]> {
+    this.#assertScope(actor, 'changeset.read');
+    const all = await this.#stores.control.listChangeSets();
+    if (actor.scopes.includes('operator.resolve')) {
+      return all;
+    }
+    return all.filter((record) => record.authorActorId === actor.actorId);
   }
 
   /** Publish an immutable Application Release directly (operator path). */
@@ -658,8 +1123,12 @@ export class ControlPlaneService {
     return record;
   }
 
-  /** The currently selected release for an application. */
-  async getSelectedRelease(applicationId: string): Promise<ApplicationReleaseRecord | undefined> {
+  /** The currently selected release for an application (requires `release.read`). */
+  async getSelectedRelease(
+    actor: AuthenticatedActorContext,
+    applicationId: string,
+  ): Promise<ApplicationReleaseRecord | undefined> {
+    this.#assertScope(actor, 'release.read');
     return this.#stores.control.getSelectedRelease(applicationId);
   }
 
