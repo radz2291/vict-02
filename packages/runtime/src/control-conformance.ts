@@ -33,7 +33,11 @@ import type {
   ChangeSetRecord,
   ControlAuditEvent,
 } from './control-types.js';
-import { controlContentHash, validateChangeSetContent } from './control-types.js';
+import {
+  controlContentHash,
+  validateChangeSetContent,
+  VICT_IDEMPOTENCY_FENCE_CONFLICT,
+} from './control-types.js';
 
 /**
  * Stage 06B shared conformance suite for the control-plane and
@@ -347,6 +351,7 @@ export function runAgentControlConformanceSuite(
           owner: 'svc-cf-1',
           leaseUntil: 8000,
           attempts: 1,
+          fenceToken: 'fence-cf-1',
         } as const;
         expect(await stores.commandIdempotency.claimReceipt(receipt)).toBe('claimed');
         expect(await stores.commandIdempotency.claimReceipt(receipt)).toBe('exists');
@@ -356,6 +361,7 @@ export function runAgentControlConformanceSuite(
           idempotencyKey: 'key-cf-1',
           resultJson: '{"changesetId":"changeset-cf-1","status":"draft"}',
           at: 7001,
+          fenceToken: 'fence-cf-1',
         });
         const completed = await stores.commandIdempotency.getReceipt({
           actorId: 'actor-author',
@@ -364,14 +370,18 @@ export function runAgentControlConformanceSuite(
         });
         expect(completed?.status).toBe('completed');
         expect(completed?.resultJson).toBe('{"changesetId":"changeset-cf-1","status":"draft"}');
-        // A settled receipt is never overwritten.
-        await stores.commandIdempotency.failReceipt({
-          actorId: 'actor-author',
-          command: 'changeset.propose',
-          idempotencyKey: 'key-cf-1',
-          responseCode: 'VICT_X',
-          at: 7002,
-        });
+        // A settled receipt is never overwritten (and the fence no longer
+        // owns a pending claim).
+        await expect(
+          stores.commandIdempotency.failReceipt({
+            actorId: 'actor-author',
+            command: 'changeset.propose',
+            idempotencyKey: 'key-cf-1',
+            responseCode: 'VICT_X',
+            at: 7002,
+            fenceToken: 'fence-cf-1',
+          }),
+        ).rejects.toThrow(VICT_IDEMPOTENCY_FENCE_CONFLICT);
         expect(
           (
             await stores.commandIdempotency.getReceipt({
@@ -385,6 +395,7 @@ export function runAgentControlConformanceSuite(
         await stores.commandIdempotency.claimReceipt({
           ...receipt,
           idempotencyKey: 'key-cf-2',
+          fenceToken: 'fence-cf-2',
         });
         await stores.commandIdempotency.failReceipt({
           actorId: 'actor-author',
@@ -392,6 +403,7 @@ export function runAgentControlConformanceSuite(
           idempotencyKey: 'key-cf-2',
           responseCode: 'VICT_CONTROL_CHANGESET_EXISTS',
           at: 7003,
+          fenceToken: 'fence-cf-2',
         });
         const failed = await stores.commandIdempotency.getReceipt({
           actorId: 'actor-author',
@@ -424,6 +436,7 @@ export function runAgentControlConformanceSuite(
           owner: 'svc-a',
           leaseUntil: 9000,
           attempts: 1,
+          fenceToken: 'fence-a',
         };
         expect(await stores.commandIdempotency.claimReceipt(base)).toBe('claimed');
         // A second actor claiming the SAME client-generated key is a
@@ -434,6 +447,7 @@ export function runAgentControlConformanceSuite(
             ...base,
             actorId: 'actor-b',
             requestDigest: 'digest-b',
+            fenceToken: 'fence-b',
           }),
         ).toBe('claimed');
         // The same key under a different command is also a different
@@ -442,6 +456,7 @@ export function runAgentControlConformanceSuite(
           await stores.commandIdempotency.claimReceipt({
             ...base,
             command: 'release.select',
+            fenceToken: 'fence-c',
           }),
         ).toBe('claimed');
         await stores.commandIdempotency.completeReceipt({
@@ -450,6 +465,7 @@ export function runAgentControlConformanceSuite(
           idempotencyKey: 'shared-key',
           resultJson: '{"changesetId":"cs-a"}',
           at: 7001,
+          fenceToken: 'fence-a',
         });
         const a = await stores.commandIdempotency.getReceipt({
           actorId: 'actor-a',
@@ -487,6 +503,7 @@ export function runAgentControlConformanceSuite(
           owner: 'svc-crashed',
           leaseUntil: 7050,
           attempts: 1,
+          fenceToken: 'fence-crashed',
         });
         // A live lease is protected.
         expect(
@@ -498,19 +515,22 @@ export function runAgentControlConformanceSuite(
             leaseUntil: 7100,
             at: 7049,
           }),
-        ).toBe('not-expired');
+        ).toEqual({ outcome: 'not-expired' });
         // After expiry the crashed claim is taken over (attempt counter
-        // incremented) — the key is never stuck as in-progress forever.
-        expect(
-          await stores.commandIdempotency.takeOverExpiredLease({
-            actorId: 'actor-author',
-            command: 'changeset.commit',
-            idempotencyKey: 'lease-key',
-            owner: 'svc-retry',
-            leaseUntil: 7150,
-            at: 7051,
-          }),
-        ).toBe('taken');
+        // incremented, NEW fence token) — the key is never stuck as
+        // in-progress forever.
+        const takeover = await stores.commandIdempotency.takeOverExpiredLease({
+          actorId: 'actor-author',
+          command: 'changeset.commit',
+          idempotencyKey: 'lease-key',
+          owner: 'svc-retry',
+          leaseUntil: 7150,
+          at: 7051,
+        });
+        expect(takeover.outcome).toBe('taken');
+        if (takeover.outcome !== 'taken') throw new Error('unreachable');
+        expect(takeover.fenceToken === undefined).toBe(false);
+        expect(takeover.fenceToken).not.toBe('fence-crashed');
         const taken = await stores.commandIdempotency.getReceipt({
           actorId: 'actor-author',
           command: 'changeset.commit',
@@ -518,12 +538,51 @@ export function runAgentControlConformanceSuite(
         });
         expect(taken?.owner).toBe('svc-retry');
         expect(taken?.attempts).toBe(2);
-        // A retryable infrastructure failure RELEASES the claim.
+        expect(taken?.fenceToken).toBe(takeover.fenceToken);
+        // A STALE owner (the crashed claimer's old fence token) can neither
+        // settle nor release: stable conflict, receipt byte-identical.
+        const beforeStale = JSON.stringify(
+          await stores.commandIdempotency.getReceipt({
+            actorId: 'actor-author',
+            command: 'changeset.commit',
+            idempotencyKey: 'lease-key',
+          }),
+        );
+        await expect(
+          stores.commandIdempotency.completeReceipt({
+            actorId: 'actor-author',
+            command: 'changeset.commit',
+            idempotencyKey: 'lease-key',
+            resultJson: '{"stale":true}',
+            at: 7052,
+            fenceToken: 'fence-crashed',
+          }),
+        ).rejects.toThrow(VICT_IDEMPOTENCY_FENCE_CONFLICT);
+        await expect(
+          stores.commandIdempotency.releaseReceipt({
+            actorId: 'actor-author',
+            command: 'changeset.commit',
+            idempotencyKey: 'lease-key',
+            at: 7052,
+            fenceToken: 'fence-crashed',
+          }),
+        ).rejects.toThrow(VICT_IDEMPOTENCY_FENCE_CONFLICT);
+        expect(
+          JSON.stringify(
+            await stores.commandIdempotency.getReceipt({
+              actorId: 'actor-author',
+              command: 'changeset.commit',
+              idempotencyKey: 'lease-key',
+            }),
+          ),
+        ).toBe(beforeStale);
+        // A retryable infrastructure failure RELEASES the claim (fenced).
         await stores.commandIdempotency.releaseReceipt({
           actorId: 'actor-author',
           command: 'changeset.commit',
           idempotencyKey: 'lease-key',
           at: 7052,
+          fenceToken: takeover.fenceToken,
         });
         expect(
           await stores.commandIdempotency.getReceipt({
@@ -1164,6 +1223,7 @@ export function runAgentControlConformanceSuite(
           owner: undefined,
           leaseUntil: undefined,
           attempts: 1,
+          fenceToken: undefined,
         });
         await stores.dispose();
 

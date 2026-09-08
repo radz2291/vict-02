@@ -18,6 +18,8 @@ import type {
   CommandIdempotencyReceipt,
   CommandIdempotencyStore,
   CommandIdempotencyName,
+  CommandIdempotencyLeaseTakeover,
+  TurnToolSlotAllocation,
   ControlAuditEvent,
   ControlPlaneStore,
   ControlRunRecord,
@@ -25,7 +27,9 @@ import type {
 } from './control-types.js';
 import {
   VictControlError,
+  VICT_IDEMPOTENCY_FENCE_CONFLICT,
   CHANGESET_BASE_NONE,
+  commandIdempotencyFenceToken,
   validateStreamLedgerAppend,
 } from './control-types.js';
 
@@ -632,6 +636,31 @@ export class InMemoryAgentTurnStore implements AgentTurnStore {
 export class InMemoryAgentToolInvocationStore implements AgentToolInvocationStore {
   readonly #invocations = new Map<string, AgentToolInvocationRecord>();
   readonly #byKey = new Map<string, string>();
+  readonly #turnSlots = new Map<string, TurnToolSlotAllocation>();
+  readonly #turnSlotMax = new Map<string, number>();
+
+  async allocateTurnToolSlot(input: {
+    turnId: string;
+    toolName: string;
+    argDigest: string;
+  }): Promise<TurnToolSlotAllocation> {
+    const key = `${input.turnId}\u0000${input.toolName}\u0000${input.argDigest}`;
+    const existing = this.#turnSlots.get(key);
+    if (existing !== undefined) {
+      return structuredCloneControl(existing); // same logical request: same slot
+    }
+    const slot = (this.#turnSlotMax.get(input.turnId) ?? 0) + 1;
+    this.#turnSlotMax.set(input.turnId, slot);
+    const allocation: TurnToolSlotAllocation = {
+      slot,
+      turnId: input.turnId,
+      toolName: input.toolName,
+      argDigest: input.argDigest,
+      toolCallId: `slot-${slot}-${digest(input.turnId).slice(0, 12)}`,
+    };
+    this.#turnSlots.set(key, allocation);
+    return structuredCloneControl(allocation);
+  }
 
   async recordInvocationIntent(
     record: AgentToolInvocationRecord,
@@ -960,6 +989,36 @@ export class InMemoryCommandIdempotencyStore implements CommandIdempotencyStore 
     return 'claimed';
   }
 
+  /**
+   * Fenced settlement: the presented fence token must match the receipt's
+   * CURRENT claim generation exactly. A stale owner receives a stable
+   * non-echoing conflict and the receipt is left BYTE-IDENTICAL.
+   */
+  #requireLivePendingFence(key: string, fenceToken: string): CommandIdempotencyReceipt {
+    const found = this.#receipts.get(key);
+    if (found === undefined) {
+      throw new VictControlError(
+        'VICT_IDEMPOTENCY_RECEIPT_MISSING',
+        'No idempotency receipt exists for this key namespace.',
+      );
+    }
+    if (found.status !== 'pending') {
+      // Settled receipts are never re-settled (duplicate replay is handled
+      // by the service layer): a fence mismatch is the truthful outcome.
+      throw new VictControlError(
+        VICT_IDEMPOTENCY_FENCE_CONFLICT,
+        'VICT_IDEMPOTENCY_FENCE_CONFLICT: the idempotency claim is no longer pending; the presented fence token does not own it.',
+      );
+    }
+    if (found.fenceToken === undefined || found.fenceToken !== fenceToken) {
+      throw new VictControlError(
+        VICT_IDEMPOTENCY_FENCE_CONFLICT,
+        'VICT_IDEMPOTENCY_FENCE_CONFLICT: the settlement fence token does not match the current claim generation; the claim is untouched.',
+      );
+    }
+    return found;
+  }
+
   async getReceipt(name: CommandIdempotencyName): Promise<CommandIdempotencyReceipt | undefined> {
     const found = this.#receipts.get(InMemoryCommandIdempotencyStore.#name(name));
     return found === undefined ? undefined : structuredCloneControl(found);
@@ -983,26 +1042,20 @@ export class InMemoryCommandIdempotencyStore implements CommandIdempotencyStore 
     idempotencyKey: string;
     resultJson: string;
     at: number;
+    fenceToken: string;
   }): Promise<void> {
     const key = InMemoryCommandIdempotencyStore.#name(input);
-    const found = this.#receipts.get(key);
-    if (found === undefined) {
-      throw new VictControlError(
-        'VICT_IDEMPOTENCY_RECEIPT_MISSING',
-        'No idempotency receipt exists for this key namespace.',
-      );
-    }
-    if (found.status === 'pending') {
-      const updated: CommandIdempotencyReceipt = {
-        ...found,
-        status: 'completed',
-        resultJson: input.resultJson,
-        settledAt: input.at,
-        owner: undefined,
-        leaseUntil: undefined,
-      };
-      this.#receipts.set(key, structuredCloneControl(updated));
-    }
+    const found = this.#requireLivePendingFence(key, input.fenceToken);
+    const updated: CommandIdempotencyReceipt = {
+      ...found,
+      status: 'completed',
+      resultJson: input.resultJson,
+      settledAt: input.at,
+      owner: undefined,
+      leaseUntil: undefined,
+      fenceToken: undefined,
+    };
+    this.#receipts.set(key, structuredCloneControl(updated));
   }
 
   async failReceipt(input: {
@@ -1011,26 +1064,20 @@ export class InMemoryCommandIdempotencyStore implements CommandIdempotencyStore 
     idempotencyKey: string;
     responseCode: string;
     at: number;
+    fenceToken: string;
   }): Promise<void> {
     const key = InMemoryCommandIdempotencyStore.#name(input);
-    const found = this.#receipts.get(key);
-    if (found === undefined) {
-      throw new VictControlError(
-        'VICT_IDEMPOTENCY_RECEIPT_MISSING',
-        'No idempotency receipt exists for this key namespace.',
-      );
-    }
-    if (found.status === 'pending') {
-      const updated: CommandIdempotencyReceipt = {
-        ...found,
-        status: 'failed',
-        responseCode: input.responseCode,
-        settledAt: input.at,
-        owner: undefined,
-        leaseUntil: undefined,
-      };
-      this.#receipts.set(key, structuredCloneControl(updated));
-    }
+    const found = this.#requireLivePendingFence(key, input.fenceToken);
+    const updated: CommandIdempotencyReceipt = {
+      ...found,
+      status: 'failed',
+      responseCode: input.responseCode,
+      settledAt: input.at,
+      owner: undefined,
+      leaseUntil: undefined,
+      fenceToken: undefined,
+    };
+    this.#receipts.set(key, structuredCloneControl(updated));
   }
 
   async releaseReceipt(input: {
@@ -1038,15 +1085,14 @@ export class InMemoryCommandIdempotencyStore implements CommandIdempotencyStore 
     command: string;
     idempotencyKey: string;
     at: number;
+    fenceToken: string;
   }): Promise<void> {
     const key = InMemoryCommandIdempotencyStore.#name(input);
-    const found = this.#receipts.get(key);
-    if (found === undefined) {
-      return;
-    }
-    if (found.status === 'pending') {
-      this.#receipts.delete(key); // claimable again (retryable failure)
-    }
+    // FENCED release: only the current claim generation may release the
+    // claim; a stale owner receives a conflict and the live claim survives
+    // byte-identically.
+    this.#requireLivePendingFence(key, input.fenceToken);
+    this.#receipts.delete(key); // claimable again (retryable failure)
   }
 
   async takeOverExpiredLease(input: {
@@ -1056,26 +1102,35 @@ export class InMemoryCommandIdempotencyStore implements CommandIdempotencyStore 
     owner: string;
     leaseUntil: number;
     at: number;
-  }): Promise<'taken' | 'not-expired' | 'missing'> {
+  }): Promise<CommandIdempotencyLeaseTakeover> {
     const key = InMemoryCommandIdempotencyStore.#name(input);
     const found = this.#receipts.get(key);
     if (found === undefined) {
-      return 'missing';
+      return { outcome: 'missing' };
     }
     if (found.status !== 'pending') {
-      return 'not-expired'; // settled: replay path handles it
+      return { outcome: 'not-expired' }; // settled: replay path handles it
     }
     if ((found.leaseUntil ?? 0) > input.at) {
-      return 'not-expired'; // the previous owner may still be executing
+      return { outcome: 'not-expired' }; // the previous owner may still be executing
     }
+    const attempts = found.attempts + 1;
+    const fenceToken = commandIdempotencyFenceToken({
+      actorId: input.actorId,
+      command: input.command,
+      idempotencyKey: input.idempotencyKey,
+      owner: input.owner,
+      attempts,
+    });
     const updated: CommandIdempotencyReceipt = {
       ...found,
       owner: input.owner,
       leaseUntil: input.leaseUntil,
-      attempts: found.attempts + 1,
+      attempts,
+      fenceToken,
     };
     this.#receipts.set(key, structuredCloneControl(updated));
-    return 'taken';
+    return { outcome: 'taken', fenceToken };
   }
 }
 

@@ -133,9 +133,19 @@ export interface SelectActivationCommand {
   readonly activationVersion: string;
   /**
    * Optimistic-concurrency guard. When provided, selection fails with a
-   * structured conflict unless the current selection revision matches.
+   * structured conflict unless the guard matches the CURRENT state:
+   * a number requires that selection revision; the literal `'none'`
+   * requires an EXPLICIT ABSENCE of any current selection (never overload
+   * `undefined`, which means no guard was supplied).
    */
-  readonly expectedSelectionRevision?: number;
+  readonly expectedSelectionRevision?: number | 'none';
+  /**
+   * Stable operation identity (idempotency/fencing anchor): re-selection
+   * under the SAME operation identity returns the ORIGINAL selection
+   * without adding another revision; a different operation identity goes
+   * through the guard normally.
+   */
+  readonly operationId?: string;
 }
 
 /** Current durable selection of an activation for one graph. */
@@ -144,6 +154,9 @@ export interface ActivationSelection {
   readonly activationVersion: string;
   readonly selectionRevision: number;
   readonly selectedAt: number;
+  /** The ChangeSet operation identity that produced this selection, when
+   * selection ran under the operation protocol (idempotency anchor). */
+  readonly operationId?: string;
 }
 
 export interface PublishAndSelectCommand {

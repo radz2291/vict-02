@@ -1,9 +1,12 @@
+import { createHash } from 'node:crypto';
 import { DatabaseSync, type SQLInputValue } from 'node:sqlite';
 import {
   assertDeletionReceiptStep,
   InMemoryActorDirectory,
   isDurableStreamKind,
   VictControlError,
+  VICT_IDEMPOTENCY_FENCE_CONFLICT,
+  commandIdempotencyFenceToken,
   validateAgentActivationRecord,
   validateStreamLedgerAppend,
   type ActorDirectory,
@@ -27,6 +30,8 @@ import {
   type CommandIdempotencyName,
   type CommandIdempotencyReceipt,
   type CommandIdempotencyStore,
+  type CommandIdempotencyLeaseTakeover,
+  type TurnToolSlotAllocation,
   type ControlAuditEvent,
   type ControlPlaneStore,
   type ControlRunRecord,
@@ -121,6 +126,7 @@ interface ControlRunRow {
   outcome: string;
   created_at: string;
   detail_json: string | null;
+  observed_base_json: string | null;
 }
 
 function rowToControlRun(row: ControlRunRow): ControlRunRecord {
@@ -139,6 +145,10 @@ function rowToControlRun(row: ControlRunRow): ControlRunRecord {
       row.detail_json === null
         ? undefined
         : (JSON.parse(row.detail_json) as ControlRunRecord['detail']),
+    observedBase:
+      row.observed_base_json === null || row.observed_base_json === undefined
+        ? undefined
+        : (JSON.parse(row.observed_base_json) as ControlRunRecord['observedBase']),
   };
 }
 
@@ -181,6 +191,7 @@ interface IdempotencyRow {
   owner: string | null;
   lease_until: string | null;
   attempts: number;
+  fence_token: string | null;
 }
 
 function rowToIdempotencyReceipt(row: IdempotencyRow): CommandIdempotencyReceipt {
@@ -197,6 +208,7 @@ function rowToIdempotencyReceipt(row: IdempotencyRow): CommandIdempotencyReceipt
     owner: row.owner ?? undefined,
     leaseUntil: optionalIso(row.lease_until),
     attempts: row.attempts,
+    fenceToken: row.fence_token ?? undefined,
   };
 }
 
@@ -596,6 +608,8 @@ export function createSqliteAgentControlStores(
               existing.actor_id === record.actorId &&
               existing.outcome === record.outcome &&
               existing.base_json === JSON.stringify(record.base) &&
+              existing.observed_base_json ===
+                (record.observedBase === undefined ? null : JSON.stringify(record.observedBase)) &&
               fromIso(existing.created_at) === record.createdAt;
             if (!same) {
               throw new VictControlError(
@@ -608,8 +622,8 @@ export function createSqliteAgentControlStores(
           db.prepare(
             `INSERT INTO vict_control_run
               (run_id, kind, changeset_id, content_hash, base_json, operations_json,
-               runner_profile, actor_id, outcome, created_at, detail_json)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`,
+               runner_profile, actor_id, outcome, created_at, detail_json, observed_base_json)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`,
           ).run(
             record.runId,
             record.kind,
@@ -622,6 +636,7 @@ export function createSqliteAgentControlStores(
             record.outcome,
             toIso(record.createdAt),
             record.detail === undefined ? null : JSON.stringify(record.detail),
+            record.observedBase === undefined ? null : JSON.stringify(record.observedBase),
           );
         }),
       );
@@ -1514,6 +1529,53 @@ export function createSqliteAgentControlStores(
   }
 
   const invocations: AgentToolInvocationStore = {
+    async allocateTurnToolSlot(input: {
+      turnId: string;
+      toolName: string;
+      argDigest: string;
+    }): Promise<TurnToolSlotAllocation> {
+      return safeRun('invocations.allocateSlot', () =>
+        inTransaction(db, () => {
+          // Allocation and reuse happen in ONE transaction: the same
+          // logical request (same turn, tool, digest) re-reads its exact
+          // persisted slot; a fresh request takes the next monotonic slot
+          // (a persisted allocation, never a row count, never a clock).
+          const existing = db
+            .prepare(
+              'SELECT slot, tool_call_id FROM vict_agent_turn_tool_slot WHERE turn_id = ? AND tool_name = ? AND arg_digest = ?;',
+            )
+            .get(input.turnId, input.toolName, input.argDigest) as
+            { slot: number; tool_call_id: string } | undefined;
+          if (existing !== undefined) {
+            return {
+              slot: existing.slot,
+              toolCallId: existing.tool_call_id,
+              turnId: input.turnId,
+              toolName: input.toolName,
+              argDigest: input.argDigest,
+            };
+          }
+          const maxRow = db
+            .prepare(
+              'SELECT MAX(slot) AS max_slot FROM vict_agent_turn_tool_slot WHERE turn_id = ?;',
+            )
+            .get(input.turnId) as { max_slot: number | null };
+          const slot = (maxRow.max_slot ?? 0) + 1;
+          const toolCallId = `slot-${slot}-${createHash('sha256').update(input.turnId, 'utf8').digest('hex').slice(0, 12)}`;
+          db.prepare(
+            'INSERT INTO vict_agent_turn_tool_slot (turn_id, tool_name, arg_digest, slot, tool_call_id) VALUES (?, ?, ?, ?, ?);',
+          ).run(input.turnId, input.toolName, input.argDigest, slot, toolCallId);
+          return {
+            slot,
+            toolCallId,
+            turnId: input.turnId,
+            toolName: input.toolName,
+            argDigest: input.argDigest,
+          };
+        }),
+      );
+    },
+
     async recordInvocationIntent(
       record: AgentToolInvocationRecord,
     ): Promise<AgentToolInvocationRecord> {
@@ -1607,7 +1669,14 @@ export function createSqliteAgentControlStores(
 
     async updateInvocationStatus(command: {
       invocationId: string;
-      status: 'approved' | 'running' | 'completed' | 'failed' | 'declined' | 'cancelled';
+      status:
+        | 'approved'
+        | 'running'
+        | 'completed'
+        | 'failed'
+        | 'declined'
+        | 'cancelled'
+        | 'outcome_unknown';
       at: number;
       resultSummary?: string;
       errorCode?: string;
@@ -1632,6 +1701,7 @@ export function createSqliteAgentControlStores(
             failed: 3,
             declined: 3,
             cancelled: 3,
+            outcome_unknown: 3,
           };
           const orderOf = (status: string): number => ORDER[status] ?? 0;
           if (orderOf(command.status) < orderOf(current.status)) {
@@ -1972,8 +2042,8 @@ export function createSqliteAgentControlStores(
           }
           db.prepare(
             `INSERT INTO vict_command_idempotency
-              (actor_id, command, idempotency_key, request_digest, status, response_code, result_json, created_at, settled_at, owner, lease_until, attempts)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`,
+              (actor_id, command, idempotency_key, request_digest, status, response_code, result_json, created_at, settled_at, owner, lease_until, attempts, fence_token)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`,
           ).run(
             record.actorId,
             record.command,
@@ -1987,6 +2057,7 @@ export function createSqliteAgentControlStores(
             record.owner ?? null,
             record.leaseUntil === undefined ? null : toIso(record.leaseUntil),
             record.attempts,
+            record.fenceToken ?? null,
           );
           return 'claimed' as const;
         }),
@@ -2027,6 +2098,7 @@ export function createSqliteAgentControlStores(
       idempotencyKey: string;
       resultJson: string;
       at: number;
+      fenceToken: string;
     }): Promise<void> {
       safeRun('idempotency.complete', () =>
         inTransaction(db, () => {
@@ -2041,17 +2113,29 @@ export function createSqliteAgentControlStores(
               'No idempotency receipt exists for this key namespace.',
             );
           }
-          if (row.status === 'pending') {
-            db.prepare(
-              "UPDATE vict_command_idempotency SET status = 'completed', result_json = ?, settled_at = ?, owner = NULL, lease_until = NULL WHERE actor_id = ? AND command = ? AND idempotency_key = ?;",
-            ).run(
-              input.resultJson,
-              toIso(input.at),
-              input.actorId,
-              input.command,
-              input.idempotencyKey,
+          // FENCED settlement, compared and mutated in ONE transaction: a
+          // stale owner's token never settles the current claim generation.
+          if (row.status !== 'pending') {
+            throw new VictControlError(
+              VICT_IDEMPOTENCY_FENCE_CONFLICT,
+              'VICT_IDEMPOTENCY_FENCE_CONFLICT: the idempotency claim is no longer pending; the presented fence token does not own it.',
             );
           }
+          if ((row.fence_token ?? null) !== input.fenceToken) {
+            throw new VictControlError(
+              VICT_IDEMPOTENCY_FENCE_CONFLICT,
+              'VICT_IDEMPOTENCY_FENCE_CONFLICT: the settlement fence token does not match the current claim generation; the claim is untouched.',
+            );
+          }
+          db.prepare(
+            "UPDATE vict_command_idempotency SET status = 'completed', result_json = ?, settled_at = ?, owner = NULL, lease_until = NULL, fence_token = NULL WHERE actor_id = ? AND command = ? AND idempotency_key = ?;",
+          ).run(
+            input.resultJson,
+            toIso(input.at),
+            input.actorId,
+            input.command,
+            input.idempotencyKey,
+          );
         }),
       );
     },
@@ -2062,6 +2146,7 @@ export function createSqliteAgentControlStores(
       idempotencyKey: string;
       responseCode: string;
       at: number;
+      fenceToken: string;
     }): Promise<void> {
       safeRun('idempotency.fail', () =>
         inTransaction(db, () => {
@@ -2076,17 +2161,28 @@ export function createSqliteAgentControlStores(
               'No idempotency receipt exists for this key namespace.',
             );
           }
-          if (row.status === 'pending') {
-            db.prepare(
-              "UPDATE vict_command_idempotency SET status = 'failed', response_code = ?, settled_at = ?, owner = NULL, lease_until = NULL WHERE actor_id = ? AND command = ? AND idempotency_key = ?;",
-            ).run(
-              input.responseCode,
-              toIso(input.at),
-              input.actorId,
-              input.command,
-              input.idempotencyKey,
+          // FENCED settlement, compared and mutated in ONE transaction.
+          if (row.status !== 'pending') {
+            throw new VictControlError(
+              VICT_IDEMPOTENCY_FENCE_CONFLICT,
+              'VICT_IDEMPOTENCY_FENCE_CONFLICT: the idempotency claim is no longer pending; the presented fence token does not own it.',
             );
           }
+          if ((row.fence_token ?? null) !== input.fenceToken) {
+            throw new VictControlError(
+              VICT_IDEMPOTENCY_FENCE_CONFLICT,
+              'VICT_IDEMPOTENCY_FENCE_CONFLICT: the settlement fence token does not match the current claim generation; the claim is untouched.',
+            );
+          }
+          db.prepare(
+            "UPDATE vict_command_idempotency SET status = 'failed', response_code = ?, settled_at = ?, owner = NULL, lease_until = NULL, fence_token = NULL WHERE actor_id = ? AND command = ? AND idempotency_key = ?;",
+          ).run(
+            input.responseCode,
+            toIso(input.at),
+            input.actorId,
+            input.command,
+            input.idempotencyKey,
+          );
         }),
       );
     },
@@ -2096,12 +2192,31 @@ export function createSqliteAgentControlStores(
       command: string;
       idempotencyKey: string;
       at: number;
+      fenceToken: string;
     }): Promise<void> {
       safeRun('idempotency.release', () =>
         inTransaction(db, () => {
-          // A RETRYABLE infrastructure failure must not be permanently
-          // confused with a deterministic command failure: the pending
-          // claim is removed so a retry can re-execute truthfully.
+          // FENCED release, compared and deleted in ONE transaction: only
+          // the current claim generation may release the claim; a stale
+          // owner receives a stable conflict and the live claim survives
+          // byte-identically. A RETRYABLE infrastructure failure must not
+          // be permanently confused with a deterministic command failure:
+          // the pending claim is removed so a retry can re-execute
+          // truthfully.
+          const row = db
+            .prepare(
+              'SELECT * FROM vict_command_idempotency WHERE actor_id = ? AND command = ? AND idempotency_key = ?;',
+            )
+            .get(input.actorId, input.command, input.idempotencyKey) as IdempotencyRow | undefined;
+          if (row === undefined) {
+            return;
+          }
+          if (row.status !== 'pending' || (row.fence_token ?? null) !== input.fenceToken) {
+            throw new VictControlError(
+              VICT_IDEMPOTENCY_FENCE_CONFLICT,
+              'VICT_IDEMPOTENCY_FENCE_CONFLICT: the settlement fence token does not match the current claim generation; the claim is untouched.',
+            );
+          }
           db.prepare(
             "DELETE FROM vict_command_idempotency WHERE actor_id = ? AND command = ? AND idempotency_key = ? AND status = 'pending';",
           ).run(input.actorId, input.command, input.idempotencyKey);
@@ -2116,7 +2231,7 @@ export function createSqliteAgentControlStores(
       owner: string;
       leaseUntil: number;
       at: number;
-    }): Promise<'taken' | 'not-expired' | 'missing'> {
+    }): Promise<CommandIdempotencyLeaseTakeover> {
       return safeRun('idempotency.leaseTakeover', () =>
         inTransaction(db, () => {
           const row = db
@@ -2125,25 +2240,37 @@ export function createSqliteAgentControlStores(
             )
             .get(input.actorId, input.command, input.idempotencyKey) as IdempotencyRow | undefined;
           if (row === undefined) {
-            return 'missing' as const;
+            return { outcome: 'missing' } as const;
           }
           if (row.status !== 'pending') {
-            return 'not-expired' as const; // settled: replay path handles it
+            return { outcome: 'not-expired' } as const; // settled: replay path handles it
           }
           const leaseUntil = optionalIso(row.lease_until) ?? 0;
           if (leaseUntil > input.at) {
-            return 'not-expired' as const; // the previous owner may still run
+            return { outcome: 'not-expired' } as const; // the previous owner may still run
           }
+          // A takeover ALWAYS issues a NEW settlement fence token (the old
+          // owner's generation becomes stale).
+          const attempts = row.attempts + 1;
+          const fenceToken = commandIdempotencyFenceToken({
+            actorId: input.actorId,
+            command: input.command,
+            idempotencyKey: input.idempotencyKey,
+            owner: input.owner,
+            attempts,
+          });
           db.prepare(
-            'UPDATE vict_command_idempotency SET owner = ?, lease_until = ?, attempts = attempts + 1 WHERE actor_id = ? AND command = ? AND idempotency_key = ?;',
+            'UPDATE vict_command_idempotency SET owner = ?, lease_until = ?, attempts = ?, fence_token = ? WHERE actor_id = ? AND command = ? AND idempotency_key = ?;',
           ).run(
             input.owner,
             toIso(input.leaseUntil),
+            attempts,
+            fenceToken,
             input.actorId,
             input.command,
             input.idempotencyKey,
           );
-          return 'taken' as const;
+          return { outcome: 'taken', fenceToken } as const;
         }),
       );
     },

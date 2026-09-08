@@ -47,8 +47,8 @@ export interface StoreErrorDetails {
   readonly actualRecordRevision?: number;
   readonly expectedEventSeq?: number;
   readonly actualEventSeq?: number;
-  readonly expectedSelectionRevision?: number;
-  readonly actualSelectionRevision?: number;
+  readonly expectedSelectionRevision?: number | 'none';
+  readonly actualSelectionRevision?: number | 'none';
   readonly schemaVersion?: number;
   readonly [key: string]: unknown;
 }

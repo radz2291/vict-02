@@ -205,6 +205,7 @@ export type {
   AgentStreamLedgerStore,
   AgentToolInvocationRecord,
   AgentToolInvocationStatus,
+  TurnToolSlotAllocation,
   AgentToolInvocationStore,
   AgentTurnCorrelation,
   AgentTurnRecord,
@@ -222,6 +223,7 @@ export type {
   CommandIdempotencyReceipt,
   CommandIdempotencyStore,
   CommandIdempotencyName,
+  CommandIdempotencyLeaseTakeover,
   ControlAuditAction,
   ControlAuditEvent,
   ControlPlaneStore,
@@ -253,6 +255,8 @@ export {
   validateChangeSetOperation,
   validateStreamLedgerAppend,
   changeSetOperationIdentity,
+  VICT_IDEMPOTENCY_FENCE_CONFLICT,
+  commandIdempotencyFenceToken,
 } from './control-types.js';
 export { ActorScopeDeniedError, VictControlError } from './control-types.js';
 export {

@@ -675,6 +675,32 @@ export const SCHEMA_MIGRATIONS: readonly Migration[] = [
       `ALTER TABLE vict_control_run ADD COLUMN detail_json TEXT;`,
     ],
   },
+  {
+    // Stage 06B final reliability correction (migration 8):
+    // - activation selections carry the ChangeSet operation identity
+    //   (idempotency/fencing anchor, matching release selections);
+    // - command idempotency receipts carry the settlement FENCE token of
+    //   the current claim generation;
+    // - governance runs carry the observed (verified) subject base.
+    version: 8,
+    name: 'stage-06b-final-reliability-correction',
+    statements: [
+      `ALTER TABLE vict_activation_selection ADD COLUMN operation_id TEXT;`,
+      `CREATE UNIQUE INDEX idx_vict_activation_selection_operation
+        ON vict_activation_selection (graph_id, operation_id)
+        WHERE operation_id IS NOT NULL;`,
+      `ALTER TABLE vict_command_idempotency ADD COLUMN fence_token TEXT;`,
+      `ALTER TABLE vict_control_run ADD COLUMN observed_base_json TEXT;`,
+      `CREATE TABLE vict_agent_turn_tool_slot (
+        turn_id TEXT NOT NULL,
+        tool_name TEXT NOT NULL,
+        arg_digest TEXT NOT NULL,
+        slot INTEGER NOT NULL,
+        tool_call_id TEXT NOT NULL,
+        PRIMARY KEY (turn_id, tool_name, arg_digest)
+      );`,
+    ],
+  },
 ];
 
 /** The highest schema version this adapter understands. */

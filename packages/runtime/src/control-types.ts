@@ -458,6 +458,11 @@ export interface ControlRunRecord {
   readonly outcome: 'passed' | 'failed' | 'blocked';
   /** Epoch-ms execution time from the injected clock. */
   readonly createdAt: number;
+  /** The EXACT observed subject base at run time (what the run verified):
+   * the currently selected version for the subject, with the
+   * `CHANGESET_BASE_NONE` sentinel for explicit absence. This proves what
+   * base the run actually checked (never a caller claim). */
+  readonly observedBase?: ChangeSetBase;
   /** Simulation-run detail: the exact simulation inputs, per-operation
    * identities and outcomes of the sandboxed execution (IDs and outcomes
    * only — never payloads). Validation runs carry `undefined`. */
@@ -536,72 +541,203 @@ export function changeSetOperationIdentity(input: {
   });
 }
 
-/** Validate the structural shape of one ChangeSet operation (fail closed). */
-export function validateChangeSetOperation(operation: unknown): ChangeSetOperation {
-  if (typeof operation !== 'object' || operation === null) {
-    throw new Error('VICT_CONTROL_OPERATION_INVALID: a ChangeSet operation must be an object.');
+/**
+ * The CLOSED structural vocabulary of one ChangeSet operation kind: every
+ * kind declares its EXACT required own members. A declaration that misses
+ * a member, adds a member, or mistypes a member is malformed and can
+ * never reach a content hash or a durable record.
+ */
+const CHANGESET_OPERATION_FIELDS: Readonly<Record<string, readonly string[]>> = {
+  'select-activation': ['kind', 'graphId', 'activationVersion'],
+  'rollback-activation': ['kind', 'graphId', 'targetActivationVersion'],
+  'publish-and-select-release': ['kind', 'release'],
+  'select-release': ['kind', 'applicationId', 'releaseVersion'],
+  'rollback-release': ['kind', 'applicationId', 'targetReleaseVersion'],
+};
+
+/**
+ * The exact declared members of the ChangeSet base (closed structure).
+ */
+const CHANGESET_BASE_FIELDS: readonly string[] = ['kind', 'subjectId', 'expectedVersion'];
+
+/**
+ * Capture a CLOSED plain-data record without ever invoking caller code or
+ * echoing captured values:
+ *
+ * - the value must be a non-null, non-array object whose prototype is
+ *   exactly `Object.prototype` (or null) — class instances, exotic
+ *   prototypes, and structs smuggled through exotic prototypes fail;
+ * - property enumeration, `Reflect.ownKeys`, and descriptor reads are
+ *   guarded — a hostile proxy that throws is rejected without a raw
+ *   exception crossing the boundary;
+ * - OWN string-keyed ENUMERABLE data properties only: accessors
+ *   (getters/setters), inherited members, non-enumerable fields, and
+ *   symbol keys are rejected, and getters are NEVER invoked (values are
+ *   read exclusively through the captured property descriptor).
+ * - the field set must be EXACTLY the declared closed set.
+ *
+ * The returned capture is a freshly allocated plain object owned by VICT
+ * (the caller's object is never retained, frozen, or mutated).
+ */
+function captureClosedControlRecord(
+  raw: unknown,
+  field: string,
+  allowed: readonly string[] | undefined,
+): Record<string, unknown> {
+  if (typeof raw !== 'object' || raw === null || Array.isArray(raw)) {
+    throw new VictControlError(
+      'VICT_CONTROL_STRUCTURE_INVALID',
+      `The ${field} must be a plain object with a closed field set.`,
+    );
   }
-  const candidate = operation as Record<string, unknown>;
-  const kind = candidate.kind;
-  const expectFields = (fields: readonly string[]): void => {
-    for (const key of Object.keys(candidate)) {
-      if (!fields.includes(key)) {
-        throw new Error(
-          'VICT_CONTROL_OPERATION_INVALID: a ChangeSet operation declares an unknown field; executable functions and unrestricted patches are never persisted.',
-        );
-      }
+  let prototype: object | null;
+  try {
+    prototype = Object.getPrototypeOf(raw);
+  } catch {
+    throw new VictControlError(
+      'VICT_CONTROL_STRUCTURE_INVALID',
+      `The ${field} could not be inspected; hostile containers are rejected.`,
+    );
+  }
+  if (prototype !== Object.prototype && prototype !== null) {
+    throw new VictControlError(
+      'VICT_CONTROL_STRUCTURE_INVALID',
+      `The ${field} must be a plain data record; exotic prototypes are rejected.`,
+    );
+  }
+  let ownKeys: PropertyKey[];
+  try {
+    ownKeys = Reflect.ownKeys(raw);
+  } catch {
+    throw new VictControlError(
+      'VICT_CONTROL_STRUCTURE_INVALID',
+      `The ${field} could not be enumerated; hostile containers are rejected.`,
+    );
+  }
+  const capture: Record<string, unknown> = {};
+  for (const key of ownKeys) {
+    if (typeof key !== 'string') {
+      throw new VictControlError(
+        'VICT_CONTROL_STRUCTURE_INVALID',
+        `The ${field} declares a symbol key; only plain data properties are accepted.`,
+      );
     }
-    for (const field of fields) {
-      if (field === 'kind') {
-        continue;
-      }
-      const value = candidate[field];
-      if (typeof value !== 'string') {
-        // Non-string fields (e.g. release content) are validated by their
-        // dedicated closed-schema validator.
-        continue;
-      }
-      assertControlId(value, `operation.${field}`);
+    if (allowed !== undefined && !allowed.includes(key)) {
+      throw new VictControlError(
+        'VICT_CONTROL_STRUCTURE_INVALID',
+        `The ${field} declares a field outside the closed structure.`,
+      );
     }
-  };
-  switch (kind) {
+    let descriptor: PropertyDescriptor | undefined;
+    try {
+      descriptor = Object.getOwnPropertyDescriptor(raw, key);
+    } catch {
+      throw new VictControlError(
+        'VICT_CONTROL_STRUCTURE_INVALID',
+        `The ${field} could not be inspected; hostile containers are rejected.`,
+      );
+    }
+    if (
+      descriptor === undefined ||
+      descriptor.get !== undefined ||
+      descriptor.set !== undefined ||
+      descriptor.enumerable !== true
+    ) {
+      throw new VictControlError(
+        'VICT_CONTROL_STRUCTURE_INVALID',
+        `The ${field} declares an accessor, inherited, or non-enumerable member; only own enumerable data properties are accepted.`,
+      );
+    }
+    capture[key] = descriptor.value;
+  }
+  for (const required of allowed ?? []) {
+    if (!(required in capture)) {
+      throw new VictControlError(
+        'VICT_CONTROL_STRUCTURE_INVALID',
+        `The ${field} is missing a required member of the closed structure.`,
+      );
+    }
+  }
+  return capture;
+}
+
+/** Validate a required bounded string identifier member (exact type). */
+function requireBoundedMember(capture: Record<string, unknown>, field: string): string {
+  const value = capture[field];
+  if (typeof value !== 'string') {
+    throw new VictControlError(
+      'VICT_CONTROL_FIELD_INVALID',
+      `The member '${field}' must be a string.`,
+    );
+  }
+  assertControlId(value, field);
+  return value;
+}
+
+/**
+ * Validate the structural shape of one ChangeSet operation (fail closed).
+ *
+ * EVERY required member of the operation kind is enforced with its exact
+ * runtime type, non-empty bounded identifier form, and the closed own-field
+ * set. Accessors, inherited/non-enumerable members, symbols, exotic
+ * prototypes, and hostile proxies are rejected WITHOUT invoking getters or
+ * echoing captured values. Only the validated VICT-owned canonical capture
+ * is returned/hashed — never the original caller object.
+ */
+export function validateChangeSetOperation(operation: unknown): ChangeSetOperation {
+  // Structural capture FIRST (closed plain-data discipline, no field-set
+  // restriction yet) to read the kind identity WITHOUT invoking getters.
+  const structure = captureClosedControlRecord(operation, 'ChangeSet operation', undefined);
+  if (typeof structure.kind !== 'string' || !(structure.kind in CHANGESET_OPERATION_FIELDS)) {
+    throw new VictControlError(
+      'VICT_CONTROL_OPERATION_INVALID',
+      'The ChangeSet operation kind is outside the closed vocabulary.',
+    );
+  }
+  const kindCapture = structure.kind;
+  const allowed = CHANGESET_OPERATION_FIELDS[kindCapture] as readonly string[];
+  // Re-capture with the EXACT closed field set for the resolved kind.
+  const capture = captureClosedControlRecord(operation, 'ChangeSet operation', allowed);
+  if (capture.kind !== kindCapture) {
+    throw new VictControlError(
+      'VICT_CONTROL_OPERATION_INVALID',
+      'The ChangeSet operation kind must be a stable string identity.',
+    );
+  }
+  switch (kindCapture) {
     case 'select-activation':
-      expectFields(['kind', 'graphId', 'activationVersion']);
       return {
         kind: 'select-activation',
-        graphId: candidate.graphId as string,
-        activationVersion: candidate.activationVersion as string,
+        graphId: requireBoundedMember(capture, 'graphId'),
+        activationVersion: requireBoundedMember(capture, 'activationVersion'),
       };
     case 'rollback-activation':
-      expectFields(['kind', 'graphId', 'targetActivationVersion']);
       return {
         kind: 'rollback-activation',
-        graphId: candidate.graphId as string,
-        targetActivationVersion: candidate.targetActivationVersion as string,
+        graphId: requireBoundedMember(capture, 'graphId'),
+        targetActivationVersion: requireBoundedMember(capture, 'targetActivationVersion'),
       };
     case 'publish-and-select-release':
-      expectFields(['kind', 'release']);
       return {
         kind: 'publish-and-select-release',
-        release: validateApplicationReleaseContent(candidate.release),
+        release: validateApplicationReleaseContent(capture.release),
       };
     case 'select-release':
-      expectFields(['kind', 'applicationId', 'releaseVersion']);
       return {
         kind: 'select-release',
-        applicationId: candidate.applicationId as string,
-        releaseVersion: candidate.releaseVersion as string,
+        applicationId: requireBoundedMember(capture, 'applicationId'),
+        releaseVersion: requireBoundedMember(capture, 'releaseVersion'),
       };
     case 'rollback-release':
-      expectFields(['kind', 'applicationId', 'targetReleaseVersion']);
       return {
         kind: 'rollback-release',
-        applicationId: candidate.applicationId as string,
-        targetReleaseVersion: candidate.targetReleaseVersion as string,
+        applicationId: requireBoundedMember(capture, 'applicationId'),
+        targetReleaseVersion: requireBoundedMember(capture, 'targetReleaseVersion'),
       };
     default:
-      throw new Error(
-        'VICT_CONTROL_OPERATION_INVALID: the ChangeSet operation kind is outside the closed vocabulary.',
+      throw new VictControlError(
+        'VICT_CONTROL_OPERATION_INVALID',
+        'The ChangeSet operation kind is outside the closed vocabulary.',
       );
   }
 }
@@ -617,28 +753,36 @@ const RELEASE_CONTENT_FIELDS = [
   'activationBinding',
 ] as const;
 
-/** Validate one immutable Application Release content record (fail closed). */
+/**
+ * Validate one immutable Application Release content record (fail closed).
+ * The content is captured as a CLOSED plain-data structure (exact member
+ * set, exact string types, no accessors/symbols/hostile containers) and
+ * the returned record is a fresh VICT-owned capture.
+ */
 export function validateApplicationReleaseContent(content: unknown): ApplicationReleaseContent {
-  if (typeof content !== 'object' || content === null || Array.isArray(content)) {
-    throw new Error('VICT_CONTROL_RELEASE_INVALID: release content must be an object.');
-  }
-  const candidate = content as Record<string, unknown>;
-  for (const key of Object.keys(candidate)) {
-    if (!(RELEASE_CONTENT_FIELDS as readonly string[]).includes(key)) {
-      throw new Error('VICT_CONTROL_RELEASE_INVALID: release content declares an unknown field.');
-    }
-  }
+  const capture = captureClosedControlRecord(
+    content,
+    'release content',
+    RELEASE_CONTENT_FIELDS as readonly string[],
+  );
   for (const field of RELEASE_CONTENT_FIELDS) {
-    assertControlId(candidate[field], `release.${field}`);
+    const value = capture[field];
+    if (typeof value !== 'string') {
+      throw new VictControlError(
+        'VICT_CONTROL_RELEASE_INVALID',
+        `The release member '${field}' must be a string.`,
+      );
+    }
+    assertControlId(value, `release.${field}`);
   }
   return {
-    releaseVersion: candidate.releaseVersion as string,
-    applicationId: candidate.applicationId as string,
-    applicationVersion: candidate.applicationVersion as string,
-    rendererIdentity: candidate.rendererIdentity as string,
-    componentRegistryIdentity: candidate.componentRegistryIdentity as string,
-    dataAdapterIdentity: candidate.dataAdapterIdentity as string,
-    activationBinding: candidate.activationBinding as string,
+    releaseVersion: capture.releaseVersion as string,
+    applicationId: capture.applicationId as string,
+    applicationVersion: capture.applicationVersion as string,
+    rendererIdentity: capture.rendererIdentity as string,
+    componentRegistryIdentity: capture.componentRegistryIdentity as string,
+    dataAdapterIdentity: capture.dataAdapterIdentity as string,
+    activationBinding: capture.activationBinding as string,
   };
 }
 
@@ -676,9 +820,29 @@ export function validateChangeSetContent(input: {
   ) {
     throw new Error('VICT_CONTROL_FIELD_INVALID: the ChangeSet base is malformed.');
   }
-  const base = input.base as ChangeSetBase;
-  assertControlId(base.subjectId, 'base.subjectId');
-  assertControlId(base.expectedVersion, 'base.expectedVersion');
+  // The base is a CLOSED plain-data structure: exactly its declared members,
+  // exact string types, no accessors/symbols/hostile containers.
+  const baseCapture = captureClosedControlRecord(
+    input.base,
+    'ChangeSet base',
+    CHANGESET_BASE_FIELDS as readonly string[],
+  );
+  if (baseCapture.kind !== 'activation' && baseCapture.kind !== 'release') {
+    throw new Error('VICT_CONTROL_FIELD_INVALID: the ChangeSet base is malformed.');
+  }
+  if (
+    typeof baseCapture.subjectId !== 'string' ||
+    typeof baseCapture.expectedVersion !== 'string'
+  ) {
+    throw new Error('VICT_CONTROL_FIELD_INVALID: the ChangeSet base is malformed.');
+  }
+  assertControlId(baseCapture.subjectId, 'base.subjectId');
+  assertControlId(baseCapture.expectedVersion, 'base.expectedVersion');
+  const base: ChangeSetBase = {
+    kind: baseCapture.kind,
+    subjectId: baseCapture.subjectId,
+    expectedVersion: baseCapture.expectedVersion,
+  };
   if (
     !Array.isArray(input.operations) ||
     input.operations.length === 0 ||
@@ -687,6 +851,15 @@ export function validateChangeSetContent(input: {
     throw new Error(
       'VICT_CONTROL_FIELD_INVALID: a ChangeSet must declare between 1 and 64 closed operations.',
     );
+  }
+  // Sparse arrays are hostile captures, never operation lists: every index
+  // must be an OWN present member.
+  for (let index = 0; index < input.operations.length; index += 1) {
+    if (!Object.prototype.hasOwnProperty.call(input.operations, index)) {
+      throw new Error(
+        'VICT_CONTROL_FIELD_INVALID: the ChangeSet operation list must be a dense array.',
+      );
+    }
   }
   const operations = input.operations.map((operation) => validateChangeSetOperation(operation));
   assertBoundedString(input.rationale, 'rationale', 2000);
@@ -703,18 +876,22 @@ export function validateChangeSetContent(input: {
       'VICT_CONTROL_FIELD_INVALID: requiredApproverCount must be a safe integer between 1 and 8.',
     );
   }
+  // The content identity is derived from the VALIDATED VICT-owned captures
+  // (the closed base structure and the canonical operation set) — never from
+  // the original caller objects (which could carry accessors, symbols, or
+  // exotic prototypes and are never retained).
   const contentHash = controlContentHash({
     schema: CHANGESET_SCHEMA,
     authorActorId: input.authorActorId,
-    base: input.base,
-    operations: input.operations,
+    base,
+    operations,
     rationale: input.rationale,
     riskClass: input.riskClass,
     requiredApproverCount: input.requiredApproverCount,
     expiresAt: input.expiresAt,
   });
   return {
-    base: input.base,
+    base,
     operations,
     rationale: input.rationale,
     riskClass: input.riskClass,
@@ -987,6 +1164,17 @@ export type AgentToolInvocationStatus =
   | 'cancelled'
   | 'outcome_unknown';
 
+/** One durable turn-execution tool slot (stable tool-call identity). */
+export interface TurnToolSlotAllocation {
+  /** The 1-based monotonic slot index within the turn. */
+  readonly slot: number;
+  /** The stable tool-call identity derived from the persisted slot. */
+  readonly toolCallId: string;
+  readonly turnId: string;
+  readonly toolName: string;
+  readonly argDigest: string;
+}
+
 /** One durable protected tool-invocation record. */
 export interface AgentToolInvocationRecord {
   readonly invocationId: string;
@@ -1015,6 +1203,21 @@ export interface AgentToolInvocationRecord {
 /** The durable tool-invocation store port. */
 export interface AgentToolInvocationStore {
   recordInvocationIntent(record: AgentToolInvocationRecord): Promise<AgentToolInvocationRecord>;
+  /**
+   * Allocate (or re-read) the DURABLE turn-execution tool slot for one
+   * logical tool request. The slot is a separately persisted allocation
+   * keyed by (turnId, toolName, argDigest): the FIRST allocation assigns
+   * the next monotonic slot for the turn and persists it BEFORE any
+   * invocation; every later call with the same key — including after a
+   * restart — returns the SAME slot and the SAME stable toolCallId.
+   * Logical tool-call identity therefore never derives from time, process
+   * counters, or the number of rows currently present.
+   */
+  allocateTurnToolSlot(input: {
+    turnId: string;
+    toolName: string;
+    argDigest: string;
+  }): Promise<TurnToolSlotAllocation>;
   getInvocation(invocationId: string): Promise<AgentToolInvocationRecord | undefined>;
   getInvocationByIdempotencyKey(
     idempotencyKey: string,
@@ -1177,7 +1380,47 @@ export interface CommandIdempotencyReceipt {
   readonly leaseUntil: number | undefined;
   /** How many times the claim has been (re-)taken (lease takeovers). */
   readonly attempts: number;
+  /**
+   * The immutable settlement FENCE token for the current claim generation.
+   * Completion, deterministic failure, and release must present exactly
+   * this token; a stale owner presenting a different token receives a
+   * stable non-echoing conflict and the receipt is left byte-identical.
+   * The token changes on every lease takeover (it is derived from the
+   * namespace, owner, and attempt generation).
+   */
+  readonly fenceToken: string | undefined;
 }
+
+/** Stable structured conflict code thrown when a settlement fence mismatches. */
+export const VICT_IDEMPOTENCY_FENCE_CONFLICT = 'VICT_IDEMPOTENCY_FENCE_CONFLICT';
+
+/**
+ * Derive the deterministic settlement fence token for one claim
+ * generation. The token binds the namespace, the lease owner, and the
+ * attempt generation: a lease takeover always produces a NEW token, so a
+ * stale owner can never settle a claim it no longer owns.
+ */
+export function commandIdempotencyFenceToken(input: {
+  actorId: string;
+  command: string;
+  idempotencyKey: string;
+  owner: string;
+  attempts: number;
+}): string {
+  return (
+    'vict-fence-' +
+    createHash('sha256')
+      .update(
+        `${input.actorId}\u0000${input.command}\u0000${input.idempotencyKey}\u0000${input.owner}\u0000${input.attempts}`,
+        'utf8',
+      )
+      .digest('hex')
+  );
+}
+
+/** The result of a lease takeover attempt (the NEW fence token on success). */
+export type CommandIdempotencyLeaseTakeover =
+  { outcome: 'taken'; fenceToken: string } | { outcome: 'not-expired' | 'missing' };
 
 /** The namespaced lookup key of one receipt. */
 export interface CommandIdempotencyName {
@@ -1212,6 +1455,8 @@ export interface CommandIdempotencyStore {
     idempotencyKey: string;
     resultJson: string;
     at: number;
+    /** The claim's settlement fence token (exact generation match). */
+    fenceToken: string;
   }): Promise<void>;
   failReceipt(input: {
     actorId: string;
@@ -1219,23 +1464,30 @@ export interface CommandIdempotencyStore {
     idempotencyKey: string;
     responseCode: string;
     at: number;
+    /** The claim's settlement fence token (exact generation match). */
+    fenceToken: string;
   }): Promise<void>;
   /**
    * Release a `pending` claim WITHOUT a terminal disposition — used for
    * RETRYABLE infrastructure failures so they are never permanently
    * confused with deterministic command failures. The key becomes
-   * claimable again.
+   * claimable again. The release is FENCED: only the current claim owner
+   * generation may release; a stale owner receives a stable conflict and
+   * the live claim is left byte-identical.
    */
   releaseReceipt(input: {
     actorId: string;
     command: string;
     idempotencyKey: string;
     at: number;
+    /** The claim's settlement fence token (exact generation match). */
+    fenceToken: string;
   }): Promise<void>;
   /**
    * Crash recovery: take over an EXPIRED pending lease. Returns `taken`
-   * (the caller is the new owner; attempts incremented), `not-expired`
-   * (the previous owner may still be executing), or `missing`.
+   * with the NEW settlement fence token (the caller is the new owner;
+   * attempts incremented), `not-expired` (the previous owner may still be
+   * executing), or `missing`.
    */
   takeOverExpiredLease(input: {
     actorId: string;
@@ -1244,7 +1496,7 @@ export interface CommandIdempotencyStore {
     owner: string;
     leaseUntil: number;
     at: number;
-  }): Promise<'taken' | 'not-expired' | 'missing'>;
+  }): Promise<CommandIdempotencyLeaseTakeover>;
 }
 
 /** The composed control-plane store set. */

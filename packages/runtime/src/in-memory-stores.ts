@@ -111,7 +111,31 @@ export function createInMemoryStores(options: InMemoryStoresOptions = {}): VictS
     // An activation may only be selected for the graph it belongs to.
     assertActivationBelongsToGraph(stored, command.graphId, 'catalog.select');
     const current = selections.get(command.graphId);
-    if (command.expectedSelectionRevision !== undefined) {
+    // Operation-identity idempotency: re-selection under the SAME operation
+    // identity returns the ORIGINAL selection without adding a revision.
+    if (
+      command.operationId !== undefined &&
+      current?.operationId !== undefined &&
+      current.operationId === command.operationId
+    ) {
+      return immutableSnapshot(current);
+    }
+    if (command.expectedSelectionRevision === 'none') {
+      // EXPLICIT absence guard: the selection must NOT exist (undefined
+      // never means "expect absence").
+      if (current) {
+        throw new VictStoreError(
+          'VICT_STORE_SELECTION_CONFLICT',
+          'The graph already has a selection; the expected ABSENT selection does not match.',
+          {
+            operation: 'catalog.select',
+            graphId: command.graphId,
+            expectedSelectionRevision: 'none',
+            actualSelectionRevision: current.selectionRevision,
+          },
+        );
+      }
+    } else if (command.expectedSelectionRevision !== undefined) {
       if (!current) {
         throw new VictStoreError(
           'VICT_STORE_SELECTION_CONFLICT',
@@ -143,6 +167,7 @@ export function createInMemoryStores(options: InMemoryStoresOptions = {}): VictS
       activationVersion: command.activationVersion,
       selectionRevision: (current?.selectionRevision ?? 0) + 1,
       selectedAt: Date.now(),
+      ...(command.operationId !== undefined ? { operationId: command.operationId } : {}),
     };
     selections.set(command.graphId, next);
     return immutableSnapshot(next);
@@ -210,7 +235,20 @@ export function createInMemoryStores(options: InMemoryStoresOptions = {}): VictS
         );
       }
       const current = selections.get(command.select.graphId);
-      if (command.select.expectedSelectionRevision !== undefined) {
+      if (command.select.expectedSelectionRevision === 'none') {
+        if (current) {
+          throw new VictStoreError(
+            'VICT_STORE_SELECTION_CONFLICT',
+            'The graph already has a selection; the expected ABSENT selection does not match.',
+            {
+              operation: 'catalog.publishAndSelect',
+              graphId: command.select.graphId,
+              expectedSelectionRevision: 'none',
+              actualSelectionRevision: current.selectionRevision,
+            },
+          );
+        }
+      } else if (command.select.expectedSelectionRevision !== undefined) {
         if (!current || current.selectionRevision !== command.select.expectedSelectionRevision) {
           throw new VictStoreError(
             'VICT_STORE_SELECTION_CONFLICT',

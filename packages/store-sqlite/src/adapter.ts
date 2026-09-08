@@ -533,10 +533,48 @@ export function createSqliteStores(options: SqliteStoresOptions = {}): Disposabl
             'catalog.select',
           );
           const current = db
-            .prepare('SELECT selection_revision FROM vict_activation_selection WHERE graph_id = ?;')
-            .get(command.graphId) as { selection_revision: number } | undefined;
+            .prepare(
+              'SELECT selection_revision, operation_id FROM vict_activation_selection WHERE graph_id = ?;',
+            )
+            .get(command.graphId) as
+            { selection_revision: number; operation_id: string | null } | undefined;
+          // Operation-identity idempotency: re-selection under the SAME
+          // operation identity returns the ORIGINAL selection without
+          // adding a revision.
+          if (
+            command.operationId !== undefined &&
+            current?.operation_id !== null &&
+            current?.operation_id !== undefined &&
+            current.operation_id === command.operationId
+          ) {
+            const originalSelectedAt = db
+              .prepare('SELECT selected_at FROM vict_activation_selection WHERE graph_id = ?;')
+              .get(command.graphId) as { selected_at: string };
+            return immutable({
+              graphId: command.graphId,
+              activationVersion: command.activationVersion,
+              selectionRevision: current.selection_revision,
+              selectedAt: Date.parse(originalSelectedAt.selected_at),
+              operationId: command.operationId,
+            });
+          }
           const currentRevision = current?.selection_revision;
-          if (command.expectedSelectionRevision !== undefined) {
+          if (command.expectedSelectionRevision === 'none') {
+            // EXPLICIT absence guard: the selection must NOT exist
+            // (undefined never means "expect absence").
+            if (current !== undefined) {
+              throw new VictStoreError(
+                'VICT_STORE_SELECTION_CONFLICT',
+                'The graph already has a selection; the expected ABSENT selection does not match.',
+                {
+                  operation: 'catalog.select',
+                  graphId: command.graphId,
+                  expectedSelectionRevision: 'none',
+                  actualSelectionRevision: current.selection_revision,
+                },
+              );
+            }
+          } else if (command.expectedSelectionRevision !== undefined) {
             if (
               currentRevision === undefined ||
               currentRevision !== command.expectedSelectionRevision
@@ -556,18 +594,26 @@ export function createSqliteStores(options: SqliteStoresOptions = {}): Disposabl
           const nextRevision = (currentRevision ?? 0) + 1;
           const selectedAt = toIso(Date.now());
           db.prepare(
-            `INSERT INTO vict_activation_selection (graph_id, activation_version, selection_revision, selected_at)
-             VALUES (?, ?, ?, ?)
+            `INSERT INTO vict_activation_selection (graph_id, activation_version, selection_revision, selected_at, operation_id)
+             VALUES (?, ?, ?, ?, ?)
              ON CONFLICT(graph_id) DO UPDATE SET
                activation_version = excluded.activation_version,
                selection_revision = excluded.selection_revision,
-               selected_at = excluded.selected_at;`,
-          ).run(command.graphId, command.activationVersion, nextRevision, selectedAt);
+               selected_at = excluded.selected_at,
+               operation_id = excluded.operation_id;`,
+          ).run(
+            command.graphId,
+            command.activationVersion,
+            nextRevision,
+            selectedAt,
+            command.operationId ?? null,
+          );
           return immutable({
             graphId: command.graphId,
             activationVersion: command.activationVersion,
             selectionRevision: nextRevision,
             selectedAt: Date.parse(selectedAt),
+            ...(command.operationId !== undefined ? { operationId: command.operationId } : {}),
           });
         }),
       );
@@ -583,6 +629,7 @@ export function createSqliteStores(options: SqliteStoresOptions = {}): Disposabl
               activation_version: string;
               selection_revision: number;
               selected_at: string;
+              operation_id: string | null;
             }
           | undefined;
         if (!row) {
@@ -593,6 +640,9 @@ export function createSqliteStores(options: SqliteStoresOptions = {}): Disposabl
           activationVersion: row.activation_version,
           selectionRevision: row.selection_revision,
           selectedAt: fromIso(row.selected_at, 'catalog.readSelection'),
+          ...(row.operation_id !== null && row.operation_id !== undefined
+            ? { operationId: row.operation_id }
+            : {}),
         });
       });
     },
@@ -671,7 +721,20 @@ export function createSqliteStores(options: SqliteStoresOptions = {}): Disposabl
             .prepare('SELECT selection_revision FROM vict_activation_selection WHERE graph_id = ?;')
             .get(command.select.graphId) as { selection_revision: number } | undefined;
           const currentRevision = current?.selection_revision;
-          if (
+          if (command.select.expectedSelectionRevision === 'none') {
+            if (current !== undefined) {
+              throw new VictStoreError(
+                'VICT_STORE_SELECTION_CONFLICT',
+                'The graph already has a selection; the expected ABSENT selection does not match.',
+                {
+                  operation: 'catalog.publishAndSelect',
+                  graphId: command.select.graphId,
+                  expectedSelectionRevision: 'none',
+                  actualSelectionRevision: current.selection_revision,
+                },
+              );
+            }
+          } else if (
             command.select.expectedSelectionRevision !== undefined &&
             (currentRevision === undefined ||
               currentRevision !== command.select.expectedSelectionRevision)

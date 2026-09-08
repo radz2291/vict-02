@@ -210,6 +210,7 @@ describe('sqlite schema migrations', () => {
           'vict_agent_tool_invocation',
           'vict_agent_turn',
           'vict_agent_turn_cancel',
+          'vict_agent_turn_tool_slot',
           'vict_attempt',
           'vict_audit_event',
           'vict_branch_result',
