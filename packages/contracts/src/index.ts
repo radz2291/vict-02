@@ -44,11 +44,15 @@ export {
   AGENT_STREAM_DURABLE_KINDS,
   AGENT_STREAM_TRANSIENT_KINDS,
   AGENT_STREAM_ID_PATTERN,
+  AGENT_STREAM_CONTENT_REF_PATTERN,
   AGENT_STREAM_SCHEMA_CODES,
   AGENT_STREAM_CODE_PATTERN,
   isValidAgentStreamId,
   validateAgentStreamEvent,
   assertAgentStreamEvent,
+  agentStreamWireEnvelopeFields,
+  validateAgentStreamWireEnvelope,
+  assertAgentStreamWireEnvelope,
 } from './agent-stream.js';
 export type {
   AgentStreamContext,
@@ -57,6 +61,7 @@ export type {
   AgentStreamSchemaCode,
   AgentStreamSchemaIssue,
   AgentStreamValidationResult,
+  AgentStreamWireValidationResult,
   AgentStreamTextDelta,
   AgentStreamContentCompleted,
   AgentStreamToolRequested,

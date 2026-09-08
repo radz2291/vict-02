@@ -51,6 +51,14 @@ export interface AgentStreamContext {
   readonly traceId?: string;
   /** VICT run identity for correlation, when the turn runs inside a run. */
   readonly victRunId?: string;
+  /** The pinned activation identity for the turn, when composed. */
+  readonly activationVersion?: string;
+  /** the agent framework execution identity for correlation, when one exists. */
+  readonly mastraRunId?: string;
+  /** The durable VICT tool-invocation identity, when the event belongs to one. */
+  readonly victInvocationId?: string;
+  /** The durable VICT attempt identity (one logical invocation attempt). */
+  readonly victAttemptId?: string;
 }
 
 /** Payload of `text.delta` — transient streamed text content. */
@@ -59,11 +67,15 @@ export interface AgentStreamTextDelta {
   readonly delta: string;
 }
 
-/** Payload of `content.completed` — the durable completed content milestone. */
+/** Payload of `content.completed` — the durable completed-content milestone. */
 export interface AgentStreamContentCompleted {
   readonly kind: 'content.completed';
-  /** Full completed assistant text for this turn (safe, model-authored). */
-  readonly text: string;
+  /**
+   * Bounded reference to the completed assistant content inside the
+   * designated, actor-authorized conversation store. The operational
+   * stream ledger never carries the content itself.
+   */
+  readonly contentRef: string;
 }
 
 /** Payload of `tool.requested` — the model selected a tool. */
@@ -205,6 +217,8 @@ export const AGENT_STREAM_SCHEMA_CODES = [
   'AGENT_STREAM_INVALID_FIELD',
   'AGENT_STREAM_INVALID_CODE',
   'AGENT_STREAM_INVALID_USAGE',
+  'AGENT_STREAM_INVALID_CONTENT_REF',
+  'AGENT_STREAM_SCHEMA_MISMATCH',
   'AGENT_STREAM_NOT_OBJECT',
 ] as const;
 
@@ -232,7 +246,7 @@ interface KindFields {
 const KIND_FIELDS: Readonly<Record<AgentStreamEventKind, KindFields>> = {
   'response.started': { fields: new Set(['kind']), transient: false },
   'text.delta': { fields: new Set(['kind', 'delta']), transient: true },
-  'content.completed': { fields: new Set(['kind', 'text']), transient: false },
+  'content.completed': { fields: new Set(['kind', 'contentRef']), transient: false },
   'tool.requested': { fields: new Set(['kind', 'toolCallId', 'toolName']), transient: false },
   'tool.started': { fields: new Set(['kind', 'toolCallId', 'toolName']), transient: false },
   'tool.awaiting_approval': {
@@ -262,6 +276,13 @@ export const AGENT_STREAM_TRANSIENT_KINDS: readonly AgentStreamEventKind[] =
 /** Stable sanitized failure-code shape used by `tool.failed` / `response.failed`. */
 export const AGENT_STREAM_CODE_PATTERN = /^VICT_[A-Z0-9_]{1,96}$/;
 
+/**
+ * Bounded content-reference shape for durable content milestones. A
+ * content reference IDENTIFIES content inside the designated,
+ * actor-authorized conversation store — it never carries the content.
+ */
+export const AGENT_STREAM_CONTENT_REF_PATTERN = /^[A-Za-z0-9][A-Za-z0-9._:@/-]{0,255}$/;
+
 /** The closed context field set carried by EVERY event. */
 const CONTEXT_FIELDS: ReadonlySet<string> = new Set([
   'streamId',
@@ -271,6 +292,10 @@ const CONTEXT_FIELDS: ReadonlySet<string> = new Set([
   'agentProfileVersion',
   'traceId',
   'victRunId',
+  'activationVersion',
+  'mastraRunId',
+  'victInvocationId',
+  'victAttemptId',
   'seq',
 ]);
 
@@ -342,6 +367,16 @@ export function validateAgentStreamEvent(input: unknown): AgentStreamValidationR
   if (!isValidOptionalId(event.victRunId)) {
     reject('AGENT_STREAM_INVALID_ID', 'victRunId');
   }
+  for (const optionalIdField of [
+    'activationVersion',
+    'mastraRunId',
+    'victInvocationId',
+    'victAttemptId',
+  ] as const) {
+    if (!isValidOptionalId(event[optionalIdField])) {
+      reject('AGENT_STREAM_INVALID_ID', optionalIdField);
+    }
+  }
   if (
     typeof event.agentProfileVersion !== 'string' ||
     event.agentProfileVersion.length === 0 ||
@@ -362,8 +397,11 @@ export function validateAgentStreamEvent(input: unknown): AgentStreamValidationR
       }
       break;
     case 'content.completed':
-      if (typeof event.text !== 'string' || event.text.length === 0) {
-        reject('AGENT_STREAM_INVALID_FIELD', 'content.completed.text');
+      if (
+        typeof event.contentRef !== 'string' ||
+        !AGENT_STREAM_CONTENT_REF_PATTERN.test(event.contentRef)
+      ) {
+        reject('AGENT_STREAM_INVALID_CONTENT_REF', 'content.completed.contentRef');
       }
       break;
     case 'tool.requested':
@@ -439,31 +477,97 @@ export function assertAgentStreamEvent(input: unknown): asserts input is AgentSt
   }
 }
 
+// ---- The closed WIRE envelope (server-emitted SSE data payloads) ------------
+
 /**
- * `vict.agent-stream@1` compatibility and evolution rules (frozen marker,
- * Stage 06B — OPEN-015):
+ * The ONE closed wire-envelope shape for every server-emitted
+ * `vict.agent-stream@1` frame. A wire frame is a normalized event PLUS the
+ * exact schema marker field. This is the ONLY shape the server is allowed
+ * to emit and the ONLY shape the exported validator accepts; unknown
+ * fields, schema mismatches, undeclared event kinds, and malformed
+ * payloads FAIL CLOSED.
+ */
+const WIRE_ENVELOPE_FIELDS: ReadonlySet<string> = new Set(['schema']);
+
+/** The closed field set of the wire envelope (event fields + `schema`). */
+export function agentStreamWireEnvelopeFields(kind: AgentStreamEventKind): ReadonlySet<string> {
+  const fields = new Set([...CONTEXT_FIELDS, ...KIND_FIELDS[kind].fields, ...WIRE_ENVELOPE_FIELDS]);
+  return fields;
+}
+
+/** The field-level validation result for one wire envelope. */
+export type AgentStreamWireValidationResult =
+  | { readonly ok: true }
+  | { readonly ok: false; readonly issues: readonly AgentStreamSchemaIssue[] };
+
+/**
+ * The FINAL validation of one server-emitted wire envelope. The input must
+ * be a plain object carrying the exact `vict.agent-stream@1` marker and a
+ * structurally valid normalized event; anything else fails closed with
+ * codes and paths only (never values).
+ */
+export function validateAgentStreamWireEnvelope(input: unknown): AgentStreamWireValidationResult {
+  if (!isPlainObject(input)) {
+    return { ok: false, issues: [{ code: 'AGENT_STREAM_NOT_OBJECT' }] };
+  }
+  const frame = input as Record<string, unknown>;
+  if (frame.schema !== AGENT_STREAM_SCHEMA) {
+    return {
+      ok: false,
+      issues: [{ code: 'AGENT_STREAM_SCHEMA_MISMATCH', path: 'schema' }],
+    };
+  }
+  // Strip the closed marker field and validate the remaining payload as a
+  // normalized event (unknown fields still fail closed).
+  const { schema: _marker, ...event } = frame;
+  void _marker;
+  return validateAgentStreamEvent(event);
+}
+
+/** Validate and THROW on any invalid wire envelope (fail closed). */
+export function assertAgentStreamWireEnvelope(input: unknown): void {
+  const result = validateAgentStreamWireEnvelope(input);
+  if (!result.ok) {
+    const error = new Error(
+      `AGENT_STREAM_WIRE_INVALID: the wire envelope is not a valid ${AGENT_STREAM_SCHEMA} frame (${result.issues
+        .map((issue) => issue.code)
+        .join(', ')}).`,
+    ) as Error & { readonly name: string; code: string };
+    error.name = 'AgentStreamSchemaError';
+    error.code = 'AGENT_STREAM_WIRE_INVALID';
+    throw error;
+  }
+}
+
+/**
+ * `vict.agent-stream@1` compatibility and evolution rules (frozen marker;
+ * corrective finalization BEFORE the first independent acceptance of this
+ * contract — no `@2` marker exists and none may be introduced here):
  *
- * 1. The `vict.agent-stream@1` marker is FROZEN: every event validated by
- *    this module must remain byte-compatible with the schema above for the
- *    lifetime of `@1`.
- * 2. Additive evolution (a NEW event kind, a NEW optional context field,
- *    or a NEW optional payload field) is delivered ONLY through a new
- *    schema marker (`vict.agent-stream@2`) with its own closed validation
- *    rule set — never by widening `@1` in place.
- * 3. Consumers MUST treat unknown kinds and unknown fields as fatal
- *    validation failures (fail closed); they MUST NOT forward unknown
- *    content across the boundary. This makes forward evolution explicit:
- *    an unmodified `@1` consumer fails on `@2` traffic instead of silently
- *    misinterpreting it.
- * 4. `text.delta` is transient stream content: delivery is at-least-once
+ * 1. Once accepted, the `vict.agent-stream@1` marker is FROZEN: every
+ *    event validated by this module must remain byte-compatible with the
+ *    schema above for the lifetime of `@1`.
+ * 2. Every server-emitted frame is a closed WIRE ENVELOPE: the exact
+ *    schema marker field plus exactly the normalized event fields,
+ *    validated by the exported `validateAgentStreamWireEnvelope`.
+ *    Unknown kinds, unknown fields, schema mismatches, and malformed
+ *    payloads fail closed; consumers MUST NOT forward unknown content.
+ * 3. Replay status is NOT an event: it crosses the SSE boundary through a
+ *    separately defined response mechanism (response headers), never as
+ *    an undeclared frame inside the closed event vocabulary.
+ * 4. Durable content milestones (`content.completed`) carry a bounded
+ *    content REFERENCE into the designated, actor-authorized conversation
+ *    store — never the content itself. The operational stream ledger
+ *    therefore cannot retain prompt text, tool payloads, or completed
+ *    assistant content.
+ * 5. `text.delta` is transient stream content: delivery is at-least-once
  *    and consecutive deltas MAY be coalesced under backpressure. All other
  *    kinds are durable milestones that MUST NOT be dropped, reordered, or
- *    coalesced, and (except `response.started`/`response.*` bookkeeping)
- *    are persisted by the durable stream ledger by default.
- * 5. Delivery is at-least-once with client deduplication by
+ *    coalesced, and are persisted by the durable stream ledger.
+ * 6. Delivery is at-least-once with client deduplication by
  *    (streamId, seq); sequence numbers are strictly monotonic per stream
  *    and enforced by the durable ledger's append gate.
- * 6. Raw provider/agent-framework chunk types, hidden chain-of-thought,
+ * 7. Raw provider/agent-framework chunk types, hidden chain-of-thought,
  *    raw provider/capability errors, credentials, and full tool payloads
  *    are NOT representable in `@1` and MUST never be smuggled through
  *    optional fields (the closed field sets structurally prevent this).

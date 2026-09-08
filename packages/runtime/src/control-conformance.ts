@@ -209,6 +209,148 @@ export function runAgentControlConformanceSuite(
 ): void {
   const { it: t, expect } = runner;
 
+  // ---- Corrective-finalization stores: runs, receipts, CAS, idempotency ----
+
+  t(
+    `[${factory.name}] control runs: idempotent record, content collision, exact read`,
+    async () => {
+      const stores = await factory.create();
+      try {
+        const record = makeChangeSetRecord();
+        await stores.control.saveChangeSet(record);
+        const run = {
+          runId: 'run-cf-1',
+          kind: 'validation',
+          changesetId: record.changesetId,
+          contentHash: record.contentHash,
+          base: record.base,
+          operations: record.operations,
+          runnerProfile: 'vict.control-plane@1',
+          actorId: 'actor-author',
+          outcome: 'passed',
+          createdAt: 5000,
+        } as const;
+        await stores.control.recordControlRun(run);
+        await stores.control.recordControlRun(run); // idempotent re-record
+        const stored = await stores.control.getControlRun('run-cf-1');
+        expect(stored?.outcome).toBe('passed');
+        expect(stored?.runnerProfile).toBe('vict.control-plane@1');
+        await expect(
+          stores.control.recordControlRun({ ...run, outcome: 'failed' }),
+        ).rejects.toThrow(/different content/);
+        expect(await stores.control.getControlRun('run-ghost')).toEqual(undefined);
+      } finally {
+        await stores.dispose();
+      }
+    },
+  );
+
+  t(`[${factory.name}] operation receipts: idempotent, ordered, collision-guarded`, async () => {
+    const stores = await factory.create();
+    try {
+      const receipt = (index: number, effectRef: string) => ({
+        changesetId: 'changeset-cf-1',
+        operationIndex: index,
+        operationKind: 'select-release' as const,
+        operationDigest: `digest-${index}`,
+        effectRef,
+        actorId: 'actor-author',
+        appliedAt: 6000 + index,
+      });
+      await stores.control.recordOperationReceipt(receipt(1, 'effect:b'));
+      await stores.control.recordOperationReceipt(receipt(0, 'effect:a'));
+      await stores.control.recordOperationReceipt(receipt(0, 'effect:a')); // idempotent
+      const list = await stores.control.listOperationReceipts('changeset-cf-1');
+      expect(list.map((entry) => entry.operationIndex)).toEqual([0, 1]);
+      await expect(
+        stores.control.recordOperationReceipt(receipt(0, 'effect:CHANGED')),
+      ).rejects.toThrow(/different content/);
+    } finally {
+      await stores.dispose();
+    }
+  });
+
+  t(
+    `[${factory.name}] compare-and-set status: exactly one winner, conflict otherwise`,
+    async () => {
+      const stores = await factory.create();
+      try {
+        const record = makeChangeSetRecord();
+        await stores.control.saveChangeSet(record);
+        const first = await stores.control.compareAndSetChangeSetStatus({
+          changesetId: record.changesetId,
+          expectedStatus: 'draft',
+          nextStatus: 'applying',
+        });
+        expect(first.status).toBe('applying');
+        await expect(
+          stores.control.compareAndSetChangeSetStatus({
+            changesetId: record.changesetId,
+            expectedStatus: 'draft',
+            nextStatus: 'committed',
+          }),
+        ).rejects.toThrow(/not in the expected status/);
+        const second = await stores.control.compareAndSetChangeSetStatus({
+          changesetId: record.changesetId,
+          expectedStatus: 'applying',
+          nextStatus: 'committed',
+        });
+        expect(second.status).toBe('committed');
+      } finally {
+        await stores.dispose();
+      }
+    },
+  );
+
+  t(`[${factory.name}] command idempotency: claim/complete/fail with one winner`, async () => {
+    const stores = await factory.create();
+    try {
+      const receipt = {
+        idempotencyKey: 'key-cf-1',
+        actorId: 'actor-author',
+        command: 'changeset.propose',
+        requestDigest: 'digest-cf-1',
+        status: 'pending',
+        responseCode: undefined,
+        resultJson: undefined,
+        createdAt: 7000,
+        settledAt: undefined,
+      } as const;
+      expect(await stores.commandIdempotency.claimReceipt(receipt)).toBe('claimed');
+      expect(await stores.commandIdempotency.claimReceipt(receipt)).toBe('exists');
+      await stores.commandIdempotency.completeReceipt({
+        idempotencyKey: 'key-cf-1',
+        resultJson: '{"applied":["select-release"]}',
+        at: 7001,
+      });
+      const completed = await stores.commandIdempotency.getReceipt('key-cf-1');
+      expect(completed?.status).toBe('completed');
+      expect(completed?.resultJson).toBe('{"applied":["select-release"]}');
+      // A settled receipt is never overwritten.
+      await stores.commandIdempotency.failReceipt({
+        idempotencyKey: 'key-cf-1',
+        responseCode: 'VICT_X',
+        at: 7002,
+      });
+      expect((await stores.commandIdempotency.getReceipt('key-cf-1'))?.status).toBe('completed');
+      // A failure disposition round-trips.
+      await stores.commandIdempotency.claimReceipt({
+        ...receipt,
+        idempotencyKey: 'key-cf-2',
+      });
+      await stores.commandIdempotency.failReceipt({
+        idempotencyKey: 'key-cf-2',
+        responseCode: 'VICT_CONTROL_CHANGESET_EXISTS',
+        at: 7003,
+      });
+      const failed = await stores.commandIdempotency.getReceipt('key-cf-2');
+      expect(failed?.status).toBe('failed');
+      expect(failed?.responseCode).toBe('VICT_CONTROL_CHANGESET_EXISTS');
+    } finally {
+      await stores.dispose();
+    }
+  });
+
   // ---- ChangeSets ----------------------------------------------------------
   t(`[${factory.name}] changeset save/get round-trips and duplicate ids are rejected`, async () => {
     const stores = await factory.create();
@@ -642,7 +784,8 @@ export function runAgentControlConformanceSuite(
         await stores.streamLedger.appendEvent({
           streamId: 'stream-reopen',
           kind: 'content.completed',
-          payload: '{"kind":"content.completed","text":"persisted"}',
+          payload:
+            '{"kind":"content.completed","turnId":"turn-reopen","threadId":"thread-reopen","actorId":"actor-author","agentProfileVersion":"p","contentRef":"conversation:vict-actor-actor-author/thread-reopen/turn-reopen"}',
           at: 1400,
         });
         await stores.streamLedger.appendEvent({
@@ -650,6 +793,18 @@ export function runAgentControlConformanceSuite(
           kind: 'text.delta',
           payload: '{"kind":"text.delta","delta":"gone"}',
           at: 1401,
+        });
+        // A durable idempotency receipt must survive the close/reopen too.
+        await stores.commandIdempotency.claimReceipt({
+          idempotencyKey: 'key-reopen',
+          actorId: 'actor-author',
+          command: 'changeset.propose',
+          requestDigest: 'digest-reopen',
+          status: 'completed',
+          responseCode: undefined,
+          resultJson: '{"ok":true}',
+          createdAt: 1402,
+          settledAt: 1403,
         });
         await stores.dispose();
 
@@ -669,6 +824,9 @@ export function runAgentControlConformanceSuite(
           const rows = await reopened.streamLedger.listEventsFrom('stream-reopen', 0);
           expect(rows.map((row) => row.kind)).toEqual(['content.completed']);
           expect(await reopened.streamLedger.latestSeq('stream-reopen')).toBe(2);
+          const receipt = await reopened.commandIdempotency.getReceipt('key-reopen');
+          expect(receipt?.status).toBe('completed');
+          expect(receipt?.resultJson).toBe('{"ok":true}');
         } finally {
           await reopened.dispose();
         }

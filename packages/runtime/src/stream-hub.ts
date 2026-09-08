@@ -103,7 +103,9 @@ export class AgentStreamHub {
    * delivers to subscribers. Throws (fail closed) on any schema-invalid
    * event.
    */
-  async publish(event: AgentStreamEvent): Promise<AgentStreamEvent> {
+  async publish(
+    event: Omit<AgentStreamEvent, 'seq'> & { readonly seq?: number },
+  ): Promise<AgentStreamEvent> {
     // Pre-validate the event STRUCTURE with a placeholder sequence (the
     // durable ledger assigns the authoritative monotonic sequence next).
     const { seq: _ignored, ...withoutSeq } = event as unknown as Record<string, unknown>;
@@ -122,7 +124,10 @@ export class AgentStreamHub {
       payload: streamEventPayloadOf(event),
       at: this.#clock(),
     });
-    const assigned: AgentStreamEvent = { ...event, seq };
+    // The stored event is ONE immutable, frozen copy: the replay buffer and
+    // every subscriber receive their OWN copies, so no delivery path can
+    // ever mutate an event object that another path still reads.
+    const assigned: AgentStreamEvent = deepFreezeEvent({ ...event, seq } as AgentStreamEvent);
     assertAgentStreamEvent(assigned);
     const state = this.#stateOf(event.streamId);
     if (!isDurableStreamKind(event.kind)) {
@@ -138,6 +143,14 @@ export class AgentStreamHub {
    * Delivery is at-least-once: duplicates after the cursor are possible
    * when a buffered delta was already delivered.
    */
+  /**
+   * Subscribe to a stream. Replays durable ledger rows and buffered
+   * transient deltas after the cursor, then attaches the subscriber.
+   * Delivery is at-least-once: duplicates after the cursor are possible
+   * when a buffered delta was already delivered. Backpressure during the
+   * replay NEVER discards events: the remaining replay is buffered for
+   * this subscriber and delivered through `pull()`.
+   */
   async subscribe(
     streamId: string,
     subscriber: AgentStreamSubscriber,
@@ -148,21 +161,30 @@ export class AgentStreamHub {
       throw new Error('AGENT_STREAM_SUBSCRIBER_EXISTS: the subscriber id is already attached.');
     }
     const afterSeq = cursor?.lastSeq ?? 0;
+    const entry: SubscriberState = { subscriber, slow: false, pending: [] };
     const durableRows = await this.#ledger.listEventsFrom(streamId, afterSeq);
+    const backlog: AgentStreamEvent[] = [];
     for (const row of durableRows) {
-      if (!subscriber.deliver(ledgerRowToEvent(row))) {
-        break;
-      }
+      backlog.push(ledgerRowToEvent(row));
     }
     for (const buffered of state.buffer) {
-      if (buffered.seq <= afterSeq) {
-        continue;
+      if (buffered.seq > afterSeq) {
+        backlog.push(buffered);
       }
-      if (!subscriber.deliver(buffered)) {
+    }
+    backlog.sort((a, b) => a.seq - b.seq);
+    for (let index = 0; index < backlog.length; index += 1) {
+      // Delivery is at-least-once and CURSOR-DEDUPLICATED: a `false` return
+      // means the handed event was ACCEPTED by the transport (Node buffers
+      // the bytes) and everything AFTER it must be buffered — the accepted
+      // event itself is never re-delivered.
+      if (!subscriber.deliver(cloneEvent(backlog[index] as AgentStreamEvent))) {
+        entry.slow = true;
+        entry.pending.push(...backlog.slice(index + 1));
         break;
       }
     }
-    state.subscribers.set(subscriber.subscriberId, { subscriber, slow: false, pending: [] });
+    state.subscribers.set(subscriber.subscriberId, entry);
   }
 
   /** Detach a subscriber (clean completion/cancellation). */
@@ -178,7 +200,9 @@ export class AgentStreamHub {
   /**
    * Drain the pending queue of a slow subscriber. Consecutive pending
    * `text.delta` events are coalesced into one delta; non-delta events are
-   * never dropped, reordered, or coalesced.
+   * never dropped, reordered, or coalesced. Returned events are private
+   * copies of this subscriber's queue — coalescing never mutates any
+   * event that another consumer can observe.
    */
   pull(streamId: string, subscriberId: string): readonly AgentStreamEvent[] {
     const state = this.#stateOf(streamId);
@@ -237,15 +261,18 @@ export class AgentStreamHub {
   #deliver(state: StreamState, event: AgentStreamEvent): void {
     for (const entry of state.subscribers.values()) {
       if (!entry.slow) {
-        const accepted = entry.subscriber.deliver(event);
-        if (!accepted) {
+        // Each subscriber receives its OWN copy: no delivery path can
+        // mutate an event the replay buffer (or another subscriber) reads.
+        // A `false` return means the event was ACCEPTED and the transport
+        // is saturated: only SUBSEQUENT events buffer.
+        if (!entry.subscriber.deliver(cloneEvent(event))) {
           entry.slow = true;
-          entry.pending.push(event);
         }
         continue;
       }
       // Buffered mode: coalesce consecutive transient deltas, never drop
-      // non-delta events, and honor the hard pending bound.
+      // non-delta events, and honor the hard pending bound. Pending
+      // entries are private copies of this subscriber only.
       const last = entry.pending.at(-1);
       if (
         event.kind === 'text.delta' &&
@@ -253,12 +280,12 @@ export class AgentStreamHub {
         last.kind === 'text.delta' &&
         entry.pending.length <= this.#pendingLimit
       ) {
-        // Coalesce in place: consecutive deltas merge into one.
+        // Coalesce into the private pending copy (never the stored event).
         (last as { delta: string }).delta = last.delta + event.delta;
         continue;
       }
       if (entry.pending.length < this.#pendingLimit) {
-        entry.pending.push(event);
+        entry.pending.push(cloneEvent(event));
         continue;
       }
       // Hard bound reached: only further transient deltas may be folded
@@ -280,6 +307,24 @@ function pushBounded(buffer: AgentStreamEvent[], event: AgentStreamEvent, size: 
   }
 }
 
+/** A private deep copy of one event (delivery paths never share objects). */
+function cloneEvent(event: AgentStreamEvent): AgentStreamEvent {
+  return JSON.parse(JSON.stringify(event)) as AgentStreamEvent;
+}
+
+/** Freeze one event deeply (stored events are immutable by construction). */
+function deepFreezeEvent<T>(event: T): T {
+  if (event !== null && typeof event === 'object') {
+    for (const value of Object.values(event as Record<string, unknown>)) {
+      if (value !== null && typeof value === 'object') {
+        deepFreezeEvent(value);
+      }
+    }
+    Object.freeze(event);
+  }
+  return event;
+}
+
 /** Coalesce CONSECUTIVE text.delta events; all other events pass through. */
 function coalesceDeltas(events: readonly AgentStreamEvent[]): AgentStreamEvent[] {
   const result: AgentStreamEvent[] = [];
@@ -291,7 +336,7 @@ function coalesceDeltas(events: readonly AgentStreamEvent[]): AgentStreamEvent[]
     }
     result.push(event);
   }
-  return result;
+  return result.map((event) => deepFreezeEvent(event));
 }
 
 /** Reconstruct one full event from a durable ledger row (fail closed). */

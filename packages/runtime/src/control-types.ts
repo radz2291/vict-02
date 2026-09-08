@@ -339,22 +339,44 @@ export type ApplicationReleaseContent = Pick<
   | 'activationBinding'
 >;
 
-/** Validation evidence attached to a ChangeSet. */
+/** Validation evidence attached to a ChangeSet (bound to an EXECUTED run). */
 export interface ChangeSetValidationEvidence {
+  /** Identity of the authoritative VICT-executed validation run. */
   readonly runId: string;
   readonly outcome: 'passed' | 'failed';
   readonly recordedAt: number;
+  /** The EXACT ChangeSet content identity the run was executed against. */
+  readonly contentHash: string;
+  /** The EXACT expected base identity the run was executed against. */
+  readonly base: ChangeSetBase;
+  /** The runner/profile version identity that executed the run. */
+  readonly runnerProfile: string;
+  /** The authenticated actor for whom the run was executed. */
+  readonly actorId: string;
 }
 
-/** Simulation evidence attached to a ChangeSet. */
+/** Simulation evidence attached to a ChangeSet (bound to an EXECUTED run). */
 export interface ChangeSetSimulationEvidence {
+  /** Identity of the authoritative VICT-executed simulation run. */
   readonly runId: string;
   readonly outcome: 'passed' | 'failed' | 'blocked';
   readonly recordedAt: number;
+  /** The EXACT ChangeSet content identity the run was executed against. */
+  readonly contentHash: string;
+  /** The EXACT expected base identity the run was executed against. */
+  readonly base: ChangeSetBase;
+  /** The runner/profile version identity that executed the run. */
+  readonly runnerProfile: string;
+  /** The authenticated actor for whom the run was executed. */
+  readonly actorId: string;
 }
 
-/** Forward-only ChangeSet status. */
-export type ChangeSetStatus = 'draft' | 'approved' | 'committed' | 'declined' | 'expired';
+/** Forward-only ChangeSet status. `applying` is a DURABLE, non-final
+ * state: a commit whose operations are being applied (saga). A failure
+ * inside `applying` leaves the record truthfully `applying` — never a
+ * falsely final state — and deterministic recovery completes it. */
+export type ChangeSetStatus =
+  'draft' | 'approved' | 'applying' | 'committed' | 'declined' | 'expired';
 
 /** One proposed, version-guarded control-plane change. */
 export interface ChangeSetRecord {
@@ -401,6 +423,51 @@ export interface ChangeSetApprovalDecision {
   readonly approverActorId: string;
   readonly decision: 'approved' | 'declined';
   readonly decidedAt: number;
+}
+
+// ---- Authoritative governance runs (trusted executed VICT boundary) --------
+
+/** The closed governance-run vocabulary. */
+export type ControlRunKind = 'validation' | 'simulation';
+
+/**
+ * One authoritative validation/simulation run EXECUTED by the trusted VICT
+ * boundary. Run records are the ONLY source from which ChangeSet evidence
+ * may be derived; caller-claimed evidence is verified against these
+ * durable records before it can authorize a commit.
+ */
+export interface ControlRunRecord {
+  readonly runId: string;
+  readonly kind: ControlRunKind;
+  /** The ChangeSet subject the run was executed against. */
+  readonly changesetId: string;
+  /** The EXACT content identity the run was executed against. */
+  readonly contentHash: string;
+  /** The EXACT expected base identity at run time. */
+  readonly base: ChangeSetBase;
+  /** The EXACT operation set the run covered (canonical content). */
+  readonly operations: readonly ChangeSetOperation[];
+  /** The runner/profile version identity that executed the run. */
+  readonly runnerProfile: string;
+  /** The authenticated actor the run was executed for. */
+  readonly actorId: string;
+  readonly outcome: 'passed' | 'failed' | 'blocked';
+  /** Epoch-ms execution time from the injected clock. */
+  readonly createdAt: number;
+}
+
+/** One durable receipt of a single applied ChangeSet operation (saga). */
+export interface ChangeSetOperationReceipt {
+  readonly changesetId: string;
+  /** Zero-based index of the operation inside the ChangeSet. */
+  readonly operationIndex: number;
+  readonly operationKind: ChangeSetOperation['kind'];
+  /** Content identity of the exact operation that was applied. */
+  readonly operationDigest: string;
+  /** Stable identity of the applied effect (idempotency anchor). */
+  readonly effectRef: string;
+  readonly actorId: string;
+  readonly appliedAt: number;
 }
 
 /** Validate the structural shape of one ChangeSet operation (fail closed). */
@@ -613,6 +680,29 @@ export interface ControlPlaneStore {
   recordChangeSetApproval(decision: ChangeSetApprovalDecision): Promise<void>;
   listChangeSetApprovals(changesetId: string): Promise<readonly ChangeSetApprovalDecision[]>;
 
+  /** Durable record of one authoritative governance run (idempotent by runId). */
+  recordControlRun(record: ControlRunRecord): Promise<void>;
+  getControlRun(runId: string): Promise<ControlRunRecord | undefined>;
+
+  /**
+   * Durable saga receipts for applied ChangeSet operations (idempotent by
+   * (changesetId, operationIndex)). Recovery completes a commit exactly
+   * once by skipping operations that already carry a receipt.
+   */
+  recordOperationReceipt(receipt: ChangeSetOperationReceipt): Promise<void>;
+  listOperationReceipts(changesetId: string): Promise<readonly ChangeSetOperationReceipt[]>;
+
+  /**
+   * Compare-and-set the ChangeSet status (one winner). The update is
+   * applied only when the CURRENT durable status equals `expectedStatus`;
+   * a mismatch throws `VICT_CONTROL_CHANGESET_STATUS_CONFLICT`.
+   */
+  compareAndSetChangeSetStatus(input: {
+    changesetId: string;
+    expectedStatus: ChangeSetStatus;
+    nextStatus: ChangeSetStatus;
+  }): Promise<ChangeSetRecord>;
+
   publishRelease(record: ApplicationReleaseRecord): Promise<void>;
   getRelease(releaseVersion: string): Promise<ApplicationReleaseRecord | undefined>;
   listReleases(applicationId: string): Promise<readonly ApplicationReleaseRecord[]>;
@@ -774,7 +864,14 @@ export interface AgentTurnStore {
 // ---- Tool invocations (durable-before-invocation) ----------------------------
 
 export type AgentToolInvocationStatus =
-  'intent' | 'approved' | 'running' | 'completed' | 'failed' | 'declined' | 'cancelled';
+  | 'intent'
+  | 'approved'
+  | 'running'
+  | 'completed'
+  | 'failed'
+  | 'declined'
+  | 'cancelled'
+  | 'outcome_unknown';
 
 /** One durable protected tool-invocation record. */
 export interface AgentToolInvocationRecord {
@@ -810,7 +907,14 @@ export interface AgentToolInvocationStore {
   ): Promise<AgentToolInvocationRecord | undefined>;
   updateInvocationStatus(command: {
     invocationId: string;
-    status: 'approved' | 'running' | 'completed' | 'failed' | 'declined' | 'cancelled';
+    status:
+      | 'approved'
+      | 'running'
+      | 'completed'
+      | 'failed'
+      | 'declined'
+      | 'cancelled'
+      | 'outcome_unknown';
     at: number;
     resultSummary?: string;
     errorCode?: string;
@@ -912,7 +1016,45 @@ export function isDurableStreamKind(kind: AgentStreamEventKind): boolean {
 
 // ---- The composed control-plane store set -------------------------------------
 
-/** The full set of Stage 06B durable stores (neutral ports). */
+// ---- Durable command idempotency -----------------------------------------
+
+/** The closed, bounded idempotency-key format (HTTP + CLI surface). */
+export const COMMAND_IDEMPOTENCY_KEY_PATTERN = /^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$/;
+
+/**
+ * One durable command-idempotency receipt. A receipt binds the idempotency
+ * key to the authenticated actor, the command kind, the canonical request
+ * digest, and the durable result or terminal disposition.
+ */
+export interface CommandIdempotencyReceipt {
+  readonly idempotencyKey: string;
+  readonly actorId: string;
+  readonly command: string;
+  /** Canonical digest over the exact request payload. */
+  readonly requestDigest: string;
+  readonly status: 'pending' | 'completed' | 'failed';
+  /** Stable failure code when status is `failed`. */
+  readonly responseCode: string | undefined;
+  /** Canonical JSON of the durable result when status is `completed`. */
+  readonly resultJson: string | undefined;
+  readonly createdAt: number;
+  readonly settledAt: number | undefined;
+}
+
+/** The durable command-idempotency store port (one winner per key). */
+export interface CommandIdempotencyStore {
+  /**
+   * Insert-if-absent. Returns `claimed` for exactly one concurrent caller
+   * (the winner); every other caller receives `exists` with the existing
+   * durable receipt.
+   */
+  claimReceipt(record: CommandIdempotencyReceipt): Promise<'claimed' | 'exists'>;
+  getReceipt(idempotencyKey: string): Promise<CommandIdempotencyReceipt | undefined>;
+  completeReceipt(input: { idempotencyKey: string; resultJson: string; at: number }): Promise<void>;
+  failReceipt(input: { idempotencyKey: string; responseCode: string; at: number }): Promise<void>;
+}
+
+/** The composed control-plane store set. */
 export interface AgentControlStores {
   readonly actors: ActorDirectory;
   readonly control: ControlPlaneStore;
@@ -920,6 +1062,8 @@ export interface AgentControlStores {
   readonly invocations: AgentToolInvocationStore;
   readonly approvals: AgentApprovalStore;
   readonly streamLedger: AgentStreamLedgerStore;
+  /** Durable command idempotency (state-changing HTTP/CLI commands). */
+  readonly commandIdempotency: CommandIdempotencyStore;
 }
 
 /** Validation error for any control-plane structural violation. */
