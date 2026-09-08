@@ -1,6 +1,10 @@
 import { createServer, type IncomingMessage, type Server, type ServerResponse } from 'node:http';
 import { VictControlError, type AgentControlStores, type AgentStreamHub } from '@vict/runtime';
-import type { AgentStreamEvent } from '@vict/contracts';
+import {
+  AGENT_STREAM_SCHEMA,
+  assertAgentStreamWireEnvelope,
+  type AgentStreamEvent,
+} from '@vict/contracts';
 import { AuthenticationError, type ServerActorContext } from './auth.js';
 import { VictCommandService, type VictCommandOutcome } from './commands.js';
 
@@ -11,12 +15,19 @@ import { VictCommandService, type VictCommandOutcome } from './commands.js';
  * `/vict/v1/streams/:streamId`. Hard transport rules:
  *
  * - closed request schemas and a bounded request body (256 KiB);
- * - strict content-type handling (`application/json` for commands);
+ * - EXACT content-type handling (`application/json`, optional charset);
  * - stable status/error mapping — malformed JSON, unknown routes, and
  *   unsupported methods fail with structured, non-echoing bodies;
- * - mutation idempotency keys via the `Idempotency-Key` header;
+ * - the durable `Idempotency-Key` boundary for state-changing commands is
+ *   enforced below the transport by the shared command service;
  * - the authenticated server context on EVERY protected operation — no
  *   client-supplied identity is ever authoritative;
+ * - SSE is ACTOR-SCOPED: a stream without a matching, valid turn ownership
+ *   record is denied — never treated as public; every emitted frame is a
+ *   closed `vict.agent-stream@1` wire envelope validated before write;
+ * - Node HTTP backpressure is honored: `response.write() === false` means
+ *   the bytes were ACCEPTED, and the remaining replay is delivered after
+ *   `drain` — never discarded;
  * - NO privileged Mastra route exists at this boundary (a probe set of
  *   Mastra-native paths is covered by permanent tests);
  * - raw exceptions, tokens, and secrets never echo.
@@ -61,8 +72,9 @@ export interface VictHttpServerOptions {
 /** The composed VICT HTTP server (transport + command + SSE). */
 export interface VictHttpServer {
   readonly server: Server;
-  /** The actual listening port (after `listen`). */
+  /** The actual listening port (0 before `listen`). */
   port(): number;
+  /** Await actual shutdown, including open SSE subscribers. */
   close(): Promise<void>;
 }
 
@@ -71,13 +83,12 @@ function statusForError(code: string | undefined): number {
   if (code === undefined) {
     return 500;
   }
-  if (code.startsWith('VICT_ACTOR_')) {
-    return 403;
-  }
   switch (code) {
     case 'VICT_AUTH_TOKEN_MISSING':
     case 'VICT_AUTH_TOKEN_UNKNOWN':
       return 401;
+    case 'VICT_ACTOR_SCOPE_DENIED':
+      return 403;
     case 'VICT_COMMAND_UNKNOWN':
     case 'VICT_CONTROL_CHANGESET_MISSING':
     case 'VICT_TURN_MISSING':
@@ -88,8 +99,12 @@ function statusForError(code: string | undefined): number {
     case 'VICT_CONTROL_APPROVAL_MISSING':
     case 'VICT_STORE_ACTIVATION_NOT_FOUND':
     case 'VICT_STORE_RELEASE_NOT_FOUND':
+    case 'VICT_STREAM_ACTOR_MISMATCH':
+    case 'VICT_TURN_ACTOR_MISMATCH':
       return 404;
     case 'VICT_COMMAND_FIELD_INVALID':
+    case 'VICT_COMMAND_PAYLOAD_INVALID':
+    case 'VICT_COMMAND_IDEMPOTENCY_KEY_INVALID':
     case 'VICT_CONTROL_ID_INVALID':
     case 'VICT_CONTROL_FIELD_INVALID':
     case 'VICT_CONTROL_TIMESTAMP_INVALID':
@@ -102,13 +117,25 @@ function statusForError(code: string | undefined): number {
     case 'VICT_CONTROL_RELEASE_COLLISION':
     case 'VICT_AGENT_DELETION_INTENT_COLLISION':
       return 400;
+    case 'VICT_COMMAND_IDEMPOTENCY_CONFLICT':
+    case 'VICT_COMMAND_IDEMPOTENCY_IN_PROGRESS':
     case 'VICT_CONTROL_BASE_STALE':
+    case 'VICT_STREAM_CURSOR_FUTURE':
       return 409;
     case 'VICT_CONTROL_APPROVAL_CONFLICT':
     case 'VICT_CONTROL_APPROVALS_INVALIDATED':
     case 'VICT_CONTROL_CHANGESET_NOT_APPROVED':
     case 'VICT_CONTROL_CHANGESET_NOT_DRAFT':
     case 'VICT_CONTROL_CHANGESET_EXPIRED':
+    case 'VICT_CONTROL_CHANGESET_STATUS_CONFLICT':
+    case 'VICT_CONTROL_EVIDENCE_MISSING':
+    case 'VICT_CONTROL_EVIDENCE_FAILED':
+    case 'VICT_CONTROL_EVIDENCE_STALE':
+    case 'VICT_CONTROL_EVIDENCE_NOT_AUTHORITATIVE':
+    case 'VICT_CONTROL_EVIDENCE_SUBJECT_MISMATCH':
+    case 'VICT_CONTROL_EVIDENCE_CONTENT_MISMATCH':
+    case 'VICT_CONTROL_EVIDENCE_BASE_MISMATCH':
+    case 'VICT_CONTROL_EVIDENCE_ACTOR_MISMATCH':
     case 'VICT_CONTROL_TURN_INVALID_TRANSITION':
     case 'VICT_CONTROL_INVOCATION_REGRESSION':
     case 'VICT_CONTROL_INVOCATION_TERMINAL':
@@ -120,6 +147,9 @@ function statusForError(code: string | undefined): number {
     case 'VICT_RUN_STORE_UNAVAILABLE':
       return 409;
     default:
+      if (code.startsWith('VICT_ACTOR_')) {
+        return 403;
+      }
       return 500;
   }
 }
@@ -168,6 +198,33 @@ function safeErrorBody(code: string): string {
   return JSON.stringify({ ok: false, code });
 }
 
+/**
+ * EXACT supported Content-Type parsing: the media type must be exactly
+ * `application/json` (case-insensitive) with at most an optional charset
+ * parameter (`utf-8`/`us-ascii`). Near-miss types fail closed.
+ */
+export function isSupportedJsonContentType(contentType: string): boolean {
+  const parts = contentType.split(';').map((part) => part.trim());
+  const mediaType = parts[0]?.toLowerCase();
+  if (mediaType !== 'application/json') {
+    return false;
+  }
+  for (const parameter of parts.slice(1)) {
+    if (parameter.length === 0) {
+      continue;
+    }
+    const [name, value] = parameter.split('=', 2);
+    if (name?.trim().toLowerCase() !== 'charset') {
+      return false;
+    }
+    const charset = value?.trim().toLowerCase().replace(/^"|"$/g, '');
+    if (charset !== 'utf-8' && charset !== 'us-ascii') {
+      return false;
+    }
+  }
+  return true;
+}
+
 /** Route the command path to a command name. */
 const ROUTE_COMMANDS: Readonly<Record<string, string>> = {
   '/vict/v1/health': 'health.inspect',
@@ -186,6 +243,7 @@ const POST_ROUTES: Readonly<Record<string, () => string>> = {
   '/vict/v1/changesets/commit': () => 'changeset.commit',
   '/vict/v1/changesets/decide': () => 'changeset.decide',
   '/vict/v1/changesets/revise': () => 'changeset.revise',
+  '/vict/v1/changesets/check': () => 'changeset.execute-check',
   '/vict/v1/changesets/evidence': () => 'changeset.attach-evidence',
   '/vict/v1/releases/publish': () => 'release.publish',
   '/vict/v1/releases/select': () => 'release.select',
@@ -199,9 +257,34 @@ const POST_ROUTES: Readonly<Record<string, () => string>> = {
   '/vict/v1/streams/inspect': () => 'stream.inspect',
 };
 
+/** The bounded reconnect cursor: `v1:<streamId>:<lastSeq>`. */
+const CURSOR_PATTERN = /^v1:([A-Za-z0-9][A-Za-z0-9._:@-]{0,127}):(\d{1,19})$/;
+
+export function encodeStreamCursor(streamId: string, lastSeq: number): string {
+  return `v1:${streamId}:${lastSeq}`;
+}
+
+export interface DecodedStreamCursor {
+  readonly streamId: string;
+  readonly lastSeq: number;
+}
+
+export function decodeStreamCursor(raw: string): DecodedStreamCursor | undefined {
+  const match = CURSOR_PATTERN.exec(raw);
+  if (match === null) {
+    return undefined;
+  }
+  const lastSeq = Number(match[2]);
+  if (!Number.isSafeInteger(lastSeq) || lastSeq < 0) {
+    return undefined;
+  }
+  return { streamId: match[1] as string, lastSeq };
+}
+
 /** Create the composed VICT HTTP + SSE server (not yet listening). */
 export function createVictHttpServer(options: VictHttpServerOptions): VictHttpServer {
-  const boundPort = 0;
+  let boundAddress: { port: number } | undefined;
+  const openStreams = new Set<ServerResponse>();
   const server =
     options.server ??
     createServer((req, res) => {
@@ -225,6 +308,15 @@ export function createVictHttpServer(options: VictHttpServerOptions): VictHttpSe
         }
       });
     });
+  // Track the REAL bound port (0 before `listen`).
+  const refreshBoundAddress = (): void => {
+    const address = server.address();
+    if (address !== null && typeof address === 'object') {
+      boundAddress = { port: address.port };
+    }
+  };
+  server.on('listening', refreshBoundAddress);
+  refreshBoundAddress();
 
   async function authenticate(req: IncomingMessage): Promise<ServerActorContext> {
     // Bearer-token authentication: the transport credential NEVER carries
@@ -283,15 +375,15 @@ export function createVictHttpServer(options: VictHttpServerOptions): VictHttpSe
     // Everything else is a protected command endpoint.
     const actor = await authenticate(req);
 
-    const isMutation = req.method === 'POST' || req.method === 'PUT' || req.method === 'DELETE';
     let body: string;
     if (req.method === 'POST' || req.method === 'PUT') {
+      // EXACT supported content type (application/json, optional charset).
       const contentType = req.headers['content-type'];
-      if (contentType === undefined || !contentType.includes('application/json')) {
+      if (typeof contentType !== 'string' || !isSupportedJsonContentType(contentType)) {
         throw new HttpError('VICT_HTTP_CONTENT_TYPE_INVALID', 415);
       }
       body = await readBody(req, res);
-    } else {
+    } else if (req.method === 'GET') {
       // GET commands may carry bounded query payloads.
       const queryPayload: Record<string, unknown> = {};
       for (const [key, value] of url.searchParams.entries()) {
@@ -300,6 +392,8 @@ export function createVictHttpServer(options: VictHttpServerOptions): VictHttpSe
         }
       }
       body = JSON.stringify({ payload: queryPayload });
+    } else {
+      body = '{}';
     }
     let parsed: unknown;
     try {
@@ -310,26 +404,34 @@ export function createVictHttpServer(options: VictHttpServerOptions): VictHttpSe
     if (typeof parsed !== 'object' || parsed === null || Array.isArray(parsed)) {
       throw new HttpError('VICT_HTTP_BODY_MALFORMED', 400);
     }
-    let payload =
-      typeof (parsed as Record<string, unknown>).payload === 'object' &&
-      (parsed as Record<string, unknown>).payload !== null &&
-      !Array.isArray((parsed as Record<string, unknown>).payload)
-        ? ((parsed as Record<string, unknown>).payload as Record<string, unknown>)
-        : {};
-    if (Object.keys(payload).length > 64) {
-      throw new HttpError('VICT_HTTP_RATE_BOUNDS', 400);
+    let payload: unknown = (parsed as Record<string, unknown>).payload;
+    if (payload === undefined) {
+      payload = {};
+    }
+    if (typeof payload === 'object' && payload !== null && !Array.isArray(payload)) {
+      if (Object.keys(payload as Record<string, unknown>).length > 64) {
+        throw new HttpError('VICT_HTTP_RATE_BOUNDS', 400);
+      }
     }
     // Dynamic instance routes inject the authoritative path identity into
     // the bounded payload (path params win over client-supplied fields).
-    const resolved = resolveCommand(req, path, url, payload);
+    const resolved = resolveCommand(
+      req,
+      path,
+      url,
+      (typeof payload === 'object' && payload !== null && !Array.isArray(payload)
+        ? payload
+        : {}) as Record<string, unknown>,
+    );
     if (resolved.pathParams !== undefined) {
-      payload = { ...payload, ...resolved.pathParams };
+      payload = { ...(payload as Record<string, unknown>), ...resolved.pathParams };
     }
     const idempotencyKey = req.headers['idempotency-key'];
+    const command = resolved.command as never;
     const outcome = await options.commandService.dispatch(actor, {
-      command: resolved.command as never,
-      payload,
-      ...(typeof idempotencyKey === 'string' && isMutation ? { idempotencyKey } : {}),
+      command,
+      payload: payload as Record<string, unknown>,
+      ...(typeof idempotencyKey === 'string' ? { idempotencyKey } : {}),
     });
     if (!outcome.ok) {
       sendJson(res, statusForError(outcome.code), outcomeBody(outcome));
@@ -351,6 +453,13 @@ export function createVictHttpServer(options: VictHttpServerOptions): VictHttpSe
     url: URL,
     payload: Record<string, unknown>,
   ): ResolvedRoute {
+    // GET routes with fixed commands (checked first for dual-verb paths).
+    if (req.method === 'GET') {
+      const fixedGet = ROUTE_COMMANDS[path];
+      if (fixedGet !== undefined) {
+        return { command: fixedGet };
+      }
+    }
     // Explicit POST routes.
     const post = POST_ROUTES[path];
     if (post !== undefined) {
@@ -413,6 +522,12 @@ export function createVictHttpServer(options: VictHttpServerOptions): VictHttpSe
     throw new HttpError('VICT_HTTP_ROUTE_UNKNOWN', 404);
   }
 
+  const TERMINAL_EVENT_KINDS: ReadonlySet<string> = new Set([
+    'response.completed',
+    'response.failed',
+    'response.cancelled',
+  ]);
+
   async function handleSse(
     req: IncomingMessage,
     res: ServerResponse,
@@ -420,128 +535,192 @@ export function createVictHttpServer(options: VictHttpServerOptions): VictHttpSe
     streamId: string,
     url: URL,
   ): Promise<void> {
-    // Authorization: the stream's owning actor (or an operator) may read.
+    // ---- AUTHORIZATION (fail closed; never treat a stream as public) ----
+    // A stream is readable by its owning actor; broader access requires the
+    // explicit privileged `operator.resolve` scope. Durable rows without a
+    // matching, valid turn ownership record DENY access: a stream that no
+    // turn owns does not exist for this caller.
     const turnRows = await options.stores.turns.listTurns();
     const streamTurn = turnRows.find((turn) => turn.streamId === streamId);
-    if (streamTurn !== undefined && streamTurn.actorId !== actor.actorId) {
-      const canOperate = actor.scopes.includes('agent.stream.read');
-      if (!canOperate) {
-        sendJson(res, 403, { ok: false, code: 'VICT_STREAM_ACTOR_MISMATCH' });
-        return;
-      }
+    if (streamTurn === undefined) {
+      sendJson(res, 404, { ok: false, code: 'VICT_STREAM_UNKNOWN' });
+      return;
     }
-    // Cursor validation: Last-Event-ID header or explicit ?cursor=.
+    if (streamTurn.actorId !== actor.actorId && !actor.scopes.includes('operator.resolve')) {
+      sendJson(res, 403, { ok: false, code: 'VICT_STREAM_ACTOR_MISMATCH' });
+      return;
+    }
+    // ---- Cursor validation (stream identity + sequence) ------------------
     const lastEventId = req.headers['last-event-id'];
     const cursorParam = url.searchParams.get('cursor');
     const rawCursor =
       typeof lastEventId === 'string' && lastEventId.length > 0 ? lastEventId : cursorParam;
     let lastSeq = 0;
     if (rawCursor !== undefined && rawCursor !== null && rawCursor !== '') {
-      const parsed = Number(rawCursor);
-      if (!Number.isSafeInteger(parsed) || parsed < 0 || !/^\d+$/.test(String(rawCursor))) {
+      const decoded = typeof rawCursor === 'string' ? decodeStreamCursor(rawCursor) : undefined;
+      if (decoded === undefined) {
         sendJson(res, 400, { ok: false, code: 'VICT_STREAM_CURSOR_MALFORMED' });
         return;
       }
-      if (parsed > (await options.hub.latestSeq(streamId))) {
-        // A future cursor is rejected (no fabricated state).
+      if (decoded.streamId !== streamId) {
+        // A cursor from ANOTHER stream is rejected (cross-stream replay).
+        sendJson(res, 403, { ok: false, code: 'VICT_STREAM_CURSOR_STREAM_MISMATCH' });
+        return;
+      }
+      // Future detection uses the AUTHORITATIVE durable sequence bound
+      // (the ledger), which survives restart when the memory buffer is empty.
+      if (decoded.lastSeq > (await options.hub.latestSeq(streamId))) {
         sendJson(res, 409, { ok: false, code: 'VICT_STREAM_CURSOR_FUTURE' });
         return;
       }
-      lastSeq = parsed;
+      lastSeq = decoded.lastSeq;
     }
+    // ---- Replay bounds BEFORE streaming (response-mechanism disclosure) --
+    const replay = await options.hub.replay({ streamId, lastSeq });
     res.writeHead(200, {
       'content-type': 'text/event-stream; charset=utf-8',
       'cache-control': 'no-cache',
       connection: 'keep-alive',
+      // Replay status is NOT an event: it crosses the boundary through this
+      // separately defined response mechanism (headers). An authoritative
+      // `true` discloses that transient deltas between the cursor and the
+      // buffer are unrecoverable and completed content must be recovered
+      // from the durable, actor-authorized conversation store.
+      ...(replay.olderThanBuffer ? { 'x-vict-replay-bounded': 'true' } : {}),
+      'x-vict-stream-newest-seq': String(replay.newestSeq),
+      'x-vict-stream-cursor': encodeStreamCursor(streamId, replay.newestSeq),
     });
-    const subscriberId = `sse-${actor.actorId}-${Math.random().toString(36).slice(2, 10)}`;
-    let open = true;
-    const writeEvent = (event: AgentStreamEvent): boolean => {
-      if (!open) {
-        return false;
-      }
-      try {
-        res.write(
-          `id: ${event.seq}\nevent: ${event.kind}\ndata: ${JSON.stringify({
-            schema: 'vict.agent-stream@1',
-            ...event,
-          })}\n\n`,
-        );
-        return true;
-      } catch {
-        open = false;
-        return false;
+    res.flushHeaders?.();
+    // Flush the SSE handshake immediately so clients observe the response.
+    res.write(': connected\n\n');
+    openStreams.add(res);
+    let closed = false;
+    let drainScheduled = false;
+    let terminalReached = false;
+
+    const finish = (): void => {
+      if (!closed) {
+        closed = true;
+        openStreams.delete(res);
+        options.hub.unsubscribe(streamId, subscriberId);
+        res.end();
       }
     };
-    // Replay from the cursor (durable rows + buffered deltas).
-    const replay = await options.hub.replay({ streamId, lastSeq });
-    if (replay.olderThanBuffer) {
-      // Authoritative durable state disclosure: completed content must be
-      // recovered from the durable milestones (never from delta replay).
-      res.write(
-        `event: replay.bounded\ndata: ${JSON.stringify({
-          schema: 'vict.agent-stream@1',
-          streamId,
-          note: 'cursor-older-than-buffer',
-          newestSeq: replay.newestSeq,
-        })}\n\n`,
-      );
-    }
-    for (const event of replay.events) {
-      if (!writeEvent(event)) {
-        break;
+
+    /** Serialize one frame as a closed wire envelope (validated; fail closed). */
+    const serializeFrame = (event: AgentStreamEvent): string => {
+      const frame = { schema: AGENT_STREAM_SCHEMA, ...event };
+      // Every server-emitted frame conforms to the ONE closed wire-envelope
+      // validator — including frames reconstructed from durable rows.
+      assertAgentStreamWireEnvelope(frame);
+      return `id: ${event.seq}\nevent: ${event.kind}\ndata: ${JSON.stringify(frame)}\n\n`;
+    };
+
+    /** Write until backpressure; returns false when the socket is saturated. */
+    const writeFrames = (events: readonly AgentStreamEvent[]): boolean => {
+      for (const event of events) {
+        if (TERMINAL_EVENT_KINDS.has(event.kind)) {
+          terminalReached = true;
+        }
+        try {
+          res.write(serializeFrame(event));
+        } catch {
+          finish();
+          return false;
+        }
       }
-    }
-    if (isTerminalTurn(streamTurn)) {
-      // The turn is already terminal: close cleanly after replay.
-      res.end();
+      return res.writableNeedDrain !== true;
+    };
+
+    const subscriberId = `sse-${actor.actorId}-${Math.random().toString(36).slice(2, 10)}`;
+    // The authorized replay is written BEFORE the live subscription: Node
+    // buffers accepted bytes, so the full replay is always written (never
+    // discarded on backpressure — the `drain` event resumes live delivery).
+    writeFrames(replay.events);
+    if (terminalReached) {
+      // The turn became terminal within the replay: close cleanly after it.
+      finish();
       return;
     }
+    // The subscription is anchored AT the replay cursor: the hub delivers
+    // only NEW events, and its pending queue + `drain` pump carry any live
+    // backpressure.
     await options.hub.subscribe(
       streamId,
       {
         subscriberId,
-        deliver: (event) => writeEvent(event),
+        deliver: (event) => writeFrames([event]),
       },
       { lastSeq: replay.newestSeq },
     );
-    // Drain buffered events when the client pulls (slow-client backpressure
-    // coalescing happens inside the hub).
-    const drainInterval = setInterval(() => {
-      const pending = options.hub.pull(streamId, subscriberId);
-      for (const event of pending) {
-        if (!writeEvent(event)) {
-          break;
-        }
+    const pump = (): void => {
+      if (closed || drainScheduled) {
+        return;
       }
-    }, 50);
+      drainScheduled = true;
+      setImmediate(() => {
+        drainScheduled = false;
+        if (closed) {
+          return;
+        }
+        const pending = options.hub.pull(streamId, subscriberId);
+        const flushed = writeFrames(pending);
+        if (terminalReached) {
+          // The terminal event (and everything before it) has been written;
+          // close the stream cleanly after the turn became terminal.
+          finish();
+          return;
+        }
+        if (!flushed) {
+          return; // the next `drain` re-schedules the pump
+        }
+      });
+    };
+    res.on('drain', () => {
+      // `response.write() === false` means the bytes were ACCEPTED; resume
+      // delivery only when the socket has drained.
+      pump();
+    });
+    pump();
     req.on('close', () => {
-      open = false;
-      clearInterval(drainInterval);
-      options.hub.unsubscribe(streamId, subscriberId);
+      finish();
     });
   }
 
+  server.on('close', () => {
+    for (const res of openStreams) {
+      try {
+        res.end();
+      } catch {
+        /* already gone */
+      }
+    }
+    openStreams.clear();
+  });
+
   return {
     server,
-    port: () => boundPort,
+    port: () => boundAddress?.port ?? 0,
     async close(): Promise<void> {
+      // Await ACTUAL shutdown: close the server, end every open SSE
+      // subscriber, and resolve only when the server emits its close event.
+      for (const res of openStreams) {
+        try {
+          res.end();
+        } catch {
+          /* already gone */
+        }
+      }
+      openStreams.clear();
       await new Promise<void>((resolve) => {
-        server.close(() => resolve());
-        resolve();
+        if (server.listening) {
+          server.close(() => resolve());
+        } else {
+          resolve();
+        }
       });
     },
   };
-}
-
-function isTerminalTurn(turn: { status: string } | undefined): boolean {
-  return (
-    turn !== undefined &&
-    (turn.status === 'completed' ||
-      turn.status === 'failed' ||
-      turn.status === 'cancelled' ||
-      turn.status === 'blocked')
-  );
 }
 
 /** Listen on an ephemeral port (real HTTP, loopback). */

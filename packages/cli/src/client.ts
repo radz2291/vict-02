@@ -14,6 +14,8 @@
  * - no hostile value is ever echoed into CLI diagnostics.
  */
 
+import { createHash } from 'node:crypto';
+
 export const VICT_CLI_SCHEMA = 'vict.cli@1' as const;
 
 /** Typed CLI failure. `code` is the stable server code or a CLI-local one. */
@@ -64,17 +66,27 @@ export class VictHttpClient {
 
   /** Perform one command request and return the DATA of an ok envelope.
    * POST bodies use the versioned `{ payload }` envelope; GET payloads are
-   * supplied as `query` and encoded as bounded query parameters.
+   * supplied as `query` and encoded as bounded query parameters. POST
+   * requests carry the durable `Idempotency-Key` header — generated
+   * deterministically per logical invocation when the caller omits one.
    */
   async request(
     method: 'GET' | 'POST',
     path: string,
-    input?: { payload?: Record<string, unknown>; query?: Record<string, unknown> },
+    input?: {
+      payload?: Record<string, unknown>;
+      query?: Record<string, unknown>;
+      idempotencyKey?: string;
+    },
   ): Promise<Record<string, unknown>> {
     const url = `${this.#options.endpoint}${path}${method === 'GET' && input?.query !== undefined ? toQueryString(input.query) : ''}`;
     const body =
       method === 'POST' && input?.payload !== undefined
         ? JSON.stringify({ payload: input.payload })
+        : undefined;
+    const idempotencyKey =
+      method === 'POST'
+        ? (input?.idempotencyKey ?? deriveCliIdempotencyKey(path, input?.payload))
         : undefined;
     let response: Response;
     try {
@@ -83,6 +95,7 @@ export class VictHttpClient {
         headers: {
           authorization: `Bearer ${this.#options.token}`,
           ...(body !== undefined ? { 'content-type': 'application/json' } : {}),
+          ...(idempotencyKey !== undefined ? { 'idempotency-key': idempotencyKey } : {}),
         },
         ...(body !== undefined ? { body } : {}),
         signal: AbortSignal.timeout(this.#options.timeoutMs),
@@ -139,4 +152,36 @@ function safeStatusMessage(status: number, code: unknown): string {
     return `The command was rejected (${code}, HTTP ${status}).`;
   }
   return `The command was rejected (HTTP ${status}).`;
+}
+
+/**
+ * Derive a DURABLE CLI idempotency key for one logical invocation. The key
+ * is a function of the command path and the exact payload content — the
+ * same logical command retried by the operator reuses the same key (safe
+ * exactly-once semantics), while different content derives a different
+ * key. Bounded to the closed key format.
+ */
+function deriveCliIdempotencyKey(
+  path: string,
+  payload: Record<string, unknown> | undefined,
+): string {
+  const digest = createHash('sha256')
+    .update(`${path}\u0000${JSON.stringify(sortPayload(payload ?? {}))}`)
+    .digest('hex');
+  return `cli-${digest.slice(0, 40)}`;
+}
+
+/** Key-order-independent payload serialization for key derivation. */
+function sortPayload(value: unknown): unknown {
+  if (Array.isArray(value)) {
+    return value.map((entry) => sortPayload(entry));
+  }
+  if (value !== null && typeof value === 'object') {
+    return Object.fromEntries(
+      Object.entries(value as Record<string, unknown>)
+        .sort(([a], [b]) => (a < b ? -1 : 1))
+        .map(([key, entry]) => [key, sortPayload(entry)]),
+    );
+  }
+  return value;
 }

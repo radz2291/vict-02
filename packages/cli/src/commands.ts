@@ -70,12 +70,19 @@ export const CLI_COMMANDS: Readonly<Record<string, CliCommandSpec>> = {
     positionals: ['changesetId'],
     description: 'Revise a ChangeSet (invalidates evidence and approvals).',
   },
+  'changeset check': {
+    method: 'POST',
+    path: '/vict/v1/changesets/check',
+    flags: ['changesetId', 'kind'],
+    positionals: ['changesetId'],
+    description: 'Execute an authoritative validation or simulation run (trusted boundary).',
+  },
   'changeset evidence': {
     method: 'POST',
     path: '/vict/v1/changesets/evidence',
     flags: ['changesetId'],
     positionals: ['changesetId'],
-    description: 'Attach validation or simulation evidence to a ChangeSet.',
+    description: 'Attach evidence DERIVED from an executed run (runId references the run).',
   },
   'changeset decide': {
     method: 'POST',

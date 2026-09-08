@@ -103,10 +103,15 @@ async function post(
   path: string,
   payload: unknown,
   token: string,
+  idempotencyKey?: string,
 ): Promise<{ status: number; text: string }> {
   const response = await fetch(`http://127.0.0.1:${port}${path}`, {
     method: 'POST',
-    headers: { 'content-type': 'application/json', authorization: `Bearer ${token}` },
+    headers: {
+      'content-type': 'application/json',
+      authorization: `Bearer ${token}`,
+      ...(idempotencyKey !== undefined ? { 'idempotency-key': idempotencyKey } : {}),
+    },
     body: typeof payload === 'string' ? payload : JSON.stringify({ payload }),
   });
   return { status: response.status, text: await response.text() };
@@ -168,6 +173,7 @@ describe('canary leakage matrix (real HTTP + durable SQLite)', () => {
         filters: { status: HOSTILE_CANARY },
       },
       canaryToken,
+      'canary-hostile-mutate-1',
     );
     expect([400, 404, 409]).toContain(hostile.status);
     expect(hostile.text).not.toContain(HOSTILE_CANARY);
@@ -257,6 +263,7 @@ describe('canary leakage matrix (real HTTP + durable SQLite)', () => {
       '/vict/v1/approvals/appr-canary-1',
       { decision: 'approved' },
       'vict-test-token-approver',
+      'canary-decide-1',
     );
     if (decided.status !== 200) {
       throw new Error('DECIDE::' + decided.status + '::' + decided.text.slice(0, 140));
@@ -286,18 +293,16 @@ describe('canary leakage matrix (real HTTP + durable SQLite)', () => {
       kind: 'content.completed',
       payload: JSON.stringify({
         kind: 'content.completed',
-        streamId: 'stream-canary',
-        seq: 1,
         turnId: 'turn-canary-1',
         threadId: 'thread-canary',
         actorId: 'actor-user',
         agentProfileVersion: 'profile-canary-1',
-        text: 'authorized assistant content',
+        contentRef: 'conversation:vict-actor-actor-user/thread-canary/turn-canary-1',
       }),
       at: Date.now(),
     });
     const response = await fetch(
-      `http://127.0.0.1:${port}/vict/v1/streams/stream-canary?cursor=0`,
+      `http://127.0.0.1:${port}/vict/v1/streams/stream-canary?cursor=${encodeURIComponent('v1:stream-canary:0')}`,
       {
         headers: { authorization: `Bearer vict-token-${TOKEN_CANARY}` },
       },

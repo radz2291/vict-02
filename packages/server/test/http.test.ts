@@ -52,15 +52,18 @@ describe('versioned HTTP commands (real HTTP)', () => {
   it('client-supplied actor identity is never authoritative (spoofing rejected)', async () => {
     const f = await fixture();
     // A hostile payload cannot claim another actor: the context derives
-    // ONLY from the token.
+    // ONLY from the token, and undeclared payload fields fail closed.
     const spoof = await post(
       f.port,
       '/vict/v1/actor/whoami',
       { payload: { actorId: 'actor-victim', roles: ['administrator'] } },
       bearer(userToken()),
     );
-    expect(spoof.status).toBe(200);
-    expect((spoof.body.data as Record<string, unknown>).actorId).toBe('actor-user');
+    expect(spoof.status).toBe(400);
+    expect(spoof.body.code).toBe('VICT_COMMAND_PAYLOAD_INVALID');
+    const clean = await get(f.port, '/vict/v1/actor/whoami', bearer(userToken()));
+    expect(clean.status).toBe(200);
+    expect((clean.body.data as Record<string, unknown>).actorId).toBe('actor-user');
     const spoofPost = await post(
       f.port,
       '/vict/v1/changesets',
@@ -76,17 +79,12 @@ describe('versioned HTTP commands (real HTTP)', () => {
           expiresAt: 99999999999999,
         },
       },
-      bearer(userToken()),
+      { ...bearer(userToken()), 'idempotency-key': 'spoof-propose-1' },
     );
-    if (spoofPost.status === 200) {
-      const changeset = (spoofPost.body.data as Record<string, unknown>).changeset as Record<
-        string,
-        unknown
-      >;
-      expect(changeset.authorActorId).toBe('actor-user');
-    } else {
-      expect(spoofPost.status).toBeLessThan(500);
-    }
+    // The undeclared `actorId` payload field is rejected by the closed
+    // command schema before any store access (never silently converted).
+    expect(spoofPost.status).toBe(400);
+    expect(spoofPost.body.code).toBe('VICT_COMMAND_PAYLOAD_INVALID');
   });
 
   it('malformed JSON, oversized bodies, and wrong content types are rejected safely', async () => {
@@ -166,21 +164,39 @@ describe('versioned HTTP commands (real HTTP)', () => {
           expiresAt: Date.now() + 3_600_000,
         },
       },
-      bearer(userToken()),
+      { ...bearer(userToken()), 'idempotency-key': 'http-lifecycle-propose' },
     );
     expect(proposed.status).toBe(200);
+    // The authoritative validation run executes through the trusted VICT
+    // boundary; evidence DERIVES from the executed run record.
+    const check = await post(
+      f.port,
+      '/vict/v1/changesets/check',
+      { payload: { changesetId: 'cs-http-1', kind: 'validation' } },
+      { ...bearer(userToken()), 'idempotency-key': 'http-lifecycle-check' },
+    );
+    expect(check.status).toBe(200);
+    const runId = ((check.body.data as Record<string, unknown>).run as Record<string, unknown>)
+      .runId as string;
+    const evidence = await post(
+      f.port,
+      '/vict/v1/changesets/evidence',
+      { payload: { changesetId: 'cs-http-1', kind: 'validation', runId } },
+      { ...bearer(userToken()), 'idempotency-key': 'http-lifecycle-evidence' },
+    );
+    expect(evidence.status).toBe(200);
     const decided = await post(
       f.port,
       '/vict/v1/changesets/decide',
       { payload: { changesetId: 'cs-http-1', decision: 'approved' } },
-      bearer(userToken()),
+      { ...bearer(userToken()), 'idempotency-key': 'http-lifecycle-decide' },
     );
     expect(decided.status).toBe(200);
     const committed = await post(
       f.port,
       '/vict/v1/changesets/commit',
       { payload: { changesetId: 'cs-http-1' } },
-      bearer(userToken()),
+      { ...bearer(userToken()), 'idempotency-key': 'http-lifecycle-commit' },
     );
     expect(committed.status).toBe(200);
     const selected = await get(
@@ -207,31 +223,129 @@ describe('versioned HTTP commands (real HTTP)', () => {
       f.port,
       '/vict/v1/approvals/approval-x',
       { payload: { approvalId: 'approval-x', decision: 'approved' } },
-      bearer(operatorToken()),
+      { ...bearer(operatorToken()), 'idempotency-key': 'cross-approve-1' },
     );
-    expect([200, 403, 404, 409]).toContain(crossApprove.status);
+    // The operator lacks the approval scope: default-deny 403 below the
+    // transport (never a 500).
+    expect(crossApprove.status).toBe(403);
   });
 
   it('mutation idempotency keys are accepted on POST routes', async () => {
     const f = await fixture();
-    const first = await post(
+    const expiresAt = Date.now() + 3_600_000;
+    const idemPayload = {
+      payload: {
+        changesetId: 'cs-idem',
+        base: { kind: 'release', subjectId: 'app.http', expectedVersion: 'none' },
+        operations: [{ kind: 'select-activation', graphId: 'g', activationVersion: 'v' }],
+        rationale: 'idem',
+        riskClass: 'low',
+        requiredApproverCount: 1,
+        expiresAt,
+      },
+    };
+    const first = await post(f.port, '/vict/v1/changesets', idemPayload, {
+      ...bearer(userToken()),
+      'idempotency-key': 'idem-1',
+    });
+    expect(first.status).toBe(200);
+    // The SAME key + BYTE-IDENTICAL payload replays the original result durably.
+    const replay = await post(f.port, '/vict/v1/changesets', idemPayload, {
+      ...bearer(userToken()),
+      'idempotency-key': 'idem-1',
+    });
+    expect(replay.status).toBe(200);
+    // A different payload under the SAME key is a stable conflict.
+    const conflict = await post(
+      f.port,
+      '/vict/v1/changesets',
+      { ...idemPayload, payload: { ...idemPayload.payload, changesetId: 'cs-idem-OTHER' } },
+      { ...bearer(userToken()), 'idempotency-key': 'idem-1' },
+    );
+    expect(conflict.status).toBe(409);
+    expect(conflict.body.code).toBe('VICT_COMMAND_IDEMPOTENCY_CONFLICT');
+    // A mutation WITHOUT a key is rejected (durable boundary required).
+    const noKey = await post(
       f.port,
       '/vict/v1/changesets',
       {
         payload: {
-          changesetId: 'cs-idem',
+          changesetId: 'cs-nokey',
           base: { kind: 'release', subjectId: 'app.http', expectedVersion: 'none' },
           operations: [{ kind: 'select-activation', graphId: 'g', activationVersion: 'v' }],
-          rationale: 'idem',
+          rationale: 'no key',
           riskClass: 'low',
           requiredApproverCount: 1,
           expiresAt: Date.now() + 3_600_000,
         },
       },
-      { ...bearer(userToken()), 'idempotency-key': 'idem-1' },
+      bearer(userToken()),
     );
-    expect(first.status).toBe(200);
-    void first;
+    expect(noKey.status).toBe(400);
+    expect(noKey.body.code).toBe('VICT_COMMAND_IDEMPOTENCY_KEY_INVALID');
+  });
+
+  it('disconnects, aborted bodies, and duplicate requests fail safely', async () => {
+    const f = await fixture();
+    // An ABORTED request body (client disconnect mid-upload) never wedges
+    // the server and never echoes hostile content.
+    const abortController = new AbortController();
+    const aborted = fetch(`http://127.0.0.1:${f.port}/vict/v1/changesets`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', authorization: userToken() },
+      body: '{"payload":{"partial":',
+      signal: abortController.signal,
+    }).then(
+      (response) => response.status,
+      () => 'aborted',
+    );
+    abortController.abort();
+    const outcome = await aborted;
+    expect(['aborted', 400, 499, 500].includes(outcome as never)).toBe(true);
+    // The server remains healthy afterwards.
+    const health = await get(f.port, '/vict/v1/health');
+    expect(health.status).toBe(200);
+    // Two IDENTICAL concurrent duplicate mutations with the same durable
+    // key produce exactly one winner; the loser never double-executes.
+    const expiresAt = Date.now() + 3_600_000;
+    const payload = {
+      payload: {
+        changesetId: 'cs-dup-race',
+        base: { kind: 'release', subjectId: 'app.http', expectedVersion: 'none' },
+        operations: [{ kind: 'select-activation', graphId: 'g', activationVersion: 'v' }],
+        rationale: 'dup',
+        riskClass: 'low',
+        requiredApproverCount: 1,
+        expiresAt,
+      },
+    };
+    const call = () =>
+      fetch(`http://127.0.0.1:${f.port}/vict/v1/changesets`, {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+          authorization: userToken(),
+          'idempotency-key': 'dup-race-1',
+        },
+        body: JSON.stringify(payload),
+      }).then(async (response) => ({
+        status: response.status,
+        body: (await response.json()) as Record<string, unknown>,
+      }));
+    const results = await Promise.all([call(), call(), call()]);
+    const winners = results.filter((entry) => entry.status === 200);
+    const losers = results.filter(
+      (entry) => entry.status === 409 && entry.body.code === 'VICT_COMMAND_IDEMPOTENCY_IN_PROGRESS',
+    );
+    // Every caller either received the ORIGINAL result (durable replay) or
+    // the stable in-progress conflict — never a second execution.
+    expect(winners.length + losers.length).toBe(results.length);
+    for (const entry of winners.slice(1)) {
+      expect(entry.body).toEqual(winners[0]?.body);
+    }
+    // Exactly ONE durable effect exists for the three requests.
+    const all = await f.stores.control.listChangeSets();
+    expect(all.filter((entry) => entry.changesetId === 'cs-dup-race').length).toBe(1);
   });
 
   it('oversized payload field counts are bounded', async () => {
@@ -240,7 +354,12 @@ describe('versioned HTTP commands (real HTTP)', () => {
     for (let i = 0; i < 100; i += 1) {
       payload[`field${i}`] = i;
     }
-    const response = await post(f.port, '/vict/v1/app/actions', { payload }, bearer(userToken()));
+    const response = await post(
+      f.port,
+      '/vict/v1/app/actions',
+      { payload },
+      { ...bearer(userToken()), 'idempotency-key': 'oversize-1' },
+    );
     // The bounded body/field checks fail closed before any data access.
     expect([400, 415]).toContain(response.status);
   });

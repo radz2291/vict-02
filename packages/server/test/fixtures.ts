@@ -41,6 +41,8 @@ export const TEST_ACTOR_TOKENS: Readonly<Record<string, string>> = {
   'vict-test-token-user': 'actor-user',
   'vict-test-token-operator': 'actor-operator',
   'vict-test-token-approver': 'actor-approver',
+  'vict-test-token-viewer': 'actor-viewer',
+  'vict-test-token-empty': 'actor-empty',
 };
 
 export const USER_ACTOR: ActorRecordType = {
@@ -64,6 +66,21 @@ export const APPROVER_ACTOR: ActorRecordType = {
   createdAt: 0,
 };
 
+export const VIEWER_ACTOR: ActorRecordType = {
+  actorId: 'actor-viewer',
+  status: 'active',
+  roles: ['viewer'],
+  createdAt: 0,
+};
+
+/** An actor with NO roles: zero derived scopes (default-deny probe). */
+export const NO_SCOPE_ACTOR: ActorRecordType = {
+  actorId: 'actor-empty',
+  status: 'active',
+  roles: [],
+  createdAt: 0,
+};
+
 /** Build and listen on a real ephemeral HTTP server. */
 export async function httpFixture(): Promise<HttpFixture> {
   const stores = createInMemoryAgentControlStores();
@@ -72,6 +89,8 @@ export async function httpFixture(): Promise<HttpFixture> {
   await directory.upsert(USER_ACTOR);
   await directory.upsert(OPERATOR_ACTOR);
   await directory.upsert(APPROVER_ACTOR);
+  await directory.upsert(VIEWER_ACTOR);
+  await directory.upsert(NO_SCOPE_ACTOR);
   const hub = new AgentStreamHub({ ledger: stores.streamLedger, clock: () => Date.now() });
   const ids = { n: 0 };
   const controlPlane = new ControlPlaneService({
@@ -82,6 +101,7 @@ export async function httpFixture(): Promise<HttpFixture> {
       changesetId: () => `cs-${(ids.n += 1)}`,
       changesetApprovalId: () => `csa-${(ids.n += 1)}`,
       auditId: () => `audit-${(ids.n += 1)}`,
+      controlRunId: () => `run-${(ids.n += 1)}`,
     },
   });
   const commandService = new VictCommandService({

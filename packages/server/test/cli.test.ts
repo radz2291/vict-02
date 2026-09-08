@@ -136,14 +136,28 @@ describe('vict CLI (real HTTP boundary)', () => {
       expect(record.data.changeset.changesetId).toBe('cs-cli-1');
       expect(record.data.changeset.status).toBe('draft');
 
+      // The authoritative validation run EXECUTES through the trusted VICT
+      // boundary; the evidence attaches by referencing the executed runId
+      // (outcome, timestamps, and bindings derive from the durable run).
+      const checkPath = join(dir, 'check.json');
+      writeFileSync(
+        checkPath,
+        JSON.stringify({ changesetId: 'cs-cli-1', kind: 'validation' }),
+        'utf8',
+      );
+      const check = await vict(['changeset', 'check', 'cs-cli-1', '--file', checkPath, '--json']);
+      expect(check.code).toBe(0);
+      const runRecord = JSON.parse(check.out) as {
+        data: { run: { runId: string; outcome: string } };
+      };
+      expect(runRecord.data.run.outcome).toBe('passed');
       const evidencePath = join(dir, 'ev.json');
       writeFileSync(
         evidencePath,
         JSON.stringify({
+          changesetId: 'cs-cli-1',
           kind: 'validation',
-          runId: 'run-cli-ev-1',
-          outcome: 'passed',
-          recordedAt: Date.now(),
+          runId: runRecord.data.run.runId,
         }),
         'utf8',
       );
@@ -179,11 +193,11 @@ describe('vict CLI (real HTTP boundary)', () => {
     const result = await vict(['changeset', 'get', 'cs-cli-1', '--json']);
     expect(result.code).toBe(0);
     expect(result.out).toContain('cs-cli-1');
-    // A missing ChangeSet is an ok envelope with an empty record (the
-    // command surface exposes absence as data, not a transport error).
+    // A missing ChangeSet is the authorizing actor's denial (404 mapping,
+    // stable code; absence is never disclosed as an empty record).
     const missing = await vict(['changeset', 'get', 'cs-never-was', '--json']);
-    expect(missing.code).toBe(0);
-    expect(missing.out).toContain('"changeset": {}');
+    expect(missing.code).toBe(2);
+    expect(missing.err).toContain('VICT_CONTROL_CHANGESET_MISSING');
   });
 
   it('usage errors: unknown command, missing connection, bad flag', async () => {

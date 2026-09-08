@@ -111,25 +111,6 @@ function sigkill(child: ChildProcess): void {
   child.kill('SIGKILL');
 }
 
-/** Bounded poll until the predicate holds (observation, not race-fixing). */
-async function pollUntil<T>(
-  probe: () => Promise<T>,
-  predicate: (value: T) => boolean,
-  timeoutMs = 5000,
-): Promise<T> {
-  const deadline = Date.now() + timeoutMs;
-  for (;;) {
-    const value = await probe();
-    if (predicate(value)) {
-      return value;
-    }
-    if (Date.now() > deadline) {
-      return value;
-    }
-    await new Promise((resolve) => setTimeout(resolve, 20));
-  }
-}
-
 interface BearerResponse {
   status: number;
   body: Record<string, unknown>;
@@ -140,10 +121,15 @@ async function post(
   path: string,
   payload: Record<string, unknown>,
   token: string,
+  idempotencyKey?: string,
 ): Promise<BearerResponse> {
   const response = await fetch(`http://127.0.0.1:${port}${path}`, {
     method: 'POST',
-    headers: { 'content-type': 'application/json', authorization: `Bearer ${token}` },
+    headers: {
+      'content-type': 'application/json',
+      authorization: `Bearer ${token}`,
+      ...(idempotencyKey !== undefined ? { 'idempotency-key': idempotencyKey } : {}),
+    },
     body: JSON.stringify({ payload }),
   });
   return { status: response.status, body: (await response.json()) as Record<string, unknown> };
@@ -199,6 +185,7 @@ describe('SIGKILL cross-store fixtures (real child processes)', () => {
       '/vict/v1/approvals/appr-sk-1',
       { decision: 'approved' },
       'vict-test-token-approver',
+      'sigkill-approve-1',
     );
     expect(approved.status).toBe(200);
     // Crash AFTER the VICT approval but BEFORE the protected effect.
@@ -207,12 +194,11 @@ describe('SIGKILL cross-store fixtures (real child processes)', () => {
 
     // Phase C: resume — the approval is NOT lost; the effect runs EXACTLY
     // once; the retried logical invocation is skipped as already-completed.
+    // runPhase awaits the worker's EXIT, so the effects log is final when
+    // read (the resume worker keeps running past READY and finishes the
+    // replay-skip check asynchronously after the sentinel appears).
     const effectsFile = join(dir, 'effects.log');
-    await spawnWorker('resume', dir);
-    await pollUntil(
-      async () => existsSync(effectsFile),
-      (exists) => exists,
-    );
+    await runPhase('resume', dir);
     const effectLines = readFileSync(effectsFile, 'utf8')
       .split('\n')
       .filter((line) => line.startsWith('EFFECT '));
@@ -247,6 +233,7 @@ describe('SIGKILL cross-store fixtures (real child processes)', () => {
       '/vict/v1/turns/cancel',
       { turnId: 'turn-sk-1', reasonCode: 'VICT_REASON_OPERATOR_CANCEL' },
       'vict-test-token-operator',
+      'sigkill-cancel-1',
     );
     expect(cancelled.status).toBe(200);
     sigkill(phaseA.child);
@@ -274,7 +261,7 @@ describe('SIGKILL cross-store fixtures (real child processes)', () => {
     // Phase B: fresh process; reconnect from cursor 0 over REAL HTTP.
     const phaseB = await spawnWorker('serve', dir);
     const response = await fetch(
-      `http://127.0.0.1:${phaseB.port}/vict/v1/streams/stream-sk-1?cursor=0`,
+      `http://127.0.0.1:${phaseB.port}/vict/v1/streams/stream-sk-1?cursor=${encodeURIComponent('v1:stream-sk-1:0')}`,
       { headers: { authorization: 'Bearer vict-test-token-user' } },
     );
     expect(response.status).toBe(200);
