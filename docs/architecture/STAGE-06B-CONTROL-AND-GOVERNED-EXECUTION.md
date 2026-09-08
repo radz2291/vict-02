@@ -95,6 +95,41 @@ chunk types, hidden reasoning, and raw provider/capability errors never
 cross the boundary; failures surface as stable sanitized codes
 (`tool.failed`, `response.failed`).
 
+Tool-state truthfulness (Stage 06B correction): `tool.completed` means the
+tool — the durable capability invocation — FINISHED, and it is normalized
+ONLY for a durably confirmed completion (the owner's own confirmed
+settlement, or a replay bound to an already-`completed` invocation).
+The governed capability bridge's results are normalized through ONE closed
+mapping at the adapter boundary (`normalizeCapabilityToolResultEvent`):
+
+- `victCapabilityReplay.disposition: 'completed'` → `tool.completed`;
+- `'failed'` / `'declined'` / `'cancelled'` / `'outcome_unknown'` →
+  `tool.failed` with `VICT_CAPABILITY_INVOCATION_FAILED` /
+  `VICT_CAPABILITY_DECLINED` / `VICT_CAPABILITY_CANCELLED` /
+  `VICT_CAPABILITY_OUTCOME_UNKNOWN` respectively;
+- `'in_progress'` → NONTERMINAL: no terminal event is emitted. A running,
+  unresolved, or ambiguous invocation NEVER produces a terminal milestone;
+  the occurrence's milestone stays open for the owner's truthful
+  settlement (zero `tool.completed` while the durable status is running);
+- unknown, malformed, unsupported, or contradictory replay envelopes (and
+  failure markers that are not well-formed) → `tool.failed`
+  (`VICT_CAPABILITY_OUTCOME_UNKNOWN`) — fail closed, never completion,
+  and no envelope content is forwarded (events carry stable codes only).
+
+A replay envelope is validated structurally at the adapter boundary before
+it can influence any milestone (closed field set, bounded safe
+`invocationId`, bounded string `resultSummary`, plain-object shape).
+One logical occurrence `(turnId, toolCallId)` can never acquire
+contradictory terminal milestones: the FIRST terminal milestone for an
+occurrence is final, and later results for the same occurrence never add a
+contradicting (`tool.failed` after `tool.completed` or the reverse) or
+duplicate terminal event. Bridge control markers (`victCapabilityReplay`,
+`victCapabilityFailure`, `victHelperFailure`) are RESERVED: a capability
+or helper output impersonating a control envelope is fenced as the
+truthful `outcome_unknown`/execution failure and never returned as data,
+so fabricated dispositions can neither suppress nor forge terminal
+milestones.
+
 ## 3. Actors, roles, scopes — the trust boundary
 
 - Authentication and authorization are distinct: a deterministic local
@@ -337,22 +372,33 @@ compatible). Two distinct tool occurrences with identical arguments
 therefore carry distinct identities and may execute twice; a retry of the
 SAME occurrence identity reuses one identity and executes at most once.
 
-Live invocation attempts are FENCED (single-process/local envelope):
-claiming the attempt (`intent`/`approved → running`) stamps a durable
+Live invocation attempts are FENCED (single-process/local envelope).
+Claiming the attempt (`intent`/`approved → running`) stamps a durable
 fence token, owner identity, and monotonic attempt generation; exactly one
-claim per generation wins. A duplicate that observes a live-owned
-`running` record NEVER mutates it: with a same-process live owner it
-awaits the owner's settlement and replays the truthful terminal
-disposition (a cancelled waiter receives the non-terminal `in_progress`
-report); with no live owner in this process (owner loss across a process
-life) the attempt is reconciled CONSERVATIVELY to the fenced,
-NON-replayable `outcome_unknown` through an exact-binding reconciliation
-command — the effect is never re-executed, and the dead owner's later
-settlement is refused by its stale fence. Terminal replay of a `completed`
-record returns the explicit replay envelope only: a bounded structural
-result summary that is visibly a replay/recovery disposition, carries no
-raw output, and can never satisfy the capability's output contract as a
-new execution result.
+claim per generation wins. The in-process live-owner registry is scoped
+PER COMPOSITION (store domain) — never a module-global map keyed only by
+`invocationId`: two independent compositions with independent stores
+running in one process can produce colliding local invocation ids, and a
+shared key would alias their liveness (one composition awaiting — or
+fence-sharing with — the other composition's owner). A duplicate that
+observes a live-owned `running` record NEVER mutates it: with a
+same-composition live owner it awaits the owner's settlement and replays
+the truthful terminal disposition; with no live owner in its own
+composition (owner loss across a process life, or an attempt belonging to
+another composition) the attempt is reconciled CONSERVATIVELY to the
+fenced, NON-replayable `outcome_unknown` through an exact-binding
+reconciliation command — the effect is never re-executed, and the dead
+owner's later settlement is refused by its stale fence. The documented
+duplicate-cancellation policy: when a duplicate waiter is CANCELLED while
+the owner remains live, the owner is not mutated or cancelled, no false
+terminal disposition is produced, and the waiter receives the truthful
+NON-terminal `in_progress` replay report — normalized by the adapter as an
+open milestone (no terminal tool event), so the occurrence's terminal
+milestone stays reserved for the owner's truthful settlement. Terminal
+replay of a `completed` record returns the explicit replay envelope only:
+a bounded structural result summary that is visibly a replay/recovery
+disposition, carries no raw output, and can never satisfy the capability's
+output contract as a new execution result.
 
 Argument digests
 are computed over a canonical JSON form (key-order invariant; unsupported
