@@ -69,7 +69,8 @@ class OverlayActivationCatalog implements ActivationCatalog {
   async select(command: {
     graphId: string;
     activationVersion: string;
-    expectedSelectionRevision?: number;
+    expectedSelectionRevision?: number | 'none';
+    operationId?: string;
   }): Promise<ActivationSelection> {
     const stored = await this.#real.get(command.activationVersion);
     if (stored === undefined || stored.graphId !== command.graphId) {
@@ -78,10 +79,26 @@ class OverlayActivationCatalog implements ActivationCatalog {
         'The referenced activation does not exist for this graph.',
       );
     }
+    // Operation-identity idempotency: re-selection under the SAME operation
+    // identity returns the ORIGINAL sandbox selection without a revision.
     const current = this.#selections.get(command.graphId);
     if (
+      command.operationId !== undefined &&
+      current?.operationId !== undefined &&
+      current.operationId === command.operationId
+    ) {
+      return current;
+    }
+    if (command.expectedSelectionRevision === 'none') {
+      if (current !== undefined) {
+        throw new VictControlError(
+          'VICT_CONTROL_BASE_STALE',
+          'The simulated selection already exists; the expected ABSENT selection does not match.',
+        );
+      }
+    } else if (
       command.expectedSelectionRevision !== undefined &&
-      (current?.selectionRevision ?? 0) !== command.expectedSelectionRevision
+      (current?.selectionRevision ?? 'none') !== command.expectedSelectionRevision
     ) {
       throw new VictControlError(
         'VICT_CONTROL_BASE_STALE',
@@ -93,6 +110,7 @@ class OverlayActivationCatalog implements ActivationCatalog {
       activationVersion: command.activationVersion,
       selectionRevision: (current?.selectionRevision ?? 0) + 1,
       selectedAt: 0,
+      ...(command.operationId !== undefined ? { operationId: command.operationId } : {}),
     };
     this.#selections.set(command.graphId, next);
     return next;

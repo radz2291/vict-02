@@ -5,6 +5,7 @@ import {
   AgentControlStores,
   ApplicationReleaseRecord,
   ChangeSetApprovalDecision,
+  ChangeSetBase,
   ChangeSetOperation,
   ChangeSetOperationReceipt,
   ChangeSetRecord,
@@ -95,7 +96,15 @@ export interface ActorAuthority {
  */
 export interface OperationGuard {
   readonly expectedBaseVersion?: string;
-  readonly expectedSelectionRevision?: number;
+  /**
+   * The expected activation-selection guard AT THE TARGET MUTATION: a
+   * number fences on that selection revision; the literal `'none'`
+   * fences on an EXPLICIT ABSENCE of any current selection (never
+   * overload `undefined` — that means NO guard was supplied).
+   */
+  readonly expectedSelectionRevision?: number | 'none';
+  /** The stable operation identity (idempotency anchor) for the effect. */
+  readonly operationId?: string;
 }
 
 /** Resolve the authoritative actor context or fail closed. */
@@ -459,11 +468,24 @@ export class ControlPlaneService {
     );
     let outcome: ControlRunRecord['outcome'];
     let detail: ControlRunDetail | undefined;
+    // The OBSERVED subject base at run time (what this run actually
+    // verified), captured as the safe base identity with the
+    // CHANGESET_BASE_NONE sentinel for explicit absence. The run record
+    // proves exactly what was checked — never a caller claim.
+    const observedVersion = await this.#selectedVersionFor(record.base);
+    const observedBase: ChangeSetBase = {
+      kind: record.base.kind,
+      subjectId: record.base.subjectId,
+      expectedVersion: observedVersion ?? CHANGESET_BASE_NONE,
+    };
     if (input.kind === 'validation') {
       // Authoritative prevalidation of the COMPLETE operation set against
-      // the current durable state (never a caller claim).
+      // the current durable state (never a caller claim). The declared
+      // base must be the CURRENT subject selection (including explicit
+      // expected absence): a stale base is ALWAYS blocked, never passed.
       outcome = 'passed';
       try {
+        this.#verifyDeclaredBase(record.base, observedVersion);
         await this.#prevalidateOperations(record);
       } catch (error) {
         if (
@@ -480,7 +502,22 @@ export class ControlPlaneService {
       }
     } else {
       // SIMULATION: real execution through the safe simulation boundary.
-      if (this.#simulator === undefined) {
+      // The simulation starts from and verifies the SAME exact base as
+      // validation: a stale base is blocked BEFORE the sandbox runs (the
+      // sandbox is never allowed to pass a base the durable state does
+      // not match).
+      const expectedVersion =
+        record.base.expectedVersion === CHANGESET_BASE_NONE
+          ? undefined
+          : record.base.expectedVersion;
+      if (observedVersion !== expectedVersion) {
+        outcome = 'blocked';
+        detail = {
+          simulator: this.#simulator?.simulatorId ?? 'unavailable',
+          inputs: { base: record.base, operationIdentities },
+          operations: [],
+        };
+      } else if (this.#simulator === undefined) {
         // No simulator composed: simulation is BLOCKED (fail closed) —
         // validation is never accepted as a substitute.
         outcome = 'blocked';
@@ -518,6 +555,7 @@ export class ControlPlaneService {
       actorId: actor.actorId,
       outcome,
       createdAt: this.#clock(),
+      observedBase,
       ...(detail !== undefined ? { detail } : {}),
     };
     await this.#stores.control.recordControlRun(run);
@@ -657,6 +695,23 @@ export class ControlPlaneService {
           `The executed ${kind} run did not pass (${run.outcome}); commit is blocked.`,
         );
       }
+    }
+  }
+
+  /**
+   * Verify the DECLARED base is the CURRENT subject selection (including
+   * explicit expected absence). A stale base can never pass validation —
+   * the mutation-time commit CAS remains mandatory regardless (earlier
+   * evidence never replaces mutation-time fencing).
+   */
+  #verifyDeclaredBase(base: ChangeSetRecord['base'], observedVersion: string | undefined): void {
+    const expected =
+      base.expectedVersion === CHANGESET_BASE_NONE ? undefined : base.expectedVersion;
+    if (observedVersion !== expected) {
+      throw new VictControlError(
+        'VICT_CONTROL_BASE_STALE',
+        'The ChangeSet base is stale: the declared base is not the current subject selection.',
+      );
     }
   }
 
@@ -943,17 +998,19 @@ export class ControlPlaneService {
             operation.kind === 'select-activation'
               ? operation.activationVersion
               : operation.targetActivationVersion;
-          let expectedRevision: number | undefined;
+          let expectedRevision: number | 'none';
           if (activationProjected.has(operation.graphId)) {
-            expectedRevision = activationProjected.get(operation.graphId);
+            expectedRevision = activationProjected.get(operation.graphId) as number | 'none';
           } else if (
             record.base.kind === 'activation' &&
             record.base.subjectId === operation.graphId
           ) {
             const selection = await this.#catalog.getSelection(operation.graphId);
-            expectedRevision = selection?.selectionRevision;
+            expectedRevision = selection?.selectionRevision ?? 'none';
           } else {
-            expectedRevision = undefined; // not the base subject: unfenced
+            guards[index] = undefined; // not the base subject: unfenced
+            void target;
+            break;
           }
           guards[index] = { expectedSelectionRevision: expectedRevision };
           const current = activationProjected.has(operation.graphId)
@@ -962,8 +1019,9 @@ export class ControlPlaneService {
           void target;
           activationProjected.set(
             operation.graphId,
-            expectedRevision === undefined ? current + 1 : expectedRevision + 1,
+            expectedRevision === 'none' ? 1 : expectedRevision + 1,
           );
+          void current;
           break;
         }
         case 'publish-and-select-release': {
@@ -1038,7 +1096,15 @@ export class ControlPlaneService {
             ? operation.activationVersion
             : operation.targetActivationVersion;
         const selection = await this.#catalog.getSelection(operation.graphId);
-        return selection?.activationVersion === target;
+        // The EXACT operation identity must be verifiable: a selection of
+        // the same target made through ANY other path (an operator select,
+        // a different operation) is NOT proof that THIS operation's effect
+        // completed.
+        return (
+          selection !== undefined &&
+          selection.activationVersion === target &&
+          selection.operationId === operationDigest
+        );
       }
       case 'publish-and-select-release':
       case 'select-release':
@@ -1072,6 +1138,7 @@ export class ControlPlaneService {
           ...(guard?.expectedSelectionRevision !== undefined
             ? { expectedSelectionRevision: guard.expectedSelectionRevision }
             : {}),
+          operationId: operationDigest,
         });
         await this.#auditWithId(
           this.#deterministicAuditId('activation.selected', operationDigest),
@@ -1091,6 +1158,7 @@ export class ControlPlaneService {
           ...(guard?.expectedSelectionRevision !== undefined
             ? { expectedSelectionRevision: guard.expectedSelectionRevision }
             : {}),
+          operationId: operationDigest,
         });
         await this.#auditWithId(
           this.#deterministicAuditId('activation.rolled-back', operationDigest),
