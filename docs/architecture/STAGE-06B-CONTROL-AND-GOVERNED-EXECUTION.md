@@ -1,12 +1,15 @@
 # Stage 06B — Control Plane and Governed Remote Execution
 
-Status: corrected corrective-finalization increment, awaiting fresh
-independent audit (not Verified).
+Status: corrected corrective-finalization increment with the final
+boundary correction applied, awaiting fresh independent audit (not
+Verified).
 Parent reference: `docs/VICT-SYSTEM-REFERENCE.md` (§0.9, §5, §24.3).
 Companion reports: `docs/report/VICT-STAGE-06B-REPORT.md` (original
-implementation claim, preserved byte-for-byte) and
+implementation claim, preserved byte-for-byte),
 `docs/report/VICT-STAGE-06B-CORRECTIVE-FINALIZATION-REPORT.md`
-(defect reproduction and corrections on top of it).
+(defect reproduction and corrections on top of it), and
+`docs/report/VICT-STAGE-06B-FINAL-BOUNDARY-CORRECTION-REPORT.md`
+(final invocation and control-boundary correction).
 
 Stage 06B turns the Stage 06A product-agent foundation into a governed,
 remotely drivable system: an authenticated actor boundary, ChangeSet and
@@ -181,6 +184,23 @@ draft ──approve──▶ approved ──commit──▶ committed
   rewriting history or repinning in-flight runs; compensation is
   expressed as a distinct operation kind. No executable functions or unrestricted JSON
   patches can be persisted as operations.
+- The COMPLETE ChangeSet authoring input is CAPTURED at the validation
+  boundary before any member is read: the outer envelope must be a plain
+  object with the EXACT closed field set, and the base, the operation
+  list, and every operation (including embedded release content) are
+  captured through guarded own-property DESCRIPTORS. Caller getters are
+  never invoked (a hostile `base.kind` getter runs ZERO times); revoked
+  proxies, sparse arrays, accessor or non-enumerable array elements,
+  extra string/symbol properties, exotic prototypes, and hostile
+  enumeration/descriptor traps are all rejected with ONE stable,
+  non-echoing `VictControlError` — no raw `TypeError` or canary ever
+  crosses, and a rejected proposal creates NO ChangeSet, hash, run, audit
+  event, or store row. Only VICT-owned validated captures are hashed;
+  caller objects are never retained, frozen, or aliased (post-call caller
+  mutation cannot alter stored content or its hash). The same capture
+  discipline applies at the direct `ControlPlaneService` package entry
+  points (`propose`, `revise`, `publishRelease`) — the HTTP dispatcher's
+  earlier capture does not excuse unsafe direct APIs.
 - Application Releases are immutable published records
   (exact identity, content hash, renderer/component/data-adapter identities, activation binding) with select/rollback
   selection records; activation selection is audited.
@@ -296,17 +316,45 @@ fail closed; contract validation remains authoritative even if the agent
 framework's schema validation passed.
 
 Store failures are never silently swallowed: invocation state transitions
-tolerate only explicitly recognized stale/fenced/idempotent outcomes; any
-other store error propagates. If an external effect occurred but terminal
-persistence failed, the invocation enters the truthful `outcome_unknown`
-state instead of reporting normal completion.
+are EXACT-BINDING — a settlement is idempotent only when the observed
+durable state is the exact state and binding requested; any other store
+error propagates. If an external effect occurred but terminal persistence
+failed, the invocation enters the truthful `outcome_unknown` state instead
+of reporting normal completion: normal success is returned ONLY after the
+exact durable `completed` transition is confirmed.
 
-Tool-call identity is deterministic: a missing/malformed upstream tool-call
-identity falls back to an identity derived from the durable turn context and
-the DURABLE per-turn invocation ordinal (never current time, never a process
-counter), stable across retry, approval suspension and restart. An expired
-RUNNING attempt on the same logical invocation identity reconciles to the
-fenced non-replay `outcome_unknown` state BEFORE any retry. Argument digests
+Tool-call occurrence identity is the FRAMEWORK-SUPPLIED `toolCallId`, read
+from both surfaces the pinned Mastra Tool wrapper exposes (top level for
+direct calls, `agent.toolCallId` for agent-loop executions) and verified
+through the real pinned `Agent` execution path. A call with no stable
+occurrence identity fails CLOSED (`VICT_CAPABILITY_TOOL_IDENTITY_REQUIRED`)
+BEFORE any durable intent, approval request, or capability invocation —
+occurrence identity is never inferred from the arguments alone (a
+digest-only key cannot distinguish a retry from a second legitimate
+identical call), and the former digest-only turn-tool-slot allocation is
+no longer used by the bridge (the migration-8 table remains, forward
+compatible). Two distinct tool occurrences with identical arguments
+therefore carry distinct identities and may execute twice; a retry of the
+SAME occurrence identity reuses one identity and executes at most once.
+
+Live invocation attempts are FENCED (single-process/local envelope):
+claiming the attempt (`intent`/`approved → running`) stamps a durable
+fence token, owner identity, and monotonic attempt generation; exactly one
+claim per generation wins. A duplicate that observes a live-owned
+`running` record NEVER mutates it: with a same-process live owner it
+awaits the owner's settlement and replays the truthful terminal
+disposition (a cancelled waiter receives the non-terminal `in_progress`
+report); with no live owner in this process (owner loss across a process
+life) the attempt is reconciled CONSERVATIVELY to the fenced,
+NON-replayable `outcome_unknown` through an exact-binding reconciliation
+command — the effect is never re-executed, and the dead owner's later
+settlement is refused by its stale fence. Terminal replay of a `completed`
+record returns the explicit replay envelope only: a bounded structural
+result summary that is visibly a replay/recovery disposition, carries no
+raw output, and can never satisfy the capability's output contract as a
+new execution result.
+
+Argument digests
 are computed over a canonical JSON form (key-order invariant; unsupported
 values are rejected, not silently coerced). The durable idempotency key is
 propagated into the capability invocation context so external adapters can
