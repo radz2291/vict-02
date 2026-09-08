@@ -73,8 +73,10 @@ export {
   bridgeCapabilityToolToMastra,
   buildCapabilityTools,
   canonicalArgDigest,
+  CAPABILITY_TOOL_FAILURE_CODES,
   createCapabilityLiveRunRegistry,
   defaultBridgePolicy,
+  isCapabilityToolFailureCode,
   normalizeCapabilityToolResultEvent,
   parseCapabilityReplayEnvelope,
   runWithBridgeTurnScope,
@@ -94,6 +96,21 @@ export type {
   CapabilityToolFailureCode,
   ValidCapabilityReplay,
 } from './tool-bridge.js';
+
+// ---- Shared control-envelope inspection boundary (post-audit remediation) ---
+export {
+  CONTROL_MARKER_KEYS,
+  captureControlRecord,
+  capturedHasAnyControlMarker,
+  capturedHasField,
+  inspectControlField,
+  rebuildPlainCapturedObject,
+} from './control-envelope.js';
+export type {
+  CapturedControlField,
+  CapturedControlRecord,
+  InspectedControlField,
+} from './control-envelope.js';
 
 // ---- Turn executor composition (Stage 06B) -----------------------------------
 export { composeMastraTurnExecutor } from './turn-executor.js';

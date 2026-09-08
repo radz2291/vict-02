@@ -9,6 +9,13 @@ import type {
 } from '@vict/runtime';
 import type { AgentStreamEvent } from '@vict/contracts';
 import type { CapabilityDefinition, CapabilityContext, EffectClass } from '@vict/sdk';
+import {
+  CONTROL_MARKER_KEYS,
+  captureControlRecord,
+  capturedHasAnyControlMarker,
+  capturedHasField,
+  rebuildPlainCapturedObject,
+} from './control-envelope.js';
 
 /**
  * Stage 06B — the VICT capability-to-Mastra tool bridge (AI-005/006,
@@ -83,6 +90,33 @@ export interface CapabilityToolFailure {
 }
 
 /**
+ * The CLOSED runtime vocabulary of capability-tool failure codes. A
+ * failure marker may normalize into a stream event ONLY through this exact
+ * allowlist: the post-audit probes demonstrated that arbitrary strings
+ * (`CANARY-ARBITRARY-CODE`), accessor-read values, non-enumerable fields,
+ * and inherited markers previously crossed the boundary as event codes.
+ * Anything outside this set becomes the safe `VICT_CAPABILITY_OUTCOME_UNKNOWN`.
+ */
+export const CAPABILITY_TOOL_FAILURE_CODES: ReadonlySet<string> =
+  new Set<CapabilityToolFailureCode>([
+    'VICT_CAPABILITY_INPUT_CONTRACT_REJECTED',
+    'VICT_CAPABILITY_OUTPUT_CONTRACT_REJECTED',
+    'VICT_CAPABILITY_INVOCATION_FAILED',
+    'VICT_CAPABILITY_OUTCOME_UNKNOWN',
+    'VICT_CAPABILITY_AUTHORITY_DENIED',
+    'VICT_CAPABILITY_DECLINED',
+    'VICT_CAPABILITY_AWAITING_APPROVAL_TIMED_OUT',
+    'VICT_CAPABILITY_CANCELLED',
+    'VICT_CAPABILITY_TOOL_IDENTITY_REQUIRED',
+    'VICT_CAPABILITY_TOOL_LIMIT_EXCEEDED',
+  ]);
+
+/** Total, non-throwing closed-vocabulary check for one candidate code. */
+export function isCapabilityToolFailureCode(value: unknown): value is CapabilityToolFailureCode {
+  return typeof value === 'string' && CAPABILITY_TOOL_FAILURE_CODES.has(value);
+}
+
+/**
  * The structured TERMINAL REPLAY envelope: an invocation that is already
  * durably terminal NEVER passes through capability invocation again. The
  * replay returns the stable safe disposition of the existing record —
@@ -130,7 +164,7 @@ const SAFE_ID_PATTERN = /^[A-Za-z0-9._:-]{1,128}$/;
 const MAX_RESULT_SUMMARY_LENGTH = 512;
 
 /**
- * Validate a replay envelope at the ADAPTER boundary (fail closed).
+ * Validate a replay envelope at the ADAPTER boundary (fail closed, TOTAL).
  *
  * `tool.completed` may be normalized ONLY from a structurally valid
  * envelope whose durable meaning is a confirmed completion. Anything
@@ -141,48 +175,120 @@ const MAX_RESULT_SUMMARY_LENGTH = 512;
  * A result is `not-a-replay` when it carries no replay marker at all
  * (ordinary results, helper results, and structured failure envelopes).
  * A result carrying BOTH control markers is hostile: `invalid`.
+ *
+ * POST-AUDIT HARDENING: this function is TOTAL — no inspection can throw.
+ * All structure is captured through the shared control-envelope boundary
+ * (descriptor reads only; getters, proxy traps, `in`, and `Object.keys`
+ * are never used before (or after) safe capture). Accessor, non-enumerable,
+ * and symbol-keyed fields are rejected without being read; inherited
+ * members are invisible to the capture and therefore never trusted; a
+ * hostile, exotic, or REVOKED proxy classifies as `invalid` (marker
+ * absence can never be proven for an uninspectable object) instead of
+ * letting a raw exception escape. When a marker field is present in any
+ * non-plain-data form, the record is `invalid` — it claims a bridge
+ * structure it cannot present.
  */
 export function parseCapabilityReplayEnvelope(result: unknown): CapabilityReplayVerdict {
-  if (typeof result !== 'object' || result === null || Array.isArray(result)) {
+  if (typeof result !== 'object' || result === null) {
     return { kind: 'not-a-replay' } as const;
   }
-  const record = result as Record<string, unknown>;
-  if (!('victCapabilityReplay' in record)) {
+  const outer = captureControlRecord(result);
+  if (outer.kind !== 'captured') {
+    // A hostile/revoked container (including one whose Array.isArray
+    // classification throws): nothing about it can be proven, so it can
+    // never be treated as an ordinary result either. Fail closed.
+    return { kind: 'invalid' } as const;
+  }
+  let isArray: boolean;
+  try {
+    isArray = Array.isArray(result);
+  } catch {
+    return { kind: 'invalid' } as const;
+  }
+  if (isArray) {
     return { kind: 'not-a-replay' } as const;
   }
-  if (typeof record.victCapabilityFailure === 'string') {
+  // GUARDED marker-membership honesty probe (the only `in` use, AFTER safe
+  // capture): a throwing `has` trap is hostile; membership visible to `in`
+  // but absent from the own-descriptor capture (inherited or a
+  // descriptor-invisible proxy lie) is rejected — inherited and hidden
+  // markers can never impersonate a bridge structure.
+  for (const name of ['victCapabilityReplay', 'victCapabilityFailure'] as const) {
+    let present: boolean;
+    try {
+      present = name in result;
+    } catch {
+      return { kind: 'invalid' } as const;
+    }
+    if (present && !outer.fields.has(name)) {
+      return { kind: 'invalid' } as const;
+    }
+  }
+  const hasReplayMarker = capturedHasField(outer, 'victCapabilityReplay');
+  const hasFailureMarker = capturedHasField(outer, 'victCapabilityFailure');
+  if (!hasReplayMarker && !hasFailureMarker) {
+    return { kind: 'not-a-replay' } as const;
+  }
+  if (hasReplayMarker && hasFailureMarker) {
     // Contradictory control markers on one result: fail closed.
     return { kind: 'invalid' } as const;
   }
-  const envelope = record.victCapabilityReplay;
-  if (typeof envelope !== 'object' || envelope === null || Array.isArray(envelope)) {
+  if (!hasReplayMarker) {
+    // A failure envelope (with or without a well-formed code) is not a
+    // replay; the normalizer classifies the failure code separately.
+    return { kind: 'not-a-replay' } as const;
+  }
+  // The replay marker claims a bridge-produced structure: it must be a
+  // plain own enumerable DATA field on a plain (or null-proto) record.
+  const replayField = outer.fields.get('victCapabilityReplay');
+  if (replayField === undefined || replayField.kind !== 'data' || !replayField.enumerable) {
     return { kind: 'invalid' } as const;
   }
-  const proto = Object.getPrototypeOf(envelope) as object | null;
-  if (proto !== Object.prototype && proto !== null) {
+  if (outer.hasSymbolKeys || outer.prototype === 'exotic') {
+    // A classed or symbol-carrying record is not a bridge-produced structure.
+    return { kind: 'invalid' } as const;
+  }
+  const envelopeCapture = captureControlRecord(replayField.value);
+  if (envelopeCapture.kind !== 'captured') {
+    return { kind: 'invalid' } as const;
+  }
+  if (envelopeCapture.prototype === 'exotic') {
     // A classed/proxied envelope is not a bridge-produced structure.
     return { kind: 'invalid' } as const;
   }
-  const fields = envelope as Record<string, unknown>;
-  for (const key of Object.keys(fields)) {
+  if (envelopeCapture.hasSymbolKeys) {
+    return { kind: 'invalid' } as const;
+  }
+  let disposition: string | undefined;
+  let invocationId: string | undefined;
+  let resultSummary: string | undefined;
+  for (const [key, field] of envelopeCapture.fields) {
     if (key !== 'disposition' && key !== 'invocationId' && key !== 'resultSummary') {
       // Closed structure: unknown envelope members are rejected, never
       // interpreted (nothing unknown can ever become completion).
       return { kind: 'invalid' } as const;
     }
+    if (field.kind !== 'data' || !field.enumerable) {
+      // Accessor or hidden envelope members are rejected unread.
+      return { kind: 'invalid' } as const;
+    }
+    if (key === 'disposition') {
+      disposition = typeof field.value === 'string' ? field.value : undefined;
+    } else if (key === 'invocationId') {
+      invocationId = typeof field.value === 'string' ? field.value : undefined;
+    } else {
+      resultSummary = typeof field.value === 'string' ? field.value : undefined;
+    }
   }
-  const disposition = fields.disposition;
-  if (typeof disposition !== 'string' || !REPLAY_DISPOSITIONS.has(disposition)) {
+  if (disposition === undefined || !REPLAY_DISPOSITIONS.has(disposition)) {
     return { kind: 'invalid' } as const;
   }
-  const invocationId = fields.invocationId;
-  if (typeof invocationId !== 'string' || !SAFE_ID_PATTERN.test(invocationId)) {
+  if (invocationId === undefined || !SAFE_ID_PATTERN.test(invocationId)) {
     return { kind: 'invalid' } as const;
   }
-  const resultSummary = fields.resultSummary;
   if (
-    resultSummary !== undefined &&
-    (typeof resultSummary !== 'string' || resultSummary.length > MAX_RESULT_SUMMARY_LENGTH)
+    envelopeCapture.fields.has('resultSummary') &&
+    (resultSummary === undefined || resultSummary.length > MAX_RESULT_SUMMARY_LENGTH)
   ) {
     return { kind: 'invalid' } as const;
   }
@@ -229,28 +335,77 @@ export type CapabilityToolEventVerdict =
  * Normalize ONE capability-bridge tool result into its stream milestone
  * verdict. This is the SINGLE mapping function the adapter's real
  * tool-result normalization path uses (no second mapping exists).
+ *
+ * POST-AUDIT HARDENING: the mapping is TOTAL — every inspection goes
+ * through the shared control-envelope capture (descriptor reads only, no
+ * getter/trap/`in`/`Object.keys` invocation), so hostile getters, revoked
+ * proxies, and throwing traps classify instead of throwing. The failure
+ * code is checked against the CLOSED `CAPABILITY_TOOL_FAILURE_CODES`
+ * allowlist: arbitrary, accessor-read, non-enumerable, inherited, and
+ * non-string failure markers all become the safe
+ * `VICT_CAPABILITY_OUTCOME_UNKNOWN` and are never echoed as event codes.
  */
 export function normalizeCapabilityToolResultEvent(result: unknown): CapabilityToolEventVerdict {
-  if (typeof result !== 'object' || result === null || Array.isArray(result)) {
+  if (typeof result !== 'object' || result === null) {
     return { kind: 'not-capability' } as const;
   }
-  const record = result as Record<string, unknown>;
-  const hasReplayMarker = 'victCapabilityReplay' in record;
-  const hasFailureMarker = 'victCapabilityFailure' in record;
+  const outer = captureControlRecord(result);
+  if (outer.kind !== 'captured') {
+    // A hostile/revoked container (including one whose Array.isArray
+    // classification throws): marker absence can never be proven — fail
+    // closed (never a raw exception, never legacy forwarding).
+    return { kind: 'failed', code: 'VICT_CAPABILITY_OUTCOME_UNKNOWN' } as const;
+  }
+  try {
+    if (Array.isArray(result)) {
+      return { kind: 'not-capability' } as const;
+    }
+  } catch {
+    return { kind: 'failed', code: 'VICT_CAPABILITY_OUTCOME_UNKNOWN' } as const;
+  }
+  // GUARDED marker-membership honesty probe (the only `in` uses, AFTER
+  // safe capture): a throwing `has` trap is hostile; membership visible to
+  // `in` but absent from the own-descriptor capture (inherited or a
+  // descriptor-invisible proxy lie) can never impersonate a bridge result.
+  {
+    let inReplay: boolean;
+    let inFailure: boolean;
+    try {
+      inReplay = 'victCapabilityReplay' in result;
+      inFailure = 'victCapabilityFailure' in result;
+    } catch {
+      return { kind: 'failed', code: 'VICT_CAPABILITY_OUTCOME_UNKNOWN' } as const;
+    }
+    const hasReplay = capturedHasField(outer, 'victCapabilityReplay');
+    const hasFailure = capturedHasField(outer, 'victCapabilityFailure');
+    if ((inReplay && !hasReplay) || (inFailure && !hasFailure)) {
+      return { kind: 'failed', code: 'VICT_CAPABILITY_OUTCOME_UNKNOWN' } as const;
+    }
+  }
+  const hasReplayMarker = capturedHasField(outer, 'victCapabilityReplay');
+  const hasFailureMarker = capturedHasField(outer, 'victCapabilityFailure');
   if (!hasReplayMarker && !hasFailureMarker) {
     return { kind: 'not-capability' } as const;
   }
-  if (typeof record.victCapabilityFailure === 'string') {
-    if (hasReplayMarker) {
-      // Contradictory control markers on one result: fail closed.
+  if (hasReplayMarker && hasFailureMarker) {
+    // Contradictory control markers on one result: fail closed.
+    return { kind: 'failed', code: 'VICT_CAPABILITY_OUTCOME_UNKNOWN' } as const;
+  }
+  if (hasFailureMarker) {
+    const failureField = outer.fields.get('victCapabilityFailure');
+    if (failureField === undefined || failureField.kind !== 'data' || !failureField.enumerable) {
+      // An accessor or hidden failure marker is hostile; its value is
+      // never read. Fail closed with the safe code.
       return { kind: 'failed', code: 'VICT_CAPABILITY_OUTCOME_UNKNOWN' } as const;
     }
     return {
       kind: 'failed',
-      code: record.victCapabilityFailure as CapabilityToolFailureCode,
+      code: isCapabilityToolFailureCode(failureField.value)
+        ? failureField.value
+        : 'VICT_CAPABILITY_OUTCOME_UNKNOWN',
     } as const;
   }
-  const verdict = parseCapabilityReplayEnvelope(record);
+  const verdict = parseCapabilityReplayEnvelope(result);
   if (verdict.kind !== 'valid') {
     // A replay marker that does not validate strictly — or a malformed
     // failure marker — is fail closed: a safe failure, never completion.
@@ -467,6 +622,10 @@ function sha256Hex(payload: string): string {
  * the structural shape of the arguments ONLY: container kinds, counts, and
  * JSON type names. Argument values, argument key names, authorization-like
  * field names, and serialized payload fragments are NEVER retained.
+ *
+ * TOTAL (post-audit): hostile containers (throwing traps, revoked proxies)
+ * classify as `unsupported` through the shared control-envelope capture —
+ * no reflection exception can escape, and no getter/trap is ever invoked.
  */
 export function safeArgumentSummary(input: unknown, _limit = 120): string {
   return shapeSummary(input, 0) ?? 'unsupported';
@@ -492,15 +651,29 @@ function shapeSummary(value: unknown, depth: number): string | undefined {
     case 'undefined':
       return 'unsupported';
     case 'object': {
-      if (Array.isArray(value)) {
-        return `array(${value.length})`;
-      }
-      const proto = Object.getPrototypeOf(value) as object | null;
-      if (proto !== Object.prototype && proto !== null) {
+      let isArray: boolean;
+      try {
+        isArray = Array.isArray(value);
+      } catch {
+        // A revoked proxy throws even on IsArray: unsupported.
         return 'unsupported';
       }
-      const fields = Object.keys(value as Record<string, unknown>).length;
-      return `object(${fields} fields)`;
+      if (isArray) {
+        return `array(${(value as unknown[]).length})`;
+      }
+      const capture = captureControlRecord(value);
+      if (capture.kind !== 'captured' || capture.prototype === 'exotic') {
+        // A classed instance — or an uninspectable hostile container — is
+        // unsupported and never serialized.
+        return 'unsupported';
+      }
+      let count = 0;
+      for (const field of capture.fields.values()) {
+        if (field.kind === 'data' && field.enumerable) {
+          count += 1;
+        }
+      }
+      return `object(${count} fields)`;
     }
     default:
       return 'unsupported';
@@ -846,23 +1019,22 @@ function standardSchemaFromContract(
       version: 1,
       vendor: 'vict.contract',
       validate: (value: unknown) => {
-        // The bridge's own SAFE structured failure markers and TERMINAL
-        // REPLAY envelopes pass through the output schema: they are fixed
-        // non-echoing denial/replay structures, never capability output
-        // (the strict capability contract still governs every real result
-        // inside execute).
-        if (
-          typeof value === 'object' &&
-          value !== null &&
-          (typeof (value as Record<string, unknown>).victCapabilityFailure === 'string' ||
-            typeof (value as Record<string, unknown>).victCapabilityReplay === 'object')
-        ) {
-          return { value } as const;
-        }
-        if (contract === undefined) {
-          return { value } as const;
-        }
         try {
+          // The bridge's own SAFE structured failure markers and TERMINAL
+          // REPLAY envelopes pass through the output schema — but ONLY
+          // after EXACT structural validation succeeds (closed field set,
+          // plain own enumerable data descriptors, allowlisted code or
+          // disposition; post-audit rule: a replay or failure envelope may
+          // bypass the Standard Schema output adapter only after that
+          // exact validation succeeds). The check is TOTAL: a hostile or
+          // uninspectable value can never throw out of `validate` — it
+          // simply falls through to the contract parse below.
+          if (isExactBridgeControlEnvelope(value)) {
+            return { value } as const;
+          }
+          if (contract === undefined) {
+            return { value } as const;
+          }
           const result = contract.parse(value) as {
             ok: boolean;
             value?: unknown;
@@ -873,6 +1045,8 @@ function standardSchemaFromContract(
           }
           return { issues: [{ message: 'vict-contract-rejected' }] } as const;
         } catch {
+          // A throwing contract parser is untrusted: its message and any
+          // nested cause are never retained or surfaced.
           return { issues: [{ message: 'vict-contract-rejected' }] } as const;
         }
       },
@@ -882,6 +1056,38 @@ function standardSchemaFromContract(
       },
     },
   };
+}
+
+/**
+ * EXACT structural check for a bridge-produced control envelope: either a
+ * single-field failure envelope `{ victCapabilityFailure: <allowlisted> }`
+ * or a single-field structurally valid replay envelope. Total (never
+ * throws) and non-echoing: hostile shapes simply return false.
+ */
+function isExactBridgeControlEnvelope(value: unknown): boolean {
+  const outer = captureControlRecord(value);
+  if (outer.kind !== 'captured') {
+    return false;
+  }
+  if (outer.hasSymbolKeys || outer.prototype === 'exotic' || outer.fields.size !== 1) {
+    return false;
+  }
+  const failureField = outer.fields.get('victCapabilityFailure');
+  if (failureField !== undefined) {
+    return (
+      failureField.kind === 'data' &&
+      failureField.enumerable &&
+      isCapabilityToolFailureCode(failureField.value)
+    );
+  }
+  if (!outer.fields.has('victCapabilityReplay')) {
+    return false;
+  }
+  const replayField = outer.fields.get('victCapabilityReplay');
+  if (replayField === undefined || replayField.kind !== 'data' || !replayField.enumerable) {
+    return false;
+  }
+  return parseCapabilityReplayEnvelope(value).kind === 'valid';
 }
 
 /** Deterministic, model-safe tool name for a capability id. */
@@ -1389,27 +1595,73 @@ async function executeOwnedAttempt(
       );
     }
   }
-  // ---- Reserved control-marker rejection ---------------------------------
+  // ---- Reserved control-marker rejection + hostile-structure arbitration -
   // The bridge's control markers (`victCapabilityReplay`,
   // `victCapabilityFailure`) and the helper bridge's marker are RESERVED:
   // a capability whose output impersonates a control envelope can never
   // have that output returned as a normal result — it would poison the
   // adapter's milestone mapping (a fake `in_progress` would suppress the
   // truthful completion event; a fake failure marker would contradict the
-  // durable completed state). The truthful disposition is the fenced,
-  // NON-replayable `outcome_unknown`; the hostile object is dropped
-  // (nothing from it is forwarded or summarized).
+  // durable completed state).
+  //
+  // POST-AUDIT SETTLEMENT GUARANTEE: the capability has ALREADY run here —
+  // this entire inspection is therefore TOTAL and every rejection funnels
+  // into the fenced, NON-replayable `outcome_unknown` settlement. The
+  // previous direct `in`-based check let a hostile Proxy (`has` trap) or a
+  // revoked proxy THROW past this point, bypassing the fence and leaving
+  // the durable invocation incorrectly `running` with the raw exception
+  // crossing the tool boundary. Now:
+  // - structure is captured through the shared control-envelope boundary
+  //   (descriptor reads only — no getter/setter/get-trap is ever invoked);
+  // - an uninspectable (revoked/trap-hostile) output is `outcome_unknown`
+  //   (`VICT_CAPABILITY_UNSAFE_OUTPUT_STRUCTURE`);
+  // - any reserved marker in any own form (data, accessor, hidden) is
+  //   rejected unread (`VICT_CAPABILITY_RESERVED_MARKER_REJECTED`);
+  // - an own `then` field in any form is rejected — a thenable output
+  //   would run arbitrary code during the post-settlement delivery await;
+  // - THREE GUARDED `in`-consistency probes (the only `in` uses, AFTER
+  //   safe capture) verify the container answers marker membership
+  //   honestly: a throwing `has` trap, or a `has` lie invisible to the
+  //   descriptor capture, classifies the output as hostile. A throwing
+  //   trap never reaches the model and never echoes its canary.
+  let capturedOutput:
+    Extract<ReturnType<typeof captureControlRecord>, { kind: 'captured' }> | undefined;
   if (typeof rawOutput === 'object' && rawOutput !== null) {
-    const outputRecord = rawOutput as Record<string, unknown>;
-    if (
-      'victCapabilityReplay' in outputRecord ||
-      'victCapabilityFailure' in outputRecord ||
-      'victHelperFailure' in outputRecord
-    ) {
-      return settleUnknown(
-        'VICT_CAPABILITY_OUTCOME_UNKNOWN',
-        'VICT_CAPABILITY_RESERVED_MARKER_REJECTED',
-      );
+    const reject = (
+      errorCode:
+        'VICT_CAPABILITY_RESERVED_MARKER_REJECTED' | 'VICT_CAPABILITY_UNSAFE_OUTPUT_STRUCTURE',
+    ): Promise<CapabilityToolFailure> =>
+      settleUnknown('VICT_CAPABILITY_OUTCOME_UNKNOWN', errorCode);
+    try {
+      const capture = captureControlRecord(rawOutput);
+      if (capture.kind !== 'captured') {
+        return await reject('VICT_CAPABILITY_UNSAFE_OUTPUT_STRUCTURE');
+      }
+      capturedOutput = capture;
+      if (capturedHasAnyControlMarker(capture)) {
+        return await reject('VICT_CAPABILITY_RESERVED_MARKER_REJECTED');
+      }
+      if (capturedHasField(capture, 'then')) {
+        return await reject('VICT_CAPABILITY_UNSAFE_OUTPUT_STRUCTURE');
+      }
+      for (const name of CONTROL_MARKER_KEYS) {
+        let present: boolean;
+        try {
+          present = name in rawOutput;
+        } catch {
+          return await reject('VICT_CAPABILITY_UNSAFE_OUTPUT_STRUCTURE');
+        }
+        if (present) {
+          // Marker membership visible to `in` but not to the descriptor
+          // capture (inherited or descriptor-invisible proxy lie): the
+          // output impersonates a control envelope.
+          return await reject('VICT_CAPABILITY_RESERVED_MARKER_REJECTED');
+        }
+      }
+    } catch {
+      // Absolute backstop: NO inspection failure can bypass the fenced
+      // settlement path once the capability may already have acted.
+      return await reject('VICT_CAPABILITY_UNSAFE_OUTPUT_STRUCTURE');
     }
   }
   // ---- FENCED completed settlement ---------------------------------------
@@ -1433,6 +1685,20 @@ async function executeOwnedAttempt(
     return settleUnknown('VICT_CAPABILITY_OUTCOME_UNKNOWN', 'VICT_CAPABILITY_OUTCOME_UNKNOWN');
   }
   // ---- Sanitized result to Mastra (confirmed durable completion) ----------
+  // A verified PLAIN output is delivered as a structurally identical
+  // trap-free/thenable-free REBUILD (own enumerable data fields, values
+  // taken from their descriptors): no downstream consumer (Mastra, the
+  // adapter, the model) can ever trigger a getter, a proxy trap, or an
+  // inherited/own `then` on the delivered container. Non-plain outputs
+  // (arrays, class instances) are delivered as-is — their contract
+  // validation, marker checks, and the guarded `in` probes above all
+  // passed.
+  if (capturedOutput !== undefined) {
+    const rebuilt = rebuildPlainCapturedObject(capturedOutput);
+    if (rebuilt !== undefined) {
+      return rebuilt;
+    }
+  }
   return rawOutput;
 }
 

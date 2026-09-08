@@ -20,6 +20,8 @@ import {
   type HelperToolGateVerdict,
 } from './helper-tools.js';
 import { normalizeCapabilityToolResultEvent, sanitizeCapabilityToolName } from './tool-bridge.js';
+import { isCapabilityToolFailureCode } from './tool-bridge.js';
+import { inspectControlField } from './control-envelope.js';
 import { VictMastraCompositionError, type MastraThreadCoordinator } from './memory.js';
 
 /**
@@ -944,21 +946,27 @@ export class MastraProductAgent implements ProductAgentPort {
                 trustToolName(payload.toolName) === UNTRUSTED_TOOL_METADATA_PLACEHOLDER
                   ? (pendingToolCalls.get(toolCallId) ?? UNTRUSTED_TOOL_METADATA_PLACEHOLDER)
                   : (payload.toolName as string);
-              const result = payload.result as
-                | {
-                    victHelperFailure?: string;
-                    victCapabilityFailure?: string;
-                    error?: unknown;
-                  }
-                | undefined;
+              // The tool result value is UNTRUSTED (it may be a hostile
+              // container): every marker/milestone read goes through the
+              // shared total control-envelope inspection — direct member
+              // reads on a hostile Proxy can invoke a `get` trap and throw,
+              // which would abort the whole turn with a raw error.
+              const result = payload.result as unknown;
+              const helperFailureField = inspectControlField(result, 'victHelperFailure');
+              const helperMarkerPresent =
+                helperFailureField.kind === 'data' ||
+                helperFailureField.kind === 'present-unreadable';
+              const helperFailureCode =
+                helperFailureField.kind === 'data' && typeof helperFailureField.value === 'string'
+                  ? helperFailureField.value
+                  : undefined;
+              const errorField = inspectControlField(result, 'error');
+              const resultReportsError = errorField.kind === 'data' && errorField.value === true;
               // Mastra reports a schema-rejected tool input as a tool
               // result carrying `{ error: true }` (with the sanitized
               // message from our Standard-Schema wrapper).
-              const failed =
-                result?.victHelperFailure !== undefined ||
-                result?.error === true ||
-                payload.isError === true;
-              if (result?.victHelperFailure === 'VICT_HELPER_TOOL_LIMIT_EXCEEDED') {
+              const failed = helperMarkerPresent || resultReportsError || payload.isError === true;
+              if (helperFailureCode === 'VICT_HELPER_TOOL_LIMIT_EXCEEDED') {
                 toolLimitExceeded = true;
               }
               // Stage 06B tool-state truthfulness: the governed capability
@@ -1001,8 +1009,22 @@ export class MastraProductAgent implements ProductAgentPort {
               // Stage 06B: the governed capability bridge's structured safe
               // denials (decline, awaiting timeout, authority denial) are
               // honest tool failures with their stable non-echoing codes.
-              if (typeof result?.victCapabilityFailure === 'string') {
-                emitToolTerminal(toolCallId, toolName, 'failed', result.victCapabilityFailure);
+              // The code is checked against the bridge's CLOSED vocabulary:
+              // an arbitrary or hostile value can never become an event
+              // code (it normalizes to VICT_CAPABILITY_OUTCOME_UNKNOWN).
+              const capabilityFailureField = inspectControlField(result, 'victCapabilityFailure');
+              if (
+                capabilityFailureField.kind === 'data' &&
+                typeof capabilityFailureField.value === 'string'
+              ) {
+                emitToolTerminal(
+                  toolCallId,
+                  toolName,
+                  'failed',
+                  isCapabilityToolFailureCode(capabilityFailureField.value)
+                    ? capabilityFailureField.value
+                    : 'VICT_CAPABILITY_OUTCOME_UNKNOWN',
+                );
                 break;
               }
               if (failed) {

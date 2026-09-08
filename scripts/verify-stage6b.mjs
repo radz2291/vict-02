@@ -288,6 +288,17 @@ runVitestSuites('governed Mastra tool bridge, turn executor, phase fault injecti
   'packages/mastra/test/tool-state-normalization.test.ts',
 ]);
 
+// ---- 6b. Post-audit hostile-envelope containment suites ----------------------
+
+runVitestSuites(
+  'post-audit hostile-envelope containment (total capture boundary, fenced post-invocation settlement, helper containment)',
+  [
+    'packages/mastra/test/control-envelope-containment.test.ts',
+    'packages/mastra/test/tool-bridge.hostile-output.test.ts',
+    'packages/mastra/test/helper-tools.containment.test.ts',
+  ],
+);
+
 // ---- 7. Real-HTTP server suites ----------------------------------------------
 
 runVitestSuites('versioned HTTP commands, SSE + real-socket backpressure, remote app data, CLI', [

@@ -4,6 +4,13 @@ import type {
   AgentHelperToolArtifact,
   AgentHelperToolIO,
 } from '@vict/runtime';
+import {
+  CONTROL_MARKER_KEYS,
+  captureControlRecord,
+  capturedHasAnyControlMarker,
+  capturedHasField,
+  rebuildPlainCapturedObject,
+} from './control-envelope.js';
 
 /**
  * Mastra-native helper tools (Stage 06A, amendment §6.5).
@@ -184,26 +191,65 @@ export function bridgeHelperToolToMastra(
           victHelperFailure: 'VICT_HELPER_OUTPUT_CONTRACT_REJECTED',
         } satisfies HelperToolFailure;
       }
-      // 4. Reserved control-marker rejection: the bridge control markers
-      // (`victCapabilityReplay`, `victCapabilityFailure`,
-      // `victHelperFailure`) are RESERVED control-plane structures. A
-      // helper output impersonating one can never reach the model as data
-      // (where it could poison the adapter's tool-milestone mapping — e.g.
-      // a fake `in_progress` replay suppressing a truthful completion
-      // event). The hostile output is dropped: the truthful sanitized
-      // execution failure is returned instead.
+      // 4. Reserved control-marker rejection + hostile-output containment:
+      // the bridge control markers (`victCapabilityReplay`,
+      // `victCapabilityFailure`, `victHelperFailure`) are RESERVED
+      // control-plane structures. A helper output impersonating one can
+      // never reach the model as data (where it could poison the adapter's
+      // tool-milestone mapping — e.g. a fake `in_progress` replay
+      // suppressing a truthful completion event).
+      //
+      // POST-AUDIT HARDENING: this inspection is TOTAL. The previous
+      // direct `in`-based check let a hostile Proxy (`has` trap) or a
+      // revoked proxy THROW the raw exception out of the tool boundary.
+      // Now the structure is captured through the shared control-envelope
+      // boundary (descriptor reads only — no getter/setter/get-trap is
+      // ever invoked); an uninspectable output, any reserved marker in any
+      // own form (read never), and an own `then` field in any form all
+      // collapse to the stable `VICT_HELPER_RESERVED_MARKER_REJECTED`
+      // failure. Three guarded `in`-consistency probes (the only `in`
+      // uses, AFTER safe capture) verify marker-membership honesty: a
+      // throwing `has` trap or an inherited/descriptor-invisible marker
+      // membership is rejected with no trap error or canary ever echoed.
+      // A verified PLAIN output is delivered as a structurally identical
+      // trap-free/thenable-free rebuild; non-plain outputs (arrays, class
+      // instances) that passed every check are delivered as-is.
       const validatedOutput = parsedOutput.value;
       if (typeof validatedOutput === 'object' && validatedOutput !== null) {
-        const outputRecord = validatedOutput as Record<string, unknown>;
-        if (
-          'victCapabilityReplay' in outputRecord ||
-          'victCapabilityFailure' in outputRecord ||
-          'victHelperFailure' in outputRecord
-        ) {
+        let captured: Extract<ReturnType<typeof captureControlRecord>, { kind: 'captured' }>;
+        try {
+          const capture = captureControlRecord(validatedOutput);
+          if (capture.kind !== 'captured') {
+            return {
+              victHelperFailure: 'VICT_HELPER_RESERVED_MARKER_REJECTED',
+            } satisfies HelperToolFailure;
+          }
+          captured = capture;
+        } catch {
           return {
             victHelperFailure: 'VICT_HELPER_RESERVED_MARKER_REJECTED',
           } satisfies HelperToolFailure;
         }
+        if (capturedHasAnyControlMarker(captured) || capturedHasField(captured, 'then')) {
+          return {
+            victHelperFailure: 'VICT_HELPER_RESERVED_MARKER_REJECTED',
+          } satisfies HelperToolFailure;
+        }
+        try {
+          for (const name of CONTROL_MARKER_KEYS) {
+            if (name in validatedOutput) {
+              return {
+                victHelperFailure: 'VICT_HELPER_RESERVED_MARKER_REJECTED',
+              } satisfies HelperToolFailure;
+            }
+          }
+        } catch {
+          return {
+            victHelperFailure: 'VICT_HELPER_RESERVED_MARKER_REJECTED',
+          } satisfies HelperToolFailure;
+        }
+        const rebuilt = rebuildPlainCapturedObject(captured);
+        return rebuilt ?? validatedOutput;
       }
       return validatedOutput;
     },
