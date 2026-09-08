@@ -1,28 +1,35 @@
 #!/usr/bin/env node
 /**
  * Stage 06B aggregate verification: control plane and governed remote
- * execution.
+ * execution (corrective finalization).
  *
- * Aggregation for convenience — it does NOT replace or skip the individual
- * evidence commands in the verification ladder. It verifies:
+ * SELF-CONTAINED: the verifier builds EVERY artifact it consumes (all
+ * production workspaces in dependency order, including @vict/server and
+ * @vict/cli), so it is valid from a zero-artifact clean clone — it never
+ * depends on artifacts from previous manual builds.
  *
- *  1. New-package inspection: @vict/control, @vict/server and @vict/cli
- *     own real behavior (no empty placeholders); the dependency direction
- *     is acyclic (neutral packages stay Mastra-free; control/server/cli are
- *     transport-only and agent-framework-free); exact pinned Mastra
- *     versions are untouched; @vict/cli has no store access.
- *  2. Runtime + SQLite control-plane conformance suites (semantic parity
- *     incl. close/reopen) and the agent-stream schema suite.
- *  3. Control-plane lifecycle suites (ChangeSets, approvals, actor
- *     boundary) and the governed Mastra tool-bridge/executor suites.
- *  4. Real-HTTP server suites: versioned commands, resumable SSE,
- *     remote Application data boundary, CLI over the shared command
- *     surface, SIGKILL cross-store fixtures, canary leakage matrix.
- *  5. Real child-process proof: a fresh process opens a SQLite control
+ * Gates:
+ *  1. Clean zero-artifact build + typecheck of the full package graph.
+ *  2. New-package inspection: @vict/control, @vict/server and @vict/cli own
+ *     real behavior; dependency direction is acyclic (neutral packages stay
+ *     Mastra-free and store-free; server is agent-framework-free and
+ *     provider-free); exact pinned Mastra versions; CLI has no store access.
+ *  3. Runtime + SQLite control-plane conformance suites (close/reopen
+ *     parity) and the agent-stream wire-schema suite.
+ *  4. Control-plane lifecycle suites — including the durable commit saga,
+ *     authoritative evidence, and the authorization matrix gates.
+ *  5. Durable command idempotency gates (in-memory + SQLite + HTTP).
+ *  6. Governed Mastra tool-bridge suites + phase fault injection.
+ *  7. Real-HTTP server suites: versioned commands, resumable SSE with
+ *     real-socket backpressure, remote Application data boundary, CLI over
+ *     the shared command surface.
+ *  8. SIGKILL cross-store fixtures and the end-to-end canary retention
+ *     scan (raw DB/WAL/SHM bytes).
+ *  9. Real child-process proof: a fresh process opens a SQLite control
  *     store, serves HTTP, and the CLI drives a ChangeSet lifecycle against
  *     it end-to-end.
- *  6. Stage 06A gates re-run: the LOW-06A-1/LOW-06A-2 driver-cause,
- *     migration and governance regression suites.
+ * 10. Stage 06A gates re-run: driver-cause, migration and governance
+ *     regression suites.
  */
 import { spawn, spawnSync } from 'node:child_process';
 import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
@@ -38,6 +45,9 @@ function run(command, args, options = {}) {
     encoding: 'utf8',
     cwd: options.cwd ?? repoRoot,
     timeout: options.timeout,
+    // npm (and pnpm-style shims) are .cmd scripts on Windows and can only
+    // be spawned through the shell; direct node.exe invocations stay
+    // shell-free so inline -e scripts survive cmd.exe parsing.
     ...(options.shell ? { shell: true } : {}),
   });
   if (options.capture && result.status !== 0) {
@@ -61,12 +71,47 @@ function runVitestSuites(label, suites) {
   const vitestEntry = join(repoRoot, 'node_modules', 'vitest', 'vitest.mjs');
   const result = run(process.execPath, [vitestEntry, 'run', '--root', repoRoot, ...suites], {
     capture: true,
-    timeout: 600_000,
+    timeout: 900_000,
   });
   check(result.status === 0, `${label} (${suites.length} suites)`);
 }
 
-// ---- 1. Package inspection -------------------------------------------------
+// ---- 1. Clean build + typecheck (the verifier builds what it consumes) ------
+
+console.log('\n=== verify:stage6b — zero-artifact build + typecheck ===');
+{
+  // No pre-existing dist artifact may be REQUIRED: prove the tree typechecks
+  // and builds from whatever state it is in (the typecheck runs on sources).
+  const typecheck = run('npm', ['run', 'typecheck'], {
+    capture: true,
+    timeout: 600_000,
+    shell: true,
+  });
+  check(typecheck.status === 0, 'npm run typecheck succeeds (strict, before build)');
+  if (typecheck.status !== 0) {
+    console.error(typecheck.stdout?.slice(-2000));
+  }
+  const build = run('npm', ['run', 'build'], { capture: true, timeout: 900_000, shell: true });
+  check(build.status === 0, 'npm run build builds EVERY production workspace (incl. server + cli)');
+  if (build.status !== 0) {
+    console.error(build.stdout?.slice(-2000));
+  }
+  const typecheckAfter = run('npm', ['run', 'typecheck'], {
+    capture: true,
+    timeout: 600_000,
+    shell: true,
+  });
+  check(typecheckAfter.status === 0, 'npm run typecheck succeeds after build');
+  // The built graph must include server + cli dist (packed consumers).
+  check(
+    existsSync(join(repoRoot, 'packages/server/dist/index.js')) &&
+      existsSync(join(repoRoot, 'packages/cli/dist/cli.js')) &&
+      existsSync(join(repoRoot, 'packages/control/dist/index.js')),
+    'the built package graph includes @vict/server, @vict/cli and @vict/control dist',
+  );
+}
+
+// ---- 2. Package inspection -------------------------------------------------
 
 console.log('\n=== verify:stage6b — package inspection (Stage 06B) ===');
 {
@@ -177,9 +222,9 @@ if (bad.length > 0) { console.error(bad.join(',')); process.exit(1); }
   );
 }
 
-// ---- 2. Runtime + SQLite conformance and schema suites ----------------------
+// ---- 3. Runtime + SQLite conformance and schema suites ----------------------
 
-runVitestSuites('runtime control-plane conformance + schema', [
+runVitestSuites('runtime control-plane conformance + wire schema', [
   'packages/runtime/test/agent-control-conformance.test.ts',
   'packages/contracts/test/agent-stream-schema.test.ts',
   'packages/runtime/test/store-errors.driver-cause.test.ts',
@@ -188,36 +233,51 @@ runVitestSuites('runtime control-plane conformance + schema', [
 runVitestSuites('SQLite control-plane conformance (close/reopen parity)', [
   'packages/store-sqlite/test/agent-control-conformance.test.ts',
   'packages/store-sqlite/test/agent-governance-receipt-steps.test.ts',
+  'packages/store-sqlite/test/migrations.test.ts',
 ]);
 
-// ---- 3. Control plane + Mastra bridge ---------------------------------------
+// ---- 4. Control plane lifecycle + authorization matrix + commit saga --------
 
-runVitestSuites('control-plane lifecycle and actor boundary', [
+runVitestSuites('control-plane lifecycle, commit saga, authoritative evidence, actor boundary', [
   'packages/control/test/control-plane.test.ts',
 ]);
 
-runVitestSuites('governed Mastra tool bridge and turn executor', [
+runVitestSuites('public-API authorization matrix (real HTTP)', [
+  'packages/server/test/authorization-matrix.test.ts',
+]);
+
+// ---- 5. Durable command idempotency ------------------------------------------
+
+runVitestSuites('durable command idempotency (in-memory + SQLite + HTTP)', [
+  'packages/server/test/idempotency.test.ts',
+]);
+
+// ---- 6. Governed Mastra tool bridge + fault injection ------------------------
+
+runVitestSuites('governed Mastra tool bridge, turn executor, phase fault injection', [
   'packages/mastra/test/tool-bridge.test.ts',
+  'packages/mastra/test/tool-bridge.faults.test.ts',
   'packages/mastra/test/turn-executor.test.ts',
 ]);
 
-// ---- 4. Real-HTTP server suites ---------------------------------------------
+// ---- 7. Real-HTTP server suites ----------------------------------------------
 
-runVitestSuites('versioned HTTP commands, SSE, remote app data, CLI', [
+runVitestSuites('versioned HTTP commands, SSE + real-socket backpressure, remote app data, CLI', [
   'packages/server/test/http.test.ts',
   'packages/server/test/sse.test.ts',
   'packages/server/test/app-remote.test.ts',
   'packages/server/test/cli.test.ts',
 ]);
 
-// ---- 5. SIGKILL + canary fixtures -------------------------------------------
+// ---- 8. SIGKILL + end-to-end canary -------------------------------------------
 
-runVitestSuites('child-process SIGKILL fixtures and canary leakage matrix', [
+runVitestSuites('child-process SIGKILL fixtures and end-to-end canary retention scan', [
   'packages/server/test/restart-sigkill.test.ts',
   'packages/server/test/canary.test.ts',
+  'packages/server/test/e2e-canary.test.ts',
 ]);
 
-// ---- 5b. Real child-process CLI lifecycle over SQLite + HTTP -----------------
+// ---- 8b. Real child-process CLI lifecycle over SQLite + HTTP -------------------
 
 console.log('\n=== verify:stage6b — fresh-process SQLite server + CLI lifecycle ===');
 {
@@ -311,7 +371,7 @@ console.log('\n=== verify:stage6b — fresh-process SQLite server + CLI lifecycl
   check(lifecycleOk, 'fresh-process SQLite server: CLI drives a ChangeSet proposal end-to-end');
 }
 
-// ---- 6. Stage 06A regression gates (LOW-06A-2) -------------------------------
+// ---- 9. Stage 06A regression gates (LOW-06A-1/2) ------------------------------
 
 console.log('\n=== verify:stage6b — Stage 06A regression suites (LOW-06A-1/2) ===');
 {
@@ -325,18 +385,22 @@ console.log('\n=== verify:stage6b — Stage 06A regression suites (LOW-06A-1/2) 
       repoRoot,
       'packages/runtime/test/store-errors.driver-cause.test.ts',
       'packages/store-sqlite/test/agent-governance-receipt-steps.test.ts',
+      'packages/store-sqlite/test/migrations.test.ts',
     ],
     { capture: true, timeout: 300_000 },
   );
-  check(result.status === 0, 'Stage 06A regression suites (driver-cause + receipt steps) pass');
+  check(
+    result.status === 0,
+    'Stage 06A regression suites (driver-cause + receipt steps + migrations) pass',
+  );
 }
 
-// ---- Summary ------------------------------------------------------------------
+// ---- Summary --------------------------------------------------------------------
 
 console.log('\n========================================');
 if (failures === 0) {
   console.log('verify:stage6b: ALL GATES PASSED');
-  console.log('Stage 06B implemented and awaiting fresh independent audit.');
+  console.log('Stage 06B corrective finalization complete; awaiting fresh independent audit.');
   process.exit(0);
 } else {
   console.log(`verify:stage6b: ${failures} gate(s) FAILED`);
