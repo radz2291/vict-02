@@ -130,6 +130,36 @@ truthful `outcome_unknown`/execution failure and never returned as data,
 so fabricated dispositions can neither suppress nor forge terminal
 milestones.
 
+Post-audit envelope hardening (remediation after the independent exit
+audit): every result/output inspection at this boundary is TOTAL and runs
+through ONE shared control-envelope capture — guarded `Array.isArray`,
+`Object.getPrototypeOf`, `Reflect.ownKeys`, and per-key descriptor reads
+only. Direct member reads, `in` (except guarded marker-membership honesty
+probes AFTER safe capture), iteration, and `Object.keys` are never used
+before safe capture; getters, setters, proxy `get` traps, and user
+iterators are never invoked. Values are read only from own enumerable
+data-property descriptors; accessor, non-enumerable, and symbol-keyed
+fields, inherited marker membership, arrays/exotic prototypes where plain
+records are required, and hostile or revoked proxies all produce STABLE
+fail-closed classifications (`VICT_CAPABILITY_OUTCOME_UNKNOWN` / the
+corresponding stable helper or invalid verdicts) — no raw exception or
+canary can escape an inspection, and rejected content is never echoed.
+The failure-code vocabulary at this boundary is CLOSED: a failure marker
+normalizes into an event code ONLY through the exact
+`CAPABILITY_TOOL_FAILURE_CODES` allowlist; arbitrary strings become the
+safe `VICT_CAPABILITY_OUTCOME_UNKNOWN`.
+
+POST-INVOCATION SETTLEMENT GUARANTEE: once a capability invocation has
+begun, EVERY later failure — output-contract parsing, reserved-marker
+inspection, result summarization, hostile-output arbitration, Standard
+Schema adaptation, and completion persistence — is contained by the
+FENCED settlement path: the record settles to the truthful non-replayable
+`outcome_unknown` (effect count one; a retry never re-executes), the
+model receives the stable non-echoing failure, and a raw trap exception
+or canary can never cross the tool boundary. When the settlement store
+itself is unavailable, the model still receives the safe outcome-unknown
+failure and persistence is never falsely claimed to have succeeded.
+
 ## 3. Actors, roles, scopes — the trust boundary
 
 - Authentication and authorization are distinct: a deterministic local
