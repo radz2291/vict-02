@@ -14,7 +14,7 @@
   ],
   "scripts": {
     "bench": "tsx scripts/benchmark.ts",
-    "build": "npm run build -w @vict/contracts && npm run build -w @vict/sdk && npm run build -w @vict/kernel && npm run build -w @vict/runtime && npm run build -w @vict/store-sqlite && npm run build -w @vict/control && npm run build -w @vict/application && npm run build -w @vict/appdata-sqlite && npm run build -w @vict/renderer-svelte && npm run build -w @vict/scaffolder && npm run build -w @vict/mastra && npm run build -w @vict/server && npm run build -w @vict/cli",
+    "build": "npm run build -w @victframework/contracts && npm run build -w @victframework/sdk && npm run build -w @victframework/kernel && npm run build -w @victframework/runtime && npm run build -w @victframework/store-sqlite && npm run build -w @victframework/control && npm run build -w @victframework/application && npm run build -w @victframework/appdata-sqlite && npm run build -w @victframework/renderer-svelte && npm run build -w @victframework/scaffolder && npm run build -w @victframework/mastra && npm run build -w @victframework/server && npm run build -w @victframework/cli",
     "example": "tsx examples/ara-proof/src/main.ts",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
@@ -31,7 +31,12 @@
     "verify:stage5": "node scripts/verify-stage5.mjs",
     "verify:stage6a": "node scripts/verify-stage6a.mjs",
     "verify:stage6b": "node scripts/verify-stage6b.mjs",
-    "verify:clean-clone": "node scripts/verify-clean-clone.mjs"
+    "verify:clean-clone": "node scripts/verify-clean-clone.mjs",
+    "verify:n1": "node scripts/verify-n1-emitted.mjs",
+    "verify:release-set": "node scripts/check-release-set.mjs",
+    "verify:release-consumer": "node scripts/verify-release-consumer.mjs",
+    "verify:stage7a": "node scripts/verify-stage7a.mjs",
+    "publish:release": "node scripts/publish-release.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
@@ -47,5 +52,6 @@
     "typescript-eslint": "^8.68.0",
     "vitest": "^4.1.11",
     "zod": "^3.25.76"
-  }
+  },
+  "license": "Apache-2.0"
 }
