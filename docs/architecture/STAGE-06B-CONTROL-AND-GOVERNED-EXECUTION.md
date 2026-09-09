@@ -160,6 +160,44 @@ or canary can never cross the tool boundary. When the settlement store
 itself is unavailable, the model still receives the safe outcome-unknown
 failure and persistence is never falsely claimed to have succeeded.
 
+DELIVERY-SAFE SNAPSHOT (H-1 remediation — the model-facing Mastra delivery
+boundary): a durably `completed` invocation must never be delivered in a
+state that can contradict it. The exact value returned to Mastra is
+therefore proven safe BEFORE the fenced `completed` settlement: after
+output-contract validation and reserved-marker rejection, the bridge
+recursively captures the result into a fresh VICT-owned snapshot
+(`captureDeliverySafeSnapshot`) and settles `completed` only on success,
+deriving the durable `resultSummary` FROM that snapshot and returning ONLY
+that snapshot. The accepted delivery domain is exactly: `null`, booleans,
+bounded strings, finite numbers, dense bounded arrays, and plain objects
+(Object.prototype or null prototype) whose fields are all own enumerable
+string-keyed DATA properties — with the documented bounds: container depth
+≤ 16, total captured nodes ≤ 4096, array length ≤ 1024, object field count
+≤ 128, string length ≤ 8192. The capture is passive (guarded descriptor
+reads only — no getter, setter, iterator, `toJSON`, proxy `get`/`has`, or
+thenable hook is ever invoked) and rejects, BEFORE durable completion, with
+the stable non-echoing durable code `VICT_CAPABILITY_UNSAFE_OUTPUT_STRUCTURE`
+(model code `VICT_CAPABILITY_OUTCOME_UNKNOWN`; no new event codes): nested
+hostile or revoked proxies (any reflection trap that throws or lies), class
+instances and every non-plain instance (Date, Map, Set, RegExp, …),
+null-prototype objects EXCEPTED (accepted), own `then` in any form at any
+depth, inherited exotic prototypes (including inherited `then`), functions,
+BigInts, Symbols, `undefined`, non-finite numbers, accessor fields (never
+read), non-enumerable and symbol-keyed fields, extra array properties,
+sparse arrays (an array whose length exceeds its contiguous data is
+delivered as its dense prefix), cycles, and every bound above. A nested
+proxy that is fully transparent to descriptor reflection contributes its
+descriptor DATA only: the delivered value is a trap-free plain rebuild and
+no caller code can run against it after delivery. Rejection follows the
+effectful-ambiguity rule: the capability may already have acted → fenced
+`outcome_unknown` → stable safe failure → no normal output → no
+`tool.completed` → a retry performs no second effect. Post-return mutation
+of the capability's original output can never change the delivered value,
+the summary, the events, or the durable record (zero aliasing at any
+nesting level). This boundary governs the model-facing tool-result delivery
+path only; richer values inside unrelated local VICT capability use are
+unaffected.
+
 ## 3. Actors, roles, scopes — the trust boundary
 
 - Authentication and authorization are distinct: a deterministic local
