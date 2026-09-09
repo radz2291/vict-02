@@ -79,6 +79,13 @@
     ),
   );
   const navGroups = $derived.by(() => {
+    // Navigation groups appear in the order of their FIRST OCCURRENCE in
+    // the ordered route list (the route contract is ordered navigation
+    // semantics; a Map preserves that first-occurrence anchoring, and a
+    // repeated or interleaved group always collects ALL of its routes
+    // together). Routes inside a group sort by the declared `order` hint,
+    // then by path (deterministic presentation) — never by route-array
+    // position over an explicit hint.
     const groups = new Map<string, typeof navRoutes>();
     for (const entry of navRoutes) {
       const group = entry.route.nav?.group ?? '';
@@ -86,18 +93,14 @@
       list.push(entry);
       groups.set(group, list);
     }
-    // Navigation groups sort by name; routes inside a group sort by the
-    // declared `order` hint, then by path (deterministic presentation).
-    return [...groups.entries()]
-      .sort((a, b) => (a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0))
-      .map(([name, entries]) => [
-        name,
-        [...entries].sort((a, b) => {
-          const oa = a.route.nav?.order ?? 0;
-          const ob = b.route.nav?.order ?? 0;
-          return oa - ob || (a.route.path < b.route.path ? -1 : 1);
-        }),
-      ] as const);
+    return [...groups.entries()].map(([name, entries]) => [
+      name,
+      [...entries].sort((a, b) => {
+        const oa = a.route.nav?.order ?? 0;
+        const ob = b.route.nav?.order ?? 0;
+        return oa - ob || (a.route.path < b.route.path ? -1 : 1);
+      }),
+    ] as const);
   });
 
   const isActive = $derived.by(() => {
@@ -299,7 +302,12 @@
           class:vict-nav-open={mobileNavOpen}
           aria-label="Application"
         >
-          {#each navGroups as [group, entries] (group)}
+          <!-- Unkeyed on purpose: group blocks carry no local state, and
+               index-wise reconciliation keeps the DOM order exactly equal
+               to the derived first-occurrence order even when a reactive
+               plan update permutes the group sequence (a keyed each over a
+               multi-node body must not be relied on for reordering). -->
+          {#each navGroups as [group, entries]}
             {#if group !== ''}
               <p class="vict-nav-group-label">{group}</p>
             {/if}
