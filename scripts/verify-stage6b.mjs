@@ -299,6 +299,17 @@ runVitestSuites(
   ],
 );
 
+// ---- 6c. H-1 delivery-snapshot suites (durable completion before safe result
+// delivery; recursive delivery-safe snapshot + real pinned Mastra path) ------
+
+runVitestSuites(
+  'H-1 delivery remediation (delivery-safe snapshot boundary, hostile nested output rejected before durable completion, real Mastra path)',
+  [
+    'packages/mastra/test/tool-bridge.delivery-snapshot.test.ts',
+    'packages/mastra/test/tool-bridge.h1-delivery.test.ts',
+  ],
+);
+
 // ---- 7. Real-HTTP server suites ----------------------------------------------
 
 runVitestSuites('versioned HTTP commands, SSE + real-socket backpressure, remote app data, CLI', [

@@ -14,8 +14,8 @@ import {
   captureControlRecord,
   capturedHasAnyControlMarker,
   capturedHasField,
-  rebuildPlainCapturedObject,
 } from './control-envelope.js';
+import { captureDeliverySafeSnapshot } from './delivery-snapshot.js';
 
 /**
  * Stage 06B — the VICT capability-to-Mastra tool bridge (AI-005/006,
@@ -35,7 +35,12 @@ import {
  * → durable intent where required
  * → capability invocation
  * → authoritative output-contract validation
- * → sanitized result returned to Mastra
+ * → recursive delivery-safe snapshot (H-1: the EXACT value returned to
+ *   Mastra is proven safe BEFORE durable completion; anything else is the
+ *   fenced `outcome_unknown`)
+ * → safe summary derived from that snapshot
+ * → fenced durable `completed` settlement
+ * → only the captured VICT-owned snapshot returned to Mastra
  * ```
  *
  * Hard rules enforced here:
@@ -1514,15 +1519,19 @@ interface OwnedAttemptContext {
 
 /**
  * Execute ONE owned attempt under its EXACT fence: capability invocation,
- * authoritative output-contract validation, and the fenced terminal
- * settlement.
+ * authoritative output-contract validation, the recursive delivery-safe
+ * snapshot, and the fenced terminal settlement.
  *
- * Normal success is returned ONLY after the exact durable `completed`
- * transition is confirmed under this attempt's fence. A capability throw,
- * an output-contract violation, or ANY completion-persistence failure is
- * the truthful fenced, NON-replayable `outcome_unknown` — the model never
- * receives a normal success (and never the raw output) for an invocation
- * whose durable completion is unconfirmed.
+ * Normal success is returned ONLY after (a) the exact value to be returned
+ * to Mastra has been captured as a delivery-safe VICT-owned snapshot (H-1:
+ * an output that cannot be proven safe to deliver is NEVER settled
+ * `completed` — it takes the fenced, non-replayable `outcome_unknown` path
+ * instead) and (b) the exact durable `completed` transition is confirmed
+ * under this attempt's fence. A capability throw, an output-contract
+ * violation, a reserved-marker or delivery-unsafe structure, or ANY
+ * completion-persistence failure is the truthful fenced, NON-replayable
+ * `outcome_unknown` — the model never receives a normal success (and never
+ * the raw output) for an invocation whose durable completion is unconfirmed.
  */
 async function executeOwnedAttempt(
   deps: CapabilityBridgeDeps,
@@ -1624,8 +1633,6 @@ async function executeOwnedAttempt(
   //   honestly: a throwing `has` trap, or a `has` lie invisible to the
   //   descriptor capture, classifies the output as hostile. A throwing
   //   trap never reaches the model and never echoes its canary.
-  let capturedOutput:
-    Extract<ReturnType<typeof captureControlRecord>, { kind: 'captured' }> | undefined;
   if (typeof rawOutput === 'object' && rawOutput !== null) {
     const reject = (
       errorCode:
@@ -1637,7 +1644,6 @@ async function executeOwnedAttempt(
       if (capture.kind !== 'captured') {
         return await reject('VICT_CAPABILITY_UNSAFE_OUTPUT_STRUCTURE');
       }
-      capturedOutput = capture;
       if (capturedHasAnyControlMarker(capture)) {
         return await reject('VICT_CAPABILITY_RESERVED_MARKER_REJECTED');
       }
@@ -1664,10 +1670,51 @@ async function executeOwnedAttempt(
       return await reject('VICT_CAPABILITY_UNSAFE_OUTPUT_STRUCTURE');
     }
   }
+  // ---- RECURSIVE DELIVERY-SAFE SNAPSHOT (H-1 remediation) ----------------
+  // The model-facing Mastra delivery boundary accepts ONLY the documented
+  // delivery-safe domain (null, booleans, bounded strings, finite numbers,
+  // dense bounded arrays, and plain objects with own enumerable string-keyed
+  // data properties). The EXACT value about to be returned to Mastra is
+  // recursively captured into a fresh VICT-owned snapshot BEFORE the fenced
+  // `completed` settlement — the invocation is never settled `completed` on
+  // a value whose delivery could later contradict the durable record. The
+  // capture is passive (descriptor reads only — no getter/setter/iterator/
+  // `toJSON`/proxy `get`/`has`/thenable hook is ever invoked) and rejects,
+  // BEFORE durable completion, every value it cannot prove safe: nested
+  // hostile or revoked proxies, class instances, Date/Map/Set, thenables,
+  // inherited exotic prototypes, functions, BigInts, Symbols, `undefined`,
+  // non-finite numbers, accessors, non-enumerable and symbol-keyed fields,
+  // extra array properties, sparse arrays, cycles, and every bound (depth,
+  // nodes, collection length, property count, string size) — each with one
+  // stable non-echoing durable code. Such an output follows the
+  // effectful-ambiguity rule: the capability may already have acted →
+  // fenced `outcome_unknown` → stable safe failure → no normal output → no
+  // `tool.completed` → a retry performs no second effect (the record is
+  // terminal).
+  let deliveredOutput: unknown;
+  try {
+    const snapshot = captureDeliverySafeSnapshot(rawOutput);
+    if (!snapshot.ok) {
+      return await settleUnknown(
+        'VICT_CAPABILITY_OUTCOME_UNKNOWN',
+        'VICT_CAPABILITY_UNSAFE_OUTPUT_STRUCTURE',
+      );
+    }
+    deliveredOutput = snapshot.value;
+  } catch {
+    // Absolute backstop: an unsafe-to-deliver output can never settle
+    // `completed` — the fenced outcome-unknown path is the only exit.
+    return await settleUnknown(
+      'VICT_CAPABILITY_OUTCOME_UNKNOWN',
+      'VICT_CAPABILITY_UNSAFE_OUTPUT_STRUCTURE',
+    );
+  }
   // ---- FENCED completed settlement ---------------------------------------
+  // The summary is derived FROM THE CAPTURED SNAPSHOT (never from the raw
+  // output): the summarized structure is exactly the structure delivered.
   let resultSummary: string;
   try {
-    resultSummary = safeArgumentSummary(rawOutput);
+    resultSummary = safeArgumentSummary(deliveredOutput);
   } catch {
     return settleUnknown('VICT_CAPABILITY_OUTCOME_UNKNOWN', 'VICT_CAPABILITY_OUTCOME_UNKNOWN');
   }
@@ -1685,21 +1732,13 @@ async function executeOwnedAttempt(
     return settleUnknown('VICT_CAPABILITY_OUTCOME_UNKNOWN', 'VICT_CAPABILITY_OUTCOME_UNKNOWN');
   }
   // ---- Sanitized result to Mastra (confirmed durable completion) ----------
-  // A verified PLAIN output is delivered as a structurally identical
-  // trap-free/thenable-free REBUILD (own enumerable data fields, values
-  // taken from their descriptors): no downstream consumer (Mastra, the
-  // adapter, the model) can ever trigger a getter, a proxy trap, or an
-  // inherited/own `then` on the delivered container. Non-plain outputs
-  // (arrays, class instances) are delivered as-is — their contract
-  // validation, marker checks, and the guarded `in` probes above all
-  // passed.
-  if (capturedOutput !== undefined) {
-    const rebuilt = rebuildPlainCapturedObject(capturedOutput);
-    if (rebuilt !== undefined) {
-      return rebuilt;
-    }
-  }
-  return rawOutput;
+  // ONLY the captured VICT-owned snapshot is returned: a structurally plain,
+  // trap-free, thenable-free, alias-free value. No downstream consumer
+  // (Mastra, the adapter, the model) can ever trigger a getter, a proxy
+  // trap, a user iterator, or a hostile serialization hook on it, and
+  // post-return mutation of the capability's original output cannot change
+  // the delivered value, the summary, the events, or the durable record.
+  return deliveredOutput;
 }
 
 /** The turn-scoped async context (set by the turn executor around the stream). */

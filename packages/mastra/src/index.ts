@@ -112,6 +112,14 @@ export type {
   InspectedControlField,
 } from './control-envelope.js';
 
+// ---- Recursive delivery-safe snapshot boundary (H-1 remediation) -------------
+export { DELIVERY_SNAPSHOT_BOUNDS, captureDeliverySafeSnapshot } from './delivery-snapshot.js';
+export type {
+  DeliverySnapshotBounds,
+  DeliverySnapshotResult,
+  DeliveryUnsafeReason,
+} from './delivery-snapshot.js';
+
 // ---- Turn executor composition (Stage 06B) -----------------------------------
 export { composeMastraTurnExecutor } from './turn-executor.js';
 export type { MastraTurnComposition, MastraTurnExecutorDeps } from './turn-executor.js';
