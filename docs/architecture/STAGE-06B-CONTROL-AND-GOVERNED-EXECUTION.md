@@ -1,15 +1,17 @@
 # Stage 06B — Control Plane and Governed Remote Execution
 
-Status: corrected corrective-finalization increment with the final
-boundary correction applied, awaiting fresh independent audit (not
-Verified).
-Parent reference: `docs/VICT-SYSTEM-REFERENCE.md` (§0.9, §5, §24.3).
-Companion reports: `docs/report/VICT-STAGE-06B-REPORT.md` (original
-implementation claim, preserved byte-for-byte),
+Status: Verified with non-blocking issues — formally closed as part of
+Stage 06 (2026-09-09).
+Parent reference: `docs/VICT-SYSTEM-REFERENCE.md` (v0.3.4; §0.10, §5, §23,
+§24.3). Companion reports: `docs/report/VICT-STAGE-06B-REPORT.md`
+(original implementation claim, preserved byte-for-byte),
 `docs/report/VICT-STAGE-06B-CORRECTIVE-FINALIZATION-REPORT.md`
-(defect reproduction and corrections on top of it), and
+(defect reproduction and corrections on top of it),
 `docs/report/VICT-STAGE-06B-FINAL-BOUNDARY-CORRECTION-REPORT.md`
-(final invocation and control-boundary correction).
+(final invocation and control-boundary correction), and
+`docs/report/VICT-STAGE-06-H1-INDEPENDENT-CLOSURE-VERIFICATION.md`
+(final independent closure verification; authoritative Stage 06
+disposition). The independent closure record is §11.
 
 Stage 06B turns the Stage 06A product-agent foundation into a governed,
 remotely drivable system: an authenticated actor boundary, ChangeSet and
@@ -572,8 +574,12 @@ ladder are recorded in
 
 ## 10. Genuine limitations
 
-- Implementation-stage increment: no independent Stage 06B audit yet; the
-  full Stage 06 exit gate is open; Stage 07 blocked.
+- Audit history: the increment was audited by the fresh independent
+  Stage 06 exit audit, corrected post-audit (hostile tool-result
+  containment, then the H-1 delivery-snapshot boundary), re-verified by
+  the final independent closure verification, and Stage 06 was formally
+  closed on 2026-09-09 (see §11). No finding that remains open blocks
+  the stage.
 - The deterministic local test authenticator is not a production identity
   provider; single-process, local-first envelope unchanged.
 - CLI transport is the versioned HTTP surface; no interactive Studio; no
@@ -581,3 +587,75 @@ ladder are recorded in
 - The Windows-specific migration-teardown test flake (file-lock teardown)
   remains an environmental limitation, documented in the Stage 06A
   closure and re-confirmed during this stage's ladder.
+
+## 11. Independent closure (2026-09-09)
+
+Stage 06B passed the fresh independent **Stage 06 exit audit**
+(`eb8d458a3718562f61e60d844dfa31ffb9cbf356`; verdict `VERIFIED WITH
+NON-BLOCKING ISSUES — STAGE 07 PERMITTED AFTER FORMAL STAGE 06
+CLOSURE`), then the post-audit hostile-envelope remediation
+(`735cc9a19d3d8253f792e10d605967142b2ad052`) was verified by the focused
+independent re-audit (`d146dae1fd27f665ed9d8c297d40436046a860fb`) — which
+also discovered the residual High defect H-1 — and H-1 was corrected by
+the delivery-safe snapshot boundary
+(`c2ff692e68658fca281f797cd1fe5dd9fa0ddd38`, documented at
+`a6675bb8f47c763d99f140dddeab7021a6242df1`). The final independent
+**H-1 closure verification** (report committed as
+`8c13c28d4d50c53e141b32f05150d4c443a3dba5`) returned the authoritative
+verdict `VERIFIED — STAGE 06 READY FOR FORMAL CLOSURE`, and Stage 06 was
+formally closed as a separate documentation-only act recorded in
+`docs/VICT-SYSTEM-REFERENCE.md` v0.3.4 (§0.10). The historical design
+sections above describe the increment as delivered and corrected; they
+are preserved unchanged.
+
+- **Final audited implementation SHA:**
+  `c2ff692e68658fca281f797cd1fe5dd9fa0ddd38` (H-1-corrected tip; all
+  earlier correction commits in linear ancestry).
+- **Final audit-report SHA:**
+  `8c13c28d4d50c53e141b32f05150d4c443a3dba5`.
+- **Authoritative environment:** Ubuntu 24.04 (WSL2 guest), native Linux
+  ext4 filesystem, x86_64; Node v24.19.0; npm 11.17.0; Git 2.43.0;
+  SQLite via the built-in `node:sqlite` driver (engine 3.53.3); pinned
+  `@mastra/core` 1.64.0 (memory 1.28.2, libsql 1.22.3, observability
+  1.17.5); no provider credentials and no live model calls — the real
+  pinned Mastra Agent loop driven by the deterministic offline model
+  fixture. Fresh clone with linear history; `HEAD == origin/main` at
+  clone time and re-verified before the report commit.
+- **Observed test totals:** full suite 114 files / 2152 tests, all
+  passed; `verify:stage6b` ALL GATES PASSED (including the H-1 group
+  6c); permanent H-1 suites 45/45; independent snapshot-boundary probe
+  68/68 exact-bound checks; real-path truthfulness matrix 8/8
+  combinations (read/write × memory/SQLite); concurrency/fencing/restart
+  subset green in three consecutive rounds; `npm audit --omit=dev` 0
+  vulnerabilities. The exit audit itself had observed 109 files / 2062
+  tests plus 109 probe assertions at its target.
+- **Verified boundary guarantees:** the nine-step tool-bridge
+  authorization order with out-of-envelope tools absent; framework-supplied
+  occurrence identity failing closed; fenced exactly-once settlements
+  with truthful `outcome_unknown` on ambiguity; the delivery-safe
+  snapshot captured BEFORE durable `completed` settlement, with the
+  durable summary derived from the snapshot and only the snapshot
+  delivered; closed failure-code vocabulary with no raw exception,
+  canary, or hostile-value escape; durable namespaced command
+  idempotency; lossless ordered SSE replay with cursor round-trip;
+  real child-process SIGKILL restart reconciliation without duplicate
+  effects or lost approvals; and the adversarial canary matrix over
+  HTTP, SSE, safe errors, durable rows, and raw DB/WAL/SHM bytes.
+- **Remaining accepted non-blocking issues:** N-1 (Low) — own
+  `__proto__` delivery-snapshot key handling, an early Stage 07
+  hardening acceptance item; N-2 (Informational) — fully sparse arrays
+  delivered as their documented dense prefix and `-0` serializing as
+  `0`; EXIT-1 (Low) — shared-store cross-composition liveness
+  adjudication, the documented trade-off of the declared
+  single-process/local envelope; EXIT-2/EXIT-3 (Informational) —
+  approval-expiry error form and the by-design persisted bounded
+  approval `decisionReason`.
+- **Formal closure disposition:**
+
+```text
+STAGE 06 VERIFIED — FORMALLY CLOSED — STAGE 07 PERMITTED
+```
+
+Stage 07 is next permitted and has not begun: no real ARA product,
+live-provider integration, or real-use data-protection proof (MSTR-012)
+exists, and none may be described as delivered or Verified.

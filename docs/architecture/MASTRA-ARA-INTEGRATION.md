@@ -24,7 +24,20 @@
 > (OPEN-015 closed). This is an implementation record — no Stage 06B
 > requirement is Verified; the full Stage 06 exit gate remains open and
 > Stage 07 remains blocked. The amendment body below is preserved as the
-> accepted v0.3.0/v0.3.1 record.
+> accepted v0.3.0/v0.3.1 record. — Update (2026-09-09, documentation
+> only): Stage 06 — both increments — is implemented and independently
+> verified, and Stage 06 is formally closed per
+> `docs/VICT-SYSTEM-REFERENCE.md` v0.3.4 (§0.10). The accepted evidence
+> chain is the Stage 06 independent exit audit (`eb8d458`), the
+> post-audit hostile-envelope re-audit (`d146dae`, which found and
+> blocked on H-1), and the final independent H-1 closure verification
+> (`8c13c28`, verdict `VERIFIED — STAGE 06 READY FOR FORMAL CLOSURE`).
+> The ownership split is unchanged: Mastra still reasons and coordinates
+> AI work; VICT still authorizes, commits, governs, and presents product
+> behavior. No real ARA product, no live provider/model proof, and no
+> real-use data-protection proof (MSTR-012) has been delivered; Stage 07
+> is next permitted and has not begun. This update supersedes the
+> 2026-09-08 implementation-record status above.
 > **Scope:** the canonical product-agent boundary between VICT and Mastra,
 > the ownership matrix, the tool bridge, agent identity and snapshot
 > semantics, memory/storage/observability separation, data-protection
@@ -1261,8 +1274,13 @@ New requirement families. Maturity is Accepted (chosen design); at
 acceptance delivery was Planned — the authoritative delivery statuses are
 maintained in `docs/VICT-SYSTEM-REFERENCE.md` §15.3, where the Stage 06A
 independently verified subset (AI-001..AI-004, MSTR-002, MSTR-003,
-MSTR-008, MSTR-010, MSTR-011) is marked Verified since v0.3.2. IDs are unique
-across the reference.
+MSTR-008, MSTR-010, MSTR-011) is marked Verified since v0.3.2. Since the
+v0.3.4 Stage 06 formal closure, the complete Stage 06-delivered set is
+Verified in §15.3: AI-001..AI-012, AI-014, AI-015, and MSTR-001,
+MSTR-002..MSTR-008, MSTR-010, MSTR-011; Stage 07 concerns (AI-013,
+MSTR-009, MSTR-012 and the real product) remain Planned. IDs are unique
+across the reference. The table below preserves the at-acceptance Planned
+values as the historical record.
 
 ### 13.1 Neutral product-agent architecture (AI)
 
