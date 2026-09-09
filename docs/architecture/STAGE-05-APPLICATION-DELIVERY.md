@@ -17,7 +17,7 @@
 > independent disposition.
 
 Stage 04 proved the neutral authoring foundation (authoring ABI, capability
-packs, `@vict/application` identity/compilation, renderer/data ports, and a
+packs, `@victframework/application` identity/compilation, renderer/data ports, and a
 minimal vertical proof). Stage 05 turns that foundation into complete,
 responsive, customizable application delivery: one neutral definition plus
 explicit bindings produces a full runnable application without hand-authored
@@ -26,21 +26,21 @@ routes or page shells.
 ## 1. Package and dependency structure
 
 ```text
-@vict/contracts
+@victframework/contracts
        ↓
-@vict/sdk                 (framework-neutral Application/Resource/Release definitions)
+@victframework/sdk                 (framework-neutral Application/Resource/Release definitions)
        ↓
-@vict/kernel
+@victframework/kernel
        ↓
-@vict/runtime
+@victframework/runtime
        ↓
-@vict/store-sqlite        (Vict OPERATIONAL stores — unchanged)
+@victframework/store-sqlite        (Vict OPERATIONAL stores — unchanged)
 
-@vict/contracts + @vict/sdk
+@victframework/contracts + @victframework/sdk
        ↓
-@vict/application         (neutral model, compiler, identity, ports, conformance suites)
+@victframework/application         (neutral model, compiler, identity, ports, conformance suites)
        ↓                  ↓
-@vict/renderer-svelte     @vict/appdata-sqlite      @vict/scaffolder
+@victframework/renderer-svelte     @victframework/appdata-sqlite      @victframework/scaffolder
 (Svelte renderer/host)    (SQLite app-data adapter) (one-time host scaffolder)
        ↓
 examples/reference-app    (complete §17.10 reference proof)
@@ -50,19 +50,19 @@ New packages and their boundaries:
 
 | Package | Responsibility | Depends on |
 |---|---|---|
-| `@vict/renderer-svelte` | Canonical Svelte renderer: generic `VitApp` host, built-in role components, responsive navigation, theme tokens, accessible defaults | `@vict/application`, `@vict/sdk`, `svelte` (peer) |
-| `@vict/appdata-sqlite` | Production SQLite application-domain adapter + separate versioned application-domain migrations | `@vict/application`, `@vict/contracts`, `@vict/sdk` (built-in `node:sqlite`) |
-| `@vict/scaffolder` | One-time deterministic SvelteKit host scaffolder | (none — pure Node) |
+| `@victframework/renderer-svelte` | Canonical Svelte renderer: generic `VitApp` host, built-in role components, responsive navigation, theme tokens, accessible defaults | `@victframework/application`, `@victframework/sdk`, `svelte` (peer) |
+| `@victframework/appdata-sqlite` | Production SQLite application-domain adapter + separate versioned application-domain migrations | `@victframework/application`, `@victframework/contracts`, `@victframework/sdk` (built-in `node:sqlite`) |
+| `@victframework/scaffolder` | One-time deterministic SvelteKit host scaffolder | (none — pure Node) |
 
 Boundary rules enforced and tested:
 
-- `@vict/application` remains framework-neutral and browser-safe. Its
+- `@victframework/application` remains framework-neutral and browser-safe. Its
   declarations reference NO Svelte, SvelteKit, SQLite, Zod, runtime, or
   kernel types (the Stage 04 structural scans continue to pass).
-- Svelte dependencies exist ONLY in `@vict/renderer-svelte` (and the SvelteKit
+- Svelte dependencies exist ONLY in `@victframework/renderer-svelte` (and the SvelteKit
   application examples, which are consumers).
-- SQLite dependencies exist ONLY in `@vict/appdata-sqlite` (the operational
-  `@vict/store-sqlite` remains below the runtime, untouched).
+- SQLite dependencies exist ONLY in `@victframework/appdata-sqlite` (the operational
+  `@victframework/store-sqlite` remains below the runtime, untouched).
 - Renderer components receive only: the immutable plan, the supplied
   component registry, the action dispatcher, route data, and declared
   primitive props. No renderer component receives runtime instances, stores,
@@ -292,7 +292,7 @@ and require no production change; the `--legacy-peer-deps` scoping in
 `verify:stage5` remains documented and honestly scoped (the plain
 packed-consumer install path needs no workaround).
 
-## 3. Renderer model (`@vict/renderer-svelte`)
+## 3. Renderer model (`@victframework/renderer-svelte`)
 
 - The generic `VitApp` host renders EVERY supported built-in role from the
   immutable plan. There is exactly one generic catch-all host page in the
@@ -385,7 +385,7 @@ adds the ownership rules:
   `cmp.health@1` island is registered in
   `src/lib/components/registry.ts` (author-owned code island).
 
-## 6. Scaffolder (`@vict/scaffolder`)
+## 6. Scaffolder (`@victframework/scaffolder`)
 
 One-time SvelteKit application-host scaffolder:
 
@@ -430,7 +430,7 @@ state merely reports it.
 Stage 06 signal/operator kinds are NOT implemented; unknown action kinds are
 rejected honestly (`UNSUPPORTED_ACTION`).
 
-## 8. Application-data adapter (`@vict/appdata-sqlite`)
+## 8. Application-data adapter (`@victframework/appdata-sqlite`)
 
 - Implements the storage-neutral `ApplicationDataAdapter` port with an
   explicit authorization/effect context on every call.
@@ -524,7 +524,7 @@ separate from Vict operational migrations.
   with the mandatory fail-closed binding context; mismatched real binding
   context fails closed (`RELEASE_COMPONENT_MISMATCH`, adapter/revision
   mismatch, activation-reference checks).
-- All distinctions are covered by permanent tests in `@vict/application`
+- All distinctions are covered by permanent tests in `@victframework/application`
   and the reference application's identity suite.
 
 ## 13. OPEN-013 decision (component/chart libraries)
@@ -546,7 +546,7 @@ against the required criteria:
 - Offline/determinism: no CDN, no telemetry; chart geometry is deterministic
   from data.
 - Boundary: NO component- or chart-library types exist anywhere in
-  `@vict/application` or `@vict/sdk`.
+  `@victframework/application` or `@victframework/sdk`.
 - Customization/theming: everything is token-driven.
 - Packed behavior: the renderer packs and builds in isolated consumers
   (verify:stage5).
@@ -572,7 +572,7 @@ against the required criteria:
 
 - Root aggregate: `npm run verify:stage5`.
 - Reference application suites: `npm run test -w reference-app`.
-- Renderer conformance: `@vict/application/testing` shared suite, run in the
+- Renderer conformance: `@victframework/application/testing` shared suite, run in the
   renderer project of the root vitest config.
 - Data conformance: shared suite applied to BOTH adapters (in-memory and
   SQLite) in `packages/appdata-sqlite/test/conformance.test.ts`.

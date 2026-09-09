@@ -330,7 +330,7 @@ flowchart TB
     end
     subgraph AISUB["Bounded AI subsystem — server-side, in process (Mastra)"]
         PORT["ProductAgent port (neutral, VICT)"]
-        ADP["@vict/mastra adapter"]
+        ADP["@victframework/mastra adapter"]
         AGENT2["Mastra agent + memory (reasoning, tool selection)"]
     end
     subgraph GOV["VICT capability boundary (VICT authority)"]
@@ -426,39 +426,39 @@ VICT-facing product code consumes a **neutral product-agent boundary**.
 No Mastra type appears through:
 
 ```text
-@vict/contracts
-@vict/sdk
-@vict/kernel
-@vict/runtime
-@vict/application
+@victframework/contracts
+@victframework/sdk
+@victframework/kernel
+@victframework/runtime
+@victframework/application
 ```
 
 The Mastra-specific implementation lives in an **optional adapter
 package**:
 
 ```text
-@vict/mastra
+@victframework/mastra
 ```
 
 The name follows the existing technology-adapter convention
-(`@vict/store-sqlite`, `@vict/appdata-sqlite`). Changing the package name
+(`@victframework/store-sqlite`, `@victframework/appdata-sqlite`). Changing the package name
 is permitted only with documented reasoning recorded per GOV-005 before
 the package is published as a stabilized boundary.
 
 ```mermaid
 flowchart TB
     subgraph NEUTRAL["Mastra-neutral core (Stage 01–05 verified packages)"]
-        PORT["ProductAgent port + AgentStream contract + snapshot types (@vict/contracts + @vict/runtime, planned)"]
+        PORT["ProductAgent port + AgentStream contract + snapshot types (@victframework/contracts + @victframework/runtime, planned)"]
     end
     subgraph ADAPTER["Optional product composition (planned)"]
-        VTM["@vict/mastra adapter"]
+        VTM["@victframework/mastra adapter"]
         MAISTA["Mastra runtime (pinned @mastra/core + @mastra/memory)"]
     end
     VTM -->|"implements"| PORT
     VTM --> MAISTA
 ```
 
-Dependency rule (AI-002): `@vict/mastra` may import `@mastra/*` and the
+Dependency rule (AI-002): `@victframework/mastra` may import `@mastra/*` and the
 neutral VICT packages. The neutral VICT packages import only VICT
 packages. Packed-consumer declaration checks in Stage 06 prove no
 `@mastra/*` dependency or type leaks into neutral packages.
@@ -468,7 +468,7 @@ packages. Packed-consumer declaration checks in Stage 06 prove no
 | Element                              | Definition                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `ProductAgent` port                  | Neutral interface: given a pinned agent activation snapshot, a turn input (validated by VICT contracts), and an execution context (actor, authority envelope, abort signal, correlation IDs), produce a normalized event stream and a terminal turn outcome. No Mastra parameter, chunk, or error type appears in the signature.                                                                                                                                                            |
-| Mastra-backed adapter                | `@vict/mastra` implementation of the port. It owns translating the pinned profile into a Mastra `Agent` configuration, bridging tools (§7), mapping streams (§9), and propagating cancellation.                                                                                                                                                                                                                                                                                             |
+| Mastra-backed adapter                | `@victframework/mastra` implementation of the port. It owns translating the pinned profile into a Mastra `Agent` configuration, bridging tools (§7), mapping streams (§9), and propagating cancellation.                                                                                                                                                                                                                                                                                             |
 | Agent definition/binding             | The VICT-authored description of an agent under the strict profile schema: ID/revision, instructions ID/revision, model profile (incl. provider intent), generation defaults and bounded options, stop/loop policy, memory policy, ordered processor/guardrail chains, structured-output contract (when enabled), helper-tool set (§6.5), capability allowlist, subagent/workflow set (when enabled), and provider compatibility metadata. Declared canonical data only — no function text. |
 | Agent ID and revision                | Explicit non-empty stable strings (same discipline as capability IDs/revisions; CAP-001).                                                                                                                                                                                                                                                                                                                                                                                                   |
 | Model-profile reference and revision | Names the model-router string (`provider/model`), sampling/temperature bounds, and any provider compatibility constraints. The profile declares intent; the actual provider/model identity observed at run time is recorded when known (§6).                                                                                                                                                                                                                                                |
@@ -770,16 +770,16 @@ agent-memory engine. Four separate storage domains exist:
 
 ```mermaid
 flowchart TB
-    subgraph MSTORES["Mastra stores — @vict/mastra-owned (initial: @mastra/libsql file)"]
+    subgraph MSTORES["Mastra stores — @victframework/mastra-owned (initial: @mastra/libsql file)"]
         MEMD["memory domain: threads, messages, resources, working memory, semantic-recall state, observational memory"]
         WFD["workflows domain: agent-run suspension/resume snapshots (minimal, deleted at finish)"]
         OBSDD["observability domain: AI traces, spans, model/tool timing, token/cost, evaluations, feedback"]
     end
-    subgraph VOP["VICT operational stores — @vict/store-sqlite (unchanged)"]
+    subgraph VOP["VICT operational stores — @victframework/store-sqlite (unchanged)"]
         ACTD["activations, agent profiles, runs, attempts, waits/timers"]
         EVT2["events: effects, approvals, audit, retention-safe summaries"]
     end
-    subgraph VAD2["VICT application-domain stores — @vict/appdata-sqlite (unchanged)"]
+    subgraph VAD2["VICT application-domain stores — @victframework/appdata-sqlite (unchanged)"]
         RES2["projects, commitments, tasks, reminders, conversations — typed Application Layer resources"]
     end
     CORR2["Correlation IDs only — no duplicate raw payloads across stores"]
@@ -790,7 +790,7 @@ flowchart TB
 
 | Domain                       | Owner                              | Owns                                                                                                                                                  | Explicitly excluded                                 |
 | ---------------------------- | ---------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------- |
-| Mastra memory                | Mastra (`@vict/mastra` configures) | Conversation threads and messages; working memory; semantic recall/vector state; observational memory; suspended agent state where Mastra requires it | Authority decisions; product records; audit history |
+| Mastra memory                | Mastra (`@victframework/mastra` configures) | Conversation threads and messages; working memory; semantic recall/vector state; observational memory; suspended agent state where Mastra requires it | Authority decisions; product records; audit history |
 | VICT application-domain data | VICT Application Layer             | Projects, commitments, tasks, reminders, user-managed records, explicit product resources rendered through the Application Layer                      | Agent-internal context                              |
 | VICT operational data        | VICT runtime/control               | Activations, runs, capability attempts, effect and approval records, safe audit events, retention-safe summaries                                      | Full prompts/messages (by default)                  |
 | Mastra observability data    | Mastra                             | AI traces and spans, model/tool timing, token and cost data, evaluations and feedback                                                                 | Product audit history                               |
@@ -1150,7 +1150,7 @@ is implemented by this amendment.
 
 ```mermaid
 flowchart LR
-    S5["Stage 01–05 — Verified & closed\n(execution, identity, durability,\nauthoring, application delivery)"] --> S6["Stage 06 — Planned\nIntegration + control plane\nneutral port, @vict/mastra, tool bridge,\nagent-stream contract, identity snapshots,\noffline fixtures, AUDIT-F1 hygiene"]
+    S5["Stage 01–05 — Verified & closed\n(execution, identity, durability,\nauthoring, application delivery)"] --> S6["Stage 06 — Planned\nIntegration + control plane\nneutral port, @victframework/mastra, tool bridge,\nagent-stream contract, identity snapshots,\noffline fixtures, AUDIT-F1 hygiene"]
     S6 --> S7["Stage 07 — Planned\nReal Mastra-backed ARA product\nreal provider + memory, governed tools,\ncomplete Application Definition,\nrobust assistant UI, approvals, audits"]
 ```
 
@@ -1174,7 +1174,7 @@ Stages 07–11 are not renumbered):
 - the strict agent-profile schema (§6.1 closed canonical data);
 - the complete deterministic `agentProfileVersion` (§6.1–§6.3);
 - immutable profile/activation/run snapshots (§6.4);
-- the pinned `@vict/mastra` adapter foundation (pinned `@mastra/*`
+- the pinned `@victframework/mastra` adapter foundation (pinned `@mastra/*`
   versions, adapter compatibility marker);
 - an offline deterministic model fixture / mock-model proof (no provider
   credentials in tests);
@@ -1331,7 +1331,7 @@ values as the historical record.
 | ID     | Requirement                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | Maturity  | Delivery |
 | ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- | -------- |
 | AI-001 | VICT MUST expose product agents through a neutral, versioned ProductAgent boundary (port, stream contract, snapshot types) that product code can consume without Mastra types.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | Accepted  | Planned  |
-| AI-002 | Core VICT packages (`@vict/contracts`, `@vict/sdk`, `@vict/kernel`, `@vict/runtime`, `@vict/application`, `@vict/renderer-svelte`, `@vict/appdata-sqlite`, `@vict/scaffolder`, `@vict/store-sqlite`) MUST remain free of Mastra dependencies and Mastra types; Mastra-specific code MAY exist only in the optional adapter package and product composition.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | Invariant | Planned  |
+| AI-002 | Core VICT packages (`@victframework/contracts`, `@victframework/sdk`, `@victframework/kernel`, `@victframework/runtime`, `@victframework/application`, `@victframework/renderer-svelte`, `@victframework/appdata-sqlite`, `@victframework/scaffolder`, `@victframework/store-sqlite`) MUST remain free of Mastra dependencies and Mastra types; Mastra-specific code MAY exist only in the optional adapter package and product composition.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | Invariant | Planned  |
 | AI-003 | Agent definitions MUST be version-addressable through an explicit `agentProfileVersion` composed from strict canonical declared data covering every runtime-affecting component — profile schema marker; agent ID/revision; instructions ID/revision; model-profile ID/revision including model router/provider intent; generation defaults and bounded options; stop/iteration/tool-call/loop policy; memory-policy ID/revision; ordered processor and guardrail chains; structured-output contract reference (when enabled); sorted Mastra-native helper-tool references; sorted VICT capability references; sorted subagent/AI-internal workflow references (when enabled); and an adapter compatibility marker including every runtime-affecting pinned `@mastra/*` package version actually used. Set-like collections are canonically sorted; order-sensitive chains preserve declared order; function bodies are never hashed; and no runtime-affecting configuration is silently omitted. Identity MUST NOT be derived from function source or bodies, secrets, time, random values, framework internals, schema-library internals, mutable memory contents, or raw prompts/conversation payloads. | Invariant | Planned  |
 | AI-004 | Activation MUST resolve and deep-capture every revisioned profile component into an immutable VICT-owned snapshot, binding required function references without hashing or serializing their bodies; an in-flight turn MUST NOT retain or consult a live mutable Mastra `Agent`, registry, processor list, model profile, or tool map; changed definitions apply only after explicit reactivation; the snapshot records every runtime-affecting pinned `@mastra/*` version and the actual provider/model identity observed at execution when available; and provider credentials MUST NOT enter the profile, identity, snapshot, stream, trace, diagnostics, or any VICT/Mastra store.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | Invariant | Planned  |
 | AI-005 | Model-facing tool availability MUST derive only from the VICT-pinned authority envelope of the activation snapshot; Mastra tool descriptions or configuration MUST NOT grant or widen authority.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | Invariant | Planned  |
@@ -1385,7 +1385,7 @@ values as the historical record.
 | Normalized stream events + cursor reconnect; transport = HTTP commands + resumable SSE                                                                                                                                                                                                                                                                                                                                                                      | §9, AI-009                   |
 | Svelte remains the ARA renderer; live conversation workspace may start as a versioned custom island                                                                                                                                                                                                                                                                                                                                                         | §11, AI-013                  |
 | Stage 06 establishes the integration; Stage 07 delivers the real product                                                                                                                                                                                                                                                                                                                                                                                    | §12                          |
-| Adapter package name `@vict/mastra` (technology-adapter convention)                                                                                                                                                                                                                                                                                                                                                                                         | §5.1                         |
+| Adapter package name `@victframework/mastra` (technology-adapter convention)                                                                                                                                                                                                                                                                                                                                                                                         | §5.1                         |
 
 ### 14.2 Remaining open questions (with owners and decision stages)
 
@@ -1427,7 +1427,7 @@ Stage 01–05 invariants without changing them:
 - **Interfaces:** API-003/API-004 discipline extended — the agent-stream
   contract has resumable cursor semantics from the start, and the Mastra
   integration is an adapter, never a privileged backdoor (API-004's rule
-  applied to `@vict/mastra`).
+  applied to `@victframework/mastra`).
 - **Agents:** AGNT-005..AGNT-008 (the Mastra-backed product agent is
   still a bounded capability consumer; it never receives Builder Kit or
   repository authority; the Builder Agent stays out of the conversation

@@ -12,7 +12,7 @@
 > open. See §16 for the independent closure summary.
 > **Scope:** the neutral ProductAgent boundary, the strict agent-profile
 > schema and deterministic `agentProfileVersion`, immutable activation
-> snapshots, the pinned `@vict/mastra` adapter foundation with a
+> snapshots, the pinned `@victframework/mastra` adapter foundation with a
 > deterministic offline model fixture, adapter-native pure helper tools,
 > dedicated memory/storage separation, the local data-protection baseline
 > (MSTR-011), the version-upgrade conformance harness (MSTR-002), and the
@@ -23,29 +23,29 @@
 ## 1. Package topology
 
 ```text
-@vict/contracts ─ @vict/sdk ─ @vict/kernel ─ @vict/runtime ─ @vict/store-sqlite
+@victframework/contracts ─ @victframework/sdk ─ @victframework/kernel ─ @victframework/runtime ─ @victframework/store-sqlite
                                     ▲               ▲
-                                    └───────────────┼── @vict/mastra (optional adapter)
+                                    └───────────────┼── @victframework/mastra (optional adapter)
                                                     └── pinned @mastra/* packages
 ```
 
-- `@vict/mastra` is a new OPTIONAL adapter package. It imports the neutral
+- `@victframework/mastra` is a new OPTIONAL adapter package. It imports the neutral
   VICT packages and the pinned Mastra packages. **No neutral package imports
-  `@vict/mastra`, and no neutral source, declaration, or emitted `.d.ts`
+  `@victframework/mastra`, and no neutral source, declaration, or emitted `.d.ts`
   mentions Mastra** (AI-002). Verified by packed-consumer declaration scans
   and workspace source scans in `verify:stage6a`.
 - Neutral placement follows the established responsibilities:
-  - `@vict/contracts`: the normalized `vict.agent-stream@1` event contract
+  - `@victframework/contracts`: the normalized `vict.agent-stream@1` event contract
     (in-process surface; transport belongs to Stage 06B, OPEN-015 stays
     open);
-  - `@vict/sdk`: the profile authoring vocabulary (`AGENT_PROFILE_SCHEMA`,
+  - `@victframework/sdk`: the profile authoring vocabulary (`AGENT_PROFILE_SCHEMA`,
     `defineAgentProfile`) with a strict, non-invoking canonical capture;
-  - `@vict/kernel`: the profile compiler — closed schema, strict
+  - `@victframework/kernel`: the profile compiler — closed schema, strict
     canonical-input boundary, and the deterministic identity;
-  - `@vict/runtime`: the artifact/profile registries, immutable activation
+  - `@victframework/runtime`: the artifact/profile registries, immutable activation
     snapshots, turn pinning, credential boundary, and the governed
     deletion/export services with their durable store;
-  - `@vict/store-sqlite`: an ADDITIVE migration (version 3) plus the SQLite
+  - `@victframework/store-sqlite`: an ADDITIVE migration (version 3) plus the SQLite
     `AgentGovernanceStore` implementation (same operational database
     domain, disjoint `vict_agent_*` tables).
 - No empty placeholder packages were created and no existing public API
@@ -54,7 +54,7 @@
 
 ## 2. Public neutral APIs (summary)
 
-- `@vict/contracts`: `AGENT_STREAM_SCHEMA` (`vict.agent-stream@1`), the
+- `@victframework/contracts`: `AGENT_STREAM_SCHEMA` (`vict.agent-stream@1`), the
   `AgentStreamEvent` union (`response.started`, `text.delta`,
   `content.completed`, `tool.requested`, `tool.started`,
   `tool.awaiting_approval`, `tool.completed`, `tool.failed`,
@@ -62,14 +62,14 @@
   `response.failed`, `response.cancelled`) with per-stream monotonic `seq`
   and full identity context on every event. No raw provider or adapter
   chunk type is representable; reasoning content is never carried.
-- `@vict/sdk`: `AgentProfileAuthoring` and friends, `AGENT_PROFILE_SCHEMA`
+- `@victframework/sdk`: `AgentProfileAuthoring` and friends, `AGENT_PROFILE_SCHEMA`
   (`vict.agent-profile@1`), `defineAgentProfile` (frozen deep capture
   guarded by a strict canonical walk that rejects accessors by descriptor
   inspection without invoking them).
-- `@vict/kernel`: `compileAgentProfile` → `CompiledAgentProfile`
+- `@victframework/kernel`: `compileAgentProfile` → `CompiledAgentProfile`
   (`profile`, `manifest`, `manifestJson`, `agentProfileVersion`), issue
   codes (`AGENT_PROFILE_*`), `AGENT_PROFILE_IDENTITY_SCHEMA`.
-- `@vict/runtime`: `AgentProfileRegistry` (artifacts, profiles, activation,
+- `@victframework/runtime`: `AgentProfileRegistry` (artifacts, profiles, activation,
   restoration), `ProductAgentPort`, `AgentProfileActivation`,
   `pinAgentTurnRunner`, `AgentGovernanceStore` (+ in-memory impl),
   `ConversationDeletionCoordinator`, `ConversationExportService`,
@@ -180,7 +180,7 @@ agentProfileVersion = 'v1_' + sha256(AGENT_PROFILE_IDENTITY_SCHEMA + 0x00 + cano
   stored `createdAt`: a restored activation carries the PERSISTED creation
   time, never the restoring process's clock.
 
-## 6. Actual adapter construction (`@vict/mastra`)
+## 6. Actual adapter construction (`@victframework/mastra`)
 
 - `MastraProductAgent.create(activation, config)` builds, from the FROZEN
   snapshot only: a real pinned `Memory` (message window + explicit
@@ -366,7 +366,7 @@ local-first · single actor · single application process ·
 non-multi-tenant · file-backed
 ```
 
-The `@vict/mastra` storage composition documents this envelope at its
+The `@victframework/mastra` storage composition documents this envelope at its
 public boundary (`storage.ts` module contract). It implies NO multi-process,
 multi-tenant, protected-cloud, or production-scale guarantee; exceeding it
 requires an appropriate supported backend and security profile (MSTR-012,

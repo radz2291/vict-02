@@ -232,7 +232,7 @@ Character filtering is therefore insufficient by construction: an
 alphanumeric secret survives any allowlist of characters.
 
 The single shared sanitizer (`sanitizeContractIssues` in
-`@vict/contracts`, applied identically by the durable engine and the
+`@victframework/contracts`, applied identically by the durable engine and the
 sequential engine) reduces every rejection to framework-controlled
 facts only:
 
@@ -374,7 +374,7 @@ cancellation request/application, attempt recovery, operator resolution)
 proves that no half-state, skipped event, duplicate continuation, lost
 receipt, or leaked checkpoint becomes visible — including REAL SQLite
 transaction rollback, not only in-memory staged rollback. Both adapters
-pass the same shared suites (`@vict/runtime/testing`:
+pass the same shared suites (`@victframework/runtime/testing`:
 `runOrchestrationConformanceSuite`, `runOrchestrationJoinSuite`,
 `runOrchestrationRaceSuite`).
 

@@ -75,7 +75,7 @@ formal stage with two increments. **Stage 06A (product-agent foundation)
 is independently verified and formally closed** (2026-09-06, disposition
 VERIFIED WITH NON-BLOCKING ISSUES — STAGE 06A CLOSED — STAGE 06B
 PERMITTED): the neutral versioned product-agent boundary, the pinned
-Mastra adapter (`@vict/mastra`: `@mastra/core` 1.64.0, memory 1.28.2,
+Mastra adapter (`@victframework/mastra`: `@mastra/core` 1.64.0, memory 1.28.2,
 libsql 1.22.3, observability 1.17.5) with the deterministic offline model
 fixture, governed deletion fencing with receipt-backed reconciliation,
 dedicated Mastra storage with retention/pruning, and POSIX containment.
@@ -83,12 +83,12 @@ dedicated Mastra storage with retention/pruning, and POSIX containment.
 and awaiting fresh independent audit**: actors/roles/scopes with
 default-deny, ChangeSets with immutable content identity and
 content-hash-bound approvals, activation and Application Release
-publish/select/rollback governance (`@vict/control`), the final
+publish/select/rollback governance (`@victframework/control`), the final
 `vict.agent-stream@1` field-level schema (OPEN-015 decided), versioned
-HTTP commands and resumable SSE (`@vict/server`), the governed capability
+HTTP commands and resumable SSE (`@victframework/server`), the governed capability
 tool bridge with durable approvals, cancellation and restart
-reconciliation (`@vict/mastra`), remote Application data bindings, and
-the typed operator CLI (`@vict/cli`) — proven by real child-process
+reconciliation (`@victframework/mastra`), remote Application data bindings, and
+the typed operator CLI (`@victframework/cli`) — proven by real child-process
 SIGKILL fixtures and an adversarial canary leakage matrix, gated by
 `verify:stage6b`. Stage 06 remains In Progress and is not yet Verified;
 Stage 07 remains blocked. See
@@ -96,7 +96,7 @@ Stage 07 remains blocked. See
 `docs/report/VICT-STAGE-06B-REPORT.md`.
 
 Stage 4 details — the capability and application authoring foundation: the SDK is now a lightweight authoring ABI below the kernel and
-runtime (`@vict/contracts → @vict/sdk → @vict/kernel → @vict/runtime`),
+runtime (`@victframework/contracts → @victframework/sdk → @victframework/kernel → @victframework/runtime`),
 capability packs install explicitly with least-authority permissions,
 configuration and secret resolution, and a framework-neutral
 Application Definition compiles into an immutable plan with canonical
@@ -139,8 +139,8 @@ npm run example:application  # build + DOM-level tests for the Stage 04
 ## Durable local store quick start
 
 ```ts
-import { createRuntime, defineCapability, defineGraph } from '@vict/sdk';
-import { createSqliteStores } from '@vict/store-sqlite';
+import { createRuntime, defineCapability, defineGraph } from '@victframework/sdk';
+import { createSqliteStores } from '@victframework/store-sqlite';
 
 const stores = createSqliteStores({ path: 'vict.db' }); // or ':memory:'
 const runtime = createRuntime({ stores });
@@ -265,3 +265,19 @@ model, state diagrams, effect/ambiguity rules, and operational limits.
   03 disposition: verified with non-blocking issues; Stage 04 permitted
 - `docs/handoff/VICT-STAGE-02-HANDOFF.md` — Stage 02 scope
 - `docs/handoff/VICT-STAGE-03-HANDOFF.md` — Stage 03 scope
+
+## Package namespace and licensing (Stage 07A, 2026-09-09)
+
+The canonical public npm namespace for VICT packages is
+**`@victframework/*`**, published by npm user `rz1` through the
+`victframework` organization. The former development-only `@vict/*`
+names are superseded and never published; historical reports and
+handoffs that use `@vict/*` refer to the same packages under their
+former development names.
+
+The public release set (13 packages), its exact versions, the immutable
+compatible release-set identity, supported runtimes, and the
+install/rollback procedure are recorded in
+[`docs/RELEASE-COMPATIBILITY.md`](docs/RELEASE-COMPATIBILITY.md).
+
+VICT is licensed under **Apache-2.0** (see [`LICENSE`](LICENSE)).

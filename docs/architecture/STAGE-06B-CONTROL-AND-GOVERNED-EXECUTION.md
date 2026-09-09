@@ -27,18 +27,18 @@ single-process, non-multi-tenant envelope.
 New Stage 06B packages (no empty placeholders; each owns real behavior):
 
 ```text
-@vict/contracts   (neutral)      final vict.agent-stream@1 schema
-@vict/runtime     (neutral)      actor/role/scope model, control-plane ports,
+@victframework/contracts   (neutral)      final vict.agent-stream@1 schema
+@victframework/runtime     (neutral)      actor/role/scope model, control-plane ports,
                                  in-memory stores, AgentStreamHub, conformance
-@vict/control     (neutral)      ChangeSet lifecycle, approvals, release
+@victframework/control     (neutral)      ChangeSet lifecycle, approvals, release
                                  governance, agent-turn governance, audit
-@vict/store-sqlite               durable SQLite adapters (migration 5:
+@victframework/store-sqlite               durable SQLite adapters (migration 5:
                                  agent-control-plane tables)
-@vict/mastra      (pinned)       governed capability tool bridge + turn executor
-@vict/server      (transport)    versioned HTTP commands, resumable SSE,
+@victframework/mastra      (pinned)       governed capability tool bridge + turn executor
+@victframework/server      (transport)    versioned HTTP commands, resumable SSE,
                                  authenticated actor composition, remote
                                  Application data adapter
-@vict/cli         (operator)     typed commands over the shared command surface
+@victframework/cli         (operator)     typed commands over the shared command surface
 ```
 
 Dependency direction (acyclic; verified by inspection and build):
@@ -55,7 +55,7 @@ Dependency direction (acyclic; verified by inspection and build):
 
 ## 2. `vict.agent-stream@1` — final schema (OPEN-015 decided)
 
-Defined in `@vict/contracts` (`packages/contracts/src/agent-stream.ts`),
+Defined in `@victframework/contracts` (`packages/contracts/src/agent-stream.ts`),
 Mastra-free, field-level, fail-closed:
 
 - Closed 13-kind vocabulary: `response.started`, `text.delta`,
@@ -150,6 +150,22 @@ The failure-code vocabulary at this boundary is CLOSED: a failure marker
 normalizes into an event code ONLY through the exact
 `CAPABILITY_TOOL_FAILURE_CODES` allowlist; arbitrary strings become the
 safe `VICT_CAPABILITY_OUTCOME_UNKNOWN`.
+
+> **Stage 07A N-1 correction note (2026-09-09, v0.4.1).** The accepted
+> audit Low N-1 — an own `__proto__` delivery-snapshot data key silently
+> dropped (scalar) or promoted to the delivered container's prototype
+> (object) — was corrected in Stage 07A at the
+> `captureDeliverySafeSnapshot` boundary: own `__proto__` keys in any
+> own form, at any depth, are rejected with the dedicated closed reason
+> `proto-field` BEFORE durable completion, surfaced through the existing
+> durable code `VICT_CAPABILITY_UNSAFE_OUTPUT_STRUCTURE` (model code
+> `VICT_CAPABILITY_OUTCOME_UNKNOWN`). Null-prototype containers without
+> a prohibited key remain accepted; `constructor`/`prototype` string
+> keys remain plain own data; all other accepted delivery-domain
+> behavior is unchanged. Negative control reproduced at `e0e65b7`;
+> permanent suites `tool-bridge.proto-field.test.ts` + emitted probe
+> `verify:n1`. The historical §2 body above is preserved unchanged;
+> item closure awaits the independent Stage 07A verification.
 
 POST-INVOCATION SETTLEMENT GUARANTEE: once a capability invocation has
 begun, EVERY later failure — output-contract parsing, reserved-marker
@@ -323,7 +339,7 @@ winner; restart between VICT approval and Mastra resume reconciles safely.
 
 ## 5. Versioned HTTP commands and resumable SSE
 
-`@vict/server` composes a real `node:http` server (`vict.command@1`):
+`@victframework/server` composes a real `node:http` server (`vict.command@1`):
 
 - Closed command list (`health.inspect`, `compatibility.inspect`,
   `actor.whoami`, `changeset.propose/revise/attach-evidence/decide/
@@ -551,7 +567,7 @@ the test.
 `verify:stage6b` (aggregate exit gate) is self-contained: it first runs
 `npm run typecheck` and `npm run build` (so it is valid from a
 zero-artifact clean clone and builds every workspace it consumes,
-including `@vict/server` and `@vict/cli`), then gates: package inspection
+including `@victframework/server` and `@victframework/cli`), then gates: package inspection
 (real behavior, dependency direction, Mastra-freedom of neutral/transport
 packages, pinned versions, CLI store-freedom); runtime + SQLite
 conformance parity incl. close/reopen and the corrective-finalization

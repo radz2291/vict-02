@@ -21,39 +21,39 @@ user message → prepare context → assistant capability → assistant response
 ## Package dependency map
 
 ```text
-@vict/contracts  ←  @vict/kernel  ←  @vict/runtime
+@victframework/contracts  ←  @victframework/kernel  ←  @victframework/runtime
        ↑                 ↑                ↑
-       └──────────────── @vict/sdk ───────┘  (public authoring facade)
+       └──────────────── @victframework/sdk ───────┘  (public authoring facade)
 
-examples/ara-proof → @vict/sdk (+ optional @vict/sdk/zod)
+examples/ara-proof → @victframework/sdk (+ optional @victframework/sdk/zod)
 ```
 
-- **@vict/contracts** — the neutral contract API: executable data promises
+- **@victframework/contracts** — the neutral contract API: executable data promises
   (`Contract<T>` with `id`, `revision`, `expected`, `parse`), structured
   validation results (`ContractResult`, `ContractIssue`), and the shared
   `VictError` shape plus a ready `errorSignalContract` for error handlers.
   The base package is **schema-library neutral**: no schema library appears
   in its signatures or emitted declarations. Zod convenience exists only in
-  the optional `@vict/contracts/zod` adapter subpath (zod as an optional peer
+  the optional `@victframework/contracts/zod` adapter subpath (zod as an optional peer
   dependency), which maps zod issues onto neutral, safe `ContractIssue`
   objects with framework-generated messages.
-- **@vict/kernel** — pure graph semantics: definition types, compiler with
+- **@victframework/kernel** — pure graph semantics: definition types, compiler with
   structured rejections (13 stable issue codes), immutable compiled graphs,
   layered activation identity, the sequential executor, ordered trace events,
   structured errors. The kernel performs **no** filesystem, network, database,
   provider, or secret access. All environment access arrives through explicit
   ports (`CapabilityPort`, `PolicyPort`, `ContractEnvironment`,
   `CapabilityIndex`, `Clock`, `IdFactory`).
-- **@vict/runtime** — the usable in-process runtime: capability registry,
+- **@victframework/runtime** — the usable in-process runtime: capability registry,
   test doubles (`registerDouble`/`replaceDouble`), execution modes
   (`normal | simulate | test`), effect policy enforcement, atomic activation
   with an **immutable activation snapshot**, isolated node testing, payload
   retention policy, in-memory run repository, public execution facade.
   Contains no ARA-specific logic.
-- **@vict/sdk** — the stable import surface for application authors:
+- **@victframework/sdk** — the stable import surface for application authors:
   `defineContract` (neutral), `defineCapability`, `defineGraph`,
   `createRuntime`, and the public vocabulary. Optional Zod authoring sugar
-  lives in `@vict/sdk/zod`. No lower package imports from the SDK.
+  lives in `@victframework/sdk/zod`. No lower package imports from the SDK.
 
 No circular dependencies. The physical arrangement matches the handoff; no
 deviation was necessary.
@@ -62,7 +62,7 @@ deviation was necessary.
 
 | Concept | Implementation |
 |---|---|
-| Kernel | `@vict/kernel` — compile + execute, pure, port-driven |
+| Kernel | `@victframework/kernel` — compile + execute, pure, port-driven |
 | Contract | `Contract<T>` with `id`, `revision`, `expected`, `parse` |
 | Capability | `CapabilityDefinition<I, O>` — id, revision, effect class, contracts, `invoke` |
 | Runtime | `VictRuntime` / `createRuntime()` with an immutable activation snapshot |
@@ -98,7 +98,7 @@ Every normal/simulated run and every event identifies graph id,
 ## Execution lifecycle
 
 1. **Author** — application code defines contracts (neutral API or optional
-   adapter), capabilities, and a graph through `@vict/sdk`.
+   adapter), capabilities, and a graph through `@victframework/sdk`.
 2. **Register** — capabilities (with revisions) and their embedded contracts
    register on a runtime instance. Registration validates revisions with
    structured errors. Test doubles are registered with `registerDouble`;
@@ -175,7 +175,7 @@ Two different guarantees, deliberately separated:
   output regardless of retention; retention governs *stored history* only.
   Since Stage 02, that stored history lives behind the semantic store ports
   (`ActivationCatalog` / `ExecutionStore`) with the in-memory store as the
-  default backend and SQLite (`@vict/store-sqlite`) as the durable adapter;
+  default backend and SQLite (`@victframework/store-sqlite`) as the durable adapter;
   see `docs/architecture/STAGE-02-STORES.md`.
 
 ## Simulation and effect policy
@@ -210,10 +210,10 @@ Isolated node testing (`runtime.runNode(nodeId, input)`):
 ## Public API example
 
 ```ts
-import { createRuntime, defineCapability, defineContract, defineGraph } from '@vict/sdk';
+import { createRuntime, defineCapability, defineContract, defineGraph } from '@victframework/sdk';
 
 // Neutral contract authoring (no schema library). Optional Zod sugar:
-//   import { defineZodContract } from '@vict/sdk/zod';
+//   import { defineZodContract } from '@victframework/sdk/zod';
 const Text = defineContract<{ text: string }>({
   id: 'app.text',
   revision: '1',
@@ -252,9 +252,9 @@ packed tarballs into isolated consumers; the neutral consumer has no zod).
 
 | Legacy idea inspected | Reused as behaviour | Rejected/reframed | Reason |
 |---|---|---|---|
-| `@vict/engine` — "dumb" storage/traversal engine with grammar plug slots | Graph execution remains a dedicated layer with zero domain knowledge | Kernel owns full compile + execution *semantics*; no grammar plug system (Validator/Processor/Editor) | Semantics belong to the kernel, not to pluggable interpreters; ports replace plugs |
+| `@victframework/engine` — "dumb" storage/traversal engine with grammar plug slots | Graph execution remains a dedicated layer with zero domain knowledge | Kernel owns full compile + execution *semantics*; no grammar plug system (Validator/Processor/Editor) | Semantics belong to the kernel, not to pluggable interpreters; ports replace plugs |
 | Four delivery modes in the engine runtime | Execution modes survive as `normal / simulate / test` | Single deterministic sequential algorithm instead of four delivery modes | Determinism first; mode is policy, not traversal shape |
-| `@vict/grammar` + YAML blueprints as the primary authoring experience | Structural validation survives (compile-time rejections) | Authoring is typed TypeScript via `@vict/sdk`; YAML is a possible future serialization, not the product | Type-checked authoring beats stringly-typed YAML; the thesis is inspectable graphs, not YAML |
+| `@victframework/grammar` + YAML blueprints as the primary authoring experience | Structural validation survives (compile-time rejections) | Authoring is typed TypeScript via `@victframework/sdk`; YAML is a possible future serialization, not the product | Type-checked authoring beats stringly-typed YAML; the thesis is inspectable graphs, not YAML |
 | `lang-app` / `lang-ai` / `lang-space` language modules | Nothing directly | Replaced by capabilities (+ future capability packs) | Ordinary integrations are typed operations, not "languages" |
 | `ShapeChecker` wire validation | Inter-node contract checking survives | Contracts are executable promises enforced at execution boundaries with structured issues | Data-shaped promises, not grammar-declared wire rules |
 | Live-edit `EditorSystem` (atomic graph hot-edit) | Atomicity survives in graph activation | Change sets / live edit deferred to the future control plane | Governance needs intent, not Night 01 machinery |

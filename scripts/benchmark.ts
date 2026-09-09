@@ -15,11 +15,11 @@
  *
  * Usage: npm run bench
  */
-import { defineCapability, defineGraph, neutralJsonContract } from '@vict/sdk';
-import { createRuntime } from '@vict/runtime';
-import { createSqliteStores } from '@vict/store-sqlite';
-import type { VictRuntime } from '@vict/runtime';
-import { defineZodContract } from '@vict/sdk/zod';
+import { defineCapability, defineGraph, neutralJsonContract } from '@victframework/sdk';
+import { createRuntime } from '@victframework/runtime';
+import { createSqliteStores } from '@victframework/store-sqlite';
+import type { VictRuntime } from '@victframework/runtime';
+import { defineZodContract } from '@victframework/sdk/zod';
 import { z } from 'zod';
 import { createHash, randomUUID } from 'node:crypto';
 import { mkdtempSync, rmSync } from 'node:fs';
@@ -149,7 +149,7 @@ function printSet(label: string, set: SampleSet, iterations: number): void {
 async function main(): Promise<void> {
   console.log('=== Vict Stage 02 performance baseline ===');
   console.log(`node:       ${process.version} (${platform()} ${release()} ${arch()})`);
-  console.log(`packages:   @vict/* 0.1.0`);
+  console.log(`packages:   @victframework/* 0.1.0`);
   console.log(`graph:      ${GRAPH.id} (3 nodes, 2 edges, 10 events per completed run)`);
   console.log(
     `durability: file-backed runs use journal_mode=wal + synchronous=FULL (real fsync per commit)`,

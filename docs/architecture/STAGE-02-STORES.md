@@ -16,21 +16,21 @@ timers, branching, retries, or distributed workers were added.
 ## Package and dependency map
 
 ```text
-@vict/contracts  ←  @vict/kernel  ←  @vict/runtime  ←  @vict/store-sqlite
+@victframework/contracts  ←  @victframework/kernel  ←  @victframework/runtime  ←  @victframework/store-sqlite
        ↑                 ↑                ↑
-       └─────────────────┴──── @vict/sdk ──┘   (public authoring facade;
+       └─────────────────┴──── @victframework/sdk ──┘   (public authoring facade;
                                                 never imports the adapter)
 ```
 
-- **@vict/runtime** owns the semantic store ports (`ActivationCatalog`,
+- **@victframework/runtime** owns the semantic store ports (`ActivationCatalog`,
   `ExecutionStore`), the public persistence records (`StoredRun`,
   `StoredEvent`, `StoredActivation`, `ActivationManifest`), the in-memory
   conforming store, the durable run lifecycle, and restart policy. It never
   imports SQLite.
-- **@vict/store-sqlite** owns schema, migrations, transactions, and
-  serialization for SQLite. It depends on `@vict/runtime` ports only — not on
-  `@vict/sdk` — and contains no graph compilation or application logic.
-- **@vict/kernel** remains pure: no filesystem, database, clock, or process
+- **@victframework/store-sqlite** owns schema, migrations, transactions, and
+  serialization for SQLite. It depends on `@victframework/runtime` ports only — not on
+  `@victframework/sdk` — and contains no graph compilation or application logic.
+- **@victframework/kernel** remains pure: no filesystem, database, clock, or process
   access.
 
 ## SQLite driver decision
@@ -211,7 +211,7 @@ is an explicit boot operation (single local owner assumed):
 
 ## Conformance and adversarial evidence
 
-One adapter-neutral conformance suite (`@vict/runtime/testing`) runs against
+One adapter-neutral conformance suite (`@victframework/runtime/testing`) runs against
 both the in-memory and SQLite stores: publish/read equivalence, idempotent
 republish, version collisions, selection optimistic concurrency, atomic
 create/transition, stale-revision and sequence conflicts, dense append-only

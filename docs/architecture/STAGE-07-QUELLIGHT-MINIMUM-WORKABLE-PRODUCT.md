@@ -65,7 +65,7 @@ Repository context at authoring time:
 | VICT `origin/main` expected and confirmed | `c6d2a5a3e4745bfed44c204c6a9c1674e57e03c7` |
 | Stage 06 status | Formally closed, verified with non-blocking issues (reference v0.3.4, §0.10) |
 | Stage 07 status | Permitted; rebaselined by this amendment; **not begun** |
-| All `@vict/*` package manifests | version `0.1.0`, `private: true`, Node `>=22.13.0` |
+| All `@victframework/*` package manifests | version `0.1.0`, `private: true`, Node `>=22.13.0` |
 
 ---
 
@@ -79,7 +79,7 @@ The product previously called **ARA** is now named **Quellight**.
 VICT       — the reusable application framework, runtime and control system.
              This repository. Provides execution, identity, durability,
              governance, application delivery, and the product-agent
-             integration boundary (Mastra behind @vict/mastra).
+             integration boundary (Mastra behind @victframework/mastra).
 Quellight  — a SEPARATE product repository and EXTERNAL CONSUMER of
              released VICT packages. VICT's first flagship consumer and
              reference product. A persistent cognitive partner, not a
@@ -132,15 +132,15 @@ Statuses quote the authoritative reference tables.
 | Capability needed by Quellight | VICT state | Status |
 | --- | --- | --- |
 | Durable, restart-safe execution with pinned identity | Kernel/runtime activation, run pinning, SQLite stores, restart reconciliation | Verified (Stages 01–03) |
-| Governed capability execution with effect/approval policy | Runtime authority gating + `@vict/control` ChangeSets/approvals | Verified (Stages 01–06) |
+| Governed capability execution with effect/approval policy | Runtime authority gating + `@victframework/control` ChangeSets/approvals | Verified (Stages 01–06) |
 | Neutral product-agent boundary, agent-profile identity, immutable snapshots | `ProductAgent` port, `agentProfileVersion`, activation snapshots | Verified (Stage 06) |
-| Mastra composition: pinned versions, offline fixture, tool bridge, streaming | `@vict/mastra` adapter, nine-step bridge, `vict.agent-stream@1` + resumable SSE | Verified (Stage 06); **offline fixture only — no live provider ever exercised** |
+| Mastra composition: pinned versions, offline fixture, tool bridge, streaming | `@victframework/mastra` adapter, nine-step bridge, `vict.agent-stream@1` + resumable SSE | Verified (Stage 06); **offline fixture only — no live provider ever exercised** |
 | Credential isolation, retention bounds with executed pruning, governed deletion/export, canary leakage tests | Stage 06A/06B data-protection baseline | Verified within the declared local envelope (`MSTR-011`); **real-use proof (`MSTR-012`) is Stage 07 work** |
-| Application delivery: renderer, scaffolder, SQLite domain adapter, conformance | `@vict/renderer-svelte`, `@vict/scaffolder`, `@vict/appdata-sqlite` | Verified (Stage 05) |
-| Actor boundary, versioned HTTP commands, idempotent commands, CLI | `@vict/server`, `@vict/cli` | Verified (Stage 06) |
-| **Consumable release artifacts for an external repository** | All `@vict/*` are `0.1.0` and `private: true`; no publish mechanism, no compatible release-set identity, no clean external consumer proof | **Missing — Stage 07A (handoff)** |
+| Application delivery: renderer, scaffolder, SQLite domain adapter, conformance | `@victframework/renderer-svelte`, `@victframework/scaffolder`, `@victframework/appdata-sqlite` | Verified (Stage 05) |
+| Actor boundary, versioned HTTP commands, idempotent commands, CLI | `@victframework/server`, `@victframework/cli` | Verified (Stage 06) |
+| **Consumable release artifacts for an external repository** | All `@victframework/*` are `0.1.0` and `private: true`; no publish mechanism, no compatible release-set identity, no clean external consumer proof | **Missing — Stage 07A (handoff)** |
 | **One real model-provider profile with protected credential resolution** | Provider binding is composition-supplied; offline fixture only | **Missing — Stage 07 work** |
-| **Quellight Shared World store (threads, epistemics, commitments, loops, lineage, retention)** | `@vict/application` data port is flat single-resource CRUD (§6) — not sufficient | **Missing — Quellight-owned store (§6.3)** |
+| **Quellight Shared World store (threads, epistemics, commitments, loops, lineage, retention)** | `@victframework/application` data port is flat single-resource CRUD (§6) — not sufficient | **Missing — Quellight-owned store (§6.3)** |
 | **Conversation-first workspace with visible shared-world objects** | Renderer and code-island mechanism exist; no conversation workspace exists | **Missing — Quellight product surface** |
 | **Context assembly from thread + commitments + open loops** | Nothing in VICT assembles product meaning | **Missing — Quellight product logic** |
 | **Live-provider proof and MSTR-012 real-use evidence** | Never performed in any stage | **Missing — Stage 07 work** |
@@ -162,7 +162,7 @@ code, or deferral. "Quellight" below means the Quellight repository.
 | `C1` Shared World | The single durable truth | **Quellight-owned store** (§6.3), written through VICT governed capabilities; exposed to structured surfaces through Application Layer bindings |
 | `C2a` external ingress integrity | Source validation before shared-world records | **Deferred** — no ingestion sources in the minimum; the only external ingress is the conversation input, which crosses VICT contract validation |
 | `C2b` kernel I/O integrity | Controlled, audited kernel↔world crossings | **VICT capability boundary** (`AI-006`, bridge, actor/authority/contract/effect/approval) is the enforced `C2b` analog; Quellight kernel reads/writes cross it |
-| `C3` Agent Kernel | Constitution, models, projections | **Split:** the reasoning substrate composition lives in `@vict/mastra` (Verified); the three living models and projections are Quellight product state rebuilt from `C1` (§5) |
+| `C3` Agent Kernel | Constitution, models, projections | **Split:** the reasoning substrate composition lives in `@victframework/mastra` (Verified); the three living models and projections are Quellight product state rebuilt from `C1` (§5) |
 | `C4` Constitution | Durable identity/invariants | **Quellight-owned durable record** (versioned, user-visible). Hard-regime enforcement (`L0–L2`, grants, invariants) rides VICT deterministic gates (`INV-16`); semantic regime (`L3–L5`) is mandatory loop policy in the Quellight agent instructions/processors |
 | `C5` Cognitive Loop | `S1–S7`, event-activated | Mastra agent loop inside the bounded AI subsystem. **Minimum activation source: user interaction only.** Event/time/ingestion activation deferred (§7.2). `S5` maps to the model's constitution check plus the VICT deterministic gate — the gate is authoritative for `L0–L2` and authority grants |
 | `C6` Adaptation Engine | `A1–A5` lawful speeds | `A1` surface behavior and `A2` working context operate naturally in conversation; **`A3–A5` learning/adaptation deferred** — no automatic pattern learning in the minimum |
@@ -330,7 +330,7 @@ historical):
 The generic application-data machinery was inspected at source, not
 inferred from documentation:
 
-- `packages/application/src/data.ts` (`@vict/application`): the
+- `packages/application/src/data.ts` (`@victframework/application`): the
   `ApplicationDataAdapter` port exposes per-resource `list`/`get` with
   **equality-only filters**, substring search, sort, limit/offset, and
   projection; mutations are **single-record** create/update/delete or a
@@ -339,7 +339,7 @@ inferred from documentation:
   operation, no relationship/join query, no append-only or lineage
   semantics, no dependency graph, no retention/tombstone concept, and
   no projection-rebuild hook** at the port.
-- `packages/appdata-sqlite` (`@vict/appdata-sqlite`): a production SQLite
+- `packages/appdata-sqlite` (`@victframework/appdata-sqlite`): a production SQLite
   adapter of that flat port — real `BEGIN IMMEDIATE` transactions, keyed
   idempotency recorded in the same transaction as the row, separate
   application-domain migrations (`vict_appdata_migrations`). Its
@@ -352,7 +352,7 @@ inferred from documentation:
 port inside the Quellight repository**, implemented as a
 Quellight-owned SQLite adapter, exposed through VICT Application Layer
 bindings only where structured surfaces need them. The generic
-`@vict/application` data port is **not** the Shared World and is not
+`@victframework/application` data port is **not** the Shared World and is not
 stretched to fake it. A generic VICT abstraction (e.g. a "semantic
 domain store" package) is **explicitly deferred** until real consumer
 evidence from at least Quellight's use demonstrates the reusable
@@ -909,7 +909,7 @@ and no Quellight capability may be described as Verified.
 
 ## 14. Genuine risks and limitations
 
-- **First external consumer risk.** Stage 07A is the first time `@vict/*`
+- **First external consumer risk.** Stage 07A is the first time `@victframework/*`
   packages are consumed outside the monorepo. Missing exports,
   workspace-relative assumptions, or packaging gaps will surface; the
   handoff's clean-consumer verification exists precisely to find them

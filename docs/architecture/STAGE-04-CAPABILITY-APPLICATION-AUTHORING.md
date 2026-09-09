@@ -25,31 +25,31 @@ the runtime, SQLite, Svelte, or any schema library.
 The verified dependency direction is now exactly the accepted target:
 
 ```text
-@vict/contracts
+@victframework/contracts
         ↓  (imported by)
-@vict/sdk
+@victframework/sdk
         ↓  (imported by)
-@vict/kernel   (+ @vict/application, which imports contracts + sdk)
+@victframework/kernel   (+ @victframework/application, which imports contracts + sdk)
         ↓  (imported by)
-@vict/runtime
+@victframework/runtime
         ↓  (imported by)
-@vict/store-sqlite
+@victframework/store-sqlite
 ```
 
 Formal statement:
 
-- `@vict/sdk` is a lightweight **authoring ABI**. It depends on
-  `@vict/contracts` only (plus an optional `zod` peer for the `./zod`
-  subpath). It does NOT depend on, re-export, or mention `@vict/runtime`
-  anywhere in its exports. Capability-pack authors can install `@vict/sdk`
+- `@victframework/sdk` is a lightweight **authoring ABI**. It depends on
+  `@victframework/contracts` only (plus an optional `zod` peer for the `./zod`
+  subpath). It does NOT depend on, re-export, or mention `@victframework/runtime`
+  anywhere in its exports. Capability-pack authors can install `@victframework/sdk`
   without the runtime (proven by packed-consumer isolation).
-- `@vict/kernel` and `@vict/runtime` CONSUME public authoring declarations
+- `@victframework/kernel` and `@victframework/runtime` CONSUME public authoring declarations
   (graph language, capability vocabulary, effect/execution modes, retry
-  limits) from `@vict/sdk`; they no longer own author-facing definitions.
+  limits) from `@victframework/sdk`; they no longer own author-facing definitions.
   Convenience re-exports remain in the kernel/runtime indexes (sourced from
-  `@vict/sdk`), which keeps the graph acyclic.
-- `@vict/application` (new) is the framework-neutral application
-  model/compiler. It depends on `@vict/contracts` and `@vict/sdk` only —
+  `@victframework/sdk`), which keeps the graph acyclic.
+- `@victframework/application` (new) is the framework-neutral application
+  model/compiler. It depends on `@victframework/contracts` and `@victframework/sdk` only —
   never on the runtime, a UI framework, or a schema library. It is
   browser-safe by construction (identity hashing uses an in-package
   pure-TS SHA-256 cross-checked against `node:crypto`, not `node:crypto`
@@ -58,17 +58,17 @@ Formal statement:
   never enters the base SDK or application declarations (structural scan
   enforced in the proof tests and the isolated packed consumers).
 - Runtime composition APIs (`createRuntime`, stores, orchestration) are
-  imported explicitly from `@vict/runtime`.
+  imported explicitly from `@victframework/runtime`.
 
 ### 1.1 Migration table (intentional pre-1.0 import changes)
 
 | Before (≤ Stage 03)                          | After (Stage 04)                                    |
 | -------------------------------------------- | --------------------------------------------------- |
-| `createRuntime` / `VictRuntime` from `@vict/sdk` | import from `@vict/runtime` explicitly          |
-| `RunResult` type from `@vict/sdk`            | import from `@vict/runtime`                         |
-| `KernelEvent` type from `@vict/sdk`          | import from `@vict/kernel`                          |
-| `ApplicationGraphDefinition`, node/edge/wait types, `RetryPolicy`, limits, `EffectClass`, `ExecutionMode`, `CapabilityDefinition`, `CapabilityContext`, `DoubleInvoke` re-exported from kernel/runtime | authoritative home is `@vict/sdk` (kernel/runtime still re-export them for convenience) |
-| `@vict/sdk` package deps                     | `@vict/contracts` only (+ optional `zod` peer); `@vict/kernel` and `@vict/runtime` dependencies REMOVED |
+| `createRuntime` / `VictRuntime` from `@victframework/sdk` | import from `@victframework/runtime` explicitly          |
+| `RunResult` type from `@victframework/sdk`            | import from `@victframework/runtime`                         |
+| `KernelEvent` type from `@victframework/sdk`          | import from `@victframework/kernel`                          |
+| `ApplicationGraphDefinition`, node/edge/wait types, `RetryPolicy`, limits, `EffectClass`, `ExecutionMode`, `CapabilityDefinition`, `CapabilityContext`, `DoubleInvoke` re-exported from kernel/runtime | authoritative home is `@victframework/sdk` (kernel/runtime still re-export them for convenience) |
+| `@victframework/sdk` package deps                     | `@victframework/contracts` only (+ optional `zod` peer); `@victframework/kernel` and `@victframework/runtime` dependencies REMOVED |
 
 There is no compatibility facade recreating the old direction: the facade
 itself was the forbidden dependency.
@@ -78,7 +78,7 @@ itself was the forbidden dependency.
 The base SDK surface is schema-neutral, framework-neutral, and frozen at
 the factory boundary:
 
-- `defineContract` (re-exported from `@vict/contracts`), `defineCapability`,
+- `defineContract` (re-exported from `@victframework/contracts`), `defineCapability`,
   `defineGraph`, `defineResource`, `defineApplication`,
   `defineApplicationRelease`, `defineCapabilityPack`.
 - Every official factory returns a DEEP-FROZEN DEEP COPY. Function values
@@ -98,7 +98,7 @@ the factory boundary:
   `requiredSecrets`) enforced by the runtime before handler invocation.
 - Base declarations contain no Zod, no Svelte, and no runtime implementation
   references (declaration scans in the packed consumers prove it). The
-  optional Zod adapter stays under `@vict/sdk/zod`.
+  optional Zod adapter stays under `@victframework/sdk/zod`.
 
 ## 3. Capability packs
 
@@ -159,7 +159,7 @@ executable bindings.
   packs can be validated without a runtime; diagnostics have stable
   `PACK_*` codes and safe paths, sorted by path.
 - Both offline workspace packs pass the SAME shared conformance suite
-  (`runCapabilityPackConformanceSuite` in `@vict/runtime/testing`):
+  (`runCapabilityPackConformanceSuite` in `@victframework/runtime/testing`):
   - `packs/notes-pack` (`vict.example.notes`) — pure/read behavior;
   - `packs/ledger-pack` (`vict.example.ledger`) — keyed-idempotent write
     with declared permissions, required configuration and secret, declared
@@ -384,7 +384,7 @@ enter either identity (unsafe provenance fields are rejected).
 
 ## 8. Renderer, component, and application-data boundaries
 
-- **Renderer contract** (`@vict/application/renderer`, browser-safe
+- **Renderer contract** (`@victframework/application/renderer`, browser-safe
   subpath): `ApplicationRenderer` consumes an immutable plan plus
   explicitly supplied bindings (component registry + action dispatcher).
   Structured diagnostics (`RendererDiagnostic`): `RENDERER_UNSUPPORTED_ROLE`
@@ -412,7 +412,7 @@ enter either identity (unsafe provenance fields are rejected).
   with canaries covering component-resolution messages, action-result
   messages, and HTTP bodies. The real SvelteKit proof host passes this
   suite (test in the proof package).
-- **Application-data port** (`@vict/application`): storage-neutral
+- **Application-data port** (`@victframework/application`): storage-neutral
   `ApplicationDataAdapter` with an explicit authorization/effect context on
   every call; adapters MUST NOT import, expose, or mutate `VictStores`
   (structural: the package has no runtime dependency; the in-memory
@@ -534,7 +534,7 @@ the final remediation, and the independent closure audit — see §13.)
 2. **Unknown authoring fields (LOW-2).** Untyped JavaScript authors get
    structured rejections instead of silent stripping at graph, node,
    edge, wait, retry/backoff boundaries (kernel) and at every
-   application/pack/release boundary (@vict/application + sdk pack
+   application/pack/release boundary (@victframework/application + sdk pack
    validator). Diagnostics carry stable codes and safe definition paths
    and are insertion-order independent (path-sorted). The Stage 03 probe
    (misspelled `outputContractId`) now fails compilation with
@@ -566,7 +566,7 @@ remediation report's post-re-audit correction stands.
   facade.
 - Stage 01–03 canonical identity is unchanged: capability-only graphs keep
   `vict.graph@1` byte-compatible identity; control graphs keep
-  `vict.graph@2`. The kernel's definition types moved to `@vict/sdk` by
+  `vict.graph@2`. The kernel's definition types moved to `@victframework/sdk` by
   re-export (no semantic change; identity vectors are untouched by the
   move).
 - `CapabilityContext` gained OPTIONAL scoped readers
@@ -583,7 +583,7 @@ remediation report's post-re-audit correction stands.
   input and an output contract; plain JavaScript objects are validated the
   same way. Capabilities whose boundary deliberately accepts arbitrary
   values declare the stable neutral contract (`vict.neutral.json` from
-  `@vict/sdk`), which is identity-compatible with every contract on graph
+  `@victframework/sdk`), which is identity-compatible with every contract on graph
   edges. Capability definitions are closed-schema validated (unknown
   fields, invalid effect classes, malformed authority arrays, and
   unsupported idempotency values are rejected at registration).
