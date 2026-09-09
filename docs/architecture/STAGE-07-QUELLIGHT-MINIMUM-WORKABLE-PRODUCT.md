@@ -16,6 +16,20 @@
 > is Verified by this documentation task; every new `QLT-*` requirement is
 > Planned, and no Stage 01–06 Verified status is changed by this document.
 > **Stage 06 remains formally closed** (2026-09-09, reference v0.3.4).
+>
+> **Status update (2026-09-09, reference v0.4.2, §0.13): Stage 07A is
+> implemented, independently verified, and FORMALLY CLOSED.** The
+> independent verification (audit at commit `cb9d74b…`) returned `VERIFIED
+> WITH NON-BLOCKING ISSUES — FORMAL CLOSURE PERMITTED`; the formal-closure
+> action performed the audit-sanctioned F-1 verifier self-match correction
+> (fix commit `e45bdec…`), marked N-1 CLOSED-in-Stage-07A and `ARCH-012`
+> Verified, and recorded `docs/report/VICT-STAGE-07A-FORMAL-CLOSURE.md`.
+> Disposition: `STAGE 07A VERIFIED WITH NON-BLOCKING ISSUES — FORMALLY
+> CLOSED`. **Stage 07B is PERMITTED and NOT BEGUN.** Stage 07 remains In
+> Progress until the §13 exit gate passes an independent audit; every
+> `QLT-*` requirement remains Planned; the Quellight repository has not
+> been created or touched; the published release set
+> `vict-release-set@1/0.1.0` is immutable and unchanged.
 > **Scope:** product identity and repository boundary; the corrected
 > memory/identity model; the Shared World record and storage decision; the
 > exact Minimum Workable Quellight scope and exclusions; the canonical
@@ -946,7 +960,8 @@ and no Quellight capability may be described as Verified.
 ---
 
 *End of the Stage 07 Quellight rebaseline amendment. Stage 06 remains
-formally closed; Stage 07 is rebaselined and permitted; Stage 07
-implementation has not begun; Stage 07A is the next permitted
-implementation increment; no Quellight capability is Verified by this
-documentation task.*
+formally closed; Stage 07 is rebaselined, permitted, and **In Progress**;
+Stage 07A — the consumer foundation — is verified with non-blocking issues
+and formally closed (2026-09-09, reference v0.4.2, §0.13 of the system
+reference); **Stage 07B is PERMITTED and NOT BEGUN**; the Quellight product
+repository has not been created; no Quellight product capability exists.*

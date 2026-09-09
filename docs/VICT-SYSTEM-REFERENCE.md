@@ -1,12 +1,12 @@
 # VICT System Reference
 
 > **Canonical title:** Vict Architecture and Operating Model — Authoritative System Reference<br>
-> **Document version:** 0.4.1<br>
+> **Document version:** 0.4.2<br>
 > **System generation:** Greenfield<br>
-> **Status:** Authoritative baseline; Mastra/ARA integration amendment accepted (v0.3.0), finalized by the v0.3.1 pre-implementation correction, extended by the v0.3.2 Stage 06A formal closure, extended by the v0.3.3 Stage 06B implementation record, extended by the v0.3.4 Stage 06 formal closure, rebaselined by the v0.4.0 Quellight product amendment, and extended by the v0.4.1 Stage 07A implementation record; future features are individually marked<br>
-> **Last updated:** 2026-09-09 (v0.4.1 — Stage 07A Quellight consumer foundation implemented: the canonical public npm namespace `@victframework/*` under the `victframework` organization (publisher `rz1`), Apache-2.0 licensing, the N-1 own-`__proto__` delivery-snapshot hardening, the corrected Stage 06B verifier banner, the immutable compatible public release set (identity and exact pins in `docs/RELEASE-COMPATIBILITY.md`), the isolated clean-consumer verification, and the protected operator-configuration foundation. Implementation record — see §0.12. No Stage 01–06 Verified status changed; Stage 07A is NOT Verified and awaits independent verification; Stage 07B has not begun)<br>
-> **Current delivery point:** Stages 1, 1.1, 2, 3, 4, 5, and 6 independently verified and formally closed (Stage 05 and Stage 06 closed with non-blocking issues); Mastra/ARA amendment accepted, finalized (v0.3.1), and implemented through Stage 06; product rebaselined to Quellight (v0.4.0); Stage 07A — the consumer foundation — implemented and awaiting independent verification (v0.4.1, §0.12); Stage 07B remains blocked pending that verification<br>
-> **Next permitted stage:** Stage 7 — Minimum Workable Quellight (permitted, rebaselined, not begun: Stage 06 is formally closed and Stage 07 may begin under normal stage governance. No Stage 07 capability exists: there is no Quellight repository, no external-consumer release mechanism, no live provider/model integration, no Shared World store, and no real-use data-protection proof (MSTR-012), and none may be described as delivered. **Stage 07A — Quellight consumer foundation** is the next permitted implementation increment per `docs/handoff/VICT-STAGE-07A-QUELLIGHT-CONSUMER-FOUNDATION-HANDOFF.md`. The Stage 07 governing architecture is `docs/architecture/STAGE-07-QUELLIGHT-MINIMUM-WORKABLE-PRODUCT.md` (canonical input SHA-256 `e7f61d24c16fd60c66efdb0af0b32859f1fdf1b571e32a0368870cb559b01331`), read together with the historical Mastra/ARA amendment `docs/architecture/MASTRA-ARA-INTEGRATION.md` and the closed Stage 06 foundation records `docs/architecture/STAGE-06A-PRODUCT-AGENT-FOUNDATION.md` and `docs/architecture/STAGE-06B-CONTROL-AND-GOVERNED-EXECUTION.md`, with the complete Stage 06 evidence chain in §0.10 and §24.3 of this reference)
+> **Status:** Authoritative baseline; Mastra/ARA integration amendment accepted (v0.3.0), finalized by the v0.3.1 pre-implementation correction, extended by the v0.3.2 Stage 06A formal closure, extended by the v0.3.3 Stage 06B implementation record, extended by the v0.3.4 Stage 06 formal closure, rebaselined by the v0.4.0 Quellight product amendment, and extended by the v0.4.1 Stage 07A implementation record, and extended by the v0.4.2 Stage 07A formal closure; future features are individually marked<br>
+> **Last updated:** 2026-09-09 (v0.4.2 — Stage 07A Quellight consumer foundation independently verified and formally closed. The independent verdict at commit `cb9d74b…` is `VERIFIED WITH NON-BLOCKING ISSUES — FORMAL CLOSURE PERMITTED`. The formal-closure action performed the narrowly authorized F-1 correction — the `verify:stage7a` namespace gate no longer flags its own detection literal (fix commit `e45bdec…`) — marked N-1 CLOSED-in-Stage-07A, marked `ARCH-012` Verified, reconciled the F-4 wording in `docs/RELEASE-COMPATIBILITY.md`, and recorded `docs/report/VICT-STAGE-07A-FORMAL-CLOSURE.md` (§0.13). Disposition: `STAGE 07A VERIFIED WITH NON-BLOCKING ISSUES — FORMALLY CLOSED`; **Stage 07B PERMITTED — NOT BEGUN**; Stage 07 remains In Progress; every `QLT-*` requirement remains Planned; the published release set `vict-release-set@1/0.1.0` (content ID `v1_dbb7438dfe16b7de245fe3863f6980b7e9a44a83c1809e01071941782597a11d`, release source `7e5908e…`) is immutable and unchanged; no Stage 01–06 Verified status changed)<br>
+> **Current delivery point:** Stages 1, 1.1, 2, 3, 4, 5, and 6 independently verified and formally closed (Stage 05 and Stage 06 closed with non-blocking issues); Mastra/ARA amendment accepted, finalized (v0.3.1), and implemented through Stage 06; product rebaselined to Quellight (v0.4.0); Stage 07A — the consumer foundation — implemented (v0.4.1, §0.12), independently verified and formally closed (v0.4.2, §0.13); **Stage 07 remains In Progress**; Stage 07B — the Quellight repository bootstrap — is PERMITTED and NOT BEGUN<br>
+> **Next permitted stage:** Stage 7 — Minimum Workable Quellight (permitted, rebaselined, In Progress: Stage 06 is formally closed and Stage 07 proceeds under normal stage governance. **Stage 07A — Quellight consumer foundation — is implemented, independently verified (`VERIFIED WITH NON-BLOCKING ISSUES — FORMAL CLOSURE PERMITTED`, audit at `cb9d74b…`), and FORMALLY CLOSED (v0.4.2, §0.13). Stage 07B — the Quellight repository bootstrap — is PERMITTED and NOT BEGUN**: there is no Quellight repository, no live provider/model integration, no Shared World store, and no real-use data-protection proof (MSTR-012), and none may be described as delivered. The Stage 07 governing architecture is `docs/architecture/STAGE-07-QUELLIGHT-MINIMUM-WORKABLE-PRODUCT.md` (canonical input SHA-256 `e7f61d24c16fd60c66efdb0af0b32859f1fdf1b571e32a0368870cb559b01331`), read together with the historical Mastra/ARA amendment `docs/architecture/MASTRA-ARA-INTEGRATION.md` and the closed Stage 06 foundation records `docs/architecture/STAGE-06A-PRODUCT-AGENT-FOUNDATION.md` and `docs/architecture/STAGE-06B-CONTROL-AND-GOVERNED-EXECUTION.md`, with the complete Stage 06 evidence chain in §0.10 and §24.3 of this reference)
 
 ---
 
@@ -468,6 +468,126 @@ Verified status changed, no `QLT-*` requirement is promoted, and Stage
    consumer obligation is now exercised, not yet independently
    verified).
 
+> **Superseded on 2026-09-09 by §0.13:** the implementation record
+> above was subsequently independently verified — verdict `VERIFIED
+> WITH NON-BLOCKING ISSUES — FORMAL CLOSURE PERMITTED` — and Stage 07A
+> was formally closed at v0.4.2. The statements "Stage 07A is NOT
+> Verified", "the independent Stage 07A audit has NOT yet occurred",
+> and "`ARCH-012`'s delivery-status update remains an audit decision"
+> are the truthful v0.4.1 record of that time and are no longer the
+> current status; the audit did reproduce one gate defect (F-1) and
+> the formal-closure action carried the sanctioned correction. This
+> section is preserved unchanged as the historical implementation
+> record.
+
+---
+
+## 0.13 Closure v0.4.2 — Stage 07A formal closure (F-1 verifier correction plus documentation)
+
+On 2026-09-09, after the independent Stage 07A verification at commit
+`cb9d74bf0d4ca8e1c21f7962e80bbf8d358d82a1` returned the authoritative
+verdict `VERIFIED WITH NON-BLOCKING ISSUES — FORMAL CLOSURE PERMITTED`,
+Stage 07A — the Quellight consumer foundation — is **formally closed**.
+The authoritative disposition is:
+
+```text
+STAGE 07A VERIFIED WITH NON-BLOCKING ISSUES — FORMALLY CLOSED
+STAGE 07B PERMITTED — NOT BEGUN
+```
+
+Stage 07 as a whole remains **In Progress** until the Stage 07 exit
+gate (`docs/architecture/STAGE-07-QUELLIGHT-MINIMUM-WORKABLE-PRODUCT.md`
+§13) passes an independent audit; Stage 07B — the Quellight repository
+bootstrap — is permitted and has NOT begun; the Quellight product
+repository (`C:/Users/RZ1/Desktop/RZ/260909-VCT-Quellight`,
+`https://github.com/radz2291/Quellight`) remains untouched; every
+`QLT-*` product requirement remains Planned; no Stage 01–06 Verified
+status changed.
+
+1. **F-1 correction (the only code change of this closure).** The
+   independent audit found (Medium, non-blocking, corrective action
+   required) that Gate 1 of `scripts/verify-stage7a.mjs` flags its own
+   file: the scanner's source contains the literal `@vict/` as its
+   detection pattern and doc-comment text, so `verify:stage7a` exited
+   1 on the committed tree and in any clean checkout (offenders:
+   `scripts/verify-stage7a.mjs`; gates 2–6 green). The gate failed
+   closed (false positive, conservative direction); the substantive
+   namespace property was independently verified TRUE. Reproduced at
+   the audited starting commit `cb9d74b…` before any change (exit 1,
+   364 files scanned, sole offender the verifier itself); corrected by
+   the audit-sanctioned one-line exclusion of the verifier's own file
+   from its own scan (fix commit `e45bdec…`); clean post-fix run exits
+   0 (ALL GATES PASSED, 363 files scanned); and a deliberate
+   negative control — a temporary tracked fixture importing
+   `@vict/contracts` (former namespace) on a representative executable
+   consumer surface (`packages/contracts/src/…`) — still failed the
+   gate with exit 1, proving detection strength preserved. The fixture
+   was removed after the proof. No broad directory/file-type
+   exclusion, no unconditional pass, no other gate, production package,
+   or release artifact was touched.
+2. **Truthful implementation-report discrepancy.** The independent
+   audit found that the implementation report's verification row
+   "11. `verify:stage7a` — exit 0, all six gates" **did not reproduce
+   on the committed tree**: the auditor's ladder run exited 1 with
+   Gate 1 self-flagging (F-1, cause above). The historical
+   implementation report
+   (`docs/report/VICT-STAGE-07A-CONSUMER-FOUNDATION-IMPLEMENTATION-REPORT.md`)
+   is preserved unchanged; this discrepancy is recorded here and in
+   the formal-closure record, and the corrected gate now genuinely
+   passes from a clean checkout.
+3. **N-1 — CLOSED-in-Stage-07A.** The audit independently reproduced
+   the baseline defect at `e0e65b7` with its own probe and verified
+   the corrected boundary end-to-end (own `__proto__` keys rejected
+   with `proto-field` for scalar/object/null/array values, JSON.parse
+   and `defineProperty` forms, depths 1–14; governed-bridge durable
+   surface fenced `outcome_unknown`, exactly one effect, no second
+   effect on retry; no echo, no pollution, no caller alias; safe
+   null-prototype and `constructor`/`prototype` behavior preserved;
+   three consecutive green rounds of the affected suites; full ladder
+   2175 passed / 3 skipped; `verify:n1` 16/16). Its disposition —
+   "N-1's independent-verification acceptance criteria are SATISFIED —
+   CLOSED-in-Stage-07A" — is now recorded in §23 (Stage 6) and §24.2.
+4. **ARCH-012 — Verified (Stage 07A).** The first-real-consumer
+   obligations are independently exercised: 13 public packages,
+   semver `0.1.0`, `engines.node >=22.13.0` on every manifest, the
+   recorded compatibility document, and a proven external consumer.
+   The audit's §15 disposition ("SATISFIED in substance") is
+   reconciled in §5.3 per §27.4.
+5. **F-4 wording reconciliation.** `docs/RELEASE-COMPATIBILITY.md` §6
+   no longer implies a version-tag publication path; the immutability
+   anchors are the content-derived release-set identity and the
+   clean-tree publication preflight, as independently verified.
+6. **Immutable release boundary unchanged.** The published release
+   remains: release source `7e5908e578c6371ef20a93d03c48f8af422ca487`,
+   release set `vict-release-set@1/0.1.0`, content ID
+   `v1_dbb7438dfe16b7de245fe3863f6980b7e9a44a83c1809e01071941782597a11d`,
+   all 13 packages at `0.1.0` under the `latest` dist-tag. Nothing was
+   republished, unpublished, or mutated; no dist-tag, access, or
+   organization setting changed; no Git release tag was created. The
+   F-1 verifier correction and this documentation commit do not alter
+   any published artifact.
+7. **Carried findings (unchanged, per the audit).** F-2 (Low,
+   implementation-report accuracy) — accepted non-blocking debt;
+   the historical report is preserved unchanged and the corrected
+   counts are recorded in the formal-closure record. F-3 (Low,
+   tarballs carry `license` metadata but not the license text) —
+   accepted non-blocking debt, candidate Stage 07B-side packaging
+   improvement. F-5 (Informational — `verify:stage6b` comment/label
+   strings slightly exceeded "banner text only", semantically neutral;
+   upstream `@mastra/*` declaration defects surface only with
+   `skipLibCheck: false`) — informational, no action. F-6
+   (Informational — four failed publication attempts truthfully
+   recorded; published subset 0 before the successful run) — no
+   action.
+
+This v0.4.2 update changes exactly one verification script (the F-1
+self-match correction above — no gate semantics beyond the sanctioned
+self-exclusion) and active normative status/documentation locations
+(§0.13 here, the §5.3 ARCH-012 row, §23/§24 status notes, the Stage 07
+architecture status, the F-4 wording, and the formal-closure record).
+No production code, tests, packages, manifests, lockfiles, examples,
+packs, migrations, or historical reports were modified.
+
 ---
 
 ## 1. The complete idea
@@ -730,7 +850,7 @@ Dependency arrows mean “is imported by the next layer.” Exact package extrac
 | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------- | ------------- |
 | ARCH-010 | Capability authors MUST NOT need to import the full runtime to define capabilities.                                                                          | Accepted    | Verified      |
 | ARCH-011 | Packages MUST NOT be created solely as placeholders for hypothetical services.                                                                               | Invariant   | Verified      |
-| ARCH-012 | Public packages MUST declare compatibility and use semantic versioning.                                                                                      | Accepted    | Planned       |
+| ARCH-012 | Public packages MUST declare compatibility and use semantic versioning.                                                                                      | Accepted    | Verified (Stage 07A)  |
 | ARCH-013 | Internal dependency direction MUST keep the kernel independent of runtime adapters.                                                                          | Invariant   | Verified      |
 | ARCH-014 | A future umbrella package MAY re-export stable APIs but MUST NOT become a hidden dependency cycle.                                                           | Provisional | Not Scheduled |
 | ARCH-015 | Logical Application Layer responsibilities MUST be proven before package names are stabilized; packages MUST NOT be created as empty framework abstractions. | Accepted    | Verified      |
@@ -1987,7 +2107,7 @@ Stages are capability gates, not calendar promises. A work session may complete 
 | 4     | Capability and application authoring foundation              | Verified with non-blocking issues                                     | Stable SDK/packs plus neutral Application Definition, identity, bindings, and renderer contract                                                                                                                                                                                       |
 | 5     | Application delivery layer                                   | Verified with non-blocking issues                                     | SvelteKit renderer, scaffolder, built-in surfaces, domain-data adapter, and complete working application proof                                                                                                                                                                        |
 | 6     | Control plane, API, and product-agent integration foundation | Verified with non-blocking issues — formally closed (2026-09-09)      | Governed ChangeSets, approvals, activation operations, typed remote consumption, plus the neutral product-agent boundary, Mastra adapter foundation, tool bridge, and agent-stream contract (two increments: 06A foundation and 06B control plane/remote execution — both independently verified; one final exit gate passed; formal closure recorded at §0.10)                                                                                                                |
-| 7     | Minimum Workable Quellight (v0.4.0 rebaseline; formerly "Real Mastra-backed ARA product") | Planned — rebaselined, permitted, not begun | The separate Quellight repository consumes released VICT packages and delivers the Minimum Workable Quellight: shared-world persistence, commitments/open loops with explicit ceremony, the canonical first vertical, real-use MSTR-012 proofs (Stage 07A — consumer foundation — is the first increment; see §0.11 and the Stage 07 architecture document)                                                                                                                |
+| 7     | Minimum Workable Quellight (v0.4.0 rebaseline; formerly "Real Mastra-backed ARA product") | In Progress — Stage 07A (consumer foundation) verified with non-blocking issues and formally closed (2026-09-09); Stage 07B permitted and not begun | The separate Quellight repository consumes released VICT packages and delivers the Minimum Workable Quellight: shared-world persistence, commitments/open loops with explicit ceremony, the canonical first vertical, real-use MSTR-012 proofs (Stage 07A — consumer foundation — is the first increment; see §0.11, §0.13 and the Stage 07 architecture document)                                                                                                                |
 | 8     | Builder Kit and self-hosting                                 | Planned                                                               | Model-agnostic agents extend Vict and its applications under bounded rules                                                                                                                                                                                                            |
 | 9     | Studio, diagnosis, and controlled recovery                   | Planned                                                               | Operator experience and safe recovery, reusing the Application Layer where appropriate                                                                                                                                                                                                |
 | 10    | Ecosystem and proven playbooks                               | Planned                                                               | Reusable packs, application templates, and proven compositions                                                                                                                                                                                                                        |
@@ -2531,7 +2651,7 @@ ARA proof:        exactly 13 ordered events; benchmark exactly 10 events
 
 **Remaining non-blocking carry-forwards (accepted; Stage 06 is not reopened)**
 
-- **N-1 (H-1 audit Low) — own `__proto__` delivery-snapshot key handling:** an own `__proto__` data key is silently dropped from the delivered snapshot (scalar value) or becomes the delivered container's prototype (object value), with no pollution of `Object.prototype`, no caller alias, internally consistent summaries, and safe serialization. Recorded as an **early Stage 07 hardening acceptance item**: reject own `__proto__` keys with a dedicated closed reason (or build snapshot containers with null prototypes / `defineProperty`) BEFORE any live-provider or real-ARA claim is made. **Stage 07A correction note (v0.4.1, 2026-09-09):** implemented as specified — dedicated closed reason `proto-field`, existing durable code `VICT_CAPABILITY_UNSAFE_OUTPUT_STRUCTURE`, negative control at `e0e65b7`, permanent regression suites; item closure awaits the independent Stage 07A verification.
+- **N-1 (H-1 audit Low) — own `__proto__` delivery-snapshot key handling:** an own `__proto__` data key is silently dropped from the delivered snapshot (scalar value) or becomes the delivered container's prototype (object value), with no pollution of `Object.prototype`, no caller alias, internally consistent summaries, and safe serialization. Recorded as an **early Stage 07 hardening acceptance item**: reject own `__proto__` keys with a dedicated closed reason (or build snapshot containers with null prototypes / `defineProperty`) BEFORE any live-provider or real-ARA claim is made. **Stage 07A correction note (v0.4.1, 2026-09-09):** implemented as specified — dedicated closed reason `proto-field`, existing durable code `VICT_CAPABILITY_UNSAFE_OUTPUT_STRUCTURE`, negative control at `e0e65b7`, permanent regression suites; item closure awaits the independent Stage 07A verification. **CLOSED-in-Stage-07A (v0.4.2, 2026-09-09):** the independent Stage 07A verification reproduced the baseline defect with its own probe at `e0e65b7`, verified the corrected boundary end-to-end (audit §9: all own forms at depths 1–14, governed-bridge durability, one effect, no echo/pollution/alias, safe domain preserved, three green rounds, `verify:n1` 16/16), and recorded "N-1's independent-verification acceptance criteria are SATISFIED"; closure is formalized at §0.13.
 - **N-2 (Informational):** fully sparse arrays are delivered as their documented dense prefix `[]`, and `-0` serializes as `0` — documented, truthful model-facing behaviors.
 - **EXIT-1 (Low):** two same-process compositions sharing one store do not share live-owner liveness; a cross-composition retry conservatively reconciles the record to non-replayable `outcome_unknown` and the live owner's known result is discarded (exactly one effect, no false completion). Documented trade-off of the declared single-process/local envelope; unreachable through any shipped flow.
 - **Environmental:** the Linux evidence is WSL2 on native ext4 — real Linux kernel and filesystem behavior, not bare-metal certification; Windows ACL best-effort and the other retained environmental notes are unchanged.
@@ -2553,6 +2673,15 @@ ARA proof:        exactly 13 ordered events; benchmark exactly 10 events
 > (`docs/handoff/VICT-STAGE-07A-QUELLIGHT-CONSUMER-FOUNDATION-HANDOFF.md`)
 > is the first permitted increment; Stage 07 implementation has not
 > begun.
+>
+> **Stage 07A closure note (2026-09-09, v0.4.2, §0.13).** Stage 07A is
+> implemented, independently verified (`VERIFIED WITH NON-BLOCKING
+> ISSUES — FORMAL CLOSURE PERMITTED`), and formally closed; the exit-gate
+> requirement that the Stage 07A gate pass independent audit before any
+> live-provider or real-Quellight claim is now SATISFIED. **Stage 07B is
+> PERMITTED and NOT BEGUN**; Stage 07 remains In Progress; every
+> `QLT-*` requirement remains Planned; the Quellight repository has not
+> been created or touched.
 
 **Purpose**
 
@@ -2780,6 +2909,7 @@ This section is deliberately factual and should be updated after every accepted 
 - Stage 4 adds the independently verified capability/application authoring foundation: the stable authoring-focused `@victframework/sdk` ABI with the corrected contracts-only dependency direction; capability packs with atomic pack installation AND atomic direct capability registration; least-authority permission/configuration/secret gating with genuinely invocation-scoped authority caches and resolvers (proven on the sequential, durable in-memory, and SQLite engines, including rotation, transient-failure recovery, and concurrency); strict closed capability contracts, effect vocabulary, authority declarations, and immutable authoring captures; the framework-neutral, browser-safe `@victframework/application` package with closed Application/Resource/Release schemas, deterministic `applicationVersion` and `releaseVersion`, mandatory fail-closed release-binding verification against actual deployment identities, a neutral renderer contract, a structurally keyed versioned component registry, a storage-neutral application-data port with closed request schemas and primitive filter domains, and shared renderer/data-adapter conformance suites; and a real SvelteKit vertical proof exercising local, data, and Vict actions with authorization enforced below the UI.
 - Stage 5 adds the independently verified application delivery layer at final audited implementation target `070147e`: the `vict.application@2` delivery vocabulary with strict `@1` compatibility and byte-identical legacy identity vectors; strict required-member and canonical-input validation (dense plain canonical data only; sparse arrays, inherited/non-enumerable/accessor members, exotic prototypes, and hostile proxies rejected structurally); deterministic, collision-resistant `applicationVersion`; immutable caller-independent compiled plans whose scalars, manifest identity, serialization bytes, and version never contradict each other; the canonical Svelte 5 renderer (`@victframework/renderer-svelte`) and generic application host with routes, navigation, responsive layouts, forms, records, tables, search, charts, tabs, dialogs, drawers, status, action and conversation surfaces, safe loading/empty/validation/denied/stale/partial/failure states, theme tokens, and versioned custom-component code islands; the one-time deterministic non-destructive scaffolder (`@victframework/scaffolder`); the production SQLite application-domain adapter (`@victframework/appdata-sqlite`) with typed authorized query/mutation/action boundaries, strict idempotency, and application-domain migrations explicitly separate from operational migrations; readiness-gated real-process SIGKILL restart evidence; a warning-free Svelte build; real-browser responsive and accessibility checks; and packed-consumer plus generated-host build verification. Observed closure baseline: 57 unit files / 1436 tests, 3 renderer files / 45 tests, 1 integration file / 4 tests, 61 files / 1485 total; ARA exactly 13 ordered events; benchmark exactly 10 events per completed run; Stage 04 application proof 17/17. Disposition: VERIFIED WITH NON-BLOCKING ISSUES — formal closure permitted and performed 2026-09-04.
 - Stage 6 adds the independently verified control plane, API, and product-agent integration at final audited implementation `c2ff692` (H-1-corrected tip, documented at `a6675bb`, verified by `8c13c28`): the neutral `vict.agent-stream@1` stream contract with resumable SSE, monotonic sequences, and lossless ordered replay; the `@victframework/control` governance package (ChangeSets with immutable content identity and exact-base CAS, evidence derived only from durable control runs, content-hash-bound approvals, activation and Application Release publish/select/rollback, durable agent-turn governance, audit events); the governed `@victframework/mastra` capability tool bridge (nine-step authorization order, framework-supplied occurrence identity, fenced exactly-once settlements, and the delivery-safe result snapshot settled BEFORE durable completion); the `@victframework/server` boundary (versioned HTTP commands with namespaced durable idempotency, authenticated actor composition, actor-scoped reads, no privileged Mastra route); the `@victframework/cli`; real child-process SIGKILL restart fixtures; and the adversarial canary matrix over every observable surface including raw DB/WAL/SHM bytes. Observed closure baseline: 114 files / 2152 tests, all passed; `verify:stage6b` ALL GATES PASSED; ARA exactly 13 ordered events; benchmark exactly 10 events per completed run; Stage 05 application proof 17/17. Disposition: VERIFIED WITH NON-BLOCKING ISSUES — formal closure performed 2026-09-09 (§0.10).
+- Stage 07A adds the independently verified Quellight consumer foundation at audited starting commit `cb9d74bf0d4ca8e1c21f7962e80bbf8d358d82a1` (implementation baseline `e0e65b7…`, published release commit `7e5908e…`): the canonical public namespace `@victframework/*` (13 packages published at `0.1.0` to the public npm registry with exact internal pins, Apache-2.0, engines `>=22.13.0`; immutable release-set identity `vict-release-set@1/0.1.0`, content ID `v1_dbb7438dfe16b7de245fe3863f6980b7e9a44a83c1809e01071941782597a11d`, recorded in `docs/RELEASE-COMPATIBILITY.md` and gated by `verify:release-set`); the N-1 own-`__proto__` delivery-snapshot rejection (closed reason `proto-field` through the existing durable `VICT_CAPABILITY_UNSAFE_OUTPUT_STRUCTURE` code, negative control at `e0e65b7`, permanent suites, emitted-package probe); the corrected Stage 06B verifier banner; isolated clean-consumer verification from packed tarballs and the public registry (82/82 independent checks); and the protected operator-configuration foundation with canary-proven non-leakage. The independent audit reproduced the full namespace classification and one gate defect — F-1, the `verify:stage7a` Gate 1 self-match — corrected at formal closure (`e45bdec…`, audit-sanctioned one-line self-exclusion; negative control proves the gate still fails on a genuine former-namespace reference). Observed independent closure baseline: 115 files / 2175 tests passed, 3 skipped (POSIX-only, unchanged); registry truth 13/13 recomputed; release-set identity recomputed; historical reports and handoffs byte-identical to the baseline. Disposition: `STAGE 07A VERIFIED WITH NON-BLOCKING ISSUES — FORMALLY CLOSED` (2026-09-09, §0.13); Stage 07 remains In Progress; Stage 07B permitted and not begun.
 
 ### 24.2 Accepted carry-forward issues
 
@@ -2798,7 +2928,7 @@ The following accepted notes remain visible rather than being hidden by the acce
 - **Informational (Stage 3, unchanged):** completion-phase store faults recover safely after lease lapse but are not immediately surfaced by the worker loop; non-cooperative in-flight capability cancellation retains documented cooperative race semantics.
 - **Environmental (not a defect):** the full Stage 3 verification ladder and packed-consumer check were executed on Windows (win32-x64); Node 24 targeted checks passed, while POSIX Stage 3 execution remains not independently reproduced. Node 24 and a second operating system were likewise unavailable for the Stage 4 remediation, the Stage 5 correction audits, and the final Stage 5 closure audit; a second Node runtime (v22.22.3) provided partial targeted mitigation at Stage 4, recorded as an environmental limitation rather than a defect.
 - **Low (AUDIT-F1, test-infrastructure hygiene, carried into Stage 06):** the scaffolder's real-build test uses the shared repository-local `.tmp-scaffold-check` path and can race if two independent Vitest processes execute that test simultaneously in one checkout. The prescribed sequential verification ladder passes; the finding does not touch identity, durability, or crash timing. A later correction should use a unique `mkdtemp` directory per process. **CLOSED in Stage 06A:** the real-build test now uses a unique per-process `mkdtemp` directory, verified by the Stage 06A final independent Linux closure audit.
-- **Low (H-1 audit N-1, boundary hardening — early Stage 07 acceptance item):** an own `__proto__` data key on an otherwise-accepted object is not rejected by the delivery-snapshot's closed vocabulary: a scalar-valued own `__proto__` field is silently dropped from the delivered snapshot, and an object-valued own `__proto__` becomes the delivered container's prototype. Verified consequences: no pollution of `Object.prototype` or any shared object, no caller-owned alias, internally consistent summaries/events/durable rows, safe serialization. To be corrected in early Stage 07 — reject own `__proto__` keys with a dedicated closed reason (or build snapshot containers with null prototypes) — BEFORE any live-provider or real-ARA claim. **Stage 07A correction note (v0.4.1, 2026-09-09):** implemented — own `__proto__` keys in any own form at any depth are rejected with the dedicated closed reason `proto-field`, surfaced through the existing durable code `VICT_CAPABILITY_UNSAFE_OUTPUT_STRUCTURE`; negative control reproduced at `e0e65b7`, corrected behavior proven by permanent suites and the emitted-package probe (`verify:n1`). Closure of this item awaits the independent Stage 07A verification.
+- **Low (H-1 audit N-1, boundary hardening — early Stage 07 acceptance item):** an own `__proto__` data key on an otherwise-accepted object is not rejected by the delivery-snapshot's closed vocabulary: a scalar-valued own `__proto__` field is silently dropped from the delivered snapshot, and an object-valued own `__proto__` becomes the delivered container's prototype. Verified consequences: no pollution of `Object.prototype` or any shared object, no caller-owned alias, internally consistent summaries/events/durable rows, safe serialization. To be corrected in early Stage 07 — reject own `__proto__` keys with a dedicated closed reason (or build snapshot containers with null prototypes) — BEFORE any live-provider or real-ARA claim. **Stage 07A correction note (v0.4.1, 2026-09-09):** implemented — own `__proto__` keys in any own form at any depth are rejected with the dedicated closed reason `proto-field`, surfaced through the existing durable code `VICT_CAPABILITY_UNSAFE_OUTPUT_STRUCTURE`; negative control reproduced at `e0e65b7`, corrected behavior proven by permanent suites and the emitted-package probe (`verify:n1`). Closure of this item awaits the independent Stage 07A verification. **CLOSED-in-Stage-07A (v0.4.2, 2026-09-09):** the independent Stage 07A verification independently reproduced the defect at the `e0e65b7` baseline with its own probe and verified the corrected boundary end-to-end (§0.13 item 3); its disposition "N-1's independent-verification acceptance criteria are SATISFIED" permits the formal closure that marks this item CLOSED.
 - **Informational (H-1 audit N-2):** fully sparse arrays are delivered as their documented dense prefix `[]`, and `-0` is delivered as `-0` (serializes as `0`). Documented, truthful model-facing behaviors; recorded for completeness.
 - **Low (Stage 06 exit audit EXIT-1, documented trade-off):** two same-process bridge compositions sharing ONE store do not share live-owner liveness; a cross-composition retry of the same occurrence identity conservatively reconciles the record to non-replayable `outcome_unknown` and the genuinely live owner can no longer settle its known result (exactly one effect; no false completion; no second effect). Unreachable through any shipped flow; retained as the documented trade-off of the declared single-process/local envelope. EXIT-2 (approval expiry throw-vs-denial form) and EXIT-3 (by-design persisted bounded approval `decisionReason`) remain informational observations.
 - **Environmental (Stage 06, not a defect):** the authoritative Stage 06 evidence was produced inside a WSL2 Ubuntu 24.04 guest on native ext4 — real Linux kernel and filesystem behavior, not bare-metal certification. No live provider, API key, or real model was used anywhere in Stage 06; live-provider verification and the real-use deployment-envelope/data-protection proof (MSTR-012) belong to Stage 07.
@@ -2883,6 +3013,9 @@ Retained informational limitations (verified architecture is not reopened): Stag
 - MASTRA-ARA-INTEGRATION.md — the accepted Mastra/ARA integration amendment record (v0.3.0, finalized by the v0.3.1 pre-implementation correction): product decision, ownership matrix, Mastra-versus-VICT orchestration boundary, neutral product-agent boundary, complete agent executable identity and snapshot semantics (§6), Mastra-native helper-tool policy, tool bridge, memory/storage/observability separation with the local data-protection baseline and declared deployment envelope (§8), streaming/transport decision, security composition, primary-source ledger (§2.4), real ARA product target, Stage 06A/06B delivery split and revised Stage 06/07, and the AI/MSTR requirement families; normative for Stage 06+; maintained under docs/architecture/. Read since v0.4.0 with its dated Quellight supersession note: historical "ARA product" references denote the product now named Quellight, and the §11 full-product specification is Quellight's long-term target while Stage 07 delivers the Minimum Workable Quellight.
 - STAGE-07-QUELLIGHT-MINIMUM-WORKABLE-PRODUCT.md — the accepted v0.4.0 Quellight rebaseline amendment: authority and canonical input hash (v1.3 CANONICAL, SHA-256 `e7f61d24…b01331`), product identity and repository boundary (VICT framework vs separate Quellight consumer repository), VICT-readiness matrix, canonical-to-VICT ownership mapping, the corrected memory/identity model, the Shared World record and storage decision (Quellight-owned store; no premature VICT extraction), the exact Minimum Workable Quellight scope and exclusions, the canonical first vertical acceptance scenario, the Q0–Q5 vertical/horizontal roadmap, requirement traceability with ARA compatibility and the new `QLT-*` family (all Planned), open constitutional decisions (OQ1–OQ6 launch positions; OQ6 unratified), security and retention boundaries, the Stage 07 exit gate, and genuine risks; normative for Stage 07; maintained under docs/architecture/.
 - VICT-STAGE-07A-QUELLIGHT-CONSUMER-FOUNDATION-HANDOFF.md — the executable Stage 07A implementation handoff (the next permitted increment): the H-1 N-1 `__proto__` delivery-snapshot hardening, the stale Stage 06B verifier-banner correction, the private-registry release/consumer mechanism, the immutable compatible release-set identity, isolated clean-consumer verification, and protected configuration foundations, with exact tests, negative controls, deliverables, exclusions, and exit gate; maintained under docs/handoff/.
+- VICT-STAGE-07A-CONSUMER-FOUNDATION-IMPLEMENTATION-REPORT.md — the Stage 07A implementer evidence (six work items, the public publication record, and the verification ladder); implementer claim, NOT independently authoritative; preserved unchanged including its non-reproducible `verify:stage7a = 0` row, which the independent verification found did not hold on the committed tree (F-1).
+- VICT-STAGE-07A-INDEPENDENT-VERIFICATION.md — the independent Stage 07A verification at commit `cb9d74bf0d4ca8e1c21f7962e80bbf8d358d82a1`: full governing-document derivation, namespace classification, registry truth for all 13 packages, release-set identity recomputation, 82/82 independent external-consumer proof, N-1 adversarial verification with baseline negative control, operator-credential canary probe, and the verification ladder; **authoritative Stage 07A disposition: VERIFIED WITH NON-BLOCKING ISSUES — FORMAL CLOSURE PERMITTED** (findings F-1 Medium, F-2/F-3 Low, F-4/F-5/F-6 Informational — none blocking; N-1 and ARCH-012 satisfied).
+- VICT-STAGE-07A-FORMAL-CLOSURE.md — the Stage 07A formal-closure record (v0.4.2, 2026-09-09): the F-1 reproduction/correction/negative-control evidence, the truthful implementation-report discrepancy, F-2–F-6 dispositions, N-1 CLOSED-in-Stage-07A, ARCH-012 Verified, the immutable release-boundary confirmation, the verification ladder at the fix commit, and the Stage 07B permitted/not-begun status; maintained under docs/report/.
 
 ---
 
@@ -3066,4 +3199,4 @@ Otherwise it probably belongs in an application, capability pack, adapter, devel
 
 ---
 
-**End of authoritative baseline v0.4.0**
+**End of authoritative baseline v0.4.2**

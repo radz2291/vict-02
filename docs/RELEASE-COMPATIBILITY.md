@@ -7,8 +7,14 @@
 > compatible release-set identity, the supported Node/runtime versions,
 > the registry location and access requirements, the consumer
 > install/rollback procedure, and the integrity mechanism.
-> **Not independently verified yet** — Stage 07A remains awaiting
-> independent verification.
+> **Independently verified and live (2026-09-09):** the independent
+> Stage 07A verification recomputed the release-set identity, retrieved
+> all 13 packages from the registry, and re-verified both consumer
+> modes (verdict `VERIFIED WITH NON-BLOCKING ISSUES — FORMAL CLOSURE
+> PERMITTED`); Stage 07A is formally closed (reference v0.4.2, §0.13).
+> Per §6's CI gate rule the recorded set is live. Finding F-4's §6
+> wording was reconciled at formal closure (no version-tag publication
+> path; the content-derived identity is the immutability anchor).
 
 ## 1. Registry identity and namespace decision
 
@@ -134,11 +140,17 @@ a NEW set identity; consumers upgrade explicitly.
 
 ## 6. Reproducible publication path
 
-The scripted path from a clean checkout + version tag to published
-artifacts — no interactive steps, no secrets in the repository (registry
-credentials live only in the publishing environment):
+The scripted path from a clean checkout of the release commit to
+published artifacts — no interactive steps, no secrets in the repository
+(registry credentials live only in the publishing environment). **No
+Git release tag is required or used** (reconciled at Stage 07A formal
+closure per independent-verification finding F-4: the repository has no
+tag convention; the immutability anchors are the content-derived
+release-set identity in §2, the clean-tree publication preflight, and
+the never-republish guard — independently verified):
 
-1. clean checkout of the release commit (`git checkout <tag>`);
+1. clean checkout of the release commit (exact clean tree at the
+   release commit; no tag lookup);
 2. `npm ci` → `npm run verify:release-set` → `npm run build`;
 3. `npm pack --dry-run --json` per package → inspected tarball manifests;
 4. `npm run verify:release-consumer` (installs the packed tarballs into a
