@@ -8,7 +8,10 @@
  *     lockfile) still references the superseded development-only
  *     `@vict/*` namespace — every current reference is
  *     `@victframework/*`. Historical reports (docs/report/**) and
- *     handoffs (docs/handoff/**) are excluded by design.
+ *     handoffs (docs/handoff/**) are excluded by design. This
+ *     verifier's own file is also excluded: it necessarily contains
+ *     the literal `@vict/` as its detection pattern (F-1 correction;
+ *     no other file or pattern is exempt).
  *  2. Release-set consistency: the manifests match the recorded
  *     immutable release-set identity exactly (verify:release-set).
  *  3. N-1 hardening suites: the delivery-snapshot boundary rejects own
@@ -72,11 +75,17 @@ console.log('\n--- Gate 1: namespace migration (no superseded @vict/* on executa
     .split(/\r?\n/)
     .filter((line) => line.trim().length > 0);
   const executableExtensions = /\.(ts|tsx|mts|cts|mjs|cjs|js|json|svelte|css|html)$/;
+  // F-1 correction: exclude ONLY this verifier's own file from the
+  // scan — it contains the literal `@vict/` as its detection pattern
+  // and doc-comment text by design, so the gate must not flag itself.
+  // Every other executable surface remains fully scanned.
+  const self = 'scripts/verify-stage7a.mjs';
   const executable = tracked.filter(
     (file) =>
       executableExtensions.test(file) &&
       !file.startsWith('docs/report/') &&
-      !file.startsWith('docs/handoff/'),
+      !file.startsWith('docs/handoff/') &&
+      file !== self,
   );
   const offenders = executable.filter((file) => {
     try {
