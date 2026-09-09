@@ -67,6 +67,21 @@
  * - own `then` fields (any form) and the reserved bridge control markers
  *   are rejected at every nesting level (defense in depth; the top-level
  *   reserved-marker arbitration in the bridge runs first and unchanged);
+ * - Stage 07A N-1 (H-1 audit Low): an own `__proto__` DATA key in any own
+ *   form, at any depth, is rejected with the dedicated closed reason
+ *   `proto-field` BEFORE any snapshot field is written. Rationale: a plain
+ *   rebuilt object can never truthfully carry an own `__proto__` data key —
+ *   `snapshot[key] = value` would silently drop scalar values (the inherited
+ *   setter ignores non-object values) and turn object values into the
+ *   delivered container's PROTOTYPE — so such an output is outside the
+ *   delivery domain, never transformed. Safe `constructor` / `prototype`
+ *   string keys are unchanged (delivered as plain own data fields), and
+ *   null-prototype containers WITHOUT a prohibited own `__proto__` key
+ *   remain accepted. The bridge surfaces this rejection through the
+ *   EXISTING durable code `VICT_CAPABILITY_UNSAFE_OUTPUT_STRUCTURE`
+ *   (model code `VICT_CAPABILITY_OUTCOME_UNKNOWN`) — a documented
+ *   specialization of the existing closed durable vocabulary, so no new
+ *   durable store value is introduced;
  * - rejection reasons come from ONE closed, stable, non-echoing
  *   vocabulary; rejected keys and values are never retained or surfaced.
  */
@@ -112,6 +127,8 @@ export type DeliveryUnsafeReason =
   | 'reserved-marker'
   /** An own `then` field in any form (data, accessor, hidden). */
   | 'then-field'
+  /** An own `__proto__` key in any own form (Stage 07A N-1 hardening). */
+  | 'proto-field'
   /** A non-plain instance (class instance, Date, Map, Set, RegExp, …). */
   | 'exotic-prototype'
   /** An own accessor (getter/setter) field — present, never read. */
@@ -258,8 +275,23 @@ function captureValue(value: unknown, depth: number, state: CaptureState): Deliv
     // descriptor DATA to the snapshot; the proxy itself never survives.)
     return { ok: false, reason: 'exotic-prototype' } as const;
   }
-  // Reserved bridge markers and own `then` fields are rejected at EVERY
-  // nesting level, in ANY own form (data, accessor, hidden) — never read.
+  // Reserved bridge markers, own `then` fields, and — since the Stage 07A
+  // N-1 hardening — own `__proto__` keys are rejected at EVERY nesting
+  // level, in ANY own form (data, accessor, hidden) — never read. The own
+  // `__proto__` rejection is a DEDICATED FIRST PASS over the captured key
+  // set, so the closed `proto-field` reason fires deterministically for
+  // any object carrying an own `__proto__` key regardless of the other
+  // fields' shapes, and BEFORE the snapshot is built (no captured field is
+  // ever written through the inherited `__proto__` setter, which would
+  // drop scalar values and promote object values to the delivered
+  // container's prototype). Arrays cannot carry an own `__proto__` index;
+  // an array-side own `__proto__` property is already rejected as
+  // `extra-array-property` below.
+  for (const key of capture.fields.keys()) {
+    if (key === '__proto__') {
+      return { ok: false, reason: 'proto-field' } as const;
+    }
+  }
   for (const [key, field] of capture.fields) {
     if (isReservedOrThenKey(key)) {
       return {
