@@ -10,8 +10,8 @@ import {
   type KernelEvent,
   type OutputSummary,
   type SignalReceiptRecord,
-} from '@vict/kernel';
-import type { VictError } from '@vict/contracts';
+} from '@victframework/kernel';
+import type { VictError } from '@victframework/contracts';
 import type {
   CompleteAttemptCommand,
   CancellationResult,

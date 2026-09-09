@@ -1,7 +1,7 @@
 import { frozenCapture, VictAuthoringError } from './authoring.js';
 
 /**
- * Product-agent authoring vocabulary (`@vict/sdk`).
+ * Product-agent authoring vocabulary (`@victframework/sdk`).
  *
  * This module is part of the stable authoring ABI. It sits BELOW the kernel
  * and runtime in the dependency direction and is — like the rest of the

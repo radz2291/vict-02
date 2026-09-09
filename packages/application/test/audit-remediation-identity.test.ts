@@ -5,7 +5,7 @@ import {
   RESOURCE_DEFINITION_SCHEMA,
   defineApplication,
   defineResource,
-} from '@vict/sdk';
+} from '@victframework/sdk';
 import {
   compileApplication,
   createComponentRegistry,
@@ -125,7 +125,7 @@ function compileProbePlan(): ApplicationPlan {
 function makeRelease(
   plan: ApplicationPlan,
   overrides: Record<string, unknown> = {},
-): import('@vict/sdk').ApplicationRelease & Record<string, unknown> {
+): import('@victframework/sdk').ApplicationRelease & Record<string, unknown> {
   return {
     schema: APPLICATION_RELEASE_SCHEMA,
     applicationId: plan.applicationId,

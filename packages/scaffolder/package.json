@@ -1,7 +1,6 @@
 {
-  "name": "@vict/scaffolder",
+  "name": "@victframework/scaffolder",
   "version": "0.1.0",
-  "private": true,
   "type": "module",
   "description": "One-time SvelteKit application-host scaffolder for Vict: deterministic, non-destructive, path-safe, idempotent. Generates the generic VICT host, extension locations (code islands), and required configuration. Never overwrites application-owned files and never regenerates ordinary application code.",
   "exports": {
@@ -23,5 +22,18 @@
   },
   "engines": {
     "node": ">=22.13.0"
-  }
+  },
+  "license": "Apache-2.0",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/radz2291/vict-02.git",
+    "directory": "packages/scaffolder"
+  },
+  "bugs": {
+    "url": "https://github.com/radz2291/vict-02/issues"
+  },
+  "homepage": "https://github.com/radz2291/vict-02#readme"
 }

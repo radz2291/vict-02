@@ -2,15 +2,15 @@ import { afterAll, describe, expect, it } from 'vitest';
 import { mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import type { AgentArtifactBinding, AgentHelperToolArtifact } from '@vict/runtime';
-import type { AgentHelperToolIO } from '@vict/runtime';
-import type { CapabilityDefinition, Contract } from '@vict/sdk';
+import type { AgentArtifactBinding, AgentHelperToolArtifact } from '@victframework/runtime';
+import type { AgentHelperToolIO } from '@victframework/runtime';
+import type { CapabilityDefinition, Contract } from '@victframework/sdk';
 import {
   createInMemoryAgentControlStores,
   AgentStreamHub,
   authenticatedActorContext,
   AgentProfileRegistry,
-} from '@vict/runtime';
+} from '@victframework/runtime';
 import {
   MASTRA_ADAPTER_COMPATIBILITY,
   bridgeHelperToolToMastra,

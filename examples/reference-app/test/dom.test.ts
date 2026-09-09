@@ -1,8 +1,11 @@
 import { flushSync } from 'svelte';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
-import { createInMemoryApplicationData, type ApplicationDataAdapter } from '@vict/application';
-import { renderVictApplication } from '@vict/renderer-svelte';
-import type { MountedVictApplication } from '@vict/renderer-svelte';
+import {
+  createInMemoryApplicationData,
+  type ApplicationDataAdapter,
+} from '@victframework/application';
+import { renderVictApplication } from '@victframework/renderer-svelte';
+import type { MountedVictApplication } from '@victframework/renderer-svelte';
 import { dataContracts, resources } from '$lib/application/definition.js';
 import { createReferenceRegistry } from '$lib/components/registry';
 import { createReferenceServer, type ReferenceAppServer } from '$lib/server/application-server';

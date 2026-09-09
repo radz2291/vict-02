@@ -1,12 +1,12 @@
 import { describe, expect, it, vi } from 'vitest';
 import { z } from 'zod';
-import { defineCapability, defineGraph } from '@vict/sdk';
-import { createRuntime, type VictRuntime } from '@vict/runtime';
-import { defineZodContract } from '@vict/sdk/zod';
+import { defineCapability, defineGraph } from '@victframework/sdk';
+import { createRuntime, type VictRuntime } from '@victframework/runtime';
+import { defineZodContract } from '@victframework/sdk/zod';
 
 /**
- * Public-surface smoke test: this file imports ONLY from '@vict/sdk' and its
- * optional zod adapter '@vict/sdk/zod' (plus zod for schema authoring),
+ * Public-surface smoke test: this file imports ONLY from '@victframework/sdk' and its
+ * optional zod adapter '@victframework/sdk/zod' (plus zod for schema authoring),
  * exactly as an external application would, and proves the system through
  * public APIs - not package internals.
  */

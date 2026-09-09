@@ -4,7 +4,7 @@ import {
   createSqliteApplicationData,
   migrationsFromResources,
   type SqliteApplicationDataAdapter,
-} from '@vict/appdata-sqlite';
+} from '@victframework/appdata-sqlite';
 import { createReferenceServer, type ReferenceAppServer } from './application-server.js';
 import { dataContracts, resources } from '$lib/application/definition.js';
 

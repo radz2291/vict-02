@@ -1,12 +1,12 @@
-import { createRuntime, installCapabilityPack } from '@vict/runtime';
-import { runCapabilityPackConformanceSuite } from '@vict/runtime/testing';
+import { createRuntime, installCapabilityPack } from '@victframework/runtime';
+import { runCapabilityPackConformanceSuite } from '@victframework/runtime/testing';
 import {
   defineCapabilityPack,
   defineGraph,
   VICT_AUTHORING_COMPAT_VERSION,
   validateCapabilityPack,
   neutralJsonContract,
-} from '@vict/sdk';
+} from '@victframework/sdk';
 import { describe, expect, it } from 'vitest';
 import {
   ledgerPack,

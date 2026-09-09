@@ -3,8 +3,8 @@ import type {
   ApplicationDataQueryRequest,
   ApplicationDataRequestContext,
   ApplicationDataResult,
-} from '@vict/application';
-import type { Contract, ResourceDefinition } from '@vict/sdk';
+} from '@victframework/application';
+import type { Contract, ResourceDefinition } from '@victframework/sdk';
 import {
   openAppDatabase,
   safeDriver,

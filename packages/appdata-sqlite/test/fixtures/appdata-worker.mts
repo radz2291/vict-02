@@ -1,5 +1,5 @@
-import { createSqliteApplicationData } from '@vict/appdata-sqlite';
-import { defineResource, RESOURCE_DEFINITION_SCHEMA } from '@vict/sdk';
+import { createSqliteApplicationData } from '@victframework/appdata-sqlite';
+import { defineResource, RESOURCE_DEFINITION_SCHEMA } from '@victframework/sdk';
 
 /**
  * Application-data restart worker (Stage 05). Invoked as a REAL child

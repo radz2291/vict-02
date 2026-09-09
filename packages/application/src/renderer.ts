@@ -1,4 +1,4 @@
-import type { ComponentReference, SurfaceRole } from '@vict/sdk';
+import type { ComponentReference, SurfaceRole } from '@victframework/sdk';
 import type { ApplicationPlan } from './compile.js';
 
 /**

@@ -1,8 +1,13 @@
 import { describe, expect, it } from 'vitest';
 import { z } from 'zod';
-import { defineCapability, defineGraph, errorSignalContract, neutralJsonContract } from '@vict/sdk';
-import { defineZodContract } from '@vict/sdk/zod';
-import { createRuntime } from '@vict/runtime';
+import {
+  defineCapability,
+  defineGraph,
+  errorSignalContract,
+  neutralJsonContract,
+} from '@victframework/sdk';
+import { defineZodContract } from '@victframework/sdk/zod';
+import { createRuntime } from '@victframework/runtime';
 
 const Counter = defineZodContract('t.counter', '1', z.object({ count: z.number() }));
 const Greeting = defineZodContract(

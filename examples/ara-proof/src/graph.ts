@@ -1,4 +1,4 @@
-import { defineGraph } from '@vict/sdk';
+import { defineGraph } from '@victframework/sdk';
 
 /**
  * The deterministic ARA conversation flow:

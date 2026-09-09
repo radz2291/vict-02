@@ -10,8 +10,8 @@ import {
   type AgentArtifact,
   type AgentHelperToolDefinition,
   type AgentTurnOutcome,
-} from '@vict/runtime';
-import { createSqliteAgentGovernanceStore } from '@vict/store-sqlite';
+} from '@victframework/runtime';
+import { createSqliteAgentGovernanceStore } from '@victframework/store-sqlite';
 import {
   createDedicatedMastraStore,
   createDeterministicOfflineModel,
@@ -24,7 +24,7 @@ import {
   VictMastraAdapterError,
   VictMastraCompositionError,
   type DedicatedMastraStore,
-} from '@vict/mastra';
+} from '@victframework/mastra';
 
 /**
  * Stage 06A boundary-remediation regressions:
@@ -229,7 +229,7 @@ async function composeBoundary(options: {
     guardrails: [{ id: 'guardrail.b', revision: '1' }],
     capabilities: [] as never as Array<{ id: string; revision: string }>,
     adapter: {
-      id: '@vict/mastra',
+      id: '@victframework/mastra',
       revision: '1',
       runtimePackages: {
         '@mastra/core': '1.64.0',
@@ -291,7 +291,7 @@ describe('unfenced compositions are rejected before execution', () => {
         guardrails: [{ id: 'guardrail.b', revision: '1' }],
         capabilities: [] as never as Array<{ id: string; revision: string }>,
         adapter: {
-          id: '@vict/mastra',
+          id: '@victframework/mastra',
           revision: '1',
           runtimePackages: {
             '@mastra/core': '1.64.0',
@@ -381,7 +381,7 @@ describe('supported composition: deletion versus in-flight turns (barrier-contro
       guardrails: [{ id: 'guardrail.b', revision: '1' }],
       capabilities: [] as never as Array<{ id: string; revision: string }>,
       adapter: {
-        id: '@vict/mastra',
+        id: '@victframework/mastra',
         revision: '1',
         runtimePackages: {
           '@mastra/core': '1.64.0',
@@ -539,7 +539,7 @@ describe('supported composition: deletion versus in-flight turns (barrier-contro
       guardrails: [{ id: 'guardrail.b', revision: '1' }],
       capabilities: [] as never as Array<{ id: string; revision: string }>,
       adapter: {
-        id: '@vict/mastra',
+        id: '@victframework/mastra',
         revision: '1',
         runtimePackages: {
           '@mastra/core': '1.64.0',
@@ -635,7 +635,7 @@ describe('supported composition: deletion versus in-flight turns (barrier-contro
         guardrails: [{ id: 'guardrail.b', revision: '1' }],
         capabilities: [] as never as Array<{ id: string; revision: string }>,
         adapter: {
-          id: '@vict/mastra',
+          id: '@victframework/mastra',
           revision: '1',
           runtimePackages: {
             '@mastra/core': '1.64.0',
@@ -797,7 +797,7 @@ describe('supported composition: deletion versus in-flight turns (barrier-contro
         guardrails: [{ id: 'guardrail.b', revision: '1' }],
         capabilities: [] as never as Array<{ id: string; revision: string }>,
         adapter: {
-          id: '@vict/mastra',
+          id: '@victframework/mastra',
           revision: '1',
           runtimePackages: {
             '@mastra/core': '1.64.0',
@@ -867,7 +867,7 @@ describe('supported composition: deletion versus in-flight turns (barrier-contro
         guardrails: [{ id: 'guardrail.b', revision: '1' }],
         capabilities: [] as never as Array<{ id: string; revision: string }>,
         adapter: {
-          id: '@vict/mastra',
+          id: '@victframework/mastra',
           revision: '1',
           runtimePackages: {
             '@mastra/core': '1.64.0',
@@ -1131,7 +1131,7 @@ describe('hostile configuration and callback results are contained', () => {
         guardrails: [{ id: 'guardrail.b', revision: '1' }],
         capabilities: [] as never as Array<{ id: string; revision: string }>,
         adapter: {
-          id: '@vict/mastra',
+          id: '@victframework/mastra',
           revision: '1',
           runtimePackages: {
             '@mastra/core': '1.64.0',
@@ -1216,7 +1216,7 @@ describe('hostile configuration and callback results are contained', () => {
         guardrails: [{ id: 'guardrail.hostile', revision: '1' }],
         capabilities: [] as never as Array<{ id: string; revision: string }>,
         adapter: {
-          id: '@vict/mastra',
+          id: '@victframework/mastra',
           revision: '1',
           runtimePackages: {
             '@mastra/core': '1.64.0',

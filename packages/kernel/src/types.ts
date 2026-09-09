@@ -1,12 +1,12 @@
-import type { Contract, ContractIssue, VictError } from '@vict/contracts';
+import type { Contract, ContractIssue, VictError } from '@victframework/contracts';
 
 /**
  * Stage 04: the stable authoring definitions (graph language, capability
  * vocabulary, effect/execution modes, retry policy and its limits) now live
- * in `@vict/sdk`, the authoring ABI below the kernel. The kernel CONSUMES
+ * in `@victframework/sdk`, the authoring ABI below the kernel. The kernel CONSUMES
  * these public declarations; it no longer owns author-facing definitions.
  * They are re-exported here (and from the kernel index) purely for
- * internal/consumer convenience — `@vict/sdk` is the single authoritative
+ * internal/consumer convenience — `@victframework/sdk` is the single authoritative
  * home and the dependency direction stays acyclic:
  * `contracts -> sdk -> kernel -> runtime`.
  */
@@ -32,8 +32,8 @@ export type {
   TimeoutEdgeDefinition,
   TimerWaitDefinition,
   WaitNodeDefinition,
-} from '@vict/sdk';
-export { MAX_BRANCH_COUNT, MAX_DELAY_MS_LIMIT, RETRY_MAX_ATTEMPTS_LIMIT } from '@vict/sdk';
+} from '@victframework/sdk';
+export { MAX_BRANCH_COUNT, MAX_DELAY_MS_LIMIT, RETRY_MAX_ATTEMPTS_LIMIT } from '@victframework/sdk';
 import type {
   ApplicationGraphDefinition,
   EffectClass,
@@ -41,7 +41,7 @@ import type {
   RetryPolicy,
   SignalWaitDefinition,
   TimerWaitDefinition,
-} from '@vict/sdk';
+} from '@victframework/sdk';
 
 /**
  * Run status.

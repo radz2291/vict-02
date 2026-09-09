@@ -1,5 +1,5 @@
-import type { ApplicationPlan, ApplicationRenderer } from '@vict/application';
-import type { RenderedApplication, RendererBindings } from '@vict/application/renderer';
+import type { ApplicationPlan, ApplicationRenderer } from '@victframework/application';
+import type { RenderedApplication, RendererBindings } from '@victframework/application/renderer';
 import VitApp from './VitApp.svelte';
 import { BUILT_IN_ROLES, validatePlanForRenderer, type VictPlanView } from './logic.js';
 import {
@@ -8,7 +8,7 @@ import {
   type RenderVictApplicationOptions,
 } from './mount.svelte.js';
 
-export { RendererDiagnostic } from '@vict/application/renderer';
+export { RendererDiagnostic } from '@victframework/application/renderer';
 export {
   resolveRoute,
   matchPath,

@@ -380,7 +380,7 @@ describe('public-API authorization matrix (real HTTP, below-transport enforcemen
     void who;
     // The composed command service is the enforcement point: a caller with
     // an empty-scope context is denied DIRECTLY at the dispatcher.
-    const { authenticatedActorContext } = await import('@vict/runtime');
+    const { authenticatedActorContext } = await import('@victframework/runtime');
     const empty = authenticatedActorContext(
       { actorId: 'actor-empty', status: 'active', roles: [], createdAt: 0 },
       'actor-empty',

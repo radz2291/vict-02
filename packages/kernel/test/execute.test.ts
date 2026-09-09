@@ -2,8 +2,8 @@ import { describe, expect, it } from 'vitest';
 import { compileGraph } from '../src/compile.js';
 import { executeGraph } from '../src/execute.js';
 import { unsafeCompiledGraphForTesting } from '../src/testing.js';
-import type { VictError } from '@vict/contracts';
-import type { Contract } from '@vict/contracts';
+import type { VictError } from '@victframework/contracts';
+import type { Contract } from '@victframework/contracts';
 import type {
   CapabilityDescriptor,
   CapabilityIndex,

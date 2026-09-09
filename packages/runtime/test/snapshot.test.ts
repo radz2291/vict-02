@@ -1,9 +1,9 @@
 import { describe, expect, it, vi } from 'vitest';
 import { z } from 'zod';
-import { defineCapability, defineGraph } from '@vict/sdk';
-import { defineZodContract } from '@vict/sdk/zod';
-import { createRuntime } from '@vict/runtime';
-import type { KernelEvent } from '@vict/kernel';
+import { defineCapability, defineGraph } from '@victframework/sdk';
+import { defineZodContract } from '@victframework/sdk/zod';
+import { createRuntime } from '@victframework/runtime';
+import type { KernelEvent } from '@victframework/kernel';
 
 const Count = defineZodContract('s.count', '1', z.object({ count: z.number() }));
 

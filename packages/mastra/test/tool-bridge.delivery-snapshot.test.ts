@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import type { CapabilityDefinition, Contract } from '@vict/sdk';
-import { createInMemoryAgentControlStores, type AgentControlStores } from '@vict/runtime';
-import { createSqliteAgentControlStores } from '@vict/store-sqlite';
+import type { CapabilityDefinition, Contract } from '@victframework/sdk';
+import { createInMemoryAgentControlStores, type AgentControlStores } from '@victframework/runtime';
+import { createSqliteAgentControlStores } from '@victframework/store-sqlite';
 import { DELIVERY_SNAPSHOT_BOUNDS, captureDeliverySafeSnapshot } from '../src/delivery-snapshot.js';
 import {
   bridgeCapabilityToolToMastra,
@@ -457,7 +457,7 @@ async function makeSnapshotFixture(
       return outputProvider();
     },
   } as unknown as CapabilityDefinition;
-  const { AgentTurnService } = await import('@vict/control');
+  const { AgentTurnService } = await import('@victframework/control');
   const turnService = new AgentTurnService({
     stores,
     clock,
@@ -753,7 +753,7 @@ describe('bridge delivery snapshot: completion is gated on provably safe deliver
         roles: ['developer'],
         createdAt: 0,
       });
-      const { AgentTurnService } = await import('@vict/control');
+      const { AgentTurnService } = await import('@victframework/control');
       const turnService = new AgentTurnService({
         stores,
         clock,

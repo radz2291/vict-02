@@ -12,7 +12,7 @@ import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { afterAll, describe, expect, it } from 'vitest';
-import { GENERATED_FILES, scaffoldVictApp } from '@vict/scaffolder';
+import { GENERATED_FILES, scaffoldVictApp } from '@victframework/scaffolder';
 
 /**
  * One-time host scaffolder guarantees (Stage 05): fresh generation,

@@ -1,7 +1,7 @@
 import { flushSync, mount, unmount } from 'svelte';
-import type { ApplicationPlan, ApplicationRenderer } from '@vict/application';
-import type { ComponentRegistry } from '@vict/application/renderer';
-import { createComponentRegistry } from '@vict/application/renderer';
+import type { ApplicationPlan, ApplicationRenderer } from '@victframework/application';
+import type { ComponentRegistry } from '@victframework/application/renderer';
+import { createComponentRegistry } from '@victframework/application/renderer';
 import ApplicationHost from './ApplicationHost.svelte';
 import Badge from './components/Badge.svelte';
 

@@ -1,8 +1,8 @@
 import { createHash } from 'node:crypto';
-import { canonicalJson } from '@vict/kernel';
-import type { AgentStreamEvent } from '@vict/contracts';
-import type { AgentReference, AgentProfileAuthoring } from '@vict/sdk';
-import type { CompiledAgentProfile } from '@vict/kernel';
+import { canonicalJson } from '@victframework/kernel';
+import type { AgentStreamEvent } from '@victframework/contracts';
+import type { AgentReference, AgentProfileAuthoring } from '@victframework/sdk';
+import type { CompiledAgentProfile } from '@victframework/kernel';
 
 /**
  * Neutral product-agent runtime boundary (Stage 06A).
@@ -912,6 +912,6 @@ export function pinAgentTurnRunner(
 /**
  * Compile-time and documentation view of the profile authoring input the
  * registry accepts (re-exported so neutral runtime consumers do not need
- * to import `@vict/sdk` separately for the shape).
+ * to import `@victframework/sdk` separately for the shape).
  */
 export type { AgentProfileAuthoring };

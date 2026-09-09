@@ -2,13 +2,13 @@ import { mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterAll, describe, expect, it } from 'vitest';
-import { runAgentControlConformanceSuite } from '@vict/runtime';
+import { runAgentControlConformanceSuite } from '@victframework/runtime';
 import { createSqliteAgentControlStores } from '../src/index.js';
 
 /**
  * The SHARED Stage 06B conformance suite executed against the DURABLE
  * SQLite adapters (migration 5) — the same behavioral source the in-memory
- * adapters pass in `@vict/runtime`'s own suite. Includes close/reopen
+ * adapters pass in `@victframework/runtime`'s own suite. Includes close/reopen
  * equivalence, so every durable state machine survives a process restart.
  */
 

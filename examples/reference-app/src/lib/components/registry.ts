@@ -1,5 +1,5 @@
-import { createComponentRegistry } from '@vict/application/renderer';
-import type { ComponentRegistry } from '@vict/application/renderer';
+import { createComponentRegistry } from '@victframework/application/renderer';
+import type { ComponentRegistry } from '@victframework/application/renderer';
 import HealthBadge from './HealthBadge.svelte';
 
 /**

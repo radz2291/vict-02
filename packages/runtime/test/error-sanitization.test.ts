@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { z } from 'zod';
-import { defineCapability, defineGraph } from '@vict/sdk';
-import { defineZodContract } from '@vict/sdk/zod';
-import { createRuntime } from '@vict/runtime';
+import { defineCapability, defineGraph } from '@victframework/sdk';
+import { defineZodContract } from '@victframework/sdk/zod';
+import { createRuntime } from '@victframework/runtime';
 
 const SECRET = 'capability-SECRET-c31e9b';
 

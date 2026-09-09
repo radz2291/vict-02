@@ -8,8 +8,8 @@ import {
   resolveDecisionRoute,
   canonicalJoinOutput,
   RETRY_MAX_ATTEMPTS_LIMIT,
-} from '@vict/kernel';
-import type { ApplicationGraphDefinition, CapabilityIndex } from '@vict/kernel';
+} from '@victframework/kernel';
+import type { ApplicationGraphDefinition, CapabilityIndex } from '@victframework/kernel';
 
 /** Stable capability/contract knowledge for compiler tests. */
 const capabilities: CapabilityIndex = {

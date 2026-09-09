@@ -1,7 +1,7 @@
 /**
  * Compact, dependency-free SHA-256 (FIPS 180-4).
  *
- * `@vict/application` compiles canonical identity for BOTH node tooling and
+ * `@victframework/application` compiles canonical identity for BOTH node tooling and
  * browser hosts (the renderer boundary must not depend on node builtins),
  * so identity hashing uses this pure implementation instead of
  * `node:crypto`. Output is byte-identical to `crypto.createHash('sha256')`;

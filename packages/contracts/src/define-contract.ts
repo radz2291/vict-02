@@ -41,7 +41,7 @@ export function isOfficialContract(value: unknown): boolean {
  * This is the base authoring API and is schema-library neutral: no schema
  * library appears in the signature or in emitted declarations. For schema
  * library convenience use an optional adapter such as
- * `defineZodContract` from `@vict/contracts/zod`.
+ * `defineZodContract` from `@victframework/contracts/zod`.
  *
  * The `revision` is an author/build responsibility: changing the contract's
  * accepted shape or semantics requires publishing a new revision so activation

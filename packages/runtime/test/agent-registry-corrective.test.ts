@@ -7,7 +7,7 @@ import {
   type AgentArtifactKind,
   type AgentProfileActivation,
 } from '../src/index.js';
-import type { AgentProfileAuthoring } from '@vict/sdk';
+import type { AgentProfileAuthoring } from '@victframework/sdk';
 
 /**
  * Stage 06A corrective regressions — artifact-registry integrity, complete
@@ -53,7 +53,7 @@ function profileInput(overrides: Partial<AgentProfileAuthoring> = {}): AgentProf
     guardrails: [{ id: 'guardrail.c', revision: '1' }],
     structuredOutput: { contract: { id: 'contract.c', revision: '1' } },
     capabilities: [{ id: 'cap.c', revision: '1' }],
-    adapter: { id: '@vict/mastra', revision: '1', runtimePackages: {} },
+    adapter: { id: '@victframework/mastra', revision: '1', runtimePackages: {} },
     ...overrides,
   };
 }
@@ -403,7 +403,11 @@ describe('the canonical activation manifest covers the complete resolved activat
     };
     expect(manifest.schema).toBe('vict.agent-activation@3');
     expect(manifest.agentProfileVersion).toBe(activation.agentProfileVersion);
-    expect(manifest.adapter).toEqual({ id: '@vict/mastra', revision: '1', runtimePackages: {} });
+    expect(manifest.adapter).toEqual({
+      id: '@victframework/mastra',
+      revision: '1',
+      runtimePackages: {},
+    });
     // Resolved subagent identities are part of the manifest (empty set here,
     // canonically represented).
     expect(manifest.subagents).toEqual([]);

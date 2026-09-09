@@ -11,7 +11,7 @@ import {
   type ChangeSetRecord,
   type ControlRunOperationOutcome,
   type StoredActivation,
-} from '@vict/runtime';
+} from '@victframework/runtime';
 import type { ChangeSetSimulator } from './control-plane.js';
 
 /**

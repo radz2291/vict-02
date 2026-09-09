@@ -11,18 +11,18 @@ import {
   validateCapabilityPack,
   defineCapabilityPack,
   neutralJsonContract,
-} from '@vict/sdk';
+} from '@victframework/sdk';
 
 /**
  * Stage 04 authoring-ABI surface test.
  *
- * `@vict/sdk` is a lightweight authoring layer BELOW the kernel and runtime:
- * this file imports NOTHING from `@vict/runtime` (enforced structurally by
+ * `@victframework/sdk` is a lightweight authoring layer BELOW the kernel and runtime:
+ * this file imports NOTHING from `@victframework/runtime` (enforced structurally by
  * the packed-consumer isolation check) and exercises the stable authoring
  * factories, their immutability guarantees, and the capability-pack
  * validator.
  */
-describe('@vict/sdk authoring ABI (Stage 04)', () => {
+describe('@victframework/sdk authoring ABI (Stage 04)', () => {
   it('authors contracts, capabilities and graphs without any runtime import', () => {
     const TextMessage = defineContract<{ text: string }>({
       id: 'smoke.text',

@@ -44,7 +44,7 @@ export interface Contract<T = unknown> {
 
 /**
  * Neutral contract authoring shape. This is Vict's public contract API —
- * schema libraries enter only through optional adapters (e.g. `@vict/contracts/zod`).
+ * schema libraries enter only through optional adapters (e.g. `@victframework/contracts/zod`).
  */
 export interface ContractDefinition<T = unknown> {
   readonly id: string;

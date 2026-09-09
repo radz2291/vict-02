@@ -1,4 +1,4 @@
-import { VictControlError } from '@vict/runtime';
+import { VictControlError } from '@victframework/runtime';
 import type { ServerActorContext } from './auth.js';
 
 /**

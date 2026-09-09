@@ -2,11 +2,11 @@ import { describe, expect, it } from 'vitest';
 import { mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { createInMemoryStores } from '@vict/runtime';
-import { runDurableBoundarySuite, runStoreConformanceSuite } from '@vict/runtime/testing';
-import type { BoundaryConformanceFactory, ConformanceStores } from '@vict/runtime/testing';
-import { createSqliteStores } from '@vict/store-sqlite';
-import type { SqliteStoresOptions } from '@vict/store-sqlite';
+import { createInMemoryStores } from '@victframework/runtime';
+import { runDurableBoundarySuite, runStoreConformanceSuite } from '@victframework/runtime/testing';
+import type { BoundaryConformanceFactory, ConformanceStores } from '@victframework/runtime/testing';
+import { createSqliteStores } from '@victframework/store-sqlite';
+import type { SqliteStoresOptions } from '@victframework/store-sqlite';
 
 /**
  * One adapter-neutral behavioral source, executed against BOTH backends:

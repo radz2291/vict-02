@@ -1,5 +1,9 @@
 import { randomUUID } from 'node:crypto';
-import { sanitizeContractIssues, type ContractResult, type VictError } from '@vict/contracts';
+import {
+  sanitizeContractIssues,
+  type ContractResult,
+  type VictError,
+} from '@victframework/contracts';
 import { kernelError } from './errors.js';
 import { summarizeOutput } from './summarize.js';
 import type {

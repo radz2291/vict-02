@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { AgentProfileRegistry, pinAgentTurnRunner, type AgentArtifact } from '../src/index.js';
-import type { AgentProfileAuthoring } from '@vict/sdk';
+import type { AgentProfileAuthoring } from '@victframework/sdk';
 
 /**
  * Stage 06A permanent regression: registration atomicity, immutable
@@ -26,7 +26,7 @@ function profileInput(overrides: Partial<AgentProfileAuthoring> = {}): AgentProf
     memoryPolicy: { id: 'memory-policy.r', revision: '1' },
     helperTools: [{ id: 'helper.r', revision: '1' }],
     capabilities: [{ id: 'cap.r', revision: '1' }],
-    adapter: { id: '@vict/mastra', revision: '1', runtimePackages: {} },
+    adapter: { id: '@victframework/mastra', revision: '1', runtimePackages: {} },
     ...overrides,
   };
 }

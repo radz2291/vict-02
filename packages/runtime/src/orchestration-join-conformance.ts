@@ -1,4 +1,4 @@
-import { neutralJsonContract } from '@vict/sdk';
+import { neutralJsonContract } from '@victframework/sdk';
 import type { VictRuntime } from './runtime.js';
 import type {
   ConformanceExpect,

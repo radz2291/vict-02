@@ -7,8 +7,8 @@ import { fileURLToPath } from 'node:url';
 import { afterAll, describe, expect, it } from 'vitest';
 import { retryRm } from './helpers/retry-rm.js';
 import { isReadyLine } from './fixtures/readiness.js';
-import { createSqliteAgentControlStores } from '@vict/store-sqlite';
-import { VictControlError } from '@vict/runtime';
+import { createSqliteAgentControlStores } from '@victframework/store-sqlite';
+import { VictControlError } from '@victframework/runtime';
 
 /**
  * Stage 06B final boundary correction — SQLite attempt-fencing suites

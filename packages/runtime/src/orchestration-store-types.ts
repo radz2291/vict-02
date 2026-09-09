@@ -8,8 +8,8 @@ import type {
   KernelEvent,
   OutputSummary,
   SignalReceiptRecord,
-} from '@vict/kernel';
-import type { VictError } from '@vict/contracts';
+} from '@victframework/kernel';
+import type { VictError } from '@victframework/contracts';
 import type { PayloadRetention } from './types.js';
 
 /**

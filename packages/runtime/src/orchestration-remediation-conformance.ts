@@ -1,5 +1,5 @@
-import { neutralJsonContract } from '@vict/sdk';
-import type { KernelEvent } from '@vict/kernel';
+import { neutralJsonContract } from '@victframework/sdk';
+import type { KernelEvent } from '@victframework/kernel';
 import type { ManualOrchestrationClock } from './orchestration-race-conformance.js';
 import type { OrchestrationStore } from './orchestration-store-types.js';
 import type { VictRuntime } from './runtime.js';

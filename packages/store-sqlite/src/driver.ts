@@ -1,5 +1,5 @@
 import { DatabaseSync } from 'node:sqlite';
-import { VictControlError, VictStoreError } from '@vict/runtime';
+import { VictControlError, VictStoreError } from '@victframework/runtime';
 
 /**
  * Thin, safe wrapper over the built-in `node:sqlite` driver.

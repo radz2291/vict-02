@@ -1,5 +1,5 @@
-import type { VictError } from '@vict/contracts';
-import type { EffectClass, KernelEvent } from '@vict/kernel';
+import type { VictError } from '@victframework/contracts';
+import type { EffectClass, KernelEvent } from '@victframework/kernel';
 import type { OrchestrationStore } from './orchestration-store-types.js';
 import type { CapabilityRegistry } from './registry.js';
 import type { EffectPolicyOverrides } from './effect-policy.js';

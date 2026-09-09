@@ -1,4 +1,4 @@
-import { compileGraph, executeGraph } from '@vict/kernel';
+import { compileGraph, executeGraph } from '@victframework/kernel';
 import { OrchestrationDriver } from './orchestration-driver.js';
 import type {
   OrchestrationRunResult,
@@ -35,9 +35,9 @@ import type {
   KernelEvent,
   KernelPorts,
   KernelRunOutput,
-} from '@vict/kernel';
-import { NEUTRAL_JSON_CONTRACT_ID } from '@vict/contracts';
-import type { Contract, ContractResult, VictError } from '@vict/contracts';
+} from '@victframework/kernel';
+import { NEUTRAL_JSON_CONTRACT_ID } from '@victframework/contracts';
+import type { Contract, ContractResult, VictError } from '@victframework/contracts';
 import { CapabilityRegistry, type RegisteredDouble } from './registry.js';
 import type { FrozenCapabilityBinding } from './registry.js';
 import { decideEffectAuthorization } from './effect-policy.js';
@@ -238,7 +238,7 @@ export class VictRuntime {
       if (orchestration === undefined) {
         throw new VictRuntimeError(
           'VICT_RUNTIME_INVALID_STORES',
-          'Durable orchestration requires a store set with a conforming `orchestration` port (OrchestrationStore). Provide @vict/store-sqlite ≥ Stage 03 or the default in-memory stores.',
+          'Durable orchestration requires a store set with a conforming `orchestration` port (OrchestrationStore). Provide @victframework/store-sqlite ≥ Stage 03 or the default in-memory stores.',
         );
       }
       this.#orchestrationDriverInstance = new OrchestrationDriver({
@@ -448,7 +448,7 @@ export class VictRuntime {
       if (!run) {
         return { ok: false as const, code: 'VICT_ORCH_UNKNOWN_RUN', message: 'Run not found.' };
       }
-      let graph: import('@vict/kernel').CompiledGraph;
+      let graph: import('@victframework/kernel').CompiledGraph;
       try {
         graph = await driver.resolveGraphForDriver(run.activationVersion);
       } catch (error) {
@@ -469,8 +469,15 @@ export class VictRuntime {
         activationVersion: run.activationVersion,
       };
       const now = deps.clock.now();
-      const VictErr = (code: string, message: string): import('@vict/contracts').VictError =>
-        ({ code, message, retryable: false }) as unknown as import('@vict/contracts').VictError;
+      const VictErr = (
+        code: string,
+        message: string,
+      ): import('@victframework/contracts').VictError =>
+        ({
+          code,
+          message,
+          retryable: false,
+        }) as unknown as import('@victframework/contracts').VictError;
       if (action === 'cancel') {
         return {
           ok: true as const,
@@ -588,7 +595,9 @@ export class VictRuntime {
             reasonCode: input.reasonCode,
             continuation: {
               kind: 'complete' as const,
-              outputSummary: await import('@vict/kernel').then((k) => k.summarizeOutput(output)),
+              outputSummary: await import('@victframework/kernel').then((k) =>
+                k.summarizeOutput(output),
+              ),
               output,
             },
             checkpoint: undefined,
@@ -1627,7 +1636,7 @@ function randomId(): string {
   return Array.from(bytes, (byte) => byte.toString(16).padStart(2, '0')).join('');
 }
 
-/** Create a runtime instance. Application code should use the `@vict/sdk` facade instead. */
+/** Create a runtime instance. Application code should use the `@victframework/sdk` facade instead. */
 export function createRuntime(options: VictRuntimeOptions = {}): VictRuntime {
   return new VictRuntime(options);
 }
@@ -1640,7 +1649,7 @@ export function createRuntime(options: VictRuntimeOptions = {}): VictRuntime {
  */
 function descriptorAuthorityOf(
   definition: CapabilityDefinition,
-): import('@vict/kernel').CapabilityDescriptor['authority'] {
+): import('@victframework/kernel').CapabilityDescriptor['authority'] {
   const has = (names: readonly string[] | undefined): boolean =>
     names !== undefined && names.length > 0;
   if (

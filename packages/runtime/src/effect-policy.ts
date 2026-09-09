@@ -1,4 +1,7 @@
-import type { EffectAuthorizationDecision, EffectAuthorizationRequest } from '@vict/kernel';
+import type {
+  EffectAuthorizationDecision,
+  EffectAuthorizationRequest,
+} from '@victframework/kernel';
 
 export interface EffectPolicyOverrides {
   /** Explicit caller permission required to run `irreversible` capabilities in normal mode. */

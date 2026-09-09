@@ -3,8 +3,8 @@ import {
   validateAgentStreamEvent,
   type AgentStreamEvent,
   type AgentStreamEventKind,
-} from '@vict/contracts';
-import type { EffectClass } from '@vict/kernel';
+} from '@victframework/contracts';
+import type { EffectClass } from '@victframework/kernel';
 import { toCanonicalJson } from './serialization.js';
 
 /**
@@ -24,7 +24,7 @@ import { toCanonicalJson } from './serialization.js';
  *   durable milestones, transient deltas — AI-009, `vict.agent-stream@1`).
  *
  * In-memory reference implementations live in `control-in-memory.ts`; the
- * SQLite adapter implements the same ports in `@vict/store-sqlite` and both
+ * SQLite adapter implements the same ports in `@victframework/store-sqlite` and both
  * pass the shared conformance suite (`control-conformance.ts`).
  *
  * These are NEUTRAL ports: no Mastra, HTTP, transport, or provider type

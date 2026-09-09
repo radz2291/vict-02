@@ -1,7 +1,7 @@
-import type { AgentProfileActivation, AgentControlStores } from '@vict/runtime';
-import { AgentStreamHub } from '@vict/runtime';
-import type { AgentStreamEvent } from '@vict/contracts';
-import { AgentTurnService } from '@vict/control';
+import type { AgentProfileActivation, AgentControlStores } from '@victframework/runtime';
+import { AgentStreamHub } from '@victframework/runtime';
+import type { AgentStreamEvent } from '@victframework/contracts';
+import { AgentTurnService } from '@victframework/control';
 import { MastraProductAgent } from './adapter.js';
 import type { MastraProductAgentConfig } from './adapter.js';
 import {
@@ -13,7 +13,7 @@ import {
 
 /**
  * Stage 06B — the Mastra-backed turn executor (implements the neutral
- * `AgentTurnExecutor` port from `@vict/control`).
+ * `AgentTurnExecutor` port from `@victframework/control`).
  *
  * Composition:
  * - the ProductAgent port (adapter) executes the pinned turn;

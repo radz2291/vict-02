@@ -1,7 +1,7 @@
-import { neutralJsonContract } from '@vict/sdk';
+import { neutralJsonContract } from '@victframework/sdk';
 import { describe, expect, it } from 'vitest';
-import { createInMemoryStores, createRuntime } from '@vict/runtime';
-import type { KernelEvent } from '@vict/kernel';
+import { createInMemoryStores, createRuntime } from '@victframework/runtime';
+import type { KernelEvent } from '@victframework/kernel';
 
 /**
  * Stage 03 adversarial: payload and error canaries (handoff §24.12).
@@ -25,7 +25,7 @@ describe('stage 03 payload and error canaries (in-memory durable orchestration)'
     async () => {
       const stores = createInMemoryStores();
       const orchestration =
-        stores.orchestration as never as import('@vict/runtime').OrchestrationStore;
+        stores.orchestration as never as import('@victframework/runtime').OrchestrationStore;
       const runtime = createRuntime({ stores });
       const seen: KernelEvent[] = [];
       runtime
@@ -132,7 +132,7 @@ describe('stage 03 payload and error canaries (in-memory durable orchestration)'
       };
       const stores = createInMemoryStores();
       const orchestration =
-        stores.orchestration as never as import('@vict/runtime').OrchestrationStore;
+        stores.orchestration as never as import('@victframework/runtime').OrchestrationStore;
       const runtime = createRuntime({ stores });
       let downstreamCalls = 0;
       runtime

@@ -5,7 +5,7 @@
    * `renderSurface` snippet so behavior stays identical at every depth.
    * Complex interactive roles delegate to dedicated components.
    */
-  import type { ComponentRegistry } from '@vict/application/renderer';
+  import type { ComponentRegistry } from '@victframework/application/renderer';
   import type { VictPlanView, PlanSurface } from './logic.js';
   import { isVisible, isDisabled, headingTagForLevel, type ViewDatum, type ActionResult } from './logic.js';
   import RecordsTable from './RecordsTable.svelte';

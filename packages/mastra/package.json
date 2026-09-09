@@ -1,7 +1,6 @@
 {
-  "name": "@vict/mastra",
+  "name": "@victframework/mastra",
   "version": "0.1.0",
-  "private": true,
   "type": "module",
   "description": "Optional Mastra-backed implementation of the neutral VICT ProductAgent boundary: pinned Mastra versions, deterministic offline model fixture, pure helper-tool enforcement, dedicated file-backed Mastra storage, payload-safe tracing, and governed memory lifecycle. Imports the neutral VICT packages; never imported by them.",
   "exports": {
@@ -23,17 +22,30 @@
     "@mastra/libsql": "1.22.3",
     "@mastra/memory": "1.28.2",
     "@mastra/observability": "1.17.5",
-    "@vict/contracts": "0.1.0",
-    "@vict/kernel": "0.1.0",
-    "@vict/runtime": "0.1.0",
-    "@vict/sdk": "0.1.0",
     "zod": "^3.25.76",
-    "@vict/control": "0.1.0"
+    "@victframework/contracts": "0.1.0",
+    "@victframework/kernel": "0.1.0",
+    "@victframework/runtime": "0.1.0",
+    "@victframework/sdk": "0.1.0",
+    "@victframework/control": "0.1.0"
   },
   "devDependencies": {
-    "@vict/store-sqlite": "0.1.0"
+    "@victframework/store-sqlite": "0.1.0"
   },
   "engines": {
     "node": ">=22.13.0"
-  }
+  },
+  "license": "Apache-2.0",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/radz2291/vict-02.git",
+    "directory": "packages/mastra"
+  },
+  "bugs": {
+    "url": "https://github.com/radz2291/vict-02/issues"
+  },
+  "homepage": "https://github.com/radz2291/vict-02#readme"
 }

@@ -6,8 +6,8 @@ import {
   validateChangeSetOperation,
   VictControlError,
   type ChangeSetBase,
-} from '@vict/runtime';
-import { ControlPlaneService } from '@vict/control';
+} from '@victframework/runtime';
+import { ControlPlaneService } from '@victframework/control';
 
 /**
  * Stage 06B final boundary correction — the complete ChangeSet CAPTURE

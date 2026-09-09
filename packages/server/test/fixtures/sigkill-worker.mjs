@@ -32,18 +32,18 @@ const dbPath = args.get('--db');
 const readyFile = args.get('--ready-file');
 const effectsFile = args.get('--effects');
 
-const { createSqliteAgentControlStores } = await import('@vict/store-sqlite');
+const { createSqliteAgentControlStores } = await import('@victframework/store-sqlite');
 const { AgentStreamHub, createInMemoryStores, InMemoryActorDirectory } =
-  await import('@vict/runtime');
+  await import('@victframework/runtime');
 const { ControlPlaneService, AgentTurnService, createControlPlaneSandboxSimulator } =
-  await import('@vict/control');
+  await import('@victframework/control');
 const {
   createLocalTestAuthenticator,
   createServerAuthenticator,
   createVictHttpServer,
   listenVictHttpServer,
   VictCommandService,
-} = await import('@vict/server');
+} = await import('@victframework/server');
 
 const TOKENS = {
   'vict-test-token-user': 'actor-user',

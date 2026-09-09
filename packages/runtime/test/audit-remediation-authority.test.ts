@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
-import { defineContract, defineGraph, neutralJsonContract } from '@vict/sdk';
-import { createInMemoryStores, createRuntime } from '@vict/runtime';
-import { createSqliteStores } from '@vict/store-sqlite';
-import type { VictRuntime } from '@vict/runtime';
+import { defineContract, defineGraph, neutralJsonContract } from '@victframework/sdk';
+import { createInMemoryStores, createRuntime } from '@victframework/runtime';
+import { createSqliteStores } from '@victframework/store-sqlite';
+import type { VictRuntime } from '@victframework/runtime';
 
 /**
  * Stage 04 audit remediation — HIGH-04-C (pinned authority declarations),

@@ -1,4 +1,4 @@
-import type { ResourceDefinition } from '@vict/sdk';
+import type { ResourceDefinition } from '@victframework/sdk';
 import {
   VictApplicationDataError,
   inTransaction,

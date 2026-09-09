@@ -4,9 +4,9 @@ import {
   defineApplication,
   defineContract,
   defineResource,
-} from '@vict/sdk';
-import { compileApplication } from '@vict/application';
-import type { ApplicationPlan } from '@vict/application';
+} from '@victframework/sdk';
+import { compileApplication } from '@victframework/application';
+import type { ApplicationPlan } from '@victframework/application';
 
 /**
  * The ENTIRE proof application surface, described neutrally.

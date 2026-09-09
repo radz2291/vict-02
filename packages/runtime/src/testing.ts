@@ -1,5 +1,5 @@
 /**
- * Testing utilities for `@vict/runtime`. Import from `@vict/runtime/testing`.
+ * Testing utilities for `@victframework/runtime`. Import from `@victframework/runtime/testing`.
  *
  * Includes the adapter-neutral store conformance suite: every conforming
  * store backend (in-memory, SQLite, future adapters) must pass the same

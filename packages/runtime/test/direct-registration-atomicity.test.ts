@@ -1,13 +1,13 @@
 import { describe, expect, it } from 'vitest';
-import { defineCapabilityPack, defineContract, neutralJsonContract } from '@vict/sdk';
-import type { CapabilityPackBindings, CapabilityPackManifest } from '@vict/sdk';
+import { defineCapabilityPack, defineContract, neutralJsonContract } from '@victframework/sdk';
+import type { CapabilityPackBindings, CapabilityPackManifest } from '@victframework/sdk';
 import {
   createInMemoryStores,
   createRuntime,
   installCapabilityPack,
   VICT_RUNTIME_COMPAT_VERSION,
-} from '@vict/runtime';
-import { createSqliteStores } from '@vict/store-sqlite';
+} from '@victframework/runtime';
+import { createSqliteStores } from '@victframework/store-sqlite';
 
 /**
  * RE-AUDIT LOW-RE-3 permanent remediation suite — the direct public

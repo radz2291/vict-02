@@ -14,7 +14,7 @@
  * `npm run typecheck` MUST succeed immediately after `npm ci`, BEFORE any
  * build and with no `dist` directories present (this exact sequence failed
  * at the pre-correction SHA: the root tsconfig lacked project/path
- * resolution for @vict/control, @vict/server and @vict/cli).
+ * resolution for @victframework/control, @victframework/server and @victframework/cli).
  *
  * The clone is taken from the COMMITTED repository state (git clone reads
  * HEAD); run this script after committing the correction.

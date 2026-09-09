@@ -1,11 +1,11 @@
-import type { KernelEvent } from '@vict/kernel';
+import type { KernelEvent } from '@victframework/kernel';
 import {
   canonicalSemanticForm,
   computeActivationVersion,
   computeCapabilitySetVersion,
   computeGraphVersion,
-} from '@vict/kernel';
-import type { VictError } from '@vict/contracts';
+} from '@victframework/kernel';
+import type { VictError } from '@victframework/contracts';
 import { ACTIVATION_MANIFEST_SCHEMA, RUN_EVENT_SCHEMA } from './store-types.js';
 import type {
   ActivationManifest,

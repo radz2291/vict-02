@@ -13,7 +13,7 @@
  *     suites and the Stage 03 LOW-finding closures;
  *   - the SvelteKit application proof builds and runs its DOM-level tests;
  *   - isolated PACKED-TARBALL consumers prove:
- *       1. author-only @vict/sdk usage WITHOUT @vict/runtime, svelte, zod;
+ *       1. author-only @victframework/sdk usage WITHOUT @victframework/runtime, svelte, zod;
  *       2. neutral Application Definition usage WITHOUT svelte or zod;
  *       3. the optional Zod adapter subpath with zod installed;
  *       4. emitted declarations are complete (strict tsc, skipLibCheck
@@ -116,7 +116,7 @@ for (const pkg of ['contracts', 'sdk', 'application']) {
     capture: true,
   });
   if (result.status !== 0) {
-    check(false, `npm pack @vict/${pkg}`);
+    check(false, `npm pack @victframework/${pkg}`);
   }
 }
 const tarballs = readdirSync(work).filter((file) => file.endsWith('.tgz'));
@@ -149,17 +149,17 @@ function packageJsonFromTarball(tarball) {
 }
 const sdkPkgJson = packageJsonFromTarball(sdkTarball);
 check(
-  JSON.stringify(sdkPkgJson.dependencies ?? {}).indexOf('@vict/runtime') === -1 &&
-    JSON.stringify(sdkPkgJson.dependencies ?? {}).indexOf('@vict/kernel') === -1,
-  '@vict/sdk depends on @vict/contracts only (no runtime, no kernel)',
+  JSON.stringify(sdkPkgJson.dependencies ?? {}).indexOf('@victframework/runtime') === -1 &&
+    JSON.stringify(sdkPkgJson.dependencies ?? {}).indexOf('@victframework/kernel') === -1,
+  '@victframework/sdk depends on @victframework/contracts only (no runtime, no kernel)',
 );
 const appPkgJson = packageJsonFromTarball(appTarball);
 check(
-  JSON.stringify(appPkgJson.dependencies ?? {}).indexOf('@vict/runtime') === -1 &&
+  JSON.stringify(appPkgJson.dependencies ?? {}).indexOf('@victframework/runtime') === -1 &&
     Object.keys(appPkgJson.dependencies ?? {})
       .sort()
-      .join(',') === '@vict/contracts,@vict/sdk',
-  '@vict/application depends on @vict/contracts + @vict/sdk only',
+      .join(',') === '@victframework/contracts,@victframework/sdk',
+  '@victframework/application depends on @victframework/contracts + @victframework/sdk only',
 );
 
 // --- Consumer A: author-only SDK (NO runtime, NO svelte, NO zod). -----------
@@ -204,7 +204,7 @@ writeFileSync(
   defineGraph,
   defineResource,
   validateCapabilityPack,
-} from '@vict/sdk';
+} from '@victframework/sdk';
 
 // An author defines contracts, capabilities, graphs, packs, applications,
 // resources and releases WITHOUT importing the runtime.
@@ -310,12 +310,12 @@ console.log('AUTHOR_ONLY_CONSUMER_OK');
     : [];
   check(
     !modules.includes('runtime') && !modules.includes('kernel'),
-    'author consumer installed WITHOUT @vict/runtime or @vict/kernel',
+    'author consumer installed WITHOUT @victframework/runtime or @victframework/kernel',
   );
 }
 assertDeclarationsClean(
   join(repoRoot, 'packages', 'sdk'),
-  ['@vict/runtime', '@vict/kernel', 'svelte', "from 'zod'", 'from "zod"'],
+  ['@victframework/runtime', '@victframework/kernel', 'svelte', "from 'zod'", 'from "zod"'],
   'sdk declarations',
 );
 
@@ -354,14 +354,14 @@ writeFileSync(
   RESOURCE_DEFINITION_SCHEMA,
   defineApplication,
   defineResource,
-} from '@vict/sdk';
+} from '@victframework/sdk';
 import {
   compileApplication,
   compileApplicationRelease,
   computeApplicationVersion,
   createComponentRegistry,
   createInMemoryApplicationData,
-} from '@vict/application';
+} from '@victframework/application';
 
 const resource = defineResource({
   schema: RESOURCE_DEFINITION_SCHEMA,
@@ -449,7 +449,7 @@ console.log('NEUTRAL_APPLICATION_CONSUMER_OK', version.slice(0, 10));
 }
 assertDeclarationsClean(
   join(repoRoot, 'packages', 'application'),
-  ['@vict/runtime', 'svelte', 'zod'],
+  ['@victframework/runtime', 'svelte', 'zod'],
   'application declarations',
 );
 
@@ -459,7 +459,7 @@ mkdirSync(join(zodDir, 'src'), { recursive: true });
 run('npm', ['install', contractsTarball, sdkTarball, 'zod@3'], { cwd: zodDir });
 writeFileSync(
   join(zodDir, 'src', 'index.ts'),
-  `import { defineZodContract } from '@vict/sdk/zod';
+  `import { defineZodContract } from '@victframework/sdk/zod';
 import { z } from 'zod';
 
 const User = defineZodContract('zc.user', '1', z.object({ name: z.string() }));

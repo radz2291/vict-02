@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
-import { defineContract, defineGraph } from '@vict/sdk';
-import { createRuntime } from '@vict/runtime';
-import { installCapabilityPack } from '@vict/runtime';
-import type { CapabilityPack, CapabilityPackManifest } from '@vict/sdk';
+import { defineContract, defineGraph } from '@victframework/sdk';
+import { createRuntime } from '@victframework/runtime';
+import { installCapabilityPack } from '@victframework/runtime';
+import type { CapabilityPack, CapabilityPackManifest } from '@victframework/sdk';
 
 /**
  * Stage 04 audit remediation — MED-04-A (CONT-001 enforcement) and

@@ -1,11 +1,11 @@
-import { neutralJsonContract } from '@vict/sdk';
+import { neutralJsonContract } from '@victframework/sdk';
 import { describe, expect, it } from 'vitest';
 import { mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { createRuntime } from '@vict/runtime';
-import type { OrchestrationStore } from '@vict/runtime';
-import { createSqliteStores } from '@vict/store-sqlite';
+import { createRuntime } from '@victframework/runtime';
+import type { OrchestrationStore } from '@victframework/runtime';
+import { createSqliteStores } from '@victframework/store-sqlite';
 
 /**
  * Corrective Stage 03 SQLite evidence (handoff §24.11 atomicity, §24.5

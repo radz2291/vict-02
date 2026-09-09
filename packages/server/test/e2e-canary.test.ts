@@ -2,24 +2,24 @@ import { afterAll, describe, expect, it } from 'vitest';
 import { existsSync, mkdtempSync, readFileSync, readdirSync, rmSync, statSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import type { CapabilityDefinition, Contract } from '@vict/sdk';
+import type { CapabilityDefinition, Contract } from '@victframework/sdk';
 import {
   AgentStreamHub,
   createInMemoryStores,
   InMemoryActorDirectory,
   type AgentApprovalRecord,
   type AgentToolInvocationRecord,
-} from '@vict/runtime';
-import { AgentProfileRegistry } from '@vict/runtime';
-import { createSqliteAgentControlStores } from '@vict/store-sqlite';
-import { ControlPlaneService, createControlPlaneSandboxSimulator } from '@vict/control';
+} from '@victframework/runtime';
+import { AgentProfileRegistry } from '@victframework/runtime';
+import { createSqliteAgentControlStores } from '@victframework/store-sqlite';
+import { ControlPlaneService, createControlPlaneSandboxSimulator } from '@victframework/control';
 import {
   MASTRA_ADAPTER_COMPATIBILITY,
   createDeterministicOfflineModel,
   createDedicatedMastraStore,
   MastraThreadCoordinator,
-} from '@vict/mastra';
-import { composeMastraTurnExecutor } from '@vict/mastra';
+} from '@victframework/mastra';
+import { composeMastraTurnExecutor } from '@victframework/mastra';
 import {
   createLocalTestAuthenticator,
   createServerAuthenticator,

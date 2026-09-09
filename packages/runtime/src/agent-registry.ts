@@ -15,9 +15,9 @@ import type {
 } from './agent-types.js';
 import { AGENT_ACTIVATION_IDENTITY_SCHEMA, validateAgentActivationRecord } from './agent-types.js';
 import { createHash } from 'node:crypto';
-import { canonicalJson, compileAgentProfile } from '@vict/kernel';
-import type { CompiledAgentProfile } from '@vict/kernel';
-import type { AgentProfileAuthoring, AgentReference } from '@vict/sdk';
+import { canonicalJson, compileAgentProfile } from '@victframework/kernel';
+import type { CompiledAgentProfile } from '@victframework/kernel';
+import type { AgentProfileAuthoring, AgentReference } from '@victframework/sdk';
 import { VictRuntimeError } from './errors.js';
 
 /**

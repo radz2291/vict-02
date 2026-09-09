@@ -6,7 +6,7 @@ import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { retryRm } from './helpers/retry-rm.js';
 import { DatabaseSync } from 'node:sqlite';
-import { createSqliteStores, CURRENT_SCHEMA_VERSION } from '@vict/store-sqlite';
+import { createSqliteStores, CURRENT_SCHEMA_VERSION } from '@victframework/store-sqlite';
 
 /**
  * Stage 03 forward migration from a REAL Stage 02 database fixture

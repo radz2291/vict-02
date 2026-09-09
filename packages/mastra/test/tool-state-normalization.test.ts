@@ -2,14 +2,14 @@ import { afterAll, describe, expect, it } from 'vitest';
 import { mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import type { CapabilityDefinition, Contract } from '@vict/sdk';
+import type { CapabilityDefinition, Contract } from '@victframework/sdk';
 import {
   createInMemoryAgentControlStores,
   AgentStreamHub,
   type AgentControlStores,
-} from '@vict/runtime';
-import { authenticatedActorContext, AgentProfileRegistry } from '@vict/runtime';
-import type { AuthenticatedActorContext } from '@vict/runtime';
+} from '@victframework/runtime';
+import { authenticatedActorContext, AgentProfileRegistry } from '@victframework/runtime';
+import type { AuthenticatedActorContext } from '@victframework/runtime';
 import {
   MASTRA_ADAPTER_COMPATIBILITY,
   createDeterministicOfflineModel,

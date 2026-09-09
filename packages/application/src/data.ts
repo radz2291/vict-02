@@ -1,4 +1,4 @@
-import type { Contract, ResourceDefinition } from '@vict/sdk';
+import type { Contract, ResourceDefinition } from '@victframework/sdk';
 
 /**
  * Framework-neutral application-data adapter contract (Stage 04).

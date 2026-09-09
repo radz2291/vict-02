@@ -13,7 +13,7 @@ import type { RetryPolicy } from './graph.js';
  *
  * Everything in this module is pure: it never imports the runtime, a UI
  * framework, or a schema library, so capability-pack authors can install
- * `@vict/sdk` alone.
+ * `@victframework/sdk` alone.
  */
 
 /** Canonical schema marker of a capability-pack manifest. */

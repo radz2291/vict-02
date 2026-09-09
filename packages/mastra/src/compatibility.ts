@@ -16,7 +16,7 @@ import { createHash } from 'node:crypto';
  */
 
 /** The adapter package identity. */
-export const MASTRA_ADAPTER_ID = '@vict/mastra';
+export const MASTRA_ADAPTER_ID = '@victframework/mastra';
 
 /**
  * The adapter implementation revision. Bump when adapter code changes

@@ -1,7 +1,6 @@
 {
-  "name": "@vict/sdk",
+  "name": "@victframework/sdk",
   "version": "0.1.0",
-  "private": true,
   "type": "module",
   "description": "Stable, schema-library-neutral authoring ABI for Vict: contracts, capabilities, graphs, capability packs, applications, resources and releases. Optional Zod adapter under ./zod. Has NO dependency on the runtime.",
   "exports": {
@@ -23,7 +22,7 @@
     "build": "tsc -p tsconfig.json"
   },
   "dependencies": {
-    "@vict/contracts": "0.1.0"
+    "@victframework/contracts": "0.1.0"
   },
   "peerDependencies": {
     "zod": "^3.25.0"
@@ -32,5 +31,21 @@
     "zod": {
       "optional": true
     }
-  }
+  },
+  "license": "Apache-2.0",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/radz2291/vict-02.git",
+    "directory": "packages/sdk"
+  },
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "bugs": {
+    "url": "https://github.com/radz2291/vict-02/issues"
+  },
+  "homepage": "https://github.com/radz2291/vict-02#readme"
 }

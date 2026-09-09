@@ -1,6 +1,6 @@
 import { rmSync } from 'node:fs';
 import { afterAll, describe, expect, it } from 'vitest';
-import type { CapabilityDefinition, Contract } from '@vict/sdk';
+import type { CapabilityDefinition, Contract } from '@victframework/sdk';
 import {
   authenticatedActorContext,
   createInMemoryAgentControlStores,
@@ -8,10 +8,10 @@ import {
   type AgentControlStores,
   type AgentToolInvocationRecord,
   type AuthenticatedActorContext,
-} from '@vict/runtime';
-import type { AgentStreamEvent } from '@vict/contracts';
-import type { AgentTurnRecord } from '@vict/runtime';
-import { AgentTurnService } from '@vict/control';
+} from '@victframework/runtime';
+import type { AgentStreamEvent } from '@victframework/contracts';
+import type { AgentTurnRecord } from '@victframework/runtime';
+import { AgentTurnService } from '@victframework/control';
 import {
   bridgeCapabilityToolToMastra,
   buildCapabilityTools,

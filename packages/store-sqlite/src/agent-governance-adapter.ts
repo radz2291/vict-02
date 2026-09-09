@@ -10,7 +10,7 @@ import {
   type AgentDeletionIntentState,
   type AgentDeletionStep,
   type AgentGovernanceStore,
-} from '@vict/runtime';
+} from '@victframework/runtime';
 import { openDatabase, safeRun, inTransaction, type OpenDatabase } from './driver.js';
 import { runMigrations } from './migrations.js';
 

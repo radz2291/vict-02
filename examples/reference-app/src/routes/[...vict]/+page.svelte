@@ -5,8 +5,8 @@
   // and action invalidation flow through the renderer's reactive props.
   import { page } from '$app/state';
   import { goto, invalidateAll } from '$app/navigation';
-  import { VitApp, type ActionResult } from '@vict/renderer-svelte';
-  import '@vict/renderer-svelte/theme.css';
+  import { VitApp, type ActionResult } from '@victframework/renderer-svelte';
+  import '@victframework/renderer-svelte/theme.css';
   import { createReferenceRegistry } from '$lib/components/registry';
 
   let {

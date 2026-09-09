@@ -1,5 +1,5 @@
-import type { CapabilityPack } from '@vict/sdk';
-import { defineGraph } from '@vict/sdk';
+import type { CapabilityPack } from '@victframework/sdk';
+import { defineGraph } from '@victframework/sdk';
 import type { KernelEvent } from './index.js';
 import { createInMemoryStores, createRuntime } from './index.js';
 import { installCapabilityPack } from './pack-install.js';

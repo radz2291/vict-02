@@ -1,5 +1,5 @@
-import { victError } from '@vict/contracts';
-import type { VictError } from '@vict/contracts';
+import { victError } from '@victframework/contracts';
+import type { VictError } from '@victframework/contracts';
 
 /** Stable runtime-level error codes used by thrown configuration errors and defensive port failures. */
 export type RuntimeErrorCode =

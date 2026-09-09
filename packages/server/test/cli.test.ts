@@ -2,7 +2,7 @@ import { afterAll, describe, expect, it } from 'vitest';
 import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { runVictCli } from '@vict/cli';
+import { runVictCli } from '@victframework/cli';
 
 /**
  * Stage 06B — CLI over the REAL composed HTTP boundary.

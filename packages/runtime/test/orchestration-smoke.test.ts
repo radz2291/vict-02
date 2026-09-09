@@ -1,6 +1,6 @@
-import { neutralJsonContract } from '@vict/sdk';
-import { createRuntime } from '@vict/runtime';
-import type { KernelEvent } from '@vict/kernel';
+import { neutralJsonContract } from '@victframework/sdk';
+import { createRuntime } from '@victframework/runtime';
+import type { KernelEvent } from '@victframework/kernel';
 import { describe, expect, it } from 'vitest';
 
 /**

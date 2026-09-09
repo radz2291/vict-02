@@ -1,5 +1,8 @@
 import { describe, expect, it } from 'vitest';
-import { APPLICATION_DEFINITION_SCHEMA, APPLICATION_DEFINITION_SCHEMA_V2 } from '@vict/sdk';
+import {
+  APPLICATION_DEFINITION_SCHEMA,
+  APPLICATION_DEFINITION_SCHEMA_V2,
+} from '@victframework/sdk';
 import {
   compileApplication,
   computeApplicationVersion,

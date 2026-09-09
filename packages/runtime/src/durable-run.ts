@@ -1,5 +1,10 @@
-import type { ExecutionMode, KernelEvent, KernelRunOutput, OutputSummary } from '@vict/kernel';
-import type { VictError } from '@vict/contracts';
+import type {
+  ExecutionMode,
+  KernelEvent,
+  KernelRunOutput,
+  OutputSummary,
+} from '@victframework/kernel';
+import type { VictError } from '@victframework/contracts';
 import type { PayloadRetention } from './types.js';
 import type { ExecutionStore, RunStateUpdate } from './store-types.js';
 import { VictStoreError } from './store-errors.js';

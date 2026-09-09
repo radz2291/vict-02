@@ -1,5 +1,5 @@
-import { victError } from '@vict/contracts';
-import type { VictError } from '@vict/contracts';
+import { victError } from '@victframework/contracts';
+import type { VictError } from '@victframework/contracts';
 
 /** Stable kernel error codes carried by structured error signals. */
 export type KernelErrorCode =

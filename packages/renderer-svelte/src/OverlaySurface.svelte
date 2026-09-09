@@ -4,7 +4,7 @@
    * button, focus management (initial focus, Escape, focus trap, focus
    * restore), and nested content surfaces.
    */
-  import type { ComponentRegistry } from '@vict/application/renderer';
+  import type { ComponentRegistry } from '@victframework/application/renderer';
   import type { VictPlanView, PlanSurface, ViewDatum, ActionResult } from './logic.js';
     import Surface from './Surface.svelte';
 

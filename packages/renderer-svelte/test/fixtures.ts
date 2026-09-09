@@ -4,10 +4,10 @@ import {
   defineApplication,
   defineContract,
   defineResource,
-} from '@vict/sdk';
-import { compileApplication, type ApplicationPlan } from '@vict/application';
-import { createComponentRegistry } from '@vict/application/renderer';
-import type { SurfaceRole } from '@vict/sdk';
+} from '@victframework/sdk';
+import { compileApplication, type ApplicationPlan } from '@victframework/application';
+import { createComponentRegistry } from '@victframework/application/renderer';
+import type { SurfaceRole } from '@victframework/sdk';
 import Badge from './Badge.svelte';
 
 /**

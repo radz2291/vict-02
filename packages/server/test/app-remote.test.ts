@@ -1,5 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import { authenticatedActorContext, VictControlError, type ActorRecord } from '@vict/runtime';
+import {
+  authenticatedActorContext,
+  VictControlError,
+  type ActorRecord,
+} from '@victframework/runtime';
 import {
   createServerAuthenticator,
   createLocalTestAuthenticator,

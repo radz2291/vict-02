@@ -3,7 +3,7 @@ import type {
   AgentArtifactBinding,
   AgentHelperToolArtifact,
   AgentHelperToolIO,
-} from '@vict/runtime';
+} from '@victframework/runtime';
 import {
   CONTROL_MARKER_KEYS,
   captureControlRecord,

@@ -1,13 +1,13 @@
-import { defineCapability } from '@vict/sdk';
-import { createRuntime } from '@vict/runtime';
-import type { ApplicationDataAdapter } from '@vict/application';
+import { defineCapability } from '@victframework/sdk';
+import { createRuntime } from '@victframework/runtime';
+import type { ApplicationDataAdapter } from '@victframework/application';
 import {
   collectSurfaces,
   resolveRoute,
   type ActionResult,
   type ViewDatum,
   type VictPlanView,
-} from '@vict/renderer-svelte';
+} from '@victframework/renderer-svelte';
 import {
   analyzeInputContract,
   analyzeOutputContract,

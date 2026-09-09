@@ -1,5 +1,5 @@
-import { defineAgentProfile, AGENT_PROFILE_SCHEMA } from '@vict/sdk';
-import type { AgentProfileAuthoring, AgentReference } from '@vict/sdk';
+import { defineAgentProfile, AGENT_PROFILE_SCHEMA } from '@victframework/sdk';
+import type { AgentProfileAuthoring, AgentReference } from '@victframework/sdk';
 
 /**
  * Shared Stage 06A fixtures: a complete valid agent profile, its artifacts,
@@ -39,7 +39,7 @@ export function validProfileInput(): AgentProfileAuthoring {
       { id: 'cap.notes.read', revision: '1' },
     ],
     adapter: {
-      id: '@vict/mastra',
+      id: '@victframework/mastra',
       revision: '1',
       runtimePackages: {
         '@mastra/core': '1.64.0',

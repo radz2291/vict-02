@@ -1,19 +1,22 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
-import { computeApplicationVersion, compileApplication } from '@vict/application';
-import { compileApplicationRelease, RELEASE_IDENTITY_SCHEMA } from '@vict/application';
+import { computeApplicationVersion, compileApplication } from '@victframework/application';
+import { compileApplicationRelease, RELEASE_IDENTITY_SCHEMA } from '@victframework/application';
 import {
   createVictRenderer,
   RENDERER_ID,
   RENDERER_REVISION,
   resolveRoute,
-} from '@vict/renderer-svelte';
-import { APPLICATION_DEFINITION_SCHEMA_V2, APPLICATION_DEFINITION_SCHEMA } from '@vict/sdk';
+} from '@victframework/renderer-svelte';
+import {
+  APPLICATION_DEFINITION_SCHEMA_V2,
+  APPLICATION_DEFINITION_SCHEMA,
+} from '@victframework/sdk';
 import {
   createReferenceServer,
   resetReferenceServer,
   type ReferenceAppServer,
 } from '$lib/server/application-server';
-import { createInMemoryApplicationData } from '@vict/application';
+import { createInMemoryApplicationData } from '@victframework/application';
 import { dataContracts } from '$lib/application/definition.js';
 import {
   bindings,

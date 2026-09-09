@@ -36,7 +36,7 @@ import {
   type ControlPlaneStore,
   type ControlRunRecord,
   type ReleaseSelectionRecord,
-} from '@vict/runtime';
+} from '@victframework/runtime';
 import { inTransaction, openDatabase, safeRun, type OpenDatabase } from './driver.js';
 import { runMigrations } from './migrations.js';
 
@@ -2178,7 +2178,7 @@ export function createSqliteAgentControlStores(
   const streamLedger: AgentStreamLedgerStore = {
     async appendEvent(command: {
       streamId: string;
-      kind: import('@vict/contracts').AgentStreamEventKind;
+      kind: import('@victframework/contracts').AgentStreamEventKind;
       payload: string;
       at: number;
     }): Promise<{ seq: number; persisted: boolean }> {

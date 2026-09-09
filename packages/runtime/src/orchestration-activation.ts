@@ -1,7 +1,7 @@
 import { createHash } from 'node:crypto';
-import type { Contract } from '@vict/contracts';
-import { compileGraph, type CompiledGraph, type GraphIssue } from '@vict/kernel';
-import type { ApplicationGraphDefinition } from '@vict/kernel';
+import type { Contract } from '@victframework/contracts';
+import { compileGraph, type CompiledGraph, type GraphIssue } from '@victframework/kernel';
+import type { ApplicationGraphDefinition } from '@victframework/kernel';
 import { VictStoreError } from './store-errors.js';
 import { VictRuntimeError } from './errors.js';
 import { toCanonicalJson } from './serialization.js';

@@ -20,7 +20,7 @@ import {
   VictStoreError,
   changeSetOperationIdentity,
   controlContentHash,
-} from '@vict/runtime';
+} from '@victframework/runtime';
 import {
   authenticatedActorContext,
   captureClosedControlArray,
@@ -36,7 +36,7 @@ import {
   type ControlAuditAction,
   ACTOR_SCOPES,
   type ActorScope,
-} from '@vict/runtime';
+} from '@victframework/runtime';
 
 /**
  * Stage 06B — the ChangeSet and Application Release governance service.

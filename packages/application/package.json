@@ -1,9 +1,8 @@
 {
-  "name": "@vict/application",
+  "name": "@victframework/application",
   "version": "0.1.0",
-  "private": true,
   "type": "module",
-  "description": "Framework-neutral Application Definition compiler, canonical identity, release manifests, renderer contract, and application-data adapter contracts with shared conformance fixtures. Depends only on @vict/contracts and @vict/sdk \u2014 never on the runtime or a UI framework.",
+  "description": "Framework-neutral Application Definition compiler, canonical identity, release manifests, renderer contract, and application-data adapter contracts with shared conformance fixtures. Depends only on @victframework/contracts and @victframework/sdk — never on the runtime or a UI framework.",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -27,7 +26,23 @@
     "build": "tsc -p tsconfig.json"
   },
   "dependencies": {
-    "@vict/contracts": "0.1.0",
-    "@vict/sdk": "0.1.0"
-  }
+    "@victframework/contracts": "0.1.0",
+    "@victframework/sdk": "0.1.0"
+  },
+  "license": "Apache-2.0",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/radz2291/vict-02.git",
+    "directory": "packages/application"
+  },
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "bugs": {
+    "url": "https://github.com/radz2291/vict-02/issues"
+  },
+  "homepage": "https://github.com/radz2291/vict-02#readme"
 }

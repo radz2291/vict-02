@@ -1,5 +1,5 @@
-import type { SurfaceRole } from '@vict/sdk';
-import { RendererDiagnostic } from '@vict/application/renderer';
+import type { SurfaceRole } from '@victframework/sdk';
+import { RendererDiagnostic } from '@victframework/application/renderer';
 
 /**
  * Pure renderer logic: deterministic route resolution (parameters +

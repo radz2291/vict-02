@@ -12,7 +12,7 @@
    * registry) is computed through `$derived`, so route, plan, data, and
    * registry updates propagate WITHOUT remounting and never go stale.
    */
-  import { RendererDiagnostic, type ComponentRegistry } from '@vict/application/renderer';
+  import { RendererDiagnostic, type ComponentRegistry } from '@victframework/application/renderer';
   import {
     resolveRoute,
     themeVariables,

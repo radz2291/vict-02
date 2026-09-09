@@ -10,9 +10,9 @@ import {
   InMemoryActorDirectory,
   type ActorDirectory,
   type ActorRecord,
-} from '@vict/runtime';
-import { createSqliteAgentControlStores } from '@vict/store-sqlite';
-import { ControlPlaneService, createControlPlaneSandboxSimulator } from '@vict/control';
+} from '@victframework/runtime';
+import { createSqliteAgentControlStores } from '@victframework/store-sqlite';
+import { ControlPlaneService, createControlPlaneSandboxSimulator } from '@victframework/control';
 import {
   createLocalTestAuthenticator,
   createServerAuthenticator,

@@ -1,10 +1,10 @@
 /**
- * Stage 06B — `@vict/cli`: the typed operator/developer command client.
+ * Stage 06B — `@victframework/cli`: the typed operator/developer command client.
  *
  * The CLI consumes the SAME versioned VICT command surface as the HTTP
  * boundary (identical routes, envelopes and stable error codes). It never
  * opens a store, reads SQLite, or bypasses governance: every operation is
- * performed by the composed `VictCommandService` behind `@vict/server`.
+ * performed by the composed `VictCommandService` behind `@victframework/server`.
  *
  * The client contract is stable and tested:
  * - requests are JSON with bearer authentication;

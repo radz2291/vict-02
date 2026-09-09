@@ -4,16 +4,16 @@ import { mkdtemp } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
-import { createSqliteStores, openDatabase, inTransaction } from '@vict/store-sqlite';
-import { toCanonicalJson, ACTIVATION_MANIFEST_SCHEMA } from '@vict/runtime';
-import type { ActivationManifest, KernelEvent, StoredActivation } from '@vict/runtime';
-import type { DisposableVictStores } from '@vict/runtime';
+import { createSqliteStores, openDatabase, inTransaction } from '@victframework/store-sqlite';
+import { toCanonicalJson, ACTIVATION_MANIFEST_SCHEMA } from '@victframework/runtime';
+import type { ActivationManifest, KernelEvent, StoredActivation } from '@victframework/runtime';
+import type { DisposableVictStores } from '@victframework/runtime';
 import {
   canonicalSemanticForm,
   computeActivationVersion,
   computeCapabilitySetVersion,
   computeGraphVersion,
-} from '@vict/kernel';
+} from '@victframework/kernel';
 
 /**
  * Corruption and schema adversarial cases (15.6): malformed JSON,

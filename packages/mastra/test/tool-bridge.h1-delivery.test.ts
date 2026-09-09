@@ -2,16 +2,16 @@ import { afterAll, describe, expect, it } from 'vitest';
 import { existsSync, mkdtempSync, readFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import type { CapabilityDefinition, Contract } from '@vict/sdk';
+import type { CapabilityDefinition, Contract } from '@victframework/sdk';
 import {
   authenticatedActorContext,
   createInMemoryAgentControlStores,
   AgentProfileRegistry,
   AgentStreamHub,
   type AgentControlStores,
-} from '@vict/runtime';
-import { createSqliteAgentControlStores } from '@vict/store-sqlite';
-import { AgentTurnService } from '@vict/control';
+} from '@victframework/runtime';
+import { createSqliteAgentControlStores } from '@victframework/store-sqlite';
+import { AgentTurnService } from '@victframework/control';
 import {
   MASTRA_ADAPTER_COMPATIBILITY,
   composeMastraTurnExecutor,

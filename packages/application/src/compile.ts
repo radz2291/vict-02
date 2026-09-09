@@ -3,7 +3,7 @@ import {
   APPLICATION_DEFINITION_SCHEMA_V2,
   RESOURCE_DEFINITION_SCHEMA,
   THEME_TOKEN_NAMES,
-} from '@vict/sdk';
+} from '@victframework/sdk';
 import { sha256 } from './sha256.js';
 import type {
   ActionDefinition,
@@ -15,7 +15,7 @@ import type {
   Surface,
   ThemeDeclaration,
   ViewBinding,
-} from '@vict/sdk';
+} from '@victframework/sdk';
 
 /**
  * Application validation and compilation (Stage 04).

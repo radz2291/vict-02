@@ -1,16 +1,16 @@
 import { flushSync, mount, unmount } from 'svelte';
 import { describe, expect, it } from 'vitest';
-import type { SurfaceRole } from '@vict/sdk';
+import type { SurfaceRole } from '@victframework/sdk';
 import {
   APPLICATION_DEFINITION_SCHEMA,
   RESOURCE_DEFINITION_SCHEMA,
   defineApplication,
   defineResource,
-} from '@vict/sdk';
-import { compileApplication } from '@vict/application';
-import { RendererDiagnostic } from '@vict/application/renderer';
-import type { ApplicationPlan } from '@vict/application';
-import { runRendererConformanceSuite } from '@vict/application/testing';
+} from '@victframework/sdk';
+import { compileApplication } from '@victframework/application';
+import { RendererDiagnostic } from '@victframework/application/renderer';
+import type { ApplicationPlan } from '@victframework/application';
+import { runRendererConformanceSuite } from '@victframework/application/testing';
 import { compileProofPlan } from '$lib/application/definition';
 import { createProofComponentRegistry, createProofRenderer } from '$lib/host/proof-renderer';
 import ApplicationHost from '$lib/host/ApplicationHost.svelte';

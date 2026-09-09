@@ -1,5 +1,5 @@
 /**
- * `@vict/mastra` — the optional Mastra-backed implementation of the
+ * `@victframework/mastra` — the optional Mastra-backed implementation of the
  * neutral VICT ProductAgent boundary (Stage 06A foundation).
  *
  * Dependency direction (AI-002): this package imports the neutral VICT

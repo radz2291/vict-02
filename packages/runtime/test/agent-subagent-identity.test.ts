@@ -61,7 +61,7 @@ function childProfile(temperature: number) {
     helperTools: [],
     capabilities: [],
     adapter: {
-      id: '@vict/mastra',
+      id: '@victframework/mastra',
       revision: '1',
       runtimePackages: {
         '@mastra/core': '1.64.0',
@@ -93,7 +93,7 @@ function parentProfile() {
     subagents: [{ id: 'agent.child', revision: '7' }],
     capabilities: [],
     adapter: {
-      id: '@vict/mastra',
+      id: '@victframework/mastra',
       revision: '1',
       runtimePackages: {
         '@mastra/core': '1.64.0',

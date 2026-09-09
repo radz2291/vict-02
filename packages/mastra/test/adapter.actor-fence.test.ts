@@ -8,7 +8,7 @@ import {
   InMemoryAgentGovernanceStore,
   type AgentArtifact,
   type AgentHelperToolDefinition,
-} from '@vict/runtime';
+} from '@victframework/runtime';
 import {
   createDedicatedMastraStore,
   createDeterministicOfflineModel,
@@ -17,7 +17,7 @@ import {
   MastraMemoryDeletionPort,
   MastraProductAgent,
   MastraThreadCoordinator,
-} from '@vict/mastra';
+} from '@victframework/mastra';
 
 /**
  * Stage 06A corrective regressions — actor isolation and deletion safety:
@@ -135,7 +135,7 @@ async function composeFor(
     guardrails: [{ id: 'guardrail.length', revision: '1' }],
     capabilities: [] as never as Array<{ id: string; revision: string }>,
     adapter: {
-      id: '@vict/mastra',
+      id: '@victframework/mastra',
       revision: '1',
       runtimePackages: {
         '@mastra/core': '1.64.0',
@@ -298,7 +298,7 @@ describe('governed deletion versus in-flight turns (barrier-controlled fencing)'
       guardrails: [] as never as Array<{ id: string; revision: string }>,
       capabilities: [] as never as Array<{ id: string; revision: string }>,
       adapter: {
-        id: '@vict/mastra',
+        id: '@victframework/mastra',
         revision: '1',
         runtimePackages: {
           '@mastra/core': '1.64.0',

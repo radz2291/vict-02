@@ -8,7 +8,7 @@ import {
   type AgentDeletionIntentRecord,
   type AgentGovernanceStore,
 } from '../src/index.js';
-import { createSqliteAgentGovernanceStore } from '@vict/store-sqlite';
+import { createSqliteAgentGovernanceStore } from '@victframework/store-sqlite';
 
 /**
  * SHARED deletion-receipt conformance (boundary remediation, MSTR-011).

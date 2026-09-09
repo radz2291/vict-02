@@ -1,10 +1,14 @@
 import { createServer, type IncomingMessage, type Server, type ServerResponse } from 'node:http';
-import { VictControlError, type AgentControlStores, type AgentStreamHub } from '@vict/runtime';
+import {
+  VictControlError,
+  type AgentControlStores,
+  type AgentStreamHub,
+} from '@victframework/runtime';
 import {
   AGENT_STREAM_SCHEMA,
   assertAgentStreamWireEnvelope,
   type AgentStreamEvent,
-} from '@vict/contracts';
+} from '@victframework/contracts';
 import { AuthenticationError, type ServerActorContext } from './auth.js';
 import { VictCommandService, type VictCommandOutcome } from './commands.js';
 

@@ -1,12 +1,12 @@
-import type { AgentControlStores, AgentTurnRecord } from '@vict/runtime';
-import { assertActorScope, VictControlError } from '@vict/runtime';
-import type { AgentStreamEvent } from '@vict/contracts';
+import type { AgentControlStores, AgentTurnRecord } from '@victframework/runtime';
+import { assertActorScope, VictControlError } from '@victframework/runtime';
+import type { AgentStreamEvent } from '@victframework/contracts';
 import type {
   AgentApprovalRecord,
   AgentToolInvocationRecord,
   AuthenticatedActorContext,
-} from '@vict/runtime';
-import type { EffectClass } from '@vict/kernel';
+} from '@victframework/runtime';
+import type { EffectClass } from '@victframework/kernel';
 
 /**
  * Stage 06B — the agent-turn governance service.
@@ -23,7 +23,7 @@ import type { EffectClass } from '@vict/kernel';
  * - restart reconciliation forces one honest terminal state for open turns.
  *
  * The transport-neutral `AgentTurnExecutor` port is implemented by the
- * optional agent-framework adapter (`@vict/mastra`); this package never
+ * optional agent-framework adapter (`@victframework/mastra`); this package never
  * imports it (dependency direction).
  */
 

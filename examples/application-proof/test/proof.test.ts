@@ -2,8 +2,8 @@ import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { flushSync, mount, unmount } from 'svelte';
 import { describe, expect, it, vi } from 'vitest';
-import { compileApplicationRelease } from '@vict/application';
-import { createComponentRegistry } from '@vict/application/renderer';
+import { compileApplicationRelease } from '@victframework/application';
+import { createComponentRegistry } from '@victframework/application/renderer';
 import Badge from '$lib/host/components/Badge.svelte';
 import ApplicationHost from '$lib/host/ApplicationHost.svelte';
 import {
@@ -13,8 +13,8 @@ import {
 } from '$lib/application/definition';
 import { getProofServer } from '$lib/application/server';
 import { createProofComponentRegistry, createProofRenderer } from '$lib/host/proof-renderer';
-import { defineCapability } from '@vict/sdk';
-import { createRuntime } from '@vict/runtime';
+import { defineCapability } from '@victframework/sdk';
+import { createRuntime } from '@victframework/runtime';
 import * as pageServer from '../src/routes/[...vict]/+page.server';
 
 /**
@@ -231,8 +231,8 @@ describe('Stage 04 proof: framework neutrality of the base declarations', () => 
         .filter((line) => /^\s*(import|export)\b/.test(line));
       for (const line of dependencyLines) {
         expect(line, file).not.toMatch(/from\s+['"]svelte|import\s+['"]svelte/i);
-        expect(line, `${file}: ${line}`).not.toContain('@vict/runtime');
-        expect(line, `${file}: ${line}`).not.toContain('@vict/kernel');
+        expect(line, `${file}: ${line}`).not.toContain('@victframework/runtime');
+        expect(line, `${file}: ${line}`).not.toContain('@victframework/kernel');
       }
     }
   });

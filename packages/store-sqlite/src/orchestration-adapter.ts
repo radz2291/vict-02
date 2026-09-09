@@ -4,8 +4,8 @@ import type {
   DurableTokenState,
   DurableWaitState,
   OutputSummary,
-} from '@vict/kernel';
-import type { VictError } from '@vict/contracts';
+} from '@victframework/kernel';
+import type { VictError } from '@victframework/contracts';
 import type {
   ClaimDueTimersCommand,
   ClaimDueTimersResult,
@@ -30,21 +30,21 @@ import type {
   SignalDeliveryResult,
   StoredOrchestrationRun,
   TimerRecord,
-} from '@vict/runtime';
+} from '@victframework/runtime';
 import {
   canonicalJoinOutput,
   canTransitionAttempt,
   canTransitionRun,
   canTransitionToken,
   type KernelEvent,
-} from '@vict/kernel';
+} from '@victframework/kernel';
 import {
   RUN_EVENT_SCHEMA,
   VictStoreError,
   assertEventMatchesRun,
   canonicalPersistedValue,
   toCanonicalJson,
-} from '@vict/runtime';
+} from '@victframework/runtime';
 import { inTransaction, safeRun } from './driver.js';
 import type { OpenDatabase } from './driver.js';
 

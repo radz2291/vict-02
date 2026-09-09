@@ -1,5 +1,5 @@
-import { defineContract } from '@vict/sdk';
-import type { KernelEvent } from '@vict/kernel';
+import { defineContract } from '@victframework/sdk';
+import type { KernelEvent } from '@victframework/kernel';
 
 /**
  * Contracts for the Stage 03 orchestration proof. All parse functions are

@@ -2,7 +2,7 @@
  * Authoring vocabulary for application graphs (Stage 01–03 verified graph
  * language, now owned by the stable authoring ABI).
  *
- * Moved to `@vict/sdk` by Stage 04 so the kernel and runtime CONSUME public
+ * Moved to `@victframework/sdk` by Stage 04 so the kernel and runtime CONSUME public
  * authoring declarations instead of owning author-facing definitions.
  * Schema-neutral: no schema library, no runtime, and no UI framework
  * appears anywhere in these declarations.

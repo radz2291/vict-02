@@ -19,8 +19,9 @@
     "@sveltejs/adapter-node": "^5.2.12"
   },
   "dependencies": {
-    "@vict/application": "0.1.0",
-    "@vict/runtime": "0.1.0",
-    "@vict/sdk": "0.1.0"
-  }
+    "@victframework/application": "0.1.0",
+    "@victframework/runtime": "0.1.0",
+    "@victframework/sdk": "0.1.0"
+  },
+  "license": "Apache-2.0"
 }

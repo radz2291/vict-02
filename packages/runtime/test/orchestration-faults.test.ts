@@ -1,7 +1,7 @@
-import { neutralJsonContract } from '@vict/sdk';
+import { neutralJsonContract } from '@victframework/sdk';
 import { describe, expect, it } from 'vitest';
-import { createInMemoryStores, createRuntime, VictStoreError } from '@vict/runtime';
-import type { TransitionFaultHooks } from '@vict/runtime';
+import { createInMemoryStores, createRuntime, VictStoreError } from '@victframework/runtime';
+import type { TransitionFaultHooks } from '@victframework/runtime';
 
 /**
  * Stage 03 adversarial: atomic fault injection (handoff §24.11).
@@ -102,7 +102,7 @@ describe('stage 03 atomic fault injection (in-memory adapter hooks)', () => {
         const arbiter = createFaultArbiter();
         const stores = createInMemoryStores({ faults: arbiter.hooks });
         const orchestration =
-          stores.orchestration as never as import('@vict/runtime').OrchestrationStore;
+          stores.orchestration as never as import('@victframework/runtime').OrchestrationStore;
         const runtime = createRuntime({ stores });
         registerCapabilities(runtime);
         const activated = await runtime.activate(WAIT_GRAPH as never);

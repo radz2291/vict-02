@@ -1,6 +1,14 @@
-import { executeGraph } from '@vict/kernel';
-import type { ApplicationGraphDefinition, CompiledGraph, KernelRunOutput } from '@vict/kernel';
-import { compileGraph, canonicalSemanticForm, computeCapabilitySetVersion } from '@vict/kernel';
+import { executeGraph } from '@victframework/kernel';
+import type {
+  ApplicationGraphDefinition,
+  CompiledGraph,
+  KernelRunOutput,
+} from '@victframework/kernel';
+import {
+  compileGraph,
+  canonicalSemanticForm,
+  computeCapabilitySetVersion,
+} from '@victframework/kernel';
 import { VictStoreError } from './store-errors.js';
 import type { StoreErrorCode } from './store-errors.js';
 import { ACTIVATION_MANIFEST_SCHEMA } from './store-types.js';

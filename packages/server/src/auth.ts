@@ -4,14 +4,14 @@ import {
   type ActorDirectory,
   type ActorRecord,
   type AuthenticatedActorContext,
-} from '@vict/runtime';
+} from '@victframework/runtime';
 
 /**
  * Stage 06B — the authenticated actor boundary (SEC-001, MSTR-007).
  *
  * Authentication and authorization remain DISTINCT: the authenticator only
  * establishes WHO the caller is; scope checks happen below the transport in
- * `@vict/control` and every command handler. Client-supplied actor ids,
+ * `@victframework/control` and every command handler. Client-supplied actor ids,
  * roles, scopes, and the Mastra memory identity are NEVER authoritative —
  * the authoritative context is derived ONLY from the server-side actor
  * directory.

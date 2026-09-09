@@ -1,4 +1,4 @@
-import type { VictError } from '@vict/contracts';
+import type { VictError } from '@victframework/contracts';
 import {
   backoffDelayMs,
   isRetryable,
@@ -9,7 +9,7 @@ import {
   type EffectClass,
   type SignalWaitDefinition,
   type TimerWaitDefinition,
-} from '@vict/kernel';
+} from '@victframework/kernel';
 import {
   canonicalBranchLineage,
   forkChildTokenId,

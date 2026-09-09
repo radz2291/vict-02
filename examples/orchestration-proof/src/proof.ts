@@ -1,8 +1,8 @@
-import { neutralJsonContract } from '@vict/sdk';
-import { createRuntime, createInMemoryStores } from '@vict/runtime';
-import type { VictRuntime } from '@vict/runtime';
-import type { KernelEvent } from '@vict/kernel';
-import type { RunResult } from '@vict/runtime';
+import { neutralJsonContract } from '@victframework/sdk';
+import { createRuntime, createInMemoryStores } from '@victframework/runtime';
+import type { VictRuntime } from '@victframework/runtime';
+import type { KernelEvent } from '@victframework/kernel';
+import type { RunResult } from '@victframework/runtime';
 import { DecisionResultContract, JoinResultContract, StringContract } from './contracts.js';
 import { proofGraph } from './graph.js';
 
@@ -213,7 +213,8 @@ export async function runProof(): Promise<ProofReport> {
     );
   }
 
-  const orchestration = state.stores.orchestration as import('@vict/runtime').OrchestrationStore;
+  const orchestration = state.stores
+    .orchestration as import('@victframework/runtime').OrchestrationStore;
   const snapshot = await orchestration.getOrchestrationSnapshot(runId);
   if (!snapshot) {
     throw new Error('durable snapshot missing after completion');
@@ -256,7 +257,7 @@ export async function runProof(): Promise<ProofReport> {
     throw new Error(`proof run (determinism pass) did not complete: '${completed2.status}'`);
   }
   const events2 = await (
-    second.stores.orchestration as import('@vict/runtime').OrchestrationStore
+    second.stores.orchestration as import('@victframework/runtime').OrchestrationStore
   ).listOrchestrationEvents(parked2.runId);
   const semanticFingerprint = (list: readonly KernelEvent[]): string =>
     list

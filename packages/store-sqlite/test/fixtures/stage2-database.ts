@@ -3,13 +3,13 @@ import { writeFileSync } from 'node:fs';
 // to the source in unbuilt checkouts (a relative '../../dist/index.js' hard
 // dependency on a prior build broke `npm test` in fresh clones), and to the
 // built artifact in published usage. Same adapter the suite tests.
-import { createSqliteStores } from '@vict/store-sqlite';
-import { toCanonicalJson } from '@vict/runtime';
+import { createSqliteStores } from '@victframework/store-sqlite';
+import { toCanonicalJson } from '@victframework/runtime';
 import {
   computeGraphVersion,
   computeCapabilitySetVersion,
   computeActivationVersion,
-} from '@vict/kernel';
+} from '@victframework/kernel';
 
 /**
  * Produce a REAL Stage 02 database (schema v1 semantics) with the actual

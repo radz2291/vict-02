@@ -1,5 +1,5 @@
-import { compileAgentProfile } from '@vict/kernel';
-import { AGENT_PROFILE_SCHEMA, defineAgentProfile } from '@vict/sdk';
+import { compileAgentProfile } from '@victframework/kernel';
+import { AGENT_PROFILE_SCHEMA, defineAgentProfile } from '@victframework/sdk';
 import { describe, expect, it } from 'vitest';
 import {
   MASTRA_ADAPTER_COMPATIBILITY,
@@ -24,7 +24,7 @@ describe('adapter compatibility marker (MSTR-002)', () => {
       '@mastra/libsql': '1.22.3',
       '@mastra/observability': '1.17.5',
     });
-    expect(MASTRA_ADAPTER_COMPATIBILITY.id).toBe('@vict/mastra');
+    expect(MASTRA_ADAPTER_COMPATIBILITY.id).toBe('@victframework/mastra');
     expect(MASTRA_ADAPTER_COMPATIBILITY.runtimePackages).toEqual(MASTRA_PINNED_VERSIONS);
   });
 
@@ -65,7 +65,7 @@ describe('adapter compatibility marker (MSTR-002)', () => {
         turnPolicy: { maxSteps: 4, maxToolCalls: 4, onLimit: 'fail-closed' },
         memoryPolicy: { id: 'mp', revision: '1' },
         adapter: {
-          id: '@vict/mastra',
+          id: '@victframework/mastra',
           revision: '1',
           runtimePackages: { '@mastra/core': coreVersion },
         },

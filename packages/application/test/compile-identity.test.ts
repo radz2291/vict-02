@@ -4,14 +4,14 @@ import {
   RESOURCE_DEFINITION_SCHEMA,
   defineApplication,
   defineResource,
-} from '@vict/sdk';
+} from '@victframework/sdk';
 import {
   compileApplication,
   computeApplicationVersion,
   compileApplicationRelease,
   computeReleaseVersion,
 } from '../src/index.js';
-import type { ApplicationDefinition, ResourceDefinition } from '@vict/sdk';
+import type { ApplicationDefinition, ResourceDefinition } from '@victframework/sdk';
 
 /** A minimal but complete proof-shaped application used across identity tests. */
 function definition(): ApplicationDefinition {

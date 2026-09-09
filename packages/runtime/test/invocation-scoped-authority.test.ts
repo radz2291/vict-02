@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
-import { defineGraph, neutralJsonContract } from '@vict/sdk';
-import { createInMemoryStores, createRuntime } from '@vict/runtime';
-import type { VictRuntime } from '@vict/runtime';
-import { createSqliteStores } from '@vict/store-sqlite';
+import { defineGraph, neutralJsonContract } from '@victframework/sdk';
+import { createInMemoryStores, createRuntime } from '@victframework/runtime';
+import type { VictRuntime } from '@victframework/runtime';
+import { createSqliteStores } from '@victframework/store-sqlite';
 
 /**
  * HIGH-04-D (RE-AUDIT) permanent remediation suite — the authority

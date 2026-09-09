@@ -7,7 +7,7 @@ import {
   AgentProfileRegistry,
   type AgentArtifact,
   type AgentHelperToolDefinition,
-} from '@vict/runtime';
+} from '@victframework/runtime';
 import {
   createDedicatedMastraStore,
   createDeterministicOfflineModel,
@@ -15,7 +15,7 @@ import {
   MastraThreadCoordinator,
   resolveProtectedStoreDir,
   VictMastraStorageError,
-} from '@vict/mastra';
+} from '@victframework/mastra';
 import { validProfileInput } from './fixtures.js';
 
 /**
@@ -426,7 +426,7 @@ describe('canary leakage — planted secrets never reach forbidden surfaces', ()
   });
 
   it('hostile object keys cannot smuggle canaries into identity manifests', async () => {
-    const { compileAgentProfile } = await import('@vict/kernel');
+    const { compileAgentProfile } = await import('@victframework/kernel');
     const hostile = validProfileInput() as unknown as Record<string, unknown>;
     hostile[CANARY_HOSTILE_KEY] = 'SECRET';
     const result = compileAgentProfile(hostile);

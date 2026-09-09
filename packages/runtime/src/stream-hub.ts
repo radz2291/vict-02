@@ -2,7 +2,7 @@ import {
   assertAgentStreamEvent,
   validateAgentStreamEvent,
   type AgentStreamEvent,
-} from '@vict/contracts';
+} from '@victframework/contracts';
 import { isDurableStreamKind, streamEventPayloadOf } from './control-types.js';
 import type { AgentStreamLedgerStore } from './control-types.js';
 
@@ -38,7 +38,7 @@ import type { AgentStreamLedgerStore } from './control-types.js';
  *   cursor. Durable, control, and terminal events are never silently
  *   discarded.
  *
- * The hub is transport-free: SSE belongs to `@vict/server`.
+ * The hub is transport-free: SSE belongs to `@victframework/server`.
  */
 
 /** One hub subscriber (transport-owned delivery mechanism). */

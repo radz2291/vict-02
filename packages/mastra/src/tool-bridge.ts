@@ -1,14 +1,14 @@
 import { createTool } from '@mastra/core/tools';
 import { createHash, randomUUID } from 'node:crypto';
 import { AsyncLocalStorage } from 'node:async_hooks';
-import { toCanonicalJson, VictControlError } from '@vict/runtime';
+import { toCanonicalJson, VictControlError } from '@victframework/runtime';
 import type {
   AgentProfileActivation,
   AgentToolInvocationRecord,
   AgentApprovalRecord,
-} from '@vict/runtime';
-import type { AgentStreamEvent } from '@vict/contracts';
-import type { CapabilityDefinition, CapabilityContext, EffectClass } from '@vict/sdk';
+} from '@victframework/runtime';
+import type { AgentStreamEvent } from '@victframework/contracts';
+import type { CapabilityDefinition, CapabilityContext, EffectClass } from '@victframework/sdk';
 import {
   CONTROL_MARKER_KEYS,
   captureControlRecord,

@@ -2,9 +2,9 @@ import {
   compileApplicationRelease,
   type ApplicationDataAdapter,
   type FrozenApplicationRelease,
-} from '@vict/application';
-import type { ApplicationPlan } from '@vict/application';
-import { createVictRenderer, RENDERER_ID, RENDERER_REVISION } from '@vict/renderer-svelte';
+} from '@victframework/application';
+import type { ApplicationPlan } from '@victframework/application';
+import { createVictRenderer, RENDERER_ID, RENDERER_REVISION } from '@victframework/renderer-svelte';
 import { createReferenceRegistry } from '$lib/components/registry';
 
 /**

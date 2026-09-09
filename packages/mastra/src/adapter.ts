@@ -11,8 +11,8 @@ import type {
   AgentTurnOutcome,
   AgentTurnRequest,
   ProductAgentPort,
-} from '@vict/runtime';
-import type { AgentStreamEvent, AgentStreamUsage } from '@vict/contracts';
+} from '@victframework/runtime';
+import type { AgentStreamEvent, AgentStreamUsage } from '@victframework/contracts';
 import { MASTRA_ADAPTER_COMPATIBILITY, type MastraPinnedPackageName } from './compatibility.js';
 import {
   bridgeHelperToolToMastra,

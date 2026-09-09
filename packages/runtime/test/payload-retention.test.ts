@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import { z } from 'zod';
-import { defineCapability, defineGraph } from '@vict/sdk';
-import { defineZodContract } from '@vict/sdk/zod';
-import { createRuntime } from '@vict/runtime';
-import type { PayloadRetention } from '@vict/runtime';
+import { defineCapability, defineGraph } from '@victframework/sdk';
+import { defineZodContract } from '@victframework/sdk/zod';
+import { createRuntime } from '@victframework/runtime';
+import type { PayloadRetention } from '@victframework/runtime';
 
 const SECRET_OUTPUT = { text: 'public part', secretNote: 'retained-SECRET-8a2f1' };
 const SECRET = 'retained-SECRET-8a2f1';

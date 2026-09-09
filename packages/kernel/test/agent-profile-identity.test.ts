@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import { compileAgentProfile } from '@vict/kernel';
-import { defineAgentProfile } from '@vict/sdk';
-import type { AgentProfileAuthoring } from '@vict/sdk';
+import { compileAgentProfile } from '@victframework/kernel';
+import { defineAgentProfile } from '@victframework/sdk';
+import type { AgentProfileAuthoring } from '@victframework/sdk';
 
 /**
  * Stage 06A permanent regression: deterministic `agentProfileVersion`
@@ -41,7 +41,7 @@ function base(): AgentProfileAuthoring {
     subagents: [{ id: 'agent.sub', revision: '1' }],
     workflows: [{ id: 'workflow.summarize', revision: '1' }],
     adapter: {
-      id: '@vict/mastra',
+      id: '@victframework/mastra',
       revision: '1',
       runtimePackages: { '@mastra/core': '1.64.0', '@mastra/memory': '1.28.2' },
     },
@@ -81,7 +81,7 @@ describe('agentProfileVersion — determinism', () => {
         const { createRequire } = await import('node:module');
         const { pathToFileURL } = await import('node:url');
         const require = createRequire(${JSON.stringify(join(repoRoot, 'package.json'))});
-        const kernelUrl = pathToFileURL(require.resolve('@vict/kernel')).href;
+        const kernelUrl = pathToFileURL(require.resolve('@victframework/kernel')).href;
         const { compileAgentProfile } = await import(kernelUrl);
         const profile = ${JSON.stringify(base())};
         const result = await compileAgentProfile(profile);

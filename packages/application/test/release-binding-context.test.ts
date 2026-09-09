@@ -5,7 +5,7 @@ import {
   RESOURCE_DEFINITION_SCHEMA,
   defineApplication,
   defineResource,
-} from '@vict/sdk';
+} from '@victframework/sdk';
 import { compileApplication, createComponentRegistry } from '../src/index.js';
 import type { ApplicationPlan } from '../src/index.js';
 import { compileApplicationRelease } from '../src/index.js';

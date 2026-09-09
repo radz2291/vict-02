@@ -1,10 +1,10 @@
-import { NEUTRAL_JSON_CONTRACT_ID, type Contract } from '@vict/contracts';
+import { NEUTRAL_JSON_CONTRACT_ID, type Contract } from '@victframework/contracts';
 import type {
   CapabilityDescriptor,
   CapabilityIndex,
   ContractEnvironment,
   EffectClass,
-} from '@vict/kernel';
+} from '@victframework/kernel';
 import { VictRuntimeError } from './errors.js';
 import type { CapabilityDefinition, DoubleInvoke } from './types.js';
 import {

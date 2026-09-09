@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto';
-import type { AgentControlStores, ControlAuditEvent } from '@vict/runtime';
+import type { AgentControlStores, ControlAuditEvent } from '@victframework/runtime';
 import {
   COMMAND_IDEMPOTENCY_KEY_PATTERN,
   toCanonicalJson,
@@ -7,7 +7,7 @@ import {
   VICT_IDEMPOTENCY_FENCE_CONFLICT,
   commandIdempotencyFenceToken,
   type CommandIdempotencyReceipt,
-} from '@vict/runtime';
+} from '@victframework/runtime';
 import type { ServerActorContext } from './auth.js';
 
 /**

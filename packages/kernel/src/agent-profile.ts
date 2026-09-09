@@ -1,6 +1,6 @@
 import { canonicalJson } from './canonical.js';
 import { createHash } from 'node:crypto';
-import type { AgentProfileAuthoring, AgentReference } from '@vict/sdk';
+import type { AgentProfileAuthoring, AgentReference } from '@victframework/sdk';
 
 /**
  * Stage 06A — strict agent-profile compilation and deterministic identity.

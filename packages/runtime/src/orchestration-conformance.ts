@@ -1,4 +1,4 @@
-import { neutralJsonContract } from '@vict/sdk';
+import { neutralJsonContract } from '@victframework/sdk';
 import type { OrchestrationStore } from './orchestration-store-types.js';
 import type { VictRuntime } from './runtime.js';
 import { decideEffectAuthorization } from './effect-policy.js';

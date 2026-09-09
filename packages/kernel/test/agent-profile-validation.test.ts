@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import { compileAgentProfile } from '@vict/kernel';
-import { defineAgentProfile, VictAuthoringError } from '@vict/sdk';
-import type { AgentProfileAuthoring } from '@vict/sdk';
+import { compileAgentProfile } from '@victframework/kernel';
+import { defineAgentProfile, VictAuthoringError } from '@victframework/sdk';
+import type { AgentProfileAuthoring } from '@victframework/sdk';
 
 /**
  * Stage 06A permanent regression: the strict agent-profile validation
@@ -24,7 +24,7 @@ function base(): AgentProfileAuthoring {
     generation: {},
     turnPolicy: { maxSteps: 4, maxToolCalls: 4, onLimit: 'fail-closed' },
     memoryPolicy: { id: 'memory-policy.a', revision: '1' },
-    adapter: { id: '@vict/mastra', revision: '1', runtimePackages: {} },
+    adapter: { id: '@victframework/mastra', revision: '1', runtimePackages: {} },
   };
 }
 

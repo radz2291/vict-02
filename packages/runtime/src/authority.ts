@@ -3,7 +3,7 @@ import type {
   CapabilityContext,
   CapabilityDefinition,
   CapabilitySecretReader,
-} from '@vict/sdk';
+} from '@victframework/sdk';
 import { VictRuntimeError } from './errors.js';
 
 /**

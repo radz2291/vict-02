@@ -5,14 +5,18 @@ import {
   neutralJsonContract,
   satisfiesCompatibilityRange,
   validateCapabilityPack,
-} from '@vict/sdk';
-import type { CapabilityPack, CapabilityPackBindings, CapabilityPackManifest } from '@vict/sdk';
+} from '@victframework/sdk';
+import type {
+  CapabilityPack,
+  CapabilityPackBindings,
+  CapabilityPackManifest,
+} from '@victframework/sdk';
 import {
   createRuntime,
   installCapabilityPack,
   VictRuntimeError,
   VICT_RUNTIME_COMPAT_VERSION,
-} from '@vict/runtime';
+} from '@victframework/runtime';
 
 /**
  * Stage 04 audit remediation — HIGH-04-A (atomic pack installation) and

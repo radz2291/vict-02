@@ -9,16 +9,16 @@ import {
   type ActivationManifest,
   type ActorRecord,
   type ControlRunRecord,
-} from '@vict/runtime';
+} from '@victframework/runtime';
 import {
   canonicalJson,
   canonicalSemanticForm,
   computeActivationVersion,
   computeCapabilitySetVersion,
   computeGraphVersion,
-} from '@vict/kernel';
+} from '@victframework/kernel';
 import { ControlPlaneService, createControlPlaneSandboxSimulator } from '../src/index.js';
-import type { AuthenticatedActorContext } from '@vict/runtime';
+import type { AuthenticatedActorContext } from '@victframework/runtime';
 
 /**
  * Stage 06B final reliability correction — R4 + governance-run truthfulness.

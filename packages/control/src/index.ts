@@ -1,5 +1,5 @@
 /**
- * `@vict/control` — the Vict control plane (Stage 06B).
+ * `@victframework/control` — the Vict control plane (Stage 06B).
  *
  * Transport-free governance over the neutral runtime ports:
  *

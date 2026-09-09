@@ -1,9 +1,9 @@
 import { z } from 'zod';
-import { defineZodContract } from '@vict/sdk/zod';
+import { defineZodContract } from '@victframework/sdk/zod';
 
 /**
  * The ARA example authors its contracts with the optional Zod adapter
- * (`@vict/sdk/zod`). The base `@vict/sdk` contract API is schema-library
+ * (`@victframework/sdk/zod`). The base `@victframework/sdk` contract API is schema-library
  * neutral; this import is the explicit opt-in to the adapter.
  */
 

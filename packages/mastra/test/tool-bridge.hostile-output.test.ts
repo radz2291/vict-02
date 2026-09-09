@@ -2,10 +2,10 @@ import { describe, expect, it } from 'vitest';
 import { mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import type { CapabilityDefinition, Contract } from '@vict/sdk';
-import { createInMemoryAgentControlStores, type AgentControlStores } from '@vict/runtime';
-import { createSqliteAgentControlStores } from '@vict/store-sqlite';
-import { AgentTurnService } from '@vict/control';
+import type { CapabilityDefinition, Contract } from '@victframework/sdk';
+import { createInMemoryAgentControlStores, type AgentControlStores } from '@victframework/runtime';
+import { createSqliteAgentControlStores } from '@victframework/store-sqlite';
+import { AgentTurnService } from '@victframework/control';
 import {
   bridgeCapabilityToolToMastra,
   normalizeCapabilityToolResultEvent,

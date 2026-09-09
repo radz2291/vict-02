@@ -5,9 +5,9 @@ import {
   VictControlError,
   VICT_IDEMPOTENCY_FENCE_CONFLICT,
   type ActorRecord,
-} from '@vict/runtime';
-import { createInMemoryStores, type ActivationCatalog } from '@vict/runtime';
-import { ControlPlaneService } from '@vict/control';
+} from '@victframework/runtime';
+import { createInMemoryStores, type ActivationCatalog } from '@victframework/runtime';
+import { ControlPlaneService } from '@victframework/control';
 import { VictCommandService, VICT_COMMANDS } from '../src/commands.js';
 import type { VictCommandRequest } from '../src/commands.js';
 import type { ServerActorContext } from '../src/auth.js';

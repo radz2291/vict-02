@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { compileAgentProfile } from '../src/agent-profile.js';
-import { defineAgentProfile, AGENT_PROFILE_SCHEMA } from '@vict/sdk';
-import type { AgentProfileAuthoring } from '@vict/sdk';
+import { defineAgentProfile, AGENT_PROFILE_SCHEMA } from '@victframework/sdk';
+import type { AgentProfileAuthoring } from '@victframework/sdk';
 
 /**
  * Stage 06A corrective regression — credential-reference boundary.
@@ -38,7 +38,7 @@ function profileWithCredentialVarUntyped(value: unknown): unknown {
     generation: {},
     turnPolicy: { maxSteps: 4, maxToolCalls: 4, onLimit: 'fail-closed' },
     memoryPolicy: { id: 'memory-policy.cv', revision: '1' },
-    adapter: { id: '@vict/mastra', revision: '1', runtimePackages: {} },
+    adapter: { id: '@victframework/mastra', revision: '1', runtimePackages: {} },
   };
 }
 

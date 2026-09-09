@@ -3,10 +3,10 @@ import type {
   ApplicationPlan,
   CompileReleaseContext,
   FrozenApplicationRelease,
-} from '@vict/application';
-import { compileApplicationRelease } from '@vict/application';
-import { APPLICATION_RELEASE_SCHEMA } from '@vict/sdk';
-import type { ApplicationRelease } from '@vict/sdk';
+} from '@victframework/application';
+import { compileApplicationRelease } from '@victframework/application';
+import { APPLICATION_RELEASE_SCHEMA } from '@victframework/sdk';
+import type { ApplicationRelease } from '@victframework/sdk';
 
 /**
  * Release compilation for the Stage 04 proof deployment.

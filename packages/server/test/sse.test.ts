@@ -1,5 +1,5 @@
 import { afterAll, describe, expect, it } from 'vitest';
-import { AGENT_STREAM_SCHEMA, type AgentStreamEvent } from '@vict/contracts';
+import { AGENT_STREAM_SCHEMA, type AgentStreamEvent } from '@victframework/contracts';
 import { httpFixture } from './fixtures.js';
 import {
   createInMemoryAgentControlStores,
@@ -7,8 +7,8 @@ import {
   InMemoryActorDirectory,
   AgentStreamHub,
   type AgentControlStores,
-} from '@vict/runtime';
-import { ControlPlaneService, createControlPlaneSandboxSimulator } from '@vict/control';
+} from '@victframework/runtime';
+import { ControlPlaneService, createControlPlaneSandboxSimulator } from '@victframework/control';
 import {
   createLocalTestAuthenticator,
   createServerAuthenticator,
@@ -586,7 +586,7 @@ describe('resumable SSE (real HTTP, vict.agent-stream@1)', () => {
     // the durable rows; transient deltas from before the restart do not
     // replay, and the cursor-older-than-buffer disclosure is computed from
     // the AUTHORITATIVE durable sequence bounds.
-    const freshHub = new (await import('@vict/runtime')).AgentStreamHub({
+    const freshHub = new (await import('@victframework/runtime')).AgentStreamHub({
       ledger: f.stores.streamLedger,
       clock: () => Date.now(),
     });

@@ -66,7 +66,7 @@ function realActivationRecord(agentId = 'agent.governance'): AgentActivationReco
     helperTools: [],
     capabilities: [],
     adapter: {
-      id: '@vict/mastra',
+      id: '@victframework/mastra',
       revision: '1',
       runtimePackages: {
         '@mastra/core': '1.64.0',

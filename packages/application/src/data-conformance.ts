@@ -1,4 +1,4 @@
-import type { ResourceDefinition } from '@vict/sdk';
+import type { ResourceDefinition } from '@victframework/sdk';
 import type { ApplicationDataAdapter, ApplicationDataRequestContext } from './data.js';
 
 /** Every observable surface of an adapter result (message + serialized shape). */

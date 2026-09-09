@@ -3,7 +3,7 @@ import {
   APPLICATION_DEFINITION_SCHEMA,
   APPLICATION_DEFINITION_SCHEMA_V2,
   defineApplication,
-} from '@vict/sdk';
+} from '@victframework/sdk';
 import { compileApplication, stableJson } from '../src/index.js';
 import { CanonicalIdentityError } from '../src/compile.js';
 import type { CompileApplicationInput } from '../src/index.js';

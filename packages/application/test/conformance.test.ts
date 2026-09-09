@@ -4,8 +4,8 @@ import {
   RESOURCE_DEFINITION_SCHEMA,
   defineApplication,
   defineResource,
-} from '@vict/sdk';
-import type { SurfaceRole } from '@vict/sdk';
+} from '@victframework/sdk';
+import type { SurfaceRole } from '@victframework/sdk';
 import {
   compileApplication,
   createComponentRegistry,
@@ -250,7 +250,7 @@ describe('Stage 04: shared application-data conformance suite (in-memory referen
 
   it('the reference adapter keeps application data separate from VictStores', async () => {
     // Structural evidence: the adapter type surface carries no store
-    // operations; the packaging isolation check proves no @vict/runtime
+    // operations; the packaging isolation check proves no @victframework/runtime
     // import exists in the emitted declarations.
     const adapter = createInMemoryApplicationData([resource]);
     expect(typeof adapter.query).toBe('function');

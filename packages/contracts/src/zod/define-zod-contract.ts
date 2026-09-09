@@ -18,7 +18,7 @@ export interface DefineZodContractOptions {
 /**
  * Optional Zod adapter: build a neutral Vict `Contract` from a zod schema.
  *
- * Zod appears only here, in the optional `@vict/contracts/zod` subpath.
+ * Zod appears only here, in the optional `@victframework/contracts/zod` subpath.
  * Zod issues are mapped to neutral, safe `ContractIssue` objects:
  * framework-generated messages, type-shape `received` descriptions, no
  * `ZodError` instances and no zod types in results.

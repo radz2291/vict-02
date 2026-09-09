@@ -1,7 +1,6 @@
 {
-  "name": "@vict/appdata-sqlite",
+  "name": "@victframework/appdata-sqlite",
   "version": "0.1.0",
-  "private": true,
   "type": "module",
   "description": "Production SQLite application-domain data adapter for the neutral Application Data port, with a separate versioned application-domain migration API. Uses the built-in node:sqlite driver. Application-domain tables and migrations are structurally separate from Vict operational stores.",
   "exports": {
@@ -19,11 +18,24 @@
     "build": "tsc -p tsconfig.json"
   },
   "dependencies": {
-    "@vict/application": "0.1.0",
-    "@vict/contracts": "0.1.0",
-    "@vict/sdk": "0.1.0"
+    "@victframework/application": "0.1.0",
+    "@victframework/contracts": "0.1.0",
+    "@victframework/sdk": "0.1.0"
   },
   "engines": {
     "node": ">=22.13.0"
-  }
+  },
+  "license": "Apache-2.0",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/radz2291/vict-02.git",
+    "directory": "packages/appdata-sqlite"
+  },
+  "bugs": {
+    "url": "https://github.com/radz2291/vict-02/issues"
+  },
+  "homepage": "https://github.com/radz2291/vict-02#readme"
 }

@@ -1,11 +1,11 @@
-import { defineCapability } from '@vict/sdk';
+import { defineCapability } from '@victframework/sdk';
 import {
   createInMemoryApplicationData,
   type ApplicationDataAdapter,
   type ActionResult,
   type FrozenApplicationRelease,
-} from '@vict/application';
-import { createRuntime } from '@vict/runtime';
+} from '@victframework/application';
+import { createRuntime } from '@victframework/runtime';
 import { compileProofPlan, noteInputContract, noteResource, summaryOutputContract } from './definition.js';
 import { compileProofRelease } from './release.js';
 import { createProofComponentRegistry, createProofRenderer } from '$lib/host/proof-renderer.js';
@@ -17,7 +17,7 @@ import { createProofComponentRegistry, createProofRenderer } from '$lib/host/pro
  * - mutations go through the application-data adapter with an explicit
  *   authorization/effect context;
  * - the capability action starts a REAL Vict run through the public
- *   `@vict/runtime` APIs (contract-validated, effect-policy enforced);
+ *   `@victframework/runtime` APIs (contract-validated, effect-policy enforced);
  * - local actions never leave the renderer boundary and never become
  *   graph nodes.
  *

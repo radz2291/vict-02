@@ -1,7 +1,6 @@
 {
-  "name": "@vict/kernel",
+  "name": "@victframework/kernel",
   "version": "0.1.0",
-  "private": true,
   "type": "module",
   "description": "Pure graph compilation and execution semantics for Vict. No I/O.",
   "exports": {
@@ -23,7 +22,23 @@
     "build": "tsc -p tsconfig.json"
   },
   "dependencies": {
-    "@vict/contracts": "0.1.0",
-    "@vict/sdk": "0.1.0"
-  }
+    "@victframework/contracts": "0.1.0",
+    "@victframework/sdk": "0.1.0"
+  },
+  "license": "Apache-2.0",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/radz2291/vict-02.git",
+    "directory": "packages/kernel"
+  },
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "bugs": {
+    "url": "https://github.com/radz2291/vict-02/issues"
+  },
+  "homepage": "https://github.com/radz2291/vict-02#readme"
 }

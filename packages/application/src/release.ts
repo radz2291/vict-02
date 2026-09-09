@@ -1,5 +1,5 @@
-import type { ApplicationRelease } from '@vict/sdk';
-import { satisfiesCompatibilityRange, VICT_AUTHORING_COMPAT_VERSION } from '@vict/sdk';
+import type { ApplicationRelease } from '@victframework/sdk';
+import { satisfiesCompatibilityRange, VICT_AUTHORING_COMPAT_VERSION } from '@victframework/sdk';
 import { sha256 as sha256Pure } from './sha256.js';
 import type { ApplicationPlan } from './compile.js';
 import { stableJson } from './compile.js';

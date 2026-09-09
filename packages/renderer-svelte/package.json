@@ -1,9 +1,8 @@
 {
-  "name": "@vict/renderer-svelte",
+  "name": "@victframework/renderer-svelte",
   "version": "0.1.0",
-  "private": true,
   "type": "module",
-  "description": "Canonical SvelteKit renderer for Vict Application Plans: generic application host, built-in role components, responsive navigation, semantic theme tokens, and accessible defaults. Svelte and component-library dependencies live ONLY in this renderer boundary — never in @vict/application or the base SDK.",
+  "description": "Canonical SvelteKit renderer for Vict Application Plans: generic application host, built-in role components, responsive navigation, semantic theme tokens, and accessible defaults. Svelte and component-library dependencies live ONLY in this renderer boundary — never in @victframework/application or the base SDK.",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -24,13 +23,26 @@
     "test": "vitest run --project renderer"
   },
   "dependencies": {
-    "@vict/application": "0.1.0",
-    "@vict/sdk": "0.1.0"
+    "@victframework/application": "0.1.0",
+    "@victframework/sdk": "0.1.0"
   },
   "peerDependencies": {
     "svelte": "^5.0.0"
   },
   "engines": {
     "node": ">=22.13.0"
-  }
+  },
+  "license": "Apache-2.0",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/radz2291/vict-02.git",
+    "directory": "packages/renderer-svelte"
+  },
+  "bugs": {
+    "url": "https://github.com/radz2291/vict-02/issues"
+  },
+  "homepage": "https://github.com/radz2291/vict-02#readme"
 }

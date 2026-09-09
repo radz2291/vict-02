@@ -3,7 +3,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterAll, describe, expect, it } from 'vitest';
 import { retryRm } from './helpers/retry-rm.js';
-import { createSqliteAgentControlStores, createSqliteStores } from '@vict/store-sqlite';
+import { createSqliteAgentControlStores, createSqliteStores } from '@victframework/store-sqlite';
 import { DatabaseSync } from 'node:sqlite';
 
 /**
@@ -19,14 +19,14 @@ function openShared(path: string): { db: DatabaseSync; close(): void } {
   db.exec('PRAGMA synchronous = FULL;');
   return { db, close: (): void => undefined };
 }
-import { commandIdempotencyFenceToken, VictControlError } from '@vict/runtime';
+import { commandIdempotencyFenceToken, VictControlError } from '@victframework/runtime';
 import {
   canonicalJson,
   canonicalSemanticForm,
   computeActivationVersion,
   computeCapabilitySetVersion,
   computeGraphVersion,
-} from '@vict/kernel';
+} from '@victframework/kernel';
 
 /**
  * Stage 06B final reliability correction — durable (SQLite) restart and

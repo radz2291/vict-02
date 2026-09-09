@@ -1,5 +1,5 @@
-import type { CapabilityPack, PackIssue } from '@vict/sdk';
-import { validateCapabilityPack } from '@vict/sdk';
+import type { CapabilityPack, PackIssue } from '@victframework/sdk';
+import { validateCapabilityPack } from '@victframework/sdk';
 import type { VictRuntime } from './runtime.js';
 import { VictRuntimeError } from './errors.js';
 import type { RuntimeErrorCode } from './errors.js';

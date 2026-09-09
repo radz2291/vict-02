@@ -2,8 +2,8 @@ import {
   createInMemoryAgentControlStores,
   AgentStreamHub,
   type AgentControlStores,
-} from '@vict/runtime';
-import { ControlPlaneService, createControlPlaneSandboxSimulator } from '@vict/control';
+} from '@victframework/runtime';
+import { ControlPlaneService, createControlPlaneSandboxSimulator } from '@victframework/control';
 import {
   createLocalTestAuthenticator,
   createServerAuthenticator,
@@ -17,8 +17,8 @@ import {
   type ActivationCatalog,
   type ActorDirectory,
   InMemoryActorDirectory,
-} from '@vict/runtime';
-import type { ActorRecord as ActorRecordType } from '@vict/runtime';
+} from '@victframework/runtime';
+import type { ActorRecord as ActorRecordType } from '@victframework/runtime';
 
 /**
  * The shared HTTP test composition: a REAL node:http server on an

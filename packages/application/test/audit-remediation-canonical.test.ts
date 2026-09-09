@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import { APPLICATION_DEFINITION_SCHEMA, defineApplication } from '@vict/sdk';
+import { APPLICATION_DEFINITION_SCHEMA, defineApplication } from '@victframework/sdk';
 import { compileApplication } from '../src/index.js';
-import type { ApplicationDefinition } from '@vict/sdk';
+import type { ApplicationDefinition } from '@victframework/sdk';
 
 /**
  * Stage 04 audit remediation — MED-04-F: the canonical serializable domain.

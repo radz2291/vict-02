@@ -4,7 +4,7 @@ import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { afterAll, describe, expect, it } from 'vitest';
-import { createSqliteApplicationData, physicalTableName } from '@vict/appdata-sqlite';
+import { createSqliteApplicationData, physicalTableName } from '@victframework/appdata-sqlite';
 
 /**
  * Restart and operational/application-schema separation (Stage 05).

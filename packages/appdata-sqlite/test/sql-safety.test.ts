@@ -2,8 +2,8 @@ import { mkdtempSync } from 'node:fs';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { describe, expect, it } from 'vitest';
-import { defineResource } from '@vict/sdk';
-import { createSqliteApplicationData, physicalTableName } from '@vict/appdata-sqlite';
+import { defineResource } from '@victframework/sdk';
+import { createSqliteApplicationData, physicalTableName } from '@victframework/appdata-sqlite';
 
 /**
  * SQL-injection resistance and safe physical mapping (Stage 05).

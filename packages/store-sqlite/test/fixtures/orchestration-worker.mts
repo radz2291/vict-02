@@ -1,7 +1,7 @@
-import { neutralJsonContract } from '@vict/contracts';
+import { neutralJsonContract } from '@victframework/contracts';
 import { readFileSync, existsSync, writeFileSync } from 'node:fs';
-import { createSqliteStores } from '@vict/store-sqlite';
-import { createRuntime } from '@vict/runtime';
+import { createSqliteStores } from '@victframework/store-sqlite';
+import { createRuntime } from '@victframework/runtime';
 import { durableWrite, emitReady } from './readiness.js';
 
 /**

@@ -1,12 +1,12 @@
 import { describe, expect, it } from 'vitest';
-import type { CapabilityDefinition, Contract } from '@vict/sdk';
+import type { CapabilityDefinition, Contract } from '@victframework/sdk';
 import {
   authenticatedActorContext,
   createInMemoryAgentControlStores,
   type AgentControlStores,
   type AuthenticatedActorContext,
-} from '@vict/runtime';
-import { AgentTurnService } from '@vict/control';
+} from '@victframework/runtime';
+import { AgentTurnService } from '@victframework/control';
 import {
   bridgeCapabilityToolToMastra,
   canonicalArgDigest,

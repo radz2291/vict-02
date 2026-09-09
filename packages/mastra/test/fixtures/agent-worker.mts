@@ -7,8 +7,8 @@ import {
   protectCredentialPort,
   type AgentArtifact,
   type AgentHelperToolDefinition,
-} from '@vict/runtime';
-import { createSqliteAgentGovernanceStore } from '@vict/store-sqlite';
+} from '@victframework/runtime';
+import { createSqliteAgentGovernanceStore } from '@victframework/store-sqlite';
 import {
   createDedicatedMastraStore,
   createDeterministicOfflineModel,
@@ -16,8 +16,8 @@ import {
   MastraMemoryDeletionPort,
   MastraProductAgent,
   MastraThreadCoordinator,
-} from '@vict/mastra';
-import { AGENT_PROFILE_SCHEMA } from '@vict/sdk';
+} from '@victframework/mastra';
+import { AGENT_PROFILE_SCHEMA } from '@victframework/sdk';
 
 /** Bounded explicit retention (required at composition, MSTR-011). */
 const TEST_RETENTION = {
@@ -68,7 +68,7 @@ function profileInput(): Parameters<AgentProfileRegistry['registerProfile']>[0] 
     helperTools: [{ id: 'helper.uppercase', revision: '1' }],
     capabilities: [],
     adapter: {
-      id: '@vict/mastra',
+      id: '@victframework/mastra',
       revision: '1',
       runtimePackages: {
         '@mastra/core': '1.64.0',

@@ -1,33 +1,37 @@
 /**
- * `@vict/sdk` — the stable authoring ABI for Vict.
+ * `@victframework/sdk` — the stable authoring ABI for Vict.
  *
  * Stage 04 corrected the dependency direction: the SDK is a lightweight
  * authoring layer BELOW the kernel and runtime, so capability-pack and
- * application authors can install and import `@vict/sdk` without
+ * application authors can install and import `@victframework/sdk` without
  * installing the runtime:
  *
- *   @vict/contracts -> @vict/sdk -> @vict/kernel -> @vict/runtime
+ *   @victframework/contracts -> @victframework/sdk -> @victframework/kernel -> @victframework/runtime
  *
  * This base surface is schema-library neutral and framework neutral:
  * - NO runtime composition APIs are exported here. Import `createRuntime`
- *   and friends explicitly from `@vict/runtime`.
+ *   and friends explicitly from `@victframework/runtime`.
  * - No Zod, Svelte, or runtime implementation type appears in these
- *   declarations. Optional Zod convenience lives in `@vict/sdk/zod`.
+ *   declarations. Optional Zod convenience lives in `@victframework/sdk/zod`.
  * - Official factories return immutable (deep-frozen) definitions.
  */
 
 // ---- Neutral executable contracts and structured results -----------------
-export { defineContract, validateContractIdentity, neutralJsonContract } from '@vict/contracts';
+export {
+  defineContract,
+  validateContractIdentity,
+  neutralJsonContract,
+} from '@victframework/contracts';
 export type {
   Contract,
   ContractDefinition,
   ContractIssue,
   ContractResult,
   VictError,
-} from '@vict/contracts';
-export { ContractDefinitionError } from '@vict/contracts';
-export type { ContractDefinitionErrorCode } from '@vict/contracts';
-export { victError, errorSignalContract } from '@vict/contracts';
+} from '@victframework/contracts';
+export { ContractDefinitionError } from '@victframework/contracts';
+export type { ContractDefinitionErrorCode } from '@victframework/contracts';
+export { victError, errorSignalContract } from '@victframework/contracts';
 export {
   describeReceived,
   formatPath,
@@ -37,8 +41,12 @@ export {
   MAX_OBSERVABLE_ISSUES,
   SAFE_ISSUE_CODES,
   UNTRUSTED_ISSUE_CODE,
-} from '@vict/contracts';
-export type { ObservableContractIssue, RawSchemaIssue, SafeIssueOptions } from '@vict/contracts';
+} from '@victframework/contracts';
+export type {
+  ObservableContractIssue,
+  RawSchemaIssue,
+  SafeIssueOptions,
+} from '@victframework/contracts';
 
 // ---- Capability authoring vocabulary (moved from kernel/runtime) ----------
 export type {

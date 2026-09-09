@@ -1,6 +1,6 @@
-import { defineCapability } from '@vict/sdk';
-import type { CapabilityDefinition } from '@vict/sdk';
-import type { VictRuntime } from '@vict/runtime';
+import { defineCapability } from '@victframework/sdk';
+import type { CapabilityDefinition } from '@victframework/sdk';
+import type { VictRuntime } from '@victframework/runtime';
 import {
   AssistantMessageContract,
   PreparedContextContract,

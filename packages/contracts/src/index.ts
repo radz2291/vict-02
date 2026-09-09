@@ -1,9 +1,9 @@
 /**
- * `@vict/contracts` — Vict's neutral contract API.
+ * `@victframework/contracts` — Vict's neutral contract API.
  *
  * This base entry point is schema-library neutral: no schema library appears
  * in the signature surface or emitted declarations. Schema-library
- * convenience lives in optional adapter subpaths (e.g. `@vict/contracts/zod`,
+ * convenience lives in optional adapter subpaths (e.g. `@victframework/contracts/zod`,
  * which requires zod as an optional peer dependency).
  */
 export type {

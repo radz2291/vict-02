@@ -1,7 +1,7 @@
-import { neutralJsonContract } from '@vict/sdk';
-import { createRuntime } from '@vict/runtime';
-import type { KernelEvent } from '@vict/kernel';
-import { createSqliteStores } from '@vict/store-sqlite';
+import { neutralJsonContract } from '@victframework/sdk';
+import { createRuntime } from '@victframework/runtime';
+import type { KernelEvent } from '@victframework/kernel';
+import { createSqliteStores } from '@victframework/store-sqlite';
 import { mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';

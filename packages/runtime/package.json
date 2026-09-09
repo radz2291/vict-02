@@ -1,7 +1,6 @@
 {
-  "name": "@vict/runtime",
+  "name": "@victframework/runtime",
   "version": "0.1.0",
-  "private": true,
   "type": "module",
   "description": "In-process Vict runtime: capability registry, effect policy, execution modes, atomic graph activation, run traces.",
   "exports": {
@@ -23,8 +22,24 @@
     "build": "tsc -p tsconfig.json"
   },
   "dependencies": {
-    "@vict/contracts": "0.1.0",
-    "@vict/kernel": "0.1.0",
-    "@vict/sdk": "0.1.0"
-  }
+    "@victframework/contracts": "0.1.0",
+    "@victframework/kernel": "0.1.0",
+    "@victframework/sdk": "0.1.0"
+  },
+  "license": "Apache-2.0",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/radz2291/vict-02.git",
+    "directory": "packages/runtime"
+  },
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "bugs": {
+    "url": "https://github.com/radz2291/vict-02/issues"
+  },
+  "homepage": "https://github.com/radz2291/vict-02#readme"
 }

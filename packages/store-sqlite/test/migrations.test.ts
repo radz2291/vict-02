@@ -11,8 +11,8 @@ import {
   readSchemaVersion,
   runMigrations,
   CURRENT_SCHEMA_VERSION,
-} from '@vict/store-sqlite';
-import { SCHEMA_MIGRATIONS } from '@vict/store-sqlite';
+} from '@victframework/store-sqlite';
+import { SCHEMA_MIGRATIONS } from '@victframework/store-sqlite';
 
 /**
  * Migration policy (Section 13): ordered forward-only migrations with an

@@ -3,7 +3,7 @@ import type {
   AgentConversationMemoryExportPort,
   AgentGovernanceStore,
   AgentMemoryDeletionPort,
-} from '@vict/runtime';
+} from '@victframework/runtime';
 import type { LibSQLStore } from '@mastra/libsql';
 import { MAX_RETENTION_AGE_MS } from './storage.js';
 

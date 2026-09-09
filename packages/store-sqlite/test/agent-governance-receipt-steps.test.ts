@@ -7,7 +7,7 @@ import {
   DELETION_RECEIPT_STEP_INVALID_MESSAGE,
   InMemoryAgentGovernanceStore,
   type AgentGovernanceStore,
-} from '@vict/runtime';
+} from '@victframework/runtime';
 import { createSqliteAgentGovernanceStore } from '../src/index.js';
 
 /**

@@ -1,5 +1,5 @@
 /**
- * Offline guard for the @vict/mastra suites (MSTR-010: verifiable offline).
+ * Offline guard for the @victframework/mastra suites (MSTR-010: verifiable offline).
  *
  * Stage 06A adapter tests must fail if an unexpected network request is
  * attempted. The guard replaces `globalThis.fetch` and the connect/

@@ -5,7 +5,7 @@ import type {
   ApplicationRelease,
   ResourceDefinition,
 } from './application.js';
-import { isOfficialContract } from '@vict/contracts';
+import { isOfficialContract } from '@victframework/contracts';
 
 /**
  * Authoring helpers.

@@ -2,16 +2,16 @@ import { mkdtempSync } from 'node:fs';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { afterAll, describe, expect, it } from 'vitest';
-import { defineContract, defineResource, RESOURCE_DEFINITION_SCHEMA } from '@vict/sdk';
-import { createInMemoryApplicationData } from '@vict/application';
-import { runApplicationDataAdapterSuite } from '@vict/application/testing';
+import { defineContract, defineResource, RESOURCE_DEFINITION_SCHEMA } from '@victframework/sdk';
+import { createInMemoryApplicationData } from '@victframework/application';
+import { runApplicationDataAdapterSuite } from '@victframework/application/testing';
 import {
   createSqliteApplicationData,
   physicalTableName,
   readDurabilityPragmas,
   openAppDatabase,
   type SqliteApplicationDataAdapter,
-} from '@vict/appdata-sqlite';
+} from '@victframework/appdata-sqlite';
 
 /**
  * Shared application-data conformance (Stage 05).

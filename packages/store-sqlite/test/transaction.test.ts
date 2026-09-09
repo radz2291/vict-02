@@ -3,20 +3,20 @@ import { retryRm } from './helpers/retry-rm.js';
 import { mkdtemp } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { createSqliteStores } from '@vict/store-sqlite';
-import { toCanonicalJson, ACTIVATION_MANIFEST_SCHEMA } from '@vict/runtime';
+import { createSqliteStores } from '@victframework/store-sqlite';
+import { toCanonicalJson, ACTIVATION_MANIFEST_SCHEMA } from '@victframework/runtime';
 import type {
   ActivationManifest,
   KernelEvent,
   TransitionFaultHooks,
   VictStores,
-} from '@vict/runtime';
+} from '@victframework/runtime';
 import {
   canonicalSemanticForm,
   computeActivationVersion,
   computeCapabilitySetVersion,
   computeGraphVersion,
-} from '@vict/kernel';
+} from '@victframework/kernel';
 
 /**
  * Transaction failure (15.4) and concurrency conflict (15.5) against the

@@ -1,10 +1,18 @@
 import { flushSync } from 'svelte';
 import { describe, expect, it } from 'vitest';
-import { compileApplication, type ApplicationPlan } from '@vict/application';
-import { runRendererConformanceSuite } from '@vict/application/testing';
-import { RendererDiagnostic } from '@vict/application/renderer';
-import { createVictRenderer, renderVictApplication, resolveRoute } from '@vict/renderer-svelte';
-import { APPLICATION_DEFINITION_SCHEMA_V2, defineApplication, type SurfaceRole } from '@vict/sdk';
+import { compileApplication, type ApplicationPlan } from '@victframework/application';
+import { runRendererConformanceSuite } from '@victframework/application/testing';
+import { RendererDiagnostic } from '@victframework/application/renderer';
+import {
+  createVictRenderer,
+  renderVictApplication,
+  resolveRoute,
+} from '@victframework/renderer-svelte';
+import {
+  APPLICATION_DEFINITION_SCHEMA_V2,
+  defineApplication,
+  type SurfaceRole,
+} from '@victframework/sdk';
 import {
   ROWS,
   probeApp,

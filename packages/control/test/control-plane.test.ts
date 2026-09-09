@@ -5,8 +5,8 @@ import {
   createInMemoryAgentControlStores,
   InMemoryActorDirectory,
   type ActorRecord,
-} from '@vict/runtime';
-import { createInMemoryStores, type ActivationCatalog } from '@vict/runtime';
+} from '@victframework/runtime';
+import { createInMemoryStores, type ActivationCatalog } from '@victframework/runtime';
 import {
   assertScopeForActor,
   ControlPlaneService,
@@ -14,7 +14,7 @@ import {
   AgentTurnService,
   safeInputSummary,
 } from '../src/index.js';
-import type { AuthenticatedActorContext } from '@vict/runtime';
+import type { AuthenticatedActorContext } from '@victframework/runtime';
 
 /**
  * Control-plane service conformance: the authenticated actor boundary

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { runCapabilityPackConformanceSuite } from '@vict/runtime/testing';
+import { runCapabilityPackConformanceSuite } from '@victframework/runtime/testing';
 import { notesPack, notesPackConformance } from '../src/index.js';
 
 /**

@@ -7,8 +7,8 @@ import {
   ConversationExportService,
   type AgentArtifact,
   type AgentHelperToolDefinition,
-} from '@vict/runtime';
-import type { Contract, ContractResult } from '@vict/contracts';
+} from '@victframework/runtime';
+import type { Contract, ContractResult } from '@victframework/contracts';
 import {
   createDedicatedMastraStore,
   createDeterministicOfflineModel,
@@ -19,7 +19,7 @@ import {
   MASTRA_ADAPTER_COMPATIBILITY,
   executeMemoryPrune,
   mastraResourceIdForActor,
-} from '@vict/mastra';
+} from '@victframework/mastra';
 import { validProfileInput } from './fixtures.js';
 
 /**

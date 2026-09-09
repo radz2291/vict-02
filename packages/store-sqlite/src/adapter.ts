@@ -1,6 +1,6 @@
-import type { KernelEvent, OutputSummary } from '@vict/kernel';
-import type { VictError } from '@vict/contracts';
-import type { ExecutionMode, PayloadRetention } from '@vict/runtime';
+import type { KernelEvent, OutputSummary } from '@victframework/kernel';
+import type { VictError } from '@victframework/contracts';
+import type { ExecutionMode, PayloadRetention } from '@victframework/runtime';
 import {
   ACTIVATION_MANIFEST_SCHEMA,
   ACTIVATION_MANIFEST_SCHEMA_V2,
@@ -12,7 +12,7 @@ import {
   assertRunMatchesActivation,
   assertStoredActivationReadable,
   toCanonicalJson,
-} from '@vict/runtime';
+} from '@victframework/runtime';
 import type {
   ActivationCatalog,
   ActivationSelection,
@@ -35,7 +35,7 @@ import type {
   StoredRunStatus,
   TransitionFaultHooks,
   VictStores,
-} from '@vict/runtime';
+} from '@victframework/runtime';
 import { inTransaction, openDatabase, safeRun } from './driver.js';
 import type { OpenDatabase, SqliteDriverOptions } from './driver.js';
 import { runMigrations } from './migrations.js';

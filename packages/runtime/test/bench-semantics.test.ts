@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { z } from 'zod';
-import { defineCapability, defineGraph } from '@vict/sdk';
-import { createRuntime } from '@vict/runtime';
-import { defineZodContract } from '@vict/sdk/zod';
+import { defineCapability, defineGraph } from '@victframework/sdk';
+import { createRuntime } from '@victframework/runtime';
+import { defineZodContract } from '@victframework/sdk/zod';
 
 /**
  * Pins the benchmark graph's event semantics: a three-node pure graph with

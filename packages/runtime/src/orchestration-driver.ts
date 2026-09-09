@@ -1,11 +1,11 @@
-import { sanitizeContractIssues, type VictError } from '@vict/contracts';
+import { sanitizeContractIssues, type VictError } from '@victframework/contracts';
 import {
   summarizeOutput,
   type CompiledGraph,
   type CompiledNode,
   type DecisionResult,
   type KernelEvent,
-} from '@vict/kernel';
+} from '@victframework/kernel';
 import type {
   AttemptOutcome,
   ClaimedAttempt,
@@ -109,7 +109,7 @@ function isTerminalStatus(status: string): boolean {
  * anywhere in an issue object, so ONLY the framework-controlled shared
  * sanitizer output survives into events: an allowlisted issue code, an
  * ordinal path, and a framework-generated message. See
- * `sanitizeContractIssues` in `@vict/contracts` for the exact policy.
+ * `sanitizeContractIssues` in `@victframework/contracts` for the exact policy.
  */
 function safeContractIssues(
   issues: readonly unknown[] | undefined,
@@ -266,9 +266,9 @@ export class OrchestrationDriver {
    * Start one orchestration run and drive it until terminal or quiescent.
    */
   async startRun<T>(
-    graph: import('@vict/kernel').CompiledGraph,
+    graph: import('@victframework/kernel').CompiledGraph,
     input: unknown,
-    mode: import('@vict/kernel').ExecutionMode,
+    mode: import('@victframework/kernel').ExecutionMode,
     runId: string,
     options: {
       concurrency?: number;
@@ -344,7 +344,7 @@ export class OrchestrationDriver {
    */
   async #drive<T>(
     runId: string,
-    mode: import('@vict/kernel').ExecutionMode,
+    mode: import('@victframework/kernel').ExecutionMode,
     options: {
       concurrency?: number;
       onEvent?: (event: KernelEvent) => void;
@@ -469,7 +469,7 @@ export class OrchestrationDriver {
   async #executeAttempt(
     resolved: ResolvedExecution,
     claim: ClaimedAttempt,
-    mode: import('@vict/kernel').ExecutionMode,
+    mode: import('@victframework/kernel').ExecutionMode,
     options: {
       onEvent?: (event: KernelEvent) => void;
       policy?: import('./effect-policy.js').EffectPolicyOverrides;
@@ -866,7 +866,7 @@ export class OrchestrationDriver {
     resolved: ResolvedExecution,
     claim: ClaimedAttempt,
     envelope: EventEnvelopeFields,
-    mode: import('@vict/kernel').ExecutionMode,
+    mode: import('@victframework/kernel').ExecutionMode,
     rawOutcome: OutcomeForPlan,
     inputPayload: unknown,
     onEvent?: (event: KernelEvent) => void,
@@ -1244,7 +1244,7 @@ export class OrchestrationDriver {
     const run: {
       status: typeof plan.runStatus;
       output?: unknown;
-      outputSummary?: import('@vict/kernel').OutputSummary;
+      outputSummary?: import('@victframework/kernel').OutputSummary;
       error?: VictError;
     } = { status: plan.runStatus };
     if (plan.runStatus === 'completed') {
@@ -1336,7 +1336,7 @@ export async function resultFromRun<T>(
   }
   const trace = (await orchestration
     .listOrchestrationEvents(run.runId)
-    .catch(() => [])) as readonly import('@vict/kernel').KernelEvent[];
+    .catch(() => [])) as readonly import('@victframework/kernel').KernelEvent[];
   const result: import('./orchestration-driver-types.js').OrchestrationRunResult<T> = {
     runId: run.runId,
     graphId: run.graphId,

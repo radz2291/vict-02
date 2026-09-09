@@ -10,8 +10,8 @@
    * diagnostics, never the runtime and never node builtins. All actions
    * cross the server boundary through the injected `dispatch` callable.
    */
-  import type { ComponentRegistry } from '@vict/application/renderer';
-  import { RendererDiagnostic } from '@vict/application/renderer';
+  import type { ComponentRegistry } from '@victframework/application/renderer';
+  import { RendererDiagnostic } from '@victframework/application/renderer';
 
   interface PlanShape {
     routes: {

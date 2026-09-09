@@ -1,4 +1,4 @@
-import { createRuntime } from '@vict/runtime';
+import { createRuntime } from '@victframework/runtime';
 import { registerAraCapabilities } from './capabilities.js';
 import { araGraph } from './graph.js';
 import type { AssistantMessage } from './contracts.js';

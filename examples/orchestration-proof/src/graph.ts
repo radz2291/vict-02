@@ -1,4 +1,4 @@
-import type { ApplicationGraphDefinition } from '@vict/sdk';
+import type { ApplicationGraphDefinition } from '@victframework/sdk';
 
 /**
  * The proof topology (fixed, declared, compiled before activation):

@@ -1,5 +1,5 @@
-import type { EffectClass, ExecutionMode, KernelEvent, OutputSummary } from '@vict/kernel';
-import type { VictError } from '@vict/contracts';
+import type { EffectClass, ExecutionMode, KernelEvent, OutputSummary } from '@victframework/kernel';
+import type { VictError } from '@victframework/contracts';
 import type { PayloadRetention } from './types.js';
 import type { OrchestrationStore } from './orchestration-store-types.js';
 

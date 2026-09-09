@@ -1,5 +1,5 @@
 import type { DatabaseSync } from 'node:sqlite';
-import { VictStoreError } from '@vict/runtime';
+import { VictStoreError } from '@victframework/runtime';
 
 /**
  * Forward-only schema migrations for the Vict SQLite store.

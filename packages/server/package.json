@@ -1,7 +1,6 @@
 {
-  "name": "@vict/server",
+  "name": "@victframework/server",
   "version": "0.1.0",
-  "private": true,
   "type": "module",
   "description": "Vict server boundary (Stage 06B): authenticated actor composition, versioned HTTP commands, resumable SSE for vict.agent-stream@1, and the remote Application data/action adapter. Consumes neutral runtime/control/application ports; exposes no privileged agent-framework route.",
   "exports": {
@@ -19,10 +18,26 @@
     "build": "tsc -p tsconfig.json"
   },
   "dependencies": {
-    "@vict/application": "0.1.0",
-    "@vict/contracts": "0.1.0",
-    "@vict/control": "0.1.0",
-    "@vict/runtime": "0.1.0",
-    "@vict/store-sqlite": "0.1.0"
-  }
+    "@victframework/application": "0.1.0",
+    "@victframework/contracts": "0.1.0",
+    "@victframework/control": "0.1.0",
+    "@victframework/runtime": "0.1.0",
+    "@victframework/store-sqlite": "0.1.0"
+  },
+  "license": "Apache-2.0",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/radz2291/vict-02.git",
+    "directory": "packages/server"
+  },
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "bugs": {
+    "url": "https://github.com/radz2291/vict-02/issues"
+  },
+  "homepage": "https://github.com/radz2291/vict-02#readme"
 }

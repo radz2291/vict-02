@@ -6,7 +6,7 @@ import {
   AgentProfileRegistry,
   type AgentArtifact,
   type AgentHelperToolDefinition,
-} from '@vict/runtime';
+} from '@victframework/runtime';
 import {
   createDedicatedMastraStore,
   createDeterministicOfflineModel,
@@ -14,7 +14,7 @@ import {
   MastraThreadCoordinator,
   MASTRA_ADAPTER_COMPATIBILITY,
   VictMastraAdapterError,
-} from '@vict/mastra';
+} from '@victframework/mastra';
 import { validProfileInput } from './fixtures.js';
 
 /**
@@ -236,7 +236,7 @@ function hash(value: string): number {
 describe('exact adapter compatibility validation (before execution)', () => {
   it('rejects a wrong adapter id before any factory invocation', async () => {
     const { activation, store, dedicated } = await composeActivation({
-      id: '@vict/not-the-adapter',
+      id: '@victframework/not-the-adapter',
     });
     try {
       let factoryCalls = 0;

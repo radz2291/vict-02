@@ -3,7 +3,7 @@ import { mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterAll, describe, expect, it } from 'vitest';
-import { AgentProfileRegistry, type AgentActivationRecord } from '@vict/runtime';
+import { AgentProfileRegistry, type AgentActivationRecord } from '@victframework/runtime';
 import {
   createSqliteAgentGovernanceStore,
   CURRENT_SCHEMA_VERSION,
@@ -48,7 +48,7 @@ function realActivationRecord(): AgentActivationRecord {
     helperTools: [],
     capabilities: [],
     adapter: {
-      id: '@vict/mastra',
+      id: '@victframework/mastra',
       revision: '1',
       runtimePackages: {
         '@mastra/core': '1.64.0',

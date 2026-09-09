@@ -1,9 +1,9 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { z } from 'zod';
-import { defineCapability, defineGraph } from '@vict/sdk';
-import { defineZodContract } from '@vict/sdk/zod';
-import { createInMemoryStores, createRuntime } from '@vict/runtime';
-import type { VictRuntime } from '@vict/runtime';
+import { defineCapability, defineGraph } from '@victframework/sdk';
+import { defineZodContract } from '@victframework/sdk/zod';
+import { createInMemoryStores, createRuntime } from '@victframework/runtime';
+import type { VictRuntime } from '@victframework/runtime';
 
 const Count = defineZodContract('dl.count', '1', z.object({ count: z.number() }));
 

@@ -231,11 +231,11 @@ function templates(
           test: 'vitest run',
         },
         dependencies: {
-          '@vict/application': '0.1.0',
-          '@vict/appdata-sqlite': '0.1.0',
-          '@vict/renderer-svelte': '0.1.0',
-          '@vict/runtime': '0.1.0',
-          '@vict/sdk': '0.1.0',
+          '@victframework/application': '0.1.0',
+          '@victframework/appdata-sqlite': '0.1.0',
+          '@victframework/renderer-svelte': '0.1.0',
+          '@victframework/runtime': '0.1.0',
+          '@victframework/sdk': '0.1.0',
         },
         devDependencies: {
           '@sveltejs/adapter-node': '^5.2.12',
@@ -339,9 +339,9 @@ export {};
   RESOURCE_DEFINITION_SCHEMA,
   defineApplication,
   defineResource,
-} from '@vict/sdk';
-import { compileApplication } from '@vict/application';
-import type { ApplicationPlan } from '@vict/application';
+} from '@victframework/sdk';
+import { compileApplication } from '@victframework/application';
+import type { ApplicationPlan } from '@victframework/application';
 
 /**
  * YOUR APPLICATION DEFINITION — author-owned.
@@ -493,7 +493,7 @@ the database, the component registry, or secrets.
     ],
     [
       'src/lib/components/registry.ts',
-      `import type { ComponentRegistry } from '@vict/application/renderer';
+      `import type { ComponentRegistry } from '@victframework/application/renderer';
 
 /**
  * YOUR COMPONENT REGISTRY — author-owned code island.
@@ -519,9 +519,9 @@ export function registerComponents(_registry: ComponentRegistry): void {
     [
       'src/lib/server/application-server.ts',
       `import { join } from 'node:path';
-import { createSqliteApplicationData } from '@vict/appdata-sqlite';
-import { createRuntime } from '@vict/runtime';
-import type { ApplicationDataAdapter, ActionResult } from '@vict/application';
+import { createSqliteApplicationData } from '@victframework/appdata-sqlite';
+import { createRuntime } from '@victframework/runtime';
+import type { ApplicationDataAdapter, ActionResult } from '@victframework/application';
 import { compileAppPlan, itemResource } from '$lib/application/definition';
 
 /**
@@ -589,7 +589,7 @@ export function createAppServer() {
         return { ok: result.ok, code: result.ok ? undefined : result.code, message: result.ok ? undefined : result.message, value: result.ok ? result.row : undefined };
       }
       // capability actions: wire to runtime.activate(...) / runtime.run(...)
-      // following the @vict/runtime public API when your application adds
+      // following the @victframework/runtime public API when your application adds
       // durable Vict-governed behavior.
       void runtime;
       return { ok: false, code: 'UNSUPPORTED_ACTION', message: 'This action kind is not wired in this starter.' };
@@ -669,9 +669,9 @@ export const load: PageServerLoad = async ({ url }) => {
   // will ever need. Everything visible is rendered from the neutral plan.
   import { page } from '$app/state';
   import { invalidateAll } from '$app/navigation';
-  import { VitApp, type ActionResult } from '@vict/renderer-svelte';
-  import '@vict/renderer-svelte/theme.css';
-  import { createComponentRegistry } from '@vict/application/renderer';
+  import { VitApp, type ActionResult } from '@victframework/renderer-svelte';
+  import '@victframework/renderer-svelte/theme.css';
+  import { createComponentRegistry } from '@victframework/application/renderer';
   import { registerComponents } from '$lib/components/registry';
 
   let { data }: { data: { plan: Record<string, unknown>; viewData: Record<string, unknown> } } =

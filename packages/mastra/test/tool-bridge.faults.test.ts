@@ -3,7 +3,7 @@ import {
   createInMemoryAgentControlStores,
   VictControlError,
   type AgentControlStores,
-} from '@vict/runtime';
+} from '@victframework/runtime';
 import { canonicalArgDigest, safeArgumentSummary } from '../src/tool-bridge.js';
 
 /**

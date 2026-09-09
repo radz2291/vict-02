@@ -8,13 +8,13 @@ import {
   AgentStreamHub,
   InMemoryActorDirectory,
   type ActorDirectory,
-} from '@vict/runtime';
+} from '@victframework/runtime';
 import {
   createControlPlaneSandboxSimulator,
   ControlPlaneService,
   AgentTurnService,
-} from '@vict/control';
-import { createSqliteAgentControlStores } from '@vict/store-sqlite';
+} from '@victframework/control';
+import { createSqliteAgentControlStores } from '@victframework/store-sqlite';
 import {
   createLocalTestAuthenticator,
   createServerAuthenticator,

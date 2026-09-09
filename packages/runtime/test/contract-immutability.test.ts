@@ -1,9 +1,14 @@
 import { describe, expect, it, vi } from 'vitest';
 import { z } from 'zod';
-import { defineCapability, defineContract, defineGraph, neutralJsonContract } from '@vict/sdk';
-import { defineZodContract } from '@vict/sdk/zod';
-import { createRuntime } from '@vict/runtime';
-import type { Contract, ContractResult } from '@vict/contracts';
+import {
+  defineCapability,
+  defineContract,
+  defineGraph,
+  neutralJsonContract,
+} from '@victframework/sdk';
+import { defineZodContract } from '@victframework/sdk/zod';
+import { createRuntime } from '@victframework/runtime';
+import type { Contract, ContractResult } from '@victframework/contracts';
 
 const Count = defineZodContract('ci.count', '1', z.object({ count: z.number() }));
 

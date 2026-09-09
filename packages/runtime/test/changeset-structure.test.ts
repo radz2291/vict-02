@@ -5,7 +5,7 @@ import {
   validateChangeSetOperation,
   VictControlError,
   type ChangeSetBase,
-} from '@vict/runtime';
+} from '@victframework/runtime';
 
 /**
  * Stage 06B final reliability correction — R6 negative controls.

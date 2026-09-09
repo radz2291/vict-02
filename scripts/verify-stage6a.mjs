@@ -7,14 +7,14 @@
  * prerequisites and verifies:
  *
  *  1. Package inspection: exports/declarations exist, dependency direction
- *     is acyclic (no neutral package imports @vict/mastra), no Mastra ee/
+ *     is acyclic (no neutral package imports @victframework/mastra), no Mastra ee/
  *     import, no undeclared transitive reliance, exact pinned Mastra
  *     versions, license boundaries recorded, neutral base declarations
  *     Mastra-free.
  *  2. Neutral packed consumer: installs ONLY the packed neutral VICT
  *     packages (no Mastra on disk), compiles a valid agent profile and
  *     rejects an invalid one, under strict TypeScript (skipLibCheck: false).
- *  3. Mastra adapter packed consumer: installs the packed @vict/mastra with
+ *  3. Mastra adapter packed consumer: installs the packed @victframework/mastra with
  *     exact @mastra/* versions resolved from the registry (no workspace
  *     hoisting) and runs the deterministic offline-model proof without
  *     network or provider credentials.
@@ -91,7 +91,12 @@ console.log('\n=== verify:stage6a — package inspection ===');
     typeof deps['zod'] === 'string',
     'zod declared explicitly (pinned Mastra peer requirement)',
   );
-  for (const neutral of ['@vict/contracts', '@vict/sdk', '@vict/kernel', '@vict/runtime']) {
+  for (const neutral of [
+    '@victframework/contracts',
+    '@victframework/sdk',
+    '@victframework/kernel',
+    '@victframework/runtime',
+  ]) {
     check(deps[neutral] === '0.1.0', `${neutral} declared as a direct dependency at 0.1.0`);
   }
 
@@ -115,7 +120,7 @@ console.log('\n=== verify:stage6a — package inspection ===');
     };
     check(
       !Object.keys(all).some((key) => key.startsWith('@mastra/')),
-      `@vict/${name} has no @mastra/* dependency`,
+      `@victframework/${name} has no @mastra/* dependency`,
     );
   }
 
@@ -135,7 +140,7 @@ console.log('\n=== verify:stage6a — package inspection ===');
     }
   };
   scanEe(join(repoRoot, 'packages', 'mastra', 'src'));
-  check(!eeImport, '@vict/mastra imports no Mastra ee/ path');
+  check(!eeImport, '@victframework/mastra imports no Mastra ee/ path');
 
   // Exports + declarations exist.
   for (const file of [
@@ -148,7 +153,10 @@ console.log('\n=== verify:stage6a — package inspection ===');
     'dist/helper-tools.d.ts',
     'dist/offline-model.d.ts',
   ]) {
-    check(existsSync(join(repoRoot, 'packages', 'mastra', file)), `@vict/mastra ${file} exists`);
+    check(
+      existsSync(join(repoRoot, 'packages', 'mastra', file)),
+      `@victframework/mastra ${file} exists`,
+    );
   }
 
   // No undeclared transitive reliance: the adapter source imports only
@@ -159,11 +167,11 @@ console.log('\n=== verify:stage6a — package inspection ===');
       '@mastra/libsql',
       '@mastra/memory',
       '@mastra/observability',
-      '@vict/contracts',
-      '@vict/control',
-      '@vict/kernel',
-      '@vict/runtime',
-      '@vict/sdk',
+      '@victframework/contracts',
+      '@victframework/control',
+      '@victframework/kernel',
+      '@victframework/runtime',
+      '@victframework/sdk',
       'zod',
     ]);
     const undeclared = new Set();
@@ -196,7 +204,7 @@ console.log('\n=== verify:stage6a — package inspection ===');
     );
   }
 
-  // Dependency direction acyclicity: no neutral package imports @vict/mastra.
+  // Dependency direction acyclicity: no neutral package imports @victframework/mastra.
   let neutralImportsAdapter = false;
   const scanNeutral = (dir) => {
     for (const entry of readdirSync(dir, { withFileTypes: true })) {
@@ -205,7 +213,7 @@ console.log('\n=== verify:stage6a — package inspection ===');
         scanNeutral(full);
       } else if (entry.name.endsWith('.ts')) {
         const content = readFileSync(full, 'utf8');
-        if (content.includes('@vict/mastra')) {
+        if (content.includes('@victframework/mastra')) {
           neutralImportsAdapter = true;
         }
       }
@@ -224,7 +232,10 @@ console.log('\n=== verify:stage6a — package inspection ===');
   ]) {
     scanNeutral(join(repoRoot, 'packages', name, 'src'));
   }
-  check(!neutralImportsAdapter, 'no neutral package imports @vict/mastra (acyclic direction)');
+  check(
+    !neutralImportsAdapter,
+    'no neutral package imports @victframework/mastra (acyclic direction)',
+  );
 
   // Base neutral declarations contain no Mastra-specific references. Since
   // Stage 06B, neutral correlation identifiers (mastraResourceId,
@@ -253,7 +264,7 @@ console.log('\n=== verify:stage6a — package inspection ===');
       const content = raw.replace(/\/\*[\s\S]*?\*\//g, '').replace(/^\s*\/\/.*$/gm, '');
       for (const pattern of forbiddenPatterns) {
         if (pattern.test(content)) {
-          neutralViolation = `@vict/${name}/dist/${entry} contains ${String(pattern)}`;
+          neutralViolation = `@victframework/${name}/dist/${entry} contains ${String(pattern)}`;
         }
       }
     }
@@ -339,7 +350,7 @@ try {
       shell,
       timeout: 300_000,
     });
-    check(pack.status === 0, `npm pack @vict/${name}`);
+    check(pack.status === 0, `npm pack @victframework/${name}`);
     if (pack.status !== 0) {
       throw new Error(`npm pack failed for ${name}`);
     }
@@ -347,7 +358,7 @@ try {
     if (tgz === undefined) {
       throw new Error(`npm pack output missing for ${name}`);
     }
-    tarballs[`@vict/${name}`] = join(work, tgz).replace(/\\/g, '/');
+    tarballs[`@victframework/${name}`] = join(work, tgz).replace(/\\/g, '/');
   }
 
   // ---- 3. Neutral packed consumer: no Mastra on disk ---------------------------
@@ -363,7 +374,10 @@ try {
           private: true,
           type: 'module',
           dependencies: Object.fromEntries(
-            neutralPackages.map((name) => [`@vict/${name}`, `file:${tarballs[`@vict/${name}`]}`]),
+            neutralPackages.map((name) => [
+              `@victframework/${name}`,
+              `file:${tarballs[`@victframework/${name}`]}`,
+            ]),
           ),
         },
         null,
@@ -402,8 +416,8 @@ try {
       );
 
       const neutralProbeRuntime = [
-        "import { defineAgentProfile, AGENT_PROFILE_SCHEMA } from '@vict/sdk';",
-        "import { compileAgentProfile } from '@vict/kernel';",
+        "import { defineAgentProfile, AGENT_PROFILE_SCHEMA } from '@victframework/sdk';",
+        "import { compileAgentProfile } from '@victframework/kernel';",
         '',
         '// Built EMITTED JavaScript, executed by plain Node (no tsx, no IPC).',
         'const profile = defineAgentProfile({',
@@ -415,7 +429,7 @@ try {
         '  generation: {},',
         "  turnPolicy: { maxSteps: 4, maxToolCalls: 4, onLimit: 'fail-closed' },",
         "  memoryPolicy: { id: 'memory-policy.packed', revision: '1' },",
-        "  adapter: { id: '@vict/mastra', revision: '1', runtimePackages: { '@mastra/core': '1.64.0' } },",
+        "  adapter: { id: '@victframework/mastra', revision: '1', runtimePackages: { '@mastra/core': '1.64.0' } },",
         '});',
         '',
         'const first = compileAgentProfile(profile);',
@@ -468,8 +482,8 @@ try {
       writeFileSync(
         join(neutralConsumer, 'probe.mts'),
         [
-          "import { defineAgentProfile, AGENT_PROFILE_SCHEMA } from '@vict/sdk';",
-          "import { compileAgentProfile } from '@vict/kernel';",
+          "import { defineAgentProfile, AGENT_PROFILE_SCHEMA } from '@victframework/sdk';",
+          "import { compileAgentProfile } from '@victframework/kernel';",
           '',
           'const profile = defineAgentProfile({',
           '  schema: AGENT_PROFILE_SCHEMA,',
@@ -480,7 +494,7 @@ try {
           '  generation: {},',
           "  turnPolicy: { maxSteps: 4, maxToolCalls: 4, onLimit: 'fail-closed' },",
           "  memoryPolicy: { id: 'memory-policy.packed', revision: '1' },",
-          "  adapter: { id: '@vict/mastra', revision: '1', runtimePackages: { '@mastra/core': '1.64.0' } },",
+          "  adapter: { id: '@victframework/mastra', revision: '1', runtimePackages: { '@mastra/core': '1.64.0' } },",
           '});',
           'const compiled = compileAgentProfile(profile);',
           'if (!compiled.ok) { throw new Error(String(compiled.issues.length)); }',
@@ -529,14 +543,14 @@ try {
           private: true,
           type: 'module',
           dependencies: {
-            '@vict/mastra': `file:${tarballs['@vict/mastra']}`,
+            '@victframework/mastra': `file:${tarballs['@victframework/mastra']}`,
             ...Object.fromEntries(
               [
-                '@vict/contracts',
-                '@vict/control',
-                '@vict/sdk',
-                '@vict/kernel',
-                '@vict/runtime',
+                '@victframework/contracts',
+                '@victframework/control',
+                '@victframework/sdk',
+                '@victframework/kernel',
+                '@victframework/runtime',
               ].map((name) => [name, `file:${tarballs[name]}`]),
             ),
             ...pinned,
@@ -552,7 +566,10 @@ try {
       shell,
       timeout: 900_000,
     });
-    check(adapterInstall.status === 0, 'adapter consumer installs the packed @vict/mastra');
+    check(
+      adapterInstall.status === 0,
+      'adapter consumer installs the packed @victframework/mastra',
+    );
     if (adapterInstall.status === 0) {
       // Exact pinned versions resolved from the registry (no workspace).
       for (const [name, version] of Object.entries(pinned)) {
@@ -568,7 +585,7 @@ try {
       }
 
       const adapterProbe = [
-        "import { AgentProfileRegistry } from '@vict/runtime';",
+        "import { AgentProfileRegistry } from '@victframework/runtime';",
         'import {',
         '  createDedicatedMastraStore,',
         '  createDeterministicOfflineModel,',
@@ -576,7 +593,7 @@ try {
         '  MastraThreadCoordinator,',
         '  MASTRA_ADAPTER_COMPATIBILITY,',
         '  verifyMastraAdapterCompatibility,',
-        "} from '@vict/mastra';",
+        "} from '@victframework/mastra';",
         '',
         'const harness = await verifyMastraAdapterCompatibility();',
         "if (!harness.ok) { throw new Error('compatibility harness failed: ' + JSON.stringify(harness.checks)); }",

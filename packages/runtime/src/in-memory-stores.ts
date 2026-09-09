@@ -1,4 +1,4 @@
-import type { ExecutionMode, KernelEvent } from '@vict/kernel';
+import type { ExecutionMode, KernelEvent } from '@victframework/kernel';
 import type { PayloadRetention } from './types.js';
 import type {
   ActivationCatalog,

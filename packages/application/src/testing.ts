@@ -1,6 +1,6 @@
 /**
- * Testing utilities for `@vict/application`. Import from
- * `@vict/application/testing`.
+ * Testing utilities for `@victframework/application`. Import from
+ * `@victframework/application/testing`.
  *
  * Includes the shared renderer and application-data adapter conformance
  * suites: every conforming renderer or data adapter must pass the same

@@ -1,4 +1,4 @@
-import type { KernelEvent } from '@vict/kernel';
+import type { KernelEvent } from '@victframework/kernel';
 import {
   canonicalJson,
   canonicalSemanticForm,
@@ -6,7 +6,7 @@ import {
   computeActivationVersion,
   computeCapabilitySetVersion,
   computeGraphVersion,
-} from '@vict/kernel';
+} from '@victframework/kernel';
 import type { ActivationManifest, PublishActivationCommand } from './store-types.js';
 import { VictStoreError } from './store-errors.js';
 

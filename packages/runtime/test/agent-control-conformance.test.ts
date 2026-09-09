@@ -4,7 +4,7 @@ import { runAgentControlConformanceSuite } from '../src/control-conformance.js';
 /**
  * The SHARED Stage 06B conformance suite executed against the in-memory
  * reference adapters. The SQLite adapters pass the same suite in
- * `@vict/store-sqlite` (with close/reopen equivalence).
+ * `@victframework/store-sqlite` (with close/reopen equivalence).
  */
 describe('agent-control stores (in-memory reference)', () => {
   runAgentControlConformanceSuite(

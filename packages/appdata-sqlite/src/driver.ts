@@ -4,9 +4,9 @@ import { DatabaseSync } from 'node:sqlite';
  * Safe driver wrapper for the application-domain SQLite adapter.
  *
  * This adapter boundary owns its OWN minimal node:sqlite wrapper: it MUST
- * NOT depend on `@vict/store-sqlite` (which belongs to the execution spine
- * and imports `@vict/runtime`). The application branch depends only on
- * `@vict/contracts`, `@vict/sdk`, and `@vict/application`.
+ * NOT depend on `@victframework/store-sqlite` (which belongs to the execution spine
+ * and imports `@victframework/runtime`). The application branch depends only on
+ * `@victframework/contracts`, `@victframework/sdk`, and `@victframework/application`.
  *
  * Safety rules (mirroring the operational driver's discipline):
  * - Raw driver error messages, SQL text, and bound values never leave this

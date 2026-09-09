@@ -4,7 +4,7 @@ import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { afterAll, describe, expect, it } from 'vitest';
 import { createSqliteAgentGovernanceStore } from '../src/index.js';
-import { AgentProfileRegistry, type AgentActivationRecord } from '@vict/runtime';
+import { AgentProfileRegistry, type AgentActivationRecord } from '@victframework/runtime';
 
 /**
  * Stage 06A corrective regressions — governance-record invariants on the
@@ -77,7 +77,7 @@ function validActivationRecord(): AgentActivationRecord {
     helperTools: [],
     capabilities: [],
     adapter: {
-      id: '@vict/mastra',
+      id: '@victframework/mastra',
       revision: '1',
       runtimePackages: {
         '@mastra/core': '1.64.0',
@@ -294,13 +294,13 @@ describe('activation restoration against SQLite across process boundaries', () =
     const recordPath = join(dir, 'record.json');
     const repoRoot = resolve(__dirname, '..', '..', '..');
     const workerScript = join(dir, 'worker.mjs');
-    // The worker runs against the BUILT @vict/store-sqlite dist (plain
+    // The worker runs against the BUILT @victframework/store-sqlite dist (plain
     // Node, no tsx) — a genuine fresh-process boundary over the packed
     // runtime surfaces.
     writeFileSync(
       workerScript,
       [
-        "import { createSqliteAgentGovernanceStore } from '@vict/store-sqlite';",
+        "import { createSqliteAgentGovernanceStore } from '@victframework/store-sqlite';",
         'import { readFileSync, writeFileSync } from "node:fs";',
         'const [, , mode, dbPath, recordPath] = process.argv;',
         'const store = createSqliteAgentGovernanceStore({ path: dbPath });',
@@ -323,7 +323,7 @@ describe('activation restoration against SQLite across process boundaries', () =
       NODE_PATH: join(repoRoot, 'node_modules'),
     };
     const options = { cwd: repoRoot, env, encoding: 'utf8' as const, timeout: 120_000 } as const;
-    // Resolve @vict/store-sqlite from the workspace dist through a package
+    // Resolve @victframework/store-sqlite from the workspace dist through a package
     // import map written next to the worker (plain node resolution).
     writeFileSync(
       join(dir, 'package.json'),

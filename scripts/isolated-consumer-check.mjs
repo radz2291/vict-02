@@ -3,13 +3,13 @@
  * Isolated consumer / package check for Vict Stage 02.
  *
  * Proves, against PACKED TARBALLS (not workspace sources, no hoisting):
- *   1. A neutral consumer can install @vict/{contracts,kernel,runtime,store-sqlite,sdk}
+ *   1. A neutral consumer can install @victframework/{contracts,kernel,runtime,store-sqlite,sdk}
  *      WITHOUT zod, author contracts through the neutral API, persist an
  *      activation and run in a real SQLite database file, close, reopen,
  *      restore the activation, and read the identical run — all type-checked
  *      under strict TypeScript (skipLibCheck: false) against emitted
  *      declarations.
- *   2. A consumer that installs zod can use the optional @vict/sdk/zod
+ *   2. A consumer that installs zod can use the optional @victframework/sdk/zod
  *      adapter subpath (and its contract is frozen).
  *   3. Base emitted declarations contain no Zod type/module references.
  *
@@ -117,10 +117,10 @@ writeFileSync(
 );
 writeFileSync(
   join(neutralDir, 'src', 'index.ts'),
-  `import { defineCapability, defineContract, defineGraph } from '@vict/sdk';
-import { createRuntime } from '@vict/runtime';
-import { createSqliteStores } from '@vict/store-sqlite';
-import type { Contract } from '@vict/sdk';
+  `import { defineCapability, defineContract, defineGraph } from '@victframework/sdk';
+import { createRuntime } from '@victframework/runtime';
+import { createSqliteStores } from '@victframework/store-sqlite';
+import type { Contract } from '@victframework/sdk';
 
 // Neutral contract authoring: no schema library involved anywhere.
 const Message: Contract<{ text: string }> = defineContract<{ text: string }>({
@@ -291,10 +291,10 @@ writeFileSync(
 );
 writeFileSync(
   join(orchDir, 'src', 'index.ts'),
-  `import { defineContract, defineGraph, neutralJsonContract } from '@vict/sdk';
-import { createRuntime } from '@vict/runtime';
-import { createSqliteStores } from '@vict/store-sqlite';
-import type { RunResult } from '@vict/runtime';
+  `import { defineContract, defineGraph, neutralJsonContract } from '@victframework/sdk';
+import { createRuntime } from '@victframework/runtime';
+import { createSqliteStores } from '@victframework/store-sqlite';
+import type { RunResult } from '@victframework/runtime';
 
 const S = defineContract<string>({
   id: 'orch.s',
@@ -364,7 +364,7 @@ const graph = defineGraph({
 
 if (phase === 'resume') {
   const runId = process.argv[4] ?? '';
-  const orchestration = stores.orchestration as import('@vict/runtime').OrchestrationStore;
+  const orchestration = stores.orchestration as import('@victframework/runtime').OrchestrationStore;
   const waits = await orchestration.listWaits(runId);
   const openWait = waits.find((w) => w.status === 'open');
   if (!openWait) {
@@ -452,7 +452,7 @@ writeFileSync(
 run('npm', ['install', ...tarballs.map((file) => join(work, file)), 'zod@3'], { cwd: zodDir });
 writeFileSync(
   join(zodDir, 'src', 'index.mts'),
-  `import { defineZodContract } from '@vict/sdk/zod';
+  `import { defineZodContract } from '@victframework/sdk/zod';
 import { z } from 'zod';
 
 const User = defineZodContract('zc.user', '1', z.object({ name: z.string() }));

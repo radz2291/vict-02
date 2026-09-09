@@ -1,12 +1,12 @@
 import { describe, expect, it } from 'vitest';
-import { createInMemoryStores, createRuntime } from '@vict/runtime';
+import { createInMemoryStores, createRuntime } from '@victframework/runtime';
 import {
   runOrchestrationCanarySuite,
   runOrchestrationConformanceSuite,
   runOrchestrationJoinSuite,
   runOrchestrationRaceSuite,
   runOrchestrationRemediationSuite,
-} from '@vict/runtime/testing';
+} from '@victframework/runtime/testing';
 
 /** The shared Stage 03 audit-remediation suite — in-memory backend. */
 describe('orchestration remediation (shared suite, in-memory)', () => {

@@ -2,12 +2,12 @@ import { join } from 'node:path';
 import { mkdtempSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { describe, expect, it } from 'vitest';
-import { defineResource, RESOURCE_DEFINITION_SCHEMA } from '@vict/sdk';
+import { defineResource, RESOURCE_DEFINITION_SCHEMA } from '@victframework/sdk';
 import {
   createSqliteApplicationData,
   migrationsFromResources,
   VictApplicationDataError,
-} from '@vict/appdata-sqlite';
+} from '@victframework/appdata-sqlite';
 
 /**
  * Application-domain migration semantics (OPEN-014 decision, Stage 05):

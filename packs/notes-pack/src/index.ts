@@ -1,5 +1,5 @@
-import { defineCapabilityPack, defineContract } from '@vict/sdk';
-import type { CapabilityPack } from '@vict/sdk';
+import { defineCapabilityPack, defineContract } from '@victframework/sdk';
+import type { CapabilityPack } from '@victframework/sdk';
 
 /**
  * `vict.example.notes` — a PURE/READ capability pack.

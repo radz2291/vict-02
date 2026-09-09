@@ -2,16 +2,16 @@ import { describe, expect, it } from 'vitest';
 import { mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { createRuntime } from '@vict/runtime';
-import { createSqliteStores } from '@vict/store-sqlite';
+import { createRuntime } from '@victframework/runtime';
+import { createSqliteStores } from '@victframework/store-sqlite';
 import {
   runOrchestrationCanarySuite,
   runOrchestrationConformanceSuite,
   runOrchestrationJoinSuite,
   runOrchestrationRaceSuite,
   runOrchestrationRemediationSuite,
-} from '@vict/runtime/testing';
-import type { OrchestrationRemediationStores } from '@vict/runtime/testing';
+} from '@victframework/runtime/testing';
+import type { OrchestrationRemediationStores } from '@victframework/runtime/testing';
 
 /** The shared Stage 03 audit-remediation suite — SQLite backend (real close/reopen). */
 describe('orchestration remediation (shared suite, sqlite)', () => {

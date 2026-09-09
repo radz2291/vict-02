@@ -75,8 +75,8 @@ function check(condition, label) {
  * Exits non-zero on any violation; never mutates anything.
  */
 const REQUIRED_MEMBERS_PROBE = `
-import { compileApplication } from '@vict/application';
-import { APPLICATION_DEFINITION_SCHEMA, APPLICATION_DEFINITION_SCHEMA_V2 } from '@vict/sdk';
+import { compileApplication } from '@victframework/application';
+import { APPLICATION_DEFINITION_SCHEMA, APPLICATION_DEFINITION_SCHEMA_V2 } from '@victframework/sdk';
 
 function base(schema) {
   return {
@@ -216,7 +216,7 @@ function packedScaffolderCheck() {
         failures += 1;
         return;
       }
-      tarballs[`@vict/${name}`] = join(work, tgz.trim()).replace(/\\/g, '/');
+      tarballs[`@victframework/${name}`] = join(work, tgz.trim()).replace(/\\/g, '/');
     }
 
     // A tiny consumer installs the PACKED scaffolder and generates the host
@@ -230,7 +230,9 @@ function packedScaffolderCheck() {
           name: 'vict-stage5-packed-consumer',
           private: true,
           type: 'module',
-          dependencies: { '@vict/scaffolder': `file:${tarballs['@vict/scaffolder']}` },
+          dependencies: {
+            '@victframework/scaffolder': `file:${tarballs['@victframework/scaffolder']}`,
+          },
         },
         null,
         2,
@@ -244,7 +246,7 @@ function packedScaffolderCheck() {
     });
     check(
       consumerInstall.status === 0,
-      'packed-consumer: @vict/scaffolder installs from its tarball',
+      'packed-consumer: @victframework/scaffolder installs from its tarball',
     );
     if (consumerInstall.status !== 0) return;
 
@@ -253,7 +255,7 @@ function packedScaffolderCheck() {
       process.execPath,
       [
         '-e',
-        `import { scaffoldVictApp } from '@vict/scaffolder';
+        `import { scaffoldVictApp } from '@victframework/scaffolder';
          const result = scaffoldVictApp({ targetDir: ${JSON.stringify(target)}, appName: 'Packed Consumer App' });
          if (result.status !== 'created') { throw new Error('scaffold status: ' + result.status); }
          console.log('generated', result.files.length, 'files');`,

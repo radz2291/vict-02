@@ -1,12 +1,12 @@
-import type { Contract } from '@vict/contracts';
+import type { Contract } from '@victframework/contracts';
 
 /**
  * Authoring vocabulary for executable capabilities.
  *
- * This module is part of the stable authoring ABI (`@vict/sdk`). It sits
+ * This module is part of the stable authoring ABI (`@victframework/sdk`). It sits
  * BELOW the kernel and runtime in the dependency direction:
  *
- *   @vict/contracts -> @vict/sdk -> @vict/kernel -> @vict/runtime
+ *   @victframework/contracts -> @victframework/sdk -> @victframework/kernel -> @victframework/runtime
  *
  * The kernel and runtime CONSUME these public authoring declarations; they
  * do not own author-facing definitions. Nothing in this module may import

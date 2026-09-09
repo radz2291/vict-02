@@ -1,7 +1,7 @@
-import { neutralJsonContract } from '@vict/sdk';
-import type { KernelEvent } from '@vict/kernel';
-import { SAFE_ISSUE_CODES } from '@vict/contracts';
-import type { ContractIssue } from '@vict/contracts';
+import { neutralJsonContract } from '@victframework/sdk';
+import type { KernelEvent } from '@victframework/kernel';
+import { SAFE_ISSUE_CODES } from '@victframework/contracts';
+import type { ContractIssue } from '@victframework/contracts';
 import type { VictRuntime } from './runtime.js';
 import type { OrchestrationStore } from './orchestration-store-types.js';
 import type {

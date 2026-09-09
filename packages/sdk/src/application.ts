@@ -10,7 +10,7 @@
  * internals.
  *
  * Validation, canonicalization, identity, and compilation live in
- * `@vict/application` (which depends on this module, never the reverse).
+ * `@victframework/application` (which depends on this module, never the reverse).
  * Every schema is CLOSED: unknown fields are rejected with structured
  * diagnostics instead of being silently stripped.
  */

@@ -245,7 +245,7 @@ export async function processDueTimers(
   options: ProcessDueTimersOptions,
   resolveGraph: (
     activationVersion: string,
-  ) => Promise<{ ok: true; graph: import('@vict/kernel').CompiledGraph } | { ok: false }>,
+  ) => Promise<{ ok: true; graph: import('@victframework/kernel').CompiledGraph } | { ok: false }>,
   nowMs: () => number,
 ): Promise<ProcessDueTimersResult> {
   const limit = Math.min(options.limit ?? 16, 256);
@@ -284,7 +284,7 @@ async function resolveOneDueTimer(
   },
   resolveGraph: (
     activationVersion: string,
-  ) => Promise<{ ok: true; graph: import('@vict/kernel').CompiledGraph } | { ok: false }>,
+  ) => Promise<{ ok: true; graph: import('@victframework/kernel').CompiledGraph } | { ok: false }>,
 ): Promise<boolean> {
   const run = await deps.orchestration.getOrchestrationRun(timer.runId);
   if (!run) {
@@ -560,7 +560,7 @@ export async function recoverOrchestration(
   options: RecoverOrchestrationOptions,
   policyFor: (
     runId: string,
-    attempt: import('@vict/kernel').DurableAttemptState,
+    attempt: import('@victframework/kernel').DurableAttemptState,
   ) => Promise<
     | { readonly action: 'reclaim'; readonly reason?: string }
     | { readonly action: 'block'; readonly reason: string }
@@ -572,12 +572,12 @@ export async function recoverOrchestration(
   const reclaimed: {
     runId: string;
     attemptId: string;
-    effectClass: import('@vict/kernel').EffectClass;
+    effectClass: import('@victframework/kernel').EffectClass;
   }[] = [];
   const blocked: {
     runId: string;
     attemptId: string;
-    effectClass: import('@vict/kernel').EffectClass;
+    effectClass: import('@victframework/kernel').EffectClass;
     reason: string;
   }[] = [];
   const skipped: { runId: string; attemptId: string; reason: string }[] = [];

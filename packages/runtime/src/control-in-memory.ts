@@ -36,7 +36,7 @@ import {
 /**
  * Stage 06B in-memory reference implementations of the neutral control
  * plane and agent-execution store ports. The SQLite adapter implements the
- * SAME semantics in `@vict/store-sqlite`; the shared conformance suite
+ * SAME semantics in `@victframework/store-sqlite`; the shared conformance suite
  * (`control-conformance.ts`) proves the adapters cannot diverge.
  *
  * In-memory durability model: process-local maps guarded by a single
@@ -1084,7 +1084,7 @@ export class InMemoryAgentStreamLedgerStore implements AgentStreamLedgerStore {
 
   async appendEvent(command: {
     streamId: string;
-    kind: import('@vict/contracts').AgentStreamEventKind;
+    kind: import('@victframework/contracts').AgentStreamEventKind;
     payload: string;
     at: number;
   }): Promise<{ seq: number; persisted: boolean }> {

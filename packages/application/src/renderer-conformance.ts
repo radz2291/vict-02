@@ -1,4 +1,4 @@
-import type { SurfaceRole } from '@vict/sdk';
+import type { SurfaceRole } from '@victframework/sdk';
 import type { ApplicationPlan } from './compile.js';
 import type { ApplicationRenderer, RendererBindings } from './renderer.js';
 import { RendererDiagnostic } from './renderer.js';

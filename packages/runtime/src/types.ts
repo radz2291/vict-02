@@ -1,13 +1,13 @@
-import type { GraphIssue, KernelEvent, OutputSummary, RunStatus } from '@vict/kernel';
-import type { VictError } from '@vict/contracts';
+import type { GraphIssue, KernelEvent, OutputSummary, RunStatus } from '@victframework/kernel';
+import type { VictError } from '@victframework/contracts';
 import type { VictStores } from './store-types.js';
 
 /**
  * Stage 04: capability authoring declarations (capability context,
  * capability definition, double invocation, effect/execution modes) now
- * live in `@vict/sdk`, the authoring ABI below the kernel and runtime. The
+ * live in `@victframework/sdk`, the authoring ABI below the kernel and runtime. The
  * runtime consumes them; they are re-exported here (and from the runtime
- * index) for consumer convenience — `@vict/sdk` is the single home.
+ * index) for consumer convenience — `@victframework/sdk` is the single home.
  */
 export type {
   CapabilityConfigReader,
@@ -17,8 +17,8 @@ export type {
   DoubleInvoke,
   EffectClass,
   ExecutionMode,
-} from '@vict/sdk';
-import type { ExecutionMode } from '@vict/sdk';
+} from '@victframework/sdk';
+import type { ExecutionMode } from '@victframework/sdk';
 
 /**
  * How much payload data the runtime retains in stored run records.
@@ -195,7 +195,7 @@ export interface VictRuntimeOptions {
   /**
    * Durable activation/execution stores. Defaults to a private in-memory
    * store set with identical semantics. To persist across process restarts
-   * inject an adapter such as `createSqliteStores()` from `@vict/store-sqlite`.
+   * inject an adapter such as `createSqliteStores()` from `@victframework/store-sqlite`.
    */
   readonly stores?: VictStores;
   /** Clock used for run and event timestamps. Defaults to the system clock. */

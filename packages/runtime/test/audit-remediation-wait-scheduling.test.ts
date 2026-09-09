@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { defineCapability, defineGraph, neutralJsonContract } from '@vict/sdk';
-import { createRuntime } from '@vict/runtime';
+import { defineCapability, defineGraph, neutralJsonContract } from '@victframework/sdk';
+import { createRuntime } from '@victframework/runtime';
 
 /**
  * Stage 04 audit remediation — MED-04-E: the unapproved seven-day wait

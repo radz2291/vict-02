@@ -1,5 +1,5 @@
-import { defineCapabilityPack, defineContract } from '@vict/sdk';
-import type { CapabilityPack } from '@vict/sdk';
+import { defineCapabilityPack, defineContract } from '@victframework/sdk';
+import type { CapabilityPack } from '@victframework/sdk';
 
 /**
  * `vict.example.ledger` — a WRITE capability pack with the full Stage 04
