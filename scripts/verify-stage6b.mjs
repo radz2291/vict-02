@@ -4,13 +4,13 @@
  * execution (corrective finalization).
  *
  * SELF-CONTAINED: the verifier builds EVERY artifact it consumes (all
- * production workspaces in dependency order, including @vict/server and
- * @vict/cli), so it is valid from a zero-artifact clean clone — it never
+ * production workspaces in dependency order, including @victframework/server and
+ * @victframework/cli), so it is valid from a zero-artifact clean clone — it never
  * depends on artifacts from previous manual builds.
  *
  * Gates:
  *  1. Clean zero-artifact build + typecheck of the full package graph.
- *  2. New-package inspection: @vict/control, @vict/server and @vict/cli own
+ *  2. New-package inspection: @victframework/control, @victframework/server and @victframework/cli own
  *     real behavior; dependency direction is acyclic (neutral packages stay
  *     Mastra-free and store-free; server is agent-framework-free and
  *     provider-free); exact pinned Mastra versions; CLI has no store access.
@@ -107,7 +107,7 @@ console.log('\n=== verify:stage6b — zero-artifact build + typecheck ===');
     existsSync(join(repoRoot, 'packages/server/dist/index.js')) &&
       existsSync(join(repoRoot, 'packages/cli/dist/cli.js')) &&
       existsSync(join(repoRoot, 'packages/control/dist/index.js')),
-    'the built package graph includes @vict/server, @vict/cli and @vict/control dist',
+    'the built package graph includes @victframework/server, @victframework/cli and @victframework/control dist',
   );
 }
 
@@ -450,7 +450,9 @@ console.log('\n=== verify:stage6b — Stage 06A regression suites (LOW-06A-1/2) 
 console.log('\n========================================');
 if (failures === 0) {
   console.log('verify:stage6b: ALL GATES PASSED');
-  console.log('Stage 06B corrective finalization complete; awaiting fresh independent audit.');
+  console.log(
+    'Stage 06 closed (independently verified and formally closed 2026-09-09); verification ladder re-confirmed.',
+  );
   process.exit(0);
 } else {
   console.log(`verify:stage6b: ${failures} gate(s) FAILED`);
