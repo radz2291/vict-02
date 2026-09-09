@@ -37,7 +37,29 @@
 > behavior. No real ARA product, no live provider/model proof, and no
 > real-use data-protection proof (MSTR-012) has been delivered; Stage 07
 > is next permitted and has not begun. This update supersedes the
-> 2026-09-08 implementation-record status above.
+> 2026-09-08 implementation-record status above. — SUPERSESSION UPDATE
+> (2026-09-09, Quellight rebaseline, documentation-only): the product
+> previously called ARA is now named **Quellight**, a separate product
+> repository and external consumer of released VICT packages; VICT is
+> the reusable application framework, runtime and control system
+> (`docs/VICT-SYSTEM-REFERENCE.md` v0.4.0, §0.11). Every historical
+> "ARA product" reference in this document denotes the product now named
+> Quellight; the historical body, ARA identifiers, and evidence are
+> preserved unchanged and are not renamed. The Stage 07 target has been
+> REBASELINED: this document's §11 full-product specification and §12.2
+> stage description are Quellight's LONG-TERM product target, while
+> Stage 07 now delivers the **Minimum Workable Quellight** per
+> `docs/architecture/STAGE-07-QUELLIGHT-MINIMUM-WORKABLE-PRODUCT.md`
+> (canonical input: The-Persistent-Cognitive-Partner-Agent-Context
+> v1.3 CANONICAL, SHA-256
+> `e7f61d24c16fd60c66efdb0af0b32859f1fdf1b571e32a0368870cb559b01331`),
+> including the corrected memory/identity model (Mastra memory is
+> conversation machinery and replaceable caches, never Quellight's
+> canonical identity or a second durable semantic reality) and the
+> Quellight Shared World storage decision. Stage 07 implementation has
+> not begun; Stage 07A is the next permitted increment. Future-facing
+> product language uses Quellight; historical ARA evidence remains
+> historically truthful.
 > **Scope:** the canonical product-agent boundary between VICT and Mastra,
 > the ownership matrix, the tool bridge, agent identity and snapshot
 > semantics, memory/storage/observability separation, data-protection
@@ -1054,6 +1076,17 @@ Mastra and VICT observability are complementary, not merged:
 
 ## 11. The real ARA product and UI expectation
 
+> **v0.4.0 correction (2026-09-09):** the product described here is now
+> named **Quellight**, and this section's full-product specification is
+> Quellight's **long-term** target. Stage 07 delivers the **Minimum
+> Workable Quellight** (`docs/architecture/STAGE-07-QUELLIGHT-MINIMUM-WORKABLE-PRODUCT.md`
+> §7) — a bounded subset of this specification whose central claim
+> (persistent shared-world continuity with ceremony-gated durable
+> meaning) is proven end to end. Items of this specification not in that
+> minimum remain later Quellight roadmap (Q2–Q5). The ownership and
+> boundary rules below are unchanged. Historical heading preserved for
+> traceability.
+
 A **real ARA product** is a complete user-facing application, not an API
 demonstration. The Stage 07 product target is comparable in usability and
 robustness to contemporary assistant products, without copying their
@@ -1225,6 +1258,17 @@ only after 06A and 06B are complete and this full gate passes):**
 - independent security-oriented audit passes.
 
 ### 12.2 Revised Stage 07 — Real Mastra-backed ARA product
+
+> **v0.4.0 correction (2026-09-09):** superseded as the Stage 07 stage
+> definition. The product is now **Quellight**, and Stage 07 is
+> **"Minimum Workable Quellight"** per
+> `docs/architecture/STAGE-07-QUELLIGHT-MINIMUM-WORKABLE-PRODUCT.md` and
+> the reference v0.4.0 §23. The list below is preserved unchanged as the
+> long-term Quellight product target (with §11); the Stage 07 exit gate
+> is now the minimum's exit gate (Stage 07A first increment), not the
+> full list below. The memory-ownership rows of §3/§8 are narrowed by
+> the corrected model: durable partnership-material meaning resolves to
+> Quellight's Shared World, never to Mastra memory.
 
 Stage 07 delivers the Mastra-backed real ARA product:
 

@@ -1,12 +1,12 @@
 # VICT System Reference
 
 > **Canonical title:** Vict Architecture and Operating Model — Authoritative System Reference<br>
-> **Document version:** 0.3.4<br>
+> **Document version:** 0.4.0<br>
 > **System generation:** Greenfield<br>
-> **Status:** Authoritative baseline; Mastra/ARA integration amendment accepted (v0.3.0), finalized by the v0.3.1 pre-implementation correction, extended by the v0.3.2 Stage 06A formal closure, extended by the v0.3.3 Stage 06B implementation record, and extended by the v0.3.4 Stage 06 formal closure; future features are individually marked<br>
-> **Last updated:** 2026-09-09 (v0.3.4 — Stage 06 verified and formally closed: Stage 06A independently verified and formally closed; Stage 06B implemented, corrected, and independently verified with non-blocking issues through the Stage 06 independent exit audit, the post-audit hostile-envelope remediation and re-audit, the H-1 delivery-snapshot correction, and the final independent H-1 closure verification (verdict `VERIFIED — STAGE 06 READY FOR FORMAL CLOSURE`). Stage 06 requirement rows promoted to Verified with recorded evidence mappings; OPEN-015 decided; Stage 07 next permitted and not begun. Documentation-only closure — no production code, tests, packages, migrations, examples, fixtures, scripts, manifests, or historical reports modified)<br>
-> **Current delivery point:** Stages 1, 1.1, 2, 3, 4, 5, and 6 independently verified and formally closed (Stage 05 and Stage 06 closed with non-blocking issues); Mastra/ARA amendment accepted, finalized (v0.3.1), and implemented through Stage 06; Stage 07 permitted but not begun<br>
-> **Next permitted stage:** Stage 7 — Real Mastra-backed ARA product (permitted, not begun: Stage 06 passed its final independent closure verification and is formally closed, so Stage 07 may begin under normal stage governance. No Stage 07 capability exists: there is no real ARA product, no live provider/model integration, and no real-use data-protection proof (MSTR-012), and none may be described as delivered. The Stage 07 handoff is to be generated from this v0.3.4 baseline, `docs/architecture/MASTRA-ARA-INTEGRATION.md`, and the closed Stage 06 foundation records `docs/architecture/STAGE-06A-PRODUCT-AGENT-FOUNDATION.md` and `docs/architecture/STAGE-06B-CONTROL-AND-GOVERNED-EXECUTION.md`, with the complete Stage 06 evidence chain in §0.10 and §24.3 of this reference)
+> **Status:** Authoritative baseline; Mastra/ARA integration amendment accepted (v0.3.0), finalized by the v0.3.1 pre-implementation correction, extended by the v0.3.2 Stage 06A formal closure, extended by the v0.3.3 Stage 06B implementation record, extended by the v0.3.4 Stage 06 formal closure, and rebaselined by the v0.4.0 Quellight product amendment; future features are individually marked<br>
+> **Last updated:** 2026-09-09 (v0.4.0 — Quellight rebaseline: the product previously called ARA is now Quellight, a separate product repository and external consumer of released VICT packages; VICT is the reusable application framework, runtime and control system. Stage 07 is rebaselined from the old ARA-oriented assistant target to the Minimum Workable Quellight per `docs/architecture/STAGE-07-QUELLIGHT-MINIMUM-WORKABLE-PRODUCT.md`; historical ARA identifiers and evidence are preserved unchanged. Documentation-only amendment — no production code, tests, packages, migrations, examples, fixtures, scripts, manifests, or historical reports modified; no Quellight capability is Verified)<br>
+> **Current delivery point:** Stages 1, 1.1, 2, 3, 4, 5, and 6 independently verified and formally closed (Stage 05 and Stage 06 closed with non-blocking issues); Mastra/ARA amendment accepted, finalized (v0.3.1), and implemented through Stage 06; product rebaselined to Quellight (v0.4.0); Stage 07 permitted, rebaselined, and not begun<br>
+> **Next permitted stage:** Stage 7 — Minimum Workable Quellight (permitted, rebaselined, not begun: Stage 06 is formally closed and Stage 07 may begin under normal stage governance. No Stage 07 capability exists: there is no Quellight repository, no external-consumer release mechanism, no live provider/model integration, no Shared World store, and no real-use data-protection proof (MSTR-012), and none may be described as delivered. **Stage 07A — Quellight consumer foundation** is the next permitted implementation increment per `docs/handoff/VICT-STAGE-07A-QUELLIGHT-CONSUMER-FOUNDATION-HANDOFF.md`. The Stage 07 governing architecture is `docs/architecture/STAGE-07-QUELLIGHT-MINIMUM-WORKABLE-PRODUCT.md` (canonical input SHA-256 `e7f61d24c16fd60c66efdb0af0b32859f1fdf1b571e32a0368870cb559b01331`), read together with the historical Mastra/ARA amendment `docs/architecture/MASTRA-ARA-INTEGRATION.md` and the closed Stage 06 foundation records `docs/architecture/STAGE-06A-PRODUCT-AGENT-FOUNDATION.md` and `docs/architecture/STAGE-06B-CONTROL-AND-GOVERNED-EXECUTION.md`, with the complete Stage 06 evidence chain in §0.10 and §24.3 of this reference)
 
 ---
 
@@ -291,6 +291,80 @@ STAGE 06 VERIFIED — FORMALLY CLOSED — STAGE 07 PERMITTED
 
 ---
 
+## 0.11 Accepted architecture amendment — Quellight product rebaseline (v0.4.0)
+
+On 2026-09-09, after the verified formal closure of Stage 06 and before
+any Stage 07 implementation, the product was rebaselined. The product
+previously called **ARA** is now named **Quellight**. This is a
+substantive accepted architecture amendment (minor version per §27.5:
+accepted additive architecture and stage design — no invariant, identity
+model, authority boundary, or verified status changes).
+
+Authoritative input: the canonical frozen architecture context
+`The-Persistent-Cognitive-Partner-Agent-Context-v1.3-CANONICAL.md`
+(version 1.3, 2026-09-07, status `CANONICAL — conceptual architecture
+frozen`; SHA-256
+`e7f61d24c16fd60c66efdb0af0b32859f1fdf1b571e32a0368870cb559b01331`).
+The canonical architecture is Quellight's long-term governing product
+architecture. Stage 07 delivers a truthful **Minimum Workable
+Quellight**, not a claim that the v1.3 architecture is implemented.
+
+The governing architecture record is
+`docs/architecture/STAGE-07-QUELLIGHT-MINIMUM-WORKABLE-PRODUCT.md`,
+which defines:
+
+- the **repository boundary**: VICT is the reusable application
+  framework, runtime and control system (this repository); Quellight is
+  a separate product repository and external consumer of released VICT
+  packages — VICT's first flagship consumer and reference product;
+- the **corrected memory/identity model**: Mastra owns raw transcripts,
+  in-flight working memory, and replaceable caches only; every durable
+  partnership-material fact, interpretation, commitment, open loop,
+  relationship state, authority record, and learned procedure resolves
+  to Quellight's Shared World; `MS2–MS6` and durable living-model state
+  are rebuildable from it; VICT `agentProfileVersion` is pinned
+  executable agent configuration, not Quellight's persistent identity;
+  VICT operational events record what the software executed and are not
+  themselves the Shared World; Shared World writes cross typed, governed
+  VICT capabilities; a new thread with no transcript recovers relevant
+  continuity from the Shared World;
+- the **Shared World storage decision**: a Quellight-owned store and
+  SQLite adapter in the Quellight repository (the generic
+  `@vict/application` data port is flat single-resource CRUD — equality
+  filters, single-record mutations — and is not stretched into lineage,
+  atomic multi-record semantics, dependency invalidation, or
+  retention/tombstone behavior); a generic VICT abstraction is deferred
+  until real consumer evidence;
+- the **exact minimum scope** (§7 of that document), the **canonical
+  first vertical** (the commitment/continuity acceptance scenario, §8),
+  the **Q0–Q5 roadmap** (§9), and the explicitly **deferred
+  capabilities**;
+- the **requirement families**: historical `ARA-*` identifiers and all
+  ARA evidence are preserved unchanged; new product semantics use the
+  new `QLT-*` family (QLT-001..QLT-020), **all Planned**; supersession
+  of future-facing framings is explicit, never silent; no Stage 01–06
+  Verified status changes; no requirement is simultaneously Planned and
+  Verified;
+- the **constitutional launch positions**: OQ1 conversation-first
+  workspace with visible objects; OQ2 explicit commitment confirmation;
+  OQ3 no autonomous interruption in the minimum; OQ4 one pinned
+  provider/model profile, rotation deferred; OQ5 no default external
+  execute/decide authority; OQ6 custodian and ceremony **proposed, not
+  ratified** — no constitutional-owner approval is recorded as having
+  occurred.
+
+Stage 07 delivery is split into increments. **Stage 07A — Quellight
+consumer foundation** (`docs/handoff/VICT-STAGE-07A-QUELLIGHT-CONSUMER-FOUNDATION-HANDOFF.md`)
+is the next permitted implementation increment: the H-1 audit Low N-1
+(own `__proto__` delivery-snapshot keys) hardening, the stale Stage 06B
+verifier success-banner correction, the private-registry release and
+consumer mechanism, the immutable compatible release-set identity, the
+isolated clean-consumer verification, and the protected configuration
+foundations. **Stage 07 implementation has not begun**, and no Quellight
+capability is Verified by the v0.4.0 documentation amendment.
+
+---
+
 ## 1. The complete idea
 
 Vict is a capability-oriented application runtime and control system for building software whose behavior can be inspected, versioned, simulated, changed, executed, and audited.
@@ -302,7 +376,7 @@ The complete Vict package is not just an execution engine. It has six cooperatin
 3. **Application definition and delivery:** structured application, data, screen, layout, component, and action definitions rendered into a complete usable application with conventional-code escape hatches.
 4. **Control plane:** safe inspection and change through proposals, validation, simulation, approval, activation, and rollback.
 5. **Developer and builder system:** SDKs, local tools, conformance tests, and a model-agnostic Builder Kit usable by Codex, Claude Code, Pi, a human developer, or another coding host.
-6. **Ecosystem and reference products:** reusable capability packs, adapters, application templates, proven playbooks, and ARA as the lighthouse application.
+6. **Ecosystem and reference products:** reusable capability packs, adapters, application templates, proven playbooks, and a flagship reference consumer product — historically ARA, now named Quellight as a separate external-consumer repository (v0.4.0 rebaseline; §0.11).
 7. **Product-agent subsystem (composed, not core):** the bounded AI subsystem of a real product. Since v0.3.0 this is accepted as Mastra operating behind the neutral VICT ProductAgent boundary — VICT never rebuilds it and never lets it own authority (see §0.6 and `docs/architecture/MASTRA-ARA-INTEGRATION.md`).
 
 ```mermaid
@@ -428,7 +502,7 @@ Vict is not:
 | Agent profile version  | Deterministic hash (`agentProfileVersion`) of the declared profile components — the executable identity of an agent definition                                                |
 | Tool bridge            | The only path from a Mastra tool request to VICT-governed execution: schema → bound capability → authority → contract → effect/approval policy → execution → sanitized result |
 | AI subsystem           | The server-side, in-process composition where Mastra runs under VICT governance; never a privileged control plane                                                             |
-| ARA                    | Vict’s reference application and performance/correctness lighthouse                                                                                                           |
+| ARA                    | Historical identifier of Vict’s reference application and performance/correctness lighthouse (Stages 01–06 evidence, the 13-event offline “ARA proof”). Since v0.4.0 the flagship consumer product is named **Quellight** — a separate external-consumer repository; future-facing product language uses Quellight while historical ARA identifiers and evidence remain unchanged (§0.11)                                            |
 
 Terms are part of the public mental model. New synonyms should not be introduced casually.
 
@@ -520,7 +594,7 @@ flowchart TB
     APPMODEL --> RENDERER["Svelte renderer"]
     RUNTIME --> CONTROL["@vict/control"]
     RUNTIME --> SERVER["@vict/server"]
-    RUNTIME --> MASTRA["@vict/mastra adapter (In Progress; optional)"]
+    RUNTIME --> MASTRA["@vict/mastra adapter (Verified — Stage 06; optional)"]
     APPMODEL --> MASTRA
 ```
 
@@ -1632,6 +1706,17 @@ Distributed execution adds ownership, leasing, partitioning, backpressure, and f
 
 ## 20. ARA reference application
 
+> **v0.4.0 supersession note (2026-09-09):** the Stage 07 product target
+> described in this section has been **rebaselined**. The product is now
+> named **Quellight**, a separate product repository consuming released
+> VICT packages, and Stage 07 delivers the **Minimum Workable
+> Quellight** per `docs/architecture/STAGE-07-QUELLIGHT-MINIMUM-WORKABLE-PRODUCT.md`
+> — not the complete assistant product previously described here. This
+> section remains the truthful historical record of the ARA-era framing;
+> historical `ARA-*` requirement rows below are unchanged, and their
+> mapping to the successor `QLT-*` requirements is recorded in the
+> Stage 07 architecture document (§10.4).
+
 ARA is the lighthouse product used to prove that Vict serves a real interactive application without making the runtime the product’s bottleneck.
 
 ARA is also the first real consumer of the Application Layer. Its conversation, projects/commitments, forms, records, dashboards, approvals, and custom interaction surfaces must use the structured application model where it fits. Bespoke components remain allowed, but ARA must expose missing Application Layer abstractions rather than silently rebuilding ordinary screens, routes, data binding, and actions outside Vict.
@@ -1797,7 +1882,7 @@ Stages are capability gates, not calendar promises. A work session may complete 
 | 4     | Capability and application authoring foundation              | Verified with non-blocking issues                                     | Stable SDK/packs plus neutral Application Definition, identity, bindings, and renderer contract                                                                                                                                                                                       |
 | 5     | Application delivery layer                                   | Verified with non-blocking issues                                     | SvelteKit renderer, scaffolder, built-in surfaces, domain-data adapter, and complete working application proof                                                                                                                                                                        |
 | 6     | Control plane, API, and product-agent integration foundation | Verified with non-blocking issues — formally closed (2026-09-09)      | Governed ChangeSets, approvals, activation operations, typed remote consumption, plus the neutral product-agent boundary, Mastra adapter foundation, tool bridge, and agent-stream contract (two increments: 06A foundation and 06B control plane/remote execution — both independently verified; one final exit gate passed; formal closure recorded at §0.10)                                                                                                                |
-| 7     | Real Mastra-backed ARA product                               | Planned                                                               | Real assistant product proves runtime, Application Layer, and the Mastra integration together                                                                                                                                                                                         |
+| 7     | Minimum Workable Quellight (v0.4.0 rebaseline; formerly "Real Mastra-backed ARA product") | Planned — rebaselined, permitted, not begun | The separate Quellight repository consumes released VICT packages and delivers the Minimum Workable Quellight: shared-world persistence, commitments/open loops with explicit ceremony, the canonical first vertical, real-use MSTR-012 proofs (Stage 07A — consumer foundation — is the first increment; see §0.11 and the Stage 07 architecture document)                                                                                                                |
 | 8     | Builder Kit and self-hosting                                 | Planned                                                               | Model-agnostic agents extend Vict and its applications under bounded rules                                                                                                                                                                                                            |
 | 9     | Studio, diagnosis, and controlled recovery                   | Planned                                                               | Operator experience and safe recovery, reusing the Application Layer where appropriate                                                                                                                                                                                                |
 | 10    | Ecosystem and proven playbooks                               | Planned                                                               | Reusable packs, application templates, and proven compositions                                                                                                                                                                                                                        |
@@ -2348,45 +2433,112 @@ ARA proof:        exactly 13 ordered events; benchmark exactly 10 events
 - **Stage 07 scope:** no live provider, API key, or real model was used anywhere in Stage 06; live-provider behavior and the real-use data-protection/deployment-envelope proof (MSTR-012) remain Stage 07 work and are not claimed.
 - Findings genuinely superseded by later corrections — notably H-1 itself (corrected at `c2ff692`, verified at `8c13c28`) and the pre-H-1 hostile-envelope limitation #3 of the post-audit remediation report — are closed and are not listed as open anywhere.
 
-### Stage 7 — Real Mastra-backed ARA product
+### Stage 7 — Minimum Workable Quellight (v0.4.0 rebaseline)
+
+> **Rebaseline (2026-09-09, §0.11).** This stage was rebaselined from the
+> former "Real Mastra-backed ARA product" target to the **Minimum
+> Workable Quellight**: the product is a separate repository consuming
+> released VICT packages, and the governing architecture, exact scope,
+> first vertical, roadmap, and deferred capabilities are defined in
+> `docs/architecture/STAGE-07-QUELLIGHT-MINIMUM-WORKABLE-PRODUCT.md`.
+> The former complete-assistant specification (this section's original
+> body, and `MASTRA-ARA-INTEGRATION.md` §11/§12.2) remains Quellight's
+> long-term product target; Stage 07 delivers only the bounded minimum
+> below. **Stage 07A — Quellight consumer foundation**
+> (`docs/handoff/VICT-STAGE-07A-QUELLIGHT-CONSUMER-FOUNDATION-HANDOFF.md`)
+> is the first permitted increment; Stage 07 implementation has not
+> begun.
 
 **Purpose**
 
-Deliver the real ARA product on the Stage 06 integration foundation: a complete, robust, user-facing assistant application that proves product usefulness and exposes missing runtime, capability, control-plane, and Application Layer abstractions through one real product.
+Establish VICT's first real external consumer and prove the central
+persistent-partner claim in a usable product baseline: a separate
+Quellight repository delivers streaming conversation over persistent
+threads plus a minimal Shared World — epistemically typed records,
+commitments and open loops created only by explicit confirmation,
+correction lineage, and retention metadata — where context assembly
+recovers continuity from the Shared World rather than transcripts,
+restart loses nothing, and the canonical first vertical passes offline
+with a bounded live-provider subset.
 
 **Includes**
 
-- real model-provider configuration (pinned model profile; credentials only in protected operator configuration, never in tests);
-- Mastra agent and memory under pinned versions with explicit memory policies;
-- the DECLARED deployment envelope (MSTR-012): local-first, single actor, single application process, non-multi-tenant, file-backed — stated in product documentation and the Stage 07 report; exceeding it (multi-process or externally hosted production) requires adopting an appropriate supported backend and security profile instead of extending the libSQL claim;
-- data-protection proof in real use (MSTR-012): retention, deletion, export, and pruning exercised end to end; store files not web-accessible; secret canaries absent from every retained and observable surface; provider credentials external to stored application data; clear user-facing information about what conversational data is retained and how to delete/export it; documented backup/recovery behavior and limitations;
-- VICT-governed tool capabilities for ARA's real domain actions;
-- the complete ARA Application Definition covering conversation, projects/commitments, reminders, forms, records/tables, dashboard/chart, navigation, and safe states;
-- a robust assistant UI meeting the §20.4/`MASTRA-ARA-INTEGRATION.md` §11 minimum specification: streaming rendering, tool-activity states, approval cards, stop/retry/regenerate, explicit edit/resend/branch history rules, attachments/citations where supported, usage/provider status, reconnect and restart recovery, full loading/offline/empty/denied/partial/error states, responsive layouts, keyboard accessibility and screen-reader semantics, real-browser usability and performance evidence, theme customization, and explicit extension points;
-- real application-domain resources through Application Layer resource/data bindings;
-- the human approval flow end to end;
-- latency, cost, usability, and security evidence with separate measurement for UI transport, VICT, Mastra, provider, and tools;
-- explicit justification for every custom-component island;
-- independent product, architecture, security, UI, and accessibility audits.
+- **Stage 07A (first increment, VICT-side):** the H-1 audit Low N-1
+  `__proto__` delivery-snapshot hardening; the stale Stage 06B verifier
+  banner correction; the private-registry release/consumer mechanism
+  with exact internal version pins; the immutable compatible release-set
+  identity; isolated clean-consumer verification (install, typecheck,
+  build, minimal runtime/renderer composition outside the monorepo);
+  and protected configuration foundations (provider profile selection,
+  credential variable-name resolution, store locations, retention
+  bounds — values never logged, serialized, or persisted);
+- the separate Quellight repository consuming immutable, pinned VICT
+  release artifacts through that mechanism (no source copies, no
+  mutable-main resolution);
+- one real model-provider profile with protected credential resolution
+  (one pinned preferred profile; rotation deferred — OQ4);
+- streaming conversation and persistent thread handling on the Verified
+  `vict.agent-stream@1`/SSE path; restart and reconnect recovery in real
+  use;
+- the minimal Quellight-owned Shared World store (threads; epistemically
+  typed claims/evidence; commitments; open loops; correction lineage;
+  retention metadata), written only through governed VICT capabilities;
+- explicit proposal/confirmation before conversation becomes
+  consequential durable meaning (OQ2);
+- context assembly from the relevant Shared World thread, commitments,
+  and open loops — a fresh thread with no transcript still recovers
+  relevant continuity;
+- user-visible inspection, correction (with lineage), and deletion (with
+  tombstones and dependency re-evaluation);
+- a conversation-first workspace with visible shared-world objects (OQ1);
+- the canonical first vertical (§8 of the Stage 07 architecture
+  document) passing offline deterministically plus a bounded
+  live-provider subset;
+- real-use retention, deletion, export, and credential-leakage proof
+  (MSTR-012);
+- responsive, accessible baseline UI with the Stage 05 accessibility
+  discipline; structured surfaces from the Application Layer with
+  explicit justified islands.
 
-**Excludes**
+**Excludes** (deferred to later Quellight milestones, §9 of the Stage 07
+architecture document; absence MUST NOT violate canonical invariants)
 
-- Builder Agent in the message path;
-- general marketplace claims;
-- bypassing ordinary Application Layer surfaces merely to finish the reference product;
-- multi-tenant, multi-process, or cloud-production claims under the initial libSQL envelope (MSTR-012).
+- autonomous background cognitive cycles and non-conversation loop
+  activation; full `D1–D5` initiative exposure and `ESC` behavior;
+- full `G1–G5` external delegation (no default external execute/decide
+  authority — OQ5);
+- email, calendar, device, and third-party ingestion; complete `SYNC`
+  computation; automatic pattern learning and full `A1–A5` adaptation;
+- broad evidence dependency propagation beyond the bounded minimum;
+- full provider-rotation/fallback policy and model-swap certification;
+- voice; multi-user, multi-process, multi-tenant, or protected-cloud
+  claims (MSTR-012 envelope unchanged); Builder Agent in the
+  conversation path; marketplace claims; bypassing Application Layer
+  surfaces.
 
 **Exit gate**
 
-- an end-to-end user flow survives process restart, activation change, and application-version change;
-- a sensitive tool action requires correct approval and cannot proceed without it;
-- the declared deployment envelope (MSTR-012) is documented and honored, with the deployment-envelope data-protection proofs (MSTR-012) demonstrated in real use;
-- the product surface is substantially produced by the Application Definition, while every custom component is explicit and justified;
-- the assistant experience meets the §11 minimum specification in real-browser use, including reconnect and restart recovery;
-- safe observability supports diagnosis with per-boundary latency/cost reporting;
-- Vict runtime and rendering overhead are measured separately and stay within accepted budgets;
-- product code does not bypass core effect/change/data/permission semantics;
-- independent product, architecture, security, UI, and accessibility audits pass.
+- the Stage 07A gate has passed independent audit (including the N-1
+  hardening) BEFORE any live-provider or real-Quellight claim;
+- the Quellight repository installs, typechecks, builds, and runs from a
+  clean clone against pinned release artifacts, proven outside the VICT
+  monorepo;
+- the complete canonical first vertical passes: offline deterministically
+  plus the bounded live-provider subset;
+- Shared World continuity survives restart and fresh-thread recovery
+  without transcript dependence; corrections preserve lineage; deleted
+  or expired material no longer influences assembled context;
+- MSTR-012 real-use proofs pass (retention, deletion, export, pruning;
+  non-web-accessible stores; absent secret canaries; credentials
+  external to stored data; informed-user retention disclosure;
+  documented backup/recovery limitations);
+- the UI is responsive and accessible on baseline flows with
+  real-browser evidence;
+- no deferred capability is claimed; product language uses Quellight;
+  historical ARA evidence remains intact; OQ6 remains unratified and
+  labeled as such;
+- independent product, architecture, security, and accessibility audits
+  pass.
 
 ### Stage 8 — Builder Kit and self-hosting
 
@@ -2555,7 +2707,7 @@ Stage 4 — capability and application authoring foundation — is independently
 
 Stage 5 — application delivery layer — is independently verified and formally closed (2026-09-04) at final audited implementation target `070147e`, with the final independent closure audit at `2f8233c`, disposition **VERIFIED WITH NON-BLOCKING ISSUES**. The verified delivery comprises the `vict.application@2` delivery vocabulary with strict `@1` compatibility; strict required-member and canonical-input validation; deterministic, collision-resistant `applicationVersion`; immutable caller-independent compiled plans and serialization; the canonical Svelte 5 renderer and generic application host; routes, navigation and responsive layouts; forms, records, tables, search, charts, tabs, dialogs, drawers, status, action and conversation surfaces; safe loading, empty, validation, denied, stale, partial and failure states; theme tokens and versioned custom-component code islands; the one-time deterministic non-destructive scaffolder; the production SQLite application-domain adapter with application-domain migrations separate from operational migrations; typed, authorized query/mutation/action boundaries; restart and real-process SIGKILL recovery evidence; a warning-free Svelte build; real-browser responsive and accessibility checks; and packed-consumer and generated-host build verification. The observed closure baseline is 57 unit files / 1436 tests, 3 renderer files / 45 tests, 1 integration file / 4 tests, 61 files / 1485 total, ARA exactly 13 ordered events, benchmark exactly 10 events per completed run, and Stage 04 application proof 17/17.
 
-Stage 06 — Control plane, API, and product-agent integration foundation — is **In Progress**. The **Mastra/ARA architecture amendment is accepted and finalized** as reference v0.3.1 together with `docs/architecture/MASTRA-ARA-INTEGRATION.md`. Its foundation increment, **Stage 06A — product-agent foundation**, is **independently verified and formally closed (2026-09-06)** with disposition **VERIFIED WITH NON-BLOCKING ISSUES — STAGE 06A CLOSED — STAGE 06B PERMITTED**. The final independent Linux closure audit at commit `8a554cb` verified the corrected implementation target `1ac9c18` (documented at `c1a6a57`) on a fresh clone under Ubuntu 24.04.4 (WSL2, real Linux kernel 6.6.87.2) with native Linux x86_64 Node v24.19.0 and a native ext4 checkout: 68 files / 1,605 unit tests, 1 file / 4 integration tests, 81 files / 1,777 complete project tests; `verify:stage6a` passed twice; the POSIX storage suites passed five consecutive times; the driver-cause suite passed five consecutive times; and the migration/governance suites passed three consecutive times; ARA retained exactly 13 ordered events and the benchmark exactly 10 events per completed run, with the Stage 05 application proof and real-browser suite intact (44/44 including 13 real-browser tests; `example:application` 17/17). Findings: Critical 0, High 0, Medium 0, Low 2 (both accepted, below); **no Stage 06A closure blocker remains**.
+Stage 06 — Control plane, API, and product-agent integration foundation — **was In Progress at the time this narrative was written and is now verified and formally closed (2026-09-09; §0.10); the paragraph below is preserved as the truthful historical record of that in-progress state**. The **Mastra/ARA architecture amendment is accepted and finalized** as reference v0.3.1 together with `docs/architecture/MASTRA-ARA-INTEGRATION.md`. Its foundation increment, **Stage 06A — product-agent foundation**, is **independently verified and formally closed (2026-09-06)** with disposition **VERIFIED WITH NON-BLOCKING ISSUES — STAGE 06A CLOSED — STAGE 06B PERMITTED**. The final independent Linux closure audit at commit `8a554cb` verified the corrected implementation target `1ac9c18` (documented at `c1a6a57`) on a fresh clone under Ubuntu 24.04.4 (WSL2, real Linux kernel 6.6.87.2) with native Linux x86_64 Node v24.19.0 and a native ext4 checkout: 68 files / 1,605 unit tests, 1 file / 4 integration tests, 81 files / 1,777 complete project tests; `verify:stage6a` passed twice; the POSIX storage suites passed five consecutive times; the driver-cause suite passed five consecutive times; and the migration/governance suites passed three consecutive times; ARA retained exactly 13 ordered events and the benchmark exactly 10 events per completed run, with the Stage 05 application proof and real-browser suite intact (44/44 including 13 real-browser tests; `example:application` 17/17). Findings: Critical 0, High 0, Medium 0, Low 2 (both accepted, below); **no Stage 06A closure blocker remains**.
 
 The complete accepted Stage 06A evidence chain: initial implementation `b513d9f`; initial implementation report `1d50027`; corrective-finalization implementation `1c65849`; corrective-finalization report `53c3eb7`; boundary-remediation implementation `5d931e3`; boundary-remediation report `79a1ef3`; independent boundary audit `28b4a06`; Linux closure implementation `1ac9c18`; Linux closure report `c1a6a57`; final independent Linux closure audit `8a554cb` (the formal starting point of this closure).
 
@@ -2568,7 +2720,7 @@ The two accepted non-blocking findings are carried explicitly into Stage 06B as 
 
 Stage 06B — control plane and governed remote execution — was implemented on top of the Stage 06A closure point `b491ede` and passed through a truthful corrective history before independent audit: the two accepted LOW-06A carry-forwards closed first (SQLite receipt-step rejection parity with shared conformance tests; `verify:stage6a` extended to directly gate driver-cause, migration, and governance regressions); the final `vict.agent-stream@1` field-level schema in `@vict/contracts` with OPEN-015 decided; the `@vict/control` package (actors/roles/scopes with default-deny, ChangeSets with immutable content identity, closed typed operations, evidence invalidation, content-hash-bound approvals, idempotent competing-commit semantics, activation publish/select/rollback, Application Release publish/select/rollback, agent-turn governance with durable-before-invocation tool intents, self-approval denial, exact-binding approval consumption, durable cancellation, restart reconciliation, audit events) with shared in-memory/SQLite conformance suites; the `@vict/mastra` governed capability tool bridge enforcing the nine-step authorization order against the pinned Mastra versions; the `@vict/server` boundary (versioned HTTP commands over real `node:http`, resumable SSE with `Last-Event-ID`/cursor replay and delta coalescing, authenticated actor composition with Mastra `resourceId` derived server-side, remote Application data adapter with hostile-container containment); the `@vict/cli` typed operator commands consuming the same versioned command surface; and real child-process SIGKILL fixtures plus an adversarial canary leakage matrix over HTTP, SSE, safe errors, durable stream rows, approval records, and raw SQLite DB/WAL/SHM bytes. Corrective passes before audit closed clean-clone build integrity, below-transport authorization, durable command idempotency, the applying-saga commit, wire-envelope finalization, lossless replay/backpressure, and R1–R6 reliability defects, followed by the invocation/control boundary correction (`b37320c`) and the tool-state truthfulness correction (`57ca502`).
 
-The fresh independent **Stage 06 exit audit** (`eb8d458`) then verified the complete Stage 06 gate on a fresh Linux clone — full ladder, four independent probe programs (109 assertions), and a negative control at the previous boundary-correction tip — returning **VERIFIED WITH NON-BLOCKING ISSUES — STAGE 07 PERMITTED AFTER FORMAL STAGE 06 CLOSURE** (Low EXIT-1 shared-store liveness trade-off; Informational EXIT-2/EXIT-3; no Critical/High/Medium). **Post-audit hostile-envelope remediation** (`735cc9a`) hardened every result/output inspection into one total, guarded control-envelope capture; the focused independent **post-audit closure re-audit** (`d146dae`) re-verified that containment (37/37 envelope matrix, 8/8 durability, 10/10 boundary probes, 45/45 permanent tests) but independently reproduced one residual **High defect, H-1** — a contract-valid output containing a delivery-hostile nested value was settled durably `completed` and then normalized as `tool.failed` in the real pinned Mastra stream (for an approved write capability, an effectful result became contradictory) — and correctly blocked closure. **H-1 was corrected** by the delivery-safe snapshot boundary (`c2ff692`, documented at `a6675bb`): the exact value returned to Mastra is recursively captured into a bounded, passive, VICT-owned snapshot BEFORE the fenced `completed` settlement; uncapturable values settle stable `outcome_unknown` with one effect and no second effect on retry; the durable summary is derived from the snapshot and only the snapshot is delivered. The final independent **H-1 closure verification** (`8c13c28`) re-proved the boundary end-to-end on a fresh clone — negative control reproducing the contradiction at `46a1ab7`, 68/68 exact snapshot-boundary checks, the real-path truthfulness matrix over all read/write × memory/SQLite combos, instrumented settlement ordering, the concurrency/fencing/restart subset three times, 114 files / 2152 tests, `verify:stage6b`, `npm audit` with 0 vulnerabilities — and returned **`VERIFIED — STAGE 06 READY FOR FORMAL CLOSURE`** with no blocking finding (Low N-1 and Informational N-2 accepted). Stage 06 was formally closed on 2026-09-09 at v0.3.4 (§0.10). **Stage 07 — the real Mastra-backed ARA product — is next permitted and has not begun.**
+The fresh independent **Stage 06 exit audit** (`eb8d458`) then verified the complete Stage 06 gate on a fresh Linux clone — full ladder, four independent probe programs (109 assertions), and a negative control at the previous boundary-correction tip — returning **VERIFIED WITH NON-BLOCKING ISSUES — STAGE 07 PERMITTED AFTER FORMAL STAGE 06 CLOSURE** (Low EXIT-1 shared-store liveness trade-off; Informational EXIT-2/EXIT-3; no Critical/High/Medium). **Post-audit hostile-envelope remediation** (`735cc9a`) hardened every result/output inspection into one total, guarded control-envelope capture; the focused independent **post-audit closure re-audit** (`d146dae`) re-verified that containment (37/37 envelope matrix, 8/8 durability, 10/10 boundary probes, 45/45 permanent tests) but independently reproduced one residual **High defect, H-1** — a contract-valid output containing a delivery-hostile nested value was settled durably `completed` and then normalized as `tool.failed` in the real pinned Mastra stream (for an approved write capability, an effectful result became contradictory) — and correctly blocked closure. **H-1 was corrected** by the delivery-safe snapshot boundary (`c2ff692`, documented at `a6675bb`): the exact value returned to Mastra is recursively captured into a bounded, passive, VICT-owned snapshot BEFORE the fenced `completed` settlement; uncapturable values settle stable `outcome_unknown` with one effect and no second effect on retry; the durable summary is derived from the snapshot and only the snapshot is delivered. The final independent **H-1 closure verification** (`8c13c28`) re-proved the boundary end-to-end on a fresh clone — negative control reproducing the contradiction at `46a1ab7`, 68/68 exact snapshot-boundary checks, the real-path truthfulness matrix over all read/write × memory/SQLite combos, instrumented settlement ordering, the concurrency/fencing/restart subset three times, 114 files / 2152 tests, `verify:stage6b`, `npm audit` with 0 vulnerabilities — and returned **`VERIFIED — STAGE 06 READY FOR FORMAL CLOSURE`** with no blocking finding (Low N-1 and Informational N-2 accepted). Stage 06 was formally closed on 2026-09-09 at v0.3.4 (§0.10). **Stage 07 — the real Mastra-backed ARA product, as named at that time — was next permitted and had not begun**; under the v0.4.0 rebaseline (§0.11) that target is now the **Minimum Workable Quellight**, still permitted and still not begun, with Stage 07A as the first permitted increment.
 
 Retained informational limitations (verified architecture is not reopened): Stage 03's two load-sensitive real-time tests re-tripped once each in the audit's first-run full-suite executions and passed on every quiet re-run (unchanged Stage 03 files; governed clock-injection remains the recorded future direction); the Linux evidence is WSL2 (real Linux kernel, native ext4) and does not claim bare-metal certification; Windows ACL behavior remains documented best-effort; rollback-journal sidecars were absent under the exercised WAL configuration; sidecars created after the initial permission application rely on the enclosing `0700` directory unless permissions are reapplied; and Stage 06A is proven only within the declared local-first, single-actor, single-process, non-multi-tenant envelope — Stage 07 must still prove the real-use deployment envelope and product behavior (MSTR-012).
 
@@ -2623,7 +2775,9 @@ Retained informational limitations (verified architecture is not reopened): Stag
 - VICT-STAGE-06-POST-AUDIT-INDEPENDENT-CLOSURE-RE-AUDIT.md — focused independent re-audit of the envelope remediation: containment re-verified, but the H-1 High defect (durable completion before safe delivery) independently reproduced; **authoritative Stage 06 blocker record: NOT VERIFIED — STAGE 07 BLOCKED**, committed as `d146dae1fd27f665ed9d8c297d40436046a860fb`.
 - VICT-STAGE-06-H1-DELIVERY-SNAPSHOT-REMEDIATION-REPORT.md — implementer claim correcting H-1 with the delivery-safe snapshot boundary (capture before durable completion; stable `VICT_CAPABILITY_UNSAFE_OUTPUT_STRUCTURE`; no second effect on retry); historical record (implementation `c2ff692e68658fca281f797cd1fe5dd9fa0ddd38`, documentation tip `a6675bb8f47c763d99f140dddeab7021a6242df1`); preserved unchanged.
 - VICT-STAGE-06-H1-INDEPENDENT-CLOSURE-VERIFICATION.md — final independent closure verification of the H-1 correction on a fresh clone (Ubuntu 24.04/WSL2, Node v24.19.0, ext4): negative control at the defective baseline `46a1ab7`, 68/68 exact snapshot-boundary checks, real-path truthfulness matrix, instrumented settlement ordering, 114 files / 2152 tests, and `verify:stage6b`; **authoritative Stage 06 disposition: VERIFIED — STAGE 06 READY FOR FORMAL CLOSURE**, committed as `8c13c28d4d50c53e141b32f05150d4c443a3dba5`. Formal Stage 06 closure was performed as a separate documentation-only act at v0.3.4 (§0.10). All earlier Stage 06 blocker and remediation reports above are preserved as historical evidence.
-- MASTRA-ARA-INTEGRATION.md — the accepted Mastra/ARA integration amendment record (v0.3.0, finalized by the v0.3.1 pre-implementation correction): product decision, ownership matrix, Mastra-versus-VICT orchestration boundary, neutral product-agent boundary, complete agent executable identity and snapshot semantics (§6), Mastra-native helper-tool policy, tool bridge, memory/storage/observability separation with the local data-protection baseline and declared deployment envelope (§8), streaming/transport decision, security composition, primary-source ledger (§2.4), real ARA product target, Stage 06A/06B delivery split and revised Stage 06/07, and the AI/MSTR requirement families; normative for Stage 06+; maintained under docs/architecture/.
+- MASTRA-ARA-INTEGRATION.md — the accepted Mastra/ARA integration amendment record (v0.3.0, finalized by the v0.3.1 pre-implementation correction): product decision, ownership matrix, Mastra-versus-VICT orchestration boundary, neutral product-agent boundary, complete agent executable identity and snapshot semantics (§6), Mastra-native helper-tool policy, tool bridge, memory/storage/observability separation with the local data-protection baseline and declared deployment envelope (§8), streaming/transport decision, security composition, primary-source ledger (§2.4), real ARA product target, Stage 06A/06B delivery split and revised Stage 06/07, and the AI/MSTR requirement families; normative for Stage 06+; maintained under docs/architecture/. Read since v0.4.0 with its dated Quellight supersession note: historical "ARA product" references denote the product now named Quellight, and the §11 full-product specification is Quellight's long-term target while Stage 07 delivers the Minimum Workable Quellight.
+- STAGE-07-QUELLIGHT-MINIMUM-WORKABLE-PRODUCT.md — the accepted v0.4.0 Quellight rebaseline amendment: authority and canonical input hash (v1.3 CANONICAL, SHA-256 `e7f61d24…b01331`), product identity and repository boundary (VICT framework vs separate Quellight consumer repository), VICT-readiness matrix, canonical-to-VICT ownership mapping, the corrected memory/identity model, the Shared World record and storage decision (Quellight-owned store; no premature VICT extraction), the exact Minimum Workable Quellight scope and exclusions, the canonical first vertical acceptance scenario, the Q0–Q5 vertical/horizontal roadmap, requirement traceability with ARA compatibility and the new `QLT-*` family (all Planned), open constitutional decisions (OQ1–OQ6 launch positions; OQ6 unratified), security and retention boundaries, the Stage 07 exit gate, and genuine risks; normative for Stage 07; maintained under docs/architecture/.
+- VICT-STAGE-07A-QUELLIGHT-CONSUMER-FOUNDATION-HANDOFF.md — the executable Stage 07A implementation handoff (the next permitted increment): the H-1 N-1 `__proto__` delivery-snapshot hardening, the stale Stage 06B verifier-banner correction, the private-registry release/consumer mechanism, the immutable compatible release-set identity, isolated clean-consumer verification, and protected configuration foundations, with exact tests, negative controls, deliverables, exclusions, and exit gate; maintained under docs/handoff/.
 
 ---
 
@@ -2807,4 +2961,4 @@ Otherwise it probably belongs in an application, capability pack, adapter, devel
 
 ---
 
-**End of authoritative baseline v0.3.4**
+**End of authoritative baseline v0.4.0**
