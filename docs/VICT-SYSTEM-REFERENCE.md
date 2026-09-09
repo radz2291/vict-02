@@ -1,12 +1,12 @@
 # VICT System Reference
 
 > **Canonical title:** Vict Architecture and Operating Model — Authoritative System Reference<br>
-> **Document version:** 0.4.2<br>
+> **Document version:** 0.4.3<br>
 > **System generation:** Greenfield<br>
-> **Status:** Authoritative baseline; Mastra/ARA integration amendment accepted (v0.3.0), finalized by the v0.3.1 pre-implementation correction, extended by the v0.3.2 Stage 06A formal closure, extended by the v0.3.3 Stage 06B implementation record, extended by the v0.3.4 Stage 06 formal closure, rebaselined by the v0.4.0 Quellight product amendment, and extended by the v0.4.1 Stage 07A implementation record, and extended by the v0.4.2 Stage 07A formal closure; future features are individually marked<br>
-> **Last updated:** 2026-09-09 (v0.4.2 — Stage 07A Quellight consumer foundation independently verified and formally closed. The independent verdict at commit `cb9d74b…` is `VERIFIED WITH NON-BLOCKING ISSUES — FORMAL CLOSURE PERMITTED`. The formal-closure action performed the narrowly authorized F-1 correction — the `verify:stage7a` namespace gate no longer flags its own detection literal (fix commit `e45bdec…`) — marked N-1 CLOSED-in-Stage-07A, marked `ARCH-012` Verified, reconciled the F-4 wording in `docs/RELEASE-COMPATIBILITY.md`, and recorded `docs/report/VICT-STAGE-07A-FORMAL-CLOSURE.md` (§0.13). Disposition: `STAGE 07A VERIFIED WITH NON-BLOCKING ISSUES — FORMALLY CLOSED`; **Stage 07B PERMITTED — NOT BEGUN**; Stage 07 remains In Progress; every `QLT-*` requirement remains Planned; the published release set `vict-release-set@1/0.1.0` (content ID `v1_dbb7438dfe16b7de245fe3863f6980b7e9a44a83c1809e01071941782597a11d`, release source `7e5908e…`) is immutable and unchanged; no Stage 01–06 Verified status changed)<br>
-> **Current delivery point:** Stages 1, 1.1, 2, 3, 4, 5, and 6 independently verified and formally closed (Stage 05 and Stage 06 closed with non-blocking issues); Mastra/ARA amendment accepted, finalized (v0.3.1), and implemented through Stage 06; product rebaselined to Quellight (v0.4.0); Stage 07A — the consumer foundation — implemented (v0.4.1, §0.12), independently verified and formally closed (v0.4.2, §0.13); **Stage 07 remains In Progress**; Stage 07B — the Quellight repository bootstrap — is PERMITTED and NOT BEGUN<br>
-> **Next permitted stage:** Stage 7 — Minimum Workable Quellight (permitted, rebaselined, In Progress: Stage 06 is formally closed and Stage 07 proceeds under normal stage governance. **Stage 07A — Quellight consumer foundation — is implemented, independently verified (`VERIFIED WITH NON-BLOCKING ISSUES — FORMAL CLOSURE PERMITTED`, audit at `cb9d74b…`), and FORMALLY CLOSED (v0.4.2, §0.13). Stage 07B — the Quellight repository bootstrap — is PERMITTED and NOT BEGUN**: there is no Quellight repository, no live provider/model integration, no Shared World store, and no real-use data-protection proof (MSTR-012), and none may be described as delivered. The Stage 07 governing architecture is `docs/architecture/STAGE-07-QUELLIGHT-MINIMUM-WORKABLE-PRODUCT.md` (canonical input SHA-256 `e7f61d24c16fd60c66efdb0af0b32859f1fdf1b571e32a0368870cb559b01331`), read together with the historical Mastra/ARA amendment `docs/architecture/MASTRA-ARA-INTEGRATION.md` and the closed Stage 06 foundation records `docs/architecture/STAGE-06A-PRODUCT-AGENT-FOUNDATION.md` and `docs/architecture/STAGE-06B-CONTROL-AND-GOVERNED-EXECUTION.md`, with the complete Stage 06 evidence chain in §0.10 and §24.3 of this reference)
+> **Status:** Authoritative baseline; Mastra/ARA integration amendment accepted (v0.3.0), finalized by the v0.3.1 pre-implementation correction, extended by the v0.3.2 Stage 06A formal closure, extended by the v0.3.3 Stage 06B implementation record, extended by the v0.3.4 Stage 06 formal closure, rebaselined by the v0.4.0 Quellight product amendment, extended by the v0.4.1 Stage 07A implementation record, extended by the v0.4.2 Stage 07A formal closure, and extended by the v0.4.3 Stage 07B handoff registration; future features are individually marked<br>
+> **Last updated:** 2026-09-09 (v0.4.3 — the Stage 07B handoff is issued and registered (§0.14): `docs/handoff/VICT-STAGE-07B-QUELLIGHT-CONSUMER-BOOTSTRAP-HANDOFF.md` — Quellight Consumer Bootstrap and Live Conversation Foundation. Documentation-only registration: the handoff defines the Stage 07B boundary (repository inception against the immutable release set, one pinned live-provider profile — Ollama Cloud, model `glm-5.3-flash`, pending the owner credential and profile confirmation — streaming conversation over persistent threads with truthful reconnect/restart recovery, a minimal accessible conversation-first UI, and the Quellight-owned Shared World store foundation whose only durable record family in 07B is the user-created thread record); it explicitly separates conversation persistence from Shared World continuity; the proposed later substage sequence 07C–07D–07E is recorded there as PROPOSED. **Stage 07B PERMITTED — SPECIFIED (HANDOFF ISSUED) — IMPLEMENTATION NOT BEGUN**; the Quellight repository has not been created; every `QLT-*` requirement remains Planned; the published release set `vict-release-set@1/0.1.0` (content ID `v1_dbb7438dfe16b7de245fe3863f6980b7e9a44a83c1809e01071941782597a11d`, release source `7e5908e…`) is immutable and unchanged; no Stage 01–07A Verified status changed). Previous: v0.4.2 — Stage 07A Quellight consumer foundation independently verified and formally closed. The independent verdict at commit `cb9d74b…` is `VERIFIED WITH NON-BLOCKING ISSUES — FORMAL CLOSURE PERMITTED`. The formal-closure action performed the narrowly authorized F-1 correction — the `verify:stage7a` namespace gate no longer flags its own detection literal (fix commit `e45bdec…`) — marked N-1 CLOSED-in-Stage-07A, marked `ARCH-012` Verified, reconciled the F-4 wording in `docs/RELEASE-COMPATIBILITY.md`, and recorded `docs/report/VICT-STAGE-07A-FORMAL-CLOSURE.md` (§0.13). Disposition: `STAGE 07A VERIFIED WITH NON-BLOCKING ISSUES — FORMALLY CLOSED`; **Stage 07B PERMITTED — NOT BEGUN**; Stage 07 remains In Progress; every `QLT-*` requirement remains Planned; the published release set `vict-release-set@1/0.1.0` (content ID `v1_dbb7438dfe16b7de245fe3863f6980b7e9a44a83c1809e01071941782597a11d`, release source `7e5908e…`) is immutable and unchanged; no Stage 01–06 Verified status changed)<br>
+> **Current delivery point:** Stages 1, 1.1, 2, 3, 4, 5, and 6 independently verified and formally closed (Stage 05 and Stage 06 closed with non-blocking issues); Mastra/ARA amendment accepted, finalized (v0.3.1), and implemented through Stage 06; product rebaselined to Quellight (v0.4.0); Stage 07A — the consumer foundation — implemented (v0.4.1, §0.12), independently verified and formally closed (v0.4.2, §0.13); **Stage 07 remains In Progress**; Stage 07B — Quellight Consumer Bootstrap and Live Conversation Foundation — is PERMITTED and SPECIFIED by its issued handoff (v0.4.3, §0.14) and IMPLEMENTATION HAS NOT BEGUN<br>
+> **Next permitted stage:** Stage 7 — Minimum Workable Quellight (permitted, rebaselined, In Progress: Stage 06 is formally closed and Stage 07 proceeds under normal stage governance. **Stage 07A — Quellight consumer foundation — is implemented, independently verified (`VERIFIED WITH NON-BLOCKING ISSUES — FORMAL CLOSURE PERMITTED`, audit at `cb9d74b…`), and FORMALLY CLOSED (v0.4.2, §0.13). Stage 07B — Quellight Consumer Bootstrap and Live Conversation Foundation — is PERMITTED and SPECIFIED by its issued handoff `docs/handoff/VICT-STAGE-07B-QUELLIGHT-CONSUMER-BOOTSTRAP-HANDOFF.md` (v0.4.3, §0.14): repository inception of the separate Quellight repository against the immutable release set, one pinned live-provider profile, streaming conversation over persistent threads, and the Quellight-owned Shared World store foundation — and IMPLEMENTATION HAS NOT BEGUN**: there is no Quellight repository, no live provider/model integration, no Shared World store, and no real-use data-protection proof (MSTR-012), and none may be described as delivered. The Stage 07 governing architecture is `docs/architecture/STAGE-07-QUELLIGHT-MINIMUM-WORKABLE-PRODUCT.md` (canonical input SHA-256 `e7f61d24c16fd60c66efdb0af0b32859f1fdf1b571e32a0368870cb559b01331`), read together with the historical Mastra/ARA amendment `docs/architecture/MASTRA-ARA-INTEGRATION.md` and the closed Stage 06 foundation records `docs/architecture/STAGE-06A-PRODUCT-AGENT-FOUNDATION.md` and `docs/architecture/STAGE-06B-CONTROL-AND-GOVERNED-EXECUTION.md`, with the complete Stage 06 evidence chain in §0.10 and §24.3 of this reference)
 
 ---
 
@@ -587,6 +587,69 @@ self-exclusion) and active normative status/documentation locations
 architecture status, the F-4 wording, and the formal-closure record).
 No production code, tests, packages, manifests, lockfiles, examples,
 packs, migrations, or historical reports were modified.
+
+## 0.14 Handoff registration v0.4.3 — Stage 07B Quellight Consumer Bootstrap and Live Conversation Foundation specified (documentation-only)
+
+On 2026-09-09 the Stage 07B implementation handoff was issued and is
+registered as the next permitted increment after the closed Stage 07A:
+`docs/handoff/VICT-STAGE-07B-QUELLIGHT-CONSUMER-BOOTSTRAP-HANDOFF.md`.
+This is a documentation-only registration: **Stage 07B is PERMITTED —
+SPECIFIED (HANDOFF ISSUED) — IMPLEMENTATION NOT BEGUN**; no Stage 01–07A
+Verified status changed; every `QLT-*` requirement remains Planned; the
+Quellight repository (`C:/Users/RZ1/Desktop/RZ/260909-VCT-Quellight`,
+`https://github.com/radz2291/Quellight`) has not been created and was
+inspected read-only only; the published release set is unchanged.
+
+The handoff defines the complete Stage 07B boundary:
+
+1. **Product outcome.** A real local Quellight application that installs
+   the exact public release set, starts from a clean checkout with no VICT
+   source present, streams a real model response through the Verified
+   `vict.agent-stream@1` resumable-SSE path, creates and reopens
+   conversation threads, persists and restores transcripts across process
+   restart, reconnects truthfully after client interruption, and presents
+   a minimal responsive accessible conversation-first UI — with
+   credentials excluded from source, logs, events, serialization,
+   persistence, and build artifacts, and with deterministic offline tests
+   plus one bounded live-provider proof.
+2. **Single provider profile (one precise owner confirmation required
+   before the live proof runs).** Ollama Cloud, model `glm-5.3-flash`
+   (model-router intent `ollama-cloud/glm-5.3-flash`; endpoint
+   `https://ollama.com/v1`; credential environment-variable NAME
+   `OLLAMA_API_KEY`; OpenAI-compatible chat completions; streaming
+   supported; tool-capable for later stages; documented 429/5xx error
+   behavior; zero data retention per Ollama's cloud policy). The owner's
+   existing Z.ai credential is a GLM Coding Plan key, which Z.ai's usage
+   policy restricts to supported coding tools — it MUST NOT be used for
+   the Quellight application; the Z.ai alternative for application use is
+   the pay-per-token Model API (`ZHIPU_API_KEY`) and would be a recorded
+   profile revision. No rotation, no fallback (`OQ4`).
+3. **Shared World boundary.** Conversation persistence is explicitly
+   distinguished from Shared World continuity. Stage 07B introduces the
+   Quellight-owned Shared World store foundation (own SQLite file, own
+   versioned migrations, retention metadata columns) with EXACTLY ONE
+   durable record family materialized — the user-created Shared World
+   thread record. The agent/model writes nothing to the Shared World in
+   07B; no continuity claim is derived from transcript persistence; full
+   Shared World meaning (claims, commitments, loops, lineage, ceremony,
+   context assembly) is explicitly deferred.
+4. **Repository inception.** Verified empty-state preflight (the local
+   folder contains only the canonical input document, whose SHA-256
+   `e7f61d24…b01331` is re-verified; the GitHub repository is empty),
+   `main` default branch, ordered initial commits, committed lockfile,
+   exact `@victframework/*@0.1.0` pins, `private: true`, truthful
+   `UNLICENSED` posture (no license invented), credential-free history,
+   and a clean-install/no-monorepo-fallback proof.
+5. **Proposed later sequence (PROPOSED, not accepted):** 07C Shared World
+   Meaning and Ceremony → 07D Retention, Recovery, and Real-Use Proof
+   (incl. `MSTR-012`) → 07E Stage 07 Exit Gate. The superseded ARA
+   `07A/07B/07C` breakdown is not inherited.
+
+The handoff's exit gate separates implementation-completeness (all
+offline evidence and the proven live seam) from Stage 07B completion
+(the single bounded live-provider run, which requires the owner-supplied
+credential and the §7 profile confirmation). No work may be described as
+Stage 07B Verified until an independent audit passes.
 
 ---
 
@@ -2107,7 +2170,7 @@ Stages are capability gates, not calendar promises. A work session may complete 
 | 4     | Capability and application authoring foundation              | Verified with non-blocking issues                                     | Stable SDK/packs plus neutral Application Definition, identity, bindings, and renderer contract                                                                                                                                                                                       |
 | 5     | Application delivery layer                                   | Verified with non-blocking issues                                     | SvelteKit renderer, scaffolder, built-in surfaces, domain-data adapter, and complete working application proof                                                                                                                                                                        |
 | 6     | Control plane, API, and product-agent integration foundation | Verified with non-blocking issues — formally closed (2026-09-09)      | Governed ChangeSets, approvals, activation operations, typed remote consumption, plus the neutral product-agent boundary, Mastra adapter foundation, tool bridge, and agent-stream contract (two increments: 06A foundation and 06B control plane/remote execution — both independently verified; one final exit gate passed; formal closure recorded at §0.10)                                                                                                                |
-| 7     | Minimum Workable Quellight (v0.4.0 rebaseline; formerly "Real Mastra-backed ARA product") | In Progress — Stage 07A (consumer foundation) verified with non-blocking issues and formally closed (2026-09-09); Stage 07B permitted and not begun | The separate Quellight repository consumes released VICT packages and delivers the Minimum Workable Quellight: shared-world persistence, commitments/open loops with explicit ceremony, the canonical first vertical, real-use MSTR-012 proofs (Stage 07A — consumer foundation — is the first increment; see §0.11, §0.13 and the Stage 07 architecture document)                                                                                                                |
+| 7     | Minimum Workable Quellight (v0.4.0 rebaseline; formerly "Real Mastra-backed ARA product") | In Progress — Stage 07A (consumer foundation) verified with non-blocking issues and formally closed (2026-09-09); Stage 07B permitted, specified by its issued handoff (v0.4.3, §0.14), and not begun | The separate Quellight repository consumes released VICT packages and delivers the Minimum Workable Quellight: shared-world persistence, commitments/open loops with explicit ceremony, the canonical first vertical, real-use MSTR-012 proofs (Stage 07A — consumer foundation — is the first increment; Stage 07B — Quellight Consumer Bootstrap and Live Conversation Foundation — is the second; see §0.11, §0.13, §0.14 and the Stage 07 architecture document)                                                                                                                |
 | 8     | Builder Kit and self-hosting                                 | Planned                                                               | Model-agnostic agents extend Vict and its applications under bounded rules                                                                                                                                                                                                            |
 | 9     | Studio, diagnosis, and controlled recovery                   | Planned                                                               | Operator experience and safe recovery, reusing the Application Layer where appropriate                                                                                                                                                                                                |
 | 10    | Ecosystem and proven playbooks                               | Planned                                                               | Reusable packs, application templates, and proven compositions                                                                                                                                                                                                                        |
@@ -2682,6 +2745,23 @@ ARA proof:        exactly 13 ordered events; benchmark exactly 10 events
 > PERMITTED and NOT BEGUN**; Stage 07 remains In Progress; every
 > `QLT-*` requirement remains Planned; the Quellight repository has not
 > been created or touched.
+>
+> **Stage 07B specification note (2026-09-09, v0.4.3, §0.14).** The
+> Stage 07B handoff is issued:
+> `docs/handoff/VICT-STAGE-07B-QUELLIGHT-CONSUMER-BOOTSTRAP-HANDOFF.md`
+> — Quellight Consumer Bootstrap and Live Conversation Foundation. It
+> defines the substage boundary: repository inception of the separate
+> Quellight repository against the immutable release set; one pinned
+> live-provider profile (Ollama Cloud, `glm-5.3-flash`, pending owner
+> credential and profile confirmation); streaming conversation over
+> persistent threads with truthful reconnect/restart recovery; a minimal
+> responsive accessible conversation-first UI; and the Quellight-owned
+> Shared World store foundation whose only durable record family in 07B
+> is the user-created thread record — with conversation persistence
+> explicitly distinguished from Shared World continuity. The later
+> substage sequence 07C–07D–07E proposed in the handoff remains PROPOSED
+> until accepted through the handoff process. **Stage 07B is PERMITTED —
+> SPECIFIED — and IMPLEMENTATION HAS NOT BEGUN.**
 
 **Purpose**
 
@@ -3016,6 +3096,7 @@ Retained informational limitations (verified architecture is not reopened): Stag
 - VICT-STAGE-07A-CONSUMER-FOUNDATION-IMPLEMENTATION-REPORT.md — the Stage 07A implementer evidence (six work items, the public publication record, and the verification ladder); implementer claim, NOT independently authoritative; preserved unchanged including its non-reproducible `verify:stage7a = 0` row, which the independent verification found did not hold on the committed tree (F-1).
 - VICT-STAGE-07A-INDEPENDENT-VERIFICATION.md — the independent Stage 07A verification at commit `cb9d74bf0d4ca8e1c21f7962e80bbf8d358d82a1`: full governing-document derivation, namespace classification, registry truth for all 13 packages, release-set identity recomputation, 82/82 independent external-consumer proof, N-1 adversarial verification with baseline negative control, operator-credential canary probe, and the verification ladder; **authoritative Stage 07A disposition: VERIFIED WITH NON-BLOCKING ISSUES — FORMAL CLOSURE PERMITTED** (findings F-1 Medium, F-2/F-3 Low, F-4/F-5/F-6 Informational — none blocking; N-1 and ARCH-012 satisfied).
 - VICT-STAGE-07A-FORMAL-CLOSURE.md — the Stage 07A formal-closure record (v0.4.2, 2026-09-09): the F-1 reproduction/correction/negative-control evidence, the truthful implementation-report discrepancy, F-2–F-6 dispositions, N-1 CLOSED-in-Stage-07A, ARCH-012 Verified, the immutable release-boundary confirmation, the verification ladder at the fix commit, and the Stage 07B permitted/not-begun status; maintained under docs/report/.
+- VICT-STAGE-07B-QUELLIGHT-CONSUMER-BOOTSTRAP-HANDOFF.md — the executable Stage 07B implementation handoff (v0.4.3, 2026-09-09; the next permitted increment): Quellight Consumer Bootstrap and Live Conversation Foundation — verified pre-inception state and repository-inception procedure, exact release-set consumption with no-monorepo-fallback controls, the single pinned provider profile (Ollama Cloud, `glm-5.3-flash`; owner confirmation required before the bounded live proof; the Z.ai Coding Plan credential prohibited for the application), the conversation path over `vict.agent-stream@1` resumable SSE with reconnect/restart/cancellation semantics, the Quellight-owned Shared World store foundation with the thread record as the only durable 07B record family and conversation persistence explicitly distinguished from Shared World continuity, ordered work packages WP-1–WP-7, the full negative-control set including credential canaries and build-artifact hygiene, documentation and evidence rules, the completion-report template, explicit deferrals, and the PROPOSED later sequence (07C Shared World Meaning and Ceremony → 07D Retention, Recovery, and Real-Use Proof → 07E Stage 07 Exit Gate); maintained under docs/handoff/.
 
 ---
 
@@ -3199,4 +3280,4 @@ Otherwise it probably belongs in an application, capability pack, adapter, devel
 
 ---
 
-**End of authoritative baseline v0.4.2**
+**End of authoritative baseline v0.4.3**

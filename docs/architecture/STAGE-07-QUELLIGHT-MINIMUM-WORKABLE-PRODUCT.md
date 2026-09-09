@@ -30,6 +30,29 @@
 > `QLT-*` requirement remains Planned; the Quellight repository has not
 > been created or touched; the published release set
 > `vict-release-set@1/0.1.0` is immutable and unchanged.
+>
+> **Status update (2026-09-09, reference v0.4.3, §0.14): Stage 07B is
+> SPECIFIED by its issued handoff —
+> `docs/handoff/VICT-STAGE-07B-QUELLIGHT-CONSUMER-BOOTSTRAP-HANDOFF.md`
+> (Quellight Consumer Bootstrap and Live Conversation Foundation) — and
+> IMPLEMENTATION HAS NOT BEGUN.** The handoff fixes the Stage 07B
+> substage boundary within this architecture's Q0/Q1 interleaving:
+> repository inception of the separate Quellight repository against the
+> immutable release set (completing Q0's exit proof in the real
+> consumer), one pinned live-provider profile (Ollama Cloud,
+> `glm-5.3-flash`; owner credential and profile confirmation required
+> before the bounded live proof runs), streaming conversation over
+> persistent threads with truthful reconnect/restart recovery, a minimal
+> responsive accessible conversation-first UI, and the Quellight-owned
+> Shared World store foundation (§6.3) whose only durable record family
+> in 07B is the user-created thread record — conversation persistence is
+> explicitly distinguished from Shared World continuity, and the agent
+> writes nothing to the Shared World in 07B. The §8 canonical first
+> vertical remains the Stage 07 exit-gate obligation, NOT a Stage 07B
+> obligation; the later substage sequence proposed in the handoff
+> (07C Shared World Meaning and Ceremony → 07D Retention, Recovery, and
+> Real-Use Proof → 07E Stage 07 Exit Gate) is PROPOSED until accepted
+> through the handoff process.
 > **Scope:** product identity and repository boundary; the corrected
 > memory/identity model; the Shared World record and storage decision; the
 > exact Minimum Workable Quellight scope and exclusions; the canonical
@@ -963,5 +986,6 @@ and no Quellight capability may be described as Verified.
 formally closed; Stage 07 is rebaselined, permitted, and **In Progress**;
 Stage 07A — the consumer foundation — is verified with non-blocking issues
 and formally closed (2026-09-09, reference v0.4.2, §0.13 of the system
-reference); **Stage 07B is PERMITTED and NOT BEGUN**; the Quellight product
+reference); **Stage 07B is PERMITTED — SPECIFIED by its issued handoff
+(reference v0.4.3, §0.14) — and NOT BEGUN**; the Quellight product
 repository has not been created; no Quellight product capability exists.*
