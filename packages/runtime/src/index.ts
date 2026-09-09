@@ -19,7 +19,7 @@ export type {
   KernelEvent,
   KernelEventType,
   OutputSummary,
-} from '@vict/kernel';
+} from '@victframework/kernel';
 export type {
   ActivationCatalog,
   ActivationSelection,
@@ -272,6 +272,30 @@ export {
   InMemoryControlPlaneStore,
 } from './control-in-memory.js';
 export { AgentStreamHub } from './stream-hub.js';
+// ---- Stage 07A: protected operator-configuration foundation -----------------
+export {
+  OPERATOR_CONFIG_SCHEMA,
+  OperatorConfigError,
+  OperatorCredentialUnavailableError,
+  requireOperatorCredential,
+  resolveOperatorConfiguration,
+  resolveProviderProfileSelection,
+  resolveRetentionBounds,
+  resolveStoreLocationPlan,
+  serializeOperatorConfiguration,
+} from './operator-config.js';
+export type {
+  OperatorConfigErrorCode,
+  OperatorConfiguration,
+  OperatorConfigInput,
+  OperatorCredentialEnvironment,
+  OperatorProfileInput,
+  OperatorRetentionInput,
+  OperatorStoresInput,
+  ProviderProfileSelection,
+  RetentionBounds,
+  StoreLocationPlan,
+} from './operator-config.js';
 export type {
   AgentStreamHubOptions,
   AgentStreamReplay,
