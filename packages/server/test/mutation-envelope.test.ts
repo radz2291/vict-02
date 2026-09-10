@@ -1154,7 +1154,10 @@ describe('Stage 07C Phase F — negative controls (VC matrix)', () => {
     await expectRejected(
       () =>
         dispatchEnvelope(env, 'cmd-key-inject-2', {
-          mutation: { ...(envelopePayload()['mutation'] as Record<string, unknown>), ambient: CANARY },
+          mutation: {
+            ...(envelopePayload()['mutation'] as Record<string, unknown>),
+            ambient: CANARY,
+          },
         }),
       'VICT_COMMAND_PAYLOAD_INVALID',
       env.probe,
