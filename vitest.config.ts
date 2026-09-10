@@ -36,7 +36,13 @@ export default defineConfig({
       {
         test: {
           name: 'unit',
-          include: ['packages/*/test/**/*.test.ts', 'packs/*/test/**/*.test.ts'],
+          include: [
+            'packages/*/test/**/*.test.ts',
+            'packs/*/test/**/*.test.ts',
+            // Permanent regression coverage for the shared verifier rules
+            // (scripts/lib/*) used by the release-gate verifiers.
+            'scripts/test/**/*.test.mjs',
+          ],
           // The Svelte renderer package runs in its own DOM-level project
           // (svelte plugin + happy-dom) — never double-run without its
           // toolchain. The Mastra adapter runs in its own project with a

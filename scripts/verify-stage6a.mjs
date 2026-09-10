@@ -35,7 +35,8 @@ import {
   writeFileSync,
 } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { join, resolve } from 'node:path';
+import { join, relative, resolve } from 'node:path';
+import { findForbiddenSpecifierSegments } from './lib/import-scan.mjs';
 
 const repoRoot = resolve(new URL('..', import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '$1'));
 let failures = 0;
@@ -124,8 +125,14 @@ console.log('\n=== verify:stage6a — package inspection ===');
     );
   }
 
-  // No ee/ imports anywhere in the adapter sources.
-  let eeImport = false;
+  // No forbidden 'ee' path segment in any REAL module reference of the
+  // adapter sources (scripts/lib/import-scan.mjs — Phase F4 repair of F3
+  // finding MD-2: the former raw 'ee/' substring scan false-positived on
+  // ordinary words such as 'free/' or 'thenable-free/' in a comment;
+  // comments and unrelated words can no longer fail the gate, while a real
+  // forbidden import — package subpath, relative path, side-effect, or
+  // dynamic reference — still does).
+  const eeFindings = [];
   const scanEe = (dir) => {
     for (const entry of readdirSync(dir, { withFileTypes: true })) {
       const full = join(dir, entry.name);
@@ -133,14 +140,19 @@ console.log('\n=== verify:stage6a — package inspection ===');
         scanEe(full);
       } else if (entry.name.endsWith('.ts')) {
         const content = readFileSync(full, 'utf8');
-        if (content.includes('ee/')) {
-          eeImport = true;
+        for (const finding of findForbiddenSpecifierSegments(content, ['ee'])) {
+          eeFindings.push(
+            `${relative(repoRoot, full)}: module reference '${finding.specifier}' contains forbidden path segment '${finding.segment}'`,
+          );
         }
       }
     }
   };
   scanEe(join(repoRoot, 'packages', 'mastra', 'src'));
-  check(!eeImport, '@victframework/mastra imports no Mastra ee/ path');
+  for (const finding of eeFindings) {
+    console.error(`  FAIL: ${finding}`);
+  }
+  check(eeFindings.length === 0, '@victframework/mastra imports no Mastra ee/ path');
 
   // Exports + declarations exist.
   for (const file of [

@@ -24,6 +24,7 @@ import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync
 import { mkdtemp } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
+import { matchTarballSet } from './lib/tarball-set.mjs';
 
 const repoRoot = resolve(new URL('..', import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '$1'));
 let failures = 0;
@@ -121,32 +122,68 @@ for (const pkg of ['contracts', 'sdk', 'application']) {
 }
 const tarballs = readdirSync(work).filter((file) => file.endsWith('.tgz'));
 check(tarballs.length === 3, `packed 3 tarballs (found ${tarballs.length})`);
-const tarballPaths = tarballs.map((file) => join(work, file));
 
-const sdkTarball = tarballPaths.find((file) => file.includes('vict-sdk'));
-const appTarball = tarballPaths.find((file) => file.includes('vict-application'));
-const contractsTarball = tarballPaths.find((file) => file.includes('vict-contracts'));
-check(
-  sdkTarball !== undefined && appTarball !== undefined && contractsTarball !== undefined,
-  'tarball identities',
-);
-
-// --- Package metadata: the dependency direction is enforced structurally. ---
-function packageJsonFromTarball(tarball) {
+// --- Tarball identity: read from the metadata INSIDE each tarball and -----
+// matched against the exact workspace-manifest identities under the
+// canonical npm-pack filename rule (scripts/lib/tarball-set.mjs — Phase F4
+// repair of F3 finding MD-1: the stale pre-migration 'vict-*' name
+// matchers never matched the canonical `@victframework/*` tarball names,
+// and the unmatched `undefined` results crashed the verifier).
+function tarballMetadata(tarballPath) {
   // Run tar from the tarball's own directory with a RELATIVE filename:
   // GNU tar treats 'C:\...' absolute paths as remote-host specs.
-  const dir = join(tarball, '..');
-  const name = tarball.split(/[\\/]/).pop();
-  const result = run('tar', ['-xzf', name, '-O', 'package/package.json'], {
+  const dir = join(tarballPath, '..');
+  const fileName = tarballPath.split(/[\\/]/).pop() ?? '';
+  const result = run('tar', ['-xzf', fileName, '-O', 'package/package.json'], {
     capture: true,
     cwd: dir,
   });
   if (result.status !== 0) {
-    check(false, `tarball metadata readable: ${tarball}`);
+    return { fileName, error: `tar extraction failed with exit ${result.status}` };
+  }
+  try {
+    const manifest = JSON.parse(result.stdout);
+    if (typeof manifest?.name !== 'string' || typeof manifest?.version !== 'string') {
+      return { fileName, error: 'tarball package.json has no name/version' };
+    }
+    return { fileName, name: manifest.name, version: manifest.version, manifest };
+  } catch {
+    return { fileName, error: 'tarball package.json is not parseable JSON' };
+  }
+}
+
+function packageJsonFromTarball(tarballPath) {
+  const meta = tarballMetadata(tarballPath);
+  if (meta.manifest === undefined) {
+    check(false, `tarball metadata readable: ${tarballPath} (${meta.error})`);
     return {};
   }
-  return JSON.parse(result.stdout);
+  return meta.manifest;
 }
+
+const expectedIdentities = ['contracts', 'sdk', 'application'].map((pkg) => {
+  const manifest = JSON.parse(
+    readFileSync(join(repoRoot, 'packages', pkg, 'package.json'), 'utf8'),
+  );
+  return { name: manifest.name, version: manifest.version };
+});
+const foundTarballs = tarballs.map((file) => tarballMetadata(join(work, file)));
+const identityMatch = matchTarballSet(expectedIdentities, foundTarballs);
+for (const problem of identityMatch.problems) {
+  console.error(`  FAIL: ${problem}`);
+}
+check(identityMatch.ok, 'tarball identities match the workspace manifests exactly');
+if (!identityMatch.ok) {
+  rmSync(work, { recursive: true, force: true });
+  console.error('\nverify:stage4 FAILED — packed-tarball identity resolution failed');
+  process.exit(1);
+}
+const tarballOf = (name) => join(work, identityMatch.byName.get(name)?.fileName ?? '');
+const sdkTarball = tarballOf('@victframework/sdk');
+const appTarball = tarballOf('@victframework/application');
+const contractsTarball = tarballOf('@victframework/contracts');
+
+// --- Package metadata: the dependency direction is enforced structurally. ---
 const sdkPkgJson = packageJsonFromTarball(sdkTarball);
 check(
   JSON.stringify(sdkPkgJson.dependencies ?? {}).indexOf('@victframework/runtime') === -1 &&
@@ -326,7 +363,7 @@ writeFileSync(
   join(appDir, 'package.json'),
   JSON.stringify({ name: 'vict-consumer-app', private: true, type: 'module' }, null, 2),
 );
-run('npm', ['install', ...tarballPaths], { cwd: appDir });
+run('npm', ['install', contractsTarball, sdkTarball, appTarball], { cwd: appDir });
 writeFileSync(
   join(appDir, 'tsconfig.json'),
   JSON.stringify(

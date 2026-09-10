@@ -1211,3 +1211,105 @@ describe('Stage 07C Phase F — negative controls (VC matrix)', () => {
     }
   });
 });
+
+describe('Stage 07C Phase F — 64 KiB serialized UTF-8 BYTE boundary (multibyte fixtures, LO-1)', () => {
+  // The authoritative rule is the serialized UTF-8 byte length of the input
+  // (`Buffer.byteLength(JSON.stringify(input), 'utf8') <=
+  // MUTATION_INPUT_MAX_BYTES`), never the JavaScript character count. The
+  // fixtures use '€' (3 UTF-8 bytes per character) so a regression from
+  // byte semantics to string .length semantics cannot pass silently.
+
+  const MULTIBYTE_PREFIX = '{"id":"note-mb","title":"t","note":{"blob":"';
+  const MULTIBYTE_SUFFIX = '"}}';
+
+  /** Construct an input whose JSON serialization is EXACTLY `totalBytes` UTF-8 bytes. */
+  function multibyteBoundaryInput(totalBytes: number): Record<string, unknown> {
+    const prefixBytes = Buffer.byteLength(MULTIBYTE_PREFIX, 'utf8');
+    const suffixBytes = Buffer.byteLength(MULTIBYTE_SUFFIX, 'utf8');
+    const contentBytes = totalBytes - prefixBytes - suffixBytes;
+    if (contentBytes < 3) {
+      throw new Error('fixture construction: no room for multibyte content');
+    }
+    // '€' encodes to 3 UTF-8 bytes; pad the remainder with 1-byte 'a' chars.
+    const euros = Math.floor(contentBytes / 3);
+    const pad = contentBytes - euros * 3;
+    const input = {
+      id: 'note-mb',
+      title: 't',
+      note: { blob: `${'€'.repeat(euros)}${'a'.repeat(pad)}` },
+    };
+    expect(Buffer.byteLength(JSON.stringify(input), 'utf8')).toBe(totalBytes);
+    return input;
+  }
+
+  it('accepts multibyte input serialized immediately below the 64 KiB bound and forwards it value-for-value', async () => {
+    const env = makeEnv();
+    env.probe.reset();
+    const input = multibyteBoundaryInput(MUTATION_INPUT_MAX_BYTES - 3);
+    const outcome = await env.service.dispatch(env.actor, {
+      command: 'app.data.mutate',
+      payload: envelopePayload({
+        mutation: { op: 'create', idempotencyKey: 'domain-key-mb-1', input },
+      }),
+      idempotencyKey: 'cmd-key-mb-1',
+    });
+    expect(outcome.ok).toBe(true);
+    expect(env.probe.calls().length).toBe(1);
+    expect((env.probe.calls()[0] as Record<string, unknown>)['input']).toEqual(input);
+  });
+
+  it('accepts multibyte input serialized at EXACTLY the 64 KiB bound (at-bound fixture)', async () => {
+    const env = makeEnv();
+    env.probe.reset();
+    const input = multibyteBoundaryInput(MUTATION_INPUT_MAX_BYTES);
+    const outcome = await env.service.dispatch(env.actor, {
+      command: 'app.data.mutate',
+      payload: envelopePayload({
+        mutation: { op: 'create', idempotencyKey: 'domain-key-mb-2', input },
+      }),
+      idempotencyKey: 'cmd-key-mb-2',
+    });
+    expect(outcome.ok).toBe(true);
+    expect(env.probe.calls().length).toBe(1);
+  });
+
+  it('rejects multibyte input serialized one byte above the bound with zero adapter calls and no content echo', async () => {
+    const env = makeEnv();
+    const input = multibyteBoundaryInput(MUTATION_INPUT_MAX_BYTES + 1);
+    const error = await dispatchEnvelope(env, 'cmd-key-mb-3', {
+      mutation: { op: 'create', idempotencyKey: 'domain-key-mb-3', input },
+    }).then(
+      () => {
+        throw new Error('expected rejection with code VICT_APPDATA_MUTATION_INPUT_INVALID');
+      },
+      (e: unknown) => e,
+    );
+    expect(error).toBeInstanceOf(VictControlError);
+    expect((error as VictControlError).code).toBe('VICT_APPDATA_MUTATION_INPUT_INVALID');
+    // Stable non-echoing rejection: no multibyte content in any message.
+    expect(String((error as VictControlError).message)).not.toContain('€');
+    expect(env.probe.calls().length).toBe(0);
+  });
+
+  it('rejects multibyte input whose CHARACTER count is far below the bound but BYTE length exceeds it (byteLength-vs-length regression fixture)', async () => {
+    const env = makeEnv();
+    // 22,000 '€' characters serialize to 66,000 UTF-8 bytes (> 64 KiB)
+    // while the string itself has only 22,000 characters (< 65,536): a
+    // regression from Buffer.byteLength to .length semantics would ACCEPT
+    // this input and this fixture would fail.
+    const blob = '€'.repeat(22000);
+    const input = { id: 'note-mb', title: 't', note: { blob } };
+    expect(blob.length).toBeLessThan(MUTATION_INPUT_MAX_BYTES);
+    expect(Buffer.byteLength(JSON.stringify(input), 'utf8')).toBeGreaterThan(
+      MUTATION_INPUT_MAX_BYTES,
+    );
+    await expectRejected(
+      () =>
+        dispatchEnvelope(env, 'cmd-key-mb-4', {
+          mutation: { op: 'create', idempotencyKey: 'domain-key-mb-4', input },
+        }),
+      'VICT_APPDATA_MUTATION_INPUT_INVALID',
+      env.probe,
+    );
+  });
+});
