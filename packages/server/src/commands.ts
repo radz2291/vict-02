@@ -201,12 +201,36 @@ const COMMAND_REGISTRY: Readonly<Record<VictCommandName, CommandSpec>> = {
   },
   'app.data.mutate': {
     scope: 'app.data.write',
-    fields: ['resourceId', 'releaseVersion', 'expectedRevision', 'actionKind'],
+    // Stage 07C Phase F (F-8 correction): the closed payload field set gains
+    // the OPTIONAL compiled-plan action identity (`actionId`,
+    // `expectedActionRevision`) and the closed mutation envelope (`mutation`)
+    // that carries the declared mutation request (op/id/input/idempotencyKey)
+    // across the governed boundary. The legacy identity-only shape (payload
+    // without `mutation`) is unchanged. Unknown fields at either level still
+    // fail closed below (`#assertPayloadFields` and the envelope capture in
+    // `app-remote.ts`).
+    fields: [
+      'resourceId',
+      'releaseVersion',
+      'expectedRevision',
+      'actionKind',
+      'actionId',
+      'expectedActionRevision',
+      'mutation',
+    ],
     mutation: true,
   },
   'app.data.action': {
     scope: 'app.data.write',
-    fields: ['resourceId', 'releaseVersion', 'expectedRevision', 'actionKind'],
+    fields: [
+      'resourceId',
+      'releaseVersion',
+      'expectedRevision',
+      'actionKind',
+      'actionId',
+      'expectedActionRevision',
+      'mutation',
+    ],
     mutation: true,
   },
 };
@@ -331,7 +355,14 @@ function requestDigest(canonicalPayload: Record<string, unknown>): string {
  *   would invoke hostile code and could leak or mutate;
  * - property enumeration or reads that THROW (proxies, traps) fail with a
  *   stable non-echoing error instead of a raw exception;
- * - nested values must be plain objects, arrays, or JSON scalars.
+ * - nested values must be plain objects, arrays, or JSON scalars;
+ * - an OWN `__proto__` key in any own form at any depth is REJECTED with the
+ *   stable non-echoing code (Stage 07C Phase F handoff §6.8, the Stage 07A
+ *   N-1 discipline applied to the command capture path): before this
+ *   hardening such keys were silently dropped (scalar values) or silently
+ *   promoted into the captured container's prototype (object values) by the
+ *   `result[key] = value` assignment, so the rejected-form requirement can
+ *   only be enforced HERE, at the single capture path.
  */
 function canonicalPlainPayload(raw: unknown, depth = 0): Record<string, unknown> {
   if (depth > 8) {
@@ -366,6 +397,12 @@ function canonicalPlainPayload(raw: unknown, depth = 0): Record<string, unknown>
       }
       if (descriptor.get !== undefined || descriptor.set !== undefined) {
         throw new Error('accessor property');
+      }
+      if (key === '__proto__') {
+        throw new VictControlError(
+          'VICT_COMMAND_PAYLOAD_INVALID',
+          'The command payload declares a prohibited special key; own prototype-key forms are rejected in any own form at any depth.',
+        );
       }
       value = descriptor.value;
     } catch {
