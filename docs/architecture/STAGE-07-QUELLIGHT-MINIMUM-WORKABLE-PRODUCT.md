@@ -113,6 +113,25 @@
 > ordinary product route → custom mutation shortcut → direct durable
 > write) is forbidden. Stage 07D and 07E remain accepted future
 > substages and have not begun; Stage 07 remains In Progress.
+>
+> **Status update (2026-09-10, reference v0.4.9, §0.18): `OQ6` is RATIFIED as
+> the Stage 07C launch position by explicit owner decision.** The owner
+> ratified the Stage 07C handoff §11.1 recommended authority model — User =
+> constitutional authority and final confirmer (explicit Save on a
+> user-authored record = confirmation where the UI clearly identifies it as a
+> durable Shared World write); Quellight Shared World = durable custodian of
+> confirmed partnership material; Agent = proposer and reasoner, never a
+> unilateral confirmer; VICT = governance, execution, identity, provenance,
+> delivery, and effect-boundary enforcer holding none of Quellight's product
+> meaning — with the binding consequences recorded in reference §0.18 and the
+> Stage 07C handoff addendum §19, including the version-eligibility
+> stale-proposal policy (staleness by referenced-version change, supersession,
+> or ineligibility — never by elapsed time alone). The §11 `OQ6` row below is
+> preserved unchanged as the historical record of this amendment's authoring
+> state. The narrower formal constitution-custody question remains separately
+> open for a later versioned constitution record; the F-8 Stage 07C entry gate
+> (reference §0.16.3) remains BINDING; no other status changes.
+>
 > **Scope:** product identity and repository boundary; the corrected
 > memory/identity model; the Shared World record and storage decision; the
 > exact Minimum Workable Quellight scope and exclusions; the canonical
@@ -1058,5 +1077,6 @@ accepted future substages and have not begun;
 the Quellight repository exists as a real external consumer pinned to the
 immutable `vict-release-set@1/0.1.0`; no Quellight capability beyond the
 closed 07A/07B scope exists; every `QLT-*` requirement remains Planned;
-OQ6 remains unratified and is presented for owner decision in the Stage 07C
-handoff §11.3.*
+`OQ6` was ratified as the Stage 07C launch position by the owner on 2026-09-10
+(reference v0.4.9, §0.18; dated addendum in the Stage 07C handoff §19), while
+the formal constitution-custody question remains separately open.*

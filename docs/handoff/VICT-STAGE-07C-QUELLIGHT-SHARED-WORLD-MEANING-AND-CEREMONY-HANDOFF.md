@@ -1267,3 +1267,80 @@ remains Planned; `OQ6` remains UNRATIFIED and is presented for owner decision
 in §11.3, not decided by this handoff; the canonical input remains
 byte-identical (SHA-256 `e7f61d24c16fd60c66efdb0af0b32859f1fdf1b571e32a0368870cb559b01331`); no VICT package, script, manifest, lockfile, or registry
 state was changed by this specification.*
+---
+
+## 19. OWNER-DECISION ADDENDUM (2026-09-10) — OQ6 RATIFIED
+
+> **Class:** dated owner-decision addendum appended AFTER issuance, per the
+> governing rule that historical analysis is never silently rewritten. §1–§18
+> above (including §11's "UNRATIFIED" status, §3's fixed-decisions bullet, and
+> the closing marker) remain byte-identical as the historical record of the
+> handoff as issued; this addendum records the owner's decision that answers
+> §11.3 and is the controlling authority where it updates §11.
+
+### 19.1 The decision
+
+On 2026-09-10 the repository owner **explicitly ratified** the recommended
+authority model of §11.1 for Quellight's Stage 07C ceremony and record
+families, answering §11.3 by ratification without amendment. The ratified
+allocation:
+
+```text
+User:                    constitutional authority and final confirmer
+Quellight Shared World:  durable custodian of confirmed partnership material
+Agent:                   proposer and reasoner, never unilateral confirmer
+VICT:                    governance, execution, identity, provenance, delivery,
+                         and effect-boundary enforcer
+```
+
+**OQ6 disposition: RATIFIED (launch position).** The narrower formal
+constitution-custody question reserved in §11.3 — who holds
+constitutional-owner custody of Quellight's constitution and what ceremony
+makes a constitution version valid — remains separately open for a later
+versioned constitution record; this ratification does not decide it.
+
+### 19.2 Binding consequences (exact recorded decision terms)
+
+The following consequences are recorded as the owner's binding decision terms
+and supersede any conflicting detail elsewhere in this handoff:
+
+1. The agent may draft and explain proposals but **cannot confirm its own
+   proposal** or silently promote an inference into Shared World truth.
+2. An agent-generated proposal requires an **explicit user decision**:
+   confirm, reject, or amend.
+3. An explicit **Save** action on a user-authored record constitutes
+   confirmation, **provided the UI clearly identifies it as a durable Shared
+   World write**.
+4. A proposal **does not become stale merely because time passes**.
+5. A proposal becomes stale when its referenced source or target effective
+   version **changes, is superseded, or becomes ineligible**.
+6. A stale proposal **cannot be confirmed unchanged**; it must be regenerated
+   or amended against the current version.
+7. When the user and agent disagree, the agent may explain or propose an
+   alternative, but **the user's decision remains authoritative**.
+8. Corrections and deletion requests **require user authority**; Stage 07D
+   may define the complete retention and hard-deletion machinery.
+9. VICT enforces the declared boundary but **owns none of Quellight's product
+   meaning**.
+
+### 19.3 Superseded detail (stale-proposal policy)
+
+Consequence 4–6 above replace §8.2's time-based "bounded staleness window"
+phrasing as the binding Stage 07C stale-proposal policy: staleness is a
+**version-eligibility property** (the referenced source or target effective
+version changed, was superseded, or became ineligible), never a function of
+elapsed time alone. Stage 07C implementation MUST follow this ratified
+policy; the §8.2 window text is preserved above as the historical analysis
+it superseded.
+
+### 19.4 What this addendum changes and does not change
+
+Changed: OQ6's disposition is RATIFIED as the binding launch position for
+Stage 07C; consequence 4–6 govern proposal staleness; the authority model of
+§11.1 is binding for Stage 07C implementation (Phase Q). Unchanged: every
+structural invariant of §8 (user-typed confirmation through the governed
+boundary; agent propose-only; no silent promotion) — which this ratification
+confirms rather than loosens; the F-8 entry gate (§5–§6); the prohibited
+path; the `/api/act` freeze; the Phase F → Phase Q sequencing; and all
+historical text above. No VICT package, manifest, lockfile, or registry
+state is changed by this addendum.
