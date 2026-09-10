@@ -22,9 +22,16 @@
 > correction (independent verdict `VERIFIED WITH NON-BLOCKING ISSUES —
 > RELEASE PREPARATION PERMITTED`, audit at `02dbf40…`). §2 records the
 > current machine-readable set; the complete `0.1.0` record is preserved
-> unchanged in §2.1. Set status: publication pending at preparation
-> (this paragraph is updated to "live" only after registry and
-> consumer verification pass).
+> unchanged in §2.1. Set status: **verified and live (2026-09-10)** —
+> published from the exact frozen artifacts of release source
+> `2c8a7fb5c264c337ae8474603e693bfb19394d1e` with a temporary candidate
+> dist-tag during the publication window; `latest` advanced to `0.1.1`
+> only after all 13 members were individually verified against the
+> frozen artifacts; the §6 CI gate rule (`verify:release-consumer --
+> --registry`) passed, and an independent fresh-cache external consumer
+> proved the exact-pinned install and the corrected first-occurrence
+> navigation order from the registry artifacts (record:
+> `docs/report/VICT-0.1.1-NAVIGATION-GROUP-ORDER-RELEASE.md`).
 
 ## 1. Registry identity and namespace decision
 
