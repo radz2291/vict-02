@@ -30,6 +30,23 @@
 > its own work Verified, MUST NOT begin Stage 07C or any later substage,
 > and MUST NOT touch the VICT repository's packages, scripts, release
 > identity, or historical records.
+>
+> **Closure status (2026-09-10, reference v0.4.7, §0.16): Stage 07B has
+> been implemented under this handoff, independently re-verified, and
+> FORMALLY CLOSED.** Authoritative verdict: `VERIFIED WITH NON-BLOCKING
+> ISSUES — FORMAL CLOSURE PERMITTED` (re-verification report at Quellight
+> commit `1e0c0f53d62cde6d5031f865fe871ac1d41c9a9b`; audited
+> implementation `00ca458…`; original audit `45e6aa6…`; remediation tip
+> `65f1767…`). Disposition: `STAGE 07B VERIFIED WITH NON-BLOCKING ISSUES —
+> FORMALLY CLOSED`; **Stage 07C specification permitted — NOT BEGUN**;
+> Stage 07 remains In Progress. The handoff text below is preserved as
+> issued; the "NOT BEGUN" statements in it are the truthful issuance-time
+> record and are no longer the current status. The semantic-authority
+> enforcement principle is registered as `GOV-007` (reference §0.4,
+> §0.16.2) and the F-8 `app.data.mutate` payload gap is the binding
+> Stage 07C entry gate (reference §0.16.3). The §17 proposed sequence
+> (07C → 07D → 07E) remains the accepted remaining Stage 07 sequence;
+> each substage still requires its own handoff.
 
 ---
 
@@ -1014,3 +1031,12 @@ and NOT BEGUN**; the Quellight local folder and
 handoff and remain unchanged; every `QLT-*` requirement remains Planned;
 the published release set `vict-release-set@1/0.1.0` is immutable and
 unchanged.*
+
+*Closure status (2026-09-10, reference v0.4.7, §0.16): Stage 07B was
+implemented under this handoff, independently re-verified
+(`VERIFIED WITH NON-BLOCKING ISSUES — FORMAL CLOSURE PERMITTED`,
+re-verification at Quellight commit `1e0c0f53…`), and FORMALLY CLOSED —
+`STAGE 07B VERIFIED WITH NON-BLOCKING ISSUES — FORMALLY CLOSED`; Stage 07C
+specification is permitted and NOT BEGUN (entry gate: reference §0.16.3);
+Stage 07 remains In Progress. The issuance-time statements above are
+preserved unchanged as the historical record.*

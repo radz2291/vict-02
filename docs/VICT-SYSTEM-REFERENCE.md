@@ -1,12 +1,12 @@
 # VICT System Reference
 
 > **Canonical title:** Vict Architecture and Operating Model — Authoritative System Reference<br>
-> **Document version:** 0.4.6<br>
+> **Document version:** 0.4.7<br>
 > **System generation:** Greenfield<br>
-> **Status:** Authoritative baseline; Mastra/ARA integration amendment accepted (v0.3.0), finalized by the v0.3.1 pre-implementation correction, extended by the v0.3.2 Stage 06A formal closure, extended by the v0.3.3 Stage 06B implementation record, extended by the v0.4.0 Quellight product amendment, extended by the v0.4.1 Stage 07A implementation record, extended by the v0.4.2 Stage 07A formal closure, extended by the v0.4.3 Stage 07B handoff registration, corrected by the v0.4.4 navigation-group-order renderer correction, extended by the v0.4.5 coordinated 0.1.1 release-preparation record (§17.3 reactive-scope qualification), and extended by the v0.4.6 coordinated 0.1.1 publication record (§0.15); future features are individually marked<br>
-> **Last updated:** 2026-09-10 (v0.4.6 — coordinated release set 0.1.1 PUBLISHED and independently verified installable: all 13 `@victframework/*` packages published at `0.1.1` to the public npm registry from the exact frozen artifacts of the release-preparation commit `2c8a7fb…` (`chore(release): prepare VICT 0.1.1`), dependency-topological order, public access, dist-tag `latest` advanced to `0.1.1` on every package only after all 13 were individually verified against the frozen artifacts (SHA-256 pre-publish, `dist.integrity` post-publish, downloaded-tarball byte recomputation), after a temporary candidate dist-tag (`vict-0.1.1-rc`) had kept `latest` at the complete `0.1.0` set during the publication window and was then removed; the immutable prior set `vict-release-set@1/0.1.0` (content ID `v1_dbb7438dfe16b7de245fe3863f6980b7e9a44a83c1809e01071941782597a11d`, release source `7e5908e…`) remains published, byte-unchanged, and installable by exact pin. New immutable release identity: `vict-release-set@1/0.1.1`, content ID `v1_e31e8dd60d05e1d6feb08b5ed0874cceae561bdf10e08d8b93e07840de8d9cdf` (§0.15). Publication required the supported interactive WebAuthn confirmation (2FA `auth-and-writes`) per registry write, completed by the owner in the browser; no OTP/password/token was requested, accepted, or stored, and no bypass token was created. The post-publication CI gate rule of `docs/RELEASE-COMPATIBILITY.md` §6 (`verify:release-consumer -- --registry`) passed, and an independent fresh-cache external consumer proved the exact-pinned install, strict typecheck, SQLite close/reopen, and the rendered navigation sequence Research → Practice → Operate → Review → System from the emitted registry artifacts. Release record: `docs/report/VICT-0.1.1-NAVIGATION-GROUP-ORDER-RELEASE.md`. No Stage 01–07A Verified status changed; every `QLT-*` requirement remains Planned; Stage 07B remains PERMITTED — SPECIFIED — IMPLEMENTATION NOT BEGUN). Previous: v0.4.5 — coordinated release-set 0.1.1 preparation: all 13 `@victframework/*` packages advanced to `0.1.1` with exact internal pins as the second immutable release set `vict-release-set@1/0.1.1` (content ID `v1_e31e8dd60d05e1d6feb08b5ed0874cceae561bdf10e08d8b93e07840de8d9cdf`), carrying the independently verified navigation-group-order renderer correction (independent verdict `VERIFIED WITH NON-BLOCKING ISSUES — RELEASE PREPARATION PERMITTED`, audit at `02dbf40…`); `docs/RELEASE-COMPATIBILITY.md` records the new set and preserves the complete `0.1.0` lineage record; §17.3's reactive-recalculation sentence is qualified to its verified scope (finding IV-1): shape-preserving group permutations and label renames recalculate without remounting, while adding, removing, or structurally resizing navigation groups during reactive plan replacement is NOT guaranteed by this release and is recorded as known framework debt (finding IV-2) — the stale-baseline closing marker is also corrected (finding IV-5); the renderer revision stays `renderer.svelte-kit@5.0.0` per the explicit release-time disposition of finding IV-4 (no normative rule requires a bump on renderer behavior changes; established practice; the npm package version distinguishes the corrected behavior); the published `vict-release-set@1/0.1.0` remains immutable and unchanged. Previous: v0.4.4 — navigation-group-order renderer correction (§17.3): the canonical Svelte renderer previously sorted navigation groups alphabetically by group name, silently discarding the ordered-navigation semantics the route contract already declares; the corrected renderer presents navigation groups in the order of their FIRST OCCURRENCE in the ordered route list (a repeated or interleaved group is anchored at its first occurrence and collects all of its routes), preserving the declared `nav.order` hint and the deterministic path tie-break within each group, the same order on desktop and mobile, and correct recalculation when an application plan changes reactively. Prompted by the external consumer finding GAP-CANDIDATE-2 (Trading OS T0 independent-review reconciliation, read-only evidence at `22a6b34…`); renderer-only correction — no Application Definition schema change, no compiled-plan shape change, no application-identity change, existing consumers remain valid. Implementation report: `docs/report/VICT-NAVIGATION-GROUP-ORDER-IMPLEMENTATION-REPORT.md`; independently verified (verdict `VERIFIED WITH NON-BLOCKING ISSUES — RELEASE PREPARATION PERMITTED`, `docs/report/VICT-NAVIGATION-GROUP-ORDER-INDEPENDENT-VERIFICATION.md`); the published release set `vict-release-set@1/0.1.0` (content ID `v1_dbb7438dfe16b7de245fe3863f6980b7e9a44a83c1809e01071941782597a11d`, release source `7e5908e…`) is immutable and unchanged and does NOT contain this correction. No Stage 01–07A Verified status changed; every `QLT-*` requirement remains Planned). Previous: v0.4.3 — the Stage 07B handoff is issued and registered (§0.14): `docs/handoff/VICT-STAGE-07B-QUELLIGHT-CONSUMER-BOOTSTRAP-HANDOFF.md` — Quellight Consumer Bootstrap and Live Conversation Foundation. Documentation-only registration: the handoff defines the Stage 07B boundary (repository inception against the immutable release set, one pinned live-provider profile — Ollama Cloud, model `glm-5.3-flash`, pending the owner credential and profile confirmation — streaming conversation over persistent threads with truthful reconnect/restart recovery, a minimal accessible conversation-first UI, and the Quellight-owned Shared World store foundation whose only durable record family in 07B is the user-created thread record); it explicitly separates conversation persistence from Shared World continuity; the proposed later substage sequence 07C–07D–07E is recorded there as PROPOSED. **Stage 07B PERMITTED — SPECIFIED (HANDOFF ISSUED) — IMPLEMENTATION NOT BEGUN**; the Quellight repository has not been created; every `QLT-*` requirement remains Planned; the published release set `vict-release-set@1/0.1.0` (content ID `v1_dbb7438dfe16b7de245fe3863f6980b7e9a44a83c1809e01071941782597a11d`, release source `7e5908e…`) is immutable and unchanged; no Stage 01–07A Verified status changed). Previous: v0.4.2 — Stage 07A Quellight consumer foundation independently verified and formally closed. The independent verdict at commit `cb9d74b…` is `VERIFIED WITH NON-BLOCKING ISSUES — FORMAL CLOSURE PERMITTED`. The formal-closure action performed the narrowly authorized F-1 correction — the `verify:stage7a` namespace gate no longer flags its own detection literal (fix commit `e45bdec…`) — marked N-1 CLOSED-in-Stage-07A, marked `ARCH-012` Verified, reconciled the F-4 wording in `docs/RELEASE-COMPATIBILITY.md`, and recorded `docs/report/VICT-STAGE-07A-FORMAL-CLOSURE.md` (§0.13). Disposition: `STAGE 07A VERIFIED WITH NON-BLOCKING ISSUES — FORMALLY CLOSED`; **Stage 07B PERMITTED — NOT BEGUN**; Stage 07 remains In Progress; every `QLT-*` requirement remains Planned; the published release set `vict-release-set@1/0.1.0` (content ID `v1_dbb7438dfe16b7de245fe3863f6980b7e9a44a83c1809e01071941782597a11d`, release source `7e5908e…`) is immutable and unchanged; no Stage 01–06 Verified status changed)<br>
-> **Current delivery point:** Stages 1, 1.1, 2, 3, 4, 5, and 6 independently verified and formally closed (Stage 05 and Stage 06 closed with non-blocking issues); Mastra/ARA amendment accepted, finalized (v0.3.1), and implemented through Stage 06; product rebaselined to Quellight (v0.4.0); Stage 07A — the consumer foundation — implemented (v0.4.1, §0.12), independently verified and formally closed (v0.4.2, §0.13); **Stage 07 remains In Progress**; Stage 07B — Quellight Consumer Bootstrap and Live Conversation Foundation — is PERMITTED and SPECIFIED by its issued handoff (v0.4.3, §0.14) and IMPLEMENTATION HAS NOT BEGUN; the coordinated release set `vict-release-set@1/0.1.1` carrying the verified navigation correction is PUBLISHED and its consumer-installability independently proven (v0.4.6, §0.15)<br>
-> **Next permitted stage:** Stage 7 — Minimum Workable Quellight (permitted, rebaselined, In Progress: Stage 06 is formally closed and Stage 07 proceeds under normal stage governance. **Stage 07A — Quellight consumer foundation — is implemented, independently verified (`VERIFIED WITH NON-BLOCKING ISSUES — FORMAL CLOSURE PERMITTED`, audit at `cb9d74b…`), and FORMALLY CLOSED (v0.4.2, §0.13). Stage 07B — Quellight Consumer Bootstrap and Live Conversation Foundation — is PERMITTED and SPECIFIED by its issued handoff `docs/handoff/VICT-STAGE-07B-QUELLIGHT-CONSUMER-BOOTSTRAP-HANDOFF.md` (v0.4.3, §0.14): repository inception of the separate Quellight repository against the immutable release set, one pinned live-provider profile, streaming conversation over persistent threads, and the Quellight-owned Shared World store foundation — and IMPLEMENTATION HAS NOT BEGUN**: there is no Quellight repository, no live provider/model integration, no Shared World store, and no real-use data-protection proof (MSTR-012), and none may be described as delivered. The Stage 07 governing architecture is `docs/architecture/STAGE-07-QUELLIGHT-MINIMUM-WORKABLE-PRODUCT.md` (canonical input SHA-256 `e7f61d24c16fd60c66efdb0af0b32859f1fdf1b571e32a0368870cb559b01331`), read together with the historical Mastra/ARA amendment `docs/architecture/MASTRA-ARA-INTEGRATION.md` and the closed Stage 06 foundation records `docs/architecture/STAGE-06A-PRODUCT-AGENT-FOUNDATION.md` and `docs/architecture/STAGE-06B-CONTROL-AND-GOVERNED-EXECUTION.md`, with the complete Stage 06 evidence chain in §0.10 and §24.3 of this reference)
+> **Status:** Authoritative baseline; Mastra/ARA integration amendment accepted (v0.3.0), finalized by the v0.3.1 pre-implementation correction, extended by the v0.3.2 Stage 06A formal closure, extended by the v0.3.3 Stage 06B implementation record, extended by the v0.4.0 Quellight product amendment, extended by the v0.4.1 Stage 07A implementation record, extended by the v0.4.2 Stage 07A formal closure, extended by the v0.4.3 Stage 07B handoff registration, corrected by the v0.4.4 navigation-group-order renderer correction, extended by the v0.4.5 coordinated 0.1.1 release-preparation record (§17.3 reactive-scope qualification), and extended by the v0.4.6 coordinated 0.1.1 publication record (§0.15), and extended by the v0.4.7 Stage 07B formal closure with the registered consumer semantic-authority invariant GOV-007 (§0.16); future features are individually marked<br>
+> **Last updated:** 2026-09-10 (v0.4.7 — Stage 07B Quellight Consumer Bootstrap and Live Conversation Foundation independently re-verified and FORMALLY CLOSED (§0.16): the independent re-verification at Quellight commit `1e0c0f53d62cde6d5031f865fe871ac1d41c9a9b` returned the authoritative verdict `VERIFIED WITH NON-BLOCKING ISSUES — FORMAL CLOSURE PERMITTED` — the F-1 and F-2 remediations independently verified closed, the previously missing bounded independent live-provider proof (N-15) executed and passed by the re-audit, and the complete verification ladder green from a fresh clean clone; the owner's semantic-authority enforcement principle is registered as the governing consumption invariant **GOV-007** (§0.4, §0.16) and mirrored in the Quellight decision register; the F-8 `app.data.mutate` payload gap becomes a binding **Stage 07C entry gate** (§0.16). Disposition: `STAGE 07B VERIFIED WITH NON-BLOCKING ISSUES — FORMALLY CLOSED`; **Stage 07C specification permitted — NOT BEGUN**; Stage 07 remains In Progress. Stage 07B was implemented and audited against the immutable release set `vict-release-set@1/0.1.0` (content ID `v1_dbb7438dfe16b7de245fe3863f6980b7e9a44a83c1809e01071941782597a11d`); Quellight remains pinned to that set — the published `vict-release-set@1/0.1.1` is NOT adopted by this closure, and any later release adoption requires an explicit Stage 07C compatibility decision and fresh verification. Stage 07B was NOT YAML-authored; its authoritative representation is the typed Application Definition plus the compiled plan, and YAML absence is not a conformance finding. No Stage 01–07A Verified status changed; every `QLT-*` requirement remains Planned; no VICT package, script, manifest, lockfile, or registry state was touched by this closure). Previous: v0.4.6 — coordinated release set 0.1.1 PUBLISHED and independently verified installable: all 13 `@victframework/*` packages published at `0.1.1` to the public npm registry from the exact frozen artifacts of the release-preparation commit `2c8a7fb…` (`chore(release): prepare VICT 0.1.1`), dependency-topological order, public access, dist-tag `latest` advanced to `0.1.1` on every package only after all 13 were individually verified against the frozen artifacts (SHA-256 pre-publish, `dist.integrity` post-publish, downloaded-tarball byte recomputation), after a temporary candidate dist-tag (`vict-0.1.1-rc`) had kept `latest` at the complete `0.1.0` set during the publication window and was then removed; the immutable prior set `vict-release-set@1/0.1.0` (content ID `v1_dbb7438dfe16b7de245fe3863f6980b7e9a44a83c1809e01071941782597a11d`, release source `7e5908e…`) remains published, byte-unchanged, and installable by exact pin. New immutable release identity: `vict-release-set@1/0.1.1`, content ID `v1_e31e8dd60d05e1d6feb08b5ed0874cceae561bdf10e08d8b93e07840de8d9cdf` (§0.15). Publication required the supported interactive WebAuthn confirmation (2FA `auth-and-writes`) per registry write, completed by the owner in the browser; no OTP/password/token was requested, accepted, or stored, and no bypass token was created. The post-publication CI gate rule of `docs/RELEASE-COMPATIBILITY.md` §6 (`verify:release-consumer -- --registry`) passed, and an independent fresh-cache external consumer proved the exact-pinned install, strict typecheck, SQLite close/reopen, and the rendered navigation sequence Research → Practice → Operate → Review → System from the emitted registry artifacts. Release record: `docs/report/VICT-0.1.1-NAVIGATION-GROUP-ORDER-RELEASE.md`. No Stage 01–07A Verified status changed; every `QLT-*` requirement remains Planned; Stage 07B remains PERMITTED — SPECIFIED — IMPLEMENTATION NOT BEGUN). Previous: v0.4.5 — coordinated release-set 0.1.1 preparation: all 13 `@victframework/*` packages advanced to `0.1.1` with exact internal pins as the second immutable release set `vict-release-set@1/0.1.1` (content ID `v1_e31e8dd60d05e1d6feb08b5ed0874cceae561bdf10e08d8b93e07840de8d9cdf`), carrying the independently verified navigation-group-order renderer correction (independent verdict `VERIFIED WITH NON-BLOCKING ISSUES — RELEASE PREPARATION PERMITTED`, audit at `02dbf40…`); `docs/RELEASE-COMPATIBILITY.md` records the new set and preserves the complete `0.1.0` lineage record; §17.3's reactive-recalculation sentence is qualified to its verified scope (finding IV-1): shape-preserving group permutations and label renames recalculate without remounting, while adding, removing, or structurally resizing navigation groups during reactive plan replacement is NOT guaranteed by this release and is recorded as known framework debt (finding IV-2) — the stale-baseline closing marker is also corrected (finding IV-5); the renderer revision stays `renderer.svelte-kit@5.0.0` per the explicit release-time disposition of finding IV-4 (no normative rule requires a bump on renderer behavior changes; established practice; the npm package version distinguishes the corrected behavior); the published `vict-release-set@1/0.1.0` remains immutable and unchanged. Previous: v0.4.4 — navigation-group-order renderer correction (§17.3): the canonical Svelte renderer previously sorted navigation groups alphabetically by group name, silently discarding the ordered-navigation semantics the route contract already declares; the corrected renderer presents navigation groups in the order of their FIRST OCCURRENCE in the ordered route list (a repeated or interleaved group is anchored at its first occurrence and collects all of its routes), preserving the declared `nav.order` hint and the deterministic path tie-break within each group, the same order on desktop and mobile, and correct recalculation when an application plan changes reactively. Prompted by the external consumer finding GAP-CANDIDATE-2 (Trading OS T0 independent-review reconciliation, read-only evidence at `22a6b34…`); renderer-only correction — no Application Definition schema change, no compiled-plan shape change, no application-identity change, existing consumers remain valid. Implementation report: `docs/report/VICT-NAVIGATION-GROUP-ORDER-IMPLEMENTATION-REPORT.md`; independently verified (verdict `VERIFIED WITH NON-BLOCKING ISSUES — RELEASE PREPARATION PERMITTED`, `docs/report/VICT-NAVIGATION-GROUP-ORDER-INDEPENDENT-VERIFICATION.md`); the published release set `vict-release-set@1/0.1.0` (content ID `v1_dbb7438dfe16b7de245fe3863f6980b7e9a44a83c1809e01071941782597a11d`, release source `7e5908e…`) is immutable and unchanged and does NOT contain this correction. No Stage 01–07A Verified status changed; every `QLT-*` requirement remains Planned). Previous: v0.4.3 — the Stage 07B handoff is issued and registered (§0.14): `docs/handoff/VICT-STAGE-07B-QUELLIGHT-CONSUMER-BOOTSTRAP-HANDOFF.md` — Quellight Consumer Bootstrap and Live Conversation Foundation. Documentation-only registration: the handoff defines the Stage 07B boundary (repository inception against the immutable release set, one pinned live-provider profile — Ollama Cloud, model `glm-5.3-flash`, pending the owner credential and profile confirmation — streaming conversation over persistent threads with truthful reconnect/restart recovery, a minimal accessible conversation-first UI, and the Quellight-owned Shared World store foundation whose only durable record family in 07B is the user-created thread record); it explicitly separates conversation persistence from Shared World continuity; the proposed later substage sequence 07C–07D–07E is recorded there as PROPOSED. **Stage 07B PERMITTED — SPECIFIED (HANDOFF ISSUED) — IMPLEMENTATION NOT BEGUN**; the Quellight repository has not been created; every `QLT-*` requirement remains Planned; the published release set `vict-release-set@1/0.1.0` (content ID `v1_dbb7438dfe16b7de245fe3863f6980b7e9a44a83c1809e01071941782597a11d`, release source `7e5908e…`) is immutable and unchanged; no Stage 01–07A Verified status changed). Previous: v0.4.2 — Stage 07A Quellight consumer foundation independently verified and formally closed. The independent verdict at commit `cb9d74b…` is `VERIFIED WITH NON-BLOCKING ISSUES — FORMAL CLOSURE PERMITTED`. The formal-closure action performed the narrowly authorized F-1 correction — the `verify:stage7a` namespace gate no longer flags its own detection literal (fix commit `e45bdec…`) — marked N-1 CLOSED-in-Stage-07A, marked `ARCH-012` Verified, reconciled the F-4 wording in `docs/RELEASE-COMPATIBILITY.md`, and recorded `docs/report/VICT-STAGE-07A-FORMAL-CLOSURE.md` (§0.13). Disposition: `STAGE 07A VERIFIED WITH NON-BLOCKING ISSUES — FORMALLY CLOSED`; **Stage 07B PERMITTED — NOT BEGUN**; Stage 07 remains In Progress; every `QLT-*` requirement remains Planned; the published release set `vict-release-set@1/0.1.0` (content ID `v1_dbb7438dfe16b7de245fe3863f6980b7e9a44a83c1809e01071941782597a11d`, release source `7e5908e…`) is immutable and unchanged; no Stage 01–06 Verified status changed)<br>
+> **Current delivery point:** Stages 1, 1.1, 2, 3, 4, 5, and 6 independently verified and formally closed (Stage 05 and Stage 06 closed with non-blocking issues); Mastra/ARA amendment accepted, finalized (v0.3.1), and implemented through Stage 06; product rebaselined to Quellight (v0.4.0); Stage 07A — the consumer foundation — implemented (v0.4.1, §0.12), independently verified and formally closed (v0.4.2, §0.13); Stage 07B — Quellight Consumer Bootstrap and Live Conversation Foundation — implemented in the separate Quellight repository against the immutable `vict-release-set@1/0.1.0`, independently verified (`VERIFIED WITH NON-BLOCKING ISSUES — FORMAL CLOSURE PERMITTED`, re-verification at Quellight commit `1e0c0f53…`), and FORMALLY CLOSED (v0.4.7, §0.16); **Stage 07 remains In Progress**; Stage 07C specification is permitted and has NOT begun, gated by the F-8 mutation-boundary entry gate (§0.16); the coordinated release set `vict-release-set@1/0.1.1` carrying the verified navigation correction is PUBLISHED and its consumer-installability independently proven (v0.4.6, §0.15) — Quellight remains pinned to the immutable `vict-release-set@1/0.1.0`<br>
+> **Next permitted stage:** Stage 7 — Minimum Workable Quellight (permitted, rebaselined, In Progress: Stage 06 is formally closed and Stage 07 proceeds under normal stage governance. **Stage 07A — Quellight consumer foundation — is implemented, independently verified (`VERIFIED WITH NON-BLOCKING ISSUES — FORMAL CLOSURE PERMITTED`, audit at `cb9d74b…`), and FORMALLY CLOSED (v0.4.2, §0.13). Stage 07B — Quellight Consumer Bootstrap and Live Conversation Foundation — was implemented in the separate Quellight repository (`https://github.com/radz2291/Quellight`) against the immutable release set `vict-release-set@1/0.1.0` (audited implementation `00ca458…`; original independent audit `45e6aa6…`; remediation tip `65f1767…`), was independently re-verified with verdict `VERIFIED WITH NON-BLOCKING ISSUES — FORMAL CLOSURE PERMITTED` (re-verification report at Quellight commit `1e0c0f53…`), and is FORMALLY CLOSED (v0.4.7, §0.16). **Stage 07C — Shared World Meaning and Ceremony — has its specification PERMITTED; effectful Stage 07C implementation is gated by the Stage 07C entry gate (§0.16): before any Shared World proposal, confirmation ceremony, correction, commitment, open loop, or other durable meaning write is implemented, the Stage 07C handoff must resolve F-8 (the released `app.data.mutate` payload cannot carry mutation input) explicitly through one of the three authorized paths; the prohibited path (UI or ordinary product route → custom mutation shortcut → direct durable write) is forbidden.** The real-use data-protection proof (MSTR-012) remains not performed and belongs to Stage 07D; nothing beyond the closed 07B scope may be described as delivered. The Stage 07 governing architecture is `docs/architecture/STAGE-07-QUELLIGHT-MINIMUM-WORKABLE-PRODUCT.md` (canonical input SHA-256 `e7f61d24c16fd60c66efdb0af0b32859f1fdf1b571e32a0368870cb559b01331`), read together with the historical Mastra/ARA amendment `docs/architecture/MASTRA-ARA-INTEGRATION.md` and the closed Stage 06 foundation records `docs/architecture/STAGE-06A-PRODUCT-AGENT-FOUNDATION.md` and `docs/architecture/STAGE-06B-CONTROL-AND-GOVERNED-EXECUTION.md`, with the complete Stage 06 evidence chain in §0.10 and §24.3 of this reference)
 
 ---
 
@@ -65,6 +65,7 @@ Every material design item has both a maturity and a delivery status.
 | GOV-004 | Future behavior MUST NOT be described as current until independently verified.                        | Invariant | Verified    |
 | GOV-005 | Architecture changes MUST record rationale, affected IDs, compatibility impact, and migration impact. | Accepted  | Planned     |
 | GOV-006 | Legacy documents MAY inform decisions but MUST NOT impose legacy package or language structure.       | Invariant | Verified    |
+| GOV-007 | **VICT semantic authority (owner enforcement principle; §0.16).** Wherever VICT defines behavior, VICT's released definitions, typed IR, contracts, compilers, runtimes, capability boundaries, execution identities, delivery semantics, and protocols are authoritative. YAML is an optional authoring/serialization notation and provides no architectural enforcement or conformance guarantee; YAML absence alone is never a conformance failure. A consumer MAY implement product UI, presentation state, product policy, prompts, product-owned storage, and thin documented adapters; a consumer MUST NOT recreate, shadow, bypass, or silently replace VICT-owned semantics. A framework limitation MUST fail closed and become an explicit framework-change or registered-extension proposal — never a custom shortcut. Every effectful user action MUST have auditable provenance from the user-visible action through its declared application action or capability, runtime handler, governed boundary, and resulting effect; presentation-only actions (focus, panel visibility, local layout) do not require capability governance. Independent consumer audits MUST treat an unproven critical VICT path or semantic bypass as blocking even when the application appears to work. | Invariant | Verified (Stage 07B) |
 
 ### 0.5 Accepted architecture amendment — Application Layer
 
@@ -719,7 +720,193 @@ v0.4.4-era independent verification (verdict at `02dbf40…`:
    independently proven installable VICT version. The Trading OS T1
    entry gate is SATISFIED; Trading OS remains untouched and T1 has NOT
    begun. Stage 07B remains PERMITTED — SPECIFIED — IMPLEMENTATION NOT
-   BEGUN; every `QLT-*` requirement remains Planned.
+   BEGUN; every `QLT-*` requirement remains Planned. (Superseded on
+   2026-09-10 by §0.16: Stage 07B was subsequently implemented,
+   independently re-verified, and formally closed.)
+
+---
+
+## 0.16 Closure v0.4.7 — Stage 07B formal closure (documentation-only), registered consumer enforcement principle GOV-007, and the Stage 07C entry gate
+
+On 2026-09-10, after the independent Quellight Stage 07B re-verification
+returned the authoritative verdict `VERIFIED WITH NON-BLOCKING ISSUES —
+FORMAL CLOSURE PERMITTED`, Stage 07B — Quellight Consumer Bootstrap and
+Live Conversation Foundation — is **formally closed**. The authoritative
+disposition is:
+
+```text
+STAGE 07B VERIFIED WITH NON-BLOCKING ISSUES — FORMALLY CLOSED
+STAGE 07C SPECIFICATION PERMITTED — NOT BEGUN
+Stage 07 remains In Progress.
+```
+
+### 0.16.1 Evidence chain (all SHAs verified during this closure)
+
+| Role | Value |
+| --- | --- |
+| Quellight Stage 07B audited implementation | `00ca458374f99f9cd35612affb71e9adbf01b70f` |
+| Original independent audit (verdict `NOT VERIFIED — REMEDIATION REQUIRED`) | `45e6aa690e3caa9f68264d93143c7107c6d8e11f` |
+| Remediation final tip | `65f1767eb5929caa0e5b18e3d4d1600d327b3b51` |
+| Formatting-only normalization commit (re-audit Phase 0, authorized) | `587b1838731afc2c3c6eb164cc9dfd9f2f2c3a82` |
+| Independent re-verification report commit — **authoritative audited evidence SHA** | `1e0c0f53d62cde6d5031f865fe871ac1d41c9a9b` |
+| VICT tip at closure (fetch-verified; `HEAD == origin/main`) | `5c8b14d016474a8bbb5fa023e5457f53b49fa072` (`docs(release): record VICT 0.1.1 publication`) |
+| Governing handoff | `docs/handoff/VICT-STAGE-07B-QUELLIGHT-CONSUMER-BOOTSTRAP-HANDOFF.md` (v0.4.3, §0.14) |
+| Governing Stage 07 architecture | `docs/architecture/STAGE-07-QUELLIGHT-MINIMUM-WORKABLE-PRODUCT.md` |
+
+The re-verification independently confirmed: F-1 and F-2 remediated and
+closed (literal real-browser Stop click through the released command
+boundary with per-intent idempotency; substantive controlled-time
+deadline proof 10/10); the previously missing bounded independent
+live-provider proof (N-15) executed by the re-audit itself and PASSED
+(three real provider turns: completed, cancelled by the real Stop click
+with exactly one durable `response.cancelled`, and post-SIGKILL-restart
+completed — credential absent from every persisted and observable
+surface); the full offline verification ladder green from a fresh clean
+clone (34 tests across both suites, build, `verify:stop`,
+`verify:consumer`, aggregate `verify:quellight` exit 0, `npm audit
+--omit=dev` 0 vulnerabilities); release-set integrity independently
+recomputed and MATCHING
+(`vict-release-set@1/0.1.0`, content ID
+`v1_dbb7438dfe16b7de245fe3863f6980b7e9a44a83c1809e01071941782597a11d`);
+and no VICT bypass, no fallback, no credential path, and no production
+test-only behavior introduced by the remediation.
+
+### 0.16.2 Registered enforcement principle — GOV-007 (VICT semantic authority)
+
+The owner's binding enforcement principle — applied as audit-normative
+by both Stage 07B independent audits (original audit §7/§18;
+re-verification §10) and recommended by the original audit for formal
+registration — is hereby registered as the governing consumption
+invariant **GOV-007** in §0.4. Its substance:
+
+- VICT's released definitions, typed IR, contracts, compilers, runtimes,
+  capability boundaries, execution identities, delivery semantics, and
+  protocols are **authoritative** wherever VICT defines the behavior.
+- **YAML is an optional authoring or serialization notation.** YAML
+  itself provides no architectural enforcement or conformance guarantee.
+  Stage 07B was **not** YAML-authored: its authoritative representation
+  is the typed Application Definition plus the compiled plan, and YAML
+  absence alone is never a conformance failure.
+- A consumer MAY implement product UI, presentation state, product
+  policy, prompts, product-owned storage, and thin documented adapters.
+- A consumer MUST NOT recreate, shadow, bypass, or silently replace
+  VICT-owned semantics.
+- A framework limitation MUST fail closed and become an explicit
+  framework-change or registered-extension proposal — never a custom
+  shortcut.
+- Every effectful user action MUST have auditable provenance from the
+  user-visible action through its declared application action or
+  capability, runtime handler, governed boundary, and resulting effect.
+  Presentation-only actions (focus, panel visibility, local layout) do
+  not require capability governance.
+- Independent consumer audits MUST treat an unproven critical VICT path
+  or semantic bypass as blocking even when the application appears to
+  work.
+
+Delivery status `Verified (Stage 07B)`: the principle's substance was
+independently applied and enforced by the Stage 07B re-verification's
+framework-conformance classification (its §7/§10) — the same
+§27.4/§0.13 pattern as `ARCH-012` at v0.4.2. This registration changes
+no accepted architecture; it names and homes an already-binding
+enforcement rule so future consumer audits cite a registered requirement
+instead of a per-audit clarification.
+
+### 0.16.3 Stage 07C entry gate (F-8 resolution required)
+
+The original audit's F-8 finding — confirmed at released-source level:
+the released `app.data.mutate` command payload structurally cannot carry
+mutation input — is **non-blocking for Stage 07B** and is recorded here
+as a binding **entry gate for Stage 07C**, not as a retroactive Stage
+07B failure. Before Stage 07C implements Shared World proposals,
+confirmation ceremonies, corrections, commitments, open loops, or other
+durable meaning writes, the Stage 07C handoff must resolve F-8
+explicitly by proving ONE of:
+
+1. the required mutation input is expressible through a released public
+   VICT application/capability boundary; or
+2. a formally defined, registered, governed consumer capability
+   extension provides the required input and effect boundary; or
+3. VICT is corrected, independently verified, released as a new
+   immutable package set, and Quellight adopts that exact set through a
+   controlled compatibility change.
+
+The following path is PROHIBITED:
+
+```text
+UI or ordinary product route
+→ custom mutation shortcut
+→ direct durable write
+```
+
+merely because the current `app.data.mutate` payload is insufficient.
+The existing bounded `/api/act` treatment may remain historical Stage
+07B behavior; it MUST NOT silently become the general Stage 07C effect
+model.
+
+### 0.16.4 Final findings dispositions (as of this closure)
+
+| Finding | Disposition |
+| --- | --- |
+| F-1 (browser Stop control request shape) | Remediated and independently verified closed. |
+| F-2 (N-6 deadline-test stub) | Remediated and independently verified closed. |
+| Missing independent live proof (N-15) | Resolved — executed independently by the re-verification and passed. |
+| F-3 (`VICT_`-prefixed Quellight display code) | Open Low — Quellight-local display-only code using a `VICT_` prefix; carried forward as naming hygiene, without treating it as framework authority. |
+| F-4 (implementation-report placement) | Open Low — historical implementation-report placement (`docs/stage-07b-report.md` remains at `docs/` rather than `docs/report/`); the file is preserved rather than moved or rewritten. |
+| F-5 (verifier intermediate output) | Open Low — cosmetic verifier output only; exit codes correct. |
+| F-6 / F-7 (dev-only `EBADENGINE`; dev-dependency audit findings) | Informational, development-only. |
+| F-8 (`app.data.mutate` payload gap) | Non-blocking for Stage 07B; becomes the Stage 07C entry gate (§0.16.3). |
+| RI-1 / RI-2 (clone `node_modules` junction incident; live probe executed twice) | Audit-process incidents only; no product impact. |
+
+### 0.16.5 Requirement reconciliation and Stage 07 progress
+
+```text
+Stage 07A  — remains FORMALLY CLOSED (v0.4.2, §0.13).
+Stage 07B  — FORMALLY CLOSED (this section).
+Stage 07   — remains IN PROGRESS (until the §13 Stage 07 exit gate
+             passes an independent audit).
+Stage 07C  — specification permitted; NOT BEGUN; entry gate §0.16.3.
+Stage 07D  — accepted future substage; NOT BEGUN.
+Stage 07E  — accepted future substage; NOT BEGUN.
+```
+
+| Substage | Scope | Status |
+| --- | --- | --- |
+| 07A | Quellight consumer foundation (VICT-side) | FORMALLY CLOSED (2026-09-09, v0.4.2) |
+| 07B | Quellight consumer bootstrap and live conversation foundation | FORMALLY CLOSED (2026-09-10, v0.4.7) — verified with non-blocking issues |
+| 07C | Shared World Meaning and Ceremony | Specification permitted — NOT BEGUN (entry gate: §0.16.3) |
+| 07D | Retention, Recovery, and Real-Use Proof | Accepted future substage — NOT BEGUN |
+| 07E | Stage 07 Exit Gate | Accepted future substage — NOT BEGUN |
+
+No individual `QLT-*` requirement is promoted by this closure: the
+independent audits verified the substance of the repository-existence
+and pinned-consumption obligations (e.g. N-1/N-2, release-set identity
+recomputation) but did not explicitly disposition any individual `QLT-*`
+row for promotion, so every `QLT-*` requirement remains **Planned**
+ pending the Stage 07 exit-gate reconciliation per §27.4. Requirements
+spanning Shared World meaning, correction, ceremony, retention,
+`MSTR-012` real use, and the final exit remain Planned or In Progress
+under the existing vocabulary. No Stage 01–06 Verified disposition
+changed.
+
+### 0.16.6 Release boundary and non-interaction
+
+- The closed consumer release remains the immutable
+  `vict-release-set@1/0.1.0` — all 13 `@victframework/*` packages at
+  exactly `0.1.0`, content ID
+  `v1_dbb7438dfe16b7de245fe3863f6980b7e9a44a83c1809e01071941782597a11d`.
+  Quellight's manifest and lockfile remain pinned to it.
+- The published `vict-release-set@1/0.1.1` (v0.4.6, §0.15) remains live
+  but is **not adopted** by Stage 07B or this closure. Any later release
+  adoption requires an explicit Stage 07C compatibility decision and
+  fresh verification.
+- This closure is documentation-only: no VICT package, script, manifest,
+  lockfile, release identity, or registry state is created, changed, or
+  republished. The Quellight canonical input remains byte-identical
+  (SHA-256 `e7f61d24c16fd60c66efdb0af0b32859f1fdf1b571e32a0368870cb559b01331`).
+- The formal-closure record is
+  `docs/report/VICT-STAGE-07B-FORMAL-CLOSURE.md`; the mirrored Quellight
+  record is created by the Quellight-side closure commit after this one
+  is pushed.
 
 ---
 
@@ -2242,7 +2429,7 @@ Stages are capability gates, not calendar promises. A work session may complete 
 | 4     | Capability and application authoring foundation              | Verified with non-blocking issues                                     | Stable SDK/packs plus neutral Application Definition, identity, bindings, and renderer contract                                                                                                                                                                                       |
 | 5     | Application delivery layer                                   | Verified with non-blocking issues                                     | SvelteKit renderer, scaffolder, built-in surfaces, domain-data adapter, and complete working application proof                                                                                                                                                                        |
 | 6     | Control plane, API, and product-agent integration foundation | Verified with non-blocking issues — formally closed (2026-09-09)      | Governed ChangeSets, approvals, activation operations, typed remote consumption, plus the neutral product-agent boundary, Mastra adapter foundation, tool bridge, and agent-stream contract (two increments: 06A foundation and 06B control plane/remote execution — both independently verified; one final exit gate passed; formal closure recorded at §0.10)                                                                                                                |
-| 7     | Minimum Workable Quellight (v0.4.0 rebaseline; formerly "Real Mastra-backed ARA product") | In Progress — Stage 07A (consumer foundation) verified with non-blocking issues and formally closed (2026-09-09); Stage 07B permitted, specified by its issued handoff (v0.4.3, §0.14), and not begun | The separate Quellight repository consumes released VICT packages and delivers the Minimum Workable Quellight: shared-world persistence, commitments/open loops with explicit ceremony, the canonical first vertical, real-use MSTR-012 proofs (Stage 07A — consumer foundation — is the first increment; Stage 07B — Quellight Consumer Bootstrap and Live Conversation Foundation — is the second; see §0.11, §0.13, §0.14 and the Stage 07 architecture document)                                                                                                                |
+| 7     | Minimum Workable Quellight (v0.4.0 rebaseline; formerly "Real Mastra-backed ARA product") | In Progress — Stage 07A (consumer foundation) verified with non-blocking issues and formally closed (2026-09-09); Stage 07B (consumer bootstrap and live conversation foundation) verified with non-blocking issues and formally closed (2026-09-10, v0.4.7, §0.16); Stage 07C specification permitted, gated by the F-8 entry gate, and not begun | The separate Quellight repository consumes released VICT packages and delivers the Minimum Workable Quellight: shared-world persistence, commitments/open loops with explicit ceremony, the canonical first vertical, real-use MSTR-012 proofs (Stage 07A — consumer foundation — is the first increment; Stage 07B — Quellight Consumer Bootstrap and Live Conversation Foundation — is the second, now formally closed; see §0.11, §0.13, §0.14, §0.16 and the Stage 07 architecture document)                                                                                                                |
 | 8     | Builder Kit and self-hosting                                 | Planned                                                               | Model-agnostic agents extend Vict and its applications under bounded rules                                                                                                                                                                                                            |
 | 9     | Studio, diagnosis, and controlled recovery                   | Planned                                                               | Operator experience and safe recovery, reusing the Application Layer where appropriate                                                                                                                                                                                                |
 | 10    | Ecosystem and proven playbooks                               | Planned                                                               | Reusable packs, application templates, and proven compositions                                                                                                                                                                                                                        |
@@ -2834,6 +3021,28 @@ ARA proof:        exactly 13 ordered events; benchmark exactly 10 events
 > substage sequence 07C–07D–07E proposed in the handoff remains PROPOSED
 > until accepted through the handoff process. **Stage 07B is PERMITTED —
 > SPECIFIED — and IMPLEMENTATION HAS NOT BEGUN.**
+>
+> **Stage 07B closure note (2026-09-10, v0.4.7, §0.16).** Stage 07B was
+> implemented in the separate Quellight repository against the immutable
+> `vict-release-set@1/0.1.0` (which it remains pinned to), independently
+> audited (original verdict `NOT VERIFIED — REMEDIATION REQUIRED` at
+> `45e6aa6…`; F-1/F-2 remediation at `6660491…`–`65f1767…`), then
+> independently re-verified with the authoritative verdict `VERIFIED
+> WITH NON-BLOCKING ISSUES — FORMAL CLOSURE PERMITTED` (re-verification
+> report at Quellight commit `1e0c0f53…`, including the re-audit's own
+> bounded live-provider proof and its independent confirmation of the
+> remediated stop and deadline paths), and is now FORMALLY CLOSED:
+> `STAGE 07B VERIFIED WITH NON-BLOCKING ISSUES — FORMALLY CLOSED`.
+> The owner's semantic-authority enforcement principle is registered as
+> `GOV-007` (§0.4, §0.16.2); the F-8 `app.data.mutate` payload gap is
+> recorded as the binding Stage 07C entry gate (§0.16.3); final F-1–F-8
+> and RI-1/RI-2 dispositions are recorded in §0.16.4. **Stage 07C
+> specification is permitted; effectful Stage 07C implementation is NOT
+> yet unconditionally permitted** and is gated by the §0.16.3 entry
+> gate. **Stage 07 remains In Progress**; Stage 07D and 07E remain
+> accepted future substages and have not begun; every `QLT-*`
+> requirement remains Planned; the canonical first vertical and the
+> `MSTR-012` real-use proof remain Stage 07 exit-gate obligations.
 
 **Purpose**
 
@@ -3062,6 +3271,7 @@ This section is deliberately factual and should be updated after every accepted 
 - Stage 5 adds the independently verified application delivery layer at final audited implementation target `070147e`: the `vict.application@2` delivery vocabulary with strict `@1` compatibility and byte-identical legacy identity vectors; strict required-member and canonical-input validation (dense plain canonical data only; sparse arrays, inherited/non-enumerable/accessor members, exotic prototypes, and hostile proxies rejected structurally); deterministic, collision-resistant `applicationVersion`; immutable caller-independent compiled plans whose scalars, manifest identity, serialization bytes, and version never contradict each other; the canonical Svelte 5 renderer (`@victframework/renderer-svelte`) and generic application host with routes, navigation, responsive layouts, forms, records, tables, search, charts, tabs, dialogs, drawers, status, action and conversation surfaces, safe loading/empty/validation/denied/stale/partial/failure states, theme tokens, and versioned custom-component code islands; the one-time deterministic non-destructive scaffolder (`@victframework/scaffolder`); the production SQLite application-domain adapter (`@victframework/appdata-sqlite`) with typed authorized query/mutation/action boundaries, strict idempotency, and application-domain migrations explicitly separate from operational migrations; readiness-gated real-process SIGKILL restart evidence; a warning-free Svelte build; real-browser responsive and accessibility checks; and packed-consumer plus generated-host build verification. Observed closure baseline: 57 unit files / 1436 tests, 3 renderer files / 45 tests, 1 integration file / 4 tests, 61 files / 1485 total; ARA exactly 13 ordered events; benchmark exactly 10 events per completed run; Stage 04 application proof 17/17. Disposition: VERIFIED WITH NON-BLOCKING ISSUES — formal closure permitted and performed 2026-09-04.
 - Stage 6 adds the independently verified control plane, API, and product-agent integration at final audited implementation `c2ff692` (H-1-corrected tip, documented at `a6675bb`, verified by `8c13c28`): the neutral `vict.agent-stream@1` stream contract with resumable SSE, monotonic sequences, and lossless ordered replay; the `@victframework/control` governance package (ChangeSets with immutable content identity and exact-base CAS, evidence derived only from durable control runs, content-hash-bound approvals, activation and Application Release publish/select/rollback, durable agent-turn governance, audit events); the governed `@victframework/mastra` capability tool bridge (nine-step authorization order, framework-supplied occurrence identity, fenced exactly-once settlements, and the delivery-safe result snapshot settled BEFORE durable completion); the `@victframework/server` boundary (versioned HTTP commands with namespaced durable idempotency, authenticated actor composition, actor-scoped reads, no privileged Mastra route); the `@victframework/cli`; real child-process SIGKILL restart fixtures; and the adversarial canary matrix over every observable surface including raw DB/WAL/SHM bytes. Observed closure baseline: 114 files / 2152 tests, all passed; `verify:stage6b` ALL GATES PASSED; ARA exactly 13 ordered events; benchmark exactly 10 events per completed run; Stage 05 application proof 17/17. Disposition: VERIFIED WITH NON-BLOCKING ISSUES — formal closure performed 2026-09-09 (§0.10).
 - Stage 07A adds the independently verified Quellight consumer foundation at audited starting commit `cb9d74bf0d4ca8e1c21f7962e80bbf8d358d82a1` (implementation baseline `e0e65b7…`, published release commit `7e5908e…`): the canonical public namespace `@victframework/*` (13 packages published at `0.1.0` to the public npm registry with exact internal pins, Apache-2.0, engines `>=22.13.0`; immutable release-set identity `vict-release-set@1/0.1.0`, content ID `v1_dbb7438dfe16b7de245fe3863f6980b7e9a44a83c1809e01071941782597a11d`, recorded in `docs/RELEASE-COMPATIBILITY.md` and gated by `verify:release-set`); the N-1 own-`__proto__` delivery-snapshot rejection (closed reason `proto-field` through the existing durable `VICT_CAPABILITY_UNSAFE_OUTPUT_STRUCTURE` code, negative control at `e0e65b7`, permanent suites, emitted-package probe); the corrected Stage 06B verifier banner; isolated clean-consumer verification from packed tarballs and the public registry (82/82 independent checks); and the protected operator-configuration foundation with canary-proven non-leakage. The independent audit reproduced the full namespace classification and one gate defect — F-1, the `verify:stage7a` Gate 1 self-match — corrected at formal closure (`e45bdec…`, audit-sanctioned one-line self-exclusion; negative control proves the gate still fails on a genuine former-namespace reference). Observed independent closure baseline: 115 files / 2175 tests passed, 3 skipped (POSIX-only, unchanged); registry truth 13/13 recomputed; release-set identity recomputed; historical reports and handoffs byte-identical to the baseline. Disposition: `STAGE 07A VERIFIED WITH NON-BLOCKING ISSUES — FORMALLY CLOSED` (2026-09-09, §0.13); Stage 07 remains In Progress; Stage 07B permitted and not begun.
+- Stage 07B adds the independently verified Quellight consumer bootstrap and live conversation foundation in the separate Quellight repository (`https://github.com/radz2291/Quellight`; this VICT repository was read-only throughout implementation and contains no Quellight code): registry-only consumption of the immutable `vict-release-set@1/0.1.0` (content ID `v1_dbb7438dfe16b7de245fe3863f6980b7e9a44a83c1809e01071941782597a11d`; lockfile integrity and release-set content ID independently recomputed and matching); one pinned provider profile (`ollama-cloud/glm-5.3-flash`) with protected just-in-time credential resolution; streaming conversation over persistent threads on the `vict.agent-stream@1` resumable-SSE path with truthful reconnect/cancellation/SIGKILL-restart recovery; the Quellight-owned Shared World store foundation (thread record family only; the agent has no Shared World write path — negative-controlled); a minimal responsive accessible conversation-first UI; and a bounded live-provider proof. Audit chain: audited implementation `00ca458…`; original independent audit `45e6aa6…` (`NOT VERIFIED — REMEDIATION REQUIRED`; blocking F-1 browser stop-control request shape, missing independent live proof); remediation `6660491…` + `2379d4b…` + `65f1767…`; independent re-verification at `1e0c0f53…` — verdict `VERIFIED WITH NON-BLOCKING ISSUES — FORMAL CLOSURE PERMITTED` (F-1/F-2 remediations verified closed with a literal real-browser Stop-click proof; N-15 bounded live proof independently executed and passed; clean-clone ladder green; release-set content ID recomputed and matching). Disposition: `STAGE 07B VERIFIED WITH NON-BLOCKING ISSUES — FORMALLY CLOSED` (2026-09-10, §0.16); the owner's semantic-authority enforcement principle registered as GOV-007 (§0.4, §0.16.2); F-8 recorded as the Stage 07C entry gate (§0.16.3); Stage 07 remains In Progress; every `QLT-*` requirement remains Planned; Quellight remains pinned to the immutable `0.1.0` set (the published `0.1.1` set is not adopted).
 
 ### 24.2 Accepted carry-forward issues
 
@@ -3171,7 +3381,8 @@ Retained informational limitations (verified architecture is not reopened): Stag
 - VICT-STAGE-07A-CONSUMER-FOUNDATION-IMPLEMENTATION-REPORT.md — the Stage 07A implementer evidence (six work items, the public publication record, and the verification ladder); implementer claim, NOT independently authoritative; preserved unchanged including its non-reproducible `verify:stage7a = 0` row, which the independent verification found did not hold on the committed tree (F-1).
 - VICT-STAGE-07A-INDEPENDENT-VERIFICATION.md — the independent Stage 07A verification at commit `cb9d74bf0d4ca8e1c21f7962e80bbf8d358d82a1`: full governing-document derivation, namespace classification, registry truth for all 13 packages, release-set identity recomputation, 82/82 independent external-consumer proof, N-1 adversarial verification with baseline negative control, operator-credential canary probe, and the verification ladder; **authoritative Stage 07A disposition: VERIFIED WITH NON-BLOCKING ISSUES — FORMAL CLOSURE PERMITTED** (findings F-1 Medium, F-2/F-3 Low, F-4/F-5/F-6 Informational — none blocking; N-1 and ARCH-012 satisfied).
 - VICT-STAGE-07A-FORMAL-CLOSURE.md — the Stage 07A formal-closure record (v0.4.2, 2026-09-09): the F-1 reproduction/correction/negative-control evidence, the truthful implementation-report discrepancy, F-2–F-6 dispositions, N-1 CLOSED-in-Stage-07A, ARCH-012 Verified, the immutable release-boundary confirmation, the verification ladder at the fix commit, and the Stage 07B permitted/not-begun status; maintained under docs/report/.
-- VICT-STAGE-07B-QUELLIGHT-CONSUMER-BOOTSTRAP-HANDOFF.md — the executable Stage 07B implementation handoff (v0.4.3, 2026-09-09; the next permitted increment): Quellight Consumer Bootstrap and Live Conversation Foundation — verified pre-inception state and repository-inception procedure, exact release-set consumption with no-monorepo-fallback controls, the single pinned provider profile (Ollama Cloud, `glm-5.3-flash`; owner confirmation required before the bounded live proof; the Z.ai Coding Plan credential prohibited for the application), the conversation path over `vict.agent-stream@1` resumable SSE with reconnect/restart/cancellation semantics, the Quellight-owned Shared World store foundation with the thread record as the only durable 07B record family and conversation persistence explicitly distinguished from Shared World continuity, ordered work packages WP-1–WP-7, the full negative-control set including credential canaries and build-artifact hygiene, documentation and evidence rules, the completion-report template, explicit deferrals, and the PROPOSED later sequence (07C Shared World Meaning and Ceremony → 07D Retention, Recovery, and Real-Use Proof → 07E Stage 07 Exit Gate); maintained under docs/handoff/.
+- VICT-STAGE-07B-QUELLIGHT-CONSUMER-BOOTSTRAP-HANDOFF.md — the executable Stage 07B implementation handoff (v0.4.3, 2026-09-09; the next permitted increment): Quellight Consumer Bootstrap and Live Conversation Foundation — verified pre-inception state and repository-inception procedure, exact release-set consumption with no-monorepo-fallback controls, the single pinned provider profile (Ollama Cloud, `glm-5.3-flash`; owner confirmation required before the bounded live proof; the Z.ai Coding Plan credential prohibited for the application), the conversation path over `vict.agent-stream@1` resumable SSE with reconnect/restart/cancellation semantics, the Quellight-owned Shared World store foundation with the thread record as the only durable 07B record family and conversation persistence explicitly distinguished from Shared World continuity, ordered work packages WP-1–WP-7, the full negative-control set including credential canaries and build-artifact hygiene, documentation and evidence rules, the completion-report template, explicit deferrals, and the PROPOSED later sequence (07C Shared World Meaning and Ceremony → 07D Retention, Recovery, and Real-Use Proof → 07E Stage 07 Exit Gate); maintained under docs/handoff/. **Status: formally closed at v0.4.7 (§0.16)** — Stage 07B is implemented, independently verified, and closed; the handoff text is preserved as issued.
+- VICT-STAGE-07B-FORMAL-CLOSURE.md — the Stage 07B formal-closure record (v0.4.7, 2026-09-10): the complete Quellight evidence chain (implementation `00ca458…`, original audit `45e6aa6…`, remediation `65f1767…`, re-verification `1e0c0f53…`), the authoritative verdict and closure disposition, the GOV-007 semantic-authority registration, the Stage 07C entry gate (F-8), final findings dispositions, the Stage 07 progress table, the immutable release boundary (Quellight pinned to `0.1.0`; `0.1.1` published but not adopted), and non-interaction/preservation evidence; maintained under docs/report/.
 
 ---
 
@@ -3355,4 +3566,4 @@ Otherwise it probably belongs in an application, capability pack, adapter, devel
 
 ---
 
-**End of authoritative baseline v0.4.6**
+**End of authoritative baseline v0.4.7**

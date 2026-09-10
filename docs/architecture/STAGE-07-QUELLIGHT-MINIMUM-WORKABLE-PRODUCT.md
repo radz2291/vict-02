@@ -53,6 +53,33 @@
 > (07C Shared World Meaning and Ceremony → 07D Retention, Recovery, and
 > Real-Use Proof → 07E Stage 07 Exit Gate) is PROPOSED until accepted
 > through the handoff process.
+>
+> **Status update (2026-09-10, reference v0.4.7, §0.16): Stage 07B is
+> implemented, independently re-verified, and FORMALLY CLOSED.** The
+> independent re-verification at Quellight commit `1e0c0f53…` returned
+> `VERIFIED WITH NON-BLOCKING ISSUES — FORMAL CLOSURE PERMITTED` (F-1/F-2
+> remediations verified closed; the bounded independent live-provider
+> proof N-15 executed and passed; clean-clone ladder green; the
+> `vict-release-set@1/0.1.0` content ID recomputed and matching).
+> Disposition: `STAGE 07B VERIFIED WITH NON-BLOCKING ISSUES — FORMALLY
+> CLOSED`. The owner's semantic-authority enforcement principle is
+> registered as **GOV-007** (reference §0.4, §0.16.2; mirrored in the
+> Quellight decision register). **The §8 canonical first vertical, the
+> §10 `QLT-*` requirement family (all Planned), and the §13 Stage 07
+> exit gate remain open Stage 07 obligations.** **Stage 07C
+> specification is permitted, and effectful Stage 07C implementation is
+> gated by the Stage 07C entry gate (reference §0.16.3)**: before any
+> Shared World proposal, confirmation ceremony, correction, commitment,
+> open loop, or other durable meaning write is implemented, the Stage
+> 07C handoff must resolve F-8 (the released `app.data.mutate` payload
+> cannot carry mutation input) through one of the three authorized paths
+> — released public boundary expressibility; a formally defined,
+> registered, governed consumer capability extension; or a corrected,
+> independently verified, newly released immutable VICT set adopted
+> through a controlled compatibility change. The prohibited path (UI or
+> ordinary product route → custom mutation shortcut → direct durable
+> write) is forbidden. Stage 07D and 07E remain accepted future
+> substages and have not begun; Stage 07 remains In Progress.
 > **Scope:** product identity and repository boundary; the corrected
 > memory/identity model; the Shared World record and storage decision; the
 > exact Minimum Workable Quellight scope and exclusions; the canonical
@@ -986,6 +1013,12 @@ and no Quellight capability may be described as Verified.
 formally closed; Stage 07 is rebaselined, permitted, and **In Progress**;
 Stage 07A — the consumer foundation — is verified with non-blocking issues
 and formally closed (2026-09-09, reference v0.4.2, §0.13 of the system
-reference); **Stage 07B is PERMITTED — SPECIFIED by its issued handoff
-(reference v0.4.3, §0.14) — and NOT BEGUN**; the Quellight product
-repository has not been created; no Quellight product capability exists.*
+reference); **Stage 07B — Quellight Consumer Bootstrap and Live
+Conversation Foundation — is verified with non-blocking issues and
+formally closed (2026-09-10, reference v0.4.7, §0.16)**; Stage 07C —
+Shared World Meaning and Ceremony — has its specification permitted, is
+NOT BEGUN, and is gated by the Stage 07C entry gate (reference §0.16.3);
+Stage 07D and 07E remain accepted future substages and have not begun;
+the Quellight repository exists as a real external consumer pinned to the
+immutable `vict-release-set@1/0.1.0`; no Quellight capability beyond the
+closed 07A/07B scope exists; every `QLT-*` requirement remains Planned.*
