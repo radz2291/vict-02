@@ -132,6 +132,27 @@
 > open for a later versioned constitution record; the F-8 Stage 07C entry gate
 > (reference §0.16.3) remains BINDING; no other status changes.
 >
+> **Status update (2026-09-10, reference v0.4.11, §0.19): Stage 07C Phase F
+> (VICT input-boundary correction and release) is COMPLETE through Phase F4
+> release preparation.** Phase F2 implemented the minimal generic VICT
+> correction through the authorized path 3 (independently verified at
+> `af47f15…`); Phase F3 verified it with non-blocking issues; Phase F4
+> satisfied the binding hygiene conditions (MD-1, MD-2, LO-1 — verifier
+> repairs and multibyte boundary fixtures with permanent regression
+> coverage, hygiene commit `935dae7…`) and prepared the immutable release
+> candidate: all 13 `@victframework/*` packages at `0.2.0`, release identity
+> `vict-release-set@1/0.2.0` (content ID
+> `v1_7a557983114b0743334061bd1f02ccd14f22e29f3a86697a4fd09b1722a8f172`),
+> immutable release-source commit `5c81aca…` (`chore(release): prepare VICT
+> 0.2.0`), packed-candidate verification, clean packed-consumer proof, and
+> truthful negative controls recorded. **VICT 0.2.0 is prepared but NOT
+> published; `latest` remains `0.1.1`; an independent pre-publication audit
+> of the release-source commit is required before any publication.**
+> Quellight remains pinned to the immutable `vict-release-set@1/0.1.0`;
+> adopting `0.2.0` is a later controlled Phase Q compatibility task
+> (work package Q1); **Quellight Phase Q has not begun**; Stage 07 remains
+> In Progress. Evidence: `docs/report/VICT-0.2.0-RELEASE-PREPARATION.md`.
+>
 > **Scope:** product identity and repository boundary; the corrected
 > memory/identity model; the Shared World record and storage decision; the
 > exact Minimum Workable Quellight scope and exclusions; the canonical
@@ -1068,11 +1089,14 @@ and formally closed (2026-09-09, reference v0.4.2, §0.13 of the system
 reference); **Stage 07B — Quellight Consumer Bootstrap and Live
 Conversation Foundation — is verified with non-blocking issues and
 formally closed (2026-09-10, reference v0.4.7, §0.16)**; Stage 07C —
-Shared World Meaning and Ceremony — is SPECIFIED by its issued handoff
-(reference v0.4.8, §0.17; the F-8 entry-gate resolution is specified as the
-minimal generic VICT input-boundary correction, released as a new immutable
-coordinated set and adopted through a controlled compatibility change), and
-EFFECTFUL Stage 07C IMPLEMENTATION HAS NOT BEGUN; Stage 07D and 07E remain
+Shared World Meaning and Ceremony — has its specification issued (reference
+v0.4.8, §0.17) with OQ6 ratified (reference v0.4.9, §0.18); its Phase F
+(VICT input-boundary correction) is implemented, independently verified
+(`af47f15…`), and prepared for release through Phase F4 (reference v0.4.11,
+§0.19: release candidate prepared at release-source `5c81aca…` — **VICT
+0.2.0 is prepared but NOT published; independent pre-publication audit
+required**); Phase Q (Quellight Shared World meaning and ceremony) has NOT
+BEGUN; Stage 07D and 07E remain
 accepted future substages and have not begun;
 the Quellight repository exists as a real external consumer pinned to the
 immutable `vict-release-set@1/0.1.0`; no Quellight capability beyond the
