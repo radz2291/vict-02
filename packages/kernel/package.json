@@ -1,6 +1,6 @@
 {
   "name": "@victframework/kernel",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "type": "module",
   "description": "Pure graph compilation and execution semantics for Vict. No I/O.",
   "exports": {
@@ -22,8 +22,8 @@
     "build": "tsc -p tsconfig.json"
   },
   "dependencies": {
-    "@victframework/contracts": "0.1.1",
-    "@victframework/sdk": "0.1.1"
+    "@victframework/contracts": "0.2.0",
+    "@victframework/sdk": "0.2.0"
   },
   "license": "Apache-2.0",
   "publishConfig": {

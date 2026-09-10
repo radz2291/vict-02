@@ -1,6 +1,6 @@
 {
   "name": "@victframework/mastra",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "type": "module",
   "description": "Optional Mastra-backed implementation of the neutral VICT ProductAgent boundary: pinned Mastra versions, deterministic offline model fixture, pure helper-tool enforcement, dedicated file-backed Mastra storage, payload-safe tracing, and governed memory lifecycle. Imports the neutral VICT packages; never imported by them.",
   "exports": {
@@ -23,14 +23,14 @@
     "@mastra/memory": "1.28.2",
     "@mastra/observability": "1.17.5",
     "zod": "^3.25.76",
-    "@victframework/contracts": "0.1.1",
-    "@victframework/kernel": "0.1.1",
-    "@victframework/runtime": "0.1.1",
-    "@victframework/sdk": "0.1.1",
-    "@victframework/control": "0.1.1"
+    "@victframework/contracts": "0.2.0",
+    "@victframework/kernel": "0.2.0",
+    "@victframework/runtime": "0.2.0",
+    "@victframework/sdk": "0.2.0",
+    "@victframework/control": "0.2.0"
   },
   "devDependencies": {
-    "@victframework/store-sqlite": "0.1.1"
+    "@victframework/store-sqlite": "0.2.0"
   },
   "engines": {
     "node": ">=22.13.0"

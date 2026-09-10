@@ -149,7 +149,7 @@ function printSet(label: string, set: SampleSet, iterations: number): void {
 async function main(): Promise<void> {
   console.log('=== Vict Stage 02 performance baseline ===');
   console.log(`node:       ${process.version} (${platform()} ${release()} ${arch()})`);
-  console.log(`packages:   @victframework/* 0.1.1`);
+  console.log(`packages:   @victframework/* 0.2.0`);
   console.log(`graph:      ${GRAPH.id} (3 nodes, 2 edges, 10 events per completed run)`);
   console.log(
     `durability: file-backed runs use journal_mode=wal + synchronous=FULL (real fsync per commit)`,

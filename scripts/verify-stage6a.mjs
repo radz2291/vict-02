@@ -98,7 +98,7 @@ console.log('\n=== verify:stage6a — package inspection ===');
     '@victframework/kernel',
     '@victframework/runtime',
   ]) {
-    check(deps[neutral] === '0.1.1', `${neutral} declared as a direct dependency at 0.1.1`);
+    check(deps[neutral] === '0.2.0', `${neutral} declared as a direct dependency at 0.2.0`);
   }
 
   // Neutral packages must not depend on Mastra.

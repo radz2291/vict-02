@@ -1,6 +1,6 @@
 {
   "name": "@victframework/cli",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "type": "module",
   "description": "Vict typed operator/developer CLI. Consumes the same versioned VICT command surface as HTTP (never SQLite directly); thin, Mastra-free, browser-independent.",
   "bin": {
@@ -22,7 +22,7 @@
     "build": "tsc -p tsconfig.json"
   },
   "devDependencies": {
-    "@victframework/server": "0.1.1"
+    "@victframework/server": "0.2.0"
   },
   "license": "Apache-2.0",
   "publishConfig": {
