@@ -1,6 +1,6 @@
 {
   "name": "@victframework/contracts",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "module",
   "description": "Neutral executable input/output promises and structured validation results for Vict graphs. Schema-library adapters are optional subpaths.",
   "exports": {

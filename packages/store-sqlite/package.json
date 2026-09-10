@@ -1,6 +1,6 @@
 {
   "name": "@victframework/store-sqlite",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "module",
   "description": "SQLite adapter for Vict's semantic store ports: activation catalog, execution store, forward migrations. Uses the built-in node:sqlite driver.",
   "exports": {
@@ -18,7 +18,7 @@
     "build": "tsc -p tsconfig.json"
   },
   "dependencies": {
-    "@victframework/runtime": "0.1.0"
+    "@victframework/runtime": "0.1.1"
   },
   "engines": {
     "node": ">=22.13.0"

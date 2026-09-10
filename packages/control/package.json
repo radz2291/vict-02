@@ -1,6 +1,6 @@
 {
   "name": "@victframework/control",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "module",
   "description": "Vict control plane: authenticated actor boundary, ChangeSet lifecycle with immutable content identity and approvals, activation and Application Release governance, agent-turn governance with durable approvals and cancellation, and audit events. Depends on the neutral runtime ports; transport-free.",
   "exports": {
@@ -18,8 +18,8 @@
     "build": "tsc -p tsconfig.json"
   },
   "dependencies": {
-    "@victframework/contracts": "0.1.0",
-    "@victframework/runtime": "0.1.0"
+    "@victframework/contracts": "0.1.1",
+    "@victframework/runtime": "0.1.1"
   },
   "license": "Apache-2.0",
   "publishConfig": {

@@ -1,6 +1,6 @@
 {
   "name": "@victframework/sdk",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "module",
   "description": "Stable, schema-library-neutral authoring ABI for Vict: contracts, capabilities, graphs, capability packs, applications, resources and releases. Optional Zod adapter under ./zod. Has NO dependency on the runtime.",
   "exports": {
@@ -22,7 +22,7 @@
     "build": "tsc -p tsconfig.json"
   },
   "dependencies": {
-    "@victframework/contracts": "0.1.0"
+    "@victframework/contracts": "0.1.1"
   },
   "peerDependencies": {
     "zod": "^3.25.0"

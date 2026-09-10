@@ -1,6 +1,6 @@
 {
   "name": "@victframework/renderer-svelte",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "module",
   "description": "Canonical SvelteKit renderer for Vict Application Plans: generic application host, built-in role components, responsive navigation, semantic theme tokens, and accessible defaults. Svelte and component-library dependencies live ONLY in this renderer boundary — never in @victframework/application or the base SDK.",
   "exports": {
@@ -23,8 +23,8 @@
     "test": "vitest run --project renderer"
   },
   "dependencies": {
-    "@victframework/application": "0.1.0",
-    "@victframework/sdk": "0.1.0"
+    "@victframework/application": "0.1.1",
+    "@victframework/sdk": "0.1.1"
   },
   "peerDependencies": {
     "svelte": "^5.0.0"

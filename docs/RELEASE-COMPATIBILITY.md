@@ -15,6 +15,16 @@
 > Per §6's CI gate rule the recorded set is live. Finding F-4's §6
 > wording was reconciled at formal closure (no version-tag publication
 > path; the content-derived identity is the immutability anchor).
+>
+> **Coordinated release set 0.1.1 (2026-09-10):** the second immutable
+> release set — `vict-release-set@1/0.1.1`, all 13 members at `0.1.1` —
+> carries the independently verified navigation-group-order renderer
+> correction (independent verdict `VERIFIED WITH NON-BLOCKING ISSUES —
+> RELEASE PREPARATION PERMITTED`, audit at `02dbf40…`). §2 records the
+> current machine-readable set; the complete `0.1.0` record is preserved
+> unchanged in §2.1. Set status: publication pending at preparation
+> (this paragraph is updated to "live" only after registry and
+> consumer verification pass).
 
 ## 1. Registry identity and namespace decision
 
@@ -37,27 +47,27 @@ new set. Nothing is ever unpublished, re-published, or mutated.
 ```json
 {
   "vict-release-set": {
-    "identity": "vict-release-set@1/0.1.0",
-    "contentId": "v1_dbb7438dfe16b7de245fe3863f6980b7e9a44a83c1809e01071941782597a11d",
+    "identity": "vict-release-set@1/0.1.1",
+    "contentId": "v1_e31e8dd60d05e1d6feb08b5ed0874cceae561bdf10e08d8b93e07840de8d9cdf",
     "contentIdAlgorithm": "sha256 over the sorted newline-joined 'name@version' list of the exact member set, prefixed v1_",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "access": "public",
     "registry": "https://registry.npmjs.org/",
     "license": "Apache-2.0",
     "packages": {
-      "@victframework/appdata-sqlite": "0.1.0",
-      "@victframework/application": "0.1.0",
-      "@victframework/cli": "0.1.0",
-      "@victframework/contracts": "0.1.0",
-      "@victframework/control": "0.1.0",
-      "@victframework/kernel": "0.1.0",
-      "@victframework/mastra": "0.1.0",
-      "@victframework/renderer-svelte": "0.1.0",
-      "@victframework/runtime": "0.1.0",
-      "@victframework/scaffolder": "0.1.0",
-      "@victframework/sdk": "0.1.0",
-      "@victframework/server": "0.1.0",
-      "@victframework/store-sqlite": "0.1.0"
+      "@victframework/appdata-sqlite": "0.1.1",
+      "@victframework/application": "0.1.1",
+      "@victframework/cli": "0.1.1",
+      "@victframework/contracts": "0.1.1",
+      "@victframework/control": "0.1.1",
+      "@victframework/kernel": "0.1.1",
+      "@victframework/mastra": "0.1.1",
+      "@victframework/renderer-svelte": "0.1.1",
+      "@victframework/runtime": "0.1.1",
+      "@victframework/scaffolder": "0.1.1",
+      "@victframework/sdk": "0.1.1",
+      "@victframework/server": "0.1.1",
+      "@victframework/store-sqlite": "0.1.1"
     }
   }
 }
@@ -70,10 +80,47 @@ record ever disagree (mismatched internal pins, a member version drift,
 a missing member, a non-exact internal specifier, or a lost
 publishability property).
 
+### 2.1 Release-set lineage (immutable predecessors)
+
+Prior release sets are never mutated, re-published, or unpublished;
+their registry artifacts remain available for explicit pinning. The
+first public release set is preserved here exactly as it was recorded
+while it was the current set:
+
+```text
+vict-release-set@1/0.1.0
+contentId: v1_dbb7438dfe16b7de245fe3863f6980b7e9a44a83c1809e01071941782597a11d
+contentIdAlgorithm: sha256 over the sorted newline-joined 'name@version' list of the exact member set, prefixed v1_
+version: 0.1.0
+access: public
+registry: https://registry.npmjs.org/
+license: Apache-2.0
+packages:
+  @victframework/appdata-sqlite   0.1.0
+  @victframework/application      0.1.0
+  @victframework/cli              0.1.0
+  @victframework/contracts        0.1.0
+  @victframework/control          0.1.0
+  @victframework/kernel           0.1.0
+  @victframework/mastra           0.1.0
+  @victframework/renderer-svelte  0.1.0
+  @victframework/runtime          0.1.0
+  @victframework/scaffolder       0.1.0
+  @victframework/sdk              0.1.0
+  @victframework/server           0.1.0
+  @victframework/store-sqlite     0.1.0
+```
+
+Registry truth for the predecessor set is the authoritative immutability
+evidence: every `@victframework/*` package keeps its published `0.1.0`
+artifacts (per-version integrity values recorded in the Stage 07A
+independent-verification report) alongside the new set; `0.1.0` stays
+installable by exact pin regardless of which set `latest` points to.
+
 ## 3. Dependency graph and exact pins
 
 All intra-VICT dependencies inside the release set are EXACT pins of
-`0.1.0` — no ranges, no `workspace:`/`file:`/`git` specifiers in any
+`0.1.1` — no ranges, no `workspace:`/`file:`/`git` specifiers in any
 published manifest. Verified dependency direction (acyclic):
 
 ```text
@@ -120,13 +167,13 @@ From a clean clone OUTSIDE the VICT checkout, installing exclusively
 from the public npm registry with exact versions:
 
 ```bash
-npm install @victframework/contracts@0.1.0 @victframework/sdk@0.1.0 \
-  @victframework/kernel@0.1.0 @victframework/runtime@0.1.0 \
-  @victframework/store-sqlite@0.1.0 @victframework/application@0.1.0 \
-  @victframework/renderer-svelte@0.1.0 @victframework/appdata-sqlite@0.1.0 \
-  @victframework/scaffolder@0.1.0 @victframework/control@0.1.0 \
-  @victframework/mastra@0.1.0 @victframework/server@0.1.0 \
-  @victframework/cli@0.1.0
+npm install @victframework/contracts@0.1.1 @victframework/sdk@0.1.1 \
+  @victframework/kernel@0.1.1 @victframework/runtime@0.1.1 \
+  @victframework/store-sqlite@0.1.1 @victframework/application@0.1.1 \
+  @victframework/renderer-svelte@0.1.1 @victframework/appdata-sqlite@0.1.1 \
+  @victframework/scaffolder@0.1.1 @victframework/control@0.1.1 \
+  @victframework/mastra@0.1.1 @victframework/server@0.1.1 \
+  @victframework/cli@0.1.1
 ```
 
 Integrity mechanism: the consumer's lockfile records the SHA-512
@@ -136,7 +183,11 @@ against it. `npm ci` reproduces the exact recorded graph.
 Rollback: pin the prior release-set identity (all prior published
 versions remain in the registry; nothing is unpublished or mutated).
 A release-set identity is immutable; changing any member version creates
-a NEW set identity; consumers upgrade explicitly.
+a NEW set identity; consumers upgrade explicitly. For consumers of the
+`0.1.1` set, rollback means pinning the complete `0.1.0` set from §2.1
+(the navigation-group-order correction is NOT contained in `0.1.0`);
+for consumers still on `0.1.0`, upgrade means pinning the complete
+`0.1.1` set above — never a partial mix of the two sets.
 
 ## 6. Reproducible publication path
 
@@ -168,12 +219,22 @@ pass before a release-set identity is recorded as live in this document.
 
 ## 7. Distribution tag
 
-The Stage 07A set is published under the `latest` dist-tag as version
-`0.1.0` — the first public release of the set. There are no prior
+The Stage 07A set was published under the `latest` dist-tag as version
+`0.1.0` — the first public release of the set. There were no prior
 published versions of any `@victframework/*` package, so no non-stable
-tag is required; `0.x` semver communicates the pre-1.0 compatibility
+tag was required; `0.x` semver communicates the pre-1.0 compatibility
 contract (breaking changes may arrive in `0.x` minor bumps; exact pins
 protect consumers).
+
+For the `0.1.1` coordinated set, publication keeps `latest` pointing at
+the complete `0.1.0` release until every `0.1.1` artifact exists: each
+package is published with a temporary unique candidate dist-tag (not
+`latest`), the exact version, manifest, integrity, and tarball inventory
+are verified per package, and only after all 13 members are independently
+confirmed is `latest` advanced to `0.1.1` on every package and the
+temporary candidate tag removed. A bare `npm install @victframework/<pkg>`
+therefore resolves either the complete old set or the complete new set,
+never a mixed one.
 
 ## 8. Post-install independence
 
