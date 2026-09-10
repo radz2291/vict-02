@@ -54,6 +54,39 @@
 > Real-Use Proof → 07E Stage 07 Exit Gate) is PROPOSED until accepted
 > through the handoff process.
 >
+> **Status update (2026-09-10, reference v0.4.8, §0.17): Stage 07C is SPECIFIED
+> by its issued implementation handoff —
+> `docs/handoff/VICT-STAGE-07C-QUELLIGHT-SHARED-WORLD-MEANING-AND-CEREMONY-HANDOFF.md`
+> (Quellight Shared World Meaning and Confirmation Ceremony) — and EFFECTFUL
+> IMPLEMENTATION HAS NOT BEGUN.** The handoff resolves the Stage 07C entry
+> gate on paper: it independently reproduces the F-8 `app.data.mutate`
+> payload gap at source level (the closed command payload field set and the
+> `remoteMutate` field list; byte-identical across the published `0.1.0` and
+> `0.1.1` sets), selects the third authorized path — the smallest generic
+> VICT input-boundary correction (a closed, optional mutation envelope
+> carrying typed, contract-validated action input across the declared
+> Application Layer boundary), independently verified and released as a new
+> immutable coordinated set (expected sequence `vict-release-set@1/0.2.0`, an
+> expectation only — no manifest is changed and nothing is published by the
+> specification) and adopted by Quellight through a controlled compatibility
+> change — as the recommended resolution, with the prohibited path (UI or
+> ordinary product route → custom mutation shortcut → direct durable write)
+> restated and the Stage 07B `/api/act` accommodation frozen at its 07B
+> thread-CRUD scope. The handoff defines the Stage 07C product boundary
+> (durable Shared World record families, the explicit confirmation ceremony,
+> epistemic discipline, correction lineage, deterministic context assembly
+> from confirmed records only, inspection, retention-metadata foundation),
+> the Phase F (framework) → Phase Q (Quellight) work packages with hard
+> prerequisites, the negative-control acceptance matrix, the
+> action-provenance enforcement, and the Stage 07D boundary. It develops a
+> RECOMMENDED OQ6 authority model (user: constitutional authority and final
+> confirmer; Quellight Shared World: durable custodian; agent: proposer and
+> reasoner, never a confirmer; VICT: governance and effect enforcer holding
+> no product meaning) and requests ONE precise owner decision — **OQ6
+> remains UNRATIFIED and is NOT recorded as decided**; the §11 table below is
+> unchanged and truthful. Stage 07D and 07E remain accepted future substages
+> and have not begun; Stage 07 remains In Progress.
+>
 > **Status update (2026-09-10, reference v0.4.7, §0.16): Stage 07B is
 > implemented, independently re-verified, and FORMALLY CLOSED.** The
 > independent re-verification at Quellight commit `1e0c0f53…` returned
@@ -1016,9 +1049,14 @@ and formally closed (2026-09-09, reference v0.4.2, §0.13 of the system
 reference); **Stage 07B — Quellight Consumer Bootstrap and Live
 Conversation Foundation — is verified with non-blocking issues and
 formally closed (2026-09-10, reference v0.4.7, §0.16)**; Stage 07C —
-Shared World Meaning and Ceremony — has its specification permitted, is
-NOT BEGUN, and is gated by the Stage 07C entry gate (reference §0.16.3);
-Stage 07D and 07E remain accepted future substages and have not begun;
+Shared World Meaning and Ceremony — is SPECIFIED by its issued handoff
+(reference v0.4.8, §0.17; the F-8 entry-gate resolution is specified as the
+minimal generic VICT input-boundary correction, released as a new immutable
+coordinated set and adopted through a controlled compatibility change), and
+EFFECTFUL Stage 07C IMPLEMENTATION HAS NOT BEGUN; Stage 07D and 07E remain
+accepted future substages and have not begun;
 the Quellight repository exists as a real external consumer pinned to the
 immutable `vict-release-set@1/0.1.0`; no Quellight capability beyond the
-closed 07A/07B scope exists; every `QLT-*` requirement remains Planned.*
+closed 07A/07B scope exists; every `QLT-*` requirement remains Planned;
+OQ6 remains unratified and is presented for owner decision in the Stage 07C
+handoff §11.3.*
