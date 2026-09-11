@@ -33,8 +33,8 @@
 > `docs/report/VICT-0.1.1-NAVIGATION-GROUP-ORDER-RELEASE.md`). The
 > complete `0.1.1` set record is preserved in §2.1.
 >
-> **Coordinated release set 0.2.0 (2026-09-10) — PREPARED, NOT
-> PUBLISHED:** the third immutable release set — `vict-release-set@1/
+> **Coordinated release set 0.2.0 (2026-09-10; published 2026-09-11) —
+> VERIFIED AND LIVE:** the third immutable release set — `vict-release-set@1/
 > 0.2.0`, all 13 members at `0.2.0` — carries the independently verified
 > Stage 07C Phase F2 generic governed mutation-input boundary correction
 > (independent verdict `VERIFIED WITH NON-BLOCKING ISSUES — PHASE F4
@@ -52,12 +52,29 @@
 > adapter reconciliation); calls without mutation input (identity-only)
 > behave byte-identically to `0.1.0`/`0.1.1` (backward compatibility);
 > and NO Quellight-specific Shared World semantics enter the framework
-> (GOV-007). Set status: **prepared — NOT
-> published; `latest` remains `0.1.1`**; publication requires a fresh
-> independent pre-publication audit of the recorded release-source
-> commit followed by the §6 candidate-dist-tag publication path;
-> adoption by Quellight is a separate later controlled Phase Q
-> compatibility task (Quellight remains pinned to `0.1.0`).
+> (GOV-007). Set status: **published and registry-verified (2026-09-11)** —
+> the fresh independent pre-publication audit of the recorded release-source
+> commit returned `VERIFIED WITH NON-BLOCKING ISSUES — VICT 0.2.0 PUBLICATION
+> PERMITTED FROM EXACT SOURCE 5c81aca…` (audit report committed at
+> `a4ad735…`); the 13 frozen artifacts were reproduced from that exact source
+> and byte-compared against the audit inventory (13/13 SHA-256 equal) before
+> any publish; publication used the §7 candidate-dist-tag discipline with the
+> temporary tag `vict-0.2.0-rc` (`latest` remained the complete `0.1.1` set
+> throughout the window); each package's registry artifact was downloaded and
+> proven byte-identical to its frozen artifact; the §6 CI gate rule
+> (`verify:release-consumer -- --registry`) passed, an independent mutation-
+> proof consumer proved the governed mutation-input boundary (valid input
+> reaches the adapter exactly once; undeclared, oversized multibyte, and
+> closed-envelope violations fail closed with zero adapter calls; identity-
+> only behavior is byte-compatible), and a fresh `latest`-resolution consumer
+> proved the exact-0.2.0 install from the public registry with
+> `npm audit --omit=dev` clean; `latest` advanced to `0.2.0` on every package
+> only after all 13 members were individually verified, and the candidate
+> tag was then removed (13/13; final dist-tags exactly `{latest: 0.2.0}`).
+> Publication and verification record:
+> `docs/report/VICT-0.2.0-PUBLICATION.md`. Quellight remains pinned to
+> `0.1.0`; adopting `0.2.0` is a separate later controlled Phase Q
+> compatibility task (permitted, not begun).
 
 ## 1. Registry identity and namespace decision
 
