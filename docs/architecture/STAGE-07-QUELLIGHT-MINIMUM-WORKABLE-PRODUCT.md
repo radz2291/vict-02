@@ -160,6 +160,8 @@
 > silently upgraded; Stage 07 remains In Progress. Evidence:
 > `docs/report/VICT-0.2.0-PUBLICATION.md`.
 >
+> **Status update (2026-09-13, reference v0.4.13, §0.21): Stage 07C Phase Q1 — Quellight's controlled adoption of the exact immutable `vict-release-set@1/0.2.0` and the governed mutation migration — is independently verified and FORMALLY CLOSED.** The independent verification at Quellight commit `73d53c8…` (audited chain: pre-Q1 baseline `f25b03a…` → implementation `b802a87…` → documentation `269fa21…`) returned `VERIFIED WITH NON-BLOCKING ISSUES — PHASE Q1 FORMAL CLOSURE PERMITTED`: the 0.2.0 adoption is registry-proven (13/13 versions, dist-tags, and integrity; the coordinated content ID independently re-derived EQUAL), the historical Stage 07B `/api/act` direct-adapter accommodation is retired and permanently gated, thread mutations cross the released governed mutation boundary with closed input contracts, server-derived identity, and durable claim/lease/fenced idempotency (87/87 independent adversarial checks; truthful replay recovery), and existing 07B behavior is preserved. Disposition: `QUELLIGHT STAGE 07C PHASE Q1 VERIFIED WITH NON-BLOCKING ISSUES — FORMALLY CLOSED`. Findings: DOC-1 (a stale `0.1.0` statement in the Quellight system reference) resolved during closure; FENCE-1 (prototype-named unknown fields silently dropped at the Q1 ingress — the audit proved no effect or authority bypass) and TEST-1 (no permanent browser-level replay-recovery test; due no later than Phase Q3 verification, before the confirmation ceremony is accepted as reliable) carried as Low; the gate fill-in semantics, the pre-existing streaming completion race, replay non-selection of the affected thread, and the unchanged 07B-bounded conversation-correlation insert carried as informational without reopening Q1. **Phase Q2 — Quellight-owned durable Shared World tables, additive migrations, record and lifecycle schemas, product-owned ports and SQLite adapters, deterministic repository-level tests, and source/provenance/retention metadata (the handoff §7.1 record families: proposal/ceremony record; epistemic claim; commitment; open loop; correction lineage; source/provenance link; retention metadata) — is PERMITTED and NOT BEGUN.** Q2 must not yet expose production proposal or confirmation actions, allow the agent to promote meaning, activate canonical Shared World context, add confirmation/rejection/amendment UI, perform context assembly, implement correction UI, implement full retention/deletion enforcement, begin autonomous learning, or create an alternate write path; every future effectful write uses the governed VICT 0.2.0 boundary adopted in Q1; schema existence alone must not make a record canonical, confirmed, model-visible, or context-eligible. Phases Q3–Q7 have not begun; no Shared World record schema, proposal, ceremony, context assembly, inspection UI, or retention enforcement exists; every `QLT-*` requirement remains Planned; the Minimum Workable Quellight is NOT complete; the Quellight repository now consumes the immutable `@victframework/*@0.2.0` set; Stage 07 remains In Progress. Evidence: Quellight `docs/report/QUELLIGHT-STAGE-07C-PHASE-Q1-INDEPENDENT-VERIFICATION.md` (audit) and `QUELLIGHT-STAGE-07C-PHASE-Q1-FORMAL-CLOSURE.md` (closure); VICT record `docs/report/VICT-STAGE-07C-PHASE-Q1-FORMAL-CLOSURE.md`.
+>
 > **Status update (2026-09-10, reference v0.4.11, §0.19): Stage 07C Phase F
 > (VICT input-boundary correction and release) is COMPLETE through Phase F4
 > release preparation.** Phase F2 implemented the minimal generic VICT
@@ -1124,12 +1126,17 @@ v0.4.8, §0.17) with OQ6 ratified (reference v0.4.9, §0.18); its Phase F
 §0.19: release candidate prepared at release-source `5c81aca…`), and
 **PUBLISHED and registry-verified (reference v0.4.12, §0.20: all 13
 packages at `0.2.0`, `latest = 0.2.0` everywhere, candidate tag removed,
-consumer-proven)**; Phase Q (Quellight Shared World meaning and ceremony)
-is PERMITTED and has NOT BEGUN; Stage 07D and 07E remain
+consumer-proven)**; Phase Q1 — Quellight's controlled adoption of the exact
+immutable `vict-release-set@1/0.2.0` and the governed mutation migration —
+is implemented, independently verified (`VERIFIED WITH NON-BLOCKING ISSUES
+— PHASE Q1 FORMAL CLOSURE PERMITTED`, audit at `73d53c8…`), and FORMALLY
+CLOSED (reference v0.4.13, §0.21); Phase Q2 is PERMITTED and has NOT
+BEGUN; Phases Q3–Q7 have not begun; Stage 07D and 07E remain
 accepted future substages and have not begun;
 the Quellight repository exists as a real external consumer pinned to the
-immutable `vict-release-set@1/0.1.0`; no Quellight capability beyond the
-closed 07A/07B scope exists; every `QLT-*` requirement remains Planned;
+immutable `vict-release-set@1/0.2.0` (content ID
+`v1_7a557983114b0743334061bd1f02ccd14f22e29f3a86697a4fd09b1722a8f172`);
+no Quellight capability beyond the closed 07A/07B and Q1 scope exists; every `QLT-*` requirement remains Planned;
 `OQ6` was ratified as the Stage 07C launch position by the owner on 2026-09-10
 (reference v0.4.9, §0.18; dated addendum in the Stage 07C handoff §19), while
 the formal constitution-custody question remains separately open.*
