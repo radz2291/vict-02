@@ -147,7 +147,7 @@ Closed tag rule (everything else is refused):
   later tag promotion is required, and a stable version is never a moved
   tag on candidate content.
 
-## 8. Authoritative in-workflow checks (frozen)
+## 8. Authoritative in-workflow checks (frozen; AMENDED 2026-09-21, §8.1)
 
 The workflow runs the repository's authoritative release checks against
 the exact checked-out `source_sha` before any registry write, in this
@@ -157,8 +157,9 @@ order:
    (`npm run verify:release-set`);
 2. `npm ci` (locked graph, fresh);
 3. `npm run format:check`, `npm run lint`, `npm run typecheck`;
-4. `npm test` — the full suite, once;
-5. `npm run build` — all 13 packages;
+4. `npm run build` — all 13 packages (AMENDED: moved ahead of the full
+   suite; see §8.1);
+5. `npm test` — the full suite, once;
 6. `npm pack` of all 13 packages — ACTUAL tarballs, then inspection:
    identity read from inside each tarball against the workspace manifests
    (canonical npm-pack naming), and a content scan per §9;
@@ -168,6 +169,28 @@ order:
 
 Any non-zero result fails the run before publication. No failure is
 rerun, retried, or downgraded to a warning.
+
+### 8.1 Amendment (2026-09-21): build before the full suite
+
+**Defect observed (release runs 35530469973, pre-publication):** the
+repository's permanent cross-process durability fixtures (the Stage 05
+`ReadyChild`/`sigkill-worker` pattern: `agent-profile-identity`,
+`agent-governance-corrective`, `restart-sigkill`, and the scaffolder's
+real generated-project build) spawn REAL child node processes that import
+the workspace packages through their BUILT `dist/` outputs. Vitest's
+source aliases cover only in-process imports; a spawned child resolves
+through `node_modules` and requires a prior build. With the ladder's
+original order (`npm test` before `npm run build`), the full suite is
+NOT self-contained on a clean machine and fails with `Cannot find module
+.../dist/index.js` — six genuine fixture failures, zero product defects.
+Development machines always carried a stale `dist/`, which masked the
+defect; the first clean-runner execution exposed it.
+
+**Amendment:** the ladder order becomes build (4) → full suite (5), as
+restated above. The semantic guarantee is unchanged and strengthened:
+every check still runs against the exact checked-out `source_sha`, the
+suite still runs exactly once, and any failure still fails the run
+before publication.
 
 ## 9. Tarball content scan (frozen)
 
