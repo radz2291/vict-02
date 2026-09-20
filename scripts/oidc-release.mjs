@@ -50,6 +50,7 @@ import { createHash } from 'node:crypto';
 import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { normalizeResumeInput } from './lib/release-set.mjs';
 import { matchTarballSet } from './lib/tarball-set.mjs';
 import { readTarballMember } from './lib/tarball-io.mjs';
 import {
@@ -119,6 +120,7 @@ function parseArgs(argv) {
   args.version ??= process.env.RELEASE_VERSION;
   args.tag ??= process.env.RELEASE_NPM_TAG;
   args.resumeFrom ??= process.env.RELEASE_RESUME_FROM;
+  args.resumeFrom = normalizeResumeInput(args.resumeFrom);
   return args;
 }
 

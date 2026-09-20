@@ -51,6 +51,20 @@ export const FROZEN_PUBLISH_ORDER = [
  */
 export const SOURCE_SHA_PATTERN = /^[0-9a-f]{40}$/;
 
+/**
+ * Normalize the release engine's resume-point input.
+ *
+ * An OMITTED workflow_dispatch input arrives as the EMPTY STRING (and a
+ * blank string is never a member name), which must mean NO resume point.
+ * Anything else is returned unchanged for member validation.
+ */
+export function normalizeResumeInput(value) {
+  if (typeof value === 'string' && value.trim() === '') {
+    return undefined;
+  }
+  return value;
+}
+
 /** The exact shape of a coordinated release-set version. */
 export const RELEASE_VERSION_PATTERN = /^\d+\.\d+\.\d+(?:-rc\.\d+)?$/;
 

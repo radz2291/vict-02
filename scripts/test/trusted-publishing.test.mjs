@@ -10,6 +10,7 @@ import {
   FROZEN_PUBLISH_ORDER,
   FROZEN_TRUST_TARGET,
   npmVersionSatisfiesMinimum,
+  normalizeResumeInput,
   publishArgv,
   SOURCE_SHA_PATTERN,
   trustGithubArgv,
@@ -100,6 +101,25 @@ describe('SOURCE_SHA_PATTERN', () => {
     expect(SOURCE_SHA_PATTERN.test('main')).toBe(false);
     expect(SOURCE_SHA_PATTERN.test('')).toBe(false);
     expect(SOURCE_SHA_PATTERN.test(undefined)).toBe(false);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Resume-point input normalization (regression: an OMITTED workflow_dispatch
+// input arrives as the empty string and must mean NO resume point, never a
+// non-member resume refusal — observed in release run 35529329279)
+// ---------------------------------------------------------------------------
+
+describe('normalizeResumeInput', () => {
+  it('normalizes an omitted/empty/blank resume input to NO resume point', () => {
+    expect(normalizeResumeInput(undefined)).toBeUndefined();
+    expect(normalizeResumeInput('')).toBeUndefined();
+    expect(normalizeResumeInput('   ')).toBeUndefined();
+  });
+
+  it('preserves a real resume-point member name unchanged', () => {
+    expect(normalizeResumeInput('@victframework/sdk')).toBe('@victframework/sdk');
+    expect(normalizeResumeInput('sdk')).toBe('sdk');
   });
 });
 
