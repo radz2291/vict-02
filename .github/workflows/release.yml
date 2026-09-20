@@ -99,15 +99,19 @@ jobs:
       - name: Release-set coherence gate (verify:release-set)
         run: npm run verify:release-set
 
-      - name: Authoritative release checks (format, lint, types, full suite)
+      - name: Authoritative static checks (format, lint, types)
         run: |
           npm run format:check
           npm run lint
           npm run typecheck
-          npm test
 
-      - name: Build all 13 packages
+      - name: Build all 13 packages (contract §8.1: build precedes the full
+          suite — the cross-process durability fixtures execute real child
+          node processes against the built workspace outputs)
         run: npm run build
+
+      - name: Full test suite, once
+        run: npm test
 
       - name: Pack the actual release tarballs
         env:
