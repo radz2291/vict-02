@@ -128,11 +128,18 @@ function resolveNpmLauncher() {
   };
 }
 
-function runTrust(launcher, argv) {
+function runTrust(launcher, argv, options = {}) {
+  // The mutating `trust github` call may need the LIVE browser-2FA prompt
+  // ("Authenticate at <URL> / Press ENTER..."): when `interactive` is set
+  // it inherits this terminal's stdio so the human can complete it in the
+  // official npm flow. Read-only `trust list` stays captured for parsing.
   const result = spawnSync(launcher.command, [...launcher.prefix, ...argv], {
-    encoding: 'utf8',
     shell: process.platform === 'win32' && launcher.command !== process.execPath,
+    ...(options.interactive ? { stdio: 'inherit' } : { encoding: 'utf8' }),
   });
+  if (options.interactive) {
+    return { status: result.status, stdout: '', stderr: '' };
+  }
   return {
     status: result.status,
     stdout: sanitize(result.stdout ?? ''),
@@ -315,11 +322,11 @@ console.log(
 );
 for (let index = 0; index < toConfigure.length; index += 1) {
   const name = toConfigure[index];
-  const result = runTrust(launcher, trustGithubArgv(name, FROZEN_TRUST_TARGET));
+  const result = runTrust(launcher, trustGithubArgv(name, FROZEN_TRUST_TARGET), {
+    interactive: true,
+  });
   if (result.status !== 0) {
-    fail(
-      `npm trust github ${name} failed (exit ${result.status}). Output: ${result.stderr.slice(0, 300) || result.stdout.slice(0, 300)}`,
-    );
+    fail(`npm trust github ${name} failed (exit ${result.status}).`);
   }
   console.log(`  configured: ${name}`);
   if (index < toConfigure.length - 1) await sleep(DELAY_MS);
