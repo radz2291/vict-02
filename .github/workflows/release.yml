@@ -1,0 +1,146 @@
+name: VICT coordinated release-set publication
+
+# Trusted-publishing release path (frozen contract:
+# docs/RELEASE-TRUSTED-PUBLISHING-CONTRACT.md).
+#
+# - Trigger: manual workflow_dispatch ONLY.
+# - Authority: npm OIDC trusted publishing — the ONLY permissions are
+#   `contents: read` + `id-token: write`; there is NO npm token, secret,
+#   or token-bearing .npmrc anywhere. npm obtains a short-lived
+#   credential through the OIDC exchange automatically.
+# - The workflow filename is security-sensitive: every package's trust
+#   relationship binds to `release.yml` EXACTLY. Do not rename.
+# - Publishes the coordinated 13-package `@victframework/*` set as ONE
+#   immutable unit from an exact pushed main-lineage commit, in frozen
+#   dependency-topological order, never overwriting or unpublishing.
+# - A `validate_only` run exercises the full pre-publication chain but
+#   makes NO registry write and proves NOTHING about OIDC publication.
+
+on:
+  workflow_dispatch:
+    inputs:
+      source_sha:
+        description: 'Exact pushed release-source commit (full 40-hex SHA, ancestor of origin/main)'
+        required: true
+        type: string
+      version:
+        description: 'Coordinated release-set version (X.Y.Z or X.Y.Z-rc.N; must equal all 13 manifests)'
+        required: true
+        type: string
+      npm_tag:
+        description: 'Distribution tag: latest (stable X.Y.Z) or vict-X.Y.Z-rc (candidate X.Y.Z-rc.N)'
+        required: true
+        type: string
+      resume_from_package:
+        description: 'Optional: first NOT-yet-published package of a partially published release (byte-identical integrity is proven for the published prefix)'
+        required: false
+        type: string
+      validate_only:
+        description: 'Run the full pre-publication chain and stop before any registry write'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: vict-release-set-publication
+  cancel-in-progress: false
+
+jobs:
+  publish-release-set:
+    name: Validate, build, and publish the coordinated release set
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - name: Check out the exact release source
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ inputs.source_sha }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Use Node 24 (GitHub-hosted runner; no dependency cache)
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          package-manager-cache: false
+
+      - name: Pin npm 11.19.1 (trusted publishing >= 11.5.1, trust >= 11.15.0)
+        run: npm install -g npm@11.19.1
+
+      - name: Validate inputs, lineage, release-set coherence, and registry guard
+        env:
+          RELEASE_SOURCE_SHA: ${{ inputs.source_sha }}
+          RELEASE_VERSION: ${{ inputs.version }}
+          RELEASE_NPM_TAG: ${{ inputs.npm_tag }}
+          RELEASE_RESUME_FROM: ${{ inputs.resume_from_package }}
+        run: node scripts/oidc-release.mjs validate
+
+      - name: Install the locked dependency graph
+        run: npm ci
+
+      - name: Release-set coherence gate (verify:release-set)
+        run: npm run verify:release-set
+
+      - name: Authoritative release checks (format, lint, types, full suite)
+        run: |
+          npm run format:check
+          npm run lint
+          npm run typecheck
+          npm test
+
+      - name: Build all 13 packages
+        run: npm run build
+
+      - name: Pack the actual release tarballs
+        env:
+          RELEASE_PACK_DIR: .release-pack
+        run: node scripts/oidc-release.mjs pack --pack-dir "$RELEASE_PACK_DIR"
+
+      - name: Inspect and scan the actual tarballs (identity, paths, manifest, content)
+        env:
+          RELEASE_PACK_DIR: .release-pack
+        run: node scripts/scan-release-tarballs.mjs --pack-dir "$RELEASE_PACK_DIR"
+
+      - name: Isolated packed-tarball consumer proof
+        run: npm run verify:release-consumer
+
+      - name: Publish the exact tarballs (OIDC — no token of any kind)
+        if: ${{ inputs.validate_only != true }}
+        env:
+          RELEASE_SOURCE_SHA: ${{ inputs.source_sha }}
+          RELEASE_VERSION: ${{ inputs.version }}
+          RELEASE_NPM_TAG: ${{ inputs.npm_tag }}
+          RELEASE_RESUME_FROM: ${{ inputs.resume_from_package }}
+        run: node scripts/oidc-release.mjs publish --pack-dir .release-pack --results-file release-results.json
+
+      - name: Verify registry state and record release evidence
+        if: ${{ inputs.validate_only != true }}
+        env:
+          RELEASE_VERSION: ${{ inputs.version }}
+          RELEASE_NPM_TAG: ${{ inputs.npm_tag }}
+          RELEASE_PACK_DIR: .release-pack
+        run: |
+          node scripts/oidc-release.mjs verify-registry --pack-dir "$RELEASE_PACK_DIR" --results-file release-results.json
+          npm run verify:release-consumer -- --registry
+
+      - name: Record the release-evidence artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-evidence
+          path: release-results.json
+          if-no-files-found: ignore
+
+      - name: Validation-only notice
+        if: ${{ inputs.validate_only == true }}
+        run: |
+          echo "VALIDATION-ONLY RUN COMPLETE." >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "The full pre-publication chain passed. This run made NO registry" >> "$GITHUB_STEP_SUMMARY"
+          echo "write and is NOT proof that OIDC publication works; the first real" >> "$GITHUB_STEP_SUMMARY"
+          echo "OIDC publication proof is the next candidate release." >> "$GITHUB_STEP_SUMMARY"
+          echo "VALIDATION-ONLY RUN COMPLETE — OIDC publication NOT proven by this run."

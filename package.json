@@ -35,6 +35,8 @@
     "verify:n1": "node scripts/verify-n1-emitted.mjs",
     "verify:release-set": "node scripts/check-release-set.mjs",
     "verify:release-consumer": "node scripts/verify-release-consumer.mjs",
+    "release:validate": "node scripts/oidc-release.mjs",
+    "release:trust-bootstrap": "node scripts/trust-bootstrap.mjs",
     "verify:stage7a": "node scripts/verify-stage7a.mjs",
     "publish:release": "node scripts/publish-release.mjs"
   },
@@ -45,6 +47,7 @@
     "eslint": "^10.9.1",
     "globals": "^17.11.0",
     "happy-dom": "^15.11.7",
+    "js-yaml": "^4.1.0",
     "prettier": "^3.9.6",
     "svelte": "^5.57.0",
     "tsx": "^4.23.13",

@@ -275,33 +275,76 @@ adoption), upgrade means pinning the complete `0.1.1` set first or
 jumping directly to the complete `0.2.0` set after its publication —
 never a partial mix of sets.
 
-## 6. Reproducible publication path
+## 6. Reproducible publication path (GitHub OIDC trusted publishing)
 
-The scripted path from a clean checkout of the release commit to
-published artifacts — no interactive steps, no secrets in the repository
-(registry credentials live only in the publishing environment). **No
-Git release tag is required or used** (reconciled at Stage 07A formal
-closure per independent-verification finding F-4: the repository has no
-tag convention; the immutability anchors are the content-derived
-release-set identity in §2, the clean-tree publication preflight, and
-the never-republish guard — independently verified):
+The ordinary publication path is the GitHub Actions workflow
+`.github/workflows/release.yml` (`radz2291/vict-02`), governed by the
+frozen contract
+[`docs/RELEASE-TRUSTED-PUBLISHING-CONTRACT.md`](./RELEASE-TRUSTED-PUBLISHING-CONTRACT.md).
+No interactive steps, no secrets in the repository, and no long-lived npm
+publishing token anywhere: the workflow receives a SHORT-LIVED credential
+directly from npm through the OIDC exchange (`id-token: write`; npm
+>= 11.5.1 on a GitHub-hosted runner). There is no separate dist-tag
+mutation step — the model is version-based:
+
+```text
+Pre-verification candidate:  0.x.y-rc.N under the candidate tag vict-0.x.y-rc (never latest)
+Verified stable release:     0.x.y under latest
+```
+
+**Local machine:** develops, verifies, commits, and pushes the immutable
+release source (an exact, clean main-lineage commit whose manifests and
+recorded release-set identity are coherent).
+
+**GitHub Actions:** re-checks the exact pushed source again — full
+40-hex `source_sha` input checked out and proven an ancestor of
+`origin/main`; release-set coherence (`npm run verify:release-set`);
+`npm ci`; format, lint, typecheck, and the full test suite; the full
+build; the ACTUAL tarballs packed, identity-inspected, and content-
+scanned; the isolated packed-tarball consumer proof — and then publishes
+those exact tarballs in dependency-topological order with `--access
+public` and the requested closed dist-tag, never overwriting,
+re-publishing, or unpublishing an existing version. On partial failure
+it stops and reports the exact published subset; a later run may resume
+only by proving byte-identical registry integrity for every
+already-published member (`resume_from_package`). Post-publication it
+proves per-package registry integrity and dist-tag state and re-runs the
+consumer install from the public registry. Local `npm whoami` is NOT a
+release-preflight requirement; no OTP is required per package. A
+`validate_only` run exercises the entire pre-publication chain but is
+NOT proof that OIDC publication works.
+
+The retained operator-run fallback for extraordinary situations is
+`node scripts/publish-release.mjs [--publish]` (dry by default), the
+same fail-closed engine described below; it requires local npm
+authentication and is NOT the ordinary path:
 
 1. clean checkout of the release commit (exact clean tree at the
    release commit; no tag lookup);
 2. `npm ci` → `npm run verify:release-set` → `npm run build`;
 3. `npm pack --dry-run --json` per package → inspected tarball manifests;
 4. `npm run verify:release-consumer` (installs the packed tarballs into a
-   fresh external consumer, typechecks, typechecks, runs the runtime and
+   fresh external consumer, typechecks, runs the runtime and
    renderer composition, asserts exact versions and lockfile integrity,
    and probes for monorepo leakage);
-5. `npm run publish:release` (dependency-topological `npm publish
-   --access public` of the exact packed artifacts);
+5. publication of the exact packed artifacts (ordinary path: the GitHub
+   Actions workflow above; fallback: `npm run publish:release` —
+   dependency-topological `npm publish --access public`);
 6. post-publication: `npm run verify:release-consumer -- --registry`
    re-runs the consumer verification installing EXACT versions from the
-   public registry.
+   public registry (the workflow performs the equivalent proof
+   automatically).
 
 CI gate rule: `publish → verify:release-consumer -- --registry` must
 pass before a release-set identity is recorded as live in this document.
+Trusted-publisher configuration is per package (all 13 trust the exact
+repository + workflow filename `release.yml`); it was bootstrapped once
+in a bounded interactive session with
+`scripts/trust-bootstrap.mjs` and is verified through `npm trust list`.
+Workflow filename and repository identity are security-sensitive and
+cannot be casually renamed. Account-, organization-, and package-
+governance changes may still require interactive 2FA; ordinary
+coordinated releases do not.
 
 ## 7. Distribution tag
 
