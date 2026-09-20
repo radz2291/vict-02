@@ -153,11 +153,44 @@ function runTrust(launcher, argv, options = {}) {
 // registry-touching wrapper lives here.
 
 /** `npm trust list <pkg> --json`, interpreted fail-closed. */
-function listTrustRelationships(launcher, packageName) {
-  const result = runTrust(launcher, ['trust', 'list', packageName, '--json']);
+/** True when a captured npm failure is the OTP/browser-auth challenge. */
+function isOtpChallenge(result) {
+  return (
+    result.status !== 0 &&
+    /EOTP|one-time password|Open this URL/i.test(`${result.stderr}${result.stdout}`)
+  );
+}
+
+/**
+ * Run one trust call; on the OTP challenge, re-run it INTERACTIVELY so
+ * the human completes the browser auth once (npm's five-minute skip then
+ * covers the remaining calls). After an interactive `list` succeeds, the
+ * captured call is repeated once so its JSON can be parsed inside the
+ * grace window.
+ */
+async function runTrustWithOtpRetry(launcher, argv) {
+  let result = runTrust(launcher, argv);
+  if (!isOtpChallenge(result)) {
+    return result;
+  }
+  console.log(
+    '  browser authentication required — complete the challenge in the npm window (a URL will appear there).',
+  );
+  const interactive = runTrust(launcher, argv, { interactive: true });
+  if (interactive.status !== 0) {
+    return interactive;
+  }
+  if (argv[0] === 'list') {
+    return runTrust(launcher, argv);
+  }
+  return { status: 0, stdout: '', stderr: '' };
+}
+
+async function listTrustRelationships(launcher, packageName) {
+  const result = await runTrustWithOtpRetry(launcher, ['trust', 'list', packageName, '--json']);
   if (result.status !== 0) {
     fail(
-      `npm trust list ${packageName} failed (exit ${result.status}). Output: ${result.stderr.slice(0, 300) || result.stdout.slice(0, 300)}`,
+      `npm trust list ${packageName} failed (exit ${result.status}). Output: ${(result.stderr || result.stdout).slice(0, 1200)}`,
     );
   }
   let parsed;
@@ -293,7 +326,7 @@ console.log('trust-bootstrap: workflow file confirmed on pushed origin/main');
 // 5. Pre-check every package (idempotent skip / refuse conflicts).
 const toConfigure = [];
 for (const name of namesInFrozenOrder) {
-  const { exact, conflicting } = listTrustRelationships(launcher, name);
+  const { exact, conflicting } = await listTrustRelationships(launcher, name);
   if (exact.length > 0 && conflicting.length === 0) {
     console.log(`  already-exact: ${name} (skipped)`);
     continue;
@@ -322,9 +355,7 @@ console.log(
 );
 for (let index = 0; index < toConfigure.length; index += 1) {
   const name = toConfigure[index];
-  const result = runTrust(launcher, trustGithubArgv(name, FROZEN_TRUST_TARGET), {
-    interactive: true,
-  });
+  const result = await runTrustWithOtpRetry(launcher, trustGithubArgv(name, FROZEN_TRUST_TARGET));
   if (result.status !== 0) {
     fail(`npm trust github ${name} failed (exit ${result.status}).`);
   }
@@ -336,7 +367,7 @@ for (let index = 0; index < toConfigure.length; index += 1) {
 console.log('\ntrust-bootstrap: verifying every configured relationship...');
 let verificationFailures = 0;
 for (const name of namesInFrozenOrder) {
-  const { exact, conflicting } = listTrustRelationships(launcher, name);
+  const { exact, conflicting } = await listTrustRelationships(launcher, name);
   if (exact.length > 0 && conflicting.length === 0) {
     console.log(`  ok: ${name}`);
   } else {
