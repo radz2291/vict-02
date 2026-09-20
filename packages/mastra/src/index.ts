@@ -82,6 +82,7 @@ export {
   runWithBridgeTurnScope,
   safeArgumentSummary,
   sanitizeCapabilityToolName,
+  validateHostQuietWriteApprovalPolicy,
 } from './tool-bridge.js';
 export type {
   BridgeCapabilityPolicy,
@@ -94,6 +95,9 @@ export type {
   CapabilityToolEventVerdict,
   CapabilityToolFailure,
   CapabilityToolFailureCode,
+  HostQuietWriteApprovalEntry,
+  HostQuietWriteApprovalPolicy,
+  HostQuietWritePolicyFailureCode,
   ValidCapabilityReplay,
 } from './tool-bridge.js';
 

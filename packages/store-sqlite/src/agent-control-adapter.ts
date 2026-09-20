@@ -274,6 +274,9 @@ interface InvocationRow {
   run_fence_at: string | null;
   run_owner_identity: string | null;
   run_generation: number | null;
+  approval_required: number | null;
+  approval_disposition: string | null;
+  effect_policy_identity: string | null;
 }
 
 function rowToInvocation(row: InvocationRow): AgentToolInvocationRecord {
@@ -308,6 +311,21 @@ function rowToInvocation(row: InvocationRow): AgentToolInvocationRecord {
       : {}),
     ...(row.run_generation !== null && row.run_generation !== undefined && row.run_generation !== 0
       ? { runGeneration: row.run_generation }
+      : {}),
+    // VICT-M-1 truthful decision evidence (immutable after intent; a NULL
+    // column maps to an ABSENT member so pre-migration rows stay
+    // shape-stable with earlier adapters).
+    ...(row.approval_required !== null && row.approval_required !== undefined
+      ? { approvalRequired: row.approval_required === 1 }
+      : {}),
+    ...(row.approval_disposition !== null && row.approval_disposition !== undefined
+      ? {
+          approvalDisposition:
+            row.approval_disposition as AgentToolInvocationRecord['approvalDisposition'],
+        }
+      : {}),
+    ...(row.effect_policy_identity !== null && row.effect_policy_identity !== undefined
+      ? { effectPolicyIdentity: row.effect_policy_identity }
       : {}),
   };
 }
@@ -1639,8 +1657,8 @@ export function createSqliteAgentControlStores(
             `INSERT INTO vict_agent_tool_invocation
               (invocation_id, turn_id, tool_call_id, tool_name, capability_id, capability_revision, effect,
                idempotency_key, actor_id, arg_digest, argument_summary, status, created_at, updated_at,
-               completed_at, result_summary, error_code)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`,
+               completed_at, result_summary, error_code, approval_required, approval_disposition, effect_policy_identity)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`,
           ).run(
             record.invocationId,
             record.turnId,
@@ -1659,6 +1677,9 @@ export function createSqliteAgentControlStores(
             record.completedAt === undefined ? null : toIso(record.completedAt),
             record.resultSummary ?? null,
             record.errorCode ?? null,
+            record.approvalRequired === undefined ? null : record.approvalRequired ? 1 : 0,
+            record.approvalDisposition ?? null,
+            record.effectPolicyIdentity ?? null,
           );
           return record;
         }),

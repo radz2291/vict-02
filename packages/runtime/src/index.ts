@@ -205,6 +205,7 @@ export type {
   AgentStreamLedgerStore,
   AgentToolInvocationRecord,
   AgentToolInvocationStatus,
+  EffectApprovalDisposition,
   TurnToolSlotAllocation,
   AgentToolInvocationStore,
   AgentTurnCorrelation,
@@ -239,6 +240,7 @@ export {
   CONTROL_AUDIT_ACTIONS,
   COMMAND_IDEMPOTENCY_KEY_PATTERN,
   CONTROL_ID_PATTERN,
+  EFFECT_APPROVAL_DISPOSITIONS,
   ROLE_SCOPES,
   AGENT_TURN_SCHEMA,
   assertActorScope,
@@ -257,6 +259,7 @@ export {
   validateChangeSetOperation,
   validateStreamLedgerAppend,
   changeSetOperationIdentity,
+  VICT_EFFECT_POLICY_IDENTITY,
   VICT_IDEMPOTENCY_FENCE_CONFLICT,
   commandIdempotencyFenceToken,
 } from './control-types.js';

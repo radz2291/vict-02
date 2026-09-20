@@ -721,6 +721,34 @@ export const SCHEMA_MIGRATIONS: readonly Migration[] = [
       `ALTER TABLE vict_agent_tool_invocation ADD COLUMN run_generation INTEGER NOT NULL DEFAULT 0;`,
     ],
   },
+  {
+    // VICT-M-1 remediation (migration 10):
+    // - tool invocations carry the IMMUTABLE approval-decision evidence
+    //   (truthful approval-required boolean, the closed-code policy
+    //   disposition basis, and the versioned policy semantics identity),
+    //   stamped at intent time and never mutated afterwards;
+    // - forward-only: columns are ADDED and every legacy row is backfilled
+    //   ONLY from the fixed 0.2.0 rule, which derives every decision
+    //   UNAMBIGUOUSLY from the NOT-NULL closed-vocabulary `effect` column
+    //   (write/irreversible → approval required; read/pure → not):
+    //   historical effects are never rewritten and no uncertain evidence
+    //   is fabricated;
+    // - historical/default rows truthfully carry the default disposition
+    //   under the same policy-semantics identity the M-1 model documents,
+    //   so a future policy change can never reinterpret whether an old
+    //   invocation required approval.
+    version: 10,
+    name: 'm1-approval-decision-evidence',
+    statements: [
+      `ALTER TABLE vict_agent_tool_invocation ADD COLUMN approval_required INTEGER;`,
+      `ALTER TABLE vict_agent_tool_invocation ADD COLUMN approval_disposition TEXT;`,
+      `ALTER TABLE vict_agent_tool_invocation ADD COLUMN effect_policy_identity TEXT;`,
+      `UPDATE vict_agent_tool_invocation SET
+        approval_required = CASE WHEN effect IN ('write', 'irreversible') THEN 1 ELSE 0 END,
+        approval_disposition = 'default-effect-policy',
+        effect_policy_identity = 'vict-effect-policy@1';`,
+    ],
+  },
 ];
 
 /** The highest schema version this adapter understands. */

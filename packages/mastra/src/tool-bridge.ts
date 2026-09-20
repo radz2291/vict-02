@@ -1,11 +1,16 @@
 import { createTool } from '@mastra/core/tools';
 import { createHash, randomUUID } from 'node:crypto';
 import { AsyncLocalStorage } from 'node:async_hooks';
-import { toCanonicalJson, VictControlError } from '@victframework/runtime';
+import {
+  toCanonicalJson,
+  VictControlError,
+  VICT_EFFECT_POLICY_IDENTITY,
+} from '@victframework/runtime';
 import type {
   AgentProfileActivation,
   AgentToolInvocationRecord,
   AgentApprovalRecord,
+  EffectApprovalDisposition,
 } from '@victframework/runtime';
 import type { AgentStreamEvent } from '@victframework/contracts';
 import type { CapabilityDefinition, CapabilityContext, EffectClass } from '@victframework/sdk';
@@ -434,18 +439,29 @@ export function normalizeCapabilityToolResultEvent(result: unknown): CapabilityT
   }
 }
 
-/** The effect/approval policy derived for one pinned envelope entry. */
+/**
+ * The effect/approval policy derived for one pinned envelope entry.
+ *
+ * VICT-M-1: the policy now carries the CLOSED-CODE basis
+ * (`approvalDisposition`) that produced the approval decision, and the
+ * decision itself is durably recorded on every invocation at intent
+ * time — effect truth and approval truth are independently represented.
+ */
 export interface BridgeCapabilityPolicy {
   readonly capabilityId: string;
   readonly capabilityRevision: string;
   readonly effect: EffectClass;
   /** Whether a VICT approval record is required before invocation. */
   readonly requiresApproval: boolean;
+  /** The stable closed-code basis that produced the decision. */
+  readonly approvalDisposition: EffectApprovalDisposition;
 }
 
 /**
  * Default policy: `irreversible` and `write` require VICT approval;
  * `read` and `pure` do not. A policy may be stricter, never weaker.
+ * Every decision this function produces is based on the default effect
+ * table (`approvalDisposition: 'default-effect-policy'`).
  */
 export function defaultBridgePolicy(
   capabilityId: string,
@@ -457,7 +473,140 @@ export function defaultBridgePolicy(
     capabilityRevision,
     effect,
     requiresApproval: effect === 'write' || effect === 'irreversible',
+    approvalDisposition: 'default-effect-policy',
   };
+}
+
+// ---- VICT-M-1: host-owned quiet-write approval policy ----------------------
+
+/** Bounded identity pattern for host-policy identifiers and targets
+ * (the same discipline as the runtime `CONTROL_ID_PATTERN`). */
+const HOST_POLICY_IDENTITY_PATTERN = /^[A-Za-z0-9][A-Za-z0-9._:@-]{0,127}$/;
+
+/** One EXACT quiet-write authorization. NO wildcard form exists: an
+ * entry names ONE capability ID at ONE exact revision, and only ever a
+ * resolved `write` target. `irreversible` capabilities can never be
+ * exempted. */
+export interface HostQuietWriteApprovalEntry {
+  readonly capabilityId: string;
+  readonly capabilityRevision: string;
+}
+
+/**
+ * Host-owned quiet-write approval policy (VICT-M-1; frozen contract §3.2).
+ *
+ * Supplied ONLY through trusted host/composition dependencies
+ * (`CapabilityBridgeDeps.quietWriteApprovals`): there is no path to this
+ * object from `CapabilityDefinition`, packs, model output, tool input,
+ * or agent-profile content, and no capability-controlled opt-out exists.
+ * When absent, behavior is byte-for-byte the default effect table.
+ */
+export interface HostQuietWriteApprovalPolicy {
+  /** Versioned identity of THIS host policy instance (host-chosen,
+   * bounded identifier; VICT records its own disposition basis, never
+   * the host policy content). */
+  readonly policyIdentity: string;
+  readonly entries: readonly HostQuietWriteApprovalEntry[];
+}
+
+/** The stable, non-echoing fail-closed validation codes (frozen contract
+ * §6). They appear as thrown-error message PREFIXES at composition/tool
+ * -build time; no request data or policy content is ever echoed. */
+export type HostQuietWritePolicyFailureCode =
+  | 'VICT_HOST_QUIET_WRITE_POLICY_MALFORMED_ENTRY'
+  | 'VICT_HOST_QUIET_WRITE_POLICY_DUPLICATE_ENTRY'
+  | 'VICT_HOST_QUIET_WRITE_POLICY_UNRESOLVED_TARGET'
+  | 'VICT_HOST_QUIET_WRITE_POLICY_TARGET_NOT_WRITE';
+
+/**
+ * Validate a host quiet-write policy FAIL CLOSED.
+ *
+ * Shape and duplicate checks always apply. Every entry's target is then
+ * resolved through `resolveTarget` (the composition supplies the pinned
+ * -envelope-bound resolver in `buildCapabilityTools`) and must resolve to
+ * a `write` capability — a malformed, duplicate, unmatched, non-write, or
+ * irreversible target throws before any model-facing tool exists. Stable
+ * codes only; never echoes entry content beyond the stable code.
+ */
+export function validateHostQuietWriteApprovalPolicy(
+  policy: HostQuietWriteApprovalPolicy,
+  resolveTarget: (
+    capabilityId: string,
+    capabilityRevision: string,
+  ) => CapabilityDefinition<unknown, unknown> | undefined,
+): void {
+  if (
+    policy === null ||
+    typeof policy !== 'object' ||
+    Array.isArray(policy) ||
+    typeof policy.policyIdentity !== 'string' ||
+    !HOST_POLICY_IDENTITY_PATTERN.test(policy.policyIdentity) ||
+    !Array.isArray(policy.entries)
+  ) {
+    throw new Error(
+      'VICT_HOST_QUIET_WRITE_POLICY_MALFORMED_ENTRY: the host quiet-write approval policy is malformed.',
+    );
+  }
+  const seen = new Set<string>();
+  for (const entry of policy.entries) {
+    if (
+      entry === null ||
+      typeof entry !== 'object' ||
+      Array.isArray(entry) ||
+      typeof entry?.capabilityId !== 'string' ||
+      !HOST_POLICY_IDENTITY_PATTERN.test(entry.capabilityId) ||
+      typeof entry?.capabilityRevision !== 'string' ||
+      !HOST_POLICY_IDENTITY_PATTERN.test(entry.capabilityRevision)
+    ) {
+      throw new Error(
+        'VICT_HOST_QUIET_WRITE_POLICY_MALFORMED_ENTRY: a host quiet-write approval entry is malformed.',
+      );
+    }
+    const key = `${entry.capabilityId}@${entry.capabilityRevision}`;
+    if (seen.has(key)) {
+      throw new Error(
+        'VICT_HOST_QUIET_WRITE_POLICY_DUPLICATE_ENTRY: two host quiet-write entries name the same capability identity.',
+      );
+    }
+    seen.add(key);
+    const definition = resolveTarget(entry.capabilityId, entry.capabilityRevision);
+    if (definition === undefined) {
+      throw new Error(
+        'VICT_HOST_QUIET_WRITE_POLICY_UNRESOLVED_TARGET: a host quiet-write entry names a capability identity outside the pinned activation envelope.',
+      );
+    }
+    if ((definition.effect as EffectClass) !== 'write') {
+      // Covers read, pure, and — permanently — irreversible targets.
+      throw new Error(
+        'VICT_HOST_QUIET_WRITE_POLICY_TARGET_NOT_WRITE: a host quiet-write entry targets a capability whose resolved effect is not write.',
+      );
+    }
+  }
+}
+
+/**
+ * Resolve whether ONE capability identity receives the exact host
+ * quiet-write exemption. Frozen rule: an exact (ID, revision) entry match
+ * AND resolved effect `write` — nothing else can ever produce `true`
+ * (capability self-exemption is structurally impossible: the capability
+ * cannot add itself to host composition dependencies).
+ */
+function hostQuietWriteApprovalFor(
+  policy: HostQuietWriteApprovalPolicy | undefined,
+  capabilityId: string,
+  capabilityRevision: string,
+  effect: EffectClass,
+): boolean {
+  if (policy === undefined || effect !== 'write') {
+    return false;
+  }
+  return policy.entries.some(
+    (entry) =>
+      entry !== null &&
+      typeof entry === 'object' &&
+      entry.capabilityId === capabilityId &&
+      entry.capabilityRevision === capabilityRevision,
+  );
 }
 
 /** Resolve one pinned envelope reference to the actual pinned definition. */
@@ -592,6 +741,16 @@ export interface CapabilityBridgeDeps {
   readonly liveRunRegistry?: CapabilityLiveRunRegistry;
   /** Event emission for the durable `tool.awaiting_approval` milestone. */
   readonly emitAwaitingApproval?: (event: AgentStreamEvent) => Promise<void>;
+  /**
+   * VICT-M-1: the HOST-OWNED quiet-write approval policy. Supplied only
+   * through this trusted composition-dependency channel; an EXACT entry
+   * (capability ID + revision, resolved effect `write`) permits that one
+   * capability to execute without a separate approval wait. No wildcard,
+   * no capability-controlled opt-out; `irreversible` can never be
+   * exempted. Every entry is validated fail closed at tool-build time.
+   * When absent, all defaults are byte-for-byte unchanged.
+   */
+  readonly quietWriteApprovals?: HostQuietWriteApprovalPolicy;
   readonly clock?: () => number;
   /** Approval wait expiry in ms (default 15 minutes). */
   readonly approvalExpiryMs?: number;
@@ -702,6 +861,7 @@ export function buildCapabilityTools(
   // any other composition (colliding local invocation ids across store
   // domains must never alias liveness).
   const liveRunRegistry = deps.liveRunRegistry ?? createCapabilityLiveRunRegistry();
+  const resolved = new Map<string, CapabilityDefinition<unknown, unknown>>();
   for (const reference of activation.capabilities) {
     const definition = deps.resolveCapability(reference.id, reference.revision);
     if (definition === undefined) {
@@ -710,6 +870,22 @@ export function buildCapabilityTools(
         `VICT_CAPABILITY_ENVELOPE_UNRESOLVED: capability '${reference.id}' revision '${reference.revision}' could not be resolved for the pinned activation.`,
       );
     }
+    resolved.set(`${reference.id}@${reference.revision}`, definition);
+  }
+  // VICT-M-1: the host quiet-write policy is validated FAIL CLOSED
+  // against the FULL resolved envelope BEFORE any tool is built
+  // (malformed, duplicate, unmatched, non-write, and irreversible entries
+  // abort composition; nothing model-facing exists on failure).
+  if (deps.quietWriteApprovals !== undefined) {
+    validateHostQuietWriteApprovalPolicy(
+      deps.quietWriteApprovals,
+      (capabilityId, capabilityRevision) => resolved.get(`${capabilityId}@${capabilityRevision}`),
+    );
+  }
+  for (const reference of activation.capabilities) {
+    const definition = resolved.get(
+      `${reference.id}@${reference.revision}`,
+    ) as CapabilityDefinition<unknown, unknown>;
     const toolName = sanitizeCapabilityToolName(definition.id);
     const previous = nameOwner.get(toolName);
     if (previous !== undefined) {
@@ -738,7 +914,22 @@ export function bridgeCapabilityToolToMastra(
   const capabilityId = definition.id;
   const capabilityRevision = definition.revision;
   const effect = definition.effect as EffectClass;
-  const policy = defaultBridgePolicy(capabilityId, capabilityRevision, effect);
+  // VICT-M-1: the effective policy resolves the exact host quiet-write
+  // entry (if any) BEFORE the approval gate exists; with no host policy
+  // the result is exactly the default effect table.
+  const quietWrite = hostQuietWriteApprovalFor(
+    deps.quietWriteApprovals,
+    capabilityId,
+    capabilityRevision,
+    effect,
+  );
+  const policy: BridgeCapabilityPolicy = quietWrite
+    ? {
+        ...defaultBridgePolicy(capabilityId, capabilityRevision, effect),
+        requiresApproval: false,
+        approvalDisposition: 'host-policy-write-without-separate-approval',
+      }
+    : defaultBridgePolicy(capabilityId, capabilityRevision, effect);
   const inputContract = definition.input;
   const outputContract = definition.output;
   const clock = deps.clock ?? (() => Date.now());
@@ -881,6 +1072,12 @@ export function bridgeCapabilityToolToMastra(
         actorId: turn.actorId,
         argDigest,
         argumentSummary,
+        // VICT-M-1 truthful decision evidence — resolved from the bridge
+        // policy above (never from capability code), durably stamped at
+        // intent time, and immutable afterwards.
+        approvalRequired: policy.requiresApproval,
+        approvalDisposition: policy.approvalDisposition,
+        effectPolicyIdentity: VICT_EFFECT_POLICY_IDENTITY,
       } as const;
       const rereadInvocation = (): Promise<AgentToolInvocationRecord> =>
         recordInvocationIntentIdempotent(deps, intentInput);

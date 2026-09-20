@@ -1,4 +1,8 @@
-import type { AgentControlStores, AgentTurnRecord } from '@victframework/runtime';
+import type {
+  AgentControlStores,
+  AgentTurnRecord,
+  EffectApprovalDisposition,
+} from '@victframework/runtime';
 import { assertActorScope, VictControlError } from '@victframework/runtime';
 import type { AgentStreamEvent } from '@victframework/contracts';
 import type {
@@ -292,7 +296,13 @@ export class AgentTurnService {
     return turn;
   }
 
-  /** Record a durable tool-invocation intent (durable BEFORE invocation). */
+  /** Record a durable tool-invocation intent (durable BEFORE invocation).
+   *
+   * VICT-M-1: the truthful effect-policy decision evidence
+   * (`approvalRequired`, `approvalDisposition`, `effectPolicyIdentity`)
+   * is supplied by the CALLING BRIDGE from its resolved policy — never
+   * from capability code — and is stamped immutably onto the durable
+   * record at intent time. */
   async recordToolInvocationIntent(input: {
     turnId: string;
     toolCallId: string;
@@ -303,6 +313,9 @@ export class AgentTurnService {
     actorId: string;
     argDigest: string;
     argumentSummary: string;
+    approvalRequired?: boolean;
+    approvalDisposition?: EffectApprovalDisposition;
+    effectPolicyIdentity?: string;
   }): Promise<AgentToolInvocationRecord> {
     const invocationId = this.#ids.invocationId();
     const now = this.#clock();
@@ -328,6 +341,9 @@ export class AgentTurnService {
       completedAt: undefined,
       resultSummary: undefined,
       errorCode: undefined,
+      approvalRequired: input.approvalRequired,
+      approvalDisposition: input.approvalDisposition,
+      effectPolicyIdentity: input.effectPolicyIdentity,
     });
   }
 

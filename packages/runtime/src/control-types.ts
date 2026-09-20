@@ -1376,6 +1376,42 @@ export type AgentToolInvocationStatus =
   | 'cancelled'
   | 'outcome_unknown';
 
+/**
+ * CLOSED vocabulary for the policy basis of one invocation's durable
+ * approval decision (VICT-M-1 remediation; frozen in
+ * `docs/report/VICT-M-1-REMEDIATION-CONTRACT.md` §4).
+ *
+ * - `default-effect-policy`: the decision came from the default effect
+ *   table (`write`/`irreversible` → separate approval required;
+ *   `read`/`pure` → not required).
+ * - `host-policy-write-without-separate-approval`: the decision came from
+ *   an EXACT host quiet-write entry (capability ID + revision match,
+ *   effect `write`); the approval-required decision resolved false.
+ *
+ * Frozen: new members require a new contract amendment. No free-form
+ * reason text, configuration content, or secret material is ever stored
+ * in a disposition field.
+ */
+export type EffectApprovalDisposition =
+  'default-effect-policy' | 'host-policy-write-without-separate-approval';
+
+/** The complete frozen disposition vocabulary (total membership check). */
+export const EFFECT_APPROVAL_DISPOSITIONS: ReadonlySet<string> = new Set<EffectApprovalDisposition>(
+  ['default-effect-policy', 'host-policy-write-without-separate-approval'],
+);
+
+/**
+ * Versioned identity of the effect-policy SEMANTICS that produced a
+ * durable approval decision (frozen contract §3.1).
+ *
+ * `vict-effect-policy@1` = the M-1 policy model: the default effect table
+ * plus the exact-match host quiet-write exemption. Future semantic
+ * changes bump the identity; historical rows only ever carry identities
+ * documented in current release documentation, so a policy change can
+ * never reinterpret whether an old invocation required approval.
+ */
+export const VICT_EFFECT_POLICY_IDENTITY = 'vict-effect-policy@1';
+
 /** One durable turn-execution tool slot (stable tool-call identity). */
 export interface TurnToolSlotAllocation {
   /** The 1-based monotonic slot index within the turn. */
@@ -1418,6 +1454,19 @@ export interface AgentToolInvocationRecord {
   /** Safe bounded result summary — never full payloads. */
   readonly resultSummary: string | undefined;
   readonly errorCode: string | undefined;
+  /**
+   * VICT-M-1 truthful decision evidence — stamped at INTENT time from the
+   * bridge's resolved effect policy and IMMUTABLE afterwards (no claim,
+   * settlement, reconciliation, or restart path writes these members).
+   * Absent only on records that predate the remediation (migrated legacy
+   * rows carry the truthful backfill).
+   */
+  /** The approval decision ACTUALLY resolved for this invocation. */
+  readonly approvalRequired?: boolean;
+  /** The closed-code basis that produced the decision. */
+  readonly approvalDisposition?: EffectApprovalDisposition;
+  /** Versioned policy semantics identity (historical interpretation). */
+  readonly effectPolicyIdentity?: string;
   /** The fence token of the CURRENT execution attempt (claim-bound). */
   readonly runFenceToken?: string | undefined;
   /** When the current attempt was claimed (epoch ms). */
