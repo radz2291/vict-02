@@ -10,6 +10,7 @@
  * carry permanent regression coverage in `scripts/test/`.
  */
 
+import { createHash } from 'node:crypto';
 import { readFileSync, readdirSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 
@@ -58,6 +59,19 @@ export const SOURCE_SHA_PATTERN = /^[0-9a-f]{40}$/;
  * blank string is never a member name), which must mean NO resume point.
  * Anything else is returned unchanged for member validation.
  */
+/**
+ * The RECORDED content-derived release-set identity (RELEASE-COMPATIBILITY.md
+ * §2 algorithm): sha256 over the sorted, newline-joined `name@version` list
+ * of the exact member set, prefixed `v1_`.
+ *
+ * @param {string[]} nameVersionPairs unsorted `name@version` entries
+ * @returns {string}
+ */
+export function deriveReleaseSetContentId(nameVersionPairs) {
+  const canonicalList = [...nameVersionPairs].sort().join('\n');
+  return `v1_${createHash('sha256').update(canonicalList, 'utf8').digest('hex')}`;
+}
+
 export function normalizeResumeInput(value) {
   if (typeof value === 'string' && value.trim() === '') {
     return undefined;

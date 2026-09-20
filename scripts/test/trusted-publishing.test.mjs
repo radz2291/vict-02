@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import { describe, expect, it } from 'vitest';
 import { existsSync, mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -6,6 +7,7 @@ import { fileURLToPath } from 'node:url';
 import yaml from 'js-yaml';
 import {
   deriveReleaseInventory,
+  deriveReleaseSetContentId,
   EXPECTED_RELEASE_PACKAGE_COUNT,
   FROZEN_PUBLISH_ORDER,
   FROZEN_TRUST_TARGET,
@@ -109,6 +111,21 @@ describe('SOURCE_SHA_PATTERN', () => {
 // input arrives as the empty string and must mean NO resume point, never a
 // non-member resume refusal — observed in release run 35529329279)
 // ---------------------------------------------------------------------------
+
+describe('deriveReleaseSetContentId', () => {
+  it('derives the RECORDED identity: sha256 over the sorted newline-joined list', () => {
+    const list = ['@victframework/sdk@0.3.0-rc.1', '@victframework/contracts@0.3.0-rc.1'];
+    const newline = String.fromCharCode(10);
+    const expected = `v1_${createHash('sha256')
+      .update(list.slice().sort().join(newline), 'utf8')
+      .digest('hex')}`;
+    expect(deriveReleaseSetContentId(list)).toBe(expected);
+    // Order-independent (the canonical list is sorted).
+    expect(deriveReleaseSetContentId([...list].reverse())).toBe(expected);
+    // Divergent members produce a divergent identity.
+    expect(deriveReleaseSetContentId(['@victframework/sdk@0.2.0'])).not.toBe(expected);
+  });
+});
 
 describe('normalizeResumeInput', () => {
   it('normalizes an omitted/empty/blank resume input to NO resume point', () => {

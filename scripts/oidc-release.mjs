@@ -50,7 +50,7 @@ import { createHash } from 'node:crypto';
 import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { normalizeResumeInput } from './lib/release-set.mjs';
+import { deriveReleaseSetContentId, normalizeResumeInput } from './lib/release-set.mjs';
 import { matchTarballSet } from './lib/tarball-set.mjs';
 import { readTarballMember } from './lib/tarball-io.mjs';
 import {
@@ -411,12 +411,15 @@ function commandPublish(args) {
     ok(`resume integrity proof: ${name}@${version} matches the local artifact byte-for-byte`);
   }
 
-  // Content-derived release-set identity (same derivation as
-  // check-release-set.mjs) recorded with the evidence.
-  const canonicalList = JSON.stringify(
-    inventory.order.map((name) => `${name}@${inventory.byName.get(name).version}`).sort(),
+  // Content-derived release-set identity — THE RECORDED derivation
+  // (RELEASE-COMPATIBILITY.md §2: sha256 over the sorted newline-joined
+  // `name@version` list; identical to check-release-set.mjs). A previous
+  // engine draft hashed a JSON.stringify of the list instead, producing a
+  // divergent evidence identity (observed on run 35530894104); the
+  // recorded algorithm is authoritative.
+  const contentId = deriveReleaseSetContentId(
+    inventory.order.map((name) => `${name}@${inventory.byName.get(name).version}`),
   );
-  const contentId = `v1_${createHash('sha256').update(canonicalList, 'utf8').digest('hex')}`;
 
   const results = {
     sourceSha: sourceSha ?? null,
@@ -488,38 +491,70 @@ function commandVerifyRegistry(args) {
   const inventory = deriveReleaseInventory(repoRoot);
   const matched = matchPackDir(repoRoot, packDir, inventory);
 
-  const rows = [];
+  // Registry propagation lag: immediately after the LAST publish, CDN
+  // replicas can still serve STALE packuments for freshly published
+  // packages (observed on run 35530894104: all 13 publishes succeeded,
+  // every immediate read reported the version 'missing', and every read
+  // minutes later verified clean). Verification is therefore retried on
+  // a bounded backoff. The retries are READ-ONLY — they never publish,
+  // mutate, or unpublish anything — and a final failed pass still fails
+  // the run closed.
+  const VERIFY_ATTEMPTS = 12;
+  const VERIFY_BACKOFF_MS = 10_000;
+  let rows = [];
   let failures = 0;
-  for (const name of inventory.order) {
-    const tgzPath = join(packDir, matched.byName.get(name).fileName);
-    const local = tarballIntegrity(tgzPath);
-    const packument = fetchPackument(name);
-    const registry = packument.versions?.[version];
-    const problems = [];
-    if (registry === undefined) {
-      problems.push('version missing in registry');
-    } else {
-      const remoteIntegrity = registry.dist?.integrity;
-      if (remoteIntegrity !== local) {
-        problems.push(
-          `integrity mismatch (registry ${remoteIntegrity ?? 'missing'} vs local ${local})`,
-        );
+  for (let attempt = 1; attempt <= VERIFY_ATTEMPTS; attempt += 1) {
+    rows = [];
+    failures = 0;
+    for (const name of inventory.order) {
+      const tgzPath = join(packDir, matched.byName.get(name).fileName);
+      const local = tarballIntegrity(tgzPath);
+      const packument = fetchPackument(name);
+      const registry = packument.versions?.[version];
+      const problems = [];
+      if (registry === undefined) {
+        problems.push('version missing in registry');
+      } else {
+        const remoteIntegrity = registry.dist?.integrity;
+        if (remoteIntegrity !== local) {
+          problems.push(
+            `integrity mismatch (registry ${remoteIntegrity ?? 'missing'} vs local ${local})`,
+          );
+        }
+      }
+      const tags = packument['dist-tags'] ?? {};
+      if (tags[tag] !== version) {
+        problems.push(`dist-tag '${tag}' is '${tags[tag] ?? 'missing'}', expected '${version}'`);
+      }
+      if (tag !== 'latest' && tags.latest === version) {
+        problems.push('latest must never point at a candidate version');
+      }
+      if (problems.length > 0) {
+        failures += 1;
+        rows.push({ name, version, integrity: local, ok: false, problems });
+      } else {
+        rows.push({ name, version, integrity: local, ok: true, problems: [] });
       }
     }
-    const tags = packument['dist-tags'] ?? {};
-    if (tags[tag] !== version) {
-      problems.push(`dist-tag '${tag}' is '${tags[tag] ?? 'missing'}', expected '${version}'`);
+    if (failures === 0) {
+      for (const row of rows) {
+        console.log(`  ok: ${row.name}@${row.version} integrity + dist-tag verified`);
+      }
+      break;
     }
-    if (tag !== 'latest' && tags.latest === version) {
-      problems.push('latest must never point at a candidate version');
+    if (attempt < VERIFY_ATTEMPTS) {
+      console.log(
+        `  ${failures} package(s) not yet visible on the registry (attempt ${attempt}/${VERIFY_ATTEMPTS}); waiting ${VERIFY_BACKOFF_MS / 1000}s before the read-only re-check (registry propagation lag)...`,
+      );
+      // Portable bounded wait (the workflow runs on ubuntu-latest).
+      spawnSync(process.execPath, ['-e', `setTimeout(() => {}, ${VERIFY_BACKOFF_MS})`], {
+        stdio: 'ignore',
+      });
     }
-    if (problems.length > 0) {
-      failures += 1;
-      console.error(`  FAIL: ${name}@${version}: ${problems.join('; ')}`);
-      rows.push({ name, version, integrity: local, ok: false, problems });
-    } else {
-      console.log(`  ok: ${name}@${version} integrity + dist-tag verified`);
-      rows.push({ name, version, integrity: local, ok: true, problems: [] });
+  }
+  for (const row of rows) {
+    if (!row.ok) {
+      console.error(`  FAIL: ${row.name}@${row.version}: ${row.problems.join('; ')}`);
     }
   }
 
