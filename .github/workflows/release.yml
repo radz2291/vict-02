@@ -55,12 +55,26 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 120
     steps:
-      - name: Check out the exact release source
+      - name: Check out the main lineage (full refs, no persisted credentials)
         uses: actions/checkout@v6
         with:
-          ref: ${{ inputs.source_sha }}
+          ref: main
           fetch-depth: 0
           persist-credentials: false
+
+      # Detach at the EXACT requested release source AFTER the full-ref
+      # fetch: the engine's own validation then re-proves that this SHA
+      # resolves and is an ancestor of the freshly fetched origin/main, so
+      # a checkout never depends on GitHub's SHA-isolated fetch cache
+      # (observed loss: release runs 35529604540 / 35529798221 —
+      # `upload-pack: not our ref` for an already-pushed main tip).
+      - name: Detach at the exact release-source SHA
+        env:
+          RELEASE_SOURCE_SHA: ${{ inputs.source_sha }}
+        run: |
+          git checkout --detach "$RELEASE_SOURCE_SHA"
+          git status --porcelain
+          test "$(git rev-parse HEAD)" = "$RELEASE_SOURCE_SHA"
 
       - name: Use Node 24 (GitHub-hosted runner; no dependency cache)
         uses: actions/setup-node@v6

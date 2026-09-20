@@ -577,12 +577,24 @@ describe('release.yml workflow definition', () => {
     expect(npmPin.run).toContain('npm@11.19.1');
   });
 
-  it('checks out the exact input SHA without persisting credentials', () => {
+  it('checks out the main lineage and detaches at the exact input SHA without persisting credentials', () => {
     const steps = doc.jobs['publish-release-set'].steps;
     const checkout = steps.find((step) => String(step.uses ?? '').startsWith('actions/checkout'));
-    expect(checkout.with.ref).toBe('${{ inputs.source_sha }}');
+    expect(checkout.with.ref).toBe('main');
     expect(checkout.with['fetch-depth']).toBe(0);
     expect(checkout.with['persist-credentials']).toBe(false);
+    // The detach step pins HEAD to the EXACT requested release source and
+    // self-verifies the pinned identity (the engine's lineage validation
+    // re-proves ancestry against the freshly fetched origin/main). The
+    // checkout therefore never depends on GitHub's SHA-isolated fetch
+    // cache (run-losses 35529604540 / 35529798221).
+    const detach = steps.find((step) =>
+      String(step.name ?? '').startsWith('Detach at the exact release-source SHA'),
+    );
+    expect(detach).toBeDefined();
+    expect(detach.env.RELEASE_SOURCE_SHA).toBe('${{ inputs.source_sha }}');
+    expect(detach.run).toContain('git checkout --detach "$RELEASE_SOURCE_SHA"');
+    expect(detach.run).toContain('test "$(git rev-parse HEAD)" = "$RELEASE_SOURCE_SHA"');
   });
 
   it('contains no secret references and no token material anywhere', () => {
