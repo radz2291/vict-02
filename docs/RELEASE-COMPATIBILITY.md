@@ -75,6 +75,26 @@
 > `docs/report/VICT-0.2.0-PUBLICATION.md`. Quellight remains pinned to
 > `0.1.0`; adopting `0.2.0` is a separate later controlled Phase Q
 > compatibility task (permitted, not begun).
+>
+> **Coordinated candidate release set 0.3.0-rc.1 (2026-09-21) —
+> PREPARED, PUBLICATION PENDING (verification candidate):** the fourth
+> immutable release set — `vict-release-set@1/0.3.0-rc.1`, all 13 members
+> at `0.3.0-rc.1` — carries the VICT-M-1 truthful-effect remediation
+> (frozen contract
+> `docs/report/VICT-M-1-REMEDIATION-CONTRACT.md`): independent
+> representation of factual effect, the per-invocation approval decision,
+> and its closed-code policy basis (`EffectApprovalDisposition`,
+> `VICT_EFFECT_POLICY_IDENTITY`, three intent-immutable evidence fields on
+> the durable invocation record; SQLite migration 10 with an unambiguous
+> 0.2.0-rule backfill; and the host-owned EXACT quiet-write approval
+> policy — composition-supplied only, no wildcard, no capability
+> self-exemption, `irreversible` never exemptable; defaults byte-equivalent
+> when absent). Set status: **verification candidate, published under the
+> candidate tag `vict-0.3.0-rc` through the trusted-OIDC release workflow
+> (`.github/workflows/release.yml`); `latest` remains `0.2.0` and stable
+> `0.3.0` is NOT published.** Independent verification of M-1 is
+> outstanding; a stable `0.3.0` release (published through the same
+> workflow after verification) is a separate later decision.
 
 ## 1. Registry identity and namespace decision
 
@@ -97,27 +117,27 @@ new set. Nothing is ever unpublished, re-published, or mutated.
 ```json
 {
   "vict-release-set": {
-    "identity": "vict-release-set@1/0.2.0",
-    "contentId": "v1_7a557983114b0743334061bd1f02ccd14f22e29f3a86697a4fd09b1722a8f172",
+    "identity": "vict-release-set@1/0.3.0-rc.1",
+    "contentId": "v1_9117e0cbd3f3fe520238442e237889bf3b9a50916327051487b8a497551500a4",
     "contentIdAlgorithm": "sha256 over the sorted newline-joined 'name@version' list of the exact member set, prefixed v1_",
-    "version": "0.2.0",
+    "version": "0.3.0-rc.1",
     "access": "public",
     "registry": "https://registry.npmjs.org/",
     "license": "Apache-2.0",
     "packages": {
-      "@victframework/appdata-sqlite": "0.2.0",
-      "@victframework/application": "0.2.0",
-      "@victframework/cli": "0.2.0",
-      "@victframework/contracts": "0.2.0",
-      "@victframework/control": "0.2.0",
-      "@victframework/kernel": "0.2.0",
-      "@victframework/mastra": "0.2.0",
-      "@victframework/renderer-svelte": "0.2.0",
-      "@victframework/runtime": "0.2.0",
-      "@victframework/scaffolder": "0.2.0",
-      "@victframework/sdk": "0.2.0",
-      "@victframework/server": "0.2.0",
-      "@victframework/store-sqlite": "0.2.0"
+      "@victframework/appdata-sqlite": "0.3.0-rc.1",
+      "@victframework/application": "0.3.0-rc.1",
+      "@victframework/cli": "0.3.0-rc.1",
+      "@victframework/contracts": "0.3.0-rc.1",
+      "@victframework/control": "0.3.0-rc.1",
+      "@victframework/kernel": "0.3.0-rc.1",
+      "@victframework/mastra": "0.3.0-rc.1",
+      "@victframework/renderer-svelte": "0.3.0-rc.1",
+      "@victframework/runtime": "0.3.0-rc.1",
+      "@victframework/scaffolder": "0.3.0-rc.1",
+      "@victframework/sdk": "0.3.0-rc.1",
+      "@victframework/server": "0.3.0-rc.1",
+      "@victframework/store-sqlite": "0.3.0-rc.1"
     }
   }
 }
