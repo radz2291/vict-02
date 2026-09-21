@@ -1,4 +1,5 @@
 import { Buffer } from 'node:buffer';
+import { types } from 'node:util';
 
 /**
  * B-1 remediation — the safe bounded capture of model-facing presentation
@@ -114,6 +115,20 @@ function captureValue(value: unknown, label: string, depth: number): unknown {
     return value;
   }
   if (valueType === 'object') {
+    // Audit-remediation B-3: NATIVE proxy rejection BEFORE any inspection
+    // of this value — before Array.isArray branching reads, prototype
+    // reads, descriptor inspection, and any property or array-element
+    // read. Node's stable `types.isProxy` executes ZERO traps of the
+    // inspected object (probe-proven; audit-remediation contract §1.4),
+    // so a plain-target, array-target, nested, lying-descriptor, or
+    // revoked proxy is rejected without executing any attacker-controlled
+    // behavior.
+    if (types.isProxy(value)) {
+      throw new VictPresentationError(
+        'VICT_PRESENTATION_INVALID',
+        `${label}: proxies cannot be captured (plain data only)`,
+      );
+    }
     if (Array.isArray(value)) {
       if (value.length > PRESENTATION_BOUNDS.maxArrayLength) {
         throw new VictPresentationError(
@@ -121,9 +136,21 @@ function captureValue(value: unknown, label: string, depth: number): unknown {
           `${label}: an array exceeds the ${PRESENTATION_BOUNDS.maxArrayLength}-item bound`,
         );
       }
+      // Descriptor-driven element capture: element accessors are rejected
+      // before any element value is read (a plain array's index properties
+      // are the only readable members; `length` is a non-configurable own
+      // data property and can never be an accessor).
+      const elementDescriptors = Object.getOwnPropertyDescriptors(value);
       const out: unknown[] = [];
       for (let index = 0; index < value.length; index += 1) {
-        out.push(captureValue(value[index], `${label}[${index}]`, depth + 1));
+        const descriptor = elementDescriptors[String(index)];
+        if (descriptor !== undefined && (descriptor.get !== undefined || descriptor.set !== undefined)) {
+          throw new VictPresentationError(
+            'VICT_PRESENTATION_INVALID',
+            `${label}: an accessor element (getter/setter) cannot be captured`,
+          );
+        }
+        out.push(captureValue(descriptor?.value, `${label}[${index}]`, depth + 1));
       }
       return Object.freeze(out);
     }
@@ -134,13 +161,22 @@ function captureValue(value: unknown, label: string, depth: number): unknown {
         `${label}: exotic prototype — presentation captures plain data only`,
       );
     }
+    // Audit-remediation B-2: ANY own symbol-keyed property — enumerable or
+    // not — is REJECTED, never silently dropped. (`getOwnPropertyDescriptors`
+    // reports string keys only, so symbols are checked explicitly.)
+    if (Object.getOwnPropertySymbols(value).length > 0) {
+      throw new VictPresentationError(
+        'VICT_PRESENTATION_INVALID',
+        `${label}: symbol-keyed fields cannot be captured (plain data only)`,
+      );
+    }
     let descriptors: Record<string, PropertyDescriptor>;
     try {
       descriptors = Object.getOwnPropertyDescriptors(value as Record<string, unknown>);
     } catch {
       throw new VictPresentationError(
         'VICT_PRESENTATION_INVALID',
-        `${label}: the container could not be inspected (hostile proxy or revoked object)`,
+        `${label}: the container could not be inspected`,
       );
     }
     const ownKeys = Object.keys(descriptors);
@@ -161,7 +197,12 @@ function captureValue(value: unknown, label: string, depth: number): unknown {
       }
       const descriptor = descriptors[key]!;
       if (!descriptor.enumerable) {
-        continue; // hidden members are invisible to the capture, never trusted
+        // Audit-remediation O-3: hidden members are REJECTED explicitly —
+        // never silently skipped (silent dropping is the B-2 defect class).
+        throw new VictPresentationError(
+          'VICT_PRESENTATION_INVALID',
+          `${label}: a non-enumerable field cannot be captured (plain own enumerable data only)`,
+        );
       }
       if (descriptor.get !== undefined || descriptor.set !== undefined) {
         throw new VictPresentationError(
