@@ -76,8 +76,29 @@
 > `0.1.0`; adopting `0.2.0` is a separate later controlled Phase Q
 > compatibility task (permitted, not begun).
 >
+> **Coordinated stable release set 0.3.0 (2026-09-21) — PREPARED,
+> PUBLICATION AUTHORIZED (PENDING EXECUTION AT PREPARATION TIME):** the
+> fifth immutable release set — `vict-release-set@1/0.3.0`, all 13
+> members at `0.3.0` — carries the SAME verified M-1 semantic content as
+> the candidate below with NO runtime, authority, approval, migration,
+> API, or product-behavior change (only package versions, exact internal
+> pins, the generated release identity, and provenance metadata
+> differ). The fresh independent re-verification
+> (`docs/report/VICT-M-1-INDEPENDENT-RE-VERIFICATION.md`, verdict
+> `CLEARED — CONDITIONAL STABLE RELEASE PERMITTED`, 0 Blocking / 0 High /
+> 0 Medium) cleared the evidence chain of the candidate and executed the
+> full deferred audit scope (Linux authoritative rebuild 13/13
+> byte-identical, registry-only consumer proof with fail-closed negative
+> controls, old-tree negative controls, 10 independent M-1 semantic
+> probes, both authoritative ladders green). Publication goes through
+> the unchanged trusted-OIDC workflow `.github/workflows/release.yml`
+> with `npm_tag: latest` (no npm token, login, or OTP anywhere);
+> `latest` moves to `0.3.0` only through this direct stable publication
+> (frozen §7 tag rule), the candidate tag `vict-0.3.0-rc` remains
+> `0.3.0-rc.1` untouched, and `0.2.0` remains available.
+>
 > **Coordinated candidate release set 0.3.0-rc.1 (2026-09-21) —
-> PREPARED, PUBLICATION PENDING (verification candidate):** the fourth
+> PUBLISHED AND INDEPENDENTLY RE-VERIFIED (verification candidate):** the fourth
 > immutable release set — `vict-release-set@1/0.3.0-rc.1`, all 13 members
 > at `0.3.0-rc.1` — carries the VICT-M-1 truthful-effect remediation
 > (frozen contract
@@ -128,27 +149,27 @@ new set. Nothing is ever unpublished, re-published, or mutated.
 ```json
 {
   "vict-release-set": {
-    "identity": "vict-release-set@1/0.3.0-rc.1",
-    "contentId": "v1_9117e0cbd3f3fe520238442e237889bf3b9a50916327051487b8a497551500a4",
+    "identity": "vict-release-set@1/0.3.0",
+    "contentId": "v1_5f3a074a50ab5623acbf933d52a24e6d383ded2ccd02bbaa78a28c3be3915580",
     "contentIdAlgorithm": "sha256 over the sorted newline-joined 'name@version' list of the exact member set, prefixed v1_",
-    "version": "0.3.0-rc.1",
+    "version": "0.3.0",
     "access": "public",
     "registry": "https://registry.npmjs.org/",
     "license": "Apache-2.0",
     "packages": {
-      "@victframework/appdata-sqlite": "0.3.0-rc.1",
-      "@victframework/application": "0.3.0-rc.1",
-      "@victframework/cli": "0.3.0-rc.1",
-      "@victframework/contracts": "0.3.0-rc.1",
-      "@victframework/control": "0.3.0-rc.1",
-      "@victframework/kernel": "0.3.0-rc.1",
-      "@victframework/mastra": "0.3.0-rc.1",
-      "@victframework/renderer-svelte": "0.3.0-rc.1",
-      "@victframework/runtime": "0.3.0-rc.1",
-      "@victframework/scaffolder": "0.3.0-rc.1",
-      "@victframework/sdk": "0.3.0-rc.1",
-      "@victframework/server": "0.3.0-rc.1",
-      "@victframework/store-sqlite": "0.3.0-rc.1"
+      "@victframework/appdata-sqlite": "0.3.0",
+      "@victframework/application": "0.3.0",
+      "@victframework/cli": "0.3.0",
+      "@victframework/contracts": "0.3.0",
+      "@victframework/control": "0.3.0",
+      "@victframework/kernel": "0.3.0",
+      "@victframework/mastra": "0.3.0",
+      "@victframework/renderer-svelte": "0.3.0",
+      "@victframework/runtime": "0.3.0",
+      "@victframework/scaffolder": "0.3.0",
+      "@victframework/sdk": "0.3.0",
+      "@victframework/server": "0.3.0",
+      "@victframework/store-sqlite": "0.3.0"
     }
   }
 }
@@ -165,6 +186,36 @@ publishability property).
 
 Prior release sets are never mutated, re-published, or unpublished;
 their registry artifacts remain available for explicit pinning.
+
+The candidate release set, preserved exactly as it was recorded while it
+was the current set (published under the candidate tag `vict-0.3.0-rc`;
+evidence chain recovered and independently re-verified — original
+publication run `35530894104` truthfully terminal-`failure`, successor
+evidence run `35558851493` terminal-`success`):
+
+```text
+vict-release-set@1/0.3.0-rc.1
+contentId: v1_9117e0cbd3f3fe520238442e237889bf3b9a50916327051487b8a497551500a4
+contentIdAlgorithm: sha256 over the sorted newline-joined 'name@version' list of the exact member set, prefixed v1_
+version: 0.3.0-rc.1
+access: public
+registry: https://registry.npmjs.org/
+license: Apache-2.0
+packages:
+  @victframework/appdata-sqlite   0.3.0-rc.1
+  @victframework/application      0.3.0-rc.1
+  @victframework/cli              0.3.0-rc.1
+  @victframework/contracts        0.3.0-rc.1
+  @victframework/control          0.3.0-rc.1
+  @victframework/kernel           0.3.0-rc.1
+  @victframework/mastra           0.3.0-rc.1
+  @victframework/renderer-svelte  0.3.0-rc.1
+  @victframework/runtime          0.3.0-rc.1
+  @victframework/scaffolder       0.3.0-rc.1
+  @victframework/sdk              0.3.0-rc.1
+  @victframework/server           0.3.0-rc.1
+  @victframework/store-sqlite     0.3.0-rc.1
+```
 
 The second public release set, preserved exactly as it was recorded
 while it was the current set:
@@ -234,7 +285,7 @@ installable by exact pin regardless of which set `latest` points to.
 ## 3. Dependency graph and exact pins
 
 All intra-VICT dependencies inside the release set are EXACT pins of
-`0.2.0` — no ranges, no `workspace:`/`file:`/`git` specifiers in any
+`0.3.0` — no ranges, no `workspace:`/`file:`/`git` specifiers in any
 published manifest. Verified dependency direction (acyclic):
 
 ```text
@@ -281,13 +332,13 @@ From a clean clone OUTSIDE the VICT checkout, installing exclusively
 from the public npm registry with exact versions:
 
 ```bash
-npm install @victframework/contracts@0.2.0 @victframework/sdk@0.2.0 \
-  @victframework/kernel@0.2.0 @victframework/runtime@0.2.0 \
-  @victframework/store-sqlite@0.2.0 @victframework/application@0.2.0 \
-  @victframework/renderer-svelte@0.2.0 @victframework/appdata-sqlite@0.2.0 \
-  @victframework/scaffolder@0.2.0 @victframework/control@0.2.0 \
-  @victframework/mastra@0.2.0 @victframework/server@0.2.0 \
-  @victframework/cli@0.2.0
+npm install @victframework/contracts@0.3.0 @victframework/sdk@0.3.0 \
+  @victframework/kernel@0.3.0 @victframework/runtime@0.3.0 \
+  @victframework/store-sqlite@0.3.0 @victframework/application@0.3.0 \
+  @victframework/renderer-svelte@0.3.0 @victframework/appdata-sqlite@0.3.0 \
+  @victframework/scaffolder@0.3.0 @victframework/control@0.3.0 \
+  @victframework/mastra@0.3.0 @victframework/server@0.3.0 \
+  @victframework/cli@0.3.0
 ```
 
 Integrity mechanism: the consumer's lockfile records the SHA-512
@@ -298,12 +349,12 @@ Rollback: pin the prior release-set identity (all prior published
 versions remain in the registry; nothing is unpublished or mutated).
 A release-set identity is immutable; changing any member version creates
 a NEW set identity; consumers upgrade explicitly. For consumers of the
-`0.2.0` set, rollback means pinning the complete `0.1.1` set from §2.1
-(the governed mutation-input boundary is NOT contained in `0.1.1`);
-for consumers on `0.1.1`, upgrade means pinning the complete `0.2.0` set
-above; for consumers still on `0.1.0` (e.g. Quellight until its Phase Q
-adoption), upgrade means pinning the complete `0.1.1` set first or
-jumping directly to the complete `0.2.0` set after its publication —
+`0.3.0` set, rollback means pinning the complete `0.2.0` set from §2.1
+(the M-1 truthful-effect evidence is NOT contained in `0.2.0`);
+for consumers on `0.3.0-rc.1`, upgrade means pinning the complete
+`0.3.0` set above (the M-1 semantic content is identical; only the
+version/pin/identity metadata differs); for consumers still on `0.2.0`
+or earlier, upgrade means adopting the complete `0.3.0` set —
 never a partial mix of sets.
 
 ## 6. Reproducible publication path (GitHub OIDC trusted publishing)
