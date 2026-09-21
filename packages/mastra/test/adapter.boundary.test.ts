@@ -230,7 +230,7 @@ async function composeBoundary(options: {
     capabilities: [] as never as Array<{ id: string; revision: string }>,
     adapter: {
       id: '@victframework/mastra',
-      revision: '1',
+      revision: '2',
       runtimePackages: {
         '@mastra/core': '1.64.0',
         '@mastra/memory': '1.28.2',
@@ -292,7 +292,7 @@ describe('unfenced compositions are rejected before execution', () => {
         capabilities: [] as never as Array<{ id: string; revision: string }>,
         adapter: {
           id: '@victframework/mastra',
-          revision: '1',
+          revision: '2',
           runtimePackages: {
             '@mastra/core': '1.64.0',
             '@mastra/memory': '1.28.2',
@@ -382,7 +382,7 @@ describe('supported composition: deletion versus in-flight turns (barrier-contro
       capabilities: [] as never as Array<{ id: string; revision: string }>,
       adapter: {
         id: '@victframework/mastra',
-        revision: '1',
+        revision: '2',
         runtimePackages: {
           '@mastra/core': '1.64.0',
           '@mastra/memory': '1.28.2',
@@ -540,7 +540,7 @@ describe('supported composition: deletion versus in-flight turns (barrier-contro
       capabilities: [] as never as Array<{ id: string; revision: string }>,
       adapter: {
         id: '@victframework/mastra',
-        revision: '1',
+        revision: '2',
         runtimePackages: {
           '@mastra/core': '1.64.0',
           '@mastra/memory': '1.28.2',
@@ -636,7 +636,7 @@ describe('supported composition: deletion versus in-flight turns (barrier-contro
         capabilities: [] as never as Array<{ id: string; revision: string }>,
         adapter: {
           id: '@victframework/mastra',
-          revision: '1',
+          revision: '2',
           runtimePackages: {
             '@mastra/core': '1.64.0',
             '@mastra/memory': '1.28.2',
@@ -798,7 +798,7 @@ describe('supported composition: deletion versus in-flight turns (barrier-contro
         capabilities: [] as never as Array<{ id: string; revision: string }>,
         adapter: {
           id: '@victframework/mastra',
-          revision: '1',
+          revision: '2',
           runtimePackages: {
             '@mastra/core': '1.64.0',
             '@mastra/memory': '1.28.2',
@@ -868,7 +868,7 @@ describe('supported composition: deletion versus in-flight turns (barrier-contro
         capabilities: [] as never as Array<{ id: string; revision: string }>,
         adapter: {
           id: '@victframework/mastra',
-          revision: '1',
+          revision: '2',
           runtimePackages: {
             '@mastra/core': '1.64.0',
             '@mastra/memory': '1.28.2',
@@ -1132,7 +1132,7 @@ describe('hostile configuration and callback results are contained', () => {
         capabilities: [] as never as Array<{ id: string; revision: string }>,
         adapter: {
           id: '@victframework/mastra',
-          revision: '1',
+          revision: '2',
           runtimePackages: {
             '@mastra/core': '1.64.0',
             '@mastra/memory': '1.28.2',
@@ -1217,7 +1217,7 @@ describe('hostile configuration and callback results are contained', () => {
         capabilities: [] as never as Array<{ id: string; revision: string }>,
         adapter: {
           id: '@victframework/mastra',
-          revision: '1',
+          revision: '2',
           runtimePackages: {
             '@mastra/core': '1.64.0',
             '@mastra/memory': '1.28.2',

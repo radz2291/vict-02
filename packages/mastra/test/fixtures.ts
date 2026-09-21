@@ -40,7 +40,7 @@ export function validProfileInput(): AgentProfileAuthoring {
     ],
     adapter: {
       id: '@victframework/mastra',
-      revision: '1',
+      revision: '2',
       runtimePackages: {
         '@mastra/core': '1.64.0',
         '@mastra/memory': '1.28.2',

@@ -66,7 +66,7 @@ describe('adapter compatibility marker (MSTR-002)', () => {
         memoryPolicy: { id: 'mp', revision: '1' },
         adapter: {
           id: '@victframework/mastra',
-          revision: '1',
+          revision: '2',
           runtimePackages: { '@mastra/core': coreVersion },
         },
       });

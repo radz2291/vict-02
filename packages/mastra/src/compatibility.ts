@@ -22,8 +22,13 @@ export const MASTRA_ADAPTER_ID = '@victframework/mastra';
  * The adapter implementation revision. Bump when adapter code changes
  * execution semantics (the same author/build revision discipline as
  * capability handlers — bodies are never hashed).
+ *
+ * Revision 2 (B-1 remediation): the model-facing tool surface changed —
+ * capability tools now present the captured descriptive input/output JSON
+ * Schema and the bounded capability description, and model-facing
+ * construction fails closed without a usable descriptive input schema.
  */
-export const MASTRA_ADAPTER_REVISION = '1';
+export const MASTRA_ADAPTER_REVISION = '2';
 
 /** Exact pinned Mastra package versions used by this adapter. */
 export const MASTRA_PINNED_VERSIONS = {

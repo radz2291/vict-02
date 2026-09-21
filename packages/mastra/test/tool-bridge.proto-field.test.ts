@@ -250,6 +250,7 @@ function permissiveContract(id: string): Contract<unknown> {
     id,
     revision: '1',
     expected: 'bounded test contract',
+    descriptiveJsonSchema: { type: 'object' },
     parse: (input: unknown): ReturnType<Contract<unknown>['parse']> => ({
       ok: true,
       value: input,

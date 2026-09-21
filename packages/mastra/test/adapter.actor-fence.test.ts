@@ -136,7 +136,7 @@ async function composeFor(
     capabilities: [] as never as Array<{ id: string; revision: string }>,
     adapter: {
       id: '@victframework/mastra',
-      revision: '1',
+      revision: '2',
       runtimePackages: {
         '@mastra/core': '1.64.0',
         '@mastra/memory': '1.28.2',
@@ -299,7 +299,7 @@ describe('governed deletion versus in-flight turns (barrier-controlled fencing)'
       capabilities: [] as never as Array<{ id: string; revision: string }>,
       adapter: {
         id: '@victframework/mastra',
-        revision: '1',
+        revision: '2',
         runtimePackages: {
           '@mastra/core': '1.64.0',
           '@mastra/memory': '1.28.2',

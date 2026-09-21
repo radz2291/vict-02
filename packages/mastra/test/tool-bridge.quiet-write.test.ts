@@ -30,6 +30,7 @@ function neutralContract(id: string, ok: (value: unknown) => boolean): Contract<
     id,
     revision: '1',
     expected: 'bounded test contract',
+    descriptiveJsonSchema: { type: 'object' },
     parse: (input: unknown) =>
       ok(input)
         ? { ok: true as const, value: input }

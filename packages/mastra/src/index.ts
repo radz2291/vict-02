@@ -116,6 +116,15 @@ export type {
   InspectedControlField,
 } from './control-envelope.js';
 
+// ---- Model-facing presentation capture (B-1 remediation) ---------------------
+export {
+  PRESENTATION_BOUNDS,
+  VictPresentationError,
+  captureCapabilityDescription,
+  capturePresentationSchema,
+} from './presentation.js';
+export type { PresentationCaptureErrorCode } from './presentation.js';
+
 // ---- Recursive delivery-safe snapshot boundary (H-1 remediation) -------------
 export { DELIVERY_SNAPSHOT_BOUNDS, captureDeliverySafeSnapshot } from './delivery-snapshot.js';
 export type {

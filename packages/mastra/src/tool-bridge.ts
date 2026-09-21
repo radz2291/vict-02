@@ -21,6 +21,11 @@ import {
   capturedHasField,
 } from './control-envelope.js';
 import { captureDeliverySafeSnapshot } from './delivery-snapshot.js';
+import {
+  VictPresentationError,
+  captureCapabilityDescription,
+  capturePresentationSchema,
+} from './presentation.js';
 
 /**
  * Stage 06B — the VICT capability-to-Mastra tool bridge (AI-005/006,
@@ -932,15 +937,51 @@ export function bridgeCapabilityToolToMastra(
     : defaultBridgePolicy(capabilityId, capabilityRevision, effect);
   const inputContract = definition.input;
   const outputContract = definition.output;
+  // B-1: the model-facing PRESENTATION of this capability — captured as a
+  // safe bounded inert snapshot at tool-construction time (frozen contract:
+  // docs/report/VICT-MODEL-FACING-CAPABILITY-SCHEMA-CONTRACT.md §3.3/§4).
+  // The presentation is NEVER authority: `~standard.validate` continues to
+  // delegate to the bound neutral contract, unchanged. A model-facing
+  // capability without a usable descriptive input schema FAILS CLOSED here
+  // — the bridge never fabricates the misleading generic `{type:"object"}`
+  // input schema, and invalid presentation metadata aborts construction.
+  const boundedDescription = captureCapabilityDescription(definition.description);
+  const inputPresentation = (
+    inputContract as { descriptiveJsonSchema?: unknown } | undefined
+  )?.descriptiveJsonSchema;
+  if (inputPresentation === undefined) {
+    throw new VictPresentationError(
+      'VICT_PRESENTATION_INPUT_SCHEMA_REQUIRED',
+      `capability '${capabilityId}' is model-facing and requires a usable descriptive input schema on its input contract`,
+    );
+  }
+  const capturedInputSchema = capturePresentationSchema(
+    inputPresentation,
+    `capability '${capabilityId}' input schema`,
+  );
+  const outputPresentation = (
+    outputContract as { descriptiveJsonSchema?: unknown } | undefined
+  )?.descriptiveJsonSchema;
+  const capturedOutputSchema =
+    outputPresentation === undefined
+      ? undefined
+      : capturePresentationSchema(outputPresentation, `capability '${capabilityId}' output schema`);
   const clock = deps.clock ?? (() => Date.now());
   const createToolLoose = createTool as unknown as (options: unknown) => unknown;
 
   return createToolLoose({
     id: capabilityId,
     // Bounded, capability-declaration-derived metadata — never authority.
-    description: `VICT governed capability '${capabilityId}' (revision ${capabilityRevision}, effect '${effect}').`,
-    inputSchema: standardSchemaFromContract(inputContract),
-    outputSchema: standardSchemaFromContract(outputContract),
+    description:
+      boundedDescription === undefined
+        ? `VICT governed capability '${capabilityId}' (revision ${capabilityRevision}, effect '${effect}').`
+        : `VICT governed capability '${capabilityId}' (revision ${capabilityRevision}, effect '${effect}'). ${boundedDescription}`,
+    inputSchema: standardSchemaFromContract(
+      inputContract,
+      capturedInputSchema,
+      capturedOutputSchema,
+    ),
+    outputSchema: standardSchemaFromContract(outputContract, undefined, undefined),
     execute: async (
       inputData: unknown,
       executionContext: {
@@ -1210,11 +1251,17 @@ export function bridgeCapabilityToolToMastra(
 /**
  * Wrap one neutral VICT capability contract into the Standard-Schema-With-JSON
  * interface the pinned tools API accepts. Validation authority stays with
- * the VICT contract (CONT-001); the JSON Schema describes only the boundary
- * shape to the model.
+ * the VICT contract (CONT-001); the JSON Schema members are PASSIVE
+ * PRESENTATION ONLY (B-1): `input()` returns the captured descriptive
+ * input schema of the capability's input contract (never fabricated), and
+ * `output()` returns the captured descriptive output schema when declared
+ * (neutral object shape otherwise). Neither member is ever executed as
+ * validation, and neither can bypass `contract.parse`.
  */
 function standardSchemaFromContract(
   contract: { parse: (value: unknown) => unknown } | undefined,
+  descriptiveInputSchema: unknown,
+  descriptiveOutputSchema: unknown,
 ): unknown {
   return {
     '~standard': {
@@ -1253,8 +1300,8 @@ function standardSchemaFromContract(
         }
       },
       jsonSchema: {
-        input: () => ({ type: 'object' }),
-        output: () => ({ type: 'object' }),
+        input: () => descriptiveInputSchema ?? { type: 'object' },
+        output: () => descriptiveOutputSchema ?? { type: 'object' },
       },
     },
   };

@@ -200,6 +200,7 @@ async function fixture(): Promise<number> {
       id: 'cap.notes.write.input',
       revision: '1',
       expected: 'bounded test contract',
+      descriptiveJsonSchema: { type: 'object' },
       parse: (input: unknown) =>
         typeof input === 'object' && input !== null
           ? { ok: true, value: input }
@@ -209,6 +210,7 @@ async function fixture(): Promise<number> {
       id: 'cap.notes.write.output',
       revision: '1',
       expected: 'bounded test contract',
+      descriptiveJsonSchema: { type: 'object' },
       parse: (input: unknown) =>
         typeof input === 'object' && input !== null
           ? { ok: true, value: input }

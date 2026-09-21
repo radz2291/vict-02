@@ -216,6 +216,7 @@ describe('post-audit: the Standard Schema output adapter cannot be tricked by ho
       id: 'cap.schema.probe.output',
       revision: '1',
       expected: 'probe',
+      descriptiveJsonSchema: { type: 'object' },
       parse: (input: unknown) =>
         typeof input === 'object' && input !== null && 'saved' in (input as object)
           ? { ok: true as const, value: input }
@@ -494,6 +495,7 @@ const contract = (id: string, ok: (value: unknown) => boolean): Contract<unknown
   id,
   revision: '1',
   expected: 'bounded test contract',
+  descriptiveJsonSchema: { type: 'object' },
   parse: (input: unknown) =>
     ok(input)
       ? { ok: true as const, value: input }
