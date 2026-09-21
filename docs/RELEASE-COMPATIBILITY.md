@@ -97,11 +97,11 @@
 > (frozen §7 tag rule), the candidate tag `vict-0.3.0-rc` remains
 > `0.3.0-rc.1` untouched, and `0.2.0` remains available.
 >
-> **Coordinated candidate release set 0.3.1-rc.1 (2026-09-22) — PREPARED,
-> PUBLICATION PENDING (verification candidate):** the sixth immutable
-> release set — `vict-release-set@1/0.3.1-rc.1`, all 13 members at
-> `0.3.1-rc.1` — carries the B-1 model-facing capability-schema remediation
-> (frozen contract
+> **Coordinated candidate release set 0.3.1-rc.1 (2026-09-22) —
+> PUBLISHED AND EVIDENCE-RECOVERED (verification candidate):** the sixth
+> immutable release set — `vict-release-set@1/0.3.1-rc.1`, all 13 members
+> at `0.3.1-rc.1` — carries the B-1 model-facing capability-schema
+> remediation (frozen contract
 > `docs/report/VICT-MODEL-FACING-CAPABILITY-SCHEMA-CONTRACT.md`): the
 > neutral descriptive presentation API (optional `descriptiveJsonSchema` on
 > the contract declaration; optional bounded `description` on the
@@ -110,9 +110,18 @@
 > captured structure instead of the fabricated generic `{type:object}`
 > object, fail-closed construction for model-facing capabilities without a
 > usable descriptive input schema, and adapter revision 1 → 2.
-> Graph-only execution is unchanged. Set status: **verification candidate,
-> to be published under the candidate tag `vict-0.3.1-rc` through the
-> trusted-OIDC release workflow (`.github/workflows/release.yml`);
+> Graph-only execution is unchanged. Set status: **published from exact
+> release source `948d8e5…` under the candidate tag `vict-0.3.1-rc`
+> through the trusted-OIDC release workflow (publication run
+> `35625570254`: full in-workflow chain green, ALL 13 packages published
+> via npm OIDC, final same-run registry verification failed on CDN
+> propagation lag — terminal-`failure` on verification timing only; the
+> read-only successor evidence run `35630175086` then re-proved the set
+> terminal-`success` — 13/13 registry integrity equality against the
+> byte-identical Linux rebuild, dist-tags `vict-0.3.1-rc → 0.3.1-rc.1`,
+> `latest → 0.3.0`, SLSA provenance 13/13 bound to the source SHA and
+> publication run, registry-only consumer proof — per
+> `docs/report/VICT-0.3.1-RC1-EVIDENCE-RECOVERY-AMENDMENT.md`).
 > `latest` remains `0.3.0` and stable `0.3.1` is NOT published.**
 > Independent verification is outstanding.
 >
