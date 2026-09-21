@@ -12,6 +12,10 @@ name: VICT-M-1 candidate evidence recovery (read-only)
 # docs/report/VICT-0.3.1-RC1-EVIDENCE-RECOVERY-AMENDMENT.md (publication
 # run 35625570254: ALL 13 packages published under vict-0.3.1-rc; the
 # final same-run registry verification failed on CDN propagation lag).
+# The bound now moves again to the 0.3.1-rc.2 candidate per
+# docs/report/VICT-0.3.1-RC2-EVIDENCE-RECOVERY-AMENDMENT.md (publication
+# run 35661159776: ALL 13 packages published under vict-0.3.1-rc; the
+# final same-run registry verification failed on CDN propagation lag).
 #
 # This workflow is READ-ONLY:
 # - permissions are exactly `contents: read`; it holds NO OIDC write
@@ -36,12 +40,12 @@ on:
         description: 'Must equal the bound candidate source (any other value fails the run)'
         required: false
         type: string
-        default: '948d8e514d5657e4b76df54e2168101c8e084267'
+        default: 'a7b0018c460581e5425df80e56b0ccf309a4b4a4'
       version:
         description: 'Must equal the bound candidate version (any other value fails the run)'
         required: false
         type: string
-        default: '0.3.1-rc.1'
+        default: '0.3.1-rc.2'
       npm_tag:
         description: 'Must equal the bound candidate tag (any other value fails the run)'
         required: false

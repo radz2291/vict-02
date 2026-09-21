@@ -19,25 +19,25 @@ import { createHash } from 'node:crypto';
  * be pointed at any other version, source, run, or registry.
  */
 export const BOUND_CANDIDATE = Object.freeze({
-  version: '0.3.1-rc.1',
-  sourceSha: '948d8e514d5657e4b76df54e2168101c8e084267',
-  originalRunId: 35625570254,
-  originalRunUrl: 'https://github.com/radz2291/vict-02/actions/runs/35625570254',
+  version: '0.3.1-rc.2',
+  sourceSha: 'a7b0018c460581e5425df80e56b0ccf309a4b4a4',
+  originalRunId: 35661159776,
+  originalRunUrl: 'https://github.com/radz2291/vict-02/actions/runs/35661159776',
   originalWorkflowPath: '.github/workflows/release.yml',
   originalRunConclusion: 'failure',
   packageCount: 13,
   registry: 'https://registry.npmjs.org/',
   repository: 'radz2291/vict-02',
   repositoryUrl: 'https://github.com/radz2291/vict-02',
-  releaseSetIdentity: 'vict-release-set@1/0.3.1-rc.1',
-  expectedContentId: 'v1_b6e39c1f6d6f627c03dfe12e8eb4bc0b6b8bb7f7746b4b871cf00d3c7f7ae731',
-  correctedEngineSha: '948d8e514d5657e4b76df54e2168101c8e084267',
+  releaseSetIdentity: 'vict-release-set@1/0.3.1-rc.2',
+  expectedContentId: 'v1_55d1ad2eb0afaf0e487b3e0b457069e7cfe2ac0bdaed7d443a13287287f0e31f',
+  correctedEngineSha: 'a7b0018c460581e5425df80e56b0ccf309a4b4a4',
   candidateTag: 'vict-0.3.1-rc',
   expectedLatest: '0.3.0',
   forbiddenStableVersion: '0.3.1',
   provenanceRef: 'refs/heads/main',
   provenanceBuilderId: 'https://github.com/actions/runner/github-hosted',
-  amendment: 'docs/report/VICT-0.3.1-RC1-EVIDENCE-RECOVERY-AMENDMENT.md',
+  amendment: 'docs/report/VICT-0.3.1-RC2-EVIDENCE-RECOVERY-AMENDMENT.md',
   evidenceSchema: 'vict-candidate-evidence-recovery@2',
 });
 
