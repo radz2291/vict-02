@@ -151,13 +151,54 @@ outside the repositories as ephemeral audit tooling).
 ## 3. Verification state
 
 Full authoritative ladder executed ONCE on the final frozen executable
-tree (results recorded in the run transcript; all exit 0): `npm ci`,
+tree `a7b0018…` — ALL 12 STEPS EXIT 0 in one run: `npm ci`,
 `format:check`, `lint`, `typecheck`, `build`, `verify:release-set`
 (13 packages, `0.3.1-rc.2`, `v1_55d1ad2e…`), `npm test` (full suite
-once), pack + complete tarball inspection, external packed-tarball
-consumer, `npm audit --omit=dev`, `git diff --check`. Publication and
-post-publication registry/provenance/rebuild/consumer evidence are
-recorded below as they complete.
+once: 2408 passed / 3 skipped), pack 13/13, tarball inspection + content
+scan 13/13 clean, external packed-tarball consumer (ALL CHECKS PASSED),
+`npm audit --omit=dev` (0 vulnerabilities), `git diff --check`.
+
+Disclosure (diagnosed ladder deviations on the pre-fix tree
+`88d9875…`): (1) `typecheck` exit 2 — six REAL strict-type errors in
+the NEW controls file (the vitest transform is not a typechecker); fixed
+properly at `a7b0018…` with zero assertion weakening; (2) one
+load-induced timing flake — `[sqlite] HIGH-3` (orchestration
+conformance; real-time 20 ms deadlines + polling; file untouched by this
+task, last changed long before it) timed out at 20 s under full-suite
+parallel load, passed 48/48 in isolation (6.1 s), and the full suite
+passed 2408/3 skipped in a DISCLOSED rerun; the authoritative tree
+`a7b0018…` then produced the single-run all-green ladder above.
+
+## 3a. Publication and post-publication evidence (recorded)
+
+* **Publication run `35661159776`** (`.github/workflows/release.yml`,
+  `workflow_dispatch`, source `a7b0018…`, `0.3.1-rc.2`,
+  `vict-0.3.1-rc`): full in-workflow chain green; **ALL 13 PACKAGES
+  PUBLISHED** via npm OIDC trusted publishing ("oidc-release: ALL 13
+  PACKAGES PUBLISHED under 'vict-0.3.1-rc'"; no token, login, OTP, or
+  local publication anywhere); the final same-run registry verification
+  failed on CDN propagation lag (2/13 not visible after 12 read-only
+  re-checks) — terminal-`failure` on verification timing only, the
+  established recovery class.
+* **Amendment `2c09d88…` + re-bind `0eef818…`**: the read-only evidence
+  machinery re-bound to the rc.2 candidate per the standalone amendment.
+* **Read-only successor evidence run `35662077320`**
+  (`.github/workflows/release-evidence.yml`, permissions exactly
+  `contents: read`): **terminal-`success`** — 13/13 registry manifests
+  at exactly `0.3.1-rc.2`; `vict-0.3.1-rc → 0.3.1-rc.2`; `latest →
+  0.3.0`; stable `0.3.1` absent; per-package registry integrity equality
+  against the rebuilt candidate source; SLSA provenance 13/13 bound to
+  repository `radz2291/vict-02`, workflow `release.yml`, ref
+  `refs/heads/main`, `gitCommit a7b0018…`, invocationId
+  `…/actions/runs/35661159776/attempts/1` (independently re-read 13/13
+  after the run); release-set content identity `v1_55d1ad2e…` recomputed
+  and matching; registry-only consumer proof green.
+* **Registry integrity (sha512 dist.integrity, samples; full values in
+  the registry packuments):** mastra `KF6QM6VHMd3T…`, contracts
+  `jGsh72fCv6VE…`, server `TpOsXoYCvajR…`.
+* **Quellight mechanical repin:** committed and pushed (Quellight
+  `cd3af1c…` + docs `8dcd3c0…`); Quellight authoritative offline ladder
+  green (recorded in that repository; `verify:q6:live` NOT executed).
 
 ## 4. Commits (all on main; linear; fast-forward push)
 
