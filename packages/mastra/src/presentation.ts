@@ -1,7 +1,12 @@
+import { Buffer } from 'node:buffer';
+
 /**
  * B-1 remediation — the safe bounded capture of model-facing presentation
  * metadata (frozen contract:
- * `docs/report/VICT-MODEL-FACING-CAPABILITY-SCHEMA-CONTRACT.md` §4).
+ * `docs/report/VICT-MODEL-FACING-CAPABILITY-SCHEMA-CONTRACT.md` §4;
+ * audit-remediation contract:
+ * `docs/report/VICT-MODEL-FACING-CAPABILITY-SCHEMA-AUDIT-REMEDIATION-CONTRACT.md`
+ * §1.1–§1.4).
  *
  * A capability author declares presentation metadata — the descriptive
  * JSON Schema on the neutral contract and the bounded human-readable
@@ -81,25 +86,7 @@ const PROTOTYPE_NAMED_KEYS: ReadonlySet<string> = new Set([
   'prototype',
 ]);
 
-class CaptureAccount {
-  totalBytes = 0;
-  addBytes(chars: number): void {
-    this.totalBytes += chars;
-    if (this.totalBytes > PRESENTATION_BOUNDS.maxTotalBytes) {
-      throw new VictPresentationError(
-        'VICT_PRESENTATION_INVALID',
-        `the serialized presentation exceeds the ${PRESENTATION_BOUNDS.maxTotalBytes}-byte bound`,
-      );
-    }
-  }
-}
-
-function captureValue(
-  value: unknown,
-  label: string,
-  depth: number,
-  account: CaptureAccount,
-): unknown {
+function captureValue(value: unknown, label: string, depth: number): unknown {
   if (depth > PRESENTATION_BOUNDS.maxDepth) {
     throw new VictPresentationError(
       'VICT_PRESENTATION_INVALID',
@@ -118,14 +105,12 @@ function captureValue(
         `${label}: a string exceeds the ${PRESENTATION_BOUNDS.maxStringLength}-character bound`,
       );
     }
-    account.addBytes(text.length);
     return text;
   }
   if (valueType === 'boolean' || valueType === 'number') {
     if (valueType === 'number' && !Number.isFinite(value as number)) {
       throw new VictPresentationError('VICT_PRESENTATION_INVALID', `${label}: non-finite number`);
     }
-    account.addBytes(8);
     return value;
   }
   if (valueType === 'object') {
@@ -138,7 +123,7 @@ function captureValue(
       }
       const out: unknown[] = [];
       for (let index = 0; index < value.length; index += 1) {
-        out.push(captureValue(value[index], `${label}[${index}]`, depth + 1, account));
+        out.push(captureValue(value[index], `${label}[${index}]`, depth + 1));
       }
       return Object.freeze(out);
     }
@@ -184,7 +169,7 @@ function captureValue(
           `${label}: an accessor field (getter/setter) cannot be captured`,
         );
       }
-      out[key] = captureValue(descriptor.value, `${label}.${key}`, depth + 1, account);
+      out[key] = captureValue(descriptor.value, `${label}.${key}`, depth + 1);
     }
     return Object.freeze(out);
   }
@@ -199,16 +184,33 @@ function captureValue(
  * Capture one presentation value (a descriptive JSON Schema) as a deep
  * immutable bounded snapshot. TOTAL and fail closed: any violation throws
  * `VictPresentationError` with a stable non-echoing code.
+ *
+ * Audit-remediation B-1: the total §4 bound is enforced as the TRUE
+ * serialized UTF-8 byte length of the deterministic serialization of the
+ * captured snapshot — values, keys, punctuation, containers, and JSON
+ * string escaping included — never as JavaScript `.length` (UTF-16 code
+ * units) or per-value approximations. The snapshot's key order is sorted
+ * by construction, so `JSON.stringify` over it is deterministic and the
+ * measurement is reproducible byte-for-byte.
  */
 export function capturePresentationSchema(value: unknown, label: string): unknown {
   if (value === undefined) {
     throw new VictPresentationError('VICT_PRESENTATION_INVALID', `${label}: no schema is declared`);
   }
-  const captured = captureValue(value, label, 0, new CaptureAccount());
+  const captured = captureValue(value, label, 0);
   if (typeof captured !== 'object' || captured === null || Array.isArray(captured)) {
     throw new VictPresentationError(
       'VICT_PRESENTATION_INVALID',
       `${label}: the schema root must be a plain object`,
+    );
+  }
+  // The authoritative total bound: actual UTF-8 bytes of the deterministic
+  // serialized presentation (audit finding B-1).
+  const serializedBytes = Buffer.byteLength(JSON.stringify(captured), 'utf8');
+  if (serializedBytes > PRESENTATION_BOUNDS.maxTotalBytes) {
+    throw new VictPresentationError(
+      'VICT_PRESENTATION_INVALID',
+      `the serialized presentation exceeds the ${PRESENTATION_BOUNDS.maxTotalBytes}-byte bound (measured as serialized UTF-8 bytes)`,
     );
   }
   return captured;
