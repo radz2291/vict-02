@@ -94,7 +94,18 @@
 > (`.github/workflows/release.yml`); `latest` remains `0.2.0` and stable
 > `0.3.0` is NOT published.** Independent verification of M-1 is
 > outstanding; a stable `0.3.0` release (published through the same
-> workflow after verification) is a separate later decision.
+> workflow after verification) is a separate later decision. **Evidence-chain
+> recovery (2026-09-21):** Blocking finding B-1 — the publication run's
+> terminal-`failure` verify step and its divergent recorded contentId — was
+> remediated through the owner-approved read-only amendment
+> (`docs/report/VICT-TRUSTED-PUBLISHING-EVIDENCE-RECOVERY-AMENDMENT.md`):
+> successor evidence run `35558851493` (terminal-`success`) re-proved this
+> set read-only (13/13 integrity, provenance, dist-tags, Linux rebuild
+> byte-identical, corrected contentId `v1_9117e0cb…`, registry-only
+> consumer proof) with the original run `35530894104` preserved as the
+> truthful publication event; the set's evidence chain is intact and AWAITS
+> FRESH INDEPENDENT RE-VERIFICATION
+> (`docs/report/VICT-M-1-CANDIDATE-EVIDENCE-RECOVERY.md`).
 
 ## 1. Registry identity and namespace decision
 
