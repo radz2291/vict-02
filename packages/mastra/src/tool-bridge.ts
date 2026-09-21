@@ -979,287 +979,287 @@ export function bridgeCapabilityToolToMastra(
   // authority; the guard only fails closed earlier.
   return attachRawToolArgumentGuard(
     createToolLoose({
-    id: capabilityId,
-    // Bounded, capability-declaration-derived metadata — never authority.
-    description:
-      boundedDescription === undefined
-        ? `VICT governed capability '${capabilityId}' (revision ${capabilityRevision}, effect '${effect}').`
-        : `VICT governed capability '${capabilityId}' (revision ${capabilityRevision}, effect '${effect}'). ${boundedDescription}`,
-    inputSchema: standardSchemaFromContract(
-      inputContract,
-      capturedInputSchema,
-      capturedOutputSchema,
-    ),
-    // Audit-remediation O-1 cleanup: the captured OUTPUT schema is exposed
-    // on the REAL outputSchema wrapper exactly as the frozen §3.3(4)
-    // specifies — `tool.outputSchema['~standard'].jsonSchema.output()`
-    // returns the captured output presentation (previously the generic
-    // `{type:'object'}` appeared on this surface and the captured schema
-    // was reachable only through the input wrapper's `.output()`).
-    outputSchema: standardSchemaFromContract(outputContract, undefined, capturedOutputSchema),
-    execute: async (
-      inputData: unknown,
-      executionContext: {
-        toolCallId?: unknown;
-        abortSignal?: unknown;
-        requestContext?: { get?: (key: string) => unknown };
-        /** The pinned Mastra Tool wrapper organizes AGENT executions with
-         * the occurrence identity nested under `agent` (the top-level
-         * field remains the direct-call surface). */
-        agent?: { toolCallId?: unknown };
-      },
-    ): Promise<unknown> => {
-      // ---- 0. Turn scope (authenticated actor + turn identity) -----------
-      const turn = readTurnScope();
-      if (turn === undefined) {
-        return {
-          victCapabilityFailure: 'VICT_CAPABILITY_AUTHORITY_DENIED',
-        } satisfies CapabilityToolFailure;
-      }
-      // Per-turn tool budget (same discipline as helper tools).
-      if (deps.budgetGate !== undefined) {
-        try {
-          if (deps.budgetGate() !== 'allowed') {
-            return {
-              victCapabilityFailure: 'VICT_CAPABILITY_TOOL_LIMIT_EXCEEDED',
-            } satisfies CapabilityToolFailure;
-          }
-        } catch {
+      id: capabilityId,
+      // Bounded, capability-declaration-derived metadata — never authority.
+      description:
+        boundedDescription === undefined
+          ? `VICT governed capability '${capabilityId}' (revision ${capabilityRevision}, effect '${effect}').`
+          : `VICT governed capability '${capabilityId}' (revision ${capabilityRevision}, effect '${effect}'). ${boundedDescription}`,
+      inputSchema: standardSchemaFromContract(
+        inputContract,
+        capturedInputSchema,
+        capturedOutputSchema,
+      ),
+      // Audit-remediation O-1 cleanup: the captured OUTPUT schema is exposed
+      // on the REAL outputSchema wrapper exactly as the frozen §3.3(4)
+      // specifies — `tool.outputSchema['~standard'].jsonSchema.output()`
+      // returns the captured output presentation (previously the generic
+      // `{type:'object'}` appeared on this surface and the captured schema
+      // was reachable only through the input wrapper's `.output()`).
+      outputSchema: standardSchemaFromContract(outputContract, undefined, capturedOutputSchema),
+      execute: async (
+        inputData: unknown,
+        executionContext: {
+          toolCallId?: unknown;
+          abortSignal?: unknown;
+          requestContext?: { get?: (key: string) => unknown };
+          /** The pinned Mastra Tool wrapper organizes AGENT executions with
+           * the occurrence identity nested under `agent` (the top-level
+           * field remains the direct-call surface). */
+          agent?: { toolCallId?: unknown };
+        },
+      ): Promise<unknown> => {
+        // ---- 0. Turn scope (authenticated actor + turn identity) -----------
+        const turn = readTurnScope();
+        if (turn === undefined) {
           return {
             victCapabilityFailure: 'VICT_CAPABILITY_AUTHORITY_DENIED',
           } satisfies CapabilityToolFailure;
         }
-      }
-      // ---- 1. Closed tool-envelope validation ----------------------------
-      // The tool exists only because this exact (id, revision) is in the
-      // frozen envelope; re-verify against the CURRENT snapshot (a stale
-      // or extra tool fails closed).
-      const pinned = activation.capabilities.find(
-        (reference) => reference.id === capabilityId && reference.revision === capabilityRevision,
-      );
-      if (pinned === undefined) {
-        return {
-          victCapabilityFailure: 'VICT_CAPABILITY_AUTHORITY_DENIED',
-        } satisfies CapabilityToolFailure;
-      }
-      let toolCallId: string | undefined;
-      // The occurrence identity is the FRAMEWORK-SUPPLIED tool-call id: the
-      // pinned Mastra Tool wrapper carries it at the top level for direct
-      // calls and under `agent` for agent-loop executions. Both surfaces are
-      // read; anything malformed fails closed below.
-      const identitySurfaces = [executionContext.toolCallId, executionContext.agent?.toolCallId];
-      for (const candidate of identitySurfaces) {
-        if (typeof candidate === 'string' && /^[A-Za-z0-9._:-]{1,128}$/.test(candidate)) {
-          toolCallId = candidate;
-          break;
+        // Per-turn tool budget (same discipline as helper tools).
+        if (deps.budgetGate !== undefined) {
+          try {
+            if (deps.budgetGate() !== 'allowed') {
+              return {
+                victCapabilityFailure: 'VICT_CAPABILITY_TOOL_LIMIT_EXCEEDED',
+              } satisfies CapabilityToolFailure;
+            }
+          } catch {
+            return {
+              victCapabilityFailure: 'VICT_CAPABILITY_AUTHORITY_DENIED',
+            } satisfies CapabilityToolFailure;
+          }
         }
-      }
-      // NOTE: when the framework supplies no valid tool-call identity, the
-      // bridge fails CLOSED (VICT_CAPABILITY_TOOL_IDENTITY_REQUIRED) before
-      // any durable work — occurrence identity is never inferred from
-      // arguments, time, process counters, or row counts.
-      // ---- 2. Authenticated actor + authority check ----------------------
-      // The turn's authenticated actor is the only authority source; a
-      // mismatch (hostile request context) fails closed.
-      const requestActor = readRequestActor(executionContext);
-      if (requestActor !== undefined && requestActor !== turn.actorId) {
-        return {
-          victCapabilityFailure: 'VICT_CAPABILITY_AUTHORITY_DENIED',
-        } satisfies CapabilityToolFailure;
-      }
-      // ---- 3. Authoritative VICT input-contract validation ---------------
-      let parsedInput: { ok: true; value: unknown } | { ok: false } | undefined;
-      if (inputContract !== undefined) {
+        // ---- 1. Closed tool-envelope validation ----------------------------
+        // The tool exists only because this exact (id, revision) is in the
+        // frozen envelope; re-verify against the CURRENT snapshot (a stale
+        // or extra tool fails closed).
+        const pinned = activation.capabilities.find(
+          (reference) => reference.id === capabilityId && reference.revision === capabilityRevision,
+        );
+        if (pinned === undefined) {
+          return {
+            victCapabilityFailure: 'VICT_CAPABILITY_AUTHORITY_DENIED',
+          } satisfies CapabilityToolFailure;
+        }
+        let toolCallId: string | undefined;
+        // The occurrence identity is the FRAMEWORK-SUPPLIED tool-call id: the
+        // pinned Mastra Tool wrapper carries it at the top level for direct
+        // calls and under `agent` for agent-loop executions. Both surfaces are
+        // read; anything malformed fails closed below.
+        const identitySurfaces = [executionContext.toolCallId, executionContext.agent?.toolCallId];
+        for (const candidate of identitySurfaces) {
+          if (typeof candidate === 'string' && /^[A-Za-z0-9._:-]{1,128}$/.test(candidate)) {
+            toolCallId = candidate;
+            break;
+          }
+        }
+        // NOTE: when the framework supplies no valid tool-call identity, the
+        // bridge fails CLOSED (VICT_CAPABILITY_TOOL_IDENTITY_REQUIRED) before
+        // any durable work — occurrence identity is never inferred from
+        // arguments, time, process counters, or row counts.
+        // ---- 2. Authenticated actor + authority check ----------------------
+        // The turn's authenticated actor is the only authority source; a
+        // mismatch (hostile request context) fails closed.
+        const requestActor = readRequestActor(executionContext);
+        if (requestActor !== undefined && requestActor !== turn.actorId) {
+          return {
+            victCapabilityFailure: 'VICT_CAPABILITY_AUTHORITY_DENIED',
+          } satisfies CapabilityToolFailure;
+        }
+        // ---- 3. Authoritative VICT input-contract validation ---------------
+        let parsedInput: { ok: true; value: unknown } | { ok: false } | undefined;
+        if (inputContract !== undefined) {
+          try {
+            const result = inputContract.parse(inputData);
+            parsedInput = result.ok ? { ok: true, value: result.value } : { ok: false };
+          } catch {
+            parsedInput = { ok: false };
+          }
+          if (!parsedInput.ok) {
+            return {
+              victCapabilityFailure: 'VICT_CAPABILITY_INPUT_CONTRACT_REJECTED',
+            } satisfies CapabilityToolFailure;
+          }
+        }
+        const effectiveInput =
+          parsedInput !== undefined && parsedInput.ok ? parsedInput.value : inputData;
+        // The canonical digest and the safe summary are computed under a
+        // guard: hostile argument containers (throwing getters/traps) are
+        // rejected with ONE stable non-echoing failure — never a raw error.
+        let argDigest: string;
+        let argumentSummary: string;
         try {
-          const result = inputContract.parse(inputData);
-          parsedInput = result.ok ? { ok: true, value: result.value } : { ok: false };
+          argDigest = canonicalArgDigest(effectiveInput);
+          argumentSummary = safeArgumentSummary(effectiveInput);
         } catch {
-          parsedInput = { ok: false };
-        }
-        if (!parsedInput.ok) {
           return {
             victCapabilityFailure: 'VICT_CAPABILITY_INPUT_CONTRACT_REJECTED',
           } satisfies CapabilityToolFailure;
         }
-      }
-      const effectiveInput =
-        parsedInput !== undefined && parsedInput.ok ? parsedInput.value : inputData;
-      // The canonical digest and the safe summary are computed under a
-      // guard: hostile argument containers (throwing getters/traps) are
-      // rejected with ONE stable non-echoing failure — never a raw error.
-      let argDigest: string;
-      let argumentSummary: string;
-      try {
-        argDigest = canonicalArgDigest(effectiveInput);
-        argumentSummary = safeArgumentSummary(effectiveInput);
-      } catch {
-        return {
-          victCapabilityFailure: 'VICT_CAPABILITY_INPUT_CONTRACT_REJECTED',
-        } satisfies CapabilityToolFailure;
-      }
-      if (toolCallId === undefined) {
-        // ---- TOOL-CALL OCCURRENCE IDENTITY (fail closed) -----------------
-        // The framework-supplied `toolCallId` IS the occurrence identity.
-        // A call with no stable occurrence identity is refused BEFORE any
-        // durable intent, approval request, or capability invocation:
-        // occurrence identity is NEVER inferred from the arguments alone —
-        // a digest-only key cannot distinguish a retry from a second
-        // legitimate identical call, so inferring from arguments would
-        // alias distinct occurrences (and silently drop effects).
-        return {
-          victCapabilityFailure: 'VICT_CAPABILITY_TOOL_IDENTITY_REQUIRED',
-        } satisfies CapabilityToolFailure;
-      }
-      /**
-       * ---- 4. Durable intent (durable BEFORE invocation; always) ---------
-       * The intent is idempotent over the logical invocation identity: a
-       * retry/resume/restart with the same tool-call occurrence identity
-       * and digest resolves to the SAME durable invocation record
-       * (exactly-once). The idempotent re-record is ALSO the truthful
-       * re-read primitive used after every arbitration conflict below.
-       */
-      const intentInput = {
-        turnId: turn.turnId,
-        toolCallId,
-        toolName: capabilityId,
-        capabilityId,
-        capabilityRevision,
-        effect,
-        actorId: turn.actorId,
-        argDigest,
-        argumentSummary,
-        // VICT-M-1 truthful decision evidence — resolved from the bridge
-        // policy above (never from capability code), durably stamped at
-        // intent time, and immutable afterwards.
-        approvalRequired: policy.requiresApproval,
-        approvalDisposition: policy.approvalDisposition,
-        effectPolicyIdentity: VICT_EFFECT_POLICY_IDENTITY,
-      } as const;
-      const rereadInvocation = (): Promise<AgentToolInvocationRecord> =>
-        recordInvocationIntentIdempotent(deps, intentInput);
-      let current = await rereadInvocation();
+        if (toolCallId === undefined) {
+          // ---- TOOL-CALL OCCURRENCE IDENTITY (fail closed) -----------------
+          // The framework-supplied `toolCallId` IS the occurrence identity.
+          // A call with no stable occurrence identity is refused BEFORE any
+          // durable intent, approval request, or capability invocation:
+          // occurrence identity is NEVER inferred from the arguments alone —
+          // a digest-only key cannot distinguish a retry from a second
+          // legitimate identical call, so inferring from arguments would
+          // alias distinct occurrences (and silently drop effects).
+          return {
+            victCapabilityFailure: 'VICT_CAPABILITY_TOOL_IDENTITY_REQUIRED',
+          } satisfies CapabilityToolFailure;
+        }
+        /**
+         * ---- 4. Durable intent (durable BEFORE invocation; always) ---------
+         * The intent is idempotent over the logical invocation identity: a
+         * retry/resume/restart with the same tool-call occurrence identity
+         * and digest resolves to the SAME durable invocation record
+         * (exactly-once). The idempotent re-record is ALSO the truthful
+         * re-read primitive used after every arbitration conflict below.
+         */
+        const intentInput = {
+          turnId: turn.turnId,
+          toolCallId,
+          toolName: capabilityId,
+          capabilityId,
+          capabilityRevision,
+          effect,
+          actorId: turn.actorId,
+          argDigest,
+          argumentSummary,
+          // VICT-M-1 truthful decision evidence — resolved from the bridge
+          // policy above (never from capability code), durably stamped at
+          // intent time, and immutable afterwards.
+          approvalRequired: policy.requiresApproval,
+          approvalDisposition: policy.approvalDisposition,
+          effectPolicyIdentity: VICT_EFFECT_POLICY_IDENTITY,
+        } as const;
+        const rereadInvocation = (): Promise<AgentToolInvocationRecord> =>
+          recordInvocationIntentIdempotent(deps, intentInput);
+        let current = await rereadInvocation();
 
-      /**
-       * ---- 5. Attempt-ownership dispatch (bounded arbitration) -----------
-       * Exactly ONE live owner exists per invocation attempt (the durable
-       * claim below is the single ownership gate):
-       *
-       * - `running`: this caller is a DUPLICATE. It NEVER mutates the
-       *   record: with a same-composition live owner it AWAITS the owner's
-       *   settlement and replays the truthful terminal disposition (a
-       *   cancelled waiter receives the non-terminal `in_progress`
-       *   report); with no live owner in this composition the attempt is
-       *   conservatively reconciled to the fenced, NON-REPLAYABLE
-       *   `outcome_unknown` (owner loss across a process life) without
-       *   executing anything.
-       * - terminal: the stable safe disposition replay (never a second
-       *   effect, never raw capability output).
-       * - `intent`/`approved`: this caller is the OWNER CANDIDATE — it
-       *   runs the approval policy (if any) and then CLAIMS the attempt;
-       *   exactly one claim wins per generation.
-       */
-      for (let round = 0; round < 6; round += 1) {
-        if (current.status === 'running') {
-          return resolveRunningDuplicate(deps, current, {
-            abortSignal: turn.abortSignal,
-            clock,
-            liveRunRegistry,
-            rereadInvocation,
-          });
-        }
-        if (current.status !== 'intent' && current.status !== 'approved') {
-          // TERMINAL REPLAY: an invocation that is already durably terminal
-          // NEVER passes through capability invocation again.
-          return stableDispositionEnvelope(current);
-        }
-        // ---- OWNER CANDIDATE: pre-running (intent | approved) ------------
-        if (policy.requiresApproval) {
-          const gate = await runApprovalGate(deps, current, {
-            policy,
-            turn,
-            toolCallId,
-            capabilityId,
-            capabilityRevision,
-            argDigest,
-            effect,
-            clock,
-          });
-          if (gate.kind === 'return') {
-            return gate.envelope;
-          }
-          if (gate.kind === 'arbitrate') {
-            // A fenced/idempotent conflict while settling the approval
-            // outcome: re-read the truthful durable state and re-dispatch.
-            current = await rereadInvocation();
-            continue;
-          }
-          // Consumption winner: the durable pre-run state is `approved`.
-          try {
-            await deps.updateInvocationStatus({
-              invocationId: current.invocationId,
-              status: 'approved',
-              at: clock(),
+        /**
+         * ---- 5. Attempt-ownership dispatch (bounded arbitration) -----------
+         * Exactly ONE live owner exists per invocation attempt (the durable
+         * claim below is the single ownership gate):
+         *
+         * - `running`: this caller is a DUPLICATE. It NEVER mutates the
+         *   record: with a same-composition live owner it AWAITS the owner's
+         *   settlement and replays the truthful terminal disposition (a
+         *   cancelled waiter receives the non-terminal `in_progress`
+         *   report); with no live owner in this composition the attempt is
+         *   conservatively reconciled to the fenced, NON-REPLAYABLE
+         *   `outcome_unknown` (owner loss across a process life) without
+         *   executing anything.
+         * - terminal: the stable safe disposition replay (never a second
+         *   effect, never raw capability output).
+         * - `intent`/`approved`: this caller is the OWNER CANDIDATE — it
+         *   runs the approval policy (if any) and then CLAIMS the attempt;
+         *   exactly one claim wins per generation.
+         */
+        for (let round = 0; round < 6; round += 1) {
+          if (current.status === 'running') {
+            return resolveRunningDuplicate(deps, current, {
+              abortSignal: turn.abortSignal,
+              clock,
+              liveRunRegistry,
+              rereadInvocation,
             });
-          } catch (error) {
-            if (
-              error instanceof VictControlError &&
-              (error.code === 'VICT_CONTROL_INVOCATION_TERMINAL' ||
-                error.code === 'VICT_CONTROL_INVOCATION_REGRESSION' ||
-                error.code === 'VICT_CONTROL_INVOCATION_OWNER_ACTIVE')
-            ) {
+          }
+          if (current.status !== 'intent' && current.status !== 'approved') {
+            // TERMINAL REPLAY: an invocation that is already durably terminal
+            // NEVER passes through capability invocation again.
+            return stableDispositionEnvelope(current);
+          }
+          // ---- OWNER CANDIDATE: pre-running (intent | approved) ------------
+          if (policy.requiresApproval) {
+            const gate = await runApprovalGate(deps, current, {
+              policy,
+              turn,
+              toolCallId,
+              capabilityId,
+              capabilityRevision,
+              argDigest,
+              effect,
+              clock,
+            });
+            if (gate.kind === 'return') {
+              return gate.envelope;
+            }
+            if (gate.kind === 'arbitrate') {
+              // A fenced/idempotent conflict while settling the approval
+              // outcome: re-read the truthful durable state and re-dispatch.
               current = await rereadInvocation();
               continue;
             }
-            throw error;
+            // Consumption winner: the durable pre-run state is `approved`.
+            try {
+              await deps.updateInvocationStatus({
+                invocationId: current.invocationId,
+                status: 'approved',
+                at: clock(),
+              });
+            } catch (error) {
+              if (
+                error instanceof VictControlError &&
+                (error.code === 'VICT_CONTROL_INVOCATION_TERMINAL' ||
+                  error.code === 'VICT_CONTROL_INVOCATION_REGRESSION' ||
+                  error.code === 'VICT_CONTROL_INVOCATION_OWNER_ACTIVE')
+              ) {
+                current = await rereadInvocation();
+                continue;
+              }
+              throw error;
+            }
           }
-        }
-        // ---- 6. CLAIM the attempt (single ownership gate) ----------------
-        // The live-owner registration is established BEFORE the durable
-        // claim so a duplicate that observes `running` always finds the
-        // same-composition owner (never a false "abandoned" inference).
-        const registration = liveRunRegistry.register(current.invocationId);
-        try {
-          let claimed: AgentToolInvocationRecord;
+          // ---- 6. CLAIM the attempt (single ownership gate) ----------------
+          // The live-owner registration is established BEFORE the durable
+          // claim so a duplicate that observes `running` always finds the
+          // same-composition owner (never a false "abandoned" inference).
+          const registration = liveRunRegistry.register(current.invocationId);
           try {
-            claimed = await deps.claimInvocationRun({
-              invocationId: current.invocationId,
+            let claimed: AgentToolInvocationRecord;
+            try {
+              claimed = await deps.claimInvocationRun({
+                invocationId: current.invocationId,
+                fenceToken: registration.fenceToken,
+                ownerIdentity: BRIDGE_OWNER_IDENTITY,
+                at: clock(),
+              });
+            } catch (error) {
+              if (
+                error instanceof VictControlError &&
+                (error.code === 'VICT_CONTROL_INVOCATION_OWNER_ACTIVE' ||
+                  error.code === 'VICT_CONTROL_INVOCATION_TERMINAL' ||
+                  error.code === 'VICT_CONTROL_INVOCATION_REGRESSION')
+              ) {
+                // Lost claim arbitration: re-read and re-dispatch truthfully.
+                current = await rereadInvocation();
+                continue;
+              }
+              throw error;
+            }
+            return await executeOwnedAttempt(deps, claimed, {
+              definition,
+              effectiveInput,
+              outputContract,
+              turn,
+              toolCallId,
+              idempotencyKey: current.idempotencyKey,
               fenceToken: registration.fenceToken,
-              ownerIdentity: BRIDGE_OWNER_IDENTITY,
-              at: clock(),
+              clock,
             });
-          } catch (error) {
-            if (
-              error instanceof VictControlError &&
-              (error.code === 'VICT_CONTROL_INVOCATION_OWNER_ACTIVE' ||
-                error.code === 'VICT_CONTROL_INVOCATION_TERMINAL' ||
-                error.code === 'VICT_CONTROL_INVOCATION_REGRESSION')
-            ) {
-              // Lost claim arbitration: re-read and re-dispatch truthfully.
-              current = await rereadInvocation();
-              continue;
-            }
-            throw error;
+          } finally {
+            registration.settle();
           }
-          return await executeOwnedAttempt(deps, claimed, {
-            definition,
-            effectiveInput,
-            outputContract,
-            turn,
-            toolCallId,
-            idempotencyKey: current.idempotencyKey,
-            fenceToken: registration.fenceToken,
-            clock,
-          });
-        } finally {
-          registration.settle();
         }
-      }
-      // Arbitration never converged (impossible under the bounded state
-      // machine): fail closed with the stable non-replayable failure.
-      return {
-        victCapabilityFailure: 'VICT_CAPABILITY_OUTCOME_UNKNOWN',
-      } satisfies CapabilityToolFailure;
-    },
+        // Arbitration never converged (impossible under the bounded state
+        // machine): fail closed with the stable non-replayable failure.
+        return {
+          victCapabilityFailure: 'VICT_CAPABILITY_OUTCOME_UNKNOWN',
+        } satisfies CapabilityToolFailure;
+      },
     }),
   );
 }

@@ -177,27 +177,27 @@ new set. Nothing is ever unpublished, re-published, or mutated.
 ```json
 {
   "vict-release-set": {
-    "identity": "vict-release-set@1/0.3.1-rc.1",
-    "contentId": "v1_b6e39c1f6d6f627c03dfe12e8eb4bc0b6b8bb7f7746b4b871cf00d3c7f7ae731",
+    "identity": "vict-release-set@1/0.3.1-rc.2",
+    "contentId": "v1_55d1ad2eb0afaf0e487b3e0b457069e7cfe2ac0bdaed7d443a13287287f0e31f",
     "contentIdAlgorithm": "sha256 over the sorted newline-joined 'name@version' list of the exact member set, prefixed v1_",
-    "version": "0.3.1-rc.1",
+    "version": "0.3.1-rc.2",
     "access": "public",
     "registry": "https://registry.npmjs.org/",
     "license": "Apache-2.0",
     "packages": {
-      "@victframework/appdata-sqlite": "0.3.1-rc.1",
-      "@victframework/application": "0.3.1-rc.1",
-      "@victframework/cli": "0.3.1-rc.1",
-      "@victframework/contracts": "0.3.1-rc.1",
-      "@victframework/control": "0.3.1-rc.1",
-      "@victframework/kernel": "0.3.1-rc.1",
-      "@victframework/mastra": "0.3.1-rc.1",
-      "@victframework/renderer-svelte": "0.3.1-rc.1",
-      "@victframework/runtime": "0.3.1-rc.1",
-      "@victframework/scaffolder": "0.3.1-rc.1",
-      "@victframework/sdk": "0.3.1-rc.1",
-      "@victframework/server": "0.3.1-rc.1",
-      "@victframework/store-sqlite": "0.3.1-rc.1"
+      "@victframework/appdata-sqlite": "0.3.1-rc.2",
+      "@victframework/application": "0.3.1-rc.2",
+      "@victframework/cli": "0.3.1-rc.2",
+      "@victframework/contracts": "0.3.1-rc.2",
+      "@victframework/control": "0.3.1-rc.2",
+      "@victframework/kernel": "0.3.1-rc.2",
+      "@victframework/mastra": "0.3.1-rc.2",
+      "@victframework/renderer-svelte": "0.3.1-rc.2",
+      "@victframework/runtime": "0.3.1-rc.2",
+      "@victframework/scaffolder": "0.3.1-rc.2",
+      "@victframework/sdk": "0.3.1-rc.2",
+      "@victframework/server": "0.3.1-rc.2",
+      "@victframework/store-sqlite": "0.3.1-rc.2"
     }
   }
 }

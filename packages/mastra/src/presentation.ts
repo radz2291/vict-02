@@ -144,7 +144,10 @@ function captureValue(value: unknown, label: string, depth: number): unknown {
       const out: unknown[] = [];
       for (let index = 0; index < value.length; index += 1) {
         const descriptor = elementDescriptors[String(index)];
-        if (descriptor !== undefined && (descriptor.get !== undefined || descriptor.set !== undefined)) {
+        if (
+          descriptor !== undefined &&
+          (descriptor.get !== undefined || descriptor.set !== undefined)
+        ) {
           throw new VictPresentationError(
             'VICT_PRESENTATION_INVALID',
             `${label}: an accessor element (getter/setter) cannot be captured`,

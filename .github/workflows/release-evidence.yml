@@ -62,7 +62,7 @@ env:
 
 jobs:
   evidence-recovery:
-    name: Read-only candidate evidence recovery (13 packages, 0.3.0-rc.1)
+    name: Read-only candidate evidence recovery (13 packages, bounded identity)
     runs-on: ubuntu-latest
     timeout-minutes: 120
     steps:

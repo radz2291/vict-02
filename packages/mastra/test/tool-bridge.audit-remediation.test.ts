@@ -15,11 +15,7 @@ import {
   VictPresentationError,
   capturePresentationSchema,
 } from '../src/presentation.js';
-import {
-  HOSTILE_RAW_ARGUMENT_KEYS,
-  attachRawToolArgumentGuard,
-  inspectRawToolArguments,
-} from '../src/raw-argument-guard.js';
+import { HOSTILE_RAW_ARGUMENT_KEYS, inspectRawToolArguments } from '../src/raw-argument-guard.js';
 import { MASTRA_ADAPTER_COMPATIBILITY } from '../src/compatibility.js';
 
 /**
@@ -191,10 +187,15 @@ function makeQuellightExactProposalContract(): Contract<unknown> {
         }
       }
       for (const field of requiredFields) {
-        if (typeof contentRecord[field] !== 'string' || (contentRecord[field] as string).length === 0) {
+        if (
+          typeof contentRecord[field] !== 'string' ||
+          (contentRecord[field] as string).length === 0
+        ) {
           return {
             ok: false as const,
-            issues: [{ code: 'missing_field', path: `content.${field}`, message: 'string required' }],
+            issues: [
+              { code: 'missing_field', path: `content.${field}`, message: 'string required' },
+            ],
           };
         }
       }
@@ -377,7 +378,11 @@ const TRAP_NAMES = [
   'construct',
 ] as const;
 
-function countedProxy(target: unknown): { proxy: unknown; totalTraps: () => number; counts: Record<string, number> } {
+function countedProxy(target: unknown): {
+  proxy: unknown;
+  totalTraps: () => number;
+  counts: Record<string, number>;
+} {
   const counts: Record<string, number> = {};
   const handler: Record<string, unknown> = {};
   for (const trap of TRAP_NAMES) {
@@ -431,9 +436,9 @@ function schemaOfExactSize(targetBytes: number): Record<string, string> {
 describe('B-1: the total presentation bound measures TRUE serialized UTF-8 bytes', () => {
   it('a serialization of EXACTLY 32768 UTF-8 bytes PASSES the capture', () => {
     const schema = schemaOfExactSize(PRESENTATION_BOUNDS.maxTotalBytes);
-    expect(
-      Buffer.byteLength(JSON.stringify(schema), 'utf8'),
-    ).toBe(PRESENTATION_BOUNDS.maxTotalBytes);
+    expect(Buffer.byteLength(JSON.stringify(schema), 'utf8')).toBe(
+      PRESENTATION_BOUNDS.maxTotalBytes,
+    );
     const captured = capturePresentationSchema(schema, 'probe') as Record<string, unknown>;
     expect(Object.keys(captured)).toHaveLength(16);
   });
@@ -475,7 +480,9 @@ describe('B-1: the total presentation bound measures TRUE serialized UTF-8 bytes
     // the old boundary value — while the true serialized size is ~65KB.
     const schema: Record<string, string> = {};
     for (let index = 0; index < 16; index += 1) {
-      schema[`f${String(index).padStart(2, '0')}`] = '"'.repeat(PRESENTATION_BOUNDS.maxStringLength);
+      schema[`f${String(index).padStart(2, '0')}`] = '"'.repeat(
+        PRESENTATION_BOUNDS.maxStringLength,
+      );
     }
     const serializedBytes = Buffer.byteLength(JSON.stringify(schema), 'utf8');
     expect(serializedBytes).toBeGreaterThan(PRESENTATION_BOUNDS.maxTotalBytes);
@@ -514,9 +521,11 @@ describe('B-1: the total presentation bound measures TRUE serialized UTF-8 bytes
     });
     const { deps } = await makeFixture(contract);
     const tool = buildTool(contract, deps);
-    const presented = (tool as {
-      inputSchema: { '~standard': { jsonSchema: { input: () => unknown } } };
-    }).inputSchema['~standard'].jsonSchema.input();
+    const presented = (
+      tool as {
+        inputSchema: { '~standard': { jsonSchema: { input: () => unknown } } };
+      }
+    ).inputSchema['~standard'].jsonSchema.input();
     expect(presented).toEqual(schema);
   });
 });
@@ -638,12 +647,22 @@ describe('B-2: symbol-keyed and non-enumerable fields are REJECTED, never droppe
       })(),
       (() => {
         const s: Record<string, unknown> = { type: 'object' };
-        Object.defineProperty(s, 'hidden', { value: CANARY, enumerable: false, configurable: true });
+        Object.defineProperty(s, 'hidden', {
+          value: CANARY,
+          enumerable: false,
+          configurable: true,
+        });
         return s;
       })(),
       (() => {
         const s: Record<string, unknown> = { type: 'object', sneaky: CANARY };
-        Object.defineProperty(s, 'sneaky', { get() { return CANARY; }, enumerable: true, configurable: true });
+        Object.defineProperty(s, 'sneaky', {
+          get() {
+            return CANARY;
+          },
+          enumerable: true,
+          configurable: true,
+        });
         return s;
       })(),
     ];
@@ -684,13 +703,34 @@ const GUARD_ENVELOPE = { victCapabilityFailure: 'VICT_CAPABILITY_INPUT_CONTRACT_
 function hostileArgumentShapes(): Array<{ readonly name: string; readonly args: unknown }> {
   const validRemainder = { proposalKind: 'claim', content: VALID_CLAIM['content'] };
   const shapes: Array<{ name: string; args: unknown }> = [
-    { name: 'object-valued __proto__ (JSON.parse)', args: JSON.parse('{"__proto__": {"injected": true}, "proposalKind": "claim"}') },
-    { name: 'number-valued __proto__ (JSON.parse)', args: JSON.parse('{"__proto__": 5, "proposalKind": "claim"}') },
-    { name: 'string-valued __proto__ (JSON.parse)', args: JSON.parse('{"__proto__": "hostile", "proposalKind": "claim"}') },
-    { name: 'boolean-valued __proto__ (JSON.parse)', args: JSON.parse('{"__proto__": true, "proposalKind": "claim"}') },
-    { name: 'null-valued __proto__ (JSON.parse)', args: JSON.parse('{"__proto__": null, "proposalKind": "claim"}') },
-    { name: 'own __proto__ data property via computed key (undefined value)', args: { ['__proto__']: undefined, proposalKind: 'claim' } },
-    { name: 'own constructor key', args: JSON.parse('{"constructor": {"prototype": true}, "proposalKind": "claim"}') },
+    {
+      name: 'object-valued __proto__ (JSON.parse)',
+      args: JSON.parse('{"__proto__": {"injected": true}, "proposalKind": "claim"}'),
+    },
+    {
+      name: 'number-valued __proto__ (JSON.parse)',
+      args: JSON.parse('{"__proto__": 5, "proposalKind": "claim"}'),
+    },
+    {
+      name: 'string-valued __proto__ (JSON.parse)',
+      args: JSON.parse('{"__proto__": "hostile", "proposalKind": "claim"}'),
+    },
+    {
+      name: 'boolean-valued __proto__ (JSON.parse)',
+      args: JSON.parse('{"__proto__": true, "proposalKind": "claim"}'),
+    },
+    {
+      name: 'null-valued __proto__ (JSON.parse)',
+      args: JSON.parse('{"__proto__": null, "proposalKind": "claim"}'),
+    },
+    {
+      name: 'own __proto__ data property via computed key (undefined value)',
+      args: { ['__proto__']: undefined, proposalKind: 'claim' },
+    },
+    {
+      name: 'own constructor key',
+      args: JSON.parse('{"constructor": {"prototype": true}, "proposalKind": "claim"}'),
+    },
     { name: 'own prototype key', args: JSON.parse('{"prototype": [], "proposalKind": "claim"}') },
     {
       name: 'nested hostile key inside an array of objects',
@@ -843,9 +883,9 @@ describe('B-4: hostile prototype-named raw arguments are rejected with ZERO effe
     expect(tool[Symbol.for('mastra.core.tool.Tool')]).toBe(true);
     expect(typeof tool['execute']).toBe('function');
     // The provider-facing declaration surface is UNCHANGED by the wrap.
-    const standard = (tool['inputSchema'] as { '~standard': { jsonSchema: { input: () => unknown } } })[
-      '~standard'
-    ];
+    const standard = (
+      tool['inputSchema'] as { '~standard': { jsonSchema: { input: () => unknown } } }
+    )['~standard'];
     expect(standard.jsonSchema.input()).toEqual(PROPOSAL_INPUT_SCHEMA);
   });
 });
@@ -939,7 +979,9 @@ describe('adjacent cleanup: the captured output schema rides the REAL outputSche
   it('tool.outputSchema[~standard].jsonSchema.output() returns the captured output schema', async () => {
     const { deps } = await makeFixture(makeQuellightExactProposalContract());
     const tool = buildTool(makeQuellightExactProposalContract(), deps) as {
-      outputSchema: { '~standard': { jsonSchema: { input: () => unknown; output: () => unknown } } };
+      outputSchema: {
+        '~standard': { jsonSchema: { input: () => unknown; output: () => unknown } };
+      };
     };
     const output = tool.outputSchema['~standard'].jsonSchema.output() as Record<string, unknown>;
     expect(output).toBeDefined();
