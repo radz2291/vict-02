@@ -378,7 +378,7 @@ const TRAP_NAMES = [
   'construct',
 ] as const;
 
-function countedProxy(target: unknown): {
+function countedProxy(target: object): {
   proxy: unknown;
   totalTraps: () => number;
   counts: Record<string, number>;
@@ -387,9 +387,12 @@ function countedProxy(target: unknown): {
   const handler: Record<string, unknown> = {};
   for (const trap of TRAP_NAMES) {
     counts[trap] = 0;
-    handler[trap] = function (...args: unknown[]) {
+    handler[trap] = function (this: unknown, ...args: unknown[]) {
       counts[trap] = (counts[trap] ?? 0) + 1;
-      return (Reflect as unknown as Record<string, (...a: unknown[]) => unknown>)[trap](...args);
+      const reflectTrap = (Reflect as unknown as Record<string, (...a: unknown[]) => unknown>)[
+        trap
+      ] as (...a: unknown[]) => unknown;
+      return reflectTrap(this, ...args);
     };
   }
   return {
@@ -417,7 +420,7 @@ function schemaOfExactSize(targetBytes: number): Record<string, string> {
   let field = 0;
   while (size < targetBytes) {
     const key = `f${String(field % 16).padStart(2, '0')}`;
-    if (out[key].length >= maxCharsPerField) {
+    if ((out[key] ?? '').length >= maxCharsPerField) {
       field += 1;
       if (field >= 16) {
         throw new Error(`cannot reach target ${targetBytes} within per-string bound`);
@@ -595,7 +598,12 @@ describe('B-2: symbol-keyed and non-enumerable fields are REJECTED, never droppe
   it('an ENUMERABLE own symbol-keyed field rejects construction (rc.1 silently dropped it)', () => {
     const schema: Record<string, unknown> = { type: 'object', visible: true };
     const symbolKey = Symbol('audit-symbol');
-    (schema as Record<PropertySymbol, unknown>)[symbolKey] = 'symbol-payload';
+    Object.defineProperty(schema, symbolKey, {
+      value: 'symbol-payload',
+      enumerable: true,
+      configurable: true,
+      writable: true,
+    });
     expect(() => capturePresentationSchema(schema, 'probe')).toThrowError(VictPresentationError);
     try {
       capturePresentationSchema(schema, 'probe');
@@ -639,7 +647,7 @@ describe('B-2: symbol-keyed and non-enumerable fields are REJECTED, never droppe
 
   it('hostile canaries never appear in any capture error', () => {
     const CANARY = 'AUDIT-CANARY-HOSTILE-VALUE';
-    const hostileInputs: unknown[] = [
+    const hostileInputs: Array<Record<string | symbol, unknown>> = [
       (() => {
         const s: Record<string | symbol, unknown> = { type: 'object' };
         s[Symbol('s')] = CANARY;
@@ -880,7 +888,8 @@ describe('B-4: hostile prototype-named raw arguments are rejected with ZERO effe
     const tool = buildTool(permissiveContract, deps) as Record<string, unknown>;
     // The REAL tool object is the Mastra Tool instance (marker present) and
     // only `execute` was wrapped.
-    expect(tool[Symbol.for('mastra.core.tool.Tool')]).toBe(true);
+    const toolMarker = Symbol.for('mastra.core.tool.Tool');
+    expect((tool as Record<symbol, unknown>)[toolMarker]).toBe(true);
     expect(typeof tool['execute']).toBe('function');
     // The provider-facing declaration surface is UNCHANGED by the wrap.
     const standard = (
@@ -945,7 +954,7 @@ describe('B-4: the real provider-tool conversion path still carries the full cap
       // already captured when this surfaces.
     }
     expect(captured.length).toBeGreaterThan(0);
-    const call = captured[captured.length - 1];
+    const call = captured[captured.length - 1] as Record<string, unknown>;
     const tools = (call['tools'] as Array<Record<string, unknown>>) ?? [];
     expect(tools.length).toBeGreaterThan(0);
     const bound = tools.find((candidate) =>
