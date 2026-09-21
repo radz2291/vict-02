@@ -239,35 +239,35 @@ describe('@victframework/sdk authoring ABI (Stage 04)', () => {
     expect(Object.isFrozen(pack.manifest)).toBe(true);
   });
 
-// ---- B-1 remediation: the bounded capability description field ------------
+  // ---- B-1 remediation: the bounded capability description field ------------
 
-describe('capability description (model-facing presentation; B-1)', () => {
-  it('defineCapability captures the bounded description as frozen inert data', () => {
-    const description =
-      'Draft an inert pending proposal for user review; never confirms or saves canonical memory.';
-    const capability = defineCapability({
-      id: 'smoke.described',
-      revision: '1',
-      effect: 'write',
-      description,
-      input: neutralJsonContract,
-      output: neutralJsonContract,
-      invoke: async () => ({ accepted: true }),
+  describe('capability description (model-facing presentation; B-1)', () => {
+    it('defineCapability captures the bounded description as frozen inert data', () => {
+      const description =
+        'Draft an inert pending proposal for user review; never confirms or saves canonical memory.';
+      const capability = defineCapability({
+        id: 'smoke.described',
+        revision: '1',
+        effect: 'write',
+        description,
+        input: neutralJsonContract,
+        output: neutralJsonContract,
+        invoke: async () => ({ accepted: true }),
+      });
+      expect(capability.description).toBe(description);
+      expect(Object.isFrozen(capability)).toBe(true);
     });
-    expect(capability.description).toBe(description);
-    expect(Object.isFrozen(capability)).toBe(true);
-  });
 
-  it('the description field is optional and absent by default', () => {
-    const capability = defineCapability({
-      id: 'smoke.undescribed',
-      revision: '1',
-      effect: 'read',
-      input: neutralJsonContract,
-      output: neutralJsonContract,
-      invoke: async () => undefined,
+    it('the description field is optional and absent by default', () => {
+      const capability = defineCapability({
+        id: 'smoke.undescribed',
+        revision: '1',
+        effect: 'read',
+        input: neutralJsonContract,
+        output: neutralJsonContract,
+        invoke: async () => undefined,
+      });
+      expect(capability.description).toBeUndefined();
     });
-    expect(capability.description).toBeUndefined();
   });
-});
 });

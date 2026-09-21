@@ -160,7 +160,10 @@ const proposalInputContract: Contract<unknown> = defineContract<unknown>({
       }
     }
     for (const field of requiredFields) {
-      if (typeof contentRecord[field] !== 'string' || (contentRecord[field] as string).length === 0) {
+      if (
+        typeof contentRecord[field] !== 'string' ||
+        (contentRecord[field] as string).length === 0
+      ) {
         return {
           ok: false as const,
           issues: [{ code: 'missing_field', path: `content.${field}`, message: 'string required' }],
@@ -195,7 +198,9 @@ const proposalOutputContract: Contract<unknown> = defineContract<unknown>({
   parse: (input) => ({ ok: true as const, value: input }),
 });
 
-function makeProposalCapability(overrides: Partial<CapabilityDefinition> = {}): CapabilityDefinition {
+function makeProposalCapability(
+  overrides: Partial<CapabilityDefinition> = {},
+): CapabilityDefinition {
   return {
     id: 'cap.proposal.draft',
     revision: '3',
@@ -225,7 +230,9 @@ function providerFacingInputSchema(tool: unknown): unknown {
   expect(typeof standard.validate).toBe('function');
   expect(typeof standard.jsonSchema.input).toBe('function');
   expect(typeof standard.jsonSchema.output).toBe('function');
-  return standard.jsonSchema.input({ target: 'draft-07' });
+  return (standard.jsonSchema.input as (options?: { target?: string }) => unknown)({
+    target: 'draft-07',
+  });
 }
 
 interface Fixture {
@@ -292,10 +299,7 @@ const SCOPE = {
   threadId: 'thread-presentation',
 };
 
-async function executeTool(
-  tool: unknown,
-  input: unknown,
-): Promise<unknown> {
+async function executeTool(tool: unknown, input: unknown): Promise<unknown> {
   const exec = (tool as { execute: unknown }).execute as (
     i: unknown,
     c: unknown,
@@ -341,9 +345,7 @@ describe('B-1: the real tool object exposes the captured model-facing schema', (
     );
     expect(description).toContain('never confirms, saves, or changes canonical memory');
     expect(description).toContain('claim');
-    expect(description.length).toBeLessThanOrEqual(
-      120 + PRESENTATION_BOUNDS.maxDescriptionChars,
-    );
+    expect(description.length).toBeLessThanOrEqual(120 + PRESENTATION_BOUNDS.maxDescriptionChars);
   });
 
   it('buildCapabilityTools exposes the same captured declaration to the agent', async () => {
@@ -360,10 +362,12 @@ describe('B-1: the real tool object exposes the captured model-facing schema', (
     const { deps } = await makeFixture(makeProposalCapability());
     const toolA = bridgeCapabilityToolToMastra(ACTIVATION, makeProposalCapability(), deps);
     const toolB = bridgeCapabilityToolToMastra(ACTIVATION, makeProposalCapability(), deps);
-    const outputA = (toolA as { inputSchema: { '~standard': { jsonSchema: { output: () => unknown } } } })
-      .inputSchema['~standard'].jsonSchema.output();
-    const outputB = (toolB as { inputSchema: { '~standard': { jsonSchema: { output: () => unknown } } } })
-      .inputSchema['~standard'].jsonSchema.output();
+    const outputA = (
+      toolA as { inputSchema: { '~standard': { jsonSchema: { output: () => unknown } } } }
+    ).inputSchema['~standard'].jsonSchema.output();
+    const outputB = (
+      toolB as { inputSchema: { '~standard': { jsonSchema: { output: () => unknown } } } }
+    ).inputSchema['~standard'].jsonSchema.output();
     expect(JSON.stringify(outputA)).toBe(JSON.stringify(outputB));
     expect(JSON.stringify(providerFacingInputSchema(toolA))).toBe(
       JSON.stringify(providerFacingInputSchema(toolB)),
@@ -390,9 +394,7 @@ describe('B-1: invalid presentation metadata fails closed at tool construction',
     try {
       bridgeCapabilityToolToMastra(ACTIVATION, undescribed, deps);
     } catch (error) {
-      expect((error as VictPresentationError).code).toBe(
-        'VICT_PRESENTATION_INPUT_SCHEMA_REQUIRED',
-      );
+      expect((error as VictPresentationError).code).toBe('VICT_PRESENTATION_INPUT_SCHEMA_REQUIRED');
     }
     // The same refusal applies when NO input contract is declared at all.
     const noContract = makeProposalCapability({ input: undefined });
@@ -410,9 +412,12 @@ describe('B-1: invalid presentation metadata fails closed at tool construction',
           {},
           {
             type: { value: 'object', enumerable: true },
-            sneaky: { get() {
-              return 'payload';
-            }, enumerable: true },
+            sneaky: {
+              get() {
+                return 'payload';
+              },
+              enumerable: true,
+            },
           },
         ),
         label,
@@ -443,7 +448,10 @@ describe('B-1: invalid presentation metadata fails closed at tool construction',
     );
     // Overbound string.
     expect(() =>
-      capturePresentationSchema({ text: 'x'.repeat(PRESENTATION_BOUNDS.maxStringLength + 1) }, label),
+      capturePresentationSchema(
+        { text: 'x'.repeat(PRESENTATION_BOUNDS.maxStringLength + 1) },
+        label,
+      ),
     ).toThrowError(VictPresentationError);
     // Overbound depth.
     let deep: unknown = 'leaf';
@@ -453,24 +461,25 @@ describe('B-1: invalid presentation metadata fails closed at tool construction',
     expect(() => capturePresentationSchema(deep, label)).toThrowError(VictPresentationError);
     // Symbol-keyed data is invisible to the capture (own enumerable string
     // keys only) and a bare symbol fails closed.
-    expect(() => capturePresentationSchema(Symbol('x'), label)).toThrowError(
-      VictPresentationError,
-    );
+    expect(() => capturePresentationSchema(Symbol('x'), label)).toThrowError(VictPresentationError);
     // Non-object schema root.
     expect(() => capturePresentationSchema('type: object', label)).toThrowError(
       VictPresentationError,
     );
     // Invalid description.
     expect(() => captureCapabilityDescription(42)).toThrowError(VictPresentationError);
-    expect(() => captureCapabilityDescription('x'.repeat(PRESENTATION_BOUNDS.maxDescriptionChars + 1)))
-      .toThrowError(VictPresentationError);
+    expect(() =>
+      captureCapabilityDescription('x'.repeat(PRESENTATION_BOUNDS.maxDescriptionChars + 1)),
+    ).toThrowError(VictPresentationError);
   });
 
   it('descriptive-schema mutation after construction cannot alter the built tool', async () => {
     const { deps } = await makeFixture(makeProposalCapability());
     // A HAND-BUILT (not defineCapability-captured) definition whose schema
     // payload is deliberately mutable.
-    const mutableSchema: Record<string, unknown> = JSON.parse(JSON.stringify(PROPOSAL_INPUT_SCHEMA));
+    const mutableSchema: Record<string, unknown> = JSON.parse(
+      JSON.stringify(PROPOSAL_INPUT_SCHEMA),
+    );
     (mutableSchema as { properties: Record<string, unknown> }).properties['injected'] = {
       type: 'string',
     };
@@ -520,7 +529,11 @@ describe('B-1: the presentation can never bypass the authoritative contract', ()
       },
       {
         proposalKind: 'open_loop',
-        content: { subject: 'Transition', loopKind: 'undecided_question', detail: 'Fast or gradual?' },
+        content: {
+          subject: 'Transition',
+          loopKind: 'undecided_question',
+          detail: 'Fast or gradual?',
+        },
       },
     ]) {
       const outcome = (await executeTool(tool, args)) as { accepted?: boolean };
@@ -543,7 +556,13 @@ describe('B-1: the presentation can never bypass the authoritative contract', ()
       // wrong content shape for the kind
       {
         proposalKind: 'commitment',
-        content: { subject: 'x', epistemicType: 'E5', honestyState: 'likely', confidence: 'stated', statement: 'x' },
+        content: {
+          subject: 'x',
+          epistemicType: 'E5',
+          honestyState: 'likely',
+          confidence: 'stated',
+          statement: 'x',
+        },
       },
       // unknown field
       {
@@ -558,7 +577,9 @@ describe('B-1: the presentation can never bypass the authoritative contract', ()
         },
       },
       // prototype-named key
-      JSON.parse('{"proposalKind": "claim", "__proto__": {"injected": true}, "content": {"subject":"s","epistemicType":"E5","honestyState":"likely","confidence":"stated","statement":"x"}}'),
+      JSON.parse(
+        '{"proposalKind": "claim", "__proto__": {"injected": true}, "content": {"subject":"s","epistemicType":"E5","honestyState":"likely","confidence":"stated","statement":"x"}}',
+      ),
       // non-object
       'draft a proposal',
     ];
@@ -592,7 +613,11 @@ describe('B-1: the presentation can never bypass the authoritative contract', ()
       parse: proposalInputContract.parse,
     });
     const { deps, effectCount } = await makeFixture(makeProposalCapability({ input: lyingInput }));
-    const tool = bridgeCapabilityToolToMastra(ACTIVATION, makeProposalCapability({ input: lyingInput }), deps);
+    const tool = bridgeCapabilityToolToMastra(
+      ACTIVATION,
+      makeProposalCapability({ input: lyingInput }),
+      deps,
+    );
     // The tool DOES present the lying schema (presentation is inert)...
     expect(providerFacingInputSchema(tool)).toEqual({
       type: 'string',
@@ -600,7 +625,10 @@ describe('B-1: the presentation can never bypass the authoritative contract', ()
     });
     // ...but the hostile arguments STILL fail the authoritative parse and
     // the well-formed arguments STILL succeed — unchanged by the schema.
-    const rejected = (await executeTool(tool, 'a string as the lying schema suggests')) as Record<string, unknown>;
+    const rejected = (await executeTool(tool, 'a string as the lying schema suggests')) as Record<
+      string,
+      unknown
+    >;
     expect(
       rejected['error'] === true ||
         rejected['victCapabilityFailure'] === 'VICT_CAPABILITY_INPUT_CONTRACT_REJECTED',

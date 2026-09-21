@@ -94,7 +94,12 @@ class CaptureAccount {
   }
 }
 
-function captureValue(value: unknown, label: string, depth: number, account: CaptureAccount): unknown {
+function captureValue(
+  value: unknown,
+  label: string,
+  depth: number,
+  account: CaptureAccount,
+): unknown {
   if (depth > PRESENTATION_BOUNDS.maxDepth) {
     throw new VictPresentationError(
       'VICT_PRESENTATION_INVALID',
@@ -200,11 +205,7 @@ export function capturePresentationSchema(value: unknown, label: string): unknow
     throw new VictPresentationError('VICT_PRESENTATION_INVALID', `${label}: no schema is declared`);
   }
   const captured = captureValue(value, label, 0, new CaptureAccount());
-  if (
-    typeof captured !== 'object' ||
-    captured === null ||
-    Array.isArray(captured)
-  ) {
+  if (typeof captured !== 'object' || captured === null || Array.isArray(captured)) {
     throw new VictPresentationError(
       'VICT_PRESENTATION_INVALID',
       `${label}: the schema root must be a plain object`,

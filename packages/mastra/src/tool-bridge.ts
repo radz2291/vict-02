@@ -946,9 +946,8 @@ export function bridgeCapabilityToolToMastra(
   // — the bridge never fabricates the misleading generic `{type:"object"}`
   // input schema, and invalid presentation metadata aborts construction.
   const boundedDescription = captureCapabilityDescription(definition.description);
-  const inputPresentation = (
-    inputContract as { descriptiveJsonSchema?: unknown } | undefined
-  )?.descriptiveJsonSchema;
+  const inputPresentation = (inputContract as { descriptiveJsonSchema?: unknown } | undefined)
+    ?.descriptiveJsonSchema;
   if (inputPresentation === undefined) {
     throw new VictPresentationError(
       'VICT_PRESENTATION_INPUT_SCHEMA_REQUIRED',
@@ -959,9 +958,8 @@ export function bridgeCapabilityToolToMastra(
     inputPresentation,
     `capability '${capabilityId}' input schema`,
   );
-  const outputPresentation = (
-    outputContract as { descriptiveJsonSchema?: unknown } | undefined
-  )?.descriptiveJsonSchema;
+  const outputPresentation = (outputContract as { descriptiveJsonSchema?: unknown } | undefined)
+    ?.descriptiveJsonSchema;
   const capturedOutputSchema =
     outputPresentation === undefined
       ? undefined

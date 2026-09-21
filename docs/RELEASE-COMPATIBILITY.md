@@ -97,6 +97,25 @@
 > (frozen §7 tag rule), the candidate tag `vict-0.3.0-rc` remains
 > `0.3.0-rc.1` untouched, and `0.2.0` remains available.
 >
+> **Coordinated candidate release set 0.3.1-rc.1 (2026-09-22) — PREPARED,
+> PUBLICATION PENDING (verification candidate):** the sixth immutable
+> release set — `vict-release-set@1/0.3.1-rc.1`, all 13 members at
+> `0.3.1-rc.1` — carries the B-1 model-facing capability-schema remediation
+> (frozen contract
+> `docs/report/VICT-MODEL-FACING-CAPABILITY-SCHEMA-CONTRACT.md`): the
+> neutral descriptive presentation API (optional `descriptiveJsonSchema` on
+> the contract declaration; optional bounded `description` on the
+> capability definition), the safe bounded fail-closed presentation capture
+> in the Mastra bridge, provider-facing tool schemas that carry the exact
+> captured structure instead of the fabricated generic `{type:object}`
+> object, fail-closed construction for model-facing capabilities without a
+> usable descriptive input schema, and adapter revision 1 → 2.
+> Graph-only execution is unchanged. Set status: **verification candidate,
+> to be published under the candidate tag `vict-0.3.1-rc` through the
+> trusted-OIDC release workflow (`.github/workflows/release.yml`);
+> `latest` remains `0.3.0` and stable `0.3.1` is NOT published.**
+> Independent verification is outstanding.
+>
 > **Coordinated candidate release set 0.3.0-rc.1 (2026-09-21) —
 > PUBLISHED AND INDEPENDENTLY RE-VERIFIED (verification candidate):** the fourth
 > immutable release set — `vict-release-set@1/0.3.0-rc.1`, all 13 members
@@ -149,27 +168,27 @@ new set. Nothing is ever unpublished, re-published, or mutated.
 ```json
 {
   "vict-release-set": {
-    "identity": "vict-release-set@1/0.3.0",
-    "contentId": "v1_5f3a074a50ab5623acbf933d52a24e6d383ded2ccd02bbaa78a28c3be3915580",
+    "identity": "vict-release-set@1/0.3.1-rc.1",
+    "contentId": "v1_b6e39c1f6d6f627c03dfe12e8eb4bc0b6b8bb7f7746b4b871cf00d3c7f7ae731",
     "contentIdAlgorithm": "sha256 over the sorted newline-joined 'name@version' list of the exact member set, prefixed v1_",
-    "version": "0.3.0",
+    "version": "0.3.1-rc.1",
     "access": "public",
     "registry": "https://registry.npmjs.org/",
     "license": "Apache-2.0",
     "packages": {
-      "@victframework/appdata-sqlite": "0.3.0",
-      "@victframework/application": "0.3.0",
-      "@victframework/cli": "0.3.0",
-      "@victframework/contracts": "0.3.0",
-      "@victframework/control": "0.3.0",
-      "@victframework/kernel": "0.3.0",
-      "@victframework/mastra": "0.3.0",
-      "@victframework/renderer-svelte": "0.3.0",
-      "@victframework/runtime": "0.3.0",
-      "@victframework/scaffolder": "0.3.0",
-      "@victframework/sdk": "0.3.0",
-      "@victframework/server": "0.3.0",
-      "@victframework/store-sqlite": "0.3.0"
+      "@victframework/appdata-sqlite": "0.3.1-rc.1",
+      "@victframework/application": "0.3.1-rc.1",
+      "@victframework/cli": "0.3.1-rc.1",
+      "@victframework/contracts": "0.3.1-rc.1",
+      "@victframework/control": "0.3.1-rc.1",
+      "@victframework/kernel": "0.3.1-rc.1",
+      "@victframework/mastra": "0.3.1-rc.1",
+      "@victframework/renderer-svelte": "0.3.1-rc.1",
+      "@victframework/runtime": "0.3.1-rc.1",
+      "@victframework/scaffolder": "0.3.1-rc.1",
+      "@victframework/sdk": "0.3.1-rc.1",
+      "@victframework/server": "0.3.1-rc.1",
+      "@victframework/store-sqlite": "0.3.1-rc.1"
     }
   }
 }
@@ -186,6 +205,33 @@ publishability property).
 
 Prior release sets are never mutated, re-published, or unpublished;
 their registry artifacts remain available for explicit pinning.
+
+The immediate predecessor stable set, preserved exactly as it was
+recorded while it was the current set:
+
+```text
+vict-release-set@1/0.3.0
+contentId: v1_5f3a074a50ab5623acbf933d52a24e6d383ded2ccd02bbaa78a28c3be3915580
+contentIdAlgorithm: sha256 over the sorted newline-joined 'name@version' list of the exact member set, prefixed v1_
+version: 0.3.0
+access: public
+registry: https://registry.npmjs.org/
+license: Apache-2.0
+packages:
+  @victframework/appdata-sqlite   0.3.0
+  @victframework/application      0.3.0
+  @victframework/cli              0.3.0
+  @victframework/contracts        0.3.0
+  @victframework/control          0.3.0
+  @victframework/kernel           0.3.0
+  @victframework/mastra           0.3.0
+  @victframework/renderer-svelte  0.3.0
+  @victframework/runtime          0.3.0
+  @victframework/scaffolder       0.3.0
+  @victframework/sdk              0.3.0
+  @victframework/server           0.3.0
+  @victframework/store-sqlite     0.3.0
+```
 
 The candidate release set, preserved exactly as it was recorded while it
 was the current set (published under the candidate tag `vict-0.3.0-rc`;
@@ -285,7 +331,7 @@ installable by exact pin regardless of which set `latest` points to.
 ## 3. Dependency graph and exact pins
 
 All intra-VICT dependencies inside the release set are EXACT pins of
-`0.3.0` — no ranges, no `workspace:`/`file:`/`git` specifiers in any
+`0.3.1-rc.1` — no ranges, no `workspace:`/`file:`/`git` specifiers in any
 published manifest. Verified dependency direction (acyclic):
 
 ```text
