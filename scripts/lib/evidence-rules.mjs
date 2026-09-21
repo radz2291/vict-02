@@ -19,26 +19,26 @@ import { createHash } from 'node:crypto';
  * be pointed at any other version, source, run, or registry.
  */
 export const BOUND_CANDIDATE = Object.freeze({
-  version: '0.3.0-rc.1',
-  sourceSha: 'a98dd015a3cb6f8e210447dcc89f5cdefab02ec9',
-  originalRunId: 35530894104,
-  originalRunUrl: 'https://github.com/radz2291/vict-02/actions/runs/35530894104',
+  version: '0.3.1-rc.1',
+  sourceSha: '948d8e514d5657e4b76df54e2168101c8e084267',
+  originalRunId: 35625570254,
+  originalRunUrl: 'https://github.com/radz2291/vict-02/actions/runs/35625570254',
   originalWorkflowPath: '.github/workflows/release.yml',
   originalRunConclusion: 'failure',
   packageCount: 13,
   registry: 'https://registry.npmjs.org/',
   repository: 'radz2291/vict-02',
   repositoryUrl: 'https://github.com/radz2291/vict-02',
-  releaseSetIdentity: 'vict-release-set@1/0.3.0-rc.1',
-  expectedContentId: 'v1_9117e0cbd3f3fe520238442e237889bf3b9a50916327051487b8a497551500a4',
-  correctedEngineSha: '8844f54e0a6d59f1d81f241eb7ce32d3bad21e8c',
-  candidateTag: 'vict-0.3.0-rc',
-  expectedLatest: '0.2.0',
-  forbiddenStableVersion: '0.3.0',
+  releaseSetIdentity: 'vict-release-set@1/0.3.1-rc.1',
+  expectedContentId: 'v1_b6e39c1f6d6f627c03dfe12e8eb4bc0b6b8bb7f7746b4b871cf00d3c7f7ae731',
+  correctedEngineSha: '948d8e514d5657e4b76df54e2168101c8e084267',
+  candidateTag: 'vict-0.3.1-rc',
+  expectedLatest: '0.3.0',
+  forbiddenStableVersion: '0.3.1',
   provenanceRef: 'refs/heads/main',
   provenanceBuilderId: 'https://github.com/actions/runner/github-hosted',
-  amendment: 'docs/report/VICT-TRUSTED-PUBLISHING-EVIDENCE-RECOVERY-AMENDMENT.md',
-  evidenceSchema: 'vict-m1-evidence-recovery@1',
+  amendment: 'docs/report/VICT-0.3.1-RC1-EVIDENCE-RECOVERY-AMENDMENT.md',
+  evidenceSchema: 'vict-candidate-evidence-recovery@2',
 });
 
 /** The evidence workflow file this recovery is implemented by. */

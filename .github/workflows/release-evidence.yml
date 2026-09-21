@@ -1,24 +1,33 @@
 name: VICT-M-1 candidate evidence recovery (read-only)
 
-# Owner-approved, narrowly bounded evidence recovery for Blocking finding
-# B-1 (docs/report/VICT-M-1-INDEPENDENT-VERIFICATION.md), governed by
-# docs/report/VICT-TRUSTED-PUBLISHING-EVIDENCE-RECOVERY-AMENDMENT.md.
+# Owner-approved, narrowly bounded evidence recovery for the candidate
+# publication runs whose same-run registry verification failed on
+# registry propagation lag (the B-1 verification-timing class).
+#
+# History: first bound to the immutable `0.3.0-rc.1` candidate (source
+# a98dd015a3cb6f8e210447dcc89f5cdefab02ec9, publication run 35530894104;
+# governed by docs/report/VICT-TRUSTED-PUBLISHING-EVIDENCE-RECOVERY-AMENDMENT.md;
+# closed by docs/report/VICT-M-1-CANDIDATE-EVIDENCE-RECOVERY.md). The
+# bound now moves to the `0.3.1-rc.1` candidate per
+# docs/report/VICT-0.3.1-RC1-EVIDENCE-RECOVERY-AMENDMENT.md (publication
+# run 35625570254: ALL 13 packages published under vict-0.3.1-rc; the
+# final same-run registry verification failed on CDN propagation lag).
 #
 # This workflow is READ-ONLY:
 # - permissions are exactly `contents: read`; it holds NO OIDC write
 #   authority, NO environment, NO npm credential, NO secret of any kind;
 # - it never invokes any registry-mutating npm command and never grants
 #   publication or distribution-tag authority;
-# - the immutable candidate `0.3.0-rc.1` (source a98dd015a3cb6f8e210447d
-#   dcc89f5cdefab02ec9, publication run 35530894104) is verified as it
+# - the immutable candidate `0.3.1-rc.1` (source 948d8e514d5657e4b76df54e2
+#   168101c8e084267, publication run 35625570254) is verified as it
 #   exists on the public registry; nothing is republished or modified.
 #
-# The corrected release engine (commit 8844f54e, remediation lineage) is
-# used through its non-mutating pack/verify-registry subcommands only;
-# the candidate source is independently checked out and rebuilt at the
-# exact bound SHA. This workflow cannot publish anything and is not a
-# general release-repair platform: it is bounded to the exact candidate
-# above and fails closed on any deviation.
+# The release engine at the exact release source is used through its
+# non-mutating pack/verify-registry subcommands only; the candidate
+# source is independently checked out and rebuilt at the exact bound SHA.
+# This workflow cannot publish anything and is not a general
+# release-repair platform: it is bounded to the exact candidate above and
+# fails closed on any deviation.
 
 on:
   workflow_dispatch:
@@ -27,17 +36,17 @@ on:
         description: 'Must equal the bound candidate source (any other value fails the run)'
         required: false
         type: string
-        default: 'a98dd015a3cb6f8e210447dcc89f5cdefab02ec9'
+        default: '948d8e514d5657e4b76df54e2168101c8e084267'
       version:
         description: 'Must equal the bound candidate version (any other value fails the run)'
         required: false
         type: string
-        default: '0.3.0-rc.1'
+        default: '0.3.1-rc.1'
       npm_tag:
         description: 'Must equal the bound candidate tag (any other value fails the run)'
         required: false
         type: string
-        default: 'vict-0.3.0-rc'
+        default: 'vict-0.3.1-rc'
 
 permissions:
   contents: read
