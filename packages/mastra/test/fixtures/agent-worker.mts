@@ -16,6 +16,7 @@ import {
   MastraMemoryDeletionPort,
   MastraProductAgent,
   MastraThreadCoordinator,
+  MASTRA_ADAPTER_COMPATIBILITY,
 } from '@victframework/mastra';
 import { AGENT_PROFILE_SCHEMA } from '@victframework/sdk';
 
@@ -69,7 +70,7 @@ function profileInput(): Parameters<AgentProfileRegistry['registerProfile']>[0] 
     capabilities: [],
     adapter: {
       id: '@victframework/mastra',
-      revision: '2',
+      revision: MASTRA_ADAPTER_COMPATIBILITY.revision,
       runtimePackages: {
         '@mastra/core': '1.64.0',
         '@mastra/memory': '1.28.2',

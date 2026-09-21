@@ -17,6 +17,7 @@ import {
   MastraMemoryDeletionPort,
   MastraProductAgent,
   MastraThreadCoordinator,
+  MASTRA_ADAPTER_COMPATIBILITY,
 } from '@victframework/mastra';
 
 /**
@@ -136,7 +137,7 @@ async function composeFor(
     capabilities: [] as never as Array<{ id: string; revision: string }>,
     adapter: {
       id: '@victframework/mastra',
-      revision: '2',
+      revision: MASTRA_ADAPTER_COMPATIBILITY.revision,
       runtimePackages: {
         '@mastra/core': '1.64.0',
         '@mastra/memory': '1.28.2',
@@ -299,7 +300,7 @@ describe('governed deletion versus in-flight turns (barrier-controlled fencing)'
       capabilities: [] as never as Array<{ id: string; revision: string }>,
       adapter: {
         id: '@victframework/mastra',
-        revision: '2',
+        revision: MASTRA_ADAPTER_COMPATIBILITY.revision,
         runtimePackages: {
           '@mastra/core': '1.64.0',
           '@mastra/memory': '1.28.2',

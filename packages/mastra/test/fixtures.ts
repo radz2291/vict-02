@@ -1,3 +1,4 @@
+import { MASTRA_ADAPTER_COMPATIBILITY } from '@victframework/mastra';
 import { defineAgentProfile, AGENT_PROFILE_SCHEMA } from '@victframework/sdk';
 import type { AgentProfileAuthoring, AgentReference } from '@victframework/sdk';
 
@@ -40,7 +41,7 @@ export function validProfileInput(): AgentProfileAuthoring {
     ],
     adapter: {
       id: '@victframework/mastra',
-      revision: '2',
+      revision: MASTRA_ADAPTER_COMPATIBILITY.revision,
       runtimePackages: {
         '@mastra/core': '1.64.0',
         '@mastra/memory': '1.28.2',

@@ -26,6 +26,7 @@ import {
   captureCapabilityDescription,
   capturePresentationSchema,
 } from './presentation.js';
+import { attachRawToolArgumentGuard } from './raw-argument-guard.js';
 
 /**
  * Stage 06B — the VICT capability-to-Mastra tool bridge (AI-005/006,
@@ -967,7 +968,17 @@ export function bridgeCapabilityToolToMastra(
   const clock = deps.clock ?? (() => Date.now());
   const createToolLoose = createTool as unknown as (options: unknown) => unknown;
 
-  return createToolLoose({
+  // Audit-remediation B-4: the RAW-argument guard wraps the PUBLIC
+  // `execute` of the tool object this bridge RETURNS — the earliest
+  // VICT-owned boundary that still sees UNTOUCHED arguments (Mastra's
+  // `convertUndefinedToNull` normalization runs inside that method, before
+  // validation and before the governed pipeline). Own prototype-named keys
+  // (`__proto__`, `constructor`, `prototype`) at any depth, in any value
+  // shape, are rejected with ZERO effect BEFORE upstream preprocessing can
+  // silently drop or act on them. `Contract.parse` remains the sole
+  // authority; the guard only fails closed earlier.
+  return attachRawToolArgumentGuard(
+    createToolLoose({
     id: capabilityId,
     // Bounded, capability-declaration-derived metadata — never authority.
     description:
@@ -979,7 +990,13 @@ export function bridgeCapabilityToolToMastra(
       capturedInputSchema,
       capturedOutputSchema,
     ),
-    outputSchema: standardSchemaFromContract(outputContract, undefined, undefined),
+    // Audit-remediation O-1 cleanup: the captured OUTPUT schema is exposed
+    // on the REAL outputSchema wrapper exactly as the frozen §3.3(4)
+    // specifies — `tool.outputSchema['~standard'].jsonSchema.output()`
+    // returns the captured output presentation (previously the generic
+    // `{type:'object'}` appeared on this surface and the captured schema
+    // was reachable only through the input wrapper's `.output()`).
+    outputSchema: standardSchemaFromContract(outputContract, undefined, capturedOutputSchema),
     execute: async (
       inputData: unknown,
       executionContext: {
@@ -1243,7 +1260,8 @@ export function bridgeCapabilityToolToMastra(
         victCapabilityFailure: 'VICT_CAPABILITY_OUTCOME_UNKNOWN',
       } satisfies CapabilityToolFailure;
     },
-  });
+    }),
+  );
 }
 
 /**

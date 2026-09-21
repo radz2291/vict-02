@@ -27,8 +27,15 @@ export const MASTRA_ADAPTER_ID = '@victframework/mastra';
  * capability tools now present the captured descriptive input/output JSON
  * Schema and the bounded capability description, and model-facing
  * construction fails closed without a usable descriptive input schema.
+ *
+ * Revision 3 (audit-remediation B-1..B-4): the model-visible tool surface
+ * changed again — the raw-argument guard now rejects own prototype-named
+ * keys (any value shape, any depth) BEFORE upstream normalization, the
+ * capture rejects proxies natively (zero trap execution), symbol-keyed and
+ * non-enumerable fields explicitly, and the total presentation bound is
+ * measured as true serialized UTF-8 bytes.
  */
-export const MASTRA_ADAPTER_REVISION = '2';
+export const MASTRA_ADAPTER_REVISION = '3';
 
 /** Exact pinned Mastra package versions used by this adapter. */
 export const MASTRA_PINNED_VERSIONS = {
