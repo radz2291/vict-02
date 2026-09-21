@@ -1,0 +1,121 @@
+name: VICT-M-1 candidate evidence recovery (read-only)
+
+# Owner-approved, narrowly bounded evidence recovery for Blocking finding
+# B-1 (docs/report/VICT-M-1-INDEPENDENT-VERIFICATION.md), governed by
+# docs/report/VICT-TRUSTED-PUBLISHING-EVIDENCE-RECOVERY-AMENDMENT.md.
+#
+# This workflow is READ-ONLY:
+# - permissions are exactly `contents: read`; it holds NO OIDC write
+#   authority, NO environment, NO npm credential, NO secret of any kind;
+# - it never invokes any registry-mutating npm command and never grants
+#   publication or distribution-tag authority;
+# - the immutable candidate `0.3.0-rc.1` (source a98dd015a3cb6f8e210447d
+#   dcc89f5cdefab02ec9, publication run 35530894104) is verified as it
+#   exists on the public registry; nothing is republished or modified.
+#
+# The corrected release engine (commit 8844f54e, remediation lineage) is
+# used through its non-mutating pack/verify-registry subcommands only;
+# the candidate source is independently checked out and rebuilt at the
+# exact bound SHA. This workflow cannot publish anything and is not a
+# general release-repair platform: it is bounded to the exact candidate
+# above and fails closed on any deviation.
+
+on:
+  workflow_dispatch:
+    inputs:
+      source_sha:
+        description: 'Must equal the bound candidate source (any other value fails the run)'
+        required: false
+        type: string
+        default: 'a98dd015a3cb6f8e210447dcc89f5cdefab02ec9'
+      version:
+        description: 'Must equal the bound candidate version (any other value fails the run)'
+        required: false
+        type: string
+        default: '0.3.0-rc.1'
+      npm_tag:
+        description: 'Must equal the bound candidate tag (any other value fails the run)'
+        required: false
+        type: string
+        default: 'vict-0.3.0-rc'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: vict-m1-candidate-evidence-recovery
+  cancel-in-progress: false
+
+env:
+  EVIDENCE_CANDIDATE_ROOT: candidate-src
+  EVIDENCE_PACK_DIR: .evidence-pack
+  EVIDENCE_RESULTS_FILE: m1-evidence-results.json
+
+jobs:
+  evidence-recovery:
+    name: Read-only candidate evidence recovery (13 packages, 0.3.0-rc.1)
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - name: Check out the main lineage (full refs, no persisted credentials)
+        uses: actions/checkout@v6
+        with:
+          ref: main
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Detach the immutable candidate source at the exact bound SHA
+        env:
+          EVIDENCE_SOURCE_SHA: ${{ inputs.source_sha }}
+        run: |
+          git worktree add --detach "$EVIDENCE_CANDIDATE_ROOT" "$EVIDENCE_SOURCE_SHA"
+          test "$(git -C "$EVIDENCE_CANDIDATE_ROOT" rev-parse HEAD)" = "$EVIDENCE_SOURCE_SHA"
+          test -z "$(git -C "$EVIDENCE_CANDIDATE_ROOT" status --porcelain)"
+
+      - name: Use Node 24 (GitHub-hosted runner; no dependency cache)
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          package-manager-cache: false
+
+      - name: Pin npm 11.19.1 (the exact release toolchain)
+        run: npm install -g npm@11.19.1
+
+      - name: Evidence-workflow security audit (read-only, bound, no publication authority)
+        run: node scripts/release-evidence.mjs guard --workflow .github/workflows/release-evidence.yml
+
+      - name: Install the locked dependency graph at the candidate source
+        working-directory: ${{ env.EVIDENCE_CANDIDATE_ROOT }}
+        run: npm ci
+
+      - name: Build the candidate source (all 13 packages)
+        working-directory: ${{ env.EVIDENCE_CANDIDATE_ROOT }}
+        run: npm run build
+
+      - name: 'Pack the rebuilt candidate tarballs (engine subcommand: pack)'
+        run: node scripts/oidc-release.mjs pack --pack-dir "$EVIDENCE_PACK_DIR" --repo-root "$EVIDENCE_CANDIDATE_ROOT"
+
+      - name: Scan the rebuilt candidate tarballs (identity, paths, manifest, content)
+        run: node scripts/scan-release-tarballs.mjs --pack-dir "$EVIDENCE_PACK_DIR" --repo-root "$EVIDENCE_CANDIDATE_ROOT"
+
+      - name: Record the complete read-only evidence chain
+        env:
+          EVIDENCE_SOURCE_SHA: ${{ inputs.source_sha }}
+          EVIDENCE_VERSION: ${{ inputs.version }}
+          EVIDENCE_NPM_TAG: ${{ inputs.npm_tag }}
+        run: |
+          node scripts/release-evidence.mjs verify \
+            --candidate-root "$EVIDENCE_CANDIDATE_ROOT" \
+            --pack-dir "$EVIDENCE_PACK_DIR" \
+            --results-file "$EVIDENCE_RESULTS_FILE" \
+            --source-sha "$EVIDENCE_SOURCE_SHA" \
+            --version "$EVIDENCE_VERSION" \
+            --npm-tag "$EVIDENCE_NPM_TAG"
+
+      - name: Record the evidence artifact
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: m1-candidate-evidence-recovery
+          path: m1-evidence-results.json
+          if-no-files-found: ignore
