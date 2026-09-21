@@ -183,3 +183,68 @@ describe('errorSignalContract (neutral parser)', () => {
     }
   });
 });
+
+// ---- B-1 remediation: the neutral descriptive presentation field ----------
+
+describe('descriptiveJsonSchema (neutral presentation; B-1)', () => {
+  const presentation = {
+    type: 'object',
+    properties: {
+      proposalKind: { type: 'string', enum: ['claim', 'commitment', 'open_loop'] },
+      content: { type: 'object' },
+    },
+    required: ['proposalKind', 'content'],
+    additionalProperties: false,
+  } as const;
+
+  function presentedContract() {
+    return defineContract<{ proposalKind: string }>({
+      id: 'test.presented',
+      revision: '1',
+      expected: 'closed proposal shape',
+      descriptiveJsonSchema: presentation,
+      parse: (input) => {
+        const kind = (input as { proposalKind?: unknown } | null)?.proposalKind;
+        return typeof kind === 'string'
+          ? { ok: true as const, value: input as { proposalKind: string } }
+          : {
+              ok: false as const,
+              issues: [{ code: 'invalid_type', path: 'proposalKind', message: 'kind required' }],
+            };
+      },
+    });
+  }
+
+  it('carries the declared descriptive schema as frozen inert data', () => {
+    const contract = presentedContract();
+    expect(contract.descriptiveJsonSchema).toEqual(presentation);
+    expect(Object.isFrozen(contract)).toBe(true);
+  });
+
+  it('the declared field extends the public surface only when declared', () => {
+    expect(Object.keys(presentedContract()).sort()).toEqual([
+      'descriptiveJsonSchema',
+      'expected',
+      'id',
+      'parse',
+      'revision',
+    ]);
+    // Contracts without presentation data keep the exact prior surface.
+    expect(Object.keys(textContract()).sort()).toEqual(['expected', 'id', 'parse', 'revision']);
+  });
+
+  it('presentation is NEVER consulted by parse (authority separation)', () => {
+    const contract = presentedContract();
+    // A lying presentation cannot change what parse accepts...
+    expect(contract.parse({ proposalKind: 'claim' }).ok).toBe(true);
+    expect(contract.parse({ totally: 'different' }).ok).toBe(false);
+    // The contract OBJECT is frozen: parse and identity can never be
+    // swapped in place. The presentation payload is inert author data;
+    // the tool-construction capture (bridge lane) owns the deep immutable
+    // snapshot, bounds, and fail-closed rules.
+    expect(Object.isFrozen(contract)).toBe(true);
+    expect(() => {
+      (contract as { parse?: unknown })['parse'] = () => ({ ok: true, value: null });
+    }).toThrow();
+  });
+});

@@ -38,6 +38,16 @@ export interface Contract<T = unknown> {
   readonly revision: string;
   /** Human-readable description of the promised shape. */
   readonly expected: string;
+  /**
+   * OPTIONAL passive JSON Schema (plain JSON data, draft-07-compatible
+   * vocabulary) describing the shape this contract accepts, for
+   * NON-AUTHORITATIVE presentation surfaces only (e.g. the model-facing
+   * schema of a capability tool). It is never executed, never consulted
+   * by `parse`, and never authorizes anything: authoritative validation
+   * is `parse` alone. Captured by consumers as bounded inert data
+   * (invalid presentation data fails closed at capture).
+   */
+  readonly descriptiveJsonSchema?: unknown;
   /** Validate an untrusted value. Never throws for invalid input; returns issues instead. */
   parse(input: unknown): ContractResult<T>;
 }
@@ -50,6 +60,18 @@ export interface ContractDefinition<T = unknown> {
   readonly id: string;
   readonly revision: string;
   readonly expected?: string;
+  /**
+   * OPTIONAL passive JSON Schema (plain JSON data, draft-07-compatible
+   * vocabulary) describing the shape this contract accepts, for
+   * NON-AUTHORITATIVE presentation surfaces only (e.g. the model-facing
+   * schema of a capability tool). It is never executed, never consulted
+   * by `parse`, and never authorizes anything: authoritative validation
+   * is `parse` alone. Declared as bounded inert plain data — the
+   * presentation consumer captures it fail-closed at tool construction.
+   * Fulfills the System Reference §6 conceptual `describe?()` semantics
+   * in inert-data form (no author code executes at capture time).
+   */
+  readonly descriptiveJsonSchema?: unknown;
   parse(input: unknown): ContractResult<T>;
 }
 

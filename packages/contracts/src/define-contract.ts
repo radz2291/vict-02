@@ -59,6 +59,13 @@ export function defineContract<T>(definition: ContractDefinition<T>): Contract<T
     id: definition.id,
     revision: definition.revision,
     expected: definition.expected ?? definition.id,
+    // Inert presentation data (declared only): copied by reference into
+    // the frozen contract. It is never executed and is never consulted by
+    // `parse`; presentation consumers capture it fail-closed at tool
+    // construction (bounded inert snapshot).
+    ...(definition.descriptiveJsonSchema !== undefined
+      ? { descriptiveJsonSchema: definition.descriptiveJsonSchema }
+      : {}),
     parse: (input: unknown): ContractResult<T> => definition.parse(input),
   };
   // Non-enumerable brand: official identity marker for capture semantics.

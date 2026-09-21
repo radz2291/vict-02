@@ -118,6 +118,14 @@ export interface CapabilityDefinition<I = unknown, O = unknown> {
   readonly output?: Contract<O>;
   invoke(input: I, context: CapabilityContext): Promise<O> | O;
   /**
+   * OPTIONAL bounded, human-readable, model-facing description of what
+   * this capability does (what to send it, what it never does). Inert
+   * presentation metadata: it can never widen effect, permission, or
+   * contract authority, and it is captured as bounded inert data when a
+   * model-facing tool is built (invalid presentation fails closed).
+   */
+  readonly description?: string;
+  /**
    * Declared idempotency semantics for retryable writes: `'keyed'` means the
    * capability accepts a stable idempotency key (supplied through the
    * capability context) and repeats with the same key are reconciled to one
