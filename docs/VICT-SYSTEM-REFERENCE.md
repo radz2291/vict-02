@@ -1896,6 +1896,49 @@ or historical report is changed.
 
 ---
 
+## 0.30 Implementation increment v0.4.24 — audit findings B-1..B-4 remediated; candidate 0.3.1-rc.2 prepared (documentation update)
+
+**Recorded 2026-09-22.** The independent verification of the
+`0.3.1-rc.1` candidate confirmed four executable deviations from the
+frozen capture contract (B-1 the §4 total bound measured as UTF-16
+units instead of serialized UTF-8 bytes; B-2 symbol-keyed fields
+silently dropped; B-3 hostile plain-target proxies captured with trap
+execution; B-4 primitive/null own `__proto__` arguments vanishing
+before validation and their valid remainders executing) and REFUSED
+stable promotion. The owner-ordered remediation (frozen standalone
+contract, committed alone before executable change) is implemented:
+
+1. **B-1** — the total presentation bound is enforced as the true
+   serialized UTF-8 byte length of the deterministic serialization
+   (values, keys, punctuation, containers, escaping); boundary exact
+   passes, boundary+1 fails; structural bounds retained.
+2. **B-2/O-3** — own symbol-keyed properties (enumerable or not) and
+   non-enumerable own string-keyed fields are REJECTED, never dropped
+   or skipped.
+3. **B-3** — Node's stable native proxy detection rejects every proxy
+   shape BEFORE any inspection with EXACTLY ZERO trap executions
+   (probe-proven before implementation, per the contract's stop
+   condition).
+4. **B-4** — the returned tool's public `execute` is wrapped so VICT
+   inspects raw arguments BEFORE upstream normalization; own
+   `__proto__`/`constructor`/`prototype` keys at any depth, any value
+   shape, including `defineProperty`-created and array-nested keys, are
+   rejected with zero effect. `Contract.parse` remains the sole
+   authority; adapter revision 2 → 3.
+5. **Old-candidate discriminators** — all four findings reproduced
+   against registry-installed `0.3.1-rc.1` in a disposable external
+   consumer (removed afterward); 29 permanent negative controls added
+   on the repaired tree.
+6. **Candidate** — 13 members at `0.3.1-rc.2` (release-set identity
+   `vict-release-set@1/0.3.1-rc.2`, content ID `v1_55d1ad2e…`); the
+   `0.3.1-rc.1` set remains published and immutable; `latest` remains
+   `0.3.0`; stable `0.3.1` is NOT published. Quellight is mechanically
+   repinned to `0.3.1-rc.2` (candidate-repin record in that
+   repository); Q6 remains not formally closed; Execution 4 has not run
+   and is not authorized; Phase Q7 remains BLOCKED — NOT BEGUN.
+
+---
+
 ## 0.29 Implementation increment v0.4.23 — B-1 model-facing capability-schema remediation implemented; candidate 0.3.1-rc.1 published and evidence-recovered (documentation update)
 
 **Recorded 2026-09-22.** Finding B-1: the released 0.3.0 Mastra bridge
