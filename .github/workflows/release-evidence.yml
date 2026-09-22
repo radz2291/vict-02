@@ -16,14 +16,21 @@ name: VICT-M-1 candidate evidence recovery (read-only)
 # docs/report/VICT-0.3.1-RC2-EVIDENCE-RECOVERY-AMENDMENT.md (publication
 # run 35661159776: ALL 13 packages published under vict-0.3.1-rc; the
 # final same-run registry verification failed on CDN propagation lag).
+# The bound now moves to the STABLE 0.3.1 release per
+# docs/report/VICT-0.3.1-STABLE-EVIDENCE-RECOVERY-AMENDMENT.md
+# (publication run 35688234026: ALL 13 packages published under latest
+# from source 446453fc4f6837e50a0bf3254b47d6a208f5b491; the final
+# same-run registry verification failed on CDN propagation lag — the
+# same verification-timing class; the retained candidate tag
+# vict-0.3.1-rc stays exactly at 0.3.1-rc.2).
 #
 # This workflow is READ-ONLY:
 # - permissions are exactly `contents: read`; it holds NO OIDC write
 #   authority, NO environment, NO npm credential, NO secret of any kind;
 # - it never invokes any registry-mutating npm command and never grants
 #   publication or distribution-tag authority;
-# - the immutable candidate `0.3.1-rc.1` (source 948d8e514d5657e4b76df54e2
-#   168101c8e084267, publication run 35625570254) is verified as it
+# - the immutable stable 0.3.1 release (source 446453fc4f6837e50a0bf3254b47d6a208f5b491,
+#   publication run 35688234026) is verified as it
 #   exists on the public registry; nothing is republished or modified.
 #
 # The release engine at the exact release source is used through its
@@ -40,17 +47,17 @@ on:
         description: 'Must equal the bound candidate source (any other value fails the run)'
         required: false
         type: string
-        default: 'a7b0018c460581e5425df80e56b0ccf309a4b4a4'
+        default: '446453fc4f6837e50a0bf3254b47d6a208f5b491'
       version:
         description: 'Must equal the bound candidate version (any other value fails the run)'
         required: false
         type: string
-        default: '0.3.1-rc.2'
+        default: '0.3.1'
       npm_tag:
         description: 'Must equal the bound candidate tag (any other value fails the run)'
         required: false
         type: string
-        default: 'vict-0.3.1-rc'
+        default: 'latest'
 
 permissions:
   contents: read

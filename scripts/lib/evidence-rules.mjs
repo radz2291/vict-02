@@ -19,26 +19,29 @@ import { createHash } from 'node:crypto';
  * be pointed at any other version, source, run, or registry.
  */
 export const BOUND_CANDIDATE = Object.freeze({
-  version: '0.3.1-rc.2',
-  sourceSha: 'a7b0018c460581e5425df80e56b0ccf309a4b4a4',
-  originalRunId: 35661159776,
-  originalRunUrl: 'https://github.com/radz2291/vict-02/actions/runs/35661159776',
+  version: '0.3.1',
+  sourceSha: '446453fc4f6837e50a0bf3254b47d6a208f5b491',
+  originalRunId: 35688234026,
+  originalRunUrl: 'https://github.com/radz2291/vict-02/actions/runs/35688234026',
   originalWorkflowPath: '.github/workflows/release.yml',
   originalRunConclusion: 'failure',
   packageCount: 13,
   registry: 'https://registry.npmjs.org/',
   repository: 'radz2291/vict-02',
   repositoryUrl: 'https://github.com/radz2291/vict-02',
-  releaseSetIdentity: 'vict-release-set@1/0.3.1-rc.2',
-  expectedContentId: 'v1_55d1ad2eb0afaf0e487b3e0b457069e7cfe2ac0bdaed7d443a13287287f0e31f',
-  correctedEngineSha: 'a7b0018c460581e5425df80e56b0ccf309a4b4a4',
-  candidateTag: 'vict-0.3.1-rc',
-  expectedLatest: '0.3.0',
-  forbiddenStableVersion: '0.3.1',
+  releaseSetIdentity: 'vict-release-set@1/0.3.1',
+  expectedContentId: 'v1_1c695280d3afec5e91bfc75d3c99a5a85bc27f6d91127c4d0ce7bd51563c2583',
+  correctedEngineSha: '446453fc4f6837e50a0bf3254b47d6a208f5b491',
+  candidateTag: 'latest',
+  expectedLatest: '0.3.1',
+  // STABLE recovery: there is no forbidden stable version; the guard is
+  // disabled (null) and the retained CANDIDATE tags must instead hold exact.
+  forbiddenStableVersion: null,
+  retainedTags: Object.freeze({ 'vict-0.3.1-rc': '0.3.1-rc.2' }),
   provenanceRef: 'refs/heads/main',
   provenanceBuilderId: 'https://github.com/actions/runner/github-hosted',
-  amendment: 'docs/report/VICT-0.3.1-RC2-EVIDENCE-RECOVERY-AMENDMENT.md',
-  evidenceSchema: 'vict-candidate-evidence-recovery@2',
+  amendment: 'docs/report/VICT-0.3.1-STABLE-EVIDENCE-RECOVERY-AMENDMENT.md',
+  evidenceSchema: 'vict-stable-evidence-recovery@1',
 });
 
 /** The evidence workflow file this recovery is implemented by. */
@@ -214,10 +217,24 @@ export function evaluateRegistryMemberState(name, packument) {
   if (versionEntry === undefined) {
     problems.push(`${name}@${bound.version} is missing from the registry`);
   }
-  if (versions[bound.forbiddenStableVersion] !== undefined) {
+  // Candidate recoveries forbid the stable version; a STABLE recovery has no
+  // forbidden version (the bound field is null and this guard is skipped).
+  if (
+    bound.forbiddenStableVersion != null &&
+    versions[bound.forbiddenStableVersion] !== undefined
+  ) {
     problems.push(
       `${name}@${bound.forbiddenStableVersion} EXISTS — stable must remain unpublished`,
     );
+  }
+  // STABLE recovery: the retained candidate tags must hold EXACTLY (never
+  // moved, never reused for the stable release).
+  for (const [tag, expected] of Object.entries(bound.retainedTags ?? {})) {
+    if (distTags[tag] !== expected) {
+      problems.push(
+        `${name} retained dist-tag '${tag}' is '${distTags[tag] ?? 'missing'}', expected '${expected}'`,
+      );
+    }
   }
   if (distTags[bound.candidateTag] !== bound.version) {
     problems.push(
@@ -244,7 +261,16 @@ export function evaluateRegistryMemberState(name, packument) {
       version: bound.version,
       integrity,
       distTags,
-      stableAbsent: versions[bound.forbiddenStableVersion] === undefined,
+      stableAbsent:
+        bound.forbiddenStableVersion == null
+          ? 'not-applicable-stable-release'
+          : versions[bound.forbiddenStableVersion] === undefined,
+      retainedTags: Object.fromEntries(
+        Object.entries(bound.retainedTags ?? {}).map(([tag, expected]) => [
+          tag,
+          distTags[tag] === expected,
+        ]),
+      ),
     },
   };
 }

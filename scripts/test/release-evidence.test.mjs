@@ -32,7 +32,7 @@ function slsaPayload() {
     _type: 'https://in-toto.io/Statement/v1',
     subject: [
       {
-        name: 'pkg:npm/%40victframework/contracts@0.3.1-rc.2',
+        name: 'pkg:npm/%40victframework/contracts@0.3.1',
         digest: {
           sha512: Buffer.from(GOOD_INTEGRITY.replace(/^sha512-/, ''), 'base64').toString('hex'),
         },
@@ -87,22 +87,23 @@ function slsaAttestation(payload) {
 
 describe('BOUND_CANDIDATE', () => {
   it('is exactly the amendment-bound recovery identity', () => {
-    expect(BOUND_CANDIDATE.version).toBe('0.3.1-rc.2');
-    expect(BOUND_CANDIDATE.sourceSha).toBe('a7b0018c460581e5425df80e56b0ccf309a4b4a4');
-    expect(BOUND_CANDIDATE.originalRunId).toBe(35661159776);
+    expect(BOUND_CANDIDATE.version).toBe('0.3.1');
+    expect(BOUND_CANDIDATE.sourceSha).toBe('446453fc4f6837e50a0bf3254b47d6a208f5b491');
+    expect(BOUND_CANDIDATE.originalRunId).toBe(35688234026);
     expect(BOUND_CANDIDATE.packageCount).toBe(13);
     expect(BOUND_CANDIDATE.registry).toBe('https://registry.npmjs.org/');
-    expect(BOUND_CANDIDATE.correctedEngineSha).toBe('a7b0018c460581e5425df80e56b0ccf309a4b4a4');
-    expect(BOUND_CANDIDATE.candidateTag).toBe('vict-0.3.1-rc');
-    expect(BOUND_CANDIDATE.expectedLatest).toBe('0.3.0');
-    expect(BOUND_CANDIDATE.forbiddenStableVersion).toBe('0.3.1');
+    expect(BOUND_CANDIDATE.correctedEngineSha).toBe('446453fc4f6837e50a0bf3254b47d6a208f5b491');
+    expect(BOUND_CANDIDATE.candidateTag).toBe('latest');
+    expect(BOUND_CANDIDATE.expectedLatest).toBe('0.3.1');
+    expect(BOUND_CANDIDATE.forbiddenStableVersion).toBe(null);
+    expect(BOUND_CANDIDATE.retainedTags).toEqual({ 'vict-0.3.1-rc': '0.3.1-rc.2' });
   });
 
   it('the expected contentId equals the corrected algorithm over the frozen set at the bound version', () => {
     const list = FROZEN_PUBLISH_ORDER.map((name) => `${name}@${BOUND_CANDIDATE.version}`);
     expect(BOUND_CANDIDATE.expectedContentId).toBe(deriveReleaseSetContentId(list));
     expect(BOUND_CANDIDATE.expectedContentId).toBe(
-      'v1_55d1ad2eb0afaf0e487b3e0b457069e7cfe2ac0bdaed7d443a13287287f0e31f',
+      'v1_1c695280d3afec5e91bfc75d3c99a5a85bc27f6d91127c4d0ce7bd51563c2583',
     );
   });
 
@@ -119,35 +120,44 @@ describe('evaluateRegistryMemberState', () => {
   const good = () => ({
     versions: {
       '0.3.0': { dist: { integrity: 'sha512-AAA=' } },
-      '0.3.1-rc.2': { dist: { integrity: GOOD_INTEGRITY } },
+      '0.3.1-rc.1': { dist: { integrity: 'sha512-CCC=' } },
+      '0.3.1-rc.2': { dist: { integrity: 'sha512-DDD=' } },
+      '0.3.1': { dist: { integrity: GOOD_INTEGRITY } },
     },
-    'dist-tags': { latest: '0.3.0', 'vict-0.3.1-rc': '0.3.1-rc.2' },
+    'dist-tags': {
+      latest: '0.3.1',
+      'vict-0.3.0-rc': '0.3.0-rc.1',
+      'vict-0.3.1-rc': '0.3.1-rc.2',
+    },
   });
 
-  it('accepts the bound candidate state', () => {
+  it('accepts the bound stable state (retained candidate tags exact)', () => {
     const verdict = evaluateRegistryMemberState('@victframework/contracts', good());
     expect(verdict.ok).toBe(true);
     expect(verdict.state.integrity).toBe(GOOD_INTEGRITY);
-    expect(verdict.state.stableAbsent).toBe(true);
+    expect(verdict.state.stableAbsent).toBe('not-applicable-stable-release');
+    expect(verdict.state.retainedTags).toEqual({ 'vict-0.3.1-rc': true });
   });
 
-  it('negative control: a missing candidate version fails', () => {
+  it('negative control: a missing bound version fails', () => {
     const packument = good();
-    delete packument.versions['0.3.1-rc.2'];
+    delete packument.versions['0.3.1'];
     const verdict = evaluateRegistryMemberState('@victframework/contracts', packument);
     expect(verdict.ok).toBe(false);
     expect(verdict.problems.join(' ')).toContain('missing from the registry');
   });
 
-  it('negative control: a published stable 0.3.1 fails', () => {
+  it('negative control: a moved retained candidate tag fails', () => {
     const packument = good();
-    packument.versions['0.3.1'] = { dist: { integrity: 'sha512-BBB=' } };
+    packument['dist-tags']['vict-0.3.1-rc'] = '0.3.1';
     const verdict = evaluateRegistryMemberState('@victframework/contracts', packument);
     expect(verdict.ok).toBe(false);
-    expect(verdict.problems.join(' ')).toContain('stable must remain unpublished');
+    expect(verdict.problems.join(' ')).toContain(
+      "retained dist-tag 'vict-0.3.1-rc' is '0.3.1', expected '0.3.1-rc.2'",
+    );
   });
 
-  it('negative control: latest moved off 0.3.0 fails', () => {
+  it('negative control: latest not at the bound stable version fails', () => {
     const packument = good();
     packument['dist-tags'].latest = '0.3.1-rc.2';
     const verdict = evaluateRegistryMemberState('@victframework/contracts', packument);
@@ -155,10 +165,7 @@ describe('evaluateRegistryMemberState', () => {
     expect(verdict.problems.join(' ')).toContain("'latest' is '0.3.1-rc.2'");
   });
 
-  it('negative control: a moved or missing candidate tag fails', () => {
-    const moved = good();
-    moved['dist-tags']['vict-0.3.1-rc'] = '0.3.0';
-    expect(evaluateRegistryMemberState('@victframework/contracts', moved).ok).toBe(false);
+  it('negative control: a missing retained candidate tag fails', () => {
     const missing = good();
     delete missing['dist-tags']['vict-0.3.1-rc'];
     expect(evaluateRegistryMemberState('@victframework/contracts', missing).ok).toBe(false);
@@ -166,7 +173,7 @@ describe('evaluateRegistryMemberState', () => {
 
   it('negative control: missing registry integrity fails', () => {
     const packument = good();
-    packument.versions['0.3.1-rc.2'].dist = {};
+    packument.versions['0.3.1'].dist = {};
     expect(evaluateRegistryMemberState('@victframework/contracts', packument).ok).toBe(false);
   });
 });
@@ -210,7 +217,7 @@ describe('evaluateSlsaProvenance', () => {
     expect(verdict.identities.gitCommit).toBe(BOUND_CANDIDATE.sourceSha);
     expect(verdict.identities.workflowPath).toBe('.github/workflows/release.yml');
     expect(verdict.identities.repository).toBe('https://github.com/radz2291/vict-02');
-    expect(verdict.identities.invocationId).toContain('/35661159776/');
+    expect(verdict.identities.invocationId).toContain('/35688234026/');
     expect(verdict.identities.builderId).toBe('https://github.com/actions/runner/github-hosted');
   });
 
@@ -287,17 +294,17 @@ describe('evaluateSlsaProvenance', () => {
 describe('evaluateRegistryManifest', () => {
   const manifest = (dependencies) => ({
     name: '@victframework/server',
-    version: '0.3.1-rc.2',
+    version: '0.3.1',
     dependencies,
   });
 
   it('accepts exact internal pins and extracts the graph', () => {
     const verdict = evaluateRegistryManifest(
       manifest({
-        '@victframework/runtime': '0.3.1-rc.2',
-        '@victframework/control': '0.3.1-rc.2',
-        '@victframework/application': '0.3.1-rc.2',
-        '@victframework/store-sqlite': '0.3.1-rc.2',
+        '@victframework/runtime': '0.3.1',
+        '@victframework/control': '0.3.1',
+        '@victframework/application': '0.3.1',
+        '@victframework/store-sqlite': '0.3.1',
         fastify: '5.6.2',
       }),
       FROZEN_PUBLISH_ORDER,
@@ -309,11 +316,11 @@ describe('evaluateRegistryManifest', () => {
 
   it('negative control: a range pin on an internal member fails', () => {
     const verdict = evaluateRegistryManifest(
-      manifest({ '@victframework/runtime': '^0.3.1-rc.2' }),
+      manifest({ '@victframework/runtime': '^0.3.1' }),
       FROZEN_PUBLISH_ORDER,
     );
     expect(verdict.ok).toBe(false);
-    expect(verdict.problems.join(' ')).toContain("pinned '^0.3.1-rc.2'");
+    expect(verdict.problems.join(' ')).toContain("pinned '^0.3.1'");
   });
 
   it('negative control: a wrong exact pin fails', () => {
@@ -560,7 +567,7 @@ describe('auditEvidenceWorkflow negative controls', () => {
   it('refuses a registry-mutating npm command', () => {
     const mutated =
       base() +
-      '\n      - name: smuggled\n        run: npm deprecate @victframework/sdk@0.3.1-rc.2 --message x\n';
+      '\n      - name: smuggled\n        run: npm deprecate @victframework/sdk@0.3.1 --message x\n';
     const audit = auditEvidenceWorkflow(mutated);
     expect(audit.ok).toBe(false);
   });
@@ -576,7 +583,7 @@ describe('auditEvidenceWorkflow negative controls', () => {
   });
 
   it('refuses mutated dispatch defaults (the recovery is bound)', () => {
-    const mutated = base().replace("default: '0.3.1-rc.2'", "default: '0.3.1-rc.9'");
+    const mutated = base().replace("default: '0.3.1'", "default: '0.3.1-rc.9'");
     const audit = auditEvidenceWorkflow(mutated);
     expect(audit.ok).toBe(false);
     expect(audit.problems.join(' ')).toContain("input 'version'");

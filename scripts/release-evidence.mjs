@@ -598,7 +598,13 @@ async function commandVerify(args) {
       );
     }
     ok(
-      `13/13 members present at ${bound.version}; latest=${bound.expectedLatest}; ${bound.candidateTag}=${bound.version}; stable absent`,
+      bound.forbiddenStableVersion == null
+        ? `13/13 members present at ${bound.version}; latest=${bound.expectedLatest}; retained tags: ${
+            Object.entries(bound.retainedTags ?? {})
+              .map(([t, v]) => `${t}=${v}`)
+              .join(', ') || 'none'
+          }`
+        : `13/13 members present at ${bound.version}; latest=${bound.expectedLatest}; ${bound.candidateTag}=${bound.version}; stable absent`,
     );
   }
 
