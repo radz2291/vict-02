@@ -1896,6 +1896,47 @@ or historical report is changed.
 
 ---
 
+## 0.31 Reconciliation v0.4.25 — fresh independent re-verification CLEARED (0 Blocking/0 High/0 Medium); stable 0.3.1 published and verified; Quellight repinned; B-1..B-4 FORMALLY CLOSED (documentation update)
+
+**Recorded 2026-09-22.** The fresh independent re-verification of the
+`0.3.1-rc.2` candidate (`docs/report/VICT-MODEL-FACING-CAPABILITY-SCHEMA-FRESH-INDEPENDENT-RE-VERIFICATION-AND-STABLE-CLOSURE.md`)
+reproduced all four old defects against registry-installed rc.1,
+verified every repaired behavior against registry-installed rc.2
+(B-1 true-byte bound incl. the exact 32,768/32,769 boundary, B-2
+symbol/hidden rejection, B-3 zero-trap native proxy rejection, B-4
+pre-normalization raw-argument guard through the real bridge, the real
+Mastra Agent loop with a recording model, and Quellight's exact
+capability contract; presentation truthfulness incl. mutation
+resistance), recomputed the full release chain (manifests, pins, content
+ID, integrity 13/13, provenance 13/13, dist-tags), and ran the
+authoritative ladders (VICT 2408 passed \| 3 skipped; Quellight offline
+gates green; `verify:q6:live` NEVER executed). Verdict: **ZERO
+Blocking/High/Medium** (4 Low: the 8242e62/378d0bf/a7b0018 attribution
+split; the strictly formatting-only 8dcd3c00 historical-report touch;
+the pre-existing upstream @mastra/core validation-error echo; the
+pre-existing Quellight test-isolation tmpdir race).
+
+1. **Stable release** — `@victframework/*@0.3.1`
+   (`vict-release-set@1/0.3.1`, content ID `v1_1c695280…`), release
+   source `446453fc…` (stable payloads proven content-equivalent to the
+   audited rc.2 modulo version/pin metadata, 13/13); stable ladder
+   green; published under `latest` by run `35688234026` (13/13
+   published; same-run verification failed on propagation lag,
+   terminal-`failure`, never relabelled); read-only evidence run
+   `35689362749` terminal-`success` under the stable evidence-recovery
+   amendment `87b5180…`; integrity/provenance/dist-tags/consumer
+   verified; `vict-0.3.1-rc` RETAINED at `0.3.1-rc.2`; 0.3.0, rc.1,
+   rc.2 remain immutable and installable.
+2. **Quellight** — mechanically repinned to `@victframework/*@0.3.1`
+   (commit `1fae9f3…`); offline ladder green (one disclosed run of the
+   known pre-existing test-isolation race, Low).
+3. **Status** — the B-1..B-4 remediation is FORMALLY CLOSED. Q6 remains
+   not formally closed (the live ceremony proof has not passed);
+   Execution 4 has not run and is not authorized; Phase Q7 remains
+   BLOCKED — NOT BEGUN.
+
+---
+
 ## 0.30 Implementation increment v0.4.24 — audit findings B-1..B-4 remediated; candidate 0.3.1-rc.2 prepared (documentation update)
 
 **Recorded 2026-09-22.** The independent verification of the
