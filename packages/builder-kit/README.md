@@ -52,14 +52,32 @@ integrity-recorded local artifact.
 vict-builder-kit generate     regenerate the committed stable layer
 vict-builder-kit catalog      regenerate the capability catalog
 vict-builder-kit verify       run the freshness/identity/completeness gate
+vict-builder-kit verify --app [--app-dir <dir>]  run the app-level freshness gate
 vict-builder-kit validate <file>...
 vict-builder-kit run --profile <name> --tool <tool> [--task-pack <file>] [--arg k=v ...]
 vict-builder-kit task-pack --handoff <path> --base-tree <sha> --in-scope <glob> [--ignore <glob>] [--profile <name>]
-vict-builder-kit init-app --app-dir <dir> --release-set <id> --kit-artifact <spec> --kit-sha256 <hex>
+vict-builder-kit init-app --app-dir <dir> --release-set <id> --kit-artifact <spec> --kit-sha256 <hex> --input <path> [--input <path> ...]
 ```
 
 In the VICT workspace the npm scripts (`kit:generate`, `verify:builder-kit`)
 run the CLI from source via tsx. The `bin` shim runs the built `dist`.
+
+## External-app bootstrap (handoff WP-1)
+
+`init-app` generates `BUILDER-KIT.md` plus the app-local base pack
+(`docs/builder-kit/base-pack.json`, `vict.builder.app-pack@1`) into an
+external application project: the app identity and every `--input` path are
+recorded as content-addressed provenance, together with the consumed
+platform release set and the kit artifact identity (D-1′). The generated
+bootstrap carries the pack identity and mandates `verify --app` before
+work; a red gate is a stop condition. `verify --app` checks the pack
+schema, the canonical identity rule (packId over canonical bytes with
+packId omitted), the bootstrap↔pack binding, per-input content drift /
+unregistered inputs, and — once platform packages are installed — the
+installed `@victframework/*` versions against the recorded release set
+(the kit itself is a tool, not a platform member, and is excluded). The
+path is checkout-independent: install the packed kit artifact into the
+app and run it from there.
 
 ## Authority boundary
 

@@ -1,11 +1,12 @@
 import { describe, expect, it, vi } from 'vitest';
 import { generateStableLayer } from '../src/generate/generate.js';
+import { APP_PACK_PATH } from '../src/generate/app-pack.js';
 import { initExternalApp } from '../src/generate/init-app.js';
 import { buildTaskPack, taskPackDirectory, writeTaskPack } from '../src/generate/task-pack.js';
 import { BOOTSTRAP_PROTOCOL } from '../src/markers.js';
 import { buildFixture, failures } from './helpers/fixture.js';
 import { verifyBuilderKit } from '../src/verify/verify.js';
-import { mkdtempSync, readFileSync, rmSync } from 'node:fs';
+import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { canonicalJsonBytes, packIdentityFromBytes, sha256Hex } from '../src/canonical.js';
@@ -101,16 +102,39 @@ describe('external app bootstrap (init-app, P2 support)', () => {
   it('writes a host-neutral BUILDER-KIT.md carrying the protocol identity', () => {
     const root = mkdtempSync(join(tmpdir(), 'vict-init-app-'));
     tempRoots.push(root);
-    const [written] = initExternalApp({
+    writeFileSync(
+      join(root, 'package.json'),
+      JSON.stringify({ name: 'example-app', version: '0.1.0' }),
+      'utf8',
+    );
+    writeFileSync(join(root, 'README.md'), '# example app\n', 'utf8');
+    const [, bootstrapPath] = initExternalApp({
       appDir: root,
       releaseSetId: 'vict-release-set@1/0.3.1',
       kitArtifactSpec: '@victframework/builder-kit-0.1.0.tgz',
       kitArtifactSha256: 'a'.repeat(64),
+      inputs: ['package.json', 'README.md'],
     });
-    const text = readFileSync(written ?? '', 'utf8');
+    const text = readFileSync(bootstrapPath ?? '', 'utf8');
     expect(text).toContain(BOOTSTRAP_PROTOCOL);
     expect(text).toContain('vict-release-set@1/0.3.1');
     expect(text).toContain('a'.repeat(64));
     expect(text).toContain('the ONLY product specification');
+    // The app-local base pack is written beside the bootstrap and bound into it.
+    const packPath = join(root, APP_PACK_PATH);
+    expect(existsSync(packPath)).toBe(true);
+    const pack = JSON.parse(readFileSync(packPath, 'utf8')) as Record<string, unknown>;
+    expect(pack['schemaMarker']).toBe('vict.builder.app-pack@1');
+    expect(text).toContain(pack['packId'] as string);
+    // Rejections: missing recorded input fails closed.
+    expect(() =>
+      initExternalApp({
+        appDir: root,
+        releaseSetId: 'vict-release-set@1/0.3.1',
+        kitArtifactSpec: 'x.tgz',
+        kitArtifactSha256: 'a'.repeat(64),
+        inputs: ['missing.ts'],
+      }),
+    ).toThrow(/does not exist/);
   });
 });

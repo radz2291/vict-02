@@ -18,6 +18,7 @@ export {
 } from './canonical.js';
 export {
   ALL_SCHEMA_MARKERS,
+  APP_PACK_SCHEMA,
   AUDIT_SCHEMA,
   BOOTSTRAP_PROTOCOL,
   CATALOG_SCHEMA,
@@ -30,6 +31,7 @@ export {
 } from './markers.js';
 export { validateDocument } from './validate/index.js';
 export type { ValidationIssue, ValidationResult, Validator } from './validate/index.js';
+export { validateAppPack } from './validate/app-pack.js';
 export { validateAudit, validateHandoff, validateResult } from './validate/evidence.js';
 export { validateCatalog } from './validate/catalog.js';
 export { validateContextPack } from './validate/context-pack.js';
@@ -56,6 +58,18 @@ export { generateStableLayer } from './generate/generate.js';
 export { renderBootstrap, renderPackMd } from './generate/render.js';
 export { buildTaskPack, taskPackDirectory, writeTaskPack } from './generate/task-pack.js';
 export { initExternalApp } from './generate/init-app.js';
+export {
+  APP_BOOTSTRAP_PATH,
+  APP_PACK_PATH,
+  APP_STOP_CONDITIONS,
+  APP_VERIFICATION_COMMANDS,
+  buildAppPack,
+  buildAppPackFromPaths,
+  digestAppInputs,
+  isSafeRelativeAppPath,
+} from './generate/app-pack.js';
+export type { AppPackDocument, RecordedAppInput } from './generate/app-pack.js';
+export { verifyApp } from './verify/app-verify.js';
 export { verifyBuilderKit } from './verify/verify.js';
 export type { CheckResult, VerifyReport } from './verify/verify.js';
 export { compareBaseline, loadTaskPack } from './verify/baseline.js';

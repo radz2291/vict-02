@@ -6,6 +6,7 @@ import { initExternalApp } from './generate/init-app.js';
 import { canonicalJsonBytes, sha256Hex } from './canonical.js';
 import { generateCatalog } from './catalog/generate.js';
 import { verifyBuilderKit } from './verify/verify.js';
+import { verifyApp } from './verify/app-verify.js';
 import { validateDocument, type ValidationResult } from './validate/index.js';
 import {
   defaultDenialsFile,
@@ -27,13 +28,14 @@ function usage(): string {
     '  generate [--repo-root <dir>]                      regenerate the committed stable layer',
     '  catalog   [--repo-root <dir>] [--out <file>]      regenerate the capability catalog',
     '  verify    [--repo-root <dir>] [--json]            run the verify:builder-kit gate',
+    '  verify --app [--app-dir <dir>] [--json]           run the app-level freshness gate',
     '  validate  <file>...                               validate vict.builder.* documents',
     '  run       --profile <name> --tool <tool> [--task-pack <file>] [--arg k=v ...]',
     '                                                    execute a tool under a profile',
     '  task-pack --handoff <path> --base-tree <sha> --in-scope <glob> [--ignore <glob>]',
     '            [--profile <name>] [--repo-root <dir>]  generate an isolated task pack',
     '  init-app  --app-dir <dir> --release-set <id> --kit-artifact <spec> --kit-sha256 <hex>',
-    '                                                    bootstrap an external application',
+    '            --input <path> [--input <path> ...] [--brief <path>]  bootstrap an external application',
   ].join('\n');
 }
 
@@ -175,6 +177,25 @@ export function runCli(argv: readonly string[]): number {
   }
 
   if (command === 'verify') {
+    const appMode = flag(args, 'app') !== undefined;
+    if (appMode) {
+      const report = verifyApp(flag(args, 'app-dir'));
+      if (flag(args, 'json') !== undefined) {
+        process.stdout.write(JSON.stringify(report, null, 2) + '\n');
+      } else {
+        for (const check of report.checks) {
+          const marker = check.ok ? 'ok' : 'FAIL';
+          const drift = check.driftClass === null ? '' : ` [${check.driftClass}]`;
+          console.log(`  ${marker}: ${check.id}${drift} — ${check.detail}`);
+        }
+        console.log(
+          report.ok
+            ? `\nverify --app: ALL CHECKS PASSED (${String(report.checks.length)} checks)`
+            : `\nverify --app: ${String(report.checks.filter((check) => !check.ok).length)} check(s) FAILED`,
+        );
+      }
+      return report.ok ? 0 : 1;
+    }
     const repoRoot = repoRootOf(args);
     const report = verifyBuilderKit(repoRoot);
     if (flag(args, 'json') !== undefined) {
@@ -301,24 +322,33 @@ export function runCli(argv: readonly string[]): number {
     const releaseSet = flag(args, 'release-set');
     const kitArtifact = flag(args, 'kit-artifact');
     const kitSha = flag(args, 'kit-sha256');
+    const inputs = flagList(args, 'input');
     if (
       appDir === undefined ||
       releaseSet === undefined ||
       kitArtifact === undefined ||
-      kitSha === undefined
+      kitSha === undefined ||
+      inputs.length === 0
     ) {
       console.error(
-        'init-app: --app-dir, --release-set, --kit-artifact, and --kit-sha256 are required',
+        'init-app: --app-dir, --release-set, --kit-artifact, --kit-sha256, and at least one --input are required',
       );
       return 2;
     }
-    const written = initExternalApp({
-      appDir,
-      releaseSetId: releaseSet,
-      kitArtifactSpec: kitArtifact,
-      kitArtifactSha256: kitSha,
-      briefPath: flag(args, 'brief'),
-    });
+    let written: readonly string[];
+    try {
+      written = initExternalApp({
+        appDir,
+        releaseSetId: releaseSet,
+        kitArtifactSpec: kitArtifact,
+        kitArtifactSha256: kitSha,
+        inputs,
+        briefPath: flag(args, 'brief'),
+      });
+    } catch (error) {
+      console.error(error instanceof Error ? error.message : String(error));
+      return 1;
+    }
     for (const path of written) console.log(`  wrote ${path}`);
     return 0;
   }

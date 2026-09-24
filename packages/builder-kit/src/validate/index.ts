@@ -1,4 +1,5 @@
 import {
+  APP_PACK_SCHEMA,
   AUDIT_SCHEMA,
   CATALOG_SCHEMA,
   CONTEXT_PACK_SCHEMA,
@@ -9,6 +10,7 @@ import {
   TOOLS_SCHEMA,
 } from '../markers.js';
 import type { ValidationResult } from './common.js';
+import { validateAppPack } from './app-pack.js';
 import { validateAudit, validateHandoff, validateResult } from './evidence.js';
 import { validateCatalog } from './catalog.js';
 import { validateContextPack } from './context-pack.js';
@@ -17,6 +19,7 @@ import { validateTaskPack } from './task-pack.js';
 
 export type { ValidationIssue, ValidationResult } from './common.js';
 
+export { validateAppPack } from './app-pack.js';
 export { validateAudit, validateHandoff, validateResult } from './evidence.js';
 export { validateCatalog } from './catalog.js';
 export { validateContextPack } from './context-pack.js';
@@ -28,6 +31,7 @@ export type Validator = (document: unknown) => ValidationResult;
 /** Validator registry keyed by the document's `schemaMarker`. */
 export const VALIDATORS: Readonly<Record<string, Validator>> = {
   [CONTEXT_PACK_SCHEMA]: validateContextPack,
+  [APP_PACK_SCHEMA]: validateAppPack,
   [TASK_PACK_SCHEMA]: validateTaskPack,
   [CATALOG_SCHEMA]: validateCatalog,
   [TOOLS_SCHEMA]: validateTools,
