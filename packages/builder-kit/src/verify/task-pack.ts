@@ -44,6 +44,8 @@ export interface TaskPackAuthorityResult {
   readonly baseTree: string | null;
   readonly inScopePaths: readonly string[];
   readonly ignoreManifest: readonly string[];
+  /** The pack's accepted effective profile name (null when unusable). */
+  readonly permissionProfile: string | null;
 }
 
 interface ParsedTaskPack {
@@ -268,7 +270,14 @@ export function verifyTaskPackAuthority(
       driftClass: 'schema-invalid',
       detail: `task pack unreadable: ${(error as Error).message}`,
     });
-    return { ok: false, checks, baseTree: null, inScopePaths: [], ignoreManifest: [] };
+    return {
+      ok: false,
+      checks,
+      baseTree: null,
+      inScopePaths: [],
+      ignoreManifest: [],
+      permissionProfile: null,
+    };
   }
 
   // 1. schema (closed vocabulary).
@@ -282,7 +291,14 @@ export function verifyTaskPackAuthority(
       driftClass: 'schema-invalid',
       detail: `task pack unparsable: ${(error as Error).message}`,
     });
-    return { ok: false, checks, baseTree: null, inScopePaths: [], ignoreManifest: [] };
+    return {
+      ok: false,
+      checks,
+      baseTree: null,
+      inScopePaths: [],
+      ignoreManifest: [],
+      permissionProfile: null,
+    };
   }
   const schema = validateTaskPack(parsedJson);
   add({
@@ -305,7 +321,14 @@ export function verifyTaskPackAuthority(
       driftClass: 'schema-invalid',
       detail: 'task pack structure unusable for authority verification',
     });
-    return { ok: false, checks, baseTree: null, inScopePaths: [], ignoreManifest: [] };
+    return {
+      ok: false,
+      checks,
+      baseTree: null,
+      inScopePaths: [],
+      ignoreManifest: [],
+      permissionProfile: null,
+    };
   }
 
   // 2. canonical identity (§4.4 exclusion rule is normative).
@@ -468,5 +491,6 @@ export function verifyTaskPackAuthority(
     baseTree: pack.baseTree,
     inScopePaths: pack.inScopePaths,
     ignoreManifest: pack.ignoreManifest,
+    permissionProfile: pack.permissionProfile,
   };
 }

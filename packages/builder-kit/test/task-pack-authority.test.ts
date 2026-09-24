@@ -220,4 +220,49 @@ describe('active task-pack authority (gate and wrapper)', () => {
     // Nothing was written under the un-granted scope: refusal precedes use.
     expect(existsSync(join(root, 'scripts', 'evil.txt'))).toBe(false);
   });
+
+  it('WRAPPER: refuses a write-capable invocation without a task pack (no fallback scope)', () => {
+    const root = freshWithAcceptedRecord();
+    for (const profileName of ['builder.change', 'builder.selfhost']) {
+      const refused = buildToolContext(root, profileName, undefined);
+      expect(typeof refused).toBe('string');
+      if (typeof refused === 'string') {
+        expect(refused).toMatch(/requires a valid active task pack/);
+        expect(refused).toMatch(/no fallback write scope/);
+      }
+    }
+  });
+
+  it("WRAPPER: refuses a requested profile that differs from the pack's effective profile", () => {
+    const root = freshWithAcceptedRecord();
+    const packPath = activePack(root, { permissionProfile: 'builder.change' });
+    // The pack is valid, but the caller may not ride it under a stronger profile.
+    const refused = buildToolContext(root, 'builder.selfhost', packPath);
+    expect(typeof refused).toBe('string');
+    if (typeof refused === 'string') {
+      expect(refused).toMatch(/profile mismatch/);
+      expect(refused).toMatch(/builder\.change/);
+    }
+    // The equal-profile request still works.
+    const matched = buildToolContext(root, 'builder.change', packPath);
+    expect(typeof matched).not.toBe('string');
+  });
+
+  it('WRAPPER: accepts a valid pack whose profile matches, and preserves read-only inspection', () => {
+    const root = freshWithAcceptedRecord();
+    const selfhostPack = activePack(root, { permissionProfile: 'builder.selfhost' });
+    const context = buildToolContext(root, 'builder.selfhost', selfhostPack);
+    expect(typeof context).not.toBe('string');
+    if (typeof context !== 'string') {
+      expect(context.inScopePaths).toEqual(['docs/builder-kit/**']);
+      expect(context.profile.name).toBe('builder.selfhost');
+    }
+    // Read-only inspection needs no task pack and gets no write scope.
+    const readonlyContext = buildToolContext(root, 'builder.read', undefined);
+    expect(typeof readonlyContext).not.toBe('string');
+    if (typeof readonlyContext !== 'string') {
+      expect(readonlyContext.inScopePaths).toEqual([]);
+      expect(readonlyContext.profile.write).toEqual([]);
+    }
+  });
 });

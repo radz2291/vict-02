@@ -123,6 +123,15 @@ export function buildToolContext(
   if (profile === undefined) {
     return `unknown profile '${profileName}' (available: ${profiles.map((p) => p.name).join(', ')})`;
   }
+  // A write-capable invocation REQUIRES a valid active task pack: there is
+  // no fallback write scope, and the caller cannot choose a stronger
+  // profile than the pack's accepted effective profile (architecture
+  // §3.3/§3.5 — the task pack names the profile in effect).
+  const writeCapable =
+    profile.write.includes('working-branch') || profile.write.includes('kit-tools');
+  if (writeCapable && taskPackPath === undefined) {
+    return `write-capable profile '${profileName}' requires a valid active task pack (--task-pack); no fallback write scope exists`;
+  }
   let inScopePaths: readonly string[] = [];
   if (taskPackPath !== undefined) {
     // Authority BEFORE scope: an invalid or stale task pack is refused
@@ -136,10 +145,12 @@ export function buildToolContext(
         .join(', ');
       return `task pack refused (not accepted authority): ${failed}`;
     }
+    if (authority.permissionProfile !== profileName) {
+      return `task pack refused (profile mismatch): the pack's accepted effective profile is '${String(
+        authority.permissionProfile,
+      )}' but '${profileName}' was requested`;
+    }
     inScopePaths = authority.inScopePaths;
-  }
-  if (profile.write.includes('working-branch') || profile.write.includes('kit-tools')) {
-    inScopePaths = inScopePaths.length > 0 ? inScopePaths : ['docs/builder-kit/**'];
   }
   return {
     repoRoot,

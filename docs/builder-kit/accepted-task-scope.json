@@ -3,23 +3,18 @@
     "path": "docs/handoff/VICT-STAGE-08-BUILDER-KIT-HANDOFF.md",
     "sha256": "4aa83c1510faa4877becaeadd3a4335c87a8b02cc4812e0db93c5ebd737ad3e2"
   },
-  "ignoreManifest": [".builder-kit/**", ".git/**", ".pi/**", "docs/report/**", "node_modules/**"],
-  "ignoreManifestDigest": "3650c90cc020c9df5439a139ca40f00bed5e627e85e71676fb4aca9c21f7ab32",
+  "ignoreManifest": [".builder-kit/**", ".git/**", ".pi/**", "node_modules/**"],
+  "ignoreManifestDigest": "ccb292251394fa193658959120d8878ce251a74c1704003a01ef48f0b4c82dda",
   "inScopePaths": [
     "BUILDER-KIT.md",
-    "docs/VICT-SYSTEM-REFERENCE.md",
-    "docs/builder-kit/**",
-    "docs/governance/**",
+    "docs/builder-kit/PACK.md",
+    "docs/builder-kit/capability-catalog.json",
+    "docs/builder-kit/context-pack.json",
     "examples/reference-app/**",
-    "package.json",
-    "packs/notes-pack/**",
-    "packages/builder-kit/**",
-    "scripts/lib/release-set.mjs",
-    "scripts/verify-builder-kit.mjs",
-    "scripts/verify-stage6a.mjs"
+    "packs/notes-pack/**"
   ],
-  "notes": "Accepted machine-checkable representation of the Stage 8 handoff scope, filed 2026-09-24 by explicit owner direction (G1 gate correction). inScopePaths derive from the handoff section Autonomy permitted list (packages/builder-kit/**; scripts/verify-builder-kit.mjs; docs/builder-kit/**; root BUILDER-KIT.md; the P1 task implementation paths packs/notes-pack/** and examples/reference-app/**; the two npm script entries, recorded as package.json; dated reference status notes, recorded as docs/VICT-SYSTEM-REFERENCE.md), plus the owner-ratified bounded retrospective exceptions (scripts/verify-stage6a.mjs, scripts/lib/release-set.mjs) and the owner-directed governance location (docs/governance/**); see the docs/governance gate-correction record for the derivation table. permissionProfiles are the kit-shipped profiles; the effective profile is named per task pack. ignoreManifest is detection-only, not write authority: .pi/** (owner-local, never read), docs/report/** (named denial; the handoff-named new report file remains permitted), .builder-kit/**, .git/**, node_modules/**.",
-  "packId": "64cdb2034a3f9555451f4e1e4434cd8e07d3625a02a718780ea10c69360f9dc7",
-  "permissionProfiles": ["builder.read", "builder.change", "builder.selfhost"],
+  "notes": "P1-specific narrow accepted scope, filed 2026-09-24 by explicit owner direction (G2 operator preflight); SUPERSEDES the broader G1-era record for the P1 proof only. inScopePaths permit exactly: the notes-pack implementation (packs/notes-pack/**), the reference-application implementation and tests (examples/reference-app/**), and the particular generated Builder Kit artifacts the capability change requires — BUILDER-KIT.md, docs/builder-kit/PACK.md, docs/builder-kit/capability-catalog.json, docs/builder-kit/context-pack.json (both renderings embed the packId, which changes when the catalog changes). EXCLUDED from the P1 builder scope: packages/builder-kit/** (kit source), scripts/** (verify and release scripts), docs/governance/**, docs/VICT-SYSTEM-REFERENCE.md (reference-status edits), package.json, and this acceptance record itself (host edits to it are outside scope and therefore baseline-detected). The detection ignore manifest deliberately EXCLUDES docs/report/**: historical report edits must remain detectable as baseline escapes; report filing stays with the operator/evaluator after the host runs. permissionProfiles: builder.selfhost only — the P1 hosts work under that single effective profile, and the wrapper refuses any requested profile that differs from the pack. ignoreManifest .pi/** is owner-local and never read.",
+  "packId": "7d75f679f7d4b4641d652c5911b69b96140b51e16ba7b3016b6d78897634067d",
+  "permissionProfiles": ["builder.selfhost"],
   "schemaMarker": "vict.builder.accepted-task-scope@1"
 }
