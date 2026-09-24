@@ -15,11 +15,7 @@ import {
   resources,
 } from '$lib/application/definition.js';
 import { createReferenceRegistry } from '$lib/components/registry';
-import {
-  createReferenceServer,
-  resetReferenceServer,
-  type ReferenceAppServer,
-} from '$lib/server/application-server';
+import { createReferenceServer, type ReferenceAppServer } from '$lib/server/application-server';
 
 /**
  * Permanent renderer-level evidence for the reading-time region on the
