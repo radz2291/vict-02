@@ -7,7 +7,7 @@
         "package": "@victframework/ledger-pack"
       },
       {
-        "contentSha256": "d53505c2ba810a2cd0ffbe4f6bd54a6258b21314323737490076cb9d5f8a55d1",
+        "contentSha256": "ef37e165d2e8884ca7b673f97bd8d9537898339d359ee260d298716dcb1ae432",
         "module": "packs/notes-pack/src/index.ts",
         "package": "@victframework/notes-pack"
       }
@@ -126,7 +126,7 @@
     {
       "capabilities": [
         {
-          "contentSha256": "d53505c2ba810a2cd0ffbe4f6bd54a6258b21314323737490076cb9d5f8a55d1",
+          "contentSha256": "ef37e165d2e8884ca7b673f97bd8d9537898339d359ee260d298716dcb1ae432",
           "effect": "pure",
           "id": "notes.format",
           "input": {
@@ -142,7 +142,7 @@
           "summary": null
         },
         {
-          "contentSha256": "d53505c2ba810a2cd0ffbe4f6bd54a6258b21314323737490076cb9d5f8a55d1",
+          "contentSha256": "ef37e165d2e8884ca7b673f97bd8d9537898339d359ee260d298716dcb1ae432",
           "effect": "read",
           "id": "notes.stats",
           "input": {
@@ -152,6 +152,22 @@
           "module": "packs/notes-pack/src/index.ts",
           "output": {
             "contractId": "notes.stats",
+            "revision": "1"
+          },
+          "revision": "1",
+          "summary": null
+        },
+        {
+          "contentSha256": "ef37e165d2e8884ca7b673f97bd8d9537898339d359ee260d298716dcb1ae432",
+          "effect": "read",
+          "id": "notes.readingTime",
+          "input": {
+            "contractId": "notes.text",
+            "revision": "1"
+          },
+          "module": "packs/notes-pack/src/index.ts",
+          "output": {
+            "contractId": "notes.readingTime",
             "revision": "1"
           },
           "revision": "1",
@@ -171,6 +187,10 @@
         {
           "id": "notes.stats",
           "revision": "1"
+        },
+        {
+          "id": "notes.readingTime",
+          "revision": "1"
         }
       ],
       "documentation": {
@@ -181,6 +201,11 @@
           "capabilityId": "notes.format",
           "description": "The formatted output uppercases the input title.",
           "id": "eval.notes.format.uppercases"
+        },
+        {
+          "capabilityId": "notes.readingTime",
+          "description": "The estimate reports one minute or more for any non-empty content.",
+          "id": "eval.notes.readingTime.estimates-from-content"
         }
       ],
       "id": "vict.example.notes",

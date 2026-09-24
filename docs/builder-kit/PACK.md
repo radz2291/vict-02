@@ -4,7 +4,7 @@
 
 Rendered view of `docs/builder-kit/context-pack.json` (`vict.builder.context-pack@1`).
 
-- packId: `bdb2d50a9a8382f488c7c1ab9251a465b4d35028778ab6f46858545777d604ea`
+- packId: `e8f8365169ea880fbcee35a00623b909f62a4425ea275af9840c4728a5e4eb21`
 - reference truth: v0.4.32
 - release truth: `vict-release-set@1/0.3.1`
 - workspace: `vict-monorepo@0.1.0`
@@ -15,7 +15,7 @@ Rendered view of `docs/builder-kit/context-pack.json` (`vict.builder.context-pac
 | --- | --- |
 | docs/RELEASE-COMPATIBILITY.md | `c09e252aae93c082d2a53cf8047a6b7eff52a62203023fdb3efb6ada07bc49df` |
 | docs/VICT-SYSTEM-REFERENCE.md | `dc43c1672c3f75da886325f236945a40fe0b6c79a373b8da6a0763612c4baa42` |
-| docs/builder-kit/capability-catalog.json | `9a79aeeac764deef61077c92d8211bd16a632f8a7ccfd2ce4993da8dd3667039` |
+| docs/builder-kit/capability-catalog.json | `2ff63e5c784a15e93b4457c2a7710beb9443bc119d133fdc156fb0347f818946` |
 | examples/application-proof/package.json | `02bae191e7f8b22fcdbceedc6937b526184d2114a5a4662c3daacf2169d294bc` |
 | examples/ara-proof/package.json | `a6c071e4e377bd96b498db5ec4cde820ecbb993c5454b76ec4ed6500c31b0747` |
 | examples/orchestration-proof/package.json | `689183a3e96db61121ad1f54e5033e22b1a973f9d5ce5ab110eb3de9094300f4` |

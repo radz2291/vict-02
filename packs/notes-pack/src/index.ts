@@ -80,6 +80,43 @@ const NoteStats = defineContract<{ words: number; characters: number }>({
   },
 });
 
+const ReadingTime = defineContract<{ minutes: number; words: number }>({
+  id: 'notes.readingTime',
+  revision: '1',
+  expected: '{ minutes: number, words: number }',
+  parse: (input) => {
+    const candidate = input as { minutes?: unknown; words?: unknown } | null;
+    if (
+      candidate !== null &&
+      typeof candidate === 'object' &&
+      typeof candidate.minutes === 'number' &&
+      typeof candidate.words === 'number'
+    ) {
+      return {
+        ok: true as const,
+        value: { minutes: candidate.minutes, words: candidate.words },
+      };
+    }
+    return {
+      ok: false as const,
+      issues: [{ code: 'invalid_type', path: '(root)', message: 'reading-time estimate expected' }],
+    };
+  },
+});
+
+/**
+ * Estimated reading time for a note's content (PURE derivation: no I/O,
+ * no state). ~200 words per minute with a one-minute minimum for any
+ * non-empty content; empty content estimates zero minutes.
+ */
+export function estimateReadingTime(content: string): { minutes: number; words: number } {
+  const words = content.trim().split(/\s+/).filter(Boolean).length;
+  return {
+    minutes: words === 0 ? 0 : Math.max(1, Math.ceil(words / 200)),
+    words,
+  };
+}
+
 export const notesPack: CapabilityPack = defineCapabilityPack(
   {
     schema: 'vict.capability-pack@1',
@@ -101,11 +138,19 @@ export const notesPack: CapabilityPack = defineCapabilityPack(
         input: { contractId: 'notes.text', revision: '1' },
         output: { contractId: 'notes.stats', revision: '1' },
       },
+      {
+        id: 'notes.readingTime',
+        revision: '1',
+        effect: 'read',
+        input: { contractId: 'notes.text', revision: '1' },
+        output: { contractId: 'notes.readingTime', revision: '1' },
+      },
     ],
     contracts: [
       { id: 'notes.text', revision: '1' },
       { id: 'notes.formatted', revision: '1' },
       { id: 'notes.stats', revision: '1' },
+      { id: 'notes.readingTime', revision: '1' },
     ],
     permissions: [],
     configuration: [],
@@ -115,6 +160,11 @@ export const notesPack: CapabilityPack = defineCapabilityPack(
         id: 'eval.notes.format.uppercases',
         capabilityId: 'notes.format',
         description: 'The formatted output uppercases the input title.',
+      },
+      {
+        id: 'eval.notes.readingTime.estimates-from-content',
+        capabilityId: 'notes.readingTime',
+        description: 'The estimate reports one minute or more for any non-empty content.',
       },
     ],
     documentation: {
@@ -144,13 +194,34 @@ export const notesPack: CapabilityPack = defineCapabilityPack(
           characters: input.title.length,
         }),
       },
+      {
+        id: 'notes.readingTime',
+        revision: '1',
+        input: NoteText,
+        output: ReadingTime,
+        invoke: (input: { title: string }) => estimateReadingTime(input.title),
+      },
     ],
     doubles: [],
   },
 );
 
+/**
+ * A worked example on the pack's example surface: the exact input/output
+ * pair the `notes.readingTime@1` read produces for this content (the same
+ * pure derivation the binding's invoke runs).
+ */
+export const readingTimeExample = {
+  capabilityId: 'notes.readingTime',
+  input: { title: 'Vict derives estimated reading time from declared pure read capabilities' },
+  output: { minutes: 1, words: 10 },
+} as const;
+
 export const notesPackConformance = {
   pureCapabilityId: 'notes.format',
   pureInput: { title: 'hello vict' },
   pureExpectedOutput: { formatted: 'HELLO VICT', length: 10 },
+  readingTimeCapabilityId: 'notes.readingTime',
+  readingTimeInput: readingTimeExample.input,
+  readingTimeExpectedOutput: readingTimeExample.output,
 } as const;

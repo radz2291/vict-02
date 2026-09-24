@@ -126,7 +126,7 @@
         "path": "docs/VICT-SYSTEM-REFERENCE.md"
       },
       {
-        "contentSha256": "9a79aeeac764deef61077c92d8211bd16a632f8a7ccfd2ce4993da8dd3667039",
+        "contentSha256": "2ff63e5c784a15e93b4457c2a7710beb9443bc119d133fdc156fb0347f818946",
         "path": "docs/builder-kit/capability-catalog.json"
       },
       {
@@ -222,7 +222,7 @@
       "workspaces": ["examples/*", "packages/*", "packs/*"]
     }
   },
-  "packId": "bdb2d50a9a8382f488c7c1ab9251a465b4d35028778ab6f46858545777d604ea",
+  "packId": "e8f8365169ea880fbcee35a00623b909f62a4425ea275af9840c4728a5e4eb21",
   "permissionProfilesRef": {
     "contentSha256": "893ba3ff5b73e3bf9d87da2ea1c49f5fcd176f5bdb8d36e20628fcf184f19b88",
     "schemaMarker": "vict.builder.profile@1",
