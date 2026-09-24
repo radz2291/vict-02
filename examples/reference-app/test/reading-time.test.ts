@@ -96,9 +96,7 @@ describe('reading-time region declared through the Application Definition', () =
     expect(overviewSurfaces?.map((surface) => surface.id)).toContain('ls.noteReadingTime');
 
     // The declared action is a real capability action with declared contracts.
-    const action = referenceApplication.actions.find(
-      (entry) => entry.id === 'act.noteReadingTime',
-    );
+    const action = referenceApplication.actions.find((entry) => entry.id === 'act.noteReadingTime');
     expect(action?.kind).toBe('capability');
     expect(action).toMatchObject({
       capabilityId: 'refapp.noteReadingTime',

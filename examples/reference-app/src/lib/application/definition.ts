@@ -183,11 +183,7 @@ export const noteReadingTimeInputContract = defineContract<{ note: string }>({
   expected: '{ note: string }',
   parse: (input) => {
     const candidate = input as { note?: unknown } | null;
-    if (
-      candidate !== null &&
-      typeof candidate === 'object' &&
-      typeof candidate.note === 'string'
-    ) {
+    if (candidate !== null && typeof candidate === 'object' && typeof candidate.note === 'string') {
       return { ok: true as const, value: { note: candidate.note } };
     }
     return failContract('a note content string is required');

@@ -192,11 +192,11 @@ export function createReferenceServer(
               edges: [],
             }
           : {
-            id: graphId,
-            entry: 'only',
-            nodes: [{ id: 'only', capability: 'refapp.analyze', input: 'refapp.analyze.input' }],
-            edges: [],
-          };
+              id: graphId,
+              entry: 'only',
+              nodes: [{ id: 'only', capability: 'refapp.analyze', input: 'refapp.analyze.input' }],
+              edges: [],
+            };
     const activation = await runtime.activate(graph);
     if (!activation.ok) {
       throw new Error('capability activation failed');
