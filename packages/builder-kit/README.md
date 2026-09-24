@@ -56,11 +56,32 @@ vict-builder-kit verify --app [--app-dir <dir>]  run the app-level freshness gat
 vict-builder-kit validate <file>...
 vict-builder-kit run --profile <name> --tool <tool> [--task-pack <file>] [--arg k=v ...]
 vict-builder-kit task-pack --handoff <path> --base-tree <sha> --in-scope <glob> [--ignore <glob>] [--profile <name>]
+vict-builder-kit accept-scope --handoff <path> --in-scope <glob> [--profile <name>] [--ignore <glob>] --notes <text>
 vict-builder-kit init-app --app-dir <dir> --release-set <id> --kit-artifact <spec> --kit-sha256 <hex> --input <path> [--input <path> ...]
 ```
 
 In the VICT workspace the npm scripts (`kit:generate`, `verify:builder-kit`)
 run the CLI from source via tsx. The `bin` shim runs the built `dist`.
+
+## Task-pack authority (handoff = sole task authority)
+
+A task pack's recomputed `packId` certifies its BYTES, never its
+authority. Before an active task pack's scope is used — by the gate
+(`verify:builder-kit`) or by the tool wrapper (`run --task-pack …`, which
+refuses an invalid or stale pack outright) — the kit verifies:
+`vict.builder.task-pack@1` schema (closed vocabulary); canonical identity
+(§4.4 exclusion rule); the committed base-pack binding; the current
+handoff path and byte digest; the ignore-manifest digest; that the pinned
+`baseTree` exists as an exact commit; that the carried scope, ignore set,
+and profile are covered by the committed accepted-task-scope record
+(`docs/builder-kit/accepted-task-scope.json`, `vict.builder.accepted-task-scope@1`)
+for the SAME handoff bytes; and that regeneration from exactly the §3.3
+inputs (base pack + handoff + task parameters) reproduces the pack
+byte-for-byte. `accept-scope` files that record: it is created at handoff
+acceptance by explicit owner direction, committed beside the stable layer,
+and identity-bound by the same canonical rule. An altered pack that hashes
+correctly is still refused — authority comes from the accepted record, not
+from the pack's self-consistency.
 
 ## External-app bootstrap (handoff WP-1)
 

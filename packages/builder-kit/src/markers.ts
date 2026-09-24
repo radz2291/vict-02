@@ -6,6 +6,7 @@ export const CONTEXT_PACK_SCHEMA = 'vict.builder.context-pack@1';
 /** App-local base pack of an external application project (handoff WP-1 `init-app`). */
 export const APP_PACK_SCHEMA = 'vict.builder.app-pack@1';
 export const TASK_PACK_SCHEMA = 'vict.builder.task-pack@1';
+export const ACCEPTED_TASK_SCOPE_SCHEMA = 'vict.builder.accepted-task-scope@1';
 export const CATALOG_SCHEMA = 'vict.builder.catalog@1';
 export const TOOLS_SCHEMA = 'vict.builder.tools@1';
 export const PROFILE_SCHEMA = 'vict.builder.profile@1';
@@ -19,6 +20,7 @@ export const ALL_SCHEMA_MARKERS: readonly string[] = [
   CONTEXT_PACK_SCHEMA,
   APP_PACK_SCHEMA,
   TASK_PACK_SCHEMA,
+  ACCEPTED_TASK_SCOPE_SCHEMA,
   CATALOG_SCHEMA,
   TOOLS_SCHEMA,
   PROFILE_SCHEMA,

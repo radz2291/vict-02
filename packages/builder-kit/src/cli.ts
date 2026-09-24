@@ -1,12 +1,18 @@
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
-import { join } from 'node:path';
+import { join, resolve } from 'node:path';
+import { pathToFileURL } from 'node:url';
 import { generateStableLayer } from './generate/generate.js';
+import {
+  buildAcceptedTaskScope,
+  ACCEPTED_TASK_SCOPE_PATH,
+} from './generate/accepted-task-scope.js';
 import { buildTaskPack, taskPackDirectory } from './generate/task-pack.js';
 import { initExternalApp } from './generate/init-app.js';
 import { canonicalJsonBytes, sha256Hex } from './canonical.js';
 import { generateCatalog } from './catalog/generate.js';
 import { verifyBuilderKit } from './verify/verify.js';
 import { verifyApp } from './verify/app-verify.js';
+import { verifyTaskPackAuthority } from './verify/task-pack.js';
 import { validateDocument, type ValidationResult } from './validate/index.js';
 import {
   defaultDenialsFile,
@@ -17,7 +23,8 @@ import {
 
 /**
  * `vict-builder-kit` command-line surface:
- * `generate`, `catalog`, `verify`, `validate`, `run`, `task-pack`, `init-app`.
+ * `generate`, `catalog`, `verify`, `validate`, `run`, `task-pack`,
+ * `accept-scope`, `init-app`.
  */
 
 function usage(): string {
@@ -32,8 +39,13 @@ function usage(): string {
     '  validate  <file>...                               validate vict.builder.* documents',
     '  run       --profile <name> --tool <tool> [--task-pack <file>] [--arg k=v ...]',
     '                                                    execute a tool under a profile',
-    '  task-pack --handoff <path> --base-tree <sha> --in-scope <glob> [--ignore <glob>]',
-    '            [--profile <name>] [--repo-root <dir>]  generate an isolated task pack',
+    '  task-pack --handoff <path> --base-tree <sha> --in-scope <glob> [--ignore <glob>]' +
+      ' [--profile <name>] [--repo-root <dir>]' +
+      '  generate an isolated task pack',
+    '  accept-scope --handoff <path> --in-scope <glob> [--in-scope <glob> ...]' +
+      ' [--profile <name> [--profile <name> ...]] [--ignore <glob>] [--notes <text>]' +
+      ' [--repo-root <dir>]' +
+      '  file the committed accepted-task-scope record for a handoff',
     '  init-app  --app-dir <dir> --release-set <id> --kit-artifact <spec> --kit-sha256 <hex>',
     '            --input <path> [--input <path> ...] [--brief <path>]  bootstrap an external application',
   ].join('\n');
@@ -100,7 +112,8 @@ function readRootScripts(repoRoot: string): readonly string[] {
   return Object.keys(scripts as Record<string, unknown>).sort();
 }
 
-function buildToolContext(
+/** Build the tool context for `run`; returns an error string on refusal. */
+export function buildToolContext(
   repoRoot: string,
   profileName: string,
   taskPackPath: string | undefined,
@@ -112,10 +125,18 @@ function buildToolContext(
   }
   let inScopePaths: readonly string[] = [];
   if (taskPackPath !== undefined) {
-    const parsed = JSON.parse(readFileSync(taskPackPath, 'utf8')) as Record<string, unknown>;
-    const inScope = parsed['inScopePaths'];
-    if (Array.isArray(inScope))
-      inScopePaths = inScope.filter((p): p is string => typeof p === 'string');
+    // Authority BEFORE scope: an invalid or stale task pack is refused
+    // outright — its carried scope is never used (architecture §3.3/§3.9;
+    // a recomputed packId certifies bytes, not authority).
+    const authority = verifyTaskPackAuthority(repoRoot, taskPackPath);
+    if (!authority.ok) {
+      const failed = authority.checks
+        .filter((check) => !check.ok)
+        .map((check) => `${check.id} [${check.driftClass ?? 'invalid'}]`)
+        .join(', ');
+      return `task pack refused (not accepted authority): ${failed}`;
+    }
+    inScopePaths = authority.inScopePaths;
   }
   if (profile.write.includes('working-branch') || profile.write.includes('kit-tools')) {
     inScopePaths = inScopePaths.length > 0 ? inScopePaths : ['docs/builder-kit/**'];
@@ -317,6 +338,41 @@ export function runCli(argv: readonly string[]): number {
     return 0;
   }
 
+  if (command === 'accept-scope') {
+    const repoRoot = repoRootOf(args);
+    const handoffPath = flag(args, 'handoff');
+    if (handoffPath === undefined) {
+      console.error('accept-scope: --handoff is required');
+      return 2;
+    }
+    const inScopePaths = flagList(args, 'in-scope');
+    if (inScopePaths.length === 0) {
+      console.error('accept-scope: at least one --in-scope glob is required');
+      return 2;
+    }
+    const profiles = flagList(args, 'profile');
+    const notes = flag(args, 'notes');
+    if (notes === undefined || notes.trim().length === 0) {
+      console.error(
+        'accept-scope: --notes is required (the acceptance record must state its derivation)',
+      );
+      return 2;
+    }
+    const record = buildAcceptedTaskScope(repoRoot, {
+      handoffPath,
+      inScopePaths,
+      permissionProfiles: profiles.length > 0 ? profiles : ['builder.change'],
+      ignoreManifest: flagList(args, 'ignore'),
+      notes,
+    });
+    const bytes = canonicalJsonBytes(record);
+    const outPath = join(repoRoot, ACCEPTED_TASK_SCOPE_PATH);
+    writeFileSync(outPath, bytes);
+    console.log(`  wrote ${outPath} (${String(bytes.byteLength)} bytes)`);
+    console.log(`  accepted-scope packId ${String(record['packId'])}`);
+    return 0;
+  }
+
   if (command === 'init-app') {
     const appDir = flag(args, 'app-dir');
     const releaseSet = flag(args, 'release-set');
@@ -359,5 +415,8 @@ export function runCli(argv: readonly string[]): number {
 }
 
 // Entry point: dispatch and set the process exit code (never process.exit,
-// so redirected stdout always flushes).
-process.exitCode = runCli(process.argv.slice(2));
+// so redirected stdout always flushes). Guarded so test modules can import
+// helpers from this file without dispatching.
+const invokedDirectly =
+  process.argv[1] !== undefined && import.meta.url === pathToFileURL(resolve(process.argv[1])).href;
+if (invokedDirectly) process.exitCode = runCli(process.argv.slice(2));

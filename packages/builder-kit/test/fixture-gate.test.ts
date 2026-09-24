@@ -4,6 +4,7 @@ import { join } from 'node:path';
 import { afterAll, describe, expect, it, vi } from 'vitest';
 import { generateStableLayer } from '../src/generate/generate.js';
 import { verifyBuilderKit } from '../src/verify/verify.js';
+import { writeAcceptedTaskScope } from '../src/generate/accepted-task-scope.js';
 import { writeTaskPack } from '../src/generate/task-pack.js';
 import {
   buildFixture,
@@ -173,6 +174,15 @@ describe('verify:builder-kit battery (fixture repository)', () => {
     function withTaskPack(): string {
       const root = fresh({ git: true });
       const head = git(root, ['rev-parse', 'HEAD']).trim();
+      // The accepted-scope record is what makes the pack accepted authority
+      // (architecture §3.3/§3.9); file it for the same handoff bytes.
+      writeAcceptedTaskScope(root, {
+        handoffPath: 'docs/TASK.md',
+        inScopePaths: ['docs/builder-kit/**'],
+        permissionProfiles: ['builder.change', 'builder.selfhost'],
+        ignoreManifest: ['*.tmp.md'],
+        notes: 'fixture acceptance record: scope derived from the fixture handoff text.',
+      });
       writeTaskPack(root, {
         handoffPath: 'docs/TASK.md',
         baseTree: head,

@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import { generateStableLayer } from '../src/generate/generate.js';
+import { writeAcceptedTaskScope } from '../src/generate/accepted-task-scope.js';
 import { APP_PACK_PATH } from '../src/generate/app-pack.js';
 import { initExternalApp } from '../src/generate/init-app.js';
 import { buildTaskPack, taskPackDirectory, writeTaskPack } from '../src/generate/task-pack.js';
@@ -72,6 +73,15 @@ describe('task packs (vict.builder.task-pack@1)', () => {
     const root = buildFixture({ git: true });
     tempRoots.push(root);
     generateStableLayer(root);
+    // An active task pack is accepted authority only against the committed
+    // accepted-scope record for the same handoff bytes (§3.3/§3.9).
+    writeAcceptedTaskScope(root, {
+      handoffPath: 'docs/TASK.md',
+      inScopePaths: ['docs/builder-kit/**'],
+      permissionProfiles: ['builder.change', 'builder.selfhost'],
+      ignoreManifest: [],
+      notes: 'fixture acceptance record: scope derived from the fixture handoff text.',
+    });
     const head = execFileSync('git', ['-C', root, 'rev-parse', 'HEAD'], {
       encoding: 'utf8',
     }).trim();

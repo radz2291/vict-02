@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://vict.dev/schemas/builder-kit/accepted-task-scope@1.json",
+  "title": "vict.builder.accepted-task-scope@1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaMarker",
+    "packId",
+    "handoff",
+    "inScopePaths",
+    "permissionProfiles",
+    "ignoreManifest",
+    "ignoreManifestDigest",
+    "notes"
+  ],
+  "properties": {
+    "schemaMarker": { "const": "vict.builder.accepted-task-scope@1" },
+    "packId": { "$ref": "#/$defs/sha256" },
+    "handoff": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": { "type": "string", "minLength": 1 },
+        "sha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "inScopePaths": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "permissionProfiles": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "ignoreManifest": { "type": "array", "items": { "type": "string" } },
+    "ignoreManifestDigest": { "$ref": "#/$defs/sha256" },
+    "notes": { "type": "string" }
+  },
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+  }
+}

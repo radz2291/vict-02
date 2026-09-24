@@ -1,0 +1,25 @@
+{
+  "handoff": {
+    "path": "docs/handoff/VICT-STAGE-08-BUILDER-KIT-HANDOFF.md",
+    "sha256": "4aa83c1510faa4877becaeadd3a4335c87a8b02cc4812e0db93c5ebd737ad3e2"
+  },
+  "ignoreManifest": [".builder-kit/**", ".git/**", ".pi/**", "docs/report/**", "node_modules/**"],
+  "ignoreManifestDigest": "3650c90cc020c9df5439a139ca40f00bed5e627e85e71676fb4aca9c21f7ab32",
+  "inScopePaths": [
+    "BUILDER-KIT.md",
+    "docs/VICT-SYSTEM-REFERENCE.md",
+    "docs/builder-kit/**",
+    "docs/governance/**",
+    "examples/reference-app/**",
+    "package.json",
+    "packs/notes-pack/**",
+    "packages/builder-kit/**",
+    "scripts/lib/release-set.mjs",
+    "scripts/verify-builder-kit.mjs",
+    "scripts/verify-stage6a.mjs"
+  ],
+  "notes": "Accepted machine-checkable representation of the Stage 8 handoff scope, filed 2026-09-24 by explicit owner direction (G1 gate correction). inScopePaths derive from the handoff section Autonomy permitted list (packages/builder-kit/**; scripts/verify-builder-kit.mjs; docs/builder-kit/**; root BUILDER-KIT.md; the P1 task implementation paths packs/notes-pack/** and examples/reference-app/**; the two npm script entries, recorded as package.json; dated reference status notes, recorded as docs/VICT-SYSTEM-REFERENCE.md), plus the owner-ratified bounded retrospective exceptions (scripts/verify-stage6a.mjs, scripts/lib/release-set.mjs) and the owner-directed governance location (docs/governance/**); see the docs/governance gate-correction record for the derivation table. permissionProfiles are the kit-shipped profiles; the effective profile is named per task pack. ignoreManifest is detection-only, not write authority: .pi/** (owner-local, never read), docs/report/** (named denial; the handoff-named new report file remains permitted), .builder-kit/**, .git/**, node_modules/**.",
+  "packId": "64cdb2034a3f9555451f4e1e4434cd8e07d3625a02a718780ea10c69360f9dc7",
+  "permissionProfiles": ["builder.read", "builder.change", "builder.selfhost"],
+  "schemaMarker": "vict.builder.accepted-task-scope@1"
+}

@@ -22,7 +22,8 @@ import {
 import { CATALOG_SCHEMA, CONTEXT_PACK_SCHEMA, PROFILE_SCHEMA, TOOLS_SCHEMA } from '../markers.js';
 import { scanFirstPartySources } from '../catalog/static-scan.js';
 import { validateDocument, validateProfile, validateTools } from '../validate/index.js';
-import { compareBaseline, loadTaskPack, taskPackRoot } from './baseline.js';
+import { compareBaseline, taskPackRoot } from './baseline.js';
+import { verifyTaskPackAuthority } from './task-pack.js';
 
 /**
  * `verify:builder-kit` — the freshness/identity/completeness gate
@@ -200,28 +201,51 @@ export function verifyBuilderKit(repoRoot: string): VerifyReport {
     record('identity:base-pack', false, 'pack-tamper', 'committed base pack unreadable');
   }
 
-  // Task pack identities (when present).
+  // Active task packs: authority FIRST (§3.3/§3.9 — a pack whose scope
+  // was altered and whose packId was recomputed is NOT accepted authority),
+  // then baseline comparison only against authority-verified scope.
   for (const taskPackPath of listTaskPacks(repoRoot)) {
-    const bytes = readFileSync(taskPackPath);
-    try {
-      const parsed = JSON.parse(bytes.toString('utf8')) as Record<string, unknown>;
-      const recorded = parsed['packId'];
-      const recomputed = packIdentityFromBytes(bytes);
-      const ok = typeof recorded === 'string' && recorded === recomputed;
-      record(
-        `identity:${taskPackPath.replace(/\\/g, '/')}`,
-        ok,
-        ok ? null : 'pack-tamper',
-        ok ? 'task pack identity matches' : 'task pack identity mismatch',
-      );
-    } catch (error) {
-      record(
-        `identity:${taskPackPath.replace(/\\/g, '/')}`,
-        false,
-        'pack-tamper',
-        (error as Error).message,
-      );
+    const label = taskPackPath.replace(/\\/g, '/');
+    const authority = verifyTaskPackAuthority(repoRoot, taskPackPath);
+    for (const check of authority.checks) {
+      record(`${check.id}:${label}`, check.ok, check.driftClass, check.detail);
     }
+    if (!authority.ok) {
+      record(
+        `baseline:${label}`,
+        false,
+        'baseline-escape',
+        'task pack is not accepted authority; baseline comparison withheld (wrapper refuses scope, gate refuses comparison)',
+      );
+      continue;
+    }
+    const comparison = compareBaseline(
+      repoRoot,
+      authority.baseTree ?? '',
+      authority.inScopePaths,
+      authority.ignoreManifest,
+    );
+    if (comparison === null) {
+      record(
+        `baseline:${label}`,
+        false,
+        'baseline-escape',
+        `git comparison against ${String(authority.baseTree).slice(0, 12)}… failed`,
+      );
+      continue;
+    }
+    const ok = comparison.escapes.length === 0;
+    record(
+      `baseline:${label}`,
+      ok,
+      ok ? null : 'baseline-escape',
+      ok
+        ? `all working-tree changes versus ${String(authority.baseTree).slice(0, 12)}… are in scope (${String(comparison.changes.filter((c) => !c.ignored).length)} tracked)`
+        : `out-of-scope change(s): ${comparison.escapes
+            .map((escape) => `${escape.path} [${escape.changeClass}]`)
+            .join(', ')
+            .slice(0, 400)}`,
+    );
   }
 
   // ---- 3. catalog: fail-closed static completeness -----------------------
@@ -476,46 +500,6 @@ export function verifyBuilderKit(repoRoot: string): VerifyReport {
       null,
       'no task pack present; baseline comparison not applicable',
     );
-  } else {
-    for (const taskPackPath of taskPacks) {
-      const taskPack = loadTaskPack(taskPackPath);
-      if (taskPack === null) {
-        record(
-          `baseline:${taskPackPath.replace(/\\/g, '/')}`,
-          false,
-          'schema-invalid',
-          'task pack unreadable',
-        );
-        continue;
-      }
-      const comparison = compareBaseline(
-        repoRoot,
-        taskPack.baseTree,
-        taskPack.inScopePaths,
-        taskPack.ignoreManifest,
-      );
-      if (comparison === null) {
-        record(
-          `baseline:${taskPackPath.replace(/\\/g, '/')}`,
-          false,
-          'baseline-escape',
-          `git comparison against ${taskPack.baseTree.slice(0, 12)}… failed`,
-        );
-        continue;
-      }
-      const ok = comparison.escapes.length === 0;
-      record(
-        `baseline:${taskPackPath.replace(/\\/g, '/')}`,
-        ok,
-        ok ? null : 'baseline-escape',
-        ok
-          ? `all working-tree changes versus ${taskPack.baseTree.slice(0, 12)}… are in scope (${String(comparison.changes.filter((c) => !c.ignored).length)} tracked)`
-          : `out-of-scope change(s): ${comparison.escapes
-              .map((escape) => `${escape.path} [${escape.changeClass}]`)
-              .join(', ')
-              .slice(0, 400)}`,
-      );
-    }
   }
 
   return { ok: checks.every((check) => check.ok), checks };
