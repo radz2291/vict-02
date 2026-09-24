@@ -1,14 +1,17 @@
 # VICT — Stage 08 Handoff: Builder Kit and Self-Hosting
 
-> **Status:** PROPOSED — issued as part of the Stage 8 entry-contract
-> candidate for **owner review**. This handoff authorizes NOTHING until the
-> owner ratifies the entry contract (architecture document §9). It names
-> reference v0.4.28 plus the candidate registrations §0.35 (v0.4.29) and
-> §0.36 (v0.4.30 — corrective pass per owner review: identity rules,
-> stable/task pack split, capability catalog, starting-tree pinning, P1
-> same-task worktrees, `docs/report/` alignment, P2 brief purity, D-1–D-5
-> recommended dispositions); it is valid only against the ratified text of
-> that version or later.
+> **Status:** RATIFIED — contract FROZEN (owner decision G0, 2026-09-24;
+> reference v0.4.32, §0.38). **Frozen architecture contract identity:**
+> `vict.stage08.entry-contract@1` — SHA-256 over the exact committed bytes
+> of `docs/architecture/STAGE-08-BUILDER-KIT-AND-SELF-HOSTING.md` at the
+> ratification commit:
+> `ba3fde1b51e9b24b6b9dcef393593fe9fb3e7dc476c87fafd7d6a4fc1ed4c57a`
+> (recompute independently; the architecture document intentionally does
+> not carry this digest). **Authorization: G1 implementation only**
+> (WP-1–WP-5); P1/P2 remain gated at G2/G3 with their own stop points.
+> It names reference v0.4.28 through v0.4.32 (§§0.35–0.38; §0.38 is the
+> G0 ratification record). Do not mark your own work Verified. Do not
+> start Stage 9. Do not touch the Quellight repository.
 >
 > **Reference:** `docs/VICT-SYSTEM-REFERENCE.md` v0.4.28 + candidate §0.35
 > **Architecture:** `docs/architecture/STAGE-08-BUILDER-KIT-AND-SELF-HOSTING.md`
@@ -185,14 +188,21 @@ implementer report filed. **Proofs may not start from a red ladder.**
 
 ### WP-6 — Proof P1: self-hosting equivalence
 
-- Owner selects the two hosts (decision D-2). The operator accepts the
-  handoff, pins the starting tree `baseTree = B`, and issues **one task
-  card with one set of acceptance criteria to both hosts**: add a
-  `readingTime` pure/read capability (contract + revision +
-  effect/authority declarations + implementation + example + permanent
-  tests) to `packs/notes-pack`, and surface a reading-time region on the
-  reference application's notes screen via the Application Definition with
-  a permanent renderer-level test.
+- Hosts are **Codex and Claude Code** (owner decision D-2, reference
+  §0.38), each fresh and isolated. If either host is unavailable when P1
+  begins: STOP and return for an owner decision — do not silently
+  substitute.
+- The operator accepts the handoff, pins the starting baseline to an
+  **exact existing commit SHA** `B`, and issues **one task card with one
+  set of acceptance criteria to both hosts**: add a `readingTime`
+  pure/read capability (contract + revision + effect/authority
+  declarations + implementation + example + permanent tests) to
+  `packs/notes-pack`, and surface a reading-time region on the reference
+  application's notes screen via the Application Definition with a
+  permanent renderer-level test. A task pack regenerates from exactly:
+  the committed base pack (by `packId`), this handoff (path + SHA-256),
+  the baseline commit SHA `B`, and the ignore-manifest digest — no other
+  input.
 - Two isolated worktrees are created from exactly `B`
   (`git worktree add ../vict-p1-hostA B`, `git worktree add
   ../vict-p1-hostB B`). Each session runs fresh inside its own worktree
@@ -264,6 +274,15 @@ implementer report filed. **Proofs may not start from a red ladder.**
    GREEN). The catalog-drift case is detected by the static declaration
    scan (parsing only — no pack execution is needed to catch the
    omission).
+2b. **Fail-closed catalog completeness:** a first-party pack source whose
+   capability entry is computed/dynamic or otherwise unresolvable by the
+   static enumerator → RED with the explicit class `catalog-unresolved`
+   (never a silent omission); the manifest-reading generation path runs
+   in a credential-free isolated child process — canary credentials
+   planted in the process environment appear in no catalog or pack bytes,
+   the process imports only the declared pack modules, and any handler
+   invocation during generation fails the gate. The verified SDK ABI is
+   not modified.
 3. **Schema rejection:** malformed handoff/result/audit/pack/profile
    documents → validator rejects with structured diagnostics (closed
    vocabulary, non-echoing).
@@ -338,10 +357,11 @@ numbers from any prior stage.
   the P1 task implementation in `packs/notes-pack` and
   `examples/reference-app`, and the P2 app in its separate empty directory;
   append dated Stage 8 status notes to reference §23/§24.
-- Requires a stop and owner decision: D-1 (consumption medium) and D-2
-  (host pair) unresolved; a kit defect that would require changing a
-  verified semantic to fix; any conflict between this handoff and the
-  reference; test failures not attributable to handoff work; any publication
+- Requires a stop and owner decision: either P1 host (Codex or Claude
+  Code) unavailable when P1 begins (D-2 — no silent substitution); a kit
+  defect that would require changing a verified semantic to fix; any
+  conflict between this handoff and the reference; test failures not
+  attributable to handoff work; any publication
   or production-activation request; missing credentials or environment
   prerequisites for a proof.
 
@@ -389,11 +409,12 @@ INCONCLUSIVE. The auditor files its record as
   task packs, tools with profiles, schemas, gate — all tested;
 - `verify:builder-kit` green on the committed tree and red on every negative
   control, with the identity-exclusion rule enforced;
-- P1: two fresh sessions (two hosts, or agent + human) each completed the
-  SAME bounded capability + application-surface change in isolated
-  worktrees from the same handoff and pinned starting tree, with
-  equivalent, independently reproducible evidence; only the selected
-  result integrated;
+- P1: two fresh sessions — **Codex and Claude Code** (D-2) — each
+  completed the SAME bounded capability + application-surface change in
+  isolated worktrees from the same handoff and pinned baseline commit SHA,
+  with equivalent, independently reproducible evidence; only the selected
+  result integrated. The host runs are acceptance evidence and never by
+  themselves a Verified status;
 - P2: the fresh-agent TaskLedger app built from an empty project exists
   and, scored by the evaluator against F1–F8 (never shown to the builder),
   survives a real-process restart, keeps definition-driven surfaces and

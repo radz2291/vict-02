@@ -1,13 +1,14 @@
 # VICT Stage 08 — Builder Kit and Self-Hosting
 
-> **Status:** PROPOSED Stage 8 entry contract — documentation-only candidate
-> issued for **owner review**. Nothing in this document authorizes
-> implementation. Stage 8 implementation MAY begin only after the owner
-> ratifies this contract together with its bounded handoff
-> (`docs/handoff/VICT-STAGE-08-BUILDER-KIT-HANDOFF.md`) through a dated
-> owner decision recorded in `docs/VICT-SYSTEM-REFERENCE.md` (§9). The
-> contract is NOT frozen in this document; the canonical input hash is
-> computed and pinned at freeze time (§9).
+> **Status:** RATIFIED AND FROZEN Stage 8 entry contract (owner decision
+> G0, 2026-09-24; reference v0.4.32, §0.38). The owner ratified this
+> contract together with its bounded handoff
+> (`docs/handoff/VICT-STAGE-08-BUILDER-KIT-HANDOFF.md`), resolved
+> D-1′–D-5 as recorded in §8, and authorized **G1 implementation only**.
+> The frozen contract identity is the SHA-256 over these exact committed
+> bytes, pinned in the handoff; this document intentionally does not carry
+> or depend on that digest. Later changes require an amendment under
+> reference §27.5.
 >
 > **Correction (2026-09-24, reference v0.4.30, §0.36):** corrected per owner
 > review — context-pack identity cycles resolved (§3.3, §4.4), stable
@@ -242,12 +243,15 @@ directory `.builder-kit/packs/<handoff-slug>-<first8(handoffSha256)>/` —
 concurrent tasks never share or overwrite a pack. Members: the base-pack
 `packId` binding; `{ handoffPath, handoffSha256 }` (the sole task
 authority); the handoff's `inScopePaths` and named denials; the **pinned
-starting tree** `baseTree` (the git tree/commit hash of the accepted
-starting state, supplied by the operator at acceptance — it exists before
-generation begins, so it is a normal input, not a cycle); the detection
-ignore-manifest digest; and the effective `permissionProfile`. Task packs
-are reproducible: regenerating from the same committed base pack + handoff
-yields byte-identical output. Provenance versus task parameters: the base
+starting baseline** `baseTree` — an **exact existing commit SHA** fixed by
+the operator at handoff acceptance (it exists before generation begins, so
+it is a normal input, not a cycle); the detection ignore-manifest digest;
+and the effective `permissionProfile`. Task packs are reproducible:
+regenerating a task pack requires EXACTLY the committed base pack (by
+`packId`), the handoff document (path + SHA-256), the baseline commit SHA,
+and the ignore-manifest digest — no other input participates, and any
+additional input is a generation defect. Regeneration from those inputs is
+byte-identical. Provenance versus task parameters: the base
 pack's recorded input digests are provenance (content-addressed);
 `baseTree`, `inScopePaths`, and the profile are task parameters — carried
 so the assignment is reproducible and enforceable. `baseTree` in
@@ -479,6 +483,17 @@ authoring ABI (`defineCapability`/`defineCapabilityPack` in
   generator's trust envelope is first-party workspace code only;
   third-party pack distribution remains Stage 10 (SEC-005, OPEN-010) and
   is out of Stage 8 scope.
+- **Fail-closed completeness (normative).** The static enumerator must
+  resolve every first-party capability declaration and expression it
+  scans. Anything it cannot resolve — a computed/dynamic capability entry,
+  an unresolvable identifier, a parse failure — is an explicit
+  verification failure (`catalog-unresolved`), NEVER a silent omission.
+  Where manifest reading imports first-party modules, the generator runs
+  in a credential-free isolated child process (no inherited credential
+  environment; canary-checked), never invokes capability handlers, and
+  imports only the declared pack modules. Any handler invocation during
+  generation fails the gate. The verified SDK ABI is not changed by this
+  contract.
 
 Each entry records its source package, declaring module, and
 declaration-content digest. A fresh agent discovers capabilities through
@@ -634,8 +649,8 @@ same acceptance criteria** — one task card, for example:
 
 Isolation and integration:
 
-1. the operator accepts the handoff and pins the starting tree `B` (the
-   task pack records `baseTree = B`);
+1. the operator accepts the handoff and pins the starting baseline to the
+   exact existing commit SHA `B` (the task pack records `baseTree = B`);
 2. two isolated worktrees are created from exactly `B`
    (`git worktree add …-hostA B`, `git worktree add …-hostB B`); each host
    works only inside its own worktree — no shared files, no collision;
@@ -650,6 +665,12 @@ Isolation and integration:
 
 Equivalence is judged on both sessions independently satisfying the same
 acceptance criteria with reproducible evidence — not on identical diffs.
+The host runs are acceptance evidence; they do not by themselves confer
+Verified status on Stage 8, the kit, or either host — that requires the
+independent audit and owner closure (§22.3). Per owner decision D-2 the
+hosts are Codex and Claude Code; if either is unavailable when P1 begins,
+the implementer stops and returns for an owner decision (no silent
+substitution).
 
 ### 5.4 Proof P2 — greenfield application from an empty project
 
@@ -786,27 +807,28 @@ release publication by a builder; no Stage 9/11 scope.
 
 | ID | Item | Disposition sought |
 | --- | --- | --- |
-| D-1 | P2 consumption medium. **Recommended disposition (D-1′):** the 13 platform packages from the existing published `vict-release-set@1/0.3.1` (registry, lockfile integrity — the clean-consumer discipline is preserved) plus the new `@victframework/builder-kit` as an integrity-recorded local artifact (recorded SHA-256; exact `0.3.1` pins; no-checkout-leakage probe retained). No new publication is a Stage 8 prerequisite; the kit joins a future release set only when the owner next authorizes one. | recommendation proposed; owner confirms or overrides at G0 |
-| D-2 | P1 host pair. **Recommended disposition:** two agent hosts from the supported set (Codex, Claude Code, Pi); the agent+human equivalence path is the fallback if a second host is unavailable — both satisfy AGNT-001 and the exit gate. Same task card, isolated worktrees (§5.3). | recommendation proposed; owner names the pair at G0 |
-| D-3 | Release-set membership of the kit. **Recommended disposition:** defer — the immutable-set rule is untouched; the kit is distributed as the D-1′ local artifact until the owner's next authorized release naturally includes it as a 14th member (a new set identity). | recommendation proposed; owner decides with D-1 |
-| D-4 | Generated artifacts at rest. **Recommended disposition (as corrected in §3.3):** the stable layer — `BUILDER-KIT.md`, base pack, and capability catalog — is committed with the regenerate-and-compare gate (auditable at any commit; churn bounded by input-change-driven regeneration, §4.2); per-handoff task packs are NOT committed (generated on demand, isolated per handoff digest). | recommendation proposed; owner may flip |
-| D-5 | The §15.3 `MSTR-012` delivery cell still reads `Planned` although §0.33 records the MSTR-012 real-use proof closed with Stage 07D (D4); the §24.1/§24.3 historical tails already carry dated supersession notes (§0.35). **Recommended disposition:** at ratification, perform the §27.4 status update and mark `MSTR-012` Verified citing §0.33; keeping `Planned` after closure would misstate current truth. | recommendation proposed; owner decides at G0 |
+| D-1 | P2 consumption medium. **Disposition (D-1′, ADOPTED):** the 13 platform packages from the existing published `vict-release-set@1/0.3.1` (registry, lockfile integrity — the clean-consumer discipline is preserved) plus the new `@victframework/builder-kit` as an integrity-recorded local artifact (recorded SHA-256; exact `0.3.1` pins; no-checkout-leakage probe retained). No new publication is a Stage 8 prerequisite; the kit joins a future release set only when the owner next authorizes one. | **RESOLVED — adopted as recommended (G0, 2026-09-24; reference §0.38)** |
+| D-2 | P1 host pair. **Disposition (ADOPTED with named hosts):** **Codex and Claude Code**, each fresh and isolated, on the same task card and acceptance criteria (§5.3). If either host is unavailable when P1 begins, the implementer stops and returns for an owner decision — no silent substitution. The agent+human equivalence path remains the reference-level fallback if the owner later re-opens D-2. | **RESOLVED (G0, 2026-09-24; reference §0.38)** |
+| D-3 | Release-set membership of the kit. **Disposition (ADOPTED):** deferred — the immutable-set rule is untouched; the kit is distributed as the D-1′ local artifact until the owner's next authorized release naturally includes it as a 14th member (a new set identity). Any future publication is separately authorized. | **RESOLVED — deferred as recommended (G0, 2026-09-24; reference §0.38)** |
+| D-4 | Generated artifacts at rest. **Disposition (ADOPTED, as corrected in §3.3):** the stable layer — `BUILDER-KIT.md`, base pack, and capability catalog — is committed with the regenerate-and-compare gate (auditable at any commit; churn bounded by input-change-driven regeneration, §4.2); per-handoff task packs are generated on demand in isolated locations and are NOT committed. | **RESOLVED — adopted as corrected (G0, 2026-09-24; reference §0.38)** |
+| D-5 | `MSTR-012` delivery status. **Disposition (ADOPTED — RECONCILED TO VERIFIED):** the §15.3 cell is marked Verified with the precise citation chain — Stage 07D Phase D4 real-use evidence (Layer A sealed execution passed exactly once, one-shot machinery confirmed non-re-executable by the independent 07E audit probes N-D4-P-27/28; attempt-2 exit-code/observability disclosures carried; Layer B organic-use window recorded at the owner-frozen minimum in its own closeout record), the independent Stage 07D D5 re-verification (§0.33), and the fresh independent Stage 07E exit audit whose verdict permitted the Stage 07 formal closure (Quellight `5f709a5…`, verified read-only) whose exit gate includes MSTR-012 — with the disclosed caveat that the 07E audit validated the committed real-use evidence structurally without re-execution. The requirement is stage-scoped, and the formal closure certified it whole; nothing is claimed beyond that scope. | **RESOLVED (G0, 2026-09-24; reference §0.38)** |
 | R-1 | Fresh builders may attribute gate failures to their own work and thrash. Mitigation: §3.8 item 6 stop condition + result-document classification. | accepted risk, monitored at audit |
 | R-2 | Pack/kit adds a maintenance obligation to every contract-touching change (§4.2 step 8). Mitigation: the same-commit gate makes the obligation mechanical and cheap. | accepted risk |
 | R-3 | Host-mediated out-of-scope writes are detectable, not preventable (§3.5). | stated boundary; audit checks it |
 
-## 9. Ratification and freeze procedure
+## 9. Ratification and freeze (RECORDED)
 
-1. The owner reviews this document (as corrected at v0.4.30, §0.36) and the
-   Stage 8 handoff together with the §0.35/§0.36 candidate reconciliations
-   in the reference.
-2. Ratification is a dated owner decision recorded in
-   `docs/VICT-SYSTEM-REFERENCE.md`, resolving D-1/D-2 (and D-3/D-4/D-5 as
-   chosen).
-3. At ratification the contract is frozen: the canonical input hash of the
-   CURRENT corrected contract bytes — this document exactly as committed at
-   ratification (the v0.4.31-registered text or later, whichever the owner
-   ratifies) — is computed and pinned in the handoff, and later changes
-   require an amendment under reference §27.5.
-4. Only then may implementation begin (G1). This document, as issued, is a
-   proposal and authorizes nothing.
+1. **RATIFIED (G0, 2026-09-24).** The owner reviewed the corrected
+   candidate (registered at reference v0.4.29–v0.4.31, §§0.35–0.37) and
+   ratified this contract together with the Stage 8 handoff by the dated
+   owner decision recorded in `docs/VICT-SYSTEM-REFERENCE.md` §0.38,
+   resolving D-1′, D-2, D-3, D-4, and D-5 exactly as recorded in §8.
+2. **FROZEN.** The contract identity is the SHA-256 over this document's
+   exact committed bytes at the ratification commit; the digest is pinned
+   in the handoff, and this document deliberately does not contain or
+   depend on it. Later changes require an amendment under reference §27.5.
+3. **Authorization: G1 implementation only** (handoff work packages
+   WP-1–WP-5, gate G1). Proofs P1/P2 remain subject to their own gates
+   (G2/G3) and stop points. This ratification authorizes nothing else: no
+   release publication, no production activation, no Quellight work, and
+   no Stage 9 work.
