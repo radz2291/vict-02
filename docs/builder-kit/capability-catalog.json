@@ -1,0 +1,198 @@
+{
+  "generatedFrom": {
+    "sourceModules": [
+      {
+        "contentSha256": "732588ecc59e348fde678203b6d5052986c3d59b9aa40500c4bd1aa704e56462",
+        "module": "packs/ledger-pack/src/index.ts",
+        "package": "@victframework/ledger-pack"
+      },
+      {
+        "contentSha256": "d53505c2ba810a2cd0ffbe4f6bd54a6258b21314323737490076cb9d5f8a55d1",
+        "module": "packs/notes-pack/src/index.ts",
+        "package": "@victframework/notes-pack"
+      }
+    ]
+  },
+  "packs": [
+    {
+      "capabilities": [
+        {
+          "contentSha256": "732588ecc59e348fde678203b6d5052986c3d59b9aa40500c4bd1aa704e56462",
+          "effect": "pure",
+          "id": "ledger.audit",
+          "input": {
+            "contractId": "ledger.entry",
+            "revision": "1"
+          },
+          "module": "packs/ledger-pack/src/index.ts",
+          "output": {
+            "contractId": "ledger.audit-line",
+            "revision": "1"
+          },
+          "revision": "1",
+          "summary": null
+        },
+        {
+          "ambiguity": "keyedRetry",
+          "configuration": ["ledger.currency"],
+          "contentSha256": "732588ecc59e348fde678203b6d5052986c3d59b9aa40500c4bd1aa704e56462",
+          "effect": "write",
+          "id": "ledger.apply",
+          "idempotency": "keyed",
+          "input": {
+            "contractId": "ledger.entry",
+            "revision": "1"
+          },
+          "module": "packs/ledger-pack/src/index.ts",
+          "output": {
+            "contractId": "ledger.receipt",
+            "revision": "1"
+          },
+          "permissions": ["ledger.write"],
+          "requiredConfiguration": ["ledger.currency"],
+          "requiredSecrets": ["ledger.apiKey"],
+          "retry": {
+            "backoff": {
+              "delayMs": 10,
+              "kind": "fixed"
+            },
+            "maxAttempts": 3,
+            "retryOn": ["timeout"]
+          },
+          "revision": "1",
+          "secrets": ["ledger.apiKey"],
+          "summary": null
+        }
+      ],
+      "configuration": [
+        {
+          "description": "Display currency code.",
+          "name": "ledger.currency",
+          "required": true
+        }
+      ],
+      "contracts": [
+        {
+          "id": "ledger.entry",
+          "revision": "1"
+        },
+        {
+          "id": "ledger.audit-line",
+          "revision": "1"
+        },
+        {
+          "id": "ledger.receipt",
+          "revision": "1"
+        }
+      ],
+      "documentation": {
+        "summary": "Keyed-idempotent ledger writes with least-authority declarations."
+      },
+      "doubles": [
+        {
+          "capabilityId": "ledger.apply",
+          "modes": ["test", "simulate"],
+          "revision": "1"
+        }
+      ],
+      "evaluations": [
+        {
+          "capabilityId": "ledger.apply",
+          "description": "Same idempotency key reconciles to one external mutation.",
+          "id": "eval.ledger.apply.keyed"
+        }
+      ],
+      "id": "vict.example.ledger",
+      "permissions": [
+        {
+          "description": "Append entries to the simulated ledger.",
+          "id": "ledger.write"
+        }
+      ],
+      "provenance": {
+        "author": "vict examples",
+        "license": "MIT"
+      },
+      "secrets": [
+        {
+          "description": "Ledger API key reference.",
+          "name": "ledger.apiKey",
+          "required": true
+        }
+      ],
+      "version": "1.0.0",
+      "victCompatibility": "^0.1.0"
+    },
+    {
+      "capabilities": [
+        {
+          "contentSha256": "d53505c2ba810a2cd0ffbe4f6bd54a6258b21314323737490076cb9d5f8a55d1",
+          "effect": "pure",
+          "id": "notes.format",
+          "input": {
+            "contractId": "notes.text",
+            "revision": "1"
+          },
+          "module": "packs/notes-pack/src/index.ts",
+          "output": {
+            "contractId": "notes.formatted",
+            "revision": "1"
+          },
+          "revision": "1",
+          "summary": null
+        },
+        {
+          "contentSha256": "d53505c2ba810a2cd0ffbe4f6bd54a6258b21314323737490076cb9d5f8a55d1",
+          "effect": "read",
+          "id": "notes.stats",
+          "input": {
+            "contractId": "notes.text",
+            "revision": "1"
+          },
+          "module": "packs/notes-pack/src/index.ts",
+          "output": {
+            "contractId": "notes.stats",
+            "revision": "1"
+          },
+          "revision": "1",
+          "summary": null
+        }
+      ],
+      "configuration": [],
+      "contracts": [
+        {
+          "id": "notes.text",
+          "revision": "1"
+        },
+        {
+          "id": "notes.formatted",
+          "revision": "1"
+        },
+        {
+          "id": "notes.stats",
+          "revision": "1"
+        }
+      ],
+      "documentation": {
+        "summary": "Pure/read text utilities for note-shaped records."
+      },
+      "evaluations": [
+        {
+          "capabilityId": "notes.format",
+          "description": "The formatted output uppercases the input title.",
+          "id": "eval.notes.format.uppercases"
+        }
+      ],
+      "id": "vict.example.notes",
+      "permissions": [],
+      "provenance": {
+        "author": "vict examples",
+        "license": "MIT"
+      },
+      "secrets": [],
+      "version": "1.0.0",
+      "victCompatibility": "^0.1.0"
+    }
+  ],
+  "schemaMarker": "vict.builder.catalog@1"
+}

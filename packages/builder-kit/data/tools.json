@@ -1,0 +1,79 @@
+{
+  "schemaMarker": "vict.builder.tools@1",
+  "tools": [
+    {
+      "name": "fs.read",
+      "summary": "Read any repository file except named denials (.pi/, .git/, credential-shaped paths).",
+      "input": ["path"],
+      "enforcement": "read-only"
+    },
+    {
+      "name": "fs.write",
+      "summary": "Write files only inside the handoff's declared in-scope paths; every refusal is recorded.",
+      "input": ["path", "content"],
+      "enforcement": "in-scope-write"
+    },
+    {
+      "name": "shell.run",
+      "summary": "Run an npm script by name from the root manifest, only when the profile allowlists it.",
+      "input": ["script"],
+      "enforcement": "listed-scripts"
+    },
+    {
+      "name": "git.status",
+      "summary": "Read-only working-tree status.",
+      "input": [],
+      "enforcement": "read-only"
+    },
+    {
+      "name": "git.diff",
+      "summary": "Read-only diff summary of working-tree changes.",
+      "input": [],
+      "enforcement": "read-only"
+    },
+    {
+      "name": "git.log",
+      "summary": "Read-only recent commit log.",
+      "input": [],
+      "enforcement": "read-only"
+    },
+    {
+      "name": "git.commit",
+      "summary": "Commit staged changes on the working branch with a supplied message; staging is the builder's own action.",
+      "input": ["message"],
+      "enforcement": "working-branch"
+    },
+    {
+      "name": "kit.verify",
+      "summary": "Run the verify:builder-kit freshness/identity/completeness gate.",
+      "input": [],
+      "enforcement": "kit-gate"
+    },
+    {
+      "name": "kit.validate",
+      "summary": "Validate vict.builder.* documents against their versioned schemas.",
+      "input": ["file"],
+      "enforcement": "kit-gate"
+    },
+    {
+      "name": "kit.generate",
+      "summary": "Regenerate the committed stable layer (catalog, base pack, renderings).",
+      "input": [],
+      "enforcement": "kit-gate"
+    }
+  ],
+  "absent": [
+    {
+      "name": "git.push",
+      "reason": "not a kit tool; the owner pushes (architecture §3.5)"
+    },
+    {
+      "name": "control.validate / control.propose / control.simulate / control.inspect / control.activateDev",
+      "reason": "optional VICT control-tool bindings omitted in this kit build (WP-3 option exercised); no control authority is available through the kit"
+    },
+    {
+      "name": "publish / production activation / approval / role change / secret access",
+      "reason": "absent from every builder profile; attempts are escalation-shaped stop conditions"
+    }
+  ]
+}

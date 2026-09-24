@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://vict.dev/schemas/builder-kit/profile@1.json",
+  "title": "vict.builder.profile@1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaMarker",
+    "name",
+    "read",
+    "write",
+    "scripts",
+    "control",
+    "denials",
+    "stopOnDenial"
+  ],
+  "properties": {
+    "schemaMarker": { "const": "vict.builder.profile@1" },
+    "name": { "enum": ["builder.read", "builder.change", "builder.selfhost"] },
+    "read": { "type": "array", "items": { "type": "string" } },
+    "write": { "type": "array", "items": { "type": "string" } },
+    "scripts": { "type": "array", "items": { "type": "string" } },
+    "control": { "type": "array", "items": { "type": "string" } },
+    "denials": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "stopOnDenial": { "type": "array", "items": { "type": "string" } }
+  }
+}

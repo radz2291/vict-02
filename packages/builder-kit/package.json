@@ -1,0 +1,47 @@
+{
+  "name": "@victframework/builder-kit",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Vict Builder Kit: host-neutral bootstrap, generated context/task packs, capability catalog, typed repository tools, permission profiles, and the verify:builder-kit freshness gate. Not a release-set member (publication deferred, architecture D-3); distributed as an integrity-recorded local artifact.",
+  "private": true,
+  "bin": {
+    "vict-builder-kit": "./bin/vict-builder-kit.mjs"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "bin",
+    "schemas",
+    "data"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "tsx": "^4.23.13",
+    "typescript": "^6.0.3"
+  },
+  "license": "Apache-2.0",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/radz2291/vict-02.git",
+    "directory": "packages/builder-kit"
+  },
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "bugs": {
+    "url": "https://github.com/radz2291/vict-02/issues"
+  },
+  "homepage": "https://github.com/radz2291/vict-02#readme"
+}

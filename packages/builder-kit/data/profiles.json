@@ -1,0 +1,125 @@
+[
+  {
+    "schemaMarker": "vict.builder.profile@1",
+    "name": "builder.read",
+    "read": ["repository", "packs", "control-plane inspection"],
+    "write": [],
+    "scripts": [],
+    "control": [],
+    "denials": [
+      "production activation",
+      "release publication or Application Release select",
+      "secret values",
+      "approvals",
+      "role or scope changes",
+      "git.push",
+      "path .pi/**",
+      "existing docs/report/ evidence files (creating a handoff-named new report file is permitted)"
+    ],
+    "stopOnDenial": [
+      "production activation",
+      "release publication or Application Release select",
+      "secret values",
+      "approvals",
+      "role or scope changes"
+    ]
+  },
+  {
+    "schemaMarker": "vict.builder.profile@1",
+    "name": "builder.change",
+    "read": ["repository", "packs", "control-plane inspection"],
+    "write": ["in-scope paths", "kit-tools", "working-branch"],
+    "scripts": [
+      "format:check",
+      "lint",
+      "typecheck",
+      "test",
+      "test:unit",
+      "test:integration",
+      "build",
+      "verify:stage5",
+      "verify:stage6a",
+      "verify:stage6b",
+      "verify:stage7a",
+      "verify:release-set",
+      "verify:clean-clone",
+      "verify:builder-kit"
+    ],
+    "control": [
+      "control.validate",
+      "control.propose",
+      "control.simulate",
+      "control.inspect",
+      "control.activateDev"
+    ],
+    "denials": [
+      "production activation",
+      "release publication or Application Release select",
+      "secret values",
+      "approvals",
+      "role or scope changes",
+      "git.push",
+      "path .pi/**",
+      "existing docs/report/ evidence files (creating a handoff-named new report file is permitted)"
+    ],
+    "stopOnDenial": [
+      "production activation",
+      "release publication or Application Release select",
+      "secret values",
+      "approvals",
+      "role or scope changes"
+    ]
+  },
+  {
+    "schemaMarker": "vict.builder.profile@1",
+    "name": "builder.selfhost",
+    "read": ["repository", "packs", "control-plane inspection"],
+    "write": [
+      "in-scope paths",
+      "kit-tools",
+      "working-branch",
+      "selfhost scope: packages/builder-kit/**, scripts/verify-builder-kit.mjs, docs/builder-kit/**, BUILDER-KIT.md, root npm script entries (per an explicitly ratified self-hosting handoff)"
+    ],
+    "scripts": [
+      "format:check",
+      "lint",
+      "typecheck",
+      "test",
+      "test:unit",
+      "test:integration",
+      "build",
+      "kit:generate",
+      "verify:stage5",
+      "verify:stage6a",
+      "verify:stage6b",
+      "verify:stage7a",
+      "verify:release-set",
+      "verify:clean-clone",
+      "verify:builder-kit"
+    ],
+    "control": [
+      "control.validate",
+      "control.propose",
+      "control.simulate",
+      "control.inspect",
+      "control.activateDev"
+    ],
+    "denials": [
+      "production activation",
+      "release publication or Application Release select",
+      "secret values",
+      "approvals",
+      "role or scope changes",
+      "git.push",
+      "path .pi/**",
+      "existing docs/report/ evidence files (creating a handoff-named new report file is permitted)"
+    ],
+    "stopOnDenial": [
+      "production activation",
+      "release publication or Application Release select",
+      "secret values",
+      "approvals",
+      "role or scope changes"
+    ]
+  }
+]

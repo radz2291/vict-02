@@ -171,6 +171,14 @@ export function deriveReleaseInventory(repoRoot) {
       problems.push(`packages/${dirName}: unreadable manifest (${error.message})`);
       continue;
     }
+    if (manifest.manifest.private === true) {
+      // Private packages are never publishable and therefore never
+      // release-set candidates (standard npm publishability semantics).
+      // Recorded, not silent: the frozen-set and coherence checks below
+      // still fail if any non-private 14th package ever appears — a new
+      // set identity requires separate owner authorization (D-3).
+      continue;
+    }
     if (!manifest.name.startsWith(INTERNAL_DEPENDENCY_PREFIX)) {
       problems.push(
         `packages/${dirName}: manifest name '${manifest.name}' is not an ${INTERNAL_DEPENDENCY_PREFIX}* release-set member`,

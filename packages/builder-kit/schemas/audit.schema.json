@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://vict.dev/schemas/builder-kit/audit@1.json",
+  "title": "vict.builder.audit@1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaMarker",
+    "auditor",
+    "reDerived",
+    "findings",
+    "disposition",
+    "evidenceCommits"
+  ],
+  "properties": {
+    "schemaMarker": { "const": "vict.builder.audit@1" },
+    "auditor": { "type": "string", "minLength": 1 },
+    "reDerived": { "type": "array", "items": { "type": "string" } },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "classification", "description"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "classification": { "enum": ["gating", "corrective", "deferred", "rejected"] },
+          "description": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "disposition": { "enum": ["PASS", "PASS WITH ISSUES", "FAIL", "INCONCLUSIVE"] },
+    "evidenceCommits": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^([0-9a-f]{40}|[0-9a-f]{64})$" }
+    }
+  }
+}

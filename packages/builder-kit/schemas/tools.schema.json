@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://vict.dev/schemas/builder-kit/tools@1.json",
+  "title": "vict.builder.tools@1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaMarker", "tools", "absent"],
+  "properties": {
+    "schemaMarker": { "const": "vict.builder.tools@1" },
+    "tools": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "summary", "input", "enforcement"],
+        "properties": {
+          "name": {
+            "enum": [
+              "fs.read",
+              "fs.write",
+              "shell.run",
+              "git.status",
+              "git.diff",
+              "git.log",
+              "git.commit",
+              "kit.verify",
+              "kit.validate",
+              "kit.generate"
+            ]
+          },
+          "summary": { "type": "string", "minLength": 1 },
+          "input": { "type": "array", "items": { "type": "string" } },
+          "enforcement": {
+            "enum": ["read-only", "in-scope-write", "listed-scripts", "working-branch", "kit-gate"]
+          }
+        }
+      }
+    },
+    "absent": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "reason"],
+        "properties": {
+          "name": { "type": "string", "minLength": 1 },
+          "reason": { "type": "string", "minLength": 1 }
+        }
+      }
+    }
+  }
+}

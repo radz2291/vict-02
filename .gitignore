@@ -16,3 +16,6 @@ examples/application-proof/build/
 examples/reference-app/build/
 # Reference application local domain database
 examples/reference-app/.data/
+
+# Builder Kit task packs and denial records (generated, never committed)
+.builder-kit/

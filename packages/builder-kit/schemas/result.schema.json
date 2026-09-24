@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://vict.dev/schemas/builder-kit/result@1.json",
+  "title": "vict.builder.result@1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaMarker",
+    "session",
+    "commits",
+    "commands",
+    "observedCounts",
+    "filesChanged",
+    "requirementClaims",
+    "deviations",
+    "knownDebt",
+    "stopPoint"
+  ],
+  "properties": {
+    "schemaMarker": { "const": "vict.builder.result@1" },
+    "session": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["host", "startedAt", "endedAt"],
+      "properties": {
+        "host": { "type": "string", "minLength": 1 },
+        "startedAt": { "type": "string", "format": "date-time" },
+        "endedAt": { "type": "string", "format": "date-time" }
+      }
+    },
+    "commits": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["sha", "message"],
+        "properties": {
+          "sha": { "type": "string", "pattern": "^([0-9a-f]{40}|[0-9a-f]{64})$" },
+          "message": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "commands": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["command", "exitCode", "observed"],
+        "properties": {
+          "command": { "type": "string", "minLength": 1 },
+          "exitCode": { "type": "integer", "minimum": 0 },
+          "observed": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "observedCounts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "value", "source"],
+        "properties": {
+          "name": { "type": "string", "minLength": 1 },
+          "value": { "type": "number" },
+          "source": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "filesChanged": { "type": "array", "items": { "type": "string" } },
+    "requirementClaims": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "classification", "evidence"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "classification": { "enum": ["implemented", "exercised", "not-done"] },
+          "evidence": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "deviations": { "type": "array", "items": { "type": "string" } },
+    "knownDebt": { "type": "array", "items": { "type": "string" } },
+    "stopPoint": { "type": "string", "minLength": 1 }
+  }
+}

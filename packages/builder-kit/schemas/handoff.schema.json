@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://vict.dev/schemas/builder-kit/handoff@1.json",
+  "title": "vict.builder.handoff@1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaMarker",
+    "objective",
+    "requirementIds",
+    "baseTree",
+    "inScopePaths",
+    "ignoreManifest",
+    "outOfScopeStopList",
+    "requiredCommands",
+    "negativeControls",
+    "profile",
+    "stopConditions",
+    "deliverables",
+    "exitGate"
+  ],
+  "properties": {
+    "schemaMarker": { "const": "vict.builder.handoff@1" },
+    "objective": { "type": "string", "minLength": 1 },
+    "requirementIds": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "baseTree": { "$ref": "#/$defs/gitSha" },
+    "inScopePaths": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "ignoreManifest": { "type": "array", "items": { "type": "string" } },
+    "outOfScopeStopList": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "requiredCommands": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "negativeControls": { "type": "array", "items": { "type": "string" } },
+    "profile": { "type": "string", "minLength": 1 },
+    "stopConditions": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "deliverables": { "type": "array", "items": { "type": "string" } },
+    "exitGate": { "type": "string", "minLength": 1 }
+  },
+  "$defs": {
+    "gitSha": { "type": "string", "pattern": "^([0-9a-f]{40}|[0-9a-f]{64})$" }
+  }
+}
