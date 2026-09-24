@@ -98,11 +98,21 @@ build emits declarations):
   §3.3/§4.4 (`packId` over canonical bytes with `packId` omitted; no
   timestamp, no carrying-commit SHA, no environment data anywhere in the
   output);
-- the capability-catalog generator producing `vict.builder.catalog@1` from
-  the typed authoring declarations (declared contract ID/revision, effect
-  class, authority requirements, idempotency, author-declared summary;
-  implementation mechanism at implementer's judgment within the verified
-  authoring API, gated by tests);
+- the capability-catalog generator producing `vict.builder.catalog@1` per
+  the architecture §4.1 verified design: import first-party workspace pack
+  modules only (the same trust envelope as the verified ladder) and
+  serialize their frozen, fully declarative manifests — handlers never
+  invoked, bodies never serialized or hashed — recording exactly the
+  genuinely available metadata (capability id/revision/effect/contract
+  refs; declared idempotency/retry/ambiguity/permissions/configuration/
+  secrets where present; pack id/version, `documentation.summary`,
+  pack-level permission/configuration/secret descriptions, doubles,
+  evaluations) with `summary: null` recorded explicitly for the absent
+  per-capability description (the manifest closed vocabulary has none
+  today — none may be invented); enumeration completeness proven by the
+  static TypeScript-compiler scan (parsing only) of
+  `defineCapabilityPack`/`defineCapability` call-sites and `capabilities:`
+  literal entries versus the committed catalog;
 - the per-handoff task-pack generator (base pack + handoff → isolated
   `.builder-kit/packs/<slug>-<handoffSha8>/`; records the operator-supplied
   `baseTree`, the in-scope set, the ignore manifest, and the profile);
@@ -212,9 +222,12 @@ implementer report filed. **Proofs may not start from a red ladder.**
 - Fresh agent host, empty directory outside both repositories. **Builder
   inputs: the kit, the kit's generic documentation, the public VICT
   documentation shipped with the packages, and the §P2 brief verbatim —
-  the brief is the ONLY product specification.** The F1–F8 list and the
-  claim→evidence table are evaluator acceptance criteria and are withheld
-  from the builder.
+  the brief is the ONLY product specification.** Evaluator isolation is
+  explicit: the F1–F8 list, the claim→evidence table, and this Stage 8
+  handoff itself remain OUTSIDE the builder's supplied workspace and
+  context. The brief and the rubric are byte-pinned separately for audit
+  (two independent SHA-256 digests in the evidence: exact brief bytes
+  supplied, exact rubric bytes scored against).
 - The evaluator scores the delivered application against F1–F8 and the
   claim→evidence table of architecture §5.4 (real-browser record for
   usability claims; scripted real-process restart probe for F7;
@@ -248,7 +261,9 @@ implementer report filed. **Proofs may not start from a red ladder.**
    `verify:builder-kit` red with the stable per-class reason; and the
    negative-of-the-negative: regenerating at a descendant commit with
    unchanged inputs reproduces the committed bytes (head movement alone is
-   GREEN).
+   GREEN). The catalog-drift case is detected by the static declaration
+   scan (parsing only — no pack execution is needed to catch the
+   omission).
 3. **Schema rejection:** malformed handoff/result/audit/pack/profile
    documents → validator rejects with structured diagnostics (closed
    vocabulary, non-echoing).
@@ -320,7 +335,7 @@ numbers from any prior stage.
 
 - Permitted: create `packages/builder-kit/**`, `scripts/verify-builder-kit.mjs`,
   `docs/builder-kit/**`, root `BUILDER-KIT.md`, the two npm script entries,
-  P1 variant implementations in `packs/notes-pack` and
+  the P1 task implementation in `packs/notes-pack` and
   `examples/reference-app`, and the P2 app in its separate empty directory;
   append dated Stage 8 status notes to reference §23/§24.
 - Requires a stop and owner decision: D-1 (consumption medium) and D-2
@@ -356,7 +371,7 @@ Per reference §27.3 and §22: the auditor receives this handoff, the report,
 the VICT repository path, the P2 app repository path, and the reference.
 The auditor MUST: inspect kit source and tests; re-run the full ladder
 including `verify:builder-kit`; independently re-derive both P1 sessions'
-evidence (fresh clones; both variants re-verified); re-run at least the
+evidence (fresh clones; both worktree sessions re-verified); re-run at least the
 restart probe and one browser check of P2; verify every negative control by
 re-execution; reconcile every material claim against observed output; verify
 no out-of-scope, `.pi/`, Quellight, gate-weakening, or publication event
