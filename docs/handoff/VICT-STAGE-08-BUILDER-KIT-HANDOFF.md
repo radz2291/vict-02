@@ -3,8 +3,12 @@
 > **Status:** PROPOSED — issued as part of the Stage 8 entry-contract
 > candidate for **owner review**. This handoff authorizes NOTHING until the
 > owner ratifies the entry contract (architecture document §9). It names
-> reference v0.4.28 plus the candidate §0.35 registration (v0.4.29); it is
-> valid only against the ratified text of that version or later.
+> reference v0.4.28 plus the candidate registrations §0.35 (v0.4.29) and
+> §0.36 (v0.4.30 — corrective pass per owner review: identity rules,
+> stable/task pack split, capability catalog, starting-tree pinning, P1
+> same-task worktrees, `docs/report/` alignment, P2 brief purity, D-1–D-5
+> recommended dispositions); it is valid only against the ratified text of
+> that version or later.
 >
 > **Reference:** `docs/VICT-SYSTEM-REFERENCE.md` v0.4.28 + candidate §0.35
 > **Architecture:** `docs/architecture/STAGE-08-BUILDER-KIT-AND-SELF-HOSTING.md`
@@ -55,7 +59,7 @@ Stable IDs implemented or exercised:
 - **AGNT-005 / AGNT-006 / AGNT-007** (product-agent separation preserved;
   no kit or repository authority for Product Agents; kit never on the
   product fast path);
-- **BLD-001 … BLD-012** (the Stage 8 family defined in the architecture
+- **BLD-001 … BLD-013** (the Stage 8 family defined in the architecture
   document §6; all Planned — this stage is their first delivery);
 - **API-004** (MCP adapter only, if implemented at all);
 - **PRD-006 / PRD-007 / PRD-008** and **APP-001 / APP-003 / APP-008 /
@@ -83,35 +87,52 @@ Mastra types; zod, if used, confined per the verified subpath discipline;
 build emits declarations):
 
 - schema constants and validators for `vict.builder.context-pack@1`,
+  `vict.builder.task-pack@1`, `vict.builder.catalog@1`,
   `vict.builder.tools@1`, `vict.builder.profile@1`,
   `vict.builder.handoff@1`, `vict.builder.result@1`,
   `vict.builder.audit@1` (JSON Schema documents shipped from the package;
   validators plain and dependency-light);
-- the deterministic context-pack generator (canonical, insertion-order-
-  independent, byte-stable for identical inputs) with the provenance record
-  of architecture §3.4;
-- the freshness checker implementing every §4.3 drift class;
+- the deterministic base-pack generator (canonical, key-sorted,
+  insertion-order-independent, byte-stable for identical inputs) with the
+  provenance record of architecture §3.4 and the identity rule of
+  §3.3/§4.4 (`packId` over canonical bytes with `packId` omitted; no
+  timestamp, no carrying-commit SHA, no environment data anywhere in the
+  output);
+- the capability-catalog generator producing `vict.builder.catalog@1` from
+  the typed authoring declarations (declared contract ID/revision, effect
+  class, authority requirements, idempotency, author-declared summary;
+  implementation mechanism at implementer's judgment within the verified
+  authoring API, gated by tests);
+- the per-handoff task-pack generator (base pack + handoff → isolated
+  `.builder-kit/packs/<slug>-<handoffSha8>/`; records the operator-supplied
+  `baseTree`, the in-scope set, the ignore manifest, and the profile);
+- the freshness checker implementing every §4.3 drift class (content
+  drift, catalog drift/dangling, release/workspace identity, `pack-tamper`,
+  unregistered input, baseline escape incl. renames and untracked files);
 - the profile-enforcing tool wrapper `vict-builder-kit run` (fs.read /
   fs.write with in-scope enforcement / shell.run by npm-script name /
   git status|diff|log|commit; denial records emitted as structured events);
-- the `vict-builder-kit` CLI: `generate`, `verify`, `validate`, `run`,
-  `init-app` (generates `BUILDER-KIT.md` + app pack into an external app
-  project for P2);
-- unit + negative tests inside the package (generator determinism, each
-  drift class, each schema's rejection set, profile refusals).
+- the `vict-builder-kit` CLI: `generate`, `catalog`, `verify`, `validate`,
+  `run`, `task-pack`, `init-app` (generates `BUILDER-KIT.md` + the
+  app-local base pack into an external app project for P2);
+- unit + negative tests inside the package (generator determinism, the
+  identity-exclusion rule, each drift class, each schema's rejection set,
+  profile refusals).
 
 ### WP-2 — VICT self-hosting wiring
 
-- Root `BUILDER-KIT.md`, generated and committed (architecture §3.2);
-- `docs/builder-kit/context-pack.json` + `docs/builder-kit/PACK.md`,
-  generated and committed;
-- pack inputs exactly as architecture §3.4 (reference, release-compatibility
-  constant, workspace manifests, the named handoff);
+- Root `BUILDER-KIT.md`, generated and committed (architecture §3.2 — the
+  stable layer);
+- the committed stable layer: `docs/builder-kit/context-pack.json`,
+  `docs/builder-kit/PACK.md`, and `docs/builder-kit/capability-catalog.json`
+  — regenerated only when a recorded input changes (architecture §4.2),
+  never per-commit;
+- base-pack inputs exactly as architecture §3.4 (reference, release-
+  compatibility constant, workspace manifests, capability catalog) — the
+  Stage 8 handoff is bound by the TASK layer, not the committed base pack;
 - npm scripts: `kit:generate` and `verify:builder-kit` (the new gate),
   leaving every existing script untouched;
-- constitution excerpts limited to the §3.3 list; the task overlay binds
-  THIS handoff by path + SHA-256 (recomputed at freeze time after
-  ratification — placeholder below).
+- constitution excerpts limited to the §3.3 list.
 
 ### WP-3 — Permission profiles and control tools
 
@@ -126,20 +147,26 @@ build emits declarations):
 ### WP-4 — `verify:builder-kit` gate and permanent negative controls
 
 `scripts/verify-builder-kit.mjs` (npm script `verify:builder-kit`)
-implementing architecture §3.9: regenerate-and-compare, anchor recomputation,
-schema validation, and the negative-control battery of §Tests below. The
-gate MUST fail (non-zero exit, stable reason) on every negative control and
-pass on the committed tree. No existing gate is weakened, reordered, or
-bypassed.
+implementing architecture §3.9: regenerate-and-compare for both pack
+layers, identity recomputation with the §3.3/§4.4 exclusions,
+capability-catalog recomputation from typed declarations, schema validation,
+the baseline comparison versus the task pack's pinned `baseTree`
+(committed, renamed, and untracked changes classified through the ignore
+manifest), and the negative-control battery of §Tests below. The gate MUST
+fail (non-zero exit, stable reason) on every negative control and pass on
+the committed tree. No existing gate is weakened, reordered, or bypassed.
 
 ### WP-5 — Documentation and knowledge-loop verification
 
 - The kit's README (package) and the architecture document's §3 cross-check
   (mismatch = stop);
-- demonstration of architecture §4.2: one mechanical rehearsal on a scratch
-  branch showing a contract-touching change whose pack regeneration lags →
-  gate red → regeneration in the same commit set → gate green (rehearsal
-  evidence quoted in the report; the scratch branch is not merged).
+- demonstration of architecture §4.2/§4.4: two mechanical rehearsals on a
+  scratch branch — (a) a capability declaration change whose catalog/pack
+  regeneration lags → gate red (`catalog-drift`) → declaration + catalog +
+  base pack landed in one commit set → gate green; (b) an unrelated commit
+  changing no recorded input → gate stays green with no pack churn
+  (rehearsal evidence quoted in the report; the scratch branch is not
+  merged).
 
 ### Gate G1 (stop point)
 
@@ -148,39 +175,52 @@ implementer report filed. **Proofs may not start from a red ladder.**
 
 ### WP-6 — Proof P1: self-hosting equivalence
 
-- Owner selects the two hosts (decision D-2). Each session runs fresh
-  (new clone or clean worktree, no shared conversation state), bootstraps
-  from `BUILDER-KIT.md`, passes the freshness gate, works under
+- Owner selects the two hosts (decision D-2). The operator accepts the
+  handoff, pins the starting tree `baseTree = B`, and issues **one task
+  card with one set of acceptance criteria to both hosts**: add a
+  `readingTime` pure/read capability (contract + revision +
+  effect/authority declarations + implementation + example + permanent
+  tests) to `packs/notes-pack`, and surface a reading-time region on the
+  reference application's notes screen via the Application Definition with
+  a permanent renderer-level test.
+- Two isolated worktrees are created from exactly `B`
+  (`git worktree add ../vict-p1-hostA B`, `git worktree add
+  ../vict-p1-hostB B`). Each session runs fresh inside its own worktree
+  (no shared conversation state, no shared files), bootstraps from its
+  worktree's `BUILDER-KIT.md`, passes the freshness gate, and works under
   `builder.selfhost`.
-- Task card variants (equal size, no collision):
-  - **Variant A:** add a `readingTime` pure/read capability (contract +
-    revision + effect/authority declarations + implementation + example +
-    permanent tests) to `packs/notes-pack`, and surface a reading-time
-    region on the reference application's notes screen via the Application
-    Definition with a permanent renderer-level test.
-  - **Variant B:** add a `wordFrequency` pure/read capability with the same
-    declaration/test completeness, surfaced as a top-terms region on the
-    same screen.
 - Each session produces: a `vict.builder.result@1` document (validated),
-  full-ladder output, the freshness-gate transcript, and its commit(s).
-- Equivalence criterion: BOTH sessions satisfy the same exit criteria with
-  independently reproducible evidence. Identical diffs are NOT expected.
+  full-ladder output, the freshness-gate transcript, and its commit(s) on
+  its worktree branch.
+- Evaluation: both results are compared against the identical acceptance
+  criteria; the comparison and the selection rationale are recorded; ONLY
+  the selected worktree's commit(s) are integrated into `main`. The
+  unselected worktree is preserved as evidence (branch or bundle) and
+  never merged.
+- Equivalence criterion: BOTH sessions independently satisfy the same
+  acceptance criteria with independently reproducible evidence. Identical
+  diffs are NOT expected.
 
 ### WP-7 — Proof P2: greenfield "TaskLedger"
 
-- Consumption medium per owner decision D-1 (architecture §8): **option A**
-  registry install of the next owner-published release set including
-  `@victframework/builder-kit`, or **option B** packed tarballs from the
-  audited release-source commit with recorded per-tarball SHA-256 and a
-  no-checkout-leakage probe (claims then say: registry consumption NOT
-  exercised by P2).
-- Fresh agent host, empty directory outside both repositories, the §P2
-  brief verbatim, `vict-builder-kit init-app` as the kit entry.
-- Deliver the F1–F8 behaviors, the claim→evidence table of architecture
-  §5.4 (real-browser record for usability claims; scripted real-process
-  restart probe for F7; definition/component-island wiring for F6; action
-  negative probe for F5; application-identity stability for F8), and the
-  negative-control run for the P2 session.
+- Consumption medium per D-1′ (architecture §8; owner may override): the
+  13 platform packages installed from the existing published
+  `vict-release-set@1/0.3.1` (registry, lockfile integrity) plus
+  `@victframework/builder-kit` as an integrity-recorded local artifact
+  (recorded SHA-256; exact `0.3.1` internal pins; no-checkout-leakage
+  probe retained). No new publication is performed or required.
+- Fresh agent host, empty directory outside both repositories. **Builder
+  inputs: the kit, the kit's generic documentation, the public VICT
+  documentation shipped with the packages, and the §P2 brief verbatim —
+  the brief is the ONLY product specification.** The F1–F8 list and the
+  claim→evidence table are evaluator acceptance criteria and are withheld
+  from the builder.
+- The evaluator scores the delivered application against F1–F8 and the
+  claim→evidence table of architecture §5.4 (real-browser record for
+  usability claims; scripted real-process restart probe for F7;
+  definition/component-island wiring for F6; action negative probe for F5;
+  application-identity stability for F8), plus the negative-control run
+  for the P2 session.
 - The P2 app is agent-free: no model provider, no credentials, no network
   AI service.
 
@@ -195,12 +235,20 @@ implementer report filed. **Proofs may not start from a red ladder.**
 
 ## Tests and negative controls (minimum permanent set)
 
-1. **Pack determinism:** two generations from identical inputs are
-   byte-identical; input-order permutations do not change bytes.
-2. **Stale anchors:** each §4.3 drift class simulated (moved HEAD, edited
-   source, changed release constant, changed workspace identity, tampered
-   pack bytes, unregistered input) → `verify:builder-kit` red with the
-   stable per-class reason.
+1. **Pack determinism and identity:** two generations from identical
+   inputs are byte-identical; input-order permutations do not change bytes;
+   output contains no timestamp, no random data, no host paths, and no
+   carrying-commit SHA; `packId` recomputed over canonical bytes with
+   `packId` omitted matches, and recomputation over bytes INCLUDING
+   `packId` fails (the exclusion rule is enforced).
+2. **Freshness classes:** each §4.3 drift class simulated (edited input
+   content, catalog drift, dangling catalog entry, changed release
+   constant, changed workspace identity, tampered pack bytes /
+   identity-exclusion breach, unregistered input, baseline escape) →
+   `verify:builder-kit` red with the stable per-class reason; and the
+   negative-of-the-negative: regenerating at a descendant commit with
+   unchanged inputs reproduces the committed bytes (head movement alone is
+   GREEN).
 3. **Schema rejection:** malformed handoff/result/audit/pack/profile
    documents → validator rejects with structured diagnostics (closed
    vocabulary, non-echoing).
@@ -212,8 +260,10 @@ implementer report filed. **Proofs may not start from a red ladder.**
    classification.
 6. **Secret canaries:** canary values in env/config → absent from all logs,
    errors, reports, pack bytes, and any persisted surface (TEST-007).
-7. **Out-of-scope detection (host-mediated):** a staged out-of-scope file
-   change → gate diff check flags it against the handoff's in-scope set.
+7. **Baseline detection (host-mediated):** out-of-scope changes versus the
+   pinned `baseTree` — a committed edit, a renamed file, and an untracked
+   file (each outside the ignore manifest) → the gate's baseline comparison
+   flags each with its class; in-scope changes do not flag.
 8. **Invalid references:** a definition referencing a nonexistent component/
    action/contract revision → structured fail-closed diagnostic (§17.3).
 9. **Existing gates intact:** the full existing ladder runs unchanged
@@ -246,8 +296,9 @@ numbers from any prior stage.
 ## Out of scope (explicit stop boundaries)
 
 - Any release publication, candidate tag, or registry write (owner-only,
-  separately authorized — including option A of D-1; the implementer stops
-  at the G2→G3 boundary and the owner performs any publication);
+  separately authorized; under the recommended D-1′ disposition no
+  publication is required for P2 at all, and none may be performed by a
+  builder);
 - production activation or any Application Release select/rollback in any
   non-local environment;
 - Stage 9 Studio, Stage 10 ecosystem, Stage 11 cloud scope;
@@ -257,8 +308,9 @@ numbers from any prior stage.
 - changes to verified semantics: identity algorithms, activation/run/store
   semantics, effect/approval ordering, `vict.agent-stream@1`, release-set
   identity rules;
-- edits under `docs/report/` (historical evidence immutable) and `.pi/`
-  (never read or written);
+- modifying or deleting existing files under `docs/report/` (historical
+  evidence is immutable; CREATING the handoff-named new report files named
+  under Deliverables is in scope) and `.pi/` (never read or written);
 - weakening or reordering any existing verification gate; introducing a
   second application model or destructive regeneration;
 - marking Stage 8 or any BLD requirement Verified (independent audit +
@@ -283,7 +335,9 @@ numbers from any prior stage.
 - `packages/builder-kit` (source, schemas, generator, validator, wrapper,
   CLI, tests); `scripts/verify-builder-kit.mjs`; npm script entries;
 - committed generated artifacts: `BUILDER-KIT.md`, `docs/builder-kit/*`;
-- P1 evidence package (two result documents, ladder transcripts, commits);
+- P1 evidence package (two result documents, ladder transcripts, worktree
+  commits, the evaluator's comparison/selection record, and the integrated
+  selected result);
 - P2 evidence package (app repository, F1–F8 records, restart probe, browser
   record, negative-control transcript, consumption-medium integrity record);
 - `docs/report/VICT-STAGE-08-IMPLEMENTATION-REPORT.md` — implementer claim,
@@ -309,22 +363,29 @@ no out-of-scope, `.pi/`, Quellight, gate-weakening, or publication event
 occurred; classify findings (gating/corrective/deferred/rejected); and
 return a §22.3 disposition. Implementer claims never substitute for audit
 reproduction; the disposition vocabulary is PASS / PASS WITH ISSUES / FAIL /
-INCONCLUSIVE.
+INCONCLUSIVE. The auditor files its record as
+`docs/report/VICT-STAGE-08-INDEPENDENT-AUDIT.md` (a new file; existing
+`docs/report/` evidence untouched).
 
 ## Exit gate
 
-- The Builder Kit exists as specified: bootstrap, pack with provenance,
-  tools with profiles, schemas, gate — all committed, all tested;
+- The Builder Kit exists as specified: stable bootstrap layer (bootstrap,
+  base pack, capability catalog) committed with provenance, per-handoff
+  task packs, tools with profiles, schemas, gate — all tested;
 - `verify:builder-kit` green on the committed tree and red on every negative
-  control;
+  control, with the identity-exclusion rule enforced;
 - P1: two fresh sessions (two hosts, or agent + human) each completed the
-  bounded capability + application-surface change from the same handoff with
-  equivalent, independently reproducible evidence;
-- P2: the fresh-agent TaskLedger app built from an empty project exists,
-  exhibits F1–F8, survives a real-process restart, keeps definition-driven
-  surfaces and the custom code island cleanly coexisting, and carries the
-  claim→evidence records including real-browser evidence for usability
-  claims and the clean-consumer record for the chosen consumption medium;
+  SAME bounded capability + application-surface change in isolated
+  worktrees from the same handoff and pinned starting tree, with
+  equivalent, independently reproducible evidence; only the selected
+  result integrated;
+- P2: the fresh-agent TaskLedger app built from an empty project exists
+  and, scored by the evaluator against F1–F8 (never shown to the builder),
+  survives a real-process restart, keeps definition-driven surfaces and
+  the custom code island cleanly coexisting, and carries the claim→evidence
+  records including real-browser evidence for usability claims and the
+  D-1′ consumption record (0.3.1 registry packages + integrity-recorded
+  local kit artifact);
 - scope violations prevented or detected; generated and custom surface
   ownership remains clear; all claims carry reproducible observed evidence;
 - production activation and release publication were not performed by any
@@ -333,5 +394,5 @@ INCONCLUSIVE.
   **until then Stage 8 is not Verified and nothing may claim it is**.
 
 **Explicit stop point:** after WP-8 / before any owner closure decision. The
-implementer stops at each named gate (G1, G2→G3 boundary if D-1 option A,
-post-P2) and reports. Do not start Stage 9.
+implementer stops at each named gate (G1, post-P1, post-P2) and reports. Do
+not start Stage 9.
