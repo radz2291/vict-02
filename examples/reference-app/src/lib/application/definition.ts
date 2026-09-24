@@ -177,6 +177,48 @@ export const analyzeOutputContract = defineContract<{
   },
 });
 
+export const noteReadingTimeInputContract = defineContract<{ note: string }>({
+  id: 'refapp.noteReadingTime.input',
+  revision: '1',
+  expected: '{ note: string }',
+  parse: (input) => {
+    const candidate = input as { note?: unknown } | null;
+    if (
+      candidate !== null &&
+      typeof candidate === 'object' &&
+      typeof candidate.note === 'string'
+    ) {
+      return { ok: true as const, value: { note: candidate.note } };
+    }
+    return failContract('a note content string is required');
+  },
+});
+
+export const noteReadingTimeOutputContract = defineContract<{ minutes: number; words: number }>({
+  id: 'refapp.noteReadingTime.output',
+  revision: '1',
+  expected: '{ minutes: number, words: number }',
+  parse: (input) => {
+    const candidate = input as { minutes?: unknown; words?: unknown } | null;
+    if (
+      candidate !== null &&
+      typeof candidate === 'object' &&
+      typeof candidate.minutes === 'number' &&
+      Number.isFinite(candidate.minutes) &&
+      candidate.minutes >= 0 &&
+      typeof candidate.words === 'number' &&
+      Number.isFinite(candidate.words) &&
+      candidate.words >= 0
+    ) {
+      return {
+        ok: true as const,
+        value: { minutes: candidate.minutes, words: candidate.words },
+      };
+    }
+    return failContract('a reading-time estimate with finite non-negative numbers is required');
+  },
+});
+
 /* ------------------------------------------------------------------ */
 /* Resources                                                           */
 /* ------------------------------------------------------------------ */
@@ -272,7 +314,7 @@ export const metricResource = defineResource({
 export const referenceApplication = defineApplication({
   schema: APPLICATION_DEFINITION_SCHEMA_V2,
   id: 'app.reference',
-  revision: '5',
+  revision: '6',
   name: 'Vict Reference Application',
   routes: [
     {
@@ -502,6 +544,28 @@ export const referenceApplication = defineApplication({
                       viewId: 'v.projectDetail',
                       emptyMessage: 'This project does not exist.',
                     },
+                    {
+                      role: 'text',
+                      id: 't.readingTime-intro',
+                      content:
+                        'Reading time — an estimate computed from the workspace notes by a real Vict capability run.',
+                      level: 3,
+                    },
+                    {
+                      role: 'action',
+                      id: 'act.readingTime-btn',
+                      actionId: 'act.noteReadingTime',
+                      label: 'Estimate reading time',
+                    },
+                    {
+                      role: 'list',
+                      id: 'ls.noteReadingTime',
+                      viewId: 'v.noteReadingTime',
+                      titleField: 'label',
+                      secondaryField: 'value',
+                      emptyMessage:
+                        'No reading-time estimate yet — run the estimate action to compute one from the workspace notes.',
+                    },
                   ],
                 },
                 {
@@ -597,6 +661,12 @@ export const referenceApplication = defineApplication({
       resourceId: 'projects',
       resourceRevision: '1',
       fields: ['id', 'name', 'status', 'budget', 'owner', 'notes'],
+    },
+    {
+      viewId: 'v.noteReadingTime',
+      resourceId: 'metrics',
+      resourceRevision: '1',
+      fields: ['id', 'label', 'value'],
     },
   ],
   forms: [
@@ -708,6 +778,17 @@ export const referenceApplication = defineApplication({
       outputContractId: 'refapp.analyze.output',
       outputContractRevision: '1',
     },
+    {
+      kind: 'capability',
+      id: 'act.noteReadingTime',
+      revision: '1',
+      capabilityId: 'refapp.noteReadingTime',
+      capabilityRevision: '1',
+      inputContractId: 'refapp.noteReadingTime.input',
+      inputContractRevision: '1',
+      outputContractId: 'refapp.noteReadingTime.output',
+      outputContractRevision: '1',
+    },
   ],
   resources: [
     { resourceId: 'projects', revision: '1' },
@@ -733,8 +814,13 @@ export const bindings = {
     { id: 'refapp.message.input', revision: '1' },
     { id: 'refapp.analyze.input', revision: '1' },
     { id: 'refapp.analyze.output', revision: '1' },
+    { id: 'refapp.noteReadingTime.input', revision: '1' },
+    { id: 'refapp.noteReadingTime.output', revision: '1' },
   ],
-  capabilities: [{ id: 'refapp.analyze', revision: '1' }],
+  capabilities: [
+    { id: 'refapp.analyze', revision: '1' },
+    { id: 'refapp.noteReadingTime', revision: '1' },
+  ],
   components: [{ componentId: 'cmp.health', revision: '1' }],
 } as const;
 

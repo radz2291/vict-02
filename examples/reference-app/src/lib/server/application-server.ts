@@ -13,6 +13,8 @@ import {
   analyzeOutputContract,
   compileReferencePlan,
   messageInputContract,
+  noteReadingTimeInputContract,
+  noteReadingTimeOutputContract,
   projectInputContract,
 } from '$lib/application/definition.js';
 
@@ -71,6 +73,27 @@ const replyCapability = defineCapability({
   },
 });
 
+/**
+ * Pure capability: estimates the reading time of a note's content
+ * (~200 words per minute, one-minute minimum for non-empty content).
+ * Mirrors the declared `notes.readingTime@1` pure read of the capability
+ * pack: the same derivation, under this application's declared contracts.
+ */
+const noteReadingTimeCapability = defineCapability({
+  id: 'refapp.noteReadingTime',
+  revision: '1',
+  effect: 'pure',
+  input: noteReadingTimeInputContract,
+  output: noteReadingTimeOutputContract,
+  invoke: (input: { note: string }) => {
+    const words = input.note.trim().split(/\s+/).filter(Boolean).length;
+    return {
+      minutes: words === 0 ? 0 : Math.max(1, Math.ceil(words / 200)),
+      words,
+    };
+  },
+});
+
 /** Pure capability: formats workspace metrics from raw project stats. */
 const analyzeCapability = defineCapability({
   id: 'refapp.analyze',
@@ -91,8 +114,10 @@ function buildRuntime() {
   const runtime = createRuntime();
   runtime.registerCapability(replyCapability);
   runtime.registerCapability(analyzeCapability);
+  runtime.registerCapability(noteReadingTimeCapability);
   runtime.registerContract(messageInputContract);
   runtime.registerContract(analyzeInputContract);
+  runtime.registerContract(noteReadingTimeInputContract);
   return runtime;
 }
 
@@ -153,7 +178,20 @@ export function createReferenceServer(
             nodes: [{ id: 'only', capability: 'refapp.reply', input: 'refapp.message.input' }],
             edges: [],
           }
-        : {
+        : graphId === 'g.refapp.noteReadingTime'
+          ? {
+              id: graphId,
+              entry: 'only',
+              nodes: [
+                {
+                  id: 'only',
+                  capability: 'refapp.noteReadingTime',
+                  input: 'refapp.noteReadingTime.input',
+                },
+              ],
+              edges: [],
+            }
+          : {
             id: graphId,
             entry: 'only',
             nodes: [{ id: 'only', capability: 'refapp.analyze', input: 'refapp.analyze.input' }],
@@ -210,8 +248,12 @@ export function createReferenceServer(
       );
       return;
     }
+    // The metrics resource declares NO keyed idempotency for create, so the
+    // mutation must not carry an idempotency key (the adapter rejects keys
+    // on non-keyed mutations). The get→update/else→create probe above is
+    // the upsert.
     await data.mutate(
-      { resourceId: 'metrics', op: 'create', input: metric, idempotencyKey: `metric:${metric.id}` },
+      { resourceId: 'metrics', op: 'create', input: metric },
       { permissions: serverGrants, effect: 'write' },
     );
   }
@@ -386,6 +428,48 @@ export function createReferenceServer(
             await upsertMetric(metric);
           }
           return { ok: true, value: outChecked.value };
+        }
+        if (action.capabilityId === 'refapp.noteReadingTime') {
+          const projects = await listRows('projects');
+          const produced: { id: string; label: string; value: string }[] = [];
+          for (const project of projects) {
+            const notes = project.notes;
+            if (typeof notes !== 'string' || notes.trim().length === 0) {
+              continue; // no note content: nothing to estimate for this record
+            }
+            const parsed = noteReadingTimeInputContract.parse({ note: notes });
+            if (!parsed.ok) {
+              return {
+                ok: false,
+                code: 'CONTRACT_REJECTED',
+                message: 'The note content is invalid.',
+              };
+            }
+            const output = await runCapability<{ minutes: number; words: number }>(
+              'g.refapp.noteReadingTime',
+              parsed.value,
+            );
+            const checked = noteReadingTimeOutputContract.parse(output);
+            if (!checked.ok) {
+              return {
+                ok: false,
+                code: 'CONTRACT_REJECTED',
+                message: 'The reading-time output is invalid.',
+              };
+            }
+            const name =
+              typeof project.name === 'string' && project.name.length > 0
+                ? project.name
+                : String(project.id ?? 'note');
+            const metric = {
+              id: `rt-${String(project.id ?? '')}`,
+              label: `Reading time — ${name}`,
+              value: `${checked.value.minutes} min (${checked.value.words} words)`,
+            };
+            await upsertMetric(metric);
+            produced.push(metric);
+          }
+          return { ok: true, value: { metrics: produced } };
         }
         return {
           ok: false,
