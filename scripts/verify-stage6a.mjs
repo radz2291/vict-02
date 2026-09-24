@@ -98,7 +98,31 @@ console.log('\n=== verify:stage6a — package inspection ===');
     '@victframework/kernel',
     '@victframework/runtime',
   ]) {
-    check(deps[neutral] === '0.2.0', `${neutral} declared as a direct dependency at 0.2.0`);
+    // The expected version is the CURRENT recorded release-set version
+    // (parsed from the machine-readable block of docs/RELEASE-COMPATIBILITY.md
+    // — the same authoritative record verify:release-set reads), not a
+    // hard-coded literal: the release-set version legitimately advances
+    // when the owner authorizes a new coordinated release, and the
+    // exact-pin assertion must track it (G1 ladder repair: the previous
+    // hard-coded '0.2.0' failed against the live 0.3.1 set — pre-existing
+    // at the G0 baseline, proven by git show c4f37d9:packages/mastra/package.json).
+    const compatDoc = readFileSync(join(repoRoot, 'docs', 'RELEASE-COMPATIBILITY.md'), 'utf8');
+    const blockMatch = compatDoc.match(/```json\s*(\{[\s\S]*?"vict-release-set"[\s\S]*?\})\s*```/);
+    const releaseVersion =
+      blockMatch === null
+        ? null
+        : (JSON.parse(blockMatch[1])?.['vict-release-set']?.['version'] ?? null);
+    if (typeof releaseVersion !== 'string' || releaseVersion.length === 0) {
+      check(
+        false,
+        `${neutral} declared as a direct dependency at the recorded release-set version (release-set record unparsable)`,
+      );
+      continue;
+    }
+    check(
+      deps[neutral] === releaseVersion,
+      `${neutral} declared as a direct dependency at ${releaseVersion}`,
+    );
   }
 
   // Neutral packages must not depend on Mastra.
