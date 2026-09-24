@@ -297,3 +297,26 @@ including `verify:builder-kit`; this report is filed. Work stops here:
   commit follows), with unmerged local evidence branches
   `scratch/g1-rehearsal` (`710627b…`) and `scratch/g1-rehearsal-b`
   (`b37b1d2…`).
+
+---
+
+## Erratum (recorded at filing, 2026-09-24)
+
+**E-1 — owner-local `.pi/` staging incident (recovered; main and origin never affected).**
+During rehearsal (a), the fold-in commit used `git add -A`, which also
+staged the owner-local `.pi/` directory (18 paths) into the scratch-branch
+commit `710627b…` — a boundary violation by mechanism, even though `.pi/`
+was never read or written by the implementer. Discovered in the final
+state sweep (a clean working tree without the expected untracked `.pi/`
+entry after checking out `main`). Recovery, verified: `git log main -- .pi`
+is empty (main NEVER contained `.pi/`); the remote carries exactly one
+branch (`main`, at `d4ec245…`), so nothing was ever pushed; the working
+tree copy was restored byte-exact from `710627b`'s stored objects via
+`git restore --source=… --worktree -- .pi` (paths listed as metadata only;
+file contents were never read or displayed); the scratch branch tip was
+rewritten to `c6ef18a0f5b9` (parent = `710627b…`, so the quoted rehearsal
+SHA remains valid evidence) with `.pi/` removed from its tree. Root cause:
+untracked-aware staging (`git add -A`) instead of explicit paths; the
+implementation and report commits used explicit paths throughout. Lesson
+applied going forward: staging must always enumerate explicit paths when
+owner-local untracked material exists.
