@@ -1,10 +1,10 @@
 /* The application root container: tokens apply to the Vict subtree only,
    so a Vict application can coexist with an arbitrary host page. */
 .vict-app {
-  font-family: var(--vict-font-family);
-  font-size: var(--vict-font-sizeBase);
-  color: var(--vict-color-text);
-  background: var(--vict-color-bg);
+  font-family: var(--vict-font-family, system-ui, sans-serif);
+  font-size: var(--vict-font-sizeBase, 16px);
+  color: var(--vict-color-text, #17202a);
+  background: var(--vict-color-bg, #fff);
   min-height: 100vh;
   line-height: 1.5;
 }
@@ -17,7 +17,7 @@
 
 /* Visible focus indication everywhere. */
 .vict-app :focus-visible {
-  outline: 2px solid var(--vict-color-focusRing);
+  outline: 2px solid var(--vict-color-focusRing, #3158cf);
   outline-offset: 2px;
   border-radius: 2px;
 }
@@ -132,7 +132,7 @@
   line-height: 1.5;
 }
 .vict-breadcrumbs li + li::before {
-  content: '�';
+  content: '›';
   margin-right: 7px;
   color: var(--vict-color-textMuted, #5a6673);
 }

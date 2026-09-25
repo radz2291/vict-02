@@ -11,28 +11,6 @@
     onPage: (page: number) => void | Promise<void>;
   }
   let { intent, rows, state, onSearch, onFilter, onSort, onPage }: Props = $props();
-
-  /** Keyboard operation of the horizontal scroll region (phone widths). */
-  function onScrollKeydown(event: KeyboardEvent): void {
-    const region = event.currentTarget as HTMLElement;
-    if (region.scrollWidth <= region.clientWidth) return;
-    const target = event.target as Element | null;
-    if (target !== null && ['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName)) return;
-    const step = Math.max(80, Math.round(region.clientWidth * 0.6));
-    if (event.key === 'ArrowRight') {
-      region.scrollBy({ left: step, behavior: 'auto' });
-      event.preventDefault();
-    } else if (event.key === 'ArrowLeft') {
-      region.scrollBy({ left: -step, behavior: 'auto' });
-      event.preventDefault();
-    } else if (event.key === 'Home') {
-      region.scrollTo({ left: 0, behavior: 'auto' });
-      event.preventDefault();
-    } else if (event.key === 'End') {
-      region.scrollTo({ left: region.scrollWidth, behavior: 'auto' });
-      event.preventDefault();
-    }
-  }
 </script>
 
 <section class="vict-ui-table" data-surface={intent.surfaceId} aria-label={intent.title}>
@@ -71,7 +49,7 @@
   {#if state.total === 0}
     <p class="vict-ui-table__empty" data-state="empty" data-testid="table-empty">{intent.emptyMessage}</p>
   {:else}
-    <div class="vict-ui-table__scroll" role="region" aria-label="Records table" tabindex="0" onkeydown={onScrollKeydown}>
+    <div class="vict-ui-table__scroll" role="region" aria-label="Records table" tabindex="0">
       <table data-testid="records-table">
         <thead>
           <tr>
