@@ -2,6 +2,10 @@ import { describe, expect, it } from 'vitest';
 import {
   createInMemoryApplicationData,
   type ApplicationDataAdapter,
+  type ApplicationDataMutationRequest,
+  type ApplicationDataQueryRequest,
+  type ApplicationDataRequestContext,
+  type ApplicationDataResult,
 } from '@victframework/application';
 import { dataContracts, resources } from '$lib/application/definition.js';
 import { createReferenceServer } from '$lib/server/application-server';
@@ -152,6 +156,146 @@ describe('metrics upsert: declared idempotency and failure behavior (negative co
     expect(result.ok).toBe(false);
     if (!result.ok) {
       expect(result.code).toBe('DATA_UNKNOWN_IDENTITY');
+    }
+  });
+});
+
+describe('metrics upsert fails closed on rejected mutations (injected through the server adapter)', () => {
+  /**
+   * The upsert MUST fail closed when either mutation is rejected: a
+   * rejected create or update must surface as a dispatch FAILURE — never
+   * as a success reported without persistence. The injections wrap the
+   * REAL in-memory adapter (the server's own adapter boundary) and reject
+   * exactly one request shape; everything else delegates unchanged.
+   */
+  function injectingAdapter(
+    inner: ApplicationDataAdapter,
+    interceptMutate: (request: ApplicationDataMutationRequest) => ApplicationDataResult | undefined,
+    interceptQuery?: (request: ApplicationDataQueryRequest) => ApplicationDataResult | undefined,
+  ): ApplicationDataAdapter {
+    return {
+      id: `injecting(${inner.id})`,
+      revision: inner.revision,
+      async query(request: ApplicationDataQueryRequest, context: ApplicationDataRequestContext) {
+        const override = interceptQuery?.(request);
+        return override ?? inner.query(request, context);
+      },
+      async mutate(
+        request: ApplicationDataMutationRequest,
+        context: ApplicationDataRequestContext,
+      ) {
+        const override = interceptMutate(request);
+        return override ?? inner.mutate(request, context);
+      },
+    };
+  }
+
+  const injected = (code: string): ApplicationDataResult => ({
+    ok: false,
+    code: code as Extract<ApplicationDataResult, { ok: false }>['code'],
+    message: 'injected rejection (test)',
+  });
+
+  it('a rejected CREATE surfaces as dispatch failure, never success (nothing persisted)', async () => {
+    const data = makeData();
+    const server = createReferenceServer({
+      data: injectingAdapter(data, (request) =>
+        request.resourceId === 'metrics' && request.op === 'create'
+          ? injected('DATA_INVALID_REQUEST')
+          : undefined,
+      ),
+    });
+    try {
+      const result = await server.dispatch('act.noteReadingTime');
+      expect(result.ok).toBe(false);
+      if (!result.ok) {
+        // The server's existing structured action-failure boundary.
+        expect(result.code).toBe('ACTION_FAILED');
+      }
+      // The rejected create persisted nothing.
+      expect(await metricRows(data)).toHaveLength(0);
+    } finally {
+      server.close();
+    }
+  });
+
+  it('a rejected UPDATE surfaces as dispatch failure, never success (previous value intact)', async () => {
+    const data = makeData();
+    let rejectUpdates = false;
+    const server = createReferenceServer({
+      data: injectingAdapter(data, (request) =>
+        rejectUpdates && request.resourceId === 'metrics' && request.op === 'update'
+          ? injected('DATA_INVALID_REQUEST')
+          : undefined,
+      ),
+    });
+    try {
+      // First estimate persists normally.
+      const first = await server.dispatch('act.noteReadingTime');
+      expect(first.ok).toBe(true);
+      expect(await metricRows(data)).toHaveLength(1);
+
+      // Inject the update rejection: the repeat estimate must FAIL, and
+      // the previously persisted value must remain exactly as it was.
+      rejectUpdates = true;
+      const second = await server.dispatch('act.noteReadingTime');
+      expect(second.ok).toBe(false);
+      if (!second.ok) {
+        expect(second.code).toBe('ACTION_FAILED');
+      }
+      const rows = await metricRows(data);
+      expect(rows).toHaveLength(1);
+      expect(rows[0]).toMatchObject({ id: 'rt-alpha-1', value: '1 min (1 words)' });
+    } finally {
+      server.close();
+    }
+  });
+
+  it('a failed existence probe (not "missing record") never falls through to create', async () => {
+    const data = makeData();
+    const server = createReferenceServer({
+      data: injectingAdapter(
+        data,
+        () => undefined,
+        (request) =>
+          request.resourceId === 'metrics' && request.op === 'get'
+            ? injected('DATA_UNAUTHORIZED')
+            : undefined,
+      ),
+    });
+    try {
+      const result = await server.dispatch('act.noteReadingTime');
+      expect(result.ok).toBe(false);
+      if (!result.ok) {
+        expect(result.code).toBe('ACTION_FAILED');
+      }
+      // The probe failure was NOT treated as permission to create.
+      expect(await metricRows(data)).toHaveLength(0);
+    } finally {
+      server.close();
+    }
+  });
+
+  it('after an injected rejection, a normal dispatch succeeds again (no poisoned state)', async () => {
+    const data = makeData();
+    let rejectCreates = false;
+    const server = createReferenceServer({
+      data: injectingAdapter(data, (request) =>
+        rejectCreates && request.resourceId === 'metrics' && request.op === 'create'
+          ? injected('DATA_UNAUTHORIZED')
+          : undefined,
+      ),
+    });
+    try {
+      rejectCreates = true;
+      const failed = await server.dispatch('act.noteReadingTime');
+      expect(failed.ok).toBe(false);
+      rejectCreates = false;
+      const recovered = await server.dispatch('act.noteReadingTime');
+      expect(recovered.ok).toBe(true);
+      expect(await metricRows(data)).toHaveLength(1);
+    } finally {
+      server.close();
     }
   });
 });

@@ -247,20 +247,38 @@ export function createReferenceServer(
       { permissions: serverGrants, effect: 'read' },
     );
     if (existing.ok) {
-      await data.mutate(
+      const updated = await data.mutate(
         { resourceId: 'metrics', op: 'update', id: metric.id, input: metric },
         { permissions: serverGrants, effect: 'write' },
       );
+      // Fail closed: a rejected update must not let the action report
+      // success without persisting. The throw crosses the dispatcher's
+      // structured action-failure boundary (ACTION_FAILED).
+      if (!updated.ok) {
+        throw new Error(`metrics upsert: the metrics update was rejected (${updated.code}).`);
+      }
       return;
+    }
+    // A failed get is permission to create ONLY when it means "missing
+    // record" (DATA_UNKNOWN_IDENTITY). Any other failure — authorization,
+    // malformed request, unknown resource, hostile-input fallback — is not
+    // an absence proof: fail closed instead of creating.
+    if (existing.code !== 'DATA_UNKNOWN_IDENTITY') {
+      throw new Error(`metrics upsert: the existence probe failed (${existing.code}).`);
     }
     // The metrics resource declares NO keyed idempotency for create, so the
     // mutation must not carry an idempotency key (the adapter rejects keys
     // on non-keyed mutations). The get→update/else→create probe above is
     // the upsert.
-    await data.mutate(
+    const created = await data.mutate(
       { resourceId: 'metrics', op: 'create', input: metric },
       { permissions: serverGrants, effect: 'write' },
     );
+    // Fail closed: a rejected create must not let the action report
+    // success without persisting.
+    if (!created.ok) {
+      throw new Error(`metrics upsert: the metrics create was rejected (${created.code}).`);
+    }
   }
 
   const dispatch = async (actionId: string, input?: unknown): Promise<ActionResult> => {
