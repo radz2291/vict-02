@@ -13,9 +13,13 @@
 - Real-browser loop: Chrome 153.0.8010.54 (headless, puppeteer-core), consistent with the
   reference app's existing browser-suite discovery.
 - Suites: renderer unit project **59/59**, reference-app suite **62/62** (includes the real-Chrome
-  browser suite and axe-core scans), full unit suite 2098/2106 (the 8 pre-existing failures are
-  dist-dependent store/server tests that need the workspace build first; they pass after
-  `npm run build` — not P3-related).
+  browser suite and axe-core scans). Full unit project after the workspace build: **2104/2106** —
+  the 2 remaining failures are `scripts/test/trusted-publishing.test.mjs` (frozen 13-package
+  release-inventory derivation): the P3 line carries 15 releasable packages, and the release-set
+  13→15 expansion is the known separate governance work deliberately NOT touched by this QA pass
+  (the QA diff touches no script or package.json, so the failures are identical on the pristine
+  P3 SHA). The other 6 dist-dependent failures seen on a clean checkout pass once
+  `npm run build` has produced the package `dist/` outputs.
 
 ## 2. Defects found and fixed on the QA branch (bounded, presentation/a11y only)
 
@@ -219,8 +223,10 @@ All canonical `form-values` behavior confirmed in real Chrome (canonical module 
    pre-existing and preserved. Flagging for the owner: if secondary action styling is wanted,
    the plan surface/intent contract needs a declared field — a Codex contract change, out of
    QA scope.
-3. The 8 pre-existing dist-dependent unit failures (store/server restart tests) fail on a
-   clean checkout without `npm run build` and pass after it; unrelated to P3.
+3. `scripts/test/trusted-publishing.test.mjs` fails 2/57 assertions on this branch (release
+   inventory frozen at 13 packages while the P3 line carries 15) — this is the known release-set
+   13→15 governance work, deliberately kept separate per the QA scope; the QA diff provably does
+   not touch any inventory input (no scripts, no package.json changes).
 4. Reading-time metric CONTENT rendering is covered by the existing DOM-level suite
    (`reading-time.test.ts`, adapter-seeded notes); the real-browser run verifies the P3-owned
    path (dispatch inside tab, success feedback, region refetch to the correct empty state) —
