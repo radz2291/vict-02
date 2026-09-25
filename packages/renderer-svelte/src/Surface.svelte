@@ -260,7 +260,21 @@
     color: var(--vict-color-textMuted);
   }
 
+  .vict-detail-row {
+    display: grid;
+    grid-template-columns: 10rem 1fr;
+    gap: calc(var(--vict-spacing-unit) * 2);
+    padding-bottom: calc(var(--vict-spacing-unit) * 1);
+    border-bottom: 1px solid var(--vict-color-border);
+  }
+
   .vict-detail dd {
     margin: 0;
+    /* Grid items default to min-width:auto, so an unbreakable value
+       (long JSON, ids, URLs) forces the column past the panel and gets
+       clipped at phone widths. Let the item shrink and break the token
+       instead — long values stay fully visible at every width. */
+    min-width: 0;
+    overflow-wrap: anywhere;
   }
 </style>

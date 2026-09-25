@@ -49,6 +49,11 @@
   {#if state.total === 0}
     <p class="vict-ui-table__empty" data-state="empty" data-testid="table-empty">{intent.emptyMessage}</p>
   {:else}
+    <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
+    <!-- A scrollable table region must be keyboard-operable (axe:
+         scrollable-region-focusable); role=region + aria-label make the
+         focus stop meaningful, and keyboard scrolling is handled in
+         code. The Svelte rule does not model this pattern. -->
     <div class="vict-ui-table__scroll" role="region" aria-label="Records table" tabindex="0">
       <table data-testid="records-table">
         <thead>

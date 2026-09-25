@@ -1,0 +1,212 @@
+[
+ {
+  "name": "compat: npm install from packed tarballs (clean temp dir)",
+  "ok": true,
+  "detail": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-qa3-consumer-BrmcKv\\consumer-compat"
+ },
+ {
+  "name": "compat: installed versions exactly 0.3.1",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "compat: no monorepo leakage in the lockfile",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "compat: vite build succeeds",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "compat: emitted CSS carries the migrated P3 presentation (index-YmDAf0Ly.css, 16238 bytes)",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "compat: packed renderer mounts the generic host",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "compat: all widget controls render (text/date/json/number/boolean)",
+  "ok": true,
+  "detail": "id,name,starts,config,budget,discount,active"
+ },
+ {
+  "name": "compat: required errors field-associated (novalidate fix present in packed CSS/JS)",
+  "ok": true,
+  "detail": "{\"describedby\":\"vict-field-error-f.widget-create-name\",\"text\":\"This field is required.\"}"
+ },
+ {
+  "name": "compat: form dispatch reaches the consumer boundary with canonical payload",
+  "ok": true,
+  "detail": "[{\"actionId\":\"act.saveWidget\",\"input\":{\"id\":\"c-1\",\"name\":\"Consumer widget\",\"starts\":\"\",\"config\":\"\",\"budget\":88,\"active\":false}}]"
+ },
+ {
+  "name": "compat: tabs render on the record route",
+  "ok": true,
+  "detail": "{\"count\":2,\"selected\":0}"
+ },
+ {
+  "name": "compat: ArrowRight moves tab selection",
+  "ok": true,
+  "detail": "{\"count\":2,\"selected\":1}"
+ },
+ {
+  "name": "compat: packed dialog opens modal with focus inside",
+  "ok": true,
+  "detail": "{\"open\":true,\"modal\":true,\"inside\":true}"
+ },
+ {
+  "name": "compat: Escape closes; trigger regains focus",
+  "ok": true,
+  "detail": "overlay-trigger"
+ },
+ {
+  "name": "compat: drawer opens right-aligned",
+  "ok": true,
+  "detail": "{\"open\":true,\"right\":true}"
+ },
+ {
+  "name": "compat: five status tone badges render",
+  "ok": true,
+  "detail": "5"
+ },
+ {
+  "name": "compat: denied feedback renders role=alert",
+  "ok": true,
+  "detail": "alert"
+ },
+ {
+  "name": "compat@380: no horizontal page overflow",
+  "ok": true,
+  "detail": "0"
+ },
+ {
+  "name": "compat@380: long tabs reachable via contained scroll (fix present)",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "compat@320: no horizontal page overflow",
+  "ok": true,
+  "detail": "0"
+ },
+ {
+  "name": "compat@320: long tabs reachable via contained scroll (fix present)",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "compat: no page errors in the packed consumer",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "direct: npm install from packed tarballs (clean temp dir)",
+  "ok": true,
+  "detail": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-qa3-consumer-BrmcKv\\consumer-direct"
+ },
+ {
+  "name": "direct: installed versions exactly 0.3.1",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "direct: no monorepo leakage in the lockfile",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "direct: vite build succeeds",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "direct: emitted CSS carries the migrated P3 presentation (index-BGPMnqay.css, 14498 bytes)",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "direct: packed renderer mounts the generic host",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "direct: all widget controls render (text/date/json/number/boolean)",
+  "ok": true,
+  "detail": "id,name,starts,config,budget,discount,active"
+ },
+ {
+  "name": "direct: required errors field-associated (novalidate fix present in packed CSS/JS)",
+  "ok": true,
+  "detail": "{\"describedby\":\"vict-field-error-f.widget-create-name\",\"text\":\"This field is required.\"}"
+ },
+ {
+  "name": "direct: form dispatch reaches the consumer boundary with canonical payload",
+  "ok": true,
+  "detail": "[{\"actionId\":\"act.saveWidget\",\"input\":{\"id\":\"c-1\",\"name\":\"Consumer widget\",\"starts\":\"\",\"config\":\"\",\"budget\":88,\"active\":false}}]"
+ },
+ {
+  "name": "direct: tabs render on the record route",
+  "ok": true,
+  "detail": "{\"count\":2,\"selected\":0}"
+ },
+ {
+  "name": "direct: ArrowRight moves tab selection",
+  "ok": true,
+  "detail": "{\"count\":2,\"selected\":1}"
+ },
+ {
+  "name": "direct: packed dialog opens modal with focus inside",
+  "ok": true,
+  "detail": "{\"open\":true,\"modal\":true,\"inside\":true}"
+ },
+ {
+  "name": "direct: Escape closes; trigger regains focus",
+  "ok": true,
+  "detail": "overlay-trigger"
+ },
+ {
+  "name": "direct: drawer opens right-aligned",
+  "ok": true,
+  "detail": "{\"open\":true,\"right\":true}"
+ },
+ {
+  "name": "direct: five status tone badges render",
+  "ok": true,
+  "detail": "5"
+ },
+ {
+  "name": "direct: denied feedback renders role=alert",
+  "ok": true,
+  "detail": "alert"
+ },
+ {
+  "name": "direct@380: no horizontal page overflow",
+  "ok": true,
+  "detail": "0"
+ },
+ {
+  "name": "direct@380: long tabs reachable via contained scroll (fix present)",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "direct@320: no horizontal page overflow",
+  "ok": true,
+  "detail": "0"
+ },
+ {
+  "name": "direct@320: long tabs reachable via contained scroll (fix present)",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "direct: no page errors in the packed consumer",
+  "ok": true,
+  "detail": ""
+ }
+]

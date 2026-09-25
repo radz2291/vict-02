@@ -1,0 +1,6 @@
+# Ignore QA tooling build artifacts — evidence (screenshots, results, drivers, sources) is committed.
+harness/node_modules/
+harness/dist/
+consumer-*/node_modules/
+consumer-*/dist/
+*.log

@@ -1,0 +1,19 @@
+{
+  "name": "vict-qa3-harness",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "QA-only browser harness for P3 verification (not part of the release set; lives outside the workspace globs).",
+  "scripts": {
+    "plan": "tsx scripts/emit-plan.mts",
+    "dev": "vite dev --port 5199 --strictPort",
+    "build": "vite build",
+    "preview": "vite preview --port 5199 --strictPort"
+  },
+  "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "^5.0.3",
+    "svelte": "^5.28.0",
+    "tsx": "^4.19.3",
+    "vite": "^6.3.5"
+  }
+}

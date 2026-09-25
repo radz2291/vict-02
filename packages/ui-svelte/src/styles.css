@@ -1,7 +1,10 @@
 /* ==========================================================================
-   Vict renderer — semantic theme tokens (renderer-owned CSS variables).
-   Applications customize tokens through the neutral Application Definition
-   theme declaration; raw CSS never crosses the neutral boundary.
+   Vict UI — semantic theme tokens and shared presentation (ui-svelte).
+   This is the ONE production style source for migrated P3 presentation;
+   `@victframework/renderer-svelte/theme.css` is a compatibility entry
+   point that imports this file. Applications customize tokens through
+   the neutral Application Definition theme declaration; raw CSS never
+   crosses the neutral boundary.
    ========================================================================== */
 
 :root {
@@ -612,6 +615,13 @@
   display: flex;
   gap: calc(var(--vict-spacing-unit) * 0.5);
   border-bottom: 1px solid var(--vict-color-border);
+  /* Long tab runs overflow into a contained horizontal scroll region
+     instead of being clipped by the page container at phone widths
+     (document overflow stays zero, every tab remains reachable by
+     touch swipe and by keyboard focus scrolling). Desktop layouts
+     where the tabs fit are visually unchanged. */
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
 }
 
 .vict-tabpanel {
@@ -641,8 +651,12 @@
   z-index: 50;
 }
 
-.vict-overlay:not([open]) { display: none; }
-.vict-overlay::backdrop { background: transparent; }
+.vict-overlay:not([open]) {
+  display: none;
+}
+.vict-overlay::backdrop {
+  background: transparent;
+}
 
 .vict-overlay--drawer {
   align-items: stretch;
@@ -668,7 +682,6 @@
   overflow: auto;
 }
 
-
 /* Form and native modal presentation. All controls are owned here. */
 .vict-form {
   background: var(--vict-color-surface);
@@ -690,5 +703,12 @@
   gap: calc(var(--vict-spacing-unit) * 2);
   margin-bottom: calc(var(--vict-spacing-unit) * 3);
 }
-.vict-overlay-header h2 { margin: 0; font-size: 1.1rem; }
-.vict-dialog, .vict-drawer { position: relative; z-index: 1; }
+.vict-overlay-header h2 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+.vict-dialog,
+.vict-drawer {
+  position: relative;
+  z-index: 1;
+}
