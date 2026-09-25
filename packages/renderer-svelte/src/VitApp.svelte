@@ -152,6 +152,11 @@
       }
       return;
     }
+    await dispatchAction(actionId, input);
+  }
+
+  /** Action authority and safe failure state shared with the conversation adapter. */
+  async function dispatchAction(actionId: string, input?: unknown): Promise<ActionResult> {
     lastAction = actionId;
     try {
       const result = await dispatch(actionId, input);
@@ -159,6 +164,7 @@
       if (result.ok && onInvalidate !== undefined) {
         onInvalidate();
       }
+      return result;
     } catch {
       // A dispatcher rejection is caught and mapped to a SAFE
       // renderer-generated failure; no unhandled rejection can exist and no
@@ -168,7 +174,13 @@
         code: 'RENDERER_ACTION_FAILED',
         message: 'The action could not be completed; this safe failure state is renderer-generated.',
       };
+      return lastResult;
     }
+  }
+
+  function sendConversation(actionId: string, text: string): Promise<boolean> {
+    return dispatchAction(actionId, { text, author: 'You', participant: 'user' })
+      .then((result) => result.ok);
   }
 
   const validationFailed = $derived(
@@ -278,7 +290,7 @@
               {record}
               run={runAction}
               {dispatch}
-              {onInvalidate}
+              {sendConversation}
             />
           {/each}
         </section>

@@ -73,6 +73,28 @@ export interface UiOverlayIntent {
   readonly triggerLabel: string;
 }
 
+/** Resolved display values; source fields and records stay with the adapter. */
+export interface UiDisplayField {
+  readonly label: string;
+  readonly value: string;
+}
+
+export interface UiListItem {
+  readonly title: string;
+  readonly secondary?: string;
+}
+
+export interface UiChartPoint {
+  readonly label: string;
+  readonly value: number;
+}
+
+export interface UiConversationMessage {
+  readonly author: string;
+  readonly participant: string;
+  readonly text: string;
+}
+
 export interface UiPlan {
   readonly tables: Readonly<Record<string, UiTableIntent>>;
 }

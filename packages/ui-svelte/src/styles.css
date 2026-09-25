@@ -1,6 +1,6 @@
 /* ==========================================================================
    Vict UI — semantic theme tokens and shared presentation (ui-svelte).
-   This is the ONE production style source for migrated P3 presentation;
+   This is the ONE production style source for migrated presentation;
    `@victframework/renderer-svelte/theme.css` is a compatibility entry
    point that imports this file. Applications customize tokens through
    the neutral Application Definition theme declaration; raw CSS never
@@ -34,6 +34,183 @@
   /* Elevation. */
   --vict-elevation-low: 0 1px 2px rgba(23, 32, 42, 0.08);
   --vict-elevation-high: 0 8px 24px rgba(23, 32, 42, 0.18);
+}
+
+/* Generic read-only data view: no query controls or application state.
+   The richer RecordsTable above owns search, filters, sort, and paging. */
+.vict-data-view {
+  max-width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  border: 1px solid var(--vict-color-border, #d5dae1);
+  border-radius: var(--vict-radius-base, 8px);
+  background: var(--vict-color-surface, #fff);
+}
+.vict-data-view table,
+.vict-data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.vict-data-view th,
+.vict-data-view td,
+.vict-data-table th,
+.vict-data-table td {
+  text-align: left;
+  padding: calc(var(--vict-spacing-unit, 8px) * 1.5) calc(var(--vict-spacing-unit, 8px) * 2);
+  border-bottom: 1px solid var(--vict-color-border, #d5dae1);
+  overflow-wrap: anywhere;
+}
+.vict-data-view th,
+.vict-data-table th {
+  background: var(--vict-color-bg, #f5f6f8);
+  font-weight: 600;
+}
+.vict-data-view th,
+.vict-data-view td {
+  min-width: 8rem;
+}
+
+.vict-text {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+.vict-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--vict-spacing-unit, 8px);
+}
+.vict-list-item {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  background: var(--vict-color-surface, #fff);
+  border: 1px solid var(--vict-color-border, #d5dae1);
+  border-radius: var(--vict-radius-base, 8px);
+  padding: calc(var(--vict-spacing-unit, 8px) * 2);
+}
+.vict-detail {
+  margin: 0;
+  display: grid;
+  gap: calc(var(--vict-spacing-unit, 8px) * 2);
+}
+.vict-detail-row {
+  display: grid;
+  grid-template-columns: minmax(0, 10rem) minmax(0, 1fr);
+  gap: calc(var(--vict-spacing-unit, 8px) * 2);
+  padding-bottom: var(--vict-spacing-unit, 8px);
+  border-bottom: 1px solid var(--vict-color-border, #d5dae1);
+}
+.vict-detail dt {
+  min-width: 0;
+  font-weight: 600;
+  color: var(--vict-color-textMuted, #5a6673);
+  overflow-wrap: anywhere;
+}
+.vict-detail dd {
+  min-width: 0;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.vict-figure {
+  min-width: 0;
+  margin: 0;
+  background: var(--vict-color-surface, #fff);
+  border: 1px solid var(--vict-color-border, #d5dae1);
+  border-radius: var(--vict-radius-base, 8px);
+  padding: calc(var(--vict-spacing-unit, 8px) * 3);
+}
+.vict-figure figcaption {
+  font-weight: 600;
+  margin-bottom: calc(var(--vict-spacing-unit, 8px) * 2);
+}
+.vict-chart {
+  width: 100%;
+  height: auto;
+}
+.vict-chart .vict-bar {
+  fill: var(--vict-color-accent, #3b5bdb);
+}
+.vict-chart text {
+  fill: var(--vict-color-text, #17202a);
+  font-size: 12px;
+}
+.vict-chart-gridline {
+  stroke: var(--vict-color-border, #d5dae1);
+  stroke-width: 1;
+}
+.vict-chart-table {
+  margin-top: calc(var(--vict-spacing-unit, 8px) * 2);
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.vict-conversation-panel {
+  min-width: 0;
+  background: var(--vict-color-surface, #fff);
+  border: 1px solid var(--vict-color-border, #d5dae1);
+  border-radius: var(--vict-radius-base, 8px);
+  padding: calc(var(--vict-spacing-unit, 8px) * 3);
+}
+.vict-conversation {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--vict-spacing-unit, 8px) * 2);
+  max-height: 60vh;
+  overflow-y: auto;
+}
+.vict-conversation-message {
+  min-width: 0;
+  max-width: 85%;
+  overflow-wrap: anywhere;
+  border: 1px solid var(--vict-color-border, #d5dae1);
+  border-radius: var(--vict-radius-base, 8px);
+  padding: calc(var(--vict-spacing-unit, 8px) * 2);
+}
+.vict-conversation-message--user {
+  align-self: flex-end;
+  border-color: var(--vict-color-accent, #3b5bdb);
+}
+.vict-conversation-message--assistant {
+  align-self: flex-start;
+}
+.vict-conversation-meta {
+  margin: 0 0 calc(var(--vict-spacing-unit, 8px) * 0.5);
+  font-size: 0.75rem;
+  color: var(--vict-color-textMuted, #5a6673);
+}
+.vict-conversation-body {
+  margin: 0;
+  white-space: pre-wrap;
+}
+.vict-conversation-input {
+  margin-top: calc(var(--vict-spacing-unit, 8px) * 2);
+  display: grid;
+  gap: var(--vict-spacing-unit, 8px);
+}
+.vict-conversation-input-row {
+  display: flex;
+  gap: var(--vict-spacing-unit, 8px);
+  min-width: 0;
+}
+.vict-conversation-input-row .vict-input {
+  flex: 1;
+  min-width: 0;
+}
+
+@media (max-width: 520px) {
+  .vict-detail-row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2px;
+  }
+  .vict-conversation-panel,
+  .vict-figure {
+    padding: calc(var(--vict-spacing-unit, 8px) * 2);
+  }
+  .vict-conversation-message {
+    max-width: 100%;
+  }
 }
 
 /* The application root container: tokens apply to the Vict subtree only,

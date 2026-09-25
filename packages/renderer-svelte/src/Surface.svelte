@@ -1,18 +1,15 @@
 <script lang="ts">
   /**
-   * Renders ONE neutral surface. Simple roles render inline; nested
-   * surfaces (tabs/dialogs/drawers) render through the recursive
-   * `renderSurface` snippet so behavior stays identical at every depth.
-   * Complex interactive roles delegate to dedicated components.
+   * Interprets ONE neutral surface. Application bindings and recursive
+   * traversal stay here; presentation is delegated to ui-svelte.
    */
   import type { ComponentRegistry } from '@victframework/application/renderer';
   import type { VictPlanView, PlanSurface } from './logic.js';
   import type { UiPlan, UiStatusTone } from '@victframework/ui';
-  import { Button, Feedback, StatusBadge, Tabs } from '@victframework/ui-svelte';
+  import { Button, Chart, ComponentSlot, Conversation, DataView, Detail, Feedback, List, StatusBadge, Tabs, Text } from '@victframework/ui-svelte';
   import { isVisible, isDisabled, headingTagForLevel, type ViewDatum, type ActionResult } from './logic.js';
+  import { chartPoints, conversationMessages, detailFields, displayRows, listItems } from './presentation.js';
   import TableAdapter from './TableAdapter.svelte';
-  import ChartSurface from './ChartSurface.svelte';
-  import ConversationSurface from './ConversationSurface.svelte';
   import FormSurface from './FormSurface.svelte';
   import OverlaySurface from './OverlaySurface.svelte';
   
@@ -30,8 +27,7 @@
     record: Record<string, unknown> | null;
     run: (actionId: string, input?: unknown) => Promise<void>;
     dispatch: (actionId: string, input?: unknown) => Promise<ActionResult>;
-    onInvalidate?: () => void;
-    navigate?: (path: string) => void;
+    sendConversation: (actionId: string, text: string) => Promise<boolean>;
   }
 
   let {
@@ -45,8 +41,7 @@
     record,
     run,
     dispatch,
-    onInvalidate,
-    navigate,
+    sendConversation,
   }: Props = $props();
 
   const visible = $derived(isVisible(surface, context));
@@ -93,57 +88,14 @@
 {#snippet renderSurface(sn: PlanSurface)}
   {#if isVisible(sn, context)}
     {#if sn.role === 'text'}
-      {@const headingTag = headingTagForLevel(sn.level)}
-      {#if headingTag !== null}
-        <!-- The tag name comes ONLY from the compiler-validated closed
-             heading vocabulary (logic.ts HEADING_TAGS) — never arbitrary. -->
-        <svelte:element this={headingTag} class="vict-text" data-surface={sn.id}>{String(sn.content)}</svelte:element>
-      {:else}
-        <p class="vict-text" data-surface={sn.id}>{String(sn.content)}</p>
-      {/if}
+      <Text surfaceId={sn.id} content={String(sn.content)} tag={headingTagForLevel(sn.level) ?? 'p'} />
     {:else if sn.role === 'view'}
-      {@const rows = viewRows(sn.viewId)}
       {@const fields = viewFieldNames(sn.viewId)}
-      {#if rows.length === 0}
-        <Feedback kind="empty" message="Nothing here yet." surfaceId={sn.id} />
-      {:else}
-        <div class="vict-table-wrap" data-surface={sn.id} role="region" aria-label="Data table">
-          <table class="vict-table">
-            <thead>
-              <tr>
-                {#each fields as field (field)}
-                  <th scope="col">{field}</th>
-                {/each}
-              </tr>
-            </thead>
-            <tbody>
-              {#each rows as row, index (index)}
-                <tr>
-                  {#each fields as field (field)}
-                    <td>{String(row[field] ?? '')}</td>
-                  {/each}
-                </tr>
-              {/each}
-            </tbody>
-          </table>
-        </div>
-      {/if}
+      <DataView surfaceId={sn.id} columns={fields} rows={displayRows(viewRows(sn.viewId), fields)} />
     {:else if sn.role === 'list'}
-      {@const rows = viewRows(sn.viewId)}
-      {#if rows.length === 0}
-        <Feedback kind="empty" message={str(sn.emptyMessage) || 'Nothing here yet.'} surfaceId={sn.id} />
-      {:else}
-        <ul class="vict-list" data-surface={sn.id}>
-          {#each rows as row, index (index)}
-            <li class="vict-list-item">
-              <strong>{String(row[str(sn.titleField)] ?? '')}</strong>
-              {#if typeof sn.secondaryField === 'string'}
-                <span> — {String(row[sn.secondaryField] ?? '')}</span>
-              {/if}
-            </li>
-          {/each}
-        </ul>
-      {/if}
+      <List surfaceId={sn.id} items={listItems(viewRows(sn.viewId), str(sn.titleField),
+        typeof sn.secondaryField === 'string' ? sn.secondaryField : undefined)}
+        emptyMessage={str(sn.emptyMessage) || 'Nothing here yet.'} />
     {:else if sn.role === 'table'}
       <TableAdapter
         surface={sn}
@@ -157,18 +109,8 @@
         Array.isArray(sn.fields) && sn.fields.length > 0
           ? (sn.fields as readonly string[])
           : viewFieldNames(sn.viewId)}
-      {#if row === null || row === undefined}
-        <Feedback kind="empty" message={str(sn.emptyMessage) || 'This record does not exist.'} surfaceId={sn.id} />
-      {:else}
-        <dl class="vict-detail" data-surface={sn.id}>
-          {#each fields as field (field)}
-            <div class="vict-detail-row">
-              <dt>{field}</dt>
-              <dd>{String(row[field] ?? '')}</dd>
-            </div>
-          {/each}
-        </dl>
-      {/if}
+      <Detail surfaceId={sn.id} fields={detailFields(row, fields)}
+        emptyMessage={str(sn.emptyMessage) || 'This record does not exist.'} />
     {:else if sn.role === 'form'}
       <FormSurface surface={sn} {plan} {run} values={record ?? {}} identity={params.id} />
     {:else if sn.role === 'action'}
@@ -180,13 +122,9 @@
     {:else if sn.role === 'component'}
       {@const resolved = resolveComponent(sn)}
       {#if resolved !== undefined}
-        <div
-          class="vict-component-slot"
-          data-surface={sn.id}
-          data-component={str(sn.componentId)}
-        >
+        <ComponentSlot surfaceId={sn.id} componentId={str(sn.componentId)}>
           <resolved.Component {...((sn.props ?? {}) as Record<string, never>)} />
-        </div>
+        </ComponentSlot>
       {:else}
         <Feedback kind="error" message="The custom component could not be resolved." surfaceId={sn.id} />
       {/if}
@@ -198,7 +136,10 @@
       {@const tones = (sn.tones ?? {}) as Record<string, string>}
       <StatusBadge {value} tone={statusTone(tones[value])} surfaceId={sn.id} />
     {:else if sn.role === 'chart'}
-      <ChartSurface surface={sn} rows={viewRows(sn.viewId)} />
+      <Chart surfaceId={sn.id} title={typeof sn.title === 'string' ? sn.title : undefined}
+        summary={str(sn.summary)} kind={str(sn.kind) === 'line' ? 'line' : 'bar'}
+        xLabel={str(sn.xField)} yLabel={str(sn.yField)}
+        points={chartPoints(viewRows(sn.viewId), str(sn.xField), str(sn.yField))} />
     {:else if sn.role === 'tabs'}
       {@const tabs = (sn.tabs ?? []) as readonly { name: string; label: string; surfaces?: readonly PlanSurface[] }[]}
       {#snippet tabPanel(index: number)}
@@ -219,17 +160,15 @@
         {record}
         {run}
         {dispatch}
-        {onInvalidate}
-        {navigate}
+        {sendConversation}
       />
     {:else if sn.role === 'conversation'}
-      <ConversationSurface
-        surface={sn}
-        {plan}
-        initialRows={viewRows(sn.viewId)}
-        {dispatch}
-        {onInvalidate}
-      />
+      {@const view = plan.views?.[String(sn.viewId)] as { emptyMessage?: string } | undefined}
+      <Conversation surfaceId={sn.id}
+        messages={conversationMessages(viewRows(sn.viewId), str(sn.messageField), str(sn.authorField), str(sn.participantField))}
+        emptyMessage={str(sn.emptyMessage) || str(view?.emptyMessage) || 'No messages yet. Say hello!'}
+        inputLabel={str(sn.inputLabel)} inputPlaceholder={str(sn.inputPlaceholder)}
+        onSend={(text) => sendConversation(str(sn.sendActionId), text)} />
     {:else if sn.role === 'states'}
       <span data-surface={sn.id} class="vict-states-marker" hidden aria-hidden="true"></span>
     {/if}
@@ -239,42 +178,3 @@
 {#if visible}
   {@render renderSurface(surface)}
 {/if}
-
-<style>
-  .vict-detail {
-    margin: 0;
-    display: grid;
-    gap: calc(var(--vict-spacing-unit) * 2);
-  }
-
-  .vict-detail-row {
-    display: grid;
-    grid-template-columns: 10rem 1fr;
-    gap: calc(var(--vict-spacing-unit) * 2);
-    padding-bottom: calc(var(--vict-spacing-unit) * 1);
-    border-bottom: 1px solid var(--vict-color-border);
-  }
-
-  .vict-detail dt {
-    font-weight: 600;
-    color: var(--vict-color-textMuted);
-  }
-
-  .vict-detail-row {
-    display: grid;
-    grid-template-columns: 10rem 1fr;
-    gap: calc(var(--vict-spacing-unit) * 2);
-    padding-bottom: calc(var(--vict-spacing-unit) * 1);
-    border-bottom: 1px solid var(--vict-color-border);
-  }
-
-  .vict-detail dd {
-    margin: 0;
-    /* Grid items default to min-width:auto, so an unbreakable value
-       (long JSON, ids, URLs) forces the column past the panel and gets
-       clipped at phone widths. Let the item shrink and break the token
-       instead — long values stay fully visible at every width. */
-    min-width: 0;
-    overflow-wrap: anywhere;
-  }
-</style>

@@ -20,11 +20,10 @@
     record: Record<string, unknown> | null;
     run: (actionId: string, input?: unknown) => Promise<void>;
     dispatch: (actionId: string, input?: unknown) => Promise<ActionResult>;
-    onInvalidate?: () => void;
-    navigate?: (path: string) => void;
+    sendConversation: (actionId: string, text: string) => Promise<boolean>;
   }
 
-  let { surface, plan, uiPlan, registry, context, params, viewData, record, run, dispatch, onInvalidate, navigate }: Props = $props();
+  let { surface, plan, uiPlan, registry, context, params, viewData, record, run, dispatch, sendConversation }: Props = $props();
   const intent = $derived<UiOverlayIntent>({
     kind: surface.role === 'drawer' ? 'drawer' : 'dialog',
     title: typeof surface.title === 'string' ? surface.title : '',
@@ -35,7 +34,7 @@
 {#snippet content()}
   {#each ((surface.content ?? []) as readonly PlanSurface[]) as nested (nested.id)}
     <Surface surface={nested} {plan} {uiPlan} {registry} {context} {params} {viewData}
-      {record} {run} {dispatch} {onInvalidate} {navigate} />
+      {record} {run} {dispatch} {sendConversation} />
   {/each}
 {/snippet}
 

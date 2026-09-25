@@ -18,6 +18,8 @@ export interface RenderVictApplicationOptions {
   readonly record?: Record<string, unknown> | null;
   readonly target?: HTMLElement;
   readonly navigate?: (path: string) => void;
+  /** Refetch route data after a successful mutation. */
+  readonly onInvalidate?: () => void;
 }
 
 export interface MountedVictApplication {
@@ -42,6 +44,7 @@ export function renderVictApplication(
     viewData: options.viewData ?? {},
     record: options.record ?? null,
     navigate: options.navigate,
+    onInvalidate: options.onInvalidate,
   });
   const instance = mount(VitApp, { target, props });
   flushSync();
