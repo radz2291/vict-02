@@ -404,9 +404,14 @@ describe('accessible defaults', () => {
   it('charts carry an accessible summary and a data-table equivalent', () => {
     const mounted = mountProbe(surfaceForRole('chart'));
     try {
-      const figure = mounted.output.querySelector('figure[role="img"]');
+      // The figure is a named group; the SVG itself is the named image.
+      // The interactive Data-table disclosure stays outside any img role
+      // (no nested-interactive: axe serious violation fixed in QA P4).
+      const figure = mounted.output.querySelector('figure.vict-figure');
       expect(figure?.getAttribute('aria-label')).toBe('Quantity per status');
-      expect(mounted.output.querySelector('[data-testid="chart-svg"]')).not.toBeNull();
+      const svg = mounted.output.querySelector('[data-testid="chart-svg"]');
+      expect(svg?.getAttribute('role')).toBe('img');
+      expect(svg?.getAttribute('aria-label')).toBe('Quantity per status');
       expect(mounted.output.querySelector('.vict-chart-table table')).not.toBeNull();
       // Aggregation: 2 active, 1 draft; 4+7=11 active qty, 2 draft.
       const table = mounted.output.querySelector('.vict-chart-table table');
@@ -476,14 +481,25 @@ describe('accessible defaults', () => {
 
   it('keeps the parent modal open when a nested dialog closes', async () => {
     const mounted = mountProbe({
-      role: 'dialog', id: 'x', title: 'Parent', triggerLabel: 'Open parent',
-      content: [{ role: 'dialog', id: 'child', title: 'Child', triggerLabel: 'Open child',
-        content: [{ role: 'text', id: 'nested-text', content: 'Nested' }] }],
+      role: 'dialog',
+      id: 'x',
+      title: 'Parent',
+      triggerLabel: 'Open parent',
+      content: [
+        {
+          role: 'dialog',
+          id: 'child',
+          title: 'Child',
+          triggerLabel: 'Open child',
+          content: [{ role: 'text', id: 'nested-text', content: 'Nested' }],
+        },
+      ],
     });
     try {
       mounted.output.querySelector<HTMLButtonElement>('[data-surface="x"]')?.click();
       await new Promise((resolve) => setTimeout(resolve, 10));
-      const childTrigger = mounted.output.querySelector<HTMLButtonElement>('[data-surface="child"]');
+      const childTrigger =
+        mounted.output.querySelector<HTMLButtonElement>('[data-surface="child"]');
       childTrigger?.click();
       await new Promise((resolve) => setTimeout(resolve, 10));
       const dialogs = mounted.output.querySelectorAll<HTMLDialogElement>('dialog');

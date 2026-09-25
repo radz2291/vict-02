@@ -33,8 +33,13 @@
   }
 </script>
 
-<section class="vict-conversation-panel" data-surface={surfaceId} aria-label="Conversation">
-  <div class="vict-conversation" data-testid="conversation-feed" aria-live="polite">
+<section class="vict-conversation-panel" data-surface={surfaceId}>
+  <!-- The feed is a contained scroll region (max-height + overflow): it must
+       stay keyboard-scrollable (axe scrollable-region-focusable) and named.
+       The app-declared composer label (compiler-required, non-empty) keeps
+       the region name distinct when a screen shows several conversations. -->
+  <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
+  <div class="vict-conversation" data-testid="conversation-feed" role="region" aria-label={`Messages — ${inputLabel}`} aria-live="polite" tabindex="0">
     {#if messages.length === 0}
       <p class="vict-state" data-state="empty">{emptyMessage}</p>
     {:else}

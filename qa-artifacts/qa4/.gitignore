@@ -1,0 +1,14 @@
+# Ignore QA tooling build artifacts — evidence (screenshots, results, drivers, sources) is committed.
+harness/node_modules/
+harness/dist/
+consumer-*/node_modules/
+consumer-*/
+!consumer-compat/
+!consumer-direct/
+consumer-compat/node_modules/
+consumer-direct/node_modules/
+consumer-compat/dist/
+consumer-direct/dist/
+consumer-compat/package-lock.json
+consumer-direct/package-lock.json
+*.log
