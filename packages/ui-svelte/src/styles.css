@@ -83,6 +83,9 @@
 }
 .vict-ui-table__scroll {
   overflow-x: auto;
+  /* Keep horizontal swipes contained: the document never scrolls sideways,
+     and a fling at the table edge does not trigger browser navigation. */
+  overscroll-behavior-x: contain;
 }
 .vict-ui-table table {
   width: 100%;
@@ -162,6 +165,15 @@
   .vict-ui-table th,
   .vict-ui-table td {
     padding-inline: 18px;
+    /* Sensible column floors: cells keep readable width and the table
+       overflows into the contained scroll region instead of crushing
+       values together. Scoping to phone widths leaves desktop layout
+       untouched. */
+    min-width: 104px;
+  }
+  .vict-ui-table th:first-child,
+  .vict-ui-table td:first-child {
+    min-width: 136px;
   }
   .vict-ui-table__pagination {
     padding: 16px 18px;
