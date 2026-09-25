@@ -1,3 +1,208 @@
+/* The application root container: tokens apply to the Vict subtree only,
+   so a Vict application can coexist with an arbitrary host page. */
+.vict-app {
+  font-family: var(--vict-font-family);
+  font-size: var(--vict-font-sizeBase);
+  color: var(--vict-color-text);
+  background: var(--vict-color-bg);
+  min-height: 100vh;
+  line-height: 1.5;
+}
+
+.vict-app *,
+.vict-app *::before,
+.vict-app *::after {
+  box-sizing: border-box;
+}
+
+/* Visible focus indication everywhere. */
+.vict-app :focus-visible {
+  outline: 2px solid var(--vict-color-focusRing);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Reduced-motion behavior. */
+@media (prefers-reduced-motion: reduce) {
+  .vict-app *,
+  .vict-app *::before,
+  .vict-app *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Shared application frame, supplied with resolved display links by the renderer. */
+.vict-shell {
+  display: grid;
+  grid-template-columns: 248px minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr);
+  grid-template-areas: 'nav header' 'nav main';
+  min-height: 100vh;
+}
+.vict-shell--single {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas: 'header' 'main';
+}
+.vict-header {
+  grid-area: header;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  min-height: 72px;
+  padding: 16px clamp(24px, 3vw, 48px);
+  background: var(--vict-color-surface, #fff);
+  border-bottom: 1px solid var(--vict-color-border, #d5dae1);
+}
+.vict-header h1 {
+  margin: 0;
+  color: var(--vict-color-text, #17202a);
+  font-size: clamp(1.25rem, 1.4vw, 1.6rem);
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.025em;
+}
+.vict-nav {
+  grid-area: nav;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 4px;
+  min-width: 0;
+  padding: 28px 16px;
+  background: var(--vict-color-surface, #fff);
+  border-right: 1px solid var(--vict-color-border, #d5dae1);
+}
+.vict-nav-group-label {
+  margin: 18px 12px 6px;
+  color: var(--vict-color-textMuted, #5a6673);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+.vict-nav-group-label:first-child {
+  margin-top: 0;
+}
+.vict-nav-link {
+  display: block;
+  min-height: 40px;
+  padding: 9px 12px;
+  border-radius: var(--vict-radius-base, 8px);
+  color: var(--vict-color-text, #17202a);
+  font-size: 0.92rem;
+  font-weight: 550;
+  line-height: 1.45;
+  text-decoration: none;
+}
+.vict-nav-link:hover {
+  background: var(--vict-color-bg, #f5f6f8);
+}
+.vict-nav-link[aria-current='page'] {
+  background: var(--vict-color-accent, #3b5bdb);
+  color: var(--vict-color-accentContrast, #fff);
+  font-weight: 700;
+}
+.vict-nav-toggle {
+  display: none;
+}
+.vict-main {
+  grid-area: main;
+  width: min(100%, 1320px);
+  min-width: 0;
+  justify-self: center;
+  padding: 28px clamp(24px, 3vw, 48px) 48px;
+  overflow-x: hidden;
+}
+.vict-region {
+  margin-bottom: calc(var(--vict-spacing-unit, 8px) * 4);
+}
+.vict-breadcrumbs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  list-style: none;
+  margin: 0 0 22px;
+  padding: 0;
+  color: var(--vict-color-textMuted, #5a6673);
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+.vict-breadcrumbs li + li::before {
+  content: '�';
+  margin-right: 7px;
+  color: var(--vict-color-textMuted, #5a6673);
+}
+.vict-breadcrumbs a {
+  color: var(--vict-color-accent, #3b5bdb);
+  text-decoration: none;
+}
+.vict-breadcrumbs a:hover {
+  text-decoration: underline;
+}
+@media (max-width: 719px) {
+  .vict-shell,
+  .vict-shell--single {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto minmax(0, 1fr);
+    grid-template-areas: 'header' 'nav' 'main';
+  }
+  .vict-header {
+    gap: 12px;
+    min-height: 56px;
+    padding: 8px 16px;
+    position: static;
+  }
+  .vict-header h1 {
+    min-width: 0;
+    font-size: 1.12rem;
+    line-height: 1.25;
+  }
+  .vict-nav-toggle {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-height: 38px;
+    padding: 6px 9px;
+    border: 1px solid var(--vict-color-border, #d5dae1);
+    border-radius: var(--vict-radius-base, 8px);
+    color: var(--vict-color-text, #17202a);
+    background: var(--vict-color-surface, #fff);
+    font: inherit;
+    font-size: 0.8rem;
+    font-weight: 650;
+    cursor: pointer;
+  }
+  .vict-nav-toggle:hover {
+    background: var(--vict-color-bg, #f5f6f8);
+  }
+  .vict-nav {
+    display: none;
+  }
+  .vict-nav-open {
+    display: flex;
+    padding: 12px 16px 16px;
+    border-right: 0;
+    border-bottom: 1px solid var(--vict-color-border, #d5dae1);
+  }
+  .vict-nav-link {
+    min-height: 44px;
+    padding: 11px 12px;
+  }
+  .vict-main {
+    padding: 16px 16px 32px;
+  }
+  .vict-breadcrumbs {
+    margin-bottom: 18px;
+    font-size: 0.78rem;
+  }
+}
+
 /* The migrated table's one packaged style source. Host theme tokens remain
    optional so the component also works outside the legacy VICT shell. */
 .vict-ui-table {

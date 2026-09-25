@@ -2,10 +2,8 @@
   /**
    * The GENERIC Vict application host (Stage 05 canonical renderer).
    *
-   * Renders whatever an immutable Application Plan declares: responsive
-   * navigation, header, breadcrumbs, screen regions, surfaces, and safe
-   * states. There is NO application-specific markup here — every route and
-   * page shell is derived from the plan.
+   * Resolves routes, data, actions, and safe states from the immutable
+   * Application Plan. Shared shell presentation belongs to ui-svelte.
    *
    * Reactivity contract (closes the Stage 04 `state_referenced_locally`
    * carry-forward): every value derived from a prop (plan, path, rows,
@@ -14,6 +12,7 @@
    */
   import { RendererDiagnostic, type ComponentRegistry } from '@victframework/application/renderer';
   import { deriveUiPlan } from '@victframework/ui';
+  import { AppShell } from '@victframework/ui-svelte';
   import {
     resolveRoute,
     themeVariables,
@@ -65,7 +64,7 @@
     }
   });
 
-  // ALL prop-derived values are reactive derivations — never init-time
+  // ALL prop-derived values are reactive derivations, never init-time
   // snapshots (no stale route/component resolution, no Svelte warnings).
   const current = $derived.by(() => resolveRoute(plan, path));
   const screen = $derived(current?.screen ?? null);
@@ -86,7 +85,7 @@
     // semantics; a Map preserves that first-occurrence anchoring, and a
     // repeated or interleaved group always collects ALL of its routes
     // together). Routes inside a group sort by the declared `order` hint,
-    // then by path (deterministic presentation) — never by route-array
+    // then by path (deterministic presentation), never by route-array
     // position over an explicit hint.
     const groups = new Map<string, typeof navRoutes>();
     for (const entry of navRoutes) {
@@ -122,47 +121,6 @@
     }
     return active;
   });
-
-  let mobileNavOpen = $state(false);
-  let navToggle = $state<HTMLButtonElement | null>(null);
-
-  // Mobile navigation policy (MED-05-A remediation): the menu CLOSES when
-  // the application navigates to another screen, so the in-flow nav panel
-  // never surprises the user on the new screen; it stays open while the
-  // user interacts within the current screen. The layout policy itself is
-  // declared in theme.css (the nav is an explicit mobile grid row — never
-  // an implicitly placed column).
-
-  $effect(() => {
-    void path;
-    mobileNavOpen = false;
-  });
-
-  function closeMobileNav(): void {
-    mobileNavOpen = false;
-    // Keyboard users return to the menu control after closing.
-    navToggle?.focus();
-  }
-
-  // Keyboard policy: Escape closes the open mobile navigation and returns
-  // focus to the menu control. Only Escape raised INSIDE the open nav (or
-  // on the menu control itself) reacts, so overlays keep their own Escape
-  // semantics.
-  function windowKeydown(event: KeyboardEvent): void {
-    if (!mobileNavOpen || event.key !== 'Escape') {
-      return;
-    }
-    const target = event.target;
-    if (!(target instanceof Element)) {
-      return;
-    }
-    const insideNav = target.closest('#vict-nav') !== null;
-    const onToggle = target.classList.contains('vict-nav-toggle');
-    if (insideNav || onToggle) {
-      event.preventDefault();
-      closeMobileNav();
-    }
-  }
 
   // ---- Action state ------------------------------------------------------
   let lastResult = $state<ActionResult | null>(null);
@@ -265,6 +223,18 @@
     const entry = plan.routes.find((candidate) => candidate.route.id === routeId);
     return entry?.route.path;
   }
+  const shellGroups = $derived(navGroups.map(([label, entries]) => ({
+    label,
+    links: entries.map((entry) => ({
+      label: entry.route.nav?.label ?? '',
+      href: entry.route.path,
+      current: isActive.has(entry.route.id),
+    })),
+  })));
+  const shellBreadcrumbs = $derived((screen?.breadcrumbs ?? []).map((crumb) => ({
+    label: crumb.label,
+    href: hrefForRouteId(crumb.routeId),
+  })));
 </script>
 
 <div
@@ -276,170 +246,71 @@
     .join('')}
 >
   {#if !validated.ok}
-    <main class="vict-main">
+    <AppShell {path}>
       <p class="vict-alert" role="alert" data-testid="structural-failure">{validated.message}</p>
-    </main>
-  {:else}
-  <div class="vict-shell">
-    {#if screen !== null}
-      <header class="vict-header">
-        {#if navRoutes.length > 0}
-          <button
-            type="button"
-            class="vict-btn vict-btn--secondary vict-nav-toggle"
-            aria-expanded={mobileNavOpen}
-            aria-controls="vict-nav"
-            bind:this={navToggle}
-            onclick={() => (mobileNavOpen = !mobileNavOpen)}
-          >
-            ☰ Menu
-          </button>
-        {/if}
-        <h1>{screen.title}</h1>
-      </header>
-      {#if navRoutes.length > 0}
-        <nav
-          id="vict-nav"
-          class="vict-nav"
-          class:vict-nav-open={mobileNavOpen}
-          aria-label="Application"
-        >
-          <!-- Unkeyed on purpose: group blocks carry no local state, and
-               index-wise reconciliation keeps the DOM order exactly equal
-               to the derived first-occurrence order even when a reactive
-               plan update permutes the group sequence (a keyed each over a
-               multi-node body must not be relied on for reordering). -->
-          {#each navGroups as [group, entries]}
-            {#if group !== ''}
-              <p class="vict-nav-group-label">{group}</p>
-            {/if}
-            {#each entries as entry (entry.route.id)}
-              <a
-                class="vict-nav-link"
-                href={entry.route.path}
-                aria-current={isActive.has(entry.route.id) ? 'page' : undefined}
-              >
-                {entry.route.nav?.label}
-              </a>
-            {/each}
-          {/each}
-        </nav>
-      {/if}
-      <main class="vict-main" data-screen={screen.id}>
-        {#if screen.breadcrumbs !== undefined && screen.breadcrumbs.length > 0}
-          <nav aria-label="Breadcrumb" data-testid="breadcrumbs">
-            <ol class="vict-breadcrumbs">
-              {#each screen.breadcrumbs as crumb, index (index)}
-                <li>
-                  {#if crumb.routeId !== undefined && hrefForRouteId(crumb.routeId) !== undefined}
-                    <a href={hrefForRouteId(crumb.routeId)}>{crumb.label}</a>
-                  {:else}
-                    <span aria-current="page">{crumb.label}</span>
-                  {/if}
-                </li>
-              {/each}
-            </ol>
-          </nav>
-        {/if}
-
-        {#if anyStale}
-          <p class="vict-state" role="status" data-testid="stale-state">
-            {stateText('stale', 'Showing saved data that may be out of date.')}
-          </p>
-        {/if}
-        {#if anyPartial}
-          <p class="vict-state" role="status" data-testid="partial-state">
-            {stateText('partial', 'Some data is unavailable right now.')}
-          </p>
-        {/if}
-
-        {#each screen.layout as region (screen.id + '.' + region.name)}
-          <section class="vict-region" data-region={region.name}>
-            {#each region.surfaces as surface (surface.id)}
-              <Surface
-                {surface}
-                {plan}
-                {uiPlan}
-                {registry}
-                {context}
-                {params}
-                {viewData}
-                {record}
-                run={runAction}
-                {dispatch}
-                {onInvalidate}
-              />
-            {/each}
-          </section>
-        {/each}
-
-        {#if validationFailed}
-          <p class="vict-alert" role="alert" data-testid="validation-state">
-            {stateText('validation', 'Validation failed; check the highlighted fields.')}
-          </p>
-        {:else if denied}
-          <p class="vict-alert vict-alert--denied" role="alert" data-testid="denied-state">
-            {stateText('denied', 'This action was denied by the authorization boundary.')}
-          </p>
-        {:else if failed}
-          <p class="vict-alert" role="alert" data-testid="failure-state">
-            {stateText('failure', 'Something failed safely.')}
-          </p>
-        {:else if lastResult !== null && lastResult.ok}
-          <p class="vict-state" role="status" data-testid="result-state" data-last-action={lastAction}>
-            Done.
-          </p>
-        {/if}
-      </main>
-    {:else}
-      <main class="vict-main">
-        <p class="vict-state" role="status" data-testid="route-not-found">
-          This path is not part of the application.
+    </AppShell>
+  {:else if screen !== null}
+    <AppShell
+      title={screen.title}
+      screenId={screen.id}
+      {path}
+      groups={shellGroups}
+      breadcrumbs={shellBreadcrumbs}
+    >
+      {#if anyStale}
+        <p class="vict-state" role="status" data-testid="stale-state">
+          {stateText('stale', 'Showing saved data that may be out of date.')}
         </p>
-      </main>
-    {/if}
-  </div>
+      {/if}
+      {#if anyPartial}
+        <p class="vict-state" role="status" data-testid="partial-state">
+          {stateText('partial', 'Some data is unavailable right now.')}
+        </p>
+      {/if}
+
+      {#each screen.layout as region (screen.id + '.' + region.name)}
+        <section class="vict-region" data-region={region.name}>
+          {#each region.surfaces as surface (surface.id)}
+            <Surface
+              {surface}
+              {plan}
+              {uiPlan}
+              {registry}
+              {context}
+              {params}
+              {viewData}
+              {record}
+              run={runAction}
+              {dispatch}
+              {onInvalidate}
+            />
+          {/each}
+        </section>
+      {/each}
+
+      {#if validationFailed}
+        <p class="vict-alert" role="alert" data-testid="validation-state">
+          {stateText('validation', 'Validation failed; check the highlighted fields.')}
+        </p>
+      {:else if denied}
+        <p class="vict-alert vict-alert--denied" role="alert" data-testid="denied-state">
+          {stateText('denied', 'This action was denied by the authorization boundary.')}
+        </p>
+      {:else if failed}
+        <p class="vict-alert" role="alert" data-testid="failure-state">
+          {stateText('failure', 'Something failed safely.')}
+        </p>
+      {:else if lastResult !== null && lastResult.ok}
+        <p class="vict-state" role="status" data-testid="result-state" data-last-action={lastAction}>
+          Done.
+        </p>
+      {/if}
+    </AppShell>
+  {:else}
+    <AppShell {path}>
+      <p class="vict-state" role="status" data-testid="route-not-found">
+        This path is not part of the application.
+      </p>
+    </AppShell>
   {/if}
 </div>
-
-<svelte:window onkeydown={windowKeydown} />
-
-<style>
-  .vict-nav-toggle {
-    display: none;
-  }
-
-  @media (max-width: 719px) {
-    .vict-nav-toggle {
-      display: inline-flex;
-    }
-    .vict-nav {
-      display: none;
-    }
-    .vict-nav-open {
-      display: flex;
-    }
-  }
-
-  .vict-breadcrumbs {
-    display: flex;
-    flex-wrap: wrap;
-    gap: calc(var(--vict-spacing-unit) * 1);
-    list-style: none;
-    padding: 0;
-    margin: 0 0 calc(var(--vict-spacing-unit) * 3);
-    font-size: 0.875rem;
-    color: var(--vict-color-textMuted);
-  }
-
-  .vict-breadcrumbs li + li::before {
-    content: '›';
-    margin-right: calc(var(--vict-spacing-unit) * 1);
-    color: var(--vict-color-textMuted);
-  }
-
-  .vict-breadcrumbs a {
-    color: var(--vict-color-accent);
-    text-decoration: none;
-  }
-</style>

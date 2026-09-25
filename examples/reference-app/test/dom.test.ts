@@ -66,6 +66,30 @@ async function mountApp(path: string, searchParams?: URLSearchParams) {
 }
 
 describe('reference application DOM rendering', () => {
+  it('uses the shared shell on dashboard, projects, conversation, and detail routes', async () => {
+    for (const [path, title, screenId] of [
+      ['/', 'Vict Reference Application', 's.dashboard'],
+      ['/projects', 'Projects', 's.projects'],
+      ['/conversation', 'Conversation', 's.conversation'],
+      ['/projects/alpha-1', 'Project', 's.project-detail'],
+    ] as const) {
+      const { instance } = await mountApp(path);
+      expect(
+        instance.output.querySelector('.vict-shell .vict-main')?.getAttribute('data-screen'),
+      ).toBe(screenId);
+      expect(instance.output.querySelector('.vict-header h1')?.textContent).toBe(title);
+      expect(instance.output.querySelectorAll('nav[aria-label="Application"]')).toHaveLength(1);
+      if (path === '/projects') {
+        expect(instance.output.querySelector('.vict-ui-table__heading h2')?.textContent).toBe(
+          'Records',
+        );
+        expect(instance.output.querySelector('[data-testid="breadcrumbs"]')?.textContent).toContain(
+          'Projects',
+        );
+      }
+    }
+  });
+
   it('renders the dashboard with status, metrics list, chart, action, and custom island', async () => {
     const { instance } = await mountApp('/');
     const html = instance.output.innerHTML;
@@ -255,6 +279,9 @@ describe('safe states', () => {
     // fallback renders (the denial itself comes from the boundary below UI).
     expect(instance.output.querySelector('[data-testid="denied-state"]')?.textContent).toContain(
       'denied by the authorization boundary',
+    );
+    expect(instance.output.querySelector('.vict-shell .vict-header h1')?.textContent).toBe(
+      'Project',
     );
   });
 

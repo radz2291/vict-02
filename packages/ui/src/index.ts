@@ -33,6 +33,23 @@ export interface UiTableIntent {
   readonly emptyMessage: string;
 }
 
+/** Resolved display links. Route IDs and navigation policy stay with the renderer. */
+export interface UiShellLink {
+  readonly label: string;
+  readonly href: string;
+  readonly current?: boolean;
+}
+
+export interface UiShellGroup {
+  readonly label: string;
+  readonly links: readonly UiShellLink[];
+}
+
+export interface UiShellBreadcrumb {
+  readonly label: string;
+  readonly href?: string;
+}
+
 export interface UiPlan {
   readonly tables: Readonly<Record<string, UiTableIntent>>;
 }
@@ -82,7 +99,9 @@ export function deriveUiPlan(plan: UiPlanSource): UiPlan {
         const filterFields = Array.isArray(surface.filterFields) ? surface.filterFields : [];
         tables[surface.id] = Object.freeze({
           surfaceId: surface.id,
-          title: typeof screen.title === 'string' ? screen.title : 'Records',
+          // A table is a surface within a titled page. Repeating the page
+          // title in its card produces adjacent identical headings.
+          title: 'Records',
           columns: Object.freeze(columns),
           search: Object.freeze({ label: 'Search records', fields: Object.freeze(searchFields) }),
           filters: Object.freeze(
