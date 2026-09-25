@@ -80,7 +80,7 @@
     </div>
     <nav class="vict-ui-table__pagination" aria-label="Table pagination">
       <button type="button" data-testid="table-prev" disabled={state.page === 0} onclick={() => void onPage(state.page - 1)}>Previous</button>
-      <span aria-live="polite" data-testid="table-page-indicator">Page {state.page + 1} of {state.pageCount} ({state.total} records)</span>
+      <span aria-live="polite" data-testid="table-page-indicator">Page {state.page + 1} of {state.pageCount} ({state.total} {state.total === 1 ? 'record' : 'records'})</span>
       <button type="button" data-testid="table-next" disabled={state.page >= state.pageCount - 1} onclick={() => void onPage(state.page + 1)}>Next</button>
     </nav>
   {/if}

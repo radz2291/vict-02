@@ -485,6 +485,42 @@ describe('accessible defaults', () => {
       mounted.unmount();
     }
   });
+
+  it('ignores a late response from a superseded query (last-issued wins)', async () => {
+    const resolvers: Array<(value: unknown) => void> = [];
+    const searches: string[] = [];
+    const mounted = mountProbe(surfaceForRole('table'), {
+      dispatch: (_actionId: string, input?: unknown) =>
+        new Promise((resolve) => {
+          searches.push((input as { search?: { text?: string } })?.search?.text ?? '');
+          resolvers.push(resolve);
+        }),
+    });
+    try {
+      const search = mounted.output.querySelector<HTMLInputElement>('[data-testid="table-search"]');
+      search!.value = 'alpha';
+      search!.dispatchEvent(new Event('input', { bubbles: true }));
+      search!.value = 'beta';
+      search!.dispatchEvent(new Event('input', { bubbles: true }));
+      expect(resolvers).toHaveLength(2);
+      expect(searches).toEqual(['alpha', 'beta']);
+      // The NEWER query resolves first…
+      resolvers[1]!({ ok: true, value: { rows: [{ id: 'b-1', title: 'beta-row' }], total: 1 } });
+      await new Promise((resolve) => setTimeout(resolve, 10));
+      // …then the OLDER superseded query resolves late with different rows.
+      resolvers[0]!({ ok: true, value: { rows: [{ id: 'a-1', title: 'alpha-row' }], total: 1 } });
+      await new Promise((resolve) => setTimeout(resolve, 10));
+      const tableText =
+        mounted.output.querySelector('[data-testid="records-table"]')?.textContent ?? '';
+      expect(tableText).toContain('beta-row');
+      expect(tableText).not.toContain('alpha-row');
+      expect(mounted.output.querySelector('.vict-ui-table__count')?.textContent).toContain(
+        '1 record',
+      );
+    } finally {
+      mounted.unmount();
+    }
+  });
 });
 
 describe('shared renderer conformance suite (Stage 05 renderer)', () => {

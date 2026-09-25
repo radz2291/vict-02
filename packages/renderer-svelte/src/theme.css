@@ -275,16 +275,6 @@
   font-weight: 600;
 }
 
-.vict-table-sort {
-  background: none;
-  border: none;
-  font: inherit;
-  font-weight: 600;
-  cursor: pointer;
-  padding: 0;
-  color: inherit;
-}
-
 .vict-list {
   list-style: none;
   margin: 0;

@@ -29,10 +29,18 @@
   let queryRows = $state<readonly Record<string, unknown>[]>([]);
   let queryTotal = $state<number | null>(null);
   let pending = $state(false);
+  // Monotonic query token: only the LATEST issued query may apply its
+  // result, so rapid successive searches can never let an earlier response
+  // resolve late and overwrite fresher rows (last-issued wins, not
+  // last-resolved).
+  let queryToken = 0;
 
-  // The host's route-data refresh resets transient controls, as before.
+  // Route-data changes (path/plan/load refreshes) resync the local state —
+  // never stale rows. The token bump also invalidates any query that is
+  // still in flight so its late response cannot overwrite the reset.
   $effect(() => {
     void initialRows;
+    queryToken++;
     queryRows = hasQueryAction ? initialRows.slice(0, intent.pageSize) : initialRows;
     queryTotal = initialRows.length;
     page = 0;
@@ -66,9 +74,20 @@
     }
     return rows;
   });
-  const total = $derived(hasQueryAction ? (queryTotal ?? 0) : displayRows.length);
+  const total = $derived(
+    hasQueryAction ? (queryTotal ?? initialRows.length) : displayRows.length,
+  );
   const pageCount = $derived(Math.max(1, Math.ceil(total / intent.pageSize)));
-  const rows = $derived(hasQueryAction ? displayRows : displayRows.slice(page * intent.pageSize, (page + 1) * intent.pageSize));
+  const rows = $derived(
+    hasQueryAction
+      ? // Before the first query completes (SSR / pre-hydration), the initial
+        // route rows ARE the current page — render them instead of a flash of
+        // the empty state. Once queryTotal is set (even 0), it is authoritative.
+        queryTotal === null
+          ? initialRows.slice(0, intent.pageSize)
+          : displayRows
+      : displayRows.slice(page * intent.pageSize, (page + 1) * intent.pageSize),
+  );
   const state: UiTableState = $derived({
     search,
     filters: filterValues,
@@ -82,6 +101,7 @@
 
   async function runQuery(nextPage: number, nextSortField: string | null, nextSortDir: 'asc' | 'desc'): Promise<void> {
     if (!hasQueryAction) return;
+    const token = ++queryToken;
     const payload: QueryPayload = { limit: intent.pageSize, offset: nextPage * intent.pageSize };
     const activeFilters: Record<string, string> = {};
     for (const [field, value] of Object.entries(filterValues)) if (value !== '') activeFilters[field] = value;
@@ -91,12 +111,13 @@
     pending = true;
     try {
       const result = await dispatch(String(surface.queryActionId), payload);
+      if (token !== queryToken) return; // a newer query superseded this one
       if (result.ok && Array.isArray((result.value as { rows?: unknown }).rows)) {
         queryRows = (result.value as { rows: Record<string, unknown>[] }).rows;
         queryTotal = (result.value as { total?: number }).total ?? queryRows.length;
       }
     } finally {
-      pending = false;
+      if (token === queryToken) pending = false;
     }
   }
 
