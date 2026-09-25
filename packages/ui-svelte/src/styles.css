@@ -166,6 +166,19 @@
   .vict-ui-table__pagination {
     padding: 16px 18px;
   }
+  /* Deliberate phone layout: page status gets its own centered row above
+     the buttons; Previous and Next stretch edge-to-edge below as equal
+     touch targets. DOM (and keyboard) order is unchanged — the status is
+     visually reordered only. */
+  .vict-ui-table__page-status {
+    order: -1;
+    flex: 1 1 100%;
+    text-align: center;
+  }
+  .vict-ui-table__pagination button {
+    flex: 1;
+    padding-block: 10px;
+  }
 }
 @media (prefers-reduced-motion: reduce) {
   .vict-ui-table *,
