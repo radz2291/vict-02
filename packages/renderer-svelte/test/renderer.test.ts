@@ -452,6 +452,39 @@ describe('accessible defaults', () => {
       mounted.unmount();
     }
   });
+
+  it('keeps search and pagination local without a declared query action', async () => {
+    const { queryActionId: _queryActionId, ...localTable } = surfaceForRole('table') as Record<
+      string,
+      unknown
+    >;
+    const dispatched: string[] = [];
+    const mounted = mountProbe(localTable, {
+      dispatch: async (actionId: string) => {
+        dispatched.push(actionId);
+        return { ok: true, value: null };
+      },
+    });
+    try {
+      expect(mounted.output.querySelectorAll('[data-testid="table-row"]')).toHaveLength(2);
+      mounted.output.querySelector<HTMLButtonElement>('[data-testid="table-next"]')?.click();
+      await new Promise((resolve) => setTimeout(resolve, 10));
+      expect(mounted.output.querySelector('[data-testid="table-row"]')?.textContent).toContain(
+        'gamma',
+      );
+      const search = mounted.output.querySelector<HTMLInputElement>('[data-testid="table-search"]');
+      search!.value = 'beta';
+      search!.dispatchEvent(new Event('input', { bubbles: true }));
+      await new Promise((resolve) => setTimeout(resolve, 10));
+      expect(mounted.output.querySelectorAll('[data-testid="table-row"]')).toHaveLength(1);
+      expect(mounted.output.querySelector('[data-testid="table-row"]')?.textContent).toContain(
+        'beta',
+      );
+      expect(dispatched).toEqual([]);
+    } finally {
+      mounted.unmount();
+    }
+  });
 });
 
 describe('shared renderer conformance suite (Stage 05 renderer)', () => {

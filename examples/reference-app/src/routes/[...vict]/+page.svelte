@@ -7,7 +7,6 @@
   import { goto, invalidateAll } from '$app/navigation';
   import { VitApp, type ActionResult } from '@victframework/renderer-svelte';
   import '@victframework/renderer-svelte/theme.css';
-  import '@victframework/ui-svelte/styles.css';
   import { createReferenceRegistry } from '$lib/components/registry';
 
   let {

@@ -9,7 +9,7 @@
   import type { VictPlanView, PlanSurface } from './logic.js';
   import type { UiPlan } from '@victframework/ui';
   import { isVisible, isDisabled, headingTagForLevel, type ViewDatum, type ActionResult } from './logic.js';
-  import { RecordsTable } from '@victframework/ui-svelte';
+  import TableAdapter from './TableAdapter.svelte';
   import ChartSurface from './ChartSurface.svelte';
   import ConversationSurface from './ConversationSurface.svelte';
   import FormSurface from './FormSurface.svelte';
@@ -179,13 +179,11 @@
         </ul>
       {/if}
     {:else if sn.role === 'table'}
-      <RecordsTable
+      <TableAdapter
         surface={sn}
-        {plan}
         intent={uiPlan.tables[sn.id]}
         initialRows={viewRows(sn.viewId)}
         {dispatch}
-        {onInvalidate}
       />
     {:else if sn.role === 'detail'}
       {@const row = viewRecord(sn.viewId)}

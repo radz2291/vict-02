@@ -1,3 +1,5 @@
+@import '@victframework/ui-svelte/styles.css';
+
 /* ==========================================================================
    Vict renderer — semantic theme tokens (renderer-owned CSS variables).
    Applications customize tokens through the neutral Application Definition
