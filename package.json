@@ -14,7 +14,7 @@
   ],
   "scripts": {
     "bench": "tsx scripts/benchmark.ts",
-    "build": "npm run build -w @victframework/contracts && npm run build -w @victframework/sdk && npm run build -w @victframework/kernel && npm run build -w @victframework/runtime && npm run build -w @victframework/store-sqlite && npm run build -w @victframework/control && npm run build -w @victframework/application && npm run build -w @victframework/appdata-sqlite && npm run build -w @victframework/renderer-svelte && npm run build -w @victframework/scaffolder && npm run build -w @victframework/mastra && npm run build -w @victframework/server && npm run build -w @victframework/cli",
+    "build": "npm run build -w @victframework/contracts && npm run build -w @victframework/sdk && npm run build -w @victframework/kernel && npm run build -w @victframework/runtime && npm run build -w @victframework/store-sqlite && npm run build -w @victframework/control && npm run build -w @victframework/application && npm run build -w @victframework/appdata-sqlite && npm run build -w @victframework/ui && npm run build -w @victframework/ui-svelte && npm run build -w @victframework/renderer-svelte && npm run build -w @victframework/scaffolder && npm run build -w @victframework/mastra && npm run build -w @victframework/server && npm run build -w @victframework/cli",
     "example": "tsx examples/ara-proof/src/main.ts",
     "format": "prettier --write .",
     "format:check": "prettier --check .",

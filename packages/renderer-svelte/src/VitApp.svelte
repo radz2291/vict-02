@@ -13,6 +13,7 @@
    * registry updates propagate WITHOUT remounting and never go stale.
    */
   import { RendererDiagnostic, type ComponentRegistry } from '@victframework/application/renderer';
+  import { deriveUiPlan } from '@victframework/ui';
   import {
     resolveRoute,
     themeVariables,
@@ -70,6 +71,7 @@
   const screen = $derived(current?.screen ?? null);
   const params = $derived(current?.params ?? {});
   const themeVars = $derived(themeVariables((plan.manifest ?? {}) as { theme?: unknown }));
+  const uiPlan = $derived(deriveUiPlan(plan));
 
   const navRoutes = $derived(
     plan.routes.filter(
@@ -357,6 +359,7 @@
               <Surface
                 {surface}
                 {plan}
+                {uiPlan}
                 {registry}
                 {context}
                 {params}

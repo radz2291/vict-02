@@ -8,17 +8,38 @@
    * action the table paginates/sorts the already-loaded rows locally
    * (presentation-only interactions stay local — APP-011).
    */
-  import type { VictPlanView, PlanSurface, ActionResult } from './logic.js';
+  import type { UiTableIntent } from '@victframework/ui';
+
+  interface PlanSurface {
+    readonly id: string;
+    readonly viewId?: unknown;
+    readonly columns?: unknown;
+    readonly searchFields?: unknown;
+    readonly filterFields?: unknown;
+    readonly pageSize?: unknown;
+    readonly queryActionId?: unknown;
+    readonly emptyMessage?: unknown;
+  }
+  interface VictPlanView {
+    readonly views?: Readonly<Record<string, unknown>>;
+  }
+  interface ActionResult {
+    readonly ok: boolean;
+    readonly value?: unknown;
+    readonly code?: string;
+    readonly message?: string;
+  }
   
   interface Props {
     surface: PlanSurface;
     plan: VictPlanView;
+    intent?: UiTableIntent;
     initialRows: readonly Record<string, unknown>[];
     dispatch: (actionId: string, input?: unknown) => Promise<ActionResult>;
     onInvalidate?: () => void;
   }
 
-  let { surface, plan, initialRows, dispatch, onInvalidate }: Props = $props();
+  let { surface, plan, intent, initialRows, dispatch }: Props = $props();
 
   interface QueryPayload {
     readonly filters?: Record<string, string>;
@@ -36,10 +57,13 @@
   const viewId = $derived(String(surface.viewId));
   const view = $derived(plan.views?.[viewId] as { fields?: readonly string[] } | undefined);
   const columns = $derived.by(() => {
-    if (Array.isArray(surface.columns) && surface.columns.length > 0) {
-      return surface.columns as readonly { field: string; label?: string; sortable?: boolean }[];
-    }
-    return (view?.fields ?? []).map((field) => ({ field }));
+    const declared = Array.isArray(surface.columns) && surface.columns.length > 0
+      ? surface.columns as readonly { field: string; label?: string; sortable?: boolean }[]
+      : (view?.fields ?? []).map((field) => ({ field }));
+    return declared.map((column) => ({
+      ...column,
+      label: intent?.columns.find((candidate) => candidate.field === column.field)?.label ?? column.label,
+    }));
   });
   const searchFields = $derived(
     Array.isArray(surface.searchFields) && surface.searchFields.length > 0
@@ -177,27 +201,35 @@
   }
 </script>
 
-<div class="vict-records-table" data-surface={surface.id}>
+<div class="vict-records-table vict-ui-records" data-surface={surface.id}>
+  <div class="vict-ui-records-heading">
+    <div>
+      <p class="vict-ui-eyebrow">WORKSPACE / RECORDS</p>
+      <h2>{intent?.title ?? 'Records'}</h2>
+      <p class="vict-ui-subtitle">Find and manage the records in this workspace.</p>
+    </div>
+    <span class="vict-ui-count" aria-live="polite">{displayTotal} records</span>
+  </div>
   <div class="vict-table-toolbar">
     <label class="vict-search-label">
-      <span class="vict-field-label">Search</span>
+      <span class="vict-field-label">{intent?.searchLabel ?? 'Search records'}</span>
       <input
         class="vict-input"
         type="search"
         data-testid="table-search"
-        aria-label="Search records"
+        aria-label={intent?.searchLabel ?? 'Search records'}
         value={search}
         oninput={(event) => void onSearchInput(event)}
       />
     </label>
     {#each filterFields as filterField (filterField)}
       <label class="vict-search-label">
-        <span class="vict-field-label">Filter: {filterField}</span>
+        <span class="vict-field-label">{intent?.filters.find((filter) => filter.field === filterField)?.label ?? `Filter by ${filterField}`}</span>
         <input
           class="vict-input"
           type="text"
           data-testid="table-filter-{filterField}"
-          aria-label="Filter by {filterField}"
+          aria-label={intent?.filters.find((filter) => filter.field === filterField)?.label ?? `Filter by ${filterField}`}
           value={filterValues[filterField] ?? ''}
           oninput={(event) => void onFilterInput(filterField, event)}
         />
@@ -210,7 +242,7 @@
 
   {#if displayTotal === 0}
     <p class="vict-state" data-state="empty" data-testid="table-empty">
-      {typeof surface.emptyMessage === 'string' ? surface.emptyMessage : 'No records found.'}
+      {intent?.emptyMessage ?? 'No records found.'}
     </p>
   {:else}
     <div class="vict-table-wrap" role="region" aria-label="Records table">

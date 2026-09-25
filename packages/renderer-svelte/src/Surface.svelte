@@ -7,8 +7,9 @@
    */
   import type { ComponentRegistry } from '@victframework/application/renderer';
   import type { VictPlanView, PlanSurface } from './logic.js';
+  import type { UiPlan } from '@victframework/ui';
   import { isVisible, isDisabled, headingTagForLevel, type ViewDatum, type ActionResult } from './logic.js';
-  import RecordsTable from './RecordsTable.svelte';
+  import { RecordsTable } from '@victframework/ui-svelte';
   import ChartSurface from './ChartSurface.svelte';
   import ConversationSurface from './ConversationSurface.svelte';
   import FormSurface from './FormSurface.svelte';
@@ -17,6 +18,7 @@
   interface Props {
     surface: PlanSurface;
     plan: VictPlanView;
+    uiPlan: UiPlan;
     registry: ComponentRegistry;
     context: {
       readonly params: Readonly<Record<string, string>>;
@@ -34,6 +36,7 @@
   let {
     surface,
     plan,
+    uiPlan,
     registry,
     context,
     params,
@@ -179,6 +182,7 @@
       <RecordsTable
         surface={sn}
         {plan}
+        intent={uiPlan.tables[sn.id]}
         initialRows={viewRows(sn.viewId)}
         {dispatch}
         {onInvalidate}

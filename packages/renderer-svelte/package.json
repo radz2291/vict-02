@@ -24,7 +24,9 @@
   },
   "dependencies": {
     "@victframework/application": "0.3.1",
-    "@victframework/sdk": "0.3.1"
+    "@victframework/sdk": "0.3.1",
+    "@victframework/ui": "0.3.1",
+    "@victframework/ui-svelte": "0.3.1"
   },
   "peerDependencies": {
     "svelte": "^5.0.0"

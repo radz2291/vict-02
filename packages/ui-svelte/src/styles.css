@@ -1,0 +1,196 @@
+/* Packaged VICT presentation for the first migrated screen. The legacy
+   renderer imports this file through its existing theme.css entry point. */
+.vict-app:has([data-screen='s.projects']) {
+  --vict-color-bg: #f4f6fa;
+  --vict-color-surface: #ffffff;
+  --vict-color-text: #182338;
+  --vict-color-textMuted: #53627a;
+  --vict-color-accent: #3158cf;
+  --vict-color-accentContrast: #ffffff;
+  --vict-color-border: #dce2eb;
+  --vict-color-focusRing: #3158cf;
+  --vict-radius-base: 10px;
+}
+
+.vict-app:has([data-screen='s.projects']) .vict-nav {
+  background: #16233c;
+  color: #dce7fc;
+  border: 0;
+  padding: 32px 18px;
+  gap: 6px;
+}
+.vict-app:has([data-screen='s.projects']) .vict-nav::before {
+  content: 'VICT  /  WORKSPACE';
+  color: #fff;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  padding: 2px 12px 30px;
+}
+.vict-app:has([data-screen='s.projects']) .vict-nav-group-label {
+  color: #9cafcf;
+  font-weight: 700;
+  margin: 22px 12px 4px;
+}
+.vict-app:has([data-screen='s.projects']) .vict-nav-link {
+  color: #dce7fc;
+  padding: 11px 13px;
+}
+.vict-app:has([data-screen='s.projects']) .vict-nav-link:hover {
+  background: #253958;
+}
+.vict-app:has([data-screen='s.projects']) .vict-nav-link[aria-current='page'] {
+  background: #3559a9;
+  color: #fff;
+  font-weight: 700;
+}
+.vict-app:has([data-screen='s.projects']) .vict-header {
+  box-shadow: 0 1px 8px rgba(22, 35, 60, 0.035);
+  min-height: 76px;
+  padding-inline: clamp(24px, 4vw, 64px);
+}
+.vict-app:has([data-screen='s.projects']) .vict-header h1 {
+  font-size: 17px;
+  font-weight: 750;
+}
+.vict-app [data-screen='s.projects'] {
+  padding: 30px clamp(24px, 4vw, 64px) 64px;
+}
+.vict-app [data-screen='s.projects'] .vict-breadcrumbs {
+  margin-bottom: 24px;
+  font-size: 13px;
+}
+.vict-app [data-screen='s.projects'] .vict-region {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 18px;
+}
+.vict-app [data-screen='s.projects'] .vict-region > .vict-btn {
+  align-self: flex-start;
+  min-height: 42px;
+  padding-inline: 20px;
+  font-weight: 700;
+  box-shadow: 0 5px 12px rgba(49, 88, 207, 0.14);
+}
+.vict-ui-records {
+  background: var(--vict-color-surface);
+  border: 1px solid var(--vict-color-border);
+  border-radius: 16px;
+  box-shadow: 0 12px 32px rgba(24, 35, 56, 0.06);
+  overflow: hidden;
+}
+.vict-ui-records-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  padding: 28px 30px 18px;
+}
+.vict-ui-eyebrow {
+  margin: 0 0 8px;
+  color: var(--vict-color-accent);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+}
+.vict-ui-records-heading h2 {
+  margin: 0;
+  font-size: clamp(24px, 2.2vw, 32px);
+  line-height: 1.15;
+}
+.vict-ui-subtitle {
+  margin: 10px 0 0;
+  color: var(--vict-color-textMuted);
+  font-size: 14px;
+}
+.vict-ui-count {
+  white-space: nowrap;
+  border-radius: 999px;
+  background: #edf2ff;
+  color: #2749a8;
+  padding: 7px 12px;
+  font-size: 13px;
+  font-weight: 700;
+}
+.vict-ui-records .vict-table-toolbar {
+  margin: 0;
+  padding: 16px 30px 24px;
+  border-bottom: 1px solid var(--vict-color-border);
+  justify-content: flex-start;
+}
+.vict-ui-records .vict-search-label {
+  gap: 7px;
+  min-width: min(260px, 100%);
+}
+.vict-ui-records .vict-field-label {
+  font-size: 12px;
+  color: var(--vict-color-textMuted);
+  font-weight: 700;
+}
+.vict-ui-records .vict-input {
+  min-height: 42px;
+  border-color: #cbd5e3;
+}
+.vict-ui-records .vict-table {
+  border: 0;
+  border-radius: 0;
+}
+.vict-ui-records .vict-table th {
+  background: #f8fafd;
+  color: #4b5a70;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 14px 30px;
+}
+.vict-ui-records .vict-table td {
+  padding: 18px 30px;
+  font-size: 14px;
+}
+.vict-ui-records .vict-table tbody tr:hover {
+  background: #f8faff;
+}
+.vict-ui-records .vict-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+.vict-ui-records .vict-table-sort {
+  text-transform: inherit;
+  letter-spacing: inherit;
+}
+.vict-ui-records .vict-pagination {
+  margin: 0;
+  padding: 18px 30px;
+  border-top: 1px solid var(--vict-color-border);
+  justify-content: flex-end;
+  color: var(--vict-color-textMuted);
+  font-size: 13px;
+}
+.vict-ui-records .vict-state[data-state='empty'] {
+  margin: 24px 30px;
+}
+@media (max-width: 719px) {
+  .vict-app:has([data-screen='s.projects']) .vict-nav {
+    padding: 14px;
+  }
+  .vict-app:has([data-screen='s.projects']) .vict-nav::before {
+    display: none;
+  }
+  .vict-app [data-screen='s.projects'] {
+    padding: 20px 16px 40px;
+  }
+  .vict-ui-records-heading {
+    align-items: flex-start;
+    padding: 22px 18px 14px;
+  }
+  .vict-ui-records .vict-table-toolbar {
+    padding: 14px 18px 20px;
+  }
+  .vict-ui-records .vict-table th,
+  .vict-ui-records .vict-table td {
+    padding-inline: 18px;
+  }
+  .vict-ui-records .vict-pagination {
+    padding: 16px 18px;
+  }
+}

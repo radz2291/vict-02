@@ -94,6 +94,30 @@ describe('reference application DOM rendering', () => {
     expect(instance.output.querySelector('nav[aria-label="Breadcrumb"]')).not.toBeNull();
   });
 
+  it('queries the same application boundary from the migrated projects table', async () => {
+    const { instance } = await mountApp('/projects');
+    const search = instance.output.querySelector<HTMLInputElement>('[data-testid="table-search"]');
+    expect(search).not.toBeNull();
+    search!.value = 'Beta';
+    search!.dispatchEvent(new Event('input', { bubbles: true }));
+    await expect
+      .poll(() => instance.output.querySelectorAll('[data-testid="table-row"]').length)
+      .toBe(1);
+    expect(instance.output.querySelector('[data-testid="table-row"]')?.textContent).toContain(
+      'Beta',
+    );
+
+    const filter = instance.output.querySelector<HTMLInputElement>(
+      '[data-testid="table-filter-status"]',
+    );
+    expect(filter).not.toBeNull();
+    filter!.value = 'active';
+    filter!.dispatchEvent(new Event('input', { bubbles: true }));
+    await expect
+      .poll(() => instance.output.querySelector('[data-testid="table-empty"]')?.textContent)
+      .toContain('No projects match');
+  });
+
   it('renders the record detail with status, tabs, dialog, drawer, and edit form', async () => {
     const { instance } = await mountApp('/projects/alpha-1');
     const html = instance.output.innerHTML;
