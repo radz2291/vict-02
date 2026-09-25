@@ -428,11 +428,74 @@ describe('accessible defaults', () => {
       const panel = document.querySelector('[data-testid="overlay-panel"]');
       expect(panel).not.toBeNull();
       expect(document.activeElement).toBe(panel);
-      // Escape closes and restores focus to the trigger.
-      window.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
+      // The browser sends cancel to the topmost native modal on Escape.
+      panel?.closest('dialog')?.dispatchEvent(new Event('cancel', { cancelable: true }));
       await new Promise((resolve) => setTimeout(resolve, 10));
       expect(document.querySelector('[data-testid="overlay"]')).toBeNull();
       expect(document.activeElement).toBe(trigger);
+    } finally {
+      mounted.unmount();
+    }
+  });
+
+  it('tabs preserve roving focus, ARIA selection, and panel visibility', () => {
+    const mounted = mountProbe(surfaceForRole('tabs'));
+    try {
+      const tabs = mounted.output.querySelectorAll<HTMLButtonElement>('[role="tab"]');
+      const panels = mounted.output.querySelectorAll<HTMLElement>('[role="tabpanel"]');
+      expect(tabs).toHaveLength(2);
+      expect(tabs[0]?.getAttribute('aria-selected')).toBe('true');
+      expect(panels[1]?.hidden).toBe(true);
+      tabs[0]?.focus();
+      tabs[0]?.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
+      flushSync();
+      expect(document.activeElement).toBe(tabs[1]);
+      expect(tabs[1]?.getAttribute('aria-selected')).toBe('true');
+      expect(tabs[1]?.getAttribute('tabindex')).toBe('0');
+      expect(panels[0]?.hidden).toBe(true);
+      expect(panels[1]?.hidden).toBe(false);
+      tabs[1]?.dispatchEvent(new KeyboardEvent('keydown', { key: 'Home', bubbles: true }));
+      flushSync();
+      expect(document.activeElement).toBe(tabs[0]);
+    } finally {
+      mounted.unmount();
+    }
+  });
+
+  it('resolves status tone into the shared badge', () => {
+    const mounted = mountProbe(surfaceForRole('status'));
+    try {
+      const badge = mounted.output.querySelector('[data-surface="x"]');
+      expect(badge?.getAttribute('role')).toBe('status');
+      expect(badge?.classList.contains('vict-status--success')).toBe(true);
+      expect(badge?.textContent).toBe('active');
+    } finally {
+      mounted.unmount();
+    }
+  });
+
+  it('keeps the parent modal open when a nested dialog closes', async () => {
+    const mounted = mountProbe({
+      role: 'dialog', id: 'x', title: 'Parent', triggerLabel: 'Open parent',
+      content: [{ role: 'dialog', id: 'child', title: 'Child', triggerLabel: 'Open child',
+        content: [{ role: 'text', id: 'nested-text', content: 'Nested' }] }],
+    });
+    try {
+      mounted.output.querySelector<HTMLButtonElement>('[data-surface="x"]')?.click();
+      await new Promise((resolve) => setTimeout(resolve, 10));
+      const childTrigger = mounted.output.querySelector<HTMLButtonElement>('[data-surface="child"]');
+      childTrigger?.click();
+      await new Promise((resolve) => setTimeout(resolve, 10));
+      const dialogs = mounted.output.querySelectorAll<HTMLDialogElement>('dialog');
+      expect(dialogs).toHaveLength(2);
+      dialogs[1]?.dispatchEvent(new Event('cancel', { cancelable: true }));
+      await new Promise((resolve) => setTimeout(resolve, 10));
+      expect(mounted.output.querySelectorAll('dialog')).toHaveLength(1);
+      expect(document.activeElement).toBe(childTrigger);
+      // A click on the dialog backdrop closes the remaining surface.
+      dialogs[0]?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+      await new Promise((resolve) => setTimeout(resolve, 10));
+      expect(mounted.output.querySelectorAll('dialog')).toHaveLength(0);
     } finally {
       mounted.unmount();
     }

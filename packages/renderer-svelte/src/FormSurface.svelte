@@ -13,6 +13,8 @@
    * forms share this exact policy.
    */
   import type { VictPlanView, PlanSurface } from './logic.js';
+  import type { UiFormField } from '@victframework/ui';
+  import { Form } from '@victframework/ui-svelte';
   import {
     prefillFormState,
     toSubmitPayload,
@@ -44,6 +46,12 @@
   );
 
   const fields = $derived(form?.fields ?? []);
+  const uiFields = $derived(fields.map((field): UiFormField => ({
+    name: field.name,
+    label: field.label,
+    required: field.required === true,
+    widget: widgetKind(field.widget),
+  })));
 
   // Raw widget-boundary state (canonical model lives in form-values.ts).
   let state = $state<FormState>({ text: {}, checked: {} });
@@ -59,19 +67,6 @@
     fieldErrors = {};
   });
 
-  function inputType(widget: unknown): string {
-    switch (widgetKind(widget)) {
-      case 'number':
-        return 'number';
-      case 'boolean':
-        return 'checkbox';
-      case 'date':
-        return 'date';
-      default:
-        return 'text';
-    }
-  }
-
   function clearFieldError(name: string): void {
     if (fieldErrors[name] !== undefined) {
       const next = { ...fieldErrors };
@@ -80,21 +75,16 @@
     }
   }
 
-  function onNumberInput(name: string, event: Event): void {
-    // Number inputs keep the RAW text boundary state — Svelte's numeric
-    // input coercion must not silently decide the submitted type.
-    const target = event.currentTarget as HTMLInputElement;
-    state = { ...state, text: { ...state.text, [name]: target.value } };
+  function onTextInput(name: string, value: string): void {
+    // Numeric input remains raw text until the canonical submit conversion.
+    state = { ...state, text: { ...state.text, [name]: value } };
     clearFieldError(name);
   }
 
-  function onCheckedInput(name: string, event: Event): void {
-    const target = event.currentTarget as HTMLInputElement;
-    state = { ...state, checked: { ...state.checked, [name]: target.checked } };
+  function onCheckedInput(name: string, checked: boolean): void {
+    state = { ...state, checked: { ...state.checked, [name]: checked } };
     clearFieldError(name);
   }
-
-  const hasFieldErrors = $derived(Object.keys(fieldErrors).length > 0);
 
   async function submit(event: SubmitEvent): Promise<void> {
     event.preventDefault();
@@ -115,103 +105,16 @@
 </script>
 
 {#if form !== undefined}
-  <form class="vict-form" data-surface={surface.id} onsubmit={(event) => void submit(event)}>
-    {#each fields as field (field.name)}
-      <div class="vict-field" data-field={field.name}>
-        <label class="vict-field-label" for="vict-field-{form.formId}-{field.name}">
-          {field.label}{field.required === true ? ' *' : ''}
-        </label>
-        {#if field.widget === 'json'}
-          <textarea
-            class="vict-textarea"
-            id="vict-field-{form.formId}-{field.name}"
-            name={field.name}
-            rows="3"
-            aria-invalid={fieldErrors[field.name] !== undefined ? 'true' : undefined}
-            aria-describedby={fieldErrors[field.name] !== undefined
-              ? `vict-field-error-${form.formId}-${field.name}`
-              : undefined}
-            bind:value={state.text[field.name]}
-            oninput={() => clearFieldError(field.name)}
-          ></textarea>
-        {:else if widgetKind(field.widget) === 'boolean'}
-          <input
-            class="vict-checkbox"
-            id="vict-field-{form.formId}-{field.name}"
-            name={field.name}
-            type="checkbox"
-            aria-invalid={fieldErrors[field.name] !== undefined ? 'true' : undefined}
-            aria-describedby={fieldErrors[field.name] !== undefined
-              ? `vict-field-error-${form.formId}-${field.name}`
-              : undefined}
-            checked={state.checked[field.name] === true}
-            onchange={(event) => onCheckedInput(field.name, event)}
-          />
-        {:else if widgetKind(field.widget) === 'number'}
-          <!-- Explicit value/oninput binding: Svelte's numeric input
-               coercion must not decide the submitted type; the canonical
-               model converts at the declared widget boundary. -->
-          <input
-            class="vict-input"
-            id="vict-field-{form.formId}-{field.name}"
-            name={field.name}
-            type="number"
-            step="any"
-            required={field.required === true}
-            aria-invalid={fieldErrors[field.name] !== undefined ? 'true' : undefined}
-            aria-describedby={fieldErrors[field.name] !== undefined
-              ? `vict-field-error-${form.formId}-${field.name}`
-              : undefined}
-            value={state.text[field.name] ?? ''}
-            oninput={(event) => onNumberInput(field.name, event)}
-          />
-        {:else}
-          <input
-            class="vict-input"
-            id="vict-field-{form.formId}-{field.name}"
-            name={field.name}
-            type={inputType(field.widget)}
-            required={field.required === true}
-            aria-invalid={fieldErrors[field.name] !== undefined ? 'true' : undefined}
-            aria-describedby={fieldErrors[field.name] !== undefined
-              ? `vict-field-error-${form.formId}-${field.name}`
-              : undefined}
-            bind:value={state.text[field.name]}
-            oninput={() => clearFieldError(field.name)}
-          />
-        {/if}
-        {#if fieldErrors[field.name] !== undefined}
-          <p
-            class="vict-field-error"
-            id="vict-field-error-{form.formId}-{field.name}"
-            data-testid="form-field-error-{field.name}"
-          >
-            {fieldErrors[field.name]}
-          </p>
-        {/if}
-      </div>
-    {/each}
-    {#if hasFieldErrors}
-      <p class="vict-alert" role="alert" data-testid="form-local-validation">
-        Please correct the highlighted fields.
-      </p>
-    {/if}
-    <button type="submit" class="vict-btn" data-testid="form-submit">{submitLabel}</button>
-  </form>
+  <Form
+    surfaceId={surface.id}
+    formId={form.formId}
+    fields={uiFields}
+    text={state.text}
+    checked={state.checked}
+    errors={fieldErrors}
+    {submitLabel}
+    onText={onTextInput}
+    onChecked={onCheckedInput}
+    onSubmit={(event) => { void submit(event); }}
+  />
 {/if}
-
-<style>
-  .vict-form {
-    background: var(--vict-color-surface);
-    border: 1px solid var(--vict-color-border);
-    border-radius: var(--vict-radius-base);
-    padding: calc(var(--vict-spacing-unit) * 3);
-    max-width: 32rem;
-  }
-
-  .vict-field-error {
-    margin: calc(var(--vict-spacing-unit) * 0.5) 0 0;
-    font-size: 0.8125rem;
-    color: var(--vict-color-danger);
-  }
-</style>

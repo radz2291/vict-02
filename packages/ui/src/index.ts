@@ -50,6 +50,29 @@ export interface UiShellBreadcrumb {
   readonly href?: string;
 }
 
+/** Stable display props. Application IDs, dispatch, and value conversion stay with the adapter. */
+export type UiButtonVariant = 'primary' | 'secondary' | 'danger';
+export type UiStatusTone = 'neutral' | 'success' | 'warning' | 'danger' | 'info';
+export type UiFieldWidget = 'text' | 'number' | 'boolean' | 'date' | 'json';
+
+export interface UiFormField {
+  readonly name: string;
+  readonly label: string;
+  readonly required: boolean;
+  readonly widget: UiFieldWidget;
+}
+
+export interface UiTab {
+  readonly name: string;
+  readonly label: string;
+}
+
+export interface UiOverlayIntent {
+  readonly kind: 'dialog' | 'drawer';
+  readonly title: string;
+  readonly triggerLabel: string;
+}
+
 export interface UiPlan {
   readonly tables: Readonly<Record<string, UiTableIntent>>;
 }

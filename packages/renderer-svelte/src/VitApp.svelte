@@ -12,7 +12,7 @@
    */
   import { RendererDiagnostic, type ComponentRegistry } from '@victframework/application/renderer';
   import { deriveUiPlan } from '@victframework/ui';
-  import { AppShell } from '@victframework/ui-svelte';
+  import { AppShell, Feedback } from '@victframework/ui-svelte';
   import {
     resolveRoute,
     themeVariables,
@@ -247,7 +247,7 @@
 >
   {#if !validated.ok}
     <AppShell {path}>
-      <p class="vict-alert" role="alert" data-testid="structural-failure">{validated.message}</p>
+      <Feedback kind="error" message={validated.message} testId="structural-failure" />
     </AppShell>
   {:else if screen !== null}
     <AppShell
@@ -258,14 +258,10 @@
       breadcrumbs={shellBreadcrumbs}
     >
       {#if anyStale}
-        <p class="vict-state" role="status" data-testid="stale-state">
-          {stateText('stale', 'Showing saved data that may be out of date.')}
-        </p>
+        <Feedback message={stateText('stale', 'Showing saved data that may be out of date.')} testId="stale-state" />
       {/if}
       {#if anyPartial}
-        <p class="vict-state" role="status" data-testid="partial-state">
-          {stateText('partial', 'Some data is unavailable right now.')}
-        </p>
+        <Feedback message={stateText('partial', 'Some data is unavailable right now.')} testId="partial-state" />
       {/if}
 
       {#each screen.layout as region (screen.id + '.' + region.name)}
@@ -289,28 +285,18 @@
       {/each}
 
       {#if validationFailed}
-        <p class="vict-alert" role="alert" data-testid="validation-state">
-          {stateText('validation', 'Validation failed; check the highlighted fields.')}
-        </p>
+        <Feedback kind="error" message={stateText('validation', 'Validation failed; check the highlighted fields.')} testId="validation-state" />
       {:else if denied}
-        <p class="vict-alert vict-alert--denied" role="alert" data-testid="denied-state">
-          {stateText('denied', 'This action was denied by the authorization boundary.')}
-        </p>
+        <Feedback kind="denied" message={stateText('denied', 'This action was denied by the authorization boundary.')} testId="denied-state" />
       {:else if failed}
-        <p class="vict-alert" role="alert" data-testid="failure-state">
-          {stateText('failure', 'Something failed safely.')}
-        </p>
+        <Feedback kind="error" message={stateText('failure', 'Something failed safely.')} testId="failure-state" />
       {:else if lastResult !== null && lastResult.ok}
-        <p class="vict-state" role="status" data-testid="result-state" data-last-action={lastAction}>
-          Done.
-        </p>
+        <Feedback message="Done." testId="result-state" {lastAction} />
       {/if}
     </AppShell>
   {:else}
     <AppShell {path}>
-      <p class="vict-state" role="status" data-testid="route-not-found">
-        This path is not part of the application.
-      </p>
+      <Feedback message="This path is not part of the application." testId="route-not-found" />
     </AppShell>
   {/if}
 </div>
