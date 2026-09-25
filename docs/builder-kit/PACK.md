@@ -4,7 +4,7 @@
 
 Rendered view of `docs/builder-kit/context-pack.json` (`vict.builder.context-pack@1`).
 
-- packId: `e8f8365169ea880fbcee35a00623b909f62a4425ea275af9840c4728a5e4eb21`
+- packId: `791f24fb023cf3eb29ffb0d7123f23ad803b8042906ed84ace6d991d4d15a0b2`
 - reference truth: v0.4.32
 - release truth: `vict-release-set@1/0.3.1`
 - workspace: `vict-monorepo@0.1.0`
@@ -19,7 +19,7 @@ Rendered view of `docs/builder-kit/context-pack.json` (`vict.builder.context-pac
 | examples/application-proof/package.json | `02bae191e7f8b22fcdbceedc6937b526184d2114a5a4662c3daacf2169d294bc` |
 | examples/ara-proof/package.json | `a6c071e4e377bd96b498db5ec4cde820ecbb993c5454b76ec4ed6500c31b0747` |
 | examples/orchestration-proof/package.json | `689183a3e96db61121ad1f54e5033e22b1a973f9d5ce5ab110eb3de9094300f4` |
-| examples/reference-app/package.json | `a1adcad84bd7d6483b91d01d20ec8000a56f12dfe8592a4ef3c408c3cdf979f5` |
+| examples/reference-app/package.json | `927dc901e62c3f658c0dc36335ce5c8150669b86d7c49a814bac44c71147860e` |
 | package.json | `880697603290195841d6a382e20ad836da4668d91e751888cfb37e1eb501ba62` |
 | packages/appdata-sqlite/package.json | `d054b4a3b361085c1868f12e298e70a5b844e61979007bcf9872b37c0f5f9e12` |
 | packages/application/package.json | `cdec57abe34c69918b4a2011b01d4ead4f1c666d5b1c11fde2a58102f70f47bc` |
@@ -61,7 +61,7 @@ Rendered view of `docs/builder-kit/context-pack.json` (`vict.builder.context-pac
 | application-proof | 0.1.0 | yes | @victframework/application, @victframework/runtime, @victframework/sdk |
 | ara-proof | 0.1.0 | yes | @victframework/runtime, @victframework/sdk |
 | orchestration-proof | 0.1.0 | yes | @victframework/runtime, @victframework/sdk |
-| reference-app | 0.1.0 | yes | @victframework/appdata-sqlite, @victframework/application, @victframework/renderer-svelte, @victframework/runtime, @victframework/sdk |
+| reference-app | 0.1.0 | yes | @victframework/appdata-sqlite, @victframework/application, @victframework/notes-pack, @victframework/renderer-svelte, @victframework/runtime, @victframework/sdk |
 
 ## Constitution excerpts
 

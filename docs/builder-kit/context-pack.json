@@ -142,7 +142,7 @@
         "path": "examples/orchestration-proof/package.json"
       },
       {
-        "contentSha256": "a1adcad84bd7d6483b91d01d20ec8000a56f12dfe8592a4ef3c408c3cdf979f5",
+        "contentSha256": "927dc901e62c3f658c0dc36335ce5c8150669b86d7c49a814bac44c71147860e",
         "path": "examples/reference-app/package.json"
       },
       {
@@ -222,7 +222,7 @@
       "workspaces": ["examples/*", "packages/*", "packs/*"]
     }
   },
-  "packId": "e8f8365169ea880fbcee35a00623b909f62a4425ea275af9840c4728a5e4eb21",
+  "packId": "791f24fb023cf3eb29ffb0d7123f23ad803b8042906ed84ace6d991d4d15a0b2",
   "permissionProfilesRef": {
     "contentSha256": "893ba3ff5b73e3bf9d87da2ea1c49f5fcd176f5bdb8d36e20628fcf184f19b88",
     "schemaMarker": "vict.builder.profile@1",
@@ -452,6 +452,7 @@
       "internalDependencies": [
         "@victframework/appdata-sqlite",
         "@victframework/application",
+        "@victframework/notes-pack",
         "@victframework/renderer-svelte",
         "@victframework/runtime",
         "@victframework/sdk"

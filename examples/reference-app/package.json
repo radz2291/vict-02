@@ -14,6 +14,7 @@
   "dependencies": {
     "@victframework/application": "0.2.0",
     "@victframework/appdata-sqlite": "0.2.0",
+    "@victframework/notes-pack": "1.0.0",
     "@victframework/renderer-svelte": "0.2.0",
     "@victframework/runtime": "0.2.0",
     "@victframework/sdk": "0.2.0"

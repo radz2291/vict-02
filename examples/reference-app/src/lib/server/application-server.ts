@@ -1,5 +1,6 @@
 import { defineCapability } from '@victframework/sdk';
-import { createRuntime } from '@victframework/runtime';
+import { createRuntime, installCapabilityPack } from '@victframework/runtime';
+import { notesPack } from '@victframework/notes-pack';
 import type { ApplicationDataAdapter } from '@victframework/application';
 import {
   collectSurfaces,
@@ -13,10 +14,26 @@ import {
   analyzeOutputContract,
   compileReferencePlan,
   messageInputContract,
-  noteReadingTimeInputContract,
-  noteReadingTimeOutputContract,
   projectInputContract,
 } from '$lib/application/definition.js';
+
+/**
+ * The `notes.readingTime@1` capability EXECUTES the capability pack's own
+ * binding — there is deliberately no app-local calculation. The pack
+ * (`vict.example.notes`, `@victframework/notes-pack`) is installed with
+ * `installCapabilityPack` — the Stage 04 supported registration path: the
+ * manifest is cross-validated against the executable bindings and the
+ * contracts, capabilities, and declared doubles register ATOMICALLY. The
+ * region's declared action (`act.noteReadingTime`) references the pack's
+ * capability and contracts by exact id + revision (`notes.readingTime@1`,
+ * input `notes.text@1`, output `notes.readingTime@1`).
+ */
+const readingTimeBinding = notesPack.bindings.capabilities.find(
+  (binding) => binding.id === 'notes.readingTime',
+);
+if (readingTimeBinding?.input === undefined || readingTimeBinding.output === undefined) {
+  throw new Error('notes pack: the notes.readingTime binding carries no declared contracts');
+}
 
 /**
  * The reference application's in-process application server (local modular
@@ -73,27 +90,6 @@ const replyCapability = defineCapability({
   },
 });
 
-/**
- * Pure capability: estimates the reading time of a note's content
- * (~200 words per minute, one-minute minimum for non-empty content).
- * Mirrors the declared `notes.readingTime@1` pure read of the capability
- * pack: the same derivation, under this application's declared contracts.
- */
-const noteReadingTimeCapability = defineCapability({
-  id: 'refapp.noteReadingTime',
-  revision: '1',
-  effect: 'pure',
-  input: noteReadingTimeInputContract,
-  output: noteReadingTimeOutputContract,
-  invoke: (input: { note: string }) => {
-    const words = input.note.trim().split(/\s+/).filter(Boolean).length;
-    return {
-      minutes: words === 0 ? 0 : Math.max(1, Math.ceil(words / 200)),
-      words,
-    };
-  },
-});
-
 /** Pure capability: formats workspace metrics from raw project stats. */
 const analyzeCapability = defineCapability({
   id: 'refapp.analyze',
@@ -110,14 +106,23 @@ const analyzeCapability = defineCapability({
   }),
 });
 
-function buildRuntime() {
+/**
+ * Build the application runtime. Exported for the permanent
+ * capability-identity tests: the tests assert against the runtime THIS
+ * function builds — that the WHOLE capability pack is installed (atomic
+ * batch), that `notes.readingTime` is registered under the pack's id, and
+ * that no duplicate app-local reading-time capability exists.
+ */
+export function buildRuntime() {
   const runtime = createRuntime();
   runtime.registerCapability(replyCapability);
   runtime.registerCapability(analyzeCapability);
-  runtime.registerCapability(noteReadingTimeCapability);
+  // The supported pack registration path (Stage 04 §3): cross-validated
+  // manifest↔bindings, compatibility check, atomic staged-batch install of
+  // the pack's contracts + capabilities.
+  installCapabilityPack(runtime, notesPack);
   runtime.registerContract(messageInputContract);
   runtime.registerContract(analyzeInputContract);
-  runtime.registerContract(noteReadingTimeInputContract);
   return runtime;
 }
 
@@ -178,15 +183,15 @@ export function createReferenceServer(
             nodes: [{ id: 'only', capability: 'refapp.reply', input: 'refapp.message.input' }],
             edges: [],
           }
-        : graphId === 'g.refapp.noteReadingTime'
+        : graphId === 'g.notes.readingTime'
           ? {
               id: graphId,
               entry: 'only',
               nodes: [
                 {
                   id: 'only',
-                  capability: 'refapp.noteReadingTime',
-                  input: 'refapp.noteReadingTime.input',
+                  capability: 'notes.readingTime',
+                  input: 'notes.text',
                 },
               ],
               edges: [],
@@ -429,7 +434,7 @@ export function createReferenceServer(
           }
           return { ok: true, value: outChecked.value };
         }
-        if (action.capabilityId === 'refapp.noteReadingTime') {
+        if (action.capabilityId === 'notes.readingTime') {
           const projects = await listRows('projects');
           const produced: { id: string; label: string; value: string }[] = [];
           for (const project of projects) {
@@ -437,7 +442,10 @@ export function createReferenceServer(
             if (typeof notes !== 'string' || notes.trim().length === 0) {
               continue; // no note content: nothing to estimate for this record
             }
-            const parsed = noteReadingTimeInputContract.parse({ note: notes });
+            // The pack's OWN declared input contract (notes.text@1, shape
+            // { title: string }): the note content is fed under the pack's
+            // declared shape — no app-local input contract exists.
+            const parsed = readingTimeBinding.input.parse({ title: notes });
             if (!parsed.ok) {
               return {
                 ok: false,
@@ -446,10 +454,10 @@ export function createReferenceServer(
               };
             }
             const output = await runCapability<{ minutes: number; words: number }>(
-              'g.refapp.noteReadingTime',
+              'g.notes.readingTime',
               parsed.value,
             );
-            const checked = noteReadingTimeOutputContract.parse(output);
+            const checked = readingTimeBinding.output.parse(output);
             if (!checked.ok) {
               return {
                 ok: false,

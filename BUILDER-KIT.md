@@ -6,7 +6,7 @@
 
 - protocol: `vict.builder.bootstrap@1`
 - kit package: `@victframework/builder-kit@0.1.0`
-- base pack: `vict.builder.context-pack@1`, packId `e8f8365169ea880fbcee35a00623b909f62a4425ea275af9840c4728a5e4eb21`
+- base pack: `vict.builder.context-pack@1`, packId `791f24fb023cf3eb29ffb0d7123f23ad803b8042906ed84ace6d991d4d15a0b2`
 - reference truth: `docs/VICT-SYSTEM-REFERENCE.md` v0.4.32
 - release truth: `vict-release-set@1/0.3.1`
 

@@ -177,43 +177,15 @@ export const analyzeOutputContract = defineContract<{
   },
 });
 
-export const noteReadingTimeInputContract = defineContract<{ note: string }>({
-  id: 'refapp.noteReadingTime.input',
-  revision: '1',
-  expected: '{ note: string }',
-  parse: (input) => {
-    const candidate = input as { note?: unknown } | null;
-    if (candidate !== null && typeof candidate === 'object' && typeof candidate.note === 'string') {
-      return { ok: true as const, value: { note: candidate.note } };
-    }
-    return failContract('a note content string is required');
-  },
-});
-
-export const noteReadingTimeOutputContract = defineContract<{ minutes: number; words: number }>({
-  id: 'refapp.noteReadingTime.output',
-  revision: '1',
-  expected: '{ minutes: number, words: number }',
-  parse: (input) => {
-    const candidate = input as { minutes?: unknown; words?: unknown } | null;
-    if (
-      candidate !== null &&
-      typeof candidate === 'object' &&
-      typeof candidate.minutes === 'number' &&
-      Number.isFinite(candidate.minutes) &&
-      candidate.minutes >= 0 &&
-      typeof candidate.words === 'number' &&
-      Number.isFinite(candidate.words) &&
-      candidate.words >= 0
-    ) {
-      return {
-        ok: true as const,
-        value: { minutes: candidate.minutes, words: candidate.words },
-      };
-    }
-    return failContract('a reading-time estimate with finite non-negative numbers is required');
-  },
-});
+/* The reading-time capability has NO app-local duplicate: the region's
+ * action is bound to the capability pack's declared capability
+ * `notes.readingTime@1` (pack `vict.example.notes`) and its declared
+ * contracts `notes.text@1` (input) and `notes.readingTime@1` (output).
+ * The contract objects live in the pack and are registered at runtime by
+ * `installCapabilityPack` (the Stage 04 supported registration path); the
+ * action and binding entries below reference them by exact id + revision
+ * only.
+ */
 
 /* ------------------------------------------------------------------ */
 /* Resources                                                           */
@@ -778,11 +750,11 @@ export const referenceApplication = defineApplication({
       kind: 'capability',
       id: 'act.noteReadingTime',
       revision: '1',
-      capabilityId: 'refapp.noteReadingTime',
+      capabilityId: 'notes.readingTime',
       capabilityRevision: '1',
-      inputContractId: 'refapp.noteReadingTime.input',
+      inputContractId: 'notes.text',
       inputContractRevision: '1',
-      outputContractId: 'refapp.noteReadingTime.output',
+      outputContractId: 'notes.readingTime',
       outputContractRevision: '1',
     },
   ],
@@ -810,12 +782,16 @@ export const bindings = {
     { id: 'refapp.message.input', revision: '1' },
     { id: 'refapp.analyze.input', revision: '1' },
     { id: 'refapp.analyze.output', revision: '1' },
-    { id: 'refapp.noteReadingTime.input', revision: '1' },
-    { id: 'refapp.noteReadingTime.output', revision: '1' },
+    // The reading-time capability is the capability pack's declared
+    // `notes.readingTime@1` over the pack's declared contracts — referenced
+    // here by exact id + revision; the contract objects are registered by
+    // `installCapabilityPack` at runtime (no app-local duplicates).
+    { id: 'notes.text', revision: '1' },
+    { id: 'notes.readingTime', revision: '1' },
   ],
   capabilities: [
     { id: 'refapp.analyze', revision: '1' },
-    { id: 'refapp.noteReadingTime', revision: '1' },
+    { id: 'notes.readingTime', revision: '1' },
   ],
   components: [{ componentId: 'cmp.health', revision: '1' }],
 } as const;

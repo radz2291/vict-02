@@ -9,13 +9,16 @@ import type { MountedVictApplication } from '@victframework/renderer-svelte';
 import {
   compileReferencePlan,
   dataContracts,
-  noteReadingTimeInputContract,
-  noteReadingTimeOutputContract,
   referenceApplication,
   resources,
 } from '$lib/application/definition.js';
+import {
+  buildRuntime,
+  createReferenceServer,
+  type ReferenceAppServer,
+} from '$lib/server/application-server';
+import { notesPack } from '@victframework/notes-pack';
 import { createReferenceRegistry } from '$lib/components/registry';
-import { createReferenceServer, type ReferenceAppServer } from '$lib/server/application-server';
 
 /**
  * Permanent renderer-level evidence for the reading-time region on the
@@ -91,13 +94,15 @@ describe('reading-time region declared through the Application Definition', () =
     expect(overviewSurfaces?.map((surface) => surface.id)).toContain('act.readingTime-btn');
     expect(overviewSurfaces?.map((surface) => surface.id)).toContain('ls.noteReadingTime');
 
-    // The declared action is a real capability action with declared contracts.
+    // The declared action is a real capability action bound to the
+    // capability pack's declared `notes.readingTime@1` and its declared
+    // contracts — NOT to an app-local duplicate capability.
     const action = referenceApplication.actions.find((entry) => entry.id === 'act.noteReadingTime');
     expect(action?.kind).toBe('capability');
     expect(action).toMatchObject({
-      capabilityId: 'refapp.noteReadingTime',
-      inputContractId: 'refapp.noteReadingTime.input',
-      outputContractId: 'refapp.noteReadingTime.output',
+      capabilityId: 'notes.readingTime',
+      inputContractId: 'notes.text',
+      outputContractId: 'notes.readingTime',
     });
 
     // The region's list is bound through a declared view over the metrics resource.
@@ -151,24 +156,139 @@ describe('reading-time region rendering (generic Vict host)', () => {
   });
 });
 
-describe('reading-time contracts (declared, fail-closed)', () => {
+describe("reading-time contracts (the pack's declared contracts, fail-closed)", () => {
+  const binding = notesPack.bindings.capabilities.find((entry) => entry.id === 'notes.readingTime');
   it('rejects malformed input and malformed output documents', () => {
-    expect(noteReadingTimeInputContract.parse({ note: 42 }).ok).toBe(false);
-    expect(noteReadingTimeInputContract.parse(null).ok).toBe(false);
-    expect(noteReadingTimeInputContract.parse({}).ok).toBe(false);
-    expect(noteReadingTimeOutputContract.parse({ minutes: -1, words: 0 }).ok).toBe(false);
-    expect(noteReadingTimeOutputContract.parse({ minutes: 1 }).ok).toBe(false);
-    expect(noteReadingTimeOutputContract.parse({ minutes: '2', words: 10 }).ok).toBe(false);
+    expect(binding?.input?.parse({ title: 42 }).ok).toBe(false);
+    expect(binding?.input?.parse(null).ok).toBe(false);
+    expect(binding?.input?.parse({}).ok).toBe(false);
+    // The pack's declared output contract is a strict type/shape check
+    // (numbers for minutes and words, both present); type violations and
+    // missing fields fail closed.
+    expect(binding?.output?.parse({ minutes: '2', words: 10 }).ok).toBe(false);
+    expect(binding?.output?.parse({ minutes: true, words: 10 }).ok).toBe(false);
+    expect(binding?.output?.parse({ minutes: 1 }).ok).toBe(false);
+    expect(binding?.output?.parse({ minutes: 2, words: '250' }).ok).toBe(false);
+    expect(binding?.output?.parse(null).ok).toBe(false);
   });
 
-  it('accepts the exact shape the capability produces', () => {
-    expect(noteReadingTimeInputContract.parse({ note: 'some content' })).toEqual({
+  it('accepts the exact shape the pack capability produces', () => {
+    expect(binding?.input?.parse({ title: 'some content' })).toEqual({
       ok: true,
-      value: { note: 'some content' },
+      value: { title: 'some content' },
     });
-    expect(noteReadingTimeOutputContract.parse({ minutes: 2, words: 250 })).toEqual({
+    expect(binding?.output?.parse({ minutes: 2, words: 250 })).toEqual({
       ok: true,
       value: { minutes: 2, words: 250 },
     });
+  });
+});
+
+describe('capability identity and execution path (pack-installed, not duplicated)', () => {
+  /**
+   * These tests pin WHICH capability executes: the capability pack's own
+   * `notes.readingTime@1`, installed through `installCapabilityPack` (the
+   * Stage 04 supported registration path). A second app-local calculation
+   * with matching output CANNOT satisfy this suite: pack installation is
+   * an atomic all-or-nothing batch, so the pack's sibling capabilities and
+   * contracts must be registered too; the duplicate app-local id must be
+   * absent; the declared action must reference the pack's ids; and the
+   * input contract must be the pack's `notes.text@1` shape ({ title }),
+   * which rejects the old app-local { note } shape.
+   */
+  it("activates a probe graph on notes.readingTime over the pack's notes.text contract", async () => {
+    const runtime = buildRuntime();
+    const activation = await runtime.activate({
+      id: 'g.probe.readingTime',
+      entry: 'only',
+      nodes: [{ id: 'only', capability: 'notes.readingTime', input: 'notes.text' }],
+      edges: [],
+    });
+    expect(activation.ok).toBe(true);
+    if (!activation.ok) return;
+    const run = await runtime.run({ title: 'word '.repeat(250).trim() }, { mode: 'normal' });
+    expect(run.status).toBe('completed');
+    expect(run.output).toEqual({ minutes: 2, words: 250 });
+  });
+
+  it('the whole pack is installed atomically: sibling capabilities and contracts resolve', async () => {
+    const runtime = buildRuntime();
+    const formatActivation = await runtime.activate({
+      id: 'g.probe.format',
+      entry: 'only',
+      nodes: [{ id: 'only', capability: 'notes.format', input: 'notes.text' }],
+      edges: [],
+    });
+    expect(formatActivation.ok).toBe(true);
+    if (formatActivation.ok) {
+      const run = await runtime.run({ title: 'hello vict' }, { mode: 'normal' });
+      expect(run.status).toBe('completed');
+      expect(run.output).toEqual({ formatted: 'HELLO VICT', length: 10 });
+    }
+    const statsActivation = await runtime.activate({
+      id: 'g.probe.stats',
+      entry: 'only',
+      nodes: [{ id: 'only', capability: 'notes.stats', input: 'notes.text' }],
+      edges: [],
+    });
+    expect(statsActivation.ok).toBe(true);
+  });
+
+  it('the app-local duplicate id refapp.noteReadingTime is NOT registered', async () => {
+    const runtime = buildRuntime();
+    const activation = await runtime.activate({
+      id: 'g.probe.duplicate',
+      entry: 'only',
+      nodes: [
+        { id: 'only', capability: 'refapp.noteReadingTime', input: 'refapp.noteReadingTime.input' },
+      ],
+      edges: [],
+    });
+    expect(activation.ok).toBe(false);
+  });
+
+  it("the pack's frozen binding invoke produces exactly what the server dispatch upserts", async () => {
+    const binding = notesPack.bindings.capabilities.find(
+      (entry) => entry.id === 'notes.readingTime',
+    );
+    expect(Object.isFrozen(notesPack.bindings.capabilities)).toBe(true);
+    const { server } = makeServer();
+    const result = await server.dispatch('act.noteReadingTime');
+    expect(result.ok).toBe(true);
+    const metrics = (result.value as { metrics: { id: string; value: string }[] }).metrics;
+    // Alpha: 'first' (1 word) and Beta: 250 words — the pack binding's own
+    // invoke decides the values; the server adds no calculation of its own.
+    const packOutput = (content: string) => {
+      const parsedInput = binding?.input?.parse({ title: content });
+      expect(parsedInput?.ok).toBe(true);
+      const raw = binding?.invoke(parsedInput?.value);
+      const parsedOutput = binding?.output?.parse(raw);
+      expect(parsedOutput?.ok).toBe(true);
+      return parsedOutput?.value as { minutes: number; words: number };
+    };
+    const alpha = packOutput('first');
+    const beta = packOutput('word '.repeat(250).trim());
+    expect(metrics).toContainEqual({
+      id: 'rt-alpha-1',
+      label: 'Reading time — Alpha',
+      value: `${alpha.minutes} min (${alpha.words} words)`,
+    });
+    expect(metrics).toContainEqual({
+      id: 'rt-beta-2',
+      label: 'Reading time — Beta',
+      value: `${beta.minutes} min (${beta.words} words)`,
+    });
+    expect(metrics).toHaveLength(2);
+  });
+
+  it("the pack's notes.text contract rejects the old app-local { note } input shape", () => {
+    const binding = notesPack.bindings.capabilities.find(
+      (entry) => entry.id === 'notes.readingTime',
+    );
+    // The pre-correction app defined its own { note: string } input
+    // contract. The pack contract is the ONLY registered input contract for
+    // the reading-time capability, and it rejects that shape.
+    expect(binding?.input?.parse({ note: 'legacy shape' }).ok).toBe(false);
+    expect(binding?.input?.parse({ title: 'pack shape' }).ok).toBe(true);
   });
 });
