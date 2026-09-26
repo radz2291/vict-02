@@ -3,7 +3,8 @@
    * The GENERIC Vict application host (Stage 05 canonical renderer).
    *
    * Resolves routes, data, actions, and safe states from the immutable
-   * Application Plan. Shared shell presentation belongs to ui-svelte.
+   * Application Plan. Shared shell presentation comes from the sibling
+   * presentation components of this package.
    *
    * Reactivity contract (closes the Stage 04 `state_referenced_locally`
    * carry-forward): every value derived from a prop (plan, path, rows,
@@ -12,7 +13,8 @@
    */
   import { RendererDiagnostic, type ComponentRegistry } from '@victframework/application/renderer';
   import { deriveUiPlan } from '@victframework/ui';
-  import { AppShell, Feedback } from '@victframework/ui-svelte';
+  import AppShell from './AppShell.svelte';
+  import Feedback from './Feedback.svelte';
   import {
     resolveRoute,
     themeVariables,

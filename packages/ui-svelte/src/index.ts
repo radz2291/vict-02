@@ -14,3 +14,27 @@ export { default as Detail } from './Detail.svelte';
 export { default as Chart } from './Chart.svelte';
 export { default as Conversation } from './Conversation.svelte';
 export { default as ComponentSlot } from './ComponentSlot.svelte';
+
+// ---------------------------------------------------------------------------
+// Renderer surface: the PERMANENT Svelte ApplicationRenderer implementation
+// lives in this package (moved from @victframework/renderer-svelte, which is
+// now only a compatibility facade re-exporting everything below).
+// ---------------------------------------------------------------------------
+
+export { default as VitApp } from './VitApp.svelte';
+export { createVictRenderer, RENDERER_ID, RENDERER_REVISION } from './renderer.js';
+export { renderVictApplication } from './mount.svelte.js';
+export type { MountedVictApplication, RenderVictApplicationOptions } from './mount.svelte.js';
+export {
+  resolveRoute,
+  matchPath,
+  themeVariables,
+  validatePlanForRenderer,
+  collectSurfaces,
+  BUILT_IN_ROLES,
+  type VictPlanView,
+  type ResolvedRoute,
+  type ActionResult,
+  type ViewDatum,
+} from './logic.js';
+export { RendererDiagnostic } from '@victframework/application/renderer';

@@ -14,7 +14,7 @@
    */
   import type { VictPlanView, PlanSurface } from './logic.js';
   import type { UiFormField } from '@victframework/ui';
-  import { Form } from '@victframework/ui-svelte';
+  import Form from './Form.svelte';
   import {
     prefillFormState,
     toSubmitPayload,

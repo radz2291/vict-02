@@ -1,6 +1,6 @@
 import { flushSync } from 'svelte';
 import { describe, expect, it, vi } from 'vitest';
-import { renderVictApplication } from '@victframework/renderer-svelte';
+import { renderVictApplication } from '@victframework/ui-svelte';
 import { probeApp, surfaceForRole, testRegistry } from './fixtures.js';
 
 function conversation(

@@ -6,7 +6,17 @@
   import type { ComponentRegistry } from '@victframework/application/renderer';
   import type { VictPlanView, PlanSurface } from './logic.js';
   import type { UiPlan, UiStatusTone } from '@victframework/ui';
-  import { Button, Chart, ComponentSlot, Conversation, DataView, Detail, Feedback, List, StatusBadge, Tabs, Text } from '@victframework/ui-svelte';
+  import Button from './Button.svelte';
+  import Chart from './Chart.svelte';
+  import ComponentSlot from './ComponentSlot.svelte';
+  import Conversation from './Conversation.svelte';
+  import DataView from './DataView.svelte';
+  import Detail from './Detail.svelte';
+  import Feedback from './Feedback.svelte';
+  import List from './List.svelte';
+  import StatusBadge from './StatusBadge.svelte';
+  import Tabs from './Tabs.svelte';
+  import Text from './Text.svelte';
   import { isVisible, isDisabled, headingTagForLevel, type ViewDatum, type ActionResult } from './logic.js';
   import { chartPoints, conversationMessages, detailFields, displayRows, listItems } from './presentation.js';
   import TableAdapter from './TableAdapter.svelte';

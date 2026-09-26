@@ -2,7 +2,7 @@
   /** Application surface traversal stays in the adapter; modal behavior belongs to UI. */
   import type { ComponentRegistry } from '@victframework/application/renderer';
   import type { UiOverlayIntent, UiPlan } from '@victframework/ui';
-  import { Overlay } from '@victframework/ui-svelte';
+  import Overlay from './Overlay.svelte';
   import type { VictPlanView, PlanSurface, ViewDatum, ActionResult } from './logic.js';
   import Surface from './Surface.svelte';
 

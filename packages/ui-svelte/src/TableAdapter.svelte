@@ -1,7 +1,7 @@
 <script lang="ts">
   /** Transitional owner of query dispatch and local table behavior. */
   import type { UiTableIntent, UiTableState } from '@victframework/ui';
-  import { RecordsTable } from '@victframework/ui-svelte';
+  import RecordsTable from './RecordsTable.svelte';
   import type { ActionResult, PlanSurface } from './logic.js';
 
   interface Props {

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { compileApplication, type ApplicationPlan } from '@victframework/application';
-import { renderVictApplication } from '@victframework/renderer-svelte';
+import { renderVictApplication } from '@victframework/ui-svelte';
 import { APPLICATION_DEFINITION_SCHEMA_V2, defineApplication } from '@victframework/sdk';
 import { itemResource, testRegistry } from './fixtures.js';
 
