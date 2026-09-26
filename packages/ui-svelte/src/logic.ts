@@ -161,6 +161,25 @@ function matchRoute(plan: VictPlanView, path: string): ResolvedRoute | null {
   };
 }
 
+/**
+ * Substitute declared `:name` path parameters from a bounded input record
+ * (parameterized navigation actions). Segments without a provided value are
+ * left intact; values must be string/number primitives.
+ */
+export function substitutePathParams(path: string, input: unknown): string {
+  const params = (input ?? {}) as Record<string, unknown>;
+  return path
+    .split('/')
+    .map((segment) => {
+      if (!segment.startsWith(':') || segment.length < 2) {
+        return segment;
+      }
+      const value = params[segment.slice(1)];
+      return typeof value === 'string' || typeof value === 'number' ? String(value) : segment;
+    })
+    .join('/');
+}
+
 /** Match `/projects/:id` style paths; returns parameters or null. */
 export function matchPath(pattern: string, path: string): Record<string, string> | null {
   const patternSegments = pattern.split('/').filter((segment) => segment.length > 0);
@@ -361,6 +380,30 @@ export function validatePlanForRenderer(
           );
         }
       }
+      if (surface.role === 'table') {
+        // Versioned island cells resolve structurally too: an unresolvable
+        // cell component fails BEFORE anything renders (never silently).
+        const columns = Array.isArray(surface.columns) ? surface.columns : [];
+        for (const column of columns) {
+          const cell = column as { componentId?: unknown; revision?: unknown };
+          if (typeof cell.componentId !== 'string' || cell.componentId.length === 0) {
+            continue;
+          }
+          const resolved = registry.resolve({
+            componentId: cell.componentId,
+            revision: String(cell.revision ?? ''),
+          });
+          if (!resolved.ok) {
+            throw new RendererDiagnostic(
+              resolved.code === 'UNKNOWN_COMPONENT'
+                ? 'RENDERER_UNKNOWN_COMPONENT'
+                : 'RENDERER_COMPONENT_RESOLUTION_FAILED',
+              resolved.message ?? 'The table cell component could not be resolved.',
+              { componentId: cell.componentId },
+            );
+          }
+        }
+      }
       void path;
     }
   }
@@ -386,7 +429,7 @@ export function headingTagForLevel(level: unknown): string | null {
   return HEADING_TAGS[level - 1] ?? null;
 }
 
-/** The complete Stage 05 built-in role vocabulary. */
+/** The complete Stage 05 built-in role vocabulary (plus the @2 count role). */
 export const BUILT_IN_ROLES: readonly SurfaceRole[] = [
   'text',
   'view',
@@ -399,8 +442,30 @@ export const BUILT_IN_ROLES: readonly SurfaceRole[] = [
   'detail',
   'chart',
   'status',
+  'count',
   'tabs',
   'dialog',
   'drawer',
   'conversation',
 ];
+
+/**
+ * Derive a row action's input from one row through the declared mapping
+ * (action input field → row field; default `{ id: 'id' }`). Only values
+ * actually present on the row are included; values are the row's projected
+ * primitives.
+ */
+export function deriveRowActionInput(
+  rowAction: { readonly input?: Readonly<Record<string, string>> } | undefined,
+  row: Readonly<Record<string, unknown>>,
+): Record<string, unknown> {
+  const mapping = rowAction?.input ?? { id: 'id' };
+  const input: Record<string, unknown> = {};
+  for (const [name, rowField] of Object.entries(mapping)) {
+    const value = row[rowField];
+    if (value !== undefined) {
+      input[name] = value;
+    }
+  }
+  return input;
+}

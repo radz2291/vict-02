@@ -1,0 +1,118 @@
+{
+  "scaffolderTarballSha256": "83cfd888ed275663553b2f57ecdb25645458056fc3d97e98a25267ad41a556d8",
+  "immutableHostFilesByteIdentical": true,
+  "files": [
+    {
+      "file": "app/.gitignore",
+      "ownership": "immutable-host",
+      "hashBefore": "9e418f887151df3aca70df5f65c2bc53ef485dd68492e71e55c032f90acf6e58",
+      "hashAfter": "9e418f887151df3aca70df5f65c2bc53ef485dd68492e71e55c032f90acf6e58",
+      "byteIdentical": true
+    },
+    {
+      "file": "app/README.md",
+      "ownership": "immutable-host",
+      "hashBefore": "e7f90fd535ab9bbbb6e5d1afd4018cf79015bd34dae4c2b28aec26f42c79eb27",
+      "hashAfter": "e7f90fd535ab9bbbb6e5d1afd4018cf79015bd34dae4c2b28aec26f42c79eb27",
+      "byteIdentical": true
+    },
+    {
+      "file": "app/package.json",
+      "ownership": "immutable-host",
+      "hashBefore": "63cdecce6f7ea791e4a6ec3eaa3a0f13c97616f565587a058553882cd2f9c59a",
+      "hashAfter": "63cdecce6f7ea791e4a6ec3eaa3a0f13c97616f565587a058553882cd2f9c59a",
+      "byteIdentical": true
+    },
+    {
+      "file": "app/src/app.d.ts",
+      "ownership": "immutable-host",
+      "hashBefore": "a8ab39741ad2afc8540bd498f50aefa8d7e51c9ca08af2fbd966636569084086",
+      "hashAfter": "a8ab39741ad2afc8540bd498f50aefa8d7e51c9ca08af2fbd966636569084086",
+      "byteIdentical": true
+    },
+    {
+      "file": "app/src/app.html",
+      "ownership": "immutable-host",
+      "hashBefore": "3ff04fbb33dde51a446d5b81688b04cf82a2afc5b4eb3eefdb7e7439a1003c9e",
+      "hashAfter": "3ff04fbb33dde51a446d5b81688b04cf82a2afc5b4eb3eefdb7e7439a1003c9e",
+      "byteIdentical": true
+    },
+    {
+      "file": "app/src/lib/application/definition.ts",
+      "ownership": "author-owned",
+      "hashBefore": "9f75acbdedb5fd24a37b3c466dca7ff042f496a3c7e7b9de54f0e37ecd481d31",
+      "hashAfter": "a5d426f5bd2b1cf2145d014c42c7312715ca9d58c6a77705a2242a97570b9ac0",
+      "byteIdentical": false
+    },
+    {
+      "file": "app/src/lib/components/README.md",
+      "ownership": "immutable-host",
+      "hashBefore": "3d6fb4cf25c854283246b68ea724b17a674d225bf951ad8345a2cfa2c84e2c2a",
+      "hashAfter": "3d6fb4cf25c854283246b68ea724b17a674d225bf951ad8345a2cfa2c84e2c2a",
+      "byteIdentical": true
+    },
+    {
+      "file": "app/src/lib/components/registry.ts",
+      "ownership": "author-owned",
+      "hashBefore": "e461407c03b62f7191bea421973cde7c9784eec02d737ab70e3a0a83817026af",
+      "hashAfter": "6347b450271fc793d13af05fdae9ee26dedceac8578bf16f817f5c4cc72cf949",
+      "byteIdentical": false
+    },
+    {
+      "file": "app/src/lib/server/application-server.ts",
+      "ownership": "immutable-host",
+      "hashBefore": "06765da67afee846c2ca1595ba313c4384b0b8365c350321b95baf2a6715fcd1",
+      "hashAfter": "06765da67afee846c2ca1595ba313c4384b0b8365c350321b95baf2a6715fcd1",
+      "byteIdentical": true
+    },
+    {
+      "file": "app/src/routes/[...vict]/+page.server.ts",
+      "ownership": "immutable-host",
+      "hashBefore": "70cc78d5a804da5ac947765f8af109720f09bb43e7a58ddd51c111148d7feab2",
+      "hashAfter": "70cc78d5a804da5ac947765f8af109720f09bb43e7a58ddd51c111148d7feab2",
+      "byteIdentical": true
+    },
+    {
+      "file": "app/src/routes/[...vict]/+page.svelte",
+      "ownership": "immutable-host",
+      "hashBefore": "2a035298e4f4532bbd37d8444dd8c7f59bb37ae6704687e967d0d68ca0d0e492",
+      "hashAfter": "2a035298e4f4532bbd37d8444dd8c7f59bb37ae6704687e967d0d68ca0d0e492",
+      "byteIdentical": true
+    },
+    {
+      "file": "app/src/routes/api/act/+server.ts",
+      "ownership": "immutable-host",
+      "hashBefore": "a41720baa2d7f8fadacdfe6e2c24554fbe76fd97737c0d90e57a5d676602ba65",
+      "hashAfter": "a41720baa2d7f8fadacdfe6e2c24554fbe76fd97737c0d90e57a5d676602ba65",
+      "byteIdentical": true
+    },
+    {
+      "file": "app/svelte.config.js",
+      "ownership": "immutable-host",
+      "hashBefore": "9180a1181e78f42417857e083c0e3f0e103e29822319e70cf5aa9e8d93619a7e",
+      "hashAfter": "9180a1181e78f42417857e083c0e3f0e103e29822319e70cf5aa9e8d93619a7e",
+      "byteIdentical": true
+    },
+    {
+      "file": "app/tsconfig.json",
+      "ownership": "immutable-host",
+      "hashBefore": "0374d911148fdc6cd5eaf484a277ef6d685e71f1aec6d2812c412c97cf960e94",
+      "hashAfter": "0374d911148fdc6cd5eaf484a277ef6d685e71f1aec6d2812c412c97cf960e94",
+      "byteIdentical": true
+    },
+    {
+      "file": "app/vite.config.ts",
+      "ownership": "immutable-host",
+      "hashBefore": "0204797c6e6a4cb4a39be1d359085148b3c70f771a1ca81805d320b7154cbb96",
+      "hashAfter": "0204797c6e6a4cb4a39be1d359085148b3c70f771a1ca81805d320b7154cbb96",
+      "byteIdentical": true
+    },
+    {
+      "file": "app/vitest.config.ts",
+      "ownership": "immutable-host",
+      "hashBefore": "8c7ce3dcc2f14df512acd540c188fab7b23d91c38260e980306ac521f29fa63e",
+      "hashAfter": "8c7ce3dcc2f14df512acd540c188fab7b23d91c38260e980306ac521f29fa63e",
+      "byteIdentical": true
+    }
+  ]
+}

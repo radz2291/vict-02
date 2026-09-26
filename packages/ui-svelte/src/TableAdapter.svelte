@@ -1,16 +1,20 @@
 <script lang="ts">
   /** Transitional owner of query dispatch and local table behavior. */
+  import type { ComponentRegistry } from '@victframework/application/renderer';
   import type { UiTableIntent, UiTableState } from '@victframework/ui';
   import RecordsTable from './RecordsTable.svelte';
-  import type { ActionResult, PlanSurface } from './logic.js';
+  import { deriveRowActionInput, type ActionResult, type PlanSurface } from './logic.js';
 
   interface Props {
     surface: PlanSurface;
     intent: UiTableIntent;
     initialRows: readonly Record<string, unknown>[];
     dispatch: (actionId: string, input?: unknown) => Promise<ActionResult>;
+    registry?: ComponentRegistry;
+    /** Renderer action path (local/navigation stay client-side). */
+    run?: (actionId: string, input?: unknown) => Promise<ActionResult | void>;
   }
-  let { surface, intent, initialRows, dispatch }: Props = $props();
+  let { surface, intent, initialRows, dispatch, registry, run }: Props = $props();
 
   interface QueryPayload {
     filters?: Record<string, string>;
@@ -142,6 +146,18 @@
     page = Math.min(Math.max(0, nextPage), pageCount - 1);
     await runQuery(page, sortField, sortDir);
   }
+
+  /** Declared per-row action: dispatch/navigation with row-derived input. */
+  async function onRowAction(row: Readonly<Record<string, unknown>>): Promise<void> {
+    if (intent.rowAction === undefined) return;
+    const actionId = intent.rowAction.actionId;
+    const input = deriveRowActionInput(intent.rowAction, row);
+    if (run !== undefined) {
+      await run(actionId, input);
+      return;
+    }
+    await dispatch(actionId, input);
+  }
 </script>
 
-<RecordsTable {intent} {rows} state={tableState} {onSearch} {onFilter} {onSort} {onPage} />
+<RecordsTable {intent} {rows} state={tableState} {registry} {onSearch} {onFilter} {onSort} {onPage} {onRowAction} />
