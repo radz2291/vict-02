@@ -148,4 +148,85 @@ and `scripts/verify-ui-composition.mjs`, and `npm run format:check` flags
 `packages/ui-svelte/src/mount.svelte.ts` — all present on the base commit
 `dc69768` and left untouched (no unrelated changes on this branch).
 
-Status will be updated at the bottom as the work lands.
+## 5. Fresh external consumer — outcome
+
+Proof at `C:/Users/RZ1/Desktop/RZ/taskledger-gap-proof-20260926` (outside the
+VICT repository): packed candidate tarballs (11 packages, sha256 recorded,
+nothing published), explicit release-set selection at scaffold time, then the
+full TaskLedger authoring pass. Final numbers:
+
+- **Immutable host files byte-identical** after app authoring (14/14; the
+  only changed files are the author-owned `definition.ts` and
+  `registry.ts`) — see `host-byte-comparison.json` in the proof directory.
+- The ONLY custom Svelte product component is the 49-line presentational
+  `PriorityBadge.svelte` (declared row-derived props, never fetches or
+  dispatches). No `TaskTable`, no `TaskForm`, no self-fetching count.
+- Browser evidence at laptop 1280×800 and phone 390×844: create (valid +
+  native + boundary rejections), edit prefill + save through the declared
+  `/tasks/:id` route, server-backed search, sort, pagination, island-cell
+  badges with three distinct palettes, row Complete (governed durable runs,
+  replay reconciled), live dashboard count + per-day chart, restart
+  persistence (byte-identical rows; ledger runs/events/activations
+  identical), zero page-level horizontal overflow at phone width,
+  keyboard-operable controls. Screenshots + `evidence-summary.json` in
+  `browser-evidence/`.
+- Negative action-boundary probes: unknown field, malformed type, undeclared
+  action — all refused before any governed run or durable mutation (ledger
+  byte-unchanged).
+- `applicationVersion` `v1_e42187a7…` stable across three rebuilds.
+
+Two platform fixes made mid-proof were folded back into the templates before
+the final scaffold (the app was re-scaffolded clean): the compiler consumes
+identity entries only (`contracts.map`/`capabilities.map`), and the generic
+host creates its `.data` directory.
+
+## 6. Release truth (owner decision required; nothing published here)
+
+A future release would need, at minimum (candidate content on this branch):
+
+| Package | Contract surface | Effect on consumers |
+| --- | --- | --- |
+| `@victframework/sdk` | `TableColumn.componentId/revision/props`, `TableRowAction`, table `rowAction`, `role:'count'` surface, `ViewBinding.filters/sort`, `ViewSort`, `SurfaceRole` + 'count' | additive, optional @2 members; existing definitions compile byte-identically (identity unchanged when absent) |
+| `@victframework/application` | compiler validation for the above; new issue code `INVALID_VIEW_DECLARATION`; island-cell structural resolution in `renderer-conformance` ALL_ROLES | additive diagnostics only |
+| `@victframework/ui` | `UiTableIntent` island-cell + rowAction intents | additive |
+| `@victframework/ui-svelte` | island-cell + row-action rendering, `Count.svelte`, `substitutePathParams`, `deriveRowActionInput`, FormSurface record prefill fix, actions-heading CSS | additive; renderer revision unchanged (`renderer.svelte-kit@5.0.0`) — the owner may wish to bump the renderer revision for the new coverage |
+| `@victframework/scaffolder` | BREAKING: `platformDependencies` required (explicit release set, validated); CLI `--release-set`; domain-free host templates; ownership README | callers passing no release set now get a structured refusal (verify-stage5 updated in-tree) |
+| `@victframework/renderer-svelte` | NO source change (pure facade; P5 architecture holds) | deprecation impact unchanged: existing consumers keep importing `@victframework/renderer-svelte`; when it is later deprecated they must switch imports to `@victframework/ui-svelte` (same names) — mechanical re-export mapping, no behavior change |
+
+Clean external-consumer test after a future release: from an EMPTY directory,
+install the scaffolder from the registry, scaffold with an EXPLICIT release
+set pinned to the published versions, `npm ci` from the generated lockfile,
+and prove (a) the generated host builds warning-free, (b) the full TaskLedger
+authoring path works with only `definition.ts` + `registry.ts` + one island,
+(c) every immutable generated host file is byte-identical after authoring,
+(d) the governed boundary refuses unknown/malformed input before any run.
+The in-repo proxy for this is `verify:stage5`'s packed-consumer check, now
+selecting the release set explicitly at scaffold time.
+
+## 7. Governance boundary
+
+Stage 8 G3 remains HELD; the frozen rubric is untouched; the published
+`0.3.1` P2 proof result (F6 FAIL) is not amended or retroactively repaired;
+nothing here is merged to main, published, or claimed Verified. The frozen
+P2 brief's exact F6 semantics are satisfiable by the platform path on this
+branch; whether a NEW P2-style proof is ordered is the owner's decision.
+`@victframework/cognee` is untouched.
+
+## 8. Remaining owner decisions / recorded limitations
+
+1. One row action per table surface: a per-row Edit LINK (in addition to the
+   declared Complete dispatch) needs either a second slot or a `rowLink`
+   contract — the edit route is otherwise fully definition-driven (URL,
+   prefill, save all work). Recorded, not closed here.
+2. Sort semantics are the data adapter's declared sort (alphabetical for
+   `priority`); semantic priority RANKING would need a declared rank field
+   or an extension — not closed here (out of minimal-contract scope).
+3. No relative-date filter vocabulary: the chart shows all completion days;
+   a bounded "last N days" window would be a future aggregate/filter
+   contract.
+4. The generic host's capability-effect hook is the ONE documented extension
+   seam; needs beyond declared views/forms/actions (e.g. custom projections)
+   still require an owner decision rather than host-file edits.
+5. Incidents disclosed in the proof directory (`evidence-summary.json`),
+   including the shared-tmux dev-server interference with the concurrent
+   coding-agent workspace agent (process-level only; their files untouched).

@@ -545,8 +545,10 @@ export function compileAppPlan(): ApplicationPlan {
   const result = compileApplication({
     application,
     resources,
-    contracts,
-    capabilities,
+    // The compiler consumes identity entries only; the full contract and
+    // capability objects bind to the runtime and the data adapter above.
+    contracts: contracts.map((contract) => ({ id: contract.id, revision: contract.revision })),
+    capabilities: capabilities.map((capability) => ({ id: capability.id, revision: capability.revision })),
     components: [],
   });
   if (!result.ok) {
@@ -600,7 +602,8 @@ export function registerComponents(_registry: ComponentRegistry): void {
     ],
     [
       'src/lib/server/application-server.ts',
-      `import { join } from 'node:path';
+      `import { mkdirSync } from 'node:fs';
+import { dirname, join } from 'node:path';
 import { createSqliteApplicationData } from '@victframework/appdata-sqlite';
 import { createRuntime } from '@victframework/runtime';
 import { createSqliteStores } from '@victframework/store-sqlite';
@@ -658,6 +661,10 @@ export interface AppServer {
 
 /** The async application factory: the generated host routes await it. */
 export async function createAppServer(): Promise<AppServer> {
+  // The data directory is a platform convention (gitignored); the storage
+  // drivers create files but never directories.
+  mkdirSync(dirname(DB_PATH), { recursive: true });
+  mkdirSync(dirname(RUNS_PATH), { recursive: true });
   const plan = compileAppPlan();
   // Durable governed runs: activation catalog + run/event records persist
   // across restarts in their own Vict-operational store.
@@ -910,10 +917,18 @@ export async function createAppServer(): Promise<AppServer> {
       return null;
     }
     const viewIds = new Set<string>();
+    const formResourceIds = new Set<string>();
     for (const { surface } of collectSurfaces(resolved.screen)) {
       const viewId = (surface as { viewId?: unknown }).viewId;
       if (typeof viewId === 'string') {
         viewIds.add(viewId);
+      }
+      const formId = (surface as { formId?: unknown }).formId;
+      if (typeof formId === 'string') {
+        const boundResource = (plan.toJSON().forms as Record<string, { resourceId?: string } | undefined>)[formId];
+        if (typeof boundResource?.resourceId === 'string') {
+          formResourceIds.add(boundResource.resourceId);
+        }
       }
     }
     interface LoadedView {
@@ -925,6 +940,7 @@ export async function createAppServer(): Promise<AppServer> {
     const views = plan.toJSON().views as Record<string, LoadedView | undefined>;
     const viewData: Record<string, ViewDatum> = {};
     let record: Record<string, unknown> | null = null;
+    const identity = resolved.params.id;
     for (const viewId of viewIds) {
       const view = views[viewId];
       if (view === undefined) {
@@ -958,6 +974,21 @@ export async function createAppServer(): Promise<AppServer> {
         if (got.ok && got.row !== undefined) {
           record = got.row as Record<string, unknown>;
           viewData[viewId] = { ...viewData[viewId], record };
+        }
+      }
+    }
+    // Parameterized routes on form-only screens (e.g. a record edit form
+    // without a view surface): the declared form's bound resource is the
+    // generic record source for the route's :id parameter.
+    if (identity !== undefined && record === null) {
+      for (const resourceId of formResourceIds) {
+        const got = await data.query(
+          { op: 'get', resourceId, id: identity },
+          { permissions: grants, effect: 'read' },
+        );
+        if (got.ok && got.row !== undefined) {
+          record = got.row as Record<string, unknown>;
+          break;
         }
       }
     }
@@ -1023,8 +1054,9 @@ export const load: PageServerLoad = async ({ url }) => {
   import { createComponentRegistry } from '@victframework/application/renderer';
   import { registerComponents } from '$lib/components/registry';
 
-  let { data }: { data: { plan: Record<string, unknown>; viewData: Record<string, unknown> } } =
-    $props();
+  let { data }: {
+    data: { plan: Record<string, unknown>; viewData: Record<string, unknown>; record: Record<string, unknown> | null };
+  } = $props();
 
   const registry = createComponentRegistry('registry.app', '1');
   registerComponents(registry);
@@ -1047,6 +1079,7 @@ export const load: PageServerLoad = async ({ url }) => {
   {dispatch}
   path={page.url.pathname}
   viewData={data.viewData}
+  record={data.record}
   onInvalidate={() => void invalidateAll()}
 />
 `,

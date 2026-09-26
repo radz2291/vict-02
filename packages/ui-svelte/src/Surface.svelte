@@ -142,7 +142,13 @@
       <Detail surfaceId={sn.id} fields={detailFields(row, fields)}
         emptyMessage={str(sn.emptyMessage) || 'This record does not exist.'} />
     {:else if sn.role === 'form'}
-      <FormSurface surface={sn} {plan} {run} values={viewRecord(sn.viewId) ?? {}} identity={params.id} />
+      <FormSurface
+        surface={sn}
+        {plan}
+        {run}
+        values={typeof sn.viewId === 'string' ? (viewRecord(sn.viewId) ?? record ?? {}) : (record ?? {})}
+        identity={params.id}
+      />
     {:else if sn.role === 'action'}
       <ActionButton surface={sn} {plan} disabled={isDisabled(sn, params)} {run} />
     {:else if sn.role === 'component'}

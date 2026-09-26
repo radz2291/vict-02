@@ -1,0 +1,11 @@
+af8664485391dadbc033ab355c38b4dd946b04e72793146e0f865a36e178f9ec *tarballs/victframework-appdata-sqlite-0.3.1.tgz
+ed929d88d7d5af301c49269a842678bb111311603c4b0fe06bb8a22f2fb200cd *tarballs/victframework-application-0.3.1.tgz
+6624bdd8c5b91d182c9272d872115a9c09cc808c7a945b6d72ddaac2fa9e6556 *tarballs/victframework-contracts-0.3.1.tgz
+9fd9d3f65b64fef544af812045333fb095e6e68b8497caba2c5cc426e85f0299 *tarballs/victframework-kernel-0.3.1.tgz
+47d7b76f519736cbd8ade8eeb258141b695bcd19a75c8a1af726423980f675fb *tarballs/victframework-renderer-svelte-0.3.1.tgz
+f999bda7c13d8079a3ef29be494c4d52eb378a9b9725cb8a538a51cfbdebad9a *tarballs/victframework-runtime-0.3.1.tgz
+83cfd888ed275663553b2f57ecdb25645458056fc3d97e98a25267ad41a556d8 *tarballs/victframework-scaffolder-0.3.1.tgz
+4939f86f0632cc1437676b04f0ebb00dffe90bae78323d261b6afd613544ae15 *tarballs/victframework-sdk-0.3.1.tgz
+23452ceb5ba5e0371ca3f903b3397b9014fa1ab44108861237026fde7030957e *tarballs/victframework-store-sqlite-0.3.1.tgz
+37067c621a21860a9577b7cdf3468c4bd0422dedf0aea9514750209b9f321f10 *tarballs/victframework-ui-0.3.1.tgz
+038818af4e9f91bea76ad1ddc1357bee0c767cbbe254ba8eb8876f8951038b21 *tarballs/victframework-ui-svelte-0.3.1.tgz

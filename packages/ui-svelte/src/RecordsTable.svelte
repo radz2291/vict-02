@@ -126,7 +126,7 @@
               </th>
             {/each}
             {#if intent.rowAction !== undefined}
-              <th scope="col"><span class="vict-ui-table__actions-heading">{intent.rowAction.label}</span></th>
+              <th scope="col" class="vict-ui-table__actions-heading">{intent.rowAction.label}</th>
             {/if}
           </tr>
         </thead>
