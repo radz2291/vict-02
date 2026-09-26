@@ -6,7 +6,7 @@
  * Derives the release set from the ACTUAL publishable manifests and proves
  * it equals the RECORDED release set in `docs/RELEASE-COMPATIBILITY.md`:
  *
- *   1. the publishable inventory is exactly the recorded 13-package set;
+ *   1. the publishable inventory is exactly the recorded 15-package set;
  *   2. every member carries the ONE coherent release-set version;
  *   3. every internal `@victframework/*` dependency is an EXACT pin of the
  *      same release-set version — no ranges, no `workspace:`/`file:`/`git`
@@ -44,6 +44,8 @@ const RELEASE_PACKAGES = [
   'sdk',
   'server',
   'store-sqlite',
+  'ui',
+  'ui-svelte',
 ];
 
 let failures = 0;

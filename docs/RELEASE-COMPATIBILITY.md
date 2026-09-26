@@ -155,6 +155,25 @@
 > truthful publication event; the set's evidence chain is intact and AWAITS
 > FRESH INDEPENDENT RE-VERIFICATION
 > (`docs/report/VICT-M-1-CANDIDATE-EVIDENCE-RECOVERY.md`).
+>
+> **Coordinated release set 0.3.1 (amended 2026-09-26, 15 members —
+> PREPARED; NOT PUBLISHED):** the current compatible release-set record in
+> §2 below carries the frozen-contract amendment of 2026-09-26 (trusted-
+> publishing contract §14): the repository's P1–P5 UI foundation added
+> `@victframework/ui` (neutral, renderer-agnostic UI vocabulary) and
+> `@victframework/ui-svelte` (the permanent Svelte `ApplicationRenderer`,
+> independently verified in P5 with verdict `P5 ARCHITECTURE VERIFIED —
+> RELEASE INTEGRATION PERMITTED`), while `@victframework/renderer-svelte`
+> is RETAINED in the set as a pure compatibility facade during its
+> documented deprecation window — a 15-member set, NOT 14. The
+> pre-amendment prepared 13-member `0.3.1` record (contentId
+> `v1_1c695280…`) was superseded by this amendment BEFORE any publication
+> and was never published to the registry; it is superseded, not a
+> registry lineage entry. The amended identity below was independently
+> re-derived with the frozen §2 algorithm from the actual manifests.
+> Release integration of the amended set (validation-only run, candidate
+> publication, trust extension for the two new members) is a separate
+> later step under the amended contract.
 
 ## 1. Registry identity and namespace decision
 
@@ -178,7 +197,7 @@ new set. Nothing is ever unpublished, re-published, or mutated.
 {
   "vict-release-set": {
     "identity": "vict-release-set@1/0.3.1",
-    "contentId": "v1_1c695280d3afec5e91bfc75d3c99a5a85bc27f6d91127c4d0ce7bd51563c2583",
+    "contentId": "v1_3a82c0651bb4b0d554009c87ffe4b3038cf8c51b208648572caf510373fdafaa",
     "contentIdAlgorithm": "sha256 over the sorted newline-joined 'name@version' list of the exact member set, prefixed v1_",
     "version": "0.3.1",
     "access": "public",
@@ -197,11 +216,25 @@ new set. Nothing is ever unpublished, re-published, or mutated.
       "@victframework/scaffolder": "0.3.1",
       "@victframework/sdk": "0.3.1",
       "@victframework/server": "0.3.1",
-      "@victframework/store-sqlite": "0.3.1"
+      "@victframework/store-sqlite": "0.3.1",
+      "@victframework/ui": "0.3.1",
+      "@victframework/ui-svelte": "0.3.1"
     }
   }
 }
 ```
+
+Amendment provenance (2026-09-26): the member set above is the amended
+15-package coordinated set (trusted-publishing contract §14). The
+pre-amendment prepared record of the SAME `0.3.1` version line carried 13
+members with contentId
+`v1_1c695280d3afec5e91bfc75d3c99a5a85bc27f6d91127c4d0ce7bd51563c2583`;
+that prepared identity was never published and is superseded — changing
+the member set creates a NEW set identity per the immutability rule
+above, and this §2 record is the live prepared record for the next
+release. The contentId was independently re-derived from the actual
+manifests with the frozen algorithm (`scripts/lib/release-set.mjs`
+`deriveReleaseSetContentId`) at amendment time.
 
 The consistency gate `npm run verify:release-set`
 (`scripts/check-release-set.mjs`) re-derives every value above from the
@@ -340,11 +373,12 @@ installable by exact pin regardless of which set `latest` points to.
 ## 3. Dependency graph and exact pins
 
 All intra-VICT dependencies inside the release set are EXACT pins of
-`0.3.1-rc.1` — no ranges, no `workspace:`/`file:`/`git` specifiers in any
-published manifest. Verified dependency direction (acyclic):
+`0.3.1` — no ranges, no `workspace:`/`file:`/`git` specifiers in any
+published manifest. Verified dependency direction (acyclic; the two
+members added by the 2026-09-26 contract amendment §14 are marked):
 
 ```text
-@victframework/contracts
+@victframework/contracts            (no internal dependencies)
   └─ @victframework/sdk
        ├─ @victframework/kernel
        │    └─ @victframework/runtime
@@ -353,16 +387,19 @@ published manifest. Verified dependency direction (acyclic):
        │         │    └─ (server, mastra depend on control)
        │         └─ @victframework/mastra  (optional adapter; pinned @mastra/* 1.64.0 / 1.28.2 / 1.22.3 / 1.17.5)
        └─ @victframework/application
-            ├─ @victframework/renderer-svelte  (Svelte 5 peer)
             └─ @victframework/appdata-sqlite
+@victframework/ui                   (no internal dependency — ADDED 2026-09-26)
+  └─ @victframework/ui-svelte       (depends on ui + application + sdk; Svelte 5 peer; the permanent Svelte ApplicationRenderer — ADDED 2026-09-26)
+       └─ @victframework/renderer-svelte  (compatibility facade: depends ONLY on ui-svelte and re-exports its bindings; retained in the set during its deprecation window)
 @victframework/server   (runtime + control + application + store-sqlite)
 @victframework/cli      (HTTP client only; server dependency is test/dev-only)
 @victframework/scaffolder (no internal runtime dependencies)
 ```
 
-Publication MUST follow dependency-topological order so every consumer
-install resolves: `contracts → sdk → kernel → runtime → store-sqlite →
-application → renderer-svelte → appdata-sqlite → scaffolder → control →
+Publication MUST follow dependency-topological order (frozen contract
+§5, as amended 2026-09-26) so every consumer install resolves:
+`contracts → sdk → kernel → runtime → store-sqlite → application → ui →
+ui-svelte → renderer-svelte → appdata-sqlite → scaffolder → control →
 mastra → server → cli`.
 
 Examples (`examples/*`) and capability packs (`packs/*`) remain
@@ -374,7 +411,7 @@ workspace-private and are NOT part of the release set.
 | --- | --- | --- |
 | Node.js `>=22.13.0` | Declared in every published manifest (`engines.node`) | `node:sqlite` floor (OPEN-001); full verification ladder executed on Node v22.13.1 (Windows) |
 | Node 24.x | Compatible target (not the declared floor) | Stage 06 authoritative evidence ran on Node v24.19.0 (Linux/WSL2) |
-| Browsers | `@victframework/application` is browser-safe; `@victframework/renderer-svelte` supports browser + SSR with Svelte as a peer. All other members are Node-side | Stage 05 browser-safety boundary (reference §5.1) |
+| Browsers | `@victframework/application` is browser-safe; `@victframework/ui-svelte` (and the `@victframework/renderer-svelte` facade re-exporting it) supports browser + SSR with Svelte as a peer; `@victframework/ui` is environment-neutral. All other members are Node-side | Stage 05 browser-safety boundary (reference §5.1); P5 QA real-browser harness and packed consumers |
 
 `@victframework/mastra` additionally pins exact Mastra package versions
 (`@mastra/core` 1.64.0, `@mastra/memory` 1.28.2, `@mastra/libsql`
@@ -399,6 +436,14 @@ npm install @victframework/contracts@0.3.0 @victframework/sdk@0.3.0 \
 Integrity mechanism: the consumer's lockfile records the SHA-512
 `integrity` hash of every installed tarball; npm verifies every install
 against it. `npm ci` reproduces the exact recorded graph.
+
+The amended 15-member set (the `0.3.1` line onward, contract §14) adds
+`@victframework/ui` and `@victframework/ui-svelte` to this install list
+at the set's exact version — same exact-pin discipline. The command
+above shows the latest PUBLISHED stable set (`0.3.0`, the 13-member
+predecessor) for consumers pinning published versions today; ui and
+ui-svelte enter the installable set with the first publication of the
+amended `0.3.1` line.
 
 Rollback: pin the prior release-set identity (all prior published
 versions remain in the registry; nothing is unpublished or mutated).
@@ -474,10 +519,14 @@ authentication and is NOT the ordinary path:
 
 CI gate rule: `publish → verify:release-consumer -- --registry` must
 pass before a release-set identity is recorded as live in this document.
-Trusted-publisher configuration is per package (all 13 trust the exact
-repository + workflow filename `release.yml`); it was bootstrapped once
-in a bounded interactive session with
-`scripts/trust-bootstrap.mjs` and is verified through `npm trust list`.
+Trusted-publisher configuration is per package: all 15 members of the
+amended set trust the exact repository + workflow filename `release.yml`
+(contract §14, 2026-09-26). The original 13 were bootstrapped once in a
+bounded interactive session with `scripts/trust-bootstrap.mjs`; the two
+members added by the amendment extend the SAME exact relationship
+idempotently through the same tool (already-exact relationships are
+skipped, never replaced), and every relationship is verified through
+`npm trust list`.
 Workflow filename and repository identity are security-sensitive and
 cannot be casually renamed. Account-, organization-, and package-
 governance changes may still require interactive 2FA; ordinary
@@ -516,8 +565,9 @@ candidate tag removed — never a mixed set.
 
 An installed consumer has NO dependency on the VICT source checkout: all
 published packages ship only their declared `files` (built `dist`
-output, plus the renderer's Svelte sources and theme CSS by design), all
-internal dependencies resolve as exact registry versions, and
+output, plus the Svelte renderer's component sources and theme CSS by
+design — `ui-svelte`'s `src`/`styles.css` and the facade's re-export
+surface and `theme.css`), all internal dependencies resolve as exact registry versions, and
 `scripts/verify-release-consumer.mjs` proves installation, typecheck,
 composition, and execution in a temp directory outside the repository
 with a no-monorepo-leakage probe.

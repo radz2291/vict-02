@@ -197,4 +197,6 @@ if (findings.length > 0) {
   for (const finding of findings) console.error(`  - ${finding}`);
   process.exit(1);
 }
-console.log('\nscan-release-tarballs: ALL 13 TARBALLS CLEAN (identity, paths, manifest, content)');
+console.log(
+  `\nscan-release-tarballs: ALL ${inventory.order.length} TARBALLS CLEAN (identity, paths, manifest, content)`,
+);

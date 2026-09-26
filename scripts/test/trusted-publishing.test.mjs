@@ -162,10 +162,16 @@ describe('npmVersionSatisfiesMinimum', () => {
 describe('deriveReleaseInventory (real repository)', () => {
   const inventory = deriveReleaseInventory(repoRoot);
 
-  it('derives exactly the frozen 13-package set with no problems', () => {
+  it('derives exactly the frozen 15-package set (contract §5 as amended 2026-09-26, §14) with no problems', () => {
     expect(inventory.problems).toEqual([]);
     expect(inventory.order).toEqual(FROZEN_PUBLISH_ORDER);
     expect(inventory.order).toHaveLength(EXPECTED_RELEASE_PACKAGE_COUNT);
+    expect(EXPECTED_RELEASE_PACKAGE_COUNT).toBe(15);
+    // The amended members sit exactly where the contract amendment placed
+    // them: ui immediately before its only internal dependent.
+    expect(inventory.order[6]).toBe('@victframework/ui');
+    expect(inventory.order[7]).toBe('@victframework/ui-svelte');
+    expect(inventory.order[8]).toBe('@victframework/renderer-svelte');
   });
 
   it('shares ONE coherent release-set version of the coordinated shape', () => {
@@ -180,15 +186,19 @@ describe('deriveReleaseInventory (real repository)', () => {
 describe('deriveReleaseInventory (synthetic drift fixtures)', () => {
   // A minimal packages/ fixture: only the frozen-order edges matter, so a
   // three-package inventory is enough to exercise the ordering rule.
-  function makeFixture(manifests) {
+  function makeFixtureRoot(manifests) {
     const root = mkdtempSync(join(tmpdir(), 'vict-release-set-fixture-'));
+    for (const [name, version, extra] of manifests) {
+      const dirName = name.replace('@victframework/', '').replace('/', '_');
+      const dir = join(root, 'packages', dirName);
+      mkdirSync(dir, { recursive: true });
+      writeFileSync(join(dir, 'package.json'), JSON.stringify({ name, version, ...extra }));
+    }
+    return root;
+  }
+  function makeFixture(manifests) {
+    const root = makeFixtureRoot(manifests);
     try {
-      for (const [name, version, extra] of manifests) {
-        const dirName = name.replace('@victframework/', '').replace('/', '_');
-        const dir = join(root, 'packages', dirName);
-        mkdirSync(dir, { recursive: true });
-        writeFileSync(join(dir, 'package.json'), JSON.stringify({ name, version, ...extra }));
-      }
       return deriveReleaseInventory(root);
     } finally {
       rmSync(root, { recursive: true, force: true });
@@ -205,7 +215,59 @@ describe('deriveReleaseInventory (synthetic drift fixtures)', () => {
     ]);
     const problems = fixture.problems.join('\n');
     expect(problems).toContain('frozen publication order violated');
-    expect(problems).toContain('expected exactly 13');
+    expect(problems).toContain('expected exactly 15');
+  });
+
+  it('reports an extra publishable member outside the frozen inventory', () => {
+    const fixture = makeFixture([
+      ['@victframework/contracts', '1.0.0', {}],
+      ['@victframework/ghost-package', '1.0.0', {}],
+    ]);
+    const problems = fixture.problems.join('\n');
+    expect(problems).toContain(
+      "'@victframework/ghost-package' is not in the frozen 15-package inventory",
+    );
+    expect(problems).toContain('release-set inventory is 2 packages, expected exactly 15');
+  });
+
+  it('reports a missing frozen inventory member', () => {
+    const fixture = makeFixture([['@victframework/contracts', '1.0.0', {}]]);
+    const problems = fixture.problems.join('\n');
+    expect(problems).toContain(
+      "frozen inventory member '@victframework/sdk' has no publishable manifest",
+    );
+    expect(problems).toContain('release-set inventory is 1 packages, expected exactly 15');
+  });
+
+  it('reports an internal dependency edge to a non-member', () => {
+    const fixture = makeFixture([
+      ['@victframework/contracts', '1.0.0', { dependencies: { '@victframework/ghost': '1.0.0' } }],
+    ]);
+    expect(fixture.problems.join('\n')).toContain(
+      "'@victframework/contracts' depends on internal '@victframework/ghost', which is not a release-set member",
+    );
+  });
+
+  it('honors explicit inventory-rule overrides (historical evidence bindings only)', () => {
+    // The release-evidence ladder verifies the PRE-amendment 13-member
+    // bound candidate with the SAME engine; the override must relax only
+    // the recorded rule, never the default release path.
+    const historicalOrder = ['@victframework/alpha', '@victframework/beta', '@victframework/gamma'];
+    const root = makeFixtureRoot([
+      ['@victframework/alpha', '1.0.0', {}],
+      ['@victframework/beta', '1.0.0', { dependencies: { '@victframework/alpha': '1.0.0' } }],
+      ['@victframework/gamma', '1.0.0', { dependencies: { '@victframework/beta': '1.0.0' } }],
+    ]);
+    try {
+      const overridden = deriveReleaseInventory(root, {
+        expectedCount: 3,
+        frozenOrder: historicalOrder,
+      });
+      expect(overridden.problems).toEqual([]);
+      expect(overridden.order).toEqual(historicalOrder);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
   });
 
   it('reports a non-member manifest name', () => {
@@ -635,6 +697,14 @@ describe('release.yml workflow definition', () => {
     expect(publishStep.if).toBe('${{ inputs.validate_only != true }}');
   });
 
+  it('carries the AMENDED 15-package wording (contract §14, 2026-09-26) with no stale 13-package claims', () => {
+    expect(raw).toContain('coordinated 15-package `@victframework/*` set');
+    expect(raw).toContain('must equal all 15 manifests');
+    expect(raw).toContain('Build all 15 packages');
+    // No normative 13-package claim survives anywhere in the workflow.
+    expect(raw).not.toMatch(/13-package|all 13\b|Build all 13/);
+  });
+
   it('passes release inputs as environment variables, never by shell interpolation', () => {
     const steps = doc.jobs['publish-release-set'].steps;
     const inputByEnv = {
@@ -664,5 +734,72 @@ describe('release.yml workflow definition', () => {
     ]) {
       expect(engine).toContain(envKey);
     }
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Trust bootstrap (contract §11 as amended) — the amended 15-package
+// inventory must flow into the bootstrap, and the two packages added by
+// the 2026-09-26 §14 amendment must be treated EXACTLY like the original
+// thirteen (same argv shape, same allowlist, same order position rules).
+// ---------------------------------------------------------------------------
+
+describe('trust-bootstrap amended inventory coupling', () => {
+  const bootstrap = readFileSync(join(repoRoot, 'scripts', 'trust-bootstrap.mjs'), 'utf8');
+
+  it('derives its exact allowlist from the shared amended release-set rules', () => {
+    expect(bootstrap).toContain("from './lib/release-set.mjs'");
+    expect(bootstrap).toContain('deriveReleaseInventory(repoRoot)');
+    expect(bootstrap).toContain('EXPECTED_RELEASE_PACKAGE_COUNT');
+    expect(bootstrap).toContain('FROZEN_PUBLISH_ORDER[index]');
+    // No stale hardcoded 13 anywhere in the bootstrap.
+    expect(bootstrap).not.toMatch(/exactly 13|ALL 13|13-package/);
+  });
+
+  it('plans the EXACT same trust relationship for every member, including the two amended packages', () => {
+    const original = [
+      '@victframework/contracts',
+      '@victframework/sdk',
+      '@victframework/kernel',
+      '@victframework/runtime',
+      '@victframework/store-sqlite',
+      '@victframework/application',
+      '@victframework/renderer-svelte',
+      '@victframework/appdata-sqlite',
+      '@victframework/scaffolder',
+      '@victframework/control',
+      '@victframework/mastra',
+      '@victframework/server',
+      '@victframework/cli',
+    ];
+    const amended = ['@victframework/ui', '@victframework/ui-svelte'];
+    const shape = (name) => {
+      const argv = trustGithubArgv(name, FROZEN_TRUST_TARGET);
+      return argv.map((part) => (part === name ? '<package>' : part));
+    };
+    const reference = shape(original[0]);
+    for (const name of [...original, ...amended]) {
+      expect(trustGithubArgv(name, FROZEN_TRUST_TARGET)).toEqual([
+        'trust',
+        'github',
+        name,
+        '--repo',
+        'radz2291/vict-02',
+        '--file',
+        'release.yml',
+        '--allow-publish',
+        '--yes',
+      ]);
+      expect(shape(name)).toEqual(reference);
+    }
+    expect(amended.every((name) => FROZEN_PUBLISH_ORDER.includes(name))).toBe(true);
+    // Position invariants: each amended member sits AFTER everything it
+    // depends on and the facade stays directly after ui-svelte.
+    const pos = new Map(FROZEN_PUBLISH_ORDER.map((name, index) => [name, index]));
+    expect(pos.get('@victframework/ui')).toBeLessThan(pos.get('@victframework/ui-svelte'));
+    expect(pos.get('@victframework/ui-svelte')).toBeLessThan(
+      pos.get('@victframework/renderer-svelte'),
+    );
+    expect(pos.get('@victframework/application')).toBeLessThan(pos.get('@victframework/ui-svelte'));
   });
 });

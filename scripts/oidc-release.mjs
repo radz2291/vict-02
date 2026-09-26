@@ -216,7 +216,7 @@ function fetchSync(url) {
  * The frozen resume split (contract §10): with a resume point, every
  * member BEFORE it must already exist (integrity proof happens where the
  * local tarball exists), and every member AT/AFTER it must be
- * unpublished. Without a resume point, all 13 must be unpublished.
+ * unpublished. Without a resume point, all 15 must be unpublished.
  */
 function validateUnpublishedGuard(inventory, version, resumeFrom) {
   const order = inventory.order;
@@ -334,7 +334,7 @@ function commandValidate(args) {
       `requested version '${version}' does not equal the coherent manifest version '${inventory.version}'.`,
     );
   }
-  ok(`release-set inventory coherent: 13 packages at ${version}`);
+  ok(`release-set inventory coherent: ${inventory.order.length} packages at ${version}`);
 
   const setCheck = run('node', [join(scriptDir, 'check-release-set.mjs')], {
     capture: true,
@@ -371,7 +371,7 @@ function commandPack(args) {
     }
   }
   matchPackDir(repoRoot, packDir, inventory);
-  ok(`packed exactly 13 canonical tarballs into ${packDir}`);
+  ok(`packed exactly ${inventory.order.length} canonical tarballs into ${packDir}`);
 }
 
 function commandPublish(args) {
@@ -480,7 +480,7 @@ function commandPublish(args) {
     console.error('Successful publications are preserved (never unpublished, never mutated).');
     fail(`publication failed at ${stopped.name}: ${stopped.stderr.slice(0, 500)}`);
   }
-  console.log(`\noidc-release: ALL 13 PACKAGES PUBLISHED under '${tag}'`);
+  console.log(`\noidc-release: ALL ${inventory.order.length} PACKAGES PUBLISHED under '${tag}'`);
   console.log(`release-set identity: vict-release-set@1/${version} (${contentId.slice(0, 18)}…)`);
 }
 
@@ -597,7 +597,7 @@ function commandVerifyRegistry(args) {
   }
 
   if (failures > 0) fail(`registry verification failed for ${failures} package(s).`);
-  console.log('\noidc-release: REGISTRY STATE VERIFIED for all 13 packages');
+  console.log(`\noidc-release: REGISTRY STATE VERIFIED for all ${inventory.order.length} packages`);
 }
 
 // ---- dispatch ---------------------------------------------------------------

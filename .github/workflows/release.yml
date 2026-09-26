@@ -10,7 +10,7 @@ name: VICT coordinated release-set publication
 #   credential through the OIDC exchange automatically.
 # - The workflow filename is security-sensitive: every package's trust
 #   relationship binds to `release.yml` EXACTLY. Do not rename.
-# - Publishes the coordinated 13-package `@victframework/*` set as ONE
+# - Publishes the coordinated 15-package `@victframework/*` set as ONE
 #   immutable unit from an exact pushed main-lineage commit, in frozen
 #   dependency-topological order, never overwriting or unpublishing.
 # - A `validate_only` run exercises the full pre-publication chain but
@@ -24,7 +24,7 @@ on:
         required: true
         type: string
       version:
-        description: 'Coordinated release-set version (X.Y.Z or X.Y.Z-rc.N; must equal all 13 manifests)'
+        description: 'Coordinated release-set version (X.Y.Z or X.Y.Z-rc.N; must equal all 15 manifests)'
         required: true
         type: string
       npm_tag:
@@ -105,7 +105,7 @@ jobs:
           npm run lint
           npm run typecheck
 
-      - name: Build all 13 packages (build precedes the full suite — contract §8.1)
+      - name: Build all 15 packages (build precedes the full suite — contract §8.1)
         run: npm run build
 
       - name: Full test suite, once
