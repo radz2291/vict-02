@@ -56,6 +56,7 @@ export const requestsApplication: ApplicationDefinition = {
   ...shared,
   id: 'app.requests',
   name: 'Requests',
+  components: [{ componentId: 'cmp.request-planner', revision: '1' }],
   composition: {
     navigation: 'sidebar',
     contentWidth: 'wide',
@@ -75,6 +76,12 @@ export const requestsApplication: ApplicationDefinition = {
       path: '/requests/feedback',
       screenId: 's.feedback',
       nav: { label: 'Save feedback review', group: 'Team intake', order: 2 },
+    },
+    {
+      id: 'schedule',
+      path: '/requests/schedule',
+      screenId: 's.schedule',
+      nav: { label: 'Plan a request', group: 'Team intake', order: 3 },
     },
   ],
   screens: [
@@ -105,6 +112,26 @@ export const requestsApplication: ApplicationDefinition = {
       ),
     },
     feedbackReview,
+    {
+      id: 's.schedule',
+      title: 'Plan a request',
+      composition: { contentWidth: 'standard', density: 'comfortable' },
+      layout: [
+        {
+          name: 'planner',
+          appearance: 'panel',
+          surfaces: [
+            {
+              role: 'component',
+              id: 'requests.planner',
+              componentId: 'cmp.request-planner',
+              revision: '1',
+              props: { submitActionId: 'act.create' },
+            },
+          ],
+        },
+      ],
+    },
   ],
   forms: [
     requestForm,
@@ -261,6 +288,7 @@ export function compileCompositionPlan(application: ApplicationDefinition) {
     application,
     resources: resourceList,
     contracts: [...registryContracts],
+    components: [{ componentId: 'cmp.request-planner', revision: '1' }],
   });
   if (!result.ok) throw new Error(JSON.stringify(result.issues));
   return result.plan;

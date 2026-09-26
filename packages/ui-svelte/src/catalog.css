@@ -1,0 +1,773 @@
+/* Optional catalog layer; load after styles.css. Supported Bits UI 2 parts API.
+   Every rule is scoped, so existing renderer surfaces keep their accepted design. */
+.vict-controls {
+  font: var(--vict-font-sizeBase)/1.6 var(--vict-font-family);
+  color: var(--vict-color-text);
+  min-width: 0;
+  --vict-control-selected: color-mix(
+    in srgb,
+    var(--vict-color-accent) 10%,
+    var(--vict-color-surface)
+  );
+}
+.vict-controls *,
+.vict-controls *::before,
+.vict-controls *::after {
+  box-sizing: border-box;
+}
+.vict-controls :where(button, input, select, textarea) {
+  font: inherit;
+}
+.vict-controls :where(button, [role='button']) {
+  touch-action: manipulation;
+}
+.vict-controls :focus-visible {
+  outline: 3px solid var(--vict-color-focusRing);
+  outline-offset: 3px;
+}
+.vict-controls [hidden] {
+  display: none !important;
+}
+.vict-controls :where([data-disabled], :disabled) {
+  opacity: 0.48;
+  cursor: not-allowed;
+}
+.vict-controls :where(h2, h3, h4, p) {
+  margin-block: 0 12px;
+}
+.vict-controls a {
+  color: var(--vict-color-accent);
+  text-underline-offset: 3px;
+}
+.vict-controls label.vict-control-row {
+  min-height: 32px;
+}
+.vict-controls .vict-field-error {
+  display: block;
+  margin-top: 6px;
+}
+.vict-control-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+}
+.vict-control-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  min-width: 0;
+}
+.vict-control-label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.vict-control-help {
+  color: var(--vict-color-textMuted);
+  font-size: 13px;
+}
+.vict-control-panel {
+  padding: 16px;
+  border: 1px solid var(--vict-color-border);
+  border-radius: var(--vict-radius-base);
+  background: var(--vict-color-surface);
+}
+.vict-controls
+  :where(
+    [data-button-root],
+    [data-dialog-trigger],
+    [data-dialog-close],
+    [data-dialog-cancel],
+    [data-dialog-action],
+    [data-alert-dialog-trigger],
+    [data-alert-dialog-cancel],
+    [data-alert-dialog-action],
+    :is([data-dropdown-menu-trigger], [data-context-menu-trigger], [data-menubar-trigger]),
+    [data-menubar-trigger],
+    :is([data-select-trigger], [data-combobox-trigger]),
+    [data-combobox-trigger],
+    [data-popover-trigger],
+    [data-popover-close],
+    [data-tooltip-trigger],
+    [data-collapsible-trigger],
+    [data-navigation-menu-trigger],
+    [data-pagination-page],
+    [data-pagination-prev],
+    [data-pagination-next],
+    [data-toggle-root],
+    [data-toggle-group-item],
+    [data-toolbar-button],
+    [data-toolbar-group-item]
+  ) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: var(--vict-control-height);
+  padding: 8px 14px;
+  border: 1px solid var(--vict-color-border);
+  border-radius: 7px;
+  background: var(--vict-color-surface);
+  color: var(--vict-color-text);
+  cursor: pointer;
+  text-decoration: none;
+  max-width: 100%;
+}
+.vict-controls
+  :where(
+    [data-state='on'],
+    [data-state='active'],
+    [data-selected],
+    [aria-pressed='true'],
+    [aria-current='page']
+  ) {
+  background-color: var(--vict-control-selected);
+  color: var(--vict-color-accent);
+}
+.vict-controls .vict-btn {
+  background: var(--vict-color-accent);
+  color: var(--vict-color-accentContrast);
+  border-color: transparent;
+}
+.vict-controls .vict-btn--secondary {
+  background: var(--vict-color-surface);
+  color: var(--vict-color-text);
+  border-color: var(--vict-color-border);
+}
+.vict-controls .vict-btn--danger {
+  background: var(--vict-color-danger);
+  color: white;
+}
+.vict-controls .vict-btn--quiet {
+  background: transparent;
+  color: var(--vict-color-textMuted);
+}
+.vict-controls select.vict-select {
+  padding: 8px 12px;
+  min-height: 40px;
+  border: 1px solid var(--vict-color-border);
+  border-radius: 7px;
+  background: var(--vict-color-surface);
+}
+.vict-controls
+  :where(
+    :is([data-dropdown-menu-content], [data-context-menu-content], [data-menubar-content]),
+    :is(
+      [data-dropdown-menu-sub-content],
+      [data-context-menu-sub-content],
+      [data-menubar-sub-content]
+    ),
+    :is([data-select-content], [data-combobox-content]),
+    [data-popover-content],
+    [data-link-preview-content]
+  ) {
+  z-index: 60;
+  padding: 6px;
+  min-width: min(200px, calc(100vw - 32px));
+  max-width: calc(100vw - 32px);
+  max-height: min(360px, var(--bits-floating-available-height, 70dvh));
+  overflow: auto;
+  background: var(--vict-color-surface);
+  border: 1px solid var(--vict-color-border);
+  border-radius: var(--vict-radius-base);
+  box-shadow: var(--vict-elevation-high);
+}
+.vict-controls
+  :where(
+    :is([data-dropdown-menu-item], [data-context-menu-item], [data-menubar-item]),
+    :is(
+      [data-dropdown-menu-sub-trigger],
+      [data-context-menu-sub-trigger],
+      [data-menubar-sub-trigger]
+    ),
+    :is(
+      [data-dropdown-menu-checkbox-item],
+      [data-context-menu-checkbox-item],
+      [data-menubar-checkbox-item]
+    ),
+    :is([data-dropdown-menu-radio-item], [data-context-menu-radio-item], [data-menubar-radio-item]),
+    :is([data-select-item], [data-combobox-item]),
+    [data-command-item],
+    [data-command-link-item]
+  ) {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 40px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  color: inherit;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+.vict-controls :where([data-highlighted], [data-command-item][data-selected='true']) {
+  background: var(--vict-control-selected);
+  color: var(--vict-color-accent);
+}
+.vict-controls
+  :where(
+    :is(
+      [data-dropdown-menu-checkbox-item],
+      [data-context-menu-checkbox-item],
+      [data-menubar-checkbox-item]
+    ),
+    :is([data-dropdown-menu-radio-item], [data-context-menu-radio-item], [data-menubar-radio-item]),
+    :is([data-select-item], [data-combobox-item])
+  )::before {
+  content: '';
+  width: 14px;
+  flex: 0 0 14px;
+}
+.vict-controls
+  :where(
+    :is(
+      [data-dropdown-menu-checkbox-item],
+      [data-context-menu-checkbox-item],
+      [data-menubar-checkbox-item]
+    )[data-state='checked'],
+    :is(
+      [data-dropdown-menu-radio-item],
+      [data-context-menu-radio-item],
+      [data-menubar-radio-item]
+    )[data-state='checked'],
+    :is([data-select-item], [data-combobox-item])[data-selected]
+  )::before {
+  content: '✓';
+}
+.vict-controls
+  :where(
+    :is(
+      [data-dropdown-menu-sub-trigger],
+      [data-context-menu-sub-trigger],
+      [data-menubar-sub-trigger]
+    )
+  )::after {
+  content: '›';
+  margin-left: auto;
+}
+.vict-controls
+  :where(
+    :is(
+      [data-dropdown-menu-group-heading],
+      [data-context-menu-group-heading],
+      [data-menubar-group-heading]
+    ),
+    :is([data-select-group-label], [data-combobox-group-label]),
+    [data-command-group-heading]
+  ) {
+  padding: 8px 12px;
+  color: var(--vict-color-textMuted);
+  font-size: 12px;
+  font-weight: 650;
+}
+.vict-controls
+  :where(
+    :is([data-dropdown-menu-separator], [data-context-menu-separator], [data-menubar-separator]),
+    [data-separator-root],
+    [data-command-separator]
+  ) {
+  height: 1px;
+  border: 0;
+  background: var(--vict-color-border);
+  margin-block: 8px;
+}
+.vict-controls [data-separator-root][data-orientation='vertical'] {
+  width: 1px;
+  height: 28px;
+  margin-inline: 4px;
+}
+.vict-controls
+  :where(
+    [data-command-input],
+    :is([data-select-input], [data-combobox-input]),
+    [data-combobox-input]
+  ) {
+  min-width: 0;
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--vict-color-border);
+  border-radius: 7px;
+  background: var(--vict-color-surface);
+  color: var(--vict-color-text);
+}
+.vict-controls [data-command-root] {
+  border: 1px solid var(--vict-color-border);
+  border-radius: var(--vict-radius-base);
+  overflow: hidden;
+  background: var(--vict-color-surface);
+}
+.vict-controls [data-command-input] {
+  border: 0;
+  border-bottom: 1px solid var(--vict-color-border);
+  border-radius: 0;
+}
+.vict-controls [data-command-list] {
+  max-height: 270px;
+  overflow: auto;
+  padding: 6px;
+}
+.vict-controls :where([data-command-empty], [data-command-loading]) {
+  padding: 16px;
+  color: var(--vict-color-textMuted);
+}
+.vict-controls [data-accordion-item] {
+  border-bottom: 1px solid var(--vict-color-border);
+}
+.vict-controls [data-accordion-header] {
+  margin: 0;
+}
+.vict-controls [data-accordion-trigger] {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  padding: 14px 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-align: start;
+  font-weight: 600;
+  cursor: pointer;
+}
+.vict-controls [data-accordion-trigger]::after {
+  content: '+';
+}
+.vict-controls [data-accordion-trigger][data-state='open']::after {
+  content: '−';
+}
+.vict-controls :where([data-accordion-content], [data-collapsible-content]) {
+  padding-block: 4px 16px;
+}
+.vict-controls :where([data-dialog-overlay], [data-alert-dialog-overlay]) {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  background: #20323966;
+}
+.vict-controls :where([data-dialog-content], [data-alert-dialog-content]) {
+  position: fixed;
+  z-index: 81;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(480px, calc(100vw - 32px));
+  max-height: calc(100dvh - 32px);
+  overflow: auto;
+  padding: 24px;
+  border: 1px solid var(--vict-color-border);
+  border-radius: 14px;
+  background: var(--vict-color-surface);
+  box-shadow: var(--vict-elevation-high);
+}
+.vict-controls :where([data-dialog-title], [data-alert-dialog-title]) {
+  display: block;
+  margin: 0 0 10px;
+  font-size: 20px;
+  font-weight: 650;
+}
+.vict-controls :where([data-dialog-description], [data-alert-dialog-description]) {
+  margin: 0 0 20px;
+  color: var(--vict-color-textMuted);
+}
+.vict-controls :where([data-dialog-action], [data-alert-dialog-action]) {
+  background: var(--vict-color-danger);
+  color: white;
+  border-color: transparent;
+}
+.vict-controls [data-avatar-root] {
+  display: inline-flex;
+  position: relative;
+  flex: 0 0 44px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--vict-control-selected);
+  color: var(--vict-color-accent);
+}
+.vict-controls :where([data-avatar-image], [data-avatar-fallback]) {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.vict-controls [data-avatar-fallback] {
+  display: grid;
+  place-items: center;
+  font-weight: 650;
+}
+.vict-controls :where([data-checkbox-root], [data-radio-group-item]) {
+  display: inline-grid;
+  place-items: center;
+  vertical-align: middle;
+  width: 22px;
+  height: 22px;
+  flex: 0 0 22px;
+  padding: 0;
+  border: 1px solid var(--vict-color-textMuted);
+  border-radius: 5px;
+  background: var(--vict-color-surface);
+  color: var(--vict-color-accentContrast);
+  cursor: pointer;
+}
+.vict-controls [data-radio-group-item] {
+  border-radius: 50%;
+}
+.vict-controls
+  :where(
+    [data-checkbox-root][data-state='checked'],
+    [data-checkbox-root][data-state='indeterminate'],
+    [data-radio-group-item][data-state='checked']
+  ) {
+  background: var(--vict-color-accent);
+  border-color: var(--vict-color-accent);
+}
+.vict-controls [data-checkbox-root][data-state='checked']::after {
+  content: '✓';
+}
+.vict-controls [data-checkbox-root][data-state='indeterminate']::after {
+  content: '−';
+}
+.vict-controls [data-radio-group-item][data-state='checked']::after {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--vict-color-accentContrast);
+}
+.vict-controls [data-radio-group-root] {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.vict-controls [data-switch-root] {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 42px;
+  width: 42px;
+  height: 26px;
+  padding: 3px;
+  border: 0;
+  border-radius: 20px;
+  background: var(--vict-color-textMuted);
+  cursor: pointer;
+}
+.vict-controls [data-switch-root][data-state='checked'] {
+  background: var(--vict-color-accent);
+}
+.vict-controls [data-switch-thumb] {
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  background: white;
+  transition: transform 0.12s;
+}
+.vict-controls [data-switch-root][data-state='checked'] [data-switch-thumb] {
+  transform: translateX(16px);
+}
+.vict-controls [data-slider-root] {
+  position: relative;
+  height: 8px;
+  margin: 20px 12px;
+  border-radius: 10px;
+  background: var(--vict-color-border);
+  touch-action: none;
+}
+.vict-controls [data-slider-range] {
+  position: absolute;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--vict-color-accent);
+}
+.vict-controls [data-slider-thumb] {
+  display: block;
+  width: 22px;
+  height: 22px;
+  border: 2px solid var(--vict-color-accent);
+  border-radius: 50%;
+  background: var(--vict-color-surface);
+  top: -7px;
+}
+.vict-controls [data-slider-root][data-orientation='vertical'] {
+  width: 8px;
+  height: 150px;
+}
+.vict-controls [data-slider-root][data-orientation='vertical'] [data-slider-range] {
+  width: 100%;
+  height: auto;
+}
+.vict-controls [data-slider-root][data-orientation='vertical'] [data-slider-thumb] {
+  top: auto;
+  left: -7px;
+}
+.vict-controls :where([data-progress-root], [data-meter-root]) {
+  height: 10px;
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--vict-color-border);
+}
+.vict-metric-fill {
+  height: 100%;
+  width: var(--vict-value, 0%);
+  background: var(--vict-color-accent);
+  border-radius: inherit;
+}
+.vict-controls [data-progress-root][data-state='indeterminate'] .vict-metric-fill {
+  width: 35%;
+  animation: vict-progress 1.5s infinite alternate ease-in-out;
+}
+@keyframes vict-progress {
+  to {
+    transform: translateX(180%);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .vict-controls *,
+  .vict-controls *::before {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+.vict-controls
+  :where(
+    [data-toggle-group-root],
+    [data-toolbar-root],
+    [data-toolbar-group],
+    [data-menubar-root],
+    [data-pagination-root],
+    [data-tabs-list]
+  ) {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.vict-controls [data-tabs-list] {
+  border-bottom: 1px solid var(--vict-color-border);
+}
+.vict-controls [data-tabs-trigger] {
+  padding: 10px 14px;
+  min-height: 42px;
+  background: none;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  color: var(--vict-color-textMuted);
+  cursor: pointer;
+}
+.vict-controls [data-tabs-trigger][data-state='active'] {
+  border-bottom-color: var(--vict-color-accent);
+  color: var(--vict-color-accent);
+  font-weight: 650;
+}
+.vict-controls [data-tabs-content] {
+  padding-top: 16px;
+}
+.vict-controls [data-navigation-menu-root] {
+  position: relative;
+}
+.vict-controls [data-navigation-menu-list] {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+.vict-controls [data-navigation-menu-content] {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 30;
+  width: min(340px, calc(100vw - 48px));
+  padding: 16px;
+  border: 1px solid var(--vict-color-border);
+  border-radius: var(--vict-radius-base);
+  background: var(--vict-color-surface);
+  box-shadow: var(--vict-elevation-high);
+}
+.vict-controls [data-navigation-menu-link] {
+  display: block;
+  padding: 8px;
+  border-radius: 6px;
+  color: var(--vict-color-accent);
+}
+.vict-controls
+  :where([data-date-field-label], [data-date-range-field-label], [data-time-field-label]) {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.vict-controls :where([data-date-field-input], [data-time-field-input]) {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 8px 10px;
+  min-height: 42px;
+  border: 1px solid var(--vict-color-border);
+  border-radius: 7px;
+  background: var(--vict-color-surface);
+  max-width: 100%;
+}
+.vict-controls :where([data-date-field-input], [data-time-field-input])[data-invalid] {
+  border-color: var(--vict-color-danger);
+}
+.vict-controls :where([data-date-field-segment], [data-time-field-segment]) {
+  padding: 1px 2px;
+  border-radius: 3px;
+}
+.vict-controls :where([data-date-field-segment], [data-time-field-segment]):focus {
+  background: var(--vict-control-selected);
+}
+.vict-controls
+  :where(:is([data-calendar-root], [data-range-calendar-root]), [data-range-calendar-root]) {
+  max-width: 100%;
+}
+.vict-controls :is([data-calendar-header], [data-range-calendar-header]) {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.vict-controls :is([data-calendar-heading], [data-range-calendar-heading]) {
+  font-weight: 650;
+}
+.vict-controls
+  :where(
+    :is([data-calendar-prev-button], [data-range-calendar-prev-button]),
+    :is([data-calendar-next-button], [data-range-calendar-next-button])
+  ) {
+  width: 36px;
+  height: 36px;
+  background: transparent;
+  border: 1px solid var(--vict-color-border);
+  border-radius: 7px;
+  color: inherit;
+  font-size: 24px;
+  cursor: pointer;
+}
+.vict-calendar-months {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.vict-controls :is([data-calendar-grid], [data-range-calendar-grid]) {
+  width: 100%;
+  max-width: 320px;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+.vict-controls :is([data-calendar-head-cell], [data-range-calendar-head-cell]) {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--vict-color-textMuted);
+  padding: 6px 0;
+}
+.vict-controls :is([data-calendar-cell], [data-range-calendar-cell]) {
+  padding: 2px;
+  text-align: center;
+}
+.vict-controls :is([data-calendar-day], [data-range-calendar-day]) {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  min-width: 26px;
+  height: 36px;
+  border-radius: 6px;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+}
+.vict-controls :is([data-calendar-day], [data-range-calendar-day])[data-selected] {
+  background: var(--vict-color-accent);
+  color: var(--vict-color-accentContrast);
+}
+.vict-controls :is([data-calendar-day], [data-range-calendar-day])[data-highlighted] {
+  background: var(--vict-control-selected);
+}
+.vict-controls :is([data-calendar-day], [data-range-calendar-day])[data-outside-month] {
+  opacity: 0.4;
+}
+.vict-controls :is([data-calendar-day], [data-range-calendar-day])[data-unavailable] {
+  text-decoration: line-through;
+  color: var(--vict-color-danger);
+}
+.vict-controls :is([data-calendar-day], [data-range-calendar-day])[data-today] {
+  box-shadow: inset 0 0 0 1px var(--vict-color-accent);
+}
+.vict-controls [data-tooltip-content] {
+  z-index: 90;
+  max-width: min(280px, calc(100vw - 32px));
+  padding: 8px 12px;
+  border-radius: 7px;
+  background: var(--vict-color-text);
+  color: var(--vict-color-surface);
+  box-shadow: var(--vict-elevation-low);
+}
+.vict-controls [data-scroll-area-root] {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--vict-color-border);
+  border-radius: 8px;
+}
+.vict-controls [data-scroll-area-viewport] {
+  width: 100%;
+  height: 100%;
+}
+.vict-controls [data-scroll-area-scrollbar] {
+  display: flex;
+  user-select: none;
+  touch-action: none;
+  padding: 2px;
+  width: 10px;
+  background: var(--vict-color-bg);
+}
+.vict-controls [data-scroll-area-thumb] {
+  position: relative;
+  flex: 1;
+  border-radius: 8px;
+  background: var(--vict-color-textMuted);
+}
+.vict-controls [data-range-calendar-day][data-selected] {
+  background: var(--vict-control-selected);
+  color: var(--vict-color-accent);
+}
+.vict-controls [data-range-calendar-day]:is([data-selection-start], [data-selection-end]) {
+  background: var(--vict-color-accent);
+  color: var(--vict-color-accentContrast);
+}
+.vict-controls [data-slider-thumb]::after {
+  content: '';
+  position: absolute;
+  inset: -11px;
+}
+@media (max-width: 600px) {
+  .vict-controls {
+    --vict-control-height: 44px;
+  }
+  .vict-controls label.vict-control-row {
+    min-height: 44px;
+  }
+  .vict-controls
+    :where(input, [role='spinbutton'], :is([data-select-trigger], [data-combobox-trigger])) {
+    font-size: 16px;
+  }
+  .vict-controls
+    :where(
+      :is([data-dropdown-menu-item], [data-context-menu-item], [data-menubar-item]),
+      :is(
+        [data-dropdown-menu-checkbox-item],
+        [data-context-menu-checkbox-item],
+        [data-menubar-checkbox-item]
+      ),
+      :is(
+        [data-dropdown-menu-radio-item],
+        [data-context-menu-radio-item],
+        [data-menubar-radio-item]
+      ),
+      :is([data-select-item], [data-combobox-item])
+    ) {
+    min-height: 44px;
+  }
+}

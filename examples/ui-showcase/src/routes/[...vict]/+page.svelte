@@ -19,9 +19,14 @@
     data: { actionEndpoint?: string; plan: Record<string, unknown>; viewData: Record<string, unknown>; record: Record<string, unknown> | null };
   } = $props();
 
-  // The trusted local component registry lives OUTSIDE the manifest; the
-  // plan carries only cmp.island@1.
-  const registry = createShowcaseRegistry();
+  // The plan declares component identities; the trusted registry supplies code.
+  const registry = $derived(
+    createShowcaseRegistry(
+      ((data.plan.components ?? []) as { componentId: string }[]).some(
+        (entry) => entry.componentId === 'cmp.request-planner',
+      ),
+    ),
+  );
 
   async function dispatch(actionId: string, input?: unknown): Promise<ActionResult> {
     const response = await fetch(data.actionEndpoint ?? '/api/act', {

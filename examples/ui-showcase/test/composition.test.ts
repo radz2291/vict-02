@@ -6,12 +6,12 @@ import {
 } from '../src/lib/application/composition.js';
 import { createShowcaseServer } from '../src/lib/server/application-server.js';
 describe('independent composition applications', () => {
-  it('compiles independent identities without custom scenario components', async () => {
+  it('keeps independent shells and declares the registered planner extension explicitly', async () => {
     const requests = compileCompositionPlan(requestsApplication);
     const workspace = compileCompositionPlan(workspaceApplication);
     expect(requests.applicationId).not.toBe(workspace.applicationId);
     expect(requests.applicationVersion).not.toBe(workspace.applicationVersion);
-    expect(requests.components).toEqual([]);
+    expect(requests.components).toEqual([{ componentId: 'cmp.request-planner', revision: '1' }]);
     expect(workspace.components).toEqual([]);
     expect((requests.manifest.composition as { navigation?: string }).navigation).toBe('sidebar');
     expect((workspace.manifest.composition as { navigation?: string }).navigation).toBe('top');

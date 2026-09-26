@@ -1,6 +1,7 @@
 import { createComponentRegistry } from '@victframework/application/renderer';
 import type { ComponentRegistry } from '@victframework/application/renderer';
 import ShowcaseIsland from './ShowcaseIsland.svelte';
+import ScheduleIsland from './ScheduleIsland.svelte';
 
 /**
  * The trusted local component registry of this deployment (code islands
@@ -9,12 +10,18 @@ import ShowcaseIsland from './ShowcaseIsland.svelte';
  * and the server so the deployed component identity always comes from the
  * SAME actual registry.
  */
-export function createShowcaseRegistry(): ComponentRegistry {
+export function createShowcaseRegistry(includePlanner = false): ComponentRegistry {
   const registry = createComponentRegistry('registry.showcase', '1');
   registry.register({
     componentId: 'cmp.island',
     revision: '1',
     implementation: ShowcaseIsland,
   });
+  if (includePlanner)
+    registry.register({
+      componentId: 'cmp.request-planner',
+      revision: '1',
+      implementation: ScheduleIsland,
+    });
   return registry;
 }

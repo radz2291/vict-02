@@ -7,7 +7,7 @@ import { join } from 'node:path';
 import puppeteer from 'puppeteer-core';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
-const artifacts = join(root, 'qa-artifacts/composition-slice-1');
+const artifacts = join(root, process.env.VICT_QA_OUTPUT ?? 'qa-artifacts/composition-slice-1');
 mkdirSync(artifacts, { recursive: true });
 const server = spawn(process.execPath, ['build'], {
   cwd: join(root, 'examples/ui-showcase'),

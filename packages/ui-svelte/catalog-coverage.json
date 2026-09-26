@@ -1,0 +1,290 @@
+{
+  "bitsVersion": "2.19.3",
+  "svelteVersion": "5.57.0",
+  "families": [
+    {
+      "name": "Accordion",
+      "slug": "accordion",
+      "status": "styled and usable",
+      "example": "examples/ui-showcase/src/lib/catalog/ActionsExamples.svelte",
+      "test": "scripts/verify-ui-catalog.mjs"
+    },
+    {
+      "name": "AlertDialog",
+      "slug": "alert-dialog",
+      "status": "styled and usable",
+      "example": "examples/ui-showcase/src/lib/catalog/ActionsExamples.svelte",
+      "test": "scripts/verify-ui-catalog.mjs"
+    },
+    {
+      "name": "AspectRatio",
+      "slug": "aspect-ratio",
+      "status": "supported direct composition",
+      "example": "examples/ui-showcase/src/lib/catalog/DirectExamples.svelte",
+      "test": "scripts/verify-ui-catalog.mjs"
+    },
+    {
+      "name": "Avatar",
+      "slug": "avatar",
+      "status": "styled and usable",
+      "example": "examples/ui-showcase/src/lib/catalog/DisplayExamples.svelte",
+      "test": "scripts/verify-ui-catalog.mjs"
+    },
+    {
+      "name": "Button",
+      "slug": "button",
+      "status": "styled and usable",
+      "example": "examples/ui-showcase/src/lib/catalog/ActionsExamples.svelte",
+      "test": "scripts/verify-ui-catalog.mjs"
+    },
+    {
+      "name": "Calendar",
+      "slug": "calendar",
+      "status": "styled and usable",
+      "example": "examples/ui-showcase/src/lib/catalog/DateExamples.svelte",
+      "test": "scripts/verify-ui-catalog.mjs"
+    },
+    {
+      "name": "Checkbox",
+      "slug": "checkbox",
+      "status": "styled and usable",
+      "example": "examples/ui-showcase/src/lib/catalog/SelectionExamples.svelte",
+      "test": "scripts/verify-ui-catalog.mjs"
+    },
+    {
+      "name": "Collapsible",
+      "slug": "collapsible",
+      "status": "supported direct composition",
+      "example": "examples/ui-showcase/src/lib/catalog/DirectExamples.svelte",
+      "test": "scripts/verify-ui-catalog.mjs"
+    },
+    {
+      "name": "Combobox",
+      "slug": "combobox",
+      "status": "styled and usable",
+      "example": "examples/ui-showcase/src/lib/catalog/SelectionExamples.svelte",
+      "test": "scripts/verify-ui-catalog.mjs"
+    },
+    {
+      "name": "Command",
+      "slug": "command",
+      "status": "styled and usable",
+      "example": "examples/ui-showcase/src/lib/catalog/ActionsExamples.svelte",
+      "test": "scripts/verify-ui-catalog.mjs"
+    },
+    {
+      "name": "ContextMenu",
+      "slug": "context-menu",
+      "status": "styled and usable",
+      "example": "examples/ui-showcase/src/lib/catalog/ActionsExamples.svelte",
+      "test": "scripts/verify-ui-catalog.mjs"
+    },
+    {
+      "name": "DateField",
+      "slug": "date-field",
+      "status": "styled and usable",
+      "example": "examples/ui-showcase/src/lib/catalog/DateExamples.svelte",
+      "test": "scripts/verify-ui-catalog.mjs"
+    },
+    {
+      "name": "DatePicker",
+      "slug": "date-picker",
+      "status": "styled and usable",
+      "example": "examples/ui-showcase/src/lib/catalog/DateExamples.svelte",
+      "test": "scripts/verify-ui-catalog.mjs"
+    },
+    {
+      "name": "DateRangeField",
+      "slug": "date-range-field",
+      "status": "styled and usable",
+      "example": "examples/ui-showcase/src/lib/catalog/DateExamples.svelte",
+      "test": "scripts/verify-ui-catalog.mjs"
+    },
+    {
+      "name": "DateRangePicker",
+      "slug": "date-range-picker",
+      "status": "styled and usable",
+      "example": "examples/ui-showcase/src/lib/catalog/DateExamples.svelte",
+      "test": "scripts/verify-ui-catalog.mjs"
+    },
+    {
+      "name": "Dialog",
+      "slug": "dialog",
+      "status": "styled and usable",
+      "example": "examples/ui-showcase/src/lib/catalog/ActionsExamples.svelte",
+      "test": "scripts/verify-ui-catalog.mjs"
+    },
+    {
+      "name": "DropdownMenu",
+      "slug": "dropdown-menu",
+      "status": "styled and usable",
+      "example": "examples/ui-showcase/src/lib/catalog/ActionsExamples.svelte",
+      "test": "scripts/verify-ui-catalog.mjs"
+    },
+    {
+      "name": "Label",
+      "slug": "label",
+      "status": "supported direct composition",
+      "example": "examples/ui-showcase/src/lib/catalog/DirectExamples.svelte",
+      "test": "scripts/verify-ui-catalog.mjs"
+    },
+    {
+      "name": "LinkPreview",
+      "slug": "link-preview",
+      "status": "supported direct composition",
+      "example": "examples/ui-showcase/src/lib/catalog/DirectExamples.svelte",
+      "test": "scripts/verify-ui-catalog.mjs"
+    },
+    {
+      "name": "Menubar",
+      "slug": "menubar",
+      "status": "supported direct composition",
+      "example": "examples/ui-showcase/src/lib/catalog/DirectExamples.svelte",
+      "test": "scripts/verify-ui-catalog.mjs"
+    },
+    {
+      "name": "Meter",
+      "slug": "meter",
+      "status": "styled and usable",
+      "example": "examples/ui-showcase/src/lib/catalog/DisplayExamples.svelte",
+      "test": "scripts/verify-ui-catalog.mjs"
+    },
+    {
+      "name": "NavigationMenu",
+      "slug": "navigation-menu",
+      "status": "styled and usable",
+      "example": "examples/ui-showcase/src/lib/catalog/DisplayExamples.svelte",
+      "test": "scripts/verify-ui-catalog.mjs"
+    },
+    {
+      "name": "Pagination",
+      "slug": "pagination",
+      "status": "styled and usable",
+      "example": "examples/ui-showcase/src/lib/catalog/DisplayExamples.svelte",
+      "test": "scripts/verify-ui-catalog.mjs"
+    },
+    {
+      "name": "PinInput",
+      "slug": "pin-input",
+      "status": "deferred",
+      "reason": "Authentication UX needs an actual consuming flow, including autofill, paste, password-manager and recovery behavior. Future: an authentication recipe using Bits PinInput; no copied keyboard code."
+    },
+    {
+      "name": "Popover",
+      "slug": "popover",
+      "status": "styled and usable",
+      "example": "examples/ui-showcase/src/lib/catalog/ActionsExamples.svelte",
+      "test": "scripts/verify-ui-catalog.mjs"
+    },
+    {
+      "name": "Progress",
+      "slug": "progress",
+      "status": "styled and usable",
+      "example": "examples/ui-showcase/src/lib/catalog/DisplayExamples.svelte",
+      "test": "scripts/verify-ui-catalog.mjs"
+    },
+    {
+      "name": "RadioGroup",
+      "slug": "radio-group",
+      "status": "styled and usable",
+      "example": "examples/ui-showcase/src/lib/catalog/SelectionExamples.svelte",
+      "test": "scripts/verify-ui-catalog.mjs"
+    },
+    {
+      "name": "RangeCalendar",
+      "slug": "range-calendar",
+      "status": "styled and usable",
+      "example": "examples/ui-showcase/src/lib/catalog/DateExamples.svelte",
+      "test": "scripts/verify-ui-catalog.mjs"
+    },
+    {
+      "name": "RatingGroup",
+      "slug": "rating-group",
+      "status": "deferred",
+      "reason": "Rating semantics, scale labels and empty/clear behavior require a consuming product. Future: a labelled Bits RatingGroup recipe."
+    },
+    {
+      "name": "ScrollArea",
+      "slug": "scroll-area",
+      "status": "supported direct composition",
+      "example": "examples/ui-showcase/src/lib/catalog/DirectExamples.svelte",
+      "test": "scripts/verify-ui-catalog.mjs"
+    },
+    {
+      "name": "Select",
+      "slug": "select",
+      "status": "styled and usable",
+      "example": "examples/ui-showcase/src/lib/catalog/SelectionExamples.svelte",
+      "test": "scripts/verify-ui-catalog.mjs"
+    },
+    {
+      "name": "Separator",
+      "slug": "separator",
+      "status": "supported direct composition",
+      "example": "examples/ui-showcase/src/lib/catalog/DirectExamples.svelte",
+      "test": "scripts/verify-ui-catalog.mjs"
+    },
+    {
+      "name": "Slider",
+      "slug": "slider",
+      "status": "styled and usable",
+      "example": "examples/ui-showcase/src/lib/catalog/SelectionExamples.svelte",
+      "test": "scripts/verify-ui-catalog.mjs"
+    },
+    {
+      "name": "Switch",
+      "slug": "switch",
+      "status": "styled and usable",
+      "example": "examples/ui-showcase/src/lib/catalog/SelectionExamples.svelte",
+      "test": "scripts/verify-ui-catalog.mjs"
+    },
+    {
+      "name": "Tabs",
+      "slug": "tabs",
+      "status": "styled and usable",
+      "example": "examples/ui-showcase/src/lib/catalog/DisplayExamples.svelte",
+      "test": "scripts/verify-ui-catalog.mjs"
+    },
+    {
+      "name": "TimeField",
+      "slug": "time-field",
+      "status": "styled and usable",
+      "example": "examples/ui-showcase/src/lib/catalog/DateExamples.svelte",
+      "test": "scripts/verify-ui-catalog.mjs"
+    },
+    {
+      "name": "TimeRangeField",
+      "slug": "time-range-field",
+      "status": "deferred",
+      "reason": "Overnight ranges, timezone/DST and end-before-start rules need an explicit product contract. Single TimeField and date ranges are available; future: compose the same segments with Bits TimeRangeField once those rules are chosen."
+    },
+    {
+      "name": "Toggle",
+      "slug": "toggle",
+      "status": "styled and usable",
+      "example": "examples/ui-showcase/src/lib/catalog/SelectionExamples.svelte",
+      "test": "scripts/verify-ui-catalog.mjs"
+    },
+    {
+      "name": "ToggleGroup",
+      "slug": "toggle-group",
+      "status": "styled and usable",
+      "example": "examples/ui-showcase/src/lib/catalog/SelectionExamples.svelte",
+      "test": "scripts/verify-ui-catalog.mjs"
+    },
+    {
+      "name": "Toolbar",
+      "slug": "toolbar",
+      "status": "supported direct composition",
+      "example": "examples/ui-showcase/src/lib/catalog/DirectExamples.svelte",
+      "test": "scripts/verify-ui-catalog.mjs"
+    },
+    {
+      "name": "Tooltip",
+      "slug": "tooltip",
+      "status": "styled and usable",
+      "example": "examples/ui-showcase/src/lib/catalog/ActionsExamples.svelte",
+      "test": "scripts/verify-ui-catalog.mjs"
+    }
+  ]
+}

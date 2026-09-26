@@ -1,137 +1,75 @@
-# Primitive strategy and coverage
+# Foundation catalog coverage
 
-Audited 26 September 2026 against Bits UI 2.19.3 and Svelte 5.57.0.
+Audited against the installed **Bits UI 2.19.3**, Svelte **5.57.0**, and @internationalized/date **3.12.4**. The installed Bits family exports and the public VICT subpaths are checked by `node scripts/audit-ui-catalog.mjs`. Dependency versions are unchanged in this cycle.
 
-## Decision
+## Audit and outcome
 
-Use [Bits UI](https://bits-ui.com/docs/getting-started) for stateful interaction
-and accessibility. Its installed peer requirement is Svelte ^5.33.0, compatible
-with this repository's locked 5.57.0. The ui-svelte peer floor is now ^5.33.0.
-Bits' date peer is supplied by @internationalized/date (locked 3.12.4).
-No Tailwind, copied interaction implementation, external font, or separate demo theme.
+The baseline catalog was a roadmap: **7 families represented**, 23 more styled families marked Next, eight primitive exports without worked examples, and three explicit deferrals. The old 30/8/3 figures described the intended split, not completed styled coverage.
 
-Native button, input, number, date, textarea, checkbox, select, label and links
-are sufficient for the simple controls in this slice. Native select provides
-platform keyboard/typeahead behavior; advanced search/multiple selection will
-use Bits Combobox/Select rather than extending our own interaction code.
+This cycle delivers **30 styled and usable**, **8 supported direct composition**, and **3 deferred** out of 41 families. Every implemented family has a public granular export, working interactive example, and a named browser check. No planned rows count as coverage. The original seven renderer components remain compatible.
 
-Svelte-independent meaning remains in @victframework/ui. SDK authoring and
-compiler validation remain in sdk/application. Components, adapters and styles
-remain in ui-svelte. renderer-svelte still only re-exports the canonical package.
+## Public usage and styling
 
-The audit found five field widgets, manual tab keyboard behavior, native dialog
-plus fallback code, hardcoded stacked regions, unstyled checkboxes, no selection
-metadata, and inconsistent spacing between tables/forms/conversations. Existing
-type builds did not inspect .svelte files. This slice adds an actual svelte-check
-command and removes those tab/overlay interaction implementations.
+See [CATALOG-USAGE.md](CATALOG-USAGE.md) for supported imports, portal scope, binding, date serialization, registered actions, and examples. Load `styles.css` plus the optional `catalog.css`, then put catalog parts under `ControlScope`. Styled families expose the upstream Bits parts API through VICT-owned subpaths; the shared stylesheet supplies automatic token-based styling. A second wrapper around every Bits part would duplicate prop forwarding without adding useful behavior. `CalendarGrid` is a reusable rendering helper for the date family.
 
-## Component catalog (all 41 Bits families)
+The eight direct-composition families are intentionally assembled by the consuming product: aspect sizing, disclosure content, labels, link previews, desktop menus, scroll containers, separators, and toolbars. Their public subpaths and examples make that a supported path. Common visual rules for menus, focus, and surfaces are still shared. No import reaches undocumented Bits internals.
 
-**1** = provide a styled reusable component in the completed foundation.
-**2** = expose original primitive for composition; a wrapper adds little value.
-**3** = defer the family with the reason shown.
-
-“Next” is scheduled after owner review; it does not claim a styled component
-exists now. Original namespaces (except deferred families) are already available
-at `@victframework/ui-svelte/primitives`. Styled exports live at the main entry.
-The primitive entry follows the installed Bits API and is not a new VICT abstraction.
-
-| Family | Strategy | This slice / remainder |
+| Family | Classification | Export, working example, test / deferral and future path |
 | --- | --- | --- |
-| Accordion | 1 | Next: styled disclosure groups |
-| Alert Dialog | 1 | Next: explicit destructive confirmation; regular Dialog is not a substitute |
-| Aspect Ratio | 2 | Exposed; layout utility |
-| Avatar | 1 | Next: image/fallback component; current conversation initials are presentational |
-| Button | 1 | Now: native Button, primary/secondary/danger, pending/disabled conventions |
-| Calendar | 1 | Next: locale-aware calendar |
-| Checkbox | 1 | Now: native boolean FormField; next: tri-state styled Bits control |
-| Collapsible | 2 | Exposed; compose disclosure with existing panels |
-| Combobox | 1 | Next: searchable single/multiple choice |
-| Command | 1 | Next: command palette with application-supplied commands |
-| Context Menu | 1 | Next: styled menu shared with Dropdown Menu |
-| Date Field | 1 | Next: segmented locale-aware date input; native date remains available now |
-| Date Picker | 1 | Next: field/calendar/popover composition |
-| Date Range Field | 1 | Next: typed range presentation |
-| Date Range Picker | 1 | Next: range selection with calendar |
-| Dialog | 1 | Now: Bits-backed Overlay for both dialogs and right drawers |
-| Dropdown Menu | 1 | Next: styled actions/check/radio/submenus |
-| Label | 2 | Exposed; native labels used now |
-| Link Preview | 2 | Exposed; app-owned preview contents |
-| Menubar | 2 | Exposed; desktop menu composition is product-specific |
-| Meter | 1 | Next: bounded scalar measurement |
-| Navigation Menu | 1 | Next: rich navigation; ordinary application links available now |
-| Pagination | 1 | Next: standalone pagination; native table pagination available now |
-| PIN Input | 3 | Deferred: specialised authentication UX and autofill need a concrete consuming flow |
-| Popover | 1 | Now: styled reusable content popover; table density control |
-| Progress | 1 | Next: determinate/indeterminate progress |
-| Radio Group | 1 | Next: mutually exclusive choices |
-| Range Calendar | 1 | Next: shared date range family |
-| Rating Group | 3 | Deferred: specialised rating semantics need a consuming product |
-| Scroll Area | 2 | Exposed; native overflow used for tables, tabs and conversation |
-| Select | 1 | Now: native finite string Select; next: rich/multiple Bits selection |
-| Separator | 2 | Exposed; no need to wrap a separator element |
-| Slider | 1 | Next: keyboard-operable numeric range |
-| Switch | 1 | Next: immediate boolean setting, distinct from form checkbox |
-| Tabs | 1 | Now: Bits roving focus/selection/panels; mounted panels retain state |
-| Time Field | 1 | Next: segmented time with explicit locale/timezone policy |
-| Time Range Field | 3 | Deferred until single-time/date range conventions are reviewed |
-| Toggle | 1 | Next: pressed-state action |
-| Toggle Group | 1 | Next: single/multiple toolbar selection |
-| Toolbar | 2 | Exposed; compose actions and toggles |
-| Tooltip | 1 | Now: named help trigger, description, keyboard focus/Escape |
+| Accordion | **styled and usable** | [accordion](src/catalog/accordion.ts) · [example](../../examples/ui-showcase/src/lib/catalog/ActionsExamples.svelte) · [browser test](../../scripts/verify-ui-catalog.mjs) |
+| Alert Dialog | **styled and usable** | [alert-dialog](src/catalog/alert-dialog.ts) · [example](../../examples/ui-showcase/src/lib/catalog/ActionsExamples.svelte) · [browser test](../../scripts/verify-ui-catalog.mjs) |
+| Aspect Ratio | **supported direct composition** | [aspect-ratio](src/catalog/aspect-ratio.ts) · [example](../../examples/ui-showcase/src/lib/catalog/DirectExamples.svelte) · [browser test](../../scripts/verify-ui-catalog.mjs) |
+| Avatar | **styled and usable** | [avatar](src/catalog/avatar.ts) · [example](../../examples/ui-showcase/src/lib/catalog/DisplayExamples.svelte) · [browser test](../../scripts/verify-ui-catalog.mjs) |
+| Button | **styled and usable** | [button](src/catalog/button.ts) · [example](../../examples/ui-showcase/src/lib/catalog/ActionsExamples.svelte) · [browser test](../../scripts/verify-ui-catalog.mjs) |
+| Calendar | **styled and usable** | [calendar](src/catalog/calendar.ts) · [example](../../examples/ui-showcase/src/lib/catalog/DateExamples.svelte) · [browser test](../../scripts/verify-ui-catalog.mjs) |
+| Checkbox | **styled and usable** | [checkbox](src/catalog/checkbox.ts) · [example](../../examples/ui-showcase/src/lib/catalog/SelectionExamples.svelte) · [browser test](../../scripts/verify-ui-catalog.mjs) |
+| Collapsible | **supported direct composition** | [collapsible](src/catalog/collapsible.ts) · [example](../../examples/ui-showcase/src/lib/catalog/DirectExamples.svelte) · [browser test](../../scripts/verify-ui-catalog.mjs) |
+| Combobox | **styled and usable** | [combobox](src/catalog/combobox.ts) · [example](../../examples/ui-showcase/src/lib/catalog/SelectionExamples.svelte) · [browser test](../../scripts/verify-ui-catalog.mjs) |
+| Command | **styled and usable** | [command](src/catalog/command.ts) · [example](../../examples/ui-showcase/src/lib/catalog/ActionsExamples.svelte) · [browser test](../../scripts/verify-ui-catalog.mjs) |
+| Context Menu | **styled and usable** | [context-menu](src/catalog/context-menu.ts) · [example](../../examples/ui-showcase/src/lib/catalog/ActionsExamples.svelte) · [browser test](../../scripts/verify-ui-catalog.mjs) |
+| Date Field | **styled and usable** | [date-field](src/catalog/date-field.ts) · [example](../../examples/ui-showcase/src/lib/catalog/DateExamples.svelte) · [browser test](../../scripts/verify-ui-catalog.mjs) |
+| Date Picker | **styled and usable** | [date-picker](src/catalog/date-picker.ts) · [example](../../examples/ui-showcase/src/lib/catalog/DateExamples.svelte) · [browser test](../../scripts/verify-ui-catalog.mjs) |
+| Date Range Field | **styled and usable** | [date-range-field](src/catalog/date-range-field.ts) · [example](../../examples/ui-showcase/src/lib/catalog/DateExamples.svelte) · [browser test](../../scripts/verify-ui-catalog.mjs) |
+| Date Range Picker | **styled and usable** | [date-range-picker](src/catalog/date-range-picker.ts) · [example](../../examples/ui-showcase/src/lib/catalog/DateExamples.svelte) · [browser test](../../scripts/verify-ui-catalog.mjs) |
+| Dialog | **styled and usable** | [dialog](src/catalog/dialog.ts) · [example](../../examples/ui-showcase/src/lib/catalog/ActionsExamples.svelte) · [browser test](../../scripts/verify-ui-catalog.mjs) |
+| Dropdown Menu | **styled and usable** | [dropdown-menu](src/catalog/dropdown-menu.ts) · [example](../../examples/ui-showcase/src/lib/catalog/ActionsExamples.svelte) · [browser test](../../scripts/verify-ui-catalog.mjs) |
+| Label | **supported direct composition** | [label](src/catalog/label.ts) · [example](../../examples/ui-showcase/src/lib/catalog/DirectExamples.svelte) · [browser test](../../scripts/verify-ui-catalog.mjs) |
+| Link Preview | **supported direct composition** | [link-preview](src/catalog/link-preview.ts) · [example](../../examples/ui-showcase/src/lib/catalog/DirectExamples.svelte) · [browser test](../../scripts/verify-ui-catalog.mjs) |
+| Menubar | **supported direct composition** | [menubar](src/catalog/menubar.ts) · [example](../../examples/ui-showcase/src/lib/catalog/DirectExamples.svelte) · [browser test](../../scripts/verify-ui-catalog.mjs) |
+| Meter | **styled and usable** | [meter](src/catalog/meter.ts) · [example](../../examples/ui-showcase/src/lib/catalog/DisplayExamples.svelte) · [browser test](../../scripts/verify-ui-catalog.mjs) |
+| Navigation Menu | **styled and usable** | [navigation-menu](src/catalog/navigation-menu.ts) · [example](../../examples/ui-showcase/src/lib/catalog/DisplayExamples.svelte) · [browser test](../../scripts/verify-ui-catalog.mjs) |
+| Pagination | **styled and usable** | [pagination](src/catalog/pagination.ts) · [example](../../examples/ui-showcase/src/lib/catalog/DisplayExamples.svelte) · [browser test](../../scripts/verify-ui-catalog.mjs) |
+| PIN Input | **deferred** | Authentication UX needs an actual consuming flow, including autofill, paste, password-manager and recovery behavior. Future: an authentication recipe using Bits PinInput; no copied keyboard code. |
+| Popover | **styled and usable** | [popover](src/catalog/popover.ts) · [example](../../examples/ui-showcase/src/lib/catalog/ActionsExamples.svelte) · [browser test](../../scripts/verify-ui-catalog.mjs) |
+| Progress | **styled and usable** | [progress](src/catalog/progress.ts) · [example](../../examples/ui-showcase/src/lib/catalog/DisplayExamples.svelte) · [browser test](../../scripts/verify-ui-catalog.mjs) |
+| Radio Group | **styled and usable** | [radio-group](src/catalog/radio-group.ts) · [example](../../examples/ui-showcase/src/lib/catalog/SelectionExamples.svelte) · [browser test](../../scripts/verify-ui-catalog.mjs) |
+| Range Calendar | **styled and usable** | [range-calendar](src/catalog/range-calendar.ts) · [example](../../examples/ui-showcase/src/lib/catalog/DateExamples.svelte) · [browser test](../../scripts/verify-ui-catalog.mjs) |
+| Rating Group | **deferred** | Rating semantics, scale labels and empty/clear behavior require a consuming product. Future: a labelled Bits RatingGroup recipe. |
+| Scroll Area | **supported direct composition** | [scroll-area](src/catalog/scroll-area.ts) · [example](../../examples/ui-showcase/src/lib/catalog/DirectExamples.svelte) · [browser test](../../scripts/verify-ui-catalog.mjs) |
+| Select | **styled and usable** | [select](src/catalog/select.ts) · [example](../../examples/ui-showcase/src/lib/catalog/SelectionExamples.svelte) · [browser test](../../scripts/verify-ui-catalog.mjs) |
+| Separator | **supported direct composition** | [separator](src/catalog/separator.ts) · [example](../../examples/ui-showcase/src/lib/catalog/DirectExamples.svelte) · [browser test](../../scripts/verify-ui-catalog.mjs) |
+| Slider | **styled and usable** | [slider](src/catalog/slider.ts) · [example](../../examples/ui-showcase/src/lib/catalog/SelectionExamples.svelte) · [browser test](../../scripts/verify-ui-catalog.mjs) |
+| Switch | **styled and usable** | [switch](src/catalog/switch.ts) · [example](../../examples/ui-showcase/src/lib/catalog/SelectionExamples.svelte) · [browser test](../../scripts/verify-ui-catalog.mjs) |
+| Tabs | **styled and usable** | [tabs](src/catalog/tabs.ts) · [example](../../examples/ui-showcase/src/lib/catalog/DisplayExamples.svelte) · [browser test](../../scripts/verify-ui-catalog.mjs) |
+| Time Field | **styled and usable** | [time-field](src/catalog/time-field.ts) · [example](../../examples/ui-showcase/src/lib/catalog/DateExamples.svelte) · [browser test](../../scripts/verify-ui-catalog.mjs) |
+| Time Range Field | **deferred** | Overnight ranges, timezone/DST and end-before-start rules need an explicit product contract. Single TimeField and date ranges are available; future: compose the same segments with Bits TimeRangeField once those rules are chosen. |
+| Toggle | **styled and usable** | [toggle](src/catalog/toggle.ts) · [example](../../examples/ui-showcase/src/lib/catalog/SelectionExamples.svelte) · [browser test](../../scripts/verify-ui-catalog.mjs) |
+| Toggle Group | **styled and usable** | [toggle-group](src/catalog/toggle-group.ts) · [example](../../examples/ui-showcase/src/lib/catalog/SelectionExamples.svelte) · [browser test](../../scripts/verify-ui-catalog.mjs) |
+| Toolbar | **supported direct composition** | [toolbar](src/catalog/toolbar.ts) · [example](../../examples/ui-showcase/src/lib/catalog/DirectExamples.svelte) · [browser test](../../scripts/verify-ui-catalog.mjs) |
+| Tooltip | **styled and usable** | [tooltip](src/catalog/tooltip.ts) · [example](../../examples/ui-showcase/src/lib/catalog/ActionsExamples.svelte) · [browser test](../../scripts/verify-ui-catalog.mjs) |
 
-30 families targeted for styling; 8 primitive-only; 3 deferred. Seven styled
-families are represented now: Button, Checkbox, Dialog, Popover, Select, Tabs,
-and Tooltip. Native date input does not count as the Bits Date Field. Text and
-numeric fields, drawer, feedback, status, app shell, forms, records and
-conversations are additional VICT components, not extra Bits families.
+## Boundaries and integration
 
-Next order: (1) selection/disclosure/navigation and action menus,
-(2) command/feedback/progress and reusable avatar, (3) the date/time family.
-Feedback, empty/validation/denied/failure states and status badges are styled now.
-Toast and richer async feedback are VICT work outside the Bits catalog.
+Portable layout, action feedback, and application contracts remain in `@victframework/ui`. This cycle adds **no primitive schema roles** and no Bits/Svelte types to neutral packages. All parts, date helpers, styles and Svelte context live in `ui-svelte`; `renderer-svelte` remains a facade.
 
-## Application Definition vocabulary is intentionally smaller
+Requests keeps its compact sidebar; Workspace keeps its top navigation and conversation/context layout. Requests adds `/requests/schedule` as a normal application screen containing `cmp.request-planner@1`. The trusted registry loads that product surface separately. It uses menu templates, rich selection, a date picker, checkbox and accordion, then submits the declared `act.create` through `useVictActions`. The same host dispatch, input contract, server permissions, data adapter and invalidation path apply. No capability is granted by a control or by the component context. Undeclared action IDs are rejected before dispatch.
 
-No schema role was added for tooltip, popover, checkbox, calendar, menu, or command.
-A table owns its display popover and help tooltip. A form maps semantic fields to
-controls. Advanced compositions can use the existing trusted component registry.
-Primitive availability does not imply every primitive needs a schema node.
+Action feedback stays beside the action. Passive status, conversation messages and form validation retain the provisionally accepted composition-slice behavior.
 
-The additive @2 metadata in this slice:
-- Screen `layoutMode?: 'stack' | 'split'`.
-- Region `size?: 'full' | 'main' | 'aside'`,
-  `appearance?: 'plain' | 'panel'`, `flow?: 'stack' | 'inline'`.
-- Form field `widget: 'select'` with ordered nonempty, unique string
-  `options: { value: string; label: string }[]`.
+## Verification and review
 
-Metadata is compiler-validated, frozen and included in normal application identity.
-Existing definitions keep their default stack behavior; @1 rejects the additions.
-Selections submit strings, never labels. Optional empty selection is an empty string.
-Unknown selection values fail locally. Server input contracts remain authoritative.
+Run `npm run catalog` from the repository root. It builds dependencies and serves port **5180**: `/catalog`, `/requests/schedule`, `/requests`, and `/workspace`. The gallery is a development harness; the request flow uses the generic renderer.
 
-Future contracts must be explicit: multi-select needs an array value domain;
-combobox needs option-source/query/cancellation semantics; date ranges need
-start/end and absence rules; switches need a distinction between boolean form
-submission and immediate action; commands need app-supplied action bindings.
-These are not silently represented as text or invented schema roles.
+Run `npm run test:catalog` for production-browser family, keyboard, accessibility, responsive and flow checks. Package interaction/action-context tests are in [catalog.test.ts](test/catalog.test.ts). Coverage audits, bundle measurements and existing composition/foundation regressions are recorded in [the owner review report](../../docs/UI-FOUNDATION-CATALOG-COVERAGE.md).
 
-## Conventions
-
-One stylesheet: `@victframework/ui-svelte/styles.css`. Teal accent, slate text,
-neutral surfaces, system fonts, a spacing scale based on 8px, 7–14px radii,
-restrained elevation and three-pixel focus rings. Native mobile fields use 16px
-type. `--vict-density` adjusts controls/table rows; the table also offers a local
-compact-row setting. Split layouts stack below 1100px; navigation collapses
-below 720px. Data tables scroll locally and stay keyboard-focusable.
-
-Dialogs portal into their owning .vict-app to inherit per-app tokens while
-avoiding transformed ancestors. Standalone use falls back to the body.
-Bits owns traps, Escape, outside interaction and restoration. Focus opens on the
-first focusable control; tests assert containment, not a specific panel element.
-
-Current generic surfaces still have limitations: action tone is inferred from
-legacy action IDs containing “delete”, server field-level validation is not
-provided by ActionResult, and screen layout hints are coarse rather than a
-general nested layout language. Future work should address those explicit
-contracts instead of special-casing application routes.
+No final visual acceptance, merge, publication, npm trust, or release approval is implied.

@@ -61,6 +61,17 @@
     return datum?.rows ?? [];
   }
 
+  function runComponentAction(actionId: string, input?: unknown): Promise<ActionResult | void> {
+    if (!plan.actions?.[actionId]) {
+      return Promise.resolve({
+        ok: false,
+        code: 'UNKNOWN_ACTION',
+        message: 'This action is not declared by the application.',
+      });
+    }
+    return run(actionId, input);
+  }
+
   function viewRecord(viewId: unknown): Record<string, unknown> | null {
     const datum = viewData[String(viewId)];
     if (datum?.record !== undefined && datum.record !== null) {
@@ -128,7 +139,7 @@
     {:else if sn.role === 'component'}
       {@const resolved = resolveComponent(sn)}
       {#if resolved !== undefined}
-        <ComponentSlot surfaceId={sn.id} componentId={str(sn.componentId)}>
+        <ComponentSlot surfaceId={sn.id} componentId={str(sn.componentId)} run={runComponentAction}>
           <resolved.Component {...((sn.props ?? {}) as Record<string, never>)} />
         </ComponentSlot>
       {:else}

@@ -14,6 +14,212 @@
       "types": "./src/primitives.ts",
       "svelte": "./src/primitives.ts",
       "default": "./src/primitives.ts"
+    },
+    "./catalog/accordion": {
+      "types": "./src/catalog/accordion.ts",
+      "svelte": "./src/catalog/accordion.ts",
+      "default": "./src/catalog/accordion.ts"
+    },
+    "./catalog/alert-dialog": {
+      "types": "./src/catalog/alert-dialog.ts",
+      "svelte": "./src/catalog/alert-dialog.ts",
+      "default": "./src/catalog/alert-dialog.ts"
+    },
+    "./catalog/aspect-ratio": {
+      "types": "./src/catalog/aspect-ratio.ts",
+      "svelte": "./src/catalog/aspect-ratio.ts",
+      "default": "./src/catalog/aspect-ratio.ts"
+    },
+    "./catalog/avatar": {
+      "types": "./src/catalog/avatar.ts",
+      "svelte": "./src/catalog/avatar.ts",
+      "default": "./src/catalog/avatar.ts"
+    },
+    "./catalog/button": {
+      "types": "./src/catalog/button.ts",
+      "svelte": "./src/catalog/button.ts",
+      "default": "./src/catalog/button.ts"
+    },
+    "./catalog/calendar": {
+      "types": "./src/catalog/calendar.ts",
+      "svelte": "./src/catalog/calendar.ts",
+      "default": "./src/catalog/calendar.ts"
+    },
+    "./catalog/checkbox": {
+      "types": "./src/catalog/checkbox.ts",
+      "svelte": "./src/catalog/checkbox.ts",
+      "default": "./src/catalog/checkbox.ts"
+    },
+    "./catalog/collapsible": {
+      "types": "./src/catalog/collapsible.ts",
+      "svelte": "./src/catalog/collapsible.ts",
+      "default": "./src/catalog/collapsible.ts"
+    },
+    "./catalog/combobox": {
+      "types": "./src/catalog/combobox.ts",
+      "svelte": "./src/catalog/combobox.ts",
+      "default": "./src/catalog/combobox.ts"
+    },
+    "./catalog/command": {
+      "types": "./src/catalog/command.ts",
+      "svelte": "./src/catalog/command.ts",
+      "default": "./src/catalog/command.ts"
+    },
+    "./catalog/context-menu": {
+      "types": "./src/catalog/context-menu.ts",
+      "svelte": "./src/catalog/context-menu.ts",
+      "default": "./src/catalog/context-menu.ts"
+    },
+    "./catalog/date-field": {
+      "types": "./src/catalog/date-field.ts",
+      "svelte": "./src/catalog/date-field.ts",
+      "default": "./src/catalog/date-field.ts"
+    },
+    "./catalog/date-picker": {
+      "types": "./src/catalog/date-picker.ts",
+      "svelte": "./src/catalog/date-picker.ts",
+      "default": "./src/catalog/date-picker.ts"
+    },
+    "./catalog/date-range-field": {
+      "types": "./src/catalog/date-range-field.ts",
+      "svelte": "./src/catalog/date-range-field.ts",
+      "default": "./src/catalog/date-range-field.ts"
+    },
+    "./catalog/date-range-picker": {
+      "types": "./src/catalog/date-range-picker.ts",
+      "svelte": "./src/catalog/date-range-picker.ts",
+      "default": "./src/catalog/date-range-picker.ts"
+    },
+    "./catalog/dialog": {
+      "types": "./src/catalog/dialog.ts",
+      "svelte": "./src/catalog/dialog.ts",
+      "default": "./src/catalog/dialog.ts"
+    },
+    "./catalog/dropdown-menu": {
+      "types": "./src/catalog/dropdown-menu.ts",
+      "svelte": "./src/catalog/dropdown-menu.ts",
+      "default": "./src/catalog/dropdown-menu.ts"
+    },
+    "./catalog/label": {
+      "types": "./src/catalog/label.ts",
+      "svelte": "./src/catalog/label.ts",
+      "default": "./src/catalog/label.ts"
+    },
+    "./catalog/link-preview": {
+      "types": "./src/catalog/link-preview.ts",
+      "svelte": "./src/catalog/link-preview.ts",
+      "default": "./src/catalog/link-preview.ts"
+    },
+    "./catalog/menubar": {
+      "types": "./src/catalog/menubar.ts",
+      "svelte": "./src/catalog/menubar.ts",
+      "default": "./src/catalog/menubar.ts"
+    },
+    "./catalog/meter": {
+      "types": "./src/catalog/meter.ts",
+      "svelte": "./src/catalog/meter.ts",
+      "default": "./src/catalog/meter.ts"
+    },
+    "./catalog/navigation-menu": {
+      "types": "./src/catalog/navigation-menu.ts",
+      "svelte": "./src/catalog/navigation-menu.ts",
+      "default": "./src/catalog/navigation-menu.ts"
+    },
+    "./catalog/pagination": {
+      "types": "./src/catalog/pagination.ts",
+      "svelte": "./src/catalog/pagination.ts",
+      "default": "./src/catalog/pagination.ts"
+    },
+    "./catalog/popover": {
+      "types": "./src/catalog/popover.ts",
+      "svelte": "./src/catalog/popover.ts",
+      "default": "./src/catalog/popover.ts"
+    },
+    "./catalog/progress": {
+      "types": "./src/catalog/progress.ts",
+      "svelte": "./src/catalog/progress.ts",
+      "default": "./src/catalog/progress.ts"
+    },
+    "./catalog/radio-group": {
+      "types": "./src/catalog/radio-group.ts",
+      "svelte": "./src/catalog/radio-group.ts",
+      "default": "./src/catalog/radio-group.ts"
+    },
+    "./catalog/range-calendar": {
+      "types": "./src/catalog/range-calendar.ts",
+      "svelte": "./src/catalog/range-calendar.ts",
+      "default": "./src/catalog/range-calendar.ts"
+    },
+    "./catalog/scroll-area": {
+      "types": "./src/catalog/scroll-area.ts",
+      "svelte": "./src/catalog/scroll-area.ts",
+      "default": "./src/catalog/scroll-area.ts"
+    },
+    "./catalog/select": {
+      "types": "./src/catalog/select.ts",
+      "svelte": "./src/catalog/select.ts",
+      "default": "./src/catalog/select.ts"
+    },
+    "./catalog/separator": {
+      "types": "./src/catalog/separator.ts",
+      "svelte": "./src/catalog/separator.ts",
+      "default": "./src/catalog/separator.ts"
+    },
+    "./catalog/slider": {
+      "types": "./src/catalog/slider.ts",
+      "svelte": "./src/catalog/slider.ts",
+      "default": "./src/catalog/slider.ts"
+    },
+    "./catalog/switch": {
+      "types": "./src/catalog/switch.ts",
+      "svelte": "./src/catalog/switch.ts",
+      "default": "./src/catalog/switch.ts"
+    },
+    "./catalog/tabs": {
+      "types": "./src/catalog/tabs.ts",
+      "svelte": "./src/catalog/tabs.ts",
+      "default": "./src/catalog/tabs.ts"
+    },
+    "./catalog/time-field": {
+      "types": "./src/catalog/time-field.ts",
+      "svelte": "./src/catalog/time-field.ts",
+      "default": "./src/catalog/time-field.ts"
+    },
+    "./catalog/toggle": {
+      "types": "./src/catalog/toggle.ts",
+      "svelte": "./src/catalog/toggle.ts",
+      "default": "./src/catalog/toggle.ts"
+    },
+    "./catalog/toggle-group": {
+      "types": "./src/catalog/toggle-group.ts",
+      "svelte": "./src/catalog/toggle-group.ts",
+      "default": "./src/catalog/toggle-group.ts"
+    },
+    "./catalog/toolbar": {
+      "types": "./src/catalog/toolbar.ts",
+      "svelte": "./src/catalog/toolbar.ts",
+      "default": "./src/catalog/toolbar.ts"
+    },
+    "./catalog/tooltip": {
+      "types": "./src/catalog/tooltip.ts",
+      "svelte": "./src/catalog/tooltip.ts",
+      "default": "./src/catalog/tooltip.ts"
+    },
+    "./controls": {
+      "types": "./src/controls.ts",
+      "svelte": "./src/controls.ts",
+      "default": "./src/controls.ts"
+    },
+    "./catalog.css": "./src/catalog.css",
+    "./component-actions": {
+      "types": "./src/component-actions.ts",
+      "svelte": "./src/component-actions.ts",
+      "default": "./src/component-actions.ts"
+    },
+    "./dates": {
+      "types": "./src/dates.ts",
+      "svelte": "./src/dates.ts",
+      "default": "./src/dates.ts"
     }
   },
   "main": "./src/index.ts",
@@ -21,7 +227,10 @@
   "types": "./src/index.ts",
   "files": [
     "src",
-    "dist"
+    "dist",
+    "FOUNDATION-CATALOG.md",
+    "CATALOG-USAGE.md",
+    "catalog-coverage.json"
   ],
   "scripts": {
     "build": "tsc -p tsconfig.json --emitDeclarationOnly --outDir dist",
@@ -48,5 +257,8 @@
   },
   "engines": {
     "node": ">=22.13.0"
-  }
+  },
+  "sideEffects": [
+    "**/*.css"
+  ]
 }

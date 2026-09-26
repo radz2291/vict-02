@@ -1,0 +1,286 @@
+{
+  "label": "after",
+  "mode": "cold production navigation; summed per-asset gzip",
+  "routes": {
+    "/requests": {
+      "totals": {
+        "js": {
+          "bytes": 308997,
+          "gzip": 104022
+        },
+        "css": {
+          "bytes": 39172,
+          "gzip": 8149
+        }
+      },
+      "assets": [
+        {
+          "path": "/_app/immutable/assets/3.DkJ7YBNl.css",
+          "kind": "css",
+          "bytes": 388,
+          "gzip": 231
+        },
+        {
+          "path": "/_app/immutable/assets/CalendarGrid.DtJfJXTN.css",
+          "kind": "css",
+          "bytes": 17255,
+          "gzip": 3347
+        },
+        {
+          "path": "/_app/immutable/assets/tooltip-provider.CBBURr9O.css",
+          "kind": "css",
+          "bytes": 21529,
+          "gzip": 4571
+        },
+        {
+          "path": "/_app/immutable/chunks/7-qewH0O.js",
+          "kind": "js",
+          "bytes": 29879,
+          "gzip": 11308
+        },
+        {
+          "path": "/_app/immutable/chunks/B0TILayi.js",
+          "kind": "js",
+          "bytes": 300,
+          "gzip": 218
+        },
+        {
+          "path": "/_app/immutable/chunks/BgGgVIeK.js",
+          "kind": "js",
+          "bytes": 3309,
+          "gzip": 1514
+        },
+        {
+          "path": "/_app/immutable/chunks/BxohzTXh.js",
+          "kind": "js",
+          "bytes": 30395,
+          "gzip": 11505
+        },
+        {
+          "path": "/_app/immutable/chunks/CarGCBnX.js",
+          "kind": "js",
+          "bytes": 2242,
+          "gzip": 986
+        },
+        {
+          "path": "/_app/immutable/chunks/CdH370c9.js",
+          "kind": "js",
+          "bytes": 1890,
+          "gzip": 935
+        },
+        {
+          "path": "/_app/immutable/chunks/CstBisX4.js",
+          "kind": "js",
+          "bytes": 9946,
+          "gzip": 4152
+        },
+        {
+          "path": "/_app/immutable/chunks/D3Xzo0BR.js",
+          "kind": "js",
+          "bytes": 186,
+          "gzip": 169
+        },
+        {
+          "path": "/_app/immutable/chunks/D6qbvDRP.js",
+          "kind": "js",
+          "bytes": 58386,
+          "gzip": 19890
+        },
+        {
+          "path": "/_app/immutable/chunks/Dp1pzeXC.js",
+          "kind": "js",
+          "bytes": 1266,
+          "gzip": 728
+        },
+        {
+          "path": "/_app/immutable/chunks/DSkF-hIJ.js",
+          "kind": "js",
+          "bytes": 146,
+          "gzip": 126
+        },
+        {
+          "path": "/_app/immutable/chunks/Dso9LBVF.js",
+          "kind": "js",
+          "bytes": 6902,
+          "gzip": 3127
+        },
+        {
+          "path": "/_app/immutable/chunks/SVIHU10p.js",
+          "kind": "js",
+          "bytes": 158116,
+          "gzip": 46384
+        },
+        {
+          "path": "/_app/immutable/entry/app.CEdosrPz.js",
+          "kind": "js",
+          "bytes": 5216,
+          "gzip": 2334
+        },
+        {
+          "path": "/_app/immutable/entry/start.CxizS2-n.js",
+          "kind": "js",
+          "bytes": 118,
+          "gzip": 108
+        },
+        {
+          "path": "/_app/immutable/nodes/0.M4Tu-NXH.js",
+          "kind": "js",
+          "bytes": 217,
+          "gzip": 173
+        },
+        {
+          "path": "/_app/immutable/nodes/1.DakT1gh1.js",
+          "kind": "js",
+          "bytes": 417,
+          "gzip": 284
+        },
+        {
+          "path": "/_app/immutable/nodes/3.Bi_i643R.js",
+          "kind": "js",
+          "bytes": 66,
+          "gzip": 81
+        }
+      ]
+    },
+    "/workspace": {
+      "totals": {
+        "js": {
+          "bytes": 308997,
+          "gzip": 104022
+        },
+        "css": {
+          "bytes": 39172,
+          "gzip": 8149
+        }
+      },
+      "assets": [
+        {
+          "path": "/_app/immutable/assets/3.DkJ7YBNl.css",
+          "kind": "css",
+          "bytes": 388,
+          "gzip": 231
+        },
+        {
+          "path": "/_app/immutable/assets/CalendarGrid.DtJfJXTN.css",
+          "kind": "css",
+          "bytes": 17255,
+          "gzip": 3347
+        },
+        {
+          "path": "/_app/immutable/assets/tooltip-provider.CBBURr9O.css",
+          "kind": "css",
+          "bytes": 21529,
+          "gzip": 4571
+        },
+        {
+          "path": "/_app/immutable/chunks/7-qewH0O.js",
+          "kind": "js",
+          "bytes": 29879,
+          "gzip": 11308
+        },
+        {
+          "path": "/_app/immutable/chunks/B0TILayi.js",
+          "kind": "js",
+          "bytes": 300,
+          "gzip": 218
+        },
+        {
+          "path": "/_app/immutable/chunks/BgGgVIeK.js",
+          "kind": "js",
+          "bytes": 3309,
+          "gzip": 1514
+        },
+        {
+          "path": "/_app/immutable/chunks/BxohzTXh.js",
+          "kind": "js",
+          "bytes": 30395,
+          "gzip": 11505
+        },
+        {
+          "path": "/_app/immutable/chunks/CarGCBnX.js",
+          "kind": "js",
+          "bytes": 2242,
+          "gzip": 986
+        },
+        {
+          "path": "/_app/immutable/chunks/CdH370c9.js",
+          "kind": "js",
+          "bytes": 1890,
+          "gzip": 935
+        },
+        {
+          "path": "/_app/immutable/chunks/CstBisX4.js",
+          "kind": "js",
+          "bytes": 9946,
+          "gzip": 4152
+        },
+        {
+          "path": "/_app/immutable/chunks/D3Xzo0BR.js",
+          "kind": "js",
+          "bytes": 186,
+          "gzip": 169
+        },
+        {
+          "path": "/_app/immutable/chunks/D6qbvDRP.js",
+          "kind": "js",
+          "bytes": 58386,
+          "gzip": 19890
+        },
+        {
+          "path": "/_app/immutable/chunks/Dp1pzeXC.js",
+          "kind": "js",
+          "bytes": 1266,
+          "gzip": 728
+        },
+        {
+          "path": "/_app/immutable/chunks/DSkF-hIJ.js",
+          "kind": "js",
+          "bytes": 146,
+          "gzip": 126
+        },
+        {
+          "path": "/_app/immutable/chunks/Dso9LBVF.js",
+          "kind": "js",
+          "bytes": 6902,
+          "gzip": 3127
+        },
+        {
+          "path": "/_app/immutable/chunks/SVIHU10p.js",
+          "kind": "js",
+          "bytes": 158116,
+          "gzip": 46384
+        },
+        {
+          "path": "/_app/immutable/entry/app.CEdosrPz.js",
+          "kind": "js",
+          "bytes": 5216,
+          "gzip": 2334
+        },
+        {
+          "path": "/_app/immutable/entry/start.CxizS2-n.js",
+          "kind": "js",
+          "bytes": 118,
+          "gzip": 108
+        },
+        {
+          "path": "/_app/immutable/nodes/0.M4Tu-NXH.js",
+          "kind": "js",
+          "bytes": 217,
+          "gzip": 173
+        },
+        {
+          "path": "/_app/immutable/nodes/1.DakT1gh1.js",
+          "kind": "js",
+          "bytes": 417,
+          "gzip": 284
+        },
+        {
+          "path": "/_app/immutable/nodes/3.Bi_i643R.js",
+          "kind": "js",
+          "bytes": 66,
+          "gzip": 81
+        }
+      ]
+    }
+  }
+}
