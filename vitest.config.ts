@@ -85,7 +85,11 @@ export default defineConfig({
           // The SvelteKit applications run their own DOM/browser-level
           // projects (svelte/sveltekit toolchain) — excluded here so they
           // are never double-run without their toolchains.
-          exclude: ['examples/application-proof/**', 'examples/reference-app/**'],
+          exclude: [
+            'examples/application-proof/**',
+            'examples/reference-app/**',
+            'examples/ui-showcase/**',
+          ],
         },
         resolve: { alias: aliases },
       },

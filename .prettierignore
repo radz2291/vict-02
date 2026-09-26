@@ -7,5 +7,6 @@ package-lock.json
 # (prettier has no svelte parser by default); build output is never formatted.
 examples/application-proof/
 examples/reference-app/build/
+examples/ui-showcase/build/
 
 qa-artifacts/

@@ -14,6 +14,7 @@ coverage/
 .svelte-kit/
 examples/application-proof/build/
 examples/reference-app/build/
+examples/ui-showcase/build/
 # Reference application local domain database
 examples/reference-app/.data/
 
