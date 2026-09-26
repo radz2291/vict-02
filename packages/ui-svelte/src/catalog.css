@@ -151,6 +151,11 @@
   border-radius: 7px;
   background: var(--vict-color-surface);
 }
+.vict-controls [data-select-trigger] {
+  width: 100%;
+  justify-content: space-between;
+  text-align: start;
+}
 .vict-controls
   :where(
     :is([data-dropdown-menu-content], [data-context-menu-content], [data-menubar-content]),
@@ -173,6 +178,13 @@
   border: 1px solid var(--vict-color-border);
   border-radius: var(--vict-radius-base);
   box-shadow: var(--vict-elevation-high);
+}
+.vict-controls :is([data-select-content], [data-combobox-content]) {
+  width: var(--vict-control-popup-width, var(--bits-floating-anchor-width));
+  min-width: 0;
+}
+.vict-controls [data-popover-content]:has([data-calendar-root], [data-range-calendar-root]) {
+  width: var(--vict-calendar-popup-width, 320px);
 }
 .vict-controls
   :where(
@@ -348,6 +360,8 @@
   background: #20323966;
 }
 .vict-controls :where([data-dialog-content], [data-alert-dialog-content]) {
+  display: grid;
+  gap: var(--vict-space-4);
   position: fixed;
   z-index: 81;
   top: 50%;
@@ -364,13 +378,16 @@
 }
 .vict-controls :where([data-dialog-title], [data-alert-dialog-title]) {
   display: block;
-  margin: 0 0 10px;
+  margin: 0;
   font-size: 20px;
   font-weight: 650;
 }
 .vict-controls :where([data-dialog-description], [data-alert-dialog-description]) {
-  margin: 0 0 20px;
+  margin: 0;
   color: var(--vict-color-textMuted);
+}
+.vict-controls :where([data-dialog-content], [data-alert-dialog-content]) > button {
+  justify-self: start;
 }
 .vict-controls :where([data-dialog-action], [data-alert-dialog-action]) {
   background: var(--vict-color-danger);
@@ -654,8 +671,9 @@
   gap: 16px;
 }
 .vict-controls :is([data-calendar-grid], [data-range-calendar-grid]) {
+  flex: 1 1 240px;
+  min-width: 0;
   width: 100%;
-  max-width: 320px;
   border-collapse: collapse;
   table-layout: fixed;
 }

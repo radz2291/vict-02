@@ -1,6 +1,6 @@
 <script lang="ts">
   import '@victframework/ui-svelte/catalog.css';
-  import { ControlScope, CalendarGrid } from '@victframework/ui-svelte/controls';
+  import { ControlScope, CalendarGrid, ChevronDown } from '@victframework/ui-svelte/controls';
   import { useVictActions } from '@victframework/ui-svelte/component-actions';
   import { DropdownMenu } from '@victframework/ui-svelte/catalog/dropdown-menu';
   import { Select } from '@victframework/ui-svelte/catalog/select';
@@ -137,9 +137,9 @@
           aria-labelledby="planner-team-label"
           aria-invalid={!!errors.team}
           aria-describedby={errors.team ? 'planner-team-error' : undefined}
-          >{team || 'Choose a team'} ⌄</Select.Trigger
+          ><span>{team || 'Choose a team'}</span><ChevronDown /></Select.Trigger
         ><Select.Portal
-          ><Select.Content sideOffset={6}
+          ><Select.Content sideOffset={6} align="start" collisionPadding={16}
             >{#each teams as option (option.value)}<Select.Item {...option}
                 >{option.label}</Select.Item
               >{/each}</Select.Content

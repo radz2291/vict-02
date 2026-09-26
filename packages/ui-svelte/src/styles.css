@@ -1159,9 +1159,8 @@ h3.vict-text {
   margin: 0;
 }
 .vict-form-summary ul {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px 18px;
+  display: grid;
+  gap: 6px;
   margin: 4px 0 0;
   padding-left: 18px;
 }

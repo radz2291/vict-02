@@ -7,6 +7,7 @@
   import { Switch } from '@victframework/ui-svelte/catalog/switch';
   import { Toggle } from '@victframework/ui-svelte/catalog/toggle';
   import { ToggleGroup } from '@victframework/ui-svelte/catalog/toggle-group';
+  import { ChevronDown } from '@victframework/ui-svelte/controls';
   import Example from './Example.svelte';
   const teams = [
     { value: 'product', label: 'Product' },
@@ -48,7 +49,7 @@
       oninput={(event) => (search = event.currentTarget.value)}
     />
     <Combobox.Portal
-      ><Combobox.Content sideOffset={6}>
+      ><Combobox.Content sideOffset={6} align="start" collisionPadding={16}>
         {#each teams.filter((item) => item.label
             .toLowerCase()
             .includes(search.toLowerCase())) as item (item.value)}<Combobox.Item {...item}
@@ -69,7 +70,7 @@
       oninput={(event) => (peopleSearch = event.currentTarget.value)}
     />
     <Combobox.Portal
-      ><Combobox.Content sideOffset={6}>
+      ><Combobox.Content sideOffset={6} align="start" collisionPadding={16}>
         {#each people.filter((item) => item.label
             .toLowerCase()
             .includes(peopleSearch.toLowerCase())) as item (item.value)}<Combobox.Item {...item}
@@ -88,11 +89,11 @@
   <span id="select-teams-label" class="vict-control-label">Teams to notify · multiple</span>
   <Select.Root type="multiple" bind:value={selectedTeams}>
     <Select.Trigger aria-labelledby="select-teams-label"
-      >{selectedTeams.length}
-      {selectedTeams.length === 1 ? 'team' : 'teams'} selected ⌄</Select.Trigger
+      ><span>{selectedTeams.length}
+        {selectedTeams.length === 1 ? 'team' : 'teams'} selected</span><ChevronDown /></Select.Trigger
     >
     <Select.Portal
-      ><Select.Content sideOffset={6}
+      ><Select.Content sideOffset={6} align="start" collisionPadding={16}
         >{#each teams as item (item.value)}<Select.Item {...item}>{item.label}</Select.Item
           >{/each}</Select.Content
       ></Select.Portal
@@ -101,9 +102,9 @@
   <span id="priority-label" class="vict-control-label">Priority · single</span>
   <Select.Root type="single" bind:value={priority}
     ><Select.Trigger aria-labelledby="priority-label"
-      >{priority === 'normal' ? 'Normal' : 'Urgent'} ⌄</Select.Trigger
+      ><span>{priority === 'normal' ? 'Normal' : 'Urgent'}</span><ChevronDown /></Select.Trigger
     ><Select.Portal
-      ><Select.Content sideOffset={6}
+      ><Select.Content sideOffset={6} align="start" collisionPadding={16}
         ><Select.Item value="normal">Normal</Select.Item><Select.Item value="urgent"
           >Urgent</Select.Item
         ></Select.Content

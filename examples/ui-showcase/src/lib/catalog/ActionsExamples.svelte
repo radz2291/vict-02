@@ -153,11 +153,13 @@
         <Dialog.Title>Name your workspace</Dialog.Title><Dialog.Description
           >Choose a name your team will recognise.</Dialog.Description
         >
-        <label class="vict-control-label" for="workspace-name">Workspace name</label><input
-          class="vict-input"
-          id="workspace-name"
-          value="Product team"
-        />
+        <div>
+          <label class="vict-control-label" for="workspace-name">Workspace name</label><input
+            class="vict-input"
+            id="workspace-name"
+            value="Product team"
+          />
+        </div>
         <div class="vict-control-row"><Dialog.Close>Save name</Dialog.Close></div>
       </Dialog.Content></Dialog.Portal
     ></Dialog.Root

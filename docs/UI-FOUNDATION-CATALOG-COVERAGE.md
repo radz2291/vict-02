@@ -93,11 +93,12 @@ Both existing routes fetched the same totals:
 
 | Route | JS gzip before → after | JS increase | CSS gzip before → after | CSS increase |
 | --- | ---: | ---: | ---: | ---: |
-| `/requests` | 100,145 → 104,022 bytes | 3,877 bytes (3.87%) | 4,657 → 8,149 bytes | 3,492 bytes |
-| `/workspace` | 100,145 → 104,022 bytes | 3,877 bytes (3.87%) | 4,657 → 8,149 bytes | 3,492 bytes |
+| `/requests` | 100,145 → 104,179 bytes | 4,034 bytes (4.03%) | 4,657 → 8,241 bytes | 3,584 bytes |
+| `/workspace` | 100,145 → 104,179 bytes | 4,034 bytes (4.03%) | 4,657 → 8,241 bytes | 3,584 bytes |
 
-Combined gzip grows **7,369 bytes per route (7.03%)**. Uncompressed JS changes
-from 300,142 to 308,997 bytes; CSS changes from 21,916 to 39,172 bytes.
+Combined gzip grows **7,618 bytes per route (7.27%)**, including the owner spacing
+follow-up below. Uncompressed JS changes from 300,142 to 309,333 bytes; CSS changes
+from 21,916 to 39,668 bytes.
 The full per-asset records are [before](../qa-artifacts/foundation-catalog/bundle-before.json)
 and [after](../qa-artifacts/foundation-catalog/bundle-after.json).
 <!-- /bundle-table -->
@@ -181,3 +182,31 @@ Svelte checks report zero errors and warnings. Production builds retain upstream
 - Passive system notices, table-query error presentation and custom product feedback policies retain their composition-slice behavior. No toast system, docking engine, or full-height workbench template was added.
 
 The owner can now review breadth and consistency before choosing product stress slices.
+
+## Owner spacing and alignment follow-up
+
+The owner's six captures identified shared defaults worth correcting now:
+
+- Validation summaries use a vertical list with 6px between items, retaining real list semantics, field links and focus handling. Bullets no longer intrude into an adjacent item.
+- Dialog and alert-dialog content use a shared 16px gap. Labels and inputs remain grouped; action buttons are separated from the form or command list.
+- Form Select and Combobox popups match their anchor's width and align at its start. Action menus keep their compact content sizing. The usage guide documents width overrides and alignment props.
+- `ChevronDown` is a shared decorative SVG helper, replacing the font-dependent arrow glyph in rich selection and the existing popover trigger. Select values align at the start, with the chevron at the end.
+- Calendar tables expand with their headers, so intermediate widths have seven evenly distributed columns. Floating calendars keep a compact viewport-capped width.
+
+Inspected actual captures at **1440, 700, 390 and 320px**, including the real
+registered request form. [Layout measurements](../qa-artifacts/foundation-catalog/owner-polish/layout-measurements.json)
+confirm matching anchor/popup edges, matching calendar/header widths, 16px command
+action spacing and no document overflow. Representative corrected states:
+[validation](../qa-artifacts/foundation-catalog/owner-polish/validation-390.png),
+[command dialog](../qa-artifacts/foundation-catalog/owner-polish/commands-390.png),
+[form dialog](../qa-artifacts/foundation-catalog/owner-polish/dialog-320.png),
+[combobox](../qa-artifacts/foundation-catalog/owner-polish/combobox-700.png),
+[select](../qa-artifacts/foundation-catalog/owner-polish/select-390.png),
+[calendar](../qa-artifacts/foundation-catalog/owner-polish/calendar-700.png), and
+[registered form selection](../qa-artifacts/foundation-catalog/owner-polish/request-selection-390.png).
+
+Follow-up checks passed: library and application Svelte checks (zero errors or
+warnings), production build, all **46 catalog browser checks** and all **18
+composition browser groups**, including keyboard, focus, accessibility, feedback
+lifecycle and both application drawers. No portable contract or primitive
+interaction logic changed. Catalog counts and deferrals remain unchanged.

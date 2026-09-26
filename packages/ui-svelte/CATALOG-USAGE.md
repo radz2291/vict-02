@@ -37,6 +37,19 @@ overflow-hidden card. This is the same portal constraint as the existing shell.
 Use `collisionPadding={16}` on floating Content parts to keep a visible viewport
 inset on narrow screens; the library owns placement and collision handling.
 
+Form selection popups match their field width; use `align="start"` on Select and
+Combobox Content. This keeps the field and its choices visually connected.
+Select triggers align their value at the start and support the decorative
+`ChevronDown` helper from `controls` at the end. Keep its icon separate from the
+value text. Action menus remain content-sized. A product can override
+`--vict-control-popup-width` or the Content styles when it needs a compact popup.
+
+Dialog Content provides a shared 16px gap between its direct children. Group
+a label and its input together; keep action rows separate from the body.
+Calendar grids fill their available container with seven equal columns. Floating
+calendars default to 320px, capped by the viewport; products can set
+`--vict-calendar-popup-width` for a wider, multiple-month composition.
+
 Catalog CSS is optional and scoped to `.vict-controls`. It uses the existing
 semantic tokens. Parts have visible focus, checked/selected, disabled, open,
 invalid, range and indeterminate states; reduced motion is respected. CSS utility
