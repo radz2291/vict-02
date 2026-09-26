@@ -40,9 +40,10 @@ export interface PlanRouteEntry {
 
 /** Structural view of a screen (surfaces are read defensively). */
 export interface PlanScreen {
+  readonly layoutMode?: import('@victframework/ui').UiLayoutMode;
   readonly id: string;
   readonly title: string;
-  readonly layout: readonly { readonly name: string; readonly surfaces: readonly PlanSurface[] }[];
+  readonly layout: readonly { readonly name: string; readonly surfaces: readonly PlanSurface[]; readonly size?: 'full' | 'main' | 'aside'; readonly appearance?: 'plain' | 'panel'; readonly flow?: 'stack' | 'inline' }[];
   /** Screen states are read defensively (the compiled plan carries the closed @1/@2 states). */
   readonly states?: unknown;
   readonly breadcrumbs?: readonly { readonly label: string; readonly routeId?: string }[];
@@ -64,9 +65,9 @@ export interface VictPlanView {
   readonly views: Readonly<Record<string, unknown>>;
   readonly forms: Readonly<Record<string, { readonly submitActionId: string } | undefined>>;
   readonly actions: Readonly<
-    Record<string, { readonly kind: string; readonly id: string } | undefined>
+    Record<string, { readonly kind: string; readonly id: string; readonly routeId?: string } | undefined>
   >;
-  readonly manifest?: { readonly theme?: unknown };
+  readonly manifest?: { readonly theme?: unknown; readonly name?: string };
 }
 
 /** Resolved route context: the matched route, its screen, and path parameters. */

@@ -88,7 +88,7 @@
           : displayRows
       : displayRows.slice(page * intent.pageSize, (page + 1) * intent.pageSize),
   );
-  const state: UiTableState = $derived({
+  const tableState: UiTableState = $derived({
     search,
     filters: filterValues,
     sortField,
@@ -144,4 +144,4 @@
   }
 </script>
 
-<RecordsTable {intent} {rows} {state} {onSearch} {onFilter} {onSort} {onPage} />
+<RecordsTable {intent} {rows} state={tableState} {onSearch} {onFilter} {onSort} {onPage} />

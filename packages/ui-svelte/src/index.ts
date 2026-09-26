@@ -1,3 +1,6 @@
+export { default as Select } from './Select.svelte';
+export { default as Popover } from './Popover.svelte';
+export { default as Tooltip } from './Tooltip.svelte';
 export { default as RecordsTable } from './RecordsTable.svelte';
 export { default as AppShell } from './AppShell.svelte';
 export { default as Button } from './Button.svelte';

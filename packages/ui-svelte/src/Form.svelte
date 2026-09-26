@@ -11,11 +11,12 @@
     checked: Readonly<Record<string, boolean>>;
     errors: Readonly<Record<string, string>>;
     submitLabel: string;
+    pending?: boolean;
     onText: (name: string, value: string) => void;
     onChecked: (name: string, checked: boolean) => void;
     onSubmit: (event: SubmitEvent) => void;
   }
-  let { surfaceId, formId, fields, text, checked, errors, submitLabel, onText, onChecked, onSubmit }: Props = $props();
+  let { surfaceId, formId, fields, text, checked, errors, submitLabel, pending = false, onText, onChecked, onSubmit }: Props = $props();
 </script>
 
 <!--
@@ -28,13 +29,13 @@
   render. The `required` attribute itself stays on controls so assistive
   technology still announces the required state.
 -->
-<form class="vict-form" data-surface={surfaceId} novalidate onsubmit={onSubmit}>
+<form class="vict-form" data-surface={surfaceId} novalidate aria-busy={pending} onsubmit={onSubmit}>
   {#each fields as field (field.name)}
     <FormField {formId} {field} text={text[field.name] ?? ''} checked={checked[field.name] === true}
-      error={errors[field.name]} {onText} {onChecked} />
+      disabled={pending} error={errors[field.name]} {onText} {onChecked} />
   {/each}
   {#if Object.keys(errors).length > 0}
     <Feedback kind="error" message="Please correct the highlighted fields." testId="form-local-validation" />
   {/if}
-  <Button type="submit" label={submitLabel} testId="form-submit" />
+  <Button type="submit" disabled={pending} label={pending ? 'Saving…' : submitLabel} testId="form-submit" />
 </form>

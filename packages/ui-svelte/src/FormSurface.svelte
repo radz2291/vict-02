@@ -12,7 +12,7 @@
    * dispatch a malformed mutation (HIGH-05-A remediation). Create and edit
    * forms share this exact policy.
    */
-  import type { VictPlanView, PlanSurface } from './logic.js';
+  import type { VictPlanView, PlanSurface, ActionResult } from './logic.js';
   import type { UiFormField } from '@victframework/ui';
   import Form from './Form.svelte';
   import {
@@ -25,7 +25,7 @@
   interface Props {
     surface: PlanSurface;
     plan: VictPlanView;
-    run: (actionId: string, input?: unknown) => Promise<void>;
+    run: (actionId: string, input?: unknown) => Promise<ActionResult | void>;
     /** Optional identity for edit forms (prefills and becomes the update target). */
     identity?: unknown;
     /** Prefill values for edit forms. */
@@ -39,7 +39,7 @@
     plan.forms?.[String(surface.formId)] as
       | {
           readonly formId: string;
-          readonly fields?: readonly { readonly name: string; readonly label: string; readonly required?: boolean; readonly widget?: unknown }[];
+          readonly fields?: readonly { readonly name: string; readonly label: string; readonly required?: boolean; readonly widget?: unknown; readonly options?: UiFormField['options'] }[];
           readonly submitActionId: string;
         }
       | undefined,
@@ -51,19 +51,21 @@
     label: field.label,
     required: field.required === true,
     widget: widgetKind(field.widget),
+    ...(field.options ? { options: field.options } : {}),
   })));
 
   // Raw widget-boundary state (canonical model lives in form-values.ts).
-  let state = $state<FormState>({ text: {}, checked: {} });
+  let formState = $state<FormState>({ text: {}, checked: {} });
   // Local, field-associated conversion errors (renderer-generated text only).
   let fieldErrors = $state<Record<string, string>>({});
+  let pending = $state(false);
 
   $effect(() => {
     // Edit forms prefill from the provided values through the canonical
     // normalization policy; the binding resets when the prefill identity
     // changes. This does NOT depend on any input event having occurred.
     void identity;
-    state = prefillFormState(fields, values ?? {});
+    formState = prefillFormState(fields, values ?? {});
     fieldErrors = {};
   });
 
@@ -77,20 +79,21 @@
 
   function onTextInput(name: string, value: string): void {
     // Numeric input remains raw text until the canonical submit conversion.
-    state = { ...state, text: { ...state.text, [name]: value } };
+    formState = { ...formState, text: { ...formState.text, [name]: value } };
     clearFieldError(name);
   }
 
   function onCheckedInput(name: string, checked: boolean): void {
-    state = { ...state, checked: { ...state.checked, [name]: checked } };
+    formState = { ...formState, checked: { ...formState.checked, [name]: checked } };
     clearFieldError(name);
   }
 
   async function submit(event: SubmitEvent): Promise<void> {
     event.preventDefault();
+    if (pending) return;
     // Canonical conversion at the declared widget boundary. Conversion
     // failures remain LOCAL to the form: no mutation is dispatched.
-    const outcome = toSubmitPayload(fields, state);
+    const outcome = toSubmitPayload(fields, formState);
     if (!outcome.ok) {
       fieldErrors = { ...(outcome.fieldErrors ?? {}) };
       return;
@@ -100,7 +103,9 @@
     if (identity !== undefined) {
       payload.__identity = identity;
     }
-    await run(String(form?.submitActionId), payload);
+    pending = true;
+    try { await run(String(form?.submitActionId), payload); }
+    finally { pending = false; }
   }
 </script>
 
@@ -109,10 +114,11 @@
     surfaceId={surface.id}
     formId={form.formId}
     fields={uiFields}
-    text={state.text}
-    checked={state.checked}
+    text={formState.text}
+    checked={formState.checked}
     errors={fieldErrors}
     {submitLabel}
+    {pending}
     onText={onTextInput}
     onChecked={onCheckedInput}
     onSubmit={(event) => { void submit(event); }}

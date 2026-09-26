@@ -3,6 +3,7 @@
   import type { ComponentRegistry } from '@victframework/application/renderer';
   import type { UiOverlayIntent, UiPlan } from '@victframework/ui';
   import Overlay from './Overlay.svelte';
+  import Feedback from './Feedback.svelte';
   import type { VictPlanView, PlanSurface, ViewDatum, ActionResult } from './logic.js';
   import Surface from './Surface.svelte';
 
@@ -18,7 +19,7 @@
     params: Readonly<Record<string, string>>;
     viewData: Readonly<Record<string, ViewDatum>>;
     record: Record<string, unknown> | null;
-    run: (actionId: string, input?: unknown) => Promise<void>;
+    run: (actionId: string, input?: unknown) => Promise<ActionResult | void>;
     dispatch: (actionId: string, input?: unknown) => Promise<ActionResult>;
     sendConversation: (actionId: string, text: string) => Promise<boolean>;
   }
@@ -29,13 +30,24 @@
     title: typeof surface.title === 'string' ? surface.title : '',
     triggerLabel: typeof surface.triggerLabel === 'string' ? surface.triggerLabel : 'Open',
   });
+  let result = $state<ActionResult | null>(null);
+  async function runInside(actionId: string, input?: unknown): Promise<ActionResult | void> {
+    const outcome = await run(actionId, input);
+    if (outcome) result = outcome;
+    return outcome;
+  }
 </script>
 
 {#snippet content()}
   {#each ((surface.content ?? []) as readonly PlanSurface[]) as nested (nested.id)}
     <Surface surface={nested} {plan} {uiPlan} {registry} {context} {params} {viewData}
-      {record} {run} {dispatch} {sendConversation} />
+      {record} run={runInside} {dispatch} {sendConversation} />
   {/each}
+  {#if result}
+    <Feedback kind={result.ok ? 'status' : result.code === 'DATA_UNAUTHORIZED' ? 'denied' : 'error'}
+      message={result.ok ? 'Done.' : result.code === 'DATA_UNAUTHORIZED' ? 'This action was denied.' : 'The action could not be completed.'}
+      testId="overlay-result" />
+  {/if}
 {/snippet}
 
-<Overlay surfaceId={surface.id} {intent} {content} />
+<Overlay surfaceId={surface.id} {intent} {content} onOpenChange={() => { result = null; }} />

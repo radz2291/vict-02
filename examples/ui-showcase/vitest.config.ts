@@ -32,6 +32,7 @@ export default defineConfig({
   },
   test: {
     environment: 'happy-dom',
+    server: { deps: { inline: ['bits-ui', 'runed', '@internationalized/date'] } },
     include: ['test/**/*.test.ts'],
     testTimeout: 120_000,
     hookTimeout: 480_000,

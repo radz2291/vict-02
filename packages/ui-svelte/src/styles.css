@@ -1,261 +1,78 @@
-/* ==========================================================================
-   Vict UI — semantic theme tokens and shared presentation (ui-svelte).
-   This is the ONE production style source for migrated presentation;
-   `@victframework/renderer-svelte/theme.css` is a compatibility entry
-   point that imports this file. Applications customize tokens through
-   the neutral Application Definition theme declaration; raw CSS never
-   crosses the neutral boundary.
-   ========================================================================== */
-
+/* VICT's shared visual foundation. No scenario selectors or external fonts.
+   Apps override semantic tokens through their Application Definition theme. */
 :root {
-  /* Color roles (WCAG AA contrast against their paired surfaces). */
-  --vict-color-bg: #f5f6f8;
+  --vict-color-bg: #f7f9f9;
   --vict-color-surface: #ffffff;
-  --vict-color-text: #17202a;
-  --vict-color-textMuted: #5a6673;
-  --vict-color-accent: #3b5bdb;
+  --vict-color-text: #203239;
+  --vict-color-textMuted: #586c73;
+  --vict-color-accent: #176b5b;
   --vict-color-accentContrast: #ffffff;
-  --vict-color-border: #d5dae1;
-  --vict-color-danger: #b02a37;
-  --vict-color-warning: #8a5a00;
-  --vict-color-success: #1e7145;
-  --vict-color-info: #1c5f8a;
-  --vict-color-focusRing: #3b5bdb;
-
-  /* Typography. */
-  --vict-font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  --vict-font-sizeBase: 16px;
-
-  /* Layout. */
+  --vict-color-border: #dce5e5;
+  --vict-color-danger: #b03143;
+  --vict-color-warning: #876013;
+  --vict-color-success: #216e51;
+  --vict-color-info: #346984;
+  --vict-color-focusRing: #167d72;
+  --vict-font-family: Inter, 'Segoe UI', system-ui, sans-serif;
+  --vict-font-sizeBase: 14px;
   --vict-spacing-unit: 8px;
-  --vict-radius-base: 8px;
+  --vict-radius-base: 10px;
   --vict-density: 1;
-
-  /* Elevation. */
-  --vict-elevation-low: 0 1px 2px rgba(23, 32, 42, 0.08);
-  --vict-elevation-high: 0 8px 24px rgba(23, 32, 42, 0.18);
+  --vict-elevation-low: 0 2px 4px #20323904;
+  --vict-elevation-high: 0 20px 80px #152e3330;
+  --vict-control-height: 40px;
+  --vict-space-1: calc(var(--vict-spacing-unit) * 0.5);
+  --vict-space-2: var(--vict-spacing-unit);
+  --vict-space-3: calc(var(--vict-spacing-unit) * 1.5);
+  --vict-space-4: calc(var(--vict-spacing-unit) * 2);
+  --vict-space-6: calc(var(--vict-spacing-unit) * 3);
 }
-
-/* Generic read-only data view: no query controls or application state.
-   The richer RecordsTable above owns search, filters, sort, and paging. */
-.vict-data-view {
-  max-width: 100%;
-  overflow-x: auto;
-  overscroll-behavior-x: contain;
-  border: 1px solid var(--vict-color-border, #d5dae1);
-  border-radius: var(--vict-radius-base, 8px);
-  background: var(--vict-color-surface, #fff);
+.vict-app,
+.vict-dialog,
+.vict-drawer,
+.vict-popover,
+.vict-tooltip {
+  font-family: var(--vict-font-family);
+  font-size: var(--vict-font-sizeBase);
+  color: var(--vict-color-text);
+  line-height: 1.6;
 }
-.vict-data-view table,
-.vict-data-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-.vict-data-view th,
-.vict-data-view td,
-.vict-data-table th,
-.vict-data-table td {
-  text-align: left;
-  padding: calc(var(--vict-spacing-unit, 8px) * 1.5) calc(var(--vict-spacing-unit, 8px) * 2);
-  border-bottom: 1px solid var(--vict-color-border, #d5dae1);
-  overflow-wrap: anywhere;
-}
-.vict-data-view th,
-.vict-data-table th {
-  background: var(--vict-color-bg, #f5f6f8);
-  font-weight: 600;
-}
-.vict-data-view th,
-.vict-data-view td {
-  min-width: 8rem;
-}
-
-.vict-text {
-  max-width: 100%;
-  overflow-wrap: anywhere;
-}
-.vict-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  gap: var(--vict-spacing-unit, 8px);
-}
-.vict-list-item {
-  min-width: 0;
-  overflow-wrap: anywhere;
-  background: var(--vict-color-surface, #fff);
-  border: 1px solid var(--vict-color-border, #d5dae1);
-  border-radius: var(--vict-radius-base, 8px);
-  padding: calc(var(--vict-spacing-unit, 8px) * 2);
-}
-.vict-detail {
-  margin: 0;
-  display: grid;
-  gap: calc(var(--vict-spacing-unit, 8px) * 2);
-}
-.vict-detail-row {
-  display: grid;
-  grid-template-columns: minmax(0, 10rem) minmax(0, 1fr);
-  gap: calc(var(--vict-spacing-unit, 8px) * 2);
-  padding-bottom: var(--vict-spacing-unit, 8px);
-  border-bottom: 1px solid var(--vict-color-border, #d5dae1);
-}
-.vict-detail dt {
-  min-width: 0;
-  font-weight: 600;
-  color: var(--vict-color-textMuted, #5a6673);
-  overflow-wrap: anywhere;
-}
-.vict-detail dd {
-  min-width: 0;
-  margin: 0;
-  overflow-wrap: anywhere;
-}
-
-.vict-figure {
-  min-width: 0;
-  margin: 0;
-  background: var(--vict-color-surface, #fff);
-  border: 1px solid var(--vict-color-border, #d5dae1);
-  border-radius: var(--vict-radius-base, 8px);
-  padding: calc(var(--vict-spacing-unit, 8px) * 3);
-}
-.vict-figure figcaption {
-  font-weight: 600;
-  margin-bottom: calc(var(--vict-spacing-unit, 8px) * 2);
-}
-.vict-chart {
-  width: 100%;
-  height: auto;
-}
-.vict-chart .vict-bar {
-  fill: var(--vict-color-accent, #3b5bdb);
-}
-.vict-chart text {
-  fill: var(--vict-color-text, #17202a);
-  font-size: 12px;
-}
-.vict-chart-gridline {
-  stroke: var(--vict-color-border, #d5dae1);
-  stroke-width: 1;
-}
-.vict-chart-table {
-  margin-top: calc(var(--vict-spacing-unit, 8px) * 2);
-  max-width: 100%;
-  overflow-x: auto;
-}
-
-.vict-conversation-panel {
-  min-width: 0;
-  background: var(--vict-color-surface, #fff);
-  border: 1px solid var(--vict-color-border, #d5dae1);
-  border-radius: var(--vict-radius-base, 8px);
-  padding: calc(var(--vict-spacing-unit, 8px) * 3);
-}
-.vict-conversation {
-  display: flex;
-  flex-direction: column;
-  gap: calc(var(--vict-spacing-unit, 8px) * 2);
-  max-height: 60vh;
-  overflow-y: auto;
-}
-.vict-conversation-message {
-  min-width: 0;
-  max-width: 85%;
-  overflow-wrap: anywhere;
-  border: 1px solid var(--vict-color-border, #d5dae1);
-  border-radius: var(--vict-radius-base, 8px);
-  padding: calc(var(--vict-spacing-unit, 8px) * 2);
-}
-.vict-conversation-message--user {
-  align-self: flex-end;
-  border-color: var(--vict-color-accent, #3b5bdb);
-}
-.vict-conversation-message--assistant {
-  align-self: flex-start;
-}
-.vict-conversation-meta {
-  margin: 0 0 calc(var(--vict-spacing-unit, 8px) * 0.5);
-  font-size: 0.75rem;
-  color: var(--vict-color-textMuted, #5a6673);
-}
-.vict-conversation-body {
-  margin: 0;
-  white-space: pre-wrap;
-}
-.vict-conversation-input {
-  margin-top: calc(var(--vict-spacing-unit, 8px) * 2);
-  display: grid;
-  gap: var(--vict-spacing-unit, 8px);
-}
-.vict-conversation-input-row {
-  display: flex;
-  gap: var(--vict-spacing-unit, 8px);
-  min-width: 0;
-}
-.vict-conversation-input-row .vict-input {
-  flex: 1;
-  min-width: 0;
-}
-
-@media (max-width: 520px) {
-  .vict-detail-row {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 2px;
-  }
-  .vict-conversation-panel,
-  .vict-figure {
-    padding: calc(var(--vict-spacing-unit, 8px) * 2);
-  }
-  .vict-conversation-message {
-    max-width: 100%;
-  }
-}
-
-/* The application root container: tokens apply to the Vict subtree only,
-   so a Vict application can coexist with an arbitrary host page. */
 .vict-app {
-  font-family: var(--vict-font-family, system-ui, sans-serif);
-  font-size: var(--vict-font-sizeBase, 16px);
-  color: var(--vict-color-text, #17202a);
-  background: var(--vict-color-bg, #fff);
-  min-height: 100vh;
-  line-height: 1.5;
+  background: var(--vict-color-bg);
+  min-height: 100dvh;
 }
-
 .vict-app *,
 .vict-app *::before,
-.vict-app *::after {
+.vict-app *::after,
+.vict-popover,
+.vict-tooltip {
   box-sizing: border-box;
 }
-
-/* Visible focus indication everywhere. */
-.vict-app :focus-visible {
-  outline: 2px solid var(--vict-color-focusRing, #3158cf);
-  outline-offset: 2px;
-  border-radius: 2px;
+.vict-app :focus-visible,
+.vict-popover :focus-visible,
+.vict-help:focus-visible,
+:where(.vict-btn, .vict-input, .vict-textarea, .vict-select, .vict-checkbox):focus-visible {
+  outline: 3px solid var(--vict-color-focusRing);
+  outline-offset: 3px;
 }
-
-/* Reduced-motion behavior. */
-@media (prefers-reduced-motion: reduce) {
-  .vict-app *,
-  .vict-app *::before,
-  .vict-app *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
+.vict-app button,
+.vict-app input,
+.vict-app select,
+.vict-app textarea {
+  font: inherit;
 }
-
-/* Shared application frame, supplied with resolved display links by the renderer. */
+.vict-app button {
+  touch-action: manipulation;
+}
+.vict-app [hidden] {
+  display: none !important;
+}
 .vict-shell {
   display: grid;
-  grid-template-columns: 248px minmax(0, 1fr);
-  grid-template-rows: auto minmax(0, 1fr);
+  grid-template-columns: 216px minmax(0, 1fr);
+  grid-template-rows: 72px 1fr;
   grid-template-areas: 'nav header' 'nav main';
-  min-height: 100vh;
+  min-height: 100dvh;
 }
 .vict-shell--single {
   grid-template-columns: minmax(0, 1fr);
@@ -266,626 +83,901 @@
   display: flex;
   align-items: center;
   min-width: 0;
-  min-height: 72px;
-  padding: 16px clamp(24px, 3vw, 48px);
-  background: var(--vict-color-surface, #fff);
-  border-bottom: 1px solid var(--vict-color-border, #d5dae1);
+  padding: 16px clamp(24px, 3.4vw, 52px);
+  border-bottom: 1px solid var(--vict-color-border);
+  background: var(--vict-color-surface);
 }
 .vict-header h1 {
   margin: 0;
-  color: var(--vict-color-text, #17202a);
-  font-size: clamp(1.25rem, 1.4vw, 1.6rem);
-  font-weight: 700;
-  line-height: 1.25;
-  letter-spacing: -0.025em;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
 }
 .vict-nav {
   grid-area: nav;
   display: flex;
   flex-direction: column;
-  align-items: stretch;
-  gap: 4px;
+  gap: 6px;
+  padding: 26px 16px;
+  background: var(--vict-color-surface);
+  border-right: 1px solid var(--vict-color-border);
   min-width: 0;
-  padding: 28px 16px;
-  background: var(--vict-color-surface, #fff);
-  border-right: 1px solid var(--vict-color-border, #d5dae1);
+}
+.vict-brand {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: 10px;
+  padding: 0 12px 38px;
+}
+.vict-brand > span:first-child {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  background: var(--vict-color-accent);
+  color: var(--vict-color-accentContrast);
+  border-radius: 9px;
+  font-size: 18px;
+  font-weight: 700;
+}
+.vict-brand strong {
+  font-size: 20px;
+  letter-spacing: -0.04em;
+}
+.vict-brand-caption {
+  flex-basis: 100%;
+  margin: 10px 0 0 40px;
+  color: var(--vict-color-textMuted);
+  font-size: 12px;
 }
 .vict-nav-group-label {
-  margin: 18px 12px 6px;
-  color: var(--vict-color-textMuted, #5a6673);
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.09em;
-  line-height: 1.4;
+  margin: 16px 12px 7px;
+  color: var(--vict-color-textMuted);
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
 }
-.vict-nav-group-label:first-child {
-  margin-top: 0;
-}
 .vict-nav-link {
-  display: block;
-  min-height: 40px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 42px;
   padding: 9px 12px;
-  border-radius: var(--vict-radius-base, 8px);
-  color: var(--vict-color-text, #17202a);
-  font-size: 0.92rem;
-  font-weight: 550;
-  line-height: 1.45;
+  border-radius: 7px;
+  color: var(--vict-color-textMuted);
+  font-weight: 500;
   text-decoration: none;
+  overflow-wrap: anywhere;
+}
+.vict-nav-link::before {
+  content: '';
+  height: 6px;
+  width: 6px;
+  flex: none;
+  border: 1px solid currentColor;
+  border-radius: 2px;
 }
 .vict-nav-link:hover {
-  background: var(--vict-color-bg, #f5f6f8);
+  background: var(--vict-color-bg);
+  color: var(--vict-color-text);
 }
 .vict-nav-link[aria-current='page'] {
-  background: var(--vict-color-accent, #3b5bdb);
-  color: var(--vict-color-accentContrast, #fff);
-  font-weight: 700;
+  background: color-mix(in srgb, var(--vict-color-accent) 9%, white);
+  color: var(--vict-color-accent);
+  font-weight: 650;
+}
+.vict-nav-link[aria-current='page']::before {
+  background: currentColor;
 }
 .vict-nav-toggle {
   display: none;
 }
 .vict-main {
   grid-area: main;
-  width: min(100%, 1320px);
   min-width: 0;
+  width: 100%;
+  max-width: 1440px;
   justify-self: center;
-  padding: 28px clamp(24px, 3vw, 48px) 48px;
-  overflow-x: hidden;
-}
-.vict-region {
-  margin-bottom: calc(var(--vict-spacing-unit, 8px) * 4);
+  padding: 28px clamp(24px, 3.4vw, 52px) 56px;
 }
 .vict-breadcrumbs {
   display: flex;
   flex-wrap: wrap;
-  gap: 7px;
-  list-style: none;
-  margin: 0 0 22px;
+  gap: 10px;
   padding: 0;
-  color: var(--vict-color-textMuted, #5a6673);
-  font-size: 0.82rem;
-  line-height: 1.5;
+  margin: 0 0 36px;
+  list-style: none;
+  color: var(--vict-color-textMuted);
+  font-size: 12px;
 }
 .vict-breadcrumbs li + li::before {
-  content: '›';
-  margin-right: 7px;
-  color: var(--vict-color-textMuted, #5a6673);
+  content: '/';
+  margin-right: 10px;
+  opacity: 0.55;
 }
 .vict-breadcrumbs a {
-  color: var(--vict-color-accent, #3b5bdb);
+  color: inherit;
   text-decoration: none;
 }
 .vict-breadcrumbs a:hover {
   text-decoration: underline;
 }
+.vict-layout {
+  display: grid;
+  gap: 28px;
+  align-items: start;
+}
+.vict-layout[data-layout='split'] {
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 312px);
+}
+.vict-region {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 14px;
+}
+.vict-region[data-size='full'] {
+  grid-column: 1 / -1;
+}
+.vict-layout[data-layout='split'] > .vict-region[data-size='aside'] {
+  grid-column: 2;
+}
+.vict-region[data-flow='inline'] {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.vict-region[data-appearance='panel'] {
+  padding: 24px;
+  border: 1px solid var(--vict-color-border);
+  border-radius: var(--vict-radius-base);
+  background: var(--vict-color-surface);
+  box-shadow: var(--vict-elevation-low);
+}
+.vict-text {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+p.vict-text {
+  color: var(--vict-color-textMuted);
+  max-width: 65ch;
+}
+h2.vict-text {
+  font-size: clamp(26px, 2.6vw, 36px);
+  line-height: 1.2;
+  font-weight: 600;
+  letter-spacing: -0.04em;
+}
+h3.vict-text {
+  font-size: 14px;
+  line-height: 1.5;
+  font-weight: 650;
+  margin-top: 10px;
+}
+.vict-region[data-appearance='panel'] h2.vict-text {
+  font-size: 19px;
+  letter-spacing: -0.025em;
+}
+.vict-region > .vict-status {
+  align-self: flex-start;
+}
+.vict-btn,
+.vict-ui-table__pagination button,
+.vict-nav-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  width: fit-content;
+  min-height: calc(var(--vict-control-height) * var(--vict-density));
+  padding: 8px 16px;
+  border: 1px solid var(--vict-color-accent);
+  border-radius: 7px;
+  background: var(--vict-color-accent);
+  color: var(--vict-color-accentContrast);
+  font: inherit;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    box-shadow 0.15s;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+.vict-nav-toggle {
+  display: none;
+}
+.vict-btn:hover:not(:disabled) {
+  box-shadow: inset 0 0 0 100px #0000000a;
+}
+.vict-btn--secondary,
+.vict-ui-table__pagination button,
+.vict-nav-toggle {
+  background: var(--vict-color-surface);
+  color: var(--vict-color-text);
+  border-color: var(--vict-color-border);
+}
+.vict-btn--quiet {
+  background: transparent;
+  border-color: transparent;
+  color: var(--vict-color-textMuted);
+}
+.vict-btn--danger {
+  background: var(--vict-color-danger);
+  border-color: var(--vict-color-danger);
+  color: white;
+}
+.vict-app button:disabled,
+.vict-app input:disabled,
+.vict-app select:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+.vict-form {
+  display: grid;
+  gap: 18px;
+  width: 100%;
+  max-width: 40rem;
+}
+.vict-field {
+  display: grid;
+  gap: 7px;
+  min-width: 0;
+}
+.vict-field-label {
+  font-size: 12px;
+  font-weight: 600;
+}
+.vict-input,
+.vict-textarea,
+.vict-ui-table__field input {
+  width: 100%;
+  min-width: 0;
+  min-height: calc(var(--vict-control-height) * var(--vict-density));
+  padding: 9px 12px;
+  border: 1px solid var(--vict-color-border);
+  border-radius: 7px;
+  background: var(--vict-color-surface);
+  color: var(--vict-color-text);
+  font: inherit;
+  box-shadow: 0 1px 2px #20323903;
+}
+.vict-input:hover,
+.vict-textarea:hover,
+.vict-ui-table__field input:hover {
+  border-color: color-mix(in srgb, var(--vict-color-textMuted) 55%, var(--vict-color-border));
+}
+.vict-input::placeholder {
+  color: var(--vict-color-textMuted);
+  opacity: 0.9;
+}
+.vict-textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+.vict-input[aria-invalid='true'],
+.vict-textarea[aria-invalid='true'] {
+  border-color: var(--vict-color-danger);
+}
+.vict-field-error {
+  margin: 0;
+  color: var(--vict-color-danger);
+  font-size: 12px;
+}
+.vict-checkbox {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--vict-color-accent);
+  cursor: pointer;
+  margin: 0;
+}
+.vict-field--boolean {
+  grid-template-columns: 18px 1fr;
+  align-items: center;
+  column-gap: 10px;
+  min-height: 32px;
+}
+.vict-field--boolean > label {
+  grid-column: 2;
+  grid-row: 1;
+  cursor: pointer;
+}
+.vict-field--boolean > input {
+  grid-column: 1;
+  grid-row: 1;
+}
+.vict-field--boolean > .vict-field-error {
+  grid-column: 1 / -1;
+}
+.vict-form > .vict-btn {
+  margin-top: 4px;
+  width: 100%;
+}
+.vict-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 4px 9px;
+  border-radius: 5px;
+  font-size: 11px;
+  font-weight: 650;
+  color: var(--vict-color-textMuted);
+  background: color-mix(in srgb, currentColor 7%, white);
+  width: fit-content;
+}
+.vict-status::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 100%;
+  background: currentColor;
+  flex: none;
+}
+.vict-status--success {
+  color: var(--vict-color-success);
+}
+.vict-status--warning {
+  color: var(--vict-color-warning);
+}
+.vict-status--danger {
+  color: var(--vict-color-danger);
+}
+.vict-status--info {
+  color: var(--vict-color-info);
+}
+.vict-state,
+.vict-alert {
+  margin: 18px 0 0;
+  padding: 14px 18px;
+  border-radius: 7px;
+  background: var(--vict-color-surface);
+  border: 1px solid var(--vict-color-border);
+  color: var(--vict-color-textMuted);
+  overflow-wrap: anywhere;
+}
+.vict-state[role='status'] {
+  border-left: 3px solid var(--vict-color-success);
+}
+.vict-alert {
+  border-left: 3px solid var(--vict-color-danger);
+  color: var(--vict-color-danger);
+}
+.vict-alert--denied {
+  border-left-color: var(--vict-color-warning);
+  color: var(--vict-color-warning);
+}
+/* Tables keep overflow local and remain keyboard scrollable. */
+.vict-ui-table {
+  background: var(--vict-color-surface);
+  border: 1px solid var(--vict-color-border);
+  border-radius: var(--vict-radius-base);
+  min-width: 0;
+  box-shadow: var(--vict-elevation-low);
+}
+.vict-ui-table__heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 22px 22px 16px;
+}
+.vict-ui-table__heading h2 {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+.vict-ui-table__count {
+  color: var(--vict-color-textMuted);
+  font-size: 11px;
+  background: var(--vict-color-bg);
+  border: 1px solid var(--vict-color-border);
+  border-radius: 20px;
+  padding: 2px 9px;
+  white-space: nowrap;
+}
+.vict-ui-table__toolbar {
+  display: flex;
+  align-items: end;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 0 22px 20px;
+}
+.vict-ui-table__field {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+  flex: 1 1 180px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--vict-color-textMuted);
+}
+.vict-ui-table__field input {
+  font-size: 13px;
+  font-weight: 400;
+}
+.vict-table-tools {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.vict-ui-table__scroll,
+.vict-data-view,
+.vict-chart-table {
+  max-width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+}
+.vict-ui-table table,
+.vict-data-view table,
+.vict-data-table {
+  border-collapse: collapse;
+  width: 100%;
+}
+.vict-ui-table th,
+.vict-ui-table td,
+.vict-data-view th,
+.vict-data-view td,
+.vict-data-table th,
+.vict-data-table td {
+  padding: calc(16px * var(--vict-density)) 22px;
+  text-align: left;
+  border-bottom: 1px solid var(--vict-color-border);
+}
+.vict-ui-table th,
+.vict-data-view th,
+.vict-data-table th {
+  background: var(--vict-color-bg);
+  color: var(--vict-color-textMuted);
+  font-size: 11px;
+  font-weight: 600;
+}
+.vict-ui-table td {
+  font-size: 12px;
+  line-height: 1.55;
+  min-width: 90px;
+}
+.vict-ui-table td:first-child {
+  font-weight: 550;
+  min-width: 190px;
+}
+.vict-ui-table tbody tr:hover {
+  background: color-mix(in srgb, var(--vict-color-accent) 3%, white);
+}
+.vict-ui-table__sort {
+  background: none;
+  border: 0;
+  padding: 0;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+.vict-ui-table__sort span {
+  margin-left: 5px;
+  font-size: 9px;
+}
+.vict-ui-table--compact td {
+  padding-block: calc(9px * var(--vict-density));
+}
+.vict-ui-table__pagination {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 16px 22px;
+  color: var(--vict-color-textMuted);
+  font-size: 11px;
+}
+.vict-ui-table__pagination button {
+  min-height: 32px;
+  padding: 5px 10px;
+  font-size: 11px;
+}
+.vict-ui-table__page-status {
+  margin-right: auto;
+  order: -1;
+}
+.vict-ui-table__empty {
+  padding: 24px;
+  color: var(--vict-color-textMuted);
+}
+.vict-ui-table__loading {
+  font-size: 12px;
+}
+.vict-help {
+  width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 1px solid var(--vict-color-border);
+  border-radius: 100%;
+  background: var(--vict-color-surface);
+  color: var(--vict-color-textMuted);
+  cursor: help;
+  font-size: 12px;
+}
+.vict-popover {
+  z-index: 80;
+  min-width: 220px;
+  max-width: calc(100vw - 32px);
+  background: var(--vict-color-surface);
+  border: 1px solid var(--vict-color-border);
+  border-radius: 10px;
+  padding: 16px;
+  box-shadow: var(--vict-elevation-high);
+}
+.vict-popover-title {
+  margin: 0 0 12px;
+  font-weight: 650;
+  font-size: 13px;
+}
+.vict-check-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.vict-tooltip {
+  z-index: 100;
+  max-width: min(260px, calc(100vw - 24px));
+  padding: 9px 12px;
+  background: var(--vict-color-text);
+  color: var(--vict-color-surface);
+  border-radius: 7px;
+  font-size: 12px;
+  box-shadow: var(--vict-elevation-low);
+}
+/* Bits UI owns interaction. VICT supplies only visuals. */
+.vict-tabs {
+  min-width: 0;
+}
+.vict-tablist {
+  display: flex;
+  gap: 24px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  border-bottom: 1px solid var(--vict-color-border);
+  padding: 0 4px;
+}
+.vict-tabs [role='tab'] {
+  flex: none;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: none;
+  padding: 12px 0;
+  color: var(--vict-color-textMuted);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+.vict-tabs [role='tab'][aria-selected='true'] {
+  border-bottom-color: var(--vict-color-accent);
+  color: var(--vict-color-accent);
+  font-weight: 650;
+}
+.vict-tabpanel {
+  padding-top: 20px;
+}
+.vict-tabpanel > * + * {
+  margin-top: 16px;
+}
+.vict-overlay-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: #102e3c66;
+  backdrop-filter: blur(3px);
+}
+.vict-dialog,
+.vict-drawer {
+  position: fixed;
+  z-index: 51;
+  background: var(--vict-color-surface);
+  box-shadow: var(--vict-elevation-high);
+  padding: 28px;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+.vict-dialog {
+  inset: 50% auto auto 50%;
+  transform: translate(-50%, -50%);
+  width: min(520px, calc(100vw - 32px));
+  max-height: calc(100dvh - 48px);
+  border: 1px solid var(--vict-color-border);
+  border-radius: 14px;
+}
+.vict-drawer {
+  inset: 0 0 0 auto;
+  width: min(440px, calc(100vw - 16px));
+  height: 100dvh;
+}
+/* Equal layer values keep nested overlays above their parent by DOM order. */
+.vict-overlay-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+.vict-overlay-header h2 {
+  font-size: 19px;
+  line-height: 1.3;
+  letter-spacing: -0.025em;
+  margin: 0;
+  font-weight: 600;
+}
+.vict-overlay-header .vict-btn {
+  flex: none;
+  width: 32px;
+  min-height: 32px;
+  padding: 3px;
+}
+.vict-overlay-body {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.vict-conversation-panel {
+  background: var(--vict-color-surface);
+  border: 1px solid var(--vict-color-border);
+  border-radius: var(--vict-radius-base);
+  padding: 28px;
+}
+.vict-conversation {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  max-height: 56vh;
+  overflow-y: auto;
+  padding: 2px;
+}
+.vict-conversation-message {
+  max-width: 94%;
+  overflow-wrap: anywhere;
+  align-self: flex-start;
+}
+.vict-conversation-message--user {
+  align-self: flex-end;
+  background: color-mix(in srgb, var(--vict-color-accent) 5%, white);
+  padding: 16px 18px;
+  border: 1px solid color-mix(in srgb, var(--vict-color-accent) 14%, white);
+  border-radius: 12px 12px 3px 12px;
+}
+.vict-conversation-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 10px;
+  font-size: 12px;
+  font-weight: 650;
+}
+.vict-avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 7px;
+  background: color-mix(in srgb, var(--vict-color-accent) 12%, white);
+  color: var(--vict-color-accent);
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+}
+.vict-message-role {
+  font-size: 10px;
+  color: var(--vict-color-textMuted);
+  font-weight: 400;
+}
+.vict-conversation-body {
+  margin: 0;
+  white-space: pre-wrap;
+  font-size: 13px;
+  line-height: 1.85;
+}
+.vict-conversation-input {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid var(--vict-color-border);
+  display: grid;
+  gap: 8px;
+}
+.vict-conversation-input-row {
+  display: flex;
+  gap: 8px;
+  min-width: 0;
+}
+.vict-conversation-input-row .vict-input {
+  flex: 1;
+  min-width: 0;
+}
+.vict-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+}
+.vict-list-item {
+  padding: 16px;
+  border: 1px solid var(--vict-color-border);
+  border-radius: var(--vict-radius-base);
+  background: var(--vict-color-surface);
+  overflow-wrap: anywhere;
+}
+.vict-list-item p {
+  margin: 5px 0 0;
+  color: var(--vict-color-textMuted);
+  font-size: 12px;
+}
+.vict-detail {
+  margin: 0;
+  display: grid;
+  gap: 16px;
+}
+.vict-detail-row {
+  display: grid;
+  grid-template-columns: minmax(0, 9rem) minmax(0, 1fr);
+  gap: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--vict-color-border);
+  overflow-wrap: anywhere;
+}
+.vict-detail dt {
+  color: var(--vict-color-textMuted);
+}
+.vict-detail dd {
+  margin: 0;
+}
+.vict-figure {
+  margin: 0;
+  min-width: 0;
+  background: var(--vict-color-surface);
+  border: 1px solid var(--vict-color-border);
+  border-radius: var(--vict-radius-base);
+  padding: 24px;
+}
+.vict-figure figcaption {
+  font-weight: 650;
+  margin-bottom: 20px;
+}
+.vict-chart {
+  width: 100%;
+  height: auto;
+}
+.vict-chart .vict-bar {
+  fill: var(--vict-color-accent);
+}
+.vict-chart text {
+  fill: var(--vict-color-text);
+  font-size: 12px;
+}
+.vict-chart-gridline {
+  stroke: var(--vict-color-border);
+  stroke-width: 1;
+}
+.vict-chart-table {
+  margin-top: 20px;
+}
+@media (max-width: 1100px) {
+  .vict-layout[data-layout='split'] {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .vict-layout[data-layout='split'] > .vict-region[data-size='aside'] {
+    grid-column: 1;
+  }
+}
 @media (max-width: 719px) {
   .vict-shell,
   .vict-shell--single {
     grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: auto auto minmax(0, 1fr);
+    grid-template-rows: auto auto 1fr;
     grid-template-areas: 'header' 'nav' 'main';
   }
   .vict-header {
-    gap: 12px;
-    min-height: 56px;
-    padding: 8px 16px;
-    position: static;
+    padding: 12px 18px;
+    gap: 14px;
+    min-height: 64px;
   }
   .vict-header h1 {
-    min-width: 0;
-    font-size: 1.12rem;
-    line-height: 1.25;
+    font-size: 15px;
   }
   .vict-nav-toggle {
     display: inline-flex;
-    flex: none;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    min-height: 38px;
-    padding: 6px 9px;
-    border: 1px solid var(--vict-color-border, #d5dae1);
-    border-radius: var(--vict-radius-base, 8px);
-    color: var(--vict-color-text, #17202a);
-    background: var(--vict-color-surface, #fff);
-    font: inherit;
-    font-size: 0.8rem;
-    font-weight: 650;
-    cursor: pointer;
-  }
-  .vict-nav-toggle:hover {
-    background: var(--vict-color-bg, #f5f6f8);
+    min-height: 36px;
+    padding: 5px 10px;
   }
   .vict-nav {
     display: none;
   }
   .vict-nav-open {
     display: flex;
-    padding: 12px 16px 16px;
     border-right: 0;
-    border-bottom: 1px solid var(--vict-color-border, #d5dae1);
+    border-bottom: 1px solid var(--vict-color-border);
+    padding: 16px;
+  }
+  .vict-nav-open .vict-brand {
+    display: none;
   }
   .vict-nav-link {
     min-height: 44px;
-    padding: 11px 12px;
   }
   .vict-main {
-    padding: 16px 16px 32px;
+    padding: 22px 18px 36px;
   }
   .vict-breadcrumbs {
-    margin-bottom: 18px;
-    font-size: 0.78rem;
+    margin-bottom: 26px;
+    font-size: 11px;
   }
-}
-
-/* The migrated table's one packaged style source. Host theme tokens remain
-   optional so the component also works outside the legacy VICT shell. */
-.vict-ui-table {
-  box-sizing: border-box;
-  color: var(--vict-color-text, #182338);
-  background: var(--vict-color-surface, #fff);
-  border: 1px solid var(--vict-color-border, #dce2eb);
-  border-radius: 14px;
-  box-shadow: 0 10px 30px rgba(24, 35, 56, 0.06);
-  overflow: hidden;
-  font-family: var(--vict-font-family, system-ui, sans-serif);
-}
-.vict-ui-table *,
-.vict-ui-table *::before,
-.vict-ui-table *::after {
-  box-sizing: border-box;
-}
-.vict-ui-table :focus-visible {
-  outline: 2px solid var(--vict-color-focusRing, #3158cf);
-  outline-offset: 2px;
-}
-.vict-ui-table__heading {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 20px;
-  padding: 26px 28px 20px;
-}
-.vict-ui-table__heading h2 {
-  margin: 0;
-  font-size: clamp(22px, 2vw, 28px);
-  line-height: 1.2;
-}
-.vict-ui-table__count {
-  white-space: nowrap;
-  border-radius: 999px;
-  background: #edf2ff;
-  color: #2749a8;
-  padding: 7px 12px;
-  font-size: 13px;
-  font-weight: 700;
-}
-.vict-ui-table__toolbar {
-  display: flex;
-  align-items: end;
-  flex-wrap: wrap;
-  gap: 16px;
-  padding: 0 28px 24px;
-  border-bottom: 1px solid var(--vict-color-border, #dce2eb);
-}
-.vict-ui-table__field {
-  display: flex;
-  flex-direction: column;
-  gap: 7px;
-  min-width: min(250px, 100%);
-  color: var(--vict-color-textMuted, #53627a);
-  font-size: 12px;
-  font-weight: 700;
-}
-.vict-ui-table__field input {
-  width: 100%;
-  min-height: 42px;
-  padding: 8px 12px;
-  border: 1px solid var(--vict-color-border, #cbd5e3);
-  border-radius: 8px;
-  color: var(--vict-color-text, #182338);
-  background: var(--vict-color-surface, #fff);
-  font: inherit;
-  font-size: 14px;
-  font-weight: 400;
-}
-.vict-ui-table__loading {
-  align-self: center;
-  color: var(--vict-color-textMuted, #53627a);
-  font-size: 13px;
-}
-.vict-ui-table__empty {
-  margin: 24px 28px;
-  padding: 20px;
-  border-radius: 8px;
-  background: var(--vict-color-bg, #f4f6fa);
-  color: var(--vict-color-textMuted, #53627a);
-}
-.vict-ui-table__scroll {
-  overflow-x: auto;
-  /* Keep horizontal swipes contained: the document never scrolls sideways,
-     and a fling at the table edge does not trigger browser navigation. */
-  overscroll-behavior-x: contain;
-}
-.vict-ui-table table {
-  width: 100%;
-  border-collapse: collapse;
-}
-.vict-ui-table th,
-.vict-ui-table td {
-  padding: 16px 28px;
-  text-align: left;
-  border-bottom: 1px solid var(--vict-color-border, #dce2eb);
-}
-.vict-ui-table th {
-  background: var(--vict-color-bg, #f8fafd);
-  color: var(--vict-color-textMuted, #53627a);
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-.vict-ui-table td {
-  font-size: 14px;
-}
-.vict-ui-table tbody tr:hover {
-  background: #f8faff;
-}
-.vict-ui-table tbody tr:last-child td {
-  border-bottom: 0;
-}
-.vict-ui-table__sort {
-  border: 0;
-  padding: 0;
-  color: inherit;
-  background: transparent;
-  font: inherit;
-  font-weight: 700;
-  text-transform: inherit;
-  letter-spacing: inherit;
-  cursor: pointer;
-}
-.vict-ui-table__sort span {
-  margin-left: 4px;
-}
-.vict-ui-table__pagination {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  flex-wrap: wrap;
-  gap: 14px;
-  padding: 18px 28px;
-  border-top: 1px solid var(--vict-color-border, #dce2eb);
-  color: var(--vict-color-textMuted, #53627a);
-  font-size: 13px;
-}
-.vict-ui-table__pagination button {
-  border: 1px solid var(--vict-color-border, #dce2eb);
-  border-radius: 8px;
-  padding: 8px 12px;
-  color: var(--vict-color-accent, #3158cf);
-  background: var(--vict-color-surface, #fff);
-  font: inherit;
-  cursor: pointer;
-}
-.vict-ui-table__pagination button:hover:not(:disabled) {
-  background: var(--vict-color-bg, #f4f6fa);
-}
-.vict-ui-table__pagination button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-@media (max-width: 719px) {
+  .vict-layout {
+    gap: 24px;
+  }
+  .vict-region[data-appearance='panel'],
+  .vict-conversation-panel {
+    padding: 20px;
+  }
+  h2.vict-text {
+    font-size: 28px;
+  }
   .vict-ui-table__heading {
-    align-items: flex-start;
-    padding: 22px 18px 18px;
+    padding: 18px 16px 14px;
   }
   .vict-ui-table__toolbar {
-    padding: 0 18px 20px;
+    padding: 0 16px 16px;
+  }
+  .vict-ui-table__field {
+    flex-basis: 100%;
+  }
+  .vict-table-tools {
+    justify-content: flex-end;
+    width: 100%;
   }
   .vict-ui-table th,
   .vict-ui-table td {
-    padding-inline: 18px;
-    /* Sensible column floors: cells keep readable width and the table
-       overflows into the contained scroll region instead of crushing
-       values together. Scoping to phone widths leaves desktop layout
-       untouched. */
-    min-width: 104px;
-  }
-  .vict-ui-table th:first-child,
-  .vict-ui-table td:first-child {
-    min-width: 136px;
+    padding: 14px 16px;
   }
   .vict-ui-table__pagination {
-    padding: 16px 18px;
+    padding: 14px 16px;
   }
-  /* Deliberate phone layout: page status gets its own centered row above
-     the buttons; Previous and Next stretch edge-to-edge below as equal
-     touch targets. DOM (and keyboard) order is unchanged — the status is
-     visually reordered only. */
   .vict-ui-table__page-status {
-    order: -1;
-    flex: 1 1 100%;
-    text-align: center;
+    flex-basis: 100%;
   }
-  .vict-ui-table__pagination button {
-    flex: 1;
-    padding-block: 10px;
+  .vict-conversation-message {
+    max-width: 100%;
+  }
+  .vict-conversation-message--user {
+    padding: 14px;
+  }
+  .vict-conversation-input-row {
+    flex-wrap: wrap;
+  }
+  .vict-conversation-input-row .vict-input {
+    flex-basis: 100%;
+  }
+  .vict-conversation-input-row .vict-btn {
+    margin-left: auto;
+  }
+  .vict-input,
+  .vict-textarea,
+  .vict-ui-table__field input {
+    font-size: 16px;
+  }
+  .vict-detail-row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 4px;
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .vict-ui-table *,
-  .vict-ui-table *::before,
-  .vict-ui-table *::after {
+  .vict-app *,
+  .vict-app *::before,
+  .vict-app *::after {
+    animation: none !important;
+    transition: none !important;
     scroll-behavior: auto !important;
   }
-}
-
-/* --------------------------------------------------------------------------
-   Shared control styling
-   -------------------------------------------------------------------------- */
-
-.vict-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: calc(var(--vict-spacing-unit) * 1);
-  padding: calc(var(--vict-spacing-unit) * 1) calc(var(--vict-spacing-unit) * 2.5);
-  border-radius: var(--vict-radius-base);
-  border: 1px solid var(--vict-color-accent);
-  background: var(--vict-color-accent);
-  color: var(--vict-color-accentContrast);
-  font: inherit;
-  cursor: pointer;
-}
-
-.vict-btn:hover {
-  filter: brightness(1.08);
-}
-
-.vict-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  filter: none;
-}
-
-.vict-btn--secondary {
-  background: var(--vict-color-surface);
-  color: var(--vict-color-accent);
-}
-
-.vict-btn--danger {
-  background: var(--vict-color-danger);
-  border-color: var(--vict-color-danger);
-  color: #ffffff;
-}
-
-.vict-input,
-.vict-select,
-.vict-textarea {
-  font: inherit;
-  padding: calc(var(--vict-spacing-unit) * 1) calc(var(--vict-spacing-unit) * 1.5);
-  border: 1px solid var(--vict-color-border);
-  border-radius: var(--vict-radius-base);
-  background: var(--vict-color-surface);
-  color: var(--vict-color-text);
-  width: 100%;
-}
-
-.vict-input[aria-invalid='true'] {
-  border-color: var(--vict-color-danger);
-}
-
-.vict-field {
-  display: flex;
-  flex-direction: column;
-  gap: calc(var(--vict-spacing-unit) * 0.5);
-  margin-bottom: calc(var(--vict-spacing-unit) * 2);
-  max-width: 26rem;
-}
-
-.vict-field-label {
-  font-weight: 600;
-}
-
-.vict-field-error {
-  color: var(--vict-color-danger);
-  font-size: 0.875rem;
-}
-
-.vict-state {
-  padding: calc(var(--vict-spacing-unit) * 2) calc(var(--vict-spacing-unit) * 3);
-  border-radius: var(--vict-radius-base);
-  background: var(--vict-color-surface);
-  border: 1px dashed var(--vict-color-border);
-  color: var(--vict-color-textMuted);
-}
-
-.vict-alert {
-  padding: calc(var(--vict-spacing-unit) * 2) calc(var(--vict-spacing-unit) * 3);
-  border-radius: var(--vict-radius-base);
-  border-left: 4px solid var(--vict-color-danger);
-  background: var(--vict-color-surface);
-}
-
-.vict-alert--denied {
-  border-left-color: var(--vict-color-warning);
-}
-
-/* --------------------------------------------------------------------------
-   Status tones
-   -------------------------------------------------------------------------- */
-
-.vict-status {
-  display: inline-flex;
-  align-items: center;
-  gap: calc(var(--vict-spacing-unit) * 1);
-  padding: calc(var(--vict-spacing-unit) * 0.5) calc(var(--vict-spacing-unit) * 2);
-  border-radius: 999px;
-  font-size: 0.875rem;
-  font-weight: 600;
-  border: 1px solid var(--vict-color-border);
-  background: var(--vict-color-surface);
-}
-
-.vict-status::before {
-  content: '';
-  width: 8px;
-  height: 8px;
-  border-radius: 999px;
-  background: var(--vict-color-textMuted);
-}
-
-.vict-status--success {
-  color: var(--vict-color-success);
-  border-color: var(--vict-color-success);
-}
-.vict-status--success::before {
-  background: var(--vict-color-success);
-}
-
-.vict-status--warning {
-  color: var(--vict-color-warning);
-  border-color: var(--vict-color-warning);
-}
-.vict-status--warning::before {
-  background: var(--vict-color-warning);
-}
-
-.vict-status--danger {
-  color: var(--vict-color-danger);
-  border-color: var(--vict-color-danger);
-}
-.vict-status--danger::before {
-  background: var(--vict-color-danger);
-}
-
-.vict-status--info {
-  color: var(--vict-color-info);
-  border-color: var(--vict-color-info);
-}
-.vict-status--info::before {
-  background: var(--vict-color-info);
-}
-
-/* --------------------------------------------------------------------------
-   Tabs, dialogs, drawers
-   -------------------------------------------------------------------------- */
-
-.vict-tabs [role='tab'] {
-  font: inherit;
-  padding: calc(var(--vict-spacing-unit) * 1) calc(var(--vict-spacing-unit) * 2);
-  border: 1px solid transparent;
-  border-bottom: none;
-  background: none;
-  cursor: pointer;
-  border-radius: var(--vict-radius-base) var(--vict-radius-base) 0 0;
-  color: var(--vict-color-textMuted);
-}
-
-.vict-tabs [role='tab'][aria-selected='true'] {
-  background: var(--vict-color-surface);
-  border-color: var(--vict-color-border);
-  color: var(--vict-color-text);
-  font-weight: 600;
-}
-
-.vict-tablist {
-  display: flex;
-  gap: calc(var(--vict-spacing-unit) * 0.5);
-  border-bottom: 1px solid var(--vict-color-border);
-  /* Long tab runs overflow into a contained horizontal scroll region
-     instead of being clipped by the page container at phone widths
-     (document overflow stays zero, every tab remains reachable by
-     touch swipe and by keyboard focus scrolling). Desktop layouts
-     where the tabs fit are visually unchanged. */
-  overflow-x: auto;
-  overscroll-behavior-x: contain;
-}
-
-.vict-tabpanel {
-  background: var(--vict-color-surface);
-  border: 1px solid var(--vict-color-border);
-  border-top: none;
-  padding: calc(var(--vict-spacing-unit) * 3);
-}
-
-.vict-overlay {
-  position: fixed;
-  inset: 0;
-  width: 100vw;
-  height: 100vh;
-  height: 100dvh;
-  max-width: none;
-  max-height: none;
-  margin: 0;
-  padding: 0;
-  border: 0;
-  background: rgba(23, 32, 42, 0.45);
-  color: var(--vict-color-text);
-  font: inherit;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 50;
-}
-
-.vict-overlay:not([open]) {
-  display: none;
-}
-.vict-overlay::backdrop {
-  background: transparent;
-}
-
-.vict-overlay--drawer {
-  align-items: stretch;
-  justify-content: flex-end;
-}
-
-.vict-dialog {
-  background: var(--vict-color-surface);
-  border-radius: var(--vict-radius-base);
-  box-shadow: var(--vict-elevation-high);
-  padding: calc(var(--vict-spacing-unit) * 4);
-  max-width: min(32rem, 92vw);
-  max-height: 86vh;
-  overflow: auto;
-}
-
-.vict-drawer {
-  background: var(--vict-color-surface);
-  width: min(24rem, 92vw);
-  height: 100%;
-  box-shadow: var(--vict-elevation-high);
-  padding: calc(var(--vict-spacing-unit) * 4);
-  overflow: auto;
-}
-
-/* Form and native modal presentation. All controls are owned here. */
-.vict-form {
-  background: var(--vict-color-surface);
-  border: 1px solid var(--vict-color-border);
-  border-radius: var(--vict-radius-base);
-  padding: calc(var(--vict-spacing-unit) * 3);
-  max-width: 32rem;
-}
-.vict-field-error {
-  margin: calc(var(--vict-spacing-unit) * 0.5) 0 0;
-}
-.vict-textarea[aria-invalid='true'] {
-  border-color: var(--vict-color-danger);
-}
-.vict-overlay-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: calc(var(--vict-spacing-unit) * 2);
-  margin-bottom: calc(var(--vict-spacing-unit) * 3);
-}
-.vict-overlay-header h2 {
-  margin: 0;
-  font-size: 1.1rem;
-}
-.vict-dialog,
-.vict-drawer {
-  position: relative;
-  z-index: 1;
 }

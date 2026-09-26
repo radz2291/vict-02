@@ -418,19 +418,19 @@ describe('accessible defaults', () => {
     }
   });
 
-  it('dialog focus: opening focuses the panel, Escape closes and restores focus', async () => {
+  it('dialog focus: opening contains focus, Escape closes and restores focus', async () => {
     const mounted = mountProbe(surfaceForRole('dialog'));
     try {
       const trigger = mounted.output.querySelector<HTMLButtonElement>(
         '[data-testid="overlay-trigger"]',
       );
+      trigger?.focus();
       trigger?.click();
       await new Promise((resolve) => setTimeout(resolve, 10));
       const panel = document.querySelector('[data-testid="overlay-panel"]');
       expect(panel).not.toBeNull();
-      expect(document.activeElement).toBe(panel);
-      // The browser sends cancel to the topmost native modal on Escape.
-      panel?.closest('dialog')?.dispatchEvent(new Event('cancel', { cancelable: true }));
+      expect(panel?.contains(document.activeElement)).toBe(true);
+      document.activeElement?.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
       await new Promise((resolve) => setTimeout(resolve, 10));
       expect(document.querySelector('[data-testid="overlay"]')).toBeNull();
       expect(document.activeElement).toBe(trigger);
@@ -496,18 +496,19 @@ describe('accessible defaults', () => {
       await new Promise((resolve) => setTimeout(resolve, 10));
       const childTrigger =
         mounted.output.querySelector<HTMLButtonElement>('[data-surface="child"]');
+      childTrigger?.focus();
       childTrigger?.click();
       await new Promise((resolve) => setTimeout(resolve, 10));
-      const dialogs = mounted.output.querySelectorAll<HTMLDialogElement>('dialog');
+      const dialogs = mounted.output.querySelectorAll<HTMLElement>('[role="dialog"]');
       expect(dialogs).toHaveLength(2);
-      dialogs[1]?.dispatchEvent(new Event('cancel', { cancelable: true }));
+      document.activeElement?.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
       await new Promise((resolve) => setTimeout(resolve, 10));
-      expect(mounted.output.querySelectorAll('dialog')).toHaveLength(1);
+      expect(mounted.output.querySelectorAll('[role="dialog"]')).toHaveLength(1);
       expect(document.activeElement).toBe(childTrigger);
-      // A click on the dialog backdrop closes the remaining surface.
-      dialogs[0]?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+      // Close the remaining modal through its accessible close control.
+      dialogs[0]?.querySelector<HTMLButtonElement>('[data-testid="overlay-close"]')?.click();
       await new Promise((resolve) => setTimeout(resolve, 10));
-      expect(mounted.output.querySelectorAll('dialog')).toHaveLength(0);
+      expect(mounted.output.querySelectorAll('[role="dialog"]')).toHaveLength(0);
     } finally {
       mounted.unmount();
     }

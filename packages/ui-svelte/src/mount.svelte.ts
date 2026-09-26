@@ -46,7 +46,8 @@ export function renderVictApplication(
     navigate: options.navigate,
     onInvalidate: options.onInvalidate,
   });
-  const instance = mount(VitApp, { target, props });
+  // VitApp structurally validates plans at the generic renderer boundary.
+  const instance = mount(VitApp, { target, props: props as import('svelte').ComponentProps<typeof VitApp> });
   flushSync();
   let unmounted = false;
   const mountTarget = target;

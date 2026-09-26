@@ -31,9 +31,9 @@
  */
 
 /** The closed declared widget vocabulary (matches the SDK FormField union). */
-export type FormWidgetKind = 'text' | 'number' | 'boolean' | 'date' | 'json';
+export type FormWidgetKind = 'text' | 'number' | 'boolean' | 'date' | 'json' | 'select';
 
-const WIDGET_KINDS: readonly string[] = ['text', 'number', 'boolean', 'date', 'json'];
+const WIDGET_KINDS: readonly string[] = ['text', 'number', 'boolean', 'date', 'json', 'select'];
 
 /**
  * Resolve the declared widget kind for a field. Unknown/unsupported widget
@@ -63,6 +63,7 @@ export interface FormState {
 
 /** Field metadata the model needs (the compiled plan's declared fields). */
 export interface FormFieldMeta {
+  readonly options?: readonly { readonly value: string; readonly label: string }[];
   readonly name: string;
   readonly required?: boolean;
   readonly widget?: unknown;
@@ -171,6 +172,10 @@ export function toSubmitPayload(
         continue;
       }
       payload[field.name] = Number(raw.trim());
+      continue;
+    }
+    if (kind === 'select' && !field.options?.some((option) => option.value === raw)) {
+      fieldErrors[field.name] = 'Choose a listed option.';
       continue;
     }
     payload[field.name] = raw;

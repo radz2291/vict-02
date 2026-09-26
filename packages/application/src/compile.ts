@@ -138,7 +138,7 @@ const ROUTE_FIELDS_V2: ReadonlySet<string> = new Set([...ROUTE_FIELDS, 'redirect
 const NAV_FIELDS: ReadonlySet<string> = new Set(['label', 'group', 'order']);
 const SCREEN_FIELDS: ReadonlySet<string> = new Set(['id', 'title', 'layout', 'states']);
 /** @2 adds contextual breadcrumb navigation on screens. */
-const SCREEN_FIELDS_V2: ReadonlySet<string> = new Set([...SCREEN_FIELDS, 'breadcrumbs']);
+const SCREEN_FIELDS_V2: ReadonlySet<string> = new Set([...SCREEN_FIELDS, 'breadcrumbs', 'layoutMode']);
 const REGION_FIELDS: ReadonlySet<string> = new Set(['name', 'surfaces']);
 const STATES_FIELDS: ReadonlySet<string> = new Set([
   'loading',
@@ -1697,6 +1697,9 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
         screensById.set(screen.id, screen);
       }
       requireDisplayStringMember(collector, screen, 'title', `${screenPath}.title`, 'Screen title');
+      if (screen.layoutMode !== undefined && !['stack', 'split'].includes(screen.layoutMode as string)) {
+        collector.add('INVALID_SURFACE_DECLARATION', 'Invalid screen layoutMode.', screenPath + '.layoutMode');
+      }
       if (isV2 && screen.breadcrumbs !== undefined) {
         for (const [index, crumb] of screen.breadcrumbs.entries()) {
           collector.unknownFields(
@@ -1739,7 +1742,12 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
             continue;
           }
           const regionPath = `${screenPath}.layout[${entryKeyLabel(region.name)}]`;
-          collector.unknownFields(region, REGION_FIELDS, regionPath);
+          collector.unknownFields(region, isV2 ? new Set([...REGION_FIELDS, 'size', 'appearance', 'flow']) : REGION_FIELDS, regionPath);
+          for (const [key, allowed] of Object.entries({ size: ['full', 'main', 'aside'], appearance: ['plain', 'panel'], flow: ['stack', 'inline'] })) {
+            if (region[key] !== undefined && !allowed.includes(region[key] as string)) {
+              collector.add('INVALID_SURFACE_DECLARATION', 'Invalid region ' + key + '.', regionPath + '.' + key);
+            }
+          }
           const regionName = region.name;
           const regionNameValid = requireDisplayStringMember(
             collector,
@@ -1959,7 +1967,29 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
             continue;
           }
           const fieldPath = `${formPath}.fields[${entryKeyLabel(field.name)}]`;
-          collector.unknownFields(field, FORM_FIELD_FIELDS, fieldPath);
+          collector.unknownFields(field, isV2 ? new Set([...FORM_FIELD_FIELDS, 'options']) : FORM_FIELD_FIELDS, fieldPath);
+          if (field.widget === 'select') {
+            if (!isV2 || !Array.isArray(field.options) || field.options.length === 0) {
+              collector.add('INVALID_SURFACE_DECLARATION', 'Select fields require @2 and nonempty options.', fieldPath + '.options');
+            } else {
+              const values = new Set<string>();
+              for (const option of field.options) {
+                if (!isPlainObject(option)) {
+                  collector.add('INVALID_SURFACE_DECLARATION', 'Select options must be objects.', fieldPath + '.options');
+                  continue;
+                }
+                collector.unknownFields(option, new Set(['value', 'label']), fieldPath + '.options');
+                requireDisplayStringMember(collector, option, 'value', fieldPath + '.options.value', 'Option value');
+                requireDisplayStringMember(collector, option, 'label', fieldPath + '.options.label', 'Option label');
+                if (typeof option.value === 'string') {
+                  if (values.has(option.value)) collector.add('INVALID_SURFACE_DECLARATION', 'Select option values must be unique.', fieldPath + '.options');
+                  values.add(option.value);
+                }
+              }
+            }
+          } else if (field.options !== undefined) {
+            collector.add('INVALID_SURFACE_DECLARATION', 'Options are only valid for select fields.', fieldPath + '.options');
+          }
           requireIdentifierMember(collector, field, 'name', `${fieldPath}.name`, 'Form field name');
           requireDisplayStringMember(
             collector,

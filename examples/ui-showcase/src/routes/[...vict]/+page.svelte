@@ -34,7 +34,7 @@
 </script>
 
 <svelte:head>
-  <title>VICT UI Showcase</title>
+  <title>{data.plan.applicationId === 'app.foundation' ? 'VICT Workspace' : 'VICT UI Showcase'}</title>
 </svelte:head>
 
 <VitApp

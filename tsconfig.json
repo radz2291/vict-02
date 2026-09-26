@@ -38,5 +38,5 @@
     "scripts/**/*.ts",
     "vitest.config.ts"
   ],
-  "exclude": ["examples/application-proof", "examples/reference-app"]
+  "exclude": ["examples/application-proof", "examples/reference-app", "examples/ui-showcase"]
 }

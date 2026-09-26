@@ -4,6 +4,7 @@
 
   interface Props {
     title?: string;
+    brand?: string;
     screenId?: string;
     path: string;
     groups?: readonly UiShellGroup[];
@@ -11,7 +12,7 @@
     children: Snippet;
   }
 
-  let { title = '', screenId, path, groups = [], breadcrumbs = [], children }: Props = $props();
+  let { title = '', brand = 'Workspace', screenId, path, groups = [], breadcrumbs = [], children }: Props = $props();
   let mobileNavOpen = $state(false);
   let navToggle = $state<HTMLButtonElement | null>(null);
   let navElement = $state<HTMLElement | null>(null);
@@ -66,6 +67,7 @@
       aria-label="Application"
       bind:this={navElement}
     >
+      <div class="vict-brand"><span aria-hidden="true">{brand.slice(0, 1)}</span><strong>{brand}</strong><span class="vict-brand-caption">Workspace</span></div>
       {#each groups as group}
         {#if group.label !== ''}
           <p class="vict-nav-group-label">{group.label}</p>

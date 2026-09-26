@@ -261,6 +261,10 @@ export interface DisabledCondition {
 
 /** A named layout region of a screen, holding ordered surfaces. */
 export interface ScreenRegion {
+  /** Optional @2 composition hints; no CSS or renderer implementation names. */
+  readonly size?: 'full' | 'main' | 'aside';
+  readonly appearance?: 'plain' | 'panel';
+  readonly flow?: 'stack' | 'inline';
   readonly name: string;
   /** Ordered surface sequence; the order is meaningful presentation semantics. */
   readonly surfaces: readonly Surface[];
@@ -268,6 +272,8 @@ export interface ScreenRegion {
 
 /** A screen: title, layout regions, safe default states, and contextual navigation. */
 export interface ScreenDefinition {
+  /** @2: split shares space between main and supporting regions; stacks on small screens. */
+  readonly layoutMode?: 'stack' | 'split';
   readonly id: string;
   readonly title: string;
   /** Named regions; the region array is ordered layout semantics. */
@@ -291,11 +297,13 @@ export interface ViewBinding {
 
 /** One ordered form field. Form-field order is meaningful presentation semantics. */
 export interface FormField {
+  /** @2: finite string choices, only valid with widget: 'select'. */
+  readonly options?: readonly { readonly value: string; readonly label: string }[];
   /** Field name; must exist in the bound resource's explicit field catalogue. */
   readonly name: string;
   readonly label: string;
   readonly required?: boolean;
-  readonly widget?: 'text' | 'number' | 'boolean' | 'date' | 'json';
+  readonly widget?: 'text' | 'number' | 'boolean' | 'date' | 'json' | 'select';
 }
 
 /**

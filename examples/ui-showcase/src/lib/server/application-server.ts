@@ -9,6 +9,7 @@ import {
   type ViewDatum,
   type VictPlanView,
 } from '@victframework/ui-svelte';
+import { compileFoundationPlan, foundationSeeds } from '$lib/application/foundation.js';
 import { compileShowcasePlan } from '$lib/application/definition.js';
 import {
   dataContracts,
@@ -182,16 +183,17 @@ const MESSAGE_RESOURCES = new Set([
 ]);
 
 export function createShowcaseServer(
-  options: { readonly data?: ApplicationDataAdapter } = {},
+  options: { readonly data?: ApplicationDataAdapter; readonly foundation?: boolean } = {},
 ): ShowcaseAppServer {
-  const plan = compileShowcasePlan();
+  const foundation = options.foundation ?? process.env.VICT_FOUNDATION === '1';
+  const plan = foundation ? compileFoundationPlan() : compileShowcasePlan();
   const runtime = buildRuntime();
   const data: ApplicationDataAdapter =
     options.data ??
     createInMemoryApplicationData(resourceList, {
       id: 'vict.showcase-data',
       revision: '1',
-      seeds: seeds as Record<string, readonly Record<string, unknown>[]>,
+      seeds: { ...seeds, ...(foundation ? foundationSeeds : {}) } as Record<string, readonly Record<string, unknown>[]>,
       contracts: dataContracts,
     });
 
@@ -396,7 +398,7 @@ export function createShowcaseServer(
 
         // ---- gallery submissions (create-form demo) -----------------------
         if (action.resourceId === 'gallerySubmissions' && action.op === 'create') {
-          const parsed = galleryInputContract.parse(payload);
+          const parsed = galleryInputContract.parse({ ...payload, id: payload.id ?? nextId('request') });
           if (!parsed.ok) {
             return {
               ok: false,

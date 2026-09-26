@@ -21,6 +21,8 @@
     validatePlanForRenderer,
     BUILT_IN_ROLES,
     type VictPlanView,
+    type ActionResult,
+    type ViewDatum,
   } from './logic.js';
   import Surface from './Surface.svelte';
 
@@ -128,7 +130,7 @@
   let lastResult = $state<ActionResult | null>(null);
   let lastAction = $state<string | null>(null);
 
-  export async function runAction(actionId: string, input?: unknown): Promise<void> {
+  export async function runAction(actionId: string, input?: unknown): Promise<ActionResult | void> {
     const action = plan.actions?.[actionId];
     // Browser-local actions NEVER cross the dispatcher (APP-011): the
     // declared local transition is executed entirely inside the renderer.
@@ -154,7 +156,7 @@
       }
       return;
     }
-    await dispatchAction(actionId, input);
+    return dispatchAction(actionId, input);
   }
 
   /** Action authority and safe failure state shared with the conversation adapter. */
@@ -266,6 +268,7 @@
   {:else if screen !== null}
     <AppShell
       title={screen.title}
+      brand={plan.manifest?.name ?? 'Workspace'}
       screenId={screen.id}
       {path}
       groups={shellGroups}
@@ -278,8 +281,9 @@
         <Feedback message={stateText('partial', 'Some data is unavailable right now.')} testId="partial-state" />
       {/if}
 
+      <div class="vict-layout" data-layout={screen.layoutMode ?? 'stack'}>
       {#each screen.layout as region (screen.id + '.' + region.name)}
-        <section class="vict-region" data-region={region.name}>
+        <section class="vict-region" data-region={region.name} data-size={region.size ?? 'full'} data-appearance={region.appearance ?? 'plain'} data-flow={region.flow ?? 'stack'}>
           {#each region.surfaces as surface (surface.id)}
             <Surface
               {surface}
@@ -298,6 +302,7 @@
         </section>
       {/each}
 
+      </div>
       {#if validationFailed}
         <Feedback kind="error" message={stateText('validation', 'Validation failed; check the highlighted fields.')} testId="validation-state" />
       {:else if denied}

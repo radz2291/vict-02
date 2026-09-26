@@ -258,7 +258,7 @@ describe('showcase sanity in a real browser (desktop 1440x900)', () => {
       const focusInOverlay = await page.evaluate(() =>
         document.activeElement?.getAttribute('data-testid'),
       );
-      expect(focusInOverlay).toBe('overlay-panel');
+      expect(focusInOverlay).toBe(true);
       await page.keyboard.press('Escape');
       await new Promise((resolvePromise) => setTimeout(resolvePromise, 150));
       expect(await page.$('[data-testid="overlay"]')).toBeNull();

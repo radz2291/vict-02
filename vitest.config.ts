@@ -66,6 +66,7 @@ export default defineConfig({
       {
         test: {
           name: 'renderer',
+          server: { deps: { inline: ['bits-ui', 'runed', '@internationalized/date'] } },
           // The permanent renderer implementation owner (ui-svelte) plus the
           // renderer-svelte compatibility-facade tests share the same
           // DOM-level toolchain (svelte plugin + happy-dom).

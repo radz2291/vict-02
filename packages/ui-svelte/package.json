@@ -9,7 +9,12 @@
       "svelte": "./src/index.ts",
       "default": "./src/index.ts"
     },
-    "./styles.css": "./src/styles.css"
+    "./styles.css": "./src/styles.css",
+    "./primitives": {
+      "types": "./src/primitives.ts",
+      "svelte": "./src/primitives.ts",
+      "default": "./src/primitives.ts"
+    }
   },
   "main": "./src/index.ts",
   "svelte": "./src/index.ts",
@@ -23,12 +28,14 @@
     "test": "vitest run --project renderer"
   },
   "dependencies": {
+    "@internationalized/date": "^3.12.4",
     "@victframework/application": "0.3.1",
     "@victframework/sdk": "0.3.1",
-    "@victframework/ui": "0.3.1"
+    "@victframework/ui": "0.3.1",
+    "bits-ui": "^2.19.3"
   },
   "peerDependencies": {
-    "svelte": "^5.0.0"
+    "svelte": "^5.33.0"
   },
   "license": "Apache-2.0",
   "publishConfig": {

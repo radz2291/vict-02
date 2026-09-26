@@ -35,7 +35,7 @@
     params: Readonly<Record<string, string>>;
     viewData: Readonly<Record<string, ViewDatum>>;
     record: Record<string, unknown> | null;
-    run: (actionId: string, input?: unknown) => Promise<void>;
+    run: (actionId: string, input?: unknown) => Promise<ActionResult | void>;
     dispatch: (actionId: string, input?: unknown) => Promise<ActionResult>;
     sendConversation: (actionId: string, text: string) => Promise<boolean>;
   }
@@ -83,7 +83,7 @@
       ? value : 'neutral';
   }
 
-  function resolveComponent(sn: PlanSurface): { Component: unknown } | undefined {
+  function resolveComponent(sn: PlanSurface): { Component: import('svelte').Component<Record<string, never>> } | undefined {
     const resolved = registry.resolve({
       componentId: str(sn.componentId),
       revision: str(sn.revision),
@@ -91,7 +91,7 @@
     if (!resolved.ok) {
       return undefined;
     }
-    return { Component: resolved.implementation };
+    return { Component: resolved.implementation as import('svelte').Component<Record<string, never>> };
   }
 </script>
 
@@ -109,7 +109,7 @@
     {:else if sn.role === 'table'}
       <TableAdapter
         surface={sn}
-        intent={uiPlan.tables[sn.id]}
+        intent={uiPlan.tables[sn.id]!}
         initialRows={viewRows(sn.viewId)}
         {dispatch}
       />

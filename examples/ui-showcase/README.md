@@ -1,3 +1,8 @@
+> Foundation owner review: from the repository root run `npm run foundation`, then open
+> [Requests](http://127.0.0.1:5178/records) and [Conversation](http://127.0.0.1:5178/workspace).
+> See [the checkpoint report](../../qa-artifacts/foundation-slice/README.md) and
+> [component catalog](../../packages/ui-svelte/FOUNDATION-CATALOG.md).
+
 # VICT UI Showcase — Owner Visual Acceptance App (P6D)
 
 A runnable **product showroom + stress laboratory** for the VICT UI. Every

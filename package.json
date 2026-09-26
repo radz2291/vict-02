@@ -40,7 +40,10 @@
     "release:validate": "node scripts/oidc-release.mjs",
     "release:trust-bootstrap": "node scripts/trust-bootstrap.mjs",
     "verify:stage7a": "node scripts/verify-stage7a.mjs",
-    "publish:release": "node scripts/publish-release.mjs"
+    "publish:release": "node scripts/publish-release.mjs",
+    "foundation": "node scripts/ui-foundation.mjs",
+    "check:ui": "svelte-check --tsconfig packages/ui-svelte/tsconfig.check.json",
+    "test:foundation": "npm run build -w ui-showcase && node scripts/verify-ui-foundation.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
@@ -48,10 +51,11 @@
     "@types/node": "^26.4.0",
     "eslint": "^10.9.1",
     "globals": "^17.11.0",
-    "happy-dom": "^15.11.7",
+    "happy-dom": "^20.14.5",
     "js-yaml": "^4.1.0",
     "prettier": "^3.9.6",
     "svelte": "^5.57.0",
+    "svelte-check": "^4.7.6",
     "tsx": "^4.23.13",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.68.0",
