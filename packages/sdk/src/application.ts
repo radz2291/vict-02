@@ -296,6 +296,14 @@ export interface ViewBinding {
   readonly resourceRevision: string;
   /** Projection: subset of catalogue fields, in meaningful display order. */
   readonly fields?: readonly string[];
+  /**
+   * Declared static exact-match filters (@2) applied by the host when
+   * loading the view (e.g. an "open tasks" projection). Values are bounded
+   * serializable primitives; keys must be resource catalogue fields.
+   */
+  readonly filters?: Readonly<Record<string, string | number | boolean>>;
+  /** Declared deterministic read order (@2) for the view's rows. */
+  readonly sort?: readonly ViewSort[];
   /** Declared safe-empty behavior key rendered when no rows exist. */
   readonly emptyMessage?: string;
 }
@@ -309,6 +317,13 @@ export interface FormField {
   readonly label: string;
   readonly required?: boolean;
   readonly widget?: 'text' | 'number' | 'boolean' | 'date' | 'json' | 'select';
+}
+
+/** Declared deterministic read order for a view's rows (@2). */
+export interface ViewSort {
+  /** Resource catalogue field to sort by. */
+  readonly field: string;
+  readonly direction: 'asc' | 'desc';
 }
 
 /**
@@ -348,6 +363,7 @@ export type SurfaceRole =
   | 'detail'
   | 'chart'
   | 'status'
+  | 'count'
   | 'tabs'
   | 'dialog'
   | 'drawer'
@@ -373,10 +389,38 @@ export interface TableColumn {
   readonly label?: string;
   /** Column header sorting control is presented when true. */
   readonly sortable?: boolean;
+  /**
+   * Versioned registered component rendered in this cell (@2 island cell;
+   * e.g. a priority badge). The component is resolved from the application's
+   * declared component references at exactly this revision and receives ONLY
+   * the props declared in `props`, derived from the rendered row. It stays
+   * presentational: it never receives the runtime, the dispatcher, or data
+   * access.
+   */
+  readonly componentId?: string;
+  /** Exact revision of the declared cell component (required with `componentId`). */
+  readonly revision?: string;
+  /** Maps the cell component's prop names to row fields (@2; prop name → view field). */
+  readonly props?: Readonly<Record<string, string>>;
 }
 
 /** Semantic value→tone mapping entries of a status surface. */
 export type StatusToneMapping = Readonly<Record<string, StatusTone>>;
+
+/**
+ * Declared per-row action of a table surface (@2). The renderer dispatches
+ * the DECLARED action once per row with input derived from that row through
+ * `input` (action input field → view field); the default mapping is
+ * `{ id: 'id' }`. Navigation actions substitute declared route parameters
+ * from the same derived input. The action's own declared contract, effect
+ * class, and authorization remain the only authority; the row control is
+ * presentation only.
+ */
+export interface TableRowAction {
+  readonly actionId: string;
+  readonly label: string;
+  readonly input?: Readonly<Record<string, string>>;
+}
 
 /**
  * Neutral surface: meaning and composition, never framework component types.
@@ -449,6 +493,8 @@ export type Surface =
       readonly columns?: readonly TableColumn[];
       /** Declared query action that re-reads rows for search/sort/page. */
       readonly queryActionId?: string;
+      /** Declared per-row action (@2) dispatched with row-derived input. */
+      readonly rowAction?: TableRowAction;
       /** Fields searched by the table's search control (subset of view fields). */
       readonly searchFields?: readonly string[];
       /** Fields offered as exact-match filter controls (subset of view fields). */
@@ -493,6 +539,15 @@ export type Surface =
       readonly field?: string;
       /** Explicit value→tone mapping; unmapped values render neutral. */
       readonly tones?: StatusToneMapping;
+      readonly visibleWhen?: SurfaceCondition;
+    }
+  | {
+      /** Live count of a declared view's rows (@2): renders the view datum's total. */
+      readonly role: 'count';
+      readonly id: string;
+      readonly viewId: string;
+      /** Accessible label announced with the count. */
+      readonly label?: string;
       readonly visibleWhen?: SurfaceCondition;
     }
   | {

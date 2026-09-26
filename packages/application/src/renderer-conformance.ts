@@ -79,6 +79,7 @@ const ALL_ROLES: readonly SurfaceRole[] = [
   'detail',
   'chart',
   'status',
+  'count',
   'tabs',
   'dialog',
   'drawer',

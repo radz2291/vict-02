@@ -10,6 +10,7 @@
   import Chart from './Chart.svelte';
   import ComponentSlot from './ComponentSlot.svelte';
   import Conversation from './Conversation.svelte';
+  import Count from './Count.svelte';
   import DataView from './DataView.svelte';
   import Detail from './Detail.svelte';
   import Feedback from './Feedback.svelte';
@@ -123,6 +124,14 @@
         intent={uiPlan.tables[sn.id]!}
         initialRows={viewRows(sn.viewId)}
         {dispatch}
+        {registry}
+        {run}
+      />
+    {:else if sn.role === 'count'}
+      <Count
+        surfaceId={sn.id}
+        label={typeof sn.label === 'string' ? sn.label : 'Records'}
+        value={typeof viewData[String(sn.viewId)]?.total === 'number' ? (viewData[String(sn.viewId)]?.total as number) : 0}
       />
     {:else if sn.role === 'detail'}
       {@const row = viewRecord(sn.viewId)}
@@ -133,7 +142,7 @@
       <Detail surfaceId={sn.id} fields={detailFields(row, fields)}
         emptyMessage={str(sn.emptyMessage) || 'This record does not exist.'} />
     {:else if sn.role === 'form'}
-      <FormSurface surface={sn} {plan} {run} values={record ?? {}} identity={params.id} />
+      <FormSurface surface={sn} {plan} {run} values={viewRecord(sn.viewId) ?? {}} identity={params.id} />
     {:else if sn.role === 'action'}
       <ActionButton surface={sn} {plan} disabled={isDisabled(sn, params)} {run} />
     {:else if sn.role === 'component'}

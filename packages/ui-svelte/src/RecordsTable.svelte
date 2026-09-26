@@ -1,19 +1,64 @@
 <script lang="ts">
   import Popover from './Popover.svelte';
   import Tooltip from './Tooltip.svelte';
+  import ComponentSlot from './ComponentSlot.svelte';
+  import type { ComponentRegistry } from '@victframework/application/renderer';
   import type { UiTableIntent, UiTableState } from '@victframework/ui';
 
   interface Props {
     intent: UiTableIntent;
     rows: readonly Readonly<Record<string, unknown>>[];
     state: UiTableState;
+    registry?: ComponentRegistry;
     onSearch: (value: string) => void | Promise<void>;
     onFilter: (field: string, value: string) => void | Promise<void>;
     onSort: (field: string) => void | Promise<void>;
     onPage: (page: number) => void | Promise<void>;
+    onRowAction?: (row: Readonly<Record<string, unknown>>) => void | Promise<void>;
   }
-  let { intent, rows, state: tableState, onSearch, onFilter, onSort, onPage }: Props = $props();
+  let {
+    intent,
+    rows,
+    state: tableState,
+    registry,
+    onSearch,
+    onFilter,
+    onSort,
+    onPage,
+    onRowAction,
+  }: Props = $props();
   let compact = $state(false);
+
+  type CellComponent = import('svelte').Component<Record<string, never>>;
+  // Resolve each declared cell component ONCE per intent: unresolvable
+  // islands never render silently (structural validation already failed
+  // earlier; this map only holds successful resolutions).
+  const cellComponents = $derived.by(() => {
+    const map = new Map<string, CellComponent>();
+    if (registry === undefined) return map;
+    for (const column of intent.columns) {
+      const cell = column.component;
+      if (cell === undefined || map.has(cell.componentId)) continue;
+      const resolved = registry.resolve({ componentId: cell.componentId, revision: cell.revision });
+      if (resolved.ok) {
+        map.set(cell.componentId, resolved.implementation as CellComponent);
+      }
+    }
+    return map;
+  });
+
+  // Row-derived island props: only declared mappings against the row's
+  // projected values (bounded, serializable, never the row object itself).
+  function cellProps(
+    cell: { readonly props: Readonly<Record<string, string>> },
+    row: Readonly<Record<string, unknown>>,
+  ): Record<string, never> {
+    const props: Record<string, unknown> = {};
+    for (const [name, rowField] of Object.entries(cell.props)) {
+      props[name] = row[rowField] ?? '';
+    }
+    return props as Record<string, never>;
+  }
 </script>
 
 <section class="vict-ui-table" class:vict-ui-table--compact={compact} data-surface={intent.surfaceId} aria-label={intent.title}>
@@ -80,14 +125,36 @@
                 {/if}
               </th>
             {/each}
+            {#if intent.rowAction !== undefined}
+              <th scope="col"><span class="vict-ui-table__actions-heading">{intent.rowAction.label}</span></th>
+            {/if}
           </tr>
         </thead>
         <tbody>
           {#each rows as row, index (index)}
             <tr data-testid="table-row">
               {#each intent.columns as column (column.field)}
-                <td>{String(row[column.field] ?? '')}</td>
+                <td>
+                  {#if column.component !== undefined && cellComponents.get(column.component.componentId) !== undefined}
+                    {@const CellComponent = cellComponents.get(column.component.componentId)!}
+                    <ComponentSlot surfaceId={intent.surfaceId} componentId={column.component.componentId}>
+                      <CellComponent {...cellProps(column.component, row)} />
+                    </ComponentSlot>
+                  {:else}
+                    {String(row[column.field] ?? '')}
+                  {/if}
+                </td>
               {/each}
+              {#if intent.rowAction !== undefined}
+                <td class="vict-ui-table__actions-cell">
+                  <button
+                    type="button"
+                    class="vict-ui-table__row-action"
+                    data-testid="table-row-action"
+                    onclick={() => void onRowAction?.(row)}
+                  >{intent.rowAction.label}</button>
+                </td>
+              {/if}
             </tr>
           {/each}
         </tbody>

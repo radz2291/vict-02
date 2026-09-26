@@ -591,6 +591,57 @@ h3.vict-text {
 .vict-ui-table__loading {
   font-size: 12px;
 }
+.vict-ui-table__actions-cell {
+  white-space: nowrap;
+}
+.vict-ui-table__actions-heading {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+.vict-ui-table__row-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1px solid var(--vict-color-border);
+  border-radius: var(--vict-radius-base);
+  background: var(--vict-color-surface);
+  color: inherit;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 550;
+  cursor: pointer;
+}
+.vict-count {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin: 0;
+  padding: 16px 22px;
+  background: var(--vict-color-surface);
+  border: 1px solid var(--vict-color-border);
+  border-radius: var(--vict-radius-base);
+  box-shadow: var(--vict-elevation-low);
+}
+.vict-count__label {
+  color: var(--vict-color-textMuted);
+  font-size: 11px;
+  font-weight: 600;
+}
+.vict-count__value {
+  font-size: 26px;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
 .vict-help {
   width: 24px;
   height: 24px;

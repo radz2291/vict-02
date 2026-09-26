@@ -251,12 +251,16 @@ function packedScaffolderCheck() {
     if (consumerInstall.status !== 0) return;
 
     const target = join(work, 'generated-app');
+    const releaseSetPath = join(work, 'release-set.json');
+    writeFileSync(releaseSetPath, JSON.stringify(tarballs, null, 2));
     const scaffold = run(
       process.execPath,
       [
         '-e',
-        `import { scaffoldVictApp } from '@victframework/scaffolder';
-         const result = scaffoldVictApp({ targetDir: ${JSON.stringify(target)}, appName: 'Packed Consumer App' });
+        `import { readFileSync } from 'node:fs';
+         import { scaffoldVictApp } from '@victframework/scaffolder';
+         const platformDependencies = JSON.parse(readFileSync(${JSON.stringify(releaseSetPath)}, 'utf8'));
+         const result = scaffoldVictApp({ targetDir: ${JSON.stringify(target)}, appName: 'Packed Consumer App', platformDependencies });
          if (result.status !== 'created') { throw new Error('scaffold status: ' + result.status); }
          console.log('generated', result.files.length, 'files');`,
       ],
@@ -265,11 +269,13 @@ function packedScaffolderCheck() {
     check(scaffold.status === 0, 'packed-generation: the packed scaffolder created the host');
     if (scaffold.status !== 0) return;
 
-    // The generated project consumes ONLY the packed tarballs.
+    // The generated project consumes ONLY the packed tarballs: the explicit
+    // release-set selection already routes every declared @vict dependency
+    // to a packed tarball (no post-scaffold package.json mutation needed).
+    // Transitive @vict packages the host does not import directly are still
+    // routed here, so no registry install can occur.
     const pkgPath = join(target, 'package.json');
     const pkg = JSON.parse(readFileSync(pkgPath, 'utf8'));
-    // Route BOTH direct and transitive @vict dependencies to the packed
-    // tarballs: private workspace packages are never on the public registry.
     for (const [name, tgz] of Object.entries(tarballs)) {
       pkg.dependencies[name] = `file:${tgz}`;
     }

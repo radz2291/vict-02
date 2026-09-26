@@ -85,13 +85,14 @@ export function probeApp(
   extra?: {
     readonly views?: readonly unknown[];
     readonly actions?: readonly unknown[];
+    readonly routes?: readonly unknown[];
   },
 ): ApplicationPlan {
   const application = defineApplication({
     schema: APPLICATION_DEFINITION_SCHEMA_V2,
     id: 'app.probe',
     revision: '1',
-    routes: [{ id: 'home', path: '/', screenId: 's.home' }],
+    routes: (extra?.routes as never) ?? [{ id: 'home', path: '/', screenId: 's.home' }],
     screens: [
       {
         id: 's.home',

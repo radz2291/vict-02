@@ -17,6 +17,7 @@
   import Feedback from './Feedback.svelte';
   import {
     resolveRoute,
+    substitutePathParams,
     themeVariables,
     validatePlanForRenderer,
     BUILT_IN_ROLES,
@@ -141,8 +142,12 @@
     // become server dispatches either.
     if (action?.kind === 'navigation') {
       const target = plan.routes.find((entry) => entry.route.id === action.routeId);
-      const targetPath = target?.route.path;
-      if (typeof targetPath === 'string') {
+      const declaredPath = target?.route.path;
+      if (typeof declaredPath === 'string') {
+        // Parameterized navigation: declared `:name` segments substitute from
+        // the action input (e.g. a row action mapping { id: 'id' }); missing
+        // segments stay declared and fail route resolution honestly.
+        const targetPath = substitutePathParams(declaredPath, input);
         if (navigate !== undefined) {
           navigate(targetPath);
         } else if (typeof window !== 'undefined') {

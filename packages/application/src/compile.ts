@@ -90,6 +90,7 @@ export type ApplicationIssueCode =
   | 'INVALID_ACTION_FEEDBACK'
   | 'INVALID_UI_COMPOSITION'
   | 'INVALID_SURFACE_DECLARATION'
+  | 'INVALID_VIEW_DECLARATION'
   | 'INVALID_TABLE_DECLARATION'
   | 'INVALID_CHART_DECLARATION'
   | 'INVALID_STATUS_DECLARATION'
@@ -168,6 +169,8 @@ const VIEW_FIELDS: ReadonlySet<string> = new Set([
   'resourceId',
   'resourceRevision',
   'fields',
+  'filters',
+  'sort',
   'emptyMessage',
 ]);
 const FORM_FIELDS: ReadonlySet<string> = new Set([
@@ -294,6 +297,7 @@ const SURFACE_FIELDS_V2: ReadonlyMap<Surface['role'], ReadonlySet<string>> = new
       'viewId',
       'columns',
       'queryActionId',
+      'rowAction',
       'searchFields',
       'filterFields',
       'pageSize',
@@ -319,6 +323,7 @@ const SURFACE_FIELDS_V2: ReadonlyMap<Surface['role'], ReadonlySet<string>> = new
     ]),
   ],
   ['status', new Set([...SURFACE_COMMON_FIELDS, 'value', 'field', 'tones', 'visibleWhen'])],
+  ['count', new Set([...SURFACE_COMMON_FIELDS, 'viewId', 'label', 'visibleWhen'])],
   ['tabs', new Set([...SURFACE_COMMON_FIELDS, 'tabs', 'visibleWhen'])],
   [
     'dialog',
@@ -345,7 +350,18 @@ const SURFACE_FIELDS_V2: ReadonlyMap<Surface['role'], ReadonlySet<string>> = new
   ],
 ]);
 const TAB_FIELDS: ReadonlySet<string> = new Set(['name', 'label', 'surfaces']);
-const TABLE_COLUMN_FIELDS: ReadonlySet<string> = new Set(['field', 'label', 'sortable']);
+const TABLE_COLUMN_FIELDS: ReadonlySet<string> = new Set([
+  'field',
+  'label',
+  'sortable',
+  'componentId',
+  'revision',
+  'props',
+]);
+/** Closed @2 members of a declared table row action. */
+const TABLE_ROW_ACTION_FIELDS: ReadonlySet<string> = new Set(['actionId', 'label', 'input']);
+/** Closed @2 members of one declared view sort entry. */
+const SORT_ENTRY_FIELDS: ReadonlySet<string> = new Set(['field', 'direction']);
 const STATUS_TONES: ReadonlySet<string> = new Set([
   'success',
   'warning',
@@ -1916,6 +1932,77 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
           `application.views[${view.viewId}].fields`,
         );
       }
+      // Declared static view filters (@2): plain object keyed by catalogue
+      // fields with bounded serializable primitive values.
+      if (view.filters !== undefined) {
+        const filtersPath = `application.views[${entryKeyLabel(view.viewId)}].filters`;
+        if (!isPlainObject(view.filters)) {
+          collector.add(
+            'INVALID_VIEW_DECLARATION',
+            `View '${view.viewId}' filters must be a plain object when declared (received ${describeReceivedType(view.filters)}).`,
+            filtersPath,
+          );
+        } else {
+          collector.unknownFields(view.filters, new Set(Object.keys(view.filters)), filtersPath);
+          for (const [key, value] of Object.entries(view.filters)) {
+            checkCatalogueField(
+              collector,
+              providedResources.get(view.resourceId),
+              key,
+              filtersPath,
+            );
+            const validValue =
+              typeof value === 'string' ||
+              typeof value === 'boolean' ||
+              (typeof value === 'number' && Number.isFinite(value));
+            if (!validValue) {
+              collector.add(
+                'INVALID_VIEW_DECLARATION',
+                `View '${view.viewId}' filter '${key}' must be a string, number, or boolean.`,
+                `${filtersPath}.${key}`,
+              );
+            }
+          }
+        }
+      }
+      // Declared deterministic view sort (@2): catalogue fields + closed
+      // direction vocabulary.
+      if (view.sort !== undefined) {
+        const sortPath = `application.views[${entryKeyLabel(view.viewId)}].sort`;
+        if (!Array.isArray(view.sort)) {
+          collector.add(
+            'INVALID_VIEW_DECLARATION',
+            `View '${view.viewId}' sort must be an array when declared (received ${describeReceivedType(view.sort)}).`,
+            sortPath,
+          );
+        } else {
+          for (const [sortIndex, entry] of view.sort.entries()) {
+            const entryPath = `${sortPath}[${sortIndex}]`;
+            if (!isPlainObject(entry)) {
+              collector.add(
+                'INVALID_VIEW_DECLARATION',
+                `View '${view.viewId}' sort entries must be plain objects (received ${describeReceivedType(entry)}).`,
+                entryPath,
+              );
+              continue;
+            }
+            collector.unknownFields(entry, SORT_ENTRY_FIELDS, entryPath);
+            checkCatalogueField(
+              collector,
+              providedResources.get(view.resourceId),
+              entry.field,
+              `${entryPath}.field`,
+            );
+            if (entry.direction !== 'asc' && entry.direction !== 'desc') {
+              collector.add(
+                'INVALID_VIEW_DECLARATION',
+                `View '${view.viewId}' sort direction must be 'asc' or 'desc'.`,
+                `${entryPath}.direction`,
+              );
+            }
+          }
+        }
+      }
     }
 
     const formIds = new Set<string>();
@@ -2929,6 +3016,80 @@ function resolveSurfaceLater(
             `${path}.pageSize`,
           );
         }
+        // Declared per-row action (@2): references a DECLARED action; the
+        // input mapping is a closed plain object of non-empty strings.
+        if (surface.rowAction !== undefined) {
+          const rowActionPath = `${path}.rowAction`;
+          if (!isPlainObject(surface.rowAction)) {
+            collector.add(
+              'INVALID_TABLE_DECLARATION',
+              `Table surface '${surface.id}' rowAction must be a plain object (received ${describeReceivedType(surface.rowAction)}).`,
+              rowActionPath,
+            );
+          } else {
+            collector.unknownFields(surface.rowAction, TABLE_ROW_ACTION_FIELDS, rowActionPath);
+            if (
+              typeof surface.rowAction.actionId !== 'string' ||
+              surface.rowAction.actionId.length === 0
+            ) {
+              collector.add(
+                'INVALID_TABLE_DECLARATION',
+                `Table surface '${surface.id}' rowAction.actionId must be a non-empty string.`,
+                `${rowActionPath}.actionId`,
+              );
+            } else {
+              const rowAction = maps.actionsById.get(surface.rowAction.actionId);
+              if (rowAction === undefined) {
+                collector.add(
+                  'UNKNOWN_ACTION_REFERENCE',
+                  `Table surface '${surface.id}' references unknown row action '${surface.rowAction.actionId}'.`,
+                  `${rowActionPath}.actionId`,
+                );
+              } else if (rowAction.kind === 'local') {
+                collector.add(
+                  'INVALID_ACTION_BINDING',
+                  `Table surface '${surface.id}' rowAction must reference a server or navigation action; '${surface.rowAction.actionId}' is a local action.`,
+                  `${rowActionPath}.actionId`,
+                );
+              }
+            }
+            if (
+              typeof surface.rowAction.label !== 'string' ||
+              surface.rowAction.label.trim().length === 0
+            ) {
+              collector.add(
+                'INVALID_TABLE_DECLARATION',
+                `Table surface '${surface.id}' rowAction.label must be a non-empty string.`,
+                `${rowActionPath}.label`,
+              );
+            }
+            if (surface.rowAction.input !== undefined) {
+              if (!isPlainObject(surface.rowAction.input)) {
+                collector.add(
+                  'INVALID_TABLE_DECLARATION',
+                  `Table surface '${surface.id}' rowAction.input must be a plain object (received ${describeReceivedType(surface.rowAction.input)}).`,
+                  `${rowActionPath}.input`,
+                );
+              } else {
+                collector.unknownFields(
+                  surface.rowAction.input,
+                  new Set(Object.keys(surface.rowAction.input)),
+                  `${rowActionPath}.input`,
+                );
+                collectViewFieldIssues(
+                  collector,
+                  maps,
+                  surface.id,
+                  surface.viewId,
+                  Object.entries(surface.rowAction.input).map(
+                    ([name, rowField]) => [`rowAction.input.${name}`, rowField] as const,
+                  ),
+                  path,
+                );
+              }
+            }
+          }
+        }
         if (surface.columns !== undefined) {
           for (const [index, column] of surface.columns.entries()) {
             const columnPath = `${path}.columns[${index}]`;
@@ -2951,6 +3112,64 @@ function resolveSurfaceLater(
               `Table surface '${surface.id}' column field`,
               'INVALID_TABLE_DECLARATION',
             );
+            // Versioned island cell (@2): the component reference must be
+            // declared at an exact revision, like a component surface, and
+            // its prop sources must be fields of the bound view's projection.
+            if (column.componentId !== undefined) {
+              const cellRevisionValid = requireRevisionMember(
+                collector,
+                column,
+                'revision',
+                `${columnPath}.revision`,
+                `Table surface '${surface.id}' cell component revision`,
+              );
+              const declaredCell = maps.componentRefs.get(column.componentId);
+              if (declaredCell === undefined) {
+                collector.add(
+                  'UNKNOWN_COMPONENT_REFERENCE',
+                  `Table surface '${surface.id}' column '${column.field}' references unknown component '${column.componentId}'.`,
+                  `${columnPath}.componentId`,
+                );
+              } else if (cellRevisionValid && declaredCell !== column.revision) {
+                collector.add(
+                  'COMPONENT_REVISION_MISMATCH',
+                  `Table surface '${surface.id}' column '${column.field}' references component '${column.componentId}' revision '${column.revision}' but the application declares '${declaredCell}'.`,
+                  `${columnPath}.revision`,
+                );
+              }
+              if (column.props !== undefined) {
+                if (!isPlainObject(column.props)) {
+                  collector.add(
+                    'INVALID_TABLE_DECLARATION',
+                    `Table surface '${surface.id}' column '${column.field}' props must be a plain object (received ${describeReceivedType(column.props)}).`,
+                    `${columnPath}.props`,
+                  );
+                } else {
+                  collector.unknownFields(
+                    column.props,
+                    new Set(Object.keys(column.props)),
+                    `${columnPath}.props`,
+                  );
+                  collectViewFieldIssues(
+                    collector,
+                    maps,
+                    surface.id,
+                    surface.viewId,
+                    Object.entries(column.props).map(
+                      ([propName, rowField]) =>
+                        [`columns[${index}].props.${propName}`, rowField] as const,
+                    ),
+                    path,
+                  );
+                }
+              }
+            } else if (column.revision !== undefined || column.props !== undefined) {
+              collector.add(
+                'INVALID_TABLE_DECLARATION',
+                `Table surface '${surface.id}' column '${String(column.field ?? index)}' declares cell-component members without componentId.`,
+                columnPath,
+              );
+            }
           }
           collectViewFieldIssues(
             collector,
@@ -3102,6 +3321,25 @@ function resolveSurfaceLater(
               break;
             }
           }
+        }
+        collectConditionIssues(collector, surface, path, maps);
+        break;
+      }
+      case 'count': {
+        // count surfaces must reference a DECLARED view.
+        if (!maps.viewsById.has(surface.viewId)) {
+          collector.add(
+            'UNKNOWN_VIEW_REFERENCE',
+            `Surface '${surface.id}' references unknown view '${surface.viewId}'.`,
+            `${path}.viewId`,
+          );
+        }
+        if (surface.label !== undefined && typeof surface.label !== 'string') {
+          collector.add(
+            'INVALID_SURFACE_DECLARATION',
+            `Count surface '${surface.id}' label must be a string when declared.`,
+            `${path}.label`,
+          );
         }
         collectConditionIssues(collector, surface, path, maps);
         break;

@@ -17,6 +17,7 @@ export { default as List } from './List.svelte';
 export { default as Detail } from './Detail.svelte';
 export { default as Chart } from './Chart.svelte';
 export { default as Conversation } from './Conversation.svelte';
+export { default as Count } from './Count.svelte';
 export { default as ComponentSlot } from './ComponentSlot.svelte';
 
 // ---------------------------------------------------------------------------
@@ -32,6 +33,8 @@ export type { MountedVictApplication, RenderVictApplicationOptions } from './mou
 export {
   resolveRoute,
   matchPath,
+  substitutePathParams,
+  deriveRowActionInput,
   themeVariables,
   validatePlanForRenderer,
   collectSurfaces,
