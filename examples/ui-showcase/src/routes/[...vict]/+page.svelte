@@ -19,22 +19,52 @@
     data: { actionEndpoint?: string; plan: Record<string, unknown>; viewData: Record<string, unknown>; record: Record<string, unknown> | null };
   } = $props();
 
-  // The plan declares component identities; the trusted registry supplies code.
+  // The plan declares component identities; the trusted registry supplies
+  // code. The registry is recreated ONLY when the declared component-id
+  // set actually changes — never per data reload — so registered surfaces
+  // keep their instances (and their state) across invalidations.
+  const componentKey = $derived(
+    ((data.plan.components ?? []) as { componentId: string }[])
+      .map((entry) => entry.componentId)
+      .sort()
+      .join('|'),
+  );
   const registry = $derived(
     createShowcaseRegistry(
-      ((data.plan.components ?? []) as { componentId: string }[]).some(
-        (entry) => entry.componentId === 'cmp.request-planner',
-      ),
+      componentKey.includes('cmp.request-planner'),
+      componentKey.includes('cmp.session-picker'),
     ),
   );
 
+  // Reads (declared query actions, e.g. a product surface loading its own
+  // list) never dirty the route; only mutations do. Without this boundary a
+  // mount-time read would invalidate, remount the surface, and read again
+  // forever.
+  let lastActionKind = $state<string | undefined>(undefined);
+
   async function dispatch(actionId: string, input?: unknown): Promise<ActionResult> {
-    const response = await fetch(data.actionEndpoint ?? '/api/act', {
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ actionId, input }),
-    });
+    lastActionKind = (
+      data.plan.actions as Record<string, { kind?: string } | undefined>
+    )[actionId]?.kind;
+    // `path` carries the route the action was issued from so the owning
+    // application can resolve its own route parameters (the same record
+    // identity a form receives). Applications that do not need it ignore it.
+    const endpoint = data.actionEndpoint ?? '/api/act';
+    const separator = endpoint.includes('?') ? '&' : '?';
+    const response = await fetch(
+      `${endpoint}${separator}path=${encodeURIComponent(page.url.pathname)}`,
+      {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ actionId, input }),
+      },
+    );
     return (await response.json()) as ActionResult;
+  }
+
+  function handleInvalidate(): void {
+    if (lastActionKind === 'query') return;
+    void invalidateAll();
   }
 </script>
 
@@ -49,6 +79,6 @@
   path={page.url.pathname}
   viewData={data.viewData as never}
   record={data.record}
-  onInvalidate={() => void invalidateAll()}
+  onInvalidate={handleInvalidate}
   navigate={(target) => void goto(target)}
 />

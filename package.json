@@ -47,7 +47,8 @@
     "composition": "node scripts/ui-composition.mjs",
     "test:composition": "npm run build -w ui-showcase && node scripts/verify-ui-composition.mjs",
     "catalog": "node scripts/ui-catalog.mjs",
-    "test:catalog": "npm run build -w ui-showcase && node scripts/verify-ui-catalog.mjs"
+    "test:catalog": "npm run build -w ui-showcase && node scripts/verify-ui-catalog.mjs",
+    "workspace": "node scripts/ui-workspace.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

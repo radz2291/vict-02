@@ -15,7 +15,7 @@ export const load: PageServerLoad = async ({ url }) => {
     throw error(404, 'No application route is declared for this path.');
   }
   return {
-    ...(process.env.VICT_COMPOSITION === '1'
+    ...(process.env.VICT_COMPOSITION === '1' || process.env.VICT_PRODUCT === '1'
       ? { actionEndpoint: '/api/act?application=' + encodeURIComponent(app.plan.applicationId) }
       : {}),
     plan: route.plan as unknown as Record<string, unknown>,

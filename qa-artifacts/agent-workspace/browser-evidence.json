@@ -1,0 +1,37 @@
+{
+  "baseUrl": "dynamic",
+  "checks": [
+    {
+      "check": "sessions-chooser",
+      "ok": true
+    },
+    {
+      "check": "approval-flow",
+      "ok": true
+    },
+    {
+      "check": "failure-recovery-message",
+      "ok": true
+    },
+    {
+      "check": "draft-retention",
+      "ok": true
+    },
+    {
+      "check": "reset-dialog",
+      "ok": true
+    },
+    {
+      "check": "drawer-keyboard",
+      "ok": true
+    },
+    {
+      "check": "responsive-stack",
+      "ok": true
+    },
+    {
+      "check": "axe-smoke",
+      "ok": true
+    }
+  ]
+}

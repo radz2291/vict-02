@@ -16,9 +16,27 @@ const aliases = {
   '@victframework/sdk': resolveFromRoot('../../packages/sdk/src/index.ts'),
   '@victframework/runtime': resolveFromRoot('../../packages/runtime/src/index.ts'),
   '@victframework/ui': resolveFromRoot('../../packages/ui/src/index.ts'),
-  '@victframework/ui-svelte': resolveFromRoot('../../packages/ui-svelte/src/index.ts'),
   '@victframework/renderer-svelte': resolveFromRoot('../../packages/renderer-svelte/src/index.ts'),
 };
+
+// The ui-svelte package resolves through package exports in the real dev
+// server and built app. Vitest resolves aliases exactly, so the subpaths
+// used by the registered product surfaces need explicit rewrites (longest
+// first) — CSS included — or imports inside .svelte files fail to resolve.
+const uiSvelteSrc = resolveFromRoot('../../packages/ui-svelte/src');
+const aliasRules = [
+  {
+    find: /^@victframework\/ui-svelte$/,
+    replacement: resolveFromRoot('../../packages/ui-svelte/src/index.ts'),
+  },
+  { find: /^@victframework\/ui-svelte\/catalog.css$/, replacement: `${uiSvelteSrc}/catalog.css` },
+  { find: /^@victframework\/ui-svelte\/styles.css$/, replacement: `${uiSvelteSrc}/styles.css` },
+  { find: /^@victframework\/ui-svelte\/(catalog\/[a-z-]+)$/, replacement: `${uiSvelteSrc}/$1.ts` },
+  {
+    find: /^@victframework\/ui-svelte\/(controls|component-actions|dates)$/,
+    replacement: `${uiSvelteSrc}/$1.ts`,
+  },
+];
 
 // DOM-level and browser tests: the sveltekit plugin compiles .svelte imports
 // (including the linked @victframework renderer sources) and provides the
@@ -28,7 +46,10 @@ export default defineConfig({
   plugins: [sveltekit()],
   resolve: {
     conditions: ['browser'],
-    alias: aliases,
+    alias: [
+      ...aliasRules,
+      ...Object.entries(aliases).map(([find, replacement]) => ({ find, replacement })),
+    ],
   },
   test: {
     environment: 'happy-dom',

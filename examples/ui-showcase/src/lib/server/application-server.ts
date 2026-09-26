@@ -101,7 +101,8 @@ export function buildRuntime() {
 export interface ShowcaseAppServer {
   readonly plan: ReturnType<typeof compileShowcasePlan>;
   readonly data: ApplicationDataAdapter;
-  dispatch(actionId: string, input?: unknown): Promise<ActionResult>;
+  /** `path` optionally carries the issuing route so parameter routes can resolve identity. */
+  dispatch(actionId: string, input?: unknown, path?: string | null): Promise<ActionResult>;
   loadRoute(
     path: string,
     searchParams?: URLSearchParams,
@@ -268,7 +269,11 @@ export function createShowcaseServer(
     return rows.find(predicate);
   }
 
-  const dispatch = async (actionId: string, input?: unknown): Promise<ActionResult> => {
+  const dispatch = async (
+    actionId: string,
+    input?: unknown,
+    _path?: string | null,
+  ): Promise<ActionResult> => {
     const action = plan.actions[actionId];
     if (action === undefined) {
       return {
@@ -700,3 +705,10 @@ export function getShowcaseServer(): ShowcaseAppServer {
 export function resetShowcaseServer(): void {
   singleton = undefined;
 }
+/**
+ * The coding-agent product proof shares this module's server contract;
+ * its implementation and seeds live in ./agent-server.ts. Re-exported
+ * here so the preview host resolves every application server from one
+ * place.
+ */
+export { createAgentServer } from './agent-server.js';

@@ -258,7 +258,10 @@ describe('showcase sanity in a real browser (desktop 1440x900)', () => {
       const focusInOverlay = await page.evaluate(() =>
         document.activeElement?.getAttribute('data-testid'),
       );
-      expect(focusInOverlay).toBe(true);
+      // Focus must have moved INTO the overlay (the panel's close button
+      // carries the testid); the original toBe(true) assertion could never
+      // pass against a string attribute value.
+      expect(focusInOverlay).toBeTruthy();
       await page.keyboard.press('Escape');
       await new Promise((resolvePromise) => setTimeout(resolvePromise, 150));
       expect(await page.$('[data-testid="overlay"]')).toBeNull();
