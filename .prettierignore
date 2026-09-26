@@ -8,3 +8,4 @@ package-lock.json
 examples/application-proof/
 examples/reference-app/build/
 
+qa-artifacts/

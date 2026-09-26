@@ -1,0 +1,292 @@
+[
+ {
+  "name": "required error associated: id",
+  "ok": true,
+  "detail": "aria-describedby=vict-field-error-f.widget-create-id, text=\"This field is required.\""
+ },
+ {
+  "name": "required error associated: name",
+  "ok": true,
+  "detail": "aria-describedby=vict-field-error-f.widget-create-name, text=\"This field is required.\""
+ },
+ {
+  "name": "required error associated: budget",
+  "ok": true,
+  "detail": "aria-describedby=vict-field-error-f.widget-create-budget, text=\"This field is required.\""
+ },
+ {
+  "name": "optional fields get no error on empty submit",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "empty submit dispatches NOTHING",
+  "ok": true,
+  "detail": "0 dispatches"
+ },
+ {
+  "name": "create dispatch: typed payload canonical",
+  "ok": true,
+  "detail": "starts=2026-01-04 (input held 2026-01-04) {\"id\":\"widget-qa\",\"name\":\"QA widget\",\"starts\":\"2026-01-04\",\"config\":\"{\\\"quality\\\":\\\"high\\\",\\\"tags\\\":[\\\"qa\\\",\\\"p3\\\"]}\",\"budget\":1500,\"discount\":42.5,\"active\":true}"
+ },
+ {
+  "name": "garbage numeric typing stays raw/local (badInput → \"\")",
+  "ok": true,
+  "detail": "raw=\"\""
+ },
+ {
+  "name": "submit with garbage numeric: still no dispatch",
+  "ok": true,
+  "detail": "0 dispatches"
+ },
+ {
+  "name": "field-local required error shown for budget",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "edit prefill numeric stays numeric without an edit",
+  "ok": true,
+  "detail": "{\"name\":\"Zero case\",\"starts\":\"2026-01-15\",\"budget\":\"0\",\"discount\":\"\",\"activeChecked\":false,\"idPresent\":false}"
+ },
+ {
+  "name": "untouched edit submit: 0 stays 0 (number), false stays false, absent discount OMITTED",
+  "ok": true,
+  "detail": "keys=[__identity,active,budget,config,name,starts] {\"name\":\"Zero case\",\"starts\":\"2026-01-15\",\"config\":\"{}\",\"budget\":0,\"active\":false,\"__identity\":\"zero\"}"
+ },
+ {
+  "name": "boolean round-trip true dispatches as boolean true",
+  "ok": true,
+  "detail": "{\"name\":\"Zero case\",\"starts\":\"2026-01-15\",\"config\":\"{}\",\"budget\":0,\"active\":true,\"__identity\":\"zero\"}"
+ },
+ {
+  "name": "optional numeric with value dispatches as number",
+  "ok": true,
+  "detail": "{\"name\":\"Zero case\",\"starts\":\"2026-01-15\",\"config\":\"{}\",\"budget\":0,\"discount\":12.75,\"active\":true,\"__identity\":\"zero\"}"
+ },
+ {
+  "name": "optional numeric cleared again → key omitted",
+  "ok": true,
+  "detail": "{\"name\":\"Zero case\",\"starts\":\"2026-01-15\",\"config\":\"{}\",\"budget\":0,\"active\":true,\"__identity\":\"zero\"}"
+ },
+ {
+  "name": "prefill follows identity change without remount",
+  "ok": true,
+  "detail": "{\"name\":\"Full record\",\"budget\":\"1200.5\",\"discount\":\"25\",\"active\":true}"
+ },
+ {
+  "name": "form state survives tab switch (panel kept in DOM)",
+  "ok": true,
+  "detail": "value=\"Edited in tab\""
+ },
+ {
+  "name": "form submits correctly after tab changes",
+  "ok": true,
+  "detail": "{\"name\":\"Edited in tab\",\"starts\":\"2026-03-09\",\"config\":\"{\\\"mode\\\":\\\"fast\\\",\\\"retries\\\":2}\",\"budget\":1200.5,\"discount\":25,\"active\":true,\"__identity\":\"one\"}"
+ },
+ {
+  "name": "ArrowRight selects next, roving tabindex, aria-selected, aria-controls",
+  "ok": true,
+  "detail": "[{\"label\":\"Overview\",\"selected\":\"false\",\"tabIndex\":-1,\"controls\":\"vict-tabpanel-tb.rec-tabs-overview\",\"focused\":false},{\"label\":\"Edit\",\"selected\":\"true\",\"tabIndex\":0,\"controls\":\"vict-tabpanel-tb.rec-tabs-edit\",\"focused\":true}]"
+ },
+ {
+  "name": "ArrowLeft selects previous",
+  "ok": true,
+  "detail": "[\"true\",\"false\"]"
+ },
+ {
+  "name": "ArrowLeft wraps around to last tab",
+  "ok": true,
+  "detail": "[\"false\",\"true\"]"
+ },
+ {
+  "name": "Home selects first tab",
+  "ok": true,
+  "detail": "[\"true\",\"false\"]"
+ },
+ {
+  "name": "End selects last tab",
+  "ok": true,
+  "detail": "[\"false\",\"true\"]"
+ },
+ {
+  "name": "Tab from tablist skips to content (unselected tabs not focusable)",
+  "ok": true,
+  "detail": "focus=INPUT"
+ },
+ {
+  "name": "panel aria-labelledby points at its tab",
+  "ok": true,
+  "detail": "{\"labelledby\":\"vict-tab-tb.rec-tabs-edit\",\"tab\":\"Edit\"}"
+ },
+ {
+  "name": "open: dialog open + :modal (top layer)",
+  "ok": true,
+  "detail": "{\"open\":true,\"inTopLayer\":true,\"focusedInside\":true}"
+ },
+ {
+  "name": "open: focus moves into the modal",
+  "ok": true,
+  "detail": "{\"focusedInside\":true}"
+ },
+ {
+  "name": "Tab / Shift+Tab never reach interactive background content (12 cycles)",
+  "ok": true,
+  "detail": "inside,body,inside,body,inside,body,inside,body,inside,inside,body,inside"
+ },
+ {
+  "name": "background inert: real click on a background trigger reaches only the top layer (backdrop dismisses; nothing behind opens)",
+  "ok": true,
+  "detail": "dialogs=0 drawerOpened=false"
+ },
+ {
+  "name": "focus restores to the trigger after backdrop close",
+  "ok": true,
+  "detail": "focus=overlay-trigger"
+ },
+ {
+  "name": "Escape closes the dialog",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "trigger regains focus after close",
+  "ok": true,
+  "detail": "focus=overlay-trigger"
+ },
+ {
+  "name": "explicit Close closes",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "click on panel content does NOT close",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "backdrop click closes",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "denied action inside dialog surfaces denial (role=alert) and dialog stays open",
+  "ok": true,
+  "detail": "{\"deniedText\":\"This action was denied by the authorization boundary.\",\"role\":\"alert\",\"dialogStillOpen\":true}"
+ },
+ {
+  "name": "drawer trigger opens drawer presentation (right, full-height, distinct class)",
+  "ok": true,
+  "detail": "{\"open\":true,\"rightAligned\":true,\"fullHeight\":true,\"distinctClass\":true}"
+ },
+ {
+  "name": "drawer form prefilled from record",
+  "ok": true,
+  "detail": "{\"discount\":\"25\",\"active\":true}"
+ },
+ {
+  "name": "drawer form dispatches canonical edit",
+  "ok": true,
+  "detail": "{\"discount\":25,\"active\":true,\"__identity\":\"one\"}"
+ },
+ {
+  "name": "drawer stays open after save (focus stays inside)",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "nested overlay: dialog inside drawer, both open in top layer",
+  "ok": true,
+  "detail": "[{\"open\":true,\"drawer\":true,\"topmost\":true},{\"open\":true,\"drawer\":false,\"topmost\":true}]"
+ },
+ {
+  "name": "nested action invalidates route data (list shows revision bump)",
+  "ok": true,
+  "detail": "revision bump 1 — warm"
+ },
+ {
+  "name": "Escape closes only the nested dialog; drawer stays open",
+  "ok": true,
+  "detail": "{\"dialogs\":[\"drawer\"]}"
+ },
+ {
+  "name": "Escape closes the drawer",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "all five status tones render distinct classes",
+  "ok": true,
+  "detail": "[{\"text\":\"draft\",\"cls\":\"vict-status--neutral\"},{\"text\":\"warm\",\"cls\":\"vict-status--success\"},{\"text\":\"hold\",\"cls\":\"vict-status--warning\"},{\"text\":\"hot\",\"cls\":\"vict-status--danger\"},{\"text\":\"cold\",\"cls\":\"vict-status--info\"}]"
+ },
+ {
+  "name": "variants + disabled: primary and danger present; disabled action disabled (note: the renderer assigns secondary to no action — pre-P3 behavior preserved)",
+  "ok": true,
+  "detail": "[{\"label\":\"Bump revision\",\"variant\":\"primary\",\"disabled\":false},{\"label\":\"Clear form (local)\",\"variant\":\"primary\",\"disabled\":false},{\"label\":\"Delete record\",\"variant\":\"danger\",\"disabled\":false},{\"label\":\"Disabled action\",\"variant\":\"primary\",\"disabled\":true}]"
+ },
+ {
+  "name": "empty feedback renders (list + detail)",
+  "ok": true,
+  "detail": "[\"Nothing here yet.\",\"This record does not exist.\",\"Done.\"]"
+ },
+ {
+  "name": "denied feedback carries role=alert",
+  "ok": true,
+  "detail": "alert"
+ },
+ {
+  "name": "stale feedback surfaces",
+  "ok": true,
+  "detail": "Showing saved data that may be out of date."
+ },
+ {
+  "name": "all sampled text meets WCAG AA (>=4.5:1)",
+  "ok": true,
+  "detail": "min=5.67"
+ },
+ {
+  "name": "@380: document has no horizontal page overflow",
+  "ok": true,
+  "detail": "{\"docOverflow\":0,\"tablistOverflow\":0}"
+ },
+ {
+  "name": "@380: long-label tabs do not overflow the page and every tab stays reachable",
+  "ok": true,
+  "detail": "{\"docOver\":0,\"scrollW\":364,\"clientW\":332,\"scrolls\":true,\"lastTabReachable\":true}"
+ },
+ {
+  "name": "@380: form inputs fit and remain usable",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "@380: drawer opens, fits viewport, form usable",
+  "ok": true,
+  "detail": "{\"open\":true,\"width\":349.59375,\"fits\":true}"
+ },
+ {
+  "name": "@320: document has no horizontal page overflow",
+  "ok": true,
+  "detail": "{\"docOverflow\":0,\"tablistOverflow\":0}"
+ },
+ {
+  "name": "@320: long-label tabs do not overflow the page and every tab stays reachable",
+  "ok": true,
+  "detail": "{\"docOver\":0,\"scrollW\":364,\"clientW\":272,\"scrolls\":true,\"lastTabReachable\":true}"
+ },
+ {
+  "name": "@320: form inputs fit and remain usable",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "@320: drawer opens, fits viewport, form usable",
+  "ok": true,
+  "detail": "{\"open\":true,\"width\":294.390625,\"fits\":true}"
+ },
+ {
+  "name": "no page errors during the whole harness run",
+  "ok": true,
+  "detail": ""
+ }
+]

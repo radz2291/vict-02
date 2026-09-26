@@ -43,12 +43,12 @@ export default defineConfig({
             // (scripts/lib/*) used by the release-gate verifiers.
             'scripts/test/**/*.test.mjs',
           ],
-          // The Svelte renderer package runs in its own DOM-level project
-          // (svelte plugin + happy-dom) — never double-run without its
+          // Svelte renderer packages run in their own DOM-level project
+          // (svelte plugin + happy-dom) — never double-run without their
           // toolchain. The Mastra adapter runs in its own project with a
           // network guard (its suites must fail on any unexpected network
           // request) — never double-run without that guard.
-          exclude: ['packages/renderer-svelte/**', 'packages/mastra/**'],
+          exclude: ['packages/renderer-svelte/**', 'packages/ui-svelte/**', 'packages/mastra/**'],
         },
         resolve: { alias: aliases },
       },
@@ -66,7 +66,13 @@ export default defineConfig({
       {
         test: {
           name: 'renderer',
-          include: ['packages/renderer-svelte/test/**/*.test.ts'],
+          // The permanent renderer implementation owner (ui-svelte) plus the
+          // renderer-svelte compatibility-facade tests share the same
+          // DOM-level toolchain (svelte plugin + happy-dom).
+          include: [
+            'packages/renderer-svelte/test/**/*.test.ts',
+            'packages/ui-svelte/test/**/*.test.ts',
+          ],
           environment: 'happy-dom',
         },
         resolve: { alias: aliases, conditions: ['browser'] },

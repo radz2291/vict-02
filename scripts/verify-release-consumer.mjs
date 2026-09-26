@@ -19,14 +19,20 @@
  *      `node_modules/@victframework/*` entry resolves (realpath) into the
  *      repository;
  *   5. typechecks (strict, skipLibCheck:false) a consumer importing the
- *      documented public surface of all 13 packages;
+ *      documented public surface of all 15 packages — including the
+ *      neutral `@victframework/ui` surface and the DIRECT
+ *      `@victframework/ui-svelte` renderer API alongside the legacy
+ *      `@victframework/renderer-svelte` compatibility facade;
  *   6. executes a minimal RUNTIME composition: one contract, one
  *      capability, one graph run on a real SQLite store — persisted,
  *      closed, reopened, exact-activation restored, run record truthful;
  *   7. compiles one Application Definition into its immutable plan and
  *      runs the renderer composition: the renderer-contract component
  *      registry plus the packed renderer's structural plan validation and
- *      identity, executed headlessly against the installed package.
+ *      identity, executed headlessly against the installed package; and
+ *      proves the facade/direct binding IDENTITY (the compatibility facade
+ *      re-exports the very same renderer bindings as ui-svelte, never a
+ *      copy) in the installed tree.
  *
  * Usage:
  *   npm run build && npm run verify:release-consumer
@@ -66,6 +72,8 @@ const RELEASE_PACKAGES = [
   'sdk',
   'server',
   'store-sqlite',
+  'ui',
+  'ui-svelte',
 ];
 
 let failures = 0;
@@ -290,6 +298,17 @@ import type {
 import { AgentTurnService } from '@victframework/control';
 import { createVictHttpServer, VictCommandService } from '@victframework/server';
 import { runVictCli } from '@victframework/cli';
+// The AMENDED 15-package set adds the neutral UI vocabulary and the
+// permanent Svelte renderer package; the consumer surface must prove both
+// resolve as published, alongside — not instead of — the facade above.
+import { deriveUiPlan, type UiPlan } from '@victframework/ui';
+import {
+  createVictRenderer,
+  renderVictApplication,
+  resolveRoute as directResolveRoute,
+  RENDERER_ID,
+  RENDERER_REVISION,
+} from '@victframework/ui-svelte';
 
 type RendererType = ApplicationRenderer;
 const _typeSurface: [
@@ -307,8 +326,17 @@ const _typeSurface: [
   AgentProfileAuthoring | null,
   ApplicationDefinition | null,
   SqliteStoresOptions | null,
-] = [null, null, null, null, null, null, null, null, null, null, null, null, null, null];
+  UiPlan | null,
+] = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null];
 void _typeSurface;
+
+// The DIRECT ui-svelte renderer API must satisfy the neutral
+// ApplicationRenderer contract exactly as the facade does.
+const directRenderer: ApplicationRenderer = createVictRenderer();
+void directRenderer;
+void renderVictApplication;
+void directResolveRoute;
+void deriveUiPlan;
 
 export {
   defineContract,
@@ -326,6 +354,10 @@ export {
   createVictHttpServer,
   VictCommandService,
   runVictCli,
+  createVictRenderer,
+  deriveUiPlan,
+  RENDERER_ID,
+  RENDERER_REVISION,
 };
 export type RendererComposition = { renderer: RendererType };
 `,
@@ -466,21 +498,21 @@ check(
   `Application Definition compile + renderer-contract registry (exit ${appCheck.status})`,
 );
 
-// Renderer composition headlessly: the packed renderer's pure logic module
-// (shipped under files: src) validates the compiled plan. The renderer's
-// browser surface (Svelte components) is consumed through the consumer's
-// bundler in real use; this proves the packed package resolves outside the
-// monorepo and its structural composition logic runs against the compiled
-// plan. Type-only + bundler-level coverage is additionally proven by the
-// strict typecheck above (type imports of the renderer surface).
-const rendererLogicTs = join(
-  consumerNodeModules,
-  '@victframework',
-  'renderer-svelte',
-  'src',
-  'logic.ts',
+// Renderer composition headlessly: the packed Svelte renderer's pure logic
+// module (shipped under files: src by @victframework/ui-svelte — the
+// permanent renderer implementation since P5) validates the compiled plan.
+// The renderer's browser surface (Svelte components) is consumed through
+// the consumer's bundler in real use; this proves the packed package
+// resolves outside the monorepo and its structural composition logic runs
+// against the compiled plan. Type-only + bundler-level coverage is
+// additionally proven by the strict typecheck above (type imports of the
+// direct renderer surface AND the legacy facade surface).
+const rendererLogicTs = join(consumerNodeModules, '@victframework', 'ui-svelte', 'src', 'logic.ts');
+check(existsSync(rendererLogicTs), 'packed renderer ships its pure logic module (ui-svelte)');
+check(
+  !existsSync(join(consumerNodeModules, '@victframework', 'renderer-svelte', 'src', 'logic.ts')),
+  'the facade ships no independent logic copy (pure re-export facade)',
 );
-check(existsSync(rendererLogicTs), 'packed renderer ships its pure logic module');
 // Consumer-side bundling of the shipped renderer logic (the standard way a
 // bundler-based consumer compiles the renderer's shipped TypeScript):
 // esbuild transpiles the logic module to plain ESM; the package's runtime
@@ -538,6 +570,67 @@ check(
   rendererCheck.status === 0,
   `renderer composition over the compiled plan (exit ${rendererCheck.status})`,
 );
+
+// ---- 8. Facade/direct renderer binding identity (amended 15-package set) ----
+// The compatibility facade must expose the VERY SAME renderer bindings as
+// ui-svelte — never a copy. Both packages ship TypeScript sources as their
+// runtime; ONE esbuild bundle containing BOTH entry modules decides module
+// identity by resolved path, so identical bindings prove re-export. .svelte
+// files load as inert text (this probe exercises only the pure JS/TS export
+// surface; the component surface is bundler-consumed, proven above).
+writeFileSync(
+  join(consumerSrc, 'identity-check.ts'),
+  `
+import * as direct from '../node_modules/@victframework/ui-svelte/src/index.ts';
+import * as facade from '../node_modules/@victframework/renderer-svelte/src/index.ts';
+
+function assert(cond, message) {
+  if (!cond) throw new Error('facade/direct identity FAILED: ' + message);
+}
+assert(direct.createVictRenderer === facade.createVictRenderer, 'createVictRenderer binding differs');
+assert(direct.renderVictApplication === facade.renderVictApplication, 'renderVictApplication binding differs');
+assert(direct.resolveRoute === facade.resolveRoute, 'resolveRoute binding differs');
+assert(direct.matchPath === facade.matchPath, 'matchPath binding differs');
+assert(direct.validatePlanForRenderer === facade.validatePlanForRenderer, 'validatePlanForRenderer binding differs');
+assert(direct.BUILT_IN_ROLES === facade.BUILT_IN_ROLES, 'BUILT_IN_ROLES binding differs');
+assert(direct.RENDERER_ID === facade.RENDERER_ID, 'RENDERER_ID differs');
+assert(direct.RENDERER_REVISION === facade.RENDERER_REVISION, 'RENDERER_REVISION differs');
+assert(direct.RENDERER_ID === 'renderer.svelte-kit', 'frozen renderer identity drifted');
+assert(direct.RENDERER_REVISION === '5.0.0', 'frozen renderer revision drifted');
+console.log('CONSUMER_RENDERER_IDENTITY_OK', direct.RENDERER_ID, direct.RENDERER_REVISION);
+`,
+);
+const identityBundle = join(consumerSrc, 'identity-check.mjs');
+const identityBuild = run(
+  npm,
+  [
+    'exec',
+    '--no',
+    '--',
+    'esbuild',
+    join(consumerSrc, 'identity-check.ts'),
+    '--bundle',
+    '--platform=node',
+    '--format=esm',
+    `--outfile=${identityBundle}`,
+    '--loader:.svelte=text',
+  ],
+  { cwd: consumer, capture: true },
+);
+check(
+  identityBuild.status === 0,
+  `consumer bundles the facade+direct renderer surface (exit ${identityBuild.status})`,
+);
+const identityCheck = run(process.execPath, [identityBundle], { capture: true });
+check(
+  identityCheck.status === 0 &&
+    (identityCheck.stdout ?? '').includes('CONSUMER_RENDERER_IDENTITY_OK'),
+  `facade re-exports the same renderer bindings as ui-svelte (exit ${identityCheck.status})`,
+);
+if (identityCheck.status !== 0) {
+  console.error(identityCheck.stdout ?? '');
+  console.error(identityCheck.stderr ?? '');
+}
 
 // ---- Cleanup ------------------------------------------------------------------
 rmSync(work, { recursive: true, force: true });

@@ -18,6 +18,8 @@
       "@victframework/cli": ["./packages/cli/src/index.ts"],
       "@victframework/appdata-sqlite": ["./packages/appdata-sqlite/src/index.ts"],
       "@victframework/renderer-svelte": ["./packages/renderer-svelte/src/index.ts"],
+      "@victframework/ui": ["./packages/ui/src/index.ts"],
+      "@victframework/ui-svelte": ["./packages/ui-svelte/src/index.ts"],
       "@victframework/scaffolder": ["./packages/scaffolder/src/index.ts"],
       "@victframework/application": ["./packages/application/src/index.ts"],
       "@victframework/application/*": ["./packages/application/src/*"],

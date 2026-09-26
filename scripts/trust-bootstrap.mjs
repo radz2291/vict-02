@@ -17,7 +17,7 @@
  * Safety model (frozen):
  * - exact package allowlist: derives the inventory from the canonical
  *   manifests and refuses to act if it is not exactly the frozen
- *   13-package set;
+ *   15-package set (contract §5 as amended 2026-09-26, §14);
  * - deterministic order: the frozen dependency-topological publication
  *   order;
  * - two-second delay between registry-mutating requests;
@@ -249,7 +249,9 @@ if (inventory.problems.length > 0) {
   fail(`release-set inventory invalid:\n  - ${inventory.problems.join('\n  - ')}`);
 }
 if (inventory.order.length !== EXPECTED_RELEASE_PACKAGE_COUNT) {
-  fail(`inventory is ${inventory.order.length} packages; expected exactly 13.`);
+  fail(
+    `inventory is ${inventory.order.length} packages; expected exactly ${EXPECTED_RELEASE_PACKAGE_COUNT}.`,
+  );
 }
 const namesInFrozenOrder = inventory.order;
 for (let index = 0; index < namesInFrozenOrder.length; index += 1) {
@@ -298,7 +300,9 @@ if (verifyOnly) {
   }
   if (failures > 0)
     fail(`${failures} package(s) do not have the exact expected trust relationship.`);
-  console.log('\ntrust-bootstrap: ALL 13 TRUST RELATIONSHIPS VERIFIED EXACT');
+  console.log(
+    `\ntrust-bootstrap: ALL ${namesInFrozenOrder.length} TRUST RELATIONSHIPS VERIFIED EXACT`,
+  );
   process.exit(0);
 }
 

@@ -1,0 +1,67 @@
+<script lang="ts">
+  import type { UiConversationMessage } from '@victframework/ui';
+  interface Props {
+    surfaceId: string;
+    messages: readonly UiConversationMessage[];
+    emptyMessage: string;
+    inputLabel: string;
+    inputPlaceholder?: string;
+    onSend: (text: string) => Promise<boolean>;
+  }
+  let { surfaceId, messages, emptyMessage, inputLabel, inputPlaceholder = '', onSend }: Props = $props();
+  let draft = $state('');
+  let sending = $state(false);
+  let inputElement: HTMLInputElement;
+  let formElement: HTMLFormElement;
+
+  async function send(event: SubmitEvent): Promise<void> {
+    event.preventDefault();
+    const text = draft.trim();
+    if (text === '' || sending) return;
+    const restoreFocus = formElement?.contains(document.activeElement) ?? false;
+    sending = true;
+    try {
+      if (await onSend(text) && draft.trim() === text) draft = '';
+    } catch {
+      // The adapter owns safe failure reporting; no raw exception enters UI.
+    } finally {
+      sending = false;
+      if (restoreFocus && (formElement?.contains(document.activeElement) || document.activeElement === document.body)) {
+        inputElement?.focus();
+      }
+    }
+  }
+</script>
+
+<section class="vict-conversation-panel" data-surface={surfaceId}>
+  <!-- The feed is a contained scroll region (max-height + overflow): it must
+       stay keyboard-scrollable (axe scrollable-region-focusable) and named.
+       The app-declared composer label (compiler-required, non-empty) keeps
+       the region name distinct when a screen shows several conversations. -->
+  <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
+  <div class="vict-conversation" data-testid="conversation-feed" role="region" aria-label={`Messages — ${inputLabel}`} aria-live="polite" tabindex="0">
+    {#if messages.length === 0}
+      <p class="vict-state" data-state="empty">{emptyMessage}</p>
+    {:else}
+      {#each messages as message, index (index)}
+        <article class="vict-conversation-message"
+          class:vict-conversation-message--user={message.participant === 'user'}
+          class:vict-conversation-message--assistant={message.participant === 'assistant'}
+          data-testid="conversation-message" data-participant={message.participant}>
+          <p class="vict-conversation-meta">{message.author} · {message.participant}</p>
+          <p class="vict-conversation-body">{message.text}</p>
+        </article>
+      {/each}
+    {/if}
+  </div>
+  <form class="vict-conversation-input" aria-busy={sending} bind:this={formElement} onsubmit={(event) => void send(event)}>
+    <label class="vict-field-label" for="vict-conversation-input-{surfaceId}">{inputLabel}</label>
+    <div class="vict-conversation-input-row">
+      <input class="vict-input" id="vict-conversation-input-{surfaceId}" data-testid="conversation-input"
+        name="message" autocomplete="off" placeholder={inputPlaceholder} bind:value={draft} bind:this={inputElement} />
+      <button class="vict-btn" type="submit" data-testid="conversation-send" disabled={sending || draft.trim() === ''}>
+        {sending ? 'Sending…' : 'Send'}
+      </button>
+    </div>
+  </form>
+</section>

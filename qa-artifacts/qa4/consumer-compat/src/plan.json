@@ -1,0 +1,2132 @@
+{
+  "applicationId": "app.qa.p4",
+  "applicationRevision": "1",
+  "applicationVersion": "v1_1de3262b6f22084ef00dd645eb1a6431ab62dba2a16c299005c760cc0794de45",
+  "manifest": {
+    "schema": "vict.application@2",
+    "id": "app.qa.p4",
+    "revision": "1",
+    "routes": [
+      {
+        "id": "headings",
+        "path": "/headings",
+        "screenId": "s.headings",
+        "nav": {
+          "label": "Headings",
+          "group": "P4",
+          "order": 1
+        }
+      },
+      {
+        "id": "widgets",
+        "path": "/widgets",
+        "screenId": "s.widgets",
+        "nav": {
+          "label": "Widgets",
+          "group": "P4",
+          "order": 2
+        }
+      },
+      {
+        "id": "charts",
+        "path": "/charts",
+        "screenId": "s.charts",
+        "nav": {
+          "label": "Charts",
+          "group": "P4",
+          "order": 3
+        }
+      },
+      {
+        "id": "conversation",
+        "path": "/conversation",
+        "screenId": "s.conversation",
+        "nav": {
+          "label": "Conversation",
+          "group": "P4",
+          "order": 4
+        }
+      },
+      {
+        "id": "slots",
+        "path": "/slots",
+        "screenId": "s.slots",
+        "nav": {
+          "label": "Slots",
+          "group": "P4",
+          "order": 5
+        }
+      },
+      {
+        "id": "rec",
+        "path": "/rec/:id",
+        "screenId": "s.rec"
+      }
+    ],
+    "screens": [
+      {
+        "id": "s.charts",
+        "title": "Charts",
+        "breadcrumbs": [
+          {
+            "label": "Home"
+          }
+        ],
+        "layout": [
+          {
+            "name": "main",
+            "surfaces": [
+              {
+                "role": "chart",
+                "id": "ch.barMain",
+                "viewId": "v.chartBar",
+                "kind": "bar",
+                "xField": "status",
+                "yField": "budget",
+                "summary": "Bar chart of total budget summed per project status",
+                "title": "Budget by status (bar)"
+              },
+              {
+                "role": "chart",
+                "id": "ch.lineMain",
+                "viewId": "v.chartLine",
+                "kind": "line",
+                "xField": "month",
+                "yField": "value",
+                "summary": "Line chart of the monthly value trend",
+                "title": "Monthly trend (line)"
+              },
+              {
+                "role": "chart",
+                "id": "ch.barEmpty",
+                "viewId": "v.chartEmpty",
+                "kind": "bar",
+                "xField": "status",
+                "yField": "budget",
+                "summary": "Empty bar chart with zero data points",
+                "title": "Empty chart (bar, zero points)"
+              },
+              {
+                "role": "chart",
+                "id": "ch.lineOne",
+                "viewId": "v.chartOne",
+                "kind": "line",
+                "xField": "month",
+                "yField": "value",
+                "summary": "Line chart with exactly one data point",
+                "title": "One point (line)"
+              },
+              {
+                "role": "chart",
+                "id": "ch.barEdge",
+                "viewId": "v.chartEdge",
+                "kind": "bar",
+                "xField": "label",
+                "yField": "value",
+                "summary": "Bar chart with large, zero, and negative values",
+                "title": "Large / zero / negative values (bar)"
+              },
+              {
+                "role": "chart",
+                "id": "ch.lineMany",
+                "viewId": "v.chartMany",
+                "kind": "line",
+                "xField": "label",
+                "yField": "value",
+                "summary": "Line chart with twelve dense data points",
+                "title": "Many points (line, 12)"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "s.conversation",
+        "title": "Conversation",
+        "breadcrumbs": [
+          {
+            "label": "Home"
+          }
+        ],
+        "layout": [
+          {
+            "name": "main",
+            "surfaces": [
+              {
+                "role": "conversation",
+                "id": "cv.ok",
+                "viewId": "v.messages",
+                "messageField": "text",
+                "authorField": "author",
+                "participantField": "participant",
+                "sendActionId": "act.sendMessage",
+                "inputLabel": "Message (ok boundary)",
+                "inputPlaceholder": "Type a message…",
+                "emptyMessage": "No messages yet — say hello!"
+              },
+              {
+                "role": "conversation",
+                "id": "cv.empty",
+                "viewId": "v.messagesEmpty",
+                "messageField": "text",
+                "authorField": "author",
+                "participantField": "participant",
+                "sendActionId": "act.sendMessage",
+                "inputLabel": "Message (empty feed)",
+                "emptyMessage": "No messages yet — say hello!"
+              },
+              {
+                "role": "conversation",
+                "id": "cv.denied",
+                "viewId": "v.messages",
+                "messageField": "text",
+                "authorField": "author",
+                "participantField": "participant",
+                "sendActionId": "act.messageDenied",
+                "inputLabel": "Message (denied boundary)"
+              },
+              {
+                "role": "conversation",
+                "id": "cv.throws",
+                "viewId": "v.messages",
+                "messageField": "text",
+                "authorField": "author",
+                "participantField": "participant",
+                "sendActionId": "act.messageThrows",
+                "inputLabel": "Message (throwing boundary)"
+              }
+            ]
+          }
+        ],
+        "states": {
+          "failure": {
+            "role": "text",
+            "id": "t.conv-failure",
+            "content": "The conversation failed safely."
+          }
+        }
+      },
+      {
+        "id": "s.headings",
+        "title": "Heading vocabulary",
+        "breadcrumbs": [
+          {
+            "label": "Home"
+          }
+        ],
+        "layout": [
+          {
+            "name": "main",
+            "surfaces": [
+              {
+                "role": "text",
+                "id": "t.h1",
+                "content": "Documented level one",
+                "level": 1
+              },
+              {
+                "role": "text",
+                "id": "t.h2",
+                "content": "Documented level two",
+                "level": 2
+              },
+              {
+                "role": "text",
+                "id": "t.h3",
+                "content": "Documented level three",
+                "level": 3
+              },
+              {
+                "role": "text",
+                "id": "t.h4",
+                "content": "Documented level four",
+                "level": 4
+              },
+              {
+                "role": "text",
+                "id": "t.h5",
+                "content": "Documented level five",
+                "level": 5
+              },
+              {
+                "role": "text",
+                "id": "t.h6",
+                "content": "Documented level six",
+                "level": 6
+              },
+              {
+                "role": "text",
+                "id": "t.plain",
+                "content": "Unleveled body paragraph. Long content must wrap inside its container instead of forcing the document wider: this sentence repeats padding words so the rendered paragraph is several lines tall at phone widths, with ordinary spaces and a few long tokens such as Supercalifragilisticexpialidocious-And-Other-Extraordinary-Vocabulary to prove wrapping."
+              },
+              {
+                "role": "text",
+                "id": "t.unbroken",
+                "content": "Unbreakable-tokenthatmustnotforcepageoverflow-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789-abcdefghijklmnopqrstuvwxyz-END"
+              },
+              {
+                "role": "text",
+                "id": "t.hostile",
+                "content": "Text with markup-looking content: <b>bold?</b> <img src=x onerror=\"window.__qaXss=1\"> <script>window.__qaXssScript=1</script>"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "s.rec",
+        "title": "Record detail",
+        "breadcrumbs": [
+          {
+            "label": "Home"
+          },
+          {
+            "label": "Record"
+          }
+        ],
+        "layout": [
+          {
+            "name": "main",
+            "surfaces": [
+              {
+                "role": "tabs",
+                "id": "tb.rec-tabs",
+                "tabs": [
+                  {
+                    "name": "overview",
+                    "label": "Overview",
+                    "surfaces": [
+                      {
+                        "role": "detail",
+                        "id": "dt.rec",
+                        "viewId": "v.recDetail",
+                        "emptyMessage": "This record does not exist."
+                      },
+                      {
+                        "role": "list",
+                        "id": "ls.related",
+                        "viewId": "v.related",
+                        "titleField": "title",
+                        "secondaryField": "secondary",
+                        "emptyMessage": "Nothing derived yet."
+                      }
+                    ]
+                  },
+                  {
+                    "name": "notes",
+                    "label": "Notes",
+                    "surfaces": [
+                      {
+                        "role": "text",
+                        "id": "t.rec-notes",
+                        "content": "A long notes paragraph for the record: it repeats so the panel has real height and wrapping behavior at phone widths, exactly like the shipped applications produce.",
+                        "level": 3
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "role": "drawer",
+                "id": "dr.rec",
+                "title": "Record drawer",
+                "triggerLabel": "Open record drawer…",
+                "content": [
+                  {
+                    "role": "text",
+                    "id": "t.drawer-note",
+                    "content": "A conversation nested inside a drawer overlay."
+                  },
+                  {
+                    "role": "conversation",
+                    "id": "cv.drawer",
+                    "viewId": "v.messages",
+                    "messageField": "text",
+                    "authorField": "author",
+                    "participantField": "participant",
+                    "sendActionId": "act.sendMessage",
+                    "inputLabel": "Message (drawer)",
+                    "emptyMessage": "No messages yet."
+                  },
+                  {
+                    "role": "list",
+                    "id": "ls.drawer-empty",
+                    "viewId": "v.listEmpty",
+                    "titleField": "title",
+                    "emptyMessage": "The drawer list is empty."
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "states": {
+          "failure": {
+            "role": "text",
+            "id": "t.rec-failure",
+            "content": "The record failed safely."
+          }
+        }
+      },
+      {
+        "id": "s.slots",
+        "title": "Component slot",
+        "breadcrumbs": [
+          {
+            "label": "Home"
+          }
+        ],
+        "layout": [
+          {
+            "name": "main",
+            "surfaces": [
+              {
+                "role": "text",
+                "id": "t.slot-intro",
+                "content": "A resolvable custom component receives its declared props unchanged.",
+                "level": 2
+              },
+              {
+                "role": "component",
+                "id": "cm.health",
+                "componentId": "cmp.health",
+                "revision": "1",
+                "props": {
+                  "label": "workspace health island",
+                  "count": 7,
+                  "pinned": true
+                }
+              },
+              {
+                "role": "text",
+                "id": "t.slot-note",
+                "content": "Below: the same island nested inside a dialog overlay at phone widths.",
+                "level": 3
+              },
+              {
+                "role": "dialog",
+                "id": "dlg.slot",
+                "title": "Island in overlay",
+                "triggerLabel": "Open island dialog…",
+                "content": [
+                  {
+                    "role": "component",
+                    "id": "cm.overlay-health",
+                    "componentId": "cmp.health",
+                    "revision": "1",
+                    "props": {
+                      "label": "overlay island",
+                      "count": 3,
+                      "pinned": false
+                    }
+                  },
+                  {
+                    "role": "list",
+                    "id": "ls.overlay",
+                    "viewId": "v.listPlain",
+                    "titleField": "title"
+                  },
+                  {
+                    "role": "view",
+                    "id": "sv.overlay-grid",
+                    "viewId": "v.gridEmpty"
+                  },
+                  {
+                    "role": "chart",
+                    "id": "ch.overlay-empty",
+                    "viewId": "v.chartEmpty",
+                    "kind": "bar",
+                    "xField": "status",
+                    "yField": "budget",
+                    "summary": "Empty chart nested inside a dialog",
+                    "title": "Nested empty chart"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "s.widgets",
+        "title": "Read-only widgets",
+        "breadcrumbs": [
+          {
+            "label": "Home"
+          }
+        ],
+        "layout": [
+          {
+            "name": "main",
+            "surfaces": [
+              {
+                "role": "text",
+                "id": "t.grid-title",
+                "content": "Read-only data view",
+                "level": 2
+              },
+              {
+                "role": "view",
+                "id": "sv.grid",
+                "viewId": "v.grid"
+              },
+              {
+                "role": "view",
+                "id": "sv.grid-empty",
+                "viewId": "v.gridEmpty"
+              },
+              {
+                "role": "text",
+                "id": "t.list-title",
+                "content": "Lists",
+                "level": 2
+              },
+              {
+                "role": "list",
+                "id": "ls.plain",
+                "viewId": "v.listPlain",
+                "titleField": "title"
+              },
+              {
+                "role": "list",
+                "id": "ls.secondary",
+                "viewId": "v.listSecondary",
+                "titleField": "title",
+                "secondaryField": "secondary"
+              },
+              {
+                "role": "list",
+                "id": "ls.unbroken",
+                "viewId": "v.listUnbroken",
+                "titleField": "title",
+                "secondaryField": "secondary"
+              },
+              {
+                "role": "list",
+                "id": "ls.empty",
+                "viewId": "v.listEmpty",
+                "titleField": "title",
+                "emptyMessage": "The list is empty."
+              },
+              {
+                "role": "text",
+                "id": "t.detail-title",
+                "content": "Detail",
+                "level": 2
+              },
+              {
+                "role": "detail",
+                "id": "dt.inline",
+                "viewId": "v.detailRows",
+                "emptyMessage": "This record does not exist."
+              },
+              {
+                "role": "detail",
+                "id": "dt.empty",
+                "viewId": "v.detailEmpty",
+                "emptyMessage": "This record does not exist."
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "views": [
+      {
+        "viewId": "v.chartBar",
+        "resourceId": "catalog",
+        "resourceRevision": "1",
+        "fields": [
+          "status",
+          "budget"
+        ]
+      },
+      {
+        "viewId": "v.chartEdge",
+        "resourceId": "catalog",
+        "resourceRevision": "1",
+        "fields": [
+          "label",
+          "value"
+        ]
+      },
+      {
+        "viewId": "v.chartEmpty",
+        "resourceId": "catalog",
+        "resourceRevision": "1",
+        "fields": [
+          "status",
+          "budget"
+        ]
+      },
+      {
+        "viewId": "v.chartLine",
+        "resourceId": "catalog",
+        "resourceRevision": "1",
+        "fields": [
+          "month",
+          "value"
+        ]
+      },
+      {
+        "viewId": "v.chartMany",
+        "resourceId": "catalog",
+        "resourceRevision": "1",
+        "fields": [
+          "label",
+          "value"
+        ]
+      },
+      {
+        "viewId": "v.chartOne",
+        "resourceId": "catalog",
+        "resourceRevision": "1",
+        "fields": [
+          "month",
+          "value"
+        ]
+      },
+      {
+        "viewId": "v.detailEmpty",
+        "resourceId": "catalog",
+        "resourceRevision": "1",
+        "fields": [
+          "id",
+          "name"
+        ]
+      },
+      {
+        "viewId": "v.detailRows",
+        "resourceId": "catalog",
+        "resourceRevision": "1",
+        "fields": [
+          "id",
+          "name",
+          "status",
+          "config",
+          "budget",
+          "owner",
+          "notes",
+          "updated"
+        ]
+      },
+      {
+        "viewId": "v.grid",
+        "resourceId": "catalog",
+        "resourceRevision": "1",
+        "fields": [
+          "id",
+          "name",
+          "status",
+          "budget",
+          "owner",
+          "notes",
+          "code",
+          "updated"
+        ]
+      },
+      {
+        "viewId": "v.gridEmpty",
+        "resourceId": "catalog",
+        "resourceRevision": "1",
+        "fields": [
+          "id",
+          "name"
+        ]
+      },
+      {
+        "viewId": "v.listEmpty",
+        "resourceId": "catalog",
+        "resourceRevision": "1",
+        "fields": [
+          "title"
+        ]
+      },
+      {
+        "viewId": "v.listPlain",
+        "resourceId": "catalog",
+        "resourceRevision": "1",
+        "fields": [
+          "title"
+        ]
+      },
+      {
+        "viewId": "v.listSecondary",
+        "resourceId": "catalog",
+        "resourceRevision": "1",
+        "fields": [
+          "title",
+          "secondary"
+        ]
+      },
+      {
+        "viewId": "v.listUnbroken",
+        "resourceId": "catalog",
+        "resourceRevision": "1",
+        "fields": [
+          "title",
+          "secondary"
+        ]
+      },
+      {
+        "viewId": "v.messages",
+        "resourceId": "messages",
+        "resourceRevision": "1",
+        "fields": [
+          "id",
+          "text",
+          "author",
+          "participant"
+        ]
+      },
+      {
+        "viewId": "v.messagesEmpty",
+        "resourceId": "messages",
+        "resourceRevision": "1",
+        "fields": [
+          "id",
+          "text",
+          "author",
+          "participant"
+        ]
+      },
+      {
+        "viewId": "v.recDetail",
+        "resourceId": "catalog",
+        "resourceRevision": "1",
+        "fields": [
+          "id",
+          "name",
+          "status",
+          "config",
+          "budget",
+          "owner",
+          "notes",
+          "updated",
+          "tags",
+          "flags"
+        ]
+      },
+      {
+        "viewId": "v.related",
+        "resourceId": "catalog",
+        "resourceRevision": "1",
+        "fields": [
+          "title",
+          "secondary"
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "kind": "mutation",
+        "id": "act.messageDenied",
+        "revision": "1",
+        "resourceId": "messages",
+        "resourceRevision": "1",
+        "op": "create",
+        "inputContractId": "qa.message.input",
+        "inputContractRevision": "1"
+      },
+      {
+        "kind": "mutation",
+        "id": "act.messageThrows",
+        "revision": "1",
+        "resourceId": "messages",
+        "resourceRevision": "1",
+        "op": "create",
+        "inputContractId": "qa.message.input",
+        "inputContractRevision": "1"
+      },
+      {
+        "kind": "mutation",
+        "id": "act.sendMessage",
+        "revision": "1",
+        "resourceId": "messages",
+        "resourceRevision": "1",
+        "op": "create",
+        "inputContractId": "qa.message.input",
+        "inputContractRevision": "1"
+      }
+    ],
+    "resources": [
+      {
+        "resourceId": "catalog",
+        "revision": "1"
+      },
+      {
+        "resourceId": "messages",
+        "revision": "1"
+      }
+    ],
+    "components": [
+      {
+        "componentId": "cmp.health",
+        "revision": "1"
+      }
+    ]
+  },
+  "routes": [
+    {
+      "route": {
+        "id": "headings",
+        "path": "/headings",
+        "screenId": "s.headings",
+        "nav": {
+          "label": "Headings",
+          "group": "P4",
+          "order": 1
+        }
+      },
+      "screen": {
+        "id": "s.headings",
+        "title": "Heading vocabulary",
+        "breadcrumbs": [
+          {
+            "label": "Home"
+          }
+        ],
+        "layout": [
+          {
+            "name": "main",
+            "surfaces": [
+              {
+                "role": "text",
+                "id": "t.h1",
+                "content": "Documented level one",
+                "level": 1
+              },
+              {
+                "role": "text",
+                "id": "t.h2",
+                "content": "Documented level two",
+                "level": 2
+              },
+              {
+                "role": "text",
+                "id": "t.h3",
+                "content": "Documented level three",
+                "level": 3
+              },
+              {
+                "role": "text",
+                "id": "t.h4",
+                "content": "Documented level four",
+                "level": 4
+              },
+              {
+                "role": "text",
+                "id": "t.h5",
+                "content": "Documented level five",
+                "level": 5
+              },
+              {
+                "role": "text",
+                "id": "t.h6",
+                "content": "Documented level six",
+                "level": 6
+              },
+              {
+                "role": "text",
+                "id": "t.plain",
+                "content": "Unleveled body paragraph. Long content must wrap inside its container instead of forcing the document wider: this sentence repeats padding words so the rendered paragraph is several lines tall at phone widths, with ordinary spaces and a few long tokens such as Supercalifragilisticexpialidocious-And-Other-Extraordinary-Vocabulary to prove wrapping."
+              },
+              {
+                "role": "text",
+                "id": "t.unbroken",
+                "content": "Unbreakable-tokenthatmustnotforcepageoverflow-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789-abcdefghijklmnopqrstuvwxyz-END"
+              },
+              {
+                "role": "text",
+                "id": "t.hostile",
+                "content": "Text with markup-looking content: <b>bold?</b> <img src=x onerror=\"window.__qaXss=1\"> <script>window.__qaXssScript=1</script>"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "route": {
+        "id": "widgets",
+        "path": "/widgets",
+        "screenId": "s.widgets",
+        "nav": {
+          "label": "Widgets",
+          "group": "P4",
+          "order": 2
+        }
+      },
+      "screen": {
+        "id": "s.widgets",
+        "title": "Read-only widgets",
+        "breadcrumbs": [
+          {
+            "label": "Home"
+          }
+        ],
+        "layout": [
+          {
+            "name": "main",
+            "surfaces": [
+              {
+                "role": "text",
+                "id": "t.grid-title",
+                "content": "Read-only data view",
+                "level": 2
+              },
+              {
+                "role": "view",
+                "id": "sv.grid",
+                "viewId": "v.grid"
+              },
+              {
+                "role": "view",
+                "id": "sv.grid-empty",
+                "viewId": "v.gridEmpty"
+              },
+              {
+                "role": "text",
+                "id": "t.list-title",
+                "content": "Lists",
+                "level": 2
+              },
+              {
+                "role": "list",
+                "id": "ls.plain",
+                "viewId": "v.listPlain",
+                "titleField": "title"
+              },
+              {
+                "role": "list",
+                "id": "ls.secondary",
+                "viewId": "v.listSecondary",
+                "titleField": "title",
+                "secondaryField": "secondary"
+              },
+              {
+                "role": "list",
+                "id": "ls.unbroken",
+                "viewId": "v.listUnbroken",
+                "titleField": "title",
+                "secondaryField": "secondary"
+              },
+              {
+                "role": "list",
+                "id": "ls.empty",
+                "viewId": "v.listEmpty",
+                "titleField": "title",
+                "emptyMessage": "The list is empty."
+              },
+              {
+                "role": "text",
+                "id": "t.detail-title",
+                "content": "Detail",
+                "level": 2
+              },
+              {
+                "role": "detail",
+                "id": "dt.inline",
+                "viewId": "v.detailRows",
+                "emptyMessage": "This record does not exist."
+              },
+              {
+                "role": "detail",
+                "id": "dt.empty",
+                "viewId": "v.detailEmpty",
+                "emptyMessage": "This record does not exist."
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "route": {
+        "id": "charts",
+        "path": "/charts",
+        "screenId": "s.charts",
+        "nav": {
+          "label": "Charts",
+          "group": "P4",
+          "order": 3
+        }
+      },
+      "screen": {
+        "id": "s.charts",
+        "title": "Charts",
+        "breadcrumbs": [
+          {
+            "label": "Home"
+          }
+        ],
+        "layout": [
+          {
+            "name": "main",
+            "surfaces": [
+              {
+                "role": "chart",
+                "id": "ch.barMain",
+                "viewId": "v.chartBar",
+                "kind": "bar",
+                "xField": "status",
+                "yField": "budget",
+                "summary": "Bar chart of total budget summed per project status",
+                "title": "Budget by status (bar)"
+              },
+              {
+                "role": "chart",
+                "id": "ch.lineMain",
+                "viewId": "v.chartLine",
+                "kind": "line",
+                "xField": "month",
+                "yField": "value",
+                "summary": "Line chart of the monthly value trend",
+                "title": "Monthly trend (line)"
+              },
+              {
+                "role": "chart",
+                "id": "ch.barEmpty",
+                "viewId": "v.chartEmpty",
+                "kind": "bar",
+                "xField": "status",
+                "yField": "budget",
+                "summary": "Empty bar chart with zero data points",
+                "title": "Empty chart (bar, zero points)"
+              },
+              {
+                "role": "chart",
+                "id": "ch.lineOne",
+                "viewId": "v.chartOne",
+                "kind": "line",
+                "xField": "month",
+                "yField": "value",
+                "summary": "Line chart with exactly one data point",
+                "title": "One point (line)"
+              },
+              {
+                "role": "chart",
+                "id": "ch.barEdge",
+                "viewId": "v.chartEdge",
+                "kind": "bar",
+                "xField": "label",
+                "yField": "value",
+                "summary": "Bar chart with large, zero, and negative values",
+                "title": "Large / zero / negative values (bar)"
+              },
+              {
+                "role": "chart",
+                "id": "ch.lineMany",
+                "viewId": "v.chartMany",
+                "kind": "line",
+                "xField": "label",
+                "yField": "value",
+                "summary": "Line chart with twelve dense data points",
+                "title": "Many points (line, 12)"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "route": {
+        "id": "conversation",
+        "path": "/conversation",
+        "screenId": "s.conversation",
+        "nav": {
+          "label": "Conversation",
+          "group": "P4",
+          "order": 4
+        }
+      },
+      "screen": {
+        "id": "s.conversation",
+        "title": "Conversation",
+        "breadcrumbs": [
+          {
+            "label": "Home"
+          }
+        ],
+        "layout": [
+          {
+            "name": "main",
+            "surfaces": [
+              {
+                "role": "conversation",
+                "id": "cv.ok",
+                "viewId": "v.messages",
+                "messageField": "text",
+                "authorField": "author",
+                "participantField": "participant",
+                "sendActionId": "act.sendMessage",
+                "inputLabel": "Message (ok boundary)",
+                "inputPlaceholder": "Type a message…",
+                "emptyMessage": "No messages yet — say hello!"
+              },
+              {
+                "role": "conversation",
+                "id": "cv.empty",
+                "viewId": "v.messagesEmpty",
+                "messageField": "text",
+                "authorField": "author",
+                "participantField": "participant",
+                "sendActionId": "act.sendMessage",
+                "inputLabel": "Message (empty feed)",
+                "emptyMessage": "No messages yet — say hello!"
+              },
+              {
+                "role": "conversation",
+                "id": "cv.denied",
+                "viewId": "v.messages",
+                "messageField": "text",
+                "authorField": "author",
+                "participantField": "participant",
+                "sendActionId": "act.messageDenied",
+                "inputLabel": "Message (denied boundary)"
+              },
+              {
+                "role": "conversation",
+                "id": "cv.throws",
+                "viewId": "v.messages",
+                "messageField": "text",
+                "authorField": "author",
+                "participantField": "participant",
+                "sendActionId": "act.messageThrows",
+                "inputLabel": "Message (throwing boundary)"
+              }
+            ]
+          }
+        ],
+        "states": {
+          "failure": {
+            "role": "text",
+            "id": "t.conv-failure",
+            "content": "The conversation failed safely."
+          }
+        }
+      }
+    },
+    {
+      "route": {
+        "id": "slots",
+        "path": "/slots",
+        "screenId": "s.slots",
+        "nav": {
+          "label": "Slots",
+          "group": "P4",
+          "order": 5
+        }
+      },
+      "screen": {
+        "id": "s.slots",
+        "title": "Component slot",
+        "breadcrumbs": [
+          {
+            "label": "Home"
+          }
+        ],
+        "layout": [
+          {
+            "name": "main",
+            "surfaces": [
+              {
+                "role": "text",
+                "id": "t.slot-intro",
+                "content": "A resolvable custom component receives its declared props unchanged.",
+                "level": 2
+              },
+              {
+                "role": "component",
+                "id": "cm.health",
+                "componentId": "cmp.health",
+                "revision": "1",
+                "props": {
+                  "label": "workspace health island",
+                  "count": 7,
+                  "pinned": true
+                }
+              },
+              {
+                "role": "text",
+                "id": "t.slot-note",
+                "content": "Below: the same island nested inside a dialog overlay at phone widths.",
+                "level": 3
+              },
+              {
+                "role": "dialog",
+                "id": "dlg.slot",
+                "title": "Island in overlay",
+                "triggerLabel": "Open island dialog…",
+                "content": [
+                  {
+                    "role": "component",
+                    "id": "cm.overlay-health",
+                    "componentId": "cmp.health",
+                    "revision": "1",
+                    "props": {
+                      "label": "overlay island",
+                      "count": 3,
+                      "pinned": false
+                    }
+                  },
+                  {
+                    "role": "list",
+                    "id": "ls.overlay",
+                    "viewId": "v.listPlain",
+                    "titleField": "title"
+                  },
+                  {
+                    "role": "view",
+                    "id": "sv.overlay-grid",
+                    "viewId": "v.gridEmpty"
+                  },
+                  {
+                    "role": "chart",
+                    "id": "ch.overlay-empty",
+                    "viewId": "v.chartEmpty",
+                    "kind": "bar",
+                    "xField": "status",
+                    "yField": "budget",
+                    "summary": "Empty chart nested inside a dialog",
+                    "title": "Nested empty chart"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "route": {
+        "id": "rec",
+        "path": "/rec/:id",
+        "screenId": "s.rec"
+      },
+      "screen": {
+        "id": "s.rec",
+        "title": "Record detail",
+        "breadcrumbs": [
+          {
+            "label": "Home"
+          },
+          {
+            "label": "Record"
+          }
+        ],
+        "layout": [
+          {
+            "name": "main",
+            "surfaces": [
+              {
+                "role": "tabs",
+                "id": "tb.rec-tabs",
+                "tabs": [
+                  {
+                    "name": "overview",
+                    "label": "Overview",
+                    "surfaces": [
+                      {
+                        "role": "detail",
+                        "id": "dt.rec",
+                        "viewId": "v.recDetail",
+                        "emptyMessage": "This record does not exist."
+                      },
+                      {
+                        "role": "list",
+                        "id": "ls.related",
+                        "viewId": "v.related",
+                        "titleField": "title",
+                        "secondaryField": "secondary",
+                        "emptyMessage": "Nothing derived yet."
+                      }
+                    ]
+                  },
+                  {
+                    "name": "notes",
+                    "label": "Notes",
+                    "surfaces": [
+                      {
+                        "role": "text",
+                        "id": "t.rec-notes",
+                        "content": "A long notes paragraph for the record: it repeats so the panel has real height and wrapping behavior at phone widths, exactly like the shipped applications produce.",
+                        "level": 3
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "role": "drawer",
+                "id": "dr.rec",
+                "title": "Record drawer",
+                "triggerLabel": "Open record drawer…",
+                "content": [
+                  {
+                    "role": "text",
+                    "id": "t.drawer-note",
+                    "content": "A conversation nested inside a drawer overlay."
+                  },
+                  {
+                    "role": "conversation",
+                    "id": "cv.drawer",
+                    "viewId": "v.messages",
+                    "messageField": "text",
+                    "authorField": "author",
+                    "participantField": "participant",
+                    "sendActionId": "act.sendMessage",
+                    "inputLabel": "Message (drawer)",
+                    "emptyMessage": "No messages yet."
+                  },
+                  {
+                    "role": "list",
+                    "id": "ls.drawer-empty",
+                    "viewId": "v.listEmpty",
+                    "titleField": "title",
+                    "emptyMessage": "The drawer list is empty."
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "states": {
+          "failure": {
+            "role": "text",
+            "id": "t.rec-failure",
+            "content": "The record failed safely."
+          }
+        }
+      }
+    }
+  ],
+  "screens": {
+    "s.headings": {
+      "id": "s.headings",
+      "title": "Heading vocabulary",
+      "breadcrumbs": [
+        {
+          "label": "Home"
+        }
+      ],
+      "layout": [
+        {
+          "name": "main",
+          "surfaces": [
+            {
+              "role": "text",
+              "id": "t.h1",
+              "content": "Documented level one",
+              "level": 1
+            },
+            {
+              "role": "text",
+              "id": "t.h2",
+              "content": "Documented level two",
+              "level": 2
+            },
+            {
+              "role": "text",
+              "id": "t.h3",
+              "content": "Documented level three",
+              "level": 3
+            },
+            {
+              "role": "text",
+              "id": "t.h4",
+              "content": "Documented level four",
+              "level": 4
+            },
+            {
+              "role": "text",
+              "id": "t.h5",
+              "content": "Documented level five",
+              "level": 5
+            },
+            {
+              "role": "text",
+              "id": "t.h6",
+              "content": "Documented level six",
+              "level": 6
+            },
+            {
+              "role": "text",
+              "id": "t.plain",
+              "content": "Unleveled body paragraph. Long content must wrap inside its container instead of forcing the document wider: this sentence repeats padding words so the rendered paragraph is several lines tall at phone widths, with ordinary spaces and a few long tokens such as Supercalifragilisticexpialidocious-And-Other-Extraordinary-Vocabulary to prove wrapping."
+            },
+            {
+              "role": "text",
+              "id": "t.unbroken",
+              "content": "Unbreakable-tokenthatmustnotforcepageoverflow-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789-abcdefghijklmnopqrstuvwxyz-END"
+            },
+            {
+              "role": "text",
+              "id": "t.hostile",
+              "content": "Text with markup-looking content: <b>bold?</b> <img src=x onerror=\"window.__qaXss=1\"> <script>window.__qaXssScript=1</script>"
+            }
+          ]
+        }
+      ]
+    },
+    "s.widgets": {
+      "id": "s.widgets",
+      "title": "Read-only widgets",
+      "breadcrumbs": [
+        {
+          "label": "Home"
+        }
+      ],
+      "layout": [
+        {
+          "name": "main",
+          "surfaces": [
+            {
+              "role": "text",
+              "id": "t.grid-title",
+              "content": "Read-only data view",
+              "level": 2
+            },
+            {
+              "role": "view",
+              "id": "sv.grid",
+              "viewId": "v.grid"
+            },
+            {
+              "role": "view",
+              "id": "sv.grid-empty",
+              "viewId": "v.gridEmpty"
+            },
+            {
+              "role": "text",
+              "id": "t.list-title",
+              "content": "Lists",
+              "level": 2
+            },
+            {
+              "role": "list",
+              "id": "ls.plain",
+              "viewId": "v.listPlain",
+              "titleField": "title"
+            },
+            {
+              "role": "list",
+              "id": "ls.secondary",
+              "viewId": "v.listSecondary",
+              "titleField": "title",
+              "secondaryField": "secondary"
+            },
+            {
+              "role": "list",
+              "id": "ls.unbroken",
+              "viewId": "v.listUnbroken",
+              "titleField": "title",
+              "secondaryField": "secondary"
+            },
+            {
+              "role": "list",
+              "id": "ls.empty",
+              "viewId": "v.listEmpty",
+              "titleField": "title",
+              "emptyMessage": "The list is empty."
+            },
+            {
+              "role": "text",
+              "id": "t.detail-title",
+              "content": "Detail",
+              "level": 2
+            },
+            {
+              "role": "detail",
+              "id": "dt.inline",
+              "viewId": "v.detailRows",
+              "emptyMessage": "This record does not exist."
+            },
+            {
+              "role": "detail",
+              "id": "dt.empty",
+              "viewId": "v.detailEmpty",
+              "emptyMessage": "This record does not exist."
+            }
+          ]
+        }
+      ]
+    },
+    "s.charts": {
+      "id": "s.charts",
+      "title": "Charts",
+      "breadcrumbs": [
+        {
+          "label": "Home"
+        }
+      ],
+      "layout": [
+        {
+          "name": "main",
+          "surfaces": [
+            {
+              "role": "chart",
+              "id": "ch.barMain",
+              "viewId": "v.chartBar",
+              "kind": "bar",
+              "xField": "status",
+              "yField": "budget",
+              "summary": "Bar chart of total budget summed per project status",
+              "title": "Budget by status (bar)"
+            },
+            {
+              "role": "chart",
+              "id": "ch.lineMain",
+              "viewId": "v.chartLine",
+              "kind": "line",
+              "xField": "month",
+              "yField": "value",
+              "summary": "Line chart of the monthly value trend",
+              "title": "Monthly trend (line)"
+            },
+            {
+              "role": "chart",
+              "id": "ch.barEmpty",
+              "viewId": "v.chartEmpty",
+              "kind": "bar",
+              "xField": "status",
+              "yField": "budget",
+              "summary": "Empty bar chart with zero data points",
+              "title": "Empty chart (bar, zero points)"
+            },
+            {
+              "role": "chart",
+              "id": "ch.lineOne",
+              "viewId": "v.chartOne",
+              "kind": "line",
+              "xField": "month",
+              "yField": "value",
+              "summary": "Line chart with exactly one data point",
+              "title": "One point (line)"
+            },
+            {
+              "role": "chart",
+              "id": "ch.barEdge",
+              "viewId": "v.chartEdge",
+              "kind": "bar",
+              "xField": "label",
+              "yField": "value",
+              "summary": "Bar chart with large, zero, and negative values",
+              "title": "Large / zero / negative values (bar)"
+            },
+            {
+              "role": "chart",
+              "id": "ch.lineMany",
+              "viewId": "v.chartMany",
+              "kind": "line",
+              "xField": "label",
+              "yField": "value",
+              "summary": "Line chart with twelve dense data points",
+              "title": "Many points (line, 12)"
+            }
+          ]
+        }
+      ]
+    },
+    "s.conversation": {
+      "id": "s.conversation",
+      "title": "Conversation",
+      "breadcrumbs": [
+        {
+          "label": "Home"
+        }
+      ],
+      "layout": [
+        {
+          "name": "main",
+          "surfaces": [
+            {
+              "role": "conversation",
+              "id": "cv.ok",
+              "viewId": "v.messages",
+              "messageField": "text",
+              "authorField": "author",
+              "participantField": "participant",
+              "sendActionId": "act.sendMessage",
+              "inputLabel": "Message (ok boundary)",
+              "inputPlaceholder": "Type a message…",
+              "emptyMessage": "No messages yet — say hello!"
+            },
+            {
+              "role": "conversation",
+              "id": "cv.empty",
+              "viewId": "v.messagesEmpty",
+              "messageField": "text",
+              "authorField": "author",
+              "participantField": "participant",
+              "sendActionId": "act.sendMessage",
+              "inputLabel": "Message (empty feed)",
+              "emptyMessage": "No messages yet — say hello!"
+            },
+            {
+              "role": "conversation",
+              "id": "cv.denied",
+              "viewId": "v.messages",
+              "messageField": "text",
+              "authorField": "author",
+              "participantField": "participant",
+              "sendActionId": "act.messageDenied",
+              "inputLabel": "Message (denied boundary)"
+            },
+            {
+              "role": "conversation",
+              "id": "cv.throws",
+              "viewId": "v.messages",
+              "messageField": "text",
+              "authorField": "author",
+              "participantField": "participant",
+              "sendActionId": "act.messageThrows",
+              "inputLabel": "Message (throwing boundary)"
+            }
+          ]
+        }
+      ],
+      "states": {
+        "failure": {
+          "role": "text",
+          "id": "t.conv-failure",
+          "content": "The conversation failed safely."
+        }
+      }
+    },
+    "s.slots": {
+      "id": "s.slots",
+      "title": "Component slot",
+      "breadcrumbs": [
+        {
+          "label": "Home"
+        }
+      ],
+      "layout": [
+        {
+          "name": "main",
+          "surfaces": [
+            {
+              "role": "text",
+              "id": "t.slot-intro",
+              "content": "A resolvable custom component receives its declared props unchanged.",
+              "level": 2
+            },
+            {
+              "role": "component",
+              "id": "cm.health",
+              "componentId": "cmp.health",
+              "revision": "1",
+              "props": {
+                "label": "workspace health island",
+                "count": 7,
+                "pinned": true
+              }
+            },
+            {
+              "role": "text",
+              "id": "t.slot-note",
+              "content": "Below: the same island nested inside a dialog overlay at phone widths.",
+              "level": 3
+            },
+            {
+              "role": "dialog",
+              "id": "dlg.slot",
+              "title": "Island in overlay",
+              "triggerLabel": "Open island dialog…",
+              "content": [
+                {
+                  "role": "component",
+                  "id": "cm.overlay-health",
+                  "componentId": "cmp.health",
+                  "revision": "1",
+                  "props": {
+                    "label": "overlay island",
+                    "count": 3,
+                    "pinned": false
+                  }
+                },
+                {
+                  "role": "list",
+                  "id": "ls.overlay",
+                  "viewId": "v.listPlain",
+                  "titleField": "title"
+                },
+                {
+                  "role": "view",
+                  "id": "sv.overlay-grid",
+                  "viewId": "v.gridEmpty"
+                },
+                {
+                  "role": "chart",
+                  "id": "ch.overlay-empty",
+                  "viewId": "v.chartEmpty",
+                  "kind": "bar",
+                  "xField": "status",
+                  "yField": "budget",
+                  "summary": "Empty chart nested inside a dialog",
+                  "title": "Nested empty chart"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "s.rec": {
+      "id": "s.rec",
+      "title": "Record detail",
+      "breadcrumbs": [
+        {
+          "label": "Home"
+        },
+        {
+          "label": "Record"
+        }
+      ],
+      "layout": [
+        {
+          "name": "main",
+          "surfaces": [
+            {
+              "role": "tabs",
+              "id": "tb.rec-tabs",
+              "tabs": [
+                {
+                  "name": "overview",
+                  "label": "Overview",
+                  "surfaces": [
+                    {
+                      "role": "detail",
+                      "id": "dt.rec",
+                      "viewId": "v.recDetail",
+                      "emptyMessage": "This record does not exist."
+                    },
+                    {
+                      "role": "list",
+                      "id": "ls.related",
+                      "viewId": "v.related",
+                      "titleField": "title",
+                      "secondaryField": "secondary",
+                      "emptyMessage": "Nothing derived yet."
+                    }
+                  ]
+                },
+                {
+                  "name": "notes",
+                  "label": "Notes",
+                  "surfaces": [
+                    {
+                      "role": "text",
+                      "id": "t.rec-notes",
+                      "content": "A long notes paragraph for the record: it repeats so the panel has real height and wrapping behavior at phone widths, exactly like the shipped applications produce.",
+                      "level": 3
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "role": "drawer",
+              "id": "dr.rec",
+              "title": "Record drawer",
+              "triggerLabel": "Open record drawer…",
+              "content": [
+                {
+                  "role": "text",
+                  "id": "t.drawer-note",
+                  "content": "A conversation nested inside a drawer overlay."
+                },
+                {
+                  "role": "conversation",
+                  "id": "cv.drawer",
+                  "viewId": "v.messages",
+                  "messageField": "text",
+                  "authorField": "author",
+                  "participantField": "participant",
+                  "sendActionId": "act.sendMessage",
+                  "inputLabel": "Message (drawer)",
+                  "emptyMessage": "No messages yet."
+                },
+                {
+                  "role": "list",
+                  "id": "ls.drawer-empty",
+                  "viewId": "v.listEmpty",
+                  "titleField": "title",
+                  "emptyMessage": "The drawer list is empty."
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "states": {
+        "failure": {
+          "role": "text",
+          "id": "t.rec-failure",
+          "content": "The record failed safely."
+        }
+      }
+    }
+  },
+  "views": {
+    "v.grid": {
+      "viewId": "v.grid",
+      "resourceId": "catalog",
+      "resourceRevision": "1",
+      "fields": [
+        "id",
+        "name",
+        "status",
+        "budget",
+        "owner",
+        "notes",
+        "code",
+        "updated"
+      ]
+    },
+    "v.gridEmpty": {
+      "viewId": "v.gridEmpty",
+      "resourceId": "catalog",
+      "resourceRevision": "1",
+      "fields": [
+        "id",
+        "name"
+      ]
+    },
+    "v.listPlain": {
+      "viewId": "v.listPlain",
+      "resourceId": "catalog",
+      "resourceRevision": "1",
+      "fields": [
+        "title"
+      ]
+    },
+    "v.listSecondary": {
+      "viewId": "v.listSecondary",
+      "resourceId": "catalog",
+      "resourceRevision": "1",
+      "fields": [
+        "title",
+        "secondary"
+      ]
+    },
+    "v.listUnbroken": {
+      "viewId": "v.listUnbroken",
+      "resourceId": "catalog",
+      "resourceRevision": "1",
+      "fields": [
+        "title",
+        "secondary"
+      ]
+    },
+    "v.listEmpty": {
+      "viewId": "v.listEmpty",
+      "resourceId": "catalog",
+      "resourceRevision": "1",
+      "fields": [
+        "title"
+      ]
+    },
+    "v.detailRows": {
+      "viewId": "v.detailRows",
+      "resourceId": "catalog",
+      "resourceRevision": "1",
+      "fields": [
+        "id",
+        "name",
+        "status",
+        "config",
+        "budget",
+        "owner",
+        "notes",
+        "updated"
+      ]
+    },
+    "v.detailEmpty": {
+      "viewId": "v.detailEmpty",
+      "resourceId": "catalog",
+      "resourceRevision": "1",
+      "fields": [
+        "id",
+        "name"
+      ]
+    },
+    "v.recDetail": {
+      "viewId": "v.recDetail",
+      "resourceId": "catalog",
+      "resourceRevision": "1",
+      "fields": [
+        "id",
+        "name",
+        "status",
+        "config",
+        "budget",
+        "owner",
+        "notes",
+        "updated",
+        "tags",
+        "flags"
+      ]
+    },
+    "v.related": {
+      "viewId": "v.related",
+      "resourceId": "catalog",
+      "resourceRevision": "1",
+      "fields": [
+        "title",
+        "secondary"
+      ]
+    },
+    "v.messages": {
+      "viewId": "v.messages",
+      "resourceId": "messages",
+      "resourceRevision": "1",
+      "fields": [
+        "id",
+        "text",
+        "author",
+        "participant"
+      ]
+    },
+    "v.messagesEmpty": {
+      "viewId": "v.messagesEmpty",
+      "resourceId": "messages",
+      "resourceRevision": "1",
+      "fields": [
+        "id",
+        "text",
+        "author",
+        "participant"
+      ]
+    },
+    "v.chartBar": {
+      "viewId": "v.chartBar",
+      "resourceId": "catalog",
+      "resourceRevision": "1",
+      "fields": [
+        "status",
+        "budget"
+      ]
+    },
+    "v.chartLine": {
+      "viewId": "v.chartLine",
+      "resourceId": "catalog",
+      "resourceRevision": "1",
+      "fields": [
+        "month",
+        "value"
+      ]
+    },
+    "v.chartEmpty": {
+      "viewId": "v.chartEmpty",
+      "resourceId": "catalog",
+      "resourceRevision": "1",
+      "fields": [
+        "status",
+        "budget"
+      ]
+    },
+    "v.chartOne": {
+      "viewId": "v.chartOne",
+      "resourceId": "catalog",
+      "resourceRevision": "1",
+      "fields": [
+        "month",
+        "value"
+      ]
+    },
+    "v.chartEdge": {
+      "viewId": "v.chartEdge",
+      "resourceId": "catalog",
+      "resourceRevision": "1",
+      "fields": [
+        "label",
+        "value"
+      ]
+    },
+    "v.chartMany": {
+      "viewId": "v.chartMany",
+      "resourceId": "catalog",
+      "resourceRevision": "1",
+      "fields": [
+        "label",
+        "value"
+      ]
+    }
+  },
+  "forms": {},
+  "actions": {
+    "act.sendMessage": {
+      "kind": "mutation",
+      "id": "act.sendMessage",
+      "revision": "1",
+      "resourceId": "messages",
+      "resourceRevision": "1",
+      "op": "create",
+      "inputContractId": "qa.message.input",
+      "inputContractRevision": "1"
+    },
+    "act.messageDenied": {
+      "kind": "mutation",
+      "id": "act.messageDenied",
+      "revision": "1",
+      "resourceId": "messages",
+      "resourceRevision": "1",
+      "op": "create",
+      "inputContractId": "qa.message.input",
+      "inputContractRevision": "1"
+    },
+    "act.messageThrows": {
+      "kind": "mutation",
+      "id": "act.messageThrows",
+      "revision": "1",
+      "resourceId": "messages",
+      "resourceRevision": "1",
+      "op": "create",
+      "inputContractId": "qa.message.input",
+      "inputContractRevision": "1"
+    }
+  },
+  "resources": {
+    "messages": {
+      "schema": "vict.resource@1",
+      "id": "messages",
+      "revision": "1",
+      "identity": {
+        "key": "id"
+      },
+      "fields": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "text",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "author",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "participant",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "queries": {
+        "list": {
+          "pagination": false
+        }
+      },
+      "mutations": [
+        {
+          "op": "create",
+          "effect": "write",
+          "inputContractId": "qa.message.input",
+          "idempotency": "keyed",
+          "permissions": [
+            "messages.write"
+          ]
+        }
+      ],
+      "authorization": {
+        "effect": "read"
+      }
+    },
+    "catalog": {
+      "schema": "vict.resource@1",
+      "id": "catalog",
+      "revision": "1",
+      "identity": {
+        "key": "id"
+      },
+      "fields": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "title",
+          "type": "string"
+        },
+        {
+          "name": "secondary",
+          "type": "string"
+        },
+        {
+          "name": "status",
+          "type": "string"
+        },
+        {
+          "name": "budget",
+          "type": "number"
+        },
+        {
+          "name": "value",
+          "type": "number"
+        },
+        {
+          "name": "owner",
+          "type": "string"
+        },
+        {
+          "name": "notes",
+          "type": "string"
+        },
+        {
+          "name": "code",
+          "type": "string"
+        },
+        {
+          "name": "updated",
+          "type": "string"
+        },
+        {
+          "name": "month",
+          "type": "string"
+        },
+        {
+          "name": "label",
+          "type": "string"
+        },
+        {
+          "name": "config",
+          "type": "string"
+        },
+        {
+          "name": "tags",
+          "type": "string"
+        },
+        {
+          "name": "flags",
+          "type": "string"
+        }
+      ],
+      "queries": {
+        "list": {
+          "pagination": false
+        }
+      },
+      "mutations": [],
+      "authorization": {
+        "effect": "read"
+      }
+    }
+  },
+  "components": [
+    {
+      "componentId": "cmp.health",
+      "revision": "1"
+    }
+  ]
+}
