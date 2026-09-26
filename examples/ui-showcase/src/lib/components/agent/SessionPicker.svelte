@@ -1,10 +1,11 @@
 <script lang="ts">
   /**
    * Registered product surface cmp.session-picker@1: the project +
-   * session chooser of the coding-agent workspace. It fetches its rows
-   * through the DECLARED query actions (act.pickSessions /
-   * act.pickProjects) via the supported component-action context, and
-   * navigates with ordinary links to the session routes. Presentation
+   * session chooser of the coding-agent workspace. The session and
+   * project lists arrive as DECLARED view data (`sessions: { view:
+   * 'v.agentSessions' }`, `projects: { view: 'v.agentProjects' }` — the
+   * host loader loads them for the screen); the island never self-fetches
+   * and navigates with ordinary links to the session routes. Presentation
    * reuses the VICT tokens, status styles and the catalog Select.
    */
   import '@victframework/ui-svelte/catalog.css';
@@ -15,13 +16,18 @@
   import { useVictActions } from '@victframework/ui-svelte/component-actions';
   import { ActionFeedback } from '@victframework/ui-svelte';
   import { actionFeedback, type UiActionFeedback } from '@victframework/ui';
-  import { onAgentDataChanged, notifyAgentDataChanged } from './bus.js';
 
   let {
-    sessionsActionId,
-    projectsActionId,
+    kind,
+    sessions,
+    projects,
     resetActionId,
-  }: { sessionsActionId: string; projectsActionId: string; resetActionId: string } = $props();
+  }: {
+    kind: string;
+    sessions?: readonly Record<string, unknown>[];
+    projects?: readonly Record<string, unknown>[];
+    resetActionId: string;
+  } = $props();
 
   const actions = useVictActions();
 
@@ -44,11 +50,9 @@
     description: string;
   }
 
-  let sessions = $state<SessionRow[]>([]);
-  let projects = $state<ProjectRow[]>([]);
+  const sessionRows = $derived((sessions ?? []) as readonly SessionRow[]);
+  const projectRows = $derived((projects ?? []) as readonly ProjectRow[]);
   let project = $state('all');
-  let pending = $state(true);
-  let loadError = $state('');
   let resetOpen = $state(false);
   let resetting = $state(false);
   let resetFeedback = $state<UiActionFeedback | null>(null);
@@ -74,40 +78,10 @@
   }
 
   const visible = $derived(
-    project === 'all' ? [...sessions].sort(sessionSort) : [...sessions].filter((s) => s.projectId === project).sort(sessionSort),
+    project === 'all'
+      ? [...sessionRows].sort(sessionSort)
+      : [...sessionRows].filter((s) => s.projectId === project).sort(sessionSort),
   );
-
-  async function refresh(): Promise<void> {
-    pending = true;
-    loadError = '';
-    try {
-      const [sessionResult, projectResult] = await Promise.all([
-        actions.run(sessionsActionId, { sort: [{ field: 'id', direction: 'asc' }], limit: 50 }),
-        actions.run(projectsActionId, { sort: [{ field: 'id', direction: 'asc' }], limit: 50 }),
-      ]);
-      if (sessionResult && sessionResult.ok === true) {
-        const rows = (sessionResult.value as { rows?: SessionRow[] }).rows ?? [];
-        sessions = rows;
-      } else if (sessionResult && sessionResult.ok === false) {
-        loadError = 'The session list could not be loaded. Try “Reload” in a moment.';
-      }
-      if (projectResult && projectResult.ok === true) {
-        projects = (projectResult.value as { rows?: ProjectRow[] }).rows ?? [];
-      }
-    } catch {
-      loadError = 'The session list could not be loaded. Try “Reload” in a moment.';
-    } finally {
-      pending = false;
-    }
-  }
-
-  $effect(() => {
-    void refresh();
-    return onAgentDataChanged(() => {
-      // Other product surfaces may have changed session state.
-      void refresh();
-    });
-  });
 
   /** Deterministic restart of the whole demo (application-controlled close). */
   async function resetDemo(): Promise<void> {
@@ -120,8 +94,8 @@
         resetFeedback = actionFeedback(result, { success: 'Demo data restored.' }, true);
         if (resetFeedback.kind === 'success') {
           resetOpen = false;
-          await refresh();
-          notifyAgentDataChanged();
+          // The renderer's invalidation hook reloads the declared views;
+          // the fresh session/project rows arrive as props.
         }
       }
     } catch {
@@ -133,13 +107,13 @@
 </script>
 
 <ControlScope>
-  <section class="picker" data-testid="session-picker" aria-busy={pending}>
+  <section class="picker" data-testid="session-picker">
     <div class="picker-bar">
       <span id="picker-project-label" class="vict-control-label">Project</span>
       <Select.Root
         type="single"
         bind:value={project}
-        disabled={pending || projects.length === 0}
+        disabled={projectRows.length === 0}
       >
         <Select.Trigger aria-labelledby="picker-project-label" class="picker-select">
           <span>{project === 'all' ? 'All projects' : project}</span>
@@ -148,14 +122,14 @@
         <Select.Portal>
           <Select.Content sideOffset={6} align="start" collisionPadding={16}>
             <Select.Item value="all">All projects</Select.Item>
-            {#each projects as item (item.id)}
+            {#each projectRows as item (item.id)}
               <Select.Item value={item.id}>{item.name}</Select.Item>
             {/each}
           </Select.Content>
         </Select.Portal>
       </Select.Root>
       <span class="picker-count" role="status">
-        {pending ? 'Loading sessions…' : `${visible.length} ${visible.length === 1 ? 'session' : 'sessions'}`}
+        {`${visible.length} ${visible.length === 1 ? 'session' : 'sessions'}`}
       </span>
       <AlertDialog.Root bind:open={resetOpen}>
         <AlertDialog.Trigger
@@ -194,12 +168,7 @@
       {/if}
     </div>
 
-    {#if loadError !== ''}
-      <p class="vict-alert" role="alert">{loadError}</p>
-      <button class="vict-btn vict-btn--secondary" type="button" onclick={() => void refresh()}>
-        Reload sessions
-      </button>
-    {:else if !pending && visible.length === 0}
+    {#if visible.length === 0}
       <p class="vict-state" data-state="empty">
         No sessions for this project yet. Choose another project, or reset the demo data.
       </p>

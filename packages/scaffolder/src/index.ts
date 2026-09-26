@@ -611,6 +611,7 @@ import type { ApplicationDataAdapter, ApplicationPlan, ActionResult } from '@vic
 import type { Contract } from '@victframework/sdk';
 import {
   collectSurfaces,
+  declaredSurfaceViewIds,
   resolveRoute,
   type ViewDatum,
   type VictPlanView,
@@ -916,13 +917,9 @@ export async function createAppServer(): Promise<AppServer> {
     if (resolved === null || resolved.screen === null) {
       return null;
     }
-    const viewIds = new Set<string>();
+    const viewIds = new Set<string>(declaredSurfaceViewIds(resolved.screen));
     const formResourceIds = new Set<string>();
     for (const { surface } of collectSurfaces(resolved.screen)) {
-      const viewId = (surface as { viewId?: unknown }).viewId;
-      if (typeof viewId === 'string') {
-        viewIds.add(viewId);
-      }
       const formId = (surface as { formId?: unknown }).formId;
       if (typeof formId === 'string') {
         const boundResource = (plan.toJSON().forms as Record<string, { resourceId?: string } | undefined>)[formId];

@@ -101,8 +101,7 @@ export function buildRuntime() {
 export interface ShowcaseAppServer {
   readonly plan: ReturnType<typeof compileShowcasePlan>;
   readonly data: ApplicationDataAdapter;
-  /** `path` optionally carries the issuing route so parameter routes can resolve identity. */
-  dispatch(actionId: string, input?: unknown, path?: string | null): Promise<ActionResult>;
+  dispatch(actionId: string, input?: unknown): Promise<ActionResult>;
   loadRoute(
     path: string,
     searchParams?: URLSearchParams,
@@ -269,11 +268,7 @@ export function createShowcaseServer(
     return rows.find(predicate);
   }
 
-  const dispatch = async (
-    actionId: string,
-    input?: unknown,
-    _path?: string | null,
-  ): Promise<ActionResult> => {
+  const dispatch = async (actionId: string, input?: unknown): Promise<ActionResult> => {
     const action = plan.actions[actionId];
     if (action === undefined) {
       return {

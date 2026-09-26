@@ -462,8 +462,21 @@ export type Surface =
       readonly id: string;
       readonly componentId: string;
       readonly revision: string;
-      /** Bounded, contract-safe props for the custom component. */
-      readonly props?: Readonly<Record<string, string | number | boolean>>;
+      /**
+       * Bounded, contract-safe props for the custom component. Static
+       * primitives keep their literal meaning; a {@link ComponentSource}
+       * object is a declared route-context binding resolved by the
+       * renderer (route parameter, route record field, or declared view
+       * rows) — never an expression or executable code.
+       */
+      readonly props?: Readonly<Record<string, string | number | boolean | ComponentSource>>;
+      /**
+       * Declared input bindings (@2) for actions this surface dispatches:
+       * input field name → route-context source. The renderer resolves
+       * them at dispatch time, so an island never inspects URLs or
+       * self-builds record identity. Explicit input fields still win.
+       */
+      readonly input?: Readonly<Record<string, ComponentSource>>;
       readonly visibleWhen?: SurfaceCondition;
     }
   | {
@@ -588,6 +601,14 @@ export type Surface =
       readonly participantField?: string;
       /** Declared mutation/capability action executed on send. */
       readonly sendActionId: string;
+      /**
+       * Declared send-input bindings (@2): input field name → route-context
+       * source (same closed vocabulary as component surfaces). Resolved by
+       * the renderer and merged under the composed send payload, so a
+       * conversation on a parameterized route operates on the current
+       * record without URL inspection.
+       */
+      readonly input?: Readonly<Record<string, ComponentSource>>;
       readonly inputLabel: string;
       readonly inputPlaceholder?: string;
       readonly emptyMessage?: string;
@@ -649,6 +670,21 @@ export type ActionDefinition = { readonly feedback?: UiActionFeedbackText } &
         readonly outputContractRevision?: string;
       }
   );
+
+/**
+ * Bounded declared source of dynamic component-surface data (@2). A closed
+ * three-way vocabulary over the route context — no expressions, no
+ * executable code, no unrestricted data access. Unknown sources, unknown
+ * route parameters, undeclared views and unknown record fields are
+ * rejected at compile time where determinable.
+ */
+export type ComponentSource =
+  /** The current route parameter value by declared name. */
+  | { readonly param: string }
+  /** The named field of the current route record (parameterized routes). */
+  | { readonly record: string }
+  /** The rows of a declared view, loaded for the surface's screen. */
+  | { readonly view: string };
 
 /** Compatibility declarations of an application. */
 export interface ApplicationCompatibility {

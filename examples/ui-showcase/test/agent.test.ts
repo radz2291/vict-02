@@ -22,9 +22,6 @@ describe('agent workspace definition', () => {
       { componentId: 'cmp.output-log', revision: '1' },
     ]);
     for (const actionId of [
-      'act.pickSessions',
-      'act.pickProjects',
-      'act.queryLog',
       'act.send',
       'act.approve',
       'act.decline',
@@ -45,35 +42,23 @@ describe('agent workspace definition', () => {
 });
 
 describe('agent workspace routes and scoped data', () => {
-  const rowsOf = (result: {
-    ok: boolean;
-    code?: string;
-    value?: unknown;
-  }): Record<string, unknown>[] => {
-    if (!result.ok) throw new Error(`query failed: ${result.code ?? ''}`);
-    return (result.value as { rows?: Record<string, unknown>[] }).rows ?? [];
-  };
-
-  it('serves the sessions chooser queries and the session workspace with scoped views', async () => {
+  it('serves the declared view data and the session workspace with scoped views', async () => {
     const server = createAgentServer();
 
     const sessions = await server.loadRoute('/agent');
     expect(sessions).not.toBeNull();
 
-    // The chooser surface is a registered island that fetches through the
-    // declared query actions — the same boundary the renderer uses.
-    const picked = await server.dispatch('act.pickSessions', {
-      sort: [{ field: 'id', direction: 'asc' }],
-      limit: 50,
-    });
-    const rows = rowsOf(picked);
+    // The chooser island receives the DECLARED views as props: the host
+    // loader collects component-surface view bindings (v.agentSessions /
+    // v.agentProjects) alongside direct view surfaces.
+    const rows = sessions?.viewData['v.agentSessions']?.rows ?? [];
     expect(rows).toHaveLength(5);
     const statuses = rows.map((row) => row.status);
     for (const expected of ['running', 'completed', 'failed', 'awaiting_approval']) {
       expect(statuses).toContain(expected);
     }
-    const projects = await server.dispatch('act.pickProjects');
-    expect(rowsOf(projects)).toHaveLength(3);
+    const projectRows = sessions?.viewData['v.agentProjects']?.rows ?? [];
+    expect(projectRows).toHaveLength(3);
 
     const workspace = await server.loadRoute('/agent/sessions/AGW-101');
     expect(workspace).not.toBeNull();
@@ -84,9 +69,9 @@ describe('agent workspace routes and scoped data', () => {
       expect(scoped.length).toBeGreaterThan(0);
       expect(scoped.every((row) => row.sessionId === 'AGW-101')).toBe(true);
     }
-    // The output log island fetches through its declared query action.
-    const log = await server.dispatch('act.queryLog', { filters: { sessionId: 'AGW-101' } });
-    const logRows = rowsOf(log);
+    // The output log island receives its session-scoped rows as declared
+    // view data (v.agentLog is a component-surface view binding).
+    const logRows = workspace?.viewData['v.agentLog']?.rows ?? [];
     expect(logRows.length).toBeGreaterThan(0);
     expect(logRows.every((row) => row.sessionId === 'AGW-101')).toBe(true);
 
@@ -100,11 +85,12 @@ describe('agent workspace routes and scoped data', () => {
 describe('deterministic session state machine', () => {
   it('rejects messages for a stopped session while retaining the safe failure shape', async () => {
     const server = createAgentServer();
-    const result = await server.dispatch(
-      'act.send',
-      { text: 'Anybody there?', author: 'You', participant: 'user' },
-      '/agent/sessions/AGW-105',
-    );
+    const result = await server.dispatch('act.send', {
+      id: 'AGW-105',
+      text: 'Anybody there?',
+      author: 'You',
+      participant: 'user',
+    });
     expect(result.ok).toBe(false);
     expect(result.code).toBe('ACTION_FAILED');
     expect(result.message).toContain('failed');
@@ -116,11 +102,12 @@ describe('deterministic session state machine', () => {
       (await server.loadRoute('/agent/sessions/AGW-102'))?.viewData['v.agentMessages']?.rows
         ?.length ?? 0;
     const before = await count();
-    const result = await server.dispatch(
-      'act.send',
-      { text: 'How are the edge cases going?', author: 'You', participant: 'user' },
-      '/agent/sessions/AGW-102',
-    );
+    const result = await server.dispatch('act.send', {
+      id: 'AGW-102',
+      text: 'How are the edge cases going?',
+      author: 'You',
+      participant: 'user',
+    });
     expect(result.ok).toBe(true);
     const after = await count();
     expect(after - before).toBe(2); // user message + assistant reply
@@ -132,11 +119,7 @@ describe('deterministic session state machine', () => {
     const waiting = await server.loadRoute('/agent/sessions/AGW-101');
     expect(waiting?.record?.status).toBe('awaiting_approval');
 
-    const approved = await server.dispatch(
-      'act.approve',
-      { id: 'AGW-101' },
-      '/agent/sessions/AGW-101',
-    );
+    const approved = await server.dispatch('act.approve', { id: 'AGW-101' });
     expect(approved.ok).toBe(true);
     let record = (await server.loadRoute('/agent/sessions/AGW-101'))?.record;
     expect(record).toMatchObject({ status: 'running', progress: 45 });
@@ -156,11 +139,12 @@ describe('deterministic session state machine', () => {
     // A completed session no longer accepts steps, failures or messages.
     expect((await server.dispatch('act.advance', { id: 'AGW-101' })).ok).toBe(false);
     expect((await server.dispatch('act.fail', { id: 'AGW-101' })).ok).toBe(false);
-    const send = await server.dispatch(
-      'act.send',
-      { text: 'hello?', author: 'You', participant: 'user' },
-      '/agent/sessions/AGW-101',
-    );
+    const send = await server.dispatch('act.send', {
+      id: 'AGW-101',
+      text: 'hello?',
+      author: 'You',
+      participant: 'user',
+    });
     expect(send.ok).toBe(false);
   });
 
@@ -185,15 +169,15 @@ describe('deterministic session state machine', () => {
     expect(failed.ok).toBe(true);
     let record = (await server.loadRoute('/agent/sessions/AGW-102'))?.record;
     expect(record).toMatchObject({ status: 'failed', progress: 55 });
-    let log = await server.dispatch('act.queryLog', { filters: { sessionId: 'AGW-102' } });
-    let logRows = (log.value as { rows: Record<string, unknown>[] }).rows;
+    let logRows =
+      (await server.loadRoute('/agent/sessions/AGW-102'))?.viewData['v.agentLog']?.rows ?? [];
     expect(logRows.some((row) => row.level === 'error')).toBe(true);
     expect((await server.dispatch('act.retry', { id: 'AGW-102' })).ok).toBe(true);
     record = (await server.loadRoute('/agent/sessions/AGW-102'))?.record;
     expect(record).toMatchObject({ status: 'running' });
     expect(record?.progress).toBe(55); // progress survives the failure
-    log = await server.dispatch('act.queryLog', { filters: { sessionId: 'AGW-102' } });
-    logRows = (log.value as { rows: Record<string, unknown>[] }).rows;
+    logRows =
+      (await server.loadRoute('/agent/sessions/AGW-102'))?.viewData['v.agentLog']?.rows ?? [];
     expect(
       logRows.some((row) => String(row.line).includes('retrying from the last checkpoint')),
     ).toBe(true);
@@ -226,26 +210,21 @@ describe('deterministic session state machine', () => {
   });
 
   it('resets the demo to its exact seed state', async () => {
-    const rowsOf = (result: {
-      ok: boolean;
-      code?: string;
-      value?: unknown;
-    }): Record<string, unknown>[] => {
-      if (!result.ok) throw new Error(`query failed: ${result.code ?? ''}`);
-      return (result.value as { rows?: Record<string, unknown>[] }).rows ?? [];
-    };
     const server = createAgentServer();
     await server.dispatch('act.approve', { id: 'AGW-101' });
-    await server.dispatch(
-      'act.send',
-      { text: 'hello', author: 'You', participant: 'user' },
-      '/agent/sessions/AGW-102',
-    );
-    let rows = rowsOf(await server.dispatch('act.pickSessions', {}));
+    await server.dispatch('act.send', {
+      id: 'AGW-102',
+      text: 'hello',
+      author: 'You',
+      participant: 'user',
+    });
+    const sessionsRowsOf = async (): Promise<readonly Record<string, unknown>[]> =>
+      (await server.loadRoute('/agent'))?.viewData['v.agentSessions']?.rows ?? [];
+    let rows: readonly Record<string, unknown>[] = await sessionsRowsOf();
     expect(rows.find((row) => row.id === 'AGW-101')?.status).toBe('running');
 
     expect((await server.dispatch('act.reset')).ok).toBe(true);
-    rows = rowsOf(await server.dispatch('act.pickSessions', {}));
+    rows = await sessionsRowsOf();
     expect(rows).toHaveLength(5);
     expect(rows.find((row) => row.id === 'AGW-101')).toMatchObject({
       status: 'awaiting_approval',

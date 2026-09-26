@@ -3,7 +3,7 @@ import { createRuntime } from '@victframework/runtime';
 import { createInMemoryApplicationData } from '@victframework/application';
 import type { ApplicationDataAdapter } from '@victframework/application';
 import {
-  collectSurfaces,
+  declaredSurfaceViewIds,
   resolveRoute,
   type ActionResult,
   type ViewDatum,
@@ -34,10 +34,10 @@ import {
  * - the `agentConsole` ops are the session state machine: approve,
  *   decline, advance, fail, retry and reset.
  *
- * Session identity comes from the ROUTE the action was issued from
- * (`?path=`), resolved against the plan's own route table — the same
- * record identity a form would receive. An explicit `input.id` is
- * accepted and wins, so the boundary never guesses.
+ * Session identity is a DECLARED action-input binding: the workspace
+ * component surface declares `input: { id: { param: 'id' } }`, so the
+ * renderer supplies the route's session id and the boundary never guesses
+ * from URLs. An explicit `input.id` from tests/clients works unchanged.
  */
 
 /** The authorization profile of this deployment (server-side only). */
@@ -81,7 +81,7 @@ function buildAgentRuntime() {
 export interface AgentAppServer {
   readonly plan: ReturnType<typeof compileAgentPlan>;
   readonly data: ApplicationDataAdapter;
-  dispatch(actionId: string, input?: unknown, path?: string | null): Promise<ActionResult>;
+  dispatch(actionId: string, input?: unknown): Promise<ActionResult>;
   loadRoute(
     path: string,
     _searchParams?: URLSearchParams,
@@ -242,11 +242,8 @@ export function createAgentServer(): AgentAppServer {
     return checked.value.metrics[0]?.value ?? 'Noted.';
   }
 
-  /** The session an action refers to: route identity first, input id second. */
-  async function targetSession(
-    input: unknown,
-    path?: string | null,
-  ): Promise<{
+  /** The session an action refers to, through its declared identity input. */
+  async function targetSession(input: unknown): Promise<{
     session: Record<string, unknown> | null;
     error?: ActionResult;
   }> {
@@ -254,10 +251,6 @@ export function createAgentServer(): AgentAppServer {
     const candidate = (input ?? {}) as Record<string, unknown>;
     if (typeof candidate.id === 'string' && candidate.id.length > 0) {
       id = candidate.id;
-    } else if (path !== undefined && path !== null && path.length > 0) {
-      const resolved = resolveRoute(plan.toJSON() as unknown as VictPlanView, path);
-      const first = resolved?.params ? Object.values(resolved.params)[0] : undefined;
-      if (typeof first === 'string' && first.length > 0) id = first;
     }
     if (id === undefined) {
       return {
@@ -294,11 +287,7 @@ export function createAgentServer(): AgentAppServer {
   }
 
   /** The deterministic session state machine (console ops). */
-  async function dispatchConsoleOp(
-    op: string,
-    input?: unknown,
-    path?: string | null,
-  ): Promise<ActionResult> {
+  async function dispatchConsoleOp(op: string, input?: unknown): Promise<ActionResult> {
     // The demo restart is global by design: it needs no session identity.
     if (op === 'reset') {
       data = createAdapter();
@@ -307,7 +296,7 @@ export function createAgentServer(): AgentAppServer {
       clockMinutes = 0;
       return { ok: true, value: { reset: true } };
     }
-    const found = await targetSession(input, path);
+    const found = await targetSession(input);
     if (found.error !== undefined) return found.error;
     const session = found.session!;
     const id = String(session.id);
@@ -422,11 +411,7 @@ export function createAgentServer(): AgentAppServer {
     }
   }
 
-  const dispatch = async (
-    actionId: string,
-    input?: unknown,
-    path?: string | null,
-  ): Promise<ActionResult> => {
+  const dispatch = async (actionId: string, input?: unknown): Promise<ActionResult> => {
     const action = plan.actions[actionId];
     if (action === undefined) {
       return {
@@ -462,12 +447,12 @@ export function createAgentServer(): AgentAppServer {
 
       if (action.kind === 'mutation') {
         if (action.resourceId === 'agentConsole') {
-          return await dispatchConsoleOp(action.op, input, path);
+          return await dispatchConsoleOp(action.op, input);
         }
 
         // Conversation send: mutation + a REAL deterministic capability reply.
         if (action.resourceId === 'agentMessages' && action.op === 'create') {
-          const found = await targetSession(input, path);
+          const found = await targetSession(input);
           if (found.error !== undefined) return found.error;
           const session = found.session!;
           const status = String(session.status);
@@ -566,11 +551,10 @@ export function createAgentServer(): AgentAppServer {
       }
     }
 
-    const viewIds = new Set<string>();
-    for (const { surface } of collectSurfaces(resolved.screen)) {
-      const viewId = (surface as { viewId?: unknown }).viewId;
-      if (typeof viewId === 'string') viewIds.add(viewId);
-    }
+    // Every view the screen reads: direct view surfaces AND component
+    // surfaces' declared route-context bindings (picker sessions/projects,
+    // the output log) — component surfaces never fetch their own data.
+    const viewIds = declaredSurfaceViewIds(resolved.screen);
 
     for (const viewId of viewIds) {
       const view = plan.views[viewId];

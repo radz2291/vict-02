@@ -18,7 +18,7 @@
   import StatusBadge from './StatusBadge.svelte';
   import Tabs from './Tabs.svelte';
   import Text from './Text.svelte';
-  import { isVisible, isDisabled, headingTagForLevel, type ViewDatum, type ActionResult } from './logic.js';
+  import { isVisible, isDisabled, headingTagForLevel, resolveComponentProps, resolveComponentActionInput, type ViewDatum, type ActionResult } from './logic.js';
   import { chartPoints, conversationMessages, detailFields, displayRows, listItems } from './presentation.js';
   import TableAdapter from './TableAdapter.svelte';
   import FormSurface from './FormSurface.svelte';
@@ -62,6 +62,8 @@
     return datum?.rows ?? [];
   }
 
+  const sourceContext = $derived({ params, record, viewData });
+
   function runComponentAction(actionId: string, input?: unknown): Promise<ActionResult | void> {
     if (!plan.actions?.[actionId]) {
       return Promise.resolve({
@@ -70,7 +72,16 @@
         message: 'This action is not declared by the application.',
       });
     }
-    return run(actionId, input);
+    // Declared record-context input bindings (@2): the surface's `input`
+    // map resolves against the route context and fills the dispatch input;
+    // explicit island input fields win. The island never inspects URLs or
+    // self-builds record identity.
+    const bound = resolveComponentActionInput(
+      (surface.input ?? undefined) as Readonly<Record<string, unknown>> | undefined,
+      input,
+      sourceContext,
+    );
+    return run(actionId, bound);
   }
 
   function viewRecord(viewId: unknown): Record<string, unknown> | null {
@@ -104,6 +115,14 @@
       return undefined;
     }
     return { Component: resolved.implementation as import('svelte').Component<Record<string, never>> };
+  }
+
+  /** Static scalars pass through; declared route-context sources resolve. */
+  function componentProps(sn: PlanSurface): Record<string, unknown> {
+    return resolveComponentProps(
+      (sn.props ?? undefined) as Readonly<Record<string, unknown>> | undefined,
+      sourceContext,
+    );
   }
 </script>
 
@@ -155,7 +174,7 @@
       {@const resolved = resolveComponent(sn)}
       {#if resolved !== undefined}
         <ComponentSlot surfaceId={sn.id} componentId={str(sn.componentId)} run={runComponentAction}>
-          <resolved.Component {...((sn.props ?? {}) as Record<string, never>)} />
+          <resolved.Component {...(componentProps(sn) as Record<string, never>)} />
         </ComponentSlot>
       {:else}
         <Feedback kind="error" message="The custom component could not be resolved." surfaceId={sn.id} />
@@ -196,11 +215,16 @@
       />
     {:else if sn.role === 'conversation'}
       {@const view = plan.views?.[String(sn.viewId)] as { emptyMessage?: string } | undefined}
+      {@const boundInput = resolveComponentActionInput(
+        (sn.input ?? undefined) as Readonly<Record<string, unknown>> | undefined,
+        undefined,
+        sourceContext,
+      )}
       <Conversation surfaceId={sn.id}
         messages={conversationMessages(viewRows(sn.viewId), str(sn.messageField), str(sn.authorField), str(sn.participantField))}
         emptyMessage={str(sn.emptyMessage) || str(view?.emptyMessage) || 'No messages yet. Say hello!'}
         inputLabel={str(sn.inputLabel)} inputPlaceholder={str(sn.inputPlaceholder)}
-        onSend={(text) => sendConversation(str(sn.sendActionId), text)} />
+        onSend={(text) => sendConversation(str(sn.sendActionId), text, boundInput)} />
     {:else if sn.role === 'states'}
       <span data-surface={sn.id} class="vict-states-marker" hidden aria-hidden="true"></span>
     {/if}

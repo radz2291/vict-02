@@ -76,6 +76,7 @@ export type ApplicationIssueCode =
   | 'CAPABILITY_REVISION_MISMATCH'
   | 'UNKNOWN_COMPONENT_REFERENCE'
   | 'COMPONENT_REVISION_MISMATCH'
+  | 'INVALID_COMPONENT_SOURCE'
   | 'UNKNOWN_SURFACE_ROLE'
   | 'MUTATION_NOT_DECLARED'
   | 'ROUTE_PATH_INVALID'
@@ -233,7 +234,7 @@ const SURFACE_FIELDS: ReadonlyMap<Surface['role'], ReadonlySet<string>> = new Ma
   ['view', new Set([...SURFACE_COMMON_FIELDS, 'viewId'])],
   ['form', new Set([...SURFACE_COMMON_FIELDS, 'formId'])],
   ['action', new Set([...SURFACE_COMMON_FIELDS, 'actionId', 'label'])],
-  ['component', new Set([...SURFACE_COMMON_FIELDS, 'componentId', 'revision', 'props'])],
+  ['component', new Set([...SURFACE_COMMON_FIELDS, 'componentId', 'revision', 'props', 'input'])],
   ['states', new Set([...SURFACE_COMMON_FIELDS, 'viewId'])],
 ]);
 
@@ -342,6 +343,7 @@ const SURFACE_FIELDS_V2: ReadonlyMap<Surface['role'], ReadonlySet<string>> = new
       'authorField',
       'participantField',
       'sendActionId',
+      'input',
       'inputLabel',
       'inputPlaceholder',
       'emptyMessage',
@@ -2646,12 +2648,33 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
     }
 
     // ---- Cross-references from surfaces (deferred until the maps exist) --------
+    // Closed route-context vocabulary for component surfaces: every declared
+    // route path parameter (union across routes — surfaces are validated
+    // screen-agnostically) and every declared resource catalogue field.
+    const routeParams = new Set<string>();
+    for (const route of Array.isArray(application.routes) ? application.routes : []) {
+      const path = (route as { path?: unknown }).path;
+      if (typeof path !== 'string') continue;
+      for (const segment of path.split('/')) {
+        if (segment.startsWith(':') && segment.length > 1) routeParams.add(segment.slice(1));
+      }
+    }
+    const resourceFields = new Set<string>();
+    for (const resource of providedResources.values()) {
+      if (Array.isArray(resource.fields)) {
+        for (const field of resource.fields) {
+          if (typeof field?.name === 'string') resourceFields.add(field.name);
+        }
+      }
+    }
     for (const resolution of surfaceResolutions) {
       resolution(collector, {
         viewsById,
         formsById,
         actionsById,
         routeIds,
+        routeParams,
+        resourceFields,
         componentRefs,
         resources: providedResources,
       });
@@ -2830,6 +2853,8 @@ type SurfaceResolution = (
     readonly formsById: ReadonlyMap<string, FormBinding>;
     readonly actionsById: ReadonlyMap<string, ActionDefinition>;
     readonly routeIds: ReadonlySet<string>;
+    readonly routeParams: ReadonlySet<string>;
+    readonly resourceFields: ReadonlySet<string>;
     readonly componentRefs: ReadonlyMap<string, string>;
     readonly resources: ReadonlyMap<string, ResourceDefinition>;
   },
@@ -2931,6 +2956,20 @@ function resolveSurfaceLater(
             `${path}.revision`,
           );
         }
+        // Declared route-context bindings (@2): props values may be static
+        // primitives (unchanged meaning) or closed ComponentSource objects,
+        // and `input` maps action-input fields to the same closed sources.
+        // Unknown sources, unknown route parameters, undeclared views and
+        // unknown record fields are rejected at compile time where
+        // determinable — no expressions, no executable code.
+        collectComponentSourceIssues(
+          collector,
+          maps,
+          surface.id,
+          surface.props,
+          surface.input,
+          path,
+        );
         collectConditionIssues(collector, surface, path, maps);
         break;
       }
@@ -3406,6 +3445,11 @@ function resolveSurfaceLater(
           conversationFields,
           path,
         );
+        // Declared send-input bindings (@2): a conversation on a
+        // parameterized route can bind input fields (e.g. the record id)
+        // to closed route-context sources — the same vocabulary and
+        // validation as component surfaces.
+        collectComponentSourceIssues(collector, maps, surface.id, undefined, surface.input, path);
         const sendAction = maps.actionsById.get(surface.sendActionId);
         if (sendAction === undefined) {
           collector.add(
@@ -3495,6 +3539,104 @@ function collectConditionIssues(
  * (falling back to the resource's explicit field catalogue when the view
  * does not narrow fields).
  */
+/**
+ * Closed route-context source vocabulary for component surfaces (@2):
+ * exactly one of `param` / `record` / `view`, each a non-empty string.
+ * Anything else — including expressions, nested objects and multi-member
+ * shapes — is rejected.
+ */
+function isComponentSourceShape(value: unknown): value is Record<string, string> {
+  if (typeof value !== 'object' || value === null || Array.isArray(value)) return false;
+  const record = value as Record<string, unknown>;
+  const keys = Object.keys(record);
+  if (keys.length !== 1) return false;
+  const key = keys[0]!;
+  const member = record[key];
+  return (
+    (key === 'param' || key === 'record' || key === 'view') &&
+    typeof member === 'string' &&
+    member.length > 0
+  );
+}
+
+function collectComponentSourceIssues(
+  collector: Collector,
+  maps: {
+    readonly viewsById: ReadonlyMap<string, ViewBinding>;
+    readonly routeParams: ReadonlySet<string>;
+    readonly resourceFields: ReadonlySet<string>;
+  },
+  surfaceId: string,
+  props: unknown,
+  input: unknown,
+  path: string,
+): void {
+  const checkSource = (source: unknown, sourcePath: string): void => {
+    if (!isComponentSourceShape(source)) {
+      collector.add(
+        'INVALID_COMPONENT_SOURCE',
+        `Component surface '${surfaceId}' source at '${sourcePath.replace(`${path}.`, '')}' must be a closed route-context binding: exactly one of { param }, { record } or { view } with a non-empty string value. Expressions and executable code are not part of the vocabulary.`,
+        sourcePath,
+      );
+      return;
+    }
+    const entries = Object.entries(source);
+    const kind = entries[0]?.[0] ?? '';
+    const name = entries[0]?.[1] ?? '';
+    if (kind === 'param' && maps.routeParams.size > 0 && !maps.routeParams.has(name)) {
+      collector.add(
+        'INVALID_COMPONENT_SOURCE',
+        `Component surface '${surfaceId}' references route parameter '${name}' which no declared route declares.`,
+        sourcePath,
+      );
+    }
+    if (kind === 'view' && !maps.viewsById.has(name)) {
+      collector.add(
+        'UNKNOWN_VIEW_REFERENCE',
+        `Component surface '${surfaceId}' references unknown view '${name}'.`,
+        sourcePath,
+      );
+    }
+    if (kind === 'record' && maps.resourceFields.size > 0 && !maps.resourceFields.has(name)) {
+      collector.add(
+        'UNKNOWN_FIELD',
+        `Component surface '${surfaceId}' record binding references field '${name}' which no declared resource catalogue defines.`,
+        sourcePath,
+      );
+    }
+  };
+
+  if (props !== undefined) {
+    if (!isPlainObject(props)) {
+      collector.add(
+        'INVALID_COMPONENT_SOURCE',
+        `Component surface '${surfaceId}' props must be a plain object (received ${describeReceivedType(props)}).`,
+        `${path}.props`,
+      );
+    } else {
+      for (const [name, value] of Object.entries(props as Record<string, unknown>)) {
+        if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
+          continue; // static scalar: unchanged meaning
+        }
+        checkSource(value, `${path}.props.${name}`);
+      }
+    }
+  }
+  if (input !== undefined) {
+    if (!isPlainObject(input)) {
+      collector.add(
+        'INVALID_COMPONENT_SOURCE',
+        `Component surface '${surfaceId}' input must be a plain object (received ${describeReceivedType(input)}).`,
+        `${path}.input`,
+      );
+    } else {
+      for (const [field, source] of Object.entries(input as Record<string, unknown>)) {
+        checkSource(source, `${path}.input.${field}`);
+      }
+    }
+  }
+}
+
 function collectViewFieldIssues(
   collector: Collector,
   maps: {
@@ -3566,7 +3708,11 @@ function collectComponentPropsIssues(
     const inDomain =
       typeof value === 'string' ||
       (typeof value === 'number' && Number.isFinite(value) && !Object.is(value, -0)) ||
-      typeof value === 'boolean';
+      typeof value === 'boolean' ||
+      // Declared route-context source bindings (@2) are closed plain
+      // objects ({ param } / { record } / { view }); their shape is
+      // validated by collectComponentSourceIssues.
+      isComponentSourceShape(value);
     if (!inDomain) {
       collector.add(
         'INVALID_SURFACE_DECLARATION',

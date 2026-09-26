@@ -338,6 +338,28 @@ export function collectSurfaces(
  * and every custom component must resolve. Throws structured
  * RendererDiagnostic failures BEFORE anything renders.
  */
+/**
+ * Every view id a screen's declared surfaces read: direct `viewId`
+ * members plus component-surface route-context bindings (`props` and
+ * `input` entries with `{ view }` sources). Hosts load exactly these,
+ * so a component surface never fetches its own data.
+ */
+export function declaredSurfaceViewIds(screen: PlanScreen): readonly string[] {
+  const out = new Set<string>();
+  for (const { surface } of collectSurfaces(screen)) {
+    const viewId = surface.viewId;
+    if (typeof viewId === 'string' && viewId.length > 0) out.add(viewId);
+    for (const map of ['props', 'input'] as const) {
+      const declared = surface[map];
+      if (typeof declared !== 'object' || declared === null || Array.isArray(declared)) continue;
+      for (const value of Object.values(declared as Record<string, unknown>)) {
+        if (isComponentSource(value) && 'view' in value) out.add(value.view);
+      }
+    }
+  }
+  return [...out];
+}
+
 export function validatePlanForRenderer(
   plan: VictPlanView,
   registry: {
@@ -468,4 +490,89 @@ export function deriveRowActionInput(
     }
   }
   return input;
+}
+
+/**
+ * Closed route-context source for component-surface props and action
+ * inputs (@2): a route parameter, a route record field, or a declared
+ * view's rows. Exactly one member with a non-empty string value — no
+ * expressions, no executable code. (Mirrors `@victframework/sdk`.)
+ */
+export type ComponentSourceBinding =
+  { readonly param: string } | { readonly record: string } | { readonly view: string };
+
+/** Structural guard: is this props/input value a declared source binding? */
+export function isComponentSource(value: unknown): value is ComponentSourceBinding {
+  if (typeof value !== 'object' || value === null || Array.isArray(value)) return false;
+  const keys = Object.keys(value as Record<string, unknown>);
+  if (keys.length !== 1) return false;
+  const member = (value as Record<string, unknown>)[keys[0] as string];
+  return (
+    (keys[0] === 'param' || keys[0] === 'record' || keys[0] === 'view') &&
+    typeof member === 'string' &&
+    member.length > 0
+  );
+}
+
+/** Context a declared source binding resolves against. */
+export interface ComponentSourceContext {
+  readonly params: Readonly<Record<string, string>>;
+  readonly record: Record<string, unknown> | null;
+  readonly viewData: Readonly<Record<string, ViewDatum>>;
+}
+
+/**
+ * Resolve one declared source binding against the renderer's route
+ * context. Unknown shapes resolve to `undefined` (compilation rejects
+ * them first; the renderer never guesses).
+ */
+export function resolveComponentSource(
+  source: ComponentSourceBinding,
+  context: ComponentSourceContext,
+): unknown {
+  if (!isComponentSource(source)) return undefined;
+  if ('param' in source) {
+    return context.params[source.param];
+  }
+  if ('record' in source) {
+    return (context.record ?? {})[source.record];
+  }
+  return context.viewData[source.view]?.rows;
+}
+
+/**
+ * Resolve a component surface's declared props: static primitives pass
+ * through unchanged; declared sources resolve against the route context.
+ */
+export function resolveComponentProps(
+  props: Readonly<Record<string, unknown>> | undefined,
+  context: ComponentSourceContext,
+): Record<string, unknown> {
+  const out: Record<string, unknown> = {};
+  for (const [name, value] of Object.entries(props ?? {})) {
+    out[name] = isComponentSource(value) ? resolveComponentSource(value, context) : value;
+  }
+  return out;
+}
+
+/**
+ * Resolve a component surface's declared action-input bindings and merge
+ * them under the island's explicit input (explicit fields win). Islands
+ * that dispatch record-operating actions therefore never inspect URLs or
+ * self-build record identity.
+ */
+export function resolveComponentActionInput(
+  input: Readonly<Record<string, unknown>> | undefined,
+  explicit: unknown,
+  context: ComponentSourceContext,
+): Record<string, unknown> | undefined {
+  const declared = resolveComponentProps(input, context);
+  const keys = Object.keys(declared);
+  if (keys.length === 0) {
+    return (explicit ?? undefined) as Record<string, unknown> | undefined;
+  }
+  if (explicit === undefined || explicit === null || typeof explicit !== 'object') {
+    return declared;
+  }
+  return { ...declared, ...(explicit as Record<string, unknown>) };
 }

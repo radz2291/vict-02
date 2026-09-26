@@ -2,6 +2,10 @@
   "baseUrl": "dynamic",
   "checks": [
     {
+      "check": "no-query-loop-declared-record-context",
+      "ok": true
+    },
+    {
       "check": "sessions-chooser",
       "ok": true
     },

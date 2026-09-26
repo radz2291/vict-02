@@ -197,6 +197,8 @@ function packedScaffolderCheck() {
       'store-sqlite',
       'application',
       'appdata-sqlite',
+      'ui',
+      'ui-svelte',
       'renderer-svelte',
       'scaffolder',
     ]) {

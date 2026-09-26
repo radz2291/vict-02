@@ -1,20 +1,24 @@
 <script lang="ts">
   /**
    * Registered product surface cmp.output-log@1: the tool output log of
-   * one coding-agent session. It fetches its lines through the DECLARED
-   * query action (act.queryLog) for the workspace route's session and
-   * presents them as a real engineering log — monospace, leveled, and
-   * inside the catalog ScrollArea — never as a generic alert.
+   * one coding-agent session. The session-scoped log rows arrive as
+   * DECLARED view data (`lines: { view: 'v.agentLog' }` — the host loader
+   * applies the session scope); the island never inspects the URL and
+   * never self-fetches. Presentation is a real engineering log —
+   * monospace, leveled, inside the catalog ScrollArea — never a generic
+   * alert.
    */
   import '@victframework/ui-svelte/catalog.css';
   import { ControlScope } from '@victframework/ui-svelte/controls';
   import { ScrollArea } from '@victframework/ui-svelte/catalog/scroll-area';
-  import { useVictActions } from '@victframework/ui-svelte/component-actions';
-  import { onAgentDataChanged } from './bus.js';
 
-  let { logActionId }: { logActionId: string } = $props();
-
-  const actions = useVictActions();
+  let {
+    kind,
+    lines,
+  }: {
+    kind: string;
+    lines?: readonly Record<string, unknown>[];
+  } = $props();
 
   interface LogRow {
     id: string;
@@ -24,44 +28,14 @@
     line: string;
   }
 
-  let lines = $state<LogRow[]>([]);
-  let failed = $state(false);
+  const entries = $derived((lines ?? []) as readonly LogRow[]);
   let viewport = $state<HTMLDivElement | null>(null);
 
-  const sessionId = $derived.by(() => {
-    if (typeof window === 'undefined') return '';
-    const parts = window.location.pathname.split('/').filter((part) => part !== '');
-    return parts.length >= 3 && parts[0] === 'agent' && parts[1] === 'sessions'
-      ? (parts[2] ?? '')
-      : '';
-  });
-
-  async function refresh(): Promise<void> {
-    if (sessionId === '') return;
-    failed = false;
-    try {
-      const result = await actions.run(logActionId, {
-        filters: { sessionId },
-        sort: [
-          { field: 'at', direction: 'asc' },
-          { field: 'id', direction: 'asc' },
-        ],
-        limit: 200,
-      });
-      lines = result && result.ok === true ? ((result.value as { rows?: LogRow[] }).rows ?? []) : [];
-      if (result && result.ok === false) failed = true;
-    } catch {
-      failed = true;
-    }
-    // The log reads oldest → newest; keep the newest line in view.
-    await Promise.resolve();
-    if (viewport !== null) viewport.scrollTop = viewport.scrollHeight;
-  }
-
+  // The log reads oldest → newest; keep the newest line in view.
   $effect(() => {
-    void sessionId;
-    void refresh();
-    return onAgentDataChanged(() => void refresh());
+    void entries.length;
+    void Promise.resolve();
+    if (viewport !== null) viewport.scrollTop = viewport.scrollHeight;
   });
 
   function timeOf(at: string): string {
@@ -73,11 +47,9 @@
   <section class="log" data-testid="output-log" aria-label="Tool output log">
     <p class="log-head">
       <span>Tool output</span>
-      <span class="log-count">{lines.length} {lines.length === 1 ? 'line' : 'lines'}</span>
+      <span class="log-count">{entries.length} {entries.length === 1 ? 'line' : 'lines'}</span>
     </p>
-    {#if failed}
-      <p class="vict-alert" role="alert">The output log could not be loaded. It will retry when the session changes.</p>
-    {:else if lines.length === 0}
+    {#if entries.length === 0}
       <p class="vict-state" data-state="empty">No output recorded for this session yet.</p>
     {:else}
     <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
@@ -90,7 +62,7 @@
           data-testid="log-viewport"
         >
           <ol class="log-lines" role="log" aria-label="Tool output lines">
-            {#each lines as entry (entry.id)}
+            {#each entries as entry (entry.id)}
               <li class="log-line log-line--{entry.level}" data-testid="log-line" data-level={entry.level}>
                 <span class="log-time">{timeOf(entry.at)}</span>
                 <span class="log-level">{entry.level}</span>

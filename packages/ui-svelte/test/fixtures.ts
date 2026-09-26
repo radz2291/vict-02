@@ -86,6 +86,7 @@ export function probeApp(
     readonly views?: readonly unknown[];
     readonly actions?: readonly unknown[];
     readonly routes?: readonly unknown[];
+    readonly components?: readonly unknown[];
   },
 ): ApplicationPlan {
   const application = defineApplication({
@@ -143,13 +144,13 @@ export function probeApp(
       },
     ],
     resources: [{ resourceId: 'items', revision: '1' }],
-    components: [{ componentId: 'cmp.badge', revision: '1' }],
+    components: [{ componentId: 'cmp.badge', revision: '1' }, ...(extra?.components ?? [])],
   });
   const result = compileApplication({
     application,
     resources: [itemResource],
     contracts: [{ id: 'test.item.input', revision: '1' }],
-    components: [{ componentId: 'cmp.badge', revision: '1' }],
+    components: [{ componentId: 'cmp.badge', revision: '1' }, ...(extra?.components ?? [])],
   });
   if (!result.ok) {
     throw new Error(`probe plan invalid: ${JSON.stringify(result.issues)}`);

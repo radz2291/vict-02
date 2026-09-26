@@ -139,7 +139,7 @@ owner decision, documented as leaving the no-edit path.
 | G6 nav params | DONE — `substitutePathParams` in the navigation action path |
 | G7 view filters/sort | DONE — `ViewBinding.filters/sort`, compile validation (catalogue fields, closed direction), applied by the generic loader |
 | Tests | compile-contract suite (18), renderer DOM suite (6), scaffolder suites extended (release-set refusal, domain-free host, ownership README, CLI release-set) — all green; full unit (1016) + renderer (90) + integration + mastra + reference-app suites green |
-| Fresh external consumer + browser evidence | PENDING |
+| Fresh external consumer + browser evidence | DONE — see §5 (proof at `C:/Users/RZ1/Desktop/RZ/taskledger-gap-proof-20260926`; 16 files compared: 14 immutable host files byte-identical, only the author-owned `definition.ts` and `registry.ts` changed; the only custom Svelte component is the 50-line presentational `PriorityBadge.svelte`; laptop + phone browser evidence and negative boundary probes in the proof directory) |
 
 Base-branch observations (pre-existing, not introduced here, not fixed here):
 `npm run lint` reports 3 errors in `packages/ui-svelte/test/composition-feedback.test.ts`
@@ -203,7 +203,40 @@ authoring path works with only `definition.ts` + `registry.ts` + one island,
 The in-repo proxy for this is `verify:stage5`'s packed-consumer check, now
 selecting the release set explicitly at scaffold time.
 
-## 7. Governance boundary
+## 7. Reconciliation addendum (2026-09-27, branch `pi/ui-reconciliation-r1`)
+
+The coding-agent workspace proof (`pi/coding-agent-workspace-p1`) and this
+branch were reconciled onto one review branch with normal Git history. Two
+shared behavior gaps exposed by the coding-agent proof were closed in the
+platform, on top of (never replacing) this branch's G1–G7 work:
+
+1. **Read/write invalidation boundary** — the shared renderer
+   (`ui-svelte/VitApp`) now skips host invalidation for successful declared
+   `query` actions; only state-changing actions refresh route data. The
+   coding-agent host's `lastActionKind` query-skip workaround was removed.
+   The generated host page (already a plain `invalidateAll`) is unchanged in
+   behavior and now correct by construction.
+2. **Declared record context** — component surfaces may declare props bound
+   to the route parameter, the route record's fields, or a declared view's
+   rows (`{ param } / { record } / { view }` — the same closed vocabulary is
+   validated at compile time with the new `INVALID_COMPONENT_SOURCE` issue
+   code), and may declare action-input bindings (`input`) resolved by the
+   renderer at dispatch time; conversation surfaces accept the same send
+   binding. The generated host template now collects component-surface view
+   bindings via `declaredSurfaceViewIds` (ui-svelte, re-exported by the
+   facade) when loading a screen's views.
+
+Effect on this record: the TaskLedger app itself is untouched (its only
+island is the presentational badge, which receives row-derived props through
+the table-column contract from §2 G1 and needs none of the new bindings).
+The recorded external-consumer proof (§5) corresponds to the pinned
+TaskLedger-branch tarballs and stands as recorded; the packed-consumer
+check on the reconciliation branch passes with the release closure extended
+to include `@victframework/ui` and `@victframework/ui-svelte` (required since
+the sdk/application `@victframework/ui` dependencies and the P5 facade
+architecture left them outside the packed set).
+
+## 8. Governance boundary
 
 Stage 8 G3 remains HELD; the frozen rubric is untouched; the published
 `0.3.1` P2 proof result (F6 FAIL) is not amended or retroactively repaired;
@@ -212,7 +245,7 @@ P2 brief's exact F6 semantics are satisfiable by the platform path on this
 branch; whether a NEW P2-style proof is ordered is the owner's decision.
 `@victframework/cognee` is untouched.
 
-## 8. Remaining owner decisions / recorded limitations
+## 9. Remaining owner decisions / recorded limitations
 
 1. One row action per table surface: a per-row Edit LINK (in addition to the
    declared Complete dispatch) needs either a second slot or a `rowLink`

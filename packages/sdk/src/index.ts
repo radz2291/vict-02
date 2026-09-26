@@ -128,6 +128,7 @@ export type {
   BreadcrumbItem,
   ChartKind,
   ComponentReference,
+  ComponentSource,
   DisabledCondition,
   FormBinding,
   FormField,

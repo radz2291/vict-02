@@ -196,6 +196,48 @@ async function scanAccessibility(
 }
 
 describe('coding-agent workspace in a real browser (product proof)', () => {
+  it('declared data flow: the mounted workspace issues NO query requests (no fetch loop)', async () => {
+    const page = await newPage(1440, 900);
+    const actRequests: string[] = [];
+    page.on('request', (request) => {
+      if (request.url().includes('/api/act')) actRequests.push(request.url());
+    });
+    try {
+      await open(page, '/agent/sessions/AGW-101');
+      await waitForSelector(page, '[data-testid="session-console"]');
+      await waitForSelector(page, '[data-testid="output-log"]');
+      const baseline = actRequests.length;
+      // A quiet workspace: reads arrive through the declared route data
+      // (record context + view bindings), never through islands issuing
+      // declared queries — a mounted component must not enter a
+      // repeated-fetch loop.
+      await new Promise((resolvePromise) => setTimeout(resolvePromise, 1500));
+      expect(actRequests.length).toBe(baseline);
+      // A state-changing action still issues exactly one action call, and
+      // the host invalidation refreshes the declared data afterwards.
+      await clickWhenReady(page, '[data-testid="approve-btn"]');
+      await page.waitForFunction(
+        () => document.querySelector('[data-testid="advance-btn"]') !== null,
+        { timeout: 15_000 },
+      );
+      expect(actRequests.length).toBe(baseline + 1);
+      evidence.checks.push({ check: 'no-query-loop-declared-record-context', ok: true });
+      expectNoPageErrors();
+      // Restore the exact seed state for the tests that follow (the
+      // deterministic reset is itself a declared mutation; the assertion
+      // above has already counted the approval action).
+      await page.evaluate(async () => {
+        await fetch('/api/act?application=app.agent-workspace', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ actionId: 'act.reset' }),
+        });
+      });
+    } finally {
+      await page.close();
+    }
+  }, 180_000);
+
   it('the sessions chooser lists every state and the project filter narrows it', async () => {
     const page = await newPage(1440, 900);
     try {

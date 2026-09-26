@@ -34,7 +34,12 @@
     path?: string;
     /** Route data per view id (rows and/or the route's detail record). */
     viewData?: Readonly<Record<string, ViewDatum>>;
-    /** Invoked after a successful non-local action so the host refetches. */
+    /**
+     * Invoked after a successful non-local, non-query action so the host
+     * refetches. Declared query actions never invalidate: a read must not
+     * dirty the route or remount the surface that issued it (the renderer
+     * owns the read-vs-write boundary; hosts stay plain).
+     */
     onInvalidate?: () => void;
     /** Detail record of the current route (convenience alias for viewData). */
     record?: Record<string, unknown> | null;
@@ -164,7 +169,11 @@
   async function dispatchAction(actionId: string, input?: unknown): Promise<ActionResult> {
     try {
       const result = await dispatch(actionId, input);
-      if (result.ok && onInvalidate !== undefined) {
+      // Read-vs-write invalidation boundary (renderer-owned): only state-
+      // changing actions refresh route data. A declared `query` must not
+      // trigger invalidation — a mount-time read would otherwise dirty the
+      // route, remount the issuing surface, and read again forever.
+      if (result.ok && onInvalidate !== undefined && plan.actions?.[actionId]?.kind !== 'query') {
         onInvalidate();
       }
       if (!result.ok) {
@@ -184,8 +193,17 @@
     }
   }
 
-  function sendConversation(actionId: string, text: string): Promise<ActionResult> {
-    return dispatchAction(actionId, { text, author: 'You', participant: 'user' })
+  function sendConversation(
+    actionId: string,
+    text: string,
+    boundInput?: Record<string, unknown>,
+  ): Promise<ActionResult> {
+    return dispatchAction(actionId, {
+      ...(boundInput ?? {}),
+      text,
+      author: 'You',
+      participant: 'user',
+    })
       .then((result) => ({ ...result, message: actionFeedback(result, plan.actions[actionId]?.feedback).message }));
   }
 

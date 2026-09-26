@@ -36,35 +36,15 @@
     ),
   );
 
-  // Reads (declared query actions, e.g. a product surface loading its own
-  // list) never dirty the route; only mutations do. Without this boundary a
-  // mount-time read would invalidate, remount the surface, and read again
-  // forever.
-  let lastActionKind = $state<string | undefined>(undefined);
-
   async function dispatch(actionId: string, input?: unknown): Promise<ActionResult> {
-    lastActionKind = (
-      data.plan.actions as Record<string, { kind?: string } | undefined>
-    )[actionId]?.kind;
-    // `path` carries the route the action was issued from so the owning
-    // application can resolve its own route parameters (the same record
-    // identity a form receives). Applications that do not need it ignore it.
     const endpoint = data.actionEndpoint ?? '/api/act';
     const separator = endpoint.includes('?') ? '&' : '?';
-    const response = await fetch(
-      `${endpoint}${separator}path=${encodeURIComponent(page.url.pathname)}`,
-      {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ actionId, input }),
-      },
-    );
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ actionId, input }),
+    });
     return (await response.json()) as ActionResult;
-  }
-
-  function handleInvalidate(): void {
-    if (lastActionKind === 'query') return;
-    void invalidateAll();
   }
 </script>
 
@@ -79,6 +59,6 @@
   path={page.url.pathname}
   viewData={data.viewData as never}
   record={data.record}
-  onInvalidate={handleInvalidate}
+  onInvalidate={() => void invalidateAll()}
   navigate={(target) => void goto(target)}
 />

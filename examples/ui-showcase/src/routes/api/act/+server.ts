@@ -28,6 +28,6 @@ export const POST: RequestHandler = async ({ request, url }) => {
       { status: 400 },
     );
   }
-  const result = await app.dispatch(body.actionId, body.input, url.searchParams.get('path'));
+  const result = await app.dispatch(body.actionId, body.input);
   return json(result);
 };

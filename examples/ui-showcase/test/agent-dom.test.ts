@@ -5,7 +5,7 @@
 // shared ActionFeedback behaviour.
 import { flushSync, tick } from 'svelte';
 import { describe, expect, it } from 'vitest';
-import { renderVictApplication } from '@victframework/ui-svelte';
+import { renderVictApplication, type MountedVictApplication } from '@victframework/ui-svelte';
 import { compileAgentPlan } from '../src/lib/application/agent.js';
 import { createAgentServer } from '../src/lib/server/agent-server.js';
 import { createShowcaseRegistry } from '../src/lib/components/registry.js';
@@ -13,21 +13,30 @@ import { eagerAgentComponents } from '../src/lib/components/agent/eager.js';
 
 const PLAN = compileAgentPlan();
 
-function mountSession(path: string): void {
+async function mountSession(path: string): Promise<MountedVictApplication> {
   document.body.replaceChildren();
   const server = createAgentServer();
   const registry = createShowcaseRegistry(false, true, eagerAgentComponents);
   window.history.replaceState({}, '', path);
-  renderVictApplication({
+  // The host contract: load the route (plan, declared views, record) and
+  // refetch after successful non-query actions. The islands receive their
+  // record context and view data as DECLARED props — they never fetch.
+  const loaded = (await server.loadRoute(path))!;
+  const app = renderVictApplication({
     plan: PLAN,
     registry,
-    dispatch: async (actionId: string, input?: unknown) =>
-      server.dispatch(actionId, input, window.location.pathname),
+    dispatch: (actionId: string, input?: unknown) => server.dispatch(actionId, input),
     path,
-    viewData: {},
-    record: null,
+    viewData: loaded.viewData,
+    record: loaded.record,
+    onInvalidate: () => {
+      void server.loadRoute(path).then((next) => {
+        if (next !== null) app.update({ viewData: next.viewData, record: next.record });
+      });
+    },
     target: document.body,
   });
+  return app;
 }
 
 async function waitFor(selector: string, timeoutMs = 8000): Promise<void> {
@@ -47,7 +56,7 @@ async function text(selector: string): Promise<string | undefined> {
 
 describe('agent workspace DOM (product islands through the real renderer)', () => {
   it('mounts the session workspace with console, conversation and inspector tabs', async () => {
-    mountSession('/agent/sessions/AGW-101');
+    await mountSession('/agent/sessions/AGW-101');
     await waitFor('[data-testid="session-console"]');
     expect(document.querySelector('[data-testid="session-console"]')).not.toBeNull();
     expect(await text('[data-testid="session-status"]')).toBe('Waiting for approval');
@@ -62,7 +71,7 @@ describe('agent workspace DOM (product islands through the real renderer)', () =
   });
 
   it('approves a waiting session in the DOM: status flips, feedback appears, controls swap', async () => {
-    mountSession('/agent/sessions/AGW-101');
+    await mountSession('/agent/sessions/AGW-101');
     await waitFor('[data-testid="approve-btn"]');
     const approve = document.querySelector<HTMLButtonElement>('[data-testid="approve-btn"]');
     expect(approve).not.toBeNull();
@@ -81,7 +90,7 @@ describe('agent workspace DOM (product islands through the real renderer)', () =
   });
 
   it('advances and fails a running session with visible feedback each step', async () => {
-    mountSession('/agent/sessions/AGW-102');
+    await mountSession('/agent/sessions/AGW-102');
     await waitFor('[data-testid="advance-btn"]');
     expect(await text('[data-testid="session-status"]')).toBe('Running');
     const advance = document.querySelector<HTMLButtonElement>('[data-testid="advance-btn"]');

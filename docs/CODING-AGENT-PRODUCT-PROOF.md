@@ -1,6 +1,9 @@
 # Coding Agent Workspace — Product Proof 1 — owner review
 
-Status: **CODING AGENT PRODUCT SLICE READY FOR OWNER REVIEW**.
+Status: **CODING AGENT PRODUCT SLICE READY FOR OWNER REVIEW** (reconciled:
+merged with the TaskLedger platform-gap branch onto the review branch
+`pi/ui-reconciliation-r1`, 2026-09-27 — see
+`docs/UI-RECONCILIATION-2026-09-27.md`).
 This is a product proof of the UI foundation, not an acceptance of the full UI
 system, not a release, and not the trading proof.
 
@@ -94,32 +97,36 @@ declared contracts.
 | Changed files list, activity list | **1 — Application Definition** (`list` surfaces, session-scoped views) |
 | Progress bar, project Select, reset AlertDialog, log ScrollArea | **2 — reusable `ui-svelte`** catalog components (`catalog/progress`, `catalog/select`, `catalog/alert-dialog`, `catalog/scroll-area`) + `controls` (`ControlScope`, `ChevronDown`) |
 | Route data, action boundary, contracts, permissions, deterministic state machine, capability reply | **4 — host/server bootstrap** (`agent-server.ts`, `agent-data.ts`) — the stand-in backend, not UI |
-| Page host, `?path=` route-identity glue, query-vs-mutation invalidation boundary, registry wiring, lazy-surface wrapper, launch script | **4 — host/bootstrap** (`+page.svelte`, `+page.server.ts`, `api/act`, `preview-server.ts`, `registry.ts`, `AgentSurface.svelte`, `ui-workspace.mjs`) |
+| Page host, registry wiring, lazy-surface wrapper, launch script | **4 — host/bootstrap** (`+page.svelte`, `+page.server.ts`, `api/act`, `preview-server.ts`, `registry.ts`, `AgentSurface.svelte`, `ui-workspace.mjs`) |
 
 ### Product-specific UI code count (category 3)
 
 | File | Lines | Purpose |
 | --- | ---: | --- |
-| `src/lib/components/agent/SessionPicker.svelte` | 322 | project + session chooser |
-| `src/lib/components/agent/SessionConsole.svelte` | 306 | task console: progress, approval, state controls |
-| `src/lib/components/agent/OutputLog.svelte` | 185 | tool output log |
+| `src/lib/components/agent/SessionPicker.svelte` | 291 | project + session chooser (declared view data as props) |
+| `src/lib/components/agent/SessionConsole.svelte` | 283 | task console: progress, approval, state controls (declared record context) |
+| `src/lib/components/agent/OutputLog.svelte` | 157 | tool output log (declared view data as props) |
 | `src/lib/components/agent/AgentSurface.svelte` | 26 | lazy wrapper (keeps islands out of the shared bundle) |
-| `src/lib/components/agent/bus.ts` | 24 | island refresh coordination (product-local) |
 | `src/lib/components/agent/eager.ts` | 16 | eager registrations for DOM tests |
-| **Total product UI** | **879** | |
+| **Total product UI** | **773** | (was 879 pre-reconciliation; −106 lines: the 24-line island-coordination `bus.ts` was deleted and the three islands lost their self-fetching code) |
 
 Supporting (NOT UI, listed for honesty):
 
-- `src/lib/application/agent.ts` (398 lines) — the Application Definition:
-  framework-neutral, no Svelte, compiles to the plan.
+- `src/lib/application/agent.ts` (409 lines) — the Application Definition:
+  framework-neutral, no Svelte, compiles to the plan (now declares the
+  route-context bindings for the islands and the conversation; the three
+  self-fetch query actions were removed).
 - `src/lib/application/agent-data.ts` (960 lines) — contracts, resources,
   deterministic seeds (most of it is seed data).
-- `src/lib/server/agent-server.ts` (600 lines) — deterministic local backend
-  behaviour (state machine, capability reply, scoped route data).
-- Host glue diff on shared files: ~+95/−27 lines across `+page.svelte`,
-  `+page.server.ts`, `api/act`, `preview-server.ts`, `application-server.ts`
-  (server interface), `registry.ts`, `vitest.config.ts` (test aliases),
-  `package.json`/`scripts/ui-workspace.mjs` (launch).
+- `src/lib/server/agent-server.ts` (584 lines) — deterministic local backend
+  behaviour (state machine, capability reply, scoped route data; session
+  identity arrives through the DECLARED input binding, not a URL parameter).
+- Host glue diff on shared files vs the catalog baseline: ~+62/−15 lines across
+  `+page.svelte`, `+page.server.ts`, `api/act`, `preview-server.ts`,
+  `application-server.ts` (server interface), `registry.ts`, `vitest.config.ts`
+  (test aliases), `package.json`/`scripts/ui-workspace.mjs` (launch) — was
+  ~+95/−27 pre-reconciliation: the `?path=` identity glue and the query-skip
+  workaround are gone.
 
 The islands are genuinely product-specific composition (an agent state
 machine and a tool log do not exist in the shared vocabulary). Everything
@@ -128,23 +135,25 @@ feedback — is the standard renderer. No generic contract was added to the
 foundation for a one-off detail, and no catalog primitive is displayed merely
 to show coverage.
 
-### Foundation limits exposed (recorded, not patched)
+### Foundation limits exposed (CLOSED by the reconciliation slice, 2026-09-27)
 
-1. **Component surfaces receive only static props** — route parameters and
-   view data are not injected into registered surfaces, so self-fetching
-   islands read the workspace id from the URL and fetch through declared
-   query actions (the documented TaskTable/RequestPlanner pattern). A
-   supported “record-scoped component surface” would remove the URL-reading
-   and the per-island fetch boilerplate.
-2. **No read-only invalidation boundary in the renderer** — every successful
-   action (including declared queries) triggers the host’s invalidation hook,
-   and re-render churn remounts component surfaces behind lazy snippets. The
-   host now skips invalidation for `query`-kind actions
-   (`+page.svelte::handleInvalidate`). A renderer/host contract for
-   read-vs-write invalidation would remove host glue.
+1. ~~**Component surfaces receive only static props**~~ — CLOSED: component
+   surfaces now declare typed route-context bindings (`{ param } / { record }
+   / { view }`) for props and action inputs, compile-validated with the new
+   `INVALID_COMPONENT_SOURCE` diagnostics. The workspace islands receive the
+   session record's fields, the chooser lists, and the scoped log rows as
+   declared props; console actions and conversation sends bind `{ id }` to
+   the route parameter. No URL inspection, no self-fetching, no island
+   coordination bus.
+2. ~~**No read-only invalidation boundary in the renderer**~~ — CLOSED: the
+   shared renderer now skips host invalidation for successful declared
+   `query` actions; only state-changing actions refresh route data. The
+   host-side `lastActionKind` query-skip workaround is removed; the host is
+   a plain `invalidateAll` again.
 3. **The standard table is too wide for a 280–312 px supporting column** —
    the changed-files inspector uses the standard list instead; a narrow-panel
    table presentation is a plausible future addition to `ui-svelte`.
+   (Recorded, still open — NOT part of the reconciliation slice.)
 
 ## Owner corrections carried forward
 

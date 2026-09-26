@@ -80,8 +80,11 @@ export const agentApplication: ApplicationDefinition = {
               revision: '1',
               props: {
                 kind: 'picker',
-                sessionsActionId: 'act.pickSessions',
-                projectsActionId: 'act.pickProjects',
+                // Declared route-context data: the picker renders the
+                // declared views' rows as props instead of self-fetching
+                // through query actions.
+                sessions: { view: 'v.agentSessions' },
+                projects: { view: 'v.agentProjects' },
                 resetActionId: 'act.reset',
               },
             },
@@ -137,7 +140,26 @@ export const agentApplication: ApplicationDefinition = {
               id: 'agent.session-console',
               componentId: 'cmp.session-console',
               revision: '1',
-              props: { kind: 'console', sessionsActionId: 'act.pickSessions' },
+              props: {
+                kind: 'console',
+                // Declared record context: the fields of the workspace
+                // route's session record, supplied by the renderer — the
+                // console never reads the URL and never self-fetches.
+                id: { record: 'id' },
+                projectId: { record: 'projectId' },
+                task: { record: 'task' },
+                status: { record: 'status' },
+                progress: { record: 'progress' },
+                model: { record: 'model' },
+                branch: { record: 'branch' },
+                durationMin: { record: 'durationMin' },
+                filesChanged: { record: 'filesChanged' },
+                tokens: { record: 'tokens' },
+              },
+              // Declared input binding: every console action operates on
+              // the CURRENT record; the renderer resolves `{ id }` from
+              // the route parameter at dispatch time.
+              input: { id: { param: 'id' } },
             },
             {
               role: 'conversation',
@@ -147,6 +169,10 @@ export const agentApplication: ApplicationDefinition = {
               authorField: 'author',
               participantField: 'participant',
               sendActionId: 'act.send',
+              // Declared send binding: the message mutation operates on the
+              // CURRENT session record; the renderer resolves `{ id }` from
+              // the route parameter — the composer never inspects the URL.
+              input: { id: { param: 'id' } },
               inputLabel: 'Message Victor',
               inputPlaceholder: 'Ask about this task, or tell Victor what to adjust…',
               emptyMessage: 'No messages yet. Describe the task or say hello.',
@@ -200,7 +226,13 @@ export const agentApplication: ApplicationDefinition = {
                       id: 'agent.output-log',
                       componentId: 'cmp.output-log',
                       revision: '1',
-                      props: { kind: 'log', logActionId: 'act.queryLog' },
+                      props: {
+                        kind: 'log',
+                        // Declared view data: the session-scoped log rows
+                        // arrive as props (the host loader applies the
+                        // declared session scope) — no self-fetch.
+                        lines: { view: 'v.agentLog' },
+                      },
                     },
                   ],
                 },
@@ -263,27 +295,6 @@ export const agentApplication: ApplicationDefinition = {
     },
   ],
   actions: [
-    {
-      kind: 'query',
-      id: 'act.pickSessions',
-      revision: '1',
-      resourceId: 'agentSessions',
-      resourceRevision: '1',
-    },
-    {
-      kind: 'query',
-      id: 'act.pickProjects',
-      revision: '1',
-      resourceId: 'agentProjects',
-      resourceRevision: '1',
-    },
-    {
-      kind: 'query',
-      id: 'act.queryLog',
-      revision: '1',
-      resourceId: 'agentLog',
-      resourceRevision: '1',
-    },
     {
       kind: 'mutation',
       id: 'act.send',
