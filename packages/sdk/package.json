@@ -22,7 +22,8 @@
     "build": "tsc -p tsconfig.json"
   },
   "dependencies": {
-    "@victframework/contracts": "0.3.1"
+    "@victframework/contracts": "0.3.1",
+    "@victframework/ui": "0.3.1"
   },
   "peerDependencies": {
     "zod": "^3.25.0"

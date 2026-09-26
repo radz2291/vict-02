@@ -23,11 +23,14 @@ import { RESOURCE_DEFINITION_SCHEMA, defineContract, defineResource } from '@vic
 const TICKET_STATES = ['baru', 'dalam_proses', 'selesai', 'batal'] as const;
 const TICKET_PRIORITIES = ['rendah', 'sederhana', 'tinggi', 'kritikal'] as const;
 
-function failContract(message: string): {
+function failContract(
+  message: string,
+  path = '(root)',
+): {
   ok: false;
   issues: { code: string; path: string; message: string }[];
 } {
-  return { ok: false as const, issues: [{ code: 'invalid_value', path: '(root)', message }] };
+  return { ok: false as const, issues: [{ code: 'invalid_value', path, message }] };
 }
 
 export const ticketInputContract = defineContract<{
@@ -193,16 +196,14 @@ export const galleryInputContract = defineContract<{
     }
     const name = candidate.name;
     if (typeof name !== 'string' || name.trim().length === 0 || name.length > 80) {
-      return failContract('name is required (1-80 characters)');
+      return failContract('Use a name between 1 and 80 characters.', 'name');
     }
     const rank = candidate.rank;
     if (typeof rank !== 'number' || !Number.isFinite(rank) || rank < 0 || rank > 100) {
-      return failContract(
-        'rank must be a finite number between 0 and 100 (server validation demo)',
-      );
+      return failContract('Choose a priority score between 0 and 100.', 'rank');
     }
     if (typeof candidate.zeroCheck !== 'boolean') {
-      return failContract('zeroCheck must be a boolean');
+      return failContract('Choose whether this needs follow-up.', 'zeroCheck');
     }
     if (
       candidate.startDate !== undefined &&

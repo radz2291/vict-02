@@ -54,13 +54,12 @@ export interface UiShellBreadcrumb {
 export type UiButtonVariant = 'primary' | 'secondary' | 'danger';
 export type UiStatusTone = 'neutral' | 'success' | 'warning' | 'danger' | 'info';
 export type UiFieldWidget = 'text' | 'number' | 'boolean' | 'date' | 'json' | 'select';
-export interface UiSelectOption { readonly value: string; readonly label: string }
-export type UiLayoutMode = 'stack' | 'split';
-export interface UiRegionPresentation {
-  readonly size?: 'full' | 'main' | 'aside';
-  readonly appearance?: 'plain' | 'panel';
-  readonly flow?: 'stack' | 'inline';
+export interface UiSelectOption {
+  readonly value: string;
+  readonly label: string;
 }
+export * from './composition.js';
+export * from './feedback.js';
 
 export interface UiFormField {
   readonly options?: readonly UiSelectOption[];

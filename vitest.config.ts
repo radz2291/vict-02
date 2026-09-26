@@ -8,6 +8,7 @@ const resolveFromRoot = (relative: string): string =>
 // Vitest resolves workspace package names directly to their TypeScript sources so
 // tests exercise source without requiring a prior build. Longest prefixes first.
 const aliases = {
+  '@victframework/ui': resolveFromRoot('packages/ui/src/index.ts'),
   '@victframework/kernel/testing': resolveFromRoot('packages/kernel/src/testing.ts'),
   '@victframework/kernel': resolveFromRoot('packages/kernel/src/index.ts'),
   '@victframework/contracts/zod': resolveFromRoot('packages/contracts/src/zod/index.ts'),

@@ -3,11 +3,11 @@ import { fileURLToPath } from 'node:url';
 const root = fileURLToPath(new URL('../', import.meta.url));
 for (const name of [
   'contracts',
+  'ui',
   'sdk',
   'kernel',
   'runtime',
   'application',
-  'ui',
   'ui-svelte',
   'renderer-svelte',
 ]) {

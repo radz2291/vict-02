@@ -306,7 +306,9 @@ describe('action boundaries in the renderer', () => {
       button?.click();
       await new Promise((resolve) => setTimeout(resolve, 10));
       // The local transition ran entirely inside the renderer.
-      expect(mounted.output.querySelector('[data-testid="result-state"]')).not.toBeNull();
+      expect(
+        mounted.output.querySelector('[data-kind="success"] [data-testid="action-success"]'),
+      ).not.toBeNull();
       expect(calls).toEqual([]);
     } finally {
       mounted.unmount();
@@ -344,7 +346,9 @@ describe('action boundaries in the renderer', () => {
     try {
       mounted.output.querySelector<HTMLButtonElement>('[data-surface="x"]')?.click();
       await new Promise((resolve) => setTimeout(resolve, 10));
-      const failure = mounted.output.querySelector('[data-testid="failure-state"]');
+      const failure = mounted.output.querySelector(
+        '[data-kind="failure"] [data-testid="action-error"]',
+      );
       expect(failure).not.toBeNull();
       expect(mounted.output.innerHTML).not.toContain(CANARY);
     } finally {
@@ -430,7 +434,9 @@ describe('accessible defaults', () => {
       const panel = document.querySelector('[data-testid="overlay-panel"]');
       expect(panel).not.toBeNull();
       expect(panel?.contains(document.activeElement)).toBe(true);
-      document.activeElement?.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+      document.activeElement?.dispatchEvent(
+        new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }),
+      );
       await new Promise((resolve) => setTimeout(resolve, 10));
       expect(document.querySelector('[data-testid="overlay"]')).toBeNull();
       expect(document.activeElement).toBe(trigger);
@@ -501,7 +507,9 @@ describe('accessible defaults', () => {
       await new Promise((resolve) => setTimeout(resolve, 10));
       const dialogs = mounted.output.querySelectorAll<HTMLElement>('[role="dialog"]');
       expect(dialogs).toHaveLength(2);
-      document.activeElement?.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+      document.activeElement?.dispatchEvent(
+        new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }),
+      );
       await new Promise((resolve) => setTimeout(resolve, 10));
       expect(mounted.output.querySelectorAll('[role="dialog"]')).toHaveLength(1);
       expect(document.activeElement).toBe(childTrigger);
@@ -628,8 +636,9 @@ describe('shared renderer conformance suite (Stage 05 renderer)', () => {
           return new Promise<void>((resolve) => setTimeout(resolve, 25));
         },
         getFailureStateText: (output) =>
-          (output as HTMLElement).querySelector('[data-testid="failure-state"]')?.textContent ??
-          undefined,
+          (output as HTMLElement).querySelector(
+            '[data-kind="failure"] [data-testid="action-error"]',
+          )?.textContent ?? undefined,
       }),
     ).resolves.toBeUndefined();
   });

@@ -14,6 +14,8 @@ export interface ActionResult {
   value?: unknown;
   code?: string;
   message?: string;
+  /** Safe, field-keyed server validation errors. Unknown field names become a form-level error. */
+  fieldErrors?: Readonly<Record<string, string>>;
 }
 
 /** Route data provided by the host per view id. */
@@ -41,9 +43,16 @@ export interface PlanRouteEntry {
 /** Structural view of a screen (surfaces are read defensively). */
 export interface PlanScreen {
   readonly layoutMode?: import('@victframework/ui').UiLayoutMode;
+  readonly composition?: import('@victframework/ui').UiPageComposition;
   readonly id: string;
   readonly title: string;
-  readonly layout: readonly { readonly name: string; readonly surfaces: readonly PlanSurface[]; readonly size?: 'full' | 'main' | 'aside'; readonly appearance?: 'plain' | 'panel'; readonly flow?: 'stack' | 'inline' }[];
+  readonly layout: readonly {
+    readonly name: string;
+    readonly surfaces: readonly PlanSurface[];
+    readonly size?: 'full' | 'main' | 'aside';
+    readonly appearance?: 'plain' | 'panel';
+    readonly flow?: 'stack' | 'inline';
+  }[];
   /** Screen states are read defensively (the compiled plan carries the closed @1/@2 states). */
   readonly states?: unknown;
   readonly breadcrumbs?: readonly { readonly label: string; readonly routeId?: string }[];
@@ -65,9 +74,22 @@ export interface VictPlanView {
   readonly views: Readonly<Record<string, unknown>>;
   readonly forms: Readonly<Record<string, { readonly submitActionId: string } | undefined>>;
   readonly actions: Readonly<
-    Record<string, { readonly kind: string; readonly id: string; readonly routeId?: string } | undefined>
+    Record<
+      string,
+      | {
+          readonly kind: string;
+          readonly id: string;
+          readonly routeId?: string;
+          readonly feedback?: import('@victframework/ui').UiActionFeedbackText;
+        }
+      | undefined
+    >
   >;
-  readonly manifest?: { readonly theme?: unknown; readonly name?: string };
+  readonly manifest?: {
+    readonly theme?: unknown;
+    readonly name?: string;
+    readonly composition?: import('@victframework/ui').UiApplicationComposition;
+  };
 }
 
 /** Resolved route context: the matched route, its screen, and path parameters. */

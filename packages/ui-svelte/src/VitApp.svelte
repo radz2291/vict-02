@@ -12,7 +12,7 @@
    * registry updates propagate WITHOUT remounting and never go stale.
    */
   import { RendererDiagnostic, type ComponentRegistry } from '@victframework/application/renderer';
-  import { deriveUiPlan } from '@victframework/ui';
+  import { deriveUiPlan, resolvePageComposition, actionFeedback } from '@victframework/ui';
   import AppShell from './AppShell.svelte';
   import Feedback from './Feedback.svelte';
   import {
@@ -75,6 +75,7 @@
   const params = $derived(current?.params ?? {});
   const themeVars = $derived(themeVariables((plan.manifest ?? {}) as { theme?: unknown }));
   const uiPlan = $derived(deriveUiPlan(plan));
+  const pageComposition = $derived(resolvePageComposition(plan.manifest?.composition, screen?.composition));
 
   const navRoutes = $derived(
     plan.routes.filter(
@@ -127,17 +128,14 @@
   });
 
   // ---- Action state ------------------------------------------------------
-  let lastResult = $state<ActionResult | null>(null);
-  let lastAction = $state<string | null>(null);
+
 
   export async function runAction(actionId: string, input?: unknown): Promise<ActionResult | void> {
     const action = plan.actions?.[actionId];
     // Browser-local actions NEVER cross the dispatcher (APP-011): the
     // declared local transition is executed entirely inside the renderer.
     if (action?.kind === 'local') {
-      lastAction = actionId;
-      lastResult = { ok: true, value: { local: 'reset-transient' } };
-      return;
+      return { ok: true, value: { local: 'reset-transient' } };
     }
     // Navigation actions change the route context client-side; they never
     // become server dispatches either.
@@ -145,8 +143,6 @@
       const target = plan.routes.find((entry) => entry.route.id === action.routeId);
       const targetPath = target?.route.path;
       if (typeof targetPath === 'string') {
-        lastAction = actionId;
-        lastResult = { ok: true, value: { navigated: targetPath } };
         if (navigate !== undefined) {
           navigate(targetPath);
         } else if (typeof window !== 'undefined') {
@@ -161,44 +157,32 @@
 
   /** Action authority and safe failure state shared with the conversation adapter. */
   async function dispatchAction(actionId: string, input?: unknown): Promise<ActionResult> {
-    lastAction = actionId;
     try {
       const result = await dispatch(actionId, input);
-      lastResult = result;
       if (result.ok && onInvalidate !== undefined) {
         onInvalidate();
+      }
+      if (!result.ok) {
+        const state = result.code === 'CONTRACT_REJECTED' ? 'validation' : result.code === 'DATA_UNAUTHORIZED' ? 'denied' : 'failure';
+        return { ...result, message: stateText(state, result.message ?? '') || undefined };
       }
       return result;
     } catch {
       // A dispatcher rejection is caught and mapped to a SAFE
       // renderer-generated failure; no unhandled rejection can exist and no
       // raw error content ever reaches the DOM.
-      lastResult = {
+      return {
         ok: false,
         code: 'RENDERER_ACTION_FAILED',
-        message: 'The action could not be completed; this safe failure state is renderer-generated.',
+        message: 'The action could not be completed. Try again.',
       };
-      return lastResult;
     }
   }
 
-  function sendConversation(actionId: string, text: string): Promise<boolean> {
+  function sendConversation(actionId: string, text: string): Promise<ActionResult> {
     return dispatchAction(actionId, { text, author: 'You', participant: 'user' })
-      .then((result) => result.ok);
+      .then((result) => ({ ...result, message: actionFeedback(result, plan.actions[actionId]?.feedback).message }));
   }
-
-  const validationFailed = $derived(
-    lastResult !== null && !lastResult.ok && lastResult.code === 'CONTRACT_REJECTED',
-  );
-  const denied = $derived(
-    lastResult !== null && !lastResult.ok && lastResult.code === 'DATA_UNAUTHORIZED',
-  );
-  const failed = $derived(
-    lastResult !== null &&
-      !lastResult.ok &&
-      !validationFailed &&
-      !denied,
-  );
 
   const screenState = $derived(
     (screen?.states ?? {}) as Record<string, { content?: unknown } | undefined>,
@@ -269,6 +253,8 @@
     <AppShell
       title={screen.title}
       brand={plan.manifest?.name ?? 'Workspace'}
+      composition={plan.manifest?.composition}
+      pageComposition={pageComposition}
       screenId={screen.id}
       {path}
       groups={shellGroups}
@@ -281,7 +267,7 @@
         <Feedback message={stateText('partial', 'Some data is unavailable right now.')} testId="partial-state" />
       {/if}
 
-      <div class="vict-layout" data-layout={screen.layoutMode ?? 'stack'}>
+      <div class="vict-layout" data-layout={screen.layoutMode ?? 'stack'} data-stack-at={pageComposition.stackAt} data-supporting-width={pageComposition.supportingWidth}>
       {#each screen.layout as region (screen.id + '.' + region.name)}
         <section class="vict-region" data-region={region.name} data-size={region.size ?? 'full'} data-appearance={region.appearance ?? 'plain'} data-flow={region.flow ?? 'stack'}>
           {#each region.surfaces as surface (surface.id)}
@@ -303,15 +289,6 @@
       {/each}
 
       </div>
-      {#if validationFailed}
-        <Feedback kind="error" message={stateText('validation', 'Validation failed; check the highlighted fields.')} testId="validation-state" />
-      {:else if denied}
-        <Feedback kind="denied" message={stateText('denied', 'This action was denied by the authorization boundary.')} testId="denied-state" />
-      {:else if failed}
-        <Feedback kind="error" message={stateText('failure', 'Something failed safely.')} testId="failure-state" />
-      {:else if lastResult !== null && lastResult.ok}
-        <Feedback message="Done." testId="result-state" {lastAction} />
-      {/if}
     </AppShell>
   {:else}
     <AppShell {path}>

@@ -7,11 +7,12 @@
     emptyMessage: string;
     inputLabel: string;
     inputPlaceholder?: string;
-    onSend: (text: string) => Promise<boolean>;
+    onSend: (text: string) => Promise<boolean | { ok: boolean; message?: string }>;
   }
   let { surfaceId, messages, emptyMessage, inputLabel, inputPlaceholder = '', onSend }: Props = $props();
   let draft = $state('');
   let sending = $state(false);
+  let sendError = $state('');
   let feedElement: HTMLDivElement;
   let following = true;
   let previousMessageCount: number | undefined;
@@ -33,10 +34,14 @@
     const restoreFocus = formElement?.contains(document.activeElement) ?? false;
     following = true;
     sending = true;
+    sendError = '';
     try {
-      if (await onSend(text) && draft.trim() === text) draft = '';
+      const result = await onSend(text);
+      const ok = typeof result === 'boolean' ? result : result.ok;
+      if (ok && draft.trim() === text) draft = '';
+      if (!ok) sendError = (typeof result === 'object' ? result.message : undefined) ?? 'Your message was not sent. Your draft is still here. Try again.';
     } catch {
-      // The adapter owns safe failure reporting; no raw exception enters UI.
+      sendError = 'Your message was not sent. Your draft is still here. Try again.';
     } finally {
       sending = false;
       if (restoreFocus && (formElement?.contains(document.activeElement) || document.activeElement === document.body)) {
@@ -76,5 +81,6 @@
         {sending ? 'Sending…' : 'Send'}
       </button>
     </div>
+    <p class="vict-send-error" role="alert" aria-atomic="true">{sendError}</p>
   </form>
 </section>

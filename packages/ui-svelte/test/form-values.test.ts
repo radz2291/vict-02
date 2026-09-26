@@ -349,7 +349,7 @@ describe('form prefill and submit through the compiled plan (DOM level)', () => 
         second.mounted.output.querySelector('[name="title"]')?.getAttribute('aria-invalid'),
       ).toBe('true');
       expect(
-        second.mounted.output.querySelector('[data-testid="form-local-validation"]'),
+        second.mounted.output.querySelector('[data-testid="form-field-error-title"]'),
       ).not.toBeNull();
     } finally {
       second.mounted.unmount();

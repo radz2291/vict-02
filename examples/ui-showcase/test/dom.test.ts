@@ -106,7 +106,9 @@ describe('showcase DOM rendering (P6D)', () => {
       const columns = stressHost.querySelectorAll('[data-testid="records-table"] th').length;
       expect(columns).toBe(30); // id + 29 stress columns
       // 12 long-named stress tabs render (tab buttons carry the surface id).
-      const tabs = stressHost.querySelectorAll('[id^="vict-tab-ts.stress-tabs-"]').length;
+      const tabs = stressHost.querySelectorAll(
+        '[data-surface="ts.stress-tabs"] [role="tab"]',
+      ).length;
       expect(tabs).toBe(12);
     } finally {
       (server.data as { close?: () => void }).close?.();

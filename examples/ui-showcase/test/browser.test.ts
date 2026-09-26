@@ -304,7 +304,7 @@ describe('showcase responsive sanity (mobile 320-430)', () => {
       await page.click('.vict-nav-toggle');
       await new Promise((resolvePromise) => setTimeout(resolvePromise, 150));
       const navVisible = await page.evaluate(() => {
-        const nav = document.querySelector<HTMLElement>('#vict-nav');
+        const nav = document.querySelector<HTMLElement>('.vict-navigation-drawer');
         return nav !== null && window.getComputedStyle(nav).display !== 'none';
       });
       expect(navVisible).toBe(true);

@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "requests: separate definition and desktop shell",
+    "requests: drawer keyboard, backdrop, scroll, focus and overflow at 430",
+    "requests: drawer keyboard, backdrop, scroll, focus and overflow at 390",
+    "requests: drawer keyboard, backdrop, scroll, focus and overflow at 320",
+    "requests: selection closes and desktop resize releases modal",
+    "workspace: separate definition and desktop shell",
+    "workspace: drawer keyboard, backdrop, scroll, focus and overflow at 430",
+    "workspace: drawer keyboard, backdrop, scroll, focus and overflow at 390",
+    "workspace: drawer keyboard, backdrop, scroll, focus and overflow at 320",
+    "workspace: selection closes and desktop resize releases modal",
+    "application-defined navigation thresholds differ at 800px",
+    "form feedback lifecycle and accessibility at 1440",
+    "failure: persistent server outcome beside Save at 1440",
+    "denial: persistent server outcome beside Save at 1440",
+    "form feedback lifecycle and accessibility at 390",
+    "failure: persistent server outcome beside Save at 390",
+    "denial: persistent server outcome beside Save at 390",
+    "action endpoint keeps applications scoped"
+  ],
+  "browserErrors": [],
+  "passed": true
+}

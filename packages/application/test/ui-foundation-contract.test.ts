@@ -103,15 +103,17 @@ describe('foundation composition and selection contracts', () => {
     input.application.screens[0]!.layoutMode = 'pixel-editor';
     expect(compile(input).ok).toBe(false);
   });
-  it.each([
-    [],
+  it.each(
     [
-      { value: 'same', label: 'A' },
-      { value: 'same', label: 'B' },
-    ],
-    [{ value: '', label: 'Empty' }],
-    [{ value: 'x', label: '' }],
-  ])('rejects invalid choices %j', (options) => {
+      [],
+      [
+        { value: 'same', label: 'A' },
+        { value: 'same', label: 'B' },
+      ],
+      [{ value: '', label: 'Empty' }],
+      [{ value: 'x', label: '' }],
+    ].map((options) => ({ options })),
+  )('rejects invalid choices %j', ({ options }) => {
     const input = fixture();
     input.application.forms[0]!.fields[0]!.options = options;
     expect(compile(input).ok).toBe(false);

@@ -183,17 +183,24 @@ const MESSAGE_RESOURCES = new Set([
 ]);
 
 export function createShowcaseServer(
-  options: { readonly data?: ApplicationDataAdapter; readonly foundation?: boolean } = {},
+  options: {
+    readonly data?: ApplicationDataAdapter;
+    readonly foundation?: boolean;
+    readonly plan?: ShowcaseAppServer['plan'];
+  } = {},
 ): ShowcaseAppServer {
   const foundation = options.foundation ?? process.env.VICT_FOUNDATION === '1';
-  const plan = foundation ? compileFoundationPlan() : compileShowcasePlan();
+  const plan = options.plan ?? (foundation ? compileFoundationPlan() : compileShowcasePlan());
   const runtime = buildRuntime();
   const data: ApplicationDataAdapter =
     options.data ??
     createInMemoryApplicationData(resourceList, {
       id: 'vict.showcase-data',
       revision: '1',
-      seeds: { ...seeds, ...(foundation ? foundationSeeds : {}) } as Record<string, readonly Record<string, unknown>[]>,
+      seeds: { ...seeds, ...(foundation ? foundationSeeds : {}) } as Record<
+        string,
+        readonly Record<string, unknown>[]
+      >,
       contracts: dataContracts,
     });
 
@@ -398,12 +405,24 @@ export function createShowcaseServer(
 
         // ---- gallery submissions (create-form demo) -----------------------
         if (action.resourceId === 'gallerySubmissions' && action.op === 'create') {
-          const parsed = galleryInputContract.parse({ ...payload, id: payload.id ?? nextId('request') });
+          const parsed = galleryInputContract.parse({
+            ...payload,
+            id: payload.id ?? nextId('request'),
+          });
           if (!parsed.ok) {
             return {
               ok: false,
               code: 'CONTRACT_REJECTED',
-              message: 'The submission is invalid (rank must be 0–100).',
+              message: 'The request could not be saved. Check its details and try again.',
+              fieldErrors: Object.fromEntries(
+                parsed.issues
+                  .filter((issue) =>
+                    ['name', 'rank', 'zeroCheck', 'startDate', 'payload', 'comment'].includes(
+                      issue.path,
+                    ),
+                  )
+                  .map((issue) => [issue.path, issue.message]),
+              ),
             };
           }
           const created = await data.mutate(

@@ -2,7 +2,7 @@
   "name": "@victframework/application",
   "version": "0.3.1",
   "type": "module",
-  "description": "Framework-neutral Application Definition compiler, canonical identity, release manifests, renderer contract, and application-data adapter contracts with shared conformance fixtures. Depends only on @victframework/contracts and @victframework/sdk — never on the runtime or a UI framework.",
+  "description": "Framework-neutral Application Definition compiler, canonical identity, release manifests, renderer contract, and application-data adapter contracts with shared conformance fixtures. Depends on @victframework/contracts, @victframework/sdk and portable @victframework/ui contracts — never on the runtime or a UI framework.",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -27,7 +27,8 @@
   },
   "dependencies": {
     "@victframework/contracts": "0.3.1",
-    "@victframework/sdk": "0.3.1"
+    "@victframework/sdk": "0.3.1",
+    "@victframework/ui": "0.3.1"
   },
   "license": "Apache-2.0",
   "publishConfig": {

@@ -6,7 +6,7 @@
   import type { ComponentRegistry } from '@victframework/application/renderer';
   import type { VictPlanView, PlanSurface } from './logic.js';
   import type { UiPlan, UiStatusTone } from '@victframework/ui';
-  import Button from './Button.svelte';
+  import ActionButton from './ActionButton.svelte';
   import Chart from './Chart.svelte';
   import ComponentSlot from './ComponentSlot.svelte';
   import Conversation from './Conversation.svelte';
@@ -37,7 +37,7 @@
     record: Record<string, unknown> | null;
     run: (actionId: string, input?: unknown) => Promise<ActionResult | void>;
     dispatch: (actionId: string, input?: unknown) => Promise<ActionResult>;
-    sendConversation: (actionId: string, text: string) => Promise<boolean>;
+    sendConversation: (actionId: string, text: string) => Promise<ActionResult>;
   }
 
   let {
@@ -124,11 +124,7 @@
     {:else if sn.role === 'form'}
       <FormSurface surface={sn} {plan} {run} values={record ?? {}} identity={params.id} />
     {:else if sn.role === 'action'}
-      {@const action = plan.actions?.[str(sn.actionId)]}
-      {@const disabled = isDisabled(sn, params)}
-      <Button label={str(sn.label)} variant={str(sn.actionId).includes('delete') ? 'danger' : 'primary'}
-        surfaceId={sn.id} actionKind={str(action?.kind) || 'unknown'} actionId={str(sn.actionId)}
-        {disabled} onclick={() => { void run(str(sn.actionId)); }} />
+      <ActionButton surface={sn} {plan} disabled={isDisabled(sn, params)} {run} />
     {:else if sn.role === 'component'}
       {@const resolved = resolveComponent(sn)}
       {#if resolved !== undefined}

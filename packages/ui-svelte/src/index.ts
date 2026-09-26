@@ -6,6 +6,7 @@ export { default as AppShell } from './AppShell.svelte';
 export { default as Button } from './Button.svelte';
 export { default as StatusBadge } from './StatusBadge.svelte';
 export { default as Feedback } from './Feedback.svelte';
+export { default as ActionFeedback } from './ActionFeedback.svelte';
 export { default as Tabs } from './Tabs.svelte';
 export { default as Form } from './Form.svelte';
 export { default as FormField } from './FormField.svelte';

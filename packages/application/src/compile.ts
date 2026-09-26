@@ -5,6 +5,13 @@ import {
   THEME_TOKEN_NAMES,
 } from '@victframework/sdk';
 import { sha256 } from './sha256.js';
+import {
+  validateApplicationComposition,
+  validatePageComposition,
+  validateActionFeedback,
+  validateLayoutMode,
+  validateRegionPresentation,
+} from '@victframework/ui';
 import type {
   ActionDefinition,
   ApplicationDefinition,
@@ -80,6 +87,8 @@ export type ApplicationIssueCode =
   | 'INVALID_SURFACE_DISABLED_CONDITION'
   | 'INVALID_THEME_TOKEN'
   | 'INVALID_THEME_TOKEN_VALUE'
+  | 'INVALID_ACTION_FEEDBACK'
+  | 'INVALID_UI_COMPOSITION'
   | 'INVALID_SURFACE_DECLARATION'
   | 'INVALID_TABLE_DECLARATION'
   | 'INVALID_CHART_DECLARATION'
@@ -138,7 +147,12 @@ const ROUTE_FIELDS_V2: ReadonlySet<string> = new Set([...ROUTE_FIELDS, 'redirect
 const NAV_FIELDS: ReadonlySet<string> = new Set(['label', 'group', 'order']);
 const SCREEN_FIELDS: ReadonlySet<string> = new Set(['id', 'title', 'layout', 'states']);
 /** @2 adds contextual breadcrumb navigation on screens. */
-const SCREEN_FIELDS_V2: ReadonlySet<string> = new Set([...SCREEN_FIELDS, 'breadcrumbs', 'layoutMode']);
+const SCREEN_FIELDS_V2: ReadonlySet<string> = new Set([
+  ...SCREEN_FIELDS,
+  'breadcrumbs',
+  'layoutMode',
+  'composition',
+]);
 const REGION_FIELDS: ReadonlySet<string> = new Set(['name', 'surfaces']);
 const STATES_FIELDS: ReadonlySet<string> = new Set([
   'loading',
@@ -1037,6 +1051,7 @@ export function canonicalApplicationManifest(
     id: application.id,
     revision: application.revision,
     ...(application.name !== undefined ? { name: application.name } : {}),
+    ...(application.composition !== undefined ? { composition: application.composition } : {}),
     routes: [...application.routes].map((route) => ({ ...route })),
     screens,
     ...(application.views !== undefined
@@ -1195,7 +1210,19 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
         ],
       };
     }
-    collector.unknownFields(application, APPLICATION_FIELDS, 'application');
+    collector.unknownFields(
+      application,
+      isV2 ? new Set([...APPLICATION_FIELDS, 'composition']) : APPLICATION_FIELDS,
+      'application',
+    );
+    if (isV2 && application.composition !== undefined) {
+      for (const issue of validateApplicationComposition(
+        application.composition,
+        'application.composition',
+      )) {
+        collector.add('INVALID_UI_COMPOSITION', issue.message, issue.path);
+      }
+    }
 
     if (typeof application.schema !== 'string') {
       collector.add(
@@ -1697,8 +1724,18 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
         screensById.set(screen.id, screen);
       }
       requireDisplayStringMember(collector, screen, 'title', `${screenPath}.title`, 'Screen title');
-      if (screen.layoutMode !== undefined && !['stack', 'split'].includes(screen.layoutMode as string)) {
-        collector.add('INVALID_SURFACE_DECLARATION', 'Invalid screen layoutMode.', screenPath + '.layoutMode');
+      if (isV2 && screen.composition !== undefined) {
+        for (const issue of validatePageComposition(
+          screen.composition,
+          screenPath + '.composition',
+        )) {
+          collector.add('INVALID_UI_COMPOSITION', issue.message, issue.path);
+        }
+      }
+      if (screen.layoutMode !== undefined) {
+        for (const issue of validateLayoutMode(screen.layoutMode, screenPath + '.layoutMode')) {
+          collector.add('INVALID_SURFACE_DECLARATION', issue.message, issue.path);
+        }
       }
       if (isV2 && screen.breadcrumbs !== undefined) {
         for (const [index, crumb] of screen.breadcrumbs.entries()) {
@@ -1742,11 +1779,18 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
             continue;
           }
           const regionPath = `${screenPath}.layout[${entryKeyLabel(region.name)}]`;
-          collector.unknownFields(region, isV2 ? new Set([...REGION_FIELDS, 'size', 'appearance', 'flow']) : REGION_FIELDS, regionPath);
-          for (const [key, allowed] of Object.entries({ size: ['full', 'main', 'aside'], appearance: ['plain', 'panel'], flow: ['stack', 'inline'] })) {
-            if (region[key] !== undefined && !allowed.includes(region[key] as string)) {
-              collector.add('INVALID_SURFACE_DECLARATION', 'Invalid region ' + key + '.', regionPath + '.' + key);
-            }
+          collector.unknownFields(
+            region,
+            isV2 ? new Set([...REGION_FIELDS, 'size', 'appearance', 'flow']) : REGION_FIELDS,
+            regionPath,
+          );
+          const presentation = Object.fromEntries(
+            ['size', 'appearance', 'flow']
+              .filter((key) => region[key] !== undefined)
+              .map((key) => [key, region[key]]),
+          );
+          for (const issue of validateRegionPresentation(presentation, regionPath)) {
+            collector.add('INVALID_SURFACE_DECLARATION', issue.message, issue.path);
           }
           const regionName = region.name;
           const regionNameValid = requireDisplayStringMember(
@@ -1967,28 +2011,65 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
             continue;
           }
           const fieldPath = `${formPath}.fields[${entryKeyLabel(field.name)}]`;
-          collector.unknownFields(field, isV2 ? new Set([...FORM_FIELD_FIELDS, 'options']) : FORM_FIELD_FIELDS, fieldPath);
+          collector.unknownFields(
+            field,
+            isV2 ? new Set([...FORM_FIELD_FIELDS, 'options']) : FORM_FIELD_FIELDS,
+            fieldPath,
+          );
           if (field.widget === 'select') {
             if (!isV2 || !Array.isArray(field.options) || field.options.length === 0) {
-              collector.add('INVALID_SURFACE_DECLARATION', 'Select fields require @2 and nonempty options.', fieldPath + '.options');
+              collector.add(
+                'INVALID_SURFACE_DECLARATION',
+                'Select fields require @2 and nonempty options.',
+                fieldPath + '.options',
+              );
             } else {
               const values = new Set<string>();
               for (const option of field.options) {
                 if (!isPlainObject(option)) {
-                  collector.add('INVALID_SURFACE_DECLARATION', 'Select options must be objects.', fieldPath + '.options');
+                  collector.add(
+                    'INVALID_SURFACE_DECLARATION',
+                    'Select options must be objects.',
+                    fieldPath + '.options',
+                  );
                   continue;
                 }
-                collector.unknownFields(option, new Set(['value', 'label']), fieldPath + '.options');
-                requireDisplayStringMember(collector, option, 'value', fieldPath + '.options.value', 'Option value');
-                requireDisplayStringMember(collector, option, 'label', fieldPath + '.options.label', 'Option label');
+                collector.unknownFields(
+                  option,
+                  new Set(['value', 'label']),
+                  fieldPath + '.options',
+                );
+                requireDisplayStringMember(
+                  collector,
+                  option,
+                  'value',
+                  fieldPath + '.options.value',
+                  'Option value',
+                );
+                requireDisplayStringMember(
+                  collector,
+                  option,
+                  'label',
+                  fieldPath + '.options.label',
+                  'Option label',
+                );
                 if (typeof option.value === 'string') {
-                  if (values.has(option.value)) collector.add('INVALID_SURFACE_DECLARATION', 'Select option values must be unique.', fieldPath + '.options');
+                  if (values.has(option.value))
+                    collector.add(
+                      'INVALID_SURFACE_DECLARATION',
+                      'Select option values must be unique.',
+                      fieldPath + '.options',
+                    );
                   values.add(option.value);
                 }
               }
             }
           } else if (field.options !== undefined) {
-            collector.add('INVALID_SURFACE_DECLARATION', 'Options are only valid for select fields.', fieldPath + '.options');
+            collector.add(
+              'INVALID_SURFACE_DECLARATION',
+              'Options are only valid for select fields.',
+              fieldPath + '.options',
+            );
           }
           requireIdentifierMember(collector, field, 'name', `${fieldPath}.name`, 'Form field name');
           requireDisplayStringMember(
@@ -2043,9 +2124,16 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
       const actionPath = `application.actions[${entryKeyLabel(action.id)}]`;
       collector.unknownFields(
         action,
-        ACTION_FIELDS.get(action.kind) ?? ACTION_BASE_FIELDS,
+        isV2
+          ? new Set([...(ACTION_FIELDS.get(action.kind) ?? ACTION_BASE_FIELDS), 'feedback'])
+          : (ACTION_FIELDS.get(action.kind) ?? ACTION_BASE_FIELDS),
         actionPath,
       );
+      if (isV2 && action.feedback !== undefined) {
+        for (const issue of validateActionFeedback(action.feedback, actionPath + '.feedback')) {
+          collector.add('INVALID_ACTION_FEEDBACK', issue.message, issue.path);
+        }
+      }
       // id and revision are required members of EVERY declared action
       // (LOW-05-A closure): an action without its revision was previously
       // accepted silently and received an applicationVersion.

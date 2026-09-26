@@ -16,7 +16,7 @@
   let {
     data,
   }: {
-    data: { plan: Record<string, unknown>; viewData: Record<string, unknown>; record: Record<string, unknown> | null };
+    data: { actionEndpoint?: string; plan: Record<string, unknown>; viewData: Record<string, unknown>; record: Record<string, unknown> | null };
   } = $props();
 
   // The trusted local component registry lives OUTSIDE the manifest; the
@@ -24,7 +24,7 @@
   const registry = createShowcaseRegistry();
 
   async function dispatch(actionId: string, input?: unknown): Promise<ActionResult> {
-    const response = await fetch('/api/act', {
+    const response = await fetch(data.actionEndpoint ?? '/api/act', {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify({ actionId, input }),
@@ -34,7 +34,7 @@
 </script>
 
 <svelte:head>
-  <title>{data.plan.applicationId === 'app.foundation' ? 'VICT Workspace' : 'VICT UI Showcase'}</title>
+  <title>{(data.plan.manifest as { name?: string } | undefined)?.name ?? 'VICT UI Showcase'}</title>
 </svelte:head>
 
 <VitApp

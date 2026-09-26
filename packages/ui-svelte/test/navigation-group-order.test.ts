@@ -83,7 +83,7 @@ export function compileNavApp(
 
 /** The rendered navigation sequence in DOM order: group labels and links. */
 function navSequence(output: HTMLElement): readonly string[] {
-  const nav = output.querySelector('#vict-nav');
+  const nav = output.querySelector('[data-desktop-navigation]');
   if (nav === null) return [];
   const out: string[] = [];
   for (const node of nav.querySelectorAll('.vict-nav-group-label, .vict-nav-link')) {
@@ -242,7 +242,7 @@ describe('navigation group order (first occurrence in the ordered route list)', 
     }
   });
 
-  it('uses the same semantic order for desktop and mobile presentation and preserves keyboard policy', async () => {
+  it('keeps desktop semantics and starts the mobile drawer closed', () => {
     const plan = compileNavApp([
       { id: 'w1', path: '/w1', label: 'One', group: 'Zebra', order: 1 },
       { id: 'y1', path: '/y1', label: 'Two', group: 'Yak', order: 1 },
@@ -250,35 +250,15 @@ describe('navigation group order (first occurrence in the ordered route list)', 
     ]);
     const mounted = mountPlan(plan, '/y1');
     try {
-      // ONE landmark serves both form factors (the mobile presentation is
-      // the same nav shown as an in-flow panel below the 720px breakpoint).
-      const navs = mounted.output.querySelectorAll('nav[aria-label="Application"]');
-      expect(navs.length).toBe(1);
       expect(navSequence(mounted.output)).toEqual(['#Zebra', 'One', 'Three', '#Yak', 'Two']);
-      // Current-page semantics remain intact with grouped navigation.
-      const current = mounted.output.querySelector('[aria-current="page"]');
-      expect(current?.textContent?.trim()).toBe('Two');
-
-      // Mobile toggle: aria-expanded flips, the in-flow panel opens, and
-      // the link sequence is unchanged (no re-ordering between form
-      // factors or menu states).
-      const toggle = mounted.output.querySelector<HTMLButtonElement>('.vict-nav-toggle');
-      expect(toggle?.getAttribute('aria-expanded')).toBe('false');
-      toggle?.click();
-      await new Promise((resolve) => setTimeout(resolve, 10));
-      expect(toggle?.getAttribute('aria-expanded')).toBe('true');
-      expect(mounted.output.querySelector('#vict-nav')?.classList.contains('vict-nav-open')).toBe(
-        true,
+      expect(mounted.output.querySelector('[aria-current="page"]')?.textContent?.trim()).toBe(
+        'Two',
       );
-      expect(navSequence(mounted.output)).toEqual(['#Zebra', 'One', 'Three', '#Yak', 'Two']);
-      // Escape inside the open nav closes it and restores focus to the
-      // control (declared keyboard policy).
-      const link = mounted.output.querySelector<HTMLElement>('#vict-nav .vict-nav-link');
-      link?.focus();
-      link?.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
-      await new Promise((resolve) => setTimeout(resolve, 10));
+      const toggle = mounted.output.querySelector('.vict-nav-toggle');
       expect(toggle?.getAttribute('aria-expanded')).toBe('false');
-      expect(document.activeElement?.classList.contains('vict-nav-toggle')).toBe(true);
+      expect(toggle?.getAttribute('aria-label')).toBe('Open navigation menu');
+      expect(mounted.output.querySelector('[role="dialog"]')).toBeNull();
+      // Real browser checks cover focus, scrolling, breakpoints and dismissal.
     } finally {
       mounted.unmount();
     }

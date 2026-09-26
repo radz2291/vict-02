@@ -7,7 +7,7 @@ import { join } from 'node:path';
 import puppeteer from 'puppeteer-core';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
-const artifacts = join(root, 'qa-artifacts/foundation-slice');
+const artifacts = join(root, process.env.VICT_QA_OUTPUT ?? 'qa-artifacts/foundation-slice');
 mkdirSync(artifacts, { recursive: true });
 const server = spawn(process.execPath, ['build'], {
   cwd: join(root, 'examples/ui-showcase'),
@@ -100,14 +100,14 @@ try {
   await check('mobile navigation: toggle, Escape, focus return, route change', async () => {
     await go('/records', 320);
     await page.click('.vict-nav-toggle');
-    await page.waitForSelector('.vict-nav-open', { visible: true });
+    await page.waitForSelector('.vict-navigation-drawer', { visible: true });
     await page.keyboard.press('Escape');
     assert.equal(
       await page.$eval('.vict-nav-toggle', (el) => el.getAttribute('aria-expanded')),
       'false',
     );
     await page.click('.vict-nav-toggle');
-    await page.click('.vict-nav-link[href="/workspace"]');
+    await page.click('.vict-navigation-drawer .vict-nav-link[href="/workspace"]');
     await page.waitForFunction(() => location.pathname === '/workspace');
     assert.equal(
       await page.$eval('.vict-nav-toggle', (el) => el.getAttribute('aria-expanded')),
@@ -215,10 +215,15 @@ try {
     );
     await page.screenshot({ path: join(artifacts, 'dialog-390.png'), fullPage: false });
     await page.click('[data-action-id="act.ack"]');
-    await page.waitForSelector('[role="dialog"] [data-testid="overlay-result"]');
+    await page.waitForSelector(
+      '[role="dialog"] [data-kind="success"] [data-testid="action-success"]',
+    );
     assert.equal(
-      await page.$eval('[role="dialog"] [data-testid="overlay-result"]', (el) => el.textContent),
-      'Done.',
+      await page.$eval(
+        '[role="dialog"] [data-kind="success"] [data-testid="action-success"]',
+        (el) => el.textContent,
+      ),
+      'Action completed.',
     );
     await page.mouse.click(5, 5);
     await countDialogs(0);
@@ -247,7 +252,7 @@ try {
         rank: 0,
         zeroCheck: false,
       });
-      await page.waitForSelector('[data-testid="result-state"]');
+      await page.waitForSelector('[data-kind="success"] [data-testid="action-success"]');
       await page.waitForFunction(() =>
         document.querySelector('.vict-ui-table__count')?.textContent?.includes('7 records'),
       );
@@ -262,7 +267,7 @@ try {
       await page.select('select[name="comment"]', 'Operations');
       await page.type('input[name="rank"]', '999');
       await page.click('[data-testid="form-submit"]');
-      await page.waitForSelector('[data-testid="validation-state"]');
+      await page.waitForSelector('[data-testid="form-field-error-rank"]');
     },
   );
   await check(

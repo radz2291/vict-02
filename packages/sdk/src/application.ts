@@ -1,3 +1,10 @@
+import type {
+  UiActionFeedbackText,
+  UiApplicationComposition,
+  UiPageComposition,
+  UiLayoutMode,
+  UiRegionPresentation,
+} from '@victframework/ui';
 /**
  * Framework-neutral Application, Resource and Release DEFINITIONS.
  *
@@ -260,11 +267,8 @@ export interface DisabledCondition {
 }
 
 /** A named layout region of a screen, holding ordered surfaces. */
-export interface ScreenRegion {
+export interface ScreenRegion extends UiRegionPresentation {
   /** Optional @2 composition hints; no CSS or renderer implementation names. */
-  readonly size?: 'full' | 'main' | 'aside';
-  readonly appearance?: 'plain' | 'panel';
-  readonly flow?: 'stack' | 'inline';
   readonly name: string;
   /** Ordered surface sequence; the order is meaningful presentation semantics. */
   readonly surfaces: readonly Surface[];
@@ -273,7 +277,8 @@ export interface ScreenRegion {
 /** A screen: title, layout regions, safe default states, and contextual navigation. */
 export interface ScreenDefinition {
   /** @2: split shares space between main and supporting regions; stacks on small screens. */
-  readonly layoutMode?: 'stack' | 'split';
+  readonly layoutMode?: UiLayoutMode;
+  readonly composition?: UiPageComposition;
   readonly id: string;
   readonly title: string;
   /** Named regions; the region array is ordered layout semantics. */
@@ -535,58 +540,60 @@ export type Surface =
     };
 
 /** Application action kinds (Stage 04 foundation subset). */
-export type ActionDefinition =
+export type ActionDefinition = { readonly feedback?: UiActionFeedbackText } &
   /** Local/view presentation action. Never becomes a graph node. */
-  | {
-      readonly kind: 'local';
-      readonly id: string;
-      readonly revision: string;
-      readonly inputContractId?: string;
-    }
-  /** Navigation action: change route context. */
-  | {
-      readonly kind: 'navigation';
-      readonly id: string;
-      readonly revision: string;
-      readonly routeId: string;
-    }
-  /** Typed resource query. */
-  | {
-      readonly kind: 'query';
-      readonly id: string;
-      readonly revision: string;
-      readonly resourceId: string;
-      readonly resourceRevision: string;
-      readonly inputContractId?: string;
-      readonly inputContractRevision?: string;
-      readonly outputContractId?: string;
-      readonly outputContractRevision?: string;
-    }
-  /** Authorized resource mutation. */
-  | {
-      readonly kind: 'mutation';
-      readonly id: string;
-      readonly revision: string;
-      readonly resourceId: string;
-      readonly resourceRevision: string;
-      readonly op: string;
-      readonly inputContractId: string;
-      readonly inputContractRevision?: string;
-      readonly outputContractId?: string;
-      readonly outputContractRevision?: string;
-    }
-  /** Real VICT capability invocation through the public runtime boundary. */
-  | {
-      readonly kind: 'capability';
-      readonly id: string;
-      readonly revision: string;
-      readonly capabilityId: string;
-      readonly capabilityRevision: string;
-      readonly inputContractId: string;
-      readonly inputContractRevision?: string;
-      readonly outputContractId?: string;
-      readonly outputContractRevision?: string;
-    };
+  (
+    | {
+        readonly kind: 'local';
+        readonly id: string;
+        readonly revision: string;
+        readonly inputContractId?: string;
+      }
+    /** Navigation action: change route context. */
+    | {
+        readonly kind: 'navigation';
+        readonly id: string;
+        readonly revision: string;
+        readonly routeId: string;
+      }
+    /** Typed resource query. */
+    | {
+        readonly kind: 'query';
+        readonly id: string;
+        readonly revision: string;
+        readonly resourceId: string;
+        readonly resourceRevision: string;
+        readonly inputContractId?: string;
+        readonly inputContractRevision?: string;
+        readonly outputContractId?: string;
+        readonly outputContractRevision?: string;
+      }
+    /** Authorized resource mutation. */
+    | {
+        readonly kind: 'mutation';
+        readonly id: string;
+        readonly revision: string;
+        readonly resourceId: string;
+        readonly resourceRevision: string;
+        readonly op: string;
+        readonly inputContractId: string;
+        readonly inputContractRevision?: string;
+        readonly outputContractId?: string;
+        readonly outputContractRevision?: string;
+      }
+    /** Real VICT capability invocation through the public runtime boundary. */
+    | {
+        readonly kind: 'capability';
+        readonly id: string;
+        readonly revision: string;
+        readonly capabilityId: string;
+        readonly capabilityRevision: string;
+        readonly inputContractId: string;
+        readonly inputContractRevision?: string;
+        readonly outputContractId?: string;
+        readonly outputContractRevision?: string;
+      }
+  );
 
 /** Compatibility declarations of an application. */
 export interface ApplicationCompatibility {
@@ -598,6 +605,8 @@ export interface ApplicationCompatibility {
 
 /** Canonical framework-neutral Application Definition. */
 export interface ApplicationDefinition {
+  /** Application-owned portable shell choices (@2). */
+  readonly composition?: UiApplicationComposition;
   readonly schema: typeof APPLICATION_DEFINITION_SCHEMA | typeof APPLICATION_DEFINITION_SCHEMA_V2;
   /** Stable application id. */
   readonly id: string;

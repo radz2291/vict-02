@@ -103,7 +103,9 @@ describe('P4 presentation boundary', () => {
       app.type('  Keep me  ');
       app.submit();
       await vi.waitFor(() =>
-        expect(app.mounted.output.querySelector('[data-testid="denied-state"]')).not.toBeNull(),
+        expect(app.mounted.output.querySelector('.vict-send-error')?.textContent).toContain(
+          'permission',
+        ),
       );
       expect(app.input.value).toBe('  Keep me  ');
       expect(app.onInvalidate).not.toHaveBeenCalled();
@@ -120,7 +122,9 @@ describe('P4 presentation boundary', () => {
       app.type('Retry');
       app.submit();
       await vi.waitFor(() =>
-        expect(app.mounted.output.querySelector('[data-testid="failure-state"]')).not.toBeNull(),
+        expect(app.mounted.output.querySelector('.vict-send-error')?.textContent).toContain(
+          'could not be completed',
+        ),
       );
       expect(app.input.value).toBe('Retry');
       expect(app.mounted.output.innerHTML).not.toContain('PRIVATE-CANARY');

@@ -1,13 +1,18 @@
 import { json } from '@sveltejs/kit';
-import { getShowcaseServer } from '$lib/server/application-server';
+import { serverForId } from '$lib/server/preview-server';
 import type { RequestHandler } from './$types';
 
 // The ONLY action boundary of the showcase. Every non-local action crosses
 // the server-side authorization/effect boundary here; local and navigation
 // actions never reach this endpoint at all (the renderer executes them
 // client-side).
-export const POST: RequestHandler = async ({ request }) => {
-  const app = getShowcaseServer();
+export const POST: RequestHandler = async ({ request, url }) => {
+  const app = serverForId(url.searchParams.get('application'));
+  if (!app)
+    return json(
+      { ok: false, code: 'UNKNOWN_APPLICATION', message: 'This application is not registered.' },
+      { status: 404 },
+    );
   let body: { actionId?: unknown; input?: unknown };
   try {
     body = (await request.json()) as { actionId?: unknown; input?: unknown };
