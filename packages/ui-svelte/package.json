@@ -15,7 +15,7 @@
     "build": "tsc -p tsconfig.json --emitDeclarationOnly --outDir dist",
     "test": "vitest run --project renderer"
   },
-  "dependencies": { "@victframework/application": "0.3.1", "@victframework/ui": "0.3.1" },
+  "dependencies": { "@victframework/application": "0.3.1", "@victframework/sdk": "0.3.1", "@victframework/ui": "0.3.1" },
   "peerDependencies": { "svelte": "^5.0.0" },
   "license": "Apache-2.0",
   "publishConfig": { "access": "public" },

@@ -1,0 +1,229 @@
+{
+  "results": [
+    {
+      "name": "pack: all six 0.3.1 packages packed from the QA worktree",
+      "ok": true,
+      "detail": "victframework-appdata-sqlite-0.3.1.tgz, victframework-application-0.3.1.tgz, victframework-contracts-0.3.1.tgz, victframework-kernel-0.3.1.tgz, victframework-renderer-svelte-0.3.1.tgz, victframework-runtime-0.3.1.tgz, victframework-scaffolder-0.3.1.tgz, victframework-sdk-0.3.1.tgz, victframework-store-sqlite-0.3.1.tgz, victframework-ui-0.3.1.tgz, victframework-ui-svelte-0.3.1.tgz"
+    },
+    {
+      "name": "ssr: server-rendered dashboard contains the chart figure + named svg + gridlines BEFORE hydration",
+      "ok": true,
+      "detail": "dashboard bytes=30296"
+    },
+    {
+      "name": "ssr: server-rendered conversation contains the feed region, input, and Send button BEFORE hydration",
+      "ok": true,
+      "detail": "conversation bytes=28923"
+    },
+    {
+      "name": "ssr: server-rendered read-only/list/detail markup present on the projects screen",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "compat: npm install from packed tarballs (clean temp dir)",
+      "ok": true,
+      "detail": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-qa4-consumer-2WArdC\\consumer-compat"
+    },
+    {
+      "name": "compat: installed versions exactly 0.3.1",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "compat: no monorepo leakage in the lockfile",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "compat: installed theme.css is ONLY the compatibility entry importing ui-svelte/styles.css",
+      "ok": true,
+      "detail": "/* Compatibility stylesheet entry point. Presentation styles live in ui-svelte. */\n@import '@victframework/ui-svelte/sty"
+    },
+    {
+      "name": "compat: vite build succeeds",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "compat: emitted CSS carries the migrated P4 presentation (index-lcHDGzSy.css, 17319 bytes)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "compat: NO duplicate style implementation (each signature defined exactly once)",
+      "ok": true,
+      "detail": "counts={\"list item block (.vict-list-item{)\":1,\"conversation feed (max-height:60vh)\":1,\"dataview cells (min-width:8rem)\":1,\"detail columns (minmax(0,10rem))\":1,\"chart bars (.vict-chart .vict-bar)\":1}"
+    },
+    {
+      "name": "compat: built bundle contains EXACTLY ONE renderer implementation (identity x1, host marker x1)",
+      "ok": true,
+      "detail": "js files: 1"
+    },
+    {
+      "name": "compat: packed renderer mounts the generic host",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "compat: facade re-exports the SAME runtime bindings as ui-svelte (createVictRenderer/renderVictApplication/VitApp/identity constants)",
+      "ok": true,
+      "detail": "{\"sameCreate\":true,\"sameRender\":true,\"sameVitApp\":true,\"sameIdConst\":true,\"sameRevConst\":true,\"id\":\"renderer.svelte-kit\",\"revision\":\"5.0.0\",\"roles\":[\"text\",\"view\",\"form\",\"action\",\"component\",\"states\",\"list\",\"table\",\"detail\",\"chart\",\"status\",\"tabs\",\"dialog\",\"drawer\",\"conversation\"]}"
+    },
+    {
+      "name": "compat: frozen renderer identity through the packed path (id/revision/roles)",
+      "ok": true,
+      "detail": "{\"sameCreate\":true,\"sameRender\":true,\"sameVitApp\":true,\"sameIdConst\":true,\"sameRevConst\":true,\"id\":\"renderer.svelte-kit\",\"revision\":\"5.0.0\",\"roles\":[\"text\",\"view\",\"form\",\"action\",\"component\",\"states\",\"list\",\"table\",\"detail\",\"chart\",\"status\",\"tabs\",\"dialog\",\"drawer\",\"conversation\"]}"
+    },
+    {
+      "name": "compat: text role emits declared heading tags; markup-looking content is escaped text",
+      "ok": true,
+      "detail": "{\"h2\":\"H2\",\"h6\":\"H6\",\"escaped\":true}"
+    },
+    {
+      "name": "compat: packed DataView renders the region + table with corresponding headers/cells",
+      "ok": true,
+      "detail": "{\"headers\":[\"id\",\"name\",\"status\",\"budget\",\"owner\",\"notes\",\"code\",\"updated\"],\"cells\":[\"AAAAAAAAAAAA\",\"Alpha widget\",\"active\",\"1250000\",\"QA\",\"Long note: p\",\"X\",\"2026-09-26\"]}"
+    },
+    {
+      "name": "compat: packed list + detail + empty state render",
+      "ok": true,
+      "detail": "{\"list\":\"Item with secondary — the secondary value\",\"detailRows\":8,\"emptyState\":\"The list is empty.\"}"
+    },
+    {
+      "name": "compat: packed chart renders bars/line/empty with the QA a11y fix (named svg image, figure group)",
+      "ok": true,
+      "detail": "{\"bars\":5,\"barTable\":[\"planning (long category label)400\",\"active1250\",\"paused300\",\"done900\",\"archived150\"],\"svgRole\":\"img\",\"svgLabel\":\"Bar chart of total budget summed per project status\",\"figRole\":null,\"lineCircles\":6,\"linePath\":true,\"emptyBars\":0}"
+    },
+    {
+      "name": "compat: packed chart data table corresponds to the rendered bars",
+      "ok": true,
+      "detail": "planning (long category label)400|active1250|paused300|done900|archived150"
+    },
+    {
+      "name": "compat: packed conversation sends trimmed text, refetches the feed, clears the draft (QA keyboard-scroll fix present)",
+      "ok": true,
+      "detail": "{\"feed\":[\"You · user Seeded consumer message.\",\"You · user Packed send\"],\"draft\":\"\",\"region\":\"region\"}"
+    },
+    {
+      "name": "compat: route changes and data updates propagate WITHOUT remounting (same host node)",
+      "ok": true,
+      "detail": "{\"remount\":{\"sameNode\":true,\"msgTagged\":true},\"afterNavHost\":true}"
+    },
+    {
+      "name": "compat: consumer-side custom island receives props unchanged through the packed slot path",
+      "ok": true,
+      "detail": "{\"hostStillTagged\":true,\"islandLabel\":\"workspace health island\",\"islandCount\":\"7\",\"islandPinned\":\"true\",\"slotSurface\":\"cm.health\"}"
+    },
+    {
+      "name": "compat: packed DataView @320 scrolls in a contained region; no document overflow",
+      "ok": true,
+      "detail": "{\"scrollable\":true,\"contained\":true,\"docOverflow\":false}"
+    },
+    {
+      "name": "compat: no page errors in the packed consumer",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "direct: npm install from packed tarballs (clean temp dir)",
+      "ok": true,
+      "detail": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-qa4-consumer-2WArdC\\consumer-direct"
+    },
+    {
+      "name": "direct: installed versions exactly 0.3.1",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "direct: no monorepo leakage in the lockfile",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "direct: installed theme.css is ONLY the compatibility entry importing ui-svelte/styles.css",
+      "ok": true,
+      "detail": "/* Compatibility stylesheet entry point. Presentation styles live in ui-svelte. */\n@import '@victframework/ui-svelte/sty"
+    },
+    {
+      "name": "direct: vite build succeeds",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "direct: emitted CSS carries the migrated P4 presentation (index-lcHDGzSy.css, 17319 bytes)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "direct: NO duplicate style implementation (each signature defined exactly once)",
+      "ok": true,
+      "detail": "counts={\"list item block (.vict-list-item{)\":1,\"conversation feed (max-height:60vh)\":1,\"dataview cells (min-width:8rem)\":1,\"detail columns (minmax(0,10rem))\":1,\"chart bars (.vict-chart .vict-bar)\":1}"
+    },
+    {
+      "name": "direct: built bundle contains EXACTLY ONE renderer implementation (identity x1, host marker x1)",
+      "ok": true,
+      "detail": "js files: 1"
+    },
+    {
+      "name": "direct: packed renderer mounts the generic host",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "direct: frozen renderer identity through the packed path (id/revision/roles)",
+      "ok": true,
+      "detail": "{\"id\":\"renderer.svelte-kit\",\"revision\":\"5.0.0\",\"roles\":[\"text\",\"view\",\"form\",\"action\",\"component\",\"states\",\"list\",\"table\",\"detail\",\"chart\",\"status\",\"tabs\",\"dialog\",\"drawer\",\"conversation\"],\"idConst\":\"renderer.svelte-kit\",\"revConst\":\"5.0.0\"}"
+    },
+    {
+      "name": "direct: text role emits declared heading tags; markup-looking content is escaped text",
+      "ok": true,
+      "detail": "{\"h2\":\"H2\",\"h6\":\"H6\",\"escaped\":true}"
+    },
+    {
+      "name": "direct: packed DataView renders the region + table with corresponding headers/cells",
+      "ok": true,
+      "detail": "{\"headers\":[\"id\",\"name\",\"status\",\"budget\",\"owner\",\"notes\",\"code\",\"updated\"],\"cells\":[\"AAAAAAAAAAAA\",\"Alpha widget\",\"active\",\"1250000\",\"QA\",\"Long note: p\",\"X\",\"2026-09-26\"]}"
+    },
+    {
+      "name": "direct: packed list + detail + empty state render",
+      "ok": true,
+      "detail": "{\"list\":\"Item with secondary — the secondary value\",\"detailRows\":8,\"emptyState\":\"The list is empty.\"}"
+    },
+    {
+      "name": "direct: packed chart renders bars/line/empty with the QA a11y fix (named svg image, figure group)",
+      "ok": true,
+      "detail": "{\"bars\":5,\"barTable\":[\"planning (long category label)400\",\"active1250\",\"paused300\",\"done900\",\"archived150\"],\"svgRole\":\"img\",\"svgLabel\":\"Bar chart of total budget summed per project status\",\"figRole\":null,\"lineCircles\":6,\"linePath\":true,\"emptyBars\":0}"
+    },
+    {
+      "name": "direct: packed chart data table corresponds to the rendered bars",
+      "ok": true,
+      "detail": "planning (long category label)400|active1250|paused300|done900|archived150"
+    },
+    {
+      "name": "direct: packed conversation sends trimmed text, refetches the feed, clears the draft (QA keyboard-scroll fix present)",
+      "ok": true,
+      "detail": "{\"feed\":[\"You · user Seeded consumer message.\",\"You · user Packed send\"],\"draft\":\"\",\"region\":\"region\"}"
+    },
+    {
+      "name": "direct: route changes and data updates propagate WITHOUT remounting (same host node)",
+      "ok": true,
+      "detail": "{\"remount\":{\"sameNode\":true,\"msgTagged\":true},\"afterNavHost\":true}"
+    },
+    {
+      "name": "direct: consumer-side custom island receives props unchanged through the packed slot path",
+      "ok": true,
+      "detail": "{\"hostStillTagged\":true,\"islandLabel\":\"workspace health island\",\"islandCount\":\"7\",\"islandPinned\":\"true\",\"slotSurface\":\"cm.health\"}"
+    },
+    {
+      "name": "direct: packed DataView @320 scrolls in a contained region; no document overflow",
+      "ok": true,
+      "detail": "{\"scrollable\":true,\"contained\":true,\"docOverflow\":false}"
+    },
+    {
+      "name": "direct: no page errors in the packed consumer",
+      "ok": true,
+      "detail": ""
+    }
+  ]
+}
