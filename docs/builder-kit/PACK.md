@@ -4,7 +4,7 @@
 
 Rendered view of `docs/builder-kit/context-pack.json` (`vict.builder.context-pack@1`).
 
-- packId: `bed2e5c2d3ed5454a259163fdfc3d2b5e0f250520a9ff493ac3603a0584b4c14`
+- packId: `f5a691a1f27eecccc0f96b4f23eb289408e7e04379068617ed674031397d8bb8`
 - reference truth: v0.4.32
 - release truth: `vict-release-set@1/0.3.1`
 - workspace: `vict-monorepo@0.1.0`
@@ -25,7 +25,7 @@ Rendered view of `docs/builder-kit/context-pack.json` (`vict.builder.context-pac
 | packages/appdata-sqlite/package.json | `d054b4a3b361085c1868f12e298e70a5b844e61979007bcf9872b37c0f5f9e12` |
 | packages/application/package.json | `8316928744eb4396bea1ea584ad8139db25a968085bb0b24257d2836f3590f0d` |
 | packages/builder-kit/package.json | `9c614c8a686e767d959d99cb03a36bd242d8350401e356859307fe540409be44` |
-| packages/cli/package.json | `51eb6c8d3aa3d47fed4b091ccae10770814c0495e091a3c2872a1a461fde3b24` |
+| packages/cli/package.json | `0e0f53c881ec53051acc27ec1c37e4cb2fd95c8818cf392cca645cfa8e541723` |
 | packages/contracts/package.json | `ac2dfe2091d89223961a05863f0f1126c14cd2a9d6d936337e761ce1b78d46dc` |
 | packages/control/package.json | `714e785a0880b56afcb3bbee93c5b4b90d92513706d0fdcee8e5cb7a55bf196f` |
 | packages/kernel/package.json | `a3b4817905b538ca8e5c338f999198767ca321c5751bbb4136348f3898e53568` |
@@ -48,7 +48,7 @@ Rendered view of `docs/builder-kit/context-pack.json` (`vict.builder.context-pac
 | @victframework/appdata-sqlite | 0.3.1 | no | @victframework/application, @victframework/contracts, @victframework/sdk |
 | @victframework/application | 0.3.1 | no | @victframework/contracts, @victframework/sdk, @victframework/ui |
 | @victframework/builder-kit | 0.1.0 | yes |  |
-| @victframework/cli | 0.3.1 | no | @victframework/server |
+| @victframework/cli | 0.3.1 | no | @victframework/application, @victframework/server |
 | @victframework/contracts | 0.3.1 | no |  |
 | @victframework/control | 0.3.1 | no | @victframework/contracts, @victframework/runtime |
 | @victframework/kernel | 0.3.1 | no | @victframework/contracts, @victframework/sdk |

@@ -21,6 +21,9 @@
   "scripts": {
     "build": "tsc -p tsconfig.json"
   },
+  "dependencies": {
+    "@victframework/application": "0.3.1"
+  },
   "devDependencies": {
     "@victframework/server": "0.3.1"
   },

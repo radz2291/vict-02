@@ -166,7 +166,7 @@
         "path": "packages/builder-kit/package.json"
       },
       {
-        "contentSha256": "51eb6c8d3aa3d47fed4b091ccae10770814c0495e091a3c2872a1a461fde3b24",
+        "contentSha256": "0e0f53c881ec53051acc27ec1c37e4cb2fd95c8818cf392cca645cfa8e541723",
         "path": "packages/cli/package.json"
       },
       {
@@ -234,7 +234,7 @@
       "workspaces": ["examples/*", "packages/*", "packs/*"]
     }
   },
-  "packId": "bed2e5c2d3ed5454a259163fdfc3d2b5e0f250520a9ff493ac3603a0584b4c14",
+  "packId": "f5a691a1f27eecccc0f96b4f23eb289408e7e04379068617ed674031397d8bb8",
   "permissionProfilesRef": {
     "contentSha256": "893ba3ff5b73e3bf9d87da2ea1c49f5fcd176f5bdb8d36e20628fcf184f19b88",
     "schemaMarker": "vict.builder.profile@1",
@@ -278,7 +278,7 @@
     },
     {
       "externalDependencies": [],
-      "internalDependencies": ["@victframework/server"],
+      "internalDependencies": ["@victframework/application", "@victframework/server"],
       "main": "./dist/index.js",
       "name": "@victframework/cli",
       "private": false,

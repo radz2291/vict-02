@@ -189,8 +189,21 @@ export interface ResourcePresentationHint {
   readonly label?: string;
   /** Meaningful display order (ordered semantics; never sorted away). */
   readonly order?: number;
-  readonly widget?: 'text' | 'number' | 'boolean' | 'date' | 'json';
+  readonly widget?: (typeof RESOURCE_PRESENTATION_WIDGETS)[number];
 }
+
+/**
+ * Closed @1 widget vocabulary of resource presentation hints. Runtime
+ * constant so authoring tools can expose it without reading types
+ * (authoring-tools slice); the union above is derived from it.
+ */
+export const RESOURCE_PRESENTATION_WIDGETS = [
+  'text',
+  'number',
+  'boolean',
+  'date',
+  'json',
+] as const;
 
 /* ------------------------------------------------------------------ */
 /* Application definitions                                             */
@@ -316,8 +329,22 @@ export interface FormField {
   readonly name: string;
   readonly label: string;
   readonly required?: boolean;
-  readonly widget?: 'text' | 'number' | 'boolean' | 'date' | 'json' | 'select';
+  readonly widget?: (typeof FORM_FIELD_WIDGETS)[number];
 }
+
+/**
+ * Closed @2 widget vocabulary of form fields. Runtime constant so authoring
+ * tools can expose it without reading types (authoring-tools slice); the
+ * union above is derived from it.
+ */
+export const FORM_FIELD_WIDGETS = [
+  'text',
+  'number',
+  'boolean',
+  'date',
+  'json',
+  'select',
+] as const;
 
 /** Declared deterministic read order for a view's rows (@2). */
 export interface ViewSort {

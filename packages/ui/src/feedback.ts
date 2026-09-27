@@ -15,6 +15,14 @@ export interface UiActionFeedback {
    */
   readonly dataStale?: boolean;
 }
+/** Closed outcome keys of the @2 action-feedback declaration. */
+export const ACTION_FEEDBACK_OUTCOMES: readonly string[] = [
+  'success',
+  'validation',
+  'denied',
+  'failure',
+];
+
 export function validateActionFeedback(
   value: unknown,
   path = 'feedback',
@@ -30,7 +38,7 @@ export function validateActionFeedback(
     .sort()
     .flatMap((key) => {
       const text = (value as Record<string, unknown>)[key];
-      return !['success', 'validation', 'denied', 'failure'].includes(key) ||
+      return !ACTION_FEEDBACK_OUTCOMES.includes(key) ||
         typeof text !== 'string' ||
         text.trim().length === 0
         ? [

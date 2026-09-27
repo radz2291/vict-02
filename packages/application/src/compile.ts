@@ -241,6 +241,9 @@ const SURFACE_FIELDS: ReadonlyMap<Surface['role'], ReadonlySet<string>> = new Ma
 /** The closed @2 surface field sets (Stage 05 delivery vocabulary). */
 const CONDITION_FIELDS: ReadonlySet<string> = new Set(['viewNonEmpty', 'viewEmpty', 'paramEquals']);
 const CONDITION_PARAM_EQUALS_FIELDS: ReadonlySet<string> = new Set(['name', 'value']);
+/** Closed @2 members of the theme declaration and of one token assignment. */
+const THEME_FIELDS: ReadonlySet<string> = new Set(['reference', 'tokens']);
+const THEME_TOKEN_ASSIGNMENT_FIELDS: ReadonlySet<string> = new Set(['name', 'value']);
 const DISABLED_CONDITION_FIELDS: ReadonlySet<string> = new Set(['paramMissing']);
 const BREADCRUMB_FIELDS: ReadonlySet<string> = new Set(['label', 'routeId']);
 const STAGE04_SURFACE_FIELD_SETS = SURFACE_FIELDS;
@@ -364,6 +367,8 @@ const TABLE_COLUMN_FIELDS: ReadonlySet<string> = new Set([
 const TABLE_ROW_ACTION_FIELDS: ReadonlySet<string> = new Set(['actionId', 'label', 'input']);
 /** Closed @2 members of one declared view sort entry. */
 const SORT_ENTRY_FIELDS: ReadonlySet<string> = new Set(['field', 'direction']);
+/** Closed sort-direction vocabulary (single source for validation + vocabulary). */
+const SORT_DIRECTIONS: ReadonlySet<string> = new Set(['asc', 'desc']);
 const STATUS_TONES: ReadonlySet<string> = new Set([
   'success',
   'warning',
@@ -411,6 +416,62 @@ const VALUE_LIKE_FIELD_NAMES: ReadonlySet<string> = new Set([
   'token',
   'apiKey',
 ]);
+
+/**
+ * Machine-readable compiler vocabulary (authoring-tools slice).
+ *
+ * SINGLE SOURCE OF TRUTH: every member below IS the very constant the
+ * compiler's validation consumes — not a copy. Authoring tools read this
+ * (via `describeApplicationVocabulary()`) so the exposed vocabulary can
+ * never drift from what `compileApplication` actually enforces.
+ */
+export const APPLICATION_VOCABULARY = {
+  /** Field sets per definition object; `V2` marks the @2 extended sets. */
+  objects: {
+    application: APPLICATION_FIELDS,
+    route: ROUTE_FIELDS,
+    routeV2: ROUTE_FIELDS_V2,
+    routeNav: NAV_FIELDS,
+    screen: SCREEN_FIELDS,
+    screenV2: SCREEN_FIELDS_V2,
+    region: REGION_FIELDS,
+    screenStates: STATES_FIELDS,
+    screenStatesV2: STATES_FIELDS_V2,
+    view: VIEW_FIELDS,
+    form: FORM_FIELDS,
+    formField: FORM_FIELD_FIELDS,
+    resourceRef: RESOURCE_REF_FIELDS,
+    componentRef: COMPONENT_FIELDS,
+    surfaceCondition: CONDITION_FIELDS,
+    surfaceConditionParamEquals: CONDITION_PARAM_EQUALS_FIELDS,
+    surfaceDisabledCondition: DISABLED_CONDITION_FIELDS,
+    breadcrumb: BREADCRUMB_FIELDS,
+    tab: TAB_FIELDS,
+    tableColumn: TABLE_COLUMN_FIELDS,
+    tableRowAction: TABLE_ROW_ACTION_FIELDS,
+    sortEntry: SORT_ENTRY_FIELDS,
+    resourceDefinition: RESOURCE_DEF_FIELDS,
+    resourceField: RESOURCE_FIELD_FIELDS,
+    theme: THEME_FIELDS,
+    themeTokenAssignment: THEME_TOKEN_ASSIGNMENT_FIELDS,
+  },
+  /** Closed values enforced by validation. */
+  closedValues: {
+    actionKinds: new Set([...ACTION_FIELDS.keys()]),
+    surfaceRolesV1: new Set(SURFACE_FIELDS.keys()),
+    surfaceRolesV2: new Set(SURFACE_FIELDS_V2.keys()),
+    statusTones: STATUS_TONES,
+    chartKinds: CHART_KINDS,
+    sortDirections: SORT_DIRECTIONS,
+    resourceFieldTypes: RESOURCE_FIELD_TYPES,
+  },
+  /** Field sets per action kind / surface role (validation's own maps). */
+  actionFieldsByKind: ACTION_FIELDS,
+  surfaceFieldsByRoleV1: SURFACE_FIELDS,
+  surfaceFieldsByRoleV2: SURFACE_FIELDS_V2,
+  /** Field names that signal embedded values where only references are allowed. */
+  valueLikeFieldNames: VALUE_LIKE_FIELD_NAMES,
+} as const;
 
 /**
  * Plain-object check. Deliberately a plain boolean predicate (no type
@@ -1995,7 +2056,7 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
               entry.field,
               `${entryPath}.field`,
             );
-            if (entry.direction !== 'asc' && entry.direction !== 'desc') {
+            if (!SORT_DIRECTIONS.has(entry.direction as string)) {
               collector.add(
                 'INVALID_VIEW_DECLARATION',
                 `View '${view.viewId}' sort direction must be 'asc' or 'desc'.`,
@@ -2585,7 +2646,7 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
     }
     if (isV2 && application.theme !== undefined && isPlainObject(application.theme)) {
       const theme = application.theme as ThemeDeclaration;
-      const themeFields = new Set(['reference', 'tokens']);
+      const themeFields = THEME_FIELDS;
       collector.unknownFields(theme, themeFields, 'application.theme');
       if (
         theme.reference !== undefined &&
@@ -2608,7 +2669,7 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
           const seenTokens = new Set<string>();
           for (const [index, assignment] of theme.tokens.entries()) {
             const path = `application.theme.tokens[${index}]`;
-            collector.unknownFields(assignment, new Set(['name', 'value']), path);
+            collector.unknownFields(assignment, THEME_TOKEN_ASSIGNMENT_FIELDS, path);
             if (
               typeof assignment.name !== 'string' ||
               !THEME_TOKEN_NAMES.includes(assignment.name)

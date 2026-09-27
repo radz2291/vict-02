@@ -13,3 +13,11 @@ export {
   type CliCommandSpec,
 } from './commands.js';
 export { runVictCli, type VictCliIo, type VictCliOptions } from './cli.js';
+export {
+  extractCompileInput,
+  isTypeScriptPath,
+  runCheckCommand,
+  runVocabularyCommand,
+  type VictCheckJson,
+  type VictVocabularyJson,
+} from './check.js';
