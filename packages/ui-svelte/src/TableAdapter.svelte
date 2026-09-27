@@ -25,6 +25,15 @@
   }
 
   const hasQueryAction = $derived(typeof surface.queryActionId === 'string' && surface.queryActionId.length > 0);
+  // The bound view's declared initial sort (@2): the fresh-mount state AND
+  // every dispatched query (search, filter, pagination) carry it until the
+  // user selects another sort. Seeded from the compiled plan, so dispatched
+  // pages can never diverge from the server-loaded page order — the server
+  // loads the view WITH its declared sort; without this seed a dispatch that
+  // omitted `sort` fell back to the data adapter's own list order, repeating
+  // rows across page boundaries and hiding others (QA FINDING-1).
+  const declaredSort = $derived(intent.initialSort ?? []);
+  const declaredFirst = $derived(declaredSort[0]);
   let search = $state('');
   let filterValues = $state<Record<string, string>>({});
   let sortField = $state<string | null>(null);
@@ -44,14 +53,18 @@
   // still in flight so its late response cannot overwrite the reset.
   $effect(() => {
     void initialRows;
+    const declared = declaredFirst;
     queryToken++;
     queryRows = hasQueryAction ? initialRows.slice(0, intent.pageSize) : initialRows;
     queryTotal = initialRows.length;
     page = 0;
     search = '';
     filterValues = {};
-    sortField = null;
-    sortDir = 'asc';
+    // Mount and route-data changes seed/resync to the view's declared
+    // initial sort, not to an unsorted state — the resynced page must stay
+    // in declared order.
+    sortField = declared?.field ?? null;
+    sortDir = declared?.direction ?? 'asc';
   });
 
   const displayRows = $derived.by(() => {
@@ -111,7 +124,15 @@
     for (const [field, value] of Object.entries(filterValues)) if (value !== '') activeFilters[field] = value;
     if (Object.keys(activeFilters).length > 0) payload.filters = activeFilters;
     if (search.trim() !== '') payload.search = { text: search.trim(), fields: intent.search.fields };
-    if (nextSortField !== null) payload.sort = [{ field: nextSortField, direction: nextSortDir }];
+    // ALWAYS dispatch an explicit sort: the user-selected sort when one is
+    // active, otherwise the view's declared initial sort. Omitting `sort`
+    // would hand the query to the data adapter's own list order, which can
+    // differ from the declared view order the current page was seeded with.
+    if (nextSortField !== null) {
+      payload.sort = [{ field: nextSortField, direction: nextSortDir }];
+    } else if (declaredSort.length > 0) {
+      payload.sort = declaredSort;
+    }
     pending = true;
     try {
       const result = await dispatch(String(surface.queryActionId), payload);

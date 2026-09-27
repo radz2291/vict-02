@@ -41,8 +41,39 @@ export interface UiTableIntent {
   };
   readonly search: { readonly label: string; readonly fields: readonly string[] };
   readonly filters: readonly { readonly field: string; readonly label: string }[];
+  /**
+   * The bound view's declared deterministic sort (@2), when declared.
+   * The table's fresh-mount state AND every dispatched query (search,
+   * filter, pagination) use it until the user selects another sort, so
+   * dispatched pages can never diverge from the server-loaded page order
+   * (zero repeated/hidden rows across page boundaries).
+   */
+  readonly initialSort?: readonly {
+    readonly field: string;
+    readonly direction: 'asc' | 'desc';
+  }[];
   readonly pageSize: number;
   readonly emptyMessage: string;
+}
+
+/**
+ * Defensive read of a declared view sort (@2): entries must all be
+ * well-formed `{ field, direction: 'asc' | 'desc' }` objects. Any malformed
+ * entry discards the whole declaration (the compiler already rejects it;
+ * the derived intent simply stays honest about what it applies).
+ */
+function deriveInitialSort(source: unknown): UiTableIntent['initialSort'] {
+  if (!Array.isArray(source)) return undefined;
+  const entries: { field: string; direction: 'asc' | 'desc' }[] = [];
+  for (const entry of source) {
+    if (entry === null || typeof entry !== 'object' || Array.isArray(entry)) return undefined;
+    const field = (entry as { field?: unknown }).field;
+    const direction = (entry as { direction?: unknown }).direction;
+    if (typeof field !== 'string' || field.length === 0) return undefined;
+    if (direction !== 'asc' && direction !== 'desc') return undefined;
+    entries.push({ field, direction });
+  }
+  return entries.length > 0 ? Object.freeze(entries) : undefined;
 }
 
 /** Read a bounded plain-object member defensively. */
@@ -165,7 +196,9 @@ export function deriveUiPlan(plan: UiPlanSource): UiPlan {
       if (surface.role === 'table') {
         const declaredColumns = Array.isArray(surface.columns) ? surface.columns : [];
         const view = plan.views?.[String(surface.viewId)] as
-          { fields?: readonly string[] } | undefined;
+          | { fields?: readonly string[]; sort?: unknown }
+          | undefined;
+        const initialSort = deriveInitialSort(view?.sort);
         const rawColumns =
           declaredColumns.length > 0
             ? declaredColumns
@@ -228,6 +261,7 @@ export function deriveUiPlan(plan: UiPlanSource): UiPlan {
               .filter((field): field is string => typeof field === 'string')
               .map((field) => Object.freeze({ field, label: `Filter by ${field}` })),
           ),
+          ...(initialSort !== undefined ? { initialSort } : {}),
           pageSize:
             typeof surface.pageSize === 'number' &&
             Number.isSafeInteger(surface.pageSize) &&
