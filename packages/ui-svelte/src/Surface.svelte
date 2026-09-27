@@ -38,7 +38,11 @@
     record: Record<string, unknown> | null;
     run: (actionId: string, input?: unknown) => Promise<ActionResult | void>;
     dispatch: (actionId: string, input?: unknown) => Promise<ActionResult>;
-    sendConversation: (actionId: string, text: string) => Promise<ActionResult>;
+    sendConversation: (
+      actionId: string,
+      text: string,
+      boundInput?: Record<string, unknown>,
+    ) => Promise<ActionResult>;
   }
 
   let {

@@ -1,9 +1,22 @@
+// @vitest-environment node
 import { spawn, spawnSync, type ChildProcess } from 'node:child_process';
 import { existsSync, mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+
+/**
+ * This file deliberately runs under the NODE environment even though the
+ * project config defaults to happy-dom. It is a real-process HTTP suite:
+ * it spawns the BUILT Node server and drives it with `fetch` — it never
+ * touches the DOM. Under happy-dom the global `fetch` is happy-dom's
+ * browser-faithful implementation, which enforces CORS against the
+ * cross-origin (localhost, OS-assigned port) server spawned here and
+ * fails every request before it reaches the real boundary. Node's own
+ * undici fetch has no such restriction, so the per-file pragma restores
+ * the environment the suite was written against — the assertions, the
+ * real process, and the durable-store coverage are unchanged.
 
 /**
  * Real-process HTTP evidence for the reference application (Stage 05).

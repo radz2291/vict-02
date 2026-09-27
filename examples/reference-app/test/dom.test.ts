@@ -275,11 +275,20 @@ describe('safe states', () => {
     deleteButton?.click();
     await new Promise((resolve) => setTimeout(resolve, 20));
     void server;
-    // The detail screen declares no denied state; the renderer-generated
-    // fallback renders (the denial itself comes from the boundary below UI).
-    expect(instance.output.querySelector('[data-testid="denied-state"]')?.textContent).toContain(
-      'denied by the authorization boundary',
+    // The current renderer maps a boundary denial (DATA_UNAUTHORIZED) to
+    // the action's error feedback (role="alert") — the screen's DECLARED
+    // denied-state text when the screen declares one, the boundary's safe
+    // message otherwise. The detail screen declares no denied state, so the
+    // boundary's non-echoing denial message is what must render. (The
+    // pre-bits-ui renderer block emitted a dedicated denied-state testid;
+    // that surface was replaced by the per-action feedback contract.)
+    // Scope to the delete dialog's panel: other action surfaces on this
+    // screen (reading-time, reset form) render their own empty feedback.
+    const denial = instance.output.querySelector(
+      '[data-testid="overlay-panel"] [data-testid="action-error"]',
     );
+    expect(denial?.textContent).toContain('requires permission');
+    // A denial never blanks the screen: the shell stays intact.
     expect(instance.output.querySelector('.vict-shell .vict-header h1')?.textContent).toBe(
       'Project',
     );
@@ -346,7 +355,11 @@ describe('injection resistance (canaries)', () => {
     ];
     triggers[1]?.click();
     await new Promise((resolve) => setTimeout(resolve, 10));
-    const island = document.querySelector('[data-testid="overlay"] [data-testid="custom-health"]');
+    // The bits-ui overlay renders the panel as the Dialog.Content sibling of
+    // the backdrop inside the portal; the island lives in the panel.
+    const island = document.querySelector(
+      '[data-testid="overlay-panel"] [data-testid="custom-health"]',
+    );
     expect(island?.textContent?.trim()).toBe('detail island');
     expect(
       (island as (typeof HTMLElement.prototype & { __registry?: unknown }) | null)?.__registry,
