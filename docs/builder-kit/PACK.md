@@ -4,7 +4,7 @@
 
 Rendered view of `docs/builder-kit/context-pack.json` (`vict.builder.context-pack@1`).
 
-- packId: `791f24fb023cf3eb29ffb0d7123f23ad803b8042906ed84ace6d991d4d15a0b2`
+- packId: `bed2e5c2d3ed5454a259163fdfc3d2b5e0f250520a9ff493ac3603a0584b4c14`
 - reference truth: v0.4.32
 - release truth: `vict-release-set@1/0.3.1`
 - workspace: `vict-monorepo@0.1.0`
@@ -13,28 +13,31 @@ Rendered view of `docs/builder-kit/context-pack.json` (`vict.builder.context-pac
 
 | path | contentSha256 |
 | --- | --- |
-| docs/RELEASE-COMPATIBILITY.md | `c09e252aae93c082d2a53cf8047a6b7eff52a62203023fdb3efb6ada07bc49df` |
+| docs/RELEASE-COMPATIBILITY.md | `bb067faf17031bdd93a9af45088e557366442879752059c9d7c7434fe9b5ba3d` |
 | docs/VICT-SYSTEM-REFERENCE.md | `dc43c1672c3f75da886325f236945a40fe0b6c79a373b8da6a0763612c4baa42` |
 | docs/builder-kit/capability-catalog.json | `2ff63e5c784a15e93b4457c2a7710beb9443bc119d133fdc156fb0347f818946` |
 | examples/application-proof/package.json | `02bae191e7f8b22fcdbceedc6937b526184d2114a5a4662c3daacf2169d294bc` |
 | examples/ara-proof/package.json | `a6c071e4e377bd96b498db5ec4cde820ecbb993c5454b76ec4ed6500c31b0747` |
 | examples/orchestration-proof/package.json | `689183a3e96db61121ad1f54e5033e22b1a973f9d5ce5ab110eb3de9094300f4` |
-| examples/reference-app/package.json | `927dc901e62c3f658c0dc36335ce5c8150669b86d7c49a814bac44c71147860e` |
-| package.json | `880697603290195841d6a382e20ad836da4668d91e751888cfb37e1eb501ba62` |
+| examples/reference-app/package.json | `1743f33bb06d647c6b3bca61313d2f2384a186659b65e0650741c75e27a66910` |
+| examples/ui-showcase/package.json | `c11dad2a61aba1963a810e6dbcd1cb1ee38f5ed8fb993ec6ebfe270984f9a195` |
+| package.json | `403d5a8bc588e7b64d7cdea6724c36c944f41e17a45d1a8ee33851d9df67fa69` |
 | packages/appdata-sqlite/package.json | `d054b4a3b361085c1868f12e298e70a5b844e61979007bcf9872b37c0f5f9e12` |
-| packages/application/package.json | `cdec57abe34c69918b4a2011b01d4ead4f1c666d5b1c11fde2a58102f70f47bc` |
+| packages/application/package.json | `8316928744eb4396bea1ea584ad8139db25a968085bb0b24257d2836f3590f0d` |
 | packages/builder-kit/package.json | `9c614c8a686e767d959d99cb03a36bd242d8350401e356859307fe540409be44` |
 | packages/cli/package.json | `51eb6c8d3aa3d47fed4b091ccae10770814c0495e091a3c2872a1a461fde3b24` |
 | packages/contracts/package.json | `ac2dfe2091d89223961a05863f0f1126c14cd2a9d6d936337e761ce1b78d46dc` |
 | packages/control/package.json | `714e785a0880b56afcb3bbee93c5b4b90d92513706d0fdcee8e5cb7a55bf196f` |
 | packages/kernel/package.json | `a3b4817905b538ca8e5c338f999198767ca321c5751bbb4136348f3898e53568` |
 | packages/mastra/package.json | `26f2074259c01d6b6a81c7ade71e668d77e670fef6dfe2c1ca2222517bd16a3c` |
-| packages/renderer-svelte/package.json | `bbebb7974bdb0fa327a53c6e29af913e5de0091965afea85d85df365bbc3b4e1` |
+| packages/renderer-svelte/package.json | `4b10c21eaf03db54a3f8eb677be6d8e57ab863f73b08eb824b3e00266c0f82a5` |
 | packages/runtime/package.json | `3af89d74777afabcef858a00946505f9ceebf121c6fed78d1b75d8f1938e06c8` |
 | packages/scaffolder/package.json | `31c6f94094a02721250d0a214159279989e965e4e76b1bbcdef4b457cc1c80c6` |
-| packages/sdk/package.json | `430ae4c90e3e3b227e416efedc99fea92466eb0c76722004fdca46a3a5f41bd5` |
+| packages/sdk/package.json | `a0405122abe4451bae78d7f90ebfef727dfa53a36275c6d2a8fdb04c759252e0` |
 | packages/server/package.json | `3b051604ee6a89904923cd435dc2cc6c454b58af0e5c66986f70614fdb67e3e1` |
 | packages/store-sqlite/package.json | `77919cb1ff418ac56bed12707fa913532d58727bab8b47f59041cfe5af40097b` |
+| packages/ui-svelte/package.json | `2c0aaabf384bd443d2a0dad4ed2f6494999ebcc29af8796c7b7ff533ce8af620` |
+| packages/ui/package.json | `87074c9688fc93dfd2c6e4c891a08c70a58c517879c895c5a8cdc21e4d951aca` |
 | packs/ledger-pack/package.json | `d9e41a96d6a89fc10ca0ef010da718f92c15f4d36cf85309c49ca9acb84a8c27` |
 | packs/notes-pack/package.json | `13654d8e09b3c269ee17bf7d90e48df655b9e56740c165ad4a2551ad5613fea0` |
 
@@ -43,7 +46,7 @@ Rendered view of `docs/builder-kit/context-pack.json` (`vict.builder.context-pac
 | package | version | private | internal dependencies |
 | --- | --- | --- | --- |
 | @victframework/appdata-sqlite | 0.3.1 | no | @victframework/application, @victframework/contracts, @victframework/sdk |
-| @victframework/application | 0.3.1 | no | @victframework/contracts, @victframework/sdk |
+| @victframework/application | 0.3.1 | no | @victframework/contracts, @victframework/sdk, @victframework/ui |
 | @victframework/builder-kit | 0.1.0 | yes |  |
 | @victframework/cli | 0.3.1 | no | @victframework/server |
 | @victframework/contracts | 0.3.1 | no |  |
@@ -52,16 +55,19 @@ Rendered view of `docs/builder-kit/context-pack.json` (`vict.builder.context-pac
 | @victframework/ledger-pack | 1.0.0 | yes | @victframework/sdk |
 | @victframework/mastra | 0.3.1 | no | @victframework/contracts, @victframework/control, @victframework/kernel, @victframework/runtime, @victframework/sdk, @victframework/store-sqlite |
 | @victframework/notes-pack | 1.0.0 | yes | @victframework/sdk |
-| @victframework/renderer-svelte | 0.3.1 | no | @victframework/application, @victframework/sdk |
+| @victframework/renderer-svelte | 0.3.1 | no | @victframework/ui-svelte |
 | @victframework/runtime | 0.3.1 | no | @victframework/contracts, @victframework/kernel, @victframework/sdk |
 | @victframework/scaffolder | 0.3.1 | no |  |
-| @victframework/sdk | 0.3.1 | no | @victframework/contracts |
+| @victframework/sdk | 0.3.1 | no | @victframework/contracts, @victframework/ui |
 | @victframework/server | 0.3.1 | no | @victframework/application, @victframework/contracts, @victframework/control, @victframework/runtime, @victframework/store-sqlite |
 | @victframework/store-sqlite | 0.3.1 | no | @victframework/runtime |
+| @victframework/ui | 0.3.1 | no |  |
+| @victframework/ui-svelte | 0.3.1 | no | @victframework/application, @victframework/sdk, @victframework/ui |
 | application-proof | 0.1.0 | yes | @victframework/application, @victframework/runtime, @victframework/sdk |
 | ara-proof | 0.1.0 | yes | @victframework/runtime, @victframework/sdk |
 | orchestration-proof | 0.1.0 | yes | @victframework/runtime, @victframework/sdk |
 | reference-app | 0.1.0 | yes | @victframework/appdata-sqlite, @victframework/application, @victframework/notes-pack, @victframework/renderer-svelte, @victframework/runtime, @victframework/sdk |
+| ui-showcase | 0.1.0 | yes | @victframework/application, @victframework/renderer-svelte, @victframework/runtime, @victframework/sdk, @victframework/ui, @victframework/ui-svelte |
 
 ## Constitution excerpts
 

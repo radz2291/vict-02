@@ -118,7 +118,7 @@
   "generatedFrom": {
     "inputs": [
       {
-        "contentSha256": "c09e252aae93c082d2a53cf8047a6b7eff52a62203023fdb3efb6ada07bc49df",
+        "contentSha256": "bb067faf17031bdd93a9af45088e557366442879752059c9d7c7434fe9b5ba3d",
         "path": "docs/RELEASE-COMPATIBILITY.md"
       },
       {
@@ -142,11 +142,15 @@
         "path": "examples/orchestration-proof/package.json"
       },
       {
-        "contentSha256": "927dc901e62c3f658c0dc36335ce5c8150669b86d7c49a814bac44c71147860e",
+        "contentSha256": "1743f33bb06d647c6b3bca61313d2f2384a186659b65e0650741c75e27a66910",
         "path": "examples/reference-app/package.json"
       },
       {
-        "contentSha256": "880697603290195841d6a382e20ad836da4668d91e751888cfb37e1eb501ba62",
+        "contentSha256": "c11dad2a61aba1963a810e6dbcd1cb1ee38f5ed8fb993ec6ebfe270984f9a195",
+        "path": "examples/ui-showcase/package.json"
+      },
+      {
+        "contentSha256": "403d5a8bc588e7b64d7cdea6724c36c944f41e17a45d1a8ee33851d9df67fa69",
         "path": "package.json"
       },
       {
@@ -154,7 +158,7 @@
         "path": "packages/appdata-sqlite/package.json"
       },
       {
-        "contentSha256": "cdec57abe34c69918b4a2011b01d4ead4f1c666d5b1c11fde2a58102f70f47bc",
+        "contentSha256": "8316928744eb4396bea1ea584ad8139db25a968085bb0b24257d2836f3590f0d",
         "path": "packages/application/package.json"
       },
       {
@@ -182,7 +186,7 @@
         "path": "packages/mastra/package.json"
       },
       {
-        "contentSha256": "bbebb7974bdb0fa327a53c6e29af913e5de0091965afea85d85df365bbc3b4e1",
+        "contentSha256": "4b10c21eaf03db54a3f8eb677be6d8e57ab863f73b08eb824b3e00266c0f82a5",
         "path": "packages/renderer-svelte/package.json"
       },
       {
@@ -194,7 +198,7 @@
         "path": "packages/scaffolder/package.json"
       },
       {
-        "contentSha256": "430ae4c90e3e3b227e416efedc99fea92466eb0c76722004fdca46a3a5f41bd5",
+        "contentSha256": "a0405122abe4451bae78d7f90ebfef727dfa53a36275c6d2a8fdb04c759252e0",
         "path": "packages/sdk/package.json"
       },
       {
@@ -204,6 +208,14 @@
       {
         "contentSha256": "77919cb1ff418ac56bed12707fa913532d58727bab8b47f59041cfe5af40097b",
         "path": "packages/store-sqlite/package.json"
+      },
+      {
+        "contentSha256": "2c0aaabf384bd443d2a0dad4ed2f6494999ebcc29af8796c7b7ff533ce8af620",
+        "path": "packages/ui-svelte/package.json"
+      },
+      {
+        "contentSha256": "87074c9688fc93dfd2c6e4c891a08c70a58c517879c895c5a8cdc21e4d951aca",
+        "path": "packages/ui/package.json"
       },
       {
         "contentSha256": "d9e41a96d6a89fc10ca0ef010da718f92c15f4d36cf85309c49ca9acb84a8c27",
@@ -222,7 +234,7 @@
       "workspaces": ["examples/*", "packages/*", "packs/*"]
     }
   },
-  "packId": "791f24fb023cf3eb29ffb0d7123f23ad803b8042906ed84ace6d991d4d15a0b2",
+  "packId": "bed2e5c2d3ed5454a259163fdfc3d2b5e0f250520a9ff493ac3603a0584b4c14",
   "permissionProfilesRef": {
     "contentSha256": "893ba3ff5b73e3bf9d87da2ea1c49f5fcd176f5bdb8d36e20628fcf184f19b88",
     "schemaMarker": "vict.builder.profile@1",
@@ -244,7 +256,11 @@
     },
     {
       "externalDependencies": [],
-      "internalDependencies": ["@victframework/contracts", "@victframework/sdk"],
+      "internalDependencies": [
+        "@victframework/contracts",
+        "@victframework/sdk",
+        "@victframework/ui"
+      ],
       "main": "./dist/index.js",
       "name": "@victframework/application",
       "private": false,
@@ -338,7 +354,7 @@
     },
     {
       "externalDependencies": ["svelte"],
-      "internalDependencies": ["@victframework/application", "@victframework/sdk"],
+      "internalDependencies": ["@victframework/ui-svelte"],
       "main": "./src/index.ts",
       "name": "@victframework/renderer-svelte",
       "private": false,
@@ -369,7 +385,7 @@
     },
     {
       "externalDependencies": ["zod"],
-      "internalDependencies": ["@victframework/contracts"],
+      "internalDependencies": ["@victframework/contracts", "@victframework/ui"],
       "main": "./dist/index.js",
       "name": "@victframework/sdk",
       "private": false,
@@ -398,6 +414,28 @@
       "name": "@victframework/store-sqlite",
       "private": false,
       "types": "./dist/index.d.ts",
+      "version": "0.3.1"
+    },
+    {
+      "externalDependencies": [],
+      "internalDependencies": [],
+      "main": "./dist/index.js",
+      "name": "@victframework/ui",
+      "private": false,
+      "types": "./dist/index.d.ts",
+      "version": "0.3.1"
+    },
+    {
+      "externalDependencies": ["@internationalized/date", "bits-ui", "svelte"],
+      "internalDependencies": [
+        "@victframework/application",
+        "@victframework/sdk",
+        "@victframework/ui"
+      ],
+      "main": "./src/index.ts",
+      "name": "@victframework/ui-svelte",
+      "private": false,
+      "types": "./src/index.ts",
       "version": "0.3.1"
     },
     {
@@ -459,6 +497,31 @@
       ],
       "main": "",
       "name": "reference-app",
+      "private": true,
+      "types": "",
+      "version": "0.1.0"
+    },
+    {
+      "externalDependencies": [
+        "@sveltejs/adapter-node",
+        "@sveltejs/kit",
+        "@sveltejs/vite-plugin-svelte",
+        "axe-core",
+        "happy-dom",
+        "puppeteer-core",
+        "svelte",
+        "vite"
+      ],
+      "internalDependencies": [
+        "@victframework/application",
+        "@victframework/renderer-svelte",
+        "@victframework/runtime",
+        "@victframework/sdk",
+        "@victframework/ui",
+        "@victframework/ui-svelte"
+      ],
+      "main": "",
+      "name": "ui-showcase",
       "private": true,
       "types": "",
       "version": "0.1.0"
