@@ -14,7 +14,12 @@ export const application = defineApplication({
   name: 'Regions example',
   // Application composition: navigation arrangement, width, density,
   // and the breakpoint below which primary navigation collapses to a drawer.
-  composition: { navigation: 'sidebar', contentWidth: 'wide', density: 'comfortable', responsive: { navigationAt: 'medium' } },
+  composition: {
+    navigation: 'sidebar',
+    contentWidth: 'wide',
+    density: 'comfortable',
+    responsive: { navigationAt: 'medium' },
+  },
   routes: [{ id: 'home', path: '/', screenId: 's.home', nav: { label: 'Home', order: 1 } }],
   screens: [
     {

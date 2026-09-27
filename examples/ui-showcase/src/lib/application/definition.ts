@@ -1,7 +1,4 @@
-import {
-  APPLICATION_DEFINITION_SCHEMA_V2,
-  type ApplicationDefinition,
-} from '@victframework/sdk';
+import { APPLICATION_DEFINITION_SCHEMA_V2, type ApplicationDefinition } from '@victframework/sdk';
 import { compileApplication } from '@victframework/application';
 import type { ApplicationPlan } from '@victframework/application';
 import { registryContracts, resourceList } from './data.js';

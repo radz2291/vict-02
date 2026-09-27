@@ -46,12 +46,12 @@ function tempDir(prefix: string): string {
 
 /** The explicit release set used by these tests (workspace package specs). */
 const RELEASE_SET: Record<string, string> = {
-  '@victframework/application': '0.3.1',
-  '@victframework/appdata-sqlite': '0.3.1',
-  '@victframework/ui-svelte': '0.3.1',
-  '@victframework/runtime': '0.3.1',
-  '@victframework/sdk': '0.3.1',
-  '@victframework/store-sqlite': '0.3.1',
+  '@victframework/application': '0.4.0-rc.1',
+  '@victframework/appdata-sqlite': '0.4.0-rc.1',
+  '@victframework/ui-svelte': '0.4.0-rc.1',
+  '@victframework/runtime': '0.4.0-rc.1',
+  '@victframework/sdk': '0.4.0-rc.1',
+  '@victframework/store-sqlite': '0.4.0-rc.1',
 };
 
 afterAll(() => {

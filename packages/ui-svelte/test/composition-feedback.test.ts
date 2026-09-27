@@ -243,7 +243,7 @@ describe('composition and integrated feedback through the real renderer', () => 
   it('uses a quiet Save default when no result text is supplied', async () => {
     const app = mount(async () => ({ ok: true }), {
       ...definition,
-      actions: definition.actions.map(({ feedback, ...action }) => action),
+      actions: definition.actions.map(({ feedback: _feedback, ...action }) => action),
     });
     try {
       app.type('A name');

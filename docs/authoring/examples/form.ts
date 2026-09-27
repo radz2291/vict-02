@@ -23,8 +23,19 @@ export const resources = [
       { name: 'priority', type: 'string', label: 'Priority' },
     ],
     mutations: [
-      { op: 'create', effect: 'write', inputContractId: 'task.create.input', idempotency: 'keyed', permissions: ['tasks.write'] },
-      { op: 'update', effect: 'write', inputContractId: 'task.update.input', permissions: ['tasks.write'] },
+      {
+        op: 'create',
+        effect: 'write',
+        inputContractId: 'task.create.input',
+        idempotency: 'keyed',
+        permissions: ['tasks.write'],
+      },
+      {
+        op: 'update',
+        effect: 'write',
+        inputContractId: 'task.update.input',
+        permissions: ['tasks.write'],
+      },
     ],
     authorization: { effect: 'read' },
   }),

@@ -197,13 +197,7 @@ export interface ResourcePresentationHint {
  * constant so authoring tools can expose it without reading types
  * (authoring-tools slice); the union above is derived from it.
  */
-export const RESOURCE_PRESENTATION_WIDGETS = [
-  'text',
-  'number',
-  'boolean',
-  'date',
-  'json',
-] as const;
+export const RESOURCE_PRESENTATION_WIDGETS = ['text', 'number', 'boolean', 'date', 'json'] as const;
 
 /* ------------------------------------------------------------------ */
 /* Application definitions                                             */
@@ -337,14 +331,7 @@ export interface FormField {
  * tools can expose it without reading types (authoring-tools slice); the
  * union above is derived from it.
  */
-export const FORM_FIELD_WIDGETS = [
-  'text',
-  'number',
-  'boolean',
-  'date',
-  'json',
-  'select',
-] as const;
+export const FORM_FIELD_WIDGETS = ['text', 'number', 'boolean', 'date', 'json', 'select'] as const;
 
 /** Declared deterministic read order for a view's rows (@2). */
 export interface ViewSort {

@@ -23,7 +23,13 @@ export const resources = [
       { name: 'author', type: 'string', label: 'Author' },
     ],
     mutations: [
-      { op: 'create', effect: 'write', inputContractId: 'message.send.input', idempotency: 'keyed', permissions: ['messages.write'] },
+      {
+        op: 'create',
+        effect: 'write',
+        inputContractId: 'message.send.input',
+        idempotency: 'keyed',
+        permissions: ['messages.write'],
+      },
     ],
     authorization: { effect: 'read' },
   }),

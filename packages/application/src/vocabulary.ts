@@ -155,13 +155,20 @@ export interface ApplicationVocabulary {
 
 /** Derive the stable, JSON-able vocabulary descriptor. */
 export function describeApplicationVocabulary(): ApplicationVocabulary {
-  const { objects, closedValues, actionFieldsByKind, surfaceFieldsByRoleV1, surfaceFieldsByRoleV2 } =
-    APPLICATION_VOCABULARY;
-  const objectEntries = (sets: Record<string, ReadonlySet<string>>): Record<string, VocabularyObject> =>
-    Object.fromEntries(
-      Object.entries(sets).map(([name, set]) => [name, { fields: sorted(set) }]),
-    );
-  const byKey = (map: ReadonlyMap<string, ReadonlySet<string>>): Record<string, readonly string[]> =>
+  const {
+    objects,
+    closedValues,
+    actionFieldsByKind,
+    surfaceFieldsByRoleV1,
+    surfaceFieldsByRoleV2,
+  } = APPLICATION_VOCABULARY;
+  const objectEntries = (
+    sets: Record<string, ReadonlySet<string>>,
+  ): Record<string, VocabularyObject> =>
+    Object.fromEntries(Object.entries(sets).map(([name, set]) => [name, { fields: sorted(set) }]));
+  const byKey = (
+    map: ReadonlyMap<string, ReadonlySet<string>>,
+  ): Record<string, readonly string[]> =>
     Object.fromEntries([...map.entries()].map(([key, set]) => [key, sorted(set)]));
   return {
     schemaVersions: {

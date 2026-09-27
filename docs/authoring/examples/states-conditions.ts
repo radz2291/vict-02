@@ -47,7 +47,12 @@ export const application = defineApplication({
         {
           name: 'main',
           surfaces: [
-            { role: 'view', id: 'v.list', viewId: 'v.tasks', visibleWhen: { viewNonEmpty: 'v.tasks' } },
+            {
+              role: 'view',
+              id: 'v.list',
+              viewId: 'v.tasks',
+              visibleWhen: { viewNonEmpty: 'v.tasks' },
+            },
             {
               role: 'status',
               id: 'st.status',
@@ -58,8 +63,16 @@ export const application = defineApplication({
               role: 'tabs',
               id: 'tb.panels',
               tabs: [
-                { name: 'details', label: 'Details', surfaces: [{ role: 'text', id: 't.d', content: 'Details.' }] },
-                { name: 'notes', label: 'Notes', surfaces: [{ role: 'text', id: 't.n', content: 'Notes.' }] },
+                {
+                  name: 'details',
+                  label: 'Details',
+                  surfaces: [{ role: 'text', id: 't.d', content: 'Details.' }],
+                },
+                {
+                  name: 'notes',
+                  label: 'Notes',
+                  surfaces: [{ role: 'text', id: 't.n', content: 'Notes.' }],
+                },
               ],
             },
             {
@@ -77,7 +90,12 @@ export const application = defineApplication({
     },
   ],
   views: [
-    { viewId: 'v.tasks', resourceId: 'tasks', resourceRevision: '1', fields: ['id', 'title', 'status'] },
+    {
+      viewId: 'v.tasks',
+      resourceId: 'tasks',
+      resourceRevision: '1',
+      fields: ['id', 'title', 'status'],
+    },
   ],
   forms: [],
   actions: [{ kind: 'navigation', id: 'act.go', revision: '1', routeId: 'home' }],

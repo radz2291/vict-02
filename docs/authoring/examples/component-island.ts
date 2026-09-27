@@ -73,9 +73,7 @@ export const application = defineApplication({
       states: {},
     },
   ],
-  components: [
-    { componentId: 'app.task-summary', revision: '1' },
-  ],
+  components: [{ componentId: 'app.task-summary', revision: '1' }],
   views: [
     {
       viewId: 'v.task',

@@ -4,6 +4,7 @@ import {
   defineApplication,
   defineContract,
   defineResource,
+  type ComponentReference,
 } from '@victframework/sdk';
 import { compileApplication, type ApplicationPlan } from '@victframework/application';
 import { createComponentRegistry } from '@victframework/application/renderer';
@@ -86,7 +87,7 @@ export function probeApp(
     readonly views?: readonly unknown[];
     readonly actions?: readonly unknown[];
     readonly routes?: readonly unknown[];
-    readonly components?: readonly unknown[];
+    readonly components?: readonly ComponentReference[];
   },
 ): ApplicationPlan {
   const application = defineApplication({

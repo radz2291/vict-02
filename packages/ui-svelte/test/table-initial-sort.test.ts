@@ -47,7 +47,11 @@ function makeHostQuery(store: readonly Row[], seen: QueryPayload[]) {
     if (payload.search !== undefined) {
       const needle = payload.search.text.toLowerCase();
       rows = rows.filter((row) =>
-        payload.search!.fields.some((field) => String(row[field] ?? '').toLowerCase().includes(needle)),
+        payload.search!.fields.some((field) =>
+          String(row[field] ?? '')
+            .toLowerCase()
+            .includes(needle),
+        ),
       );
     }
     for (const entry of [...(payload.sort ?? [])].reverse()) {
@@ -105,7 +109,9 @@ function mountDeclaredTable(dispatch: (actionId: string, input?: unknown) => Pro
     dispatch,
     // Server load (`loadRoute`) returns ALL declared-order view rows; the
     // table takes its first page and its pre-query total from them.
-    viewData: { 'v.items': { rows: serverSorted(STORE_ROWS, DECLARED_DESC[0]!), total: STORE_ROWS.length } },
+    viewData: {
+      'v.items': { rows: serverSorted(STORE_ROWS, DECLARED_DESC[0]!), total: STORE_ROWS.length },
+    },
     path: '/',
   });
 }
@@ -211,9 +217,7 @@ describe('declared initial sort on a fresh mount (QA FINDING-1)', () => {
     const mounted = mountDeclaredTable(makeHostQuery(STORE_ROWS, seen));
     try {
       // User sorts by qty: the dispatch now carries the USER sort.
-      mounted.output
-        .querySelector<HTMLButtonElement>('[data-sort-field="qty"]')!
-        .click();
+      mounted.output.querySelector<HTMLButtonElement>('[data-sort-field="qty"]')!.click();
       await flush();
       expect(seen).toHaveLength(1);
       expect(seen[0]!.sort).toEqual([{ field: 'qty', direction: 'asc' }]);

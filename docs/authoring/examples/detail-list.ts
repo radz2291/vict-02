@@ -61,8 +61,18 @@ export const application = defineApplication({
     },
   ],
   views: [
-    { viewId: 'v.task', resourceId: 'tasks', resourceRevision: '1', fields: ['id', 'title', 'notes'] },
-    { viewId: 'v.related', resourceId: 'tasks', resourceRevision: '1', fields: ['id', 'title', 'notes'] },
+    {
+      viewId: 'v.task',
+      resourceId: 'tasks',
+      resourceRevision: '1',
+      fields: ['id', 'title', 'notes'],
+    },
+    {
+      viewId: 'v.related',
+      resourceId: 'tasks',
+      resourceRevision: '1',
+      fields: ['id', 'title', 'notes'],
+    },
   ],
   forms: [],
   actions: [],

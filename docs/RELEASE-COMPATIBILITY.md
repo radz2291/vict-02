@@ -175,6 +175,25 @@
 > publication, trust extension for the two new members) is a separate
 > later step under the amended contract.
 
+> **Coordinated candidate release set 0.4.0-rc.1 (2026-09-27, 14 members
+> — PREPARED; NOT PUBLISHED):** the current compatible release-set record
+> in §2 below is the facade-retirement candidate re-versioned per the
+> repository's release rules: the 14-member set (consolidated amendment
+> draft §16, awaiting owner ratification) at the NEW coherent candidate
+> version `0.4.0-rc.1` (identity `vict-release-set@1/0.4.0-rc.1`,
+> contentId `v1_2a70a29a…`). The version moves off `0.3.1`, which is
+> PUBLISHED and immutable (`latest = 0.3.1` for all 13 historical
+> members since 2026-09-22; ui/ui-svelte have no registry presence), so
+> the 14-member set can never publish at `0.3.1` — the prior r1
+> prepared record naming that version was already un-publishable at
+> filing. Per the frozen §7 rule the line's first publication would be
+> this candidate under the non-latest tag `vict-0.4.0-rc`, with stable
+> `0.4.0` under `latest` only after independent verification. The
+> 14-member `0.3.1` prepared identity (contentId `v1_e31858f1…`, below)
+> was superseded BEFORE any publication and is not the identity of this
+> candidate. Nothing is published; publication additionally requires the
+> owner-ratified final release contract.
+>
 > **Coordinated release set 0.3.1 (re-amended 2026-09-27, 14 members —
 > PREPARED; NOT PUBLISHED):** the current compatible release-set record in
 > §2 below carries the facade retirement of 2026-09-27 (consolidated
@@ -221,43 +240,70 @@ new set. Nothing is ever unpublished, re-published, or mutated.
 ```json
 {
   "vict-release-set": {
-    "identity": "vict-release-set@1/0.3.1",
-    "contentId": "v1_e31858f1ba93a4336524d52886c3c72f85fda4b4237457bccfad2235d0e1555d",
+    "identity": "vict-release-set@1/0.4.0-rc.1",
+    "contentId": "v1_2a70a29af12fa887d18e7099b027a11f86bd2f6a70a756446fb43844e41d9399",
     "contentIdAlgorithm": "sha256 over the sorted newline-joined 'name@version' list of the exact member set, prefixed v1_",
-    "version": "0.3.1",
+    "version": "0.4.0-rc.1",
     "access": "public",
     "registry": "https://registry.npmjs.org/",
     "license": "Apache-2.0",
     "packages": {
-      "@victframework/appdata-sqlite": "0.3.1",
-      "@victframework/application": "0.3.1",
-      "@victframework/cli": "0.3.1",
-      "@victframework/contracts": "0.3.1",
-      "@victframework/control": "0.3.1",
-      "@victframework/kernel": "0.3.1",
-      "@victframework/mastra": "0.3.1",
-      "@victframework/runtime": "0.3.1",
-      "@victframework/scaffolder": "0.3.1",
-      "@victframework/sdk": "0.3.1",
-      "@victframework/server": "0.3.1",
-      "@victframework/store-sqlite": "0.3.1",
-      "@victframework/ui": "0.3.1",
-      "@victframework/ui-svelte": "0.3.1"
+      "@victframework/appdata-sqlite": "0.4.0-rc.1",
+      "@victframework/application": "0.4.0-rc.1",
+      "@victframework/cli": "0.4.0-rc.1",
+      "@victframework/contracts": "0.4.0-rc.1",
+      "@victframework/control": "0.4.0-rc.1",
+      "@victframework/kernel": "0.4.0-rc.1",
+      "@victframework/mastra": "0.4.0-rc.1",
+      "@victframework/runtime": "0.4.0-rc.1",
+      "@victframework/scaffolder": "0.4.0-rc.1",
+      "@victframework/sdk": "0.4.0-rc.1",
+      "@victframework/server": "0.4.0-rc.1",
+      "@victframework/store-sqlite": "0.4.0-rc.1",
+      "@victframework/ui": "0.4.0-rc.1",
+      "@victframework/ui-svelte": "0.4.0-rc.1"
     }
   }
 }
 ```
 
+Version-selection provenance (2026-09-27, this branch): the candidate
+set's coherent version moves `0.3.1` → `0.4.0-rc.1`. Rationale per the
+frozen rules: (a) stable `0.3.1` IS published and immutable — live
+registry reads on 2026-09-27 show `latest = 0.3.1` for all 13 historical
+members (publish time `2026-09-22T04:53:06.374Z`, with `0.3.1-rc.2` also
+published; `@victframework/ui` and `@victframework/ui-svelte` return
+registry 404 — no registry presence at any version), so a coordinated
+14-member set at `0.3.1` is impossible: 13 members already have the
+version and §6 forbids any re-publish; the r1 prepared record naming
+`0.3.1` was therefore already un-publishable when filed, and this
+branch corrects that with a NEW coherent version as the recorded rule
+required; (b) the candidate set differs from the published stable line
+(`0.3.1`, 13 members) by TWO added members (`ui`, `ui-svelte`) and one
+retired member (`renderer-svelte`), plus the whole P1–P5 UI foundation
+and authoring surface — a minor-version step in the repository's 0.x
+convention; (c) §7 publishes every new line as a candidate FIRST
+(`X.Y.Z-rc.N` under the non-latest tag `vict-0.4.0-rc`), stable `0.4.0`
+under `latest` only after independent verification — so the live
+prepared record is the CANDIDATE `0.4.0-rc.1`. The contentId was
+derived from the actual 14 manifests at `0.4.0-rc.1` with the frozen
+algorithm; the version change is itself a NEW set identity (sha256 over
+`name@version` pairs) — the former 14-member `0.3.1` identity
+(`v1_e31858f1…`) is NOT the identity of this candidate and remains
+superseded-unpublished.
+
 Amendment provenance (2026-09-27, facade retirement): the member set
 above is the re-derived 14-package candidate set (consolidated amendment
 draft §16, awaiting owner ratification). The immediately preceding
-prepared record of the SAME `0.3.1` version line carried the 15-member
+prepared record of the `0.3.1` version line carried the 15-member
 §14 set (contentId `v1_3a82c065…`) with `renderer-svelte` retained as a
 pure compatibility facade; that prepared identity was never published and
 is superseded — changing the member set creates a NEW set identity per
-the immutability rule above, and this §2 record is the live prepared
-record for the next release. The contentId was re-derived from the actual
-manifests with the frozen algorithm (`scripts/lib/release-set.mjs`
+the immutability rule above. The intermediate 14-member `0.3.1`
+facade-retirement identity (contentId `v1_e31858f1…`) was in turn
+superseded, still unpublished, by the version selection recorded above.
+The contentId was re-derived from the actual manifests with the frozen
+algorithm (`scripts/lib/release-set.mjs`
 `deriveReleaseSetContentId`). The historical 13-member pre-§14 prepared
 record (contentId `v1_1c695280…`) remains superseded-unpublished as
 recorded below.
@@ -413,7 +459,7 @@ installable by exact pin regardless of which set `latest` points to.
 ## 3. Dependency graph and exact pins
 
 All intra-VICT dependencies inside the release set are EXACT pins of
-`0.3.1` — no ranges, no `workspace:`/`file:`/`git` specifiers in any
+`0.4.0-rc.1` — no ranges, no `workspace:`/`file:`/`git` specifiers in any
 published manifest. Verified dependency direction (acyclic; the two
 members added by the 2026-09-26 contract amendment §14 are marked):
 
@@ -484,8 +530,9 @@ Integrity mechanism: the consumer's lockfile records the SHA-512
 `integrity` hash of every installed tarball; npm verifies every install
 against it. `npm ci` reproduces the exact recorded graph.
 
-The amended set (the `0.3.1` line onward, contract §14; 14 members since
-the 2026-09-27 facade retirement, draft §16) adds `@victframework/ui` and
+The amended set (from the first publication of the post-retirement
+candidate line `0.4.0-rc.1` onward, contract §14; 14 members since the
+2026-09-27 facade retirement, draft §16) adds `@victframework/ui` and
 `@victframework/ui-svelte` to this install list at the set's exact
 version — same exact-pin discipline, with `renderer-svelte` NO LONGER a
 candidate member (imports migrate to `ui-svelte`; see

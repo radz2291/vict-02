@@ -98,7 +98,11 @@ function validateObject(
     const member = (value as Record<string, unknown>)[key];
     const memberPath = path + '.' + key;
     if (nestedResponsive && key === 'responsive') {
-      issues.push(...validateObject(member, memberPath, { navigationAt: [...APPLICATION_COMPOSITION_CHOICES['responsive.navigationAt']] }));
+      issues.push(
+        ...validateObject(member, memberPath, {
+          navigationAt: [...APPLICATION_COMPOSITION_CHOICES['responsive.navigationAt']],
+        }),
+      );
     } else if (!Object.hasOwn(rules, key)) {
       issues.push({ path: memberPath, message: 'Unknown composition choice.' });
     } else if (typeof member !== 'string' || !rules[key]?.includes(member)) {

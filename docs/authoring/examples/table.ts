@@ -25,7 +25,12 @@ export const resources = [
       { name: 'createdAt', type: 'string', label: 'Created' },
     ],
     mutations: [
-      { op: 'update', effect: 'write', inputContractId: 'task.update.input', permissions: ['tasks.write'] },
+      {
+        op: 'update',
+        effect: 'write',
+        inputContractId: 'task.update.input',
+        permissions: ['tasks.write'],
+      },
     ],
     authorization: { effect: 'read' },
   }),
@@ -95,7 +100,13 @@ export const application = defineApplication({
   ],
   forms: [],
   actions: [
-    { kind: 'query', id: 'act.queryTasks', revision: '1', resourceId: 'tasks', resourceRevision: '1' },
+    {
+      kind: 'query',
+      id: 'act.queryTasks',
+      revision: '1',
+      resourceId: 'tasks',
+      resourceRevision: '1',
+    },
     {
       kind: 'capability',
       id: 'act.completeTask',

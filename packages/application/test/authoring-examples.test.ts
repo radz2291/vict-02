@@ -18,7 +18,10 @@ import {
   type CompileApplicationInput,
 } from '@victframework/application';
 
-const examplesDir = join(dirname(fileURLToPath(import.meta.url)), '../../../docs/authoring/examples');
+const examplesDir = join(
+  dirname(fileURLToPath(import.meta.url)),
+  '../../../docs/authoring/examples',
+);
 
 /** Reduce an example module to the compiler input (host conventions). */
 function inputOf(moduleNamespace: Record<string, unknown>): CompileApplicationInput {
@@ -27,13 +30,20 @@ function inputOf(moduleNamespace: Record<string, unknown>): CompileApplicationIn
       ? value
           .filter((entry) => typeof entry === 'object' && entry !== null)
           .filter((entry) => 'id' in (entry as object) && 'revision' in (entry as object))
-          .map((entry) => ({ id: (entry as { id: string }).id, revision: (entry as { revision: string }).revision }))
+          .map((entry) => ({
+            id: (entry as { id: string }).id,
+            revision: (entry as { revision: string }).revision,
+          }))
       : [];
   return {
     application: moduleNamespace['application'] as CompileApplicationInput['application'],
     resources: (moduleNamespace['resources'] ?? []) as CompileApplicationInput['resources'],
-    contracts: identityEntries(moduleNamespace['contracts']) as CompileApplicationInput['contracts'],
-    capabilities: identityEntries(moduleNamespace['capabilities']) as CompileApplicationInput['capabilities'],
+    contracts: identityEntries(
+      moduleNamespace['contracts'],
+    ) as CompileApplicationInput['contracts'],
+    capabilities: identityEntries(
+      moduleNamespace['capabilities'],
+    ) as CompileApplicationInput['capabilities'],
     components: (moduleNamespace['components'] ?? []) as CompileApplicationInput['components'],
   };
 }
@@ -92,7 +102,9 @@ describe('guide claims about diagnostics stay true', () => {
     const broken = structuredClone(application) as Record<string, unknown>;
     (broken['id'] as string) = 'app.example.broken';
     const screens = broken['screens'] as Record<string, unknown>[];
-    (screens[0]['layout'] as unknown[])[0] = {
+    const firstLayout = screens[0]?.['layout'] as unknown[] | undefined;
+    if (firstLayout === undefined) throw new Error('table example: expected a first screen layout');
+    firstLayout[0] = {
       name: 'main',
       surfaces: [
         { role: 'gauge', id: 'g.one' }, // UNKNOWN_SURFACE_ROLE
@@ -111,6 +123,7 @@ describe('guide claims about diagnostics stay true', () => {
       resources: [],
     });
     expect(result.ok).toBe(false);
+    if (result.ok) throw new Error('expected the broken definition to fail compilation');
     const codes = new Set(result.issues.map((issue) => issue.code));
     expect(codes.has('UNKNOWN_SURFACE_ROLE')).toBe(true);
     expect(codes.has('INVALID_VIEW_DECLARATION')).toBe(true);

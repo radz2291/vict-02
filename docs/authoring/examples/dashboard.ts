@@ -32,7 +32,9 @@ export const application = defineApplication({
   id: 'app.example.dashboard',
   revision: '1',
   name: 'Dashboard example',
-  routes: [{ id: 'home', path: '/', screenId: 's.dashboard', nav: { label: 'Dashboard', order: 1 } }],
+  routes: [
+    { id: 'home', path: '/', screenId: 's.dashboard', nav: { label: 'Dashboard', order: 1 } },
+  ],
   screens: [
     {
       id: 's.dashboard',
@@ -63,7 +65,13 @@ export const application = defineApplication({
     },
   ],
   views: [
-    { viewId: 'v.open', resourceId: 'tasks', resourceRevision: '1', fields: ['id'], filters: { status: 'open' } },
+    {
+      viewId: 'v.open',
+      resourceId: 'tasks',
+      resourceRevision: '1',
+      fields: ['id'],
+      filters: { status: 'open' },
+    },
     {
       viewId: 'v.byDay',
       resourceId: 'tasks',

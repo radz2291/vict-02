@@ -154,7 +154,13 @@ describe('action transition coherence (refresh-aware completion)', () => {
       // The send itself is treated as delivered (success), the refresh
       // failure is the separate stale note.
       expect(mounted.output.querySelector('.vict-send-error')?.textContent ?? '').toBe('');
-      expect(mounted.output.querySelector('[data-testid="conversation-input"]')?.value).toBe('');
+      expect(
+        (
+          mounted.output.querySelector(
+            '[data-testid="conversation-input"]',
+          ) as HTMLInputElement | null
+        )?.value,
+      ).toBe('');
     } finally {
       mounted.unmount();
     }

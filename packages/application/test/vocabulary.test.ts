@@ -32,7 +32,14 @@ describe('machine-readable vocabulary', () => {
 
   it('exposes the closed surface roles from the compiler enforcement maps', () => {
     const vocabulary = describeApplicationVocabulary();
-    expect(vocabulary.closedValues.surfaceRoles.v1).toEqual(['action', 'component', 'form', 'states', 'text', 'view']);
+    expect(vocabulary.closedValues.surfaceRoles.v1).toEqual([
+      'action',
+      'component',
+      'form',
+      'states',
+      'text',
+      'view',
+    ]);
     // @2 roles are a superset of the @1 roles and carry the delivery roles.
     for (const role of vocabulary.closedValues.surfaceRoles.v1) {
       expect(vocabulary.closedValues.surfaceRoles.v2).toContain(role);
@@ -47,7 +54,8 @@ describe('machine-readable vocabulary', () => {
   });
 
   it('exposes the table role fields an author needs (view, sort columns, row action)', () => {
-    const tableFields = describeApplicationVocabulary().objects['surface']?.fieldsByKey?.['table'] ?? [];
+    const tableFields =
+      describeApplicationVocabulary().objects['surface']?.fieldsByKey?.['table'] ?? [];
     for (const field of [
       'viewId',
       'queryActionId',
@@ -94,26 +102,42 @@ describe('machine-readable vocabulary', () => {
   it('exposes every diagnostic code the compiler can emit (spot-checked against real diagnostics)', () => {
     // Exhaustiveness against the union is enforced at compile time by the
     // `satisfies` guard in vocabulary.ts; here we pin a few members.
-    for (const code of ['UNKNOWN_SURFACE_ROLE', 'UNKNOWN_FIELD', 'INVALID_VIEW_DECLARATION', 'DUPLICATE_SCREEN_ID']) {
+    for (const code of [
+      'UNKNOWN_SURFACE_ROLE',
+      'UNKNOWN_FIELD',
+      'INVALID_VIEW_DECLARATION',
+      'DUPLICATE_SCREEN_ID',
+    ]) {
       expect(APPLICATION_ISSUE_CODES).toContain(code);
     }
     // Every code emitted by a broken definition is a member of the exported list.
+    // The definition is intentionally invalid (unknown surface role) — it is
+    // built as an untyped record so this file typechecks; the compiler is the
+    // authority that rejects it at runtime.
+    const brokenApplication: Record<string, unknown> = {
+      schema: 'vict.application@2',
+      id: 'app.probe',
+      revision: '1',
+      name: 'Probe',
+      routes: [],
+      screens: [
+        {
+          id: 's.x',
+          title: 'X',
+          layout: [{ name: 'main', surfaces: [{ role: 'nope', id: 'a' }] }],
+        },
+      ],
+      views: [],
+      forms: [],
+      actions: [],
+      resources: [],
+    };
     const result = compileApplication({
-      application: {
-        schema: 'vict.application@2',
-        id: 'app.probe',
-        revision: '1',
-        name: 'Probe',
-        routes: [],
-        screens: [{ id: 's.x', title: 'X', layout: [{ name: 'main', surfaces: [{ role: 'nope', id: 'a' }] }] }],
-        views: [],
-        forms: [],
-        actions: [],
-        resources: [],
-      },
+      application: brokenApplication as never,
       resources: [],
     });
     expect(result.ok).toBe(false);
+    if (result.ok) throw new Error('expected the broken definition to fail compilation');
     for (const issue of result.issues) {
       expect(APPLICATION_ISSUE_CODES).toContain(issue.code);
     }

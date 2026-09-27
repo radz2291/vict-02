@@ -13,8 +13,18 @@ export const application = defineApplication({
   revision: '1',
   name: 'Navigation example',
   routes: [
-    { id: 'home', path: '/', screenId: 's.home', nav: { label: 'Overview', group: 'Work', order: 1 } },
-    { id: 'tasks', path: '/tasks', screenId: 's.tasks', nav: { label: 'Tasks', group: 'Work', order: 2 } },
+    {
+      id: 'home',
+      path: '/',
+      screenId: 's.home',
+      nav: { label: 'Overview', group: 'Work', order: 1 },
+    },
+    {
+      id: 'tasks',
+      path: '/tasks',
+      screenId: 's.tasks',
+      nav: { label: 'Tasks', group: 'Work', order: 2 },
+    },
     { id: 'task', path: '/tasks/:id', screenId: 's.task' }, // deep route: no nav entry
     { id: 'legacy', path: '/legacy', redirect: 'tasks' }, // @2 redirect route (screenId optional)
   ],
@@ -32,7 +42,11 @@ export const application = defineApplication({
     {
       id: 's.task',
       title: 'Task',
-      breadcrumbs: [{ label: 'Home', routeId: 'home' }, { label: 'Tasks', routeId: 'tasks' }, { label: 'Detail' }],
+      breadcrumbs: [
+        { label: 'Home', routeId: 'home' },
+        { label: 'Tasks', routeId: 'tasks' },
+        { label: 'Detail' },
+      ],
       layout: [{ name: 'main', surfaces: [{ role: 'text', id: 't.task', content: 'One task.' }] }],
     },
   ],

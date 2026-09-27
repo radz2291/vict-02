@@ -7,7 +7,11 @@ export const application = defineApplication({
   name: 'Valid',
   routes: [{ id: 'home', path: '/', screenId: 's.home', nav: { label: 'Home', order: 1 } }],
   screens: [
-    { id: 's.home', title: 'Home', layout: [{ name: 'main', surfaces: [{ role: 'text', id: 't.hi', content: 'Hi' }] }] },
+    {
+      id: 's.home',
+      title: 'Home',
+      layout: [{ name: 'main', surfaces: [{ role: 'text', id: 't.hi', content: 'Hi' }] }],
+    },
   ],
   views: [],
   forms: [],

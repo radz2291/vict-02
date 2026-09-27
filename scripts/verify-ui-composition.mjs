@@ -1,4 +1,4 @@
-/* global document, window, location, innerWidth, getComputedStyle, scrollY, Event */
+/* global document, window, location, innerWidth, getComputedStyle, scrollY */
 import assert from 'node:assert/strict';
 import { spawn } from 'node:child_process';
 import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
@@ -62,7 +62,6 @@ try {
     );
     await page.waitForSelector('[data-testid="vict-host"]');
   };
-  const focused = () => page.evaluate(() => document.activeElement?.getAttribute('data-testid'));
   const countDialogs = (n) =>
     page.waitForFunction(
       (count) => document.querySelectorAll('[role="dialog"]').length === count,

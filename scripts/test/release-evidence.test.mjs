@@ -124,17 +124,25 @@ describe('BOUND_CANDIDATE', () => {
   });
 
   it('the FACADE-RETIREMENT 14-member candidate set derives its own distinct recorded identity', () => {
-    // Regression coupling for the 2026-09-27 facade-retirement draft §16:
-    // the current 0.3.1 candidate set (14 members) must derive the newly
-    // recorded contentId — distinct from both the historical bound
-    // candidate and the superseded-unpublished §14/§15 15-member record.
-    const list = FROZEN_PUBLISH_ORDER.map((name) => `${name}@0.3.1`);
+    // Regression coupling for the 2026-09-27 facade-retirement draft §16
+    // as prepared for owner review (version selection to 0.4.0-rc.1):
+    // the current candidate set (14 members at 0.4.0-rc.1) must derive
+    // the newly recorded contentId — distinct from the historical bound
+    // candidate, the superseded-unpublished §14/§15 15-member record,
+    // AND the superseded-unpublished intermediate 14-member 0.3.1
+    // facade-retirement record (a version change is a set-identity
+    // change, so the 0.3.1 identity is NOT this candidate's identity).
+    const list = FROZEN_PUBLISH_ORDER.map((name) => `${name}@0.4.0-rc.1`);
     expect(deriveReleaseSetContentId(list)).toBe(
-      'v1_e31858f1ba93a4336524d52886c3c72f85fda4b4237457bccfad2235d0e1555d',
+      'v1_2a70a29af12fa887d18e7099b027a11f86bd2f6a70a756446fb43844e41d9399',
     );
     expect(deriveReleaseSetContentId(list)).not.toBe(BOUND_CANDIDATE.expectedContentId);
     expect(deriveReleaseSetContentId(list)).not.toBe(
       'v1_3a82c0651bb4b0d554009c87ffe4b3038cf8c51b208648572caf510373fdafaa',
+    );
+    expect(deriveReleaseSetContentId(FROZEN_PUBLISH_ORDER.map((name) => `${name}@0.3.1`))).toBe(
+      // the superseded r1 intermediate: 14 members at the consumed 0.3.1 line
+      'v1_e31858f1ba93a4336524d52886c3c72f85fda4b4237457bccfad2235d0e1555d',
     );
   });
 

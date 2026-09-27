@@ -20,28 +20,34 @@ const cliRoot = dirname(dirname(fileURLToPath(import.meta.url)));
 const bin = join(cliRoot, 'bin', 'vict.mjs');
 
 describe('vict bin check (packaged flow)', () => {
-  it.skipIf(!existsSync(join(cliRoot, 'dist', 'cli.js')))('checks a TypeScript definition end-to-end via the bin re-exec', () => {
-    const fixture = join(cliRoot, 'test', 'fixtures', 'check', 'valid.ts');
-    const stdout = execFileSync(process.execPath, [bin, 'check', fixture, '--json'], {
-      encoding: 'utf8',
-    });
-    const payload = JSON.parse(stdout);
-    expect(payload.ok).toBe(true);
-    expect(payload.applicationVersion).toMatch(/^v1_[0-9a-f]{64}$/);
-  });
+  it.skipIf(!existsSync(join(cliRoot, 'dist', 'cli.js')))(
+    'checks a TypeScript definition end-to-end via the bin re-exec',
+    () => {
+      const fixture = join(cliRoot, 'test', 'fixtures', 'check', 'valid.ts');
+      const stdout = execFileSync(process.execPath, [bin, 'check', fixture, '--json'], {
+        encoding: 'utf8',
+      });
+      const payload = JSON.parse(stdout);
+      expect(payload.ok).toBe(true);
+      expect(payload.applicationVersion).toMatch(/^v1_[0-9a-f]{64}$/);
+    },
+  );
 
-  it.skipIf(!existsSync(join(cliRoot, 'dist', 'cli.js')))('reports invalid definitions with exit code 4 through the bin', () => {
-    const fixture = join(cliRoot, 'test', 'fixtures', 'check', 'broken.ts');
-    let failed: { status: number; stderr: string } | undefined;
-    try {
-      execFileSync(process.execPath, [bin, 'check', fixture, '--json'], { encoding: 'utf8' });
-    } catch (error) {
-      failed = error as { status: number; stderr: string };
-    }
-    expect(failed).toBeDefined();
-    expect(failed?.status).toBe(4);
-    const payload = JSON.parse(failed?.stdout as string) as { ok: boolean; issueCount: number };
-    expect(payload.ok).toBe(false);
-    expect(payload.issueCount).toBeGreaterThan(0);
-  });
+  it.skipIf(!existsSync(join(cliRoot, 'dist', 'cli.js')))(
+    'reports invalid definitions with exit code 4 through the bin',
+    () => {
+      const fixture = join(cliRoot, 'test', 'fixtures', 'check', 'broken.ts');
+      let failed: { status: number; stderr: string; stdout: string } | undefined;
+      try {
+        execFileSync(process.execPath, [bin, 'check', fixture, '--json'], { encoding: 'utf8' });
+      } catch (error) {
+        failed = error as { status: number; stderr: string; stdout: string };
+      }
+      if (!failed) throw new Error('expected the bin to exit non-zero on the broken fixture');
+      expect(failed.status).toBe(4);
+      const payload = JSON.parse(failed.stdout) as { ok: boolean; issueCount: number };
+      expect(payload.ok).toBe(false);
+      expect(payload.issueCount).toBeGreaterThan(0);
+    },
+  );
 });

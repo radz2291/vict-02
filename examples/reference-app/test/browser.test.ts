@@ -571,16 +571,12 @@ async function measureLayout(page: Page): Promise<LayoutMeasurement> {
     // Measure whichever navigation is actually visible; fall back to the
     // desktop nav so a hidden-nav assertion still sees display:'none'.
     const navElements = Array.from(
-      document.querySelectorAll<HTMLElement>(
-        '[data-desktop-navigation], .vict-navigation-drawer',
-      ),
+      document.querySelectorAll<HTMLElement>('[data-desktop-navigation], .vict-navigation-drawer'),
     );
     const visibleNav = navElements.find((el) => {
       const style = window.getComputedStyle(el);
       return (
-        style.display !== 'none' &&
-        style.visibility !== 'hidden' &&
-        el.getClientRects().length > 0
+        style.display !== 'none' && style.visibility !== 'hidden' && el.getClientRects().length > 0
       );
     });
     const nav = visibleNav ?? navElements[0] ?? null;

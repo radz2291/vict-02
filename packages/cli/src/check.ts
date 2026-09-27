@@ -111,7 +111,9 @@ function schemaMarkerOf(value: unknown): string | null {
  */
 export function extractCompileInput(
   moduleNamespace: Record<string, unknown>,
-): { ok: true; input: CompileApplicationInput; schema: string | null } | { ok: false; error: string } {
+):
+  | { ok: true; input: CompileApplicationInput; schema: string | null }
+  | { ok: false; error: string } {
   // Full input object (default or named `checkInput`).
   const candidates: unknown[] = [moduleNamespace['default'], moduleNamespace['checkInput']];
   for (const candidate of candidates) {
@@ -144,11 +146,15 @@ export function extractCompileInput(
     return { ok: true, input, schema: schemaMarkerOf(application) };
   }
   // Fallback: exactly one named export that looks like the definition.
-  const flagged = Object.entries(moduleNamespace).filter(([, value]) => schemaMarkerOf(value) !== null);
+  const flagged = Object.entries(moduleNamespace).filter(
+    ([, value]) => schemaMarkerOf(value) !== null,
+  );
   if (flagged.length === 1) {
     const [exportName, exportValue] = flagged[0] as [string, unknown];
     void exportName;
-    const input = normalizeInput({ application: exportValue as CompileApplicationInput['application'] });
+    const input = normalizeInput({
+      application: exportValue as CompileApplicationInput['application'],
+    });
     return { ok: true, input, schema: schemaMarkerOf(exportValue) };
   }
   return {
@@ -181,7 +187,9 @@ function normalizeInput(partial: Partial<CompileApplicationInput>): CompileAppli
     Array.isArray(value)
       ? value
           .filter((entry): entry is Record<string, unknown> => isPlainObject(entry))
-          .filter((entry) => typeof entry[key] === 'string' && typeof entry['revision'] === 'string')
+          .filter(
+            (entry) => typeof entry[key] === 'string' && typeof entry['revision'] === 'string',
+          )
           .map((entry) => ({ id: entry['id'] as string, revision: entry['revision'] as string }))
       : [];
   const contracts = identityEntries(partial.contracts, 'id');
@@ -191,8 +199,14 @@ function normalizeInput(partial: Partial<CompileApplicationInput>): CompileAppli
   const components = Array.isArray(partial.components)
     ? partial.components
         .filter((entry): entry is Record<string, unknown> => isPlainObject(entry))
-        .filter((entry) => typeof entry['componentId'] === 'string' && typeof entry['revision'] === 'string')
-        .map((entry) => ({ componentId: entry['componentId'] as string, revision: entry['revision'] as string }))
+        .filter(
+          (entry) =>
+            typeof entry['componentId'] === 'string' && typeof entry['revision'] === 'string',
+        )
+        .map((entry) => ({
+          componentId: entry['componentId'] as string,
+          revision: entry['revision'] as string,
+        }))
     : [];
   if (components.length > 0) input.components = components;
   return input as CompileApplicationInput;
@@ -270,7 +284,11 @@ function enrichIssue(
   vocabulary: Vocabulary,
   templates: { prefix: string; object: VocabObject }[],
 ): { code: string; message: string; path?: string; allowedValues?: readonly string[] } {
-  const base = { code: issue.code, message: issue.message, ...(issue.path !== undefined ? { path: issue.path } : {}) };
+  const base = {
+    code: issue.code,
+    message: issue.message,
+    ...(issue.path !== undefined ? { path: issue.path } : {}),
+  };
   const allowed = (values: readonly string[]) => ({ ...base, allowedValues: values });
 
   switch (issue.code) {
@@ -292,7 +310,8 @@ function enrichIssue(
       return allowed([...merged].sort());
     }
     case 'INVALID_VIEW_DECLARATION':
-      if (/sort direction/i.test(issue.message)) return allowed(vocabulary.closedValues.sortDirections);
+      if (/sort direction/i.test(issue.message))
+        return allowed(vocabulary.closedValues.sortDirections);
       break;
     case 'INVALID_CHART_DECLARATION':
       if (/\bkind\b/i.test(issue.message)) return allowed(vocabulary.closedValues.chartKinds);
@@ -402,7 +421,9 @@ export async function runCheckCommand(
     } else {
       io.stdout(`vict check: OK — ${filePath}`);
       io.stdout(`  schema:              ${extracted.schema ?? 'unknown'}`);
-      io.stdout(`  application id:      ${result.plan.applicationId} @ ${result.plan.applicationRevision}`);
+      io.stdout(
+        `  application id:      ${result.plan.applicationId} @ ${result.plan.applicationRevision}`,
+      );
       io.stdout(`  applicationVersion:  ${result.plan.applicationVersion}`);
     }
     return 0;
@@ -419,10 +440,13 @@ export async function runCheckCommand(
     };
     io.stdout(JSON.stringify(payload, null, 2));
   } else {
-    io.stderr(`vict check: INVALID — ${filePath} (${issues.length} issue${issues.length === 1 ? '' : 's'})`);
+    io.stderr(
+      `vict check: INVALID — ${filePath} (${issues.length} issue${issues.length === 1 ? '' : 's'})`,
+    );
     for (const issue of issues) {
       const location = issue.path !== undefined ? ` [${issue.path}]` : '';
-      const values = issue.allowedValues !== undefined ? ` (allowed: ${issue.allowedValues.join(', ')})` : '';
+      const values =
+        issue.allowedValues !== undefined ? ` (allowed: ${issue.allowedValues.join(', ')})` : '';
       io.stderr(`  ${issue.code}${location}: ${issue.message}${values}`);
     }
     io.stderr('Exit code 4 (invalid definition). Fix the issues above and re-run.');

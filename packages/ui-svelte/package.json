@@ -1,6 +1,6 @@
 {
   "name": "@victframework/ui-svelte",
-  "version": "0.3.1",
+  "version": "0.4.0-rc.1",
   "type": "module",
   "description": "The permanent Svelte renderer for Vict Application Plans: the canonical ApplicationRenderer (mount/update/unmount machinery, generic VitApp host, recursive surface traversal, table/form/overlay adapters, route + structural validation, presentation normalization, canonical form-value conversion) plus the shared presentation components and packaged styles. Framework-neutral packages never depend on Svelte — Svelte lives only in this renderer boundary.",
   "exports": {
@@ -238,9 +238,9 @@
   },
   "dependencies": {
     "@internationalized/date": "^3.12.4",
-    "@victframework/application": "0.3.1",
-    "@victframework/sdk": "0.3.1",
-    "@victframework/ui": "0.3.1",
+    "@victframework/application": "0.4.0-rc.1",
+    "@victframework/sdk": "0.4.0-rc.1",
+    "@victframework/ui": "0.4.0-rc.1",
     "bits-ui": "^2.19.3"
   },
   "peerDependencies": {

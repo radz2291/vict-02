@@ -196,8 +196,7 @@ export function deriveUiPlan(plan: UiPlanSource): UiPlan {
       if (surface.role === 'table') {
         const declaredColumns = Array.isArray(surface.columns) ? surface.columns : [];
         const view = plan.views?.[String(surface.viewId)] as
-          | { fields?: readonly string[]; sort?: unknown }
-          | undefined;
+          { fields?: readonly string[]; sort?: unknown } | undefined;
         const initialSort = deriveInitialSort(view?.sort);
         const rawColumns =
           declaredColumns.length > 0
