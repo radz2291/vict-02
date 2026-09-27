@@ -18,8 +18,7 @@
     "@victframework/sdk": "0.3.1",
     "@victframework/runtime": "0.3.1",
     "@victframework/ui": "0.3.1",
-    "@victframework/ui-svelte": "0.3.1",
-    "@victframework/renderer-svelte": "0.3.1"
+    "@victframework/ui-svelte": "0.3.1"
   },
   "devDependencies": {
     "@sveltejs/adapter-node": "^5.2.12",

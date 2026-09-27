@@ -44,8 +44,9 @@ export interface ScaffoldVictAppOptions {
    * platform versions — placeholder version pins are a release-integrity
    * defect (Stage 8 F6 §6.1). The generated host requires at least:
    * `@victframework/application`, `@victframework/appdata-sqlite`,
-   * `@victframework/renderer-svelte`, `@victframework/runtime`,
-   * `@victframework/sdk`, `@victframework/store-sqlite`.
+   * `@victframework/ui-svelte` (the sole Svelte renderer package),
+   * `@victframework/runtime`, `@victframework/sdk`,
+   * `@victframework/store-sqlite`.
    */
   readonly platformDependencies: Readonly<Record<string, string>>;
 }
@@ -82,7 +83,7 @@ export const GENERATED_FILES: readonly string[] = Object.freeze(
 export const REQUIRED_PLATFORM_PACKAGES: readonly string[] = Object.freeze([
   '@victframework/application',
   '@victframework/appdata-sqlite',
-  '@victframework/renderer-svelte',
+  '@victframework/ui-svelte',
   '@victframework/runtime',
   '@victframework/sdk',
   '@victframework/store-sqlite',
@@ -615,7 +616,7 @@ import {
   resolveRoute,
   type ViewDatum,
   type VictPlanView,
-} from '@victframework/renderer-svelte';
+} from '@victframework/ui-svelte';
 import {
   compileAppPlan,
   resources,
@@ -1046,8 +1047,8 @@ export const load: PageServerLoad = async ({ url }) => {
   // will ever need. Everything visible is rendered from the neutral plan.
   import { page } from '$app/state';
   import { invalidateAll } from '$app/navigation';
-  import { VitApp, type ActionResult } from '@victframework/renderer-svelte';
-  import '@victframework/renderer-svelte/theme.css';
+  import { VitApp, type ActionResult } from '@victframework/ui-svelte';
+  import '@victframework/ui-svelte/styles.css';
   import { createComponentRegistry } from '@victframework/application/renderer';
   import { registerComponents } from '$lib/components/registry';
 
@@ -1167,7 +1168,7 @@ any file it created, and it refuses conflicts instead of overwriting.
 \`package.json\` pins the EXACT platform release set passed to the
 scaffolder (\`platformDependencies\`). The generated host imports at least:
 \`@victframework/application\`, \`@victframework/appdata-sqlite\`,
-\`@victframework/renderer-svelte\`, \`@victframework/runtime\`,
+\`@victframework/ui-svelte\`, \`@victframework/runtime\`,
 \`@victframework/sdk\`, \`@victframework/store-sqlite\`.
 
 ## Commands

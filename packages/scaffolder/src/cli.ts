@@ -9,7 +9,7 @@
  *   { "@victframework/sdk": "0.3.1", "@victframework/runtime": "0.3.1", ... }
  * The scaffolder never invents or defaults platform versions: an explicit
  * release-set selection covering the packages the generated host imports
- * (application, appdata-sqlite, renderer-svelte, runtime, sdk,
+ * (application, appdata-sqlite, ui-svelte, runtime, sdk,
  * store-sqlite) is REQUIRED.
  */
 import { readFileSync } from 'node:fs';

@@ -4,8 +4,8 @@ import {
   createInMemoryApplicationData,
   type ApplicationDataAdapter,
 } from '@victframework/application';
-import { renderVictApplication } from '@victframework/renderer-svelte';
-import type { MountedVictApplication } from '@victframework/renderer-svelte';
+import { renderVictApplication } from '@victframework/ui-svelte';
+import type { MountedVictApplication } from '@victframework/ui-svelte';
 import {
   compileReferencePlan,
   dataContracts,

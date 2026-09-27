@@ -4,8 +4,8 @@ import {
   createInMemoryApplicationData,
   type ApplicationDataAdapter,
 } from '@victframework/application';
-import { renderVictApplication } from '@victframework/renderer-svelte';
-import type { MountedVictApplication } from '@victframework/renderer-svelte';
+import { renderVictApplication } from '@victframework/ui-svelte';
+import type { MountedVictApplication } from '@victframework/ui-svelte';
 import { dataContracts, resources } from '$lib/application/definition.js';
 import { createReferenceRegistry } from '$lib/components/registry';
 import { createReferenceServer, type ReferenceAppServer } from '$lib/server/application-server';

@@ -16,7 +16,6 @@ const aliases = {
   '@victframework/sdk': resolveFromRoot('../../packages/sdk/src/index.ts'),
   '@victframework/runtime': resolveFromRoot('../../packages/runtime/src/index.ts'),
   '@victframework/ui': resolveFromRoot('../../packages/ui/src/index.ts'),
-  '@victframework/renderer-svelte': resolveFromRoot('../../packages/renderer-svelte/src/index.ts'),
 };
 
 // The ui-svelte package resolves through package exports in the real dev

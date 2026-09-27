@@ -17,7 +17,8 @@
  * Safety model (frozen):
  * - exact package allowlist: derives the inventory from the canonical
  *   manifests and refuses to act if it is not exactly the frozen
- *   15-package set (contract §5 as amended 2026-09-26, §14);
+ *   14-package set (contract §5 as amended 2026-09-26, §14; candidate
+ *   set re-derived 2026-09-27 by the facade-retirement draft §16);
  * - deterministic order: the frozen dependency-topological publication
  *   order;
  * - two-second delay between registry-mutating requests;

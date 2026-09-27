@@ -199,7 +199,6 @@ function packedScaffolderCheck() {
       'appdata-sqlite',
       'ui',
       'ui-svelte',
-      'renderer-svelte',
       'scaffolder',
     ]) {
       const pack = run(npm, ['pack', `./packages/${name}`, '--pack-destination', work], {

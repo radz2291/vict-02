@@ -216,7 +216,7 @@ function fetchSync(url) {
  * The frozen resume split (contract §10): with a resume point, every
  * member BEFORE it must already exist (integrity proof happens where the
  * local tarball exists), and every member AT/AFTER it must be
- * unpublished. Without a resume point, all 15 must be unpublished.
+ * unpublished. Without a resume point, all 14 must be unpublished.
  */
 function validateUnpublishedGuard(inventory, version, resumeFrom) {
   const order = inventory.order;

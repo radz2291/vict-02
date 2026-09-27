@@ -4,7 +4,7 @@ import {
   type FrozenApplicationRelease,
 } from '@victframework/application';
 import type { ApplicationPlan } from '@victframework/application';
-import { createVictRenderer, RENDERER_ID, RENDERER_REVISION } from '@victframework/renderer-svelte';
+import { createVictRenderer, RENDERER_ID, RENDERER_REVISION } from '@victframework/ui-svelte';
 import { createReferenceRegistry } from '$lib/components/registry';
 
 /**

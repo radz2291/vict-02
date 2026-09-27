@@ -162,21 +162,22 @@ describe('npmVersionSatisfiesMinimum', () => {
 describe('deriveReleaseInventory (real repository)', () => {
   const inventory = deriveReleaseInventory(repoRoot);
 
-  it('derives exactly the frozen 15-package set (contract §5 as amended 2026-09-26, §14; order re-amended 2026-09-27, §15) with no problems', () => {
+  it('derives exactly the frozen 14-package set (contract §5 as amended 2026-09-26, §14; order re-amended 2026-09-27, §15; facade-retirement draft §16) with no problems', () => {
     expect(inventory.problems).toEqual([]);
     expect(inventory.order).toEqual(FROZEN_PUBLISH_ORDER);
     expect(inventory.order).toHaveLength(EXPECTED_RELEASE_PACKAGE_COUNT);
-    expect(EXPECTED_RELEASE_PACKAGE_COUNT).toBe(15);
-    // The §15 re-amendment moved ONLY `ui`: it now sits immediately before
+    expect(EXPECTED_RELEASE_PACKAGE_COUNT).toBe(14);
+    // The §15 re-amendment moved ONLY `ui`: it sits immediately before
     // its EARLIEST internal dependent — `sdk` gained a `@victframework/ui`
-    // dependency (presentation-intent types) alongside `application` —
-    // while the §14 positions of `ui-svelte` (8) and `renderer-svelte` (9)
-    // are unchanged.
+    // dependency (presentation-intent types) alongside `application`.
+    // The facade-retirement draft §16 then REMOVED the
+    // `@victframework/renderer-svelte` compatibility facade (the §15
+    // position 9) — one deletion, no reordering.
     expect(inventory.order[1]).toBe('@victframework/ui');
     expect(inventory.order[2]).toBe('@victframework/sdk');
     expect(inventory.order[6]).toBe('@victframework/application');
     expect(inventory.order[7]).toBe('@victframework/ui-svelte');
-    expect(inventory.order[8]).toBe('@victframework/renderer-svelte');
+    expect(inventory.order).not.toContain('@victframework/renderer-svelte');
   });
 
   it('shares ONE coherent release-set version of the coordinated shape', () => {
@@ -220,7 +221,7 @@ describe('deriveReleaseInventory (synthetic drift fixtures)', () => {
     ]);
     const problems = fixture.problems.join('\n');
     expect(problems).toContain('frozen publication order violated');
-    expect(problems).toContain('expected exactly 15');
+    expect(problems).toContain('expected exactly 14');
   });
 
   it('reports an extra publishable member outside the frozen inventory', () => {
@@ -230,9 +231,9 @@ describe('deriveReleaseInventory (synthetic drift fixtures)', () => {
     ]);
     const problems = fixture.problems.join('\n');
     expect(problems).toContain(
-      "'@victframework/ghost-package' is not in the frozen 15-package inventory",
+      "'@victframework/ghost-package' is not in the frozen 14-package inventory",
     );
-    expect(problems).toContain('release-set inventory is 2 packages, expected exactly 15');
+    expect(problems).toContain('release-set inventory is 2 packages, expected exactly 14');
   });
 
   it('reports a missing frozen inventory member', () => {
@@ -241,7 +242,7 @@ describe('deriveReleaseInventory (synthetic drift fixtures)', () => {
     expect(problems).toContain(
       "frozen inventory member '@victframework/sdk' has no publishable manifest",
     );
-    expect(problems).toContain('release-set inventory is 1 packages, expected exactly 15');
+    expect(problems).toContain('release-set inventory is 1 packages, expected exactly 14');
   });
 
   it('reports an internal dependency edge to a non-member', () => {
@@ -702,12 +703,13 @@ describe('release.yml workflow definition', () => {
     expect(publishStep.if).toBe('${{ inputs.validate_only != true }}');
   });
 
-  it('carries the AMENDED 15-package wording (contract §14, 2026-09-26) with no stale 13-package claims', () => {
-    expect(raw).toContain('coordinated 15-package `@victframework/*` set');
-    expect(raw).toContain('must equal all 15 manifests');
-    expect(raw).toContain('Build all 15 packages');
-    // No normative 13-package claim survives anywhere in the workflow.
+  it('carries the facade-retirement 14-package wording (contract §14 as re-derived by draft §16, 2026-09-27) with no stale count claims', () => {
+    expect(raw).toContain('coordinated 14-package `@victframework/*` set');
+    expect(raw).toContain('must equal all 14 manifests');
+    expect(raw).toContain('Build all 14 packages');
+    // No normative stale-count claim survives anywhere in the workflow.
     expect(raw).not.toMatch(/13-package|all 13\b|Build all 13/);
+    expect(raw).not.toMatch(/15-package|all 15\b|Build all 15/);
   });
 
   it('passes release inputs as environment variables, never by shell interpolation', () => {
@@ -799,12 +801,10 @@ describe('trust-bootstrap amended inventory coupling', () => {
     }
     expect(amended.every((name) => FROZEN_PUBLISH_ORDER.includes(name))).toBe(true);
     // Position invariants: each amended member sits AFTER everything it
-    // depends on and the facade stays directly after ui-svelte.
+    // depends on. The retired facade is absent from the order entirely.
     const pos = new Map(FROZEN_PUBLISH_ORDER.map((name, index) => [name, index]));
     expect(pos.get('@victframework/ui')).toBeLessThan(pos.get('@victframework/ui-svelte'));
-    expect(pos.get('@victframework/ui-svelte')).toBeLessThan(
-      pos.get('@victframework/renderer-svelte'),
-    );
     expect(pos.get('@victframework/application')).toBeLessThan(pos.get('@victframework/ui-svelte'));
+    expect(pos.has('@victframework/renderer-svelte')).toBe(false);
   });
 });

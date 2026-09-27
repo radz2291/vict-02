@@ -36,18 +36,19 @@ const repoRoot = resolve(scriptDir, '..');
 const PUBLISH = process.argv.includes('--publish');
 const PUBLIC_REGISTRY = 'https://registry.npmjs.org/';
 
-/** Dependency-topological publication order (the amended frozen contract
- * §5 order — 15 members, 2026-09-26 amendment §14). */
+/** Dependency-topological publication order (contract §5 as amended;
+ * candidate set per the facade-retirement draft §16, 2026-09-27: the
+ * §15 order minus the removed renderer-svelte facade — 14 members,
+ * awaiting owner ratification). */
 const PUBLISH_ORDER = [
   'contracts',
+  'ui',
   'sdk',
   'kernel',
   'runtime',
   'store-sqlite',
   'application',
-  'ui',
   'ui-svelte',
-  'renderer-svelte',
   'appdata-sqlite',
   'scaffolder',
   'control',

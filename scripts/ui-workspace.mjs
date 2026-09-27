@@ -1,16 +1,7 @@
 import { spawn, spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 const root = fileURLToPath(new URL('../', import.meta.url));
-for (const name of [
-  'contracts',
-  'ui',
-  'sdk',
-  'kernel',
-  'runtime',
-  'application',
-  'ui-svelte',
-  'renderer-svelte',
-]) {
+for (const name of ['contracts', 'ui', 'sdk', 'kernel', 'runtime', 'application', 'ui-svelte']) {
   const built = spawnSync(
     process.execPath,
     [process.env.npm_execpath, 'run', 'build', '-w', '@victframework/' + name],

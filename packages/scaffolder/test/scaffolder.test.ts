@@ -48,7 +48,7 @@ function tempDir(prefix: string): string {
 const RELEASE_SET: Record<string, string> = {
   '@victframework/application': '0.3.1',
   '@victframework/appdata-sqlite': '0.3.1',
-  '@victframework/renderer-svelte': '0.3.1',
+  '@victframework/ui-svelte': '0.3.1',
   '@victframework/runtime': '0.3.1',
   '@victframework/sdk': '0.3.1',
   '@victframework/store-sqlite': '0.3.1',

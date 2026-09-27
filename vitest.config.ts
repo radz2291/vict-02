@@ -17,7 +17,6 @@ const aliases = {
   '@victframework/runtime': resolveFromRoot('packages/runtime/src/index.ts'),
   '@victframework/store-sqlite': resolveFromRoot('packages/store-sqlite/src/index.ts'),
   '@victframework/appdata-sqlite': resolveFromRoot('packages/appdata-sqlite/src/index.ts'),
-  '@victframework/renderer-svelte': resolveFromRoot('packages/renderer-svelte/src/index.ts'),
   '@victframework/scaffolder': resolveFromRoot('packages/scaffolder/src/index.ts'),
   '@victframework/application/testing': resolveFromRoot('packages/application/src/testing.ts'),
   '@victframework/application/renderer': resolveFromRoot('packages/application/src/renderer.ts'),
@@ -44,12 +43,12 @@ export default defineConfig({
             // (scripts/lib/*) used by the release-gate verifiers.
             'scripts/test/**/*.test.mjs',
           ],
-          // Svelte renderer packages run in their own DOM-level project
-          // (svelte plugin + happy-dom) — never double-run without their
-          // toolchain. The Mastra adapter runs in its own project with a
-          // network guard (its suites must fail on any unexpected network
-          // request) — never double-run without that guard.
-          exclude: ['packages/renderer-svelte/**', 'packages/ui-svelte/**', 'packages/mastra/**'],
+          // The Svelte renderer runs in its own DOM-level project (svelte
+          // plugin + happy-dom) — never double-run without its toolchain.
+          // The Mastra adapter runs in its own project with a network guard
+          // (its suites must fail on any unexpected network request) — never
+          // double-run without that guard.
+          exclude: ['packages/ui-svelte/**', 'packages/mastra/**'],
         },
         resolve: { alias: aliases },
       },
@@ -68,13 +67,9 @@ export default defineConfig({
         test: {
           name: 'renderer',
           server: { deps: { inline: ['bits-ui', 'runed', '@internationalized/date'] } },
-          // The permanent renderer implementation owner (ui-svelte) plus the
-          // renderer-svelte compatibility-facade tests share the same
-          // DOM-level toolchain (svelte plugin + happy-dom).
-          include: [
-            'packages/renderer-svelte/test/**/*.test.ts',
-            'packages/ui-svelte/test/**/*.test.ts',
-          ],
+          // The permanent Svelte renderer implementation (ui-svelte — the
+          // sole renderer package since the facade retirement).
+          include: ['packages/ui-svelte/test/**/*.test.ts'],
           environment: 'happy-dom',
         },
         resolve: { alias: aliases, conditions: ['browser'] },

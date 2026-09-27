@@ -4,7 +4,7 @@
 
 Rendered view of `docs/builder-kit/context-pack.json` (`vict.builder.context-pack@1`).
 
-- packId: `f5a691a1f27eecccc0f96b4f23eb289408e7e04379068617ed674031397d8bb8`
+- packId: `a4e5668afec07c9edc00168c398054efeb3b404784c8853fdac808c146285378`
 - reference truth: v0.4.32
 - release truth: `vict-release-set@1/0.3.1`
 - workspace: `vict-monorepo@0.1.0`
@@ -13,15 +13,15 @@ Rendered view of `docs/builder-kit/context-pack.json` (`vict.builder.context-pac
 
 | path | contentSha256 |
 | --- | --- |
-| docs/RELEASE-COMPATIBILITY.md | `bb067faf17031bdd93a9af45088e557366442879752059c9d7c7434fe9b5ba3d` |
+| docs/RELEASE-COMPATIBILITY.md | `97f9c77b924913b3edebf98b2e7f691338c26cf5927041ab919adefc81459903` |
 | docs/VICT-SYSTEM-REFERENCE.md | `dc43c1672c3f75da886325f236945a40fe0b6c79a373b8da6a0763612c4baa42` |
 | docs/builder-kit/capability-catalog.json | `2ff63e5c784a15e93b4457c2a7710beb9443bc119d133fdc156fb0347f818946` |
 | examples/application-proof/package.json | `02bae191e7f8b22fcdbceedc6937b526184d2114a5a4662c3daacf2169d294bc` |
 | examples/ara-proof/package.json | `a6c071e4e377bd96b498db5ec4cde820ecbb993c5454b76ec4ed6500c31b0747` |
 | examples/orchestration-proof/package.json | `689183a3e96db61121ad1f54e5033e22b1a973f9d5ce5ab110eb3de9094300f4` |
-| examples/reference-app/package.json | `1743f33bb06d647c6b3bca61313d2f2384a186659b65e0650741c75e27a66910` |
-| examples/ui-showcase/package.json | `c11dad2a61aba1963a810e6dbcd1cb1ee38f5ed8fb993ec6ebfe270984f9a195` |
-| package.json | `403d5a8bc588e7b64d7cdea6724c36c944f41e17a45d1a8ee33851d9df67fa69` |
+| examples/reference-app/package.json | `71e90a1fbaf155f002a9a25fb7f1a80a06de874da07e6bf955530c14793a221a` |
+| examples/ui-showcase/package.json | `60f44b97114af9631f11ec700a2bd1d71ad17f867e6e3b613ecc06dd49c1cb6d` |
+| package.json | `a14f30cb4891b8f3804e158a3c7bd93c5b847d3f1257c74b4f663beab4437236` |
 | packages/appdata-sqlite/package.json | `d054b4a3b361085c1868f12e298e70a5b844e61979007bcf9872b37c0f5f9e12` |
 | packages/application/package.json | `8316928744eb4396bea1ea584ad8139db25a968085bb0b24257d2836f3590f0d` |
 | packages/builder-kit/package.json | `9c614c8a686e767d959d99cb03a36bd242d8350401e356859307fe540409be44` |
@@ -30,7 +30,6 @@ Rendered view of `docs/builder-kit/context-pack.json` (`vict.builder.context-pac
 | packages/control/package.json | `714e785a0880b56afcb3bbee93c5b4b90d92513706d0fdcee8e5cb7a55bf196f` |
 | packages/kernel/package.json | `a3b4817905b538ca8e5c338f999198767ca321c5751bbb4136348f3898e53568` |
 | packages/mastra/package.json | `26f2074259c01d6b6a81c7ade71e668d77e670fef6dfe2c1ca2222517bd16a3c` |
-| packages/renderer-svelte/package.json | `4b10c21eaf03db54a3f8eb677be6d8e57ab863f73b08eb824b3e00266c0f82a5` |
 | packages/runtime/package.json | `3af89d74777afabcef858a00946505f9ceebf121c6fed78d1b75d8f1938e06c8` |
 | packages/scaffolder/package.json | `31c6f94094a02721250d0a214159279989e965e4e76b1bbcdef4b457cc1c80c6` |
 | packages/sdk/package.json | `a0405122abe4451bae78d7f90ebfef727dfa53a36275c6d2a8fdb04c759252e0` |
@@ -55,7 +54,6 @@ Rendered view of `docs/builder-kit/context-pack.json` (`vict.builder.context-pac
 | @victframework/ledger-pack | 1.0.0 | yes | @victframework/sdk |
 | @victframework/mastra | 0.3.1 | no | @victframework/contracts, @victframework/control, @victframework/kernel, @victframework/runtime, @victframework/sdk, @victframework/store-sqlite |
 | @victframework/notes-pack | 1.0.0 | yes | @victframework/sdk |
-| @victframework/renderer-svelte | 0.3.1 | no | @victframework/ui-svelte |
 | @victframework/runtime | 0.3.1 | no | @victframework/contracts, @victframework/kernel, @victframework/sdk |
 | @victframework/scaffolder | 0.3.1 | no |  |
 | @victframework/sdk | 0.3.1 | no | @victframework/contracts, @victframework/ui |
@@ -66,8 +64,8 @@ Rendered view of `docs/builder-kit/context-pack.json` (`vict.builder.context-pac
 | application-proof | 0.1.0 | yes | @victframework/application, @victframework/runtime, @victframework/sdk |
 | ara-proof | 0.1.0 | yes | @victframework/runtime, @victframework/sdk |
 | orchestration-proof | 0.1.0 | yes | @victframework/runtime, @victframework/sdk |
-| reference-app | 0.1.0 | yes | @victframework/appdata-sqlite, @victframework/application, @victframework/notes-pack, @victframework/renderer-svelte, @victframework/runtime, @victframework/sdk |
-| ui-showcase | 0.1.0 | yes | @victframework/application, @victframework/renderer-svelte, @victframework/runtime, @victframework/sdk, @victframework/ui, @victframework/ui-svelte |
+| reference-app | 0.1.0 | yes | @victframework/appdata-sqlite, @victframework/application, @victframework/notes-pack, @victframework/runtime, @victframework/sdk, @victframework/ui-svelte |
+| ui-showcase | 0.1.0 | yes | @victframework/application, @victframework/runtime, @victframework/sdk, @victframework/ui, @victframework/ui-svelte |
 
 ## Constitution excerpts
 
