@@ -3,12 +3,16 @@
   let { kind, ...surfaceProps }: { kind: string } & Record<string, unknown> = $props();
   // The registered agent product surfaces load lazily so the shared
   // catch-all bundle of the other preview applications never carries them.
-  const LOADERS: Record<string, () => Promise<{ default: Component<Record<string, unknown>> }>> = {
-    picker: () => import('./SessionPicker.svelte'),
-    console: () => import('./SessionConsole.svelte'),
-    log: () => import('./OutputLog.svelte'),
+  // The dynamic-import PROMISES are created ONCE at module scope: a record
+  // refresh re-runs the `load` derivation, and a freshly created promise
+  // would restart the {#await} block and REMOUNT the island — wiping its
+  // local state (action feedback, focus) every time the record changes.
+  const LOADERS: Record<string, Promise<{ default: Component<Record<string, unknown>> }>> = {
+    picker: import('./SessionPicker.svelte'),
+    console: import('./SessionConsole.svelte'),
+    log: import('./OutputLog.svelte'),
   };
-  const load = $derived(LOADERS[kind]?.());
+  const load = $derived(LOADERS[kind]);
 </script>
 
 {#if load === undefined}

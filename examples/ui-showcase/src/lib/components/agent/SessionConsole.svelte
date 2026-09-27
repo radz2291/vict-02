@@ -19,6 +19,7 @@
    * the shared ActionFeedback component.
    */
   import '@victframework/ui-svelte/catalog.css';
+  import { tick } from 'svelte';
   import { ControlScope } from '@victframework/ui-svelte/controls';
   import { Progress } from '@victframework/ui-svelte/catalog/progress';
   import { useVictActions } from '@victframework/ui-svelte/component-actions';
@@ -96,14 +97,28 @@
       // `{ id: { param: 'id' } }` supplies the current record identity.
       const result = await actions.run(actionId);
       if (result) feedback = actionFeedback(result, FEEDBACK[actionId] ?? {}, true);
-      // Console actions change session data; the shared renderer's
-      // invalidation hook refreshes the route record and every declared
-      // surface (this console, the conversation, files, activity, log).
+      // Console actions change session data; the shared renderer resolves
+      // an action only AFTER its route refresh has settled, so this
+      // feedback line and the refreshed status badge always agree.
     } catch {
       feedback = actionFeedback({ ok: false }, undefined, true);
     } finally {
       pending = false;
       busyAction = '';
+      // A state-changing action usually swaps the console's control branch
+      // (the clicked button is gone). Keyboard focus must follow the new
+      // primary control instead of dropping to <body>.
+      await tick();
+      const section = document.querySelector('[data-testid=session-console]');
+      if (section === null || section.contains(document.activeElement)) return;
+      const primary = section.querySelector<HTMLElement>(
+        '[data-testid=approve-btn], [data-testid=advance-btn], [data-testid=retry-btn]',
+      );
+      if (primary !== null) {
+        primary.focus();
+      } else {
+        section.querySelector<HTMLElement>('[data-testid=session-done]')?.focus();
+      }
     }
   }
 </script>
@@ -208,7 +223,7 @@
           <ActionFeedback {feedback} actionId="act.retry" />
         </div>
       {:else}
-        <p class="console-done" data-testid="session-done">
+        <p class="console-done" data-testid="session-done" tabindex="-1">
           This session finished. Its transcript, activity and changed files remain available here.
         </p>
         <div class="console-actions">

@@ -6,6 +6,14 @@
       "ok": true
     },
     {
+      "check": "fail-transition-coherent-1440",
+      "ok": true
+    },
+    {
+      "check": "fail-transition-coherent-390",
+      "ok": true
+    },
+    {
       "check": "sessions-chooser",
       "ok": true
     },

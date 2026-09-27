@@ -8,6 +8,12 @@ export interface UiActionFeedbackText {
 export interface UiActionFeedback {
   readonly kind: 'success' | 'validation' | 'denied' | 'failure';
   readonly message: string;
+  /**
+   * The action succeeded but its data refresh failed, so the rendered
+   * record may be out of date. Rendered as a DISTINCT stale-data note —
+   * never as an action failure and never with a re-run invitation.
+   */
+  readonly dataStale?: boolean;
 }
 export function validateActionFeedback(
   value: unknown,
@@ -38,7 +44,7 @@ export function validateActionFeedback(
 }
 /** Inputs are safe application-boundary results, never raw caught exceptions. */
 export function actionFeedback(
-  result: { ok: boolean; code?: string; message?: string },
+  result: { ok: boolean; code?: string; message?: string; dataStale?: boolean },
   text: UiActionFeedbackText = {},
   isSave = false,
 ): UiActionFeedback {
@@ -57,5 +63,9 @@ export function actionFeedback(
       ? 'We couldn’t save your changes. Your draft is still here. Try again.'
       : 'The action could not be completed. Try again.',
   };
-  return { kind, message: text[kind] ?? result.message ?? defaults[kind] };
+  return {
+    kind,
+    message: text[kind] ?? result.message ?? defaults[kind],
+    ...(kind === 'success' && result.dataStale === true ? { dataStale: true } : {}),
+  };
 }

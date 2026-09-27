@@ -179,8 +179,14 @@ retention on failure) is used by the console and the conversation.
     on a stopped session, reset dialog, mobile drawer with Escape +
     focus restore, responsive task-first stacking at 768/390/320, document
     overflow ≤ 2px at 1440/768/390/320, axe-core smoke scan with zero
-    serious/critical violations). Screenshots:
-    `qa-artifacts/agent-workspace/*.png`.
+    serious/critical violations), PLUS the transition-coherence timeline
+    checks at 1440 and 390 added by the reconciliation slice: the act.fail
+    transition must complete coherently (success feedback only beside the
+    refreshed Failed status, stable loading control, no island remount,
+    stable conversation width, focus on the new primary control, single POST
+    under a double click, draft retained, no scroll jump, idle no-loop).
+    Screenshots: `qa-artifacts/agent-workspace/*.png` (incl.
+    `coherent-transition-1440/390.png`).
 - App typecheck: `npm run check -w ui-showcase` — clean.
 - Whole showcase suite (`npx vitest run`, includes the pre-existing P6D
   browser suite and screenshots): green on this branch, with ONE one-line

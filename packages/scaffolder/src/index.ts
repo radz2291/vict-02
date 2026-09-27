@@ -1077,7 +1077,7 @@ export const load: PageServerLoad = async ({ url }) => {
   path={page.url.pathname}
   viewData={data.viewData}
   record={data.record}
-  onInvalidate={() => void invalidateAll()}
+  onInvalidate={() => invalidateAll()}
 />
 `,
     ],

@@ -16,6 +16,14 @@ export interface ActionResult {
   message?: string;
   /** Safe, field-keyed server validation errors. Unknown field names become a form-level error. */
   fieldErrors?: Readonly<Record<string, string>>;
+  /**
+   * The action SUCCEEDED but the host's data refresh failed, so the
+   * rendered record may be out of date. Never flips `ok` to false: the
+   * mutation outcome and the refresh outcome are reported separately, so
+   * surfaces never misreport a saved action as failed nor invite an
+   * unsafe re-run.
+   */
+  dataStale?: boolean;
 }
 
 /** Route data provided by the host per view id. */

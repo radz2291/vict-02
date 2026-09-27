@@ -36,11 +36,17 @@
     viewData?: Readonly<Record<string, ViewDatum>>;
     /**
      * Invoked after a successful non-local, non-query action so the host
-     * refetches. Declared query actions never invalidate: a read must not
+     * refetches. May return a promise: the renderer AWAITS it before the
+     * action's completion becomes visible, so feedback and control state
+     * only ever appear beside the REFRESHED record (never beside a stale
+     * one). Declared query actions never invalidate: a read must not
      * dirty the route or remount the surface that issued it (the renderer
-     * owns the read-vs-write boundary; hosts stay plain).
+     * owns the read-vs-write boundary; hosts stay plain). If the returned
+     * promise rejects, the action still reports success with
+     * `dataStale: true` — a failed refresh never misreports the mutation
+     * itself as failed.
      */
-    onInvalidate?: () => void;
+    onInvalidate?: () => unknown;
     /** Detail record of the current route (convenience alias for viewData). */
     record?: Record<string, unknown> | null;
     /** Client-side navigation hook (e.g. SvelteKit's goto). */
@@ -173,14 +179,25 @@
       // changing actions refresh route data. A declared `query` must not
       // trigger invalidation — a mount-time read would otherwise dirty the
       // route, remount the issuing surface, and read again forever.
+      //
+      // The refresh is AWAITED before the action resolves: surfaces set
+      // their success feedback and release their loading control only once
+      // the refreshed record is on screen, so success is never displayed
+      // beside a stale status. A rejected refresh is caught here and
+      // reported as `dataStale` — the action's own success is preserved.
+      let dataStale = false;
       if (result.ok && onInvalidate !== undefined && plan.actions?.[actionId]?.kind !== 'query') {
-        onInvalidate();
+        try {
+          await onInvalidate();
+        } catch {
+          dataStale = true;
+        }
       }
       if (!result.ok) {
         const state = result.code === 'CONTRACT_REJECTED' ? 'validation' : result.code === 'DATA_UNAUTHORIZED' ? 'denied' : 'failure';
         return { ...result, message: stateText(state, result.message ?? '') || undefined };
       }
-      return result;
+      return dataStale ? { ...result, dataStale: true } : result;
     } catch {
       // A dispatcher rejection is caught and mapped to a SAFE
       // renderer-generated failure; no unhandled rejection can exist and no

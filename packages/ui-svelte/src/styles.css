@@ -782,6 +782,10 @@ h3.vict-text {
   gap: 28px;
   max-height: 56vh;
   overflow-y: auto;
+  /* Reserve the scrollbar gutter so messages keep their width when the
+     scrollbar appears (a newly appended message must never shift the
+     whole transcript sideways). */
+  scrollbar-gutter: stable;
   padding: 2px;
 }
 .vict-conversation-message {
@@ -818,6 +822,18 @@ h3.vict-text {
   font-size: 10px;
   color: var(--vict-color-textMuted);
   font-weight: 400;
+}
+.vict-action-stale {
+  margin: 0;
+  font-size: 13px;
+  color: color-mix(
+    in srgb,
+    var(--vict-color-warning, #8a6d3b) 80%,
+    var(--vict-color-text, inherit)
+  );
+}
+.vict-action-stale::before {
+  content: '\26a0 '; /* warning sign */
 }
 .vict-conversation-body {
   margin: 0;

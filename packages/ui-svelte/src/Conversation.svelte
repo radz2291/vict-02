@@ -7,12 +7,13 @@
     emptyMessage: string;
     inputLabel: string;
     inputPlaceholder?: string;
-    onSend: (text: string) => Promise<boolean | { ok: boolean; message?: string }>;
+    onSend: (text: string) => Promise<boolean | { ok: boolean; message?: string; dataStale?: boolean }>;
   }
   let { surfaceId, messages, emptyMessage, inputLabel, inputPlaceholder = '', onSend }: Props = $props();
   let draft = $state('');
   let sending = $state(false);
   let sendError = $state('');
+  let sendStale = $state(false);
   let feedElement: HTMLDivElement;
   let following = true;
   let previousMessageCount: number | undefined;
@@ -35,11 +36,15 @@
     following = true;
     sending = true;
     sendError = '';
+    sendStale = false;
     try {
       const result = await onSend(text);
       const ok = typeof result === 'boolean' ? result : result.ok;
       if (ok && draft.trim() === text) draft = '';
       if (!ok) sendError = (typeof result === 'object' ? result.message : undefined) ?? 'Your message was not sent. Your draft is still here. Try again.';
+      // The send SUCCEEDED but the refreshed transcript could not be
+      // loaded: a distinct stale note, never a send failure.
+      sendStale = ok === true && typeof result === 'object' && result.dataStale === true;
     } catch {
       sendError = 'Your message was not sent. Your draft is still here. Try again.';
     } finally {
@@ -82,5 +87,10 @@
       </button>
     </div>
     <p class="vict-send-error" role="alert" aria-atomic="true">{sendError}</p>
+    {#if sendStale}
+      <p class="vict-action-stale" role="status" aria-atomic="true" data-testid="conversation-stale">
+        Sent, but the latest messages could not be loaded. This view may be out of date.
+      </p>
+    {/if}
   </form>
 </section>

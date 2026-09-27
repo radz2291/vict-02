@@ -59,6 +59,6 @@
   path={page.url.pathname}
   viewData={data.viewData as never}
   record={data.record}
-  onInvalidate={() => void invalidateAll()}
+  onInvalidate={() => invalidateAll()}
   navigate={(target) => void goto(target)}
 />

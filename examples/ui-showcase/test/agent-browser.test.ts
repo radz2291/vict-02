@@ -238,6 +238,172 @@ describe('coding-agent workspace in a real browser (product proof)', () => {
     }
   }, 180_000);
 
+  /**
+   * The act.fail transition trace (shared contract, real browser): the
+   * action's visible completion must be COHERENT with the refreshed
+   * record. A 8 ms in-page sampler records every visible state change
+   * while the action and its invalidation round-trips run, and the
+   * assertions scan the timeline afterwards:
+   *   - the success feedback must NEVER be visible while the status badge
+   *     still shows the stale "Running";
+   *   - the loading control must stay in its loading state until the
+   *     refresh settles;
+   *   - the console island must never unmount or lose identity (no
+   *     remount = no lost feedback, no lost focus);
+   *   - the conversation feed keeps its width (scrollbar-gutter stable);
+   *   - focus ends on the new primary control; no page scroll jump; the
+   *     conversation draft survives; exactly one action POST; and the
+   *     settled workspace issues no further requests (no query loop).
+   */
+  async function traceFailureTransition(width: number, height: number): Promise<void> {
+    const page = await newPage(width, height);
+    let failPosts = 0;
+    page.on('request', (request) => {
+      // The action id travels in the POST body, not the URL.
+      if (request.url().includes('/api/act') && (request.postData() ?? '').includes('act.fail')) {
+        failPosts += 1;
+      }
+    });
+    try {
+      await open(page, '/agent/sessions/AGW-102');
+      await waitForSelector(page, '[data-testid="session-console"]');
+      await page.evaluate(async () => {
+        await fetch('/api/act?application=app.agent-workspace', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ actionId: 'act.reset' }),
+        });
+      });
+      await open(page, '/agent/sessions/AGW-102');
+      await waitForSelector(page, '[data-testid="fail-btn"]');
+      // A draft typed BEFORE the action must survive the transition.
+      await page.type('[data-testid="conversation-input"]', 'draft survives the transition');
+      await page.evaluate(() => {
+        const section = document.querySelector('[data-testid="session-console"]');
+        if (section !== null)
+          (section as HTMLElement & { __token?: string }).__token = 'identity-probe';
+        const win = window as unknown as { __trace: unknown[]; __last: string };
+        win.__trace = [];
+        win.__last = '';
+        const sample = () => {
+          const console_ = document.querySelector('[data-testid="session-console"]');
+          const feed = document.querySelector('[data-testid="conversation-feed"]');
+          const s = {
+            t: Date.now(),
+            status: document.querySelector('[data-testid="session-status"]')?.textContent ?? null,
+            failBtn: document.querySelector('[data-testid="fail-btn"]')?.textContent.trim() ?? null,
+            success: document.querySelector('[data-testid="action-success"]')?.textContent ?? null,
+            consoleId:
+              console_ === null
+                ? 'ABSENT'
+                : ((console_ as HTMLElement & { __token?: string }).__token ?? 'REPLACED'),
+            feedWidth: feed?.clientWidth ?? -1,
+            scrollY: Math.round(scrollY),
+            active:
+              document.activeElement?.getAttribute('data-testid') ??
+              document.activeElement?.tagName ??
+              null,
+          };
+          const key = JSON.stringify(s);
+          if (key !== win.__last) {
+            win.__last = key;
+            win.__trace.push(s);
+          }
+        };
+        setInterval(sample, 8);
+      });
+      // Focus the trigger first (this may auto-scroll on phone), THEN pin
+      // the scroll reference for the no-jump assertion.
+      await page.focus('[data-testid="fail-btn"]');
+      const scrollBefore = await page.evaluate(() => Math.round(scrollY));
+      // Two rapid clicks: the re-entrant guard + disabled loading state
+      // must make this exactly ONE action request.
+      await page.click('[data-testid="fail-btn"]', { delay: 20 });
+      await page.click('[data-testid="fail-btn"]', { delay: 20 }).catch(() => undefined);
+      await page.waitForFunction(
+        () => document.querySelector('[data-testid="retry-btn"]') !== null,
+        { timeout: 20_000 },
+      );
+      // Keyboard focus follows the flow to the new primary control (the
+      // island restores it after the settled transition; a manual click on
+      // the new control is NOT required).
+      await page.waitForFunction(
+        () => document.activeElement?.getAttribute('data-testid') === 'retry-btn',
+        { timeout: 5_000 },
+      );
+      // The settled, coherent end state: refreshed status AND the action's
+      // success feedback are visible TOGETHER, focus on the new primary.
+      const settled = await page.evaluate(() => ({
+        status: document.querySelector('[data-testid="session-status"]')?.textContent ?? '',
+        success: document.querySelector('[data-testid="action-success"]')?.textContent ?? '',
+        active: document.activeElement?.getAttribute('data-testid') ?? '',
+        draft: (document.querySelector('[data-testid="conversation-input"]') as HTMLInputElement)
+          ?.value,
+      }));
+      expect(settled.status).toBe('Failed');
+      expect(settled.success).toContain('Failure simulated');
+      expect(settled.active).toBe('retry-btn');
+      expect(settled.draft).toBe('draft survives the transition');
+      expect(failPosts, 'exactly one act.fail dispatch under a double click').toBe(1);
+      const trace = await page.evaluate(() => {
+        const win = window as unknown as { __trace: unknown[] };
+        return win.__trace;
+      });
+      expect(trace.length).toBeGreaterThan(2);
+      // Scroll stability is asserted ACROSS THE TRANSITION: from the first
+      // loading sample (the click) onward. Samples captured before the
+      // click legitimately include the test's own scroll-into-view.
+      const clickIdx = (trace as { failBtn: string | null }[]).findIndex(
+        (sample) => sample.failBtn === 'Failing…',
+      );
+      expect(clickIdx).toBeGreaterThan(0);
+      for (const sample of trace.slice(clickIdx) as {
+        status: string | null;
+        success: string | null;
+        consoleId: string;
+        feedWidth: number;
+        scrollY: number;
+      }[]) {
+        expect(
+          sample.success !== null && sample.success.length > 0 && sample.status === 'Running',
+          `success beside stale status: ${JSON.stringify(sample)}`,
+        ).toBe(false);
+        expect(sample.consoleId, 'console island remounted or unmounted').toBe('identity-probe');
+        expect(sample.feedWidth).toBe((trace[0] as { feedWidth: number }).feedWidth);
+        expect(Math.abs(sample.scrollY - scrollBefore)).toBeLessThanOrEqual(2);
+      }
+      // No repeated-fetch loop: idle after settle, no further requests.
+      const quietBaseline = failPosts;
+      await new Promise((resolvePromise) => setTimeout(resolvePromise, 900));
+      expect(failPosts).toBe(quietBaseline);
+      expectNoPageErrors();
+      await shoot(page, width < 800 ? 'coherent-transition-390' : 'coherent-transition-1440');
+      evidence.checks.push({
+        check: `fail-transition-coherent-${width}`,
+        ok: true,
+      });
+    } finally {
+      await page
+        .evaluate(async () => {
+          await fetch('/api/act?application=app.agent-workspace', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ actionId: 'act.reset' }),
+          });
+        })
+        .catch(() => undefined);
+      await page.close();
+    }
+  }
+
+  it('failure transition stays coherent with the refreshed record (desktop)', async () => {
+    await traceFailureTransition(1440, 900);
+  }, 240_000);
+
+  it('failure transition stays coherent with the refreshed record (phone)', async () => {
+    await traceFailureTransition(390, 844);
+  }, 240_000);
+
   it('the sessions chooser lists every state and the project filter narrows it', async () => {
     const page = await newPage(1440, 900);
     try {

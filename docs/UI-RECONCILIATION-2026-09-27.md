@@ -204,7 +204,71 @@ Package impact (source changes; nothing published):
 | `@victframework/scaffolder` | generated generic host collects component-surface view bindings (`declaredSurfaceViewIds`) — a newly scaffolded host differs from previously generated ones only in that import/collection line |
 | `scripts/verify-stage5.mjs` | packed closure extended with `ui`/`ui-svelte` (verifier only) |
 
-## 6. Boundaries kept
+## 6. Transition-coherence repair (owner-reported, fixed on this branch)
+
+**Report:** after clicking **Simulate failure** on
+`/agent/sessions/AGW-101`, five consecutive frames showed Running →
+"Failing…" → success feedback "Failure simulated" BESIDE the still-Running
+status → Failed with Retry, the success text never visible together with the
+fresh status; the conversation shifted sideways; the page jerked.
+
+**Measured cause** (real Chrome via CDP, 8 ms in-page sampler,
+`before/timeline.json`; 500 ms-throttled pass to widen the frames):
+
+1. `VitApp.dispatchAction` fired the host hook **fire-and-forget**
+   (`onInvalidate={() => void invalidateAll()}`) and resolved the action
+   immediately: at t+11 ms the success feedback appeared and the loading
+   control popped back to enabled while the status badge still read
+   "Running" (incoherent frame; with throttling it lasted ~830 ms and left a
+   window where the action could be fired again).
+2. When the refreshed record applied, the console island **remounted**:
+   `AgentSurface`'s `const load = $derived(LOADERS[kind]?.())` created a NEW
+   dynamic-import promise per re-run, restarting the `{#await}` block — the
+   island (and its feedback state) was destroyed and rebuilt (element
+   identity probe: marked section replaced by a fresh node), so the success
+   message was wiped exactly when the Failed status arrived, and keyboard
+   focus fell to `<body>`.
+3. Disabling the focused button at action start drops focus to `<body>`.
+4. `.vict-conversation` had no `scrollbar-gutter`, so the failure message
+   that overflowed the feed made the scrollbar appear and shifted every
+   message 15 px sideways (measured feed 572 → 557 px, message width
+   496 → 482 px).
+
+**Fix (shared VICT code):**
+
+- `ui-svelte/VitApp.svelte`: `dispatchAction` now AWAITS the host refresh
+  before the action resolves; surfaces show feedback and release their
+  loading control only beside the REFRESHED record. A rejected refresh is
+  caught and reported as `ActionResult.dataStale: true` — the mutation stays
+  a success, never misreported as failed, with no re-run invitation.
+- `ui/src/feedback.ts` + `ui-svelte/ActionFeedback.svelte`: success feedback
+  carries the distinct stale note (`data-testid="action-stale"`); the
+  conversation send path surfaces its own equivalent
+  (`data-testid="conversation-stale"` in `Conversation.svelte`).
+- `ui-svelte/styles.css`: `scrollbar-gutter: stable` on the conversation
+  feed (no width shift when the scrollbar appears) + the stale-note style.
+- Host pages return the `invalidateAll()` promise (showcase
+  `+page.svelte` and the scaffolder's generated host template).
+
+**Product-specific adjustments (only what the product owns):**
+
+- `AgentSurface.svelte`: the lazy-loader promises are created ONCE at module
+  scope, so a record refresh can no longer restart the `{#await}` block and
+  remount the island.
+- `SessionConsole.svelte`: after the settled transition, keyboard focus
+  moves to the NEW primary control (approve/advance/retry) or the completed
+  note — focus follows the flow instead of dropping to `<body>`.
+
+**Regression coverage:** `packages/ui-svelte/test/action-transition.test.ts`
+(4 tests: loading control + feedback wait for refresh; failed refresh →
+success + distinct stale state, no failure text; sync host hook; stale
+through the conversation send) and two real-browser timeline tests in
+`agent-browser.test.ts` (desktop 1440 and phone 390: no success-beside-stale
+sample, island identity stable, feed width constant, single POST under a
+double click, focus on Retry, draft retained, no scroll jump, idle no-loop,
+settled screenshots `coherent-transition-*.png`).
+
+## 7. Boundaries kept
 
 - No merge to `main`, no publishing, no facade deprecation.
 - The frozen Stage 8 rubric is untouched; G3 remains HELD on the published
@@ -213,7 +277,7 @@ Package impact (source changes; nothing published):
   per-role examples, linked lists, formatting, progress binding,
   wider/sticky layout, structured conversation content.
 
-## 7. Remaining limitations (honest)
+## 8. Remaining limitations (honest)
 
 1. Compile-time param validation is app-wide (union of declared route
    params), not per-screen — a param valid on one route passes on another.
