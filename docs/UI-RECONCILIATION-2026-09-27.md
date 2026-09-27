@@ -296,4 +296,13 @@ settled screenshots `coherent-transition-*.png`).
 5. The TaskLedger external-consumer proof remains pinned to the
    TaskLedger-branch tarballs; re-running the authoring pass against
    re-packaged post-reconciliation tarballs is a possible follow-up if the
-   owner wants the byte-comparison repeated against the merged tree.
+   owner wants the byte-comparison repeated against the merged tree.6. The reference-app's browser/dom suites (responsive-nav MED-05-A, dialog
+   focus, HIGH-05-A numeric prefill, denied-state fallback, injection
+   canary) show **9 pre-existing failures inherited from the merged
+   branches** — A/B verified 2026-09-27: rebuilding `8141812`'s package
+   sources reproduces the identical failure set, so the transition repair
+   (`2f71ef8`) did not cause them. The http-suite CORS failures are
+   environmental (happy-dom fetch), also reproduced on the pristine
+   TaskLedger worktree. Neither proof branch had the refapp browser/dom
+   suites in its gate; a refapp follow-up against the reconciled facade
+   architecture is an owner decision.
