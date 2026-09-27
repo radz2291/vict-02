@@ -162,14 +162,19 @@ describe('npmVersionSatisfiesMinimum', () => {
 describe('deriveReleaseInventory (real repository)', () => {
   const inventory = deriveReleaseInventory(repoRoot);
 
-  it('derives exactly the frozen 15-package set (contract §5 as amended 2026-09-26, §14) with no problems', () => {
+  it('derives exactly the frozen 15-package set (contract §5 as amended 2026-09-26, §14; order re-amended 2026-09-27, §15) with no problems', () => {
     expect(inventory.problems).toEqual([]);
     expect(inventory.order).toEqual(FROZEN_PUBLISH_ORDER);
     expect(inventory.order).toHaveLength(EXPECTED_RELEASE_PACKAGE_COUNT);
     expect(EXPECTED_RELEASE_PACKAGE_COUNT).toBe(15);
-    // The amended members sit exactly where the contract amendment placed
-    // them: ui immediately before its only internal dependent.
-    expect(inventory.order[6]).toBe('@victframework/ui');
+    // The §15 re-amendment moved ONLY `ui`: it now sits immediately before
+    // its EARLIEST internal dependent — `sdk` gained a `@victframework/ui`
+    // dependency (presentation-intent types) alongside `application` —
+    // while the §14 positions of `ui-svelte` (8) and `renderer-svelte` (9)
+    // are unchanged.
+    expect(inventory.order[1]).toBe('@victframework/ui');
+    expect(inventory.order[2]).toBe('@victframework/sdk');
+    expect(inventory.order[6]).toBe('@victframework/application');
     expect(inventory.order[7]).toBe('@victframework/ui-svelte');
     expect(inventory.order[8]).toBe('@victframework/renderer-svelte');
   });

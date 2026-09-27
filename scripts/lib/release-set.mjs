@@ -27,19 +27,32 @@ export const INTERNAL_DEPENDENCY_PREFIX = '@victframework/';
 
 /**
  * The frozen dependency-topological publication order (contract §5, as
- * amended 2026-09-26, §14). Every release action validates that this
- * order is still a valid linearization of the ACTUAL manifests' internal
- * dependency graph and fails closed when the graph drifted — the order
- * is frozen, not re-derived per release.
+ * amended 2026-09-26, §14; order re-amended 2026-09-27, §15 — see
+ * docs/RELEASE-TRUSTED-PUBLISHING-CONTRACT-AMENDMENT-DRAFT-2026-09-27.md
+ * for the owner-ratification record). Every release action validates that
+ * this order is still a valid linearization of the ACTUAL manifests'
+ * internal dependency graph and fails closed when the graph drifted — the
+ * order is frozen, not re-derived per release.
+ *
+ * §15 context (verification-only re-derivation, tracked to the actual
+ * graph): the TaskLedger platform work gave `sdk` and `application`
+ * internal `@victframework/ui` dependencies (presentation-intent types).
+ * The §14 order placed `ui` at position 7 — AFTER both — so the frozen
+ * order stopped being a linearization of the real graph and every
+ * release action now fails closed (two recorded trusted-publishing test
+ * failures). The re-derived order below moves ONLY `ui`, to immediately
+ * before its earliest internal dependent (`sdk`), preserving the relative
+ * order of the original 13 entries and the §14 positions of
+ * `ui-svelte` (8) and `renderer-svelte` (9).
  */
 export const FROZEN_PUBLISH_ORDER = [
   '@victframework/contracts',
+  '@victframework/ui',
   '@victframework/sdk',
   '@victframework/kernel',
   '@victframework/runtime',
   '@victframework/store-sqlite',
   '@victframework/application',
-  '@victframework/ui',
   '@victframework/ui-svelte',
   '@victframework/renderer-svelte',
   '@victframework/appdata-sqlite',
