@@ -536,9 +536,12 @@ function commandVerifyRegistry(args) {
   // minutes later verified clean). Verification is therefore retried on
   // a bounded backoff. The retries are READ-ONLY — they never publish,
   // mutate, or unpublish anything — and a final failed pass still fails
-  // the run closed.
-  const VERIFY_ATTEMPTS = 12;
-  const VERIFY_BACKOFF_MS = 10_000;
+  // the run closed. 2026-09-28: the 0.4.0-rc.1 publication saw npm CDN
+  // propagation lag of ~2.5+ minutes for 2 of 14 packages, exhausting
+  // 12 × 10s; the window is widened to 60 × 15s (~15 min) — still
+  // bounded, still read-only, still fail-closed on the final pass.
+  const VERIFY_ATTEMPTS = 60;
+  const VERIFY_BACKOFF_MS = 15_000;
   let rows = [];
   let failures = 0;
   for (let attempt = 1; attempt <= VERIFY_ATTEMPTS; attempt += 1) {

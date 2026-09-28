@@ -76,9 +76,12 @@ workflow, on `main`:
 - `trust_evidence_path`: <path of the committed artifact from §C>
 - `validate_only`: ✅ true
 
-Expected: authority gate, trust preflight (evidence mode; presence
-re-proven live), build, full test suite, pack, tarball scan, packed
-consumer — all green; run stops before any publish step.
+Expected: input/lineage validation, release-set coherence, static checks,
+build, full test suite, pack, tarball scan, and the packed consumer — all
+green, with the authority/trust/publish steps skipped by design (they run
+only when `validate_only` is false; the rehearsal proves nothing about OIDC
+publishing, and both gates are verified locally at the same SHA before the
+real dispatch).
 
 ## E. Coordinated publication
 

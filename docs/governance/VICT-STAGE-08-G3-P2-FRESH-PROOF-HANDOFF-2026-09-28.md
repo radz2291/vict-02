@@ -29,7 +29,8 @@ coordinated release is out.
 | Dist-tag after publication | `vict-0.4.0-rc` on every member; `latest` NOT moved (still the historical stable) |
 | Release source at handoff time | `radz2291/vict-02` `main` @ `46988a6a45a31d76629570e12024c6ca92f17d0c` (merge of `pi/release-exec-r1` @ `b0619b1`; base `9b6eb01e32c1a2d81368c8231cb1bb037a702bfa`) |
 | Dispatch source_sha | the exact pushed main-lineage SHA supplied to the workflow at dispatch (must be an ancestor of origin/main at run time; record it from the workflow run) |
-| Bootstrap placeholders (already authorized separately) | `@victframework/ui@0.0.0-bootstrap.1`, `@victframework/ui-svelte@0.0.0-bootstrap.1`, dist-tag `bootstrap` — registry-presence markers, NOT releases; never cited as the candidate |
+| Bootstrap placeholders (authorized §16 exception) | `@victframework/ui@0.0.0-bootstrap.1`, `@victframework/ui-svelte@0.0.0-bootstrap.1`, dist-tag `bootstrap` — registry-presence markers, NOT releases; never cited as the candidate |
+| **PUBLISHED (2026-09-28)** | run [`36427806906`](https://github.com/radz2291/vict-02/actions/runs/36427806906), source `d7bd003047a648738a4d1d824b0c4e4a442c0da3`: all 14 at `0.4.0-rc.1` under `vict-0.4.0-rc`; 14/14 registry `dist.integrity` match the run-recorded digests (`release-results.json` artifact); `latest` untouched (12 × `0.3.1`); independent external consumer (`verify:release-consumer --registry`) ALL PASSED. See docs/RELEASE-EXEC-R3-2026-09-28.md. |
 | Authority | §16 ratified; §16.5 exact line `Owner decision recorded: D-AUTHORIZE` in the frozen contract |
 
 Post-publication verification the operator should demand (independent
