@@ -18,10 +18,14 @@
  *      version shape that can NEVER satisfy the coordinated release-set
  *      version rule (X.Y.Z / X.Y.Z-rc.N), so the bootstrap can never
  *      consume or partially publish the coordinated `0.4.0-rc.1` set.
- *      The placeholder carries the REAL built package content,
- *      truthfully versioned; it is registry-immutable lineage once
- *      published. `latest` stays unoccupied (the placeholder never
- *      claims it).
+ *      The placeholder is a REGISTRY-PRESENCE MARKER, not a functional
+ *      release: it carries the REAL built package content with the REAL
+ *      dependency pins, which is exactly why members depending on the
+ *      (still unpublished) coordinated versions are NOT installable
+ *      until the coordinated set publishes — resolution fails by design.
+ *      It is registry-immutable lineage once published; `latest` stays
+ *      unoccupied. Its only purpose is to make the package EXIST so its
+ *      trust relationship can be configured.
  *   2. The placeholder publish uses the HISTORICAL local interactive-
  *      2FA path (contract §13 precedent: "All historical publications
  *      used local interactive WebAuthn 2FA") — npm OIDC trusted
@@ -53,18 +57,18 @@
  *
  * Usage:
  *   node scripts/first-publish-bootstrap.mjs            # plan only
+ *   node scripts/first-publish-bootstrap.mjs --inspect  # build + inspect the actual dry-run tarballs (no registry write)
  *   node scripts/first-publish-bootstrap.mjs --execute \
  *        --authorization path/to/owner-authorization.txt
  */
 import { spawnSync } from 'node:child_process';
-import { cpSync, mkdtempSync, readFileSync, rmSync, existsSync } from 'node:fs';
-import { tmpdir } from 'node:os';
+import { readFileSync, rmSync, existsSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { assessContractAuthorityAtRoot, FROZEN_CONTRACT_PATH } from './lib/contract-authority.mjs';
+import { buildBootstrapCandidate } from './lib/bootstrap-pack.mjs';
 import { fetchPackument } from './lib/registry-probe.mjs';
 import {
-  assessTrustPreflight,
   BOOTSTRAP_PLACEHOLDER_TAG,
   BOOTSTRAP_PLACEHOLDER_VERSION,
 } from './lib/trust-preflight.mjs';
@@ -91,6 +95,7 @@ function run(command, args, options = {}) {
 }
 
 const execute = process.argv.includes('--execute');
+const inspect = process.argv.includes('--inspect');
 const authFlagIndex = process.argv.indexOf('--authorization');
 const authorizationPath = authFlagIndex !== -1 ? process.argv[authFlagIndex + 1] : undefined;
 if (execute && (authorizationPath === undefined || authorizationPath.length === 0)) {
@@ -124,6 +129,61 @@ console.log(
   `\nfirst-publish-bootstrap: inventory verified — ${inventory.order.length} members; absent members needing the bootstrap: ${absent.length === 0 ? 'NONE' : absent.join(', ')}`,
 );
 
+// 2b. Artifact inspection (--inspect): build + pack --dry-run per absent
+//     member and VALIDATE the actual tarball against the manifest. No
+//     registry write of any kind; the workspace is only built in place.
+if (inspect) {
+  console.log(
+    '\nfirst-publish-bootstrap: INSPECTING the placeholder artifacts (dry-run tarballs; no registry write)',
+  );
+  let failed = false;
+  for (const name of absent) {
+    console.log(`\n  ${name}:`);
+    let candidate;
+    try {
+      candidate = buildBootstrapCandidate({
+        repoRoot,
+        name,
+        log: (line) => console.log(`    ${line}`),
+      });
+    } catch (error) {
+      console.error(`    BUILD/PACK FAILED: ${error.message}`);
+      failed = true;
+      continue;
+    }
+    console.log(`    placeholder version: ${candidate.manifest.version}`);
+    console.log(
+      `    tarball would be:    ${candidate.packSummary.filename} (${candidate.packSummary.size} bytes, ${candidate.fileList.length} files)`,
+    );
+    for (const path of candidate.fileList) console.log(`      - ${path}`);
+    if (candidate.problems.length > 0) {
+      failed = true;
+      for (const problem of candidate.problems) console.error(`    VALIDATION FAILURE: ${problem}`);
+    } else {
+      console.log(
+        '    validation: every declared export/main/types target present; files allowlist covered; dependency pins verbatim.',
+      );
+      const deps = candidate.manifest.dependencies ?? {};
+      const pinnedToCoordinated = Object.values(deps).some((spec) => spec === inventory.version);
+      console.log(
+        pinnedToCoordinated
+          ? `    installability: NOT installable until the coordinated set publishes (dependencies pin ${inventory.version}, which is unpublished) — registry-presence marker by design.`
+          : '    installability: no dependencies — the placeholder itself installs standalone, but it remains a registry-presence marker, NOT a functional release (never a candidate/stable version, never `latest`).',
+      );
+    }
+    rmSync(candidate.workDir, { recursive: true, force: true });
+  }
+  if (failed) {
+    fail(
+      'placeholder artifact inspection FAILED — the broken or incomplete artifact must never be published.',
+    );
+  }
+  console.log(
+    '\nfirst-publish-bootstrap: all inspected placeholder artifacts are complete and truthful. No registry write was made.',
+  );
+  process.exit(0);
+}
+
 if (absent.length === 0) {
   console.log(
     'first-publish-bootstrap: nothing to bootstrap — every member already has registry presence. Run scripts/verify-trust-preflight.mjs next.',
@@ -137,13 +197,16 @@ for (const name of absent) {
   const entry = inventory.byName.get(name);
   console.log(`  ${name}:`);
   console.log(
-    `    content:     the REAL built package at packages/${name.replace('@victframework/', '')} (temp-copy only; the workspace tree is never mutated)`,
+    `    content:     the REAL BUILT package at packages/${name.replace('@victframework/', '')} (workspace build + temp-copy; dist included; the workspace tree is never mutated)`,
   );
   console.log(
     `    placeholder: ${BOOTSTRAP_PLACEHOLDER_VERSION} (fixed constant; never the coordinated set version ${inventory.version})`,
   );
   console.log(
     `    dist-tag:    ${BOOTSTRAP_PLACEHOLDER_TAG} ('latest' stays unoccupied until the first real coordinated release)`,
+  );
+  console.log(
+    `    truth:       registry-presence marker, NOT a functional release — members whose dependencies pin the unpublished coordinated version are not installable until the set publishes (by design; run --inspect for the artifact proof)`,
   );
   console.log(
     `    publish:     npm publish <placeholder.tgz> --access public --tag ${BOOTSTRAP_PLACEHOLDER_TAG} --registry https://registry.npmjs.org/ — INTERACTIVE 2FA (contract §13 historical path; the one registered §16 exception)`,
@@ -213,30 +276,35 @@ if (dirty.length > 0) {
 // 5. Publish the placeholders (interactive 2FA; stop at first failure).
 const npm = process.platform === 'win32' ? 'npm.cmd' : 'npm';
 for (const name of absent) {
-  const bareName = name.replace('@victframework/', '');
-  const work = mkdtempSync(join(tmpdir(), 'vict-first-publish-'));
+  let candidate;
   try {
-    cpSync(join(repoRoot, 'packages', bareName), join(work, bareName), {
-      recursive: true,
-      filter: (source) =>
-        !source.includes(`${bareName}${join('node_modules')}`) && !source.includes('dist'),
+    // Build the REAL candidate (workspace build + faithful temp copy +
+    // re-version) and VALIDATE the actual artifact before publishing it.
+    candidate = buildBootstrapCandidate({
+      repoRoot,
+      name,
+      log: (line) => console.log(`  ${line}`),
     });
-    // Re-version the TEMP COPY only. The workspace manifest is never mutated.
-    const manifestPath = join(work, bareName, 'package.json');
-    const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'));
-    if (manifest.name !== name) fail(`temp-copy manifest name mismatch for ${name}.`);
-    manifest.version = BOOTSTRAP_PLACEHOLDER_VERSION;
-    const { writeFileSync } = await import('node:fs');
-    writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`);
+    if (candidate.problems.length > 0) {
+      for (const problem of candidate.problems) console.error(`  - ${problem}`);
+      fail(
+        `the ${name} placeholder artifact failed validation — never publish a broken or incomplete artifact.`,
+      );
+    }
 
-    const pack = run(npm, ['pack', join(work, bareName), '--pack-destination', work, '--silent'], {
-      cwd: work,
-    });
+    // Real pack from the validated candidate directory (same temp root).
+    const pack = run(
+      npm,
+      ['pack', candidate.candidateDir, '--pack-destination', candidate.workDir, '--silent'],
+      {
+        cwd: candidate.workDir,
+      },
+    );
     if (pack.status !== 0) {
       fail(`npm pack failed for the ${name} placeholder (exit ${pack.status}).`);
     }
     const tgzName = (pack.stdout ?? '').trim().split(/\r?\n/).at(-1)?.trim();
-    if (tgzName === undefined || !existsSync(join(work, tgzName))) {
+    if (tgzName === undefined || !existsSync(join(candidate.workDir, tgzName))) {
       fail(`could not locate the packed placeholder tarball for ${name}.`);
     }
     console.log(
@@ -246,7 +314,7 @@ for (const name of absent) {
       npm,
       [
         'publish',
-        join(work, tgzName),
+        join(candidate.workDir, tgzName),
         '--access',
         'public',
         '--tag',
@@ -254,7 +322,7 @@ for (const name of absent) {
         '--registry',
         'https://registry.npmjs.org/',
       ],
-      { stdio: 'inherit', shell: process.platform === 'win32', cwd: work },
+      { stdio: 'inherit', shell: process.platform === 'win32', cwd: candidate.workDir },
     );
     if (publish.status !== 0) {
       fail(
@@ -265,7 +333,7 @@ for (const name of absent) {
       `  published: ${name}@${BOOTSTRAP_PLACEHOLDER_VERSION} under '${BOOTSTRAP_PLACEHOLDER_TAG}'`,
     );
   } finally {
-    rmSync(work, { recursive: true, force: true });
+    if (candidate !== undefined) rmSync(candidate.workDir, { recursive: true, force: true });
   }
 }
 

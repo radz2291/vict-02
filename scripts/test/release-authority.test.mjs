@@ -1,32 +1,42 @@
 /**
- * Release-authority tests: the fail-closed contract-authority gate and
- * the trust preflight (release-readiness corrections, 2026-09-27).
+ * Release-authority tests (r4): the fail-closed contract-authority gate
+ * WITH owner-decision enforcement, the MANDATORY trust preflight with
+ * set-bound evidence, and the engine/workflow wiring.
  *
  * RED/GREEN contract:
  *  - while §16 exists only as the unratified draft, the REAL frozen
  *    contract is REFUSED (red) — by every registry-writing path;
- *  - ONLY the exact owner-ratified contract state (the draft's
- *    Appendix A/B substitutions applied verbatim + the §16 amendment
- *    record with its §16.5 sequence-deviation authorization) is
- *    accepted (green). The `ratify()` fixture below applies exactly
- *    those mechanical edits; any tampering is refused again.
+ *  - only the EXACT owner-ratified state passes: Appendices A+B applied
+ *    verbatim AND the owner's explicit §16.5 decision line
+ *    (`Owner decision recorded: D-AUTHORIZE` / `D-REVERT`) consistent
+ *    with the branch's REAL git history. A heading or a self-created
+ *    marker is NOT a decision: missing, ambiguous, malformed, or
+ *    contradictory choices refuse authority (r4);
+ *  - publication additionally requires the set-wide trust preflight
+ *    (all 14 present + exact verified trust) — live or through a
+ *    VALIDATED set-bound evidence artifact (r4; r3 accepted arbitrary
+ *    JSON, so these tests fail on r3).
  *
- * No test in this file performs a registry write: the refusal paths are
- * proven to fail BEFORE any registry call.
+ * No test in this file performs a registry write.
  */
 import { spawnSync } from 'node:child_process';
 import { describe, expect, it } from 'vitest';
-import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
   assessContractAuthority,
+  createGitAncestryVerifier,
+  extractOwnerDecision,
   parseSection5Order,
-  RATIFIED_AMENDMENTS_LINE_MARKER,
-  RATIFIED_DEVIATION_HEADING,
-  RATIFIED_SECTION16_HEADING,
 } from '../lib/contract-authority.mjs';
+import { assessPublicationPreflight, releaseSetIdentityAt } from '../lib/publication-preflight.mjs';
+import {
+  membersFromTrustEvidence,
+  TRUST_EVIDENCE_SCHEMA,
+  validateTrustEvidence,
+} from '../lib/trust-evidence.mjs';
 import {
   assessTrustPreflight,
   BOOTSTRAP_PLACEHOLDER_VERSION,
@@ -45,29 +55,27 @@ const scriptDir = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(scriptDir, '..', '..');
 const FROZEN_CONTRACT = join(repoRoot, 'docs', 'RELEASE-TRUSTED-PUBLISHING-CONTRACT.md');
 const realContractText = readFileSync(FROZEN_CONTRACT, 'utf8');
+const ownerDecisionLine = (token) => `Owner decision recorded: ${token}`;
 
 // ---------------------------------------------------------------------------
 // The mechanical ratification fixture: EXACTLY the mechanical edits the
 // §16 draft's Appendix A (§5 substitution) and Appendix B (§§1, 2, 6, 8,
-// 10, 11 substitutions + appended §16 record) specify. Kept line-for-line
-// faithful to the draft; tamper tests below prove the checker notices
-// deviations.
+// 10, 11 substitutions + appended §16 record) specify, plus the owner's
+// §16.5 decision line when a decision is supplied. Tamper tests below
+// prove the checker notices deviations.
 // ---------------------------------------------------------------------------
 
 function substituteCounts(text) {
   let out = text;
   const edits = [
-    // §1 — manifests metadata proof
     [
       '* All 15 published manifests carry (AMENDED 2026-09-26: 13 → 15; see\n  §14)',
       '* All 14 published manifests carry (AMENDED 2026-09-26, §14: 13 → 15;\n  AMENDED 2026-09-27, §16: 15 → 14)',
     ],
-    // §2 — workflow-rename blast radius
     [
       'invalidates the trust relationships of all 15 packages (AMENDED\n  2026-09-26: 13 → 15; see §14)',
       'invalidates the trust relationships of all 14 packages (AMENDED\n  2026-09-26, §14: 13 → 15; AMENDED 2026-09-27, §16: 15 → 14)',
     ],
-    // §6 — coherent version + unpublished checks
     [
       'the ONE coherent version of all 15 manifests (AMENDED 2026-09-26:\n    13 → 15; see §14)',
       'the ONE coherent version of all 14 manifests (AMENDED 2026-09-26,\n    §14: 13 → 15; AMENDED 2026-09-27, §16: 15 → 14)',
@@ -76,7 +84,6 @@ function substituteCounts(text) {
       'UNPUBLISHED for all 15 packages (AMENDED 2026-09-26: 13 → 15; see §14)',
       'UNPUBLISHED for all 14 packages (AMENDED 2026-09-26, §14: 13 → 15;\n  AMENDED 2026-09-27, §16: 15 → 14)',
     ],
-    // §8 — build/pack counts
     [
       '4. `npm run build` — all 15 packages (AMENDED 2026-09-26: 13 → 15; see\n   §14; AMENDED: moved ahead of the full suite; see §8.1);',
       '4. `npm run build` — all 14 packages (AMENDED 2026-09-26, §14: 13 → 15;\n   AMENDED 2026-09-27, §16: 15 → 14; AMENDED: moved ahead of the full\n   suite; see §8.1);',
@@ -85,12 +92,10 @@ function substituteCounts(text) {
       '6. `npm pack` of all 15 packages (AMENDED 2026-09-26: 13 → 15; see §14)',
       '6. `npm pack` of all 14 packages (AMENDED 2026-09-26, §14: 13 → 15;\n   AMENDED 2026-09-27, §16: 15 → 14)',
     ],
-    // §10 — resume/unpublished rule
     [
       'Without the input, all 15 must be unpublished (AMENDED\n  2026-09-26: 13 → 15; see §14).',
       'Without the input, all 14 must be unpublished (AMENDED 2026-09-26,\n  §14: 13 → 15; AMENDED 2026-09-27, §16: 15 → 14).',
     ],
-    // §11 — bootstrap allowlist + ceremony counts
     [
       'derives the exact 15-package\n  (AMENDED 2026-09-26: 13 → 15; see §14) inventory',
       'derives the exact 14-package\n  (AMENDED 2026-09-26, §14: 13 → 15; AMENDED 2026-09-27, §16: 15 → 14)\n  inventory',
@@ -185,10 +190,14 @@ contract changes):**
    can never satisfy the §6 coordinated version rule — published through
    the historical local interactive-2FA path (§13 precedent), never
    through the coordinated release engine, never consuming a coordinated
-   set version. Placeholder versions are registry-immutable lineage.
-   The coordinated set publishes only after ALL members' relationships
-   are verified (\`scripts/verify-trust-preflight.mjs\` refuses any
-   publication otherwise).
+   set version. Placeholder versions are registry-immutable lineage and
+   registry-presence markers, NOT functional releases: they carry the
+   real built package content with the real dependency pins, so members
+   whose dependencies pin the coordinated version are NOT installable
+   until the coordinated set publishes. The coordinated set publishes
+   only after ALL members' relationships are verified
+   (\`scripts/verify-trust-preflight.mjs\` refuses any publication
+   otherwise).
 
 ### 16.5 Ratification sequence deviation — explicit owner authorization
 
@@ -204,49 +213,49 @@ created registry drift: nothing was published, no trust was mutated,
 and every frozen verifier failed closed in between. The unratified §15
 draft is NOT authority and is not relied on.
 
-By ratifying this §16 the owner EXPLICITLY AUTHORIZES retroactively the
-consuming implementation commits above, or DIRECTS their reversion
-before ratification; the chosen option is recorded in the ratification
-commit message. Ratification without either choice recorded is
-INCOMPLETE and the release path stays fail-closed.
+Upon ratification the owner records EXACTLY ONE decision line in this
+section, in the exact form \`Owner decision recorded: \` immediately
+followed by the chosen token — D-AUTHORIZE (retroactively authorizing
+the consuming implementation commits named above; the pre-publication
+authority gate verifies they ARE ancestors of the release source) or
+D-REVERT (directing the reversion of the consuming implementation
+before ratification; the authority gate verifies the named commits have
+actually been REMOVED from the release branch's history). The same
+choice is repeated in the ratification commit message. A record with NO
+decision line, with MORE THAN ONE, with a malformed line, or whose
+choice contradicts the branch's actual history is INCOMPLETE, AMBIGUOUS,
+or CONTRADICTORY, and the release path stays fail-closed. A heading, a
+summary, or a self-authored marker anywhere else is not an owner
+decision: only this exact decision line inside §16.5 of the frozen
+contract counts.
 `;
 
-function ratify(text) {
+function ratify(text, decision) {
   let out = text;
-  // Header amendments-to-date line records §16.
   out = out.replace(
     '§14 (2026-09-26, 15-package release set).',
     '§14 (2026-09-26, 15-package release set); §16 (2026-09-27, 14-package\nfacade retirement).',
   );
-  if (!out.includes(RATIFIED_AMENDMENTS_LINE_MARKER.replace(/\s+/g, ' ').slice(0, 24))) {
-    // the whitespace-normalized marker check happens in the lib; keep the
-    // fixture honest — the string above must contain the marker words.
-  }
-  // §5 wholesale substitution (Appendix A).
   const s5Start = out.indexOf('## 5. Release-set inventory');
   const s5End = out.indexOf('## 6.');
   if (s5Start === -1 || s5End === -1) throw new Error('ratify fixture: §5 bounds not found');
   out = out.slice(0, s5Start) + SECTION5_SUBSTITUTION + '\n' + out.slice(s5End);
-  // §§1, 2, 6, 8, 10, 11 current-tense count substitutions (Appendix B).
   out = substituteCounts(out);
-  // Append the §16 amendment record (Appendix B, part 2).
-  out = `${out.trimEnd()}\n\n${SECTION16_RECORD}`;
+  let record = SECTION16_RECORD;
+  if (decision !== undefined) {
+    // The owner appends EXACTLY ONE decision line inside §16.5.
+    record = `${record.trimEnd()}\n\n${ownerDecisionLine(decision)}\n`;
+  }
+  out = `${out.trimEnd()}\n\n${record}`;
   return out;
 }
 
-function writeFixtureRepo(contractText) {
-  const dir = mkdtempSync(join(tmpdir(), 'vict-contract-authority-'));
-  mkdirSync(join(dir, 'docs'), { recursive: true });
-  writeFileSync(join(dir, 'docs', 'RELEASE-TRUSTED-PUBLISHING-CONTRACT.md'), contractText);
-  return dir;
-}
-
 // ---------------------------------------------------------------------------
-// 1. Contract authority — RED on the real frozen contract (unratified §16)
+// 1. Contract authority — RED on the real frozen contract (§14 state)
 // ---------------------------------------------------------------------------
 
 describe('contract authority — red state (frozen contract at §14, §16 unratified)', () => {
-  const verdict = assessContractAuthority(realContractText);
+  const verdict = assessContractAuthority(realContractText, { isAncestor: () => true });
 
   it('refuses the real frozen contract', () => {
     expect(verdict.authorized).toBe(false);
@@ -278,19 +287,177 @@ describe('contract authority — red state (frozen contract at §14, §16 unrati
 });
 
 // ---------------------------------------------------------------------------
-// 2. Contract authority — GREEN on the exact ratified state only
+// 2. Contract authority — the owner decision is ENFORCED (r4)
 // ---------------------------------------------------------------------------
 
-describe('contract authority — green state (exact ratified §16 state)', () => {
-  const ratified = ratify(realContractText);
-  const verdict = assessContractAuthority(ratified);
+describe('contract authority — §16.5 owner decision enforcement', () => {
+  const ratifiedNoDecision = ratify(realContractText);
+  const alwaysAncestor = () => true;
+  const neverAncestor = () => false;
 
-  it('authorizes the exactly-ratified contract text', () => {
+  it('extractOwnerDecision: exact line inside §16.5 is recognized; elsewhere it is not', () => {
+    expect(extractOwnerDecision(ratify(realContractText, 'D-AUTHORIZE')).kind).toBe('authorize');
+    expect(extractOwnerDecision(ratify(realContractText, 'D-REVERT')).kind).toBe('revert');
+    // A decision marker dropped into §14's area (outside §16.5) is NOT
+    // the owner decision: the section-scoped search never sees it.
+    const misplaced = ratifiedNoDecision.replace(
+      '§14 (2026-09-26, 15-package release set); §16 (2026-09-27, 14-package\nfacade retirement).',
+      `§14 (2026-09-26, 15-package release set); §16 (2026-09-27, 14-package\nfacade retirement). ${ownerDecisionLine('D-AUTHORIZE')}`,
+    );
+    expect(extractOwnerDecision(misplaced).kind).toBe('malformed'); // §16.5 still mentions tokens without its own exact line
+  });
+
+  it('extractOwnerDecision: missing, ambiguous, and malformed are distinguished', () => {
+    expect(extractOwnerDecision(ratifiedNoDecision).kind).toBe('malformed'); // tokens mentioned, no exact line
+    const both = ratify(realContractText, 'D-AUTHORIZE').replace(
+      `${ownerDecisionLine('D-AUTHORIZE')}`,
+      `${ownerDecisionLine('D-AUTHORIZE')}\n${ownerDecisionLine('D-REVERT')}`,
+    );
+    expect(extractOwnerDecision(both).kind).toBe('ambiguous');
+    const duplicate = ratify(realContractText, 'D-AUTHORIZE').replace(
+      ownerDecisionLine('D-AUTHORIZE'),
+      `${ownerDecisionLine('D-AUTHORIZE')}\n${ownerDecisionLine('D-AUTHORIZE')}`,
+    );
+    expect(extractOwnerDecision(duplicate).kind).toBe('ambiguous');
+    const malformed = ratify(realContractText, 'D-AUTHORIZE').replace(
+      ownerDecisionLine('D-AUTHORIZE'),
+      'owner decision: D-AUTHORIZE (informal note)',
+    );
+    expect(extractOwnerDecision(malformed).kind).toBe('malformed');
+  });
+
+  it('refuses a ratified record with NO decision line (heading is not a decision)', () => {
+    const verdict = assessContractAuthority(ratifiedNoDecision, { isAncestor: alwaysAncestor });
+    expect(verdict.authorized).toBe(false);
+    // The record TEXT mentions the tokens (as instructions) without the
+    // owner ever recording the exact line — refused.
+    const problem = verdict.problems.find((p) => p.includes('owner decision malformed'));
+    expect(problem).toBeDefined();
+    expect(problem).toContain('records no exact `Owner decision recorded:');
+  });
+
+  it('refuses AMBIGUOUS decisions (both tokens, or the line twice)', () => {
+    const both = ratify(realContractText, 'D-AUTHORIZE').replace(
+      ownerDecisionLine('D-AUTHORIZE'),
+      `${ownerDecisionLine('D-AUTHORIZE')}\n${ownerDecisionLine('D-REVERT')}`,
+    );
+    const verdict = assessContractAuthority(both, { isAncestor: alwaysAncestor });
+    expect(verdict.authorized).toBe(false);
+    expect(verdict.problems.join('\n')).toContain('owner decision ambiguous');
+  });
+
+  it('refuses MALFORMED decisions (tokens without the exact line form)', () => {
+    const informal = ratify(realContractText, 'D-AUTHORIZE').replace(
+      ownerDecisionLine('D-AUTHORIZE'),
+      'The owner informally nodded at D-AUTHORIZE.',
+    );
+    const verdict = assessContractAuthority(informal, { isAncestor: alwaysAncestor });
+    expect(verdict.authorized).toBe(false);
+    expect(verdict.problems.join('\n')).toContain('owner decision malformed');
+  });
+
+  it('accepts D-AUTHORIZE only when the named consuming commits ARE ancestors', () => {
+    const ok = assessContractAuthority(ratify(realContractText, 'D-AUTHORIZE'), {
+      isAncestor: alwaysAncestor,
+    });
+    expect(ok.authorized).toBe(true);
+
+    const contradictory = assessContractAuthority(ratify(realContractText, 'D-AUTHORIZE'), {
+      isAncestor: neverAncestor,
+    });
+    expect(contradictory.authorized).toBe(false);
+    expect(contradictory.problems.join('\n')).toContain('D-AUTHORIZE is recorded');
+
+    const noVerifier = assessContractAuthority(ratify(realContractText, 'D-AUTHORIZE'), {});
+    expect(noVerifier.authorized).toBe(false);
+    expect(noVerifier.problems.join('\n')).toContain('cross-check unavailable');
+  });
+
+  it('accepts D-REVERT only when the named consuming commits are GONE from history', () => {
+    const reverted = assessContractAuthority(ratify(realContractText, 'D-REVERT'), {
+      isAncestor: neverAncestor,
+    });
+    expect(reverted.authorized).toBe(true);
+
+    const stillPresent = assessContractAuthority(ratify(realContractText, 'D-REVERT'), {
+      isAncestor: alwaysAncestor,
+    });
+    expect(stillPresent.authorized).toBe(false);
+    expect(stillPresent.problems.join('\n')).toContain('D-REVERT is recorded');
+    expect(stillPresent.problems.join('\n')).toContain('revert the implementation');
+  });
+
+  it('git ancestry verifier: resolvable → true/false; unresolvable → undefined, never a guess', () => {
+    const isAncestor = createGitAncestryVerifier(repoRoot);
+    const head = spawnSync('git', ['rev-parse', 'HEAD'], {
+      encoding: 'utf8',
+      cwd: repoRoot,
+    }).stdout.trim();
+    expect(isAncestor(head)).toBe(true);
+    // A well-formed but ABSENT sha cannot be resolved (git exit 128) —
+    // the honest verdict is undefined, and the gate refuses on it.
+    expect(isAncestor('0123456789abcdef0123456789abcdef01234567')).toBeUndefined();
+    const missingRepo = createGitAncestryVerifier(join(tmpdir(), 'definitely-not-a-repo-r4'));
+    expect(missingRepo(head)).toBeUndefined();
+  });
+
+  it('end-to-end D-REVERT on a truly reverted world (orphan commit named) AUTHORIZES', () => {
+    const dir = mkdtempSync(join(tmpdir(), 'vict-reverted-world-'));
+    mkdirSync(join(dir, 'docs'), { recursive: true });
+    const git = (args) => {
+      const result = spawnSync('git', args, { encoding: 'utf8', cwd: dir });
+      if (result.status !== 0) throw new Error(`git ${args.join(' ')} failed: ${result.stderr}`);
+      return (result.stdout ?? '').trim();
+    };
+    try {
+      git(['init', '-q']);
+      git(['config', 'user.email', 'fixture@example.invalid']);
+      git(['config', 'user.name', 'fixture']);
+      writeFileSync(join(dir, 'docs', 'SEED.md'), 'seed\n');
+      git(['add', '-A']);
+      git(['commit', '-q', '-m', 'seed']);
+      // A commit on an ORPHAN branch: never an ancestor of main HEAD —
+      // standing in for "the consuming commits were removed".
+      git(['checkout', '-q', '--orphan', 'side']);
+      git(['commit', '-q', '--allow-empty', '-m', 'orphan']);
+      const orphanSha = git(['rev-parse', 'HEAD']);
+      git(['checkout', '-q', 'master']);
+      let text = ratify(realContractText, 'D-REVERT').replace(
+        'bac9c01640d1aa4e6d1ee040969fae3d63136853',
+        orphanSha,
+      );
+      text = text.replace('d8c70df2d80169e38d951c4569e913ecfab49865', orphanSha);
+      writeFileSync(join(dir, 'docs', 'RELEASE-TRUSTED-PUBLISHING-CONTRACT.md'), text);
+      git(['add', '-A']);
+      git(['commit', '-q', '-m', 'ratify §16 D-REVERT (fixture)']);
+      const green = spawnSync(
+        process.execPath,
+        [join(repoRoot, 'scripts', 'verify-contract-authority.mjs'), '--repo-root', dir],
+        { encoding: 'utf8', cwd: repoRoot },
+      );
+      expect(green.status).toBe(0);
+      expect(green.stdout).toContain('AUTHORIZED');
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
+    }
+  });
+});
+
+// ---------------------------------------------------------------------------
+// 3. Contract authority — GREEN on the exact ratified + decided state
+// ---------------------------------------------------------------------------
+
+describe('contract authority — green state (ratified Appendices A+B + explicit owner decision)', () => {
+  it('authorizes the exactly-ratified contract with D-AUTHORIZE (injected ancestry)', () => {
+    const verdict = assessContractAuthority(ratify(realContractText, 'D-AUTHORIZE'), {
+      isAncestor: () => true,
+    });
     expect(verdict.problems).toEqual([]);
     expect(verdict.authorized).toBe(true);
   });
 
   it('the ratified §5 order parses to exactly the frozen 14-package order', () => {
+    const ratified = ratify(realContractText, 'D-AUTHORIZE');
     const order = parseSection5Order(
       ratified.slice(ratified.indexOf('## 5.'), ratified.indexOf('## 6.')),
     );
@@ -298,58 +465,138 @@ describe('contract authority — green state (exact ratified §16 state)', () =>
   });
 
   it('refuses a tampered §5 order (one swapped entry)', () => {
+    const ratified = ratify(realContractText, 'D-AUTHORIZE');
     const tampered = ratified.replace(
       '13. @victframework/server                (was 14 in §14)\n14. @victframework/cli                   (was 15 in §14)',
       '13. @victframework/cli                   (was 15 in §14)\n14. @victframework/server                (was 14 in §14)',
     );
     expect(tampered).not.toEqual(ratified);
-    const result = assessContractAuthority(tampered);
+    const result = assessContractAuthority(tampered, { isAncestor: () => true });
     expect(result.authorized).toBe(false);
     expect(result.problems.join('\n')).toContain('order is not the frozen 14-package order');
   });
 
   it('refuses a reintroduced current-tense 15-norm', () => {
+    const ratified = ratify(realContractText, 'D-AUTHORIZE');
     const tampered = ratified.replace(
       'The human never\n  performs 14 separate manual package configurations.',
       'The human never\n  performs 15 separate manual package configurations.',
     );
-    const result = assessContractAuthority(tampered);
+    const result = assessContractAuthority(tampered, { isAncestor: () => true });
     expect(result.authorized).toBe(false);
     expect(result.problems.join('\n')).toContain('stale current-tense');
   });
 
-  it('refuses a missing sequence-deviation authorization', () => {
-    const tampered = ratified.replace(`\n${RATIFIED_DEVIATION_HEADING}\n`, '\n');
-    const result = assessContractAuthority(tampered);
-    expect(result.authorized).toBe(false);
-    expect(result.problems.join('\n')).toContain('missing owner authorization');
-  });
-
-  it('refuses a missing §16 record', () => {
-    const tampered =
-      ratified.slice(0, ratified.indexOf(RATIFIED_SECTION16_HEADING)).trimEnd() + '\n';
-    const result = assessContractAuthority(tampered);
-    expect(result.authorized).toBe(false);
-    expect(result.problems.join('\n')).toContain('missing ratified amendment record');
-  });
-
   it('tolerates 15-references inside historical records (§8.1/§13/§14/§16)', () => {
-    // §8.1's historical narrative legitimately mentions earlier states.
+    const ratified = ratify(realContractText, 'D-AUTHORIZE');
     const withHistory = ratified.replace(
       'the first clean-runner execution exposed it.',
       'the first clean-runner execution exposed it. (Historical note: at the\n§14 state all 15 packages were built at step 4.)',
     );
-    const result = assessContractAuthority(withHistory);
+    const result = assessContractAuthority(withHistory, { isAncestor: () => true });
     expect(result.authorized).toBe(true);
   });
 });
 
 // ---------------------------------------------------------------------------
-// 3. Engine wiring — every registry-writing path refuses BEFORE any
-//    registry call while the contract is unratified
+// 4. Contract authority — REAL git ancestry, end to end (CLI)
 // ---------------------------------------------------------------------------
 
-describe('engine wiring — authority gate precedes any registry call', () => {
+/** Build a real git fixture whose ratified contract names REAL commits. */
+function writeGitFixture(decision, { nameCommits }) {
+  const dir = mkdtempSync(join(tmpdir(), 'vict-contract-authority-git-'));
+  mkdirSync(join(dir, 'docs'), { recursive: true });
+  const git = (args) => {
+    const result = spawnSync('git', args, { encoding: 'utf8', cwd: dir });
+    if (result.status !== 0) throw new Error(`git ${args.join(' ')} failed: ${result.stderr}`);
+    return (result.stdout ?? '').trim();
+  };
+  git(['init', '-q']);
+  git(['config', 'user.email', 'fixture@example.invalid']);
+  git(['config', 'user.name', 'fixture']);
+  writeFileSync(join(dir, 'docs', 'SEED.md'), 'seed\n');
+  git(['add', '-A']);
+  git(['commit', '-q', '-m', 'seed']);
+  const parentSha = git(['rev-parse', 'HEAD']);
+  let text = ratify(realContractText, decision);
+  if (nameCommits) {
+    // Point §16.5's named commits at REAL commits of this fixture repo:
+    // parentSha (ancestor) and a second commit made below (HEAD).
+    text = text
+      .replace('bac9c01640d1aa4e6d1ee040969fae3d63136853', parentSha)
+      .replace('d8c70df2d80169e38d951c4569e913ecfab49865', 'PENDING_SECOND_SHA');
+  }
+  writeFileSync(join(dir, 'docs', 'RELEASE-TRUSTED-PUBLISHING-CONTRACT.md'), text);
+  git(['add', '-A']);
+  git(['commit', '-q', '-m', 'ratify §16 (test fixture)']);
+  if (nameCommits) {
+    const headSha = git(['rev-parse', 'HEAD']);
+    // Re-write the contract with the real HEAD sha in place of the
+    // placeholder and commit again (HEAD sha changes; the LAST commit's
+    // own sha cannot name itself — name the seed + first ratification
+    // commit instead, both ancestors).
+    const firstRatifySha = headSha;
+    let final = readFileSync(join(dir, 'docs', 'RELEASE-TRUSTED-PUBLISHING-CONTRACT.md'), 'utf8')
+      .toString()
+      .replace('PENDING_SECOND_SHA', firstRatifySha);
+    writeFileSync(join(dir, 'docs', 'RELEASE-TRUSTED-PUBLISHING-CONTRACT.md'), final);
+    git(['add', '-A']);
+    git(['commit', '-q', '-m', 'ratify §16 — record decision (test fixture)']);
+  }
+  return dir;
+}
+
+describe('contract authority — end-to-end with REAL git ancestry (CLI)', () => {
+  it('the standalone CLI is RED on the real repo (§16 unratified, no decision)', () => {
+    const result = spawnSync(
+      process.execPath,
+      [join(repoRoot, 'scripts', 'verify-contract-authority.mjs')],
+      {
+        encoding: 'utf8',
+        cwd: repoRoot,
+      },
+    );
+    expect(result.status).toBe(1);
+    expect(result.stderr).toContain('does not yet authorize the 14-package candidate set');
+  });
+
+  it('D-AUTHORIZE with real ancestor commits AUTHORIZES', () => {
+    const fixtureRoot = writeGitFixture('D-AUTHORIZE', { nameCommits: true });
+    try {
+      const green = spawnSync(
+        process.execPath,
+        [join(repoRoot, 'scripts', 'verify-contract-authority.mjs'), '--repo-root', fixtureRoot],
+        { encoding: 'utf8', cwd: repoRoot },
+      );
+      expect(green.status).toBe(0);
+      expect(green.stdout).toContain('AUTHORIZED');
+    } finally {
+      rmSync(fixtureRoot, { recursive: true, force: true });
+    }
+  });
+
+  it('D-REVERT while the consuming commits are still ancestors is REFUSED (real git)', () => {
+    const fixtureRoot = writeGitFixture('D-REVERT', { nameCommits: true });
+    try {
+      const red = spawnSync(
+        process.execPath,
+        [join(repoRoot, 'scripts', 'verify-contract-authority.mjs'), '--repo-root', fixtureRoot],
+        { encoding: 'utf8', cwd: repoRoot },
+      );
+      expect(red.status).toBe(1);
+      expect(red.stderr).toContain('D-REVERT is recorded');
+    } finally {
+      rmSync(fixtureRoot, { recursive: true, force: true });
+    }
+  });
+});
+
+// ---------------------------------------------------------------------------
+// 5. Engine wiring — every registry-writing path refuses BEFORE any
+//    registry call; the trust preflight is wired after authority (r4)
+// ---------------------------------------------------------------------------
+
+describe('engine wiring — authority + preflight gates precede any registry call', () => {
   it('oidc-release validate refuses with the authority message (no lineage/registry activity)', () => {
     const result = spawnSync(
       process.execPath,
@@ -369,7 +616,6 @@ describe('engine wiring — authority gate precedes any registry call', () => {
     const output = `${result.stderr}${result.stdout}`;
     expect(output).toContain('CONTRACT AUTHORITY REFUSED');
     expect(output).toContain('NO registry call or write was made');
-    // The gate fired BEFORE lineage validation and the unpublished guard.
     expect(output).not.toContain('origin/main');
     expect(output).not.toContain('resume');
   });
@@ -390,29 +636,46 @@ describe('engine wiring — authority gate precedes any registry call', () => {
     expect(`${result.stderr}${result.stdout}`).not.toContain('requires a valid --pack-dir');
   });
 
-  it('the standalone authority CLI is red on the real repo and green only on a ratified fixture', () => {
-    const red = spawnSync(
-      process.execPath,
-      [join(repoRoot, 'scripts', 'verify-contract-authority.mjs')],
-      {
-        encoding: 'utf8',
-        cwd: repoRoot,
-      },
-    );
-    expect(red.status).toBe(1);
-    expect(red.stderr).toContain('does not yet authorize the 14-package candidate set');
+  it('the trust preflight is wired into BOTH oidc subcommands and publish-release (r4; fails on r3)', () => {
+    const oidc = readFileSync(join(repoRoot, 'scripts', 'oidc-release.mjs'), 'utf8');
+    // Definition + two call sites (validate, publish — publish covers the
+    // resume path).
+    expect(oidc.match(/assertTrustPreflight\(/g)?.length).toBe(3);
+    // Both call sites precede any unpublished-guard/resume work.
+    const firstCall = oidc.indexOf('assertTrustPreflight(repoRoot');
+    const guardDef = oidc.indexOf('function validateUnpublishedGuard');
+    expect(firstCall).toBeGreaterThan(-1);
+    expect(firstCall).toBeLessThan(guardDef);
+    const publish = readFileSync(join(repoRoot, 'scripts', 'publish-release.mjs'), 'utf8');
+    expect(publish).toMatch(/assessPublicationPreflight\(\{\s*repoRoot/);
+  });
 
-    const fixtureRoot = writeFixtureRepo(ratify(realContractText));
+  it('oidc-release with an ARBITRARY evidence file still refuses at the AUTHORITY gate first', () => {
+    const arbitrary = join(tmpdir(), `arbitrary-evidence-${Date.now()}.json`);
+    writeFileSync(arbitrary, '{"contracts": {"github": {"repository": "radz2291/vict-02"}}}');
     try {
-      const green = spawnSync(
+      const result = spawnSync(
         process.execPath,
-        [join(repoRoot, 'scripts', 'verify-contract-authority.mjs'), '--repo-root', fixtureRoot],
+        [
+          join(repoRoot, 'scripts', 'oidc-release.mjs'),
+          'validate',
+          '--source-sha',
+          '0000000000000000000000000000000000000000',
+          '--version',
+          '0.4.0-rc.1',
+          '--tag',
+          'vict-0.4.0-rc',
+          '--trust-evidence',
+          arbitrary,
+        ],
         { encoding: 'utf8', cwd: repoRoot },
       );
-      expect(green.status).toBe(0);
-      expect(green.stdout).toContain('AUTHORIZED');
+      expect(result.status).toBe(1);
+      const output = `${result.stderr}${result.stdout}`;
+      expect(output).toContain('CONTRACT AUTHORITY REFUSED');
+      expect(output).not.toContain('evidence artifact'); // preflight never even ran
     } finally {
-      rmSync(fixtureRoot, { recursive: true, force: true });
+      rmSync(arbitrary, { force: true });
     }
   });
 
@@ -450,7 +713,7 @@ describe('engine wiring — authority gate precedes any registry call', () => {
 });
 
 // ---------------------------------------------------------------------------
-// 4. Trust preflight — the set-wide publication rule
+// 6. Trust preflight — set-wide rule + CREDIBLE evidence (r4)
 // ---------------------------------------------------------------------------
 
 function fullSet(overrides = {}) {
@@ -532,7 +795,159 @@ describe('trust preflight — set-wide publication rule', () => {
 });
 
 // ---------------------------------------------------------------------------
-// 5. The bootstrap placeholder can never consume the coordinated set
+// 7. Trust evidence — arbitrary or stale JSON never authorizes (r4)
+// ---------------------------------------------------------------------------
+
+function validEvidence({ now = new Date('2026-09-27T12:00:00Z'), identity, version } = {}) {
+  const members = {};
+  for (const name of FROZEN_PUBLISH_ORDER) {
+    members[name] = {
+      registry: 'present',
+      trust: 'exact',
+      command: `npm trust list ${name} --json`,
+      exitCode: 0,
+      rawOutputSha256: 'a'.repeat(64),
+    };
+  }
+  return JSON.stringify({
+    schema: TRUST_EVIDENCE_SCHEMA,
+    generatedAt: now.toISOString(),
+    version,
+    setIdentity: identity,
+    members,
+  });
+}
+
+describe('trust evidence — binding failures refuse authority', () => {
+  const { identity, inventory } = releaseSetIdentityAt(repoRoot);
+  const version = inventory.version;
+  const now = new Date('2026-09-27T12:00:00Z');
+
+  it('a well-formed, bound, fresh artifact validates and authorizes the set', () => {
+    const result = validateTrustEvidence(validEvidence({ identity, version, now }), {
+      expectedVersion: version,
+      expectedIdentity: identity,
+      now,
+    });
+    expect(result.ok).toBe(true);
+    const assessment = assessTrustPreflight(membersFromTrustEvidence(result.evidence));
+    expect(assessment.authorized).toBe(true);
+  });
+
+  it('an r3-style ARBITRARY evidence map (name → output) is refused', () => {
+    const result = validateTrustEvidence(
+      JSON.stringify({ '@victframework/contracts': { github: {} } }),
+      {
+        expectedVersion: version,
+        expectedIdentity: identity,
+        now,
+      },
+    );
+    expect(result.ok).toBe(false);
+    expect(result.problems.join('\n')).toContain('schema mismatch');
+  });
+
+  it('a STALE artifact (>24h) is refused', () => {
+    const stale = new Date('2026-09-25T11:00:00Z');
+    const result = validateTrustEvidence(validEvidence({ identity, version, now: stale }), {
+      expectedVersion: version,
+      expectedIdentity: identity,
+      now,
+    });
+    expect(result.ok).toBe(false);
+    expect(result.problems.join('\n')).toContain('STALE');
+  });
+
+  it('an artifact bound to ANOTHER version or set identity is dead on arrival', () => {
+    const wrongVersion = validateTrustEvidence(validEvidence({ identity, version: '0.3.1', now }), {
+      expectedVersion: version,
+      expectedIdentity: identity,
+      now,
+    });
+    expect(wrongVersion.ok).toBe(false);
+    expect(wrongVersion.problems.join('\n')).toContain('bound to version "0.3.1"');
+
+    const wrongIdentity = validateTrustEvidence(
+      validEvidence({ identity: `v1_${'b'.repeat(64)}`, version, now }),
+      {
+        expectedVersion: version,
+        expectedIdentity: identity,
+        now,
+      },
+    );
+    expect(wrongIdentity.ok).toBe(false);
+    expect(wrongIdentity.problems.join('\n')).toContain('foreign-set artifact');
+  });
+
+  it('partial evidence (a missing member) and non-member noise are refused', () => {
+    const parsed = JSON.parse(validEvidence({ identity, version, now }));
+    delete parsed.members['@victframework/cli'];
+    const missing = validateTrustEvidence(JSON.stringify(parsed), {
+      expectedVersion: version,
+      expectedIdentity: identity,
+      now,
+    });
+    expect(missing.ok).toBe(false);
+    expect(missing.problems.join('\n')).toContain("missing member '@victframework/cli'");
+
+    const noisy = JSON.parse(validEvidence({ identity, version, now }));
+    noisy.members['@victframework/renderer-svelte'] = {
+      registry: 'present',
+      trust: 'exact',
+      command: 'x',
+      exitCode: 0,
+      rawOutputSha256: 'a'.repeat(64),
+    };
+    const extra = validateTrustEvidence(JSON.stringify(noisy), {
+      expectedVersion: version,
+      expectedIdentity: identity,
+      now,
+    });
+    expect(extra.ok).toBe(false);
+    expect(extra.problems.join('\n')).toContain("non-member '@victframework/renderer-svelte'");
+  });
+
+  it('members without the official-command binding (command/sha) are refused', () => {
+    const parsed = JSON.parse(validEvidence({ identity, version, now }));
+    parsed.members['@victframework/contracts'].command = 'cat made-up.json';
+    parsed.members['@victframework/sdk'].rawOutputSha256 = 'not-a-sha';
+    const result = validateTrustEvidence(JSON.stringify(parsed), {
+      expectedVersion: version,
+      expectedIdentity: identity,
+      now,
+    });
+    expect(result.ok).toBe(false);
+    const joined = result.problems.join('\n');
+    expect(joined).toContain("'@victframework/contracts' does not record the official");
+    expect(joined).toContain("'@victframework/sdk' is missing the sha256");
+  });
+
+  it('assessPublicationPreflight in evidence mode: credible artifact → authorized; arbitrary → blocked', () => {
+    const credible = join(tmpdir(), 'credible-trust-evidence.json');
+    writeFileSync(credible, validEvidence({ identity, version, now: new Date() }));
+    try {
+      const verdict = assessPublicationPreflight({ repoRoot, evidencePath: credible });
+      expect(verdict.authorized).toBe(true);
+      expect(verdict.mode).toBe('evidence');
+    } finally {
+      rmSync(credible, { force: true });
+    }
+
+    const arbitrary = join(tmpdir(), 'arbitrary-trust-evidence.json');
+    writeFileSync(arbitrary, JSON.stringify({ hello: 'world' }));
+    try {
+      const verdict = assessPublicationPreflight({ repoRoot, evidencePath: arbitrary });
+      expect(verdict.authorized).toBe(false);
+      expect(verdict.stage).toBe('blocked');
+      expect(verdict.blockedReason).toContain('NOT CREDIBLE');
+    } finally {
+      rmSync(arbitrary, { force: true });
+    }
+  });
+});
+
+// ---------------------------------------------------------------------------
+// 8. The bootstrap placeholder can never consume the coordinated set
 // ---------------------------------------------------------------------------
 
 describe('first-publication bootstrap — placeholder isolation', () => {
@@ -549,7 +964,11 @@ describe('first-publication bootstrap — placeholder isolation', () => {
       const result = spawnSync(
         process.execPath,
         [join(repoRoot, 'scripts', 'first-publish-bootstrap.mjs')],
-        { encoding: 'utf8', cwd: repoRoot, timeout: 240_000 },
+        {
+          encoding: 'utf8',
+          cwd: repoRoot,
+          timeout: 240_000,
+        },
       );
       expect(result.status).toBe(0);
       const output = `${result.stdout}${result.stderr}`;
@@ -562,21 +981,37 @@ describe('first-publication bootstrap — placeholder isolation', () => {
 });
 
 // ---------------------------------------------------------------------------
-// 6. The workflow gates publication on contract authority
+// 9. The workflow gates publication on BOTH authority and preflight (r4)
 // ---------------------------------------------------------------------------
 
-describe('release.yml — contract authority gate', () => {
-  const raw = existsSync(join(repoRoot, '.github', 'workflows', 'release.yml'))
-    ? readFileSync(join(repoRoot, '.github', 'workflows', 'release.yml'), 'utf8')
-    : '';
+describe('release.yml — authority + trust preflight gates', () => {
+  const raw = readFileSync(join(repoRoot, '.github', 'workflows', 'release.yml'), 'utf8');
 
-  it('runs the authority gate immediately before the publish step, publish-only', () => {
+  it('runs the authority gate immediately before the preflight, then publish', () => {
     expect(raw).toContain('node scripts/verify-contract-authority.mjs');
     const gateIndex = raw.indexOf('Contract authority gate');
+    const preflightIndex = raw.indexOf('Trust preflight gate');
     const publishIndex = raw.indexOf('Publish the exact tarballs');
     expect(gateIndex).toBeGreaterThan(-1);
-    expect(publishIndex).toBeGreaterThan(gateIndex);
-    const gateBlock = raw.slice(gateIndex, publishIndex);
+    expect(preflightIndex).toBeGreaterThan(gateIndex);
+    expect(publishIndex).toBeGreaterThan(preflightIndex);
+    const gateBlock = raw.slice(gateIndex, preflightIndex);
     expect(gateBlock).toContain('validate_only != true');
+  });
+
+  it('the preflight step requires the AUTHORIZED verdict (fails on r3)', () => {
+    const preflightIndex = raw.indexOf('Trust preflight gate');
+    const block = raw.slice(preflightIndex, raw.indexOf('Publish the exact tarballs'));
+    expect(block).toContain('--require-authorized');
+    expect(block).toContain('verify-trust-preflight.mjs');
+    // Evidence can be supplied through a workflow input; without it the
+    // live mode applies and CI stays blocked (no npm session).
+    expect(raw).toContain('trust_evidence_path');
+  });
+
+  it('the publish engine receives the evidence path (env, never shell interpolation)', () => {
+    const publishIndex = raw.indexOf('Publish the exact tarballs');
+    const block = raw.slice(publishIndex, raw.indexOf('Verify registry state'));
+    expect(block).toContain('RELEASE_TRUST_EVIDENCE');
   });
 });

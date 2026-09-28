@@ -23,6 +23,13 @@ name: VICT coordinated release-set publication
 #   an unratified draft the workflow fails closed BY DESIGN — including
 #   validate_only rehearsals and resume paths. Ordinary structural and
 #   packed-consumer checks are not gated and stay usable.
+# - TRUST PREFLIGHT (r4): every publication path additionally refuses
+#   until ALL 14 members exist and their exact trust relationships are
+#   credibly verified — live (impossible in CI without a session) or via
+#   a VALIDATED operator-evidence artifact (schema-bound, freshness-
+#   bounded, pinned to the current version + set identity). Until the
+#   owner resolves the CI trust-proof decision, CI publication fails
+#   closed at this gate.
 # - A `validate_only` run exercises the full pre-publication chain but
 #   makes NO registry write and proves NOTHING about OIDC publication.
 
@@ -43,6 +50,10 @@ on:
         type: string
       resume_from_package:
         description: 'Optional: first NOT-yet-published package of a partially published release (byte-identical integrity is proven for the published prefix)'
+        required: false
+        type: string
+      trust_evidence_path:
+        description: 'Optional: path to a VALIDATED operator trust-evidence artifact (scripts/capture-trust-evidence.mjs) committed/uploaded in this ref — required for the preflight in CI, where no npm session exists under the no-secret policy'
         required: false
         type: string
       validate_only:
@@ -138,6 +149,18 @@ jobs:
         if: ${{ inputs.validate_only != true }}
         run: node scripts/verify-contract-authority.mjs
 
+      - name: Trust preflight gate (all 14 members present + exact verified trust)
+        if: ${{ inputs.validate_only != true }}
+        env:
+          RELEASE_TRUST_EVIDENCE: ${{ inputs.trust_evidence_path }}
+        run: |
+          ARGS=""
+          if [ -n "$RELEASE_TRUST_EVIDENCE" ]; then
+            ARGS="--evidence $RELEASE_TRUST_EVIDENCE"
+          fi
+          # shellcheck disable=SC2086
+          node scripts/verify-trust-preflight.mjs --require-authorized $ARGS
+
       - name: Publish the exact tarballs (OIDC — no token of any kind)
         if: ${{ inputs.validate_only != true }}
         env:
@@ -145,6 +168,7 @@ jobs:
           RELEASE_VERSION: ${{ inputs.version }}
           RELEASE_NPM_TAG: ${{ inputs.npm_tag }}
           RELEASE_RESUME_FROM: ${{ inputs.resume_from_package }}
+          RELEASE_TRUST_EVIDENCE: ${{ inputs.trust_evidence_path }}
         run: node scripts/oidc-release.mjs publish --pack-dir .release-pack --results-file release-results.json
 
       - name: Verify registry state and record release evidence

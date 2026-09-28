@@ -33,7 +33,7 @@
  * of untrusted data):
  *
  *   RELEASE_SOURCE_SHA / RELEASE_VERSION / RELEASE_NPM_TAG /
- *   RELEASE_RESUME_FROM
+ *   RELEASE_RESUME_FROM / RELEASE_TRUST_EVIDENCE
  *
  * Usage:
  *   node scripts/oidc-release.mjs validate [--source-sha S] [--version V]
@@ -55,6 +55,7 @@ import { matchTarballSet } from './lib/tarball-set.mjs';
 import { readTarballMember } from './lib/tarball-io.mjs';
 import { fetchPackument as fetchPackumentProbe, PUBLIC_REGISTRY } from './lib/registry-probe.mjs';
 import { assessContractAuthorityAtRoot, FROZEN_CONTRACT_PATH } from './lib/contract-authority.mjs';
+import { assessPublicationPreflight } from './lib/publication-preflight.mjs';
 import {
   deriveReleaseInventory,
   publishArgv,
@@ -105,6 +106,43 @@ function assertContractAuthority(repoRoot) {
   ok('contract authority: the frozen contract ratifies the 14-package set (§16)');
 }
 
+/**
+ * TRUST PREFLIGHT GATE (fail-closed, pre-publication; r4).
+ *
+ * THE SET-WIDE RULE: publication of ANY member is refused unless ALL 14
+ * members exist in the registry AND their exact frozen trust
+ * relationships are credibly verified — LIVE (authenticated session) or
+ * through a VALIDATED operator-evidence artifact bound to the CURRENT
+ * coherent version + content-derived set identity (GitHub Actions holds
+ * no npm session under the frozen no-secret policy; until the owner
+ * resolves the trust-proof decision, CI publication stays blocked
+ * HERE). Runs immediately after the contract-authority gate, BEFORE any
+ * registry call or write — including resume paths — in both `validate`
+ * and `publish`.
+ */
+function assertTrustPreflight(repoRoot, evidencePath) {
+  const verdict = assessPublicationPreflight({
+    repoRoot,
+    evidencePath,
+    log: (line) => console.log(`  ${line}`),
+  });
+  if (!verdict.authorized) {
+    console.error(
+      `oidc-release: TRUST PREFLIGHT REFUSED — ${verdict.blockedReason} NO registry call or write was made. Details:`,
+    );
+    for (const problem of verdict.problems) console.error(`  - ${problem}`);
+    console.error(
+      verdict.mode === 'evidence'
+        ? 'Owner action: capture a FRESH evidence artifact with scripts/capture-trust-evidence.mjs from an authenticated session, or resolve the CI trust-proof decision recorded in docs/RELEASE-READINESS-CORRECTIONS-R4-2026-09-27.md.'
+        : 'Owner action: run with an authenticated npm session, or pass a validated evidence artifact via --trust-evidence (see scripts/capture-trust-evidence.mjs).',
+    );
+    process.exit(1);
+  }
+  ok(
+    `trust preflight: all 14 members present with exact verified trust relationships (mode: ${verdict.mode})`,
+  );
+}
+
 // ---- argument parsing (flags OR environment; flags win) --------------------
 
 function parseArgs(argv) {
@@ -137,6 +175,10 @@ function parseArgs(argv) {
         args.resultsFile = value;
         index += 1;
         break;
+      case '--trust-evidence':
+        args.trustEvidence = value;
+        index += 1;
+        break;
       case '--repo-root':
         args.repoRoot = resolve(value);
         index += 1;
@@ -151,6 +193,10 @@ function parseArgs(argv) {
   args.tag ??= process.env.RELEASE_NPM_TAG;
   args.resumeFrom ??= process.env.RELEASE_RESUME_FROM;
   args.resumeFrom = normalizeResumeInput(args.resumeFrom);
+  args.trustEvidence ??= process.env.RELEASE_TRUST_EVIDENCE;
+  if (args.trustEvidence !== undefined && args.trustEvidence.trim() === '') {
+    args.trustEvidence = undefined;
+  }
   return args;
 }
 
@@ -307,6 +353,7 @@ function matchPackDir(repoRoot, packDir, inventory) {
 function commandValidate(args) {
   const { repoRoot, sourceSha, version, tag, resumeFrom } = args;
   assertContractAuthority(repoRoot);
+  assertTrustPreflight(repoRoot, args.trustEvidence);
   if (sourceSha === undefined || !SOURCE_SHA_PATTERN.test(sourceSha)) {
     fail('a full 40-hex source SHA is required (got missing/malformed input).');
   }
@@ -366,6 +413,7 @@ function commandPack(args) {
 function commandPublish(args) {
   const { repoRoot, packDir, resultsFile, sourceSha, version, tag, resumeFrom } = args;
   assertContractAuthority(repoRoot);
+  assertTrustPreflight(repoRoot, args.trustEvidence);
   if (packDir === undefined || !existsSync(packDir)) fail('publish requires a valid --pack-dir.');
   if (resultsFile === undefined) fail('publish requires --results-file <path>.');
   const tagVerdict = validateVersionTagPair(version, tag);

@@ -31,6 +31,7 @@ import { tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { assessContractAuthorityAtRoot, FROZEN_CONTRACT_PATH } from './lib/contract-authority.mjs';
+import { assessPublicationPreflight } from './lib/publication-preflight.mjs';
 
 const scriptDir = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(scriptDir, '..');
@@ -105,6 +106,33 @@ if (PUBLISH) {
     process.exit(1);
   }
   console.log('publish:release: contract authority verified (§16 ratified)');
+
+  // TRUST PREFLIGHT GATE (fail-closed, pre-publication; r4): publication
+  // of ANY member is refused unless ALL 14 members exist and carry the
+  // EXACT frozen trust relationship, credibly verified (live session or
+  // validated set-bound evidence). Runs BEFORE any registry write,
+  // including this operator engine's resume path.
+  const trustEvidenceFlagIndex = process.argv.indexOf('--trust-evidence');
+  const trustEvidencePath =
+    trustEvidenceFlagIndex !== -1 ? process.argv[trustEvidenceFlagIndex + 1] : undefined;
+  const preflight = assessPublicationPreflight({
+    repoRoot,
+    evidencePath: trustEvidencePath,
+    log: (line) => console.log(`  ${line}`),
+  });
+  if (!preflight.authorized) {
+    console.error(
+      `publish:release: TRUST PREFLIGHT REFUSED — ${preflight.blockedReason} NO registry write was made. Details:`,
+    );
+    for (const problem of preflight.problems) console.error(`  - ${problem}`);
+    console.error(
+      'Owner action: run from an authenticated session or pass a validated artifact via --trust-evidence (scripts/capture-trust-evidence.mjs).',
+    );
+    process.exit(1);
+  }
+  console.log(
+    `publish:release: trust preflight verified (all 14 present + exact; mode: ${preflight.mode})`,
+  );
 
   const gitStatus = run('git', ['status', '--porcelain'], { capture: true });
   if (gitStatus.status !== 0) fail('git status failed — publish only from the release checkout.');

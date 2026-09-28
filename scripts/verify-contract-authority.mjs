@@ -7,8 +7,13 @@
  * at the current checkout, carries the owner-ratified 14-package state:
  *
  *   - the §16 amendment record (facade retirement) is IN the frozen file;
- *   - the §16.5 ratification sequence-deviation owner authorization is
- *     in the record;
+ *   - the §16.5 ratification sequence-deviation record is in the file AND
+ *     carries EXACTLY ONE owner decision line — `Owner decision recorded:
+ *     D-AUTHORIZE` or `Owner decision recorded: D-REVERT` — whose choice
+ *     is consistent with the branch's REAL git history (D-AUTHORIZE:
+ *     the named consuming commits ARE ancestors of this checkout;
+ *     D-REVERT: they have actually been removed). A heading, a summary,
+ *     or a self-authored marker anywhere else is not an owner decision;
  *   - the amendments-to-date header records §16;
  *   - §5 carries exactly the frozen 14-package inventory and order;
  *   - no current-tense 15-package norm survives in §§1–12 (historical
@@ -30,7 +35,7 @@
  *
  * Usage: node scripts/verify-contract-authority.mjs [--repo-root R]
  */
-import { dirname, join, resolve } from 'node:path';
+import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { assessContractAuthorityAtRoot, FROZEN_CONTRACT_PATH } from './lib/contract-authority.mjs';
 

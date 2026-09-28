@@ -224,18 +224,34 @@ was mutated, no frozen verifier was weakened, and every frozen check
 failed closed in between, exactly as designed.
 
 **The exact owner decision required (encoded as §16.5 in the Appendix B
-record):** upon ratification the owner must record ONE of —
+record; ENFORCED by the authority gate):** upon ratification the owner
+must record EXACTLY ONE decision line in the §16.5 section of the frozen
+file, in the exact form `Owner decision recorded: ` immediately followed
+by the chosen token — one of —
 
-- **(D-authorize)** retroactively authorize the consuming implementation
-  commits listed above (and on this branch), accepting the sequence
-  deviation as disclosed; or
-- **(D-revert)** direct the reversion of the consuming implementation
-  before ratification, so the amendment-then-implementation sequence is
-  restored and the implementation is re-applied in a later commit.
+- **`Owner decision recorded: D-AUTHORIZE`** — retroactively authorize
+  the consuming implementation commits named in §16.5 (and on this
+  branch), accepting the sequence deviation as disclosed; the
+  pre-publication authority gate verifies those commits ARE ancestors of
+  the release source; or
+- **`Owner decision recorded: D-REVERT`** — direct the reversion of the
+  consuming implementation before ratification, so the
+  amendment-then-implementation sequence is restored and the
+  implementation is re-applied in a later commit; the authority gate
+  verifies the named commits have actually been REMOVED from the release
+  branch's history.
 
-Ratification without one recorded choice is INCOMPLETE, and the
-contract-authority gate stays red (fail-closed) until the complete
-record exists in the frozen file.
+The same choice is repeated in the ratification commit message.
+Ratification with NO decision line, with MORE THAN ONE, with a
+malformed line, or with a choice that contradicts the branch's actual
+history is INCOMPLETE, AMBIGUOUS, or CONTRADICTORY, and the
+contract-authority gate stays red (fail-closed). A heading, a summary,
+or a self-authored marker anywhere else is not an owner decision: only
+this exact decision line inside §16.5 of the frozen contract counts.
+On THIS implementation branch only an explicitly recorded D-AUTHORIZE
+could ever permit the 14-package release path — D-REVERT requires the
+implementation to be reverted first, and the gate refuses the
+contradiction.
 
 ## Historical record preserved
 
@@ -513,9 +529,16 @@ contract changes):**
    the historical local interactive-2FA path (§13 precedent), never
    through the coordinated release engine, never consuming a coordinated
    set version. Placeholder versions are registry-immutable lineage.
-   The coordinated set publishes only after ALL members' relationships
-   are verified (`scripts/verify-trust-preflight.mjs` refuses any
-   publication otherwise).
+   The placeholders are REGISTRY-PRESENCE MARKERS, not functional
+   releases: they carry the real built package content with the real
+   dependency pins, so members whose dependencies pin the coordinated
+   version are NOT installable until the coordinated set publishes —
+   resolution fails by design, which keeps the placeholder from ever
+   being consumed as a release. The coordinated set publishes only
+   after ALL members' relationships are verified
+   (`scripts/verify-trust-preflight.mjs` refuses any publication
+   otherwise; a validated, set-bound operator-evidence artifact or a
+   live authenticated check are the only accepted proofs).
 
 ### 16.5 Ratification sequence deviation — explicit owner authorization
 
@@ -531,9 +554,20 @@ created registry drift: nothing was published, no trust was mutated,
 and every frozen verifier failed closed in between. The unratified §15
 draft is NOT authority and is not relied on.
 
-By ratifying this §16 the owner EXPLICITLY AUTHORIZES retroactively the
-consuming implementation commits above, or DIRECTS their reversion
-before ratification; the chosen option is recorded in the ratification
-commit message. Ratification without either choice recorded is
-INCOMPLETE and the release path stays fail-closed.
+Upon ratification the owner records EXACTLY ONE decision line in this
+section, in the exact form `Owner decision recorded: ` immediately
+followed by the chosen token — D-AUTHORIZE (retroactively authorizing
+the consuming implementation commits named above; the pre-publication
+authority gate verifies they ARE ancestors of the release source) or
+D-REVERT (directing the reversion of the consuming implementation
+before ratification; the authority gate verifies the named commits have
+actually been REMOVED from the release branch's history). The same
+choice is repeated in the ratification commit message. A record with NO
+decision line, with MORE THAN ONE, with a malformed line, or whose
+choice contradicts the branch's actual history is INCOMPLETE, AMBIGUOUS,
+or CONTRADICTORY, and the release path stays fail-closed. A heading, a
+summary, or a self-authored marker anywhere else is not an owner
+decision: only this exact decision line inside §16.5 of the frozen
+contract counts.
+```
 ````
