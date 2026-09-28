@@ -36,12 +36,26 @@ function check(
   return { id, ok, detail, driftClass };
 }
 
+/**
+ * Extract the set version from a recorded release-set id.
+ *
+ * Accepts a full semver build (`0.3.1`) and semver prerelease builds
+ * (`0.4.0-rc.1`): prerelease identifiers are `[-0-9A-Za-z.]` segments
+ * after the patch version, per semver §9. Anything else (including
+ * partial versions and trailing junk) yields `null`, which callers must
+ * treat as fail-closed (every installed package then reports as
+ * mismatched rather than silently passing).
+ */
+export function extractRecordedSetVersion(recordedSetId: string): string | null {
+  const match = /^vict-release-set@1\/(\d+\.\d+\.\d+[-0-9A-Za-z.]*)$/.exec(recordedSetId);
+  return match === null ? null : match[1];
+}
+
 /** Once platform packages exist, they must match the recorded release set; before that, bootstrap state.
  *  The kit itself (`@victframework/builder-kit`) is a tool, not a platform member — it is recorded
  *  separately via `kitArtifact` and is excluded from this check. */
 function releaseSetCheck(appDir: string, recordedSetId: string): CheckResult {
-  const match = /^vict-release-set@1\/(\d+\.\d+\.\d+)$/.exec(recordedSetId);
-  const recordedVersion = match === null ? null : match[1];
+  const recordedVersion = extractRecordedSetVersion(recordedSetId);
   const installed: string[] = [];
   const scopeDir = appPath(appDir, join('node_modules', '@victframework'));
   if (existsSync(scopeDir)) {
