@@ -38,8 +38,12 @@ of the release run):
 
 - `npm view @victframework/<member>@0.4.0-rc.1` resolves for all 14;
   `dist-tags['vict-0.4.0-rc'] == '0.4.0-rc.1'` for all 14; `latest`
-  unchanged for the 12 historical members and unoccupied for
-  ui/ui-svelte;
+  unchanged for the 12 historical members; for ui/ui-svelte,
+  `latest = 0.0.0-bootstrap.1` (the platform-forced bootstrap marker
+  recorded in R2 — NOT unoccupied, and NOT the candidate). [Corrected
+  2026-09-28 after publication: an earlier revision said "unoccupied";
+  the registry actually carries `latest = 0.0.0-bootstrap.1` on both.]
+  Independent sweep 2026-09-28: 12 × `latest = 0.3.1`;
 - every published `dist.integrity` matches the release-run tarball
   digests recorded in the run's `release-results.json` artifact;
 - `verify:release-consumer -- --registry` (clean external consumer off
@@ -123,7 +127,7 @@ Delivered application must demonstrate, at `0.4.0-rc.1`:
 | Contract authority (§16 ratified + D-AUTHORIZE + ancestry) | GREEN (verified, CLI + tests) |
 | Release-set coherence (14 pkgs, 0.4.0-rc.1, `v1_2a70a29af12fa88…`) | GREEN (verified) |
 | Build / full test suite / static gates / packed-consumer / browser proofs | GREEN (verified on this exact source; see docs/RELEASE-EXEC-R1-2026-09-28.md) |
-| Registry writes (bootstrap placeholders) | BLOCKED pending owner-signed authorization artifact + interactive npm 2FA (draft prepared; §16 exception) |
-| Trust relationships for ui/ui-svelte | BLOCKED until the placeholders exist, then `trust-bootstrap --execute` + live/evidence verification |
-| Coordinated publication | BLOCKED behind the trust preflight (all 14 present + exact) and the authority gate; `validate_only` rehearsal recommended first |
+| Registry writes (bootstrap placeholders) | ~~BLOCKED…~~ **DONE** — §16 bootstrap executed; `ui`/`ui-svelte` `0.0.0-bootstrap.1` published under dist-tag `bootstrap` (see R2). [Corrected 2026-09-28 post-publication; the row below originally said BLOCKED] |
+| Trust relationships for ui/ui-svelte | ~~BLOCKED…~~ **DONE** — exact trust established for all 14 (recorded at `d7bd0030`, R2). [Corrected 2026-09-28] |
+| Coordinated publication | ~~BLOCKED…~~ **PUBLISHED** — run [`36427806906`](https://github.com/radz2291/vict-02/actions/runs/36427806906) from `d7bd0030`: ALL 14 PACKAGES PUBLISHED under `vict-0.4.0-rc` at `0.4.0-rc.1`; the run's later read-only `verify-registry` step timed out on npm CDN propagation (fail-closed), so the run verdict is `failure` even though publication is complete — registry facts independently confirmed (R3). [Corrected 2026-09-28] |
 | G3 | **HELD** (frozen P2 pinned to 0.3.1; fresh proof pending publication) |
