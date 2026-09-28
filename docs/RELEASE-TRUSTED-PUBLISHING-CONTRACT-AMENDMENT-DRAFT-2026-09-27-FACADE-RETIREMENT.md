@@ -509,8 +509,9 @@ amendment trigger the amendment rule anticipates.
 contract changes):**
 
 1. **Inventory and order (§5):** replaced verbatim by the §16
-   substitution (exactly 14 packages; `renderer-svelte` REMOVED; a sink
-   deletion — one removal, no reordering; machine-validated topological).
+   substitution (exactly 14 packages; `renderer-svelte` REMOVED; `ui`
+   moved ahead of `sdk` before the sink deletion; machine-validated
+   topological order).
 2. **Derived counts (§§1, 2, 6, 8, 10, 11):** every current-tense count
    derived from the inventory is restated from 15 to 14, preserving the
    historical amendment markers: manifests metadata proof (§1),
@@ -569,5 +570,4 @@ or CONTRADICTORY, and the release path stays fail-closed. A heading, a
 summary, or a self-authored marker anywhere else is not an owner
 decision: only this exact decision line inside §16.5 of the frozen
 contract counts.
-```
 ````
