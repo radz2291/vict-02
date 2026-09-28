@@ -1,0 +1,73 @@
+FIRST-PUBLICATION BOOTSTRAP AUTHORIZATION (§16 contract exception)
+
+Release:        @victframework coordinated 14-package set, candidate version 0.4.0-rc.1
+Release source: radz2291/vict-02 main (exact SHA recorded at dispatch time; lineage of 9b6eb01e32c1a2d81368c8231cb1bb037a702bfa)
+Authority:      docs/RELEASE-TRUSTED-PUBLISHING-CONTRACT.md §16 (ratified), §16.5
+                "Owner decision recorded: D-AUTHORIZE"; §11 first-publication
+                bootstrap exception.
+
+The undersigned owner (radz2291, radz2291/vict-02) authorizes the ONE-TIME
+first-publication bootstrap (scripts/first-publish-bootstrap.mjs --execute)
+for EXACTLY the following absent release-set members, and nothing else:
+
+  1. @victframework/ui
+  2. @victframework/ui-svelte
+
+Placeholder version (fixed constant): 0.0.0-bootstrap.1
+Distribution tag (never `latest`):    bootstrap
+Publish path:                          local interactive npm 2FA (contract §13
+                                       historical path; the ONE registered §16
+                                       exception) — never the coordinated OIDC
+                                       release engine.
+
+The owner understands and accepts:
+  - the placeholders are REGISTRY-PRESENCE MARKERS, not functional releases;
+    they are registry-immutable lineage once published;
+  - `latest` stays unoccupied for both packages until the first real
+    coordinated release;
+  - the @victframework/ui-svelte placeholder is NOT installable until the
+    coordinated 0.4.0-rc.1 set publishes (its dependencies pin the
+    unpublished coordinated version by design);
+  - publication of the placeholders requires interactive npm 2FA in the
+    owner's authenticated session;
+  - after the placeholders exist, trust relationships
+    (radz2291/vict-02 / release.yml / publish / no environment) are
+    configured for both packages, and the coordinated set publishes only
+    after `scripts/verify-trust-preflight.mjs` reports AUTHORIZED for all
+    14 members.
+
+OWNER APPROVAL — RECORDED (operator-recorded verbatim from the owner's
+direct instruction in the release-execution session, 2026-09-28; this
+recording asserts NO signature and NO npm account identity — the owner's
+interactively-authenticated npm session during the publish itself remains
+a separate, required, per-package 2FA act):
+
+  "My approval is explicit: I authorize the one-time first-publication
+   bootstrap for exactly @victframework/ui and @victframework/ui-svelte
+   at 0.0.0-bootstrap.1 under the bootstrap tag, as described in the
+   prepared authorization draft. I also want you to continue through the
+   0.4.0-rc.1 candidate release once every ratified gate passes."
+
+  Additional standing constraints stated by the owner with the approval:
+   - investigate the configured automation (GitHub OIDC workflow, npm
+     trust relationships) BEFORE any interactive step; use a no-2FA route
+     ONLY if proven to work AND to comply with the ratified contract;
+   - do not add a bypass token, do not weaken the gates, do not change
+     the frozen contract, do not treat the existing 13 packages' trust as
+     trust for the new two;
+   - never paste credentials or a 2FA code into chat; interactive npm
+     steps happen only in the owner's terminal/browser session.
+
+  Operator investigation result (2026-09-28, pre-execution): no compliant
+  no-2FA route exists. npm trusted publishing is a per-package setting on
+  an EXISTING package (contract §16; `npm trust` E404s on absent packages),
+  and the frozen contract fixes the placeholder publish mechanics to the
+  historical local interactive-2FA path (§16 item 3, §13 precedent), never
+  the coordinated release engine. Interactive npm 2FA is therefore both
+  contract-mandated and technically unavoidable.
+
+--
+Approval recorded as specified above. Registry writes remain blocked until
+the artifact passes the script's gate AND the owner's authenticated npm
+session performs the interactive publishes (G3 remains HELD regardless; the
+bootstrap does not affect the Stage 8 G3 decision).

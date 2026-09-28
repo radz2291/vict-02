@@ -39,6 +39,7 @@
  *   node scripts/capture-trust-evidence.mjs --out trust-evidence.json
  */
 import { mkdirSync, writeFileSync } from 'node:fs';
+import { spawnSync } from 'node:child_process';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
@@ -93,6 +94,41 @@ try {
 //    truthfully as a FAILED result (exitCode 1) — such an artifact can
 //    never validate (only successful official-command results are
 //    evidence); the preflight, not this script, says what blocks.
+
+// npm's tightened 2FA policy gates even read-only `npm trust list`
+// behind a recent web authentication (HTTP 401 → EOTP, observed
+// 2026-09-28 with npm 11.19.1). Mirror trust-bootstrap's proven
+// operator flow: on the OTP challenge, re-run THE SAME official
+// command INTERACTIVELY (stdio inherited) so the human completes the
+// browser authentication once — npm's five-minute skip then covers the
+// remaining members — and repeat the captured read inside the grace
+// window so the recorded output still comes from this script's own
+// official-command spawn (schema, bindings, and provenance unchanged).
+function spawnTrustListWithOtpRetry(name) {
+  let result = spawnTrustList(launcher, name);
+  if (result.kind !== 'auth') {
+    return result;
+  }
+  console.log(
+    `  ${name}: npm requires a 2FA pass — complete the browser authentication for the interactive re-run below (npm's five-minute skip then covers the remaining members)...`,
+  );
+  const interactive = spawnSync(
+    launcher.command,
+    [...launcher.prefix, 'trust', 'list', name, '--json'],
+    {
+      stdio: 'inherit',
+      shell: process.platform === 'win32' && launcher.command !== process.execPath,
+    },
+  );
+  if (interactive.status !== 0) {
+    return {
+      kind: 'error',
+      message: `exit ${interactive.status} after the interactive 2FA pass`,
+    };
+  }
+  return spawnTrustList(launcher, name);
+}
+
 const results = [];
 let unverifiable = 0;
 for (const name of inventory.order) {
@@ -109,7 +145,7 @@ for (const name of inventory.order) {
   }
 
   const command = officialTrustListCommand(name);
-  const result = spawnTrustList(launcher, name);
+  const result = spawnTrustListWithOtpRetry(name);
   let exitCode;
   let rawOutput;
   let rawOutputSha256;

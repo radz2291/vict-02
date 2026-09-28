@@ -337,6 +337,45 @@ for (const name of absent) {
   }
 }
 
+// 6. Enforce the promised end-state: 'latest' stays UNOCCUPIED for every
+//    bootstrapped member. npm AUTO-INITIALIZES the 'latest' dist-tag to the
+//    first published version of a brand-new package ('--tag' only adds the
+//    requested tag alongside it), so the auto-created tag must be removed
+//    explicitly. A leftover 'latest' would present a registry-presence
+//    marker as the package's current release — exactly the consumption the
+//    placeholder design forbids (contract §16; the owner authorization
+//    records "`latest` stays unoccupied for both packages").
+for (const name of absent) {
+  let packument;
+  try {
+    packument = await fetchPackument(name);
+  } catch (error) {
+    fail(
+      `the post-publish registry probe for ${name} failed: ${sanitize(String(error))} — verify the 'latest' dist-tag manually before proceeding.`,
+    );
+  }
+  const latest = packument?.['dist-tags']?.latest;
+  if (latest === undefined) continue;
+  if (latest !== BOOTSTRAP_PLACEHOLDER_VERSION) {
+    fail(
+      `the ${name} 'latest' dist-tag points at unexpected version '${latest}' — refusing to mutate it; resolve manually before proceeding.`,
+    );
+  }
+  console.log(
+    `  removing the npm-auto-created 'latest' dist-tag from ${name} (a placeholder must never present as the current release)...`,
+  );
+  const rm = spawnSync(npm, ['dist-tag', 'rm', name, 'latest'], {
+    stdio: 'inherit',
+    shell: process.platform === 'win32',
+  });
+  if (rm.status !== 0) {
+    fail(
+      `could not remove the npm-auto-created 'latest' dist-tag from ${name} (exit ${rm.status}; npm requires a fresh 2FA pass for dist-tag changes). ` +
+        `The placeholder publish itself SUCCEEDED and is immutable; complete the authorized end-state by running 'npm dist-tag rm ${name} latest' in an authenticated session, then continue with the trust bootstrap.`,
+    );
+  }
+}
+
 console.log(
-  `\nfirst-publish-bootstrap: placeholders published for ${absent.join(', ')}. NEXT: scripts/trust-bootstrap.mjs --execute, then scripts/verify-trust-preflight.mjs must report AUTHORIZED for all 14 members before the coordinated set publishes.`,
+  `\nfirst-publish-bootstrap: placeholders published for ${absent.join(', ')} with 'latest' left unoccupied. NEXT: scripts/trust-bootstrap.mjs --execute, then scripts/verify-trust-preflight.mjs must report AUTHORIZED for all 14 members before the coordinated set publishes.`,
 );

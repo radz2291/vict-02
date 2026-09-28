@@ -1,0 +1,149 @@
+{
+  "schema": "vict-trust-preflight-evidence/2",
+  "generatedAt": "2026-09-28T13:10:13.367Z",
+  "version": "0.4.0-rc.1",
+  "setIdentity": "v1_2a70a29af12fa887d18e7099b027a11f86bd2f6a70a756446fb43844e41d9399",
+  "command": "npm trust list <name> --json (per member; captured by scripts/capture-trust-evidence.mjs)",
+  "results": [
+    {
+      "name": "@victframework/contracts",
+      "registry": "present",
+      "versionCount": 8,
+      "command": "npm trust list @victframework/contracts --json",
+      "exitCode": 0,
+      "rawOutput": "\n{\n  \"id\": \"41fbf73b-575a-4b91-b61c-b8da0ce11cb7\",\n  \"type\": \"github\",\n  \"file\": \"release.yml\",\n  \"repository\": \"radz2291/vict-02\",\n  \"permissions\": [\n    \"createPackage\",\n    \"createStagedPackage\"\n  ]\n}\n\n",
+      "rawOutputSha256": "bc97f418febbf0cafe0645e69cd971e3f3a2fd7606cdf7560a46222e6df61343",
+      "trust": "exact"
+    },
+    {
+      "name": "@victframework/ui",
+      "registry": "present",
+      "versionCount": 1,
+      "command": "npm trust list @victframework/ui --json",
+      "exitCode": 0,
+      "rawOutput": "\n{\n  \"id\": \"7a4a06b2-13c4-444b-b4a8-a318625e713f\",\n  \"type\": \"github\",\n  \"file\": \"release.yml\",\n  \"repository\": \"radz2291/vict-02\",\n  \"permissions\": [\n    \"createPackage\",\n    \"createStagedPackage\"\n  ]\n}\n\n",
+      "rawOutputSha256": "770ce019d3182bf6b45604ffe2e24539264eec63d412b2bc244c3ae088f26d7a",
+      "trust": "exact"
+    },
+    {
+      "name": "@victframework/sdk",
+      "registry": "present",
+      "versionCount": 8,
+      "command": "npm trust list @victframework/sdk --json",
+      "exitCode": 0,
+      "rawOutput": "\n{\n  \"id\": \"64969a9e-0981-4c7b-887f-524c085f8d83\",\n  \"type\": \"github\",\n  \"file\": \"release.yml\",\n  \"repository\": \"radz2291/vict-02\",\n  \"permissions\": [\n    \"createPackage\",\n    \"createStagedPackage\"\n  ]\n}\n\n",
+      "rawOutputSha256": "71361331170c1c82f9e703054407c954f7f93e8c7344573c187a1112e4d2d013",
+      "trust": "exact"
+    },
+    {
+      "name": "@victframework/kernel",
+      "registry": "present",
+      "versionCount": 8,
+      "command": "npm trust list @victframework/kernel --json",
+      "exitCode": 0,
+      "rawOutput": "\n{\n  \"id\": \"e0ba58ae-01ec-4b61-b624-717661179132\",\n  \"type\": \"github\",\n  \"file\": \"release.yml\",\n  \"repository\": \"radz2291/vict-02\",\n  \"permissions\": [\n    \"createPackage\",\n    \"createStagedPackage\"\n  ]\n}\n\n",
+      "rawOutputSha256": "0b25121cbde87a304372cfbadd126e7909c7e8c71d1e7e8399e43e050656f277",
+      "trust": "exact"
+    },
+    {
+      "name": "@victframework/runtime",
+      "registry": "present",
+      "versionCount": 8,
+      "command": "npm trust list @victframework/runtime --json",
+      "exitCode": 0,
+      "rawOutput": "\n{\n  \"id\": \"fd78ba78-e0a4-434c-a00f-cafab8f5d501\",\n  \"type\": \"github\",\n  \"file\": \"release.yml\",\n  \"repository\": \"radz2291/vict-02\",\n  \"permissions\": [\n    \"createPackage\",\n    \"createStagedPackage\"\n  ]\n}\n\n",
+      "rawOutputSha256": "cb8d8acaa1d6747d8f8cf016f9028b366fffd487cc370ef66df55227edfdd765",
+      "trust": "exact"
+    },
+    {
+      "name": "@victframework/store-sqlite",
+      "registry": "present",
+      "versionCount": 8,
+      "command": "npm trust list @victframework/store-sqlite --json",
+      "exitCode": 0,
+      "rawOutput": "\n{\n  \"id\": \"f3dcf1ee-3bd4-469f-9cfb-48b611c98be5\",\n  \"type\": \"github\",\n  \"file\": \"release.yml\",\n  \"repository\": \"radz2291/vict-02\",\n  \"permissions\": [\n    \"createPackage\",\n    \"createStagedPackage\"\n  ]\n}\n\n",
+      "rawOutputSha256": "0642de01efbf553bc109be9828995547075b8b24b6203e86efefbac1558beba1",
+      "trust": "exact"
+    },
+    {
+      "name": "@victframework/application",
+      "registry": "present",
+      "versionCount": 8,
+      "command": "npm trust list @victframework/application --json",
+      "exitCode": 0,
+      "rawOutput": "\n{\n  \"id\": \"950e7c03-ab89-47eb-a3f5-ee819e8a2017\",\n  \"type\": \"github\",\n  \"file\": \"release.yml\",\n  \"repository\": \"radz2291/vict-02\",\n  \"permissions\": [\n    \"createPackage\",\n    \"createStagedPackage\"\n  ]\n}\n\n",
+      "rawOutputSha256": "16da00576f2dcd6c70bbc37022ba0b9a991ef6cfb06c774211589d1de3ea3e5d",
+      "trust": "exact"
+    },
+    {
+      "name": "@victframework/ui-svelte",
+      "registry": "present",
+      "versionCount": 1,
+      "command": "npm trust list @victframework/ui-svelte --json",
+      "exitCode": 0,
+      "rawOutput": "\n{\n  \"id\": \"f0fe74c6-2ab6-400b-b426-52b5900b6759\",\n  \"type\": \"github\",\n  \"file\": \"release.yml\",\n  \"repository\": \"radz2291/vict-02\",\n  \"permissions\": [\n    \"createPackage\",\n    \"createStagedPackage\"\n  ]\n}\n\n",
+      "rawOutputSha256": "87a0556a648664667596a81b3c53454158776c2a8358ab12459f0c60018b114b",
+      "trust": "exact"
+    },
+    {
+      "name": "@victframework/appdata-sqlite",
+      "registry": "present",
+      "versionCount": 8,
+      "command": "npm trust list @victframework/appdata-sqlite --json",
+      "exitCode": 0,
+      "rawOutput": "\n{\n  \"id\": \"3937f798-a1d1-4499-82fb-c06e48ede63d\",\n  \"type\": \"github\",\n  \"file\": \"release.yml\",\n  \"repository\": \"radz2291/vict-02\",\n  \"permissions\": [\n    \"createPackage\",\n    \"createStagedPackage\"\n  ]\n}\n\n",
+      "rawOutputSha256": "963087296509d73266db6c1f4f9df8074f62ca8829adabd8a0ff6bfd74b87323",
+      "trust": "exact"
+    },
+    {
+      "name": "@victframework/scaffolder",
+      "registry": "present",
+      "versionCount": 8,
+      "command": "npm trust list @victframework/scaffolder --json",
+      "exitCode": 0,
+      "rawOutput": "\n{\n  \"id\": \"c94d42ba-45e9-4596-853c-bba46900c4a0\",\n  \"type\": \"github\",\n  \"file\": \"release.yml\",\n  \"repository\": \"radz2291/vict-02\",\n  \"permissions\": [\n    \"createPackage\",\n    \"createStagedPackage\"\n  ]\n}\n\n",
+      "rawOutputSha256": "249a44a8737872ec73f3ce676482a75b0d475798f3da6d2f719a5a56265adf45",
+      "trust": "exact"
+    },
+    {
+      "name": "@victframework/control",
+      "registry": "present",
+      "versionCount": 8,
+      "command": "npm trust list @victframework/control --json",
+      "exitCode": 0,
+      "rawOutput": "\n{\n  \"id\": \"5ec55848-254e-4e81-bd59-a1d2df4fc926\",\n  \"type\": \"github\",\n  \"file\": \"release.yml\",\n  \"repository\": \"radz2291/vict-02\",\n  \"permissions\": [\n    \"createPackage\",\n    \"createStagedPackage\"\n  ]\n}\n\n",
+      "rawOutputSha256": "c3de0fbe2ebb5a4ebbaaf354ce4a9a08d4b4a882ee768aca059afbd833e585b8",
+      "trust": "exact"
+    },
+    {
+      "name": "@victframework/mastra",
+      "registry": "present",
+      "versionCount": 8,
+      "command": "npm trust list @victframework/mastra --json",
+      "exitCode": 0,
+      "rawOutput": "\n{\n  \"id\": \"d75127d7-6542-418e-97bc-fd9585682026\",\n  \"type\": \"github\",\n  \"file\": \"release.yml\",\n  \"repository\": \"radz2291/vict-02\",\n  \"permissions\": [\n    \"createPackage\",\n    \"createStagedPackage\"\n  ]\n}\n\n",
+      "rawOutputSha256": "c4d7ec6da2cc571dee4f8e964cf57278e61f5483cdbef3994d06839a76ab6330",
+      "trust": "exact"
+    },
+    {
+      "name": "@victframework/server",
+      "registry": "present",
+      "versionCount": 8,
+      "command": "npm trust list @victframework/server --json",
+      "exitCode": 0,
+      "rawOutput": "\n{\n  \"id\": \"b9e50865-e90f-499f-9b5a-a4b89049f8f6\",\n  \"type\": \"github\",\n  \"file\": \"release.yml\",\n  \"repository\": \"radz2291/vict-02\",\n  \"permissions\": [\n    \"createPackage\",\n    \"createStagedPackage\"\n  ]\n}\n\n",
+      "rawOutputSha256": "d85c9faa1d9ccfae4e76b7bb0473f0aaf0298684783755a0ba7bb2b1eb557eab",
+      "trust": "exact"
+    },
+    {
+      "name": "@victframework/cli",
+      "registry": "present",
+      "versionCount": 8,
+      "command": "npm trust list @victframework/cli --json",
+      "exitCode": 0,
+      "rawOutput": "\n{\n  \"id\": \"134fd08a-9f62-49bf-9ee8-a4f98739bee7\",\n  \"type\": \"github\",\n  \"file\": \"release.yml\",\n  \"repository\": \"radz2291/vict-02\",\n  \"permissions\": [\n    \"createPackage\",\n    \"createStagedPackage\"\n  ]\n}\n\n",
+      "rawOutputSha256": "afb8ce33cd40dff5164f7de9bd6f7ab1daa03038453de9c9e3a942c824dda7fa",
+      "trust": "exact"
+    }
+  ]
+}
