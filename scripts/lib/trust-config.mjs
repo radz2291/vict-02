@@ -20,6 +20,71 @@ export function sanitize(text) {
     .replace(/\bgithub_pat_[A-Za-z0-9_]{22,}\b/g, '[redacted]');
 }
 
+/**
+ * Classify the JSON output of the official `npm trust list <name> --json`
+ * command against the frozen trust target (r5: shared here so the
+ * evidence validator reclassifies from the CAPTURED OUTPUT itself, not
+ * from a claimed status; fail-closed on unparseable output).
+ *
+ * Tolerated real-output shapes (verified against the npm 11.19.1
+ * source): a single pretty JSON object per trust configuration, or
+ * SEVERAL such documents concatenated in one output (npm prints one
+ * JSON blob per configured relationship with no separating comma), or
+ * an empty string (a package with no trust configuration — classified
+ * as MISSING, never as an error). Anything else is an error and the
+ * caller decides (the preflight treats it as UNVERIFIABLE — a blocker).
+ */
+export function classifyTrustListOutput(rawOutput) {
+  const text = String(rawOutput ?? '').trim();
+  const documents = [];
+  if (text.length === 0) {
+    documents.push({});
+  } else {
+    try {
+      documents.push(JSON.parse(text));
+    } catch {
+      // Concatenated JSON documents: scan balanced top-level {...} blocks.
+      let depth = 0;
+      let start = -1;
+      let inString = false;
+      let escaped = false;
+      for (let index = 0; index < text.length; index += 1) {
+        const char = text[index];
+        if (inString) {
+          if (escaped) escaped = false;
+          else if (char === '\\') escaped = true;
+          else if (char === '"') inString = false;
+          continue;
+        }
+        if (char === '"') {
+          inString = true;
+        } else if (char === '{') {
+          if (depth === 0) start = index;
+          depth += 1;
+        } else if (char === '}') {
+          depth -= 1;
+          if (depth === 0 && start !== -1) {
+            try {
+              documents.push(JSON.parse(text.slice(start, index + 1)));
+            } catch {
+              return { error: 'unparseable npm trust list output; inspect manually.' };
+            }
+            start = -1;
+          }
+        }
+      }
+      if (depth !== 0 || documents.length === 0) {
+        return { error: 'unparseable npm trust list output; inspect manually.' };
+      }
+    }
+  }
+  const entries = [];
+  for (const parsed of documents) {
+    entries.push(...collectRelationships(parsed));
+  }
+  return classifyRelationships(entries);
+}
+
 /** Collect candidate relationship objects from arbitrary JSON shapes. */
 export function collectRelationships(value, found = []) {
   if (Array.isArray(value)) {
@@ -47,15 +112,24 @@ function relationshipField(entry, names) {
 function relationshipAllowsPublish(entry) {
   if (entry.allowPublish === true || entry['allow-publish'] === true) return true;
   const permissions = entry.permissions ?? entry.scopes;
+  // The publish permission, in every observed spelling. The raw API key
+  // `createPackage` is what npm 11.x `npm trust list <pkg> --json`
+  // actually emits for a relationship configured with --allow-publish
+  // (npm/lib/trust-cmd.js: PERMISSIONS.CREATE_PACKAGE = 'createPackage';
+  // the human-facing label 'publish' is only the non-JSON display form).
+  // Stage-publish (createStagedPackage) is deliberately NOT accepted:
+  // the frozen relationship is --allow-publish only.
+  const publishTokens = ['publish', 'npm publish', 'createPackage'];
+  const hasPublish = (value) => publishTokens.includes(value);
   if (Array.isArray(permissions)) {
-    if (permissions.includes('publish') || permissions.includes('npm publish')) return true;
+    if (permissions.some(hasPublish)) return true;
   }
   if (typeof permissions === 'string') {
     if (
       permissions
         .split(/[,;|]/)
         .map((part) => part.trim())
-        .includes('publish')
+        .some(hasPublish)
     )
       return true;
   }

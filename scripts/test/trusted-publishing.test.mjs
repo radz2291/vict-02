@@ -21,6 +21,7 @@ import {
 } from '../lib/release-set.mjs';
 import {
   classifyRelationships,
+  classifyTrustListOutput,
   collectRelationships,
   describeRelationship,
   originMatchesFrozenRepository,
@@ -435,6 +436,67 @@ describe('classifyRelationships', () => {
     ]);
     expect(verdict.exact).toHaveLength(0);
     expect(verdict.conflicting).toHaveLength(1);
+  });
+});
+
+describe('classifyTrustListOutput (r5 — verified against the npm 11.19.1 source)', () => {
+  // The EXACT JSON `npm trust list <pkg> --json` (npm 11.19.1) emits for
+  // the frozen relationship: github bodyToOptions flattens claims into
+  // `file`/`repository`, and the raw API permission key `createPackage`
+  // is kept in --json mode (the 'publish' label is display-only).
+  const REAL_NPM_SHAPE = JSON.stringify(
+    {
+      id: 12345,
+      type: 'github',
+      file: 'release.yml',
+      repository: 'radz2291/vict-02',
+      permissions: ['createPackage'],
+    },
+    null,
+    2,
+  );
+
+  it('classifies the REAL npm 11.19.1 trust-list shape as EXACT (r5 latent-defect fix)', () => {
+    // Before r5 this shape classified as CONFLICTING (the classifier
+    // only accepted the display spelling 'publish' / an allowPublish
+    // flag) — a configured-frozen package would have been refused.
+    const verdict = classifyTrustListOutput(REAL_NPM_SHAPE);
+    expect(verdict.error).toBeUndefined();
+    expect(verdict.exact).toHaveLength(1);
+    expect(verdict.conflicting).toHaveLength(0);
+  });
+
+  it('classifies an environment binding or other repo in the real shape as CONFLICTING', () => {
+    const withEnv = classifyTrustListOutput(
+      REAL_NPM_SHAPE.replace(
+        '"repository": "radz2291/vict-02",',
+        '"repository": "radz2291/vict-02",\n  "environment": "prod",',
+      ),
+    );
+    expect(withEnv.conflicting).toHaveLength(1);
+    const otherRepo = classifyTrustListOutput(
+      REAL_NPM_SHAPE.replace('radz2291/vict-02', 'other/repo'),
+    );
+    expect(otherRepo.conflicting).toHaveLength(1);
+  });
+
+  it('parses CONCATENATED JSON documents (npm prints one blob per config)', () => {
+    const two = `${REAL_NPM_SHAPE}\n${REAL_NPM_SHAPE.replace('release.yml', 'other.yml')}`;
+    const verdict = classifyTrustListOutput(two);
+    expect(verdict.exact).toHaveLength(1);
+    expect(verdict.conflicting).toHaveLength(1);
+  });
+
+  it('treats an EMPTY capture as MISSING (a package with no trust configs prints nothing)', () => {
+    const verdict = classifyTrustListOutput('');
+    expect(verdict.error).toBeUndefined();
+    expect(verdict.exact).toHaveLength(0);
+    expect(verdict.conflicting).toHaveLength(0);
+  });
+
+  it('fails closed on unparseable output', () => {
+    expect(classifyTrustListOutput('npm error E401').error).toBeDefined();
+    expect(classifyTrustListOutput('{broken').error).toBeDefined();
   });
 });
 

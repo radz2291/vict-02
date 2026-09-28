@@ -21,8 +21,11 @@
  *
  * This module owns the probing so the CLI and the engines cannot drift:
  * registry existence via read-only packument probes; trust via the live
- * official command or validated evidence. Read-only: never configures,
- * revokes, or publishes anything.
+ * official command or validated evidence (r5: evidence mode re-probes
+ * registry presence LIVE at release time — the artifact's presence
+ * claims are never trusted — and classifies trust from the RETAINED
+ * captured output, never from a claimed status). Read-only: never
+ * configures, revokes, or publishes anything.
  */
 
 import { readFileSync } from 'node:fs';
@@ -35,7 +38,7 @@ import {
 } from './release-set.mjs';
 import { fetchPackument } from './registry-probe.mjs';
 import { resolveNpmLauncher } from './npm-launcher.mjs';
-import { classifyRelationships, sanitize } from './trust-config.mjs';
+import { classifyTrustListOutput, sanitize } from './trust-config.mjs';
 import {
   assessTrustPreflight,
   publicationBlockedReason,
@@ -49,30 +52,11 @@ import {
 } from './trust-preflight.mjs';
 import { membersFromTrustEvidence, validateTrustEvidence } from './trust-evidence.mjs';
 
-/** Classify the JSON output of the official `npm trust list` command. */
-export function classifyTrustListOutput(rawOutput) {
-  let parsed;
-  try {
-    parsed = JSON.parse(rawOutput || '{}');
-  } catch {
-    return { error: 'unparseable npm trust list output; inspect manually.' };
-  }
-  const entries = [];
-  const collect = (value) => {
-    if (Array.isArray(value)) {
-      for (const entry of value) collect(entry);
-      return;
-    }
-    if (value === null || typeof value !== 'object') return;
-    const hasTarget =
-      'repository' in value || 'repo' in value || 'workflow' in value || 'file' in value;
-    const hasKind = 'provider' in value || 'type' in value || 'tool' in value;
-    if (hasTarget && hasKind) entries.push(value);
-    for (const child of Object.values(value)) collect(child);
-  };
-  collect(parsed);
-  return classifyRelationships(entries);
-}
+/** Classify the JSON output of the official `npm trust list` command
+ * (r5: the implementation moved to the shared trust rules so the
+ * evidence validator classifies from the CAPTURED output with exactly
+ * the same code path as a live run; re-exported for compatibility). */
+export { classifyTrustListOutput };
 
 /** Run the official read-only `npm trust list <name> --json`. */
 export function spawnTrustList(launcherResolved, packageName) {
@@ -186,9 +170,38 @@ export function assessPublicationPreflight(options) {
       };
     }
     log(
-      `trust preflight: validated operator evidence bound to ${inventory.version} / ${identity.slice(0, 18)}…`,
+      `trust preflight: validated operator evidence bound to ${inventory.version} / ${identity.slice(0, 18)}… (trust classified from the RETAINED captured output)`,
     );
-    members = membersFromTrustEvidence(validation.evidence);
+    const evidenceMembers = membersFromTrustEvidence(validation.evidence);
+    const claimedRegistry = new Map(
+      evidenceMembers.map((member) => [member.name, member.registry]),
+    );
+    // RELEASE-TIME REGISTRY RECHECK (r5): the artifact's `registry`
+    // claims are never trusted for the §11 presence rule — presence is
+    // re-proven LIVE (read-only packument fetch; needs no npm session,
+    // so it always runs wherever the gate runs, including CI).
+    members = [];
+    for (const member of evidenceMembers) {
+      let registry;
+      try {
+        const packument = fetchPackument(member.name);
+        const versionCount = Object.keys(packument.versions ?? {}).length;
+        registry = versionCount > 0 ? REGISTRY_PRESENT : REGISTRY_ABSENT;
+        log(
+          `  ${member.name}: LIVE registry recheck → ${registry === REGISTRY_PRESENT ? `present (${versionCount} version(s))` : 'ABSENT (no presence at any version)'}` +
+            (claimedRegistry.get(member.name) !== registry
+              ? ` (evidence claimed '${claimedRegistry.get(member.name)}' — the LIVE result governs)`
+              : ''),
+        );
+      } catch (error) {
+        registry = REGISTRY_UNREACHABLE;
+        log(`  ${member.name}: release-time registry recheck failed (${error.message})`);
+      }
+      // Trust comes ONLY from the evidence (classified from the captured
+      // output — see membersFromTrustEvidence); it is authentication-
+      // gated and cannot be re-proven by CI.
+      members.push({ name: member.name, registry, trust: member.trust });
+    }
   } else {
     mode = 'live';
     members = [];

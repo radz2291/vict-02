@@ -8,15 +8,18 @@
  *
  * WHY THIS EXISTS: `npm trust list` is authentication-gated (E401
  * without a session) and GitHub Actions holds no npm session under the
- * frozen no-secret policy (contract §4). The ONLY pre-write proof
+ * frozen no-secret policy (contract §4). The ONLY pre-write trust-proof
  * channel is the authenticated operator capturing the OFFICIAL
  * read-only command output during the release window. The artifact
- * records, for each of the 14 frozen members:
- *   - registry presence (read-only packument probe),
- *   - the exact command run (`npm trust list <name> --json`),
- *   - its exit code,
- *   - the sha256 of the raw official output,
- *   - the classified trust status,
+ * (schema v2) records, for each of the 14 frozen members, one RESULT:
+ *   - registry presence + version count (read-only packument probe),
+ *   - the EXACT official command (`npm trust list <name> --json`),
+ *   - its exit code (only successful captures can ever authorize),
+ *   - the RETAINED non-sensitive captured output (rawOutput),
+ *   - the sha256 of that output (RECOMPUTED by the validator — the
+ *     artifact cannot claim a hash over output it does not retain),
+ *   - the trust status CLASSIFIED FROM THAT OUTPUT (never self-asserted
+ *     without proof — the validator reclassifies and compares).
  * and binds the whole artifact to the CURRENT coherent version and the
  * CURRENT content-derived release-set identity. A stale artifact (from
  * another version or set) is dead on arrival.
@@ -24,7 +27,9 @@
  * HONEST LIMIT: the artifact binds the capture to the set/version/time;
  * the integrity of the captured output rests on the operator ceremony —
  * the same §13 trust model under which every historical package was
- * published. Run this ONLY from an authenticated, trusted environment.
+ * published. The hash and timestamp do NOT authenticate the creator;
+ * there is no independent signature. Run this ONLY from an
+ * authenticated, trusted environment.
  *
  * The script performs READ-ONLY npm calls (`npm view`, `npm trust
  * list`) and writes ONE local artifact file. It never publishes,
@@ -33,16 +38,16 @@
  * Usage (requires an authenticated npm session):
  *   node scripts/capture-trust-evidence.mjs --out trust-evidence.json
  */
-import { createHash } from 'node:crypto';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { TRUST_EVIDENCE_SCHEMA } from './lib/trust-evidence.mjs';
 import {
-  releaseSetIdentityAt,
-  spawnTrustList,
-  classifyTrustListOutput,
-} from './lib/publication-preflight.mjs';
+  TRUST_EVIDENCE_SCHEMA,
+  officialTrustListCommand,
+  rawOutputSha256Of,
+} from './lib/trust-evidence.mjs';
+import { releaseSetIdentityAt, spawnTrustList } from './lib/publication-preflight.mjs';
+import { classifyTrustListOutput } from './lib/trust-config.mjs';
 import { resolveNpmLauncher } from './lib/npm-launcher.mjs';
 import { fetchPackument } from './lib/registry-probe.mjs';
 import {
@@ -85,9 +90,10 @@ try {
 }
 
 // 3. Per-member capture (read-only). Anything unprovable is recorded
-//    truthfully as unverifiable — the preflight, not this script,
-//    decides whether that blocks publication.
-const members = {};
+//    truthfully as a FAILED result (exitCode 1) — such an artifact can
+//    never validate (only successful official-command results are
+//    evidence); the preflight, not this script, says what blocks.
+const results = [];
 let unverifiable = 0;
 for (const name of inventory.order) {
   let registry;
@@ -102,16 +108,17 @@ for (const name of inventory.order) {
     );
   }
 
-  const command = `npm trust list ${name} --json`;
+  const command = officialTrustListCommand(name);
   const result = spawnTrustList(launcher, name);
-  let trust;
   let exitCode;
+  let rawOutput;
   let rawOutputSha256;
+  let trust;
   if (result.kind === 'ok') {
     exitCode = 0;
-    const raw = result.stdout ?? '';
-    rawOutputSha256 = createHash('sha256').update(raw).digest('hex');
-    const classified = classifyTrustListOutput(raw);
+    rawOutput = result.stdout ?? '';
+    rawOutputSha256 = rawOutputSha256Of(rawOutput);
+    const classified = classifyTrustListOutput(rawOutput);
     if (classified.error !== undefined) {
       trust = TRUST_UNVERIFIABLE;
     } else if (classified.conflicting.length > 0) {
@@ -122,14 +129,22 @@ for (const name of inventory.order) {
       trust = TRUST_MISSING;
     }
   } else {
-    exitCode = result.kind === 'auth' ? 1 : 1;
+    exitCode = 1;
+    rawOutput = result.message ?? 'unavailable';
+    rawOutputSha256 = rawOutputSha256Of(rawOutput);
     trust = TRUST_UNVERIFIABLE;
-    rawOutputSha256 = createHash('sha256')
-      .update(result.message ?? 'unavailable')
-      .digest('hex');
     unverifiable += 1;
   }
-  members[name] = { registry, versionCount, command, exitCode, rawOutputSha256, trust };
+  results.push({
+    name,
+    registry,
+    versionCount,
+    command,
+    exitCode,
+    rawOutput,
+    rawOutputSha256,
+    trust,
+  });
   console.log(`  ${name}: ${registry} (${versionCount} version(s)); trust ${command} → ${trust}`);
 }
 
@@ -141,16 +156,16 @@ const artifact = {
   setIdentity: identity,
   command:
     'npm trust list <name> --json (per member; captured by scripts/capture-trust-evidence.mjs)',
-  members,
+  results,
 };
 const target = resolve(outPath);
 mkdirSync(dirname(target), { recursive: true });
 writeFileSync(target, `${JSON.stringify(artifact, null, 2)}\n`);
 console.log(
-  `capture-trust-evidence: artifact written to ${target} (${Object.keys(members).length} members; ${unverifiable} unverifiable).`,
+  `capture-trust-evidence: artifact written to ${target} (${results.length} member results; ${unverifiable} unverifiable).`,
 );
 if (unverifiable > 0) {
   console.log(
-    'capture-trust-evidence: NOTE — unverifiable members BLOCK publication. Re-run authenticated (npm login) so every `npm trust list` succeeds.',
+    'capture-trust-evidence: NOTE — this artifact records FAILED captures and will be REFUSED by the preflight (only successful official-command results are evidence). Re-run authenticated (npm login) so every `npm trust list` succeeds.',
   );
 }

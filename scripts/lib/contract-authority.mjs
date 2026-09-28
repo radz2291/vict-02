@@ -116,31 +116,44 @@ function extractSection165(text) {
 /**
  * Extract the owner's recorded decision from the §16.5 section ONLY.
  *
- * The exact decision line is `Owner decision recorded: D-AUTHORIZE` or
- * `Owner decision recorded: D-REVERT` (case-sensitive, exact token).
- * Returns one of:
- *   { kind: 'authorize' } | { kind: 'revert' }        — exactly one line
- *   { kind: 'missing' }                                — no line at all
- *   { kind: 'malformed' }                              — tokens mentioned,
- *                                                        no exact line
- *   { kind: 'ambiguous' }                              — more than one line
+ * r5: the decision must be EXACTLY ONE FULL LINE — a line whose entire
+ * (trimmed) content is `Owner decision recorded: D-AUTHORIZE` or
+ * `Owner decision recorded: D-REVERT` (case-sensitive, exact token,
+ * nothing else on the line). The r4 checker searched for the phrase
+ * anywhere inside the section, so PROSE quoting the phrase, or the line
+ * carrying a trailing annotation, silently authorized the release; an
+ * exact full line cannot hide inside prose. Returns one of:
+ *   { kind: 'authorize' } | { kind: 'revert' }   — exactly one exact line
+ *   { kind: 'missing' }                          — no §16.5 section at all, or
+ *                                                  no decision attempt in it
+ *   { kind: 'malformed' }                        — the section mentions the
+ *                                                  decision prefix or tokens,
+ *                                                  but records no exact line
+ *   { kind: 'ambiguous' }                        — more than one exact line
+ *                                                  (the line twice, or both
+ *                                                  choices)
  * A decision marker OUTSIDE the §16.5 section is invisible here by
  * design: only the §16.5 record is the owner decision.
  */
 export function extractOwnerDecision(contractText) {
   const section = extractSection165(contractText);
   if (section === null) return { kind: 'missing' };
-  const matches = [
-    ...section.matchAll(
-      new RegExp(`${OWNER_DECISION_PREFIX}\\s*(D-AUTHORIZE|D-REVERT)(?![A-Za-z-])`, 'g'),
-    ),
-  ];
-  if (matches.length === 0) {
-    const mentionsTokens = /\bD-AUTHORIZE\b|\bD-REVERT\b/.test(section);
-    return { kind: mentionsTokens ? 'malformed' : 'missing' };
+  const decisionLines = [];
+  for (const rawLine of section.split(/\r?\n/)) {
+    const line = rawLine.trim();
+    if (line === ownerDecisionLine(OWNER_DECISION_AUTHORIZE)) {
+      decisionLines.push(OWNER_DECISION_AUTHORIZE);
+    } else if (line === ownerDecisionLine(OWNER_DECISION_REVERT)) {
+      decisionLines.push(OWNER_DECISION_REVERT);
+    }
   }
-  if (matches.length > 1) return { kind: 'ambiguous' };
-  return { kind: matches[0][1] === OWNER_DECISION_AUTHORIZE ? 'authorize' : 'revert' };
+  if (decisionLines.length === 0) {
+    const attempted =
+      section.includes(OWNER_DECISION_PREFIX) || /\bD-AUTHORIZE\b|\bD-REVERT\b/.test(section);
+    return { kind: attempted ? 'malformed' : 'missing' };
+  }
+  if (decisionLines.length > 1) return { kind: 'ambiguous' };
+  return { kind: decisionLines[0] === OWNER_DECISION_AUTHORIZE ? 'authorize' : 'revert' };
 }
 
 /** 40-hex commit SHAs named inside the §16.5 section (the consuming
@@ -220,7 +233,7 @@ export function assessContractAuthority(contractText, context = {}) {
       );
     } else if (decision.kind === 'malformed') {
       problems.push(
-        'owner decision malformed: §16.5 mentions the decision tokens but records no exact `Owner decision recorded: D-AUTHORIZE` / `Owner decision recorded: D-REVERT` line (case-sensitive, exact form) — refusing.',
+        'owner decision malformed: §16.5 mentions the decision but records no exact full line `Owner decision recorded: D-AUTHORIZE` / `Owner decision recorded: D-REVERT` (case-sensitive, the decision alone on its own line — prose quoting the phrase, a trailing annotation, or an informal marker is not an owner decision) — refusing.',
       );
     } else if (decision.kind === 'ambiguous') {
       problems.push(

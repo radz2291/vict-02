@@ -50,6 +50,10 @@
  *   node scripts/verify-trust-preflight.mjs --require-authorized
  *   node scripts/verify-trust-preflight.mjs --require-authorized \
  *        --evidence trust-evidence.json
+ *   RELEASE_TRUST_EVIDENCE=<path> node scripts/verify-trust-preflight.mjs \
+ *        --require-authorized      (r5: env form — how release.yml passes
+ *        the evidence input; an env value can never be word-split by a
+ *        shell, unlike a shell-built argument string)
  */
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -72,7 +76,13 @@ const evidenceIndex = process.argv.indexOf('--evidence');
 if (evidenceIndex !== -1 && process.argv[evidenceIndex + 1] === undefined) {
   fail('verify-trust-preflight: --evidence requires a file path.');
 }
-const evidencePath = evidenceIndex !== -1 ? process.argv[evidenceIndex + 1] : undefined;
+// r5: the evidence path may arrive as the RELEASE_TRUST_EVIDENCE env var
+// (the workflow passes its `trust_evidence_path` input this way to every
+// preflight consumer) or as the explicit --evidence flag (flag wins).
+const envEvidence = process.env.RELEASE_TRUST_EVIDENCE;
+const envEvidencePath =
+  typeof envEvidence === 'string' && envEvidence.trim() !== '' ? envEvidence.trim() : undefined;
+const evidencePath = evidenceIndex !== -1 ? process.argv[evidenceIndex + 1] : envEvidencePath;
 
 // Identity banner: the artifact (or live probe) is bound to THIS set.
 try {

@@ -1,7 +1,13 @@
 /**
- * Release-authority tests (r4): the fail-closed contract-authority gate
- * WITH owner-decision enforcement, the MANDATORY trust preflight with
- * set-bound evidence, and the engine/workflow wiring.
+ * Release-authority tests (r4/r5): the fail-closed contract-authority gate
+ * WITH owner-decision enforcement (r5: the decision must be an EXACT
+ * FULL LINE inside §16.5 — prose quoting the phrase no longer
+ * authorizes), the MANDATORY trust preflight with set-bound evidence
+ * (r5: the evidence must RETAIN its captured official output — hash
+ * recomputed, trust reclassified — and registry presence is re-proven
+ * live at release time), and the engine/workflow wiring (r5: the
+ * evidence path reaches the FIRST validate step and travels by env var
+ * only, never shell-built arguments).
  *
  * RED/GREEN contract:
  *  - while §16 exists only as the unratified draft, the REAL frozen
@@ -11,15 +17,25 @@
  *    (`Owner decision recorded: D-AUTHORIZE` / `D-REVERT`) consistent
  *    with the branch's REAL git history. A heading or a self-created
  *    marker is NOT a decision: missing, ambiguous, malformed, or
- *    contradictory choices refuse authority (r4);
+ *    contradictory choices refuse authority (r4); prose quoting the
+ *    phrase, or the line with a trailing annotation, is refused too
+ *    (r5 — these ACCEPTED on r4);
  *  - publication additionally requires the set-wide trust preflight
  *    (all 14 present + exact verified trust) — live or through a
  *    VALIDATED set-bound evidence artifact (r4; r3 accepted arbitrary
- *    JSON, so these tests fail on r3).
+ *    JSON, so these tests fail on r3). r5 negatives (failed exit code,
+ *    invented hash, altered output, forged status, wrong member,
+ *    duplicate, stale) also fail on r4, whose checker verified the
+ *    hash's FORMAT only;
+ *  - release.yml must pass the operator evidence to EVERY preflight
+ *    consumer — the first `validate` step included (r4 defect: CI died
+ *    on the E401 live check before any evidence-aware step) — and the
+ *    preflight step must not build shell argument strings from it.
  *
  * No test in this file performs a registry write.
  */
 import { spawnSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
 import { describe, expect, it } from 'vitest';
 import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -50,6 +66,7 @@ import {
   TRUST_UNVERIFIABLE,
 } from '../lib/trust-preflight.mjs';
 import { FROZEN_PUBLISH_ORDER, validateVersionTagPair } from '../lib/release-set.mjs';
+import yaml from 'js-yaml';
 
 const scriptDir = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(scriptDir, '..', '..');
@@ -326,6 +343,45 @@ describe('contract authority — §16.5 owner decision enforcement', () => {
     expect(extractOwnerDecision(malformed).kind).toBe('malformed');
   });
 
+  it('r5: the decision must be a FULL LINE — prose quoting the phrase never authorizes (accepted on r4)', () => {
+    // The entire r4 defect: this phrase, buried in prose, matched the
+    // r4 search and AUTHORIZED the release. It is a full line, but not
+    // an exact decision line.
+    const prose = ratify(realContractText, 'D-AUTHORIZE').replace(
+      ownerDecisionLine('D-AUTHORIZE'),
+      'The meeting minutes quote: "Owner decision recorded: D-AUTHORIZE" as the form to use.',
+    );
+    expect(extractOwnerDecision(prose).kind).toBe('malformed');
+    const verdict = assessContractAuthority(prose, { isAncestor: alwaysAncestor });
+    expect(verdict.authorized).toBe(false);
+    expect(verdict.problems.join('\n')).toContain('owner decision malformed');
+  });
+
+  it('r5: a trailing annotation on the decision line is refused (authorized on r4)', () => {
+    const annotated = ratify(realContractText, 'D-AUTHORIZE').replace(
+      ownerDecisionLine('D-AUTHORIZE'),
+      `${ownerDecisionLine('D-AUTHORIZE')} (ratified at the 2026-09-27 review)`,
+    );
+    expect(extractOwnerDecision(annotated).kind).toBe('malformed');
+    expect(assessContractAuthority(annotated, { isAncestor: alwaysAncestor }).authorized).toBe(
+      false,
+    );
+    // Lowercase or differently-spelled tokens are not the exact line either.
+    const lowercased = ratify(realContractText, 'D-AUTHORIZE').replace(
+      ownerDecisionLine('D-AUTHORIZE'),
+      'Owner decision recorded: d-authorize',
+    );
+    expect(extractOwnerDecision(lowercased).kind).toBe('malformed');
+  });
+
+  it('r5: the exact line still authorizes regardless of surrounding indentation', () => {
+    const indented = ratify(realContractText, 'D-REVERT').replace(
+      ownerDecisionLine('D-REVERT'),
+      `    ${ownerDecisionLine('D-REVERT')}   `,
+    );
+    expect(extractOwnerDecision(indented).kind).toBe('revert');
+  });
+
   it('refuses a ratified record with NO decision line (heading is not a decision)', () => {
     const verdict = assessContractAuthority(ratifiedNoDecision, { isAncestor: alwaysAncestor });
     expect(verdict.authorized).toBe(false);
@@ -333,7 +389,7 @@ describe('contract authority — §16.5 owner decision enforcement', () => {
     // owner ever recording the exact line — refused.
     const problem = verdict.problems.find((p) => p.includes('owner decision malformed'));
     expect(problem).toBeDefined();
-    expect(problem).toContain('records no exact `Owner decision recorded:');
+    expect(problem).toContain('records no exact full line `Owner decision recorded:');
   });
 
   it('refuses AMBIGUOUS decisions (both tokens, or the line twice)', () => {
@@ -795,153 +851,378 @@ describe('trust preflight — set-wide publication rule', () => {
 });
 
 // ---------------------------------------------------------------------------
-// 7. Trust evidence — arbitrary or stale JSON never authorizes (r4)
+// 7. Trust evidence — arbitrary, stale, or SELF-ASSERTING JSON never
+//    authorizes (r4); the artifact must RETAIN its captured official
+//    output and survive hash recompute + reclassification (r5)
 // ---------------------------------------------------------------------------
 
+/** The EXACT shape npm 11.19.1 `npm trust list <pkg> --json` emits for
+ * the frozen relationship (verified against the npm 11.19.1 source:
+ * github bodyToOptions + raw `createPackage` permission key). */
+function frozenTrustListOutput() {
+  return JSON.stringify(
+    {
+      id: 12345,
+      type: 'github',
+      file: 'release.yml',
+      repository: 'radz2291/vict-02',
+      permissions: ['createPackage'],
+    },
+    null,
+    2,
+  );
+}
+
+function sha256(text) {
+  return createHash('sha256').update(text, 'utf8').digest('hex');
+}
+
 function validEvidence({ now = new Date('2026-09-27T12:00:00Z'), identity, version } = {}) {
-  const members = {};
-  for (const name of FROZEN_PUBLISH_ORDER) {
-    members[name] = {
+  const results = FROZEN_PUBLISH_ORDER.map((name) => {
+    const rawOutput = frozenTrustListOutput();
+    return {
+      name,
       registry: 'present',
-      trust: 'exact',
+      versionCount: 1,
       command: `npm trust list ${name} --json`,
       exitCode: 0,
-      rawOutputSha256: 'a'.repeat(64),
+      rawOutput,
+      rawOutputSha256: sha256(rawOutput),
+      trust: 'exact',
     };
-  }
+  });
   return JSON.stringify({
     schema: TRUST_EVIDENCE_SCHEMA,
     generatedAt: now.toISOString(),
     version,
     setIdentity: identity,
-    members,
+    results,
   });
 }
+
+function evidenceWith(identity, version, mutate, now) {
+  const parsed = JSON.parse(validEvidence({ identity, version, now }));
+  mutate(parsed);
+  return JSON.stringify(parsed);
+}
+
+const evidenceBinding = (identity, version, now) => ({
+  expectedVersion: version,
+  expectedIdentity: identity,
+  now,
+});
 
 describe('trust evidence — binding failures refuse authority', () => {
   const { identity, inventory } = releaseSetIdentityAt(repoRoot);
   const version = inventory.version;
   const now = new Date('2026-09-27T12:00:00Z');
 
-  it('a well-formed, bound, fresh artifact validates and authorizes the set', () => {
-    const result = validateTrustEvidence(validEvidence({ identity, version, now }), {
-      expectedVersion: version,
-      expectedIdentity: identity,
-      now,
-    });
+  it('a well-formed, bound, fresh artifact validates; trust is DERIVED from the retained output', () => {
+    const result = validateTrustEvidence(
+      validEvidence({ identity, version, now }),
+      evidenceBinding(identity, version, now),
+    );
     expect(result.ok).toBe(true);
     const assessment = assessTrustPreflight(membersFromTrustEvidence(result.evidence));
     expect(assessment.authorized).toBe(true);
+    // The claimed statuses were never consulted: even if every claim
+    // were flipped to 'missing', the derived (output-classified) trust
+    // stays exact.
+    const lying = JSON.parse(validEvidence({ identity, version, now }));
+    for (const result of lying.results) result.trust = 'missing';
+    const lyingMembers = membersFromTrustEvidence({ results: lying.results });
+    expect(lyingMembers.every((member) => member.trust === TRUST_EXACT)).toBe(true);
   });
 
   it('an r3-style ARBITRARY evidence map (name → output) is refused', () => {
     const result = validateTrustEvidence(
       JSON.stringify({ '@victframework/contracts': { github: {} } }),
-      {
-        expectedVersion: version,
-        expectedIdentity: identity,
-        now,
-      },
+      evidenceBinding(identity, version, now),
     );
     expect(result.ok).toBe(false);
     expect(result.problems.join('\n')).toContain('schema mismatch');
   });
 
+  it('a superseded v1 artifact (hash without retained output) is refused by name', () => {
+    const v1 = validEvidence({ identity, version, now }).replace(
+      TRUST_EVIDENCE_SCHEMA,
+      'vict-trust-preflight-evidence/1',
+    );
+    const result = validateTrustEvidence(v1, evidenceBinding(identity, version, now));
+    expect(result.ok).toBe(false);
+    expect(result.problems.join('\n')).toContain('superseded and REFUSED');
+    expect(result.problems.join('\n')).toContain('without retaining the captured output');
+  });
+
   it('a STALE artifact (>24h) is refused', () => {
     const stale = new Date('2026-09-25T11:00:00Z');
-    const result = validateTrustEvidence(validEvidence({ identity, version, now: stale }), {
-      expectedVersion: version,
-      expectedIdentity: identity,
-      now,
-    });
+    const result = validateTrustEvidence(
+      validEvidence({ identity, version, now: stale }),
+      evidenceBinding(identity, version, now),
+    );
     expect(result.ok).toBe(false);
     expect(result.problems.join('\n')).toContain('STALE');
   });
 
   it('an artifact bound to ANOTHER version or set identity is dead on arrival', () => {
-    const wrongVersion = validateTrustEvidence(validEvidence({ identity, version: '0.3.1', now }), {
-      expectedVersion: version,
-      expectedIdentity: identity,
-      now,
-    });
+    const wrongVersion = validateTrustEvidence(
+      validEvidence({ identity, version: '0.3.1', now }),
+      evidenceBinding(identity, version, now),
+    );
     expect(wrongVersion.ok).toBe(false);
     expect(wrongVersion.problems.join('\n')).toContain('bound to version "0.3.1"');
 
     const wrongIdentity = validateTrustEvidence(
       validEvidence({ identity: `v1_${'b'.repeat(64)}`, version, now }),
-      {
-        expectedVersion: version,
-        expectedIdentity: identity,
-        now,
-      },
+      evidenceBinding(identity, version, now),
     );
     expect(wrongIdentity.ok).toBe(false);
     expect(wrongIdentity.problems.join('\n')).toContain('foreign-set artifact');
   });
 
-  it('partial evidence (a missing member) and non-member noise are refused', () => {
-    const parsed = JSON.parse(validEvidence({ identity, version, now }));
-    delete parsed.members['@victframework/cli'];
-    const missing = validateTrustEvidence(JSON.stringify(parsed), {
-      expectedVersion: version,
-      expectedIdentity: identity,
+  it('partial evidence (a missing member result) and non-member noise are refused', () => {
+    const missing = evidenceWith(
+      identity,
+      version,
+      (parsed) => {
+        parsed.results = parsed.results.filter((result) => result.name !== '@victframework/cli');
+      },
       now,
-    });
-    expect(missing.ok).toBe(false);
-    expect(missing.problems.join('\n')).toContain("missing member '@victframework/cli'");
+    );
+    const missingResult = validateTrustEvidence(missing, evidenceBinding(identity, version, now));
+    expect(missingResult.ok).toBe(false);
+    expect(missingResult.problems.join('\n')).toContain(
+      "no result for release-set member '@victframework/cli'",
+    );
 
-    const noisy = JSON.parse(validEvidence({ identity, version, now }));
-    noisy.members['@victframework/renderer-svelte'] = {
-      registry: 'present',
-      trust: 'exact',
-      command: 'x',
-      exitCode: 0,
-      rawOutputSha256: 'a'.repeat(64),
-    };
-    const extra = validateTrustEvidence(JSON.stringify(noisy), {
-      expectedVersion: version,
-      expectedIdentity: identity,
+    const noisy = evidenceWith(
+      identity,
+      version,
+      (parsed) => {
+        parsed.results.push({
+          name: '@victframework/renderer-svelte',
+          registry: 'present',
+          versionCount: 1,
+          command: 'npm trust list @victframework/renderer-svelte --json',
+          exitCode: 0,
+          rawOutput: frozenTrustListOutput(),
+          rawOutputSha256: sha256(frozenTrustListOutput()),
+          trust: 'exact',
+        });
+      },
       now,
-    });
+    );
+    const extra = validateTrustEvidence(noisy, evidenceBinding(identity, version, now));
     expect(extra.ok).toBe(false);
-    expect(extra.problems.join('\n')).toContain("non-member '@victframework/renderer-svelte'");
+    expect(extra.problems.join('\n')).toContain('not a frozen release-set member');
   });
 
-  it('members without the official-command binding (command/sha) are refused', () => {
-    const parsed = JSON.parse(validEvidence({ identity, version, now }));
-    parsed.members['@victframework/contracts'].command = 'cat made-up.json';
-    parsed.members['@victframework/sdk'].rawOutputSha256 = 'not-a-sha';
-    const result = validateTrustEvidence(JSON.stringify(parsed), {
-      expectedVersion: version,
-      expectedIdentity: identity,
+  it('r5: a FAILED official command (exitCode 1) is refused, never interpreted', () => {
+    const failed = evidenceWith(
+      identity,
+      version,
+      (parsed) => {
+        parsed.results[0].exitCode = 1;
+      },
       now,
-    });
+    );
+    const result = validateTrustEvidence(failed, evidenceBinding(identity, version, now));
     expect(result.ok).toBe(false);
-    const joined = result.problems.join('\n');
-    expect(joined).toContain("'@victframework/contracts' does not record the official");
-    expect(joined).toContain("'@victframework/sdk' is missing the sha256");
+    expect(result.problems.join('\n')).toContain('FAILED official command (exitCode 1)');
   });
 
-  it('assessPublicationPreflight in evidence mode: credible artifact → authorized; arbitrary → blocked', () => {
-    const credible = join(tmpdir(), 'credible-trust-evidence.json');
-    writeFileSync(credible, validEvidence({ identity, version, now: new Date() }));
-    try {
-      const verdict = assessPublicationPreflight({ repoRoot, evidencePath: credible });
-      expect(verdict.authorized).toBe(true);
-      expect(verdict.mode).toBe('evidence');
-    } finally {
-      rmSync(credible, { force: true });
-    }
+  it('r5: an INVENTED hash is refused — the retained output is re-hashed and compared', () => {
+    const invented = evidenceWith(
+      identity,
+      version,
+      (parsed) => {
+        parsed.results[0].rawOutputSha256 = sha256('output that was never captured');
+      },
+      now,
+    );
+    const result = validateTrustEvidence(invented, evidenceBinding(identity, version, now));
+    expect(result.ok).toBe(false);
+    expect(result.problems.join('\n')).toContain(
+      'rawOutputSha256 does NOT match the retained captured output',
+    );
+  });
 
-    const arbitrary = join(tmpdir(), 'arbitrary-trust-evidence.json');
-    writeFileSync(arbitrary, JSON.stringify({ hello: 'world' }));
-    try {
-      const verdict = assessPublicationPreflight({ repoRoot, evidencePath: arbitrary });
-      expect(verdict.authorized).toBe(false);
-      expect(verdict.stage).toBe('blocked');
-      expect(verdict.blockedReason).toContain('NOT CREDIBLE');
-    } finally {
-      rmSync(arbitrary, { force: true });
+  it('r5: ALTERED captured output is refused (hash no longer matches)', () => {
+    const altered = evidenceWith(
+      identity,
+      version,
+      (parsed) => {
+        // Flip the repository inside the retained output but keep the
+        // original hash — exactly what a careless or malicious editor of
+        // a captured artifact would produce.
+        parsed.results[1].rawOutput = parsed.results[1].rawOutput.replace(
+          'radz2291/vict-02',
+          'attacker/elsewhere',
+        );
+      },
+      now,
+    );
+    const result = validateTrustEvidence(altered, evidenceBinding(identity, version, now));
+    expect(result.ok).toBe(false);
+    expect(result.problems.join('\n')).toContain('does NOT match the retained captured output');
+  });
+
+  it('r5: a FORGED trust status is refused — the claim must match the output classification', () => {
+    // Self-consistent hash over EMPTY output (a real "no trust configs"
+    // capture) — but the status was forged to 'exact'.
+    const forged = evidenceWith(
+      identity,
+      version,
+      (parsed) => {
+        parsed.results[2].rawOutput = '';
+        parsed.results[2].rawOutputSha256 = sha256('');
+        parsed.results[2].trust = 'exact';
+      },
+      now,
+    );
+    const result = validateTrustEvidence(forged, evidenceBinding(identity, version, now));
+    expect(result.ok).toBe(false);
+    expect(result.problems.join('\n')).toContain(
+      "CLAIMS trust 'exact', but its own captured output CLASSIFIES as 'missing'",
+    );
+  });
+
+  it('r5: a result for the WRONG member binding (mismatched command) is refused', () => {
+    const wrongCommand = evidenceWith(
+      identity,
+      version,
+      (parsed) => {
+        parsed.results[3].command = 'npm trust list @victframework/contracts --json';
+      },
+      now,
+    );
+    const result = validateTrustEvidence(wrongCommand, evidenceBinding(identity, version, now));
+    expect(result.ok).toBe(false);
+    expect(result.problems.join('\n')).toContain('does not record the EXACT official command');
+  });
+
+  it('r5: DUPLICATE results for one member are refused', () => {
+    const duplicated = evidenceWith(
+      identity,
+      version,
+      (parsed) => {
+        parsed.results.push({ ...parsed.results[4] });
+      },
+      now,
+    );
+    const result = validateTrustEvidence(duplicated, evidenceBinding(identity, version, now));
+    expect(result.ok).toBe(false);
+    expect(result.problems.join('\n')).toContain('DUPLICATE results');
+  });
+
+  it('r5: unparseable captured output is refused even when the hash matches', () => {
+    const garbage = evidenceWith(
+      identity,
+      version,
+      (parsed) => {
+        parsed.results[5].rawOutput = 'npm error This command requires you to be logged in.';
+        parsed.results[5].rawOutputSha256 = sha256(
+          'npm error This command requires you to be logged in.',
+        );
+      },
+      now,
+    );
+    const result = validateTrustEvidence(garbage, evidenceBinding(identity, version, now));
+    expect(result.ok).toBe(false);
+    expect(result.problems.join('\n')).toContain(
+      "not parseable official 'npm trust list --json' output",
+    );
+  });
+
+  it(
+    'evidence-mode preflight (r5): evidence proves TRUST; registry presence is re-proven LIVE at release time',
+    { timeout: 300_000 },
+    () => {
+      const credible = join(tmpdir(), 'credible-trust-evidence-r5.json');
+      // The fixture claims `registry: 'present'` for ALL 14 members —
+      // including ui and ui-svelte, which have NO registry presence
+      // until the owner-authorized bootstrap. The live recheck must
+      // override those claims.
+      writeFileSync(credible, validEvidence({ identity, version, now: new Date() }));
+      try {
+        const verdict = assessPublicationPreflight({ repoRoot, evidencePath: credible });
+        expect(verdict.mode).toBe('evidence');
+        // The evidence WAS accepted (validated, bound, fresh, classified
+        // exact) — every member's trust is now EXACT, none unverifiable:
+        expect(verdict.assessment.unverifiable).toEqual([]);
+        expect(verdict.assessment.untrusted).toEqual([]);
+        expect(verdict.assessment.conflicting).toEqual([]);
+        // …but the LIVE registry recheck governs presence: ui/ui-svelte
+        // are still absent, so publication stays refused (bootstrap
+        // stage) — the artifact's presence claims are never trusted.
+        expect(verdict.authorized).toBe(false);
+        expect(verdict.stage).toBe('first-publication-bootstrap');
+        expect(verdict.assessment.absent).toEqual([
+          '@victframework/ui',
+          '@victframework/ui-svelte',
+        ]);
+      } finally {
+        rmSync(credible, { force: true });
+      }
+    },
+  );
+
+  it('r5 negatives refuse publication before the first package (evidence-mode preflight)', () => {
+    const negatives = [
+      [
+        'failed exit code',
+        (parsed) => {
+          parsed.results[0].exitCode = 1;
+        },
+      ],
+      [
+        'invented hash',
+        (parsed) => {
+          parsed.results[0].rawOutputSha256 = sha256('never captured');
+        },
+      ],
+      [
+        'altered captured output',
+        (parsed) => {
+          parsed.results[0].rawOutput = parsed.results[0].rawOutput.replace(
+            'release.yml',
+            'other.yml',
+          );
+        },
+      ],
+      [
+        'forged exact trust',
+        (parsed) => {
+          parsed.results[0].rawOutput = '';
+          parsed.results[0].rawOutputSha256 = sha256('');
+          parsed.results[0].trust = 'exact';
+        },
+      ],
+      [
+        'wrong member binding',
+        (parsed) => {
+          parsed.results[0].command = 'npm trust list @other/pkg --json';
+        },
+      ],
+      ['stale time', 'STALE'],
+    ];
+    for (const [label, mutate] of negatives) {
+      const stale = new Date('2026-09-01T00:00:00Z');
+      const raw =
+        mutate === 'STALE'
+          ? validEvidence({ identity, version, now: stale })
+          : evidenceWith(identity, version, mutate, new Date());
+      const artifact = join(tmpdir(), `negative-evidence-${label.replace(/\W+/g, '-')}.json`);
+      writeFileSync(artifact, raw);
+      try {
+        const verdict = assessPublicationPreflight({ repoRoot, evidencePath: artifact });
+        expect(verdict.mode, label).toBe('evidence');
+        expect(verdict.authorized, label).toBe(false);
+        expect(verdict.stage, label).toBe('blocked');
+        expect(verdict.blockedReason, label).toContain('NOT CREDIBLE');
+      } finally {
+        rmSync(artifact, { force: true });
+      }
     }
   });
 });
@@ -1014,4 +1295,145 @@ describe('release.yml — authority + trust preflight gates', () => {
     const block = raw.slice(publishIndex, raw.indexOf('Verify registry state'));
     expect(block).toContain('RELEASE_TRUST_EVIDENCE');
   });
+
+  // --- r5: the evidence input reaches EVERY preflight consumer, by env only ---
+
+  it('r5: the FIRST validate step receives RELEASE_TRUST_EVIDENCE (defect on r4)', () => {
+    const doc = yaml.load(raw);
+    const steps = doc.jobs['publish-release-set'].steps;
+    const validate = steps.find((step) =>
+      String(step.run ?? '').includes('node scripts/oidc-release.mjs validate'),
+    );
+    expect(validate).toBeDefined();
+    // On r4 this step ran the trust preflight WITHOUT the evidence, so
+    // CI died on the authentication-gated live check before any later
+    // evidence-aware step could run.
+    expect(validate.env.RELEASE_TRUST_EVIDENCE).toBe('${{ inputs.trust_evidence_path }}');
+  });
+
+  it('r5: the preflight gate passes the evidence path by ENV ONLY — no shell word-splitting is possible', () => {
+    const doc = yaml.load(raw);
+    const steps = doc.jobs['publish-release-set'].steps;
+    const preflight = steps.find((step) =>
+      String(step.name ?? '').startsWith('Trust preflight gate'),
+    );
+    expect(preflight).toBeDefined();
+    expect(preflight.env.RELEASE_TRUST_EVIDENCE).toBe('${{ inputs.trust_evidence_path }}');
+    // The run block is a single fixed command: no ARGS assembly, no
+    // variable expansion, no --evidence shell interpolation.
+    expect(preflight.run.trim()).toBe(
+      'node scripts/verify-trust-preflight.mjs --require-authorized',
+    );
+    expect(preflight.run).not.toContain('$');
+    expect(preflight.run).not.toContain('--evidence');
+    // The consumer actually reads the env var.
+    const verifyScript = readFileSync(
+      join(repoRoot, 'scripts', 'verify-trust-preflight.mjs'),
+      'utf8',
+    );
+    expect(verifyScript).toContain('process.env.RELEASE_TRUST_EVIDENCE');
+  });
+
+  it('r5: the evidence artifact format is consumed by the shared preflight, not re-parsed by the workflow', () => {
+    // The workflow never inspects the artifact; only the engine does.
+    expect(raw).not.toMatch(/rawOutput|validateTrustEvidence|trust list/);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// 10. Faithful integration: the evidence env drives the REAL gate (r5)
+// ---------------------------------------------------------------------------
+
+describe('verify-trust-preflight — the evidence env reaches the real gate (r5)', () => {
+  const { identity, inventory } = releaseSetIdentityAt(repoRoot);
+  const version = inventory.version;
+
+  function runPreflight(envOverrides) {
+    return spawnSync(
+      process.execPath,
+      [join(repoRoot, 'scripts', 'verify-trust-preflight.mjs'), '--require-authorized'],
+      {
+        encoding: 'utf8',
+        cwd: repoRoot,
+        timeout: 240_000,
+        env: { ...process.env, ...envOverrides },
+      },
+    );
+  }
+
+  it(
+    'a valid evidence fixture (env only) carries the run PAST the trust check to the live registry recheck',
+    { timeout: 300_000 },
+    () => {
+      const artifact = join(tmpdir(), 'r5-integration-evidence.json');
+      const parsed = JSON.parse(validEvidence({ identity, version, now: new Date() }));
+      writeFileSync(artifact, JSON.stringify(parsed));
+      try {
+        const result = runPreflight({ RELEASE_TRUST_EVIDENCE: artifact });
+        const output = `${result.stdout}${result.stderr}`;
+        // The evidence was accepted and USED (mode: evidence):
+        expect(output).toContain('validated operator evidence bound to');
+        expect(output).toContain('classified from the RETAINED captured output');
+        // …so the gate reached the LIVE registry recheck — the exact
+        // stage the r4 E401 dead-end never allowed CI to reach:
+        expect(output).toContain('LIVE registry recheck');
+        // The recheck governs: ui/ui-svelte are still absent, so the
+        // verdict refuses publication (bootstrap stage — correct; a
+        // registry WRITE remains impossible, G3 HELD).
+        expect(result.status).toBe(1);
+        expect(output).toContain('ABSENT (no presence at any version)');
+        expect(output).toContain('first-publication-bootstrap');
+        expect(output).toContain('@victframework/ui');
+      } finally {
+        rmSync(artifact, { force: true });
+      }
+    },
+  );
+
+  it(
+    'WITHOUT the evidence env the gate stays in live mode and fails authentication-gated (the r4 CI failure mode)',
+    { timeout: 300_000 },
+    () => {
+      const env = { ...process.env };
+      delete env.RELEASE_TRUST_EVIDENCE;
+      const result = spawnSync(
+        process.execPath,
+        [join(repoRoot, 'scripts', 'verify-trust-preflight.mjs'), '--require-authorized'],
+        { encoding: 'utf8', cwd: repoRoot, timeout: 240_000, env },
+      );
+      const output = `${result.stdout}${result.stderr}`;
+      expect(result.status).toBe(1);
+      expect(output).not.toContain('validated operator evidence');
+      expect(output).toContain('UNVERIFIABLE');
+    },
+  );
+
+  it(
+    'an INVALID evidence fixture via env is refused as NOT CREDIBLE before any registry write',
+    { timeout: 300_000 },
+    () => {
+      const artifact = join(tmpdir(), 'r5-integration-evidence-invalid.json');
+      writeFileSync(
+        artifact,
+        evidenceWith(
+          identity,
+          version,
+          (parsed) => {
+            parsed.results[0].exitCode = 1;
+          },
+          new Date(),
+        ),
+      );
+      try {
+        const result = runPreflight({ RELEASE_TRUST_EVIDENCE: artifact });
+        const output = `${result.stdout}${result.stderr}`;
+        expect(result.status).toBe(1);
+        expect(output).toContain('NOT CREDIBLE');
+        expect(output).toContain('FAILED official command (exitCode 1)');
+        expect(output).not.toContain('LIVE registry recheck');
+      } finally {
+        rmSync(artifact, { force: true });
+      }
+    },
+  );
 });
