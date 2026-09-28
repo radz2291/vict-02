@@ -53,9 +53,10 @@ import { fileURLToPath } from 'node:url';
 import { deriveReleaseSetContentId, normalizeResumeInput } from './lib/release-set.mjs';
 import { matchTarballSet } from './lib/tarball-set.mjs';
 import { readTarballMember } from './lib/tarball-io.mjs';
+import { fetchPackument as fetchPackumentProbe, PUBLIC_REGISTRY } from './lib/registry-probe.mjs';
+import { assessContractAuthorityAtRoot, FROZEN_CONTRACT_PATH } from './lib/contract-authority.mjs';
 import {
   deriveReleaseInventory,
-  PUBLIC_REGISTRY,
   publishArgv,
   SOURCE_SHA_PATTERN,
   validateVersionTagPair,
@@ -73,6 +74,35 @@ function fail(message) {
 
 function ok(label) {
   console.log(`  ok: ${label}`);
+}
+
+/**
+ * CONTRACT AUTHORITY GATE (fail-closed, pre-publication).
+ *
+ * The frozen trusted-publishing contract is the ONLY publication
+ * authority. While the §16 facade-retirement amendment exists merely as
+ * an unratified draft, the frozen text still records the §14 15-package
+ * state, and this engine's 14-package derivation has NO contractual
+ * authority. The gate reads the frozen contract AT THE CHECKED-OUT
+ * SOURCE and refuses unless it carries the exact ratified 14-package
+ * state (§16 record, §16.5 owner authorization, §5 = the frozen
+ * 14-package order, zero surviving current-tense 15-norms). It runs
+ * BEFORE any registry call or write — including resume paths — in both
+ * `validate` and `publish`.
+ */
+function assertContractAuthority(repoRoot) {
+  const verdict = assessContractAuthorityAtRoot(repoRoot);
+  if (!verdict.authorized) {
+    console.error(
+      `oidc-release: CONTRACT AUTHORITY REFUSED — the frozen contract (${FROZEN_CONTRACT_PATH}) does not yet authorize the 14-package candidate set. NO registry call or write was made. Gaps:`,
+    );
+    for (const problem of verdict.problems) console.error(`  - ${problem}`);
+    console.error(
+      'Owner action: ratify §16 into the frozen contract (amendment commit applying Appendices A+B of docs/RELEASE-TRUSTED-PUBLISHING-CONTRACT-AMENDMENT-DRAFT-2026-09-27-FACADE-RETIREMENT.md verbatim), then re-run. Until then every publication attempt fails closed BY DESIGN.',
+    );
+    process.exit(1);
+  }
+  ok('contract authority: the frozen contract ratifies the 14-package set (§16)');
 }
 
 // ---- argument parsing (flags OR environment; flags win) --------------------
@@ -163,52 +193,10 @@ function validateLineage(repoRoot, sourceSha) {
  * blocker, not as "unpublished").
  */
 function fetchPackument(name) {
-  const url = `${PUBLIC_REGISTRY}${encodeURIComponent(name)}`;
-  const response = fetchSync(url);
-  if (response.kind === 'error') {
-    fail(`the public npm registry is unreachable for ${name}: ${response.message}`);
-  }
-  if (response.kind === 'not-found') {
-    return { name, versions: {}, 'dist-tags': {} };
-  }
-  let packument;
   try {
-    packument = JSON.parse(response.body);
-  } catch {
-    fail(`the registry returned unparseable metadata for ${name}.`);
-  }
-  return packument;
-}
-
-/**
- * Small, dependency-free synchronous GET with a bounded timeout.
- * Windows Node 22 supports synchronous fetch only via this child trick —
- * spawn the resident `node` with an inline fetch script (no shell).
- */
-function fetchSync(url) {
-  const script = `
-    const url = process.argv[1];
-    fetch(url, { headers: { accept: 'application/json' }, signal: AbortSignal.timeout(30_000) })
-      .then(async (response) => {
-        if (response.status === 404) { console.log(JSON.stringify({ kind: 'not-found' })); return; }
-        if (!response.ok) { console.log(JSON.stringify({ kind: 'error', message: 'HTTP ' + response.status })); return; }
-        const body = await response.text();
-        console.log(JSON.stringify({ kind: 'ok', body }));
-      })
-      .catch((error) => { console.log(JSON.stringify({ kind: 'error', message: String(error && error.message) })); });
-  `;
-  const result = spawnSync(process.execPath, ['-e', script, url], {
-    encoding: 'utf8',
-    timeout: 60_000,
-  });
-  if (result.status !== 0) {
-    return { kind: 'error', message: `probe exited ${result.status}` };
-  }
-  const line = (result.stdout ?? '').trim().split(/\r?\n/).at(-1) ?? '';
-  try {
-    return JSON.parse(line);
-  } catch {
-    return { kind: 'error', message: 'unparseable probe output' };
+    return fetchPackumentProbe(name);
+  } catch (error) {
+    fail(error.message);
   }
 }
 
@@ -318,6 +306,7 @@ function matchPackDir(repoRoot, packDir, inventory) {
 
 function commandValidate(args) {
   const { repoRoot, sourceSha, version, tag, resumeFrom } = args;
+  assertContractAuthority(repoRoot);
   if (sourceSha === undefined || !SOURCE_SHA_PATTERN.test(sourceSha)) {
     fail('a full 40-hex source SHA is required (got missing/malformed input).');
   }
@@ -376,6 +365,7 @@ function commandPack(args) {
 
 function commandPublish(args) {
   const { repoRoot, packDir, resultsFile, sourceSha, version, tag, resumeFrom } = args;
+  assertContractAuthority(repoRoot);
   if (packDir === undefined || !existsSync(packDir)) fail('publish requires a valid --pack-dir.');
   if (resultsFile === undefined) fail('publish requires --results-file <path>.');
   const tagVerdict = validateVersionTagPair(version, tag);

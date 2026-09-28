@@ -58,9 +58,10 @@ import {
   EXPECTED_RELEASE_PACKAGE_COUNT,
   FROZEN_PUBLISH_ORDER,
   FROZEN_TRUST_TARGET,
-  npmVersionSatisfiesMinimum,
   trustGithubArgv,
 } from './lib/release-set.mjs';
+import { assessContractAuthorityAtRoot, FROZEN_CONTRACT_PATH } from './lib/contract-authority.mjs';
+import { resolveNpmLauncher } from './lib/npm-launcher.mjs';
 import {
   classifyRelationships,
   collectRelationships,
@@ -71,7 +72,6 @@ import {
 
 const scriptDir = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(scriptDir, '..');
-const PINNED_NPM_VERSION = '11.19.1';
 const DELAY_MS = 2000;
 
 function fail(message) {
@@ -81,52 +81,6 @@ function fail(message) {
 
 function sleep(ms) {
   return new Promise((resolveSleep) => setTimeout(resolveSleep, ms));
-}
-
-// ---- npm launcher resolution (>= 11.15.0 required for npm trust) ------------
-
-function npmVersionOf(command, args) {
-  const result = spawnSync(command, [...args, '--version'], {
-    encoding: 'utf8',
-    shell: process.platform === 'win32' && command !== process.execPath,
-  });
-  if (result.status !== 0) return undefined;
-  return (result.stdout ?? '').trim().split(/\r?\n/).at(-1);
-}
-
-/**
- * Resolve an npm launcher that satisfies the `npm trust` minimum.
- * Order: $NPM_BIN (explicit operator override), the active `npm`,
- * then the pinned npm through `npx -y npm@<pinned>`. Returns
- * { command, prefix, description }; no credentials are involved here.
- */
-function resolveNpmLauncher() {
-  if (process.env.NPM_BIN !== undefined && process.env.NPM_BIN.length > 0) {
-    const version = npmVersionOf(process.env.NPM_BIN, []);
-    if (version === undefined) fail(`NPM_BIN '${process.env.NPM_BIN}' could not report a version.`);
-    if (!npmVersionSatisfiesMinimum(version)) {
-      fail(`NPM_BIN npm ${version} is older than the required ${'11.15.0'}.`);
-    }
-    return { command: process.env.NPM_BIN, prefix: [], description: `NPM_BIN (npm ${version})` };
-  }
-  const activeVersion = npmVersionOf(process.platform === 'win32' ? 'npm.cmd' : 'npm', []);
-  if (activeVersion !== undefined && npmVersionSatisfiesMinimum(activeVersion)) {
-    return {
-      command: process.platform === 'win32' ? 'npm.cmd' : 'npm',
-      prefix: [],
-      description: `active npm (${activeVersion})`,
-    };
-  }
-  const npx = process.platform === 'win32' ? 'npx.cmd' : 'npx';
-  const pinnedVersion = npmVersionOf(npx, ['-y', `npm@${PINNED_NPM_VERSION}`]);
-  if (pinnedVersion === undefined) {
-    fail(`could not run npm ${PINNED_NPM_VERSION} through npx for the trust interface.`);
-  }
-  return {
-    command: npx,
-    prefix: ['-y', `npm@${PINNED_NPM_VERSION}`],
-    description: `npx npm@${PINNED_NPM_VERSION} (active npm ${activeVersion ?? 'unknown'} is too old)`,
-  };
 }
 
 function runTrust(launcher, argv, options = {}) {
@@ -243,6 +197,26 @@ function workflowFilePushedToOriginMain() {
 const execute = process.argv.includes('--execute');
 const verifyOnly = process.argv.includes('--verify-only');
 if (execute && verifyOnly) fail('--execute and --verify-only are mutually exclusive.');
+
+// 0. CONTRACT AUTHORITY GATE (fail-closed, registry-write gate).
+// Configuring a trust relationship WRITES to the registry; like every
+// other registry write it is refused while the frozen contract does not
+// carry the ratified 14-package state (§16). The DRY plan and the
+// read-only --verify-only mode stay usable for inspection.
+if (execute) {
+  const authority = assessContractAuthorityAtRoot(repoRoot);
+  if (!authority.authorized) {
+    console.error(
+      `trust-bootstrap: CONTRACT AUTHORITY REFUSED — the frozen contract (${FROZEN_CONTRACT_PATH}) does not yet authorize the 14-package candidate set. NO registry call or write was made. Gaps:`,
+    );
+    for (const problem of authority.problems) console.error(`  - ${problem}`);
+    console.error(
+      'Owner action: ratify §16 into the frozen contract first (Appendices A+B of the amendment draft, verbatim); the trust bootstrap (including the §16 first-publication bootstrap) is part of the ratified procedure.',
+    );
+    process.exit(1);
+  }
+  console.log('trust-bootstrap: contract authority verified (§16 ratified)');
+}
 
 // 1. Frozen inventory derivation (exact allowlist).
 const inventory = deriveReleaseInventory(repoRoot);

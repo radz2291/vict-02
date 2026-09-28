@@ -30,6 +30,7 @@ import { existsSync, mkdtempSync, readFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { assessContractAuthorityAtRoot, FROZEN_CONTRACT_PATH } from './lib/contract-authority.mjs';
 
 const scriptDir = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(scriptDir, '..');
@@ -88,6 +89,23 @@ for (const name of PUBLISH_ORDER) {
 }
 
 if (PUBLISH) {
+  // CONTRACT AUTHORITY GATE (fail-closed, pre-publication): the frozen
+  // contract must carry the ratified 14-package state (§16) before ANY
+  // registry write — including this operator-run engine and its resume
+  // path. The dry plan above stays usable for inspection.
+  const authority = assessContractAuthorityAtRoot(repoRoot);
+  if (!authority.authorized) {
+    console.error(
+      `publish:release: CONTRACT AUTHORITY REFUSED — the frozen contract (${FROZEN_CONTRACT_PATH}) does not yet authorize the 14-package candidate set. NO registry write was made. Gaps:`,
+    );
+    for (const problem of authority.problems) console.error(`  - ${problem}`);
+    console.error(
+      'Owner action: ratify §16 into the frozen contract first (amendment draft Appendices A+B, verbatim).',
+    );
+    process.exit(1);
+  }
+  console.log('publish:release: contract authority verified (§16 ratified)');
+
   const gitStatus = run('git', ['status', '--porcelain'], { capture: true });
   if (gitStatus.status !== 0) fail('git status failed — publish only from the release checkout.');
   const dirty = (gitStatus.stdout ?? '')

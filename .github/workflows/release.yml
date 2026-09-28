@@ -16,6 +16,13 @@ name: VICT coordinated release-set publication
 #   (Facade-retirement draft §16, 2026-09-27: the §14 inventory minus the
 #   removed renderer-svelte compatibility facade — awaiting owner
 #   ratification; the frozen contract text is unchanged until then.)
+# - CONTRACT AUTHORITY: every registry write is gated twice on the frozen
+#   contract carrying the RATIFIED 14-package state (scripts/verify-
+#   contract-authority.mjs immediately before the publish step, and the
+#   engine's own authority assertion in validate/publish). While §16 is
+#   an unratified draft the workflow fails closed BY DESIGN — including
+#   validate_only rehearsals and resume paths. Ordinary structural and
+#   packed-consumer checks are not gated and stay usable.
 # - A `validate_only` run exercises the full pre-publication chain but
 #   makes NO registry write and proves NOTHING about OIDC publication.
 
@@ -126,6 +133,10 @@ jobs:
 
       - name: Isolated packed-tarball consumer proof
         run: npm run verify:release-consumer
+
+      - name: Contract authority gate (frozen contract must ratify the 14-package set)
+        if: ${{ inputs.validate_only != true }}
+        run: node scripts/verify-contract-authority.mjs
 
       - name: Publish the exact tarballs (OIDC — no token of any kind)
         if: ${{ inputs.validate_only != true }}
