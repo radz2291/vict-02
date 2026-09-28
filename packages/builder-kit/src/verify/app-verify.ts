@@ -48,7 +48,7 @@ function check(
  */
 export function extractRecordedSetVersion(recordedSetId: string): string | null {
   const match = /^vict-release-set@1\/(\d+\.\d+\.\d+[-0-9A-Za-z.]*)$/.exec(recordedSetId);
-  return match === null ? null : match[1];
+  return match === null || match[1] === undefined ? null : match[1];
 }
 
 /** Once platform packages exist, they must match the recorded release set; before that, bootstrap state.

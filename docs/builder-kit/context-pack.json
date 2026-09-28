@@ -118,7 +118,7 @@
   "generatedFrom": {
     "inputs": [
       {
-        "contentSha256": "26c0e3df4356938e1b4e0bb1028a8b6cc2f2313eaa51a871685f93820d17b2a6",
+        "contentSha256": "4e44de15a538d0c0e34793957743d8e8eb63b51c366e14048c7ce748eddf3262",
         "path": "docs/RELEASE-COMPATIBILITY.md"
       },
       {
@@ -230,7 +230,7 @@
       "workspaces": ["examples/*", "packages/*", "packs/*"]
     }
   },
-  "packId": "3b1f40d5dbeaa755d2156808809b1490cc73603b7a425e6cfa9256f8da551440",
+  "packId": "d15c8620a376b1c2bd03b327e364f7224fdeab928920cbdd63c23c8ca1e06546",
   "permissionProfilesRef": {
     "contentSha256": "893ba3ff5b73e3bf9d87da2ea1c49f5fcd176f5bdb8d36e20628fcf184f19b88",
     "schemaMarker": "vict.builder.profile@1",
