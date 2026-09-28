@@ -13,16 +13,14 @@ name: VICT coordinated release-set publication
 # - Publishes the coordinated 14-package `@victframework/*` set as ONE
 #   immutable unit from an exact pushed main-lineage commit, in frozen
 #   dependency-topological order, never overwriting or unpublishing.
-#   (Facade-retirement draft §16, 2026-09-27: the §14 inventory minus the
-#   removed renderer-svelte compatibility facade — awaiting owner
-#   ratification; the frozen contract text is unchanged until then.)
+#   (§16 ratified the 14-member inventory and the renderer-svelte facade
+#   retirement; the published historical facade remains untouched.)
 # - CONTRACT AUTHORITY: every registry write is gated twice on the frozen
-#   contract carrying the RATIFIED 14-package state (scripts/verify-
-#   contract-authority.mjs immediately before the publish step, and the
-#   engine's own authority assertion in validate/publish). While §16 is
-#   an unratified draft the workflow fails closed BY DESIGN — including
-#   validate_only rehearsals and resume paths. Ordinary structural and
-#   packed-consumer checks are not gated and stay usable.
+#   contract carrying the RATIFIED 14-package state and the owner's
+#   D-AUTHORIZE decision (scripts/verify-contract-authority.mjs before
+#   publish and the engine's assertion in validate/publish, including
+#   resume paths). Ordinary structural and packed-consumer checks stay
+#   usable independently.
 # - TRUST PREFLIGHT (r5): every publication path additionally refuses
 #   until ALL 14 members exist and their exact trust relationships are
 #   credibly verified — live (impossible in CI without a session) or via
@@ -37,8 +35,10 @@ name: VICT coordinated release-set publication
 #   evidence-aware steps could run). Values travel as env vars, never as
 #   shell-built argument strings, so no path can be word-split. Registry
 #   presence is re-proven LIVE at release time; the artifact's presence
-#   claims are never trusted. Until the owner resolves the CI
-#   trust-proof decision, CI publication fails closed at this gate.
+#   claims are never trusted. The owner accepted the operator-evidence
+#   ceremony with its documented provenance and 24-hour timing limits.
+#   Publication stays blocked until the two new members are bootstrapped
+#   and all 14 trust relationships are verified.
 # - A `validate_only` run exercises the full pre-publication chain but
 #   makes NO registry write and proves NOTHING about OIDC publication.
 
