@@ -175,30 +175,26 @@
 > publication, trust extension for the two new members) is a separate
 > later step under the amended contract.
 
-> **Coordinated candidate release set 0.4.0-rc.1 (2026-09-27, 14 members
-> — PREPARED; NOT PUBLISHED):** the current compatible release-set record
-> in §2 below is the facade-retirement candidate re-versioned per the
-> repository's release rules: the 14-member set (consolidated amendment
-> draft §16, awaiting owner ratification) at the NEW coherent candidate
-> version `0.4.0-rc.1` (identity `vict-release-set@1/0.4.0-rc.1`,
-> contentId `v1_2a70a29a…`). The version moves off `0.3.1`, which is
-> PUBLISHED and immutable (`latest = 0.3.1` for all 13 historical
-> members since 2026-09-22; ui/ui-svelte have no registry presence), so
-> the 14-member set can never publish at `0.3.1` — the prior r1
-> prepared record naming that version was already un-publishable at
-> filing. Per the frozen §7 rule the line's first publication would be
-> this candidate under the non-latest tag `vict-0.4.0-rc`, with stable
-> `0.4.0` under `latest` only after independent verification. The
-> 14-member `0.3.1` prepared identity (contentId `v1_e31858f1…`, below)
-> was superseded BEFORE any publication and is not the identity of this
-> candidate. Nothing is published; publication additionally requires the
-> owner-ratified final release contract.
+> **Coordinated candidate release set 0.4.0-rc.1 (published
+> 2026-09-28; 14 members):** §2 records the exact-pinned, published
+> facade-retirement candidate under `vict-0.4.0-rc`. Its identity is
+> `vict-release-set@1/0.4.0-rc.1` /
+> `v1_2a70a29af12fa887d18e7099b027a11f86bd2f6a70a756446fb43844e41d9399`.
+> The owner ratified §16 and recorded D-AUTHORIZE before publication.
+> GitHub Actions [run 36427806906](https://github.com/radz2291/vict-02/actions/runs/36427806906)
+> published all 14 from source `d7bd003047a648738a4d1d824b0c4e4a442c0da3`.
+> Its final read-only registry check timed out during CDN propagation,
+> leaving the run marked failure; the subsequent release record reports
+> 14/14 registry integrity matches and a passing public-registry consumer
+> check. See [RELEASE-EXEC-R3](./RELEASE-EXEC-R3-2026-09-28.md) for the
+> evidence and caveat. `latest` remains `0.3.1` for the 12 historical
+> members and npm's `0.0.0-bootstrap.1` marker for `ui` and
+> `ui-svelte`; the candidate is selected with `vict-0.4.0-rc` or
+> exact `0.4.0-rc.1` pins. Stable `0.4.0` is a later decision.
 >
 > **Coordinated release set 0.3.1 (re-amended 2026-09-27, 14 members —
-> PREPARED; NOT PUBLISHED):** the current compatible release-set record in
-> §2 below carries the facade retirement of 2026-09-27 (consolidated
-> trusted-publishing contract amendment draft §16, awaiting owner
-> ratification): the workspace REMOVED the
+> PREPARED; NEVER PUBLISHED):** this historical prepared record carried
+> the facade retirement before the owner ratified §16: the workspace REMOVED the
 > `@victframework/renderer-svelte` compatibility-facade package and
 > migrated every current consumer to direct `@victframework/ui-svelte`
 > imports — the permanent Svelte `ApplicationRenderer` implementation has
@@ -284,8 +280,9 @@ retired member (`renderer-svelte`), plus the whole P1–P5 UI foundation
 and authoring surface — a minor-version step in the repository's 0.x
 convention; (c) §7 publishes every new line as a candidate FIRST
 (`X.Y.Z-rc.N` under the non-latest tag `vict-0.4.0-rc`), stable `0.4.0`
-under `latest` only after independent verification — so the live
-prepared record is the CANDIDATE `0.4.0-rc.1`. The contentId was
+under `latest` only after independent verification — so the candidate
+version selected at preparation was `0.4.0-rc.1` (published on
+2026-09-28). The contentId was
 derived from the actual 14 manifests at `0.4.0-rc.1` with the frozen
 algorithm; the version change is itself a NEW set identity (sha256 over
 `name@version` pairs) — the former 14-member `0.3.1` identity
@@ -294,7 +291,7 @@ superseded-unpublished.
 
 Amendment provenance (2026-09-27, facade retirement): the member set
 above is the re-derived 14-package candidate set (consolidated amendment
-draft §16, awaiting owner ratification). The immediately preceding
+draft §16 at preparation, ratified before the 2026-09-28 publication). The immediately preceding
 prepared record of the `0.3.1` version line carried the 15-member
 §14 set (contentId `v1_3a82c065…`) with `renderer-svelte` retained as a
 pure compatibility facade; that prepared identity was never published and
@@ -530,18 +527,15 @@ Integrity mechanism: the consumer's lockfile records the SHA-512
 `integrity` hash of every installed tarball; npm verifies every install
 against it. `npm ci` reproduces the exact recorded graph.
 
-The amended set (from the first publication of the post-retirement
-candidate line `0.4.0-rc.1` onward, contract §14; 14 members since the
-2026-09-27 facade retirement, draft §16) adds `@victframework/ui` and
-`@victframework/ui-svelte` to this install list at the set's exact
-version — same exact-pin discipline, with `renderer-svelte` NO LONGER a
-candidate member (imports migrate to `ui-svelte`; see
-`docs/UI-FACADE-RETIREMENT-2026-09-27.md`). The command above shows the
-latest PUBLISHED stable set (`0.3.0`, the 13-member predecessor) for
-consumers pinning published versions today; ui and ui-svelte enter the
-installable set with the first publication of the amended line, and
-published `renderer-svelte@0.3.0` remains installable by exact pin for
-consumers who have not yet migrated.
+The published `0.4.0-rc.1` candidate adds `@victframework/ui` and
+`@victframework/ui-svelte` at the exact version in §2 and omits
+`renderer-svelte` from its 14-member inventory (imports migrate to
+`ui-svelte`; see `docs/UI-FACADE-RETIREMENT-2026-09-27.md`). The
+`0.3.0` command above is a historical install example; the latest
+published stable set is `0.3.1` for its 13 members, whereas this
+candidate requires explicit `0.4.0-rc.1` pins or `vict-0.4.0-rc`.
+Published `renderer-svelte@0.3.1` remains installable by exact pin
+for consumers who have not migrated.
 
 Rollback: pin the prior release-set identity (all prior published
 versions remain in the registry; nothing is unpublished or mutated).
