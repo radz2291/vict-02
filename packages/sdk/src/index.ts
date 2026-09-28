@@ -117,7 +117,9 @@ export {
   APPLICATION_DEFINITION_SCHEMA,
   APPLICATION_DEFINITION_SCHEMA_V2,
   APPLICATION_RELEASE_SCHEMA,
+  FORM_FIELD_WIDGETS,
   RESOURCE_DEFINITION_SCHEMA,
+  RESOURCE_PRESENTATION_WIDGETS,
   THEME_TOKEN_NAMES,
 } from './application.js';
 export type {
@@ -128,6 +130,7 @@ export type {
   BreadcrumbItem,
   ChartKind,
   ComponentReference,
+  ComponentSource,
   DisabledCondition,
   FormBinding,
   FormField,

@@ -1,0 +1,55 @@
+PASS  pack: all six 0.3.1 packages packed from the QA worktree — victframework-appdata-sqlite-0.3.1.tgz, victframework-application-0.3.1.tgz, victframework-contracts-0.3.1.tgz, victframework-kernel-0.3.1.tgz, victframework-renderer-svelte-0.3.1.tgz, victframework-runtime-0.3.1.tgz, victframework-scaffolder-0.3.1.tgz, victframework-sdk-0.3.1.tgz, victframework-store-sqlite-0.3.1.tgz, victframework-ui-0.3.1.tgz, victframework-ui-svelte-0.3.1.tgz
+PASS  ssr: server-rendered dashboard contains the chart figure + named svg + gridlines BEFORE hydration — dashboard bytes=30296
+PASS  ssr: server-rendered conversation contains the feed region, input, and Send button BEFORE hydration — conversation bytes=28923
+PASS  ssr: server-rendered read-only/list/detail markup present on the projects screen
+consumer root: C:\Users\RZ1\AppData\Local\Temp\vict-qa4-consumer-2WArdC
+PASS  compat: npm install from packed tarballs (clean temp dir) — C:\Users\RZ1\AppData\Local\Temp\vict-qa4-consumer-2WArdC\consumer-compat
+PASS  compat: installed versions exactly 0.3.1
+PASS  compat: no monorepo leakage in the lockfile
+PASS  compat: installed theme.css is ONLY the compatibility entry importing ui-svelte/styles.css — /* Compatibility stylesheet entry point. Presentation styles live in ui-svelte. */
+@import '@victframework/ui-svelte/sty
+PASS  compat: vite build succeeds
+PASS  compat: emitted CSS carries the migrated P4 presentation (index-lcHDGzSy.css, 17319 bytes)
+PASS  compat: NO duplicate style implementation (each signature defined exactly once) — counts={"list item block (.vict-list-item{)":1,"conversation feed (max-height:60vh)":1,"dataview cells (min-width:8rem)":1,"detail columns (minmax(0,10rem))":1,"chart bars (.vict-chart .vict-bar)":1}
+PASS  compat: built bundle contains EXACTLY ONE renderer implementation (identity x1, host marker x1) — js files: 1
+
+=== CONSUMER compat (port 5301) ===
+PASS  compat: packed renderer mounts the generic host
+PASS  compat: facade re-exports the SAME runtime bindings as ui-svelte (createVictRenderer/renderVictApplication/VitApp/identity constants) — {"sameCreate":true,"sameRender":true,"sameVitApp":true,"sameIdConst":true,"sameRevConst":true,"id":"renderer.svelte-kit","revision":"5.0.0","roles":["text","view","form","action","component","states","list","table","detail","chart","status","tabs","dialog","drawer","conversation"]}
+PASS  compat: frozen renderer identity through the packed path (id/revision/roles) — {"sameCreate":true,"sameRender":true,"sameVitApp":true,"sameIdConst":true,"sameRevConst":true,"id":"renderer.svelte-kit","revision":"5.0.0","roles":["text","view","form","action","component","states","list","table","detail","chart","status","tabs","dialog","drawer","conversation"]}
+PASS  compat: text role emits declared heading tags; markup-looking content is escaped text — {"h2":"H2","h6":"H6","escaped":true}
+PASS  compat: packed DataView renders the region + table with corresponding headers/cells — {"headers":["id","name","status","budget","owner","notes","code","updated"],"cells":["AAAAAAAAAAAA","Alpha widget","active","1250000","QA","Long note: p","X","2026-09-26"]}
+PASS  compat: packed list + detail + empty state render — {"list":"Item with secondary — the secondary value","detailRows":8,"emptyState":"The list is empty."}
+PASS  compat: packed chart renders bars/line/empty with the QA a11y fix (named svg image, figure group) — {"bars":5,"barTable":["planning (long category label)400","active1250","paused300","done900","archived150"],"svgRole":"img","svgLabel":"Bar chart of total budget summed per project status","figRole":null,"lineCircles":6,"linePath":true,"emptyBars":0}
+PASS  compat: packed chart data table corresponds to the rendered bars — planning (long category label)400|active1250|paused300|done900|archived150
+PASS  compat: packed conversation sends trimmed text, refetches the feed, clears the draft (QA keyboard-scroll fix present) — {"feed":["You · user Seeded consumer message.","You · user Packed send"],"draft":"","region":"region"}
+PASS  compat: route changes and data updates propagate WITHOUT remounting (same host node) — {"remount":{"sameNode":true,"msgTagged":true},"afterNavHost":true}
+PASS  compat: consumer-side custom island receives props unchanged through the packed slot path — {"hostStillTagged":true,"islandLabel":"workspace health island","islandCount":"7","islandPinned":"true","slotSurface":"cm.health"}
+PASS  compat: packed DataView @320 scrolls in a contained region; no document overflow — {"scrollable":true,"contained":true,"docOverflow":false}
+PASS  compat: no page errors in the packed consumer
+PASS  direct: npm install from packed tarballs (clean temp dir) — C:\Users\RZ1\AppData\Local\Temp\vict-qa4-consumer-2WArdC\consumer-direct
+PASS  direct: installed versions exactly 0.3.1
+PASS  direct: no monorepo leakage in the lockfile
+PASS  direct: installed theme.css is ONLY the compatibility entry importing ui-svelte/styles.css — /* Compatibility stylesheet entry point. Presentation styles live in ui-svelte. */
+@import '@victframework/ui-svelte/sty
+PASS  direct: vite build succeeds
+PASS  direct: emitted CSS carries the migrated P4 presentation (index-lcHDGzSy.css, 17319 bytes)
+PASS  direct: NO duplicate style implementation (each signature defined exactly once) — counts={"list item block (.vict-list-item{)":1,"conversation feed (max-height:60vh)":1,"dataview cells (min-width:8rem)":1,"detail columns (minmax(0,10rem))":1,"chart bars (.vict-chart .vict-bar)":1}
+PASS  direct: built bundle contains EXACTLY ONE renderer implementation (identity x1, host marker x1) — js files: 1
+
+=== CONSUMER direct (port 5302) ===
+PASS  direct: packed renderer mounts the generic host
+PASS  direct: frozen renderer identity through the packed path (id/revision/roles) — {"id":"renderer.svelte-kit","revision":"5.0.0","roles":["text","view","form","action","component","states","list","table","detail","chart","status","tabs","dialog","drawer","conversation"],"idConst":"renderer.svelte-kit","revConst":"5.0.0"}
+PASS  direct: text role emits declared heading tags; markup-looking content is escaped text — {"h2":"H2","h6":"H6","escaped":true}
+PASS  direct: packed DataView renders the region + table with corresponding headers/cells — {"headers":["id","name","status","budget","owner","notes","code","updated"],"cells":["AAAAAAAAAAAA","Alpha widget","active","1250000","QA","Long note: p","X","2026-09-26"]}
+PASS  direct: packed list + detail + empty state render — {"list":"Item with secondary — the secondary value","detailRows":8,"emptyState":"The list is empty."}
+PASS  direct: packed chart renders bars/line/empty with the QA a11y fix (named svg image, figure group) — {"bars":5,"barTable":["planning (long category label)400","active1250","paused300","done900","archived150"],"svgRole":"img","svgLabel":"Bar chart of total budget summed per project status","figRole":null,"lineCircles":6,"linePath":true,"emptyBars":0}
+PASS  direct: packed chart data table corresponds to the rendered bars — planning (long category label)400|active1250|paused300|done900|archived150
+PASS  direct: packed conversation sends trimmed text, refetches the feed, clears the draft (QA keyboard-scroll fix present) — {"feed":["You · user Seeded consumer message.","You · user Packed send"],"draft":"","region":"region"}
+PASS  direct: route changes and data updates propagate WITHOUT remounting (same host node) — {"remount":{"sameNode":true,"msgTagged":true},"afterNavHost":true}
+PASS  direct: consumer-side custom island receives props unchanged through the packed slot path — {"hostStillTagged":true,"islandLabel":"workspace health island","islandCount":"7","islandPinned":"true","slotSurface":"cm.health"}
+PASS  direct: packed DataView @320 scrolls in a contained region; no document overflow — {"scrollable":true,"contained":true,"docOverflow":false}
+PASS  direct: no page errors in the packed consumer
+
+==== CONSUMER: 45/45 checks passed ====
+CONSUMER_EXIT=0

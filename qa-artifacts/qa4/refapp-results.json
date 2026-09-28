@@ -1,0 +1,95 @@
+{
+  "results": [
+    {
+      "name": "refapp conversation: fresh conversation renders the declared empty state",
+      "ok": true,
+      "detail": "No messages yet — say hello! Your message is processed by a real Vict run."
+    },
+    {
+      "name": "refapp conversation: whitespace-only draft never crosses the boundary (network evidence)",
+      "ok": true,
+      "detail": "disabled=true, posts=0"
+    },
+    {
+      "name": "refapp conversation: dispatch payload is TRIMMED app text with renderer-declared author/participant",
+      "ok": true,
+      "detail": "{\"text\":\"Hello from QA browser\",\"author\":\"You\",\"participant\":\"user\"}"
+    },
+    {
+      "name": "refapp conversation: user message AND real Vict-run assistant reply both appear after refetch",
+      "ok": true,
+      "detail": "[\"You · user Hello from QA browser\",\"Assistant · assistant Received “Hello from QA browser” (4 words).\"]"
+    },
+    {
+      "name": "refapp conversation: successful send clears the draft",
+      "ok": true,
+      "detail": "\"\""
+    },
+    {
+      "name": "refapp conversation: typing works after refetch",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "refapp conversation RACE: draft edited during an in-flight REAL send survives the success (cleared only when trimmed draft == sent text)",
+      "ok": true,
+      "detail": "during=\"race send EDITED-IN-FLIGHT\" after=\"race send EDITED-IN-FLIGHT\""
+    },
+    {
+      "name": "refapp conversation: rapid triple-submit dispatches exactly once (network evidence)",
+      "ok": true,
+      "detail": "posts=1"
+    },
+    {
+      "name": "refapp conversation: contract-rejected send keeps the draft and surfaces the declared validation feedback",
+      "ok": true,
+      "detail": "draftKept=true feedback=\"Validation failed; check the highlighted fields.\""
+    },
+    {
+      "name": "refapp conversation: composer still operable after rejection + refetch cycle",
+      "ok": true,
+      "detail": "\"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    },
+    {
+      "name": "refapp conversation @320: panel fits, composer on one row, no document overflow",
+      "ok": true,
+      "detail": "{\"fits\":true,\"composerRow\":true,\"docOverflow\":false}"
+    },
+    {
+      "name": "refapp conversation: long + unbroken message SENT, wraps inside the panel; no page overflow",
+      "ok": true,
+      "detail": "{\"isLong\":true,\"fits\":true,\"docOverflow\":false}"
+    },
+    {
+      "name": "refapp chart: three aggregated status bars from real seeded projects; data table matches (zero budget → 1px nub)",
+      "ok": true,
+      "detail": "{\"table\":[\"active=100\",\"paused=0\",\"done=250.5\"],\"rects\":[{\"h\":89.42115768463074,\"title\":\"active: 100\"},{\"h\":1,\"title\":\"paused: 0\"},{\"h\":224,\"title\":\"done: 250.5\"}]}"
+    },
+    {
+      "name": "refapp chart: figure is a named group; the svg is the named image (QA a11y fix present)",
+      "ok": true,
+      "detail": "{\"figRole\":null,\"svgRole\":\"img\",\"summary\":\"Total project budget summed per project status\"}"
+    },
+    {
+      "name": "refapp headings: outline is sensible (shell h1, then declared levels 2 → 3 without inversion)",
+      "ok": true,
+      "detail": "[\"H1 Vict Reference Application\",\"H2 Local workspace overview produ\"]"
+    },
+    {
+      "name": "refapp drawer: custom island + nested text render through the recursion path (island in overlay)",
+      "ok": true,
+      "detail": "{\"open\":true,\"drawer\":true,\"islandText\":true,\"islandRenders\":true}"
+    },
+    {
+      "name": "refapp detail @320 (inside tabs): long values stay inside the panel; no document overflow (P3 fix not regressed)",
+      "ok": true,
+      "detail": "{\"present\":true,\"inside\":true,\"docOverflow\":false}"
+    },
+    {
+      "name": "refapp: no uncaught page errors",
+      "ok": true,
+      "detail": ""
+    }
+  ],
+  "pageErrors": []
+}

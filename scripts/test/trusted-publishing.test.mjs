@@ -21,6 +21,7 @@ import {
 } from '../lib/release-set.mjs';
 import {
   classifyRelationships,
+  classifyTrustListOutput,
   collectRelationships,
   describeRelationship,
   originMatchesFrozenRepository,
@@ -162,10 +163,22 @@ describe('npmVersionSatisfiesMinimum', () => {
 describe('deriveReleaseInventory (real repository)', () => {
   const inventory = deriveReleaseInventory(repoRoot);
 
-  it('derives exactly the frozen 13-package set with no problems', () => {
+  it('derives exactly the frozen 14-package set (contract §5 as amended 2026-09-26, §14; order re-amended 2026-09-27, §15; facade-retirement draft §16) with no problems', () => {
     expect(inventory.problems).toEqual([]);
     expect(inventory.order).toEqual(FROZEN_PUBLISH_ORDER);
     expect(inventory.order).toHaveLength(EXPECTED_RELEASE_PACKAGE_COUNT);
+    expect(EXPECTED_RELEASE_PACKAGE_COUNT).toBe(14);
+    // The §15 re-amendment moved ONLY `ui`: it sits immediately before
+    // its EARLIEST internal dependent — `sdk` gained a `@victframework/ui`
+    // dependency (presentation-intent types) alongside `application`.
+    // The facade-retirement draft §16 then REMOVED the
+    // `@victframework/renderer-svelte` compatibility facade (the §15
+    // position 9) — one deletion, no reordering.
+    expect(inventory.order[1]).toBe('@victframework/ui');
+    expect(inventory.order[2]).toBe('@victframework/sdk');
+    expect(inventory.order[6]).toBe('@victframework/application');
+    expect(inventory.order[7]).toBe('@victframework/ui-svelte');
+    expect(inventory.order).not.toContain('@victframework/renderer-svelte');
   });
 
   it('shares ONE coherent release-set version of the coordinated shape', () => {
@@ -180,15 +193,19 @@ describe('deriveReleaseInventory (real repository)', () => {
 describe('deriveReleaseInventory (synthetic drift fixtures)', () => {
   // A minimal packages/ fixture: only the frozen-order edges matter, so a
   // three-package inventory is enough to exercise the ordering rule.
-  function makeFixture(manifests) {
+  function makeFixtureRoot(manifests) {
     const root = mkdtempSync(join(tmpdir(), 'vict-release-set-fixture-'));
+    for (const [name, version, extra] of manifests) {
+      const dirName = name.replace('@victframework/', '').replace('/', '_');
+      const dir = join(root, 'packages', dirName);
+      mkdirSync(dir, { recursive: true });
+      writeFileSync(join(dir, 'package.json'), JSON.stringify({ name, version, ...extra }));
+    }
+    return root;
+  }
+  function makeFixture(manifests) {
+    const root = makeFixtureRoot(manifests);
     try {
-      for (const [name, version, extra] of manifests) {
-        const dirName = name.replace('@victframework/', '').replace('/', '_');
-        const dir = join(root, 'packages', dirName);
-        mkdirSync(dir, { recursive: true });
-        writeFileSync(join(dir, 'package.json'), JSON.stringify({ name, version, ...extra }));
-      }
       return deriveReleaseInventory(root);
     } finally {
       rmSync(root, { recursive: true, force: true });
@@ -205,7 +222,59 @@ describe('deriveReleaseInventory (synthetic drift fixtures)', () => {
     ]);
     const problems = fixture.problems.join('\n');
     expect(problems).toContain('frozen publication order violated');
-    expect(problems).toContain('expected exactly 13');
+    expect(problems).toContain('expected exactly 14');
+  });
+
+  it('reports an extra publishable member outside the frozen inventory', () => {
+    const fixture = makeFixture([
+      ['@victframework/contracts', '1.0.0', {}],
+      ['@victframework/ghost-package', '1.0.0', {}],
+    ]);
+    const problems = fixture.problems.join('\n');
+    expect(problems).toContain(
+      "'@victframework/ghost-package' is not in the frozen 14-package inventory",
+    );
+    expect(problems).toContain('release-set inventory is 2 packages, expected exactly 14');
+  });
+
+  it('reports a missing frozen inventory member', () => {
+    const fixture = makeFixture([['@victframework/contracts', '1.0.0', {}]]);
+    const problems = fixture.problems.join('\n');
+    expect(problems).toContain(
+      "frozen inventory member '@victframework/sdk' has no publishable manifest",
+    );
+    expect(problems).toContain('release-set inventory is 1 packages, expected exactly 14');
+  });
+
+  it('reports an internal dependency edge to a non-member', () => {
+    const fixture = makeFixture([
+      ['@victframework/contracts', '1.0.0', { dependencies: { '@victframework/ghost': '1.0.0' } }],
+    ]);
+    expect(fixture.problems.join('\n')).toContain(
+      "'@victframework/contracts' depends on internal '@victframework/ghost', which is not a release-set member",
+    );
+  });
+
+  it('honors explicit inventory-rule overrides (historical evidence bindings only)', () => {
+    // The release-evidence ladder verifies the PRE-amendment 13-member
+    // bound candidate with the SAME engine; the override must relax only
+    // the recorded rule, never the default release path.
+    const historicalOrder = ['@victframework/alpha', '@victframework/beta', '@victframework/gamma'];
+    const root = makeFixtureRoot([
+      ['@victframework/alpha', '1.0.0', {}],
+      ['@victframework/beta', '1.0.0', { dependencies: { '@victframework/alpha': '1.0.0' } }],
+      ['@victframework/gamma', '1.0.0', { dependencies: { '@victframework/beta': '1.0.0' } }],
+    ]);
+    try {
+      const overridden = deriveReleaseInventory(root, {
+        expectedCount: 3,
+        frozenOrder: historicalOrder,
+      });
+      expect(overridden.problems).toEqual([]);
+      expect(overridden.order).toEqual(historicalOrder);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
   });
 
   it('reports a non-member manifest name', () => {
@@ -367,6 +436,67 @@ describe('classifyRelationships', () => {
     ]);
     expect(verdict.exact).toHaveLength(0);
     expect(verdict.conflicting).toHaveLength(1);
+  });
+});
+
+describe('classifyTrustListOutput (r5 — verified against the npm 11.19.1 source)', () => {
+  // The EXACT JSON `npm trust list <pkg> --json` (npm 11.19.1) emits for
+  // the frozen relationship: github bodyToOptions flattens claims into
+  // `file`/`repository`, and the raw API permission key `createPackage`
+  // is kept in --json mode (the 'publish' label is display-only).
+  const REAL_NPM_SHAPE = JSON.stringify(
+    {
+      id: 12345,
+      type: 'github',
+      file: 'release.yml',
+      repository: 'radz2291/vict-02',
+      permissions: ['createPackage'],
+    },
+    null,
+    2,
+  );
+
+  it('classifies the REAL npm 11.19.1 trust-list shape as EXACT (r5 latent-defect fix)', () => {
+    // Before r5 this shape classified as CONFLICTING (the classifier
+    // only accepted the display spelling 'publish' / an allowPublish
+    // flag) — a configured-frozen package would have been refused.
+    const verdict = classifyTrustListOutput(REAL_NPM_SHAPE);
+    expect(verdict.error).toBeUndefined();
+    expect(verdict.exact).toHaveLength(1);
+    expect(verdict.conflicting).toHaveLength(0);
+  });
+
+  it('classifies an environment binding or other repo in the real shape as CONFLICTING', () => {
+    const withEnv = classifyTrustListOutput(
+      REAL_NPM_SHAPE.replace(
+        '"repository": "radz2291/vict-02",',
+        '"repository": "radz2291/vict-02",\n  "environment": "prod",',
+      ),
+    );
+    expect(withEnv.conflicting).toHaveLength(1);
+    const otherRepo = classifyTrustListOutput(
+      REAL_NPM_SHAPE.replace('radz2291/vict-02', 'other/repo'),
+    );
+    expect(otherRepo.conflicting).toHaveLength(1);
+  });
+
+  it('parses CONCATENATED JSON documents (npm prints one blob per config)', () => {
+    const two = `${REAL_NPM_SHAPE}\n${REAL_NPM_SHAPE.replace('release.yml', 'other.yml')}`;
+    const verdict = classifyTrustListOutput(two);
+    expect(verdict.exact).toHaveLength(1);
+    expect(verdict.conflicting).toHaveLength(1);
+  });
+
+  it('treats an EMPTY capture as MISSING (a package with no trust configs prints nothing)', () => {
+    const verdict = classifyTrustListOutput('');
+    expect(verdict.error).toBeUndefined();
+    expect(verdict.exact).toHaveLength(0);
+    expect(verdict.conflicting).toHaveLength(0);
+  });
+
+  it('fails closed on unparseable output', () => {
+    expect(classifyTrustListOutput('npm error E401').error).toBeDefined();
+    expect(classifyTrustListOutput('{broken').error).toBeDefined();
   });
 });
 
@@ -635,6 +765,15 @@ describe('release.yml workflow definition', () => {
     expect(publishStep.if).toBe('${{ inputs.validate_only != true }}');
   });
 
+  it('carries the facade-retirement 14-package wording (contract §14 as re-derived by draft §16, 2026-09-27) with no stale count claims', () => {
+    expect(raw).toContain('coordinated 14-package `@victframework/*` set');
+    expect(raw).toContain('must equal all 14 manifests');
+    expect(raw).toContain('Build all 14 packages');
+    // No normative stale-count claim survives anywhere in the workflow.
+    expect(raw).not.toMatch(/13-package|all 13\b|Build all 13/);
+    expect(raw).not.toMatch(/15-package|all 15\b|Build all 15/);
+  });
+
   it('passes release inputs as environment variables, never by shell interpolation', () => {
     const steps = doc.jobs['publish-release-set'].steps;
     const inputByEnv = {
@@ -664,5 +803,70 @@ describe('release.yml workflow definition', () => {
     ]) {
       expect(engine).toContain(envKey);
     }
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Trust bootstrap (contract §11 as amended) — the amended 15-package
+// inventory must flow into the bootstrap, and the two packages added by
+// the 2026-09-26 §14 amendment must be treated EXACTLY like the original
+// thirteen (same argv shape, same allowlist, same order position rules).
+// ---------------------------------------------------------------------------
+
+describe('trust-bootstrap amended inventory coupling', () => {
+  const bootstrap = readFileSync(join(repoRoot, 'scripts', 'trust-bootstrap.mjs'), 'utf8');
+
+  it('derives its exact allowlist from the shared amended release-set rules', () => {
+    expect(bootstrap).toContain("from './lib/release-set.mjs'");
+    expect(bootstrap).toContain('deriveReleaseInventory(repoRoot)');
+    expect(bootstrap).toContain('EXPECTED_RELEASE_PACKAGE_COUNT');
+    expect(bootstrap).toContain('FROZEN_PUBLISH_ORDER[index]');
+    // No stale hardcoded 13 anywhere in the bootstrap.
+    expect(bootstrap).not.toMatch(/exactly 13|ALL 13|13-package/);
+  });
+
+  it('plans the EXACT same trust relationship for every member, including the two amended packages', () => {
+    const original = [
+      '@victframework/contracts',
+      '@victframework/sdk',
+      '@victframework/kernel',
+      '@victframework/runtime',
+      '@victframework/store-sqlite',
+      '@victframework/application',
+      '@victframework/renderer-svelte',
+      '@victframework/appdata-sqlite',
+      '@victframework/scaffolder',
+      '@victframework/control',
+      '@victframework/mastra',
+      '@victframework/server',
+      '@victframework/cli',
+    ];
+    const amended = ['@victframework/ui', '@victframework/ui-svelte'];
+    const shape = (name) => {
+      const argv = trustGithubArgv(name, FROZEN_TRUST_TARGET);
+      return argv.map((part) => (part === name ? '<package>' : part));
+    };
+    const reference = shape(original[0]);
+    for (const name of [...original, ...amended]) {
+      expect(trustGithubArgv(name, FROZEN_TRUST_TARGET)).toEqual([
+        'trust',
+        'github',
+        name,
+        '--repo',
+        'radz2291/vict-02',
+        '--file',
+        'release.yml',
+        '--allow-publish',
+        '--yes',
+      ]);
+      expect(shape(name)).toEqual(reference);
+    }
+    expect(amended.every((name) => FROZEN_PUBLISH_ORDER.includes(name))).toBe(true);
+    // Position invariants: each amended member sits AFTER everything it
+    // depends on. The retired facade is absent from the order entirely.
+    const pos = new Map(FROZEN_PUBLISH_ORDER.map((name, index) => [name, index]));
+    expect(pos.get('@victframework/ui')).toBeLessThan(pos.get('@victframework/ui-svelte'));
+    expect(pos.get('@victframework/application')).toBeLessThan(pos.get('@victframework/ui-svelte'));
+    expect(pos.has('@victframework/renderer-svelte')).toBe(false);
   });
 });

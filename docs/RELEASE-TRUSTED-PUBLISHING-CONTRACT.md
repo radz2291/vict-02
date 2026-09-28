@@ -12,8 +12,11 @@ Amendment rule: if a frozen semantic rule below must change, the change is
 documented in a separate amendment commit BEFORE any implementation
 consumes the amendment. No silent reinterpretation; no amendment bundled
 with consuming implementation.
+Amendments to date: §8.1 (2026-09-21, build before the full suite);
+§14 (2026-09-26, 15-package release set); §16 (2026-09-27,
+14-package facade retirement).
 
-## 1. Trusted repository identity (frozen)
+## 1. Trusted repository identity (frozen; AMENDED 2026-09-26, §14)
 
 * GitHub owner/repository: **`radz2291/vict-02`** (exactly; from `origin`:
   `https://github.com/radz2291/vict-02.git`).
@@ -21,19 +24,22 @@ with consuming implementation.
   `private: false`; default branch `main`).
 * GitHub Actions is available on the repository (actions API reachable,
   zero prior workflow runs).
-* All 13 published manifests carry
+* All 14 published manifests carry (AMENDED 2026-09-26, §14:
+  13 → 15; AMENDED 2026-09-27, §16: 15 → 14)
   `repository.url = git+https://github.com/radz2291/vict-02.git` with
   `directory: packages/<name>` — the package metadata truthfully names the
   exact source repository. Trusted publishing therefore derives from and
   binds to metadata that is already public and consistent.
 
-## 2. Workflow identity (frozen; security-sensitive)
+## 2. Workflow identity (frozen; security-sensitive; AMENDED 2026-09-26,
+§14)
 
 * Exact workflow filename: **`release.yml`** at
   `.github/workflows/release.yml`.
 * npm binds each package's trusted publisher to the EXACT workflow
   filename. The filename is security-sensitive: renaming it silently
-  invalidates the trust relationships of all 13 packages. It must not be
+  invalidates the trust relationships of all 14 packages (AMENDED
+  2026-09-26, §14: 13 → 15; AMENDED 2026-09-27, §16: 15 → 14). It must not be
   renamed without a new amendment of this contract and a new bootstrap.
 * The repository identity and workflow filename together are the whole
   authorization surface: no environment, no unrelated provider, and no
@@ -75,35 +81,40 @@ permissions:
   are OUT OF SCOPE: they may still require interactive human 2FA. Ordinary
   coordinated releases do not.
 
-## 5. Release-set inventory (frozen)
+## 5. Release-set inventory (frozen; AMENDED 2026-09-26, §14; AMENDED
+2026-09-27, §16 — facade retirement, 15 → 14)
 
 The canonical inventory is derived from the publishable manifests under
-`packages/*/package.json` and MUST remain exactly the recorded 13-package
+`packages/*/package.json` and MUST remain exactly the recorded 14-package
 `@victframework/*` set (`npm run verify:release-set` is the enforcing
 gate; its rules — one coherent version, exact internal pins, recorded
 content-derived identity, public access, Apache-2.0, Node engines — are
-incorporated here by reference and unchanged).
+incorporated here by reference and unchanged). AMENDED 2026-09-27 (§16):
+the `@victframework/renderer-svelte` compatibility facade is REMOVED
+from the forward candidate set; its published versions remain registry-
+immutable lineage installable by exact pin.
 
 Dependency-topological publication order (frozen; derived from the
 manifests' internal dependency graph):
 
 ```text
  1. @victframework/contracts
- 2. @victframework/sdk
- 3. @victframework/kernel
- 4. @victframework/runtime
- 5. @victframework/store-sqlite
- 6. @victframework/application
- 7. @victframework/renderer-svelte
- 8. @victframework/appdata-sqlite
- 9. @victframework/scaffolder
-10. @victframework/control
-11. @victframework/mastra
-12. @victframework/server
-13. @victframework/cli
+ 2. @victframework/ui                    (ADDED 2026-09-26, §14; moved ahead of sdk, §16)
+ 3. @victframework/sdk                   (was 2 in §14; shifted by the §16 ui move)
+ 4. @victframework/kernel
+ 5. @victframework/runtime
+ 6. @victframework/store-sqlite
+ 7. @victframework/application
+ 8. @victframework/ui-svelte             (ADDED 2026-09-26, §14)
+ 9. @victframework/appdata-sqlite        (was 10 in §14)
+10. @victframework/scaffolder            (was 11 in §14)
+11. @victframework/control               (was 12 in §14)
+12. @victframework/mastra                (was 13 in §14)
+13. @victframework/server                (was 14 in §14)
+14. @victframework/cli                   (was 15 in §14)
 ```
 
-## 6. Trigger and release inputs (frozen)
+## 6. Trigger and release inputs (frozen; AMENDED 2026-09-26, §14)
 
 * Trigger: **`workflow_dispatch` ONLY.** No push-, tag-, or
   schedule-triggered publication exists.
@@ -111,7 +122,8 @@ manifests' internal dependency graph):
   * `source_sha` (required) — the EXACT pushed release-source commit, full
     40-hex SHA-1. The run checks out and verifies exactly this commit.
   * `version` (required) — the coordinated release-set version; must equal
-    the ONE coherent version of all 13 manifests at `source_sha`.
+    the ONE coherent version of all 14 manifests (AMENDED
+    2026-09-26, §14: 13 → 15; AMENDED 2026-09-27, §16: 15 → 14) at `source_sha`.
   * `npm_tag` (required) — closed vocabulary, see §7.
   * `resume_from_package` (optional) — the first NOT-yet-published package
     of a partially published release; see §10.
@@ -122,7 +134,9 @@ manifests' internal dependency graph):
 * Immutability: the release set is built, checked, and published as ONE
   coordinated unit from that exact SHA. No overwrite, no re-publish, no
   unpublish of an existing version, ever. The requested `version` must be
-  UNPUBLISHED for all 13 packages before any publish (or satisfy the §10
+  UNPUBLISHED for all 14 packages (AMENDED 2026-09-26, §14:
+  13 → 15; AMENDED 2026-09-27, §16: 15 → 14)
+  before any publish (or satisfy the §10
   resume proof).
 
 ## 7. Candidate and stable release strategy (frozen; version-based)
@@ -147,7 +161,8 @@ Closed tag rule (everything else is refused):
   later tag promotion is required, and a stable version is never a moved
   tag on candidate content.
 
-## 8. Authoritative in-workflow checks (frozen; AMENDED 2026-09-21, §8.1)
+## 8. Authoritative in-workflow checks (frozen; AMENDED 2026-09-21, §8.1;
+AMENDED 2026-09-26, §14)
 
 The workflow runs the repository's authoritative release checks against
 the exact checked-out `source_sha` before any registry write, in this
@@ -157,10 +172,13 @@ order:
    (`npm run verify:release-set`);
 2. `npm ci` (locked graph, fresh);
 3. `npm run format:check`, `npm run lint`, `npm run typecheck`;
-4. `npm run build` — all 13 packages (AMENDED: moved ahead of the full
-   suite; see §8.1);
+4. `npm run build` — all 14 packages (AMENDED 2026-09-26, §14:
+   13 → 15; AMENDED 2026-09-27, §16: 15 → 14; AMENDED: moved ahead
+   of the full suite; see §8.1);
 5. `npm test` — the full suite, once;
-6. `npm pack` of all 13 packages — ACTUAL tarballs, then inspection:
+6. `npm pack` of all 14 packages (AMENDED 2026-09-26, §14:
+   13 → 15; AMENDED 2026-09-27, §16: 15 → 14)
+   — ACTUAL tarballs, then inspection:
    identity read from inside each tarball against the workspace manifests
    (canonical npm-pack naming), and a content scan per §9;
 7. `npm run verify:release-consumer` — the isolated packed-tarball
@@ -203,7 +221,8 @@ references (`workspace:`, `file:`, `link:`), repository-only material
 any file outside the manifest's declared `files` surface. The scan fails
 closed with named findings; it never warns-and-continues.
 
-## 10. Publication, partial failure, and resume (frozen)
+## 10. Publication, partial failure, and resume (frozen; AMENDED
+2026-09-26, §14)
 
 * Publication uses the EXACT packed and verified tarballs, in the §5
   topological order, `npm publish <tarball> --access public --tag
@@ -222,7 +241,8 @@ closed with named findings; it never warns-and-continues.
   registry `dist.integrity` must EQUAL the SHA-512 integrity of the
   locally packed tarball (byte-identical artifact proof); every member at
   or after the resume point must be unpublished. Any mismatch fails the
-  run closed. Without the input, all 13 must be unpublished.
+  run closed. Without the input, all 14 must be unpublished (AMENDED
+  2026-09-26, §14: 13 → 15; AMENDED 2026-09-27, §16: 15 → 14).
 * Post-publication verification (same run): per-package registry reads
   prove version existence, `dist.integrity` equality with the packed
   artifact, and the expected dist-tag state; then
@@ -238,17 +258,21 @@ closed with named findings; it never warns-and-continues.
   works. The first real OIDC publication proof is the resumed VICT-M-1
   candidate release.
 
-## 11. One-time trust bootstrap (frozen; performed once)
+## 11. One-time trust bootstrap (frozen; performed once; AMENDED
+2026-09-26, §14)
 
-* Tool: `scripts/trust-bootstrap.mjs` — derives the exact 13-package
-  inventory from the canonical manifests, in §5 topological order, and
+* Tool: `scripts/trust-bootstrap.mjs` — derives the exact 14-package
+  (AMENDED 2026-09-26, §14: 13 → 15; AMENDED 2026-09-27, §16:
+  15 → 14) inventory from the canonical
+  manifests, in §5 topological order, and
   configures each package with the official `npm trust github` interface
   (npm >= 11.15.0) to trust EXACTLY:
   * repository `radz2291/vict-02`,
   * workflow filename `release.yml`,
   * permission `--allow-publish` (direct `npm publish`),
   * NO environment, NO unrelated provider/repository/workflow.
-* Safety: exact package allowlist (13; anything else aborts); fixed
+* Safety: exact package allowlist (14 as of the 2026-09-27 amendment,
+  §16; anything else aborts); fixed
   deterministic order; two-second delay between registry requests;
   `spawnSync` argument arrays only (no shell interpolation of any value);
   no token input, output, storage, or `.npmrc` inspection; stops at the
@@ -265,8 +289,10 @@ closed with named findings; it never warns-and-continues.
   challenge completed by the human in the official npm flow; the human
   selects npm's option to skip repeated 2FA for the next five minutes;
   the script then configures the remaining packages automatically; all
-  13 relationships are verified inside the window. The human never
-  performs 13 separate manual package configurations. If npm does not
+  14 relationships are verified inside the window (AMENDED
+  2026-09-26, §14: 13 → 15; AMENDED 2026-09-27, §16: 15 → 14 —
+  the completed historical ceremonies are preserved as history). The human never
+  performs 14 separate manual package configurations. If npm does not
   offer the five-minute skip, the script stops after the first package
   and the exact non-sensitive behavior is reported so the plan can be
   revised. No granular bypass-2FA publishing token is created as a
@@ -314,3 +340,166 @@ closed with named findings; it never warns-and-continues.
   release reports) are HISTORICAL REPORTS and are preserved unchanged.
   The only current release-path document at freeze time,
   `docs/RELEASE-COMPATIBILITY.md` §6, is reconciled by this task.
+
+## 14. Amendment (2026-09-26): 15-package release set
+
+**Cause observed (P1–P5 UI foundation phases; independently verified):**
+the repository gained two publishable packages — `@victframework/ui`
+(neutral, renderer-agnostic UI vocabulary, no dependencies) and
+`@victframework/ui-svelte` (the permanent Svelte `ApplicationRenderer`).
+P5 independently established (`qa/ui-foundation-p5`, verdict **P5
+ARCHITECTURE VERIFIED — release integration permitted**;
+`qa-artifacts/p5-qa/P5-QA-REPORT.md`) that `@victframework/ui-svelte` is
+the single permanent Svelte renderer implementation and
+`@victframework/renderer-svelte` is a pure compatibility facade whose
+only dependency is `ui-svelte`. `renderer-svelte` REMAINS in the release
+set during its documented compatibility/deprecation window: the amended
+coordinated set is 15 packages, NOT 14. The repository now contains
+exactly 15 publishable `@victframework/*` manifests (all `private=false`
+with `publishConfig.access=public`, one coherent version `0.3.1`; the
+workspace-only `@victframework/builder-kit` is `private:true` and is not
+a release-set member). Against the un-amended frozen rule, the
+release-set gate fails closed BY DESIGN (inventory derives 15 members vs
+the recorded 13; the `renderer-svelte → ui-svelte` and `ui-svelte → ui`
+edges reference packages that were not release-set members) — exactly
+the amendment trigger this contract's amendment rule anticipates; the
+failures are the frozen semantics working, never a silent
+reinterpretation.
+
+**Amendment (the semantic rule changes as follows; nothing else in this
+contract changes):**
+
+1. **Inventory (§5):** the coordinated release set is amended from the
+   recorded 13-package set to exactly 15 packages by ADDING
+   `@victframework/ui` and `@victframework/ui-svelte`. No member is
+   removed.
+2. **Publication order (§5):** the frozen dependency-topological order
+   becomes the 15-entry order restated in §5. It was verified at
+   amendment time against the ACTUAL manifests' internal dependency
+   graph: `ui-svelte` depends on `application`, `sdk`, and `ui`;
+   `renderer-svelte` depends on `ui-svelte`; `ui` itself has no internal
+   dependencies, so it is placed immediately before its only internal
+   dependent (`ui-svelte`, position 8), preserving the original 13-entry
+   order everywhere else. The order is a valid topological linearization
+   (no member publishes before any package it depends on).
+3. **Derived counts:** every count derived from the inventory changes
+   with it — manifests metadata proof (§1), workflow-rename blast radius
+   (§2), coherent-version check (§6), unpublished-set check (§6, §10),
+   build/pack counts (§8), and the bootstrap allowlist (§11) — all now
+   mean 15.
+4. **Trust semantics (§11):** the original one-time ceremony configuring
+   the original 13 relationships was completed on its historical date and
+   is preserved as history; it is neither repeated nor rewritten. The
+   amended inventory means the bootstrap tool (once its implementation is
+   amended) derives a 15-package allowlist: the existing 13 EXACT trust
+   relationships are idempotently skipped (never replaced), and the two
+   new packages are configured through the same official `npm trust
+   github` interface with the same repository/workflow/permission
+   constraints and the same verification requirements. This is an
+   EXTENSION of trust to new members of the set — a second one-time
+   ceremony is NOT required, and no existing relationship is mutated.
+5. **Historical record preserved:** §8.1 (the 2026-09-21 build-order
+   amendment) and §13 (the freeze-time baseline record) are untouched.
+   Statements that were true of the 13-package state on their historical
+   dates remain true as history; only normative present-tense rules are
+   restated to 15.
+
+**Implementation consumption status:** at the time of THIS amendment
+commit, NO implementation consumes it — per the amendment rule, the
+consuming implementation must come in a separate later commit.
+Specifically, `scripts/lib/release-set.mjs`
+(`EXPECTED_RELEASE_PACKAGE_COUNT`, `FROZEN_PUBLISH_ORDER`), the
+trusted-publishing tests, `release.yml` inventory expectations,
+`docs/RELEASE-COMPATIBILITY.md`, the release-set content ID, and the npm
+trust state still enforce the 13-package rule and MUST be amended by that
+follow-up implementation work. Until then, release-set verification
+currently fails against the frozen 13-package expectations — which is the
+EXPECTED and CORRECT state between this amendment and its consuming
+implementation.
+
+**Explicitly unchanged by this amendment:** the trusted repository
+identity (§1 repository), workflow filename (§2 `release.yml`), runner
+and toolchain pins (§3), OIDC permission model and no-secret policy (§4),
+candidate/stable tag strategy (§7), tarball content-scan rules (§9),
+publication/resume/integrity semantics (§10), permanent verification
+requirements (§12), and the release-set content-ID scheme (owned by the
+implementation, not this document).
+
+## 16. Amendment (2026-09-27): 14-package release set (facade retirement)
+
+**Cause observed (owner-directed facade retirement; independently
+verified):** the workspace removed the `@victframework/renderer-svelte`
+compatibility facade — a pure re-export of the single permanent
+implementation in `@victframework/ui-svelte` — and migrated every
+current consumer to direct `ui-svelte` imports. The published facade
+versions remain on npm untouched. Against the amended frozen rule (§14,
+15 packages) every release-set action failed closed BY DESIGN — the
+amendment trigger the amendment rule anticipates.
+
+**Amendment (the semantic rules change as follows; nothing else in this
+contract changes):**
+
+1. **Inventory and order (§5):** replaced verbatim by the §16
+   substitution (exactly 14 packages; `renderer-svelte` REMOVED; `ui`
+   moved ahead of `sdk` before the sink deletion; machine-validated
+   topological order).
+2. **Derived counts (§§1, 2, 6, 8, 10, 11):** every current-tense count
+   derived from the inventory is restated from 15 to 14, preserving the
+   historical amendment markers: manifests metadata proof (§1),
+   workflow-rename blast radius (§2), coherent-version check (§6),
+   unpublished-set checks (§6, §10), build/pack counts (§8), and the
+   bootstrap allowlist and ceremony counts (§11).
+3. **Trust semantics and first-publication bootstrap exception (§11):**
+   no existing relationship is mutated. `@victframework/ui` and
+   `@victframework/ui-svelte` have no registry presence; npm's
+   trusted-publisher configuration is a per-package setting on an
+   EXISTING package. Their FIRST registry presence may be established
+   ONLY through the separately owner-authorized bootstrap
+   (`scripts/first-publish-bootstrap.mjs`): placeholder version
+   `0.0.0-bootstrap.1` under the `bootstrap` dist-tag — a shape that
+   can never satisfy the §6 coordinated version rule — published through
+   the historical local interactive-2FA path (§13 precedent), never
+   through the coordinated release engine, never consuming a coordinated
+   set version. Placeholder versions are registry-immutable lineage.
+   The placeholders are REGISTRY-PRESENCE MARKERS, not functional
+   releases: they carry the real built package content with the real
+   dependency pins, so members whose dependencies pin the coordinated
+   version are NOT installable until the coordinated set publishes —
+   resolution fails by design, which keeps the placeholder from ever
+   being consumed as a release. The coordinated set publishes only
+   after ALL members' relationships are verified
+   (`scripts/verify-trust-preflight.mjs` refuses any publication
+   otherwise; a validated, set-bound operator-evidence artifact or a
+   live authenticated check are the only accepted proofs).
+
+### 16.5 Ratification sequence deviation — explicit owner authorization
+
+The frozen amendment rule requires the amendment commit BEFORE any
+implementation consumes the amendment. THIS RATIFICATION RECORDS A
+DEPARTURE: the consuming implementation for the 14-package set was
+committed BEFORE ratification — `pi/ui-facade-retirement-r1` @
+`bac9c01640d1aa4e6d1ee040969fae3d63136853`, its owner-review
+preparation `pi/ui-facade-retirement-r2` @
+`d8c70df2d80169e38d951c4569e913ecfab49865`, and the release-readiness
+corrections on `pi/release-readiness-r3`. No consuming implementation
+created registry drift: nothing was published, no trust was mutated,
+and every frozen verifier failed closed in between. The unratified §15
+draft is NOT authority and is not relied on.
+
+Upon ratification the owner records EXACTLY ONE decision line in this
+section, in the exact form `Owner decision recorded: ` immediately
+followed by the chosen token — D-AUTHORIZE (retroactively authorizing
+the consuming implementation commits named above; the pre-publication
+authority gate verifies they ARE ancestors of the release source) or
+D-REVERT (directing the reversion of the consuming implementation
+before ratification; the authority gate verifies the named commits have
+actually been REMOVED from the release branch's history). The same
+choice is repeated in the ratification commit message. A record with NO
+decision line, with MORE THAN ONE, with a malformed line, or whose
+choice contradicts the branch's actual history is INCOMPLETE, AMBIGUOUS,
+or CONTRADICTORY, and the release path stays fail-closed. A heading, a
+summary, or a self-authored marker anywhere else is not an owner
+decision: only this exact decision line inside §16.5 of the frozen
+contract counts.
+
+Owner decision recorded: D-AUTHORIZE

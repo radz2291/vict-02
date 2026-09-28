@@ -1,0 +1,1611 @@
+{
+  "applicationId": "app.qa.p3",
+  "applicationRevision": "1",
+  "applicationVersion": "v1_6d80fc6b4aef08d8d5a528883b55b0e4a23bf9a451c0477276fa8ca6117a0faf",
+  "manifest": {
+    "schema": "vict.application@2",
+    "id": "app.qa.p3",
+    "revision": "1",
+    "routes": [
+      {
+        "id": "widgets",
+        "path": "/widgets",
+        "screenId": "s.widgets",
+        "nav": {
+          "label": "Widgets",
+          "group": "Data",
+          "order": 1
+        }
+      },
+      {
+        "id": "widget-detail",
+        "path": "/rec/:id",
+        "screenId": "s.rec"
+      },
+      {
+        "id": "tones",
+        "path": "/tones",
+        "screenId": "s.tones",
+        "nav": {
+          "label": "Status tones",
+          "group": "Checks",
+          "order": 2
+        }
+      },
+      {
+        "id": "actions",
+        "path": "/actions",
+        "screenId": "s.actions",
+        "nav": {
+          "label": "Actions & feedback",
+          "group": "Checks",
+          "order": 3
+        }
+      },
+      {
+        "id": "longtabs",
+        "path": "/longtabs",
+        "screenId": "s.longtabs",
+        "nav": {
+          "label": "Long tabs",
+          "group": "Checks",
+          "order": 4
+        }
+      }
+    ],
+    "screens": [
+      {
+        "id": "s.actions",
+        "title": "Actions & feedback",
+        "breadcrumbs": [
+          {
+            "label": "Home"
+          }
+        ],
+        "layout": [
+          {
+            "name": "main",
+            "surfaces": [
+              {
+                "role": "action",
+                "id": "act.primary-btn",
+                "actionId": "act.bump",
+                "label": "Bump revision"
+              },
+              {
+                "role": "action",
+                "id": "act.reset-feedback-btn",
+                "actionId": "act.resetForm",
+                "label": "Clear form (local)"
+              },
+              {
+                "role": "action",
+                "id": "act.delete-btn",
+                "actionId": "act.delete-denied",
+                "label": "Delete record"
+              },
+              {
+                "role": "action",
+                "id": "act.disabled-btn",
+                "actionId": "act.bump",
+                "label": "Disabled action",
+                "disabledWhen": {
+                  "paramMissing": "never-present"
+                }
+              },
+              {
+                "role": "list",
+                "id": "ls.empty",
+                "viewId": "v.none",
+                "titleField": "name",
+                "emptyMessage": "Nothing here yet."
+              },
+              {
+                "role": "detail",
+                "id": "dt.empty",
+                "viewId": "v.none",
+                "emptyMessage": "This record does not exist."
+              }
+            ]
+          }
+        ],
+        "states": {
+          "failure": {
+            "role": "text",
+            "id": "t.actions-failure",
+            "content": "The adjustment failed safely."
+          }
+        }
+      },
+      {
+        "id": "s.longtabs",
+        "title": "Long-label tabs",
+        "breadcrumbs": [
+          {
+            "label": "Home"
+          }
+        ],
+        "layout": [
+          {
+            "name": "main",
+            "surfaces": [
+              {
+                "role": "tabs",
+                "id": "tb.long",
+                "tabs": [
+                  {
+                    "name": "configuration-overview",
+                    "label": "Configuration overview and defaults",
+                    "surfaces": [
+                      {
+                        "role": "text",
+                        "id": "t.long-a",
+                        "content": "First long tab panel."
+                      }
+                    ]
+                  },
+                  {
+                    "name": "advanced-maintenance",
+                    "label": "Advanced maintenance operations queue",
+                    "surfaces": [
+                      {
+                        "role": "text",
+                        "id": "t.long-b",
+                        "content": "Second long tab panel."
+                      }
+                    ]
+                  },
+                  {
+                    "name": "audit-history",
+                    "label": "Audit history and retained evidence trail",
+                    "surfaces": [
+                      {
+                        "role": "text",
+                        "id": "t.long-c",
+                        "content": "Third long tab panel."
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "s.rec",
+        "title": "Widget record",
+        "breadcrumbs": [
+          {
+            "label": "Widgets",
+            "routeId": "widgets"
+          },
+          {
+            "label": "Record"
+          }
+        ],
+        "layout": [
+          {
+            "name": "main",
+            "surfaces": [
+              {
+                "role": "status",
+                "id": "st.rec-status",
+                "field": "status",
+                "tones": {
+                  "cold": "info",
+                  "warm": "success",
+                  "hot": "danger",
+                  "hold": "warning"
+                }
+              },
+              {
+                "role": "tabs",
+                "id": "tb.rec-tabs",
+                "tabs": [
+                  {
+                    "name": "overview",
+                    "label": "Overview",
+                    "surfaces": [
+                      {
+                        "role": "detail",
+                        "id": "dt.rec",
+                        "viewId": "v.widgetDetail",
+                        "emptyMessage": "This record does not exist."
+                      },
+                      {
+                        "role": "list",
+                        "id": "ls.related",
+                        "viewId": "v.related",
+                        "titleField": "name",
+                        "secondaryField": "status",
+                        "emptyMessage": "Nothing derived yet."
+                      }
+                    ]
+                  },
+                  {
+                    "name": "edit",
+                    "label": "Edit",
+                    "surfaces": [
+                      {
+                        "role": "form",
+                        "id": "fm.widget-edit",
+                        "formId": "f.widget-edit"
+                      },
+                      {
+                        "role": "action",
+                        "id": "act.reset-edit-btn",
+                        "actionId": "act.resetForm",
+                        "label": "Reset form (local)"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "role": "dialog",
+                "id": "dlg.rec",
+                "title": "Danger zone",
+                "triggerLabel": "Danger zone…",
+                "content": [
+                  {
+                    "role": "text",
+                    "id": "t.danger-note",
+                    "content": "Deleting is denied by the authorization boundary for every principal."
+                  },
+                  {
+                    "role": "action",
+                    "id": "act.delete-denied-btn",
+                    "actionId": "act.delete-denied",
+                    "label": "Delete record"
+                  },
+                  {
+                    "role": "form",
+                    "id": "fm.rename",
+                    "formId": "f.rename"
+                  }
+                ]
+              },
+              {
+                "role": "drawer",
+                "id": "dr.rec",
+                "title": "Adjust record",
+                "triggerLabel": "Adjust…",
+                "content": [
+                  {
+                    "role": "text",
+                    "id": "t.adjust-note",
+                    "content": "A successful adjustment invalidates route data and closes the loop."
+                  },
+                  {
+                    "role": "form",
+                    "id": "fm.adjust",
+                    "formId": "f.adjust"
+                  },
+                  {
+                    "role": "dialog",
+                    "id": "dlg.nested",
+                    "title": "Nested confirm",
+                    "triggerLabel": "Nested confirm…",
+                    "content": [
+                      {
+                        "role": "text",
+                        "id": "t.nested-note",
+                        "content": "This dialog is nested inside the drawer surface."
+                      },
+                      {
+                        "role": "action",
+                        "id": "act.bump-nested-btn",
+                        "actionId": "act.bump",
+                        "label": "Bump revision (nested)"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "s.tones",
+        "title": "Status tones",
+        "breadcrumbs": [
+          {
+            "label": "Home"
+          }
+        ],
+        "layout": [
+          {
+            "name": "main",
+            "surfaces": [
+              {
+                "role": "status",
+                "id": "st.neutral",
+                "value": "draft",
+                "tones": {}
+              },
+              {
+                "role": "status",
+                "id": "st.success",
+                "value": "warm",
+                "tones": {
+                  "warm": "success"
+                }
+              },
+              {
+                "role": "status",
+                "id": "st.warning",
+                "value": "hold",
+                "tones": {
+                  "hold": "warning"
+                }
+              },
+              {
+                "role": "status",
+                "id": "st.danger",
+                "value": "hot",
+                "tones": {
+                  "hot": "danger"
+                }
+              },
+              {
+                "role": "status",
+                "id": "st.info",
+                "value": "cold",
+                "tones": {
+                  "cold": "info"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "s.widgets",
+        "title": "Widget create form",
+        "breadcrumbs": [
+          {
+            "label": "Home"
+          }
+        ],
+        "layout": [
+          {
+            "name": "main",
+            "surfaces": [
+              {
+                "role": "form",
+                "id": "fm.widget-create",
+                "formId": "f.widget-create"
+              },
+              {
+                "role": "action",
+                "id": "act.reset-widgets-btn",
+                "actionId": "act.resetForm",
+                "label": "Clear form (local)"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "views": [
+      {
+        "viewId": "v.none",
+        "resourceId": "widgets",
+        "resourceRevision": "1",
+        "fields": [
+          "id",
+          "name"
+        ]
+      },
+      {
+        "viewId": "v.related",
+        "resourceId": "widgets",
+        "resourceRevision": "1",
+        "fields": [
+          "id",
+          "name",
+          "status"
+        ]
+      },
+      {
+        "viewId": "v.widgetDetail",
+        "resourceId": "widgets",
+        "resourceRevision": "1",
+        "fields": [
+          "id",
+          "name",
+          "status",
+          "starts",
+          "config",
+          "budget",
+          "discount",
+          "active"
+        ]
+      }
+    ],
+    "forms": [
+      {
+        "formId": "f.adjust",
+        "resourceId": "widgets",
+        "resourceRevision": "1",
+        "inputContractId": "qa.widget.input",
+        "fields": [
+          {
+            "name": "discount",
+            "label": "Discount (optional)",
+            "widget": "number"
+          },
+          {
+            "name": "active",
+            "label": "Active",
+            "widget": "boolean"
+          }
+        ],
+        "submitActionId": "act.saveWidget"
+      },
+      {
+        "formId": "f.rename",
+        "resourceId": "widgets",
+        "resourceRevision": "1",
+        "inputContractId": "qa.widget.input",
+        "fields": [
+          {
+            "name": "name",
+            "label": "Rename record",
+            "required": true,
+            "widget": "text"
+          }
+        ],
+        "submitActionId": "act.saveWidget"
+      },
+      {
+        "formId": "f.widget-create",
+        "resourceId": "widgets",
+        "resourceRevision": "1",
+        "inputContractId": "qa.widget.input",
+        "fields": [
+          {
+            "name": "id",
+            "label": "Identifier",
+            "required": true,
+            "widget": "text"
+          },
+          {
+            "name": "name",
+            "label": "Name",
+            "required": true,
+            "widget": "text"
+          },
+          {
+            "name": "starts",
+            "label": "Starts on",
+            "widget": "date"
+          },
+          {
+            "name": "config",
+            "label": "Config (JSON)",
+            "widget": "json"
+          },
+          {
+            "name": "budget",
+            "label": "Budget",
+            "required": true,
+            "widget": "number"
+          },
+          {
+            "name": "discount",
+            "label": "Discount (optional)",
+            "widget": "number"
+          },
+          {
+            "name": "active",
+            "label": "Active",
+            "widget": "boolean"
+          }
+        ],
+        "submitActionId": "act.saveWidget"
+      },
+      {
+        "formId": "f.widget-edit",
+        "resourceId": "widgets",
+        "resourceRevision": "1",
+        "inputContractId": "qa.widget.input",
+        "fields": [
+          {
+            "name": "name",
+            "label": "Name",
+            "required": true,
+            "widget": "text"
+          },
+          {
+            "name": "starts",
+            "label": "Starts on",
+            "widget": "date"
+          },
+          {
+            "name": "config",
+            "label": "Config (JSON)",
+            "widget": "json"
+          },
+          {
+            "name": "budget",
+            "label": "Budget",
+            "required": true,
+            "widget": "number"
+          },
+          {
+            "name": "discount",
+            "label": "Discount (optional)",
+            "widget": "number"
+          },
+          {
+            "name": "active",
+            "label": "Active",
+            "widget": "boolean"
+          }
+        ],
+        "submitActionId": "act.saveWidget"
+      }
+    ],
+    "actions": [
+      {
+        "kind": "mutation",
+        "id": "act.bump",
+        "revision": "1",
+        "resourceId": "widgets",
+        "resourceRevision": "1",
+        "op": "update",
+        "inputContractId": "qa.widget.input"
+      },
+      {
+        "kind": "mutation",
+        "id": "act.delete-denied",
+        "revision": "1",
+        "resourceId": "widgets",
+        "resourceRevision": "1",
+        "op": "delete",
+        "inputContractId": "qa.widget.input"
+      },
+      {
+        "kind": "navigation",
+        "id": "act.goNew",
+        "revision": "1",
+        "routeId": "widgets"
+      },
+      {
+        "kind": "local",
+        "id": "act.resetForm",
+        "revision": "1"
+      },
+      {
+        "kind": "mutation",
+        "id": "act.saveWidget",
+        "revision": "1",
+        "resourceId": "widgets",
+        "resourceRevision": "1",
+        "op": "create",
+        "inputContractId": "qa.widget.input",
+        "inputContractRevision": "1"
+      }
+    ],
+    "resources": [
+      {
+        "resourceId": "widgets",
+        "revision": "1"
+      }
+    ]
+  },
+  "routes": [
+    {
+      "route": {
+        "id": "widgets",
+        "path": "/widgets",
+        "screenId": "s.widgets",
+        "nav": {
+          "label": "Widgets",
+          "group": "Data",
+          "order": 1
+        }
+      },
+      "screen": {
+        "id": "s.widgets",
+        "title": "Widget create form",
+        "breadcrumbs": [
+          {
+            "label": "Home"
+          }
+        ],
+        "layout": [
+          {
+            "name": "main",
+            "surfaces": [
+              {
+                "role": "form",
+                "id": "fm.widget-create",
+                "formId": "f.widget-create"
+              },
+              {
+                "role": "action",
+                "id": "act.reset-widgets-btn",
+                "actionId": "act.resetForm",
+                "label": "Clear form (local)"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "route": {
+        "id": "widget-detail",
+        "path": "/rec/:id",
+        "screenId": "s.rec"
+      },
+      "screen": {
+        "id": "s.rec",
+        "title": "Widget record",
+        "breadcrumbs": [
+          {
+            "label": "Widgets",
+            "routeId": "widgets"
+          },
+          {
+            "label": "Record"
+          }
+        ],
+        "layout": [
+          {
+            "name": "main",
+            "surfaces": [
+              {
+                "role": "status",
+                "id": "st.rec-status",
+                "field": "status",
+                "tones": {
+                  "cold": "info",
+                  "warm": "success",
+                  "hot": "danger",
+                  "hold": "warning"
+                }
+              },
+              {
+                "role": "tabs",
+                "id": "tb.rec-tabs",
+                "tabs": [
+                  {
+                    "name": "overview",
+                    "label": "Overview",
+                    "surfaces": [
+                      {
+                        "role": "detail",
+                        "id": "dt.rec",
+                        "viewId": "v.widgetDetail",
+                        "emptyMessage": "This record does not exist."
+                      },
+                      {
+                        "role": "list",
+                        "id": "ls.related",
+                        "viewId": "v.related",
+                        "titleField": "name",
+                        "secondaryField": "status",
+                        "emptyMessage": "Nothing derived yet."
+                      }
+                    ]
+                  },
+                  {
+                    "name": "edit",
+                    "label": "Edit",
+                    "surfaces": [
+                      {
+                        "role": "form",
+                        "id": "fm.widget-edit",
+                        "formId": "f.widget-edit"
+                      },
+                      {
+                        "role": "action",
+                        "id": "act.reset-edit-btn",
+                        "actionId": "act.resetForm",
+                        "label": "Reset form (local)"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "role": "dialog",
+                "id": "dlg.rec",
+                "title": "Danger zone",
+                "triggerLabel": "Danger zone…",
+                "content": [
+                  {
+                    "role": "text",
+                    "id": "t.danger-note",
+                    "content": "Deleting is denied by the authorization boundary for every principal."
+                  },
+                  {
+                    "role": "action",
+                    "id": "act.delete-denied-btn",
+                    "actionId": "act.delete-denied",
+                    "label": "Delete record"
+                  },
+                  {
+                    "role": "form",
+                    "id": "fm.rename",
+                    "formId": "f.rename"
+                  }
+                ]
+              },
+              {
+                "role": "drawer",
+                "id": "dr.rec",
+                "title": "Adjust record",
+                "triggerLabel": "Adjust…",
+                "content": [
+                  {
+                    "role": "text",
+                    "id": "t.adjust-note",
+                    "content": "A successful adjustment invalidates route data and closes the loop."
+                  },
+                  {
+                    "role": "form",
+                    "id": "fm.adjust",
+                    "formId": "f.adjust"
+                  },
+                  {
+                    "role": "dialog",
+                    "id": "dlg.nested",
+                    "title": "Nested confirm",
+                    "triggerLabel": "Nested confirm…",
+                    "content": [
+                      {
+                        "role": "text",
+                        "id": "t.nested-note",
+                        "content": "This dialog is nested inside the drawer surface."
+                      },
+                      {
+                        "role": "action",
+                        "id": "act.bump-nested-btn",
+                        "actionId": "act.bump",
+                        "label": "Bump revision (nested)"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "route": {
+        "id": "tones",
+        "path": "/tones",
+        "screenId": "s.tones",
+        "nav": {
+          "label": "Status tones",
+          "group": "Checks",
+          "order": 2
+        }
+      },
+      "screen": {
+        "id": "s.tones",
+        "title": "Status tones",
+        "breadcrumbs": [
+          {
+            "label": "Home"
+          }
+        ],
+        "layout": [
+          {
+            "name": "main",
+            "surfaces": [
+              {
+                "role": "status",
+                "id": "st.neutral",
+                "value": "draft",
+                "tones": {}
+              },
+              {
+                "role": "status",
+                "id": "st.success",
+                "value": "warm",
+                "tones": {
+                  "warm": "success"
+                }
+              },
+              {
+                "role": "status",
+                "id": "st.warning",
+                "value": "hold",
+                "tones": {
+                  "hold": "warning"
+                }
+              },
+              {
+                "role": "status",
+                "id": "st.danger",
+                "value": "hot",
+                "tones": {
+                  "hot": "danger"
+                }
+              },
+              {
+                "role": "status",
+                "id": "st.info",
+                "value": "cold",
+                "tones": {
+                  "cold": "info"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "route": {
+        "id": "actions",
+        "path": "/actions",
+        "screenId": "s.actions",
+        "nav": {
+          "label": "Actions & feedback",
+          "group": "Checks",
+          "order": 3
+        }
+      },
+      "screen": {
+        "id": "s.actions",
+        "title": "Actions & feedback",
+        "breadcrumbs": [
+          {
+            "label": "Home"
+          }
+        ],
+        "layout": [
+          {
+            "name": "main",
+            "surfaces": [
+              {
+                "role": "action",
+                "id": "act.primary-btn",
+                "actionId": "act.bump",
+                "label": "Bump revision"
+              },
+              {
+                "role": "action",
+                "id": "act.reset-feedback-btn",
+                "actionId": "act.resetForm",
+                "label": "Clear form (local)"
+              },
+              {
+                "role": "action",
+                "id": "act.delete-btn",
+                "actionId": "act.delete-denied",
+                "label": "Delete record"
+              },
+              {
+                "role": "action",
+                "id": "act.disabled-btn",
+                "actionId": "act.bump",
+                "label": "Disabled action",
+                "disabledWhen": {
+                  "paramMissing": "never-present"
+                }
+              },
+              {
+                "role": "list",
+                "id": "ls.empty",
+                "viewId": "v.none",
+                "titleField": "name",
+                "emptyMessage": "Nothing here yet."
+              },
+              {
+                "role": "detail",
+                "id": "dt.empty",
+                "viewId": "v.none",
+                "emptyMessage": "This record does not exist."
+              }
+            ]
+          }
+        ],
+        "states": {
+          "failure": {
+            "role": "text",
+            "id": "t.actions-failure",
+            "content": "The adjustment failed safely."
+          }
+        }
+      }
+    },
+    {
+      "route": {
+        "id": "longtabs",
+        "path": "/longtabs",
+        "screenId": "s.longtabs",
+        "nav": {
+          "label": "Long tabs",
+          "group": "Checks",
+          "order": 4
+        }
+      },
+      "screen": {
+        "id": "s.longtabs",
+        "title": "Long-label tabs",
+        "breadcrumbs": [
+          {
+            "label": "Home"
+          }
+        ],
+        "layout": [
+          {
+            "name": "main",
+            "surfaces": [
+              {
+                "role": "tabs",
+                "id": "tb.long",
+                "tabs": [
+                  {
+                    "name": "configuration-overview",
+                    "label": "Configuration overview and defaults",
+                    "surfaces": [
+                      {
+                        "role": "text",
+                        "id": "t.long-a",
+                        "content": "First long tab panel."
+                      }
+                    ]
+                  },
+                  {
+                    "name": "advanced-maintenance",
+                    "label": "Advanced maintenance operations queue",
+                    "surfaces": [
+                      {
+                        "role": "text",
+                        "id": "t.long-b",
+                        "content": "Second long tab panel."
+                      }
+                    ]
+                  },
+                  {
+                    "name": "audit-history",
+                    "label": "Audit history and retained evidence trail",
+                    "surfaces": [
+                      {
+                        "role": "text",
+                        "id": "t.long-c",
+                        "content": "Third long tab panel."
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "screens": {
+    "s.widgets": {
+      "id": "s.widgets",
+      "title": "Widget create form",
+      "breadcrumbs": [
+        {
+          "label": "Home"
+        }
+      ],
+      "layout": [
+        {
+          "name": "main",
+          "surfaces": [
+            {
+              "role": "form",
+              "id": "fm.widget-create",
+              "formId": "f.widget-create"
+            },
+            {
+              "role": "action",
+              "id": "act.reset-widgets-btn",
+              "actionId": "act.resetForm",
+              "label": "Clear form (local)"
+            }
+          ]
+        }
+      ]
+    },
+    "s.rec": {
+      "id": "s.rec",
+      "title": "Widget record",
+      "breadcrumbs": [
+        {
+          "label": "Widgets",
+          "routeId": "widgets"
+        },
+        {
+          "label": "Record"
+        }
+      ],
+      "layout": [
+        {
+          "name": "main",
+          "surfaces": [
+            {
+              "role": "status",
+              "id": "st.rec-status",
+              "field": "status",
+              "tones": {
+                "cold": "info",
+                "warm": "success",
+                "hot": "danger",
+                "hold": "warning"
+              }
+            },
+            {
+              "role": "tabs",
+              "id": "tb.rec-tabs",
+              "tabs": [
+                {
+                  "name": "overview",
+                  "label": "Overview",
+                  "surfaces": [
+                    {
+                      "role": "detail",
+                      "id": "dt.rec",
+                      "viewId": "v.widgetDetail",
+                      "emptyMessage": "This record does not exist."
+                    },
+                    {
+                      "role": "list",
+                      "id": "ls.related",
+                      "viewId": "v.related",
+                      "titleField": "name",
+                      "secondaryField": "status",
+                      "emptyMessage": "Nothing derived yet."
+                    }
+                  ]
+                },
+                {
+                  "name": "edit",
+                  "label": "Edit",
+                  "surfaces": [
+                    {
+                      "role": "form",
+                      "id": "fm.widget-edit",
+                      "formId": "f.widget-edit"
+                    },
+                    {
+                      "role": "action",
+                      "id": "act.reset-edit-btn",
+                      "actionId": "act.resetForm",
+                      "label": "Reset form (local)"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "role": "dialog",
+              "id": "dlg.rec",
+              "title": "Danger zone",
+              "triggerLabel": "Danger zone…",
+              "content": [
+                {
+                  "role": "text",
+                  "id": "t.danger-note",
+                  "content": "Deleting is denied by the authorization boundary for every principal."
+                },
+                {
+                  "role": "action",
+                  "id": "act.delete-denied-btn",
+                  "actionId": "act.delete-denied",
+                  "label": "Delete record"
+                },
+                {
+                  "role": "form",
+                  "id": "fm.rename",
+                  "formId": "f.rename"
+                }
+              ]
+            },
+            {
+              "role": "drawer",
+              "id": "dr.rec",
+              "title": "Adjust record",
+              "triggerLabel": "Adjust…",
+              "content": [
+                {
+                  "role": "text",
+                  "id": "t.adjust-note",
+                  "content": "A successful adjustment invalidates route data and closes the loop."
+                },
+                {
+                  "role": "form",
+                  "id": "fm.adjust",
+                  "formId": "f.adjust"
+                },
+                {
+                  "role": "dialog",
+                  "id": "dlg.nested",
+                  "title": "Nested confirm",
+                  "triggerLabel": "Nested confirm…",
+                  "content": [
+                    {
+                      "role": "text",
+                      "id": "t.nested-note",
+                      "content": "This dialog is nested inside the drawer surface."
+                    },
+                    {
+                      "role": "action",
+                      "id": "act.bump-nested-btn",
+                      "actionId": "act.bump",
+                      "label": "Bump revision (nested)"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "s.tones": {
+      "id": "s.tones",
+      "title": "Status tones",
+      "breadcrumbs": [
+        {
+          "label": "Home"
+        }
+      ],
+      "layout": [
+        {
+          "name": "main",
+          "surfaces": [
+            {
+              "role": "status",
+              "id": "st.neutral",
+              "value": "draft",
+              "tones": {}
+            },
+            {
+              "role": "status",
+              "id": "st.success",
+              "value": "warm",
+              "tones": {
+                "warm": "success"
+              }
+            },
+            {
+              "role": "status",
+              "id": "st.warning",
+              "value": "hold",
+              "tones": {
+                "hold": "warning"
+              }
+            },
+            {
+              "role": "status",
+              "id": "st.danger",
+              "value": "hot",
+              "tones": {
+                "hot": "danger"
+              }
+            },
+            {
+              "role": "status",
+              "id": "st.info",
+              "value": "cold",
+              "tones": {
+                "cold": "info"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "s.actions": {
+      "id": "s.actions",
+      "title": "Actions & feedback",
+      "breadcrumbs": [
+        {
+          "label": "Home"
+        }
+      ],
+      "layout": [
+        {
+          "name": "main",
+          "surfaces": [
+            {
+              "role": "action",
+              "id": "act.primary-btn",
+              "actionId": "act.bump",
+              "label": "Bump revision"
+            },
+            {
+              "role": "action",
+              "id": "act.reset-feedback-btn",
+              "actionId": "act.resetForm",
+              "label": "Clear form (local)"
+            },
+            {
+              "role": "action",
+              "id": "act.delete-btn",
+              "actionId": "act.delete-denied",
+              "label": "Delete record"
+            },
+            {
+              "role": "action",
+              "id": "act.disabled-btn",
+              "actionId": "act.bump",
+              "label": "Disabled action",
+              "disabledWhen": {
+                "paramMissing": "never-present"
+              }
+            },
+            {
+              "role": "list",
+              "id": "ls.empty",
+              "viewId": "v.none",
+              "titleField": "name",
+              "emptyMessage": "Nothing here yet."
+            },
+            {
+              "role": "detail",
+              "id": "dt.empty",
+              "viewId": "v.none",
+              "emptyMessage": "This record does not exist."
+            }
+          ]
+        }
+      ],
+      "states": {
+        "failure": {
+          "role": "text",
+          "id": "t.actions-failure",
+          "content": "The adjustment failed safely."
+        }
+      }
+    },
+    "s.longtabs": {
+      "id": "s.longtabs",
+      "title": "Long-label tabs",
+      "breadcrumbs": [
+        {
+          "label": "Home"
+        }
+      ],
+      "layout": [
+        {
+          "name": "main",
+          "surfaces": [
+            {
+              "role": "tabs",
+              "id": "tb.long",
+              "tabs": [
+                {
+                  "name": "configuration-overview",
+                  "label": "Configuration overview and defaults",
+                  "surfaces": [
+                    {
+                      "role": "text",
+                      "id": "t.long-a",
+                      "content": "First long tab panel."
+                    }
+                  ]
+                },
+                {
+                  "name": "advanced-maintenance",
+                  "label": "Advanced maintenance operations queue",
+                  "surfaces": [
+                    {
+                      "role": "text",
+                      "id": "t.long-b",
+                      "content": "Second long tab panel."
+                    }
+                  ]
+                },
+                {
+                  "name": "audit-history",
+                  "label": "Audit history and retained evidence trail",
+                  "surfaces": [
+                    {
+                      "role": "text",
+                      "id": "t.long-c",
+                      "content": "Third long tab panel."
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "views": {
+    "v.widgetDetail": {
+      "viewId": "v.widgetDetail",
+      "resourceId": "widgets",
+      "resourceRevision": "1",
+      "fields": [
+        "id",
+        "name",
+        "status",
+        "starts",
+        "config",
+        "budget",
+        "discount",
+        "active"
+      ]
+    },
+    "v.related": {
+      "viewId": "v.related",
+      "resourceId": "widgets",
+      "resourceRevision": "1",
+      "fields": [
+        "id",
+        "name",
+        "status"
+      ]
+    },
+    "v.none": {
+      "viewId": "v.none",
+      "resourceId": "widgets",
+      "resourceRevision": "1",
+      "fields": [
+        "id",
+        "name"
+      ]
+    }
+  },
+  "forms": {
+    "f.widget-create": {
+      "formId": "f.widget-create",
+      "resourceId": "widgets",
+      "resourceRevision": "1",
+      "inputContractId": "qa.widget.input",
+      "fields": [
+        {
+          "name": "id",
+          "label": "Identifier",
+          "required": true,
+          "widget": "text"
+        },
+        {
+          "name": "name",
+          "label": "Name",
+          "required": true,
+          "widget": "text"
+        },
+        {
+          "name": "starts",
+          "label": "Starts on",
+          "widget": "date"
+        },
+        {
+          "name": "config",
+          "label": "Config (JSON)",
+          "widget": "json"
+        },
+        {
+          "name": "budget",
+          "label": "Budget",
+          "required": true,
+          "widget": "number"
+        },
+        {
+          "name": "discount",
+          "label": "Discount (optional)",
+          "widget": "number"
+        },
+        {
+          "name": "active",
+          "label": "Active",
+          "widget": "boolean"
+        }
+      ],
+      "submitActionId": "act.saveWidget"
+    },
+    "f.widget-edit": {
+      "formId": "f.widget-edit",
+      "resourceId": "widgets",
+      "resourceRevision": "1",
+      "inputContractId": "qa.widget.input",
+      "fields": [
+        {
+          "name": "name",
+          "label": "Name",
+          "required": true,
+          "widget": "text"
+        },
+        {
+          "name": "starts",
+          "label": "Starts on",
+          "widget": "date"
+        },
+        {
+          "name": "config",
+          "label": "Config (JSON)",
+          "widget": "json"
+        },
+        {
+          "name": "budget",
+          "label": "Budget",
+          "required": true,
+          "widget": "number"
+        },
+        {
+          "name": "discount",
+          "label": "Discount (optional)",
+          "widget": "number"
+        },
+        {
+          "name": "active",
+          "label": "Active",
+          "widget": "boolean"
+        }
+      ],
+      "submitActionId": "act.saveWidget"
+    },
+    "f.rename": {
+      "formId": "f.rename",
+      "resourceId": "widgets",
+      "resourceRevision": "1",
+      "inputContractId": "qa.widget.input",
+      "fields": [
+        {
+          "name": "name",
+          "label": "Rename record",
+          "required": true,
+          "widget": "text"
+        }
+      ],
+      "submitActionId": "act.saveWidget"
+    },
+    "f.adjust": {
+      "formId": "f.adjust",
+      "resourceId": "widgets",
+      "resourceRevision": "1",
+      "inputContractId": "qa.widget.input",
+      "fields": [
+        {
+          "name": "discount",
+          "label": "Discount (optional)",
+          "widget": "number"
+        },
+        {
+          "name": "active",
+          "label": "Active",
+          "widget": "boolean"
+        }
+      ],
+      "submitActionId": "act.saveWidget"
+    }
+  },
+  "actions": {
+    "act.resetForm": {
+      "kind": "local",
+      "id": "act.resetForm",
+      "revision": "1"
+    },
+    "act.goNew": {
+      "kind": "navigation",
+      "id": "act.goNew",
+      "revision": "1",
+      "routeId": "widgets"
+    },
+    "act.saveWidget": {
+      "kind": "mutation",
+      "id": "act.saveWidget",
+      "revision": "1",
+      "resourceId": "widgets",
+      "resourceRevision": "1",
+      "op": "create",
+      "inputContractId": "qa.widget.input",
+      "inputContractRevision": "1"
+    },
+    "act.delete-denied": {
+      "kind": "mutation",
+      "id": "act.delete-denied",
+      "revision": "1",
+      "resourceId": "widgets",
+      "resourceRevision": "1",
+      "op": "delete",
+      "inputContractId": "qa.widget.input"
+    },
+    "act.bump": {
+      "kind": "mutation",
+      "id": "act.bump",
+      "revision": "1",
+      "resourceId": "widgets",
+      "resourceRevision": "1",
+      "op": "update",
+      "inputContractId": "qa.widget.input"
+    }
+  },
+  "resources": {
+    "widgets": {
+      "schema": "vict.resource@1",
+      "id": "widgets",
+      "revision": "1",
+      "identity": {
+        "key": "id"
+      },
+      "fields": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "status",
+          "type": "string"
+        },
+        {
+          "name": "starts",
+          "type": "string"
+        },
+        {
+          "name": "config",
+          "type": "string"
+        },
+        {
+          "name": "budget",
+          "type": "number"
+        },
+        {
+          "name": "discount",
+          "type": "number"
+        },
+        {
+          "name": "active",
+          "type": "boolean"
+        }
+      ],
+      "queries": {
+        "list": {
+          "sort": [
+            "name"
+          ],
+          "pagination": false
+        }
+      },
+      "mutations": [
+        {
+          "op": "create",
+          "effect": "write",
+          "inputContractId": "qa.widget.input",
+          "idempotency": "keyed",
+          "permissions": [
+            "widgets.write"
+          ]
+        },
+        {
+          "op": "update",
+          "effect": "write",
+          "permissions": [
+            "widgets.write"
+          ]
+        },
+        {
+          "op": "delete",
+          "effect": "write",
+          "permissions": [
+            "widgets.admin"
+          ]
+        }
+      ],
+      "authorization": {
+        "effect": "read"
+      }
+    }
+  },
+  "components": []
+}

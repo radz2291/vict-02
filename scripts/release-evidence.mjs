@@ -53,11 +53,7 @@ import {
   evaluateSlsaProvenance,
   selfScanEvidenceText,
 } from './lib/evidence-rules.mjs';
-import {
-  deriveReleaseInventory,
-  deriveReleaseSetContentId,
-  FROZEN_PUBLISH_ORDER,
-} from './lib/release-set.mjs';
+import { deriveReleaseInventory, deriveReleaseSetContentId } from './lib/release-set.mjs';
 import { readTarballMember } from './lib/tarball-io.mjs';
 import { checkText } from './lib/tarball-scan-rules.mjs';
 
@@ -516,9 +512,16 @@ async function commandVerify(args) {
     if (!s.isAncestorOfMainHead) {
       s.problems.push('candidate source is not an ancestor of the evidence main lineage');
     }
-    // Candidate manifests must be exactly the frozen 13-member inventory at
-    // the bound version (missing or extra member fails closed).
-    const inventory = deriveReleaseInventory(candidateRoot);
+    // Candidate manifests must be exactly the BOUND candidate's own
+    // inventory (the pre-amendment member list recorded above) at the
+    // bound version (missing or extra member fails closed). The frozen
+    // contract order was amended to 15 members on 2026-09-26; the ladder
+    // keeps verifying the historical candidate against its OWN recorded
+    // set, never the current frozen rule.
+    const inventory = deriveReleaseInventory(candidateRoot, {
+      expectedCount: bound.packageCount,
+      frozenOrder: bound.order,
+    });
     s.inventoryProblems = inventory.problems;
     if (inventory.problems.length > 0) {
       s.problems.push(`candidate inventory invalid: ${inventory.problems.join(' | ')}`);
@@ -547,7 +550,7 @@ async function commandVerify(args) {
     record();
     if (!s.ok) fail(s.problems.join(' | '));
     ok(
-      `candidate source ${head.slice(0, 12)} verified: clean, immutable, exactly the 13-member set at ${bound.version}`,
+      `candidate source ${head.slice(0, 12)} verified: clean, immutable, exactly the ${bound.packageCount}-member set at ${bound.version}`,
     );
   }
 
@@ -578,7 +581,7 @@ async function commandVerify(args) {
     const s = section('registryState');
     s.registry = bound.registry;
     s.packages = [];
-    for (const name of FROZEN_PUBLISH_ORDER) {
+    for (const name of bound.order) {
       const packument = await fetchJson(`${bound.registry}${encodeURIComponent(name)}`);
       if (packument === null) {
         s.packages.push({ name, problems: ['packument not found (package absent)'] });
@@ -599,12 +602,12 @@ async function commandVerify(args) {
     }
     ok(
       bound.forbiddenStableVersion == null
-        ? `13/13 members present at ${bound.version}; latest=${bound.expectedLatest}; retained tags: ${
+        ? `${bound.packageCount}/${bound.packageCount} members present at ${bound.version}; latest=${bound.expectedLatest}; retained tags: ${
             Object.entries(bound.retainedTags ?? {})
               .map(([t, v]) => `${t}=${v}`)
               .join(', ') || 'none'
           }`
-        : `13/13 members present at ${bound.version}; latest=${bound.expectedLatest}; ${bound.candidateTag}=${bound.version}; stable absent`,
+        : `${bound.packageCount}/${bound.packageCount} members present at ${bound.version}; latest=${bound.expectedLatest}; ${bound.candidateTag}=${bound.version}; stable absent`,
     );
   }
 
@@ -616,7 +619,7 @@ async function commandVerify(args) {
       'sha256 over the sorted newline-joined name@version list, prefixed v1_ (RELEASE-COMPATIBILITY §2)';
     s.derivedWith =
       'scripts/lib/release-set.mjs deriveReleaseSetContentId (corrected engine, shared with commandPublish)';
-    const memberList = FROZEN_PUBLISH_ORDER.map((name) => {
+    const memberList = bound.order.map((name) => {
       const packument = registryPackuments.get(name);
       const entry = packument?.versions?.[bound.version];
       return `${entry?.name ?? name}@${entry?.version ?? 'MISSING'}`;
@@ -641,7 +644,7 @@ async function commandVerify(args) {
   {
     const s = section('provenance');
     s.packages = [];
-    for (const name of FROZEN_PUBLISH_ORDER) {
+    for (const name of bound.order) {
       const record_ = await fetchJson(
         `${bound.registry}-/npm/v1/attestations/${name}@${bound.version}`,
       );
@@ -678,7 +681,7 @@ async function commandVerify(args) {
     record();
     if (!s.ok) fail(`provenance bindings failed: ${s.problems.slice(0, 10).join(' | ')}`);
     ok(
-      '13/13 provenance statements bind the repository, source SHA, workflow, original run, and tarball digests',
+      `${bound.packageCount}/${bound.packageCount} provenance statements bind the repository, source SHA, workflow, original run, and tarball digests`,
     );
   }
 
@@ -688,7 +691,7 @@ async function commandVerify(args) {
   {
     const s = section('registryBytes');
     s.packages = [];
-    for (const name of FROZEN_PUBLISH_ORDER) {
+    for (const name of bound.order) {
       const packument = registryPackuments.get(name);
       const dist = packument?.versions?.[bound.version]?.dist;
       const url = dist?.tarball;
@@ -714,7 +717,7 @@ async function commandVerify(args) {
       } finally {
         rmSync(workRoot, { recursive: true, force: true });
       }
-      const verdict = evaluateRegistryManifest(manifest, FROZEN_PUBLISH_ORDER);
+      const verdict = evaluateRegistryManifest(manifest, bound.order);
       s.packages.push({
         name,
         url,
@@ -729,7 +732,9 @@ async function commandVerify(args) {
     s.ok = s.problems.length === 0;
     record();
     if (!s.ok) fail(`registry-bytes checks failed: ${s.problems.slice(0, 10).join(' | ')}`);
-    ok('13/13 registry artifacts hash-verified; manifests pin exactly the coherent internal set');
+    ok(
+      `${bound.packageCount}/${bound.packageCount} registry artifacts hash-verified; manifests pin exactly the coherent internal set`,
+    );
   }
 
   // ---- section 11: rebuild comparison ---------------------------------------
@@ -742,7 +747,7 @@ async function commandVerify(args) {
       'entry mode (content byte-identical). The Linux reconstruction here is ' +
       'authoritative; its result is recorded truthfully per package.';
     s.packages = [];
-    for (const name of FROZEN_PUBLISH_ORDER) {
+    for (const name of bound.order) {
       const entry = readdirSync(packDir).find((fileName) => {
         if (!fileName.endsWith('.tgz')) return false;
         try {
@@ -785,7 +790,7 @@ async function commandVerify(args) {
       fail('rebuilt artifacts do not equal the registry artifacts');
     }
     ok(
-      '13/13 rebuilt artifacts are byte-identical AND content-identical to the registry artifacts',
+      '${bound.packageCount}/${bound.packageCount} rebuilt artifacts are byte-identical AND content-identical to the registry artifacts',
     );
   }
 
@@ -925,7 +930,7 @@ async function commandVerify(args) {
     const rebuild = new Map(
       (evidence.sections.rebuildComparison?.packages ?? []).map((p) => [p.name, p]),
     );
-    for (const name of FROZEN_PUBLISH_ORDER) {
+    for (const name of bound.order) {
       const integrity = registryIntegrities.get(name) ?? 'n/a';
       const comparison = rebuild.get(name);
       lines.push(

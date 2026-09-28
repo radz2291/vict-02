@@ -134,7 +134,6 @@ console.log('\n=== verify:stage6a — package inspection ===');
     'application',
     'store-sqlite',
     'appdata-sqlite',
-    'renderer-svelte',
     'scaffolder',
   ]) {
     const pkg = JSON.parse(readFileSync(join(repoRoot, 'packages', name, 'package.json'), 'utf8'));
@@ -263,7 +262,6 @@ console.log('\n=== verify:stage6a — package inspection ===');
     'application',
     'store-sqlite',
     'appdata-sqlite',
-    'renderer-svelte',
     'scaffolder',
   ]) {
     scanNeutral(join(repoRoot, 'packages', name, 'src'));

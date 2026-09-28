@@ -6,9 +6,9 @@
 
 - protocol: `vict.builder.bootstrap@1`
 - kit package: `@victframework/builder-kit@0.1.0`
-- base pack: `vict.builder.context-pack@1`, packId `791f24fb023cf3eb29ffb0d7123f23ad803b8042906ed84ace6d991d4d15a0b2`
+- base pack: `vict.builder.context-pack@1`, packId `3b1f40d5dbeaa755d2156808809b1490cc73603b7a425e6cfa9256f8da551440`
 - reference truth: `docs/VICT-SYSTEM-REFERENCE.md` v0.4.32
-- release truth: `vict-release-set@1/0.3.1`
+- release truth: `vict-release-set@1/0.4.0-rc.1`
 
 ## 2. Freshness rule
 

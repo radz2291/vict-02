@@ -33,7 +33,7 @@
  * of untrusted data):
  *
  *   RELEASE_SOURCE_SHA / RELEASE_VERSION / RELEASE_NPM_TAG /
- *   RELEASE_RESUME_FROM
+ *   RELEASE_RESUME_FROM / RELEASE_TRUST_EVIDENCE
  *
  * Usage:
  *   node scripts/oidc-release.mjs validate [--source-sha S] [--version V]
@@ -53,9 +53,11 @@ import { fileURLToPath } from 'node:url';
 import { deriveReleaseSetContentId, normalizeResumeInput } from './lib/release-set.mjs';
 import { matchTarballSet } from './lib/tarball-set.mjs';
 import { readTarballMember } from './lib/tarball-io.mjs';
+import { fetchPackument as fetchPackumentProbe, PUBLIC_REGISTRY } from './lib/registry-probe.mjs';
+import { assessContractAuthorityAtRoot, FROZEN_CONTRACT_PATH } from './lib/contract-authority.mjs';
+import { assessPublicationPreflight } from './lib/publication-preflight.mjs';
 import {
   deriveReleaseInventory,
-  PUBLIC_REGISTRY,
   publishArgv,
   SOURCE_SHA_PATTERN,
   validateVersionTagPair,
@@ -73,6 +75,72 @@ function fail(message) {
 
 function ok(label) {
   console.log(`  ok: ${label}`);
+}
+
+/**
+ * CONTRACT AUTHORITY GATE (fail-closed, pre-publication).
+ *
+ * The frozen trusted-publishing contract is the ONLY publication
+ * authority. While the §16 facade-retirement amendment exists merely as
+ * an unratified draft, the frozen text still records the §14 15-package
+ * state, and this engine's 14-package derivation has NO contractual
+ * authority. The gate reads the frozen contract AT THE CHECKED-OUT
+ * SOURCE and refuses unless it carries the exact ratified 14-package
+ * state (§16 record, §16.5 owner authorization, §5 = the frozen
+ * 14-package order, zero surviving current-tense 15-norms). It runs
+ * BEFORE any registry call or write — including resume paths — in both
+ * `validate` and `publish`.
+ */
+function assertContractAuthority(repoRoot) {
+  const verdict = assessContractAuthorityAtRoot(repoRoot);
+  if (!verdict.authorized) {
+    console.error(
+      `oidc-release: CONTRACT AUTHORITY REFUSED — the frozen contract (${FROZEN_CONTRACT_PATH}) does not yet authorize the 14-package candidate set. NO registry call or write was made. Gaps:`,
+    );
+    for (const problem of verdict.problems) console.error(`  - ${problem}`);
+    console.error(
+      'Owner action: ratify §16 into the frozen contract (amendment commit applying Appendices A+B of docs/RELEASE-TRUSTED-PUBLISHING-CONTRACT-AMENDMENT-DRAFT-2026-09-27-FACADE-RETIREMENT.md verbatim), then re-run. Until then every publication attempt fails closed BY DESIGN.',
+    );
+    process.exit(1);
+  }
+  ok('contract authority: the frozen contract ratifies the 14-package set (§16)');
+}
+
+/**
+ * TRUST PREFLIGHT GATE (fail-closed, pre-publication; r4).
+ *
+ * THE SET-WIDE RULE: publication of ANY member is refused unless ALL 14
+ * members exist in the registry AND their exact frozen trust
+ * relationships are credibly verified — LIVE (authenticated session) or
+ * through a VALIDATED operator-evidence artifact bound to the CURRENT
+ * coherent version + content-derived set identity (GitHub Actions holds
+ * no npm session under the frozen no-secret policy; until the owner
+ * resolves the trust-proof decision, CI publication stays blocked
+ * HERE). Runs immediately after the contract-authority gate, BEFORE any
+ * registry call or write — including resume paths — in both `validate`
+ * and `publish`.
+ */
+function assertTrustPreflight(repoRoot, evidencePath) {
+  const verdict = assessPublicationPreflight({
+    repoRoot,
+    evidencePath,
+    log: (line) => console.log(`  ${line}`),
+  });
+  if (!verdict.authorized) {
+    console.error(
+      `oidc-release: TRUST PREFLIGHT REFUSED — ${verdict.blockedReason} NO registry call or write was made. Details:`,
+    );
+    for (const problem of verdict.problems) console.error(`  - ${problem}`);
+    console.error(
+      verdict.mode === 'evidence'
+        ? 'Owner action: capture a FRESH evidence artifact with scripts/capture-trust-evidence.mjs from an authenticated session, or resolve the CI trust-proof decision recorded in docs/RELEASE-READINESS-CORRECTIONS-R4-2026-09-27.md.'
+        : 'Owner action: run with an authenticated npm session, or pass a validated evidence artifact via --trust-evidence (see scripts/capture-trust-evidence.mjs).',
+    );
+    process.exit(1);
+  }
+  ok(
+    `trust preflight: all 14 members present with exact verified trust relationships (mode: ${verdict.mode})`,
+  );
 }
 
 // ---- argument parsing (flags OR environment; flags win) --------------------
@@ -107,6 +175,10 @@ function parseArgs(argv) {
         args.resultsFile = value;
         index += 1;
         break;
+      case '--trust-evidence':
+        args.trustEvidence = value;
+        index += 1;
+        break;
       case '--repo-root':
         args.repoRoot = resolve(value);
         index += 1;
@@ -121,6 +193,10 @@ function parseArgs(argv) {
   args.tag ??= process.env.RELEASE_NPM_TAG;
   args.resumeFrom ??= process.env.RELEASE_RESUME_FROM;
   args.resumeFrom = normalizeResumeInput(args.resumeFrom);
+  args.trustEvidence ??= process.env.RELEASE_TRUST_EVIDENCE;
+  if (args.trustEvidence !== undefined && args.trustEvidence.trim() === '') {
+    args.trustEvidence = undefined;
+  }
   return args;
 }
 
@@ -163,52 +239,10 @@ function validateLineage(repoRoot, sourceSha) {
  * blocker, not as "unpublished").
  */
 function fetchPackument(name) {
-  const url = `${PUBLIC_REGISTRY}${encodeURIComponent(name)}`;
-  const response = fetchSync(url);
-  if (response.kind === 'error') {
-    fail(`the public npm registry is unreachable for ${name}: ${response.message}`);
-  }
-  if (response.kind === 'not-found') {
-    return { name, versions: {}, 'dist-tags': {} };
-  }
-  let packument;
   try {
-    packument = JSON.parse(response.body);
-  } catch {
-    fail(`the registry returned unparseable metadata for ${name}.`);
-  }
-  return packument;
-}
-
-/**
- * Small, dependency-free synchronous GET with a bounded timeout.
- * Windows Node 22 supports synchronous fetch only via this child trick —
- * spawn the resident `node` with an inline fetch script (no shell).
- */
-function fetchSync(url) {
-  const script = `
-    const url = process.argv[1];
-    fetch(url, { headers: { accept: 'application/json' }, signal: AbortSignal.timeout(30_000) })
-      .then(async (response) => {
-        if (response.status === 404) { console.log(JSON.stringify({ kind: 'not-found' })); return; }
-        if (!response.ok) { console.log(JSON.stringify({ kind: 'error', message: 'HTTP ' + response.status })); return; }
-        const body = await response.text();
-        console.log(JSON.stringify({ kind: 'ok', body }));
-      })
-      .catch((error) => { console.log(JSON.stringify({ kind: 'error', message: String(error && error.message) })); });
-  `;
-  const result = spawnSync(process.execPath, ['-e', script, url], {
-    encoding: 'utf8',
-    timeout: 60_000,
-  });
-  if (result.status !== 0) {
-    return { kind: 'error', message: `probe exited ${result.status}` };
-  }
-  const line = (result.stdout ?? '').trim().split(/\r?\n/).at(-1) ?? '';
-  try {
-    return JSON.parse(line);
-  } catch {
-    return { kind: 'error', message: 'unparseable probe output' };
+    return fetchPackumentProbe(name);
+  } catch (error) {
+    fail(error.message);
   }
 }
 
@@ -216,7 +250,7 @@ function fetchSync(url) {
  * The frozen resume split (contract §10): with a resume point, every
  * member BEFORE it must already exist (integrity proof happens where the
  * local tarball exists), and every member AT/AFTER it must be
- * unpublished. Without a resume point, all 13 must be unpublished.
+ * unpublished. Without a resume point, all 14 must be unpublished.
  */
 function validateUnpublishedGuard(inventory, version, resumeFrom) {
   const order = inventory.order;
@@ -318,6 +352,8 @@ function matchPackDir(repoRoot, packDir, inventory) {
 
 function commandValidate(args) {
   const { repoRoot, sourceSha, version, tag, resumeFrom } = args;
+  assertContractAuthority(repoRoot);
+  assertTrustPreflight(repoRoot, args.trustEvidence);
   if (sourceSha === undefined || !SOURCE_SHA_PATTERN.test(sourceSha)) {
     fail('a full 40-hex source SHA is required (got missing/malformed input).');
   }
@@ -334,7 +370,7 @@ function commandValidate(args) {
       `requested version '${version}' does not equal the coherent manifest version '${inventory.version}'.`,
     );
   }
-  ok(`release-set inventory coherent: 13 packages at ${version}`);
+  ok(`release-set inventory coherent: ${inventory.order.length} packages at ${version}`);
 
   const setCheck = run('node', [join(scriptDir, 'check-release-set.mjs')], {
     capture: true,
@@ -371,11 +407,13 @@ function commandPack(args) {
     }
   }
   matchPackDir(repoRoot, packDir, inventory);
-  ok(`packed exactly 13 canonical tarballs into ${packDir}`);
+  ok(`packed exactly ${inventory.order.length} canonical tarballs into ${packDir}`);
 }
 
 function commandPublish(args) {
   const { repoRoot, packDir, resultsFile, sourceSha, version, tag, resumeFrom } = args;
+  assertContractAuthority(repoRoot);
+  assertTrustPreflight(repoRoot, args.trustEvidence);
   if (packDir === undefined || !existsSync(packDir)) fail('publish requires a valid --pack-dir.');
   if (resultsFile === undefined) fail('publish requires --results-file <path>.');
   const tagVerdict = validateVersionTagPair(version, tag);
@@ -480,7 +518,7 @@ function commandPublish(args) {
     console.error('Successful publications are preserved (never unpublished, never mutated).');
     fail(`publication failed at ${stopped.name}: ${stopped.stderr.slice(0, 500)}`);
   }
-  console.log(`\noidc-release: ALL 13 PACKAGES PUBLISHED under '${tag}'`);
+  console.log(`\noidc-release: ALL ${inventory.order.length} PACKAGES PUBLISHED under '${tag}'`);
   console.log(`release-set identity: vict-release-set@1/${version} (${contentId.slice(0, 18)}…)`);
 }
 
@@ -597,7 +635,7 @@ function commandVerifyRegistry(args) {
   }
 
   if (failures > 0) fail(`registry verification failed for ${failures} package(s).`);
-  console.log('\noidc-release: REGISTRY STATE VERIFIED for all 13 packages');
+  console.log(`\noidc-release: REGISTRY STATE VERIFIED for all ${inventory.order.length} packages`);
 }
 
 // ---- dispatch ---------------------------------------------------------------

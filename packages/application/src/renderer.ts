@@ -36,8 +36,13 @@ export class RendererDiagnostic extends Error {
 
 /** Action execution result. Errors are SAFE structured values, never raw echoes. */
 export type ActionResult<T = unknown> =
-  | { readonly ok: true; readonly value: T }
-  | { readonly ok: false; readonly code: string; readonly message: string };
+  | { readonly ok: true; readonly value: T; readonly message?: string }
+  | {
+      readonly ok: false;
+      readonly code: string;
+      readonly message: string;
+      readonly fieldErrors?: Readonly<Record<string, string>>;
+    };
 
 /**
  * Executes application actions BELOW the renderer boundary. The renderer

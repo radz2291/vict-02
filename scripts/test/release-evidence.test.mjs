@@ -99,11 +99,50 @@ describe('BOUND_CANDIDATE', () => {
     expect(BOUND_CANDIDATE.retainedTags).toEqual({ 'vict-0.3.1-rc': '0.3.1-rc.2' });
   });
 
-  it('the expected contentId equals the corrected algorithm over the frozen set at the bound version', () => {
-    const list = FROZEN_PUBLISH_ORDER.map((name) => `${name}@${BOUND_CANDIDATE.version}`);
+  it('binds its own PRE-amendment 13-member order (never retro-expanded by the 2026-09-26 §14 amendment or the 2026-09-27 §16 draft)', () => {
+    expect(BOUND_CANDIDATE.order).toHaveLength(13);
+    expect(BOUND_CANDIDATE.order[0]).toBe('@victframework/contracts');
+    expect(BOUND_CANDIDATE.order.at(-1)).toBe('@victframework/cli');
+    expect(BOUND_CANDIDATE.order).not.toContain('@victframework/ui');
+    expect(BOUND_CANDIDATE.order).not.toContain('@victframework/ui-svelte');
+    // The amended candidate order (14 members, facade-retirement draft
+    // §16) deliberately DIVERGES from the bound historical order: the
+    // historical candidate must keep being verified against its own
+    // recorded inventory.
+    expect(FROZEN_PUBLISH_ORDER).toHaveLength(14);
+    expect(FROZEN_PUBLISH_ORDER).toContain('@victframework/ui');
+    expect(FROZEN_PUBLISH_ORDER).toContain('@victframework/ui-svelte');
+    expect(FROZEN_PUBLISH_ORDER).not.toContain('@victframework/renderer-svelte');
+  });
+
+  it('the expected contentId equals the corrected algorithm over the bound historical set at the bound version', () => {
+    const list = BOUND_CANDIDATE.order.map((name) => `${name}@${BOUND_CANDIDATE.version}`);
     expect(BOUND_CANDIDATE.expectedContentId).toBe(deriveReleaseSetContentId(list));
     expect(BOUND_CANDIDATE.expectedContentId).toBe(
       'v1_1c695280d3afec5e91bfc75d3c99a5a85bc27f6d91127c4d0ce7bd51563c2583',
+    );
+  });
+
+  it('the FACADE-RETIREMENT 14-member candidate set derives its own distinct recorded identity', () => {
+    // Regression coupling for the 2026-09-27 facade-retirement draft §16
+    // as prepared for owner review (version selection to 0.4.0-rc.1):
+    // the current candidate set (14 members at 0.4.0-rc.1) must derive
+    // the newly recorded contentId — distinct from the historical bound
+    // candidate, the superseded-unpublished §14/§15 15-member record,
+    // AND the superseded-unpublished intermediate 14-member 0.3.1
+    // facade-retirement record (a version change is a set-identity
+    // change, so the 0.3.1 identity is NOT this candidate's identity).
+    const list = FROZEN_PUBLISH_ORDER.map((name) => `${name}@0.4.0-rc.1`);
+    expect(deriveReleaseSetContentId(list)).toBe(
+      'v1_2a70a29af12fa887d18e7099b027a11f86bd2f6a70a756446fb43844e41d9399',
+    );
+    expect(deriveReleaseSetContentId(list)).not.toBe(BOUND_CANDIDATE.expectedContentId);
+    expect(deriveReleaseSetContentId(list)).not.toBe(
+      'v1_3a82c0651bb4b0d554009c87ffe4b3038cf8c51b208648572caf510373fdafaa',
+    );
+    expect(deriveReleaseSetContentId(FROZEN_PUBLISH_ORDER.map((name) => `${name}@0.3.1`))).toBe(
+      // the superseded r1 intermediate: 14 members at the consumed 0.3.1 line
+      'v1_e31858f1ba93a4336524d52886c3c72f85fda4b4237457bccfad2235d0e1555d',
     );
   });
 
@@ -183,14 +222,14 @@ describe('evaluateRegistryMemberState', () => {
 // ---------------------------------------------------------------------------
 
 describe('evaluateMemberSet', () => {
-  it('accepts exactly the frozen 13-member set', () => {
+  it('accepts exactly the frozen member set', () => {
     expect(evaluateMemberSet(FROZEN_PUBLISH_ORDER, FROZEN_PUBLISH_ORDER)).toEqual([]);
   });
 
   it('negative control: a missing member fails', () => {
     const problems = evaluateMemberSet(FROZEN_PUBLISH_ORDER.slice(1), FROZEN_PUBLISH_ORDER);
     expect(problems.join(' ')).toContain("member '@victframework/contracts' is missing");
-    expect(problems.join(' ')).toContain('member count is 12');
+    expect(problems.join(' ')).toContain('member count is 13');
   });
 
   it('negative control: an extra member fails', () => {
@@ -199,7 +238,7 @@ describe('evaluateMemberSet', () => {
       FROZEN_PUBLISH_ORDER,
     );
     expect(problems.join(' ')).toContain("unexpected extra member '@victframework/ghost'");
-    expect(problems.join(' ')).toContain('member count is 14');
+    expect(problems.join(' ')).toContain('member count is 15');
   });
 });
 

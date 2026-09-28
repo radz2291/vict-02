@@ -26,6 +26,27 @@ export const BOUND_CANDIDATE = Object.freeze({
   originalWorkflowPath: '.github/workflows/release.yml',
   originalRunConclusion: 'failure',
   packageCount: 13,
+  // The EXACT member order at the bound source SHA — the pre-amendment
+  // 13-member set. The frozen contract §5 order was amended on 2026-09-26
+  // (contract §14) to 15 members (adding ui and ui-svelte); the binding
+  // preserves its own historical inventory so the evidence ladder keeps
+  // verifying the recorded candidate exactly as it existed. Never
+  // retro-expand this list.
+  order: Object.freeze([
+    '@victframework/contracts',
+    '@victframework/sdk',
+    '@victframework/kernel',
+    '@victframework/runtime',
+    '@victframework/store-sqlite',
+    '@victframework/application',
+    '@victframework/renderer-svelte',
+    '@victframework/appdata-sqlite',
+    '@victframework/scaffolder',
+    '@victframework/control',
+    '@victframework/mastra',
+    '@victframework/server',
+    '@victframework/cli',
+  ]),
   registry: 'https://registry.npmjs.org/',
   repository: 'radz2291/vict-02',
   repositoryUrl: 'https://github.com/radz2291/vict-02',
@@ -280,7 +301,7 @@ export function evaluateRegistryMemberState(name, packument) {
  * extra member, or renamed member all fail).
  *
  * @param {string[]} observedNames registry/candidate member names
- * @param {string[]} frozenOrder the frozen 13-name order
+ * @param {string[]} frozenOrder the frozen member order to validate against
  * @returns {string[]} problems
  */
 export function evaluateMemberSet(observedNames, frozenOrder) {

@@ -1,0 +1,66 @@
+{
+  "proof": "TaskLedger Platform Gap — fresh external consumer",
+  "date": "2026-09-26",
+  "location": "C:/Users/RZ1/Desktop/RZ/taskledger-gap-proof-20260926 (outside the VICT repository)",
+  "scaffold": {
+    "method": "@victframework/scaffolder packed tarball (83cfd888ed275663553b2f57ecdb25645458056fc3d97e98a25267ad41a556d8), consumed from a plain pack-consumer project; explicit release-set selection (release-set.json) passed as platformDependencies",
+    "releaseSet": "11 candidate file: tarballs packed from branch pi/taskledger-platform-gap (unpublished; sha256 in tarball-sha256.txt)",
+    "generatedFiles": 16
+  },
+  "evidence": {
+    "immutableHostByteComparison": "host-byte-comparison.json — 14 immutable host files byte-identical after app authoring; the 2 changed files are the author-owned definition.ts and registry.ts (the documented authoring surface)",
+    "create": "8/8 tasks created through the declared form (title/notes/priority; contract-validated create)",
+    "invalidSubmit": "empty title refused natively (Please fill out this field.); oversize title refused at the action boundary (CONTRACT_REJECTED field error on title; no navigation, no mutation); hostile create with unknown field 'bogus' refused by task.create.input@1",
+    "table": {
+      "serverBackedSearch": "search 'contract' → 1 row (Review contract boundary) via declared act.queryTasks",
+      "sort": "title asc → alphabetical asc verified; server-backed",
+      "pagination": "9 records, pageSize 5 → 2 pages; round trip with zero row overlap",
+      "islandCells": "priority badge is the declared island cell (app.priority-badge@1) with props derived from each row; 3 distinct palettes (low/medium/high) observed"
+    },
+    "edit": "declared /tasks/:id route → generic host record get → declared edit form prefilled (title/priority/notes) → save → 'The task was saved.' → persisted notes/priority verified through the query boundary",
+    "complete": "row Complete dispatched the declared capability action act.completeTask; governed durable runs recorded (real Vict run, pinned activation v1_3689119596dd1b038f67bcdc3fc6c3b786f5e243a3ed17e5d0683f5c0d2ef6a7, durable run+event records); task row refreshed to done through the host's invalidation; replay of Complete on a done row reconciled with NO duplicate completion row (idempotent by task id)",
+    "dashboard": "live open count through the declared filtered view (v.open-tasks, filters {status:'open'}) + count surface; completions-per-day chart through the declared sorted view (v.completions) with accessible per-day table",
+    "negativeProbes": [
+      "unknown field on act.completeTask → CONTRACT_REJECTED task.complete.input@1, fieldErrors {notes}, ledger 0 runs before AND after",
+      "malformed id type on act.completeTask → CONTRACT_REJECTED, no run",
+      "undeclared actionId → UNKNOWN_ACTION",
+      "unknown field 'bogus' on act.createTask → CONTRACT_REJECTED, no mutation"
+    ],
+    "restartPersistence": {
+      "method": "real process kill (taskkill /F) + fresh preview server process",
+      "result": "all 9 task rows byte-identical before/after; completions 1→1; governed ledger runs 2→2, events 8→8; dashboard count + chart identical after restart"
+    },
+    "applicationVersionStability": "v1_e42187a77a7624f4cd4fd338bd4e7a3806b0e60793f467ca9605238085f1f815 identical across three rebuilds of the unchanged definition",
+    "governedLedger": {
+      "afterSeedingAndTwoCompletes": { "runs": 4, "events": 16, "activations": 1 },
+      "store": "app/.data/vict-runs.sqlite (vict_run / vict_run_event / vict_activation tables)"
+    },
+    "phone390x844": {
+      "pageHorizontalOverflow": "0px (documentElement.scrollWidth == clientWidth); the F3-class page-overflow defect found in evidence was fixed by making the row-action column header a real visible heading",
+      "table": "scrolls within its own region; search control full-width stacked; pagination visible; Complete reachable after scrolling the table region (verified clickable at 390px; governed run recorded)",
+      "keyboard": "table search, sort header, next page, and row Complete are all keyboard-focusable"
+    },
+    "screenshots": [
+      "browser-evidence/dashboard-laptop-1280.png",
+      "browser-evidence/tasks-laptop-1280.png",
+      "browser-evidence/create-laptop-1280.png",
+      "browser-evidence/dashboard-phone-390.png",
+      "browser-evidence/tasks-phone-390.png",
+      "browser-evidence/create-phone-390.png"
+    ]
+  },
+  "productSpecificCodeInventory": {
+    "authorOwnedFiles": [
+      "app/src/lib/application/definition.ts (domain: resources, contracts, capability, effect hook, grants, definition)",
+      "app/src/lib/components/registry.ts (versioned registration)",
+      "app/src/lib/components/PriorityBadge.svelte (49 lines — the ONLY custom Svelte product component)"
+    ],
+    "noOtherIslands": "no TaskTable, no TaskForm, no self-fetching count component — table, form, count, chart, rendering, dispatch, and host wiring are all VICT generic",
+    "badge": "presentational only: receives the row-derived priority prop; never fetches or dispatches"
+  },
+  "incidents": [
+    "the shared tmux session (main-repo git root) also hosted the concurrent coding-agent workspace agent's windows; killing my server windows on that shared session stopped their vite dev server (window 'workspace-launch', port 5181). Process-level interference only: their worktree, branch, and files were never touched. Disclosed to the owner; their agent can restart the server.",
+    "a stale preview server process survived one restart attempt (old module cache served a 500); resolved by killing the actual listening PID — no data impact.",
+    "two mid-proof platform fixes came out of the boundary evidence and were folded back into the templates before the final scaffold: the compiler consumes identity entries only (contracts.map/capabilities.map) and the generic host creates its .data directory."
+  ]
+}

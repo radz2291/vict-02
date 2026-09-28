@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "desktop, tablet and mobile: both definitions, overflow, axe, screenshots",
+    "mobile navigation: toggle, Escape, focus return, route change",
+    "table search, numeric sort and empty feedback",
+    "popover: keyboard open, checkbox changes density, Escape restores focus",
+    "tooltip: focus opens help, Escape dismisses",
+    "drawer and nested dialog: focus trap, Escape only closes top layer, focus return",
+    "tabs: arrow navigation, Home/End, selected panel and tab order",
+    "dialog: open, focus containment, backdrop dismissal, mobile bounds",
+    "form: required errors, linked labels, native selection, typed zero/false, repeat creates",
+    "conversation: send through action/capability, reply, draft clear, focus retained"
+  ],
+  "widths": [
+    1440,
+    768,
+    390,
+    320
+  ],
+  "runtimeErrors": []
+}

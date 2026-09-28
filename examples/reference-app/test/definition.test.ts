@@ -6,7 +6,7 @@ import {
   RENDERER_ID,
   RENDERER_REVISION,
   resolveRoute,
-} from '@victframework/renderer-svelte';
+} from '@victframework/ui-svelte';
 import {
   APPLICATION_DEFINITION_SCHEMA_V2,
   APPLICATION_DEFINITION_SCHEMA,

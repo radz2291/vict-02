@@ -1,0 +1,162 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/Desktop/RZ/vict-02-qa-ui-p5
+
+(node:22232) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:25000) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:21784) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:23068) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:23032) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:11060) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:9444) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ❯ |unit| scripts/test/trusted-publishing.test.mjs (55 tests | 2 failed) 305ms
+     × derives exactly the frozen 13-package set with no problems 49ms
+     × validates the frozen order as a real topological linearization 4ms
+(node:25036) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:25512) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:23932) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:22236) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:25396) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:1720) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:19704) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:8800) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:23212) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:11720) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:19984) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:23332) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:23336) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:25080) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+warning: in the working copy of 'BUILDER-KIT.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'README-fixture.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/builder-kit/PACK.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/builder-kit/capability-catalog.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/builder-kit/context-pack.json', LF will be replaced by CRLF the next time Git touches it
+(node:22644) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:388) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:18440) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:24628) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:5244) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+warning: in the working copy of 'BUILDER-KIT.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/builder-kit/PACK.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/builder-kit/capability-catalog.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/builder-kit/context-pack.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'packs/fx-pack/src/index.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/builder-kit/accepted-task-scope.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'BUILDER-KIT.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/builder-kit/PACK.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/builder-kit/capability-catalog.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/builder-kit/context-pack.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'packs/fx-pack/src/index.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/builder-kit/accepted-task-scope.json', LF will be replaced by CRLF the next time Git touches it
+(node:12212) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+warning: in the working copy of 'BUILDER-KIT.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/builder-kit/PACK.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/builder-kit/capability-catalog.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/builder-kit/context-pack.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'packs/fx-pack/src/index.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/builder-kit/accepted-task-scope.json', LF will be replaced by CRLF the next time Git touches it
+(node:16680) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:17444) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:17888) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:20788) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+warning: in the working copy of 'BUILDER-KIT.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'README-fixture.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/builder-kit/PACK.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/builder-kit/capability-catalog.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/builder-kit/context-pack.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/builder-kit/accepted-task-scope.json', LF will be replaced by CRLF the next time Git touches it
+(node:25552) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:10620) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:13684) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:17968) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| scripts/test/trusted-publishing.test.mjs > deriveReleaseInventory (real repository) > derives exactly the frozen 13-package set with no problems
+AssertionError: expected [ …(5) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "'@victframework/ui' is not in the frozen 13-package inventory",
++   "'@victframework/ui-svelte' is not in the frozen 13-package inventory",
++   "release-set inventory is 15 packages, expected exactly 13",
++   "'@victframework/renderer-svelte' depends on internal '@victframework/ui-svelte', which is not a release-set member",
++   "'@victframework/ui-svelte' depends on internal '@victframework/ui', which is not a release-set member",
++ ]
+
+ ❯ scripts/test/trusted-publishing.test.mjs:166:32
+    164|
+    165|   it('derives exactly the frozen 13-package set with no problems', () …
+    166|     expect(inventory.problems).toEqual([]);
+       |                                ^
+    167|     expect(inventory.order).toEqual(FROZEN_PUBLISH_ORDER);
+    168|     expect(inventory.order).toHaveLength(EXPECTED_RELEASE_PACKAGE_COUN…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  |unit| scripts/test/trusted-publishing.test.mjs > deriveReleaseInventory (real repository) > validates the frozen order as a real topological linearization
+AssertionError: expected [ …(2) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "'@victframework/renderer-svelte' depends on internal '@victframework/ui-svelte', which is not a release-set member",
++   "'@victframework/ui-svelte' depends on internal '@victframework/ui', which is not a release-set member",
++ ]
+
+ ❯ scripts/test/trusted-publishing.test.mjs:176:64
+    174|
+    175|   it('validates the frozen order as a real topological linearization',…
+    176|     expect(validateFrozenOrderIsTopological(inventory.byName)).toEqual…
+       |                                                                ^
+    177|   });
+    178| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed | 136 passed | 1 skipped (138)
+      Tests  2 failed | 2500 passed | 3 skipped (2505)
+   Start at  10:44:26
+   Duration  190.46s (transform 81.78s, setup 0ms, import 255.61s, tests 795.41s, environment 13.87s)
+
+VITEST_EXIT=1

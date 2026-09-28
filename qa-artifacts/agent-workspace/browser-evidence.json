@@ -1,0 +1,49 @@
+{
+  "baseUrl": "dynamic",
+  "checks": [
+    {
+      "check": "no-query-loop-declared-record-context",
+      "ok": true
+    },
+    {
+      "check": "fail-transition-coherent-1440",
+      "ok": true
+    },
+    {
+      "check": "fail-transition-coherent-390",
+      "ok": true
+    },
+    {
+      "check": "sessions-chooser",
+      "ok": true
+    },
+    {
+      "check": "approval-flow",
+      "ok": true
+    },
+    {
+      "check": "failure-recovery-message",
+      "ok": true
+    },
+    {
+      "check": "draft-retention",
+      "ok": true
+    },
+    {
+      "check": "reset-dialog",
+      "ok": true
+    },
+    {
+      "check": "drawer-keyboard",
+      "ok": true
+    },
+    {
+      "check": "responsive-stack",
+      "ok": true
+    },
+    {
+      "check": "axe-smoke",
+      "ok": true
+    }
+  ]
+}

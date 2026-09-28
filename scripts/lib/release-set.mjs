@@ -5,7 +5,9 @@
  * Extracted as PURE functions so both `scripts/oidc-release.mjs` (the
  * workflow's validate/publish/verify engine) and
  * `scripts/trust-bootstrap.mjs` (the one-time bulk trust bootstrap) use
- * the SAME derivation of the 13-package inventory, the SAME closed
+ * the SAME derivation of the 14-package inventory (contract amended
+ * 2026-09-26, §14; candidate set re-derived 2026-09-27 by the
+ * facade-retirement draft §16), the SAME closed
  * version/tag rule, and the SAME publication argv — and so the rules
  * carry permanent regression coverage in `scripts/test/`.
  */
@@ -17,27 +19,56 @@ import { join, resolve } from 'node:path';
 /** The only registry the release path ever talks to. */
 export const PUBLIC_REGISTRY = 'https://registry.npmjs.org/';
 
-/** The exact coordinated release-set size (frozen contract §5). */
-export const EXPECTED_RELEASE_PACKAGE_COUNT = 13;
+/** The exact coordinated release-set size (facade-retirement amendment
+ * draft §16, 2026-09-27 — the 2026-09-26 §14 15-package set minus the
+ * removed `@victframework/renderer-svelte` compatibility facade). */
+export const EXPECTED_RELEASE_PACKAGE_COUNT = 14;
 
 /** The internal dependency prefix of every release-set member. */
 export const INTERNAL_DEPENDENCY_PREFIX = '@victframework/';
 
 /**
- * The frozen dependency-topological publication order (contract §5).
- * Every release action validates that this order is still a valid
- * linearization of the ACTUAL manifests' internal dependency graph and
- * fails closed when the graph drifted — the order is frozen, not
- * re-derived per release.
+ * The frozen dependency-topological publication order (contract §5, as
+ * amended 2026-09-26, §14; order re-amended 2026-09-27, §15 — see
+ * docs/RELEASE-TRUSTED-PUBLISHING-CONTRACT-AMENDMENT-DRAFT-2026-09-27.md
+ * for that owner-ratification record). Every release action validates
+ * that this order is still a valid linearization of the ACTUAL manifests'
+ * internal dependency graph and fails closed when the graph drifted —
+ * the order is frozen, not re-derived per release.
+ *
+ * Facade-retirement context (consolidated amendment draft §16,
+ * 2026-09-27,
+ * docs/RELEASE-TRUSTED-PUBLISHING-CONTRACT-AMENDMENT-DRAFT-2026-09-27-FACADE-RETIREMENT.md,
+ * AWAITING owner ratification): the workspace retired the
+ * `@victframework/renderer-svelte` compatibility facade — the permanent
+ * implementation has lived in `@victframework/ui-svelte` since P5 — and
+ * migrated every current consumer to direct `ui-svelte` imports. The
+ * published `renderer-svelte@0.3.1` (and all prior versions) remain on
+ * npm untouched; only the CANDIDATE set shrinks. The order below is the
+ * §15 order with `renderer-svelte` (position 9) REMOVED — one deletion,
+ * no reordering: `ui` stays immediately before its earliest internal
+ * dependent (`sdk`, the §15 move), and every other relative position is
+ * preserved.
+ *
+ * §15 context (verification-only re-derivation, tracked to the actual
+ * graph): the TaskLedger platform work gave `sdk` and `application`
+ * internal `@victframework/ui` dependencies (presentation-intent types).
+ * The §14 order placed `ui` at position 7 — AFTER both — so the §14
+ * order stopped being a linearization of the real graph and every
+ * release action failed closed (two recorded trusted-publishing test
+ * failures). The §15 re-derivation moved ONLY `ui`, to immediately
+ * before its earliest internal dependent (`sdk`), preserving the
+ * relative order of the remaining entries.
  */
 export const FROZEN_PUBLISH_ORDER = [
   '@victframework/contracts',
+  '@victframework/ui',
   '@victframework/sdk',
   '@victframework/kernel',
   '@victframework/runtime',
   '@victframework/store-sqlite',
   '@victframework/application',
-  '@victframework/renderer-svelte',
+  '@victframework/ui-svelte',
   '@victframework/appdata-sqlite',
   '@victframework/scaffolder',
   '@victframework/control',
@@ -142,10 +173,21 @@ export function readReleaseManifest(repoRoot, packageDirName) {
 
 /**
  * Derive the release-set inventory from the ACTUAL publishable manifests
- * (contract §5): one manifest per directory under packages/, the exact
- * frozen 13-name inventory, and ONE coherent release-set version.
+ * (contract §5, as amended 2026-09-26, §14; re-amended 2026-09-27 by the
+ * facade-retirement draft §16 — 14 members): one manifest per directory
+ * under packages/, the exact frozen 14-name inventory, and ONE coherent
+ * release-set version.
+ *
+ * The inventory RULES (expected count and frozen order) default to the
+ * amended frozen contract constants. The historical evidence ladder
+ * (`scripts/release-evidence.mjs`) passes the BOUND candidate's own
+ * pre-amendment inventory instead, so the ladder keeps verifying the
+ * historical 13-member candidate exactly as recorded — without the
+ * current release path ever relaxing its own 14-package rule.
  *
  * @param {string} repoRoot repository root directory
+ * @param {{expectedCount?: number, frozenOrder?: string[]}} [options]
+ *   inventory rule overrides (evidence-ladder historical bindings only)
  * @returns {{
  *   byName: Map<string, {name: string, version: string, manifest: object, dir: string}>,
  *   version: string,
@@ -153,7 +195,9 @@ export function readReleaseManifest(repoRoot, packageDirName) {
  *   problems: string[],
  * }}
  */
-export function deriveReleaseInventory(repoRoot) {
+export function deriveReleaseInventory(repoRoot, options = {}) {
+  const expectedCount = options.expectedCount ?? EXPECTED_RELEASE_PACKAGE_COUNT;
+  const frozenOrder = options.frozenOrder ?? FROZEN_PUBLISH_ORDER;
   const problems = [];
   const packagesDir = join(repoRoot, 'packages');
   const dirNames = readdirSync(packagesDir, { withFileTypes: true })
@@ -175,8 +219,12 @@ export function deriveReleaseInventory(repoRoot) {
       // Private packages are never publishable and therefore never
       // release-set candidates (standard npm publishability semantics).
       // Recorded, not silent: the frozen-set and coherence checks below
-      // still fail if any non-private 14th package ever appears — a new
-      // set identity requires separate owner authorization (D-3).
+      // still fail if any non-private package outside the frozen inventory
+      // ever appears — a new set identity requires separate owner
+      // authorization (D-3; last exercised by the 2026-09-26 contract
+      // amendment §14, which added ui and ui-svelte, and by the 2026-09-27
+      // facade-retirement draft §16, which removes the renderer-svelte
+      // facade from the candidate set).
       continue;
     }
     if (!manifest.name.startsWith(INTERNAL_DEPENDENCY_PREFIX)) {
@@ -192,20 +240,20 @@ export function deriveReleaseInventory(repoRoot) {
     byName.set(manifest.name, manifest);
   }
 
-  const frozenSet = new Set(FROZEN_PUBLISH_ORDER);
+  const frozenSet = new Set(frozenOrder);
   for (const name of byName.keys()) {
     if (!frozenSet.has(name)) {
-      problems.push(`'${name}' is not in the frozen 13-package inventory`);
+      problems.push(`'${name}' is not in the frozen ${frozenOrder.length}-package inventory`);
     }
   }
-  for (const name of FROZEN_PUBLISH_ORDER) {
+  for (const name of frozenOrder) {
     if (!byName.has(name)) {
       problems.push(`frozen inventory member '${name}' has no publishable manifest`);
     }
   }
-  if (byName.size !== EXPECTED_RELEASE_PACKAGE_COUNT) {
+  if (byName.size !== expectedCount) {
     problems.push(
-      `release-set inventory is ${byName.size} packages, expected exactly ${EXPECTED_RELEASE_PACKAGE_COUNT}`,
+      `release-set inventory is ${byName.size} packages, expected exactly ${expectedCount}`,
     );
   }
 
@@ -219,13 +267,13 @@ export function deriveReleaseInventory(repoRoot) {
   // The frozen order must still be a valid linearization of the ACTUAL
   // internal dependency graph — a graph drift fails closed here (the
   // order is frozen by contract §5, never silently re-derived).
-  const orderProblems = validateFrozenOrderIsTopological(byName);
+  const orderProblems = validateFrozenOrderIsTopological(byName, frozenOrder);
   problems.push(...orderProblems);
 
   return {
     byName,
     version: versions.values().next().value,
-    order: [...FROZEN_PUBLISH_ORDER],
+    order: [...frozenOrder],
     problems,
   };
 }
@@ -237,11 +285,13 @@ export function deriveReleaseInventory(repoRoot) {
  * release-set members count).
  *
  * @param {Map<string, {name: string, manifest: object}>} byName inventory
+ * @param {string[]} [order] the frozen order to validate against
+ *   (defaults to the amended contract §5 order)
  * @returns {string[]} problems (empty when the frozen order is valid)
  */
-export function validateFrozenOrderIsTopological(byName) {
+export function validateFrozenOrderIsTopological(byName, order = FROZEN_PUBLISH_ORDER) {
   const problems = [];
-  const position = new Map(FROZEN_PUBLISH_ORDER.map((name, index) => [name, index]));
+  const position = new Map(order.map((name, index) => [name, index]));
   for (const [name, entry] of byName) {
     for (const section of ['dependencies', 'peerDependencies', 'optionalDependencies']) {
       const deps = entry.manifest[section];

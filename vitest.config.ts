@@ -8,6 +8,7 @@ const resolveFromRoot = (relative: string): string =>
 // Vitest resolves workspace package names directly to their TypeScript sources so
 // tests exercise source without requiring a prior build. Longest prefixes first.
 const aliases = {
+  '@victframework/ui': resolveFromRoot('packages/ui/src/index.ts'),
   '@victframework/kernel/testing': resolveFromRoot('packages/kernel/src/testing.ts'),
   '@victframework/kernel': resolveFromRoot('packages/kernel/src/index.ts'),
   '@victframework/contracts/zod': resolveFromRoot('packages/contracts/src/zod/index.ts'),
@@ -16,7 +17,6 @@ const aliases = {
   '@victframework/runtime': resolveFromRoot('packages/runtime/src/index.ts'),
   '@victframework/store-sqlite': resolveFromRoot('packages/store-sqlite/src/index.ts'),
   '@victframework/appdata-sqlite': resolveFromRoot('packages/appdata-sqlite/src/index.ts'),
-  '@victframework/renderer-svelte': resolveFromRoot('packages/renderer-svelte/src/index.ts'),
   '@victframework/scaffolder': resolveFromRoot('packages/scaffolder/src/index.ts'),
   '@victframework/application/testing': resolveFromRoot('packages/application/src/testing.ts'),
   '@victframework/application/renderer': resolveFromRoot('packages/application/src/renderer.ts'),
@@ -43,12 +43,12 @@ export default defineConfig({
             // (scripts/lib/*) used by the release-gate verifiers.
             'scripts/test/**/*.test.mjs',
           ],
-          // The Svelte renderer package runs in its own DOM-level project
-          // (svelte plugin + happy-dom) — never double-run without its
-          // toolchain. The Mastra adapter runs in its own project with a
-          // network guard (its suites must fail on any unexpected network
-          // request) — never double-run without that guard.
-          exclude: ['packages/renderer-svelte/**', 'packages/mastra/**'],
+          // The Svelte renderer runs in its own DOM-level project (svelte
+          // plugin + happy-dom) — never double-run without its toolchain.
+          // The Mastra adapter runs in its own project with a network guard
+          // (its suites must fail on any unexpected network request) — never
+          // double-run without that guard.
+          exclude: ['packages/ui-svelte/**', 'packages/mastra/**'],
         },
         resolve: { alias: aliases },
       },
@@ -66,7 +66,10 @@ export default defineConfig({
       {
         test: {
           name: 'renderer',
-          include: ['packages/renderer-svelte/test/**/*.test.ts'],
+          server: { deps: { inline: ['bits-ui', 'runed', '@internationalized/date'] } },
+          // The permanent Svelte renderer implementation (ui-svelte — the
+          // sole renderer package since the facade retirement).
+          include: ['packages/ui-svelte/test/**/*.test.ts'],
           environment: 'happy-dom',
         },
         resolve: { alias: aliases, conditions: ['browser'] },
@@ -79,7 +82,11 @@ export default defineConfig({
           // The SvelteKit applications run their own DOM/browser-level
           // projects (svelte/sveltekit toolchain) — excluded here so they
           // are never double-run without their toolchains.
-          exclude: ['examples/application-proof/**', 'examples/reference-app/**'],
+          exclude: [
+            'examples/application-proof/**',
+            'examples/reference-app/**',
+            'examples/ui-showcase/**',
+          ],
         },
         resolve: { alias: aliases },
       },

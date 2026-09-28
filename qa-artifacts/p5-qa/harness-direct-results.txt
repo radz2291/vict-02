@@ -1,0 +1,94 @@
+
+=== §1 TEXT & HEADINGS ===
+PASS  headings: declared levels 1-6 emit h1-h6; unleveled text stays p — t.h1:h1,t.h2:h2,t.h3:h3,t.h4:h4,t.h5:h5,t.h6:h6,t.plain:p,t.hostile:p
+PASS  headings: all text surfaces carry vict-text class (styled source of truth) — vict-text,vict-text,vict-text,vict-text,vict-text,vict-text,vict-text,vict-text
+PASS  headings: markup-looking content renders as escaped TEXT (no element children, no script/img injection) — {"html":"Text with markup-looking content: &lt;b&gt;bold?&lt;/b&gt; &lt;img src=x onerror=\"window.__qaXss=1\"&gt; &lt;script&gt;window.__qaXssScript=1&lt;/script&gt;","children":0,"xssFlag":false,"xssScript":false,"text":true}
+PASS  headings: long + unbroken content wraps at 320px; no document overflow — {"plainWraps":true,"plainFits":true,"unbrokenFits":true,"docOverflow":false}
+PASS  headings: declared text-surface outline is declared-order and monotonic (1..6) after the shell h1 — [{"level":1,"text":"Heading vocabulary"},{"level":1,"text":"Documented level one"},{"level":2,"text":"Documented level two"},{"level":3,"text":"Documented level three"},{"level":4,"text":"Documented level four"},{"level":5,"text":"Documented level five"},{"level":6,"text":"Documented level six"}]
+PASS  headings: OBSERVATION — shell h1 (screen title) + declared level-1 text coexist (application-declared; not a UI defect) — [{"level":1,"text":"Heading vocabulary"},{"level":1,"text":"Documented level one"}]
+PASS  axe: no violations (/headings desktop)
+
+=== §2 READ-ONLY DATAVIEW ===
+PASS  dataview: region + aria-label "Data table" + tabindex 0 + real table with scope=col headers — {"role":"region","label":"Data table","tabindex":"0"}
+PASS  dataview: column headers correspond to values (8 declared fields, header count == cell count) — {"headers":["id","name","status","budget","owner","notes","code","updated"],"cells":["AAAAAAAAAAAAAAAAAAAA-BBB","Alpha widget with a rath","active","1250000","QA","Long note: padding text ","X","2026-09-26"]}
+PASS  dataview: first row values correspond to the bound record (unbroken id in row 1) — ["AAAAAAAAAAAAAAAAAAAA-BBB","Alpha widget with a rath","active","1250000","QA","Long note: padding text ","X","2026-09-26"]
+PASS  dataview: empty view renders the empty state feedback (data-state=empty p) and no table — {"isFeedback":true,"text":"Nothing here yet.","hasTable":false}
+PASS  dataview @1280: contained scroll region fits; document overflow zero — {"scrollWidth":1024,"clientWidth":937,"scrollLeft":0,"scrollable":true,"overflowX":"auto","overscroll":"contain","doc":{"scrollWidth":1280,"clientWidth":1280,"overflow":false}}
+PASS  dataview @1280: keyboard users can focus the scrollable table region and scroll it — {"focused":true,"before":0,"after":87,"reachable":true}
+PASS  dataview @1280: horizontal scroll stays contained (scrolled fully right, page did not move) — {"scrollWidth":1024,"clientWidth":937,"scrollLeft":87,"scrollable":true,"overflowX":"auto","overscroll":"contain"}
+PASS  dataview @430: contained scroll region scrolls; document overflow zero — {"scrollWidth":1024,"clientWidth":380,"scrollLeft":87,"scrollable":true,"overflowX":"auto","overscroll":"contain","doc":{"scrollWidth":430,"clientWidth":430,"overflow":false}}
+PASS  dataview @430: keyboard users can focus the scrollable table region and scroll it — {"focused":true,"before":87,"after":644,"reachable":true}
+PASS  dataview @430: horizontal scroll stays contained (scrolled fully right, page did not move) — {"scrollWidth":1024,"clientWidth":380,"scrollLeft":644,"scrollable":true,"overflowX":"auto","overscroll":"contain"}
+PASS  dataview @380: contained scroll region scrolls; document overflow zero — {"scrollWidth":1024,"clientWidth":330,"scrollLeft":644,"scrollable":true,"overflowX":"auto","overscroll":"contain","doc":{"scrollWidth":380,"clientWidth":380,"overflow":false}}
+PASS  dataview @380: keyboard users can focus the scrollable table region and scroll it — {"focused":true,"before":644,"after":694,"reachable":true}
+PASS  dataview @380: horizontal scroll stays contained (scrolled fully right, page did not move) — {"scrollWidth":1024,"clientWidth":330,"scrollLeft":694,"scrollable":true,"overflowX":"auto","overscroll":"contain"}
+PASS  dataview @320: contained scroll region scrolls; document overflow zero — {"scrollWidth":1024,"clientWidth":270,"scrollLeft":694,"scrollable":true,"overflowX":"auto","overscroll":"contain","doc":{"scrollWidth":320,"clientWidth":320,"overflow":false}}
+PASS  dataview @320: keyboard users can focus the scrollable table region and scroll it — {"focused":true,"before":694,"after":754,"reachable":true}
+PASS  dataview @320: horizontal scroll stays contained (scrolled fully right, page did not move) — {"scrollWidth":1024,"clientWidth":270,"scrollLeft":754,"scrollable":true,"overflowX":"auto","overscroll":"contain"}
+PASS  dataview @320: long text and unbroken values wrap inside cells; nothing escapes the region — {"overflowing":0,"docOverflow":false}
+PASS  axe: no violations (/widgets desktop)
+
+=== §3 LIST ===
+PASS  list: semantic <ul> with <li> children; title-only items render titles — {"tag":"ul","items":["Plain item one","Plain item two","Plain item three with a considerably longer title "],"count":3}
+PASS  list: title + secondary items render "title — secondary" — "Item with secondary — the secondary value"
+PASS  list: empty list renders empty feedback, no <ul> — The list is empty.
+PASS  list @320: items stack with grid spacing; unbroken identifiers wrap; no document overflow — {"stacked":true,"spacing":8,"unbrokenFits":true,"docOverflow":false}
+
+=== §4 DETAIL ===
+PASS  detail: <dl> with <div><dt><dd> rows; all eight fields present in declared order — ["id","name","status","config","budget","owner","notes","updated"]
+PASS  detail: nonexistent record renders the empty feedback — This record does not exist.
+PASS  detail @320: long/unbroken values wrap inside the panel (P3 clip fix not regressed); no document overflow — {"dlRight":296,"panelRight":296,"inside":true,"docOverflow":false,"jsonWraps":true}
+
+=== §5 CHARTS ===
+PASS  chart bar: named figure (group) + named svg image (role=img, summary); "Data table" summary present — {"fig":"Bar chart of total budget summed per project status","svgRole":"img","svgLabel":"Bar chart of total budget summed per project status"}
+PASS  chart bar: five bars, one per aggregated category, with <title> tooltips — ["planning (long category label): 400","active: 1250","paused: 300","done: 900","archived: 150"]
+PASS  chart bar: bar heights proportional to values (h = v/max · plotH); baselines on axis — [["planning (long category label): 400",71.68],["active: 1250",224],["paused: 300",53.76],["done: 900",161.28],["archived: 150",26.88]]
+PASS  chart bar: data table exposes labels/values in the same order as the bars (headers = declared fields) — [{"label":"planning (long category label)","value":"400"},{"label":"active","value":"1250"},{"label":"paused","value":"300"},{"label":"done","value":"900"},{"label":"archived","value":"150"}]
+PASS  chart bar: five category labels rendered under the axis in band order — [["planning (long c",105.6,159],["active",220.79999999999998,31],["paused",336,38],["done",451.20000000000005,27],["archived",566.4000000000001,45]]
+PASS  chart bar: LONG-LABEL DENSITY measured (long labels exceed their band; adjacent overlap counted — documented finding) — band=115px widest=159px adjacentOverlaps=0
+PASS  chart line: path + one circle per point; first/last points anchored to plot edges — {"circles":6,"path":"M48.0,156.0 L163.2,114.0 L278.4,135.0 L3"}
+PASS  chart line: point heights proportional to values — [156,114,135,58,93,16]
+PASS  chart line: data table corresponds to rendered points — [{"label":"Jan","value":"120"},{"label":"Feb","value":"180"},{"label":"Mar","value":"150"},{"label":"Apr","value":"260"},{"label":"May","value":"210"},{"label":"Jun","value":"320"}]
+PASS  chart zero points: no bars, no path; axes/gridlines still render; data table empty — {"rects":0,"path":"","table":0}
+PASS  chart one point: single centered circle, path present, table row matches — [{"cx":336,"cy":16,"title":"Only: 5"}]
+PASS  chart large values: scale normalizes by max (large bar ~ full plot height) — [224,1,1,1]
+PASS  chart zero/negative values: rendered as clamped 1px baseline nubs (documented limitation); data table keeps TRUE values — {"heights":[224,1,1,1],"table":[{"label":"large","value":"1250000"},{"label":"zero","value":"0"},{"label":"negative","value":"-400"},{"label":"small","value":"12"}]}
+PASS  chart edge: svg never exceeds its figure container
+PASS  chart many points: 12 circles render; adjacent label density measured (documented finding) — overlaps=2 at desktop
+PASS  chart many points: NO category label clips at the svg edge (QA fix: edge labels anchor inward) — {"outside":0,"lastText":"point-12","lastInside":true,"firstInside":true}
+PASS  charts @320: figures fit, svgs scale via viewBox, no document overflow — {"figuresFit":true,"svgsScale":true,"docOverflow":false,"svgWidth":238}
+PASS  axe: no violations (/charts desktop)
+
+=== §6 CONVERSATION ===
+PASS  conversation: initial messages render with author · participant meta and participant classes — [["user","You · user"],["assistant","Assistant · assistant"]]
+PASS  conversation: empty conversation renders its declared empty state — No messages yet — say hello!
+PASS  conversation: whitespace-only draft leaves Send disabled and submit dispatches nothing — disabled=true, dispatches 0->0
+PASS  conversation: send trims text before dispatch — {"pending":1,"flight":{"disabled":true,"label":"Sending…","busy":"true"},"log":{"text":"Hello browser QA","author":"You","participant":"user"}}
+PASS  conversation: rapid double-submit dispatches exactly once — 1 vs 1
+PASS  conversation RACE (a): draft edited during flight survives a successful send (only clears when current trimmed draft == sent text) — "     Hello browser QA   Edited while in flight"
+PASS  conversation: successful send invalidates/refetches and the sent message appears in the feed — You · user Hello browser QA
+PASS  conversation RACE (b): draft edited to trimmed-equal text during flight IS cleared on success — ""
+PASS  conversation: composer focus restored after completed send
+PASS  conversation: typing continues correctly after refetch
+PASS  conversation: denied send keeps the draft and surfaces the boundary denial — "  Denied but kept  " / "This action was denied by the authorization boundary."
+PASS  conversation: thrown dispatcher failure keeps the draft, surfaces the SAFE renderer failure, raw error never enters the DOM — "Thrown but kept" canaryLeak=false
+PASS  conversation: long + unbroken message wraps inside the panel; feed is a contained scroll region; page never overflows — {"fits":true,"feedScrolls":true,"feedScrollable":"auto","docOverflow":false}
+PASS  conversation @320: panel fits, composer row (input + Send) stays usable, no document overflow — {"fits":true,"inputVisible":true,"buttonVisible":true,"sameRow":true,"docOverflow":false}
+PASS  axe: no violations (/conversation desktop with messages)
+
+=== §7 CUSTOM COMPONENT SLOT ===
+PASS  slot: resolvable custom component renders inside the slot with UNCHANGED props (string/number/boolean) — {"label":"workspace health island","count":"7","pinned":"true","slot":"cm.health","componentId":"cmp.health","insideVict":true}
+PASS  slot: unresolvable component produces the SAFE structured failure panel (never a crash, never a raw error) — {"present":true,"role":"alert","text":"Component 'cmp.ghost' is not registered."}
+PASS  slot @320: island stays inside the shell; no document overflow — {"fits":true,"docOverflow":false}
+PASS  slot @320 overlay: island + list + empty view + empty chart all render inside the dialog without breaking the shell — {"open":true,"island":"overlay island","islandFits":true,"listItems":3,"emptyView":"Nothing here yet.","nestedChart":true,"docOverflow":false}
+PASS  axe: no violations (/slots desktop)
+
+=== §8 CROSS-ROLE NESTING ===
+PASS  nesting: detail renders inside the tab panel for the routed record — {"dl":true,"id":"AAAAAAAAAAAAAAAAAAAA","hiddenTabs":1}
+PASS  nesting: drawer contains a conversation and an empty list (both render through the recursion path) — {"open":true,"drawerClass":true,"conversation":true,"emptyList":"The drawer list is empty."}
+PASS  nesting: conversation inside the drawer sends through the boundary and refetches — You · user sent from inside the drawer
+PASS  nesting: empty detail state renders inside tabs at 380px — This record does not exist.
+PASS  axe: no violations (/rec desktop with drawer interaction)
+PASS  no uncaught page errors across the whole run
+
+==== HARNESS: 76/76 checks passed ====

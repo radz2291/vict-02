@@ -14,6 +14,14 @@ export default tseslint.config(
       '.pi/**',
       // Temporary probe scratch space (removed before finalization).
       'tmp-probes/**',
+      // QA evidence artifacts (P1–P5 QA session drivers, browser harnesses,
+      // and their captured machine-generated consumer bundles). These are
+      // immutable evidence records of verification sessions, NOT maintained
+      // production source; they deliberately use browser globals
+      // (document/window) and unlinted generated output. Excluding them
+      // here keeps the repository lint gate scoped to real source without
+      // weakening any production lint rule.
+      'qa-artifacts/**',
     ],
   },
   js.configs.recommended,

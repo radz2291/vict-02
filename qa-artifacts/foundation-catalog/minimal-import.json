@@ -1,0 +1,14 @@
+{
+  "entry": "Checkbox + ControlScope; production ESM including Svelte runtime; optional CSS measured separately",
+  "bytes": 93874,
+  "gzip": 27508,
+  "renderedBitsModules": [
+    "bits/checkbox/checkbox.svelte.js",
+    "bits/checkbox/components/checkbox-input.svelte",
+    "bits/checkbox/components/checkbox.svelte",
+    "bits/utilities/config/bits-config.js",
+    "bits/utilities/config/components/bits-config.svelte",
+    "bits/utilities/hidden-input.svelte"
+  ],
+  "unusedFamiliesExcluded": true
+}

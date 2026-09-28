@@ -1,0 +1,154 @@
+{
+  "results": [
+    {
+      "name": "pack: all six 0.3.1 packages packed from the implementation worktree",
+      "ok": true,
+      "detail": "victframework-application-0.3.1.tgz, victframework-contracts-0.3.1.tgz, victframework-renderer-svelte-0.3.1.tgz, victframework-sdk-0.3.1.tgz, victframework-ui-0.3.1.tgz, victframework-ui-svelte-0.3.1.tgz"
+    },
+    {
+      "name": "pack: packed manifests declare NO workspace: protocol",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "npm install from packed tarballs (clean temp dir)",
+      "ok": true,
+      "detail": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-p5-proof-Nb1mM4\\consumer"
+    },
+    {
+      "name": "lockfile: installed versions exactly 0.3.1",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lockfile: NO workspace: protocol",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lockfile: NO link: specifiers",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lockfile: NO monorepo path leakage (vict-02)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lockfile: file: specifiers are ONLY the packed tarball installs",
+      "ok": true,
+      "detail": "[12 occurrences] packed/victframework-application-0.3.1.tgz,packed/victframework-contracts-0.3.1.tgz,packed/victframework-renderer-svelte-0.3.1.tgz,packed/victframework-sdk-0.3.1.tgz,packed/victframework-ui-0.3.1.tgz,packed/victframework-ui-svelte-0.3.1.tgz"
+    },
+    {
+      "name": "installed theme.css is ONLY the compatibility entry importing ui-svelte/styles.css",
+      "ok": true,
+      "detail": "/* Compatibility stylesheet entry point. Presentation styles live in ui-svelte. */\n@import '@victframework/ui-svelte/sty"
+    },
+    {
+      "name": "installed renderer-svelte is the facade (re-exports from ui-svelte, no own implementation)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "installed ui-svelte ships styles.css (the one style source)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "vite build succeeds (both renderer entry points resolve)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "bundle: renderer identity string occurs EXACTLY once (single implementation)",
+      "ok": true,
+      "detail": "1"
+    },
+    {
+      "name": "bundle: generic host marker occurs EXACTLY once (single VitApp implementation)",
+      "ok": true,
+      "detail": "1"
+    },
+    {
+      "name": "bundle: style source reached through BOTH entry points (1 or 2 inline copies)",
+      "ok": true,
+      "detail": "[1,1,1]"
+    },
+    {
+      "name": "bundle: inline style copies are byte-identical (deduplicated by the bundler)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "consumer: direct: RENDERER_ID is renderer.svelte-kit",
+      "ok": true,
+      "detail": "renderer.svelte-kit"
+    },
+    {
+      "name": "consumer: direct: RENDERER_REVISION is 5.0.0",
+      "ok": true,
+      "detail": "5.0.0"
+    },
+    {
+      "name": "consumer: compat: identity constants equal the direct implementation",
+      "ok": true,
+      "detail": "renderer.svelte-kit/5.0.0"
+    },
+    {
+      "name": "consumer: single implementation: createVictRenderer is the SAME binding",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "consumer: single implementation: VitApp is the SAME binding",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "consumer: renderer factory: identical id/revision/roles through both paths",
+      "ok": true,
+      "detail": "renderer.svelte-kit/5.0.0"
+    },
+    {
+      "name": "consumer: direct: application mounts (generic host rendered)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "consumer: compat: application mounts (generic host rendered)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "consumer: direct + compat render IDENTICAL host markup",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "consumer: direct + compat resolve the route surface",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "consumer: theme tokens applied through BOTH style entry points",
+      "ok": true,
+      "detail": "--vict-color-accent: #7c3aed;"
+    },
+    {
+      "name": "consumer: direct: reactive path update renders the new screen on the SAME host node",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "consumer: compat: reactive path update renders the new screen on the SAME host node",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "consumer: direct + compat: unmount is idempotent (no throw)",
+      "ok": true,
+      "detail": ""
+    }
+  ]
+}

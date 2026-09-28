@@ -1,0 +1,179 @@
+{
+  "applicationId": "app.qa.p4.invalid",
+  "applicationRevision": "1",
+  "applicationVersion": "v1_c1b5a9561c648e27011bd41c810823b29c902e609a9f5eac0e961bb609e8f8ab",
+  "manifest": {
+    "schema": "vict.application@2",
+    "id": "app.qa.p4.invalid",
+    "revision": "1",
+    "routes": [
+      {
+        "id": "home",
+        "path": "/",
+        "screenId": "s.slots"
+      }
+    ],
+    "screens": [
+      {
+        "id": "s.slots",
+        "title": "Unresolvable slot",
+        "breadcrumbs": [
+          {
+            "label": "Home"
+          }
+        ],
+        "layout": [
+          {
+            "name": "main",
+            "surfaces": [
+              {
+                "role": "component",
+                "id": "cm.ghost",
+                "componentId": "cmp.ghost",
+                "revision": "1",
+                "props": {
+                  "label": "never resolves"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "views": [],
+    "actions": [],
+    "resources": [
+      {
+        "resourceId": "messages",
+        "revision": "1"
+      }
+    ],
+    "components": [
+      {
+        "componentId": "cmp.ghost",
+        "revision": "1"
+      }
+    ]
+  },
+  "routes": [
+    {
+      "route": {
+        "id": "home",
+        "path": "/",
+        "screenId": "s.slots"
+      },
+      "screen": {
+        "id": "s.slots",
+        "title": "Unresolvable slot",
+        "breadcrumbs": [
+          {
+            "label": "Home"
+          }
+        ],
+        "layout": [
+          {
+            "name": "main",
+            "surfaces": [
+              {
+                "role": "component",
+                "id": "cm.ghost",
+                "componentId": "cmp.ghost",
+                "revision": "1",
+                "props": {
+                  "label": "never resolves"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "screens": {
+    "s.slots": {
+      "id": "s.slots",
+      "title": "Unresolvable slot",
+      "breadcrumbs": [
+        {
+          "label": "Home"
+        }
+      ],
+      "layout": [
+        {
+          "name": "main",
+          "surfaces": [
+            {
+              "role": "component",
+              "id": "cm.ghost",
+              "componentId": "cmp.ghost",
+              "revision": "1",
+              "props": {
+                "label": "never resolves"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "views": {},
+  "forms": {},
+  "actions": {},
+  "resources": {
+    "messages": {
+      "schema": "vict.resource@1",
+      "id": "messages",
+      "revision": "1",
+      "identity": {
+        "key": "id"
+      },
+      "fields": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "text",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "author",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "participant",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "queries": {
+        "list": {
+          "pagination": false
+        }
+      },
+      "mutations": [
+        {
+          "op": "create",
+          "effect": "write",
+          "inputContractId": "qa.message.input",
+          "idempotency": "keyed",
+          "permissions": [
+            "messages.write"
+          ]
+        }
+      ],
+      "authorization": {
+        "effect": "read"
+      }
+    }
+  },
+  "components": [
+    {
+      "componentId": "cmp.ghost",
+      "revision": "1"
+    }
+  ]
+}

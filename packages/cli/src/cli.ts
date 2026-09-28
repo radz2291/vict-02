@@ -2,10 +2,17 @@
  * Stage 06B — CLI entry point (testable core).
  *
  * Exit codes:
- * - 0: command succeeded (envelope ok);
- * - 1: usage error (unknown command, missing flags, unreadable file);
+ * - 0: command succeeded (envelope ok, valid definition, or vocabulary);
+ * - 1: usage error (unknown command, missing flags, unreadable file,
+ *      module without a recognizable definition export);
  * - 2: the VICT endpoint rejected the command (stable server code);
- * - 3: transport failure (endpoint unreachable/malformed).
+ * - 3: transport failure (endpoint unreachable/malformed);
+ * - 4: `vict check` — the definition is INVALID (structured diagnostics);
+ * - 5: `vict check` — unexpected execution error (module load crash).
+ *
+ * Local authoring commands (`check`, `vocabulary`) run server-free with the
+ * authoritative compiler from `@victframework/application`; operator
+ * commands and their exit-code behavior are unchanged.
  *
  * The binary never reads databases and never prints hostile values: flag
  * values are user input, and all server-derived output comes from the
@@ -14,6 +21,7 @@
 
 import { readFileSync, statSync } from 'node:fs';
 import { VictCliError, VictHttpClient } from './client.js';
+import { runCheckCommand, runVocabularyCommand } from './check.js';
 import { buildPayload, CLI_COMMANDS, fillPath, type CliCommandSpec } from './commands.js';
 
 export interface VictCliIo {
@@ -43,8 +51,17 @@ ${Object.entries(CLI_COMMANDS)
   .map(([name, spec]) => `  ${name.padEnd(22)} ${spec.description}`)
   .join('\n')}
 
+Local authoring tools (no server required):
+  check <file> [--json]  compile an Application Definition and print
+                         structured diagnostics (exit 0 valid, 4 invalid,
+                         1 usage, 5 unexpected); TypeScript via Node's
+                         built-in type stripping (erasable TS only)
+  vocabulary [--json]    print the closed definition vocabulary derived
+                         from the compiler's enforcement constants
+
 The CLI consumes the versioned VICT command surface over HTTP only; it
-never reads stores directly and never bypasses governance.`;
+never reads stores directly and never bypasses governance. The local
+authoring commands compile only — they never execute author handlers.`;
 
 /** Parse argv into (command, flags, positionals, file, jsonOut). */
 function parse(argv: readonly string[]): {
@@ -155,6 +172,14 @@ export async function runVictCli(
   if (parsed.command === undefined || parsed.command === 'help') {
     io.stdout(USAGE);
     return parsed.command === 'help' ? 0 : 1;
+  }
+  // Local authoring tools run server-free BEFORE the endpoint requirement;
+  // every other command keeps its exact operator behavior below.
+  if (parsed.command === 'check') {
+    return runCheckCommand(parsed.positionals, io, { jsonOut: parsed.jsonOut });
+  }
+  if (parsed.command === 'vocabulary') {
+    return runVocabularyCommand(parsed.positionals, io, { jsonOut: parsed.jsonOut });
   }
   const endpoint = parsed.flags.endpoint ?? options.endpoint ?? process.env['VICT_ENDPOINT'];
   const token = parsed.flags.token ?? options.token ?? process.env['VICT_TOKEN'];

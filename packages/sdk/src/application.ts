@@ -1,3 +1,10 @@
+import type {
+  UiActionFeedbackText,
+  UiApplicationComposition,
+  UiPageComposition,
+  UiLayoutMode,
+  UiRegionPresentation,
+} from '@victframework/ui';
 /**
  * Framework-neutral Application, Resource and Release DEFINITIONS.
  *
@@ -182,8 +189,15 @@ export interface ResourcePresentationHint {
   readonly label?: string;
   /** Meaningful display order (ordered semantics; never sorted away). */
   readonly order?: number;
-  readonly widget?: 'text' | 'number' | 'boolean' | 'date' | 'json';
+  readonly widget?: (typeof RESOURCE_PRESENTATION_WIDGETS)[number];
 }
+
+/**
+ * Closed @1 widget vocabulary of resource presentation hints. Runtime
+ * constant so authoring tools can expose it without reading types
+ * (authoring-tools slice); the union above is derived from it.
+ */
+export const RESOURCE_PRESENTATION_WIDGETS = ['text', 'number', 'boolean', 'date', 'json'] as const;
 
 /* ------------------------------------------------------------------ */
 /* Application definitions                                             */
@@ -260,7 +274,8 @@ export interface DisabledCondition {
 }
 
 /** A named layout region of a screen, holding ordered surfaces. */
-export interface ScreenRegion {
+export interface ScreenRegion extends UiRegionPresentation {
+  /** Optional @2 composition hints; no CSS or renderer implementation names. */
   readonly name: string;
   /** Ordered surface sequence; the order is meaningful presentation semantics. */
   readonly surfaces: readonly Surface[];
@@ -268,6 +283,9 @@ export interface ScreenRegion {
 
 /** A screen: title, layout regions, safe default states, and contextual navigation. */
 export interface ScreenDefinition {
+  /** @2: split shares space between main and supporting regions; stacks on small screens. */
+  readonly layoutMode?: UiLayoutMode;
+  readonly composition?: UiPageComposition;
   readonly id: string;
   readonly title: string;
   /** Named regions; the region array is ordered layout semantics. */
@@ -285,17 +303,41 @@ export interface ViewBinding {
   readonly resourceRevision: string;
   /** Projection: subset of catalogue fields, in meaningful display order. */
   readonly fields?: readonly string[];
+  /**
+   * Declared static exact-match filters (@2) applied by the host when
+   * loading the view (e.g. an "open tasks" projection). Values are bounded
+   * serializable primitives; keys must be resource catalogue fields.
+   */
+  readonly filters?: Readonly<Record<string, string | number | boolean>>;
+  /** Declared deterministic read order (@2) for the view's rows. */
+  readonly sort?: readonly ViewSort[];
   /** Declared safe-empty behavior key rendered when no rows exist. */
   readonly emptyMessage?: string;
 }
 
 /** One ordered form field. Form-field order is meaningful presentation semantics. */
 export interface FormField {
+  /** @2: finite string choices, only valid with widget: 'select'. */
+  readonly options?: readonly { readonly value: string; readonly label: string }[];
   /** Field name; must exist in the bound resource's explicit field catalogue. */
   readonly name: string;
   readonly label: string;
   readonly required?: boolean;
-  readonly widget?: 'text' | 'number' | 'boolean' | 'date' | 'json';
+  readonly widget?: (typeof FORM_FIELD_WIDGETS)[number];
+}
+
+/**
+ * Closed @2 widget vocabulary of form fields. Runtime constant so authoring
+ * tools can expose it without reading types (authoring-tools slice); the
+ * union above is derived from it.
+ */
+export const FORM_FIELD_WIDGETS = ['text', 'number', 'boolean', 'date', 'json', 'select'] as const;
+
+/** Declared deterministic read order for a view's rows (@2). */
+export interface ViewSort {
+  /** Resource catalogue field to sort by. */
+  readonly field: string;
+  readonly direction: 'asc' | 'desc';
 }
 
 /**
@@ -335,6 +377,7 @@ export type SurfaceRole =
   | 'detail'
   | 'chart'
   | 'status'
+  | 'count'
   | 'tabs'
   | 'dialog'
   | 'drawer'
@@ -360,10 +403,38 @@ export interface TableColumn {
   readonly label?: string;
   /** Column header sorting control is presented when true. */
   readonly sortable?: boolean;
+  /**
+   * Versioned registered component rendered in this cell (@2 island cell;
+   * e.g. a priority badge). The component is resolved from the application's
+   * declared component references at exactly this revision and receives ONLY
+   * the props declared in `props`, derived from the rendered row. It stays
+   * presentational: it never receives the runtime, the dispatcher, or data
+   * access.
+   */
+  readonly componentId?: string;
+  /** Exact revision of the declared cell component (required with `componentId`). */
+  readonly revision?: string;
+  /** Maps the cell component's prop names to row fields (@2; prop name → view field). */
+  readonly props?: Readonly<Record<string, string>>;
 }
 
 /** Semantic value→tone mapping entries of a status surface. */
 export type StatusToneMapping = Readonly<Record<string, StatusTone>>;
+
+/**
+ * Declared per-row action of a table surface (@2). The renderer dispatches
+ * the DECLARED action once per row with input derived from that row through
+ * `input` (action input field → view field); the default mapping is
+ * `{ id: 'id' }`. Navigation actions substitute declared route parameters
+ * from the same derived input. The action's own declared contract, effect
+ * class, and authorization remain the only authority; the row control is
+ * presentation only.
+ */
+export interface TableRowAction {
+  readonly actionId: string;
+  readonly label: string;
+  readonly input?: Readonly<Record<string, string>>;
+}
 
 /**
  * Neutral surface: meaning and composition, never framework component types.
@@ -405,8 +476,21 @@ export type Surface =
       readonly id: string;
       readonly componentId: string;
       readonly revision: string;
-      /** Bounded, contract-safe props for the custom component. */
-      readonly props?: Readonly<Record<string, string | number | boolean>>;
+      /**
+       * Bounded, contract-safe props for the custom component. Static
+       * primitives keep their literal meaning; a {@link ComponentSource}
+       * object is a declared route-context binding resolved by the
+       * renderer (route parameter, route record field, or declared view
+       * rows) — never an expression or executable code.
+       */
+      readonly props?: Readonly<Record<string, string | number | boolean | ComponentSource>>;
+      /**
+       * Declared input bindings (@2) for actions this surface dispatches:
+       * input field name → route-context source. The renderer resolves
+       * them at dispatch time, so an island never inspects URLs or
+       * self-builds record identity. Explicit input fields still win.
+       */
+      readonly input?: Readonly<Record<string, ComponentSource>>;
       readonly visibleWhen?: SurfaceCondition;
     }
   | {
@@ -436,6 +520,8 @@ export type Surface =
       readonly columns?: readonly TableColumn[];
       /** Declared query action that re-reads rows for search/sort/page. */
       readonly queryActionId?: string;
+      /** Declared per-row action (@2) dispatched with row-derived input. */
+      readonly rowAction?: TableRowAction;
       /** Fields searched by the table's search control (subset of view fields). */
       readonly searchFields?: readonly string[];
       /** Fields offered as exact-match filter controls (subset of view fields). */
@@ -483,6 +569,15 @@ export type Surface =
       readonly visibleWhen?: SurfaceCondition;
     }
   | {
+      /** Live count of a declared view's rows (@2): renders the view datum's total. */
+      readonly role: 'count';
+      readonly id: string;
+      readonly viewId: string;
+      /** Accessible label announced with the count. */
+      readonly label?: string;
+      readonly visibleWhen?: SurfaceCondition;
+    }
+  | {
       /** Tabbed content container. */
       readonly role: 'tabs';
       readonly id: string;
@@ -520,6 +615,14 @@ export type Surface =
       readonly participantField?: string;
       /** Declared mutation/capability action executed on send. */
       readonly sendActionId: string;
+      /**
+       * Declared send-input bindings (@2): input field name → route-context
+       * source (same closed vocabulary as component surfaces). Resolved by
+       * the renderer and merged under the composed send payload, so a
+       * conversation on a parameterized route operates on the current
+       * record without URL inspection.
+       */
+      readonly input?: Readonly<Record<string, ComponentSource>>;
       readonly inputLabel: string;
       readonly inputPlaceholder?: string;
       readonly emptyMessage?: string;
@@ -527,58 +630,75 @@ export type Surface =
     };
 
 /** Application action kinds (Stage 04 foundation subset). */
-export type ActionDefinition =
+export type ActionDefinition = { readonly feedback?: UiActionFeedbackText } &
   /** Local/view presentation action. Never becomes a graph node. */
-  | {
-      readonly kind: 'local';
-      readonly id: string;
-      readonly revision: string;
-      readonly inputContractId?: string;
-    }
-  /** Navigation action: change route context. */
-  | {
-      readonly kind: 'navigation';
-      readonly id: string;
-      readonly revision: string;
-      readonly routeId: string;
-    }
-  /** Typed resource query. */
-  | {
-      readonly kind: 'query';
-      readonly id: string;
-      readonly revision: string;
-      readonly resourceId: string;
-      readonly resourceRevision: string;
-      readonly inputContractId?: string;
-      readonly inputContractRevision?: string;
-      readonly outputContractId?: string;
-      readonly outputContractRevision?: string;
-    }
-  /** Authorized resource mutation. */
-  | {
-      readonly kind: 'mutation';
-      readonly id: string;
-      readonly revision: string;
-      readonly resourceId: string;
-      readonly resourceRevision: string;
-      readonly op: string;
-      readonly inputContractId: string;
-      readonly inputContractRevision?: string;
-      readonly outputContractId?: string;
-      readonly outputContractRevision?: string;
-    }
-  /** Real VICT capability invocation through the public runtime boundary. */
-  | {
-      readonly kind: 'capability';
-      readonly id: string;
-      readonly revision: string;
-      readonly capabilityId: string;
-      readonly capabilityRevision: string;
-      readonly inputContractId: string;
-      readonly inputContractRevision?: string;
-      readonly outputContractId?: string;
-      readonly outputContractRevision?: string;
-    };
+  (
+    | {
+        readonly kind: 'local';
+        readonly id: string;
+        readonly revision: string;
+        readonly inputContractId?: string;
+      }
+    /** Navigation action: change route context. */
+    | {
+        readonly kind: 'navigation';
+        readonly id: string;
+        readonly revision: string;
+        readonly routeId: string;
+      }
+    /** Typed resource query. */
+    | {
+        readonly kind: 'query';
+        readonly id: string;
+        readonly revision: string;
+        readonly resourceId: string;
+        readonly resourceRevision: string;
+        readonly inputContractId?: string;
+        readonly inputContractRevision?: string;
+        readonly outputContractId?: string;
+        readonly outputContractRevision?: string;
+      }
+    /** Authorized resource mutation. */
+    | {
+        readonly kind: 'mutation';
+        readonly id: string;
+        readonly revision: string;
+        readonly resourceId: string;
+        readonly resourceRevision: string;
+        readonly op: string;
+        readonly inputContractId: string;
+        readonly inputContractRevision?: string;
+        readonly outputContractId?: string;
+        readonly outputContractRevision?: string;
+      }
+    /** Real VICT capability invocation through the public runtime boundary. */
+    | {
+        readonly kind: 'capability';
+        readonly id: string;
+        readonly revision: string;
+        readonly capabilityId: string;
+        readonly capabilityRevision: string;
+        readonly inputContractId: string;
+        readonly inputContractRevision?: string;
+        readonly outputContractId?: string;
+        readonly outputContractRevision?: string;
+      }
+  );
+
+/**
+ * Bounded declared source of dynamic component-surface data (@2). A closed
+ * three-way vocabulary over the route context — no expressions, no
+ * executable code, no unrestricted data access. Unknown sources, unknown
+ * route parameters, undeclared views and unknown record fields are
+ * rejected at compile time where determinable.
+ */
+export type ComponentSource =
+  /** The current route parameter value by declared name. */
+  | { readonly param: string }
+  /** The named field of the current route record (parameterized routes). */
+  | { readonly record: string }
+  /** The rows of a declared view, loaded for the surface's screen. */
+  | { readonly view: string };
 
 /** Compatibility declarations of an application. */
 export interface ApplicationCompatibility {
@@ -590,6 +710,8 @@ export interface ApplicationCompatibility {
 
 /** Canonical framework-neutral Application Definition. */
 export interface ApplicationDefinition {
+  /** Application-owned portable shell choices (@2). */
+  readonly composition?: UiApplicationComposition;
   readonly schema: typeof APPLICATION_DEFINITION_SCHEMA | typeof APPLICATION_DEFINITION_SCHEMA_V2;
   /** Stable application id. */
   readonly id: string;

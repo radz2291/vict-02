@@ -1,6 +1,7 @@
 export {
   APPLICATION_IDENTITY_SCHEMA,
   APPLICATION_IDENTITY_SCHEMA_V2,
+  APPLICATION_VOCABULARY,
   compileApplication,
   canonicalApplicationManifest,
   computeApplicationVersion,
@@ -41,6 +42,8 @@ export type {
   RendererBindings,
   RendererDiagnosticCode,
 } from './renderer.js';
+export { APPLICATION_ISSUE_CODES, describeApplicationVocabulary } from './vocabulary.js';
+export type { ApplicationVocabulary, VocabularyObject } from './vocabulary.js';
 
 export { createInMemoryApplicationData } from './data.js';
 export type {

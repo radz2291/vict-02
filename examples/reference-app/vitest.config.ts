@@ -22,5 +22,12 @@ export default defineConfig({
     include: ['test/**/*.test.ts'],
     testTimeout: 120_000,
     hookTimeout: 120_000,
+    // These suites drive REAL processes: http.test unconditionally runs
+    // `vite build` then spawns the built server; browser.test conditionally
+    // builds and drives a real Chromium. Run test FILES sequentially so two
+    // beforeAll hooks can never race on the shared build/ and .svelte-kit/
+    // output (a concurrent first build once truncated build/index.js mid-run,
+    // making the spawned server exit 0 as an empty module on fresh clones).
+    fileParallelism: false,
   },
 });

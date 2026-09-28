@@ -1,0 +1,226 @@
+{
+  "label": "before",
+  "mode": "cold production navigation; summed per-asset gzip",
+  "routes": {
+    "/requests": {
+      "totals": {
+        "js": {
+          "bytes": 300142,
+          "gzip": 100145
+        },
+        "css": {
+          "bytes": 21916,
+          "gzip": 4657
+        }
+      },
+      "assets": [
+        {
+          "path": "/_app/immutable/assets/2.CU9Ubr07.css",
+          "kind": "css",
+          "bytes": 21916,
+          "gzip": 4657
+        },
+        {
+          "path": "/_app/immutable/chunks/C2_NvmTC.js",
+          "kind": "js",
+          "bytes": 6901,
+          "gzip": 3126
+        },
+        {
+          "path": "/_app/immutable/chunks/CM3_oK7H.js",
+          "kind": "js",
+          "bytes": 30394,
+          "gzip": 11504
+        },
+        {
+          "path": "/_app/immutable/chunks/D1op1kUZ.js",
+          "kind": "js",
+          "bytes": 195,
+          "gzip": 161
+        },
+        {
+          "path": "/_app/immutable/chunks/DcXZJqeD.js",
+          "kind": "js",
+          "bytes": 3188,
+          "gzip": 1462
+        },
+        {
+          "path": "/_app/immutable/chunks/DKOUqulf.js",
+          "kind": "js",
+          "bytes": 28878,
+          "gzip": 10956
+        },
+        {
+          "path": "/_app/immutable/chunks/DlD-CCL-.js",
+          "kind": "js",
+          "bytes": 1878,
+          "gzip": 927
+        },
+        {
+          "path": "/_app/immutable/chunks/Dn2pOMiI.js",
+          "kind": "js",
+          "bytes": 146,
+          "gzip": 127
+        },
+        {
+          "path": "/_app/immutable/chunks/DPfCCquZ.js",
+          "kind": "js",
+          "bytes": 186,
+          "gzip": 170
+        },
+        {
+          "path": "/_app/immutable/chunks/DPiZjnj3.js",
+          "kind": "js",
+          "bytes": 2242,
+          "gzip": 985
+        },
+        {
+          "path": "/_app/immutable/chunks/SQsg3kG1.js",
+          "kind": "js",
+          "bytes": 9756,
+          "gzip": 4088
+        },
+        {
+          "path": "/_app/immutable/entry/app.DN8rdZbh.js",
+          "kind": "js",
+          "bytes": 6072,
+          "gzip": 2790
+        },
+        {
+          "path": "/_app/immutable/entry/start.D9Vi0sOz.js",
+          "kind": "js",
+          "bytes": 118,
+          "gzip": 107
+        },
+        {
+          "path": "/_app/immutable/nodes/0.CsnUFwGF.js",
+          "kind": "js",
+          "bytes": 217,
+          "gzip": 169
+        },
+        {
+          "path": "/_app/immutable/nodes/1.dnR6HxWE.js",
+          "kind": "js",
+          "bytes": 417,
+          "gzip": 281
+        },
+        {
+          "path": "/_app/immutable/nodes/2.DLkDL2iN.js",
+          "kind": "js",
+          "bytes": 209554,
+          "gzip": 63292
+        }
+      ]
+    },
+    "/workspace": {
+      "totals": {
+        "js": {
+          "bytes": 300142,
+          "gzip": 100145
+        },
+        "css": {
+          "bytes": 21916,
+          "gzip": 4657
+        }
+      },
+      "assets": [
+        {
+          "path": "/_app/immutable/assets/2.CU9Ubr07.css",
+          "kind": "css",
+          "bytes": 21916,
+          "gzip": 4657
+        },
+        {
+          "path": "/_app/immutable/chunks/C2_NvmTC.js",
+          "kind": "js",
+          "bytes": 6901,
+          "gzip": 3126
+        },
+        {
+          "path": "/_app/immutable/chunks/CM3_oK7H.js",
+          "kind": "js",
+          "bytes": 30394,
+          "gzip": 11504
+        },
+        {
+          "path": "/_app/immutable/chunks/D1op1kUZ.js",
+          "kind": "js",
+          "bytes": 195,
+          "gzip": 161
+        },
+        {
+          "path": "/_app/immutable/chunks/DcXZJqeD.js",
+          "kind": "js",
+          "bytes": 3188,
+          "gzip": 1462
+        },
+        {
+          "path": "/_app/immutable/chunks/DKOUqulf.js",
+          "kind": "js",
+          "bytes": 28878,
+          "gzip": 10956
+        },
+        {
+          "path": "/_app/immutable/chunks/DlD-CCL-.js",
+          "kind": "js",
+          "bytes": 1878,
+          "gzip": 927
+        },
+        {
+          "path": "/_app/immutable/chunks/Dn2pOMiI.js",
+          "kind": "js",
+          "bytes": 146,
+          "gzip": 127
+        },
+        {
+          "path": "/_app/immutable/chunks/DPfCCquZ.js",
+          "kind": "js",
+          "bytes": 186,
+          "gzip": 170
+        },
+        {
+          "path": "/_app/immutable/chunks/DPiZjnj3.js",
+          "kind": "js",
+          "bytes": 2242,
+          "gzip": 985
+        },
+        {
+          "path": "/_app/immutable/chunks/SQsg3kG1.js",
+          "kind": "js",
+          "bytes": 9756,
+          "gzip": 4088
+        },
+        {
+          "path": "/_app/immutable/entry/app.DN8rdZbh.js",
+          "kind": "js",
+          "bytes": 6072,
+          "gzip": 2790
+        },
+        {
+          "path": "/_app/immutable/entry/start.D9Vi0sOz.js",
+          "kind": "js",
+          "bytes": 118,
+          "gzip": 107
+        },
+        {
+          "path": "/_app/immutable/nodes/0.CsnUFwGF.js",
+          "kind": "js",
+          "bytes": 217,
+          "gzip": 169
+        },
+        {
+          "path": "/_app/immutable/nodes/1.dnR6HxWE.js",
+          "kind": "js",
+          "bytes": 417,
+          "gzip": 281
+        },
+        {
+          "path": "/_app/immutable/nodes/2.DLkDL2iN.js",
+          "kind": "js",
+          "bytes": 209554,
+          "gzip": 63292
+        }
+      ]
+    }
+  }
+}

@@ -8,7 +8,7 @@ import {
   type ActionResult,
   type ViewDatum,
   type VictPlanView,
-} from '@victframework/renderer-svelte';
+} from '@victframework/ui-svelte';
 import {
   analyzeInputContract,
   analyzeOutputContract,

@@ -1,0 +1,61 @@
+root-typecheck.log
+> vict-monorepo@0.1.0 typecheck
+> tsc -p tsconfig.json --noEmit
+
+packages/application/test/ui-foundation-contract.test.ts(49,173): error TS2345: Argument of type '(options: { value: string; label: string; } | { value: string; label: string; } | undefined) => void' is not assignable to parameter of type '(...args: [] | [{ value: string; label: string; }, { value: string; label: string; }] | [{ value: string; label: string; }]) => Awaitable<void>'.
+  Types of parameters 'options' and 'args' are incompatible.
+    Type '[] | [{ value: string; label: string; }, { value: string; label: string; }] | [{ value: string; label: string; }]' is not assignable to type '[options: { value: string; label: string; } | { value: string; label: string; } | undefined]'.
+      Type '[]' is not assignable to type '[options: { value: string; label: string; } | { value: string; label: string; } | undefined]'.
+        Source has 0 element(s) but target requires 1.
+packages/application/test/ui-foundation-contract.test.ts(50,30): error TS2322: Type '{ value: string; label: string; } | { value: string; label: string; } | undefined' is not assignable to type '{ value: string; label: string; }[]'.
+  Type 'undefined' is not assignable to type '{ value: string; label: string; }[]'.
+
+check-ui.log
+> vict-monorepo@0.1.0 check:ui
+> svelte-check --tsconfig packages/ui-svelte/tsconfig.check.json
+
+Loading svelte-check in workspace: c:\Users\RZ1\Desktop\RZ\vict-02-ui-foundation-slice
+Getting Svelte diagnostics...
+
+svelte-check found 0 errors and 0 warnings
+
+showcase-check.log
+> ui-showcase@0.1.0 check
+> svelte-kit sync && tsc -p tsconfig.json --noEmit
+
+ui-build.log
+> @victframework/ui-svelte@0.3.1 build
+> tsc -p tsconfig.json --emitDeclarationOnly --outDir dist
+
+renderer-tests.log
+RUN  v4.1.11 C:/Users/RZ1/Desktop/RZ/vict-02-ui-foundation-slice
+
+
+ Test Files  7 passed (7)
+      Tests  73 passed (73)
+   Start at  15:31:24
+   Duration  22.45s (transform 56.07s, setup 0ms, import 101.29s, tests 3.43s, environment 22.69s)
+
+compiler-tests.log
+RUN  v4.1.11 C:/Users/RZ1/Desktop/RZ/vict-02-ui-foundation-slice
+
+
+ Test Files  10 passed (10)
+      Tests  944 passed (944)
+   Start at  15:24:10
+   Duration  5.15s (transform 7.69s, setup 0ms, import 10.93s, tests 3.32s, environment 7ms)
+
+foundation-unit.log
+> ui-showcase@0.1.0 test
+> vitest run test/foundation.test.ts test/definition.test.ts
+
+
+ RUN  v4.1.11 C:/Users/RZ1/Desktop/RZ/vict-02-ui-foundation-slice/examples/ui-showcase
+
+
+ Test Files  2 passed (2)
+      Tests  10 passed (10)
+   Start at  15:25:11
+   Duration  23.93s (transform 15.20s, setup 0ms, import 20.51s, tests 364ms, environment 2.28s)
+
+focused-lint.log

@@ -1,0 +1,586 @@
+import type { SurfaceRole } from '@victframework/sdk';
+import { RendererDiagnostic } from '@victframework/application/renderer';
+
+/**
+ * Pure renderer logic: deterministic route resolution (parameters +
+ * redirects), safe-condition evaluation, theme-token mapping, and the
+ * structural plan view shared by the host component. This module is
+ * framework neutral (DOM types only) and unit-testable without mounting.
+ */
+
+/** A dispatched action result (safe structured value; never a raw echo). */
+export interface ActionResult {
+  ok: boolean;
+  value?: unknown;
+  code?: string;
+  message?: string;
+  /** Safe, field-keyed server validation errors. Unknown field names become a form-level error. */
+  fieldErrors?: Readonly<Record<string, string>>;
+  /**
+   * The action SUCCEEDED but the host's data refresh failed, so the
+   * rendered record may be out of date. Never flips `ok` to false: the
+   * mutation outcome and the refresh outcome are reported separately, so
+   * surfaces never misreport a saved action as failed nor invite an
+   * unsafe re-run.
+   */
+  dataStale?: boolean;
+}
+
+/** Route data provided by the host per view id. */
+export interface ViewDatum {
+  readonly rows?: readonly Record<string, unknown>[];
+  readonly record?: Record<string, unknown> | null;
+  readonly total?: number;
+  readonly loading?: boolean;
+  readonly stale?: boolean;
+  readonly partial?: boolean;
+}
+
+/** The structural view of a compiled route entry (route + screen or null). */
+export interface PlanRouteEntry {
+  readonly route: {
+    readonly id: string;
+    readonly path: string;
+    readonly screenId?: string;
+    readonly redirect?: string;
+    readonly nav?: { readonly label: string; readonly group?: string; readonly order?: number };
+  };
+  readonly screen: PlanScreen | null;
+}
+
+/** Structural view of a screen (surfaces are read defensively). */
+export interface PlanScreen {
+  readonly layoutMode?: import('@victframework/ui').UiLayoutMode;
+  readonly composition?: import('@victframework/ui').UiPageComposition;
+  readonly id: string;
+  readonly title: string;
+  readonly layout: readonly {
+    readonly name: string;
+    readonly surfaces: readonly PlanSurface[];
+    readonly size?: 'full' | 'main' | 'aside';
+    readonly appearance?: 'plain' | 'panel';
+    readonly flow?: 'stack' | 'inline';
+  }[];
+  /** Screen states are read defensively (the compiled plan carries the closed @1/@2 states). */
+  readonly states?: unknown;
+  readonly breadcrumbs?: readonly { readonly label: string; readonly routeId?: string }[];
+}
+
+export interface PlanSurface {
+  readonly role: SurfaceRole | string;
+  readonly id: string;
+  readonly [key: string]: unknown;
+}
+
+/** The structural subset of the compiled plan the renderer consumes. */
+export interface VictPlanView {
+  readonly applicationId: string;
+  readonly applicationRevision: string;
+  readonly applicationVersion: string;
+  readonly routes: readonly PlanRouteEntry[];
+  readonly screens: Readonly<Record<string, PlanScreen | undefined>>;
+  readonly views: Readonly<Record<string, unknown>>;
+  readonly forms: Readonly<Record<string, { readonly submitActionId: string } | undefined>>;
+  readonly actions: Readonly<
+    Record<
+      string,
+      | {
+          readonly kind: string;
+          readonly id: string;
+          readonly routeId?: string;
+          readonly feedback?: import('@victframework/ui').UiActionFeedbackText;
+        }
+      | undefined
+    >
+  >;
+  readonly manifest?: {
+    readonly theme?: unknown;
+    readonly name?: string;
+    readonly composition?: import('@victframework/ui').UiApplicationComposition;
+  };
+}
+
+/** Resolved route context: the matched route, its screen, and path parameters. */
+export interface ResolvedRoute {
+  readonly route: PlanRouteEntry['route'];
+  readonly screen: PlanScreen | null;
+  readonly params: Readonly<Record<string, string>>;
+}
+
+/**
+ * Deterministic route resolution: exact-segment matching with single
+ * `:name` parameters, followed by bounded redirect chasing. Returns null
+ * when nothing matches (structured not-found is the host's decision).
+ */
+export function resolveRoute(plan: VictPlanView, path: string): ResolvedRoute | null {
+  const normalized = normalizePath(path);
+  const match = matchRoute(plan, normalized);
+  if (match === null) {
+    return null;
+  }
+  const seen = new Set<string>();
+  let current = match;
+  while (current.screen === null && typeof current.route.redirect === 'string') {
+    if (seen.has(current.route.id)) {
+      return null; // redirect cycle guard (the compiler already rejects these)
+    }
+    seen.add(current.route.id);
+    const target = plan.routes.find((entry) => entry.route.id === current.route.redirect);
+    if (target === undefined) {
+      return null;
+    }
+    const next = matchRoute(plan, normalizePath(target.route.path));
+    if (next === null) {
+      return null;
+    }
+    current = next;
+  }
+  return current;
+}
+
+function normalizePath(path: string): string {
+  if (typeof path !== 'string' || path.length === 0) {
+    return '/';
+  }
+  return path.startsWith('/') ? path : `/${path}`;
+}
+
+function matchRoute(plan: VictPlanView, path: string): ResolvedRoute | null {
+  let fallback: { entry: PlanRouteEntry; params: Record<string, string>; score: number } | null =
+    null;
+  for (const entry of plan.routes) {
+    const params = matchPath(entry.route.path, path);
+    if (params === null) {
+      continue;
+    }
+    // Prefer the pattern with the fewest parameters (most specific match).
+    const score = entry.route.path.split(':').length;
+    if (fallback === null || score < fallback.score) {
+      fallback = { entry, params, score };
+    }
+  }
+  if (fallback === null) {
+    return null;
+  }
+  return {
+    route: fallback.entry.route,
+    screen: fallback.entry.screen,
+    params: fallback.params,
+  };
+}
+
+/**
+ * Substitute declared `:name` path parameters from a bounded input record
+ * (parameterized navigation actions). Segments without a provided value are
+ * left intact; values must be string/number primitives.
+ */
+export function substitutePathParams(path: string, input: unknown): string {
+  const params = (input ?? {}) as Record<string, unknown>;
+  return path
+    .split('/')
+    .map((segment) => {
+      if (!segment.startsWith(':') || segment.length < 2) {
+        return segment;
+      }
+      const value = params[segment.slice(1)];
+      return typeof value === 'string' || typeof value === 'number' ? String(value) : segment;
+    })
+    .join('/');
+}
+
+/** Match `/projects/:id` style paths; returns parameters or null. */
+export function matchPath(pattern: string, path: string): Record<string, string> | null {
+  const patternSegments = pattern.split('/').filter((segment) => segment.length > 0);
+  const pathSegments = path.split('/').filter((segment) => segment.length > 0);
+  if (patternSegments.length !== pathSegments.length) {
+    return null;
+  }
+  const params: Record<string, string> = {};
+  for (const [index, patternSegment] of patternSegments.entries()) {
+    const pathSegment = pathSegments[index] as string;
+    if (patternSegment.startsWith(':')) {
+      const name = patternSegment.slice(1);
+      if (name.length === 0 || pathSegment.length === 0) {
+        return null;
+      }
+      params[name] = safeSegment(pathSegment);
+    } else if (patternSegment !== pathSegment) {
+      return null;
+    }
+  }
+  return params;
+}
+
+/** Decode one path segment defensively (never throws on malformed input). */
+function safeSegment(segment: string): string {
+  try {
+    return decodeURIComponent(segment);
+  } catch {
+    return segment;
+  }
+}
+
+/** Safe derived-state visibility evaluation (conditions were compile-validated). */
+export function isVisible(
+  surface: PlanSurface,
+  context: {
+    readonly params: Readonly<Record<string, string>>;
+    readonly viewRowCount: (viewId: string) => number;
+  },
+): boolean {
+  const condition = surface.visibleWhen as
+    | {
+        readonly viewNonEmpty?: string;
+        readonly viewEmpty?: string;
+        readonly paramEquals?: { readonly name: string; readonly value: string };
+      }
+    | undefined;
+  if (condition === undefined || condition === null) {
+    return true;
+  }
+  if (typeof condition.viewNonEmpty === 'string') {
+    return context.viewRowCount(condition.viewNonEmpty) > 0;
+  }
+  if (typeof condition.viewEmpty === 'string') {
+    return context.viewRowCount(condition.viewEmpty) === 0;
+  }
+  if (
+    condition.paramEquals !== undefined &&
+    typeof condition.paramEquals === 'object' &&
+    typeof condition.paramEquals.name === 'string'
+  ) {
+    return context.params[condition.paramEquals.name] === condition.paramEquals.value;
+  }
+  return true;
+}
+
+/** Disabled-state evaluation for action surfaces (presentation only — never authorization). */
+export function isDisabled(
+  surface: PlanSurface,
+  params: Readonly<Record<string, string>>,
+): boolean {
+  const disabledWhen = surface.disabledWhen as { readonly paramMissing?: string } | undefined;
+  if (disabledWhen === undefined || disabledWhen === null) {
+    return false;
+  }
+  const name = disabledWhen.paramMissing;
+  return typeof name === 'string' && params[name] === undefined;
+}
+
+/** Map a semantic token name to its CSS custom property. */
+export function tokenToCssVariable(name: string): string {
+  return `--vict-${name.replace(/\./g, '-')}`;
+}
+
+/**
+ * Extract validated theme token assignments from the plan manifest theme
+ * declaration (`@2` shape) into CSS custom properties. Unknown token names
+ * are ignored here (the compiler already rejects them; a renderer never
+ * trusts unvalidated manifest data at runtime).
+ */
+export function themeVariables(manifest: { readonly theme?: unknown }): Record<string, string> {
+  const out: Record<string, string> = {};
+  const theme = manifest.theme;
+  if (theme === undefined || theme === null || typeof theme !== 'object') {
+    return out;
+  }
+  const tokens = (theme as { readonly tokens?: unknown }).tokens;
+  if (!Array.isArray(tokens)) {
+    return out;
+  }
+  for (const assignment of tokens) {
+    if (
+      assignment !== null &&
+      typeof assignment === 'object' &&
+      typeof (assignment as { name?: unknown }).name === 'string' &&
+      typeof (assignment as { value?: unknown }).value === 'string'
+    ) {
+      const { name, value } = assignment as { name: string; value: string };
+      out[tokenToCssVariable(name)] = value;
+    }
+  }
+  return out;
+}
+
+/** Collect every declared surface (including nested tab/dialog/drawer content). */
+export function collectSurfaces(
+  screen: PlanScreen,
+): readonly { readonly surface: PlanSurface; readonly path: string }[] {
+  const out: { surface: PlanSurface; path: string }[] = [];
+  const walk = (surface: PlanSurface, path: string): void => {
+    out.push({ surface, path });
+    if (surface.role === 'tabs' && Array.isArray(surface.tabs)) {
+      for (const [index, tab] of (
+        surface.tabs as readonly { readonly surfaces?: readonly PlanSurface[] }[]
+      ).entries()) {
+        for (const nested of tab.surfaces ?? []) {
+          walk(nested, `${path}.tabs[${index}]`);
+        }
+      }
+    }
+    if (
+      (surface.role === 'dialog' || surface.role === 'drawer') &&
+      Array.isArray(surface.content)
+    ) {
+      for (const nested of surface.content as readonly PlanSurface[]) {
+        walk(nested, `${path}.content`);
+      }
+    }
+  };
+  for (const region of screen.layout) {
+    for (const surface of region.surfaces) {
+      walk(surface, `${screen.id}.${region.name}`);
+    }
+  }
+  const states = (screen.states ?? {}) as Record<string, PlanSurface | undefined>;
+  for (const [name, surface] of Object.entries(states)) {
+    if (surface !== undefined && typeof surface === 'object') {
+      walk(surface, `${screen.id}.states.${name}`);
+    }
+  }
+  return out;
+}
+
+/**
+ * Pre-render structural validation: every surface role must be supported
+ * and every custom component must resolve. Throws structured
+ * RendererDiagnostic failures BEFORE anything renders.
+ */
+/**
+ * Every view id a screen's declared surfaces read: direct `viewId`
+ * members plus component-surface route-context bindings (`props` and
+ * `input` entries with `{ view }` sources). Hosts load exactly these,
+ * so a component surface never fetches its own data.
+ */
+export function declaredSurfaceViewIds(screen: PlanScreen): readonly string[] {
+  const out = new Set<string>();
+  for (const { surface } of collectSurfaces(screen)) {
+    const viewId = surface.viewId;
+    if (typeof viewId === 'string' && viewId.length > 0) out.add(viewId);
+    for (const map of ['props', 'input'] as const) {
+      const declared = surface[map];
+      if (typeof declared !== 'object' || declared === null || Array.isArray(declared)) continue;
+      for (const value of Object.values(declared as Record<string, unknown>)) {
+        if (isComponentSource(value) && 'view' in value) out.add(value.view);
+      }
+    }
+  }
+  return [...out];
+}
+
+export function validatePlanForRenderer(
+  plan: VictPlanView,
+  registry: {
+    readonly resolve: (reference: { readonly componentId: string; readonly revision: string }) => {
+      readonly ok: boolean;
+      readonly code?: string;
+      readonly message?: string;
+    };
+  },
+  supportedRoles: readonly string[],
+): void {
+  if (!Array.isArray(plan.routes)) {
+    throw new RendererDiagnostic('RENDERER_INVALID_PLAN', 'The plan has no routes.');
+  }
+  for (const entry of plan.routes) {
+    const screen = entry.screen;
+    if (screen === null || screen === undefined) {
+      continue; // redirect route
+    }
+    for (const { surface, path } of collectSurfaces(screen)) {
+      if (!supportedRoles.includes(String(surface.role))) {
+        throw new RendererDiagnostic(
+          'RENDERER_UNSUPPORTED_ROLE',
+          `Surface '${String(surface.id)}' has role '${String(surface.role)}', which this renderer does not support.`,
+          { surfaceId: String(surface.id), role: String(surface.role) },
+        );
+      }
+      if (surface.role === 'component') {
+        const resolved = registry.resolve({
+          componentId: String(surface.componentId ?? ''),
+          revision: String(surface.revision ?? ''),
+        });
+        if (!resolved.ok) {
+          throw new RendererDiagnostic(
+            resolved.code === 'UNKNOWN_COMPONENT'
+              ? 'RENDERER_UNKNOWN_COMPONENT'
+              : 'RENDERER_COMPONENT_RESOLUTION_FAILED',
+            resolved.message ?? 'The component could not be resolved.',
+            { componentId: String(surface.componentId ?? '') },
+          );
+        }
+      }
+      if (surface.role === 'table') {
+        // Versioned island cells resolve structurally too: an unresolvable
+        // cell component fails BEFORE anything renders (never silently).
+        const columns = Array.isArray(surface.columns) ? surface.columns : [];
+        for (const column of columns) {
+          const cell = column as { componentId?: unknown; revision?: unknown };
+          if (typeof cell.componentId !== 'string' || cell.componentId.length === 0) {
+            continue;
+          }
+          const resolved = registry.resolve({
+            componentId: cell.componentId,
+            revision: String(cell.revision ?? ''),
+          });
+          if (!resolved.ok) {
+            throw new RendererDiagnostic(
+              resolved.code === 'UNKNOWN_COMPONENT'
+                ? 'RENDERER_UNKNOWN_COMPONENT'
+                : 'RENDERER_COMPONENT_RESOLUTION_FAILED',
+              resolved.message ?? 'The table cell component could not be resolved.',
+              { componentId: cell.componentId },
+            );
+          }
+        }
+      }
+      void path;
+    }
+  }
+}
+
+/**
+ * The closed heading vocabulary for the `text` role. The emitted tag name
+ * can ONLY come from this compiler-validated closed set (declared `level`
+ * 1–6); arbitrary element injection is impossible because no other value
+ * can ever reach the element name.
+ */
+const HEADING_TAGS: readonly string[] = Object.freeze(['h1', 'h2', 'h3', 'h4', 'h5', 'h6']);
+
+/**
+ * Map a declared text `level` (1–6) to its heading tag from the closed
+ * vocabulary. Unleveled (or out-of-vocabulary) text renders as a
+ * non-heading paragraph, exactly as documented.
+ */
+export function headingTagForLevel(level: unknown): string | null {
+  if (typeof level !== 'number' || !Number.isSafeInteger(level) || level < 1 || level > 6) {
+    return null;
+  }
+  return HEADING_TAGS[level - 1] ?? null;
+}
+
+/** The complete Stage 05 built-in role vocabulary (plus the @2 count role). */
+export const BUILT_IN_ROLES: readonly SurfaceRole[] = [
+  'text',
+  'view',
+  'form',
+  'action',
+  'component',
+  'states',
+  'list',
+  'table',
+  'detail',
+  'chart',
+  'status',
+  'count',
+  'tabs',
+  'dialog',
+  'drawer',
+  'conversation',
+];
+
+/**
+ * Derive a row action's input from one row through the declared mapping
+ * (action input field → row field; default `{ id: 'id' }`). Only values
+ * actually present on the row are included; values are the row's projected
+ * primitives.
+ */
+export function deriveRowActionInput(
+  rowAction: { readonly input?: Readonly<Record<string, string>> } | undefined,
+  row: Readonly<Record<string, unknown>>,
+): Record<string, unknown> {
+  const mapping = rowAction?.input ?? { id: 'id' };
+  const input: Record<string, unknown> = {};
+  for (const [name, rowField] of Object.entries(mapping)) {
+    const value = row[rowField];
+    if (value !== undefined) {
+      input[name] = value;
+    }
+  }
+  return input;
+}
+
+/**
+ * Closed route-context source for component-surface props and action
+ * inputs (@2): a route parameter, a route record field, or a declared
+ * view's rows. Exactly one member with a non-empty string value — no
+ * expressions, no executable code. (Mirrors `@victframework/sdk`.)
+ */
+export type ComponentSourceBinding =
+  { readonly param: string } | { readonly record: string } | { readonly view: string };
+
+/** Structural guard: is this props/input value a declared source binding? */
+export function isComponentSource(value: unknown): value is ComponentSourceBinding {
+  if (typeof value !== 'object' || value === null || Array.isArray(value)) return false;
+  const keys = Object.keys(value as Record<string, unknown>);
+  if (keys.length !== 1) return false;
+  const member = (value as Record<string, unknown>)[keys[0] as string];
+  return (
+    (keys[0] === 'param' || keys[0] === 'record' || keys[0] === 'view') &&
+    typeof member === 'string' &&
+    member.length > 0
+  );
+}
+
+/** Context a declared source binding resolves against. */
+export interface ComponentSourceContext {
+  readonly params: Readonly<Record<string, string>>;
+  readonly record: Record<string, unknown> | null;
+  readonly viewData: Readonly<Record<string, ViewDatum>>;
+}
+
+/**
+ * Resolve one declared source binding against the renderer's route
+ * context. Unknown shapes resolve to `undefined` (compilation rejects
+ * them first; the renderer never guesses).
+ */
+export function resolveComponentSource(
+  source: ComponentSourceBinding,
+  context: ComponentSourceContext,
+): unknown {
+  if (!isComponentSource(source)) return undefined;
+  if ('param' in source) {
+    return context.params[source.param];
+  }
+  if ('record' in source) {
+    return (context.record ?? {})[source.record];
+  }
+  return context.viewData[source.view]?.rows;
+}
+
+/**
+ * Resolve a component surface's declared props: static primitives pass
+ * through unchanged; declared sources resolve against the route context.
+ */
+export function resolveComponentProps(
+  props: Readonly<Record<string, unknown>> | undefined,
+  context: ComponentSourceContext,
+): Record<string, unknown> {
+  const out: Record<string, unknown> = {};
+  for (const [name, value] of Object.entries(props ?? {})) {
+    out[name] = isComponentSource(value) ? resolveComponentSource(value, context) : value;
+  }
+  return out;
+}
+
+/**
+ * Resolve a component surface's declared action-input bindings and merge
+ * them under the island's explicit input (explicit fields win). Islands
+ * that dispatch record-operating actions therefore never inspect URLs or
+ * self-build record identity.
+ */
+export function resolveComponentActionInput(
+  input: Readonly<Record<string, unknown>> | undefined,
+  explicit: unknown,
+  context: ComponentSourceContext,
+): Record<string, unknown> | undefined {
+  const declared = resolveComponentProps(input, context);
+  const keys = Object.keys(declared);
+  if (keys.length === 0) {
+    return (explicit ?? undefined) as Record<string, unknown> | undefined;
+  }
+  if (explicit === undefined || explicit === null || typeof explicit !== 'object') {
+    return declared;
+  }
+  return { ...declared, ...(explicit as Record<string, unknown>) };
+}

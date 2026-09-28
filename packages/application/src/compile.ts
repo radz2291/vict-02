@@ -5,6 +5,13 @@ import {
   THEME_TOKEN_NAMES,
 } from '@victframework/sdk';
 import { sha256 } from './sha256.js';
+import {
+  validateApplicationComposition,
+  validatePageComposition,
+  validateActionFeedback,
+  validateLayoutMode,
+  validateRegionPresentation,
+} from '@victframework/ui';
 import type {
   ActionDefinition,
   ApplicationDefinition,
@@ -69,6 +76,7 @@ export type ApplicationIssueCode =
   | 'CAPABILITY_REVISION_MISMATCH'
   | 'UNKNOWN_COMPONENT_REFERENCE'
   | 'COMPONENT_REVISION_MISMATCH'
+  | 'INVALID_COMPONENT_SOURCE'
   | 'UNKNOWN_SURFACE_ROLE'
   | 'MUTATION_NOT_DECLARED'
   | 'ROUTE_PATH_INVALID'
@@ -80,7 +88,10 @@ export type ApplicationIssueCode =
   | 'INVALID_SURFACE_DISABLED_CONDITION'
   | 'INVALID_THEME_TOKEN'
   | 'INVALID_THEME_TOKEN_VALUE'
+  | 'INVALID_ACTION_FEEDBACK'
+  | 'INVALID_UI_COMPOSITION'
   | 'INVALID_SURFACE_DECLARATION'
+  | 'INVALID_VIEW_DECLARATION'
   | 'INVALID_TABLE_DECLARATION'
   | 'INVALID_CHART_DECLARATION'
   | 'INVALID_STATUS_DECLARATION'
@@ -138,7 +149,12 @@ const ROUTE_FIELDS_V2: ReadonlySet<string> = new Set([...ROUTE_FIELDS, 'redirect
 const NAV_FIELDS: ReadonlySet<string> = new Set(['label', 'group', 'order']);
 const SCREEN_FIELDS: ReadonlySet<string> = new Set(['id', 'title', 'layout', 'states']);
 /** @2 adds contextual breadcrumb navigation on screens. */
-const SCREEN_FIELDS_V2: ReadonlySet<string> = new Set([...SCREEN_FIELDS, 'breadcrumbs']);
+const SCREEN_FIELDS_V2: ReadonlySet<string> = new Set([
+  ...SCREEN_FIELDS,
+  'breadcrumbs',
+  'layoutMode',
+  'composition',
+]);
 const REGION_FIELDS: ReadonlySet<string> = new Set(['name', 'surfaces']);
 const STATES_FIELDS: ReadonlySet<string> = new Set([
   'loading',
@@ -154,6 +170,8 @@ const VIEW_FIELDS: ReadonlySet<string> = new Set([
   'resourceId',
   'resourceRevision',
   'fields',
+  'filters',
+  'sort',
   'emptyMessage',
 ]);
 const FORM_FIELDS: ReadonlySet<string> = new Set([
@@ -216,13 +234,16 @@ const SURFACE_FIELDS: ReadonlyMap<Surface['role'], ReadonlySet<string>> = new Ma
   ['view', new Set([...SURFACE_COMMON_FIELDS, 'viewId'])],
   ['form', new Set([...SURFACE_COMMON_FIELDS, 'formId'])],
   ['action', new Set([...SURFACE_COMMON_FIELDS, 'actionId', 'label'])],
-  ['component', new Set([...SURFACE_COMMON_FIELDS, 'componentId', 'revision', 'props'])],
+  ['component', new Set([...SURFACE_COMMON_FIELDS, 'componentId', 'revision', 'props', 'input'])],
   ['states', new Set([...SURFACE_COMMON_FIELDS, 'viewId'])],
 ]);
 
 /** The closed @2 surface field sets (Stage 05 delivery vocabulary). */
 const CONDITION_FIELDS: ReadonlySet<string> = new Set(['viewNonEmpty', 'viewEmpty', 'paramEquals']);
 const CONDITION_PARAM_EQUALS_FIELDS: ReadonlySet<string> = new Set(['name', 'value']);
+/** Closed @2 members of the theme declaration and of one token assignment. */
+const THEME_FIELDS: ReadonlySet<string> = new Set(['reference', 'tokens']);
+const THEME_TOKEN_ASSIGNMENT_FIELDS: ReadonlySet<string> = new Set(['name', 'value']);
 const DISABLED_CONDITION_FIELDS: ReadonlySet<string> = new Set(['paramMissing']);
 const BREADCRUMB_FIELDS: ReadonlySet<string> = new Set(['label', 'routeId']);
 const STAGE04_SURFACE_FIELD_SETS = SURFACE_FIELDS;
@@ -280,6 +301,7 @@ const SURFACE_FIELDS_V2: ReadonlyMap<Surface['role'], ReadonlySet<string>> = new
       'viewId',
       'columns',
       'queryActionId',
+      'rowAction',
       'searchFields',
       'filterFields',
       'pageSize',
@@ -305,6 +327,7 @@ const SURFACE_FIELDS_V2: ReadonlyMap<Surface['role'], ReadonlySet<string>> = new
     ]),
   ],
   ['status', new Set([...SURFACE_COMMON_FIELDS, 'value', 'field', 'tones', 'visibleWhen'])],
+  ['count', new Set([...SURFACE_COMMON_FIELDS, 'viewId', 'label', 'visibleWhen'])],
   ['tabs', new Set([...SURFACE_COMMON_FIELDS, 'tabs', 'visibleWhen'])],
   [
     'dialog',
@@ -323,6 +346,7 @@ const SURFACE_FIELDS_V2: ReadonlyMap<Surface['role'], ReadonlySet<string>> = new
       'authorField',
       'participantField',
       'sendActionId',
+      'input',
       'inputLabel',
       'inputPlaceholder',
       'emptyMessage',
@@ -331,7 +355,20 @@ const SURFACE_FIELDS_V2: ReadonlyMap<Surface['role'], ReadonlySet<string>> = new
   ],
 ]);
 const TAB_FIELDS: ReadonlySet<string> = new Set(['name', 'label', 'surfaces']);
-const TABLE_COLUMN_FIELDS: ReadonlySet<string> = new Set(['field', 'label', 'sortable']);
+const TABLE_COLUMN_FIELDS: ReadonlySet<string> = new Set([
+  'field',
+  'label',
+  'sortable',
+  'componentId',
+  'revision',
+  'props',
+]);
+/** Closed @2 members of a declared table row action. */
+const TABLE_ROW_ACTION_FIELDS: ReadonlySet<string> = new Set(['actionId', 'label', 'input']);
+/** Closed @2 members of one declared view sort entry. */
+const SORT_ENTRY_FIELDS: ReadonlySet<string> = new Set(['field', 'direction']);
+/** Closed sort-direction vocabulary (single source for validation + vocabulary). */
+const SORT_DIRECTIONS: ReadonlySet<string> = new Set(['asc', 'desc']);
 const STATUS_TONES: ReadonlySet<string> = new Set([
   'success',
   'warning',
@@ -379,6 +416,62 @@ const VALUE_LIKE_FIELD_NAMES: ReadonlySet<string> = new Set([
   'token',
   'apiKey',
 ]);
+
+/**
+ * Machine-readable compiler vocabulary (authoring-tools slice).
+ *
+ * SINGLE SOURCE OF TRUTH: every member below IS the very constant the
+ * compiler's validation consumes — not a copy. Authoring tools read this
+ * (via `describeApplicationVocabulary()`) so the exposed vocabulary can
+ * never drift from what `compileApplication` actually enforces.
+ */
+export const APPLICATION_VOCABULARY = {
+  /** Field sets per definition object; `V2` marks the @2 extended sets. */
+  objects: {
+    application: APPLICATION_FIELDS,
+    route: ROUTE_FIELDS,
+    routeV2: ROUTE_FIELDS_V2,
+    routeNav: NAV_FIELDS,
+    screen: SCREEN_FIELDS,
+    screenV2: SCREEN_FIELDS_V2,
+    region: REGION_FIELDS,
+    screenStates: STATES_FIELDS,
+    screenStatesV2: STATES_FIELDS_V2,
+    view: VIEW_FIELDS,
+    form: FORM_FIELDS,
+    formField: FORM_FIELD_FIELDS,
+    resourceRef: RESOURCE_REF_FIELDS,
+    componentRef: COMPONENT_FIELDS,
+    surfaceCondition: CONDITION_FIELDS,
+    surfaceConditionParamEquals: CONDITION_PARAM_EQUALS_FIELDS,
+    surfaceDisabledCondition: DISABLED_CONDITION_FIELDS,
+    breadcrumb: BREADCRUMB_FIELDS,
+    tab: TAB_FIELDS,
+    tableColumn: TABLE_COLUMN_FIELDS,
+    tableRowAction: TABLE_ROW_ACTION_FIELDS,
+    sortEntry: SORT_ENTRY_FIELDS,
+    resourceDefinition: RESOURCE_DEF_FIELDS,
+    resourceField: RESOURCE_FIELD_FIELDS,
+    theme: THEME_FIELDS,
+    themeTokenAssignment: THEME_TOKEN_ASSIGNMENT_FIELDS,
+  },
+  /** Closed values enforced by validation. */
+  closedValues: {
+    actionKinds: new Set([...ACTION_FIELDS.keys()]),
+    surfaceRolesV1: new Set(SURFACE_FIELDS.keys()),
+    surfaceRolesV2: new Set(SURFACE_FIELDS_V2.keys()),
+    statusTones: STATUS_TONES,
+    chartKinds: CHART_KINDS,
+    sortDirections: SORT_DIRECTIONS,
+    resourceFieldTypes: RESOURCE_FIELD_TYPES,
+  },
+  /** Field sets per action kind / surface role (validation's own maps). */
+  actionFieldsByKind: ACTION_FIELDS,
+  surfaceFieldsByRoleV1: SURFACE_FIELDS,
+  surfaceFieldsByRoleV2: SURFACE_FIELDS_V2,
+  /** Field names that signal embedded values where only references are allowed. */
+  valueLikeFieldNames: VALUE_LIKE_FIELD_NAMES,
+} as const;
 
 /**
  * Plain-object check. Deliberately a plain boolean predicate (no type
@@ -1037,6 +1130,7 @@ export function canonicalApplicationManifest(
     id: application.id,
     revision: application.revision,
     ...(application.name !== undefined ? { name: application.name } : {}),
+    ...(application.composition !== undefined ? { composition: application.composition } : {}),
     routes: [...application.routes].map((route) => ({ ...route })),
     screens,
     ...(application.views !== undefined
@@ -1195,7 +1289,19 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
         ],
       };
     }
-    collector.unknownFields(application, APPLICATION_FIELDS, 'application');
+    collector.unknownFields(
+      application,
+      isV2 ? new Set([...APPLICATION_FIELDS, 'composition']) : APPLICATION_FIELDS,
+      'application',
+    );
+    if (isV2 && application.composition !== undefined) {
+      for (const issue of validateApplicationComposition(
+        application.composition,
+        'application.composition',
+      )) {
+        collector.add('INVALID_UI_COMPOSITION', issue.message, issue.path);
+      }
+    }
 
     if (typeof application.schema !== 'string') {
       collector.add(
@@ -1697,6 +1803,19 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
         screensById.set(screen.id, screen);
       }
       requireDisplayStringMember(collector, screen, 'title', `${screenPath}.title`, 'Screen title');
+      if (isV2 && screen.composition !== undefined) {
+        for (const issue of validatePageComposition(
+          screen.composition,
+          screenPath + '.composition',
+        )) {
+          collector.add('INVALID_UI_COMPOSITION', issue.message, issue.path);
+        }
+      }
+      if (screen.layoutMode !== undefined) {
+        for (const issue of validateLayoutMode(screen.layoutMode, screenPath + '.layoutMode')) {
+          collector.add('INVALID_SURFACE_DECLARATION', issue.message, issue.path);
+        }
+      }
       if (isV2 && screen.breadcrumbs !== undefined) {
         for (const [index, crumb] of screen.breadcrumbs.entries()) {
           collector.unknownFields(
@@ -1739,7 +1858,19 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
             continue;
           }
           const regionPath = `${screenPath}.layout[${entryKeyLabel(region.name)}]`;
-          collector.unknownFields(region, REGION_FIELDS, regionPath);
+          collector.unknownFields(
+            region,
+            isV2 ? new Set([...REGION_FIELDS, 'size', 'appearance', 'flow']) : REGION_FIELDS,
+            regionPath,
+          );
+          const presentation = Object.fromEntries(
+            ['size', 'appearance', 'flow']
+              .filter((key) => region[key] !== undefined)
+              .map((key) => [key, region[key]]),
+          );
+          for (const issue of validateRegionPresentation(presentation, regionPath)) {
+            collector.add('INVALID_SURFACE_DECLARATION', issue.message, issue.path);
+          }
           const regionName = region.name;
           const regionNameValid = requireDisplayStringMember(
             collector,
@@ -1864,6 +1995,77 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
           `application.views[${view.viewId}].fields`,
         );
       }
+      // Declared static view filters (@2): plain object keyed by catalogue
+      // fields with bounded serializable primitive values.
+      if (view.filters !== undefined) {
+        const filtersPath = `application.views[${entryKeyLabel(view.viewId)}].filters`;
+        if (!isPlainObject(view.filters)) {
+          collector.add(
+            'INVALID_VIEW_DECLARATION',
+            `View '${view.viewId}' filters must be a plain object when declared (received ${describeReceivedType(view.filters)}).`,
+            filtersPath,
+          );
+        } else {
+          collector.unknownFields(view.filters, new Set(Object.keys(view.filters)), filtersPath);
+          for (const [key, value] of Object.entries(view.filters)) {
+            checkCatalogueField(
+              collector,
+              providedResources.get(view.resourceId),
+              key,
+              filtersPath,
+            );
+            const validValue =
+              typeof value === 'string' ||
+              typeof value === 'boolean' ||
+              (typeof value === 'number' && Number.isFinite(value));
+            if (!validValue) {
+              collector.add(
+                'INVALID_VIEW_DECLARATION',
+                `View '${view.viewId}' filter '${key}' must be a string, number, or boolean.`,
+                `${filtersPath}.${key}`,
+              );
+            }
+          }
+        }
+      }
+      // Declared deterministic view sort (@2): catalogue fields + closed
+      // direction vocabulary.
+      if (view.sort !== undefined) {
+        const sortPath = `application.views[${entryKeyLabel(view.viewId)}].sort`;
+        if (!Array.isArray(view.sort)) {
+          collector.add(
+            'INVALID_VIEW_DECLARATION',
+            `View '${view.viewId}' sort must be an array when declared (received ${describeReceivedType(view.sort)}).`,
+            sortPath,
+          );
+        } else {
+          for (const [sortIndex, entry] of view.sort.entries()) {
+            const entryPath = `${sortPath}[${sortIndex}]`;
+            if (!isPlainObject(entry)) {
+              collector.add(
+                'INVALID_VIEW_DECLARATION',
+                `View '${view.viewId}' sort entries must be plain objects (received ${describeReceivedType(entry)}).`,
+                entryPath,
+              );
+              continue;
+            }
+            collector.unknownFields(entry, SORT_ENTRY_FIELDS, entryPath);
+            checkCatalogueField(
+              collector,
+              providedResources.get(view.resourceId),
+              entry.field,
+              `${entryPath}.field`,
+            );
+            if (!SORT_DIRECTIONS.has(entry.direction as string)) {
+              collector.add(
+                'INVALID_VIEW_DECLARATION',
+                `View '${view.viewId}' sort direction must be 'asc' or 'desc'.`,
+                `${entryPath}.direction`,
+              );
+            }
+          }
+        }
+      }
     }
 
     const formIds = new Set<string>();
@@ -1959,7 +2161,66 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
             continue;
           }
           const fieldPath = `${formPath}.fields[${entryKeyLabel(field.name)}]`;
-          collector.unknownFields(field, FORM_FIELD_FIELDS, fieldPath);
+          collector.unknownFields(
+            field,
+            isV2 ? new Set([...FORM_FIELD_FIELDS, 'options']) : FORM_FIELD_FIELDS,
+            fieldPath,
+          );
+          if (field.widget === 'select') {
+            if (!isV2 || !Array.isArray(field.options) || field.options.length === 0) {
+              collector.add(
+                'INVALID_SURFACE_DECLARATION',
+                'Select fields require @2 and nonempty options.',
+                fieldPath + '.options',
+              );
+            } else {
+              const values = new Set<string>();
+              for (const option of field.options) {
+                if (!isPlainObject(option)) {
+                  collector.add(
+                    'INVALID_SURFACE_DECLARATION',
+                    'Select options must be objects.',
+                    fieldPath + '.options',
+                  );
+                  continue;
+                }
+                collector.unknownFields(
+                  option,
+                  new Set(['value', 'label']),
+                  fieldPath + '.options',
+                );
+                requireDisplayStringMember(
+                  collector,
+                  option,
+                  'value',
+                  fieldPath + '.options.value',
+                  'Option value',
+                );
+                requireDisplayStringMember(
+                  collector,
+                  option,
+                  'label',
+                  fieldPath + '.options.label',
+                  'Option label',
+                );
+                if (typeof option.value === 'string') {
+                  if (values.has(option.value))
+                    collector.add(
+                      'INVALID_SURFACE_DECLARATION',
+                      'Select option values must be unique.',
+                      fieldPath + '.options',
+                    );
+                  values.add(option.value);
+                }
+              }
+            }
+          } else if (field.options !== undefined) {
+            collector.add(
+              'INVALID_SURFACE_DECLARATION',
+              'Options are only valid for select fields.',
+              fieldPath + '.options',
+            );
+          }
           requireIdentifierMember(collector, field, 'name', `${fieldPath}.name`, 'Form field name');
           requireDisplayStringMember(
             collector,
@@ -2013,9 +2274,16 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
       const actionPath = `application.actions[${entryKeyLabel(action.id)}]`;
       collector.unknownFields(
         action,
-        ACTION_FIELDS.get(action.kind) ?? ACTION_BASE_FIELDS,
+        isV2
+          ? new Set([...(ACTION_FIELDS.get(action.kind) ?? ACTION_BASE_FIELDS), 'feedback'])
+          : (ACTION_FIELDS.get(action.kind) ?? ACTION_BASE_FIELDS),
         actionPath,
       );
+      if (isV2 && action.feedback !== undefined) {
+        for (const issue of validateActionFeedback(action.feedback, actionPath + '.feedback')) {
+          collector.add('INVALID_ACTION_FEEDBACK', issue.message, issue.path);
+        }
+      }
       // id and revision are required members of EVERY declared action
       // (LOW-05-A closure): an action without its revision was previously
       // accepted silently and received an applicationVersion.
@@ -2378,7 +2646,7 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
     }
     if (isV2 && application.theme !== undefined && isPlainObject(application.theme)) {
       const theme = application.theme as ThemeDeclaration;
-      const themeFields = new Set(['reference', 'tokens']);
+      const themeFields = THEME_FIELDS;
       collector.unknownFields(theme, themeFields, 'application.theme');
       if (
         theme.reference !== undefined &&
@@ -2401,7 +2669,7 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
           const seenTokens = new Set<string>();
           for (const [index, assignment] of theme.tokens.entries()) {
             const path = `application.theme.tokens[${index}]`;
-            collector.unknownFields(assignment, new Set(['name', 'value']), path);
+            collector.unknownFields(assignment, THEME_TOKEN_ASSIGNMENT_FIELDS, path);
             if (
               typeof assignment.name !== 'string' ||
               !THEME_TOKEN_NAMES.includes(assignment.name)
@@ -2441,12 +2709,33 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
     }
 
     // ---- Cross-references from surfaces (deferred until the maps exist) --------
+    // Closed route-context vocabulary for component surfaces: every declared
+    // route path parameter (union across routes — surfaces are validated
+    // screen-agnostically) and every declared resource catalogue field.
+    const routeParams = new Set<string>();
+    for (const route of Array.isArray(application.routes) ? application.routes : []) {
+      const path = (route as { path?: unknown }).path;
+      if (typeof path !== 'string') continue;
+      for (const segment of path.split('/')) {
+        if (segment.startsWith(':') && segment.length > 1) routeParams.add(segment.slice(1));
+      }
+    }
+    const resourceFields = new Set<string>();
+    for (const resource of providedResources.values()) {
+      if (Array.isArray(resource.fields)) {
+        for (const field of resource.fields) {
+          if (typeof field?.name === 'string') resourceFields.add(field.name);
+        }
+      }
+    }
     for (const resolution of surfaceResolutions) {
       resolution(collector, {
         viewsById,
         formsById,
         actionsById,
         routeIds,
+        routeParams,
+        resourceFields,
         componentRefs,
         resources: providedResources,
       });
@@ -2625,6 +2914,8 @@ type SurfaceResolution = (
     readonly formsById: ReadonlyMap<string, FormBinding>;
     readonly actionsById: ReadonlyMap<string, ActionDefinition>;
     readonly routeIds: ReadonlySet<string>;
+    readonly routeParams: ReadonlySet<string>;
+    readonly resourceFields: ReadonlySet<string>;
     readonly componentRefs: ReadonlyMap<string, string>;
     readonly resources: ReadonlyMap<string, ResourceDefinition>;
   },
@@ -2726,6 +3017,20 @@ function resolveSurfaceLater(
             `${path}.revision`,
           );
         }
+        // Declared route-context bindings (@2): props values may be static
+        // primitives (unchanged meaning) or closed ComponentSource objects,
+        // and `input` maps action-input fields to the same closed sources.
+        // Unknown sources, unknown route parameters, undeclared views and
+        // unknown record fields are rejected at compile time where
+        // determinable — no expressions, no executable code.
+        collectComponentSourceIssues(
+          collector,
+          maps,
+          surface.id,
+          surface.props,
+          surface.input,
+          path,
+        );
         collectConditionIssues(collector, surface, path, maps);
         break;
       }
@@ -2811,6 +3116,80 @@ function resolveSurfaceLater(
             `${path}.pageSize`,
           );
         }
+        // Declared per-row action (@2): references a DECLARED action; the
+        // input mapping is a closed plain object of non-empty strings.
+        if (surface.rowAction !== undefined) {
+          const rowActionPath = `${path}.rowAction`;
+          if (!isPlainObject(surface.rowAction)) {
+            collector.add(
+              'INVALID_TABLE_DECLARATION',
+              `Table surface '${surface.id}' rowAction must be a plain object (received ${describeReceivedType(surface.rowAction)}).`,
+              rowActionPath,
+            );
+          } else {
+            collector.unknownFields(surface.rowAction, TABLE_ROW_ACTION_FIELDS, rowActionPath);
+            if (
+              typeof surface.rowAction.actionId !== 'string' ||
+              surface.rowAction.actionId.length === 0
+            ) {
+              collector.add(
+                'INVALID_TABLE_DECLARATION',
+                `Table surface '${surface.id}' rowAction.actionId must be a non-empty string.`,
+                `${rowActionPath}.actionId`,
+              );
+            } else {
+              const rowAction = maps.actionsById.get(surface.rowAction.actionId);
+              if (rowAction === undefined) {
+                collector.add(
+                  'UNKNOWN_ACTION_REFERENCE',
+                  `Table surface '${surface.id}' references unknown row action '${surface.rowAction.actionId}'.`,
+                  `${rowActionPath}.actionId`,
+                );
+              } else if (rowAction.kind === 'local') {
+                collector.add(
+                  'INVALID_ACTION_BINDING',
+                  `Table surface '${surface.id}' rowAction must reference a server or navigation action; '${surface.rowAction.actionId}' is a local action.`,
+                  `${rowActionPath}.actionId`,
+                );
+              }
+            }
+            if (
+              typeof surface.rowAction.label !== 'string' ||
+              surface.rowAction.label.trim().length === 0
+            ) {
+              collector.add(
+                'INVALID_TABLE_DECLARATION',
+                `Table surface '${surface.id}' rowAction.label must be a non-empty string.`,
+                `${rowActionPath}.label`,
+              );
+            }
+            if (surface.rowAction.input !== undefined) {
+              if (!isPlainObject(surface.rowAction.input)) {
+                collector.add(
+                  'INVALID_TABLE_DECLARATION',
+                  `Table surface '${surface.id}' rowAction.input must be a plain object (received ${describeReceivedType(surface.rowAction.input)}).`,
+                  `${rowActionPath}.input`,
+                );
+              } else {
+                collector.unknownFields(
+                  surface.rowAction.input,
+                  new Set(Object.keys(surface.rowAction.input)),
+                  `${rowActionPath}.input`,
+                );
+                collectViewFieldIssues(
+                  collector,
+                  maps,
+                  surface.id,
+                  surface.viewId,
+                  Object.entries(surface.rowAction.input).map(
+                    ([name, rowField]) => [`rowAction.input.${name}`, rowField] as const,
+                  ),
+                  path,
+                );
+              }
+            }
+          }
+        }
         if (surface.columns !== undefined) {
           for (const [index, column] of surface.columns.entries()) {
             const columnPath = `${path}.columns[${index}]`;
@@ -2833,6 +3212,64 @@ function resolveSurfaceLater(
               `Table surface '${surface.id}' column field`,
               'INVALID_TABLE_DECLARATION',
             );
+            // Versioned island cell (@2): the component reference must be
+            // declared at an exact revision, like a component surface, and
+            // its prop sources must be fields of the bound view's projection.
+            if (column.componentId !== undefined) {
+              const cellRevisionValid = requireRevisionMember(
+                collector,
+                column,
+                'revision',
+                `${columnPath}.revision`,
+                `Table surface '${surface.id}' cell component revision`,
+              );
+              const declaredCell = maps.componentRefs.get(column.componentId);
+              if (declaredCell === undefined) {
+                collector.add(
+                  'UNKNOWN_COMPONENT_REFERENCE',
+                  `Table surface '${surface.id}' column '${column.field}' references unknown component '${column.componentId}'.`,
+                  `${columnPath}.componentId`,
+                );
+              } else if (cellRevisionValid && declaredCell !== column.revision) {
+                collector.add(
+                  'COMPONENT_REVISION_MISMATCH',
+                  `Table surface '${surface.id}' column '${column.field}' references component '${column.componentId}' revision '${column.revision}' but the application declares '${declaredCell}'.`,
+                  `${columnPath}.revision`,
+                );
+              }
+              if (column.props !== undefined) {
+                if (!isPlainObject(column.props)) {
+                  collector.add(
+                    'INVALID_TABLE_DECLARATION',
+                    `Table surface '${surface.id}' column '${column.field}' props must be a plain object (received ${describeReceivedType(column.props)}).`,
+                    `${columnPath}.props`,
+                  );
+                } else {
+                  collector.unknownFields(
+                    column.props,
+                    new Set(Object.keys(column.props)),
+                    `${columnPath}.props`,
+                  );
+                  collectViewFieldIssues(
+                    collector,
+                    maps,
+                    surface.id,
+                    surface.viewId,
+                    Object.entries(column.props).map(
+                      ([propName, rowField]) =>
+                        [`columns[${index}].props.${propName}`, rowField] as const,
+                    ),
+                    path,
+                  );
+                }
+              }
+            } else if (column.revision !== undefined || column.props !== undefined) {
+              collector.add(
+                'INVALID_TABLE_DECLARATION',
+                `Table surface '${surface.id}' column '${String(column.field ?? index)}' declares cell-component members without componentId.`,
+                columnPath,
+              );
+            }
           }
           collectViewFieldIssues(
             collector,
@@ -2988,6 +3425,25 @@ function resolveSurfaceLater(
         collectConditionIssues(collector, surface, path, maps);
         break;
       }
+      case 'count': {
+        // count surfaces must reference a DECLARED view.
+        if (!maps.viewsById.has(surface.viewId)) {
+          collector.add(
+            'UNKNOWN_VIEW_REFERENCE',
+            `Surface '${surface.id}' references unknown view '${surface.viewId}'.`,
+            `${path}.viewId`,
+          );
+        }
+        if (surface.label !== undefined && typeof surface.label !== 'string') {
+          collector.add(
+            'INVALID_SURFACE_DECLARATION',
+            `Count surface '${surface.id}' label must be a string when declared.`,
+            `${path}.label`,
+          );
+        }
+        collectConditionIssues(collector, surface, path, maps);
+        break;
+      }
       case 'tabs': {
         collectConditionIssues(collector, surface, path, maps);
         break;
@@ -3050,6 +3506,11 @@ function resolveSurfaceLater(
           conversationFields,
           path,
         );
+        // Declared send-input bindings (@2): a conversation on a
+        // parameterized route can bind input fields (e.g. the record id)
+        // to closed route-context sources — the same vocabulary and
+        // validation as component surfaces.
+        collectComponentSourceIssues(collector, maps, surface.id, undefined, surface.input, path);
         const sendAction = maps.actionsById.get(surface.sendActionId);
         if (sendAction === undefined) {
           collector.add(
@@ -3139,6 +3600,104 @@ function collectConditionIssues(
  * (falling back to the resource's explicit field catalogue when the view
  * does not narrow fields).
  */
+/**
+ * Closed route-context source vocabulary for component surfaces (@2):
+ * exactly one of `param` / `record` / `view`, each a non-empty string.
+ * Anything else — including expressions, nested objects and multi-member
+ * shapes — is rejected.
+ */
+function isComponentSourceShape(value: unknown): value is Record<string, string> {
+  if (typeof value !== 'object' || value === null || Array.isArray(value)) return false;
+  const record = value as Record<string, unknown>;
+  const keys = Object.keys(record);
+  if (keys.length !== 1) return false;
+  const key = keys[0]!;
+  const member = record[key];
+  return (
+    (key === 'param' || key === 'record' || key === 'view') &&
+    typeof member === 'string' &&
+    member.length > 0
+  );
+}
+
+function collectComponentSourceIssues(
+  collector: Collector,
+  maps: {
+    readonly viewsById: ReadonlyMap<string, ViewBinding>;
+    readonly routeParams: ReadonlySet<string>;
+    readonly resourceFields: ReadonlySet<string>;
+  },
+  surfaceId: string,
+  props: unknown,
+  input: unknown,
+  path: string,
+): void {
+  const checkSource = (source: unknown, sourcePath: string): void => {
+    if (!isComponentSourceShape(source)) {
+      collector.add(
+        'INVALID_COMPONENT_SOURCE',
+        `Component surface '${surfaceId}' source at '${sourcePath.replace(`${path}.`, '')}' must be a closed route-context binding: exactly one of { param }, { record } or { view } with a non-empty string value. Expressions and executable code are not part of the vocabulary.`,
+        sourcePath,
+      );
+      return;
+    }
+    const entries = Object.entries(source);
+    const kind = entries[0]?.[0] ?? '';
+    const name = entries[0]?.[1] ?? '';
+    if (kind === 'param' && maps.routeParams.size > 0 && !maps.routeParams.has(name)) {
+      collector.add(
+        'INVALID_COMPONENT_SOURCE',
+        `Component surface '${surfaceId}' references route parameter '${name}' which no declared route declares.`,
+        sourcePath,
+      );
+    }
+    if (kind === 'view' && !maps.viewsById.has(name)) {
+      collector.add(
+        'UNKNOWN_VIEW_REFERENCE',
+        `Component surface '${surfaceId}' references unknown view '${name}'.`,
+        sourcePath,
+      );
+    }
+    if (kind === 'record' && maps.resourceFields.size > 0 && !maps.resourceFields.has(name)) {
+      collector.add(
+        'UNKNOWN_FIELD',
+        `Component surface '${surfaceId}' record binding references field '${name}' which no declared resource catalogue defines.`,
+        sourcePath,
+      );
+    }
+  };
+
+  if (props !== undefined) {
+    if (!isPlainObject(props)) {
+      collector.add(
+        'INVALID_COMPONENT_SOURCE',
+        `Component surface '${surfaceId}' props must be a plain object (received ${describeReceivedType(props)}).`,
+        `${path}.props`,
+      );
+    } else {
+      for (const [name, value] of Object.entries(props as Record<string, unknown>)) {
+        if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
+          continue; // static scalar: unchanged meaning
+        }
+        checkSource(value, `${path}.props.${name}`);
+      }
+    }
+  }
+  if (input !== undefined) {
+    if (!isPlainObject(input)) {
+      collector.add(
+        'INVALID_COMPONENT_SOURCE',
+        `Component surface '${surfaceId}' input must be a plain object (received ${describeReceivedType(input)}).`,
+        `${path}.input`,
+      );
+    } else {
+      for (const [field, source] of Object.entries(input as Record<string, unknown>)) {
+        checkSource(source, `${path}.input.${field}`);
+      }
+    }
+  }
+}
+
 function collectViewFieldIssues(
   collector: Collector,
   maps: {
@@ -3210,7 +3769,11 @@ function collectComponentPropsIssues(
     const inDomain =
       typeof value === 'string' ||
       (typeof value === 'number' && Number.isFinite(value) && !Object.is(value, -0)) ||
-      typeof value === 'boolean';
+      typeof value === 'boolean' ||
+      // Declared route-context source bindings (@2) are closed plain
+      // objects ({ param } / { record } / { view }); their shape is
+      // validated by collectComponentSourceIssues.
+      isComponentSourceShape(value);
     if (!inDomain) {
       collector.add(
         'INVALID_SURFACE_DECLARATION',

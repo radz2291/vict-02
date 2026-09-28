@@ -30,21 +30,27 @@ import { existsSync, mkdtempSync, readFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { assessContractAuthorityAtRoot, FROZEN_CONTRACT_PATH } from './lib/contract-authority.mjs';
+import { assessPublicationPreflight } from './lib/publication-preflight.mjs';
 
 const scriptDir = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(scriptDir, '..');
 const PUBLISH = process.argv.includes('--publish');
 const PUBLIC_REGISTRY = 'https://registry.npmjs.org/';
 
-/** Dependency-topological publication order (derived from the manifests). */
+/** Dependency-topological publication order (contract §5 as amended;
+ * candidate set per the facade-retirement draft §16, 2026-09-27: the
+ * §15 order minus the removed renderer-svelte facade — 14 members,
+ * awaiting owner ratification). */
 const PUBLISH_ORDER = [
   'contracts',
+  'ui',
   'sdk',
   'kernel',
   'runtime',
   'store-sqlite',
   'application',
-  'renderer-svelte',
+  'ui-svelte',
   'appdata-sqlite',
   'scaffolder',
   'control',
@@ -84,6 +90,50 @@ for (const name of PUBLISH_ORDER) {
 }
 
 if (PUBLISH) {
+  // CONTRACT AUTHORITY GATE (fail-closed, pre-publication): the frozen
+  // contract must carry the ratified 14-package state (§16) before ANY
+  // registry write — including this operator-run engine and its resume
+  // path. The dry plan above stays usable for inspection.
+  const authority = assessContractAuthorityAtRoot(repoRoot);
+  if (!authority.authorized) {
+    console.error(
+      `publish:release: CONTRACT AUTHORITY REFUSED — the frozen contract (${FROZEN_CONTRACT_PATH}) does not yet authorize the 14-package candidate set. NO registry write was made. Gaps:`,
+    );
+    for (const problem of authority.problems) console.error(`  - ${problem}`);
+    console.error(
+      'Owner action: ratify §16 into the frozen contract first (amendment draft Appendices A+B, verbatim).',
+    );
+    process.exit(1);
+  }
+  console.log('publish:release: contract authority verified (§16 ratified)');
+
+  // TRUST PREFLIGHT GATE (fail-closed, pre-publication; r4): publication
+  // of ANY member is refused unless ALL 14 members exist and carry the
+  // EXACT frozen trust relationship, credibly verified (live session or
+  // validated set-bound evidence). Runs BEFORE any registry write,
+  // including this operator engine's resume path.
+  const trustEvidenceFlagIndex = process.argv.indexOf('--trust-evidence');
+  const trustEvidencePath =
+    trustEvidenceFlagIndex !== -1 ? process.argv[trustEvidenceFlagIndex + 1] : undefined;
+  const preflight = assessPublicationPreflight({
+    repoRoot,
+    evidencePath: trustEvidencePath,
+    log: (line) => console.log(`  ${line}`),
+  });
+  if (!preflight.authorized) {
+    console.error(
+      `publish:release: TRUST PREFLIGHT REFUSED — ${preflight.blockedReason} NO registry write was made. Details:`,
+    );
+    for (const problem of preflight.problems) console.error(`  - ${problem}`);
+    console.error(
+      'Owner action: run from an authenticated session or pass a validated artifact via --trust-evidence (scripts/capture-trust-evidence.mjs).',
+    );
+    process.exit(1);
+  }
+  console.log(
+    `publish:release: trust preflight verified (all 14 present + exact; mode: ${preflight.mode})`,
+  );
+
   const gitStatus = run('git', ['status', '--porcelain'], { capture: true });
   if (gitStatus.status !== 0) fail('git status failed — publish only from the release checkout.');
   const dirty = (gitStatus.stdout ?? '')

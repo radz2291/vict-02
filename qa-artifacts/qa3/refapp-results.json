@@ -1,0 +1,132 @@
+[
+ {
+  "name": "create form: every required error field-associated (aria-describedby)",
+  "ok": true,
+  "detail": "[[\"id\",\"vict-field-error-f.project-create-id\",\"This field is required.\"],[\"name\",\"vict-field-error-f.project-create-name\",\"This field is required.\"],[\"status\",\"vict-field-error-f.project-create-status\",\"This field is required.\"],[\"budget\",\"vict-field-error-f.project-create-budget\",\"This field is required.\"]]"
+ },
+ {
+  "name": "create form: empty submit crossed NO network boundary",
+  "ok": true,
+  "detail": "0 calls"
+ },
+ {
+  "name": "create form dispatches through /api/act",
+  "ok": true,
+  "detail": "{\"actionId\":\"act.createProject\",\"input\":{\"id\":\"delta\",\"name\":\"Delta project\",\"status\":\"active\",\"budget\":320}}"
+ },
+ {
+  "name": "created project renders on its detail route",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "detail route renders a tablist with Overview/Edit",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "edit tab prefills untouched numeric as numeric text",
+  "ok": true,
+  "detail": "{\"name\":\"Delta project\",\"status\":\"active\",\"budget\":\"320\"}"
+ },
+ {
+  "name": "untouched edit submit dispatched once",
+  "ok": true,
+  "detail": "[\"{\\\"actionId\\\":\\\"act.updateProject\\\",\\\"input\\\":{\\\"name\\\":\\\"Delta project\\\",\\\"status\\\":\\\"active\\\",\\\"budget\\\":320,\\\"__identity\\\":\\\"delta\\\"}}\"]"
+ },
+ {
+  "name": "untouched edit dispatch carries numeric budget (not string)",
+  "ok": true,
+  "detail": "{\"name\":\"Delta project\",\"status\":\"active\",\"budget\":320,\"__identity\":\"delta\"}"
+ },
+ {
+  "name": "budget 0 prefills as visible \"0\" (not empty)",
+  "ok": true,
+  "detail": "0"
+ },
+ {
+  "name": "budget 0 survives untouched submit as number 0",
+  "ok": true,
+  "detail": "{\"name\":\"Beta project\",\"status\":\"paused\",\"budget\":0,\"__identity\":\"beta\"}"
+ },
+ {
+  "name": "garbage numeric typing leaves raw state empty (badInput)",
+  "ok": true,
+  "detail": "raw=\"\""
+ },
+ {
+  "name": "submit with garbage numeric: NO network dispatch",
+  "ok": true,
+  "detail": "0 calls"
+ },
+ {
+  "name": "field-local required error rendered for budget",
+  "ok": true,
+  "detail": "This field is required."
+ },
+ {
+  "name": "client-side navigation used (no full page load)",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "prefill resets to the new identity (dirty state discarded)",
+  "ok": true,
+  "detail": "{\"name\":\"Alpha project\",\"budget\":\"100\"}"
+ },
+ {
+  "name": "active → success tone",
+  "ok": true,
+  "detail": "vict-status vict-status--success"
+ },
+ {
+  "name": "paused → warning tone",
+  "ok": true,
+  "detail": "vict-status vict-status--warning"
+ },
+ {
+  "name": "done → neutral tone renders",
+  "ok": true,
+  "detail": "done"
+ },
+ {
+  "name": "refapp dialog opens modal with focus inside",
+  "ok": true,
+  "detail": "{\"open\":true,\"modal\":true,\"focusInside\":true}"
+ },
+ {
+  "name": "authorization-denied action inside dialog surfaces denial, dialog stays open",
+  "ok": true,
+  "detail": "{\"text\":\"This action was denied by the authorization boundary.\",\"role\":\"alert\",\"stillOpen\":true}"
+ },
+ {
+  "name": "drawer opens right-aligned with the custom island inside",
+  "ok": true,
+  "detail": "{\"open\":true,\"right\":true,\"island\":true}"
+ },
+ {
+  "name": "capability action inside tab crosses the boundary, reports success, and the region refetches to its correct state (records carry no notes → legitimately empty; metric CONTENT rendering is covered by reading-time.test.ts with adapter-seeded notes)",
+  "ok": true,
+  "detail": "calls=1 result=Done. region-state=empty"
+ },
+ {
+  "name": "@1280: projects screen has no horizontal page overflow",
+  "ok": true,
+  "detail": "0"
+ },
+ {
+  "name": "@380: projects screen has no horizontal page overflow",
+  "ok": true,
+  "detail": "0"
+ },
+ {
+  "name": "@320: projects screen has no horizontal page overflow",
+  "ok": true,
+  "detail": "0"
+ },
+ {
+  "name": "no page errors during the whole reference-app run",
+  "ok": true,
+  "detail": ""
+ }
+]
