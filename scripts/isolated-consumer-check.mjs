@@ -3,12 +3,20 @@
  * Isolated consumer / package check for Vict Stage 02.
  *
  * Proves, against PACKED TARBALLS (not workspace sources, no hoisting):
- *   1. A neutral consumer can install @victframework/{contracts,kernel,runtime,store-sqlite,sdk}
+ *   1. A neutral consumer can install @victframework/{contracts,ui,kernel,runtime,store-sqlite,sdk}
  *      WITHOUT zod, author contracts through the neutral API, persist an
  *      activation and run in a real SQLite database file, close, reopen,
  *      restore the activation, and read the identical run — all type-checked
  *      under strict TypeScript (skipLibCheck: false) against emitted
  *      declarations.
+ *
+ *      `ui` is in the packed set because the packed `sdk` declares a real
+ *      dependency on `@victframework/ui` (exact candidate version) since
+ *      the UI-foundation integration — an incomplete closure would send
+ *      the consumer's `npm install` to the PUBLIC registry for the
+ *      not-yet-published candidate version and fail with E404 (observed).
+ *      The list must always equal the transitive workspace dependency
+ *      closure of the neutral base packages.
  *   2. A consumer that installs zod can use the optional @victframework/sdk/zod
  *      adapter subpath (and its contract is frozen).
  *   3. Base emitted declarations contain no Zod type/module references.
@@ -22,7 +30,14 @@ import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 
 const repoRoot = resolve(new URL('..', import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '$1'));
-const packages = ['contracts', 'kernel', 'runtime', 'store-sqlite', 'sdk'];
+// The transitive workspace dependency closure of the neutral base
+// packages (contracts, kernel, runtime, store-sqlite, sdk) — six
+// tarballs. `sdk` depends
+// on `ui` (exact candidate version) since the UI-foundation integration;
+// ui itself has no dependencies. An incomplete closure makes the consumer
+// install resolve through the PUBLIC registry and E404 on the unpublished
+// candidate.
+const packages = ['contracts', 'ui', 'sdk', 'kernel', 'runtime', 'store-sqlite'];
 let failures = 0;
 
 function run(command, args, options = {}) {
@@ -76,10 +91,10 @@ for (const name of packages) {
 const tarballs = readdirSync(work).filter((file) => file.endsWith('.tgz'));
 check(
   tarballs.length === packages.length,
-  `packed ${tarballs.length} tarballs (five public packages)`,
+  `packed ${tarballs.length} tarballs (six public packages)`,
 );
 
-// 2. Neutral consumer: installs the five tarballs and NOTHING else.
+// 2. Neutral consumer: installs the packed tarballs and NOTHING else.
 const neutralDir = join(work, 'consumer-neutral');
 mkdirSync(join(neutralDir, 'src'), { recursive: true });
 writeFileSync(
@@ -504,6 +519,7 @@ const scan = (base) => {
   }
 };
 scan(join(repoRoot, 'packages', 'contracts', 'dist'));
+scan(join(repoRoot, 'packages', 'ui', 'dist'));
 scan(join(repoRoot, 'packages', 'kernel', 'dist'));
 scan(join(repoRoot, 'packages', 'runtime', 'dist'));
 scan(join(repoRoot, 'packages', 'store-sqlite', 'dist'));

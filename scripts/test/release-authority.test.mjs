@@ -32,6 +32,19 @@
  *    on the E401 live check before any evidence-aware step) — and the
  *    preflight step must not build shell argument strings from it.
  *
+ * REGISTRY-STATE DETERMINISM (release-exec): the §16 first-publication
+ * bootstrap will flip `ui`/`ui-svelte` from ABSENT to PRESENT (the
+ * `0.0.0-bootstrap.1` placeholder under the `bootstrap` tag), and the
+ * §11 trust bootstrap will later make their trust EXACT. The suite runs
+ * in the release workflow's `npm test` — before AND after those one-time
+ * owner-authorized steps — so every test whose subject touches the live
+ * registry DERIVES its expectations from a read-only live presence
+ * probe (the same packument probe the production preflight performs)
+ * instead of hard-coding the pre-bootstrap world. The production gate
+ * itself is untouched: evidence still cannot forge (or deny) registry
+ * presence, presence is still re-proven LIVE at release time, and an
+ * absent member still refuses the whole set.
+ *
  * No test in this file performs a registry write.
  */
 import { spawnSync } from 'node:child_process';
@@ -66,6 +79,7 @@ import {
   TRUST_UNVERIFIABLE,
 } from '../lib/trust-preflight.mjs';
 import { FROZEN_PUBLISH_ORDER, validateVersionTagPair } from '../lib/release-set.mjs';
+import { fetchPackument } from '../lib/registry-probe.mjs';
 import yaml from 'js-yaml';
 
 const scriptDir = dirname(fileURLToPath(import.meta.url));
@@ -862,6 +876,34 @@ describe('trust preflight — set-wide publication rule', () => {
 });
 
 // ---------------------------------------------------------------------------
+// LIVE registry state — derived, never assumed (release-exec)
+// ---------------------------------------------------------------------------
+
+/** The two members whose presence the §16 first-publication bootstrap
+ * establishes (the only registry state the release path transitions). */
+const BOOTSTRAP_MEMBERS = ['@victframework/ui', '@victframework/ui-svelte'];
+
+/**
+ * LIVE read-only registry presence probe (the same packument probe the
+ * production preflight performs). Returns { present, absent } so every
+ * registry-state expectation below is DERIVED from the actual state —
+ * the suite holds identically before the bootstrap (both members
+ * absent), after it (placeholders present), and at the release-ready
+ * state. Throws when the registry is unreachable: a live-registry test
+ * requires a reachable registry, and the production gate refuses on
+ * exactly that condition.
+ */
+function livePresence(names = BOOTSTRAP_MEMBERS) {
+  const present = [];
+  const absent = [];
+  for (const name of names) {
+    const packument = fetchPackument(name);
+    (Object.keys(packument.versions ?? {}).length > 0 ? present : absent).push(name);
+  }
+  return { present, absent };
+}
+
+// ---------------------------------------------------------------------------
 // 7. Trust evidence — arbitrary, stale, or SELF-ASSERTING JSON never
 //    authorizes (r4); the artifact must RETAIN its captured official
 //    output and survive hash recompute + reclassification (r5)
@@ -1146,34 +1188,90 @@ describe('trust evidence — binding failures refuse authority', () => {
   });
 
   it(
-    'evidence-mode preflight (r5): evidence proves TRUST; registry presence is re-proven LIVE at release time',
+    'evidence-mode preflight (r5): evidence proves TRUST; registry presence is re-proven LIVE at release time (deterministic across the pre-/post-bootstrap registry states)',
     { timeout: 300_000 },
     () => {
       const credible = join(tmpdir(), 'credible-trust-evidence-r5.json');
       // The fixture claims `registry: 'present'` for ALL 14 members —
-      // including ui and ui-svelte, which have NO registry presence
-      // until the owner-authorized bootstrap. The live recheck must
-      // override those claims.
+      // including ui and ui-svelte whenever they still lack registry
+      // presence. The live recheck must override those claims.
       writeFileSync(credible, validEvidence({ identity, version, now: new Date() }));
       try {
-        const verdict = assessPublicationPreflight({ repoRoot, evidencePath: credible });
+        const live = livePresence();
+        const log = [];
+        const verdict = assessPublicationPreflight({
+          repoRoot,
+          evidencePath: credible,
+          log: (line) => log.push(line),
+        });
         expect(verdict.mode).toBe('evidence');
         // The evidence WAS accepted (validated, bound, fresh, classified
-        // exact) — every member's trust is now EXACT, none unverifiable:
+        // exact) — every member's trust is now EXACT, derived from the
+        // retained output, in EVERY registry state:
         expect(verdict.assessment.unverifiable).toEqual([]);
         expect(verdict.assessment.untrusted).toEqual([]);
         expect(verdict.assessment.conflicting).toEqual([]);
-        // …but the LIVE registry recheck governs presence: ui/ui-svelte
-        // are still absent, so publication stays refused (bootstrap
-        // stage) — the artifact's presence claims are never trusted.
-        expect(verdict.authorized).toBe(false);
-        expect(verdict.stage).toBe('first-publication-bootstrap');
-        expect(verdict.assessment.absent).toEqual([
-          '@victframework/ui',
-          '@victframework/ui-svelte',
-        ]);
+        // …but the LIVE registry recheck governs presence: the verdict's
+        // absent set equals the live probe exactly (the artifact's
+        // presence claims are never trusted):
+        expect(verdict.assessment.absent).toEqual(live.absent);
+        // and every claim/live disagreement is surfaced, never swallowed:
+        expect(log.filter((line) => line.includes('the LIVE result governs')).length).toBe(
+          live.absent.length,
+        );
+        if (live.absent.length > 0) {
+          // Pre-bootstrap world: publication stays refused on the
+          // bootstrap stage even though the evidence claims presence —
+          // registry presence cannot be forged by evidence.
+          expect(verdict.authorized).toBe(false);
+          expect(verdict.stage).toBe('first-publication-bootstrap');
+        } else {
+          // Post-bootstrap world: live presence proven for all 14, and
+          // the validated evidence carries trust — the release-time CI
+          // state the workflow's evidence input exists for.
+          expect(verdict.authorized).toBe(true);
+          expect(verdict.stage).toBe('authorized');
+        }
       } finally {
         rmSync(credible, { force: true });
+      }
+    },
+  );
+
+  it(
+    'release-exec: evidence can neither FORGE nor DENY registry presence — inverting every presence claim leaves the LIVE verdict unchanged',
+    { timeout: 300_000 },
+    () => {
+      const live = livePresence();
+      const build = (claim) => {
+        const parsed = JSON.parse(validEvidence({ identity, version, now: new Date() }));
+        for (const result of parsed.results) result.registry = claim;
+        return JSON.stringify(parsed);
+      };
+      const paths = {
+        present: join(tmpdir(), 'presence-claim-present.json'),
+        absent: join(tmpdir(), 'presence-claim-absent.json'),
+      };
+      writeFileSync(paths.present, build(REGISTRY_PRESENT));
+      writeFileSync(paths.absent, build(REGISTRY_ABSENT));
+      try {
+        const verdicts = {
+          present: assessPublicationPreflight({ repoRoot, evidencePath: paths.present }),
+          absent: assessPublicationPreflight({ repoRoot, evidencePath: paths.absent }),
+        };
+        for (const [claim, verdict] of Object.entries(verdicts)) {
+          expect(verdict.mode).toBe('evidence');
+          // Whatever the artifact claims, presence comes ONLY from the
+          // live recheck — identical verdicts under opposite claims:
+          expect(verdict.assessment.absent, claim).toEqual(live.absent);
+          expect(verdict.authorized, claim).toBe(live.absent.length === 0);
+          expect(verdict.stage, claim).toBe(
+            live.absent.length > 0 ? 'first-publication-bootstrap' : 'authorized',
+          );
+        }
+      } finally {
+        rmSync(paths.present, { force: true });
+        rmSync(paths.absent, { force: true });
       }
     },
   );
@@ -1250,9 +1348,10 @@ describe('first-publication bootstrap — placeholder isolation', () => {
   });
 
   it(
-    'the bootstrap plan names exactly the absent members and stays dry without --execute',
+    'the bootstrap plan matches the LIVE registry state and stays dry without --execute (pre- and post-bootstrap deterministic)',
     { timeout: 300_000 },
     () => {
+      const live = livePresence();
       const result = spawnSync(
         process.execPath,
         [join(repoRoot, 'scripts', 'first-publish-bootstrap.mjs')],
@@ -1264,10 +1363,23 @@ describe('first-publication bootstrap — placeholder isolation', () => {
       );
       expect(result.status).toBe(0);
       const output = `${result.stdout}${result.stderr}`;
-      expect(output).toContain('absent: @victframework/ui');
-      expect(output).toContain('absent: @victframework/ui-svelte');
-      expect(output).toContain('0.4.0-rc.1 remains the coordinated candidate version');
-      expect(output).toContain('DRY plan only');
+      if (live.absent.length > 0) {
+        // The plan names EXACTLY the live-absent members — never a
+        // package that already has registry presence (idempotence), and
+        // never a placeholder version that could consume the set:
+        for (const name of live.absent) expect(output).toContain(`absent: ${name}`);
+        for (const name of live.present) expect(output).not.toContain(`absent: ${name}`);
+        expect(output).toContain('DRY plan only');
+        expect(output).toContain('0.4.0-rc.1 remains the coordinated candidate version');
+      } else {
+        // Post-bootstrap world: nothing left to bootstrap — the script
+        // refuses to place a second placeholder on an existing package.
+        expect(output).toContain('nothing to bootstrap');
+        expect(output).not.toContain('absent: ');
+      }
+      // In EITHER state the dry run makes no registry write and never
+      // publishes:
+      expect(output).not.toContain('published:');
     },
   );
 });
@@ -1373,28 +1485,38 @@ describe('verify-trust-preflight — the evidence env reaches the real gate (r5)
   }
 
   it(
-    'a valid evidence fixture (env only) carries the run PAST the trust check to the live registry recheck',
+    'a valid evidence fixture (env only) carries the run PAST the trust check to the live registry recheck (deterministic across registry states)',
     { timeout: 300_000 },
     () => {
+      const live = livePresence();
       const artifact = join(tmpdir(), 'r5-integration-evidence.json');
       const parsed = JSON.parse(validEvidence({ identity, version, now: new Date() }));
       writeFileSync(artifact, JSON.stringify(parsed));
       try {
         const result = runPreflight({ RELEASE_TRUST_EVIDENCE: artifact });
         const output = `${result.stdout}${result.stderr}`;
-        // The evidence was accepted and USED (mode: evidence):
+        // The evidence was accepted and USED (mode: evidence) — in every
+        // registry state:
         expect(output).toContain('validated operator evidence bound to');
         expect(output).toContain('classified from the RETAINED captured output');
         // …so the gate reached the LIVE registry recheck — the exact
         // stage the r4 E401 dead-end never allowed CI to reach:
         expect(output).toContain('LIVE registry recheck');
-        // The recheck governs: ui/ui-svelte are still absent, so the
-        // verdict refuses publication (bootstrap stage — correct; a
-        // registry WRITE remains impossible, G3 HELD).
-        expect(result.status).toBe(1);
-        expect(output).toContain('ABSENT (no presence at any version)');
-        expect(output).toContain('first-publication-bootstrap');
-        expect(output).toContain('@victframework/ui');
+        if (live.absent.length > 0) {
+          // The recheck governs: the live-absent members refuse the run
+          // (bootstrap stage — a registry WRITE remains impossible, G3
+          // HELD), even though the evidence claims their presence:
+          expect(result.status).toBe(1);
+          expect(output).toContain('ABSENT (no presence at any version)');
+          expect(output).toContain('first-publication-bootstrap');
+          for (const name of live.absent) expect(output).toContain(name);
+        } else {
+          // Post-bootstrap: live presence proven for all 14 + validated
+          // trust evidence → the gate AUTHORIZES (the release-ready
+          // state the coordinated publication runs in).
+          expect(result.status).toBe(0);
+          expect(output).toContain('AUTHORIZED');
+        }
       } finally {
         rmSync(artifact, { force: true });
       }
@@ -1402,7 +1524,7 @@ describe('verify-trust-preflight — the evidence env reaches the real gate (r5)
   );
 
   it(
-    'WITHOUT the evidence env the gate stays in live mode and fails authentication-gated (the r4 CI failure mode)',
+    'WITHOUT the evidence env the gate stays in LIVE mode and its verdict tracks the live trust state (CI: the r4 authentication-gated refusal)',
     { timeout: 300_000 },
     () => {
       const env = { ...process.env };
@@ -1413,9 +1535,25 @@ describe('verify-trust-preflight — the evidence env reaches the real gate (r5)
         { encoding: 'utf8', cwd: repoRoot, timeout: 240_000, env },
       );
       const output = `${result.stdout}${result.stderr}`;
-      expect(result.status).toBe(1);
+      // Live mode only — the evidence path is never consulted:
       expect(output).not.toContain('validated operator evidence');
-      expect(output).toContain('UNVERIFIABLE');
+      // The CLI verdict must equal the live-mode verdict of the SAME
+      // registry + trust state (derived, so the test holds in the
+      // pre-bootstrap world, the post-bootstrap world, on a session-less
+      // CI runner, and on an authenticated operator machine alike):
+      const live = assessPublicationPreflight({ repoRoot });
+      expect(result.status === 0).toBe(live.authorized);
+      if (live.authorized) {
+        expect(output).toContain('AUTHORIZED');
+      } else {
+        expect(output).toContain(`(stage: ${live.stage})`);
+        if (live.assessment.unverifiable.length > 0) {
+          // The session-less CI failure mode (r4): trust verification is
+          // authentication-gated and every unverifiable member refuses
+          // the run — absence of proof is never a pass.
+          expect(output).toContain('UNVERIFIABLE');
+        }
+      }
     },
   );
 
