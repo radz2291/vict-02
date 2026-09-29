@@ -47,12 +47,15 @@ async function boundedFetch(
   idempotencyKey: string | undefined,
   targetId?: string,
 ): Promise<ConfirmationTransportResult> {
-  // Integrator amendment (in scope of the accepted G2 journey scope): the
-  // relay honors a BOUNDED target id (the journey form's target select;
-  // default 'local'). Absent or under-credentialed targets fail closed
-  // 'unreachable' — never a token echo, never a fabricated answer.
-  const requested = validSegment(targetId) ? targetId : 'local';
-  const target = getTarget(requested) ?? (requested !== 'local' ? getTarget('local') : undefined);
+  // FAIL-CLOSED target selection. An unknown, invalid, or ABSENT target
+  // id NEVER falls back to another target (the earlier invented local
+  // fallback silently sent the operator's call against the 'local'
+  // target — that was fail-open state invention). The journey forms
+  // always submit the target selector, so anything else is treated as
+  // unknown and fails closed 'unreachable' below with NO fetch, no
+  // receipt, and no echo of the requested id.
+  const requested = validSegment(targetId) ? targetId : '';
+  const target = getTarget(requested);
   if (target === undefined) {
     return { kind: 'unreachable' };
   }
