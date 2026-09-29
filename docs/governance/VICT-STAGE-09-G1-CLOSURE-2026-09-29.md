@@ -68,9 +68,23 @@ publication, no production activation.
 ## 5. Integration into `main`
 
 The owner authorized a normal checked merge / fast-forward of the accepted
-branch into `main` once this closure record passes an independent check
-(merge SHA to be recorded below; no force-push; `main` was re-verified
-unmoved at `fd675d9` immediately before).
+branch into `main` once this closure record passes an independent check.
+**EXECUTED:** the closure checker returned PASS WITH NON-BLOCKING FINDINGS
+(one cosmetic wording note on the verifier's own addendum formatting,
+retained; verifier report integrity unaffected); `main` re-verified unmoved
+at `fd675d9` immediately before; the accepted branch head was then
+fast-forwarded into `main` by a NON-FORCED ref update (server-side
+fast-forward check enforced). **Final merged `main`: `b37d4bdd98c04948920654d0ec3e12f2400e5f83`** (remote-verified).
+
+## 6. Independent check of this closure record
+
+Fresh-context checker (own clone) at `b37d4bd`: verdict PASS WITH
+NON-BLOCKING FINDINGS — all closure claims verified (acceptance verbatim;
+frozen digests recomputed and matching at `5c680d5`; docs-only diff scope
+`f68c2bb..b37d4bd` five paths, zero production code; STATE opening correct;
+verifier report unmodified; single cosmetic note: the verifier addendum's
+`## 10` header lacks a preceding blank line due to the original file's
+missing trailing newline — pure formatting, pinned bytes untouched).
 
 ## 6. Independent check of this closure record
 
