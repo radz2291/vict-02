@@ -117,6 +117,7 @@ export const ACTOR_SCOPES = [
   'activation.select',
   'activation.read',
   'run.read',
+  'run.detail',
   'run.cancel',
   'operator.resolve',
   'agent.turn.start',
@@ -187,6 +188,15 @@ export interface ActorRecord {
   readonly roles: readonly ActorRole[];
   /** Epoch-ms creation time from the injected clock. */
   readonly createdAt: number;
+  /**
+   * OPTIONAL direct scope grants (Stage 9 D-5): deployment-provisioned
+   * least-privilege actors can hold a DISTINCT scope (e.g. the protected
+   * `run.detail` scope) without inheriting an entire role's scope set.
+   * Grants are validated against the closed `ACTOR_SCOPES` vocabulary at
+   * the directory boundary and unioned with role-derived scopes; default
+   * denial is unchanged — an absent field grants nothing.
+   */
+  readonly scopes?: readonly string[];
 }
 
 /** Port resolving actor records from the authoritative directory. */
@@ -212,6 +222,16 @@ export function authoritativeScopes(actor: ActorRecord | undefined): readonly Ac
     }
     for (const scope of ROLE_SCOPES[role]) {
       scopes.add(scope);
+    }
+  }
+  // Direct grants (optional, validated): only closed-vocabulary scopes
+  // union into the authoritative set; anything else is ignored here and
+  // rejected at the directory boundary.
+  if (actor.scopes !== undefined) {
+    for (const grant of actor.scopes) {
+      if ((ACTOR_SCOPES as readonly string[]).includes(grant)) {
+        scopes.add(grant as ActorScope);
+      }
     }
   }
   return [...scopes].sort();
@@ -306,8 +326,25 @@ export class InMemoryActorDirectory implements ActorDirectory {
         );
       }
     }
+    if (record.scopes !== undefined) {
+      if (!Array.isArray(record.scopes)) {
+        throw new VictControlError('VICT_CONTROL_FIELD_INVALID', 'actor scopes must be an array.');
+      }
+      for (const grant of record.scopes) {
+        if (!(ACTOR_SCOPES as readonly string[]).includes(grant)) {
+          throw new VictControlError(
+            'VICT_CONTROL_FIELD_INVALID',
+            'actor scope grants must use the closed scope vocabulary.',
+          );
+        }
+      }
+    }
     assertControlTimestamp(record.createdAt, 'actor.createdAt');
-    this.#actors.set(record.actorId, { ...record, roles: [...record.roles] });
+    this.#actors.set(record.actorId, {
+      ...record,
+      roles: [...record.roles],
+      ...(record.scopes !== undefined ? { scopes: [...record.scopes] } : {}),
+    });
   }
 }
 
@@ -1284,6 +1321,7 @@ export const CONTROL_AUDIT_ACTIONS = [
   'activation.rolled-back',
   'actor.recorded',
   'run.cancelled',
+  'run.detail.accessed',
   'turn.cancelled',
   'approval.decided',
   'approval.expired',

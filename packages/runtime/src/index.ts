@@ -20,6 +20,7 @@ export type {
   KernelEventType,
   OutputSummary,
 } from '@victframework/kernel';
+export type { DurableWaitState } from '@victframework/kernel';
 export type {
   ActivationCatalog,
   ActivationSelection,

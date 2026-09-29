@@ -103,6 +103,7 @@ function statusForError(code: string | undefined): number {
     case 'VICT_CONTROL_APPROVAL_MISSING':
     case 'VICT_STORE_ACTIVATION_NOT_FOUND':
     case 'VICT_STORE_RELEASE_NOT_FOUND':
+    case 'VICT_RUN_MISSING':
     case 'VICT_STREAM_ACTOR_MISMATCH':
     case 'VICT_TURN_ACTOR_MISMATCH':
       return 404;
@@ -149,6 +150,7 @@ function statusForError(code: string | undefined): number {
     case 'VICT_TURN_EXECUTOR_UNAVAILABLE':
     case 'VICT_APPDATA_UNAVAILABLE':
     case 'VICT_RUN_STORE_UNAVAILABLE':
+    case 'VICT_OPERATOR_READ_UNAVAILABLE':
       return 409;
     default:
       if (code.startsWith('VICT_ACTOR_')) {
@@ -236,6 +238,13 @@ const ROUTE_COMMANDS: Readonly<Record<string, string>> = {
   '/vict/v1/actor/whoami': 'actor.whoami',
   '/vict/v1/changesets': 'changeset.list',
   '/vict/v1/releases/selected': 'release.get-selected',
+  // Stage 9 operator reads (WP-1): fixed GET collection routes.
+  '/vict/v1/releases': 'release.list',
+  '/vict/v1/releases/selections': 'release.selections',
+  '/vict/v1/activations': 'activation.list',
+  '/vict/v1/activations/selected': 'activation.selected',
+  '/vict/v1/runs': 'run.list',
+  '/vict/v1/audit': 'audit.search',
   '/vict/v1/turns': 'agent.turn.start',
   '/vict/v1/app/query': 'app.data.query',
   '/vict/v1/app/mutate': 'app.data.mutate',
@@ -508,6 +517,65 @@ export function createVictHttpServer(options: VictHttpServerOptions): VictHttpSe
         throw new HttpError('VICT_HTTP_METHOD_UNSUPPORTED', 405);
       }
       return { command: 'agent.turn.get', pathParams: { turnId: turnMatch[1] as string } };
+    }
+    // Stage 9 operator reads (WP-1): bounded dynamic instance routes. The
+    // run sub-resource routes are matched BEFORE the bare run identity so
+    // `/runs/:id/events` never collapses into `run.get`.
+    const runEventsMatch =
+      /^\/vict\/v1\/runs\/([A-Za-z0-9][A-Za-z0-9._:@-]{0,127})\/events$/.exec(path);
+    if (runEventsMatch !== null) {
+      if (req.method !== 'GET') {
+        throw new HttpError('VICT_HTTP_METHOD_UNSUPPORTED', 405);
+      }
+      return { command: 'run.events', pathParams: { runId: runEventsMatch[1] as string } };
+    }
+    const runWaitsMatch =
+      /^\/vict\/v1\/runs\/([A-Za-z0-9][A-Za-z0-9._:@-]{0,127})\/waits$/.exec(path);
+    if (runWaitsMatch !== null) {
+      if (req.method !== 'GET') {
+        throw new HttpError('VICT_HTTP_METHOD_UNSUPPORTED', 405);
+      }
+      return { command: 'run.waits', pathParams: { runId: runWaitsMatch[1] as string } };
+    }
+    const runDetailMatch =
+      /^\/vict\/v1\/runs\/([A-Za-z0-9][A-Za-z0-9._:@-]{0,127})\/detail$/.exec(path);
+    if (runDetailMatch !== null) {
+      if (req.method !== 'GET') {
+        throw new HttpError('VICT_HTTP_METHOD_UNSUPPORTED', 405);
+      }
+      // PROTECTED DETAIL (D-5): distinct scope enforced below the transport.
+      return { command: 'run.detail', pathParams: { runId: runDetailMatch[1] as string } };
+    }
+    const runMatch = /^\/vict\/v1\/runs\/([A-Za-z0-9][A-Za-z0-9._:@-]{0,127})$/.exec(path);
+    if (runMatch !== null) {
+      if (req.method !== 'GET') {
+        throw new HttpError('VICT_HTTP_METHOD_UNSUPPORTED', 405);
+      }
+      return { command: 'run.get', pathParams: { runId: runMatch[1] as string } };
+    }
+    const activationSelectedForGraphMatch =
+      /^\/vict\/v1\/graphs\/([A-Za-z0-9][A-Za-z0-9._:@-]{0,127})\/activations\/selected$/.exec(
+        path,
+      );
+    if (activationSelectedForGraphMatch !== null) {
+      if (req.method !== 'GET') {
+        throw new HttpError('VICT_HTTP_METHOD_UNSUPPORTED', 405);
+      }
+      return {
+        command: 'activation.selected',
+        pathParams: { graphId: activationSelectedForGraphMatch[1] as string },
+      };
+    }
+    const activationMatch =
+      /^\/vict\/v1\/activations\/([A-Za-z0-9][A-Za-z0-9._:@-]{0,127})$/.exec(path);
+    if (activationMatch !== null) {
+      if (req.method !== 'GET') {
+        throw new HttpError('VICT_HTTP_METHOD_UNSUPPORTED', 405);
+      }
+      return {
+        command: 'activation.get',
+        pathParams: { activationVersion: activationMatch[1] as string },
+      };
     }
     const approvalMatch = /^\/vict\/v1\/approvals\/([A-Za-z0-9][A-Za-z0-9._:@-]{0,127})$/.exec(
       path,
@@ -792,13 +860,28 @@ export function createVictHttpServer(options: VictHttpServerOptions): VictHttpSe
 }
 
 /** Listen on an ephemeral port (real HTTP, loopback). */
-export function listenVictHttpServer(composed: VictHttpServer): Promise<number> {
+export function listenVictHttpServer(
+  composed: VictHttpServer,
+  options?: { readonly port?: number; readonly host?: string },
+): Promise<number> {
+  // Stage 9 D-2: the deployment may pin a STABLE loopback port so a
+  // separately deployed Studio can be provisioned with an exact target
+  // endpoint. Defaults remain the historical ephemeral loopback bind
+  // (`0`/`127.0.0.1`); non-loopback hosts are NOT supported here.
+  const port = options?.port ?? 0;
+  const host = options?.host ?? '127.0.0.1';
+  if (!Number.isInteger(port) || port < 0 || port > 65_535) {
+    return Promise.reject(new Error('the requested bind port is not a valid TCP port'));
+  }
+  if (host !== '127.0.0.1' && host !== 'localhost') {
+    return Promise.reject(new Error('only loopback binds are supported at this boundary'));
+  }
   return new Promise((resolve, reject) => {
-    composed.server.listen(0, '127.0.0.1', () => {
+    composed.server.listen(port, host, () => {
       const address = composed.server.address();
-      if (address === null || typeof address === 'object') {
-        const port = (address as { port: number }).port;
-        resolve(port);
+      if (address !== null && typeof address === 'object') {
+        const boundPort = (address as { port: number }).port;
+        resolve(boundPort);
       } else {
         reject(new Error('the server did not bind a TCP port'));
       }

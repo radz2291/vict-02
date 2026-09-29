@@ -1,9 +1,21 @@
 import { createHash } from 'node:crypto';
-import type { AgentControlStores, ControlAuditEvent } from '@victframework/runtime';
+import type {
+  ActivationCatalog,
+  AgentControlStores,
+  ControlAuditEvent,
+  DurableWaitState,
+  ExecutionStore,
+  RunQuery,
+  StoredActivation,
+  StoredEvent,
+  StoredRun,
+  StoredRunStatus,
+} from '@victframework/runtime';
 import {
   COMMAND_IDEMPOTENCY_KEY_PATTERN,
   toCanonicalJson,
   VictControlError,
+  VictStoreError,
   VICT_IDEMPOTENCY_FENCE_CONFLICT,
   commandIdempotencyFenceToken,
   type CommandIdempotencyReceipt,
@@ -66,8 +78,18 @@ export const VICT_COMMANDS = [
   'release.select',
   'release.rollback',
   'release.get-selected',
+  'release.list',
+  'release.selections',
   'activation.select',
+  'activation.list',
+  'activation.get',
+  'activation.selected',
   'run.cancel',
+  'run.list',
+  'run.get',
+  'run.events',
+  'run.waits',
+  'run.detail',
   'agent.turn.start',
   'agent.turn.cancel',
   'agent.turn.get',
@@ -77,6 +99,7 @@ export const VICT_COMMANDS = [
   'app.data.query',
   'app.data.mutate',
   'app.data.action',
+  'audit.search',
 ] as const;
 export type VictCommandName = (typeof VICT_COMMANDS)[number];
 
@@ -166,6 +189,37 @@ const COMMAND_REGISTRY: Readonly<Record<VictCommandName, CommandSpec>> = {
     mutation: true,
   },
   'release.get-selected': { scope: 'release.read', fields: ['applicationId'], mutation: false },
+  'release.list': { scope: 'release.read', fields: ['applicationId'], mutation: false },
+  'release.selections': { scope: 'release.read', fields: ['applicationId'], mutation: false },
+  'activation.list': {
+    scope: 'activation.read',
+    fields: ['graphId', 'limit'],
+    mutation: false,
+  },
+  'activation.get': {
+    scope: 'activation.read',
+    fields: ['activationVersion'],
+    mutation: false,
+  },
+  'activation.selected': { scope: 'activation.read', fields: ['graphId'], mutation: false },
+  'run.list': {
+    scope: 'run.read',
+    fields: ['status', 'graphId', 'activationVersion', 'limit', 'offset'],
+    mutation: false,
+  },
+  'run.get': { scope: 'run.read', fields: ['runId'], mutation: false },
+  'run.events': { scope: 'run.read', fields: ['runId', 'afterSeq', 'limit'], mutation: false },
+  'run.waits': { scope: 'run.read', fields: ['runId'], mutation: false },
+  // PROTECTED DETAIL (Stage 9 D-5): DISTINCT scope, retention check, and
+  // per-access audit. Never inferred from `run.read`; no default role holds
+  // this scope — it is reached only through explicit deployment grants
+  // (or the administrator all-scopes policy).
+  'run.detail': { scope: 'run.detail', fields: ['runId'], mutation: false },
+  'audit.search': {
+    scope: 'audit.read',
+    fields: ['subjectType', 'subjectId', 'limit'],
+    mutation: false,
+  },
   'activation.select': {
     scope: 'activation.select',
     fields: ['graphId', 'activationVersion'],
@@ -281,6 +335,24 @@ export interface VictCommandServiceOptions {
   /** The remote Application data/action boundary. */
   readonly appData?: AppDataPort;
   /**
+   * Stage 9 operator reads (WP-1): the durable execution store for safe
+   * run/event reads. Optional for backward compatibility; the run.* read
+   * commands fail closed with a stable code when it is absent.
+   */
+  readonly execution?: ExecutionStore;
+  /**
+   * Stage 9 operator reads: the bounded orchestration port for wait
+   * diagnosis (safe descriptors only; never checkpoint payloads).
+   */
+  readonly orchestration?: {
+    listWaits(runId: string): Promise<readonly DurableWaitState[]>;
+  };
+  /**
+   * Stage 9 operator reads: the activation catalog for graph/activation
+   * identity and content inspection.
+   */
+  readonly catalog?: ActivationCatalog;
+  /**
    * Durable lease duration for pending idempotency claims (default
    * 60_000 ms). A crashed claimer's lease expires and the key becomes
    * recoverable.
@@ -329,6 +401,166 @@ function boundedId(value: unknown, field: string): string {
     );
   }
   return value;
+}
+
+/**
+ * Bounded pagination/sequence parameter: an optional JSON number OR a
+ * bounded decimal STRING (HTTP GET query parameters are strings by
+ * nature) that must be a SAFE INTEGER inside `[min, max]`; `fallback`
+ * applies when absent. Anything else fails closed.
+ */
+function boundedPageParam(
+  value: unknown,
+  field: string,
+  max: number,
+  fallback: number,
+  min: number,
+): number {
+  if (value === undefined) {
+    return fallback;
+  }
+  // Bounded numeric-string coercion BEFORE validation: at most 10 ASCII
+  // digits with an optional leading minus — never an expression.
+  const candidate =
+    typeof value === 'number'
+      ? value
+      : typeof value === 'string' && /^-?\d{1,10}$/.test(value)
+        ? Number(value)
+        : NaN;
+  if (!Number.isSafeInteger(candidate) || candidate < min || candidate > max) {
+    throw new VictControlError(
+      'VICT_COMMAND_FIELD_INVALID',
+      `${field} must be an integer between ${min} and ${max}.`,
+    );
+  }
+  return candidate;
+}
+
+/** The closed durable-run status vocabulary (exhaustive by construction). */
+const STORED_RUN_STATUS_FLAGS = {
+  running: true,
+  waiting: true,
+  blocked: true,
+  completed: true,
+  failed: true,
+  cancelled: true,
+} satisfies Record<StoredRunStatus, true>;
+const STORED_RUN_STATUSES = Object.freeze(
+  Object.keys(STORED_RUN_STATUS_FLAGS) as StoredRunStatus[],
+);
+
+/**
+ * The SAFE generic run projection (Stage 9 WP-1). Identity, status, safe
+ * error and safe output summary ONLY — stored `output` never crosses the
+ * generic read regardless of retention; the protected `run.detail` command
+ * is the only authorized path to protected bytes.
+ */
+function safeRunProjection(run: StoredRun): Record<string, unknown> {
+  return {
+    runId: run.runId,
+    graphId: run.graphId,
+    graphVersion: run.graphVersion,
+    capabilitySetVersion: run.capabilitySetVersion,
+    activationVersion: run.activationVersion,
+    status: run.status,
+    mode: run.mode,
+    retention: run.retention,
+    steps: run.steps,
+    currentNodeId: run.currentNodeId,
+    ...(run.outputSummary !== undefined ? { outputSummary: run.outputSummary } : {}),
+    ...(run.error !== undefined ? { error: run.error } : {}),
+    recordRevision: run.recordRevision,
+    createdAt: run.createdAt,
+    updatedAt: run.updatedAt,
+    completedAt: run.completedAt,
+  };
+}
+
+/**
+ * The SAFE event projection: identity/timeline columns only. The stored
+ * `payload` string can carry retention-gated kernel material and never
+ * crosses the generic read.
+ */
+function safeEventProjection(event: StoredEvent): Record<string, unknown> {
+  return {
+    runId: event.runId,
+    seq: event.seq,
+    eventSchema: event.eventSchema,
+    type: event.type,
+    graphId: event.graphId,
+    graphVersion: event.graphVersion,
+    capabilitySetVersion: event.capabilitySetVersion,
+    activationVersion: event.activationVersion,
+    nodeId: event.nodeId,
+    capabilityId: event.capabilityId,
+    timestamp: event.timestamp,
+  };
+}
+
+/** The SAFE wait projection: safe descriptors only, never checkpoints. */
+function safeWaitProjection(wait: DurableWaitState): Record<string, unknown> {
+  return {
+    waitId: wait.waitId,
+    runId: wait.runId,
+    tokenId: wait.tokenId,
+    nodeId: wait.nodeId,
+    activationVersion: wait.activationVersion,
+    kind: wait.kind,
+    signalName: wait.signalName,
+    dueAt: wait.dueAt,
+    timeoutAt: wait.timeoutAt,
+    status: wait.status,
+    createdAt: wait.createdAt,
+    resolvedAt: wait.resolvedAt,
+    resolvedBy: wait.resolvedBy,
+  };
+}
+
+/**
+ * The SAFE activation projection: published identity plus a defensive
+ * identity-level summary parsed from the canonical manifest (node/binding
+ * counts and graph node ids). Nothing payload-shaped is disclosed.
+ */
+function safeActivationProjection(activation: StoredActivation): Record<string, unknown> {
+  let nodeIds: string[] | undefined;
+  let bindingCount: number | undefined;
+  let contractCount: number | undefined;
+  try {
+    const manifest = JSON.parse(activation.canonicalManifest) as {
+      graph?: { nodes?: unknown };
+      bindings?: unknown;
+      contracts?: unknown;
+    };
+    if (Array.isArray(manifest.graph?.nodes)) {
+      nodeIds = (manifest.graph.nodes as unknown[])
+        .map((node) =>
+          typeof node === 'object' && node !== null && 'id' in (node as Record<string, unknown>)
+            ? (node as Record<string, unknown>)['id']
+            : undefined,
+        )
+        .filter((id): id is string => typeof id === 'string');
+    }
+    if (Array.isArray(manifest.bindings)) {
+      bindingCount = manifest.bindings.length;
+    }
+    if (Array.isArray(manifest.contracts)) {
+      contractCount = manifest.contracts.length;
+    }
+  } catch {
+    // The manifest is presentation-only here; identity columns remain
+    // truthful even if the canonical JSON were unreadable.
+  }
+  return {
+    activationVersion: activation.activationVersion,
+    manifestSchema: activation.manifestSchema,
+    graphId: activation.graphId,
+    graphVersion: activation.graphVersion,
+    capabilitySetVersion: activation.capabilitySetVersion,
+    createdAt: activation.createdAt,
+    ...(nodeIds !== undefined ? { nodeIds, nodeCount: nodeIds.length } : {}),
+    ...(bindingCount !== undefined ? { bindingCount } : {}),
+    ...(contractCount !== undefined ? { contractCount } : {}),
+  };
 }
 
 function boundedString(value: unknown, field: string, max: number): string {
@@ -590,6 +822,8 @@ export class VictCommandService {
   readonly #options: VictCommandServiceOptions;
   readonly #owner: string;
   readonly #leaseMs: number;
+  /** Monotonic disambiguator for per-access protected-detail audit ids. */
+  #detailAuditSeq = 0;
 
   constructor(options: VictCommandServiceOptions) {
     this.#options = options;
@@ -1087,6 +1321,30 @@ export class VictCommandService {
         });
         return ok({ selection: selection as unknown as Record<string, unknown> });
       }
+      // ---- Stage 9 operator reads (WP-1): safe, bounded, scope-checked ----
+      // Each helper returns the FULL outcome (ok/data or stable failure).
+      case 'run.list':
+        return this.#listRuns(payload);
+      case 'run.get':
+        return this.#getRunSafe(payload);
+      case 'run.events':
+        return this.#listRunEvents(payload);
+      case 'run.waits':
+        return this.#listRunWaits(payload);
+      case 'run.detail':
+        return this.#protectedRunDetail(actor, payload);
+      case 'activation.list':
+        return this.#listActivations(payload);
+      case 'activation.get':
+        return this.#getActivation(payload);
+      case 'activation.selected':
+        return this.#selectedActivation(payload);
+      case 'release.list':
+        return this.#listReleases(payload);
+      case 'release.selections':
+        return this.#listReleaseSelections(payload);
+      case 'audit.search':
+        return this.#searchAudit(payload);
       case 'run.cancel':
         return ok(await this.#cancelRun(actor, payload, idempotencyKey));
       case 'agent.turn.start': {
@@ -1184,6 +1442,269 @@ export class VictCommandService {
       ),
       reasonCode: typeof payload.reasonCode === 'string' ? payload.reasonCode : 'operator',
     })) as Record<string, unknown>;
+  }
+
+  // ---- Stage 9 operator reads (WP-1) ---------------------------------
+  // Safe-summary, bounded, scope-checked reads. The generic run surface
+  // NEVER discloses stored `output` (even under 'full' retention); the
+  // protected `run.detail` command is the only authorized path, behind the
+  // DISTINCT `run.detail` scope, a retention check, and per-access audit.
+
+  #requireExecution(): ExecutionStore {
+    const execution = this.#options.execution;
+    if (execution === undefined) {
+      throw new VictControlError(
+        'VICT_OPERATOR_READ_UNAVAILABLE',
+        'No execution store is composed in this deployment; operator run reads are unavailable.',
+      );
+    }
+    return execution;
+  }
+
+  #requireCatalog(): ActivationCatalog {
+    const catalog = this.#options.catalog;
+    if (catalog === undefined) {
+      throw new VictControlError(
+        'VICT_OPERATOR_READ_UNAVAILABLE',
+        'No activation catalog is composed in this deployment; activation reads are unavailable.',
+      );
+    }
+    return catalog;
+  }
+
+  #requireOrchestration(): { listWaits(runId: string): Promise<readonly DurableWaitState[]> } {
+    const orchestration = this.#options.orchestration;
+    if (orchestration === undefined) {
+      throw new VictControlError(
+        'VICT_OPERATOR_READ_UNAVAILABLE',
+        'No orchestration port is composed in this deployment; wait reads are unavailable.',
+      );
+    }
+    return orchestration;
+  }
+
+  async #listRuns(payload: Record<string, unknown>): Promise<VictCommandOutcome> {
+    const execution = this.#requireExecution();
+    const statusFilter = payload.status;
+    if (
+      statusFilter !== undefined &&
+      (typeof statusFilter !== 'string' ||
+        !(STORED_RUN_STATUSES as readonly string[]).includes(statusFilter))
+    ) {
+      throw new VictControlError(
+        'VICT_COMMAND_FIELD_INVALID',
+        'status must use the closed durable-run status vocabulary.',
+      );
+    }
+    const query: RunQuery = {
+      ...(statusFilter !== undefined ? { status: statusFilter as StoredRunStatus } : {}),
+      ...(payload.graphId !== undefined ? { graphId: boundedId(payload.graphId, 'graphId') } : {}),
+      ...(payload.activationVersion !== undefined
+        ? { activationVersion: boundedId(payload.activationVersion, 'activationVersion') }
+        : {}),
+    };
+    const limit = boundedPageParam(payload.limit, 'limit', 100, 50, 1);
+    const offset = boundedPageParam(payload.offset, 'offset', 10_000, 0, 0);
+    const runs = await execution.listRuns(query);
+    // Deterministic ordering: createdAt ascending, then runId — stable
+    // across pages; the store's natural order is never relied on.
+    const sorted = [...runs].sort(
+      (a, b) => a.createdAt - b.createdAt || (a.runId < b.runId ? -1 : a.runId > b.runId ? 1 : 0),
+    );
+    const page = sorted.slice(offset, offset + limit);
+    return ok({
+      runs: page.map(safeRunProjection),
+      total: sorted.length,
+      offset,
+      limit,
+      hasMore: offset + page.length < sorted.length,
+    });
+  }
+
+  async #getRunSafe(payload: Record<string, unknown>): Promise<VictCommandOutcome> {
+    const run = await this.#requireExecution().getRun(boundedId(payload.runId, 'runId'));
+    if (run === undefined) {
+      // Existence of other runs is never disclosed through this command.
+      return { ok: false, code: 'VICT_RUN_MISSING' };
+    }
+    return ok({ run: safeRunProjection(run) });
+  }
+
+  async #listRunEvents(payload: Record<string, unknown>): Promise<VictCommandOutcome> {
+    const execution = this.#requireExecution();
+    const runId = boundedId(payload.runId, 'runId');
+    const run = await execution.getRun(runId);
+    if (run === undefined) {
+      return { ok: false, code: 'VICT_RUN_MISSING' };
+    }
+    const afterSeq = boundedPageParam(payload.afterSeq, 'afterSeq', 1_000_000_000, -1, -1);
+    const limit = boundedPageParam(payload.limit, 'limit', 500, 100, 1);
+    const events = await execution.listEvents(runId, afterSeq);
+    const sorted = [...events].sort((a, b) => a.seq - b.seq);
+    const page = sorted.slice(0, limit);
+    return ok({
+      runId,
+      // Identity/timeline columns ONLY: the stored event payload can carry
+      // retention-gated kernel material and never crosses the generic read.
+      events: page.map(safeEventProjection),
+      nextSeq: page.length > 0 ? (page[page.length - 1] as StoredEvent).seq : afterSeq,
+      hasMore: sorted.length > page.length,
+    });
+  }
+
+  async #listRunWaits(payload: Record<string, unknown>): Promise<VictCommandOutcome> {
+    const execution = this.#requireExecution();
+    const runId = boundedId(payload.runId, 'runId');
+    const run = await execution.getRun(runId);
+    if (run === undefined) {
+      return { ok: false, code: 'VICT_RUN_MISSING' };
+    }
+    try {
+      const waits = await this.#requireOrchestration().listWaits(runId);
+      return ok({ runId, waits: waits.map(safeWaitProjection) });
+    } catch (error) {
+      // The execution store and the orchestration store are SEPARATE layers:
+      // a run without an orchestration-store counterpart truthfully has no
+      // orchestration waits. Real store faults propagate.
+      if (
+        error instanceof VictStoreError &&
+        error.code === 'VICT_STORE_RUN_NOT_FOUND'
+      ) {
+        return ok({ runId, waits: [] });
+      }
+      throw error;
+    }
+  }
+
+  async #protectedRunDetail(
+    actor: ServerActorContext,
+    payload: Record<string, unknown>,
+  ): Promise<VictCommandOutcome> {
+    const execution = this.#requireExecution();
+    const runId = boundedId(payload.runId, 'runId');
+    const run = await execution.getRun(runId);
+    if (run === undefined) {
+      return { ok: false, code: 'VICT_RUN_MISSING' };
+ }
+    // PER-ACCESS AUDIT (D-5): every authorized retrieval of protected
+    // material is durably attributable (actor, run, action, time).
+    const at = (this.#options.clock ?? (() => Date.now()))();
+    const auditEvent: ControlAuditEvent = {
+      auditId: `audit-run-detail-${run.runId}-${at}-${(this.#detailAuditSeq += 1)}`,
+      at,
+      actorId: actor.actorId,
+      action: 'run.detail.accessed',
+      subjectType: 'run',
+      subjectId: run.runId,
+      summary: 'protected run detail retrieved under the run.detail scope',
+    };
+    await this.#options.stores.control.appendAuditEvent(auditEvent);
+    // RETENTION CHECK (D-5): protected bytes exist only under 'full'
+    // retention; a summary-retention run truthfully reports that nothing
+    // is available — nothing is silently synthesized or leaked.
+    if (run.retention !== 'full') {
+      return ok({
+        run: safeRunProjection(run),
+        protectedOutput: null,
+        protectedAvailable: false,
+        retention: run.retention,
+      });
+    }
+    return ok({
+      run: safeRunProjection(run),
+      protectedOutput: run.output ?? null,
+      protectedAvailable: true,
+      retention: run.retention,
+    });
+  }
+
+  async #listActivations(payload: Record<string, unknown>): Promise<VictCommandOutcome> {
+    const catalog = this.#requireCatalog();
+    const graphId =
+      payload.graphId === undefined ? undefined : boundedId(payload.graphId, 'graphId');
+    const limit = boundedPageParam(payload.limit, 'limit', 200, 100, 1);
+    const all = await catalog.list();
+    const filtered = graphId === undefined ? all : all.filter((a) => a.graphId === graphId);
+    const sorted = [...filtered].sort((a, b) => {
+      if (a.createdAt !== b.createdAt) {
+        return a.createdAt - b.createdAt;
+      }
+      return a.activationVersion < b.activationVersion
+        ? -1
+        : a.activationVersion > b.activationVersion
+          ? 1
+          : 0;
+    });
+    return ok({
+      activations: sorted.slice(0, limit).map(safeActivationProjection),
+      total: sorted.length,
+    });
+  }
+
+  async #getActivation(payload: Record<string, unknown>): Promise<VictCommandOutcome> {
+    const activation = await this.#requireCatalog().get(
+      boundedId(payload.activationVersion, 'activationVersion'),
+    );
+    if (activation === undefined) {
+      return { ok: false, code: 'VICT_STORE_ACTIVATION_NOT_FOUND' };
+    }
+    return ok({ activation: safeActivationProjection(activation) });
+  }
+
+  async #selectedActivation(payload: Record<string, unknown>): Promise<VictCommandOutcome> {
+    const graphId = boundedId(payload.graphId, 'graphId');
+    const selection = await this.#requireCatalog().getSelection(graphId);
+    // Truthful absence (NOT an error): an unselected graph is a distinct,
+    // inspectable state, never a silent fallback.
+    return ok({
+      graphId,
+      selection:
+        selection === undefined
+          ? null
+          : {
+              graphId: selection.graphId,
+              activationVersion: selection.activationVersion,
+              selectionRevision: selection.selectionRevision,
+              selectedAt: selection.selectedAt,
+              ...(selection.operationId !== undefined
+                ? { operationId: selection.operationId }
+                : {}),
+            },
+    });
+  }
+
+  async #listReleases(payload: Record<string, unknown>): Promise<VictCommandOutcome> {
+    const releases = await this.#options.stores.control.listReleases(
+      boundedId(payload.applicationId, 'applicationId'),
+    );
+    return ok({ releases: releases as unknown as Record<string, unknown>[] });
+  }
+
+  async #listReleaseSelections(payload: Record<string, unknown>): Promise<VictCommandOutcome> {
+    const selections = await this.#options.stores.control.listReleaseSelections(
+      boundedId(payload.applicationId, 'applicationId'),
+    );
+    return ok({ selections: selections as unknown as Record<string, unknown>[] });
+  }
+
+  async #searchAudit(payload: Record<string, unknown>): Promise<VictCommandOutcome> {
+    const subjectType =
+      payload.subjectType === undefined ? undefined : boundedId(payload.subjectType, 'subjectType');
+    const subjectId =
+      payload.subjectId === undefined ? undefined : boundedId(payload.subjectId, 'subjectId');
+    const limit = boundedPageParam(payload.limit, 'limit', 200, 100, 1);
+    const events = await this.#options.stores.control.listAuditEvents({
+      ...(subjectType !== undefined ? { subjectType } : {}),
+      ...(subjectId !== undefined ? { subjectId } : {}),
+    });
+    // Deterministic newest-first ordering; bounded page.
+    const sorted = [...events].sort(
+      (a, b) => b.at - a.at || (a.auditId < b.auditId ? -1 : a.auditId > b.auditId ? 1 : 0),
+    );
+    return ok({
+      events: sorted.slice(0, limit) as unknown as Record<string, unknown>[],
+      total: sorted.length,
+    });
   }
 }
 

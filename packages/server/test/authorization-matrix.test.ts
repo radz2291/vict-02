@@ -95,6 +95,19 @@ async function post(
   return { status: response.status, code: typeof body.code === 'string' ? body.code : undefined };
 }
 
+/** Run one GET command (Stage 9 read surface). */
+async function getMatrix(
+  f: Awaited<ReturnType<typeof httpFixture>>,
+  path: string,
+  token: string,
+): Promise<{ status: number; code: string | undefined }> {
+  const response = await fetch(`http://127.0.0.1:${f.port}${path}`, {
+    headers: { authorization: `Bearer ${token}` },
+  });
+  const body = (await response.json().catch(() => ({}))) as Record<string, unknown>;
+  return { status: response.status, code: typeof body.code === 'string' ? body.code : undefined };
+}
+
 describe('public-API authorization matrix (real HTTP, below-transport enforcement)', () => {
   interface MatrixRow {
     readonly command: string;
@@ -264,6 +277,78 @@ describe('public-API authorization matrix (real HTTP, below-transport enforcemen
           token,
           `matrix-appdata-${tag}`,
         ),
+    },
+    {
+      // Stage 9 G1: the protected-detail command is a scope row like any
+      // other — nobody holds `run.detail` by default; the administrator
+      // (DEVELOPER) holds it through the closed all-scopes policy.
+      command: 'run.detail',
+      wrongScopeToken: OPERATOR,
+      correctToken: DEVELOPER,
+      run: (f, token, tag) =>
+        getMatrix(f, `/vict/v1/runs/run-matrix-${tag}/detail`, token),
+    },
+    {
+      command: 'run.list',
+      wrongScopeToken: NO_SCOPE,
+      correctToken: OPERATOR,
+      run: (f, token) => getMatrix(f, '/vict/v1/runs', token),
+    },
+    {
+      command: 'run.get',
+      wrongScopeToken: NO_SCOPE,
+      correctToken: OPERATOR,
+      run: (f, token) => getMatrix(f, '/vict/v1/runs/run-matrix-get', token),
+    },
+    {
+      command: 'run.events',
+      wrongScopeToken: NO_SCOPE,
+      correctToken: OPERATOR,
+      run: (f, token) => getMatrix(f, '/vict/v1/runs/run-matrix-events/events', token),
+    },
+    {
+      command: 'run.waits',
+      wrongScopeToken: NO_SCOPE,
+      correctToken: OPERATOR,
+      run: (f, token) => getMatrix(f, '/vict/v1/runs/run-matrix-waits/waits', token),
+    },
+    {
+      command: 'activation.list',
+      wrongScopeToken: NO_SCOPE,
+      correctToken: VIEWER,
+      run: (f, token) => getMatrix(f, '/vict/v1/activations', token),
+    },
+    {
+      command: 'activation.get',
+      wrongScopeToken: NO_SCOPE,
+      correctToken: VIEWER,
+      run: (f, token) => getMatrix(f, '/vict/v1/activations/v-matrix', token),
+    },
+    {
+      command: 'activation.selected',
+      wrongScopeToken: NO_SCOPE,
+      correctToken: VIEWER,
+      run: (f, token) =>
+        getMatrix(f, '/vict/v1/graphs/graph-matrix/activations/selected', token),
+    },
+    {
+      command: 'release.list',
+      wrongScopeToken: NO_SCOPE,
+      correctToken: VIEWER,
+      run: (f, token) => getMatrix(f, '/vict/v1/releases?applicationId=app.matrix', token),
+    },
+    {
+      command: 'release.selections',
+      wrongScopeToken: NO_SCOPE,
+      correctToken: VIEWER,
+      run: (f, token) =>
+        getMatrix(f, '/vict/v1/releases/selections?applicationId=app.matrix', token),
+    },
+    {
+      command: 'audit.search',
+      wrongScopeToken: NO_SCOPE,
+      correctToken: VIEWER,
+      run: (f, token) => getMatrix(f, '/vict/v1/audit', token),
     },
   ];
 
