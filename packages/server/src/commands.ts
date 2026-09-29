@@ -1566,10 +1566,7 @@ export class VictCommandService {
       // The execution store and the orchestration store are SEPARATE layers:
       // a run without an orchestration-store counterpart truthfully has no
       // orchestration waits. Real store faults propagate.
-      if (
-        error instanceof VictStoreError &&
-        error.code === 'VICT_STORE_RUN_NOT_FOUND'
-      ) {
+      if (error instanceof VictStoreError && error.code === 'VICT_STORE_RUN_NOT_FOUND') {
         return ok({ runId, waits: [] });
       }
       throw error;
@@ -1585,7 +1582,7 @@ export class VictCommandService {
     const run = await execution.getRun(runId);
     if (run === undefined) {
       return { ok: false, code: 'VICT_RUN_MISSING' };
- }
+    }
     // PER-ACCESS AUDIT (D-5): every authorized retrieval of protected
     // material is durably attributable (actor, run, action, time).
     const at = (this.#options.clock ?? (() => Date.now()))();

@@ -400,7 +400,10 @@ describe('Stage 9 G1 operator reads (real HTTP)', () => {
   it('run.detail (D-5): summary retention truthfully reports unavailability', async () => {
     const f = await fixture();
     const manifest = fixtureManifest('g1-graph-detail-summary');
-    const [summaryRun] = (await seedRuns(f.vict, manifest, 1, { retention: 'summary' })) as [string, ...string[]];
+    const [summaryRun] = (await seedRuns(f.vict, manifest, 1, { retention: 'summary' })) as [
+      string,
+      ...string[],
+    ];
     const response = await get(f.port, `/vict/v1/runs/${summaryRun}/detail`, DETAIL);
     expect(response.status).toBe(200);
     expect(response.data.protectedAvailable).toBe(false);
@@ -422,11 +425,7 @@ describe('Stage 9 G1 operator reads (real HTTP)', () => {
     expect(activations[0]?.graphId).toBe('g1-graph-act');
     expect(Array.isArray(activations[0]?.nodeIds)).toBe(true);
     expect(activations[0]?.nodeCount).toBe(2);
-    const one = await get(
-      f.port,
-      `/vict/v1/activations/${manifest.activationVersion}`,
-      OPERATOR,
-    );
+    const one = await get(f.port, `/vict/v1/activations/${manifest.activationVersion}`, OPERATOR);
     expect(one.status).toBe(200);
     const missing = await get(f.port, '/vict/v1/activations/v-never-published', OPERATOR);
     expect(missing.status).toBe(404);

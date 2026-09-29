@@ -1,0 +1,29 @@
+{
+  "name": "vict-studio",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "VICT Studio (Stage 09, D-1): private SvelteKit operator host. Renders the VICT Application Definition/Plan through @victframework/ui-svelte and reads operator data through an HTTP-backed ApplicationDataAdapter. Server-held target credentials; no target token reaches the browser (D-2/D-7).",
+  "scripts": {
+    "prepare": "svelte-kit sync || echo ''",
+    "dev": "vite dev",
+    "build": "svelte-kit sync && vite build",
+    "preview": "vite preview",
+    "check": "svelte-kit sync && tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@victframework/application": "0.4.0-rc.1",
+    "@victframework/sdk": "0.4.0-rc.1",
+    "@victframework/ui-svelte": "0.4.0-rc.1"
+  },
+  "devDependencies": {
+    "@sveltejs/adapter-node": "^5.2.12",
+    "@sveltejs/kit": "^2.20.0",
+    "@sveltejs/vite-plugin-svelte": "^5.0.3",
+    "svelte": "^5.28.0",
+    "vite": "^6.3.5",
+    "vitest": "^3.1.1"
+  },
+  "license": "Apache-2.0"
+}

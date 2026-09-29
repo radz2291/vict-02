@@ -521,24 +521,27 @@ export function createVictHttpServer(options: VictHttpServerOptions): VictHttpSe
     // Stage 9 operator reads (WP-1): bounded dynamic instance routes. The
     // run sub-resource routes are matched BEFORE the bare run identity so
     // `/runs/:id/events` never collapses into `run.get`.
-    const runEventsMatch =
-      /^\/vict\/v1\/runs\/([A-Za-z0-9][A-Za-z0-9._:@-]{0,127})\/events$/.exec(path);
+    const runEventsMatch = /^\/vict\/v1\/runs\/([A-Za-z0-9][A-Za-z0-9._:@-]{0,127})\/events$/.exec(
+      path,
+    );
     if (runEventsMatch !== null) {
       if (req.method !== 'GET') {
         throw new HttpError('VICT_HTTP_METHOD_UNSUPPORTED', 405);
       }
       return { command: 'run.events', pathParams: { runId: runEventsMatch[1] as string } };
     }
-    const runWaitsMatch =
-      /^\/vict\/v1\/runs\/([A-Za-z0-9][A-Za-z0-9._:@-]{0,127})\/waits$/.exec(path);
+    const runWaitsMatch = /^\/vict\/v1\/runs\/([A-Za-z0-9][A-Za-z0-9._:@-]{0,127})\/waits$/.exec(
+      path,
+    );
     if (runWaitsMatch !== null) {
       if (req.method !== 'GET') {
         throw new HttpError('VICT_HTTP_METHOD_UNSUPPORTED', 405);
       }
       return { command: 'run.waits', pathParams: { runId: runWaitsMatch[1] as string } };
     }
-    const runDetailMatch =
-      /^\/vict\/v1\/runs\/([A-Za-z0-9][A-Za-z0-9._:@-]{0,127})\/detail$/.exec(path);
+    const runDetailMatch = /^\/vict\/v1\/runs\/([A-Za-z0-9][A-Za-z0-9._:@-]{0,127})\/detail$/.exec(
+      path,
+    );
     if (runDetailMatch !== null) {
       if (req.method !== 'GET') {
         throw new HttpError('VICT_HTTP_METHOD_UNSUPPORTED', 405);
@@ -566,8 +569,9 @@ export function createVictHttpServer(options: VictHttpServerOptions): VictHttpSe
         pathParams: { graphId: activationSelectedForGraphMatch[1] as string },
       };
     }
-    const activationMatch =
-      /^\/vict\/v1\/activations\/([A-Za-z0-9][A-Za-z0-9._:@-]{0,127})$/.exec(path);
+    const activationMatch = /^\/vict\/v1\/activations\/([A-Za-z0-9][A-Za-z0-9._:@-]{0,127})$/.exec(
+      path,
+    );
     if (activationMatch !== null) {
       if (req.method !== 'GET') {
         throw new HttpError('VICT_HTTP_METHOD_UNSUPPORTED', 405);

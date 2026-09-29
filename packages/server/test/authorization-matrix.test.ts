@@ -285,8 +285,7 @@ describe('public-API authorization matrix (real HTTP, below-transport enforcemen
       command: 'run.detail',
       wrongScopeToken: OPERATOR,
       correctToken: DEVELOPER,
-      run: (f, token, tag) =>
-        getMatrix(f, `/vict/v1/runs/run-matrix-${tag}/detail`, token),
+      run: (f, token, tag) => getMatrix(f, `/vict/v1/runs/run-matrix-${tag}/detail`, token),
     },
     {
       command: 'run.list',
@@ -328,8 +327,7 @@ describe('public-API authorization matrix (real HTTP, below-transport enforcemen
       command: 'activation.selected',
       wrongScopeToken: NO_SCOPE,
       correctToken: VIEWER,
-      run: (f, token) =>
-        getMatrix(f, '/vict/v1/graphs/graph-matrix/activations/selected', token),
+      run: (f, token) => getMatrix(f, '/vict/v1/graphs/graph-matrix/activations/selected', token),
     },
     {
       command: 'release.list',

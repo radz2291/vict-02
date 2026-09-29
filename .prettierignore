@@ -10,3 +10,5 @@ examples/reference-app/build/
 examples/ui-showcase/build/
 
 qa-artifacts/
+apps/studio/build/
+apps/studio/.svelte-kit
