@@ -1,0 +1,136 @@
+# VICT Stage 09 — Studio, Diagnosis, and Controlled Recovery
+
+> **Status: RATIFIED — G0 contract FROZEN (owner decisions recorded 2026-09-29; see §7.1 and `docs/governance/VICT-STAGE-09-G0-RATIFICATION-2026-09-29.md`).** The frozen bytes are pinned by SHA-256 in the ratification record; changes require a dated amendment. Written against VICT `main` at `516948ac8bc55bbae8624bb91b3b35de34b3146c` (Stage 8 owner closure, 2026-09-29). The separate Quellight `main` was observed at `5f709a536ab1f4d5fea0407db1b9537e0aa7c0f6`; recheck both before each gate. **The ratified contract is a decision record, not implementation evidence: nothing in this document evidences that any Studio, command, route, session, registry, or receipt exists.** Reference: `docs/VICT-SYSTEM-REFERENCE.md` §23 Stage 9 and §27; predecessor: `docs/governance/VICT-STAGE-08-G4-CLOSURE-2026-09-29.md`.
+
+## 1. Outcome and limits
+
+Deliver a runnable, first-party **VICT Studio** for a human operator. From a connected local target, an operator can inspect graph and activation identity, runs and ordered events, waits/timers, Application Releases, ChangeSets, approvals, and audit; diagnose a failure from safe records; and perform authorized, confirmed, bounded interventions. The CLI reaches the same semantic operations. A fresh operator can complete the walkthroughs in §6 with a browser, without reading a database or source code.
+
+Studio is also a real VICT consumer. It uses the existing Application Definition/Plan and `@victframework/ui` → `@victframework/ui-svelte` delivery path for the ordinary shell, navigation, list/detail, form, table, and action surfaces that the current model can express. SvelteKit hosts the app and its server-side connection boundary. Purpose-built Svelte operator components are allowed for graph/timeline/comparison/confirmation views whose semantics do not fit the Application Layer; each exception must be named and justified in the evidence. Studio MUST NOT depend on the retired, separately published `@victframework/renderer-svelte` facade. G0 must confirm with a small representative plan that at least one operator read and one governed action can travel through the real VICT application delivery path; an inability is a contract decision, not an invitation to hand-build all screens.
+
+**Known navigation wall (review B-1):** the shipped List, RecordsTable and Detail roles have no row link. S9-02's run-list → detail drill-down cannot be definition-only today; Stage 8's FT-1 records the same limitation. Recommended D-1 disposition: authorize and independently gate the definition-driven FT-1 navigation addition as a separate UI-platform prerequisite to the S9-02 proof. Its platform release and external-consumer claim remain separately gated; local integrated proof may use pinned local artifacts first. G1 may scaffold the Studio and prove a different ordinary read/action path while that dependency is underway; it may not claim the S9-02 journey until FT-1 lands. Owner alternatives are a specifically bounded navigation-only island or an intentionally menu/breadcrumb-only journey, each with its UX and reuse limit recorded. No unnamed island or silent hand-built navigation is allowed.
+
+Stage 9 does not deliver a visual Application Definition editor, an autonomous healer, raw secrets or payloads by default, a Studio-only application model, cloud/multitenant access, or a general Quellight Shared World console. Compensation is guidance unless a separately authorized bounded command exists. Product-domain mutations are not part of the first Studio product view.
+
+## 2. Observed starting point and dependency boundaries
+
+- Stage 8 is formally closed **PASS WITH ISSUES** at the above VICT SHA; retained FT-1/FT-2 UI needs and FT-3/FT-4/FT-5 hygiene remain scheduled in `docs/governance/VICT-STAGE-08-FOLLOW-UP-REGISTER-2026-09-29.md`. S9-02 is an explicit FT-1 dependency under the recommended D-1 choice above. FT-2 chart windowing is not required by the Stage 9 walkthroughs; no item is silently absorbed.
+- The coordinated published set is `vict-release-set@1/0.4.0-rc.1`, **14 members**. `@victframework/builder-kit` remains a local, integrity-recorded artifact outside that set. Neither its publication nor a new VICT release is a G0 prerequisite.
+- `packages/server/src/commands.ts` is a closed command registry. Existing `activation.select`, `release.select/rollback`, `run.cancel`, `agent.turn.get`, ChangeSet and `app.data.query` commands do not supply run list/get/events/waits, `run.resolve`, or audit search at the remote command boundary. `packages/cli/src/commands.ts` is a separate closed table; CLI parity requires explicit entries and verification. The HTTP transport route table is a third surface: `app.data.action` exists in the command registry but has no transport route or CLI entry today. Stage 9's completeness check must detect and classify such pre-existing divergence without silently expanding its scope.
+- `listenVictHttpServer` binds port `0` on loopback today. Quellight's product process knows its ephemeral port internally. A separately deployed Studio therefore needs an explicitly configured, discoverable local endpoint and a distinct operator identity; no port assumption or unauthenticated product route counts as proof.
+- Quellight has no governed VICT control-plane Application Release selected at this observed SHA. A product-local version string is not a published Release. Studio must show truthful absence.
+
+These are observations at the pinned SHAs, not guarantees about future mainline. Revalidate source paths and behavior before ratification and each affected gate.
+
+## 3. Location, composition, and authority
+
+**Recommended initial form:** a private `apps/studio` workspace in VICT, served as a separate local SvelteKit process. Add `apps/*` to workspaces only when implementation is authorized. Studio consumes public VICT application/UI and versioned HTTP command interfaces, not server internals or source aliases. Package publication of Studio is not needed for a local proof. Record the actual local artifact and commit identities. Integrated local evidence precedes any coordinated publication decision.
+
+Studio's server owns an explicit allowlist of target loopback endpoints and target operator credentials; it does not discover random ports or proxy arbitrary URLs. **Proposed D-2 mechanics:** a deployment-provisioned target registry contains an exact `127.0.0.1` address and stable port plus a server-side credential reference per target; the target composition deliberately binds that port. No automatic port scan or arbitrary URL input is a discovery mechanism. A locally provisioned human credential establishes a short-lived server-side Studio session with an HttpOnly, SameSite cookie. State-changing JSON requests require the valid session, a session-bound CSRF token, and explicit Origin/Host checks; SvelteKit's form CSRF default alone does not cover this JSON boundary. The exact credential storage and session lifetime are reviewed at G0, with no target token sent to the browser. The target VICT command boundary independently authorizes the mapped operator actor. A Studio session alone grants no VICT scope. A configured target can be connected, rejected (401/403), unreachable, or absent, with truthful distinct UI states. Cross-host transport and tenant isolation are outside Stage 9.
+
+The target composition must deliberately bind a stable loopback endpoint and map an operator credential to a distinct actor with least-privilege scopes. A deployment administrator provisions that actor and the target-registry entry outside Studio; there is no identity-provisioning UI in Stage 9. Studio must not use the product agent's token. Product-specific diagnostic permissions are decided by the product's Application Layer, never by a UI label. G0 must confirm or amend the proposed session, JSON-CSRF and endpoint mechanics above and test them at the browser and direct API boundaries.
+
+## 4. Operator command plane and confirmation
+
+Expose bounded, paged, scope-checked, safe-summary commands for run list/get/events/waits, graph identity/content inspection, activation get/list/history and selection identity, Release selections and audit search as required by the walkthroughs. Reuse the existing `run.read`, `activation.read` and `audit.read` scope vocabulary where appropriate; do not infer a command from a reserved scope. Preserve exact ledger ordering and provenance. A distinct protected-detail scope, retention check, per-access audit and default denial are proposed for an expressly bounded detail request; an authorized positive retrieval must be proved as well as denial. No protected bytes leak via errors, logs, browser hydration, or generic list responses. The command names and response schemas are design candidates; G0 reconciles them with the existing ABI before freezing.
+
+Interventions under consideration are blocked-run resolution (`retry`, `confirm_applied`, `fail`, `cancel` where the runtime permits), signal, cancellation, activation selection, and Release selection/rollback. Timers are diagnosed and governed through the existing driver; do not invent an arbitrary timer-fire command. Commands return stable denial, stale-state, and idempotency outcomes. Every exposed Studio mutation has a matching supported CLI operation or a recorded, justified exclusion from the Stage 9 parity gate.
+
+**Proposed high-impact rule:** server-issued, short-lived, durable intent receipts for new `run.resolve` and `run.signal`, and for the **four existing** commands `run.cancel`, `activation.select`, `release.select`, and `release.rollback`. The authenticated actor, command, exact proposed parameters/content hash, and expected revision bind at preparation and are checked again under a durable consumption claim/fence. The issuing target is bound implicitly by its server-local receipt; Studio records the selected target for human review, but this does not add a multi-target parameter to command payloads. Scope, a UI dialog, a revision guard, and an idempotency key each serve separate purposes and are not substitutes for confirmation. Existing ChangeSet approval/commit machinery may satisfy the two-step requirement only after its actor/content-hash/approval-consumption evidence is rechecked. Product-domain `app.data.mutate/action` are not exposed by the first Studio diagnostic pane.
+
+**Compatibility choice B-2 (D-4/D-10; not yet owner-selected):** all four existing commands are one-step and used by current callers. Recommendation: one versioned command-contract migration for all four, with a documented migration of their HTTP routes, CLI entries, target compositions and consumers. A Stage 9-capable target exposes the receipt-gated version and rejects the four unconfirmed legacy mutation routes for **every** actor class, including administrator; other legacy reads may continue. This is intentionally a breaking migration for existing mutation callers, and Quellight cannot claim Studio support until its separate increment adopts the new target contract. The owner can instead select additive prepare/consume around old commands or new receipt-gated variants, but must specify and test an equally strong scope/policy fence preventing any old unconfirmed path on the Stage 9 target. A payload field made optional without such a fence does not satisfy the gate. G2 cannot begin until the choice, impacted callers and release/version plan are frozen.
+
+**Proposed receipt/idempotency composition B-3 (D-10):** preparation stores an opaque receipt ID bound to authenticated actor, exact command, the issuing target implicitly, canonical payload digest (excluding the receipt ID), expected revision, expiry and status. Confirmation carries that ID and a bounded `Idempotency-Key`. The existing command idempotency claim, namespaced by actor+command+key and bound to the digest of the complete confirmation request (including receipt ID), is checked first. If that exact request was settled under the same key, replay its recorded result with no new effect; the same key with another request digest retains the existing `VICT_COMMAND_IDEMPOTENCY_CONFLICT`. Otherwise, verify the receipt and expected state revision; durably claim and fence receipt consumption, execute under the domain's own idempotency fence, and settle the outcome. The receipt and effect are held in separate stores, so this is not a single cross-store transaction. Prove retry, crash, restart and race paths cannot repeat the effect or allow a fresh key to bypass a spent receipt. A new key against a spent receipt fails. A concurrent identical request may return the existing in-progress outcome and be retried with the same key. No receipt ID can be used to create a second effect under a fresh key.
+
+| Direct-API case | Proposed stable outcome | Effect |
+| --- | --- | --- |
+| Receipt omitted | `VICT_CONFIRMATION_REQUIRED` | None |
+| Unknown receipt, another actor's receipt, or receipt issued by another target | `VICT_CONFIRMATION_UNAVAILABLE` (non-echoing) | None |
+| Wrong command or canonical parameters | `VICT_CONFIRMATION_MISMATCH` | None |
+| Receipt expired | `VICT_CONFIRMATION_EXPIRED` | None |
+| Target revision changed after preparation | `VICT_CONFIRMATION_STALE` | None; re-review and prepare again |
+| Receipt consumed by a different request/key | `VICT_CONFIRMATION_SPENT` | None |
+| Same actor+command+key, different confirmation digest | Existing `VICT_COMMAND_IDEMPOTENCY_CONFLICT` | None |
+| Same committed confirmation retried with same key and digest | Recorded prior result | No second effect |
+
+The proposed new `VICT_CONFIRMATION_*` names are G0 contract candidates, not shipped codes. Prepared but unconsumed receipts expire without effect and remain auditable according to retention. The CLI must expose **two distinct operator steps**: prepare the exact command/target/payload and show the server-issued summary and receipt; after human review, confirm with that receipt and an explicit or deterministically derived stable key. A retry of the same confirmation uses the same key and payload. CLI must not auto-confirm preparation. Studio and CLI exercise the same command boundary on isolated equivalent targets, and the direct-API negative matrix is independent of either UI.
+
+## 5. Product-owned views and Quellight claim
+
+Studio may show a narrowly declared, permission-gated product diagnostic through the existing `app.data.query` boundary, clearly labeled as product-provided data. The generic VICT proof uses a two-actor example with allow, safe projection, and non-echoing denial evidence. The product view is not stored in a new Studio-specific model. For the Quellight pilot, its existing Application Definition declares `act.queryInspection` for `qlt.inspection`; recommendation D-3 is an **explicit, server-side configured binding to that already declared resource/action**, recorded as one product integration rather than claimed as universal discovery. A future general discovery mechanism may require a versioned `operator` declaration and Release manifest, but Stage 9 need not assume `vict.application@3` or a Release-record expansion. The configured pilot binding does not grant permission; the target's Application Layer still decides each query. No undeclared convention silently becomes a general Studio model.
+
+**Owner-selected Quellight claim gate (D-8, 2026-09-29):** to say "Studio supports Quellight," prove one real read-only pairing for the same turn: `agent.turn.get` plus Quellight's `qlt.inspection` `getTurn` via `app.data.query`. Show only declared, safe diagnostic strings. Prove operator allow, underprivileged denial, and preservation of the agent-identity refusal. This proves one governed view, not source/database access or a Shared World editor. It requires Quellight's separately governed configured endpoint, second operator actor/credential, and actor-derived inspection permission grants. No Stage 9 VICT handoff grants Quellight write authority. The owner selected Quellight as the real product test that shows Studio works. Stage 9 exit therefore includes this narrow same-turn proof. Its separately governed product increment and credentials are prerequisites to that claim; if unavailable, S9-05 remains held rather than silently dropped.
+
+## 6. Human walkthroughs and acceptance
+
+| ID | Fresh operator task | Positive proof | Negative and truthful states |
+| --- | --- | --- | --- |
+| S9-01 | Connect and inspect a target | Studio session maps to target operator actor; shows endpoint identity, scopes and selected versions | Missing, unreachable, rejected, and unselected Release remain distinct; no target token in browser |
+| S9-02 | Diagnose a failed or blocked run | From run list to detail (known FT-1 dependency under recommended D-1), provenance, ordered events, current node, safe error and waits; compare versions; explain bounded options. A separately scoped, authorized protected-detail request proves retention and per-access audit. | Empty lists, redacted generic detail, pagination, stale revision and actor denial are clear; no protected bytes in ordinary results |
+| S9-03 | Review a ChangeSet | Inspect operations, evidence and content hash; separate approver decides; authorized operator commits | Self-approval, changed content, missing approval, and duplicate effect fail closed |
+| S9-04 | Recover safely | Prepare and confirm a permitted resolution or rollback; audit shows actor, target, reason, before/after identity | Missing/mismatched/expired/replayed receipt and stale state yield no unintended effect |
+| S9-05 | Read product diagnostic | Generic example proves allow and deny; owner-selected Quellight same-turn pilot also passes under its separately governed increment | No declared view and denied view are distinct; product data is a safe projection |
+
+Stage 9 exit evidence must show Studio and CLI produce the same semantic operations on isolated equivalent targets, not execute two mutations against one shared state. A mechanical registry ↔ HTTP transport ↔ CLI inventory must account for every Stage 9 operation and explicitly classify pre-existing out-of-scope divergence such as `app.data.action`; no absent route is silently called parity. A real browser journey must use the application renderer for ordinary surfaces and identify every custom operator component. Include keyboard/accessibility, useful responsive states, direct-API authority tests, restart/idempotency behavior, retention/leakage canaries, and independent usability/security review. A builder cannot award its own independent verdict.
+
+## 7. Gates and decisions
+
+### 7.1 Owner G0 ratification (2026-09-29)
+
+The owner ratified G0 on 2026-09-29 and the dispositions below are DECISIONS,
+not implementation evidence (full text and frozen-byte digests:
+`docs/governance/VICT-STAGE-09-G0-RATIFICATION-2026-09-29.md`):
+
+- **D-1:** private `apps/studio`, SvelteKit host, genuine Application
+  Definition/Plan + `ui`/`ui-svelte`; the **B-1 recommended path is chosen** —
+  the FT-1 definition-driven row-navigation improvement is a **separately
+  gated UI-platform prerequisite**; S9-02 cannot be claimed until FT-1 lands
+  under its own gate; island and menu-only alternatives rejected. Root
+  `AGENTS.md` consciously **adopted** as pushed.
+- **D-2 + D-7:** deployment-provisioned target registry, stable loopback
+  endpoint, server-held target credential, administrator-provisioned distinct
+  least-privilege operator actor, no identity-provisioning UI; Studio human
+  session with HttpOnly/SameSite cookie, session-bound CSRF token, Origin/Host
+  checks on JSON mutations; no target token in the browser.
+- **D-3 + D-9:** explicit server-side pilot binding to Quellight's already
+  declared `act.queryInspection`/`qlt.inspection`; general discovery and any
+  new Application/Release ABI deferred.
+- **D-4 + D-10:** **one coordinated versioned migration** for `run.cancel`,
+  `activation.select`, `release.select`, `release.rollback`; a Stage 9 target
+  rejects their unconfirmed legacy mutation routes for **every actor class
+  including administrator**; B-3 receipt outcomes, durable claim/fence and
+  domain idempotency semantics, and the separate CLI prepare → human review →
+  confirm steps adopted **as worded at this freeze (R-1/R-2 folds included:
+  separate receipt and effect stores; implicit target binding)**; caller and
+  release migration plan frozen **before G2**.
+- **D-5:** protected detail requires authorized **positive** retrieval,
+  denial, retention and per-access audit, plus leakage canaries.
+- **D-6:** parity on equivalent isolated targets; three-surface
+  registry ↔ HTTP ↔ CLI inventory incl. classified pre-existing divergence.
+- **D-8:** Quellight **IN** — the real product test; the narrow same-turn
+  governed inspection proof is required for Stage 9 exit after Quellight's
+  separately governed increment; a generic example alone cannot pass S9-05.
+
+| Gate | Deliverable and stop |
+| --- | --- |
+| G0 entry | Rebase this architecture and the handoff on current remote state; resolve D-1–D-10 below; owner records ratification and immutable contract identity. Until then documentation only. |
+| G1 foundation | Safe operator reads (including graph/activation identity), explicit HTTP/CLI mappings, least-privilege actor/configuration boundary, and an actual VICT Application Definition/Plan rendered in Studio. The UI shell may scaffold in parallel, but the real read-through-data-adapter proof depends on WP-1 commands; S9-02 drill-down also depends on the D-1 navigation choice. Independent proof on a pushed candidate SHA; no automatic G2 authorization. |
+| G2 interventions | Bounded confirmation receipts and command/CLI parity; ChangeSet and recovery browser journeys; negative tests and audit. Independent proof at exact pushed SHA. |
+| G3 integration and exit | Integrated local-artifact journeys, authorized product-view example, owner-selected Quellight same-turn proof under its separately governed increment, independent usability/security audit, owner closure with exact claims and retained findings. Publication only by a later explicit decision. |
+
+G1's API and UI scaffolding may proceed in non-overlapping isolated worktrees after G0; a real Studio read cannot be claimed until its HTTP-backed adapter and operator commands integrate. Neither publication nor a completed API gate is a prerequisite for beginning the UI slice. A single integrator owns the pushed candidate. Dependencies, sequencing and exact work packages are frozen at G0, not inferred from this table.
+
+| Decision | Recommended disposition for owner review |
+| --- | --- |
+| D-1 Studio embodiment | Private `apps/studio`, SvelteKit host, genuine VICT Application Definition/Plan plus `ui`/`ui-svelte`. **Choose B-1:** recommended separately gated FT-1 navigation prerequisite for S9-02; alternatives are a named navigation-only island or deliberately menu-only UX. Record any custom island. The new root `AGENTS.md` also needs conscious adoption or removal at G0. |
+| D-2 connection and session | Deployment registry with explicit stable loopback port and credential reference; distinct operator actor; server-side target token; locally provisioned Studio human session; session-bound CSRF token plus Origin/Host checks on JSON mutations. Confirm credential storage and lifetime. |
+| D-3 product-view designation | Use Quellight's existing declared query action/resource with an explicit pilot binding; no general discovery claim. Defer a versioned operator declaration unless a separate proof makes it necessary. |
+| D-4 command compatibility | Additive new read commands where valid. **Choose B-2 for all four existing commands:** recommended coordinated versioned migration with no unconfirmed operator bypass; alternatives need an equivalent tested policy fence. Include graph/activation reads and registry ↔ HTTP ↔ CLI completeness accounting. |
+| D-5 protected detail | Distinct scope, retention, per-access audit, one authorized positive retrieval plus redaction/denial/leakage canaries. |
+| D-6 parity proof | Studio and CLI on equivalent isolated targets, same semantic outcomes and no duplicate effects; inventory all three surfaces and explicit CLI prepare→confirm. |
+| D-7 operator composition | Deployment admin provisions distinct target actor, least-privilege credential and target registry; no Studio identity-provisioning UI. |
+| D-8 Quellight claim | **Owner selected IN (2026-09-29):** Quellight is the real product test for Studio. Require the narrow same-turn proof under separately governed Quellight work before Stage 9 exit; no claim on a generic example alone. |
+| D-9 Release manifest | Defer Release-record expansion for the explicitly bound pilot; reconsider only with a general discovery contract. |
+| D-10 confirmation | Receipts for all high-impact selections and run interventions, including four existing commands subject to D-4. Adopt B-3's bound fields, check order, stable outcome table and two-step CLI; retain ChangeSet approval if independently proven. |
+
+**G0 stop conditions:** conflicting current reference/ABI; Studio application's ordinary-surface proof cannot be expressed without an unreviewed amendment; target operator authentication cannot be demonstrated safely; a proposed version/schema break has no migration; a new Quellight requirement lacks its own authority; or an owner decision is missing. Record the conflict and return to the owner with a concrete option. This candidate makes no reference edit or Verified claim.
