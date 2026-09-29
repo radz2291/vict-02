@@ -13,7 +13,9 @@
 | Builder track: studio-app | `codex/stage9-g1-studio-app` @ `534ac8aef19a8b4305c21ef4f41c4d31368aa675` | real `app.vict-studio@1` definition, named `cmp.target-connection-status@1`, 12 tests, FT-1 guard (builder report `qa-artifacts/stage9-g1/studio-app-report.md`) |
 | Integration (merge + wiring) | `acc6cbb6b72cc41b3f329ebad192af83bbc53892` | merges both tracks; integrator compositions (per-graph selectedActivations; detail-record convention) |
 | Truthful probe/partial fix | `686175d` | probe path bounded auth-only; releases require applicationId pinned in contract; per-view failures → renderer-native `partial` banner |
-| **Final G1 candidate** | (see commit at the head of this branch; verifier reports the exact SHA) | + evidence record (this file), journey tooling notes |
+| **Final G1 candidate** | (see commit at the head of this branch; verifier reports the exact SHA) | + evidence record (this file), journey tooling notes, committed builder reports |
+| Independent verification | `review/stage9-g1-verification-20260929` @ `3d03d4c0c585484f1a5d4501729925fd329ea23d` | Fresh-context verifier verdict **PASS WITH NON-BLOCKING FINDINGS** at candidate `f68c2bb`; report `docs/governance/VICT-STAGE-09-G1-VERIFICATION-2026-09-29.md` (sha256 `853c5336…62a`); nothing repaired, nothing merged |
+| Post-verdict record-hygiene repair | (branch-head commit containing this file's amendment) | F-1 corrected (screenshot 01 NOT CAPTURED — claim amended truthfully); F-2 builder reports now TRACKED on the branch (`qa-artifacts/stage9-g1/studio-server-report.md`, `studio-app-report.md`); F-3 duplicate screenshot 07b removed (07 retained); F-4 no action (verifier independently confirmed the load-sensitive FT-4 classification). Affected claims re-verified post-amendment. |
 
 Base for all of the above: VICT merged `main` `fd675d9083a32f282820d9e0135c191d691c943c` (G0 freeze `5c680d5` merged via PR #2, independently freeze-verified at `74b6d49`).
 
@@ -58,7 +60,7 @@ Leak canary: all six Studio routes' server-rendered HTML+hydration (61–67 KB e
 
 Keyboard: focus order semantic (menu button → nav links; component `<details>/<summary>` keyboard-reachable per unit tests). Responsive: 390px-full-page + 1280px screenshots captured (`qa-artifacts/stage9-g1/shots/0*.png`); grid stacks under 640px via component CSS.
 
-Screenshots: `01-login-failed-nonechoing.png` (saved), `02-dashboard-four-states.png`, `03-runs-list-no-row-links.png`, `04-run-detail-failed.png`, `05-run-detail-blocked-with-wait.png`, `06-audit-empty-truthful.png`, `07-responsive-390px.png`, `07b-responsive-390-nav.png`, `08-audit-peraccess-entries.png`.
+Screenshots: `02-dashboard-four-states.png`, `03-runs-list-no-row-links.png`, `04-run-detail-failed.png`, `05-run-detail-blocked-with-wait.png`, `06-audit-empty-truthful.png`, `07-responsive-390px.png` (single 390px capture; an earlier second 390px file was byte-identical and was removed as a duplicate), `08-audit-peraccess-entries.png`. **Honest correction (verifier finding F-1): the login-failed screenshot was NOT captured** — the non-echoing sign-in failure is proven instead by the boundary unit test and by the verifier's independent live reproduction; the evidence record originally mislabeled that artifact as saved, which the verifier caught and this amendment corrects.
 
 ## 6. FT-4 classification (visible, per protocol)
 
@@ -68,13 +70,7 @@ Also fixed at integration: the login page's `autofocus` attribute (svelte a11y w
 
 ## 7. Independent verification
 
-The fresh-context verifier's report and verdict are recorded in its own
-`review/...` branch (separate checkout, did not build): see
-`docs/governance/VICT-STAGE-09-G1-VERIFICATION-*.md` and the verifier branch
-SHA reported to the owner. Verifier findings are triaged by the stage
-manager; repairs (if any) were followed by re-verification of affected
-claims. This file states builder claims only — the verdict is the
-verifier's, and only the owner records acceptance.
+**DONE — verdict PASS WITH NON-BLOCKING FINDINGS.** The fresh-context verifier (own clone, did not build) audited candidate `f68c2bbc7426b0ffd4faa947dffdc81dd91f87bb` byte-exact and filed `docs/governance/VICT-STAGE-09-G1-VERIFICATION-2026-09-29.md` on its own branch `review/stage9-g1-verification-20260929` @ `3d03d4c0c585484f1a5d4501729925fd329ea23d`. Every criterion (a)–(d) and all exclusions reproduced exactly (freeze digests at the freeze commit, command surface, gates 39/39 + 174/174 + 2355/2355, boundary order, fetch-only adapter, definition↔bindings field-for-field, FT-1 guard, live D-2/D-7/D-5 journey, leak canary 0/0). Four findings, all NON-BLOCKING, all record-hygiene: F-1 (this record claimed a login-failed screenshot that was not captured — AMENDED truthfully here), F-2 (builder reports existed only as untracked files in the builder worktrees — now TRACKED on the branch so the citations resolve), F-3 (duplicate 390px screenshot — removed, single capture retained), F-4 (FT-4 did not reproduce in the verifier's run — consistent with the load-sensitive classification, which remains on record). Repairs affect evidence records and tracked artifacts ONLY — no production code changed after the verified SHA; the affected claims were re-verified post-amendment.
 
 ## 8. Known non-blocking items for the verifier's attention
 
