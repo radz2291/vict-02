@@ -77,12 +77,19 @@ export class VictHttpClient {
       payload?: Record<string, unknown>;
       query?: Record<string, unknown>;
       idempotencyKey?: string;
+      /**
+       * Stage 9 G2 — additional CLOSED top-level envelope members (the
+       * prepare envelope `command`/`expectedRevision`; the confirmed shape
+       * `confirmation: { receiptId }`). Built only by the CLI's
+       * confirmation steps; never arbitrary caller data.
+       */
+      bodyMembers?: Record<string, unknown>;
     },
   ): Promise<Record<string, unknown>> {
     const url = `${this.#options.endpoint}${path}${method === 'GET' && input?.query !== undefined ? toQueryString(input.query) : ''}`;
     const body =
       method === 'POST' && input?.payload !== undefined
-        ? JSON.stringify({ payload: input.payload })
+        ? JSON.stringify({ payload: input.payload, ...(input.bodyMembers ?? {}) })
         : undefined;
     const idempotencyKey =
       method === 'POST'

@@ -18,9 +18,38 @@ export interface CliCommandSpec {
   readonly positionals: readonly string[];
   /** One-line operator description. */
   readonly description: string;
+  /**
+   * Stage 9 G2: the receipt-gated two-step confirmation contract. The
+   * legacy one-step invocation is REPLACED: `--prepare` prints the
+   * server-issued receipt (never auto-confirms), `--confirm <receiptId>
+   * --key <Idempotency-Key>` posts the confirmed shape. Invoking without
+   * either flag is a usage error with guidance naming the two steps.
+   */
+  readonly confirmation?: {
+    /** The versioned command name declared at prepare. */
+    readonly command: string;
+    /** The single prepare endpoint (POST /vict/v1/confirmations). */
+    readonly preparePath: string;
+  };
 }
 
+/** The prepare-only CLI flag (truthful absence of a value). */
+const PREPARE_FLAG = 'prepare';
+/** The confirm receipt flag (`--confirm <receiptId>`). */
+export const CONFIRM_FLAG = 'confirm';
+/** The consume idempotency flag (`--key <Idempotency-Key>`). */
+export const CONFIRM_KEY_FLAG = 'key';
+/** The prepare-only revision expectation flag (contract §4.4). */
+export const EXPECTED_REVISION_FLAG = 'expectedRevision';
+
 export const CLI_COMMANDS: Readonly<Record<string, CliCommandSpec>> = {
+  'confirmation get': {
+    method: 'GET',
+    path: '/vict/v1/confirmations/:receiptId',
+    flags: [],
+    positionals: ['receiptId'],
+    description: 'Read one confirmation receipt status (its command mutation scope).',
+  },
   whoami: {
     method: 'POST',
     path: '/vict/v1/actor/whoami',
@@ -108,9 +137,10 @@ export const CLI_COMMANDS: Readonly<Record<string, CliCommandSpec>> = {
   'release select': {
     method: 'POST',
     path: '/vict/v1/releases/select',
-    flags: ['applicationId', 'releaseVersion'],
+    flags: ['applicationId', 'releaseVersion', EXPECTED_REVISION_FLAG],
     positionals: [],
-    description: 'Select the active release for an application.',
+    description: 'Select the active release for an application (receipt-gated: --prepare / --confirm).',
+    confirmation: { command: 'release.select', preparePath: '/vict/v1/confirmations' },
   },
   'release selected': {
     method: 'GET',
@@ -122,16 +152,18 @@ export const CLI_COMMANDS: Readonly<Record<string, CliCommandSpec>> = {
   'release rollback': {
     method: 'POST',
     path: '/vict/v1/releases/rollback',
-    flags: ['applicationId', 'targetReleaseVersion'],
+    flags: ['applicationId', 'targetReleaseVersion', EXPECTED_REVISION_FLAG],
     positionals: [],
-    description: 'Roll back an application to a prior immutable release.',
+    description: 'Roll back an application to a prior immutable release (receipt-gated: --prepare / --confirm).',
+    confirmation: { command: 'release.rollback', preparePath: '/vict/v1/confirmations' },
   },
   'activation select': {
     method: 'POST',
     path: '/vict/v1/activations/select',
-    flags: ['graphId', 'activationVersion'],
+    flags: ['graphId', 'activationVersion', EXPECTED_REVISION_FLAG],
     positionals: [],
-    description: 'Select an activation version for a graph (operator).',
+    description: 'Select an activation version for a graph (receipt-gated: --prepare / --confirm).',
+    confirmation: { command: 'activation.select', preparePath: '/vict/v1/confirmations' },
   },
   // ---- Stage 9 operator reads (WP-1/WP-4): read parity entries ----
   'run list': {
@@ -214,9 +246,27 @@ export const CLI_COMMANDS: Readonly<Record<string, CliCommandSpec>> = {
   'run cancel': {
     method: 'POST',
     path: '/vict/v1/runs/cancel',
-    flags: ['runId', 'reasonCode'],
+    flags: ['runId', 'reasonCode', EXPECTED_REVISION_FLAG],
     positionals: [],
-    description: 'Cancel a run (durable, authorized).',
+    description: 'Cancel a run (receipt-gated: --prepare / --confirm).',
+    confirmation: { command: 'run.cancel', preparePath: '/vict/v1/confirmations' },
+  },
+  // ---- Stage 9 G2: the new receipt-gated intervention commands ----
+  'run resolve': {
+    method: 'POST',
+    path: '/vict/v1/runs/:runId/resolve',
+    flags: ['resolution', EXPECTED_REVISION_FLAG],
+    positionals: ['runId'],
+    description: 'Resolve a blocked run (receipt-gated: --prepare / --confirm).',
+    confirmation: { command: 'run.resolve', preparePath: '/vict/v1/confirmations' },
+  },
+  'run signal': {
+    method: 'POST',
+    path: '/vict/v1/runs/:runId/signal',
+    flags: ['signalName', EXPECTED_REVISION_FLAG],
+    positionals: ['runId'],
+    description: 'Deliver a durable run signal (receipt-gated: --prepare / --confirm).',
+    confirmation: { command: 'run.signal', preparePath: '/vict/v1/confirmations' },
   },
   'turn start': {
     method: 'POST',
@@ -276,6 +326,72 @@ export const CLI_COMMANDS: Readonly<Record<string, CliCommandSpec>> = {
   },
 };
 
+/** Resolve the confirmation mode for a receipt-gated CLI command.
+ *
+ * `prepare` and `confirm` are mutually exclusive; a confirmed invocation
+ * requires both the receipt and the bounded Idempotency-Key. `usage`
+ * means the caller must be shown the two-step guidance (exit non-zero,
+ * NO network call).
+ */
+export function resolveConfirmationMode(
+  flags: Readonly<Record<string, string>>,
+): 'prepare' | 'confirm' | 'usage' {
+  const prepareRequested = flags[PREPARE_FLAG] !== undefined;
+  const receiptId = flags[CONFIRM_FLAG];
+  if (prepareRequested && receiptId !== undefined) {
+    return 'usage';
+  }
+  if (prepareRequested) {
+    return 'prepare';
+  }
+  if (receiptId !== undefined && flags[CONFIRM_KEY_FLAG] !== undefined) {
+    return 'confirm';
+  }
+  return 'usage';
+}
+
+/** The two-step usage guidance (stderr; exit 1; no network call). */
+export function confirmationUsageGuidance(commandKey: string): string {
+  return [
+    `vict: '${commandKey}' is a receipt-gated command. Exactly one of the two steps is required:`,
+    `vict:  1) vict ${commandKey} <flags> --prepare --expectedRevision <currentRevision>`,
+    'vict:     (prints the server-issued receipt summary — receiptId, payloadDigest, expiryAt; never auto-confirms)',
+    `vict:  2) vict ${commandKey} <flags> --confirm <receiptId> --key <Idempotency-Key>`,
+    'vict:     (executes the command under the reviewed receipt)',
+  ].join('\n');
+}
+
+/** Build the prepare envelope `{ command, payload, expectedRevision? }`. */
+export function buildPrepareEnvelope(
+  spec: CliCommandSpec,
+  flags: Readonly<Record<string, string>>,
+  fileJson: unknown,
+): { command: string; payload: Record<string, unknown>; expectedRevision?: number | null } {
+  const payload = buildPayload(spec, flags, fileJson);
+  return {
+    command: spec.confirmation?.command ?? '',
+    payload,
+    ...(parsePrepareRevision(flags[EXPECTED_REVISION_FLAG]) !== undefined
+      ? { expectedRevision: parsePrepareRevision(flags[EXPECTED_REVISION_FLAG]) }
+      : {}),
+  };
+}
+
+/** Parse the prepared revision flag: a bounded non-negative integer or the
+ * literal `null` (truthfully no selection). */
+export function parsePrepareRevision(value: string | undefined): number | null | undefined {
+  if (value === undefined) {
+    return undefined;
+  }
+  if (value === 'null') {
+    return null;
+  }
+  if (!/^\d{1,15}$/.test(value)) {
+    throw new Error('--expectedRevision must be a non-negative integer or the literal null.');
+  }
+  return Number(value);
+}
+
 /** Fill `:name` segments from the parsed flags. */
 export function fillPath(spec: CliCommandSpec, flags: Readonly<Record<string, string>>): string {
   return spec.path.replace(/:([A-Za-z][A-Za-z0-9]*)/g, (whole, name: string) => {
@@ -313,7 +429,20 @@ export function buildPayload(
   return payload;
 }
 
-/** Serialize a payload as a bounded query string for GET commands. */
+/** Build the CONFIRMED consume payload: the command's own fields only —
+ * prepare-only flags (`expectedRevision`) and the confirmation flow flags
+ * never enter the payload (the receipt crosses at the envelope level). */
+export function buildConfirmedPayload(
+  spec: CliCommandSpec,
+  flags: Readonly<Record<string, string>>,
+  fileJson: unknown,
+): Record<string, unknown> {
+  return buildPayload(
+    { ...spec, flags: spec.flags.filter((flag) => flag !== EXPECTED_REVISION_FLAG) },
+    flags,
+    fileJson,
+  );
+}
 export function payloadToQuery(payload: Record<string, unknown>): string {
   const params = new URLSearchParams();
   for (const [key, value] of Object.entries(payload)) {
