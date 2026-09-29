@@ -44,6 +44,8 @@ semantics are pinned as proof rows P-23/P-24 in the proposal §6.
 
 ## 4. Caller inventory — the four migrated commands, at `main` `c3f9663cadf80206645a62322e5933ff19c108e9`
 
+See §4 table. — the four migrated commands, at `main` `c3f9663cadf80206645a62322e5933ff19c108e9`
+
 Method: fresh `git grep` at the named commit (`origin/main` verified `c3f9663`
 via ls-remote 2026-09-29). Writer/dispatch surfaces are migrated in place;
 read-only classifiers are re-labeled, not re-shaped.
@@ -53,12 +55,12 @@ read-only classifiers are re-labeled, not re-shaped.
 | `packages/server/src/commands.ts` (blob `1e4a7b93…7827`) | `run.cancel`, `activation.select`, `release.select`, `release.rollback` | Registry entries: names/fields/scopes UNCHANGED; consumption requires `confirmation{receiptId}`; legacy shape → `409 VICT_CONFIRMATION_REQUIRED` every actor class; `run.resolve`/`run.signal` added with scopes `run.resolve`/`run.signal` |
 | `packages/server/src/http.ts` (blob `21946059…51ec3`) | the four POST routes → confirmation-required; NEW `POST /vict/v1/confirmations`, `GET /vict/v1/confirmations/:receiptId`, `POST /vict/v1/runs/:runId/resolve`, `POST /vict/v1/runs/:runId/signal` | In-place reshape; read routes UNCHANGED |
 | `packages/cli/src/commands.ts` (blob `35e22c38…16518`) | `run cancel`, `activation select`, `release select`, `release rollback` → two-step `--prepare` / `--confirm <receiptId> --key <Idempotency-Key>`; NEW `run resolve`, `run signal`, `confirmation get` | Breaking reshape (documented; usage guidance names the two steps; never auto-confirms) |
-| `packages/server/test/http.test.ts` (blob `2761a27d…0f25c96`→`2761a27d` prefix; full `2761a27d…`) | legacy POST route callers | Re-shaped to prepare→confirm + P-11/P-12 negatives |
+| `packages/server/test/http.test.ts` (blob `2761a27d…f25c5` — recomputable via `git rev-parse c3f9663:packages/server/test/http.test.ts`) | legacy POST route callers | Re-shaped to prepare→confirm + P-11/P-12 negatives |
 | `packages/server/test/authorization-matrix.test.ts` (blob `e1051dcc…62e20`) | scope matrix | Two permanent rows added (P-11 actor+developer; P-12 administrator no-bypass); confirmation-status read both directions |
-| `packages/server/test/command-reliability.test.ts` (blob `4074c7f5…8f…` full `4074c7f5`), `operator-reads.test.ts` (blob `25472f83…`) | idempotency/read suites | Extended for receipt lifecycle; read surface asserted UNAMENDED |
+| `packages/server/test/command-reliability.test.ts` (blob `4074c7f5…`), `packages/server/test/operator-reads.test.ts` (blob `25472f83…`) | idempotency/read suites | Extended for receipt lifecycle; read surface asserted UNAMENDED |
 | `packages/control/src/control-plane.ts` (ChangeSet machinery, S9-03 reuse decision at G2 exit, recheck at entry) | — (no shape change) | Recheck only |
 | `packages/runtime/src/control-types.ts` (blob `66440157…a3c18`), `orchestration-commands.ts` (blob `90c8a300…1ddb58`), `runtime.ts`, `kernel/src/types.ts` (blob `3d944e4a…d345d6`) | `run.cancel`/resolution DRIVER mechanics (internal executor references, NOT external command callers) | The receipt-gated `run.resolve` command binds the existing internal executor (`resolveBlocked`); `operator.resolve` stream-inspection privilege unchanged |
-| `apps/studio/src/lib/shared/contract.ts` (blob `a701028d…958`), `app-server.ts` (blob `22b7da73…7a6`), `targets.ts` (blob `b7c7a102…5148`) | READ-ONLY surface — Studio declares NO mutations today | `RESOURCE_BINDINGS` classification unchanged; S9-04 confirmation journeys are the only addition (post-acceptance implementation) |
+| `apps/studio/src/lib/shared/contract.ts` (blob `a701028d…958`), `apps/studio/src/lib/server/app-server.ts` (blob `22b7da73…7a6`), `apps/studio/src/lib/server/targets.ts` (blob `b7c7a102…5148`) | READ-ONLY surface — Studio declares NO mutations today | `RESOURCE_BINDINGS` classification unchanged; S9-04 confirmation journeys are the only addition (post-acceptance implementation) |
 | `scripts/verify-stage9-inventory.mjs` (blob `797d4209…1178`) | inventory accounting | G2 rows added; G1 read-surface registry bytes asserted UNAMENDED |
 | `packages/store-sqlite/test/orchestration-corrective.test.ts` | `run.cancel` driver test (internal mechanics) | Unchanged (driver layer, not the command surface) |
 | **External: `radz2291/VICT-Quellight` read-only** (`origin/main` verified live) | **ZERO callers** of any of the four commands or their HTTP paths (grep at current main `7ee427ac` — no matches for `run.cancel`, `activation.select`, `release.select`, `release.rollback`, `runs/cancel`, `releases/select`, `releases/rollback`, `activations/select`) | Documentation-only impact statement: Quellight's target composition must adopt the new contract before any Studio-support claim (its own increment; D-8 unchanged; **the historical Quellight observation and Stage 9's G3 product claim are NOT amended by G2**) |
@@ -82,12 +84,17 @@ read-only classifiers are re-labeled, not re-shaped.
   (verified: NONE today, including VICT-Quellight `main` `7ee427ac`) must
   adopt the prepare→confirm flow before calling a Stage 9-capable target.
 
-## 5. Frozen entry bytes (digests, recorded at freeze commit)
+## 5. Frozen entry bytes (recorded at the freeze commit)
 
-Recorded immediately below at the freeze commit (owner acceptance, this
-record, and the amended proposal are committed together; the freeze
-commit's SHA and per-file SHA-256 digests are appended to §6 by the stage
-manager AFTER the independent verification of the final entry bytes).
+- Coordinated-recovery contract (post-review amended proposal):
+  `docs/governance/VICT-STAGE-09-G2-PROPOSAL-2026-09-29.md`, content
+  SHA-256 `f270b17cfd97c5a7be60a4bbfff31a4619f1d3ac3e4f03b45f58d72bed16f7c1`. The reviewed baseline was
+  `034281d…`; the entry review `8f7501f…` challenged the delta to
+  `5b9885a`; the E-1..E-6 wording/fact fixes and this record are the
+  freeze commit. This entry record's own integrity is anchored by the
+  FREEZE COMMIT SHA (below) rather than a self-referential digest.
+- Owner acceptance §1 is quoted verbatim from the owner's authorization
+  message (2026-09-29).
 
 ## 6. Independent verification gates for the entry freeze (before G2 work starts)
 

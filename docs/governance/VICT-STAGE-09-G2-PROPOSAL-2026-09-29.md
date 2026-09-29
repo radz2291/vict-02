@@ -174,10 +174,12 @@ forbidden path):
 Idempotency-Key), bound to the digest of the COMPLETE confirmation request
 (including the receipt ID):
 - the same key was settled with the SAME digest → **replay the recorded
-  result with NO new effect** — this PRECEDES every receipt-state check, and
-  therefore applies even when the referenced receipt is now expired or
-  spent (table rows EXPIRED/SPENT apply only when the claim is NOT
-  already settled for that exact key+digest);
+  result with NO new effect** — on the CONSUME path this PRECEDES every
+  receipt-state check, and therefore applies even when the referenced
+  receipt is now expired or spent (table rows EXPIRED/SPENT apply only
+  when the claim is NOT already settled for that exact key+digest); the
+  PREPARE side never uses the outcome table at all — its replacement
+  semantics are P-22 to P-24;
 - the same key was settled with a DIFFERENT digest →
   `VICT_COMMAND_IDEMPOTENCY_CONFLICT`;
 - nothing settled under the key → Phase 2.
@@ -330,11 +332,18 @@ future gate without its own amendment.
   human-review scaled; configurable per deployment). Accept, or set another
   bounded default.
 - **D-OPEN-2 `run.signal` scope name:** `run.signal` (new closed scope) — accept the name, or amend. CORRECTED role semantics (reviewer R-3): by the closed role policy `administrator: [...ACTOR_SCOPES]`, the administrator role AUTOMATICALLY holds every scope the vocabulary ever gains — so `run.resolve`/`run.signal` are held by administrators BY POLICY, while every other actor receives them ONLY via explicit deployment scope grants. Scope default-deny therefore holds for all NON-administrator classes, and it is the confirmation fence — never scope absence — that blocks administrator legacy-shape bypass. The EXISTING `operator.resolve` scope is classified and UNCHANGED: it is the stream-inspection privilege (other-actor stream identifiers in `stream.inspect`) and the runtime-level blocked-run resolution path (`resolveBlocked` in the orchestration layer) is NOT itself the G2 command surface — G2 adds the receipt-gated `run.resolve` COMMAND requiring the NEW scope `run.resolve`; holders of `operator.resolve` gain no run-resolution authority unless the deployment grants `run.resolve` (administrators hold it by policy). The runtime `resolveBlocked` path remains the internal executor the `run.resolve` command binds to.
+- **D-OPEN-3 prepare route shape: ONE `POST /vict/v1/confirmations`.**
+  **ACCEPTED (2026-09-29) as worded.**
 - **D-OPEN-4 receipt retention window:** minimum **90 days** before purge
   eligibility (digest-level audit trail survives any purge) — accept the
   number or set another explicit window. Also resolves A-N-2 with one
   number instead of "as before". **ACCEPTED (2026-09-29): 90 days.**
-- **(All four open items ACCEPTED as worded at G2 entry — see §12.)**
+- **D-OPEN-1 prepare TTL:** **ACCEPTED (2026-09-29): 10 minutes — moved
+  here from its 4.4 default statement; the default is now the accepted
+  value.**
+- **(All four open items ACCEPTED as worded at G2 entry — see §12;
+  D-OPEN-1/2/4 carry their inline ACCEPTED pins above; D-OPEN-2
+  `run.signal` scope name ACCEPTED as worded.)**
 - **D-OPEN-3 prepare route shape:** single `POST /vict/v1/confirmations`
   (this draft) vs per-command `/prepare` routes. The single route keeps the
   three-surface inventory closed; per-command routes add six routes for
