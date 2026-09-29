@@ -125,11 +125,11 @@ export function isValidConfirmationId(value: string): boolean {
 export function buildPrepareBody(
   command: string,
   payload: Readonly<Record<string, string>>,
-  expectedRevision: string | null,
+  expectedRevision: number | null,
 ): {
   readonly command: string;
   readonly payload: Record<string, string>;
-  readonly expectedRevision: string | null;
+  readonly expectedRevision: number | null;
 } | null {
   const spec = CONFIRMATION_COMMANDS[command];
   if (spec === undefined) {
@@ -178,7 +178,10 @@ export function buildConfirmedRequest(
   }
   return {
     path: spec.route(cleaned),
-    body: { ...cleaned, confirmation: { receiptId } },
+    // The versioned envelope: the semantic fields ride inside the closed
+    // `payload` member; the confirmation object is the top-level confirmed
+    // shape member (transport contract; one canonical consumption shape).
+    body: { payload: cleaned, confirmation: { receiptId } },
   };
 }
 

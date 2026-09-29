@@ -40,13 +40,13 @@ describe('confirmation journey contract shapes (proposal §4/§5 pins)', () => {
   });
 
   it('builds the prepare body with command, payload and expectedRevision', () => {
-    const body = buildPrepareBody('run.cancel', { runId: 'run-1', reasonCode: 'demo.reason' }, '7');
+    const body = buildPrepareBody('run.cancel', { runId: 'run-1', reasonCode: 'demo.reason' }, 7);
     expect(body).not.toBeNull();
     expect(body?.command).toBe('run.cancel');
     expect(body?.payload).toEqual({ runId: 'run-1', reasonCode: 'demo.reason' });
-    expect(body?.expectedRevision).toBe('7');
-    expect(buildPrepareBody('unknown.command', {}, '7')).toBeNull();
-    expect(buildPrepareBody('run.cancel', { runId: 'run-1' }, '7')).toBeNull();
+    expect(body?.expectedRevision).toBe(7);
+    expect(buildPrepareBody('unknown.command', {}, 7)).toBeNull();
+    expect(buildPrepareBody('run.cancel', { runId: 'run-1' }, 7)).toBeNull();
   });
 
   it('builds the single canonical CONFIRMED consumption shape', () => {
@@ -58,8 +58,7 @@ describe('confirmation journey contract shapes (proposal §4/§5 pins)', () => {
     expect(confirmed).toEqual({
       path: '/vict/v1/runs/cancel',
       body: {
-        runId: 'run-1',
-        reasonCode: 'demo.reason',
+        payload: { runId: 'run-1', reasonCode: 'demo.reason' },
         confirmation: { receiptId: 'rcpt-x' },
       },
     });

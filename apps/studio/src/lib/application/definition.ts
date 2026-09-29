@@ -276,8 +276,50 @@ export const studioApplication = defineApplication({
       screenId: 's.audit',
       nav: { label: 'Audit', group: 'Governance', order: 5 },
     },
+    {
+      // Stage 9 G2 (S9-04): the confirmation journey route — prepare →
+      // human review → confirm, relayed by the Studio server with the
+      // server-held credential (the browser NEVER talks to a VICT
+      // target). ADDITIVE to the G1 read surface; the G1 read routes,
+      // resources, views and the zero-actions invariant are untouched.
+      id: 'confirmations',
+      path: '/confirmations',
+      screenId: 's.confirmations',
+      nav: { label: 'Confirmations', group: 'Governance', order: 6 },
+    },
   ],
   screens: [
+    {
+      id: 's.confirmations',
+      title: 'Confirmations',
+      breadcrumbs: [{ label: 'Dashboard', routeId: 'home' }, { label: 'Confirmations' }],
+      layout: [
+        {
+          name: 'main',
+          surfaces: [
+            {
+              role: 'component',
+              id: 'cm.confirmation-review',
+              componentId: 'cmp.confirmation-review',
+              revision: '1',
+            },
+          ],
+        },
+      ],
+      states: {
+        loading: { role: 'text', id: 't.confirm-loading', content: 'Loading confirmation review…' },
+        empty: {
+          role: 'text',
+          id: 't.confirm-empty',
+          content: 'Nothing to review yet — no confirmation was prepared in this session.',
+        },
+        failure: {
+          role: 'text',
+          id: 't.confirm-failure',
+          content: 'The confirmation review failed safely.',
+        },
+      },
+    },
     {
       id: 's.dashboard',
       title: 'VICT Studio',
@@ -646,7 +688,10 @@ export const studioApplication = defineApplication({
     { resourceId: 'auditEntries', revision: '1' },
     { resourceId: 'targetStatus', revision: '1' },
   ],
-  components: [{ componentId: 'cmp.target-connection-status', revision: '1' }],
+  components: [
+    { componentId: 'cmp.target-connection-status', revision: '1' },
+    { componentId: 'cmp.confirmation-review', revision: '1' },
+  ],
   compatibility: { applicationSchema: APPLICATION_DEFINITION_SCHEMA_V2 },
 });
 
@@ -657,7 +702,10 @@ export function compileStudioDefinitionPlan(): ApplicationPlan {
     resources,
     contracts: [],
     capabilities: [],
-    components: [{ componentId: 'cmp.target-connection-status', revision: '1' }],
+    components: [
+      { componentId: 'cmp.target-connection-status', revision: '1' },
+      { componentId: 'cmp.confirmation-review', revision: '1' },
+    ],
   });
   if (!result.ok) {
     throw new Error(`studio definition invalid: ${JSON.stringify(result.issues)}`);

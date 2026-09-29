@@ -9,7 +9,19 @@ import { STUDIO_RESOURCES } from '$lib/shared/contract.js';
  * route-param === identityField convention.
  */
 
-const EXPECTED_ROUTES = ['/', '/runs', '/runs/:runId', '/activations', '/releases', '/audit'];
+// Stage 9 G2 interface amendment (S9-04 journey surface; owner-accepted
+// G2 scope): the confirmation journey route joins the G1 read routes. The
+// G1 resource set, empty-mutations invariant and zero-actions invariant
+// are asserted unchanged below.
+const EXPECTED_ROUTES = [
+  '/',
+  '/runs',
+  '/runs/:runId',
+  '/activations',
+  '/releases',
+  '/audit',
+  '/confirmations',
+];
 
 describe('studio application definition', () => {
   it('compiles into an immutable plan', () => {
@@ -19,7 +31,7 @@ describe('studio application definition', () => {
     expect(typeof plan.toJSON()).toBe('object');
   });
 
-  it('contains exactly the six agreed route paths', () => {
+  it('contains exactly the agreed route paths (G1 read surface + the additive G2 confirmation journey route)', () => {
     const plan = compileStudioPlan();
     const paths = plan.routes.map((entry) => entry.route.path).sort();
     expect(paths).toEqual([...EXPECTED_ROUTES].sort());
@@ -66,6 +78,9 @@ describe('studio application definition', () => {
   it('binds the named component on the definition identity', () => {
     expect(studioApplication.components).toEqual([
       { componentId: 'cmp.target-connection-status', revision: '1' },
+      // Stage 9 G2 (S9-04): the named confirmation-review island joins the
+      // definition's declared component set (additive; G1 invariants unchanged).
+      { componentId: 'cmp.confirmation-review', revision: '1' },
     ]);
   });
 });

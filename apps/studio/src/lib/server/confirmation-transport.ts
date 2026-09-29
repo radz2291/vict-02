@@ -1,5 +1,5 @@
 import type { ConfirmationPrepareSummary } from '$lib/confirmation/confirmation.js';
-import { getCredential, getTarget } from './targets.js';
+import { getCredential, getTarget, listTargets } from './targets.js';
 
 /**
  * S9-04 SERVER-SIDE CONFIRMATION TRANSPORT (server-only module).
@@ -45,8 +45,14 @@ async function boundedFetch(
   method: 'GET' | 'POST',
   body: Record<string, unknown> | null,
   idempotencyKey: string | undefined,
+  targetId?: string,
 ): Promise<ConfirmationTransportResult> {
-  const target = getTarget('local');
+  // Integrator amendment (in scope of the accepted G2 journey scope): the
+  // relay honors a BOUNDED target id (the journey form's target select;
+  // default 'local'). Absent or under-credentialed targets fail closed
+  // 'unreachable' — never a token echo, never a fabricated answer.
+  const requested = validSegment(targetId) ? targetId : 'local';
+  const target = getTarget(requested) ?? (requested !== 'local' ? getTarget('local') : undefined);
   if (target === undefined) {
     return { kind: 'unreachable' };
   }
@@ -58,6 +64,11 @@ async function boundedFetch(
   if (safePath === null) {
     return { kind: 'http-error', status: 400 };
   }
+  // The target selector is transport-local: NEVER forwarded to the target
+  // (an unknown top-level envelope member would fail closed at the body
+  // gate). The forwarded body keeps only the contract members.
+  const { targetId: _omitted, ...forwardedBody } = body ?? {};
+  void _omitted;
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), 4000);
   let response: Response;
@@ -70,7 +81,7 @@ async function boundedFetch(
           ? { 'content-type': 'application/json', 'idempotency-key': idempotencyKey ?? '' }
           : {}),
       },
-      body: method === 'POST' ? JSON.stringify(body ?? {}) : undefined,
+      body: method === 'POST' ? JSON.stringify(forwardedBody) : undefined,
       signal: controller.signal,
     });
   } catch {
@@ -78,11 +89,32 @@ async function boundedFetch(
   } finally {
     clearTimeout(timer);
   }
+  // Authentication/authorization denials are re-classified from the status
+  // (the body is not parsed BEFORE this check — see below for structured
+  // codes).
+  if (!response.ok) {
+    // Integrator amendment (truthfulness): a structured non-ok envelope
+    // {ok:false, code} restates the STABLE CODE the target issued (the G1
+    // convention); only an unparseable body falls back to http-error.
+    let parsedEarly: unknown;
+    try {
+      parsedEarly = await response.json();
+    } catch {
+      void parsedEarly;
+    }
+    if (
+      typeof parsedEarly === 'object' &&
+      parsedEarly !== null &&
+      (parsedEarly as Record<string, unknown>)['ok'] === false &&
+      typeof (parsedEarly as Record<string, unknown>)['code'] === 'string'
+    ) {
+      const code = (parsedEarly as Record<string, unknown>)['code'] as string;
+      return { kind: 'envelope-error', status: response.status, code };
+    }
+    return { kind: 'http-error', status: response.status };
+  }
   if (response.status === 401 || response.status === 403) {
     return { kind: 'envelope-error', status: response.status, code: 'VICT_SCOPE_DENIED' };
-  }
-  if (!response.ok) {
-    return { kind: 'http-error', status: response.status };
   }
   let parsed: unknown;
   try {
@@ -122,16 +154,20 @@ async function boundedFetch(
 export function prepareConfirmation(
   body: Record<string, unknown>,
   idempotencyKey: string,
+  targetId?: string,
 ): Promise<ConfirmationTransportResult> {
-  return boundedFetch('/vict/v1/confirmations', 'POST', body, idempotencyKey);
+  return boundedFetch('/vict/v1/confirmations', 'POST', body, idempotencyKey, targetId);
 }
 
 /** GET /vict/v1/confirmations/:receiptId — single-receipt status read. */
-export function readConfirmationStatus(receiptId: string): Promise<ConfirmationTransportResult> {
+export function readConfirmationStatus(
+  receiptId: string,
+  targetId?: string,
+): Promise<ConfirmationTransportResult> {
   if (!validSegment(receiptId)) {
     return Promise.resolve({ kind: 'http-error', status: 400 });
   }
-  return boundedFetch(`/vict/v1/confirmations/${receiptId}`, 'GET', null, undefined);
+  return boundedFetch(`/vict/v1/confirmations/${receiptId}`, 'GET', null, undefined, targetId);
 }
 
 /** POST the confirmed shape on a command route (consume; the only shape). */
@@ -139,8 +175,9 @@ export function confirmCommand(
   path: string,
   body: Record<string, unknown>,
   idempotencyKey: string,
+  targetId?: string,
 ): Promise<ConfirmationTransportResult> {
-  return boundedFetch(path, 'POST', body, idempotencyKey);
+  return boundedFetch(path, 'POST', body, idempotencyKey, targetId);
 }
 
 /**
@@ -148,16 +185,39 @@ export function confirmCommand(
  * fields stay missing — the journey page renders only truthful content.
  */
 export function asPrepareSummary(data: Record<string, unknown>): ConfirmationPrepareSummary {
+  // Integrator amendment (truthfulness): numeric members (expiryAt,
+  // createdAt, expectedRevision) are rendered as their canonical decimal
+  // string — numbers are NEVER silently dropped from the human-review
+  // summary. Missing fields stay missing (nothing invented).
+  const str = (key: string): string | undefined => {
+    const value = data[key];
+    return typeof value === 'string'
+      ? value
+      : typeof value === 'number' && Number.isSafeInteger(value)
+        ? String(value)
+        : undefined;
+  };
   const expectedRevision = data['expectedRevision'];
-  const str = (key: string): string | undefined =>
-    typeof data[key] === 'string' ? (data[key] as string) : undefined;
   return {
     receiptId: str('receiptId') ?? '',
     command: str('command') ?? '',
     payloadDigest: str('payloadDigest') ?? '',
-    expectedRevision: typeof expectedRevision === 'string' ? expectedRevision : null,
+    expectedRevision:
+      typeof expectedRevision === 'string'
+        ? expectedRevision
+        : typeof expectedRevision === 'number'
+          ? String(expectedRevision)
+          : null,
     expiryAt: str('expiryAt') ?? '',
     createdBy: str('createdBy') ?? '',
     createdAt: str('createdAt') ?? '',
   };
+}
+
+/** Deployment-provisioned target options for the journey target select. */
+export function listConfirmationTargetOptions(): readonly {
+  id: string;
+  label: string;
+}[] {
+  return listTargets().map((entry) => ({ id: entry.id, label: entry.label }));
 }

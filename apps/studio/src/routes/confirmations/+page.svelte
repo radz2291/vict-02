@@ -14,7 +14,11 @@
   import ConfirmationReview from '$lib/components/ConfirmationReview.svelte';
   import { CONFIRMATION_COMMANDS } from '$lib/confirmation/confirmation.js';
 
-  let { form }: { form: Record<string, unknown> | null } = $props();
+  let { data, form }: { data: { targets: readonly { id: string; label: string }[] }; form: Record<string, unknown> | null } = $props();
+
+  const targetChoices = data?.targets ?? [];
+  const defaultTarget = targetChoices.find((entry) => entry.id.startsWith('g2-mutator'))?.id ?? targetChoices[0]?.id ?? 'local';
+  let selectedTarget = $state(defaultTarget);
 
   const commandChoices = Object.keys(CONFIRMATION_COMMANDS);
   let selectedCommand = $state('run.cancel');
@@ -49,6 +53,14 @@
   <section class="step">
     <h3>1 · Prepare</h3>
     <form method="POST" action="?/prepare">
+      <label>
+        Target
+        <select name="targetId" bind:value={selectedTarget}>
+          {#each targetChoices as target (target.id)}
+            <option value={target.id}>{target.id} — {target.label}</option>
+          {/each}
+        </select>
+      </label>
       <label>
         Command
         <select name="command" bind:value={selectedCommand}>
@@ -89,6 +101,14 @@
     <h3>3 · Confirm (or check status)</h3>
     <form method="POST" action="?/status">
       <label>
+        Target
+        <select name="targetId" bind:value={selectedTarget}>
+          {#each targetChoices as target (target.id)}
+            <option value={target.id}>{target.id} — {target.label}</option>
+          {/each}
+        </select>
+      </label>
+      <label>
         Receipt id (status read)
         <input name="receiptId" required />
       </label>
@@ -101,6 +121,14 @@
       />
     {/if}
     <form method="POST" action="?/confirm">
+      <label>
+        Target
+        <select name="targetId" bind:value={selectedTarget}>
+          {#each targetChoices as target (target.id)}
+            <option value={target.id}>{target.id} — {target.label}</option>
+          {/each}
+        </select>
+      </label>
       <label>
         Command
         <select name="command" bind:value={selectedCommand}>

@@ -13,8 +13,10 @@ import {
   asPrepareSummary,
   confirmCommand,
   prepareConfirmation,
+  listConfirmationTargetOptions,
   readConfirmationStatus,
 } from '$lib/server/confirmation-transport.js';
+import type { PageServerLoad } from './$types';
 
 /**
  * S9-04 CONFIRMATION JOURNEY actions (server-side).
@@ -53,6 +55,11 @@ function _fieldErrorsRef(command: string, data: FormData): string[] {
   return errors;
 }
 
+export const load: PageServerLoad = async () => {
+  // Deployment-provisioned options ONLY (ids + labels; never credentials).
+  return { targets: listConfirmationTargetOptions() };
+};
+
 export const actions: Actions = {
   /** prepare: POST /vict/v1/confirmations — issue a receipt for review. */
   prepare: async ({ request }) => {
@@ -66,8 +73,26 @@ export const actions: Actions = {
       });
     }
     const expectedRevisionRaw = String(data.get('expectedRevision') ?? '');
-    // Bounded revision: `null` only where the contract says truthfully none.
-    const expectedRevision = expectedRevisionRaw === 'null' ? null : expectedRevisionRaw;
+    // Bounded revision: `null` only where the contract says truthfully none;
+    // a decimal string parses to a SAFE integer; anything else fails closed
+    // below-transport with no fetch (the target requires number|null).
+    const expectedRevision: number | null =
+      expectedRevisionRaw === 'null' || expectedRevisionRaw === ''
+        ? null
+        : /^\d{1,15}$/.test(expectedRevisionRaw)
+          ? Number(expectedRevisionRaw)
+          : null;
+    if (expectedRevision === null && expectedRevisionRaw !== '' && expectedRevisionRaw !== 'null') {
+      // A decimal string parses to a safe integer; anything else fails
+      // closed below-transport with NO fetch and no receipt.
+      return fail(400, {
+        bannerText:
+          "expectedRevision must be the subject's CURRENT revision (a bounded non-negative integer) or the literal null.",
+        summary: null,
+        status: null,
+        command,
+      });
+    }
     const idempotencyKey = String(data.get('idempotencyKey') ?? '');
     if (!isValidConfirmationId(idempotencyKey)) {
       return fail(400, {
@@ -90,7 +115,12 @@ export const actions: Actions = {
         command,
       });
     }
-    const result = await prepareConfirmation(body, idempotencyKey);
+    const targetId = String(data.get('targetId') ?? '');
+    const result = await prepareConfirmation(
+      body,
+      idempotencyKey,
+      targetId.length > 0 ? targetId : undefined,
+    );
     switch (result.kind) {
       case 'ok': {
         const summary = asPrepareSummary(result.data);
@@ -136,7 +166,11 @@ export const actions: Actions = {
         status: null,
       });
     }
-    const result = await readConfirmationStatus(receiptId);
+    const statusTargetId = String(data.get('targetId') ?? '');
+    const result = await readConfirmationStatus(
+      receiptId,
+      statusTargetId.length > 0 ? statusTargetId : undefined,
+    );
     switch (result.kind) {
       case 'ok': {
         const status = parseConfirmationStatus(result.data);
@@ -194,7 +228,13 @@ export const actions: Actions = {
         command,
       });
     }
-    const result = await confirmCommand(confirmed.path, confirmed.body, idempotencyKey);
+    const confirmTargetId = String(data.get('targetId') ?? '');
+    const result = await confirmCommand(
+      confirmed.path,
+      confirmed.body,
+      idempotencyKey,
+      confirmTargetId.length > 0 ? confirmTargetId : undefined,
+    );
     switch (result.kind) {
       case 'ok': {
         return {
