@@ -65,10 +65,18 @@ rather than silently absorbed into the S9-02 journey work.
 
 ### 3.1 The old pilot reference (what the frozen Stage 9 contract records)
 
-From the G0 ratification record and the frozen architecture (D-8 /
-S9-05 / G3-119 row):
+From the frozen architecture (D-8 / S9-05 / G3-119 row) and the G0-era
+observation. Two sources, honestly labelled: the FIRST bullet below is a
+**composite paraphrase** of the G0 observation bullet (which reads, in
+full: "...5f709a5... declares act.queryInspection/qlt.inspection; single
+actor; hard-coded inspection grant; **no VICT Release selected. Recheck
+before any Quellight-dependent claim.**" - note "no VICT Release selected"
+is now FALSIFIED: Quellight holds the stable `vict-release-set@1/0.3.1`
+release identity; and the bullet's own recheck instruction is exactly what
+this proposal performs), while the SECOND bullet is the verbatim frozen
+architecture text (reviewer N5 confirms its fidelity):
 
-- "Quellight `main` observed at `5f709a5…` declares
+- "*Quellight `main` observed at `5f709a5...` declares
   `act.queryInspection`/`qlt.inspection`, but currently lacks a second
   operator actor, actor-derived inspection grants, and a configured
   stable target endpoint."
@@ -82,8 +90,18 @@ S9-05 / G3-119 row):
   grants Quellight write authority. … if unavailable, S9-05 remains held
   rather than silently dropped."
 
-This observation was made in the G0 era, **against the pre-Stage-7
-Quellight** (proposed off the old VICT `88032bc…` surface).
+Chronology correction (reviewer M1): the observation was **not** taken
+against a pre-Stage-7 Quellight. Quellight's Stage 07 formal closure landed
+2026-09-24 (closure `189210c` 05:59 +0800, status re-key `5f709a5` 06:16),
+while the Stage 9 draft era began at the old-surface VICT reference
+`88032bc…` (2026-09-24 15:03) and the G0 observation is dated 2026-09-29 -
+both AFTER closure. The observation was taken against the **already-closed
+governed tree at the same tip**. What makes it stale is therefore exactly
+two layers: it predates the greenfield surface split, and its operator-side
+gap statements are configuration facts to be re-derived at decision time
+(the gaps still literally exist in the tree: a single local actor
+`LOCAL_ACTOR_ID` at `src/lib/server/runtime.ts:190`; a hard-coded
+inspection grant at `src/lib/server/composition.ts:1099`).
 
 ### 3.2 Current truth (re-derived today, read-only, at Quellight `main` `5f709a5…`)
 
@@ -95,8 +113,10 @@ own governance:
    VERIFIED WITH NON-BLOCKING ISSUES — FORMAL CLOSURE PERMITTED", closure
    commit `5f709a5`). No numbered successor stage exists; Quellight's own
    record says the next product-roadmap increment requires a fresh owner
-   planning decision. **This proposal is that planning decision for the
-   Studio-pairing slice.**
+   planning decision. **This proposal is the VICT-side input to that
+   Quellight planning decision, not the decision itself** (reviewer M4):
+   any Quellight increment must originate and be recorded under Quellight's
+   own governance.
 2. The declared inspection view **persists and is governed**:
    `act.queryInspection`/`qlt.inspection` (`definition.ts:294`) with the
    `qlt.inspection.read` permission (`inspection-contract.ts:158`), plus
@@ -131,11 +151,18 @@ write authority — and Quellight still requires its own governed increment
 for anything that changes its tree.
 
 **Option 1 — bridge Studio down to Quellight's 0.3.1 (pair as-is).**
-Cheapest to reach a proof, but the proof would demonstrate a
-Studio-side compatibility bridge, not the real greenfield pairing; it
-also introduces a hand-maintained cross-surface shim inside Studio
-(governance-hostile, and the old surface lacks the operator-read
-vocabulary G1 certified).
+Cheapest to reach a proof, but a poor deal once stated precisely
+(reviewer M2): `@victframework/server@0.3.1` **does** carry the D-8 proof
+pair (`agent.turn.get` and `app.data.query` both verified in the 0.3.1
+published artifact), so what blocks a native pairing is NOT the same-turn
+commands - it is that greenfield Studio (0.4.0-rc.1 platform + the G1
+certified operator reads `run.get`/`run.list`/`run.detail`/
+`run.events`/`run.waits`, of which only `run.cancel` exists
+pre-greenfield) cannot natively speak a 0.3.1 server. A bridge would have
+to be a hand-maintained cross-surface shim inside Studio: a
+governance-hostile custom integration, exactly the pattern Stage 9
+prohibits, and it would prove a bridge rather than the real greenfield
+pairing.
 
 **Option 2 — Quellight governed adoption increment FIRST (recommended —
 this is the same precedent twice):**
@@ -153,11 +180,16 @@ this is the same precedent twice):**
      `agent.turn.get` + `qlt.inspection` read-through — operator allow,
      underprivileged denial, agent-identity refusal, and the G2-era
      confirmation/read semantics on one surface.
-  Cost: real Quellight-side work (its own governance cycle: freeze →
-  implement → independent verification), plus a decision about whether
-  the greenfield set must first be stabilized (`0.4.0-rc.1` → stable)
-  or the pairing may run on the prerelease set locally. Publication of
-  anything remains separately gated (OD-5).
+  Cost: real Quellight-side work (its own governance cycle: freeze ->
+  implement -> independent verification), plus the prerelease-sequencing
+  question now extracted as its own decision (**OD-R2**):
+  Quellight's own precedent is that every rc consumption was transitory
+  and ended in a stable repin after fresh independent re-verification
+  (0.3.0-rc.1 M-1 remediation repin; `0.3.1-rc.2` -> stable 0.3.1) - so
+  pairing on `0.4.0-rc.1` is tolerable only as a transitory verification
+  candidate, stabilization is the default path, and permanent rc
+  consumption would be a deliberate recorded deviation, not an option
+  clause. Publication of anything remains separately gated (OD-R5).
 
 **Option 3 — hold the Quellight slice.** The architecture explicitly
 permits this: "if unavailable, S9-05 remains held rather than silently
@@ -185,34 +217,56 @@ in the Quellight repository under its own governance once OD-1/OD-3 are
 decided. Publication, product activation, and any Quellight edit remain
 prohibited until the owner's separate recorded authorization.
 
-## 5. Open owner decisions (decision-ready; the reviewer will challenge these)
+## 5. Open owner decisions (post-review restatement; the reviewer challenge has been folded in)
 
-- **OD-1 — Surface reconciliation (primary):** Option 1 (bridge down to
-  0.3.1) vs Option 2 (Quellight greenfield adoption increment first,
-  recommended) vs Option 3 (hold the Quellight slice). What would you
-  give up for each: O1 spends governance integrity for speed; O2 spends
-  schedule on the real proof; O3 spends the D-8 claim itself.
-- **OD-2 — FT-1 authority shape:** authorized inside G3 as gate G3-A (this
-  proposal's shape), or as a standalone pre-G3 platform gate? Both use the
-  same scope; the question is governance packaging and whether S9-02 must
-  wait for a separate owner gate between them.
-- **OD-3 — Quellight increment scope (Option 2 only):** minimal
-  proof-only scope (adoption pin + second operator actor + inspection
-  grants + stable target endpoint) vs also carrying the two carried 07E
-  Low findings. Recommend minimal; the carried findings are unrelated to
-  the pairing.
-- **OD-4 — S9-05 fallback:** confirm that if the pairing is unavailable at
-  G3 exit, S9-05 closes with the Quellight claim HELD (never silently
-  dropped), per the frozen architecture.
-- **OD-5 — Publication posture:** the FT-1 platform change and (if Option
-  2) a stable greenfield set raise the publication question. Keep the
-  standing posture — publication is a separate, explicitly gated owner
-  decision, never a by-product of a proof — vs authorizing a
-  publication-planning annex now (planning only, no publish).
-- **OD-6 — Evidence and verifier pattern:** reuse the established
-  freeze→builder(s)→integrate→fresh-verifier→closure pattern for every
-  G3 gate (recommended), with the Stage 8 G4-audit style for the final
-  exit audit.
+The independent reviewer challenge (REVISION REQUIRED verdict, executed
+2026-09-29) verified the old-pilot quote fidelity, re-derived every
+Quellight/registry/FT-1 fact at the live tip, and restated the decision
+list; this section is that restated list with the reviewer's corrections
+already applied (M1-M4/N5-N7 folded). The proposal text above carries the
+same corrections.
+
+- **OD-R1 - Surface reconciliation (primary; = OD-1 with corrected
+  trade-offs):** bridge Studio down to 0.3.1 / Quellight greenfield
+  adoption increment first (recommended) / hold the slice. Corrected
+  trade-offs: the D-8 same-turn command pair exists on BOTH surfaces
+  (0.3.1 does carry `agent.turn.get` + `app.data.query`); the
+  non-negotiable gap is the greenfield platform plus G1's certified
+  `run.*` operator reads, which no bridge cheaply restores. Option 1 buys
+  speed at the cost of a governance-hostile custom integration; Option 2
+  buys the real proof at real schedule cost (a Quellight governance cycle
+  under Quellight's own authority); Option 3 spends the D-8 claim itself.
+- **OD-R2 - Prerelease set stabilization sequencing (new decision
+  extracted by the reviewer):** stabilize `0.4.0-rc.1` -> stable before
+  Quellight adoption (the default path by Quellight's own precedent);
+  or pair on rc locally as an explicitly transitory verification
+  candidate; or record a deliberate permanent-rc deviation. Note:
+  `vict-release-set` is a set identity, not an npm package name; the
+  registry surface is the `@victframework/*` packages under the
+  `vict-0.4.0-rc` dist-tag.
+- **OD-R3 - FT-1 authority shape (= OD-2):** authorized inside G3 as gate
+  G3-A (this proposal's shape), or as a standalone pre-G3 platform gate.
+  Same scope either way; the question is governance packaging only.
+- **OD-R4 - Quellight increment scope (= OD-3, authority restated):**
+  minimal proof-only scope (adoption pin + second operator actor +
+  actor-derived inspection grants + configured stable target endpoint) vs
+  also carrying the two 07E Low product findings; recommend minimal. The
+  Quellight increment must originate and be recorded under Quellight's
+  own governance (the VICT side records only the pairing requirement).
+- **OD-R5 - Publication posture (= OD-5, half-open by frozen text):**
+  the standing posture - publication only by a later explicit owner
+  decision - is already frozen in the architecture's G3 row and is NOT
+  reopened; the genuinely new sub-decision is whether to authorize a
+  publication-PLANNING annex now (planning only, no publish).
+- **OD-R6 - Evidence/verifier pattern (= OD-6):** reuse the established
+  freeze -> builder(s) -> integrate -> fresh-verifier -> closure pattern
+  per gate, with the Stage 8 G4-audit style for the final exit audit
+  (recommended, genuinely open process choice).
+
+Removed from the open list by frozen records (reviewer N7): the
+held-not-dropped S9-05 fallback (frozen D-8 architecture text - recorded
+as CONFIRMED, not reopened) and the "publication withheld by default"
+posture (frozen G3-row text).
 
 ## 6. Prohibitions honored by this proposal
 
