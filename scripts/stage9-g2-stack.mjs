@@ -132,7 +132,8 @@ if (process.argv[2] === 'up') {
       cwd: root,
       env,
       stdio: 'inherit',
-      shell: false,
+      // Windows: .cmd shims require a shell (Node >=22 enforces this).
+      shell: i === 0 ? false : true,
       windowsHide: true,
     });
     console.log(`started ${cmd[0]} ${cmd[1].join(' ')} (pid ${child.pid}) on ${port}`);

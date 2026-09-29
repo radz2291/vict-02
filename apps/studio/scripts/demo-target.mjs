@@ -261,6 +261,11 @@ async function mirrorAppliedEffect(runId, nextStatus) {
   }
   const mirrored = await vict.execution.getRun(runId);
   if (mirrored === undefined || mirrored.status !== 'running') {
+    // Fixture mirror note (integrator-verified): the execution store
+    // accepts transitions only FROM a 'running' run, so a run parked
+    // blocked there can never legally transition again — the resumed
+    // truth is evidenced by the executor's verbatim answer + the wait
+    // surface, never by a synthetic execution-store projection.
     return false;
   }
   await vict.execution.commitTransition({
@@ -488,6 +493,10 @@ async function signalWaitEffect({ runId, signalName, signalId }) {
     ],
   });
   const settled = await orchestration.getOrchestrationRun(runId);
+  // Signal effects are evidenced by the verbatim executor answer + the
+  // wait surface (resolvedBy) — the fixture does NOT synthesize an
+  // execution-store mirror for a resumed wait (the store forbids a
+  // blocked->running transition; see mirrorAppliedEffect's note).
   return {
     runId,
     signalId,

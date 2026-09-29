@@ -223,6 +223,12 @@
     {:else}
       <p class="fence-note">{effect.before.waits.available ? effect.after.waits.note : effect.before.waits.note}</p>
     {/if}
+    <p class="fence-note">
+      The generic run read above carries the target's execution
+      vocabulary; where an intervention status has no projection there,
+      the executor result below (the target's own confirmed-call
+      answer) is the authoritative post-effect state.
+    </p>
     <h4>Executor result (verbatim; the target's own confirmed-call answer)</h4>
     {#if effect.executorResult !== null}
       <pre>{effect.executorResult}</pre>
