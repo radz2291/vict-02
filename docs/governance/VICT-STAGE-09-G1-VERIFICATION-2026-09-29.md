@@ -116,3 +116,41 @@ All other evidence-record claims checked in §1–§5 reproduced exactly.
 `f68c2bbc7426b0ffd4faa947dffdc81dd91f87bb` is independently reproduced; the four failures in
 the record are documentation/artifact-hygiene items (F-1–F-4), each severity NON-BLOCKING.
 No repair was made and nothing was merged by this verifier.
+## 10. Addendum (2026-09-29) — post-disposition re-verification at fb63b91
+
+The stage manager dispositioned findings F-1–F-4 and pushed a follow-up commit. This
+addendum records the re-verification of the AFFECTED CLAIMS ONLY, by the same verifier,
+at the new exact SHA.
+
+- **Candidate SHA change check:** `git ls-remote origin codex/stage9-g1-foundation` →
+  `fb63b910b2e330574cb9c24708125f17e66a4256` (exact match, byte-exact). `git diff --name-only
+  f68c2bb..fb63b91` shows EXACTLY five paths: `docs/governance/VICT-STAGE-09-G1-EVIDENCE-2026-09-29.md`,
+  `docs/governance/VICT-STAGE-09-STATE.md`, `qa-artifacts/stage9-g1/shots/07b-responsive-390-nav.png`
+  (deleted), `qa-artifacts/stage9-g1/studio-app-report.md` (new), `qa-artifacts/stage9-g1/studio-server-report.md`
+  (new). **NO `src/`, `packages/`, `apps/`, or production change**; frozen bytes (`AGENTS.md`,
+  architecture, handoff) also diff-clean. ✅
+- **R-1 (F-2):** `qa-artifacts/stage9-g1/studio-server-report.md` (101 lines) and
+  `studio-app-report.md` (104 lines) now EXIST, are tracked at fb63b91, and their content
+  matches the builders' reported facts (server track: 614f82c7 @ origin, exclusive path set,
+  boundary/session/targets/probe deliverables, 174 server suite at integration, in-memory
+  session, open integrator questions; app track: 534ac8ae, real `app.vict-studio@1` definition
+  per RESOURCE_BINDINGS, `registry.studio@1` with the named component, 12 tests, FT-1
+  no-row-link guard) — consistent with everything this verifier independently re-derived at
+  f68c2bb (§4–§5 of this report). ✅
+- **R-2 (F-3):** `07b-responsive-390-nav.png` REMOVED at fb63b91; `07-responsive-390px.png`
+  retained (verified in the diff and the tree). ✅
+- **R-3 (F-1):** grep over the amended evidence record and STATE for `01-login` and `(saved)`:
+  **zero occurrences**; the record now truthfully states the login-failed screenshot was NOT
+  captured and explains what proves the non-echoing behavior instead (boundary unit test +
+  this verifier's live reproduction). ✅
+- **R-4 (citation):** the evidence record §1/§7 and the STATE G1 gate row cite the verdict
+  **PASS WITH NON-BLOCKING FINDINGS**, the report branch `review/stage9-g1-verification-20260929`,
+  and the exact SHA `3d03d4c0c585484f1a5d4501729925fd329ea23d` — byte-exact. ✅
+- **R-5 (verifier report integrity):** `git show 3d03d4c…:docs/governance/VICT-STAGE-09-G1-VERIFICATION-2026-09-29.md | sha256sum` →
+  `853c5336c5283f6372faa981f1033d5bda19235dbc04198cb0bfe244cf80262a` — unchanged; original
+  sections above are unmodified by this addendum. ✅
+
+**Addendum verdict: PASS WITH NON-BLOCKING FINDINGS — unchanged.** All dispositioned items
+(F-1, F-2, F-3 dispositioned as corrected truthfully/disposed; F-4 no action) now hold;
+the repairs are evidence-record and artifact corrections ONLY, exactly as scoped; no new
+finding from this re-verification.
