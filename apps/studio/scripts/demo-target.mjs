@@ -13,6 +13,10 @@
  *                                 activation.read, audit.read,
  *                                 agent.stream.read)
  *   vict-studio-demo-detail    -> actor-studio-detail   (same + run.detail)
+ *   vict-studio-demo-mutator   -> actor-studio-mutator  (same as detail +
+ *                                 changeset.read + run.cancel +
+ *                                 run.resolve + run.signal) — S9-04
+ *                                 confirmation journey fixture only
  *
  * The tokens are NEVER printed to stdout: the summary carries only the
  * port, target id, and endpoints. The Studio server injects them through
@@ -71,6 +75,27 @@ await directory.upsert({
   createdAt: 0,
   scopes: DETAIL_SCOPES,
 });
+// S9-04 ADDITION (Stage 9 G2, strictly additive journey fixture): a third
+// demo actor holding the mutation scopes the two-step confirmation journey
+// prepares with. The legacy `run.cancel` scope already exists at G1;
+// `run.resolve`/`run.signal` become valid when the G2 command surface lands
+// in the composed target (their absence only narrows this actor's real
+// authority; nothing in the read surface changes).
+const MUTATOR_TOKEN = 'vict-studio-demo-mutator';
+const MUTATOR_SCOPES = [
+  ...DETAIL_SCOPES,
+  'changeset.read',
+  'run.cancel',
+  'run.resolve',
+  'run.signal',
+];
+await directory.upsert({
+  actorId: 'actor-studio-mutator',
+  status: 'active',
+  roles: ['operator'],
+  createdAt: 0,
+  scopes: MUTATOR_SCOPES,
+});
 
 const controlPlane = new ControlPlaneService({
   stores: controlStores,
@@ -98,6 +123,7 @@ const auth = createServerAuthenticator({
   authenticator: createLocalTestAuthenticator({
     [OPERATOR_TOKEN]: 'actor-studio-operator',
     [DETAIL_TOKEN]: 'actor-studio-detail',
+    [MUTATOR_TOKEN]: 'actor-studio-mutator',
   }),
   directory,
 });

@@ -51,3 +51,22 @@ npm run build -w vict-studio     # svelte-kit sync + vite build
 npm run check -w vict-studio     # tsc --noEmit
 npm run test  -w vict-studio     # vitest (boundary + adapter + render tests)
 ```
+
+## Stage 9 G2 — S9-04 confirmation journey (additive slice)
+
+A dedicated journey route `src/routes/confirmations/` (NEW files: page +
+page server, `src/lib/confirmation/confirmation.ts` pure shapes, and the
+server-only `src/lib/server/confirmation-transport.ts` relay) implements
+the S9-04 `prepare → human review → confirm` browser journey per the
+frozen G2 proposal §6.2. Summary/status/banner come ONLY from target
+responses (no fabricated state). The G1 read-only plan surface, its
+RESOURCE_BINDINGS, and the generic host dispatch are NOT changed; the
+shared contract `contract.ts` is unchanged (no RESOURCE_BINDINGS addition
+was required — confirmations are not G1 read resources and the adapter
+stays read-only). New trusted island `cmp.confirmation-review@1` is
+registered in `src/lib/components/registry.ts`. Manual journey script:
+`qa-artifacts/stage9-g2/journey-plan.md`. Journey tests:
+`tests/ui/confirmation.test.ts`, `tests/confirmation-contract.test.ts`.
+`scripts/demo-target.mjs` gained ONE additive fixture actor
+(`vict-studio-demo-mutator` → mutation scopes) for the journey; the read
+surface fixture is untouched.
