@@ -1987,6 +1987,14 @@ export function commandConfirmationFenceToken(input: {
  * command `confirmation.prepare:<command>`; THIS store holds only the
  * issued receipts. Consumption is fenced with exact-generation fencing,
  * mirroring the command idempotency lease/fence semantics.
+ *
+ * Retention (D-OPEN-4 ACCEPTED, 2026-09-29): receipts are digest-only —
+ * identities and the canonical payload digest ONLY, NEVER a payload
+ * byte — and are retained a minimum of **90 days** (90-day window) before
+ * any purge eligibility; the digest-level
+ * confirmation.prepared/confirmation.consumed audit trail survives any
+ * purge. Summary retention therefore never removes the audit trail below
+ * digest level.
  */
 export interface CommandConfirmationReceiptStore {
   /**

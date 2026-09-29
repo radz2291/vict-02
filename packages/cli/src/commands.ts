@@ -139,7 +139,8 @@ export const CLI_COMMANDS: Readonly<Record<string, CliCommandSpec>> = {
     path: '/vict/v1/releases/select',
     flags: ['applicationId', 'releaseVersion', EXPECTED_REVISION_FLAG],
     positionals: [],
-    description: 'Select the active release for an application (receipt-gated: --prepare / --confirm).',
+    description:
+      'Select the active release for an application (receipt-gated: --prepare / --confirm).',
     confirmation: { command: 'release.select', preparePath: '/vict/v1/confirmations' },
   },
   'release selected': {
@@ -154,7 +155,8 @@ export const CLI_COMMANDS: Readonly<Record<string, CliCommandSpec>> = {
     path: '/vict/v1/releases/rollback',
     flags: ['applicationId', 'targetReleaseVersion', EXPECTED_REVISION_FLAG],
     positionals: [],
-    description: 'Roll back an application to a prior immutable release (receipt-gated: --prepare / --confirm).',
+    description:
+      'Roll back an application to a prior immutable release (receipt-gated: --prepare / --confirm).',
     confirmation: { command: 'release.rollback', preparePath: '/vict/v1/confirmations' },
   },
   'activation select': {

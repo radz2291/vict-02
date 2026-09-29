@@ -11,11 +11,7 @@ import {
   type AgentStreamEvent,
 } from '@victframework/contracts';
 import { AuthenticationError, type ServerActorContext } from './auth.js';
-import {
-  VictCommandService,
-  VICT_COMMANDS,
-  type VictCommandOutcome,
-} from './commands.js';
+import { VictCommandService, VICT_COMMANDS, type VictCommandOutcome } from './commands.js';
 
 /**
  * Stage 06B — the VICT-owned HTTP boundary (AI-015).
@@ -96,9 +92,7 @@ export interface ConfirmationStatusSummary {
   readonly consumedByKey?: string;
 }
 
-export type ConfirmationServiceOutcome<T> =
-  | { ok: true; data: T }
-  | { ok: false; code: string };
+export type ConfirmationServiceOutcome<T> = { ok: true; data: T } | { ok: false; code: string };
 
 export interface ConfirmationAwareCommandService {
   prepareConfirmation(
@@ -532,7 +526,14 @@ export function createVictHttpServer(options: VictHttpServerOptions): VictHttpSe
     }
     const envelope = parsed as Record<string, unknown>;
     for (const key of Object.keys(envelope)) {
-      if (key !== 'payload' && key !== 'schema' && key !== 'command' && key !== 'confirmation' && key !== 'idempotencyKey' && key !== 'expectedRevision') {
+      if (
+        key !== 'payload' &&
+        key !== 'schema' &&
+        key !== 'command' &&
+        key !== 'confirmation' &&
+        key !== 'idempotencyKey' &&
+        key !== 'expectedRevision'
+      ) {
         throw new HttpError('VICT_HTTP_BODY_MALFORMED', 400);
       }
     }
@@ -626,15 +627,22 @@ export function createVictHttpServer(options: VictHttpServerOptions): VictHttpSe
         return;
       }
     }
-    const outcome = await options.commandService.dispatch(
-      actor,
-      {
-        command,
-        payload: payload as Record<string, unknown>,
-        ...(typeof idempotencyKey === 'string' ? { idempotencyKey } : {}),
-        ...(confirmation !== undefined ? { confirmation } : {}),
-      } as unknown as Parameters<VictCommandService['dispatch']>[1],
-    );
+    // Integrator seam: the transport contract candidate pinned the
+    // confirmed shape with `confirmation` as a TOP-LEVEL envelope member
+    // (HTTP + CLI); the command service binds it as a PAYLOAD member
+    // (its capture gate keeps the closed vict.command@1 three-member
+    // set, and Phase 1 digests the COMPLETE confirmation request
+    // including receipt id). Inject without mutating the caller's
+    // object; a top-level `confirmation` member is never forwarded.
+    const consumePayload: Record<string, unknown> = {
+      ...(payload as Record<string, unknown>),
+      ...(confirmation !== undefined ? { confirmation } : {}),
+    };
+    const outcome = await options.commandService.dispatch(actor, {
+      command,
+      payload: consumePayload,
+      ...(typeof idempotencyKey === 'string' ? { idempotencyKey } : {}),
+    } as unknown as Parameters<VictCommandService['dispatch']>[1]);
     if (!outcome.ok) {
       sendJson(res, statusForError(outcome.code), outcomeBody(outcome));
       return;
@@ -679,7 +687,8 @@ export function createVictHttpServer(options: VictHttpServerOptions): VictHttpSe
     if (envelope['expectedRevision'] !== undefined) {
       const revision = envelope['expectedRevision'];
       if (
-        (revision !== null && (typeof revision !== 'number' || !Number.isSafeInteger(revision) || revision < 0))
+        revision !== null &&
+        (typeof revision !== 'number' || !Number.isSafeInteger(revision) || revision < 0)
       ) {
         throw new HttpError('VICT_HTTP_FIELD_INVALID', 400);
       }
@@ -687,7 +696,8 @@ export function createVictHttpServer(options: VictHttpServerOptions): VictHttpSe
     }
     const headerKey = req.headers['idempotency-key'];
     const bodyKey = envelope['idempotencyKey'];
-    const idempotencyKey = typeof headerKey === 'string' ? headerKey : (bodyKey as string | undefined ?? undefined);
+    const idempotencyKey =
+      typeof headerKey === 'string' ? headerKey : ((bodyKey as string | undefined) ?? undefined);
     if (
       typeof idempotencyKey !== 'string' ||
       !COMMAND_IDEMPOTENCY_KEY_PATTERN.test(idempotencyKey)
@@ -701,11 +711,19 @@ export function createVictHttpServer(options: VictHttpServerOptions): VictHttpSe
       sendJson(res, 409, { ok: false, code: 'VICT_CONFIRMATION_UNAVAILABLE' });
       return;
     }
+    // Integrator seam: the transport keeps `expectedRevision` as a
+    // bounded envelope member (transport candidate contract); the core
+    // prepare service requires it INSIDE the canonical payload (its
+    // prepare field/digest checks read payload.expectedRevision). Merge
+    // without mutating the caller's object.
+    const preparePayload: Record<string, unknown> =
+      expectedRevision !== undefined && rawPayload !== undefined && typeof rawPayload === 'object'
+        ? { ...(rawPayload as Record<string, unknown>), expectedRevision }
+        : (rawPayload as Record<string, unknown>);
     const outcome = await capable.prepareConfirmation(actor, {
       command,
-      payload: rawPayload as Record<string, unknown>,
+      payload: preparePayload,
       idempotencyKey,
-      ...(expectedRevision !== undefined ? { expectedRevision } : {}),
     });
     if (!outcome.ok) {
       sendJson(res, statusForError(outcome.code), { ok: false, code: outcome.code });
@@ -793,9 +811,8 @@ export function createVictHttpServer(options: VictHttpServerOptions): VictHttpSe
     // Stage 9 operator reads (WP-1): bounded dynamic instance routes. The
     // run sub-resource routes are matched BEFORE the bare run identity so
     // `/runs/:id/events` never collapses into `run.get`.
-    const runResolveMatch = /^\/vict\/v1\/runs\/([A-Za-z0-9][A-Za-z0-9._:@-]{0,127})\/resolve$/.exec(
-      path,
-    );
+    const runResolveMatch =
+      /^\/vict\/v1\/runs\/([A-Za-z0-9][A-Za-z0-9._:@-]{0,127})\/resolve$/.exec(path);
     if (runResolveMatch !== null) {
       if (req.method !== 'POST') {
         throw new HttpError('VICT_HTTP_METHOD_UNSUPPORTED', 405);

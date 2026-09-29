@@ -1414,12 +1414,12 @@ export function runCommandConfirmationReceiptConformanceSuite(
   t(`[${factory.name}] confirmation receipts: create/get identity and queries`, async () => {
     const stores = await factory.create();
     try {
-      expect(
-        await stores.commandConfirmationReceipts.createReceipt(receiptFixture()),
-      ).toBe('created');
-      expect(
-        await stores.commandConfirmationReceipts.createReceipt(receiptFixture()),
-      ).toBe('exists');
+      expect(await stores.commandConfirmationReceipts.createReceipt(receiptFixture())).toBe(
+        'created',
+      );
+      expect(await stores.commandConfirmationReceipts.createReceipt(receiptFixture())).toBe(
+        'exists',
+      );
       const got = await stores.commandConfirmationReceipts.getReceipt('cr-cf-1');
       expect(got?.payloadDigest).toBe('digest-cf-1');
       expect(got?.expectedRevision).toBe(3);
@@ -1427,7 +1427,11 @@ export function runCommandConfirmationReceiptConformanceSuite(
       // Different prepare key under the same (actor, command) is a separate
       // chain entry.
       await stores.commandConfirmationReceipts.createReceipt(
-        receiptFixture({ receiptId: 'cr-cf-2', replacementAttemptNo: 1, prepareIdempotencyKey: 'prep-key-cf-2' }),
+        receiptFixture({
+          receiptId: 'cr-cf-2',
+          replacementAttemptNo: 1,
+          prepareIdempotencyKey: 'prep-key-cf-2',
+        }),
       );
       const chain = await stores.commandConfirmationReceipts.listReceiptsByPrepare({
         actorId: 'actor-cf',
@@ -1489,12 +1493,14 @@ export function runCommandConfirmationReceiptConformanceSuite(
         expect(settled?.consumedByKey).toBe('key-a');
         // Settled receipts do not re-claim.
         expect(
-          (await stores.commandConfirmationReceipts.startConsumption({
-            receiptId: 'cr-cf-1',
-            owner: 'key-a',
-            leaseUntil: 9_000,
-            at: 2_600,
-          })).outcome,
+          (
+            await stores.commandConfirmationReceipts.startConsumption({
+              receiptId: 'cr-cf-1',
+              owner: 'key-a',
+              leaseUntil: 9_000,
+              at: 2_600,
+            })
+          ).outcome,
         ).toBe('settled');
       } finally {
         await stores.dispose();
@@ -1510,12 +1516,14 @@ export function runCommandConfirmationReceiptConformanceSuite(
         await stores.commandConfirmationReceipts.createReceipt(receiptFixture());
         // A claim arriving after expiry fails closed and MARKS the receipt.
         expect(
-          (await stores.commandConfirmationReceipts.startConsumption({
-            receiptId: 'cr-cf-1',
-            owner: 'key-late',
-            leaseUntil: 9_200,
-            at: 9_100,
-          })).outcome,
+          (
+            await stores.commandConfirmationReceipts.startConsumption({
+              receiptId: 'cr-cf-1',
+              owner: 'key-late',
+              leaseUntil: 9_200,
+              at: 9_100,
+            })
+          ).outcome,
         ).toBe('expired');
         expect((await stores.commandConfirmationReceipts.getReceipt('cr-cf-1'))?.status).toBe(
           'expired',
@@ -1602,9 +1610,7 @@ export function runCommandConfirmationReceiptConformanceSuite(
           prepareIdempotencyKey: 'prep-key-cf-1',
         });
         expect(chain.map((entry) => entry.replacementAttemptNo)).toEqual([1, 2, 3]);
-        expect(
-          chain[chain.length - 1]?.status,
-        ).toBe('prepared');
+        expect(chain[chain.length - 1]?.status).toBe('prepared');
       } finally {
         await stores.dispose();
       }

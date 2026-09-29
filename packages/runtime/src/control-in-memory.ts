@@ -1318,9 +1318,7 @@ export class InMemoryCommandIdempotencyStore implements CommandIdempotencyStore 
  * marks the receipt `expired`; an expired live lease is taken over with a
  * NEW fence token and an incremented attempt generation.
  */
-export class InMemoryCommandConfirmationReceiptStore
-  implements CommandConfirmationReceiptStore
-{
+export class InMemoryCommandConfirmationReceiptStore implements CommandConfirmationReceiptStore {
   readonly #receipts = new Map<string, CommandConfirmationReceipt>();
 
   async createReceipt(record: CommandConfirmationReceipt): Promise<'created' | 'exists'> {
@@ -1372,11 +1370,14 @@ export class InMemoryCommandConfirmationReceiptStore
     return bounded.map((receipt) => structuredCloneControl(receipt));
   }
 
-  #claim(receiptId: string, input: {
-    owner: string;
-    leaseUntil: number;
-    at: number;
-  }): CommandConfirmationClaim {
+  #claim(
+    receiptId: string,
+    input: {
+      owner: string;
+      leaseUntil: number;
+      at: number;
+    },
+  ): CommandConfirmationClaim {
     const found = this.#receipts.get(receiptId);
     if (found === undefined) {
       return { outcome: 'missing' };

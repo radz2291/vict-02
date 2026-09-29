@@ -222,15 +222,53 @@ for (const command of commands) {
   rows.push(row);
 }
 
-for (const pending of G2_PENDING) {
-  if (commands.includes(pending)) {
-    failures.push(`${pending}: G2-pending command must NOT exist at G1`);
+// G2 accounting rows, printed after the G1 rows.
+const g2Rows = [];
+
+// G2 slice-state accounting: while the G2 commands are ABSENT the G1-era
+// absence gate applies (they must not exist at G1). Once PRESENT, absence is
+// vacuous and the G2 block below asserts the full surface HARD — a PARTIAL
+// surface is an ambiguous slice state and fails loudly (never silently
+// re-classified; the printed rows carry the classification).
+const g2CommandsInRegistry = G2_PENDING.filter((pending) => commands.includes(pending));
+if (g2CommandsInRegistry.length === 0) {
+  for (const pending of G2_PENDING) {
+    failures.push(
+      `${pending}: G2-pending command must NOT exist at G1 (and none landed at this HEAD — recorded as g2-pending)`,
+    );
   }
+  for (const pending of G2_PENDING) {
+    g2Rows.push({
+      command: pending,
+      scope: 'pinned (proposal §4.2)',
+      http: false,
+      cli: false,
+      class: 'g2-pending — recorded at this G1-state HEAD',
+    });
+  }
+} else if (g2CommandsInRegistry.length !== G2_PENDING.length) {
+  failures.push(
+    `G2: PARTIALLY landed command surface (${g2CommandsInRegistry.join(',')} present, ${G2_PENDING.filter((p) => !g2CommandsInRegistry.includes(p)).join(',')} absent) — ambiguous slice state, never silently re-classified`,
+  );
 }
 
-// Orphan HTTP routes: every route must map to a registered command.
+// Orphan HTTP routes: every route must map to a registered command — EXCEPT
+// the transport-intercepted confirmation prepare route: the command name
+// 'confirmation.prepare' PINS the route in the closed table (dispatch is
+// intercepted before the versioned command boundary; classified, printed,
+// never silently dropped).
 for (const [path, routeCommands] of routes) {
   for (const command of routeCommands) {
+    if (command === 'confirmation.prepare') {
+      g2Rows.push({
+        command: `${path} (intercepted prepare route pin)`,
+        scope: 'the TARGET command mutation scope',
+        http: true,
+        cli: false,
+        class: 'g2 prepare-route pin (transport-intercepted; single prepare endpoint D-OPEN-3)',
+      });
+      continue;
+    }
     if (!commands.includes(command)) {
       failures.push(`HTTP route ${path}: maps to unregistered command '${command}'`);
     }
@@ -244,8 +282,6 @@ for (const [path, routeCommands] of routes) {
 // G2-PENDING; once the commands exist in the sources, the G2 surface block
 // below asserts their full route/CLI/scope shapes HARD. Nothing is silently
 // re-classified: the printed rows carry the classification.
-const g2CommandsInRegistry = G2_PENDING.filter((pending) => commands.includes(pending));
-
 /** Pinned G2 scope per command (D-OPEN-2: 'run.signal' ACCEPTED as worded;
  * run.resolve's new closed scope is pinned by the proposal §4.2 table). */
 function expectedG2ScopeFor(command) {
@@ -258,8 +294,6 @@ function expectedG2ScopeFor(command) {
       return command;
   }
 }
-
-const g2Rows = []; // G2 accounting rows, printed after the G1 rows.
 
 function g2PendingRow(command, scope, note) {
   g2Rows.push({ command, scope, http: false, cli: false, class: `g2-pending — ${note}` });
@@ -328,8 +362,10 @@ for (const pin of LEGACY_POST_ROUTE_PINS) {
     );
   }
 }
-console.assert(G1_READ_SURFACE_PINS.every((pin) => STAGE9_G1_READS.includes(pin.command)),
-  'inventory pin set drift: G1_READ_SURFACE_PINS must cover all STAGE9_G1_READS');
+console.assert(
+  G1_READ_SURFACE_PINS.every((pin) => STAGE9_G1_READS.includes(pin.command)),
+  'inventory pin set drift: G1_READ_SURFACE_PINS must cover all STAGE9_G1_READS',
+);
 
 // ---- G2 surface rows (proposal §6.1; classified as G2 surface) -------------
 if (g2CommandsInRegistry.length === 0) {
@@ -356,7 +392,7 @@ if (g2CommandsInRegistry.length === 0) {
   g2PendingRow(
     'confirmations/:receiptId CLI read',
     'the receipt command mutation scope',
-    'not yet in this worktree; CLI read entry \'confirmation get\' mirrors the status route',
+    "not yet in this worktree; CLI read entry 'confirmation get' mirrors the status route",
   );
   g2PendingRow(
     'four legacy POST routes (consume shape)',
@@ -475,12 +511,13 @@ else {
   const runtimeSource = readSource('packages/runtime/src/control-types.ts');
   for (const auditAction of ['confirmation.prepared', 'confirmation.consumed']) {
     if (!runtimeSource.includes(`'${auditAction}'`)) {
-      failures.push(`G2: audit action '${auditAction}' not found in control-types.ts (closed audit action set)`);
+      failures.push(
+        `G2: audit action '${auditAction}' not found in control-types.ts (closed audit action set)`,
+      );
     }
   }
   const retentionPinned =
-    runtimeSource.includes('confirmation') &&
-    runtimeSource.match(/90[ -]?day|90 days/i) !== null;
+    runtimeSource.includes('confirmation') && runtimeSource.match(/90[ -]?day|90 days/i) !== null;
   if (!retentionPinned) {
     failures.push('G2: 90-day receipt retention window pin not found in control-types.ts');
   }
@@ -500,7 +537,9 @@ for (const row of [...rows, ...g2Rows]) {
   const key = row.class.split(' ')[0];
   counts[key] = (counts[key] ?? 0) + 1;
 }
-console.log('STAGE 9 — three-surface inventory (registry ↔ HTTP ↔ CLI; G1 reads + G2 confirmation surface)');
+console.log(
+  'STAGE 9 — three-surface inventory (registry ↔ HTTP ↔ CLI; G1 reads + G2 confirmation surface)',
+);
 console.log(
   `commands=${rows.length + g2Rows.length} (registry=${commands.length})  http-routes=${routes.size}  cli-entries=${cli.size}`,
 );
@@ -522,4 +561,6 @@ if (failures.length > 0) {
   for (const failure of failures) console.error(`  - ${failure}`);
   process.exit(1);
 }
-console.log('\nINVENTORY OK — G1 reads on all three surfaces UNAMENDED; G2 confirmation surface accounted.');;
+console.log(
+  '\nINVENTORY OK — G1 reads on all three surfaces UNAMENDED; G2 confirmation surface accounted.',
+);

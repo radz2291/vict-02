@@ -17,12 +17,12 @@ import {
 describe('confirmation journey contract shapes (proposal §4/§5 pins)', () => {
   it('maps every receipt-gated command to its canonical consume route', () => {
     expect(CONFIRMATION_COMMANDS['run.cancel'].route({ runId: 'r1' })).toBe('/vict/v1/runs/cancel');
-    expect(
-      CONFIRMATION_COMMANDS['run.resolve'].route({ runId: 'r9' }),
-    ).toBe('/vict/v1/runs/r9/resolve');
-    expect(
-      CONFIRMATION_COMMANDS['run.signal'].route({ runId: 'r9' }),
-    ).toBe('/vict/v1/runs/r9/signal');
+    expect(CONFIRMATION_COMMANDS['run.resolve'].route({ runId: 'r9' })).toBe(
+      '/vict/v1/runs/r9/resolve',
+    );
+    expect(CONFIRMATION_COMMANDS['run.signal'].route({ runId: 'r9' })).toBe(
+      '/vict/v1/runs/r9/signal',
+    );
     expect(CONFIRMATION_COMMANDS['activation.select'].route({})).toBe(
       '/vict/v1/activations/select',
     );
@@ -92,7 +92,9 @@ describe('confirmation journey contract shapes (proposal §4/§5 pins)', () => {
   });
 
   it('banner texts restate the frozen Phase-2 outcome codes truthfully', () => {
-    expect(failureBannerText('VICT_CONFIRMATION_REQUIRED')).toContain('prepare → human review → confirm');
+    expect(failureBannerText('VICT_CONFIRMATION_REQUIRED')).toContain(
+      'prepare → human review → confirm',
+    );
     expect(failureBannerText('VICT_CONFIRMATION_EXPIRED')).toContain('Prepare again');
     expect(failureBannerText('VICT_CONFIRMATION_SPENT')).toContain('No second effect');
     expect(failureBannerText('VICT_CONFIRMATION_STALE')).toContain('prepare again');

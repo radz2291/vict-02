@@ -94,7 +94,11 @@ async function boundedFetch(
     return { kind: 'http-error', status: response.status };
   }
   const envelope = parsed as Record<string, unknown>;
-  if (envelope['ok'] === true && typeof envelope['data'] === 'object' && envelope['data'] !== null) {
+  if (
+    envelope['ok'] === true &&
+    typeof envelope['data'] === 'object' &&
+    envelope['data'] !== null
+  ) {
     return {
       kind: 'ok',
       status: response.status,

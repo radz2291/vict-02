@@ -81,7 +81,11 @@ async function post(
   payload: Record<string, unknown>,
   token: string,
   key: string,
-): Promise<{ status: number; code: string | undefined }> {
+): Promise<{
+  status: number;
+  code: string | undefined;
+  data: Record<string, unknown> | undefined;
+}> {
   const response = await fetch(`http://127.0.0.1:${f.port}${path}`, {
     method: 'POST',
     headers: {
@@ -92,7 +96,11 @@ async function post(
     body: JSON.stringify(payload),
   });
   const body = (await response.json().catch(() => ({}))) as Record<string, unknown>;
-  return { status: response.status, code: typeof body.code === 'string' ? body.code : undefined };
+  return {
+    status: response.status,
+    code: typeof body.code === 'string' ? body.code : undefined,
+    data: body.data as Record<string, unknown> | undefined,
+  };
 }
 
 /** Run one GET command (Stage 9 read surface). */
@@ -138,7 +146,13 @@ describe('Stage 9 G2 — permanent confirmation authorization rows', () => {
   it('P-11: no legacy bypass — unconfirmed mutations fail closed (operator)', async () => {
     const f = await fixture();
     for (const [path, envelope] of LEGACY_GATED) {
-      const result = await post(f, path, envelope, OPERATOR, `mx-p11-op-${path}`);
+      const result = await post(
+        f,
+        path,
+        envelope,
+        OPERATOR,
+        `mx-p11-op-${path.replace(/\//g, '-')}`,
+      );
       expect(result.status).toBe(409);
       expect(result.code).toBe('VICT_CONFIRMATION_REQUIRED');
     }
@@ -147,7 +161,13 @@ describe('Stage 9 G2 — permanent confirmation authorization rows', () => {
   it('P-11: no legacy bypass — unconfirmed mutations fail closed (developer)', async () => {
     const f = await fixture();
     for (const [path, envelope] of LEGACY_GATED) {
-      const result = await post(f, path, envelope, DEVELOPER, `mx-p11-dev-${path}`);
+      const result = await post(
+        f,
+        path,
+        envelope,
+        DEVELOPER,
+        `mx-p11-dev-${path.replace(/\//g, '-')}`,
+      );
       expect(result.status).toBe(409);
       expect(result.code).toBe('VICT_CONFIRMATION_REQUIRED');
     }
@@ -158,7 +178,13 @@ describe('Stage 9 G2 — permanent confirmation authorization rows', () => {
     // The DEVELOPER token actor holds the administrator role (closed
     // all-scopes policy); authority does NOT soften the confirmation fence.
     for (const [path, envelope] of LEGACY_GATED) {
-      const result = await post(f, path, envelope, DEVELOPER, `mx-p12-admin-${path}`);
+      const result = await post(
+        f,
+        path,
+        envelope,
+        DEVELOPER,
+        `mx-p12-admin-${path.replace(/\//g, '-')}`,
+      );
       expect(result.status).toBe(409);
       expect(result.code).toBe('VICT_CONFIRMATION_REQUIRED');
     }
@@ -186,7 +212,7 @@ describe('Stage 9 G2 — permanent confirmation authorization rows', () => {
     expect(signal.code).toBe('VICT_CONFIRMATION_REQUIRED');
   });
 
-  describe.skip('G2 confirmation scope rows (BLOCKED on the core confirmation layer)', () => {
+  describe('G2 confirmation scope rows (G2 core layer composed)', () => {
     // TODO(integrator): unskip when prepareConfirmation/getConfirmationStatus
     // land (signatures pinned in the transport candidate's integration notes
     // and the describe.skip TODO in http.test.ts).
@@ -250,7 +276,11 @@ describe('Stage 9 G2 — permanent confirmation authorization rows', () => {
       const denied = await post(
         f,
         '/vict/v1/confirmations',
-        { command: 'run.resolve', payload: { runId: 'r', resolution: 'retry' }, expectedRevision: 0 },
+        {
+          command: 'run.resolve',
+          payload: { runId: 'r', resolution: 'retry' },
+          expectedRevision: 0,
+        },
         VIEWER,
         'mx-prepare-deny-resolve',
       );
@@ -269,7 +299,11 @@ describe('Stage 9 G2 — permanent confirmation authorization rows', () => {
       const allowed = await post(
         f,
         '/vict/v1/confirmations',
-        { command: 'run.resolve', payload: { runId: 'r', resolution: 'retry' }, expectedRevision: 0 },
+        {
+          command: 'run.resolve',
+          payload: { runId: 'r', resolution: 'retry' },
+          expectedRevision: 0,
+        },
         DEVELOPER, // administrator policy holds the new scopes by definition
         'mx-prepare-allow-resolve',
       );
@@ -283,13 +317,17 @@ describe('Stage 9 G2 — permanent confirmation authorization rows', () => {
       const prepared = await post(
         f,
         '/vict/v1/confirmations',
-        { command: 'run.cancel', payload: { runId: 'r-g2-status', reasonCode: 'operator-cancel' }, expectedRevision: 0 },
+        {
+          command: 'run.cancel',
+          payload: { runId: 'r-g2-status', reasonCode: 'operator-cancel' },
+          expectedRevision: 0,
+        },
         OPERATOR,
         'mx-status-prep',
       );
       expect(prepared.status).toBe(200);
-      const receiptId = ((prepared as unknown as { body: Record<string, unknown> }).body
-        .data as Record<string, unknown>).receiptId as string;
+      const receiptId = (prepared.data as Record<string, unknown>).receiptId as string;
+      expect(typeof receiptId).toBe('string');
       // Own scope: allowed.
       const own = await getMatrix(f, `/vict/v1/confirmations/${receiptId}`, OPERATOR);
       expect(own.status).toBe(200);

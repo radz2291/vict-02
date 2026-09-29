@@ -240,9 +240,21 @@ const COMMAND_REGISTRY: Readonly<Record<VictCommandName, CommandSpec>> = {
     fields: ['graphId', 'activationVersion', 'confirmation'],
     mutation: true,
   },
-  'run.cancel': { scope: 'run.cancel', fields: ['runId', 'reasonCode', 'confirmation'], mutation: true },
-  'run.resolve': { scope: 'run.resolve', fields: ['runId', 'resolution', 'confirmation'], mutation: true },
-  'run.signal': { scope: 'run.signal', fields: ['runId', 'signalName', 'confirmation'], mutation: true },
+  'run.cancel': {
+    scope: 'run.cancel',
+    fields: ['runId', 'reasonCode', 'confirmation'],
+    mutation: true,
+  },
+  'run.resolve': {
+    scope: 'run.resolve',
+    fields: ['runId', 'resolution', 'confirmation'],
+    mutation: true,
+  },
+  'run.signal': {
+    scope: 'run.signal',
+    fields: ['runId', 'signalName', 'confirmation'],
+    mutation: true,
+  },
   'agent.turn.start': {
     scope: 'agent.turn.start',
     fields: ['threadId', 'input', 'applicationReleaseVersion'],
@@ -332,14 +344,15 @@ export type ConfirmationGatedCommand =
   | 'run.resolve'
   | 'run.signal';
 
-export const CONFIRMATION_REQUIRED_COMMANDS: ReadonlySet<string> = new Set<ConfirmationGatedCommand>([
-  'run.cancel',
-  'release.select',
-  'release.rollback',
-  'activation.select',
-  'run.resolve',
-  'run.signal',
-]);
+export const CONFIRMATION_REQUIRED_COMMANDS: ReadonlySet<string> =
+  new Set<ConfirmationGatedCommand>([
+    'run.cancel',
+    'release.select',
+    'release.rollback',
+    'activation.select',
+    'run.resolve',
+    'run.signal',
+  ]);
 
 /** Closed `run.resolve` resolution vocabulary (pinned proposal §4.2). */
 export const RUN_RESOLUTIONS = ['retry', 'confirm_applied', 'fail', 'cancel'] as const;
@@ -1406,7 +1419,8 @@ export class VictCommandService {
           return { ok: false, code: 'VICT_COMMAND_IDEMPOTENCY_IN_PROGRESS' };
         default: {
           const reread = await confirmationStore.getReceipt(receipt.receiptId);
-          code = reread?.status === 'expired' ? 'VICT_CONFIRMATION_EXPIRED' : 'VICT_CONFIRMATION_SPENT';
+          code =
+            reread?.status === 'expired' ? 'VICT_CONFIRMATION_EXPIRED' : 'VICT_CONFIRMATION_SPENT';
         }
       }
       // Deterministic classification: persist through the durable claim.
@@ -1713,19 +1727,21 @@ export class VictCommandService {
     const prepareFields = [...semanticConfirmationFields(command), 'expectedRevision'];
     this.#assertPreparePayloadFields(command, payload, prepareFields);
     const subjectField = confirmationSubjectField(command);
-    if (typeof payload[subjectField] !== 'string' || (payload[subjectField] as string).length === 0) {
+    if (
+      typeof payload[subjectField] !== 'string' ||
+      (payload[subjectField] as string).length === 0
+    ) {
       throw new VictControlError(
         'VICT_COMMAND_FIELD_INVALID',
         `The prepare payload must carry the subject identity '${subjectField}'.`,
       );
     }
-    const subjectId = payload[subjectField] as string;
     const expectedRevision = payload['expectedRevision'];
     if (expectedRevision === undefined) {
       // expectedRevision is REQUIRED (proposal §4.4; no no-guard shape).
       throw new VictControlError(
         'VICT_CONFIRMATION_FIELD_REQUIRED',
-        'VICT_CONFIRMATION_FIELD_REQUIRED: the prepare payload must carry the subject\'s current expectedRevision.',
+        "VICT_CONFIRMATION_FIELD_REQUIRED: the prepare payload must carry the subject's current expectedRevision.",
       );
     }
     if (
@@ -1736,7 +1752,7 @@ export class VictCommandService {
     ) {
       throw new VictControlError(
         'VICT_COMMAND_FIELD_INVALID',
-        'expectedRevision must be the subject\'s current revision (a safe integer, or null when truthfully none is selected).',
+        "expectedRevision must be the subject's current revision (a safe integer, or null when truthfully none is selected).",
       );
     }
     const prepareDigest = requestDigest(payload);
@@ -1853,15 +1869,20 @@ export class VictCommandService {
         ) {
           // Replacement: the expired receipt stays expired and auditable;
           // the fresh receipt is a NEW intent record (R-4/P-22).
-          return await this.#issueConfirmationReceipt(actor, command, payload, request.idempotencyKey, latest.replacementAttemptNo + 1, prepareClaimFence);
+          return await this.#issueConfirmationReceipt(
+            actor,
+            command,
+            payload,
+            request.idempotencyKey,
+            latest.replacementAttemptNo + 1,
+            prepareClaimFence,
+          );
         }
         // Beyond the replacement budget: replay the LATEST receipt's
         // truthful status. NEVER an idempotency conflict (P-23); the caller
         // is invited to use a FRESH prepare key.
         const effectiveStatus =
-          latest.status === 'prepared' && now() >= latest.expiryAt
-            ? 'expired'
-            : latest.status;
+          latest.status === 'prepared' && now() >= latest.expiryAt ? 'expired' : latest.status;
         return ok({
           receiptId: latest.receiptId,
           command,
@@ -1872,7 +1893,14 @@ export class VictCommandService {
           confirmable: false,
         });
       }
-      return await this.#issueConfirmationReceipt(actor, command, payload, request.idempotencyKey, 1, prepareClaimFence);
+      return await this.#issueConfirmationReceipt(
+        actor,
+        command,
+        payload,
+        request.idempotencyKey,
+        1,
+        prepareClaimFence,
+      );
     } catch (error) {
       if (error instanceof VictControlError && error.code !== VICT_IDEMPOTENCY_FENCE_CONFLICT) {
         // Deterministic prepare failure settles the durable claim.
@@ -1935,7 +1963,10 @@ export class VictCommandService {
         'utf8',
       )
       .digest('hex')}`;
-    const expectedRevision = payload['expectedRevision'] === undefined ? null : (payload['expectedRevision'] as number | null);
+    const expectedRevision =
+      payload['expectedRevision'] === undefined
+        ? null
+        : (payload['expectedRevision'] as number | null);
     const record: CommandConfirmationReceipt = {
       receiptId,
       actorId: actor.actorId,
@@ -2026,10 +2057,30 @@ export class VictCommandService {
    * actor (same scope as the receipt's command mutation); any other actor
    * receives the non-echoing UNAVAILABLE outcome — never existence.
    */
-  async getConfirmation(
+  /**
+   * Integrator seam alias: the transport contract candidate pinned the
+   * name `getConfirmationStatus` with a FLAT data shape (the summary IS
+   * the data). The service's canonical `getConfirmation` nests the
+   * summary under `data.confirmation`. The alias unwraps it; no semantic
+   * difference otherwise (same authorization and non-echo behavior).
+   */
+  async getConfirmationStatus(
     actor: ServerActorContext,
     receiptId: string,
   ): Promise<VictCommandOutcome> {
+    const canonical = await this.getConfirmation(actor, receiptId);
+    if (!canonical.ok) {
+      return canonical;
+    }
+    const data = canonical.data as Record<string, unknown>;
+    const summary = data['confirmation'];
+    if (typeof summary !== 'object' || summary === null) {
+      return { ok: false, code: 'VICT_CONFIRMATION_UNAVAILABLE' };
+    }
+    return { ok: true, data: summary as Record<string, unknown> };
+  }
+
+  async getConfirmation(actor: ServerActorContext, receiptId: string): Promise<VictCommandOutcome> {
     const confirmationStore = this.#options.stores.commandConfirmationReceipts;
     const receipt = await confirmationStore.getReceipt(receiptId);
     if (receipt === undefined || receipt.actorId !== actor.actorId) {
@@ -2809,10 +2860,7 @@ function semanticConfirmationFields(command: string): readonly string[] {
  * inside it) and the prepare-only `expectedRevision` guard. The SAME
  * digest binds both the prepared receipt and the consuming request.
  */
-function confirmationReceiptDigest(
-  command: string,
-  payload: Record<string, unknown>,
-): string {
+function confirmationReceiptDigest(command: string, payload: Record<string, unknown>): string {
   const semantic: Record<string, unknown> = {};
   for (const field of semanticConfirmationFields(command)) {
     if (payload[field] !== undefined) {
@@ -2820,10 +2868,7 @@ function confirmationReceiptDigest(
     }
   }
   return createHash('sha256')
-    .update(
-      `vict.confirmation@1\u0000${toCanonicalJson({ command, payload: semantic })}`,
-      'utf8',
-    )
+    .update(`vict.confirmation@1\u0000${toCanonicalJson({ command, payload: semantic })}`, 'utf8')
     .digest('hex');
 }
 

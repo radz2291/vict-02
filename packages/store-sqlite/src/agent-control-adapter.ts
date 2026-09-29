@@ -2701,19 +2701,17 @@ export function createSqliteAgentControlStores(
       limit?: number;
     }): Promise<readonly CommandConfirmationReceipt[]> {
       return safeRun('confirmation.listByActorCommand', () => {
-        const rows = (
-          input.limit !== undefined
-            ? db
-                .prepare(
-                  'SELECT * FROM vict_command_confirmation_receipt WHERE actor_id = ? AND command = ? ORDER BY replacement_attempt_no ASC, receipt_id ASC LIMIT ?;',
-                )
-                .all(input.actorId, input.command, input.limit)
-            : db
-                .prepare(
-                  'SELECT * FROM vict_command_confirmation_receipt WHERE actor_id = ? AND command = ? ORDER BY replacement_attempt_no ASC, receipt_id ASC;',
-                )
-                .all(input.actorId, input.command)
-        ) as unknown as ConfirmationReceiptRow[];
+        const rows = (input.limit !== undefined
+          ? db
+              .prepare(
+                'SELECT * FROM vict_command_confirmation_receipt WHERE actor_id = ? AND command = ? ORDER BY replacement_attempt_no ASC, receipt_id ASC LIMIT ?;',
+              )
+              .all(input.actorId, input.command, input.limit)
+          : db
+              .prepare(
+                'SELECT * FROM vict_command_confirmation_receipt WHERE actor_id = ? AND command = ? ORDER BY replacement_attempt_no ASC, receipt_id ASC;',
+              )
+              .all(input.actorId, input.command)) as unknown as ConfirmationReceiptRow[];
         return rows.map(rowToConfirmationReceipt);
       });
     },
@@ -2763,13 +2761,8 @@ export function createSqliteAgentControlStores(
             );
           }
           db.prepare(
-            "UPDATE vict_command_confirmation_receipt SET status = ?, consumed_at = ?, consumed_by_key = COALESCE(?, consumed_by_key), owner = NULL, claim_until = NULL, fence_token = NULL WHERE receipt_id = ?;",
-          ).run(
-            input.status,
-            toIso(input.at),
-            input.consumedByKey ?? null,
-            input.receiptId,
-          );
+            'UPDATE vict_command_confirmation_receipt SET status = ?, consumed_at = ?, consumed_by_key = COALESCE(?, consumed_by_key), owner = NULL, claim_until = NULL, fence_token = NULL WHERE receipt_id = ?;',
+          ).run(input.status, toIso(input.at), input.consumedByKey ?? null, input.receiptId);
         }),
       );
     },

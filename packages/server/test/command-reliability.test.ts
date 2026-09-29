@@ -8,7 +8,7 @@ import {
 } from '@victframework/runtime';
 import { createInMemoryStores, type ActivationCatalog } from '@victframework/runtime';
 import { ControlPlaneService } from '@victframework/control';
-import { VictCommandService, VICT_COMMANDS } from '../src/commands.js';
+import { type VictCommandName, VictCommandService, VICT_COMMANDS } from '../src/commands.js';
 import type { VictCommandRequest } from '../src/commands.js';
 import type { ServerActorContext } from '../src/auth.js';
 
@@ -36,6 +36,36 @@ function ctxOf(record: ActorRecord): ServerActorContext {
 }
 
 let clockValue = 1000;
+
+/**
+ * Stage 9 G2 integrator migration helper: gated mutations now require the
+ * server-issued confirmation; build the receipt with prepare, then attach
+ * the confirmation member to the payload for the consuming dispatch.
+ */
+async function confirmedRequest(
+  service: VictCommandService,
+  actor: ServerActorContext,
+  command: VictCommandName,
+  semanticPayload: Record<string, unknown>,
+  prepareKey: string,
+): Promise<{ payload: Record<string, unknown>; idempotencyKey: string }> {
+  const prepared = await service.prepareConfirmation(actor, {
+    command,
+    payload: { ...semanticPayload, expectedRevision: null },
+    idempotencyKey: prepareKey,
+  });
+  if (!prepared.ok || (prepared as { data?: unknown }).data === undefined) {
+    throw new VictControlError(
+      'VICT_TEST_PREPARE_FAILED',
+      `prepare failed: ${JSON.stringify(prepared)}`,
+    );
+  }
+  const summary = (prepared as unknown as { data: { receiptId: string } }).data;
+  return {
+    payload: { ...semanticPayload, confirmation: { receiptId: summary.receiptId } },
+    idempotencyKey: prepareKey + '-consume',
+  };
+}
 
 function makeService() {
   clockValue = 1000;
@@ -166,17 +196,32 @@ describe('R3: fenced settlement through the shared dispatcher', () => {
       contentHash: 'hash-rel-1',
     });
     void catalog;
-    const select = {
-      command: 'release.select' as const,
-      payload: { applicationId: 'app-rel', releaseVersion: 'release-rel-1' },
-      idempotencyKey: 'rel-select-1',
-    };
-    const first = await service.dispatch(actor, select);
+    // Stage 9 G2 migration: the gated select runs under the prepared
+    // confirmation (integrator helper; the semantic payload is unchanged).
+    const gate = await confirmedRequest(
+      service,
+      actor,
+      'release.select',
+      {
+        applicationId: 'app-rel',
+        releaseVersion: 'release-rel-1',
+      },
+      'rel-select-1-prepare',
+    );
+    const first = await service.dispatch(actor, {
+      command: 'release.select',
+      payload: gate.payload,
+      idempotencyKey: gate.idempotencyKey,
+    } as Parameters<typeof service.dispatch>[1]);
     expect(first.ok).toBe(true);
     // Duplicate (same actor, command, key, digest): stable SAFE replay —
     // the same identifiers and revision, reconstructed from the receipt's
     // safe projection (never a second selection effect).
-    const second = await service.dispatch(actor, select);
+    const second = await service.dispatch(actor, {
+      command: 'release.select',
+      payload: gate.payload,
+      idempotencyKey: gate.idempotencyKey,
+    } as Parameters<typeof service.dispatch>[1]);
     expect(second.ok).toBe(true);
     if (first.ok && second.ok) {
       // The replay is the SAFE projection of the settled result: the same
@@ -194,7 +239,7 @@ describe('R3: fenced settlement through the shared dispatcher', () => {
     const receipt = await stores.commandIdempotency.getReceipt({
       actorId: 'actor-rel',
       command: 'release.select',
-      idempotencyKey: 'rel-select-1',
+      idempotencyKey: 'rel-select-1-prepare-consume',
     });
     expect(receipt?.status).toBe('completed');
     // The settled receipt no longer carries a fence token.
@@ -279,16 +324,32 @@ describe('R3: barrier-controlled concurrent duplicates of one mutation', () => {
       await barrier;
       return innerSelect.call(sharedControlPlane, ...args);
     };
-    const select = {
-      command: 'release.select' as const,
-      payload: { applicationId: 'app-rel', releaseVersion: 'release-rel-2' },
-      idempotencyKey: 'rel-race-1',
-    };
-    const winner = service.dispatch(actor, select);
+    // Stage 9 G2 migration: prepare the shared receipt, then run BOTH
+    // concurrent duplicates in the confirmed shape (each with its own
+    // consume key — the race target is ONE receipt).
+    const raceGate = await confirmedRequest(
+      service,
+      actor,
+      'release.select',
+      {
+        applicationId: 'app-rel',
+        releaseVersion: 'release-rel-2',
+      },
+      'rel-race-1-prepare',
+    );
+    const winner = service.dispatch(actor, {
+      command: 'release.select',
+      payload: raceGate.payload,
+      idempotencyKey: raceGate.idempotencyKey,
+    } as Parameters<typeof service.dispatch>[1]);
     // Give the winner one macrotask to take the claim, then dispatch the
     // duplicate while the winner is parked at the barrier.
     await new Promise((resolve) => setTimeout(resolve, 0));
-    const duplicate = await duplicateService.dispatch(actor, select);
+    const duplicate = await duplicateService.dispatch(actor, {
+      command: 'release.select',
+      payload: raceGate.payload,
+      idempotencyKey: raceGate.idempotencyKey,
+    } as Parameters<typeof duplicateService.dispatch>[1]);
     // The duplicate sees the LIVE claim: stable in-progress conflict —
     // never a second execution.
     expect(duplicate).toEqual({ ok: false, code: 'VICT_COMMAND_IDEMPOTENCY_IN_PROGRESS' });
@@ -301,7 +362,7 @@ describe('R3: barrier-controlled concurrent duplicates of one mutation', () => {
     const receipt = await stores.commandIdempotency.getReceipt({
       actorId: 'actor-rel',
       command: 'release.select',
-      idempotencyKey: 'rel-race-1',
+      idempotencyKey: 'rel-race-1-prepare-consume',
     });
     expect(receipt?.status).toBe('completed');
   });

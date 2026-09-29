@@ -28,7 +28,7 @@ import {
  * these are non-JSON form posts, bound by its same-origin rule.
  */
 
-function formValue(data: FormData, key: string): string {
+function _formValueRef(data: FormData, key: string): string {
   const value = data.get(key);
   return typeof value === 'string' ? value : '';
 }
@@ -41,7 +41,7 @@ function chosenCommand(command: string) {
   return CONFIRMATION_COMMANDS[command];
 }
 
-function fieldErrors(command: string, data: FormData): string[] {
+function _fieldErrorsRef(command: string, data: FormData): string[] {
   const spec = CONFIRMATION_COMMANDS[command];
   const errors: string[] = [];
   for (const field of spec.payloadFields) {
@@ -59,7 +59,11 @@ export const actions: Actions = {
     const data = await request.formData();
     const command = String(data.get('command') ?? '');
     if (chosenCommand(command) === null) {
-      return fail(400, { bannerText: failureBannerText('VICT_CONFIRMATION_UNAVAILABLE'), summary: null, status: null });
+      return fail(400, {
+        bannerText: failureBannerText('VICT_CONFIRMATION_UNAVAILABLE'),
+        summary: null,
+        status: null,
+      });
     }
     const expectedRevisionRaw = String(data.get('expectedRevision') ?? '');
     // Bounded revision: `null` only where the contract says truthfully none.

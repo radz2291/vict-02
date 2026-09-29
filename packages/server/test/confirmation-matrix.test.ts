@@ -21,7 +21,11 @@ import {
  * (the SAME store conformance the SQLite adapter shares).
  */
 
-function actorContext(actorId: string, scopes: readonly string[], grants: readonly string[] = []): ServerActorContext {
+function actorContext(
+  actorId: string,
+  scopes: readonly string[],
+  grants: readonly string[] = [], // eslint-disable-line @typescript-eslint/no-unused-vars
+): ServerActorContext {
   return {
     actorId,
     roles: [],
@@ -101,7 +105,7 @@ function fixture(options: { confirmationTtlMs?: number } = {}): Fixture {
   };
   const service = new VictCommandService({
     stores,
-    controlPlane,
+    controlPlane: controlPlane as unknown as ControlPlanePort,
     clock: () => now,
     confirmationTtlMs: options.confirmationTtlMs ?? 600_000,
     idempotencyLeaseMs: 60_000,
@@ -154,7 +158,13 @@ async function prep(
 /** Consume through the canonical dispatch boundary (the confirmed command). */
 function consume(
   f: Fixture,
-  command: 'run.cancel' | 'release.select' | 'release.rollback' | 'activation.select' | 'run.resolve' | 'run.signal',
+  command:
+    | 'run.cancel'
+    | 'release.select'
+    | 'release.rollback'
+    | 'activation.select'
+    | 'run.resolve'
+    | 'run.signal',
   payload: Record<string, unknown>,
   key: string,
   actor: ServerActorContext = OPERATOR,
@@ -186,16 +196,23 @@ describe('Stage 9 G2 confirmation direct-API matrix (P-1..P-24)', () => {
 
   it('P-2 claim winner — exactly one effect; loser of a settled receipt is truthfully SPENT; same-key retry replays', async () => {
     const f = fixture();
-    await prep(f, 'run.cancel', { runId: 'run-p2', reasonCode: 'manual', expectedRevision: 3 }, 'prep-p2');
-    const prepared = (await f.stores.commandConfirmationReceipts.listReceiptsByPrepare({
-      actorId: 'actor-op',
-      command: 'run.cancel',
-      prepareIdempotencyKey: 'prep-p2',
-    }))[0];
+    await prep(
+      f,
+      'run.cancel',
+      { runId: 'run-p2', reasonCode: 'manual', expectedRevision: 3 },
+      'prep-p2',
+    );
+    const prepared = (
+      await f.stores.commandConfirmationReceipts.listReceiptsByPrepare({
+        actorId: 'actor-op',
+        command: 'run.cancel',
+        prepareIdempotencyKey: 'prep-p2',
+      })
+    )[0];
     const confirmed = {
       runId: 'run-p2',
       reasonCode: 'manual',
-      confirmation: { receiptId: prepared.receiptId },
+      confirmation: { receiptId: prepared!.receiptId },
     };
     const winner = await consume(f, 'run.cancel', confirmed, 'consume-p2');
     expect(winner.ok).toBe(true);
@@ -229,34 +246,48 @@ describe('Stage 9 G2 confirmation direct-API matrix (P-1..P-24)', () => {
       fenceToken: 'lost-fence',
     });
     f.timeTravel(200_000);
-    await prep(f, 'run.cancel', { runId: 'run-p3', reasonCode: 'manual', expectedRevision: 3 }, 'prep-p3');
-    const prepared = (await f.stores.commandConfirmationReceipts.listReceiptsByPrepare({
-      actorId: 'actor-op',
-      command: 'run.cancel',
-      prepareIdempotencyKey: 'prep-p3',
-    }))[0];
+    await prep(
+      f,
+      'run.cancel',
+      { runId: 'run-p3', reasonCode: 'manual', expectedRevision: 3 },
+      'prep-p3',
+    );
+    const prepared = (
+      await f.stores.commandConfirmationReceipts.listReceiptsByPrepare({
+        actorId: 'actor-op',
+        command: 'run.cancel',
+        prepareIdempotencyKey: 'prep-p3',
+      })
+    )[0];
     const retry = await consume(
       f,
       'run.cancel',
-      { runId: 'run-p3', reasonCode: 'manual', confirmation: { receiptId: prepared.receiptId } },
+      { runId: 'run-p3', reasonCode: 'manual', confirmation: { receiptId: prepared!.receiptId } },
       'consume-p3-other', // crash recovery via a fresh consumption key
     );
     expect(retry.ok).toBe(true);
     expect(f.effects.cancels).toEqual(['consume-p3-other']);
-    const settled = await f.stores.commandConfirmationReceipts.getReceipt(prepared.receiptId);
+    const settled = await f.stores.commandConfirmationReceipts.getReceipt(prepared!.receiptId);
     expect(settled?.status).toBe('consumed');
   });
 
   it('P-4 crash: claimed receipt, crash before effect — takeover after expiry, effect once, no duplicate', async () => {
     const f = fixture();
-    await prep(f, 'run.cancel', { runId: 'run-p4', reasonCode: 'manual', expectedRevision: 3 }, 'prep-p4');
-    const prepared = (await f.stores.commandConfirmationReceipts.listReceiptsByPrepare({
-      actorId: 'actor-op',
-      command: 'run.cancel',
-      prepareIdempotencyKey: 'prep-p4',
-    }))[0];
+    await prep(
+      f,
+      'run.cancel',
+      { runId: 'run-p4', reasonCode: 'manual', expectedRevision: 3 },
+      'prep-p4',
+    );
+    const prepared = (
+      await f.stores.commandConfirmationReceipts.listReceiptsByPrepare({
+        actorId: 'actor-op',
+        command: 'run.cancel',
+        prepareIdempotencyKey: 'prep-p4',
+      })
+    )[0];
     const claim = await f.stores.commandConfirmationReceipts.startConsumption({
-      receiptId: prepared.receiptId,
+      receiptId: prepared!.receiptId,
       owner: 'actor-op\u0000consume-p4',
       leaseUntil: 200,
       at: 100,
@@ -266,12 +297,12 @@ describe('Stage 9 G2 confirmation direct-API matrix (P-1..P-24)', () => {
     const retry = await consume(
       f,
       'run.cancel',
-      { runId: 'run-p4', reasonCode: 'manual', confirmation: { receiptId: prepared.receiptId } },
+      { runId: 'run-p4', reasonCode: 'manual', confirmation: { receiptId: prepared!.receiptId } },
       'consume-p4',
     );
     expect(retry.ok).toBe(true);
     expect(f.effects.cancels).toEqual(['consume-p4']);
-    const settled = await f.stores.commandConfirmationReceipts.getReceipt(prepared.receiptId);
+    const settled = await f.stores.commandConfirmationReceipts.getReceipt(prepared!.receiptId);
     expect(settled?.status).toBe('consumed');
   });
 
@@ -318,13 +349,24 @@ describe('Stage 9 G2 confirmation direct-API matrix (P-1..P-24)', () => {
 
   it('P-6: fresh key on a spent receipt → SPENT, no effect', async () => {
     const f = fixture();
-    await prep(f, 'run.cancel', { runId: 'run-p6', reasonCode: 'manual', expectedRevision: 3 }, 'prep-p6');
-    const prepared = (await f.stores.commandConfirmationReceipts.listReceiptsByPrepare({
-      actorId: 'actor-op',
-      command: 'run.cancel',
-      prepareIdempotencyKey: 'prep-p6',
-    }))[0];
-    const confirmed = { runId: 'run-p6', reasonCode: 'manual', confirmation: { receiptId: prepared.receiptId } };
+    await prep(
+      f,
+      'run.cancel',
+      { runId: 'run-p6', reasonCode: 'manual', expectedRevision: 3 },
+      'prep-p6',
+    );
+    const prepared = (
+      await f.stores.commandConfirmationReceipts.listReceiptsByPrepare({
+        actorId: 'actor-op',
+        command: 'run.cancel',
+        prepareIdempotencyKey: 'prep-p6',
+      })
+    )[0];
+    const confirmed = {
+      runId: 'run-p6',
+      reasonCode: 'manual',
+      confirmation: { receiptId: prepared!.receiptId },
+    };
     expect((await consume(f, 'run.cancel', confirmed, 'consume-p6-a')).ok).toBe(true);
     const fresh = await consume(f, 'run.cancel', confirmed, 'consume-p6-b');
     expect(fresh.ok).toBe(false);
@@ -334,8 +376,18 @@ describe('Stage 9 G2 confirmation direct-API matrix (P-1..P-24)', () => {
 
   it('P-7: same key, changed confirmation digest (new receipt) → CONFLICT', async () => {
     const f = fixture();
-    await prep(f, 'run.cancel', { runId: 'run-p7', reasonCode: 'manual', expectedRevision: 3 }, 'prep-p7-a');
-    await prep(f, 'run.cancel', { runId: 'run-p7', reasonCode: 'manual', expectedRevision: 3 }, 'prep-p7-b');
+    await prep(
+      f,
+      'run.cancel',
+      { runId: 'run-p7', reasonCode: 'manual', expectedRevision: 3 },
+      'prep-p7-a',
+    );
+    await prep(
+      f,
+      'run.cancel',
+      { runId: 'run-p7', reasonCode: 'manual', expectedRevision: 3 },
+      'prep-p7-b',
+    );
     const chain = await f.stores.commandConfirmationReceipts.listReceiptsByActorCommand({
       actorId: 'actor-op',
       command: 'run.cancel',
@@ -344,12 +396,12 @@ describe('Stage 9 G2 confirmation direct-API matrix (P-1..P-24)', () => {
     const confirmed1 = {
       runId: 'run-p7',
       reasonCode: 'manual',
-      confirmation: { receiptId: chain[0].receiptId },
+      confirmation: { receiptId: chain[0]!.receiptId },
     };
     const confirmed2 = {
       runId: 'run-p7',
       reasonCode: 'manual',
-      confirmation: { receiptId: chain[1].receiptId },
+      confirmation: { receiptId: chain[1]!.receiptId },
     };
     expect((await consume(f, 'run.cancel', confirmed1, 'consume-p7')).ok).toBe(true);
     const changed = await consume(f, 'run.cancel', confirmed2, 'consume-p7');
@@ -359,7 +411,12 @@ describe('Stage 9 G2 confirmation direct-API matrix (P-1..P-24)', () => {
 
   it('P-8: cross-command key reuse → stable conflict without ambiguity', async () => {
     const f = fixture();
-    await prep(f, 'run.cancel', { runId: 'run-p8', reasonCode: 'manual', expectedRevision: 3 }, 'prep-p8');
+    await prep(
+      f,
+      'run.cancel',
+      { runId: 'run-p8', reasonCode: 'manual', expectedRevision: 3 },
+      'prep-p8',
+    );
     const rc = (
       await f.stores.commandConfirmationReceipts.listReceiptsByPrepare({
         actorId: 'actor-op',
@@ -370,7 +427,7 @@ describe('Stage 9 G2 confirmation direct-API matrix (P-1..P-24)', () => {
     await consume(
       f,
       'run.cancel',
-      { runId: 'run-p8', reasonCode: 'manual', confirmation: { receiptId: rc.receiptId } },
+      { runId: 'run-p8', reasonCode: 'manual', confirmation: { receiptId: rc!.receiptId } },
       'consume-p8',
     );
     await prep(
@@ -389,7 +446,7 @@ describe('Stage 9 G2 confirmation direct-API matrix (P-1..P-24)', () => {
     const reuse = await consume(
       f,
       'activation.select',
-      { graphId: 'graph-p8', activationVersion: 'v1', confirmation: { receiptId: ra.receiptId } },
+      { graphId: 'graph-p8', activationVersion: 'v1', confirmation: { receiptId: ra!.receiptId } },
       'consume-p8',
     );
     expect(reuse.ok).toBe(false);
@@ -398,7 +455,12 @@ describe('Stage 9 G2 confirmation direct-API matrix (P-1..P-24)', () => {
 
   it('P-9: stale revision → STALE, no effect, re-prepare required', async () => {
     const f = fixture();
-    await prep(f, 'run.cancel', { runId: 'run-p9', reasonCode: 'manual', expectedRevision: 3 }, 'prep-p9');
+    await prep(
+      f,
+      'run.cancel',
+      { runId: 'run-p9', reasonCode: 'manual', expectedRevision: 3 },
+      'prep-p9',
+    );
     f.revision.current = 7; // the target moved after preparation
     const prepared = (
       await f.stores.commandConfirmationReceipts.listReceiptsByPrepare({
@@ -410,7 +472,7 @@ describe('Stage 9 G2 confirmation direct-API matrix (P-1..P-24)', () => {
     const stale = await consume(
       f,
       'run.cancel',
-      { runId: 'run-p9', reasonCode: 'manual', confirmation: { receiptId: prepared.receiptId } },
+      { runId: 'run-p9', reasonCode: 'manual', confirmation: { receiptId: prepared!.receiptId } },
       'consume-p9',
     );
     expect(stale.ok).toBe(false);
@@ -420,7 +482,12 @@ describe('Stage 9 G2 confirmation direct-API matrix (P-1..P-24)', () => {
 
   it('P-10: expiry → EXPIRED, no effect, receipt stays auditable in the durable chain', async () => {
     const f = fixture({ confirmationTtlMs: 1000 });
-    await prep(f, 'run.cancel', { runId: 'run-p10', reasonCode: 'manual', expectedRevision: 3 }, 'prep-p10');
+    await prep(
+      f,
+      'run.cancel',
+      { runId: 'run-p10', reasonCode: 'manual', expectedRevision: 3 },
+      'prep-p10',
+    );
     const prepared = (
       await f.stores.commandConfirmationReceipts.listReceiptsByPrepare({
         actorId: 'actor-op',
@@ -432,7 +499,7 @@ describe('Stage 9 G2 confirmation direct-API matrix (P-1..P-24)', () => {
     const expired = await consume(
       f,
       'run.cancel',
-      { runId: 'run-p10', reasonCode: 'manual', confirmation: { receiptId: prepared.receiptId } },
+      { runId: 'run-p10', reasonCode: 'manual', confirmation: { receiptId: prepared!.receiptId } },
       'consume-p10',
     );
     expect(expired.ok).toBe(false);
@@ -525,7 +592,12 @@ describe('Stage 9 G2 confirmation direct-API matrix (P-1..P-24)', () => {
 
   it('P-14: another actor receipt → UNAVAILABLE, non-echoing (consume and status read)', async () => {
     const f = fixture();
-    await prep(f, 'run.cancel', { runId: 'run-p14', reasonCode: 'manual', expectedRevision: 3 }, 'prep-p14');
+    await prep(
+      f,
+      'run.cancel',
+      { runId: 'run-p14', reasonCode: 'manual', expectedRevision: 3 },
+      'prep-p14',
+    );
     const prepared = (
       await f.stores.commandConfirmationReceipts.listReceiptsByPrepare({
         actorId: 'actor-op',
@@ -536,20 +608,25 @@ describe('Stage 9 G2 confirmation direct-API matrix (P-1..P-24)', () => {
     const foreign = await consume(
       f,
       'run.cancel',
-      { runId: 'run-p14', reasonCode: 'manual', confirmation: { receiptId: prepared.receiptId } },
+      { runId: 'run-p14', reasonCode: 'manual', confirmation: { receiptId: prepared!.receiptId } },
       'consume-p14',
       DEVELOPER,
     );
     expect(foreign.ok).toBe(false);
     expect(foreign.ok ? '' : foreign.code).toBe('VICT_CONFIRMATION_UNAVAILABLE');
-    const status = await f.service.getConfirmation(DEVELOPER, prepared.receiptId);
+    const status = await f.service.getConfirmation(DEVELOPER, prepared!.receiptId);
     expect(status.ok).toBe(false);
     expect(status.ok ? '' : status.code).toBe('VICT_CONFIRMATION_UNAVAILABLE');
   });
 
   it('P-15: replay of the same committed confirmation replays, no second effect', async () => {
     const f = fixture();
-    await prep(f, 'run.cancel', { runId: 'run-p15', reasonCode: 'manual', expectedRevision: 3 }, 'prep-p15');
+    await prep(
+      f,
+      'run.cancel',
+      { runId: 'run-p15', reasonCode: 'manual', expectedRevision: 3 },
+      'prep-p15',
+    );
     const prepared = (
       await f.stores.commandConfirmationReceipts.listReceiptsByPrepare({
         actorId: 'actor-op',
@@ -560,20 +637,25 @@ describe('Stage 9 G2 confirmation direct-API matrix (P-1..P-24)', () => {
     const confirmed = {
       runId: 'run-p15',
       reasonCode: 'manual',
-      confirmation: { receiptId: prepared.receiptId },
+      confirmation: { receiptId: prepared!.receiptId },
     };
     const first = await consume(f, 'run.cancel', confirmed, 'consume-p15');
     const replay = await consume(f, 'run.cancel', confirmed, 'consume-p15');
     expect(replay.ok).toBe(true);
-    expect((replay.data as Record<string, unknown>)['runId']).toBe(
-      (first.data as Record<string, unknown>)['runId'],
+    expect((replay as { data: Record<string, unknown> }).data['runId']).toBe(
+      (first as { data: Record<string, unknown> }).data['runId'],
     );
     expect(f.effects.cancels).toEqual(['consume-p15']);
   });
 
   it('P-16: receipt store and effect store split — restart between consume-claim and effect leaves no half-applied state', async () => {
     const f = fixture();
-    await prep(f, 'run.cancel', { runId: 'run-p16', reasonCode: 'manual', expectedRevision: 3 }, 'prep-p16');
+    await prep(
+      f,
+      'run.cancel',
+      { runId: 'run-p16', reasonCode: 'manual', expectedRevision: 3 },
+      'prep-p16',
+    );
     const prepared = (
       await f.stores.commandConfirmationReceipts.listReceiptsByPrepare({
         actorId: 'actor-op',
@@ -585,7 +667,7 @@ describe('Stage 9 G2 confirmation direct-API matrix (P-1..P-24)', () => {
     const confirmedP16 = {
       runId: 'run-p16',
       reasonCode: 'manual',
-      confirmation: { receiptId: prepared.receiptId },
+      confirmation: { receiptId: prepared!.receiptId },
     };
     await f.stores.commandIdempotency.claimReceipt({
       actorId: 'actor-op',
@@ -605,7 +687,7 @@ describe('Stage 9 G2 confirmation direct-API matrix (P-1..P-24)', () => {
       fenceToken: 'lost',
     });
     const claim = await f.stores.commandConfirmationReceipts.startConsumption({
-      receiptId: prepared.receiptId,
+      receiptId: prepared!.receiptId,
       owner: 'actor-op\u0000consume-p16',
       leaseUntil: 50,
       at: 20,
@@ -615,13 +697,18 @@ describe('Stage 9 G2 confirmation direct-API matrix (P-1..P-24)', () => {
     const retry = await consume(f, 'run.cancel', confirmedP16, 'consume-p16');
     expect(retry.ok).toBe(true);
     expect(f.effects.cancels).toEqual(['consume-p16']);
-    const settled = await f.stores.commandConfirmationReceipts.getReceipt(prepared.receiptId);
+    const settled = await f.stores.commandConfirmationReceipts.getReceipt(prepared!.receiptId);
     expect(settled?.status).toBe('consumed');
   });
 
   it('P-17: settled replay of an EXPIRED receipt replays the recorded result (Phase 1 precedence)', async () => {
     const f = fixture();
-    await prep(f, 'run.cancel', { runId: 'run-p17', reasonCode: 'manual', expectedRevision: 3 }, 'prep-p17');
+    await prep(
+      f,
+      'run.cancel',
+      { runId: 'run-p17', reasonCode: 'manual', expectedRevision: 3 },
+      'prep-p17',
+    );
     const prepared = (
       await f.stores.commandConfirmationReceipts.listReceiptsByPrepare({
         actorId: 'actor-op',
@@ -632,7 +719,7 @@ describe('Stage 9 G2 confirmation direct-API matrix (P-1..P-24)', () => {
     const win = await consume(
       f,
       'run.cancel',
-      { runId: 'run-p17', reasonCode: 'manual', confirmation: { receiptId: prepared.receiptId } },
+      { runId: 'run-p17', reasonCode: 'manual', confirmation: { receiptId: prepared!.receiptId } },
       'consume-p17',
     );
     expect(win.ok).toBe(true);
@@ -640,7 +727,7 @@ describe('Stage 9 G2 confirmation direct-API matrix (P-1..P-24)', () => {
     const replay = await consume(
       f,
       'run.cancel',
-      { runId: 'run-p17', reasonCode: 'manual', confirmation: { receiptId: prepared.receiptId } },
+      { runId: 'run-p17', reasonCode: 'manual', confirmation: { receiptId: prepared!.receiptId } },
       'consume-p17',
     );
     expect(replay.ok).toBe(true);
@@ -649,7 +736,12 @@ describe('Stage 9 G2 confirmation direct-API matrix (P-1..P-24)', () => {
 
   it('P-18: settled replay of a SPENT receipt precedes the SPENT classification (Phase 1 precedence)', async () => {
     const f = fixture();
-    await prep(f, 'run.cancel', { runId: 'run-p18', reasonCode: 'manual', expectedRevision: 3 }, 'prep-p18');
+    await prep(
+      f,
+      'run.cancel',
+      { runId: 'run-p18', reasonCode: 'manual', expectedRevision: 3 },
+      'prep-p18',
+    );
     const prepared = (
       await f.stores.commandConfirmationReceipts.listReceiptsByPrepare({
         actorId: 'actor-op',
@@ -660,21 +752,21 @@ describe('Stage 9 G2 confirmation direct-API matrix (P-1..P-24)', () => {
     const win = await consume(
       f,
       'run.cancel',
-      { runId: 'run-p18', reasonCode: 'manual', confirmation: { receiptId: prepared.receiptId } },
+      { runId: 'run-p18', reasonCode: 'manual', confirmation: { receiptId: prepared!.receiptId } },
       'consume-p18-a',
     );
     expect(win.ok).toBe(true);
     const replay = await consume(
       f,
       'run.cancel',
-      { runId: 'run-p18', reasonCode: 'manual', confirmation: { receiptId: prepared.receiptId } },
+      { runId: 'run-p18', reasonCode: 'manual', confirmation: { receiptId: prepared!.receiptId } },
       'consume-p18-a',
     );
     expect(replay.ok).toBe(true);
     const byOtherKey = await consume(
       f,
       'run.cancel',
-      { runId: 'run-p18', reasonCode: 'manual', confirmation: { receiptId: prepared.receiptId } },
+      { runId: 'run-p18', reasonCode: 'manual', confirmation: { receiptId: prepared!.receiptId } },
       'consume-p18-b',
     );
     expect(byOtherKey.ok).toBe(false);
@@ -709,7 +801,9 @@ describe('Stage 9 G2 confirmation direct-API matrix (P-1..P-24)', () => {
       at: 2500,
     });
     expect(late.outcome).toBe('expired'); // fence arrived at/after expiryAt
-    expect((await f.stores.commandConfirmationReceipts.getReceipt('cr-p19'))?.status).toBe('expired');
+    expect((await f.stores.commandConfirmationReceipts.getReceipt('cr-p19'))?.status).toBe(
+      'expired',
+    );
     // A granted claim completes under its fence (no mid-flight expiry).
     const g = fixture();
     await g.stores.commandConfirmationReceipts.createReceipt({
@@ -746,12 +840,19 @@ describe('Stage 9 G2 confirmation direct-API matrix (P-1..P-24)', () => {
       consumedByKey: 'owner',
       at: 901_000,
     });
-    expect((await g.stores.commandConfirmationReceipts.getReceipt('cr-p19b'))?.status).toBe('consumed');
+    expect((await g.stores.commandConfirmationReceipts.getReceipt('cr-p19b'))?.status).toBe(
+      'consumed',
+    );
   });
 
   it('P-20: different-key consume of one receipt: first key settles and records itself; second key SPENT, no effect', async () => {
     const f = fixture();
-    await prep(f, 'run.cancel', { runId: 'run-p20', reasonCode: 'manual', expectedRevision: 3 }, 'prep-p20');
+    await prep(
+      f,
+      'run.cancel',
+      { runId: 'run-p20', reasonCode: 'manual', expectedRevision: 3 },
+      'prep-p20',
+    );
     const prepared = (
       await f.stores.commandConfirmationReceipts.listReceiptsByPrepare({
         actorId: 'actor-op',
@@ -762,26 +863,31 @@ describe('Stage 9 G2 confirmation direct-API matrix (P-1..P-24)', () => {
     const first = await consume(
       f,
       'run.cancel',
-      { runId: 'run-p20', reasonCode: 'manual', confirmation: { receiptId: prepared.receiptId } },
+      { runId: 'run-p20', reasonCode: 'manual', confirmation: { receiptId: prepared!.receiptId } },
       'consume-p20-first',
     );
     expect(first.ok).toBe(true);
     const second = await consume(
       f,
       'run.cancel',
-      { runId: 'run-p20', reasonCode: 'manual', confirmation: { receiptId: prepared.receiptId } },
+      { runId: 'run-p20', reasonCode: 'manual', confirmation: { receiptId: prepared!.receiptId } },
       'consume-p20-second',
     );
     expect(second.ok).toBe(false);
     expect(second.ok ? '' : second.code).toBe('VICT_CONFIRMATION_SPENT');
-    const receipt = await f.stores.commandConfirmationReceipts.getReceipt(prepared.receiptId);
+    const receipt = await f.stores.commandConfirmationReceipts.getReceipt(prepared!.receiptId);
     expect(receipt?.status).toBe('consumed');
     expect(receipt?.consumedByKey).toBe('consume-p20-first');
   });
 
   it('P-21: reverse-crash convergence — the receipt settles consumed under the consuming key, exactly one effect', async () => {
     const f = fixture();
-    await prep(f, 'run.cancel', { runId: 'run-p21', reasonCode: 'manual', expectedRevision: 3 }, 'prep-p21');
+    await prep(
+      f,
+      'run.cancel',
+      { runId: 'run-p21', reasonCode: 'manual', expectedRevision: 3 },
+      'prep-p21',
+    );
     const prepared = (
       await f.stores.commandConfirmationReceipts.listReceiptsByPrepare({
         actorId: 'actor-op',
@@ -792,17 +898,17 @@ describe('Stage 9 G2 confirmation direct-API matrix (P-1..P-24)', () => {
     const win = await consume(
       f,
       'run.cancel',
-      { runId: 'run-p21', reasonCode: 'manual', confirmation: { receiptId: prepared.receiptId } },
+      { runId: 'run-p21', reasonCode: 'manual', confirmation: { receiptId: prepared!.receiptId } },
       'consume-p21',
     );
     expect(win.ok).toBe(true);
-    const receipt = await f.stores.commandConfirmationReceipts.getReceipt(prepared.receiptId);
+    const receipt = await f.stores.commandConfirmationReceipts.getReceipt(prepared!.receiptId);
     expect(receipt?.status).toBe('consumed');
     expect(receipt?.consumedByKey).toBe('consume-p21');
     const replay = await consume(
       f,
       'run.cancel',
-      { runId: 'run-p21', reasonCode: 'manual', confirmation: { receiptId: prepared.receiptId } },
+      { runId: 'run-p21', reasonCode: 'manual', confirmation: { receiptId: prepared!.receiptId } },
       'consume-p21',
     );
     expect(replay.ok).toBe(true);
@@ -850,6 +956,7 @@ describe('Stage 9 G2 confirmation direct-API matrix (P-1..P-24)', () => {
       command: 'run.cancel',
       prepareIdempotencyKey: 'prep-p23',
     });
+    expect(chainDebug.length).toBe(6); // 1 original + 5 in-budget replacements
     const beyond = await prep(f, 'run.cancel', payload, 'prep-p23');
     expect(beyond['status']).toBe('expired');
     expect(beyond['replayedStatus']).toBe(true);
@@ -918,12 +1025,9 @@ describe('Stage 9 G2 confirmation direct-API matrix (P-1..P-24)', () => {
 
 // ---- The shared CommandConfirmationReceiptStore conformance suite ------------
 describe('Stage 9 G2 — CommandConfirmationReceiptStore conformance (in-memory)', () => {
-  runCommandConfirmationReceiptConformanceSuite(
-    inMemoryAgentControlConformanceFactory(),
-    {
-      describe: (name, fn) => describe(name, fn),
-      it: (name, fn) => it(name, fn),
-      expect: expect as never,
-    },
-  );
+  runCommandConfirmationReceiptConformanceSuite(inMemoryAgentControlConformanceFactory(), {
+    describe: (name, fn) => describe(name, fn),
+    it: (name, fn) => it(name, fn),
+    expect: expect as never,
+  });
 });

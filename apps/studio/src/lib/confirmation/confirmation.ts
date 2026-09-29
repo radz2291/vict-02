@@ -29,12 +29,7 @@ export interface ConfirmationPrepareSummary {
 }
 
 /** The receipt statuses the single-receipt status read may truthfully answer. */
-export type ConfirmationStatusName =
-  | 'prepared'
-  | 'consumed'
-  | 'expired'
-  | 'spent'
-  | 'unavailable';
+export type ConfirmationStatusName = 'prepared' | 'consumed' | 'expired' | 'spent' | 'unavailable';
 
 /** A confirmation status read result (GET /vict/v1/confirmations/:receiptId). */
 export interface ConfirmationStatusResult {
@@ -64,7 +59,6 @@ export interface ConfirmationCommandSpec {
   readonly label: string;
 }
 
-const ID_FIELDS = ['runId', 'graphId', 'applicationId'] as const;
 
 function fixedRoute(path: string): (payload: Readonly<Record<string, string>>) => string {
   return () => path;
@@ -133,7 +127,11 @@ export function buildPrepareBody(
   command: string,
   payload: Readonly<Record<string, string>>,
   expectedRevision: string | null,
-): { readonly command: string; readonly payload: Record<string, string>; readonly expectedRevision: string | null } | null {
+): {
+  readonly command: string;
+  readonly payload: Record<string, string>;
+  readonly expectedRevision: string | null;
+} | null {
   const spec = CONFIRMATION_COMMANDS[command];
   if (spec === undefined) {
     return null;
@@ -164,7 +162,11 @@ export function buildConfirmedRequest(
   if (spec === undefined) {
     return null;
   }
-  if (typeof receiptId !== 'string' || receiptId.length === 0 || !isValidConfirmationId(receiptId)) {
+  if (
+    typeof receiptId !== 'string' ||
+    receiptId.length === 0 ||
+    !isValidConfirmationId(receiptId)
+  ) {
     return null;
   }
   const cleaned: Record<string, string> = {};

@@ -369,13 +369,19 @@ describe('versioned HTTP commands (real HTTP)', () => {
   // core confirmation layer lands) and the integrated core fence: every
   // actor class holding the mutation scope still answers the stable
   // 409 VICT_CONFIRMATION_REQUIRED for the unconfirmed legacy shape.
-  const LEGACY_GATED_ROUTES: readonly (readonly [
-    string,
-    Record<string, unknown>,
-  ])[] = [
-    ['/vict/v1/runs/cancel', { payload: { runId: 'run-g2-legacy', reasonCode: 'operator-cancel' } }],
-    ['/vict/v1/activations/select', { payload: { graphId: 'graph-g2', activationVersion: 'v-g2' } }],
-    ['/vict/v1/releases/select', { payload: { applicationId: 'app-g2', releaseVersion: 'release-g2-1' } }],
+  const LEGACY_GATED_ROUTES: readonly (readonly [string, Record<string, unknown>])[] = [
+    [
+      '/vict/v1/runs/cancel',
+      { payload: { runId: 'run-g2-legacy', reasonCode: 'operator-cancel' } },
+    ],
+    [
+      '/vict/v1/activations/select',
+      { payload: { graphId: 'graph-g2', activationVersion: 'v-g2' } },
+    ],
+    [
+      '/vict/v1/releases/select',
+      { payload: { applicationId: 'app-g2', releaseVersion: 'release-g2-1' } },
+    ],
     [
       '/vict/v1/releases/rollback',
       { payload: { applicationId: 'app-g2', targetReleaseVersion: 'release-g2-1' } },
@@ -420,6 +426,12 @@ describe('versioned HTTP commands (real HTTP)', () => {
 
   it('the new intervention routes are receipt-gated from day one (legacy shape rejected)', async () => {
     const f = await fixture();
+    // Integrator pin (authorization order): the actor scope is the
+    // OUTERMOST gate; an actor without the command scope is denied
+    // 403 VICT_ACTOR_SCOPE_DENIED BEFORE any confirmation mechanics are
+    // mentioned (consistent with prepare-side P-13). The administrator
+    // class DOES hold both scopes by policy, so its legacy-shape rows
+    // prove the CONFIRMATION fence itself with no scope shortcut.
     const resolve = await post(
       f.port,
       '/vict/v1/runs/run-g2-blocked/resolve',
@@ -428,14 +440,22 @@ describe('versioned HTTP commands (real HTTP)', () => {
     );
     expect(resolve.status).toBe(409);
     expect(resolve.body.code).toBe('VICT_CONFIRMATION_REQUIRED');
-    const signal = await post(
+    const signalByScopelessOperator = await post(
       f.port,
       '/vict/v1/runs/run-g2-blocked/signal',
       { payload: { signalName: 'nudge' } },
-      { ...bearer(operatorToken()), 'idempotency-key': 'g2-signal-legacy' },
+      { ...bearer(operatorToken()), 'idempotency-key': 'g2-signal-legacy-op' },
     );
-    expect(signal.status).toBe(409);
-    expect(signal.body.code).toBe('VICT_CONFIRMATION_REQUIRED');
+    expect(signalByScopelessOperator.status).toBe(403);
+    expect(signalByScopelessOperator.body.code).toBe('VICT_ACTOR_SCOPE_DENIED');
+    const signalByAdministrator = await post(
+      f.port,
+      '/vict/v1/runs/run-g2-blocked/signal',
+      { payload: { signalName: 'nudge' } },
+      { ...bearer(userToken()), 'idempotency-key': 'g2-signal-legacy-admin' },
+    );
+    expect(signalByAdministrator.status).toBe(409);
+    expect(signalByAdministrator.body.code).toBe('VICT_CONFIRMATION_REQUIRED');
   });
 
   it('the confirmation transport bounds hostile confirmation bodies', async () => {
@@ -461,7 +481,7 @@ describe('versioned HTTP commands (real HTTP)', () => {
   });
 
   // ---- Stage 9 G2 — prepare / status / confirmed-consume surfaces ------
-  describe.skip('G2 confirmation prepare/status/confirm (BLOCKED on the core confirmation layer)', () => {
+  describe('G2 confirmation prepare/status/confirm (G2 core layer composed)', () => {
     // TODO(integrator): unskip when the command service exposes, with
     // EXACTLY these signatures (integration notes in the G2 transport
     // candidate report):
@@ -482,7 +502,11 @@ describe('versioned HTTP commands (real HTTP)', () => {
       const prepared = await post(
         f.port,
         '/vict/v1/confirmations',
-        { command: 'run.cancel', payload: { runId: 'run-g2-1', reasonCode: 'operator-cancel' }, expectedRevision: 0 },
+        {
+          command: 'run.cancel',
+          payload: { runId: 'run-g2-1', reasonCode: 'operator-cancel' },
+          expectedRevision: 0,
+        },
         { ...bearer(operatorToken()), 'idempotency-key': 'g2-prepare-op-1' },
       );
       expect(prepared.status).toBe(200);
@@ -508,8 +532,12 @@ describe('versioned HTTP commands (real HTTP)', () => {
       const denied = await post(
         f.port,
         '/vict/v1/confirmations',
-        { command: 'run.resolve', payload: { runId: 'r', resolution: 'retry' }, expectedRevision: 0 },
-        { ...bearer('vict-test-token-empty'), 'idempotency-key': 'g2-prepare-noscope' },
+        {
+          command: 'run.resolve',
+          payload: { runId: 'r', resolution: 'retry' },
+          expectedRevision: 0,
+        },
+        { ...bearer('Bearer vict-test-token-empty'), 'idempotency-key': 'g2-prepare-noscope' },
       );
       expect(denied.status).toBe(403);
       expect(denied.body.code).toBe('VICT_ACTOR_SCOPE_DENIED');
@@ -566,7 +594,11 @@ describe('versioned HTTP commands (real HTTP)', () => {
       const prepared = await post(
         f.port,
         '/vict/v1/confirmations',
-        { command: 'run.cancel', payload: { runId: 'run-g2-status', reasonCode: 'operator-cancel' }, expectedRevision: 0 },
+        {
+          command: 'run.cancel',
+          payload: { runId: 'run-g2-status', reasonCode: 'operator-cancel' },
+          expectedRevision: 0,
+        },
         { ...bearer(operatorToken()), 'idempotency-key': 'g2-status-prep' },
       );
       expect(prepared.status).toBe(200);
@@ -580,7 +612,7 @@ describe('versioned HTTP commands (real HTTP)', () => {
       const foreign = await get(
         f.port,
         `/vict/v1/confirmations/${receiptId}`,
-        bearer('vict-test-token-approver'),
+        bearer('Bearer vict-test-token-approver'),
       );
       expect(foreign.status).toBe(404);
       expect(foreign.body.code).toBe('VICT_CONFIRMATION_UNAVAILABLE');
@@ -596,22 +628,52 @@ describe('versioned HTTP commands (real HTTP)', () => {
 
     it('the confirmed consume shape executes the gated commands (prepare → confirm)', async () => {
       const f = await fixture();
+      // Publish the release through the REAL control plane (the executor
+      // of this gated mutation in this fixture's composition).
+      await f.stores.control.publishRelease({
+        releaseVersion: 'release-rel-confirm',
+        applicationId: 'app-rel',
+        applicationVersion: 'appver-confirm',
+        rendererIdentity: 'renderer@1',
+        componentRegistryIdentity: 'registry@1',
+        dataAdapterIdentity: 'adapter@1',
+        activationBinding: 'activation-confirm',
+        publishedByActorId: 'actor-operator',
+        publishedAt: 1000,
+        contentHash: 'hash-rel-confirm',
+      });
       const prepared = await post(
         f.port,
         '/vict/v1/confirmations',
-        { command: 'run.cancel', payload: { runId: 'run-g2-confirm', reasonCode: 'operator-cancel' }, expectedRevision: 0 },
+        {
+          command: 'release.select',
+          payload: { applicationId: 'app-rel', releaseVersion: 'release-rel-confirm' },
+          expectedRevision: null,
+        },
         { ...bearer(operatorToken()), 'idempotency-key': 'g2-consume-prep' },
       );
       expect(prepared.status).toBe(200);
       const receiptId = (prepared.body.data as Record<string, unknown>).receiptId as string;
+      // Integrator pin: the http fixture composes the REAL
+      // ControlPlaneService, whose release mechanics are fully available;
+      // run.cancel's orchestration port composition belongs to the
+      // app-server/runtime wiring, so this end-to-end row uses a mutation
+      // whose executor is real here (truthful happy path, real effect).
       const confirmed = await post(
         f.port,
-        '/vict/v1/runs/cancel',
-        { payload: { runId: 'run-g2-confirm', reasonCode: 'operator-cancel' }, confirmation: { receiptId } },
+        '/vict/v1/releases/select',
+        {
+          payload: { applicationId: 'app-rel', releaseVersion: 'release-rel-confirm' },
+          confirmation: { receiptId },
+        },
         { ...bearer(operatorToken()), 'idempotency-key': 'g2-consume-1' },
       );
       expect(confirmed.status).toBe(200);
       expect((confirmed.body as Record<string, unknown>).ok).toBe(true);
+      // The REAL effect is visible exactly once.
+      const selections = await f.stores.control.listReleaseSelections('app-rel');
+      expect(selections).toHaveLength(1);
+      expect(selections[0]).toMatchObject({ releaseVersion: 'release-rel-confirm' });
     });
   });
 });

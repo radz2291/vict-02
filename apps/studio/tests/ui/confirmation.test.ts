@@ -9,7 +9,10 @@
 import { flushSync, mount, unmount } from 'svelte';
 import { afterEach, describe, expect, it } from 'vitest';
 import ConfirmationReview from '$lib/components/ConfirmationReview.svelte';
-import type { ConfirmationPrepareSummary, ConfirmationStatusResult } from '$lib/confirmation/confirmation.js';
+import type {
+  ConfirmationPrepareSummary,
+  ConfirmationStatusResult,
+} from '$lib/confirmation/confirmation.js';
 
 const mounted: unknown[] = [];
 
@@ -26,9 +29,7 @@ const SUMMARY: ConfirmationPrepareSummary = {
 function mountReview(props: Record<string, unknown>): HTMLElement {
   const target = document.createElement('div');
   document.body.appendChild(target);
-  mounted.push(
-    mount(ConfirmationReview as never, { target, props }),
-  );
+  mounted.push(mount(ConfirmationReview as never, { target, props }));
   flushSync();
   return target;
 }
