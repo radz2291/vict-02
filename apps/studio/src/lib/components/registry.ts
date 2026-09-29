@@ -1,18 +1,24 @@
 import { createComponentRegistry } from '@victframework/application/renderer';
 import type { ComponentRegistry } from '@victframework/application/renderer';
+import TargetConnectionStatus from './TargetConnectionStatus.svelte';
 
 /**
- * STUDIO COMPONENT REGISTRY — BUILDER TRACK `studio-app` OWNS THIS FILE
- * (and `src/lib/components/**`).
+ * The trusted local component registry of the Studio deployment (code
+ * islands live OUTSIDE the serializable manifest). The SAME factory is
+ * used by the generic host page and the UI tests, so the deployed
+ * component identity is never re-declared text.
  *
- * This scaffold stub exists only so integration typechecks before the real
- * registry lands. Replace it with the trusted local registry carrying the
- * NAMED, justified custom operator component(s) — expected:
- * `cmp.target-connection-status` (the four truthful target connection
- * states). Required export (signature is the interface; do not change it):
- *
- *   createStudioRegistry(): ComponentRegistry
+ * `cmp.target-connection-status@1` is the NAMED, justified custom
+ * operator component: target connection semantics (four truthful
+ * states with per-state disclosure) do not fit any shipped surface
+ * role — see the justification comment in TargetConnectionStatus.svelte.
  */
 export function createStudioRegistry(): ComponentRegistry {
-  return createComponentRegistry('registry.studio', '1');
+  const registry = createComponentRegistry('registry.studio', '1');
+  registry.register({
+    componentId: 'cmp.target-connection-status',
+    revision: '1',
+    implementation: TargetConnectionStatus,
+  });
+  return registry;
 }
