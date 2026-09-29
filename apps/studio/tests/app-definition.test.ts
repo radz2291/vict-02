@@ -9,8 +9,7 @@ import { STUDIO_RESOURCES } from '$lib/shared/contract.js';
  * route-param === identityField convention.
  */
 
-// Stage 9 G2 interface amendment (S9-04 journey surface; owner-accepted
-// G2 scope): the confirmation journey route joins the G1 read routes. The
+// Stage 9 G2 interface amendment (S9-04 + S9-03 journey surfaces): the
 // G1 resource set, empty-mutations invariant and zero-actions invariant
 // are asserted unchanged below.
 const EXPECTED_ROUTES = [
@@ -21,6 +20,7 @@ const EXPECTED_ROUTES = [
   '/releases',
   '/audit',
   '/confirmations',
+  '/changesets',
 ];
 
 describe('studio application definition', () => {
@@ -35,6 +35,20 @@ describe('studio application definition', () => {
     const plan = compileStudioPlan();
     const paths = plan.routes.map((entry) => entry.route.path).sort();
     expect(paths).toEqual([...EXPECTED_ROUTES].sort());
+  });
+
+  it('declares the S9-03 changeset journey route additively (its own screen, form-free)', () => {
+    const plan = compileStudioPlan();
+    const route = plan.routes.find((entry) => entry.route.path === '/changesets');
+    expect(route).toBeDefined();
+    const screen = plan.screens['s.changesets'];
+    expect(screen).toBeDefined();
+    // No form surface anywhere on the journey screen (forms live in the
+    // SvelteKit route; the definition keeps the G1 zero-form discipline).
+    const walk = (surfaces: readonly { role?: string }[]): void => {
+      for (const surface of surfaces) expect(surface.role).not.toBe('form');
+    };
+    for (const region of screen!.layout) walk(region.surfaces);
   });
 
   it('declares all nine contract resources with EMPTY mutations (read-only)', () => {
