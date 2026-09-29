@@ -231,7 +231,11 @@ async function probeUncached(entry: TargetRegistryEntry): Promise<TargetStatusRo
   const timer = setTimeout(() => controller.abort(), PROBE_TIMEOUT_MS);
   let response: Response;
   try {
-    response = await fetch(`${entry.endpoint}/vict/v1/releases`, {
+    // Bounded AUTH-ONLY probe path: /runs needs no required query params.
+    // (An earlier draft probed /releases, which requires an applicationId
+    // and 400s without one — a 400 there would have dishonestly looked
+    // like an unreachable target.)
+    response = await fetch(`${entry.endpoint}/vict/v1/runs?limit=1`, {
       method: 'GET',
       headers: { authorization: `Bearer ${credential.token}` },
       signal: controller.signal,
@@ -271,6 +275,10 @@ async function probeUncached(entry: TargetRegistryEntry): Promise<TargetStatusRo
         selected = extractSelected(body['data'] as Record<string, unknown>);
       }
     }
+    // NOTE: without a graphId the target answers 400 on /activations/selected
+    // (per-graph semantics), so 'selected' stays truthfully null here; the
+    // dashboard's selectedActivations VIEW carries selected-version visibility
+    // via the integrator's per-graph composition in app-server.ts.
   } catch {
     /* selection probe failure does not change the connected verdict */
   } finally {

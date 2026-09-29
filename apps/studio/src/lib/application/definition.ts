@@ -324,7 +324,7 @@ export const studioApplication = defineApplication({
               viewId: 'v.releases',
               titleField: 'releaseId',
               secondaryField: 'version',
-              emptyMessage: 'No releases published.',
+              emptyMessage: 'No releases listed.',
             },
           ],
         },
@@ -335,6 +335,12 @@ export const studioApplication = defineApplication({
           role: 'text',
           id: 't.dash-empty',
           content: 'Nothing to show yet — no target status, selections, or releases reported.',
+        },
+        partial: {
+          role: 'text',
+          id: 't.dash-partial',
+          content:
+            'Some data is unavailable right now — the panel shown as empty was not successfully read from the target; nothing is invented to fill it.',
         },
         failure: {
           role: 'text',
@@ -498,10 +504,17 @@ export const studioApplication = defineApplication({
       states: {
         loading: { role: 'text', id: 't.rel-loading', content: 'Loading releases…' },
         empty: { role: 'text', id: 't.rel-empty', content: 'No releases published.' },
+        partial: {
+          role: 'text',
+          id: 't.rel-partial',
+          content:
+            'Some release data is unavailable: release enumeration requires an applicationId query parameter (?applicationId=…); the target truthfully refuses to enumerate without one.',
+        },
         failure: {
           role: 'text',
           id: 't.rel-failure',
-          content: 'The release list failed safely.',
+          content:
+            'Release enumeration requires an applicationId query parameter (?applicationId=…). Without it the target truthfully refuses to enumerate; no partial list is shown.',
         },
       },
     },

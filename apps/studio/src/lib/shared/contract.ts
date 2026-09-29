@@ -106,8 +106,8 @@ export interface ResourceBinding {
  * - runWaits.list        → { runId, waits: WaitRow[] }                (param: runId)
  * - activations.list     → { activations: ActivationRow[], total }    (params: graphId?, limit)
  * - selectedActivations  → { activation: ActivationRow | null, selection: SelectionRow | null }
- * - releases.list        → { releases: Record<string, unknown>[] }
- * - releaseSelections    → { selections: Record<string, unknown>[] }
+ * - releases.list        → { releases: Record<string, unknown>[] }  (REQUIRES applicationId query param — the target 400s without it)
+ * - releaseSelections    → { selections: Record<string, unknown>[] } (REQUIRES applicationId query param)
  * - auditEntries.list    → { events: AuditRow[], total }              (params: subjectType?, subjectId?, limit)
  * - targetStatus         → Studio-LOCAL: produced by the Studio server from
  *   its own connection registry. It is never proxied to a VICT target.
@@ -206,14 +206,14 @@ export const RESOURCE_BINDINGS: Readonly<Record<StudioResourceId, ResourceBindin
     identityField: 'releaseId',
     fields: ['releaseId', 'version', 'state', 'createdAt'],
     listPath: '/vict/v1/releases',
-    listQuery: [],
+    listQuery: ['applicationId'],
   },
   releaseSelections: {
     resourceId: 'releaseSelections',
     identityField: 'releaseId',
     fields: ['releaseId', 'selectionRevision', 'selectedAt', 'selectedBy'],
     listPath: '/vict/v1/releases/selections',
-    listQuery: [],
+    listQuery: ['applicationId'],
   },
   auditEntries: {
     resourceId: 'auditEntries',

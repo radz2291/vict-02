@@ -211,7 +211,13 @@ export function getStudioServer(): StudioAppServer {
   return { loadRoute };
 }
 
-/** Truthful per-view failure datum: safe code only, never a raw error. */
+/**
+ * Truthful per-view failure datum: the view's rows are unknown (never
+ * synthesized), the renderer's native `partial` banner tells the human that
+ * some data is unavailable, and the safe code rides along diagnostically.
+ * (The renderer has no failure channel on ViewDatum; `partial` is its
+ * supported "some data is unavailable" signal.)
+ */
 function failureDatum(code: string): ViewDatum & { readonly failure: string } {
-  return { rows: [], loading: false, failure: code };
+  return { rows: [], loading: false, partial: true, failure: code };
 }
