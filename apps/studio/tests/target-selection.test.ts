@@ -33,9 +33,8 @@ process.env['VICT_STUDIO_CREDENTIALS'] = JSON.stringify({
   },
 });
 
-const { prepareConfirmation, readConfirmationStatus, confirmCommand } = await import(
-  '../src/lib/server/confirmation-transport.js'
-);
+const { prepareConfirmation, readConfirmationStatus, confirmCommand } =
+  await import('../src/lib/server/confirmation-transport.js');
 const { getTarget } = await import('../src/lib/server/targets.js');
 
 afterEach(() => {
