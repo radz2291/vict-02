@@ -55,10 +55,10 @@ D-4: "caller and release migration plan frozen before G2").
 | `run.resolve` / `run.signal` DO NOT EXIST anywhere (grep-verified) | same + `packages/cli/src/commands.ts` |
 | HTTP: the four legacy POST routes `/vict/v1/runs/cancel`, `/activations/select`, `/releases/select`, `/releases/rollback` | `packages/server/src/http.ts` POST_ROUTES |
 | CLI: one-step entries `run cancel`, `activation select`, `release select`, `release rollback` (POST + flags) | `packages/cli/src/commands.ts` |
-| Durable command idempotency EXISTS (Stage 06B): `CommandIdempotencyStore` with `claimReceipt`/`getReceipt`/`findReceiptByActorKey`/`completeReceipt`/`failReceipt`/`releaseReceipt`(fenced)/`takeOverExpiredLease`; fence tokens hashed from (actor, command, key, owner, attempts); lease default 60s; stable codes `VICT_COMMAND_IDEMPOTENCY_KEY_INVALID`, `_IN_PROGRESS`, `_CONFLICT`; namespace (actorId, command, idempotencyKey); key pattern bounded | `packages/runtime/src/control-types.ts`, `commands.ts #dispatchIdempotent` |
+| Durable command idempotency EXISTS (Stage 06B): `CommandIdempotencyStore` with `claimReceipt`/`getReceipt`/`findReceiptByActorKey`/`completeReceipt`/`failReceipt`/`releaseReceipt`(fenced)/`takeOverExpiredLease`; fence tokens hashed from (actor, command, key, owner, attempts); lease default 60s; stable codes `VICT_COMMAND_IDEMPOTENCY_KEY_INVALID`, `_IN_PROGRESS`, `_CONFLICT`, plus `VICT_IDEMPOTENCY_FENCE_CONFLICT` for fence-generation mismatches; namespace (actorId, command, idempotencyKey); key pattern bounded | `packages/runtime/src/control-types.ts`, `commands.ts #dispatchIdempotent` |
 | The receipt store (`commandIdempotency`) is SEPARATE from all effect stores; there is NO confirmation-intent store yet — G2 MUST ADD one | `AgentControlStores` |
 | Every state-changing command requires a bounded `Idempotency-Key` today (one-step) | `#dispatchIdempotent`, `vict.command@1` envelope fields `command`, `payload`, `idempotencyKey` |
-| ChangeSet approval/commit machinery exists (actor/content-hash/approval evidence to be rechecked if reused) | control package |
+| ChangeSet approval/commit machinery exists (actor/content-hash/approval evidence to be rechecked at G2 entry if reused for S9-03; the machinery lives in `packages/control/src/control-plane.ts` and its conformance suite) | `packages/control` |
 | G1 added reads incl. detail + audit; scope vocabulary is closed in `ACTOR_SCOPES` | `packages/runtime/src/control-types.ts` |
 
 ## 4. Versioned command/HTTP/CLI shapes (pinned design)
@@ -67,8 +67,8 @@ D-4: "caller and release migration plan frozen before G2").
 
 | Surface | Shape |
 | --- | --- |
-| **Prepare (server-issued receipt)** | `POST /vict/v1/confirmations` — body `{ command, payload, expectedRevision? }` + bounded `Idempotency-Key` HTTP header. Requires the TARGET command's mutation scope (e.g. preparing a `run.cancel` requires `run.cancel`). Returns `200 {ok:true, data:{ receiptId, command, payloadDigest, expectedRevision, expiryAt, createdBy, createdAt }}` — the HUMAN-REVIEWABLE SUMMARY plus receipt; **the receipt ID is opaque, bounded, and non-enumerable** (unknown/foreign/target-mismatched receipts are non-echoing `VICT_CONFIRMATION_UNAVAILABLE`). Same actor+command+key+digest represation replays the SAME receipt (idempotent prepare); a different `payload` under the same key during prepare is `VICT_COMMAND_IDEMPOTENCY_CONFLICT`. |
-| **Consume (execute under confirmation)** | `POST /vict/v1/{legacy-command-path}` with body `{ confirmation: { receiptId } }` and a bounded `Idempotency-Key` (the SAME HTTP paths as today, now requiring confirmation — see 4.2), OR explicit `POST /vict/v1/confirmations/:receiptId/consume` (equivalent; single canonical server path is the legacy-command shape in 4.2). |
+| **Prepare (server-issued receipt)** | `POST /vict/v1/confirmations` — body `{ command, payload, expectedRevision? }` + bounded `Idempotency-Key` HTTP header. Requires the TARGET command's mutation scope (e.g. preparing a `run.cancel` requires `run.cancel`). Returns `200 {ok:true, data:{ receiptId, command, payloadDigest, expectedRevision, expiryAt, createdBy, createdAt }}` — the HUMAN-REVIEWABLE SUMMARY plus receipt; **the receipt ID is opaque, bounded, and non-enumerable** (unknown/foreign/target-mismatched receipts are non-echoing `VICT_CONFIRMATION_UNAVAILABLE`). Same actor+command+key+digest reprepare replays the SAME receipt (idempotent prepare); a different `payload` under the same key during prepare is `VICT_COMMAND_IDEMPOTENCY_CONFLICT`. |
+| **Consume (execute under confirmation)** | `POST` on the SAME command routes as today (the four legacy paths + the two new intervention routes) with body `{ confirmation: { receiptId } }` and the bounded `Idempotency-Key` header. There is exactly ONE canonical consumption shape — no separate consume route exists in this design (reviewer R-2 folded). |
 | **Status read** | `GET /vict/v1/confirmations/:receiptId` → prepared / consumed / expired / spent / unavailable (non-echoing for foreign receipts; audited like other reads). |
 
 ### 4.2 The four migrated commands (exact shapes)
@@ -100,7 +100,7 @@ migrate):
 
 ### 4.3 HTTP routes (complete G2 delta, three-surface accounting)
 
-- **NEW:** `POST /vict/v1/confirmations` (prepare); `GET /vict/v1/confirmations/:receiptId` (status).
+- **NEW:** `POST /vict/v1/confirmations` (prepare; the only route that issues receipts); `GET /vict/v1/confirmations/:receiptId` (status; SINGLE-receipt read, no list endpoint in G2; authorization = the SAME mutation scope as the receipt's command, non-echoing for other actors' receipts — reviewer R-5). No consume route exists: consumption is the confirmed shape of each command route itself.
 - **CHANGED CONSUMPTION:** the four legacy POST routes now REQUIRE `confirmation.receiptId` + `Idempotency-Key`; unconfirmed → 409 `VICT_CONFIRMATION_REQUIRED` for every actor. (`run.resolve` execution goes through the runtime's existing blocked-run resolution path; `run.signal` through the existing durable-signal driver — no arbitrary timer-fire command is invented.)
 - **NEW:** `POST /vict/v1/runs/:runId/resolve`, `POST /vict/v1/runs/:runId/signal` (receipt-gated).
 - **CLI:** `run cancel|activation select|release select|release rollback|run resolve|run signal` each gain `--prepare` (prints server-issued summary + receipt; **never auto-confirms**) and `--confirm <receiptId> --key <Idempotency-Key>`; invoking WITHOUT either flag returns usage guidance naming the two steps (the old one-step entries are REPLACED — a breaking CLI migration, documented). `GET /vict/v1/confirmations/:receiptId` mirrors as `confirmation get` CLI read.
@@ -115,12 +115,47 @@ opaque `receiptId`; `actorId`; `command`; canonical payload digest
 prepared/consumed/expired/spent; `createdAt`, `consumedAt`, `consumedByKey`;
 issuing target bound implicitly (server-local store, no target parameter).
 Prepared-but-unconsumed receipts expire **without effect** and remain
-auditable per retention. Prepare is itself idempotency-keyed and durable.
+auditable per retention. Prepare is itself idempotency-keyed and durable
+(prepare claims live in the SAME `CommandIdempotencyStore` under the
+namespace command `confirmation.prepare:<command>`; a settled prepare
+replays the same receipt, and after that receipt EXPIRES a fresh prepare
+with the same key+digest issues a REPLACEMENT receipt — the expired one
+stays expired and auditable; reviewer R-4 row).
 
-## 5. Check order and outcome table (B-3 as worded; the RATIFIED contract)
+**`expectedRevision` semantics per command (pinned; reviewer R-6):** the
+prepare payload MUST carry the subject's CURRENT revision, read through the
+G1 read surface, and the consume step re-checks it (Phase 2 `STALE`):
 
-At consume, checked in this exact order, all non-echoing, effect = None on
-every non-terminal path:
+| Command | `expectedRevision` at prepare | Read-through |
+| --- | --- | --- |
+| `run.cancel`, `run.resolve`, `run.signal` | the run's `recordRevision` | `run.get` |
+| `activation.select` | the graph's CURRENT selection's `selectionRevision`; `null` when truthfully none is selected (consume then requires it is STILL unselected) | `activation.selected` |
+| `release.select`, `release.rollback` | the application's current selection's `selectionRevision` | `release.selections` |
+
+Omitting `expectedRevision` at prepare is rejected (`VICT_CONFIRMATION_FIELD_REQUIRED` candidate name, non-echoing) — no "no-guard" shape exists.
+
+## 5. Authoritative check precedence and outcome table (B-3 as worded; the RATIFIED contract)
+
+The frozen B-3 prose fixes the ORDER of mechanisms, and this section pins it
+exactly (the reviewer's R-1 was correct that a naive table-priority reading
+would push settled replays of expired/spent receipts onto a fresh key — the
+forbidden path):
+
+**Phase 1 — existing command idempotency, checked FIRST.** The existing
+`CommandIdempotencyStore` settled lookup for (actorId, command,
+Idempotency-Key), bound to the digest of the COMPLETE confirmation request
+(including the receipt ID):
+- the same key was settled with the SAME digest → **replay the recorded
+  result with NO new effect** — this PRECEDES every receipt-state check, and
+  therefore applies even when the referenced receipt is now expired or
+  spent (table rows EXPIRED/SPENT apply only when the claim is NOT
+  already settled for that exact key+digest);
+- the same key was settled with a DIFFERENT digest →
+  `VICT_COMMAND_IDEMPOTENCY_CONFLICT`;
+- nothing settled under the key → Phase 2.
+
+**Phase 2 — receipt verification chain (the ratified outcome table as the
+classification of Phase-2 outcomes)**, all non-echoing, effect = None:
 
 | Direct-API case | Stable outcome |
 | --- | --- |
@@ -130,15 +165,24 @@ every non-terminal path:
 | Receipt expired | `VICT_CONFIRMATION_EXPIRED` |
 | Target revision changed after preparation | `VICT_CONFIRMATION_STALE` (re-review, prepare again) |
 | Receipt consumed by a different request/key | `VICT_CONFIRMATION_SPENT` |
-| Same actor+command+key, different confirmation digest | `VICT_COMMAND_IDEMPOTENCY_CONFLICT` |
-| Same committed confirmation retried, same key + digest | recorded prior result, **no second effect** |
 
-The consume step then executes through the EXISTING
-`#dispatchIdempotent` machinery (claim → fence → domain effect → settle),
-satisfying the ratified requirement that confirmation idempotency is keyed
-by actor+command+key and bound to the digest of the COMPLETE confirmation
-request (including receipt ID). A fresh key against a spent receipt fails;
-no receipt ID can create a second effect under a fresh key.
+**Phase 3 — durable claims, FENCED on both stores.** The receipt is claimed
+and fenced in the NEW confirmation store (exact-generation fencing, mirroring
+the existing idempotency fence semantics), and the command proceeds through
+the EXISTING `#dispatchIdempotent` claim (including cross-command
+`findReceiptByActorKey` checks) — the confirmation idempotency is keyed by
+actor+command+key and bound to the digest of the COMPLETE confirmation
+request (including receipt ID), as ratified. The two stores are separate
+stores with distinct fence generations; the reconciliation of a crash window
+between them is proven by P-16/P-21.
+
+**Phase 4 — execute and settle.** Execute under the domain's own
+idempotency fence; settle BOTH stores (idempotency result first, receipt
+converges to consumed under the same fence, P-21). A fresh key against a
+spent receipt fails; no receipt ID can create a second effect under a fresh
+key. Any infrastructure-failure release uses the existing FENCED
+`releaseReceipt` semantics (retryable, never confused with a deterministic
+failure).
 
 ## 6. Crash / race / restart + direct-API proof matrix (each = a named automated test)
 
@@ -160,8 +204,34 @@ no receipt ID can create a second effect under a fresh key.
 | P-14 | Receipt of another target | `VICT_CONFIRMATION_UNAVAILABLE`, non-echoing |
 | P-15 | Replay of same committed confirmation (key+digest) | Prior recorded result, no second effect |
 | P-16 | Receipt store vs effect store split | Restart BETWEEN consume-claim and effect leaves no half-applied B-3 state (receipt consumed only after domain settlement, or claim released fenced) |
+| P-17 | Settled replay of an EXPIRED receipt | Same actor+command+key+digest on a receipt that has since expired → **recorded result replays, no new effect** (Phase 1 precedence; EXPIRED applies only to unsettled claims) |
+| P-18 | Settled replay of a SPENT receipt | Same precedence proof as P-17 for a receipt consumed by another key |
+| P-19 | Expiry TOCTOU at the durable claim | Receipt valid at Phase-2 check but expiring before/during the Phase-3 claim: the claim executes only when the fence wins BEFORE `expiryAt`; a fence that arrives at/after `expiryAt` fails closed `VICT_CONFIRMATION_EXPIRED`; once claimed and fenced, in-flight processing completes under the fence (no mid-flight expiry of a granted claim) |
+| P-20 | Different-key concurrent consume of one receipt | First key settles and receipts `consumed`; second key (fresh idempotency key) truthfully `VICT_CONFIRMATION_SPENT`, no effect, receipt records the consuming key |
+| P-21 | Reverse-crash convergence | Crash AFTER the domain effect settles in the idempotency store but BEFORE the receipt record updates: on retry with the same key+digest, Phase 1 replays the recorded result AND the receipt converges to `consumed` under the same fence — exactly one effect, both stores eventually consistent |
+| P-22 | Prepare-after-expiry replacement | Fresh prepare, same actor+command+key+digest, referencing an EXPIRED receipt's shape issues a REPLACEMENT receipt (bounded attempts); the expired receipt stays expired and auditable; no state carried over except audit |
 
 Browser journeys (G2 exit): S9-03 ChangeSet inspection/approval/commit with its negative set (self-approval, changed content, missing approval, duplicate effect fail closed); S9-04 prepare→review→confirm in Studio with missing/mismatched/expired/replayed receipt + stale state producing NO unintended effect, audit showing actor/target/reason/before-after identity.
+
+## 6.1 Inventory pin for the confirmation surface (reviewer R-7)
+
+`scripts/verify-stage9-inventory.mjs` gains the G2 surface explicitly:
+`confirmation.prepare`-equivalent `POST /vict/v1/confirmations`, the
+single-receipt status read, the two new intervention commands with their
+routes and CLI entries, and the reshaped CLI two-step entries — classified
+as G2 surface; the G1 READ surface is asserted UNAMENDED byte-for-byte at
+the command/registry level (G1 read commands, routes and CLI entries change
+NOWHERE in G2; only the inventory ACCOUNTING gains rows). The proposed
+legacy-shape rejection rows (P-11/P-12) are added to the permanent
+authorization matrix.
+
+## 6.2 Studio-side confirmation UX note for S9-04 (non-implementation note)
+
+Studio presents the server-issued prepare summary (command, subject,
+payload digest, expected revision, expiry) for human review and posts the
+confirmed shape with the session-bound CSRF boundary already proven at G1;
+the dialog/marker surfaces are implementation work gated on owner-accepted
+G2 scope.
 
 ## 7. Caller and release migration plan (to be FROZEN, then G2 implementation)
 
@@ -229,9 +299,7 @@ future gate without its own amendment.
 - **D-OPEN-1 receipt TTL:** default expiry 10 minutes for prepare (short,
   human-review scaled; configurable per deployment). Accept, or set another
   bounded default.
-- **D-OPEN-2 `run.signal` scope name:** `run.signal` (new closed scope,
-  default-deny: held by NO default role until deployment grants) — accept
-  the name, or amend.
+- **D-OPEN-2 `run.signal` scope name:** `run.signal` (new closed scope) — accept the name, or amend. CORRECTED role semantics (reviewer R-3): by the closed role policy `administrator: [...ACTOR_SCOPES]`, the administrator role AUTOMATICALLY holds every scope the vocabulary ever gains — so `run.resolve`/`run.signal` are held by administrators BY POLICY, while every other actor receives them ONLY via explicit deployment scope grants. Scope default-deny therefore holds for all NON-administrator classes, and it is the confirmation fence — never scope absence — that blocks administrator legacy-shape bypass. The EXISTING `operator.resolve` scope is classified and UNCHANGED: it is the stream-inspection privilege (other-actor stream identifiers in `stream.inspect`) and the runtime-level blocked-run resolution path (`resolveBlocked` in the orchestration layer) is NOT itself the G2 command surface — G2 adds the receipt-gated `run.resolve` COMMAND requiring the NEW scope `run.resolve`; holders of `operator.resolve` gain no run-resolution authority unless the deployment grants `run.resolve` (administrators hold it by policy). The runtime `resolveBlocked` path remains the internal executor the `run.resolve` command binds to.
 - **D-OPEN-3 prepare route shape:** single `POST /vict/v1/confirmations`
   (this draft) vs per-command `/prepare` routes. The single route keeps the
   three-surface inventory closed; per-command routes add six routes for
@@ -239,3 +307,20 @@ future gate without its own amendment.
 
 *(Everything above §11 is pinned design reconciled to the ratified D-4/D-10
 contract; the open items are bounded operational pins, not scope changes.)*
+
+## 4.5 Confirmation audit and retention (pinned; reviewer R-5)
+
+- New closed audit actions added to `CONTROL_AUDIT_ACTIONS`:
+  `confirmation.prepared` (actor, command, subject, receipt digest — NEVER a
+  payload byte) and `confirmation.consumed` (actor, command, key, outcome
+  class). Receipt lifecycle transitions that occur without a consume
+  (expiry, spend) are captured on the DURABLE RECEIPT RECORD itself
+  (`status`, timestamps, consumedByKey) and surface through the status read
+  and audit search (`audit.search` subjectType `confirmation`). Retention:
+  receipts carry digests and identities only — never payload bytes — so the
+  control retention policy applies unchanged; expired/spent receipts remain
+  auditable per the ratified retention wording.
+- The confirmation status read requires the receipt's command mutation scope
+  and is added to the permanent authorization matrix (both directions:
+  wrong-scope denial; same-scope allowance). It is NOT added to any default
+  role beyond what that scope mechanism already yields (see §4.6).
