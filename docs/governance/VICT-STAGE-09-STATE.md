@@ -1,6 +1,6 @@
 # VICT Stage 09 — Current State
 
-**2026-09-29 — G0 candidate prepared, HELD for owner review.** Stage 8 is FORMALLY CLOSED as PASS WITH ISSUES at VICT `main` `516948ac8bc55bbae8624bb91b3b35de34b3146c`. Stage 9 remains Planned in `docs/VICT-SYSTEM-REFERENCE.md` §23. This branch contains only a proposed architecture and handoff. No Stage 9 implementation, ratification, independent verification, publication, production activation or Quellight edit has occurred. The next allowed work is a documentation-only G0 review/correction on a pushed branch, followed by an explicit owner decision. Remote and branch identity for this candidate must be filled from the pushed commit report, not guessed here.
+**2026-09-29 — G0 candidate prepared, HELD for owner review.** Stage 8 is FORMALLY CLOSED as PASS WITH ISSUES at VICT `main` `516948ac8bc55bbae8624bb91b3b35de34b3146c`. Stage 9 remains Planned in `docs/VICT-SYSTEM-REFERENCE.md` §23. The proposed architecture and handoff were pushed on `codex/stage9-g0-candidate` at `4bfaf9449bc0ed4474ba983c1862f4ec8ae64772` (remote branch verified; documentation-only commit). No Stage 9 implementation, ratification, independent verification, publication, production activation or Quellight edit has occurred. The next allowed work is a documentation-only G0 review/correction on this branch, followed by an explicit owner decision.
 
 ## Sources and status
 
@@ -17,7 +17,7 @@ Resolve D-1–D-10 in `docs/architecture/STAGE-09-STUDIO-AND-RECOVERY.md` §7. H
 
 | Gate | Status | Candidate / verifier | Next action |
 | --- | --- | --- | --- |
-| G0 entry | PROPOSED — HELD for owner review | Proposed pack on a pushed review branch; no verifier verdict | Recheck remote, resolve decisions, owner ratifies and freezes exact bytes before issuing G1 |
+| G0 entry | PROPOSED — HELD for owner review | `codex/stage9-g0-candidate` at `4bfaf9449bc0ed4474ba983c1862f4ec8ae64772` (pack); no verifier verdict | Recheck remote, resolve decisions, owner ratifies and freezes exact bytes before issuing G1 |
 | G1 operator foundation | NOT AUTHORIZED | None | Wait for G0 |
 | G2 controlled recovery | NOT AUTHORIZED | None | Wait for its gate |
 | G3 integrated exit audit | NOT AUTHORIZED | None | Wait for its gate |
