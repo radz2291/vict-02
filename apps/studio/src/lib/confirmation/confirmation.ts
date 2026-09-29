@@ -448,8 +448,21 @@ export function asExecutorResult(data: Record<string, unknown> | null): string |
   if (data === null) {
     return null;
   }
-  const result = data['result'];
-  if (typeof result !== 'object' || result === null) {
+  // Integrator seam note (S9-04 real-effect): some confirmed commands return
+  // the executor's own answer nested under `result`; the run-intervention
+  // executors return their answer AT TOP LEVEL (e.g. run.cancel ->
+  // {runId, requestId, status, cancelled}). When a nested member exists it
+  // wins; otherwise the response data itself is the target's verbatim
+  // confirmed-call answer. Anything without identity members is absent
+  // (never an invented summary).
+  const result: Record<string, unknown> =
+    typeof data['result'] === 'object' && data['result'] !== null
+      ? (data['result'] as Record<string, unknown>)
+      : data;
+  const hasIdentity =
+    (typeof result['runId'] === 'string' || typeof result['changesetId'] === 'string') &&
+    typeof result['status'] === 'string';
+  if (!hasIdentity) {
     return null;
   }
   try {

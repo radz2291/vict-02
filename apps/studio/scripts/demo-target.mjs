@@ -44,6 +44,7 @@ import {
   createInMemoryStores,
   toCanonicalJson,
   VictControlError,
+  VictStoreError,
 } from '@victframework/runtime';
 import {
   canonicalSemanticForm,
@@ -378,7 +379,54 @@ async function resolveBlockedEffect({ runId, resolution, actorId, requestId }) {
   const at = Date.now();
   const identity = await orchestrationIdentity(run);
   const resolutionId = requestId;
-  const result = await orchestration.resolveBlocked({
+  // Integrator amendment (fixture scope, integrator): a run blocked on a
+  // DURABLE WAIT (signal) has no blocked token, so the store's blocked-token
+  // resolution path throws a raw store error for it. The executor answers
+  // TRUTHFULLY instead of throwing an illegible 500: the stable result
+  // carries the store's own error code and the run state; NO fake success,
+  // no invented effect, and the audit view is where the reviewer verifies
+  // the nothing-happened truth.
+  let result;
+  try {
+    result = await orchestration.resolveBlocked({
+      runId,
+      resolutionId,
+      action: resolution,
+      reasonCode: 'operator_request',
+      commandHash: resolutionCommandHash({
+        runId,
+        resolutionId,
+        action: resolution,
+        reasonCode: 'operator_request',
+        expectedRunRevision: run.recordRevision,
+        hasOutput: false,
+      }),
+      expectedRunRevision: run.recordRevision,
+      now: at,
+      events: [
+        {
+          type: 'operator.intervened',
+          resolutionId,
+          action: resolution,
+          actorId,
+          ...identity,
+          timestamp: at,
+        },
+      ],
+    });
+  } catch (error) {
+    const code = error instanceof VictStoreError ? error.code : 'VICT_STORE_UNAVAILABLE';
+    return {
+      runId,
+      requestId,
+      resolutionId,
+      status: 'failed_to_apply',
+      errorCode: code,
+      runStatus: run.status,
+      runRecordRevision: run.recordRevision,
+    };
+  }
+  result = result;
     runId,
     resolutionId,
     action: resolution,

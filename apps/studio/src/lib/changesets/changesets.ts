@@ -361,7 +361,13 @@ export function asChangesetSummary(data: unknown): ChangesetSummary | null {
   if (typeof data !== 'object' || data === null) {
     return null;
   }
-  const record = data as Record<string, unknown>;
+  // Integrator seam note (S9-03): the transport unwraps the target envelope
+  // to the inner command result; propose/revise/get/attach-evidence nest the
+  // changeset record under `changeset`. Accept BOTH the nested and
+  // (defensively) the flattened record — never anything else.
+  const outer = data as Record<string, unknown>;
+  const record = ((typeof outer['changeset'] === 'object' ? outer['changeset'] : null) ??
+    data) as Record<string, unknown>;
   const str = (key: string): string | undefined =>
     typeof record[key] === 'string' ? (record[key] as string) : undefined;
   const changesetId = str('changesetId');
@@ -453,7 +459,13 @@ export function asDecisionOutcome(data: unknown): DecisionSummary | null {
   if (typeof data !== 'object' || data === null) {
     return null;
   }
-  const result = data as Record<string, unknown>;
+  // Integrator seam note (S9-03): the decide command nests the control-plane
+  // { record, decision } result under `result`. Accept BOTH the nested and
+  // (defensively) the direct result — never anything else.
+  const outer = data as Record<string, unknown>;
+  const result = (typeof outer['result'] === 'object' && outer['result'] !== null
+    ? outer['result']
+    : data) as Record<string, unknown>;
   const record = asChangesetSummary(result['record']);
   const decision =
     typeof result['decision'] === 'object' && result['decision'] !== null
@@ -495,7 +507,13 @@ export function asCommitOutcome(data: unknown): CommitSummary | null {
   if (typeof data !== 'object' || data === null) {
     return null;
   }
-  const result = data as Record<string, unknown>;
+  // Integrator seam note (S9-03): the commit command nests the control-plane
+  // { record, applied } result under `result`. Accept BOTH the nested and
+  // (defensively) the direct result — never anything else.
+  const outer = data as Record<string, unknown>;
+  const result = (typeof outer['result'] === 'object' && outer['result'] !== null
+    ? outer['result']
+    : data) as Record<string, unknown>;
   const record = asChangesetSummary(result['record']);
   if (record === null || !Array.isArray(result['applied'])) {
     return null;
@@ -539,7 +557,16 @@ export function asCheckRun(data: unknown): { runId: string; kind: string; outcom
   if (typeof data !== 'object' || data === null) {
     return null;
   }
-  const run = data as Record<string, unknown>;
+  // Integrator seam note (S9-03): the transport unwraps the target envelope
+  // to the inner command result; the execute-check result nests the run
+  // record under `run`. Accept BOTH the nested and (defensively) the
+  // flattened record — never anything else.
+  const outer = data as Record<string, unknown>;
+  const candidate = outer['run'] ?? data;
+  if (typeof candidate !== 'object' || candidate === null) {
+    return null;
+  }
+  const run = candidate as Record<string, unknown>;
   if (
     typeof run['runId'] !== 'string' ||
     typeof run['kind'] !== 'string' ||

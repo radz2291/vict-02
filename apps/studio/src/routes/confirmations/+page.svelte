@@ -177,74 +177,77 @@
     </form>
   </section>
 
-  {#if form?.effect}
-    <section class="step">
-      <h3>4 · After the confirm — resulting truth read back from the target</h3>
-      <p class="fence-note">
-        Every line below comes verbatim from the target's own read surfaces. Nothing
-        here is summarized or fabricated; reads that did not return truthfully say so.
-      </p>
-      {@const effect = form.effect as ConfirmationEffectPanel}
+  {#snippet effectPanel(effect: ConfirmationEffectPanel)}
+    <p class="fence-note">
+      Every line below comes verbatim from the target's own read surfaces. Nothing
+      here is summarized or fabricated; reads that did not return truthfully say so.
+    </p>
+    <table class="effect">
+      <tbody>
+        <tr><th>actor</th><td>{effect.audit.available ? 'see audit rows' : '(audit read unavailable)'}</td></tr>
+        <tr><th>target</th><td>{effect.targetId}</td></tr>
+        <tr><th>command</th><td>{effect.command}</td></tr>
+        <tr><th>subject</th><td>{effect.subjectId ?? '(no run subject)'}</td></tr>
+        <tr><th>reason</th><td>{effect.reason ?? '(no reason member on this payload)'}</td></tr>
+        {#each Object.entries(effect.payload) as [key, value] (key)}
+          <tr><th>payload · {key}</th><td><code>{value}</code></td></tr>
+        {/each}
+      </tbody>
+    </table>
+    <h4>Run state before → after (target's own run read)</h4>
+    <table class="effect">
+      <tbody>
+        <tr>
+          <th>run status</th>
+          <td>{effect.before.run.available ? effect.before.run.status : 'unavailable'} → {effect.after.run.available ? effect.after.run.status : 'unavailable'}</td>
+        </tr>
+        <tr>
+          <th>run recordRevision</th>
+          <td>{effect.before.run.available ? effect.before.run.recordRevision : 'unavailable'} → {effect.after.run.available ? effect.after.run.recordRevision : 'unavailable'}</td>
+        </tr>
+      </tbody>
+    </table>
+    <h4>Durable waits before → after (target's own waits read)</h4>
+    {#if effect.before.waits.available && effect.after.waits.available}
       <table class="effect">
+        <thead><tr><th>waitId</th><th>signalName</th><th>before</th><th>after</th><th>resolvedBy (after)</th></tr></thead>
         <tbody>
-          <tr><th>actor</th><td>{effect.audit.available ? 'see audit rows' : '(audit read unavailable)'}</td></tr>
-          <tr><th>target</th><td>{effect.targetId}</td></tr>
-          <tr><th>command</th><td>{effect.command}</td></tr>
-          <tr><th>subject</th><td>{effect.subjectId ?? '(no run subject)'}</td></tr>
-          <tr><th>reason</th><td>{effect.reason ?? '(no reason member on this payload)'}</td></tr>
-          {#each Object.entries(effect.payload) as [key, value] (key)}
-            <tr><th>payload · {key}</th><td><code>{value}</code></td></tr>
+          {#each unifiedWaitRows(effect.before.waits.waits, effect.after.waits.waits) as row (row.waitId)}
+            <tr><td><code>{row.waitId}</code></td><td>{row.signalName ?? '—'}</td><td>{row.before}</td><td>{row.after}</td><td>{row.resolvedBy ?? '—'}</td></tr>
+          {/each}
+          {#if effect.before.waits.waits.length === 0 && effect.after.waits.waits.length === 0}
+            <tr><td colspan="5">No waits on this run at either read.</td></tr>
+          {/if}
+        </tbody>
+      </table>
+    {:else}
+      <p class="fence-note">{effect.before.waits.available ? effect.after.waits.note : effect.before.waits.note}</p>
+    {/if}
+    <h4>Executor result (verbatim; the target's own confirmed-call answer)</h4>
+    {#if effect.executorResult !== null}
+      <pre>{effect.executorResult}</pre>
+    {:else}
+      <p class="fence-note">The confirmed call returned no executor result member.</p>
+    {/if}
+    <h4>Audit trail (subjectType=confirmation)</h4>
+    {#if effect.audit.available}
+      <table class="effect">
+        <thead><tr><th>at</th><th>action</th><th>actorId</th><th>summary</th></tr></thead>
+        <tbody>
+          {#each effect.audit.events as auditEvent (auditEvent.auditId)}
+            <tr><td>{auditEvent.at}</td><td>{auditEvent.action}</td><td>{auditEvent.actorId}</td><td>{auditEvent.summary}</td></tr>
           {/each}
         </tbody>
       </table>
-      <h4>Run state before → after (target's own run read)</h4>
-      <table class="effect">
-        <tbody>
-          <tr>
-            <th>run status</th>
-            <td>{effect.before.run.available ? effect.before.run.status : 'unavailable'} → {effect.after.run.available ? effect.after.run.status : 'unavailable'}</td>
-          </tr>
-          <tr>
-            <th>run recordRevision</th>
-            <td>{effect.before.run.available ? effect.before.run.recordRevision : 'unavailable'} → {effect.after.run.available ? effect.after.run.recordRevision : 'unavailable'}</td>
-          </tr>
-        </tbody>
-      </table>
-      <h4>Durable waits before → after (target's own waits read)</h4>
-      {#if effect.before.waits.available && effect.after.waits.available}
-        <table class="effect">
-          <thead><tr><th>waitId</th><th>signalName</th><th>before</th><th>after</th><th>resolvedBy (after)</th></tr></thead>
-          <tbody>
-            {#each unifiedWaitRows(effect.before.waits.waits, effect.after.waits.waits) as row (row.waitId)}
-              <tr><td><code>{row.waitId}</code></td><td>{row.signalName ?? '—'}</td><td>{row.before}</td><td>{row.after}</td><td>{row.resolvedBy ?? '—'}</td></tr>
-            {/each}
-            {#if effect.before.waits.waits.length === 0 && effect.after.waits.waits.length === 0}
-              <tr><td colspan="5">No waits on this run at either read.</td></tr>
-            {/if}
-          </tbody>
-        </table>
-      {:else}
-        <p class="fence-note">{effect.before.waits.available ? effect.after.waits.note : effect.before.waits.note}</p>
-      {/if}
-      <h4>Executor result (verbatim; the target's own confirmed-call answer)</h4>
-      {#if effect.executorResult !== null}
-        <pre>{effect.executorResult}</pre>
-      {:else}
-        <p class="fence-note">The confirmed call returned no executor result member.</p>
-      {/if}
-      <h4>Audit trail (subjectType=confirmation, subjectId={effect.audit.available ? 'the receipt' : '—'})</h4>
-      {#if effect.audit.available}
-        <table class="effect">
-          <thead><tr><th>at</th><th>action</th><th>actorId</th><th>summary</th></tr></thead>
-          <tbody>
-            {#each effect.audit.events as auditEvent (auditEvent.auditId)}
-              <tr><td>{auditEvent.at}</td><td>{auditEvent.action}</td><td>{auditEvent.actorId}</td><td>{auditEvent.summary}</td></tr>
-            {/each}
-          </tbody>
-        </table>
-      {:else}
-        <p class="fence-note">{effect.audit.note}</p>
-      {/if}
+    {:else}
+      <p class="fence-note">{effect.audit.note}</p>
+    {/if}
+  {/snippet}
+
+  {#if form?.effect}
+    <section class="step">
+      <h3>4 · After the confirm — resulting truth read back from the target</h3>
+      {@render effectPanel(form.effect as ConfirmationEffectPanel)}
     </section>
   {/if}
 </main>
