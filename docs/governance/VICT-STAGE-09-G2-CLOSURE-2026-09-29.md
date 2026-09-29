@@ -115,13 +115,17 @@ sha256 `f270b17cfd97c5a7be60a4bbfff31a4619f1d3ac3e4f03b45f58d72bed16f7c1` matche
   only.
 - **F-1 (REPAIRED at `c018b59`):** lint `no-empty` in the fixture-stack
   helper — repaired (documented catch), affected claims re-verified at the
-  accepted head.
+  accepted head. (Checker note, recorded LOW: the commit message said
+  "prettier normalization of the demo fixture" but `c018b59`'s diff
+  contains ONLY the stack script — the acceptance is unaffected; the diff
+  is disclosed as 1 file in §2.)
 
 ## 6. Integration
 
-The accepted branch was integrated into `main` by a checked **normal
-merge or fast-forward with no forced update** (integration SHA reported
-to the owner); the closure verification preceded the integration. Stage 9
+The accepted branch is integrated into `main` by a checked **normal
+merge or fast-forward with no forced update**, immediately after this
+closure check (the GO verdict above); the integration SHA is reported in
+the owner report (the STATE records the same future form). Stage 9
 remains incomplete: **G3 stays NOT AUTHORIZED pending the owner's
 separate decision**, FT-1, package publication, product activation, and
 any Quellight edit remain prohibited.
