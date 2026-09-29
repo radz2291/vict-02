@@ -154,7 +154,10 @@ if (process.argv[2] === 'down') {
     if (owner) {
       try {
         execSync(`powershell -NoProfile -Command "Stop-Process -Id ${pid} -Force"`);
-      } catch {}
+      } catch {
+        // The exact process is already gone or the stop was rejected; the
+        // follow-up availability read below reports the truth either way.
+      }
     }
   }
 }
