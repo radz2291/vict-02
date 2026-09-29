@@ -19,6 +19,9 @@ import type {
   CommandIdempotencyStore,
   CommandIdempotencyName,
   CommandIdempotencyLeaseTakeover,
+  CommandConfirmationReceipt,
+  CommandConfirmationReceiptStore,
+  CommandConfirmationClaim,
   TurnToolSlotAllocation,
   ControlAuditEvent,
   ControlPlaneStore,
@@ -28,8 +31,10 @@ import type {
 import {
   VictControlError,
   VICT_IDEMPOTENCY_FENCE_CONFLICT,
+  VICT_CONFIRMATION_FENCE_CONFLICT,
   CHANGESET_BASE_NONE,
   commandIdempotencyFenceToken,
+  commandConfirmationFenceToken,
   validateStreamLedgerAppend,
 } from './control-types.js';
 
@@ -1305,6 +1310,194 @@ export class InMemoryCommandIdempotencyStore implements CommandIdempotencyStore 
   }
 }
 
+/**
+ * In-memory CommandConfirmationReceiptStore. Mirrors the idempotency-store
+ * lease/fence semantics: a consumption claim carries (owner, claimUntil,
+ * attempts, fenceToken); settlement and release are exact-generation
+ * fenced; a claim arriving at/after `expiryAt` fails closed and durably
+ * marks the receipt `expired`; an expired live lease is taken over with a
+ * NEW fence token and an incremented attempt generation.
+ */
+export class InMemoryCommandConfirmationReceiptStore
+  implements CommandConfirmationReceiptStore
+{
+  readonly #receipts = new Map<string, CommandConfirmationReceipt>();
+
+  async createReceipt(record: CommandConfirmationReceipt): Promise<'created' | 'exists'> {
+    if (this.#receipts.has(record.receiptId)) {
+      return 'exists';
+    }
+    this.#receipts.set(record.receiptId, structuredCloneControl(record));
+    return 'created';
+  }
+
+  async getReceipt(receiptId: string): Promise<CommandConfirmationReceipt | undefined> {
+    const found = this.#receipts.get(receiptId);
+    return found === undefined ? undefined : structuredCloneControl(found);
+  }
+
+  static #order(a: CommandConfirmationReceipt, b: CommandConfirmationReceipt): number {
+    return (
+      a.replacementAttemptNo - b.replacementAttemptNo ||
+      (a.receiptId < b.receiptId ? -1 : a.receiptId > b.receiptId ? 1 : 0)
+    );
+  }
+
+  async listReceiptsByPrepare(input: {
+    actorId: string;
+    command: string;
+    prepareIdempotencyKey: string;
+  }): Promise<readonly CommandConfirmationReceipt[]> {
+    return [...this.#receipts.values()]
+      .filter(
+        (receipt) =>
+          receipt.actorId === input.actorId &&
+          receipt.command === input.command &&
+          receipt.prepareIdempotencyKey === input.prepareIdempotencyKey,
+      )
+      .sort(InMemoryCommandConfirmationReceiptStore.#order)
+      .map((receipt) => structuredCloneControl(receipt));
+  }
+
+  async listReceiptsByActorCommand(input: {
+    actorId: string;
+    command: string;
+    limit?: number;
+  }): Promise<readonly CommandConfirmationReceipt[]> {
+    const matched = [...this.#receipts.values()]
+      .filter((receipt) => receipt.actorId === input.actorId && receipt.command === input.command)
+      .sort(InMemoryCommandConfirmationReceiptStore.#order);
+    const bounded =
+      input.limit !== undefined ? matched.slice(0, Math.max(0, input.limit)) : matched;
+    return bounded.map((receipt) => structuredCloneControl(receipt));
+  }
+
+  #claim(receiptId: string, input: {
+    owner: string;
+    leaseUntil: number;
+    at: number;
+  }): CommandConfirmationClaim {
+    const found = this.#receipts.get(receiptId);
+    if (found === undefined) {
+      return { outcome: 'missing' };
+    }
+    if (found.status !== 'prepared') {
+      return { outcome: 'settled' };
+    }
+    if (input.at >= found.expiryAt) {
+      // Fail closed at/after expiry: the receipt durably becomes `expired`
+      // (lazy, truthful expiry — still auditable; P-10/P-19).
+      const expired: CommandConfirmationReceipt = {
+        ...found,
+        status: 'expired',
+        owner: undefined,
+        claimUntil: undefined,
+        fenceToken: undefined,
+      };
+      this.#receipts.set(receiptId, structuredCloneControl(expired));
+      return { outcome: 'expired' };
+    }
+    if (
+      found.owner !== undefined &&
+      (found.claimUntil === undefined || found.claimUntil > input.at)
+    ) {
+      return { outcome: 'in-progress' };
+    }
+    const attempts = found.attempts + 1;
+    const fenceToken = commandConfirmationFenceToken({
+      receiptId,
+      owner: input.owner,
+      attempts,
+    });
+    const updated: CommandConfirmationReceipt = {
+      ...found,
+      owner: input.owner,
+      claimUntil: input.leaseUntil,
+      attempts,
+      fenceToken,
+    };
+    this.#receipts.set(receiptId, structuredCloneControl(updated));
+    return { outcome: 'claimed', fenceToken };
+  }
+
+  async startConsumption(input: {
+    receiptId: string;
+    owner: string;
+    leaseUntil: number;
+    at: number;
+  }): Promise<CommandConfirmationClaim> {
+    return this.#claim(input.receiptId, input);
+  }
+
+  async takeOverExpiredConsumptionLease(input: {
+    receiptId: string;
+    owner: string;
+    leaseUntil: number;
+    at: number;
+  }): Promise<CommandConfirmationClaim> {
+    return this.#claim(input.receiptId, input);
+  }
+
+  #requireLivePreparedFence(receiptId: string, fenceToken: string): CommandConfirmationReceipt {
+    const found = this.#receipts.get(receiptId);
+    if (found === undefined) {
+      throw new VictControlError(
+        'VICT_CONFIRMATION_RECEIPT_MISSING',
+        'No command-confirmation receipt exists for this identity.',
+      );
+    }
+    if (found.status !== 'prepared' || found.fenceToken === undefined) {
+      throw new VictControlError(
+        VICT_CONFIRMATION_FENCE_CONFLICT,
+        'VICT_CONFIRMATION_FENCE_CONFLICT: the receipt is no longer claimed as prepared; the presented fence token does not own it.',
+      );
+    }
+    if (found.fenceToken !== fenceToken) {
+      throw new VictControlError(
+        VICT_CONFIRMATION_FENCE_CONFLICT,
+        'VICT_CONFIRMATION_FENCE_CONFLICT: the settlement fence token does not match the current claim generation; the receipt is untouched.',
+      );
+    }
+    return found;
+  }
+
+  async settleConsumption(input: {
+    receiptId: string;
+    fenceToken: string;
+    status: 'consumed' | 'spent';
+    consumedByKey?: string;
+    at: number;
+  }): Promise<void> {
+    const found = this.#requireLivePreparedFence(input.receiptId, input.fenceToken);
+    const updated: CommandConfirmationReceipt = {
+      ...structuredCloneControl(found),
+      status: input.status,
+      consumedAt: input.at,
+      consumedByKey: input.consumedByKey ?? found.consumedByKey,
+      owner: undefined,
+      claimUntil: undefined,
+      fenceToken: undefined,
+    };
+    this.#receipts.set(input.receiptId, structuredCloneControl(updated));
+  }
+
+  async releaseConsumption(input: {
+    receiptId: string;
+    fenceToken: string;
+    at: number;
+  }): Promise<void> {
+    void input.at;
+    const found = this.#requireLivePreparedFence(input.receiptId, input.fenceToken);
+    const updated: CommandConfirmationReceipt = {
+      ...structuredCloneControl(found),
+      owner: undefined,
+      claimUntil: undefined,
+      fenceToken: undefined,
+    };
+    this.#receipts.set(input.receiptId, structuredCloneControl(updated));
+  }
+}
+
 /** The in-memory Stage 06B store set. */
 export function createInMemoryAgentControlStores() {
   return {
@@ -1315,6 +1508,7 @@ export function createInMemoryAgentControlStores() {
     approvals: new InMemoryAgentApprovalStore(),
     streamLedger: new InMemoryAgentStreamLedgerStore(),
     commandIdempotency: new InMemoryCommandIdempotencyStore(),
+    commandConfirmationReceipts: new InMemoryCommandConfirmationReceiptStore(),
   };
 }
 

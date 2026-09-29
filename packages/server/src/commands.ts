@@ -2,6 +2,7 @@ import { createHash } from 'node:crypto';
 import type {
   ActivationCatalog,
   AgentControlStores,
+  CommandConfirmationReceipt,
   ControlAuditEvent,
   DurableWaitState,
   ExecutionStore,
@@ -10,6 +11,7 @@ import type {
   StoredEvent,
   StoredRun,
   StoredRunStatus,
+  CommandConfirmationReceiptStore,
 } from '@victframework/runtime';
 import {
   COMMAND_IDEMPOTENCY_KEY_PATTERN,
@@ -55,6 +57,17 @@ import type { ServerActorContext } from './auth.js';
  *   full command response, rationale, application rows, model content, or
  *   tool data. An authorized replay result is reconstructed from its
  *   authoritative domain when necessary;
+ * - CONTROLLED RECOVERY FENCE (Stage 9 G2): the four migrated mutations
+ *   (`run.cancel`, `activation.select`, `release.select`,
+ *   `release.rollback`) and the new `run.resolve` / `run.signal`
+ *   interventions require a server-issued confirmation receipt; the legacy
+ *   unconfirmed shape is rejected (`VICT_CONFIRMATION_REQUIRED`) for EVERY
+ *   actor class including administrator — the all-scopes policy grants
+ *   authority, never bypass. Checks follow the frozen Phase 1–4 order:
+ *   settled idempotency replay first (digest of the COMPLETE confirmation
+ *   request), then the non-echoing receipt chain, then durable fenced
+ *   claims on BOTH stores, then execution under the domain idempotency
+ *   fence and fenced settlement of BOTH stores.
  * - stable, structured, non-echoing errors.
  */
 
@@ -85,6 +98,8 @@ export const VICT_COMMANDS = [
   'activation.get',
   'activation.selected',
   'run.cancel',
+  'run.resolve',
+  'run.signal',
   'run.list',
   'run.get',
   'run.events',
@@ -180,12 +195,12 @@ const COMMAND_REGISTRY: Readonly<Record<VictCommandName, CommandSpec>> = {
   },
   'release.select': {
     scope: 'release.select',
-    fields: ['applicationId', 'releaseVersion'],
+    fields: ['applicationId', 'releaseVersion', 'confirmation'],
     mutation: true,
   },
   'release.rollback': {
     scope: 'release.select',
-    fields: ['applicationId', 'targetReleaseVersion'],
+    fields: ['applicationId', 'targetReleaseVersion', 'confirmation'],
     mutation: true,
   },
   'release.get-selected': { scope: 'release.read', fields: ['applicationId'], mutation: false },
@@ -222,10 +237,12 @@ const COMMAND_REGISTRY: Readonly<Record<VictCommandName, CommandSpec>> = {
   },
   'activation.select': {
     scope: 'activation.select',
-    fields: ['graphId', 'activationVersion'],
+    fields: ['graphId', 'activationVersion', 'confirmation'],
     mutation: true,
   },
-  'run.cancel': { scope: 'run.cancel', fields: ['runId', 'reasonCode'], mutation: true },
+  'run.cancel': { scope: 'run.cancel', fields: ['runId', 'reasonCode', 'confirmation'], mutation: true },
+  'run.resolve': { scope: 'run.resolve', fields: ['runId', 'resolution', 'confirmation'], mutation: true },
+  'run.signal': { scope: 'run.signal', fields: ['runId', 'signalName', 'confirmation'], mutation: true },
   'agent.turn.start': {
     scope: 'agent.turn.start',
     fields: ['threadId', 'input', 'applicationReleaseVersion'],
@@ -299,6 +316,72 @@ export function isMutationCommand(command: string): boolean {
   return spec?.mutation === true;
 }
 
+// ---- Stage 9 G2 — the confirmation boundary (constants) ---------------------
+
+/**
+ * The receipt-gated commands (frozen G2 contract): the four migrated
+ * mutations with their names/fields/scopes UNCHANGED (additively gaining
+ * the REQUIRED `confirmation` payload member) and the two new intervention
+ * commands that are receipt-gated from day one.
+ */
+export type ConfirmationGatedCommand =
+  | 'run.cancel'
+  | 'release.select'
+  | 'release.rollback'
+  | 'activation.select'
+  | 'run.resolve'
+  | 'run.signal';
+
+export const CONFIRMATION_REQUIRED_COMMANDS: ReadonlySet<string> = new Set<ConfirmationGatedCommand>([
+  'run.cancel',
+  'release.select',
+  'release.rollback',
+  'activation.select',
+  'run.resolve',
+  'run.signal',
+]);
+
+/** Closed `run.resolve` resolution vocabulary (pinned proposal §4.2). */
+export const RUN_RESOLUTIONS = ['retry', 'confirm_applied', 'fail', 'cancel'] as const;
+export type RunResolution = (typeof RUN_RESOLUTIONS)[number];
+
+/** The internal prepare idempotency namespace command. */
+export function confirmationPrepareCommand(command: string): string {
+  return `confirmation.prepare:${command}`;
+}
+
+/** The pinned replacement budget: FIVE replacement receipts per (actor,
+ * command, key). Beyond it, a same-key same-digest prepare replays the
+ * latest receipt's truthful status — NEVER an idempotency conflict. */
+export const CONFIRMATION_REPLACEMENT_BUDGET = 5;
+
+/** The accepted prepare-TTL default (D-OPEN-1): 10 minutes. */
+export const DEFAULT_CONFIRMATION_TTL_MS = 600_000;
+
+/**
+ * The internal executor port binding the runtime's EXISTING blocked-run
+ * resolution path (`resolveBlocked` orchestration mechanics). No arbitrary
+ * timer-fire command is invented; the receipt-gated `run.resolve` command
+ * drives this composition port.
+ */
+export interface RunResolutionPort {
+  resolveBlocked(input: {
+    runId: string;
+    resolution: RunResolution;
+    actorId: string;
+    requestId: string;
+  }): Promise<unknown>;
+}
+
+/**
+ * The composition port binding the EXISTING durable-signal driver: the
+ * receipt-gated `run.signal` command delivers a named signal to one run's
+ * durable wait through this port (identity fields only).
+ */
+export interface RunSignalPort {
+  signalWait(input: { runId: string; signalName: string; signalId: string }): Promise<unknown>;
+}
+
 /** A closed, versioned command request. */
 export interface VictCommandRequest {
   readonly command: VictCommandName;
@@ -360,6 +443,23 @@ export interface VictCommandServiceOptions {
   readonly idempotencyLeaseMs?: number;
   /** The lease owner token (defaults to a per-service instance token). */
   readonly idempotencyOwner?: string;
+  /**
+   * Stage 9 G2: the prepare-TTL (accepted default 10 minutes = 600_000 ms).
+   * A prepared-but-unconsumed receipt expires truthfully after this time.
+   */
+  readonly confirmationTtlMs?: number;
+  /**
+   * Stage 9 G2: the internal blocked-run resolution executor (the EXISTING
+   * runtime `resolveBlocked` path). The `run.resolve` command fails closed
+   * with a stable code when it is not composed.
+   */
+  readonly runResolution?: RunResolutionPort;
+  /**
+   * Stage 9 G2: the internal durable-signal driver (the EXISTING signal
+   * delivery path). The `run.signal` command fails closed with a stable
+   * code when it is not composed.
+   */
+  readonly runSignals?: RunSignalPort;
 }
 
 /** The subset of AgentTurnService the dispatcher uses. */
@@ -822,12 +922,16 @@ export class VictCommandService {
   readonly #options: VictCommandServiceOptions;
   readonly #owner: string;
   readonly #leaseMs: number;
+  readonly #confirmationTtlMs: number;
   /** Monotonic disambiguator for per-access protected-detail audit ids. */
   #detailAuditSeq = 0;
+  /** Opaque receiptId generator nonce (never derived from payload bytes). */
+  #confirmationSeq = 0;
 
   constructor(options: VictCommandServiceOptions) {
     this.#options = options;
     this.#leaseMs = options.idempotencyLeaseMs ?? 60_000;
+    this.#confirmationTtlMs = options.confirmationTtlMs ?? DEFAULT_CONFIRMATION_TTL_MS;
     serviceInstanceCounter += 1;
     this.#owner = options.idempotencyOwner ?? `svc-${process.pid}-${serviceInstanceCounter}`;
   }
@@ -937,11 +1041,29 @@ export class VictCommandService {
     const store = this.#options.stores.commandIdempotency;
     const now = this.#options.clock ?? (() => Date.now());
     const namespace = { actorId: actor.actorId, command, idempotencyKey };
+    // The confirmation requirement is checked FIRST for the gated commands,
+    // in the command service (never the transport): a legacy unconfirmed
+    // shape fails closed for EVERY actor class including administrator.
+    if (CONFIRMATION_REQUIRED_COMMANDS.has(command)) {
+      requireConfirmationMember(payload);
+    }
     // The settlement fence token of the claim generation THIS execution
     // owns: completion, deterministic failure, and release all present
     // exactly this token. A stale owner's settlement fails with a stable
     // conflict and never mutates the current claim.
     let fenceToken: string | undefined;
+    // Confirmation-gated commands continue through the frozen Phase 1–4
+    // order below; the plain mutation path keeps the pre-G2 behavior.
+    if (CONFIRMATION_REQUIRED_COMMANDS.has(command)) {
+      return this.#dispatchConfirmedIdempotent(
+        actor,
+        command,
+        payload,
+        idempotencyKey as string,
+        digest,
+        namespace,
+      );
+    }
     const existing = await store.getReceipt(namespace);
     if (existing !== undefined) {
       // The receipt binds actor + command kind + request digest.
@@ -1095,6 +1217,852 @@ export class VictCommandService {
    * requires the full record is re-derived under the CURRENT actor's
    * authorization (actor-scoped reads — never a data leak).
    */
+  // ---- Stage 9 G2 — the confirmation boundary ------------------------
+
+  /**
+   * The confirmation-gated idempotency path: the frozen Phase 1–4 order
+   * (proposal §5). Phase 1 is the EXISTING settled idempotency lookup bound
+   * to the digest of the COMPLETE confirmation request (the payload itself
+   * includes `confirmation.receiptId`); Phase 2 classifies the non-echoing
+   * receipt chain; Phase 3 claims durably and FENCED on BOTH stores (the
+   * receipt here, the command through the EXISTING idempotency store incl.
+   * the cross-command `findReceiptByActorKey` check); Phase 4 executes
+   * under the domain idempotency fence and settles BOTH stores (idempotency
+   * result first, receipt converges under its fence — consumed on success,
+   * `spent` on a persisted deterministic failure, fenced release on a
+   * retryable infrastructure failure).
+   */
+  async #dispatchConfirmedIdempotent(
+    actor: ServerActorContext,
+    command: VictCommandName,
+    payload: Record<string, unknown>,
+    idempotencyKey: string,
+    digest: string,
+    namespace: { actorId: string; command: string; idempotencyKey: string },
+  ): Promise<VictCommandOutcome> {
+    const store = this.#options.stores.commandIdempotency;
+    const confirmationStore = this.#options.stores.commandConfirmationReceipts;
+    const now = this.#options.clock ?? (() => Date.now());
+    const claimOwner = `${actor.actorId}\u0000${idempotencyKey}`;
+    // ---- Phase 1: settled lookup (checked FIRST; replay precedes every
+    // receipt-state check) ---------------------------------------------------
+    const existing = await store.getReceipt(namespace);
+    if (existing !== undefined) {
+      if (
+        existing.actorId !== actor.actorId ||
+        existing.command !== command ||
+        existing.requestDigest !== digest
+      ) {
+        return { ok: false, code: 'VICT_COMMAND_IDEMPOTENCY_CONFLICT' };
+      }
+      if (existing.status === 'failed') {
+        // A deterministic recorded failure replays truthfully; the referenced
+        // receipt converges to `spent` under the same fence (convergence is
+        // best-effort; the recorded outcome is authoritative).
+        const receiptId = this.#boundConfirmationOf(payload);
+        if (receiptId !== undefined) {
+          await this.#settleStoredReceipt(
+            confirmationStore,
+            actor,
+            idempotencyKey,
+            receiptId,
+            'spent',
+          );
+        }
+        return { ok: false, code: existing.responseCode ?? 'VICT_COMMAND_FAILED' };
+      }
+      if (existing.status === 'completed') {
+        // Phase-1 precedence: the recorded result replays with NO new effect
+        // even when the referenced receipt is now expired or spent (P-17,
+        // P-18); the receipt converges to `consumed` under the same fence
+        // when a crashed claim left it unsettled (P-21).
+        const receiptId = this.#boundConfirmationOf(payload);
+        if (receiptId !== undefined) {
+          await this.#settleStoredReceipt(
+            confirmationStore,
+            actor,
+            idempotencyKey,
+            receiptId,
+            'consumed',
+          );
+        }
+        return this.#replayResult(actor, command, existing);
+      }
+      // `pending` claims fall through to the Phase-3 claim acquisition.
+    } else {
+      // Cross-command key reuse: one Idempotency-Key is never quietly
+      // re-namespaced into a second logical request (P-8).
+      const reused = await store.findReceiptByActorKey({
+        actorId: actor.actorId,
+        idempotencyKey,
+      });
+      if (reused !== undefined && reused.command !== command) {
+        return { ok: false, code: 'VICT_COMMAND_IDEMPOTENCY_CONFLICT' };
+      }
+    }
+    // ---- Phase 2: the receipt verification chain (non-echoing) -----------
+    const classified = await this.#classifyReceiptChain(actor, command, payload);
+    if (!classified.ok) {
+      return { ok: false, code: classified.code };
+    }
+    const receipt = classified.receipt;
+    // ---- Phase 3: durable claims, fenced on both stores ------------------
+    let idempotencyFence: string;
+    if (existing === undefined) {
+      const claimFenceToken = commandIdempotencyFenceToken({
+        actorId: actor.actorId,
+        command,
+        idempotencyKey,
+        owner: this.#owner,
+        attempts: 1,
+      });
+      const claim = await store.claimReceipt({
+        idempotencyKey,
+        actorId: actor.actorId,
+        command,
+        requestDigest: digest,
+        status: 'pending',
+        responseCode: undefined,
+        resultJson: undefined,
+        createdAt: now(),
+        settledAt: undefined,
+        owner: this.#owner,
+        leaseUntil: now() + this.#leaseMs,
+        attempts: 1,
+        fenceToken: claimFenceToken,
+      });
+      if (claim === 'exists') {
+        // Lost the concurrent race: re-read for the truthful disposition,
+        // touching neither store further (the receipt claim never happens).
+        const raced = await store.getReceipt(namespace);
+        if (
+          raced !== undefined &&
+          (raced.actorId !== actor.actorId ||
+            raced.command !== command ||
+            raced.requestDigest !== digest)
+        ) {
+          return { ok: false, code: 'VICT_COMMAND_IDEMPOTENCY_CONFLICT' };
+        }
+        if (raced !== undefined && raced.status === 'completed') {
+          return this.#replayResult(actor, command, raced);
+        }
+        if (raced !== undefined && raced.status === 'failed') {
+          return { ok: false, code: raced.responseCode ?? 'VICT_COMMAND_FAILED' };
+        }
+        return { ok: false, code: 'VICT_COMMAND_IDEMPOTENCY_IN_PROGRESS' };
+      }
+      idempotencyFence = claimFenceToken;
+    } else {
+      const takeover = await store.takeOverExpiredLease({
+        actorId: actor.actorId,
+        command,
+        idempotencyKey,
+        owner: this.#owner,
+        leaseUntil: now() + this.#leaseMs,
+        at: now(),
+      });
+      if (takeover.outcome === 'not-expired') {
+        return { ok: false, code: 'VICT_COMMAND_IDEMPOTENCY_IN_PROGRESS' };
+      }
+      if (takeover.outcome !== 'taken') {
+        // Fail closed rather than settle unfenced ('missing' namespace cannot
+        // reach here: Phase 1 established an existing pending receipt).
+        throw new VictControlError(
+          VICT_IDEMPOTENCY_FENCE_CONFLICT,
+          'VICT_IDEMPOTENCY_FENCE_CONFLICT: no settlement fence token was allocated for this command execution.',
+        );
+      }
+      idempotencyFence = takeover.fenceToken;
+    }
+    // The fenced receipt claim in the NEW confirmation store.
+    const receiptClaim = await confirmationStore.startConsumption({
+      receiptId: receipt.receiptId,
+      owner: claimOwner,
+      leaseUntil: now() + this.#leaseMs,
+      at: now(),
+    });
+    if (receiptClaim.outcome !== 'claimed') {
+      let code: string;
+      switch (receiptClaim.outcome) {
+        case 'missing':
+          code = 'VICT_CONFIRMATION_UNAVAILABLE';
+          break;
+        case 'expired':
+          code = 'VICT_CONFIRMATION_EXPIRED';
+          break;
+        case 'in-progress':
+          // Another consume of the same receipt is in flight: the loser is
+          // retryable, NOT a settled failure (P-2). Release the idempotency
+          // claim (fenced) so a same-key retry re-executes truthfully.
+          await store
+            .releaseReceipt({
+              actorId: actor.actorId,
+              command,
+              idempotencyKey,
+              at: now(),
+              fenceToken: idempotencyFence,
+            })
+            .catch(() => undefined);
+          return { ok: false, code: 'VICT_COMMAND_IDEMPOTENCY_IN_PROGRESS' };
+        default: {
+          const reread = await confirmationStore.getReceipt(receipt.receiptId);
+          code = reread?.status === 'expired' ? 'VICT_CONFIRMATION_EXPIRED' : 'VICT_CONFIRMATION_SPENT';
+        }
+      }
+      // Deterministic classification: persist through the durable claim.
+      await store
+        .failReceipt({
+          actorId: actor.actorId,
+          command,
+          idempotencyKey,
+          responseCode: code,
+          at: now(),
+          fenceToken: idempotencyFence,
+        })
+        .catch(() => undefined);
+      // The persistent stable outcome — recorded and returned (not thrown).
+      await this.#auditConsumedOutcome(actor, command, receipt.receiptId, code);
+      return { ok: false, code };
+    }
+    const receiptFence = receiptClaim.fenceToken;
+    // ---- Phase 4: execute under the domain idempotency fence; settle BOTH
+    // stores --------------------------------------------------------------
+    try {
+      const outcome = await this.#execute(actor, command, payload, idempotencyKey);
+      if (outcome.ok) {
+        await store.completeReceipt({
+          actorId: actor.actorId,
+          command,
+          idempotencyKey,
+          resultJson: JSON.stringify(safeResultProjection(command, outcome.data)),
+          at: now(),
+          fenceToken: idempotencyFence,
+        });
+      } else {
+        await store.failReceipt({
+          actorId: actor.actorId,
+          command,
+          idempotencyKey,
+          responseCode: outcome.code,
+          at: now(),
+          fenceToken: idempotencyFence,
+        });
+        // Persisted deterministic failure: the receipt truthfully settles.
+        await confirmationStore
+          .settleConsumption({
+            receiptId: receipt.receiptId,
+            fenceToken: receiptFence,
+            status: 'spent',
+            consumedByKey: idempotencyKey,
+            at: now(),
+          })
+          .catch(() => undefined);
+        return outcome;
+      }
+      // The idempotency result settled FIRST; the receipt converges under
+      // its own fence. A lost fence race converges on the Phase-1 replay.
+      await confirmationStore
+        .settleConsumption({
+          receiptId: receipt.receiptId,
+          fenceToken: receiptFence,
+          status: 'consumed',
+          consumedByKey: idempotencyKey,
+          at: now(),
+        })
+        .catch(() => undefined);
+      await this.#auditConsumed(actor, command, idempotencyKey, receipt.receiptId);
+      return outcome;
+    } catch (error) {
+      if (error instanceof VictControlError) {
+        if (error.code !== VICT_IDEMPOTENCY_FENCE_CONFLICT) {
+          await store
+            .failReceipt({
+              actorId: actor.actorId,
+              command,
+              idempotencyKey,
+              responseCode: error.code,
+              at: now(),
+              fenceToken: idempotencyFence,
+            })
+            .catch(() => undefined);
+          await confirmationStore
+            .settleConsumption({
+              receiptId: receipt.receiptId,
+              fenceToken: receiptFence,
+              status: 'spent',
+              consumedByKey: idempotencyKey,
+              at: now(),
+            })
+            .catch(() => undefined);
+        }
+        throw error;
+      }
+      // RETRYABLE infrastructure failure: fenced releases on BOTH stores so
+      // a retry re-executes truthfully — never a false terminal state.
+      await store
+        .releaseReceipt({
+          actorId: actor.actorId,
+          command,
+          idempotencyKey,
+          at: now(),
+          fenceToken: idempotencyFence,
+        })
+        .catch(() => undefined);
+      await confirmationStore
+        .releaseConsumption({ receiptId: receipt.receiptId, fenceToken: receiptFence, at: now() })
+        .catch(() => undefined);
+      throw error;
+    }
+  }
+
+  /** The bounded receipt id bound inside the confirmed request payload. */
+  #boundConfirmationOf(payload: Record<string, unknown>): string | undefined {
+    const confirmation = confirmationOf(payload);
+    return confirmation.receiptId;
+  }
+
+  /**
+   * Best-effort fenced convergence of a receipt whose claim generation this
+   * (actor, key) already owned: the crash-recovery protocol that keeps both
+   * stores eventually consistent (P-21).
+   */
+  async #settleStoredReceipt(
+    store: CommandConfirmationReceiptStore,
+    actor: ServerActorContext,
+    idempotencyKey: string,
+    receiptId: string,
+    toStatus: 'consumed' | 'spent',
+  ): Promise<void> {
+    try {
+      const receipt = await store.getReceipt(receiptId);
+      if (receipt === undefined || receipt.actorId !== actor.actorId) {
+        return;
+      }
+      if (receipt.status !== 'prepared') {
+        return;
+      }
+      if (receipt.owner !== `${actor.actorId}\u0000${idempotencyKey}`) {
+        return;
+      }
+      const at = (this.#options.clock ?? (() => Date.now()))();
+      const claim = await store.startConsumption({
+        receiptId,
+        owner: `${actor.actorId}\u0000${idempotencyKey}`,
+        leaseUntil: at + this.#leaseMs,
+        at,
+      });
+      if (claim.outcome !== 'claimed') {
+        return;
+      }
+      await store.settleConsumption({
+        receiptId,
+        fenceToken: claim.fenceToken,
+        status: toStatus,
+        consumedByKey: idempotencyKey,
+        at,
+      });
+    } catch {
+      // Best-effort convergence under the recorded outcome; never masks it.
+    }
+  }
+
+  /**
+   * Phase 2: the non-echoing receipt chain (REQUIRED → UNAVAILABLE →
+   * MISMATCH → EXPIRED → STALE → SPENT). Returns `{ ok: false, code }` —
+   * a stable persistent outcome with effect None — or the prepared
+   * receipt. Never echoes receipt bytes.
+   */
+  async #classifyReceiptChain(
+    actor: ServerActorContext,
+    command: VictCommandName,
+    payload: Record<string, unknown>,
+  ): Promise<{ ok: false; code: string } | { ok: true; receipt: CommandConfirmationReceipt }> {
+    const confirmationStore = this.#options.stores.commandConfirmationReceipts;
+    const confirmation = confirmationOf(payload);
+    const unavailable = (): { ok: false; code: string } => ({
+      ok: false,
+      code: 'VICT_CONFIRMATION_UNAVAILABLE',
+    });
+    if (confirmation.receiptId === undefined) {
+      return unavailable();
+    }
+    const receipt = await confirmationStore.getReceipt(confirmation.receiptId);
+    // Unknown receipts, other actors' receipts, and receipts issued by
+    // another target are non-echoingly unavailable (R-5).
+    if (receipt === undefined || receipt.actorId !== actor.actorId) {
+      return unavailable();
+    }
+    if (receipt.command !== command) {
+      // Wrong-command receipts are a canonical mismatch.
+      return { ok: false, code: 'VICT_CONFIRMATION_MISMATCH' };
+    }
+    // Wrong canonical parameters (re-derived from the canonical payload —
+    // never echoing the receipt's own bytes).
+    if (receipt.payloadDigest !== confirmationReceiptDigest(command, payload)) {
+      return { ok: false, code: 'VICT_CONFIRMATION_MISMATCH' };
+    }
+    // ---- chain order: EXPIRED → STALE → SPENT ----
+    const at = (this.#options.clock ?? (() => Date.now()))();
+    if (receipt.status === 'expired' || (receipt.status === 'prepared' && at >= receipt.expiryAt)) {
+      return { ok: false, code: 'VICT_CONFIRMATION_EXPIRED' };
+    }
+    const current = await this.#currentSubjectRevision(command, receipt.subjectId);
+    if (current !== undefined && receipt.expectedRevision !== current) {
+      // Target revision changed after preparation: re-review, prepare again.
+      return { ok: false, code: 'VICT_CONFIRMATION_STALE' };
+    }
+    if (receipt.status === 'spent' || receipt.status === 'consumed') {
+      return { ok: false, code: 'VICT_CONFIRMATION_SPENT' };
+    }
+    return { ok: true, receipt };
+  }
+
+  /**
+   * The CURRENT subject revision, read through the available read surface
+   * (G1 reads; `undefined` when no read source is composed — the check
+   * then cannot silently fail a receipt).
+   */
+  async #currentSubjectRevision(
+    command: string,
+    subjectId: string,
+  ): Promise<number | null | undefined> {
+    switch (command) {
+      case 'run.cancel':
+      case 'run.resolve':
+      case 'run.signal': {
+        const run = await this.#options.execution?.getRun(subjectId);
+        return run === undefined ? undefined : run.recordRevision;
+      }
+      case 'activation.select': {
+        const selection = await this.#options.catalog?.getSelection(subjectId);
+        return selection === undefined ? null : selection.selectionRevision;
+      }
+      case 'release.select':
+      case 'release.rollback': {
+        const rows = await this.#options.stores.control.listReleaseSelections(subjectId);
+        if (rows.length === 0) {
+          return null;
+        }
+        return rows.reduce((max, row) => Math.max(max, row.selectionRevision), 0);
+      }
+      default:
+        return undefined;
+    }
+  }
+
+  /**
+   * G2 `confirmation.prepare`: issue (or truthfully replay / replace) the
+   * server-issued receipt for one gated intervention. Honors: prepare
+   * claims in the EXISTING CommandIdempotencyStore under the namespace
+   * `confirmation.prepare:<command>` with the digest of the canonical
+   * prepare request; same key + digest with a live prepared receipt
+   * replays the SAME receipt; after expiry a replacement receipt (at most
+   * FIVE replacement attempts per (actor, command, key)); beyond budget
+   * the latest receipt's truthful status replays — NEVER a conflict; a
+   * digest change on the key ALWAYS answers the conflict BEFORE any
+   * replacement logic.
+   */
+  async prepareConfirmation(
+    actor: ServerActorContext,
+    request: {
+      readonly command: string;
+      readonly payload: unknown;
+      readonly idempotencyKey: string;
+    },
+  ): Promise<VictCommandOutcome> {
+    const store = this.#options.stores.commandIdempotency;
+    const confirmationStore = this.#options.stores.commandConfirmationReceipts;
+    const now = this.#options.clock ?? (() => Date.now());
+    const commandName = request.command;
+    if (
+      typeof commandName !== 'string' ||
+      !CONFIRMATION_REQUIRED_COMMANDS.has(commandName) ||
+      !(VICT_COMMANDS as readonly string[]).includes(commandName)
+    ) {
+      return { ok: false, code: 'VICT_COMMAND_UNKNOWN' };
+    }
+    const command = commandName as VictCommandName;
+    // Prepare requires the TARGET command's mutation scope.
+    const spec = COMMAND_REGISTRY[command];
+    if (spec.scope !== '*') {
+      assertCommandScope(actor, spec.scope);
+    }
+    if (
+      typeof request.idempotencyKey !== 'string' ||
+      !COMMAND_IDEMPOTENCY_KEY_PATTERN.test(request.idempotencyKey)
+    ) {
+      throw new VictControlError(
+        'VICT_COMMAND_IDEMPOTENCY_KEY_INVALID',
+        'Prepare requires a bounded Idempotency-Key (letters, digits, ".", "_", ":", "-"; at most 128 characters).',
+      );
+    }
+    let payload: Record<string, unknown>;
+    try {
+      payload = canonicalPlainPayload(request.payload);
+    } catch (error) {
+      if (error instanceof VictControlError) {
+        throw error;
+      }
+      throw new VictControlError(
+        'VICT_COMMAND_PAYLOAD_INVALID',
+        'The prepare payload could not be canonicalized; hostile containers are rejected.',
+      );
+    }
+    // Closed prepare field set: the target command's semantic fields plus
+    // the REQUIRED subject guard `expectedRevision`. Unknown fields fail.
+    const prepareFields = [...semanticConfirmationFields(command), 'expectedRevision'];
+    this.#assertPreparePayloadFields(command, payload, prepareFields);
+    const subjectField = confirmationSubjectField(command);
+    if (typeof payload[subjectField] !== 'string' || (payload[subjectField] as string).length === 0) {
+      throw new VictControlError(
+        'VICT_COMMAND_FIELD_INVALID',
+        `The prepare payload must carry the subject identity '${subjectField}'.`,
+      );
+    }
+    const subjectId = payload[subjectField] as string;
+    const expectedRevision = payload['expectedRevision'];
+    if (expectedRevision === undefined) {
+      // expectedRevision is REQUIRED (proposal §4.4; no no-guard shape).
+      throw new VictControlError(
+        'VICT_CONFIRMATION_FIELD_REQUIRED',
+        'VICT_CONFIRMATION_FIELD_REQUIRED: the prepare payload must carry the subject\'s current expectedRevision.',
+      );
+    }
+    if (
+      expectedRevision !== null &&
+      (typeof expectedRevision !== 'number' ||
+        !Number.isSafeInteger(expectedRevision) ||
+        expectedRevision < 0)
+    ) {
+      throw new VictControlError(
+        'VICT_COMMAND_FIELD_INVALID',
+        'expectedRevision must be the subject\'s current revision (a safe integer, or null when truthfully none is selected).',
+      );
+    }
+    const prepareDigest = requestDigest(payload);
+    const prepareCommand = confirmationPrepareCommand(command);
+    const prepareNamespace = {
+      actorId: actor.actorId,
+      command: prepareCommand,
+      idempotencyKey: request.idempotencyKey,
+    };
+    let prepareClaimFence: string | undefined;
+    const prepareStore = store;
+    const existingPrepare = await prepareStore.getReceipt(prepareNamespace);
+    if (existingPrepare === undefined) {
+      const reused = await prepareStore.findReceiptByActorKey({
+        actorId: actor.actorId,
+        idempotencyKey: request.idempotencyKey,
+      });
+      if (reused !== undefined && reused.command !== prepareCommand) {
+        return { ok: false, code: 'VICT_COMMAND_IDEMPOTENCY_CONFLICT' };
+      }
+      const claimFenceToken = commandIdempotencyFenceToken({
+        actorId: actor.actorId,
+        command: prepareCommand,
+        idempotencyKey: request.idempotencyKey,
+        owner: this.#owner,
+        attempts: 1,
+      });
+      const claim = await prepareStore.claimReceipt({
+        idempotencyKey: request.idempotencyKey,
+        actorId: actor.actorId,
+        command: prepareCommand,
+        requestDigest: prepareDigest,
+        status: 'pending',
+        responseCode: undefined,
+        resultJson: undefined,
+        createdAt: now(),
+        settledAt: undefined,
+        owner: this.#owner,
+        leaseUntil: now() + this.#leaseMs,
+        attempts: 1,
+        fenceToken: claimFenceToken,
+      });
+      if (claim === 'exists') {
+        const raced = await prepareStore.getReceipt(prepareNamespace);
+        if (
+          raced !== undefined &&
+          (raced.requestDigest !== prepareDigest || raced.command !== prepareCommand)
+        ) {
+          // A digest change on a claimed prepare key is ALWAYS a conflict
+          // (P-24) — before any replacement logic.
+          return { ok: false, code: 'VICT_COMMAND_IDEMPOTENCY_CONFLICT' };
+        }
+        if (raced !== undefined && raced.status === 'pending') {
+          return { ok: false, code: 'VICT_COMMAND_IDEMPOTENCY_IN_PROGRESS' };
+        }
+        // raced === completed: fall through to the truthful receipt replay.
+      } else {
+        prepareClaimFence = claimFenceToken;
+      }
+    } else {
+      if (existingPrepare.requestDigest !== prepareDigest) {
+        // A digest change on the key — settled or unsettled — answers the
+        // stable conflict BEFORE any replacement logic (P-24).
+        return { ok: false, code: 'VICT_COMMAND_IDEMPOTENCY_CONFLICT' };
+      }
+      if (existingPrepare.status === 'pending') {
+        const takeover = await prepareStore.takeOverExpiredLease({
+          actorId: actor.actorId,
+          command: prepareCommand,
+          idempotencyKey: request.idempotencyKey,
+          owner: this.#owner,
+          leaseUntil: now() + this.#leaseMs,
+          at: now(),
+        });
+        if (takeover.outcome === 'not-expired') {
+          return { ok: false, code: 'VICT_COMMAND_IDEMPOTENCY_IN_PROGRESS' };
+        }
+        prepareClaimFence = takeover.outcome === 'taken' ? takeover.fenceToken : undefined;
+      }
+      // A previously SETTLED prepare with the same digest replays through
+      // the truthful receipt chain below (same receipt, or replacement).
+    }
+    // ---- receipt chain: replay / replacement (P-22..P-24) ----
+    try {
+      const chain = await confirmationStore.listReceiptsByPrepare({
+        actorId: actor.actorId,
+        command,
+        prepareIdempotencyKey: request.idempotencyKey,
+      });
+      const latest = chain[chain.length - 1];
+      if (latest !== undefined) {
+        const elapsed = now() >= latest.expiryAt;
+        if (latest.status === 'prepared' && !elapsed) {
+          // Same actor + command + key + digest with a live prepared receipt
+          // replays the SAME receipt (idempotent prepare; P-1).
+          return ok({
+            receiptId: latest.receiptId,
+            command,
+            payloadDigest: latest.payloadDigest,
+            expectedRevision: latest.expectedRevision,
+            subjectId: latest.subjectId,
+            expiryAt: latest.expiryAt,
+            createdBy: latest.actorId,
+            createdAt: latest.createdAt,
+            status: latest.status,
+            replacementAttemptNo: latest.replacementAttemptNo,
+          });
+        }
+        const superseded = elapsed && latest.status === 'prepared';
+        const replacementsIssued = latest.replacementAttemptNo - 1;
+        if (
+          (latest.status === 'expired' || superseded) &&
+          replacementsIssued < CONFIRMATION_REPLACEMENT_BUDGET
+        ) {
+          // Replacement: the expired receipt stays expired and auditable;
+          // the fresh receipt is a NEW intent record (R-4/P-22).
+          return await this.#issueConfirmationReceipt(actor, command, payload, request.idempotencyKey, latest.replacementAttemptNo + 1, prepareClaimFence);
+        }
+        // Beyond the replacement budget: replay the LATEST receipt's
+        // truthful status. NEVER an idempotency conflict (P-23); the caller
+        // is invited to use a FRESH prepare key.
+        const effectiveStatus =
+          latest.status === 'prepared' && now() >= latest.expiryAt
+            ? 'expired'
+            : latest.status;
+        return ok({
+          receiptId: latest.receiptId,
+          command,
+          status: effectiveStatus,
+          recordedStatus: latest.status,
+          replacementAttemptNo: latest.replacementAttemptNo,
+          replayedStatus: true,
+          confirmable: false,
+        });
+      }
+      return await this.#issueConfirmationReceipt(actor, command, payload, request.idempotencyKey, 1, prepareClaimFence);
+    } catch (error) {
+      if (error instanceof VictControlError && error.code !== VICT_IDEMPOTENCY_FENCE_CONFLICT) {
+        // Deterministic prepare failure settles the durable claim.
+        if (prepareClaimFence !== undefined) {
+          await prepareStore
+            .failReceipt({
+              actorId: actor.actorId,
+              command: prepareCommand,
+              idempotencyKey: request.idempotencyKey,
+              responseCode: error.code,
+              at: now(),
+              fenceToken: prepareClaimFence,
+            })
+            .catch(() => undefined);
+        }
+        throw error;
+      }
+      // Retryable infrastructure failure: release the prepare claim.
+      if (prepareClaimFence !== undefined) {
+        await prepareStore
+          .releaseReceipt({
+            actorId: actor.actorId,
+            command: prepareCommand,
+            idempotencyKey: request.idempotencyKey,
+            at: now(),
+            fenceToken: prepareClaimFence,
+          })
+          .catch(() => undefined);
+      }
+      throw error;
+    }
+  }
+
+  /** Issue one server-issued receipt (the prepare boundary's final step). */
+  async #issueConfirmationReceipt(
+    actor: ServerActorContext,
+    command: VictCommandName,
+    payload: Record<string, unknown>,
+    prepareKey: string,
+    replacementAttemptNo: number,
+    prepareClaimFence: string | undefined,
+  ): Promise<VictCommandOutcome> {
+    const confirmationStore = this.#options.stores.commandConfirmationReceipts;
+    const control = this.#options.stores.control;
+    const now = this.#options.clock ?? (() => Date.now());
+    const at = now();
+    const payloadDigest = confirmationReceiptDigest(command, payload);
+    const subjectId = payload[confirmationSubjectField(command)] as string;
+    const receiptId = `cr-${createHash('sha256')
+      .update(
+        [
+          command,
+          actor.actorId,
+          prepareKey,
+          String(replacementAttemptNo),
+          String(at),
+          this.#owner,
+          String((this.#confirmationSeq += 1)),
+        ].join('\u0000'),
+        'utf8',
+      )
+      .digest('hex')}`;
+    const expectedRevision = payload['expectedRevision'] === undefined ? null : (payload['expectedRevision'] as number | null);
+    const record: CommandConfirmationReceipt = {
+      receiptId,
+      actorId: actor.actorId,
+      command,
+      payloadDigest,
+      subjectId,
+      expectedRevision,
+      expiryAt: at + this.#confirmationTtlMs,
+      status: 'prepared',
+      createdAt: at,
+      consumedAt: undefined,
+      consumedByKey: undefined,
+      replacementAttemptNo,
+      prepareIdempotencyKey: prepareKey,
+      owner: undefined,
+      claimUntil: undefined,
+      attempts: 0,
+      fenceToken: undefined,
+    };
+    const created = await confirmationStore.createReceipt(record);
+    if (created === 'exists') {
+      const existing = await confirmationStore.getReceipt(receiptId);
+      if (existing !== undefined) {
+        return this.#receiptPreparedView(existing);
+      }
+    }
+    // Audit carries digest + identity ONLY — never a payload byte.
+    await control.appendAuditEvent({
+      auditId: `audit-confirm-${receiptId}`,
+      at,
+      actorId: actor.actorId,
+      action: 'confirmation.prepared',
+      subjectType: 'confirmation',
+      subjectId: receiptId,
+      summary: `command=${command} actor=${actor.actorId} subject=${subjectId} digest=${payloadDigest} replacementAttemptNo=${replacementAttemptNo}`,
+    });
+    // Settle the durable prepare claim with this receipt's summary when
+    // this attempt owns the live claim generation.
+    if (prepareClaimFence !== undefined) {
+      await this.#options.stores.commandIdempotency
+        .completeReceipt({
+          actorId: actor.actorId,
+          command: confirmationPrepareCommand(command),
+          idempotencyKey: prepareKey,
+          resultJson: JSON.stringify({ receiptId, replacementAttemptNo }),
+          at,
+          fenceToken: prepareClaimFence,
+        })
+        .catch(() => undefined);
+    }
+    return this.#receiptPreparedView(record);
+  }
+
+  /** The human-reviewable prepared-receipt summary (§4.1, safe fields). */
+  #receiptPreparedView(record: CommandConfirmationReceipt): VictCommandOutcome {
+    return ok({
+      receiptId: record.receiptId,
+      command: record.command,
+      payloadDigest: record.payloadDigest,
+      expectedRevision: record.expectedRevision,
+      subjectId: record.subjectId,
+      expiryAt: record.expiryAt,
+      createdBy: record.actorId,
+      createdAt: record.createdAt,
+      status: record.status,
+      replacementAttemptNo: record.replacementAttemptNo,
+    });
+  }
+
+  /** Closed prepare payload field check (fail closed on unknown fields). */
+  #assertPreparePayloadFields(
+    command: VictCommandName,
+    payload: Record<string, unknown>,
+    allowed: readonly string[],
+  ): void {
+    for (const key of Object.keys(payload)) {
+      if (!allowed.includes(key)) {
+        throw new VictControlError(
+          'VICT_COMMAND_PAYLOAD_INVALID',
+          `The prepare payload declares an unknown field for '${command}'.`,
+        );
+      }
+    }
+  }
+
+  /**
+   * The single-receipt status read: authorized ONLY for the receipt's own
+   * actor (same scope as the receipt's command mutation); any other actor
+   * receives the non-echoing UNAVAILABLE outcome — never existence.
+   */
+  async getConfirmation(
+    actor: ServerActorContext,
+    receiptId: string,
+  ): Promise<VictCommandOutcome> {
+    const confirmationStore = this.#options.stores.commandConfirmationReceipts;
+    const receipt = await confirmationStore.getReceipt(receiptId);
+    if (receipt === undefined || receipt.actorId !== actor.actorId) {
+      return { ok: false, code: 'VICT_CONFIRMATION_UNAVAILABLE' };
+    }
+    if (!(VICT_COMMANDS as readonly string[]).includes(receipt.command)) {
+      return { ok: false, code: 'VICT_CONFIRMATION_UNAVAILABLE' };
+    }
+    const spec = COMMAND_REGISTRY[receipt.command as VictCommandName];
+    if (spec.scope !== '*') {
+      assertCommandScope(actor, spec.scope);
+    }
+    const at = (this.#options.clock ?? (() => Date.now()))();
+    const effective =
+      receipt.status === 'prepared' && at >= receipt.expiryAt ? 'expired' : receipt.status;
+    return ok({
+      confirmation: {
+        receiptId: receipt.receiptId,
+        command: receipt.command,
+        status: effective,
+        recordedStatus: receipt.status,
+        subjectId: receipt.subjectId,
+        expectedRevision: receipt.expectedRevision,
+        payloadDigest: receipt.payloadDigest,
+        expiryAt: receipt.expiryAt,
+        createdAt: receipt.createdAt,
+        consumedAt: receipt.consumedAt,
+        consumedByKey: receipt.consumedByKey,
+        replacementAttemptNo: receipt.replacementAttemptNo,
+      },
+    });
+  }
+
   async #replayResult(
     actor: ServerActorContext,
     command: VictCommandName,
@@ -1347,6 +2315,49 @@ export class VictCommandService {
         return this.#searchAudit(payload);
       case 'run.cancel':
         return ok(await this.#cancelRun(actor, payload, idempotencyKey));
+      case 'run.resolve': {
+        const runResolution = this.#options.runResolution;
+        if (runResolution === undefined) {
+          throw new VictControlError(
+            'VICT_RUN_STORE_UNAVAILABLE',
+            'No run resolution executor is composed in this deployment; run resolution is unavailable.',
+          );
+        }
+        if (
+          typeof payload.resolution !== 'string' ||
+          !(RUN_RESOLUTIONS as readonly string[]).includes(payload.resolution)
+        ) {
+          throw new VictControlError(
+            'VICT_COMMAND_FIELD_INVALID',
+            'resolution must use the closed vocabulary (retry, confirm_applied, fail, cancel).',
+          );
+        }
+        const result = await runResolution.resolveBlocked({
+          runId: boundedId(payload.runId, 'runId'),
+          resolution: payload.resolution as RunResolution,
+          actorId: actor.actorId,
+          requestId: boundedId(idempotencyKey, 'requestId'),
+        });
+        return ok({
+          result: (result ?? {}) as unknown as Record<string, unknown>,
+        });
+      }
+      case 'run.signal': {
+        const runSignals = this.#options.runSignals;
+        if (runSignals === undefined) {
+          throw new VictControlError(
+            'VICT_RUN_STORE_UNAVAILABLE',
+            'No durable signal driver is composed in this deployment; run signaling is unavailable.',
+          );
+        }
+        return ok({
+          result: (await runSignals.signalWait({
+            runId: boundedId(payload.runId, 'runId'),
+            signalName: boundedId(payload.signalName, 'signalName'),
+            signalId: boundedId(idempotencyKey, 'signalId'),
+          })) as unknown as Record<string, unknown>,
+        });
+      }
       case 'agent.turn.start': {
         const turnService = requireTurnService(this.#options.turnService);
         const result = (await turnService.startTurn(actor, {
@@ -1442,6 +2453,48 @@ export class VictCommandService {
       ),
       reasonCode: typeof payload.reasonCode === 'string' ? payload.reasonCode : 'operator',
     })) as Record<string, unknown>;
+  }
+
+  /** Durable, attributable confirmation-consumed audit (digest/identity only). */
+  async #auditConsumed(
+    actor: ServerActorContext,
+    command: string,
+    idempotencyKey: string,
+    receiptId: string,
+  ): Promise<void> {
+    const at = (this.#options.clock ?? (() => Date.now()))();
+    await this.#options.stores.control
+      .appendAuditEvent({
+        auditId: `audit-confirm-consumed-${receiptId}-${at}-${(this.#detailAuditSeq += 1)}`,
+        at,
+        actorId: actor.actorId,
+        action: 'confirmation.consumed',
+        subjectType: 'confirmation',
+        subjectId: receiptId,
+        summary: `command=${command} actor=${actor.actorId} outcome=consumed`,
+      })
+      .catch(() => undefined);
+  }
+
+  /** The consumed-chain outcome (classification failure) audit line. */
+  async #auditConsumedOutcome(
+    actor: ServerActorContext,
+    command: string,
+    receiptId: string,
+    outcome: string,
+  ): Promise<void> {
+    const at = (this.#options.clock ?? (() => Date.now()))();
+    await this.#options.stores.control
+      .appendAuditEvent({
+        auditId: `audit-confirm-outcome-${receiptId}-${at}-${(this.#detailAuditSeq += 1)}`,
+        at,
+        actorId: actor.actorId,
+        action: 'confirmation.consumed',
+        subjectType: 'confirmation',
+        subjectId: receiptId,
+        summary: `command=${command} actor=${actor.actorId} outcome=${outcome}`,
+      })
+      .catch(() => undefined);
   }
 
   // ---- Stage 9 operator reads (WP-1) ---------------------------------
@@ -1705,6 +2758,89 @@ export class VictCommandService {
   }
 }
 
+// ---- Stage 9 G2 — confirmation-boundary helpers (module-level) --------------
+
+/**
+ * The legacy fence: the gated mutation commands REQUIRE the `confirmation`
+ * payload member in the command service itself (never the transport).
+ */
+function requireConfirmationMember(payload: Record<string, unknown>): void {
+  if (payload['confirmation'] === undefined) {
+    throw new VictControlError(
+      'VICT_CONFIRMATION_REQUIRED',
+      'VICT_CONFIRMATION_REQUIRED: this command requires a server-issued confirmation; call confirmation.prepare first, then re-send with confirmation{receiptId}.',
+    );
+  }
+}
+
+/** The presented confirmation member (shape-validated, never echoed). */
+function confirmationOf(payload: Record<string, unknown>): {
+  readonly receiptId: string | undefined;
+  readonly malformed: boolean;
+} {
+  const raw = payload['confirmation'];
+  if (raw === undefined) {
+    return { receiptId: undefined, malformed: false };
+  }
+  if (typeof raw !== 'object' || raw === null || Array.isArray(raw)) {
+    return { receiptId: undefined, malformed: true };
+  }
+  const record = raw as Record<string, unknown>;
+  const keys = Object.keys(record);
+  const receiptId = record['receiptId'];
+  const malformed =
+    keys.length !== 1 ||
+    keys[0] !== 'receiptId' ||
+    typeof receiptId !== 'string' ||
+    receiptId.length === 0 ||
+    receiptId.length > 128;
+  return malformed ? { receiptId: undefined, malformed: true } : { receiptId, malformed: false };
+}
+
+/** The semantic (semantic-parameters) fields of a gated command. */
+function semanticConfirmationFields(command: string): readonly string[] {
+  const spec = (COMMAND_REGISTRY as Record<string, CommandSpec | undefined>)[command];
+  return spec === undefined ? [] : spec.fields.filter((field) => field !== 'confirmation');
+}
+
+/**
+ * The canonical digest over the semantic parameters of the confirmed
+ * request — EXCLUDES the confirmation member itself (and the receipt id
+ * inside it) and the prepare-only `expectedRevision` guard. The SAME
+ * digest binds both the prepared receipt and the consuming request.
+ */
+function confirmationReceiptDigest(
+  command: string,
+  payload: Record<string, unknown>,
+): string {
+  const semantic: Record<string, unknown> = {};
+  for (const field of semanticConfirmationFields(command)) {
+    if (payload[field] !== undefined) {
+      semantic[field] = payload[field];
+    }
+  }
+  return createHash('sha256')
+    .update(
+      `vict.confirmation@1\u0000${toCanonicalJson({ command, payload: semantic })}`,
+      'utf8',
+    )
+    .digest('hex');
+}
+
+/** The payload subject field of a gated command. */
+function confirmationSubjectField(command: string): string {
+  switch (command) {
+    case 'run.cancel':
+    case 'run.resolve':
+    case 'run.signal':
+      return 'runId';
+    case 'activation.select':
+      return 'graphId';
+    default:
+      return 'applicationId';
+  }
+}
+
 /**
  * The SAFE per-command replay projection stored in the durable receipt.
  * Only stable codes, safe identifiers, and content references are
@@ -1805,6 +2941,14 @@ function safeResultProjection(
     }
     case 'run.cancel': {
       return { command, ...pick(data, ['runId', 'status']) };
+    }
+    case 'run.resolve': {
+      const result = (data['result'] ?? data) as Record<string, unknown>;
+      return { command, ...pick(result, ['runId', 'resolution', 'status']) };
+    }
+    case 'run.signal': {
+      const result = (data['result'] ?? data) as Record<string, unknown>;
+      return { command, ...pick(result, ['runId', 'signalName', 'status']) };
     }
     case 'agent.turn.start':
       return { command, ...pick(data, ['turnId', 'streamId']) };

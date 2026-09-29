@@ -749,6 +749,39 @@ export const SCHEMA_MIGRATIONS: readonly Migration[] = [
         effect_policy_identity = 'vict-effect-policy@1';`,
     ],
   },
+  {
+    // Stage 9 G2 controlled recovery (migration 11): the durable
+    // CommandConfirmationReceiptStore. ONE table for the server-issued
+    // receipt records (digests + identities only, never payload bytes);
+    // prepare claims stay in vict_command_idempotency under the
+    // `confirmation.prepare:<command>` namespace; consumption is fenced
+    // with the exact-generation lease semantics mirrored from that table.
+    version: 11,
+    name: 'stage-09-g2-command-confirmation-receipts',
+    statements: [
+      `CREATE TABLE vict_command_confirmation_receipt (
+        receipt_id TEXT PRIMARY KEY,
+        actor_id TEXT NOT NULL,
+        command TEXT NOT NULL,
+        payload_digest TEXT NOT NULL,
+        subject_id TEXT NOT NULL,
+        expected_revision INTEGER,
+        expiry_at TEXT NOT NULL,
+        status TEXT NOT NULL CHECK (status IN ('prepared', 'consumed', 'expired', 'spent')),
+        created_at TEXT NOT NULL,
+        consumed_at TEXT,
+        consumed_by_key TEXT,
+        replacement_attempt_no INTEGER NOT NULL,
+        prepare_idempotency_key TEXT NOT NULL,
+        owner TEXT,
+        claim_until TEXT,
+        attempts INTEGER NOT NULL DEFAULT 0,
+        fence_token TEXT
+      );`,
+      `CREATE INDEX idx_vict_command_confirmation_prepare
+        ON vict_command_confirmation_receipt (actor_id, command, prepare_idempotency_key, replacement_attempt_no);`,
+    ],
+  },
 ];
 
 /** The highest schema version this adapter understands. */

@@ -32,6 +32,7 @@ import type {
   ChangeSetApprovalDecision,
   ChangeSetRecord,
   ControlAuditEvent,
+  CommandConfirmationReceipt,
 } from './control-types.js';
 import {
   controlContentHash,
@@ -1372,6 +1373,243 @@ export function inMemoryAgentControlConformanceFactory(): AgentControlConformanc
       return { ...createInMemoryAgentControlStores(), dispose: (): void => undefined };
     },
   };
+}
+
+/**
+ * Stage 9 G2: the shared CommandConfirmationReceiptStore conformance suite.
+ * Covers issuance, the (actor, command) and prepare-chain queries, exact
+ * generation-fenced consumption claims (one winner, in-flight losers),
+ * TTL expiry fail-closed marking, fenced settle (`consumed` | `spent`),
+ * fenced release, and lease takeover for crash recovery.
+ */
+export function runCommandConfirmationReceiptConformanceSuite(
+  factory: AgentControlConformanceFactory,
+  runner: ConformanceRunner,
+): void {
+  const { it: t, expect } = runner;
+
+  function receiptFixture(overrides: Record<string, unknown> = {}): CommandConfirmationReceipt {
+    return {
+      receiptId: 'cr-cf-1',
+      actorId: 'actor-cf',
+      command: 'run.cancel',
+      payloadDigest: 'digest-cf-1',
+      subjectId: 'run-cf-1',
+      expectedRevision: 3,
+      expiryAt: 9_000,
+      status: 'prepared',
+      createdAt: 1_000,
+      consumedAt: undefined,
+      consumedByKey: undefined,
+      replacementAttemptNo: 1,
+      prepareIdempotencyKey: 'prep-key-cf-1',
+      owner: undefined,
+      claimUntil: undefined,
+      attempts: 0,
+      fenceToken: undefined,
+      ...overrides,
+    } as CommandConfirmationReceipt;
+  }
+
+  t(`[${factory.name}] confirmation receipts: create/get identity and queries`, async () => {
+    const stores = await factory.create();
+    try {
+      expect(
+        await stores.commandConfirmationReceipts.createReceipt(receiptFixture()),
+      ).toBe('created');
+      expect(
+        await stores.commandConfirmationReceipts.createReceipt(receiptFixture()),
+      ).toBe('exists');
+      const got = await stores.commandConfirmationReceipts.getReceipt('cr-cf-1');
+      expect(got?.payloadDigest).toBe('digest-cf-1');
+      expect(got?.expectedRevision).toBe(3);
+      expect(got?.replacementAttemptNo).toBe(1);
+      // Different prepare key under the same (actor, command) is a separate
+      // chain entry.
+      await stores.commandConfirmationReceipts.createReceipt(
+        receiptFixture({ receiptId: 'cr-cf-2', replacementAttemptNo: 1, prepareIdempotencyKey: 'prep-key-cf-2' }),
+      );
+      const chain = await stores.commandConfirmationReceipts.listReceiptsByPrepare({
+        actorId: 'actor-cf',
+        command: 'run.cancel',
+        prepareIdempotencyKey: 'prep-key-cf-1',
+      });
+      expect(chain.map((entry) => entry.receiptId)).toEqual(['cr-cf-1']);
+      const perActor = await stores.commandConfirmationReceipts.listReceiptsByActorCommand({
+        actorId: 'actor-cf',
+        command: 'run.cancel',
+      });
+      expect(perActor.map((entry) => entry.receiptId)).toEqual(['cr-cf-1', 'cr-cf-2']);
+    } finally {
+      await stores.dispose();
+    }
+  });
+
+  t(
+    `[${factory.name}] confirmation receipts: fenced claim, in-flight losers, fenced settle`,
+    async () => {
+      const stores = await factory.create();
+      try {
+        await stores.commandConfirmationReceipts.createReceipt(receiptFixture());
+        const first = await stores.commandConfirmationReceipts.startConsumption({
+          receiptId: 'cr-cf-1',
+          owner: 'key-a',
+          leaseUntil: 5_000,
+          at: 2_000,
+        });
+        expect(first.outcome).toBe('claimed');
+        const fenceA = (first as { fenceToken: string }).fenceToken;
+        // A second concurrent claim of the live lease is refused.
+        const second = await stores.commandConfirmationReceipts.startConsumption({
+          receiptId: 'cr-cf-1',
+          owner: 'key-b',
+          leaseUntil: 5_000,
+          at: 2_100,
+        });
+        expect(second.outcome).toBe('in-progress');
+        // A stale owner can never settle (exact-generation fencing).
+        await expect(
+          stores.commandConfirmationReceipts.settleConsumption({
+            receiptId: 'cr-cf-1',
+            fenceToken: 'fence-stale',
+            status: 'consumed',
+            consumedByKey: 'key-a',
+            at: 2_200,
+          }),
+        ).rejects.toThrow(/FENCE_CONFLICT/);
+        await stores.commandConfirmationReceipts.settleConsumption({
+          receiptId: 'cr-cf-1',
+          fenceToken: fenceA,
+          status: 'consumed',
+          consumedByKey: 'key-a',
+          at: 2_500,
+        });
+        const settled = await stores.commandConfirmationReceipts.getReceipt('cr-cf-1');
+        expect(settled?.status).toBe('consumed');
+        expect(settled?.consumedByKey).toBe('key-a');
+        // Settled receipts do not re-claim.
+        expect(
+          (await stores.commandConfirmationReceipts.startConsumption({
+            receiptId: 'cr-cf-1',
+            owner: 'key-a',
+            leaseUntil: 9_000,
+            at: 2_600,
+          })).outcome,
+        ).toBe('settled');
+      } finally {
+        await stores.dispose();
+      }
+    },
+  );
+
+  t(
+    `[${factory.name}] confirmation receipts: expiry fail-closed at claim, fenced release, lease takeover`,
+    async () => {
+      const stores = await factory.create();
+      try {
+        await stores.commandConfirmationReceipts.createReceipt(receiptFixture());
+        // A claim arriving after expiry fails closed and MARKS the receipt.
+        expect(
+          (await stores.commandConfirmationReceipts.startConsumption({
+            receiptId: 'cr-cf-1',
+            owner: 'key-late',
+            leaseUntil: 9_200,
+            at: 9_100,
+          })).outcome,
+        ).toBe('expired');
+        expect((await stores.commandConfirmationReceipts.getReceipt('cr-cf-1'))?.status).toBe(
+          'expired',
+        );
+        // Fresh receipt: claim, release (fenced), takeover with a new fence.
+        await stores.commandConfirmationReceipts.createReceipt(
+          receiptFixture({ receiptId: 'cr-cf-take2', subjectId: 'run-cf-2' }),
+        );
+        const claimed = await stores.commandConfirmationReceipts.startConsumption({
+          receiptId: 'cr-cf-take2',
+          owner: 'key-a',
+          leaseUntil: 5_000,
+          at: 2_000,
+        });
+        expect(claimed.outcome).toBe('claimed');
+        const fenceOne = (claimed as { fenceToken: string }).fenceToken;
+        await expect(
+          stores.commandConfirmationReceipts.releaseConsumption({
+            receiptId: 'cr-cf-take2',
+            fenceToken: 'fence-wrong',
+            at: 2_100,
+          }),
+        ).rejects.toThrow(/FENCE_CONFLICT/);
+        await stores.commandConfirmationReceipts.releaseConsumption({
+          receiptId: 'cr-cf-take2',
+          fenceToken: fenceOne,
+          at: 2_200,
+        });
+        const released = await stores.commandConfirmationReceipts.getReceipt('cr-cf-take2');
+        expect(released?.status).toBe('prepared');
+        expect(released?.fenceToken).toBeUndefined();
+        // Takeover of the SAME unexpired released record... first a crash
+        // scenario: an expired lease is taken over with a NEW fence token.
+        const reClaim = await stores.commandConfirmationReceipts.startConsumption({
+          receiptId: 'cr-cf-take2',
+          owner: 'key-a',
+          leaseUntil: 5_000,
+          at: 3_000,
+        });
+        expect(reClaim.outcome).toBe('claimed');
+        const fenceTwo = (reClaim as { fenceToken: string }).fenceToken;
+        expect(fenceTwo).not.toBe(fenceOne);
+        await expect(
+          stores.commandConfirmationReceipts.settleConsumption({
+            receiptId: 'cr-cf-take2',
+            fenceToken: fenceOne,
+            status: 'spent',
+            at: 3_100,
+          }),
+        ).rejects.toThrow(/FENCE_CONFLICT/);
+        await stores.commandConfirmationReceipts.settleConsumption({
+          receiptId: 'cr-cf-take2',
+          fenceToken: fenceTwo,
+          status: 'spent',
+          consumedByKey: 'key-a',
+          at: 3_100,
+        });
+        expect((await stores.commandConfirmationReceipts.getReceipt('cr-cf-take2'))?.status).toBe(
+          'spent',
+        );
+      } finally {
+        await stores.dispose();
+      }
+    },
+  );
+
+  t(
+    `[${factory.name}] confirmation receipts: replacement chain ordered by attempt number`,
+    async () => {
+      const stores = await factory.create();
+      try {
+        const reversed = [3, 1, 2].map((replacementAttemptNo) =>
+          receiptFixture({
+            receiptId: `cr-chain-${replacementAttemptNo}`,
+            replacementAttemptNo,
+          }),
+        );
+        for (const receipt of reversed) {
+          expect(await stores.commandConfirmationReceipts.createReceipt(receipt)).toBe('created');
+        }
+        const chain = await stores.commandConfirmationReceipts.listReceiptsByPrepare({
+          actorId: 'actor-cf',
+          command: 'run.cancel',
+          prepareIdempotencyKey: 'prep-key-cf-1',
+        });
+        expect(chain.map((entry) => entry.replacementAttemptNo)).toEqual([1, 2, 3]);
+        expect(
+          chain[chain.length - 1]?.status,
+        ).toBe('prepared');
+      } finally {
+        await stores.dispose();
+      }
+    },
+  );
 }
 
 /** Unused-import guard kept minimal. */

@@ -31,6 +31,11 @@ import {
   type CommandIdempotencyReceipt,
   type CommandIdempotencyStore,
   type CommandIdempotencyLeaseTakeover,
+  type CommandConfirmationReceipt,
+  type CommandConfirmationReceiptStore,
+  type CommandConfirmationClaim,
+  commandConfirmationFenceToken,
+  VICT_CONFIRMATION_FENCE_CONFLICT,
   type TurnToolSlotAllocation,
   type ControlAuditEvent,
   type ControlPlaneStore,
@@ -210,6 +215,91 @@ function rowToIdempotencyReceipt(row: IdempotencyRow): CommandIdempotencyReceipt
     attempts: row.attempts,
     fenceToken: row.fence_token ?? undefined,
   };
+}
+
+interface ConfirmationReceiptRow {
+  receipt_id: string;
+  actor_id: string;
+  command: string;
+  payload_digest: string;
+  subject_id: string;
+  expected_revision: number | null;
+  expiry_at: string;
+  status: string;
+  created_at: string;
+  consumed_at: string | null;
+  consumed_by_key: string | null;
+  replacement_attempt_no: number;
+  prepare_idempotency_key: string;
+  owner: string | null;
+  claim_until: string | null;
+  attempts: number;
+  fence_token: string | null;
+}
+
+function rowToConfirmationReceipt(row: ConfirmationReceiptRow): CommandConfirmationReceipt {
+  return {
+    receiptId: row.receipt_id,
+    actorId: row.actor_id,
+    command: row.command,
+    payloadDigest: row.payload_digest,
+    subjectId: row.subject_id,
+    expectedRevision: row.expected_revision ?? null,
+    expiryAt: fromIso(row.expiry_at),
+    status: row.status as CommandConfirmationReceipt['status'],
+    createdAt: fromIso(row.created_at),
+    consumedAt: optionalIso(row.consumed_at),
+    consumedByKey: row.consumed_by_key ?? undefined,
+    replacementAttemptNo: row.replacement_attempt_no,
+    prepareIdempotencyKey: row.prepare_idempotency_key,
+    owner: row.owner ?? undefined,
+    claimUntil: optionalIso(row.claim_until),
+    attempts: row.attempts,
+    fenceToken: row.fence_token ?? undefined,
+  };
+}
+
+/**
+ * The fenced consumption-claim mutation, executed inside one transaction
+ * (shared by the initial claim and the expired-lease takeover): exactly one
+ * winner per claim generation, in-flight losers refused, TTL expiry fails
+ * closed and is durably marked.
+ */
+function claimFenced(
+  db: DatabaseSync,
+  input: { receiptId: string; owner: string; leaseUntil: number; at: number },
+): CommandConfirmationClaim {
+  return inTransaction(db, () => {
+    const row = db
+      .prepare('SELECT * FROM vict_command_confirmation_receipt WHERE receipt_id = ?;')
+      .get(input.receiptId) as ConfirmationReceiptRow | undefined;
+    if (row === undefined) {
+      return { outcome: 'missing' } as const;
+    }
+    if (row.status !== 'prepared') {
+      return { outcome: 'settled' } as const;
+    }
+    if (input.at >= fromIso(row.expiry_at)) {
+      // Fail closed at/after expiry: durable, truthful, auditable (P-19).
+      db.prepare(
+        "UPDATE vict_command_confirmation_receipt SET status = 'expired', owner = NULL, claim_until = NULL, fence_token = NULL WHERE receipt_id = ? AND status = 'prepared';",
+      ).run(input.receiptId);
+      return { outcome: 'expired' } as const;
+    }
+    if (row.owner !== null && (row.claim_until === null || fromIso(row.claim_until) > input.at)) {
+      return { outcome: 'in-progress' } as const;
+    }
+    const attempts = row.attempts + 1;
+    const fenceToken = commandConfirmationFenceToken({
+      receiptId: input.receiptId,
+      owner: input.owner,
+      attempts,
+    });
+    db.prepare(
+      'UPDATE vict_command_confirmation_receipt SET owner = ?, claim_until = ?, attempts = ?, fence_token = ? WHERE receipt_id = ?;',
+    ).run(input.owner, toIso(input.leaseUntil), attempts, fenceToken, input.receiptId);
+    return { outcome: 'claimed', fenceToken } as const;
+  });
 }
 
 interface TurnRow {
@@ -2537,6 +2627,183 @@ export function createSqliteAgentControlStores(
     },
   };
 
+  const commandConfirmationReceipts: CommandConfirmationReceiptStore = {
+    async createReceipt(record: CommandConfirmationReceipt): Promise<'created' | 'exists'> {
+      return safeRun('confirmation.create', () =>
+        inTransaction(db, () => {
+          const existing = db
+            .prepare(
+              'SELECT receipt_id FROM vict_command_confirmation_receipt WHERE receipt_id = ?;',
+            )
+            .get(record.receiptId);
+          if (existing !== undefined) {
+            return 'exists' as const;
+          }
+          db.prepare(
+            `INSERT INTO vict_command_confirmation_receipt
+              (receipt_id, actor_id, command, payload_digest, subject_id, expected_revision, expiry_at, status, created_at, consumed_at, consumed_by_key, replacement_attempt_no, prepare_idempotency_key, owner, claim_until, attempts, fence_token)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`,
+          ).run(
+            record.receiptId,
+            record.actorId,
+            record.command,
+            record.payloadDigest,
+            record.subjectId,
+            record.expectedRevision === null ? null : record.expectedRevision,
+            toIso(record.expiryAt),
+            record.status,
+            toIso(record.createdAt),
+            record.consumedAt === undefined ? null : toIso(record.consumedAt),
+            record.consumedByKey ?? null,
+            record.replacementAttemptNo,
+            record.prepareIdempotencyKey,
+            record.owner ?? null,
+            record.claimUntil === undefined ? null : toIso(record.claimUntil),
+            record.attempts,
+            record.fenceToken ?? null,
+          );
+          return 'created' as const;
+        }),
+      );
+    },
+
+    async getReceipt(receiptId: string): Promise<CommandConfirmationReceipt | undefined> {
+      return safeRun('confirmation.get', () => {
+        const row = db
+          .prepare('SELECT * FROM vict_command_confirmation_receipt WHERE receipt_id = ?;')
+          .get(receiptId) as ConfirmationReceiptRow | undefined;
+        return row === undefined ? undefined : rowToConfirmationReceipt(row);
+      });
+    },
+
+    async listReceiptsByPrepare(input: {
+      actorId: string;
+      command: string;
+      prepareIdempotencyKey: string;
+    }): Promise<readonly CommandConfirmationReceipt[]> {
+      return safeRun('confirmation.listByPrepare', () => {
+        const rows = db
+          .prepare(
+            'SELECT * FROM vict_command_confirmation_receipt WHERE actor_id = ? AND command = ? AND prepare_idempotency_key = ? ORDER BY replacement_attempt_no ASC, receipt_id ASC;',
+          )
+          .all(
+            input.actorId,
+            input.command,
+            input.prepareIdempotencyKey,
+          ) as unknown as ConfirmationReceiptRow[];
+        return rows.map(rowToConfirmationReceipt);
+      });
+    },
+
+    async listReceiptsByActorCommand(input: {
+      actorId: string;
+      command: string;
+      limit?: number;
+    }): Promise<readonly CommandConfirmationReceipt[]> {
+      return safeRun('confirmation.listByActorCommand', () => {
+        const rows = (
+          input.limit !== undefined
+            ? db
+                .prepare(
+                  'SELECT * FROM vict_command_confirmation_receipt WHERE actor_id = ? AND command = ? ORDER BY replacement_attempt_no ASC, receipt_id ASC LIMIT ?;',
+                )
+                .all(input.actorId, input.command, input.limit)
+            : db
+                .prepare(
+                  'SELECT * FROM vict_command_confirmation_receipt WHERE actor_id = ? AND command = ? ORDER BY replacement_attempt_no ASC, receipt_id ASC;',
+                )
+                .all(input.actorId, input.command)
+        ) as unknown as ConfirmationReceiptRow[];
+        return rows.map(rowToConfirmationReceipt);
+      });
+    },
+
+    async startConsumption(input: {
+      receiptId: string;
+      owner: string;
+      leaseUntil: number;
+      at: number;
+    }): Promise<CommandConfirmationClaim> {
+      return safeRun('confirmation.startConsumption', () => claimFenced(db, input));
+    },
+
+    async takeOverExpiredConsumptionLease(input: {
+      receiptId: string;
+      owner: string;
+      leaseUntil: number;
+      at: number;
+    }): Promise<CommandConfirmationClaim> {
+      return safeRun('confirmation.leaseTakeover', () => claimFenced(db, input));
+    },
+
+    async settleConsumption(input: {
+      receiptId: string;
+      fenceToken: string;
+      status: 'consumed' | 'spent';
+      consumedByKey?: string;
+      at: number;
+    }): Promise<void> {
+      safeRun('confirmation.settle', () =>
+        inTransaction(db, () => {
+          const row = db
+            .prepare('SELECT * FROM vict_command_confirmation_receipt WHERE receipt_id = ?;')
+            .get(input.receiptId) as ConfirmationReceiptRow | undefined;
+          if (row === undefined) {
+            throw new VictControlError(
+              'VICT_CONFIRMATION_RECEIPT_MISSING',
+              'No command-confirmation receipt exists for this identity.',
+            );
+          }
+          // FENCED terminal settlement, compared and mutated in ONE
+          // transaction: a stale owner's token never settles the claim.
+          if (row.status !== 'prepared' || (row.fence_token ?? null) !== input.fenceToken) {
+            throw new VictControlError(
+              VICT_CONFIRMATION_FENCE_CONFLICT,
+              'VICT_CONFIRMATION_FENCE_CONFLICT: the settlement fence token does not match the current claim generation; the receipt is untouched.',
+            );
+          }
+          db.prepare(
+            "UPDATE vict_command_confirmation_receipt SET status = ?, consumed_at = ?, consumed_by_key = COALESCE(?, consumed_by_key), owner = NULL, claim_until = NULL, fence_token = NULL WHERE receipt_id = ?;",
+          ).run(
+            input.status,
+            toIso(input.at),
+            input.consumedByKey ?? null,
+            input.receiptId,
+          );
+        }),
+      );
+    },
+
+    async releaseConsumption(input: {
+      receiptId: string;
+      fenceToken: string;
+      at: number;
+    }): Promise<void> {
+      safeRun('confirmation.release', () =>
+        inTransaction(db, () => {
+          // FENCED release: only the current claim generation may release;
+          // a stale owner receives a stable conflict and the live claim
+          // survives byte-identically.
+          const row = db
+            .prepare('SELECT * FROM vict_command_confirmation_receipt WHERE receipt_id = ?;')
+            .get(input.receiptId) as ConfirmationReceiptRow | undefined;
+          if (row === undefined) {
+            return;
+          }
+          if (row.status !== 'prepared' || (row.fence_token ?? null) !== input.fenceToken) {
+            throw new VictControlError(
+              VICT_CONFIRMATION_FENCE_CONFLICT,
+              'VICT_CONFIRMATION_FENCE_CONFLICT: the settlement fence token does not match the current claim generation; the claim is untouched.',
+            );
+          }
+          db.prepare(
+            'UPDATE vict_command_confirmation_receipt SET owner = NULL, claim_until = NULL, fence_token = NULL WHERE receipt_id = ?;',
+          ).run(input.receiptId);
+        }),
+      );
+    },
+  };
+
   return {
     actors,
     control,
@@ -2545,6 +2812,7 @@ export function createSqliteAgentControlStores(
     approvals,
     streamLedger,
     commandIdempotency,
+    commandConfirmationReceipts,
     close(): void {
       handle.close();
     },

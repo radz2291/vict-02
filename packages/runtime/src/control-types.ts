@@ -130,6 +130,12 @@ export const ACTOR_SCOPES = [
   'conversation.read',
   'conversation.delete',
   'audit.read',
+  // Stage 9 G2 (owner-accepted D-OPEN-2): the two receipt-gated
+  // intervention commands join the CLOSED scope vocabulary. Administrators
+  // hold them BY POLICY via `administrator: [...ACTOR_SCOPES]`; every other
+  // actor class receives them only through explicit deployment grants.
+  'run.resolve',
+  'run.signal',
 ] as const;
 export type ActorScope = (typeof ACTOR_SCOPES)[number];
 
@@ -1326,6 +1332,10 @@ export const CONTROL_AUDIT_ACTIONS = [
   'approval.decided',
   'approval.expired',
   'operator.intervened',
+  // Stage 9 G2: confirmation-boundary audit actions. The events carry
+  // digests and identities ONLY — never payload bytes.
+  'confirmation.prepared',
+  'confirmation.consumed',
 ] as const;
 export type ControlAuditAction = (typeof CONTROL_AUDIT_ACTIONS)[number];
 
@@ -1884,6 +1894,171 @@ export interface CommandIdempotencyStore {
   }): Promise<CommandIdempotencyLeaseTakeover>;
 }
 
+// ---- Durable command-confirmation receipts (Stage 9 G2) --------------------
+
+/**
+ * One server-issued controlled-recovery receipt (G2; proposal §4.4). The
+ * receipt is the durable INTENT record for one receipt-gated intervention:
+ * it carries the target command, the canonical payload digest (EXCLUDING
+ * the receipt id), the subject guard (expectedRevision + subjectId), the
+ * prepare TTL, and its lifecycle status. Receipts carry digests and
+ * identities ONLY — never payload bytes.
+ */
+export type CommandConfirmationReceiptStatus = 'prepared' | 'consumed' | 'expired' | 'spent';
+
+export interface CommandConfirmationReceipt {
+  /** Opaque, bounded, non-enumerable receipt identity. */
+  readonly receiptId: string;
+  /** The actor the receipt was issued to (status reads are actor-scoped). */
+  readonly actorId: string;
+  /** The target command (canonical parameters must match at consume). */
+  readonly command: string;
+  /** Canonical digest over the confirmed target command payload,
+   * EXCLUDING the receipt id itself. */
+  readonly payloadDigest: string;
+  /** The subject guard the human review authorized (consume re-checks). */
+  readonly subjectId: string;
+  readonly expectedRevision: number | null;
+  /** Epoch-ms prepare-TTL expiry (accepted default: 10 minutes). */
+  readonly expiryAt: number;
+  readonly status: CommandConfirmationReceiptStatus;
+  readonly createdAt: number;
+  readonly consumedAt: number | undefined;
+  /** The consume Idempotency-Key that settled the receipt. */
+  readonly consumedByKey: string | undefined;
+  /** 1 for the originally prepared receipt; increments per replacement.
+   * The replacement budget is FIVE replacement receipts per (actor,
+   * command, key) — beyond it the same-key same-digest retry replays the
+   * latest receipt's truthful status and never a conflict. */
+  readonly replacementAttemptNo: number;
+  /** The (actor, command) prepare idempotency key this receipt belongs to. */
+  readonly prepareIdempotencyKey: string;
+  // ---- Consumption fencing (mirrors CommandIdempotencyStore semantics) ----
+  /** The lease owner (derive binding: actor + consume key) while claimed. */
+  readonly owner: string | undefined;
+  /** Epoch-ms claim lease expiry while `consumption` is in flight. */
+  readonly claimUntil: number | undefined;
+  /** How many times the consumption claim was (re-)taken. */
+  readonly attempts: number;
+  /** The settlement fence token of the current claim generation. */
+  readonly fenceToken: string | undefined;
+}
+
+/** Result of a fenced consumption claim attempt. */
+export type CommandConfirmationClaim =
+  | { readonly outcome: 'claimed'; readonly fenceToken: string }
+  | { readonly outcome: 'missing' }
+  | { readonly outcome: 'in-progress' }
+  /** The receipt had expired at/before the claim (fail closed; recorded). */
+  | { readonly outcome: 'expired' }
+  /** The receipt has a non-`prepared` durable status (settled truthfully). */
+  | { readonly outcome: 'settled' };
+
+/** Stable structured conflict thrown when a confirmation fence mismatches. */
+export const VICT_CONFIRMATION_FENCE_CONFLICT = 'VICT_CONFIRMATION_FENCE_CONFLICT';
+
+/**
+ * Derive the deterministic settlement fence token for one receipt claim
+ * generation — hashed exactly like `commandIdempotencyFenceToken`. A lease
+ * takeover always produces a NEW token: a stale owner can never settle a
+ * claim generation it no longer owns.
+ */
+export function commandConfirmationFenceToken(input: {
+  receiptId: string;
+  owner: string;
+  attempts: number;
+}): string {
+  return (
+    'vict-confirm-fence-' +
+    createHash('sha256')
+      .update(
+        `vict.command-confirmation-fence@1\u0000${input.receiptId}\u0000${input.owner}\u0000${input.attempts}`,
+
+        'utf8',
+      )
+      .digest('hex')
+  );
+}
+
+/**
+ * The durable command-confirmation receipt store port (SEPARATE from the
+ * command idempotency store and from every effect store). Prepare claims
+ * live in the EXISTING `CommandIdempotencyStore` under the namespace
+ * command `confirmation.prepare:<command>`; THIS store holds only the
+ * issued receipts. Consumption is fenced with exact-generation fencing,
+ * mirroring the command idempotency lease/fence semantics.
+ */
+export interface CommandConfirmationReceiptStore {
+  /**
+   * Insert-if-absent an issued receipt. Exactly one concurrent creation of
+   * a given receiptId wins; the loser re-reads the durable record.
+   */
+  createReceipt(record: CommandConfirmationReceipt): Promise<'created' | 'exists'>;
+  getReceipt(receiptId: string): Promise<CommandConfirmationReceipt | undefined>;
+  /**
+   * All receipts issued under ONE (actor, command, prepare-key) namespace,
+   * ordered by `replacementAttemptNo` ascending (the replacement-chain
+   * query: budget counting and latest-truthful-status replay derive BOTH
+   * from this durable chain).
+   */
+  listReceiptsByPrepare(input: {
+    actorId: string;
+    command: string;
+    prepareIdempotencyKey: string;
+  }): Promise<readonly CommandConfirmationReceipt[]>;
+  /** Query by (actorId, command): bounded administrative/status surface. */
+  listReceiptsByActorCommand(input: {
+    actorId: string;
+    command: string;
+    limit?: number;
+  }): Promise<readonly CommandConfirmationReceipt[]>;
+  /**
+   * Claim a `prepared`, unexpired receipt for consumption: exactly one
+   * winner per claim generation. A claim arriving at/after `expiryAt` fails
+   * closed: the receipt is durably marked `expired` and `expired` is
+   * returned (P-19). An in-flight live claim answers `in-progress`. Once
+   * claimed and fenced, the claim completes under its fence — no mid-flight
+   * expiry of a granted claim.
+   */
+  startConsumption(input: {
+    receiptId: string;
+    owner: string;
+    leaseUntil: number;
+    at: number;
+  }): Promise<CommandConfirmationClaim>;
+  /**
+   * Take over an EXPIRED consumption lease (crash recovery): a NEW fence
+   * token and an incremented attempt generation are issued. Mirrors
+   * `CommandIdempotencyStore.takeOverExpiredLease`.
+   */
+  takeOverExpiredConsumptionLease(input: {
+    receiptId: string;
+    owner: string;
+    leaseUntil: number;
+    at: number;
+  }): Promise<CommandConfirmationClaim>;
+  /**
+   * Fenced terminal settlement (`consumed` | `spent`): accepted ONLY while
+   * the observed fence token equals the current claim generation. A stale
+   * owner receives a stable non-echoing conflict and the receipt stays
+   * byte-identical.
+   */
+  settleConsumption(input: {
+    receiptId: string;
+    fenceToken: string;
+    status: 'consumed' | 'spent';
+    consumedByKey?: string;
+    at: number;
+  }): Promise<void>;
+  /**
+   * FENCED release of an in-flight claim WITHOUT a terminal disposition
+   * (retryable infrastructure failure): the receipt returns to `prepared`
+   * and stays claimable. A stale owner receives a stable conflict and the
+   * live claim is left untouched.
+   */
+  releaseConsumption(input: { receiptId: string; fenceToken: string; at: number }): Promise<void>;
+}
+
 /** The composed control-plane store set. */
 export interface AgentControlStores {
   readonly actors: ActorDirectory;
@@ -1894,6 +2069,8 @@ export interface AgentControlStores {
   readonly streamLedger: AgentStreamLedgerStore;
   /** Durable command idempotency (state-changing HTTP/CLI commands). */
   readonly commandIdempotency: CommandIdempotencyStore;
+  /** Durable command-confirmation receipts (Stage 9 G2 controlled recovery). */
+  readonly commandConfirmationReceipts: CommandConfirmationReceiptStore;
 }
 
 /** Validation error for any control-plane structural violation. */

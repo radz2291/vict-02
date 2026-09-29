@@ -218,6 +218,7 @@ describe('sqlite schema migrations', () => {
           'vict_changeset',
           'vict_changeset_approval',
           'vict_changeset_operation_receipt',
+          'vict_command_confirmation_receipt',
           'vict_command_idempotency',
           'vict_control_run',
           'vict_operator_resolution',

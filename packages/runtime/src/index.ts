@@ -226,6 +226,10 @@ export type {
   CommandIdempotencyStore,
   CommandIdempotencyName,
   CommandIdempotencyLeaseTakeover,
+  CommandConfirmationReceipt,
+  CommandConfirmationReceiptStatus,
+  CommandConfirmationReceiptStore,
+  CommandConfirmationClaim,
   ControlAuditAction,
   ControlAuditEvent,
   ControlPlaneStore,
@@ -262,7 +266,9 @@ export {
   changeSetOperationIdentity,
   VICT_EFFECT_POLICY_IDENTITY,
   VICT_IDEMPOTENCY_FENCE_CONFLICT,
+  VICT_CONFIRMATION_FENCE_CONFLICT,
   commandIdempotencyFenceToken,
+  commandConfirmationFenceToken,
 } from './control-types.js';
 export { ActorScopeDeniedError, VictControlError } from './control-types.js';
 export {
@@ -270,6 +276,7 @@ export {
   InMemoryActorDirectory,
   InMemoryAgentApprovalStore,
   InMemoryCommandIdempotencyStore,
+  InMemoryCommandConfirmationReceiptStore,
   InMemoryAgentStreamLedgerStore,
   InMemoryAgentToolInvocationStore,
   InMemoryAgentTurnStore,
@@ -309,5 +316,6 @@ export type {
 export {
   inMemoryAgentControlConformanceFactory,
   runAgentControlConformanceSuite,
+  runCommandConfirmationReceiptConformanceSuite,
 } from './control-conformance.js';
 export type { AgentControlConformanceFactory } from './control-conformance.js';
