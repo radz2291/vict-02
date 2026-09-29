@@ -1,6 +1,6 @@
 # VICT Stage 09 — Studio, Diagnosis, and Controlled Recovery
 
-> **Status: PROPOSED G0 candidate, not ratified or frozen.** This document is a reviewable entry contract, not implementation authority. Written against VICT `main` at `516948ac8bc55bbae8624bb91b3b35de34b3146c` (Stage 8 owner closure, 2026-09-29). The separate Quellight `main` was observed at `5f709a536ab1f4d5fea0407db1b9537e0aa7c0f6`; recheck both before G0. Its proposals below require an owner decision. Reference: `docs/VICT-SYSTEM-REFERENCE.md` §23 Stage 9 and §27; predecessor: `docs/governance/VICT-STAGE-08-G4-CLOSURE-2026-09-29.md`.
+> **Status: RATIFIED — G0 contract FROZEN (owner decisions recorded 2026-09-29; see §7.1 and `docs/governance/VICT-STAGE-09-G0-RATIFICATION-2026-09-29.md`).** The frozen bytes are pinned by SHA-256 in the ratification record; changes require a dated amendment. Written against VICT `main` at `516948ac8bc55bbae8624bb91b3b35de34b3146c` (Stage 8 owner closure, 2026-09-29). The separate Quellight `main` was observed at `5f709a536ab1f4d5fea0407db1b9537e0aa7c0f6`; recheck both before each gate. **The ratified contract is a decision record, not implementation evidence: nothing in this document evidences that any Studio, command, route, session, registry, or receipt exists.** Reference: `docs/VICT-SYSTEM-REFERENCE.md` §23 Stage 9 and §27; predecessor: `docs/governance/VICT-STAGE-08-G4-CLOSURE-2026-09-29.md`.
 
 ## 1. Outcome and limits
 
@@ -73,7 +73,43 @@ Studio may show a narrowly declared, permission-gated product diagnostic through
 
 Stage 9 exit evidence must show Studio and CLI produce the same semantic operations on isolated equivalent targets, not execute two mutations against one shared state. A mechanical registry ↔ HTTP transport ↔ CLI inventory must account for every Stage 9 operation and explicitly classify pre-existing out-of-scope divergence such as `app.data.action`; no absent route is silently called parity. A real browser journey must use the application renderer for ordinary surfaces and identify every custom operator component. Include keyboard/accessibility, useful responsive states, direct-API authority tests, restart/idempotency behavior, retention/leakage canaries, and independent usability/security review. A builder cannot award its own independent verdict.
 
-## 7. Proposed gates and decisions
+## 7. Gates and decisions
+
+### 7.1 Owner G0 ratification (2026-09-29)
+
+The owner ratified G0 on 2026-09-29 and the dispositions below are DECISIONS,
+not implementation evidence (full text and frozen-byte digests:
+`docs/governance/VICT-STAGE-09-G0-RATIFICATION-2026-09-29.md`):
+
+- **D-1:** private `apps/studio`, SvelteKit host, genuine Application
+  Definition/Plan + `ui`/`ui-svelte`; the **B-1 recommended path is chosen** —
+  the FT-1 definition-driven row-navigation improvement is a **separately
+  gated UI-platform prerequisite**; S9-02 cannot be claimed until FT-1 lands
+  under its own gate; island and menu-only alternatives rejected. Root
+  `AGENTS.md` consciously **adopted** as pushed.
+- **D-2 + D-7:** deployment-provisioned target registry, stable loopback
+  endpoint, server-held target credential, administrator-provisioned distinct
+  least-privilege operator actor, no identity-provisioning UI; Studio human
+  session with HttpOnly/SameSite cookie, session-bound CSRF token, Origin/Host
+  checks on JSON mutations; no target token in the browser.
+- **D-3 + D-9:** explicit server-side pilot binding to Quellight's already
+  declared `act.queryInspection`/`qlt.inspection`; general discovery and any
+  new Application/Release ABI deferred.
+- **D-4 + D-10:** **one coordinated versioned migration** for `run.cancel`,
+  `activation.select`, `release.select`, `release.rollback`; a Stage 9 target
+  rejects their unconfirmed legacy mutation routes for **every actor class
+  including administrator**; B-3 receipt outcomes, durable claim/fence and
+  domain idempotency semantics, and the separate CLI prepare → human review →
+  confirm steps adopted **as worded at this freeze (R-1/R-2 folds included:
+  separate receipt and effect stores; implicit target binding)**; caller and
+  release migration plan frozen **before G2**.
+- **D-5:** protected detail requires authorized **positive** retrieval,
+  denial, retention and per-access audit, plus leakage canaries.
+- **D-6:** parity on equivalent isolated targets; three-surface
+  registry ↔ HTTP ↔ CLI inventory incl. classified pre-existing divergence.
+- **D-8:** Quellight **IN** — the real product test; the narrow same-turn
+  governed inspection proof is required for Stage 9 exit after Quellight's
+  separately governed increment; a generic example alone cannot pass S9-05.
 
 | Gate | Deliverable and stop |
 | --- | --- |
