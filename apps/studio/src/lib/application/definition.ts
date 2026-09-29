@@ -287,8 +287,59 @@ export const studioApplication = defineApplication({
       screenId: 's.confirmations',
       nav: { label: 'Confirmations', group: 'Governance', order: 6 },
     },
+    {
+      // Stage 9 G2 (S9-03): the changeset browser journey route — propose →
+      // review (operations, evidence, content hash) → decide (separate
+      // approvers) → commit (authorized operator), relayed by the Studio
+      // server with server-held per-actor credentials. ADDITIVE to the G1
+      // read surface; the G1 read routes, resources, views and the
+      // zero-actions invariant are untouched.
+      id: 'changesets',
+      path: '/changesets',
+      screenId: 's.changesets',
+      nav: { label: 'Changesets', group: 'Governance', order: 7 },
+    },
   ],
   screens: [
+    {
+      id: 's.changesets',
+      title: 'Changesets',
+      breadcrumbs: [{ label: 'Dashboard', routeId: 'home' }, { label: 'Changesets' }],
+      // The journey's forms live in the dedicated SvelteKit route;
+      // the definition surface stays form-free (the zero-form invariant).
+      layout: [
+        {
+          name: 'main',
+          surfaces: [
+            {
+              role: 'text',
+              id: 't.changeset-intro',
+              content:
+                'ChangeSet governance journey: propose → review → decide → commit; ' +
+                'self-approval, changed content, missing approval, and duplicate effect fail closed.',
+              level: 2,
+            },
+          ],
+        },
+      ],
+      states: {
+        loading: {
+          role: 'text',
+          id: 't.changeset-loading',
+          content: 'Loading changeset governance…',
+        },
+        empty: {
+          role: 'text',
+          id: 't.changeset-empty',
+          content: 'Nothing to govern yet — no changeset is recorded on the target.',
+        },
+        failure: {
+          role: 'text',
+          id: 't.changeset-failure',
+          content: 'The changeset journey failed safely.',
+        },
+      },
+    },
     {
       id: 's.confirmations',
       title: 'Confirmations',

@@ -159,3 +159,81 @@ shapes, no server probes).
    wrong `expectedRevision` → `VICT_CONFIRMATION_STALE`; fresh key on a
    settled receipt → `VICT_CONFIRMATION_SPENT` (no second effect); the
    same-key replay replays the truthful recorded outcome (no new effect).
+=======
+---
+
+# S9-03 — Changeset browser journey (Builder D lane)
+
+Machinery relied on (verified live against the composed loopback control
+plane in this worktree):
+
+- propose/revise/decide/commit ride the closed command envelope
+  `vict.command@1` on the fixed routes `POST /vict/v1/changesets(+/revise|`
+  `/decide` | `/commit`), list/get on `GET /vict/v1/changesets(+:id)`
+  (`packages/server/src/http.ts:336,352-357,795-806`).
+- Every state-changing command requires a bounded Idempotency-Key and is
+  durably idempotent (`packages/server/src/commands.ts:1039-1058`); the
+  changeset commands are NOT in `CONFIRMATION_REQUIRED_COMMANDS`
+  (`commands.ts:347-354`) — governance comes from the control plane.
+- Content hash derives from validated content; approvals bind the CURRENT
+  hash; promotion to `approved` requires DISTINCT approvers on the current
+  hash (`packages/control/src/control-plane.ts:413-493`).
+- Commit: stale-base guard, evidence policy by risk class, prevalidation,
+  CAS `approved → applying`, durable per-operation receipts, idempotent on
+  `committed` (same receipts) (`control-plane.ts:867-1000`).
+- Scope denial surfaces as `VICT_ACTOR_SCOPE_DENIED` → HTTP 403
+  (`commands.ts:3023-3026`, `http.ts:176-177`).
+
+## Fixture grants (demo target; `apps/studio/scripts/demo-target.mjs`, S9-03 block)
+
+- author `vict-studio-demo-author` → `actor-studio-author`: read scopes +
+  `changeset.read` + `changeset.propose` + `changeset.revise` (NO
+  `changeset.approve`).
+- approver-a `vict-studio-demo-approver-a` → `actor-studio-approver-a`:
+  `changeset.read` + `changeset.approve` + `changeset.commit`.
+- approver-b `vict-studio-demo-approver-b` → `actor-studio-approver-b`:
+  `changeset.read` + `changeset.approve`.
+- Studio server-side credential refs (additive defaults in
+  `apps/studio/src/lib/server/targets.ts`): `studio-changeset-author`,
+  `studio-changeset-approver-a`, `studio-changeset-approver-b`.
+
+## Positive scripted paths
+
+1. Single-approver happy path: author proposes (`requiredApproverCount 1`)
+   → author executes the validation evidence run (check + attach) →
+   approver-a decides `approved` (promoted on the current hash) →
+   approver-a commits → `committed`, N receipts, exactly-once banner.
+2. Two-approver quorum path: author proposes with
+   `requiredApproverCount 2` → approver-a approves (still draft — one of
+   two is NOT promoted) → approver-b approves (DISTINCT second approver →
+   promoted) → approver-a commits.
+
+## Negatives (all show a truthful banner and NO state change)
+
+1. SELF-APPROVAL: the author credential attempts decide → the target
+   refuses `VICT_ACTOR_SCOPE_DENIED` (403); no decision is recorded.
+2. CHANGED CONTENT: author revises an APPROVED changeset (changed
+   rationale → NEW content hash; revise() demotes the proposal to draft,
+   `control-plane.ts:324`) → follow-up commit fails
+   `VICT_CONTROL_CHANGESET_NOT_APPROVED` (status gate precedes the
+   approvals-binding double-check, `control-plane.ts:884` before
+   `:905`). NOTE (truthfulness): `VICT_CONTROL_APPROVALS_INVALIDATED` is
+   the target's defense-in-depth guard; it is not reachable through the
+   current public command surface via revision — recorded as a
+   STOP-candidate on the scripted banner, not hacked around.
+3. MISSING APPROVAL: approver-a commits a never-approved DRAFT →
+   `VICT_CONTROL_CHANGESET_NOT_APPROVED`; nothing applied.
+4. DUPLICATE EFFECT: commit the committed changeset again — with a fresh
+   key the control-plane committed-status replay returns the SAME receipt
+   list; with the SAME key the command-receipt replay replays the recorded
+   outcome. Every success banner states exactly-once; never a second
+   effect.
+
+## Studio-side contract evidence
+
+`apps/studio/tests/changeset-contract.test.ts` (closed propose/revise/
+decide/commit/evidence body shapes, bounded-id and Idempotency-Key
+validation, truthful banner mapping incl. the four negatives and the
+commit replay banner, truthful parsers, server-side actor/target
+resolution fail-closed) and `apps/studio/tests/app-definition.test.ts`
+(additive `/changesets` route + form-free screen).

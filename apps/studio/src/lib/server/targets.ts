@@ -28,6 +28,11 @@ export interface TargetCredential {
 /** Demo target token constants — LOCAL DEMO ONLY, loopback fixture. */
 const DEMO_OPERATOR_TOKEN = 'vict-studio-demo-operator';
 const DEMO_DETAIL_TOKEN = 'vict-studio-demo-detail';
+// Stage 9 G2 (S9-03 changeset browser journey): per-actor loopback fixture
+// tokens for the separate-approver governance boundary. Author proposes/
+// revises/appends evidence (NO changeset.approve — the self-approval
+// negative is the target refusing decide on it); approver-a approves AND
+// commits (the 'authorized operator commits' stand-in); approver-b approves
 
 const DEMO_TARGETS: readonly TargetRegistryEntry[] = [
   {
@@ -50,6 +55,38 @@ const DEMO_CREDENTIALS: Readonly<Record<string, TargetCredential>> = {
     token: DEMO_DETAIL_TOKEN,
     actorLabel: 'operator-detail',
     scopes: ['run.read', 'activation.read', 'audit.read', 'agent.stream.read', 'run.detail'],
+  },
+  // Stage 9 G2 (S9-03): the changeset journey actors — strictly additive
+  // fixture credentials; the existing reads/mutator grants are untouched.
+  'studio-changeset-author': {
+    token: 'vict-studio-demo-author',
+    actorLabel: 'changeset-author',
+    scopes: [
+      'run.read',
+      'activation.read',
+      'audit.read',
+      'agent.stream.read',
+      'changeset.read',
+      'changeset.propose',
+      'changeset.revise',
+    ],
+  },
+  'studio-changeset-approver-a': {
+    token: 'vict-studio-demo-approver-a',
+    actorLabel: 'changeset-approver-a',
+    scopes: [
+      'run.read',
+      'activation.read',
+      'audit.read',
+      'changeset.read',
+      'changeset.approve',
+      'changeset.commit',
+    ],
+  },
+  'studio-changeset-approver-b': {
+    token: 'vict-studio-demo-approver-b',
+    actorLabel: 'changeset-approver-b',
+    scopes: ['run.read', 'activation.read', 'audit.read', 'changeset.read', 'changeset.approve'],
   },
 };
 

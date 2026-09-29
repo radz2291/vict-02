@@ -17,6 +17,17 @@
  *                                 changeset.read + run.cancel +
  *                                 run.resolve + run.signal) — S9-04
  *                                 confirmation journey fixture only
+ *   vict-studio-demo-author    -> actor-studio-author   (same as detail +
+ *                                 changeset.read + changeset.propose +
+ *                                 changeset.revise; NO changeset.approve —
+ *                                 the self-approval NEGATIVE is the target
+ *                                 refusing decide on this actor) — S9-03
+ *   vict-studio-demo-approver-a -> actor-studio-approver-a (changeset.read
+ *                                 + changeset.approve + changeset.commit —
+ *                                 the 'authorized operator commits'
+ *                                 stand-in) — S9-03
+ *   vict-studio-demo-approver-b -> actor-studio-approver-b (changeset.read
+ *                                 + changeset.approve only) — S9-03
  *
  * The tokens are NEVER printed to stdout: the summary carries only the
  * port, target id, and endpoints. The Studio server injects them through
@@ -97,6 +108,40 @@ await directory.upsert({
   roles: ['operator'],
   createdAt: 0,
   scopes: MUTATOR_SCOPES,
+});
+// S9-03 ADDITION (Stage 9 G2, strictly additive journey fixture): the
+// governance actors the changeset browser journey relays with. The author
+// holds propose/revise/read but NOT changeset.approve (decide on it fails
+// VICT_ACTOR_SCOPE_DENIED — the separate-approver boundary negative);
+// approver-a approves AND commits; approver-b approves only (the two-
+// approver quorum path demonstrates DISTINCT approvers). Roles use the
+// same 'operator' fixture stand-in as every other demo actor.
+const AUTHOR_TOKEN = 'vict-studio-demo-author';
+const APPROVER_A_TOKEN = 'vict-studio-demo-approver-a';
+const APPROVER_B_TOKEN = 'vict-studio-demo-approver-b';
+const AUTHOR_SCOPES = [...DETAIL_SCOPES, 'changeset.read', 'changeset.propose', 'changeset.revise'];
+const APPROVER_A_SCOPES = ['changeset.read', 'changeset.approve', 'changeset.commit'];
+const APPROVER_B_SCOPES = ['changeset.read', 'changeset.approve'];
+await directory.upsert({
+  actorId: 'actor-studio-author',
+  status: 'active',
+  roles: ['operator'],
+  createdAt: 0,
+  scopes: AUTHOR_SCOPES,
+});
+await directory.upsert({
+  actorId: 'actor-studio-approver-a',
+  status: 'active',
+  roles: ['operator'],
+  createdAt: 0,
+  scopes: APPROVER_A_SCOPES,
+});
+await directory.upsert({
+  actorId: 'actor-studio-approver-b',
+  status: 'active',
+  roles: ['operator'],
+  createdAt: 0,
+  scopes: APPROVER_B_SCOPES,
 });
 
 const controlPlane = new ControlPlaneService({
@@ -463,6 +508,10 @@ const auth = createServerAuthenticator({
     [OPERATOR_TOKEN]: 'actor-studio-operator',
     [DETAIL_TOKEN]: 'actor-studio-detail',
     [MUTATOR_TOKEN]: 'actor-studio-mutator',
+    // S9-03 governance journey actors.
+    [AUTHOR_TOKEN]: 'actor-studio-author',
+    [APPROVER_A_TOKEN]: 'actor-studio-approver-a',
+    [APPROVER_B_TOKEN]: 'actor-studio-approver-b',
   }),
   directory,
 });
