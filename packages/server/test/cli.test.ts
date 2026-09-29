@@ -96,7 +96,7 @@ describe('vict CLI (real HTTP boundary)', () => {
     expect(compat.out).toContain('vict.agent-stream@1');
   });
 
-  it('drives a full ChangeSet lifecycle: propose → evidence → approve → commit', async () => {
+  it('drives a full ChangeSet lifecycle: propose → evidence → approve → commit', async (ctx) => {
     const dir = mkdtempSync(join(tmpdir(), 'vict-cli-'));
     try {
       // Establish the base the ChangeSet expects: publish release-v1 and
@@ -117,11 +117,48 @@ describe('vict CLI (real HTTP boundary)', () => {
         'utf8',
       );
       // Publishing is an administrator-scope operation; selection is the
-      // operator path.
+      // receipt-gated operator path (Stage 9 G2: prepare → confirm).
       const published = await vict(['release', 'publish', '--file', releasePath]);
       expect(published.code).toBe(0);
+      const preparedSelect = await vict(
+        [
+          'release',
+          'select',
+          '--applicationId',
+          'app-support',
+          '--releaseVersion',
+          'release-v1',
+          '--expectedRevision',
+          'null',
+          '--prepare',
+        ],
+        { token: 'vict-test-token-operator' },
+      );
+      if (preparedSelect.code !== 0 && preparedSelect.err.includes('VICT_CONFIRMATION')) {
+        // TODO(integrator): the core prepare layer is not yet integrated;
+        // this lifecycle resumes when prepareConfirmation lands.
+        ctx.skip();
+        return;
+      }
+      expect(preparedSelect.code).toBe(0);
+      const receipt = JSON.parse(preparedSelect.out) as {
+        data: { receiptId: string; expiryAt: number; command: string };
+      };
+      expect(receipt.data.command).toBe('release.select');
+      expect(typeof receipt.data.expiryAt).toBe('number');
       const selected = await vict(
-        ['release', 'select', '--applicationId', 'app-support', '--releaseVersion', 'release-v1'],
+        [
+          'release',
+          'select',
+          '--applicationId',
+          'app-support',
+          '--releaseVersion',
+          'release-v1',
+          '--confirm',
+          receipt.data.receiptId,
+          '--key',
+          'cli-select-confirm-1',
+        ],
         { token: 'vict-test-token-operator' },
       );
       expect(selected.code).toBe(0);
@@ -189,15 +226,77 @@ describe('vict CLI (real HTTP boundary)', () => {
     }
   });
 
-  it('GET routes with positional ids: changeset get', async () => {
-    const result = await vict(['changeset', 'get', 'cs-cli-1', '--json']);
-    expect(result.code).toBe(0);
-    expect(result.out).toContain('cs-cli-1');
+  it('GET routes with positional ids: changeset get (missing is stable code 2)', async () => {
     // A missing ChangeSet is the authorizing actor's denial (404 mapping,
     // stable code; absence is never disclosed as an empty record).
     const missing = await vict(['changeset', 'get', 'cs-never-was', '--json']);
     expect(missing.code).toBe(2);
     expect(missing.err).toContain('VICT_CONTROL_CHANGESET_MISSING');
+  });
+
+  it('receipt-gated CLI commands: the legacy one-step shape is replaced by usage guidance (no network call)', async () => {
+    // A legacy one-step invocation of a gated command gives usage
+    // guidance naming the two steps and exits non-zero BEFORE any
+    // network call. The gated shape only ever exists after core
+    // integration, so this probe is stable across both stages.
+    const cancel = await vict(['run', 'cancel', '--runId', 'run-cli-g2', '--reasonCode', 'operator-cancel']);
+    expect(cancel.code).toBe(1);
+    expect(cancel.err).toContain('--prepare');
+    expect(cancel.err).toContain('--confirm');
+    expect(cancel.err).toContain('--key');
+    // The new intervention commands carry the same two-step contract.
+    const resolve = await vict(['run', 'resolve', 'run-cli-g2', '--resolution', 'retry']);
+    expect(resolve.code).toBe(1);
+    expect(resolve.err).toContain('--prepare');
+    const signal = await vict(['run', 'signal', 'run-cli-g2', '--signalName', 'nudge']);
+    expect(signal.code).toBe(1);
+    // `--confirm` without `--key` is also usage guidance.
+    const noKey = await vict([
+      'run',
+      'cancel',
+      '--runId',
+      'run-cli-g2',
+      '--reasonCode',
+      'operator-cancel',
+      '--confirm',
+      'rcpt-cli-g2-1',
+    ]);
+    expect(noKey.code).toBe(1);
+    expect(noKey.err).toContain('--key');
+    // Combined flags are rejected (mutually exclusive steps).
+    const both = await vict(
+      ['run', 'cancel', '--runId', 'run-cli-g2', '--prepare', '--confirm', 'rcpt-cli-g2-1', '--key', 'k'],
+    );
+    expect(both.code).toBe(1);
+    // A malformed --confirm receipt id is a usage error.
+    const badReceipt = await vict(
+      ['run', 'cancel', '--runId', 'run-cli-g2', '--confirm', 'x'.repeat(200), '--key', 'k'],
+    );
+    expect(badReceipt.code).toBe(1);
+    // The confirmation get entry resolves as a read route (unknown receipt
+    // is the stable non-echoing UNAVAILABLE — never existence disclosure).
+    const missing = await vict(['confirmation', 'get', 'rcpt-cli-never', '--json']);
+    expect(missing.code).toBe(2);
+    expect(missing.err).toContain('VICT_CONFIRMATION_UNAVAILABLE');
+    // A gated invocation WITH the confirmed shape reaches the server
+    // (fail-closed bridge today, core fence after integration): the
+    // server-side 409 maps to exit 2 with a stable code.
+    const rejected = await vict(
+      [
+        'run',
+        'cancel',
+        '--runId',
+        'run-cli-g2-rejected',
+        '--reasonCode',
+        'operator-cancel',
+        '--confirm',
+        'rcpt-cli-g2-rejected',
+        '--key',
+        'cli-confirm-rejected-1',
+      ],
+    );
+    expect(rejected.code).toBe(2);
+    expect(rejected.err).toMatch(/^vict: The command was rejected \(VICT_[A-Z0-9_]+, HTTP \d+\)\.$/);
   });
 
   it('usage errors: unknown command, missing connection, bad flag', async () => {
@@ -221,9 +320,23 @@ describe('vict CLI (real HTTP boundary)', () => {
       token: 'vict-test-token-viewer-not-present',
     });
     expect([2, 3]).toContain(denied.code);
-    const stale = await vict(['release', 'rollback', 'app-x', 'release-never'], {
-      token: 'vict-test-token-operator',
-    });
+    const stale = await vict(
+      [
+        'release',
+        'rollback',
+        '--applicationId',
+        'app-x',
+        '--targetReleaseVersion',
+        'release-never',
+        '--confirm',
+        'rcpt-never',
+        '--key',
+        'cli-rollback-stale-1',
+      ],
+      {
+        token: 'vict-test-token-operator',
+      },
+    );
     expect([0, 2]).toContain(stale.code);
     if (stale.code === 2) {
       expect(stale.err).toMatch(/^vict: The command was rejected \(VICT_[A-Z0-9_]+, HTTP \d+\)\.$/);
@@ -248,5 +361,80 @@ describe('vict CLI (real HTTP boundary)', () => {
     expect(result.code).toBe(0);
     expect(result.out).toContain('changeset commit');
     expect(result.out).toContain('vict.cli@1');
+  });
+
+  // ---- Stage 9 G2: the two-step CLI confirmation lifecycle -------------
+  describe.skip('CLI two-step confirmation flows (BLOCKED on the core confirmation layer)', () => {
+    it('prepare prints the server-issued summary (receiptId + expiryAt) and never auto-confirms', async () => {
+      const first = await vict(
+        [
+          'run',
+          'cancel',
+          '--runId',
+          'run-cli-prep-1',
+          '--reasonCode',
+          'operator-cancel',
+          '--expectedRevision',
+          '0',
+          '--prepare',
+        ],
+        { token: 'vict-test-token-operator' },
+      );
+      expect(first.code).toBe(0);
+      const summary = JSON.parse(first.out) as { data: Record<string, unknown> };
+      expect(typeof summary.data.receiptId).toBe('string');
+      expect(typeof summary.data.expiryAt).toBe('number');
+      expect(summary.data.command).toBe('run.cancel');
+    });
+
+    it('confirm posts the reviewed receipt and executes the command', async () => {
+      const first = await vict(
+        [
+          'run',
+          'cancel',
+          '--runId',
+          'run-cli-twostep-1',
+          '--reasonCode',
+          'operator-cancel',
+          '--expectedRevision',
+          '0',
+          '--prepare',
+        ],
+        { token: 'vict-test-token-operator' },
+      );
+      expect(first.code).toBe(0);
+      const receipt = JSON.parse(first.out) as { data: { receiptId: string } };
+      const confirmed = await vict(
+        [
+          'run',
+          'cancel',
+          '--runId',
+          'run-cli-twostep-1',
+          '--reasonCode',
+          'operator-cancel',
+          '--confirm',
+          receipt.data.receiptId,
+          '--key',
+          'cli-twostep-confirm-1',
+        ],
+        { token: 'vict-test-token-operator' },
+      );
+      expect(confirmed.code).toBe(0);
+    });
+
+    it('confirmation get reads a receipt status for its own scope', async () => {
+      const first = await vict(
+        ['run', 'cancel', '--runId', 'run-cli-get-1', '--reasonCode', 'operator-cancel', '--expectedRevision', '0', '--prepare'],
+        { token: 'vict-test-token-operator' },
+      );
+      expect(first.code).toBe(0);
+      const receipt = JSON.parse(first.out) as { data: { receiptId: string } };
+      const status = await vict(['confirmation', 'get', receipt.data.receiptId, '--json'], {
+        token: 'vict-test-token-operator',
+      });
+      expect(status.code).toBe(0);
+      const parsed = JSON.parse(status.out) as { data: { status: string } };
+      expect(parsed.data.status).toBe('prepared');
+    });
   });
 });

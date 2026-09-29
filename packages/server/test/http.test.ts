@@ -363,4 +363,255 @@ describe('versioned HTTP commands (real HTTP)', () => {
     // The bounded body/field checks fail closed before any data access.
     expect([400, 415]).toContain(response.status);
   });
+
+  // ---- Stage 9 G2 — the legacy mutation fence (P-11/P-12) --------------
+  // Runnable against BOTH the fail-closed transport bridge (before the
+  // core confirmation layer lands) and the integrated core fence: every
+  // actor class holding the mutation scope still answers the stable
+  // 409 VICT_CONFIRMATION_REQUIRED for the unconfirmed legacy shape.
+  const LEGACY_GATED_ROUTES: readonly (readonly [
+    string,
+    Record<string, unknown>,
+  ])[] = [
+    ['/vict/v1/runs/cancel', { payload: { runId: 'run-g2-legacy', reasonCode: 'operator-cancel' } }],
+    ['/vict/v1/activations/select', { payload: { graphId: 'graph-g2', activationVersion: 'v-g2' } }],
+    ['/vict/v1/releases/select', { payload: { applicationId: 'app-g2', releaseVersion: 'release-g2-1' } }],
+    [
+      '/vict/v1/releases/rollback',
+      { payload: { applicationId: 'app-g2', targetReleaseVersion: 'release-g2-1' } },
+    ],
+  ];
+  it('P-11: operator legacy one-step mutations are fenced on all four commands', async () => {
+    const f = await fixture();
+    for (const [path, envelope] of LEGACY_GATED_ROUTES) {
+      const response = await post(f.port, path, envelope, {
+        ...bearer(operatorToken()),
+        'idempotency-key': `g2-legacy-op-${path.replace(/\//g, '-')}`,
+      });
+      expect(response.status).toBe(409);
+      expect(response.body.code).toBe('VICT_CONFIRMATION_REQUIRED');
+    }
+  });
+  it('P-11: developer legacy one-step mutations are fenced', async () => {
+    const f = await fixture();
+    for (const [path, envelope] of LEGACY_GATED_ROUTES) {
+      const response = await post(f.port, path, envelope, {
+        ...bearer(userToken()),
+        'idempotency-key': `g2-legacy-dev-${path.replace(/\//g, '-')}`,
+      });
+      expect(response.status).toBe(409);
+      expect(response.body.code).toBe('VICT_CONFIRMATION_REQUIRED');
+      expect(JSON.stringify(response.body)).not.toContain('runId');
+    }
+  });
+  it('P-12: administrator has NO legacy bypass — the same 409 fence', async () => {
+    const f = await fixture();
+    for (const [path, envelope] of LEGACY_GATED_ROUTES) {
+      // The DEVELOPER fixture actor holds the administrator role (the
+      // closed all-scopes policy), so this probes the administrator class.
+      const response = await post(f.port, path, envelope, {
+        ...bearer(userToken()),
+        'idempotency-key': `g2-legacy-admin-${path.replace(/\//g, '-')}`,
+      });
+      expect(response.status).toBe(409);
+      expect(response.body.code).toBe('VICT_CONFIRMATION_REQUIRED');
+    }
+  });
+
+  it('the new intervention routes are receipt-gated from day one (legacy shape rejected)', async () => {
+    const f = await fixture();
+    const resolve = await post(
+      f.port,
+      '/vict/v1/runs/run-g2-blocked/resolve',
+      { payload: { resolution: 'retry' } },
+      { ...bearer(userToken()), 'idempotency-key': 'g2-resolve-legacy' },
+    );
+    expect(resolve.status).toBe(409);
+    expect(resolve.body.code).toBe('VICT_CONFIRMATION_REQUIRED');
+    const signal = await post(
+      f.port,
+      '/vict/v1/runs/run-g2-blocked/signal',
+      { payload: { signalName: 'nudge' } },
+      { ...bearer(operatorToken()), 'idempotency-key': 'g2-signal-legacy' },
+    );
+    expect(signal.status).toBe(409);
+    expect(signal.body.code).toBe('VICT_CONFIRMATION_REQUIRED');
+  });
+
+  it('the confirmation transport bounds hostile confirmation bodies', async () => {
+    const f = await fixture();
+    // A receipt-shaped body whose receiptId is unbounded is a transport
+    // field failure before any service access.
+    const bad = await post(
+      f.port,
+      '/vict/v1/runs/run-g2-1/cancel',
+      { payload: {}, confirmation: { receiptId: 'x'.repeat(200) } },
+      { ...bearer(userToken()), 'idempotency-key': 'g2-bad-receipt-1' },
+    );
+    expect(bad.status).toBe(400); // bounded receipt shape enforced pre-service
+    expect(bad.body.code).toBe('VICT_HTTP_FIELD_INVALID');
+    const routeMissing = await post(
+      f.port,
+      '/vict/v1/runs/cancel',
+      { confirmation: 'rcpt-not-an-object' },
+      { ...bearer(userToken()), 'idempotency-key': 'g2-bad-confirm-1' },
+    );
+    expect(routeMissing.status).toBe(400);
+    expect(routeMissing.body.code).toBe('VICT_HTTP_FIELD_INVALID');
+  });
+
+  // ---- Stage 9 G2 — prepare / status / confirmed-consume surfaces ------
+  describe.skip('G2 confirmation prepare/status/confirm (BLOCKED on the core confirmation layer)', () => {
+    // TODO(integrator): unskip when the command service exposes, with
+    // EXACTLY these signatures (integration notes in the G2 transport
+    // candidate report):
+    //   prepareConfirmation(actor, { command: string;
+    //                              payload: Record<string, unknown>;
+    //                              idempotencyKey: string;
+    //                              expectedRevision?: number | null }):
+    //     Promise<{ ok:true; data:{ receiptId, command, payloadDigest,
+    //              expectedRevision, expiryAt, createdBy, createdAt } } |
+    //             { ok:false; code: string }>
+    //   getConfirmationStatus(actor, receiptId: string):
+    //     Promise<{ ok:true; data:{ receiptId, command, status, createdAt,
+    //              expiryAt?, expectedRevision?, consumedAt?,
+    //              consumedByKey? } } | { ok:false; code: string }>
+    // and widens the closed dispatch envelope with `confirmation`.
+    it('prepare issues a human-reviewable receipt (happy path)', async () => {
+      const f = await fixture();
+      const prepared = await post(
+        f.port,
+        '/vict/v1/confirmations',
+        { command: 'run.cancel', payload: { runId: 'run-g2-1', reasonCode: 'operator-cancel' }, expectedRevision: 0 },
+        { ...bearer(operatorToken()), 'idempotency-key': 'g2-prepare-op-1' },
+      );
+      expect(prepared.status).toBe(200);
+      const data = prepared.body.data as Record<string, unknown>;
+      expect(prepared.body.ok).toBe(true);
+      expect(data).toMatchObject({
+        command: 'run.cancel',
+        expectedRevision: 0,
+        createdBy: 'actor-operator',
+      });
+      expect(typeof data.receiptId).toBe('string');
+      expect(typeof data.payloadDigest).toBe('string');
+      expect(typeof data.expiryAt).toBe('number');
+      expect(typeof data.createdAt).toBe('number');
+      // The receipt NEVER echoes payload bytes.
+      expect(JSON.stringify(data)).not.toContain('operator-cancel');
+    });
+
+    it('prepare scope denial and field-required rows fail closed', async () => {
+      const f = await fixture();
+      // A no-scope actor preparing run.resolve (a scope the actor does not
+      // hold) is denied below the transport with no receipt.
+      const denied = await post(
+        f.port,
+        '/vict/v1/confirmations',
+        { command: 'run.resolve', payload: { runId: 'r', resolution: 'retry' }, expectedRevision: 0 },
+        { ...bearer('vict-test-token-empty'), 'idempotency-key': 'g2-prepare-noscope' },
+      );
+      expect(denied.status).toBe(403);
+      expect(denied.body.code).toBe('VICT_ACTOR_SCOPE_DENIED');
+      // A prepare envelope without the target command is a stable field
+      // failure.
+      const missing = await post(
+        f.port,
+        '/vict/v1/confirmations',
+        { payload: { runId: 'r' } },
+        { ...bearer(operatorToken()), 'idempotency-key': 'g2-prepare-nofield' },
+      );
+      expect(missing.status).toBe(400);
+      const unknownCommand = await post(
+        f.port,
+        '/vict/v1/confirmations',
+        { command: 'definitely.not.a.command', payload: {}, expectedRevision: 0 },
+        { ...bearer(operatorToken()), 'idempotency-key': 'g2-prepare-unknown' },
+      );
+      expect(unknownCommand.status).toBe(400);
+    });
+
+    it('prepare idempotency: same key+payload replays, different payload conflicts', async () => {
+      const f = await fixture();
+      const envelope = {
+        command: 'run.cancel',
+        payload: { runId: 'run-g2-replay', reasonCode: 'operator-cancel' },
+        expectedRevision: 0,
+      };
+      const first = await post(f.port, '/vict/v1/confirmations', envelope, {
+        ...bearer(operatorToken()),
+        'idempotency-key': 'g2-prepare-replay',
+      });
+      expect(first.status).toBe(200);
+      const replay = await post(f.port, '/vict/v1/confirmations', envelope, {
+        ...bearer(operatorToken()),
+        'idempotency-key': 'g2-prepare-replay',
+      });
+      expect(replay.status).toBe(200);
+      expect((replay.body.data as Record<string, unknown>).receiptId).toBe(
+        (first.body.data as Record<string, unknown>).receiptId,
+      );
+      const conflict = await post(
+        f.port,
+        '/vict/v1/confirmations',
+        { ...envelope, payload: { runId: 'run-g2-OTHER', reasonCode: 'operator-cancel' } },
+        { ...bearer(operatorToken()), 'idempotency-key': 'g2-prepare-replay' },
+      );
+      expect(conflict.status).toBe(409);
+      expect(conflict.body.code).toBe('VICT_COMMAND_IDEMPOTENCY_CONFLICT');
+    });
+
+    it('status read is scope-authorized and non-echoing in BOTH directions', async () => {
+      const f = await fixture();
+      const prepared = await post(
+        f.port,
+        '/vict/v1/confirmations',
+        { command: 'run.cancel', payload: { runId: 'run-g2-status', reasonCode: 'operator-cancel' }, expectedRevision: 0 },
+        { ...bearer(operatorToken()), 'idempotency-key': 'g2-status-prep' },
+      );
+      expect(prepared.status).toBe(200);
+      const receiptId = (prepared.body.data as Record<string, unknown>).receiptId as string;
+      // The receipt's own actor (holding run.cancel) reads the status.
+      const own = await get(f.port, `/vict/v1/confirmations/${receiptId}`, bearer(operatorToken()));
+      expect(own.status).toBe(200);
+      expect((own.body.data as Record<string, unknown>).status).toBe('prepared');
+      // A foreign actor (approver holds no run.cancel) answers the stable,
+      // non-echoing UNAVAILABLE — never the foreign receipt's existence.
+      const foreign = await get(
+        f.port,
+        `/vict/v1/confirmations/${receiptId}`,
+        bearer('vict-test-token-approver'),
+      );
+      expect(foreign.status).toBe(404);
+      expect(foreign.body.code).toBe('VICT_CONFIRMATION_UNAVAILABLE');
+      // Unknown receipts are indistinguishable from foreign ones.
+      const unknown = await get(
+        f.port,
+        '/vict/v1/confirmations/rcpt-unknown-g2',
+        bearer(operatorToken()),
+      );
+      expect(unknown.status).toBe(404);
+      expect(unknown.body.code).toBe('VICT_CONFIRMATION_UNAVAILABLE');
+    });
+
+    it('the confirmed consume shape executes the gated commands (prepare → confirm)', async () => {
+      const f = await fixture();
+      const prepared = await post(
+        f.port,
+        '/vict/v1/confirmations',
+        { command: 'run.cancel', payload: { runId: 'run-g2-confirm', reasonCode: 'operator-cancel' }, expectedRevision: 0 },
+        { ...bearer(operatorToken()), 'idempotency-key': 'g2-consume-prep' },
+      );
+      expect(prepared.status).toBe(200);
+      const receiptId = (prepared.body.data as Record<string, unknown>).receiptId as string;
+      const confirmed = await post(
+        f.port,
+        '/vict/v1/runs/cancel',
+        { payload: { runId: 'run-g2-confirm', reasonCode: 'operator-cancel' }, confirmation: { receiptId } },
+        { ...bearer(operatorToken()), 'idempotency-key': 'g2-consume-1' },
+      );
+      expect(confirmed.status).toBe(200);
+      expect((confirmed.body as Record<string, unknown>).ok).toBe(true);
+    });
+  });
 });

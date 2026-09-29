@@ -1,5 +1,6 @@
 import { createServer, type IncomingMessage, type Server, type ServerResponse } from 'node:http';
 import {
+  COMMAND_IDEMPOTENCY_KEY_PATTERN,
   VictControlError,
   type AgentControlStores,
   type AgentStreamHub,
@@ -10,7 +11,11 @@ import {
   type AgentStreamEvent,
 } from '@victframework/contracts';
 import { AuthenticationError, type ServerActorContext } from './auth.js';
-import { VictCommandService, type VictCommandOutcome } from './commands.js';
+import {
+  VictCommandService,
+  VICT_COMMANDS,
+  type VictCommandOutcome,
+} from './commands.js';
 
 /**
  * Stage 06B — the VICT-owned HTTP boundary (AI-015).
@@ -50,6 +55,89 @@ export type HttpErrorCode =
   | 'VICT_HTTP_COMMAND_UNKNOWN'
   | 'VICT_HTTP_FIELD_INVALID'
   | 'VICT_HTTP_RATE_BOUNDS';
+
+/**
+ * Stage 9 G2 — the confirmation transport contract (integration seam).
+ *
+ * The command-service confirmation layer (prepare/consume/status + the
+ * legacy fence) is delivered by the core command service; these interfaces
+ * pin the EXACT method shapes the transport consumes. Until the service
+ * carries both methods, the confirmation surfaces FAIL CLOSED (never
+ * pretending success) — see `confirmationCapability`.
+ */
+export interface ConfirmationPrepareRequest {
+  readonly command: string;
+  readonly payload: Record<string, unknown>;
+  readonly idempotencyKey: string;
+  /** The subject's CURRENT revision carried at prepare (contract §4.4). */
+  readonly expectedRevision?: number | null;
+}
+
+/** Prepare outcome: the human-reviewable receipt summary (never payload bytes). */
+export interface ConfirmationReceiptSummary {
+  readonly receiptId: string;
+  readonly command: string;
+  readonly payloadDigest: string;
+  readonly expectedRevision: number | null;
+  readonly expiryAt: number;
+  readonly createdBy: string;
+  readonly createdAt: number;
+}
+
+/** Status-read outcome (non-echoing; foreign receipts are never disclosed). */
+export interface ConfirmationStatusSummary {
+  readonly receiptId: string;
+  readonly command: string;
+  readonly status: string;
+  readonly createdAt: number;
+  readonly expiryAt?: number;
+  readonly expectedRevision?: number | null;
+  readonly consumedAt?: number;
+  readonly consumedByKey?: string;
+}
+
+export type ConfirmationServiceOutcome<T> =
+  | { ok: true; data: T }
+  | { ok: false; code: string };
+
+export interface ConfirmationAwareCommandService {
+  prepareConfirmation(
+    actor: ServerActorContext,
+    request: ConfirmationPrepareRequest,
+  ): Promise<ConfirmationServiceOutcome<ConfirmationReceiptSummary>>;
+  getConfirmationStatus(
+    actor: ServerActorContext,
+    receiptId: string,
+  ): Promise<ConfirmationServiceOutcome<ConfirmationStatusSummary>>;
+}
+
+/**
+ * Narrow feature check: the confirmation layer exists only when the
+ * composed command service exposes BOTH methods. Absence keeps every
+ * confirmation surface failing closed (no fake success, no bypass).
+ */
+function confirmationCapability(
+  service: VictCommandService,
+): ConfirmationAwareCommandService | undefined {
+  const candidate = service as unknown as Partial<ConfirmationAwareCommandService>;
+  return typeof candidate.prepareConfirmation === 'function' &&
+    typeof candidate.getConfirmationStatus === 'function'
+    ? (service as unknown as ConfirmationAwareCommandService)
+    : undefined;
+}
+
+/** The commands whose consume routes are receipt-gated by the G2 contract. */
+const CONFIRMATION_GATED_COMMANDS: ReadonlySet<string> = new Set([
+  'run.cancel',
+  'activation.select',
+  'release.select',
+  'release.rollback',
+  'run.resolve',
+  'run.signal',
+]);
+
+/** The bounded opaque receipt shape the confirmed shape must carry. */
+const RECEIPT_ID_PATTERN = /^[A-Za-z0-9][A-Za-z0-9._:@-]{0,127}$/;
 
 /** Structured transport error (safe body; never echoes raw content). */
 export class HttpError extends Error {
@@ -127,6 +215,18 @@ function statusForError(code: string | undefined): number {
     case 'VICT_CONTROL_BASE_STALE':
     case 'VICT_STREAM_CURSOR_FUTURE':
       return 409;
+    // Stage 9 G2 — Phase-2 confirmation outcomes (stable nearest codes).
+    case 'VICT_CONFIRMATION_REQUIRED':
+    case 'VICT_CONFIRMATION_MISMATCH':
+    case 'VICT_CONFIRMATION_STALE':
+    case 'VICT_CONFIRMATION_SPENT':
+      return 409;
+    case 'VICT_CONFIRMATION_UNAVAILABLE':
+      return 404;
+    case 'VICT_CONFIRMATION_EXPIRED':
+      return 410;
+    case 'VICT_CONFIRMATION_FIELD_REQUIRED':
+      return 400;
     case 'VICT_CONTROL_APPROVAL_CONFLICT':
     case 'VICT_CONTROL_APPROVALS_INVALIDATED':
     case 'VICT_CONTROL_CHANGESET_NOT_APPROVED':
@@ -155,6 +255,9 @@ function statusForError(code: string | undefined): number {
     default:
       if (code.startsWith('VICT_ACTOR_')) {
         return 403;
+      }
+      if (code.startsWith('VICT_CONFIRMATION_')) {
+        return 409;
       }
       return 500;
   }
@@ -263,6 +366,9 @@ const POST_ROUTES: Readonly<Record<string, () => string>> = {
   '/vict/v1/releases/rollback': () => 'release.rollback',
   '/vict/v1/activations/select': () => 'activation.select',
   '/vict/v1/runs/cancel': () => 'run.cancel',
+  // Stage 9 G2: the single prepare route. Dispatch is intercepted in the
+  // handler (the command name here pins the route in the closed table).
+  '/vict/v1/confirmations': () => 'confirmation.prepare',
   '/vict/v1/turns': () => 'agent.turn.start',
   '/vict/v1/turns/cancel': () => 'agent.turn.cancel',
   '/vict/v1/app/actions': () => 'app.data.mutate',
@@ -416,18 +522,51 @@ export function createVictHttpServer(options: VictHttpServerOptions): VictHttpSe
     }
     // The COMPLETE body envelope is validated — not only its payload
     // member. The closed top-level field set is `payload` plus the exact
-    // schema marker; unknown top-level fields fail closed.
+    // schema marker; unknown top-level fields fail closed. Stage 9 G2
+    // extends the closed set with the confirmation members `command`,
+    // `confirmation`, and `idempotencyKey` (the prepare route envelope and
+    // the confirmed consume shape; the Idempotency-Key HTTP header remains
+    // authoritative and takes precedence over a body-level key).
     if (typeof parsed !== 'object' || parsed === null || Array.isArray(parsed)) {
       throw new HttpError('VICT_HTTP_BODY_MALFORMED', 400);
     }
     const envelope = parsed as Record<string, unknown>;
     for (const key of Object.keys(envelope)) {
-      if (key !== 'payload' && key !== 'schema') {
+      if (key !== 'payload' && key !== 'schema' && key !== 'command' && key !== 'confirmation' && key !== 'idempotencyKey' && key !== 'expectedRevision') {
         throw new HttpError('VICT_HTTP_BODY_MALFORMED', 400);
       }
     }
     if (envelope.schema !== undefined && envelope.schema !== 'vict.command@1') {
       throw new HttpError('VICT_HTTP_BODY_MALFORMED', 400);
+    }
+    // Stage 9 G2: the confirmed consume shape `{ confirmation: { receiptId } }`.
+    let confirmation: { readonly receiptId: string } | undefined;
+    if (envelope.confirmation !== undefined) {
+      const rawConfirmation = envelope.confirmation;
+      if (
+        typeof rawConfirmation !== 'object' ||
+        rawConfirmation === null ||
+        Array.isArray(rawConfirmation)
+      ) {
+        throw new HttpError('VICT_HTTP_FIELD_INVALID', 400);
+      }
+      const receiptId = (rawConfirmation as Record<string, unknown>)['receiptId'];
+      if (typeof receiptId !== 'string' || !RECEIPT_ID_PATTERN.test(receiptId)) {
+        throw new HttpError('VICT_HTTP_FIELD_INVALID', 400);
+      }
+      confirmation = { receiptId };
+    }
+    // A body-level idempotencyKey is tolerated for the confirmation
+    // surfaces; the HTTP header wins when both are present.
+    let bodyIdempotencyKey: string | undefined;
+    if (envelope.idempotencyKey !== undefined) {
+      if (
+        typeof envelope.idempotencyKey !== 'string' ||
+        !COMMAND_IDEMPOTENCY_KEY_PATTERN.test(envelope.idempotencyKey)
+      ) {
+        throw new HttpError('VICT_HTTP_FIELD_INVALID', 400);
+      }
+      bodyIdempotencyKey = envelope.idempotencyKey;
     }
     let payload: unknown = envelope.payload;
     if (payload === undefined) {
@@ -437,6 +576,22 @@ export function createVictHttpServer(options: VictHttpServerOptions): VictHttpSe
       if (Object.keys(payload as Record<string, unknown>).length > 64) {
         throw new HttpError('VICT_HTTP_RATE_BOUNDS', 400);
       }
+    }
+    // Stage 9 G2 — the confirmation surfaces (prepare POST; single-receipt
+    // status GET). Both are intercepted BEFORE the route table: they are
+    // transport-to-service seams, not versioned commands.
+    if (path === '/vict/v1/confirmations' && req.method === 'POST') {
+      await handleConfirmationPrepare(actor, envelope, req, res);
+      return;
+    }
+    const confirmationStatusMatch =
+      /^\/vict\/v1\/confirmations\/([A-Za-z0-9][A-Za-z0-9._:@-]{0,127})$/.exec(path);
+    if (confirmationStatusMatch !== null) {
+      if (req.method !== 'GET') {
+        throw new HttpError('VICT_HTTP_METHOD_UNSUPPORTED', 405);
+      }
+      await handleConfirmationStatus(actor, confirmationStatusMatch[1] as string, res);
+      return;
     }
     // Dynamic instance routes inject the authoritative path identity into
     // the bounded payload (path params win over client-supplied fields).
@@ -451,13 +606,35 @@ export function createVictHttpServer(options: VictHttpServerOptions): VictHttpSe
     if (resolved.pathParams !== undefined) {
       payload = { ...(payload as Record<string, unknown>), ...resolved.pathParams };
     }
-    const idempotencyKey = req.headers['idempotency-key'];
-    const command = resolved.command as never;
-    const outcome = await options.commandService.dispatch(actor, {
-      command,
-      payload: payload as Record<string, unknown>,
-      ...(typeof idempotencyKey === 'string' ? { idempotencyKey } : {}),
-    });
+    const idempotencyKey =
+      typeof req.headers['idempotency-key'] === 'string'
+        ? (req.headers['idempotency-key'] as string)
+        : bodyIdempotencyKey;
+    const command = resolved.command;
+    // Stage 9 G2: receipt-gated consume routes. The FENCE itself lives in
+    // the command service; the transport only wires the confirmation
+    // through. Until that service layer exists, the gate FAILS CLOSED.
+    if (CONFIRMATION_GATED_COMMANDS.has(command)) {
+      const capable = confirmationCapability(options.commandService);
+      if (capable === undefined) {
+        // TODO(integrator): remove this bridge branch when the command
+        // service exposes prepareConfirmation/getConfirmationStatus and
+        // accepts `confirmation` in the closed request envelope — the
+        // fence then lives in #dispatchIdempotent as pinned (409
+        // VICT_CONFIRMATION_REQUIRED for every actor, no bypass).
+        sendJson(res, 409, { ok: false, code: 'VICT_CONFIRMATION_REQUIRED' });
+        return;
+      }
+    }
+    const outcome = await options.commandService.dispatch(
+      actor,
+      {
+        command,
+        payload: payload as Record<string, unknown>,
+        ...(typeof idempotencyKey === 'string' ? { idempotencyKey } : {}),
+        ...(confirmation !== undefined ? { confirmation } : {}),
+      } as unknown as Parameters<VictCommandService['dispatch']>[1],
+    );
     if (!outcome.ok) {
       sendJson(res, statusForError(outcome.code), outcomeBody(outcome));
       return;
@@ -469,6 +646,101 @@ export function createVictHttpServer(options: VictHttpServerOptions): VictHttpSe
   interface ResolvedRoute {
     readonly command: string;
     readonly pathParams?: Record<string, string>;
+  }
+
+  /**
+   * Stage 9 G2 — prepare: the transport seam to the core confirmation
+   * layer (`prepareConfirmation`). Transport validation stays minimal and
+   * fail-closed: a plain payload, a known command, and the bounded
+   * Idempotency-Key (header-first). Authorization (the TARGET command's
+   * mutation scope), digest binding, TTL, and idempotent prepare are
+   * enforced by the service; the transport NEVER echoes payload bytes.
+   */
+  async function handleConfirmationPrepare(
+    actor: ServerActorContext,
+    envelope: Record<string, unknown>,
+    req: IncomingMessage,
+    res: ServerResponse,
+  ): Promise<void> {
+    const command = envelope['command'];
+    if (typeof command !== 'string' || !(VICT_COMMANDS as readonly string[]).includes(command)) {
+      throw new HttpError('VICT_HTTP_FIELD_INVALID', 400);
+    }
+    const rawPayload = envelope['payload'] ?? {};
+    if (
+      typeof rawPayload !== 'object' ||
+      rawPayload === null ||
+      Array.isArray(rawPayload) ||
+      Object.keys(rawPayload).length > 64
+    ) {
+      throw new HttpError('VICT_HTTP_FIELD_INVALID', 400);
+    }
+    let expectedRevision: number | null | undefined;
+    if (envelope['expectedRevision'] !== undefined) {
+      const revision = envelope['expectedRevision'];
+      if (
+        (revision !== null && (typeof revision !== 'number' || !Number.isSafeInteger(revision) || revision < 0))
+      ) {
+        throw new HttpError('VICT_HTTP_FIELD_INVALID', 400);
+      }
+      expectedRevision = revision as number | null;
+    }
+    const headerKey = req.headers['idempotency-key'];
+    const bodyKey = envelope['idempotencyKey'];
+    const idempotencyKey = typeof headerKey === 'string' ? headerKey : (bodyKey as string | undefined ?? undefined);
+    if (
+      typeof idempotencyKey !== 'string' ||
+      !COMMAND_IDEMPOTENCY_KEY_PATTERN.test(idempotencyKey)
+    ) {
+      throw new HttpError('VICT_HTTP_FIELD_INVALID', 400);
+    }
+    const capable = confirmationCapability(options.commandService);
+    if (capable === undefined) {
+      // TODO(integrator): flip — the bridge fails closed until the
+      // command service exposes prepareConfirmation (G2 core layer).
+      sendJson(res, 409, { ok: false, code: 'VICT_CONFIRMATION_UNAVAILABLE' });
+      return;
+    }
+    const outcome = await capable.prepareConfirmation(actor, {
+      command,
+      payload: rawPayload as Record<string, unknown>,
+      idempotencyKey,
+      ...(expectedRevision !== undefined ? { expectedRevision } : {}),
+    });
+    if (!outcome.ok) {
+      sendJson(res, statusForError(outcome.code), { ok: false, code: outcome.code });
+      return;
+    }
+    sendJson(res, 200, { ok: true, data: outcome.data });
+  }
+
+  /**
+   * Stage 9 G2 — status read: single-receipt, authorization = the
+   * receipt's command mutation scope (enforced by the service); other
+   * actors' or unknown receipts answer the stable non-echoing
+   * UNAVAILABLE code so absence and foreign receipts are indistinguishable.
+   */
+  async function handleConfirmationStatus(
+    actor: ServerActorContext,
+    receiptId: string,
+    res: ServerResponse,
+  ): Promise<void> {
+    if (!RECEIPT_ID_PATTERN.test(receiptId)) {
+      throw new HttpError('VICT_HTTP_FIELD_INVALID', 400);
+    }
+    const capable = confirmationCapability(options.commandService);
+    if (capable === undefined) {
+      // TODO(integrator): flip — the bridge fails closed until the
+      // command service exposes getConfirmationStatus (G2 core layer).
+      sendJson(res, 404, { ok: false, code: 'VICT_CONFIRMATION_UNAVAILABLE' });
+      return;
+    }
+    const outcome = await capable.getConfirmationStatus(actor, receiptId);
+    if (!outcome.ok) {
+      sendJson(res, statusForError(outcome.code), { ok: false, code: outcome.code });
+      return;
+    }
+    sendJson(res, 200, { ok: true, data: outcome.data });
   }
 
   /** Resolve the command from the request (closed route table). */
@@ -521,6 +793,24 @@ export function createVictHttpServer(options: VictHttpServerOptions): VictHttpSe
     // Stage 9 operator reads (WP-1): bounded dynamic instance routes. The
     // run sub-resource routes are matched BEFORE the bare run identity so
     // `/runs/:id/events` never collapses into `run.get`.
+    const runResolveMatch = /^\/vict\/v1\/runs\/([A-Za-z0-9][A-Za-z0-9._:@-]{0,127})\/resolve$/.exec(
+      path,
+    );
+    if (runResolveMatch !== null) {
+      if (req.method !== 'POST') {
+        throw new HttpError('VICT_HTTP_METHOD_UNSUPPORTED', 405);
+      }
+      return { command: 'run.resolve', pathParams: { runId: runResolveMatch[1] as string } };
+    }
+    const runSignalMatch = /^\/vict\/v1\/runs\/([A-Za-z0-9][A-Za-z0-9._:@-]{0,127})\/signal$/.exec(
+      path,
+    );
+    if (runSignalMatch !== null) {
+      if (req.method !== 'POST') {
+        throw new HttpError('VICT_HTTP_METHOD_UNSUPPORTED', 405);
+      }
+      return { command: 'run.signal', pathParams: { runId: runSignalMatch[1] as string } };
+    }
     const runEventsMatch = /^\/vict\/v1\/runs\/([A-Za-z0-9][A-Za-z0-9._:@-]{0,127})\/events$/.exec(
       path,
     );

@@ -22,7 +22,18 @@
 import { readFileSync, statSync } from 'node:fs';
 import { VictCliError, VictHttpClient } from './client.js';
 import { runCheckCommand, runVocabularyCommand } from './check.js';
-import { buildPayload, CLI_COMMANDS, fillPath, type CliCommandSpec } from './commands.js';
+import {
+  buildConfirmedPayload,
+  buildPayload,
+  buildPrepareEnvelope,
+  CLI_COMMANDS,
+  CONFIRM_FLAG,
+  confirmationUsageGuidance,
+  fillPath,
+  parsePrepareRevision,
+  resolveConfirmationMode,
+  type CliCommandSpec,
+} from './commands.js';
 
 export interface VictCliIo {
   readonly stdout: (line: string) => void;
@@ -80,6 +91,12 @@ function parse(argv: readonly string[]): {
     const arg = argv[index] as string;
     if (arg === '--json') {
       jsonOut = true;
+      index += 1;
+      continue;
+    }
+    if (arg === '--prepare') {
+      // A value-free boolean: the PREPARE step of a receipt-gated command.
+      flags['prepare'] = 'true';
       index += 1;
       continue;
     }
@@ -195,6 +212,37 @@ export async function runVictCli(
   }
   const { spec, key } = resolved;
   const flags = { ...parsed.flags };
+  // Stage 9 G2 — receipt-gated commands: the one-step shape is REPLACED.
+  // Without exactly one of the two steps the command fails as a usage
+  // error BEFORE any network call.
+  if (spec.confirmation !== undefined) {
+    const mode = resolveConfirmationMode(flags);
+    if (mode === 'usage') {
+      io.stderr(confirmationUsageGuidance(key));
+      return 1;
+    }
+    if (mode === 'prepare') {
+      try {
+        parsePrepareRevision(flags['expectedRevision']);
+      } catch (error) {
+        io.stderr(`vict: ${(error as Error).message}`);
+        return 1;
+      }
+    }
+    if (mode === 'confirm') {
+      const receiptId = flags[CONFIRM_FLAG] as string;
+      if (!/^[A-Za-z0-9][A-Za-z0-9._:@-]{0,127}$/.test(receiptId)) {
+        io.stderr('vict: --confirm requires a bounded receipt id.');
+        return 1;
+      }
+      try {
+        fillPath(spec, flags);
+      } catch (error) {
+        io.stderr(`vict: ${(error as Error).message}`);
+        return 1;
+      }
+    }
+  }
   // Approval verbs map onto the two distinct approval commands.
   if (key === 'approval approve') {
     flags['decision'] = 'approved';
@@ -227,17 +275,41 @@ export async function runVictCli(
   let payload: Record<string, unknown>;
   try {
     path = fillPath(spec, flags);
-    payload = buildPayload(spec, flags, fileJson);
+    payload =
+      spec.confirmation !== undefined && resolveConfirmationMode(flags) === 'confirm'
+        ? buildConfirmedPayload(spec, flags, fileJson)
+        : buildPayload(spec, flags, fileJson);
   } catch (error) {
     io.stderr(`vict: ${(error as Error).message}`);
     return 1;
   }
   const client = new VictHttpClient({ endpoint, token });
+  const confirmationMode =
+    spec.confirmation !== undefined ? resolveConfirmationMode(flags) : undefined;
   try {
-    const data =
-      spec.method === 'GET'
-        ? await client.request('GET', path, { query: payload })
-        : await client.request('POST', path, { payload });
+    let data: Record<string, unknown>;
+    if (spec.method === 'GET') {
+      data = await client.request('GET', path, { query: payload });
+    } else if (confirmationMode === 'prepare') {
+      const envelope = buildPrepareEnvelope(spec, flags, fileJson);
+      data = await client.request('POST', spec.confirmation!.preparePath, {
+        payload: envelope.payload,
+        bodyMembers: {
+          command: envelope.command,
+          ...(envelope.expectedRevision !== undefined
+            ? { expectedRevision: envelope.expectedRevision }
+            : {}),
+        },
+      });
+    } else if (confirmationMode === 'confirm') {
+      data = await client.request('POST', path, {
+        payload,
+        idempotencyKey: flags['key'],
+        bodyMembers: { confirmation: { receiptId: flags['confirm'] as string } },
+      });
+    } else {
+      data = await client.request('POST', path, { payload });
+    }
     if (parsed.jsonOut) {
       io.stdout(JSON.stringify({ ok: true, command: key, data }, null, 2));
     } else {

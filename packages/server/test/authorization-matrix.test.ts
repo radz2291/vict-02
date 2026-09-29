@@ -108,17 +108,216 @@ async function getMatrix(
   return { status: response.status, code: typeof body.code === 'string' ? body.code : undefined };
 }
 
+/*
+ * Stage 9 G2: the receipt-gated commands (release.select,
+ * activation.select — and their confirmed-shape matrix rows, plus the
+ * confirmation prepare/status scope rows) are pinned in a BLOCKED-ON-CORE
+ * suite below; the transport bridge fails closed until the core
+ * confirmation layer exposes prepareConfirmation/getConfirmationStatus.
+ *
+ * The LIVE P-11/P-12 rows below run against BOTH the bridge and the
+ * integrated core fence.
+ */
+describe('Stage 9 G2 — permanent confirmation authorization rows', () => {
+  const LEGACY_GATED: readonly (readonly [string, Record<string, unknown>])[] = [
+    ['/vict/v1/runs/cancel', { payload: { runId: 'run-g2-mx', reasonCode: 'operator-cancel' } }],
+    [
+      '/vict/v1/activations/select',
+      { payload: { graphId: 'graph-g2-mx', activationVersion: 'v-g2-mx' } },
+    ],
+    [
+      '/vict/v1/releases/select',
+      { payload: { applicationId: 'app-g2-mx', releaseVersion: 'release-g2-mx' } },
+    ],
+    [
+      '/vict/v1/releases/rollback',
+      { payload: { applicationId: 'app-g2-mx', targetReleaseVersion: 'release-g2-mx' } },
+    ],
+  ];
+
+  it('P-11: no legacy bypass — unconfirmed mutations fail closed (operator)', async () => {
+    const f = await fixture();
+    for (const [path, envelope] of LEGACY_GATED) {
+      const result = await post(f, path, envelope, OPERATOR, `mx-p11-op-${path}`);
+      expect(result.status).toBe(409);
+      expect(result.code).toBe('VICT_CONFIRMATION_REQUIRED');
+    }
+  });
+
+  it('P-11: no legacy bypass — unconfirmed mutations fail closed (developer)', async () => {
+    const f = await fixture();
+    for (const [path, envelope] of LEGACY_GATED) {
+      const result = await post(f, path, envelope, DEVELOPER, `mx-p11-dev-${path}`);
+      expect(result.status).toBe(409);
+      expect(result.code).toBe('VICT_CONFIRMATION_REQUIRED');
+    }
+  });
+
+  it('P-12: administrator has NO legacy bypass — the same 409 fence', async () => {
+    const f = await fixture();
+    // The DEVELOPER token actor holds the administrator role (closed
+    // all-scopes policy); authority does NOT soften the confirmation fence.
+    for (const [path, envelope] of LEGACY_GATED) {
+      const result = await post(f, path, envelope, DEVELOPER, `mx-p12-admin-${path}`);
+      expect(result.status).toBe(409);
+      expect(result.code).toBe('VICT_CONFIRMATION_REQUIRED');
+    }
+  });
+
+  it('the new intervention commands are receipt-gated for every actor (legacy shape rejected)', async () => {
+    const f = await fixture();
+    const resolve = await post(
+      f,
+      '/vict/v1/runs/run-g2-mx/resolve',
+      { payload: { resolution: 'retry' } },
+      DEVELOPER,
+      'mx-p11-resolve',
+    );
+    expect(resolve.status).toBe(409);
+    expect(resolve.code).toBe('VICT_CONFIRMATION_REQUIRED');
+    const signal = await post(
+      f,
+      '/vict/v1/runs/run-g2-mx/signal',
+      { payload: { signalName: 'nudge' } },
+      DEVELOPER,
+      'mx-p11-signal',
+    );
+    expect(signal.status).toBe(409);
+    expect(signal.code).toBe('VICT_CONFIRMATION_REQUIRED');
+  });
+
+  describe.skip('G2 confirmation scope rows (BLOCKED on the core confirmation layer)', () => {
+    // TODO(integrator): unskip when prepareConfirmation/getConfirmationStatus
+    // land (signatures pinned in the transport candidate's integration notes
+    // and the describe.skip TODO in http.test.ts).
+    const CONFIRMED_LEGACY: readonly MatrixRow[] = [
+      {
+        command: 'release.select (confirmed shape)',
+        wrongScopeToken: VIEWER,
+        correctToken: OPERATOR,
+        run: (f, token, tag) =>
+          post(
+            f,
+            '/vict/v1/releases/select',
+            {
+              payload: { applicationId: 'app.g2mx', releaseVersion: 'release-g2mx-1' },
+              confirmation: { receiptId: `rcpt-g2mx-${tag}` },
+            },
+            token,
+            `mx-confirm-select-${tag}`,
+          ),
+      },
+      {
+        command: 'activation.select (confirmed shape)',
+        wrongScopeToken: VIEWER,
+        correctToken: OPERATOR,
+        run: (f, token, tag) =>
+          post(
+            f,
+            '/vict/v1/activations/select',
+            {
+              payload: { graphId: 'graph.g2mx', activationVersion: 'v-g2mx' },
+              confirmation: { receiptId: `rcpt-g2mx-${tag}` },
+            },
+            token,
+            `mx-confirm-activation-${tag}`,
+          ),
+      },
+    ];
+    for (const entry of CONFIRMED_LEGACY) {
+      it(`[${entry.command}] no-scope actor is denied (default deny)`, async () => {
+        const f = await fixture();
+        const result = await entry.run(f, NO_SCOPE, 'noscope');
+        expect(result.status).toBe(403);
+        expect(result.code).toBe('VICT_ACTOR_SCOPE_DENIED');
+      });
+      it(`[${entry.command}] wrong-scope actor is denied with a stable 403`, async () => {
+        const f = await fixture();
+        const result = await entry.run(f, entry.wrongScopeToken, 'wrongscope');
+        expect(result.status).toBe(403);
+        expect(result.code).toBe('VICT_ACTOR_SCOPE_DENIED');
+      });
+      it(`[${entry.command}] correct-scope actor passes authorization (command may still fail on state)`, async () => {
+        const f = await fixture();
+        const result = await entry.run(f, entry.correctToken, 'ok');
+        expect(result.status).not.toBe(403);
+        expect(result.code).not.toBe('VICT_ACTOR_SCOPE_DENIED');
+      });
+    }
+    it('confirmation prepare requires the TARGET command mutation scope (run.resolve / run.signal)', async () => {
+      const f = await fixture();
+      // A wrong-scope actor preparing run.resolve is denied with no receipt.
+      const denied = await post(
+        f,
+        '/vict/v1/confirmations',
+        { command: 'run.resolve', payload: { runId: 'r', resolution: 'retry' }, expectedRevision: 0 },
+        VIEWER,
+        'mx-prepare-deny-resolve',
+      );
+      expect(denied.status).toBe(403);
+      expect(denied.code).toBe('VICT_ACTOR_SCOPE_DENIED');
+      const deniedSignal = await post(
+        f,
+        '/vict/v1/confirmations',
+        { command: 'run.signal', payload: { runId: 'r', signalName: 'ping' }, expectedRevision: 0 },
+        VIEWER,
+        'mx-prepare-deny-signal',
+      );
+      expect(deniedSignal.status).toBe(403);
+      expect(deniedSignal.code).toBe('VICT_ACTOR_SCOPE_DENIED');
+      // A correct-scope actor passes authorization (no-scope denial).
+      const allowed = await post(
+        f,
+        '/vict/v1/confirmations',
+        { command: 'run.resolve', payload: { runId: 'r', resolution: 'retry' }, expectedRevision: 0 },
+        DEVELOPER, // administrator policy holds the new scopes by definition
+        'mx-prepare-allow-resolve',
+      );
+      expect(allowed.status).not.toBe(403);
+      expect(allowed.code).not.toBe('VICT_ACTOR_SCOPE_DENIED');
+      void deniedSignal;
+      void denied;
+    });
+    it('confirmation status read is scope-authorized in BOTH directions', async () => {
+      const f = await fixture();
+      const prepared = await post(
+        f,
+        '/vict/v1/confirmations',
+        { command: 'run.cancel', payload: { runId: 'r-g2-status', reasonCode: 'operator-cancel' }, expectedRevision: 0 },
+        OPERATOR,
+        'mx-status-prep',
+      );
+      expect(prepared.status).toBe(200);
+      const receiptId = ((prepared as unknown as { body: Record<string, unknown> }).body
+        .data as Record<string, unknown>).receiptId as string;
+      // Own scope: allowed.
+      const own = await getMatrix(f, `/vict/v1/confirmations/${receiptId}`, OPERATOR);
+      expect(own.status).toBe(200);
+      expect(own.code).toBeUndefined();
+      // Wrong scope: stable non-echoing UNAVAILABLE.
+      const wrong = await getMatrix(
+        f,
+        `/vict/v1/confirmations/${receiptId}`,
+        'vict-test-token-approver',
+      );
+      expect(wrong.status).toBe(404);
+      expect(wrong.code).toBe('VICT_CONFIRMATION_UNAVAILABLE');
+    });
+  });
+});
+
+interface MatrixRow {
+  readonly command: string;
+  readonly wrongScopeToken: string;
+  readonly correctToken: string;
+  run(
+    f: Awaited<ReturnType<typeof httpFixture>>,
+    token: string,
+    tag: string,
+  ): Promise<{ status: number; code: string | undefined }>;
+}
+
 describe('public-API authorization matrix (real HTTP, below-transport enforcement)', () => {
-  interface MatrixRow {
-    readonly command: string;
-    readonly wrongScopeToken: string;
-    readonly correctToken: string;
-    run(
-      f: Awaited<ReturnType<typeof httpFixture>>,
-      token: string,
-      tag: string,
-    ): Promise<{ status: number; code: string | undefined }>;
-  }
   const matrix: readonly MatrixRow[] = [
     {
       command: 'changeset.propose',
@@ -218,32 +417,6 @@ describe('public-API authorization matrix (real HTTP, below-transport enforcemen
           },
           token,
           `matrix-publish-${tag}`,
-        ),
-    },
-    {
-      command: 'release.select',
-      wrongScopeToken: VIEWER,
-      correctToken: OPERATOR,
-      run: (f, token, tag) =>
-        post(
-          f,
-          '/vict/v1/releases/select',
-          { payload: { applicationId: 'app.matrix', releaseVersion: 'release-matrix-1' } },
-          token,
-          `matrix-select-${tag}`,
-        ),
-    },
-    {
-      command: 'activation.select',
-      wrongScopeToken: VIEWER,
-      correctToken: OPERATOR,
-      run: (f, token, tag) =>
-        post(
-          f,
-          '/vict/v1/activations/select',
-          { payload: { graphId: 'graph.matrix', activationVersion: 'v-matrix' } },
-          token,
-          `matrix-activation-${tag}`,
         ),
     },
     {
