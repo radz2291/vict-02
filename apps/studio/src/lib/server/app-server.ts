@@ -101,6 +101,15 @@ export function getStudioServer(): StudioAppServer {
               filters[key] = value;
             }
           }
+          // INTEGRATOR COMPOSITION (agreed interface note): the target API
+          // serves selected activations PER GRAPH (`/vict/v1/activations/selected`
+          // requires graphId), so an unfiltered selectedActivations view is
+          // composed from discoverable graphs — all reads, never a proxy of a
+          // fabricated row. With an explicit graphId filter it queries directly.
+          if (resourceId === 'selectedActivations' && filters['graphId'] === undefined) {
+            viewData[viewId] = await loadSelectedActivationsComposed();
+            return;
+          }
           const limitParam = Number(searchParams?.get('limit') ?? '');
           const result = await adapter.query(
             {
@@ -128,6 +137,7 @@ export function getStudioServer(): StudioAppServer {
     // Detail record: a route parameter whose name is a binding identity
     // field reads the single record through the binding's getPath.
     let record: Record<string, unknown> | null = null;
+    let recordBindingResourceId: string | undefined;
     for (const [paramName, value] of Object.entries(resolved.params)) {
       const binding = bindingForParam(paramName);
       if (binding === undefined) {
@@ -138,10 +148,64 @@ export function getStudioServer(): StudioAppServer {
         { permissions: ['studio.operator.read'], effect: 'read' },
       );
       record = result.ok ? ((result.row ?? null) as Record<string, unknown> | null) : null;
+      recordBindingResourceId = binding.resourceId;
       break;
     }
 
+    // Reference-app detail convention: views bound to the record's own
+    // resource on a detail route show THE RECORD as their single row (the
+    // generic list for that resource has no identity filter). Views bound
+    // to other resources keep their filtered list rows.
+    if (recordBindingResourceId !== undefined) {
+      for (const viewId of viewIds) {
+        if (resourceIdFor(viewId) === recordBindingResourceId) {
+          viewData[viewId] = {
+            rows: record === null ? [] : [record],
+            loading: false,
+          } as ViewDatum;
+        }
+      }
+    }
+
     return { plan: planView, viewData, record };
+  }
+
+  /**
+   * selectedActivations composed from discoverable graphs: activations list
+   * (first page) -> unique graphIds (capped) -> per-graph selected query.
+   * Graphs without a selection are truthfully skipped.
+   */
+  async function loadSelectedActivationsComposed(): Promise<ViewDatum> {
+    try {
+      const ctx = { permissions: ['studio.operator.read'], effect: 'read' as const };
+      const activations = await adapter.query(
+        { op: 'list', resourceId: 'activations', limit: 50 },
+        ctx,
+      );
+      if (!activations.ok) {
+        return failureDatum(activations.code);
+      }
+      const graphIds = [
+        ...new Set(
+          ((activations.rows ?? []) as Record<string, unknown>[])
+            .map((row) => row['graphId'])
+            .filter((id): id is string => typeof id === 'string'),
+        ),
+      ].slice(0, 10);
+      const rows: Record<string, unknown>[] = [];
+      for (const graphId of graphIds) {
+        const selected = await adapter.query(
+          { op: 'get', resourceId: 'selectedActivations', id: graphId },
+          ctx,
+        );
+        if (selected.ok && selected.row !== undefined && selected.row !== null) {
+          rows.push(selected.row as Record<string, unknown>);
+        }
+      }
+      return { rows, loading: false } as ViewDatum;
+    } catch {
+      return failureDatum('DATA_UNSUPPORTED_QUERY');
+    }
   }
 
   return { loadRoute };
