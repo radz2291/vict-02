@@ -228,3 +228,125 @@ already named (§6); confirmation-read pagination is a non-issue absent a list
 route (say so, R-7). No decision-blocking gap besides R-1.
 
 *(Suggestions throughout are informational; the drafter repairs.)*
+
+---
+
+## Addendum — re-review of the REPAIRED proposal (2026-09-29)
+
+> **Audited repair candidate:** `codex/stage9-g2-proposal` at
+> `034281d255ae07c5fb6127e25b8e144dbff7fec9` — remote-verified byte-exact via
+> `git ls-remote`. **Diff scope confirmed:** `git diff 038991e..034281d` touches
+> ONLY `docs/governance/VICT-STAGE-09-G2-PROPOSAL-2026-09-29.md` (108 insertions,
+> 23 deletions; documentation-only).
+> This addendum covers AFFECTED CLAIMS ONLY; the original sections above are
+> unchanged. No code was run beyond git/grep/read; nothing repaired by this
+> reviewer.
+
+### Addendum verdict: **PASS WITH NON-BLOCKING FINDINGS**
+
+All eight findings are repaired faithfully against the actual code; R-1's
+precedence repair is exactly the frozen B-3 wording. Three small
+non-blocking residuals (A-N-1..A-N-3 below) do not block owner acceptance.
+
+### Findings disposition (R-1..R-8 → RR-1..RR-8)
+
+- **R-1 → RESOLVED.** §5 now pins "Phase 1 — existing command idempotency,
+  checked FIRST": settled lookup for (actor, command, key) bound to the
+  digest of the COMPLETE confirmation request (incl. receipt ID); same
+  key+digest → replay with **no new effect, even when the receipt is now
+  expired or spent** (P-17/P-18 pin this); different digest →
+  `VICT_COMMAND_IDEMPOTENCY_CONFLICT`; table reclassified as the Phase-2
+  outcome classification of UNSETTLED claims, rows 7/8 removed from Phase 2.
+  Phase 3/4 mirror the frozen claim→fence→execute→settle wording. This now
+  matches the frozen B-3 prose exactly on every path; the naive
+  expired/spent→fresh-key path the review flagged is explicitly closed.
+- **R-2 → RESOLVED.** §4.1 pins "exactly ONE canonical consumption shape — no
+  separate consume route exists"; §4.3's route delta now agrees (prepare,
+  status, and the confirmed command routes themselves). The "represation"
+  typo is fixed.
+- **R-3 → RESOLVED (verified against `main` c3f9663).** D-OPEN-2 now states
+  `administrator: [...ACTOR_SCOPES]` (`control-types.ts:179`) explicitly —
+  new scopes are held by the default administrator role BY POLICY; default-
+  deny holds for non-administrator classes; the confirmation fence (not scope
+  absence) blocks admin legacy bypass. `operator.resolve` correctly
+  classified as the stream-inspection privilege — verified: it gates
+  cross-actor stream reads at `packages/server/src/commands.ts:1390` and
+  `packages/server/src/http.ts:637`, and the `stream.inspect` command is
+  `agent.stream.read`-scoped (`commands.ts:250`). `resolveBlocked` treated as
+  the internal executor; `run.resolve` = NEW scope. Accurate against source.
+- **R-4 → RESOLVED.** P-17 (settled replay of expired receipt), P-18 (spent,
+  same precedence), P-19 (expiry TOCTOU: claim fenced only when the fence
+  wins before `expiryAt`; at/after expiry fails closed; no mid-flight expiry
+  of a granted claim — testable and sound), P-20 (different-key concurrent
+  consume → `SPENT`, consuming key recorded), P-21 (reverse-crash convergence:
+  Phase 1 replays recorded result AND receipt converges to `consumed` under
+  the same fence — exactly one effect), P-22 (prepare-after-expiry → bounded
+  replacement receipt, expired record stays auditable). All sound; see
+  A-N-3 for the one loose detail.
+- **R-5 → RESOLVED.** §4.3 pins the status read's authorization = the
+  receipt's command's mutation scope, non-echoing for other actors, added to
+  the permanent authorization matrix both directions; single-receipt read,
+  no list endpoint. §4.5 pins closed audit actions `confirmation.prepared`/
+  `confirmation.consumed` (digests/identities only, NEVER payload bytes —
+  this is the correct shape for the D-5 leakage standard); expiry/spend
+  surfaced via the durable record + `audit.search` subjectType.
+  Retention: justified as the unchanged control retention policy since no
+  payload bytes enter the store — acceptable rationale; see A-N-2.
+- **R-6 → RESOLVED (verified).** §4.4's table: `run.cancel`/`run.resolve`/
+  `run.signal` → `recordRevision` read via `run.get` (verified: the run
+  projection carries `recordRevision` at `packages/server/src/commands.ts:472`;
+  type at `packages/kernel/src/orchestration-state.ts:144`);
+  `activation.select` → current selection's `selectionRevision` via
+  `activation.selected`, or truthful `null` (consume then requires still-
+  unselected — sound); `release.select`/`release.rollback` →
+  `selectionRevision` via `release.selections` (verified:
+  `commands.ts:1136/1664`). Omission rejected (`VICT_CONFIRMATION_FIELD_
+  REQUIRED`, candidate name) — no no-guard shape. Complete.
+- **R-7 → RESOLVED.** §6.1 pins the inventory gains (prepare, status read,
+  two new commands + CLI two-step) and asserts the G1 READ surface UNAMENDED
+  at the command/registry level (accounting rows only); §4.3 pins the
+  single-receipt read (no pagination surface).
+- **R-8 → RESOLVED.** §3 codes row now includes `VICT_IDEMPOTENCY_FENCE_
+  CONFLICT`; the ChangeSet row pins `packages/control/src/control-plane.ts`
+  and its conformance suite (path verified to exist at c3f9663).
+
+### New defects introduced by the repair — none blocking
+
+- **A-N-1 — NON-BLOCKING:** §4.5 ends "…beyond what that scope mechanism
+  already yields (see §4.6)" but the document contains NO §4.6. The intended
+  content (role/scope interaction) is covered by the corrected D-OPEN-2
+  text; the dangling cross-reference is a documentation defect only.
+- **A-N-2 — NON-BLOCKING:** retention duration is not literally stated — the
+  §4.5 rationale (digests/identities only ⇒ control retention policy applies
+  unchanged) is sound but the owner may want the explicit retention window
+  named when D-OPEN-1's TTL is decided.
+- **A-N-2b/structure — NON-BLOCKING (cosmetic):** §4.4's expectedRevision
+  table and §4.5 sit physically AFTER §11 at end-of-file rather than in
+  document order; P-22's "bounded attempts" limit is unnamed. Content is
+  sound; ordering/precision only.
+
+### Overclaim re-check on the repair
+
+No new overclaims: the header disclaimers are unchanged; each new section is
+labeled as pinned design reconciled to ratified bytes with reviewer-fold
+attribution; D-OPEN-2's corrected role semantics now matches the actual
+source mechanism; nothing is asserted as ratified or implemented beyond the
+frozen G0 bytes and the G1/G2 boundary statements (G1 amendment lapse
+wording retained unchanged and correct).
+
+### Residual items for the owner
+
+1. Fix A-N-1 (dangling §4.6 reference) in the next doc touch — cosmetic, do
+   not block acceptance.
+2. Decide D-OPEN-1 (TTL) together with an explicit receipt retention window
+   (A-N-2) so the retention answer is one number, not "as before".
+3. Note D-OPEN-2's corrected consequence: adding `run.resolve`/`run.signal`
+   to `ACTOR_SCOPES` places both in the default administrator role BY POLICY
+   (non-administrators only via explicit grants); if the owner wants even
+   administrators to need explicit grants, that is a NEW mechanism decision,
+   not an amendment freebie.
+
+**Addendum verdict restated: PASS WITH NON-BLOCKING FINDINGS.** The repaired
+proposal at `034281d` is decision-ready for owner acceptance of D-4/D-10
+operationalization with D-OPEN-1..3, subject only to the cosmetic residuals
+above.
