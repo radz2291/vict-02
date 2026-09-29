@@ -44,8 +44,6 @@ semantics are pinned as proof rows P-23/P-24 in the proposal §6.
 
 ## 4. Caller inventory — the four migrated commands, at `main` `c3f9663cadf80206645a62322e5933ff19c108e9`
 
-See §4 table. — the four migrated commands, at `main` `c3f9663cadf80206645a62322e5933ff19c108e9`
-
 Method: fresh `git grep` at the named commit (`origin/main` verified `c3f9663`
 via ls-remote 2026-09-29). Writer/dispatch surfaces are migrated in place;
 read-only classifiers are re-labeled, not re-shaped.
@@ -66,7 +64,7 @@ read-only classifiers are re-labeled, not re-shaped.
 | **External: `radz2291/VICT-Quellight` read-only** (`origin/main` verified live) | **ZERO callers** of any of the four commands or their HTTP paths (grep at current main `7ee427ac` — no matches for `run.cancel`, `activation.select`, `release.select`, `release.rollback`, `runs/cancel`, `releases/select`, `releases/rollback`, `activations/select`) | Documentation-only impact statement: Quellight's target composition must adopt the new contract before any Studio-support claim (its own increment; D-8 unchanged; **the historical Quellight observation and Stage 9's G3 product claim are NOT amended by G2**) |
 | `examples/*` (application-proof, reference-app, ui-showcase, ara-proof, orchestration-proof) | NO callers of the four HTTP/CLI mutation shapes (grep-verified) | None |
 
-## 4. Coordinated version / release migration plan (FROZEN for G2)
+## 5. Coordinated version / release migration plan (FROZEN for G2)
 
 - The G2 contract change is ONE coordinated versioned migration recorded as
   a release-set candidate note against the current coordinated set
@@ -84,7 +82,7 @@ read-only classifiers are re-labeled, not re-shaped.
   (verified: NONE today, including VICT-Quellight `main` `7ee427ac`) must
   adopt the prepare→confirm flow before calling a Stage 9-capable target.
 
-## 5. Frozen entry bytes (recorded at the freeze commit)
+## 6. Frozen entry bytes (recorded at the freeze commit)
 
 - Coordinated-recovery contract (post-review amended proposal):
   `docs/governance/VICT-STAGE-09-G2-PROPOSAL-2026-09-29.md`, content
@@ -96,7 +94,7 @@ read-only classifiers are re-labeled, not re-shaped.
 - Owner acceptance §1 is quoted verbatim from the owner's authorization
   message (2026-09-29).
 
-## 6. Independent verification gates for the entry freeze (before G2 work starts)
+## 7. Independent verification gates for the entry freeze (before G2 work starts)
 
 1. Fresh reviewer challenge of EVERYTHING added after the reviewed
    `034281d255ae07c5fb6127e25b8e144dbff7fec9` — the proposal delta
@@ -104,3 +102,23 @@ read-only classifiers are re-labeled, not re-shaped.
    §12 acceptance record, inventory fact-check, migration plan fact-check.
 2. Fresh independent byte verification of the final entry commit (digests
    recomputed, owner acceptance quoted verbatim, remote refs live-checked).
+## 8. Verification record (entry freeze `089c1bac9650d5652b921db0f25c73f4d8e6b649`)
+
+Independent fresh byte-verifier verdict: **PASS WITH NON-BLOCKING
+FINDINGS** — verify record
+`review/stage9-g2-entry-verify-20260929` @ `0272f0d44b9fb8b904b6737f65819acdfb1be0b7`
+(push of `docs/governance/VICT-STAGE-09-G2-ENTRY-VERIFY-2026-09-29.md`,
+based on `089c1ba`; working tree clean; live-refs re-checked at audit end).
+Recomputed proposal digest over CRLF-normalized content:
+`f270b17cfd97c5a7be60a4bbfff31a4619f1d3ac3e4f03b45f58d72bed16f7c1` —
+matches §6 pin; LF git-blob bytes hash differently
+(`089703525954d7f2826254a7f2edc017c3506ae86c04375f34aadd6cef894954`) —
+**V-3 method note: future re-verification of the §6 digest MUST use the
+CRLF-normalized byte stream, not the LF blob**. All 15 caller-inventory
+blob SHAs independently recomputed and matching; Quellight zero-caller
+claim re-derived at fresh `7ee427ac`; diffs docs-only; no material new
+owner choice. Retained cosmetic findings V-1 (duplicate `## 4` headings)
+and V-2 (stray self-referential line) are REPAIRED by this amendment
+(headings renumbered uniquely; stray line removed) — renumbering is
+cosmetic; no digests, acceptance records, or semantic pins are altered
+(the proposal file is untouched by this commit).
