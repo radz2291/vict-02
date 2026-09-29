@@ -237,7 +237,9 @@ failure).
 | P-19 | Expiry TOCTOU at the durable claim | Receipt valid at Phase-2 check but expiring before/during the Phase-3 claim: the claim executes only when the fence wins BEFORE `expiryAt`; a fence that arrives at/after `expiryAt` fails closed `VICT_CONFIRMATION_EXPIRED`; once claimed and fenced, in-flight processing completes under the fence (no mid-flight expiry of a granted claim) |
 | P-20 | Different-key concurrent consume of one receipt | First key settles and receipts `consumed`; second key (fresh idempotency key) truthfully `VICT_CONFIRMATION_SPENT`, no effect, receipt records the consuming key |
 | P-21 | Reverse-crash convergence | Crash AFTER the domain effect settles in the idempotency store but BEFORE the receipt record updates: on retry with the same key+digest, Phase 1 replays the recorded result AND the receipt converges to `consumed` under the same fence — exactly one effect, both stores eventually consistent |
-| P-22 | Prepare-after-expiry replacement | Fresh prepare, same actor+command+key+digest, referencing an EXPIRED receipt's shape issues a REPLACEMENT receipt (at most FIVE replacement receipts per actor+command+key; further prepares fail closed `VICT_COMMAND_IDEMPOTENCY_CONFLICT`); the expired receipt stays expired and auditable; no state carried over except audit |
+| P-22 | Prepare-after-expiry replacement | Fresh prepare, same actor+command+key+digest, referencing an EXPIRED receipt's shape issues a REPLACEMENT receipt (at most FIVE replacement receipts per actor+command+key); the expired receipt stays expired and auditable; no state carried over except audit |
+| P-23 | Replacement limit reached with the SAME key+digest | A same-key+same-digest prepare beyond the replacement budget NEVER yields `VICT_COMMAND_IDEMPOTENCY_CONFLICT` — that code is reserved exclusively for a DIFFERENT digest on a settled key (Phase 1). It replays the LATEST receipt's truthful status (still prepared → same receipt; expired → truthful receipt-of-record status, non-echoing), inviting a FRESH prepare key; every attempt stays auditable |
+| P-24 | Replacement budget vs digest change | A DIFFERENT digest on the same key is not a replacement attempt at all — Phase 1 always answers `VICT_COMMAND_IDEMPOTENCY_CONFLICT` before any replacement logic runs (a changed confirmation is a NEW intent requiring a NEW key) |
 
 Browser journeys (G2 exit): S9-03 ChangeSet inspection/approval/commit with its negative set (self-approval, changed content, missing approval, duplicate effect fail closed); S9-04 prepare→review→confirm in Studio with missing/mismatched/expired/replayed receipt + stale state producing NO unintended effect, audit showing actor/target/reason/before-after identity.
 
@@ -331,11 +333,27 @@ future gate without its own amendment.
 - **D-OPEN-4 receipt retention window:** minimum **90 days** before purge
   eligibility (digest-level audit trail survives any purge) — accept the
   number or set another explicit window. Also resolves A-N-2 with one
-  number instead of "as before".
+  number instead of "as before". **ACCEPTED (2026-09-29): 90 days.**
+- **(All four open items ACCEPTED as worded at G2 entry — see §12.)**
 - **D-OPEN-3 prepare route shape:** single `POST /vict/v1/confirmations`
   (this draft) vs per-command `/prepare` routes. The single route keeps the
   three-surface inventory closed; per-command routes add six routes for
   identical semantics.
 
-*(Everything above §11 is pinned design reconciled to the ratified D-4/D-10
-contract; the open items are bounded operational pins, not scope changes.)*
+## 12. Owner decision (recorded at G2 entry)
+
+The owner accepted ALL FOUR open defaults verbatim (2026-09-29): D-OPEN-1
+prepare TTL **10 minutes**; D-OPEN-2 **`run.signal`** as the new scope;
+D-OPEN-3 **one** `POST /vict/v1/confirmations` prepare endpoint; D-OPEN-4
+receipt retention window **minimum 90 days** (digest-only receipt records).
+Consequence acknowledged: administrators continue to receive every scope in
+the closed vocabulary under the existing role policy — the confirmation
+fence (never scope absence) prevents any administrator legacy-shape bypass.
+The owner additionally directed the P-23/P-24 amendment: a same-key,
+same-payload retry must never be mislabeled as an idempotency digest
+conflict. With acceptance recorded, §11's open items are RESOLVED and the
+contract is decision-complete for the G2 freeze.
+
+*(The ratified D-4/D-10 contract and this document's pinned designs are
+statements of the G2 entry contract; frozen bytes and digest pins live in
+the G2 entry record alongside the owner acceptance.)*
