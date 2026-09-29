@@ -67,11 +67,26 @@ export function getStudioServer(): StudioAppServer {
     }
 
     // Nested surfaces (tabs/dialogs/drawers) declare view bindings too.
+    // Component surfaces may also bind props to views ({ view: 'v.x' });
+    // the renderer resolves those props FROM viewData, so every view
+    // referenced in component props must be loaded as well.
     const viewIds = new Set<string>();
     for (const { surface } of collectSurfaces(resolved.screen)) {
       const viewId = (surface as { viewId?: unknown }).viewId;
       if (typeof viewId === 'string') {
         viewIds.add(viewId);
+      }
+      const props = (surface as { props?: unknown }).props;
+      if (props !== null && typeof props === 'object') {
+        for (const value of Object.values(props as Record<string, unknown>)) {
+          if (
+            value !== null &&
+            typeof value === 'object' &&
+            typeof (value as Record<string, unknown>)['view'] === 'string'
+          ) {
+            viewIds.add((value as Record<string, string>)['view']);
+          }
+        }
       }
     }
 

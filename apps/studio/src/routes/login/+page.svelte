@@ -16,7 +16,7 @@
   <form method="POST" action="/login">
     <div>
       <label for="label">Operator label</label>
-      <input id="label" name="label" type="text" autocomplete="username" required autofocus />
+      <input id="label" name="label" type="text" autocomplete="username" required />
     </div>
     <div>
       <label for="secret">Secret</label>
