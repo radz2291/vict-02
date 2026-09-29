@@ -59,7 +59,6 @@ export interface ConfirmationCommandSpec {
   readonly label: string;
 }
 
-
 function fixedRoute(path: string): (payload: Readonly<Record<string, string>>) => string {
   return () => path;
 }
