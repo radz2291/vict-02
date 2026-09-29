@@ -7,11 +7,18 @@
 import { describe, expect, it } from 'vitest';
 import {
   CONFIRMATION_COMMANDS,
+  UNAVAILABLE_AUDIT_READ,
+  UNAVAILABLE_SUBJECT_READ,
+  UNAVAILABLE_WAITS_READ,
+  asExecutorResult,
   buildConfirmedRequest,
   buildPrepareBody,
   failureBannerText,
   isValidConfirmationId,
+  parseAuditRead,
   parseConfirmationStatus,
+  parseRunSubjectRead,
+  parseRunWaitsRead,
 } from '$lib/confirmation/confirmation.js';
 
 describe('confirmation journey contract shapes (proposal §4/§5 pins)', () => {
@@ -99,5 +106,105 @@ describe('confirmation journey contract shapes (proposal §4/§5 pins)', () => {
     expect(failureBannerText('VICT_CONFIRMATION_STALE')).toContain('prepare again');
     expect(failureBannerText('VICT_CONFIRMATION_MISMATCH')).toContain('Nothing was changed');
     expect(failureBannerText('SOME_OTHER_TARGET_CODE')).toContain('judge the outcome');
+  });
+});
+
+describe('S9-04 effect panel mapping (truthful read-back rendering)', () => {
+  it('narrow the run record read truthfully; non-ok reads are explicit unavailable states', () => {
+    expect(
+      parseRunSubjectRead('ok', {
+        run: { runId: 'r', status: 'cancelled', recordRevision: 4 },
+      }),
+    ).toEqual({ available: true, status: 'cancelled', recordRevision: '4', note: '' });
+    // A non-ok transport result claims nothing.
+    expect(parseRunSubjectRead('envelope-error', null)).toEqual({
+      available: false,
+      status: null,
+      recordRevision: null,
+      note: expect.stringContaining('No before/after state is claimed'),
+    });
+    // A malformed run member claims nothing.
+    expect(parseRunSubjectRead('ok', { run: 'garbage' }).available).toBe(false);
+    // A missing/invalid member stays null — never fabricated.
+    expect(parseRunSubjectRead('ok', { run: { status: 'running', recordRevision: 1.5 } })).toEqual({
+      available: true,
+      status: 'running',
+      recordRevision: null,
+      note: '',
+    });
+  });
+
+  it('narrow the waits read truthfully, wait by wait, keeping identity only', () => {
+    const result = parseRunWaitsRead('ok', {
+      runId: 'r',
+      waits: [
+        {
+          waitId: 'w1',
+          status: 'resolved',
+          signalName: 'demo.resume',
+          resolvedBy: 'eff-key',
+          extraFieldShouldBeKeptOut: 'secret-ish',
+        },
+        { waitId: 'w2' },
+        'garbage',
+      ],
+    });
+    expect(result.available).toBe(true);
+    expect(result.waits).toEqual([
+      { waitId: 'w1', status: 'resolved', signalName: 'demo.resume', resolvedBy: 'eff-key' },
+    ]);
+    expect(parseRunWaitsRead('unreachable', null)).toEqual({
+      available: false,
+      waits: [],
+      note: expect.stringContaining('No wait state is claimed'),
+    });
+  });
+
+  it('narrow the audit read truthfully; every row carries actor/action/at/summary', () => {
+    const result = parseAuditRead('ok', {
+      events: [
+        {
+          auditId: 'audit-1',
+          at: 1_700,
+          action: 'confirmation.consumed',
+          actorId: 'actor-a',
+          summary: 'command=run.cancel actor=actor-a outcome=consumed',
+        },
+        { auditId: 'audit-2', action: 'x', actorId: 'a' }, // missing at → still shown with the truthful marker
+        'garbage',
+      ],
+      total: 3,
+    });
+    expect(result.available).toBe(true);
+    expect(result.events).toEqual([
+      {
+        auditId: 'audit-1',
+        at: '1700',
+        action: 'confirmation.consumed',
+        actorId: 'actor-a',
+        summary: 'command=run.cancel actor=actor-a outcome=consumed',
+      },
+      { auditId: 'audit-2', at: '(unreadable)', action: 'x', actorId: 'a', summary: '' },
+    ]);
+    expect(parseAuditRead('http-error', null)).toEqual({
+      available: false,
+      events: [],
+      note: expect.stringContaining('No audit claim is made'),
+    });
+  });
+
+  it('serializes the executor result verbatim; absent members stay null', () => {
+    expect(
+      asExecutorResult({ result: { runId: 'r', status: 'accepted', runRecordRevision: 4 } }),
+    ).toBe('{"runId":"r","status":"accepted","runRecordRevision":4}');
+    expect(asExecutorResult({})).toBeNull();
+    expect(asExecutorResult(null)).toBeNull();
+  });
+
+  it('unavailable constants claim nothing (panel fail-closed states)', () => {
+    expect(UNAVAILABLE_SUBJECT_READ.status).toBeNull();
+    expect(UNAVAILABLE_SUBJECT_READ.available).toBe(false);
+    expect(UNAVAILABLE_WAITS_READ.available).toBe(false);
+    expect(UNAVAILABLE_AUDIT_READ.available).toBe(false);
   });
 });

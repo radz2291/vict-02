@@ -10,6 +10,9 @@ import { getCredential, getTarget, listTargets } from './targets.js';
  *   - POST /vict/v1/confirmations                     (prepare)
  *   - GET  /vict/v1/confirmations/:receiptId          (status)
  *   - POST of the confirmed shape on each command route (consume)
+ *   - GET  /vict/v1/runs/:runId                       (effect read-back)
+ *   - GET  /vict/v1/runs/:runId/waits                 (effect read-back)
+ *   - GET  /vict/v1/audit?subjectType&subjectId       (audit trail read)
  * The Studio server reads `prepare`/`status`/`consume` route templates
  * from the pure command table in `$lib/confirmation/confirmation.js` and
  * validates identifier-shaped fields BEFORE any fetch (fail closed).
@@ -46,6 +49,7 @@ async function boundedFetch(
   body: Record<string, unknown> | null,
   idempotencyKey: string | undefined,
   targetId?: string,
+  query?: Readonly<Record<string, string>>,
 ): Promise<ConfirmationTransportResult> {
   // Integrator amendment (in scope of the accepted G2 journey scope): the
   // relay honors a BOUNDED target id (the journey form's target select;
@@ -64,6 +68,19 @@ async function boundedFetch(
   if (safePath === null) {
     return { kind: 'http-error', status: 400 };
   }
+  // Bounded GET query: ONLY identifier-shaped keys/values reach the URL
+  // (fail closed; the audit search parameters are the one composed read).
+  let suffix = '';
+  if (query !== undefined) {
+    const params = new URLSearchParams();
+    for (const [key, value] of Object.entries(query)) {
+      if (!validSegment(key) || !validSegment(value)) {
+        return { kind: 'http-error', status: 400 };
+      }
+      params.append(key, value);
+    }
+    suffix = `?${params.toString()}`;
+  }
   // The target selector is transport-local: NEVER forwarded to the target
   // (an unknown top-level envelope member would fail closed at the body
   // gate). The forwarded body keeps only the contract members.
@@ -73,7 +90,7 @@ async function boundedFetch(
   const timer = setTimeout(() => controller.abort(), 4000);
   let response: Response;
   try {
-    response = await fetch(`${target.endpoint}${safePath}`, {
+    response = await fetch(`${target.endpoint}${safePath}${suffix}`, {
       method,
       headers: {
         authorization: `Bearer ${credential.token}`,
@@ -178,6 +195,54 @@ export function confirmCommand(
   targetId?: string,
 ): Promise<ConfirmationTransportResult> {
   return boundedFetch(path, 'POST', body, idempotencyKey, targetId);
+}
+
+/**
+ * S9-04 effect read-backs — the journey panel reads ONLY through the
+ * target's OWN G1 read surfaces. Failed/unauthorized reads surface as
+ * unreachable/http-error envelopes and the page shows truthful
+ * unavailable states — nothing is ever summarized or fabricated here.
+ */
+
+/** GET /vict/v1/runs/:runId — the subject run's record (status/revision). */
+export function readTargetRunRecord(
+  runId: string,
+  targetId?: string,
+): Promise<ConfirmationTransportResult> {
+  if (!validSegment(runId)) {
+    return Promise.resolve({ kind: 'http-error', status: 400 });
+  }
+  return boundedFetch(`/vict/v1/runs/${runId}`, 'GET', null, undefined, targetId);
+}
+
+/** GET /vict/v1/runs/:runId/waits — the run's durable waits (identity only). */
+export function readTargetRunWaits(
+  runId: string,
+  targetId?: string,
+): Promise<ConfirmationTransportResult> {
+  if (!validSegment(runId)) {
+    return Promise.resolve({ kind: 'http-error', status: 400 });
+  }
+  return boundedFetch(`/vict/v1/runs/${runId}/waits`, 'GET', null, undefined, targetId);
+}
+
+/**
+ * GET /vict/v1/audit — the target's audit trail scoped to one subject.
+ * The one composed shape: subjectType = 'confirmation' with the receipt
+ * id that was consumed (identifier-shaped; the query is checked below).
+ */
+export function searchTargetAudit(
+  subjectId: string,
+  targetId?: string,
+): Promise<ConfirmationTransportResult> {
+  if (!validSegment(subjectId)) {
+    return Promise.resolve({ kind: 'http-error', status: 400 });
+  }
+  return boundedFetch('/vict/v1/audit', 'GET', null, undefined, targetId, {
+    subjectType: 'confirmation',
+    subjectId,
+    limit: '20',
+  });
 }
 
 /**
