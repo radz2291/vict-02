@@ -32,6 +32,7 @@ import {
   createInMemoryAgentControlStores,
   createInMemoryStores,
   toCanonicalJson,
+  VictControlError,
 } from '@victframework/runtime';
 import {
   canonicalSemanticForm,
@@ -39,6 +40,7 @@ import {
   computeCapabilitySetVersion,
   computeGraphVersion,
 } from '@victframework/kernel';
+import { createHash } from 'node:crypto';
 import { ControlPlaneService, createControlPlaneSandboxSimulator } from '@victframework/control';
 import {
   createLocalTestAuthenticator,
@@ -110,13 +112,350 @@ const controlPlane = new ControlPlaneService({
   },
 });
 
+/* ------------------------------------------------------------------ */
+/* S9-04 REAL-EFFECT EXECUTOR COMPOSITION (fixture scope ONLY)          */
+/* ------------------------------------------------------------------ */
+/**
+ * The receipt-gated `run.cancel` / `run.resolve` / `run.signal` commands
+ * require their EXISTING runtime executors to be composed; with no executor
+ * the command service fails closed (VICT_RUN_STORE_UNAVAILABLE). This
+ * fixture composes those ports over the SAME in-memory stores this demo
+ * seeds — driving the store-level orchestration mechanics the runtime's own
+ * operator commands drive (requestCancellation/applyCancellation,
+ * resolveBlocked, signalWait). NO execution semantics are invented; the
+ * command shapes, idempotency hashes, and safe events mirror
+ * packages/runtime/src/orchestration-commands.ts.
+ *
+ * MIRROR NOTE (fixture scope, same discipline as the run seeds above): the
+ * demo mirrors an applied effect into the execution-store read surface ONLY
+ * where the transition is legal for that store's own closed vocabulary
+ * (ALL_RUN_STATUSES = running/completed/failed/blocked; source must be
+ * 'running'). A cancelled run truthfully CANNOT be re-projected onto that
+ * generic surface — its before→after evidence is read through the bounded
+ * wait surface (/vict/v1/runs/:runId/waits: the open wait's status moves
+ * open → cancelled with resolvedBy = requestId) and the executor's own
+ * result. Read backs are always the target's own truth.
+ */
+
+const orchestration = vict.orchestration;
+/** The execution read surface's closed run-status vocabulary
+ * (in-memory-stores.ts ALL_RUN_STATUSES). */
+const EXECUTION_RUN_STATUSES = ['running', 'completed', 'failed', 'blocked'];
+
+function sha256Hex(value) {
+  return createHash('sha256').update(value).digest('hex');
+}
+
+/** Fixture-safe payload hashing (identity-only; mirrors safeJson in
+ * orchestration-activation.ts: content canonicalized, else type identity). */
+function safePayloadHash(value) {
+  try {
+    return sha256Hex(toCanonicalJson(value));
+  } catch {
+    return sha256Hex(`unserializable:${typeof value}`);
+  }
+}
+
+/** Canonical command hashes — the EXACT shapes of
+ * orchestration-activation.ts (signalCommandHash / cancellationCommandHash /
+ * resolutionCommandHash); identical inputs yield identical hashes, so the
+ * store's own idempotency dedupe works on replays with the same request id. */
+function signalCommandHash(command) {
+  return `sig_${sha256Hex(
+    toCanonicalJson({
+      payloadHash: safePayloadHash(command.payload),
+      runId: command.runId,
+      schema: 'vict.signal-command@1',
+      signalId: command.signalId,
+      signalName: command.signalName ?? null,
+      waitId: command.waitId,
+    }),
+  ).slice(0, 32)}`;
+}
+
+function cancellationCommandHash(command) {
+  return `cancel_${sha256Hex(
+    toCanonicalJson({
+      reasonCode: command.reasonCode,
+      runId: command.runId,
+      schema: 'vict.cancellation-command@1',
+    }),
+  ).slice(0, 24)}`;
+}
+
+function resolutionCommandHash(command) {
+  return `res_${sha256Hex(
+    toCanonicalJson({
+      action: command.action,
+      expectedRunRevision: command.expectedRunRevision ?? null,
+      hasOutput: command.hasOutput,
+      reasonCode: command.reasonCode,
+      runId: command.runId,
+      schema: 'vict.resolution-command@1',
+    }),
+  ).slice(0, 24)}`;
+}
+
+/** The safe cancellation-reason vocabulary of the runtime driver
+ * (orchestration-driver-types.ts CANCELLATION_REASON_CODES). */
+const FIXTURE_CANCELLATION_REASON_CODES = ['operator_request', 'shutdown', 'policy', 'superseded'];
+
+async function executionNextSeq(runId) {
+  const events = await vict.execution.listEvents(runId, -1);
+  return events.reduce((max, event) => Math.max(max, event.seq), -1) + 1;
+}
+
+/** Mirror an applied durable effect into the generic execution read surface
+ * (only where the transition is legal for that store's closed vocabulary:
+ * a 'running' source AND a status it carries; a cancelled run has no
+ * execution-store projection and is evidenced through the wait surface). */
+async function mirrorAppliedEffect(runId, nextStatus) {
+  if (!EXECUTION_RUN_STATUSES.includes(nextStatus)) {
+    return false;
+  }
+  const mirrored = await vict.execution.getRun(runId);
+  if (mirrored === undefined || mirrored.status !== 'running') {
+    return false;
+  }
+  await vict.execution.commitTransition({
+    runId,
+    expectedRecordRevision: mirrored.recordRevision,
+    expectedNextEventSeq: await executionNextSeq(runId),
+    next: {
+      status: nextStatus,
+      ...(nextStatus === 'running' ? {} : { completedAt: Date.now() }),
+    },
+    events: [],
+    timestamp: Date.now(),
+  });
+  return true;
+}
+
+async function orchestrationIdentity(run) {
+  return {
+    runId: run.runId,
+    graphId: run.graphId,
+    graphVersion: run.graphVersion,
+    capabilitySetVersion: run.capabilitySetVersion,
+    activationVersion: run.activationVersion,
+  };
+}
+
+/** run.cancel executor: the EXISTING durable orchestration cancellation
+ * (requestCancellation → applyCancellation when in-flight work deferred),
+ * recorded with the runtime's own hash/event shapes. */
+async function cancelRunEffect({ runId, requestId, reasonCode }) {
+  if (!FIXTURE_CANCELLATION_REASON_CODES.includes(reasonCode)) {
+    throw new VictControlError(
+      'VICT_COMMAND_FIELD_INVALID',
+      'reasonCode must use the safe cancellation vocabulary (operator_request, shutdown, policy, superseded).',
+    );
+  }
+  const run = await orchestration.getOrchestrationRun(runId);
+  if (run === undefined) {
+    return { runId, requestId, status: 'unknown_run' };
+  }
+  const at = Date.now();
+  const identity = await orchestrationIdentity(run);
+  const result = await orchestration.requestCancellation({
+    runId,
+    requestId,
+    reasonCode,
+    commandHash: cancellationCommandHash({ runId, requestId, reasonCode }),
+    now: at,
+    events: [{ type: 'run.cancel_requested', requestId, reasonCode, ...identity, timestamp: at }],
+    terminalCancelEvent: {
+      type: 'run.cancelled',
+      requestId,
+      reasonCode,
+      steps: run.steps,
+      ...identity,
+      timestamp: at,
+    },
+  });
+  if (result.status === 'conflict') {
+    throw new VictControlError(
+      'VICT_COMMAND_IDEMPOTENCY_CONFLICT',
+      'The cancellation requestId was already used with different content.',
+    );
+  }
+  if (result.status === 'duplicate' || result.status === 'already_terminal') {
+    return { runId, requestId, status: result.status, cancelled: false };
+  }
+  if (!result.runCancelledNow) {
+    // In-flight work defers the terminal transition; the runtime applies it
+    // cooperatively — the same store mechanics.
+    const appliedAt = Date.now();
+    await orchestration.applyCancellation({
+      runId,
+      now: appliedAt,
+      requestId,
+      reasonCode,
+      steps: run.steps,
+      removeCheckpoints: [],
+      events: [
+        {
+          type: 'run.cancelled',
+          requestId,
+          reasonCode,
+          steps: run.steps,
+          ...identity,
+          timestamp: appliedAt,
+        },
+      ],
+    });
+  }
+  const settled = await orchestration.getOrchestrationRun(runId);
+  // 'cancelled' is outside the generic execution surface's status
+  // vocabulary: no mirror attempted (see MIRROR NOTE above).
+  await mirrorAppliedEffect(runId, settled.status);
+  return {
+    runId,
+    requestId,
+    status: 'accepted',
+    cancelled: true,
+    runStatus: settled.status,
+    runRecordRevision: settled.recordRevision,
+  };
+}
+
+/** run.resolve executor: the EXISTING blocked-run resolution path over the
+ * durable orchestration store (idempotent through the caller's resolution
+ * id; revision-guarded) with the runtime's own operator.intervened event. */
+async function resolveBlockedEffect({ runId, resolution, actorId, requestId }) {
+  const run = await orchestration.getOrchestrationRun(runId);
+  if (run === undefined) {
+    return { runId, status: 'unknown_run' };
+  }
+  if (run.status !== 'blocked') {
+    return { runId, status: 'not_blocked', runStatus: run.status };
+  }
+  const at = Date.now();
+  const identity = await orchestrationIdentity(run);
+  const resolutionId = requestId;
+  const result = await orchestration.resolveBlocked({
+    runId,
+    resolutionId,
+    action: resolution,
+    reasonCode: 'operator_request',
+    commandHash: resolutionCommandHash({
+      runId,
+      resolutionId,
+      action: resolution,
+      reasonCode: 'operator_request',
+      expectedRunRevision: run.recordRevision,
+      hasOutput: false,
+    }),
+    expectedRunRevision: run.recordRevision,
+    now: at,
+    events: [
+      {
+        type: 'operator.intervened',
+        resolutionId,
+        action: resolution,
+        actorId,
+        ...identity,
+        timestamp: at,
+      },
+    ],
+  });
+  const settled = await orchestration.getOrchestrationRun(runId);
+  if (result.status === 'accepted') {
+    await mirrorAppliedEffect(runId, settled.status);
+  }
+  return {
+    runId,
+    status: result.status,
+    runStatus: settled.status,
+    runRecordRevision: settled.recordRevision,
+  };
+}
+
+/** run.signal executor: the EXISTING durable-signal delivery path. The
+ * target wait is resolved by the store's own signalWait mechanics (open
+ * wait match by signal name; revision-fenced; idempotent by signalId). */
+async function signalWaitEffect({ runId, signalName, signalId }) {
+  const run = await orchestration.getOrchestrationRun(runId);
+  if (run === undefined) {
+    return { runId, signalId, signalName, status: 'unknown_run' };
+  }
+  const waits = await orchestration.listWaits(runId);
+  // Prefer the OPEN wait matching the signal name; when none is open, the
+  // store's own signalWait still answers truthfully for the named wait
+  // (already_resolved) — never an invented outcome here.
+  const matching = waits.filter(
+    (candidate) => candidate.signalName === null || candidate.signalName === signalName,
+  );
+  const wait = matching.find((candidate) => candidate.status === 'open') ?? matching[0];
+  if (wait === undefined) {
+    throw new VictControlError(
+      'VICT_COMMAND_FIELD_INVALID',
+      'No wait on that run accepts that signal name.',
+    );
+  }
+  const at = Date.now();
+  const identity = await orchestrationIdentity(run);
+  const command = { runId, waitId: wait.waitId, signalId, signalName, payload: {} };
+  const result = await orchestration.signalWait({
+    ...command,
+    commandHash: signalCommandHash(command),
+    expectedWaitRevision: wait.revision,
+    now: at,
+    events: [
+      {
+        type: 'signal.received',
+        waitId: wait.waitId,
+        signalId,
+        signalName: wait.signalName ?? signalName,
+        ...identity,
+        timestamp: at,
+      },
+      {
+        type: 'run.resumed',
+        by: 'signal',
+        waitId: wait.waitId,
+        signalId,
+        ...identity,
+        timestamp: at,
+      },
+    ],
+  });
+  const settled = await orchestration.getOrchestrationRun(runId);
+  return {
+    runId,
+    signalId,
+    signalName,
+    status: result.status,
+    waitId: wait.waitId,
+    runStatus: settled.status,
+    runRecordRevision: settled.recordRevision,
+  };
+}
+
+/** The command service plane: the composed ControlPlaneService with the
+ * receipt-gated run-cancel executor attached (the `controlPlane.cancelRun`
+ * optional port; everything else delegates to the composed service). */
+const commandServiceControlPlane = new Proxy(controlPlane, {
+  get(target, property, _receiver) {
+    if (property === 'cancelRun') {
+      return cancelRunEffect;
+    }
+    const value = Reflect.get(target, property, target);
+    return typeof value === 'function' ? value.bind(target) : value;
+  },
+});
+
 const commandService = new VictCommandService({
   stores: controlStores,
-  controlPlane,
+  controlPlane: commandServiceControlPlane,
   clock: () => Date.now(),
+  idempotencyOwner: 'studio-demo-fixture',
   execution: vict.execution,
   orchestration: vict.orchestration,
   catalog: vict.catalog,
+  // Stage 9 G2 executors (fixture scope; documented above).
+  runResolution: { resolveBlocked: resolveBlockedEffect },
+  runSignals: { signalWait: signalWaitEffect },
 });
 
 const auth = createServerAuthenticator({
@@ -351,6 +690,43 @@ await vict.execution.commitTransition({
       signalName: 'demo.resume',
     }),
   ],
+  timestamp: Date.now(),
+});
+
+/* ------------------------------------------------------------------ */
+/* S9-04 EFFECT SUBJECT (fixture scope) — a RUNNING, cancellable run    */
+/* ------------------------------------------------------------------ */
+/**
+ * The confirmation journey's before→after effect subject: a run that is
+ * 'running' in BOTH stores so every G1 read (run record, waits, events)
+ * mirrors the real effect truthfully after a confirmed consumption,
+ * including the run record's own status/revision before→after.
+ */
+const confirmRunId = 'run-demo-confirm';
+await vict.orchestration.createOrchestrationRun({
+  runId: confirmRunId,
+  graphId: manifest.graphId,
+  graphVersion: manifest.graphVersion,
+  capabilitySetVersion: manifest.capabilitySetVersion,
+  activationVersion: manifest.activationVersion,
+  mode: 'normal',
+  retention: 'summary',
+  rootTokenId: 'tok-confirm-root',
+  entryNodeId: 'n1',
+  checkpoint: { demo: 'confirm-run-active' },
+  events: [],
+  now: Date.now(),
+});
+await vict.execution.createRun({
+  runId: confirmRunId,
+  graphId: manifest.graphId,
+  graphVersion: manifest.graphVersion,
+  capabilitySetVersion: manifest.capabilitySetVersion,
+  activationVersion: manifest.activationVersion,
+  mode: 'normal',
+  retention: 'summary',
+  steps: 1,
+  events: [demoEvent(confirmRunId, 0, 'run.started')],
   timestamp: Date.now(),
 });
 

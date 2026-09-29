@@ -104,3 +104,58 @@ truthful banners. The Studio-side automated evidence for the components is
 in `apps/studio/tests/ui/confirmation.test.ts` (5 cases) and
 `apps/studio/tests/confirmation-contract.test.ts` (6 cases; contract
 shapes, no server probes).
+
+## 5. S9-04 REAL-EFFECT + AUDIT PANEL (addendum: the executor is now composed)
+
+> Fixture-scope addendum to §0–§4 (NO G2 semantics change): the demo target
+> now composes the receipt-gated executors, so a confirmed consumption
+> APPLIES its governed effect for real, and the journey page renders the
+> resulting truth read back from the target.
+
+1. **Executor composition** (`apps/studio/scripts/demo-target.mjs`, fixture
+   scope only): the `run.cancel` executor is attached through the
+   `controlPlane.cancelRun` optional port (the `VictCommandService`
+   dispatch's existing run-cancel path); `run.resolve` and `run.signal` are
+   composed through the existing `runResolution`/`runSignals` options.
+   All three drive the EXISTING durable orchestration store mechanics
+   (`requestCancellation`/`applyCancellation`, `resolveBlocked`,
+   `signalWait`) with the runtime's own command shapes, idempotency hashes
+   (`vict.cancellation-command@1` / `vict.resolution-command@1` /
+   `vict.signal-command@1`) and safe events (`run.cancel_requested`,
+   `run.cancelled`, `operator.intervened`, `signal.received`, `run.resumed`)
+   — nothing invented.
+
+2. **Journey subject**: `run-demo-confirm` is a new fixture seed — a
+   'running' run in BOTH stores (durable orchestration run with a ready
+   root token + the generic execution read mirror) so a confirmed
+   consumption changes durable state for real under a subject the G1
+   surface already reflects. The blocked run (`run-demo-blocked`) keeps its
+   existing seeds and its durable wait (`demo.resume`).
+
+3. **What reads as truth after a confirm** (panel `4 · After the confirm`):
+   each line renders ONLY what the target's own reads returned:
+   - run record + revision before→after via `GET /vict/v1/runs/:runId`
+     (the generic surface's closed status vocabulary is
+     running/completed/failed/blocked; a CANCELLED run is truthfully NOT a
+     status it can re-project — see the note below),
+   - durable waits before→after via `GET /vict/v1/runs/:runId/waits`
+     (identity columns only; the wait's status moves open → resolved or
+     cancelled with `resolvedBy` = the confirmed call's idempotency key),
+   - the audit trail via `GET /vict/v1/audit?subjectType=confirmation&subjectId=<receiptId>`
+     (the target's own rows: `confirmation.prepared` with digest+identity,
+     `confirmation.consumed` with `command=… actor=… outcome=consumed`),
+   - the executor's own `result` member the confirmed call returned,
+     serialized verbatim (e.g. `{status:"accepted",runStatus:"cancelled",…}`
+     or `{status:"accepted","waitId":"wait-demo-signal",…}`).
+   The reason shown in the panel is the operator-supplied payload member
+   itself (`reasonCode` / `resolution` / `signalName`); the target-name is
+   the Studio target id of the relay call. Failure reads (missing run,
+   denied, unreachable) render explicit unavailable notes — the Studio
+   never claims a state it did not read.
+
+4. **Negatives stay on the same page** (refreshed values from live runs on
+   the composed stack): unconfirmed legacy → `409 VICT_CONFIRMATION_REQUIRED`;
+   unknown/foreign receipt → non-echoing `VICT_CONFIRMATION_UNAVAILABLE`;
+   wrong `expectedRevision` → `VICT_CONFIRMATION_STALE`; fresh key on a
+   settled receipt → `VICT_CONFIRMATION_SPENT` (no second effect); the
+   same-key replay replays the truthful recorded outcome (no new effect).

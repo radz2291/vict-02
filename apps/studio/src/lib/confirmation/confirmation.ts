@@ -250,3 +250,211 @@ export const EXPIRED_CODE = 'VICT_CONFIRMATION_EXPIRED';
 export const SPENT_CODE = 'VICT_CONFIRMATION_SPENT';
 /** The stale negative (target revision changed between prepare and confirm). */
 export const STALE_CODE = 'VICT_CONFIRMATION_STALE';
+
+/* ------------------------------------------------------------------ */
+/* S9-04 EFFECT PANEL — truthful read-back shapes (Stage 9 G2)          */
+/* ------------------------------------------------------------------ */
+/*
+ * After a successful confirmed consumption the journey page renders the
+ * RESULTING EVIDENCE read back from the TARGET through its own G1 read
+ * surfaces. Every shape below is filled ONLY from what the target's reads
+ * returned (unavailable otherwise) — the Studio never composes a summary
+ * of its own:
+ *   - run record read:    GET /vict/v1/runs/:runId
+ *   - durable waits read: GET /vict/v1/runs/:runId/waits
+ *   - audit trail read:   GET /vict/v1/audit?subjectType=confirmation&subjectId=:receiptId
+ *   - executor result:    the `result` member the target itself returned
+ *                         for the confirmed call (serialized verbatim)
+ */
+
+/** One truthfully available-or-not run record read (status/revision only). */
+export interface ConfirmationSubjectRead {
+  readonly available: boolean;
+  readonly status: string | null;
+  readonly recordRevision: string | null;
+  /** Truthful note when the read could not be performed ('' when read). */
+  readonly note: string;
+}
+
+export const UNAVAILABLE_SUBJECT_READ: ConfirmationSubjectRead = {
+  available: false,
+  status: null,
+  recordRevision: null,
+  note: 'The run record read did not return a readable run (unknown, denied, or unreachable). No before/after state is claimed.',
+};
+
+/** One durable wait of the subject run (identity fields only — the same
+ * safe projection the target's own waits read returns). */
+export interface ConfirmationWaitRead {
+  readonly waitId: string;
+  readonly status: string;
+  readonly signalName: string | null;
+  readonly resolvedBy: string | null;
+}
+
+export interface ConfirmationWaitsRead {
+  readonly available: boolean;
+  readonly waits: readonly ConfirmationWaitRead[];
+  readonly note: string;
+}
+
+export const UNAVAILABLE_WAITS_READ: ConfirmationWaitsRead = {
+  available: false,
+  waits: [],
+  note: 'The durable-wait read did not return readable waits (unknown, denied, or unreachable). No wait state is claimed.',
+};
+
+/** One audit record of the target's trail (subject-scoped search rows). */
+export interface ConfirmationAuditEventRead {
+  readonly auditId: string;
+  readonly at: string;
+  readonly action: string;
+  readonly actorId: string;
+  readonly summary: string;
+}
+
+export interface ConfirmationAuditRead {
+  readonly available: boolean;
+  readonly events: readonly ConfirmationAuditEventRead[];
+  readonly note: string;
+}
+
+export const UNAVAILABLE_AUDIT_READ: ConfirmationAuditRead = {
+  available: false,
+  events: [],
+  note: 'The audit read did not return a readable trail (denied or unreachable). No audit claim is made.',
+};
+
+/** The run record + wait reads for one point in time (before or after). */
+export interface ConfirmationRunRead {
+  readonly run: ConfirmationSubjectRead;
+  readonly waits: ConfirmationWaitsRead;
+}
+
+/**
+ * The rendered effect panel for ONE confirmed consumption: before/after
+ * reads of the subject plus the audit trail. `reason` is the operator-
+ * supplied reason member (echo; the same payload the receipt's digest
+ * gates). `executorResult` is the `result` member the target itself
+ * returned for the confirmed call — serialized verbatim.
+ */
+export interface ConfirmationEffectPanel {
+  readonly targetId: string;
+  readonly command: string;
+  readonly subjectId: string | null;
+  readonly reason: string | null;
+  readonly payload: Readonly<Record<string, string>>;
+  readonly executorResult: string | null;
+  readonly before: ConfirmationRunRead;
+  readonly after: ConfirmationRunRead;
+  readonly audit: ConfirmationAuditRead;
+}
+
+/** Narrow the target's run-record read (`data.run`) — truthful or unavailable. */
+export function parseRunSubjectRead(transportKind: string, data: unknown): ConfirmationSubjectRead {
+  if (transportKind !== 'ok') {
+    return UNAVAILABLE_SUBJECT_READ;
+  }
+  const run = (data as Record<string, unknown> | null)?.['run'];
+  if (run === null || typeof run !== 'object') {
+    return UNAVAILABLE_SUBJECT_READ;
+  }
+  const record = run as Record<string, unknown>;
+  const status = record['status'];
+  const revision = record['recordRevision'];
+  return {
+    available: true,
+    status: typeof status === 'string' ? status : null,
+    recordRevision:
+      typeof revision === 'number' && Number.isSafeInteger(revision) ? String(revision) : null,
+    note: '',
+  };
+}
+
+/** Narrow the target's waits read (`data.waits`) — truthful or unavailable. */
+export function parseRunWaitsRead(transportKind: string, data: unknown): ConfirmationWaitsRead {
+  if (transportKind !== 'ok') {
+    return UNAVAILABLE_WAITS_READ;
+  }
+  const waits = (data as Record<string, unknown> | null)?.['waits'];
+  if (!Array.isArray(waits)) {
+    return UNAVAILABLE_WAITS_READ;
+  }
+  return {
+    available: true,
+    waits: waits.flatMap((wait: unknown) => {
+      if (wait === null || typeof wait !== 'object') return [];
+      const w = wait as Record<string, unknown>;
+      if (typeof w['waitId'] !== 'string' || typeof w['status'] !== 'string') return [];
+      return [
+        {
+          waitId: w['waitId'],
+          status: w['status'],
+          signalName: typeof w['signalName'] === 'string' ? w['signalName'] : null,
+          resolvedBy: typeof w['resolvedBy'] === 'string' ? w['resolvedBy'] : null,
+        },
+      ];
+    }),
+    note: '',
+  };
+}
+
+/** Narrow the target's audit search read (`data.events`) — truthful or unavailable. */
+export function parseAuditRead(transportKind: string, data: unknown): ConfirmationAuditRead {
+  if (transportKind !== 'ok') {
+    return UNAVAILABLE_AUDIT_READ;
+  }
+  const events = (data as Record<string, unknown> | null)?.['events'];
+  if (!Array.isArray(events)) {
+    return UNAVAILABLE_AUDIT_READ;
+  }
+  return {
+    available: true,
+    events: events.flatMap((event: unknown) => {
+      if (event === null || typeof event !== 'object') return [];
+      const e = event as Record<string, unknown>;
+      if (
+        typeof e['auditId'] !== 'string' ||
+        typeof e['action'] !== 'string' ||
+        typeof e['actorId'] !== 'string'
+      ) {
+        return [];
+      }
+      return [
+        {
+          auditId: e['auditId'],
+          at:
+            typeof e['at'] === 'number' && Number.isSafeInteger(e['at'])
+              ? String(e['at'])
+              : typeof e['at'] === 'string'
+                ? e['at']
+                : '(unreadable)',
+          action: e['action'],
+          actorId: e['actorId'],
+          summary: typeof e['summary'] === 'string' ? e['summary'] : '',
+        },
+      ];
+    }),
+    note: '',
+  };
+}
+
+/**
+ * The `result` member a confirmed call returned, serialized VERBATIM (the
+ * target's own executor answer; null when absent) — never a fabricated
+ * outcome summary.
+ */
+export function asExecutorResult(data: Record<string, unknown> | null): string | null {
+  if (data === null) {
+    return null;
+  }
+  const result = data['result'];
+  if (typeof result !== 'object' || result === null) {
+    return null;
+  }
+  try {
+    return JSON.stringify(result);
+  } catch {
+    return null;
+  }
+}
