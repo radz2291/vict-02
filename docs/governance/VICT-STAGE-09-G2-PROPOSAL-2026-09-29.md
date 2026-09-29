@@ -134,6 +134,34 @@ G1 read surface, and the consume step re-checks it (Phase 2 `STALE`):
 
 Omitting `expectedRevision` at prepare is rejected (`VICT_CONFIRMATION_FIELD_REQUIRED` candidate name, non-echoing) — no "no-guard" shape exists.
 
+### 4.5 Confirmation audit and retention (pinned; reviewer R-5)
+
+- New closed audit actions added to `CONTROL_AUDIT_ACTIONS`:
+  `confirmation.prepared` (actor, command, subject, receipt digest — NEVER a
+  payload byte) and `confirmation.consumed` (actor, command, key, outcome
+  class). Receipt lifecycle transitions that occur without a consume
+  (expiry, spend) are captured on the DURABLE RECEIPT RECORD itself
+  (`status`, timestamps, consumedByKey) and surface through the status read
+  and audit search (`audit.search` subjectType `confirmation`). Retention:
+  receipts carry digests and identities only — never payload bytes — so the
+  control retention policy applies unchanged; expired/spent receipts remain
+  auditable per the ratified retention wording.
+- The confirmation status read requires the receipt's command mutation scope
+  and is added to the permanent authorization matrix (both directions:
+  wrong-scope denial; same-scope allowance). It is NOT added to any default
+  role beyond what that scope mechanism already yields (see 4.6).
+
+### 4.6 Confirmation retention window (pinned default; D-OPEN-4)
+
+Receipts retain their full record (identities, digest, status, timestamps,
+consuming key) for a minimum of **90 days** before purge eligibility
+(D-OPEN-4: accept 90 days, or set another explicit bounded window). Receipts
+carry NO payload bytes — only the canonical digest — so even after purge the
+`confirmation.prepared`/`confirmation.consumed` audit events and the
+`audit.search` ledger remain the durable audit trail under the standard
+retention policy; summary retention never removes the digest-level audit
+trail.
+
 ## 5. Authoritative check precedence and outcome table (B-3 as worded; the RATIFIED contract)
 
 The frozen B-3 prose fixes the ORDER of mechanisms, and this section pins it
@@ -209,11 +237,11 @@ failure).
 | P-19 | Expiry TOCTOU at the durable claim | Receipt valid at Phase-2 check but expiring before/during the Phase-3 claim: the claim executes only when the fence wins BEFORE `expiryAt`; a fence that arrives at/after `expiryAt` fails closed `VICT_CONFIRMATION_EXPIRED`; once claimed and fenced, in-flight processing completes under the fence (no mid-flight expiry of a granted claim) |
 | P-20 | Different-key concurrent consume of one receipt | First key settles and receipts `consumed`; second key (fresh idempotency key) truthfully `VICT_CONFIRMATION_SPENT`, no effect, receipt records the consuming key |
 | P-21 | Reverse-crash convergence | Crash AFTER the domain effect settles in the idempotency store but BEFORE the receipt record updates: on retry with the same key+digest, Phase 1 replays the recorded result AND the receipt converges to `consumed` under the same fence — exactly one effect, both stores eventually consistent |
-| P-22 | Prepare-after-expiry replacement | Fresh prepare, same actor+command+key+digest, referencing an EXPIRED receipt's shape issues a REPLACEMENT receipt (bounded attempts); the expired receipt stays expired and auditable; no state carried over except audit |
+| P-22 | Prepare-after-expiry replacement | Fresh prepare, same actor+command+key+digest, referencing an EXPIRED receipt's shape issues a REPLACEMENT receipt (at most FIVE replacement receipts per actor+command+key; further prepares fail closed `VICT_COMMAND_IDEMPOTENCY_CONFLICT`); the expired receipt stays expired and auditable; no state carried over except audit |
 
 Browser journeys (G2 exit): S9-03 ChangeSet inspection/approval/commit with its negative set (self-approval, changed content, missing approval, duplicate effect fail closed); S9-04 prepare→review→confirm in Studio with missing/mismatched/expired/replayed receipt + stale state producing NO unintended effect, audit showing actor/target/reason/before-after identity.
 
-## 6.1 Inventory pin for the confirmation surface (reviewer R-7)
+### 6.1 Inventory pin for the confirmation surface (reviewer R-7)
 
 `scripts/verify-stage9-inventory.mjs` gains the G2 surface explicitly:
 `confirmation.prepare`-equivalent `POST /vict/v1/confirmations`, the
@@ -225,7 +253,7 @@ NOWHERE in G2; only the inventory ACCOUNTING gains rows). The proposed
 legacy-shape rejection rows (P-11/P-12) are added to the permanent
 authorization matrix.
 
-## 6.2 Studio-side confirmation UX note for S9-04 (non-implementation note)
+### 6.2 Studio-side confirmation UX note for S9-04 (non-implementation note)
 
 Studio presents the server-issued prepare summary (command, subject,
 payload digest, expected revision, expiry) for human review and posts the
@@ -300,6 +328,10 @@ future gate without its own amendment.
   human-review scaled; configurable per deployment). Accept, or set another
   bounded default.
 - **D-OPEN-2 `run.signal` scope name:** `run.signal` (new closed scope) — accept the name, or amend. CORRECTED role semantics (reviewer R-3): by the closed role policy `administrator: [...ACTOR_SCOPES]`, the administrator role AUTOMATICALLY holds every scope the vocabulary ever gains — so `run.resolve`/`run.signal` are held by administrators BY POLICY, while every other actor receives them ONLY via explicit deployment scope grants. Scope default-deny therefore holds for all NON-administrator classes, and it is the confirmation fence — never scope absence — that blocks administrator legacy-shape bypass. The EXISTING `operator.resolve` scope is classified and UNCHANGED: it is the stream-inspection privilege (other-actor stream identifiers in `stream.inspect`) and the runtime-level blocked-run resolution path (`resolveBlocked` in the orchestration layer) is NOT itself the G2 command surface — G2 adds the receipt-gated `run.resolve` COMMAND requiring the NEW scope `run.resolve`; holders of `operator.resolve` gain no run-resolution authority unless the deployment grants `run.resolve` (administrators hold it by policy). The runtime `resolveBlocked` path remains the internal executor the `run.resolve` command binds to.
+- **D-OPEN-4 receipt retention window:** minimum **90 days** before purge
+  eligibility (digest-level audit trail survives any purge) — accept the
+  number or set another explicit window. Also resolves A-N-2 with one
+  number instead of "as before".
 - **D-OPEN-3 prepare route shape:** single `POST /vict/v1/confirmations`
   (this draft) vs per-command `/prepare` routes. The single route keeps the
   three-surface inventory closed; per-command routes add six routes for
@@ -307,20 +339,3 @@ future gate without its own amendment.
 
 *(Everything above §11 is pinned design reconciled to the ratified D-4/D-10
 contract; the open items are bounded operational pins, not scope changes.)*
-
-## 4.5 Confirmation audit and retention (pinned; reviewer R-5)
-
-- New closed audit actions added to `CONTROL_AUDIT_ACTIONS`:
-  `confirmation.prepared` (actor, command, subject, receipt digest — NEVER a
-  payload byte) and `confirmation.consumed` (actor, command, key, outcome
-  class). Receipt lifecycle transitions that occur without a consume
-  (expiry, spend) are captured on the DURABLE RECEIPT RECORD itself
-  (`status`, timestamps, consumedByKey) and surface through the status read
-  and audit search (`audit.search` subjectType `confirmation`). Retention:
-  receipts carry digests and identities only — never payload bytes — so the
-  control retention policy applies unchanged; expired/spent receipts remain
-  auditable per the ratified retention wording.
-- The confirmation status read requires the receipt's command mutation scope
-  and is added to the permanent authorization matrix (both directions:
-  wrong-scope denial; same-scope allowance). It is NOT added to any default
-  role beyond what that scope mechanism already yields (see §4.6).
