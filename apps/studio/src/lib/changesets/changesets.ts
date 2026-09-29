@@ -463,9 +463,9 @@ export function asDecisionOutcome(data: unknown): DecisionSummary | null {
   // { record, decision } result under `result`. Accept BOTH the nested and
   // (defensively) the direct result — never anything else.
   const outer = data as Record<string, unknown>;
-  const result = (typeof outer['result'] === 'object' && outer['result'] !== null
-    ? outer['result']
-    : data) as Record<string, unknown>;
+  const result = (
+    typeof outer['result'] === 'object' && outer['result'] !== null ? outer['result'] : data
+  ) as Record<string, unknown>;
   const record = asChangesetSummary(result['record']);
   const decision =
     typeof result['decision'] === 'object' && result['decision'] !== null
@@ -511,9 +511,9 @@ export function asCommitOutcome(data: unknown): CommitSummary | null {
   // { record, applied } result under `result`. Accept BOTH the nested and
   // (defensively) the direct result — never anything else.
   const outer = data as Record<string, unknown>;
-  const result = (typeof outer['result'] === 'object' && outer['result'] !== null
-    ? outer['result']
-    : data) as Record<string, unknown>;
+  const result = (
+    typeof outer['result'] === 'object' && outer['result'] !== null ? outer['result'] : data
+  ) as Record<string, unknown>;
   const record = asChangesetSummary(result['record']);
   if (record === null || !Array.isArray(result['applied'])) {
     return null;

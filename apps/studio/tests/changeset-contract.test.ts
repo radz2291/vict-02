@@ -229,11 +229,13 @@ describe('changeset journey contract shapes (control-plane machinery pins)', () 
     expect(asCommitOutcome(null)).toBeNull();
     expect(asCommitOutcome({ record })).toBeNull();
 
-    expect(asCheckRun({ run: { runId: 'crun-1', kind: 'validation', outcome: 'passed' } })).toEqual({
-      runId: 'crun-1',
-      kind: 'validation',
-      outcome: 'passed',
-    });
+    expect(asCheckRun({ run: { runId: 'crun-1', kind: 'validation', outcome: 'passed' } })).toEqual(
+      {
+        runId: 'crun-1',
+        kind: 'validation',
+        outcome: 'passed',
+      },
+    );
     expect(asCheckRun({ runId: 'crun-1', kind: 'validation', outcome: 'passed' })).toEqual({
       runId: 'crun-1',
       kind: 'validation',

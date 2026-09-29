@@ -426,32 +426,6 @@ async function resolveBlockedEffect({ runId, resolution, actorId, requestId }) {
       runRecordRevision: run.recordRevision,
     };
   }
-  result = result;
-    runId,
-    resolutionId,
-    action: resolution,
-    reasonCode: 'operator_request',
-    commandHash: resolutionCommandHash({
-      runId,
-      resolutionId,
-      action: resolution,
-      reasonCode: 'operator_request',
-      expectedRunRevision: run.recordRevision,
-      hasOutput: false,
-    }),
-    expectedRunRevision: run.recordRevision,
-    now: at,
-    events: [
-      {
-        type: 'operator.intervened',
-        resolutionId,
-        action: resolution,
-        actorId,
-        ...identity,
-        timestamp: at,
-      },
-    ],
-  });
   const settled = await orchestration.getOrchestrationRun(runId);
   if (result.status === 'accepted') {
     await mirrorAppliedEffect(runId, settled.status);
