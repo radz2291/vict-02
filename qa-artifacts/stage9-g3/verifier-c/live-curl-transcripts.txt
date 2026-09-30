@@ -1,0 +1,53 @@
+G3-C VERIFIER LIVE CURL TRANSCRIPTS (recorded 2026-09-30, verifier's own fresh stack)
+
+STACK CONFIGURATION
+- Quellight: fresh clone, HEAD 5f709a536ab1f4d5fea0407db1b9537e0aa7c0f6 (verified also via git ls-remote origin HEAD before install), started with ITS OWN script:
+    QUELLIGHT_ACTOR_TOKEN=<verifier-token> QUELLIGHT_DATA_DIR=g3c-verify-data npm run dev -- --port 5178 --strictPort --host 127.0.0.1
+  (offline deterministic model mode — the default composition path: composition.ts modelMode !== 'live' -> createDeterministicOfflineModel)
+- Studio: vict-02 checkout at d014d62a9a8cd719edc9eeb58c48a2aacdb1bdcf, apps/studio vite dev on port 5199 with env derived from targets.ts/targets default entries (complete VICT_STUDIO_TARGETS / VICT_STUDIO_CREDENTIALS (2 quellight credentials) / VICT_STUDIO_QUELLIGHT_TURN / VICT_STUDIO_QUELLIGHT_PROVENANCE / VICT_STUDIO_HUMAN_CREDENTIALS).
+
+[1] PIN ORACLE — positive /vict/v1/health (auth Bearer <operator token>), target answered through its /vict/* app proxy:
+{"ok":true,"data":{"healthy":true,"commandSchema":"vict.command@1","streamSchema":"vict.agent-stream@1"}}
+
+[2] /vict/v1/compatibility:
+{"ok":true,"data":{"commandSchema":"vict.command@1","streamSchema":"vict.agent-stream@1","changesetSchema":"vict.changeset@1","turnSchema":"vict.agent-turn@1"}}
+
+[3] /vict/v1/actor/whoami (single token; the ONLY token the tree accepts):
+{"ok":true,"data":{"actorId":"actor-quellight-local","roles":["developer","operator"],"scopes":["activation.read","activation.select","agent.stream.read","agent.turn.cancel","agent.turn.start","app.data.read","app.data.write","audit.read","changeset.propose","changeset.read","changeset.revise","conversation.delete","conversation.read","operator.resolve","release.read","release.select","run.cancel","run.read"],"mastraResourceId":"vict-actor-actor-quellight-local"}}
+
+[4] ANTI-NEWER NEGATIVE PROBE /vict/v1/runs/qlt-probe-nonexistent:
+{"ok":false,"code":"VICT_HTTP_ROUTE_UNKNOWN"}
+=> REQUIRED refusal holds on the real 0.3.1 tree; no run.* surface exists.
+
+[5] REAL TURN THROUGH QUIELLIGHT'S OWN PRODUCT ADMISSION (raw agent.turn.start is NOT the product surface; the composed product-wrapper admission is):
+POST /api/act {"actionId":"act.createThread","input":{"title":"G3-C verifier thread"},"idempotencyKey":"g3c-create-001"}
+=> {"ok":true,"value":{"id":"qlt-9119516c4b7d98ba0c1782bd","title":"G3-C verifier thread","state":"active","retentionState":"currently-relevant","createdAt":1790741397293,"updatedAt":1790741397293}}
+POST /api/threads/qlt-9119516c4b7d98ba0c1782bd/turns {"input":"Remember that my review window is Thursday. What should I prepare?","idempotencyKey":"g3c-turn-001"}
+=> {"ok":true,"data":{"turnId":"turn-6006eaa8-2017-436b-9bea-4e9aed0fba44","streamId":"stream-998a488a-e026-40d9-9707-db1e5a767bc3"}}
+(turn completed; status "completed" in the boundary answer below.)
+
+[6] DECLARED READ 2 (inspection getTurn through app.data.query /api/act):
+POST /api/act {"actionId":"act.queryInspection","input":{"filters":{"query":"getTurn","threadId":"qlt-9119516c4b7d98ba0c1782bd","turnId":"turn-6006eaa8-2017-436b-9bea-4e9aed0fba44"}}}
+=> {"ok":true,"value":{"ok":true,"row":{"usage":"none","usageLabel":"No eligible memory existed for this reply.","appliedPolicy":{"policyId":"qlt.memory-mode@1","mode":"across-conversations","revision":1,"recordedAtMs":1790741421926},"usedCount":0,"selected":[],"exclusions":[],"exclusionsAreBoundedSubset":false,"excludedBeyondCount":null,"details":{"turnId":"turn-6006eaa8-2017-436b-9bea-4e9aed0fba44","threadId":"qlt-9119516c4b7d98ba0c1782bd","assemblerVersion":"q5-1","fingerprint":"af08a4ddae6cfef9f5321a3348a564c6cfc50fb7707f841d6f27c85a5b1b9276","renderedBytes":0,"maxRecords":8,"maxBytes":4096,"orderingIdentity":"[]","createdAtMs":1790741421974}}}}
+=> the SAME turnId (details.turnId) the boundary's turn record carries — alignment IN BOTH, live.
+
+[7] DECLARED READ 1 GET /vict/v1/turns/turn-6006eaa8-2017-436b-9bea-4e9aed0fba44 (operator credential presented):
+{"ok":true,"data":{"turn":{"turnId":"turn-6006eaa8-2017-436b-9bea-4e9aed0fba44","streamId":"stream-998a488a-e026-40d9-9707-db1e5a767bc3","threadId":"vict-conv-conv-f3978f3d5b41f07d","actorId":"actor-quellight-local","agentProfileVersion":"v1_f34b3c23f75552267f998173131c141429ae93b413b98fcc1d418bcd6bfa6b41","inputSummary":"user-input:length=66","status":"completed","createdAt":1790741420512,"updatedAt":1790741423633,"terminalAt":1790741423633,"traceId":"0556cd748938aaf8011a250ba0584283"}}}
+
+[8] AGENT-IDENTITY REFUSAL ATTEMPT — the SAME surface with the agent-context credential label provisioned in the Studio: the attempt SUCCEEDED (target resolves both credentials to the ONE actor; rendered on the page as succeeded:true, refusalCode:null, whoamiDiff []). OD-R4 evidence (d).
+
+[9] UNDERPRIVILEGED DENIAL ATTEMPT (e) — presenting a token with NO relationship to the tree's single accepted credential:
+- GET /vict/v1/actor/whoami with "authorization: Bearer ql-underpriviledged-nonexistent-token"
+  => {"ok":true,"data":{"actorId":"actor-quellight-local",... full union scopes ...}}
+- GET /vict/v1/turns/turn-6006eaa8-2017-436b-9bea-4e9aed0fba44 with the same bogus token
+  => {"ok":true,"data":{"turn":{...}}}
+EXPLANATION (target's own released code): Quellight 0.3.1 serves the VICT boundary ONLY through its own SvelteKit server-side proxy (src/routes/vict/[...path]/+server.ts), which REPLACES the presented authorization header with the in-process composition token ("headers.set('authorization', `Bearer ${runtime.actorToken()}`)") — the browser/Studio presents NOTHING that can be evaluated. The underlying loopback boundary's authenticator is the ONE-ENTRY map { [env.actorToken]: 'actor-quellight-local' } (src/lib/server/composition.ts:680). Consequence: no credential — underprivileged or not — is ever evaluated at the target's identity boundary through the reachable app origin; every call executes AS actor-quellight-local.
+
+[10] FETCH-SPY CAPABILITY COMPARISON (g3c-spy.mjs — two REAL local HTTP servers; the production transport decides on each):
+WORLD-0.3.1-shaped pin ok = true {"command":"run.get","refused":true,"code":"VICT_HTTP_ROUTE_UNKNOWN"}
+WORLD-newer-schemad (identical inspect records, run.get served) pin ok = false {"code":"VICT_QUELLIGHT_VERSION_PIN_REFUSED","detail":"the anti-newer probe (run.get) succeeded: the surface is newer-schemad than the pinned 0.3.1 identity; failing closed"}
+=> the run.get negative probe IS the discriminator: identical (version-invariant) inspect records alone would NOT distinguish the worlds; with run.get served the pin refuses with the capability banner's version state — proving the rendered 0.3.1 capability banner differs from a newer target's.
+
+[11] SECURITY: the served browser page contains NO credential token (browser-content scan: token value absent; grep false). Credentials are server-held in the Studio process only.
+
+[12] QUIELLIGHT TREE PURITY: git rev-parse HEAD 5f709a5... before AND after the entire journey; git status --porcelain empty at every stage; git diff empty; runtime data dir (gitignored) removed afterwards.

@@ -1,0 +1,48 @@
+{
+  "notes": [
+    "after login url: http://127.0.0.1:5199/",
+    "product page rendered",
+    "{\n \"banner\": \"SAME-TURN alignment demonstrated: the target's own turnId appears in BOTH answers (turn-6006eaa8-2017-436b-9bea-4e9aed0fba44).\",\n \"singleActor\": \"AGENT-IDENTITY REFUSAL NOT DEMONSTRATED on this existing tre\",\n \"whoamiDiff\": \"[]\",\n \"refusal\": \"{\\\"command\\\":\\\"agent.turn.get\\\",\\\"succeeded\\\":true,\\\"refusalCode\\\":null}\",\n \"probe\": \"Command: {\\\"command\\\":\\\"run.get\\\",\\\"refused\\\":true,\\\"code\\\":\\\"VICT_HTTP_ROUTE_UNKNOWN\\\"}\",\n \"capability\": \"Capability honesty: the newer G1 operator command reads (run.get, run.list, run.detail, run.events, run.waits) are NOT available on this declared 0.3.1 target — the transport anti-newer probe was REQUIRED to be refused and was refused. This banner is truthful and differs from a target that serves those reads.\"\n}",
+    "browser page contains credential token value: false"
+  ],
+  "responses": [
+    {
+      "url": "http://127.0.0.1:5199/product",
+      "status": 304,
+      "body": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <link rel=\"icon\" href=\"./favicon.svg\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <!--1edmfg0--><!----><title>VICT Studio — Product view</title>\n\t\t<style data-sveltekit>\n  .product-view.s"
+    },
+    {
+      "url": "http://127.0.0.1:5199/src/routes/product/+page.svelte",
+      "status": 304,
+      "body": "import { createHotContext as __vite__createHotContext } from \"/@vite/client\";import.meta.hot = __vite__createHotContext(\"/src/routes/product/+page.svelte\");import \"/node_modules/.vite/deps/svelte_internal_disclose-version.js?v=761b0fd6\";\n\n_page[$.FILENAME] = 'src/routes/product/+page.svelte';\n\nimpor"
+    },
+    {
+      "url": "http://127.0.0.1:5199/src/routes/product/+page.svelte?svelte&type=style&lang.css",
+      "status": 304,
+      "body": "import { createHotContext as __vite__createHotContext } from \"/@vite/client\";import.meta.hot = __vite__createHotContext(\"/src/routes/product/+page.svelte?svelte&type=style&lang.css\");import { updateStyle as __vite__updateStyle, removeStyle as __vite__removeStyle } from \"/@vite/client\"\nconst __vite__"
+    }
+  ],
+  "turnIds": [
+    "turnId: turn-6006eaa8-2017-436b-9bea-4e9aed0fba44",
+    "streamId: stream-998a488a-e026-40d9-9707-db1e5a767bc3",
+    "threadId: vict-conv-conv-f3978f3d5b41f07d",
+    "actorId: actor-quellight-local",
+    "agentProfileVersion: v1_f34b3c23f75552267f998173131c141429ae93b413b98fcc1d418bcd6bfa6b41",
+    "inputSummary: user-input:length=66",
+    "status: completed",
+    "createdAt: 1790741420512",
+    "updatedAt: 1790741423633",
+    "terminalAt: 1790741423633",
+    "traceId: 0556cd748938aaf8011a250ba0584283",
+    "usage: none",
+    "usageLabel: No eligible memory existed for this reply.",
+    "appliedPolicy: {\"policyId\":\"qlt.memory-mode@1\",\"mode\":\"across-conversations\",\"revision\":1,\"recordedAtMs\":1790741421926}",
+    "usedCount: 0",
+    "selected: []",
+    "exclusions: []",
+    "exclusionsAreBoundedSubset: false",
+    "excludedBeyondCount: null",
+    "details: {\"turnId\":\"turn-6006eaa8-2017-436b-9bea-4e9aed0fba44\",\"threadId\":\"qlt-9119516c4b7d98ba0c1782bd\",\"assemblerVersion\":\"q5-1\",\"fingerprint\":\"af08a4ddae6cfef9f5321a3348a564c6cfc50fb7707f841d6f27c85a5b1b9276\",\"renderedBytes\":0,\"maxRecords\":8,\"maxBytes\":4096,\"orderingIdentity\":\"[]\",\"createdAtMs\":1790741421974}"
+  ],
+  "secretLeak": false
+}

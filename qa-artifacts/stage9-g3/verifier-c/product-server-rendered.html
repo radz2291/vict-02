@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="./favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!--1edmfg0--><!----><title>VICT Studio — Product view</title>
+		<style data-sveltekit>
+  .product-view.s-w6xmwMmQddDY {
+    padding: 1.5rem;
+    display: grid;
+    gap: 0.75rem;
+  }
+  .panel.s-w6xmwMmQddDY {
+    border: 1px solid #c9cdd6;
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    background: #fafbfd;
+    display: grid;
+    gap: 0.35rem;
+  }
+  .banner.s-w6xmwMmQddDY {
+    border-left: 4px solid #4b5bd7;
+    padding: 0.5rem 0.75rem;
+    background: #eef1ff;
+  }
+  .banner.warn.s-w6xmwMmQddDY {
+    border-left-color: #b7791f;
+    background: #fff8ec;
+  }
+  .banner.failure.s-w6xmwMmQddDY {
+    border-left-color: #b42318;
+    background: #fdeceb;
+  }
+  .banner.aligned.s-w6xmwMmQddDY {
+    border-left-color: #197a4c;
+    background: #eafbf2;
+  }
+  ul.s-w6xmwMmQddDY {
+    margin: 0;
+    padding-left: 1.25rem;
+  }
+ .s-w6xmwMmQddDY{}</style>
+  </head>
+  <body data-sveltekit-preload-data="hover">
+    <div style="display: contents"><!--[--><!--[0--><!--[--><!--[--><section class="product-view s-w6xmwMmQddDY"><h1 class="s-w6xmwMmQddDY">Product view (same-turn inspection)</h1> <!--[-1--><!--]--> <!--[0--><h2 class="s-w6xmwMmQddDY">Target / version evidence (verified oracle answers, recorded verbatim)</h2> <div class="panel s-w6xmwMmQddDY" data-testid="target-evidence"><p class="s-w6xmwMmQddDY">Target: <b class="s-w6xmwMmQddDY">Quellight (existing target, declared 0.3.1)</b> (quellight);
+        expected release identity:
+        vict-release-set@1 / 0.3.1 /
+        @victframework/*@0.3.1</p> <h3 class="s-w6xmwMmQddDY">health.inspect answer.</h3> <ul data-testid="health-record" class="s-w6xmwMmQddDY"><!--[--><li class="s-w6xmwMmQddDY"><b class="s-w6xmwMmQddDY">healthy</b>: true</li><li class="s-w6xmwMmQddDY"><b class="s-w6xmwMmQddDY">commandSchema</b>: vict.command@1</li><li class="s-w6xmwMmQddDY"><b class="s-w6xmwMmQddDY">streamSchema</b>: vict.agent-stream@1</li><!--]--></ul> <h3 class="s-w6xmwMmQddDY">compatibility.inspect answer.</h3> <ul data-testid="compatibility-record" class="s-w6xmwMmQddDY"><!--[--><li class="s-w6xmwMmQddDY"><b class="s-w6xmwMmQddDY">commandSchema</b>: vict.command@1</li><li class="s-w6xmwMmQddDY"><b class="s-w6xmwMmQddDY">streamSchema</b>: vict.agent-stream@1</li><li class="s-w6xmwMmQddDY"><b class="s-w6xmwMmQddDY">changesetSchema</b>: vict.changeset@1</li><li class="s-w6xmwMmQddDY"><b class="s-w6xmwMmQddDY">turnSchema</b>: vict.agent-turn@1</li><!--]--></ul> <h3 class="s-w6xmwMmQddDY">Anti-newer probe (required refusal).</h3> <p data-testid="probe-outcome" class="s-w6xmwMmQddDY">Command: {"command":"run.get","refused":true,"code":"VICT_HTTP_ROUTE_UNKNOWN"}</p> <h3 class="s-w6xmwMmQddDY">Provenance (labeled provenance, never claimed as a runtime oracle).</h3> <pre data-testid="provenance-record" class="s-w6xmwMmQddDY">{
+  "quellightRef": "commit 5f709a536ab1f4d5fea0407db1b9537e0aa7c0f6",
+  "declaredReleaseIdentity": "vict-release-set@1/0.3.1",
+  "recordedAtLabel": "provenance"
+}</pre></div> <!--[0--><h2 class="s-w6xmwMmQddDY">Same-turn panel (one selected turn, both declared reads)</h2> <!--[-1--><!--]--> <div class="panel s-w6xmwMmQddDY" data-testid="same-turn-panel"><p class="banner s-w6xmwMmQddDY aligned" data-testid="same-turn-banner">SAME-TURN alignment demonstrated: the target's own turnId appears in BOTH answers (turn-6006eaa8-2017-436b-9bea-4e9aed0fba44).</p> <h3 class="s-w6xmwMmQddDY">Read 1 — the target's own turn record (agent.turn.get).</h3> <!--[0--><ul data-testid="turn-record" class="s-w6xmwMmQddDY"><!--[--><li class="s-w6xmwMmQddDY"><b class="s-w6xmwMmQddDY">turnId</b>: turn-6006eaa8-2017-436b-9bea-4e9aed0fba44</li><li class="s-w6xmwMmQddDY"><b class="s-w6xmwMmQddDY">streamId</b>: stream-998a488a-e026-40d9-9707-db1e5a767bc3</li><li class="s-w6xmwMmQddDY"><b class="s-w6xmwMmQddDY">threadId</b>: vict-conv-conv-f3978f3d5b41f07d</li><li class="s-w6xmwMmQddDY"><b class="s-w6xmwMmQddDY">actorId</b>: actor-quellight-local</li><li class="s-w6xmwMmQddDY"><b class="s-w6xmwMmQddDY">agentProfileVersion</b>: v1_f34b3c23f75552267f998173131c141429ae93b413b98fcc1d418bcd6bfa6b41</li><li class="s-w6xmwMmQddDY"><b class="s-w6xmwMmQddDY">inputSummary</b>: user-input:length=66</li><li class="s-w6xmwMmQddDY"><b class="s-w6xmwMmQddDY">status</b>: completed</li><li class="s-w6xmwMmQddDY"><b class="s-w6xmwMmQddDY">createdAt</b>: 1790741420512</li><li class="s-w6xmwMmQddDY"><b class="s-w6xmwMmQddDY">updatedAt</b>: 1790741423633</li><li class="s-w6xmwMmQddDY"><b class="s-w6xmwMmQddDY">terminalAt</b>: 1790741423633</li><li class="s-w6xmwMmQddDY"><b class="s-w6xmwMmQddDY">traceId</b>: 0556cd748938aaf8011a250ba0584283</li><!--]--></ul><!--]--> <h3 class="s-w6xmwMmQddDY">Read 2 — the declared inspection projection (app.data.query).</h3> <!--[0--><ul data-testid="inspection-record" class="s-w6xmwMmQddDY"><!--[--><li class="s-w6xmwMmQddDY"><b class="s-w6xmwMmQddDY">usage</b>: none</li><li class="s-w6xmwMmQddDY"><b class="s-w6xmwMmQddDY">usageLabel</b>: No eligible memory existed for this reply.</li><li class="s-w6xmwMmQddDY"><b class="s-w6xmwMmQddDY">appliedPolicy</b>: {"policyId":"qlt.memory-mode@1","mode":"across-conversations","revision":1,"recordedAtMs":1790741421926}</li><li class="s-w6xmwMmQddDY"><b class="s-w6xmwMmQddDY">usedCount</b>: 0</li><li class="s-w6xmwMmQddDY"><b class="s-w6xmwMmQddDY">selected</b>: []</li><li class="s-w6xmwMmQddDY"><b class="s-w6xmwMmQddDY">exclusions</b>: []</li><li class="s-w6xmwMmQddDY"><b class="s-w6xmwMmQddDY">exclusionsAreBoundedSubset</b>: false</li><li class="s-w6xmwMmQddDY"><b class="s-w6xmwMmQddDY">excludedBeyondCount</b>: null</li><li class="s-w6xmwMmQddDY"><b class="s-w6xmwMmQddDY">details</b>: {"turnId":"turn-6006eaa8-2017-436b-9bea-4e9aed0fba44","threadId":"qlt-9119516c4b7d98ba0c1782bd","assemblerVersion":"q5-1","fingerprint":"af08a4ddae6cfef9f5321a3348a564c6cfc50fb7707f841d6f27c85a5b1b9276","renderedBytes":0,"maxRecords":8,"maxBytes":4096,"orderingIdentity":"[]","createdAtMs":1790741421974}</li><!--]--></ul><!--]--></div><!--]--> <!--[0--><h2 class="s-w6xmwMmQddDY">Agent-identity vs. operator surface (identity evidence)</h2> <div class="panel s-w6xmwMmQddDY" data-testid="refusal-evidence"><h3 class="s-w6xmwMmQddDY">actor.whoami — server-held credential A (operator).</h3> <ul data-testid="whoami-operator" class="s-w6xmwMmQddDY"><!--[--><li class="s-w6xmwMmQddDY"><b class="s-w6xmwMmQddDY">actorId</b>: actor-quellight-local</li><li class="s-w6xmwMmQddDY"><b class="s-w6xmwMmQddDY">roles</b>: ["developer","operator"]</li><li class="s-w6xmwMmQddDY"><b class="s-w6xmwMmQddDY">scopes</b>: ["activation.read","activation.select","agent.stream.read","agent.turn.cancel","agent.turn.start","app.data.read","app.data.write","audit.read","changeset.propose","changeset.read","changeset.revise","conversation.delete","conversation.read","operator.resolve","release.read","release.select","run.cancel","run.read"]</li><li class="s-w6xmwMmQddDY"><b class="s-w6xmwMmQddDY">mastraResourceId</b>: vict-actor-actor-quellight-local</li><!--]--></ul> <h3 class="s-w6xmwMmQddDY">actor.whoami — server-held credential B (agent-context).</h3> <ul data-testid="whoami-agent" class="s-w6xmwMmQddDY"><!--[--><li class="s-w6xmwMmQddDY"><b class="s-w6xmwMmQddDY">actorId</b>: actor-quellight-local</li><li class="s-w6xmwMmQddDY"><b class="s-w6xmwMmQddDY">roles</b>: ["developer","operator"]</li><li class="s-w6xmwMmQddDY"><b class="s-w6xmwMmQddDY">scopes</b>: ["activation.read","activation.select","agent.stream.read","agent.turn.cancel","agent.turn.start","app.data.read","app.data.write","audit.read","changeset.propose","changeset.read","changeset.revise","conversation.delete","conversation.read","operator.resolve","release.read","release.select","run.cancel","run.read"]</li><li class="s-w6xmwMmQddDY"><b class="s-w6xmwMmQddDY">mastraResourceId</b>: vict-actor-actor-quellight-local</li><!--]--></ul> <h3 class="s-w6xmwMmQddDY">whoami DIFF (the identity evidence; distinctness demonstrated, not assumed).</h3> <p data-testid="whoami-diff" class="s-w6xmwMmQddDY">[]</p> <h3 class="s-w6xmwMmQddDY">Agent-context credential against the operator surface.</h3> <p data-testid="refusal-outcome" class="s-w6xmwMmQddDY">{"command":"agent.turn.get","succeeded":true,"refusalCode":null}</p> <!--[0--><p class="banner warn s-w6xmwMmQddDY" data-testid="single-actor-banner">AGENT-IDENTITY REFUSAL NOT DEMONSTRATED on this existing tree: the whoami answers
+            above prove the target resolves both server-held credentials to ONE actor
+            (the single-actor tree), so the agent-context credential is not refused. This is the
+            recorded single-actor evidence; the denial is never simulated client-side.</p><!--]--></div><!--]--><!--]--> <h2 class="s-w6xmwMmQddDY">Capability honesty</h2> <p class="banner warn s-w6xmwMmQddDY" data-testid="capability-banner">Capability honesty: the newer G1 operator command reads (run.get, run.list, run.detail, run.events, run.waits) are NOT available on this declared 0.3.1 target — the transport anti-newer probe was REQUIRED to be refused and was refused. This banner is truthful and differs from a target that serves those reads.</p></section><!--]--><!----><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
+			
+			<script>
+				{
+					__sveltekit_dev = {
+						base: new URL(".", location).pathname.slice(0, -1),
+						env: {}
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("/@fs/C:/Users/RZ1/Desktop/RZ/vict-02-g3-c-verify/node_modules/@sveltejs/kit/src/runtime/client/entry.js"),
+						import("/@fs/C:/Users/RZ1/Desktop/RZ/vict-02-g3-c-verify/apps/studio/.svelte-kit/generated/client/app.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 5],
+							data: [null,{type:"data",data:{targetId:"quellight",targetLabel:"Quellight (existing target, declared 0.3.1)",expectedIdentity:{releaseSetIdentity:"vict-release-set@1",version:"0.3.1",frameworkPins:"@victframework/*@0.3.1"},pinned:{ok:true,healthRecord:{healthy:true,commandSchema:"vict.command@1",streamSchema:"vict.agent-stream@1"},compatibilityRecord:{commandSchema:"vict.command@1",streamSchema:"vict.agent-stream@1",changesetSchema:"vict.changeset@1",turnSchema:"vict.agent-turn@1"},whoamiOperator:{actorId:"actor-quellight-local",roles:["developer","operator"],scopes:["activation.read","activation.select","agent.stream.read","agent.turn.cancel","agent.turn.start","app.data.read","app.data.write","audit.read","changeset.propose","changeset.read","changeset.revise","conversation.delete","conversation.read","operator.resolve","release.read","release.select","run.cancel","run.read"],mastraResourceId:"vict-actor-actor-quellight-local"},whoamiAgent:{actorId:"actor-quellight-local",roles:["developer","operator"],scopes:["activation.read","activation.select","agent.stream.read","agent.turn.cancel","agent.turn.start","app.data.read","app.data.write","audit.read","changeset.propose","changeset.read","changeset.revise","conversation.delete","conversation.read","operator.resolve","release.read","release.select","run.cancel","run.read"],mastraResourceId:"vict-actor-actor-quellight-local"},singleActor:true,refusalProbe:{command:"run.get",refused:true,code:"VICT_HTTP_ROUTE_UNKNOWN"},provenance:{quellightRef:"commit 5f709a536ab1f4d5fea0407db1b9537e0aa7c0f6",declaredReleaseIdentity:"vict-release-set@1/0.3.1",recordedAtLabel:"provenance"},credentialRefs:{operator:"quellight-operator",agentContext:"quellight-agent"},operatorActorLabel:"quellight-operator",agentActorLabel:"quellight-agent"},panel:{turnRecord:{turnId:"turn-6006eaa8-2017-436b-9bea-4e9aed0fba44",streamId:"stream-998a488a-e026-40d9-9707-db1e5a767bc3",threadId:"vict-conv-conv-f3978f3d5b41f07d",actorId:"actor-quellight-local",agentProfileVersion:"v1_f34b3c23f75552267f998173131c141429ae93b413b98fcc1d418bcd6bfa6b41",inputSummary:"user-input:length=66",status:"completed",createdAt:1790741420512,updatedAt:1790741423633,terminalAt:1790741423633,traceId:"0556cd748938aaf8011a250ba0584283"},inspection:{usage:"none",usageLabel:"No eligible memory existed for this reply.",appliedPolicy:{policyId:"qlt.memory-mode@1",mode:"across-conversations",revision:1,recordedAtMs:1790741421926},usedCount:0,selected:[],exclusions:[],exclusionsAreBoundedSubset:false,excludedBeyondCount:null,details:{turnId:"turn-6006eaa8-2017-436b-9bea-4e9aed0fba44",threadId:"qlt-9119516c4b7d98ba0c1782bd",assemblerVersion:"q5-1",fingerprint:"af08a4ddae6cfef9f5321a3348a564c6cfc50fb7707f841d6f27c85a5b1b9276",renderedBytes:0,maxRecords:8,maxBytes:4096,orderingIdentity:"[]",createdAtMs:1790741421974}},correlationTurnId:"turn-6006eaa8-2017-436b-9bea-4e9aed0fba44",correlations:{turnRead:true,inspection:true},failureCodes:{turnRecord:null,inspection:null},selected:{threadId:"qlt-9119516c4b7d98ba0c1782bd",turnId:"turn-6006eaa8-2017-436b-9bea-4e9aed0fba44"},banner:{state:"aligned",text:"SAME-TURN alignment demonstrated: the target's own turnId appears in BOTH answers (turn-6006eaa8-2017-436b-9bea-4e9aed0fba44)."}},refusal:{command:"agent.turn.get",succeeded:true,refusalCode:null,singleActor:true,whoamiDiff:[]},capabilityHonesty:"Capability honesty: the newer G1 operator command reads (run.get, run.list, run.detail, run.events, run.waits) are NOT available on this declared 0.3.1 target — the transport anti-newer probe was REQUIRED to be refused and was refused. This banner is truthful and differs from a target that serves those reads."},uses:{}}],
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+  </body>
+</html>
