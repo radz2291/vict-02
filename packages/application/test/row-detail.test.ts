@@ -62,15 +62,16 @@ function fixture(
 const compile = (input: Record<string, unknown>) =>
   compileApplication(input as unknown as CompileApplicationInput);
 
-type Compiled = { ok: true; plan: { screens: Record<string, unknown> } };
-
 /** First surface of the fixture's 'screen'. */
 function firstSurface(result: {
-  ok: boolean;
-  plan?: Record<string, unknown>;
+  readonly ok?: unknown;
+  readonly plan?: unknown;
 }): Record<string, unknown> {
-  if (!result.ok) throw new Error(JSON.stringify(result));
-  const screen = (result.plan.screens as Record<string, unknown>)['screen'] as unknown as {
+  if (!result.ok) throw new Error(String(result));
+  const screen = (
+    (result.plan as Record<string, unknown> | undefined)?.screens as
+      Record<string, unknown> | undefined
+  )?.['screen'] as unknown as {
     layout: Array<{ surfaces: Array<Record<string, unknown>> }>;
   };
   return screen.layout[0]!.surfaces[0]!;

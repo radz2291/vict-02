@@ -170,7 +170,6 @@ describe('studio UI rendering (G1 read-only)', () => {
         loading: false,
       },
     });
-    const html = target.innerHTML;
     // FT-1 (G3-A): the definition declares the row→detail binding, so each
     // row renders ONE genuine navigation link (anchor href) to the run
     // detail route, resolved from the row's own identity field. Shell nav

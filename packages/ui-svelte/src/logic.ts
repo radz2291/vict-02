@@ -602,39 +602,45 @@ export function resolveRowDetailLink(
   const entry = routes.find((candidate) => candidate.route.id === rowDetail.routeId);
   const declaredPath = entry?.route.path;
   if (typeof declaredPath !== 'string') return undefined;
-  const params: Record<string, string | number> = {};
+  const params = new Map<string, string | number>();
   const identity: string[] = [];
   for (const [routeParam, rowField] of Object.entries(rowDetail.param)) {
     const value = row[rowField];
     if (typeof value !== 'string' && typeof value !== 'number') return undefined;
-    params[routeParam] = value;
+    params.set(routeParam, value);
     identity.push(String(value));
   }
   // URL-encode ONLY the substituted parameter segments; declared static
   // route segments pass through verbatim. Any still-unresolved `:name`
   // segment means the row has no complete target: no link at all.
-  const declaredSegments = declaredPath.split('/');
+  // Iterate the DECLARED segments so substituted values are encoded as whole
+  // segments (a row value may itself contain '/'). Any still-unresolved
+  // `:name` parameter means the row has no complete target: no link at all.
   let unresolved = false;
-  const href = substitutePathParams(declaredPath, params)
+  const href = declaredPath
     .split('/')
-    .map((segment, index) => {
-      const declaredSegment = declaredSegments[index] ?? segment;
+    .map((declaredSegment) => {
       if (declaredSegment.startsWith(':') && declaredSegment.length > 1) {
-        if (segment.startsWith(':')) unresolved = true;
-        else {
-          try {
-            return encodeURIComponent(segment);
-          } catch {
-            return segment;
-          }
+        const value = params.get(declaredSegment.slice(1));
+        if (value === undefined) {
+          unresolved = true;
+          return declaredSegment;
+        }
+        try {
+          return encodeURIComponent(value);
+        } catch {
+          return value;
         }
       }
-      return segment;
+      return declaredSegment;
     })
     .join('/');
   if (unresolved || href.split('/').some((segment) => segment.startsWith(':'))) {
     return undefined;
   }
   const identityLabel = identity.filter(Boolean).join(' ').trim();
-  return { href, label: identityLabel.length > 0 ? `${rowDetail.label}: ${identityLabel}` : rowDetail.label };
+  return {
+    href,
+    label: identityLabel.length > 0 ? `${rowDetail.label}: ${identityLabel}` : rowDetail.label,
+  };
 }
