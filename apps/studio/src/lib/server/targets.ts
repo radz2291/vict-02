@@ -41,6 +41,19 @@ const DEMO_TARGETS: readonly TargetRegistryEntry[] = [
     endpoint: 'http://127.0.0.1:4310',
     credentialRef: 'studio-operator',
   },
+  // Stage 9 G3-C (WP-G3-C) ADDITIVE: the EXISTING Quellight target (its own
+  // tree at its live ref, run from its own composition/scripts). The
+  // identity pin, pilot binding, and the two server-held credentials
+  // (quellight-operator / quellight-agent) are declared in the narrow
+  // transport (src/lib/server/quellight-transport.ts); only tokens are
+  // provisioned through the deployment environment. Strictly additive:
+  // no existing entry's semantics change.
+  {
+    id: 'quellight',
+    label: 'Quellight (existing target, declared 0.3.1)',
+    endpoint: 'http://127.0.0.1:4610',
+    credentialRef: 'quellight-operator',
+  },
 ];
 
 const DEMO_CREDENTIALS: Readonly<Record<string, TargetCredential>> = {
@@ -87,6 +100,21 @@ const DEMO_CREDENTIALS: Readonly<Record<string, TargetCredential>> = {
     token: 'vict-studio-demo-approver-b',
     actorLabel: 'changeset-approver-b',
     scopes: ['run.read', 'activation.read', 'audit.read', 'changeset.read', 'changeset.approve'],
+  },
+  // Stage 9 G3-C (WP-G3-C) ADDITIVE: the two Quellight server-held
+  // credential constants. Both resolve on the target's own actor boundary
+  // at journey time (single-actor tree); the whoami DIFF is the identity
+  // evidence. Deployment provisioning (VICT_STUDIO_CREDENTIALS) supplies
+  // the real token values; these defaults are inert loopback fixtures.
+  'quellight-operator': {
+    token: 'vict-studio-quellight-operator',
+    actorLabel: 'quellight-operator',
+    scopes: ['run.read', 'app.data.read'],
+  },
+  'quellight-agent': {
+    token: 'vict-studio-quellight-agent',
+    actorLabel: 'quellight-agent',
+    scopes: ['run.read', 'app.data.read'],
   },
 };
 
