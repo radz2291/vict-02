@@ -39,6 +39,13 @@ export interface UiTableIntent {
     readonly label: string;
     readonly input: Readonly<Record<string, string>>;
   };
+  /**
+   * Definition-declared row→detail navigation binding (FT-1). When present,
+   * the renderer renders a GENUINE navigation link per row; when absent,
+   * no link is rendered at all. Route resolution (routeId → path) stays
+   * with the renderer's route table.
+   */
+  readonly rowDetail?: UiRowDetail;
   readonly search: { readonly label: string; readonly fields: readonly string[] };
   readonly filters: readonly { readonly field: string; readonly label: string }[];
   /**
@@ -155,6 +162,56 @@ export interface UiDisplayField {
   readonly value: string;
 }
 
+/**
+ * Definition-declared row→detail navigation binding (FT-1): a DECLARED
+ * route id plus the mapping from route path parameters to row fields.
+ * The renderer resolves the binding through its route table and renders a
+ * real link affordance (anchor href) — never a dispatch-only button.
+ * Presentation default: a row without binding renders no link at all.
+ */
+export interface UiRowDetail {
+  readonly routeId: string;
+  readonly label: string;
+  /** Route path parameter name → row field supplying the value. */
+  readonly param: Readonly<Record<string, string>>;
+}
+
+/** Row-navigation intent for a view-role record surface (FT-1). */
+export interface UiViewIntent {
+  readonly surfaceId: string;
+  readonly rowDetail?: UiRowDetail;
+}
+
+
+/**
+ * Bounded defensive read of one FT-1 row-detail navigation binding. A
+ * well-formed declaration is `{ routeId, label?, param? }` with non-empty
+ * strings; `param` is a closed `routeParam → rowField` map of non-empty
+ * strings (default `{ id: 'id' }`). Malformed declarations are discarded
+ * whole (the compiler already rejects them; the derived intent stays
+ * honest about what it can present).
+ */
+function deriveRowDetail(surface: UiSurfaceSource): UiRowDetail | undefined {
+  const declared = plainMember(surface.rowDetail);
+  const routeId = declared?.routeId;
+  if (typeof routeId !== 'string' || routeId.length === 0) return undefined;
+  const label =
+    typeof declared?.label === 'string' && declared.label.length > 0 ? declared.label : 'Open';
+  const declaredParam = plainMember(declared?.param);
+  const entries = Object.entries(declaredParam ?? { id: 'id' }).filter(
+    (entry): entry is [string, string] =>
+      typeof entry[0] === 'string' &&
+      entry[0].length > 0 &&
+      typeof entry[1] === 'string' &&
+      entry[1].length > 0,
+  );
+  return Object.freeze({
+    routeId,
+    label,
+    param: Object.freeze(Object.fromEntries(entries)),
+  });
+}
+
 export interface UiListItem {
   readonly title: string;
   readonly secondary?: string;
@@ -173,6 +230,8 @@ export interface UiConversationMessage {
 
 export interface UiPlan {
   readonly tables: Readonly<Record<string, UiTableIntent>>;
+  /** View-role record surfaces (FT-1 row-detail navigation intents). */
+  readonly views: Readonly<Record<string, UiViewIntent>>;
 }
 
 /** Current, disposable view state supplied by the renderer adapter. */
@@ -190,6 +249,7 @@ export interface UiTableState {
 /** Presentation fields only. Query action IDs and dispatch stay below UI. */
 export function deriveUiPlan(plan: UiPlanSource): UiPlan {
   const tables: Record<string, UiTableIntent> = Object.create(null);
+  const views: Record<string, UiViewIntent> = Object.create(null);
   for (const screen of Object.values(plan.screens)) {
     if (screen === undefined) continue;
     const visit = (surface: UiSurfaceSource): void => {
@@ -247,6 +307,7 @@ export function deriveUiPlan(plan: UiPlanSource): UiPlan {
             : columns.slice(0, 1).map((column) => column.field);
         const filterFields = Array.isArray(surface.filterFields) ? surface.filterFields : [];
         const rowAction = deriveRowAction(surface);
+        const rowDetail = deriveRowDetail(surface);
         tables[surface.id] = Object.freeze({
           surfaceId: surface.id,
           // A table is a surface within a titled page. Repeating the page
@@ -254,6 +315,7 @@ export function deriveUiPlan(plan: UiPlanSource): UiPlan {
           title: 'Records',
           columns: Object.freeze(columns),
           ...(rowAction !== undefined ? { rowAction } : {}),
+          ...(rowDetail !== undefined ? { rowDetail } : {}),
           search: Object.freeze({ label: 'Search records', fields: Object.freeze(searchFields) }),
           filters: Object.freeze(
             filterFields
@@ -269,6 +331,13 @@ export function deriveUiPlan(plan: UiPlanSource): UiPlan {
               : 10,
           emptyMessage:
             typeof surface.emptyMessage === 'string' ? surface.emptyMessage : 'No records found.',
+        });
+      }
+      if (surface.role === 'view') {
+        const rowDetail = deriveRowDetail(surface);
+        views[surface.id] = Object.freeze({
+          surfaceId: surface.id,
+          ...(rowDetail !== undefined ? { rowDetail } : {}),
         });
       }
       if (surface.role === 'tabs' && Array.isArray(surface.tabs)) {
@@ -287,5 +356,5 @@ export function deriveUiPlan(plan: UiPlanSource): UiPlan {
     };
     for (const region of screen.layout) for (const surface of region.surfaces) visit(surface);
   }
-  return Object.freeze({ tables: Object.freeze(tables) });
+  return Object.freeze({ tables: Object.freeze(tables), views: Object.freeze(views) });
 }

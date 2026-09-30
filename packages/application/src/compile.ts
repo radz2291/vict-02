@@ -258,7 +258,11 @@ const SURFACE_FIELDS_V2: ReadonlyMap<Surface['role'], ReadonlySet<string>> = new
   ],
   [
     'view',
-    new Set([...(STAGE04_SURFACE_FIELD_SETS.get('view') as ReadonlySet<string>), 'visibleWhen']),
+    new Set([
+      ...(STAGE04_SURFACE_FIELD_SETS.get('view') as ReadonlySet<string>),
+      'visibleWhen',
+      'rowDetail',
+    ]),
   ],
   [
     'form',
@@ -302,6 +306,7 @@ const SURFACE_FIELDS_V2: ReadonlyMap<Surface['role'], ReadonlySet<string>> = new
       'columns',
       'queryActionId',
       'rowAction',
+      'rowDetail',
       'searchFields',
       'filterFields',
       'pageSize',
@@ -365,6 +370,8 @@ const TABLE_COLUMN_FIELDS: ReadonlySet<string> = new Set([
 ]);
 /** Closed @2 members of a declared table row action. */
 const TABLE_ROW_ACTION_FIELDS: ReadonlySet<string> = new Set(['actionId', 'label', 'input']);
+/** Closed @2 members of a declared row→detail navigation binding (FT-1). */
+const TABLE_ROW_DETAIL_FIELDS: ReadonlySet<string> = new Set(['routeId', 'label', 'param']);
 /** Closed @2 members of one declared view sort entry. */
 const SORT_ENTRY_FIELDS: ReadonlySet<string> = new Set(['field', 'direction']);
 /** Closed sort-direction vocabulary (single source for validation + vocabulary). */
@@ -449,6 +456,7 @@ export const APPLICATION_VOCABULARY = {
     tab: TAB_FIELDS,
     tableColumn: TABLE_COLUMN_FIELDS,
     tableRowAction: TABLE_ROW_ACTION_FIELDS,
+    tableRowDetail: TABLE_ROW_DETAIL_FIELDS,
     sortEntry: SORT_ENTRY_FIELDS,
     resourceDefinition: RESOURCE_DEF_FIELDS,
     resourceField: RESOURCE_FIELD_FIELDS,
@@ -2940,6 +2948,9 @@ function resolveSurfaceLater(
             `${path}.viewId`,
           );
         }
+        if (surface.role === 'view') {
+          collectRowDetailIssues(collector, maps, surface, path);
+        }
         collectConditionIssues(collector, surface, path, maps);
         break;
       }
@@ -3104,6 +3115,9 @@ function resolveSurfaceLater(
             `${path}.viewId`,
           );
         }
+        // Declared row→detail navigation binding (FT-1): references a
+        // DECLARED route whose path parameters resolve from bound row fields.
+        collectRowDetailIssues(collector, maps, surface, path);
         if (
           surface.pageSize !== undefined &&
           (typeof surface.pageSize !== 'number' ||
@@ -3731,6 +3745,104 @@ function collectViewFieldIssues(
       );
     }
   }
+}
+
+/**
+ * Closed @2 cross-reference validation for the declared row→detail
+ * navigation binding (FT-1). Bounded shape: `{ routeId, label?, param? }`
+ * where `routeId` is a DECLARED route, `param` is a closed mapping from
+ * DECLARED route path parameters to bound-view field sources, and `label`
+ * is an optional non-empty string. No free-form payload is accepted.
+ */
+function collectRowDetailIssues(
+  collector: Collector,
+  maps: {
+    readonly viewsById: ReadonlyMap<string, ViewBinding>;
+    readonly routeIds: ReadonlySet<string>;
+    readonly routeParams: ReadonlySet<string>;
+    readonly resources: ReadonlyMap<string, ResourceDefinition>;
+  },
+  surface: { readonly id: string; readonly viewId: string; readonly rowDetail?: unknown },
+  path: string,
+): void {
+  const binding = surface.rowDetail;
+  if (binding === undefined) {
+    return; // no navigation binding declared: rows render no link (FT-1 negative)
+  }
+  const bindingPath = `${path}.rowDetail`;
+  if (!isPlainObject(binding)) {
+    collector.add(
+      'INVALID_SURFACE_DECLARATION',
+      `Surface '${surface.id}' rowDetail must be a plain object (received ${describeReceivedType(binding)}).`,
+      bindingPath,
+    );
+    return;
+  }
+  collector.unknownFields(binding, TABLE_ROW_DETAIL_FIELDS, bindingPath);
+  const bindingObject = binding as {
+    routeId?: unknown;
+    label?: unknown;
+    param?: unknown;
+  };
+  if (typeof bindingObject.routeId !== 'string' || bindingObject.routeId.length === 0) {
+    collector.add(
+      'INVALID_SURFACE_DECLARATION',
+      `Surface '${surface.id}' rowDetail.routeId must be a non-empty string.`,
+      `${bindingPath}.routeId`,
+    );
+  } else if (!maps.routeIds.has(bindingObject.routeId)) {
+    collector.add(
+      'UNKNOWN_ROUTE_REFERENCE',
+      `Surface '${surface.id}' rowDetail references unknown route '${bindingObject.routeId}'.`,
+      `${bindingPath}.routeId`,
+    );
+  } else if (isPlainObject(bindingObject.param)) {
+    for (const name of Object.keys(bindingObject.param)) {
+      if (!maps.routeParams.has(name)) {
+        collector.add(
+          'INVALID_SURFACE_DECLARATION',
+          `Surface '${surface.id}' rowDetail param '${name}' is not a declared route path parameter.`,
+          `${bindingPath}.param.${name}`,
+        );
+      }
+    }
+  }
+  if (
+    bindingObject.label !== undefined &&
+    (typeof bindingObject.label !== 'string' || bindingObject.label.trim().length === 0)
+  ) {
+    collector.add(
+      'INVALID_SURFACE_DECLARATION',
+      `Surface '${surface.id}' rowDetail.label must be a non-empty string when present.`,
+      `${bindingPath}.label`,
+    );
+  }
+  if (bindingObject.param === undefined) {
+    return; // default `{ id: 'id' }` applies at the renderer
+  }
+  if (!isPlainObject(bindingObject.param)) {
+    collector.add(
+      'INVALID_SURFACE_DECLARATION',
+      `Surface '${surface.id}' rowDetail.param must be a plain object (received ${describeReceivedType(bindingObject.param)}).`,
+      `${bindingPath}.param`,
+    );
+    return;
+  }
+  collector.unknownFields(
+    bindingObject.param,
+    new Set(Object.keys(bindingObject.param)),
+    `${bindingPath}.param`,
+  );
+  collectViewFieldIssues(
+    collector,
+    maps,
+    surface.id,
+    surface.viewId,
+    Object.entries(bindingObject.param).map(
+      ([name, rowField]) => [`rowDetail.param.${name}`, rowField] as const,
+    ),
+    path,
+  );
 }
 
 /**
