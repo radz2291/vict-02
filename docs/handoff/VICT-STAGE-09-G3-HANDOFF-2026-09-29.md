@@ -133,7 +133,7 @@ for Quellight's declared read-only same-turn inspection surface on
    server-held identity executes each read is specified and provable):**
    the target entry carries TWO distinct server-held credentials: the
    OPERATOR credential (executes BOTH proof reads) and a distinct
-   AGENT-CONTEXT credential (used ONLY for used ONLY for the refusal demonstration in the
+   AGENT-CONTEXT credential (used ONLY for the refusal demonstration in the
    required-demonstrations list below). For each credential the transport records the target's own
    `actor.whoami` answer (`actorId`/`roles`/`scopes`) as evidence —
    distinct identities are demonstrated by the whoami DIFF, not assumed.
