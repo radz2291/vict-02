@@ -454,12 +454,23 @@ export const studioApplication = defineApplication({
               role: 'view',
               id: 'vw.runs',
               viewId: 'v.runs',
+              // FT-1 (G3-A): definition-declared row→detail navigation.
+              // Each run-list row resolves a REAL link to the run-detail
+              // route, substituting `runId` from the row's own runId field.
+              // The route itself is WP-G3-B's; the binding is the platform
+              // mechanism's Studio consumption (navigation-only: no data
+              // surface, command, or scope change).
+              rowDetail: {
+                routeId: 'run-detail',
+                label: 'Open run',
+                param: { runId: 'runId' },
+              },
             },
             {
               role: 'text',
               id: 't.runs-ft1',
               content:
-                'Open a run by entering its id at /runs/<runId> — row navigation is a separately gated platform improvement (FT-1).',
+                'Open a run from its row link — drill-down is the definition-declared row→detail binding to /runs/<runId> (FT-1, G3-A).',
               level: 3,
             },
           ],

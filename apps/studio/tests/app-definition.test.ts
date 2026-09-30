@@ -2,6 +2,11 @@ import { describe, expect, it } from 'vitest';
 import { compileStudioPlan, studioApplication } from '$lib/application/index.js';
 import { STUDIO_RESOURCES } from '$lib/shared/contract.js';
 
+/** Read the declared FT-1 row→detail binding off a surface (if any). */
+function runDetailBinding(surface: Record<string, unknown> | undefined): unknown {
+  return surface?.rowDetail;
+}
+
 /**
  * App-definition invariants for the G1 Studio read-only operator surface.
  * These guard the agreed interface: exact route set, EMPTY mutations on
@@ -87,6 +92,38 @@ describe('studio application definition', () => {
     const paramNames = [...runDetail!.route.path.matchAll(/:([A-Za-z]+)/g)].map((m) => m[1]);
     expect(paramNames).toEqual(['runId']);
     expect(plan.resources.runs.identity.key).toBe('runId');
+  });
+
+  it('declares the FT-1 row→detail navigation binding on the run-list surface', () => {
+    const plan = compileStudioPlan();
+    const screen = plan.screens['s.runs'];
+    expect(screen).toBeDefined();
+    const surfaces: Array<Record<string, unknown>> = [];
+    for (const region of screen.layout) {
+      surfaces.push(...(region.surfaces as Array<Record<string, unknown>>));
+    }
+    const runList = surfaces.find((surface) => surface.id === 'vw.runs');
+    expect(runDetailBinding(runList)).toEqual({
+      routeId: 'run-detail',
+      label: 'Open run',
+      param: { runId: 'runId' },
+    });
+    // The binding targets the declared run-detail route and maps its single
+    // path parameter from the row identity field.
+    const route = plan.routes.find((entry) => entry.route.id === 'run-detail');
+    expect(route?.route.path).toBe('/runs/:runId');
+    // No other view/table surface declares a rowDetail binding (navigation-
+    // only scope: the binding appears exactly once, on the run list).
+    const bound: Record<string, unknown>[] = [];
+    for (const [, candidate] of Object.entries(plan.screens)) {
+      const layout = (candidate as { layout: Array<{ surfaces: Array<Record<string, unknown>> }> })
+        .layout;
+      for (const region of layout) {
+        bound.push(...region.surfaces.filter((surface) => runDetailBinding(surface) !== undefined));
+      }
+    }
+    expect(bound).toHaveLength(1);
+    expect((bound[0] as Record<string, unknown>).id).toBe('vw.runs');
   });
 
   it('binds the named component on the definition identity', () => {

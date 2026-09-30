@@ -156,7 +156,7 @@ describe('studio UI rendering (G1 read-only)', () => {
     expect(connected.textContent).toContain('operator-7');
   });
 
-  it('renders the runs list with NO anchors/clickable rows and the truthful FT-1 note', () => {
+  it('renders the runs list with a GENUINE FT-1 row link to the run-detail route', () => {
     const target = mountHost('/runs', {
       'v.runs': {
         rows: [
@@ -171,16 +171,36 @@ describe('studio UI rendering (G1 read-only)', () => {
       },
     });
     const html = target.innerHTML;
-    // FT-1 guard: no navigation surface attached to the data itself. Shell
-    // nav links (aria-label="Application") are the generic host's own and
-    // are not row navigation.
-    expect(target.querySelectorAll('[data-surface] a[href]')).toHaveLength(0);
-    expect(target.querySelectorAll('tr a[href]')).toHaveLength(0);
-    expect(html).not.toContain('/runs/run-1');
+    // FT-1 (G3-A): the definition declares the row→detail binding, so each
+    // row renders ONE genuine navigation link (anchor href) to the run
+    // detail route, resolved from the row's own identity field. Shell nav
+    // links (aria-label="Application") are the generic host's own and are
+    // not row navigation.
+    const rowLinks = target.querySelectorAll('[data-surface] tr a[href]');
+    expect(rowLinks).toHaveLength(1);
+    expect(rowLinks[0]!.getAttribute('href')).toBe('/runs/run-1');
+    expect(rowLinks[0]!.getAttribute('aria-label')).toContain('run-1');
+    expect(rowLinks[0]!.textContent?.trim()).toBe('Open run');
     // Truthful FT-1 text is present (HTML-escaped in innerHTML; read text).
     const text = target.textContent ?? '';
-    expect(text).toContain('Open a run by entering its id at /runs/<runId>');
-    expect(text).toContain('row navigation is a separately gated platform improvement (FT-1)');
+    expect(text).toContain('Open a run from its row link');
+  });
+
+  it('renders surfaces WITHOUT a rowDetail binding with no links (FT-1 negative)', () => {
+    const target = mountHost('/activations', {
+      'v.activations': {
+        rows: [
+          {
+            activationId: 'act-1',
+            graphId: 'graph.demo',
+            status: 'active',
+            createdAt: '2026-09-29T00:00:00Z',
+          },
+        ],
+        loading: false,
+      },
+    });
+    expect(target.querySelectorAll('[data-surface] tr a[href]')).toHaveLength(0);
   });
 
   it('renders the run detail surfaces with truthful empty states', () => {
