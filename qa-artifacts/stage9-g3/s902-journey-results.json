@@ -1,0 +1,133 @@
+{
+  "results": [
+    {
+      "name": "studio login session established",
+      "ok": true,
+      "detail": "http://127.0.0.1:5177/"
+    },
+    {
+      "name": "run list renders genuine Open run row links (FT-1)",
+      "ok": true,
+      "detail": "[{\"href\":\"/runs/run-demo-completed\",\"text\":\"Open run\"},{\"href\":\"/runs/run-demo-failed\",\"text\":\"Open run\"},{\"href\":\"/runs/run-demo-blocked\",\"text\":\"Open run\"}]"
+    },
+    {
+      "name": "a row link navigates to the run-detail route",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "generic detail defaults REDACTED (canary absent before reveal)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "detail page shows the run id",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "ordered events rendered verbatim (identity columns)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "durable waits rendered verbatim",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "bounded options explanation rendered (no actions dispatched here)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "protected reveal answered truthfully on the blocked run (no execution-store output exists: \"(not reported)\" — never synthesized)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "per-access audit row run.detail.accessed visible",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "per-access audit row names the actor",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "completed run default view stays REDACTED (output canary absent)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "protected bytes revealed verbatim (full-retention output)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "canary cross-check: blocked-run canary text is never part of another run detail",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "summary-retention run truthfully reports no protected bytes",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "missing run renders the truthfully refused run read banner",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "empty-variant studio login established",
+      "ok": true,
+      "detail": "http://127.0.0.1:5178/"
+    },
+    {
+      "name": "empty run list renders the truthful empty state",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "actor denial: target refuses credential without run.read (truthful 403 refusal)",
+      "ok": true,
+      "detail": "{\"status\":403,\"body\":{\"ok\":false,\"code\":\"VICT_ACTOR_UNAUTHENTICATED\"}}"
+    },
+    {
+      "name": "pagination: >1 page of runs; hasMore and totals verbatim",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "redacted generic detail: no protected byte crosses run.get (canary absent)",
+      "ok": true,
+      "detail": ""
+    }
+  ],
+  "negatives": {
+    "actor-denial (no run.read credential)": {
+      "status": 403,
+      "code": "VICT_ACTOR_UNAUTHENTICATED",
+      "expect": "refusal, no state change"
+    },
+    "pagination": {
+      "page1": {
+        "total": 59,
+        "rows": 10,
+        "status": 200
+      },
+      "page2": {
+        "total": 59,
+        "rows": 10,
+        "hasMore": true
+      },
+      "defaultLimit": {
+        "total": 59,
+        "rows": 50,
+        "hasMore": true
+      }
+    }
+  }
+}

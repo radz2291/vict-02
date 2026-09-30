@@ -1,0 +1,24 @@
+{
+  "actor-denial (no run.read credential)": {
+    "status": 403,
+    "code": "VICT_ACTOR_UNAUTHENTICATED",
+    "expect": "refusal, no state change"
+  },
+  "pagination": {
+    "page1": {
+      "total": 59,
+      "rows": 10,
+      "status": 200
+    },
+    "page2": {
+      "total": 59,
+      "rows": 10,
+      "hasMore": true
+    },
+    "defaultLimit": {
+      "total": 59,
+      "rows": 50,
+      "hasMore": true
+    }
+  }
+}
