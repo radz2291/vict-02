@@ -3778,7 +3778,11 @@ function collectRowDetailIssues(
     );
     return;
   }
-  collector.unknownFields(binding, TABLE_ROW_DETAIL_FIELDS, bindingPath);
+  collector.unknownFields(
+    binding as Readonly<Record<string, unknown>>,
+    TABLE_ROW_DETAIL_FIELDS,
+    bindingPath,
+  );
   const bindingObject = binding as {
     routeId?: unknown;
     label?: unknown;
@@ -3796,8 +3800,9 @@ function collectRowDetailIssues(
       `Surface '${surface.id}' rowDetail references unknown route '${bindingObject.routeId}'.`,
       `${bindingPath}.routeId`,
     );
-  } else if (isPlainObject(bindingObject.param)) {
-    for (const name of Object.keys(bindingObject.param)) {
+  } else if (bindingObject.param !== undefined && isPlainObject(bindingObject.param)) {
+    const declaredParams = bindingObject.param as Readonly<Record<string, string>>;
+    for (const name of Object.keys(declaredParams)) {
       if (!maps.routeParams.has(name)) {
         collector.add(
           'INVALID_SURFACE_DECLARATION',
@@ -3829,8 +3834,8 @@ function collectRowDetailIssues(
     return;
   }
   collector.unknownFields(
-    bindingObject.param,
-    new Set(Object.keys(bindingObject.param)),
+    bindingObject.param as Readonly<Record<string, string>>,
+    new Set(Object.keys(bindingObject.param as Readonly<Record<string, string>>)),
     `${bindingPath}.param`,
   );
   collectViewFieldIssues(
@@ -3838,7 +3843,7 @@ function collectRowDetailIssues(
     maps,
     surface.id,
     surface.viewId,
-    Object.entries(bindingObject.param).map(
+    Object.entries(bindingObject.param as Readonly<Record<string, string>>).map(
       ([name, rowField]) => [`rowDetail.param.${name}`, rowField] as const,
     ),
     path,

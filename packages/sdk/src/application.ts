@@ -437,6 +437,22 @@ export interface TableRowAction {
 }
 
 /**
+ * Declared row→detail navigation binding (FT-1, @2). Presentation only:
+ * the declared `routeId` resolves through the renderer's route table and
+ * each row renders a REAL link affordance (anchor href) whose route path
+ * parameters substitute from the mapped row fields (`param`, defaulted to
+ * `{ id: 'id' }`); `label` names the affordance and the row link. A row
+ * whose binding parameters are not resolvable renders no link — and a
+ * surface without `rowDetail` renders no link at all. No data surface,
+ * command, read scope, or executable payload is part of this declaration.
+ */
+export interface TableRowDetail {
+  readonly routeId: string;
+  readonly label?: string;
+  readonly param?: Readonly<Record<string, string>>;
+}
+
+/**
  * Neutral surface: meaning and composition, never framework component types.
  * The Stage 04 variants are unchanged; Stage 05 adds the delivery roles.
  * Every surface accepts the optional `visibleWhen` condition (Stage 05,
@@ -455,6 +471,8 @@ export type Surface =
       readonly role: 'view';
       readonly id: string;
       readonly viewId: string;
+      /** Declared row→detail navigation binding (FT-1, @2 only). */
+      readonly rowDetail?: TableRowDetail;
       readonly visibleWhen?: SurfaceCondition;
     }
   | {
@@ -522,6 +540,8 @@ export type Surface =
       readonly queryActionId?: string;
       /** Declared per-row action (@2) dispatched with row-derived input. */
       readonly rowAction?: TableRowAction;
+      /** Declared row→detail navigation binding (FT-1, @2 only). */
+      readonly rowDetail?: TableRowDetail;
       /** Fields searched by the table's search control (subset of view fields). */
       readonly searchFields?: readonly string[];
       /** Fields offered as exact-match filter controls (subset of view fields). */
