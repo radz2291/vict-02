@@ -92,19 +92,37 @@ for Quellight's declared read-only same-turn inspection surface on
    (D-3: existing declared query action/resource —
    `act.queryInspection`/`qlt.inspection`).
 
-   **Identity-pin oracle (repair of contract-review M-1 — the pin is
-   verified against a TARGET-DERIVED surface, never the registry's own
-   claim):** on connection the transport calls the target's own
-   `compatibility.inspect` and `health.inspect` (both present on the
-   0.3.1 server under the versioned HTTP surface) and requires the
-   returned `commandSchema` to match the pinned 0.3.1 declaration
-   EXACTLY: it must contain `agent.turn.get` and `app.data.query`, and
-   it must NOT contain the G1 operator reads
-   (`run.get`/`run.list`/`run.detail`/`run.events`/`run.waits`). Any
-   mismatch — including a NEWER target that would silently add those
-   reads — FAILS CLOSED. Registry self-echo alone is never sufficient
-   evidence. Falsifier: pointing the transport at the demo target (a
-   different surface) must refuse with a truthful version error.
+   **Identity-pin oracle (re-repair of contract-review B-1; supersedes
+   the M-1 repair text):** the inspect surfaces cannot serve as a
+   command-list oracle — the 0.3.1 `compatibility.inspect`/
+   `health.inspect` answers carry `commandSchema: 'vict.command@1'` (an
+   opaque envelope marker, version-invariant across 0.3.1 and
+   0.4.0-rc.1), and the contract PROHIBITS pretending otherwise. The
+   pin is therefore verified by a BEHAVIORAL ORACLE plus recorded
+   PROVENANCE, each element required:
+   (i) POSITIVE BEHAVIORAL: the target executes `agent.turn.get` and
+   the `app.data.query` read of `qlt.inspection` (both succeed).
+   (ii) NEGATIVE BEHAVIORAL (the anti-newer prong): the transport
+   probes ONE G1 operator read (`run.get` against any bounded id) and
+   requires a REFUSAL (unknown-command/unsupported outcome). On a
+   greenfield target that read would SUCCEED — any success of the
+   probe FAILS CLOSED the connection with a truthful version error.
+   (iii) INSPECT ANSWER-RECORD EQUALITY: the full
+   `compatibility.inspect` + `health.inspect` answers are recorded
+   verbatim at journey time and must equal the pinned expected record
+   (stream/changeset/turn schema ids, commandSchema marker, healthy,
+   turnExecutorComposed); any deviation fails closed. The contract
+   HONESTLY records that (iii) alone cannot distinguish 0.3.1 from a
+   newer set — that distinction is carried by (ii) and (iv).
+   (iv) PROVENANCE: the fixture records the exact Quellight git ref it
+   started and that ref's own declared release identity from the
+   Quellight tree (its release-set identity and `@victframework/*@0.3.1`
+   pins) — provenance evidence, labeled as such, never claimed to be a
+   runtime oracle. Registry self-echo alone is never sufficient
+   evidence. Falsifiers (both retained): pointing the transport at the
+   demo target (a newer-schemad surface) must refuse via probe (ii);
+   tampering any recorded oracle answer must fail the journey evidence
+   check.
 2. The transport issues exactly two declared reads for the proof —
    `agent.turn.get` and the `qlt.inspection` `getTurn` query via the
    target's own `app.data.query` — through the target's own
@@ -115,8 +133,8 @@ for Quellight's declared read-only same-turn inspection surface on
    server-held identity executes each read is specified and provable):**
    the target entry carries TWO distinct server-held credentials: the
    OPERATOR credential (executes BOTH proof reads) and a distinct
-   AGENT-CONTEXT credential (used ONLY for the refusal demonstration in
-   item 8). For each credential the transport records the target's own
+   AGENT-CONTEXT credential (used ONLY for used ONLY for the refusal demonstration in the
+   required-demonstrations list below). For each credential the transport records the target's own
    `actor.whoami` answer (`actorId`/`roles`/`scopes`) as evidence —
    distinct identities are demonstrated by the whoami DIFF, not assumed.
    If the target resolves both credentials to the same actor (the
@@ -218,7 +236,11 @@ negatives; (h) screenshots at the candidate.
 
 **G3-C:** (a) version-aware transport with fail-closed identity pin;
 (b) same-turn browser pairing (agent.turn.get + qlt.inspection getTurn
-aligned on one turn); (c) operator allow; (d) agent-identity refusal
+aligned on one turn — the alignment oracle is the target's OWN
+correlation identity: the turnId must appear in BOTH answers and be
+rendered in the panel; if the inspection projection carries no turn
+correlation field, the criterion is truthfully NOT DEMONSTRATED and
+reported, never approximated); (c) operator allow; (d) agent-identity refusal
 preserved; (e) underprivileged denial via Quellight's own authorization
 (or the recorded OD-R4 increment path); (f) safe projections only — no
 invented data (falsifier: mutated/absent reads must render truthful

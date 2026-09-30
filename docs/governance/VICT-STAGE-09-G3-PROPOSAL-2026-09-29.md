@@ -1,5 +1,3 @@
-# VICT Stage 09 — G3 Decision-Ready Proposal (PROPOSED, 2026-09-29 — no implementation authorized)
-
 # VICT Stage 09 — G3 Decision-Ready Proposal (AMENDED by owner decision 2026-09-29; contract-freeze pending)
 
 > **STATUS (as amended).** The owner RECORDED the G3 decisions on
