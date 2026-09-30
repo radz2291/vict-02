@@ -584,3 +584,57 @@ export function resolveComponentActionInput(
   }
   return { ...declared, ...(explicit as Record<string, unknown>) };
 }
+
+/**
+ * FT-1: resolve ONE row's declared row→detail navigation binding to a REAL
+ * navigation target. The binding's routeId is resolved through the plan's
+ * route table; `:name` path segments are substituted from the mapped row
+ * fields (URL-encoded). The link resolves ONLY when the route is declared
+ * AND every mapped parameter has a row value — otherwise the row renders
+ * no link at all (an unresolved target is never rendered as a broken href).
+ */
+export function resolveRowDetailLink(
+  rowDetail: import('@victframework/ui').UiRowDetail | undefined,
+  routes: readonly PlanRouteEntry[],
+  row: Readonly<Record<string, unknown>>,
+): { readonly href: string; readonly label: string } | undefined {
+  if (rowDetail === undefined) return undefined;
+  const entry = routes.find((candidate) => candidate.route.id === rowDetail.routeId);
+  const declaredPath = entry?.route.path;
+  if (typeof declaredPath !== 'string') return undefined;
+  const params: Record<string, string | number> = {};
+  const identity: string[] = [];
+  for (const [routeParam, rowField] of Object.entries(rowDetail.param)) {
+    const value = row[rowField];
+    if (typeof value !== 'string' && typeof value !== 'number') return undefined;
+    params[routeParam] = value;
+    identity.push(String(value));
+  }
+  // URL-encode ONLY the substituted parameter segments; declared static
+  // route segments pass through verbatim. Any still-unresolved `:name`
+  // segment means the row has no complete target: no link at all.
+  const declaredSegments = declaredPath.split('/');
+  let unresolved = false;
+  const href = substitutePathParams(declaredPath, params)
+    .split('/')
+    .map((segment, index) => {
+      const declaredSegment = declaredSegments[index] ?? segment;
+      if (declaredSegment.startsWith(':') && declaredSegment.length > 1) {
+        if (segment.startsWith(':')) unresolved = true;
+        else {
+          try {
+            return encodeURIComponent(segment);
+          } catch {
+            return segment;
+          }
+        }
+      }
+      return segment;
+    })
+    .join('/');
+  if (unresolved || href.split('/').some((segment) => segment.startsWith(':'))) {
+    return undefined;
+  }
+  const identityLabel = identity.filter(Boolean).join(' ').trim();
+  return { href, label: identityLabel.length > 0 ? `${rowDetail.label}: ${identityLabel}` : rowDetail.label };
+}

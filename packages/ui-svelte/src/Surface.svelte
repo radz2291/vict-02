@@ -18,7 +18,7 @@
   import StatusBadge from './StatusBadge.svelte';
   import Tabs from './Tabs.svelte';
   import Text from './Text.svelte';
-  import { isVisible, isDisabled, headingTagForLevel, resolveComponentProps, resolveComponentActionInput, type ViewDatum, type ActionResult } from './logic.js';
+  import { isVisible, isDisabled, headingTagForLevel, resolveComponentProps, resolveComponentActionInput, resolveRowDetailLink, type ViewDatum, type ActionResult } from './logic.js';
   import { chartPoints, conversationMessages, detailFields, displayRows, listItems } from './presentation.js';
   import TableAdapter from './TableAdapter.svelte';
   import FormSurface from './FormSurface.svelte';
@@ -43,6 +43,8 @@
       text: string,
       boundInput?: Record<string, unknown>,
     ) => Promise<ActionResult>;
+    /** Host navigation (FT-1): SPA click interception for row-detail links. */
+    navigate?: (path: string) => void;
   }
 
   let {
@@ -57,6 +59,7 @@
     run,
     dispatch,
     sendConversation,
+    navigate,
   }: Props = $props();
 
   const visible = $derived(isVisible(surface, context));
@@ -136,7 +139,14 @@
       <Text surfaceId={sn.id} content={String(sn.content)} tag={headingTagForLevel(sn.level) ?? 'p'} />
     {:else if sn.role === 'view'}
       {@const fields = viewFieldNames(sn.viewId)}
-      <DataView surfaceId={sn.id} columns={fields} rows={displayRows(viewRows(sn.viewId), fields)} />
+      {@const viewIntent = uiPlan.views?.[sn.id] as import('@victframework/ui').UiViewIntent | undefined}
+      {@const viewBinding = viewIntent?.rowDetail}
+      <DataView surfaceId={sn.id} columns={fields} rows={displayRows(viewRows(sn.viewId), fields)}
+        emptyMessage={str(sn.emptyMessage) || 'Nothing here yet.'}
+        rowLink={viewBinding === undefined ? undefined : (row) => resolveRowDetailLink(viewBinding, plan.routes, row)}
+        rowLinkHeading={viewBinding?.label}
+        viewRows={viewRows(sn.viewId)}
+        {navigate} />
     {:else if sn.role === 'list'}
       <List surfaceId={sn.id} items={listItems(viewRows(sn.viewId), str(sn.titleField),
         typeof sn.secondaryField === 'string' ? sn.secondaryField : undefined)}
@@ -146,9 +156,11 @@
         surface={sn}
         intent={uiPlan.tables[sn.id]!}
         initialRows={viewRows(sn.viewId)}
+        planRoutes={plan.routes}
         {dispatch}
         {registry}
         {run}
+        {navigate}
       />
     {:else if sn.role === 'count'}
       <Count

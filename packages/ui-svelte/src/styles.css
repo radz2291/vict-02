@@ -614,6 +614,37 @@ h3.vict-text {
   font-weight: 550;
   cursor: pointer;
 }
+/* FT-1: the declared row→detail navigation link (real anchor affordance). */
+.vict-ui-table__row-link {
+  color: var(--vict-color-accent, inherit);
+  font: inherit;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.vict-ui-table__row-link:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+.vict-ui-table__row-link-heading,
+.vict-ui-table__row-link-cell {
+  white-space: nowrap;
+}
+.vict-data-view__row-link {
+  color: var(--vict-color-accent, inherit);
+  font: inherit;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.vict-data-view__row-link:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+.vict-data-view__row-link-heading,
+.vict-data-view__row-link-cell {
+  white-space: nowrap;
+}
 .vict-count {
   display: flex;
   align-items: baseline;

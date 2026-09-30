@@ -15,6 +15,10 @@
     onSort: (field: string) => void | Promise<void>;
     onPage: (page: number) => void | Promise<void>;
     onRowAction?: (row: Readonly<Record<string, unknown>>) => void | Promise<void>;
+    /** FT-1: resolve one row's navigation target; undefined ⇒ no link cell content. */
+    rowLink?: (row: Readonly<Record<string, unknown>>) => { href: string; label: string } | undefined;
+    /** Host navigation (FT-1): SPA click interception; absent ⇒ native anchor href. */
+    navigate?: (path: string) => void;
   }
   let {
     intent,
@@ -26,6 +30,8 @@
     onSort,
     onPage,
     onRowAction,
+    rowLink,
+    navigate,
   }: Props = $props();
   let compact = $state(false);
 
@@ -58,6 +64,21 @@
       props[name] = row[rowField] ?? '';
     }
     return props as Record<string, never>;
+  }
+
+  /**
+   * FT-1: click interception turns the real anchor into SPA navigation when
+   * the host provides `navigate`; keyboard (Enter) and open-in-new-tab
+   * follow the anchor itself, and without a host every path follows the
+   * genuine href — the affordance is always real navigation.
+   */
+  function onRowLinkClick(event: MouseEvent, href: string): void {
+    if (event.defaultPrevented || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) {
+      return; // modified clicks and opened menus keep the native behavior
+    }
+    if (navigate === undefined) return;
+    event.preventDefault();
+    navigate(href);
   }
 </script>
 
@@ -128,6 +149,9 @@
             {#if intent.rowAction !== undefined}
               <th scope="col" class="vict-ui-table__actions-heading">{intent.rowAction.label}</th>
             {/if}
+            {#if intent.rowDetail !== undefined}
+              <th scope="col" class="vict-ui-table__row-link-heading">{intent.rowDetail.label}</th>
+            {/if}
           </tr>
         </thead>
         <tbody>
@@ -153,6 +177,20 @@
                     data-testid="table-row-action"
                     onclick={() => void onRowAction?.(row)}
                   >{intent.rowAction.label}</button>
+                </td>
+              {/if}
+              {#if intent.rowDetail !== undefined && rowLink !== undefined}
+                {@const link = rowLink(row)}
+                <td class="vict-ui-table__row-link-cell">
+                  {#if link !== undefined}
+                    <a
+                      href={link.href}
+                      class="vict-ui-table__row-link"
+                      data-testid="table-row-link"
+                      aria-label={link.label}
+                      onclick={(event) => onRowLinkClick(event, link.href)}
+                    >{intent.rowDetail.label}</a>
+                  {/if}
                 </td>
               {/if}
             </tr>

@@ -3,7 +3,7 @@
   import type { ComponentRegistry } from '@victframework/application/renderer';
   import type { UiTableIntent, UiTableState } from '@victframework/ui';
   import RecordsTable from './RecordsTable.svelte';
-  import { deriveRowActionInput, type ActionResult, type PlanSurface } from './logic.js';
+  import { deriveRowActionInput, resolveRowDetailLink, type ActionResult, type PlanRouteEntry, type PlanSurface } from './logic.js';
 
   interface Props {
     surface: PlanSurface;
@@ -13,8 +13,12 @@
     registry?: ComponentRegistry;
     /** Renderer action path (local/navigation stay client-side). */
     run?: (actionId: string, input?: unknown) => Promise<ActionResult | void>;
+    /** The plan's route table (FT-1 route resolution stays with the host plan). */
+    planRoutes?: readonly PlanRouteEntry[];
+    /** Host navigation (FT-1): SPA interception for row-detail links. */
+    navigate?: (path: string) => void;
   }
-  let { surface, intent, initialRows, dispatch, registry, run }: Props = $props();
+  let { surface, intent, initialRows, dispatch, registry, run, planRoutes, navigate }: Props = $props();
 
   interface QueryPayload {
     filters?: Record<string, string>;
@@ -179,6 +183,11 @@
     }
     await dispatch(actionId, input);
   }
+  /** FT-1: resolve one row's declared navigation binding to its real href. */
+  function rowLink(row: Readonly<Record<string, unknown>>): { href: string; label: string } | undefined {
+    if (intent.rowDetail === undefined || planRoutes === undefined) return undefined;
+    return resolveRowDetailLink(intent.rowDetail, planRoutes, row);
+  }
 </script>
 
-<RecordsTable {intent} {rows} state={tableState} {registry} {onSearch} {onFilter} {onSort} {onPage} {onRowAction} />
+<RecordsTable {intent} {rows} state={tableState} {registry} {rowLink} {navigate} {onSearch} {onFilter} {onSort} {onPage} {onRowAction} />

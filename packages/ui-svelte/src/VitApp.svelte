@@ -323,6 +323,7 @@
               run={runAction}
               {dispatch}
               {sendConversation}
+              {navigate}
             />
           {/each}
         </section>

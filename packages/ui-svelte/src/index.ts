@@ -35,6 +35,7 @@ export {
   matchPath,
   substitutePathParams,
   deriveRowActionInput,
+  resolveRowDetailLink,
   collectSurfaces,
   declaredSurfaceViewIds,
   isComponentSource,
