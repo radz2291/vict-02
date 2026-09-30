@@ -1,6 +1,84 @@
 # VICT Stage 09 — G3 Decision-Ready Proposal (PROPOSED, 2026-09-29 — no implementation authorized)
 
-> **STATUS.** This is a decision-ready PROPOSAL for the owner's G3 planning
+# VICT Stage 09 — G3 Decision-Ready Proposal (AMENDED by owner decision 2026-09-29; contract-freeze pending)
+
+> **STATUS (as amended).** The owner RECORDED the G3 decisions on
+> 2026-09-29 (§0 below) and directed this proposal to be amended, an
+> independent reviewer challenge to be run against the amended FINAL
+> CONTRACT BYTES, and — after documentation findings are repaired and
+> re-reviewed — the G3 entry contract FROZEN. Implementation begins only
+> after the freeze. Nothing here authorizes publication, product
+> activation, or any edit to the unfinished greenfield Quellight project.
+> The G0–G2 frozen records and the original G3 review lineage are
+> preserved; superseded text below is marked, not deleted.
+
+## 0. Owner decision record (2026-09-29, recorded verbatim in relevant part)
+
+The owner changed the Stage 9 G3 product-test decision: use the
+**existing, Stage 07-closed Quellight on VICT 0.3.1** as Studio's real
+product test now; the unfinished greenfield Quellight project is **out of
+this execution**. Studio must be designed so the greenfield product can be
+tested later through the same product-facing interface, but that later
+pairing must NOT be claimed as verified.
+
+- **OD-R1:** the proposal's "greenfield adoption first" recommendation is
+  REPLACED by an existing-Quellight-first proof. A **narrow, explicit,
+  version-aware Studio transport** is permitted for the declared,
+  read-only same-turn inspection surface on Quellight 0.3.1. The Studio
+  product-view interface stays reusable; no Quellight-specific UI
+  behavior; no silent claim that 0.3.1 supports the newer G1 `run.*`
+  operator reads.
+- **OD-R2:** no Quellight 0.4 prerelease adoption or stable repin is
+  required for this G3 proof. The greenfield pairing is recorded as a
+  LATER, separately verified task. No publication is authorized.
+- **OD-R3:** FT-1 belongs inside G3 as separately gated **G3-A**; its
+  navigation proof must precede the S9-02 G3-B drill-down claim.
+- **OD-R4:** the Quellight test stays the SMALLEST same-turn inspection
+  proof, preferring existing governed surfaces WITHOUT changing that
+  repo. If a second actor, actor-derived grant, or endpoint change is
+  NECESSARY, define and execute a **separately governed, minimal
+  increment in the existing Quellight repo** with its own entry contract
+  and independent verification. Do not touch the unfinished greenfield
+  project; do not fold unrelated low findings into this increment.
+- **OD-R5:** a publication-planning annex is allowed; package publication
+  remains a separate owner decision.
+- **OD-R6:** frozen entry contract, integrated candidate, fresh
+  independent verifier, bounded repair and re-verification **for each G3
+  gate**, then a separate Stage 9 exit audit.
+
+## 0.1 What the 0.3.1 pairing can prove — and what stays unproven
+
+**PROVABLE on the existing Quellight `main` `5f709a5` (Stage 07 closed,
+`@victframework/*@0.3.1`), read-only, no Quellight edit:** the D-8
+same-turn pairing exactly as the frozen architecture words it — one real
+read-only pairing for the same turn: `agent.turn.get` plus Quellight's
+`qlt.inspection` `getTurn` via `app.data.query`; only declared, safe
+diagnostic projections rendered; operator allow; **preservation of the
+agent-identity refusal**; no write authority anywhere; evidence of the
+actual target and version used (the transport's explicit version pin);
+truthful behavior when newer operator features (the G1 `run.*` reads) are
+unavailable on the old target; direct-API negatives; target isolation; and
+Studio's server-held-credential boundary (no browser-held target
+credential). The frozen D-3 record ("Quellight's existing declared query
+action/resource with an explicit pilot binding; no general discovery
+claim") is the governing precedent this decision returns to.
+
+**CONDITIONAL (only if the existing tree cannot demonstrate it):**
+underprivileged denial needs an actor WITHOUT the inspection permission;
+the existing tree has a single local actor whose inspection grant is
+hard-coded. If no existing governed surface can demonstrate denial, the
+OD-R4 minimal Quellight increment (second actor + actor-derived grants)
+runs under its own governance BEFORE the denial criterion can be claimed.
+The G3-C gate reports which path was taken, truthfully.
+
+**UNPROVEN by this execution (recorded, not claimed):** the greenfield
+Quellight pairing (greenfield platform + G1 `run.*` operator reads native
+on the target); any claim that 0.3.1 supports newer operator features; any
+publication or registry claim; anything about the unfinished greenfield
+Quellight project. The later pairing is a separately verified task under a
+future owner decision.
+
+ This is a decision-ready PROPOSAL for the owner's G3 planning
 > decision. Nothing in it authorizes implementation, any Quellight edit,
 > package publication, or product activation. It is written under the
 > owner's explicit no-implementation instruction following the G2 closure,
@@ -138,7 +216,11 @@ own governance:
    Quellight would be a **cross-surface bridge**, and silent hand-built
    bridges are exactly what Stage 9 governance prohibits.
 
-### 3.3 Reconciliation — the surface question is the primary G3 decision
+### 3.3 Reconciliation — SUPERSEDED by the owner decision (OD-R1: existing-Quellight-first; retained for lineage)
+
+> **SUPERSEDED.** The recommendation below ("Option 2 ... recommended")
+> was replaced by the owner's OD-R1 before implementation. The text is
+> preserved unmodified as the reviewed lineage.
 
 The old pilot reference is **evidence-stale in three ways**: it predates
 Quellight's own closed Product governance (it describes Quellight as a
@@ -198,9 +280,7 @@ held Quellight claim, deferring the pairing. Cost: the owner's D-8
 selection ("the real product test that shows Studio works") is
 postponed, and the Stage 9 exit claim is materially weaker.
 
-**Recommended: Option 2**, with Option 3 as the recorded fallback if the
-Quellight increment cannot be scheduled. This recommendation is a
-recommendation; the surface decision is OD-1 and belongs to the owner.
+~~**Recommended: Option 2**~~ — **SUPERSEDED by OD-R1: Option 1 (pair the existing 0.3.1 Quellight through a narrow, explicit, version-aware transport) is the owner's decision**, with the OD-R4 conditional minimal Quellight increment reserved for the denial criterion and Option 3's held-fallback remaining frozen text. The original recommendation is preserved above as reviewed lineage.
 
 ## 4. Proposed G3 gate structure (for the owner's planning decision)
 
