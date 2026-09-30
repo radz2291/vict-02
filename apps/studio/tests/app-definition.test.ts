@@ -100,7 +100,7 @@ describe('studio application definition', () => {
     expect(screen).toBeDefined();
     const surfaces: Array<Record<string, unknown>> = [];
     for (const region of screen.layout) {
-      surfaces.push(...(region.surfaces as Array<Record<string, unknown>>));
+      surfaces.push(...(region.surfaces as unknown as Array<Record<string, unknown>>));
     }
     const runList = surfaces.find((surface) => surface.id === 'vw.runs');
     expect(runDetailBinding(runList)).toEqual({
@@ -116,7 +116,7 @@ describe('studio application definition', () => {
     // only scope: the binding appears exactly once, on the run list).
     const bound: Record<string, unknown>[] = [];
     for (const [, candidate] of Object.entries(plan.screens)) {
-      const layout = (candidate as { layout: Array<{ surfaces: Array<Record<string, unknown>> }> })
+      const layout = (candidate as unknown as { layout: Array<{ surfaces: Array<Record<string, unknown>> }> })
         .layout;
       for (const region of layout) {
         bound.push(...region.surfaces.filter((surface) => runDetailBinding(surface) !== undefined));
