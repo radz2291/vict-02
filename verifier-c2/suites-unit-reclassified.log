@@ -1,0 +1,27 @@
+
+ Test Files  5 failed | 116 passed | 1 skipped (122)
+      Tests  9 failed | 2403 passed | 2 skipped (2414)
+   Start at  14:23:22
+   Duration  297.22s (transform 75.12s, setup 0ms, import 259.69s, tests 1258.76s, environment 56ms)
+
+UNIT_EXIT=0
+
+[2m Test Files [22m [1m[32m11 passed[39m[22m[90m (11)[39m
+[2m      Tests [22m [1m[32m97 passed[39m[22m[90m (97)[39m
+[2m   Start at [22m 14:28:26
+[2m   Duration [22m 28.86s[2m (transform 17.60s, setup 0ms, collect 28.62s, tests 1.54s, environment 10.55s, prepare 6.94s)[22m
+
+STUDIO_EXIT=0
+> tsc -p tsconfig.json --noEmit
+
+CHECK_EXIT=0
+> eslint .
+
+LINT_EXIT=0
+Checking formatting...
+All matched files use Prettier code style!
+FORMAT_EXIT=0
+classification counts: {"pre-existing":20,"legacy-mutation":4,"stage9-g1-read":11,"shared":1,"g2":6}
+
+INVENTORY OK — G1 reads on all three surfaces UNAMENDED; G2 confirmation surface accounted.
+INVENTORY_EXIT=0

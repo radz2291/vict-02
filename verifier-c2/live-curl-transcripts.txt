@@ -1,0 +1,23 @@
+=== LIVE curl transcripts — G3-C re-verification (direct Quellight boundary http://127.0.0.1:64829, PID-verified owner of the app origin 127.0.0.1:6059; tokens REDACTED as <OP-TOKEN-REDACTED>/<AGENT-TOKEN-REDACTED>) ===
+--- (1) GET /vict/v1/health (operator) ---
+{"ok":true,"data":{"healthy":true,"commandSchema":"vict.command@1","streamSchema":"vict.agent-stream@1"}}
+--- (2) GET /vict/v1/health (agent-context) ---
+{"ok":true,"data":{"healthy":true,"commandSchema":"vict.command@1","streamSchema":"vict.agent-stream@1"}}
+--- (3) GET /vict/v1/compatibility (operator) ---
+{"ok":true,"data":{"commandSchema":"vict.command@1","streamSchema":"vict.agent-stream@1","changesetSchema":"vict.changeset@1","turnSchema":"vict.agent-turn@1"}}
+--- (4) GET /vict/v1/compatibility (agent-context) ---
+{"ok":true,"data":{"commandSchema":"vict.command@1","streamSchema":"vict.agent-stream@1","changesetSchema":"vict.changeset@1","turnSchema":"vict.agent-turn@1"}}
+--- (5) GET /vict/v1/actor/whoami (operator) ---
+{"ok":true,"data":{"actorId":"actor-quellight-local","roles":["developer","operator"],"scopes":["activation.read","activation.select","agent.stream.read","agent.turn.cancel","agent.turn.start","app.data.read","app.data.write","audit.read","changeset.propose","changeset.read","changeset.revise","conversation.delete","conversation.read","operator.resolve","release.read","release.select","run.cancel","run.read"],"mastraResourceId":"vict-actor-actor-quellight-local"}}
+--- (6) GET /vict/v1/actor/whoami (agent-context) ---
+{"ok":true,"data":{"actorId":"agent-quellight-agent-context","roles":["developer"],"scopes":["activation.read","agent.stream.read","agent.turn.cancel","agent.turn.start","app.data.read","audit.read","changeset.propose","changeset.read","changeset.revise","release.read","run.read"],"mastraResourceId":"vict-actor-agent-quellight-agent-context"}}
+--- (7) GET /vict/v1/turns/turn-05042e4a-... (operator) — (c) ALLOW ---
+{"ok":true,"data":{"turn":{"turnId":"turn-05042e4a-fba2-4cd8-a115-7424209cd61f","streamId":"stream-c5f4ed02-9ab7-4c83-94b7-43f52e9294ee","threadId":"vict-conv-conv-a3fd60d683093c82","actorId":"actor-quellight-local","agentProfileVersion":"v1_f34b3c23f75552267f998173131c141429ae93b413b98fcc1d418bcd6bfa6b41","inputSummary":"user-input:length=5","status":"completed","createdAt":1790749130000,"updated
+--- (8) GET /vict/v1/turns/turn-05042e4a-... (agent-context) — (d) IDENTITY-CLASS REFUSAL ---
+{"ok":false,"code":"VICT_TURN_ACTOR_MISMATCH"}
+HTTP 404
+--- (9) GET /vict/v1/runs/qlt-probe-nonexistent (operator) — anti-newer probe, REQUIRED refusal ---
+{"ok":false,"code":"VICT_HTTP_ROUTE_UNKNOWN"}
+HTTP 404
+--- (10) act ingress app origin: POST /api/act act.queryInspection getTurn (operator; re-injected server-side) — the Studio's Read-2 path ---
+{"ok":true,"value":{"ok":true,"row":{"usage":"none","usageLabel":"No eligible memory existed for this reply.","appliedPolicy":{"policyId":"qlt.memory-mode@1","mode":"across-conversations","revision":1,"recordedAtMs":1790749130326},"usedCount":0,"selected":[],"exclusions":[],"exclusionsAreBoundedSubs

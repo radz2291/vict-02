@@ -1,0 +1,1 @@
+{"ok":true,"data":{"healthy":true,"commandSchema":"vict.command@1","streamSchema":"vict.agent-stream@1"}}

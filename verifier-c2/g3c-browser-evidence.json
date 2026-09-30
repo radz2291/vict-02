@@ -1,0 +1,58 @@
+{
+  "notes": [
+    "after login url: http://127.0.0.1:6101/",
+    "product page rendered",
+    "{\n \"sameTurnBanner\": \"SAME-TURN alignment demonstrated: the target's own turnId appears in BOTH answers (turn-05042e4a-fba2-4cd8-a115-7424209cd61f).\",\n \"singleActorBanner\": null,\n \"whoamiDiff\": \"[\\\"actorId\\\",\\\"roles\\\",\\\"scopes\\\",\\\"mastraResourceId\\\"]\",\n \"refusalOutcome\": \"{\\\"command\\\":\\\"agent.turn.get\\\",\\\"succeeded\\\":false,\\\"refusalCode\\\":\\\"VICT_TURN_ACTOR_MISMATCH\\\"}\",\n \"probeOutcome\": \"Command: {\\\"command\\\":\\\"run.get\\\",\\\"refused\\\":true,\\\"code\\\":\\\"VICT_HTTP_ROUTE_UNKNOWN\\\"}\",\n \"capability\": \"Capability honesty: the newer G1 operator command reads (run.get, run.list, run.detail, run.events, run.waits) are NOT available on this declared 0.3.1 target — the transport anti-newer probe was REQUIRED to be refused and was refused. This banner is truthful and differs from a target that serves those reads.\",\n \"provenance\": \"{\\n  \\\"quellightRef\\\": \\\"commit 1f7dcdcbbffdd58901c1eb478f6492aa106f4ba7 (Quellight branch codex/stage9-g3-c2-boundary-actors)\\\",\\n  \\\"declaredReleaseIdentity\\\": \\\"vict-release-set@1/0.3.1\\\",\\n  \\\"recordedAtLabel\\\": \\\"provenance\\\"\\n}\",\n \"targetIdentity\": null,\n \"turnIdRows\": [\n  \"turnId: turn-05042e4a-fba2-4cd8-a115-7424209cd61f\",\n  \"streamId: stream-c5f4ed02-9ab7-4c83-94b7-43f52e9294ee\",\n  \"threadId: vict-conv-conv-a3fd60d683093c82\",\n  \"actorId: actor-quellight-local\",\n  \"agentProfileVersion: v1_f34b3c23f75552267f998173131c141429ae93b413b98fcc1d418bcd6bfa6b41\",\n  \"inputSummary: user-input:length=5\",\n  \"status: completed\",\n  \"createdAt: 1790749130000\",\n  \"updatedAt: 1790749130992\",\n  \"terminalAt: 1790749130992\",\n  \"traceId: 64c52c76c60d7e74f88b3419dd225a2d\",\n  \"usage: none\",\n  \"usageLabel: No eligible memory existed for this reply.\",\n  \"appliedPolicy: {\\\"policyId\\\":\\\"qlt.memory-mode@1\\\",\\\"mode\\\":\\\"across-conversations\\\",\\\"revision\\\":1,\\\"recordedAtMs\\\":1790749130326}\",\n  \"usedCount: 0\",\n  \"selected: []\",\n  \"exclusions: []\",\n  \"exclusionsAreBoundedSubset: false\",\n  \"excludedBeyondCount: null\",\n  \"details: {\\\"turnId\\\":\\\"turn-05042e4a-fba2-4cd8-a115-7424209cd61f\\\",\\\"threadId\\\":\\\"qlt-df5ebf4ead503e74199989e8\\\",\\\"assemblerVersion\\\":\\\"q5-1\\\",\\\"fingerprint\\\":\\\"b3f54c37fb4042ec5c3811edc65eb227063a766dc56813f7dc8825beb96c7041\\\",\\\"renderedBytes\\\":0,\\\"maxRecords\\\":8,\\\"maxBytes\\\":4096,\\\"orderingIdentity\\\":\\\"[]\\\",\\\"createdAtMs\\\":1790749130339}\"\n ]\n}",
+    "browser page contains credential token value: false"
+  ],
+  "responses": [
+    {
+      "url": "http://127.0.0.1:6101/product",
+      "status": 200,
+      "body": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <link rel=\"icon\" href=\"./favicon.svg\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <!--1"
+    },
+    {
+      "url": "http://127.0.0.1:6101/src/routes/product/+page.svelte",
+      "status": 304,
+      "body": "import { createHotContext as __vite__createHotContext } from \"/@vite/client\";import.meta.hot = __vite__createHotContext(\"/src/routes/product/+page.svelte\");import \"/node_modules/.vite/deps/svelte_inte"
+    },
+    {
+      "url": "http://127.0.0.1:6101/src/routes/product/+page.svelte?svelte&type=style&lang.css",
+      "status": 304,
+      "body": "import { createHotContext as __vite__createHotContext } from \"/@vite/client\";import.meta.hot = __vite__createHotContext(\"/src/routes/product/+page.svelte?svelte&type=style&lang.css\");import { updateSt"
+    }
+  ],
+  "evidence": {
+    "sameTurnBanner": "SAME-TURN alignment demonstrated: the target's own turnId appears in BOTH answers (turn-05042e4a-fba2-4cd8-a115-7424209cd61f).",
+    "singleActorBanner": null,
+    "whoamiDiff": "[\"actorId\",\"roles\",\"scopes\",\"mastraResourceId\"]",
+    "refusalOutcome": "{\"command\":\"agent.turn.get\",\"succeeded\":false,\"refusalCode\":\"VICT_TURN_ACTOR_MISMATCH\"}",
+    "probeOutcome": "Command: {\"command\":\"run.get\",\"refused\":true,\"code\":\"VICT_HTTP_ROUTE_UNKNOWN\"}",
+    "capability": "Capability honesty: the newer G1 operator command reads (run.get, run.list, run.detail, run.events, run.waits) are NOT available on this declared 0.3.1 target — the transport anti-newer probe was REQUIRED to be refused and was refused. This banner is truthful and differs from a target that serves those reads.",
+    "provenance": "{\n  \"quellightRef\": \"commit 1f7dcdcbbffdd58901c1eb478f6492aa106f4ba7 (Quellight branch codex/stage9-g3-c2-boundary-actors)\",\n  \"declaredReleaseIdentity\": \"vict-release-set@1/0.3.1\",\n  \"recordedAtLabel\": \"provenance\"\n}",
+    "targetIdentity": null,
+    "turnIdRows": [
+      "turnId: turn-05042e4a-fba2-4cd8-a115-7424209cd61f",
+      "streamId: stream-c5f4ed02-9ab7-4c83-94b7-43f52e9294ee",
+      "threadId: vict-conv-conv-a3fd60d683093c82",
+      "actorId: actor-quellight-local",
+      "agentProfileVersion: v1_f34b3c23f75552267f998173131c141429ae93b413b98fcc1d418bcd6bfa6b41",
+      "inputSummary: user-input:length=5",
+      "status: completed",
+      "createdAt: 1790749130000",
+      "updatedAt: 1790749130992",
+      "terminalAt: 1790749130992",
+      "traceId: 64c52c76c60d7e74f88b3419dd225a2d",
+      "usage: none",
+      "usageLabel: No eligible memory existed for this reply.",
+      "appliedPolicy: {\"policyId\":\"qlt.memory-mode@1\",\"mode\":\"across-conversations\",\"revision\":1,\"recordedAtMs\":1790749130326}",
+      "usedCount: 0",
+      "selected: []",
+      "exclusions: []",
+      "exclusionsAreBoundedSubset: false",
+      "excludedBeyondCount: null",
+      "details: {\"turnId\":\"turn-05042e4a-fba2-4cd8-a115-7424209cd61f\",\"threadId\":\"qlt-df5ebf4ead503e74199989e8\",\"assemblerVersion\":\"q5-1\",\"fingerprint\":\"b3f54c37fb4042ec5c3811edc65eb227063a766dc56813f7dc8825beb96c7041\",\"renderedBytes\":0,\"maxRecords\":8,\"maxBytes\":4096,\"orderingIdentity\":\"[]\",\"createdAtMs\":1790749130339}"
+    ]
+  },
+  "secretLeak": false
+}
