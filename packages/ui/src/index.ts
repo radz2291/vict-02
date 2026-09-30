@@ -182,7 +182,6 @@ export interface UiViewIntent {
   readonly rowDetail?: UiRowDetail;
 }
 
-
 /**
  * Bounded defensive read of one FT-1 row-detail navigation binding. A
  * well-formed declaration is `{ routeId, label?, param? }` with non-empty
