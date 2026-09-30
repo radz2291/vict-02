@@ -90,13 +90,39 @@ for Quellight's declared read-only same-turn inspection surface on
 1. A target-registry entry for the local Quellight target that declares
    the expected target release identity (0.3.1) and the pilot binding
    (D-3: existing declared query action/resource —
-   `act.queryInspection`/`qlt.inspection`); the transport verifies the
-   declared identity and FAILS CLOSED on mismatch.
+   `act.queryInspection`/`qlt.inspection`).
+
+   **Identity-pin oracle (repair of contract-review M-1 — the pin is
+   verified against a TARGET-DERIVED surface, never the registry's own
+   claim):** on connection the transport calls the target's own
+   `compatibility.inspect` and `health.inspect` (both present on the
+   0.3.1 server under the versioned HTTP surface) and requires the
+   returned `commandSchema` to match the pinned 0.3.1 declaration
+   EXACTLY: it must contain `agent.turn.get` and `app.data.query`, and
+   it must NOT contain the G1 operator reads
+   (`run.get`/`run.list`/`run.detail`/`run.events`/`run.waits`). Any
+   mismatch — including a NEWER target that would silently add those
+   reads — FAILS CLOSED. Registry self-echo alone is never sufficient
+   evidence. Falsifier: pointing the transport at the demo target (a
+   different surface) must refuse with a truthful version error.
 2. The transport issues exactly two declared reads for the proof —
    `agent.turn.get` and the `qlt.inspection` `getTurn` query via the
    target's own `app.data.query` — through the target's own
    authorization (its application-server/auth as-is). No mutation verb,
    no bypass, no invented data, no fallback that fabricates.
+
+   **Identity evidence (repair of contract-review M-2 — which
+   server-held identity executes each read is specified and provable):**
+   the target entry carries TWO distinct server-held credentials: the
+   OPERATOR credential (executes BOTH proof reads) and a distinct
+   AGENT-CONTEXT credential (used ONLY for the refusal demonstration in
+   item 8). For each credential the transport records the target's own
+   `actor.whoami` answer (`actorId`/`roles`/`scopes`) as evidence —
+   distinct identities are demonstrated by the whoami DIFF, not assumed.
+   If the target resolves both credentials to the same actor (the
+   single-actor tree), the whoami evidence PROVES that fact and the
+   refusal criterion falls to the OD-R4 path (truthfully NOT
+   DEMONSTRATED on the existing tree) — never simulated client-side.
 3. Version honesty: the transport and UI label the target's actual
    identity/version; when a newer operator capability (the G1 `run.*`
    reads) is not available on the target, the UI says so truthfully (a
@@ -131,8 +157,22 @@ for Quellight's declared read-only same-turn inspection surface on
   folded in) before the criterion may be claimed. Record which path was
   taken; never simulate denial client-side.
 - Direct-API negatives: unauthorized scope, unknown turn, mismatched
-  version pin, cross-target isolation attempt, and the no-credential
-  case — each refused/truthful with no state change.
+  version pin (falsified against a second, differently-schemad local
+  target — the pin must refuse), cross-target isolation attempt, and
+  the no-credential case — each refused/truthful with no state change.
+
+  **Underprivileged denial and agent-identity refusal are each subject
+  to the OD-R4 trigger with a named decider (repair of contract-review
+  M-4):** the G3-C fresh INDEPENDENT VERIFIER decides — from the
+  builder's attempt logs plus its own live reproduction — whether the
+  existing single-actor tree can demonstrate denial (an actor without
+  the inspection permission) or refusal (a distinct agent identity
+  denied the operator surface). Only a verifier-confirmed, logged
+  impossibility authorizes the OD-R4 Quellight increment, which then
+  runs under QUELLIGHT'S OWN governance: its own entry contract, its
+  own fresh independent verification, minimal scope (second actor +
+  actor-derived inspection grants), nothing else folded in. The stage
+  manager never edits Quellight to force a criterion.
 - Evidence of the actual target/version used (logs/panels/screenshots
   carrying the declared identity the transport verified).
 
@@ -184,10 +224,16 @@ preserved; (e) underprivileged denial via Quellight's own authorization
 invented data (falsifier: mutated/absent reads must render truthful
 banners); (g) no browser-held target credential (falsifier: inspect
 browser storage/network for target tokens); (h) no Quellight-specific UI
-branching; (i) direct-API negative set; (j) target isolation; (k)
-target/version evidence; (l) Quellight repo byte-untouched at its live
-ref (verifier re-checks `git -C <quellight> status`/diff against the
-live ref); (m) capability honesty banner for unavailable newer features.
+branching (falsifier: the verifier diff-scans the product-view page for
+any Quellight-name/target-name branch outside the declared binding);
+(i) direct-API negative set; (j) target isolation; (k) target/version
+evidence (the recorded compatibility/health/whoami oracle answers at
+journey time); (l) Quellight repo byte-untouched at its live ref
+(verifier re-checks `git -C <quellight> status`/diff against the live
+ref); (m) capability honesty banner for unavailable newer features
+(falsifier: the banner must DIFFER between the demo target — reads
+present — and the Quellight target — reads absent; identical
+banners fail the criterion).
 
 **Exit (final G3 boundary):** criterion matrix for all three gates,
 pushed candidate + verifier SHAs, browser evidence, retained findings

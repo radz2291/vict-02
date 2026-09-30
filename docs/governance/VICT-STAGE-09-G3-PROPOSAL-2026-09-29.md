@@ -69,7 +69,16 @@ the existing tree has a single local actor whose inspection grant is
 hard-coded. If no existing governed surface can demonstrate denial, the
 OD-R4 minimal Quellight increment (second actor + actor-derived grants)
 runs under its own governance BEFORE the denial criterion can be claimed.
-The G3-C gate reports which path was taken, truthfully.
+**The same conditional applies symmetrically to the agent-identity
+refusal (repair of contract-review M-3):** demonstrating refusal requires
+the target to represent a distinct agent identity and deny it the
+operator surface; on a single-actor tree that is impossible without the
+OD-R4 increment, so refusal would be truthfully recorded as NOT
+DEMONSTRATED on the existing tree and routed through the same governed
+increment — never simulated client-side. The G3-C gate reports which
+path was taken for EACH of the two criteria, truthfully, with the
+verifier-confirmed evidence (the target's own `actor.whoami` answers
+distinguish the single-actor fact from a demonstrated refusal).
 
 **UNPROVEN by this execution (recorded, not claimed):** the greenfield
 Quellight pairing (greenfield platform + G1 `run.*` operator reads native
@@ -282,7 +291,14 @@ postponed, and the Stage 9 exit claim is materially weaker.
 
 ~~**Recommended: Option 2**~~ — **SUPERSEDED by OD-R1: Option 1 (pair the existing 0.3.1 Quellight through a narrow, explicit, version-aware transport) is the owner's decision**, with the OD-R4 conditional minimal Quellight increment reserved for the denial criterion and Option 3's held-fallback remaining frozen text. The original recommendation is preserved above as reviewed lineage.
 
-## 4. Proposed G3 gate structure (for the owner's planning decision)
+## 4. Proposed G3 gate structure — SUPERSEDED by the owner decision (OD-R3/OD-R6; retained for lineage)
+
+> **SUPERSEDED.** The table below predates the owner decisions; the
+> AUTHORITATIVE gate structure, scopes, criteria and verification pattern
+> are `docs/handoff/VICT-STAGE-09-G3-HANDOFF-2026-09-29.md` (G3-A → G3-B
+> → G3-C, per-gate loops, evaluation criteria with falsifiers). The row
+> note "(only if Option 2)" is void — OD-R1 selected the existing-0.3.1
+> pairing. Preserved unmodified as reviewed lineage.
 
 | Gate | Scope | Exit evidence |
 | --- | --- | --- |
@@ -297,7 +313,13 @@ in the Quellight repository under its own governance once OD-1/OD-3 are
 decided. Publication, product activation, and any Quellight edit remain
 prohibited until the owner's separate recorded authorization.
 
-## 5. Open owner decisions (post-review restatement; the reviewer challenge has been folded in)
+## 5. Open owner decisions — RESOLVED by the owner 2026-09-29 (OD-R1..R6, see §0; retained for lineage)
+
+> **SUPERSEDED/RESOLVED.** Every decision below was made by the owner on
+> 2026-09-29 and is recorded verbatim-faithful in §0. Nothing here is
+> open anymore; this section is retained because the independent contract
+> review (review/stage9-g3-contract-20260929) verified against it, and
+> superseded text is marked, not deleted.
 
 The independent reviewer challenge (REVISION REQUIRED verdict, executed
 2026-09-29) verified the old-pilot quote fidelity, re-derived every
