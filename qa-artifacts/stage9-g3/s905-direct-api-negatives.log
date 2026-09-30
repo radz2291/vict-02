@@ -1,0 +1,18 @@
+# G3-C direct-API negatives — live Quellight 0.3.1 boundary http://127.0.0.1:53055 (fixture token redacted as <OP>)
+
+## no-credential case (actor.whoami without any bearer token)
+{"ok":false,"code":"VICT_AUTH_TOKEN_MISSING"}
+
+## unauthorized credential (unknown token; single-actor tree refuse
+{"ok":false,"code":"VICT_AUTH_TOKEN_UNKNOWN"}
+
+## unknown turn id (agent.turn.get on a bounded nonexistent id)
+{"ok":false,"code":"VICT_TURN_MISSING"}
+
+## anti-newer probe (run.get against bounded dummy id) - REQUIRED refusal
+{"ok":false,"code":"VICT_HTTP_ROUTE_UNKNOWN"}
+
+## app.data.mutate via the boundary (mutation verb; the transport never issues it; the negative proves the boundary alone governs it)
+{"ok":false,"code":"VICT_HTTP_METHOD_UNSUPPORTED"}
+
+## cross-target isolation (transport-level; unit-proven in apps/studio/tests/quellight-transport.test.ts): a Quellight-target request resolving the demo credential ref 'studio-operator' is refused BEFORE any fetch: VICT_STUDIO_CROSS_TARGET_REFUSED (spy evidence, no live fetch)
