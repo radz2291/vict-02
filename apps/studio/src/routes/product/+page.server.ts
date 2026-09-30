@@ -60,6 +60,14 @@ function plain(record: unknown): Record<string, unknown> | null {
   return structuredClone(record as Record<string, unknown>);
 }
 
+/**
+ * The App-origin endpoint that serves the declared act ingress. The
+ * deployment provisions it (VICT_STUDIO_QUELLIGHT_APP_ORIGIN); when the
+ * act ingress lives on the SAME origin as the VICT boundary this stays
+ * unset and the boundary endpoint doubles as the app origin.
+ */
+const ACT_INGRESS_ENDPOINT = process.env['VICT_STUDIO_QUELLIGHT_APP_ORIGIN'];
+
 export const load: PageServerLoad = async (): Promise<Record<string, unknown>> => {
   // The declared Quellight target only: nothing else may enter this page's
   // server load (target isolation is transport-declared).
@@ -145,6 +153,7 @@ export const load: PageServerLoad = async (): Promise<Record<string, unknown>> =
     } else {
       const pair = await readQuellightTurnPair({
         endpoint: entry.endpoint,
+        actIngressEndpoint: ACT_INGRESS_ENDPOINT ?? entry.endpoint,
         threadId: selected.threadId,
         turnId: selected.turnId,
       });

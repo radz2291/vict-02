@@ -42,7 +42,6 @@ const PINNED_HEALTH = {
   healthy: true,
   commandSchema: 'vict.command@1',
   streamSchema: 'vict.agent-stream@1',
-  turnExecutorComposed: true,
 };
 const PINNED_COMPATIBILITY = {
   commandSchema: 'vict.command@1',
@@ -293,13 +292,14 @@ describe('same-turn proof reads (unit, fetch spies)', () => {
           },
         };
       }
-      if (urlEndingIn(url, '/vict/v1/app/query') && method === 'POST') {
+      if (urlEndingIn(url, '/api/act') && method === 'POST') {
         expect(auth).toBe('Bearer ql-op-token');
         return {
           status: 200,
           body: {
             ok: true,
-            data: {
+            value: {
+              ok: true,
               row: {
                 usage: 'used',
                 usedCount: 0,
@@ -334,10 +334,10 @@ describe('same-turn proof reads (unit, fetch spies)', () => {
           body: { ok: true, data: { turn: { turnId: TURN_ID, status: 'completed' } } },
         };
       }
-      if (urlEndingIn(url, '/vict/v1/app/query') && method === 'POST') {
+      if (urlEndingIn(url, '/api/act') && method === 'POST') {
         return {
           status: 200,
-          body: { ok: true, data: { row: { usage: 'unrecorded', details: {} } } },
+          body: { ok: true, value: { ok: true, row: { usage: 'unrecorded', details: {} } } },
         };
       }
       return { status: 404, body: { ok: false, code: 'VICT_HTTP_ROUTE_UNKNOWN' } };
@@ -359,8 +359,8 @@ describe('same-turn proof reads (unit, fetch spies)', () => {
       if (urlEndingIn(url, `/vict/v1/turns/${TURN_ID}`) && method === 'GET') {
         return { status: 500, body: { ok: false, code: 'VICT_TURN_NOT_FOUND' } };
       }
-      if (urlEndingIn(url, '/vict/v1/app/query') && method === 'POST') {
-        return { status: 500, body: { ok: false, code: 'QLT_INSPECTION_TURN_MISSING' } };
+      if (urlEndingIn(url, '/api/act') && method === 'POST') {
+        return { status: 200, body: { ok: false, code: 'QLT_INSPECTION_TURN_MISSING' } };
       }
       return { status: 404, body: { ok: false, code: 'VICT_HTTP_ROUTE_UNKNOWN' } };
     });

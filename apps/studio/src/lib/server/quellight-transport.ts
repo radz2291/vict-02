@@ -58,9 +58,8 @@ export const QUELLIGHT_AGENT_CREDENTIAL_REF = 'quellight-agent';
  * The pinned expected INSPECT ANSWER RECORDS (oracle element (iii)),
  * recorded from the target's own released 0.3.1 server surface
  * (`packages/server` of the release set: health.inspect answers
- * `healthy`/`commandSchema`/`streamSchema`; `turnExecutorComposed` is
- * true because the composition installs the turn service; the
- * compatibility.inspect answer carries the four schema ids verbatim).
+ * `healthy`/`commandSchema`/`streamSchema`; compatibility.inspect
+ * authenticates and carries the four schema ids verbatim).
  *
  * HONEST VERSION-INVARIANCE CAVEAT (contract-mandated): these records
  * are version-invariant across 0.3.1 and 0.4.0-rc.1 — the envelope
@@ -73,7 +72,6 @@ const PINNED_HEALTH_RECORD: Readonly<Record<string, unknown>> = {
   healthy: true,
   commandSchema: 'vict.command@1',
   streamSchema: 'vict.agent-stream@1',
-  turnExecutorComposed: true,
 };
 
 const PINNED_COMPATIBILITY_RECORD: Readonly<Record<string, unknown>> = {
@@ -105,7 +103,16 @@ export const QUELLIGHT_PILOT_BINDING = {
   queryActionId: 'act.queryInspection',
   inspectionResourceId: 'qlt.inspection',
   getTurnOp: 'getTurn',
-  applicationReleaseVersion: 'quellight-local-1',
+  /**
+   * The declared read ingress of the released read boundary
+   * (`app.data.query` via `/api/act`, per the inspection contract's own
+   * header: "exposed ONLY through the released read boundary
+   * (`app.data.query` via `/api/act")"). The VICT HTTP GET path on this
+   * composition cannot carry the closed nested filter object (a flat
+   * query-payload form only), so the declared ACT ingress is the honest
+   * route for the `getTurn` proof read.
+   */
+  queryIngressPath: '/api/act',
 } as const;
 
 /** Provenance is DEPLOYMENT-PROVIDED and carried through labeled as such. */
@@ -166,16 +173,25 @@ export async function callTargetCommand(
   } catch {
     return { ok: false, code: UNREACHABLE_CODE };
   }
-  if (
-    typeof parsed !== 'object' ||
-    parsed === null ||
-    (parsed as Record<string, unknown>)['ok'] !== true ||
-    typeof (parsed as Record<string, unknown>)['data'] !== 'object'
-  ) {
-    const code = (parsed as Record<string, unknown>)['code'];
+  if (typeof parsed !== 'object' || parsed === null) {
+    return { ok: false, code: `HTTP_${raw.status}` };
+  }
+  const parsedRecord = parsed as Record<string, unknown>;
+  if (parsedRecord['ok'] !== true) {
+    const code = parsedRecord['code'];
     return { ok: false, code: typeof code === 'string' ? code : `HTTP_${raw.status}` };
   }
-  return { ok: true, data: (parsed as { data: Record<string, unknown> })['data'] };
+  // The VICT command envelope carries `data`; the declared act ingress
+  // carries the action's result under `value` (its own declared shape).
+  const dataMember = parsedRecord['data'];
+  if (typeof dataMember === 'object' && dataMember !== null) {
+    return { ok: true, data: dataMember as Record<string, unknown> };
+  }
+  const valueMember = parsedRecord['value'];
+  if (typeof valueMember === 'object' && valueMember !== null) {
+    return { ok: true, data: valueMember as Record<string, unknown> };
+  }
+  return { ok: false, code: 'HTTP_BODY_ABSENT' };
 }
 
 /* ------------------------------------------------------------------ */
@@ -286,7 +302,19 @@ export async function connectQuellightIdentityPin(options: {
   // (iii) inspect answer-record equality, verbatim, before anything else.
   // /vict/v1/health is unauthenticated-safe on this target; the other
   // inspect surfaces and every proof read authenticate AS the credential.
-  const health = await callTargetCommand(options.fetchImpl, options.endpoint, '/vict/v1/health');
+  const earlyOperator = resolveQuellightCredential(
+    QUELLIGHT_TARGET_ID,
+    QUELLIGHT_OPERATOR_CREDENTIAL_REF,
+  );
+  if (!earlyOperator.ok) {
+    return { ok: false, code: earlyOperator.code, detail: 'operator credential required to pin' };
+  }
+  const health = await callTargetCommand(
+    options.fetchImpl,
+    options.endpoint,
+    '/vict/v1/health',
+    earlyOperator.credential.token,
+  );
   if (health.ok === false && health.code === UNREACHABLE_CODE) {
     return {
       ok: false,
@@ -306,6 +334,7 @@ export async function connectQuellightIdentityPin(options: {
     options.fetchImpl,
     options.endpoint,
     '/vict/v1/compatibility',
+    earlyOperator.credential.token,
   );
   if (compatibility.ok !== true || !recordsEqual(expectedCompatibility, compatibility.data)) {
     return {
@@ -411,6 +440,8 @@ export interface QuellightTurnPairRead {
  */
 export async function readQuellightTurnPair(options: {
   endpoint: string;
+  /** The target app origin that serves the declared act ingress (default: endpoint). */
+  actIngressEndpoint?: string;
   threadId: string;
   turnId: string;
   fetchImpl?: FetchLike;
@@ -439,7 +470,7 @@ export async function readQuellightTurnPair(options: {
     : null;
   const inspection = await appDataQuery(
     options.fetchImpl,
-    options.endpoint,
+    options.actIngressEndpoint ?? options.endpoint,
     operator.credential.token,
     {
       query: QUELLIGHT_PILOT_BINDING.getTurnOp,
@@ -474,28 +505,41 @@ export async function readQuellightTurnPair(options: {
 }
 
 /**
- * The declared qlt.inspection read through the target's own released
- * `app.data.query` boundary (read-only; no mutate path exists here).
+ * The declared read 2: the `act.queryInspection` action of the released
+ * read boundary (`app.data.query` via `/api/act`), read-only. The
+ * response is the target's own declared result shape; only the returned
+ * row is carried.
  */
 async function appDataQuery(
   fetchImpl: FetchLike | undefined,
-  endpoint: string,
+  actIngressEndpoint: string,
   token: string,
   filters: Record<string, string>,
 ): Promise<
   | { data: Readonly<Record<string, unknown>> | null; code: string | null }
   | { data: null; code: string }
 > {
-  const envelope = await callTargetCommand(fetchImpl, endpoint, '/vict/v1/app/query', token, {
-    resourceId: QUELLIGHT_PILOT_BINDING.inspectionResourceId,
-    releaseVersion: QUELLIGHT_PILOT_BINDING.applicationReleaseVersion,
-    filters,
-  });
-  if (envelope.ok) {
-    const row = (envelope.data['row'] as Record<string, unknown>) ?? null;
-    return { data: row, code: null };
+  const envelope = await callTargetCommand(
+    fetchImpl,
+    actIngressEndpoint,
+    QUELLIGHT_PILOT_BINDING.queryIngressPath,
+    token,
+    {
+      actionId: QUELLIGHT_PILOT_BINDING.queryActionId,
+      input: { filters },
+    },
+  );
+  if (!envelope.ok) {
+    return { data: null, code: envelope.code };
   }
-  return { data: null, code: envelope.code };
+  // The ingress answer was normalized; the value member is the
+  // ApplicationDataResult of the declared surface.
+  const value = envelope.data;
+  const row = (value as Record<string, unknown>)['row'];
+  return {
+    data: typeof row === 'object' && row !== null ? (row as Record<string, unknown>) : null,
+    code: null,
+  };
 }
 /* ------------------------------------------------------------------ */
 /* Agent-identity refusal attempt (operator surface, agent credential)  */
