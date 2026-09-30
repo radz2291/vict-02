@@ -1,0 +1,34 @@
+PASS  studio login session established — http://127.0.0.1:5188/
+PASS  run list renders genuine Open run row links (FT-1) — [{"href":"/runs/run-demo-completed","text":"Open run"},{"href":"/runs/run-demo-blocked","text":"Open run"},{"href":"/runs/run-demo-failed","text":"Open run"}]
+PASS  a row link navigates to the run-detail route
+shot s902-run-list.png
+PASS  generic detail defaults REDACTED (canary absent before reveal)
+PASS  detail page shows the run id
+shot s902-detail-redacted-default.png
+PASS  ordered events rendered verbatim (identity columns)
+PASS  durable waits rendered verbatim
+PASS  bounded options explanation rendered (no actions dispatched here)
+shot s902-detail-events-waits.png
+shot s902-detail-version-compare.png
+shot s902-detail-bounded-options-provenance.png
+PASS  protected reveal answered truthfully on the blocked run (no execution-store output exists: "(not reported)" — never synthesized)
+PASS  per-access audit row run.detail.accessed visible
+PASS  per-access audit row names the actor
+shot s902-protected-revealed.png
+shot s902-detail-audit-rows.png
+PASS  completed run default view stays REDACTED (output canary absent)
+PASS  protected bytes revealed verbatim (full-retention output)
+PASS  canary cross-check: blocked-run canary text is never part of another run detail
+shot s902-protected-bytes-revealed.png
+PASS  summary-retention run truthfully reports no protected bytes
+shot s902-protected-retention-denied.png
+PASS  missing run renders the truthfully refused run read banner
+shot s902-missing-run-banner.png
+PASS  empty-variant studio login established — http://127.0.0.1:5189/
+PASS  empty run list renders the truthful empty state
+shot s902-empty-list.png
+PASS  actor denial: target refuses credential without run.read (truthful 403 refusal) — {"status":403,"body":{"ok":false,"code":"VICT_ACTOR_UNAUTHENTICATED"}}
+PASS  pagination: >1 page of runs; hasMore and totals verbatim
+PASS  redacted generic detail: no protected byte crosses run.get (canary absent)
+
+s902 journey: 21/21 checks passed

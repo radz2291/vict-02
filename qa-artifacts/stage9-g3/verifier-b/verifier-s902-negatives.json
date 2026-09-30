@@ -1,0 +1,459 @@
+{
+  "empty list": {
+    "status": 200,
+    "data": {
+      "runs": [],
+      "total": 0,
+      "offset": 0,
+      "limit": 10,
+      "hasMore": false
+    }
+  },
+  "missing run": {
+    "status": 404,
+    "code": "VICT_RUN_MISSING"
+  },
+  "actor denial (disabled actor, no derived scopes)": {
+    "status": 403,
+    "code": "VICT_ACTOR_UNAUTHENTICATED"
+  },
+  "detail under operator token (no run.detail scope)": {
+    "status": 403,
+    "code": "VICT_ACTOR_SCOPE_DENIED"
+  },
+  "detail under -detail credential (completed, full retention)": {
+    "status": 200,
+    "data": {
+      "run": {
+        "runId": "run-demo-completed",
+        "graphId": "g.studio-demo",
+        "graphVersion": "v1_8a25f7cb09b940d2d3130cfee4acdffd83936850c91115eba13276cb6fd6f1b6",
+        "capabilitySetVersion": "v1_6c282c49a4e9a59375a0d77f73ec36cc09e1512720f3ed8783a1f3286270f461",
+        "activationVersion": "v1_ab66cb7c2d0d032f03fcb8f6e312282f550abc5a1394c9c751b81259ac600d87",
+        "status": "completed",
+        "mode": "normal",
+        "retention": "full",
+        "steps": 2,
+        "currentNodeId": null,
+        "outputSummary": {
+          "keys": [
+            "summary",
+            "items"
+          ],
+          "shape": "object"
+        },
+        "recordRevision": 2,
+        "createdAt": 1790747404584,
+        "updatedAt": 1790747404584,
+        "completedAt": 1790747404584
+      },
+      "protectedOutput": {
+        "items": [
+          "alpha",
+          "beta",
+          "gamma"
+        ],
+        "summary": "demo capability output committed under full retention"
+      },
+      "protectedAvailable": true,
+      "retention": "full"
+    }
+  },
+  "detail blocked run under -detail credential": {
+    "status": 200,
+    "data": {
+      "run": {
+        "runId": "run-demo-blocked",
+        "graphId": "g.studio-demo",
+        "graphVersion": "v1_8a25f7cb09b940d2d3130cfee4acdffd83936850c91115eba13276cb6fd6f1b6",
+        "capabilitySetVersion": "v1_6c282c49a4e9a59375a0d77f73ec36cc09e1512720f3ed8783a1f3286270f461",
+        "activationVersion": "v1_ab66cb7c2d0d032f03fcb8f6e312282f550abc5a1394c9c751b81259ac600d87",
+        "status": "blocked",
+        "mode": "normal",
+        "retention": "full",
+        "steps": 1,
+        "currentNodeId": "n1",
+        "recordRevision": 2,
+        "createdAt": 1790747404585,
+        "updatedAt": 1790747404588,
+        "completedAt": 1790747404588
+      },
+      "protectedOutput": null,
+      "protectedAvailable": true,
+      "retention": "full"
+    }
+  },
+  "pagination p1": {
+    "status": 200,
+    "data": {
+      "runs": [
+        {
+          "runId": "run-demo-completed",
+          "graphId": "g.studio-demo",
+          "graphVersion": "v1_8a25f7cb09b940d2d3130cfee4acdffd83936850c91115eba13276cb6fd6f1b6",
+          "capabilitySetVersion": "v1_6c282c49a4e9a59375a0d77f73ec36cc09e1512720f3ed8783a1f3286270f461",
+          "activationVersion": "v1_ab66cb7c2d0d032f03fcb8f6e312282f550abc5a1394c9c751b81259ac600d87",
+          "status": "completed",
+          "mode": "normal",
+          "retention": "full",
+          "steps": 2,
+          "currentNodeId": null,
+          "outputSummary": {
+            "keys": [
+              "summary",
+              "items"
+            ],
+            "shape": "object"
+          },
+          "recordRevision": 2,
+          "createdAt": 1790747404584,
+          "updatedAt": 1790747404584,
+          "completedAt": 1790747404584
+        },
+        {
+          "runId": "run-demo-blocked",
+          "graphId": "g.studio-demo",
+          "graphVersion": "v1_8a25f7cb09b940d2d3130cfee4acdffd83936850c91115eba13276cb6fd6f1b6",
+          "capabilitySetVersion": "v1_6c282c49a4e9a59375a0d77f73ec36cc09e1512720f3ed8783a1f3286270f461",
+          "activationVersion": "v1_ab66cb7c2d0d032f03fcb8f6e312282f550abc5a1394c9c751b81259ac600d87",
+          "status": "blocked",
+          "mode": "normal",
+          "retention": "full",
+          "steps": 1,
+          "currentNodeId": "n1",
+          "recordRevision": 2,
+          "createdAt": 1790747404585,
+          "updatedAt": 1790747404588,
+          "completedAt": 1790747404588
+        },
+        {
+          "runId": "run-demo-failed",
+          "graphId": "g.studio-demo",
+          "graphVersion": "v1_8a25f7cb09b940d2d3130cfee4acdffd83936850c91115eba13276cb6fd6f1b6",
+          "capabilitySetVersion": "v1_6c282c49a4e9a59375a0d77f73ec36cc09e1512720f3ed8783a1f3286270f461",
+          "activationVersion": "v1_ab66cb7c2d0d032f03fcb8f6e312282f550abc5a1394c9c751b81259ac600d87",
+          "status": "failed",
+          "mode": "normal",
+          "retention": "summary",
+          "steps": 1,
+          "currentNodeId": "n1",
+          "error": {
+            "code": "DEMO_CAPABILITY_FAILED",
+            "details": null,
+            "message": "demo failure"
+          },
+          "recordRevision": 2,
+          "createdAt": 1790747404585,
+          "updatedAt": 1790747404585,
+          "completedAt": 1790747404585
+        },
+        {
+          "runId": "run-demo-confirm",
+          "graphId": "g.studio-demo",
+          "graphVersion": "v1_8a25f7cb09b940d2d3130cfee4acdffd83936850c91115eba13276cb6fd6f1b6",
+          "capabilitySetVersion": "v1_6c282c49a4e9a59375a0d77f73ec36cc09e1512720f3ed8783a1f3286270f461",
+          "activationVersion": "v1_ab66cb7c2d0d032f03fcb8f6e312282f550abc5a1394c9c751b81259ac600d87",
+          "status": "running",
+          "mode": "normal",
+          "retention": "summary",
+          "steps": 1,
+          "currentNodeId": null,
+          "recordRevision": 1,
+          "createdAt": 1790747404588,
+          "updatedAt": 1790747404588,
+          "completedAt": null
+        },
+        {
+          "runId": "run-demo-page-01",
+          "graphId": "g.studio-demo",
+          "graphVersion": "v1_8a25f7cb09b940d2d3130cfee4acdffd83936850c91115eba13276cb6fd6f1b6",
+          "capabilitySetVersion": "v1_6c282c49a4e9a59375a0d77f73ec36cc09e1512720f3ed8783a1f3286270f461",
+          "activationVersion": "v1_ab66cb7c2d0d032f03fcb8f6e312282f550abc5a1394c9c751b81259ac600d87",
+          "status": "running",
+          "mode": "normal",
+          "retention": "summary",
+          "steps": 1,
+          "currentNodeId": null,
+          "recordRevision": 1,
+          "createdAt": 1790747404588,
+          "updatedAt": 1790747404588,
+          "completedAt": null
+        },
+        {
+          "runId": "run-demo-page-02",
+          "graphId": "g.studio-demo",
+          "graphVersion": "v1_8a25f7cb09b940d2d3130cfee4acdffd83936850c91115eba13276cb6fd6f1b6",
+          "capabilitySetVersion": "v1_6c282c49a4e9a59375a0d77f73ec36cc09e1512720f3ed8783a1f3286270f461",
+          "activationVersion": "v1_ab66cb7c2d0d032f03fcb8f6e312282f550abc5a1394c9c751b81259ac600d87",
+          "status": "running",
+          "mode": "normal",
+          "retention": "summary",
+          "steps": 1,
+          "currentNodeId": null,
+          "recordRevision": 1,
+          "createdAt": 1790747404588,
+          "updatedAt": 1790747404588,
+          "completedAt": null
+        },
+        {
+          "runId": "run-demo-page-03",
+          "graphId": "g.studio-demo",
+          "graphVersion": "v1_8a25f7cb09b940d2d3130cfee4acdffd83936850c91115eba13276cb6fd6f1b6",
+          "capabilitySetVersion": "v1_6c282c49a4e9a59375a0d77f73ec36cc09e1512720f3ed8783a1f3286270f461",
+          "activationVersion": "v1_ab66cb7c2d0d032f03fcb8f6e312282f550abc5a1394c9c751b81259ac600d87",
+          "status": "running",
+          "mode": "normal",
+          "retention": "summary",
+          "steps": 1,
+          "currentNodeId": null,
+          "recordRevision": 1,
+          "createdAt": 1790747404588,
+          "updatedAt": 1790747404588,
+          "completedAt": null
+        },
+        {
+          "runId": "run-demo-page-04",
+          "graphId": "g.studio-demo",
+          "graphVersion": "v1_8a25f7cb09b940d2d3130cfee4acdffd83936850c91115eba13276cb6fd6f1b6",
+          "capabilitySetVersion": "v1_6c282c49a4e9a59375a0d77f73ec36cc09e1512720f3ed8783a1f3286270f461",
+          "activationVersion": "v1_ab66cb7c2d0d032f03fcb8f6e312282f550abc5a1394c9c751b81259ac600d87",
+          "status": "running",
+          "mode": "normal",
+          "retention": "summary",
+          "steps": 1,
+          "currentNodeId": null,
+          "recordRevision": 1,
+          "createdAt": 1790747404588,
+          "updatedAt": 1790747404588,
+          "completedAt": null
+        },
+        {
+          "runId": "run-demo-page-05",
+          "graphId": "g.studio-demo",
+          "graphVersion": "v1_8a25f7cb09b940d2d3130cfee4acdffd83936850c91115eba13276cb6fd6f1b6",
+          "capabilitySetVersion": "v1_6c282c49a4e9a59375a0d77f73ec36cc09e1512720f3ed8783a1f3286270f461",
+          "activationVersion": "v1_ab66cb7c2d0d032f03fcb8f6e312282f550abc5a1394c9c751b81259ac600d87",
+          "status": "running",
+          "mode": "normal",
+          "retention": "summary",
+          "steps": 1,
+          "currentNodeId": null,
+          "recordRevision": 1,
+          "createdAt": 1790747404588,
+          "updatedAt": 1790747404588,
+          "completedAt": null
+        },
+        {
+          "runId": "run-demo-page-06",
+          "graphId": "g.studio-demo",
+          "graphVersion": "v1_8a25f7cb09b940d2d3130cfee4acdffd83936850c91115eba13276cb6fd6f1b6",
+          "capabilitySetVersion": "v1_6c282c49a4e9a59375a0d77f73ec36cc09e1512720f3ed8783a1f3286270f461",
+          "activationVersion": "v1_ab66cb7c2d0d032f03fcb8f6e312282f550abc5a1394c9c751b81259ac600d87",
+          "status": "running",
+          "mode": "normal",
+          "retention": "summary",
+          "steps": 1,
+          "currentNodeId": null,
+          "recordRevision": 1,
+          "createdAt": 1790747404588,
+          "updatedAt": 1790747404588,
+          "completedAt": null
+        }
+      ],
+      "total": 59,
+      "offset": 0,
+      "limit": 10,
+      "hasMore": true
+    }
+  },
+  "pagination p6": {
+    "status": 200,
+    "data": {
+      "runs": [
+        {
+          "runId": "run-demo-page-47",
+          "graphId": "g.studio-demo",
+          "graphVersion": "v1_8a25f7cb09b940d2d3130cfee4acdffd83936850c91115eba13276cb6fd6f1b6",
+          "capabilitySetVersion": "v1_6c282c49a4e9a59375a0d77f73ec36cc09e1512720f3ed8783a1f3286270f461",
+          "activationVersion": "v1_ab66cb7c2d0d032f03fcb8f6e312282f550abc5a1394c9c751b81259ac600d87",
+          "status": "running",
+          "mode": "normal",
+          "retention": "summary",
+          "steps": 1,
+          "currentNodeId": null,
+          "recordRevision": 1,
+          "createdAt": 1790747404590,
+          "updatedAt": 1790747404590,
+          "completedAt": null
+        },
+        {
+          "runId": "run-demo-page-48",
+          "graphId": "g.studio-demo",
+          "graphVersion": "v1_8a25f7cb09b940d2d3130cfee4acdffd83936850c91115eba13276cb6fd6f1b6",
+          "capabilitySetVersion": "v1_6c282c49a4e9a59375a0d77f73ec36cc09e1512720f3ed8783a1f3286270f461",
+          "activationVersion": "v1_ab66cb7c2d0d032f03fcb8f6e312282f550abc5a1394c9c751b81259ac600d87",
+          "status": "running",
+          "mode": "normal",
+          "retention": "summary",
+          "steps": 1,
+          "currentNodeId": null,
+          "recordRevision": 1,
+          "createdAt": 1790747404590,
+          "updatedAt": 1790747404590,
+          "completedAt": null
+        },
+        {
+          "runId": "run-demo-page-49",
+          "graphId": "g.studio-demo",
+          "graphVersion": "v1_8a25f7cb09b940d2d3130cfee4acdffd83936850c91115eba13276cb6fd6f1b6",
+          "capabilitySetVersion": "v1_6c282c49a4e9a59375a0d77f73ec36cc09e1512720f3ed8783a1f3286270f461",
+          "activationVersion": "v1_ab66cb7c2d0d032f03fcb8f6e312282f550abc5a1394c9c751b81259ac600d87",
+          "status": "running",
+          "mode": "normal",
+          "retention": "summary",
+          "steps": 1,
+          "currentNodeId": null,
+          "recordRevision": 1,
+          "createdAt": 1790747404590,
+          "updatedAt": 1790747404590,
+          "completedAt": null
+        },
+        {
+          "runId": "run-demo-page-50",
+          "graphId": "g.studio-demo",
+          "graphVersion": "v1_8a25f7cb09b940d2d3130cfee4acdffd83936850c91115eba13276cb6fd6f1b6",
+          "capabilitySetVersion": "v1_6c282c49a4e9a59375a0d77f73ec36cc09e1512720f3ed8783a1f3286270f461",
+          "activationVersion": "v1_ab66cb7c2d0d032f03fcb8f6e312282f550abc5a1394c9c751b81259ac600d87",
+          "status": "running",
+          "mode": "normal",
+          "retention": "summary",
+          "steps": 1,
+          "currentNodeId": null,
+          "recordRevision": 1,
+          "createdAt": 1790747404590,
+          "updatedAt": 1790747404590,
+          "completedAt": null
+        },
+        {
+          "runId": "run-demo-page-51",
+          "graphId": "g.studio-demo",
+          "graphVersion": "v1_8a25f7cb09b940d2d3130cfee4acdffd83936850c91115eba13276cb6fd6f1b6",
+          "capabilitySetVersion": "v1_6c282c49a4e9a59375a0d77f73ec36cc09e1512720f3ed8783a1f3286270f461",
+          "activationVersion": "v1_ab66cb7c2d0d032f03fcb8f6e312282f550abc5a1394c9c751b81259ac600d87",
+          "status": "running",
+          "mode": "normal",
+          "retention": "summary",
+          "steps": 1,
+          "currentNodeId": null,
+          "recordRevision": 1,
+          "createdAt": 1790747404590,
+          "updatedAt": 1790747404590,
+          "completedAt": null
+        },
+        {
+          "runId": "run-demo-page-52",
+          "graphId": "g.studio-demo",
+          "graphVersion": "v1_8a25f7cb09b940d2d3130cfee4acdffd83936850c91115eba13276cb6fd6f1b6",
+          "capabilitySetVersion": "v1_6c282c49a4e9a59375a0d77f73ec36cc09e1512720f3ed8783a1f3286270f461",
+          "activationVersion": "v1_ab66cb7c2d0d032f03fcb8f6e312282f550abc5a1394c9c751b81259ac600d87",
+          "status": "running",
+          "mode": "normal",
+          "retention": "summary",
+          "steps": 1,
+          "currentNodeId": null,
+          "recordRevision": 1,
+          "createdAt": 1790747404590,
+          "updatedAt": 1790747404590,
+          "completedAt": null
+        },
+        {
+          "runId": "run-demo-page-53",
+          "graphId": "g.studio-demo",
+          "graphVersion": "v1_8a25f7cb09b940d2d3130cfee4acdffd83936850c91115eba13276cb6fd6f1b6",
+          "capabilitySetVersion": "v1_6c282c49a4e9a59375a0d77f73ec36cc09e1512720f3ed8783a1f3286270f461",
+          "activationVersion": "v1_ab66cb7c2d0d032f03fcb8f6e312282f550abc5a1394c9c751b81259ac600d87",
+          "status": "running",
+          "mode": "normal",
+          "retention": "summary",
+          "steps": 1,
+          "currentNodeId": null,
+          "recordRevision": 1,
+          "createdAt": 1790747404590,
+          "updatedAt": 1790747404590,
+          "completedAt": null
+        },
+        {
+          "runId": "run-demo-page-54",
+          "graphId": "g.studio-demo",
+          "graphVersion": "v1_8a25f7cb09b940d2d3130cfee4acdffd83936850c91115eba13276cb6fd6f1b6",
+          "capabilitySetVersion": "v1_6c282c49a4e9a59375a0d77f73ec36cc09e1512720f3ed8783a1f3286270f461",
+          "activationVersion": "v1_ab66cb7c2d0d032f03fcb8f6e312282f550abc5a1394c9c751b81259ac600d87",
+          "status": "running",
+          "mode": "normal",
+          "retention": "summary",
+          "steps": 1,
+          "currentNodeId": null,
+          "recordRevision": 1,
+          "createdAt": 1790747404590,
+          "updatedAt": 1790747404590,
+          "completedAt": null
+        },
+        {
+          "runId": "run-demo-page-55",
+          "graphId": "g.studio-demo",
+          "graphVersion": "v1_8a25f7cb09b940d2d3130cfee4acdffd83936850c91115eba13276cb6fd6f1b6",
+          "capabilitySetVersion": "v1_6c282c49a4e9a59375a0d77f73ec36cc09e1512720f3ed8783a1f3286270f461",
+          "activationVersion": "v1_ab66cb7c2d0d032f03fcb8f6e312282f550abc5a1394c9c751b81259ac600d87",
+          "status": "running",
+          "mode": "normal",
+          "retention": "summary",
+          "steps": 1,
+          "currentNodeId": null,
+          "recordRevision": 1,
+          "createdAt": 1790747404590,
+          "updatedAt": 1790747404590,
+          "completedAt": null
+        }
+      ],
+      "total": 59,
+      "offset": 50,
+      "limit": 10,
+      "hasMore": false
+    }
+  },
+  "audit read-back after detail accesses (completed)": {
+    "status": 200,
+    "data": {
+      "events": [
+        {
+          "auditId": "audit-run-detail-run-demo-completed-1790749295085-6",
+          "at": 1790749295085,
+          "actorId": "actor-studio-detail",
+          "action": "run.detail.accessed",
+          "subjectType": "run",
+          "subjectId": "run-demo-completed",
+          "summary": "protected run detail retrieved under the run.detail scope"
+        },
+        {
+          "auditId": "audit-run-detail-run-demo-completed-1790749289632-4",
+          "at": 1790749289632,
+          "actorId": "actor-studio-detail",
+          "action": "run.detail.accessed",
+          "subjectType": "run",
+          "subjectId": "run-demo-completed",
+          "summary": "protected run detail retrieved under the run.detail scope"
+        },
+        {
+          "auditId": "audit-run-detail-run-demo-completed-1790749207105-2",
+          "at": 1790749207105,
+          "actorId": "actor-studio-detail",
+          "action": "run.detail.accessed",
+          "subjectType": "run",
+          "subjectId": "run-demo-completed",
+          "summary": "protected run detail retrieved under the run.detail scope"
+        }
+      ],
+      "total": 3
+    }
+  }
+}
