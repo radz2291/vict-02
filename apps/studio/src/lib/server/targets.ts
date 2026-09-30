@@ -69,6 +69,16 @@ const DEMO_CREDENTIALS: Readonly<Record<string, TargetCredential>> = {
     actorLabel: 'operator-detail',
     scopes: ['run.read', 'activation.read', 'audit.read', 'agent.stream.read', 'run.detail'],
   },
+  // Stage 9 G3-B (WP-G3-B) ADDITIVE: the run-detail page's protected
+  // `run.detail` read resolves the SEPARATE `${target.credentialRef}-detail`
+  // credential (see src/routes/runs/[runId]/run-detail-reads.ts). This entry
+  // only provisions that distinct run.detail-grant fixture credential;
+  // no existing entry's semantics change.
+  'studio-operator-detail': {
+    token: DEMO_DETAIL_TOKEN,
+    actorLabel: 'operator-detail',
+    scopes: ['run.read', 'activation.read', 'audit.read', 'agent.stream.read', 'run.detail'],
+  },
   // Stage 9 G2 (S9-03): the changeset journey actors — strictly additive
   // fixture credentials; the existing reads/mutator grants are untouched.
   'studio-changeset-author': {
