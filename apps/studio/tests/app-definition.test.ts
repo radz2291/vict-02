@@ -116,8 +116,9 @@ describe('studio application definition', () => {
     // only scope: the binding appears exactly once, on the run list).
     const bound: Record<string, unknown>[] = [];
     for (const [, candidate] of Object.entries(plan.screens)) {
-      const layout = (candidate as unknown as { layout: Array<{ surfaces: Array<Record<string, unknown>> }> })
-        .layout;
+      const layout = (
+        candidate as unknown as { layout: Array<{ surfaces: Array<Record<string, unknown>> }> }
+      ).layout;
       for (const region of layout) {
         bound.push(...region.surfaces.filter((surface) => runDetailBinding(surface) !== undefined));
       }
