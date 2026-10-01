@@ -1,0 +1,42 @@
+# M-1 re-verification — server-side curl proof (2026-10-01, tokens REDACTED)
+
+Context ports:
+- Quellight dev server (app origin): http://localhost:4739 (binds [::1]:4739)
+- Quellight embedded raw vict boundary: http://127.0.0.1:57921 (discovered via netstat on the dev-server PID 9664; GET /vict/v1/actor/whoami -> 200)
+- Quellight PRODUCTION (adapter-node `node build`): http://localhost:4742 (ORIGIN=http://localhost:4742)
+- VICT Studio PRODUCTION (adapter-node `node build`): http://localhost:4741 (ORIGIN=http://localhost:4741)
+
+Turn under test (created via product admission on the app port):
+- POST http://localhost:4739/api/act {"actionId":"act.createThread"} -> threadId qlt-c9b5b0afd115302c87bc41e4
+- POST http://localhost:4739/api/threads/qlt-c9b5b0afd115302c87bc41e4/turns {"input":"Hello"} -> turnId turn-6b6b5e46-b557-41eb-a7d1-6de5ef4f7d2c (status: completed)
+
+## Read 1 — boundary GET /vict/v1/turns/<turnId> (authorization header PRESENT, value REDACTED)
+HTTP:200
+{"ok":true,"data":{"turn":{"turnId":"turn-6b6b5e46-b557-41eb-a7d1-6de5ef4f7d2c","streamId":"stream-83779293-ece2-4ae8-b0dc-15132d94f625","threadId":"vict-conv-conv-93c3d2e2616939ea","actorId":"actor-quellight-local","status":"completed","terminalAt":1790838955653,"traceId":"3208ac8031fd18383c3c658c26efeb78"}}}
+
+## Read 2 — the repaired act-ingress POST (same POST the Studio transport issues: content-type: application/json), against PRODUCTION-served Quellight
+POST http://localhost:4742/api/act
+  content-type: application/json
+  origin: http://localhost:4741
+  body: {"actionId":"act.queryInspection","input":{"filters":{"query":"getTurn","threadId":"qlt-c9b5b0afd115302c87bc41e4","turnId":"turn-6b6b5e46-b557-41eb-a7d1-6de5ef4f7d2c"}}}
+HTTP:200
+{"ok":true,"value":{"ok":true,"row":{"usage":"none","appliedPolicy":{"policyId":"qlt.memory-mode@1","mode":"across-conversations","revision":1},"usedCount":0,"details":{"turnId":"turn-6b6b5e46-b557-41eb-a7d1-6de5ef4f7d2c","threadId":"qlt-c9b5b0afd115302c87bc41e4","assemblerVersion":"q5-1"}}}}
+
+## Negative control — the ORIGINAL M-1 red mechanism reproduced at production serving
+An undici/browser fetch POST with a JSON string body and NO explicit content-type sends `content-type: text/plain;charset=UTF-8`. Reproduced verbatim against PRODUCTION-served Quellight:
+POST http://localhost:4742/api/act
+  content-type: text/plain;charset=UTF-8   <-- header-less fetch default
+HTTP:403
+Body: "Cross-site POST form submissions are forbidden"   (SvelteKit production CSRF guard)
+
+## Positive control (same body, content-type: application/json), production serving
+HTTP:200
+
+## Dev-mode note (matches the original audit's empirical matrix)
+The identical no-content-type POST against the DEV server (:4739) returns 200 — dev mode does not run the CSRF guard; this is exactly how the original accepted evidence was masked.
+
+## Real-browser journey (Playwright headless Chromium) against Studio PRODUCTION :4741 /product
+- Same-turn panel: "SAME-TURN alignment demonstrated: the target's own turnId appears in BOTH answers (turn-6b6b5e46-b557-41eb-a7d1-6de5ef4f7d2c)." Read 2 inspection row rendered => the act-ingress POST succeeded (200).
+- Refusal regression: agent-context credential agent.turn.get -> {"succeeded":false,"refusalCode":"VICT_TURN_ACTOR_MISMATCH"}; whoami DIFF: ["actorId","roles","scopes","mastraResourceId"] (actor-quellight-local vs agent-quellight-agent-context).
+- Anti-newer probe regression: {"command":"run.get","refused":true,"code":"VICT_HTTP_ROUTE_UNKNOWN"} + capability-honesty banner rendered.
+Screenshots: m1-aligned-panel.png, m1-refusal-banner.png, m1-probe-refusal-banner.png (+ full-page m1-aligned-panel-fullpage.png).
