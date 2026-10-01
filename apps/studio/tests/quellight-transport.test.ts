@@ -326,6 +326,69 @@ describe('same-turn proof reads (unit, fetch spies)', () => {
     expect(pair.correlations).toEqual({ turnRead: true, inspection: true });
   });
 
+  it('M-1 REPAIR — every POST carries content-type application/json (production CSRF survival)', async () => {
+    const seen: Array<{ url: string; method: string; contentType: string | undefined }> = [];
+    const fetchImpl = (async (
+      url: string,
+      init?: {
+        method?: string;
+        headers?: Record<string, string>;
+        body?: string;
+      },
+    ) => {
+      seen.push({
+        url,
+        method: init?.method ?? 'GET',
+        contentType: init?.headers?.['content-type'],
+      });
+      if (url.endsWith('/vict/v1/turns/' + TURN_ID)) {
+        return {
+          status: 200,
+          json: async () => ({
+            ok: true,
+            data: {
+              turn: { turnId: TURN_ID, status: 'completed', actorId: 'actor-quellight-local' },
+            },
+          }),
+        } as unknown as Response;
+      }
+      if (url.endsWith('/api/act')) {
+        expect(init?.method).toBe('POST');
+        expect(init?.headers?.['content-type']).toBe('application/json');
+        return {
+          status: 200,
+          json: async () => ({
+            ok: true,
+            value: {
+              ok: true,
+              row: {
+                usage: 'used',
+                usedCount: 0,
+                details: { turnId: TURN_ID, threadId: THREAD_ID },
+              },
+            },
+          }),
+        } as unknown as Response;
+      }
+      return {
+        status: 404,
+        json: async () => ({ ok: false, code: 'VICT_HTTP_ROUTE_UNKNOWN' }),
+      } as unknown as Response;
+    }) as unknown as Parameters<typeof readQuellightTurnPair>[0]['fetchImpl'];
+    const pair = await readQuellightTurnPair({
+      endpoint: QL_ENDPOINT,
+      threadId: THREAD_ID,
+      turnId: TURN_ID,
+      fetchImpl,
+    });
+    expect(pair.correlations).toEqual({ turnRead: true, inspection: true });
+    const posts = seen.filter((call) => call.method === 'POST');
+    expect(posts.length).toBeGreaterThan(0);
+    for (const post of posts) {
+      expect(post.contentType).toBe('application/json');
+    }
+  });
+
   it('FALSIFIER — an inspection projection WITHOUT a turn correlation renders the truthful NOT-DEMONSTRATED state', async () => {
     const fetchImpl = spyHandler((url, method) => {
       if (urlEndingIn(url, `/vict/v1/turns/${TURN_ID}`) && method === 'GET') {

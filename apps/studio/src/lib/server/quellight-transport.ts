@@ -157,6 +157,13 @@ export async function callTargetCommand(
   if (token !== undefined) {
     headers['authorization'] = `Bearer ${token}`;
   }
+  // M-1 (Stage 9 exit audit): a POST body MUST declare application/json —
+  // SvelteKit's production CSRF protection 403s JSON POSTs without the
+  // explicit content-type, so the same-turn Read 2 failed under
+  // production serving while dev-mode (no CSRF check) masked it.
+  if (payload !== undefined) {
+    headers['content-type'] = 'application/json';
+  }
   let raw: { status: number; json: () => Promise<unknown> };
   try {
     raw = await perform(`${endpoint}${path}`, {
