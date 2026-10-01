@@ -144,6 +144,10 @@ needed:
   no persisted record).
 - Actor-denial code labeling LOW (the OD-R4 single-actor structural limitation, resolved
   by the authorized C2 increment; labeling nuance retained).
+- Turn-vs-inspection refusal-code wording (G3 closure finding): the two refusal surfaces
+  carry differently-worded codes (`VICT_TURN_ACTOR_MISMATCH` on the turn surface vs
+  `DATA_UNAUTHORIZED` on the inspection surface); the wording difference is retained as
+  recorded — itemized here at the closure checker's request so it is not folded away.
 - Deployment notes from the M-1 re-verification (see §4): `ORIGIN` requirement,
   `[::1]` binding, lazy-composed boundary port.
 
@@ -166,6 +170,9 @@ no product activation. Stage 9 closure does not open any new stage.
 A fresh independent checker reviewed the final closure claims and the documentation SHA
 before handover (lineage of every cited SHA, quote fidelity of the declaration and of the
 M-1 red evidence, retained-findings completeness against the prior records, pairing-limit
-precision, non-forced ancestry of `main`, and the final `main` SHA). Its verdict is
-recorded in STATE. The owner received the final VICT `main` SHA and the follow-up
-register with this record.
+precision, non-forced ancestry of `main`, and the final `main` SHA). **Verdict: GO for
+owner handover — no NO-GO conditions.** Its findings: INFO — STATE paraphrases rather
+than quotes the owner declaration (semantically faithful, no drift); MINOR — the
+turn-vs-inspection refusal-code-wording finding was not itemized verbatim in §6
+(remedied in this record's §6 as directed; non-blocking). The owner received the final
+VICT `main` SHA and the follow-up register with this record.
