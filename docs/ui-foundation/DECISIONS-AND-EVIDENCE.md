@@ -92,7 +92,50 @@ The pack was installed verbatim into `docs/ui-foundation/` of the isolated branc
 Installed-copy repairs (made before candidate review, recorded here):
 
 - The four pack-review links in the ledger above were rewritten from pack-relative `../../reviews/…` paths to the installed `reviews/…` locations so links resolve inside the repository. Report and manifest bytes are unchanged.
-- `STATE.md` is updated in place per its update discipline as U0 proceeds; its delivered opening bytes remain in pack review lineage (candidate 02 digest `8f7aeda86896ef83669e394e9a48e527f5db849a3e0fb880642a2f36bb05a963`).
+- `STATE.md` is updated in place per its update discipline as U0 proceeds; the delivered pack STATE bytes are inventory digest `957818b1ffb47c9ebac2be3dcc2d0eb11eca177312ba46109d439c64e806d70e` (final `HASHES.json`, post-review metadata included), while the candidate-02 reviewed STATE snapshot was `8f7aeda86896ef83669e394e9a48e527f5db849a3e0fb880642a2f36bb05a963`; the installed copy departs from both through the disclosed opening/ledger update above.
+
+## U0 contract review round 1 and repairs (2026-10-06)
+
+Identity: repository radz2291/vict-02, branch `codex/ui-foundation-u0`, base
+`4d2df037d8a82d36c60bf1bff16919650643ce22`, reviewed candidate
+`f7767b2750d85399e7200991e503e061001ee03f`.
+
+Claims and verdict: the independent fresh-context verifier (non-author; report preserved
+verbatim at [reviews/U0-REVIEW-01.md](reviews/U0-REVIEW-01.md), report SHA-256
+`456e910a2873cfc613ed064909e12716fadb4f6372bcf0d6b81fc539de19c241`) challenged the exact
+candidate
+bytes against U0-01..U0-08. Criterion results at that SHA: U0-01..U0-07 PASS (each with
+independently re-derived source evidence); U0-08 NOT DEMONSTRATED — correctly so at a
+pre-freeze candidate, since freeze pins, the freeze record, the separate freeze-byte checker
+and recorded candidate/reviewer/checker SHAs do not exist yet. Overall verdict: **HELD** —
+no blocker; the gate completes after repairs, re-review and freeze verification.
+
+Findings and repair disposition (all repaired in this round; none blocked):
+
+| Finding | Severity | Repair |
+| --- | --- | --- |
+| F-1 Edge version datum wrong (staged 155 recorded as installed) | MINOR | PROOF-DESIGN §5 now records the installed executable version 154.0.4258.53 and discloses the staged package |
+| F-2 §10 fixture table omitted `application-v3-catalog-collision.json` | MINOR | row added |
+| F-3 `application-v3-valid.json` row overstated "catalog + pin match" | MINOR | row reworded (pins are optional inputs, omitted in that fixture) |
+| F-4 installation record conflated delivered vs reviewed STATE digests | MINOR | record now cites both `957818b1…` (final inventory) and `8f7aeda8…` (candidate-02 snapshot) precisely |
+| F-5 §7 lacked a scope sentence for pre-existing VICT diagnostics | NOTE | scope paragraph added (`RELEASE_APPLICATION_MISMATCH` etc. remain governed by their owning modules) |
+| F-6 "one docs-index line" imprecise at byte level | NOTE | RECONCILIATION §1 reworded (single wrapped bullet) |
+| F-7 two negative fixtures lacked expected-diagnostic notes | NOTE | notes added |
+
+Additional manager-identified repair, disclosed beyond the reviewer's list: the
+`ui-document-invalid-duplicate-node.json` fixture could not actually demonstrate
+`UI_DOC_DUPLICATE_NODE_ID` (JSON object keys cannot repeat). Replaced by
+`ui-document-invalid-dangling-child.json` exercising the new `UI_DOC_UNKNOWN_NODE` code
+(added to the §7 catalog, class "invalid tree"); the duplicate-ID rule remains specified as a
+parsed-model validation whose negative is exercised in U1 at model level.
+
+Reproduction: review report section 3 (per-criterion evidence) and section 4 (falsification
+log) in the preserved report; `git diff f7767b2..<repair SHA>` after this commit shows every
+repair bounded to `docs/ui-foundation/**`.
+
+Authority: HANDOFF WP-6 continues — affected re-verification of the repaired bytes by a fresh
+independent reviewer, then freeze pins at the accepted contract SHA, freeze-record commit, and
+a separate fresh checker reproducing the pins before push/report.
 
 ## Future evidence entry format
 

@@ -258,6 +258,12 @@ Execution mapping (exact existing boundaries; see RECONCILIATION §4):
 
 ## 7. Diagnostic catalog (names, payloads, severity — frozen at U0)
 
+Scope: this table freezes the NEW UI-foundation diagnostic classes. Existing VICT diagnostics
+(application `APPLICATION_*`, release `RELEASE_*` — e.g. `RELEASE_APPLICATION_MISMATCH` cited
+in §2.3, adapter `DATA_*`, renderer `RENDERER_*`, runtime effect denials) remain governed by
+their owning modules and are intentionally not duplicated here; the preview layer maps onto
+them as specified in §6.2.
+
 Payload base: `{ code, message, severity }` plus the listed detail fields. Source paths and
 IDs are always included where the table names them.
 
@@ -265,6 +271,7 @@ IDs are always included where the table names them.
 | --- | --- | --- | --- |
 | `UI_DOC_UNKNOWN_SCHEMA` | error | `schema, supported: string[]` | unsupported feature/version |
 | `UI_DOC_DUPLICATE_NODE_ID` | error | `documentId, nodeId` | invalid tree |
+| `UI_DOC_UNKNOWN_NODE` | error | `documentId, nodeId, missingChildId` | invalid tree (internal ordered reference) |
 | `UI_DOC_CYCLE` | error | `documentId, path: string[]` | invalid tree/reference |
 | `UI_DOC_REFERENCE_DANGLING` | error | `documentId, screenId?, reference` | invalid reference |
 | `UI_DOC_REVISION_COLLISION` | error | `documentId, revision, digestA, digestB, authority: 'catalog' \| 'pin'` | invalid reference |
@@ -356,13 +363,14 @@ Representative fixtures (installed under `fixtures/`, JSON, prettier-clean):
 | --- | --- |
 | `ui-document-valid.json` | Minimal valid document: elements, text, a component instance, repeat, conditional, token, condition, binding, interaction |
 | `ui-document-invalid-dangling-component.json` | `UI_DOC_UNKNOWN_COMPONENT` negative |
-| `ui-document-invalid-duplicate-node.json` | `UI_DOC_DUPLICATE_NODE_ID` negative |
-| `application-v3-valid.json` | @3 application: one document-mode screen + one legacy screen, catalog + pin match |
+| `ui-document-invalid-dangling-child.json` | `UI_DOC_UNKNOWN_NODE` negative (internal child reference); `UI_DOC_DUPLICATE_NODE_ID` is a parsed-model rule whose negative cannot be expressed in a JSON object fixture and is exercised in U1 at model level |
+| `application-v3-valid.json` | @3 application: one document-mode screen + one legacy screen, document supplied via the explicit catalog (pins are an optional input and omitted here) |
 | `application-v3-invalid-mixed-presentation.json` | `UI_APP_PRESENTATION_MODE_INVALID` negative |
 | `ui-edit-transaction-valid.json` | Ordered multi-command transaction with expected revision |
 | `ui-edit-transaction-invalid-stale.json` | `UI_DOC_STALE_REVISION` negative |
 | `ui-scenario-valid.json` | Inspection approval scenario with per-operation coverage |
 | `ui-scenario-invalid-missing-coverage.json` | `SCENARIO_COVERAGE_MISSING` negative |
+| `application-v3-catalog-collision.json` | two competing catalog entries for the same `(documentId, revision)` with different digests → `UI_DOC_REVISION_COLLISION` |
 
 These fixtures are contract examples for review — they are not executed in U0 and are not
 fabricated compile/execution evidence (STAGES §2).

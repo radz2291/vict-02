@@ -257,5 +257,6 @@
       "type": "boolean",
       "default": false
     }
-  }
+  },
+  "note": "NEGATIVE: component node 'finding-instance' references definitionId 'def.missing-card' which is absent from componentDefinitions -> expected UI_DOC_UNKNOWN_COMPONENT"
 }

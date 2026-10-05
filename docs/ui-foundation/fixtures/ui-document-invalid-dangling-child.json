@@ -10,7 +10,7 @@
       "attributes": {
         "class": "inspection-detail"
       },
-      "children": ["heading", "findings", "decision-block", "duplicate-heading"]
+      "children": ["heading", "findings", "decision-block", "gone-child"]
     },
     "heading": {
       "kind": "element",
@@ -118,15 +118,6 @@
       "content": {
         "type": "literal",
         "value": "Approve inspection"
-      }
-    },
-    "duplicate-heading": {
-      "kind": "element",
-      "tag": "h1",
-      "children": ["heading-text"],
-      "style": {
-        "sourceIds": ["ss.heading"],
-        "local": []
       }
     }
   },
@@ -266,5 +257,6 @@
       "type": "boolean",
       "default": false
     }
-  }
+  },
+  "note": "NEGATIVE: root 'screen' lists child 'gone-child' which is absent from the node registry -> expected UI_DOC_UNKNOWN_NODE (ordered child reference integrity); JSON object keys cannot repeat, so the UI_DOC_DUPLICATE_NODE_ID rule is exercised at the parsed-model level in U1 rather than in a JSON fixture"
 }

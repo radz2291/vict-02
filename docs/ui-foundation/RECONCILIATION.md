@@ -12,7 +12,7 @@ existing exported names are quoted exactly.
 | Repository remote (origin) | `https://github.com/radz2291/vict-02.git` (fetch + push) |
 | Live `origin/main` at U0 start (2026-10-06, fresh `git fetch`) | `4d2df037d8a82d36c60bf1bff16919650643ce22` — identical to the pack-observed baseline |
 | Stage branch | `codex/ui-foundation-u0`, created at the SHA above in an isolated worktree (`vict-02-u0`); normal push destination; no force-push |
-| Working tree | Clean at branch creation; all U0 changes are new files under `docs/ui-foundation/`, a 14-line append to root `AGENTS.md`, and one docs-index line in `README.md` |
+| Working tree | Clean at branch creation; all U0 changes are new files under `docs/ui-foundation/`, a 14-line append to root `AGENTS.md`, and a single docs-index bullet (source-wrapped over two physical lines) in `README.md` |
 | Root instructions | Existing `AGENTS.md` Stage 9/canonical-reference rules preserved byte-for-byte; routing block appended per `AGENTS.addendum.md` |
 
 Concurrent-work classification at U0 start: the remote carries Stage 9 review/verification

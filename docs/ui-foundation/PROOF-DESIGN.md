@@ -109,7 +109,7 @@ named at measurement time):
 | --- | --- |
 | Machine | Lenovo (model 81N4), Windows 11 Home, build 26200, 12,102 MB RAM |
 | Node / npm | v22.13.1 / 11.19.1 |
-| Browsers available | Chrome 154.0.8037.92; Edge 155.0.8059.26 |
+| Browsers available | Chrome 154.0.8037.92; Edge 154.0.4258.53 (installed executable version; a newer staged 155.0.8059.26 package is present but is not the installed binary) |
 | Notes | Cold vs warm distinguished; ≥30 measured iterations after warm-up; method preserved with results |
 
 Workload (STAGES §8): 1,000 authored nodes including reusable definitions; 100 visible repeated
