@@ -94,7 +94,12 @@ nodes:
 
 `UI_DOC_CYCLE` is reported when the expansion graph contains a directed cycle — including
 within one document (acyclic containment, §3) — and its payload path enumerates the units on
-the cycle. A direct or indirect navigation loop is **not** such a cycle.
+the cycle. A direct or indirect navigation loop is **not** such a cycle. Every expansion edge
+points **at a definition** (document→definition for a tree-level instance; definition→
+definition for an instantiation); no edge ever points at a document. Cycles can therefore
+occur only among definitions, and a document node can never sit on one. Containment edges
+inside a source unit — slot fillings, repeat templates, conditional branches, portal children
+and their descendants — never cross units at all.
 
 Edges that must resolve but never participate in cycle detection:
 
@@ -118,8 +123,10 @@ mere co-membership in the same application is never an expansion edge. Worked ex
 ```
 uiDocuments: [ { documentId, revision, contentDigest }, ... ]
    // after rule-2 validation: deduplicated by (documentId, revision), then totally ordered
-   // by code-point string comparison on (documentId, revision); revision order is plain
-   // string order (e.g. "2" < "3" < "10"), not semantic version order
+   // by comparing (documentId, revision) as sequences of Unicode code points (equivalent to
+   // UTF-8 byte order; deliberately not UTF-16 code-unit order, which differs only for
+   // astral characters) — revision order is plain string order, e.g. "10" < "2" < "3",
+   // not semantic version order
 ```
 
 - Example A (identity change): screen S references document D@2 with digest `aaaa…`. Editing D

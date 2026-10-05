@@ -51,5 +51,6 @@
   "tokens": {},
   "conditions": {},
   "assets": {},
-  "localState": {}
+  "localState": {},
+  "note": "NEGATIVE: definitions def.a and def.b instantiate each other -> definition-level expansion cycle, expected UI_DOC_CYCLE (path def.a -> def.b -> def.a); all node IDs and component references resolve, so this is the ONLY defect"
 }

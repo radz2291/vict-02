@@ -77,7 +77,17 @@
           "status": "draft",
           "rejectionReason": null
         },
-        "activityEntry": "Reopened for correction by technician (prior reason quoted in activity)"
+        "activityEntry": "Reopened for correction by technician (prior reason quoted: \"Seal wear beyond tolerance\")"
+      }
+    },
+    {
+      "op": {
+        "capabilityId": "finding.add"
+      },
+      "implementation": "simulated",
+      "outcome": {
+        "kind": "success",
+        "activityEntry": "Finding added during correction (technician edit on draft)"
       }
     },
     {
@@ -95,5 +105,5 @@
     }
   ],
   "resetBoundary": "session",
-  "note": "VALID (A-02): completes the rejection -> correction -> resubmission journey (reject -> revise -> edit -> resubmit); record-level decision fields are cleared on revise while the activity trail preserves the reason. Journey fixture, not a ninth product scenario."
+  "note": "VALID (A-02): completes the rejection -> correction -> resubmission journey (reject -> revise -> edit -> resubmit); record-level decision fields are cleared on revise while the activity trail preserves the quoted reason; the finding.add step is the permitted edit on the revised draft. Journey fixture, not a ninth product scenario."
 }

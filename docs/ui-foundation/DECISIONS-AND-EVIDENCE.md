@@ -242,6 +242,32 @@ Process note (disclosed): during this round a mistaken `rm -rf` targeted the rea
 was affected, all bytes were restored from HEAD `a664c70…` via git, and the amended candidate
 was then re-derived and committed immediately. No evidence bytes were fabricated or lost.
 
+## U0 amendment review round 1 (2026-10-06) — AMENDMENT HELD; repairs F-A-01..F-A-05 applied
+
+Identity: fresh independent verifier audited candidate `33ae56f…` + ledger `df3d283…` (report
+preserved verbatim at [reviews/U0-AMENDMENT-REVIEW-01.md](reviews/U0-AMENDMENT-REVIEW-01.md),
+SHA-256 `382ff47c2518f4cbc9ca29352e310f3ea973deba7518ab3d1178032e97ba1199`). Verified: baseline
+live, amendment diff confined to docs/ui-foundation, superseded freeze intact (all 19 original
+pins reproduce; FREEZE.json untouched), all three prior report hashes match at HEAD, regression
+U0-01..U0-07 PASS, catalog 28 codes/no orphans, fixture table 13↔13, checks clean, ledger
+truthful.
+
+Verdict: **AMENDMENT HELD (repairs needed)** — A-01 and A-02 CLOSED WITH NOTES, A-03 NOT CLOSED
+pending F-A-01. Findings and dispositions:
+
+| Finding | Severity | Disposition |
+| --- | --- | --- |
+| F-A-01 Example contradicts itself: claimed code-point order gives `"10" < "2" < "3"`, text said `"2" < "3" < "10"` | MAJOR | repaired: comment now states the correct code-point example; Example D's `D@2` before `D@3` remains correct (`"2" < "3"`) |
+| F-A-02 journey fixture under-demonstrated: no edit between revise and resubmit; reason asserted, never quoted | MINOR | repaired: `finding.add` step inserted; revise activity entry quotes the actual reason |
+| F-A-03 expansion-cycle negative lacked the `NEGATIVE: …` note convention | MINOR | repaired: note added (expected `UI_DOC_CYCLE`, path `def.a → def.b → def.a`, single-defect statement) |
+| F-A-04 document-node cycle-impossibility implicit | NOTE | repaired: one sentence states every expansion edge points at a definition, so cycles occur only among definitions |
+| F-A-05 code-point vs UTF-16 code-unit ambiguity (astral only) | NOTE | repaired: ordering specified as Unicode code points (UTF-8 byte order equivalent, deliberately not UTF-16 code units) |
+| F-A-06 pack-fidelity framing was 9/11 at `54490a8…` but 6/11 post-amendment (extra divergences = exactly the authorized amendment targets) | NOTE | accepted; the new freeze record enumerates pack fidelity explicitly |
+| F-A-07 `decidedAt` never fixture-modeled (consistent with the pre-existing approve fixture) | NOTE | retained; no change |
+
+Repaired candidate replaces `33ae56f…`; a scoped fresh re-verification of the repairs precedes
+the new freeze record (per the reviewer's own prescription).
+
 ## Future evidence entry format
 
 Identity: repository, branch, full base/candidate/reviewer SHAs, environment and contract pins.
