@@ -42,6 +42,14 @@ export type {
   RendererBindings,
   RendererDiagnosticCode,
 } from './renderer.js';
+export { APPLICATION_IDENTITY_SCHEMA_V3_MARKER } from './compile.js';
+export { resolveUiAttachments } from './ui-attach.js';
+export type {
+  ResolveUiAttachmentsInput,
+  ResolvedUiAttachments,
+  UiDocumentCatalogEntryInput,
+  UiDocumentPinInput,
+} from './ui-attach.js';
 export { APPLICATION_ISSUE_CODES, describeApplicationVocabulary } from './vocabulary.js';
 export type { ApplicationVocabulary, VocabularyObject } from './vocabulary.js';
 

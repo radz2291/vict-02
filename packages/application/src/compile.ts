@@ -1,9 +1,18 @@
 import {
   APPLICATION_DEFINITION_SCHEMA,
   APPLICATION_DEFINITION_SCHEMA_V2,
+  APPLICATION_DEFINITION_SCHEMA_V3,
+  APPLICATION_IDENTITY_SCHEMA_V3,
   RESOURCE_DEFINITION_SCHEMA,
   THEME_TOKEN_NAMES,
 } from '@victframework/sdk';
+import type {
+  UiDiagnostic,
+  UiDocumentIdentityEntry,
+  UiRenderPlan,
+} from '@victframework/ui';
+import { resolveUiAttachments } from './ui-attach.js';
+import type { UiDocumentCatalogEntryInput, UiDocumentPinInput } from './ui-attach.js';
 import { sha256 } from './sha256.js';
 import {
   validateApplicationComposition,
@@ -121,6 +130,12 @@ export interface CompileApplicationInput {
   readonly contracts?: readonly ContractRegistryEntry[];
   readonly capabilities?: readonly CapabilityRegistryEntry[];
   readonly components?: readonly ComponentReference[];
+  /** @3 only: explicit UI document catalog (no hidden registries). */
+  readonly uiDocuments?: readonly UiDocumentCatalogEntryInput[];
+  /** @3 only: explicit (documentId, revision) → digest pins. */
+  readonly uiDocumentPins?: readonly UiDocumentPinInput[];
+  /** @3 only: declared extension descriptors (registered outside serialized source). */
+  readonly uiExtensions?: readonly unknown[];
 }
 
 /* ------------------------------------------------------------------ */
@@ -155,6 +170,8 @@ const SCREEN_FIELDS_V2: ReadonlySet<string> = new Set([
   'layoutMode',
   'composition',
 ]);
+/** @3 adds document-mode presentation; layout/layoutMode/composition are then FORBIDDEN. */
+const SCREEN_FIELDS_V3: ReadonlySet<string> = new Set([...SCREEN_FIELDS_V2, 'uiDocument']);
 const REGION_FIELDS: ReadonlySet<string> = new Set(['name', 'surfaces']);
 const STATES_FIELDS: ReadonlySet<string> = new Set([
   'loading',
@@ -887,6 +904,9 @@ function collectCanonicalInputIssues(input: CompileApplicationInput): readonly A
   if (input.contracts !== undefined) walkCollection(input.contracts, 'contracts', walk);
   if (input.capabilities !== undefined) walkCollection(input.capabilities, 'capabilities', walk);
   if (input.components !== undefined) walkCollection(input.components, 'components', walk);
+  if (input.uiDocuments !== undefined) walkCollection(input.uiDocuments, 'uiDocuments', walk);
+  if (input.uiDocumentPins !== undefined) walkCollection(input.uiDocumentPins, 'uiDocumentPins', walk);
+  if (input.uiExtensions !== undefined) walkCollection(input.uiExtensions, 'uiExtensions', walk);
   return collector.sorted();
 }
 
@@ -1103,8 +1123,12 @@ export const APPLICATION_IDENTITY_SCHEMA = 'vict.application-identity@1';
  */
 export const APPLICATION_IDENTITY_SCHEMA_V2 = 'vict.application-identity@2';
 
+/** The @3 identity marker (canonical UI attachment; U1). */
+export const APPLICATION_IDENTITY_SCHEMA_V3_MARKER = APPLICATION_IDENTITY_SCHEMA_V3;
+
 /** Resolve the identity marker for an application schema. */
 function identitySchemaFor(applicationSchema: string): string {
+  if (applicationSchema === 'vict.application@3') return APPLICATION_IDENTITY_SCHEMA_V3;
   return applicationSchema === 'vict.application@2'
     ? APPLICATION_IDENTITY_SCHEMA_V2
     : APPLICATION_IDENTITY_SCHEMA;
@@ -1188,6 +1212,8 @@ export function canonicalApplicationManifest(
 export function computeApplicationVersion(input: {
   readonly application: ApplicationDefinition;
   readonly resources: readonly ResourceDefinition[];
+  /** @3: A-03-ordered identity entries (deduplicated, code-point sorted). */
+  readonly uiDocuments?: readonly UiDocumentIdentityEntry[];
 }): string {
   const { application } = input;
   const providedResources = new Map(input.resources.map((entry) => [entry.id, entry]));
@@ -1224,6 +1250,12 @@ export function computeApplicationVersion(input: {
       referencedViews,
       referencedActions,
       referencedComponents,
+      // A-03: the hashed payload gains the UI document identities for @3
+      // applications only — @1/@2 payloads stay byte-identical to their
+      // historical form. Entries arrive deduplicated and code-point sorted.
+      ...((application as { schema: string }).schema === APPLICATION_DEFINITION_SCHEMA_V3 && input.uiDocuments !== undefined
+        ? { uiDocuments: input.uiDocuments }
+        : {}),
     }),
   )}`;
 }
@@ -1234,7 +1266,12 @@ export function computeApplicationVersion(input: {
 
 export type CompileApplicationResult =
   | { readonly ok: true; readonly plan: ApplicationPlan }
-  | { readonly ok: false; readonly issues: readonly ApplicationIssue[] };
+  | {
+      readonly ok: false;
+      readonly issues: readonly ApplicationIssue[];
+      /** @3: structured UI-foundation diagnostics (frozen §7 codes). */
+      readonly uiIssues?: readonly UiDiagnostic[];
+    };
 
 /**
  * The compiled, immutable application plan. Everything is deep-frozen;
@@ -1258,8 +1295,49 @@ export interface ApplicationPlan {
   readonly actions: Readonly<Record<string, Readonly<ActionDefinition>>>;
   readonly resources: Readonly<Record<string, Readonly<ResourceDefinition>>>;
   readonly components: readonly Readonly<ComponentReference>[];
+  /** @3: resolved UI document identity metadata, keyed `${documentId}@${revision}`. */
+  readonly uiDocuments?: Readonly<
+    Record<string, { readonly documentId: string; readonly revision: string; readonly contentDigest: string }>
+  >;
+  /** @3: compiled render plans for every referenced document (one renderer, U1-02). */
+  readonly documentPlans?: Readonly<Record<string, UiRenderPlan>>;
+  /** @3: non-fatal UI diagnostics carried from document compilation. */
+  readonly uiDiagnostics?: readonly UiDiagnostic[];
   /** Canonical serializable form of the compiled plan (declarations + references only). */
   toJSON(): Record<string, unknown>;
+}
+
+/**
+ * Typed view fields visible as `view.<field>` inside UI documents (rule 4):
+ * the union over declared views of their resource's field catalog, in the
+ * view's declared projection when one is declared. Types map from the
+ * resource vocabulary (json → array).
+ */
+function buildViewFieldCatalog(
+  declaredViews: readonly unknown[],
+  providedResources: ReadonlyMap<string, ResourceDefinition>,
+): Record<string, 'string' | 'number' | 'boolean' | 'array'> {
+  const isRecord = (value: unknown): value is Record<string, unknown> =>
+    typeof value === 'object' && value !== null && !Array.isArray(value);
+  const viewFields: Record<string, 'string' | 'number' | 'boolean' | 'array'> = {};
+  for (const view of declaredViews) {
+    if (!isRecord(view)) continue;
+    const resourceId = view.resourceId;
+    const resource = typeof resourceId === 'string' ? providedResources.get(resourceId) : undefined;
+    if (resource === undefined) continue;
+    const fields = Array.isArray(resource.fields) ? resource.fields : [];
+    const projected = Array.isArray(view.fields) && view.fields.length > 0 ? view.fields : null;
+    for (const field of fields) {
+      if (!isRecord(field)) continue;
+      const name = field.name;
+      if (typeof name !== 'string') continue;
+      if (projected !== null && !projected.includes(name)) continue;
+      const type = field.type;
+      viewFields[name] =
+        type === 'number' ? 'number' : type === 'boolean' ? 'boolean' : type === 'json' ? 'array' : 'string';
+    }
+  }
+  return viewFields;
 }
 
 /** Compile one application. Never throws for invalid definitions. */
@@ -1284,10 +1362,14 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
     // The @2 schema marker selects the EXTENDED closed field sets and the
     // Stage 05 validation rules. @1 definitions keep their exact Stage 04
     // accepted shape and semantics (schema-marker compatibility path).
+    // @3 adds document-mode presentation (exactly one mode per screen).
     const isV2 = application.schema === 'vict.application@2';
-    const routeFields = isV2 ? ROUTE_FIELDS_V2 : ROUTE_FIELDS;
-    const screenFields = isV2 ? SCREEN_FIELDS_V2 : SCREEN_FIELDS;
-    const statesFields = isV2 ? STATES_FIELDS_V2 : STATES_FIELDS;
+    const isV3 = (application as { schema: string }).schema === APPLICATION_DEFINITION_SCHEMA_V3;
+    /** @3 inherits the complete @2 surface/action/theme vocabulary. */
+    const v2ish = isV2 || isV3;
+    const routeFields = isV2 || isV3 ? ROUTE_FIELDS_V2 : ROUTE_FIELDS;
+    const screenFields = isV3 ? SCREEN_FIELDS_V3 : isV2 ? SCREEN_FIELDS_V2 : SCREEN_FIELDS;
+    const statesFields = isV2 || isV3 ? STATES_FIELDS_V2 : STATES_FIELDS;
 
     if (!isPlainObject(application)) {
       return {
@@ -1299,10 +1381,10 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
     }
     collector.unknownFields(
       application,
-      isV2 ? new Set([...APPLICATION_FIELDS, 'composition']) : APPLICATION_FIELDS,
+      isV2 || isV3 ? new Set([...APPLICATION_FIELDS, 'composition']) : APPLICATION_FIELDS,
       'application',
     );
-    if (isV2 && application.composition !== undefined) {
+    if (v2ish && application.composition !== undefined) {
       for (const issue of validateApplicationComposition(
         application.composition,
         'application.composition',
@@ -1319,7 +1401,8 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
       );
     } else if (
       application.schema !== APPLICATION_DEFINITION_SCHEMA &&
-      application.schema !== APPLICATION_DEFINITION_SCHEMA_V2
+      application.schema !== APPLICATION_DEFINITION_SCHEMA_V2 &&
+      application.schema !== APPLICATION_DEFINITION_SCHEMA_V3
     ) {
       collector.add(
         'APPLICATION_UNKNOWN_SCHEMA',
@@ -1615,7 +1698,7 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
         }
         routePaths.add(route.path);
       }
-      if (isV2) {
+      if (v2ish) {
         // Stage 05 route-path grammar: leading slash, static segments and
         // single `:name` parameters only — the renderer's deterministic
         // matcher cannot accept anything else.
@@ -1711,13 +1794,13 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
       // Route->screen resolution is checked after the screens map is built.
       // @2 redirect routes are exempt: they declare no screen at all.
       routeScreenResolutions.push((collector, screens: ReadonlyMap<string, ScreenDefinition>) => {
-        if (isV2 && route.redirect !== undefined) {
+        if (v2ish && route.redirect !== undefined) {
           return;
         }
         if (route.screenId === undefined) {
           collector.add(
             'ROUTE_SCREEN_REQUIRED',
-            `Route '${route.id}' must declare a screen${isV2 ? ' or a redirect' : ''}.`,
+            `Route '${route.id}' must declare a screen${v2ish ? ' or a redirect' : ''}.`,
             `application.routes[${route.id}].screenId`,
           );
           return;
@@ -1731,7 +1814,7 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
         }
       });
     }
-    if (isV2 && redirectTargets.size > 0) {
+    if (v2ish && redirectTargets.size > 0) {
       // Redirect targets must exist; redirect chains must terminate. The
       // chain walk is bounded by the route count, so cycles fail with a
       // structured diagnostic instead of looping.
@@ -1811,7 +1894,7 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
         screensById.set(screen.id, screen);
       }
       requireDisplayStringMember(collector, screen, 'title', `${screenPath}.title`, 'Screen title');
-      if (isV2 && screen.composition !== undefined) {
+      if (v2ish && screen.composition !== undefined) {
         for (const issue of validatePageComposition(
           screen.composition,
           screenPath + '.composition',
@@ -1824,7 +1907,7 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
           collector.add('INVALID_SURFACE_DECLARATION', issue.message, issue.path);
         }
       }
-      if (isV2 && screen.breadcrumbs !== undefined) {
+      if (v2ish && screen.breadcrumbs !== undefined) {
         for (const [index, crumb] of screen.breadcrumbs.entries()) {
           collector.unknownFields(
             crumb,
@@ -1848,13 +1931,15 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
           }
         }
       }
-      if (!Array.isArray(screen.layout)) {
+      // @3 document-mode screens carry uiDocument instead of a layout.
+      const screenIsDocumentMode = isV3 && (screen as { uiDocument?: unknown }).uiDocument !== undefined;
+      if (!Array.isArray(screen.layout) && !screenIsDocumentMode) {
         collector.add(
           'APPLICATION_REQUIRED_MEMBER',
           `Screen layout must be an array (received ${describeReceived(screen.layout)}).`,
           `${screenPath}.layout`,
         );
-      } else {
+      } else if (Array.isArray(screen.layout)) {
         const regionNames = new Set<string>();
         for (const region of screen.layout) {
           if (!isPlainObject(region)) {
@@ -1868,7 +1953,7 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
           const regionPath = `${screenPath}.layout[${entryKeyLabel(region.name)}]`;
           collector.unknownFields(
             region,
-            isV2 ? new Set([...REGION_FIELDS, 'size', 'appearance', 'flow']) : REGION_FIELDS,
+            v2ish ? new Set([...REGION_FIELDS, 'size', 'appearance', 'flow']) : REGION_FIELDS,
             regionPath,
           );
           const presentation = Object.fromEntries(
@@ -1906,7 +1991,7 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
             continue;
           }
           for (const surface of region.surfaces) {
-            collectSurface(collector, surface, screenPath, surfaceIds, surfaceResolutions, isV2);
+            collectSurface(collector, surface, screenPath, surfaceIds, surfaceResolutions, v2ish);
           }
         }
       }
@@ -1928,7 +2013,7 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
                 `${screenPath}.states.${name}`,
                 surfaceIds,
                 surfaceResolutions,
-                isV2,
+                v2ish,
               );
             }
           }
@@ -2171,11 +2256,11 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
           const fieldPath = `${formPath}.fields[${entryKeyLabel(field.name)}]`;
           collector.unknownFields(
             field,
-            isV2 ? new Set([...FORM_FIELD_FIELDS, 'options']) : FORM_FIELD_FIELDS,
+            v2ish ? new Set([...FORM_FIELD_FIELDS, 'options']) : FORM_FIELD_FIELDS,
             fieldPath,
           );
           if (field.widget === 'select') {
-            if (!isV2 || !Array.isArray(field.options) || field.options.length === 0) {
+            if (!v2ish || !Array.isArray(field.options) || field.options.length === 0) {
               collector.add(
                 'INVALID_SURFACE_DECLARATION',
                 'Select fields require @2 and nonempty options.',
@@ -2282,12 +2367,12 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
       const actionPath = `application.actions[${entryKeyLabel(action.id)}]`;
       collector.unknownFields(
         action,
-        isV2
+        v2ish
           ? new Set([...(ACTION_FIELDS.get(action.kind) ?? ACTION_BASE_FIELDS), 'feedback'])
           : (ACTION_FIELDS.get(action.kind) ?? ACTION_BASE_FIELDS),
         actionPath,
       );
-      if (isV2 && action.feedback !== undefined) {
+      if (v2ish && action.feedback !== undefined) {
         for (const issue of validateActionFeedback(action.feedback, actionPath + '.feedback')) {
           collector.add('INVALID_ACTION_FEEDBACK', issue.message, issue.path);
         }
@@ -2640,7 +2725,7 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
     }
 
     // ---- Theme tokens (@2) -------------------------------------------------------
-    if (isV2 && application.theme !== undefined) {
+    if (v2ish && application.theme !== undefined) {
       // The declared @2 theme model is a reference string OR a closed
       // { reference, tokens } declaration; any other type was previously
       // silently dropped from the canonical manifest.
@@ -2652,7 +2737,7 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
         );
       }
     }
-    if (isV2 && application.theme !== undefined && isPlainObject(application.theme)) {
+    if (v2ish && application.theme !== undefined && isPlainObject(application.theme)) {
       const theme = application.theme as ThemeDeclaration;
       const themeFields = THEME_FIELDS;
       collector.unknownFields(theme, themeFields, 'application.theme');
@@ -2716,6 +2801,40 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
       }
     }
 
+    // ---- @3 explicit UI attachments (rules 1-5, A-01/A-03) ---------------------
+    let uiIdentityEntries: readonly UiDocumentIdentityEntry[] = [];
+    let uiDocumentPlans: Readonly<Record<string, UiRenderPlan>> = {};
+    let uiDocumentMeta: Record<string, { documentId: string; revision: string; contentDigest: string }> = {};
+    let uiDiagnostics: readonly UiDiagnostic[] = [];
+    if (isV3) {
+      const attachments = resolveUiAttachments({
+        application: application as unknown,
+        ...(input.uiDocuments !== undefined ? { uiDocuments: input.uiDocuments } : {}),
+        ...(input.uiDocumentPins !== undefined ? { uiDocumentPins: input.uiDocumentPins } : {}),
+        ...(input.uiExtensions !== undefined ? { uiExtensions: input.uiExtensions } : {}),
+        actionIds: declaredActions
+          .map((action) => (isPlainObject(action) && typeof action.id === 'string' ? action.id : ''))
+          .filter((id) => id !== ''),
+        routeIds: routes
+          .map((route) => (isPlainObject(route) && typeof route.id === 'string' ? route.id : ''))
+          .filter((id) => id !== ''),
+        viewFields: buildViewFieldCatalog(declaredViews, providedResources),
+      });
+      const fatalUi = attachments.issues;
+      if (fatalUi.length > 0) {
+        return { ok: false, issues: collector.sorted(), uiIssues: fatalUi };
+      }
+      uiIdentityEntries = attachments.identityEntries;
+      uiDocumentPlans = attachments.documentPlans;
+      uiDocumentMeta = Object.fromEntries(
+        Object.entries(attachments.documentPlans).map(([key, plan]) => [
+          key,
+          { documentId: plan.documentId, revision: plan.revision, contentDigest: plan.sourceDigest },
+        ]),
+      );
+      uiDiagnostics = attachments.warnings;
+    }
+
     // ---- Cross-references from surfaces (deferred until the maps exist) --------
     // Closed route-context vocabulary for component surfaces: every declared
     // route path parameter (union across routes — surfaces are validated
@@ -2767,7 +2886,11 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
         string,
         unknown
       >;
-      applicationVersion = computeApplicationVersion({ application, resources: input.resources });
+      applicationVersion = computeApplicationVersion({
+        application,
+        resources: input.resources,
+        ...(isV3 ? { uiDocuments: uiIdentityEntries } : {}),
+      });
     } catch (error) {
       if (error instanceof CanonicalIdentityError) {
         return {
@@ -2844,6 +2967,9 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
     const applicationId: string = application.id;
     const applicationRevision: string = application.revision;
     const applicationVersionCaptured: string = applicationVersion;
+    const uiDocumentsCaptured = deepFreezeClone(uiDocumentMeta);
+    const documentPlansCaptured = deepFreezeClone(uiDocumentPlans);
+    const uiDiagnosticsCaptured = deepFreezeClone(uiDiagnostics);
 
     // The plan is built ENTIRELY from captured VICT-owned copies: neither the
     // manifest, the routes/screens/views/forms/actions/resources/components
@@ -2863,6 +2989,13 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
       actions: Object.freeze(actionsFrozen),
       resources: Object.freeze(resourcesFrozen),
       components: componentsFrozen,
+      ...(isV3
+        ? {
+            uiDocuments: Object.freeze(uiDocumentsCaptured),
+            documentPlans: Object.freeze(documentPlansCaptured),
+            uiDiagnostics: Object.freeze(uiDiagnosticsCaptured),
+          }
+        : {}),
       toJSON(): Record<string, unknown> {
         return {
           applicationId,
@@ -2876,6 +3009,13 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
           actions: actionsFrozen,
           resources: resourcesFrozen,
           components: componentsFrozen,
+          ...(isV3
+            ? {
+                uiDocuments: uiDocumentsCaptured,
+                documentPlans: documentPlansCaptured as unknown,
+                uiDiagnostics: uiDiagnosticsCaptured as unknown,
+              }
+            : {}),
         };
       },
     });

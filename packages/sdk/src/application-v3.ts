@@ -28,11 +28,8 @@ import type {
 } from './application.js';
 import type { UiApplicationComposition, UiLayoutMode, UiPageComposition } from '@victframework/ui';
 
-/** Canonical schema marker of the document-mode Application Definition. */
-export const APPLICATION_DEFINITION_SCHEMA_V3 = 'vict.application@3';
-
-/** The identity marker participating in @3 application identity. */
-export const APPLICATION_IDENTITY_SCHEMA_V3 = 'vict.application-identity@3';
+import { APPLICATION_DEFINITION_SCHEMA_V3, APPLICATION_IDENTITY_SCHEMA_V3 } from './application.js';
+export { APPLICATION_DEFINITION_SCHEMA_V3, APPLICATION_IDENTITY_SCHEMA_V3 };
 
 /** A screen's UI document reference (document mode). */
 export interface UiDocumentScreenReference {

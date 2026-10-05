@@ -34,6 +34,14 @@ export const APPLICATION_DEFINITION_SCHEMA = 'vict.application@1';
  * application identity, so a @2 definition can never alias a @1 identity.
  */
 export const APPLICATION_DEFINITION_SCHEMA_V2 = 'vict.application@2';
+/**
+ * Canonical schema marker of the document-mode Application Definition (U1).
+ * `vict.application@3` keeps every @2 field-set rule and adds exactly one
+ * presentation alternative per screen (legacy layout OR `uiDocument`).
+ */
+export const APPLICATION_DEFINITION_SCHEMA_V3 = 'vict.application@3';
+/** The @3 identity marker (participates in application identity). */
+export const APPLICATION_IDENTITY_SCHEMA_V3 = 'vict.application-identity@3';
 /** Canonical schema marker of a Resource Definition manifest. */
 export const RESOURCE_DEFINITION_SCHEMA = 'vict.resource@1';
 /** Canonical schema marker of an Application Release manifest. */
@@ -732,7 +740,10 @@ export interface ApplicationCompatibility {
 export interface ApplicationDefinition {
   /** Application-owned portable shell choices (@2). */
   readonly composition?: UiApplicationComposition;
-  readonly schema: typeof APPLICATION_DEFINITION_SCHEMA | typeof APPLICATION_DEFINITION_SCHEMA_V2;
+  readonly schema:
+    | typeof APPLICATION_DEFINITION_SCHEMA
+    | typeof APPLICATION_DEFINITION_SCHEMA_V2
+    | typeof APPLICATION_DEFINITION_SCHEMA_V3;
   /** Stable application id. */
   readonly id: string;
   /** Explicit application revision (author/build owned). */
