@@ -357,3 +357,98 @@ export function deriveUiPlan(plan: UiPlanSource): UiPlan {
   }
   return Object.freeze({ tables: Object.freeze(tables), views: Object.freeze(views) });
 }
+
+/* ------------------------------------------------------------------ */
+/* U1 — canonical UI document model (vict.ui-document@1)               */
+/* ------------------------------------------------------------------ */
+
+export {
+  UI_DOCUMENT_SCHEMA,
+  UI_RENDER_PLAN_SCHEMA,
+  UI_EDIT_SCHEMA,
+  UI_SCENARIO_SCHEMA,
+} from './document.js';
+export type {
+  AssetId,
+  ConditionId,
+  DefinitionId,
+  NodeId,
+  SemanticElementCatalog,
+  SemanticElementDef,
+  StateKey,
+  StyleSourceId,
+  TokenId,
+  UiAssetRef,
+  UiAttributeValue,
+  UiCatalogs,
+  UiComponentDefinition,
+  UiCondition,
+  UiDocument,
+  UiFieldTypes,
+  UiFieldType,
+  UiInteraction,
+  UiLocalStateDecl,
+  UiNode,
+  UiNodeCommon,
+  UiPrimitiveType,
+  UiPropDecl,
+  UiSlotFill,
+  UiStyleDeclaration,
+  UiStyleSource,
+  UiStyleValue,
+  UiTextContent,
+  UiToken,
+  UiVariantConditionRef,
+} from './document.js';
+export { CanonicalUiError } from './canonical-error.js';
+export {
+  canonicalUiDocument,
+  compareCodePoints,
+  orderUiDocumentIdentityEntries,
+  stableJson,
+} from './canonical.js';
+export type { CanonicalUiDocument, UiDocumentIdentityEntry } from './canonical.js';
+export { hasErrors, severityFor, uiDiagnostic } from './diagnostics.js';
+export type { UiDiagnostic, UiDiagnosticCode, UiSeverity } from './diagnostics.js';
+export { checkExpression, evaluateExpression } from './expressions.js';
+export type { ResolvedRefType, UiScopeInfo, UiScopeValues } from './expressions.js';
+export {
+  allowedAttributes,
+  defaultSemanticElementCatalog,
+  isKnownElement,
+  isLeafElement,
+} from './semantic.js';
+export { isBoundedMediaQuery, validateUiDocument } from './validate.js';
+export { compileUiDocument } from './compile.js';
+export type {
+  UiCompileResult,
+  UiExtensionDescriptor,
+  UiNodeExtractedInteraction,
+  UiRenderInstruction,
+  UiRenderPlan,
+  UiResolvedValue,
+  UiSourceMapEntry,
+  UiStyleRule,
+} from './compile.js';
+export { applyUiEdit, cloneDocument, emptyCatalogs, expectUiDocument } from './edit.js';
+export type {
+  UiDocumentSnapshot,
+  UiEditCommand,
+  UiEditResult,
+  UiEditTransaction,
+} from './edit.js';
+export { UiEditSession, advanceStoredRevision } from './session.js';
+export type { UiApplyOutcome, UiEditSessionState, UiSaveOutcome } from './session.js';
+export { inspectUiOccurrence, occurrenceKeyOf, parseOccurrenceKey } from './occurrence.js';
+export type { UiOccurrenceRef, UiOccurrenceReport, UiRuntimeProjection } from './occurrence.js';
+export { isUiScenario } from './scenario.js';
+export type {
+  ClockPolicy,
+  OutcomeSpec,
+  ScenarioActor,
+  ScenarioImplementation,
+  ScenarioOperation,
+  ScenarioStateDecl,
+  SeedSpec,
+  UiScenario,
+} from './scenario.js';
