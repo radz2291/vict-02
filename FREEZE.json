@@ -1,9 +1,16 @@
 {
   "kind": "u0-contract-freeze-record",
+  "amendment": 1,
   "repository": "https://github.com/radz2291/vict-02",
   "branch": "codex/ui-foundation-u0",
   "base_sha": "4d2df037d8a82d36c60bf1bff16919650643ce22",
-  "contract_candidate_sha": "54490a861fcd9992bfc8bfac14178fdb7921ecf0",
+  "contract_candidate_sha": "9ec87f3e7eb8eb7793f972111258940aac635346",
+  "supersedes": {
+    "freeze_record_sha": "ffbafc0a509d7179eddfa81c157595fe336c9dba",
+    "contract_candidate_sha": "54490a861fcd9992bfc8bfac14178fdb7921ecf0",
+    "note": "original freeze remains valid for its audited candidate; superseded for current readiness by the owner-authorized amendment A-01/A-02/A-03 (see DECISIONS)",
+    "original_pins_reproduction": "19/19 verified intact at reopening and re-verified by the amendment reviewer at ledger commit df3d283187c852c39840cc6909ba13605de7a75b"
+  },
   "pin_definition": "sha256 over the exact git blob bytes (git cat-file blob <contract_candidate_sha>:<path>); equivalent to a clean checkout working-tree copy at that commit because the tree is clean and blobs equal checked-out bytes (verified at freeze time)",
   "excluded_from_pins": {
     "docs/ui-foundation/STATE.md": "mutable state per STAGES section 2 (update discipline); preserved in repo, not pinned",
@@ -12,53 +19,96 @@
     "AGENTS.md (root)": "shared root entry; the frozen routing-block content is pinned via docs/ui-foundation/AGENTS.addendum.md",
     "README.md (root)": "docs-index convenience line only; not contract"
   },
-  "review_lineage": {
-    "round1": {
-      "reviewed_candidate_sha": "f7767b2750d85399e7200991e503e061001ee03f",
-      "report_path": "docs/ui-foundation/reviews/U0-REVIEW-01.md",
-      "report_sha256_at_repair_commit": "456e910a2873cfc613ed064909e12716fadb4f6372bcf0d6b81fc539de19c241",
-      "report_note": "report added by the repair commit; bytes preserved verbatim since",
-      "verdict": "HELD (pre-freeze; U0-01..U0-07 PASS, U0-08 not yet demonstrated; F-1..F-7 repaired)"
+  "pack_fidelity_enumeration": {
+    "baseline": "byte-comparison against the original verbatim pack installation at f7767b2750d85399e7200991e503e061001ee03f (digest-verified against the pack HASHES.json at install time)",
+    "identical_to_verbatim_install": [
+      "docs/ui-foundation/HANDOFF.md",
+      "docs/ui-foundation/AGENTS.addendum.md",
+      "docs/ui-foundation/reviews/PACK-REVIEW-01.md",
+      "docs/ui-foundation/reviews/PACK-REVIEW-02.md",
+      "docs/ui-foundation/reviews/candidate-01.json",
+      "docs/ui-foundation/reviews/candidate-02.json"
+    ],
+    "diverged_from_verbatim_install": {
+      "docs/ui-foundation/CONTRACTS.md": "authorized amendment targets A-01/A-03 (cycle scope, total ordering)",
+      "docs/ui-foundation/PRODUCT-ARCHITECTURE.md": "authorized amendment target A-02 (revise lifecycle clause)",
+      "docs/ui-foundation/STAGES-AND-VERIFICATION.md": "authorized amendment target A-03 (U1-01 permutation requirement)",
+      "docs/ui-foundation/DECISIONS-AND-EVIDENCE.md": "mutable evidence ledger (update discipline)",
+      "docs/ui-foundation/STATE.md": "mutable state (update discipline)"
     },
-    "round2": {
-      "reviewed_candidate_sha": "6a2f7b9ea3078da16ce42253ee9db0c902bdf3af",
-      "report_path": "docs/ui-foundation/reviews/U0-REVIEW-02.md",
-      "report_sha256": "1a5fc6488348d7a2d29618cef821d0c41706051358caa0996e6ce3e7aebb5512",
-      "verdict": "HELD pre-freeze by design; ready-to-freeze YES (N-1/N-2 micro-repairs applied pre-freeze, covered by this freeze-byte verification; N-3 closed by checker reproduction)"
+    "count": "6/11 identical, 5/11 diverged (all divergences disclosed above)"
+  },
+  "review_lineage": {
+    "original_freeze_rounds": {
+      "round1": {
+        "reviewed_candidate_sha": "f7767b2750d85399e7200991e503e061001ee03f",
+        "report_path": "docs/ui-foundation/reviews/U0-REVIEW-01.md",
+        "report_sha256_at_repair_commit": "456e910a2873cfc613ed064909e12716fadb4f6372bcf0d6b81fc539de19c241",
+        "report_note": "report added by the repair commit; bytes preserved verbatim since",
+        "verdict": "HELD (pre-freeze; U0-01..U0-07 PASS, U0-08 not yet demonstrated; F-1..F-7 repaired)"
+      },
+      "round2": {
+        "reviewed_candidate_sha": "6a2f7b9ea3078da16ce42253ee9db0c902bdf3af",
+        "report_path": "docs/ui-foundation/reviews/U0-REVIEW-02.md",
+        "report_sha256": "1a5fc6488348d7a2d29618cef821d0c41706051358caa0996e6ce3e7aebb5512",
+        "verdict": "HELD pre-freeze by design; ready-to-freeze YES (N-1/N-2 micro-repairs applied pre-freeze, covered by this freeze-byte verification; N-3 closed by checker reproduction)"
+      },
+      "freeze_checker": {
+        "audited_sha": "ffbafc0a509d7179eddfa81c157595fe336c9dba",
+        "report_sha256": "43fcaa62ad64f483cf633290caa0d03cc4ddb9c250a5cf3ead9209337e3a62dc",
+        "verdict": "FREEZE VERIFIED (original candidate; superseded for readiness only)"
+      }
+    },
+    "amendment_round": {
+      "authorization": "owner follow-up review authorized bounded amendment; findings A-01/A-02/A-03 (DECISIONS amendment section)",
+      "amended_candidate_pre_repair": "33ae56fef98b0f7c467a42f10cd873d08b1f8209",
+      "amendment_review": {
+        "audited": "33ae56fef98b0f7c467a42f10cd873d08b1f8209 + ledger df3d283187c852c39840cc6909ba13605de7a75b",
+        "report_path": "docs/ui-foundation/reviews/U0-AMENDMENT-REVIEW-01.md",
+        "report_sha256": "382ff47c2518f4cbc9ca29352e310f3ea973deba7518ab3d1178032e97ba1199",
+        "verdict": "AMENDMENT HELD (repairs needed); A-01/A-02 CLOSED WITH NOTES, A-03 NOT CLOSED pending F-A-01; findings F-A-01..F-A-07"
+      },
+      "repaired_candidate_sha": "9ec87f3e7eb8eb7793f972111258940aac635346",
+      "recheck": {
+        "audited_sha": "9ec87f3e7eb8eb7793f972111258940aac635346",
+        "report_path": "docs/ui-foundation/reviews/U0-AMENDMENT-RECHECK-01.md",
+        "report_sha256": "090879047b4c2e76455dbb930662f801983fd6fccf663fb0d1a96c7e36b42e9d",
+        "verdict": "REPAIRS VERIFIED - READY TO FREEZE (all 5 repairs verified; regression PASS; freeze authorized with STATE update + pack-fidelity enumeration, both included in this record)"
+      }
     }
   },
   "frozen_files": {
     "docs/ui-foundation/PRODUCT-ARCHITECTURE.md": {
-      "sha256": "ca2ac84ab6a9519e02234058f663d35fe3dc4e7d9d6f8dc4dd78370b50ee390f",
-      "size_bytes": 11055
+      "sha256": "7e5d1d774f786284511a2cc5fd457d419f214fe8d75391e862b0c16d5df44f72",
+      "size_bytes": 11229
     },
     "docs/ui-foundation/CONTRACTS.md": {
-      "sha256": "42ef30893454bad44e327b30d37d6d4760e6f6426bf3859bc9d76b40425496a2",
-      "size_bytes": 15692
+      "sha256": "cecf47265bedf5b462595ec873e3e310228cd95e682270003e2d944786897d5c",
+      "size_bytes": 16249
     },
     "docs/ui-foundation/STAGES-AND-VERIFICATION.md": {
-      "sha256": "c7e07960c1ee338a513fc34f77fe4da85cda6b0f79ee3e95cf657afb5a92acad",
-      "size_bytes": 13873
+      "sha256": "c63d22d625ad8c16682e875e81da0d95d56b7b52cd062657110a57b0f4000ad8",
+      "size_bytes": 13974
     },
     "docs/ui-foundation/HANDOFF.md": {
       "sha256": "769fc1e46fdd59934bf41edc78095880864fe0bdaf082bf071fed78b4a908237",
       "size_bytes": 6366
     },
     "docs/ui-foundation/DECISIONS-AND-EVIDENCE.md": {
-      "sha256": "77d4c46a001f75aa58087bb5ce73c64713f60afca5746bc237d3abfd6f1d520e",
-      "size_bytes": 13969
+      "sha256": "786c5851e0c8c86d5251776ec423a07d6acafbabf45edb2d5f9db700d10c4b98",
+      "size_bytes": 22315
     },
     "docs/ui-foundation/RECONCILIATION.md": {
       "sha256": "0dd515ff27e5503956311d5ee83c4a62e0b39603c6976c405979f6ecbd19e6be",
       "size_bytes": 14879
     },
     "docs/ui-foundation/API-SPEC.md": {
-      "sha256": "f110bb1b5ecef70c78a836a0cd6711fa2c86b61d6a8a9a72e3020a50ae5460a2",
-      "size_bytes": 23969
+      "sha256": "61c745467b360555b90dd6a83f99880426dc9a6ca1cbb8ec29f7d894cc7b565f",
+      "size_bytes": 28173
     },
     "docs/ui-foundation/PROOF-DESIGN.md": {
-      "sha256": "e2300d6668e4790be3a6a5e9e030911633c596af72591d3007e89b9591684f3a",
-      "size_bytes": 9626
+      "sha256": "ba4278789aa2f32bae776199d72de783f109fe89829620336a7f24d1b74eb7c3",
+      "size_bytes": 10697
     },
     "docs/ui-foundation/AGENTS.addendum.md": {
       "sha256": "f341c7b9224291ba8c55439a80b3fa68458c2a01e3b010c2a0700e02754aa8c2",
@@ -72,6 +122,10 @@
       "sha256": "6f330a3be4b15303e8c52b393e1801bb342cb2245593066b2eb2440d1257e814",
       "size_bytes": 8604
     },
+    "docs/ui-foundation/fixtures/application-v3-valid-navigation.json": {
+      "sha256": "2b6c669ed25a2c8177f121af7f09aefa1ae6f17f53c1bba06147905ceff2ba17",
+      "size_bytes": 4882
+    },
     "docs/ui-foundation/fixtures/application-v3-valid.json": {
       "sha256": "675b9ed100f14fb69c80942df9a6993e95d35047cd08a1c6ee53759c1a2f79d6",
       "size_bytes": 8510
@@ -83,6 +137,10 @@
     "docs/ui-foundation/fixtures/ui-document-invalid-dangling-component.json": {
       "sha256": "001f4ecf4ee53fbe7c8bfc988d6424bc1b62dcf47ffce29b85b38897437703f8",
       "size_bytes": 5782
+    },
+    "docs/ui-foundation/fixtures/ui-document-invalid-expansion-cycle.json": {
+      "sha256": "17b3632998a56b38259a19c633c571ca743243619d41001b35d22fe52d8b0019",
+      "size_bytes": 1274
     },
     "docs/ui-foundation/fixtures/ui-document-valid.json": {
       "sha256": "92f9718beff267d8baf53a409e309442f41d4c9d13172264de2d0a22be3fbdad",
@@ -99,6 +157,10 @@
     "docs/ui-foundation/fixtures/ui-scenario-invalid-missing-coverage.json": {
       "sha256": "55de5d815f81b7257d18516e3553298523acfa1a93f08c269479e23f29bffed8",
       "size_bytes": 1996
+    },
+    "docs/ui-foundation/fixtures/ui-scenario-valid-revision-loop.json": {
+      "sha256": "22b3e5076beda4fede93b031a4c702305e3ddaddf0101a753cdb133dd53f5939",
+      "size_bytes": 2861
     },
     "docs/ui-foundation/fixtures/ui-scenario-valid.json": {
       "sha256": "b172ee462926a5d1c0c44cc5c55f1c9f8063a693d30c5a9b249be36c1e34e28f",
