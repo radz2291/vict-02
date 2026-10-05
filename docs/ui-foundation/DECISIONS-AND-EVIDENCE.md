@@ -192,6 +192,56 @@ evidence does not alter any recorded pin; reproduction always resolves against t
 SHA, never HEAD. U0-08 is demonstrated at the freeze-record SHA; later evidence commits are
 append-only lineage.
 
+## U0 amendment round (2026-10-06) — owner-authorized bounded reopening, findings A-01..A-03
+
+Authorization: the owner's follow-up review independently confirmed all prior lineage (remote
+refs, all 19 original pins at `54490a8…`, all three report hashes, baseline `4d2df03…` unmoved)
+and authorized a bounded documentation/contract amendment to close three findings before U1.
+Scope: docs/ui-foundation contract documents and design fixtures + the freeze record. No U1
+implementation, no Stage 9/apps-studio work, no merge to main, no force-push, no publication.
+
+Finding-to-fix mapping (amended candidate `33ae56fef98b0f7c467a42f10cd873d08b1f8209`):
+
+- **A-01 cycle-detection ambiguity** (API-SPEC §2.2, CONTRACTS): the former rule-3 wording
+  ("a document referencing a screen/application that references it") could read legitimate
+  navigation as a cycle. Cycle detection is now defined on the structural expansion graph
+  (nodes: documents and component definitions; edges only from cross-document component
+  expansion and definition-level expansion). Navigation edges (route→screen ownership,
+  `navigate`), product-reference edges (`invokeAction`, view/record/resource/capability) and
+  expression references resolve but never become expansion edges. New fixtures:
+  `application-v3-valid-navigation.json` (mutual owning-route navigation loop — valid) and
+  `ui-document-invalid-expansion-cycle.json` (mutually expanding definitions → `UI_DOC_CYCLE`).
+  Contract ambiguity, not an observed runtime failure.
+- **A-02 incomplete rejection→correction→resubmission journey** (PROOF-DESIGN,
+  PRODUCT-ARCHITECTURE §fictional domain, API-SPEC fixture table): submit only accepted draft
+  and no action returned rejected to draft. New `inspection.revise` action (permission
+  `qlt.inspection.revise`, assigned technician, `rejected → draft`); record-level decision
+  fields (`decidedAt`, `rejectionReason`) are cleared on the record while the activity trail
+  preserves the quoted reason; `submit` validates `status === 'draft'`, `revise` validates
+  `status === 'rejected'` + assignment; permitted edits resume in draft. Journey fixture
+  `ui-scenario-valid-revision-loop.json` (reject → revise → edit → resubmit) added; it is a
+  journey fixture, not a ninth product scenario. This affects the later complete journey only;
+  it is not evidence about U1's approval path, which has not been implemented.
+- **A-03 incomplete catalog identity ordering** (API-SPEC §2.3, CONTRACTS, STAGES U1-01):
+  the hashed list was "sorted by documentId" only. Now: after rule-2 validation, deduplicate
+  by `(documentId, revision)`, then total order by code-point string comparison on
+  `(documentId, revision)` (plain string order for revisions — not semantic version order).
+  Example D added (same-ID/different-revision + duplicate identical entries + permutation).
+  U1-01 now requires: catalog input permutation and duplicate identical entries leave
+  `applicationVersion` unchanged. Non-blocking on its own; closed for determinism.
+
+Supersession: the original freeze (`ffbafc0…` over `54490a8…`) and its "U0 COMPLETE / FREEZE
+VERIFIED / U0-08 demonstrated" readiness claims are superseded for the amended bytes; the
+historical verdicts, pins and reports remain valid for their audited SHAs and are preserved
+unchanged. A new freeze record will pin the amended candidate only after a fresh independent
+review (and any repairs) complete. The original 19 pins were re-verified intact at reopening
+before any edit.
+
+Process note (disclosed): during this round a mistaken `rm -rf` targeted the real
+`docs/ui-foundation` directory and deleted uncommitted working-tree edits; nothing committed
+was affected, all bytes were restored from HEAD `a664c70…` via git, and the amended candidate
+was then re-derived and committed immediately. No evidence bytes were fabricated or lost.
+
 ## Future evidence entry format
 
 Identity: repository, branch, full base/candidate/reviewer SHAs, environment and contract pins.
