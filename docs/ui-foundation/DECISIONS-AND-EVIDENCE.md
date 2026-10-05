@@ -268,6 +268,31 @@ pending F-A-01. Findings and dispositions:
 Repaired candidate replaces `33ae56f…`; a scoped fresh re-verification of the repairs precedes
 the new freeze record (per the reviewer's own prescription).
 
+## U0 amendment freeze verification (2026-10-06) — FREEZE VERIFIED
+
+Identity: freeze record audited at `ea47edd68e302dc5b6cacb2e43635d11781619ad`; amended contract candidate `9ec87f3e7eb8eb7793f972111258940aac635346`; base
+`4d2df037d8a82d36c60bf1bff16919650643ce22` still live origin/main. A fourth independent fresh
+checker (non-author, non-amendment-reviewer, non-recheck-verifier; report preserved verbatim
+at [reviews/U0-AMENDMENT-FREEZE-CHECK-01.md](reviews/U0-AMENDMENT-FREEZE-CHECK-01.md),
+SHA-256 `9b80f3d4d29d819f4d0fe06798422c9a0339b10e8c8703cf6c1f8828c78a4ed0`) reproduced all 22 pins by two independent methods, verified the
+superseded original record untouched in history with its 19 original pins reproducing against
+the original candidate, verified full ancestry, all five report hashes byte-exact with
+single-commit histories, scope confinement (root AGENTS.md pure insertion), pack fidelity
+6/11 identical + 5/11 diverged with accurate authorization mapping, truthful pre-verdict
+wording, the F-A-01 corrected ordering example programmatically code-point-correct, and the
+revision-loop fixture operations. Baseline checks reproduced after fresh `npm ci`: typecheck
+clean, format:check clean, check:ui 0 errors / 0 warnings. Verdict: **FREEZE VERIFIED**;
+U0-08 for the amendment PASS (demonstrated at the freeze-record SHA).
+
+Findings: F-1 MINOR — the recheck verdict "REPAIRS VERIFIED — READY TO FREEZE" lacked its own
+ledger entry (this entry closes that gap; verdict bytes and hash were preserved and verified).
+F-2 INFO — checker-side CRLF artifact in its first shell pass, clean 22/22 re-run, no
+candidate effect (retained as a process note).
+
+This entry and the checker-report preservation are post-freeze evidence commits touching only
+mutable bytes (this ledger, STATE.md, reviews/); recorded pins anchor to the candidate's git
+blobs and are unaffected.
+
 ## Future evidence entry format
 
 Identity: repository, branch, full base/candidate/reviewer SHAs, environment and contract pins.
