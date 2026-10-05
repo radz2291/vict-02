@@ -1,6 +1,6 @@
 <script lang="ts">
   /** Inspection detail — DOCUMENT MODE screen rendered by the one renderer. */
-  import DocumentHost from '@victframework/ui-svelte';
+  import { DocumentHost } from '@victframework/ui-svelte';
   import { inspectionPlan } from '$lib/product/compile.js';
   import {
     InspectionDataAdapter,

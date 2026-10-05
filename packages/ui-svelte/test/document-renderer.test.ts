@@ -205,7 +205,7 @@ describe('DocumentHost (the one renderer)', () => {
     const { target, instance } = mountPlan(plan.plan, {});
     try {
       const style = target.ownerDocument.querySelector('style[data-ui-style]');
-      expect(style?.textContent).toContain('--ui-token-space.gap: 12px');
+      expect(style?.textContent).toContain('--ui-token-space_gap: 12px');
       expect(style?.textContent).toContain('.uv-root-doc_detail-1');
     } finally {
       unmount(instance);

@@ -93,6 +93,8 @@ export type UiRenderInstruction =
       readonly definitionRevision: string;
       readonly propDecls: readonly UiPropDecl[];
       readonly propValues: Readonly<Record<string, UiExpression>>;
+      /** Normalized class for the instance root (base/local style rules target it). */
+      readonly classes: readonly string[];
       /** The definition body instruction tree (prop scope). */
       readonly body: UiRenderInstruction;
       /** Slot fillings resolved in the INSTANCE scope. */
@@ -242,7 +244,8 @@ export function compileUiDocument(
   const tokenDeclarations = Object.entries(
     (document.tokens ?? {}) as Record<string, { value: string }>,
   ).map(([tokenId, token]) => ({
-    property: `--ui-token-${tokenId}`,
+    // CSS custom-property-safe name (declared token ids may contain dots)
+    property: `--ui-token-${tokenId.replace(/[^A-Za-z0-9_-]/g, '_')}`,
     value: { type: 'literal', value: token.value } as UiResolvedValue,
   }));
   if (tokenDeclarations.length > 0) {
@@ -441,6 +444,7 @@ export function compileUiDocument(
           definitionRevision: node.revision ?? definition.revision,
           propDecls: definition.props,
           propValues: (node.props ?? {}) as Record<string, UiExpression>,
+          classes: [classFor(nodeId)],
           body,
           slots,
           styleRuleIds,

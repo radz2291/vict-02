@@ -256,7 +256,7 @@ describe('compileUiDocument', () => {
     expect(result.plan.sourceDigest).toBe(canonicalUiDocument(minimalDocument()).contentDigest);
     expect(result.plan.sourceMap.map((entry) => entry.sourceNodeId)).toContain('n.status');
     const tokenRule = result.plan.style.rules.find((rule) => rule.layer === 'token');
-    expect(tokenRule?.declarations[0]?.property).toBe('--ui-token-color.accent');
+    expect(tokenRule?.declarations[0]?.property).toBe('--ui-token-color_accent');
   });
 
   it('compiles a component instance with slot fillings resolved in instance scope', () => {

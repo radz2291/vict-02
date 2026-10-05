@@ -74,7 +74,27 @@ export function evaluateCondition(
   return Boolean(evaluateExpression(condition.when, toScopeValues(scope)));
 }
 
-const escapeCss = (selector: string): string => selector.replace(/[^A-Za-z0-9_-]/g, '\\$&');
+/** Escape a class selector's identifier characters, preserving the leading dot. */
+const escapeCss = (selector: string): string => {
+  let out = '';
+  for (let index = 0; index < selector.length; index += 1) {
+    const ch = selector[index] as string;
+    const isSafe =
+      (ch >= 'a' && ch <= 'z') ||
+      (ch >= 'A' && ch <= 'Z') ||
+      (ch >= '0' && ch <= '9') ||
+      ch === '_' ||
+      ch === '-';
+    const isLeadingDot = index === 0 && ch === '.';
+    if (isSafe || isLeadingDot) {
+      out += ch;
+    } else {
+      out += String.fromCharCode(92); // backslash
+      out += ch;
+    }
+  }
+  return out;
+};
 
 /**
  * Assemble the plan's style rules into CSS text, scoped under a root
@@ -96,7 +116,7 @@ export function styleRulesToCss(plan: UiRenderPlan, rootClass: string): string {
       if (declaration.value.type === 'literal') {
         lines.push(`  ${declaration.property}: ${String(declaration.value.value)};`);
       } else if (declaration.value.type === 'token') {
-        lines.push(`  ${declaration.property}: var(--ui-token-${declaration.value.id});`);
+        lines.push(`  ${declaration.property}: var(--ui-token-${sanitizeTokenId(declaration.value.id)});`);
       }
       // binding values are runtime expressions; skipped in static CSS
     }
@@ -124,6 +144,11 @@ export function styleRulesToCss(plan: UiRenderPlan, rootClass: string): string {
     css += `\n\n@media ${query} {\n${rules.join('\n\n')}\n}`;
   }
   return css;
+}
+
+/** CSS custom-property-safe token id (declared ids may contain dots). */
+export function sanitizeTokenId(id: string): string {
+  return id.replace(/[^A-Za-z0-9_-]/g, '_');
 }
 
 /** Stable root class per plan (document+revision scoped). */

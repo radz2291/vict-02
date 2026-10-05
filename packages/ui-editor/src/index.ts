@@ -4,6 +4,9 @@
  * live in `@victframework/ui`'s frozen session/transaction engine.
  */
 
+export { default as EditorCanvas } from './EditorCanvas.svelte';
+export { default as HistoryPanel } from './HistoryPanel.svelte';
+export { default as Inspector } from './Inspector.svelte';
 export { EditorBridge } from './bridge.js';
 export type { DocumentStorePort, EditorBridgeState } from './bridge.js';
 export {

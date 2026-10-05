@@ -7,7 +7,7 @@
    * The selection outline is a canvas-level presentation rule — never
    * document source.
    */
-  import DocumentHost from '@victframework/ui-svelte';
+  import { DocumentHost } from '@victframework/ui-svelte';
   import {
     compileUiDocument,
     defaultSemanticElementCatalog,
@@ -64,10 +64,14 @@
   function escapeSelector(value: string): string {
     return value.replace(/"/g, '\\"');
   }
+
+  const canvasClasses = $derived(
+    selectedOccurrence !== undefined ? 'uv-canvas uv-canvas-has-selection' : 'uv-canvas',
+  );
 </script>
 
 {#if compiled.ok}
-  <div class="uv-canvas" class="uv-canvas-has-selection={selectedOccurrence !== undefined}">
+  <div class={canvasClasses}>
     <style>
       .uv-canvas [data-ui-occ]:hover {
         outline: 1px dashed var(--ui-editor-hover, #7aa7ff);

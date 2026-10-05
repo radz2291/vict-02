@@ -104,13 +104,28 @@
 
   type ScenarioName = keyof typeof scenarios;
   let scenarioName: ScenarioName = $state('normal');
-  let preview: PreviewSession = $state(createPreviewSession({ scenario: scenarios.normal }));
+  /** The simulated approve double — registered OUTSIDE serialized source. */
+  const previewRuntime = {
+    snapshotDoubles: () => new Map([['inspection.approve', async () => ({ decided: true, actor: 's.hart' })]]),
+  };
+  let preview: PreviewSession = $state(
+    createPreviewSession({ scenario: scenarios.normal, runtime: previewRuntime }),
+  );
   let previewNote: string = $state('Scenario ready. Approve runs against the simulated double.');
   let resetSignal: symbol = $state(Symbol('preview-init'));
 
   function switchScenario(name: ScenarioName): void {
     scenarioName = name;
+    // reset() FENCES the old session (in-flight results become SESSION_STALE);
+    // the new session carries the newly selected scenario.
     preview = preview.reset();
+    preview = createPreviewSession({
+      scenario: scenarios[name],
+      runtime: previewRuntime,
+      onStale: (info) => {
+        previewNote = `SESSION_STALE — a result from ${info.sessionId} was dropped (session was reset).`;
+      },
+    });
     // a NEW session identity must also reset the rendered document state
     resetSignal = Symbol(`reset-${preview.id}`);
     previewNote = `Switched to '${name}' — session ${preview.id}.`;
@@ -130,10 +145,10 @@
     actionIds: ['inspection.approve'],
     routeIds: ['queue', 'detail'],
     viewFields: {
-      title: 'string', status: 'string', findings: 'array',
-      'findings.severity': 'string', 'findings.description': 'string',
-      evidence: 'array', 'evidenceItem.label': 'string',
-      activity: 'array', 'activityItem.entry': 'string', 'activityItem.actor': 'string',
+      id: 'string', title: 'string', status: 'string', domainRevision: 'number',
+      findings: 'array', 'findings.severity': 'string', 'findings.description': 'string',
+      evidence: 'array', 'evidence.label': 'string',
+      activity: 'array', 'activity.entry': 'string', 'activity.actor': 'string',
     },
   }));
 
@@ -239,6 +254,17 @@
     </p>
     <EditorCanvas
       document={workingDocument}
+      catalogs={{
+        elements: defaultSemanticElementCatalog(),
+        actionIds: ['inspection.approve'],
+        routeIds: ['queue', 'detail'],
+        viewFields: {
+          id: 'string', title: 'string', status: 'string', domainRevision: 'number',
+          findings: 'array', 'findings.severity': 'string', 'findings.description': 'string',
+          evidence: 'array', 'evidence.label': 'string',
+          activity: 'array', 'activity.entry': 'string', 'activity.actor': 'string',
+        },
+      }}
       selectedOccurrence={selectedOccurrence}
       onSelect={(occurrence) => {
         selectedOccurrence = occurrence;

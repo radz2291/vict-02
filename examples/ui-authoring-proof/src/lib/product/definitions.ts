@@ -171,7 +171,7 @@ export const inspectionDetailDocument: UiDocument = {
       kind: 'element',
       id: 'n.columns',
       tag: 'div',
-      styleSources: ['ss.columns'],
+      styleSources: ['ss.columns', 'ss.columnsNarrow'],
       children: ['n.findingsSection', 'n.sideRail'],
     },
     'n.findingsSection': {
@@ -409,6 +409,11 @@ export const inspectionDetailDocument: UiDocument = {
       id: 'ss.detailNarrow',
       conditionId: 'cond.narrow',
       declarations: [{ property: 'max-width', value: { type: 'text', value: '100%' } }],
+    },
+    'ss.columnsNarrow': {
+      id: 'ss.columnsNarrow',
+      conditionId: 'cond.narrow',
+      declarations: [{ property: 'grid-template-columns', value: { type: 'text', value: '1fr' } }],
     },
     'ss.columns': {
       id: 'ss.columns',

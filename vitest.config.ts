@@ -86,6 +86,7 @@ export default defineConfig({
             'examples/application-proof/**',
             'examples/reference-app/**',
             'examples/ui-showcase/**',
+            'examples/ui-authoring-proof/**',
           ],
         },
         resolve: { alias: aliases },

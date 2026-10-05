@@ -32,6 +32,8 @@
     readonly navigate: (routeId: string, params?: Readonly<Record<string, unknown>>) => void;
     readonly setState: (key: string, value: unknown) => void;
     readonly selectOccurrence?: (occurrence: string) => void;
+    /** Additional class for the ROOT element of this subtree (component instance frames). */
+    readonly extraClass?: string;
   }
 
   let {
@@ -45,6 +47,7 @@
     navigate,
     setState,
     selectOccurrence,
+    extraClass,
   }: Props = $props();
 
   const conditions = $derived(conditionsOf(plan));
@@ -117,10 +120,13 @@
   <svelte:element
     this={instruction.tag}
     {...evaluatedAttributes}
-    class={instruction.classes.join(' ')}
+    class={[...instruction.classes, ...(extraClass !== undefined ? [extraClass] : [])].join(' ')}
     data-ui-node={instruction.nodeId}
     data-ui-occ={occ}
     onclick={(event) => {
+      // Selection and interactions address the INNERMOST declared element;
+      // bubbling to ancestor handlers would overwrite the selection.
+      event.stopPropagation();
       if (instruction.interactions.some((interaction) => interaction.on === 'click')) {
         void runInteractions(event);
       } else {
@@ -128,6 +134,7 @@
       }
     }}
     onsubmit={(event) => {
+      event.stopPropagation();
       if (instruction.interactions.some((interaction) => interaction.on === 'submit')) {
         void runInteractions(event);
       }
@@ -147,15 +154,27 @@
         {navigate}
         {setState}
         {selectOccurrence}
+        extraClass={undefined}
       />
     {/each}
   </svelte:element>
 {:else if instruction.kind === 'text'}
-  {#if instruction.content.type === 'literal'}
-    {instruction.content.value}
-  {:else}
-    {String(resolveValue({ type: 'expression', expression: instruction.content.expression }, scope) ?? '')}
-  {/if}
+  <span
+    class="uv-text"
+    data-ui-node={instruction.nodeId}
+    data-ui-occ={occ}
+    style="display: contents"
+    onclick={(event) => {
+      event.stopPropagation();
+      selectOccurrence?.(occ);
+    }}
+  >
+    {#if instruction.content.type === 'literal'}
+      {instruction.content.value}
+    {:else}
+      {String(resolveValue({ type: 'expression', expression: instruction.content.expression }, scope) ?? '')}
+    {/if}
+  </span>
 {:else if instruction.kind === 'component'}
   {@const bodyScope = { ...scope, props: evaluatedComponentProps(instruction, scope) }}
   {@const childPath = [...instancePath, `${instruction.nodeId}@${instruction.definitionId}`]}
@@ -170,6 +189,7 @@
     {navigate}
     {setState}
     {selectOccurrence}
+    extraClass={instruction.classes[0]}
   />
 {:else if instruction.kind === 'extension'}
   {@const extensionProps = evaluatedComponentProps(instruction, scope)}
