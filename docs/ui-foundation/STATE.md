@@ -1,20 +1,69 @@
 # UI foundation — current state
 
-**2026-10-06 — U0 AMENDMENT COMPLETE: frozen and freeze-byte verified (FREEZE VERIFIED, 22/22 pins).** Checker lineage: amendment review at the pre-repair candidate (AMENDMENT HELD; F-A-01..F-A-07 → five repairs), fresh scoped recheck at `9ec87f3e7eb8eb7793f972111258940aac635346` (REPAIRS VERIFIED — READY TO FREEZE), fourth fresh checker at the freeze-record commit — all 22 pins reproduced by two methods, superseded original record untouched with 19/19 original pins reproducing, lineage/fidelity/scope/truthfulness PASS, baseline checks reproduced after fresh `npm ci` (typecheck clean, format:check clean, check:ui 0 errors/0 warnings). Checker report preserved at [reviews/U0-AMENDMENT-FREEZE-CHECK-01.md](reviews/U0-AMENDMENT-FREEZE-CHECK-01.md) (SHA-256 `9b80f3d4d29d819f4d0fe06798422c9a0339b10e8c8703cf6c1f8828c78a4ed0`); verdict FREEZE VERIFIED; its F-1 MINOR ledger-completeness note is closed by the DECISIONS freeze-verification entry; F-2 INFO (checker-side CRLF artifact, clean re-run) retained. Findings A-01/A-02/A-03 all CLOSED (A-03 after the F-A-01 ordering-example correction: code-point order gives "10" < "2" < "3"). U0-01..U0-08 PASS, U0-08 demonstrated at the freeze-record SHA for the amendment. Retained non-blocking notes: F-A-06 pack fidelity 6/11 (enumerated in FREEZE.json), F-A-07 decidedAt fixture omission (consistent with the approve fixture), F-2 checker CRLF artifact. Next: normal push, remote SHA verification, owner report. U1 remains unauthorized pending a separate accepted handoff. Amendment round complete. Owner-authorized findings, all closed: A-01 cycle-detection scope (structural expansion graph; only definition→definition edges can close cycles; navigation/product references resolve but never become expansion edges; worked fixtures: valid mutual owning-route navigation + invalid definition-expansion cycle), A-02 complete rejection→correction→resubmission (`inspection.revise` rejected→draft, record-level decision fields cleared with the reason preserved in the activity trail; journey fixture `ui-scenario-valid-revision-loop.json` with the edit step), A-03 catalog total ordering (dedup by (documentId, revision), Unicode-code-point order with the corrected example `"10" < "2" < "3"`; Example D; U1-01 permutation requirement). Independent lineage: amendment review of `33ae56f…` (report preserved at [reviews/U0-AMENDMENT-REVIEW-01.md](reviews/U0-AMENDMENT-REVIEW-01.md), AMENDMENT HELD; F-A-01..F-A-07 with the F-A-01 ordering-example correction) → repairs at `9ec87f3…` → fresh scoped recheck ([reviews/U0-AMENDMENT-RECHECK-01.md](reviews/U0-AMENDMENT-RECHECK-01.md), REPAIRS VERIFIED — READY TO FREEZE). `FREEZE.json` now pins 22 contract files at the amended candidate, supersedes the original record (`ffbafc0…` over `54490a8…` — both historically intact; original 19 pins re-verified 19/19 at reopening and by the amendment reviewer), and enumerates pack fidelity 6/11 identical / 5/11 diverged (the divergences are exactly the authorized amendment targets plus the two mutable-discipline files). Next: separate fresh checker reproduces all pins + lineage + baseline checks; then final STATE, normal push, remote SHA verification, owner report. U1 remains unauthorized. The owner's follow-up review confirmed all prior refs/hashes but found three contract issues (recorded in [decisions](DECISIONS-AND-EVIDENCE.md) §U0 amendment round): A-01 cycle-detection ambiguity (API-SPEC §2.2 — navigation must not read as expansion cycle; scope now defined on the structural expansion graph, with valid-navigation and invalid-expansion-cycle fixtures), A-02 incomplete rejection→correction→resubmission journey (now complete via `inspection.revise` rejected→draft, decision fields cleared, reason preserved in the activity trail; journey fixture added), A-03 incomplete catalog identity ordering (hashed payload now deduplicated by (documentId, revision) and totally ordered by code-point string comparison; Example D; U1-01 permutation requirement). The amended candidate is an exact commit; pins will be recomputed in a NEW freeze record only after independent review (original pins at `54490a8…` remain historically valid, verified intact at reopening). Supersession: the original “U0 COMPLETE / FREEZE VERIFIED” readiness claim is superseded for the amended bytes; historical verdicts and evidence are preserved unchanged. Next: fresh independent contract review of `33ae56f…` → repairs if needed → new freeze record → separate fresh checker → push. U1 remains unauthorized.
+**2026-10-06 — U1 AUTHORIZED AND IN PROGRESS; U0 closed (frozen, verified, pushed).** The owner
+accepted the amended U0 contract and authorized U1 only: the first runnable rendering, editing
+and simulated product loop. Grant, baselines, scope, criteria, verification protocol and stop
+boundary are recorded in [U1-HANDOFF](U1-HANDOFF.md) — the routing entry for all U1 work.
+Branch `codex/ui-foundation-u1` (isolated worktree `vict-02-u1`) starts at the pushed U0
+closure commit `97346903e0c1a242b4bab0477c92bc3f34c43c38`; frozen contract authority is
+candidate `9ec87f3e7eb8eb7793f972111258940aac635346` via freeze record
+`ea47edd68e302dc5b6cacb2e43635d11781619ad`. U1 acceptance authority: STAGES §3, criteria
+U1-01…U1-08. No U1 implementation evidence exists yet at the time of writing; this entry is
+updated as the first candidate, verification and repairs land.
 
-Round history: the pack was installed verbatim into `docs/ui-foundation/` at base `4d2df037d8a82d36c60bf1bff16919650643ce22` (all installed digests matched the pack `HASHES.json` inventory; see [decisions](DECISIONS-AND-EVIDENCE.md) §U0 installation record). Local reconciliation is recorded in [RECONCILIATION](RECONCILIATION.md); exact schema/API/diagnostic drafts and the module/export plan in [API-SPEC](API-SPEC.md); fictional domain, proof walkthroughs, visual criteria and the named performance environment in [PROOF-DESIGN](PROOF-DESIGN.md); representative fixtures under `fixtures/`. The root `AGENTS.md` routing block is appended per `AGENTS.addendum.md`. No production source, manifests, lockfiles, `apps/studio`, other tracks or Stage 9 bytes were modified.
+**U0 — CLOSED (2026-10-06).** Final state: contract candidate
+`9ec87f3e7eb8eb7793f972111258940aac635346` (base `4d2df037d8a82d36c60bf1bff16919650643ce22`),
+freeze record `ea47edd68e302dc5b6cacb2e43635d11781619ad` (FREEZE.json v2: 22 pins,
+supersedes original record `ffbafc0a509d7179eddfa81c157595fe336c9dba` over candidate
+`54490a861fcd9992bfc8bfac14178fdb7921ecf0` — both historically intact; the original 19 pins
+reproduce), closure/remote commit `97346903e0c1a242b4bab0477c92bc3f34c43c38` (normal push,
+remote SHA verified). Independent lineage: original rounds (reports preserved under
+[reviews](reviews/)) → owner-authorized amendment (A-01 cycle scope, A-02 rejection→
+correction→resubmission journey, A-03 catalog total ordering) → amendment review
+([U0-AMENDMENT-REVIEW-01.md](reviews/U0-AMENDMENT-REVIEW-01.md), AMENDMENT HELD;
+F-A-01…F-A-07) → five repairs → scoped recheck ([U0-AMENDMENT-RECHECK-01.md](reviews/U0-AMENDMENT-RECHECK-01.md),
+REPAIRS VERIFIED — READY TO FREEZE) → fourth fresh checker
+([U0-AMENDMENT-FREEZE-CHECK-01.md](reviews/U0-AMENDMENT-FREEZE-CHECK-01.md), FREEZE VERIFIED:
+22/22 pins by two methods, lineage/fidelity/scope/truthfulness PASS, `npm ci` + typecheck +
+format:check + check:ui clean). U0-01…U0-08 PASS (U0-08 demonstrated at the freeze-record SHA).
+Retained non-blocking notes: F-A-06 pack fidelity 6/11 identical / 5/11 diverged (enumerated
+in FREEZE.json; divergences are the authorized amendment targets plus the two mutable-discipline
+files), F-A-07 `decidedAt` fixture omission (consistent with the approve fixture), checker
+F-2 CRLF process note. A documented process incident (mistaken `rm -rf` of uncommitted
+working-tree edits, fully restored from git before any commit) is recorded in
+[decisions](DECISIONS-AND-EVIDENCE.md).
 
-Pre-installation state (5 October 2026): the documentation execution pack and U0 design contract were authored against observed VICT main `4d2df037d8a82d36c60bf1bff16919650643ce22`. Independent documentation review of candidate 02 returned PASS after one minor candidate 01 ambiguity was repaired and rechecked. The owner authorized starting pack preparation. No foundation code, new schema/API, reference application, repository integration or Stage 9 change was implemented at that time.
+Round history: the pack was installed verbatim into `docs/ui-foundation/` at base
+`4d2df037d8a82d36c60bf1bff16919650643ce22` (all installed digests matched the pack
+`HASHES.json` inventory; see [decisions](DECISIONS-AND-EVIDENCE.md) §U0 installation record).
+Local reconciliation is recorded in [RECONCILIATION](RECONCILIATION.md); exact schema/API/
+diagnostic drafts and the module/export plan in [API-SPEC](API-SPEC.md); fictional domain,
+proof walkthroughs, visual criteria and the named performance environment in
+[PROOF-DESIGN](PROOF-DESIGN.md); representative fixtures under `fixtures/`. The root
+`AGENTS.md` routing block is appended per `AGENTS.addendum.md`.
+
+Pre-installation state (5 October 2026): the documentation execution pack and U0 design
+contract were authored against observed VICT main
+`4d2df037d8a82d36c60bf1bff16919650643ce22`. Independent documentation review of candidate 02
+returned PASS after one minor candidate 01 ambiguity was repaired and rechecked. The owner
+authorized starting pack preparation. No foundation code, new schema/API, reference
+application, repository integration or Stage 9 change was implemented at that time.
 
 ## Identity and authority
 
 - Source repository: https://github.com/radz2291/vict-02.
-- Main was read live on 5 October 2026 and remained at the full SHA above; re-fetched live on 2026-10-06 before branch creation and still at that SHA (see RECONCILIATION §1).
-- Local stage branch: codex/ui-foundation-u0 (isolated worktree `vict-02-u0`), created at the base SHA above; normal push destination.
-- Delivery location: installed in the user's repository under `docs/ui-foundation/` (verbatim pack bytes plus U0 reconciliation artifacts recorded in decisions).
-- Authority: scope clarification endorsed with “Good”; governance/pack preparation then directed with “Ok lets start”. See decisions for verbatim context and precise interpretation.
-- Current handoff: U0 only. U1–U4 remain the delivery plan, not an unattended implementation grant.
-- Same Studio: Stage 9 records formal closure with non-blocking findings; the separate agent owns its subsequent complete Studio experience/integration. Concurrent Stage 9 G3 freeze-verification branches observed on the remote during U0 baseline verification were left untouched.
+- Baseline: origin/main `4d2df037d8a82d36c60bf1bff16919650643ce22` — verified live at U0
+  start, at the U0 amendment, and again at U1 branch creation (unmoved).
+- Current branch: codex/ui-foundation-u1 (isolated worktree `vict-02-u1`), created at
+  `97346903e0c1a242b4bab0477c92bc3f34c43c38`; normal push destination. The completed
+  `codex/ui-foundation-u0` branch and its worktree are preserved as delivered.
+- Delivery location: `docs/ui-foundation/` (frozen contract bytes) plus the U1 implementation
+  scope frozen at [API-SPEC](API-SPEC.md) §9.
+- Authority: U0 completed and accepted; U1 authorized by the owner on 2026-10-06 with
+  end-to-end ownership (see [U1-HANDOFF](U1-HANDOFF.md) §1 for the verbatim grant scope).
+  U2–U4 remain the delivery plan, not an unattended implementation grant.
+- Concurrent work: Stage 9 branches and other ui-foundation/qa/pi tracks on the remote belong
+  to other agents and are left untouched; U1 never modifies `apps/studio` or Stage 9 bytes.
 
 ## Current gate ledger
 
@@ -22,9 +71,9 @@ Pre-installation state (5 October 2026): the documentation execution pack and U0
 | --- | --- | --- | --- |
 | Pack drafting | COMPLETE | Candidate 02; final reporting metadata folded afterward | Installed 2026-10-06; see decisions §U0 installation record |
 | Pack independent review | PASS — documentation only | Candidate 01: 8d2683a2a1aae7740755326af597eeed16b4a7a44cfdaf4a9d60cd8b76318e6d; candidate 02: db369614c97119762995480d3ad277b92d21e2eb812739d770bc16bf2df6b15a | Reports preserved under reviews/ |
-| U0 repository establishment/freeze | **AMENDMENT FROZEN — 22 pins at `9ec87f3…` (FREEZE.json v2 supersedes `ffbafc0…`); freeze-byte checker COMPLETE — FREEZE VERIFIED at freeze-record HEAD** | Base `4d2df037d8a82d36c60bf1bff16919650643ce22`; amendment review `382ff47c…` at `33ae56f…`; recheck `09087904…` at `9ec87f3…`; pack fidelity 6/11 identical / 5/11 diverged (enumerated in FREEZE.json) | Push + remote SHA verification; then owner-authorized U1 handoff (not yet authorized) |
-| U1 rendering/editing loop | PLANNED | None | Requires U0 pass and an authorized U1 handoff |
-| U2 breadth | PLANNED | None | Requires U1 and its own accepted scope |
+| U0 repository establishment/freeze | **CLOSED — amended contract frozen (22 pins) and freeze-byte verified; owner accepted; pushed (`a664c70…` → `9734690…` fast-forward)** | Candidates `54490a8…`/`9ec87f3…`; freeze records `ffbafc0…`/`ea47edd…`; four independent verdicts incl. FREEZE VERIFIED (`9b80f3d4…`) | None — closed. Preserve freeze records and historical evidence |
+| U1 rendering/editing loop | **AUTHORIZED — in progress** (handoff [U1-HANDOFF](U1-HANDOFF.md)) | Starting commit `9734690…`; contract authority `9ec87f3…` | Implement bounded slice → exact candidate → fresh falsifying verifier → repair/reverify → evidence, push, owner checkpoint |
+| U2 breadth | PLANNED | None | Requires U1 pass and its own accepted scope |
 | U3 realism | PLANNED | None | Requires U2 and its own accepted scope |
 | U4 reuse/handoff | PLANNED | None | Requires U3 and its own accepted scope |
 
@@ -40,21 +89,23 @@ Pre-installation state (5 October 2026): the documentation execution pack and U0
 
 ## Missing proof and limits
 
-U0 status (2026-10-06, after freeze verification): local worktree/branch inspection, dependency
-install (`npm ci`, 524 packages), and the read-only baseline checks (`typecheck`,
-`format:check`, `check:ui` — all clean, reproduced by the independent freeze checker) HAVE been
-performed; the freeze-byte pins were reproduced 19/19 by a separate fresh checker. Still NOT
-performed anywhere in this workstream: implementation of any contract element, execution of the
-design fixtures as code, browser/visual work, performance measurements, adapter/double runtime
-execution, package publication, npm-registry verification, U1+ work of any kind, and any
-Studio integration. U1 remains unauthorized until a separate accepted handoff.
+U1 status (2026-10-06, at authorization): no implementation evidence exists yet — no contract
+element executed as code, no browser/visual work, no performance measurements, no adapter or
+double runtime execution for the document model, no U1 candidate commit. The frozen U0
+fixtures remain contract examples for review, not executed evidence. Everything below the U0
+line is unchanged: no package publication, no npm-registry verification, no Studio
+integration. U1 verification must add runtime evidence per [U1-HANDOFF](U1-HANDOFF.md) §4;
+design-fixture inspection alone does not establish runtime behavior.
 
 Pack-review limits remain historical facts: the pack documentation review established the
 pack's adequacy only, and its candidate-02 snapshot excludes the folded reporting metadata
-(final delivery hashes in the pack inventory). U0 repository freeze evidence is now recorded in
-this repository: FREEZE.json, [decisions](DECISIONS-AND-EVIDENCE.md), and the preserved reports
-under [reviews](reviews/).
+(final delivery hashes in the pack inventory). U0 repository freeze evidence is recorded in
+this repository: FREEZE.json, [decisions](DECISIONS-AND-EVIDENCE.md), and the preserved
+reports under [reviews](reviews/).
 
 ## Update discipline
 
-After each candidate/review/repair, update this opening state and ledger rather than append contradictory “current” statuses. Historical decisions/evidence remain in DECISIONS-AND-EVIDENCE. Include full tested candidate/verifier SHAs and the next authorized action. Do not copy mutable status into AGENTS.
+After each candidate/review/repair, update this opening state and ledger rather than append
+contradictory "current" statuses. Historical decisions/evidence remain in
+DECISIONS-AND-EVIDENCE. Include full tested candidate/verifier SHAs and the next authorized
+action. Do not copy mutable status into AGENTS.
