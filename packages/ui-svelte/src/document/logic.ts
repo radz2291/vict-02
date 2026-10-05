@@ -1,0 +1,195 @@
+/**
+ * Render-plan → DOM view-model helpers for the document renderer.
+ *
+ * Pure functions over the compiled `vict.ui-render-plan@1`; the Svelte
+ * components consume these. No global state, no hidden registries.
+ */
+
+import {
+  evaluateExpression,
+  type UiExpression,
+  type UiScopeValues,
+  type UiRenderInstruction,
+  type UiRenderPlan,
+  type UiResolvedValue,
+} from '@victframework/ui';
+
+/** Resolved dynamic scope at one render position. */
+export interface DocumentScope {
+  readonly view?: Readonly<Record<string, unknown>>;
+  readonly record?: Readonly<Record<string, unknown>>;
+  readonly props?: Readonly<Record<string, unknown>>;
+  readonly state: Readonly<Record<string, unknown>>;
+  readonly tokens: Readonly<Record<string, string>>;
+  readonly repeatItem?: { readonly name: string; readonly value: Readonly<Record<string, unknown>> };
+}
+
+export function toScopeValues(scope: DocumentScope): UiScopeValues {
+  return {
+    ...(scope.view !== undefined ? { view: scope.view } : {}),
+    ...(scope.record !== undefined ? { record: scope.record } : {}),
+    ...(scope.props !== undefined ? { props: scope.props } : {}),
+    state: scope.state,
+    tokens: scope.tokens,
+    ...(scope.repeatItem !== undefined ? { repeatItem: scope.repeatItem } : {}),
+  };
+}
+
+/** The U1 default pure-operation registry (declared in catalogs via opNames). */
+export const DEFAULT_UI_OPS: Readonly<Record<string, (args: readonly unknown[]) => unknown>> = {
+  concat: (args) => args.map((arg) => String(arg ?? '')).join(''),
+};
+
+/** Evaluate a resolved attribute/text value to its render-time value. */
+export function resolveValue(value: UiResolvedValue, scope: DocumentScope): unknown {
+  if (value.type === 'literal') return value.value;
+  if (value.type === 'token') return scope.tokens[value.id];
+  return evaluateExpression(value.expression, toScopeValues(scope), DEFAULT_UI_OPS);
+}
+
+/** The occurrence key at render time: base key + repeat record keys. */
+export function occurrenceKey(baseKey: string, repeatKeys: readonly string[]): string {
+  if (repeatKeys.length === 0) return baseKey;
+  return `${baseKey}|${repeatKeys.join('|')}`;
+}
+
+/** Condition records by id. */
+export function conditionsOf(plan: UiRenderPlan): Readonly<Record<string, (typeof plan.dynamic.conditions)[number]>> {
+  return Object.fromEntries(plan.dynamic.conditions.map((condition) => [condition.id, condition]));
+}
+
+/** Evaluate a localState condition for branch selection. */
+export function evaluateCondition(
+  conditionId: string,
+  conditions: ReturnType<typeof conditionsOf>,
+  scope: DocumentScope,
+): boolean {
+  const condition = conditions[conditionId];
+  if (condition === undefined || condition.kind !== 'localState') return false;
+  return Boolean(evaluateExpression(condition.when, toScopeValues(scope)));
+}
+
+const escapeCss = (selector: string): string => selector.replace(/[^A-Za-z0-9_-]/g, '\\$&');
+
+/**
+ * Assemble the plan's style rules into CSS text, scoped under a root
+ * class so documents never leak globally. Layer order follows the frozen
+ * cascade: token → componentBase → componentVariant → source → local.
+ */
+export function styleRulesToCss(plan: UiRenderPlan, rootClass: string): string {
+  const conditions = conditionsOf(plan);
+  const layerOrder = plan.style.layers;
+  const escapedRoot = escapeCss(rootClass);
+  const sorted = [...plan.style.rules].sort(
+    (a, b) => layerOrder.indexOf(a.layer) - layerOrder.indexOf(b.layer),
+  );
+  const mediaBuckets = new Map<string, string[]>();
+  const plain: string[] = [];
+  for (const rule of sorted) {
+    const lines: string[] = [];
+    for (const declaration of rule.declarations) {
+      if (declaration.value.type === 'literal') {
+        lines.push(`  ${declaration.property}: ${String(declaration.value.value)};`);
+      } else if (declaration.value.type === 'token') {
+        lines.push(`  ${declaration.property}: var(--ui-token-${declaration.value.id});`);
+      }
+      // binding values are runtime expressions; skipped in static CSS
+    }
+    const declarations = lines.join('\n');
+    if (declarations === '') continue;
+    const selector =
+      rule.selector === ':root' ? `.${escapedRoot}` : `.${escapedRoot} ${escapeCss(rule.selector)}`;
+    const css = `${selector} {\n${declarations}\n}`;
+    if (rule.mediaConditionId !== undefined) {
+      const condition = conditions[rule.mediaConditionId];
+      const query = condition?.kind === 'media' ? condition.query : undefined;
+      if (query === undefined) {
+        plain.push(css);
+        continue;
+      }
+      const bucket = mediaBuckets.get(query) ?? [];
+      bucket.push(css);
+      mediaBuckets.set(query, bucket);
+    } else {
+      plain.push(css);
+    }
+  }
+  let css = plain.join('\n\n');
+  for (const [query, rules] of mediaBuckets) {
+    css += `\n\n@media ${query} {\n${rules.join('\n\n')}\n}`;
+  }
+  return css;
+}
+
+/** Stable root class per plan (document+revision scoped). */
+export function rootClassFor(plan: UiRenderPlan): string {
+  const docHash = plan.documentId.replace(/[^A-Za-z0-9_-]/g, '_');
+  return `uv-root-${docHash}-${plan.revision.replace(/[^A-Za-z0-9_-]/g, '_')}`;
+}
+
+/** Depth-first walk of the instruction tree. */
+export function walkInstructions(
+  instruction: UiRenderInstruction,
+  visit: (instruction: UiRenderInstruction) => void,
+): void {
+  visit(instruction);
+  switch (instruction.kind) {
+    case 'element':
+      instruction.children.forEach((child) => walkInstructions(child, visit));
+      break;
+    case 'component':
+      walkInstructions(instruction.body, visit);
+      Object.values(instruction.slots).forEach((children) =>
+        children.forEach((child) => walkInstructions(child, visit)),
+      );
+      break;
+    case 'repeat':
+      walkInstructions(instruction.template, visit);
+      break;
+    case 'conditional':
+      instruction.branches.forEach((branch) => branch.children.forEach((child) => walkInstructions(child, visit)));
+      break;
+    case 'slot':
+      instruction.fallback.forEach((child) => walkInstructions(child, visit));
+      break;
+    case 'unsupported':
+      instruction.children.forEach((child) => walkInstructions(child, visit));
+      break;
+    case 'text':
+    case 'extension':
+      break;
+  }
+}
+
+/** All node ids in the plan (editor canvas tooling). */
+export function nodeIdsOf(plan: UiRenderPlan): readonly string[] {
+  const ids: string[] = [];
+  for (const structure of plan.structure) {
+    walkInstructions(structure, (instruction) => ids.push(instruction.nodeId));
+  }
+  return [...new Set(ids)];
+}
+
+/** Coerce a repeat record to a field record. */
+export function asRecord(value: unknown): Record<string, unknown> {
+  return typeof value === 'object' && value !== null ? (value as Record<string, unknown>) : {};
+}
+
+/** Evaluate a component/extension instruction's declared props (typed, with defaults). */
+export function evaluatedComponentProps(
+  instruction: {
+    readonly propDecls: readonly { readonly name: string; readonly default?: string | number | boolean }[];
+    readonly propValues: Readonly<Record<string, UiExpression>>;
+  },
+  scope: DocumentScope,
+): Record<string, unknown> {
+  const out: Record<string, unknown> = {};
+  for (const declaration of instruction.propDecls) {
+    const declared = instruction.propValues[declaration.name];
+    out[declaration.name] =
+      declared !== undefined
+        ? resolveValue({ type: 'expression', expression: declared }, scope)
+        : declaration.default;
+  }
+  return out;
+}

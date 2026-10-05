@@ -22,7 +22,7 @@ import type {
 import { UI_DOCUMENT_SCHEMA } from './document.js';
 import { hasErrors, uiDiagnostic, type UiDiagnostic } from './diagnostics.js';
 import { checkExpression, type UiScopeInfo } from './expressions.js';
-import { allowedAttributes, isKnownElement, isLeafElement } from './semantic.js';
+import { isAllowedAttribute, isKnownElement, isLeafElement } from './semantic.js';
 
 export type { UiDocument };
 
@@ -422,9 +422,8 @@ function validateNode(
         );
         break; // attribute checks are meaningless for unknown tags
       }
-      const allowed = allowedAttributes(catalogs.elements, node.tag);
       for (const name of Object.keys(node.attributes ?? {})) {
-        if (!allowed.has(name)) {
+        if (!isAllowedAttribute(catalogs.elements, node.tag, name)) {
           issues.push(
             uiDiagnostic(
               'UI_DOC_UNKNOWN_ATTRIBUTE',

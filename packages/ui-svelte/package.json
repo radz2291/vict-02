@@ -220,6 +220,11 @@
       "types": "./src/dates.ts",
       "svelte": "./src/dates.ts",
       "default": "./src/dates.ts"
+    },
+    "./document": {
+      "types": "./src/document/logic.ts",
+      "svelte": "./src/document/logic.ts",
+      "default": "./src/document/logic.ts"
     }
   },
   "main": "./src/index.ts",

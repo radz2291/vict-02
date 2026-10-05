@@ -44,10 +44,10 @@ const ELEMENTS: readonly SemanticElementDef[] = [
   { tag: 'h2' },
   { tag: 'h3' },
   { tag: 'h4' },
-  { tag: 'p', leaf: true },
-  { tag: 'span', leaf: true },
-  { tag: 'strong', leaf: true },
-  { tag: 'em', leaf: true },
+  { tag: 'p' },
+  { tag: 'span' },
+  { tag: 'strong' },
+  { tag: 'em' },
   // lists
   { tag: 'ul' },
   { tag: 'ol' },
@@ -56,7 +56,7 @@ const ELEMENTS: readonly SemanticElementDef[] = [
   { tag: 'img', attributes: ['src', 'alt', 'width', 'height'], leaf: true },
   // form essentials
   { tag: 'form', attributes: ['name'] },
-  { tag: 'label', attributes: ['for'], leaf: true },
+  { tag: 'label', attributes: ['for'] },
   {
     tag: 'input',
     attributes: ['type', 'name', 'value', 'placeholder', 'required', 'disabled', 'checked', 'min', 'max', 'step'],
@@ -66,13 +66,13 @@ const ELEMENTS: readonly SemanticElementDef[] = [
     tag: 'select',
     attributes: ['name', 'required', 'disabled'],
   },
-  { tag: 'option', attributes: ['value', 'selected', 'disabled'], leaf: true },
+  { tag: 'option', attributes: ['value', 'selected', 'disabled'] },
   { tag: 'textarea', attributes: ['name', 'placeholder', 'rows', 'required', 'disabled'], leaf: true },
   { tag: 'fieldset' },
   { tag: 'legend', leaf: true },
   // interactive
-  { tag: 'button', attributes: ['type', 'name', 'value', 'disabled'], leaf: true },
-  { tag: 'a', attributes: ['href', 'target', 'rel'], leaf: true },
+  { tag: 'button', attributes: ['type', 'name', 'value', 'disabled'] },
+  { tag: 'a', attributes: ['href', 'target', 'rel'] },
   // table (read-only display essentials)
   { tag: 'table' },
   { tag: 'thead' },
@@ -87,13 +87,23 @@ export function defaultSemanticElementCatalog(): SemanticElementCatalog {
   return { elements: ELEMENTS, globalAttributes: [...GLOBAL_ATTRIBUTES] };
 }
 
-/** Resolved attribute allow-list for one tag (element + global sets). */
+/** Resolved attribute allow-list for one tag (element + global sets + data-*). */
 export function allowedAttributes(
   catalog: SemanticElementCatalog,
   tag: string,
 ): ReadonlySet<string> {
   const def = catalog.elements.find((element) => element.tag === tag);
-  return new Set([...catalog.globalAttributes, ...(def?.attributes ?? [])]);
+  return new Set([...catalog.globalAttributes, ...(def?.attributes ?? []), 'data-*']);
+}
+
+/** Attribute allow-list membership: exact names plus the `data-*` prefix family. */
+export function isAllowedAttribute(
+  catalog: SemanticElementCatalog,
+  tag: string,
+  name: string,
+): boolean {
+  if (name.startsWith('data-')) return true;
+  return allowedAttributes(catalog, tag).has(name);
 }
 
 export function isKnownElement(catalog: SemanticElementCatalog, tag: string): boolean {

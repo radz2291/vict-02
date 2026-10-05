@@ -1,3 +1,5 @@
+export { default as DocumentHost } from './document/DocumentHost.svelte';
+export { default as DocumentRenderNode } from './document/RenderNode.svelte';
 export { default as Select } from './Select.svelte';
 export { default as Popover } from './Popover.svelte';
 export { default as Tooltip } from './Tooltip.svelte';
@@ -53,3 +55,6 @@ export {
   type ComponentSourceContext,
 } from './logic.js';
 export { RendererDiagnostic } from '@victframework/application/renderer';
+
+// ---- U1 document renderer (vict.ui-render-plan@1 consumer) ------------------
+export * from './document/logic.js';

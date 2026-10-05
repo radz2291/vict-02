@@ -384,6 +384,7 @@ export type {
   UiComponentDefinition,
   UiCondition,
   UiDocument,
+  UiExpression,
   UiFieldTypes,
   UiFieldType,
   UiInteraction,
