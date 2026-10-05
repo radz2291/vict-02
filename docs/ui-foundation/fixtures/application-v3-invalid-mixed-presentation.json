@@ -319,5 +319,6 @@
       }
     }
   ],
-  "uiDocumentPins": []
+  "uiDocumentPins": [],
+  "note": "NEGATIVE: screen 'screen.inspection-detail' declares BOTH uiDocument and layout -> exactly-one-presentation-mode violated, expected UI_APP_PRESENTATION_MODE_INVALID"
 }

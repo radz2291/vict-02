@@ -137,6 +137,32 @@ Authority: HANDOFF WP-6 continues — affected re-verification of the repaired b
 independent reviewer, then freeze pins at the accepted contract SHA, freeze-record commit, and
 a separate fresh checker reproducing the pins before push/report.
 
+## U0 contract review round 2 — affected re-verification, and pre-freeze micro-repairs (2026-10-06)
+
+Identity: same branch/base; audited repaired candidate `6a2f7b9ea3078da16ce42253ee9db0c902bdf3af`.
+
+Claims and verdict: a second independent fresh-context verifier (non-author, non-round-1;
+report preserved verbatim at [reviews/U0-REVIEW-02.md](reviews/U0-REVIEW-02.md), SHA-256
+`1a5fc6488348d7a2d29618cef821d0c41706051358caa0996e6ce3e7aebb5512`) re-verified the repairs:
+F-1..F-7 all REPAIRED and re-measured where falsifiable (including an independent Edge
+154.0.4258.53 re-confirmation); the manager's fixture-semantics repair verified consistent
+(§7 catalog 28 codes; minimal dangling-child negative). Regression clean: repair diff confined
+to `docs/ui-foundation/**`; round-1 report bytes preserved (456e910a…c241 re-confirmed);
+9/11 pack-inventoried files still byte-identical to the pack; prettier-clean fixtures; no
+orphan diagnostic references; U0-01..U0-07 hold. Verdict: **HELD pre-freeze by design**;
+explicit "ready to freeze: YES"; U0-08 remains the freeze half of WP-6.
+
+New round-2 findings and disposition:
+
+| Finding | Severity | Disposition |
+| --- | --- | --- |
+| N-1 §5 staged-package clause attached the Chrome-only staged 155.0.8059.26 package to the Edge cell | NOTE | repaired pre-freeze: clause now names Chrome as the staged package's owner and states Edge has none |
+| N-2 `application-v3-invalid-mixed-presentation.json` was the only negative without a note | NOTE | repaired pre-freeze: note added (expected `UI_APP_PRESENTATION_MODE_INVALID`) |
+| N-3 STATE's typecheck/format:check/check:ui claims not re-runnable without `npm ci` | NOTE | closed by the freeze checker, which reproduces all three checks after `npm ci` at the pinned SHA |
+
+N-1/N-2 are disclosed post-review micro-repairs; their corrected bytes are part of the frozen
+contract set and are covered by the freeze-byte verification (STAGES §2 U0-08).
+
 ## Future evidence entry format
 
 Identity: repository, branch, full base/candidate/reviewer SHAs, environment and contract pins.
