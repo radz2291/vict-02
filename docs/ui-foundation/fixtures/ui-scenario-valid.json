@@ -1,0 +1,95 @@
+{
+  "schema": "vict.ui-scenario@1",
+  "scenarioId": "scn.approve-happy",
+  "references": {
+    "application": {
+      "id": "app.inspection-proof",
+      "revision": "4"
+    },
+    "documents": {
+      "doc.inspection-detail": "3"
+    }
+  },
+  "seeds": {
+    "domain": {
+      "inspections": [
+        {
+          "id": "ins-1",
+          "title": "Pump seal check",
+          "status": "submitted",
+          "technician": "act-t1",
+          "supervisor": "act-s1",
+          "domainRevision": 7,
+          "findings": [
+            {
+              "id": "f-1",
+              "severity": "medium",
+              "description": "Seal wear beyond tolerance"
+            }
+          ],
+          "evidence": [
+            {
+              "id": "e-1",
+              "label": "Wear gauge photo",
+              "kind": "image-ref",
+              "ref": "asset://gauge-001"
+            }
+          ]
+        }
+      ]
+    },
+    "random": {
+      "seed": 42
+    },
+    "clock": {
+      "kind": "fixed",
+      "start": "2026-10-06T09:00:00Z"
+    }
+  },
+  "actors": [
+    {
+      "actorId": "act-t1",
+      "role": "technician",
+      "permissions": ["qlt.inspection.submit", "qlt.inspection.edit"]
+    },
+    {
+      "actorId": "act-s1",
+      "role": "supervisor",
+      "permissions": ["qlt.inspection.approve", "qlt.inspection.reject"]
+    }
+  ],
+  "operations": [
+    {
+      "op": {
+        "capabilityId": "inspection.approve"
+      },
+      "implementation": "simulated",
+      "outcome": {
+        "kind": "success",
+        "sets": {
+          "status": "approved"
+        },
+        "activityEntry": "Inspection approved by supervisor"
+      }
+    },
+    {
+      "op": {
+        "dataOp": "inspection.list"
+      },
+      "implementation": "simulated",
+      "outcome": {
+        "kind": "success"
+      }
+    },
+    {
+      "op": {
+        "dataOp": "inspection.get"
+      },
+      "implementation": "simulated",
+      "outcome": {
+        "kind": "success"
+      }
+    }
+  ],
+  "resetBoundary": "session"
+}

@@ -265,6 +265,8 @@ model, state diagrams, effect/ambiguity rules, and operational limits.
   03 disposition: verified with non-blocking issues; Stage 04 permitted
 - `docs/handoff/VICT-STAGE-02-HANDOFF.md` — Stage 02 scope
 - `docs/handoff/VICT-STAGE-03-HANDOFF.md` — Stage 03 scope
+- `docs/ui-foundation/STATE.md` — UI foundation workstream entry point
+  (reusable UI/authoring contracts; see that directory's README-level docs)
 
 ## Package namespace and licensing (Stage 07A, 2026-09-09)
 

@@ -1,0 +1,15 @@
+{
+  "files": {
+    "AGENTS.addendum.md": "f341c7b9224291ba8c55439a80b3fa68458c2a01e3b010c2a0700e02754aa8c2",
+    "README.md": "b55c8d2fe476476ac007d29258c805fba109b2088051271bf957b3e3dfe96148",
+    "START-HERE.md": "6b5aedcc90fcb53a33a88ba2ceda8367fe2695f259b99d96e31c9608ce8521c0",
+    "docs/ui-foundation/CONTRACTS.md": "42ef30893454bad44e327b30d37d6d4760e6f6426bf3859bc9d76b40425496a2",
+    "docs/ui-foundation/DECISIONS-AND-EVIDENCE.md": "1f2cabb423959f0392428a0bd75a73c76c03ad41a66f4aa26ded5088c16217bd",
+    "docs/ui-foundation/HANDOFF.md": "769fc1e46fdd59934bf41edc78095880864fe0bdaf082bf071fed78b4a908237",
+    "docs/ui-foundation/PRODUCT-ARCHITECTURE.md": "ca2ac84ab6a9519e02234058f663d35fe3dc4e7d9d6f8dc4dd78370b50ee390f",
+    "docs/ui-foundation/STAGES-AND-VERIFICATION.md": "c7e07960c1ee338a513fc34f77fe4da85cda6b0f79ee3e95cf657afb5a92acad",
+    "docs/ui-foundation/STATE.md": "8f7aeda86896ef83669e394e9a48e527f5db849a3e0fb880642a2f36bb05a963"
+  },
+  "kind": "documentation-review-candidate",
+  "repository_baseline": "4d2df037d8a82d36c60bf1bff16919650643ce22"
+}

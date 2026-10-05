@@ -1,0 +1,43 @@
+{
+  "schema": "vict.ui-edit@1",
+  "documentId": "doc.inspection-detail",
+  "requestId": "req-2026-10-06-001",
+  "expectedDocumentRevision": "3",
+  "reason": "Add rejection-reason hint under the decision block",
+  "commands": [
+    {
+      "type": "insert",
+      "parentId": "screen",
+      "index": 3,
+      "node": {
+        "id": "decision-hint",
+        "kind": "text",
+        "content": {
+          "type": "literal",
+          "value": "Decisions are final and recorded in activity."
+        }
+      }
+    },
+    {
+      "type": "setStyleDeclaration",
+      "nodeId": "approve-button",
+      "layer": "local",
+      "declaration": {
+        "property": "border-radius",
+        "value": {
+          "type": "text",
+          "value": "6px"
+        }
+      }
+    },
+    {
+      "type": "bindExpression",
+      "nodeId": "approve-button",
+      "attribute": "disabled",
+      "expression": {
+        "type": "ref",
+        "path": "state.pendingDecision"
+      }
+    }
+  ]
+}

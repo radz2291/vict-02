@@ -1,0 +1,583 @@
+{
+  "application": {
+    "schema": "vict.application@3",
+    "id": "app.inspection-proof",
+    "revision": "4",
+    "name": "Inspection Proof",
+    "routes": [
+      {
+        "id": "route.detail",
+        "path": "/inspections/:id",
+        "screenId": "screen.inspection-detail"
+      },
+      {
+        "id": "route.settings",
+        "path": "/settings",
+        "screenId": "screen.settings"
+      }
+    ],
+    "screens": [
+      {
+        "id": "screen.inspection-detail",
+        "title": "Inspection detail",
+        "uiDocument": {
+          "documentId": "doc.inspection-detail",
+          "revision": "3"
+        }
+      },
+      {
+        "id": "screen.settings",
+        "title": "Settings",
+        "layout": {
+          "name": "main",
+          "surfaces": []
+        }
+      }
+    ],
+    "views": [],
+    "actions": [
+      {
+        "kind": "local",
+        "id": "inspection.approve",
+        "revision": "2",
+        "inputContractId": "contract.approve-input"
+      }
+    ],
+    "resources": [
+      {
+        "resourceId": "inspection",
+        "revision": "5"
+      }
+    ]
+  },
+  "uiDocuments": [
+    {
+      "document": {
+        "schema": "vict.ui-document@1",
+        "id": "doc.inspection-detail",
+        "revision": "3",
+        "root": "screen",
+        "nodes": {
+          "screen": {
+            "kind": "element",
+            "tag": "section",
+            "attributes": {
+              "class": "inspection-detail"
+            },
+            "children": ["heading", "findings", "decision-block"]
+          },
+          "heading": {
+            "kind": "element",
+            "tag": "h1",
+            "children": ["heading-text"],
+            "style": {
+              "sourceIds": ["ss.heading"],
+              "local": []
+            }
+          },
+          "heading-text": {
+            "kind": "text",
+            "content": {
+              "type": "expression",
+              "expression": {
+                "type": "ref",
+                "path": "record.title"
+              }
+            }
+          },
+          "findings": {
+            "kind": "repeat",
+            "collection": {
+              "type": "ref",
+              "path": "record.findings"
+            },
+            "key": {
+              "type": "ref",
+              "path": "repeat.finding.id"
+            },
+            "itemName": "finding",
+            "templateRoot": "finding-instance"
+          },
+          "finding-instance": {
+            "kind": "component",
+            "definitionId": "def.finding-card",
+            "props": {
+              "severity": {
+                "type": "ref",
+                "path": "repeat.finding.severity"
+              },
+              "description": {
+                "type": "ref",
+                "path": "repeat.finding.description"
+              }
+            }
+          },
+          "decision-block": {
+            "kind": "conditional",
+            "conditionId": "cond.can-decide",
+            "branches": [
+              {
+                "when": "cond.can-decide",
+                "children": ["approve-button"]
+              }
+            ]
+          },
+          "approve-button": {
+            "kind": "element",
+            "tag": "button",
+            "attributes": {
+              "type": "button"
+            },
+            "children": ["approve-label"],
+            "style": {
+              "sourceIds": [],
+              "local": [
+                {
+                  "property": "background",
+                  "value": {
+                    "type": "token",
+                    "id": "tok.accent"
+                  }
+                }
+              ]
+            },
+            "interactions": [
+              {
+                "event": "click",
+                "operations": [
+                  {
+                    "type": "invokeAction",
+                    "actionId": "inspection.approve",
+                    "input": {
+                      "expectedDomainRevision": {
+                        "type": "ref",
+                        "path": "record.domainRevision"
+                      }
+                    }
+                  },
+                  {
+                    "type": "setLocalState",
+                    "key": "pendingDecision",
+                    "value": {
+                      "type": "literal",
+                      "value": true
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "approve-label": {
+            "kind": "text",
+            "content": {
+              "type": "literal",
+              "value": "Approve inspection"
+            }
+          }
+        },
+        "componentDefinitions": {
+          "def.finding-card": {
+            "id": "def.finding-card",
+            "revision": "1",
+            "root": "fc-root",
+            "props": {
+              "severity": {
+                "type": "string",
+                "required": true
+              },
+              "description": {
+                "type": "string",
+                "required": true
+              }
+            },
+            "slots": {},
+            "variants": {},
+            "nodes": {
+              "fc-root": {
+                "kind": "element",
+                "tag": "article",
+                "attributes": {
+                  "class": "finding-card"
+                },
+                "children": ["fc-title", "fc-desc"],
+                "style": {
+                  "sourceIds": ["ss.finding"],
+                  "local": []
+                }
+              },
+              "fc-title": {
+                "kind": "text",
+                "content": {
+                  "type": "expression",
+                  "expression": {
+                    "type": "ref",
+                    "path": "prop.severity"
+                  }
+                }
+              },
+              "fc-desc": {
+                "kind": "text",
+                "content": {
+                  "type": "expression",
+                  "expression": {
+                    "type": "ref",
+                    "path": "prop.description"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "styleSources": {
+          "ss.heading": {
+            "id": "ss.heading",
+            "declarations": [
+              {
+                "property": "font-size",
+                "value": {
+                  "type": "token",
+                  "id": "tok.font-lg"
+                }
+              }
+            ]
+          },
+          "ss.finding": {
+            "id": "ss.finding",
+            "declarations": [
+              {
+                "property": "border",
+                "value": {
+                  "type": "text",
+                  "value": "1px solid"
+                }
+              },
+              {
+                "property": "border-color",
+                "value": {
+                  "type": "token",
+                  "id": "tok.border"
+                }
+              }
+            ]
+          }
+        },
+        "tokens": {
+          "tok.border": {
+            "id": "tok.border",
+            "value": "#d0d7de"
+          },
+          "tok.accent": {
+            "id": "tok.accent",
+            "value": "#0969da"
+          },
+          "tok.font-lg": {
+            "id": "tok.font-lg",
+            "value": "1.25rem"
+          }
+        },
+        "conditions": {
+          "cond.can-decide": {
+            "id": "cond.can-decide",
+            "kind": "expression",
+            "expression": {
+              "type": "compare",
+              "op": "===",
+              "left": {
+                "type": "ref",
+                "path": "record.status"
+              },
+              "right": {
+                "type": "literal",
+                "value": "submitted"
+              }
+            }
+          },
+          "cond.narrow": {
+            "id": "cond.narrow",
+            "kind": "media",
+            "query": "(max-width: 719px)"
+          }
+        },
+        "assets": {
+          "ast.logo": {
+            "id": "ast.logo",
+            "kind": "external",
+            "href": "https://example.com/logo.svg"
+          }
+        },
+        "localState": {
+          "pendingDecision": {
+            "key": "pendingDecision",
+            "type": "boolean",
+            "default": false
+          }
+        }
+      }
+    },
+    {
+      "document": {
+        "schema": "vict.ui-document@1",
+        "id": "doc.inspection-detail",
+        "revision": "3",
+        "root": "screen",
+        "nodes": {
+          "screen": {
+            "kind": "element",
+            "tag": "section",
+            "attributes": {
+              "class": "inspection-detail"
+            },
+            "children": ["heading", "findings", "decision-block"]
+          },
+          "heading": {
+            "kind": "element",
+            "tag": "h1",
+            "children": ["heading-text"],
+            "style": {
+              "sourceIds": ["ss.heading"],
+              "local": []
+            }
+          },
+          "heading-text": {
+            "kind": "text",
+            "content": {
+              "type": "expression",
+              "expression": {
+                "type": "ref",
+                "path": "record.title"
+              }
+            }
+          },
+          "findings": {
+            "kind": "repeat",
+            "collection": {
+              "type": "ref",
+              "path": "record.findings"
+            },
+            "key": {
+              "type": "ref",
+              "path": "repeat.finding.id"
+            },
+            "itemName": "finding",
+            "templateRoot": "finding-instance"
+          },
+          "finding-instance": {
+            "kind": "component",
+            "definitionId": "def.finding-card",
+            "props": {
+              "severity": {
+                "type": "ref",
+                "path": "repeat.finding.severity"
+              },
+              "description": {
+                "type": "ref",
+                "path": "repeat.finding.description"
+              }
+            }
+          },
+          "decision-block": {
+            "kind": "conditional",
+            "conditionId": "cond.can-decide",
+            "branches": [
+              {
+                "when": "cond.can-decide",
+                "children": ["approve-button"]
+              }
+            ]
+          },
+          "approve-button": {
+            "kind": "element",
+            "tag": "button",
+            "attributes": {
+              "type": "button"
+            },
+            "children": ["approve-label"],
+            "style": {
+              "sourceIds": [],
+              "local": [
+                {
+                  "property": "background",
+                  "value": {
+                    "type": "token",
+                    "id": "tok.accent"
+                  }
+                }
+              ]
+            },
+            "interactions": [
+              {
+                "event": "click",
+                "operations": [
+                  {
+                    "type": "invokeAction",
+                    "actionId": "inspection.approve",
+                    "input": {
+                      "expectedDomainRevision": {
+                        "type": "ref",
+                        "path": "record.domainRevision"
+                      }
+                    }
+                  },
+                  {
+                    "type": "setLocalState",
+                    "key": "pendingDecision",
+                    "value": {
+                      "type": "literal",
+                      "value": true
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "approve-label": {
+            "kind": "text",
+            "content": {
+              "type": "literal",
+              "value": "Approve"
+            }
+          }
+        },
+        "componentDefinitions": {
+          "def.finding-card": {
+            "id": "def.finding-card",
+            "revision": "1",
+            "root": "fc-root",
+            "props": {
+              "severity": {
+                "type": "string",
+                "required": true
+              },
+              "description": {
+                "type": "string",
+                "required": true
+              }
+            },
+            "slots": {},
+            "variants": {},
+            "nodes": {
+              "fc-root": {
+                "kind": "element",
+                "tag": "article",
+                "attributes": {
+                  "class": "finding-card"
+                },
+                "children": ["fc-title", "fc-desc"],
+                "style": {
+                  "sourceIds": ["ss.finding"],
+                  "local": []
+                }
+              },
+              "fc-title": {
+                "kind": "text",
+                "content": {
+                  "type": "expression",
+                  "expression": {
+                    "type": "ref",
+                    "path": "prop.severity"
+                  }
+                }
+              },
+              "fc-desc": {
+                "kind": "text",
+                "content": {
+                  "type": "expression",
+                  "expression": {
+                    "type": "ref",
+                    "path": "prop.description"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "styleSources": {
+          "ss.heading": {
+            "id": "ss.heading",
+            "declarations": [
+              {
+                "property": "font-size",
+                "value": {
+                  "type": "token",
+                  "id": "tok.font-lg"
+                }
+              }
+            ]
+          },
+          "ss.finding": {
+            "id": "ss.finding",
+            "declarations": [
+              {
+                "property": "border",
+                "value": {
+                  "type": "text",
+                  "value": "1px solid"
+                }
+              },
+              {
+                "property": "border-color",
+                "value": {
+                  "type": "token",
+                  "id": "tok.border"
+                }
+              }
+            ]
+          }
+        },
+        "tokens": {
+          "tok.border": {
+            "id": "tok.border",
+            "value": "#d0d7de"
+          },
+          "tok.accent": {
+            "id": "tok.accent",
+            "value": "#0969da"
+          },
+          "tok.font-lg": {
+            "id": "tok.font-lg",
+            "value": "1.25rem"
+          }
+        },
+        "conditions": {
+          "cond.can-decide": {
+            "id": "cond.can-decide",
+            "kind": "expression",
+            "expression": {
+              "type": "compare",
+              "op": "===",
+              "left": {
+                "type": "ref",
+                "path": "record.status"
+              },
+              "right": {
+                "type": "literal",
+                "value": "submitted"
+              }
+            }
+          },
+          "cond.narrow": {
+            "id": "cond.narrow",
+            "kind": "media",
+            "query": "(max-width: 719px)"
+          }
+        },
+        "assets": {
+          "ast.logo": {
+            "id": "ast.logo",
+            "kind": "external",
+            "href": "https://example.com/logo.svg"
+          }
+        },
+        "localState": {
+          "pendingDecision": {
+            "key": "pendingDecision",
+            "type": "boolean",
+            "default": false
+          }
+        }
+      }
+    }
+  ],
+  "uiDocumentPins": [],
+  "note": "NEGATIVE: two catalog entries for doc.inspection-detail@3 with different content digests -> UI_DOC_REVISION_COLLISION (authority: catalog)"
+}
