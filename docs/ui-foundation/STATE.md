@@ -1,6 +1,6 @@
 # UI foundation — current state
 
-**2026-10-06 — U0 CONTRACT FROZEN at candidate `54490a861fcd9992bfc8bfac14178fdb7921ecf0`; freeze-record committed; independent freeze-byte checker pending.** Two independent fresh-context review rounds completed (round 1 at `f7767b2…`: HELD, F-1..F-7 repaired; round 2 at `6a2f7b9…`: HELD pre-freeze by design, ready-to-freeze YES, N-1/N-2 repaired pre-freeze, N-3 delegated to checker reproduction). `FREEZE.json` pins 19 contract files (UTF-8 git-blob sha256) at the candidate SHA; mutable STATE, reviews/**, the record itself and shared root files are excluded with rationale. Baseline checks at the candidate (stage-manager run, 2026-10-06): `npm run typecheck` clean, `npm run format:check` clean, `npm run check:ui` 0 errors/0 warnings — the freeze checker independently reproduces all three after `npm ci`. Next: fresh checker reproduces pins + lineage + checks at the freeze-record SHA; then final STATE SHAs, push, remote verification and owner report. U1 remains unauthorized until a separate accepted handoff.
+**2026-10-06 — U0 COMPLETE: contract frozen AND freeze-byte verified (FREEZE VERIFIED).** Contract candidate `54490a861fcd9992bfc8bfac14178fdb7921ecf0` (base `4d2df037d8a82d36c60bf1bff16919650643ce22`); freeze record `ffbafc0a509d7179eddfa81c157595fe336c9dba` (FREEZE.json, 19 pins). Independent lineage: round-1 review at `f7767b2…` (HELD → F-1..F-7 repaired), round-2 at `6a2f7b9…` (HELD pre-freeze by design, ready-to-freeze YES; N-1/N-2 repaired pre-freeze), fresh freeze-byte checker at `ffbafc0…` — pins reproduced 19/19 (blob + working tree), lineage/scope/truthfulness PASS, baseline checks reproduced after fresh `npm ci` (`typecheck` clean, `format:check` clean, `check:ui` 0 errors/0 warnings; N-3 closed). Checker report preserved at [reviews/U0-FREEZE-CHECK-01.md](reviews/U0-FREEZE-CHECK-01.md) (sha256 `43fcaa62ad64f483cf633290caa0d03cc4ddb9c250a5cf3ead9209337e3a62dc`), verdict FREEZE VERIFIED; its three NOTEs (FV-1..FV-3) are recorded in DECISIONS; FV-1/FV-2 wording clarified in this file (post-freeze, mutable-STATE-only bytes; frozen pins untouched). U0-01..U0-08: PASS / PASS / PASS / PASS / PASS / PASS / PASS / PASS (U0-08 demonstrated by the checker at the freeze-record SHA). Retained non-blocking notes: F-5/F-6/F-7-class wording notes already repaired; N-1..N-3 repaired/closed; FV-3 npm allowScripts warning retained (environment-side, no repo effect). Next action: owner-authorized U1 handoff — this task does NOT authorize U1. Push of this branch follows; remote full SHA to be verified before the owner report.
 
 Round history (same day): the pack was installed verbatim into `docs/ui-foundation/` at base `4d2df037d8a82d36c60bf1bff16919650643ce22` (all installed digests matched the pack `HASHES.json` inventory; see [decisions](DECISIONS-AND-EVIDENCE.md) §U0 installation record). Local reconciliation is recorded in [RECONCILIATION](RECONCILIATION.md); exact schema/API/diagnostic drafts and the module/export plan in [API-SPEC](API-SPEC.md); fictional domain, proof walkthroughs, visual criteria and the named performance environment in [PROOF-DESIGN](PROOF-DESIGN.md); representative fixtures under `fixtures/`. The root `AGENTS.md` routing block is appended per `AGENTS.addendum.md`. No production source, manifests, lockfiles, `apps/studio`, other tracks or Stage 9 bytes were modified.
 
@@ -22,7 +22,7 @@ Pre-installation state (5 October 2026): the documentation execution pack and U0
 | --- | --- | --- | --- |
 | Pack drafting | COMPLETE | Candidate 02; final reporting metadata folded afterward | Installed 2026-10-06; see decisions §U0 installation record |
 | Pack independent review | PASS — documentation only | Candidate 01: 8d2683a2a1aae7740755326af597eeed16b4a7a44cfdaf4a9d60cd8b76318e6d; candidate 02: db369614c97119762995480d3ad277b92d21e2eb812739d770bc16bf2df6b15a | Reports preserved under reviews/ |
-| U0 repository establishment/freeze | CONTRACT FROZEN — candidate `54490a8…` pinned in FREEZE.json; checker reproduction pending | Base `4d2df037d8a82d36c60bf1bff16919650643ce22`; round-1 review `456e910a…` at `f7767b2…`; round-2 review `1a5fc648…` at `6a2f7b9…`; freeze record at (this commit) | Fresh checker reproduces pins + lineage + baseline checks; then final SHAs recorded, push, remote verify |
+| U0 repository establishment/freeze | **COMPLETE — FREEZE VERIFIED**; candidate `54490a8…` pinned 19/19 by fresh checker at freeze record `ffbafc0…` | Base `4d2df037d8a82d36c60bf1bff16919650643ce22`; round-1 `f7767b2…` (report `456e910a…`); round-2 `6a2f7b9…` (report `1a5fc648…`); checker report `43fcaa62…` | Push + remote SHA verification; then owner-authorized U1 handoff (not yet authorized) |
 | U1 rendering/editing loop | PLANNED | None | Requires U0 pass and an authorized U1 handoff |
 | U2 breadth | PLANNED | None | Requires U1 and its own accepted scope |
 | U3 realism | PLANNED | None | Requires U2 and its own accepted scope |
@@ -36,13 +36,24 @@ Pre-installation state (5 October 2026): the documentation execution pack and U0
 - UI composition is currently closed stack/split plus semantic presets.
 - Existing UI and Svelte package manifests declare 0.4.0-rc.1. This is source evidence, not a newly checked npm registry claim.
 - Existing ApplicationDataAdapter query/mutate context carries permissions/effect/actor.
-- System reference describes capability simulation doubles; exact callable composition APIs still require local U0 reconciliation.
+- System reference describes capability simulation doubles; the exact callable composition APIs (`registerDouble`/`replaceDouble`/`snapshotDoubles` and the adapter context) were reconciled in [RECONCILIATION](RECONCILIATION.md) §4.
 
 ## Missing proof and limits
 
-No git worktree/branch inspection, local dependency install, builds, tests, browser use, schema fixture execution, implementation verification, package publication or live Studio integration has been performed in this pack-authoring environment.
+U0 status (2026-10-06, after freeze verification): local worktree/branch inspection, dependency
+install (`npm ci`, 524 packages), and the read-only baseline checks (`typecheck`,
+`format:check`, `check:ui` — all clean, reproduced by the independent freeze checker) HAVE been
+performed; the freeze-byte pins were reproduced 19/19 by a separate fresh checker. Still NOT
+performed anywhere in this workstream: implementation of any contract element, execution of the
+design fixtures as code, browser/visual work, performance measurements, adapter/double runtime
+execution, package publication, npm-registry verification, U1+ work of any kind, and any
+Studio integration. U1 remains unauthorized until a separate accepted handoff.
 
-The passed document review establishes only the pack's adequacy. U0 is not closed until the local environment is reconciled and the final repository contract is independently frozen. Review-result metadata folded after candidate 02 is not part of that snapshot; its exact final delivery hashes are in the pack inventory. See [decisions/evidence](DECISIONS-AND-EVIDENCE.md) and the preserved review reports.
+Pack-review limits remain historical facts: the pack documentation review established the
+pack's adequacy only, and its candidate-02 snapshot excludes the folded reporting metadata
+(final delivery hashes in the pack inventory). U0 repository freeze evidence is now recorded in
+this repository: FREEZE.json, [decisions](DECISIONS-AND-EVIDENCE.md), and the preserved reports
+under [reviews](reviews/).
 
 ## Update discipline
 

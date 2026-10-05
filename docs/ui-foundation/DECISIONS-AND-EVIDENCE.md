@@ -163,6 +163,35 @@ New round-2 findings and disposition:
 N-1/N-2 are disclosed post-review micro-repairs; their corrected bytes are part of the frozen
 contract set and are covered by the freeze-byte verification (STAGES §2 U0-08).
 
+## U0 freeze-byte verification (2026-10-06) — FREEZE VERIFIED
+
+Identity: freeze record audited at `ffbafc0a509d7179eddfa81c157595fe336c9dba`; contract
+candidate `54490a861fcd9992bfc8bfac14178fdb7921ecf0`; branch `codex/ui-foundation-u0`; base
+`4d2df037d8a82d36c60bf1bff16919650643ce22` (still live origin/main at checker time).
+
+Claims and verdict: a third independent fresh-context checker (non-author, non-round-1,
+non-round-2; report preserved verbatim at
+[reviews/U0-FREEZE-CHECK-01.md](reviews/U0-FREEZE-CHECK-01.md), SHA-256
+`43fcaa62ad64f483cf633290caa0d03cc4ddb9c250a5cf3ead9209337e3a62dc`) reproduced all 19
+FREEZE.json pins (git blob + working-tree bytes, two independent computation passes), verified
+ancestry order, live baseline, both report hashes, faithful verdict summaries, allowed-path
+diff (AGENTS.md +14/−0 pure insertion), reproduced the baseline checks in a fresh install
+(`npm ci` 524 packages; typecheck/format:check/check:ui all clean — closing round-2 N-3), and
+confirmed truthful pre-verdict STATE wording. Verdict: **FREEZE VERIFIED**; U0-08 DEMONSTRATED.
+
+Findings retained (all NOTE, non-blocking): FV-1 pre-verdict present-tense phrasing (mitigated
+by explicit checker-pending ledger; clarified post-freeze in STATE — mutable bytes only, frozen
+pins untouched); FV-2 former “Missing proof” paragraph scoped to the pack-authoring environment
+(underclaimed; rewritten in STATE post-freeze); FV-3 npm allowScripts warning for esbuild
+postinstall scripts (environment-side notice, exit 0, no repository effect; retained).
+
+Post-freeze commits touch ONLY evidence bytes — STATE.md, this ledger's appended
+verification sections, and preserved reports under reviews/. FREEZE.json pins anchor to the
+contract candidate's blobs (`git cat-file blob <contract_candidate_sha>:<path>`), so appended
+evidence does not alter any recorded pin; reproduction always resolves against the candidate
+SHA, never HEAD. U0-08 is demonstrated at the freeze-record SHA; later evidence commits are
+append-only lineage.
+
 ## Future evidence entry format
 
 Identity: repository, branch, full base/candidate/reviewer SHAs, environment and contract pins.
