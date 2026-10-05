@@ -4,6 +4,7 @@ import {
   compileUiDocument,
   defaultSemanticElementCatalog,
   type UiDocument,
+  type UiRenderPlan,
 } from '@victframework/ui';
 import DocumentHost from '../src/document/DocumentHost.svelte';
 
@@ -103,7 +104,7 @@ function inspectionDetail(): UiDocument {
 }
 
 function mountPlan(
-  plan: ReturnType<typeof compileUiDocument> extends { ok: true; plan: infer P } ? P : never,
+  plan: UiRenderPlan,
   handlers: {
     dispatch?: (actionId: string, input?: unknown) => Promise<unknown>;
     navigate?: (routeId: string, params?: Record<string, unknown>) => void;

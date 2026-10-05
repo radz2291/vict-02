@@ -1,0 +1,38 @@
+{
+  "name": "@victframework/ui-preview",
+  "version": "0.4.0-rc.1",
+  "type": "module",
+  "description": "Scenario orchestration and session/reset fencing around runtime + adapter boundaries for the Vict UI foundation preview.",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "license": "Apache-2.0",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/radz2291/vict-02.git",
+    "directory": "packages/ui-preview"
+  },
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "dependencies": {
+    "@victframework/application": "0.4.0-rc.1",
+    "@victframework/runtime": "0.4.0-rc.1",
+    "@victframework/sdk": "0.4.0-rc.1",
+    "@victframework/ui": "0.4.0-rc.1"
+  }
+}

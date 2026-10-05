@@ -1,0 +1,39 @@
+{
+  "name": "@victframework/ui-editor",
+  "version": "0.4.0-rc.1",
+  "type": "module",
+  "description": "UI editor session core + canvas/layers/inspector/history modules (Svelte at the boundary) for the Vict UI foundation.",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "svelte": "./src/index.ts",
+      "default": "./src/index.ts"
+    }
+  },
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "files": [
+    "src"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "license": "Apache-2.0",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/radz2291/vict-02.git",
+    "directory": "packages/ui-editor"
+  },
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "dependencies": {
+    "@victframework/ui": "0.4.0-rc.1"
+  },
+  "peerDependencies": {
+    "svelte": "^5.33.0"
+  }
+}
