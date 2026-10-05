@@ -43,6 +43,19 @@ function minimalDocument(): UiDocument {
   };
 }
 
+/** Deeply writable mirror for test fixtures (JSON-domain data only). */
+type DeepWritable<T> = T extends readonly (infer V)[]
+  ? DeepWritable<V>[]
+  : T extends object
+    ? { -readonly [K in keyof T]: DeepWritable<T[K]> }
+    : T;
+function draft<T>(value: T): DeepWritable<T> {
+  return JSON.parse(JSON.stringify(value)) as DeepWritable<T>;
+}
+type WUiNode = DeepWritable<UiNode>;
+type WElement = Extract<WUiNode, { kind: 'element' }>;
+type WText = Extract<WUiNode, { kind: 'text' }>;
+
 const catalogs = {
   elements: defaultSemanticElementCatalog(),
   viewFields: { status: 'string', findings: 'array', 'findings.severity': 'string', 'findings.description': 'string' },
@@ -51,7 +64,7 @@ const catalogs = {
 describe('canonicalUiDocument', () => {
   it('is key-order independent and digest-stable', () => {
     const a = minimalDocument();
-    const swapped = JSON.parse(JSON.stringify(a)) as UiDocument;
+    const swapped = draft(a);
     const reordered: UiDocument = {
       ...swapped,
       tokens: Object.fromEntries(Object.entries(swapped.tokens).reverse()),
@@ -64,8 +77,8 @@ describe('canonicalUiDocument', () => {
 
   it('changes when semantic content changes', () => {
     const a = canonicalUiDocument(minimalDocument());
-    const changed = minimalDocument();
-    (changed.nodes['n.heading'] as Extract<UiNode, { kind: 'text' }>).content = {
+    const changed = draft(minimalDocument());
+    (changed.nodes['n.heading'] as WText).content = {
       type: 'literal',
       value: 'Inspection detail v2',
     };
@@ -119,32 +132,32 @@ describe('validateUiDocument', () => {
   });
 
   it('reports a dangling child reference', () => {
-    const document = minimalDocument();
-    (document.nodes['n.root'] as Extract<UiNode, { kind: 'element' }>).children = ['n.missing'];
+    const document = draft(minimalDocument());
+    (document.nodes['n.root'] as WElement).children = ['n.missing'];
     const issues = validateUiDocument(document, catalogs);
     expect(issues.some((issue) => issue.code === 'UI_DOC_UNKNOWN_NODE')).toBe(true);
   });
 
   it('reports a containment cycle', () => {
-    const document = minimalDocument();
+    const document = draft(minimalDocument());
     document.nodes['n.root'] = {
       kind: 'element',
       id: 'n.root',
       tag: 'section',
       children: ['n.self'],
-    } as UiNode;
+    } as WUiNode;
     document.nodes['n.self'] = {
       kind: 'element',
       id: 'n.self',
       tag: 'div',
       children: ['n.root'],
-    } as UiNode;
+    } as WUiNode;
     const issues = validateUiDocument(document, catalogs);
     expect(issues.some((issue) => issue.code === 'UI_DOC_CYCLE')).toBe(true);
   });
 
   it('reports duplicate node ids at the model level', () => {
-    const document = minimalDocument();
+    const document = draft(minimalDocument());
     // Simulate a registry built programmatically where two entries claim one id.
     const nodes = document.nodes as Record<string, unknown>;
     const clash = { kind: 'text', id: 'n.heading', content: { type: 'literal', value: 'clash' } };
@@ -160,14 +173,14 @@ describe('validateUiDocument', () => {
   });
 
   it('rejects unknown elements and attributes', () => {
-    const document = minimalDocument();
+    const document = draft(minimalDocument());
     document.nodes['n.bad'] = {
       kind: 'element',
       id: 'n.bad',
       tag: 'marquee',
       children: [],
-    } as UiNode;
-    (document.nodes['n.root'] as Extract<UiNode, { kind: 'element' }>).children = [
+    } as WUiNode;
+    (document.nodes['n.root'] as WElement).children = [
       'n.heading',
       'n.status',
       'n.bad',
@@ -178,8 +191,8 @@ describe('validateUiDocument', () => {
       tag: 'div',
       attributes: { onclick: 'alert(1)' },
       children: [],
-    } as UiNode;
-    (document.nodes['n.root'] as Extract<UiNode, { kind: 'element' }>).children = [
+    } as WUiNode;
+    (document.nodes['n.root'] as WElement).children = [
       'n.heading',
       'n.status',
       'n.bad',
@@ -191,7 +204,7 @@ describe('validateUiDocument', () => {
   });
 
   it('enforces the prop-only scope inside definitions', () => {
-    const document = minimalDocument();
+    const document = draft(minimalDocument());
     document.componentDefinitions['def.card'] = {
       id: 'def.card',
       revision: '1',
@@ -203,13 +216,13 @@ describe('validateUiDocument', () => {
       kind: 'text',
       id: 'n.cardRoot',
       content: { type: 'expression', expression: { type: 'ref', path: 'view.status' } },
-    } as UiNode;
+    } as WUiNode;
     const issues = validateUiDocument(document, catalogs);
     expect(issues.some((issue) => issue.code === 'UI_EXPR_SCOPE_VIOLATION')).toBe(true);
   });
 
   it('accepts a repeat over a typed array field with item refs', () => {
-    const document = minimalDocument();
+    const document = draft(minimalDocument());
     document.nodes['n.repeat'] = {
       kind: 'repeat',
       id: 'n.repeat',
@@ -217,13 +230,13 @@ describe('validateUiDocument', () => {
       key: { type: 'ref', path: 'repeat.finding.description' },
       itemName: 'finding',
       templateRoot: 'n.item',
-    } as UiNode;
+    } as WUiNode;
     document.nodes['n.item'] = {
       kind: 'text',
       id: 'n.item',
       content: { type: 'expression', expression: { type: 'ref', path: 'repeat.finding.severity' } },
-    } as UiNode;
-    (document.nodes['n.root'] as Extract<UiNode, { kind: 'element' }>).children = [
+    } as WUiNode;
+    (document.nodes['n.root'] as WElement).children = [
       'n.heading',
       'n.status',
       'n.repeat',
@@ -246,7 +259,7 @@ describe('compileUiDocument', () => {
   });
 
   it('compiles a component instance with slot fillings resolved in instance scope', () => {
-    const document = minimalDocument();
+    const document = draft(minimalDocument());
     document.componentDefinitions['def.findingCard'] = {
       id: 'def.findingCard',
       revision: '1',
@@ -259,26 +272,26 @@ describe('compileUiDocument', () => {
       id: 'n.card',
       tag: 'div',
       children: ['n.cardTitle', 'n.cardSlot'],
-    } as UiNode;
+    } as WUiNode;
     document.nodes['n.cardTitle'] = {
       kind: 'text',
       id: 'n.cardTitle',
       content: { type: 'expression', expression: { type: 'ref', path: 'prop.severity' } },
-    } as UiNode;
-    document.nodes['n.cardSlot'] = { kind: 'slot', id: 'n.cardSlot', name: 'body' } as UiNode;
+    } as WUiNode;
+    document.nodes['n.cardSlot'] = { kind: 'slot', id: 'n.cardSlot', name: 'body' } as WUiNode;
     document.nodes['n.instance'] = {
       kind: 'component',
       id: 'n.instance',
       definitionId: 'def.findingCard',
       props: { severity: { type: 'ref', path: 'view.status' } },
       slots: { body: { name: 'body', children: ['n.fill'] } },
-    } as UiNode;
+    } as WUiNode;
     document.nodes['n.fill'] = {
       kind: 'text',
       id: 'n.fill',
       content: { type: 'expression', expression: { type: 'ref', path: 'view.status' } },
-    } as UiNode;
-    (document.nodes['n.root'] as Extract<UiNode, { kind: 'element' }>).children = [
+    } as WUiNode;
+    (document.nodes['n.root'] as WElement).children = [
       'n.heading',
       'n.status',
       'n.instance',
@@ -286,12 +299,12 @@ describe('compileUiDocument', () => {
     const result = compileUiDocument(document, catalogs.elements);
     expect(result.ok).toBe(true);
     if (!result.ok) return;
-    const instance = result.plan.structure[0];
-    expect(instance.kind).toBe('element');
-    if (instance.kind !== 'element') return;
-    const component = instance.children.find((child) => child.kind === 'component');
+    const root = result.plan.structure[0];
+    expect(root?.kind).toBe('element');
+    if (root === undefined || root.kind !== 'element') return;
+    const component = root.children.find((child) => child?.kind === 'component');
     expect(component?.kind).toBe('component');
-    if (component?.kind !== 'component') return;
+    if (component === undefined || component.kind !== 'component') return;
     expect(component.slots['body']?.length).toBe(1);
     // occurrence provenance records the instance path
     const bodyKeys = result.plan.sourceMap
