@@ -9,12 +9,7 @@
  * `eval`, no `Function`, no raw expression strings.
  */
 
-import type {
-  UiCatalogs,
-  UiExpression,
-  UiFieldTypes,
-  UiPrimitiveType,
-} from './document.js';
+import type { UiCatalogs, UiExpression, UiFieldTypes, UiPrimitiveType } from './document.js';
 import { uiDiagnostic, type UiDiagnostic } from './diagnostics.js';
 
 /** The lexical scopes visible at one position in a document. */
@@ -59,7 +54,10 @@ export function checkExpression(
   nodeId: string,
 ): UiDiagnostic[] {
   const issues: UiDiagnostic[] = [];
-  const walk = (expr: UiExpression, localScope: UiScopeInfo): UiPrimitiveType | 'unknown' | 'array' | 'null' | 'any' => {
+  const walk = (
+    expr: UiExpression,
+    localScope: UiScopeInfo,
+  ): UiPrimitiveType | 'unknown' | 'array' | 'null' | 'any' => {
     switch (expr.type) {
       case 'literal':
         return literalType(expr.value);
@@ -150,11 +148,15 @@ function checkRef(
   const head = parts[0];
   const unknown = (): 'unknown' => {
     issues.push(
-      uiDiagnostic('UI_EXPR_UNKNOWN_REFERENCE', `Reference '${path}' does not resolve in this scope.`, {
-        documentId,
-        nodeId,
-        path,
-      }),
+      uiDiagnostic(
+        'UI_EXPR_UNKNOWN_REFERENCE',
+        `Reference '${path}' does not resolve in this scope.`,
+        {
+          documentId,
+          nodeId,
+          path,
+        },
+      ),
     );
     return 'unknown';
   };
@@ -239,7 +241,10 @@ export interface UiScopeValues {
   readonly view?: Readonly<Record<string, unknown>>;
   readonly record?: Readonly<Record<string, unknown>>;
   readonly repeat?: Readonly<Record<string, readonly unknown[]>>;
-  readonly repeatItem?: { readonly name: string; readonly value: Readonly<Record<string, unknown>> };
+  readonly repeatItem?: {
+    readonly name: string;
+    readonly value: Readonly<Record<string, unknown>>;
+  };
   readonly props?: Readonly<Record<string, unknown>>;
   readonly state?: Readonly<Record<string, unknown>>;
   readonly tokens?: Readonly<Record<string, string>>;
@@ -292,7 +297,9 @@ export function evaluateExpression(
       return undefined;
     }
     case 'boolean': {
-      const evaluated = expression.terms.map((term) => Boolean(evaluateExpression(term, values, ops)));
+      const evaluated = expression.terms.map((term) =>
+        Boolean(evaluateExpression(term, values, ops)),
+      );
       if (expression.op === 'not') return !evaluated[0];
       if (expression.op === 'and') return evaluated.every(Boolean);
       return evaluated.some(Boolean);

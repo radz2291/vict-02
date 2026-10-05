@@ -121,10 +121,14 @@ export function resolveUiAttachments(input: ResolveUiAttachmentsInput): Resolved
     const revision = typeof candidate.revision === 'string' ? candidate.revision : '';
     if (candidate.schema !== 'vict.ui-document@1' || documentId === '' || revision === '') {
       issues.push(
-        uiDiagnostic('UI_DOC_UNKNOWN_SCHEMA', `Catalog entry ${index} is not a vict.ui-document@1.`, {
-          schema: String(candidate.schema),
-          supported: ['vict.ui-document@1'],
-        }),
+        uiDiagnostic(
+          'UI_DOC_UNKNOWN_SCHEMA',
+          `Catalog entry ${index} is not a vict.ui-document@1.`,
+          {
+            schema: String(candidate.schema),
+            supported: ['vict.ui-document@1'],
+          },
+        ),
       );
       continue;
     }
@@ -156,7 +160,9 @@ export function resolveUiAttachments(input: ResolveUiAttachmentsInput): Resolved
       document,
       digest: contentDigest,
       references: collectComponentReferences(document),
-      ownDefinitionIds: new Set(Object.keys((document.componentDefinitions ?? {}) as Record<string, unknown>)),
+      ownDefinitionIds: new Set(
+        Object.keys((document.componentDefinitions ?? {}) as Record<string, unknown>),
+      ),
     });
   }
 
@@ -188,7 +194,8 @@ export function resolveUiAttachments(input: ResolveUiAttachmentsInput): Resolved
   for (const screen of screens) {
     if (!isPlainObject(screen)) continue;
     const screenId = typeof screen.id === 'string' ? screen.id : '';
-    const uiDocument = screen.uiDocument as { documentId?: unknown; revision?: unknown } | undefined;
+    const uiDocument = screen.uiDocument as
+      { documentId?: unknown; revision?: unknown } | undefined;
     const found: string[] = [
       ...(uiDocument !== undefined ? ['uiDocument'] : []),
       ...(screen.layout !== undefined ? ['layout'] : []),
@@ -224,11 +231,15 @@ export function resolveUiAttachments(input: ResolveUiAttachmentsInput): Resolved
     const key = `${documentId}\u0000${revision}`;
     if (byKey.get(key) === undefined) {
       issues.push(
-        uiDiagnostic('UI_DOC_REFERENCE_DANGLING', `Screen reference does not resolve in the catalog.`, {
-          documentId,
-          screenId,
-          reference: `${documentId}@${revision}`,
-        }),
+        uiDiagnostic(
+          'UI_DOC_REFERENCE_DANGLING',
+          `Screen reference does not resolve in the catalog.`,
+          {
+            documentId,
+            screenId,
+            reference: `${documentId}@${revision}`,
+          },
+        ),
       );
     }
   }
@@ -287,9 +298,11 @@ export function resolveUiAttachments(input: ResolveUiAttachmentsInput): Resolved
     const fatal = validation.filter(
       (issue) =>
         issue.severity === 'error' &&
-        !(issue.code === 'UI_DOC_UNKNOWN_COMPONENT' &&
+        !(
+          issue.code === 'UI_DOC_UNKNOWN_COMPONENT' &&
           typeof issue.definitionId === 'string' &&
-          allDefinitionIds.has(issue.definitionId)),
+          allDefinitionIds.has(issue.definitionId)
+        ),
     );
     if (fatal.length > 0) {
       issues.push(...fatal);
@@ -344,14 +357,19 @@ export function resolveUiAttachments(input: ResolveUiAttachmentsInput): Resolved
       }
     }
     // definition-body instantiations (same + cross document)
-    const nodes = (fact.document.nodes ?? {}) as Record<string, { kind?: string; definitionId?: string }>;
+    const nodes = (fact.document.nodes ?? {}) as Record<
+      string,
+      { kind?: string; definitionId?: string }
+    >;
     for (const definitionId of fact.ownDefinitionIds) {
-      const definition = (fact.document.componentDefinitions ?? {} as Record<string, { root?: string }>)[
-        definitionId
-      ];
+      const definition = (fact.document.componentDefinitions ??
+        ({} as Record<string, { root?: string }>))[definitionId];
       const rootId = definition?.root;
       if (typeof rootId !== 'string') continue;
-      const bodyNodes = (fact.document.nodes ?? {}) as Record<string, { kind?: string; definitionId?: string }>;
+      const bodyNodes = (fact.document.nodes ?? {}) as Record<
+        string,
+        { kind?: string; definitionId?: string }
+      >;
       void bodyNodes;
       const seen = new Set<string>();
       const stack = [rootId];
@@ -372,7 +390,8 @@ export function resolveUiAttachments(input: ResolveUiAttachmentsInput): Resolved
             stack.push(child);
           }
         } else if (node.kind === 'conditional') {
-          for (const branch of (node as { branches?: readonly { children?: readonly string[] }[] }).branches ?? []) {
+          for (const branch of (node as { branches?: readonly { children?: readonly string[] }[] })
+            .branches ?? []) {
             for (const child of branch.children ?? []) stack.push(child);
           }
         } else if (node.kind === 'component' && node.definitionId !== undefined) {

@@ -6,11 +6,7 @@ import {
   RESOURCE_DEFINITION_SCHEMA,
   THEME_TOKEN_NAMES,
 } from '@victframework/sdk';
-import type {
-  UiDiagnostic,
-  UiDocumentIdentityEntry,
-  UiRenderPlan,
-} from '@victframework/ui';
+import type { UiDiagnostic, UiDocumentIdentityEntry, UiRenderPlan } from '@victframework/ui';
 import { resolveUiAttachments } from './ui-attach.js';
 import type { UiDocumentCatalogEntryInput, UiDocumentPinInput } from './ui-attach.js';
 import { sha256 } from './sha256.js';
@@ -905,7 +901,8 @@ function collectCanonicalInputIssues(input: CompileApplicationInput): readonly A
   if (input.capabilities !== undefined) walkCollection(input.capabilities, 'capabilities', walk);
   if (input.components !== undefined) walkCollection(input.components, 'components', walk);
   if (input.uiDocuments !== undefined) walkCollection(input.uiDocuments, 'uiDocuments', walk);
-  if (input.uiDocumentPins !== undefined) walkCollection(input.uiDocumentPins, 'uiDocumentPins', walk);
+  if (input.uiDocumentPins !== undefined)
+    walkCollection(input.uiDocumentPins, 'uiDocumentPins', walk);
   if (input.uiExtensions !== undefined) walkCollection(input.uiExtensions, 'uiExtensions', walk);
   return collector.sorted();
 }
@@ -1253,7 +1250,8 @@ export function computeApplicationVersion(input: {
       // A-03: the hashed payload gains the UI document identities for @3
       // applications only — @1/@2 payloads stay byte-identical to their
       // historical form. Entries arrive deduplicated and code-point sorted.
-      ...((application as { schema: string }).schema === APPLICATION_DEFINITION_SCHEMA_V3 && input.uiDocuments !== undefined
+      ...((application as { schema: string }).schema === APPLICATION_DEFINITION_SCHEMA_V3 &&
+      input.uiDocuments !== undefined
         ? { uiDocuments: input.uiDocuments }
         : {}),
     }),
@@ -1297,7 +1295,10 @@ export interface ApplicationPlan {
   readonly components: readonly Readonly<ComponentReference>[];
   /** @3: resolved UI document identity metadata, keyed `${documentId}@${revision}`. */
   readonly uiDocuments?: Readonly<
-    Record<string, { readonly documentId: string; readonly revision: string; readonly contentDigest: string }>
+    Record<
+      string,
+      { readonly documentId: string; readonly revision: string; readonly contentDigest: string }
+    >
   >;
   /** @3: compiled render plans for every referenced document (one renderer, U1-02). */
   readonly documentPlans?: Readonly<Record<string, UiRenderPlan>>;
@@ -1312,6 +1313,11 @@ export interface ApplicationPlan {
  * the union over declared views of their resource's field catalog, in the
  * view's declared projection when one is declared. Types map from the
  * resource vocabulary (json → array).
+ *
+ * Joined child collections (a json-typed field whose name equals a child
+ * resource's id or id+'s', materialized by the adapter) are typed by the
+ * child resource's own field catalog under `<collectionField>.<itemField>`,
+ * so repeats over joined collections validate their item references.
  */
 function buildViewFieldCatalog(
   declaredViews: readonly unknown[],
@@ -1320,21 +1326,51 @@ function buildViewFieldCatalog(
   const isRecord = (value: unknown): value is Record<string, unknown> =>
     typeof value === 'object' && value !== null && !Array.isArray(value);
   const viewFields: Record<string, 'string' | 'number' | 'boolean' | 'array'> = {};
+  const resourceFieldsOf = (resourceId: string): readonly Record<string, unknown>[] => {
+    const resource = providedResources.get(resourceId);
+    const fields = resource !== undefined && Array.isArray(resource.fields) ? resource.fields : [];
+    return fields.filter(isRecord);
+  };
+  const registerFields = (
+    fields: readonly Record<string, unknown>[],
+    prefix: string,
+    projected: readonly unknown[] | null,
+  ): void => {
+    for (const field of fields) {
+      const name = field['name'];
+      if (typeof name !== 'string') continue;
+      if (prefix === '' && projected !== null && !projected.includes(name)) continue;
+      const type = field['type'];
+      viewFields[`${prefix}${name}`] =
+        type === 'number'
+          ? 'number'
+          : type === 'boolean'
+            ? 'boolean'
+            : type === 'json'
+              ? 'array'
+              : 'string';
+    }
+  };
   for (const view of declaredViews) {
     if (!isRecord(view)) continue;
     const resourceId = view.resourceId;
-    const resource = typeof resourceId === 'string' ? providedResources.get(resourceId) : undefined;
+    if (typeof resourceId !== 'string') continue;
+    const resource = providedResources.get(resourceId);
     if (resource === undefined) continue;
-    const fields = Array.isArray(resource.fields) ? resource.fields : [];
+    const fields = resourceFieldsOf(resourceId);
     const projected = Array.isArray(view.fields) && view.fields.length > 0 ? view.fields : null;
+    registerFields(fields, '', projected);
+    // joined child collections: json field name === child resource id (+'s')
     for (const field of fields) {
-      if (!isRecord(field)) continue;
-      const name = field.name;
-      if (typeof name !== 'string') continue;
-      if (projected !== null && !projected.includes(name)) continue;
-      const type = field.type;
-      viewFields[name] =
-        type === 'number' ? 'number' : type === 'boolean' ? 'boolean' : type === 'json' ? 'array' : 'string';
+      const name = field['name'];
+      const type = field['type'];
+      if (typeof name !== 'string' || type !== 'json') continue;
+      const child =
+        providedResources.get(name) ??
+        [...providedResources.values()].find((candidate) => `${candidate.id}s` === name);
+      if (child !== undefined) {
+        registerFields(resourceFieldsOf(child.id), `${name}.`, null);
+      }
     }
   }
   return viewFields;
@@ -1932,7 +1968,8 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
         }
       }
       // @3 document-mode screens carry uiDocument instead of a layout.
-      const screenIsDocumentMode = isV3 && (screen as { uiDocument?: unknown }).uiDocument !== undefined;
+      const screenIsDocumentMode =
+        isV3 && (screen as { uiDocument?: unknown }).uiDocument !== undefined;
       if (!Array.isArray(screen.layout) && !screenIsDocumentMode) {
         collector.add(
           'APPLICATION_REQUIRED_MEMBER',
@@ -2804,7 +2841,10 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
     // ---- @3 explicit UI attachments (rules 1-5, A-01/A-03) ---------------------
     let uiIdentityEntries: readonly UiDocumentIdentityEntry[] = [];
     let uiDocumentPlans: Readonly<Record<string, UiRenderPlan>> = {};
-    let uiDocumentMeta: Record<string, { documentId: string; revision: string; contentDigest: string }> = {};
+    let uiDocumentMeta: Record<
+      string,
+      { documentId: string; revision: string; contentDigest: string }
+    > = {};
     let uiDiagnostics: readonly UiDiagnostic[] = [];
     if (isV3) {
       const attachments = resolveUiAttachments({
@@ -2813,7 +2853,9 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
         ...(input.uiDocumentPins !== undefined ? { uiDocumentPins: input.uiDocumentPins } : {}),
         ...(input.uiExtensions !== undefined ? { uiExtensions: input.uiExtensions } : {}),
         actionIds: declaredActions
-          .map((action) => (isPlainObject(action) && typeof action.id === 'string' ? action.id : ''))
+          .map((action) =>
+            isPlainObject(action) && typeof action.id === 'string' ? action.id : '',
+          )
           .filter((id) => id !== ''),
         routeIds: routes
           .map((route) => (isPlainObject(route) && typeof route.id === 'string' ? route.id : ''))
@@ -2829,7 +2871,11 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
       uiDocumentMeta = Object.fromEntries(
         Object.entries(attachments.documentPlans).map(([key, plan]) => [
           key,
-          { documentId: plan.documentId, revision: plan.revision, contentDigest: plan.sourceDigest },
+          {
+            documentId: plan.documentId,
+            revision: plan.revision,
+            contentDigest: plan.sourceDigest,
+          },
         ]),
       );
       uiDiagnostics = attachments.warnings;

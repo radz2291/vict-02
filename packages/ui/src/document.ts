@@ -113,9 +113,19 @@ export interface UiToken {
 export type UiCondition =
   | { readonly id: ConditionId; readonly kind: 'media'; readonly query: string }
   | { readonly id: ConditionId; readonly kind: 'localState'; readonly when: UiExpression }
-  | { readonly id: ConditionId; readonly kind: 'container'; readonly name: string; readonly query: string }
+  | {
+      readonly id: ConditionId;
+      readonly kind: 'container';
+      readonly name: string;
+      readonly query: string;
+    }
   | { readonly id: ConditionId; readonly kind: 'environment'; readonly name: string }
-  | { readonly id: ConditionId; readonly kind: 'variant'; readonly variant: string; readonly value: string };
+  | {
+      readonly id: ConditionId;
+      readonly kind: 'variant';
+      readonly variant: string;
+      readonly value: string;
+    };
 
 /** Typed local state declaration with a serializable initial value. */
 export interface UiLocalStateDecl {
@@ -150,7 +160,9 @@ export interface UiComponentDefinition {
   readonly revision: string;
   readonly root: NodeId;
   readonly props: readonly UiPropDecl[];
-  readonly slots: Readonly<Record<string, { readonly required?: boolean; readonly fallback?: readonly NodeId[] }>>;
+  readonly slots: Readonly<
+    Record<string, { readonly required?: boolean; readonly fallback?: readonly NodeId[] }>
+  >;
   readonly variants?: Readonly<Record<string, UiVariantConditionRef>>;
   readonly baseStyle?: StyleSourceId;
 }

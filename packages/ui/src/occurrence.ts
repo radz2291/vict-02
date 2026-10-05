@@ -78,7 +78,7 @@ export function inspectUiOccurrence(
       }),
     );
   }
-  const node = (source.nodes ?? {} as Record<string, unknown>)[occurrence.sourceNodeId];
+  const node = (source.nodes ?? ({} as Record<string, unknown>))[occurrence.sourceNodeId];
   const found = node !== undefined;
   if (!found) {
     diagnostics.push(

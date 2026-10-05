@@ -179,7 +179,10 @@ export function fillSlot(input: {
 }
 
 /** Remove a node (reference-checked; the subtree goes with it). */
-export function removeNode(input: { readonly requestId: string; readonly nodeId: string }): TransactionDraft {
+export function removeNode(input: {
+  readonly requestId: string;
+  readonly nodeId: string;
+}): TransactionDraft {
   return { requestId: input.requestId, commands: [{ op: 'remove', nodeId: input.nodeId }] };
 }
 
@@ -191,7 +194,9 @@ export function setTextLiteral(input: {
 }): TransactionDraft {
   return {
     requestId: input.requestId,
-    commands: [{ op: 'setProperty', nodeId: input.nodeId, property: 'textLiteral', value: input.value }],
+    commands: [
+      { op: 'setProperty', nodeId: input.nodeId, property: 'textLiteral', value: input.value },
+    ],
   };
 }
 

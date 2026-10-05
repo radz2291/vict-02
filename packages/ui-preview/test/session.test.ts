@@ -6,7 +6,10 @@ function scenario(overrides: Partial<UiScenario> = {}): UiScenario {
   return {
     schema: 'vict.ui-scenario@1',
     scenarioId: 'scn.normal',
-    references: { application: { id: 'app.inspection', revision: '1' }, documents: { 'doc.detail': '1' } },
+    references: {
+      application: { id: 'app.inspection', revision: '1' },
+      documents: { 'doc.detail': '1' },
+    },
     seeds: {
       domain: {
         rows: {
@@ -18,8 +21,16 @@ function scenario(overrides: Partial<UiScenario> = {}): UiScenario {
       },
     },
     actors: [
-      { actorId: 'supervisor', role: 'supervisor', permissions: ['qlt.inspection.approve', 'qlt.inspection.read'] },
-      { actorId: 'technician', role: 'technician', permissions: ['qlt.inspection.submit', 'qlt.inspection.read'] },
+      {
+        actorId: 'supervisor',
+        role: 'supervisor',
+        permissions: ['qlt.inspection.approve', 'qlt.inspection.read'],
+      },
+      {
+        actorId: 'technician',
+        role: 'technician',
+        permissions: ['qlt.inspection.submit', 'qlt.inspection.read'],
+      },
     ],
     operations: [
       { op: 'inspection.approve', implementation: 'simulated', outcome: { kind: 'success' } },

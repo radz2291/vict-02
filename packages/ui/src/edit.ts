@@ -129,7 +129,12 @@ export interface UiDocumentSnapshot {
 }
 
 export type UiEditResult =
-  | { readonly ok: true; readonly document: UiDocument; readonly revision: string; readonly requestId: string }
+  | {
+      readonly ok: true;
+      readonly document: UiDocument;
+      readonly revision: string;
+      readonly requestId: string;
+    }
   | { readonly ok: false; readonly issues: readonly UiDiagnostic[] };
 
 /** Deep clone via structured clone semantics for plain data (JSON round trip). */
@@ -167,7 +172,12 @@ export function applyUiEdit(
   if (!Array.isArray(transaction.commands) || transaction.commands.length === 0) {
     return {
       ok: false,
-      issues: [uiDiagnostic('UI_EDIT_VALIDATION_FAILED', 'A transaction needs at least one command.', { commandIndex: 0, diagnostics: [] })],
+      issues: [
+        uiDiagnostic('UI_EDIT_VALIDATION_FAILED', 'A transaction needs at least one command.', {
+          commandIndex: 0,
+          diagnostics: [],
+        }),
+      ],
     };
   }
   const working = cloneDocument(snapshot.document);
@@ -175,7 +185,10 @@ export function applyUiEdit(
   const doc = working as unknown as {
     nodes: Record<string, UiNode>;
     componentDefinitions: Record<string, UiComponentDefinition>;
-    styleSources: Record<string, { id: string; declarations: UiStyleDeclaration[]; conditionId?: string }>;
+    styleSources: Record<
+      string,
+      { id: string; declarations: UiStyleDeclaration[]; conditionId?: string }
+    >;
     tokens: Record<string, { id: string; value: string }>;
     conditions: Record<string, { id: string; kind: string; [key: string]: unknown }>;
     assets: Record<string, { id: string; kind: string; [key: string]: unknown }>;
@@ -289,10 +302,14 @@ export function applyUiEdit(
         const remaining = collectReferences(doc, command.nodeId);
         if (remaining.length > 0) {
           fail(`Node '${command.nodeId}' is still referenced.`, [
-            uiDiagnostic('UI_EDIT_REFERENCE_REMAINS', `Node '${command.nodeId}' is still referenced.`, {
-              nodeId: command.nodeId,
-              remainingRefs: remaining,
-            }),
+            uiDiagnostic(
+              'UI_EDIT_REFERENCE_REMAINS',
+              `Node '${command.nodeId}' is still referenced.`,
+              {
+                nodeId: command.nodeId,
+                remainingRefs: remaining,
+              },
+            ),
           ]);
           return;
         }
@@ -348,7 +365,9 @@ export function applyUiEdit(
           return;
         }
         const localStyle: UiStyleDeclaration[] = [...(node.localStyle ?? [])];
-        const existingIndex = localStyle.findIndex((declaration) => declaration.property === command.property);
+        const existingIndex = localStyle.findIndex(
+          (declaration) => declaration.property === command.property,
+        );
         if (command.value === undefined) {
           if (existingIndex >= 0) localStyle.splice(existingIndex, 1);
         } else if (existingIndex >= 0) {
@@ -425,7 +444,9 @@ export function applyUiEdit(
           fail('connectInteraction needs an interaction or a removal.');
           return;
         }
-        const filtered = interactions.filter((candidate) => candidate.on !== command.interaction?.on);
+        const filtered = interactions.filter(
+          (candidate) => candidate.on !== command.interaction?.on,
+        );
         filtered.push(command.interaction);
         doc.nodes[node.id] = { ...node, interactions: filtered } as UiNode;
         return;
@@ -439,7 +460,9 @@ export function applyUiEdit(
           typeof definition.root !== 'string' ||
           doc.nodes[definition.root] === undefined
         ) {
-          fail('createComponentDefinition needs a definition with an id, revision and an existing root.');
+          fail(
+            'createComponentDefinition needs a definition with an id, revision and an existing root.',
+          );
           return;
         }
         if (doc.componentDefinitions[definition.id] !== undefined) {
@@ -487,7 +510,14 @@ export function applyUiEdit(
     return { ok: false, issues };
   }
   // Whole-document validation AFTER all commands applied (atomic semantics).
-  const validation = validateUiDocument(working, catalogs ?? emptyCatalogs());
+  // Layered authority: product-data references (view/record fields, repeat
+  // item typing, extension closure, action/route ids) are the JOINT
+  // compiler's obligation (API-SPEC §2.2 rule 4) — a session without the
+  // application inputs defers those diagnostics instead of failing edits
+  // on pre-existing declared references. Structural validity stays fatal.
+  const validation = validateUiDocument(working, catalogs ?? emptyCatalogs()).filter(
+    (issue) => !isDeferredProductReference(issue),
+  );
   if (validation.some((issue) => issue.severity === 'error')) {
     return {
       ok: false,
@@ -499,7 +529,32 @@ export function applyUiEdit(
       ],
     };
   }
-  return { ok: true, document: working, revision: snapshot.revision, requestId: transaction.requestId };
+  return {
+    ok: true,
+    document: working,
+    revision: snapshot.revision,
+    requestId: transaction.requestId,
+  };
+}
+
+/**
+ * Product-reference diagnostics a DOCUMENT-LEVEL validator cannot resolve
+ * without the application inputs; they are the joint compiler's to enforce.
+ */
+export function isDeferredProductReference(issue: {
+  readonly code: string;
+  readonly path?: unknown;
+}): boolean {
+  if (issue.code === 'UI_DOC_UNKNOWN_PRODUCT_REFERENCE') return true;
+  if (issue.code === 'UI_DOC_UNKNOWN_COMPONENT') return true; // extension resolution
+  if (issue.code === 'UI_EXPR_UNKNOWN_REFERENCE' && typeof issue.path === 'string') {
+    return (
+      issue.path.startsWith('view.') ||
+      issue.path.startsWith('record.') ||
+      issue.path.startsWith('repeat.')
+    );
+  }
+  return false;
 }
 
 /** A permissive standalone catalog for transactions (host catalogs tighten). */
@@ -549,7 +604,10 @@ function detach(nodes: Record<string, UiNode>, nodeId: string): void {
       for (const [name, fill] of Object.entries(node.slots)) {
         if (fill.children.includes(nodeId)) {
           changed = true;
-          slots[name] = { name: fill.name, children: fill.children.filter((child) => child !== nodeId) };
+          slots[name] = {
+            name: fill.name,
+            children: fill.children.filter((child) => child !== nodeId),
+          };
         } else {
           slots[name] = fill;
         }
@@ -589,7 +647,8 @@ function collectReferences(
   for (const definition of Object.values(doc.componentDefinitions)) {
     if (definition.root === nodeId) refs.push(`${definition.id}.root`);
     for (const [slotName, slot] of Object.entries(definition.slots ?? {})) {
-      if ((slot.fallback ?? []).includes(nodeId)) refs.push(`${definition.id}.slots.${slotName}.fallback`);
+      if ((slot.fallback ?? []).includes(nodeId))
+        refs.push(`${definition.id}.slots.${slotName}.fallback`);
     }
   }
   return refs;
@@ -607,7 +666,8 @@ function collectNodeSubtree(nodes: Record<string, UiNode>, rootId: string): Set<
     if (node.kind === 'element' || node.kind === 'portal') stack.push(...node.children);
     else if (node.kind === 'repeat') stack.push(node.templateRoot);
     else if (node.kind === 'slot') stack.push(...(node.fallback ?? []));
-    else if (node.kind === 'conditional') node.branches.forEach((branch) => stack.push(...branch.children));
+    else if (node.kind === 'conditional')
+      node.branches.forEach((branch) => stack.push(...branch.children));
     else if (node.kind === 'component' && node.slots !== undefined) {
       for (const fill of Object.values(node.slots)) stack.push(...fill.children);
     }

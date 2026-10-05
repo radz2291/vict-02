@@ -21,7 +21,10 @@ export interface DocumentScope {
   readonly props?: Readonly<Record<string, unknown>>;
   readonly state: Readonly<Record<string, unknown>>;
   readonly tokens: Readonly<Record<string, string>>;
-  readonly repeatItem?: { readonly name: string; readonly value: Readonly<Record<string, unknown>> };
+  readonly repeatItem?: {
+    readonly name: string;
+    readonly value: Readonly<Record<string, unknown>>;
+  };
 }
 
 export function toScopeValues(scope: DocumentScope): UiScopeValues {
@@ -54,7 +57,9 @@ export function occurrenceKey(baseKey: string, repeatKeys: readonly string[]): s
 }
 
 /** Condition records by id. */
-export function conditionsOf(plan: UiRenderPlan): Readonly<Record<string, (typeof plan.dynamic.conditions)[number]>> {
+export function conditionsOf(
+  plan: UiRenderPlan,
+): Readonly<Record<string, (typeof plan.dynamic.conditions)[number]>> {
   return Object.fromEntries(plan.dynamic.conditions.map((condition) => [condition.id, condition]));
 }
 
@@ -147,7 +152,9 @@ export function walkInstructions(
       walkInstructions(instruction.template, visit);
       break;
     case 'conditional':
-      instruction.branches.forEach((branch) => branch.children.forEach((child) => walkInstructions(child, visit)));
+      instruction.branches.forEach((branch) =>
+        branch.children.forEach((child) => walkInstructions(child, visit)),
+      );
       break;
     case 'slot':
       instruction.fallback.forEach((child) => walkInstructions(child, visit));
@@ -178,7 +185,10 @@ export function asRecord(value: unknown): Record<string, unknown> {
 /** Evaluate a component/extension instruction's declared props (typed, with defaults). */
 export function evaluatedComponentProps(
   instruction: {
-    readonly propDecls: readonly { readonly name: string; readonly default?: string | number | boolean }[];
+    readonly propDecls: readonly {
+      readonly name: string;
+      readonly default?: string | number | boolean;
+    }[];
     readonly propValues: Readonly<Record<string, UiExpression>>;
   },
   scope: DocumentScope,

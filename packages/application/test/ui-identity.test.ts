@@ -1,8 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import {
-  compileApplication,
-  computeApplicationVersion,
-} from '@victframework/application';
+import { compileApplication, computeApplicationVersion } from '@victframework/application';
 import {
   APPLICATION_DEFINITION_SCHEMA,
   APPLICATION_DEFINITION_SCHEMA_V2,
@@ -76,7 +73,11 @@ function applicationV3(screens: readonly ScreenDefinitionV3[]): ApplicationDefin
 }
 
 function detailScreen(revision: string): ScreenDefinitionV3 {
-  return { id: 's.detail', title: 'Detail', uiDocument: { documentId: 'doc.inspection-detail', revision } };
+  return {
+    id: 's.detail',
+    title: 'Detail',
+    uiDocument: { documentId: 'doc.inspection-detail', revision },
+  };
 }
 
 function legacyQueueScreen(): ScreenDefinitionV3 {
@@ -89,7 +90,9 @@ function legacyQueueScreen(): ScreenDefinitionV3 {
 
 function compileV3(documents: readonly UiDocument[], screens?: readonly ScreenDefinitionV3[]) {
   return compileApplication({
-    application: applicationV3(screens ?? [legacyQueueScreen(), detailScreen(documents[0]?.revision ?? '1')]) as never,
+    application: applicationV3(
+      screens ?? [legacyQueueScreen(), detailScreen(documents[0]?.revision ?? '1')],
+    ) as never,
     resources: [inspectionResource],
     uiDocuments: documents.map((document) => ({ document })),
   });
@@ -127,10 +130,13 @@ describe('U1-01: canonical source and identity', () => {
   });
 
   it('rejects a dangling screen reference (rule 1)', () => {
-    const result = compileV3([inspectionDocument('1', 'Detail v1')], [
-      legacyQueueScreen(),
-      detailScreen('9'), // catalog carries revision 1 only
-    ]);
+    const result = compileV3(
+      [inspectionDocument('1', 'Detail v1')],
+      [
+        legacyQueueScreen(),
+        detailScreen('9'), // catalog carries revision 1 only
+      ],
+    );
     expect(result.ok).toBe(false);
     if (result.ok) return;
     const ui = result.uiIssues ?? [];
@@ -143,7 +149,9 @@ describe('U1-01: canonical source and identity', () => {
     const result = compileV3([a, b]);
     expect(result.ok).toBe(false);
     if (result.ok) return;
-    const collision = (result.uiIssues ?? []).find((issue) => issue.code === 'UI_DOC_REVISION_COLLISION');
+    const collision = (result.uiIssues ?? []).find(
+      (issue) => issue.code === 'UI_DOC_REVISION_COLLISION',
+    );
     expect(collision).toBeDefined();
     expect(collision?.authority).toBe('catalog');
     expect(collision?.digestA).not.toBe(collision?.digestB);
@@ -154,11 +162,15 @@ describe('U1-01: canonical source and identity', () => {
       application: applicationV3([legacyQueueScreen(), detailScreen('1')]) as never,
       resources: [inspectionResource],
       uiDocuments: [{ document: inspectionDocument('1', 'Detail v1') }],
-      uiDocumentPins: [{ documentId: 'doc.inspection-detail', revision: '1', contentDigest: 'deadbeef' }],
+      uiDocumentPins: [
+        { documentId: 'doc.inspection-detail', revision: '1', contentDigest: 'deadbeef' },
+      ],
     });
     expect(result.ok).toBe(false);
     if (result.ok) return;
-    const collision = (result.uiIssues ?? []).find((issue) => issue.code === 'UI_DOC_REVISION_COLLISION');
+    const collision = (result.uiIssues ?? []).find(
+      (issue) => issue.code === 'UI_DOC_REVISION_COLLISION',
+    );
     expect(collision).toBeDefined();
     expect(collision?.authority).toBe('pin');
   });
@@ -225,7 +237,9 @@ describe('U1-01: canonical source and identity', () => {
   });
 
   it('the revision ordering inside the payload is code-point order: "10" < "2" < "3"', () => {
-    const docs = ['1', '10', '2', '3'].map((revision) => inspectionDocument(revision, `Detail ${revision}`));
+    const docs = ['1', '10', '2', '3'].map((revision) =>
+      inspectionDocument(revision, `Detail ${revision}`),
+    );
     const forward = compileApplication({
       application: applicationV3([legacyQueueScreen(), detailScreen('1')]) as never,
       resources: [inspectionResource],
@@ -255,7 +269,11 @@ describe('U1-01: canonical source and identity', () => {
           interactions: [{ on: 'click', action: 'navigate', routeId: 'queue' }],
         } as never,
         'n.h': { kind: 'text', id: 'n.h', content: { type: 'literal', value: 'Detail' } },
-        'n.back': { kind: 'text', id: 'n.back', content: { type: 'literal', value: 'Back to queue' } },
+        'n.back': {
+          kind: 'text',
+          id: 'n.back',
+          content: { type: 'literal', value: 'Back to queue' },
+        },
       },
     };
     const result = compileApplication({
@@ -265,7 +283,9 @@ describe('U1-01: canonical source and identity', () => {
     });
     expect(result.ok).toBe(true);
     if (result.ok) {
-      expect((result.plan.uiDiagnostics ?? []).some((issue) => issue.code === 'UI_DOC_CYCLE')).toBe(false);
+      expect((result.plan.uiDiagnostics ?? []).some((issue) => issue.code === 'UI_DOC_CYCLE')).toBe(
+        false,
+      );
     }
   });
 
@@ -340,8 +360,14 @@ describe('U1-01: canonical source and identity', () => {
       resources: [{ resourceId: 'inspection', revision: '1' }],
     } as const;
     const asV2 = { ...legacy, schema: APPLICATION_DEFINITION_SCHEMA_V2 };
-    const v1 = computeApplicationVersion({ application: legacy, resources: [inspectionResource] });
-    const v2 = computeApplicationVersion({ application: asV2, resources: [inspectionResource] });
+    const v1 = computeApplicationVersion({
+      application: legacy as never,
+      resources: [inspectionResource],
+    });
+    const v2 = computeApplicationVersion({
+      application: asV2 as never,
+      resources: [inspectionResource],
+    });
     expect(v1).not.toBe(v2);
     // And the @3 form (same manifest content where valid) differs again:
     const v3App = {

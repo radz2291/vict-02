@@ -92,7 +92,11 @@ function inspectionDetail(): UiDocument {
         interactions: [{ on: 'click', action: 'invokeAction', actionId: 'inspection.approve' }],
         children: ['n.approveLabel'],
       },
-      'n.approveLabel': { kind: 'text', id: 'n.approveLabel', content: { type: 'literal', value: 'Approve' } },
+      'n.approveLabel': {
+        kind: 'text',
+        id: 'n.approveLabel',
+        content: { type: 'literal', value: 'Approve' },
+      },
     },
     componentDefinitions: {},
     styleSources: {},

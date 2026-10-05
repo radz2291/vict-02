@@ -18,7 +18,13 @@
 import type { UiCatalogs, UiDocument } from './document.js';
 import { uiDiagnostic, type UiDiagnostic } from './diagnostics.js';
 import { canonicalUiDocument } from './canonical.js';
-import { applyUiEdit, cloneDocument, type UiDocumentSnapshot, type UiEditCommand, type UiEditTransaction } from './edit.js';
+import {
+  applyUiEdit,
+  cloneDocument,
+  type UiDocumentSnapshot,
+  type UiEditCommand,
+  type UiEditTransaction,
+} from './edit.js';
 import { defaultSemanticElementCatalog } from './semantic.js';
 
 export interface UiEditSessionState {
@@ -35,7 +41,12 @@ export type UiApplyOutcome =
   | { readonly ok: false; readonly issues: readonly UiDiagnostic[] };
 
 export type UiSaveOutcome =
-  | { readonly ok: true; readonly storedRevision: string; readonly document: UiDocument; readonly contentDigest: string }
+  | {
+      readonly ok: true;
+      readonly storedRevision: string;
+      readonly document: UiDocument;
+      readonly contentDigest: string;
+    }
   | { readonly ok: false; readonly issues: readonly UiDiagnostic[] };
 
 interface HistoryEntry {
@@ -85,8 +96,11 @@ export class UiEditSession {
       input.storedRevision,
       input.catalogs ?? {
         elements: defaultSemanticElementCatalog(),
-        actionIds: [],
-        routeIds: [],
+        // Product references are the JOINT compiler's obligation (API-SPEC
+        // §2.2 rule 4): an unconfigured session does not fail transactions
+        // over them.
+        actionIds: undefined,
+        routeIds: undefined,
       },
     );
   }
@@ -141,9 +155,13 @@ export class UiEditSession {
         return {
           ok: false,
           issues: [
-            uiDiagnostic('UI_EDIT_REQUEST_CONFLICT', 'Replayed request no longer applies to the current revision.', {
-              requestId: transaction.requestId,
-            }),
+            uiDiagnostic(
+              'UI_EDIT_REQUEST_CONFLICT',
+              'Replayed request no longer applies to the current revision.',
+              {
+                requestId: transaction.requestId,
+              },
+            ),
           ],
         };
       }
@@ -181,7 +199,15 @@ export class UiEditSession {
   undo(): UiApplyOutcome {
     const entry = this.#undoStack[this.#undoStack.length - 1];
     if (entry === undefined) {
-      return { ok: false, issues: [uiDiagnostic('UI_EDIT_UNDO_CONFLICT', 'Nothing to undo.', { expectedRevision: this.#working.revision, currentRevision: this.#working.revision })] };
+      return {
+        ok: false,
+        issues: [
+          uiDiagnostic('UI_EDIT_UNDO_CONFLICT', 'Nothing to undo.', {
+            expectedRevision: this.#working.revision,
+            currentRevision: this.#working.revision,
+          }),
+        ],
+      };
     }
     // Revalidation: the undo applies only when history still ends at the
     // current working revision.
@@ -203,7 +229,10 @@ export class UiEditSession {
     this.#undoStack = this.#undoStack.slice(0, -1);
     this.#redoStack = [...this.#redoStack, entry];
     this.#sequence += 1;
-    this.#working = { document: entry.before, revision: `${this.#storedRevision}#${this.#sequence}` };
+    this.#working = {
+      document: entry.before,
+      revision: `${this.#storedRevision}#${this.#sequence}`,
+    };
     return { ok: true, revision: this.#working.revision, requestId: `undo:${entry.requestId}` };
   }
 
@@ -211,7 +240,15 @@ export class UiEditSession {
   redo(): UiApplyOutcome {
     const entry = this.#redoStack[this.#redoStack.length - 1];
     if (entry === undefined) {
-      return { ok: false, issues: [uiDiagnostic('UI_EDIT_UNDO_CONFLICT', 'Nothing to redo.', { expectedRevision: this.#working.revision, currentRevision: this.#working.revision })] };
+      return {
+        ok: false,
+        issues: [
+          uiDiagnostic('UI_EDIT_UNDO_CONFLICT', 'Nothing to redo.', {
+            expectedRevision: this.#working.revision,
+            currentRevision: this.#working.revision,
+          }),
+        ],
+      };
     }
     const currentDigest = canonicalUiDocument(this.#working.document).contentDigest;
     const beforeDigest = canonicalUiDocument(entry.before).contentDigest;
@@ -229,7 +266,10 @@ export class UiEditSession {
     this.#redoStack = this.#redoStack.slice(0, -1);
     this.#undoStack = [...this.#undoStack, entry];
     this.#sequence += 1;
-    this.#working = { document: entry.after, revision: `${this.#storedRevision}#${this.#sequence}` };
+    this.#working = {
+      document: entry.after,
+      revision: `${this.#storedRevision}#${this.#sequence}`,
+    };
     return { ok: true, revision: this.#working.revision, requestId: `redo:${entry.requestId}` };
   }
 

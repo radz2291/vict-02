@@ -90,9 +90,10 @@ export class PreviewSession {
     this.#onStale = options.onStale;
     this.#delay =
       options.delay ??
-      ((ms) => new Promise((resolve) => {
-        setTimeout(resolve, ms);
-      }));
+      ((ms) =>
+        new Promise((resolve) => {
+          setTimeout(resolve, ms);
+        }));
     this.#state = this.freshState();
     this.coverage = this.computeCoverage();
   }
@@ -115,7 +116,12 @@ export class PreviewSession {
   private computeCoverage(): CoverageEntry[] {
     return this.scenario.operations.map((operation) => {
       if (operation.implementation === 'unavailable') {
-        return { op: operation.op, implementation: operation.implementation, available: false, reason: 'declared unavailable' };
+        return {
+          op: operation.op,
+          implementation: operation.implementation,
+          available: false,
+          reason: 'declared unavailable',
+        };
       }
       const isCapability = !operation.op.includes(':');
       if (isCapability) {
@@ -128,7 +134,12 @@ export class PreviewSession {
         };
       }
       // data operations are covered by the seeded simulated adapter
-      return { op: operation.op, implementation: operation.implementation, available: true, reason: 'simulated adapter' };
+      return {
+        op: operation.op,
+        implementation: operation.implementation,
+        available: true,
+        reason: 'simulated adapter',
+      };
     });
   }
 
@@ -137,10 +148,14 @@ export class PreviewSession {
     return this.coverage
       .filter((entry) => !entry.available)
       .map((entry) =>
-        uiDiagnostic('SCENARIO_COVERAGE_MISSING', `Operation '${entry.op}' has no implementation in this scenario.`, {
-          op: entry.op,
-          implementation: 'unavailable',
-        }),
+        uiDiagnostic(
+          'SCENARIO_COVERAGE_MISSING',
+          `Operation '${entry.op}' has no implementation in this scenario.`,
+          {
+            op: entry.op,
+            implementation: 'unavailable',
+          },
+        ),
       );
   }
 
@@ -173,10 +188,14 @@ export class PreviewSession {
         sessionId: this.id,
         code: 'SCENARIO_COVERAGE_MISSING',
         message: `Operation '${op}' is not implemented in this scenario; nothing ran.`,
-        diagnostic: uiDiagnostic('SCENARIO_COVERAGE_MISSING', `Operation '${op}' has no implementation.`, {
-          op,
-          implementation: 'unavailable',
-        }),
+        diagnostic: uiDiagnostic(
+          'SCENARIO_COVERAGE_MISSING',
+          `Operation '${op}' has no implementation.`,
+          {
+            op,
+            implementation: 'unavailable',
+          },
+        ),
       };
     }
     // Actor permission gate (capability ops): an actor may run ops under
@@ -205,11 +224,15 @@ export class PreviewSession {
           sessionId: this.id,
           code: 'OPERATION_DENIED',
           message: `Actor '${this.actor.actorId}' lacks permission for '${op}'.`,
-          diagnostic: uiDiagnostic('OPERATION_DENIED', 'Permission denied by the preview actor policy.', {
-            op,
-            actor: this.actor.actorId,
-            reason: 'missing permission',
-          }),
+          diagnostic: uiDiagnostic(
+            'OPERATION_DENIED',
+            'Permission denied by the preview actor policy.',
+            {
+              op,
+              actor: this.actor.actorId,
+              reason: 'missing permission',
+            },
+          ),
         };
       }
     }
@@ -220,7 +243,11 @@ export class PreviewSession {
     return this.#runCapabilityOp<T>(operation, token, input);
   }
 
-  async #settle<T>(token: symbol, delayMs: number | undefined, produce: () => PreviewResult<T>): Promise<PreviewResult<T>> {
+  async #settle<T>(
+    token: symbol,
+    delayMs: number | undefined,
+    produce: () => PreviewResult<T>,
+  ): Promise<PreviewResult<T>> {
     if (delayMs !== undefined && delayMs > 0) {
       await this.#delay(delayMs);
     }
@@ -231,7 +258,8 @@ export class PreviewSession {
         ok: false,
         sessionId: this.id,
         code: 'SESSION_STALE',
-        message: 'The session was reset while this operation was in flight; the result was dropped.',
+        message:
+          'The session was reset while this operation was in flight; the result was dropped.',
         diagnostic: uiDiagnostic('SESSION_STALE', 'Result fenced by a newer session.', {
           sessionId: this.id,
           supersededBy: this.id,
@@ -266,7 +294,8 @@ export class PreviewSession {
           ok: false,
           sessionId: this.id,
           code: operation.outcome.code ?? 'SIMULATED_FAILURE',
-          message: operation.outcome.message ?? 'The simulated operation failed (declared outcome).',
+          message:
+            operation.outcome.message ?? 'The simulated operation failed (declared outcome).',
         };
       }
       if (operation.outcome?.kind === 'denied') {
@@ -350,7 +379,8 @@ export class PreviewSession {
     operation: ScenarioOperation,
     input: unknown,
   ): PreviewResult<T> {
-    const rows: readonly Readonly<Record<string, unknown>>[] = this.#state.rows.get(resourceId) ?? [];
+    const rows: readonly Readonly<Record<string, unknown>>[] =
+      this.#state.rows.get(resourceId) ?? [];
     const payload = (input ?? {}) as {
       readonly id?: string;
       readonly input?: Record<string, unknown>;

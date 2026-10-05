@@ -55,7 +55,11 @@ export interface UiScenario {
     readonly application: { readonly id: string; readonly revision: string };
     readonly documents: Readonly<Record<string, string>>;
   };
-  readonly seeds: { readonly domain: SeedSpec; readonly random?: SeedSpec; readonly clock?: ClockPolicy };
+  readonly seeds: {
+    readonly domain: SeedSpec;
+    readonly random?: SeedSpec;
+    readonly clock?: ClockPolicy;
+  };
   readonly actors: readonly ScenarioActor[];
   readonly operations: readonly ScenarioOperation[];
   /** Reset creates a NEW session identity (frozen fencing rule). */

@@ -186,7 +186,10 @@ export {
 export type { AuthoringErrorCode } from './authoring.js';
 
 // ---- Application @3 — canonical UI attachment (U1) --------------------------
-export { APPLICATION_DEFINITION_SCHEMA_V3, APPLICATION_IDENTITY_SCHEMA_V3 } from './application-v3.js';
+export {
+  APPLICATION_DEFINITION_SCHEMA_V3,
+  APPLICATION_IDENTITY_SCHEMA_V3,
+} from './application-v3.js';
 export type {
   ApplicationDefinitionV3,
   ScreenDefinitionV3,

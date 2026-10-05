@@ -431,13 +431,14 @@ export type {
   UiSourceMapEntry,
   UiStyleRule,
 } from './compile.js';
-export { applyUiEdit, cloneDocument, emptyCatalogs, expectUiDocument } from './edit.js';
-export type {
-  UiDocumentSnapshot,
-  UiEditCommand,
-  UiEditResult,
-  UiEditTransaction,
+export {
+  applyUiEdit,
+  cloneDocument,
+  emptyCatalogs,
+  expectUiDocument,
+  isDeferredProductReference,
 } from './edit.js';
+export type { UiDocumentSnapshot, UiEditCommand, UiEditResult, UiEditTransaction } from './edit.js';
 export { UiEditSession, advanceStoredRevision } from './session.js';
 export type { UiApplyOutcome, UiEditSessionState, UiSaveOutcome } from './session.js';
 export { inspectUiOccurrence, occurrenceKeyOf, parseOccurrenceKey } from './occurrence.js';

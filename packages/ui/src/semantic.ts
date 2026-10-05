@@ -59,7 +59,18 @@ const ELEMENTS: readonly SemanticElementDef[] = [
   { tag: 'label', attributes: ['for'] },
   {
     tag: 'input',
-    attributes: ['type', 'name', 'value', 'placeholder', 'required', 'disabled', 'checked', 'min', 'max', 'step'],
+    attributes: [
+      'type',
+      'name',
+      'value',
+      'placeholder',
+      'required',
+      'disabled',
+      'checked',
+      'min',
+      'max',
+      'step',
+    ],
     leaf: true,
   },
   {
@@ -67,7 +78,11 @@ const ELEMENTS: readonly SemanticElementDef[] = [
     attributes: ['name', 'required', 'disabled'],
   },
   { tag: 'option', attributes: ['value', 'selected', 'disabled'] },
-  { tag: 'textarea', attributes: ['name', 'placeholder', 'rows', 'required', 'disabled'], leaf: true },
+  {
+    tag: 'textarea',
+    attributes: ['name', 'placeholder', 'rows', 'required', 'disabled'],
+    leaf: true,
+  },
   { tag: 'fieldset' },
   { tag: 'legend', leaf: true },
   // interactive

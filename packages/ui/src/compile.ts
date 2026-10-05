@@ -81,7 +81,9 @@ export type UiRenderInstruction =
       readonly kind: 'text';
       readonly nodeId: string;
       readonly occurrenceKey: string;
-      readonly content: { readonly type: 'literal'; readonly value: string } | { readonly type: 'expression'; readonly expression: UiExpression };
+      readonly content:
+        | { readonly type: 'literal'; readonly value: string }
+        | { readonly type: 'expression'; readonly expression: UiExpression };
     }
   | {
       readonly kind: 'component';
@@ -158,7 +160,9 @@ export interface UiRenderPlan {
   readonly structure: readonly UiRenderInstruction[];
   readonly style: {
     readonly rules: readonly UiStyleRule[];
-    readonly layers: readonly ('token' | 'componentBase' | 'componentVariant' | 'source' | 'local')[];
+    readonly layers: readonly (
+      'token' | 'componentBase' | 'componentVariant' | 'source' | 'local'
+    )[];
   };
   readonly dynamic: {
     readonly repeats: readonly { readonly nodeId: string; readonly itemName: string }[];
@@ -176,7 +180,12 @@ export function compileUiDocument(
   document: UiDocument,
   semanticCatalog: SemanticElementCatalog,
   extensions: readonly UiExtensionDescriptor[] = [],
-  catalogs: { readonly actionIds?: readonly string[]; readonly routeIds?: readonly string[]; readonly viewFields?: UiCatalogs['viewFields']; readonly opNames?: readonly string[] } = {},
+  catalogs: {
+    readonly actionIds?: readonly string[];
+    readonly routeIds?: readonly string[];
+    readonly viewFields?: UiCatalogs['viewFields'];
+    readonly opNames?: readonly string[];
+  } = {},
 ): UiCompileResult {
   const validation = validateUiDocument(document, {
     elements: semanticCatalog,
@@ -218,7 +227,10 @@ export function compileUiDocument(
   const sourceMap: UiSourceMapEntry[] = [];
   const extensionRefs: { extensionId: string; revision: string }[] = [];
   const nodes = (document.nodes ?? {}) as Record<string, UiNode>;
-  const definitions = (document.componentDefinitions ?? {}) as Record<string, UiComponentDefinition>;
+  const definitions = (document.componentDefinitions ?? {}) as Record<
+    string,
+    UiComponentDefinition
+  >;
   const extensionById = new Map(extensions.map((extension) => [extension.id, extension]));
 
   // deterministic normalized class per node
@@ -227,12 +239,12 @@ export function compileUiDocument(
     `uv-${docHash}-${nodeId.replace(/[^A-Za-z0-9_-]/g, '_')}`;
 
   // ---- token defaults layer ----------------------------------------------
-  const tokenDeclarations = Object.entries((document.tokens ?? {}) as Record<string, { value: string }>).map(
-    ([tokenId, token]) => ({
-      property: `--ui-token-${tokenId}`,
-      value: { type: 'literal', value: token.value } as UiResolvedValue,
-    }),
-  );
+  const tokenDeclarations = Object.entries(
+    (document.tokens ?? {}) as Record<string, { value: string }>,
+  ).map(([tokenId, token]) => ({
+    property: `--ui-token-${tokenId}`,
+    value: { type: 'literal', value: token.value } as UiResolvedValue,
+  }));
   if (tokenDeclarations.length > 0) {
     rules.push({
       ruleId: `${docHash}-tokens`,
@@ -249,7 +261,8 @@ export function compileUiDocument(
     selector: string,
     mediaConditionId?: string,
   ): string | undefined => {
-    if (declarations === undefined || declarations.length === 0) return undefined;    const compiled = declarations.map((declaration) => {
+    if (declarations === undefined || declarations.length === 0) return undefined;
+    const compiled = declarations.map((declaration) => {
       let value: UiResolvedValue;
       if (declaration.value.type === 'text') {
         value = { type: 'literal', value: declaration.value.value };
@@ -260,14 +273,18 @@ export function compileUiDocument(
       }
       return { property: declaration.property, value };
     });
-    rules.push({ ruleId, layer, selector, ...(mediaConditionId !== undefined ? { mediaConditionId } : {}), declarations: compiled });
+    rules.push({
+      ruleId,
+      layer,
+      selector,
+      ...(mediaConditionId !== undefined ? { mediaConditionId } : {}),
+      declarations: compiled,
+    });
     return ruleId;
   };
 
-  const occurrenceKey = (
-    nodeId: string,
-    instancePath: readonly string[],
-  ): string => [documentId, nodeId, ...instancePath].join('|');
+  const occurrenceKey = (nodeId: string, instancePath: readonly string[]): string =>
+    [documentId, nodeId, ...instancePath].join('|');
 
   let definitionExpansionGuard = 0;
 
@@ -297,9 +314,8 @@ export function compileUiDocument(
       case 'element': {
         const styleRuleIds: string[] = [];
         for (const sourceId of node.styleSources ?? []) {
-          const source = (document.styleSources ?? {} as Record<string, never>)[sourceId] as
-            | UiStyleSource
-            | undefined;
+          const source = (document.styleSources ?? ({} as Record<string, never>))[sourceId] as
+            UiStyleSource | undefined;
           const ruleId = compileStyleDeclarations(
             source?.declarations,
             `${classFor(nodeId)}-s${styleRuleIds.length}`,
@@ -399,9 +415,9 @@ export function compileUiDocument(
         }
         const styleRuleIds: string[] = [];
         if (definition.baseStyle !== undefined) {
-          const base = (document.styleSources ?? {} as Record<string, never>)[definition.baseStyle] as
-            | { declarations?: readonly { property: string; value: UiStyleValue }[] }
-            | undefined;
+          const base = (document.styleSources ?? ({} as Record<string, never>))[
+            definition.baseStyle
+          ] as { declarations?: readonly { property: string; value: UiStyleValue }[] } | undefined;
           const ruleId = compileStyleDeclarations(
             base?.declarations,
             `${classFor(nodeId)}-b`,
@@ -461,11 +477,15 @@ export function compileUiDocument(
         };
       case 'portal':
         issues.push(
-          uiDiagnostic('UI_DOC_UNSUPPORTED_FEATURE', 'Portal rendering is pending beyond the U1 slice.', {
-            documentId,
-            nodeId,
-            feature: 'portal',
-          }),
+          uiDiagnostic(
+            'UI_DOC_UNSUPPORTED_FEATURE',
+            'Portal rendering is pending beyond the U1 slice.',
+            {
+              documentId,
+              nodeId,
+              feature: 'portal',
+            },
+          ),
         );
         return {
           kind: 'unsupported',
@@ -477,7 +497,9 @@ export function compileUiDocument(
     }
   };
 
-  const structure: UiRenderInstruction[] = [compileNode(String(document.root), { inDefinition: false, instancePath: [] })];
+  const structure: UiRenderInstruction[] = [
+    compileNode(String(document.root), { inDefinition: false, instancePath: [] }),
+  ];
 
   const conditions = Object.values((document.conditions ?? {}) as Record<string, UiCondition>);
   const repeats: { nodeId: string; itemName: string }[] = [];
@@ -534,7 +556,17 @@ function extractInteraction(interaction: UiInteraction): UiNodeExtractedInteract
     };
   }
   if (interaction.action === 'navigate') {
-    return { ...base, action: 'navigate', routeId: interaction.routeId, params: interaction.params ?? {} };
+    return {
+      ...base,
+      action: 'navigate',
+      routeId: interaction.routeId,
+      params: interaction.params ?? {},
+    };
   }
-  return { ...base, action: 'setState', stateKey: interaction.key, params: { value: interaction.value } };
+  return {
+    ...base,
+    action: 'setState',
+    stateKey: interaction.key,
+    params: { value: interaction.value },
+  };
 }

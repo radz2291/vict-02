@@ -194,7 +194,10 @@ describe('UiEditSession save/reopen', () => {
     const save = session.save({ expectedStoredRevision: '1' });
     expect(save.ok).toBe(true);
     if (!save.ok) return;
-    const reopened = session.reopen({ document: save.document, storedRevision: save.storedRevision });
+    const reopened = session.reopen({
+      document: save.document,
+      storedRevision: save.storedRevision,
+    });
     expect(reopened.canUndo()).toBe(false);
     expect(reopened.workingRevision).toBe('2#0');
     expect(reopened.document.nodes['n.a']).toMatchObject({

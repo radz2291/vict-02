@@ -16,10 +16,7 @@ export interface OccurrenceReport {
 }
 
 /** Parse an occurrence key (renderer annotation) back to its source parts. */
-export function resolveOccurrence(
-  occurrenceKey: string,
-  document: UiDocument,
-): OccurrenceReport {
+export function resolveOccurrence(occurrenceKey: string, document: UiDocument): OccurrenceReport {
   const parts = occurrenceKey.split('|');
   const documentId = parts[0] ?? '';
   const sourceNodeId = parts[1] ?? '';
@@ -27,7 +24,8 @@ export function resolveOccurrence(
   const instanceSegments = rest.filter((segment) => segment.includes('@'));
   const repeatKeys = rest.filter((segment) => !segment.includes('@'));
   const firstInstance = instanceSegments[0] ?? '';
-  const owningDefinitionId = firstInstance === '' ? undefined : (firstInstance.split('@')[1] ?? undefined);
+  const owningDefinitionId =
+    firstInstance === '' ? undefined : (firstInstance.split('@')[1] ?? undefined);
   const nodes = (document.nodes ?? {}) as Record<string, UiNode>;
   return {
     sourceNodeId,

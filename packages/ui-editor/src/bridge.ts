@@ -21,12 +21,19 @@ import type { TransactionDraft } from './commands.js';
 /** Persistence port implemented by the host (file/server boundary). */
 export interface DocumentStorePort {
   /** Load the stored document + stored revision (process/reload reopen). */
-  readonly load: () => { readonly document: UiDocument; readonly storedRevision: string } | undefined;
-  /** Persist with the expected-stored-revision guard. */
+  readonly load: () =>
+    { readonly document: UiDocument; readonly storedRevision: string } | undefined;
+  /**
+   * Persist: the session has ALREADY validated the expected-stored-revision
+   * guard; the store writes through under the NEW stored revision.
+   * Single-writer port (the session is the only path to save).
+   */
   readonly save: (input: {
     readonly document: UiDocument;
-    readonly expectedStoredRevision: string;
-  }) => { readonly ok: true; readonly storedRevision: string } | { readonly ok: false; readonly reason: string };
+    readonly newStoredRevision: string;
+  }) =>
+    | { readonly ok: true; readonly storedRevision: string }
+    | { readonly ok: false; readonly reason: string };
 }
 
 export interface EditorBridgeState {
@@ -45,7 +52,10 @@ export class EditorBridge {
   #selectedOccurrence: string | undefined = undefined;
   #listeners = new Set<() => void>();
 
-  constructor(input: { readonly store: DocumentStorePort; readonly initial: { readonly document: UiDocument; readonly storedRevision: string } }) {
+  constructor(input: {
+    readonly store: DocumentStorePort;
+    readonly initial: { readonly document: UiDocument; readonly storedRevision: string };
+  }) {
     this.#session = UiEditSession.open(input.initial);
     this.#store = input.store;
   }
@@ -112,12 +122,17 @@ export class EditorBridge {
   }
 
   /** Expected-revision save through the host's store port. */
-  save(): UiSaveOutcome | { readonly ok: false; readonly issues: readonly { readonly code: string; readonly message: string }[] } {
+  save():
+    | UiSaveOutcome
+    | {
+        readonly ok: false;
+        readonly issues: readonly { readonly code: string; readonly message: string }[];
+      } {
     const result = this.#session.save({ expectedStoredRevision: this.#session.storedRevision });
     if (!result.ok) return result;
     const persisted = this.#store.save({
       document: result.document,
-      expectedStoredRevision: result.storedRevision,
+      newStoredRevision: result.storedRevision,
     });
     if (!persisted.ok) {
       return { ok: false, issues: [{ code: 'UI_DOC_STALE_REVISION', message: persisted.reason }] };

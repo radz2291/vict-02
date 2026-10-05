@@ -25,7 +25,11 @@ function minimalDocument(): UiDocument {
         tag: 'section',
         children: ['n.heading', 'n.status'],
       },
-      'n.heading': { kind: 'text', id: 'n.heading', content: { type: 'literal', value: 'Inspection detail' } },
+      'n.heading': {
+        kind: 'text',
+        id: 'n.heading',
+        content: { type: 'literal', value: 'Inspection detail' },
+      },
       'n.status': {
         kind: 'text',
         id: 'n.status',
@@ -58,7 +62,12 @@ type WText = Extract<WUiNode, { kind: 'text' }>;
 
 const catalogs = {
   elements: defaultSemanticElementCatalog(),
-  viewFields: { status: 'string', findings: 'array', 'findings.severity': 'string', 'findings.description': 'string' },
+  viewFields: {
+    status: 'string',
+    findings: 'array',
+    'findings.severity': 'string',
+    'findings.description': 'string',
+  },
 } as const;
 
 describe('canonicalUiDocument', () => {
@@ -126,7 +135,10 @@ describe('validateUiDocument', () => {
   });
 
   it('rejects an unknown schema', () => {
-    const document = { ...minimalDocument(), schema: 'vict.ui-document@9' } as unknown as UiDocument;
+    const document = {
+      ...minimalDocument(),
+      schema: 'vict.ui-document@9',
+    } as unknown as UiDocument;
     const issues = validateUiDocument(document, catalogs);
     expect(issues.some((issue) => issue.code === 'UI_DOC_UNKNOWN_SCHEMA')).toBe(true);
   });
@@ -169,7 +181,9 @@ describe('validateUiDocument', () => {
     // A JS object cannot hold two equal keys; the registry-key mismatch rule
     // fires when an entry's id disagrees with its key — the model-level
     // duplicate detection is exercised via the mismatch diagnostic.
-    expect(issues.filter((issue) => issue.code === 'UI_DOC_DUPLICATE_NODE_ID').length).toBeGreaterThanOrEqual(0);
+    expect(
+      issues.filter((issue) => issue.code === 'UI_DOC_DUPLICATE_NODE_ID').length,
+    ).toBeGreaterThanOrEqual(0);
   });
 
   it('rejects unknown elements and attributes', () => {
@@ -180,11 +194,7 @@ describe('validateUiDocument', () => {
       tag: 'marquee',
       children: [],
     } as WUiNode;
-    (document.nodes['n.root'] as WElement).children = [
-      'n.heading',
-      'n.status',
-      'n.bad',
-    ];
+    (document.nodes['n.root'] as WElement).children = ['n.heading', 'n.status', 'n.bad'];
     document.nodes['n.attr'] = {
       kind: 'element',
       id: 'n.attr',
@@ -192,12 +202,7 @@ describe('validateUiDocument', () => {
       attributes: { onclick: 'alert(1)' },
       children: [],
     } as WUiNode;
-    (document.nodes['n.root'] as WElement).children = [
-      'n.heading',
-      'n.status',
-      'n.bad',
-      'n.attr',
-    ];
+    (document.nodes['n.root'] as WElement).children = ['n.heading', 'n.status', 'n.bad', 'n.attr'];
     const issues = validateUiDocument(document, catalogs);
     expect(issues.some((issue) => issue.code === 'UI_DOC_UNKNOWN_ELEMENT')).toBe(true);
     expect(issues.some((issue) => issue.code === 'UI_DOC_UNKNOWN_ATTRIBUTE')).toBe(true);
@@ -236,11 +241,7 @@ describe('validateUiDocument', () => {
       id: 'n.item',
       content: { type: 'expression', expression: { type: 'ref', path: 'repeat.finding.severity' } },
     } as WUiNode;
-    (document.nodes['n.root'] as WElement).children = [
-      'n.heading',
-      'n.status',
-      'n.repeat',
-    ];
+    (document.nodes['n.root'] as WElement).children = ['n.heading', 'n.status', 'n.repeat'];
     const issues = validateUiDocument(document, catalogs);
     expect(issues.filter((issue) => issue.severity === 'error')).toEqual([]);
   });
@@ -291,11 +292,7 @@ describe('compileUiDocument', () => {
       id: 'n.fill',
       content: { type: 'expression', expression: { type: 'ref', path: 'view.status' } },
     } as WUiNode;
-    (document.nodes['n.root'] as WElement).children = [
-      'n.heading',
-      'n.status',
-      'n.instance',
-    ];
+    (document.nodes['n.root'] as WElement).children = ['n.heading', 'n.status', 'n.instance'];
     const result = compileUiDocument(document, catalogs.elements);
     expect(result.ok).toBe(true);
     if (!result.ok) return;

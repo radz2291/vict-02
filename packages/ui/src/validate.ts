@@ -50,10 +50,7 @@ function registryOf(document: Record<string, unknown>, key: string): Record<stri
  * Validate one document. Returns every diagnostic found; callers decide
  * via `hasErrors` whether compilation may proceed.
  */
-export function validateUiDocument(
-  input: unknown,
-  catalogs: UiCatalogs,
-): readonly UiDiagnostic[] {
+export function validateUiDocument(input: unknown, catalogs: UiCatalogs): readonly UiDiagnostic[] {
   const issues: UiDiagnostic[] = [];
   if (!isPlainObject(input)) {
     return [
@@ -83,10 +80,14 @@ export function validateUiDocument(
   }
   if (!nonEmptyString(document.revision)) {
     issues.push(
-      uiDiagnostic('UI_DOC_REFERENCE_DANGLING', 'A UI document must declare a non-empty revision.', {
-        documentId: String(document.id ?? ''),
-        reference: 'document.revision',
-      }),
+      uiDiagnostic(
+        'UI_DOC_REFERENCE_DANGLING',
+        'A UI document must declare a non-empty revision.',
+        {
+          documentId: String(document.id ?? ''),
+          reference: 'document.revision',
+        },
+      ),
     );
   }
   if (!nonEmptyString(document.root)) {
@@ -161,7 +162,9 @@ export function validateUiDocument(
         return [];
     }
   };
-  const definitionSlotFillChildren = (node: UiNode): readonly { slot: string; children: readonly string[] }[] =>
+  const definitionSlotFillChildren = (
+    node: UiNode,
+  ): readonly { slot: string; children: readonly string[] }[] =>
     node.kind === 'component' && node.slots !== undefined
       ? Object.entries(node.slots).map(([slot, fill]) => ({ slot, children: fill.children }))
       : [];
@@ -169,7 +172,10 @@ export function validateUiDocument(
   const visiting = new Set<string>();
   const visited = new Set<string>();
   const path: string[] = [];
-  const innerRepeatScope = (node: Extract<UiNode, { kind: 'repeat' }>, scope: UiScopeInfo): UiScopeInfo => ({
+  const innerRepeatScope = (
+    node: Extract<UiNode, { kind: 'repeat' }>,
+    scope: UiScopeInfo,
+  ): UiScopeInfo => ({
     repeatItems: {
       ...scope.repeatItems,
       [node.itemName]: repeatItemFields(ctx, node.collection),
@@ -233,11 +239,15 @@ export function validateUiDocument(
       const node = nodes[nodeId];
       if (node === undefined) {
         issues.push(
-          uiDiagnostic('UI_DOC_UNKNOWN_NODE', `Definition body references missing node '${nodeId}'.`, {
-            documentId,
-            nodeId: definition.root,
-            missingChildId: nodeId,
-          }),
+          uiDiagnostic(
+            'UI_DOC_UNKNOWN_NODE',
+            `Definition body references missing node '${nodeId}'.`,
+            {
+              documentId,
+              nodeId: definition.root,
+              missingChildId: nodeId,
+            },
+          ),
         );
         continue;
       }
@@ -289,11 +299,15 @@ export function validateUiDocument(
   for (const [ownedId, count] of ownerCount) {
     if (count > 1) {
       issues.push(
-        uiDiagnostic('UI_DOC_UNKNOWN_NODE', `Node '${ownedId}' has ${count} owners; every node has exactly one source parent.`, {
-          documentId,
-          nodeId: ownedId,
-          missingChildId: ownedId,
-        }),
+        uiDiagnostic(
+          'UI_DOC_UNKNOWN_NODE',
+          `Node '${ownedId}' has ${count} owners; every node has exactly one source parent.`,
+          {
+            documentId,
+            nodeId: ownedId,
+            missingChildId: ownedId,
+          },
+        ),
       );
     }
   }
@@ -339,20 +353,22 @@ export function validateUiDocument(
   for (const [tokenId, token] of Object.entries(tokens)) {
     if (!isPlainObject(token) || !nonEmptyString((token as { value?: unknown }).value)) {
       issues.push(
-        uiDiagnostic('UI_EXPR_UNKNOWN_REFERENCE', `Token '${tokenId}' must declare a string value.`, {
-          documentId,
-          nodeId: document.root,
-          path: `token.${tokenId}`,
-        }),
+        uiDiagnostic(
+          'UI_EXPR_UNKNOWN_REFERENCE',
+          `Token '${tokenId}' must declare a string value.`,
+          {
+            documentId,
+            nodeId: document.root,
+            path: `token.${tokenId}`,
+          },
+        ),
       );
     }
   }
   for (const [sourceId, source] of Object.entries(styleSources)) {
     if (!isPlainObject(source)) continue;
-    for (const declaration of (source as { declarations?: unknown }).declarations as
-      | readonly { property?: unknown; value?: unknown }[]
-      | undefined
-      ?? []) {
+    for (const declaration of ((source as { declarations?: unknown }).declarations as
+      readonly { property?: unknown; value?: unknown }[] | undefined) ?? []) {
       validateStyleDeclaration(ctx, declaration, String(sourceId), String(document.root), tokens);
     }
   }
@@ -369,12 +385,16 @@ export function validateUiDocument(
       (type === 'boolean' && typeof initial === 'boolean');
     if (!matches) {
       issues.push(
-        uiDiagnostic('UI_EXPR_TYPE_MISMATCH', `Local state '${key}' initial value does not match its type.`, {
-          documentId,
-          nodeId: document.root,
-          expected: String(type),
-          actual: typeof initial,
-        }),
+        uiDiagnostic(
+          'UI_EXPR_TYPE_MISMATCH',
+          `Local state '${key}' initial value does not match its type.`,
+          {
+            documentId,
+            nodeId: document.root,
+            expected: String(type),
+            actual: typeof initial,
+          },
+        ),
       );
     }
   }
@@ -383,7 +403,11 @@ export function validateUiDocument(
 }
 
 /** All node ids reachable through containment from a definition root. */
-function collectNodeSubtree(root: string, nodes: Record<string, UiNode>, into: Set<string>): Set<string> {
+function collectNodeSubtree(
+  root: string,
+  nodes: Record<string, UiNode>,
+  into: Set<string>,
+): Set<string> {
   const stack = [root];
   while (stack.length > 0) {
     const id = stack.pop() as string;
@@ -438,13 +462,19 @@ function validateNode(
           uiDiagnostic(
             'UI_DOC_UNKNOWN_NODE',
             `Element '${node.tag}' is a leaf and cannot own children.`,
-            { documentId, nodeId: node.children[0] as string, missingChildId: node.children[0] as string },
+            {
+              documentId,
+              nodeId: node.children[0] as string,
+              missingChildId: node.children[0] as string,
+            },
           ),
         );
       }
       for (const attribute of Object.entries(node.attributes ?? {})) {
         if (typeof attribute[1] === 'object' && attribute[1] !== null) {
-          issues.push(...checkExpression(attribute[1] as UiExpression, catalogs, scope, documentId, node.id));
+          issues.push(
+            ...checkExpression(attribute[1] as UiExpression, catalogs, scope, documentId, node.id),
+          );
         }
       }
       for (const interaction of node.interactions ?? []) {
@@ -499,12 +529,16 @@ function validateNode(
           const actual = expression.value === null ? 'null' : typeof expression.value;
           if (actual !== 'null' && actual !== propDecl.type) {
             issues.push(
-              uiDiagnostic('UI_EXPR_TYPE_MISMATCH', `Prop '${propName}' expects ${propDecl.type}.`, {
-                documentId,
-                nodeId: node.id,
-                expected: propDecl.type,
-                actual,
-              }),
+              uiDiagnostic(
+                'UI_EXPR_TYPE_MISMATCH',
+                `Prop '${propName}' expects ${propDecl.type}.`,
+                {
+                  documentId,
+                  nodeId: node.id,
+                  expected: propDecl.type,
+                  actual,
+                },
+              ),
             );
           }
         }
@@ -525,11 +559,15 @@ function validateNode(
           const child = nodes[childId];
           if (child === undefined) {
             issues.push(
-              uiDiagnostic('UI_DOC_UNKNOWN_NODE', `Slot fill references missing node '${childId}'.`, {
-                documentId,
-                nodeId: node.id,
-                missingChildId: childId,
-              }),
+              uiDiagnostic(
+                'UI_DOC_UNKNOWN_NODE',
+                `Slot fill references missing node '${childId}'.`,
+                {
+                  documentId,
+                  nodeId: node.id,
+                  missingChildId: childId,
+                },
+              ),
             );
             continue;
           }
@@ -539,13 +577,7 @@ function validateNode(
       break;
     }
     case 'repeat': {
-      const collectionType = checkExpressionTypeOf(
-        ctx,
-        node.collection,
-        scope,
-        node.id,
-        'array',
-      );
+      const collectionType = checkExpressionTypeOf(ctx, node.collection, scope, node.id, 'array');
       if (collectionType !== 'array' && collectionType !== 'unknown' && collectionType !== 'any') {
         issues.push(
           uiDiagnostic('UI_EXPR_TYPE_MISMATCH', 'A repeat collection must resolve to an array.', {
@@ -628,11 +660,15 @@ function validateNode(
     case 'portal': {
       // Structural rules only; rendering support is a declared U1 limit.
       issues.push(
-        uiDiagnostic('UI_DOC_UNSUPPORTED_FEATURE', 'Portal rendering is pending beyond the U1 slice.', {
-          documentId,
-          nodeId: node.id,
-          feature: 'portal',
-        }),
+        uiDiagnostic(
+          'UI_DOC_UNSUPPORTED_FEATURE',
+          'Portal rendering is pending beyond the U1 slice.',
+          {
+            documentId,
+            nodeId: node.id,
+            feature: 'portal',
+          },
+        ),
       );
       break;
     }
@@ -671,11 +707,7 @@ function checkExpressionTypeOf(
   return inferType(expression, catalogs, scope);
 }
 
-function inferType(
-  expression: UiExpression,
-  catalogs: UiCatalogs,
-  scope: UiScopeInfo,
-): string {
+function inferType(expression: UiExpression, catalogs: UiCatalogs, scope: UiScopeInfo): string {
   switch (expression.type) {
     case 'literal':
       return expression.value === null ? 'null' : typeof expression.value;
@@ -767,11 +799,15 @@ function validatePresentation(ctx: ValidateContext, node: UiNode, scope: UiScope
   for (const sourceId of node.styleSources ?? []) {
     if (styleSources[sourceId] === undefined) {
       issues.push(
-        uiDiagnostic('UI_DOC_REFERENCE_DANGLING', `Style source '${String(sourceId)}' does not exist.`, {
-          documentId,
-          nodeId: node.id,
-          reference: `styleSource:${String(sourceId)}`,
-        }),
+        uiDiagnostic(
+          'UI_DOC_REFERENCE_DANGLING',
+          `Style source '${String(sourceId)}' does not exist.`,
+          {
+            documentId,
+            nodeId: node.id,
+            reference: `styleSource:${String(sourceId)}`,
+          },
+        ),
       );
     }
   }
@@ -855,10 +891,14 @@ function validateCondition(
     const query = (condition as { query?: unknown }).query;
     if (typeof query !== 'string' || !isBoundedMediaQuery(query)) {
       issues.push(
-        uiDiagnostic('UI_STYLE_CONDITION_UNKNOWN', `Media condition query is not a bounded width query.`, {
-          documentId,
-          conditionId,
-        }),
+        uiDiagnostic(
+          'UI_STYLE_CONDITION_UNKNOWN',
+          `Media condition query is not a bounded width query.`,
+          {
+            documentId,
+            conditionId,
+          },
+        ),
       );
     }
     return;
@@ -867,15 +907,25 @@ function validateCondition(
     const when = (condition as { when?: UiExpression }).when;
     if (when === undefined) {
       issues.push(
-        uiDiagnostic('UI_STYLE_CONDITION_UNKNOWN', `localState condition needs a when expression.`, {
-          documentId,
-          conditionId,
-        }),
+        uiDiagnostic(
+          'UI_STYLE_CONDITION_UNKNOWN',
+          `localState condition needs a when expression.`,
+          {
+            documentId,
+            conditionId,
+          },
+        ),
       );
       return;
     }
     issues.push(
-      ...checkExpression(when, catalogs, { repeatItems: {}, inDefinition: false }, documentId, document.root),
+      ...checkExpression(
+        when,
+        catalogs,
+        { repeatItems: {}, inDefinition: false },
+        documentId,
+        document.root,
+      ),
     );
     void localState;
     return;
@@ -933,10 +983,14 @@ function validateDefinition(
   for (const [variant, ref] of Object.entries(definition.variants ?? {})) {
     if (conditions[ref.conditionId] === undefined) {
       issues.push(
-        uiDiagnostic('UI_STYLE_CONDITION_UNKNOWN', `Variant '${variant}' references unknown condition.`, {
-          documentId,
-          conditionId: ref.conditionId,
-        }),
+        uiDiagnostic(
+          'UI_STYLE_CONDITION_UNKNOWN',
+          `Variant '${variant}' references unknown condition.`,
+          {
+            documentId,
+            conditionId: ref.conditionId,
+          },
+        ),
       );
     } else {
       issues.push(
