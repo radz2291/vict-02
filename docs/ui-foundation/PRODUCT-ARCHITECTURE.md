@@ -93,7 +93,7 @@ Do not alter apps/studio in this workstream. Do not migrate existing consumers, 
 
 ### Inspection product
 
-Fictional roles: technician and supervisor. Inspection lifecycle: draft → submitted → approved or rejected. Rejection records a reason and returns the inspection for correction. Findings and evidence are reviewed side by side.
+Fictional roles: technician and supervisor. Inspection lifecycle: draft → submitted → approved or rejected; a rejected inspection may be revised back to draft by its assigned technician (record-level decision fields cleared, reason preserved in the activity trail) and resubmitted. Rejection records a reason and returns the inspection for correction. Findings and evidence are reviewed side by side.
 
 The pilot must support queue/detail/decision journeys, a reusable finding card, an evidence viewer extension, and activity/status updates. Product decisions are real state transitions in the preview adapter, not optimistic decorative badges.
 

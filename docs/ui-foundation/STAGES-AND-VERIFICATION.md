@@ -49,7 +49,7 @@ Minimum modeled/editor slice: element/text/component, simple repeat, literals/ty
 
 | Criterion | Required evidence |
 | --- | --- |
-| U1-01 Canonical source and identity | New opted-in application source resolves a UI document; changed UI content changes applicationVersion; dangling reference and explicit-catalog/pinned revision collision rejected; old release binding rejected |
+| U1-01 Canonical source and identity | New opted-in application source resolves a UI document; changed UI content changes applicationVersion; dangling reference and explicit-catalog/pinned revision collision rejected; old release binding rejected; catalog input permutation and duplicate identical entries leave applicationVersion unchanged (A-03) |
 | U1-02 One renderer | The same source/compiled artifact renders in the reference host and a normal app; no separate handwritten proof frontend |
 | U1-03 Source-aware editing | Click selects source occurrence; insert/move/style/bind/connect work through exported transactional commands; invalid/stale multi-command transaction has no partial effect |
 | U1-04 Round trip | Undo/redo, expected-revision save, process/reload reopen preserve IDs/layout/bindings; stale save rejected |

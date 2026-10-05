@@ -1,0 +1,187 @@
+{
+  "application": {
+    "schema": "vict.application@3",
+    "id": "app.inspection-proof",
+    "revision": "4",
+    "name": "Inspection Proof",
+    "routes": [
+      {
+        "id": "route.detail",
+        "path": "/inspections/:id",
+        "screenId": "screen.inspection-detail"
+      },
+      {
+        "id": "route.queue",
+        "path": "/inspections",
+        "screenId": "screen.inspection-queue"
+      }
+    ],
+    "screens": [
+      {
+        "id": "screen.inspection-detail",
+        "title": "Inspection detail",
+        "uiDocument": {
+          "documentId": "doc.inspection-detail",
+          "revision": "2"
+        }
+      },
+      {
+        "id": "screen.inspection-queue",
+        "title": "Inspection queue",
+        "uiDocument": {
+          "documentId": "doc.inspection-queue",
+          "revision": "2"
+        }
+      }
+    ],
+    "views": [],
+    "actions": [],
+    "resources": [
+      {
+        "resourceId": "inspection",
+        "revision": "5"
+      }
+    ]
+  },
+  "uiDocuments": [
+    {
+      "document": {
+        "schema": "vict.ui-document@1",
+        "id": "doc.inspection-detail",
+        "revision": "2",
+        "root": "screen",
+        "nodes": {
+          "screen": {
+            "kind": "element",
+            "tag": "section",
+            "attributes": {
+              "class": "inspection-detail"
+            },
+            "children": ["title", "back-to-queue"]
+          },
+          "title": {
+            "kind": "text",
+            "content": {
+              "type": "literal",
+              "value": "Inspection detail"
+            }
+          },
+          "back-to-queue": {
+            "kind": "element",
+            "tag": "button",
+            "attributes": {
+              "type": "button"
+            },
+            "children": ["back-label"],
+            "interactions": [
+              {
+                "event": "click",
+                "operations": [
+                  {
+                    "type": "navigate",
+                    "routeId": "route.queue",
+                    "params": {}
+                  }
+                ]
+              }
+            ]
+          },
+          "back-label": {
+            "kind": "text",
+            "content": {
+              "type": "literal",
+              "value": "Back to queue"
+            }
+          }
+        },
+        "componentDefinitions": {},
+        "styleSources": {},
+        "tokens": {},
+        "conditions": {},
+        "assets": {},
+        "localState": {}
+      }
+    },
+    {
+      "document": {
+        "schema": "vict.ui-document@1",
+        "id": "doc.inspection-queue",
+        "revision": "2",
+        "root": "screen",
+        "nodes": {
+          "screen": {
+            "kind": "element",
+            "tag": "section",
+            "attributes": {
+              "class": "inspection-queue"
+            },
+            "children": ["title", "rows"]
+          },
+          "title": {
+            "kind": "text",
+            "content": {
+              "type": "literal",
+              "value": "Inspection queue"
+            }
+          },
+          "rows": {
+            "kind": "repeat",
+            "collection": {
+              "type": "ref",
+              "path": "record.inspections"
+            },
+            "key": {
+              "type": "ref",
+              "path": "repeat.item.id"
+            },
+            "itemName": "item",
+            "templateRoot": "row"
+          },
+          "row": {
+            "kind": "element",
+            "tag": "button",
+            "attributes": {
+              "type": "button"
+            },
+            "children": ["row-label"],
+            "interactions": [
+              {
+                "event": "click",
+                "operations": [
+                  {
+                    "type": "navigate",
+                    "routeId": "route.detail",
+                    "params": {
+                      "id": {
+                        "type": "ref",
+                        "path": "repeat.item.id"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "row-label": {
+            "kind": "text",
+            "content": {
+              "type": "expression",
+              "expression": {
+                "type": "ref",
+                "path": "repeat.item.title"
+              }
+            }
+          }
+        },
+        "componentDefinitions": {},
+        "styleSources": {},
+        "tokens": {},
+        "conditions": {},
+        "assets": {},
+        "localState": {}
+      }
+    }
+  ],
+  "uiDocumentPins": [],
+  "note": "VALID (A-01): both documents live in the same application and mutually navigate between each other's owning routes (queue -> detail -> queue). Navigation edges resolve but do not form expansion edges, so this compiles without UI_DOC_CYCLE; contrast ui-document-invalid-expansion-cycle.json"
+}

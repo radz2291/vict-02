@@ -68,9 +68,8 @@ Validation rules (all produce source-linked diagnostics):
    `UI_DOC_REVISION_COLLISION`. A pure compiler given one current document and no prior pin
    cannot detect a historical collision — historical enforcement lives at the
    authoring/save boundary (expected stored revision), never in hidden global state.
-3. Referenced documents validate cleanly (`validateUiDocument`); cycles across document
-   references (a document referencing a screen/application that references it) are rejected
-   with `UI_DOC_CYCLE`.
+3. Referenced documents validate cleanly (`validateUiDocument`); cycles in the structural
+   expansion graph (see “Cycle detection scope” below) are rejected with `UI_DOC_CYCLE`.
 4. Product references inside documents (actions, routes, views, resources, components) must
    resolve against the same application/resources/contracts/capabilities inputs used for the
    rest of joint compilation (`UI_DOC_UNKNOWN_PRODUCT_REFERENCE` otherwise).
@@ -78,12 +77,49 @@ Validation rules (all produce source-linked diagnostics):
    prop schema; document-level scopes (view/record, repeat, state, token) are not visible
    inside a definition registry except through typed props (`UI_EXPR_SCOPE_VIOLATION`).
 
+#### Cycle detection scope (U0 amendment A-01)
+
+Cycle detection operates on the **structural expansion graph**, never on reference resolution
+or application ownership. Resolving a reference is a validation obligation; only structural
+composition creates an expansion edge.
+
+Expansion-graph nodes are source units: catalog documents and component definitions. A
+directed edge exists only where one unit's rendered tree structurally contains another unit's
+nodes:
+
+- a component instance whose resolved definition is stored in a **different** catalog
+  document (cross-document component expansion), and
+- a definition body instantiating another definition (definition-level expansion, within or
+  across documents).
+
+`UI_DOC_CYCLE` is reported when the expansion graph contains a directed cycle — including
+within one document (acyclic containment, §3) — and its payload path enumerates the units on
+the cycle. A direct or indirect navigation loop is **not** such a cycle.
+
+Edges that must resolve but never participate in cycle detection:
+
+- navigation edges: route → screen ownership in the application tables and `navigate`
+  operations to declared routes (a legitimate navigation loop, e.g. detail → queue → detail,
+  is valid);
+- product-reference edges: `invokeAction` operations to declared actions, view/record data
+  references, and resource/capability/permission references (they resolve per rule 4);
+- expression references (`view.`, `record.`, `repeat.`, `prop.`, `state.`, `token.`).
+
+Consequently, a document referencing a screen/application that references it is a cycle only
+when the reference structurally embeds or expands into the referencing unit's rendered tree;
+mere co-membership in the same application is never an expansion edge. Worked examples:
+`application-v3-valid-navigation.json` (mutual owning-route navigation, valid) and
+`ui-document-invalid-expansion-cycle.json` (mutually expanding definitions, `UI_DOC_CYCLE`).
+
 ### 2.3 Identity and release behavior (with examples)
 
 `computeApplicationVersion` for a @3 application adds to the hashed payload:
 
 ```
-uiDocuments: [ { documentId, revision, contentDigest }, ... ]   // sorted by documentId
+uiDocuments: [ { documentId, revision, contentDigest }, ... ]
+   // after rule-2 validation: deduplicated by (documentId, revision), then totally ordered
+   // by code-point string comparison on (documentId, revision); revision order is plain
+   // string order (e.g. "2" < "3" < "10"), not semantic version order
 ```
 
 - Example A (identity change): screen S references document D@2 with digest `aaaa…`. Editing D
@@ -96,6 +132,15 @@ uiDocuments: [ { documentId, revision, contentDigest }, ... ]   // sorted by doc
 - Example C (schema aliasing): a @2 application with identical content compiles under
   `vict.application-identity@2`; its `applicationVersion` differs from the @3 form because the
   identity schema marker participates in the hash.
+- Example D (catalog total ordering — U0 amendment A-03): a catalog supplies both `D@2`
+  (digest `aaaa…`) and `D@3` (digest `bbbb…`) for the same `documentId`, in arbitrary input
+  order, plus a byte-identical duplicate of one entry. The hashed payload deduplicates by
+  `(documentId, revision)` and sorts by code-point string comparison, so `D@2` precedes `D@3`
+  regardless of input order. Every input permutation and any duplicate identical entry yield
+  the identical payload and therefore the identical `applicationVersion`. Required U1 test:
+  permuting catalog input order (including duplicates) leaves `version` unchanged; adding or
+  removing a revision entry changes it. Two entries with the same `(documentId, revision)`
+  but different digests are a rule-2 collision, not an ordering case.
 
 Identity excludes editor selection, zoom, transient history, DOM handles, compiled CSS and
 scenario seeds (they are not inputs to the hashed payload). It includes semantic tree order,
@@ -371,6 +416,9 @@ Representative fixtures (installed under `fixtures/`, JSON, prettier-clean):
 | `ui-scenario-valid.json` | Inspection approval scenario with per-operation coverage |
 | `ui-scenario-invalid-missing-coverage.json` | `SCENARIO_COVERAGE_MISSING` negative |
 | `application-v3-catalog-collision.json` | two competing catalog entries for the same `(documentId, revision)` with different digests → `UI_DOC_REVISION_COLLISION` |
+| `application-v3-valid-navigation.json` | two catalog documents whose screens mutually `navigate` through owning routes (navigation loop) — **valid**; proves navigation/product-reference edges do not form expansion cycles (A-01) |
+| `ui-document-invalid-expansion-cycle.json` | two component definitions whose bodies instantiate each other → `UI_DOC_CYCLE` (definition-level expansion cycle; all references resolve) (A-01) |
+| `ui-scenario-valid-revision-loop.json` | rejection → correction → resubmission journey fixture: reject → revise → edit → resubmit with status transitions and activity trail incl. preserved reason (A-02) |
 
 These fixtures are contract examples for review — they are not executed in U0 and are not
 fabricated compile/execution evidence (STAGES §2).

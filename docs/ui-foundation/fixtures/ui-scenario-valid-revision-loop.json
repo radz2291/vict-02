@@ -1,0 +1,99 @@
+{
+  "schema": "vict.ui-scenario@1",
+  "scenarioId": "scn.revision-loop",
+  "references": {
+    "application": {
+      "id": "app.inspection-proof",
+      "revision": "4"
+    },
+    "documents": {
+      "doc.inspection-detail": "3"
+    }
+  },
+  "seeds": {
+    "domain": {
+      "inspections": [
+        {
+          "id": "ins-1",
+          "title": "Pump seal check",
+          "status": "submitted",
+          "technician": "act-t1",
+          "supervisor": "act-s1",
+          "domainRevision": 7,
+          "findings": [
+            {
+              "id": "f-1",
+              "severity": "high",
+              "description": "Seal wear beyond tolerance"
+            }
+          ],
+          "evidence": []
+        }
+      ]
+    },
+    "random": {
+      "seed": 42
+    },
+    "clock": {
+      "kind": "fixed",
+      "start": "2026-10-06T09:00:00Z"
+    }
+  },
+  "actors": [
+    {
+      "actorId": "act-t1",
+      "role": "technician",
+      "permissions": ["qlt.inspection.submit", "qlt.inspection.edit", "qlt.inspection.revise"]
+    },
+    {
+      "actorId": "act-s1",
+      "role": "supervisor",
+      "permissions": ["qlt.inspection.approve", "qlt.inspection.reject"]
+    }
+  ],
+  "operations": [
+    {
+      "op": {
+        "capabilityId": "inspection.reject"
+      },
+      "implementation": "simulated",
+      "outcome": {
+        "kind": "success",
+        "sets": {
+          "status": "rejected",
+          "rejectionReason": "Seal wear beyond tolerance"
+        },
+        "activityEntry": "Inspection rejected by supervisor"
+      }
+    },
+    {
+      "op": {
+        "capabilityId": "inspection.revise"
+      },
+      "implementation": "simulated",
+      "outcome": {
+        "kind": "success",
+        "sets": {
+          "status": "draft",
+          "rejectionReason": null
+        },
+        "activityEntry": "Reopened for correction by technician (prior reason quoted in activity)"
+      }
+    },
+    {
+      "op": {
+        "capabilityId": "inspection.submit"
+      },
+      "implementation": "simulated",
+      "outcome": {
+        "kind": "success",
+        "sets": {
+          "status": "submitted"
+        },
+        "activityEntry": "Inspection resubmitted by technician"
+      }
+    }
+  ],
+  "resetBoundary": "session",
+  "note": "VALID (A-02): completes the rejection -> correction -> resubmission journey (reject -> revise -> edit -> resubmit); record-level decision fields are cleared on revise while the activity trail preserves the reason. Journey fixture, not a ninth product scenario."
+}

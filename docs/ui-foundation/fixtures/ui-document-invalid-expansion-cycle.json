@@ -1,0 +1,55 @@
+{
+  "schema": "vict.ui-document@1",
+  "id": "doc.expansion-cycle-demo",
+  "revision": "1",
+  "root": "screen",
+  "nodes": {
+    "screen": {
+      "kind": "element",
+      "tag": "section",
+      "attributes": {
+        "class": "cycle-demo"
+      },
+      "children": ["badge"]
+    },
+    "badge": {
+      "kind": "component",
+      "definitionId": "def.a"
+    }
+  },
+  "componentDefinitions": {
+    "def.a": {
+      "id": "def.a",
+      "revision": "1",
+      "root": "a-root",
+      "props": {},
+      "slots": {},
+      "variants": {},
+      "nodes": {
+        "a-root": {
+          "kind": "component",
+          "definitionId": "def.b"
+        }
+      }
+    },
+    "def.b": {
+      "id": "def.b",
+      "revision": "1",
+      "root": "b-root",
+      "props": {},
+      "slots": {},
+      "variants": {},
+      "nodes": {
+        "b-root": {
+          "kind": "component",
+          "definitionId": "def.a"
+        }
+      }
+    }
+  },
+  "styleSources": {},
+  "tokens": {},
+  "conditions": {},
+  "assets": {},
+  "localState": {}
+}

@@ -25,13 +25,20 @@ resource/action/capability vocabulary — no new domain engine is created.
 | `inspection.submit` | `qlt.inspection.submit` (technician) | `draft → submitted`; sets `submittedAt`; activity entry; write |
 | `inspection.approve` | `qlt.inspection.approve` (supervisor) | `submitted → approved`; sets `decidedAt`; requires `expectedDomainRevision`; activity entry; write |
 | `inspection.reject` | `qlt.inspection.reject` (supervisor) | `submitted → rejected` + mandatory `rejectionReason`; requires `expectedDomainRevision`; activity entry; write |
+| `inspection.revise` | `qlt.inspection.revise` (technician assigned to the inspection) | `rejected → draft`; clears `decidedAt` and `rejectionReason` on the record — the reason remains quoted in the activity trail; activity entry; write |
 | `finding.add` | `qlt.inspection.edit` (technician) | append finding to a draft/submitted inspection; write |
 | `evidence.add` | `qlt.inspection.edit` (technician) | append evidence; write |
 
 Domain rules proven at runtime in U3 (U3-03): actor permissions enforced by the adapter/dispatch
-context (never by UI visibility); `approve`/`reject` validate `status === 'submitted'` and
-`expectedDomainRevision`; stale or replayed decisions produce `DOMAIN_CONFLICT` /
-`DATA_IDEMPOTENT_REPLAY` and leave state unchanged.
+context (never by UI visibility); `submit` validates `status === 'draft'`; `revise` validates
+`status === 'rejected'` and that the actor is the assigned technician; `approve`/`reject`
+validate `status === 'submitted'` and `expectedDomainRevision`; stale or replayed decisions
+produce `DOMAIN_CONFLICT` / `DATA_IDEMPOTENT_REPLAY` and leave state unchanged. The
+rejection → correction → resubmission loop is therefore complete: reject (`submitted →
+rejected`, reason mandatory) → revise (`rejected → draft`; record-level decision fields
+cleared, history preserved in the activity trail; permitted edits resume: finding/evidence
+additions and field edits) → submit (`draft → submitted`) → fresh approve/reject decision
+against a new `expectedDomainRevision`.
 
 ## 2. Scenario matrix (all eight PRODUCT-ARCHITECTURE §6 scenarios)
 
@@ -63,8 +70,11 @@ service restart and passes the shared adapter conformance suite.
   viewer extension (declared inspection limits: image-refs render as labeled placeholders in
   U1–U3 unless the extension renders them).
 - Journey: open queue → select inspection → review findings/evidence → decide (approve or
-  reject with reason) → observe status/queue/activity updates; rejection returns the
-  inspection for correction (technician edits and resubmits).
+  reject with reason) → observe status/queue/activity updates; on rejection the loop completes
+  in-preview: the technician runs `revise` (rejected → draft; the reason stays visible in the
+  activity rail), edits findings/evidence, then resubmits (`draft → submitted`) for a fresh
+  decision. The full loop is exercised by `ui-scenario-valid-revision-loop.json` as a journey
+  fixture (it is not a ninth product scenario).
 - Authoring demonstration (U1+): the detail screen is authored as a `vict.ui-document@1`
   document; selecting/editing it (insert, move, style, bind, connect) exercises the editor
   modules against the same document the preview renders.
