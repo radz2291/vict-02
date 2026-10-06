@@ -1,6 +1,44 @@
 # UI foundation — current state
 
-**2026-10-06 — U1 CANDIDATE COMPLETE; independent falsification review pending; not yet pushed.**
+**2026-10-06 — U1 GATE: PASS (independent verdict); owner checkpoint pending; branch not yet pushed.**
+Verification cycle on candidate `351d3e5…`: fresh falsification review
+([U1-FALSIFICATION-REVIEW-01.md](reviews/U1-FALSIFICATION-REVIEW-01.md), U1 **GATE FAIL** —
+BLOCKER-1: document dispatch was a silent stub in both hosts, so the authored Approve button
+did nothing while the page claimed otherwise; MAJOR-1: empty-permission actors bypassed the
+preview gate; five minors/notes) → builder repairs at candidate
+`5a81672283dbefbbffdbd809704fe563d114f1f7` (real dispatch through the adapter boundary in both
+hosts, unconditional permission gate, awaited doubles, role=alert denials, duplicate-submit
+guards, true code-point ordering; report preserved and committed) → scoped independent
+re-verification ([U1-REPAIR-REVIEW-02.md](reviews/U1-REPAIR-REVIEW-02.md), **U1-REPAIR GATE:
+PASS WITH NON-BLOCKING FINDINGS**).
+
+Final U1 criterion verdicts (pass 2): U1-01 PASS (code-point ordering + astral regression),
+U1-02 PASS, U1-03 PASS (stand from pass 1, untouched), U1-04 PASS (MINOR-3 latent — see open
+findings), U1-05 PASS (16/16 probes + live journeys), U1-06 PASS (gate + awaited doubles),
+U1-07 PASS, U1-08 PASS (budgets: compile p95 14.2 ms, edit 8.7 ms, reset 0.13 ms on the
+1,966-node workload). Regressions: none (unit 2463, renderer 108, integration 4, example 15,
+typecheck/format/check:ui clean; three pass-1 root-suite failures were environmental,
+non-reproducing on focused re-runs at both candidate HEAD and base).
+
+OPEN findings carried into the record (none gate-blocking per the verifier):
+- **R2-1 (MAJOR, record integrity)**: the repair commit `5a81672…` MESSAGE claims an
+  `EditorBridge.save()` rollback (pass-1 MINOR-3) that was **NOT applied** — the builder's
+  patch silently no-op'd and the claim was not verified before commit. The desync (failed
+  store write → session advances while the store does not) persists, probe-confirmed by the
+  verifier. Latent-only under the in-memory example store; withdrawn as a claim; actual fix
+  is owned by the U3-05 durability slice. Recorded here as the correction of record.
+- R2-2/R2-3 (notes): studio scenario-note paragraph lacks a live-region role; one benign
+  Svelte dev-mode warning in the studio (absent from production builds).
+- Retained from pass 1: in-memory simulation store is scope-honest for U1 (durable
+  replacement = U3-05); preview/adapter diagnostic code names differ from PROOF-DESIGN
+  sketches (semantics correct; reconciliation queued); timings measured host-side
+  (CDP/client-side method queued); extension placeholders (def./ext.) are U2+ scope.
+
+The branch carries the candidate, the preserved review reports, and this record. Next:
+normal push, remote SHA verification, **owner checkpoint at the U1 boundary**. U2 remains
+unauthorized.
+
+**2026-10-06 — U1 CANDIDATE history (superseded header, kept for the record).**
 The owner authorized U1 (see [U1-HANDOFF](U1-HANDOFF.md)): the first runnable rendering,
 editing and simulated product loop. Implemented per the frozen API-SPEC §9 scope:
 `packages/ui` (vict.ui-document@1 neutral core: model, validation, compilation to
@@ -107,7 +145,7 @@ application, repository integration or Stage 9 change was implemented at that ti
 | Pack drafting | COMPLETE | Candidate 02; final reporting metadata folded afterward | Installed 2026-10-06; see decisions §U0 installation record |
 | Pack independent review | PASS — documentation only | Candidate 01: 8d2683a2a1aae7740755326af597eeed16b4a7a44cfdaf4a9d60cd8b76318e6d; candidate 02: db369614c97119762995480d3ad277b92d21e2eb812739d770bc16bf2df6b15a | Reports preserved under reviews/ |
 | U0 repository establishment/freeze | **CLOSED — amended contract frozen (22 pins) and freeze-byte verified; owner accepted; pushed (`a664c70…` → `9734690…` fast-forward)** | Candidates `54490a8…`/`9ec87f3…`; freeze records `ffbafc0…`/`ea47edd…`; four independent verdicts incl. FREEZE VERIFIED (`9b80f3d4…`) | None — closed. Preserve freeze records and historical evidence |
-| U1 rendering/editing loop | **CANDIDATE COMPLETE — falsification review pending** (handoff [U1-HANDOFF](U1-HANDOFF.md)) | Candidate `351d3e5…` (from `9734690…`; contract authority `9ec87f3…`); automated suites + browser walkthrough + measurements recorded | Fresh independent verifier (U1-01…U1-08) → repairs/reverify → evidence, push, remote SHA verify, owner checkpoint |
+| U1 rendering/editing loop | **GATE PASS — owner checkpoint pending** (handoff [U1-HANDOFF](U1-HANDOFF.md)) | Repaired candidate `5a816722…` (from `9734690…`; contract authority `9ec87f3…`); verification cycle FAIL→repairs→PASS (reviews `U1-FALSIFICATION-REVIEW-01` / `U1-REPAIR-REVIEW-02`); open findings R2-1/R2-2/R2-3 carried | Normal push, remote SHA verify, owner checkpoint; U2 unauthorized |
 | U2 breadth | PLANNED | None | Requires U1 pass and its own accepted scope |
 | U3 realism | PLANNED | None | Requires U2 and its own accepted scope |
 | U4 reuse/handoff | PLANNED | None | Requires U3 and its own accepted scope |

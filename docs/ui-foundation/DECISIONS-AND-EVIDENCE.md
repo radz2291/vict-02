@@ -342,9 +342,51 @@ placeholders; portal rendering and component variants pending beyond U1; the
 rejection→correction→resubmission journey UI is U3 scope (the adapter already implements
 `revise`; the frozen journey fixture remains contract evidence).
 
-Independent falsification review of the candidate: PENDING (U1-01…U1-08).
+Independent falsification review of the candidate: **DONE — see the two rounds below.**
 
-## Future evidence entry format
+## U1 verification cycle (2026-10-06) — FAIL → repairs → PASS; candidate `5a816722…`
+
+**Round 1 — falsification review ([U1-FALSIFICATION-REVIEW-01.md](reviews/U1-FALSIFICATION-REVIEW-01.md),
+sha256 `e37f3aa26d16c7ccd2af6ad273b29cf1dc85f57ac022be9cfbd76841fab30605`).** Fresh checker,
+out-of-repo adversarial harness. Verdict **U1 GATE FAIL** on candidate `351d3e5…`: U1-01/02/03
+PASS; U1-04 PASS (MINOR latent save desync); **U1-05 FAIL — BLOCKER-1**: both hosts stubbed
+`DocumentHost.dispatch` with `async () => ({ ok: true })` — the authored Approve button
+silently no-oped while the page claimed it dispatched through the adapter boundary (false,
+undisclosed); U1-06 PASS WITH NOTES but **MAJOR-1**: `permissions: []` actors bypassed the
+preview gate; MINOR: rejecting async double returned `ok:true` unawaited; U1-07 MINOR: denial
+feedback polite `role="status"`; U1-08 MINOR: no Run-approve duplicate guard; three root-suite
+failures classified environmental (pass on focused re-run at HEAD and base — not U1
+regressions).
+
+**Repairs — candidate `5a81672283dbefbbffdbd809704fe563d114f1f7`.** Real dispatch in both
+hosts (detail route `runDeclaredAction` → `createInspectionServer`; studio canvas →
+`PreviewSession.run`) with unified pending/success/error feedback and duplicate guards;
+unconditional permission gate; awaited doubles → structured `SIMULATED_FAILURE`; `role="alert"`
+denials; true code-point identity ordering (astral regression test); example `DocumentHost`
+import fixed to the named export (latent example bug); falsification report preserved in-repo.
+Builder regression tests: authored-button approve/denial at component level; empty-permissions
+denial; rejecting-double failure; astral ordering. Gates at `5a81672…`: unit 2463/2463,
+renderer 108/108, integration 4/4, example 15/15, typecheck/format/check:ui clean, browser
+journey re-verified with zero console errors (repaired screenshots under `walkthrough/`).
+
+**Round 2 — scoped re-verification ([U1-REPAIR-REVIEW-02.md](reviews/U1-REPAIR-REVIEW-02.md),
+sha256 `5c0f11f145a15e006959cabd3021c61ca7ca20b77fd81472cc0ef785160d2fcb`).** Fresh checker,
+16/16 gate probes + live journeys. Verdict **U1-REPAIR GATE: PASS WITH NON-BLOCKING
+FINDINGS**. Per-criterion: U1-01 PASS, U1-04 PASS, U1-05 PASS, U1-06 PASS, U1-07 PASS,
+U1-08 PASS (compile p95 14.2 ms / edit 8.7 ms / reset 0.13 ms); U1-02/03 stand from round 1
+(scope); zero regressions; origin/main unmoved.
+
+**R2-1 correction of record (MAJOR, record integrity).** The `5a81672…` commit MESSAGE claims
+an `EditorBridge.save()` rollback for pass-1 MINOR-3. That claim is FALSE: the builder's patch
+silently no-op'd and was not verified before commit. The desync (failed store write → session
+advances 1→2 and reports clean while the store holds 1; retry skips revision 2) persists,
+probe-confirmed by the round-2 verifier. The claim is withdrawn; the behavior is a latent
+finding under the in-memory example store; the actual fix is owned by the U3-05 durability
+slice. Retained notes R2-2 (studio scenario-note lacks a live-region role) and R2-3 (benign
+Svelte dev-mode studio warning) are recorded in the round-2 report. Retained from round 1:
+in-memory store (U3-05), diagnostic code-name reconciliation vs PROOF-DESIGN sketches,
+host-side timing method, extension placeholders (U2+).
+
 ## Future evidence entry format
 
 Identity: repository, branch, full base/candidate/reviewer SHAs, environment and contract pins.
