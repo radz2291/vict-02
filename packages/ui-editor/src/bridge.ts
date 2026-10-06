@@ -18,22 +18,34 @@ import {
 } from '@victframework/ui';
 import type { TransactionDraft } from './commands.js';
 
+/** Result of loading the authoritative stored bytes. */
+export type DocumentStoreLoadResult =
+  | { readonly status: 'loaded'; readonly document: UiDocument; readonly storedRevision: string }
+  | { readonly status: 'empty' }
+  | { readonly status: 'invalid'; readonly message: string };
+
 /** Persistence port implemented by the host (file/server boundary). */
 export interface DocumentStorePort {
-  /** Load the stored document + stored revision (process/reload reopen). */
-  readonly load: () =>
-    { readonly document: UiDocument; readonly storedRevision: string } | undefined;
+  /** Load the authoritative stored document + revision (reload/reopen). */
+  readonly load: () => DocumentStoreLoadResult;
   /**
-   * Persist: the session has ALREADY validated the expected-stored-revision
-   * guard; the store writes through under the NEW stored revision.
-   * Single-writer port (the session is the only path to save).
+   * Persist ATOMICALLY: the store is the revision AUTHORITY. It must check
+   * `expectedStoredRevision` against its own authoritative stored revision
+   * and write through under the NEW revision in the same synchronous turn;
+   * a mismatch fails with code `UI_DOC_STALE_REVISION` and MUST NOT write.
+   * A stale editor can therefore never overwrite a newer saved document.
    */
   readonly save: (input: {
     readonly document: UiDocument;
     readonly newStoredRevision: string;
+    readonly expectedStoredRevision: string;
   }) =>
     | { readonly ok: true; readonly storedRevision: string }
-    | { readonly ok: false; readonly reason: string };
+    | {
+        readonly ok: false;
+        readonly code?: 'UI_DOC_STALE_REVISION' | (string & {});
+        readonly reason: string;
+      };
 }
 
 export interface EditorBridgeState {
@@ -121,36 +133,90 @@ export class EditorBridge {
     return outcome;
   }
 
-  /** Expected-revision save through the host's store port. */
+  /**
+   * Two-phase expected-revision save: the session STAGES the saved bytes,
+   * the store (the revision AUTHORITY) checks `expectedStoredRevision`
+   * atomically with the write, and the session COMMITS only after the store
+   * acknowledged. A failed, rejecting or thrown storage write leaves the
+   * working document, dirty state, stored revision and undo/redo continuity
+   * untouched; other storage failures are reported truthfully.
+   */
   save():
     | UiSaveOutcome
     | {
         readonly ok: false;
         readonly issues: readonly { readonly code: string; readonly message: string }[];
       } {
-    const result = this.#session.save({ expectedStoredRevision: this.#session.storedRevision });
-    if (!result.ok) return result;
-    const persisted = this.#store.save({
-      document: result.document,
-      newStoredRevision: result.storedRevision,
+    const staged = this.#session.stageSave({
+      expectedStoredRevision: this.#session.storedRevision,
     });
-    if (!persisted.ok) {
-      return { ok: false, issues: [{ code: 'UI_DOC_STALE_REVISION', message: persisted.reason }] };
+    if (!staged.ok) return staged;
+    let persisted: ReturnType<DocumentStorePort['save']>;
+    try {
+      persisted = this.#store.save({
+        document: staged.staged.document,
+        newStoredRevision: staged.staged.storedRevision,
+        expectedStoredRevision: staged.staged.fromStoredRevision,
+      });
+    } catch (error) {
+      // Thrown storage failure: truthful, and the session stays untouched.
+      return {
+        ok: false,
+        issues: [
+          {
+            code: 'UI_STORE_WRITE_FAILED',
+            message: `Storage write failed: ${String(error instanceof Error ? error.message : error)}`,
+          },
+        ],
+      };
     }
+    if (!persisted.ok) {
+      return {
+        ok: false,
+        issues: [
+          {
+            code: persisted.code ?? 'UI_STORE_WRITE_FAILED',
+            message: persisted.reason,
+          },
+        ],
+      };
+    }
+    const committed = this.#session.commitSave(staged.staged);
+    if (!committed.ok) return committed;
     this.#emit();
-    return result;
+    return {
+      ok: true,
+      storedRevision: staged.staged.storedRevision,
+      document: staged.staged.document,
+      contentDigest: staged.staged.contentDigest,
+    };
   }
 
-  /** Reload from the store: a FRESH session over stored bytes (history cleared). */
-  reopen(): boolean {
+  /**
+   * Reload from the store: a FRESH session over the authoritative stored
+   * bytes (history cleared). An empty or invalid store is reported — never
+   * silently treated as a successful reopen.
+   */
+  reopen():
+    | { readonly ok: true; readonly storedRevision: string }
+    | {
+        readonly ok: false;
+        readonly code: 'UI_STORE_EMPTY' | 'UI_STORE_INVALID';
+        readonly message?: string;
+      } {
     const stored = this.#store.load();
-    if (stored === undefined) return false;
+    if (stored.status === 'empty') {
+      return { ok: false, code: 'UI_STORE_EMPTY', message: 'No stored document exists.' };
+    }
+    if (stored.status === 'invalid') {
+      return { ok: false, code: 'UI_STORE_INVALID', message: stored.message };
+    }
     this.#session = this.#session.reopen({
       document: stored.document,
       storedRevision: stored.storedRevision,
     });
     this.#selectedOccurrence = undefined;
     this.#emit();
-    return true;
+    return { ok: true, storedRevision: stored.storedRevision };
   }
 }

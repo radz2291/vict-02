@@ -440,7 +440,7 @@ export {
 } from './edit.js';
 export type { UiDocumentSnapshot, UiEditCommand, UiEditResult, UiEditTransaction } from './edit.js';
 export { UiEditSession, advanceStoredRevision } from './session.js';
-export type { UiApplyOutcome, UiEditSessionState, UiSaveOutcome } from './session.js';
+export type { UiApplyOutcome, UiEditSessionState, UiSaveOutcome, UiStagedSave } from './session.js';
 export { inspectUiOccurrence, occurrenceKeyOf, parseOccurrenceKey } from './occurrence.js';
 export type { UiOccurrenceRef, UiOccurrenceReport, UiRuntimeProjection } from './occurrence.js';
 export { isUiScenario } from './scenario.js';

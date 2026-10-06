@@ -10,8 +10,16 @@ function bridgeOverDocument() {
   const bridge = new EditorBridge({
     initial: { document: stored, storedRevision },
     store: {
-      load: () => ({ document: stored, storedRevision }),
+      load: () => ({ status: 'loaded' as const, document: stored, storedRevision }),
       save: (input) => {
+        // Same authority discipline as the real store: check-then-write.
+        if (input.expectedStoredRevision !== storedRevision) {
+          return {
+            ok: false as const,
+            code: 'UI_DOC_STALE_REVISION' as const,
+            reason: `stored revision is ${storedRevision}, expected ${input.expectedStoredRevision}`,
+          };
+        }
         stored = input.document;
         storedRevision = input.newStoredRevision;
         return { ok: true as const, storedRevision };
@@ -75,7 +83,8 @@ describe('U1-03/U1-04: source-aware editing and the round trip', () => {
     expect(save.storedRevision).toBe('2');
     expect(storedRevisionRef()).toBe('2');
     // reopen: fresh session over the stored bytes — IDs/layout/bindings preserved
-    expect(bridge.reopen()).toBe(true);
+    const reopenedOutcome = bridge.reopen();
+    expect(reopenedOutcome.ok).toBe(true);
     const reopened = bridge.document;
     expect(reopened.nodes['n.approveLabel']).toMatchObject({
       content: { type: 'literal', value: 'Approve (edited)' },

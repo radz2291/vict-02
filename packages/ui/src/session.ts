@@ -49,6 +49,20 @@ export type UiSaveOutcome =
     }
   | { readonly ok: false; readonly issues: readonly UiDiagnostic[] };
 
+/**
+ * A save computed but NOT yet committed (two-phase save). The host persists
+ * the staged bytes first; only a successful persistence is committed to the
+ * session — a failed write leaves revision, dirty state and undo/redo
+ * continuity exactly as they were.
+ */
+export interface UiStagedSave {
+  /** The stored revision the stage was computed from (commit guard). */
+  readonly fromStoredRevision: string;
+  readonly storedRevision: string;
+  readonly document: UiDocument;
+  readonly contentDigest: string;
+}
+
 interface HistoryEntry {
   readonly requestId: string;
   readonly before: UiDocument;
@@ -280,6 +294,29 @@ export class UiEditSession {
    * `revision` field so catalog pins can address exactly these bytes.
    */
   save(input: { readonly expectedStoredRevision: string }): UiSaveOutcome {
+    const staged = this.stageSave(input);
+    if (!staged.ok) return staged;
+    this.commitSave(staged.staged);
+    return {
+      ok: true,
+      storedRevision: staged.staged.storedRevision,
+      document: staged.staged.document,
+      contentDigest: staged.staged.contentDigest,
+    };
+  }
+
+  /**
+   * Two-phase save, stage: compute the saved bytes and next stored revision
+   * WITHOUT mutating the session. The host persists the staged bytes first
+   * (the store is the revision AUTHORITY); commitSave applies the stage only
+   * after persistence succeeded, so a failed write preserves the working
+   * document, dirty state, stored revision and undo/redo continuity.
+   */
+  stageSave(input: {
+    readonly expectedStoredRevision: string;
+  }):
+    | { readonly ok: true; readonly staged: UiStagedSave }
+    | { readonly ok: false; readonly issues: readonly UiDiagnostic[] } {
     if (input.expectedStoredRevision !== this.#storedRevision) {
       return {
         ok: false,
@@ -293,17 +330,49 @@ export class UiEditSession {
     }
     const nextStored = advanceStoredRevision(this.#storedRevision);
     const saved: UiDocument = { ...this.#working.document, revision: nextStored };
-    this.#storedRevision = nextStored;
-    this.#storedDocument = cloneDocument(saved);
-    // The working snapshot continues from the new stored revision.
-    this.#working = { document: saved, revision: `${nextStored}#${this.#sequence + 1}` };
-    this.#sequence += 1;
     return {
       ok: true,
-      storedRevision: nextStored,
-      document: saved,
-      contentDigest: canonicalUiDocument(saved).contentDigest,
+      staged: {
+        fromStoredRevision: this.#storedRevision,
+        storedRevision: nextStored,
+        document: saved,
+        contentDigest: canonicalUiDocument(saved).contentDigest,
+      },
     };
+  }
+
+  /**
+   * Two-phase save, commit: apply a staged save after the host's persistence
+   * succeeded. Guarded — the commit is rejected if the session moved since
+   * the stage was computed.
+   */
+  commitSave(
+    staged: UiStagedSave,
+  ): { readonly ok: true } | { readonly ok: false; readonly issues: readonly UiDiagnostic[] } {
+    if (staged.fromStoredRevision !== this.#storedRevision) {
+      return {
+        ok: false,
+        issues: [
+          uiDiagnostic(
+            'UI_DOC_STALE_REVISION',
+            'Commit rejected: the session moved since the save was staged.',
+            {
+              expectedRevision: staged.fromStoredRevision,
+              storedRevision: this.#storedRevision,
+            },
+          ),
+        ],
+      };
+    }
+    this.#storedRevision = staged.storedRevision;
+    this.#storedDocument = cloneDocument(staged.document);
+    // The working snapshot continues from the new stored revision.
+    this.#working = {
+      document: staged.document,
+      revision: `${staged.storedRevision}#${this.#sequence + 1}`,
+    };
+    this.#sequence += 1;
+    return { ok: true };
   }
 
   /** Reopen a fresh session over stored bytes (history cleared). */

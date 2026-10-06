@@ -20,25 +20,43 @@
     defaultSemanticElementCatalog,
     type UiDocument,
   } from '@victframework/ui';
-  import { inspectionPlan } from '$lib/product/compile.js';
+  import { browser } from '$app/environment';
+  import { inspectionPlan, studioDocumentCatalogs } from '$lib/product/compile.js';
   {
     /* the shared compiled artifact (U1-02): the studio starts from the SAME bytes */
     void inspectionPlan();
   }
   import { inspectionDetailDocument } from '$lib/product/definitions.js';
+  import { createAuthoringStore, SEED_STORED_REVISION, type StorageLike } from '$lib/authoring/store.js';
 
-  /* ---- editor bridge over an in-memory store port -------------------- */
-  let storedDocument: UiDocument = structuredClone(inspectionDetailDocument);
-  let storedRevision = '1';
-  const store = {
-    load: () => ({ document: storedDocument, storedRevision }),
-    save: (input: { document: UiDocument; newStoredRevision: string }) => {
-      storedDocument = input.document;
-      storedRevision = input.newStoredRevision;
-      return { ok: true as const, storedRevision };
-    },
+  /* ---- editor bridge over the LOCAL authoring store (U1-04) ----------
+     Persistence = browser localStorage: a successful save survives a full
+     page reload, leaving/reopening the route, and browser restarts. The
+     store is the revision AUTHORITY (stale editors are rejected). On
+     startup the SAVED source is loaded; the seed is used only when the
+     store is empty; corrupt/incompatible content surfaces a visible
+     diagnostic instead of a silent fake reopen. */
+  // SSR renders with an empty memory shim; the BROWSER (where authoring
+  // happens) persists to localStorage. localStorage survives full page
+  // reloads, route changes and browser restarts for this origin.
+  const ssrMemoryShim: StorageLike = {
+    getItem: () => null,
+    setItem: () => undefined,
+    removeItem: () => undefined,
   };
-  const bridge = new EditorBridge({ store, initial: { document: storedDocument, storedRevision } });
+  const store = createAuthoringStore(browser ? window.localStorage : ssrMemoryShim, studioDocumentCatalogs);
+  const initialLoad = store.rawLoad();
+  let storeDiagnostic: string | null = $state(
+    initialLoad.status === 'invalid'
+      ? `Stored authoring data was not usable (${initialLoad.message}). ` +
+        'A fresh seed document was loaded; the next successful save replaces the stored data.'
+      : null,
+  );
+  const initialAuthoring =
+    initialLoad.status === 'loaded'
+      ? { document: initialLoad.document, storedRevision: initialLoad.storedRevision }
+      : { document: structuredClone(inspectionDetailDocument), storedRevision: SEED_STORED_REVISION };
+  const bridge = new EditorBridge({ store, initial: initialAuthoring });
 
   let workingDocument: UiDocument = $state(bridge.document);
   let bridgeState: ReturnType<typeof bridge.getSnapshot> = $state(bridge.getSnapshot());
@@ -148,16 +166,9 @@
   }
 
   /* ---- studio-side compile of the working document ------------------- */
-  const workingPlan = $derived.by(() => compileUiDocument(workingDocument, defaultSemanticElementCatalog(), [], {
-    actionIds: ['inspection.approve'],
-    routeIds: ['queue', 'detail'],
-    viewFields: {
-      id: 'string', title: 'string', status: 'string', domainRevision: 'number',
-      findings: 'array', 'findings.severity': 'string', 'findings.description': 'string',
-      evidence: 'array', 'evidence.label': 'string',
-      activity: 'array', 'activity.entry': 'string', 'activity.actor': 'string',
-    },
-  }));
+  const workingPlan = $derived.by(() =>
+    compileUiDocument(workingDocument, defaultSemanticElementCatalog(), [], studioDocumentCatalogs),
+  );
 
   let selectedOccurrence: string | undefined = $state(undefined);
   const selectedReport = $derived(
@@ -222,6 +233,12 @@
       font-size: 0.85rem;
       color: #5b6572;
     }
+    .studio-store-diagnostic {
+      background: #fdeaea;
+      color: #8f1f1f;
+      border-radius: 8px;
+      padding: 8px 12px;
+    }
     .scenario-row {
       display: flex;
       gap: 8px;
@@ -255,6 +272,9 @@
 <main class="studio">
   <section class="studio-canvas" aria-label="Authoring canvas">
     <h1 class="studio-panel">Studio — inspection detail (working document)</h1>
+    {#if storeDiagnostic !== null}
+      <p class="studio-note studio-store-diagnostic" role="alert">⚠ {storeDiagnostic}</p>
+    {/if}
     <p class="studio-note">
       Click an element to select its source occurrence. Edits go through exported transactional
       commands; the canvas renders the working document through the same renderer as the product.
@@ -317,13 +337,24 @@
         onRedo={() => bridge.redo()}
         onSave={() => {
           const outcome = bridge.save();
-          previewNote = outcome.ok
-            ? `Saved as stored revision ${outcome.storedRevision}.`
-            : `Save rejected: ${outcome.issues.map((issue) => issue.code).join(', ')}`;
+          if (outcome.ok) {
+            previewNote = `Saved as stored revision ${outcome.storedRevision} (persisted — survives reload).`;
+          } else {
+            const issue = outcome.issues[0];
+            previewNote = `Save FAILED (${issue?.code ?? 'UNKNOWN'}): ${issue?.message ?? 'storage error'}. ` +
+              'Your unsaved edits are kept — fix the storage problem and save again.';
+          }
         }}
         onReopen={() => {
-          if (bridge.reopen()) {
-            previewNote = 'Reopened from stored bytes (fresh session, history cleared).';
+          const result = bridge.reopen();
+          if (result.ok) {
+            storeDiagnostic = null;
+            previewNote = `Reopened stored revision ${result.storedRevision} from persisted bytes (fresh session, history cleared).`;
+          } else if (result.code === 'UI_STORE_INVALID') {
+            storeDiagnostic = `Stored authoring data was not usable (${result.message ?? 'invalid'}).`;
+            previewNote = 'Reopen REFUSED — the stored payload is corrupt or incompatible.';
+          } else {
+            previewNote = 'Reopen refused — no stored document exists yet.';
           }
         }}
       />

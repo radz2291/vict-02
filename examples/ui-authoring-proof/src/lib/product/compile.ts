@@ -6,7 +6,7 @@
  */
 
 import { compileApplication, type ApplicationPlan } from '@victframework/application';
-import type { UiRenderPlan } from '@victframework/ui';
+import { compileUiDocument, type UiRenderPlan } from '@victframework/ui';
 import {
   inspectionApplication,
   inspectionDetailDocument,
@@ -16,6 +16,31 @@ import {
   evidenceResource,
   activityResource,
 } from './definitions.js';
+
+/**
+ * The studio-side compile context for the detail document (working-plan
+ * compile AND the authoring store compatibility gate use the SAME
+ * declared context — a saved document must compile exactly where it was
+ * edited).
+ */
+export const studioDocumentCatalogs: Parameters<typeof compileUiDocument>[3] = {
+  actionIds: ['inspection.approve'],
+  routeIds: ['queue', 'detail'],
+  viewFields: {
+    id: 'string',
+    title: 'string',
+    status: 'string',
+    domainRevision: 'number',
+    findings: 'array',
+    'findings.severity': 'string',
+    'findings.description': 'string',
+    evidence: 'array',
+    'evidence.label': 'string',
+    activity: 'array',
+    'activity.entry': 'string',
+    'activity.actor': 'string',
+  },
+};
 
 let cached: { readonly plan: ApplicationPlan; readonly detailPlan: UiRenderPlan } | undefined;
 

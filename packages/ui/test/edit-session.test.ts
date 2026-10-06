@@ -206,6 +206,82 @@ describe('UiEditSession save/reopen', () => {
   });
 });
 
+describe('UiEditSession two-phase save (stage/commit)', () => {
+  it('stageSave computes without mutating; commit applies exactly once', () => {
+    const session = UiEditSession.open({ document: document(), storedRevision: '1' });
+    session.applyTransaction({
+      requestId: 'r1',
+      expectedDocumentRevision: '1#0',
+      commands: [setText('n.a', 'beta')],
+    });
+    const staged = session.stageSave({ expectedStoredRevision: session.storedRevision });
+    expect(staged.ok).toBe(true);
+    if (!staged.ok) return;
+    // no mutation: stored revision unchanged, still dirty, working doc keeps the edit
+    expect(session.storedRevision).toBe('1');
+    expect(session.isDirty()).toBe(true);
+    expect(staged.staged.storedRevision).toBe('2');
+    expect(staged.staged.document.nodes['n.a']).toMatchObject({
+      content: { type: 'literal', value: 'beta' },
+    });
+    const committed = session.commitSave(staged.staged);
+    expect(committed.ok).toBe(true);
+    expect(session.storedRevision).toBe('2');
+    expect(session.isDirty()).toBe(false);
+    // commit guard: replaying the same stage is rejected (session moved)
+    const replay = session.commitSave(staged.staged);
+    expect(replay.ok).toBe(false);
+    expect(session.storedRevision).toBe('2');
+  });
+
+  it('a staged-but-uncommitted save preserves undo/redo continuity exactly', () => {
+    const session = UiEditSession.open({ document: document(), storedRevision: '1' });
+    session.applyTransaction({
+      requestId: 'r1',
+      expectedDocumentRevision: '1#0',
+      commands: [setText('n.a', 'beta')],
+    });
+    session.applyTransaction({
+      requestId: 'r2',
+      expectedDocumentRevision: session.workingRevision,
+      commands: [setText('n.a', 'gamma')],
+    });
+    // partial history walk: one undo, redo pending
+    expect(session.undo().ok).toBe(true);
+    const canUndoBefore = session.canUndo();
+    const canRedoBefore = session.canRedo();
+    const digestBefore = session.state().working.document.nodes['n.a'];
+    const staged = session.stageSave({ expectedStoredRevision: session.storedRevision });
+    if (!staged.ok) throw new Error('stage failed');
+    // host persistence FAILS: commit never happens — nothing may move
+    expect(session.storedRevision).toBe('1');
+    expect(session.canUndo()).toBe(canUndoBefore);
+    expect(session.canRedo()).toBe(canRedoBefore);
+    expect(session.state().working.document.nodes['n.a']).toEqual(digestBefore);
+    // redo continuity intact: the undone edit can still be redone
+    expect(session.redo().ok).toBe(true);
+    expect(session.document.nodes['n.a']).toMatchObject({
+      content: { type: 'literal', value: 'gamma' },
+    });
+    // and the save can still complete after the failed attempt
+    const save = session.save({ expectedStoredRevision: '1' });
+    expect(save.ok).toBe(true);
+    expect(session.storedRevision).toBe('2');
+  });
+
+  it('a stale stage mutates nothing', () => {
+    const session = UiEditSession.open({ document: document(), storedRevision: '1' });
+    session.applyTransaction({
+      requestId: 'r1',
+      expectedDocumentRevision: '1#0',
+      commands: [setText('n.a', 'beta')],
+    });
+    const staged = session.stageSave({ expectedStoredRevision: '9' });
+    expect(staged.ok).toBe(false);
+    expect(session.storedRevision).toBe('1');
+    expect(session.isDirty()).toBe(true);
+  });
+});
 describe('remove reference discipline', () => {
   it('refuses to remove a referenced node (UI_EDIT_REFERENCE_REMAINS)', () => {
     const session = UiEditSession.open({ document: document(), storedRevision: '1' });

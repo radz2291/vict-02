@@ -94,8 +94,36 @@ export class PreviewSession {
         new Promise((resolve) => {
           setTimeout(resolve, ms);
         }));
+    // The session's EFFECTIVE double snapshot is captured ONCE at the
+    // creation boundary (immutability): coverage checks and execution use
+    // this same map. Registry changes after creation affect only FUTURE
+    // sessions (reset()/new createPreviewSession capture a fresh snapshot).
+    this.#doubles = new Map(options.runtime?.snapshotDoubles() ?? []);
     this.#state = this.freshState();
     this.coverage = this.computeCoverage();
+  }
+
+  /** The effective double snapshot, captured at session creation. */
+  readonly #doubles: ReadonlyMap<string, (input: unknown) => Promise<unknown>>;
+
+  /** True when this session's fencing token no longer matches `token`. */
+  #superseded(token: symbol): boolean {
+    return token !== this.#state.token;
+  }
+
+  /** The canonical SESSION_STALE result (fenced by a newer session identity). */
+  #staleResult<T>(): PreviewResult<T> {
+    this.#onStale?.({ sessionId: this.id, supersededBy: this.id });
+    return {
+      ok: false,
+      sessionId: this.id,
+      code: 'SESSION_STALE',
+      message: 'The session was reset while this operation was in flight; the result was dropped.',
+      diagnostic: uiDiagnostic('SESSION_STALE', 'Result fenced by a newer session.', {
+        sessionId: this.id,
+        supersededBy: this.id,
+      }),
+    };
   }
 
   #freshToken(): symbol {
@@ -125,7 +153,7 @@ export class PreviewSession {
       }
       const isCapability = !operation.op.includes(':');
       if (isCapability) {
-        const registered = this.#runtime?.snapshotDoubles().has(operation.op) ?? false;
+        const registered = this.#doubles.has(operation.op);
         return {
           op: operation.op,
           implementation: operation.implementation,
@@ -276,8 +304,7 @@ export class PreviewSession {
     token: symbol,
     input: unknown,
   ): Promise<PreviewResult<T>> {
-    const doubles = this.#runtime?.snapshotDoubles() ?? new Map();
-    const invoke = doubles.get(operation.op);
+    const invoke = this.#doubles.get(operation.op);
     if (invoke === undefined) {
       return {
         ok: false,
@@ -317,8 +344,14 @@ export class PreviewSession {
         // A rejecting async double is a FAILED simulation (MINOR-2 repair):
         // never reported as success with an unawaited rejected promise.
         const raw = await invoke(input);
+        // Post-await fencing: the session may have been reset WHILE the
+        // double was executing. A superseded operation settles as
+        // SESSION_STALE — its result never reaches the current session's
+        // state, feedback or domain projection.
+        if (this.#superseded(token)) return this.#staleResult<T>();
         return { ok: true, sessionId: this.id, value: raw as T };
       } catch (error) {
+        if (this.#superseded(token)) return this.#staleResult<T>();
         return {
           ok: false,
           sessionId: this.id,

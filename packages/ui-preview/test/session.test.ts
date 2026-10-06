@@ -50,12 +50,21 @@ describe('PreviewSession isolation (U1-06)', () => {
         operations: [{ op: 'inspection.approve', implementation: 'unavailable' }],
       }),
       runtime: {
-        snapshotDoubles: () => {
-          realHandlerRan = true;
-          return new Map([['inspection.approve', async () => 'REAL HANDLER MUST NOT RUN']]);
-        },
+        // The registry itself may be consulted (creation-boundary capture);
+        // what must NEVER happen is an INVOCATION of the real handler.
+        snapshotDoubles: () =>
+          new Map([
+            [
+              'inspection.approve',
+              async () => {
+                realHandlerRan = true;
+                return 'REAL HANDLER MUST NOT RUN';
+              },
+            ],
+          ]),
       } satisfies PreviewRuntimePort,
     });
+    realHandlerRan = false;
     const result = await session.run('inspection.approve');
     expect(result.ok).toBe(false);
     if (!result.ok) expect(result.code).toBe('SCENARIO_COVERAGE_MISSING');
@@ -169,5 +178,121 @@ describe('falsification repairs (MAJOR-1 / MINOR-2)', () => {
     const result = await session.run('inspection.approve');
     expect(result.ok).toBe(false);
     if (!result.ok) expect(result.code).toBe('SIMULATED_FAILURE');
+  });
+});
+
+describe('reopen-round repairs: fencing windows + snapshot immutability (U1-06)', () => {
+  function deferred<T>() {
+    let resolve!: (value: T) => void;
+    let reject!: (reason?: unknown) => void;
+    const promise = new Promise<T>((res, rej) => {
+      resolve = res;
+      reject = rej;
+    });
+    return { promise, resolve, reject };
+  }
+
+  function sessionWith(
+    held: {
+      promise: Promise<unknown>;
+      resolve: (value: unknown) => void;
+      reject: (reason?: unknown) => void;
+    },
+    onStale?: (info: { sessionId: string; supersededBy: string }) => void,
+  ) {
+    return createPreviewSession({
+      scenario: scenario(),
+      runtime: {
+        snapshotDoubles: () =>
+          new Map([
+            [
+              'inspection.approve',
+              async () => {
+                await held.promise;
+                return { decided: true };
+              },
+            ],
+          ]),
+      } satisfies PreviewRuntimePort,
+      ...(onStale ? { onStale } : {}),
+    });
+  }
+
+  it('reset while an async double is EXECUTING fences the result after it resolves', async () => {
+    const held = deferred<unknown>();
+    const staleEvents: string[] = [];
+    const session = sessionWith(held, (info) => staleEvents.push(info.sessionId));
+    const inFlight = session.run('inspection.approve');
+    // let the double start (it is now awaiting the held promise)
+    await new Promise((r) => setTimeout(r, 10));
+    const current = session.reset(); // new identity + token rotation
+    held.resolve({ decided: true });
+    const settled = await inFlight;
+    // the OLD operation must NOT return ok:true from the old session
+    expect(settled.ok).toBe(false);
+    if (!settled.ok) expect(settled.code).toBe('SESSION_STALE');
+    expect(staleEvents.length).toBe(1);
+    // the CURRENT session is untouched and fully usable
+    const fresh = await current.run('inspection.approve');
+    expect(fresh.ok).toBe(true);
+  });
+
+  it('an async double REJECTING after a reset settles as a structured stale result', async () => {
+    const held = deferred<unknown>();
+    const session = sessionWith(held);
+    const inFlight = session.run('inspection.approve');
+    await new Promise((r) => setTimeout(r, 10));
+    session.reset();
+    held.reject(new Error('double blew up after reset'));
+    const settled = await inFlight;
+    expect(settled.ok).toBe(false);
+    if (!settled.ok) expect(settled.code).toBe('SESSION_STALE');
+  });
+
+  it('reset during configured pre-invocation latency still fences (window 1 retained)', async () => {
+    const session = createPreviewSession({
+      scenario: scenario({
+        operations: [
+          {
+            op: 'inspection.approve',
+            implementation: 'simulated',
+            outcome: { kind: 'success', delayMs: 60 },
+          },
+          { op: 'inspection:mutate', implementation: 'simulated', outcome: { kind: 'success' } },
+        ],
+      }),
+      runtime: {
+        snapshotDoubles: () => new Map([['inspection.approve', async () => ({ decided: true })]]),
+      } satisfies PreviewRuntimePort,
+    });
+    const inFlight = session.run('inspection.approve');
+    const current = session.reset();
+    const settled = await inFlight;
+    expect(settled.ok).toBe(false);
+    if (!settled.ok) expect(settled.code).toBe('SESSION_STALE');
+    const fresh = await current.run('inspection.approve');
+    expect(fresh.ok).toBe(true);
+  });
+
+  it('registry changes during an existing session do not change its implementation', async () => {
+    let registered = new Map([['inspection.approve', async () => ({ impl: 'original' })]]);
+    const runtime = { snapshotDoubles: () => registered } satisfies PreviewRuntimePort;
+    const session = createPreviewSession({ scenario: scenario(), runtime });
+    // the registry is swapped AFTER the session was created
+    registered = new Map([['inspection.approve', async () => ({ impl: 'swapped' })]]);
+    const result = await session.run<{ impl: string }>('inspection.approve');
+    expect(result.ok).toBe(true);
+    if (result.ok) expect(result.value['impl']).toBe('original');
+  });
+
+  it('reset after a registry change captures the NEW implementation', async () => {
+    let registered = new Map([['inspection.approve', async () => ({ impl: 'original' })]]);
+    const runtime = { snapshotDoubles: () => registered } satisfies PreviewRuntimePort;
+    const session = createPreviewSession({ scenario: scenario(), runtime });
+    registered = new Map([['inspection.approve', async () => ({ impl: 'swapped' })]]);
+    const next = session.reset();
+    const result = await next.run<{ impl: string }>('inspection.approve');
+    expect(result.ok).toBe(true);
+    if (result.ok) expect(result.value['impl']).toBe('swapped');
   });
 });
