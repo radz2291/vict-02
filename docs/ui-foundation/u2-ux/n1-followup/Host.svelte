@@ -5,6 +5,14 @@ import {Inspector,Layers,EditorCanvas,EditorBridge,createLocalStorageDocumentSto
 import {compileUiDocument,validateUiDocument} from '@victframework/ui';
 import {reviewDocument,reviewCatalogs,reviewLabels} from '../../../../examples/ui-design-proof/src/routes/editor-review/review-document.ts';
 let doc=structuredClone(reviewDocument);
+if (location.search.includes('live')) {
+ doc.nodes.title.localStyle = doc.nodes.title.localStyle.filter(d => d.property !== 'font-size');
+ doc.nodes.title.attributes = {tabindex:'0'};
+ doc.nodes.title.styleSources = ['liveNormal','liveHover','liveFocus','liveActive'];
+ for (const [id,pseudo,size] of [['liveNormal',undefined,'17px'],['liveHover','hover','41px'],['liveFocus','focus','51px'],['liveActive','active','71px']]) {
+  doc.styleSources[id] = {id,...(pseudo ? {pseudo} : {}),declarations:[{property:'font-size',value:{type:'text',value:size}}]};
+ }
+}
 doc.nodes.hero.children.push('bound');doc.nodes.bound={kind:'element',id:'bound',tag:'div',children:[],localStyle:[{property:'padding-top',value:{type:'binding',expression:{op:'literal',value:'9px'}}}]};
 doc.nodes.request.interactions=[{on:'click',action:'invokeAction',actionId:'review.request',input:{message:{op:'literal',value:'keep'}}}];
 doc.nodes.title.interactions=[{on:'click',action:'navigate',routeId:'route.a',params:{id:{op:'literal',value:'keep'}}}];

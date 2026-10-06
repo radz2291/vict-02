@@ -26,9 +26,23 @@
   });
   $effect(() => {
     if (typeof window === 'undefined') return;
-    const refresh = () => { void tick().then(() => measurementVersion++); };
-    window.addEventListener('resize', refresh);
-    return () => window.removeEventListener('resize', refresh);
+    // CSS pseudo states can change without a source edit or a host signal.
+    const events = ['resize', 'pointerover', 'pointerout', 'pointerdown', 'pointerup', 'pointercancel', 'focusin', 'focusout', 'keydown', 'keyup'] as const;
+    let queued = false;
+    let cancelled = false;
+    const refresh = () => {
+      if (queued) return;
+      queued = true;
+      void tick().then(() => {
+        queued = false;
+        if (!cancelled) measurementVersion++;
+      });
+    };
+    for (const event of events) window.addEventListener(event, refresh);
+    return () => {
+      cancelled = true;
+      for (const event of events) window.removeEventListener(event, refresh);
+    };
   });
   let scope = $state<'shared' | 'instance'>('shared');
   let condition = $state('');

@@ -1,3 +1,9 @@
+# Owner-authorized N1 UX follow-up
+
+New candidate e5931cf30fd2c2cdb0d03a017d77c46b0f35ba31 is pushed and remote matched. Owner added F1 override removal and F2 effective-value annotation from [the exact report](https://github.com/radz2291/vict-02/blob/e0893feebc3e9783b7a29026c2285929819f86bb/docs/ui-foundation/reviews/u2/U2-N1-VERIFY-03.md). [Follow-up handoff and retained reproduction](n1-followup/HANDOFF.md). Independent exact candidate challenge pending; previous completed verdicts below remain evidence of their own snapshots. No U2 closure or compiler acceptance is inferred.
+
+---
+
 # Integration handoff — Inspector / Layers usability slice
 
 Latest owner-authorized iteration: [iteration-2/HANDOFF.md](iteration-2/HANDOFF.md). All six follow-up improvements are implemented on exact candidate a82ca8ea24638d8563b2d03196faa794af046458; its independent verdict is PASS WITH NON-BLOCKING FINDINGS. Earlier candidate history/reports below remain intact. Inspector now owns bounded scrolling with measured sticky-header padding; this supersedes the earlier host-scrolling guidance for Inspector. Layers' host/selection/runtime-scope wiring remains compatible.

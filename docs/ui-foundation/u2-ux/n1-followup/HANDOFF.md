@@ -21,3 +21,13 @@ Retained harness failures: copied fixture imports originally used one too many p
 ## Next allowed action
 
 Independent verifier challenges exact pushed candidate; bounded repair if needed. Then evidence-only handoff and remote SHA verification. Overall U2 manager integrates this slice and independently verifies combined candidate; owner experience acceptance, founder exercise participant result and U2 closure remain PENDING. No main merge, publication, deployment or U3/U4 authorization.
+
+Pushed code candidate: e5931cf30fd2c2cdb0d03a017d77c46b0f35ba31; git ls-remote matched. Full broad check completed at 23 errors/four warnings in four unchanged files; no diagnostics in the changed Inspector components. Independent challenge pending. Candidate whitespace check reported trailing blank lines in the two builder evidence harness files; implementation has no whitespace errors. A final evidence commit will preserve implementation bytes.
+
+## Independent e593 challenge and repair
+
+The evaluator found two in-scope defects at e593: visible Reset text overflowed the retained 29px icon button, and native hover/focus/active transitions left Browser now stale with a plain hook. In its real-renderer repeated row: normal17, hover actual41 vs annotation17, focus actual51 vs annotation17, active actual71 vs annotation17; leave/blur could leave51 while actual17. These are failed candidate observations, not relabeled passing cases. The evaluator independently confirmed edit/reset/history/condition/exact repeated occurrence paths, including an attached instance seed surviving Reset.
+
+Bounded repair: Reset now uses intrinsic button width. Inspector coalesces post-tick refresh on native pointer enter/leave, down/up/cancel, focus in/out and key down/up, plus resize. Handler cleanup cancels pending refreshes. These are DOM measurements only; they create no source/history writes or synthetic preview states. Arbitrary external CSS/container invalidation still belongs to a reactive host hook. Existing six improvements are retained. Previous builder snapshots/JSON are preserved with e593 prefix; fresh ones are after the width repair. Final repaired candidate and independent recheck pending.
+
+Repair builder checks: seven affected UX tests and production build PASS. The real native live-state probe passes all seven normal17→hover41→leave17→focus51→active71→release51→blur/leave17 transitions with matching Browser now and no source/history changes. Fourteen original removal/condition/occurrence observations PASS again, zero page exceptions. These are builder claims pending exact repaired-candidate independent verification.
