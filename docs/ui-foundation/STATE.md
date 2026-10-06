@@ -1,6 +1,11 @@
 # UI foundation — current state
 
-**2026-10-06 (latest) — U1 ROUND-4 REPAIRS INDEPENDENTLY VERIFIED: "U1-ROUND4 GATE: PASS"; owner checkpoint pending; round-4 candidate awaiting push.**
+**2026-10-06 (latest) — U1 ACCEPTED by the owner at the verified round-4 candidate `345b5c62…` (non-blocking notes retained); U2 ONLY authorized — designer and workbench breadth (STAGES §4, U2-01…U2-08) — now in progress on branch `codex/ui-foundation-u2` (worktree `vict-02-u2`), handoff [U2-HANDOFF](U2-HANDOFF.md).**
+Owner acceptance recorded 2026-10-06. U1 remains VERIFIED history: the round-4 record
+commit `cb8539372c1f8a9d055de3a7f29dff222262b486` is the starting remote HEAD for U2
+(live-verified via `git ls-remote`); main baseline `4d2df037…` untouched. Round-4
+verification summary (preserved below and in
+[DECISIONS-AND-EVIDENCE](DECISIONS-AND-EVIDENCE.md)):
 Fresh independent verification of candidate `345b5c62f7eae1d02d7697cdd1abc71b0daeee41`
 ([U1-ROUND4-REVIEW-05.md](reviews/U1-ROUND4-REVIEW-05.md), sha256
 `139c538422902a76f7b06c5b7a05c99c148f577b67cf684f9a756585c0f97dc4`; evidence in
@@ -31,8 +36,12 @@ the example is excluded from root typecheck; not a round-4 regression); NF-2/NF-
 notes in the report. Disclosed limitations: no literal browser-process restart; unaffected
 probes 1–12 suite-verified only; real-browser re-entrancy covered at unit level.
 
-Next: push round-4 records, remote SHA verification, **owner checkpoint at the U1
-boundary**. U2 remains unauthorized.
+Next: push round-4 records, remote SHA verification, owner checkpoint. **Owner checkpoint
+for U1: COMPLETE — owner accepted U1 at the verified candidate and authorized U2 (see top
+of this file).**
+
+| U1 rendering/editing loop | **ACCEPTED by owner 2026-10-06** (handoff [U1-HANDOFF](U1-HANDOFF.md)) | Accepted candidate `345b5c62…`; verdict "U1-ROUND4 GATE: PASS" ([U1-ROUND4-REVIEW-05](reviews/U1-ROUND4-REVIEW-05.md)); NF-1..3 non-blocking notes retained with U2 | Closed at U2 start; U3 unauthorized |
+| U2 designer/workbench breadth | **IN PROGRESS — owner-authorized 2026-10-06** (handoff [U2-HANDOFF](U2-HANDOFF.md)) | Branch `codex/ui-foundation-u2` from `cb85393…`; U2-01…U2-08 per STAGES §4; proofs in `examples/ui-design-proof` (PROOF-DESIGN §3.2–3.3); carried obligations: store.ts:144 type fix, proof typechecking, build wiring, session-API orchestration docs | Implement → independent technical challenge + independent experience review at exact candidate → repairs → push, remote verify → owner (founder) checkpoint; **owner experience acceptance pending**; U3/U4 unauthorized |
 Fresh independent verification of candidate `c1e3d0fec930a2a11341181061d537f16ec065ab`
 ([U1-ROUND3-REVIEW-04.md](reviews/U1-ROUND3-REVIEW-04.md), sha256
 `fd151713aa4345eb0653c648eace64eeb4a774cc8a796d0f74c760bd082cd12b`; 11 evidence screenshots;
@@ -294,7 +303,7 @@ application, repository integration or Stage 9 change was implemented at that ti
 | Pack drafting | COMPLETE | Candidate 02; final reporting metadata folded afterward | Installed 2026-10-06; see decisions §U0 installation record |
 | Pack independent review | PASS — documentation only | Candidate 01: 8d2683a2a1aae7740755326af597eeed16b4a7a44cfdaf4a9d60cd8b76318e6d; candidate 02: db369614c97119762995480d3ad277b92d21e2eb812739d770bc16bf2df6b15a | Reports preserved under reviews/ |
 | U0 repository establishment/freeze | **CLOSED — amended contract frozen (22 pins) and freeze-byte verified; owner accepted; pushed (`a664c70…` → `9734690…` fast-forward)** | Candidates `54490a8…`/`9ec87f3…`; freeze records `ffbafc0…`/`ea47edd…`; four independent verdicts incl. FREEZE VERIFIED (`9b80f3d4…`) | None — closed. Preserve freeze records and historical evidence |
-| U1 rendering/editing loop | **ROUND-4 VERIFIED — owner checkpoint pending** (handoff [U1-HANDOFF](U1-HANDOFF.md)) | Candidate `345b5c62…`; verdict "U1-ROUND4 GATE: PASS" ([U1-ROUND4-REVIEW-05](reviews/U1-ROUND4-REVIEW-05.md)); preservation policy unified in load+save, save-window ownership, banner clearing all held; NF-1..3 non-blocking + carried notes | Push, remote SHA verify, owner checkpoint; U2 unauthorized |
+| U1 rendering/editing loop | **ROUND-4 VERIFIED then ACCEPTED by owner (superseded by the ledger at the top of this file)** (handoff [U1-HANDOFF](U1-HANDOFF.md)) | Candidate `345b5c62…`; verdict "U1-ROUND4 GATE: PASS" ([U1-ROUND4-REVIEW-05](reviews/U1-ROUND4-REVIEW-05.md)); preservation policy unified in load+save, save-window ownership, banner clearing all held; NF-1..3 non-blocking + carried notes | Closed — owner accepted; U2 authorized |
 | U2 breadth | PLANNED | None | Requires U1 pass and its own accepted scope |
 | U3 realism | PLANNED | None | Requires U2 and its own accepted scope |
 | U4 reuse/handoff | PLANNED | None | Requires U3 and its own accepted scope |
