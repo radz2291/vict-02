@@ -223,7 +223,7 @@
         {plan}
         scope={itemScope}
         {instancePath}
-        repeatKeys={[...repeatKeys, uniqueRowKeys[index]]}
+        repeatKeys={[...repeatKeys, uniqueRowKeys[index] ?? String(index)]}
         {slotFills}
         {dispatch}
         {navigate}

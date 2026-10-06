@@ -2,8 +2,20 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "noEmit": true,
-    "types": ["svelte", "vite/client"]
+    "types": [
+      "svelte",
+      "vite/client",
+      "node"
+    ]
   },
-  "include": ["src/**/*.ts", "src/**/*.js", "src/**/*.svelte", "test/**/*.ts"],
-  "exclude": ["node_modules", ".svelte-kit"]
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.js",
+    "src/**/*.svelte",
+    "test/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    ".svelte-kit"
+  ]
 }
