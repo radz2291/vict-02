@@ -1,6 +1,38 @@
 # UI foundation — current state
 
-**2026-10-06 (latest) — U1 ROUND-3 REPAIRS INDEPENDENTLY VERIFIED: "U1-ROUND3 GATE: PASS"; owner checkpoint pending; pushed — live remote tip `03810cef573bcc03de92416ab74d5988ec140657` (verified via `git ls-remote`, matches local HEAD; findings F1/F2 opened a bounded round-4 repair).**
+**2026-10-06 (latest) — U1 ROUND-4 REPAIRS INDEPENDENTLY VERIFIED: "U1-ROUND4 GATE: PASS"; owner checkpoint pending; round-4 candidate awaiting push.**
+Fresh independent verification of candidate `345b5c62f7eae1d02d7697cdd1abc71b0daeee41`
+([U1-ROUND4-REVIEW-05.md](reviews/U1-ROUND4-REVIEW-05.md), sha256
+`139c538422902a76f7b06c5b7a05c99c148f577b67cf684f9a756585c0f97dc4`; evidence in
+`reviews/round4/`; verifier harness out-of-repo; worktree restored clean; verifier server
+killed, owner demo server untouched; origin/main live-verified twice at `4d2df037…` —
+unmoved). All four directed cases held:
+- **Preservation policy in save (same as load):** the owner's exact cases —
+  `future.format` envelope and `vict.authoring-store@1` envelope lacking a document —
+  refused at seed AND non-seed revisions (`UI_STORE_CORRUPT`), bytes unchanged;
+  preservation dominates staleness; 9 adversarial preserved shapes held; overwritable
+  replacement retained.
+- **Save-window ownership:** the owner's exact nested sequence held — nested save/stage/
+  foreign-commit/edit refused BEFORE staging, outer commit succeeds, acknowledged store
+  revision == editor baseline; thrown/refused writes release the window with state
+  preserved; forged stages cannot commit; `session.save()` never reports a refused commit
+  as success.
+- **Banner semantics:** PRESERVED banner kept on refused saves (byte-identical storage);
+  cleared only after acknowledged replacement; reload clean.
+- **STATE wording:** consistent with live remote evidence.
+
+Gates at the candidate: unit 2490/2490, renderer 108/108, integration 4/4, example 33/33,
+typecheck 0, format clean, check:ui 0 errors (2 known warnings). All TWELVE previous
+probes re-verified at suite level; browser journeys for the affected flows.
+
+Non-blocking verifier notes: **NF-1** pre-existing unbound `compileUiDocument` type
+reference at store.ts:144 (present at round-3 final `03810ce…`, invisible to gates since
+the example is excluded from root typecheck; not a round-4 regression); NF-2/NF-3 minor
+notes in the report. Disclosed limitations: no literal browser-process restart; unaffected
+probes 1–12 suite-verified only; real-browser re-entrancy covered at unit level.
+
+Next: push round-4 records, remote SHA verification, **owner checkpoint at the U1
+boundary**. U2 remains unauthorized.
 Fresh independent verification of candidate `c1e3d0fec930a2a11341181061d537f16ec065ab`
 ([U1-ROUND3-REVIEW-04.md](reviews/U1-ROUND3-REVIEW-04.md), sha256
 `fd151713aa4345eb0653c648eace64eeb4a774cc8a796d0f74c760bd082cd12b`; 11 evidence screenshots;
@@ -262,7 +294,7 @@ application, repository integration or Stage 9 change was implemented at that ti
 | Pack drafting | COMPLETE | Candidate 02; final reporting metadata folded afterward | Installed 2026-10-06; see decisions §U0 installation record |
 | Pack independent review | PASS — documentation only | Candidate 01: 8d2683a2a1aae7740755326af597eeed16b4a7a44cfdaf4a9d60cd8b76318e6d; candidate 02: db369614c97119762995480d3ad277b92d21e2eb812739d770bc16bf2df6b15a | Reports preserved under reviews/ |
 | U0 repository establishment/freeze | **CLOSED — amended contract frozen (22 pins) and freeze-byte verified; owner accepted; pushed (`a664c70…` → `9734690…` fast-forward)** | Candidates `54490a8…`/`9ec87f3…`; freeze records `ffbafc0…`/`ea47edd…`; four independent verdicts incl. FREEZE VERIFIED (`9b80f3d4…`) | None — closed. Preserve freeze records and historical evidence |
-| U1 rendering/editing loop | **ROUND-3 VERIFIED — owner checkpoint pending** (handoff [U1-HANDOFF](U1-HANDOFF.md)) | Candidate `c1e3d0fe…`; verdict "U1-ROUND3 GATE: PASS" ([U1-ROUND3-REVIEW-04](reviews/U1-ROUND3-REVIEW-04.md)); claims A/B/C held, 12 prior probes re-verified; findings F1/F2 (minor, non-blocking) + carried notes | Normal push, remote SHA verify, owner checkpoint; U2 unauthorized |
+| U1 rendering/editing loop | **ROUND-4 VERIFIED — owner checkpoint pending** (handoff [U1-HANDOFF](U1-HANDOFF.md)) | Candidate `345b5c62…`; verdict "U1-ROUND4 GATE: PASS" ([U1-ROUND4-REVIEW-05](reviews/U1-ROUND4-REVIEW-05.md)); preservation policy unified in load+save, save-window ownership, banner clearing all held; NF-1..3 non-blocking + carried notes | Push, remote SHA verify, owner checkpoint; U2 unauthorized |
 | U2 breadth | PLANNED | None | Requires U1 pass and its own accepted scope |
 | U3 realism | PLANNED | None | Requires U2 and its own accepted scope |
 | U4 reuse/handoff | PLANNED | None | Requires U3 and its own accepted scope |

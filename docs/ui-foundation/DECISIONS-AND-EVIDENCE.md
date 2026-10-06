@@ -344,6 +344,48 @@ rejection→correction→resubmission journey UI is U3 scope (the adapter alread
 
 Independent falsification review of the candidate: **DONE — see the two rounds below.**
 
+## U1 reopen round 4 (2026-10-06) — repairs verified; "U1-ROUND4 GATE: PASS"
+
+The owner directed a fourth bounded round from remote tip `03810cef…` (round-3 final,
+whose verdict remains preserved): (1) enforce the SAME preservation policy in load and
+save — every `overwritable:false` payload refused without changing its bytes, with the two
+exact single-session cases reproduced and regression coverage at seed and non-seed
+revisions, while retaining successful replacement of explicitly overwritable documents;
+(2) refuse nested saves BEFORE staging — the exact sequence (outer stages → storage
+callback calls nested save → nested write fails without side effects → outer write
+succeeds → outer commit previously refused the superseded stage) must keep the
+acknowledged storage revision and editor baseline consistent, with the save window owned
+by the outer operation; (3) clear the corruption diagnostic only after acknowledged
+success, keeping it visible on failed saves. Also: STATE's stale "branch not yet pushed"
+wording corrected against live remote evidence.
+
+Builder repairs at candidate `345b5c62f7eae1d02d7697cdd1abc71b0daeee41` (round-3 final
+`03810cef…` is its parent after the records-hygiene commit), verified by a fresh
+independent verifier (out-of-repo harness `u1-round4-falsify/`; worktree restored clean;
+owner demo server untouched). Exact verdict: **"U1-ROUND4 GATE: PASS"** — report
+[U1-ROUND4-REVIEW-05.md](reviews/U1-ROUND4-REVIEW-05.md), sha256
+`139c538422902a76f7b06c5b7a05c99c148f577b67cf684f9a756585c0f97dc4`, evidence in
+`reviews/round4/`. Finding-to-fix map (all independently attacked and held):
+
+| Directed finding (owner) | Fix | Location | Evidence |
+|---|---|---|---|
+| Preservation policy not enforced in save (round-3 F1 + owner cases) | `classifyStored()` extracted as the SINGLE envelope authority for rawLoad() AND save(); unreadable classes (invalid JSON, wrong format, missing document/storedRevision) refused with `UI_STORE_CORRUPT`, bytes unchanged, at ANY revision; preservation dominates staleness; overwritable replacement retained (seeded at recorded revision) | `examples/ui-authoring-proof/src/lib/authoring/store.ts` | 9/9 attacks incl. owner's `future.format` and missing-document cases at '1' and non-seed '12'; 9 adversarial preserved shapes; browser journey r4-j1 (refused, byte-identical storage, banner kept) |
+| Nested saves could supersede the outer stage / strand the baseline (round-3 owner scenario deepened) | `stageSave` refuses nested staging while a stage is in flight (`UI_EDIT_SAVE_IN_PROGRESS`); commitSave success releases the window; `releaseSaveWindow()` orchestrator-only (bridge finally); `session.save()` try/finally + TRUTHFUL refusal return (was silent ok); thrown/refused writes release the window with state preserved | `packages/ui/src/session.ts`, `packages/ui-editor/src/bridge.ts` | 8/8 attacks incl. the owner's exact sequence (nested save/stage/foreign-commit/edit refused pre-staging; outer commit succeeds; store == baseline == '2'; retry + editing normal); forged stages cannot commit |
+| Corruption banner outlived successful replacement (round-3 F2) | `storeDiagnostic = null` ONLY in the acknowledged-success branch of the save handler; failed saves keep it visible | studio `+page.svelte` | Browser journeys r4-j2 (replacement accepted, banner cleared), r4-j1 (refused save keeps banner), r4-j3 (reload clean) |
+| STATE said "branch not yet pushed" against pushed remote | Current entries corrected: branch pushed, live tip verified via ls-remote | `docs/ui-foundation/STATE.md` | Verifier claim D held |
+
+Gates at the candidate: unit 2490/2490, renderer 108/108, integration 4/4, example 33/33,
+typecheck 0, format clean, check:ui 0 errors (2 known warnings). All twelve previous
+probes re-verified (suite-level; affected flows browser-journeyed). One pre-existing
+round-3 test updated to the round-4 contract (host whose write failed releases the window
+before saving again) — disclosed. Verifier non-blocking notes NF-1..3 recorded in the
+report (NF-1: pre-existing unbound `compileUiDocument` type ref at store.ts:144, present
+at `03810ce…`, not a round-4 regression, invisible to gates because the example is
+excluded from root typecheck). Not covered (disclosed): literal browser-process restart;
+individual browser journeys for unaffected probes; real-browser re-entrancy (unit-level).
+Round-3 findings F1/F2 are RESOLVED by this round. Earlier verdicts/reports remain
+preserved historical evidence of their exact snapshots.
+
 ## U1 reopen round 3 (2026-10-06) — repairs verified; "U1-ROUND3 GATE: PASS"
 
 Builder repairs at candidate `c1e3d0fec930a2a11341181061d537f16ec065ab` (parent: reopening

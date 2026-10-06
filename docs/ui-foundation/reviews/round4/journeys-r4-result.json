@@ -1,0 +1,40 @@
+{
+  "run": "round-4 verifier browser journeys (isolated browser contexts, CDP :9222, dev server localhost:5222)",
+  "j1_preserved_refused": {
+    "seed": "{\"format\":\"future.format\",\"storedRevision\":\"1\",\"document\":{}}",
+    "bannerBefore": "role=alert — 'Stored authoring data is unreadable and has been PRESERVED (stored payload is not 'vict.authoring-store@1'). The store refuses to overwrite it — a save will fail until the stored data is cleared.'",
+    "edit": "selected n.approveLabel on canvas; Apply text 'R4 verifier edit 1791272542989'; Save enabled (dirty)",
+    "saveClicked": true,
+    "bannerAfterSave": "STILL VISIBLE (same PRESERVED text, role=alert)",
+    "bytesUnchanged": true,
+    "noteShown": "Save FAILED (UI_STORE_CORRUPT): refusing to overwrite preserved data: stored payload is not 'vict.authoring-store@1'. Your unsaved edits are kept — fix the storage problem and save again.",
+    "historyDisplay": "Working 1#1 · stored 1 (unsaved) — baseline and edits preserved",
+    "screenshot": "evidence/r4-j1-preserved-refused.png"
+  },
+  "j1b_reopen_refused": {
+    "clicked": "Reload stored",
+    "noteShown": "Reopen REFUSED — the stored payload is corrupt or incompatible.",
+    "bannerStillVisible": true,
+    "screenshot": "evidence/r4-j1b-reopen-refused.png"
+  },
+  "j2_overwritable_replaced_banner_cleared": {
+    "seed": "{\"format\":\"vict.authoring-store@1\",\"storedRevision\":\"3\",\"document\":{\"schema\":\"vict.ui-document@9\"}}",
+    "bannerBefore": "role=alert — 'Stored authoring data was not usable (unsupported document schema: vict.ui-document@9 — expected 'vict.ui-document@1'). A fresh seed document was loaded; the next successful save replaces the stored data.'",
+    "edit": "selected n.approveLabel; Apply text 'R4 verifier edit 1791272546679'; Save enabled",
+    "saveClicked": true,
+    "bannerAfterSave": null,
+    "noteShown": "Saved as stored revision 4",
+    "storedBytesAfter": "valid envelope, format vict.authoring-store@1, storedRevision '4', valid document (nodes+root)",
+    "screenshot": "evidence/r4-j2-overwritable-cleared.png"
+  },
+  "j3_reload_after_replacement": {
+    "bannerAfterReload": null,
+    "storedRevisionNow": "4 (History panel)",
+    "screenshot": "evidence/r4-j3-reload-persisted.png"
+  },
+  "j3b_extra_overwritable_check": {
+    "note": "hand-built 4-node minimal document was itself structurally invalid (UI_DOC_REFERENCE_DANGLING) — the candidate correctly classified it overwritable + seeded fresh with a visible banner; verifier fixture error, NOT a candidate defect (also re-demonstrates the overwritable diagnostic path)",
+    "screenshot": "evidence/r4-j3b-reload-loaded-saved-bytes.png"
+  },
+  "consoleErrors": []
+}
