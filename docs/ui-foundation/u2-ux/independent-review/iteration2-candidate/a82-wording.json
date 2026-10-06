@@ -1,0 +1,20 @@
+{
+  "candidate": "a82ca8ea24638d8563b2d03196faa794af046458",
+  "logs": [
+    {
+      "unitless": {
+        "value": "1.1",
+        "display": "Line Height\nOverride ⓘ\npx\nrem\nem\n%\nvh\nvw\n—\n↺\n\nBrowser now: 50.6px\nResolved in preview",
+        "actual": "50.6px"
+      }
+    },
+    {
+      "mismatch": {
+        "value": "56",
+        "display": "Text Size\nOverride ⓘ\npx\nrem\nem\n%\nvh\nvw\n—\n↺\n\nBrowser now: 32px\nResolved in preview",
+        "actual": "32px"
+      }
+    }
+  ],
+  "errors": []
+}

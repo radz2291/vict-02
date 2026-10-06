@@ -1,6 +1,16 @@
 # Iteration 2 integration candidate
 
+Final bounded independent verdict: **PASS WITH NON-BLOCKING FINDINGS**. [Full report](../independent-review/iteration2-candidate/ITERATION-2-REVIEW.md) is copied verbatim with SHA256 A9E8551093779D507D604F626AFD8EC803D3F896D94221F70ACFF1E09A9944DA, matching the evaluator's delivery. Full runtime/check run at 349f09e85239bded8e57063dcfc093e9f18c3663; exact final one-caption delta rechecked at a82ca8ea24638d8563b2d03196faa794af046458. Final handoff commits add evidence only and preserve that tested implementation. Final remote SHA is supplied with the owner delivery.
+
+All six owner-authorized changes passed the demonstrated challenges. Independent full run: 123 renderer tests, 12 design tests, root/design TypeScript and production build PASS; 33 supplemental, 15 actual-host and five pseudo/history observations, all with zero page exceptions. Final wording recheck PASS. Broad Svelte check remains 23 errors / four existing warnings in unchanged files; the precise manager requests in the parent FINDINGS remain applicable. Previous candidate failures and the unitless-wording observation remain preserved.
+
+Current builder visual captures: [390 first-screen size](heading-390.png), [linked spacing](spacing-1440.png), [alpha color control](alpha-control-1440.png), [Layers selection](search-selection-1440.png). The independent report links its own distinct selected-state screenshots and canonical source/history snapshots; the full check/run lineage is explicit rather than attributed to the wrong SHA.
+
+Next allowed action: overall U2 manager integrates this bounded slice with technical repairs and verifies the combined candidate. Owner experience acceptance and U2 closure remain pending. [Founder exercise](FOUNDER-EXERCISE.md) is prepared; actual participant observation has not occurred.
+
 Owner requested all six improvements described in the implementer's review. Implementation, rationale and retained builder failures are recorded in DESIGN.md. Branch remains codex/ui-foundation-u2-inspector-ux; this iteration starts at 7f9ab3e22c75ba6b33dfe8b753f7a4ddb9f15931. Original foundation base remains 83ba87f7aa112a1d93e7236c9c3ec2f4505f6cff. Neither compiler acceptance nor U2 closure is inferred. Owner experience acceptance PENDING.
+
+Pushed candidate: d224233abc2baf4796a645906f6d06a9b9a2eed6. Normal push and git ls-remote independently matched that SHA. Independent exact-candidate challenge is underway. Any later handoff/evidence commit must preserve tested implementation bytes. The finalized builder probe was rerun successfully against this exact code; alpha-control-1440.png was generated in that run, and the captures were refreshed again after the instance-location refinement.
 
 ## Mounting changes
 
@@ -21,7 +31,7 @@ Layers search shows matching rows with ancestors, including collapsed component 
 - Design-proof 12/12 PASS; production build PASS, existing renderer/workbench accessibility warnings retained.
 - Broad Svelte check remains FAIL: 23 errors / 4 existing warnings in unchanged files. Full current output: broad-svelte-check.txt.
 - Scoped supported TS/JS formatting PASS; Svelte formatter is not bundled, as previously disclosed.
-- Builder real Chrome journey PASS: mobile Text size visible on first screen, sticky header retained, linked four-side edit/Undo/Redo, translucent shared fill/save/reload/reopen, exact search selection/clear, 1440/1024/390/480 selected captures, no page exceptions. builder-journeys.json is implementer evidence; independent candidate verdict pending.
+- Builder real Chrome journey PASS: mobile Text size visible on first screen, sticky header retained, linked four-side edit/Undo/Redo, translucent shared fill/save/reload/reopen, exact search selection/clear, 1440/1024/390/480 selected captures, no page exceptions. builder-journeys.json is implementer evidence; independent final verdict PASS WITH NON-BLOCKING FINDINGS.
 
 Screenshots: heading-1440.png, heading-390.png, spacing-1440.png, alpha-control-1440.png, search-selection-1440.png, selected-1024.png, selected-390.png and container-480.png. Compare with the retained previous screenshots and historical Before capture in the parent directory.
 
@@ -33,4 +43,8 @@ Screenshots: heading-1440.png, heading-390.png, spacing-1440.png, alpha-control-
 4. Search Layers for Card description, select a matching occurrence and clear search. Confirm Inspector/canvas refer to that exact instance. Try arrow keys/Enter and full-name provenance details.
 5. Save, reload and Reopen saved. Changes survive. Preview widths and searches leave the source clean.
 
-The independent verifier will challenge the exact pushed candidate before a final verdict. The overall U2 manager owns integration and combined verification. No main merge, deployment or publication. Actual human founder observation is prepared in FOUNDER-EXERCISE.md and remains pending a participant.
+The independent verifier challenged the exact final candidate and returned PASS WITH NON-BLOCKING FINDINGS. The overall U2 manager owns integration and combined verification. No main merge, deployment or publication. Actual human founder observation is prepared in FOUNDER-EXERCISE.md and remains pending a participant.
+
+Updated code candidate: 349f09e85239bded8e57063dcfc093e9f18c3663, pushed and remote matched. Delta from d224233 adds rendered instance labels to the Inspector location and a regression. Ten affected editor tests, root TypeScript and production build were rerun successfully. The independent final review targets this updated SHA.
+
+Final code candidate: a82ca8ea24638d8563b2d03196faa794af046458. Delta from 349f09e is one explanatory caption, now Resolved in preview. Full independent runtime/history/browser challenge was performed at 349f09e; the verifier then checked this exact a82ca8e caption in unitless-resolution and genuine responsive-difference cases. Builder production build and ten affected editor tests pass at a82ca8e. Final builder screenshots are refreshed against a82ca8e.

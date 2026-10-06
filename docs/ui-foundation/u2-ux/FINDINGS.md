@@ -45,3 +45,11 @@ Independent renderer 120/120, design 12/12, root TypeScript and production build
 Final evidence-only handoff preserves implementation bytes from the tested repair candidate. Owner experience acceptance, compiler-repair acceptance and U2 closure remain PENDING. The next allowed action belongs to the overall U2 manager: integration and independent verification of the combined candidate.
 
 Final artifact whitespace check reported trailing blank lines in the two imported round-2 evaluator harnesses. These evidence files are retained verbatim; implementation files have no new whitespace errors. This observation does not affect the independently tested implementation bytes.
+
+## Second usability iteration — final handoff
+
+Owner authorized all six implementer-review improvements. Implementation and builder failures are preserved in iteration-2/DESIGN.md. Expanded independent verdict: PASS WITH NON-BLOCKING FINDINGS at a82ca8ea24638d8563b2d03196faa794af046458. Full checks and 33+15+5 browser observations were independently performed at 349f09e; only one explanatory caption changed afterward, with affected exact-a82 wording verification. Full report and all intermediate/final evidence are imported unchanged under independent-review/iteration2-candidate/. Report SHA256 matches A9E8551093779D507D604F626AFD8EC803D3F896D94221F70ACFF1E09A9944DA.
+
+All six demonstrated criteria passed. The unitless-versus-computed wording note was repaired to Resolved in preview; the original observation is retained. Broad Svelte checking still has 23 errors / four existing warnings in manager-owned unchanged files. The final evidence-only commit leaves implementation bytes identical to exact a82ca8e. No compiler acceptance or U2 closure is inferred. A prepared five-task founder exercise is available; no human participant result is claimed.
+
+Final artifact whitespace check reported trailing blank lines at EOF in the imported evaluator Host.svelte, ITERATION-2-REVIEW.md, challenge.mjs and pseudo.mjs. These independent evidence files are retained verbatim, including the report checksum; implementation bytes have no changes in this handoff.

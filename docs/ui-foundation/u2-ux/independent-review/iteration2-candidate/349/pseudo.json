@@ -1,0 +1,653 @@
+{
+  "logs": [
+    {
+      "name": "pseudoLinked",
+      "state": {
+        "source": {
+          "id": "src.title.always.hover",
+          "declarations": [
+            {
+              "property": "margin-top",
+              "value": {
+                "type": "text",
+                "value": "15px"
+              }
+            },
+            {
+              "property": "margin-right",
+              "value": {
+                "type": "text",
+                "value": "15px"
+              }
+            },
+            {
+              "property": "margin-bottom",
+              "value": {
+                "type": "text",
+                "value": "15px"
+              }
+            },
+            {
+              "property": "margin-left",
+              "value": {
+                "type": "text",
+                "value": "15px"
+              }
+            }
+          ],
+          "pseudo": "hover"
+        },
+        "node": {
+          "kind": "element",
+          "id": "title",
+          "tag": "h1",
+          "children": [
+            "titleText"
+          ],
+          "styleSources": [
+            "titleNarrow",
+            "src.title.always.hover"
+          ],
+          "localStyle": [
+            {
+              "property": "font-size",
+              "value": {
+                "type": "text",
+                "value": "46px"
+              }
+            },
+            {
+              "property": "line-height",
+              "value": {
+                "type": "text",
+                "value": "1.1"
+              }
+            },
+            {
+              "property": "letter-spacing",
+              "value": {
+                "type": "text",
+                "value": "-1px"
+              }
+            },
+            {
+              "property": "margin",
+              "value": {
+                "type": "text",
+                "value": "16px 0"
+              }
+            }
+          ],
+          "interactions": [
+            {
+              "on": "click",
+              "action": "navigate",
+              "routeId": "route.a",
+              "params": {
+                "id": {
+                  "op": "literal",
+                  "value": "keep"
+                }
+              }
+            }
+          ]
+        },
+        "draft": {
+          "requestId": "inspector-ux-b86z1hulqy5-1",
+          "reason": "Edit spacing sides together",
+          "commands": [
+            {
+              "op": "setConditionalStyle",
+              "nodeId": "title",
+              "property": "margin-top",
+              "value": {
+                "type": "text",
+                "value": "15px"
+              },
+              "pseudo": "hover"
+            },
+            {
+              "op": "setConditionalStyle",
+              "nodeId": "title",
+              "property": "margin-right",
+              "value": {
+                "type": "text",
+                "value": "15px"
+              },
+              "pseudo": "hover"
+            },
+            {
+              "op": "setConditionalStyle",
+              "nodeId": "title",
+              "property": "margin-bottom",
+              "value": {
+                "type": "text",
+                "value": "15px"
+              },
+              "pseudo": "hover"
+            },
+            {
+              "op": "setConditionalStyle",
+              "nodeId": "title",
+              "property": "margin-left",
+              "value": {
+                "type": "text",
+                "value": "15px"
+              },
+              "pseudo": "hover"
+            }
+          ]
+        },
+        "snapshot": {
+          "revision": "1#1",
+          "storedRevision": "1",
+          "dirty": true,
+          "canUndo": true,
+          "canRedo": false,
+          "selectedOccurrence": "review|title",
+          "contentDigest": "df049cc25315d5a5ddab09827e21e7640cd4e2117ecd287bcccf8dadfc9bda93"
+        },
+        "context": "Editing · Base · all sizes · hover"
+      }
+    },
+    {
+      "name": "pseudoUndo",
+      "state": {
+        "node": {
+          "kind": "element",
+          "id": "title",
+          "tag": "h1",
+          "children": [
+            "titleText"
+          ],
+          "styleSources": [
+            "titleNarrow"
+          ],
+          "localStyle": [
+            {
+              "property": "font-size",
+              "value": {
+                "type": "text",
+                "value": "46px"
+              }
+            },
+            {
+              "property": "line-height",
+              "value": {
+                "type": "text",
+                "value": "1.1"
+              }
+            },
+            {
+              "property": "letter-spacing",
+              "value": {
+                "type": "text",
+                "value": "-1px"
+              }
+            },
+            {
+              "property": "margin",
+              "value": {
+                "type": "text",
+                "value": "16px 0"
+              }
+            }
+          ],
+          "interactions": [
+            {
+              "on": "click",
+              "action": "navigate",
+              "routeId": "route.a",
+              "params": {
+                "id": {
+                  "op": "literal",
+                  "value": "keep"
+                }
+              }
+            }
+          ]
+        },
+        "draft": {
+          "requestId": "inspector-ux-b86z1hulqy5-1",
+          "reason": "Edit spacing sides together",
+          "commands": [
+            {
+              "op": "setConditionalStyle",
+              "nodeId": "title",
+              "property": "margin-top",
+              "value": {
+                "type": "text",
+                "value": "15px"
+              },
+              "pseudo": "hover"
+            },
+            {
+              "op": "setConditionalStyle",
+              "nodeId": "title",
+              "property": "margin-right",
+              "value": {
+                "type": "text",
+                "value": "15px"
+              },
+              "pseudo": "hover"
+            },
+            {
+              "op": "setConditionalStyle",
+              "nodeId": "title",
+              "property": "margin-bottom",
+              "value": {
+                "type": "text",
+                "value": "15px"
+              },
+              "pseudo": "hover"
+            },
+            {
+              "op": "setConditionalStyle",
+              "nodeId": "title",
+              "property": "margin-left",
+              "value": {
+                "type": "text",
+                "value": "15px"
+              },
+              "pseudo": "hover"
+            }
+          ]
+        },
+        "snapshot": {
+          "revision": "1#2",
+          "storedRevision": "1",
+          "dirty": false,
+          "canUndo": false,
+          "canRedo": true,
+          "selectedOccurrence": "review|title",
+          "contentDigest": "9b4ec3df907a3c8071edf7a9ad63294613aad8477d91a29a1fa8ec8d754138e5"
+        },
+        "context": "Editing · Base · all sizes · hover"
+      }
+    },
+    {
+      "name": "pseudoRedo",
+      "state": {
+        "source": {
+          "id": "src.title.always.hover",
+          "declarations": [
+            {
+              "property": "margin-top",
+              "value": {
+                "type": "text",
+                "value": "15px"
+              }
+            },
+            {
+              "property": "margin-right",
+              "value": {
+                "type": "text",
+                "value": "15px"
+              }
+            },
+            {
+              "property": "margin-bottom",
+              "value": {
+                "type": "text",
+                "value": "15px"
+              }
+            },
+            {
+              "property": "margin-left",
+              "value": {
+                "type": "text",
+                "value": "15px"
+              }
+            }
+          ],
+          "pseudo": "hover"
+        },
+        "node": {
+          "kind": "element",
+          "id": "title",
+          "tag": "h1",
+          "children": [
+            "titleText"
+          ],
+          "styleSources": [
+            "titleNarrow",
+            "src.title.always.hover"
+          ],
+          "localStyle": [
+            {
+              "property": "font-size",
+              "value": {
+                "type": "text",
+                "value": "46px"
+              }
+            },
+            {
+              "property": "line-height",
+              "value": {
+                "type": "text",
+                "value": "1.1"
+              }
+            },
+            {
+              "property": "letter-spacing",
+              "value": {
+                "type": "text",
+                "value": "-1px"
+              }
+            },
+            {
+              "property": "margin",
+              "value": {
+                "type": "text",
+                "value": "16px 0"
+              }
+            }
+          ],
+          "interactions": [
+            {
+              "on": "click",
+              "action": "navigate",
+              "routeId": "route.a",
+              "params": {
+                "id": {
+                  "op": "literal",
+                  "value": "keep"
+                }
+              }
+            }
+          ]
+        },
+        "draft": {
+          "requestId": "inspector-ux-b86z1hulqy5-1",
+          "reason": "Edit spacing sides together",
+          "commands": [
+            {
+              "op": "setConditionalStyle",
+              "nodeId": "title",
+              "property": "margin-top",
+              "value": {
+                "type": "text",
+                "value": "15px"
+              },
+              "pseudo": "hover"
+            },
+            {
+              "op": "setConditionalStyle",
+              "nodeId": "title",
+              "property": "margin-right",
+              "value": {
+                "type": "text",
+                "value": "15px"
+              },
+              "pseudo": "hover"
+            },
+            {
+              "op": "setConditionalStyle",
+              "nodeId": "title",
+              "property": "margin-bottom",
+              "value": {
+                "type": "text",
+                "value": "15px"
+              },
+              "pseudo": "hover"
+            },
+            {
+              "op": "setConditionalStyle",
+              "nodeId": "title",
+              "property": "margin-left",
+              "value": {
+                "type": "text",
+                "value": "15px"
+              },
+              "pseudo": "hover"
+            }
+          ]
+        },
+        "snapshot": {
+          "revision": "1#3",
+          "storedRevision": "1",
+          "dirty": true,
+          "canUndo": true,
+          "canRedo": false,
+          "selectedOccurrence": "review|title",
+          "contentDigest": "df049cc25315d5a5ddab09827e21e7640cd4e2117ecd287bcccf8dadfc9bda93"
+        },
+        "context": "Editing · Base · all sizes · hover"
+      }
+    },
+    {
+      "name": "pseudoReset",
+      "state": {
+        "node": {
+          "kind": "element",
+          "id": "title",
+          "tag": "h1",
+          "children": [
+            "titleText"
+          ],
+          "styleSources": [
+            "titleNarrow"
+          ],
+          "localStyle": [
+            {
+              "property": "font-size",
+              "value": {
+                "type": "text",
+                "value": "46px"
+              }
+            },
+            {
+              "property": "line-height",
+              "value": {
+                "type": "text",
+                "value": "1.1"
+              }
+            },
+            {
+              "property": "letter-spacing",
+              "value": {
+                "type": "text",
+                "value": "-1px"
+              }
+            },
+            {
+              "property": "margin",
+              "value": {
+                "type": "text",
+                "value": "16px 0"
+              }
+            }
+          ],
+          "interactions": [
+            {
+              "on": "click",
+              "action": "navigate",
+              "routeId": "route.a",
+              "params": {
+                "id": {
+                  "op": "literal",
+                  "value": "keep"
+                }
+              }
+            }
+          ]
+        },
+        "draft": {
+          "requestId": "inspector-ux-b86z1hulqy5-2",
+          "reason": "Edit spacing sides together",
+          "commands": [
+            {
+              "op": "setConditionalStyle",
+              "nodeId": "title",
+              "property": "margin-top",
+              "pseudo": "hover"
+            },
+            {
+              "op": "setConditionalStyle",
+              "nodeId": "title",
+              "property": "margin-right",
+              "pseudo": "hover"
+            },
+            {
+              "op": "setConditionalStyle",
+              "nodeId": "title",
+              "property": "margin-bottom",
+              "pseudo": "hover"
+            },
+            {
+              "op": "setConditionalStyle",
+              "nodeId": "title",
+              "property": "margin-left",
+              "pseudo": "hover"
+            }
+          ]
+        },
+        "snapshot": {
+          "revision": "1#4",
+          "storedRevision": "1",
+          "dirty": false,
+          "canUndo": true,
+          "canRedo": false,
+          "selectedOccurrence": "review|title",
+          "contentDigest": "9b4ec3df907a3c8071edf7a9ad63294613aad8477d91a29a1fa8ec8d754138e5"
+        },
+        "context": "Editing · Base · all sizes · hover"
+      }
+    },
+    {
+      "name": "resetUndo",
+      "state": {
+        "source": {
+          "id": "src.title.always.hover",
+          "declarations": [
+            {
+              "property": "margin-top",
+              "value": {
+                "type": "text",
+                "value": "15px"
+              }
+            },
+            {
+              "property": "margin-right",
+              "value": {
+                "type": "text",
+                "value": "15px"
+              }
+            },
+            {
+              "property": "margin-bottom",
+              "value": {
+                "type": "text",
+                "value": "15px"
+              }
+            },
+            {
+              "property": "margin-left",
+              "value": {
+                "type": "text",
+                "value": "15px"
+              }
+            }
+          ],
+          "pseudo": "hover"
+        },
+        "node": {
+          "kind": "element",
+          "id": "title",
+          "tag": "h1",
+          "children": [
+            "titleText"
+          ],
+          "styleSources": [
+            "titleNarrow",
+            "src.title.always.hover"
+          ],
+          "localStyle": [
+            {
+              "property": "font-size",
+              "value": {
+                "type": "text",
+                "value": "46px"
+              }
+            },
+            {
+              "property": "line-height",
+              "value": {
+                "type": "text",
+                "value": "1.1"
+              }
+            },
+            {
+              "property": "letter-spacing",
+              "value": {
+                "type": "text",
+                "value": "-1px"
+              }
+            },
+            {
+              "property": "margin",
+              "value": {
+                "type": "text",
+                "value": "16px 0"
+              }
+            }
+          ],
+          "interactions": [
+            {
+              "on": "click",
+              "action": "navigate",
+              "routeId": "route.a",
+              "params": {
+                "id": {
+                  "op": "literal",
+                  "value": "keep"
+                }
+              }
+            }
+          ]
+        },
+        "draft": {
+          "requestId": "inspector-ux-b86z1hulqy5-2",
+          "reason": "Edit spacing sides together",
+          "commands": [
+            {
+              "op": "setConditionalStyle",
+              "nodeId": "title",
+              "property": "margin-top",
+              "pseudo": "hover"
+            },
+            {
+              "op": "setConditionalStyle",
+              "nodeId": "title",
+              "property": "margin-right",
+              "pseudo": "hover"
+            },
+            {
+              "op": "setConditionalStyle",
+              "nodeId": "title",
+              "property": "margin-bottom",
+              "pseudo": "hover"
+            },
+            {
+              "op": "setConditionalStyle",
+              "nodeId": "title",
+              "property": "margin-left",
+              "pseudo": "hover"
+            }
+          ]
+        },
+        "snapshot": {
+          "revision": "1#5",
+          "storedRevision": "1",
+          "dirty": true,
+          "canUndo": true,
+          "canRedo": true,
+          "selectedOccurrence": "review|title",
+          "contentDigest": "df049cc25315d5a5ddab09827e21e7640cd4e2117ecd287bcccf8dadfc9bda93"
+        },
+        "context": "Editing · Base · all sizes · hover"
+      }
+    }
+  ],
+  "errors": []
+}

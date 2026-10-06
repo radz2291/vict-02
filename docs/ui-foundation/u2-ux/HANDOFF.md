@@ -1,5 +1,7 @@
 # Integration handoff — Inspector / Layers usability slice
 
+Latest owner-authorized iteration: [iteration-2/HANDOFF.md](iteration-2/HANDOFF.md). All six follow-up improvements are implemented on exact candidate a82ca8ea24638d8563b2d03196faa794af046458; its independent verdict is PASS WITH NON-BLOCKING FINDINGS. Earlier candidate history/reports below remain intact. Inspector now owns bounded scrolling with measured sticky-header padding; this supersedes the earlier host-scrolling guidance for Inspector. Layers' host/selection/runtime-scope wiring remains compatible.
+
 Base: 83ba87f7aa112a1d93e7236c9c3ec2f4505f6cff.
 Branch: codex/ui-foundation-u2-inspector-ux.
 Owner experience acceptance PENDING. The U2 manager integrates technical repairs and verifies the combined candidate; this slice does not close U2.
