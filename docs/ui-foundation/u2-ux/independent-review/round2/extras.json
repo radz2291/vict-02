@@ -1,0 +1,10 @@
+{
+  "attribute": "button",
+  "color": {
+    "authored": "royalblue",
+    "swatch": "#4169e1",
+    "actual": "rgb(65, 105, 225)"
+  },
+  "exported": "function",
+  "errors": []
+}

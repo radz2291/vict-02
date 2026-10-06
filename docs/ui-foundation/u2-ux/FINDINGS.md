@@ -35,3 +35,11 @@ Fresh evaluator challenged exact pushed code 4d7b0670186a04411a51234d361bb8c9ef6
 - Adjacent in-scope improvements: Advanced attribute field populates from source, named-color swatches fall back to measured RGB, and the existing conditional style command builder is now publicly exported (additive only).
 
 No engine/compiler/renderer/store/workbench/frozen file changed. These are builder repair claims until the fresh evaluator rechecks the exact repair commit.
+
+## Independent round 2 and handoff
+
+The independent evaluator rechecked exact pushed repair d0ba90cfcd5efead2b7c7c82d37a2ed29483d715 in another fresh detached checkout. Verdict: PASS WITH NON-BLOCKING FINDINGS. ROUND-2.md and round2/ evidence are imported verbatim; round 1 remains FAIL in its original report. M1 keyboard reentry, M2 same/new-route bindings, M3 actual/display viewport/container measurements with no dirtying, and L1 warning removal all passed. Attribute population, named-color swatch and additive public export also passed.
+
+Independent renderer 120/120, design 12/12, root TypeScript and production build pass. Broad Svelte check remains red at 23 errors / 4 existing warnings in unchanged files; manager requests above still apply. A failed Vite navigation-context harness run is preserved separately in round2/failed-journeys.json, followed by the completed fresh run with zero page exceptions. No failed observation is discarded or relabeled.
+
+Final evidence-only handoff preserves implementation bytes from the tested repair candidate. Owner experience acceptance, compiler-repair acceptance and U2 closure remain PENDING. The next allowed action belongs to the overall U2 manager: integration and independent verification of the combined candidate.
