@@ -5,6 +5,7 @@
   import { connectInteraction, setAttribute, setConditionalStyle, setStyle, setTextLiteral, type TransactionDraft } from './commands.js';
   import { nodeLabel, sourceBreadcrumb, editableStyle, sourceStyles, styleText, styleGroups, type EditorLabels } from './inspector-ux.js';
   import InspectorControl from './InspectorControl.svelte';
+  import InspectorSpacing from './InspectorSpacing.svelte';
   interface Props {
     document: UiDocument; selectedOccurrence?: string; onApply: (draft: TransactionDraft) => void;
     lastIssues?: readonly { code: string; message: string }[];
@@ -28,6 +29,15 @@
   let route = $state('');
   const epoch = Math.random().toString(36).slice(2);
   let counter = 0;
+  let selectionBar = $state<HTMLDivElement>();
+  let headerSize = $state(200);
+  $effect(() => {
+    if (!selectionBar || typeof ResizeObserver === 'undefined') return;
+    const bar = selectionBar;
+    const observer = new ResizeObserver(() => headerSize = bar.getBoundingClientRect().height);
+    observer.observe(bar);
+    return () => observer.disconnect();
+  });
   const report = $derived(selectedOccurrence ? resolveOccurrence(selectedOccurrence, document) : undefined);
   const node = $derived(report?.node);
   const nearest = $derived(report?.instancePath.at(-1));
@@ -67,6 +77,18 @@
     const input = { requestId: request(), nodeId: target, property, ...(value ? { value } : {}) };
     onApply(condition || pseudo ? setConditionalStyle({ ...input, ...(condition ? { conditionId: condition } : {}), ...(pseudo ? { pseudo } : {}) }) : setStyle(input));
   }
+  function changeStyles(values: readonly { property: string; value?: string }[]) {
+    const requestId = request();
+    const commands = values.flatMap(({ property, value }) => {
+      const input = { requestId, nodeId: target, property, ...(value !== undefined ? { value: { type: 'text' as const, value } } : {}) };
+      return (condition || pseudo ? setConditionalStyle({ ...input, ...(condition ? { conditionId: condition } : {}), ...(pseudo ? { pseudo } : {}) }) : setStyle(input)).commands;
+    });
+    if (commands.length) onApply({ requestId, reason: 'Edit spacing sides together', commands });
+  }
+  function ownStyle(property: string) { return editableStyle(document, target, property, condition || undefined, pseudo); }
+  function originLabel(property: string) {
+    return (targetNode?.styleSources ?? []).some(id => { const source = document.styleSources[id]; return source?.conditionId === (condition || undefined) && source.pseudo === pseudo && source.declarations.some(d => d.property === property); }) ? 'Source' : 'Preview';
+  }
   function display(property: string) {
     const local = editableStyle(document, target, property, condition || undefined, pseudo);
     if (local) return styleText(local, document);
@@ -101,19 +123,22 @@
   }
 </script>
 
-<aside class="uv-inspector ux-panel" aria-label="Inspector">
-  <header><span class="eyebrow">Inspector</span>
-    {#if node}<h2>{nodeLabel(document, node.id, labels)}</h2><p class="breadcrumb">{breadcrumb.join(' / ')}</p>
+<aside class="uv-inspector ux-panel" aria-label="Inspector" style:scroll-padding-top={`${headerSize + 8}px`}>
+  <div class="selection-bar" bind:this={selectionBar}><header>
+    {#if node}<h2 title={nodeLabel(document, node.id, labels)}>{nodeLabel(document, node.id, labels)}</h2><details class="breadcrumb"><summary>Location · {breadcrumb.length > 1 ? breadcrumb.at(-2) : 'Page'}</summary><p>{breadcrumb.join(' / ')}</p></details>
     {:else}<h2>Make a selection</h2><p>Choose an element on the canvas or in Layers to edit it.</p>{/if}
   </header>
   {#if node}
     <div class="scope">
       {#if shared}
-        <label>Style edits apply to <select aria-label="Edits apply to" value={scope} onchange={e => scope = e.currentTarget.value as 'shared' | 'instance'}><option value="shared">Shared component · {count} authored instances</option><option value="instance">This instance · component wrapper</option></select></label>
-        <p>{scope === 'shared' ? 'Shared source changes update every occurrence of this component.' : 'Styles apply to this component wrapper. Inner-element overrides and instance text replacement are unavailable.'}</p>
-      {:else}<p>Editing this source element{node.kind === 'repeat' || report?.repeatKeys.length ? ' · changes affect repeated occurrences' : ''}.</p>{/if}
+        <strong class="scope-badge">{scope === 'shared' ? `Shared · ${count} authored instances` : 'This instance · wrapper'}</strong>
+        <label class="scope-picker"><span class="sr-only">Style edits apply to</span><select aria-label="Edits apply to" value={scope} onchange={e => scope = e.currentTarget.value as 'shared' | 'instance'}><option value="shared">Shared component</option><option value="instance">This instance · component wrapper</option></select></label>
+        <details class="scope-help"><summary>Editing boundary</summary><p>{scope === 'shared' ? 'Shared source changes update every occurrence of this component. Count shows authored instances, not repeated runtime records.' : 'Styles apply to this component wrapper. Inner-element overrides and instance text replacement are unavailable.'}</p></details>
+      {:else}<span class="source-context">{node.kind === 'text' ? 'Text · appearance on containing element' : 'Source element'}{node.kind === 'repeat' || report?.repeatKeys.length ? ' · repeated occurrences' : ''}</span>{/if}
     </div>
     <nav class="tabs" aria-label="Inspector sections">{#each ['Content', 'Style', 'Behavior'] as section}<button type="button" aria-pressed={tab === section} onclick={() => tab = section}>{section}</button>{/each}</nav>
+  {/if}</div>
+  {#if node}
     {#if tab === 'Content'}
       <section><h3>Content</h3>
         {#if textNode?.kind === 'text' && textNode.content.type === 'literal'}
@@ -124,18 +149,19 @@
         {:else}<p>No direct text content. Expand this element in Layers to select its content.</p>{/if}
       </section>
     {:else if tab === 'Style'}
-      <section class="context"><label>Editing condition<select aria-label="Style target" value={condition} onchange={e => condition = e.currentTarget.value}><option value="">Base · all sizes</option>{#each styleConditions as c}<option value={c.id}>{c.label}</option>{/each}</select></label>
+      <details class="context" open={!!(condition || pseudo)}><summary>Editing · {styleConditions.find(c => c.id === condition)?.label ?? (condition || 'Base · all sizes')}{pseudo ? ` · ${pseudo}` : ' · normal'}</summary><section><label>Editing condition<select aria-label="Style target" value={condition} onchange={e => condition = e.currentTarget.value}><option value="">Base · all sizes</option>{#each styleConditions as c}<option value={c.id}>{c.label}</option>{/each}</select></label>
         <label>Element state<select aria-label="Pseudo state" value={pseudo ?? ''} onchange={e => pseudo = (e.currentTarget.value || undefined) as UiPseudoState | undefined}><option value="">Normal</option>{#each ['hover', 'focus', 'active', 'disabled'] as p}<option value={p}>{p}</option>{/each}</select></label>
         <p>{condition ? 'Edits are saved in this condition. Resize the preview to test its query.' : 'Base styling applies at every size.'} {pseudo ? `Editing ${pseudo}; this does not force the browser into that state.` : ''}</p>
         {#if unsupportedTarget}<p role="status">Condition and state editing is unavailable on component wrappers. Select the shared inner element or use base styling.</p>{/if}
         {#if node.kind === 'text'}<p>Text appearance applies to its containing {nodeLabel(document, styleSourceId, labels)}.</p>{/if}
         {#if condition || pseudo}<p>Conditional rules are attached sources. A local base override can take precedence; Reset that base override if needed.</p>{/if}
-      </section>
+      </section></details>
       {#if canStyle}
         {#each styleGroups as group, index}<details open={index < 2}><summary>{group.title}</summary><section>
+          {#if group.title === 'Size & spacing'}{#each ['padding', 'margin'] as type}{#key `${target}:${condition}:${pseudo}:${type}`}<InspectorSpacing type={type as 'padding' | 'margin'} value={display} {effective} {origin} authored={p => ownStyle(p) !== undefined} locked={p => ownStyle(p)?.type === 'binding'} disabled={unsupportedTarget} onChange={changeStyles} onReset={properties => changeStyles(properties.map(property => ({ property })))} />{/key}{/each}{/if}
           {#each group.controls as control}
             {@const own = editableStyle(document, target, control.property, condition || undefined, pseudo)}
-            {#key `${target}:${condition}:${pseudo}:${control.property}`}<InspectorControl label={control.label} kind={control.kind} value={display(control.property)} authored={own !== undefined} origin={origin(control.property)} effective={effective(control.property)} options={'options' in control ? control.options : []} disabled={unsupportedTarget || own?.type === 'binding'} onChange={v => changeStyle(control.property, { type: 'text', value: v })} onReset={() => changeStyle(control.property)} />{/key}
+            {#key `${target}:${condition}:${pseudo}:${control.property}`}<InspectorControl label={control.label} kind={control.kind} value={display(control.property)} authored={own !== undefined} origin={origin(control.property)} originLabel={originLabel(control.property)} effective={effective(control.property)} options={'options' in control ? control.options : []} disabled={unsupportedTarget || own?.type === 'binding'} onChange={v => changeStyle(control.property, { type: 'text', value: v })} onReset={() => changeStyle(control.property)} />{/key}
           {/each}
         </section></details>{/each}
       {:else}<section><p>Select an element or component to style it. Text appearance is controlled by its containing element.</p></section>{/if}
@@ -164,21 +190,23 @@
 </aside>
 
 <style>
-  .ux-panel { background: var(--ui-editor-panel, #f8f9fb); color: var(--ui-editor-ink, #202938); font: 12px/1.5 var(--ui-editor-font, 'Segoe UI', sans-serif); min-width: 0; width: 100%; box-sizing: border-box; }
-  header, section, .scope { padding: 14px 16px; min-width: 0; }
+  .ux-panel { background: var(--ui-editor-panel, #f8f9fb); color: var(--ui-editor-ink, #202938); font: 12px/1.5 var(--ui-editor-font, 'Segoe UI', sans-serif); min-width: 0; width: 100%; height: 100%; overflow: auto; box-sizing: border-box; }
+  header, section, .scope { padding: 10px 14px; min-width: 0; }
+  .selection-bar { position: sticky; top: 0; z-index: 2; background: var(--ui-editor-panel, #f8f9fb); box-shadow: 0 1px 0 var(--ui-editor-line, #d7dce5); }
   header { background: var(--ui-editor-input, #fff); border-bottom: 1px solid var(--ui-editor-line, #d7dce5); }
-  .eyebrow { font-size: 10px; text-transform: uppercase; letter-spacing: .1em; color: var(--ui-editor-muted, #667085); }
-  h2 { font-size: 16px; line-height: 1.35; margin: 5px 0; overflow-wrap: anywhere; }
+  h2 { font-size: 14px; line-height: 1.35; margin: 0 0 4px; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
   h3 { font-size: 12px; margin: 0 0 10px; }
   p { color: var(--ui-editor-muted, #667085); margin: 6px 0; overflow-wrap: anywhere; font-size: 11px; }
-  .breadcrumb { font-size: 10px; }
-  .scope { padding-block: 10px; }
+  .breadcrumb, .scope-help { font-size: 11px; border: 0; color: var(--ui-editor-muted, #667085); } .breadcrumb summary, .scope-help summary { padding: 0; font-weight: normal; } .breadcrumb p, .scope-help p { margin: 4px 0; }
+  .breadcrumb:not([open]) summary { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .scope { padding-block: 6px; } .scope-badge { display: block; font-size: 12px; color: var(--ui-editor-accent, #355cc9); } .scope-picker { margin: 3px 0; } .scope-picker select { padding-block: 4px; } .source-context { font-size: 11px; color: var(--ui-editor-muted, #667085); }
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
   label { display: block; margin: 6px 0; }
   input:not([type=checkbox]), select, textarea { width: 100%; min-width: 0; max-width: 100%; box-sizing: border-box; padding: 7px 8px; border: 1px solid var(--ui-editor-line, #d7dce5); border-radius: 5px; background: var(--ui-editor-input, #fff); color: inherit; font: inherit; }
   textarea { resize: vertical; margin-top: 5px; }
   button { padding: 7px 10px; font: inherit; color: inherit; border: 1px solid var(--ui-editor-line, #d7dce5); border-radius: 5px; background: var(--ui-editor-input, #fff); cursor: pointer; margin: 3px 3px 3px 0; }
   .primary, .tabs [aria-pressed=true] { color: var(--ui-editor-accent, #355cc9); background: var(--ui-editor-selection, #edf1ff); }
-  .tabs { display: flex; padding: 0 12px 8px; border-bottom: 1px solid var(--ui-editor-line, #d7dce5); }
+  .tabs { display: flex; padding: 0 10px 5px; border-bottom: 1px solid var(--ui-editor-line, #d7dce5); }
   .tabs button { flex: 1; }
   details { border-bottom: 1px solid var(--ui-editor-line, #d7dce5); }
   summary { padding: 10px 16px; font-weight: 600; cursor: pointer; }

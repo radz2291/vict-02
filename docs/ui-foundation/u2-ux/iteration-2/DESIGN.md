@@ -1,0 +1,20 @@
+# Second Inspector / Layers usability iteration
+
+Owner instruction: "Okay continue all", following the implementer's six-point review. This authorizes implementation of all six improvements inside the existing bounded UX scope, repairs, independent exact-candidate review and a renewed integration handoff. Owner acceptance remains pending. Starting clean local and remote branch: codex/ui-foundation-u2-inspector-ux at 7f9ab3e22c75ba6b33dfe8b753f7a4ddb9f15931. Original canonical/compiler base remains 83ba87f7aa112a1d93e7236c9c3ec2f4505f6cff; its acceptance is not inferred.
+
+1. Compact sticky selection/scope/tabs; full location available on demand. Base/normal condition controls collapse while their destination stays visible. Text size comes first.
+2. Property origin and explicit Override move into an accessible disclosure. Browser measurements stay available there; differences from authored values appear beside the control.
+3. Padding and margin use spatial diagrams with optional linking. All four changes flow through existing command builders in one transaction/history step. Alignment, direction and wrapping use labeled visual buttons.
+4. Shared authored-instance count and instance-wrapper boundary are prominent. Expanded help explains counts and unsupported inner-instance editing. No scope/schema semantics changed.
+5. Layers search exposes matching occurrences and their ancestors without mutating source. Two-line rows keep the default hierarchy compact; full names, exact occurrence IDs and provenance remain accessible. Expanded text-only parents show their role rather than duplicate their child's content, respecting explicit host labels.
+6. Color controls represent transparent/alpha colors on a checkerboard, preserve opacity through picker changes, and offer opacity editing. Named/HSL colors resolve through the browser independently of measured styles. Context-dependent or unsupported color values remain textual with an unavailable preview; no fabricated black swatch is presented as their value.
+
+No changes to compiler, renderer, bridge, history engine, storage or existing workbench. Existing exported commands remain the sole mutation path. New helpers are private to the panel; no additional public API is required. Theme hooks are preserved.
+
+Actual founder observation requires a participant. FOUNDER-EXERCISE.md provides five unguided tasks and an observation sheet. Automated/independent evaluation does not substitute for or claim human acceptance.
+
+Early checks: existing seven editor semantic tests and three new iteration tests passed; root TypeScript passed. Broad Svelte check initially retained 23 existing errors and added two line-clamp compatibility warnings (six warnings total); standard line-clamp declarations were added in scope. Failed patch applications matched no content and changed no source; corrected applications proceeded within the authorized paths.
+
+Builder failed observations are retained in the numbered builder-failed JSON files. Initial preview connection refused: the prior server had stopped; own port 5197 was restarted. Harness first used an unsupported Puppeteer Control+A chord; corrected to key down/press/up. A diagnostic shell text replacement failed parsing and changed no files. The opacity journey then found controls scrolling behind the new sticky header: a native click reached the header/body and opacity stayed 100%. Inspector now owns bounded scrolling, observes header height and reserves scroll-padding-top dynamically. The same actual click/keyboard journey then changed all cards to rgba(51,102,153,0.5), saved/reloaded/reopened, exercised linked spacing Undo/Redo and Layers search, and passed with zero page errors. At 390 text size is visible at y528–558; scrolling retains the selection header at the panel top. These are builder observations; independent verdict pending.
+
+Mounting amendment: give Inspector a bounded parent height; it now manages its own overflow and measured sticky-header scroll padding. Host scrolling remains appropriate for Layers. No external selection-height CSS constant or global shim is needed.

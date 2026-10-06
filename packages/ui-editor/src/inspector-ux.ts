@@ -123,9 +123,9 @@ export const styleGroups = [
   {
     title: 'Typography',
     controls: [
+      { property: 'font-size', label: 'Text size', kind: 'number' },
       { property: 'color', label: 'Text color', kind: 'color' },
       { property: 'font-family', label: 'Font family', kind: 'text' },
-      { property: 'font-size', label: 'Text size', kind: 'number' },
       {
         property: 'font-weight',
         label: 'Weight',
@@ -136,7 +136,7 @@ export const styleGroups = [
       {
         property: 'text-align',
         label: 'Text alignment',
-        kind: 'choice',
+        kind: 'segments',
         options: ['left', 'center', 'right', 'justify'],
       },
     ],
@@ -164,13 +164,6 @@ export const styleGroups = [
         label: property.replace('-', ' '),
         kind: 'number',
       })),
-      ...['padding', 'margin'].flatMap((type) =>
-        ['top', 'right', 'bottom', 'left'].map((side) => ({
-          property: `${type}-${side}`,
-          label: `${type} ${side}`,
-          kind: 'number',
-        })),
-      ),
       { property: 'gap', label: 'Gap between children', kind: 'number' },
     ],
   },
@@ -186,19 +179,25 @@ export const styleGroups = [
       {
         property: 'flex-direction',
         label: 'Direction',
-        kind: 'choice',
+        kind: 'segments',
         options: ['row', 'column', 'row-reverse', 'column-reverse'],
+      },
+      {
+        property: 'flex-wrap',
+        label: 'Wrapping',
+        kind: 'segments',
+        options: ['nowrap', 'wrap', 'wrap-reverse'],
       },
       {
         property: 'align-items',
         label: 'Align children',
-        kind: 'choice',
+        kind: 'segments',
         options: ['start', 'center', 'end', 'stretch'],
       },
       {
         property: 'justify-content',
         label: 'Distribute children',
-        kind: 'choice',
+        kind: 'segments',
         options: ['start', 'center', 'end', 'space-between', 'space-around'],
       },
       { property: 'grid-template-columns', label: 'Grid columns', kind: 'text' },

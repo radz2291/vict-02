@@ -1,61 +1,39 @@
 <script lang="ts">
-  let { label, kind, value = '', authored = false, origin = '', effective = '', options = [], disabled = false, onChange, onReset }: {
-    label: string; kind: string; value?: string; authored?: boolean; origin?: string; effective?: string; options?: readonly string[]; disabled?: boolean;
+  import { resolvePanelColor, colorWithAlpha } from './color-ux.js';
+  let { label, kind, value = '', authored = false, origin = '', originLabel = 'Source / preview', effective = '', options = [], disabled = false, onChange, onReset }: {
+    label: string; kind: string; value?: string; authored?: boolean; origin?: string; originLabel?: string; effective?: string; options?: readonly string[]; disabled?: boolean;
     onChange: (value: string) => void; onReset: () => void;
   } = $props();
   let draft = $state('');
   $effect(() => { draft = value; });
   const numeric = $derived(/^(-?\d*\.?\d+)(px|rem|em|%|vh|vw)?$/.exec(draft));
-  function swatch(raw: string): string {
-    if (/^#[\da-f]{6}$/i.test(raw)) return raw;
-    if (/^#[\da-f]{3}$/i.test(raw)) return '#' + [...raw.slice(1)].map(c => c + c).join('');
-    const rgb = /^rgb\(\s*(\d+),\s*(\d+),\s*(\d+)\s*\)$/.exec(raw) ?? /^rgb\(\s*(\d+),\s*(\d+),\s*(\d+)\s*\)$/.exec(effective);
-    return rgb ? '#' + rgb.slice(1).map(c => Number(c).toString(16).padStart(2, '0')).join('') : '#000000';
-  }
+  const color = $derived(kind === 'color' ? resolvePanelColor(draft) : undefined);
+  const measuredColor = $derived(kind === 'color' ? resolvePanelColor(effective) : undefined);
+  const differs = $derived(!!effective && !!value && (color && measuredColor ? color.css !== measuredColor.css : value.trim() !== effective.trim()));
   function commit(value: string) { if (value.trim()) onChange(value.trim()); }
+  function alignmentPath(option: string) { return ({ left: 'M2 4h16M2 10h10M2 16h16', center: 'M2 4h16M5 10h10M2 16h16', right: 'M2 4h16M8 10h10M2 16h16', justify: 'M2 4h16M2 10h16M2 16h16' } as Record<string, string>)[option]; }
+  function icon(option: string) { return ({ left: '☰', center: '≡', right: '☷', justify: '▤', row: '→', column: '↓', 'row-reverse': '←', 'column-reverse': '↑', start: '⊢', end: '⊣', stretch: '↔', 'space-between': '⇤⇥', 'space-around': '↔', nowrap: '→', wrap: '↵', 'wrap-reverse': '↰' } as Record<string, string>)[option]; }
 </script>
-
 <div class="control">
-  <div class="caption"><span>{label}</span><span class:local={authored}>{authored ? 'Override' : 'From source / preview'}</span></div>
+  <div class="caption"><span>{label}</span><details class="origin"><summary class:local={authored} aria-label={`${label} value details`}>{authored ? 'Override' : originLabel} ⓘ</summary><div class="explanation">{#if effective}<p>Browser now: {effective}</p>{/if}<p>{origin}</p>{#if !authored && value}<button type="button" class="override" {disabled} onclick={() => commit(value)}>Override {label}</button>{/if}</div></details></div>
   <div class="inputs">
-    {#if kind === 'color'}
-      <input type="color" aria-label={`${label} picker`} title="Choose a new solid color; text field retains non-solid or token values" value={swatch(draft)} {disabled} onchange={e => commit(e.currentTarget.value)} />
-    {/if}
-    {#if kind === 'choice'}
-      <select aria-label={label} value={draft} {disabled} onchange={e => commit(e.currentTarget.value)}>
-        <option value="">Choose…</option>
-        {#if draft && !options.includes(draft)}<option value={draft}>{draft}</option>{/if}
-        {#each options as option}<option value={option}>{option}</option>{/each}
-      </select>
-    {:else if kind === 'number' && (!draft || numeric)}
-      <input type="number" step="any" aria-label={label} value={numeric?.[1] ?? ''} {disabled} placeholder="Auto" onchange={e => { if (e.currentTarget.value !== '') commit(`${e.currentTarget.value}${numeric ? numeric[2] ?? '' : 'px'}`); }} />
-      <select aria-label={`${label} unit`} value={numeric ? numeric[2] ?? '' : 'px'} {disabled} onchange={e => { if (numeric) commit(`${numeric[1]}${e.currentTarget.value}`); }}>
-        {#each ['px', 'rem', 'em', '%', 'vh', 'vw', ''] as unit}<option value={unit}>{unit || '—'}</option>{/each}
-      </select>
-    {:else}
-      <input type="text" aria-label={label} bind:value={draft} {disabled} placeholder="Not set" onchange={() => commit(draft)} />
-    {/if}
+    {#if kind === 'color'}<div class="swatch" class:unknown={!color} title={color ? `${draft} · ${Math.round(color.alpha * 100)}% opacity` : 'Color preview unavailable; authored value retained'}>{#if color}<span style:background={color.css}></span>{:else}<span class="unknown">?</span>{/if}<input type="color" aria-label={`${label} picker`} title="Choose color; opacity is preserved" value={color?.hex ?? '#000000'} {disabled} onchange={e => commit(color && color.alpha < 1 ? colorWithAlpha(e.currentTarget.value, color.alpha) : e.currentTarget.value)} /></div>{/if}
+    {#if kind === 'segments'}<div class="segments" role="group" aria-label={label}>{#if draft && !options.includes(draft)}<span class="custom">{draft}</span>{/if}{#each options as option}<button type="button" aria-label={`${label}: ${option}`} title={option.replaceAll('-', ' ')} aria-pressed={draft === option} {disabled} onclick={() => commit(option)}>{#if label === 'Text alignment' && alignmentPath(option)}<svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d={alignmentPath(option)} stroke="currentColor" stroke-width="1.5" fill="none" /></svg><span class="sr-only">{option}</span>{:else if icon(option)}<span aria-hidden="true">{icon(option)}</span><span class="sr-only">{option}</span>{:else}{option}{/if}</button>{/each}</div>
+    {:else if kind === 'choice'}<select aria-label={label} value={draft} {disabled} onchange={e => commit(e.currentTarget.value)}><option value="">Choose…</option>{#if draft && !options.includes(draft)}<option value={draft}>{draft}</option>{/if}{#each options as option}<option value={option}>{option}</option>{/each}</select>
+    {:else if kind === 'number' && (!draft || numeric)}<input type="number" step="any" aria-label={label} value={numeric?.[1] ?? ''} {disabled} placeholder="Auto" onchange={e => { if (e.currentTarget.value !== '') commit(`${e.currentTarget.value}${numeric ? numeric[2] ?? '' : 'px'}`); }} /><select aria-label={`${label} unit`} value={numeric ? numeric[2] ?? '' : 'px'} {disabled} onchange={e => { if (numeric) commit(`${numeric[1]}${e.currentTarget.value}`); }}>{#each ['px', 'rem', 'em', '%', 'vh', 'vw', ''] as unit}<option value={unit}>{unit || '—'}</option>{/each}</select>
+    {:else}<input type="text" aria-label={label} bind:value={draft} {disabled} placeholder="Not set" onchange={() => commit(draft)} />{/if}
     <button type="button" class="reset" aria-label={`Reset ${label}`} title="Remove this override; retain shared sources" disabled={disabled || !authored} onclick={onReset}>↺</button>
   </div>
-  {#if !authored && value}<button type="button" class="override" disabled={disabled} onclick={() => commit(value)}>Override {label}</button>{/if}
-  {#if effective}<p>Browser now: {effective}</p>{/if}
-  {#if origin}<details><summary>Value origin</summary><p>{origin}</p></details>{/if}
+  {#if kind === 'color'}<label class="opacity">Opacity <input type="number" aria-label={`${label} opacity`} min="0" max="100" step="1" value={color ? Number((color.alpha * 100).toFixed(2)) : ''} disabled={disabled || !color} onchange={e => { const v = Number(e.currentTarget.value); if (color && e.currentTarget.value !== '' && Number.isFinite(v)) commit(colorWithAlpha(color.hex, Math.max(0, Math.min(100, v)) / 100)); }} /><span>%</span></label>{/if}
+  {#if differs}<p class="difference">Browser now: {effective} <span>differs from edit value</span></p>{/if}
 </div>
-
 <style>
-  .control { min-width: 0; padding: 7px 0; }
-  .caption { display: flex; justify-content: space-between; gap: 8px; font-size: 12px; margin-bottom: 5px; text-transform: capitalize; }
-  .caption span:last-child { font-size: 10px; color: var(--ui-editor-muted, #667085); text-transform: none; }
-  .caption .local { color: var(--ui-editor-accent, #355cc9); }
-  .inputs { display: flex; gap: 4px; min-width: 0; }
-  input, select, button { font: inherit; font-size: 12px; border: 1px solid var(--ui-editor-line, #d7dce5); border-radius: 5px; background: var(--ui-editor-input, #fff); color: inherit; min-height: 30px; min-width: 0; box-sizing: border-box; }
-  input, select { padding: 4px 7px; flex: 1; width: 100%; }
-  input[type=color] { flex: 0 0 32px; padding: 2px; }
-  input[type=number] + select { flex: 0 0 58px; }
-  button { flex: 0 0 29px; cursor: pointer; }
-  .override { min-height: 22px; padding: 2px 6px; margin-top: 4px; font-size: 10px; color: var(--ui-editor-accent, #355cc9); }
-  :disabled { opacity: .45; cursor: default; }
-  :focus-visible { outline: 2px solid var(--ui-editor-accent, #355cc9); outline-offset: 2px; }
-  p { font-size: 10px; line-height: 1.4; color: var(--ui-editor-muted, #667085); overflow-wrap: anywhere; margin: 3px 0 0; }
-  summary { font-size: 10px; color: var(--ui-editor-muted, #667085); cursor: pointer; }
+  .control { min-width: 0; padding: 6px 0; } .caption { display: flex; align-items: baseline; justify-content: space-between; gap: 6px; font-size: 12px; margin-bottom: 4px; text-transform: capitalize; }
+  .origin { font-size: 11px; color: var(--ui-editor-muted, #667085); text-transform: none; text-align: right; max-width: 65%; } summary { cursor: pointer; list-style: none; } summary::-webkit-details-marker { display: none; } summary.local { color: var(--ui-editor-accent, #355cc9); } .origin[open] { flex: 1; } .explanation { text-align: left; padding: 6px; background: var(--ui-editor-input, #fff); border: 1px solid var(--ui-editor-line, #d7dce5); border-radius: 4px; }
+  .inputs { display: flex; gap: 4px; min-width: 0; } input, select, button { font: inherit; font-size: 12px; border: 1px solid var(--ui-editor-line, #d7dce5); border-radius: 5px; background: var(--ui-editor-input, #fff); color: inherit; min-height: 30px; min-width: 0; box-sizing: border-box; } input, select { padding: 4px 7px; flex: 1; width: 100%; } input[type=number] + select { flex: 0 0 58px; }
+  .swatch { flex: 0 0 32px; position: relative; overflow: hidden; border: 1px solid var(--ui-editor-line, #d7dce5); border-radius: 4px; background: repeating-conic-gradient(#c7cbd2 0% 25%, #fff 0% 50%) 0 / 10px 10px; } .swatch span { position: absolute; inset: 0; } .swatch .unknown { display: grid; place-items: center; background: #fff; } .swatch input { position: absolute; inset: 0; opacity: 0; height: 100%; cursor: pointer; } .swatch:focus-within { outline: 2px solid var(--ui-editor-accent, #355cc9); outline-offset: 2px; }
+  button { flex: 0 0 29px; cursor: pointer; } .override { padding: 2px 6px; margin-top: 4px; color: var(--ui-editor-accent, #355cc9); } .segments { display: flex; flex: 1; gap: 2px; flex-wrap: wrap; } .segments button { flex: 1; padding: 2px 4px; } .segments [aria-pressed=true] { color: var(--ui-editor-accent, #355cc9); background: var(--ui-editor-selection, #edf1ff); } .custom { width: 100%; overflow-wrap: anywhere; }
+  .opacity { display: flex; justify-content: flex-end; align-items: center; gap: 5px; margin-top: 4px; font-size: 11px; color: var(--ui-editor-muted, #667085); } .opacity input { width: 57px; flex: 0 0 57px; min-height: 24px; padding: 1px 4px; } :disabled { opacity: .45; cursor: default; } :focus-visible { outline: 2px solid var(--ui-editor-accent, #355cc9); outline-offset: 2px; }
+  p { font-size: 11px; line-height: 1.4; color: var(--ui-editor-muted, #667085); overflow-wrap: anywhere; margin: 3px 0 0; } .difference span { display: block; font-size: 10px; } .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .caption:has(.origin[open]) { display: block; } .origin[open] { max-width: none; width: 100%; margin-top: 4px; } .origin[open] summary { text-align: right; }
 </style>
