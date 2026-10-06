@@ -1,0 +1,1287 @@
+{
+  "log": [
+    {
+      "initial": {
+        "heading": "Make room for better work.",
+        "size": "46px",
+        "selection": "Make room for better work.",
+        "selected": [
+          {
+            "name": "·Make room for better work.",
+            "key": "review|titleText"
+          }
+        ],
+        "articles": [
+          {
+            "bg": "rgb(255, 255, 255)",
+            "padding": "24px",
+            "paddingTop": "24px"
+          },
+          {
+            "bg": "rgb(255, 255, 255)",
+            "padding": "24px",
+            "paddingTop": "24px"
+          },
+          {
+            "bg": "rgb(255, 255, 255)",
+            "padding": "24px",
+            "paddingTop": "24px"
+          }
+        ],
+        "scroll": 1440,
+        "viewport": 1440
+      }
+    },
+    {
+      "headingEdited": {
+        "heading": "Independent founder heading",
+        "size": "52px",
+        "selection": "Independent founder heading",
+        "selected": [
+          {
+            "name": "·Independent founder heading",
+            "key": "review|titleText"
+          }
+        ],
+        "articles": [
+          {
+            "bg": "rgb(255, 255, 255)",
+            "padding": "24px",
+            "paddingTop": "24px"
+          },
+          {
+            "bg": "rgb(255, 255, 255)",
+            "padding": "24px",
+            "paddingTop": "24px"
+          },
+          {
+            "bg": "rgb(255, 255, 255)",
+            "padding": "24px",
+            "paddingTop": "24px"
+          }
+        ],
+        "scroll": 1440,
+        "viewport": 1440
+      }
+    },
+    {
+      "headingColorOrigin": "Text Color\nFrom source / preview\n↺\nOverride Text color\n\nBrowser now: rgb(37, 51, 70)\n\nValue origin\n\nInheritable property · ancestor Fieldnotes · service page declares #253346. Browser now shows the result; external cascade origin is not inferred."
+    },
+    {
+      "overrideColor": "rgb(17, 34, 51)"
+    },
+    {
+      "resetColor": "rgb(37, 51, 70)"
+    },
+    {
+      "cardSelected": {
+        "heading": "Independent founder heading",
+        "size": "52px",
+        "selection": "Service card",
+        "selected": [
+          {
+            "name": "▤Service card",
+            "key": "review|card|cardA@service"
+          }
+        ],
+        "articles": [
+          {
+            "bg": "rgb(255, 255, 255)",
+            "padding": "24px",
+            "paddingTop": "24px"
+          },
+          {
+            "bg": "rgb(255, 255, 255)",
+            "padding": "24px",
+            "paddingTop": "24px"
+          },
+          {
+            "bg": "rgb(255, 255, 255)",
+            "padding": "24px",
+            "paddingTop": "24px"
+          }
+        ],
+        "scroll": 1440,
+        "viewport": 1440
+      }
+    },
+    {
+      "sharedBackground": {
+        "heading": "Independent founder heading",
+        "size": "52px",
+        "selection": "Service card",
+        "selected": [
+          {
+            "name": "▤Service card",
+            "key": "review|card|cardA@service"
+          }
+        ],
+        "articles": [
+          {
+            "bg": "rgb(204, 221, 238)",
+            "padding": "24px",
+            "paddingTop": "24px"
+          },
+          {
+            "bg": "rgb(204, 221, 238)",
+            "padding": "24px",
+            "paddingTop": "24px"
+          },
+          {
+            "bg": "rgb(204, 221, 238)",
+            "padding": "24px",
+            "paddingTop": "24px"
+          }
+        ],
+        "scroll": 1440,
+        "viewport": 1440
+      }
+    },
+    {
+      "instanceBackground": {
+        "heading": "Independent founder heading",
+        "size": "52px",
+        "selection": "Service card",
+        "selected": [
+          {
+            "name": "▤Service card",
+            "key": "review|card|cardA@service"
+          }
+        ],
+        "articles": [
+          {
+            "bg": "rgb(170, 136, 51)",
+            "padding": "24px",
+            "paddingTop": "24px"
+          },
+          {
+            "bg": "rgb(204, 221, 238)",
+            "padding": "24px",
+            "paddingTop": "24px"
+          },
+          {
+            "bg": "rgb(204, 221, 238)",
+            "padding": "24px",
+            "paddingTop": "24px"
+          }
+        ],
+        "scroll": 1440,
+        "viewport": 1440
+      }
+    },
+    {
+      "spacing": {
+        "heading": "Independent founder heading",
+        "size": "52px",
+        "selection": "Service card",
+        "selected": [
+          {
+            "name": "▤Service card",
+            "key": "review|card|cardA@service"
+          }
+        ],
+        "articles": [
+          {
+            "bg": "rgb(170, 136, 51)",
+            "padding": "37px 24px 24px",
+            "paddingTop": "37px"
+          },
+          {
+            "bg": "rgb(204, 221, 238)",
+            "padding": "37px 24px 24px",
+            "paddingTop": "37px"
+          },
+          {
+            "bg": "rgb(204, 221, 238)",
+            "padding": "37px 24px 24px",
+            "paddingTop": "37px"
+          }
+        ],
+        "scroll": 1440,
+        "viewport": 1440
+      }
+    },
+    {
+      "undo": {
+        "heading": "Independent founder heading",
+        "size": "52px",
+        "selection": "Service card",
+        "selected": [
+          {
+            "name": "▤Service card",
+            "key": "review|card|cardA@service"
+          }
+        ],
+        "articles": [
+          {
+            "bg": "rgb(170, 136, 51)",
+            "padding": "24px",
+            "paddingTop": "24px"
+          },
+          {
+            "bg": "rgb(204, 221, 238)",
+            "padding": "24px",
+            "paddingTop": "24px"
+          },
+          {
+            "bg": "rgb(204, 221, 238)",
+            "padding": "24px",
+            "paddingTop": "24px"
+          }
+        ],
+        "scroll": 1440,
+        "viewport": 1440
+      }
+    },
+    {
+      "redo": {
+        "heading": "Independent founder heading",
+        "size": "52px",
+        "selection": "Service card",
+        "selected": [
+          {
+            "name": "▤Service card",
+            "key": "review|card|cardA@service"
+          }
+        ],
+        "articles": [
+          {
+            "bg": "rgb(170, 136, 51)",
+            "padding": "37px 24px 24px",
+            "paddingTop": "37px"
+          },
+          {
+            "bg": "rgb(204, 221, 238)",
+            "padding": "37px 24px 24px",
+            "paddingTop": "37px"
+          },
+          {
+            "bg": "rgb(204, 221, 238)",
+            "padding": "37px 24px 24px",
+            "paddingTop": "37px"
+          }
+        ],
+        "scroll": 1440,
+        "viewport": 1440
+      }
+    },
+    {
+      "saved": "Saved · revision 2\nNo unsaved changes"
+    },
+    {
+      "reload": {
+        "heading": "Independent founder heading",
+        "size": "52px",
+        "selection": "Make a selection",
+        "selected": [],
+        "articles": [
+          {
+            "bg": "rgb(170, 136, 51)",
+            "padding": "37px 24px 24px",
+            "paddingTop": "37px"
+          },
+          {
+            "bg": "rgb(204, 221, 238)",
+            "padding": "37px 24px 24px",
+            "paddingTop": "37px"
+          },
+          {
+            "bg": "rgb(204, 221, 238)",
+            "padding": "37px 24px 24px",
+            "paddingTop": "37px"
+          }
+        ],
+        "scroll": 1440,
+        "viewport": 1440
+      }
+    },
+    {
+      "reopen": {
+        "heading": "Independent founder heading",
+        "size": "52px",
+        "selection": "Make a selection",
+        "selected": [],
+        "articles": [
+          {
+            "bg": "rgb(170, 136, 51)",
+            "padding": "37px 24px 24px",
+            "paddingTop": "37px"
+          },
+          {
+            "bg": "rgb(204, 221, 238)",
+            "padding": "37px 24px 24px",
+            "paddingTop": "37px"
+          },
+          {
+            "bg": "rgb(204, 221, 238)",
+            "padding": "37px 24px 24px",
+            "paddingTop": "37px"
+          }
+        ],
+        "scroll": 1440,
+        "viewport": 1440
+      }
+    },
+    {
+      "keyboard": {
+        "heading": "Independent founder heading",
+        "size": "52px",
+        "selection": "Paragraph · FIELDNOTES / INDEPENDENT STUDIO",
+        "selected": [
+          {
+            "name": "▤Paragraph · FIELDNOTES / INDEPENDENT STUDIO",
+            "key": "review|eyebrow"
+          }
+        ],
+        "articles": [
+          {
+            "bg": "rgb(170, 136, 51)",
+            "padding": "37px 24px 24px",
+            "paddingTop": "37px"
+          },
+          {
+            "bg": "rgb(204, 221, 238)",
+            "padding": "37px 24px 24px",
+            "paddingTop": "37px"
+          },
+          {
+            "bg": "rgb(204, 221, 238)",
+            "padding": "37px 24px 24px",
+            "paddingTop": "37px"
+          }
+        ],
+        "scroll": 1440,
+        "viewport": 1440
+      },
+      "focused": "▤Paragraph · FIELDNOTES / INDEPENDENT STUDIO"
+    },
+    {
+      "collapsedTreeTabStops": [
+        "▤Introduction"
+      ]
+    },
+    {
+      "tabReentry": {
+        "role": "treeitem",
+        "name": "▤Introduction",
+        "key": "review|hero"
+      }
+    },
+    {
+      "afterCollapseKeyboard": {
+        "heading": "Independent founder heading",
+        "size": "52px",
+        "selection": "Paragraph · FIELDNOTES / INDEPENDENT STUDIO",
+        "selected": [
+          {
+            "name": "▤Paragraph · FIELDNOTES / INDEPENDENT STUDIO",
+            "key": "review|eyebrow"
+          }
+        ],
+        "articles": [
+          {
+            "bg": "rgb(170, 136, 51)",
+            "padding": "37px 24px 24px",
+            "paddingTop": "37px"
+          },
+          {
+            "bg": "rgb(204, 221, 238)",
+            "padding": "37px 24px 24px",
+            "paddingTop": "37px"
+          },
+          {
+            "bg": "rgb(204, 221, 238)",
+            "padding": "37px 24px 24px",
+            "paddingTop": "37px"
+          }
+        ],
+        "scroll": 1440,
+        "viewport": 1440
+      },
+      "focus": "▤Paragraph · FIELDNOTES / INDEPENDENT STUDIO"
+    },
+    {
+      "responsive": {
+        "width": 1024,
+        "height": 768,
+        "state": {
+          "heading": "Independent founder heading",
+          "size": "52px",
+          "selection": "Heading · Make room for better work",
+          "selected": [
+            {
+              "name": "▤Heading · Make room for better work",
+              "key": "review|title"
+            }
+          ],
+          "articles": [
+            {
+              "bg": "rgb(170, 136, 51)",
+              "padding": "37px 24px 24px",
+              "paddingTop": "37px"
+            },
+            {
+              "bg": "rgb(204, 221, 238)",
+              "padding": "37px 24px 24px",
+              "paddingTop": "37px"
+            },
+            {
+              "bg": "rgb(204, 221, 238)",
+              "padding": "37px 24px 24px",
+              "paddingTop": "37px"
+            }
+          ],
+          "scroll": 1024,
+          "viewport": 1024
+        },
+        "controls": [
+          {
+            "label": "Style target",
+            "width": 267,
+            "left": 733,
+            "right": 1000
+          },
+          {
+            "label": "Pseudo state",
+            "width": 267,
+            "left": 733,
+            "right": 1000
+          },
+          {
+            "label": "Text color picker",
+            "width": 32,
+            "left": 733,
+            "right": 765
+          },
+          {
+            "label": "Text color",
+            "width": 198,
+            "left": 769,
+            "right": 967
+          },
+          {
+            "label": "Font family",
+            "width": 234,
+            "left": 733,
+            "right": 967
+          },
+          {
+            "label": "Text size",
+            "width": 172,
+            "left": 733,
+            "right": 905
+          },
+          {
+            "label": "Text size unit",
+            "width": 58,
+            "left": 909,
+            "right": 967
+          },
+          {
+            "label": "Weight",
+            "width": 234,
+            "left": 733,
+            "right": 967
+          },
+          {
+            "label": "Line height",
+            "width": 172,
+            "left": 733,
+            "right": 905
+          },
+          {
+            "label": "Line height unit",
+            "width": 58,
+            "left": 909,
+            "right": 967
+          },
+          {
+            "label": "Text alignment",
+            "width": 234,
+            "left": 733,
+            "right": 967
+          },
+          {
+            "label": "Background picker",
+            "width": 32,
+            "left": 733,
+            "right": 765
+          },
+          {
+            "label": "Background",
+            "width": 198,
+            "left": 769,
+            "right": 967
+          },
+          {
+            "label": "Border color picker",
+            "width": 32,
+            "left": 733,
+            "right": 765
+          },
+          {
+            "label": "Border color",
+            "width": 198,
+            "left": 769,
+            "right": 967
+          },
+          {
+            "label": "Border width",
+            "width": 172,
+            "left": 733,
+            "right": 905
+          },
+          {
+            "label": "Border width unit",
+            "width": 58,
+            "left": 909,
+            "right": 967
+          },
+          {
+            "label": "Border style",
+            "width": 234,
+            "left": 733,
+            "right": 967
+          },
+          {
+            "label": "Corner radius",
+            "width": 172,
+            "left": 733,
+            "right": 905
+          },
+          {
+            "label": "Corner radius unit",
+            "width": 58,
+            "left": 909,
+            "right": 967
+          },
+          {
+            "label": "width",
+            "width": 172,
+            "left": 733,
+            "right": 905
+          },
+          {
+            "label": "width unit",
+            "width": 58,
+            "left": 909,
+            "right": 967
+          },
+          {
+            "label": "height",
+            "width": 172,
+            "left": 733,
+            "right": 905
+          },
+          {
+            "label": "height unit",
+            "width": 58,
+            "left": 909,
+            "right": 967
+          },
+          {
+            "label": "min width",
+            "width": 172,
+            "left": 733,
+            "right": 905
+          },
+          {
+            "label": "min width unit",
+            "width": 58,
+            "left": 909,
+            "right": 967
+          },
+          {
+            "label": "max width",
+            "width": 234,
+            "left": 733,
+            "right": 967
+          },
+          {
+            "label": "padding top",
+            "width": 172,
+            "left": 733,
+            "right": 905
+          },
+          {
+            "label": "padding top unit",
+            "width": 58,
+            "left": 909,
+            "right": 967
+          },
+          {
+            "label": "padding right",
+            "width": 172,
+            "left": 733,
+            "right": 905
+          },
+          {
+            "label": "padding right unit",
+            "width": 58,
+            "left": 909,
+            "right": 967
+          },
+          {
+            "label": "padding bottom",
+            "width": 172,
+            "left": 733,
+            "right": 905
+          },
+          {
+            "label": "padding bottom unit",
+            "width": 58,
+            "left": 909,
+            "right": 967
+          },
+          {
+            "label": "padding left",
+            "width": 172,
+            "left": 733,
+            "right": 905
+          },
+          {
+            "label": "padding left unit",
+            "width": 58,
+            "left": 909,
+            "right": 967
+          },
+          {
+            "label": "margin top",
+            "width": 172,
+            "left": 733,
+            "right": 905
+          },
+          {
+            "label": "margin top unit",
+            "width": 58,
+            "left": 909,
+            "right": 967
+          },
+          {
+            "label": "margin right",
+            "width": 172,
+            "left": 733,
+            "right": 905
+          },
+          {
+            "label": "margin right unit",
+            "width": 58,
+            "left": 909,
+            "right": 967
+          },
+          {
+            "label": "margin bottom",
+            "width": 172,
+            "left": 733,
+            "right": 905
+          },
+          {
+            "label": "margin bottom unit",
+            "width": 58,
+            "left": 909,
+            "right": 967
+          },
+          {
+            "label": "margin left",
+            "width": 172,
+            "left": 733,
+            "right": 905
+          },
+          {
+            "label": "margin left unit",
+            "width": 58,
+            "left": 909,
+            "right": 967
+          },
+          {
+            "label": "Gap between children",
+            "width": 234,
+            "left": 733,
+            "right": 967
+          },
+          {
+            "label": "Layout",
+            "width": 234,
+            "left": 733,
+            "right": 967
+          },
+          {
+            "label": "Direction",
+            "width": 234,
+            "left": 733,
+            "right": 967
+          },
+          {
+            "label": "Align children",
+            "width": 234,
+            "left": 733,
+            "right": 967
+          },
+          {
+            "label": "Distribute children",
+            "width": 234,
+            "left": 733,
+            "right": 967
+          },
+          {
+            "label": "Grid columns",
+            "width": 234,
+            "left": 733,
+            "right": 967
+          },
+          {
+            "label": "Style property",
+            "width": 267,
+            "left": 733,
+            "right": 1000
+          },
+          {
+            "label": null,
+            "width": 13,
+            "left": 737,
+            "right": 750
+          },
+          {
+            "label": "Style value",
+            "width": 267,
+            "left": 733,
+            "right": 1000
+          },
+          {
+            "label": "Attribute name",
+            "width": 267,
+            "left": 733,
+            "right": 1000
+          },
+          {
+            "label": "Attribute value",
+            "width": 267,
+            "left": 733,
+            "right": 1000
+          }
+        ]
+      }
+    },
+    {
+      "responsive": {
+        "width": 390,
+        "height": 844,
+        "state": {
+          "heading": "Independent founder heading",
+          "size": "32px",
+          "selection": "Heading · Make room for better work",
+          "selected": [
+            {
+              "name": "▤Heading · Make room for better work",
+              "key": "review|title"
+            }
+          ],
+          "articles": [
+            {
+              "bg": "rgb(170, 136, 51)",
+              "padding": "37px 24px 24px",
+              "paddingTop": "37px"
+            },
+            {
+              "bg": "rgb(204, 221, 238)",
+              "padding": "37px 24px 24px",
+              "paddingTop": "37px"
+            },
+            {
+              "bg": "rgb(204, 221, 238)",
+              "padding": "37px 24px 24px",
+              "paddingTop": "37px"
+            }
+          ],
+          "scroll": 390,
+          "viewport": 390
+        },
+        "controls": [
+          {
+            "label": "Style target",
+            "width": 341,
+            "left": 25,
+            "right": 366
+          },
+          {
+            "label": "Pseudo state",
+            "width": 341,
+            "left": 25,
+            "right": 366
+          },
+          {
+            "label": "Text color picker",
+            "width": 32,
+            "left": 25,
+            "right": 57
+          },
+          {
+            "label": "Text color",
+            "width": 272,
+            "left": 61,
+            "right": 333
+          },
+          {
+            "label": "Font family",
+            "width": 308,
+            "left": 25,
+            "right": 333
+          },
+          {
+            "label": "Text size",
+            "width": 246,
+            "left": 25,
+            "right": 271
+          },
+          {
+            "label": "Text size unit",
+            "width": 58,
+            "left": 275,
+            "right": 333
+          },
+          {
+            "label": "Weight",
+            "width": 308,
+            "left": 25,
+            "right": 333
+          },
+          {
+            "label": "Line height",
+            "width": 246,
+            "left": 25,
+            "right": 271
+          },
+          {
+            "label": "Line height unit",
+            "width": 58,
+            "left": 275,
+            "right": 333
+          },
+          {
+            "label": "Text alignment",
+            "width": 308,
+            "left": 25,
+            "right": 333
+          },
+          {
+            "label": "Background picker",
+            "width": 32,
+            "left": 25,
+            "right": 57
+          },
+          {
+            "label": "Background",
+            "width": 272,
+            "left": 61,
+            "right": 333
+          },
+          {
+            "label": "Border color picker",
+            "width": 32,
+            "left": 25,
+            "right": 57
+          },
+          {
+            "label": "Border color",
+            "width": 272,
+            "left": 61,
+            "right": 333
+          },
+          {
+            "label": "Border width",
+            "width": 246,
+            "left": 25,
+            "right": 271
+          },
+          {
+            "label": "Border width unit",
+            "width": 58,
+            "left": 275,
+            "right": 333
+          },
+          {
+            "label": "Border style",
+            "width": 308,
+            "left": 25,
+            "right": 333
+          },
+          {
+            "label": "Corner radius",
+            "width": 246,
+            "left": 25,
+            "right": 271
+          },
+          {
+            "label": "Corner radius unit",
+            "width": 58,
+            "left": 275,
+            "right": 333
+          },
+          {
+            "label": "width",
+            "width": 308,
+            "left": 25,
+            "right": 333
+          },
+          {
+            "label": "height",
+            "width": 308,
+            "left": 25,
+            "right": 333
+          },
+          {
+            "label": "min width",
+            "width": 246,
+            "left": 25,
+            "right": 271
+          },
+          {
+            "label": "min width unit",
+            "width": 58,
+            "left": 275,
+            "right": 333
+          },
+          {
+            "label": "max width",
+            "width": 308,
+            "left": 25,
+            "right": 333
+          },
+          {
+            "label": "padding top",
+            "width": 246,
+            "left": 25,
+            "right": 271
+          },
+          {
+            "label": "padding top unit",
+            "width": 58,
+            "left": 275,
+            "right": 333
+          },
+          {
+            "label": "padding right",
+            "width": 246,
+            "left": 25,
+            "right": 271
+          },
+          {
+            "label": "padding right unit",
+            "width": 58,
+            "left": 275,
+            "right": 333
+          },
+          {
+            "label": "padding bottom",
+            "width": 246,
+            "left": 25,
+            "right": 271
+          },
+          {
+            "label": "padding bottom unit",
+            "width": 58,
+            "left": 275,
+            "right": 333
+          },
+          {
+            "label": "padding left",
+            "width": 246,
+            "left": 25,
+            "right": 271
+          },
+          {
+            "label": "padding left unit",
+            "width": 58,
+            "left": 275,
+            "right": 333
+          },
+          {
+            "label": "margin top",
+            "width": 246,
+            "left": 25,
+            "right": 271
+          },
+          {
+            "label": "margin top unit",
+            "width": 58,
+            "left": 275,
+            "right": 333
+          },
+          {
+            "label": "margin right",
+            "width": 246,
+            "left": 25,
+            "right": 271
+          },
+          {
+            "label": "margin right unit",
+            "width": 58,
+            "left": 275,
+            "right": 333
+          },
+          {
+            "label": "margin bottom",
+            "width": 246,
+            "left": 25,
+            "right": 271
+          },
+          {
+            "label": "margin bottom unit",
+            "width": 58,
+            "left": 275,
+            "right": 333
+          },
+          {
+            "label": "margin left",
+            "width": 246,
+            "left": 25,
+            "right": 271
+          },
+          {
+            "label": "margin left unit",
+            "width": 58,
+            "left": 275,
+            "right": 333
+          },
+          {
+            "label": "Gap between children",
+            "width": 308,
+            "left": 25,
+            "right": 333
+          },
+          {
+            "label": "Layout",
+            "width": 308,
+            "left": 25,
+            "right": 333
+          },
+          {
+            "label": "Direction",
+            "width": 308,
+            "left": 25,
+            "right": 333
+          },
+          {
+            "label": "Align children",
+            "width": 308,
+            "left": 25,
+            "right": 333
+          },
+          {
+            "label": "Distribute children",
+            "width": 308,
+            "left": 25,
+            "right": 333
+          },
+          {
+            "label": "Grid columns",
+            "width": 308,
+            "left": 25,
+            "right": 333
+          },
+          {
+            "label": "Style property",
+            "width": 341,
+            "left": 25,
+            "right": 366
+          },
+          {
+            "label": null,
+            "width": 13,
+            "left": 29,
+            "right": 42
+          },
+          {
+            "label": "Style value",
+            "width": 341,
+            "left": 25,
+            "right": 366
+          },
+          {
+            "label": "Attribute name",
+            "width": 341,
+            "left": 25,
+            "right": 366
+          },
+          {
+            "label": "Attribute value",
+            "width": 341,
+            "left": 25,
+            "right": 366
+          }
+        ]
+      }
+    },
+    {
+      "resize1440Actual": {
+        "heading": "Independent founder heading",
+        "size": "52px",
+        "selection": "Heading · Make room for better work",
+        "selected": [
+          {
+            "name": "▤Heading · Make room for better work",
+            "key": "review|title"
+          }
+        ],
+        "articles": [
+          {
+            "bg": "rgb(170, 136, 51)",
+            "padding": "37px 24px 24px",
+            "paddingTop": "37px"
+          },
+          {
+            "bg": "rgb(204, 221, 238)",
+            "padding": "37px 24px 24px",
+            "paddingTop": "37px"
+          },
+          {
+            "bg": "rgb(204, 221, 238)",
+            "padding": "37px 24px 24px",
+            "paddingTop": "37px"
+          }
+        ],
+        "scroll": 1440,
+        "viewport": 1440
+      },
+      "display": "Text Size\nOverride\npx\nrem\nem\n%\nvh\nvw\n—\n↺\n\nBrowser now: 52px\n\nValue origin"
+    },
+    {
+      "container480": {
+        "heading": "Independent founder heading",
+        "size": "52px",
+        "selection": "Heading · Make room for better work",
+        "selected": [
+          {
+            "name": "▤Heading · Make room for better work",
+            "key": "review|title"
+          }
+        ],
+        "articles": [
+          {
+            "bg": "rgb(170, 136, 51)",
+            "padding": "16px",
+            "paddingTop": "16px"
+          },
+          {
+            "bg": "rgb(204, 221, 238)",
+            "padding": "16px",
+            "paddingTop": "16px"
+          },
+          {
+            "bg": "rgb(204, 221, 238)",
+            "padding": "16px",
+            "paddingTop": "16px"
+          }
+        ],
+        "scroll": 1440,
+        "viewport": 1440
+      },
+      "display": "Text Size\nOverride\npx\nrem\nem\n%\nvh\nvw\n—\n↺\n\nBrowser now: 52px\n\nValue origin",
+      "dirty": "Reopened · revision 2\nNo unsaved changes"
+    },
+    {
+      "containerMeasurement": {
+        "width": "480",
+        "actual": "16px",
+        "display": "Padding Top\nOverride\npx\nrem\nem\n%\nvh\nvw\n—\n↺\n\nBrowser now: 16px\n\nValue origin",
+        "dirty": "Reopened · revision 2\nNo unsaved changes"
+      }
+    },
+    {
+      "containerMeasurement": {
+        "width": "Full",
+        "actual": "37px",
+        "display": "Padding Top\nOverride\npx\nrem\nem\n%\nvh\nvw\n—\n↺\n\nBrowser now: 37px\n\nValue origin",
+        "dirty": "Reopened · revision 2\nNo unsaved changes"
+      }
+    },
+    {
+      "containerMeasurement": {
+        "width": "390",
+        "actual": "16px",
+        "display": "Padding Top\nOverride\npx\nrem\nem\n%\nvh\nvw\n—\n↺\n\nBrowser now: 16px\n\nValue origin",
+        "dirty": "Reopened · revision 2\nNo unsaved changes"
+      }
+    },
+    {
+      "containerMeasurement": {
+        "width": "Full",
+        "actual": "37px",
+        "display": "Padding Top\nOverride\npx\nrem\nem\n%\nvh\nvw\n—\n↺\n\nBrowser now: 37px\n\nValue origin",
+        "dirty": "Reopened · revision 2\nNo unsaved changes"
+      }
+    },
+    {
+      "narrowTarget": {
+        "value": "32",
+        "type": "number",
+        "origin": "Text Size\nFrom source / preview\npx\nrem\nem\n%\nvh\nvw\n—\n↺\nOverride Text size\n\nBrowser now: 52px\n\nValue origin"
+      }
+    },
+    {
+      "conditionEdited": {
+        "heading": "Independent founder heading",
+        "size": "52px",
+        "selection": "Heading · Make room for better work",
+        "selected": [
+          {
+            "name": "▤Heading · Make room for better work",
+            "key": "review|title"
+          }
+        ],
+        "articles": [
+          {
+            "bg": "rgb(170, 136, 51)",
+            "padding": "37px 24px 24px",
+            "paddingTop": "37px"
+          },
+          {
+            "bg": "rgb(204, 221, 238)",
+            "padding": "37px 24px 24px",
+            "paddingTop": "37px"
+          },
+          {
+            "bg": "rgb(204, 221, 238)",
+            "padding": "37px 24px 24px",
+            "paddingTop": "37px"
+          }
+        ],
+        "scroll": 1440,
+        "viewport": 1440
+      }
+    },
+    {
+      "conditionReset": {
+        "heading": "Independent founder heading",
+        "size": "52px",
+        "selection": "Heading · Make room for better work",
+        "selected": [
+          {
+            "name": "▤Heading · Make room for better work",
+            "key": "review|title"
+          }
+        ],
+        "articles": [
+          {
+            "bg": "rgb(170, 136, 51)",
+            "padding": "37px 24px 24px",
+            "paddingTop": "37px"
+          },
+          {
+            "bg": "rgb(204, 221, 238)",
+            "padding": "37px 24px 24px",
+            "paddingTop": "37px"
+          },
+          {
+            "bg": "rgb(204, 221, 238)",
+            "padding": "37px 24px 24px",
+            "paddingTop": "37px"
+          }
+        ],
+        "scroll": 1440,
+        "viewport": 1440
+      }
+    }
+  ],
+  "errors": []
+}

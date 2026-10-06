@@ -1,0 +1,141 @@
+{
+  "candidate": "1bd745a04334af07934db33211ef7803a2e4cd0b",
+  "logs": [
+    {
+      "name": "1440",
+      "state": {
+        "actual": "46px",
+        "input": "46",
+        "details": "Text Size\nOverride ⓘ\n\nBrowser now: 46px\n\nLocal override\n\npx\nrem\nem\n%\nvh\nvw\n—\nReset",
+        "overflow": false,
+        "header": "Make room for better work.\nLocation · Heading · Make room for better work\nText · appearance on containing element\nContent\nStyle\nBehavior",
+        "reset": [
+          {
+            "width": 42.546875,
+            "client": 41,
+            "scroll": 41
+          }
+        ],
+        "textSizeRect": {
+          "x": 1127,
+          "y": 470.171875,
+          "width": 182.453125,
+          "height": 30,
+          "top": 470.171875,
+          "right": 1309.453125,
+          "bottom": 500.171875,
+          "left": 1127
+        }
+      }
+    },
+    {
+      "name": "container390",
+      "state": {
+        "actual": "46px",
+        "input": "46",
+        "details": "Text Size\nOverride ⓘ\n\nBrowser now: 46px\n\nLocal override\n\npx\nrem\nem\n%\nvh\nvw\n—\nReset",
+        "overflow": false,
+        "header": "Make room for better work.\nLocation · Heading · Make room for better work\nText · appearance on containing element\nContent\nStyle\nBehavior",
+        "reset": [
+          {
+            "width": 42.546875,
+            "client": 41,
+            "scroll": 41
+          }
+        ],
+        "textSizeRect": {
+          "x": 1127,
+          "y": 470.171875,
+          "width": 182.453125,
+          "height": 30,
+          "top": 470.171875,
+          "right": 1309.453125,
+          "bottom": 500.171875,
+          "left": 1127
+        }
+      }
+    },
+    {
+      "name": "window390",
+      "state": {
+        "actual": "32px",
+        "input": "46",
+        "details": "Text Size\nOverride ⓘ\n\nBrowser now: 32px\n\nLocal override\n\npx\nrem\nem\n%\nvh\nvw\n—\nReset\n\nBrowser now: 32px\nResolved in preview",
+        "overflow": false,
+        "header": "Make room for better work.\nLocation · Heading · Make room for better work\nText · appearance on containing element\nContent\nStyle\nBehavior",
+        "reset": [
+          {
+            "width": 42.546875,
+            "client": 41,
+            "scroll": 41
+          }
+        ],
+        "textSizeRect": {
+          "x": 23,
+          "y": 598.671875,
+          "width": 236.453125,
+          "height": 30,
+          "top": 598.671875,
+          "right": 259.453125,
+          "bottom": 628.671875,
+          "left": 23
+        }
+      }
+    },
+    {
+      "name": "back1440",
+      "state": {
+        "actual": "46px",
+        "input": "46",
+        "details": "Text Size\nOverride ⓘ\n\nBrowser now: 46px\n\nLocal override\n\npx\nrem\nem\n%\nvh\nvw\n—\nReset",
+        "overflow": false,
+        "header": "Make room for better work.\nLocation · Heading · Make room for better work\nText · appearance on containing element\nContent\nStyle\nBehavior",
+        "reset": [
+          {
+            "width": 42.546875,
+            "client": 41,
+            "scroll": 41
+          }
+        ],
+        "textSizeRect": {
+          "x": 1127,
+          "y": 470.171875,
+          "width": 182.453125,
+          "height": 30,
+          "top": 470.171875,
+          "right": 1309.453125,
+          "bottom": 500.171875,
+          "left": 1127
+        }
+      }
+    },
+    {
+      "name": "1024",
+      "state": {
+        "actual": "46px",
+        "input": "46",
+        "details": "Text Size\nOverride ⓘ\n\nBrowser now: 46px\n\nLocal override\n\npx\nrem\nem\n%\nvh\nvw\n—\nReset",
+        "overflow": false,
+        "header": "Make room for better work.\nLocation · Heading · Make room for better work\nText · appearance on containing element\nContent\nStyle\nBehavior",
+        "reset": [
+          {
+            "width": 42.546875,
+            "client": 41,
+            "scroll": 41
+          }
+        ],
+        "textSizeRect": {
+          "x": 731,
+          "y": 470.171875,
+          "width": 162.453125,
+          "height": 30,
+          "top": 470.171875,
+          "right": 893.453125,
+          "bottom": 500.171875,
+          "left": 731
+        }
+      }
+    }
+  ],
+  "errors": []
+}

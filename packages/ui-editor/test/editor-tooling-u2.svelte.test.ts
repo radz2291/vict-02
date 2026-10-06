@@ -80,9 +80,14 @@ describe('Inspector (U2-04)', () => {
     });
     try {
       flushSync();
-      // provenance + effective value shown
+      // Common controls now live in the Style section.
+      [...target.querySelectorAll('button')]
+        .find((b) => b.textContent?.trim() === 'Style')
+        ?.click();
+      flushSync();
+      // Provenance and measured browser value shown.
       expect(target.textContent).toContain('n.card');
-      expect(target.textContent).toContain('effective value');
+      expect(target.textContent).toContain('Browser now');
       expect(target.textContent).toContain('rgb(0, 0, 0)');
       // a real value is required (an empty value would be a silent no-op —
       // the button is disabled)
@@ -109,7 +114,11 @@ describe('Inspector (U2-04)', () => {
       select.dispatchEvent(new Event('input', { bubbles: true }));
       select.dispatchEvent(new Event('change', { bubbles: true }));
       flushSync();
-      expect(target.textContent).toContain('base styling is NOT changed');
+      expect(target.textContent).toContain('Edits are saved in this condition');
+      // Switching destination repopulates inputs; author a fresh condition value.
+      setVal.call(valueInput, 'navy');
+      valueInput.dispatchEvent(new Event('input', { bubbles: true }));
+      flushSync();
       applyBase.click();
       flushSync();
       expect(applied?.property).toBe('color');
@@ -168,10 +177,10 @@ describe('Inspector (U2-04)', () => {
     });
     try {
       flushSync();
-      expect(target.textContent).toContain('Inside component');
+      expect(target.textContent).toContain('Component path');
       expect(target.textContent).toContain('def.card');
-      expect(target.textContent).toContain('SHARED definition');
-      expect(target.textContent?.replace(/\s+/g, ' ')).toContain('2 instances update together');
+      expect(target.textContent).toContain('Shared source changes');
+      expect(target.textContent?.replace(/\s+/g, ' ')).toContain('2 authored instances');
     } finally {
       unmount(instance);
       target.remove();
@@ -199,7 +208,7 @@ describe('Layers (U2-07)', () => {
       flushSync();
       const buttons = [...target.querySelectorAll('button')];
       expect(buttons.length).toBeGreaterThanOrEqual(4);
-      const heading = buttons.find((b) => b.textContent?.includes('“text”'));
+      const heading = buttons.find((b) => b.textContent?.includes('Welcome'));
       heading?.click();
       flushSync();
       expect(selected).toEqual(['doc.u2tool|n.heading']);

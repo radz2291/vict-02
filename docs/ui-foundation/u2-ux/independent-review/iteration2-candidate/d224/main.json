@@ -1,0 +1,116 @@
+{
+  "logs": [
+    {
+      "viewport": {
+        "width": 1024,
+        "height": 768,
+        "geometry": {
+          "field": {
+            "top": 399.390625,
+            "bottom": 429.390625
+          },
+          "header": {
+            "top": 157,
+            "bottom": 293.890625
+          },
+          "visible": true,
+          "scrollWidth": 1024,
+          "conditionOpen": false
+        }
+      }
+    },
+    {
+      "measurement": {
+        "width": 1024,
+        "actual": "49px",
+        "display": "Text Size\nOverride ⓘ\n\nBrowser now: 49px\n\nLocal override\n\npx\nrem\nem\n%\nvh\nvw\n—\n↺"
+      }
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "geometry": {
+          "field": {
+            "top": 504.890625,
+            "bottom": 534.890625
+          },
+          "header": {
+            "top": 262.5,
+            "bottom": 399.390625
+          },
+          "visible": true,
+          "scrollWidth": 390,
+          "conditionOpen": false
+        }
+      }
+    },
+    {
+      "measurement": {
+        "width": 390,
+        "actual": "32px",
+        "display": "Text Size\nOverride ⓘ\n\nBrowser now: 32px\n\nLocal override\n\npx\nrem\nem\n%\nvh\nvw\n—\n↺\n\nBrowser now: 32px\ndiffers from edit value"
+      }
+    },
+    {
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "geometry": {
+          "field": {
+            "top": 383.390625,
+            "bottom": 413.390625
+          },
+          "header": {
+            "top": 141,
+            "bottom": 277.890625
+          },
+          "visible": true,
+          "scrollWidth": 1440,
+          "conditionOpen": false
+        }
+      }
+    },
+    {
+      "measurement": {
+        "width": 1440,
+        "actual": "49px",
+        "display": "Text Size\nOverride ⓘ\n\nBrowser now: 49px\n\nLocal override\n\npx\nrem\nem\n%\nvh\nvw\n—\n↺"
+      }
+    },
+    {
+      "scope": "Service card\nLocation · Page\nShared · 3 authored instances\nStyle edits apply to\nShared component\nThis instance · component wrapper\nEditing boundary\nContent\nStyle\nBehavior"
+    },
+    {
+      "alpha": [
+        "rgba(10, 20, 30, 0.35)",
+        "rgba(10, 20, 30, 0.35)",
+        "rgba(10, 20, 30, 0.35)"
+      ]
+    },
+    {
+      "reload": {
+        "heading": "Independent iteration two heading",
+        "alpha": [
+          "rgba(10, 20, 30, 0.35)",
+          "rgba(10, 20, 30, 0.35)",
+          "rgba(10, 20, 30, 0.35)"
+        ]
+      }
+    },
+    {
+      "reopen": "Reopened · revision 2\nNo unsaved changes"
+    },
+    {
+      "container": {
+        "status": "Reopened · revision 2\nNo unsaved changes",
+        "alpha": [
+          "rgba(10, 20, 30, 0.35)",
+          "rgba(10, 20, 30, 0.35)",
+          "rgba(10, 20, 30, 0.35)"
+        ]
+      }
+    }
+  ],
+  "errors": []
+}

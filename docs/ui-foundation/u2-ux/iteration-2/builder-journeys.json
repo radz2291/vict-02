@@ -1,0 +1,36 @@
+{
+  "verdict": "PASS",
+  "observations": [
+    {
+      "firstScreenTextSize": {
+        "top": 527.890625,
+        "bottom": 557.890625
+      }
+    },
+    {
+      "sticky": {
+        "panelTop": 285.5,
+        "headerTop": 285.5
+      }
+    },
+    {
+      "colors": [
+        "rgba(51, 102, 153, 0.5)",
+        "rgba(51, 102, 153, 0.5)",
+        "rgba(51, 102, 153, 0.5)"
+      ],
+      "opacity": "50",
+      "status": "Change applied. Save to keep it.\nUnsaved changes"
+    },
+    {
+      "colors": [
+        "rgba(51, 102, 153, 0.5)",
+        "rgba(51, 102, 153, 0.5)",
+        "rgba(51, 102, 153, 0.5)"
+      ]
+    },
+    {
+      "pageErrors": []
+    }
+  ]
+}

@@ -1,0 +1,141 @@
+{
+  "candidate": "e5931cf30fd2c2cdb0d03a017d77c46b0f35ba31",
+  "logs": [
+    {
+      "name": "1440",
+      "state": {
+        "actual": "46px",
+        "input": "46",
+        "details": "Text Size\nOverride ⓘ\n\nBrowser now: 46px\n\nLocal override\n\npx\nrem\nem\n%\nvh\nvw\n—\nReset",
+        "overflow": false,
+        "header": "Make room for better work.\nLocation · Heading · Make room for better work\nText · appearance on containing element\nContent\nStyle\nBehavior",
+        "reset": [
+          {
+            "width": 29,
+            "client": 27,
+            "scroll": 35
+          }
+        ],
+        "textSizeRect": {
+          "x": 1127,
+          "y": 470.171875,
+          "width": 196,
+          "height": 30,
+          "top": 470.171875,
+          "right": 1323,
+          "bottom": 500.171875,
+          "left": 1127
+        }
+      }
+    },
+    {
+      "name": "container390",
+      "state": {
+        "actual": "46px",
+        "input": "46",
+        "details": "Text Size\nOverride ⓘ\n\nBrowser now: 46px\n\nLocal override\n\npx\nrem\nem\n%\nvh\nvw\n—\nReset",
+        "overflow": false,
+        "header": "Make room for better work.\nLocation · Heading · Make room for better work\nText · appearance on containing element\nContent\nStyle\nBehavior",
+        "reset": [
+          {
+            "width": 29,
+            "client": 27,
+            "scroll": 35
+          }
+        ],
+        "textSizeRect": {
+          "x": 1127,
+          "y": 470.171875,
+          "width": 196,
+          "height": 30,
+          "top": 470.171875,
+          "right": 1323,
+          "bottom": 500.171875,
+          "left": 1127
+        }
+      }
+    },
+    {
+      "name": "window390",
+      "state": {
+        "actual": "32px",
+        "input": "46",
+        "details": "Text Size\nOverride ⓘ\n\nBrowser now: 32px\n\nLocal override\n\npx\nrem\nem\n%\nvh\nvw\n—\nReset\n\nBrowser now: 32px\nResolved in preview",
+        "overflow": false,
+        "header": "Make room for better work.\nLocation · Heading · Make room for better work\nText · appearance on containing element\nContent\nStyle\nBehavior",
+        "reset": [
+          {
+            "width": 29,
+            "client": 27,
+            "scroll": 35
+          }
+        ],
+        "textSizeRect": {
+          "x": 23,
+          "y": 598.671875,
+          "width": 250,
+          "height": 30,
+          "top": 598.671875,
+          "right": 273,
+          "bottom": 628.671875,
+          "left": 23
+        }
+      }
+    },
+    {
+      "name": "back1440",
+      "state": {
+        "actual": "46px",
+        "input": "46",
+        "details": "Text Size\nOverride ⓘ\n\nBrowser now: 46px\n\nLocal override\n\npx\nrem\nem\n%\nvh\nvw\n—\nReset",
+        "overflow": false,
+        "header": "Make room for better work.\nLocation · Heading · Make room for better work\nText · appearance on containing element\nContent\nStyle\nBehavior",
+        "reset": [
+          {
+            "width": 29,
+            "client": 27,
+            "scroll": 35
+          }
+        ],
+        "textSizeRect": {
+          "x": 1127,
+          "y": 470.171875,
+          "width": 196,
+          "height": 30,
+          "top": 470.171875,
+          "right": 1323,
+          "bottom": 500.171875,
+          "left": 1127
+        }
+      }
+    },
+    {
+      "name": "1024",
+      "state": {
+        "actual": "46px",
+        "input": "46",
+        "details": "Text Size\nOverride ⓘ\n\nBrowser now: 46px\n\nLocal override\n\npx\nrem\nem\n%\nvh\nvw\n—\nReset",
+        "overflow": false,
+        "header": "Make room for better work.\nLocation · Heading · Make room for better work\nText · appearance on containing element\nContent\nStyle\nBehavior",
+        "reset": [
+          {
+            "width": 29,
+            "client": 27,
+            "scroll": 35
+          }
+        ],
+        "textSizeRect": {
+          "x": 731,
+          "y": 470.171875,
+          "width": 176,
+          "height": 30,
+          "top": 470.171875,
+          "right": 907,
+          "bottom": 500.171875,
+          "left": 731
+        }
+      }
+    }
+  ],
+  "errors": []
+}

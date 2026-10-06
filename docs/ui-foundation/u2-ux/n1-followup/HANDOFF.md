@@ -1,0 +1,45 @@
+# Final bounded verdict: PASS
+
+Exact independently tested repair **1bd745a04334af07934db33211ef7803a2e4cd0b**, branch codex/ui-foundation-u2-inspector-ux. [Final report](../independent-review/n1-recheck/REVIEW.md) and complete n1-recheck evidence imported verbatim. SHA2561717C185272481830EB2F44EABD10C1695A6CF7E8FF137BF45B4B6E768C3BF43 matches the evaluator delivery. [Earlier e593 FAIL](../independent-review/n1-candidate/REVIEW.md) and its full evidence remain intact; report SHA256CEF997252BC91870AAEDE31214B9CF03E9D344330D34E9F2DC20731A5D3A65F2 matches delivery.
+
+Independent exact repair checks: renderer123/123,18files; design12/12; root/design TypeScript; production build PASS.28 native main observations,7 native live-state transitions and5 responsive host states PASS, with zero page exceptions. Reset label width verified1440/1024/390; no viewport overflow. Canonical command omission, preservation of unrelated/attached sources, one history step, Undo/Redo, save/full reload/reopen and distinct repeated/component occurrence values demonstrated. Live transitions create zero drafts and leave source/digest/revision/dirty/history identical.
+
+Repaired broad Svelte check is still23 errors/four warnings in four unchanged files (repair-broad-svelte.txt plus independent broad-supported.txt). No changed Inspector diagnostics. Host hooks must invalidate arbitrary external/container changes; native pointer/focus/key, source/selection/scope/edit-target/callback and resize are covered. No exhaustive CSS animation/asynchronous stylesheet/disabled-state transition study or founder participant observation is claimed.
+
+This final commit is evidence-only and preserves source bytes from exact1bd. Owner delivery supplies final branch/remote SHA after push and equality verification. Next allowed action is overall U2 manager integration and independent verification of the combined candidate, followed by owner experience acceptance. Compiler acceptance and U2 closure remain PENDING. No merge, deployment, publication or U3/U4 authorization. Earlier chronological builder/candidate records below are retained, including superseded pending statuses.
+
+---
+
+# U2 N1 UX follow-up candidate
+
+Owner amendment: read U2-N1-VERIFY-03.md at e0893feebc3e9783b7a29026c2285929819f86bb and include F1/F2 in this existing Inspector/Layers UX scope. Historical six-part redesign and failures remain intact. Starting own branch tip: 9c743c445f8946af305e9e04ff01740d78639a9e. Branch codex/ui-foundation-u2-inspector-ux remains isolated. Live origin/main is 4d2df037d8a82d36c60bf1bff16919650643ce22. Merge-base with report branch remains the original assigned 83ba87f7aa112a1d93e7236c9c3ec2f4505f6cff. Changes on report branch since that base are records/evidence and the compiler cascade test; no implementation baseline change is required. Compiler acceptance remains separately owned.
+
+## Implementation
+
+Every ordinary style control now has a visible Reset label (accessible Reset property name), with help explaining removal, next applicable cascade and Undo. Existing onReset goes through changeStyle and setStyle with value omitted for base declarations; conditional edits use the existing setConditionalStyle removal path. No new operation or model is introduced. Owned binding declarations remain locked; shared/attached sources are retained. Advanced and spacing Reset controls already use these existing paths.
+
+Inspector now remeasures after Svelte tick on document, selected occurrence, callback, scope, condition and pseudo changes, and on viewport resize. Superseded pending source refreshes are cancelled. Measurements continue to pass the exact selectedOccurrence to the host; editing scope never substitutes a definition id. A selected editing condition does not force preview state. Host hook must read the actual canvas DOM occurrence and must expose reactive invalidation for other external DOM/container changes, as the dedicated review consumer already does. No edits to original workbench, renderer, engine, adapter, session or commands.
+
+## Reproduction and builder evidence
+
+OriginalInspector.svelte is the exact original 83ba87f7 Inspector with only relative import paths adjusted, used as a historical negative control with the real exported Canvas. original-reproduction.json shows 46px annotation after the canvas changes to 61px, with Inspector mounted BEFORE Canvas and no hook refresh workaround. This demonstrates stale measurement timing; it does not claim to reproduce the report's exact Kitchens/Adaptations screenshot pixels. In the same fixture, after-repair.json shows actual and annotation both 61px. The hook uses exact data-ui-occ equality and does not infer definition identity. The earlier Canvas-before-Inspector test did not reproduce the mismatch (before-repair.json retained).
+
+Native Chrome builder probe: 14 observations PASS, zero page exceptions. Base Reset uses setStyleDeclaration with value absent; source declaration disappears; Undo restores 61px and Redo removes it. At 390px, Reset reveals attached narrow source 32px. Conditional edit29/reset32/Undo29 preserve the original attached titleNarrow. Changing editing destination still reports actual active 29px. Switching title/intro and exact cardA/cardB occurrences reports each occurrence's own computed value; pink instance edit/reset/Undo remains occurrence-specific. Current source/history snapshots and final mobile capture are included.
+
+Checks: renderer123/123 passed before the small viewport-resize listener addition; seven affected UX tests passed again after it. Root/design TypeScript, design12/12 and production build passed after that addition. Existing accessibility warnings retained. Current broad Svelte output is separately preserved; no broad gate claimed green. Independent exact candidate challenge pending; a builder pass is not a gate verdict.
+
+Retained harness failures: copied fixture imports originally used one too many parent segments (two selector timeouts); first selection double-prefixed document id; first mobile fixture had no responsive CSS and could not click a field; probe incorrectly sought a nonexistent DOM wrapper occurrence (renderer puts instance styles on the definition root); probe read a deliberately closed value disclosure after destination changes. Corrected only harness/mounting and rerun; failed01/02/03 JSON preserved. Initial Python edit used Windows default decoding and stopped at InspectorControl Unicode; repaired with explicit UTF-8. No source mutation came from failed probe selections/formatters.
+
+## Next allowed action
+
+Independent verifier challenges exact pushed candidate; bounded repair if needed. Then evidence-only handoff and remote SHA verification. Overall U2 manager integrates this slice and independently verifies combined candidate; owner experience acceptance, founder exercise participant result and U2 closure remain PENDING. No main merge, publication, deployment or U3/U4 authorization.
+
+Pushed code candidate: e5931cf30fd2c2cdb0d03a017d77c46b0f35ba31; git ls-remote matched. Full broad check completed at 23 errors/four warnings in four unchanged files; no diagnostics in the changed Inspector components. Independent challenge pending. Candidate whitespace check reported trailing blank lines in the two builder evidence harness files; implementation has no whitespace errors. A final evidence commit will preserve implementation bytes.
+
+## Independent e593 challenge and repair
+
+The evaluator found two in-scope defects at e593: visible Reset text overflowed the retained 29px icon button, and native hover/focus/active transitions left Browser now stale with a plain hook. In its real-renderer repeated row: normal17, hover actual41 vs annotation17, focus actual51 vs annotation17, active actual71 vs annotation17; leave/blur could leave51 while actual17. These are failed candidate observations, not relabeled passing cases. The evaluator independently confirmed edit/reset/history/condition/exact repeated occurrence paths, including an attached instance seed surviving Reset.
+
+Bounded repair: Reset now uses intrinsic button width. Inspector coalesces post-tick refresh on native pointer enter/leave, down/up/cancel, focus in/out and key down/up, plus resize. Handler cleanup cancels pending refreshes. These are DOM measurements only; they create no source/history writes or synthetic preview states. Arbitrary external CSS/container invalidation still belongs to a reactive host hook. Existing six improvements are retained. Previous builder snapshots/JSON are preserved with e593 prefix; fresh ones are after the width repair. Final repaired candidate and independent recheck pending.
+
+Repair builder checks: seven affected UX tests and production build PASS. The real native live-state probe passes all seven normal17→hover41→leave17→focus51→active71→release51→blur/leave17 transitions with matching Browser now and no source/history changes. Fourteen original removal/condition/occurrence observations PASS again, zero page exceptions. These are builder claims pending exact repaired-candidate independent verification.

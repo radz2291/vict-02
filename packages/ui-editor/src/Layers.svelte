@@ -1,142 +1,140 @@
 <script lang="ts">
-  /**
-   * Layers — the reusable occurrence tree for editor surfaces (U2-07).
-   *
-   * Walks the COMPILED PLAN (the same source of truth the canvas renders):
-   * elements, component frames (with slot fills), repeat templates (one
-   * row per unique record identity), conditional branches and slot
-   * fallbacks. Selecting an entry emits the exact occurrence key the
-   * canvas annotates — no duplicated selection logic in the host.
-   */
-  import type { UiRenderPlan, UiRenderInstruction } from '@victframework/ui';
-  import { occurrenceKey } from '@victframework/ui-svelte';
-
-  interface Props {
-    readonly plan: UiRenderPlan;
-    readonly selectedOccurrence?: string;
-    readonly onSelect?: (occurrence: string) => void;
-    readonly ariaLabel?: string;
-  }
-
-  let { plan, selectedOccurrence, onSelect, ariaLabel = 'Layers' }: Props = $props();
-
-  interface LayerEntry {
-    readonly key: string;
-    readonly label: string;
-    readonly detail: string;
-    readonly depth: number;
-  }
-
-  function labelFor(instruction: UiRenderInstruction): string {
-    switch (instruction.kind) {
-      case 'element':
-        return `<${instruction.tag}>`;
-      case 'text':
-        return '“text”';
-      case 'component':
-        return `component ${instruction.definitionId}`;
-      case 'repeat':
-        return `repeat (${instruction.itemName})`;
-      case 'conditional':
-        return 'conditional';
-      case 'slot':
-        return `slot ${instruction.name}`;
-      case 'unsupported':
-        return `unsupported: ${instruction.feature}`;
-      case 'extension':
-        return `extension ${instruction.extensionId}`;
-    }
-  }
-
-  let collapsed = $state(new Set<string>());
-
-  function toggle(key: string): void {
-    const next = new Set(collapsed);
-    if (next.has(key)) next.delete(key);
-    else next.add(key);
-    collapsed = next;
-  }
-
-  function walk(
-    instruction: UiRenderInstruction,
-    depth: number,
-    repeatKeys: readonly string[],
-    out: LayerEntry[],
-  ): void {
-    const key = occurrenceKey(instruction.occurrenceKey, repeatKeys);
-    let label = labelFor(instruction);
-    let detail = '';
-    if (instruction.kind === 'repeat') detail = `template for each ${instruction.itemName}`;
-    if (instruction.kind === 'component') detail = `rev ${instruction.definitionRevision}`;
-    if (instruction.kind === 'slot' && instruction.required) detail = 'required';
-    out.push({ key, label, detail, depth });
-    if (collapsed.has(key) && instruction.kind !== 'text') return;
-    switch (instruction.kind) {
-      case 'element':
-        instruction.children.forEach((child) => walk(child, depth + 1, repeatKeys, out));
-        break;
-      case 'component': {
-        walk(instruction.body, depth + 1, repeatKeys, out);
-        for (const [slotName, fills] of Object.entries(instruction.slots)) {
-          if (fills.length === 0) continue;
-          out.push({
-            key: `${key}::slot:${slotName}`,
-            label: `slot fill: ${slotName}`,
-            detail: '',
-            depth: depth + 1,
-          });
-          fills.forEach((child) => walk(child, depth + 2, repeatKeys, out));
-        }
-        break;
+  import type { UiDocument, UiRenderPlan, UiRenderInstruction } from '@victframework/ui';
+  import { occurrenceKey, resolveValue, uniqueRepeatKeys, asRecord, evaluatedComponentProps, conditionsOf, evaluateCondition, type DocumentScope } from '@victframework/ui-svelte';
+  import { nodeLabel, type EditorLabels } from './inspector-ux.js';
+  import { tick, untrack } from 'svelte';
+  let { plan, document, selectedOccurrence, onSelect, ariaLabel = 'Layers', labels = {}, scope }: {
+    plan: UiRenderPlan; document?: UiDocument; selectedOccurrence?: string; onSelect?: (occurrence: string) => void;
+    ariaLabel?: string; labels?: EditorLabels; scope?: DocumentScope;
+  } = $props();
+  interface Entry { key: string; nodeId: string; label: string; detail: string; parent?: string; depth: number; children: boolean; component: boolean; compact: boolean; selectable: boolean; }
+  let expanded = $state(new Set<string>());
+  let closed = $state(new Set<string>());
+  let focusKey = $state('');
+  let search = $state('');
+  const query = $derived(search.trim().toLocaleLowerCase());
+  let root: HTMLElement;
+  const all = $derived.by(() => {
+    const out: Entry[] = [];
+    function walk(i: UiRenderInstruction, depth: number, keys: readonly string[], parent?: string, values?: DocumentScope, fills: Readonly<Record<string, readonly UiRenderInstruction[]>> = {}, template = false) {
+      const key = occurrenceKey(i.occurrenceKey, keys);
+      const label = document ? nodeLabel(document, i.nodeId, labels) : i.kind === 'text' && i.content.type === 'literal' ? i.content.value : i.kind === 'element' ? i.tag : i.kind === 'component' ? labels.definitions?.[i.definitionId] ?? 'Component' : i.kind;
+      const start = out.length;
+      out.push({ key, nodeId: i.nodeId, label, depth, parent, children: false, component: i.kind === 'component', compact: i.kind === 'component' || (i.kind === 'element' && i.children.every(c => c.kind === 'text')), selectable: !template && !['component', 'repeat', 'conditional', 'slot'].includes(i.kind), detail: `${i.nodeId}${i.kind === 'component' ? ` · definition ${i.definitionId} @ ${i.definitionRevision}` : ''}${keys.length ? ` · record ${keys.join(' / ')}` : ''}${template ? ' · template (runtime scope unavailable)' : ''}` });
+      const child = (instruction: UiRenderInstruction, childValues = values, childKeys = keys, childFills = fills, isTemplate = template) => walk(instruction, depth + 1, childKeys, key, childValues, childFills, isTemplate);
+      if (i.kind === 'element' || i.kind === 'unsupported') i.children.forEach(c => child(c));
+      if (i.kind === 'component') child(i.body, values ? { ...values, props: evaluatedComponentProps(i, values) } : undefined, keys, i.slots);
+      if (i.kind === 'slot') (fills[i.name]?.length ? fills[i.name] : i.fallback).forEach(c => child(c, values, keys, {}));
+      if (i.kind === 'conditional') {
+        if (values) {
+          const branch = i.branches.find(b => b.when === undefined || evaluateCondition(b.when, conditionsOf(plan), values));
+          branch?.children.forEach(c => child(c));
+        } else i.branches.forEach(b => b.children.forEach(c => child(c, values, keys, fills, true)));
       }
-      case 'repeat':
-        walk(instruction.template, depth + 1, repeatKeys, out);
-        break;
-      case 'conditional':
-        instruction.branches.forEach((branch) => {
-          out.push({
-            key: `${key}::branch:${branch.when ?? 'else'}`,
-            label: branch.when === undefined ? 'else' : `when ${branch.when}`,
-            detail: '',
-            depth: depth + 1,
-          });
-          branch.children.forEach((child) => walk(child, depth + 2, repeatKeys, out));
-        });
-        break;
-      case 'slot':
-        instruction.fallback.forEach((child) => walk(child, depth + 1, repeatKeys, out));
-        break;
-      case 'unsupported':
-        instruction.children.forEach((child) => walk(child, depth + 1, repeatKeys, out));
-        break;
-      case 'text':
-      case 'extension':
-        break;
+      if (i.kind === 'repeat') {
+        const rows = values ? resolveValue({ type: 'expression', expression: i.collection }, values) : undefined;
+        if (values && Array.isArray(rows)) {
+          const rowScopes = rows.map(row => ({ ...values, repeatItem: { name: i.itemName, value: asRecord(row) } }));
+          const rowKeys = uniqueRepeatKeys(rowScopes.map((s, index) => String(resolveValue({ type: 'expression', expression: i.key }, s) ?? index)), i.nodeId);
+          rowScopes.forEach((s, index) => child(i.template, s, [...keys, rowKeys[index]], fills));
+        } else child(i.template, values, keys, fills, true);
+      }
+      out[start] = { ...out[start], children: out.length > start + 1 };
     }
-  }
-
-  const entries = $derived.by(() => {
-    const out: LayerEntry[] = [];
-    plan.structure.forEach((instruction) => walk(instruction, 0, [], out));
+    plan.structure.forEach(i => walk(i, 0, [], undefined, scope));
     return out;
   });
+  function isOpen(entry: Entry) { return !closed.has(entry.key) && (!entry.compact || expanded.has(entry.key)); }
+  const matches = $derived(all.filter(entry => `${entry.label} ${entry.detail}`.toLocaleLowerCase().includes(query)));
+  const searchKeys = $derived.by(() => {
+    const keys = new Set<string>();
+    if (!query) return keys;
+    for (const entry of matches) {
+      keys.add(entry.key);
+      let parent = entry.parent;
+      while (parent) { keys.add(parent); parent = all.find(e => e.key === parent)?.parent; }
+    }
+    return keys;
+  });
+  const entries = $derived(all.filter(entry => {
+    if (query) return searchKeys.has(entry.key);
+    let parent = entry.parent;
+    while (parent) { const ancestor = all.find(e => e.key === parent); if (!ancestor || !isOpen(ancestor)) return false; parent = ancestor.parent; }
+    return true;
+  }));
+  function visibleLabel(entry: Entry) {
+    // Expanded text-only elements use their role; the child carries the content.
+    if (entry.compact && !entry.component && (query || isOpen(entry)) && !labels.nodes?.[entry.nodeId]) return entry.label.split(' · ')[0];
+    return entry.label;
+  }
+  const tabStop = $derived(entries.some(entry => entry.key === focusKey) ? focusKey : entries[0]?.key);
+  $effect(() => {
+    if (!selectedOccurrence) return;
+    const entry = all.find(e => e.key === selectedOccurrence);
+    if (!entry) return;
+    untrack(() => {
+      let parent = entry.parent;
+      const nextExpanded = new Set(expanded), nextClosed = new Set(closed);
+      while (parent) { nextExpanded.add(parent); nextClosed.delete(parent); parent = all.find(e => e.key === parent)?.parent; }
+      expanded = nextExpanded; closed = nextClosed;
+    });
+    focusKey = selectedOccurrence;
+  });
+  function toggle(entry: Entry) {
+    if (isOpen(entry)) {
+      let focused = all.find(item => item.key === focusKey);
+      while (focused?.parent) {
+        if (focused.parent === entry.key) { focusKey = entry.key; break; }
+        focused = all.find(item => item.key === focused?.parent);
+      }
+      closed = new Set([...closed, entry.key]);
+    }
+    else { closed = new Set([...closed].filter(k => k !== entry.key)); expanded = new Set([...expanded, entry.key]); }
+  }
+  async function focus(key: string) { focusKey = key; await tick(); Array.from(root.querySelectorAll<HTMLElement>('[role=treeitem]')).find(e => e.dataset.key === key)?.focus(); }
+  function select(entry: Entry) { focusKey = entry.key; if (entry.selectable) onSelect?.(entry.key); else if (entry.children && !query) toggle(entry); }
+  function keyboard(event: KeyboardEvent, entry: Entry) {
+    const index = entries.findIndex(e => e.key === entry.key);
+    let next: string | undefined;
+    if (event.key === 'ArrowDown') next = entries[Math.min(entries.length - 1, index + 1)]?.key;
+    if (event.key === 'ArrowUp') next = entries[Math.max(0, index - 1)]?.key;
+    if (event.key === 'Home') next = entries[0]?.key;
+    if (event.key === 'End') next = entries.at(-1)?.key;
+    if (event.key === 'ArrowRight') { if (!query && entry.children && !isOpen(entry)) toggle(entry); else next = entries[index + 1]?.parent === entry.key ? entries[index + 1]?.key : undefined; }
+    if (event.key === 'ArrowLeft') { if (!query && entry.children && isOpen(entry)) toggle(entry); else next = entry.parent; }
+    if (['ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) event.preventDefault();
+    if (next) void focus(next);
+  }
 </script>
-
-<nav class="uv-layers" aria-label={ariaLabel}>
-  <h2>{ariaLabel}</h2>
+<nav class="uv-layers" aria-label={ariaLabel} bind:this={root}>
+  <header><h2>{ariaLabel}</h2><div class="search"><input type="search" aria-label="Search layers" placeholder="Find an element…" bind:value={search} onkeydown={e => { if (e.key === 'Escape') search = ''; if (e.key === 'ArrowDown' && entries[0]) { e.preventDefault(); void focus(entries[0].key); } }} />{#if query}<button type="button" aria-label="Clear layers search" onclick={() => search = ''}>×</button>{/if}</div>{#if query}<p role="status">{matches.length} matches · ancestors shown</p>{/if}</header>
   <ul role="tree" aria-label="Document layers">
     {#each entries as entry (entry.key)}
-      <li role="treeitem" aria-level={entry.depth + 1} aria-selected={entry.key === selectedOccurrence}>
-        <button
-          type="button"
-          class:uv-layer-selected={entry.key === selectedOccurrence}
-          style:padding-left="{entry.depth * 14 + 8}px"
-          onclick={() => (entry.key.includes('::') ? undefined : onSelect?.(entry.key))}
-          title={entry.detail !== '' ? `${entry.label} — ${entry.detail}` : entry.label}
-        >
-          {entry.label}{#if entry.detail !== ''}<span class="uv-layer-detail">&nbsp;· {entry.detail}</span>{/if}
+      <li role="none" style:padding-left={`${entry.depth * 12}px`}>
+        {#if entry.children}<button class="disclosure" type="button" tabindex="-1" disabled={!!query} aria-label={`${query || isOpen(entry) ? 'Collapse' : 'Expand'} ${entry.label}`} onclick={() => toggle(entry)}>{query || isOpen(entry) ? '⌄' : '›'}</button>{:else}<span class="spacer"></span>{/if}
+        <button type="button" role="treeitem" data-key={entry.key} aria-level={entry.depth + 1} aria-expanded={entry.children ? !!query || isOpen(entry) : undefined} aria-selected={entry.key === selectedOccurrence} tabindex={entry.key === tabStop ? 0 : -1} title={`${entry.label} · ${entry.detail}`} onclick={() => select(entry)} onkeydown={e => keyboard(e, entry)} onfocus={() => focusKey = entry.key}>
+          <span class="icon" aria-hidden="true">{entry.component ? '◇' : entry.children ? '▤' : '·'}</span><span class="name">{visibleLabel(entry)}</span>{#if entry.component}<span class="badge" title="Component" aria-label="Component">◇</span>{/if}
         </button>
       </li>
     {/each}
   </ul>
+  {#if query && !matches.length}<p class="empty" role="status">No matching elements. Clear search to return to the page.</p>{/if}
+  <footer><p>↑ ↓ navigate · → expand · ← collapse · Enter select</p><details><summary>Selection details & provenance</summary><p><strong>{all.find(e => e.key === selectedOccurrence)?.label ?? 'No selected element'}</strong></p><p>{all.find(e => e.key === selectedOccurrence)?.detail}</p><code>{selectedOccurrence ?? ''}</code></details></footer>
 </nav>
+<style>
+  .uv-layers { font: 12px/1.5 var(--ui-editor-font, 'Segoe UI', sans-serif); color: var(--ui-editor-ink, #202938); background: var(--ui-editor-panel, #f8f9fb); min-width: 0; display: flex; flex-direction: column; height: 100%; }
+  header { padding: 14px 12px; border-bottom: 1px solid var(--ui-editor-line, #d7dce5); } h2 { font-size: 13px; margin: 0; } p { font-size: 10px; color: var(--ui-editor-muted, #667085); margin: 3px 0; overflow-wrap: anywhere; }
+  .search { display: flex; gap: 3px; margin-top: 6px; } .search input { width: 100%; min-width: 0; font: inherit; border: 1px solid var(--ui-editor-line, #d7dce5); border-radius: 4px; background: var(--ui-editor-input, #fff); color: inherit; padding: 5px; } .search button { padding: 0 4px; } .empty { padding: 8px 12px; }
+  ul { margin: 0; padding: 8px; list-style: none; overflow: auto; flex: 1; min-height: 100px; }
+  li { display: flex; align-items: stretch; min-height: 32px; }
+  button { border: 0; background: transparent; color: inherit; font: inherit; cursor: pointer; border-radius: 4px; min-width: 0; }
+  [role=treeitem] { display: flex; align-items: center; gap: 5px; flex: 1; padding: 5px; text-align: left; }
+  [aria-selected=true] { background: var(--ui-editor-selection, #edf1ff); color: var(--ui-editor-accent, #355cc9); }
+  .disclosure, .spacer { flex: 0 0 20px; width: 20px; }
+  .name { overflow-wrap: anywhere; min-width: 0; flex: 1; display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .icon { color: var(--ui-editor-muted, #667085); }
+  .badge { font-size: 9px; color: var(--ui-editor-muted, #667085); }
+  :focus-visible { outline: 2px solid var(--ui-editor-accent, #355cc9); outline-offset: -2px; }
+  footer { padding: 10px 12px; border-top: 1px solid var(--ui-editor-line, #d7dce5); } summary { cursor: pointer; font-size: 11px; } code { font-size: 10px; overflow-wrap: anywhere; }
+</style>
+

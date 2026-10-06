@@ -1,0 +1,27 @@
+{
+  "error": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert(colors.every((c) => c === 'rgba(51, 102, 153, 0.5)'))\n",
+  "errors": [],
+  "observations": [
+    {
+      "firstScreenTextSize": {
+        "top": 527.890625,
+        "bottom": 557.890625
+      }
+    },
+    {
+      "sticky": {
+        "panelTop": 285.5,
+        "headerTop": 285.5
+      }
+    },
+    {
+      "colors": [
+        "rgb(51, 102, 153)",
+        "rgb(51, 102, 153)",
+        "rgb(51, 102, 153)"
+      ],
+      "opacity": "100",
+      "status": "Change applied. Save to keep it.\nUnsaved changes"
+    }
+  ]
+}

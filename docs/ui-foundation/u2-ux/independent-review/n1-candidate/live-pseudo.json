@@ -1,0 +1,355 @@
+{
+  "candidate": "e5931cf30fd2c2cdb0d03a017d77c46b0f35ba31",
+  "logs": [
+    {
+      "name": "normal",
+      "state": {
+        "actual": "17px",
+        "details": "Text Size\nPreview ⓘ\n\nBrowser now: 17px\n\nShared source rowHover · hover: 41px; Shared source rowFocus · focus: 51px; Shared source rowActive · active: 71px\n\nOverride Text size\npx\nrem\nem\n%\nvh\nvw\n—\nReset",
+        "input": "17",
+        "reads": [
+          {
+            "occ": "review|row|a",
+            "property": "display",
+            "value": "block"
+          },
+          {
+            "occ": "review|row|a",
+            "property": "display",
+            "value": "block"
+          },
+          {
+            "occ": "review|row|a",
+            "property": "flex-direction",
+            "value": "row"
+          },
+          {
+            "occ": "review|row|a",
+            "property": "flex-direction",
+            "value": "row"
+          },
+          {
+            "occ": "review|row|a",
+            "property": "flex-wrap",
+            "value": "nowrap"
+          },
+          {
+            "occ": "review|row|a",
+            "property": "flex-wrap",
+            "value": "nowrap"
+          },
+          {
+            "occ": "review|row|a",
+            "property": "align-items",
+            "value": "normal"
+          },
+          {
+            "occ": "review|row|a",
+            "property": "align-items",
+            "value": "normal"
+          },
+          {
+            "occ": "review|row|a",
+            "property": "justify-content",
+            "value": "normal"
+          },
+          {
+            "occ": "review|row|a",
+            "property": "justify-content",
+            "value": "normal"
+          },
+          {
+            "occ": "review|row|a",
+            "property": "grid-template-columns",
+            "value": "none"
+          },
+          {
+            "occ": "review|row|a",
+            "property": "grid-template-columns",
+            "value": "none"
+          }
+        ]
+      }
+    },
+    {
+      "name": "pointerHover",
+      "state": {
+        "actual": "41px",
+        "details": "Text Size\nPreview ⓘ\n\nBrowser now: 17px\n\nShared source rowHover · hover: 41px; Shared source rowFocus · focus: 51px; Shared source rowActive · active: 71px\n\nOverride Text size\npx\nrem\nem\n%\nvh\nvw\n—\nReset",
+        "input": "17",
+        "reads": [
+          {
+            "occ": "review|row|a",
+            "property": "display",
+            "value": "block"
+          },
+          {
+            "occ": "review|row|a",
+            "property": "display",
+            "value": "block"
+          },
+          {
+            "occ": "review|row|a",
+            "property": "flex-direction",
+            "value": "row"
+          },
+          {
+            "occ": "review|row|a",
+            "property": "flex-direction",
+            "value": "row"
+          },
+          {
+            "occ": "review|row|a",
+            "property": "flex-wrap",
+            "value": "nowrap"
+          },
+          {
+            "occ": "review|row|a",
+            "property": "flex-wrap",
+            "value": "nowrap"
+          },
+          {
+            "occ": "review|row|a",
+            "property": "align-items",
+            "value": "normal"
+          },
+          {
+            "occ": "review|row|a",
+            "property": "align-items",
+            "value": "normal"
+          },
+          {
+            "occ": "review|row|a",
+            "property": "justify-content",
+            "value": "normal"
+          },
+          {
+            "occ": "review|row|a",
+            "property": "justify-content",
+            "value": "normal"
+          },
+          {
+            "occ": "review|row|a",
+            "property": "grid-template-columns",
+            "value": "none"
+          },
+          {
+            "occ": "review|row|a",
+            "property": "grid-template-columns",
+            "value": "none"
+          }
+        ]
+      }
+    },
+    {
+      "name": "focus",
+      "state": {
+        "actual": "51px",
+        "details": "Text Size\nPreview ⓘ\n\nBrowser now: 17px\n\nShared source rowHover · hover: 41px; Shared source rowFocus · focus: 51px; Shared source rowActive · active: 71px\n\nOverride Text size\npx\nrem\nem\n%\nvh\nvw\n—\nReset",
+        "input": "17",
+        "reads": [
+          {
+            "occ": "review|row|a",
+            "property": "display",
+            "value": "block"
+          },
+          {
+            "occ": "review|row|a",
+            "property": "display",
+            "value": "block"
+          },
+          {
+            "occ": "review|row|a",
+            "property": "flex-direction",
+            "value": "row"
+          },
+          {
+            "occ": "review|row|a",
+            "property": "flex-direction",
+            "value": "row"
+          },
+          {
+            "occ": "review|row|a",
+            "property": "flex-wrap",
+            "value": "nowrap"
+          },
+          {
+            "occ": "review|row|a",
+            "property": "flex-wrap",
+            "value": "nowrap"
+          },
+          {
+            "occ": "review|row|a",
+            "property": "align-items",
+            "value": "normal"
+          },
+          {
+            "occ": "review|row|a",
+            "property": "align-items",
+            "value": "normal"
+          },
+          {
+            "occ": "review|row|a",
+            "property": "justify-content",
+            "value": "normal"
+          },
+          {
+            "occ": "review|row|a",
+            "property": "justify-content",
+            "value": "normal"
+          },
+          {
+            "occ": "review|row|a",
+            "property": "grid-template-columns",
+            "value": "none"
+          },
+          {
+            "occ": "review|row|a",
+            "property": "grid-template-columns",
+            "value": "none"
+          }
+        ]
+      }
+    },
+    {
+      "name": "pointerActive",
+      "state": {
+        "actual": "71px",
+        "details": "Text Size\nPreview ⓘ\n\nBrowser now: 17px\n\nShared source rowHover · hover: 41px; Shared source rowFocus · focus: 51px; Shared source rowActive · active: 71px\n\nOverride Text size\npx\nrem\nem\n%\nvh\nvw\n—\nReset",
+        "input": "17",
+        "reads": [
+          {
+            "occ": "review|row|a",
+            "property": "display",
+            "value": "block"
+          },
+          {
+            "occ": "review|row|a",
+            "property": "display",
+            "value": "block"
+          },
+          {
+            "occ": "review|row|a",
+            "property": "flex-direction",
+            "value": "row"
+          },
+          {
+            "occ": "review|row|a",
+            "property": "flex-direction",
+            "value": "row"
+          },
+          {
+            "occ": "review|row|a",
+            "property": "flex-wrap",
+            "value": "nowrap"
+          },
+          {
+            "occ": "review|row|a",
+            "property": "flex-wrap",
+            "value": "nowrap"
+          },
+          {
+            "occ": "review|row|a",
+            "property": "align-items",
+            "value": "normal"
+          },
+          {
+            "occ": "review|row|a",
+            "property": "align-items",
+            "value": "normal"
+          },
+          {
+            "occ": "review|row|a",
+            "property": "justify-content",
+            "value": "normal"
+          },
+          {
+            "occ": "review|row|a",
+            "property": "justify-content",
+            "value": "normal"
+          },
+          {
+            "occ": "review|row|a",
+            "property": "grid-template-columns",
+            "value": "none"
+          },
+          {
+            "occ": "review|row|a",
+            "property": "grid-template-columns",
+            "value": "none"
+          }
+        ]
+      }
+    },
+    {
+      "name": "normalAgain",
+      "state": {
+        "actual": "17px",
+        "details": "Text Size\nPreview ⓘ\n\nBrowser now: 51px\n\nShared source rowHover · hover: 41px; Shared source rowFocus · focus: 51px; Shared source rowActive · active: 71px\n\nOverride Text size\npx\nrem\nem\n%\nvh\nvw\n—\nReset",
+        "input": "51",
+        "reads": [
+          {
+            "occ": "review|row|a",
+            "property": "display",
+            "value": "block"
+          },
+          {
+            "occ": "review|row|a",
+            "property": "display",
+            "value": "block"
+          },
+          {
+            "occ": "review|row|a",
+            "property": "flex-direction",
+            "value": "row"
+          },
+          {
+            "occ": "review|row|a",
+            "property": "flex-direction",
+            "value": "row"
+          },
+          {
+            "occ": "review|row|a",
+            "property": "flex-wrap",
+            "value": "nowrap"
+          },
+          {
+            "occ": "review|row|a",
+            "property": "flex-wrap",
+            "value": "nowrap"
+          },
+          {
+            "occ": "review|row|a",
+            "property": "align-items",
+            "value": "normal"
+          },
+          {
+            "occ": "review|row|a",
+            "property": "align-items",
+            "value": "normal"
+          },
+          {
+            "occ": "review|row|a",
+            "property": "justify-content",
+            "value": "normal"
+          },
+          {
+            "occ": "review|row|a",
+            "property": "justify-content",
+            "value": "normal"
+          },
+          {
+            "occ": "review|row|a",
+            "property": "grid-template-columns",
+            "value": "none"
+          },
+          {
+            "occ": "review|row|a",
+            "property": "grid-template-columns",
+            "value": "none"
+          }
+        ]
+      }
+    }
+  ]
+}

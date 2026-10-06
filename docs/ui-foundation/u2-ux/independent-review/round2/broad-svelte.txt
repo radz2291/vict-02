@@ -1,0 +1,212 @@
+Loading svelte-check in workspace: c:\Users\RZ1\Desktop\RZ\vict-02-u2-ux-recheck
+Getting Svelte diagnostics...
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-ux-recheck\packages\ui-svelte\src\document\RenderNode.svelte:172:3
+Warn: Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events (svelte)
+{:else if instruction.kind === 'text'}
+  <span
+    class="uv-text"
+    data-ui-node={instruction.nodeId}
+    data-ui-occ={occ}
+    style="display: contents"
+    onclick={(event) => {
+      event.stopPropagation();
+      selectOccurrence?.(occ);
+    }}
+  >
+    {#if instruction.content.type === 'literal'}
+      {instruction.content.value}
+    {:else}
+      {String(resolveValue({ type: 'expression', expression: instruction.content.expression }, scope) ?? '')}
+    {/if}
+  </span>
+{:else if instruction.kind === 'component'}
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-ux-recheck\packages\ui-svelte\src\document\RenderNode.svelte:172:3
+Warn: `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions (svelte)
+{:else if instruction.kind === 'text'}
+  <span
+    class="uv-text"
+    data-ui-node={instruction.nodeId}
+    data-ui-occ={occ}
+    style="display: contents"
+    onclick={(event) => {
+      event.stopPropagation();
+      selectOccurrence?.(occ);
+    }}
+  >
+    {#if instruction.content.type === 'literal'}
+      {instruction.content.value}
+    {:else}
+      {String(resolveValue({ type: 'expression', expression: instruction.content.expression }, scope) ?? '')}
+    {/if}
+  </span>
+{:else if instruction.kind === 'component'}
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-ux-recheck\packages\ui-editor\src\EditorCanvas.svelte:38:30
+Error: Cannot find name 'UiRenderPlan'. (ts)
+    /** The compiled plan (for Layers/activity surfaces composing this canvas). */
+    readonly onPlan?: (plan: UiRenderPlan) => void;
+    readonly ariaLabel?: string;
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-ux-recheck\examples\ui-design-proof\src\routes\service\+page.svelte:8:27
+Error: Cannot find module '$app/environment' or its corresponding type declarations. (ts)
+   */
+  import { browser } from '$app/environment';
+  import { DocumentHost } from '@victframework/ui-svelte';
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-ux-recheck\examples\ui-design-proof\src\routes\workbench\+page.svelte:310:5
+Warn: noninteractive element cannot have nonnegative tabIndex value
+https://svelte.dev/e/a11y_no_noninteractive_tabindex (svelte)
+
+    <div
+      class="wb-resizer"
+      role="separator"
+      aria-orientation="vertical"
+      aria-label="Resize inspector (left and right arrows)"
+      tabindex="0"
+      onpointerdown={startDrag}
+      onkeydown={onSeparatorKey}
+    ></div>
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-ux-recheck\examples\ui-design-proof\src\routes\workbench\+page.svelte:310:5
+Warn: Non-interactive element `<div>` should not be assigned mouse or keyboard event listeners
+https://svelte.dev/e/a11y_no_noninteractive_element_interactions (svelte)
+
+    <div
+      class="wb-resizer"
+      role="separator"
+      aria-orientation="vertical"
+      aria-label="Resize inspector (left and right arrows)"
+      tabindex="0"
+      onpointerdown={startDrag}
+      onkeydown={onSeparatorKey}
+    ></div>
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-ux-recheck\examples\ui-design-proof\src\routes\workbench\+page.svelte:12:27
+Error: Cannot find module '$app/environment' or its corresponding type declarations. (ts)
+   */
+  import { browser } from '$app/environment';
+  import {
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-ux-recheck\examples\ui-design-proof\src\routes\workbench\+page.svelte:77:27
+Error: Block-scoped variable '$state' used before its declaration. (ts)
+
+  const blades: Blade[] = $state(DOCUMENTS.map(openBlade));
+  let currentId = $state<'service' | 'fixture'>('service');
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-ux-recheck\examples\ui-design-proof\src\routes\workbench\+page.svelte:78:7
+Error: 'currentId' implicitly has type 'any' because it does not have a type annotation and is referenced directly or indirectly in its own initializer. (ts)
+  const blades: Blade[] = $state(DOCUMENTS.map(openBlade));
+  let currentId = $state<'service' | 'fixture'>('service');
+  let version = $state(0);
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-ux-recheck\examples\ui-design-proof\src\routes\workbench\+page.svelte:78:19
+Error: Block-scoped variable '$state' used before its declaration. (ts)
+  const blades: Blade[] = $state(DOCUMENTS.map(openBlade));
+  let currentId = $state<'service' | 'fixture'>('service');
+  let version = $state(0);
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-ux-recheck\examples\ui-design-proof\src\routes\workbench\+page.svelte:78:19
+Error: Untyped function calls may not accept type arguments. (ts)
+  const blades: Blade[] = $state(DOCUMENTS.map(openBlade));
+  let currentId = $state<'service' | 'fixture'>('service');
+  let version = $state(0);
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-ux-recheck\examples\ui-design-proof\src\routes\workbench\+page.svelte:79:7
+Error: 'version' implicitly has type 'any' because it does not have a type annotation and is referenced directly or indirectly in its own initializer. (ts)
+  let currentId = $state<'service' | 'fixture'>('service');
+  let version = $state(0);
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-ux-recheck\examples\ui-design-proof\src\routes\workbench\+page.svelte:79:17
+Error: Block-scoped variable '$state' used before its declaration. (ts)
+  let currentId = $state<'service' | 'fixture'>('service');
+  let version = $state(0);
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-ux-recheck\examples\ui-design-proof\src\routes\workbench\+page.svelte:81:9
+Error: 'current' implicitly has type 'any' because it does not have a type annotation and is referenced directly or indirectly in its own initializer. (ts)
+
+  const current = $derived(blades.find((blade) => blade.doc.id === currentId) ?? blades[0]);
+  const state = $derived(
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-ux-recheck\examples\ui-design-proof\src\routes\workbench\+page.svelte:82:9
+Error: 'state' implicitly has type 'any' because it does not have a type annotation and is referenced directly or indirectly in its own initializer. (ts)
+  const current = $derived(blades.find((blade) => blade.doc.id === currentId) ?? blades[0]);
+  const state = $derived(
+    (version, current?.bridge.getSnapshot()),
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-ux-recheck\examples\ui-design-proof\src\routes\workbench\+page.svelte:83:6
+Error: Left side of comma operator is unused and has no side effects. (ts)
+  const state = $derived(
+    (version, current?.bridge.getSnapshot()),
+  );
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-ux-recheck\examples\ui-design-proof\src\routes\workbench\+page.svelte:87:37
+Error: Left side of comma operator is unused and has no side effects. (ts)
+  // Svelte's reactivity, so the canvas/inspector re-render off `version`.
+  const workingDocument = $derived((version, current.bridge.document));
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-ux-recheck\examples\ui-design-proof\src\routes\workbench\+page.svelte:95:28
+Error: Untyped function calls may not accept type arguments. (ts)
+  // --- selection + plan + activity --------------------------------------
+  let selectedOccurrence = $state<string | undefined>(undefined);
+  let plan = $state<UiRenderPlan | undefined>(undefined);
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-ux-recheck\examples\ui-design-proof\src\routes\workbench\+page.svelte:96:14
+Error: Untyped function calls may not accept type arguments. (ts)
+  let selectedOccurrence = $state<string | undefined>(undefined);
+  let plan = $state<UiRenderPlan | undefined>(undefined);
+  let activity = $state<{ at: number; kind: 'info' | 'error' | 'save'; text: string }[]>([]);
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-ux-recheck\examples\ui-design-proof\src\routes\workbench\+page.svelte:97:18
+Error: Untyped function calls may not accept type arguments. (ts)
+  let plan = $state<UiRenderPlan | undefined>(undefined);
+  let activity = $state<{ at: number; kind: 'info' | 'error' | 'save'; text: string }[]>([]);
+  let activityOpen = $state(true);
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-ux-recheck\examples\ui-design-proof\src\routes\workbench\+page.svelte:165:16
+Error: Untyped function calls may not accept type arguments. (ts)
+  ] as const;
+  let sizeId = $state<(typeof SIZES)[number]['id']>('full');
+  const frameWidth = $derived(SIZES.find((size) => size.id === sizeId)?.width ?? '100%');
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-ux-recheck\examples\ui-design-proof\src\routes\workbench\+page.svelte:223:34
+Error: 'condition' is of type 'unknown'. (ts)
+    Object.entries(current.doc.seed.conditions ?? {})
+      .filter(([, condition]) => condition.kind === 'media' || condition.kind === 'container')
+      .map(([id, condition]) => ({
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-ux-recheck\examples\ui-design-proof\src\routes\workbench\+page.svelte:223:64
+Error: 'condition' is of type 'unknown'. (ts)
+    Object.entries(current.doc.seed.conditions ?? {})
+      .filter(([, condition]) => condition.kind === 'media' || condition.kind === 'container')
+      .map(([id, condition]) => ({
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-ux-recheck\examples\ui-design-proof\src\routes\workbench\+page.svelte:227:11
+Error: 'condition' is of type 'unknown'. (ts)
+        label:
+          condition.kind === 'media'
+            ? `Window: ${condition.query}`
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-ux-recheck\examples\ui-design-proof\src\routes\workbench\+page.svelte:228:26
+Error: 'condition' is of type 'unknown'. (ts)
+          condition.kind === 'media'
+            ? `Window: ${condition.query}`
+            : `Container “${condition.name}”: ${condition.query}`,
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-ux-recheck\examples\ui-design-proof\src\routes\workbench\+page.svelte:229:29
+Error: 'condition' is of type 'unknown'. (ts)
+            ? `Window: ${condition.query}`
+            : `Container “${condition.name}”: ${condition.query}`,
+      })),
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-ux-recheck\examples\ui-design-proof\src\routes\workbench\+page.svelte:229:49
+Error: 'condition' is of type 'unknown'. (ts)
+            ? `Window: ${condition.query}`
+            : `Container “${condition.name}”: ${condition.query}`,
+      })),
+
+====================================
+svelte-check found 23 errors and 4 warnings in 4 files

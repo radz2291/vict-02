@@ -1,0 +1,17 @@
+
+> ui-design-proof@0.1.0 test
+> vitest run
+
+
+ RUN  v4.1.11 C:/Users/RZ1/Desktop/RZ/vict-02-u2-n1-review/examples/ui-design-proof
+
+5:51:27 am [vite-plugin-svelte] C:/Users/RZ1/Desktop/RZ/vict-02-u2-n1-review/packages/ui-svelte/src/document/RenderNode.svelte:172:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+5:51:27 am [vite-plugin-svelte] C:/Users/RZ1/Desktop/RZ/vict-02-u2-n1-review/packages/ui-svelte/src/document/RenderNode.svelte:172:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+
+ Test Files  1 passed (1)
+      Tests  12 passed (12)
+   Start at  05:51:23
+   Duration  14.10s (transform 10.02s, setup 0ms, import 12.83s, tests 85ms, environment 841ms)
+
