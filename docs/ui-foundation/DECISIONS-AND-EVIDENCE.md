@@ -344,21 +344,41 @@ rejection→correction→resubmission journey UI is U3 scope (the adapter alread
 
 Independent falsification review of the candidate: **DONE — see the two rounds below.**
 
-## U1 reopen round 3 (2026-10-06) — three bounded repairs; round-2 verdict preserved
+## U1 reopen round 3 (2026-10-06) — repairs verified; "U1-ROUND3 GATE: PASS"
 
-The owner directed a third bounded round against the round-2 verified candidate
-`3bd03a5d…` (whose "U1-REOPEN GATE: PASS" verdict remains preserved evidence of that exact
-snapshot): (1) working-session undo/redo must survive SUCCESSFUL saves — the round-2
-FINDING-1 — repairing the history comparison (never by removing revision information from
-the canonical application identity); (2) staged-save commits must not discard accepted edits
-— round-2 FINDING-2 — including direct stage→edit→commit and synchronous reentrancy through
-the injected `DocumentStorePort.save()` callback, with truthful storage acknowledgment
-(a commit rejected after persistence must not strand the store advanced against a stale
-session baseline); (3) corrupt/incompatible document loading must produce diagnostics
-reliably (unsupported schema, missing node registry, empty document, null node, malformed
-child/branch structures), preserve unreadable stored bytes, and correct the banner's
-replacement claim when the store refuses overwrite. Round-2 findings register retained;
-superseded readiness claims remain historically documented above.
+Builder repairs at candidate `c1e3d0fec930a2a11341181061d537f16ec065ab` (parent: reopening
+record `ba29828`), verified by a fresh independent verifier (out-of-repo harness
+`u1-round3-falsify/`; worktree restored clean; one infrastructure interruption — a transient
+network timeout — resolved by resuming the same verifier session with re-orientation).
+Exact verdict: **"U1-ROUND3 GATE: PASS" (with non-blocking findings F1, F2)** — report
+[U1-ROUND3-REVIEW-04.md](reviews/U1-ROUND3-REVIEW-04.md), sha256
+`fd151713aa4345eb0653c648eace64eeb4a774cc8a796d0f74c760bd082cd12b`, 11 evidence screenshots
+(`reviews/round3/`). Finding-to-fix map (all independently attacked and held):
+
+| Directed finding | Fix | Location | Evidence |
+|---|---|---|---|
+| Undo/redo broke across successful saves (round-2 FINDING-1) | History continuity + isDirty compare HISTORY identity (canonical bytes with the document-level revision stamp normalized); canonical application identity (contentDigest) untouched | `packages/ui/src/session.ts` (`historyIdentity`, undo/redo guards, isDirty) | 5/5 package attacks + browser journey 13 (edit→save→undo→redo; divergence still refuses); `edit-session.test.ts` history matrix |
+| Staged commits could discard accepted edits (round-2 FINDING-2) | `commitSave` guards: stage OWNERSHIP (only the session's most recent stage object), stored-revision moves, working-session moves (intervening edit PRESERVED, commit refused); `EditorBridge` refuses apply/undo/redo during the save window (`UI_EDIT_SAVE_IN_PROGRESS`, try/finally reset) and reports post-persistence refusal truthfully | `packages/ui/src/session.ts`, `packages/ui-editor/src/bridge.ts` | 9/9 attacks incl. direct stage→edit→commit, synchronous store-callback reentrancy, cross-session stage, nested-save refusal; live two-tab stale-editor fencing; `bridge-save.test.ts` |
+| Malformed stored documents could throw or fake a reopen; banner replacement claim untruthful for unreadable payloads | Envelope-shape hardening before deep access (unsupported schema, missing registry, empty document, null/malformed nodes, root); validation wrapped (never throws past the gate); `overwritable` classification; unreadable payloads PRESERVED (save refuses, `UI_STORE_CORRUPT`); readable envelopes baseline the seeded editor at the RECORDED revision so replacement saves are actually accepted; banner truthful per class | `examples/ui-authoring-proof/src/lib/authoring/store.ts`, studio `+page.svelte`, `packages/ui-editor/src/bridge.ts` (passthrough) | 9/10 attacks + browser journeys 14 (PRESERVED banner + save refusal + bytes intact; overwritable banner + replacement save accepted at the recorded revision); `authoring-persistence.test.ts` |
+
+Retained proven behaviors: the TWELVE previous probes re-verified (suite-level; probes 6–12
+not re-driven as individual browser journeys — disclosed limitation). Gates at the
+candidate: unit 2483/2483, renderer 108/108, integration 4/4, example 28/28, typecheck 0,
+format clean, check:ui 0 errors (2 known warnings), console sweep zero.
+
+New findings (minor, non-blocking):
+- **F1**: wrong-format envelope with readable `storedRevision` classified `overwritable:
+  false` but `save()` at the matching revision accepts (multi-tab overwrite of "preserved"
+  bytes possible; not reachable via the single-studio flow). Owner: U-track builder; next
+  check: classification by envelope-readability + revision-consistency together.
+- **F2**: startup corruption banner outlives the successful replacement save. Owner:
+  U-track builder; next check: clear `storeDiagnostic` on successful save.
+
+Not covered (disclosed): literal browser-process restart (mechanism guarantee:
+localStorage is persistent per-origin storage; reload + route reopen demonstrated);
+individual browser journeys for probes 6–12 (suite-verified). Round-2 FINDING-1/FINDING-2
+are RESOLVED by this round. Earlier verdicts/reports remain preserved historical evidence
+of their exact snapshots.
 
 ## U1 reopen round 2 (2026-10-06) — repairs verified; "U1-REOPEN GATE: PASS"
 

@@ -1,7 +1,52 @@
 # UI foundation — current state
 
-**2026-10-06 (latest) — U1 REOPENED AGAIN (round 3) for three bounded repairs; prior verified
-candidate preserved.** The owner directed resolution of: (1) working-session undo/redo must
+**2026-10-06 (latest) — U1 ROUND-3 REPAIRS INDEPENDENTLY VERIFIED: "U1-ROUND3 GATE: PASS"; owner checkpoint pending; branch not yet pushed.**
+Fresh independent verification of candidate `c1e3d0fec930a2a11341181061d537f16ec065ab`
+([U1-ROUND3-REVIEW-04.md](reviews/U1-ROUND3-REVIEW-04.md), sha256
+`fd151713aa4345eb0653c648eace64eeb4a774cc8a796d0f74c760bd082cd12b`; 11 evidence screenshots;
+verifier harness out-of-repo; worktree restored clean; dev server killed, port freed;
+origin/main live-verified twice at `4d2df037…` — unmoved). All three repair claims held:
+- **Claim A — history across saves:** 5/5 package attacks + real-browser journey (undo/redo
+  continuity, dirty state, revision progression survive saves; genuine divergence still
+  refuses; canonical application identity untouched).
+- **Claim B — staged-commit preservation:** 9/9 attacks (cross-session stage, superseded
+  stage, double-commit, working-move preservation, `UI_EDIT_SAVE_IN_PROGRESS` reentrancy,
+  thrown/rejected writes, retry revisioning, stale-writer, nested-save truthful refusal) +
+  live two-tab stale-editor fencing.
+- **Claim C — load diagnostics:** every named malformed class (unsupported schema, missing
+  node registry, empty document, null node, malformed child/branch structures) yields
+  `invalid` with a message, zero console exceptions; unreadable bytes preserved behind a
+  truthful PRESERVED banner (save refuses, `UI_STORE_CORRUPT`); replacement saves accepted
+  at the recorded revision.
+
+All TWELVE previous probes re-verified (suite-level; probes 6–12 were not re-driven as
+individual browser journeys — disclosed). Gates at the candidate: unit 2483/2483, renderer
+108, integration 4, example 28, typecheck 0, format clean, check:ui 0 errors (2 known
+warnings).
+
+Remaining (minor, non-blocking, from the round-3 review):
+- **F1 (minor):** a wrong-format envelope with a readable `storedRevision` is classified
+  `overwritable: false`, yet `save()` at the matching revision accepts — a multi-tab writer
+  could overwrite "preserved" bytes; not reachable through the single-studio flow. Owner:
+  U-track builder; next check: classify by envelope-readability + revision-consistency
+  together, or refuse overwrite whenever the document is unreadable.
+- **F2 (minor):** the startup corruption banner outlives the successful replacement save
+  (stale diagnostic until reload). Owner: U-track builder; next check: clear
+  `storeDiagnostic` on successful save.
+- Carried: R2-2/R2-3 notes; in-memory simulated domain store (U3-05); diagnostic code-name
+  reconciliation; host-side timing method; ui-editor `build` script (.svelte, pre-existing,
+  exports→src); FINDING-1/2 from round 2 are RESOLVED by this round (history-across-saves,
+  staged-commit guards).
+
+Not covered (disclosed): literal browser-process restart (mechanism guarantee: localStorage
+is persistent per-origin storage; reload + route reopen demonstrated); individual browser
+journeys for probes 6–12 (suite-verified).
+
+Next: normal push, remote SHA verification, **owner checkpoint at the U1 boundary**. U2
+remains unauthorized.
+
+**2026-10-06 — U1 REOPENED AGAIN (round 3) for three bounded repairs; prior verified
+candidate preserved (history).** The owner directed resolution of: (1) working-session undo/redo must
 survive successful saves (history comparison, not canonical-identity, must be repaired);
 (2) staged-save commits must never discard accepted edits (guard working-session moves and
 cross-session stages; challenge direct stage→edit→commit and synchronous reentrancy through
@@ -217,7 +262,7 @@ application, repository integration or Stage 9 change was implemented at that ti
 | Pack drafting | COMPLETE | Candidate 02; final reporting metadata folded afterward | Installed 2026-10-06; see decisions §U0 installation record |
 | Pack independent review | PASS — documentation only | Candidate 01: 8d2683a2a1aae7740755326af597eeed16b4a7a44cfdaf4a9d60cd8b76318e6d; candidate 02: db369614c97119762995480d3ad277b92d21e2eb812739d770bc16bf2df6b15a | Reports preserved under reviews/ |
 | U0 repository establishment/freeze | **CLOSED — amended contract frozen (22 pins) and freeze-byte verified; owner accepted; pushed (`a664c70…` → `9734690…` fast-forward)** | Candidates `54490a8…`/`9ec87f3…`; freeze records `ffbafc0…`/`ea47edd…`; four independent verdicts incl. FREEZE VERIFIED (`9b80f3d4…`) | None — closed. Preserve freeze records and historical evidence |
-| U1 rendering/editing loop | **REOPENED (round 3) — three bounded repairs in progress** (handoff [U1-HANDOFF](U1-HANDOFF.md)) | Round-2 candidate `3bd03a5d…` + verdict preserved; readiness superseded for: undo/redo across saves, staged-commit edit preservation, malformed-load diagnostics | Repair → regression tests + browser evidence → fresh verifier (12 prior probes + new failure cases) → push, remote SHA verify, owner checkpoint; U2 unauthorized |
+| U1 rendering/editing loop | **ROUND-3 VERIFIED — owner checkpoint pending** (handoff [U1-HANDOFF](U1-HANDOFF.md)) | Candidate `c1e3d0fe…`; verdict "U1-ROUND3 GATE: PASS" ([U1-ROUND3-REVIEW-04](reviews/U1-ROUND3-REVIEW-04.md)); claims A/B/C held, 12 prior probes re-verified; findings F1/F2 (minor, non-blocking) + carried notes | Normal push, remote SHA verify, owner checkpoint; U2 unauthorized |
 | U2 breadth | PLANNED | None | Requires U1 pass and its own accepted scope |
 | U3 realism | PLANNED | None | Requires U2 and its own accepted scope |
 | U4 reuse/handoff | PLANNED | None | Requires U3 and its own accepted scope |
