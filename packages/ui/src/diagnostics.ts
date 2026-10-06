@@ -35,6 +35,7 @@ export type UiDiagnosticCode =
   | 'UI_EDIT_REFERENCE_REMAINS'
   | 'UI_EDIT_REQUEST_CONFLICT'
   | 'UI_EDIT_UNDO_CONFLICT'
+  | 'UI_EDIT_SAVE_IN_PROGRESS'
   | 'UI_DOC_STALE_REVISION'
   // extensions and occurrences
   | 'EXTENSION_UNAVAILABLE'

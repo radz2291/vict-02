@@ -58,6 +58,8 @@ export type UiSaveOutcome =
 export interface UiStagedSave {
   /** The stored revision the stage was computed from (commit guard). */
   readonly fromStoredRevision: string;
+  /** The working sequence at stage time (commit guard: working moved?). */
+  readonly fromWorkingSequence: number;
   readonly storedRevision: string;
   readonly document: UiDocument;
   readonly contentDigest: string;
@@ -83,6 +85,8 @@ export class UiEditSession {
   #redoStack: HistoryEntry[] = [];
   #idempotency = new Map<string, IdempotencyRecord>();
   #sequence = 0;
+  /** The stage returned by the most recent stageSave (commit ownership guard). */
+  #pendingStage: UiStagedSave | undefined = undefined;
   readonly #catalogs: UiCatalogs | undefined;
 
   private constructor(
@@ -141,10 +145,10 @@ export class UiEditSession {
   }
 
   isDirty(): boolean {
-    return (
-      canonicalUiDocument(this.#working.document).contentDigest !==
-      canonicalUiDocument(this.#storedDocument).contentDigest
-    );
+    // Dirt is CONTENT not yet persisted: compared by history identity (the
+    // document-level revision stamp differs by design between the working
+    // lineage and the saved bytes — see historyIdentity).
+    return historyIdentity(this.#working.document) !== historyIdentity(this.#storedDocument);
   }
 
   canUndo(): boolean {
@@ -224,10 +228,14 @@ export class UiEditSession {
       };
     }
     // Revalidation: the undo applies only when history still ends at the
-    // current working revision.
+    // current working revision. Compared by HISTORY identity (canonical bytes
+    // with the document-level revision stamp normalized): a save stamps the
+    // working document's `revision` without changing its content, so history
+    // captured before a save still matches afterwards. Canonical application
+    // identity (contentDigest) is untouched.
     if (this.#working.document !== entry.after) {
-      const currentDigest = canonicalUiDocument(this.#working.document).contentDigest;
-      const afterDigest = canonicalUiDocument(entry.after).contentDigest;
+      const currentDigest = historyIdentity(this.#working.document);
+      const afterDigest = historyIdentity(entry.after);
       if (currentDigest !== afterDigest) {
         return {
           ok: false,
@@ -264,8 +272,8 @@ export class UiEditSession {
         ],
       };
     }
-    const currentDigest = canonicalUiDocument(this.#working.document).contentDigest;
-    const beforeDigest = canonicalUiDocument(entry.before).contentDigest;
+    const currentDigest = historyIdentity(this.#working.document);
+    const beforeDigest = historyIdentity(entry.before);
     if (this.#working.document !== entry.before && currentDigest !== beforeDigest) {
       return {
         ok: false,
@@ -330,32 +338,77 @@ export class UiEditSession {
     }
     const nextStored = advanceStoredRevision(this.#storedRevision);
     const saved: UiDocument = { ...this.#working.document, revision: nextStored };
-    return {
-      ok: true,
-      staged: {
-        fromStoredRevision: this.#storedRevision,
-        storedRevision: nextStored,
-        document: saved,
-        contentDigest: canonicalUiDocument(saved).contentDigest,
-      },
+    const staged: UiStagedSave = {
+      fromStoredRevision: this.#storedRevision,
+      fromWorkingSequence: this.#sequence,
+      storedRevision: nextStored,
+      document: saved,
+      contentDigest: canonicalUiDocument(saved).contentDigest,
     };
+    // Recorded on THIS session: only the exact object returned by the most
+    // recent stageSave can commit (a stage from another session, or a stale
+    // stage superseded by a later one, is rejected).
+    this.#pendingStage = staged;
+    return { ok: true, staged };
   }
 
   /**
    * Two-phase save, commit: apply a staged save after the host's persistence
-   * succeeded. Guarded — the commit is rejected if the session moved since
-   * the stage was computed.
+   * succeeded. Guards, all checked BEFORE any mutation: (a) the staged object
+   * must be this session's most recent stage (a stage from another session,
+   * or a stale stage superseded by a later one, is rejected); (b) the stored
+   * revision must not have moved since the stage; (c) the working session
+   * must not have moved since the stage — an edit/undo/redo accepted between
+   * stage and commit is PRESERVED and the commit is refused, so staged bytes
+   * can never silently replace newer working state.
+   *
+   * If a host's persistence already wrote when the commit is refused, the
+   * session truthfully keeps its pre-commit state (edits intact, older saved
+   * baseline, still dirty): the host MUST reconcile by reopening from the
+   * authoritative store — the session never claims the uncommitted baseline
+   * was saved. `EditorBridge` prevents that situation by refusing edits for
+   * the whole save window.
    */
   commitSave(
     staged: UiStagedSave,
   ): { readonly ok: true } | { readonly ok: false; readonly issues: readonly UiDiagnostic[] } {
+    if (staged !== this.#pendingStage) {
+      return {
+        ok: false,
+        issues: [
+          uiDiagnostic(
+            'UI_DOC_STALE_REVISION',
+            'Commit rejected: this staged save does not belong to the current session state.',
+            {
+              expectedRevision: staged.fromStoredRevision,
+              storedRevision: this.#storedRevision,
+            },
+          ),
+        ],
+      };
+    }
     if (staged.fromStoredRevision !== this.#storedRevision) {
       return {
         ok: false,
         issues: [
           uiDiagnostic(
             'UI_DOC_STALE_REVISION',
-            'Commit rejected: the session moved since the save was staged.',
+            'Commit rejected: the stored revision moved since the save was staged.',
+            {
+              expectedRevision: staged.fromStoredRevision,
+              storedRevision: this.#storedRevision,
+            },
+          ),
+        ],
+      };
+    }
+    if (staged.fromWorkingSequence !== this.#sequence) {
+      return {
+        ok: false,
+        issues: [
+          uiDiagnostic(
+            'UI_DOC_STALE_REVISION',
+            'Commit rejected: the working session moved since the save was staged; the intervening edits are preserved.',
             {
               expectedRevision: staged.fromStoredRevision,
               storedRevision: this.#storedRevision,
@@ -372,6 +425,7 @@ export class UiEditSession {
       revision: `${staged.storedRevision}#${this.#sequence + 1}`,
     };
     this.#sequence += 1;
+    this.#pendingStage = undefined;
     return { ok: true };
   }
 
@@ -393,6 +447,17 @@ export class UiEditSession {
   }
 }
 
+/**
+ * History-continuity identity: the canonical bytes with the document-level
+ * revision stamp normalized away. A successful save stamps the working
+ * document's revision field without changing content, so history entries
+ * captured before a save must still match the working document afterwards.
+ * Canonical application identity (contentDigest) is NOT affected — this
+ * normalization exists only for undo/redo continuity comparisons.
+ */
+function historyIdentity(document: UiDocument): string {
+  return canonicalUiDocument({ ...document, revision: '' }).contentDigest;
+}
 function fingerprintOf(transaction: UiEditTransaction): string {
   return canonicalUiDocument({
     expectedDocumentRevision: transaction.expectedDocumentRevision,

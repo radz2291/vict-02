@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 // Import the bridge module directly: the unit project has no Svelte toolchain
 // (the barrel re-exports .svelte components; the bridge itself is neutral).
 import { EditorBridge, type DocumentStorePort } from '../src/bridge.js';
+import { UiEditSession } from '@victframework/ui';
 import type { UiDocument } from '@victframework/ui';
 
 function document(): UiDocument {
@@ -174,6 +175,87 @@ describe('EditorBridge two-phase save (store is the revision authority)', () => 
     });
   });
 
+  it('an edit accepted between stage and commit is PRESERVED and the commit is refused', () => {
+    const store = memoryStore({ document: document(), storedRevision: '1' });
+    const seed = { document: document(), storedRevision: '1' };
+    const bridge = bridgeOver(store.port, seed);
+    // direct two-phase drive: stage, then sneak an edit in, then commit
+    const session = bridge.session;
+    const staged = session.stageSave({ expectedStoredRevision: session.storedRevision });
+    expect(staged.ok).toBe(true);
+    if (!staged.ok) return;
+    const sneak = {
+      ...setText('rs', 'n.a', 'sneaky edit'),
+      expectedDocumentRevision: bridge.getSnapshot().revision,
+    };
+    expect(bridge.apply(sneak).ok).toBe(true);
+    const committed = session.commitSave(staged.staged);
+    expect(committed.ok).toBe(false);
+    // the intervening edit is preserved, truthful: still dirty, old baseline
+    expect(bridge.getSnapshot().dirty).toBe(true);
+    expect(bridge.document.nodes['n.a']).toMatchObject({
+      content: { type: 'literal', value: 'sneaky edit' },
+    });
+    expect(bridge.getSnapshot().storedRevision).toBe('1');
+    expect(store.state().storedRevision).toBe('1');
+  });
+
+  it('a synchronous re-entrant store callback cannot accept edits inside the save window', () => {
+    const seed = { document: document(), storedRevision: '1' };
+    const reentrantAttempts: string[] = [];
+    const state = { current: { ...seed } };
+    const bridgeRefCapture: { current: EditorBridge } = {
+      current: undefined as unknown as EditorBridge,
+    };
+    const port: DocumentStorePort = {
+      load: () => ({ status: 'loaded' as const, ...state.current }),
+      save: (input) => {
+        // re-entrancy: try to edit DURING the save acknowledgment
+        const bridgeRef = bridgeRefCapture.current;
+        const attempt = {
+          ...setText('re', 'n.a', 'during save'),
+          expectedDocumentRevision: bridgeRef.getSnapshot().revision,
+        };
+        const outcome = bridgeRef.apply(attempt);
+        reentrantAttempts.push(outcome.ok ? 'ACCEPTED' : 'REFUSED');
+        state.current = { document: input.document, storedRevision: input.newStoredRevision };
+        return { ok: true as const, storedRevision: input.newStoredRevision };
+      },
+    };
+    const bridge = new EditorBridge({ store: port, initial: seed });
+    bridgeRefCapture.current = bridge;
+    const edit = {
+      ...setText('r1', 'n.a', 'before save'),
+      expectedDocumentRevision: bridge.getSnapshot().revision,
+    };
+    expect(bridge.apply(edit).ok).toBe(true);
+    const save = bridge.save();
+    expect(save.ok).toBe(true);
+    expect(reentrantAttempts).toEqual(['REFUSED']);
+    // nothing was lost: the saved content is the pre-save edit; the refused edit can now be applied
+    expect(bridge.document.nodes['n.a']).toMatchObject({
+      content: { type: 'literal', value: 'before save' },
+    });
+    const afterSave = {
+      ...setText('r2', 'n.a', 'after save'),
+      expectedDocumentRevision: bridge.getSnapshot().revision,
+    };
+    expect(bridge.apply(afterSave).ok).toBe(true);
+  });
+
+  it('a stage from another session is rejected by commitSave', () => {
+    const sessionA = UiEditSession.open({ document: document(), storedRevision: '1' });
+    const sessionB = UiEditSession.open({
+      document: structuredClone(document()),
+      storedRevision: '1',
+    });
+    const stagedA = sessionA.stageSave({ expectedStoredRevision: '1' });
+    expect(stagedA.ok).toBe(true);
+    if (!stagedA.ok) return;
+    const foreign = sessionB.commitSave(stagedA.staged);
+    expect(foreign.ok).toBe(false);
+    expect(sessionB.storedRevision).toBe('1');
+  });
   it('reopen reports empty and invalid stores instead of faking success', () => {
     const emptyPort: DocumentStorePort = {
       load: () => ({ status: 'empty' }),

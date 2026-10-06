@@ -264,3 +264,109 @@ describe('U1-04: authoring persistence (localStorage store)', () => {
     }
   });
 });
+
+describe('round 3: malformed stored documents diagnose reliably', () => {
+  const baseDocument = () => structuredClone(inspectionDetailDocument);
+
+  function seedEnvelope(document: unknown, storedRevision = '4'): string {
+    return JSON.stringify({ format: 'vict.authoring-store@1', document, storedRevision });
+  }
+
+  const cases: readonly [string, (doc: Record<string, unknown>) => Record<string, unknown>][] = [
+    ['unsupported document schema', (doc) => ({ ...doc, schema: 'vict.ui-document@9' })],
+    ['missing node registry', (doc) => ({ ...doc, nodes: undefined })],
+    ['null node', (doc) => ({ ...doc, nodes: { ...doc['nodes'], 'n.status': null } })],
+    [
+      'malformed child structure (non-string child)',
+      (doc) => ({
+        ...doc,
+        nodes: { ...doc['nodes'], 'n.root': { ...doc['root'], children: ['n.approveButton', 42] } },
+      }),
+    ],
+    [
+      'malformed branch structure',
+      (doc) => ({
+        ...doc,
+        nodes: {
+          ...doc['nodes'],
+          'n.root': { ...doc['nodes']['n.root'], kind: 'conditional', branches: 'not-an-array' },
+        },
+      }),
+    ],
+  ];
+
+  for (const [name, mutate] of cases) {
+    it(`diagnoses: ${name} (visible-invalid, no exception, bytes preserved)`, () => {
+      window.localStorage.clear();
+      const raw = seedEnvelope(mutate(baseDocument() as unknown as Record<string, unknown>));
+      window.localStorage.setItem('vict.u1.authoring.doc', raw);
+      const store = createAuthoringStore(window.localStorage, studioDocumentCatalogs);
+      const load = store.rawLoad();
+      expect(load.status).toBe('invalid');
+      if (load.status === 'invalid') {
+        expect(load.message.length).toBeGreaterThan(0);
+        expect(load.overwritable).toBe(true);
+      }
+      // the unreadable-by-the-app bytes are PRESERVED verbatim
+      expect(window.localStorage.getItem('vict.u1.authoring.doc')).toBe(raw);
+    });
+  }
+
+  it('an EMPTY document (no nodes) is diagnosed, not loaded', () => {
+    window.localStorage.clear();
+    window.localStorage.setItem(
+      'vict.u1.authoring.doc',
+      seedEnvelope({
+        schema: 'vict.ui-document@1',
+        id: 'doc.x',
+        revision: '1',
+        root: 'n.root',
+        nodes: {},
+      }),
+    );
+    const store = createAuthoringStore(window.localStorage, studioDocumentCatalogs);
+    const load = store.rawLoad();
+    expect(load.status).toBe('invalid');
+    if (load.status === 'invalid') expect(load.message).toMatch(/empty|node/i);
+  });
+
+  it('an unreadable payload is refused on save (bytes preserved) and reported not-overwritable', () => {
+    window.localStorage.clear();
+    const garbage = '{totally not json';
+    window.localStorage.setItem('vict.u1.authoring.doc', garbage);
+    const store = createAuthoringStore(window.localStorage, studioDocumentCatalogs);
+    const load = store.rawLoad();
+    expect(load.status).toBe('invalid');
+    if (load.status === 'invalid') expect(load.overwritable).toBe(false);
+    // save must REFUSE (never silently replace unreadable bytes)
+    const save = store.save({
+      document: baseDocument(),
+      newStoredRevision: '2',
+      expectedStoredRevision: '1',
+    });
+    expect(save.ok).toBe(false);
+    if (!save.ok) expect(save.code).toBe('UI_STORE_CORRUPT');
+    expect(window.localStorage.getItem('vict.u1.authoring.doc')).toBe(garbage);
+  });
+
+  it('a READABLE envelope with an invalid document is overwritable (save replaces it)', () => {
+    window.localStorage.clear();
+    const broken = baseDocument() as unknown as Record<string, unknown>;
+    window.localStorage.setItem(
+      'vict.u1.authoring.doc',
+      seedEnvelope({ ...broken, schema: 'vict.ui-document@9' }),
+    );
+    const store = createAuthoringStore(window.localStorage, studioDocumentCatalogs);
+    const load = store.rawLoad();
+    expect(load.status).toBe('invalid');
+    if (load.status === 'invalid') expect(load.overwritable).toBe(true);
+    const save = store.save({
+      document: baseDocument(),
+      newStoredRevision: '5',
+      expectedStoredRevision: '4',
+    });
+    expect(save.ok).toBe(true);
+    const reloaded = store.rawLoad();
+    expect(reloaded.status).toBe('loaded');
+  });
+});

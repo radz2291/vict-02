@@ -11,9 +11,11 @@
 import {
   UiEditSession,
   canonicalUiDocument,
+  uiDiagnostic,
   type UiDocument,
   type UiEditSessionState,
   type UiApplyOutcome,
+  type UiDiagnostic,
   type UiSaveOutcome,
 } from '@victframework/ui';
 import type { TransactionDraft } from './commands.js';
@@ -22,7 +24,14 @@ import type { TransactionDraft } from './commands.js';
 export type DocumentStoreLoadResult =
   | { readonly status: 'loaded'; readonly document: UiDocument; readonly storedRevision: string }
   | { readonly status: 'empty' }
-  | { readonly status: 'invalid'; readonly message: string };
+  | {
+      readonly status: 'invalid';
+      readonly message: string;
+      /** false: payload unreadable — the store refuses to overwrite it. */
+      readonly overwritable?: boolean;
+      /** Present when the envelope was readable (the overwritable class). */
+      readonly storedRevision?: string;
+    };
 
 /** Persistence port implemented by the host (file/server boundary). */
 export interface DocumentStorePort {
@@ -63,6 +72,14 @@ export class EditorBridge {
   readonly #store: DocumentStorePort;
   #selectedOccurrence: string | undefined = undefined;
   #listeners = new Set<() => void>();
+  /**
+   * True for the whole save window (stage → store ack → commit). Edits are
+   * REFUSED during that window: a storage callback that re-entered the bridge
+   * could otherwise accept an edit between stage and commit, which the commit
+   * would then have to reject — discarding it or stranding the acknowledged
+   * store against a stale baseline. One synchronous save window, no edits.
+   */
+  #saveInFlight = false;
 
   constructor(input: {
     readonly store: DocumentStorePort;
@@ -111,6 +128,18 @@ export class EditorBridge {
 
   /** Apply one assembled transaction draft (expected revision = current working). */
   apply(draft: TransactionDraft): UiApplyOutcome {
+    if (this.#saveInFlight) {
+      return {
+        ok: false,
+        issues: [
+          uiDiagnostic(
+            'UI_EDIT_SAVE_IN_PROGRESS',
+            'Edit refused: a save is being acknowledged; retry the edit after the save settles.',
+            {},
+          ),
+        ],
+      };
+    }
     const outcome = this.#session.applyTransaction({
       requestId: draft.requestId,
       expectedDocumentRevision: this.#session.workingRevision,
@@ -122,12 +151,36 @@ export class EditorBridge {
   }
 
   undo(): UiApplyOutcome {
+    if (this.#saveInFlight) {
+      return {
+        ok: false,
+        issues: [
+          uiDiagnostic(
+            'UI_EDIT_SAVE_IN_PROGRESS',
+            'Undo refused: a save is being acknowledged; retry after the save settles.',
+            {},
+          ),
+        ],
+      };
+    }
     const outcome = this.#session.undo();
     this.#emit();
     return outcome;
   }
 
   redo(): UiApplyOutcome {
+    if (this.#saveInFlight) {
+      return {
+        ok: false,
+        issues: [
+          uiDiagnostic(
+            'UI_EDIT_SAVE_IN_PROGRESS',
+            'Redo refused: a save is being acknowledged; retry after the save settles.',
+            {},
+          ),
+        ],
+      };
+    }
     const outcome = this.#session.redo();
     this.#emit();
     return outcome;
@@ -152,12 +205,21 @@ export class EditorBridge {
     });
     if (!staged.ok) return staged;
     let persisted: ReturnType<DocumentStorePort['save']>;
+    let commitFailure: { readonly ok: false; readonly issues: readonly UiDiagnostic[] } | undefined;
+    this.#saveInFlight = true;
     try {
       persisted = this.#store.save({
         document: staged.staged.document,
         newStoredRevision: staged.staged.storedRevision,
         expectedStoredRevision: staged.staged.fromStoredRevision,
       });
+      // Still inside the save window: a re-entrant store callback could not
+      // have edited (refused above); the session-level guard is the second
+      // line of defense and keeps any intervening state truthfully.
+      if (persisted.ok) {
+        const committed = this.#session.commitSave(staged.staged);
+        if (!committed.ok) commitFailure = committed;
+      }
     } catch (error) {
       // Thrown storage failure: truthful, and the session stays untouched.
       return {
@@ -169,6 +231,8 @@ export class EditorBridge {
           },
         ],
       };
+    } finally {
+      this.#saveInFlight = false;
     }
     if (!persisted.ok) {
       return {
@@ -181,8 +245,13 @@ export class EditorBridge {
         ],
       };
     }
-    const committed = this.#session.commitSave(staged.staged);
-    if (!committed.ok) return committed;
+    if (commitFailure !== undefined) {
+      // The store acknowledged but the commit was refused: the session
+      // truthfully keeps its pre-commit state (edits intact, older saved
+      // baseline, still dirty). Surfaced so the host can reconcile by
+      // reopening from the authoritative store.
+      return commitFailure;
+    }
     this.#emit();
     return {
       ok: true,
@@ -203,13 +272,21 @@ export class EditorBridge {
         readonly ok: false;
         readonly code: 'UI_STORE_EMPTY' | 'UI_STORE_INVALID';
         readonly message?: string;
+        readonly overwritable?: boolean;
+        readonly storedRevision?: string;
       } {
     const stored = this.#store.load();
     if (stored.status === 'empty') {
       return { ok: false, code: 'UI_STORE_EMPTY', message: 'No stored document exists.' };
     }
     if (stored.status === 'invalid') {
-      return { ok: false, code: 'UI_STORE_INVALID', message: stored.message };
+      return {
+        ok: false,
+        code: 'UI_STORE_INVALID',
+        message: stored.message,
+        ...(stored.overwritable !== undefined ? { overwritable: stored.overwritable } : {}),
+        ...(stored.storedRevision !== undefined ? { storedRevision: stored.storedRevision } : {}),
+      };
     }
     this.#session = this.#session.reopen({
       document: stored.document,

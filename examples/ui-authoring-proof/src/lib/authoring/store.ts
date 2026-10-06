@@ -25,7 +25,23 @@ const STORE_FORMAT = 'vict.authoring-store@1';
 /** The stored revision a freshly seeded (empty-store) session starts from. */
 export const SEED_STORED_REVISION = '1';
 
-export type AuthoringStoreLoad = DocumentStoreLoadResult;
+/**
+ * Load failure detail. `overwritable` distinguishes the two corruption
+ * classes: `false` — the payload itself is unreadable (invalid JSON, missing
+ * envelope, no readable stored revision); the store REFUSES to overwrite it
+ * (`UI_STORE_CORRUPT`) and the bytes are preserved until cleared. `true` —
+ * the envelope is readable but the document inside is invalid; a successful
+ * save against the recorded stored revision legitimately replaces it.
+ */
+export type AuthoringStoreInvalid = {
+  readonly status: 'invalid';
+  readonly message: string;
+  readonly overwritable: boolean;
+  /** Present when the envelope was readable (the overwritable class). */
+  readonly storedRevision?: string;
+};
+
+export type AuthoringStoreLoad = DocumentStoreLoadResult | AuthoringStoreInvalid;
 
 export interface AuthoringStore extends DocumentStorePort {
   /** Full load detail: loaded / empty / invalid (diagnostics flow from here). */
@@ -103,47 +119,92 @@ export function createAuthoringStore(
   return {
     rawLoad(): AuthoringStoreLoad {
       const read = readRaw();
-      if (!read.ok) return { status: 'invalid', message: read.message };
+      if (!read.ok) return { status: 'invalid', message: read.message, overwritable: false };
       if (read.raw === null) return { status: 'empty' };
       let parsed: unknown;
       try {
         parsed = JSON.parse(read.raw);
       } catch {
-        return { status: 'invalid', message: 'stored authoring data is not valid JSON' };
+        // Unreadable payload: the bytes are preserved and save() refuses to
+        // overwrite them (UI_STORE_CORRUPT) — never silently replaced.
+        return {
+          status: 'invalid',
+          message: 'stored authoring data is not valid JSON (stored bytes preserved)',
+          overwritable: false,
+        };
       }
       if (!isRecord(parsed) || parsed['format'] !== STORE_FORMAT) {
         return {
           status: 'invalid',
           message: `stored payload is not '${STORE_FORMAT}'`,
+          overwritable: false,
         };
       }
       if (!isRecord(parsed['document']) || typeof parsed['storedRevision'] !== 'string') {
-        return { status: 'invalid', message: 'stored payload lacks a document or stored revision' };
+        return {
+          status: 'invalid',
+          message:
+            'stored payload lacks a readable document or stored revision (stored bytes preserved)',
+          overwritable: false,
+        };
       }
       const document = parsed['document'] as unknown as UiDocument;
-      // Corruption gate: full structural validation with the host's
-      // declared context; product-reference diagnostics (view./record./
-      // repeat. typing, action/route ids) are DEFERRED to the joint
-      // compiler by the layered validation authority — structural errors
-      // are fatal and must surface as a visible diagnostic, never a fake
-      // successful reopen.
-      const diagnostics = validateUiDocument(document, {
-        elements: defaultSemanticElementCatalog(),
-        ...(compatibility ?? {}),
-      }).filter((issue) => !isDeferredProductReference(issue));
-      const orphaned = unreachableNodeIds(document);
-      if (orphaned.length > 0) {
-        return {
-          status: 'invalid',
-          message: `stored document has unreachable node(s): ${orphaned.join(', ')}`,
-        };
+      // Envelope readable: a later save against the recorded stored revision
+      // legitimately replaces this class of corruption.
+      const recordedRevision: string = parsed['storedRevision'];
+      const invalid = (message: string): AuthoringStoreInvalid => ({
+        status: 'invalid',
+        message,
+        overwritable: true,
+        storedRevision: recordedRevision,
+      });
+      // Envelope-shape hardening BEFORE any deep access: malformed structures
+      // must produce a diagnostic, never an exception or a fake reopen.
+      if (typeof document['schema'] !== 'string' || document['schema'] !== 'vict.ui-document@1') {
+        return invalid(
+          `unsupported document schema: ${String(document['schema'] ?? '(missing)')} — expected 'vict.ui-document@1'`,
+        );
       }
-      if (diagnostics.some((issue) => issue.severity === 'error')) {
-        const first = diagnostics[0];
-        return {
-          status: 'invalid',
-          message: `stored document invalid: ${first?.code ?? 'UNKNOWN'} — ${first?.message ?? 'no detail'}`,
-        };
+      if (!isRecord(document['nodes'])) {
+        return invalid('stored document has no node registry');
+      }
+      if (Object.keys(document['nodes']).length === 0) {
+        return invalid('stored document is empty (no nodes)');
+      }
+      for (const [nodeId, node] of Object.entries(document['nodes'])) {
+        if (!isRecord(node) || typeof node['kind'] !== 'string') {
+          return invalid(`stored node '${nodeId}' is malformed (missing kind)`);
+        }
+      }
+      if (typeof document['root'] !== 'string') {
+        return invalid('stored document has no readable root');
+      }
+      try {
+        // Corruption gate: full structural validation with the host's
+        // declared context; product-reference diagnostics (view./record./
+        // repeat. typing, action/route ids) are DEFERRED to the joint
+        // compiler by the layered validation authority — structural errors
+        // are fatal and must surface as a visible diagnostic, never a fake
+        // successful reopen.
+        const diagnostics = validateUiDocument(document, {
+          elements: defaultSemanticElementCatalog(),
+          ...(compatibility ?? {}),
+        }).filter((issue) => !isDeferredProductReference(issue));
+        const orphaned = unreachableNodeIds(document);
+        if (orphaned.length > 0) {
+          return invalid(`stored document has unreachable node(s): ${orphaned.join(', ')}`);
+        }
+        if (diagnostics.some((issue) => issue.severity === 'error')) {
+          const first = diagnostics[0];
+          return invalid(
+            `stored document invalid: ${first?.code ?? 'UNKNOWN'} — ${first?.message ?? 'no detail'}`,
+          );
+        }
+      } catch (error) {
+        // Validation itself must never throw past the gate.
+        return invalid(
+          `stored document could not be analyzed: ${String(error instanceof Error ? error.message : error)}`,
+        );
       }
       return {
         status: 'loaded',

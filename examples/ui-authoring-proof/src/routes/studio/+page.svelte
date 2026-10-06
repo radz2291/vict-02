@@ -29,6 +29,16 @@
   import { inspectionDetailDocument } from '$lib/product/definitions.js';
   import { createAuthoringStore, SEED_STORED_REVISION, type StorageLike } from '$lib/authoring/store.js';
 
+  /** Visible-diagnostic text for an unusable store, per corruption class: */
+  function describeStoreProblem(problem: {
+    readonly message: string;
+    readonly overwritable?: boolean;
+  }): string {
+    return problem.overwritable === false
+      ? `Stored authoring data is unreadable and has been PRESERVED (${problem.message}). The store refuses to overwrite it — a save will fail until the stored data is cleared (browser site data for this origin).`
+      : `Stored authoring data was not usable (${problem.message}). A fresh seed document was loaded; the next successful save replaces the stored data.`;
+  }
+
   /* ---- editor bridge over the LOCAL authoring store (U1-04) ----------
      Persistence = browser localStorage: a successful save survives a full
      page reload, leaving/reopening the route, and browser restarts. The
@@ -47,15 +57,23 @@
   const store = createAuthoringStore(browser ? window.localStorage : ssrMemoryShim, studioDocumentCatalogs);
   const initialLoad = store.rawLoad();
   let storeDiagnostic: string | null = $state(
-    initialLoad.status === 'invalid'
-      ? `Stored authoring data was not usable (${initialLoad.message}). ` +
-        'A fresh seed document was loaded; the next successful save replaces the stored data.'
-      : null,
+    initialLoad.status === 'invalid' ? describeStoreProblem(initialLoad) : null,
   );
+
   const initialAuthoring =
     initialLoad.status === 'loaded'
       ? { document: initialLoad.document, storedRevision: initialLoad.storedRevision }
-      : { document: structuredClone(inspectionDetailDocument), storedRevision: SEED_STORED_REVISION };
+      : initialLoad.status === 'invalid' && initialLoad.overwritable
+        ? {
+            // Readable envelope, invalid document: seed the CONTENT fresh but
+            // baseline at the RECORDED stored revision, so the replacement
+            // save is accepted by the authoritative store (the banner's
+            // 'next successful save replaces' claim is then true).
+            document: structuredClone(inspectionDetailDocument),
+            storedRevision: initialLoad.storedRevision ?? SEED_STORED_REVISION,
+          }
+        : { document: structuredClone(inspectionDetailDocument), storedRevision: SEED_STORED_REVISION };
+
   const bridge = new EditorBridge({ store, initial: initialAuthoring });
 
   let workingDocument: UiDocument = $state(bridge.document);
@@ -351,7 +369,10 @@
             storeDiagnostic = null;
             previewNote = `Reopened stored revision ${result.storedRevision} from persisted bytes (fresh session, history cleared).`;
           } else if (result.code === 'UI_STORE_INVALID') {
-            storeDiagnostic = `Stored authoring data was not usable (${result.message ?? 'invalid'}).`;
+            storeDiagnostic = describeStoreProblem({
+              message: result.message ?? 'invalid',
+              overwritable: result.overwritable,
+            });
             previewNote = 'Reopen REFUSED — the stored payload is corrupt or incompatible.';
           } else {
             previewNote = 'Reopen refused — no stored document exists yet.';
