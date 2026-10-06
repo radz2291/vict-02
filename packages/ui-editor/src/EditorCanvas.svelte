@@ -28,6 +28,14 @@
     readonly onSelect: (occurrence: string) => void;
     readonly dispatch: (actionId: string, input?: unknown) => Promise<unknown>;
     readonly navigate: (routeId: string, params?: Readonly<Record<string, unknown>>) => void;
+    /** Render-time diagnostics (duplicate keys, …) surfaced to the host. */
+    readonly onRenderDiagnostic?: (diagnostic: {
+      readonly code: string;
+      readonly message: string;
+      readonly detail?: Readonly<Record<string, unknown>>;
+    }) => void;
+    /** The compiled plan (for Layers/activity surfaces composing this canvas). */
+    readonly onPlan?: (plan: UiRenderPlan) => void;
     readonly ariaLabel?: string;
   }
 
@@ -42,6 +50,8 @@
     onSelect,
     dispatch,
     navigate,
+    onRenderDiagnostic,
+    onPlan,
     ariaLabel = 'Document canvas',
   }: Props = $props();
 
@@ -60,6 +70,10 @@
   function handleSelect(occurrence: string): void {
     onSelect(occurrence);
   }
+
+  $effect(() => {
+    if (compiled.ok) onPlan?.(compiled.plan);
+  });
 
   function escapeSelector(value: string): string {
     return value.replace(/"/g, '\\"');
@@ -94,6 +108,7 @@
       {dispatch}
       {navigate}
       selectOccurrence={handleSelect}
+      onRenderDiagnostic={onRenderDiagnostic}
       ariaLabel={ariaLabel}
     />
   </div>

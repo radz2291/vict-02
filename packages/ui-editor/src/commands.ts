@@ -178,6 +178,33 @@ export function fillSlot(input: {
   };
 }
 
+/** Set or clear a condition/pseudo-gated style declaration on an ATTACHED
+ * style source (never base local style — U2-04 preview-size safety). */
+export function setConditionalStyle(input: {
+  readonly requestId: string;
+  readonly nodeId: string;
+  readonly property: string;
+  readonly value?: TransactionDraft extends never
+    ? never
+    : import('@victframework/ui').UiStyleValue;
+  readonly conditionId?: string;
+  readonly pseudo?: 'hover' | 'focus' | 'active' | 'disabled';
+}): TransactionDraft {
+  return {
+    requestId: input.requestId,
+    commands: [
+      {
+        op: 'setConditionalStyle',
+        nodeId: input.nodeId,
+        property: input.property,
+        ...(input.value !== undefined ? { value: input.value } : {}),
+        ...(input.conditionId !== undefined ? { conditionId: input.conditionId } : {}),
+        ...(input.pseudo !== undefined ? { pseudo: input.pseudo } : {}),
+      },
+    ],
+  };
+}
+
 /** Remove a node (reference-checked; the subtree goes with it). */
 export function removeNode(input: {
   readonly requestId: string;

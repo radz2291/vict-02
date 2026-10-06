@@ -7,6 +7,7 @@
 export { default as EditorCanvas } from './EditorCanvas.svelte';
 export { default as HistoryPanel } from './HistoryPanel.svelte';
 export { default as Inspector } from './Inspector.svelte';
+export { default as Layers } from './Layers.svelte';
 export { EditorBridge } from './bridge.js';
 export type { DocumentStorePort, EditorBridgeState } from './bridge.js';
 export {

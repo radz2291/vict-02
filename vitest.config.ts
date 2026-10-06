@@ -48,7 +48,11 @@ export default defineConfig({
           // The Mastra adapter runs in its own project with a network guard
           // (its suites must fail on any unexpected network request) — never
           // double-run without that guard.
-          exclude: ['packages/ui-svelte/**', 'packages/mastra/**'],
+          exclude: [
+            'packages/ui-svelte/**',
+            'packages/mastra/**',
+            'packages/ui-editor/**/*.svelte.test.ts',
+          ],
         },
         resolve: { alias: aliases },
       },
@@ -68,8 +72,12 @@ export default defineConfig({
           name: 'renderer',
           server: { deps: { inline: ['bits-ui', 'runed', '@internationalized/date'] } },
           // The permanent Svelte renderer implementation (ui-svelte — the
-          // sole renderer package since the facade retirement).
-          include: ['packages/ui-svelte/test/**/*.test.ts'],
+          // sole renderer package since the facade retirement) plus the
+          // editor's svelte-component tests (U2 tooling surfaces).
+          include: [
+            'packages/ui-svelte/test/**/*.test.ts',
+            'packages/ui-editor/test/**/*.svelte.test.ts',
+          ],
           environment: 'happy-dom',
         },
         resolve: { alias: aliases, conditions: ['browser'] },

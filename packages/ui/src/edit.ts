@@ -16,6 +16,7 @@ import type {
   UiInteraction,
   UiNode,
   UiPropDecl,
+  UiStyleSource,
   UiStyleDeclaration,
   UiStyleValue,
   UiTextContent,
@@ -67,6 +68,17 @@ export interface UiEditCommandSetConditionState {
   readonly conditionId: string;
   readonly patch: Partial<{ readonly query: string; readonly initial: string | number | boolean }>;
 }
+export interface UiEditCommandSetConditionalStyle {
+  readonly op: 'setConditionalStyle';
+  readonly nodeId: string;
+  readonly property: string;
+  /** `undefined` removes the declaration (and the source when it empties). */
+  readonly value?: UiStyleValue;
+  /** Gating condition (media or container id); omitted = unconditional. */
+  readonly conditionId?: string;
+  /** Pseudo state appended to the generated rule's selector. */
+  readonly pseudo?: 'hover' | 'focus' | 'active' | 'disabled';
+}
 export interface UiEditCommandBindExpression {
   readonly op: 'bindExpression';
   readonly nodeId: string;
@@ -108,6 +120,7 @@ export type UiEditCommand =
   | UiEditCommandSetProperty
   | UiEditCommandSetAttribute
   | UiEditCommandSetStyleDeclaration
+  | UiEditCommandSetConditionalStyle
   | UiEditCommandSetConditionState
   | UiEditCommandBindExpression
   | UiEditCommandConnectInteraction
@@ -187,7 +200,12 @@ export function applyUiEdit(
     componentDefinitions: Record<string, UiComponentDefinition>;
     styleSources: Record<
       string,
-      { id: string; declarations: UiStyleDeclaration[]; conditionId?: string }
+      {
+        id: string;
+        declarations: UiStyleDeclaration[];
+        conditionId?: string;
+        pseudo?: 'hover' | 'focus' | 'active' | 'disabled';
+      }
     >;
     tokens: Record<string, { id: string; value: string }>;
     conditions: Record<string, { id: string; kind: string; [key: string]: unknown }>;
@@ -376,6 +394,63 @@ export function applyUiEdit(
           localStyle.push({ property: command.property, value: command.value });
         }
         doc.nodes[node.id] = { ...node, localStyle } as UiNode;
+        return;
+      }
+      case 'setConditionalStyle': {
+        // U2-04: condition/pseudo-gated styling is authored as an ATTACHED
+        // style source (cascade layer 'source'), never by rewriting base
+        // local style — switching a preview size/condition cannot silently
+        // modify base source. Deterministic source id per (node, condition,
+        // pseudo) so repeated edits update the same source.
+        const node = doc.nodes[command.nodeId];
+        if (node === undefined || node.kind !== 'element') {
+          fail('setConditionalStyle requires an element node.');
+          return;
+        }
+        if (
+          command.conditionId !== undefined &&
+          doc.conditions[command.conditionId] === undefined
+        ) {
+          fail(`Unknown condition '${command.conditionId}'.`);
+          return;
+        }
+        const sourceId = `src.${command.nodeId}.${command.conditionId ?? 'always'}.${command.pseudo ?? 'plain'}`;
+        const styleSources: Record<string, UiStyleSource> = { ...(doc.styleSources ?? {}) };
+        const attached: string[] = [...(node.styleSources ?? [])];
+        const existing = styleSources[sourceId];
+        const declarations: UiStyleDeclaration[] =
+          existing === undefined ? [] : [...existing.declarations];
+        const declarationIndex = declarations.findIndex(
+          (declaration) => declaration.property === command.property,
+        );
+        if (command.value === undefined) {
+          if (declarationIndex >= 0) declarations.splice(declarationIndex, 1);
+        } else if (declarationIndex >= 0) {
+          declarations[declarationIndex] = { property: command.property, value: command.value };
+        } else {
+          declarations.push({ property: command.property, value: command.value });
+        }
+        if (declarations.length === 0) {
+          // The source empties: detach and remove it entirely.
+          delete styleSources[sourceId];
+          const sourceIndex = attached.indexOf(sourceId);
+          if (sourceIndex >= 0) attached.splice(sourceIndex, 1);
+        } else if (existing === undefined) {
+          styleSources[sourceId] = {
+            id: sourceId,
+            declarations,
+            ...(command.conditionId !== undefined ? { conditionId: command.conditionId } : {}),
+            ...(command.pseudo !== undefined ? { pseudo: command.pseudo } : {}),
+          };
+          attached.push(sourceId);
+        } else {
+          styleSources[sourceId] = { ...existing, declarations };
+        }
+        doc.styleSources = styleSources as typeof doc.styleSources;
+        doc.nodes[node.id] = {
+          ...node,
+          ...(attached.length > 0 ? { styleSources: attached } : { styleSources: undefined }),
+        } as UiNode;
         return;
       }
       case 'setConditionState': {

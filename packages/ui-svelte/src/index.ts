@@ -1,5 +1,13 @@
 export { default as DocumentHost } from './document/DocumentHost.svelte';
 export { default as DocumentRenderNode } from './document/RenderNode.svelte';
+export {
+  occurrenceKey,
+  rootClassFor,
+  styleRulesToCss,
+  uniqueRepeatKeys,
+  walkInstructions,
+  nodeIdsOf,
+} from './document/logic.js';
 export { default as Select } from './Select.svelte';
 export { default as Popover } from './Popover.svelte';
 export { default as Tooltip } from './Tooltip.svelte';
