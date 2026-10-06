@@ -131,12 +131,19 @@
     previewNote = `Switched to '${name}' — session ${preview.id}.`;
   }
 
+  let approveInFlight = $state(false);
   async function previewApprove(): Promise<void> {
-    const result = await preview.run('inspection.approve', { id: 'i-101', expectedDomainRevision: 3 });
-    if (result.ok) {
-      previewNote = `Approved in session ${result.sessionId}.`;
-    } else {
-      previewNote = `${result.code} — ${result.message}`;
+    if (approveInFlight) return; // duplicate-submit prevention (scenario 4)
+    approveInFlight = true;
+    try {
+      const result = await preview.run('inspection.approve', { id: 'i-101', expectedDomainRevision: 3 });
+      if (result.ok) {
+        previewNote = `Approved in session ${result.sessionId}.`;
+      } else {
+        previewNote = `${result.code} — ${result.message}`;
+      }
+    } finally {
+      approveInFlight = false;
     }
   }
 
@@ -270,7 +277,15 @@
         selectedOccurrence = occurrence;
         bridge.select(occurrence);
       }}
-      dispatch={async () => ({ ok: true })}
+      dispatch={async (actionId, input) => {
+        // Declared interactions in the canvas run through the PREVIEW
+        // boundary (scenario session) — never a silent stub.
+        const result = await preview.run(actionId, input);
+        previewNote = result.ok
+          ? `Canvas interaction '${actionId}' settled in ${result.sessionId}.`
+          : `${result.code} — ${result.message}`;
+        return result;
+      }}
       navigate={() => undefined}
       view={{ findings: [
         { description: 'Seal wear beyond tolerance', severity: 'high' },
@@ -352,7 +367,9 @@
             {name}
           </button>
         {/each}
-        <button type="button" class="scenario-button" onclick={previewApprove}>Run approve</button>
+        <button type="button" class="scenario-button" onclick={previewApprove} disabled={approveInFlight}>
+          {approveInFlight ? 'Approving…' : 'Run approve'}
+        </button>
       </div>
       <p class="preview-note" role="status">{previewNote}</p>
     </div>

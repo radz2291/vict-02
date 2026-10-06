@@ -18,6 +18,8 @@ export default defineConfig({
         replacement: resolveFromExample('./src/lib/app-environment-stub.ts'),
       },
     ],
+    // Component mounting needs Svelte's CLIENT build in happy-dom tests.
+    conditions: ['browser'],
   },
   plugins: [svelte()],
 });

@@ -124,12 +124,21 @@ export function orderUiDocumentIdentityEntries(
     byKey.set(key, entry);
   }
   return [...byKey.values()].sort((a, b) => {
-    if (a.documentId !== b.documentId) return a.documentId < b.documentId ? -1 : 1;
-    return a.revision < b.revision ? -1 : a.revision > b.revision ? 1 : 0;
+    if (a.documentId !== b.documentId) return compareCodePoints(a.documentId, b.documentId);
+    return compareCodePoints(a.revision, b.revision);
   });
 }
 
-/** Code-point string comparison helper (shared ordering discipline). */
+/** True code-point comparison (NOT UTF-16 code-unit order): iterates code points. */
 export function compareCodePoints(a: string, b: string): number {
-  return a < b ? -1 : a > b ? 1 : 0;
+  const pointsA = Array.from(a);
+  const pointsB = Array.from(b);
+  const length = Math.min(pointsA.length, pointsB.length);
+  for (let index = 0; index < length; index += 1) {
+    const codeA = (pointsA[index] as string).codePointAt(0) as number;
+    const codeB = (pointsB[index] as string).codePointAt(0) as number;
+    if (codeA !== codeB) return codeA < codeB ? -1 : 1;
+  }
+  if (pointsA.length !== pointsB.length) return pointsA.length < pointsB.length ? -1 : 1;
+  return 0;
 }

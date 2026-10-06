@@ -135,3 +135,39 @@ describe('PreviewSession isolation (U1-06)', () => {
     expect(session.rows('inspection')[0]?.status).toBe('submitted');
   });
 });
+
+describe('falsification repairs (MAJOR-1 / MINOR-2)', () => {
+  it('an actor with an EMPTY permission list is denied capability ops', async () => {
+    const session = createPreviewSession({
+      scenario: scenario({
+        actors: [{ actorId: 'nobody', role: 'none', permissions: [] }],
+      }),
+      runtime: {
+        snapshotDoubles: () => new Map([['inspection.approve', async () => 'MUST NOT RUN']]),
+      } satisfies PreviewRuntimePort,
+    });
+    const result = await session.run('inspection.approve');
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.code).toBe('OPERATION_DENIED');
+  });
+
+  it('a rejecting async double is a structured failure, never ok:true', async () => {
+    const session = createPreviewSession({
+      scenario: scenario(),
+      runtime: {
+        snapshotDoubles: () =>
+          new Map([
+            [
+              'inspection.approve',
+              async () => {
+                throw new Error('double blew up');
+              },
+            ],
+          ]),
+      } satisfies PreviewRuntimePort,
+    });
+    const result = await session.run('inspection.approve');
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.code).toBe('SIMULATED_FAILURE');
+  });
+});

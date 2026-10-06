@@ -218,7 +218,9 @@ export class PreviewSession {
           const tail = segments.slice(-2).join('.');
           return tail === opRoot || permission === permissionRoot;
         });
-      if (!permitted && this.actor.permissions.length > 0) {
+      // An actor with an EMPTY permission list is denied everything: the
+      // gate applies regardless of list length (MAJOR-1 repair).
+      if (!permitted) {
         return {
           ok: false,
           sessionId: this.id,
@@ -246,7 +248,7 @@ export class PreviewSession {
   async #settle<T>(
     token: symbol,
     delayMs: number | undefined,
-    produce: () => PreviewResult<T>,
+    produce: () => PreviewResult<T> | Promise<PreviewResult<T>>,
   ): Promise<PreviewResult<T>> {
     if (delayMs !== undefined && delayMs > 0) {
       await this.#delay(delayMs);
@@ -288,7 +290,7 @@ export class PreviewSession {
         }),
       };
     }
-    return this.#settle<T>(token, operation.outcome?.delayMs, () => {
+    return this.#settle<T>(token, operation.outcome?.delayMs, async () => {
       if (operation.outcome?.kind === 'failure') {
         return {
           ok: false,
@@ -311,8 +313,19 @@ export class PreviewSession {
           }),
         };
       }
-      const raw = invoke(input);
-      return { ok: true, sessionId: this.id, value: raw as T };
+      try {
+        // A rejecting async double is a FAILED simulation (MINOR-2 repair):
+        // never reported as success with an unawaited rejected promise.
+        const raw = await invoke(input);
+        return { ok: true, sessionId: this.id, value: raw as T };
+      } catch (error) {
+        return {
+          ok: false,
+          sessionId: this.id,
+          code: 'SIMULATED_FAILURE',
+          message: `The simulated double rejected: ${String(error instanceof Error ? error.message : error)}`,
+        };
+      }
     });
   }
 

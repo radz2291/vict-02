@@ -121,6 +121,15 @@ describe('orderUiDocumentIdentityEntries (A-03)', () => {
     expect(two).toHaveLength(3);
   });
 
+  it('orders by true code points, not UTF-16 code units (astral characters)', () => {
+    // U+10000 (astral) vs U+FFFD: code-point order puts U+FFFD FIRST,
+    // UTF-16 code-unit order would put the surrogate U+D800 first.
+    const ordered = orderUiDocumentIdentityEntries([
+      entry('doc\uD800\uDC00x', '1', 'a'),
+      entry('doc\uFFFDy', '1', 'b'),
+    ]);
+    expect(ordered.map((e) => e.documentId)).toEqual(['doc\uFFFDy', 'doc\uD800\uDC00x']);
+  });
   it('rejects a true digest collision', () => {
     expect(() =>
       orderUiDocumentIdentityEntries([entry('a', '1', 'x'), entry('a', '1', 'y')]),
