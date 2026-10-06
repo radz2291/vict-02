@@ -95,12 +95,17 @@ export interface UiStyleDeclaration {
   readonly value: UiStyleValue;
 }
 
+/** Pseudo states supported on style rules (element/primitive permitting). */
+export type UiPseudoState = 'hover' | 'focus' | 'active' | 'disabled';
+
 /** A reusable, attachable style source (cascade: attached reusable sources). */
 export interface UiStyleSource {
   readonly id: StyleSourceId;
   readonly declarations: readonly UiStyleDeclaration[];
-  /** Optional condition id (U1: media/viewport conditions) gating this rule. */
+  /** Optional condition id (media or container) gating this rule. */
   readonly conditionId?: ConditionId;
+  /** Optional pseudo state (selector suffix); element/primitive permitting. */
+  readonly pseudo?: UiPseudoState;
 }
 
 /** A named token/custom-property declaration. */

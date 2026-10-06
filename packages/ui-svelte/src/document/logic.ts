@@ -51,6 +51,36 @@ export function resolveValue(value: UiResolvedValue, scope: DocumentScope): unkn
 }
 
 /** The occurrence key at render time: base key + repeat record keys. */
+/**
+ * U2-02 duplicate-key rejection: the FIRST occurrence of a repeat key keeps
+ * the canonical identity; later duplicates get a stable positional fallback
+ * (key#dupN) so every rendered record keeps a unique occurrence identity,
+ * and each duplicate is REPORTED (UI_RENDER_DUPLICATE_KEY) through the
+ * renderer diagnostic channel instead of silently collapsing.
+ */
+export function uniqueRepeatKeys(
+  keys: readonly string[],
+  nodeId: string,
+  reportDiagnostic?: (diagnostic: {
+    code: string;
+    message: string;
+    detail?: Record<string, unknown>;
+  }) => void,
+): string[] {
+  const seen = new Map<string, number>();
+  return keys.map((key) => {
+    const count = seen.get(key) ?? 0;
+    seen.set(key, count + 1);
+    if (count === 0) return key;
+    reportDiagnostic?.({
+      code: 'UI_RENDER_DUPLICATE_KEY',
+      message: `Duplicate repeat key '${key}' in repeat '${nodeId}' — occurrence identity made unique (key#dup${count}).`,
+      detail: { nodeId, key, duplicateIndex: count },
+    });
+    return `${key}#dup${count}`;
+  });
+}
+
 export function occurrenceKey(baseKey: string, repeatKeys: readonly string[]): string {
   if (repeatKeys.length === 0) return baseKey;
   return `${baseKey}|${repeatKeys.join('|')}`;
@@ -109,6 +139,7 @@ export function styleRulesToCss(plan: UiRenderPlan, rootClass: string): string {
     (a, b) => layerOrder.indexOf(a.layer) - layerOrder.indexOf(b.layer),
   );
   const mediaBuckets = new Map<string, string[]>();
+  const containerBuckets = new Map<string, string[]>();
   const plain: string[] = [];
   for (const rule of sorted) {
     const lines: string[] = [];
@@ -127,7 +158,16 @@ export function styleRulesToCss(plan: UiRenderPlan, rootClass: string): string {
     const selector =
       rule.selector === ':root' ? `.${escapedRoot}` : `.${escapedRoot} ${escapeCss(rule.selector)}`;
     const css = `${selector} {\n${declarations}\n}`;
-    if (rule.mediaConditionId !== undefined) {
+    if (rule.containerConditionId !== undefined) {
+      const condition = conditions[rule.containerConditionId];
+      if (condition?.kind === 'container') {
+        const bucket = containerBuckets.get(`${condition.name} ${condition.query}`) ?? [];
+        bucket.push(css);
+        containerBuckets.set(`${condition.name} ${condition.query}`, bucket);
+        continue;
+      }
+      plain.push(css);
+    } else if (rule.mediaConditionId !== undefined) {
       const condition = conditions[rule.mediaConditionId];
       const query = condition?.kind === 'media' ? condition.query : undefined;
       if (query === undefined) {
@@ -144,6 +184,9 @@ export function styleRulesToCss(plan: UiRenderPlan, rootClass: string): string {
   let css = plain.join('\n\n');
   for (const [query, rules] of mediaBuckets) {
     css += `\n\n@media ${query} {\n${rules.join('\n\n')}\n}`;
+  }
+  for (const [containerQuery, rules] of containerBuckets) {
+    css += `\n\n@container ${containerQuery} {\n${rules.join('\n\n')}\n}`;
   }
   return css;
 }

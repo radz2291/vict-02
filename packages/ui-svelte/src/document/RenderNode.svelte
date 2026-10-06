@@ -16,6 +16,7 @@
     evaluateCondition,
     occurrenceKey,
     resolveValue,
+    uniqueRepeatKeys,
     type DocumentScope,
   } from './logic.js';
   import Self from './RenderNode.svelte';
@@ -32,6 +33,8 @@
     readonly navigate: (routeId: string, params?: Readonly<Record<string, unknown>>) => void;
     readonly setState: (key: string, value: unknown) => void;
     readonly selectOccurrence?: (occurrence: string) => void;
+    /** Render-time diagnostic channel (e.g. duplicate repeat keys). */
+    readonly reportDiagnostic?: (diagnostic: { readonly code: string; readonly message: string; readonly detail?: Readonly<Record<string, unknown>> }) => void;
     /** Additional class for the ROOT element of this subtree (component instance frames). */
     readonly extraClass?: string;
   }
@@ -47,6 +50,7 @@
     navigate,
     setState,
     selectOccurrence,
+    reportDiagnostic,
     extraClass,
   }: Props = $props();
 
@@ -154,6 +158,7 @@
         {navigate}
         {setState}
         {selectOccurrence}
+        {reportDiagnostic}
         extraClass={undefined}
       />
     {/each}
@@ -208,20 +213,22 @@
 {:else if instruction.kind === 'repeat'}
   {@const rows = resolveValue({ type: 'expression', expression: instruction.collection }, scope)}
   {#if Array.isArray(rows)}
+    {@const resolvedRowKeys = rows.map((row, index) => String(resolveValue({ type: 'expression', expression: instruction.key }, { ...scope, repeatItem: { name: instruction.itemName, value: asRecord(row) } }) ?? index))}
+    {@const uniqueRowKeys = uniqueRepeatKeys(resolvedRowKeys, instruction.nodeId, reportDiagnostic)}
     {#each rows as row, index}
-      {@const rowKey = String(resolveValue({ type: 'expression', expression: instruction.key }, { ...scope, repeatItem: { name: instruction.itemName, value: asRecord(row) } }) ?? index)}
       {@const itemScope = { ...scope, repeatItem: { name: instruction.itemName, value: asRecord(row) } }}
       <Self
         instruction={instruction.template}
         {plan}
         scope={itemScope}
         {instancePath}
-        repeatKeys={[...repeatKeys, rowKey]}
+        repeatKeys={[...repeatKeys, uniqueRowKeys[index]]}
         {slotFills}
         {dispatch}
         {navigate}
         {setState}
         {selectOccurrence}
+        {reportDiagnostic}
       />
     {/each}
   {:else}
@@ -240,6 +247,7 @@
       {navigate}
       {setState}
       {selectOccurrence}
+      {reportDiagnostic}
     />
   {/each}
 {:else if instruction.kind === 'slot'}
@@ -257,6 +265,7 @@
         {navigate}
         {setState}
         {selectOccurrence}
+        {reportDiagnostic}
       />
     {/each}
   {:else}
@@ -272,6 +281,7 @@
         {navigate}
         {setState}
         {selectOccurrence}
+        {reportDiagnostic}
       />
     {/each}
   {/if}
@@ -290,6 +300,7 @@
         {navigate}
         {setState}
         {selectOccurrence}
+        {reportDiagnostic}
       />
     {/each}
   </div>

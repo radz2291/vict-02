@@ -112,6 +112,12 @@ function mountPlan(
   handlers: {
     dispatch?: (actionId: string, input?: unknown) => Promise<unknown>;
     navigate?: (routeId: string, params?: Record<string, unknown>) => void;
+    view?: Readonly<Record<string, unknown>>;
+    onRenderDiagnostic?: (diagnostic: {
+      code: string;
+      message: string;
+      detail?: Record<string, unknown>;
+    }) => void;
   },
 ): { target: HTMLDivElement; instance: ReturnType<typeof mount> } {
   const target = document.createElement('div');
@@ -120,12 +126,15 @@ function mountPlan(
     target,
     props: {
       plan,
-      view: {
+      view: handlers.view ?? {
         findings: [
           { description: 'Seal wear', severity: 'high' },
           { description: 'Label fade', severity: 'low' },
         ],
       },
+      ...(handlers.onRenderDiagnostic !== undefined
+        ? { onRenderDiagnostic: handlers.onRenderDiagnostic }
+        : {}),
       record: { title: 'Inspection 42', status: 'submitted' },
       dispatch: handlers.dispatch ?? (async () => ({ ok: true })),
       navigate: handlers.navigate ?? (() => undefined),
@@ -207,6 +216,38 @@ describe('DocumentHost (the one renderer)', () => {
       const style = target.ownerDocument.querySelector('style[data-ui-style]');
       expect(style?.textContent).toContain('--ui-token-space_gap: 12px');
       expect(style?.textContent).toContain('.uv-root-doc_detail-1');
+    } finally {
+      unmount(instance);
+      target.remove();
+    }
+  });
+
+  it('U2-02: duplicate repeat keys keep unique occurrence identities and are reported', () => {
+    expect(plan.ok).toBe(true);
+    if (!plan.ok) return;
+    const diagnostics: { code: string; message: string; detail?: Record<string, unknown> }[] = [];
+    const { target, instance } = mountPlan(plan.plan, {
+      view: {
+        findings: [
+          { description: 'Seal wear', severity: 'high' },
+          { description: 'Seal wear', severity: 'low' },
+          { description: 'Label fade', severity: 'low' },
+        ],
+      },
+      onRenderDiagnostic: (diagnostic) => diagnostics.push(diagnostic),
+    });
+    try {
+      const items = [...target.querySelectorAll('[data-ui-node="n.findingItem"]')];
+      expect(items).toHaveLength(3);
+      const occKeys = items.map((item) => item.getAttribute('data-ui-occ') ?? '');
+      // every record keeps a UNIQUE occurrence identity
+      expect(new Set(occKeys).size).toBe(3);
+      // the FIRST duplicate-key record keeps the canonical key; the later one is made unique
+      expect(occKeys[0]).toContain('Seal wear');
+      expect(occKeys[0]).not.toContain('#dup');
+      expect(occKeys[1]).toContain('Seal wear#dup1');
+      // and the collision is REPORTED, not silent
+      expect(diagnostics.some((d) => d.code === 'UI_RENDER_DUPLICATE_KEY')).toBe(true);
     } finally {
       unmount(instance);
       target.remove();

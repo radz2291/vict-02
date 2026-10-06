@@ -18,6 +18,7 @@ import type {
   UiExpression,
   UiInteraction,
   UiNode,
+  UiPseudoState,
   UiPropDecl,
   UiStyleSource,
   UiStyleValue,
@@ -62,6 +63,10 @@ export interface UiStyleRule {
   readonly selector: string;
   /** Viewport/media condition id (CSS @media) when the rule is conditioned. */
   readonly mediaConditionId?: string;
+  /** Container condition id (CSS @container) when the rule is conditioned. */
+  readonly containerConditionId?: string;
+  /** Pseudo state appended to the selector (`.class:hover`). */
+  readonly pseudo?: UiPseudoState;
   readonly declarations: readonly { readonly property: string; readonly value: UiResolvedValue }[];
 }
 
@@ -262,9 +267,47 @@ export function compileUiDocument(
     ruleId: string,
     layer: UiStyleRule['layer'],
     selector: string,
-    mediaConditionId?: string,
+    gating?: {
+      readonly conditionId?: string;
+      readonly pseudo?: UiPseudoState;
+    },
   ): string | undefined => {
     if (declarations === undefined || declarations.length === 0) return undefined;
+    // Resolve the condition gate: media → @media, container → @container,
+    // environment/variant → DECLARED UNSUPPORTED (the rule is dropped, never
+    // silently applied unconditioned).
+    let mediaConditionId: string | undefined;
+    let containerConditionId: string | undefined;
+    if (gating?.conditionId !== undefined) {
+      const condition = (document.conditions ?? ({} as Record<string, UiCondition>))[
+        gating.conditionId
+      ];
+      if (condition === undefined) {
+        issues.push(
+          uiDiagnostic(
+            'UI_STYLE_CONDITION_UNKNOWN',
+            `Unknown style condition '${gating.conditionId}'.`,
+            {
+              documentId,
+              conditionId: gating.conditionId,
+            },
+          ),
+        );
+        return undefined;
+      }
+      if (condition.kind === 'media') mediaConditionId = condition.id;
+      else if (condition.kind === 'container') containerConditionId = condition.id;
+      else {
+        issues.push(
+          uiDiagnostic(
+            'UI_DOC_UNSUPPORTED_FEATURE',
+            `Style condition kind '\${condition.kind}' is unsupported; the conditioned rule is dropped (declared limitation).`,
+            { documentId, feature: `condition:\${condition.kind}` },
+          ),
+        );
+        return undefined;
+      }
+    }
     const compiled = declarations.map((declaration) => {
       let value: UiResolvedValue;
       if (declaration.value.type === 'text') {
@@ -279,8 +322,10 @@ export function compileUiDocument(
     rules.push({
       ruleId,
       layer,
-      selector,
+      selector: gating?.pseudo !== undefined ? `\${selector}:\${gating.pseudo}` : selector,
       ...(mediaConditionId !== undefined ? { mediaConditionId } : {}),
+      ...(containerConditionId !== undefined ? { containerConditionId } : {}),
+      ...(gating?.pseudo !== undefined ? { pseudo: gating.pseudo } : {}),
       declarations: compiled,
     });
     return ruleId;
@@ -321,10 +366,10 @@ export function compileUiDocument(
             UiStyleSource | undefined;
           const ruleId = compileStyleDeclarations(
             source?.declarations,
-            `${classFor(nodeId)}-s${styleRuleIds.length}`,
+            `${classFor(nodeId)}-s\${styleRuleIds.length}`,
             'source',
-            `.${classFor(nodeId)}`,
-            source?.conditionId,
+            `.\${classFor(nodeId)}`,
+            { conditionId: source?.conditionId, pseudo: source?.pseudo },
           );
           if (ruleId !== undefined) styleRuleIds.push(ruleId);
         }
@@ -483,7 +528,7 @@ export function compileUiDocument(
         issues.push(
           uiDiagnostic(
             'UI_DOC_UNSUPPORTED_FEATURE',
-            'Portal rendering is pending beyond the U1 slice.',
+            'Portal rendering is unsupported; its logical child ownership stays in occurrence provenance (U2-02).',
             {
               documentId,
               nodeId,
@@ -496,7 +541,15 @@ export function compileUiDocument(
           nodeId,
           occurrenceKey: key,
           feature: 'portal',
-          children: node.children.map((childId) => compileNode(childId, scope)),
+          children: node.children.map((childId) =>
+            // Occurrence identity carries the portal ownership segment so a
+            // node presented through a portal keeps its LOGICAL owner in
+            // provenance even while the visual placement is unsupported.
+            compileNode(childId, {
+              inDefinition: scope.inDefinition,
+              instancePath: [...scope.instancePath, `portal:${nodeId}:${node.target.overlayId}`],
+            }),
+          ),
         };
     }
   };

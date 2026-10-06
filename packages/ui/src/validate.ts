@@ -525,7 +525,18 @@ function validateNode(
         const propDecl = (definition as UiComponentDefinition).props?.find(
           (candidate) => candidate.name === propName,
         );
-        if (propDecl !== undefined && expression.type === 'literal') {
+        if (propDecl === undefined) {
+          // U2-01: an instance may only pass props the definition declares.
+          issues.push(
+            uiDiagnostic(
+              'UI_DOC_UNKNOWN_PROP',
+              `Definition '${node.definitionId}' declares no prop '${propName}'.`,
+              { documentId, nodeId: node.id, definitionId: node.definitionId, prop: propName },
+            ),
+          );
+          continue;
+        }
+        if (expression.type === 'literal') {
           const actual = expression.value === null ? 'null' : typeof expression.value;
           if (actual !== 'null' && actual !== propDecl.type) {
             issues.push(
@@ -572,6 +583,24 @@ function validateNode(
             continue;
           }
           validateNode(ctx, child, scope, nodes);
+        }
+      }
+      // U2-01: every slot the definition marks `required` must be filled at
+      // this instance (fallbacks serve optional slots; a required slot with
+      // no fill is an authored source error, not a runtime condition).
+      for (const [slotName, declaredSlot] of Object.entries(
+        (definition as UiComponentDefinition).slots ?? {},
+      )) {
+        if (declaredSlot.required !== true) continue;
+        const fill = node.slots?.[slotName];
+        if (fill === undefined || fill.children.length === 0) {
+          issues.push(
+            uiDiagnostic(
+              'UI_DOC_REQUIRED_SLOT_MISSING',
+              `Instance of '${node.definitionId}' leaves required slot '${slotName}' unfilled.`,
+              { documentId, nodeId: node.id, definitionId: node.definitionId, slot: slotName },
+            ),
+          );
         }
       }
       break;

@@ -26,6 +26,8 @@
     readonly navigate: (routeId: string, params?: Readonly<Record<string, unknown>>) => void;
     /** Editor selection hook (occurrence key), used by the authoring canvas only. */
     readonly selectOccurrence?: (occurrence: string) => void;
+    /** Render-time diagnostic channel (duplicate keys, etc.). */
+    readonly onRenderDiagnostic?: (diagnostic: { readonly code: string; readonly message: string; readonly detail?: Readonly<Record<string, unknown>> }) => void;
     /** Reset signal: a NEW symbol re-initializes local state (preview reset). */
     readonly resetSignal?: symbol;
     /** Root element for the document subtree. */
@@ -41,6 +43,7 @@
     dispatch,
     navigate,
     selectOccurrence,
+    onRenderDiagnostic,
     resetSignal,
     as = 'div',
     ariaLabel,
@@ -117,6 +120,7 @@
         {navigate}
         {setState}
         {selectOccurrence}
+        reportDiagnostic={onRenderDiagnostic}
       />
     {/each}
   {/key}
