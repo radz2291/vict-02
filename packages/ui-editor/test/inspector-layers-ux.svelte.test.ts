@@ -199,12 +199,14 @@ describe('Inspector / Layers UX semantic regressions', () => {
         document: fixture,
         selectedOccurrence: 'ux|card|a@card',
         readEffective: () => 'navy',
+        labels: { nodes: { a: 'Research service' } },
         onApply: (draft: TransactionDraft) => applied.push(...draft.commands),
       },
     });
     try {
       flushSync();
       const scope = target.querySelector<HTMLSelectElement>('[aria-label="Edits apply to"]')!;
+      expect(target.querySelector('.breadcrumb')?.textContent).toContain('Research service');
       scope.value = 'instance';
       scope.dispatchEvent(new Event('change', { bubbles: true }));
       flushSync();

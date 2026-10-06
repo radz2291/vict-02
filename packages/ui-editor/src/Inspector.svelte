@@ -51,6 +51,7 @@
   const canStyle = $derived(targetNode?.kind === 'element' || targetNode?.kind === 'component');
   const unsupportedTarget = $derived(!!(condition || pseudo) && targetNode?.kind !== 'element');
   const breadcrumb = $derived(node ? sourceBreadcrumb(document, node.id, labels) : []);
+  const location = $derived([...(report?.instancePath.map(step => nodeLabel(document, step.sourceNodeId, labels)) ?? []), ...breadcrumb]);
   $effect(() => { selectedOccurrence; scope = 'shared'; });
   $effect(() => { text = textNode?.kind === 'text' && textNode.content.type === 'literal' ? textNode.content.value : ''; });
   $effect(() => {
@@ -125,7 +126,7 @@
 
 <aside class="uv-inspector ux-panel" aria-label="Inspector" style:scroll-padding-top={`${headerSize + 8}px`}>
   <div class="selection-bar" bind:this={selectionBar}><header>
-    {#if node}<h2 title={nodeLabel(document, node.id, labels)}>{nodeLabel(document, node.id, labels)}</h2><details class="breadcrumb"><summary>Location · {breadcrumb.length > 1 ? breadcrumb.at(-2) : 'Page'}</summary><p>{breadcrumb.join(' / ')}</p></details>
+    {#if node}<h2 title={nodeLabel(document, node.id, labels)}>{nodeLabel(document, node.id, labels)}</h2><details class="breadcrumb"><summary>Location · {location.length > 1 ? location.at(-2) : 'Document root'}</summary><p>{location.join(' / ')}</p></details>
     {:else}<h2>Make a selection</h2><p>Choose an element on the canvas or in Layers to edit it.</p>{/if}
   </header>
   {#if node}
