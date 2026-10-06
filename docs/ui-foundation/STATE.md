@@ -38,6 +38,17 @@ independently verified on branch `codex/ui-foundation-u2`:
 - Notes: 'stored authoring data' wording on the design surface; sticky card travel (~150px)
   is honest but short; `Reload stored` on an empty store truthfully refuses.
 
+**Parallel track (2026-10-06):** the owner assigned a fresh Codex agent to improve the
+reusable Inspector/Layers UX on branch `codex/ui-foundation-u2-inspector-ux` (created from
+the U2 tip `83ba87f…`, worktree `vict-02-u2-inspector-ux`, pushed). RESERVED for Codex:
+`packages/ui-editor/src/Inspector.svelte`, `packages/ui-editor/src/Layers.svelte`, their
+UI helpers/styles, UX-specific tests, and necessary additive exports — demonstrated via a
+separate editor-review route. The U2 stage-manager track keeps compiler/renderer/session/
+bridge/storage repairs and owns the workbench route and shared records. When both tracks
+are ready, the reviewed UX commits are integrated into `codex/ui-foundation-u2` with
+lineage preserved and the combined candidate independently verified (authorized within
+U2). Until integration, the U2 stage-manager track makes NO edits to the reserved files.
+
 **Next: the FOUNDER walks the U2 proofs ([U2-WALKTHROUGH](U2-WALKTHROUGH.md), ~10 min,
 plain language). Owner experience acceptance is PENDING — independent verdicts are
 necessary, not sufficient.** U3/U4 remain unauthorized.
