@@ -346,12 +346,13 @@ Independent falsification review of the candidate: **DONE — see the two rounds
 
 ## U1 owner acceptance and U2 authorization (2026-10-06)
 
-The owner ACCEPTED U1 at the verified round-4 candidate (records  = starting remote HEAD, live-verified),
+The owner ACCEPTED U1 at the verified round-4 candidate `345b5c62f7eae1d02d7697cdd1abc71b0daeee41`
+(records `cb8539372c1f8a9d055de3a7f29dff222262b486` = starting remote HEAD, live-verified),
 with the disclosed non-blocking notes (NF-1..3) RETAINED into U2 scope. The owner authorized
 **U2 ONLY** — designer and workbench breadth (STAGES §4, U2-01…U2-08): shared components,
 occurrence provenance, general presentation, inspector clarity, the two contrasting proofs
-(, PROOF-DESIGN §3.2–3.3), reusable exported tooling, and measured
-performance/coverage. Carried obligations absorbed: the unbound  type
+in `examples/ui-design-proof` (PROOF-DESIGN §3.2–3.3), reusable exported tooling, and measured
+performance/coverage. Carried obligations absorbed: the unbound `compileUiDocument` type
 reference at authoring store.ts:144, meaningful proof typechecking, U2 build wiring, truthful
 build-command reporting, preservation of U1 save/persistence/history/fencing/snapshot
 behavior, and documentation of safe host orchestration over the session API. U3/U4, the full
@@ -360,7 +361,7 @@ force-push, publication and deployment remain unauthorized. Verification: indepe
 technical challenge AND an independent experience review through real browser use at
 1440×900 / 1024×768 / 390×844 / 480 CSS-px container, against PROOF-DESIGN §4 — owner
 experience acceptance stays pending until the founder checkpoint. New branch/worktree:
- at  (branch did not exist
+`codex/ui-foundation-u2` at `C:/Users/RZ1/Desktop/RZ/vict-02-u2` (branch did not exist
 before; verified). Handoff: [U2-HANDOFF](U2-HANDOFF.md).
 
 ## U1 reopen round 4 (2026-10-06) — repairs verified; "U1-ROUND4 GATE: PASS"
