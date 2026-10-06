@@ -28,13 +28,29 @@ independently verified on branch `codex/ui-foundation-u2`:
   (budget 250), edit feedback 13.9 ms (budget 100), reopen 4.9 ms (budget 1000). Bundle
   separation measured: product route chunks carry no authoring code.
 
-**Remaining (non-blocking, registered):**
-- **N1 (minor, owner decision):** a shared-scope local style edit silently overrides a
-  prior instance-scope override of the same property (equal specificity, later rule order;
-  the instance rule stays in the CSS). Owner: U-track builder; next check: surface an
-  origin-conflict note in the Inspector or scope local rules per occurrence.
-- **N2 (minor):** the PRESERVED banner disappears once the user edits, before the loud
-  save-failure — keep a compact storage-state indicator while storage is broken.
+**Remaining (registered):**
+- **N1 — RECLASSIFIED by the owner as a U2-01 failure and REPAIRED + VERIFIED (2026-10-06):**
+  definition-body localStyle competed with instance localStyle in the same 'local' layer
+  (shared edits won by CSS order). Repair: definition-body localStyle compiles as
+  componentBase (one reusable layer-assignment change; canonical source preserved); pinned
+  by `cascade-n1.test.ts` (both authoring orders) and independently verified
+  "U2-N1-VERIFY: PASS WITH FINDINGS" at candidate `83ba87f…` — all seven demonstrations
+  (both pink/blue orders in workbench AND /service, attached-override survival, undo/redo/
+  save/reload/reopen distinction, PRESERVED byte-identity through a refused save,
+  replacement-clears-warning) PASS
+  ([U2-N1-VERIFY-03](reviews/u2/U2-N1-VERIFY-03.md), sha256
+  `3738d99352597a3ab96d7621c8e7baf9b18aa0033187f319e47357c4f9393bf1`).
+- **N2 — CLOSED with evidence (2026-10-06):** the committed worktree keeps the PRESERVED
+  banner visible through editing AND a refused save (`UI_STORE_CORRUPT`, bytes
+  byte-identical, failure logged); the banner clears only on an acknowledged successful
+  save. The prior reviewer's observation was an artifact of the mid-review drifting
+  worktree (flagged by that reviewer); reproduction steps are recorded in the N1-verify
+  report.
+- **Routed to the Codex Inspector/Layers UX track** (branch
+  `codex/ui-foundation-u2-inspector-ux`): D5/F1 — no UI affordance to REMOVE an instance
+  override (model-level removal verified; the no-empty-apply guard stays); F2 — Inspector
+  'effective value' annotations observed inconsistent with the rendered canvas (unverified
+  observation, U2-04 follow-up).
 - Notes: 'stored authoring data' wording on the design surface; sticky card travel (~150px)
   is honest but short; `Reload stored` on an empty store truthfully refuses.
 

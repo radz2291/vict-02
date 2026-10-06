@@ -77,7 +77,10 @@ describe('frozen cascade: shared presentation never overrides instance overrides
 
   it('order independence: the shared edit still cannot win when the styled instance compiles FIRST', () => {
     const document = doc();
-    (document.nodes['n.root'] as unknown as { children: string[] }).children = ['n.later', 'n.pink'];
+    (document.nodes['n.root'] as unknown as { children: string[] }).children = [
+      'n.later',
+      'n.pink',
+    ];
     (document.nodes['def.card'] as { localStyle?: unknown }).localStyle = [
       { property: 'background-color', value: { type: 'text', value: 'blue' } },
     ];

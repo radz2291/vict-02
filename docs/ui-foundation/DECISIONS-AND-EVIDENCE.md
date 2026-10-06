@@ -344,6 +344,54 @@ rejection→correction→resubmission journey UI is U3 scope (the adapter alread
 
 Independent falsification review of the candidate: **DONE — see the two rounds below.**
 
+## U2 round-3 repair: N1 reclassified and fixed; N2 closed (2026-10-06)
+
+The owner reclassified N1 from a discretionary finding to a **U2-01 failure** (frozen
+STAGES: intentional instance overrides must persist; CONTRACTS/API-SPEC cascade: shared
+component presentation before instance-local styles, normalized generated-selector
+specificity) and directed a bounded repair with independent re-verification.
+
+Root cause (plan-level reproduced): the compiler assigned definition-body localStyle and
+instance localStyle to the SAME 'local' layer; repeated shared-body rules appearing later
+in the stylesheet overrode earlier instance rules — the owner's exact reproduction
+(instance pink, then shared blue: all five cards turned blue).
+
+Repair at candidate `83ba87f7aa112a1d93e7236c9c3ec2f4505f6cff`: one reusable
+layer-assignment change in the compiler — a localStyle inside a definition body compiles
+as **componentBase**; an instance localStyle remains the innermost **local** layer.
+Canonical source and intentional overrides preserved. Pinned by
+`packages/ui/test/cascade-n1.test.ts` (shared-blue + instance-pink in BOTH authoring
+orders; plan declares local after componentBase).
+
+Independent verification (fresh verifier, out-of-repo attacks):
+**"U2-N1-VERIFY: PASS WITH FINDINGS"** at `83ba87f…` —
+[U2-N1-VERIFY-03.md](reviews/u2/U2-N1-VERIFY-03.md), sha256
+`3738d99352597a3ab96d7621c8e7baf9b18aa0033187f319e47357c4f9393bf1`. All seven directed
+demonstrations PASS: D1 instance-pink -> shared-blue (Adaptations stayed pink; four others
+blue; canvas AND /service); D2 reverse order converges identically; D3 seed attached
+override survives shared edits; D4 undo/redo/save/reload/reopen preserve the distinction;
+D5 override removal works at model level (F1 minor: no UI removal affordance — routed to
+the Codex Inspector/Layers UX track); D6 PRESERVED banner through edit + refused save with
+byte-identical bytes; D7 replacement of an overwritable invalid document clears its
+warning. Plan-level cascade: 20-check attack script + served dist confirmed to contain the
+fix. Gates reproduced: unit 2499/2499, renderer 116/116, integration 4/4.
+
+N2 CLOSED with evidence: the committed worktree keeps the PRESERVED banner visible through
+editing AND a refused save (bytes byte-identical, failure logged); the source clears the
+banner only on an acknowledged successful save. The prior reviewer's observation was an
+artifact of the mid-review drifting worktree (flagged by that reviewer); reproduction
+steps are recorded in the N1-verify report.
+
+Parallel track opened the same day: the owner assigned a Codex agent to the reusable
+Inspector/Layers UX on `codex/ui-foundation-u2-inspector-ux` (created from `83ba87f…`,
+worktree `vict-02-u2-inspector-ux`, pushed). Reserved for Codex: Inspector.svelte,
+Layers.svelte, their UI helpers/styles, UX-specific tests, additive exports (demonstrated
+via a separate editor-review route). The stage-manager track keeps compiler/renderer/
+session/bridge/storage and owns the workbench route + shared records. Routed to Codex:
+the D5/F1 removal affordance and the F2 effective-value observation. Integration of the
+reviewed UX commits into `codex/ui-foundation-u2` (lineage preserved, combined candidate
+independently verified) is authorized within U2.
+
 ## U2 implementation and independent verification (2026-10-06) — founder checkpoint pending
 
 Implementation complete across four increments (foundations `cfb4bb4`, tooling `2e03e13`,

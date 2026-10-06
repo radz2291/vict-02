@@ -1,0 +1,98 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/Desktop/RZ/vict-02-u2
+
+(node:16116) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+warning: in the working copy of 'BUILDER-KIT.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'README-fixture.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/builder-kit/PACK.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/builder-kit/capability-catalog.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/builder-kit/context-pack.json', LF will be replaced by CRLF the next time Git touches it
+(node:37468) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+warning: in the working copy of 'BUILDER-KIT.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'README-fixture.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/builder-kit/PACK.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/builder-kit/capability-catalog.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/builder-kit/context-pack.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/builder-kit/accepted-task-scope.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'BUILDER-KIT.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/builder-kit/PACK.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/builder-kit/capability-catalog.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/builder-kit/context-pack.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'packs/fx-pack/src/index.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/builder-kit/accepted-task-scope.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'BUILDER-KIT.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/builder-kit/PACK.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/builder-kit/capability-catalog.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/builder-kit/context-pack.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'packs/fx-pack/src/index.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/builder-kit/accepted-task-scope.json', LF will be replaced by CRLF the next time Git touches it
+(node:35996) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+warning: in the working copy of 'BUILDER-KIT.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/builder-kit/PACK.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/builder-kit/capability-catalog.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/builder-kit/context-pack.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'packs/fx-pack/src/index.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/builder-kit/accepted-task-scope.json', LF will be replaced by CRLF the next time Git touches it
+(node:32844) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:32148) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:36156) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:27140) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:31120) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:13212) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:1620) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:4172) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:35320) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:37228) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:36732) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:37880) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:35232) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:21960) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:31956) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:36436) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:3632) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:38368) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:35604) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:3004) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:36540) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:37752) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:38196) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:20288) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:38292) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:37020) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:36756) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+ Test Files  129 passed (129)
+      Tests  2499 passed (2499)
+   Start at  23:55:17
+   Duration  185.70s (transform 29.75s, setup 0ms, import 120.60s, tests 704.05s, environment 70ms)
+
