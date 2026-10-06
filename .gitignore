@@ -15,6 +15,7 @@ coverage/
 examples/application-proof/build/
 examples/reference-app/build/
 examples/ui-showcase/build/
+examples/ui-authoring-proof/build/
 # Reference application local domain database
 examples/reference-app/.data/
 

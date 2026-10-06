@@ -27,7 +27,11 @@
       "@victframework/sdk": ["./packages/sdk/src/index.ts"],
       "@victframework/mastra": ["./packages/mastra/src/index.ts"],
       "@victframework/sdk/*": ["./packages/sdk/src/*"],
-      "@victframework/sdk/zod": ["./packages/sdk/src/zod.ts"]
+      "@victframework/sdk/zod": ["./packages/sdk/src/zod.ts"],
+      "@victframework/ui-editor": ["./packages/ui-editor/src/index.ts"],
+      "@victframework/ui-editor/*": ["./packages/ui-editor/src/*"],
+      "@victframework/ui-preview": ["./packages/ui-preview/src/index.ts"],
+      "@victframework/ui-preview/*": ["./packages/ui-preview/src/*"]
     }
   },
   "include": [
@@ -37,5 +41,10 @@
     "scripts/**/*.ts",
     "vitest.config.ts"
   ],
-  "exclude": ["examples/application-proof", "examples/reference-app", "examples/ui-showcase"]
+  "exclude": [
+    "examples/application-proof",
+    "examples/reference-app",
+    "examples/ui-showcase",
+    "examples/ui-authoring-proof"
+  ]
 }

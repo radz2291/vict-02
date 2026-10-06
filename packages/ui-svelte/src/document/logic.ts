@@ -116,7 +116,9 @@ export function styleRulesToCss(plan: UiRenderPlan, rootClass: string): string {
       if (declaration.value.type === 'literal') {
         lines.push(`  ${declaration.property}: ${String(declaration.value.value)};`);
       } else if (declaration.value.type === 'token') {
-        lines.push(`  ${declaration.property}: var(--ui-token-${sanitizeTokenId(declaration.value.id)});`);
+        lines.push(
+          `  ${declaration.property}: var(--ui-token-${sanitizeTokenId(declaration.value.id)});`,
+        );
       }
       // binding values are runtime expressions; skipped in static CSS
     }

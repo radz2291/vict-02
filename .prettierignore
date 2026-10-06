@@ -8,6 +8,7 @@ package-lock.json
 examples/application-proof/
 examples/reference-app/build/
 examples/ui-showcase/build/
+examples/ui-authoring-proof/build/
 
 qa-artifacts/
 apps/studio/build/

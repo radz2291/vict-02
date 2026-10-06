@@ -10,7 +10,12 @@
  * Run: npx tsx test/measure-u1.ts   (from examples/ui-authoring-proof)
  */
 
-import { compileUiDocument, defaultSemanticElementCatalog, UiEditSession, type UiDocument } from '@victframework/ui';
+import {
+  compileUiDocument,
+  defaultSemanticElementCatalog,
+  UiEditSession,
+  type UiDocument,
+} from '@victframework/ui';
 import { createPreviewSession } from '@victframework/ui-preview';
 import type { UiScenarioLike } from './preview-shim.js';
 
@@ -172,22 +177,24 @@ async function main(): Promise<void> {
     if (!list.ok) throw new Error('list failed after reset');
   }
 
-  console.log(JSON.stringify(
-    {
-      environment: { node: process.version },
-      workload: { authoredNodes: nodeCount, repeatedOccurrences: 100, transactions: 20 },
-      results: {
-        compileP95ms: Number(percentile(compileSamples, 95).toFixed(2)),
-        compileP50ms: Number(percentile(compileSamples, 50).toFixed(2)),
-        editFeedbackP95ms: Number(percentile(editSamples, 95).toFixed(2)),
-        editFeedbackP50ms: Number(percentile(editSamples, 50).toFixed(2)),
-        scenarioResetP95ms: Number(percentile(resetSamples, 95).toFixed(2)),
+  console.log(
+    JSON.stringify(
+      {
+        environment: { node: process.version },
+        workload: { authoredNodes: nodeCount, repeatedOccurrences: 100, transactions: 20 },
+        results: {
+          compileP95ms: Number(percentile(compileSamples, 95).toFixed(2)),
+          compileP50ms: Number(percentile(compileSamples, 50).toFixed(2)),
+          editFeedbackP95ms: Number(percentile(editSamples, 95).toFixed(2)),
+          editFeedbackP50ms: Number(percentile(editSamples, 50).toFixed(2)),
+          scenarioResetP95ms: Number(percentile(resetSamples, 95).toFixed(2)),
+        },
+        budgets: { compileMs: 250, editFeedbackMs: 100, scenarioResetMs: 1000 },
       },
-      budgets: { compileMs: 250, editFeedbackMs: 100, scenarioResetMs: 1000 },
-    },
-    null,
-    1,
-  ));
+      null,
+      1,
+    ),
+  );
 }
 
 void main();
