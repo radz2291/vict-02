@@ -25,7 +25,7 @@
     <button type="button" class="reset" aria-label={`Reset ${label}`} title="Remove this override; retain shared sources" disabled={disabled || !authored} onclick={onReset}>↺</button>
   </div>
   {#if kind === 'color'}<label class="opacity">Opacity <input type="number" aria-label={`${label} opacity`} min="0" max="100" step="1" value={color ? Number((color.alpha * 100).toFixed(2)) : ''} disabled={disabled || !color} onchange={e => { const v = Number(e.currentTarget.value); if (color && e.currentTarget.value !== '' && Number.isFinite(v)) commit(colorWithAlpha(color.hex, Math.max(0, Math.min(100, v)) / 100)); }} /><span>%</span></label>{/if}
-  {#if differs}<p class="difference">Browser now: {effective} <span>differs from edit value</span></p>{/if}
+  {#if differs}<p class="difference">Browser now: {effective} <span>Resolved in preview</span></p>{/if}
 </div>
 <style>
   .control { min-width: 0; padding: 6px 0; } .caption { display: flex; align-items: baseline; justify-content: space-between; gap: 6px; font-size: 12px; margin-bottom: 4px; text-transform: capitalize; }
