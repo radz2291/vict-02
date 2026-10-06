@@ -344,7 +344,43 @@ rejection→correction→resubmission journey UI is U3 scope (the adapter alread
 
 Independent falsification review of the candidate: **DONE — see the two rounds below.**
 
-## U1 reopening (2026-10-06) — owner follow-up review; readiness claim superseded
+## U1 reopen round (2026-10-06) — repairs verified; "U1-REOPEN GATE: PASS"
+
+Builder repairs at candidate `3bd03a5d649c52ac529089f176f7e22b701ee09c` (parent: reopening
+record `0a398d5`), then a fresh independent verifier (did not implement; out-of-repo attack
+harness in `u1-reopen-falsify/`; candidate worktree untouched on exit) returned the exact
+verdict **"U1-REOPEN GATE: PASS"** — report
+[U1-REOPEN-REVIEW-03.md](reviews/U1-REOPEN-REVIEW-03.md), sha256
+`44e1647d7321ce8b9c12cc6969bdb6aec8a8a7121897d2254f698940dea2862a`, 3 evidence screenshots.
+Finding-to-fix map (all independently attacked and held):
+
+| Reproduced finding | Fix | Location | Evidence |
+|---|---|---|---|
+| Studio authoring persistence was component-local memory | localStorage-backed authoring store; startup loads SAVED source (seed only when empty); corrupt/incompatible → visible `role=alert` diagnostic (structural validation + reachability gate; product refs deferred per layered authority) | `examples/ui-authoring-proof/src/lib/authoring/store.ts`, `src/routes/studio/+page.svelte` | Real-browser journey: edit→save→genuine `location.reload()`→source+revision restored; leave/reopen retained; corruption banner observed; screenshots `walkthrough/studio-persisted-reload-*`, `walkthrough/studio-corrupt-diagnostic-*` |
+| `EditorBridge.save` advanced the session before store ack; expected-revision compared session-with-itself | Two-phase save: `stageSave`/`commitSave` (guarded) in the session; bridge stages → store (revision AUTHORITY) checks `expectedStoredRevision` atomically with the write → commit only on store ack; failed/thrown writes preserve working doc, dirty, stored revision, undo/redo continuity; truthful `UI_STORE_WRITE_FAILED`/`UI_DOC_STALE_REVISION`; `reopen()` reports empty/invalid | `packages/ui/src/session.ts`, `packages/ui-editor/src/bridge.ts` | Verifier probes 3–6 (rejected write, thrown write, retry at correct next revision, stale second editor) all PASS at node boundary; regression tests `packages/ui-editor/test/bridge-save.test.ts`, `packages/ui/test/edit-session.test.ts` |
+| Preview fencing missed the executing-double window | Post-await token recheck on success AND rejection paths; superseded → `SESSION_STALE` (never stale `ok:true`); pre-invocation latency fencing retained | `packages/ui-preview/src/session.ts` | Probes 7–9 PASS (both windows demonstrated); regression tests in `packages/ui-preview/test/session.test.ts`; studio UI note observed: `SESSION_STALE — The session was reset while this operation was in flight` |
+| Double registry re-snapshotted at execution time | Registry captured ONCE at session creation; coverage + execution use the same snapshot; reset/new sessions capture fresh | `packages/ui-preview/src/session.ts` | Probes 10–12 PASS (registry swap mid-session keeps original implementation; reset captures new; missing double denies with real-handler spy untouched) |
+
+Gates at the candidate: unit 2475/2475 (127 files), renderer 108/108, integration 4/4,
+example 20/20, typecheck 0, format clean, check:ui 0 errors (2 known warnings), console
+sweep zero messages on all three routes.
+
+New findings from the reopen review (minor, non-blocking):
+- **FINDING-1 (minor, PRE-EXISTING at base)**: after a successful save, `undo()` is refused
+  with `UI_EDIT_UNDO_CONFLICT` (the save stamps the working document's `revision` field; the
+  undo continuity digest mismatches). Undo before any save works. The probed claims cover
+  continuity across FAILED writes — which hold. Consequence: studio Undo after Save fails
+  until reopen. Owner: U-track; next check: any round touching session history semantics.
+- **FINDING-2 (minor, introduced this round)**: `commitSave`'s guard misses working-session
+  moves between stage and commit (silent intervening-edit loss). Unreachable through
+  `EditorBridge.save()`/the studio (single synchronous turn); contradicts the docstring.
+  Owner: U-track builder; next check: tighten the guard before any host hand-drives the
+  two-phase API across turns.
+
+Verdict basis and retention: tested snapshot `3bd03a5…` with live `origin/main` `4d2df037…`
+unmoved; the two prior verifier reports ([U1-FALSIFICATION-REVIEW-01](reviews/U1-FALSIFICATION-REVIEW-01.md),
+[U1-REPAIR-REVIEW-02](reviews/U1-REPAIR-REVIEW-02.md)) remain preserved historical evidence
+of their rounds, with their readiness claims superseded by the reopening entry above.
 
 The owner's follow-up review REPRODUCED failures against existing U1-04 and U1-06 requirements
 on the verified candidate `5a816722…` / records `4d67c86…`: (1) studio authoring persistence

@@ -1,6 +1,53 @@
 # UI foundation — current state
 
-**2026-10-06 (later) — U1 REOPENED by the owner for a bounded repair + re-verification round.**
+**2026-10-06 (latest) — U1 REOPEN ROUND COMPLETE: repairs independently verified; owner checkpoint pending; branch not yet pushed.**
+The bounded repair round closed with a fresh independent verdict on candidate
+`3bd03a5d649c52ac529089f176f7e22b701ee09c`:
+**"U1-REOPEN GATE: PASS"** ([U1-REOPEN-REVIEW-03.md](reviews/U1-REOPEN-REVIEW-03.md),
+sha256 `44e1647d7321ce8b9c12cc6969bdb6aec8a8a7121897d2254f698940dea2862a`; verifier-built
+out-of-repo attacks; worktree untouched; origin/main live-checked unmoved). All 12 owner
+probes PASS with direct evidence, including the real-browser persistence journey (edit → save
+→ genuine `location.reload()` → edited source + revision 2 restored; route leave/reopen
+retained; corruption → visible `role=alert` diagnostic; studio fencing shows `SESSION_STALE`
+mid-flight; zero console errors on all three routes; 3 verifier screenshots in reviews/).
+Gates at the candidate: unit 2475/2475 (127 files), renderer 108, integration 4, example 20,
+typecheck 0, format clean, check:ui 0 errors (2 known warnings).
+
+Repairs now verified (finding → fix):
+- U1-04 persistence → localStorage-backed authoring store (`src/lib/authoring/store.ts`):
+  startup loads SAVED source, seeds only when empty; corrupt/incompatible → visible
+  diagnostic, never a fake reopen; studio save/reopen feedback truthful.
+- U1-04 save acknowledgment/revision integrity → two-phase session save
+  (`stageSave`/`commitSave`, `packages/ui`); bridge stages → store (revision AUTHORITY)
+  checks `expectedStoredRevision` atomically with the write → commit only on store ack;
+  failed/thrown writes preserve working doc, dirty state, stored revision, undo/redo
+  continuity; stale second editor rejected without overwriting.
+- U1-06 fencing → post-await token recheck on success AND rejection paths (both timing
+  windows demonstrated; pre-invocation latency fencing retained).
+- U1-06 snapshot immutability → double registry captured ONCE at session creation; used for
+  coverage and execution; reset/new sessions capture fresh.
+
+Remaining (minor, non-blocking, from the reopen review):
+- **FINDING-1 (minor, PRE-EXISTING at base)**: after a *successful* save, `undo()` is refused
+  (`UI_EDIT_UNDO_CONFLICT` — the saved revision stamp breaks the continuity digest); undo
+  before any save works; claims about continuity across FAILED writes hold. Owner: U-track;
+  next check: any round touching session history semantics (natural fit: the U3 durability
+  slice or a future editor round).
+- **FINDING-2 (minor, introduced this round)**: `commitSave`'s guard misses working-session
+  moves between stage and commit (silent intervening-edit loss) — unreachable through
+  `EditorBridge.save()`/the studio (single synchronous turn); contradicts the method
+  docstring only. Owner: U-track builder; next check: tighten the guard if any host ever
+  hand-drives the two-phase API across turns.
+- Carried from earlier rounds: R2-2 (studio scenario-note live-region role), R2-3 (benign
+  Svelte dev-mode studio warning), in-memory simulated domain store (U3-05), diagnostic
+  code-name reconciliation vs PROOF-DESIGN sketches, host-side timing method,
+  ui-editor `build` script fails on .svelte imports (pre-existing; exports point to src;
+  root typecheck is the gate).
+
+Next: normal push, remote SHA verification, **owner checkpoint at the U1 boundary**. U2
+remains unauthorized.
+
+**2026-10-06 — U1 REOPENED by the owner (history).**
 The owner's follow-up review reproduced failures against U1-04 and U1-06: studio authoring
 persistence was component-local only (no full-reload/restart survival); `EditorBridge.save`
 advanced the session before store acknowledgement (failed write → revision/dirty desync;
@@ -157,7 +204,7 @@ application, repository integration or Stage 9 change was implemented at that ti
 | Pack drafting | COMPLETE | Candidate 02; final reporting metadata folded afterward | Installed 2026-10-06; see decisions §U0 installation record |
 | Pack independent review | PASS — documentation only | Candidate 01: 8d2683a2a1aae7740755326af597eeed16b4a7a44cfdaf4a9d60cd8b76318e6d; candidate 02: db369614c97119762995480d3ad277b92d21e2eb812739d770bc16bf2df6b15a | Reports preserved under reviews/ |
 | U0 repository establishment/freeze | **CLOSED — amended contract frozen (22 pins) and freeze-byte verified; owner accepted; pushed (`a664c70…` → `9734690…` fast-forward)** | Candidates `54490a8…`/`9ec87f3…`; freeze records `ffbafc0…`/`ea47edd…`; four independent verdicts incl. FREEZE VERIFIED (`9b80f3d4…`) | None — closed. Preserve freeze records and historical evidence |
-| U1 rendering/editing loop | **REOPENED — bounded repairs required (U1-04, U1-06)** (handoff [U1-HANDOFF](U1-HANDOFF.md)) | Prior candidate `5a816722…` and records `4d67c86…` are historical; owner follow-up review reproduced U1-04 persistence + save-acknowledgment failures and U1-06 fencing/snapshot failures | Repair → regression tests + browser persistence journey → fresh independent verifier → push, remote SHA verify, owner checkpoint; U2 unauthorized |
+| U1 rendering/editing loop | **REOPEN ROUND VERIFIED — owner checkpoint pending** (handoff [U1-HANDOFF](U1-HANDOFF.md)) | Candidate `3bd03a5d…`; verdict "U1-REOPEN GATE: PASS" ([U1-REOPEN-REVIEW-03](reviews/U1-REOPEN-REVIEW-03.md)); 12/12 owner probes incl. real-browser persistence; findings FINDING-1/FINDING-2 (minor, non-blocking) + carried notes | Normal push, remote SHA verify, owner checkpoint; U2 unauthorized |
 | U2 breadth | PLANNED | None | Requires U1 pass and its own accepted scope |
 | U3 realism | PLANNED | None | Requires U2 and its own accepted scope |
 | U4 reuse/handoff | PLANNED | None | Requires U3 and its own accepted scope |
