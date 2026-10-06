@@ -1,7 +1,19 @@
 # UI foundation — current state
 
-**2026-10-06 — U1 GATE: PASS (independent verdict); owner checkpoint pending; branch not yet pushed.**
-Verification cycle on candidate `351d3e5…`: fresh falsification review
+**2026-10-06 (later) — U1 REOPENED by the owner for a bounded repair + re-verification round.**
+The owner's follow-up review reproduced failures against U1-04 and U1-06: studio authoring
+persistence was component-local only (no full-reload/restart survival); `EditorBridge.save`
+advanced the session before store acknowledgement (failed write → revision/dirty desync;
+expected-revision compared session-with-itself, not the authoritative store); preview reset
+fencing only covered the pre-invocation window (an async double resolving after a reset
+returned stale `ok:true`); the double registry was re-snapshotted at execution time, so
+registry changes leaked into existing sessions. The prior U1 GATE PASS and readiness claim are
+SUPERSEDED (explicitly historical; the two earlier verifier reports remain preserved evidence
+of their own rounds). Repairs + fresh independent verification follow in this round. Scope:
+U1 only; U2 remains unauthorized.
+
+**2026-10-06 — U1 GATE: PASS (independent verdict) — HISTORICAL, SUPERSEDED by the reopening
+above.** Verification cycle on candidate `351d3e5…`: fresh falsification review
 ([U1-FALSIFICATION-REVIEW-01.md](reviews/U1-FALSIFICATION-REVIEW-01.md), U1 **GATE FAIL** —
 BLOCKER-1: document dispatch was a silent stub in both hosts, so the authored Approve button
 did nothing while the page claimed otherwise; MAJOR-1: empty-permission actors bypassed the
@@ -145,7 +157,7 @@ application, repository integration or Stage 9 change was implemented at that ti
 | Pack drafting | COMPLETE | Candidate 02; final reporting metadata folded afterward | Installed 2026-10-06; see decisions §U0 installation record |
 | Pack independent review | PASS — documentation only | Candidate 01: 8d2683a2a1aae7740755326af597eeed16b4a7a44cfdaf4a9d60cd8b76318e6d; candidate 02: db369614c97119762995480d3ad277b92d21e2eb812739d770bc16bf2df6b15a | Reports preserved under reviews/ |
 | U0 repository establishment/freeze | **CLOSED — amended contract frozen (22 pins) and freeze-byte verified; owner accepted; pushed (`a664c70…` → `9734690…` fast-forward)** | Candidates `54490a8…`/`9ec87f3…`; freeze records `ffbafc0…`/`ea47edd…`; four independent verdicts incl. FREEZE VERIFIED (`9b80f3d4…`) | None — closed. Preserve freeze records and historical evidence |
-| U1 rendering/editing loop | **GATE PASS — owner checkpoint pending** (handoff [U1-HANDOFF](U1-HANDOFF.md)) | Repaired candidate `5a816722…` (from `9734690…`; contract authority `9ec87f3…`); verification cycle FAIL→repairs→PASS (reviews `U1-FALSIFICATION-REVIEW-01` / `U1-REPAIR-REVIEW-02`); open findings R2-1/R2-2/R2-3 carried | Normal push, remote SHA verify, owner checkpoint; U2 unauthorized |
+| U1 rendering/editing loop | **REOPENED — bounded repairs required (U1-04, U1-06)** (handoff [U1-HANDOFF](U1-HANDOFF.md)) | Prior candidate `5a816722…` and records `4d67c86…` are historical; owner follow-up review reproduced U1-04 persistence + save-acknowledgment failures and U1-06 fencing/snapshot failures | Repair → regression tests + browser persistence journey → fresh independent verifier → push, remote SHA verify, owner checkpoint; U2 unauthorized |
 | U2 breadth | PLANNED | None | Requires U1 pass and its own accepted scope |
 | U3 realism | PLANNED | None | Requires U2 and its own accepted scope |
 | U4 reuse/handoff | PLANNED | None | Requires U3 and its own accepted scope |

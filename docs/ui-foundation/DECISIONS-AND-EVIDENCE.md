@@ -344,6 +344,28 @@ rejection→correction→resubmission journey UI is U3 scope (the adapter alread
 
 Independent falsification review of the candidate: **DONE — see the two rounds below.**
 
+## U1 reopening (2026-10-06) — owner follow-up review; readiness claim superseded
+
+The owner's follow-up review REPRODUCED failures against existing U1-04 and U1-06 requirements
+on the verified candidate `5a816722…` / records `4d67c86…`: (1) studio authoring persistence
+was component-local memory (fixture + revision "1" re-initialized on every mount; save only
+mutated local variables; the "Reload stored" button and round-trip test shared the same memory
+closure — no full-reload or restart persistence); (2) `EditorBridge.save` called `session.save`
+BEFORE store acknowledgement — a failed/thrown store write left the session advanced
+(revision 1→2, dirty:false) while storage stayed at 1, and a retry skipped revision 2; the
+expected-revision guard compared the session with itself instead of the authoritative store;
+(3) preview reset fencing checked the fencing token only BEFORE invoking a double — an async
+double resolving after a reset returned stale `ok:true` from the old session; (4) the double
+registry was re-snapshotted at execution time (`snapshotDoubles()` during run), so registry
+changes mutated which implementation an EXISTING session invoked. The prior "U1 GATE: PASS"
+verdict and readiness claim are explicitly SUPERSEDED; both earlier verifier reports remain
+preserved historical evidence of their own rounds. This entry opens a bounded repair +
+re-verification round: U1-04 persistence + save acknowledgment/revision integrity, U1-06
+fencing + snapshot immutability, regression tests through exported boundaries, an actual
+browser reload/reopen persistence journey, then a fresh independent verifier who did not
+implement the repairs. U3-05 (durable domain operation/data adapter replacement) is unaffected;
+authoring-document persistence is U1-04 scope. U2 remains unauthorized.
+
 ## U1 verification cycle (2026-10-06) — FAIL → repairs → PASS; candidate `5a816722…`
 
 **Round 1 — falsification review ([U1-FALSIFICATION-REVIEW-01.md](reviews/U1-FALSIFICATION-REVIEW-01.md),
