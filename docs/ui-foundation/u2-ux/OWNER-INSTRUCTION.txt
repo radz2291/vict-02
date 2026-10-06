@@ -1,0 +1,138 @@
+You own a bounded U2 usability workstream for VICT: redesign and implement the reusable Inspector and Layers so a nontechnical founder can understand and edit an application visually.
+
+Complete this work through research, design, implementation, independent experience review, repairs and a concrete integration handoff. Do not stop after producing a proposal or static mockup.
+
+Project:
+https://github.com/radz2291/vict-02
+
+Create an isolated worktree and branch:
+codex/ui-foundation-u2-inspector-ux
+
+Latest observed U2 repair commit:
+83ba87f7aa112a1d93e7236c9c3ec2f4505f6cff
+
+Use that exact commit as your starting base. It contains an ongoing compiler repair; its independent verification is still pending. Do not describe it as an accepted U2 gate.
+
+Previous U2 records:
+6610d3f0c555308a3252632df3d3686094d1f8ea
+
+Frozen amended contract:
+9ec87f3e7eb8eb7793f972111258940aac635346
+
+The other coding agent remains the overall U2 stage manager and owns technical repairs and final integration. Your responsibility is the complete Inspector/Layers usability slice.
+
+1. Reconstruct the authority and product.
+
+Read AGENTS.md and the UI foundation STATE, PRODUCT-ARCHITECTURE, CONTRACTS, API-SPEC, STAGES-AND-VERIFICATION, PROOF-DESIGN, U2-HANDOFF and latest review reports.
+
+The owner found the current Inspector difficult to review. It exposes source IDs, raw CSS property/value inputs, attribute names and action IDs as the primary interface.
+
+Inspector and Layers are reusable modules intended for the actual VICT Studio. Their everyday editing experience must be addressed now. The complete Studio shell and workflow experience belong to a later, separate agent.
+
+Record this instruction and your bounded scope under docs/ui-foundation/u2-ux/. Keep owner acceptance pending. Preserve the pinned U0 contracts and historical evidence.
+
+2. Research and make deliberate design choices.
+
+Study these primary references:
+https://docs.webstudio.is/university/foundations/style-panel
+https://docs.webstudio.is/university/foundations/navigator
+https://github.com/CoreBunch/Instatic/blob/main/docs/editor.md
+https://github.com/CoreBunch/Instatic/blob/main/docs/features/modules.md
+
+Learn their organization, control affordances, selection feedback, progressive disclosure and style-origin explanations.
+
+Produce a short design brief explaining your chosen information hierarchy and interaction model. Then implement it. Exercise design judgment: consistent typography, spacing, row heights, alignment, control states and restrained visual emphasis.
+
+The owner uses tools such as Adobe applications and DaVinci Resolve. Aim for a coherent professional editing panel with recognizable controls.
+
+3. Deliver usable Inspector and Layers modules.
+
+Inspector:
+- A clear selection header with a meaningful name and breadcrumb.
+- Clear scope: this instance versus the shared component, including the number affected where known.
+- Organized Content, Style and Behavior sections.
+- Common controls for text, text/background color, typography, dimensions, spacing, layout and borders.
+- Appropriate controls: color swatches/picker, numeric values with units, choices and alignment controls.
+- Populate controls from the selected source and available effective values.
+- Explain inherited/shared/local/condition values accurately, with Override and Reset where supported.
+- Make the active condition and pseudo state understandable.
+- Offer declared actions through a picker; support friendly labels without inventing product semantics.
+- Keep raw CSS declarations, attributes, bindings and source identifiers available through Advanced.
+- Provide useful empty, disabled and error states.
+
+Layers:
+- A readable hierarchy with clear expand/collapse affordances.
+- Meaningful names derived from source metadata, roles or content, with sensible generic fallbacks.
+- Clear selection synchronized with the canvas.
+- Components and their internal structure organized so the default view remains scannable.
+- Keyboard navigation, visible focus and usable scrolling.
+- Preserve definition, instance and repeat provenance; deeper technical details remain accessible.
+
+Do not hardcode Northwind-specific identifiers or labels inside the reusable toolkit. Label resolution may use compatible optional host metadata.
+
+4. Preserve the existing foundation.
+
+All edits must use the existing canonical document, exported transactional commands and session/history boundaries.
+
+Preserve IDs, bindings, occurrence mapping, shared/instance semantics, undo/redo, revision checks and truthful save behavior.
+
+Common controls and Advanced must edit the same representation. Do not introduce a second canvas document or bypass validation.
+
+Show unsupported or unavailable features honestly. Do not guess inheritance origins or present computed values as authored values.
+
+Prefer existing tokens and primitives where suitable. Give the reusable modules a coherent default appearance and a practical theme integration surface.
+
+5. Respect parallel file ownership.
+
+Your writable scope:
+- packages/ui-editor/src/Inspector.svelte
+- packages/ui-editor/src/Layers.svelte
+- New Inspector/Layers UI helpers and styles
+- Necessary additive public exports
+- Clearly named UX-specific tests
+- A new examples/ui-design-proof/src/routes/editor-review/ route and its dedicated host helpers
+- docs/ui-foundation/u2-ux/**
+
+The dedicated review route must mount the real exported modules against canonical documents and actual EditorBridge/store behavior.
+
+Do not edit the existing workbench route, compiler, renderer, session engine, bridge, storage implementation, frozen records or shared root STATE/DECISIONS. Supply any necessary existing-host mounting changes as integration instructions for the U2 manager.
+
+If a genuine API dependency prevents progress, prepare a precise request for the manager. Do not silently modify their files.
+
+Use your own dev-server port. Leave the existing demo servers and other worktrees intact.
+
+6. Independently review actual use.
+
+Have a fresh independent evaluator challenge the exact committed candidate in a real browser. The evaluator must not be the implementer.
+
+Required journeys:
+- Select a heading, recognize it and change its text and size.
+- Select a card and change its background using a visible control.
+- Understand and exercise shared versus instance editing.
+- Adjust spacing without typing a CSS property name.
+- Understand an inherited value and create/remove an override.
+- Find an element through Layers and return to its canvas selection.
+- Undo/redo, save, reload and reopen successfully.
+- Use keyboard navigation and handle long labels without clipped controls.
+
+Review at 1440×900, 1024×768, 390×844 and the established narrow-container condition. Mobile may use an intentional alternate panel arrangement.
+
+Capture selected-element states, not only an empty Inspector. Evaluate hierarchy, density, clarity and interaction—not just console errors.
+
+Run relevant tests, typechecking and supported build checks. Repair and independently recheck in-scope failures without requiring the owner to relay every iteration. Preserve failed observations.
+
+7. Deliver the integration handoff.
+
+Push normally to your own branch and verify the remote SHA.
+
+Provide:
+- Exact base, tested candidate and final remote SHAs.
+- Before/after screenshots and a short explanation of the design.
+- Public API additions and precise mounting instructions.
+- Independent verdict, reproduction steps and relevant check results.
+- Remaining limitations.
+- A three-minute founder walkthrough using ordinary editing tasks.
+
+The overall U2 manager will integrate this branch with the technical repairs and verify the combined candidate. Your branch verdict does not independently close U2.
+
+Stop at this workstream’s handoff. Keep owner experience acceptance pending. No U3/U4 implementation, apps/studio changes, merge to main, force-push, publication or deployment.

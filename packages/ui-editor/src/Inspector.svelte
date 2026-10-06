@@ -1,430 +1,184 @@
 <script lang="ts">
-  /**
-   * Inspector — edits the SELECTED source node through exported transactional
-   * commands only. U1 bounded surface: text literal, one style declaration
-   * (property + text or token value), attribute set, and interaction connect
-   * (action id / route id). Every change is a transaction; invalid changes
-   * surface the structured diagnostics and leave the source unchanged.
-   */
-  import type { UiDocument } from '@victframework/ui';
+  import type { UiDocument, UiStyleValue } from '@victframework/ui';
+  type UiPseudoState = 'hover' | 'focus' | 'active' | 'disabled';
   import { resolveOccurrence } from './occurrence.js';
-  import {
-    connectInteraction,
-    setAttribute,
-    setConditionalStyle,
-    setStyle,
-    setTextLiteral,
-    type TransactionDraft,
-  } from './commands.js';
-
+  import { connectInteraction, setAttribute, setConditionalStyle, setStyle, setTextLiteral, type TransactionDraft } from './commands.js';
+  import { nodeLabel, sourceBreadcrumb, editableStyle, sourceStyles, styleText, styleGroups, type EditorLabels } from './inspector-ux.js';
+  import InspectorControl from './InspectorControl.svelte';
   interface Props {
-    readonly document: UiDocument;
-    readonly selectedOccurrence?: string;
-    readonly onApply: (draft: TransactionDraft) => void;
-    readonly lastIssues?: readonly { readonly code: string; readonly message: string }[];
-    readonly knownActionIds?: readonly string[];
-    readonly knownRouteIds?: readonly string[];
-    readonly knownTokenIds?: readonly string[];
-    /** Declared conditions offered as style targets (media/container only). */
-    readonly styleConditions?: readonly {
-      readonly id: string;
-      readonly label: string;
-    }[];
-    /**
-     * Effective-value hook (host-provided, e.g. getComputedStyle on the
-     * canvas DOM). U2-04: the inspector can EXPLAIN the selected value by
-     * showing the effective value next to its authored origin.
-     */
-    readonly readEffective?: (occurrenceKey: string, property: string) => string | undefined;
+    document: UiDocument; selectedOccurrence?: string; onApply: (draft: TransactionDraft) => void;
+    lastIssues?: readonly { code: string; message: string }[];
+    knownActionIds?: readonly string[]; knownRouteIds?: readonly string[]; knownTokenIds?: readonly string[];
+    styleConditions?: readonly { id: string; label: string }[];
+    readEffective?: (occurrence: string, property: string) => string | undefined;
+    labels?: EditorLabels;
   }
-
-  let {
-    document,
-    selectedOccurrence,
-    onApply,
-    lastIssues = [],
-    knownActionIds = [],
-    knownRouteIds = [],
-    knownTokenIds = [],
-    styleConditions = [],
-    readEffective,
-  }: Props = $props();
-
-  let textValue = $state('');
-  let styleProperty = $state('color');
-  let styleValue = $state('');
-  let useToken = $state(false);
-  let attributeName = $state('data-note');
-  let attributeValue = $state('');
-  let actionId = $state('');
-  /** 'base' or a condition id from styleConditions. */
-  let styleTarget = $state('base');
-  /** Where style edits land when the selection is definition-owned. */
-  let applyScope = $state<'shared' | 'instance'>('shared');
-  let stylePseudo: 'hover' | 'focus' | 'active' | 'disabled' | undefined = $state(undefined);
-  let requestIdCounter = 0;
-  /** Per-mount epoch so requestIds never collide with earlier session history. */
-  const inspectorEpoch = Math.random().toString(36).slice(2, 8);
-
-  const report = $derived(
-    selectedOccurrence !== undefined ? resolveOccurrence(selectedOccurrence, document) : undefined,
-  );
+  let { document, selectedOccurrence, onApply, lastIssues = [], knownActionIds = [], knownRouteIds = [], knownTokenIds = [], styleConditions = [], readEffective, labels = {} }: Props = $props();
+  let scope = $state<'shared' | 'instance'>('shared');
+  let condition = $state('');
+  let pseudo = $state<UiPseudoState | undefined>(undefined);
+  let tab = $state('Content');
+  let text = $state('');
+  let property = $state('color');
+  let value = $state('');
+  let token = $state(false);
+  let attr = $state('aria-label');
+  let attrValue = $state('');
+  let action = $state('');
+  let route = $state('');
+  const epoch = Math.random().toString(36).slice(2);
+  let counter = 0;
+  const report = $derived(selectedOccurrence ? resolveOccurrence(selectedOccurrence, document) : undefined);
   const node = $derived(report?.node);
-  const nodeKind = $derived(node?.kind);
-  /** How many instances of the owning definition exist (U2-01 blast radius). */
-  const definitionInstanceCount = $derived.by(() => {
-    if (report?.owningDefinitionId === undefined) return 0;
-    let count = 0;
-    for (const candidate of Object.values(document.nodes ?? {})) {
-      if (candidate.kind === 'component' && candidate.definitionId === report.owningDefinitionId) {
-        count += 1;
-      }
-    }
-    return count;
-  });
-  /** Authored origin of the currently edited property (U2-04). */
-  const authoredOrigin = $derived.by(() => {
-    if (node === undefined || nodeKind !== 'element') return undefined;
-    if (node.localStyle?.some((d) => d.property === styleProperty)) {
-      return { layer: 'Instance-local (base source)', conditioned: false };
-    }
-    for (const sourceId of node.styleSources ?? []) {
-      const source = document.styleSources?.[sourceId];
-      if (source?.declarations.some((d) => d.property === styleProperty)) {
-        const condition = source.conditionId ?? undefined;
-        return {
-          layer: `Attached style source${condition !== undefined ? ` (${condition})` : ''}${source.pseudo !== undefined ? ` :${source.pseudo}` : ''}`,
-          conditioned: condition !== undefined,
-        };
-      }
-    }
-    return undefined; // not authored on this node — may be inherited/cascade
-  });
-  const effectiveValue = $derived.by(() => {
-    if (readEffective === undefined || selectedOccurrence === undefined || nodeKind != 'element') {
-      return undefined;
-    }
-    return readEffective(selectedOccurrence, styleProperty);
-  });
-
+  const nearest = $derived(report?.instancePath.at(-1));
+  const owner = $derived(nearest?.definitionId);
+  const shared = $derived(owner !== undefined);
+  const styleSourceId = $derived(node?.kind === 'text' ? Object.values(document.nodes).find(n => n.kind === 'element' && n.children.includes(node.id))?.id ?? node.id : node?.id ?? '');
+  const target = $derived(scope === 'instance' && nearest ? nearest.sourceNodeId : styleSourceId);
+  const targetNode = $derived(document.nodes[target]);
+  const count = $derived(Object.values(document.nodes).filter(n => n.kind === 'component' && n.definitionId === owner).length);
+  const textNode = $derived(node?.kind === 'text' ? node : node?.kind === 'element' ? node.children.map(id => document.nodes[id]).find(n => n?.kind === 'text') : undefined);
+  const canStyle = $derived(targetNode?.kind === 'element' || targetNode?.kind === 'component');
+  const unsupportedTarget = $derived(!!(condition || pseudo) && targetNode?.kind !== 'element');
+  const breadcrumb = $derived(node ? sourceBreadcrumb(document, node.id, labels) : []);
+  $effect(() => { selectedOccurrence; scope = 'shared'; });
+  $effect(() => { text = textNode?.kind === 'text' && textNode.content.type === 'literal' ? textNode.content.value : ''; });
   $effect(() => {
-    if (node?.kind === 'text' && node.content.type === 'literal') {
-      textValue = node.content.value;
-    }
+    const current = editableStyle(document, target, property, condition || undefined, pseudo);
+    value = current?.type === 'token' ? current.id : styleText(current, document);
+    token = current?.type === 'token';
   });
-
-  function apply(
-    build: (requestId: string, nodeId: string) => TransactionDraft,
-    nodeId: string = report?.sourceNodeId ?? '',
-  ): void {
-    requestIdCounter += 1;
-    // Unique per session lifetime: requestIds are identity — reuse with a
-    // different payload is refused by the session (rightly), so the counter
-    // alone is not enough across hot-reloads/remounts.
-    onApply(build(`inspector-${inspectorEpoch}-${requestIdCounter}`, nodeId));
+  $effect(() => {
+    const click = node?.interactions?.find(i => i.on === 'click');
+    action = click?.action === 'invokeAction' ? click.actionId : '';
+    route = click?.action === 'navigate' ? click.routeId : '';
+  });
+  function request() { return `inspector-ux-${epoch}-${++counter}`; }
+  function changeStyle(property: string, value?: UiStyleValue) {
+    const input = { requestId: request(), nodeId: target, property, ...(value ? { value } : {}) };
+    onApply(condition || pseudo ? setConditionalStyle({ ...input, ...(condition ? { conditionId: condition } : {}), ...(pseudo ? { pseudo } : {}) }) : setStyle(input));
   }
-
-  /**
-   * The node style edits land on: the selected source node — or, when the
-   * selection is definition-owned and the user chose "this instance only",
-   * the INSTANCE node from the occurrence's component path.
-   */
-  const styleNodeId = $derived.by(() => {
-    if (
-      applyScope === 'instance' &&
-      report !== undefined &&
-      report.instancePath.length > 0
-    ) {
-      return report.instancePath[report.instancePath.length - 1].sourceNodeId;
+  function display(property: string) {
+    const local = editableStyle(document, target, property, condition || undefined, pseudo);
+    if (local) return styleText(local, document);
+    // Show unconditioned attached authored values, separately labeled from preview.
+    const sources = (targetNode?.styleSources ?? []).map(id => document.styleSources[id]).filter(s => s && s.conditionId === (condition || undefined) && s.pseudo === pseudo);
+    const authored = sources.flatMap(s => s.declarations).filter(d => d.property === property).at(-1)?.value;
+    return styleText(authored, document) || effective(property);
+  }
+  function effective(property: string) { return selectedOccurrence ? readEffective?.(selectedOccurrence, property)?.trim() ?? '' : ''; }
+  function origin(property: string) {
+    const local = editableStyle(document, target, property, condition || undefined, pseudo);
+    if (local) return local.type === 'token' ? `Override uses token ${local.id}` : local.type === 'binding' ? 'Bound expression; edit in Advanced' : `${shared && scope === 'shared' ? 'Shared definition' : 'Local'} override${condition ? ' · selected condition' : ''}${pseudo ? ` · ${pseudo}` : ''}`;
+    const sources = sourceStyles(document, target, property);
+    if (sources.length) return sources.join('; ');
+    if (['color', 'font-family', 'font-size', 'font-weight', 'line-height', 'text-align'].includes(property) && node) {
+      let ancestor = Object.values(document.nodes).find(n => 'children' in n && n.children.includes(node.id));
+      const seen = new Set<string>();
+      while (ancestor && !seen.has(ancestor.id)) {
+        seen.add(ancestor.id);
+        const declaration = ancestor.localStyle?.find(d => d.property === property);
+        const attached = sourceStyles(document, ancestor.id, property);
+        if (declaration || attached.length) return `Inheritable property · ancestor ${nodeLabel(document, ancestor.id, labels)} declares ${declaration ? styleText(declaration.value, document) : attached.join('; ')}. Browser now shows the result; external cascade origin is not inferred.`;
+        const ancestorId = ancestor.id;
+        ancestor = Object.values(document.nodes).find(n => 'children' in n && n.children.includes(ancestorId));
+        if (!ancestor) {
+          const instance = [...(report?.instancePath ?? [])].reverse().find(step => document.componentDefinitions[step.definitionId]?.root === ancestorId && !seen.has(step.sourceNodeId));
+          if (instance) ancestor = document.nodes[instance.sourceNodeId];
+        }
+      }
     }
-    return report?.sourceNodeId ?? '';
-  });
+    return 'No declaration here. Browser preview includes inheritance and defaults; origin unavailable.';
+  }
 </script>
 
-<aside class="uv-inspector" aria-label="Inspector">
-  <h2>Inspector</h2>
-  {#if report === undefined || node === undefined}
-    <p>Select an element in the canvas to inspect its source.</p>
-  {:else}
-    <dl>
-      <dt>Source node</dt>
-      <dd>
-        <code>{report.sourceNodeId}</code>
-      </dd>
-      <dt>Kind</dt>
-      <dd>{nodeKind}</dd>
-      {#if report.instancePath.length > 0}
-        <dt>Inside component</dt>
-        <dd>
-          {#each report.instancePath as step, index}
-            {#if index > 0}→{/if}
-            <code>{step.definitionId}</code> ({step.sourceNodeId})
-          {/each}
-          {#if definitionInstanceCount > 0}
-            <span class="uv-inspector-note">
-              editing the SHARED definition — {definitionInstanceCount}
-              {definitionInstanceCount === 1 ? 'instance' : 'instances'} update together
-            </span>
-          {/if}
-        </dd>
-        {#if nodeKind === 'element'}
-          <dt>Edits apply to</dt>
-          <dd>
-            <select
-              value={applyScope}
-              aria-label="Edits apply to"
-              onchange={(event) => {
-                applyScope = (event.currentTarget as HTMLSelectElement).value as 'shared' | 'instance';
-              }}
-            >
-              <option value="shared">the shared definition (all instances)</option>
-              <option value="instance">
-                this instance only ({report.instancePath[report.instancePath.length - 1]?.sourceNodeId})
-              </option>
-            </select>
-          </dd>
-        {/if}
-      {/if}
-      {#if report.portalPath.length > 0}
-        <dt>Portal ownership</dt>
-        <dd>
-          presented through
-          {#each report.portalPath as step, index}
-            {#if index > 0}→{/if}
-            <code>{step.sourceNodeId}</code> → <code>{step.overlayId}</code>
-          {/each}
-          (rendering unsupported; ownership preserved)
-        </dd>
-      {/if}
-      {#if report.repeatKeys.length > 0}
-        <dt>Record keys</dt>
-        <dd>{report.repeatKeys.join(' → ')}</dd>
-      {/if}
-    </dl>
-
-    {#if nodeKind === 'text'}
-      <label>
-        Text
-        <input
-          type="text"
-          bind:value={textValue}
-          aria-label="Text content"
-        />
-      </label>
-      <button type="button" onclick={() => apply((id, nodeId) => setTextLiteral({ requestId: id, nodeId, value: textValue }), report.sourceNodeId)}>
-        Apply text
-      </button>
-    {/if}
-
-    {#if nodeKind === 'element' || nodeKind === 'component'}
-      <fieldset>
-        <legend>Style declaration</legend>
-        <label>
-          Applies to
-          <select
-            value={styleTarget}
-            aria-label="Style target"
-            onchange={(event) => {
-              styleTarget = (event.currentTarget as HTMLSelectElement).value;
-            }}
-          >
-            <option value="base">Base styling</option>
-            {#each styleConditions as condition}
-              <option value={condition.id}>{condition.label}</option>
-            {/each}
-          </select>
-        </label>
-        {#if styleTarget !== 'base'}
-          <p class="uv-inspector-note">
-            Editing <strong>{styleConditions.find((c) => c.id === styleTarget)?.label ?? styleTarget}</strong>
-            styling — base styling is NOT changed (the rule applies only under that
-            condition).
-          </p>
-        {/if}
-        <label>
-          Pseudo state
-          <select
-            value={stylePseudo ?? ''}
-            aria-label="Pseudo state"
-            onchange={(event) => {
-              const raw = (event.currentTarget as HTMLSelectElement).value;
-              stylePseudo = raw === '' ? undefined : (raw as 'hover' | 'focus' | 'active' | 'disabled');
-            }}
-          >
-            <option value="">— (none)</option>
-            <option value="hover">hover</option>
-            <option value="focus">focus</option>
-            <option value="active">active</option>
-            <option value="disabled">disabled</option>
-          </select>
-        </label>
-        <label>
-          Property
-          <input type="text" bind:value={styleProperty} aria-label="Style property" />
-        </label>
-        {#if authoredOrigin !== undefined}
-          <p class="uv-inspector-note">
-            Authored in: {authoredOrigin.layer}
-            {#if effectiveValue !== undefined}
-              · effective value: <code>{effectiveValue}</code>
-            {/if}
-          </p>
-        {:else if effectiveValue !== undefined}
-          <p class="uv-inspector-note">
-            Not authored on this node — effective value: <code>{effectiveValue}</code>
-            (cascade/inheritance/token).
-          </p>
-        {/if}
-        <label>
-          <input type="checkbox" bind:checked={useToken} />
-          Token value
-        </label>
-        {#if useToken}
-          <label>
-            Token
-            <select bind:value={styleValue} aria-label="Token id">
-              {#each knownTokenIds as tokenId}
-                <option value={tokenId}>{tokenId}</option>
-              {/each}
-            </select>
-          </label>
-        {:else}
-          <label>
-            Value
-            <input type="text" bind:value={styleValue} aria-label="Style value" />
-          </label>
-        {/if}
-        <button
-          type="button"
-          disabled={!useToken && styleValue.trim() === ''}
-          title={!useToken && styleValue.trim() === ''
-            ? 'Enter a value first (an empty value would be a silent no-op)'
-            : undefined}
-          onclick={() => {
-            const value = useToken
-              ? { type: 'token', id: styleValue }
-              : { type: 'text', value: styleValue.trim() };
-            if (styleTarget === 'base' && stylePseudo === undefined) {
-              apply(
-                (id, nodeId) =>
-                  setStyle({
-                    requestId: id,
-                    nodeId,
-                    property: styleProperty,
-                    value,
-                  }),
-                styleNodeId,
-              );
-            } else {
-              apply(
-                (id, nodeId) =>
-                  setConditionalStyle({
-                    requestId: id,
-                    nodeId,
-                    property: styleProperty,
-                    value,
-                    ...(styleTarget !== 'base' ? { conditionId: styleTarget } : {}),
-                    ...(stylePseudo !== undefined ? { pseudo: stylePseudo } : {}),
-                  }),
-                styleNodeId,
-              );
-            }
-          }}
-        >
-          Apply style
-        </button>
-      </fieldset>
-
-      {#if nodeKind === 'element'}
-        <fieldset>
-          <legend>Attribute</legend>
-          <label>
-            Name
-            <input type="text" bind:value={attributeName} aria-label="Attribute name" />
-          </label>
-          <label>
-            Value
-            <input type="text" bind:value={attributeValue} aria-label="Attribute value" />
-          </label>
-          <button
-            type="button"
-            onclick={() =>
-              apply((id) =>
-                setAttribute({
-                  requestId: id,
-                  nodeId: report.sourceNodeId,
-                  name: attributeName,
-                  value: attributeValue,
-                }),
-              )}
-          >
-            Set attribute
-          </button>
-        </fieldset>
-
-        <fieldset>
-          <legend>Interaction (click)</legend>
-          <label>
-            Action id
-            <input type="text" bind:value={actionId} list="uv-known-actions" aria-label="Action id" />
-          </label>
-          <datalist id="uv-known-actions">
-            {#each knownActionIds as known}
-              <option value={known}>{known}</option>
-            {/each}
-          </datalist>
-          <button
-            type="button"
-            onclick={() =>
-              apply((id) =>
-                connectInteraction({
-                  requestId: id,
-                  nodeId: report.sourceNodeId,
-                  interaction: { on: 'click', action: 'invokeAction', actionId },
-                }),
-              )}
-          >
-            Connect action
-          </button>
-          {#if knownRouteIds.length > 0}
-            <label>
-              Navigate to route
-              <select
-                bind:value={actionId}
-                aria-label="Route id"
-              >
-                {#each knownRouteIds as routeId}
-                  <option value={routeId}>{routeId}</option>
-                {/each}
-              </select>
-            </label>
-            <button
-              type="button"
-              onclick={() =>
-                apply((id) =>
-                  connectInteraction({
-                    requestId: id,
-                    nodeId: report.sourceNodeId,
-                    interaction: { on: 'click', action: 'navigate', routeId: actionId },
-                  }),
-                )}
-            >
-              Connect navigation
-            </button>
-          {/if}
-        </fieldset>
-      {/if}
-    {/if}
-  {/if}
-
-  {#if lastIssues.length > 0}
-    <div class="uv-inspector-issues" role="alert">
-      Last change rejected (source unchanged):
-      <ul>
-        {#each lastIssues as issue}
-          <li>{issue.code}: {issue.message}</li>
-        {/each}
-      </ul>
+<aside class="uv-inspector ux-panel" aria-label="Inspector">
+  <header><span class="eyebrow">Inspector</span>
+    {#if node}<h2>{nodeLabel(document, node.id, labels)}</h2><p class="breadcrumb">{breadcrumb.join(' / ')}</p>
+    {:else}<h2>Make a selection</h2><p>Choose an element on the canvas or in Layers to edit it.</p>{/if}
+  </header>
+  {#if node}
+    <div class="scope">
+      {#if shared}
+        <label>Style edits apply to <select aria-label="Edits apply to" value={scope} onchange={e => scope = e.currentTarget.value as 'shared' | 'instance'}><option value="shared">Shared component · {count} authored instances</option><option value="instance">This instance · component wrapper</option></select></label>
+        <p>{scope === 'shared' ? 'Shared source changes update every occurrence of this component.' : 'Styles apply to this component wrapper. Inner-element overrides and instance text replacement are unavailable.'}</p>
+      {:else}<p>Editing this source element{node.kind === 'repeat' || report?.repeatKeys.length ? ' · changes affect repeated occurrences' : ''}.</p>{/if}
     </div>
+    <nav class="tabs" aria-label="Inspector sections">{#each ['Content', 'Style', 'Behavior'] as section}<button type="button" aria-pressed={tab === section} onclick={() => tab = section}>{section}</button>{/each}</nav>
+    {#if tab === 'Content'}
+      <section><h3>Content</h3>
+        {#if textNode?.kind === 'text' && textNode.content.type === 'literal'}
+          <label>Text content<textarea aria-label="Text content" bind:value={text} disabled={shared && scope === 'instance'} rows="4"></textarea></label>
+          {#if shared}<p>Text edits change the shared source. This instance cannot replace definition text.</p>{/if}
+          <button type="button" class="primary" disabled={shared && scope === 'instance'} onclick={() => onApply(setTextLiteral({ requestId: request(), nodeId: textNode.id, value: text }))}>Apply text</button>
+        {:else if textNode?.kind === 'text'}<p>Text comes from a binding. Its expression is available in Advanced; literal editing would replace that binding.</p>
+        {:else}<p>No direct text content. Expand this element in Layers to select its content.</p>{/if}
+      </section>
+    {:else if tab === 'Style'}
+      <section class="context"><label>Editing condition<select aria-label="Style target" value={condition} onchange={e => condition = e.currentTarget.value}><option value="">Base · all sizes</option>{#each styleConditions as c}<option value={c.id}>{c.label}</option>{/each}</select></label>
+        <label>Element state<select aria-label="Pseudo state" value={pseudo ?? ''} onchange={e => pseudo = (e.currentTarget.value || undefined) as UiPseudoState | undefined}><option value="">Normal</option>{#each ['hover', 'focus', 'active', 'disabled'] as p}<option value={p}>{p}</option>{/each}</select></label>
+        <p>{condition ? 'Edits are saved in this condition. Resize the preview to test its query.' : 'Base styling applies at every size.'} {pseudo ? `Editing ${pseudo}; this does not force the browser into that state.` : ''}</p>
+        {#if unsupportedTarget}<p role="status">Condition and state editing is unavailable on component wrappers. Select the shared inner element or use base styling.</p>{/if}
+        {#if node.kind === 'text'}<p>Text appearance applies to its containing {nodeLabel(document, styleSourceId, labels)}.</p>{/if}
+        {#if condition || pseudo}<p>Conditional rules are attached sources. A local base override can take precedence; Reset that base override if needed.</p>{/if}
+      </section>
+      {#if canStyle}
+        {#each styleGroups as group, index}<details open={index < 2}><summary>{group.title}</summary><section>
+          {#each group.controls as control}
+            {@const own = editableStyle(document, target, control.property, condition || undefined, pseudo)}
+            {#key `${target}:${condition}:${pseudo}:${control.property}`}<InspectorControl label={control.label} kind={control.kind} value={display(control.property)} authored={own !== undefined} origin={origin(control.property)} effective={effective(control.property)} options={'options' in control ? control.options : []} disabled={unsupportedTarget || own?.type === 'binding'} onChange={v => changeStyle(control.property, { type: 'text', value: v })} onReset={() => changeStyle(control.property)} />{/key}
+          {/each}
+        </section></details>{/each}
+      {:else}<section><p>Select an element or component to style it. Text appearance is controlled by its containing element.</p></section>{/if}
+    {:else}
+      <section><h3>On click</h3>
+        {#if node.kind === 'element'}
+          <label>Declared action<select aria-label="Declared action" bind:value={action}><option value="">Choose an action…</option>{#each knownActionIds as id}<option value={id}>{labels.actions?.[id] ?? id}</option>{/each}</select></label>
+          <button type="button" disabled={!knownActionIds.includes(action)} onclick={() => onApply(connectInteraction({ requestId: request(), nodeId: node.id, interaction: { on: 'click', action: 'invokeAction', actionId: action, ...(node.interactions?.find(i => i.on === 'click' && i.action === 'invokeAction')?.action === 'invokeAction' ? { input: (node.interactions.find(i => i.on === 'click' && i.action === 'invokeAction') as { input?: Readonly<Record<string, import('@victframework/ui').UiExpression>> }).input } : {}) } }))}>Connect action</button>
+          {#if !knownActionIds.length}<p>No declared actions supplied by the host.</p>{/if}
+          {#if knownRouteIds.length}<label>Destination<select aria-label="Route id" bind:value={route}><option value="">Choose…</option>{#each knownRouteIds as id}<option value={id}>{labels.routes?.[id] ?? id}</option>{/each}</select></label><button type="button" disabled={!knownRouteIds.includes(route)} onclick={() => onApply(connectInteraction({ requestId: request(), nodeId: node.id, interaction: { on: 'click', action: 'navigate', routeId: route } }))}>Connect navigation</button>{/if}
+          <p>Connecting replaces the existing click interaction. {shared ? 'Behavior edits change shared source.' : ''}</p>
+        {:else}<p>Click actions are available on elements. Select an inner button or link.</p>{/if}
+      </section>
+    {/if}
+    <details class="advanced"><summary>Advanced · source & declarations</summary><section>
+      <dl><dt>Source node</dt><dd>{node.id}</dd><dt>Component path</dt><dd>{report?.instancePath.map(p => `${p.sourceNodeId}@${p.definitionId}`).join(' / ') || 'None'}</dd><dt>Repeat record keys</dt><dd>{report?.repeatKeys.join(' / ') || 'None'}</dd><dt>Portal ownership</dt><dd>{JSON.stringify(report?.portalPath)}</dd></dl>
+      {#if canStyle}<label>CSS property<input aria-label="Style property" bind:value={property} /></label><label><input type="checkbox" bind:checked={token} /> Use token</label>
+        {#if token}<label>Token<select aria-label="Token id" bind:value={value}><option value="">Choose…</option>{#each knownTokenIds as id}<option value={id}>{id}</option>{/each}</select></label>{:else}<label>CSS value<input aria-label="Style value" bind:value={value} /></label>{/if}
+        <p>{origin(property)}</p><button type="button" disabled={!value.trim() || !property.trim() || unsupportedTarget} onclick={() => changeStyle(property, token ? { type: 'token', id: value } : { type: 'text', value: value.trim() })}>Apply style</button><button type="button" disabled={!editableStyle(document, target, property, condition || undefined, pseudo) || unsupportedTarget} onclick={() => changeStyle(property)}>Reset declaration</button>
+      {/if}
+      {#if node.kind === 'element'}<label>Attribute name<input aria-label="Attribute name" bind:value={attr} /></label><label>Attribute value<input aria-label="Attribute value" bind:value={attrValue} /></label><button type="button" onclick={() => onApply(setAttribute({ requestId: request(), nodeId: node.id, name: attr, value: attrValue }))}>Set attribute</button>{/if}
+      <h3>Canonical source (read only)</h3><pre>{JSON.stringify(node, null, 2)}</pre>
+    </section></details>
   {/if}
+  {#if lastIssues.length}<section role="alert" class="issues"><strong>Change rejected · source unchanged</strong>{#each lastIssues as issue}<p>{issue.code}: {issue.message}</p>{/each}</section>{/if}
 </aside>
+
+<style>
+  .ux-panel { background: var(--ui-editor-panel, #f8f9fb); color: var(--ui-editor-ink, #202938); font: 12px/1.5 var(--ui-editor-font, 'Segoe UI', sans-serif); min-width: 0; width: 100%; box-sizing: border-box; }
+  header, section, .scope { padding: 14px 16px; min-width: 0; }
+  header { background: var(--ui-editor-input, #fff); border-bottom: 1px solid var(--ui-editor-line, #d7dce5); }
+  .eyebrow { font-size: 10px; text-transform: uppercase; letter-spacing: .1em; color: var(--ui-editor-muted, #667085); }
+  h2 { font-size: 16px; line-height: 1.35; margin: 5px 0; overflow-wrap: anywhere; }
+  h3 { font-size: 12px; margin: 0 0 10px; }
+  p { color: var(--ui-editor-muted, #667085); margin: 6px 0; overflow-wrap: anywhere; font-size: 11px; }
+  .breadcrumb { font-size: 10px; }
+  .scope { padding-block: 10px; }
+  label { display: block; margin: 6px 0; }
+  input:not([type=checkbox]), select, textarea { width: 100%; min-width: 0; max-width: 100%; box-sizing: border-box; padding: 7px 8px; border: 1px solid var(--ui-editor-line, #d7dce5); border-radius: 5px; background: var(--ui-editor-input, #fff); color: inherit; font: inherit; }
+  textarea { resize: vertical; margin-top: 5px; }
+  button { padding: 7px 10px; font: inherit; color: inherit; border: 1px solid var(--ui-editor-line, #d7dce5); border-radius: 5px; background: var(--ui-editor-input, #fff); cursor: pointer; margin: 3px 3px 3px 0; }
+  .primary, .tabs [aria-pressed=true] { color: var(--ui-editor-accent, #355cc9); background: var(--ui-editor-selection, #edf1ff); }
+  .tabs { display: flex; padding: 0 12px 8px; border-bottom: 1px solid var(--ui-editor-line, #d7dce5); }
+  .tabs button { flex: 1; }
+  details { border-bottom: 1px solid var(--ui-editor-line, #d7dce5); }
+  summary { padding: 10px 16px; font-weight: 600; cursor: pointer; }
+  details section { padding-top: 0; }
+  .advanced { margin-top: 12px; }
+  dl { margin: 0; font-size: 11px; } dt { color: var(--ui-editor-muted, #667085); } dd { margin: 0 0 8px; overflow-wrap: anywhere; }
+  pre { overflow: auto; max-height: 240px; font-size: 10px; background: var(--ui-editor-input, #fff); padding: 8px; }
+  :focus-visible { outline: 2px solid var(--ui-editor-accent, #355cc9); outline-offset: 2px; }
+  :disabled { opacity: .5; cursor: default; }
+  .issues { background: #fff0ef; }
+</style>
+
