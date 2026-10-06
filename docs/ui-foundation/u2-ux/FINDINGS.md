@@ -20,3 +20,18 @@
 - Current underlying instance override API styles a component wrapper; per-inner-element occurrence overrides and instance text replacement remain unavailable. The UX exposes this existing limitation honestly; a future schema/API change is a separately governed manager decision.
 
 These findings do not accept the pinned compiler repair or close U2. Owner acceptance remains pending.
+
+11. Final broad check at initial candidate: 23 errors / 5 warnings. All 23 errors are in unchanged EditorCanvas and existing service/workbench paths. One new warning is the review-route canvas ref's non-reactive declaration; it is included in the bounded repair queue. Full output preserved in broad-svelte-check-initial.txt.
+12. Root Prettier check after building failed on 44 generated design-proof build files and unchanged packages/ui/test/cascade-n1.test.ts (the pinned compiler repair). Scoped formatting of all edited TS/JS files passes. Generated output and compiler test are outside writable scope; no automatic global formatting run. The manager can extend .prettierignore for examples/ui-design-proof/build and format its compiler-repair test. Markdown is globally ignored by the existing formatter configuration, and .svelte has no bundled parser.
+
+## Independent round-1 findings and bounded repair candidate
+
+Fresh evaluator challenged exact pushed code 4d7b0670186a04411a51234d361bb8c9ef65fea1 in its own detached checkout/Chrome server. Its failed observations are preserved verbatim in independent-review/ROUND-1.md and its supporting evidence.
+
+- M1: Collapsing a selected descendant's ancestor left zero visible Layers tab stops. Repair moves focusKey to the collapsed ancestor and supplies a visible fallback if a focused row disappears. Exact-selection/loop test extended with collapsed-tabstop assertion.
+- M2: Reconnecting navigation discarded canonical parameter bindings. Repair keeps existing navigation params, matching action input preservation. New regression changes route.a to route.b and asserts unchanged params through the real UiEditSession.
+- M3: Browser now values were stale after viewport/container resizing. Repair refreshes readEffective after preview size changes, window resize, and ResizeObserver callbacks, in addition to source/DOM ticks. Browser resize regression compares displayed font-size with actual getComputedStyle at 390 and 1440.
+- Canvas ref non_reactive_update warning repaired with $state; broad Svelte check now 23 errors/4 existing warnings across unchanged files, zero diagnostics in new modules or review route.
+- Adjacent in-scope improvements: Advanced attribute field populates from source, named-color swatches fall back to measured RGB, and the existing conditional style command builder is now publicly exported (additive only).
+
+No engine/compiler/renderer/store/workbench/frozen file changed. These are builder repair claims until the fresh evaluator rechecks the exact repair commit.

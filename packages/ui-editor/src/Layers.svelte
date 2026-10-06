@@ -48,6 +48,7 @@
     while (parent) { const ancestor = all.find(e => e.key === parent); if (!ancestor || !isOpen(ancestor)) return false; parent = ancestor.parent; }
     return true;
   }));
+  const tabStop = $derived(entries.some(entry => entry.key === focusKey) ? focusKey : entries[0]?.key);
   $effect(() => {
     if (!selectedOccurrence) return;
     const entry = all.find(e => e.key === selectedOccurrence);
@@ -61,7 +62,14 @@
     focusKey = selectedOccurrence;
   });
   function toggle(entry: Entry) {
-    if (isOpen(entry)) closed = new Set([...closed, entry.key]);
+    if (isOpen(entry)) {
+      let focused = all.find(item => item.key === focusKey);
+      while (focused?.parent) {
+        if (focused.parent === entry.key) { focusKey = entry.key; break; }
+        focused = all.find(item => item.key === focused?.parent);
+      }
+      closed = new Set([...closed, entry.key]);
+    }
     else { closed = new Set([...closed].filter(k => k !== entry.key)); expanded = new Set([...expanded, entry.key]); }
   }
   async function focus(key: string) { focusKey = key; await tick(); Array.from(root.querySelectorAll<HTMLElement>('[role=treeitem]')).find(e => e.dataset.key === key)?.focus(); }
@@ -85,7 +93,7 @@
     {#each entries as entry (entry.key)}
       <li role="none" style:padding-left={`${entry.depth * 12}px`}>
         {#if entry.children}<button class="disclosure" type="button" tabindex="-1" aria-label={`${isOpen(entry) ? 'Collapse' : 'Expand'} ${entry.label}`} onclick={() => toggle(entry)}>{isOpen(entry) ? '⌄' : '›'}</button>{:else}<span class="spacer"></span>{/if}
-        <button type="button" role="treeitem" data-key={entry.key} aria-level={entry.depth + 1} aria-expanded={entry.children ? isOpen(entry) : undefined} aria-selected={entry.key === selectedOccurrence} tabindex={entry.key === (focusKey || entries[0]?.key) ? 0 : -1} title={entry.detail} onclick={() => select(entry)} onkeydown={e => keyboard(e, entry)} onfocus={() => focusKey = entry.key}>
+        <button type="button" role="treeitem" data-key={entry.key} aria-level={entry.depth + 1} aria-expanded={entry.children ? isOpen(entry) : undefined} aria-selected={entry.key === selectedOccurrence} tabindex={entry.key === tabStop ? 0 : -1} title={entry.detail} onclick={() => select(entry)} onkeydown={e => keyboard(e, entry)} onfocus={() => focusKey = entry.key}>
           <span class="icon" aria-hidden="true">{entry.component ? '◇' : entry.children ? '▤' : '·'}</span><span class="name">{entry.label}</span>{#if entry.component}<span class="badge">Component</span>{/if}
         </button>
       </li>

@@ -53,7 +53,16 @@
     action = click?.action === 'invokeAction' ? click.actionId : '';
     route = click?.action === 'navigate' ? click.routeId : '';
   });
+  $effect(() => {
+    const current = node?.kind === 'element' ? node.attributes?.[attr] : undefined;
+    attrValue = typeof current === 'string' ? current : '';
+  });
   function request() { return `inspector-ux-${epoch}-${++counter}`; }
+  function connectRoute() {
+    if (!node) return;
+    const current = node.interactions?.find(i => i.on === 'click');
+    onApply(connectInteraction({ requestId: request(), nodeId: node.id, interaction: { on: 'click', action: 'navigate', routeId: route, ...(current?.action === 'navigate' && current.params ? { params: current.params } : {}) } }));
+  }
   function changeStyle(property: string, value?: UiStyleValue) {
     const input = { requestId: request(), nodeId: target, property, ...(value ? { value } : {}) };
     onApply(condition || pseudo ? setConditionalStyle({ ...input, ...(condition ? { conditionId: condition } : {}), ...(pseudo ? { pseudo } : {}) }) : setStyle(input));
@@ -133,10 +142,10 @@
     {:else}
       <section><h3>On click</h3>
         {#if node.kind === 'element'}
-          <label>Declared action<select aria-label="Declared action" bind:value={action}><option value="">Choose an action…</option>{#each knownActionIds as id}<option value={id}>{labels.actions?.[id] ?? id}</option>{/each}</select></label>
+          <label>Declared action<select aria-label="Declared action" value={action} onchange={e => action = e.currentTarget.value}><option value="">Choose an action…</option>{#each knownActionIds as id}<option value={id}>{labels.actions?.[id] ?? id}</option>{/each}</select></label>
           <button type="button" disabled={!knownActionIds.includes(action)} onclick={() => onApply(connectInteraction({ requestId: request(), nodeId: node.id, interaction: { on: 'click', action: 'invokeAction', actionId: action, ...(node.interactions?.find(i => i.on === 'click' && i.action === 'invokeAction')?.action === 'invokeAction' ? { input: (node.interactions.find(i => i.on === 'click' && i.action === 'invokeAction') as { input?: Readonly<Record<string, import('@victframework/ui').UiExpression>> }).input } : {}) } }))}>Connect action</button>
           {#if !knownActionIds.length}<p>No declared actions supplied by the host.</p>{/if}
-          {#if knownRouteIds.length}<label>Destination<select aria-label="Route id" bind:value={route}><option value="">Choose…</option>{#each knownRouteIds as id}<option value={id}>{labels.routes?.[id] ?? id}</option>{/each}</select></label><button type="button" disabled={!knownRouteIds.includes(route)} onclick={() => onApply(connectInteraction({ requestId: request(), nodeId: node.id, interaction: { on: 'click', action: 'navigate', routeId: route } }))}>Connect navigation</button>{/if}
+          {#if knownRouteIds.length}<label>Destination<select aria-label="Route id" value={route} onchange={e => route = e.currentTarget.value}><option value="">Choose…</option>{#each knownRouteIds as id}<option value={id}>{labels.routes?.[id] ?? id}</option>{/each}</select></label><button type="button" disabled={!knownRouteIds.includes(route)} onclick={connectRoute}>Connect navigation</button>{/if}
           <p>Connecting replaces the existing click interaction. {shared ? 'Behavior edits change shared source.' : ''}</p>
         {:else}<p>Click actions are available on elements. Select an inner button or link.</p>{/if}
       </section>
@@ -181,4 +190,3 @@
   :disabled { opacity: .5; cursor: default; }
   .issues { background: #fff0ef; }
 </style>
-

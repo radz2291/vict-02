@@ -44,6 +44,64 @@ function click(target: HTMLElement, label: string) {
 }
 
 describe('Inspector / Layers UX semantic regressions', () => {
+  it('reconnecting navigation preserves the existing canonical parameter bindings', async () => {
+    const documentWithRoute: UiDocument = {
+      ...fixture,
+      nodes: {
+        ...fixture.nodes,
+        title: {
+          ...fixture.nodes.title!,
+          interactions: [
+            {
+              on: 'click',
+              action: 'navigate',
+              routeId: 'route.a',
+              params: { id: { type: 'literal', value: 'keep-param' } },
+            },
+          ],
+        },
+      },
+    };
+    const target = document.createElement('div');
+    document.body.append(target);
+    const session = UiEditSession.open({ document: documentWithRoute, storedRevision: '1' });
+    const inspector = mount(Inspector, {
+      target,
+      props: {
+        document: documentWithRoute,
+        selectedOccurrence: 'ux|title',
+        knownRouteIds: ['route.a', 'route.b'],
+        onApply: (draft: TransactionDraft) => {
+          expect(
+            session.applyTransaction({
+              ...draft,
+              expectedDocumentRevision: session.workingRevision,
+            }).ok,
+          ).toBe(true);
+        },
+      },
+    });
+    try {
+      flushSync();
+      click(target, 'Behavior');
+      const route = target.querySelector<HTMLSelectElement>('[aria-label="Route id"]')!;
+      route.value = 'route.b';
+      route.dispatchEvent(new Event('change', { bubbles: true }));
+      flushSync();
+      click(target, 'Connect navigation');
+      expect(session.document.nodes.title?.interactions).toEqual([
+        {
+          on: 'click',
+          action: 'navigate',
+          routeId: 'route.b',
+          params: { id: { type: 'literal', value: 'keep-param' } },
+        },
+      ]);
+    } finally {
+      await unmount(inspector);
+      target.remove();
+    }
+  });
   it('text selection styles its source container through the session and reset retains inherited source', async () => {
     const target = document.createElement('div');
     document.body.append(target);
@@ -116,6 +174,15 @@ describe('Inspector / Layers UX semantic regressions', () => {
           (e) => e.getAttribute('tabindex') === '0',
         ),
       ).toHaveLength(1);
+      const collapse = target.querySelector<HTMLButtonElement>('[aria-label="Collapse Component"]');
+      expect(collapse).not.toBeNull();
+      collapse?.click();
+      flushSync();
+      const visibleTabStops = [...target.querySelectorAll('[role=treeitem]')].filter(
+        (e) => e.getAttribute('tabindex') === '0',
+      );
+      expect(visibleTabStops).toHaveLength(1);
+      expect(visibleTabStops[0]?.getAttribute('data-key')).toBe('ux|a');
     } finally {
       await unmount(layers);
       target.remove();

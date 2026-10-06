@@ -28,6 +28,7 @@ export {
   removeNode,
   rootIdOf,
   setAttribute,
+  setConditionalStyle,
   setStyle,
   setTextLiteral,
 } from './commands.js';

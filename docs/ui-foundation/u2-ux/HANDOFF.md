@@ -6,13 +6,13 @@ Owner experience acceptance PENDING. The U2 manager integrates technical repairs
 
 ## Mounting and additive API
 
-Imports remain Inspector, Layers, EditorCanvas, EditorBridge and createLocalStorageDocumentStore from @victframework/ui-editor. EditorLabels is the only new exported type. Inspector accepts optional labels: {nodes, definitions, actions, routes}, each a read-only ID → display name map. It does not persist labels or infer product semantics. Existing props remain supported.
+Imports remain Inspector, Layers, EditorCanvas, EditorBridge and createLocalStorageDocumentStore from @victframework/ui-editor. EditorLabels is the new exported type. The existing setConditionalStyle builder is now exported publicly (additive; unchanged canonical command semantics). Inspector accepts optional labels: {nodes, definitions, actions, routes}, each a read-only ID → display name map. It does not persist labels or infer product semantics. Existing props remain supported.
 
 Layers accepts optional document (canonical working UiDocument), labels, and scope (the existing renderer DocumentScope). Pass the same view/record/state/tokens scope as the canvas for actual repeat/conditional selection. Without runtime scope it displays an explicitly labeled template and refuses fake record selection. Pass onSelect and selectedOccurrence to both modules. The new route is the concrete mounting example: examples/ui-design-proof/src/routes/editor-review/+page.svelte and review-document.ts.
 
 Subscribe to EditorBridge and derive fresh working document and snapshot from a version signal. Selection is ephemeral through bridge.select; mutations use onApply → bridge.apply; undo/redo/save/reopen remain bridge-owned. Pass lastIssues from the returned outcome. Save feedback must depend on actual store acknowledgement.
 
-Inspector styleConditions takes declared media/container IDs and friendly query labels. Selecting a condition edits that destination, not preview dimensions; pseudo selection authors a rule without forcing hover/focus. readEffective receives an exact occurrence and property; return actual getComputedStyle measurements or undefined. Refresh it after DOM updates. Do not return guessed authored origins. Text selection styles the containing source element; instance selection styles the component wrapper. Common and Advanced use identical command builders.
+Inspector styleConditions takes declared media/container IDs and friendly query labels. Selecting a condition edits that destination, not preview dimensions; pseudo selection authors a rule without forcing hover/focus. readEffective receives an exact occurrence and property; return actual getComputedStyle measurements or undefined. Refresh it after DOM updates and viewport/container/condition changes; the review route demonstrates window resize plus ResizeObserver. Do not return guessed authored origins. Text selection styles the containing source element; instance selection styles the component wrapper. Common and Advanced use identical command builders.
 
 Theme inherited CSS variables: --ui-editor-font, --ui-editor-panel, --ui-editor-input, --ui-editor-ink, --ui-editor-muted, --ui-editor-line, --ui-editor-accent, --ui-editor-selection. Canvas retains its existing --ui-editor-hover and --ui-editor-selected hooks. Host owns panel height/scrolling and narrow-screen switching. New modules ship a coherent default appearance without a required global CSS import.
 
@@ -38,3 +38,14 @@ Do not copy the dedicated fixture into the toolkit. Existing workbench mounting 
 4. Save, reload the browser, then Reopen saved. Confirm edited content and styling survived. Use Layers with arrows and Enter to select an element; canvas outline and Inspector follow. At 390px use the panel tabs. Select 480 preview width to inspect the named container condition; choose its editing condition explicitly if you want to author there.
 
 Known limits: instance wrapper-only style editing, no instance literal text replacement, computed origin cannot be inferred from a value alone, external CSS/token/binding values may require Advanced, no forced pseudo-state simulator, template-only Layers without supplied runtime scope. This is a local review fixture, not complete Studio or live backend work.
+
+## Visual evidence
+
+Before: [historical selected shared Inspector](screenshots/before-shared-inspector.png), unchanged Inspector source from prior U2 recheck through the pinned base. After: [selected heading and size controls](screenshots/heading-1440.png), [instance scope and background](screenshots/instance-1440.png), [1024 selected state](screenshots/selected-1024.png), [390 selected state](screenshots/selected-390.png), [480 container](screenshots/narrow-container.png). These initial images are builder captures; the fresh evaluator's selected-state screenshots are preserved separately with its exact candidate verdict.
+
+The design moves technical identifiers behind Advanced, names the selected content, groups common editing controls, exposes the edit destination and keeps authored overrides distinct from browser measurements. Layers starts with scannable component groups and retains exact selection/provenance.
+
+## Repair-candidate builder checks
+
+Renderer suite: 120/120 pass (seven editor UX tests). Design-proof: 12/12 pass. Scoped TS/JS formatting passes. Browser resize comparison passes at 390 and 1440. Round 1 independent FAIL and all original observations remain in independent-review/ROUND-1.md. Exact repaired candidate independent recheck is pending.
+Root typecheck and design-proof production build also pass after repairs. Broad Svelte check remains 23 errors / 4 existing warnings; see retained log.

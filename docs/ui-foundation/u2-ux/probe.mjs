@@ -107,6 +107,24 @@ for (const [width, height] of [
 await p.setViewport({ width: 1440, height: 900 });
 await input('Preview width', '480');
 await p.screenshot({ path: 'docs/ui-foundation/u2-ux/screenshots/narrow-container.png' });
+await p.setViewport({ width: 390, height: 844 });
+await button('Canvas', '.mobile');
+await p.click('.canvas h1');
+await button('Style', '.tabs');
+await p.waitForFunction(() => {
+  const control = document.querySelector('[aria-label="Text size"]').closest('.control');
+  return control.textContent.includes(
+    'Browser now: ' + getComputedStyle(document.querySelector('.canvas h1')).fontSize,
+  );
+});
+await p.setViewport({ width: 1440, height: 900 });
+await p.waitForFunction(() => {
+  const control = document.querySelector('[aria-label="Text size"]').closest('.control');
+  return control.textContent.includes(
+    'Browser now: ' + getComputedStyle(document.querySelector('.canvas h1')).fontSize,
+  );
+});
+console.log('RESIZE measurement refresh PASS');
 assert.deepEqual(errors, []);
 console.log('BUILDER browser journeys PASS', backgrounds);
 await browser.close();

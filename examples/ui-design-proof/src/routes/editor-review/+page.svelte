@@ -13,14 +13,22 @@
   let issues = $state<readonly { code: string; message: string }[]>([]);
   let panel = $state('Inspector');
   let size = $state('Full');
-  let canvas: HTMLElement;
+  let canvas = $state<HTMLElement | undefined>(undefined);
   let domVersion = $state(0);
   $effect(() => bridge.subscribe(() => version++));
   const working = $derived.by(() => { version; return bridge.document; });
   const snapshot = $derived.by(() => { version; return bridge.getSnapshot(); });
   const selected = $derived(snapshot.selectedOccurrence);
   const compiled = $derived(compileUiDocument(working, reviewCatalogs.elements, [], { actionIds: reviewCatalogs.actionIds }));
-  $effect(() => { version; void tick().then(() => domVersion++); });
+  $effect(() => { version; size; void tick().then(() => domVersion++); });
+  $effect(() => {
+    if (!browser || !canvas) return;
+    const observer = new ResizeObserver(() => domVersion++);
+    observer.observe(canvas);
+    const refresh = () => domVersion++;
+    window.addEventListener('resize', refresh);
+    return () => { observer.disconnect(); window.removeEventListener('resize', refresh); };
+  });
   function apply(draft: TransactionDraft) { const result = bridge.apply(draft); issues = result.ok ? [] : result.issues; status = result.ok ? 'Change applied. Save to keep it.' : 'Change rejected; source unchanged.'; }
   function select(occurrence: string) { bridge.select(occurrence); panel = 'Inspector'; }
   function effective(occurrence: string, property: string) {

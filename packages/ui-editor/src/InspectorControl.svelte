@@ -9,7 +9,7 @@
   function swatch(raw: string): string {
     if (/^#[\da-f]{6}$/i.test(raw)) return raw;
     if (/^#[\da-f]{3}$/i.test(raw)) return '#' + [...raw.slice(1)].map(c => c + c).join('');
-    const rgb = /^rgb\(\s*(\d+),\s*(\d+),\s*(\d+)\s*\)$/.exec(raw);
+    const rgb = /^rgb\(\s*(\d+),\s*(\d+),\s*(\d+)\s*\)$/.exec(raw) ?? /^rgb\(\s*(\d+),\s*(\d+),\s*(\d+)\s*\)$/.exec(effective);
     return rgb ? '#' + rgb.slice(1).map(c => Number(c).toString(16).padStart(2, '0')).join('') : '#000000';
   }
   function commit(value: string) { if (value.trim()) onChange(value.trim()); }
