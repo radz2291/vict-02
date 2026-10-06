@@ -356,6 +356,10 @@
         onSave={() => {
           const outcome = bridge.save();
           if (outcome.ok) {
+            // Acknowledged persistence succeeded: a stored corruption banner
+            // (if any) is now stale — the corrupt bytes were replaced. Cleared
+            // ONLY here; a failed save keeps the diagnostic visible.
+            storeDiagnostic = null;
             previewNote = `Saved as stored revision ${outcome.storedRevision} (persisted — survives reload).`;
           } else {
             const issue = outcome.issues[0];

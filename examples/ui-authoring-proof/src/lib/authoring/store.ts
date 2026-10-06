@@ -100,6 +100,44 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 
 export type StorageLike = Pick<Storage, 'getItem' | 'setItem' | 'removeItem'>;
 
+/**
+ * Envelope-level classification of raw stored bytes — the SINGLE authority
+ * both load and save use, so the preservation policy cannot drift between
+ * them: `unreadable` payloads are load-invalid with `overwritable: false`
+ * AND save-refused (bytes preserved); only an `envelope` with a readable
+ * document and stored revision may be replaced by a later save.
+ */
+type StoredClassification =
+  | { readonly kind: 'unreadable'; readonly message: string }
+  | {
+      readonly kind: 'envelope';
+      readonly document: UiDocument;
+      readonly recordedRevision: string;
+    };
+
+function classifyStored(raw: string): StoredClassification {
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(raw);
+  } catch {
+    return { kind: 'unreadable', message: 'stored authoring data is not valid JSON' };
+  }
+  if (!isRecord(parsed) || parsed['format'] !== STORE_FORMAT) {
+    return { kind: 'unreadable', message: `stored payload is not '${STORE_FORMAT}'` };
+  }
+  if (!isRecord(parsed['document']) || typeof parsed['storedRevision'] !== 'string') {
+    return {
+      kind: 'unreadable',
+      message: 'stored payload lacks a readable document or stored revision',
+    };
+  }
+  return {
+    kind: 'envelope',
+    document: parsed['document'] as unknown as UiDocument,
+    recordedRevision: parsed['storedRevision'],
+  };
+}
+
 export function createAuthoringStore(
   storage: StorageLike,
   /** Host-declared compile context for the compatibility gate (same context the host compiles with). */
@@ -121,37 +159,15 @@ export function createAuthoringStore(
       const read = readRaw();
       if (!read.ok) return { status: 'invalid', message: read.message, overwritable: false };
       if (read.raw === null) return { status: 'empty' };
-      let parsed: unknown;
-      try {
-        parsed = JSON.parse(read.raw);
-      } catch {
+      const classified = classifyStored(read.raw);
+      if (classified.kind === 'unreadable') {
         // Unreadable payload: the bytes are preserved and save() refuses to
         // overwrite them (UI_STORE_CORRUPT) — never silently replaced.
-        return {
-          status: 'invalid',
-          message: 'stored authoring data is not valid JSON (stored bytes preserved)',
-          overwritable: false,
-        };
+        return { status: 'invalid', message: classified.message, overwritable: false };
       }
-      if (!isRecord(parsed) || parsed['format'] !== STORE_FORMAT) {
-        return {
-          status: 'invalid',
-          message: `stored payload is not '${STORE_FORMAT}'`,
-          overwritable: false,
-        };
-      }
-      if (!isRecord(parsed['document']) || typeof parsed['storedRevision'] !== 'string') {
-        return {
-          status: 'invalid',
-          message:
-            'stored payload lacks a readable document or stored revision (stored bytes preserved)',
-          overwritable: false,
-        };
-      }
-      const document = parsed['document'] as unknown as UiDocument;
+      const { document, recordedRevision } = classified;
       // Envelope readable: a later save against the recorded stored revision
       // legitimately replaces this class of corruption.
-      const recordedRevision: string = parsed['storedRevision'];
       const invalid = (message: string): AuthoringStoreInvalid => ({
         status: 'invalid',
         message,
@@ -209,7 +225,7 @@ export function createAuthoringStore(
       return {
         status: 'loaded',
         document,
-        storedRevision: parsed['storedRevision'],
+        storedRevision: recordedRevision,
       };
     },
 
@@ -222,26 +238,22 @@ export function createAuthoringStore(
       if (!read.ok) return { ok: false, code: 'UI_STORE_WRITE_FAILED', reason: read.message };
       // The AUTHORITATIVE stored revision, read in the same synchronous turn
       // as the write (check-then-set = the storage mechanism's atomic window).
+      // The SAME preservation policy as load applies here: a payload the
+      // loader would classify unreadable (wrong format envelope, missing
+      // document or stored revision, invalid JSON) is REFUSED without
+      // changing its bytes — never silently replaced behind a PRESERVED
+      // banner. Only an empty store or a readable envelope can be saved over.
       let authoritative: string | undefined;
       if (read.raw !== null) {
-        let parsed: unknown;
-        try {
-          parsed = JSON.parse(read.raw);
-        } catch {
+        const classified = classifyStored(read.raw);
+        if (classified.kind === 'unreadable') {
           return {
             ok: false,
             code: 'UI_STORE_CORRUPT',
-            reason: 'stored payload is not valid JSON; refusing to overwrite unreadable data',
+            reason: `refusing to overwrite preserved data: ${classified.message}`,
           };
         }
-        if (!isRecord(parsed) || typeof parsed['storedRevision'] !== 'string') {
-          return {
-            ok: false,
-            code: 'UI_STORE_CORRUPT',
-            reason: 'stored payload lacks a readable stored revision; refusing to overwrite',
-          };
-        }
-        authoritative = parsed['storedRevision'];
+        authoritative = classified.recordedRevision;
       }
       // Stale rules: an editor may save only against the revision the store
       // actually holds. An EMPTY store accepts the one seed revision the

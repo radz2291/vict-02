@@ -263,7 +263,11 @@ describe('UiEditSession two-phase save (stage/commit)', () => {
     expect(session.document.nodes['n.a']).toMatchObject({
       content: { type: 'literal', value: 'gamma' },
     });
-    // and the save can still complete after the failed attempt
+    // and the save can still complete after the failed attempt — the host's
+    // save operation ENDED (write failed), so it releases the save window
+    // (releaseSaveWindow in its finally); a nested/second save while the
+    // window is still owned is refused (round 4: no supersession).
+    session.releaseSaveWindow();
     const save = session.save({ expectedStoredRevision: '1' });
     expect(save.ok).toBe(true);
     expect(session.storedRevision).toBe('2');
@@ -435,5 +439,56 @@ describe('advanceStoredRevision', () => {
     expect(advanceStoredRevision('9')).toBe('10');
     expect(advanceStoredRevision('2026-10-06')).toBe('2026-10-06.r1');
     expect(advanceStoredRevision('2026-10-06.r2')).toBe('2026-10-06.r3');
+  });
+
+  describe('round 4: session save-window ownership', () => {
+    it('nested stageSave while a stage is in flight is refused BEFORE staging; outer stage keeps ownership and commits', () => {
+      const session = UiEditSession.open({ document: document(), storedRevision: '1' });
+      const outer = session.stageSave({ expectedStoredRevision: session.storedRevision });
+      expect(outer.ok).toBe(true);
+      const nested = session.stageSave({ expectedStoredRevision: session.storedRevision });
+      expect(nested.ok).toBe(false);
+      if (!nested.ok) expect(nested.issues[0]?.code).toBe('UI_EDIT_SAVE_IN_PROGRESS');
+      // Outer stage still commits (not superseded).
+      if (outer.ok) expect(session.commitSave(outer.staged).ok).toBe(true);
+      // Window released by the commit: staging works again.
+      expect(session.stageSave({ expectedStoredRevision: session.storedRevision }).ok).toBe(true);
+    });
+
+    it('a foreign commit during the window is refused and does NOT release the lock', () => {
+      const session = UiEditSession.open({ document: document(), storedRevision: '1' });
+      const outer = session.stageSave({ expectedStoredRevision: session.storedRevision });
+      expect(outer.ok).toBe(true);
+      const foreign = session.commitSave({
+        fromStoredRevision: '1',
+        fromWorkingSequence: 0,
+        storedRevision: '2',
+        document: document(),
+        contentDigest: 'fabricated',
+      });
+      expect(foreign.ok).toBe(false);
+      // Lock intact: outer commit still succeeds afterwards.
+      if (outer.ok) expect(session.commitSave(outer.staged).ok).toBe(true);
+    });
+
+    it('refused commit + releaseSaveWindow in finally: next save works (no stranded window)', () => {
+      const session = UiEditSession.open({ document: document(), storedRevision: '1' });
+      const outer = session.stageSave({ expectedStoredRevision: session.storedRevision });
+      expect(outer.ok).toBe(true);
+      // Working session moves between stage and commit -> commit refused.
+      expect(
+        session.applyTransaction({
+          requestId: 'rq-win',
+          expectedDocumentRevision: '1#0',
+          commands: [setText('n.a', 'moved')],
+        }).ok,
+      ).toBe(true);
+      try {
+        if (outer.ok) expect(session.commitSave(outer.staged).ok).toBe(false);
+      } finally {
+        session.releaseSaveWindow();
+      }
+      expect(session.stageSave({ expectedStoredRevision: session.storedRevision }).ok).toBe(true);
+    });
   });
 });

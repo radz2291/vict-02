@@ -300,17 +300,29 @@ export class UiEditSession {
    * revision deterministically (numeric revisions increment; otherwise a
    * `.r1`, `.r2`, … suffix is appended) and stamps the saved document's own
    * `revision` field so catalog pins can address exactly these bytes.
+   *
+   * Owns the save window for its whole duration: a nested save (e.g. from
+   * inside an injected store callback) is refused before staging — it can
+   * never supersede the window's stage or release its lock. The commit
+   * outcome is returned truthfully; a refused commit is NOT reported as a
+   * successful save.
    */
   save(input: { readonly expectedStoredRevision: string }): UiSaveOutcome {
     const staged = this.stageSave(input);
     if (!staged.ok) return staged;
-    this.commitSave(staged.staged);
-    return {
-      ok: true,
-      storedRevision: staged.staged.storedRevision,
-      document: staged.staged.document,
-      contentDigest: staged.staged.contentDigest,
-    };
+    try {
+      const committed = this.commitSave(staged.staged);
+      if (!committed.ok) return { ok: false, issues: committed.issues };
+      return {
+        ok: true,
+        storedRevision: staged.staged.storedRevision,
+        document: staged.staged.document,
+        contentDigest: staged.staged.contentDigest,
+      };
+    } finally {
+      // The window closes when THIS operation ends, whatever the outcome.
+      this.releaseSaveWindow();
+    }
   }
 
   /**
@@ -325,6 +337,26 @@ export class UiEditSession {
   }):
     | { readonly ok: true; readonly staged: UiStagedSave }
     | { readonly ok: false; readonly issues: readonly UiDiagnostic[] } {
+    // Save-window ownership: while a staged save is in flight on this
+    // session (stage created, store write pending), a nested stageSave —
+    // e.g. from inside the injected store's save callback — is refused
+    // BEFORE staging. A nested save can therefore never supersede the
+    // outer operation's stage; the window stays owned by the outer save.
+    if (this.#pendingStage !== undefined) {
+      return {
+        ok: false,
+        issues: [
+          uiDiagnostic(
+            'UI_EDIT_SAVE_IN_PROGRESS',
+            'Save rejected: a save is already in progress on this session; nested saves are refused until it completes.',
+            {
+              expectedRevision: input.expectedStoredRevision,
+              storedRevision: this.#storedRevision,
+            },
+          ),
+        ],
+      };
+    }
     if (input.expectedStoredRevision !== this.#storedRevision) {
       return {
         ok: false,
@@ -347,9 +379,21 @@ export class UiEditSession {
     };
     // Recorded on THIS session: only the exact object returned by the most
     // recent stageSave can commit (a stage from another session, or a stale
-    // stage superseded by a later one, is rejected).
+    // stage superseded by a later one, is rejected). The field doubles as
+    // the SAVE WINDOW lock: set at stage time, released by commitSave on
+    // success or by releaseSaveWindow() when the owning operation ends.
     this.#pendingStage = staged;
     return { ok: true, staged };
+  }
+
+  /**
+   * Release the save window when the OWNING save operation ends (success,
+   * refused commit, failed or thrown write). Orchestrator-only: nested
+   * stage/commit attempts during the window are refused and never touch the
+   * lock. Idempotent; safe to call from a finally block.
+   */
+  releaseSaveWindow(): void {
+    this.#pendingStage = undefined;
   }
 
   /**

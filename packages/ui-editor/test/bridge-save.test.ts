@@ -280,4 +280,128 @@ describe('EditorBridge two-phase save (store is the revision authority)', () => 
     // The failed reopen did not disturb the session.
     expect(invalidBridge.getSnapshot().storedRevision).toBe('1');
   });
+
+  describe('round 4: nested saves are refused inside the outer save window', () => {
+    it('owner sequence: outer save stages, storage callback calls nested bridge save (refused, no side effects), outer write succeeds, outer commit SUCCEEDS; acknowledged revision == editor baseline', () => {
+      const nestedAttempts: string[] = [];
+      const state: { current: StoreState } = {
+        current: { document: document(), storedRevision: '1' },
+      };
+      const port: DocumentStorePort = {
+        load: () => ({ status: 'loaded' as const, ...state.current }),
+        save: (input) => {
+          // The storage callback attempts a NESTED save through the bridge:
+          // must be refused pre-staging with no side effects on store or session.
+          const nested = bridgeRef.save();
+          nestedAttempts.push(
+            nested.ok ? 'unexpectedly-succeeded' : (nested.issues[0]?.code ?? 'refused'),
+          );
+          if (input.expectedStoredRevision !== state.current.storedRevision) {
+            return { ok: false as const, code: 'UI_DOC_STALE_REVISION' as const, reason: 'stale' };
+          }
+          state.current = { document: input.document, storedRevision: input.newStoredRevision };
+          return { ok: true as const, storedRevision: input.newStoredRevision };
+        },
+      };
+      const bridgeRef = new EditorBridge({
+        store: port,
+        initial: { document: document(), storedRevision: '1' },
+      });
+      const outcome = bridgeRef.save();
+      expect(nestedAttempts).toEqual(['UI_EDIT_SAVE_IN_PROGRESS']);
+      expect(outcome.ok).toBe(true);
+      // Acknowledged storage revision and editor baseline CONSISTENT (the old
+      // bug: the nested stage superseded the outer one, so the commit refused
+      // after persistence and the baseline stranded at '1' while the store
+      // held '2').
+      expect(state.current.storedRevision).toBe('2');
+      expect(bridgeRef.getSnapshot().storedRevision).toBe('2');
+      // Subsequent editing and retry behave normally after the window closes.
+      const edit = bridgeRef.apply(setText('e1', 'n.a', 'beta'));
+      expect(edit.ok).toBe(true);
+      const retry = bridgeRef.save();
+      expect(retry.ok).toBe(true);
+      expect(state.current.storedRevision).toBe('3');
+    });
+
+    it('nested session-level stage+commit inside the store callback is refused pre-staging; outer window keeps its stage and its lock', () => {
+      const state: { current: StoreState } = {
+        current: { document: document(), storedRevision: '1' },
+      };
+      const seen: string[] = [];
+      const port: DocumentStorePort = {
+        load: () => ({ status: 'loaded' as const, ...state.current }),
+        save: (input) => {
+          const session = bridgeRef.session;
+          const nestedStage = session.stageSave({ expectedStoredRevision: session.storedRevision });
+          seen.push(
+            nestedStage.ok ? 'nested-stage-ok' : (nestedStage.issues[0]?.code ?? 'stage-refused'),
+          );
+          if (nestedStage.ok) {
+            const nestedCommit = session.commitSave(nestedStage.staged);
+            seen.push(nestedCommit.ok ? 'nested-commit-ok' : 'nested-commit-refused');
+          }
+          // Foreign stage attempt also refused, and must not release the lock.
+          seen.push(
+            session.commitSave({
+              fromStoredRevision: '1',
+              fromWorkingSequence: 0,
+              storedRevision: '2',
+              document: document(),
+              contentDigest: 'x',
+            }).ok
+              ? 'foreign-commit-ok'
+              : 'foreign-commit-refused',
+          );
+          if (input.expectedStoredRevision !== state.current.storedRevision) {
+            return { ok: false as const, code: 'UI_DOC_STALE_REVISION' as const, reason: 'stale' };
+          }
+          state.current = { document: input.document, storedRevision: input.newStoredRevision };
+          return { ok: true as const, storedRevision: input.newStoredRevision };
+        },
+      };
+      const bridgeRef = new EditorBridge({
+        store: port,
+        initial: { document: document(), storedRevision: '1' },
+      });
+      const outcome = bridgeRef.save();
+      expect(seen).toEqual(['UI_EDIT_SAVE_IN_PROGRESS', 'foreign-commit-refused']);
+      expect(outcome.ok).toBe(true);
+      expect(state.current.storedRevision).toBe('2');
+      expect(bridgeRef.getSnapshot().storedRevision).toBe('2');
+    });
+
+    it('thrown write: window released in finally; session preserved; retry lands at the correct revision', () => {
+      const store = memoryStore({ document: document(), storedRevision: '1' });
+      store.failNext('throw');
+      const bridge = new EditorBridge({
+        store: store.port,
+        initial: { document: document(), storedRevision: '1' },
+      });
+      const outcome = bridge.save();
+      expect(outcome.ok).toBe(false);
+      expect(bridge.getSnapshot().storedRevision).toBe('1');
+      // Window released: editing works, next save succeeds.
+      expect(bridge.apply(setText('e1', 'n.a', 'after-throw')).ok).toBe(true);
+      store.failNext(undefined);
+      const retry = bridge.save();
+      expect(retry.ok).toBe(true);
+      expect(store.state().storedRevision).toBe('2');
+      expect(bridge.getSnapshot().storedRevision).toBe('2');
+    });
+
+    it('refused write: window released; a direct stageSave works again afterwards (no stranded lock)', () => {
+      const store = memoryStore({ document: document(), storedRevision: '1' });
+      store.failNext('fail');
+      const bridge = new EditorBridge({
+        store: store.port,
+        initial: { document: document(), storedRevision: '1' },
+      });
+      expect(bridge.save().ok).toBe(false);
+      store.failNext(undefined);
+      const session = bridge.session;
+      const stage = session.stageSave({ expectedStoredRevision: session.storedRevision });
+      expect(stage.ok).toBe(true);
+    });
+  });
 });

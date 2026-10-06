@@ -233,6 +233,11 @@ export class EditorBridge {
       };
     } finally {
       this.#saveInFlight = false;
+      // Release the session's save window when THIS operation ends —
+      // success, refused commit, failed or thrown write. Nested calls are
+      // refused during the window and can neither supersede its stage nor
+      // release its lock.
+      this.#session.releaseSaveWindow();
     }
     if (!persisted.ok) {
       return {

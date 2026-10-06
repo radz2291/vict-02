@@ -1,6 +1,6 @@
 # UI foundation — current state
 
-**2026-10-06 (latest) — U1 ROUND-3 REPAIRS INDEPENDENTLY VERIFIED: "U1-ROUND3 GATE: PASS"; owner checkpoint pending; branch not yet pushed.**
+**2026-10-06 (latest) — U1 ROUND-3 REPAIRS INDEPENDENTLY VERIFIED: "U1-ROUND3 GATE: PASS"; owner checkpoint pending; pushed — live remote tip `03810cef573bcc03de92416ab74d5988ec140657` (verified via `git ls-remote`, matches local HEAD; findings F1/F2 opened a bounded round-4 repair).**
 Fresh independent verification of candidate `c1e3d0fec930a2a11341181061d537f16ec065ab`
 ([U1-ROUND3-REVIEW-04.md](reviews/U1-ROUND3-REVIEW-04.md), sha256
 `fd151713aa4345eb0653c648eace64eeb4a774cc8a796d0f74c760bd082cd12b`; 11 evidence screenshots;
@@ -58,7 +58,7 @@ overwrite. The round-2 verified candidate `3bd03a5…` and its "U1-REOPEN GATE: 
 remain preserved evidence of that snapshot; the overall readiness claim is superseded for
 these three findings until this round's fresh verification passes. U2 remains unauthorized.
 
-**2026-10-06 — U1 REOPEN ROUND COMPLETE (round 2): repairs independently verified; owner checkpoint pending; branch not yet pushed.**
+**2026-10-06 — U1 REOPEN ROUND COMPLETE (round 2): repairs independently verified; owner checkpoint pending; subsequently pushed (history — see round-3 entry for the live remote state).**
 The bounded repair round closed with a fresh independent verdict on candidate
 `3bd03a5d649c52ac529089f176f7e22b701ee09c`:
 **"U1-REOPEN GATE: PASS"** ([U1-REOPEN-REVIEW-03.md](reviews/U1-REOPEN-REVIEW-03.md),

@@ -369,4 +369,107 @@ describe('round 3: malformed stored documents diagnose reliably', () => {
     const reloaded = store.rawLoad();
     expect(reloaded.status).toBe('loaded');
   });
+
+  describe('round 4: preservation policy enforced in save (same as load)', () => {
+    it('wrong-format envelope (readable storedRevision) is refused at the SEED revision; bytes intact', () => {
+      const window = new Window();
+      const stored = JSON.stringify({ format: 'future.format', storedRevision: '1', document: {} });
+      window.localStorage.setItem('vict.u1.authoring.doc', stored);
+      const store = createAuthoringStore(window.localStorage, studioDocumentCatalogs);
+      const load = store.rawLoad();
+      expect(load.status).toBe('invalid');
+      expect(load.overwritable).toBe(false);
+      const outcome = store.save({
+        document: inspectionDetailDocument,
+        newStoredRevision: '2',
+        expectedStoredRevision: '1',
+      });
+      expect(outcome.ok).toBe(false);
+      if (!outcome.ok) expect(outcome.code).toBe('UI_STORE_CORRUPT');
+      expect(window.localStorage.getItem('vict.u1.authoring.doc')).toBe(stored);
+      window.close();
+    });
+
+    it('envelope with missing document is refused at the SEED revision; bytes intact', () => {
+      const window = new Window();
+      const stored = JSON.stringify({ format: 'vict.authoring-store@1', storedRevision: '1' });
+      window.localStorage.setItem('vict.u1.authoring.doc', stored);
+      const store = createAuthoringStore(window.localStorage, studioDocumentCatalogs);
+      const load = store.rawLoad();
+      expect(load.status).toBe('invalid');
+      expect(load.overwritable).toBe(false);
+      const outcome = store.save({
+        document: inspectionDetailDocument,
+        newStoredRevision: '2',
+        expectedStoredRevision: '1',
+      });
+      expect(outcome.ok).toBe(false);
+      if (!outcome.ok) expect(outcome.code).toBe('UI_STORE_CORRUPT');
+      expect(window.localStorage.getItem('vict.u1.authoring.doc')).toBe(stored);
+      window.close();
+    });
+
+    it('preserved classes are also refused at NON-seed revisions (preservation dominates staleness)', () => {
+      const window = new Window();
+      const storedA = JSON.stringify({
+        format: 'future.format',
+        storedRevision: '7',
+        document: {},
+      });
+      const storedB = JSON.stringify({ format: 'vict.authoring-store@1', storedRevision: '7' });
+      for (const stored of [storedA, storedB]) {
+        window.localStorage.setItem('vict.u1.authoring.doc', stored);
+        const store = createAuthoringStore(window.localStorage, studioDocumentCatalogs);
+        const outcome = store.save({
+          document: inspectionDetailDocument,
+          newStoredRevision: '8',
+          expectedStoredRevision: '7',
+        });
+        expect(outcome.ok).toBe(false);
+        if (!outcome.ok) expect(outcome.code).toBe('UI_STORE_CORRUPT');
+        expect(window.localStorage.getItem('vict.u1.authoring.doc')).toBe(stored);
+      }
+      window.close();
+    });
+
+    it('preserved class with MISMATCHED expectation is refused (not misreported as stale); bytes intact', () => {
+      const window = new Window();
+      const stored = JSON.stringify({ format: 'future.format', storedRevision: '1', document: {} });
+      window.localStorage.setItem('vict.u1.authoring.doc', stored);
+      const store = createAuthoringStore(window.localStorage, studioDocumentCatalogs);
+      const outcome = store.save({
+        document: inspectionDetailDocument,
+        newStoredRevision: '2',
+        expectedStoredRevision: '999',
+      });
+      expect(outcome.ok).toBe(false);
+      if (!outcome.ok) expect(outcome.code).toBe('UI_STORE_CORRUPT');
+      expect(window.localStorage.getItem('vict.u1.authoring.doc')).toBe(stored);
+      window.close();
+    });
+
+    it('explicitly overwritable documents STILL replace successfully (policy retained)', () => {
+      const window = new Window();
+      const corrupt = JSON.stringify({
+        format: 'vict.authoring-store@1',
+        storedRevision: '3',
+        document: { schema: 'vict.ui-document@9' },
+      });
+      window.localStorage.setItem('vict.u1.authoring.doc', corrupt);
+      const store = createAuthoringStore(window.localStorage, studioDocumentCatalogs);
+      const load = store.rawLoad();
+      expect(load.status).toBe('invalid');
+      expect(load.overwritable).toBe(true);
+      const outcome = store.save({
+        document: inspectionDetailDocument,
+        newStoredRevision: '4',
+        expectedStoredRevision: '3',
+      });
+      expect(outcome.ok).toBe(true);
+      const reloaded = store.rawLoad();
+      expect(reloaded.status).toBe('loaded');
+      if (reloaded.status === 'loaded') expect(reloaded.storedRevision).toBe('4');
+      window.close();
+    });
+  });
 });
