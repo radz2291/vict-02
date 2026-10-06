@@ -383,7 +383,11 @@ export function compileUiDocument(
         const localRuleId = compileStyleDeclarations(
           node.localStyle,
           `${classFor(nodeId)}-l`,
-          'local',
+          // Frozen cascade: a localStyle INSIDE a definition body is part of
+          // the shared component presentation (component base layer) - it
+          // must never compete with (let alone override, by CSS order) an
+          // INSTANCE's localStyle, which is the innermost 'local' layer.
+          scope.inDefinition ? 'componentBase' : 'local',
           `.${classFor(nodeId)}`,
         );
         if (localRuleId !== undefined) styleRuleIds.push(localRuleId);
