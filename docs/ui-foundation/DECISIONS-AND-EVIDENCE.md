@@ -293,6 +293,58 @@ This entry and the checker-report preservation are post-freeze evidence commits 
 mutable bytes (this ledger, STATE.md, reviews/); recorded pins anchor to the candidate's git
 blobs and are unaffected.
 
+## U1 implementation record (2026-10-06) — candidate `351d3e5…`, review pending
+
+Grant, baselines, criteria, protocol: [U1-HANDOFF](U1-HANDOFF.md). Implementation history:
+`182caa9…` (ui core) → `b9e6573…` (sdk @3) → `4e69175…` (application @3 + identity tests) →
+`9284888…` (ui-svelte renderer) → `7f49cd0…` (editor + preview) → `505e0b1…` (proof host) →
+`4f8c1ab…` (browser-walkthrough repairs) → `351d3e5…` (candidate; build-output hygiene + root
+tsconfig paths).
+
+Disclosed implementation decisions (no frozen bytes changed; PROOF-DESIGN/API-SPEC remain
+pinned at `9ec87f3…` / `ea47edd…`):
+
+1. Joined child collections: the inspection resource additionally declares `findings`,
+   `evidence`, `activity` json fields (adapter-materialized) so the detail document can bind
+   them under `view.<field>`. PROOF-DESIGN §1.1's scalar domain fields are unchanged; the join
+   is a view-projection mechanism, and the adapter implements every §1.2 transition rule
+   (statuses, mandatory rejection reason, revise clears record-level decision fields with the
+   reason preserved in the activity trail, `expectedDomainRevision` optimistic concurrency).
+2. `@victframework/ui-editor` and `@victframework/ui-preview` manifests are `private: true`:
+   publication is out of U-track scope and the frozen 14-package release-set identity is
+   unchanged (`check-release-set` passes). Extending the release set would require separate
+   owner authorization.
+3. Layered validation authority: document-level validation and edit sessions defer
+   product-reference diagnostics (view/record/repeat-item typing, extension closure,
+   action/route ids) to the JOINT compiler (API-SPEC §2.2 rule 4). Structural validity is
+   enforced at both layers.
+4. Preview actor gating gates CAPABILITY ops by permission-root matching; simulated data-op
+   denial coverage is a DECLARED outcome — real permission enforcement lives at the real
+   adapter boundary (verified in U1-05 tests).
+5. Stored-revision convention: numeric stored revisions increment (`1` → `2`); non-numeric
+   revisions take a `.rN` suffix. The session working revision is `<storedRevision>#<seq>`
+   and advances monotonically per accepted transaction, undo and redo.
+6. The canvas text-selection affordance produces the two svelte-check a11y WARNINGS
+   (click-without-keyboard on a span). It is an editor-only occurrence mapping, not an
+   interactive control; canvas keyboard navigation is U2-06 workbench scope. check:ui is
+   otherwise 0 errors.
+7. Pre-existing test failures: six root-suite failures (bootstrap-artifact, kernel
+   child-process identity, scaffolder real build, store-sqlite/server SIGKILL cross-process)
+   were verified FAILING IDENTICALLY at base `9734690…` in the untouched u0 worktree —
+   Windows environment specifics, not U1 regressions.
+
+Evidence index: measurement harness `examples/ui-authoring-proof/test/measure-u1.ts`
+(compile p95 24.3 ms, edit feedback p95 16.8 ms, reset p95 0.2 ms — budgets 250/100/1000);
+browser screenshots `examples/ui-authoring-proof/walkthrough/` (1440×900, 1024×768,
+390×844); console sweep across all routes: zero errors; launch instructions
+`examples/ui-authoring-proof/README.md`. Retained limits: extensions render declared labeled
+placeholders; portal rendering and component variants pending beyond U1; the
+rejection→correction→resubmission journey UI is U3 scope (the adapter already implements
+`revise`; the frozen journey fixture remains contract evidence).
+
+Independent falsification review of the candidate: PENDING (U1-01…U1-08).
+
+## Future evidence entry format
 ## Future evidence entry format
 
 Identity: repository, branch, full base/candidate/reviewer SHAs, environment and contract pins.

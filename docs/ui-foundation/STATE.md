@@ -1,15 +1,50 @@
 # UI foundation — current state
 
-**2026-10-06 — U1 AUTHORIZED AND IN PROGRESS; U0 closed (frozen, verified, pushed).** The owner
-accepted the amended U0 contract and authorized U1 only: the first runnable rendering, editing
-and simulated product loop. Grant, baselines, scope, criteria, verification protocol and stop
-boundary are recorded in [U1-HANDOFF](U1-HANDOFF.md) — the routing entry for all U1 work.
-Branch `codex/ui-foundation-u1` (isolated worktree `vict-02-u1`) starts at the pushed U0
-closure commit `97346903e0c1a242b4bab0477c92bc3f34c43c38`; frozen contract authority is
-candidate `9ec87f3e7eb8eb7793f972111258940aac635346` via freeze record
-`ea47edd68e302dc5b6cacb2e43635d11781619ad`. U1 acceptance authority: STAGES §3, criteria
-U1-01…U1-08. No U1 implementation evidence exists yet at the time of writing; this entry is
-updated as the first candidate, verification and repairs land.
+**2026-10-06 — U1 CANDIDATE COMPLETE; independent falsification review pending; not yet pushed.**
+The owner authorized U1 (see [U1-HANDOFF](U1-HANDOFF.md)): the first runnable rendering,
+editing and simulated product loop. Implemented per the frozen API-SPEC §9 scope:
+`packages/ui` (vict.ui-document@1 neutral core: model, validation, compilation to
+vict.ui-render-plan@1, transactional edits, sessions, occurrence identity, A-03 identity
+ordering), `packages/sdk` (@3 authoring shape), `packages/application` (@3 joint compilation,
+rules 1–5, A-01 expansion-cycle detection, A-03 identity payload), `packages/ui-svelte` (the
+ONE document renderer), `packages/ui-editor` (session bridge, exported transactional command
+builders, canvas/inspector/history), `packages/ui-preview` (scenario orchestration, coverage
+denial, reset fencing), `examples/ui-authoring-proof` (inspection product + studio; consumes
+built outputs; product entry graph imports no editor/preview modules — verified by test).
+Candidate history: `182caa9…` → `b9e6573…` → `4e69175…` → `9284888…` → `7f49cd0…` → `505e0b1…`
+→ walkthrough repairs `4f8c1ab…` → **candidate `351d3e5…`** (branch codex/ui-foundation-u1,
+worktree vict-02-u1; starting commit `9734690…`).
+
+Automated evidence: U1-01 identity suite (Examples A–D, dangling, catalog/pin collisions, old
+release rejection, permutation+duplicate invariance, code-point order, navigation-loop-valid,
+expansion-cycle-rejected, @3-never-aliases-@1/@2); transaction atomicity/idempotency/undo-redo/
+expected-revision save/reopen; renderer occurrence provenance tests; preview isolation tests
+(SCENARIO_COVERAGE_MISSING denial, reset-during-latency fencing, DOMAIN_CONFLICT, permission
+denial); product-path tests through the real adapter (approve/deny/stale); adapter discipline;
+entry-graph isolation. Root suites green except SIX failures verified PRE-EXISTING at the base
+commit `9734690…` in the untouched u0 worktree (bootstrap-artifact, kernel child-process
+identity, scaffolder real build, store-sqlite/server SIGKILL cross-process — Windows
+environment specifics).
+
+Browser walkthrough (real Chrome via CDP, commands + screenshots under
+`examples/ui-authoring-proof/walkthrough/`): queue → detail (document-mode screen) → approve
+updates status/activity through the adapter boundary; technician denial leaves state unchanged;
+stale decision fails visibly; studio selection maps click → exact source occurrence; exported
+transactional commands edit text/styles/interactions; invalid transactions rejected with
+diagnostics and no partial effect; undo/redo/expected-revision save/reload round trip preserves
+IDs/layout/bindings; preview normal approve via registered double, missingCoverage denies
+without invoking any handler, reset-during-latency fences the in-flight result (SESSION_STALE).
+Console sweep across all routes: zero errors/warnings/exceptions.
+
+Measurements (PROOF-DESIGN §5 workload: 1,966 authored nodes, 100 repeated occurrences,
+20 consecutive transactions): compile p95 **24.3 ms** (budget ≤ 250 ms), edit feedback p95
+**16.8 ms** (budget ≤ 100 ms), scenario reset p95 **0.2 ms** (budget ≤ 1 s). Product bundle:
+278 KB client JS (~94 KB gzip) for the whole example build; editor/preview modules absent from
+the product entry graph.
+
+Next: fresh independent falsification review of candidate `351d3e5…` (U1-01…U1-08) → repairs
+if needed → reverify → evidence, normal push, remote SHA verification, owner checkpoint at the
+U1 boundary. U2 remains unauthorized.
 
 **U0 — CLOSED (2026-10-06).** Final state: contract candidate
 `9ec87f3e7eb8eb7793f972111258940aac635346` (base `4d2df037d8a82d36c60bf1bff16919650643ce22`),
@@ -72,7 +107,7 @@ application, repository integration or Stage 9 change was implemented at that ti
 | Pack drafting | COMPLETE | Candidate 02; final reporting metadata folded afterward | Installed 2026-10-06; see decisions §U0 installation record |
 | Pack independent review | PASS — documentation only | Candidate 01: 8d2683a2a1aae7740755326af597eeed16b4a7a44cfdaf4a9d60cd8b76318e6d; candidate 02: db369614c97119762995480d3ad277b92d21e2eb812739d770bc16bf2df6b15a | Reports preserved under reviews/ |
 | U0 repository establishment/freeze | **CLOSED — amended contract frozen (22 pins) and freeze-byte verified; owner accepted; pushed (`a664c70…` → `9734690…` fast-forward)** | Candidates `54490a8…`/`9ec87f3…`; freeze records `ffbafc0…`/`ea47edd…`; four independent verdicts incl. FREEZE VERIFIED (`9b80f3d4…`) | None — closed. Preserve freeze records and historical evidence |
-| U1 rendering/editing loop | **AUTHORIZED — in progress** (handoff [U1-HANDOFF](U1-HANDOFF.md)) | Starting commit `9734690…`; contract authority `9ec87f3…` | Implement bounded slice → exact candidate → fresh falsifying verifier → repair/reverify → evidence, push, owner checkpoint |
+| U1 rendering/editing loop | **CANDIDATE COMPLETE — falsification review pending** (handoff [U1-HANDOFF](U1-HANDOFF.md)) | Candidate `351d3e5…` (from `9734690…`; contract authority `9ec87f3…`); automated suites + browser walkthrough + measurements recorded | Fresh independent verifier (U1-01…U1-08) → repairs/reverify → evidence, push, remote SHA verify, owner checkpoint |
 | U2 breadth | PLANNED | None | Requires U1 pass and its own accepted scope |
 | U3 realism | PLANNED | None | Requires U2 and its own accepted scope |
 | U4 reuse/handoff | PLANNED | None | Requires U3 and its own accepted scope |
