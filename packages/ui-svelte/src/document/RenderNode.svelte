@@ -117,6 +117,9 @@
     return [];
   });
 
+  /** Void elements must not render a children slot (Svelte warning + invalid HTML). */
+  const VOID_TAGS = new Set(['input', 'br', 'hr', 'img', 'meta', 'link', 'source', 'wbr', 'col']);
+
 </script>
 
 {#if instruction.kind === 'element'}
@@ -146,6 +149,7 @@
     onchange={handleChange}
     oninput={handleChange}
   >
+    {#if !VOID_TAGS.has(instruction.tag)}
     {#each children as child (child.occurrenceKey)}
       <Self
         instruction={child}
@@ -162,6 +166,7 @@
         extraClass={undefined}
       />
     {/each}
+    {/if}
   </svelte:element>
 {:else if instruction.kind === 'text'}
   <span
