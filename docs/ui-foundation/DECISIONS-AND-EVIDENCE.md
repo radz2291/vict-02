@@ -344,7 +344,23 @@ rejection→correction→resubmission journey UI is U3 scope (the adapter alread
 
 Independent falsification review of the candidate: **DONE — see the two rounds below.**
 
-## U1 reopen round (2026-10-06) — repairs verified; "U1-REOPEN GATE: PASS"
+## U1 reopen round 3 (2026-10-06) — three bounded repairs; round-2 verdict preserved
+
+The owner directed a third bounded round against the round-2 verified candidate
+`3bd03a5d…` (whose "U1-REOPEN GATE: PASS" verdict remains preserved evidence of that exact
+snapshot): (1) working-session undo/redo must survive SUCCESSFUL saves — the round-2
+FINDING-1 — repairing the history comparison (never by removing revision information from
+the canonical application identity); (2) staged-save commits must not discard accepted edits
+— round-2 FINDING-2 — including direct stage→edit→commit and synchronous reentrancy through
+the injected `DocumentStorePort.save()` callback, with truthful storage acknowledgment
+(a commit rejected after persistence must not strand the store advanced against a stale
+session baseline); (3) corrupt/incompatible document loading must produce diagnostics
+reliably (unsupported schema, missing node registry, empty document, null node, malformed
+child/branch structures), preserve unreadable stored bytes, and correct the banner's
+replacement claim when the store refuses overwrite. Round-2 findings register retained;
+superseded readiness claims remain historically documented above.
+
+## U1 reopen round 2 (2026-10-06) — repairs verified; "U1-REOPEN GATE: PASS"
 
 Builder repairs at candidate `3bd03a5d649c52ac529089f176f7e22b701ee09c` (parent: reopening
 record `0a398d5`), then a fresh independent verifier (did not implement; out-of-repo attack

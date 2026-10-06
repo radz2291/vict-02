@@ -1,6 +1,19 @@
 # UI foundation — current state
 
-**2026-10-06 (latest) — U1 REOPEN ROUND COMPLETE: repairs independently verified; owner checkpoint pending; branch not yet pushed.**
+**2026-10-06 (latest) — U1 REOPENED AGAIN (round 3) for three bounded repairs; prior verified
+candidate preserved.** The owner directed resolution of: (1) working-session undo/redo must
+survive successful saves (history comparison, not canonical-identity, must be repaired);
+(2) staged-save commits must never discard accepted edits (guard working-session moves and
+cross-session stages; challenge direct stage→edit→commit and synchronous reentrancy through
+the store callback; rejecting a commit after persistence must not strand the store advanced);
+(3) corrupt/incompatible document loading must return diagnostics reliably (unsupported
+schema, missing node registry, empty document, null node, malformed structures), preserve
+unreadable stored bytes, and the banner must not claim replacement when the store refuses
+overwrite. The round-2 verified candidate `3bd03a5…` and its "U1-REOPEN GATE: PASS" verdict
+remain preserved evidence of that snapshot; the overall readiness claim is superseded for
+these three findings until this round's fresh verification passes. U2 remains unauthorized.
+
+**2026-10-06 — U1 REOPEN ROUND COMPLETE (round 2): repairs independently verified; owner checkpoint pending; branch not yet pushed.**
 The bounded repair round closed with a fresh independent verdict on candidate
 `3bd03a5d649c52ac529089f176f7e22b701ee09c`:
 **"U1-REOPEN GATE: PASS"** ([U1-REOPEN-REVIEW-03.md](reviews/U1-REOPEN-REVIEW-03.md),
@@ -204,7 +217,7 @@ application, repository integration or Stage 9 change was implemented at that ti
 | Pack drafting | COMPLETE | Candidate 02; final reporting metadata folded afterward | Installed 2026-10-06; see decisions §U0 installation record |
 | Pack independent review | PASS — documentation only | Candidate 01: 8d2683a2a1aae7740755326af597eeed16b4a7a44cfdaf4a9d60cd8b76318e6d; candidate 02: db369614c97119762995480d3ad277b92d21e2eb812739d770bc16bf2df6b15a | Reports preserved under reviews/ |
 | U0 repository establishment/freeze | **CLOSED — amended contract frozen (22 pins) and freeze-byte verified; owner accepted; pushed (`a664c70…` → `9734690…` fast-forward)** | Candidates `54490a8…`/`9ec87f3…`; freeze records `ffbafc0…`/`ea47edd…`; four independent verdicts incl. FREEZE VERIFIED (`9b80f3d4…`) | None — closed. Preserve freeze records and historical evidence |
-| U1 rendering/editing loop | **REOPEN ROUND VERIFIED — owner checkpoint pending** (handoff [U1-HANDOFF](U1-HANDOFF.md)) | Candidate `3bd03a5d…`; verdict "U1-REOPEN GATE: PASS" ([U1-REOPEN-REVIEW-03](reviews/U1-REOPEN-REVIEW-03.md)); 12/12 owner probes incl. real-browser persistence; findings FINDING-1/FINDING-2 (minor, non-blocking) + carried notes | Normal push, remote SHA verify, owner checkpoint; U2 unauthorized |
+| U1 rendering/editing loop | **REOPENED (round 3) — three bounded repairs in progress** (handoff [U1-HANDOFF](U1-HANDOFF.md)) | Round-2 candidate `3bd03a5d…` + verdict preserved; readiness superseded for: undo/redo across saves, staged-commit edit preservation, malformed-load diagnostics | Repair → regression tests + browser evidence → fresh verifier (12 prior probes + new failure cases) → push, remote SHA verify, owner checkpoint; U2 unauthorized |
 | U2 breadth | PLANNED | None | Requires U1 pass and its own accepted scope |
 | U3 realism | PLANNED | None | Requires U2 and its own accepted scope |
 | U4 reuse/handoff | PLANNED | None | Requires U3 and its own accepted scope |
