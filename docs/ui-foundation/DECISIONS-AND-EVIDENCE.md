@@ -344,6 +344,68 @@ rejection→correction→resubmission journey UI is U3 scope (the adapter alread
 
 Independent falsification review of the candidate: **DONE — see the two rounds below.**
 
+## U2 implementation and independent verification (2026-10-06) — founder checkpoint pending
+
+Implementation complete across four increments (foundations `cfb4bb4`, tooling `2e03e13`,
+proofs `821e720`, measurement/hygiene `904fb4d`, plus docs `fc071a7`, walkthrough `36ec8eb`
+and records `ffa1bb6`). Verified code candidate: `19bb4b98a18f86bb1193db5a45f8c33e1c5c9af5`
+(repaired round-2; the round-1 candidate `ebac7bf766ecc1bee1e510499ce4607fb211675e` FAILED
+both independent reviews — those verdicts are preserved as evidence of that exact snapshot).
+
+Finding-to-fix map (independent round 1 -> repairs -> independent recheck):
+
+| Independent finding | Fix | Evidence |
+| --- | --- | --- |
+| T-F1 (blocker): pseudo-state CSS silently inert (un-interpolated selector template; renderer never composed the pseudo suffix; escapeCss escaped the colon) | plan rule carries base selector + `pseudo` field; renderer composes `.class:pseudo` after escaping; pinned by `pseudo-css-u2.test.ts` (4 states) | Recheck R1 PASS: 8/8 fresh attacks incl. definition-body pseudo, media+pseudo, container+pseudo; candidate test verified honest |
+| T-F2 (minor): env-condition diagnostic with literal `${...}` placeholders | interpolations repaired in the same pass | Recheck R1 PASS (interpolation attack) |
+| T-F3 (major): root integration project collected the design proof's svelte suite and failed to collect it | design proof excluded from the root integration project (runs its own vitest) | Recheck R2 PASS: 4/4 green, exclusion audited, design suite 12/12 + typecheck 0 separately |
+| EX-F1 (blocker): /service rendered the static seed import; saved workbench edits never reached the finished page | /service and workbench open the SAME persisted store per key (`loadPresentable`/`openDesignStore`); /service renders stored source after mount with truthful fallback banners | Recheck R3 PASS: save -> /service renders it; unsaved edits do NOT leak; empty storage -> clean seed; SSR clean |
+| EX-F2 (major): instance-frame styling silently edited the shared node; empty style value was a silent no-op | Inspector 'Edits apply to' (shared vs this instance); style applies honor the scope; empty value disables Apply; per-mount requestId epoch; readable activity summaries | Recheck R4 PASS: instance scope changes only the target node; shared scope updates all five; empty-value guard verified incl. keyboard |
+| EX-F3 (major): schema-corrupted readable envelope hard-failed the workbench ('does not compile', Save disabled) | shared store takes the host validation gate (invalid+overwritable at the recorded revision); workbench seeds with the truthful 'not usable / replaced' banner; banner clears on successful save | Recheck R5 PASS: banner -> edit+save -> revision carried with valid schema; PRESERVED path unchanged (refusal + bytes intact) |
+
+U2 criterion verdicts (STAGES section 4):
+- **U2-01 Components: PASS** (adversarial: definition edits propagate; overrides persist; slot/prop diagnostics fire).
+- **U2-02 Occurrence provenance: PASS** (nested components, repeats, portals; duplicate keys rejected + reported).
+- **U2-03 General presentation: PASS after repair** (grid/overlap/sticky/overflow through the model; media/container/pseudo; environment/variant dropped with explicit diagnostics; frozen cascade verified).
+- **U2-04 Inspector clarity: PASS after repair** (authored origin vs effective value; condition targets; instance-vs-shared scoping; empty-value guard).
+- **U2-05 Contrasting page: PASS** (technical at round 1; experience journeys PASS at recheck).
+- **U2-06 Studio-style composition: PASS** (technical at round 1; experience journeys PASS at recheck).
+- **U2-07 Reusable tooling: PASS** (canvas/layers/inspector/history/bridge/localStorage store exported; host composes only).
+- **U2-08 Performance/coverage: PASS** (independently reproduced: p95 compile 27.3 ms / edit 18.2 ms / reopen 6.2 ms vs budgets 250/100/1000; bundle separation verified; coverage matrix `U2-COVERAGE.md`).
+
+Reports (preserved with evidence): [U2-TECHNICAL-REVIEW-01](reviews/u2/U2-TECHNICAL-REVIEW-01.md)
+(sha256 `425bc7208bd8f3f18971eb3b3b261885e51460fd57a92857d4c43856db85fab7`),
+[U2-EXPERIENCE-REVIEW-01](reviews/u2/U2-EXPERIENCE-REVIEW-01.md) (sha256
+`d17c5372a2b2cc93d64fab039e225f54b176394eccb6426dcf356cb2d1ae6d40`),
+[U2-RECHECK-01](reviews/u2/U2-RECHECK-01.md) (sha256
+`47d7c7a826b725c33a0ad4b4f184118e06a51bdaf0a4cfa4e0e7d09c111e2c67`),
+[U2-EXPERIENCE-RECHECK-02](reviews/u2/U2-EXPERIENCE-RECHECK-02.md) (sha256
+`2101bf55bc66d40ac03d7695a515ac67e03396fc5627d55688e07c2d176da622`), evidence in
+`reviews/u2/` (recheck + experience-recheck screenshots, technical attack suite).
+
+Remaining non-blocking findings (registered, owners assigned):
+- **N1 (minor, owner decision):** shared-scope local style edit silently overrides a prior
+  instance-scope override of the same property (equal specificity, later rule order).
+  Owner: U-track builder; next check: origin-conflict note in the Inspector or
+  occurrence-scoped local rules.
+- **N2 (minor):** the PRESERVED banner clears once the user edits, before the loud
+  save-failure. Owner: U-track builder; next check: compact storage-state indicator.
+- Notes: design-surface wording ('stored authoring data'); sticky card travel (~150px);
+  `Reload stored` on empty store truthfully refuses (UI_STORE_EMPTY).
+
+Carried obligations closed: authoring store.ts:144 unbound type reference (fixed);
+meaningful proof typechecking (design proof tsc 0 + authoring tsc 0); build wiring
+repaired and supported commands reported truthfully (`npm run build -w <pkg>` for
+dist-exported packages; proof apps run their own vite/svelte-kit builds); U1 guarded
+save/persistence/history/fencing/snapshot behavior preserved (U1 suites unmodified and
+green); safe session-API orchestration documented in
+[SESSION-ORCHESTRATION](SESSION-ORCHESTRATION.md).
+
+**Founder checkpoint next:** walk [U2-WALKTHROUGH](U2-WALKTHROUGH.md). Independent
+verification is complete; **owner experience acceptance is PENDING** and is not inferred
+from these verdicts. U3/U4, apps/studio, merge-to-main, force-push, publication and
+deployment remain unauthorized.
+
 ## U1 owner acceptance and U2 authorization (2026-10-06)
 
 The owner ACCEPTED U1 at the verified round-4 candidate `345b5c62f7eae1d02d7697cdd1abc71b0daeee41`

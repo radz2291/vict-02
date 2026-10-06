@@ -1,8 +1,9 @@
 # U2 handoff — designer and workbench breadth
 
-**Status: authorized (2026-10-06). U1 ACCEPTED by the owner at the verified round-4
-candidate `345b5c62f7eae1d02d7697cdd1abc71b0daeee41`, with its disclosed non-blocking
-notes retained. U2 ONLY is authorized. U3/U4 are not.**
+**Status: IMPLEMENTED + INDEPENDENTLY VERIFIED (2026-10-06). Verified code candidate
+`19bb4b98a18f86bb1193db5a45f8c33e1c5c9af5` (round-1 candidate `ebac7bf…` FAILED both
+independent reviews; repairs independently rechecked). U1 ACCEPTED by the owner at
+`345b5c62…`. Awaiting the FOUNDER checkpoint — owner experience acceptance PENDING.**
 
 ## Baseline and authority
 
@@ -68,17 +69,17 @@ goes in public package modules; the host composes them.
 - Document safe orchestration for hosts using the lower-level session API
   (save-window ownership, stage/commit, releaseSaveWindow).
 
-## Verification plan
+## Verification plan — EXECUTED (2026-10-06)
 
-1. Independent technical challenge at an exact committed candidate (fresh verifier,
-   out-of-repo harness, did not implement; attacks per criterion + regressions + gates).
-2. Independent EXPERIENCE review through actual browser use at 1440×900, 1024×768,
-   390×844 and a 480 CSS-px container, against PROOF-DESIGN §4 visual criteria — not
-   inferred from tests.
-3. Representative performance measurement (disclosed environment/method; budgets frozen
-   in PROOF-DESIGN §5).
-4. Repairs → new candidate → independent recheck of affected behavior + regressions.
-   Red evidence preserved.
+1. ✅ Independent technical challenge at `ebac7bf` (FAIL: pseudo CSS blocker, red
+   integration gate; U2-01/02/04/07/08 passed) — report preserved.
+2. ✅ Independent experience review at `ebac7bf` (FAIL: persisted edits never reached the
+   finished page; instance styling no-op; corrupt-store hard-fail) — report preserved.
+3. ✅ Repairs at `19bb4b9` (all five findings; regression-pinned) + independent recheck
+   "U2-RECHECK: PASS WITH FINDINGS" + independent experience re-verification
+   "U2-EXPERIENCE-RECHECK: PASS WITH FINDINGS" at the required sizes — reports + evidence
+   preserved under `reviews/u2/`.
+4. Performance measured within all frozen budgets (`U2-PERFORMANCE.json`).
 
 ## Checkpoint
 

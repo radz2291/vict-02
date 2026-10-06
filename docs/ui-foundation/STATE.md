@@ -1,11 +1,51 @@
 # UI foundation — current state
 
-**2026-10-06 (latest) — U1 ACCEPTED by the owner at the verified round-4 candidate `345b5c62…` (non-blocking notes retained); U2 ONLY authorized — designer and workbench breadth (STAGES §4, U2-01…U2-08) — now in progress on branch `codex/ui-foundation-u2` (worktree `vict-02-u2`), handoff [U2-HANDOFF](U2-HANDOFF.md).**
-Owner acceptance recorded 2026-10-06. U1 remains VERIFIED history: the round-4 record
-commit `cb8539372c1f8a9d055de3a7f29dff222262b486` is the starting remote HEAD for U2
-(live-verified via `git ls-remote`); main baseline `4d2df037…` untouched. Round-4
-verification summary (preserved below and in
-[DECISIONS-AND-EVIDENCE](DECISIONS-AND-EVIDENCE.md)):
+**2026-10-06 (latest) — U2 IMPLEMENTATION COMPLETE; independent technical gate PASS (after one repair round); independent experience re-verification PASS WITH FINDINGS; records final; awaiting the FOUNDER checkpoint — owner experience acceptance PENDING.**
+
+U2 (designer and workbench breadth, STAGES §4 U2-01…U2-08) is implemented and
+independently verified on branch `codex/ui-foundation-u2`:
+
+- **Code candidate under verification:** `19bb4b98a18f86bb1193db5a45f8c33e1c5c9af5`
+  (repaired round-2 candidate; the round-1 candidate `ebac7bf…` FAILED both independent
+  reviews and its verdicts are preserved evidence).
+- **Technical:** first independent review at `ebac7bf` returned "U2-TECHNICAL GATE: FAIL"
+  (pseudo-state CSS silently inert [blocker], un-interpolated diagnostics, red integration
+  gate) with U2-01/02/04/07/08 passing adversarial verification. All findings repaired;
+  independent recheck at `19bb4b9`: **"U2-RECHECK: PASS WITH FINDINGS"** — R1 pseudo CSS,
+  R2 integration gate, R3 persisted product rendering, R4 instance styling, R5 corrupt-store
+  gate all PASS under fresh attack; targeted regressions green.
+- **Experience:** first review at `ebac7bf` returned "U2-EXPERIENCE: FAIL" (persisted edits
+  never reached the finished page [blocker]; instance styling no-op; schema-corrupt store
+  hard-fail). Repaired; independent re-verification: **"U2-EXPERIENCE-RECHECK: PASS WITH
+  FINDINGS"** — all five journeys (persisted edit, instance styling, empty-value guard,
+  corrupt stores, keyboard resize/label clipping/console sweeps) PASS in a real browser at
+  1440×900 / 1024×768 / 390×844 / 480-container.
+- **Gates at `19bb4b9`:** unit 2497/2497, renderer 116/116, integration 4/4 (genuinely
+  green), root typecheck 0, format clean, check:ui 0 errors (2 known warnings), authoring
+  proof 33/33 + tsc 0, design proof 12/12 + typecheck 0 + clean build; console sweeps zero.
+- **Performance (U2-08):** representative component-heavy workload (997 nodes, 20
+  component instances, 100 repeated rows, 20 transactions, reopen) — p95 compile 20.9 ms
+  (budget 250), edit feedback 13.9 ms (budget 100), reopen 4.9 ms (budget 1000). Bundle
+  separation measured: product route chunks carry no authoring code.
+
+**Remaining (non-blocking, registered):**
+- **N1 (minor, owner decision):** a shared-scope local style edit silently overrides a
+  prior instance-scope override of the same property (equal specificity, later rule order;
+  the instance rule stays in the CSS). Owner: U-track builder; next check: surface an
+  origin-conflict note in the Inspector or scope local rules per occurrence.
+- **N2 (minor):** the PRESERVED banner disappears once the user edits, before the loud
+  save-failure — keep a compact storage-state indicator while storage is broken.
+- Notes: 'stored authoring data' wording on the design surface; sticky card travel (~150px)
+  is honest but short; `Reload stored` on an empty store truthfully refuses.
+
+**Next: the FOUNDER walks the U2 proofs ([U2-WALKTHROUGH](U2-WALKTHROUGH.md), ~10 min,
+plain language). Owner experience acceptance is PENDING — independent verdicts are
+necessary, not sufficient.** U3/U4 remain unauthorized.
+
+---
+
+**2026-10-06 — U1 ACCEPTED by the owner at the verified round-4 candidate `345b5c62…`
+(non-blocking notes retained); U2 ONLY authorized — history below.**
 Fresh independent verification of candidate `345b5c62f7eae1d02d7697cdd1abc71b0daeee41`
 ([U1-ROUND4-REVIEW-05.md](reviews/U1-ROUND4-REVIEW-05.md), sha256
 `139c538422902a76f7b06c5b7a05c99c148f577b67cf684f9a756585c0f97dc4`; evidence in
@@ -41,7 +81,7 @@ for U1: COMPLETE — owner accepted U1 at the verified candidate and authorized 
 of this file).**
 
 | U1 rendering/editing loop | **ACCEPTED by owner 2026-10-06** (handoff [U1-HANDOFF](U1-HANDOFF.md)) | Accepted candidate `345b5c62…`; verdict "U1-ROUND4 GATE: PASS" ([U1-ROUND4-REVIEW-05](reviews/U1-ROUND4-REVIEW-05.md)); NF-1..3 non-blocking notes retained with U2 | Closed at U2 start; U3 unauthorized |
-| U2 designer/workbench breadth | **IN PROGRESS — owner-authorized 2026-10-06** (handoff [U2-HANDOFF](U2-HANDOFF.md)) | Branch `codex/ui-foundation-u2` from `cb85393…`; U2-01…U2-08 per STAGES §4; proofs in `examples/ui-design-proof` (PROOF-DESIGN §3.2–3.3); carried obligations: store.ts:144 type fix, proof typechecking, build wiring, session-API orchestration docs | Implement → independent technical challenge + independent experience review at exact candidate → repairs → push, remote verify → owner (founder) checkpoint; **owner experience acceptance pending**; U3/U4 unauthorized |
+| U2 designer/workbench breadth | **IMPLEMENTED + INDEPENDENTLY VERIFIED — founder checkpoint pending** (handoff [U2-HANDOFF](U2-HANDOFF.md)) | Verified code candidate `19bb4b9…` (round-1 `ebac7bf…` FAILED both reviews — preserved); "U2-RECHECK: PASS WITH FINDINGS" + "U2-EXPERIENCE-RECHECK: PASS WITH FINDINGS" (reports in `reviews/u2/`); performance within all frozen budgets; N1/N2 non-blocking + notes | **Founder walks [U2-WALKTHROUGH](U2-WALKTHROUGH.md)** → owner experience acceptance; U3/U4 unauthorized |
 Fresh independent verification of candidate `c1e3d0fec930a2a11341181061d537f16ec065ab`
 ([U1-ROUND3-REVIEW-04.md](reviews/U1-ROUND3-REVIEW-04.md), sha256
 `fd151713aa4345eb0653c648eace64eeb4a774cc8a796d0f74c760bd082cd12b`; 11 evidence screenshots;
