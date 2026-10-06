@@ -1,0 +1,29 @@
+{
+  "name": "ui-design-proof",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "U2 proof: a contrasting service/editorial page and a Studio-style workbench, both authored as canonical UI documents, edited through the exported editor modules and rendered by the one shared renderer.",
+  "scripts": {
+    "prepare": "svelte-kit sync || echo ''",
+    "dev": "vite dev",
+    "build": "svelte-kit sync && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit -p tsconfig.check.json",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@victframework/ui": "0.4.0-rc.1",
+    "@victframework/ui-editor": "0.4.0-rc.1",
+    "@victframework/ui-svelte": "0.4.0-rc.1"
+  },
+  "devDependencies": {
+    "@sveltejs/adapter-node": "^5.2.12",
+    "@sveltejs/kit": "^2.20.0",
+    "@sveltejs/vite-plugin-svelte": "^5.0.3",
+    "happy-dom": "^15.11.7",
+    "svelte": "^5.28.0",
+    "typescript": "^5.8.3",
+    "vite": "^6.3.5"
+  }
+}

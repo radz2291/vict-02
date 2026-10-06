@@ -54,8 +54,9 @@ const ELEMENTS: readonly SemanticElementDef[] = [
   { tag: 'li' },
   // media placeholder (declared U1 limit: labeled placeholder only)
   { tag: 'img', attributes: ['src', 'alt', 'width', 'height'], leaf: true },
-  // form essentials
-  { tag: 'form', attributes: ['name'] },
+  // form essentials (U2: accessible-form support — submit suppression and
+  // autocomplete/aria wiring are first-class attributes)
+  { tag: 'form', attributes: ['name', 'novalidate', 'aria-label'] },
   { tag: 'label', attributes: ['for'] },
   {
     tag: 'input',
@@ -70,6 +71,10 @@ const ELEMENTS: readonly SemanticElementDef[] = [
       'min',
       'max',
       'step',
+      'id',
+      'autocomplete',
+      'aria-label',
+      'aria-describedby',
     ],
     leaf: true,
   },
@@ -80,7 +85,16 @@ const ELEMENTS: readonly SemanticElementDef[] = [
   { tag: 'option', attributes: ['value', 'selected', 'disabled'] },
   {
     tag: 'textarea',
-    attributes: ['name', 'placeholder', 'rows', 'required', 'disabled'],
+    attributes: [
+      'name',
+      'placeholder',
+      'rows',
+      'required',
+      'disabled',
+      'id',
+      'aria-label',
+      'aria-describedby',
+    ],
     leaf: true,
   },
   { tag: 'fieldset' },

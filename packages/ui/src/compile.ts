@@ -366,9 +366,13 @@ export function compileUiDocument(
             UiStyleSource | undefined;
           const ruleId = compileStyleDeclarations(
             source?.declarations,
-            `${classFor(nodeId)}-s\${styleRuleIds.length}`,
-            'source',
-            `.\${classFor(nodeId)}`,
+            `${classFor(nodeId)}-s${styleRuleIds.length}`,
+            // Frozen cascade: style sources INSIDE a definition body are part
+            // of the shared component presentation (component base layer);
+            // sources attached at an INSTANCE site are the instance-override
+            // layer ('source') and therefore win over the shared base.
+            scope.inDefinition ? 'componentBase' : 'source',
+            `.${classFor(nodeId)}`,
             { conditionId: source?.conditionId, pseudo: source?.pseudo },
           );
           if (ruleId !== undefined) styleRuleIds.push(ruleId);
@@ -462,6 +466,21 @@ export function compileUiDocument(
           slots[slotName] = fill.children.map((childId) => compileNode(childId, scope));
         }
         const styleRuleIds: string[] = [];
+        // U2-01/U2-03: instance-attached style sources are part of the
+        // instance override surface (cascade layer 'source') — the overlap
+        // card and the intentional accent override rely on them.
+        for (const sourceId of node.styleSources ?? []) {
+          const instanceSource = (document.styleSources ?? ({} as Record<string, never>))[sourceId] as
+            UiStyleSource | undefined;
+          const instanceRuleId = compileStyleDeclarations(
+            instanceSource?.declarations,
+            `${classFor(nodeId)}-s${styleRuleIds.length}`,
+            'source',
+            `.${classFor(nodeId)}`,
+            { conditionId: instanceSource?.conditionId, pseudo: instanceSource?.pseudo },
+          );
+          if (instanceRuleId !== undefined) styleRuleIds.push(instanceRuleId);
+        }
         if (definition.baseStyle !== undefined) {
           const base = (document.styleSources ?? ({} as Record<string, never>))[
             definition.baseStyle

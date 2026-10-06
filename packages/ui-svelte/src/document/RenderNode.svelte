@@ -194,6 +194,7 @@
     {navigate}
     {setState}
     {selectOccurrence}
+    {reportDiagnostic}
     extraClass={instruction.classes[0]}
   />
 {:else if instruction.kind === 'extension'}
