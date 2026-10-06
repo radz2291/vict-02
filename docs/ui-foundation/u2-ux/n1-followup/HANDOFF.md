@@ -1,3 +1,15 @@
+# Final bounded verdict: PASS
+
+Exact independently tested repair **1bd745a04334af07934db33211ef7803a2e4cd0b**, branch codex/ui-foundation-u2-inspector-ux. [Final report](../independent-review/n1-recheck/REVIEW.md) and complete n1-recheck evidence imported verbatim. SHA2561717C185272481830EB2F44EABD10C1695A6CF7E8FF137BF45B4B6E768C3BF43 matches the evaluator delivery. [Earlier e593 FAIL](../independent-review/n1-candidate/REVIEW.md) and its full evidence remain intact; report SHA256CEF997252BC91870AAEDE31214B9CF03E9D344330D34E9F2DC20731A5D3A65F2 matches delivery.
+
+Independent exact repair checks: renderer123/123,18files; design12/12; root/design TypeScript; production build PASS.28 native main observations,7 native live-state transitions and5 responsive host states PASS, with zero page exceptions. Reset label width verified1440/1024/390; no viewport overflow. Canonical command omission, preservation of unrelated/attached sources, one history step, Undo/Redo, save/full reload/reopen and distinct repeated/component occurrence values demonstrated. Live transitions create zero drafts and leave source/digest/revision/dirty/history identical.
+
+Repaired broad Svelte check is still23 errors/four warnings in four unchanged files (repair-broad-svelte.txt plus independent broad-supported.txt). No changed Inspector diagnostics. Host hooks must invalidate arbitrary external/container changes; native pointer/focus/key, source/selection/scope/edit-target/callback and resize are covered. No exhaustive CSS animation/asynchronous stylesheet/disabled-state transition study or founder participant observation is claimed.
+
+This final commit is evidence-only and preserves source bytes from exact1bd. Owner delivery supplies final branch/remote SHA after push and equality verification. Next allowed action is overall U2 manager integration and independent verification of the combined candidate, followed by owner experience acceptance. Compiler acceptance and U2 closure remain PENDING. No merge, deployment, publication or U3/U4 authorization. Earlier chronological builder/candidate records below are retained, including superseded pending statuses.
+
+---
+
 # U2 N1 UX follow-up candidate
 
 Owner amendment: read U2-N1-VERIFY-03.md at e0893feebc3e9783b7a29026c2285929819f86bb and include F1/F2 in this existing Inspector/Layers UX scope. Historical six-part redesign and failures remain intact. Starting own branch tip: 9c743c445f8946af305e9e04ff01740d78639a9e. Branch codex/ui-foundation-u2-inspector-ux remains isolated. Live origin/main is 4d2df037d8a82d36c60bf1bff16919650643ce22. Merge-base with report branch remains the original assigned 83ba87f7aa112a1d93e7236c9c3ec2f4505f6cff. Changes on report branch since that base are records/evidence and the compiler cascade test; no implementation baseline change is required. Compiler acceptance remains separately owned.

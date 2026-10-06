@@ -1,0 +1,14 @@
+docs/ui-foundation/u2-ux/independent-review/n1-candidate/Host.svelte:26: new blank line at EOF.
+docs/ui-foundation/u2-ux/independent-review/n1-candidate/REVIEW.md:24: new blank line at EOF.
+docs/ui-foundation/u2-ux/independent-review/n1-candidate/affected-tests.txt:13: new blank line at EOF.
+docs/ui-foundation/u2-ux/independent-review/n1-candidate/design-tests.txt:17: new blank line at EOF.
+docs/ui-foundation/u2-ux/independent-review/n1-candidate/design-typecheck.txt:4: new blank line at EOF.
+docs/ui-foundation/u2-ux/independent-review/n1-candidate/root-tsc.txt:4: new blank line at EOF.
+docs/ui-foundation/u2-ux/independent-review/n1-recheck/Host-final-fixture.svelte:26: new blank line at EOF.
+docs/ui-foundation/u2-ux/independent-review/n1-recheck/challenge.mjs:15: new blank line at EOF.
+docs/ui-foundation/u2-ux/independent-review/n1-recheck/design-tests.txt:17: new blank line at EOF.
+docs/ui-foundation/u2-ux/independent-review/n1-recheck/design-tsc.txt:4: new blank line at EOF.
+docs/ui-foundation/u2-ux/independent-review/n1-recheck/host-spotcheck.mjs:4: new blank line at EOF.
+docs/ui-foundation/u2-ux/independent-review/n1-recheck/live-pseudo.mjs:8: new blank line at EOF.
+docs/ui-foundation/u2-ux/independent-review/n1-recheck/renderer-tests.txt:13: new blank line at EOF.
+docs/ui-foundation/u2-ux/independent-review/n1-recheck/root-tsc.txt:4: new blank line at EOF.

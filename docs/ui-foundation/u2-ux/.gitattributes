@@ -1,0 +1,3 @@
+# Preserve independent N1 review evidence bytes, including original line endings.
+independent-review/n1-candidate/** -text
+independent-review/n1-recheck/** -text

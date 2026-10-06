@@ -1,0 +1,5 @@
+{
+  "logs": [],
+  "errors": [],
+  "error": "TypeError: Failed to execute 'getComputedStyle' on 'Window': parameter 1 is not of type 'Element'."
+}

@@ -1,6 +1,10 @@
-# Owner-authorized N1 UX follow-up
+# N1 UX follow-up — independently verified candidate
 
-New candidate e5931cf30fd2c2cdb0d03a017d77c46b0f35ba31 is pushed and remote matched. Owner added F1 override removal and F2 effective-value annotation from [the exact report](https://github.com/radz2291/vict-02/blob/e0893feebc3e9783b7a29026c2285929819f86bb/docs/ui-foundation/reviews/u2/U2-N1-VERIFY-03.md). [Follow-up handoff and retained reproduction](n1-followup/HANDOFF.md). Independent exact candidate challenge pending; previous completed verdicts below remain evidence of their own snapshots. No U2 closure or compiler acceptance is inferred.
+Final bounded verdict: **PASS** at **1bd745a04334af07934db33211ef7803a2e4cd0b**, after the preserved e593 FAIL and repair. [Final independent report](independent-review/n1-recheck/REVIEW.md), [failed candidate report](independent-review/n1-candidate/REVIEW.md), and [current handoff](n1-followup/HANDOFF.md). Visible Reset uses the existing omission/removal transactions, reveals the next cascade value and remains undoable. Actual selected-occurrence measurements refresh after edits, editing-condition changes and native live pseudo-state transitions. All six earlier redesign improvements remain in this branch.
+
+Independent exact1bd: renderer123/123, design12/12, root/design TypeScript and production build PASS;28 main browser observations,7 live-state transitions and5 responsive spotchecks PASS. Broad Svelte remains23 errors/four existing warnings in unchanged files. Final evidence-only handoff preserves tested implementation bytes; final pushed SHA is supplied with owner delivery. Overall U2 manager integration/combined verification and owner experience acceptance remain next; U2 closure is PENDING.
+
+Owner added F1/F2 from [U2-N1-VERIFY-03 at exact e0893fe](https://github.com/radz2291/vict-02/blob/e0893feebc3e9783b7a29026c2285929819f86bb/docs/ui-foundation/reviews/u2/U2-N1-VERIFY-03.md). Historical candidate reports and failures below remain evidence of their own snapshots. No compiler acceptance is inferred.
 
 ---
 
