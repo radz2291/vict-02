@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { tick } from 'svelte';
   import type { UiDocument, UiStyleValue } from '@victframework/ui';
   type UiPseudoState = 'hover' | 'focus' | 'active' | 'disabled';
   import { resolveOccurrence } from './occurrence.js';
@@ -15,6 +16,20 @@
     labels?: EditorLabels;
   }
   let { document, selectedOccurrence, onApply, lastIssues = [], knownActionIds = [], knownRouteIds = [], knownTokenIds = [], styleConditions = [], readEffective, labels = {} }: Props = $props();
+  // DOM measurements must run again after the canvas consumes new source/selection.
+  let measurementVersion = $state(0);
+  $effect(() => {
+    document; selectedOccurrence; readEffective; condition; pseudo; scope;
+    let cancelled = false;
+    void tick().then(() => { if (!cancelled) measurementVersion++; });
+    return () => { cancelled = true; };
+  });
+  $effect(() => {
+    if (typeof window === 'undefined') return;
+    const refresh = () => { void tick().then(() => measurementVersion++); };
+    window.addEventListener('resize', refresh);
+    return () => window.removeEventListener('resize', refresh);
+  });
   let scope = $state<'shared' | 'instance'>('shared');
   let condition = $state('');
   let pseudo = $state<UiPseudoState | undefined>(undefined);
@@ -98,7 +113,7 @@
     const authored = sources.flatMap(s => s.declarations).filter(d => d.property === property).at(-1)?.value;
     return styleText(authored, document) || effective(property);
   }
-  function effective(property: string) { return selectedOccurrence ? readEffective?.(selectedOccurrence, property)?.trim() ?? '' : ''; }
+  function effective(property: string) { measurementVersion; return selectedOccurrence ? readEffective?.(selectedOccurrence, property)?.trim() ?? '' : ''; }
   function origin(property: string) {
     const local = editableStyle(document, target, property, condition || undefined, pseudo);
     if (local) return local.type === 'token' ? `Override uses token ${local.id}` : local.type === 'binding' ? 'Bound expression; edit in Advanced' : `${shared && scope === 'shared' ? 'Shared definition' : 'Local'} override${condition ? ' · selected condition' : ''}${pseudo ? ` · ${pseudo}` : ''}`;

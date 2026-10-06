@@ -1,0 +1,12 @@
+{
+  "candidate": "83ba87f7aa112a1d93e7236c9c3ec2f4505f6cff original Inspector in isolated current real-renderer host",
+  "before": {
+    "actual": "46px",
+    "annotation": "Inspector\nSource node\ntitle\nKind\nelement\nStyle declaration\nApplies to \nBase styling\nCompact canvas\nNarrow window\n Pseudo state \n— (none)\nhover\nfocus\nactive\ndisabled\n Property \n\nAuthored in: Instance-local (base source) · effective value: 46px\n\n Token value Value  Apply style\nAttribute\nName  Value  Set attribute\nInteraction (click)\nAction id  Connect action Navigate to route \nroute.a\nroute.b\n Connect navigation"
+  },
+  "after": {
+    "actual": "61px",
+    "annotation": "Inspector\nSource node\ntitle\nKind\nelement\nStyle declaration\nApplies to \nBase styling\nCompact canvas\nNarrow window\n Pseudo state \n— (none)\nhover\nfocus\nactive\ndisabled\n Property \n\nAuthored in: Instance-local (base source) · effective value: 46px\n\n Token value Value  Apply style\nAttribute\nName  Value  Set attribute\nInteraction (click)\nAction id  Connect action Navigate to route \nroute.a\nroute.b\n Connect navigation"
+  },
+  "errors": []
+}
