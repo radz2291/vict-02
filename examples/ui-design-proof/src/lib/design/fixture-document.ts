@@ -81,8 +81,16 @@ export const fixtureDocument: UiDocument = (() => {
     source: string;
     edges?: string[];
   }[] = [
-    { id: 'fx.boxIntake', label: 'Intake — requests arrive by post and online form', source: 'fsrc.box' },
-    { id: 'fx.boxTriage', label: 'Triage — two clerks sort the week’s pile into priority bands', source: 'fsrc.box' },
+    {
+      id: 'fx.boxIntake',
+      label: 'Intake — requests arrive by post and online form',
+      source: 'fsrc.box',
+    },
+    {
+      id: 'fx.boxTriage',
+      label: 'Triage — two clerks sort the week’s pile into priority bands',
+      source: 'fsrc.box',
+    },
     {
       id: 'fx.boxReview',
       label: 'Review panel — meets Thursdays; quorum is three including the chair',
@@ -152,6 +160,7 @@ export const fixtureDocument: UiDocument = (() => {
     id: 'doc.fixture',
     revision: '1',
     root: 'fx.root',
+    nodes,
     tokens: {
       'color.ink': { id: 'color.ink', value: '#20242c' },
       'color.muted': { id: 'color.muted', value: '#667085' },
@@ -188,7 +197,10 @@ export const fixtureDocument: UiDocument = (() => {
         id: 'fsrc.graph',
         declarations: [
           { property: 'display', value: { type: 'text', value: 'grid' } },
-          { property: 'grid-template-columns', value: { type: 'text', value: 'minmax(260px, 1.4fr) 1fr' } },
+          {
+            property: 'grid-template-columns',
+            value: { type: 'text', value: 'minmax(260px, 1.4fr) 1fr' },
+          },
           { property: 'gap', value: { type: 'token', id: 'space.md' } },
           { property: 'align-items', value: { type: 'text', value: 'start' } },
         ],
@@ -198,8 +210,14 @@ export const fixtureDocument: UiDocument = (() => {
         id: 'fsrc.box',
         declarations: [
           { property: 'background', value: { type: 'token', id: 'color.card' } },
-          { property: 'border', value: { type: 'text', value: '1px solid var(--ui-token-color_line)' } },
-          { property: 'border-left', value: { type: 'text', value: '4px solid var(--ui-token-color_accent)' } },
+          {
+            property: 'border',
+            value: { type: 'text', value: '1px solid var(--ui-token-color_line)' },
+          },
+          {
+            property: 'border-left',
+            value: { type: 'text', value: '4px solid var(--ui-token-color_accent)' },
+          },
           { property: 'border-radius', value: { type: 'token', id: 'radius.md' } },
           { property: 'padding', value: { type: 'token', id: 'space.md' } },
           { property: 'font-size', value: { type: 'text', value: '14px' } },
@@ -211,7 +229,10 @@ export const fixtureDocument: UiDocument = (() => {
         id: 'fsrc.notes',
         declarations: [
           { property: 'background', value: { type: 'token', id: 'color.paper' } },
-          { property: 'border', value: { type: 'text', value: '1px dashed var(--ui-token-color_line)' } },
+          {
+            property: 'border',
+            value: { type: 'text', value: '1px dashed var(--ui-token-color_line)' },
+          },
           { property: 'border-radius', value: { type: 'token', id: 'radius.md' } },
           { property: 'padding', value: { type: 'token', id: 'space.md' } },
           { property: 'font-size', value: { type: 'text', value: '13px' } },

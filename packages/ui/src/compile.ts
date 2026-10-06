@@ -470,8 +470,9 @@ export function compileUiDocument(
         // instance override surface (cascade layer 'source') — the overlap
         // card and the intentional accent override rely on them.
         for (const sourceId of node.styleSources ?? []) {
-          const instanceSource = (document.styleSources ?? ({} as Record<string, never>))[sourceId] as
-            UiStyleSource | undefined;
+          const instanceSource = (document.styleSources ?? ({} as Record<string, never>))[
+            sourceId
+          ] as UiStyleSource | undefined;
           const instanceRuleId = compileStyleDeclarations(
             instanceSource?.declarations,
             `${classFor(nodeId)}-s${styleRuleIds.length}`,

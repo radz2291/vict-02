@@ -37,7 +37,11 @@ export function classifyStored(raw: string, format: string): StoredClassificatio
   } catch {
     return { kind: 'unreadable', message: 'stored authoring data is not valid JSON' };
   }
-  if (typeof parsed !== 'object' || parsed === null || (parsed as Record<string, unknown>)['format'] !== format) {
+  if (
+    typeof parsed !== 'object' ||
+    parsed === null ||
+    (parsed as Record<string, unknown>)['format'] !== format
+  ) {
     return { kind: 'unreadable', message: `stored payload is not '${format}'` };
   }
   const record = parsed as Record<string, unknown>;
@@ -66,9 +70,16 @@ export interface LocalStorageStoreOptions {
   /** The one revision an EMPTY store accepts for the initial seed save. */
   readonly seedStoredRevision: string;
   /**
-   * Seed content used when the host initializes from empty. The store never
-   * invents content: seeding is a HOST decision (open/invalid classification).
+   * Optional host validation gate (the layered validation authority): when
+   * provided, a READABLE envelope whose document fails validation classifies
+   * as invalid+overwritable with the RECORDED revision (a replacement save
+   * is accepted) instead of silently reopening broken bytes.
    */
+  readonly validateDocument?: (document: UiDocument) => readonly {
+    readonly code: string;
+    readonly severity: string;
+    readonly message: string;
+  }[];
 }
 
 export interface LoadFailureDetail {
@@ -80,8 +91,7 @@ export interface LoadFailureDetail {
 }
 
 export type LocalStorageStoreLoad =
-  | Extract<DocumentStoreLoadResult, { status: 'loaded' | 'empty' }>
-  | LoadFailureDetail;
+  Extract<DocumentStoreLoadResult, { status: 'loaded' | 'empty' }> | LoadFailureDetail;
 
 export interface LocalStorageDocumentStore extends DocumentStorePort {
   /** Envelope-level load with preservation classification for host UX. */
@@ -92,7 +102,24 @@ export function createLocalStorageDocumentStore(
   storage: Pick<Storage, 'getItem' | 'setItem'>,
   options: LocalStorageStoreOptions,
 ): LocalStorageDocumentStore {
-  const { key, format, seedStoredRevision } = options;
+  const { key, format, seedStoredRevision, validateDocument } = options;
+  const invalidBecauseDocument = (
+    document: UiDocument,
+    recordedRevision: string,
+  ):
+    | { status: 'invalid'; message: string; overwritable: true; storedRevision: string }
+    | undefined => {
+    if (validateDocument === undefined) return undefined;
+    const issues = validateDocument(document).filter((issue) => issue.severity === 'error');
+    const first = issues[0];
+    if (first === undefined) return undefined;
+    return {
+      status: 'invalid',
+      message: `stored document invalid: ${first.code} — ${first.message}`,
+      overwritable: true,
+      storedRevision: recordedRevision,
+    };
+  };
   const readRaw = (): { ok: true; raw: string | null } | { ok: false; message: string } => {
     try {
       return { ok: true, raw: storage.getItem(key) };
@@ -117,6 +144,11 @@ export function createLocalStorageDocumentStore(
           overwritable: false,
         };
       }
+      const documentInvalid = invalidBecauseDocument(
+        classified.document,
+        classified.recordedRevision,
+      );
+      if (documentInvalid !== undefined) return documentInvalid;
       return {
         status: 'loaded',
         document: classified.document,
@@ -138,6 +170,11 @@ export function createLocalStorageDocumentStore(
           overwritable: false,
         };
       }
+      const documentInvalid = invalidBecauseDocument(
+        classified.document,
+        classified.recordedRevision,
+      );
+      if (documentInvalid !== undefined) return documentInvalid;
       return {
         status: 'loaded',
         document: classified.document,

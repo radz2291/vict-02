@@ -18,6 +18,7 @@ import {
   validateUiDocument,
   type UiDocument,
 } from '@victframework/ui';
+import type { compileUiDocument } from '@victframework/ui';
 import type { DocumentStoreLoadResult, DocumentStorePort } from '@victframework/ui-editor';
 
 const STORAGE_KEY = 'vict.u1.authoring.doc';

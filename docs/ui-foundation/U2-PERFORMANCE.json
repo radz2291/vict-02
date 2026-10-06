@@ -1,0 +1,44 @@
+{
+  "schema": "vict.u2-measurement@1",
+  "measuredAt": "2026-10-06T11:06:36.425Z",
+  "environment": {
+    "machine": "Lenovo 81N4, Windows 11 Home build 26200, 12,102 MB RAM (named U0 environment class)",
+    "node": "v22.13.1",
+    "runtime": "node (same-process; no browser GPU/paint included)"
+  },
+  "method": "30 iterations after warm-up; p95 = sorted[floor(0.95*n)]; compile = compileUiDocument over the full document; edit = session.applyTransaction round trip; reopen = UiEditSession.open",
+  "workload": {
+    "authoredNodes": 997,
+    "componentInstances": 20,
+    "definitionBodyNodes": 3,
+    "repeatRows": 100,
+    "repeatTemplateNodes": 4,
+    "transactions": 20
+  },
+  "results": {
+    "compileP95Ms": 20.93,
+    "compileSamples": [
+      55.37, 20.93, 15.88, 18.7, 13.59, 13.07, 12.11, 12.65, 11.82, 11.62, 12.52, 9.8, 14.1, 11.1,
+      11.66, 11.08, 11.05, 9.62, 11.25, 12.04, 11.29, 9.83, 8.97, 9.19, 10.95, 9.2, 8.93, 8.65,
+      9.61, 9.4
+    ],
+    "editFeedbackP95Ms": 13.89,
+    "editSamples": [
+      13.89, 5.06, 7.24, 7.43, 7.37, 5.78, 4.4, 4.43, 6.74, 4.48, 4.65, 4.44, 4.59, 6.26, 4.33,
+      4.13, 5.03, 4.64, 5.32, 7.94
+    ],
+    "reopenP95Ms": 4.85,
+    "budgetCompileMs": 250,
+    "budgetEditMs": 100,
+    "budgetReopenMs": 1000,
+    "withinBudget": {
+      "compile": true,
+      "edit": true,
+      "reopen": true
+    }
+  },
+  "provenance": {
+    "repeatSourceOccurrencesInPlan": 4,
+    "definitionOccurrencesInPlan": 80
+  }
+}

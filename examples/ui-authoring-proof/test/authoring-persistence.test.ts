@@ -134,8 +134,8 @@ describe('U1-04: authoring persistence (localStorage store)', () => {
       statusAfter.localStyle?.some(
         (decl) =>
           decl.property === 'letter-spacing' &&
-          decl.value.type === 'text' &&
-          decl.value.value === '0.02em',
+          (decl.value as { type: string; value?: string }).type === 'text' &&
+          (decl.value as { type: string; value?: string }).value === '0.02em',
       ),
     ).toBe(true);
     // interactions preserved
@@ -275,12 +275,24 @@ describe('round 3: malformed stored documents diagnose reliably', () => {
   const cases: readonly [string, (doc: Record<string, unknown>) => Record<string, unknown>][] = [
     ['unsupported document schema', (doc) => ({ ...doc, schema: 'vict.ui-document@9' })],
     ['missing node registry', (doc) => ({ ...doc, nodes: undefined })],
-    ['null node', (doc) => ({ ...doc, nodes: { ...doc['nodes'], 'n.status': null } })],
+    [
+      'null node',
+      (doc) => ({
+        ...doc,
+        nodes: { ...(doc['nodes'] as Record<string, unknown>), 'n.status': null },
+      }),
+    ],
     [
       'malformed child structure (non-string child)',
       (doc) => ({
         ...doc,
-        nodes: { ...doc['nodes'], 'n.root': { ...doc['root'], children: ['n.approveButton', 42] } },
+        nodes: {
+          ...(doc['nodes'] as Record<string, unknown>),
+          'n.root': {
+            ...(doc['root'] as Record<string, unknown>),
+            children: ['n.approveButton', 42],
+          },
+        },
       }),
     ],
     [
@@ -288,8 +300,12 @@ describe('round 3: malformed stored documents diagnose reliably', () => {
       (doc) => ({
         ...doc,
         nodes: {
-          ...doc['nodes'],
-          'n.root': { ...doc['nodes']['n.root'], kind: 'conditional', branches: 'not-an-array' },
+          ...(doc['nodes'] as Record<string, unknown>),
+          'n.root': {
+            ...((doc['nodes'] as Record<string, unknown>)['n.root'] as Record<string, unknown>),
+            kind: 'conditional',
+            branches: 'not-an-array',
+          },
         },
       }),
     ],
@@ -378,6 +394,7 @@ describe('round 3: malformed stored documents diagnose reliably', () => {
       const store = createAuthoringStore(window.localStorage, studioDocumentCatalogs);
       const load = store.rawLoad();
       expect(load.status).toBe('invalid');
+      if (load.status !== 'invalid') throw new Error('expected invalid load');
       expect(load.overwritable).toBe(false);
       const outcome = store.save({
         document: inspectionDetailDocument,
@@ -397,6 +414,7 @@ describe('round 3: malformed stored documents diagnose reliably', () => {
       const store = createAuthoringStore(window.localStorage, studioDocumentCatalogs);
       const load = store.rawLoad();
       expect(load.status).toBe('invalid');
+      if (load.status !== 'invalid') throw new Error('expected invalid load');
       expect(load.overwritable).toBe(false);
       const outcome = store.save({
         document: inspectionDetailDocument,
@@ -459,6 +477,7 @@ describe('round 3: malformed stored documents diagnose reliably', () => {
       const store = createAuthoringStore(window.localStorage, studioDocumentCatalogs);
       const load = store.rawLoad();
       expect(load.status).toBe('invalid');
+      if (load.status !== 'invalid') throw new Error('expected invalid load');
       expect(load.overwritable).toBe(true);
       const outcome = store.save({
         document: inspectionDetailDocument,

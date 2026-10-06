@@ -35,8 +35,9 @@ export interface ContactFields {
 
 export function readContactFields(container: ParentNode): ContactFields {
   const read = (id: string): string =>
-    (container.querySelector(`#${CSS.escape(id)}`) as HTMLInputElement | HTMLTextAreaElement | null)
-      ?.value?.trim() ?? '';
+    (
+      container.querySelector(`#${CSS.escape(id)}`) as HTMLInputElement | HTMLTextAreaElement | null
+    )?.value?.trim() ?? '';
   return {
     name: read('svc.fieldName'),
     email: read('svc.fieldEmail'),
@@ -48,7 +49,10 @@ export function validateContact(fields: ContactFields): ContactOutcome {
   const issues: { field: string; message: string }[] = [];
   if (fields.name === '') issues.push({ field: 'svc.fieldName', message: 'Enter your name.' });
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(fields.email)) {
-    issues.push({ field: 'svc.fieldEmail', message: 'Enter an email address in the name@example.org form.' });
+    issues.push({
+      field: 'svc.fieldEmail',
+      message: 'Enter an email address in the name@example.org form.',
+    });
   }
   if (fields.message.length < 12) {
     issues.push({
