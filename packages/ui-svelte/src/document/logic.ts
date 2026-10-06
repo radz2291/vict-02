@@ -156,7 +156,14 @@ export function styleRulesToCss(plan: UiRenderPlan, rootClass: string): string {
     const declarations = lines.join('\n');
     if (declarations === '') continue;
     const selector =
-      rule.selector === ':root' ? `.${escapedRoot}` : `.${escapedRoot} ${escapeCss(rule.selector)}`;
+      rule.selector === ':root'
+        ? `.${escapedRoot}`
+        : // The pseudo suffix is appended AFTER escaping: a pseudo colon is
+          // selector syntax, not a character to escape (F1 — an escaped
+          // `\:hover` matches nothing).
+          rule.pseudo !== undefined
+          ? `.${escapedRoot} ${escapeCss(rule.selector)}:${rule.pseudo}`
+          : `.${escapedRoot} ${escapeCss(rule.selector)}`;
     const css = `${selector} {\n${declarations}\n}`;
     if (rule.containerConditionId !== undefined) {
       const condition = conditions[rule.containerConditionId];

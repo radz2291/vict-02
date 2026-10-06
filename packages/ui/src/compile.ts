@@ -301,8 +301,8 @@ export function compileUiDocument(
         issues.push(
           uiDiagnostic(
             'UI_DOC_UNSUPPORTED_FEATURE',
-            `Style condition kind '\${condition.kind}' is unsupported; the conditioned rule is dropped (declared limitation).`,
-            { documentId, feature: `condition:\${condition.kind}` },
+            `Style condition kind '${condition.kind}' is unsupported; the conditioned rule is dropped (declared limitation).`,
+            { documentId, feature: `condition:${condition.kind}` },
           ),
         );
         return undefined;
@@ -322,7 +322,10 @@ export function compileUiDocument(
     rules.push({
       ruleId,
       layer,
-      selector: gating?.pseudo !== undefined ? `\${selector}:\${gating.pseudo}` : selector,
+      // The pseudo suffix travels in `rule.pseudo`; the RENDERER composes
+      // `.class:pseudo` after its own escaping (a pseudo colon is selector
+      // syntax — escaping it makes the rule unmatchable, see F1).
+      selector,
       ...(mediaConditionId !== undefined ? { mediaConditionId } : {}),
       ...(containerConditionId !== undefined ? { containerConditionId } : {}),
       ...(gating?.pseudo !== undefined ? { pseudo: gating.pseudo } : {}),

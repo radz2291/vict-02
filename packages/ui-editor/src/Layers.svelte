@@ -134,7 +134,7 @@
           onclick={() => (entry.key.includes('::') ? undefined : onSelect?.(entry.key))}
           title={entry.detail !== '' ? `${entry.label} — ${entry.detail}` : entry.label}
         >
-          {entry.label}{#if entry.detail !== ''}<span class="uv-layer-detail"> {entry.detail}</span>{/if}
+          {entry.label}{#if entry.detail !== ''}<span class="uv-layer-detail">&nbsp;· {entry.detail}</span>{/if}
         </button>
       </li>
     {/each}

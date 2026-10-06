@@ -1,29 +1,50 @@
 <script lang="ts">
   /**
-   * Finished service page — renders the SAME document source the workbench
-   * edits, through the one shared renderer. The form's validation outcome is
-   * host-rendered REAL adapter state (associated to the fields via
-   * aria-describedby → `design-form-feedback`).
+   * Finished service page — renders the SAME PERSISTED source the workbench
+   * edits (loaded after mount; the seed renders for SSR and when nothing is
+   * stored). The form's validation outcome is host-rendered REAL adapter
+   * state (associated to the fields via aria-describedby).
    */
+  import { browser } from '$app/environment';
   import { DocumentHost } from '@victframework/ui-svelte';
-  import { compileUiDocument } from '@victframework/ui';
+  import { compileUiDocument, type UiDocument } from '@victframework/ui';
   import {
     designCatalogs,
     readContactFields,
     validateContact,
     type ContactOutcome,
   } from '$lib/design/adapter';
-  import { serviceDocument } from '$lib/design/service-document';
-
-  const compiled = compileUiDocument(
+  import {
+    loadPresentable,
+    openDesignStore,
+  } from '$lib/design/persistence';
+  import {
     serviceDocument,
-    designCatalogs.elements,
-    [],
-    {
-      actionIds: designCatalogs.actionIds,
-      routeIds: designCatalogs.routeIds,
-      viewFields: designCatalogs.viewFields,
-    },
+    SERVICE_STORE_KEY,
+  } from '$lib/design/service-document';
+
+  let presentable = $state<{ document: UiDocument; banner: string | null }>({
+    document: serviceDocument,
+    banner: null,
+  });
+
+  $effect(() => {
+    if (!browser) return;
+    const opened = loadPresentable(openDesignStore(SERVICE_STORE_KEY), serviceDocument);
+    presentable = { document: opened.document, banner: opened.banner };
+  });
+
+  const compiled = $derived.by(() =>
+    compileUiDocument(
+      presentable.document,
+      designCatalogs.elements,
+      [],
+      {
+        actionIds: designCatalogs.actionIds,
+        routeIds: designCatalogs.routeIds,
+        viewFields: designCatalogs.viewFields,
+      },
+    ),
   );
 
   let outcome: ContactOutcome | null = $state(null);
@@ -49,6 +70,12 @@
     // No routes in the design proof.
   }
 </script>
+
+{#if presentable.banner !== null}
+  <div class="design-form-feedback" role="alert" style="margin-top: 16px">
+    ⚠ {presentable.banner}
+  </div>
+{/if}
 
 {#if compiled.ok}
   <DocumentHost plan={compiled.plan} dispatch={dispatch} navigate={navigate} as="article" ariaLabel="Northwind Atelier home page" />

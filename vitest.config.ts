@@ -95,6 +95,10 @@ export default defineConfig({
             'examples/reference-app/**',
             'examples/ui-showcase/**',
             'examples/ui-authoring-proof/**',
+            // The design proof runs its own vitest project (its tests mount
+            // Svelte editor components via @victframework/ui-editor, which
+            // needs the svelte toolchain this project deliberately lacks).
+            'examples/ui-design-proof/**',
           ],
         },
         resolve: { alias: aliases },

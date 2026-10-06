@@ -16,9 +16,8 @@
     HistoryPanel,
     Inspector,
     Layers,
-    createLocalStorageDocumentStore,
-    type LocalStorageStoreLoad,
   } from '@victframework/ui-editor';
+  import { loadPresentable, openDesignStore } from '$lib/design/persistence';
   import {
     designCatalogs,
     type ContactOutcome,
@@ -53,50 +52,26 @@
   }
 
   function openBlade(doc: WorkbenchDocument): Blade {
+    // Shared persistence (with the design-catalog validation gate): the
+    // workbench and /service open the SAME store per key, so saved edits
+    // render in the finished page.
+    const store = openDesignStore(doc.storeKey);
     if (!browser) {
-      return { doc, bridge: stubBlade(doc), banner: null };
-    }
-    const store = createLocalStorageDocumentStore(window.localStorage, {
-      key: doc.storeKey,
-      format: DESIGN_STORE_FORMAT,
-      seedStoredRevision: SERVICE_SEED_REVISION,
-    });
-    const load: LocalStorageStoreLoad = store.rawLoad();
-    let banner: string | null = null;
-    let initial: { document: typeof doc.seed; storedRevision: string };
-    if (load.status === 'loaded') {
-      initial = { document: load.document as typeof doc.seed, storedRevision: load.storedRevision };
-    } else if (load.status === 'empty') {
-      initial = { document: doc.seed, storedRevision: SERVICE_SEED_REVISION };
-    } else if (load.overwritable) {
-      // Readable envelope, invalid document: seed CONTENT at the RECORDED
-      // revision so the replacement save is actually accepted.
-      initial = {
-        document: doc.seed,
-        storedRevision: load.storedRevision ?? SERVICE_SEED_REVISION,
+      return {
+        doc,
+        bridge: new EditorBridge({
+          store,
+          initial: { document: doc.seed, storedRevision: SERVICE_SEED_REVISION },
+        }),
+        banner: null,
       };
-      banner = `Stored design data was not usable (${load.message}). A fresh seed was loaded; the next successful save replaces the stored data.`;
-    } else {
-      initial = { document: doc.seed, storedRevision: SERVICE_SEED_REVISION };
-      banner = `Stored design data is unreadable and has been PRESERVED (${load.message}). Save will fail until the site data for this key is cleared.`;
     }
-    const bridge = new EditorBridge({ store, initial });
-    return { doc, bridge, banner };
-  }
-
-  function stubBlade(doc: WorkbenchDocument): EditorBridge {
-    // SSR render: a memory-backed throwaway store (never persisted).
-    const memory = createLocalStorageDocumentStore(
-      {
-        getItem: () => null,
-        setItem: () => undefined,
-      },
-      { key: `ssr.${doc.id}`, format: DESIGN_STORE_FORMAT, seedStoredRevision: SERVICE_SEED_REVISION },
-    );
-    return new EditorBridge({
-      store: memory,
-      initial: { document: doc.seed, storedRevision: SERVICE_SEED_REVISION },
+    const opened = loadPresentable(store, doc.seed);
+    const bridge = new EditorBridge({
+      store,
+      initial: { document: opened.document, storedRevision: opened.storedRevision },
     });
+    return { doc, bridge, banner: opened.banner };
   }
 
   const blades: Blade[] = $state(DOCUMENTS.map(openBlade));
@@ -136,7 +111,13 @@
   function applyDraft(draft: Parameters<EditorBridge['apply']>[0]): void {
     const outcome = current.bridge.apply(draft);
     if (outcome.ok) {
-      log('info', `Applied ${draft.requestId}`);
+      const command = draft.commands[0];
+      const target = 'nodeId' in command ? command.nodeId : (command as { id?: string }).id ?? '';
+      const summary =
+        command.op === 'setProperty' && command.property === 'textLiteral'
+          ? `text of ${target}`
+          : `${command.op} on ${target}`;
+      log('info', `Applied ${summary}`);
     } else {
       const first = outcome.issues[0];
       log('error', `Refused ${draft.requestId}: ${first?.code ?? 'UNKNOWN'} — ${first?.message ?? ''}`);

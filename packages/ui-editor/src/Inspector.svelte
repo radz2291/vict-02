@@ -59,8 +59,12 @@
   let actionId = $state('');
   /** 'base' or a condition id from styleConditions. */
   let styleTarget = $state('base');
+  /** Where style edits land when the selection is definition-owned. */
+  let applyScope = $state<'shared' | 'instance'>('shared');
   let stylePseudo: 'hover' | 'focus' | 'active' | 'disabled' | undefined = $state(undefined);
   let requestIdCounter = 0;
+  /** Per-mount epoch so requestIds never collide with earlier session history. */
+  const inspectorEpoch = Math.random().toString(36).slice(2, 8);
 
   const report = $derived(
     selectedOccurrence !== undefined ? resolveOccurrence(selectedOccurrence, document) : undefined,
@@ -109,10 +113,32 @@
     }
   });
 
-  function apply(build: (requestId: string) => TransactionDraft): void {
+  function apply(
+    build: (requestId: string, nodeId: string) => TransactionDraft,
+    nodeId: string = report?.sourceNodeId ?? '',
+  ): void {
     requestIdCounter += 1;
-    onApply(build(`inspector-${requestIdCounter}`));
+    // Unique per session lifetime: requestIds are identity — reuse with a
+    // different payload is refused by the session (rightly), so the counter
+    // alone is not enough across hot-reloads/remounts.
+    onApply(build(`inspector-${inspectorEpoch}-${requestIdCounter}`, nodeId));
   }
+
+  /**
+   * The node style edits land on: the selected source node — or, when the
+   * selection is definition-owned and the user chose "this instance only",
+   * the INSTANCE node from the occurrence's component path.
+   */
+  const styleNodeId = $derived.by(() => {
+    if (
+      applyScope === 'instance' &&
+      report !== undefined &&
+      report.instancePath.length > 0
+    ) {
+      return report.instancePath[report.instancePath.length - 1].sourceNodeId;
+    }
+    return report?.sourceNodeId ?? '';
+  });
 </script>
 
 <aside class="uv-inspector" aria-label="Inspector">
@@ -141,6 +167,23 @@
             </span>
           {/if}
         </dd>
+        {#if nodeKind === 'element'}
+          <dt>Edits apply to</dt>
+          <dd>
+            <select
+              value={applyScope}
+              aria-label="Edits apply to"
+              onchange={(event) => {
+                applyScope = (event.currentTarget as HTMLSelectElement).value as 'shared' | 'instance';
+              }}
+            >
+              <option value="shared">the shared definition (all instances)</option>
+              <option value="instance">
+                this instance only ({report.instancePath[report.instancePath.length - 1]?.sourceNodeId})
+              </option>
+            </select>
+          </dd>
+        {/if}
       {/if}
       {#if report.portalPath.length > 0}
         <dt>Portal ownership</dt>
@@ -168,7 +211,7 @@
           aria-label="Text content"
         />
       </label>
-      <button type="button" onclick={() => apply((id) => setTextLiteral({ requestId: id, nodeId: report.sourceNodeId, value: textValue }))}>
+      <button type="button" onclick={() => apply((id, nodeId) => setTextLiteral({ requestId: id, nodeId, value: textValue }), report.sourceNodeId)}>
         Apply text
       </button>
     {/if}
@@ -200,8 +243,15 @@
         {/if}
         <label>
           Pseudo state
-          <select bind:value={stylePseudo} aria-label="Pseudo state">
-            <option value={undefined}>— (none)</option>
+          <select
+            value={stylePseudo ?? ''}
+            aria-label="Pseudo state"
+            onchange={(event) => {
+              const raw = (event.currentTarget as HTMLSelectElement).value;
+              stylePseudo = raw === '' ? undefined : (raw as 'hover' | 'focus' | 'active' | 'disabled');
+            }}
+          >
+            <option value="">— (none)</option>
             <option value="hover">hover</option>
             <option value="focus">focus</option>
             <option value="active">active</option>
@@ -246,29 +296,37 @@
         {/if}
         <button
           type="button"
+          disabled={!useToken && styleValue.trim() === ''}
+          title={!useToken && styleValue.trim() === ''
+            ? 'Enter a value first (an empty value would be a silent no-op)'
+            : undefined}
           onclick={() => {
             const value = useToken
               ? { type: 'token', id: styleValue }
-              : { type: 'text', value: styleValue };
+              : { type: 'text', value: styleValue.trim() };
             if (styleTarget === 'base' && stylePseudo === undefined) {
-              apply((id) =>
-                setStyle({
-                  requestId: id,
-                  nodeId: report.sourceNodeId,
-                  property: styleProperty,
-                  value,
-                }),
-            );
+              apply(
+                (id, nodeId) =>
+                  setStyle({
+                    requestId: id,
+                    nodeId,
+                    property: styleProperty,
+                    value,
+                  }),
+                styleNodeId,
+              );
             } else {
-              apply((id) =>
-                setConditionalStyle({
-                  requestId: id,
-                  nodeId: report.sourceNodeId,
-                  property: styleProperty,
-                  value,
-                  ...(styleTarget !== 'base' ? { conditionId: styleTarget } : {}),
-                  ...(stylePseudo !== undefined ? { pseudo: stylePseudo } : {}),
-                }),
+              apply(
+                (id, nodeId) =>
+                  setConditionalStyle({
+                    requestId: id,
+                    nodeId,
+                    property: styleProperty,
+                    value,
+                    ...(styleTarget !== 'base' ? { conditionId: styleTarget } : {}),
+                    ...(stylePseudo !== undefined ? { pseudo: stylePseudo } : {}),
+                  }),
+                styleNodeId,
               );
             }
           }}

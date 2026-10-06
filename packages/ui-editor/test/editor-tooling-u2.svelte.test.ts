@@ -84,10 +84,21 @@ describe('Inspector (U2-04)', () => {
       expect(target.textContent).toContain('n.card');
       expect(target.textContent).toContain('effective value');
       expect(target.textContent).toContain('rgb(0, 0, 0)');
+      // a real value is required (an empty value would be a silent no-op —
+      // the button is disabled)
+      const valueInput = target.querySelector(
+        'input[aria-label="Style value"]',
+      ) as HTMLInputElement;
+      const setVal = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value')
+        ?.set as (v: string) => void;
+      setVal.call(valueInput, 'navy');
+      valueInput.dispatchEvent(new Event('input', { bubbles: true }));
+      flushSync();
       // base editing (default) goes to local style
       const applyBase = [...target.querySelectorAll('button')].find(
         (b) => b.textContent?.trim() === 'Apply style',
       ) as HTMLButtonElement;
+      expect(applyBase.disabled).toBe(false);
       applyBase.click();
       flushSync();
       expect(applied?.property).toBe('color');
