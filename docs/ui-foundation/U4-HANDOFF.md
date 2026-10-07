@@ -177,9 +177,24 @@ recorded numbers describe this one bounded exercise.
   redesigned onto public exports Button + ActionFeedback + actionFeedback),
   F-4..F-7 minor (public-export list accuracy; 38 recipes vs 41 coverage
   families; Dialog portal target = ControlScope root; stray "ComponentScope";
-  date transposition), F-8 process (branch now pushed). All package-
-  capability claims in the documents were verified true by the reviewer.
-  Affected recheck: round 2 over the repaired documents.
+  date transposition), F-8 process (the branch was local-only at review
+  time; it is pushed before handoff delivery and the final records report
+  the live remote SHA). All package-capability claims in the documents were
+  verified true by the reviewer. Affected recheck (round 2, same reviewer)
+  at the first repair `f6bca52…`: **FAIL** — narrow and mechanical: three
+  superseded "type-level"/"dist-declared" statements survived (including
+  the operative authorization prompt), the push claim was premature, and
+  two table nits (blockquote-prefixed rows; ControlScope public surface is
+  the `./controls` subpath, not a root export). Round-2 repairs committed
+  (`6b9e328…`). Round 3 (final narrow recheck, same reviewer) at `6b9e328…`:
+  **FAIL** on one remaining defect class — the §8 record had not actually
+  been updated (silent no-op string replacement) — plus a cosmetic table
+  break (raw newline mid-cell in the ui-svelte row); every corrected
+  statement verified truthful. This commit fixes both; the imported report
+  carries all three rounds (final sha256
+  `e54921adc36f798f27f397bb6a637aae99f2dea9a29f0a1312774735d7f336b8`;
+  round-1 section byte-identical to `0b4c3ef3…`). Round 4 (verification of
+  this exact fix) recorded below.
 
 ## 9. Founder checkpoint and stop boundary
 

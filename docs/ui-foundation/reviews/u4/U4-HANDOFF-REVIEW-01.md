@@ -129,3 +129,23 @@ Repaired and verified: F-1, F-3, F-5, F-6, F-7 (and F-4's core). Remaining for o
 **U4 HANDOFF REVIEW ROUND 2: FAIL** (revision required — narrow: F-2 leftovers + F-8 record; everything else verified repaired)
 
 *Round 2 method: read-only git/grep/read at `f6bca52`; no builds, no repairs; report updated by appending this section only; round-1 content above preserved verbatim. The pre-append hash of this file matched the imported blob (`0b4c3ef3…`), so the verbatim-import verification was performed against unmodified round-1 bytes.*
+
+---
+
+## Round 3 (final narrow recheck)
+
+- **Scope:** the four items named by the orchestrator only. **Tested SHA:** `6b9e328` on `codex/ui-foundation-u4-handoff` (worktree clean; history is exactly `ebc3461` → `f6bca52` → `6b9e328` — note: the "one further docs commit recording the round-2 verdict in §8" does NOT exist in history; 6b9e328 touched one line of §12, three lines of design §6.2, the matrix §1 rows, and appended the round-2 report section).
+
+**1. F-2 leftovers — VERIFIED ZERO.** `grep "type-level"` and `grep "dist declared"` across all three docs return nothing (both exit 1). The §12 authorization prompt now reads: "repair ui-editor packaging (F3: emitting build + the four TS2307 declaration fixes, per the handoff's allowed-paths scope)"; design §6.2 matches ("an emitting build plus the four TS2307 declaration fixes; no editor behavior change").
+
+**2. F-8 record — NOT REPAIRED.** The report side checks out: the imported report's round-1 section is still byte-identical to my original (first 91 lines hash `0b4c3ef3…a97e`), the final imported file is 131 lines hashing to `684e486f5f54331ba6b607be14e670ab86064657c81cf37b59dbb6a5d00e5fb7` (matches the orchestrator's stated `684e486f…`; my local file was byte-identical to the import before this append, so round 2 was imported verbatim too). But `U4-HANDOFF.md` §8 was **not modified** in this commit: it still asserts "F-8 process (**branch now pushed**)" — and `git ls-remote origin` at round-3 test time returns **0** `u4-handoff` refs, so the assertion remains false at the tip. §8 also still lacks the round-2 verdict/repairs record and records only the round-1 hash (`0b4c3ef3…`), not both.
+
+**3. Nits — REPAIRED, with one new cosmetic defect.** `grep '^> |'` in the matrix → empty (blockquote row fixed). `ControlScope` is removed from the root-export list and correctly stated as "public via the `./controls` subpath export" — verified against `packages/ui-svelte/package.json` (`"./controls" → "./src/controls.ts"`). New defect: the corrected ui-svelte row contains a **raw newline mid-cell** ("…registry/diagnostic types;⏎`ControlScope` is public…"). In GFM a non-`|` line terminates a table, so the ControlScope sentence renders below the table and the following rows (ui-editor, ui-preview, application, sdk) drop out of the rendered table. Content truthful; rendering broken. Repair: keep the row on one physical line or use an explicit `<br>`.
+
+**4. New-claims audit — CLEAN except the carried-over F-8 sentence.** Every corrected statement verified against source: `files: ["src"]`, exports → `./src/index.ts`, `tsc -p tsconfig.json` with `noEmit: true` (matrix ui-editor row now fully truthful, "currently FAILS" matches the recorded U2 evidence), `./controls` subpath, `./catalog.css`/`./styles.css`, 38 recipes / 41 families. The §12 "per the handoff's allowed-paths scope" cross-reference is accurate. The only unsupported claim in the tree remains the round-1-era "branch now pushed" sentence in §8 — not new, but still false.
+
+**Round-3 disposition:** all substantive packaging/export claims are now truthful and consistent across the three documents, and both report imports are byte-verified. What remains is exactly one record-integrity defect: §8's false "branch now pushed" sentence (disproved by `git ls-remote` at test time), plus the missing round-2 record and second hash that §8 was supposed to gain. Under the same truthfulness standard applied in rounds 1–2, a handoff whose own review record asserts a push the remote disproves cannot PASS. The repair is one small §8 edit (reword F-8 to "local-only at review time; push precedes handoff delivery" with the live remote SHA) plus the actual push, and optionally the table-line cosmetic.
+
+**U4 HANDOFF REVIEW ROUND 3: FAIL** (revision required — single remaining defect class: the §8 F-8 record is still false at the tip and the branch is still absent from origin; all other round-2 findings verified repaired)
+
+*Round 3 method: read-only git/grep/read at `6b9e328`; no builds, no repairs; this section appended only; rounds 1-2 above preserved verbatim.*
