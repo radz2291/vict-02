@@ -4,17 +4,20 @@
   import { grantsForRole } from '$lib/product/domain.js';
   import type { ScenarioId } from '$lib/server/inspection.js';
 
-  let { data }: { data: { actorRole: string; rows: Record<string, unknown>[]; scenario: string } } =
-    $props();
+  let { data }: {
+    data: { actorRole: string; rows: Record<string, unknown>[]; scenario: string; mode: string };
+  } = $props();
 
   let resetting = $state(false);
   let resetNote = $state('');
 
   /** Scenario reset (U3-02): deterministic reseed through the server process. */
-  async function resetScenario(scenario: ScenarioId): Promise<void> {
+  async function resetScenario(scenario: ScenarioId, mode?: string): Promise<void> {
     resetting = true;
     resetNote = 'Resetting…';
-    const response = await fetch(`/api/inspection/reset?as=${data.actorRole}&scenario=${scenario}`, {
+    const params = new URLSearchParams({ as: data.actorRole, scenario });
+    if (mode !== undefined) params.set('mode', mode);
+    const response = await fetch(`/api/inspection/reset?${params.toString()}`, {
       method: 'PUT',
     });
     const result = (await response.json()) as { ok: boolean; code?: string; message?: string };
@@ -62,6 +65,31 @@
       </button>
     {/each}
     <span class="strip-note" role="status">{resetNote}</span>
+  </section>
+
+  <section class="mode-strip" aria-label="Decision implementation">
+    <span class="strip-label">Decision implementation (scenario 1's approve):</span>
+    <strong>{data.mode}</strong>
+    <button
+      type="button"
+      class="strip-button"
+      onclick={() => resetScenario(data.scenario as ScenarioId, 'simulated')}
+      disabled={resetting || data.mode === 'simulated'}
+    >
+      simulated (in-memory)
+    </button>
+    <button
+      type="button"
+      class="strip-button"
+      onclick={() => resetScenario(data.scenario as ScenarioId, 'durable-local')}
+      disabled={resetting || data.mode === 'durable-local'}
+    >
+      durable-local (SQLite file)
+    </button>
+    <span class="strip-note">
+      Same action identity, same contracts — only the registered implementation and storage swap.
+      A durable decision survives a full process restart.
+    </span>
   </section>
 
   {#if data.rows.length === 0}
@@ -126,6 +154,18 @@
   }
   .strip-note {
     color: #5b6572;
+  }
+  .mode-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    font-size: 0.85rem;
+    padding: 10px 12px;
+    border: 1px solid #d9dde3;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    flex-basis: 100%;
   }
   .queue-empty {
     padding: 20px;

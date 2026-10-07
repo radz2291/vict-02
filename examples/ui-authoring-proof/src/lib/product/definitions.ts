@@ -43,6 +43,13 @@ export const inspectionResource: ResourceDefinition = {
   ],
   mutations: [
     {
+      op: 'submit',
+      effect: 'write',
+      inputContractId: 'c.decision',
+      outputContractId: 'c.decision',
+      permissions: ['qlt.inspection.submit'],
+    },
+    {
       op: 'approve',
       effect: 'irreversible',
       inputContractId: 'c.decision',
@@ -78,6 +85,14 @@ export const findingResource: ResourceDefinition = {
     { name: 'severity', type: 'string', required: true, label: 'Severity' },
     { name: 'description', type: 'string', required: true, label: 'Description' },
   ],
+  mutations: [
+    {
+      op: 'add',
+      effect: 'create',
+      idempotency: 'keyed',
+      permissions: ['qlt.inspection.edit'],
+    },
+  ],
   authorization: {},
 } as unknown as ResourceDefinition;
 
@@ -91,6 +106,14 @@ export const evidenceResource: ResourceDefinition = {
     { name: 'inspectionId', type: 'string', required: true, label: 'Inspection' },
     { name: 'label', type: 'string', required: true, label: 'Label' },
     { name: 'kind', type: 'string', required: true, label: 'Kind' },
+  ],
+  mutations: [
+    {
+      op: 'add',
+      effect: 'create',
+      idempotency: 'keyed',
+      permissions: ['qlt.inspection.edit'],
+    },
   ],
   authorization: {},
 } as unknown as ResourceDefinition;

@@ -443,7 +443,7 @@ const CHILD_SPECS: Readonly<Record<string, ChildSpec>> = {
   },
   evidence: {
     permission: 'qlt.inspection.edit',
-    requireInspection: true,
+    requireInspection: false,
     allowedStatuses: undefined,
   },
 };
@@ -464,6 +464,9 @@ export function applyChildAdd(
   const spec = CHILD_SPECS[request.resourceId];
   if (spec === undefined) {
     return failure('DATA_UNKNOWN_RESOURCE', `Unknown resource '${request.resourceId}'.`);
+  }
+  if (request.op !== 'add') {
+    return failure('DATA_MUTATION_NOT_DECLARED', `Mutation '${request.op}' is not declared.`);
   }
   if (!context.permissions.includes(spec.permission)) {
     return failure('DATA_UNAUTHORIZED', `add requires ${spec.permission}.`);
@@ -546,22 +549,114 @@ export function applyChildAdd(
   return { ok: true, row: { ...stored } };
 }
 
+/** Closed query-request schema (suite LOW-RE-4): unknown fields rejected. */
+const QUERY_REQUEST_FIELDS: readonly string[] = [
+  'op',
+  'resourceId',
+  'filters',
+  'search',
+  'sort',
+  'limit',
+  'offset',
+  'projection',
+  'id',
+];
+
 /** Generic list/get over one child table (shared by both adapters). */
 export function queryTable(
   rows: readonly Record<string, unknown>[],
   request: ApplicationDataQueryRequest,
 ): ApplicationDataResult {
+  // Structural validation BEFORE any data access: bounds, projection and the
+  // closed request schema (never silently ignored, never echoed).
+  for (const key of Object.keys(request)) {
+    if (!QUERY_REQUEST_FIELDS.includes(key)) {
+      return { ok: false, code: 'DATA_INVALID_REQUEST', message: 'Unknown query field.' };
+    }
+  }
+  const bound = (value: number | undefined): boolean =>
+    value !== undefined &&
+    (!Number.isInteger(value) || value < 0 || !Number.isFinite(value));
+  if (bound(request.limit) || bound(request.offset)) {
+    return { ok: false, code: 'DATA_INVALID_REQUEST', message: 'Invalid query bound.' };
+  }
+  if (request.projection !== undefined && rows.length > 0) {
+    const known = Object.keys(rows[0]);
+    if (request.projection.some((field) => !known.includes(field))) {
+      return { ok: false, code: 'DATA_UNSUPPORTED_QUERY', message: 'Unknown projection field.' };
+    }
+  }
   if (request.op === 'get') {
     const row = rows.find((candidate) => candidate['id'] === request.id);
     if (row === undefined) {
       return { ok: false, code: 'DATA_UNKNOWN_IDENTITY', message: 'No such row.' };
     }
-    return { ok: true, row: project(row, request.projection) };
+    // Defensive copy: callers may mutate the returned row freely.
+    return { ok: true, row: { ...project(row, request.projection) } };
   }
   let output = rows.map((row) => ({ ...row }));
-  const filters = request.filters ?? {};
-  for (const [field, value] of Object.entries(filters)) {
-    output = output.filter((row) => row[field] === value);
+  // The filters container must be a plain object, and hostile containers
+  // (throwing/revoked/exotic proxies, cycles) produce a stable, NON-ECHOING
+  // diagnostic: nothing from the container ever reaches the caller.
+  let pairs: [string, unknown][];
+  try {
+    const filters = request.filters;
+    if (
+      filters !== undefined &&
+      (typeof filters !== 'object' || filters === null || Array.isArray(filters))
+    ) {
+      return { ok: false, code: 'DATA_INVALID_REQUEST', message: 'Invalid filters container.' };
+    }
+    if (filters !== undefined) {
+      // Plain objects only: exotic prototypes are rejected structurally.
+      const proto = Object.getPrototypeOf(filters);
+      if (proto !== Object.prototype && proto !== null) {
+        return { ok: false, code: 'DATA_INVALID_REQUEST', message: 'Invalid filters container.' };
+      }
+    }
+    pairs = Object.entries(filters ?? {});
+  } catch {
+    return { ok: false, code: 'DATA_INVALID_REQUEST', message: 'Invalid filters container.' };
+  }
+  // Declared filter-value type is runtime-enforced: finite primitives only
+  // (string/number/boolean), never objects, arrays, null, NaN, infinities or
+  // negative zero — and the rejection never echoes the value.
+  for (const [, value] of pairs) {
+    let primitive: boolean;
+    try {
+      const type = typeof value;
+      primitive =
+        value !== null &&
+        (type === 'string' || type === 'number' || type === 'boolean') &&
+        (type !== 'number' || (Number.isFinite(value as number) && !Object.is(value, -0)));
+    } catch {
+      return { ok: false, code: 'DATA_INVALID_REQUEST', message: 'Invalid filter value.' };
+    }
+    if (!primitive) {
+      return { ok: false, code: 'DATA_INVALID_REQUEST', message: 'Invalid filter value.' };
+    }
+  }
+  // Rows are the adapter's own plain copies: reads cannot throw. Equality is
+  // exact primitive equality across every declared filter field.
+  output = output.filter((row) => pairs.every(([field, value]) => row[field] === value));
+  // Declared search (Stage 05): bounded case-insensitive substring across
+  // known fields only.
+  if (request.search !== undefined) {
+    const search = request.search;
+    if (typeof search.text !== 'string' || search.text.length === 0 || search.text.length > 200) {
+      return { ok: false, code: 'DATA_INVALID_REQUEST', message: 'Invalid search text.' };
+    }
+    if (!Array.isArray(search.fields) || search.fields.length === 0) {
+      return { ok: false, code: 'DATA_INVALID_REQUEST', message: 'Invalid search fields.' };
+    }
+    const known = Object.keys(rows[0] ?? {});
+    if (search.fields.some((field) => !known.includes(field))) {
+      return { ok: false, code: 'DATA_UNSUPPORTED_QUERY', message: 'Unknown search field.' };
+    }
+    const needle = search.text.toLowerCase();
+    output = output.filter((row) =>
+      search.fields.some((field) => String(row[field] ?? '').toLowerCase().includes(needle)),
+    );
   }
   const sort = request.sort ?? [];
   for (const spec of [...sort].reverse()) {
@@ -749,12 +844,20 @@ export function actionVerb(actionId: string): string | undefined {
   return INSPECTION_VERBS.includes(verb) ? verb : undefined;
 }
 
+/** What the action dispatcher needs from ANY implementation (simulated or
+ * durable): the adapter contract plus the direct activity read. */
+export interface InspectionDataAccess {
+  query: ApplicationDataAdapter['query'];
+  mutate: ApplicationDataAdapter['mutate'];
+  activityFor(inspectionId: string): readonly ActivityRow[];
+}
+
 /**
  * The single server boundary. Every declared action — from the document's
  * interactions AND the native host controls — dispatches here with the
  * acting identity; the adapter enforces permissions and domain rules.
  */
-export function createInspectionServer(data: InspectionDataAdapter) {
+export function createInspectionServer(data: InspectionDataAccess) {
   return {
     adapter: data,
     async dispatch(

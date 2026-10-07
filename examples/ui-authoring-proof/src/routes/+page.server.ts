@@ -20,6 +20,7 @@ export const load: PageServerLoad = ({ url }) => {
   return product.server.dispatch('inspection.list', {}, actor).then((result) => ({
     rows: result.ok ? ((result.value as { rows: Record<string, unknown>[] }).rows ?? []) : [],
     scenario: product.scenario,
+    mode: product.mode,
     actorRole: actor.role,
   }));
 };

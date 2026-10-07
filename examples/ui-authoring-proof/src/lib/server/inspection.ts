@@ -14,15 +14,28 @@
  * Reset is deterministic: the SAME seed rebuilds the SAME domain state.
  */
 
-import { InspectionDataAdapter, createInspectionServer } from '$lib/product/domain.js';
+import {
+  InspectionDataAdapter,
+  createInspectionServer,
+  type SeedInput,
+} from '$lib/product/domain.js';
 import { SCENARIO_IDS, scenarioSeed, type ScenarioId } from '$lib/product/scenario-seeds.js';
+import {
+  InspectionDurableAdapter,
+  durableDatabasePath,
+  openDurableInspectionStore,
+} from '$lib/server/inspection-durable.js';
 import type { ActionResult } from '@victframework/ui-svelte';
 
 export { SCENARIO_IDS, scenarioSeed };
 export type { ScenarioId };
 
+/** The registered implementation for the decision (U3-05). */
+export type ImplementationMode = 'simulated' | 'durable-local';
+
 export interface ProductServer {
   readonly scenario: ScenarioId;
+  readonly mode: ImplementationMode;
   readonly server: ReturnType<typeof createInspectionServer>;
   /** Deterministic reset: same scenario → same domain state; fences in-flight. */
   reset(scenario: ScenarioId): void;
@@ -37,38 +50,74 @@ export interface ProductServer {
   ): Promise<ActionResult>;
 }
 
-let active:
-  | {
-      scenario: ScenarioId;
-      generation: number;
-      adapter: InspectionDataAdapter;
-      server: ReturnType<typeof createInspectionServer>;
-    }
-  | undefined;
+interface ActiveServer {
+  scenario: ScenarioId;
+  generation: number;
+  mode: ImplementationMode;
+  seed: SeedInput;
+  /** The simulated adapter (mutated in memory) when mode = simulated. */
+  simulated: InspectionDataAdapter;
+  /** The durable adapter (SQLite file) when mode = durable-local. */
+  durable?: InspectionDurableAdapter;
+  server: ReturnType<typeof createInspectionServer>;
+}
 
-function instantiate(scenario: ScenarioId): void {
+let active: ActiveServer | undefined;
+
+function instantiate(scenario: ScenarioId, mode: ImplementationMode = active?.mode ?? 'simulated'): void {
   const seed = scenarioSeed(scenario);
+  const generation = (active?.generation ?? 0) + 1;
+  if (mode === 'durable-local') {
+    // The durable store is NOT reseeded on reset: persistence is the
+    // authority. An empty file seeds once; thereafter the domain carries.
+    if (active?.durable === undefined) {
+      const opened = openDurableInspectionStore(durableDatabasePath());
+      active = {
+        scenario,
+        generation,
+        mode,
+        seed,
+        simulated: new InspectionDataAdapter(seed),
+        durable: opened.adapter,
+        server: createInspectionServer(opened.adapter),
+      };
+      return;
+    }
+    active = {
+      scenario,
+      generation,
+      mode,
+      seed,
+      simulated: active.simulated,
+      durable: active.durable,
+      server: active.server,
+    };
+    return;
+  }
   const adapter = new InspectionDataAdapter(seed);
   active = {
     scenario,
-    generation: (active?.generation ?? 0) + 1,
-    adapter,
+    generation,
+    mode,
+    seed,
+    simulated: adapter,
+    ...(active?.durable !== undefined ? { durable: active.durable } : {}),
     server: createInspectionServer(adapter),
   };
 }
 
 if (active === undefined) instantiate('normal');
 
+/** The durable database file location (restart evidence identifies it). */
+export function durableFile(): string {
+  return durableDatabasePath();
+}
+
 /** The process-wide product server (simulated implementation). */
 export function getProductServer(): ProductServer {
   if (active === undefined) instantiate('normal');
   const current = () =>
-    active as {
-      scenario: ScenarioId;
-      generation: number;
-      adapter: InspectionDataAdapter;
-      server: ReturnType<typeof createInspectionServer>;
-    };
+    active as ActiveServer;
   return {
     get scenario() {
       return current().scenario;
@@ -76,11 +125,14 @@ export function getProductServer(): ProductServer {
     get generation() {
       return current().generation;
     },
+    get mode(): ImplementationMode {
+      return current().mode;
+    },
     get server() {
       return current().server;
     },
-    reset(scenario: ScenarioId) {
-      instantiate(scenario);
+    reset(scenario: ScenarioId, mode?: ImplementationMode) {
+      instantiate(scenario, mode);
     },
     async dispatch(actionId, input, actor, options) {
       const generation = current().generation;
