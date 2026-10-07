@@ -250,14 +250,18 @@ this one bounded exercise.
   bytes; NF-1 (this round-4 record) and NF-2 (branch push) are
   delivery-coupled completions, resolved by the delivery records commit
   and push of the documentation branch.
-- The component amendment receives its own independent contract review
-  (fresh reviewer, authored none of it). PENDING at this commit: the review
-  is in progress; on completion its report is imported verbatim at
-  `reviews/u4/U4-AMENDMENT-REVIEW-01.md`, findings repaired with affected
-  rechecks, and the freeze record written at
-  [U4-AMENDMENT-FREEZE](U4-AMENDMENT-FREEZE.md) (payload commit SHA +
-  SHA-256 pins + a separate fresh checker's reproduction). Until those
-  records exist, the amendment remains PROPOSED — not frozen.
+- The component amendment received its own independent contract review
+  (fresh reviewer, authored none of it): round 1 **FAIL** at `9c31fae…`
+  (B-1 blocker: instance revision pin misattributed as existing; 8 minors)
+  -> repairs `d84035a…` -> round 2 **PASS WITH NON-BLOCKING FINDINGS**
+  (N-1/N-2) -> `d78a309…` -> round 3 **PASS**. Report imported verbatim:
+  [U4-AMENDMENT-REVIEW-01](reviews/u4/U4-AMENDMENT-REVIEW-01.md). The
+  amendment is FROZEN as a candidate: payload commit `68e166f…`, per-file
+  SHA-256 pins and supersedes/governing statement in
+  [U4-AMENDMENT-FREEZE](U4-AMENDMENT-FREEZE.md); the separate fresh
+  checker's reproduction is recorded there before delivery. This document's
+  operative scope (sections 1-7, 10) and the section 12.2 prompt are
+  aligned with the frozen amendment.
 
 ## 9. Founder checkpoint and stop boundary
 

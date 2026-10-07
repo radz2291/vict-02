@@ -888,6 +888,26 @@ remain unauthorized):
    frozen amendment.
 5. The withdrawn "extension v2" sketch is replaced by the amendment's
    implementable drafts; no text adopted unresolved.
+6. Independent contract review: round 1 **FAIL** at `9c31fae…` (B-1
+   blocker — the instance revision pin was misattributed as existing; the
+   extension compile path echoes the descriptor revision and resolves
+   id-keyed last-wins; 8 minors incl. nonexistent diagnostic code in a
+   fixture, malformed expression shape, underspecified implementation
+   interface, unnamed action-input-catalog mechanism) → repairs
+   `d84035a…` → round 2 **PASS WITH NON-BLOCKING FINDINGS** (SLOT_REQUIRED
+   applicability scoping; .gitattributes restore) → `d78a309…` → round 3
+   **PASS**. Report verbatim:
+   [U4-AMENDMENT-REVIEW-01](reviews/u4/U4-AMENDMENT-REVIEW-01.md)
+   (final sha256 `34506ab9…`; round-1 section byte-identical to the
+   delivered `9ce2267c…`).
+7. Amendment FROZEN as a candidate: immutable payload commit `68e166f…`
+   (empty marker; payload paths byte-exact), per-file SHA-256 pins and
+   supersedes/governing statement in
+   [U4-AMENDMENT-FREEZE](U4-AMENDMENT-FREEZE.md); a separate fresh checker
+   reproduces the pins and verifies scope/lineage before delivery.
+   Implementation remains unauthorized; the operative U4 authorization
+   prompt is [U4-HANDOFF](U4-HANDOFF.md) §12.2 pinned to the frozen
+   amendment.
 
 ## U4 handoff preparation record (2026-10-07) — implementation NOT authorized
 
