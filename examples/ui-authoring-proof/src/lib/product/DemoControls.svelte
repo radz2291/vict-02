@@ -3,7 +3,9 @@
   let { actorRole, scenario, mode, diagnostic = '' }: { actorRole: string; scenario: string; mode: string; diagnostic?: string } = $props();
   let scenarioChoice = $state('normal'); let modeChoice = $state('simulated');
   let busy = $state(false); let note = $state('');
-  $effect(() => { scenarioChoice = scenario; modeChoice = mode; });
+  const recordLabels: Record<string, string> = { normal: 'Submitted inspections', empty: 'Empty queue', long: 'Long content' };
+  let recordLabel = $derived(recordLabels[scenario] ?? recordLabels.normal);
+  $effect(() => { scenarioChoice = scenario in recordLabels ? scenario : 'normal'; modeChoice = mode; });
   async function reset() {
     busy = true; note = 'Resetting demo…';
     try {
@@ -15,16 +17,17 @@
   }
 </script>
 <details class="demo">
-  <summary>Demo controls <span>{scenario} · {mode === 'durable-local' ? 'Saved locally' : 'Simulated'}</span></summary>
+  <summary>Demo controls <span>{mode === 'durable-local' ? 'Saved records · Saved locally' : `${recordLabel} · Simulated`}</span></summary>
   <div class="controls">
-    <p>This is a fictional inspection workspace. Simulated changes reset with the server; saved locally uses a SQLite file.</p>
+    <p>This is a fictional inspection workspace. Reset recreates simulated records. Saved locally uses a SQLite file and keeps existing records when settings change.</p>
     <div class="fields">
       <label>View as<select class="vict-select" value={actorRole} onchange={event => window.location.assign(`${window.location.pathname}?as=${event.currentTarget.value}`)} disabled={busy}><option value="supervisor">Supervisor</option><option value="technician">Technician</option></select></label>
-      <label>Scenario<select class="vict-select" bind:value={scenarioChoice} disabled={busy}>{#each ['normal', 'empty', 'long', 'latency', 'failure', 'missing', 'denied', 'conflict'] as value}<option {value}>{value}</option>{/each}</select></label>
+      <label>Records (simulated)<select class="vict-select" bind:value={scenarioChoice} disabled={busy}>{#each ['normal', 'empty', 'long'] as value}<option {value}>{recordLabels[value]}</option>{/each}</select></label>
       <label>Storage<select class="vict-select" bind:value={modeChoice} disabled={busy}><option value="simulated">Simulated</option><option value="durable-local">Saved locally (SQLite)</option></select></label>
       <Button label="Reset demo" variant="secondary" disabled={busy} onclick={reset} />
     </div>
     <p role="status">{note}</p>
+    <p>For delayed, failed, unavailable, denied and conflicting operation cases, open the test console. These cases do not change ordinary product approval.</p>
     <nav aria-label="Demo tools"><a href="/scenarios">Operation coverage & test console</a><a href="/studio">Edit presentation</a></nav>
     {#if diagnostic}<p class="diagnostic">Technical detail: {diagnostic}</p>{/if}
   </div>

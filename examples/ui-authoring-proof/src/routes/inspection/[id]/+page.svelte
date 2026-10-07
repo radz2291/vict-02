@@ -61,10 +61,11 @@
         feedbackKind = (result.code ?? '').includes('UNAUTHORIZED') || result.code === 'OPERATION_DENIED' ? 'denied' : 'error';
         diagnostic = result.code + ': ' + result.message; canReload = true;
         feedback = result.code === 'DOMAIN_CONFLICT' ? 'This inspection changed since you opened it. Reload it, review the changes, then try again.'
-          : result.code === 'SCENARIO_COVERAGE_MISSING' ? 'Approval is unavailable in this demo scenario. Choose Normal in Demo controls to continue.'
+          : result.code === 'SCENARIO_COVERAGE_MISSING' ? 'Approval is unavailable from the current implementation. Open the test console to review its coverage.'
           : feedbackKind === 'denied' ? 'Your current role cannot make this change. Switch to the appropriate role in Demo controls.'
           : result.code === 'SESSION_STALE' ? 'The demo was reset while this change was in progress. Reload the inspection before continuing.'
-          : 'The change was not recorded. Reload the inspection and try again, or choose Normal in Demo controls.';
+          : result.code === 'DATA_INVALID_INPUT' ? 'This change cannot be applied to the current inspection. Reload it to check its status and review your entries.'
+          : 'The change was not recorded. Reload the inspection before trying again.';
       }
       return result;
     } catch (error) {
