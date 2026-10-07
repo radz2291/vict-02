@@ -1,14 +1,36 @@
 # UI foundation — current state
 
-**2026-10-07 — U3 AUTHORIZED AND IN PROGRESS (product realism and durable
-replacement; U3 only).** The owner authorized U3 on 2026-10-07
+**2026-10-07 — U3 IMPLEMENTED (product realism and durable replacement);
+independent verification is the next gate; owner experience acceptance
+PENDING.** The owner-authorized U3 cycle (U3 only) delivered the complete
+inspection journey with the rejection → correction → resubmission loop in
+the frozen product host `examples/ui-authoring-proof`; the eight-scenario
+matrix with deterministic resets, fencing and truthful implementation-mode
+labels; runtime domain correctness (permissions, transitions, stale and
+replayed decisions) at the adapter boundary; and the durable replacement of
+scenario 1's `inspection.approve` through the declared adapter boundary —
+same action identity, same contracts, unchanged UI source/binding digests —
+persisted to a local SQLite file that survives a real process kill + restart
+(negative control: simulated mode forgets, proving recovery comes from the
+file). Shared conformance: both implementations pass
+`runApplicationDataAdapterSuite` over the same fixture. Performance within
+all frozen budgets ([U3-PERFORMANCE](U3-PERFORMANCE.json)); coverage matrix
+[U3-COVERAGE](U3-COVERAGE.md); founder-facing [U3-WALKTHROUGH](U3-WALKTHROUGH.md).
+The fresh independent verification of the exact candidate is the next gate
+(reports will land under `reviews/u3/`). U4, `apps/studio`, Stage 9, merge
+to main, publication and deployment remain unauthorized.
+
+U2 remains CLOSED as described below.
+
+---
+
+**2026-10-07 (superseded by the U3 implementation record above) — U3
+AUTHORIZED AND IN PROGRESS (product realism and durable replacement; U3
+only).** The owner authorized U3 on 2026-10-07
 ([U3-HANDOFF](U3-HANDOFF.md), startup corrections recorded:
 [U3-authorization entry](DECISIONS-AND-EVIDENCE.md)). Work proceeds on
 `codex/ui-foundation-u3` from the U2 closure records `a8379110…`. Owner
 experience acceptance for U3 is **PENDING** until the founder checkpoint.
-
-U2 remains CLOSED as described below. U4, `apps/studio`, Stage 9, merge to
-main, publication and deployment remain unauthorized.
 
 ---
 

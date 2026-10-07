@@ -1,9 +1,13 @@
 # U3 handoff — product realism and durable replacement
 
-**Status: AUTHORIZED — IMPLEMENTATION IN PROGRESS (owner authorization 2026-10-07;
-U3 only).** The owner authorized U3 — product realism and durable replacement
-(frozen STAGES §5, U3-01…U3-08) through implementation, independent verification,
-bounded repairs, and the founder checkpoint. U4 remains unauthorized.
+**Status: IMPLEMENTED — INDEPENDENT VERIFICATION IS THE NEXT GATE (owner
+authorization 2026-10-07; U3 only).** The owner authorized U3 — product realism
+and durable replacement (frozen STAGES §5, U3-01…U3-08) through implementation,
+independent verification, bounded repairs, and the founder checkpoint. U4
+remains unauthorized. Implementation record: [U3-COVERAGE](U3-COVERAGE.md)
+(scenario matrix + truthful implementation modes), [U3-PERFORMANCE](U3-PERFORMANCE.json),
+[U3-WALKTHROUGH](U3-WALKTHROUGH.md); founder checkpoint prepared at the
+verified candidate.
 
 Entry references (corrected at authorization — the originally prepared handoff
 named `1fe5383…`; the completed U2 closure records are the actual entry):

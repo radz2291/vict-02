@@ -725,6 +725,47 @@ remain unauthorized. Scope corrections recorded at startup:
 New branch/worktree: `codex/ui-foundation-u3` at `C:/Users/RZ1/Desktop/RZ/vict-02-u3`
 (from `a8379110…`). Handoff: [U3-HANDOFF](U3-HANDOFF.md).
 
+## U3 implementation record (2026-10-07) — verification pending
+
+Increments on `codex/ui-foundation-u3` (entry `a8379110…`): startup + handoff
+corrections `b4023bc`; domain core + frozen diagnostics `aefb498`; server-hosted
+journey `2c46115`; scenario matrix `db48707`; durable replacement `3b508b1`;
+restart proof `5bb145f`; performance `986a609` (+ docs this commit).
+
+Implementation decisions of record:
+
+1. **One domain core, two backends.** The inspection rules (permissions,
+   transitions, mandatory rejection reason, expectedDomainRevision, replay)
+   live in a shared core (`applyInspectionMutation`/`applyChildAdd`); the
+   simulated in-memory adapter and the durable SQLite adapter both execute the
+   SAME core — no second domain engine.
+2. **Frozen diagnostics aligned.** Stale decisions surface DOMAIN_CONFLICT
+   (expected/actual in the message); replayed decisions (same idempotency
+   key + same input) DATA_IDEMPOTENT_REPLAY; key reuse with different input
+   DATA_IDEMPOTENCY_CONFLICT; keyed creates reconcile (shared suite rule).
+   The U1-era DATA_CONTRACT_REJECTED stale code was replaced (test updated).
+3. **Server-hosted boundary.** The product singleton moved server-side
+   (+page.server.ts loads, /api/inspection/[action] POST boundary,
+   generation-based in-flight fencing as SESSION_STALE) so queue/detail share
+   one coherent domain and the durable file outlives the process.
+4. **Preview adapter port.** packages/ui-preview gained PreviewDataAdapterPort
+   (frozen API-SPEC §6.2: data operations dispatch through a conforming
+   adapter); declared outcomes short-circuit BEFORE any adapter call; reset()
+   carries the port. The studio's legacy seeded-rows behavior is unchanged
+   when no port is declared.
+5. **Evidence rule fidelity.** PROOF-DESIGN §1 constrains finding.add
+   (draft/submitted + existing inspection) but evidence.add is "append
+   evidence; write" with no constraint — implemented exactly so; the shared
+   conformance suite therefore runs over the evidence resource for BOTH
+   implementations.
+6. **Storage location.** The durable file is pinned by U3_DURABLE_DB
+   (default ./.local-data/inspections-u3.sqlite, gitignored); pragmas WAL +
+   synchronous=FULL verified in the restart evidence.
+
+Founder checkpoint: prepared at the verified candidate; U3-WALKTHROUGH.md is
+the owner-facing sheet. U4, apps/studio, Stage 9, merge-to-main, force-push,
+publication and deployment remain unauthorized.
+
 ## Future evidence entry format
 
 Identity: repository, branch, full base/candidate/reviewer SHAs, environment and contract pins.
