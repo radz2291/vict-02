@@ -5,13 +5,25 @@
     "id": "vict.catalog.appshell",
     "revision": "1",
     "abi": "vict.ui-component-abi@1",
-    "props": [{ "name": "title", "type": "string", "default": "" }],
+    "events": ["vict.ui-component-abi@1"],
+    "props": [
+      {
+        "name": "title",
+        "type": "string",
+        "default": ""
+      }
+    ],
     "outputs": [],
     "slots": ["content"],
     "rendererImplementationId": "vict.svelte.catalog"
   },
   "composition": {
-    "application": { "navigation": "sidebar", "responsive": { "navigationAt": "medium" } },
+    "application": {
+      "navigation": "sidebar",
+      "responsive": {
+        "navigationAt": "medium"
+      }
+    },
     "note": "UiApplicationComposition semantics: desktop arrangement + drawer below the navigationAt breakpoint; UiShellLink.current resolved by the renderer/adapter from the matched route (route ids stay with the renderer)"
   },
   "documentExcerpt": {
@@ -21,9 +33,17 @@
         "id": "shell",
         "definitionId": "vict.catalog.appshell",
         "revision": "1",
-        "props": { "title": { "type": "literal", "value": "Reviews" } },
+        "props": {
+          "title": {
+            "type": "literal",
+            "value": "Reviews"
+          }
+        },
         "slots": {
-          "content": { "name": "content", "children": ["reviewHeading"] }
+          "content": {
+            "name": "content",
+            "children": ["reviewHeading"]
+          }
         }
       },
       "reviewHeading": {
@@ -35,7 +55,10 @@
       "reviewHeadingText": {
         "kind": "text",
         "id": "reviewHeadingText",
-        "content": { "type": "literal", "value": "Review queue" }
+        "content": {
+          "type": "literal",
+          "value": "Review queue"
+        }
       }
     }
   },

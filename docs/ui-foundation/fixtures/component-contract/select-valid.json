@@ -5,10 +5,22 @@
     "id": "vict.catalog.select",
     "revision": "1",
     "abi": "vict.ui-component-abi@1",
+    "events": ["vict.ui-component-abi@1"],
     "props": [
-      { "name": "options", "type": "array" },
-      { "name": "value", "type": "string", "default": "" },
-      { "name": "disabled", "type": "boolean", "default": false }
+      {
+        "name": "options",
+        "type": "array"
+      },
+      {
+        "name": "value",
+        "type": "string",
+        "default": ""
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "default": false
+      }
     ],
     "outputs": [
       {
@@ -20,12 +32,18 @@
     "rendererImplementationId": "vict.svelte.catalog"
   },
   "applicationInputs": {
-    "viewFields": { "countries": "array" },
+    "viewFields": {
+      "countries": "array"
+    },
     "actionIds": ["assignment.assignRegion"]
   },
   "documentExcerpt": {
     "localState": {
-      "region": { "key": "region", "type": "string", "initial": "" }
+      "region": {
+        "key": "region",
+        "type": "string",
+        "initial": ""
+      }
     },
     "nodes": {
       "selRegion": {
@@ -34,12 +52,24 @@
         "definitionId": "vict.catalog.select",
         "revision": "1",
         "props": {
-          "options": { "type": "ref", "path": "view.countries" },
-          "value": { "type": "ref", "path": "state.region" }
+          "options": {
+            "type": "ref",
+            "path": "view.countries"
+          },
+          "value": {
+            "type": "ref",
+            "path": "state.region"
+          }
         },
         "outputs": {
           "valueChange": {
-            "setState": { "key": "region", "value": { "type": "ref", "path": "$output" } }
+            "setState": {
+              "key": "region",
+              "value": {
+                "type": "ref",
+                "path": "$output"
+              }
+            }
           }
         }
       }

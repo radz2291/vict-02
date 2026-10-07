@@ -5,9 +5,18 @@
     "id": "vict.catalog.dialog",
     "revision": "1",
     "abi": "vict.ui-component-abi@1",
+    "events": ["vict.ui-component-abi@1"],
     "props": [
-      { "name": "title", "type": "string", "default": "" },
-      { "name": "open", "type": "boolean", "default": false }
+      {
+        "name": "title",
+        "type": "string",
+        "default": ""
+      },
+      {
+        "name": "open",
+        "type": "boolean",
+        "default": false
+      }
     ],
     "outputs": [
       {
@@ -19,10 +28,16 @@
     "slots": ["body"],
     "rendererImplementationId": "vict.svelte.catalog"
   },
-  "applicationInputs": { "actionIds": ["assignment.confirm"] },
+  "applicationInputs": {
+    "actionIds": ["assignment.confirm"]
+  },
   "documentExcerpt": {
     "localState": {
-      "dialogOpen": { "key": "dialogOpen", "type": "boolean", "initial": false }
+      "dialogOpen": {
+        "key": "dialogOpen",
+        "type": "boolean",
+        "initial": false
+      }
     },
     "nodes": {
       "assignDialog": {
@@ -31,16 +46,31 @@
         "definitionId": "vict.catalog.dialog",
         "revision": "1",
         "props": {
-          "title": { "type": "literal", "value": "Confirm assignment" },
-          "open": { "type": "ref", "path": "state.dialogOpen" }
+          "title": {
+            "type": "literal",
+            "value": "Confirm assignment"
+          },
+          "open": {
+            "type": "ref",
+            "path": "state.dialogOpen"
+          }
         },
         "outputs": {
           "openChange": {
-            "setState": { "key": "dialogOpen", "value": { "type": "ref", "path": "$output" } }
+            "setState": {
+              "key": "dialogOpen",
+              "value": {
+                "type": "ref",
+                "path": "$output"
+              }
+            }
           }
         },
         "slots": {
-          "body": { "name": "body", "children": ["confirmBtn"] }
+          "body": {
+            "name": "body",
+            "children": ["confirmBtn"]
+          }
         }
       },
       "confirmBtn": {
@@ -49,13 +79,20 @@
         "tag": "button",
         "children": ["confirmText"],
         "interactions": [
-          { "on": "click", "action": "invokeAction", "actionId": "assignment.confirm" }
+          {
+            "on": "click",
+            "action": "invokeAction",
+            "actionId": "assignment.confirm"
+          }
         ]
       },
       "confirmText": {
         "kind": "text",
         "id": "confirmText",
-        "content": { "type": "literal", "value": "Confirm" }
+        "content": {
+          "type": "literal",
+          "value": "Confirm"
+        }
       }
     }
   },

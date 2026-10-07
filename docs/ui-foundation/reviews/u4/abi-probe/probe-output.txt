@@ -1,0 +1,18 @@
+PASS  C1 original fixture descriptor (abi+outputs, no events/slots)
+      expected: ok:true  (ACCEPTED — the defect this repair closes)
+      got:      ok:true  ACCEPTED
+PASS  C2 same descriptor + events:["vict.ui-component-abi@1"]
+      expected: ok:false UI_RENDER_EXTENSION_INTERFACE_UNSUPPORTED (legacy rejection gate)
+      got:      ok:false UI_RENDER_EXTENSION_INTERFACE_UNSUPPORTED
+PASS  C3 legacy props-only descriptor (no events/slots/abi/outputs)
+      expected: ok:true  (unchanged legacy behavior preserved)
+      got:      ok:true  ACCEPTED
+PASS  C4 legacy descriptor declaring untyped event "change"
+      expected: ok:false UI_RENDER_EXTENSION_INTERFACE_UNSUPPORTED (existing fail-closed)
+      got:      ok:false UI_RENDER_EXTENSION_INTERFACE_UNSUPPORTED
+PASS  C5 fixture descriptor, no implementation registered
+      expected: ok:false UI_RENDER_EXTENSION_UNAVAILABLE
+      got:      ok:false UI_RENDER_EXTENSION_UNAVAILABLE
+
+PROBE RESULT: 5/5 expectations met
+Legacy resolver bytes: git show 952d92da5131d6ab595b45b3bf18bc7ce3b3466d:packages/ui-svelte/src/document/extensions.ts (unmodified)

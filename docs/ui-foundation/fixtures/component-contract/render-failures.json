@@ -120,6 +120,26 @@
       "expectedCode": "UI_COMPONENT_ABI_UNSUPPORTED"
     },
     {
+      "case": "old plan artifact: instruction for an abi@1 descriptor without outputDecls (pre-amendment compiler output)",
+      "compiled": {
+        "kind": "extension",
+        "nodeId": "cbA",
+        "extensionId": "vict.catalog.checkbox",
+        "revision": "1",
+        "propDecls": [],
+        "propValues": {},
+        "note": "NO outputDecls field - the legacy extension-instruction shape (propDecls/propValues only, verified at 952d92d); the new compiler always emits outputDecls for abi@1 descriptors"
+      },
+      "registered": {
+        "descriptors": 1,
+        "implementations": 1,
+        "abi": "vict.ui-component-abi@1",
+        "slots": []
+      },
+      "expectedCode": "UI_COMPONENT_ABI_UNSUPPORTED",
+      "expectedBehavior": "fail-closed at the new renderer - the silent-degradation hole is closed; a pre-amendment plan can never present an apparently functional control with lost output wiring"
+    },
+    {
       "case": "declared+filled slot the implementation ABI cannot render",
       "compiled": {
         "kind": "extension",

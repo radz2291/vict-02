@@ -5,10 +5,23 @@
     "id": "vict.catalog.button",
     "revision": "1",
     "abi": "vict.ui-component-abi@1",
+    "events": ["vict.ui-component-abi@1"],
     "props": [
-      { "name": "label", "type": "string", "default": "" },
-      { "name": "disabled", "type": "boolean", "default": false },
-      { "name": "loading", "type": "boolean", "default": false }
+      {
+        "name": "label",
+        "type": "string",
+        "default": ""
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "default": false
+      },
+      {
+        "name": "loading",
+        "type": "boolean",
+        "default": false
+      }
     ],
     "outputs": [
       {
@@ -21,12 +34,24 @@
   },
   "applicationInputs": {
     "actionIds": ["review.approve"],
-    "actionInputs": { "review.approve": { "noteId": "string" } }
+    "actionInputs": {
+      "review.approve": {
+        "noteId": "string"
+      }
+    }
   },
   "documentExcerpt": {
     "localState": {
-      "approving": { "key": "approving", "type": "boolean", "initial": false },
-      "currentNote": { "key": "currentNote", "type": "string", "initial": "n_1" }
+      "approving": {
+        "key": "approving",
+        "type": "boolean",
+        "initial": false
+      },
+      "currentNote": {
+        "key": "currentNote",
+        "type": "string",
+        "initial": "n_1"
+      }
     },
     "nodes": {
       "approveBtn": {
@@ -35,20 +60,37 @@
         "definitionId": "vict.catalog.button",
         "revision": "1",
         "props": {
-          "label": { "type": "literal", "value": "Approve" },
-          "loading": { "type": "ref", "path": "state.approving" },
+          "label": {
+            "type": "literal",
+            "value": "Approve"
+          },
+          "loading": {
+            "type": "ref",
+            "path": "state.approving"
+          },
           "disabled": {
             "type": "compare",
             "op": "eq",
-            "left": { "type": "ref", "path": "state.currentNote" },
-            "right": { "type": "literal", "value": "" }
+            "left": {
+              "type": "ref",
+              "path": "state.currentNote"
+            },
+            "right": {
+              "type": "literal",
+              "value": ""
+            }
           }
         },
         "outputs": {
           "press": {
             "invokeAction": {
               "actionId": "review.approve",
-              "input": { "noteId": { "type": "ref", "path": "state.currentNote" } }
+              "input": {
+                "noteId": {
+                  "type": "ref",
+                  "path": "state.currentNote"
+                }
+              }
             }
           }
         }

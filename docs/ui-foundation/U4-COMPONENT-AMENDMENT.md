@@ -157,8 +157,7 @@ Registered catalog components reuse the existing `UiExtensionDescriptor`
 shape (id, revision, `props: UiPropDecl[]`, `rendererImplementationId`,
 `styleTargets?`, `inspectionLimits?`) with two changes:
 
-- **`outputs?` (new additive optional field, replaces reliance on the
-  untyped `events?: string[]`)**:
+- **`outputs?` (new additive optional field)**:
 
   ```ts
   export interface UiOutputDecl {
@@ -171,13 +170,41 @@ shape (id, revision, `props: UiPropDecl[]`, `rendererImplementationId`,
   }
   ```
 
-  The untyped `events?: string[]` field keeps its current meaning and its
-  current fail-closed renderer behavior (Section 5.2): declaring `events`
-  without `outputs` remains `UI_RENDER_EXTENSION_INTERFACE_UNSUPPORTED`.
   Outputs are granted only by the typed `outputs` field.
-- **`abi` (new additive optional field, required for output-capable
-  descriptors)**: literal `'vict.ui-component-abi@1'`. A descriptor that
-  declares `outputs` MUST declare `abi`; the bridge refuses output-channel
+- **The compatibility gate rides `events` — chosen from verified legacy
+  behavior.** The one fail-closed descriptor check the current renderer
+  performs — verified on the exact `952d92d…` bytes and reproduced at
+  resolver level (§4.3 probe) — is: a descriptor declaring any `events`
+  or `slots` entry is rejected with
+  `UI_RENDER_EXTENSION_INTERFACE_UNSUPPORTED`. Fields a legacy resolver
+  does not read (`abi`, `outputs`) are silently ignored: the probe's
+  counterexample case shows an output-wired descriptor being ACCEPTED.
+  The gate therefore cannot be a new field; it is the ABI marker
+  declared as a capability in the field legacy consumers already
+  enforce. A **component-ABI descriptor** (any descriptor declaring
+  `abi`, `outputs`, or renderable slots) MUST declare
+
+  ```ts
+  events: ['vict.ui-component-abi@1']
+  ```
+
+  The marker entry is a capability declaration, not a DOM event:
+  component-ABI-aware compilers and renderers treat it as the ABI marker
+  and never wire it as an event listener. Every legacy consumer rejects
+  such a descriptor outright with its own existing diagnostic (probe
+  case C2) — an output-wired instance can never present an apparently
+  functional control while its authored wiring is silently dropped.
+  Descriptors without the marker keep today's exact behavior: untyped
+  non-marker events keep failing closed
+  (`UI_RENDER_EXTENSION_INTERFACE_UNSUPPORTED`, unchanged), and an
+  events/slots-free props-only descriptor continues to resolve exactly
+  as today (probe case C3).
+- **`abi` (new additive optional field, required for component-ABI
+  descriptors)**: literal `'vict.ui-component-abi@1'`, consistent with
+  the `events` marker — compile validates the pair, and a descriptor
+  declaring outputs/capabilities without `abi`, without the marker, or
+  with a disagreeing marker/`abi` pair is
+  `UI_COMPONENT_ABI_UNSUPPORTED` (§5.1). The bridge refuses output-channel
   delivery when descriptor ABI and implementation ABI differ (Section 5).
 
 Typed inputs: `UiPropDecl {name, type, default?}` as today, with the type
@@ -198,16 +225,23 @@ fields, mirroring what the `kind:'component'` instruction already carries
 for document-stored definitions:
 
 ```ts
-readonly outputDecls?: readonly UiOutputDecl;                       // from the descriptor
+readonly outputDecls?: readonly UiOutputDecl[];                      // from the descriptor
 readonly outputBindings?: Readonly<Record<string, UiOutputBinding>>; // authored, resolved
 readonly slots?: Readonly<Record<string, readonly UiRenderInstruction[]>>; // instance scope
 ```
 
-Compilation resolves prop values against `propDecls` exactly as the
-component-instruction path does today; compile resolves binding payloads and
+compile resolves binding payloads and
 target references (state keys against `document.localState`; action ids
 against the declared `actionIds` catalog) and emits new diagnostics
-(Section 5.1). The compiled `extension` instruction's `revision` field
+(Section 5.1). For every instance resolving to a component-ABI descriptor
+(§3.2) the compiler emits `outputDecls` — the declared list, or `[]`
+when the author wired no outputs. Presence of this field is the
+**compile-artifact marker**: a plan instruction for an abi@1 descriptor
+without `outputDecls` was produced by a pre-amendment compiler and is
+rejected render-side (§4.3, §5.2) — the old compiler's silent field drop
+(verified: the extension instruction carries `propDecls`/`propValues`
+only at `952d92d…`) can therefore never surface as a working control
+with lost wiring. The compiled `extension` instruction's `revision` field
 carries the instance's **effective revision** (node pin, else
 registered-current at compile time — §3.1); the descriptor resolves by
 `(id, effective revision)` fail-closed, replacing the id-keyed last-wins
@@ -320,12 +354,24 @@ authority, contract-checked inputs, unchanged):
   `actionIds` catalog — the existing check for interactions
   (`UI_DOC_UNKNOWN_PRODUCT_REFERENCE`), extended by this amendment to
   output bindings; payload expressions are type-checked against the
-  action-input catalog where the application declares input types: the
-  application compiler derives this catalog from the declared action
-  contracts (existing `inputContractId` + contracts registry — a new
-  compile catalog input, additive; no application-schema change), and the
-  fixtures' `applicationInputs.actionInputs` blocks illustrate the derived
-  shape. Shape/type errors surface `UI_COMPONENT_BINDING_INCOMPATIBLE` at
+  action-input catalog where the application declares input types. The
+  catalog is derived by `@victframework/application`, which already owns
+  the `actionIds` catalog this check extends: a small pure helper
+  (`deriveActionInputCatalog`) resolves each registry action's
+  `inputContractId`/`inputContractRevision` against the contracts
+  registry the application compile already loads, producing
+  `actionId → { inputName → primitive type }`. The derived map is passed
+  through `compileUiDocument`'s catalogs option (new additive field
+  `actionInputs`) at the application's existing compile call site
+  (`packages/application/src/ui-attach.ts` — the same call that passes
+  `actionIds`/`routeIds`/`viewFields` today). Minimum affected paths:
+  `packages/ui/src/compile.ts` (option + output-binding payload checks)
+  and `packages/application/src/ui-attach.ts` (derivation + pass-through);
+  this application-package plumbing is explicitly part of the later U4
+  allowed scope — not a deferred surprise. No application-schema change;
+  `actionIds` semantics, document identity and dispatch authority are
+  unchanged. The fixtures' `applicationInputs.actionInputs` blocks
+  illustrate the derived shape. Shape/type errors surface `UI_COMPONENT_BINDING_INCOMPATIBLE` at
   compile.
 
 `$output` in binding expressions: `{type:'ref', path:'$output'}` resolves to
@@ -430,7 +476,11 @@ closes).
   revision.
 - ABI: descriptor `abi` and implementation `abi` must be the same literal;
   mismatch is `UI_COMPONENT_ABI_UNSUPPORTED` (fail-closed) — an abi@1
-  renderer never feeds an abi@2 implementation, and vice versa.
+  renderer never feeds an abi@2 implementation, and vice versa. A
+  component-ABI descriptor must also carry the `events` ABI marker (§3.2);
+  a descriptor declaring outputs/capabilities without the marker — or with
+  a marker/`abi` pair that disagrees — is itself
+  `UI_COMPONENT_ABI_UNSUPPORTED` at compile (§5.1).
 - Application registration: the component (componentId + exact revision)
   appears in the application's `components` list — the existing
   application-level rule; the list feeds `computeApplicationVersion`.
@@ -463,18 +513,44 @@ closes).
   unknown-field rejection sweep exists in `validateUiDocument`), so today's
   validator accepts documents carrying the new optional fields, and today's
   canonicalizer digests them transparently.
-- **ABI string, not schema string.** Cross-implementation compatibility is
-  carried by the explicit `abi` marker (Section 4.1) — renderer-side
-  fail-closed — rather than by mutating the frozen document schema id.
+- **Compatibility gate chosen from verified legacy behavior.** The first
+  freeze (`68e166f…`, superseded) claimed an old renderer rejects
+  output-wired instances via the descriptor `abi` field. That claim was
+  false: the current resolver reads only `id`, `revision`, `events`,
+  `slots` and `rendererImplementationId`; `abi`/`outputs` are silently
+  ignored. A resolver-level probe against the exact `952d92d…` bytes
+  reproduced the counterexample — the frozen fixture descriptor (`abi` +
+  `outputs`, no `events`/`slots`) is ACCEPTED with a matching
+  implementation, no diagnostic. The gate is therefore the field legacy
+  consumers already fail close on: the ABI marker declared in `events`
+  (§3.2), plus the compile-artifact marker (`outputDecls` always emitted
+  for abi@1 descriptors, §3.3) and the implementation `abi` field. An ABI
+  check added only to the new renderer could never make an old renderer
+  reject new artifacts; the marker makes every legacy consumer reject
+  them with its own existing diagnostic
+  (`UI_RENDER_EXTENSION_INTERFACE_UNSUPPORTED`).
 - **Compatibility matrix.**
 
   | Artifact pair | Behavior |
   | --- | --- |
-  | Old document → new validator/renderer | Byte-identical (fields absent); zero drift — same digests, same `applicationVersion` |
-  | New document → old validator | Accepted (property-based validation ignores unknown optional fields); any *semantic* miss surfaces later as a fail-closed render diagnostic — never silent misbehavior |
-  | New document → old renderer | `EXTENSION_UNAVAILABLE`/`UI_RENDER_EXTENSION_UNAVAILABLE` for unresolvable components (existing fail-closed path). No partial rendering of output-wired instances |
-  | Props-only extensions | Unchanged: `events`/`slots` descriptors without typed `outputs` keep failing closed (`UI_RENDER_EXTENSION_INTERFACE_UNSUPPORTED`) until an author migrates them to `outputs` |
-  | Old `UiSvelteExtensionProps` implementations | Continue to resolve for props-only descriptors; output-capable descriptors require abi@1 implementations |
+  | Old documents/descriptors → new compiler + renderer | Byte-identical (no marker anywhere) — same props-only resolution, digests and `applicationVersion`; old-document behavior and identity preserved unchanged |
+  | New output-enabled documents → old compiler | The property-based old compiler drops the new instance fields (extension instructions carry `propDecls`/`propValues` only — verified at `952d92d…`); the descriptor marker remains → old renderer rejects at resolution (`UI_RENDER_EXTENSION_INTERFACE_UNSUPPORTED`, probe C2); new renderer rejects the marker-less plan artifact (`UI_COMPONENT_ABI_UNSUPPORTED`, §5.2). Never an apparently functional control with silently dropped wiring |
+  | New compiled instructions → old renderer | New instruction fields are unread by legacy code, but resolution rejects via the descriptor marker — `UI_RENDER_EXTENSION_INTERFACE_UNSUPPORTED` (probe C2 shape; resolver-level result) |
+  | Old compiled instructions → new renderer + output-enabled descriptors | The instruction lacks `outputDecls` for an abi@1 descriptor → fail-closed `UI_COMPONENT_ABI_UNSUPPORTED` (§5.2); pre-amendment compile artifacts cannot masquerade as current |
+  | Fully compatible new artifacts | Full authored path: compile checks (§5.1), typed delivery, generation-gated stale handling (§5.3) |
+  | Missing / mismatched / unsupported implementations | `UI_COMPONENT_UNAVAILABLE` (absent, competing, identity mismatch — existing discipline); `UI_COMPONENT_ABI_UNSUPPORTED` (abi mismatch, malformed marker, or marker-less plan artifact); `UI_RENDER_EXTENSION_INTERFACE_UNSUPPORTED` (legacy consumers — existing diagnostic) |
+  | New document → old validator | Accepted (property-based validation tolerates the new optional fields); semantic misses surface at the failing consumer per the rows above — never silent misbehavior |
+  | Props-only extensions | Unchanged — descriptors without the marker keep today's exact resolution semantics; untyped non-marker events keep failing closed |
+
+  Evidence limits, stated plainly: the probe is a **resolver-level**
+  reproduction against the exact legacy bytes (external disposable
+  harness; production files unmodified) — it is **not** a browser
+  rendering test. For the two "old renderer" rows, the evidenced behavior
+  is the resolver's outcome at the point of component resolution;
+  downstream legacy rendering is out of scope because resolution never
+  succeeds. New compiler/renderer rows are contract requirements until
+  implemented — they have NOT been runtime-tested, and nothing here
+  claims otherwise.
 
 - **Public APIs / module ownership.**
   - `@victframework/ui`: `UiOutputDecl`, `UiOutputBinding`,
@@ -489,11 +565,18 @@ closes).
     them.
   - `@victframework/ui-editor`: Inspector property/output controls and the
     `setOutputBinding` op surface. No renderer internals imported.
-  - `@victframework/application`: registration list plumbing (existing —
-    the existing `components`/`uiExtensions` compile inputs are expected to
-    suffice; no change is anticipated. If implementation discovers a need
-    here, that is a recorded scope decision at the gate, not a silent
-    expansion of the allowed paths).
+  - `@victframework/application`: ONE bounded addition is required and is
+    explicitly part of the later U4 allowed scope (§3.5): deriving the
+    action-input catalog from the action registry's `inputContractId`/
+    `inputContractRevision` via the contracts registry the compile already
+    loads, and passing it through `compileUiDocument`'s catalogs option at
+    the existing `ui-attach.ts` call site
+    (`packages/application/src/ui-attach.ts`). Registration-list plumbing
+    (`components`/`uiExtensions`) is existing and suffices. No
+    application-schema change; `actionIds` semantics, identity semantics
+    and dispatch authority unchanged. Any further application-package
+    need is a recorded scope decision at the gate, not a silent expansion
+    of the allowed paths.
   Consumers use public exports only; the U4 packed-tarball isolation
   (no workspace links, no repo source aliases, no original-example imports)
   applies unchanged, and `@victframework/ui-svelte` ships the wrappers from
@@ -511,6 +594,7 @@ closes).
 | `UI_EXPR_TYPE_MISMATCH` | validate (stored defs) / compile (descriptor instances — built by this amendment) | error | literal prop value type ≠ `propDecl.type`; reference prop value resolving to a typed source (state key / view field) whose type ≠ `propDecl.type` |
 | `UI_COMPONENT_SLOT_REQUIRED` | compile (stored definitions — existing requiredness semantics) / render (descriptor instances — the implementation's `required` capability, §3.4) | error | a required slot has no fill. The descriptor `slots` field is a plain name list and carries no requiredness marker; descriptor-instance requiredness lives in the implementation contract |
 | `UI_COMPONENT_REVISION_UNRESOLVED` | compile | error | instance revision pin matches no registered descriptor revision (§4.1) |
+| `UI_COMPONENT_ABI_UNSUPPORTED` | compile (also surfaced render-side, §5.2) | error | component-ABI descriptor malformed: `outputs`/capabilities declared without `abi`, `abi` declared without the `events` marker (§3.2), or marker and `abi` disagree |
 | `UI_DOC_UNKNOWN_COMPONENT` | validate (deferred) / compile | error (when unresolved) | definitionId matches neither stored definitions nor registered descriptors (existing behavior preserved); also compile-raised for undeclared slot fills on descriptor instances (§3.7) |
 | `UI_DOC_UNKNOWN_PRODUCT_REFERENCE` | validate / compile | error | action id in an output binding absent from the declared `actionIds` catalog (existing code, extended scope) |
 
@@ -535,9 +619,9 @@ as an inspection limit.
 | Code | Raised when |
 | --- | --- |
 | `UI_COMPONENT_UNAVAILABLE` | zero or multiple descriptors match the compiled identity; zero or multiple implementations match; implementation missing entirely |
-| `UI_COMPONENT_ABI_UNSUPPORTED` | descriptor `abi` ≠ implementation `abi` |
+| `UI_COMPONENT_ABI_UNSUPPORTED` | descriptor `abi` ≠ implementation `abi`; instruction lacks `outputDecls` for an abi@1 descriptor (pre-amendment compile artifact, §4.3); malformed component-ABI descriptor surfaced render-side (§5.1) |
 | `UI_COMPONENT_SLOT_UNAVAILABLE` | implementation ABI cannot render a declared, filled slot |
-| `UI_RENDER_EXTENSION_INTERFACE_UNSUPPORTED` | unchanged — props-only legacy descriptors declaring untyped `events` |
+| `UI_RENDER_EXTENSION_INTERFACE_UNSUPPORTED` | code and behavior unchanged — any descriptor declaring `events`/`slots` on a legacy consumer; since §3.2 this includes every component-ABI descriptor via the `events` ABI marker (probe-verified on the `952d92d…` bytes) |
 | `EXTENSION_UNAVAILABLE` | unchanged — compile-time neither-definition-nor-extension resolution |
 
 Render diagnostics surface through the existing `reportDiagnostic` channel

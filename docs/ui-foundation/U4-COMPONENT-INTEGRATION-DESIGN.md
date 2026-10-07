@@ -166,7 +166,13 @@ styled internally and what cannot be inspected (e.g. bits-ui focus ring).
    `UiEditSession` (transactions, undo/redo, two-phase save).
 4. **Identity integration** only where genuinely required: descriptor ↔
    application `components` registration (existing rule), occurrence
-   identity (existing), ABI matching (new, render-side).
+   identity (existing), compatibility gate = `events` ABI marker +
+   implementation `abi` (new; the legacy rejection half is probe-verified
+   on the `952d92d…` resolver bytes — an `abi`-field-only gate was shown
+   false and replaced, amendment §3.2/§4.3), and the application-package
+   action-input derivation at the existing `ui-attach.ts` compile call
+   (§3.5 — the one bounded `@victframework/application` addition, in the
+   later U4 allowed scope).
 5. **Consumer evidence**: the four proofs in the packed-tarball isolated
    consumer, with labelled comparison routes.
 

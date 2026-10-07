@@ -1,0 +1,48 @@
+{
+  "name": "abi-compat-probe",
+  "proves": "The compatibility gate is chosen from VERIFIED legacy behavior. The legacy resolver at 952d92da5131d6ab595b45b3bf18bc7ce3b3466d (packages/ui-svelte/src/document/extensions.ts, resolveSvelteExtension) reads only id/revision/events/slots/rendererImplementationId: it silently ignores abi/outputs and ACCEPTS an output-wired descriptor unless events carries the ABI marker; with the marker it rejects with the existing UI_RENDER_EXTENSION_INTERFACE_UNSUPPORTED. This is a resolver-level reproduction (disposable external harness, production files unmodified) - NOT a browser rendering test. Cases C1-C5 were executed 5/5 against the exact legacy bytes; the recorded outcomes below are the probe results.",
+  "legacyReference": {
+    "commit": "952d92da5131d6ab595b45b3bf18bc7ce3b3466d",
+    "file": "packages/ui-svelte/src/document/extensions.ts",
+    "function": "resolveSvelteExtension",
+    "bytes": "exact extraction from the named commit, unmodified"
+  },
+  "cases": [
+    {
+      "id": "C1",
+      "case": "ORIGINAL ACCEPTED COUNTEREXAMPLE - the frozen checkbox-valid descriptor as first published (abi + outputs, NO events/slots) with a matching legacy implementation",
+      "input": "descriptor: the pre-repair fixture descriptor (id vict.catalog.checkbox, revision 1, abi vict.ui-component-abi@1, outputs [checkedChange:boolean], rendererImplementationId vict.svelte.catalog, no events, no slots)",
+      "expectedLegacyOutcome": "ACCEPTED (ok:true, no diagnostic) - proving abi/outputs are invisible to the legacy gate; the original 68e166f freeze matrix row was wrong",
+      "observed": "ok:true ACCEPTED"
+    },
+    {
+      "id": "C2",
+      "case": "REPAIRED GATE - same descriptor with events [\"vict.ui-component-abi@1\"]",
+      "input": "descriptor: C1 descriptor + events marker",
+      "expectedLegacyOutcome": "REJECTED with UI_RENDER_EXTENSION_INTERFACE_UNSUPPORTED (the existing fail-closed diagnostic, raised by the legacy resolver itself)",
+      "observed": "ok:false UI_RENDER_EXTENSION_INTERFACE_UNSUPPORTED"
+    },
+    {
+      "id": "C3",
+      "case": "legacy props-only descriptor (no events/slots/abi/outputs) with a matching legacy implementation",
+      "input": "descriptor: {id legacy.widget, revision 1, props [{label:string}], rendererImplementationId vict-svelte}",
+      "expectedLegacyOutcome": "ACCEPTED (ok:true) - unchanged legacy behavior preserved",
+      "observed": "ok:true ACCEPTED"
+    },
+    {
+      "id": "C4",
+      "case": "control: legacy descriptor declaring an untyped event",
+      "input": "descriptor: {id legacy.events, revision 1, events [change]}",
+      "expectedLegacyOutcome": "REJECTED with UI_RENDER_EXTENSION_INTERFACE_UNSUPPORTED (existing fail-closed behavior, unchanged)",
+      "observed": "ok:false UI_RENDER_EXTENSION_INTERFACE_UNSUPPORTED"
+    },
+    {
+      "id": "C5",
+      "case": "control: fixture descriptor with no implementation registered",
+      "input": "descriptors [C1 descriptor], implementations []",
+      "expectedLegacyOutcome": "REJECTED with UI_RENDER_EXTENSION_UNAVAILABLE",
+      "observed": "ok:false UI_RENDER_EXTENSION_UNAVAILABLE"
+    }
+  ],
+  "note": "The repaired fixtures declare the events marker on every component-ABI descriptor (checkbox-valid, select-valid, button-action, dialog-slot, appshell-content). render-failures case \"old plan artifact for an abi@1 descriptor\" adds the new-renderer rejection of pre-amendment compile output."
+}

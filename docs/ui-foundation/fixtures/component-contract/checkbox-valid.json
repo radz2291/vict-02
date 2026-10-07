@@ -5,9 +5,18 @@
     "id": "vict.catalog.checkbox",
     "revision": "1",
     "abi": "vict.ui-component-abi@1",
+    "events": ["vict.ui-component-abi@1"],
     "props": [
-      { "name": "label", "type": "string", "default": "" },
-      { "name": "checked", "type": "boolean", "default": false }
+      {
+        "name": "label",
+        "type": "string",
+        "default": ""
+      },
+      {
+        "name": "checked",
+        "type": "boolean",
+        "default": false
+      }
     ],
     "outputs": [
       {
@@ -21,8 +30,16 @@
   },
   "documentExcerpt": {
     "localState": {
-      "ackA": { "key": "ackA", "type": "boolean", "initial": false },
-      "ackB": { "key": "ackB", "type": "boolean", "initial": false }
+      "ackA": {
+        "key": "ackA",
+        "type": "boolean",
+        "initial": false
+      },
+      "ackB": {
+        "key": "ackB",
+        "type": "boolean",
+        "initial": false
+      }
     },
     "nodes": {
       "cbA": {
@@ -31,12 +48,24 @@
         "definitionId": "vict.catalog.checkbox",
         "revision": "1",
         "props": {
-          "label": { "type": "literal", "value": "Acknowledge findings" },
-          "checked": { "type": "ref", "path": "state.ackA" }
+          "label": {
+            "type": "literal",
+            "value": "Acknowledge findings"
+          },
+          "checked": {
+            "type": "ref",
+            "path": "state.ackA"
+          }
         },
         "outputs": {
           "checkedChange": {
-            "setState": { "key": "ackA", "value": { "type": "ref", "path": "$output" } }
+            "setState": {
+              "key": "ackA",
+              "value": {
+                "type": "ref",
+                "path": "$output"
+              }
+            }
           }
         }
       },
@@ -46,12 +75,24 @@
         "definitionId": "vict.catalog.checkbox",
         "revision": "1",
         "props": {
-          "label": { "type": "literal", "value": "Acknowledge pricing" },
-          "checked": { "type": "ref", "path": "state.ackB" }
+          "label": {
+            "type": "literal",
+            "value": "Acknowledge pricing"
+          },
+          "checked": {
+            "type": "ref",
+            "path": "state.ackB"
+          }
         },
         "outputs": {
           "checkedChange": {
-            "setState": { "key": "ackB", "value": { "type": "ref", "path": "$output" } }
+            "setState": {
+              "key": "ackB",
+              "value": {
+                "type": "ref",
+                "path": "$output"
+              }
+            }
           }
         }
       }
