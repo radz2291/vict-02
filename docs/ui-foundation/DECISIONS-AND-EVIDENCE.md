@@ -900,7 +900,25 @@ remain unauthorized):
    [U4-AMENDMENT-REVIEW-01](reviews/u4/U4-AMENDMENT-REVIEW-01.md)
    (final sha256 `34506ab9…`; round-1 section byte-identical to the
    delivered `9ce2267c…`).
-7. Amendment FROZEN — VERIFIED: immutable payload commit `68e166f…`
+7a. Owner-directed REPAIR CYCLE (supersedes decision 7's payload, not its
+    process): the first freeze's compatibility claim ("old renderer
+    rejects via the descriptor abi field") was FALSIFIED — resolver-level
+    probe against the exact `952d92d…` bytes ACCEPTED the frozen
+    fixture descriptor (abi/outputs invisible to the legacy gate; probe
+    C1, 5/5, reviews/u4/abi-probe/, production files unmodified). The
+    gate was rebuilt from verified legacy behavior: ABI marker declared
+    in descriptor `events` (the field legacy consumers fail close on),
+    compile-artifact marker (`outputDecls` always emitted for abi@1
+    descriptors), implementation `abi` match. Adjacent fixes: `outputDecls`
+    corrected to the array type; action-input catalog owned by
+    @victframework/application (`deriveActionInputCatalog` -> `compileUiDocument`
+    catalogs option `actionInputs` at the existing ui-attach.ts call site;
+    in the later U4 allowed scope). R2 review: round 1 **PASS WNF** at
+    `0ad3a2a…` (MINOR-1 harness rerunnability — fixed and proven by
+    verbatim rerun; INFO-1/2/3 — fixed) -> round 2 **PASS WNF**. Report:
+    [U4-AMENDMENT-REVIEW-02](reviews/u4/U4-AMENDMENT-REVIEW-02.md).
+7. First freeze — VERIFIED at the time, now SUPERSEDED by decision 7a:
+   immutable payload commit `68e166f…`
    (empty marker; payload paths byte-exact), per-file SHA-256 pins and
    supersedes/governing statement in
    [U4-AMENDMENT-FREEZE](U4-AMENDMENT-FREEZE.md); a separate fresh checker

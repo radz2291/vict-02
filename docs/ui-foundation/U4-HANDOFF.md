@@ -250,18 +250,26 @@ this one bounded exercise.
   bytes; NF-1 (this round-4 record) and NF-2 (branch push) are
   delivery-coupled completions, resolved by the delivery records commit
   and push of the documentation branch.
-- The component amendment received its own independent contract review
-  (fresh reviewer, authored none of it): round 1 **FAIL** at `9c31fae…`
-  (B-1 blocker: instance revision pin misattributed as existing; 8 minors)
-  -> repairs `d84035a…` -> round 2 **PASS WITH NON-BLOCKING FINDINGS**
-  (N-1/N-2) -> `d78a309…` -> round 3 **PASS**. Report imported verbatim:
-  [U4-AMENDMENT-REVIEW-01](reviews/u4/U4-AMENDMENT-REVIEW-01.md). The
-  amendment is FROZEN as a candidate: payload commit `68e166f…`, per-file
-  SHA-256 pins and supersedes/governing statement in
-  [U4-AMENDMENT-FREEZE](U4-AMENDMENT-FREEZE.md); the separate fresh
-  checker's reproduction is recorded there before delivery. This document's
-  operative scope (sections 1-7, 10) and the section 12.2 prompt are
-  aligned with the frozen amendment.
+- The component amendment has been through TWO independent review cycles
+  (fresh reviewers, authored none of it). Cycle 1: round 1 **FAIL** at
+  `9c31fae…` (B-1 blocker: instance revision pin misattributed as
+  existing) -> repairs -> round 3 **PASS**; frozen as payload `68e166f…`.
+  Cycle 2 (owner-directed repair): the first freeze's old-renderer
+  compatibility claim was FALSIFIED by a resolver-level probe against the
+  exact `952d92d…` bytes (output-wired descriptor ACCEPTED without the
+  events ABI marker); the gate was rebuilt from verified legacy behavior,
+  plus the `outputDecls` type fix and the named action-input ownership.
+  Independent R2 review: round 1 **PASS WITH NON-BLOCKING FINDINGS** at
+  `0ad3a2a…` -> repairs -> round 2 **PASS WITH NON-BLOCKING FINDINGS**.
+  Reports verbatim: [U4-AMENDMENT-REVIEW-01](reviews/u4/U4-AMENDMENT-REVIEW-01.md),
+  [U4-AMENDMENT-REVIEW-02](reviews/u4/U4-AMENDMENT-REVIEW-02.md); probe
+  evidence [abi-probe/](reviews/u4/abi-probe/). The amendment is FROZEN
+  (SUPERSEDING): payload commit `460d963…`, pins and supersedes statement
+  in [U4-AMENDMENT-FREEZE-02](U4-AMENDMENT-FREEZE-02.md), which
+  supersedes [U4-AMENDMENT-FREEZE](U4-AMENDMENT-FREEZE.md) (preserved);
+  the separate fresh checker's reproduction is recorded there before
+  delivery. This document's operative scope (sections 1-7, 10) and the
+  section 12.2 prompt are aligned with the superseding freeze.
 
 ## 9. Founder checkpoint and stop boundary
 
@@ -329,9 +337,11 @@ new authorization.
 > its recorded tip (PREPARED — IMPLEMENTATION NOT AUTHORIZED → AUTHORIZED)
 > together with the frozen component amendment
 > docs/ui-foundation/U4-COMPONENT-AMENDMENT.md (`vict.ui-component-abi@1`,
-> payload commit SHA recorded in docs/ui-foundation/U4-AMENDMENT-FREEZE.md).
-> Implement on a new isolated branch codex/ui-foundation-u4 from the amended
-> handoff lineage:
+> payload commit SHA `460d9632eeb6e1eb7eb57c10458562158236baa9` recorded in
+> docs/ui-foundation/U4-AMENDMENT-FREEZE-02.md — the SUPERSEDING freeze
+> record; the first freeze `68e166f3…` is superseded and its payload must
+> not be used). Implement on a new isolated branch codex/ui-foundation-u4
+> from the amended handoff lineage:
 > (1) implement the amendment's minimum scope exactly — additive neutral
 > model/compiler/validation in @victframework/ui (UiOutputDecl,
 > UiOutputBinding, setOutputBinding op, descriptor outputs/abi fields,
