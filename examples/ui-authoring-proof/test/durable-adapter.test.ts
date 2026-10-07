@@ -35,7 +35,11 @@ import {
  */
 
 const supervisor = { role: 'supervisor', actorId: 's.hart' };
-const readContext = { permissions: ['qlt.inspection.read'], effect: 'read' as const, actor: 'probe' };
+const readContext = {
+  permissions: ['qlt.inspection.read'],
+  effect: 'read' as const,
+  actor: 'probe',
+};
 const writeContext = {
   permissions: ['qlt.inspection.read', 'qlt.inspection.edit', 'qlt.inspection.approve'],
   effect: 'write' as const,
@@ -74,7 +78,12 @@ function durableFixture(seeds: readonly Record<string, unknown>[]): ApplicationD
     'INSERT INTO inspection_domain_evidence (id, inspectionId, label, kind) VALUES (?, ?, ?, ?)',
   );
   for (const row of seeds) {
-    insert.run(String(row['id'] ?? ''), String(row['inspectionId'] ?? ''), String(row['label'] ?? ''), String(row['kind'] ?? 'note'));
+    insert.run(
+      String(row['id'] ?? ''),
+      String(row['inspectionId'] ?? ''),
+      String(row['label'] ?? ''),
+      String(row['kind'] ?? 'note'),
+    );
   }
   return opened.adapter;
 }
@@ -123,12 +132,9 @@ describe('durable replacement (U3-05): identity, contracts, persistence', () => 
     const simulated = createInspectionServer(new InspectionDataAdapter(seedDomain()));
     void simulated;
     expect(inspectionApplication.id).toBe('app.inspection');
-    expect([inspectionResource, findingResource, evidenceResource, activityResource].map((r) => r.id)).toEqual([
-      'inspection',
-      'finding',
-      'evidence',
-      'activity',
-    ]);
+    expect(
+      [inspectionResource, findingResource, evidenceResource, activityResource].map((r) => r.id),
+    ).toEqual(['inspection', 'finding', 'evidence', 'activity']);
   });
 
   it('the same action id and compatible contracts through BOTH implementations', async () => {
@@ -148,8 +154,16 @@ describe('durable replacement (U3-05): identity, contracts, persistence', () => 
     }
     // Stale decisions behave identically through both (i-102 stays
     // submitted at revision 2; revision 1 is stale).
-    const staleSim = await simulated.dispatch('inspection.approve', { id: 'i-102', expectedDomainRevision: 1 }, supervisor);
-    const staleDur = await durable.dispatch('inspection.approve', { id: 'i-102', expectedDomainRevision: 1 }, supervisor);
+    const staleSim = await simulated.dispatch(
+      'inspection.approve',
+      { id: 'i-102', expectedDomainRevision: 1 },
+      supervisor,
+    );
+    const staleDur = await durable.dispatch(
+      'inspection.approve',
+      { id: 'i-102', expectedDomainRevision: 1 },
+      supervisor,
+    );
     expect(staleSim.ok).toBe(false);
     expect(staleDur.ok).toBe(false);
     if (!staleSim.ok && !staleDur.ok) {
@@ -225,10 +239,7 @@ describe('durable replacement (U3-05): identity, contracts, persistence', () => 
     const first = openDurableInspectionStore(file, 'normal');
     first.adapter.close();
     const second = openDurableInspectionStore(file, 'empty');
-    const list = await second.adapter.query(
-      { op: 'list', resourceId: 'inspection' },
-      readContext,
-    );
+    const list = await second.adapter.query({ op: 'list', resourceId: 'inspection' }, readContext);
     expect(list.ok && list.total === 3).toBe(true); // not reseeded to empty
     second.adapter.close();
   });

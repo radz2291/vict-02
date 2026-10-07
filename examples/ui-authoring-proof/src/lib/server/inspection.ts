@@ -65,7 +65,10 @@ interface ActiveServer {
 
 let active: ActiveServer | undefined;
 
-function instantiate(scenario: ScenarioId, mode: ImplementationMode = active?.mode ?? 'simulated'): void {
+function instantiate(
+  scenario: ScenarioId,
+  mode: ImplementationMode = active?.mode ?? 'simulated',
+): void {
   const seed = scenarioSeed(scenario);
   const generation = (active?.generation ?? 0) + 1;
   if (mode === 'durable-local') {
@@ -119,8 +122,7 @@ export function durableFile(): string {
 /** The process-wide product server (simulated implementation). */
 export function getProductServer(): ProductServer {
   if (active === undefined) instantiate('normal');
-  const current = () =>
-    active as ActiveServer;
+  const current = () => active as ActiveServer;
   return {
     get scenario() {
       return current().scenario;

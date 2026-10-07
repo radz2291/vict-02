@@ -1,0 +1,37 @@
+{
+  "schema": "vict.u3-measurement@1",
+  "measuredAt": "2026-10-07T05:19:19.557Z",
+  "environment": {
+    "node": "v22.13.1",
+    "runtime": "node (same-process; no browser GPU/paint included)"
+  },
+  "method": "30 iterations after 5 warm-ups; p95 = sorted[floor(0.95*n)]; edit = finding.add dispatch round trip through the product boundary; scenario reset = product reset + settled list; preview reset = PreviewSession creation + first dispatch; durable write = transactional decision round trip (reject/revise/submit loop per iteration)",
+  "budgets": {
+    "editFeedbackP95Ms": 100,
+    "scenarioResetP95Ms": 1000
+  },
+  "results": {
+    "editFeedbackP95Ms": 0.2,
+    "scenarioResetP95Ms": 0.16,
+    "previewSessionResetP95Ms": 0.33,
+    "durableDecisionWriteP95Ms": 7.95,
+    "samples": {
+      "editFeedback": [
+        0.08, 0.06, 0.05, 0.2, 0.1, 0.2, 0.06, 0.03, 0.03, 0.03, 0.03, 0.03, 0.03, 0.03, 0.03, 0.03,
+        0.03, 0.04, 0.03, 0.03, 0.03, 0.03, 0.03, 0.03, 0.03, 0.03, 0.03, 0.03, 0.03, 0.03
+      ],
+      "scenarioReset": [
+        0.4, 0.1, 0.06, 0.05, 0.05, 0.05, 0.16, 0.08, 0.02, 0.04, 0.01, 0.03, 0.01, 0.03, 0.01,
+        0.03, 0.01, 0.03, 0.01, 0.03, 0.01, 0.03, 0.01, 0.03, 0.01, 0.03, 0.01, 0.03, 0.01, 0.03
+      ],
+      "previewReset": [
+        1.25, 0.22, 0.08, 0.06, 0.04, 0.04, 0.04, 0.04, 0.33, 0.11, 0.05, 0.02, 0.02, 0.02, 0.02,
+        0.03, 0.04, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.03, 0.02, 0.02, 0.02, 0.03
+      ],
+      "durableWrite": [
+        3.52, 2.89, 3.66, 2.61, 2.68, 2.95, 3.48, 2.83, 3.11, 2.88, 4.43, 3.41, 3.41, 3.47, 3.92,
+        4.26, 5.14, 5.31, 5.81, 5.97, 4.14, 5.08, 4.45, 7.95, 4.57, 4.61, 6.81, 7.34, 5.3, 15.31
+      ]
+    }
+  }
+}

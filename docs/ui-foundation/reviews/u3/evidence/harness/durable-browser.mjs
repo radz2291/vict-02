@@ -14,17 +14,29 @@ await page.setViewport({ width: 1440, height: 900 });
 // 1. Queue: switch the decision implementation to durable-local (UI control).
 await page.goto(base + '/?as=supervisor', { waitUntil: 'networkidle0' });
 await sleep(600);
-await page.evaluate(() => Array.from(document.querySelectorAll('button')).find(b => b.textContent.includes('durable-local (SQLite file)')).click());
+await page.evaluate(() =>
+  Array.from(document.querySelectorAll('button'))
+    .find((b) => b.textContent.includes('durable-local (SQLite file)'))
+    .click(),
+);
 await sleep(800);
-const modeShown = await page.evaluate(() => document.querySelector('.mode-strip strong')?.textContent ?? '');
+const modeShown = await page.evaluate(
+  () => document.querySelector('.mode-strip strong')?.textContent ?? '',
+);
 console.log('mode shown in UI:', modeShown);
 
 // 2. Approve i-102 through the UI.
 await page.goto(base + '/inspection/i-102?as=supervisor', { waitUntil: 'networkidle0' });
 await sleep(600);
-await page.evaluate(() => Array.from(document.querySelectorAll('button')).find(b => b.textContent.includes('Approve this inspection')).click());
+await page.evaluate(() =>
+  Array.from(document.querySelectorAll('button'))
+    .find((b) => b.textContent.includes('Approve this inspection'))
+    .click(),
+);
 await sleep(800);
-const status = await page.evaluate(() => document.querySelector('[data-ui-node="n.status"]')?.textContent ?? '');
+const status = await page.evaluate(
+  () => document.querySelector('[data-ui-node="n.status"]')?.textContent ?? '',
+);
 console.log('i-102 status after UI approve:', status);
 await page.screenshot({ path: 'C:/Users/RZ1/AppData/Local/Temp/u3-durable-approved.png' });
 

@@ -575,8 +575,7 @@ export function queryTable(
     }
   }
   const bound = (value: number | undefined): boolean =>
-    value !== undefined &&
-    (!Number.isInteger(value) || value < 0 || !Number.isFinite(value));
+    value !== undefined && (!Number.isInteger(value) || value < 0 || !Number.isFinite(value));
   if (bound(request.limit) || bound(request.offset)) {
     return { ok: false, code: 'DATA_INVALID_REQUEST', message: 'Invalid query bound.' };
   }
@@ -655,7 +654,11 @@ export function queryTable(
     }
     const needle = search.text.toLowerCase();
     output = output.filter((row) =>
-      search.fields.some((field) => String(row[field] ?? '').toLowerCase().includes(needle)),
+      search.fields.some((field) =>
+        String(row[field] ?? '')
+          .toLowerCase()
+          .includes(needle),
+      ),
     );
   }
   const sort = request.sort ?? [];

@@ -19,10 +19,7 @@ export const load: PageServerLoad = ({ url }) => {
     product.reset(scenario as ScenarioId);
   }
   const mode = url.searchParams.get('mode');
-  if (
-    (mode === 'simulated' || mode === 'durable-local') &&
-    mode !== product.mode
-  ) {
+  if ((mode === 'simulated' || mode === 'durable-local') && mode !== product.mode) {
     product.reset(product.scenario, mode as ImplementationMode);
   }
   return product.server.dispatch('inspection.list', {}, actor).then((result) => ({

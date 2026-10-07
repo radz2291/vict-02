@@ -25,7 +25,11 @@ import type {
 } from '@victframework/application';
 import { mkdirSync } from 'node:fs';
 import { dirname } from 'node:path';
-import { openAppDatabase, readDurabilityPragmas, VictApplicationDataError } from '@victframework/appdata-sqlite';
+import {
+  openAppDatabase,
+  readDurabilityPragmas,
+  VictApplicationDataError,
+} from '@victframework/appdata-sqlite';
 import {
   applyChildAdd,
   applyInspectionMutation,
@@ -137,27 +141,40 @@ export function openDurableInspectionStore(
       'INSERT INTO inspection_domain_inspections (id, title, status, technician, supervisor, submittedAt, decidedAt, rejectionReason, domainRevision) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
     );
     for (const row of base.inspections) {
-      insertInspection.run(row.id, row.title, row.status, row.technician, row.supervisor, row.submittedAt, row.decidedAt, row.rejectionReason, row.domainRevision);
+      insertInspection.run(
+        row.id,
+        row.title,
+        row.status,
+        row.technician,
+        row.supervisor,
+        row.submittedAt,
+        row.decidedAt,
+        row.rejectionReason,
+        row.domainRevision,
+      );
     }
     const insertFinding = db.prepare(
       'INSERT INTO inspection_domain_findings (id, inspectionId, severity, description) VALUES (?, ?, ?, ?)',
     );
-    for (const row of base.findings) insertFinding.run(row.id, row.inspectionId, row.severity, row.description);
+    for (const row of base.findings)
+      insertFinding.run(row.id, row.inspectionId, row.severity, row.description);
     const insertEvidence = db.prepare(
       'INSERT INTO inspection_domain_evidence (id, inspectionId, label, kind) VALUES (?, ?, ?, ?)',
     );
-    for (const row of base.evidence) insertEvidence.run(row.id, row.inspectionId, row.label, row.kind);
+    for (const row of base.evidence)
+      insertEvidence.run(row.id, row.inspectionId, row.label, row.kind);
     const insertActivity = db.prepare(
       'INSERT INTO inspection_domain_activity (id, inspectionId, at, actor, entry) VALUES (?, ?, ?, ?, ?)',
     );
-    for (const row of base.activity) insertActivity.run(row.id, row.inspectionId, row.at, row.actor, row.entry);
+    for (const row of base.activity)
+      insertActivity.run(row.id, row.inspectionId, row.at, row.actor, row.entry);
   }
   const ledger: DurableLedger = {
     handle,
     lookup(key, digest) {
-      const found = db.prepare(
-        'SELECT digest, row_json FROM inspection_domain_decision_keys WHERE key = ?',
-      ).get(key) as { digest: string; row_json: string } | undefined;
+      const found = db
+        .prepare('SELECT digest, row_json FROM inspection_domain_decision_keys WHERE key = ?')
+        .get(key) as { digest: string; row_json: string } | undefined;
       if (found === undefined) return { recorded: false, digestMatches: false };
       return { recorded: true, digestMatches: found.digest === digest, rowJson: found.row_json };
     },
@@ -240,10 +257,12 @@ export class InspectionDurableAdapter implements ApplicationDataAdapter {
     if (request.resourceId === 'activity') {
       const rows = (
         request.filters?.['inspectionId'] !== undefined
-          ? (this.#db
-              .prepare('SELECT * FROM inspection_domain_activity WHERE inspectionId = ? ORDER BY id')
-              .all(request.filters['inspectionId'] as string))
-          : (this.#db.prepare('SELECT * FROM inspection_domain_activity ORDER BY id').all())
+          ? this.#db
+              .prepare(
+                'SELECT * FROM inspection_domain_activity WHERE inspectionId = ? ORDER BY id',
+              )
+              .all(request.filters['inspectionId'] as string)
+          : this.#db.prepare('SELECT * FROM inspection_domain_activity ORDER BY id').all()
       ) as Record<string, unknown>[];
       return Promise.resolve(queryTable(rows, request));
     }
@@ -287,9 +306,22 @@ export class InspectionDurableAdapter implements ApplicationDataAdapter {
             .prepare(
               'INSERT INTO inspection_domain_inspections (id, title, status, technician, supervisor, submittedAt, decidedAt, rejectionReason, domainRevision) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT(id) DO UPDATE SET status = excluded.status, submittedAt = excluded.submittedAt, decidedAt = excluded.decidedAt, rejectionReason = excluded.rejectionReason, domainRevision = excluded.domainRevision',
             )
-            .run(row.id, row.title, row.status, row.technician, row.supervisor, row.submittedAt, row.decidedAt, row.rejectionReason, row.domainRevision);
+            .run(
+              row.id,
+              row.title,
+              row.status,
+              row.technician,
+              row.supervisor,
+              row.submittedAt,
+              row.decidedAt,
+              row.rejectionReason,
+              row.domainRevision,
+            );
         }
-        this.persistChildren('inspection_domain_findings', tables.findings, ['severity', 'description']);
+        this.persistChildren('inspection_domain_findings', tables.findings, [
+          'severity',
+          'description',
+        ]);
         this.persistChildren('inspection_domain_evidence', tables.evidence, ['label', 'kind']);
         for (const row of tables.activity) {
           this.#db
@@ -304,7 +336,9 @@ export class InspectionDurableAdapter implements ApplicationDataAdapter {
         throw error;
       }
     });
-    const inspection = tables.inspections.find((candidate) => candidate['id'] === outcome.row['id']);
+    const inspection = tables.inspections.find(
+      (candidate) => candidate['id'] === outcome.row['id'],
+    );
     return Promise.resolve({
       ok: true,
       row:
@@ -336,9 +370,15 @@ export class InspectionDurableAdapter implements ApplicationDataAdapter {
       inspections: this.#db
         .prepare('SELECT * FROM inspection_domain_inspections ORDER BY id')
         .all() as never,
-      findings: this.#db.prepare('SELECT * FROM inspection_domain_findings ORDER BY id').all() as never,
-      evidence: this.#db.prepare('SELECT * FROM inspection_domain_evidence ORDER BY id').all() as never,
-      activity: this.#db.prepare('SELECT * FROM inspection_domain_activity ORDER BY id').all() as never,
+      findings: this.#db
+        .prepare('SELECT * FROM inspection_domain_findings ORDER BY id')
+        .all() as never,
+      evidence: this.#db
+        .prepare('SELECT * FROM inspection_domain_evidence ORDER BY id')
+        .all() as never,
+      activity: this.#db
+        .prepare('SELECT * FROM inspection_domain_activity ORDER BY id')
+        .all() as never,
     };
   }
 
