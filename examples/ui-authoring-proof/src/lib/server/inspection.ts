@@ -37,8 +37,9 @@ export interface ProductServer {
   readonly scenario: ScenarioId;
   readonly mode: ImplementationMode;
   readonly server: ReturnType<typeof createInspectionServer>;
-  /** Deterministic reset: same scenario → same domain state; fences in-flight. */
-  reset(scenario: ScenarioId): void;
+  /** Deterministic reset: same scenario → same domain state; fences in-flight.
+   *  An implementation-mode switch swaps ONLY the registered implementation. */
+  reset(scenario: ScenarioId, mode?: ImplementationMode): void;
   /** The LIVE generation in-flight dispatches capture for fencing. */
   readonly generation: number;
   /** Dispatch with fencing: a scenario reset during the call yields SESSION_STALE. */
@@ -90,7 +91,9 @@ function instantiate(scenario: ScenarioId, mode: ImplementationMode = active?.mo
       seed,
       simulated: active.simulated,
       durable: active.durable,
-      server: active.server,
+      // Rebuild the dispatcher around the DURABLE adapter — the mode swap
+      // changes the registered implementation, never just a label.
+      server: createInspectionServer(active.durable),
     };
     return;
   }

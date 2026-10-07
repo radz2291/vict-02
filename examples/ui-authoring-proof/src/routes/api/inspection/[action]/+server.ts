@@ -4,6 +4,7 @@ import {
   getProductServer,
   actorFrom,
   SCENARIO_IDS,
+  type ImplementationMode,
   type ScenarioId,
 } from '$lib/server/inspection.js';
 
@@ -35,16 +36,20 @@ export const POST: RequestHandler = async (event) => {
   return json(result, { status: result.ok ? 200 : result.code === 'SESSION_STALE' ? 409 : 422 });
 };
 
-/** Scenario reset (U3-02): deterministic reseed + in-flight fencing. */
+/** Scenario reset (U3-02) + implementation-mode switch (U3-05). */
 export const PUT: RequestHandler = async (event) => {
   const url = new URL(event.request.url);
-  const requested = url.searchParams.get('scenario') ?? 'normal';
+  const product = getProductServer();
+  const requested = url.searchParams.get('scenario') ?? product.scenario;
   if (!SCENARIO_IDS.includes(requested as ScenarioId)) {
     return json(
       { ok: false, code: 'UNKNOWN_SCENARIO', message: `Unknown scenario '${requested}'.` },
       { status: 400 },
     );
   }
-  getProductServer().reset(requested as ScenarioId);
-  return json({ ok: true, value: { scenario: requested } });
+  const modeParam = url.searchParams.get('mode');
+  const mode: ImplementationMode | undefined =
+    modeParam === 'durable-local' || modeParam === 'simulated' ? modeParam : undefined;
+  product.reset(requested as ScenarioId, mode);
+  return json({ ok: true, value: { scenario: requested, mode: product.mode } });
 };

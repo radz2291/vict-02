@@ -23,6 +23,8 @@ import type {
   ApplicationDataRequestContext,
   ApplicationDataResult,
 } from '@victframework/application';
+import { mkdirSync } from 'node:fs';
+import { dirname } from 'node:path';
 import { openAppDatabase, readDurabilityPragmas, VictApplicationDataError } from '@victframework/appdata-sqlite';
 import {
   applyChildAdd,
@@ -81,6 +83,8 @@ export function openDurableInspectionStore(
   pragmas: ReturnType<typeof readDurabilityPragmas>;
   handle: ReturnType<typeof openAppDatabase>;
 } {
+  // node:sqlite creates the FILE but never its parent directories.
+  mkdirSync(dirname(path), { recursive: true });
   const handle = openAppDatabase(path);
   const db = handle.db;
   withStore('schema.ensure', () => {
