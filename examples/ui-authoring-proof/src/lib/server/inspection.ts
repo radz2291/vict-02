@@ -14,82 +14,12 @@
  * Reset is deterministic: the SAME seed rebuilds the SAME domain state.
  */
 
-import {
-  InspectionDataAdapter,
-  createInspectionServer,
-  seedDomain,
-  type SeedInput,
-} from '$lib/product/domain.js';
+import { InspectionDataAdapter, createInspectionServer } from '$lib/product/domain.js';
+import { SCENARIO_IDS, scenarioSeed, type ScenarioId } from '$lib/product/scenario-seeds.js';
 import type { ActionResult } from '@victframework/ui-svelte';
 
-export type ScenarioId =
-  | 'normal'
-  | 'empty'
-  | 'long'
-  | 'latency'
-  | 'failure'
-  | 'missing'
-  | 'denied'
-  | 'conflict';
-
-export const SCENARIO_IDS: readonly ScenarioId[] = [
-  'normal',
-  'empty',
-  'long',
-  'latency',
-  'failure',
-  'missing',
-  'denied',
-  'conflict',
-];
-
-/** Deterministic scenario seeds (PROOF-DESIGN §2). Behavioral scenarios
- *  (latency/failure/missing/denied/conflict) share the normal seed; their
- *  behavior is declared in the scenario coverage, not in different data. */
-export function scenarioSeed(id: ScenarioId): SeedInput {
-  if (id === 'empty') {
-    return { inspections: [], findings: [], evidence: [], activity: [] };
-  }
-  if (id === 'long') {
-    const base = seedDomain();
-    const now = '2026-10-06T09:00:00.000Z';
-    const longText = 'Vibration reading exceeds the corridor band near the upper bearing housing'.repeat(4);
-    return {
-      inspections: [
-        {
-          id: 'i-201',
-          title: longText,
-          status: 'submitted',
-          technician: 't.nguyen',
-          supervisor: 's.hart',
-          submittedAt: now,
-          decidedAt: null,
-          rejectionReason: null,
-          domainRevision: 7,
-        },
-      ],
-      findings: Array.from({ length: 40 }, (_, index) => ({
-        id: `lf-${index + 1}`,
-        inspectionId: 'i-201',
-        severity: (index % 3 === 0 ? 'high' : index % 3 === 1 ? 'medium' : 'low') as 'high' | 'medium' | 'low',
-        description: `${String(index + 1).padStart(2, '0')} — ${longText}`,
-      })),
-      evidence: [
-        { id: 'le-1', inspectionId: 'i-201', label: longText, kind: 'image-ref' as const },
-      ],
-      activity: [
-        {
-          id: 'la-1',
-          inspectionId: 'i-201',
-          at: now,
-          actor: 't.nguyen',
-          entry: 'Inspection submitted for decision',
-        },
-      ],
-    };
-  }
-  return seedDomain();
-}
+export { SCENARIO_IDS, scenarioSeed };
+export type { ScenarioId };
 
 export interface ProductServer {
   readonly scenario: ScenarioId;
@@ -159,7 +89,8 @@ export function getProductServer(): ProductServer {
         return {
           ok: false,
           code: 'SESSION_STALE',
-          message: 'The scenario was reset while this operation was in flight; the result was dropped.',
+          message:
+            'The scenario was reset while this operation was in flight; the result was dropped.',
         };
       }
       return result;

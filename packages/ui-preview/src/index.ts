@@ -6,6 +6,7 @@
 export { PreviewSession, createPreviewSession } from './session.js';
 export type {
   CoverageEntry,
+  PreviewDataAdapterPort,
   PreviewResult,
   PreviewRuntimePort,
   PreviewSessionOptions,

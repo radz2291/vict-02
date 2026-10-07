@@ -26,3 +26,5 @@ docs/ui-foundation/u2-ux/n1-followup/
 # The imported combined-candidate verifier harnesses/journeys are verbatim
 # evidence (see reviews/u2/); formatting must not rewrite or flag them.
 docs/ui-foundation/reviews/u2/combined-verify-evidence/
+
+# U3 out-of-repo probe harnesses live in temp; nothing else to ignore here.

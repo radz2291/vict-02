@@ -20,11 +20,28 @@ import {
   type ScenarioActor,
   type ScenarioOperation,
 } from '@victframework/ui';
+import type {
+  ApplicationDataAdapter,
+  ApplicationDataRequestContext,
+} from '@victframework/application';
 
 /** Host-supplied effective doubles (capability id → bounded invoke). */
 export interface PreviewRuntimePort {
   /** Snapshot taken at session creation; immutable within a run. */
   readonly snapshotDoubles: () => ReadonlyMap<string, (input: unknown) => Promise<unknown>>;
+}
+
+/**
+ * Conforming data-adapter port (API-SPEC §6.2): data operations
+ * (`resourceId:op`) dispatch through a conforming ApplicationDataAdapter
+ * with the acting scenario actor's context — never a silent stub. When a
+ * session declares no port, data operations fall back to the seeded
+ * simulated rows (legacy preview behavior).
+ */
+export interface PreviewDataAdapterPort {
+  readonly adapter: ApplicationDataAdapter;
+  /** The request context for the acting scenario actor. */
+  readonly context: (actor: ScenarioActor) => ApplicationDataRequestContext;
 }
 
 export type PreviewResult<T = unknown> =
@@ -49,6 +66,8 @@ export interface PreviewSessionOptions {
   /** The acting scenario actor (defaults to the first declared actor). */
   readonly actorId?: string;
   readonly runtime?: PreviewRuntimePort;
+  /** Conforming data-adapter port for `resourceId:op` operations. */
+  readonly dataAdapter?: PreviewDataAdapterPort;
   /** Observable fencing: called when a stale result is dropped. */
   readonly onStale?: (info: { readonly sessionId: string; readonly supersededBy: string }) => void;
   /** Injectable delay (tests pass an immediate/controlled clock). */
@@ -73,6 +92,7 @@ export class PreviewSession {
   readonly actor: ScenarioActor;
   readonly coverage: readonly CoverageEntry[];
   readonly #runtime: PreviewRuntimePort | undefined;
+  readonly #dataAdapter: PreviewDataAdapterPort | undefined;
   readonly #onStale: PreviewSessionOptions['onStale'];
   readonly #delay: (ms: number) => Promise<void>;
   #state: SessionState;
@@ -87,6 +107,7 @@ export class PreviewSession {
         (options.scenario.actors[0] as ScenarioActor))
       : (options.scenario.actors[0] as ScenarioActor);
     this.#runtime = options.runtime;
+    this.#dataAdapter = options.dataAdapter;
     this.#onStale = options.onStale;
     this.#delay =
       options.delay ??
@@ -368,8 +389,82 @@ export class PreviewSession {
     input: unknown,
   ): Promise<PreviewResult<T>> {
     const [resourceId, dataOp] = operation.op.split(':') as [string, string];
+    // Declared failure/denied outcomes short-circuit BEFORE any adapter call
+    // (the declared outcome IS the simulation contract; nothing else runs).
+    const outcome = operation.outcome;
+    if (outcome?.kind === 'failure' || outcome?.kind === 'denied') {
+      return this.#settle<T>(token, outcome.delayMs, () => {
+        if (outcome.kind === 'denied') {
+          return {
+            ok: false,
+            sessionId: this.id,
+            code: 'OPERATION_DENIED',
+            message: outcome.message ?? 'Denied.',
+            diagnostic: uiDiagnostic('OPERATION_DENIED', 'Denied by declared scenario outcome.', {
+              op: operation.op,
+              actor: this.actor.actorId,
+              reason: outcome.code ?? 'declared',
+            }),
+          };
+        }
+        return {
+          ok: false,
+          sessionId: this.id,
+          code: outcome.code ?? 'SIMULATED_FAILURE',
+          message: outcome.message ?? 'The simulated data operation failed (declared outcome).',
+        };
+      });
+    }
+    const port = this.#dataAdapter;
+    if (port !== undefined) {
+      // Frozen boundary: data operations dispatch through the conforming
+      // adapter with the acting actor's context. The delay (if declared)
+      // still applies, and a reset during the call fences the result.
+      return this.#settle<T>(token, outcome?.delayMs, async () => {
+        const context = port.context(this.actor);
+        let result: Awaited<ReturnType<ApplicationDataAdapter['query']>>;
+        if (dataOp === 'list' || dataOp === 'get') {
+          result = await port.adapter.query(
+            dataOp === 'list'
+              ? { op: 'list', resourceId }
+              : { op: 'get', resourceId, id: (input as { id?: string } | undefined)?.id },
+            context,
+          );
+        } else {
+          const payload = (input ?? {}) as {
+            readonly id?: string;
+            readonly input?: Record<string, unknown>;
+            readonly idempotencyKey?: string;
+          };
+          result = await port.adapter.mutate(
+            {
+              resourceId,
+              op: dataOp,
+              id: payload.id,
+              input: payload.input ?? input,
+              idempotencyKey: payload.idempotencyKey,
+            },
+            context,
+          );
+        }
+        // Post-await fencing: a reset during the adapter call drops the result.
+        if (this.#superseded(token)) return this.#staleResult<T>();
+        if (!result.ok) {
+          return {
+            ok: false,
+            sessionId: this.id,
+            code: result.code,
+            message: result.message,
+          };
+        }
+        if (result.row !== undefined)
+          return { ok: true, sessionId: this.id, value: result.row as T };
+        if (result.rows !== undefined)
+          return { ok: true, sessionId: this.id, value: { rows: result.rows } as T };
+        return { ok: true, sessionId: this.id, value: result as T };
+      });
+    }
     return this.#settle<T>(token, operation.outcome?.delayMs, () => {
-      const outcome = operation.outcome;
       if (outcome?.kind === 'failure') {
         return {
           ok: false,
@@ -484,6 +579,9 @@ export class PreviewSession {
       scenario: this.scenario,
       actorId: this.actor.actorId,
       ...(this.#runtime !== undefined ? { runtime: this.#runtime } : {}),
+      // The data-adapter port carries over: the reset session dispatches
+      // through the SAME declared boundary (new identity, same port).
+      ...(this.#dataAdapter !== undefined ? { dataAdapter: this.#dataAdapter } : {}),
       ...(this.#onStale !== undefined ? { onStale: this.#onStale } : {}),
       ...(this.#delay !== undefined ? { delay: this.#delay } : {}),
     });

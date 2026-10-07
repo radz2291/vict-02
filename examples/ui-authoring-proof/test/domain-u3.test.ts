@@ -47,8 +47,16 @@ function tables(seed = seedDomain()): InspectionTables {
   };
 }
 
-const writeContext = { permissions: grantsForRole('supervisor'), effect: 'write' as const, actor: 's.hart' };
-const techContext = { permissions: grantsForRole('technician'), effect: 'write' as const, actor: 't.nguyen' };
+const writeContext = {
+  permissions: grantsForRole('supervisor'),
+  effect: 'write' as const,
+  actor: 's.hart',
+};
+const techContext = {
+  permissions: grantsForRole('technician'),
+  effect: 'write' as const,
+  actor: 't.nguyen',
+};
 
 describe('U3-01: the complete rejection → correction → resubmission loop', () => {
   it('reject requires a mandatory reason and records it in the activity trail', async () => {
@@ -56,7 +64,11 @@ describe('U3-01: the complete rejection → correction → resubmission loop', (
     const record = await loadRecord(server, 'i-101');
     const noReason = await server.dispatch(
       'inspection.reject',
-      { id: record['id'], expectedDomainRevision: record['domainRevision'], rejectionReason: '   ' },
+      {
+        id: record['id'],
+        expectedDomainRevision: record['domainRevision'],
+        rejectionReason: '   ',
+      },
       supervisor,
     );
     expect(noReason.ok).toBe(false);
@@ -68,7 +80,11 @@ describe('U3-01: the complete rejection → correction → resubmission loop', (
 
     const rejected = await server.dispatch(
       'inspection.reject',
-      { id: record['id'], expectedDomainRevision: record['domainRevision'], rejectionReason: 'Seal photos are out of focus' },
+      {
+        id: record['id'],
+        expectedDomainRevision: record['domainRevision'],
+        rejectionReason: 'Seal photos are out of focus',
+      },
       supervisor,
     );
     expect(rejected.ok).toBe(true);
@@ -85,13 +101,21 @@ describe('U3-01: the complete rejection → correction → resubmission loop', (
     const record = await loadRecord(server, 'i-101');
     await server.dispatch(
       'inspection.reject',
-      { id: record['id'], expectedDomainRevision: record['domainRevision'], rejectionReason: 'Torque log incomplete' },
+      {
+        id: record['id'],
+        expectedDomainRevision: record['domainRevision'],
+        rejectionReason: 'Torque log incomplete',
+      },
       supervisor,
     );
     const rejected = await loadRecord(server, 'i-101');
 
     // A technician assigned to a DIFFERENT inspection may not revise.
-    const stranger = await server.dispatch('inspection.revise', { id: rejected['id'] }, otherTechnician);
+    const stranger = await server.dispatch(
+      'inspection.revise',
+      { id: rejected['id'] },
+      otherTechnician,
+    );
     expect(stranger.ok).toBe(false);
     if (!stranger.ok) expect(stranger.code).toBe('DATA_UNAUTHORIZED');
     expect((await loadRecord(server, 'i-101'))['status']).toBe('rejected');
@@ -113,7 +137,11 @@ describe('U3-01: the complete rejection → correction → resubmission loop', (
     const record = await loadRecord(server, 'i-101');
     await server.dispatch(
       'inspection.reject',
-      { id: record['id'], expectedDomainRevision: record['domainRevision'], rejectionReason: 'Add the torque log' },
+      {
+        id: record['id'],
+        expectedDomainRevision: record['domainRevision'],
+        rejectionReason: 'Add the torque log',
+      },
       supervisor,
     );
     await server.dispatch('inspection.revise', { id: record['id'] }, technician);
@@ -121,7 +149,12 @@ describe('U3-01: the complete rejection → correction → resubmission loop', (
 
     const finding = await server.dispatch(
       'finding.add',
-      { id: 'f-9', inspectionId: 'i-101', severity: 'medium', description: 'Added torque log reference' },
+      {
+        id: 'f-9',
+        inspectionId: 'i-101',
+        severity: 'medium',
+        description: 'Added torque log reference',
+      },
       technician,
     );
     expect(finding.ok).toBe(true);
@@ -160,7 +193,11 @@ describe('U3-01: the complete rejection → correction → resubmission loop', (
   it('submit requires draft status; technician permission enforced at the adapter', async () => {
     const server = freshServer();
     const submitted = await loadRecord(server, 'i-101');
-    const wrongState = await server.dispatch('inspection.submit', { id: submitted['id'] }, technician);
+    const wrongState = await server.dispatch(
+      'inspection.submit',
+      { id: submitted['id'] },
+      technician,
+    );
     expect(wrongState.ok).toBe(false);
     if (!wrongState.ok) expect(wrongState.code).toBe('DATA_INVALID_INPUT');
 
@@ -196,7 +233,15 @@ describe('U3-03: runtime domain correctness (adapter boundary, not UI)', () => {
       ['finding.add', supervisor],
       ['evidence.add', supervisor],
     ] as const) {
-      const result = await server.dispatch(action, { id: record['id'], expectedDomainRevision: record['domainRevision'], rejectionReason: 'x' }, actor);
+      const result = await server.dispatch(
+        action,
+        {
+          id: record['id'],
+          expectedDomainRevision: record['domainRevision'],
+          rejectionReason: 'x',
+        },
+        actor,
+      );
       expect(result.ok, `${action} as ${actor.role} should be denied`).toBe(false);
       if (!result.ok) expect(result.code).toBe('DATA_UNAUTHORIZED');
     }
@@ -226,9 +271,13 @@ describe('U3-03: runtime domain correctness (adapter boundary, not UI)', () => {
     const server = freshServer();
     const record = await loadRecord(server, 'i-101');
     const input = { id: record['id'], expectedDomainRevision: record['domainRevision'] };
-    const first = await server.dispatch('inspection.approve', input, supervisor, { idempotencyKey: 'dec-1' });
+    const first = await server.dispatch('inspection.approve', input, supervisor, {
+      idempotencyKey: 'dec-1',
+    });
     expect(first.ok).toBe(true);
-    const replay = await server.dispatch('inspection.approve', input, supervisor, { idempotencyKey: 'dec-1' });
+    const replay = await server.dispatch('inspection.approve', input, supervisor, {
+      idempotencyKey: 'dec-1',
+    });
     expect(replay.ok).toBe(false);
     if (!replay.ok) expect(replay.code).toBe('DATA_IDEMPOTENT_REPLAY');
 
@@ -242,7 +291,11 @@ describe('U3-03: runtime domain correctness (adapter boundary, not UI)', () => {
     if (!second.ok) expect(second.code).toBe('DATA_IDEMPOTENT_REPLAY'); // identical decision input, still a replay
     const mismatch = await server.dispatch(
       'inspection.reject',
-      { id: record['id'], expectedDomainRevision: record['domainRevision'], rejectionReason: 'other' },
+      {
+        id: record['id'],
+        expectedDomainRevision: record['domainRevision'],
+        rejectionReason: 'other',
+      },
       supervisor,
       { idempotencyKey: 'dec-1' },
     );
@@ -279,7 +332,13 @@ describe('U3-03: runtime domain correctness (adapter boundary, not UI)', () => {
     const ledger = createMemoryLedger();
     const duplicate = applyInspectionMutation(
       core,
-      { resourceId: 'inspection', op: 'approve', id: 'i-101', input: { expectedDomainRevision: 99 }, idempotencyKey: 'K1' },
+      {
+        resourceId: 'inspection',
+        op: 'approve',
+        id: 'i-101',
+        input: { expectedDomainRevision: 99 },
+        idempotencyKey: 'K1',
+      },
       writeContext,
       systemClock,
       ledger,
@@ -295,9 +354,13 @@ describe('U3-04: child-resource queries (shared conformance surface)', () => {
   it('evidence add is a keyed create: replay reconciles, duplicate identity fails without consuming the key', async () => {
     const server = freshServer();
     const input = { id: 'e-50', inspectionId: 'i-101', label: 'Shared photo', kind: 'note' };
-    const first = await server.dispatch('evidence.add', input, technician, { idempotencyKey: 'ev-1' });
+    const first = await server.dispatch('evidence.add', input, technician, {
+      idempotencyKey: 'ev-1',
+    });
     expect(first.ok).toBe(true);
-    const replay = await server.dispatch('evidence.add', input, technician, { idempotencyKey: 'ev-1' });
+    const replay = await server.dispatch('evidence.add', input, technician, {
+      idempotencyKey: 'ev-1',
+    });
     expect(replay.ok).toBe(true);
     const rows = await server.dispatch('inspection.get', { id: 'i-101' }, supervisor);
     expect(rows.ok).toBe(true);

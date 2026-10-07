@@ -1,6 +1,11 @@
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types.js';
-import { getProductServer, actorFrom, SCENARIO_IDS, type ScenarioId } from '$lib/server/inspection.js';
+import {
+  getProductServer,
+  actorFrom,
+  SCENARIO_IDS,
+  type ScenarioId,
+} from '$lib/server/inspection.js';
 
 /**
  * The ONE product action boundary (U1-05/U3-01): the document's declared
@@ -18,7 +23,10 @@ export const POST: RequestHandler = async (event) => {
     const text = await event.request.text();
     if (text.length > 0) input = JSON.parse(text) as unknown;
   } catch {
-    return json({ ok: false, code: 'DATA_INVALID_INPUT', message: 'Malformed request body.' }, { status: 400 });
+    return json(
+      { ok: false, code: 'DATA_INVALID_INPUT', message: 'Malformed request body.' },
+      { status: 400 },
+    );
   }
   const idempotencyKey = event.request.headers.get('x-idempotency-key') ?? undefined;
   // Normalize route-style actions (finding-add -> finding.add).
@@ -32,7 +40,10 @@ export const PUT: RequestHandler = async (event) => {
   const url = new URL(event.request.url);
   const requested = url.searchParams.get('scenario') ?? 'normal';
   if (!SCENARIO_IDS.includes(requested as ScenarioId)) {
-    return json({ ok: false, code: 'UNKNOWN_SCENARIO', message: `Unknown scenario '${requested}'.` }, { status: 400 });
+    return json(
+      { ok: false, code: 'UNKNOWN_SCENARIO', message: `Unknown scenario '${requested}'.` },
+      { status: 400 },
+    );
   }
   getProductServer().reset(requested as ScenarioId);
   return json({ ok: true, value: { scenario: requested } });

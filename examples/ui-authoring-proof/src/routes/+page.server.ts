@@ -1,5 +1,10 @@
 import type { PageServerLoad } from './$types.js';
-import { getProductServer, actorFrom, SCENARIO_IDS, type ScenarioId } from '$lib/server/inspection.js';
+import {
+  getProductServer,
+  actorFrom,
+  SCENARIO_IDS,
+  type ScenarioId,
+} from '$lib/server/inspection.js';
 
 export const load: PageServerLoad = ({ url }) => {
   const product = getProductServer();

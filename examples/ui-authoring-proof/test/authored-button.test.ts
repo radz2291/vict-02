@@ -50,7 +50,10 @@ beforeEach(() => {
   vi.stubGlobal('fetch', fetchStub);
 });
 
-async function loadRecord(role: Actors): Promise<{ record: Record<string, unknown>; activity: ReturnType<typeof server.adapter.activityFor> }> {
+async function loadRecord(role: Actors): Promise<{
+  record: Record<string, unknown>;
+  activity: ReturnType<typeof server.adapter.activityFor>;
+}> {
   const list = await server.dispatch('inspection.list', {}, actorFor(role));
   const rows = (list.value as { rows: Record<string, unknown>[] }).rows;
   const record = rows.find((candidate) => candidate['id'] === 'i-101');

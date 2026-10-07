@@ -350,7 +350,12 @@ export function applyInspectionMutation(
       return { ok: true, row: { ...updated } };
     };
     if (op === 'approve') {
-      const updated: InspectionRow = { ...row, status: 'approved', decidedAt, domainRevision: row.domainRevision + 1 };
+      const updated: InspectionRow = {
+        ...row,
+        status: 'approved',
+        decidedAt,
+        domainRevision: row.domainRevision + 1,
+      };
       tables.inspections[tables.inspections.indexOf(row)] = updated;
       return recordAndReturn(updated, 'Inspection approved');
     }
@@ -511,7 +516,7 @@ export function applyChildAdd(
     const finding: FindingRow = {
       id,
       inspectionId: String(inspectionId ?? ''),
-      severity: (input['severity'] as FindingRow['severity'] ?? 'low'),
+      severity: (input['severity'] as FindingRow['severity']) ?? 'low',
       description: String(input['description'] ?? ''),
     };
     tables.findings.push(finding);
@@ -522,7 +527,7 @@ export function applyChildAdd(
       id,
       inspectionId: String(inspectionId ?? ''),
       label: String(input['label'] ?? ''),
-      kind: (input['kind'] as EvidenceRow['kind'] ?? 'note'),
+      kind: (input['kind'] as EvidenceRow['kind']) ?? 'note',
     };
     tables.evidence.push(evidence);
     stored = evidence;
@@ -560,7 +565,9 @@ export function queryTable(
   }
   const sort = request.sort ?? [];
   for (const spec of [...sort].reverse()) {
-    output = [...output].sort((a, b) => compareValues(a[spec.field], b[spec.field], spec.direction));
+    output = [...output].sort((a, b) =>
+      compareValues(a[spec.field], b[spec.field], spec.direction),
+    );
   }
   const total = output.length;
   const offset = request.offset ?? 0;
@@ -574,12 +581,22 @@ function project(
   projection: readonly string[] | undefined,
 ): Record<string, unknown> {
   if (projection === undefined) return row;
-  return Object.fromEntries(projection.filter((name) => name in row).map((name) => [name, row[name]]));
+  return Object.fromEntries(
+    projection.filter((name) => name in row).map((name) => [name, row[name]]),
+  );
 }
 
 function compareValues(a: unknown, b: unknown, direction: 'asc' | 'desc'): number {
   const base =
-    a === b ? 0 : a === null || a === undefined ? 1 : b === null || b === undefined ? -1 : a < b ? -1 : 1;
+    a === b
+      ? 0
+      : a === null || a === undefined
+        ? 1
+        : b === null || b === undefined
+          ? -1
+          : a < b
+            ? -1
+            : 1;
   return direction === 'asc' ? base : -base;
 }
 
@@ -594,7 +611,10 @@ export class InspectionDataAdapter implements ApplicationDataAdapter {
   readonly #ledger: DomainLedger;
   readonly #clock: DomainClock;
 
-  constructor(seed: SeedInput, options?: { readonly clock?: DomainClock; readonly ledger?: DomainLedger }) {
+  constructor(
+    seed: SeedInput,
+    options?: { readonly clock?: DomainClock; readonly ledger?: DomainLedger },
+  ) {
     this.#tables = {
       inspections: seed.inspections.map((row) => ({ ...row })),
       findings: seed.findings.map((row) => ({ ...row })),
@@ -654,9 +674,9 @@ export class InspectionDataAdapter implements ApplicationDataAdapter {
       return Promise.resolve(queryTable(filtered as unknown as Record<string, unknown>[], request));
     }
     if (request.resourceId === 'finding' || request.resourceId === 'evidence') {
-      const rows = (
-        request.resourceId === 'finding' ? this.#tables.findings : this.#tables.evidence
-      ) as unknown as Record<string, unknown>[];
+      const rows = (request.resourceId === 'finding'
+        ? this.#tables.findings
+        : this.#tables.evidence) as unknown as Record<string, unknown>[];
       return Promise.resolve(queryTable(rows, request));
     }
     return Promise.resolve({
@@ -674,11 +694,10 @@ export class InspectionDataAdapter implements ApplicationDataAdapter {
       request.resourceId === 'inspection'
         ? applyInspectionMutation(this.#tables, request, context, this.#clock, this.#ledger)
         : applyChildAdd(this.#tables, request, context, this.#clock, this.#ledger);
-    if (!outcome.ok) return Promise.resolve({ ok: false, code: outcome.code, message: outcome.message });
+    if (!outcome.ok)
+      return Promise.resolve({ ok: false, code: outcome.code, message: outcome.message });
     const row = outcome.row;
-    const inspection = this.#tables.inspections.find(
-      (candidate) => candidate['id'] === row['id'],
-    );
+    const inspection = this.#tables.inspections.find((candidate) => candidate['id'] === row['id']);
     return Promise.resolve({
       ok: true,
       row: inspection !== undefined ? this.joined(inspection) : row,
@@ -715,7 +734,11 @@ export type InspectionActionId =
   | 'finding.add'
   | 'evidence.add';
 
-const READ_ACTIONS: readonly string[] = ['inspection.list', 'inspection.get', 'inspection.activity'];
+const READ_ACTIONS: readonly string[] = [
+  'inspection.list',
+  'inspection.get',
+  'inspection.activity',
+];
 const INSPECTION_VERBS: readonly string[] = ['submit', 'approve', 'reject', 'revise'];
 
 /** Map an action id to its adapter mutation verb (or undefined for reads). */
