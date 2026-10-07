@@ -6,8 +6,18 @@ combined-gate verified ("U3 COMBINED GATE: PASS WITH NON-BLOCKING FINDINGS",
 [U3-COMBINED-VERIFY-01](reviews/u3/U3-COMBINED-VERIFY-01.md)), and the owner
 experienced the repaired product ("I have try it, it work simply." —
 scope-bounded, [OWNER-FEEDBACK-01](reviews/u3/OWNER-FEEDBACK-01.md)).
-U4 is NOT authorized and NOT started. The U4 handoff has been PREPARED and
-independently reviewed on `codex/ui-foundation-u4-handoff`:
+U4 is NOT authorized and NOT started. The owner selected the stronger
+catalog-authoring requirement (catalog components must be canonically
+authorable: properties, values and action connections inspectable/editable
+through the authoring experience); the registered-component (P3) proof no
+longer satisfies the requirement, and the prepared handoff's proof section
+and authorization prompt are superseded by
+[U4-COMPONENT-AMENDMENT](U4-COMPONENT-AMENDMENT.md) (PROPOSED — under
+independent contract review at this commit; freeze pending review + checker).
+Amendment work is isolated on `codex/ui-foundation-u4-component-amendment`
+(from the prepared handoff records `cfbd6d3…`); U0–U3 records untouched.
+The prepared U4 handoff was independently reviewed on
+`codex/ui-foundation-u4-handoff`:
 [U4-HANDOFF](U4-HANDOFF.md) (PREPARED — IMPLEMENTATION NOT AUTHORIZED),
 [U4-COMPONENT-REUSE-MATRIX](U4-COMPONENT-REUSE-MATRIX.md),
 [U4-COMPONENT-INTEGRATION-DESIGN](U4-COMPONENT-INTEGRATION-DESIGN.md);

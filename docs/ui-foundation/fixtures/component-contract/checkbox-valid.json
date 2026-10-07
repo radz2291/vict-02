@@ -1,0 +1,61 @@
+{
+  "name": "catalog-checkbox-valid",
+  "proves": "two checkbox instances of one descriptor with distinct typed state bindings; reactive checked input; checkedChange output -> setState",
+  "descriptor": {
+    "id": "vict.catalog.checkbox",
+    "revision": "1",
+    "abi": "vict.ui-component-abi@1",
+    "props": [
+      { "name": "label", "type": "string", "default": "" },
+      { "name": "checked", "type": "boolean", "default": false }
+    ],
+    "outputs": [
+      {
+        "name": "checkedChange",
+        "payload": "boolean",
+        "description": "Fires when the user toggles the checkbox."
+      }
+    ],
+    "rendererImplementationId": "vict.svelte.catalog",
+    "inspectionLimits": ["internal focus ring styling"]
+  },
+  "documentExcerpt": {
+    "localState": {
+      "ackA": { "key": "ackA", "type": "boolean", "initial": false },
+      "ackB": { "key": "ackB", "type": "boolean", "initial": false }
+    },
+    "nodes": {
+      "cbA": {
+        "kind": "component",
+        "id": "cbA",
+        "definitionId": "vict.catalog.checkbox",
+        "revision": "1",
+        "props": {
+          "label": { "type": "literal", "value": "Acknowledge findings" },
+          "checked": { "type": "ref", "path": "state.ackA" }
+        },
+        "outputs": {
+          "checkedChange": {
+            "setState": { "key": "ackA", "value": { "type": "ref", "path": "$output" } }
+          }
+        }
+      },
+      "cbB": {
+        "kind": "component",
+        "id": "cbB",
+        "definitionId": "vict.catalog.checkbox",
+        "revision": "1",
+        "props": {
+          "label": { "type": "literal", "value": "Acknowledge pricing" },
+          "checked": { "type": "ref", "path": "state.ackB" }
+        },
+        "outputs": {
+          "checkedChange": {
+            "setState": { "key": "ackB", "value": { "type": "ref", "path": "$output" } }
+          }
+        }
+      }
+    }
+  },
+  "expected": "toggle cbA writes state.ackA only; cbB untouched; both re-render from state after undo/redo/save/reload; distinct bindings isolated"
+}

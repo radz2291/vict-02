@@ -1,4 +1,11 @@
-# U4 component reuse matrix (2026-10-07, preparation phase)
+# U4 component reuse matrix (2026-10-07, amended preparation phase)
+
+**Amendment context.** The owner requires catalog components to be
+canonically authorable ([U4-COMPONENT-AMENDMENT](U4-COMPONENT-AMENDMENT.md)).
+This matrix records today's source truth AND, in section 5, the support
+level of each contract the amendment introduces. Today, every
+amendment-specific piece is **C** (contract-only); nothing in section 5 may
+be reported as existing until U4 implements and tests it.
 
 **Method and honesty legend.** This matrix was produced by read-only source
 inspection of `codex/ui-foundation-u4-handoff` at the U3 closure records
@@ -103,10 +110,11 @@ dispatch), with `onInvalidate` after success.
 - **Editable/persistable**: the **declaration** (componentId, revision,
   actions, contracts) is canonical and persistable; component internals stay
   code (opaque by design — declared, not authored).
-- **This is the recommended route for catalog (bits-ui) components inside an
-  authored application**: value state lives in the component/app (Svelte
-  state), actions dispatch through the declared boundary. See the design
-  document.
+- **Historical recommendation, superseded for the required proof**: this
+  route remains a legitimate integration route and a labelled comparison
+  example, but the owner requires document-authored catalog components
+  (amendment route, section 5) -- value state and wiring in Svelte code do
+  not satisfy the authoring requirement.
 
 ### P4 — document extension bridge (props-only)
 
@@ -133,7 +141,8 @@ exact match) render with evaluated props; missing/mismatched →
   Consequence (do NOT assume otherwise): rendering a catalog Checkbox as an
   extension does NOT connect its `checked` value to authored state. Values
   and actions need P2 (document elements) or P3 (registered components).
-  Scoped amendment proposal: design document §5.
+  The amendment (section 5 below) closes this gap; the earlier sketch is
+  withdrawn.
 
 ### P5 — editor + preview embedding
 
@@ -153,12 +162,12 @@ snapshot via edit ops + commands; `EditorCanvas` forwards
 
 ## 3. Per-component status for the required U4 proofs
 
-| Required proof | Existing implementation | Route | Status | Evidence / gap |
-| --- | --- | --- | --- | --- |
-| Button with declared action, disabled/loading/feedback | `Button.svelte` (variant/type/disabled/onclick, data-action-* test hooks); **`ActionButton.svelte`** adds pending ("Working…", `aria-busy`, disabled-while-pending), declared-outcome feedback (`actionFeedback`, validated by `feedback.ts`), focus restore | P2 (document button + `click/submit → invokeAction`) or P3 (`ActionButton` inside ComponentSlot) | A/B | A: action bridge tests; ActionButton pending/feedback unit-covered in renderer suites. B: exact disabled/loading/feedback choreography inside the U4 consumer must be reproduced at runtime |
-| Catalog Checkbox with checked-value binding + submission | `catalog/checkbox.ts` (bits-ui Checkbox; VICT styling via ControlScope) | **P3** for catalog identity (value = app state; submission via declared action); P2 only gives a native-input checkbox (not the catalog component) | A (binding, native app) / B (submission wiring) | A: "keeps checkbox and immediate switch values independently bound" (`catalog.test.ts:29`). B: checked → declared submit action inside one registered surface — no recorded test; U4 must demonstrate |
-| Sidebar/AppShell composition, navigation, active selection, responsive | `AppShell.svelte` (brand/title/path/groups/breadcrumbs, `UiApplicationComposition`), responsive nav via `matchMedia` (720/960 breakpoints, mobile drawer) | P1 (native shell) or P3 (registered); composition data is declarative (`composition.ts`) | A/B | A: `navigation-group-order.test.ts`, shell suites in renderer tests. B: responsive drawer + active selection in the U4 consumer at 1440/1024/390 |
-| Rich Select or Dialog (value change / focus / portal) | `Select.svelte` (native select: value/options/invalid/describedBy/onChange); catalog `Select` + `Dialog`/`AlertDialog` (bits-ui: focus/portal/ARIA) | Select: P2 (document `change → setState`) or P1/P3. Dialog: **P1/P3 only** — document `portal` node + Overlay exist but portal+focus behavior with catalog Dialog is P3 territory | A (catalog select/dialog styled+usable; select native component tested) / B (portal+focus in authored surface) | A: catalog coverage file marks Select/Dialog/AlertDialog "styled and usable" with showcase examples. B: focus-trap/portal behavior wired to a declared action — U4 runtime proof |
+| Required proof | Existing implementation | Route today | Authored route (amendment) | Status today | Evidence / gap |
+| --- | --- | --- | --- | --- | --- |
+| Button with declared action, disabled/loading/feedback | `Button.svelte` (variant/type/disabled/onclick, data-action-* test hooks); **`ActionButton.svelte`** adds pending ("Working…", `aria-busy`, disabled-while-pending), declared-outcome feedback (`actionFeedback`, validated by `feedback.ts`), focus restore | P2 (document button + `click/submit → invokeAction`) or P3 (`ActionButton` inside ComponentSlot) | authored `vict.catalog.button`: `press`→invokeAction, `loading`←state | A/B comparison routes; **C** authored | A: action bridge tests; ActionButton pending/feedback unit-covered in renderer suites. B: exact disabled/loading/feedback choreography inside the U4 consumer must be reproduced at runtime |
+| Catalog Checkbox with checked-value binding + submission | `catalog/checkbox.ts` (bits-ui Checkbox; VICT styling via ControlScope) | **P3** for catalog identity (value = app state; submission via declared action); P2 only gives a native-input checkbox (not the catalog component) | authored `vict.catalog.checkbox`: `checked`←state, `checkedChange`→setState, distinct keys per instance | A (binding, native app) / B (submission wiring); **C** authored | A: "keeps checkbox and immediate switch values independently bound" (`catalog.test.ts:29`). B: checked → declared submit action inside one registered surface — no recorded test; U4 must demonstrate |
+| Sidebar/AppShell composition, navigation, active selection, responsive | `AppShell.svelte` (brand/title/path/groups/breadcrumbs, `UiApplicationComposition`), responsive nav via `matchMedia` (720/960 breakpoints, mobile drawer) | P1 (native shell) or P3 (registered); composition data is declarative (`composition.ts`) | authored `vict.catalog.appshell` with content slot fill; nav/active/responsive from existing composition semantics | A/B; **C** slot fill on the registered path | A: `navigation-group-order.test.ts`, shell suites in renderer tests. B: responsive drawer + active selection in the U4 consumer at 1440/1024/390 |
+| Rich Select or Dialog (value change / focus / portal) | `Select.svelte` (native select: value/options/invalid/describedBy/onChange); catalog `Select` + `Dialog`/`AlertDialog` (bits-ui: focus/portal/ARIA) | Select: P2 (document `change → setState`) or P1/P3. Dialog: **P1/P3 only** — document `portal` node + Overlay exist but portal+focus behavior with catalog Dialog is P3 territory | authored `vict.catalog.select` (`options`←array view-field, `valueChange`→setState) and `vict.catalog.dialog` (`open` loop, body slot fill, portal to ControlScope root) | A (catalog select/dialog styled+usable; select native component tested) / B (portal+focus); **C** authored | A: catalog coverage file marks Select/Dialog/AlertDialog "styled and usable" with showcase examples. B: focus-trap/portal behavior wired to a declared action — U4 runtime proof |
 
 ## 4. Explicit non-claims
 
@@ -175,3 +184,35 @@ snapshot via edit ops + commands; `EditorCanvas` forwards
 - Editor dist reuse: blocked by F3 until repaired.
 - All of the above is source/record evidence; **U4 runtime reproduction is
   the only reuse PASS**.
+
+## 5. Amended authoring route — contract support levels (all C today)
+
+[U4-COMPONENT-AMENDMENT](U4-COMPONENT-AMENDMENT.md) specifies the
+document-authored catalog route. Every piece below is **C — contract
+only; no implementation exists**. The amendment and its fixtures define the
+shape; U4 implements and records evidence before any of this may be
+claimed:
+
+| Contract piece | Package | Status |
+| --- | --- | --- |
+| `UiOutputDecl` / `UiOutputBinding`; descriptor `outputs`/`abi`; additive plan fields (`outputDecls`, `outputBindings`, instance-scope `slots`) | ui | C (types documented in the amendment; not in source) |
+| Validator/compile rules: declared-output resolution, payload typing, `$output` scoping, state/action target checks; diagnostics `UI_COMPONENT_OUTPUT_UNKNOWN`, `UI_COMPONENT_OUTPUT_PAYLOAD_INVALID`, `UI_COMPONENT_BINDING_INCOMPATIBLE`, `UI_COMPONENT_SLOT_REQUIRED` | ui | C |
+| `setOutputBinding` edit op | ui | C |
+| Svelte bridge: `UiSvelteComponentImplementation` (+`io.emit`, slot snippets), ABI gate, generation-gated stale-drop, rejected-emit handling | ui-svelte | C |
+| Catalog wrappers: button / checkbox / select / dialog / app-shell adapting public components | ui-svelte | C |
+| Inspector: descriptor-driven property editors; Behavior-tab output-connection editor (type-filtered state picker, action picker, `$output` mapping) | ui-editor | C |
+| Render diagnostics `UI_COMPONENT_UNAVAILABLE`, `UI_COMPONENT_ABI_UNSUPPORTED`, `UI_COMPONENT_SLOT_UNAVAILABLE`; stale `UI_COMPONENT_OUTPUT_STALE` | ui-svelte | C |
+
+Existing mechanisms the amended route builds on (verified this cycle):
+typed instance props with declaration closure (`UI_DOC_UNKNOWN_PROP`) plus
+literal type checks (`UI_EXPR_TYPE_MISMATCH`); instance `slots` fills
+resolved in the instance scope for stored definitions; occurrence identity
+(`UiOccurrenceRef`); exact-identity implementation resolution (fail-closed);
+canonical digests (`canonicalUiDocument`) folding into
+`computeApplicationVersion`; property-based document validation that
+tolerates additive optional fields (the schema guard
+`UI_DOC_UNKNOWN_SCHEMA` rejects any schema-string change — hence additive
+fields inside `vict.ui-document@1`, no version bump); `UiEditSession`
+transactions/undo/redo/two-phase save; composition semantics for shell
+navigation (`UiApplicationComposition`, renderer-resolved
+`UiShellLink.current`).

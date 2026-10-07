@@ -6,8 +6,11 @@ This document is the implementation-ready plan for U4 (frozen STAGES §6,
 criteria U4-01…U4-07). It was prepared on the documentation branch
 `codex/ui-foundation-u4-handoff` (from the U3 closure records `16df3bf…`) by
 the U3 stage manager, independently reviewed (see
-[U4-HANDOFF-REVIEW-01](reviews/u4/U4-HANDOFF-REVIEW-01.md)). Nothing in it
-authorizes implementation; the owner must explicitly authorize U4 using the
+[U4-HANDOFF-REVIEW-01](reviews/u4/U4-HANDOFF-REVIEW-01.md)), and **amended**
+by [U4-COMPONENT-AMENDMENT](U4-COMPONENT-AMENDMENT.md) on
+`codex/ui-foundation-u4-component-amendment` after the owner selected the
+stronger catalog-authoring requirement. Nothing in it authorizes
+implementation; the owner must explicitly authorize U4 using the
 authorization prompt at the end of this document.
 
 ## 0. Entry authority (verify live before starting)
@@ -27,34 +30,50 @@ untouched.
 ## 1. Proposed implementation branch and scope
 
 - **Branch**: `codex/ui-foundation-u4` from the then-current
-  `codex/ui-foundation-u3` tip (or from this handoff's records tip if the
-  owner prefers the docs ancestry). Worktree-isolated; never the main
-  checkout.
+  `codex/ui-foundation-u4-component-amendment` tip (the amended handoff
+  lineage). Worktree-isolated; never the main checkout.
 - **Allowed paths**:
   - `examples/u4-consumer/` (NEW — the independent clean consumer; the only
     new example),
-  - `packages/ui-editor/` — **packaging repair only** (F3): fix the four
+  - `packages/ui/` — the frozen amendment contract, additive only:
+    `UiOutputDecl`/`UiOutputBinding` types, descriptor `outputs`/`abi`
+    fields, `setOutputBinding` edit op, validator/compile rules and
+    diagnostics, plan-instruction additive fields (amendment §3–§5); pure
+    data, no Svelte/Bits UI imports,
+  - `packages/ui-svelte/` — the amended bridge: component-implementation
+    resolution (+ ABI gate, `io.emit` delivery, slot snippets,
+    generation-gated stale-drop), catalog wrappers (button, checkbox,
+    select, dialog, app-shell) adapting public components,
+  - `packages/ui-editor/` — (a) **packaging repair** (F3): fix the four
     TS2307 Svelte-declaration errors AND give the package an emitting build
-    (its build is currently `noEmit: true` typecheck-only and cannot produce
-    dist at all); no editor behavior/logic change. Fallback if emit-based
-    dist proves disruptive: adopt the ui-svelte-style source-exports
-    packaging — an explicit, recorded choice (see §10), not a silent one,
-  - `packages/*/test/`, `scripts/` — new packaging/consumer tests and the
-    pack script,
+    (its build is currently `noEmit: true` typecheck-only and cannot
+    produce dist at all); no editor behavior/logic change — this item is
+    independent of the amendment and must not be entangled with it;
+    fallback if emit-based dist proves disruptive: adopt the ui-svelte-style
+    source-exports packaging — an explicit, recorded choice, not a silent
+    one; (b) **amendment editor scope**: descriptor-driven property editors
+    and the Behavior-tab output-connection editor wired through
+    `UiEditSession`,
+  - `packages/*/test/`, `scripts/` — new packaging/consumer/contract tests
+    and the pack script,
   - `docs/ui-foundation/` — records (coverage, walkthrough, review reports),
   - `examples/README.md` + consumer README (documentation),
   - `.gitignore`/`.prettierignore` — scoped additions for artifacts/evidence.
 - **Out of scope (unauthorized)**: `apps/studio` integration, Stage 9,
-  merge to main, npm publication, deployment, any frozen-contract change
-  (document schema, extension bridge semantics, registry identity rules),
-  the §5 amendment of the design document.
+  merge to main, npm publication, deployment, any contract change beyond
+  the frozen amendment's enumerated additive fields (the document schema
+  string stays `vict.ui-document@1`; registry identity rules and preview
+  fencing stay governing), and any amendment extension beyond its
+  §8 coverage statement.
 
 ## 2. Mapping the frozen criteria to concrete work and evidence
 
 | Criterion | Concrete work | Evidence (recorded where) |
 | --- | --- | --- |
 | **U4-01 Packaging** | `npm pack` the closure set (§4); record tarball contents + public exports per package; verify no original-app-source imports or repo source aliases are possible from the tarballs | `docs/ui-foundation/reviews/u4/U4-COVERAGE.md` + `U4-ARTIFACTS.md` (contents listing, sizes, sha256s, exports table) |
-| **U4-02 Independent consumer** | `examples/u4-consumer/` installs packed tarballs from local copies; renders an authored document source (document elements + one extension); runs a declared preview interaction via `@victframework/ui-preview`; mounts `@victframework/ui-editor` editor modules (canvas/inspector) on that source; loads a document extension through the bridge; **plus the representative component proof** (§3) | consumer tests + browser screenshots (`reviews/u4/consumer/`) |
+| **U4-02 Independent consumer** | `examples/u4-consumer/` installs packed tarballs from local copies; renders an authored document source (document elements + one extension); runs a declared preview interaction via `@victframework/ui-preview`; mounts `@victframework/ui-editor` editor modules (canvas/inspector) on that source; loads a document extension through the bridge; **plus the required
+catalog-authoring proof** (§3, amendment §6) | consumer tests + browser
+screenshots (`reviews/u4/consumer/`) |
 | **U4-03 Build parity & bundle separation** | production build of the consumer; the finished app's render behavior equals the preview session's for the same source; **editor/simulator infrastructure absent from the application bundle** — prove by bundle inspection (no `ui-editor`/`ui-preview` module ids in the app chunk graph) | `U4-COVERAGE.md` §parity + build logs (`reviews/u4/evidence/`) |
 | **U4-04 Agent speed (unfamiliar-agent exercise)** | bounded brief (§7) given to an agent with no prior repo context; record elapsed time per step, setup commands run, validations performed, repairs needed, manual interventions | `reviews/u4/U4-AGENT-EXERCISE-01.md` (honest log; no invented speed target) |
 | **U4-05 Complete walkthrough** | final inspection/page/workspace use and required negatives demonstrated independently: approve flow with Button feedback; checklist checkbox → submit; AppShell nav incl. responsive; Dialog focus/portal; negatives (undeclared action refused; denied permission; stale source failsafe; missing extension placeholder) | `reviews/u4/U4-WALKTHROUGH.md` + screenshots; reproduced by the final verifier |
@@ -62,26 +81,38 @@ untouched.
 | **U4-07 Final gate** | fresh independent verifier (did not implement) at the exact final candidate; per-criterion PASS/FAIL/NOT DEMONSTRATED; affected post-review changes rechecked | `reviews/u4/U4-VERIFY-01.md` (+ recheck reports) |
 
 **Additional owner requirement (explicit, not relabellable):** the
-representative component proof of
-[U4-COMPONENT-INTEGRATION-DESIGN](U4-COMPONENT-INTEGRATION-DESIGN.md) §1 —
+**catalog-authoring proof** — the four authored catalog compositions of
+[U4-COMPONENT-AMENDMENT](U4-COMPONENT-AMENDMENT.md) §6 and
+[U4-COMPONENT-INTEGRATION-DESIGN](U4-COMPONENT-INTEGRATION-DESIGN.md) §1:
 Button (declared action, disabled/loading/feedback), catalog Checkbox
-(checked-value binding → declared submission), Sidebar/AppShell (navigation,
-active selection, responsive), Dialog + Select (value change, focus, portal).
-If any required behavior cannot be reproduced with the existing
-implementations, it is a **FAIL (or NOT DEMONSTRATED) of the reuse
-requirement** — it must not be downgraded to a minor finding to obtain a
-reuse PASS.
+(checked value connected to authored state, feeding a declared submission),
+AppShell/sidebar (declared navigation, active selection, responsive),
+Dialog + Select (meaningful value/open-state connections, declared
+confirmation, keyboard/focus/portal). For each control the founder-visible
+arc — **select → inspect/edit exposed properties and bindings → undo/redo →
+save → reload → use in the finished app — must be shown on the SAME catalog
+control**. A separate native control does not count as proving authoring
+support for the catalog control (native elements remain labelled comparison
+examples). A missing required interaction or editing path is **FAIL** or
+**NOT DEMONSTRATED** — it must not be downgraded to a non-blocking finding
+to obtain a reuse PASS.
 
-## 3. The representative component proof (summary; full design in the design doc)
+## 3. The required catalog-authoring proof (summary; full design in the design doc)
 
-Route: **registered components (P3) + document elements (P2)** — no frozen-
-contract changes. Each proof specifies canonical source representation,
-exposed properties, value/event connections, selection/source-occurrence
-ownership, Inspector editing + save/reload, theme mounting, keyboard/focus/
-disabled/error behavior, and the action boundary (see design doc §1.1–1.4).
-Component presentation internals stay opaque **when explicitly declared**;
-business state, action identities and their connections remain visible in
-the persisted application definition / document source.
+Route: **document-authored catalog components** per
+[U4-COMPONENT-AMENDMENT](U4-COMPONENT-AMENDMENT.md) — a component instance
+in canonical source (`vict.ui-document@1`, additive fields only) naming a
+registered catalog descriptor, with typed props/outputs/slots, authored
+`outputs` bindings to state or declared actions, Inspector editing through
+new closed edit ops, and identical replay in EditorCanvas and the finished
+application (same compiled plan, same renderer). Registered components (P3)
+and document elements (P2) remain legitimate routes and appear only as
+clearly-labelled comparison examples. Component rendering internals stay
+opaque **when explicitly declared** (`inspectionLimits`); authoritative
+values and business connections (props, bindings, output mappings, action
+ids) remain visible in canonical source. Contract fixtures:
+[fixtures/component-contract/](fixtures/component-contract/README.md)
+(contract examples, not runtime evidence).
 
 ## 4. Public artifacts and exports to consume (pack list)
 
@@ -132,15 +163,25 @@ links; no imports from other examples.
 **Positive** (each with recorded evidence): document source renders in the
 consumer; declared preview interaction runs (port-driven session); editor
 modules mount and save an edit back to the persisted source; extension loads
-(descriptor + implementation); the four component proofs of §3; preview ≡
-production render for the same source; bundle separation proven; unfamiliar-
-agent exercise completes.
+(descriptor + implementation); the four catalog-authoring proofs of §3,
+including the SAME-control arc (select → edit properties/binding →
+undo/redo → save → reload → finished app) and distinct-instance state
+isolation (two checkboxes, two keys); preview ≡ production render for the
+same source; bundle separation proven; unfamiliar-agent exercise completes.
 
 **Negative** (each must refuse visibly and safely): undeclared action from a
 registered surface (host refuses pre-dispatch); action denied by the
 boundary (permission) with declared feedback and unchanged state; missing or
-mismatched extension implementation (visible unavailable placeholder +
-diagnostic); extension descriptor declaring events/slots
+mismatched extension or component implementation (visible unavailable
+placeholder + diagnostic, `UI_COMPONENT_UNAVAILABLE`);
+descriptor/implementation ABI mismatch (`UI_COMPONENT_ABI_UNSUPPORTED`);
+instance output not declared by its descriptor
+(`UI_COMPONENT_OUTPUT_UNKNOWN`, author-time); incompatible output binding
+(state key type ≠ payload type, `UI_COMPONENT_BINDING_INCOMPATIBLE`,
+author-time); implementation emitting an undeclared or wrong-typed output
+(dropped by the bridge, `UI_COMPONENT_OUTPUT_REJECTED`); stale emit after
+document replacement (dropped, `UI_COMPONENT_OUTPUT_STALE`); extension
+descriptor declaring untyped events
 (`UI_RENDER_EXTENSION_INTERFACE_UNSUPPORTED`); corrupt/incompatible saved
 source (bytes preserved, disclosed fallback — consumer-side analogue of the
 U3 studio behavior); stale document revision on save (edit-session refusal).
@@ -149,12 +190,15 @@ U3 studio behavior); stale document revision on save (edit-session refusal).
 
 Give an agent with no prior repo context ONLY: the consumer README, the
 packed artifacts, and this task — "install the artifacts, launch the
-consumer, add one document-authored screen with a button wired to a declared
-action, and one registered catalog checkbox surface; verify both in the
-browser." Record: elapsed time per step, setup commands actually run,
-validations performed, repairs needed, manual interventions. No performance
-target is invented and no universal development-speed claim is made; the
-recorded numbers describe this one bounded exercise.
+consumer, and use the authoring experience to add one document-authored
+screen containing a catalog checkbox whose checked value is connected to
+authored state and feeds a declared submission, plus a button wired to a
+declared action; edit a property and a binding on each, undo once, save,
+reload, and verify both in the finished application." Record: elapsed time
+per step, setup commands actually run, validations performed, repairs
+needed, manual interventions. No performance target is invented and no
+universal development-speed claim is made; the recorded numbers describe
+this one bounded exercise.
 
 ## 8. Independent review, repair, recheck responsibilities
 
@@ -199,6 +243,14 @@ recorded numbers describe this one bounded exercise.
   bytes; NF-1 (this round-4 record) and NF-2 (branch push) are
   delivery-coupled completions, resolved by the delivery records commit
   and push of the documentation branch.
+- The component amendment receives its own independent contract review
+  (fresh reviewer, authored none of it). PENDING at this commit: the review
+  is in progress; on completion its report is imported verbatim at
+  `reviews/u4/U4-AMENDMENT-REVIEW-01.md`, findings repaired with affected
+  rechecks, and the freeze record written at
+  [U4-AMENDMENT-FREEZE](U4-AMENDMENT-FREEZE.md) (payload commit SHA +
+  SHA-256 pins + a separate fresh checker's reproduction). Until those
+  records exist, the amendment remains PROPOSED — not frozen.
 
 ## 9. Founder checkpoint and stop boundary
 
@@ -216,10 +268,10 @@ new authorization.
 | --- | --- | --- | --- |
 | ui-editor cannot produce a consumable build (four TS2307 declaration errors AND a `noEmit` typecheck-only build script) | U2 F3, re-confirmed U3 (V-F2), sharpened by handoff review round 1 | **repair as in-scope package maintenance**: emitting build (repo dist conventions or documented source-exports fallback) + the four declaration fixes; no behavior change; record before/after | U4-01/U4-02 packaging + consumer editor mount |
 | Fresh-checkout tests require built dependency artifacts (unit suite fails without dists) | U3 N-2 | pack script + consumer setup must encode the build order; record in README | U4-01 |
-| Extension/authoring evidence to reproduce if the bridge changes | U3 combined verifier (forgery matrix, state-values tests) | bridge is NOT changed in U4; if any bridge file changes, reproduce `document-extensions.test.ts` + forgery matrix + state-values tests | pre-merge check |
+| Extension/authoring evidence to reproduce if the bridge changes | U3 combined verifier (forgery matrix, state-values tests) | the amendment **does** change the bridge (additively): before the U4 gate, reproduce `document-extensions.test.ts` + the forgery matrix + state-values tests against the amended bridge, and record props-only extensions' unchanged fail-closed behavior | pre-merge check |
 | Saved-source diagnostic wiped on detail first mount (fails safe; studio discloses) | U3 V-F1 | consumer implements the disclosed-fallback correctly; the diagnostic-wipe fix remains owned by U3+ product-host UX (NOT a U4 obligation) | U4-05 walkthrough (consumer-side); V-F1 fix at next product-host pass |
 | Catalog family statuses (3 deferred families) | catalog-coverage.json | consumer uses only families recorded "styled and usable" / "supported direct composition" | U4-02 |
-| Frozen-contract changes (incl. design-doc §5 amendment) | this cycle | **not authorized in U4**; any amendment needs explicit owner authority | owner decision |
+| Frozen-contract changes | this cycle | authorized ONLY within the frozen amendment's enumerated additive fields (§1 allowed paths); everything else stays unauthorized | owner decision |
 
 ## 11. Exact deliverables and evidence locations
 
@@ -234,6 +286,13 @@ new authorization.
 - STATE / DECISIONS / U4-HANDOFF status reconciliation at closure
 
 ## 12. U4 implementation authorization prompt (copy-paste when ready)
+
+### 12.1 SUPERSEDED — the original prompt (kept so it can never be reused)
+
+> **SUPERSEDED by §12.2 — do not use.** It described the narrower
+> registered-component (P3) proof, which the owner has ruled does NOT
+> satisfy the catalog-authoring requirement. Any authorization quoting this
+> text authorizes an insufficient scope.
 
 > Authorize U4 for radz2291/vict-02 per docs/ui-foundation/U4-HANDOFF.md at
 > its recorded tip (PREPARED — IMPLEMENTATION NOT AUTHORIZED → AUTHORIZED).
@@ -252,3 +311,53 @@ new authorization.
 > affected rechecks, preserve all reports, and stop at the founder
 > checkpoint with acceptance PENDING. No npm publication, merge to main,
 > apps/studio integration, or deployment.
+
+### 12.2 CURRENT — the amended prompt (pinned to the amendment)
+
+> Authorize U4 for radz2291/vict-02 per docs/ui-foundation/U4-HANDOFF.md at
+> its recorded tip (PREPARED — IMPLEMENTATION NOT AUTHORIZED → AUTHORIZED)
+> together with the frozen component amendment
+> docs/ui-foundation/U4-COMPONENT-AMENDMENT.md (`vict.ui-component-abi@1`,
+> payload commit SHA recorded in docs/ui-foundation/U4-AMENDMENT-FREEZE.md).
+> Implement on a new isolated branch codex/ui-foundation-u4 from the amended
+> handoff lineage:
+> (1) implement the amendment's minimum scope exactly — additive neutral
+> model/compiler/validation in @victframework/ui (UiOutputDecl,
+> UiOutputBinding, setOutputBinding op, descriptor outputs/abi fields,
+> specified diagnostics; document schema string stays vict.ui-document@1),
+> the Svelte bridge in @victframework/ui-svelte (component-implementation
+> resolution with ABI gate, bounded io.emit delivery, generation-gated
+> stale-drop, instance-scope slot snippets, catalog wrappers for button /
+> checkbox / select / dialog / app-shell), and the Inspector property +
+> output-connection editors in @victframework/ui-editor wired through
+> UiEditSession;
+> (2) repair ui-editor packaging (F3: emitting build + the four TS2307
+> declaration fixes) as a separate, unentangled item;
+> (3) pack the closure set and build examples/u4-consumer strictly from
+> packed artifacts (no workspace links, source aliases or
+> original-example imports);
+> (4) deliver the REQUIRED catalog-authoring proof on the same catalog
+> control each time — select in the editor → inspect/edit exposed
+> properties and output bindings through the Inspector → undo/redo → save →
+> reload → use in the finished app — for Button (declared action,
+> disabled/loading/feedback), catalog Checkbox (checked value connected to
+> authored state, feeding a declared submission, two instances with distinct
+> keys), AppShell/sidebar (declared navigation, active selection,
+> responsive, authored content slot), and Dialog + Select (value/open-state
+> connections, declared confirmation, keyboard/focus, portal to the
+> ControlScope root); native controls appear only as labelled comparison
+> examples; a missing required interaction or editing path is FAIL or NOT
+> DEMONSTRATED, never a non-blocking finding;
+> (5) demonstrate the specified negatives (unknown output, incompatible
+> binding, missing/mismatched implementation, ABI mismatch, stale and
+> rejected emits) and reproduce the U3 extension evidence
+> (document-extensions tests, forgery matrix, state-values) against the
+> amended bridge;
+> (6) deliver preview/production parity with bundle separation, the
+> unfamiliar-agent bounded exercise (authoring-experience version), the
+> complete walkthrough with required negatives, and the handoff artifacts.
+> All seven frozen U4 criteria and the packaging/isolation requirements stay
+> governing. Then run the fresh independent U4-07 gate, repair in-scope
+> findings with affected rechecks, preserve all reports, and stop at the
+> founder checkpoint with acceptance PENDING. No npm publication, merge to
+> main, apps/studio integration, or deployment.

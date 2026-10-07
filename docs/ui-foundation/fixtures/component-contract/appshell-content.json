@@ -1,0 +1,43 @@
+{
+  "name": "appshell-slot-composition",
+  "proves": "registered app-shell with authored content slot fill; navigation/active/responsive from the EXISTING composition semantics (no new navigation contract)",
+  "descriptor": {
+    "id": "vict.catalog.appshell",
+    "revision": "1",
+    "abi": "vict.ui-component-abi@1",
+    "props": [{ "name": "title", "type": "string", "default": "" }],
+    "outputs": [],
+    "slots": ["content"],
+    "rendererImplementationId": "vict.svelte.catalog"
+  },
+  "composition": {
+    "application": { "navigation": "sidebar", "responsive": { "navigationAt": "medium" } },
+    "note": "UiApplicationComposition semantics: desktop arrangement + drawer below the navigationAt breakpoint; UiShellLink.current resolved by the renderer/adapter from the matched route (route ids stay with the renderer)"
+  },
+  "documentExcerpt": {
+    "nodes": {
+      "shell": {
+        "kind": "component",
+        "id": "shell",
+        "definitionId": "vict.catalog.appshell",
+        "revision": "1",
+        "props": { "title": { "type": "literal", "value": "Reviews" } },
+        "slots": {
+          "content": { "name": "content", "children": ["reviewHeading"] }
+        }
+      },
+      "reviewHeading": {
+        "kind": "element",
+        "id": "reviewHeading",
+        "tag": "h1",
+        "children": ["reviewHeadingText"]
+      },
+      "reviewHeadingText": {
+        "kind": "text",
+        "id": "reviewHeadingText",
+        "content": { "type": "literal", "value": "Review queue" }
+      }
+    }
+  },
+  "expected": "authored content renders inside the shell in editor canvas and finished app identically; active navigation highlight and responsive collapse come from the composition + route matching (matchMedia 720/960 behavior already implemented in AppShell.svelte); no shell outputs are required for this proof"
+}

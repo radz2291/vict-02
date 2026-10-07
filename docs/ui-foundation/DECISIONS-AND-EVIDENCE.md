@@ -838,6 +838,57 @@ dist build TS2307 ×4 (F3) + dist-dependent unit suite (N-2) must be resolved
 before any built-artifact reuse claim; V-F1 in the next product-host UX pass;
 see [U3-HANDOFF](U3-HANDOFF.md) closure table.
 
+## U4 component-integration amendment record (2026-10-07) — documentation/design only
+
+Owner decision: existing catalog components must participate in canonical
+VICT UI authoring — their meaningful properties, values and action
+connections inspectable and editable through the authoring experience; the
+registered-component proof with code-owned state/wiring does not satisfy
+this requirement; registered components remain a legitimate route but do not
+substitute for the document-authored catalog proof.
+
+Actions of record (all documentation/design; runtime + U4 implementation
+remain unauthorized):
+
+1. Branch `codex/ui-foundation-u4-component-amendment` created from the
+   prepared handoff records `cfbd6d3…`; all four entry SHAs verified live
+   (`cfbd6d3…`, `16df3bf…`, `952d92d…`, `9ec87f3…`). Original freeze bytes
+   preserved; the prior P3 recommendation retained as history and labelled
+   superseded-for-the-required-proof.
+2. [U4-COMPONENT-AMENDMENT](U4-COMPONENT-AMENDMENT.md) written — the
+   smallest reusable contract: canonical instance → compiled instruction →
+   registered implementation → typed output → authored state/action
+   connection, on the EXISTING channels (setState / declared-action
+   dispatch); additive optional fields only inside `vict.ui-document@1` /
+   `vict.ui-render-plan@1` (schema strings unchanged — verified: the
+   `UI_DOC_UNKNOWN_SCHEMA` guard rejects any schema-string change; document
+   validation is property-based and tolerates additive optional fields);
+   ABI marker `vict.ui-component-abi@1` carries cross-implementation
+   compatibility; implementations receive emit-only authority (no
+   dispatcher, no adapters); generation-gated stale-callback drop;
+   declared-slot composition for AppShell/Dialog (minimum necessary —
+   both proofs require authored children); new diagnostics specified
+   (unknown output, payload invalid, incompatible binding, slot
+   required/unavailable, component unavailable, ABI unsupported, stale,
+   rejected emit); digest/applicationVersion semantics stated from
+   verified mechanics (`canonicalUiDocument` → document identity entry →
+   `computeApplicationVersion`).
+3. Contract fixtures (examples, not runtime evidence):
+   [fixtures/component-contract/](fixtures/component-contract/README.md) —
+   valid checkbox/select/button/dialog/appshell connections, multiple
+   instances with distinct bindings, invalid/unknown outputs, incompatible
+   payloads/bindings, missing/mismatched implementations, slot composition.
+4. [U4-COMPONENT-INTEGRATION-DESIGN](U4-COMPONENT-INTEGRATION-DESIGN.md)
+   rewritten around the authoring route (P3/P2 kept as labelled
+   comparisons); [U4-COMPONENT-REUSE-MATRIX](U4-COMPONENT-REUSE-MATRIX.md)
+   gains the amendment support-level table (every new piece C — contract
+   only); [U4-HANDOFF](U4-HANDOFF.md) scope/acceptance/negatives/agent
+   brief updated; the old §12 authorization prompt SUPERSEDED in place
+   (marked unusable) and replaced by the amended prompt pinned to the
+   frozen amendment.
+5. The withdrawn "extension v2" sketch is replaced by the amendment's
+   implementable drafts; no text adopted unresolved.
+
 ## U4 handoff preparation record (2026-10-07) — implementation NOT authorized
 
 Documentation-only cycle on `codex/ui-foundation-u4-handoff` (from the U3

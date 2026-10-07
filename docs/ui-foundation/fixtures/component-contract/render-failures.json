@@ -1,0 +1,107 @@
+{
+  "name": "render-failure-matrix",
+  "proves": "fail-closed render behavior for missing/mismatched implementations, ABI mismatch, unsupported slot rendering — with the exact codes and never a silent fallback",
+  "cases": [
+    {
+      "case": "descriptor present, no implementation registered",
+      "compiled": {
+        "kind": "extension",
+        "nodeId": "cbA",
+        "extensionId": "vict.catalog.checkbox",
+        "revision": "1",
+        "propDecls": [],
+        "propValues": {}
+      },
+      "registered": { "descriptors": 1, "implementations": 0 },
+      "expectedCode": "UI_COMPONENT_UNAVAILABLE"
+    },
+    {
+      "case": "two implementations match the identity (competing registration)",
+      "compiled": {
+        "kind": "extension",
+        "nodeId": "cbA",
+        "extensionId": "vict.catalog.checkbox",
+        "revision": "1",
+        "propDecls": [],
+        "propValues": {}
+      },
+      "registered": { "descriptors": 1, "implementations": 2 },
+      "expectedCode": "UI_COMPONENT_UNAVAILABLE"
+    },
+    {
+      "case": "implementation revision differs from the descriptor revision",
+      "compiled": {
+        "kind": "extension",
+        "nodeId": "cbA",
+        "extensionId": "vict.catalog.checkbox",
+        "revision": "1",
+        "propDecls": [],
+        "propValues": {}
+      },
+      "registered": { "descriptors": 1, "implementations": 1, "implementationRevision": "2" },
+      "expectedCode": "UI_COMPONENT_UNAVAILABLE"
+    },
+    {
+      "case": "rendererImplementationId differs",
+      "compiled": {
+        "kind": "extension",
+        "nodeId": "cbA",
+        "extensionId": "vict.catalog.checkbox",
+        "revision": "1",
+        "propDecls": [],
+        "propValues": {}
+      },
+      "registered": {
+        "descriptors": 1,
+        "implementations": 1,
+        "rendererImplementationId": "other.vendor"
+      },
+      "expectedCode": "UI_COMPONENT_UNAVAILABLE"
+    },
+    {
+      "case": "descriptor abi != implementation abi",
+      "compiled": {
+        "kind": "extension",
+        "nodeId": "cbA",
+        "extensionId": "vict.catalog.checkbox",
+        "revision": "1",
+        "propDecls": [],
+        "propValues": {},
+        "outputDecls": [{ "name": "checkedChange", "payload": "boolean" }]
+      },
+      "registered": { "descriptors": 1, "implementations": 1, "abi": "vict.ui-component-abi@2" },
+      "expectedCode": "UI_COMPONENT_ABI_UNSUPPORTED"
+    },
+    {
+      "case": "declared+filled slot the implementation ABI cannot render",
+      "compiled": {
+        "kind": "extension",
+        "nodeId": "dlg",
+        "extensionId": "vict.catalog.dialog",
+        "revision": "1",
+        "propDecls": [],
+        "propValues": {},
+        "slots": { "body": [] }
+      },
+      "registered": {
+        "descriptors": 1,
+        "implementations": 1,
+        "abi": "vict.ui-component-abi@1",
+        "rendersSlots": false
+      },
+      "expectedCode": "UI_COMPONENT_SLOT_UNAVAILABLE"
+    },
+    {
+      "case": "stale emit after document/plan replacement",
+      "runtime": "implementation emits checkedChange after save/reload replaced the plan; occurrence unmounted; emit from a superseded revision instance",
+      "expectedCode": "UI_COMPONENT_OUTPUT_STALE",
+      "expectedBehavior": "dropped at the generation gate; dev-only diagnostic; no state write, no dispatch"
+    },
+    {
+      "case": "undeclared or wrong-typed emit",
+      "runtime": "implementation calls emit('toggled') or emit('checkedChange', 'truthy-string') against payload boolean",
+      "expectedCode": "UI_COMPONENT_OUTPUT_REJECTED",
+      "expectedBehavior": "dropped by the bridge before any binding resolution; dev-only diagnostic"
+    }
+  ]
+}

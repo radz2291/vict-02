@@ -1,0 +1,49 @@
+{
+  "name": "catalog-select-valid",
+  "proves": "array-typed prop bound to a typed view-field reference; value bound to state; valueChange output -> setState feeding a declared action input",
+  "descriptor": {
+    "id": "vict.catalog.select",
+    "revision": "1",
+    "abi": "vict.ui-component-abi@1",
+    "props": [
+      { "name": "options", "type": "array" },
+      { "name": "value", "type": "string", "default": "" },
+      { "name": "disabled", "type": "boolean", "default": false }
+    ],
+    "outputs": [
+      {
+        "name": "valueChange",
+        "payload": "string",
+        "description": "Fires with the newly selected value."
+      }
+    ],
+    "rendererImplementationId": "vict.svelte.catalog"
+  },
+  "applicationInputs": {
+    "viewFields": { "countries": "array" },
+    "actionIds": ["assignment.assignRegion"]
+  },
+  "documentExcerpt": {
+    "localState": {
+      "region": { "key": "region", "type": "string", "initial": "" }
+    },
+    "nodes": {
+      "selRegion": {
+        "kind": "component",
+        "id": "selRegion",
+        "definitionId": "vict.catalog.select",
+        "revision": "1",
+        "props": {
+          "options": { "type": "ref", "path": "view.countries" },
+          "value": { "type": "ref", "path": "state.region" }
+        },
+        "outputs": {
+          "valueChange": {
+            "setState": { "key": "region", "value": { "type": "ref", "path": "$output" } }
+          }
+        }
+      }
+    }
+  },
+  "expected": "options resolve from the declared array-typed view field (no array literal exists in the expression language); choosing a value writes state.region; a separate authored control dispatching assignment.assignRegion with input { regionId: $state region } sees the new value; survives save/reload"
+}

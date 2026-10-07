@@ -1,0 +1,63 @@
+{
+  "name": "dialog-slot-composition",
+  "proves": "declared slot fill authored in the instance scope; open state loop (openChange -> setState, open <- state); confirm control INSIDE the dialog body is an authored element with a declared-action interaction; portal to ControlScope root",
+  "descriptor": {
+    "id": "vict.catalog.dialog",
+    "revision": "1",
+    "abi": "vict.ui-component-abi@1",
+    "props": [
+      { "name": "title", "type": "string", "default": "" },
+      { "name": "open", "type": "boolean", "default": false }
+    ],
+    "outputs": [
+      {
+        "name": "openChange",
+        "payload": "boolean",
+        "description": "Fires for open requests and Escape/overlay closes."
+      }
+    ],
+    "slots": ["body"],
+    "rendererImplementationId": "vict.svelte.catalog"
+  },
+  "applicationInputs": { "actionIds": ["assignment.confirm"] },
+  "documentExcerpt": {
+    "localState": {
+      "dialogOpen": { "key": "dialogOpen", "type": "boolean", "initial": false }
+    },
+    "nodes": {
+      "assignDialog": {
+        "kind": "component",
+        "id": "assignDialog",
+        "definitionId": "vict.catalog.dialog",
+        "revision": "1",
+        "props": {
+          "title": { "type": "literal", "value": "Confirm assignment" },
+          "open": { "type": "ref", "path": "state.dialogOpen" }
+        },
+        "outputs": {
+          "openChange": {
+            "setState": { "key": "dialogOpen", "value": { "type": "ref", "path": "$output" } }
+          }
+        },
+        "slots": {
+          "body": { "name": "body", "children": ["confirmBtn"] }
+        }
+      },
+      "confirmBtn": {
+        "kind": "element",
+        "id": "confirmBtn",
+        "tag": "button",
+        "children": ["confirmText"],
+        "interactions": [
+          { "on": "click", "action": "invokeAction", "actionId": "assignment.confirm" }
+        ]
+      },
+      "confirmText": {
+        "kind": "text",
+        "id": "confirmText",
+        "content": { "type": "literal", "value": "Confirm" }
+      }
+    }
+  },
+  "expected": "openChange writes state.dialogOpen (open request and Escape/overlay close both route through the authored binding); dialog body is the authored slot fill resolved in the instance scope; the confirm child dispatches assignment.confirm via the existing element interaction channel; focus moves into the dialog on open and returns on close (implementation-provided, bits-ui focus scope); portal renders to the ControlScope root, not document.body"
+}
