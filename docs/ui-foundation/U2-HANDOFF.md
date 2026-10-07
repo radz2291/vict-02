@@ -1,9 +1,25 @@
 # U2 handoff — designer and workbench breadth
 
-**Status: IMPLEMENTED + INDEPENDENTLY VERIFIED (2026-10-06). Verified code candidate
-`19bb4b98a18f86bb1193db5a45f8c33e1c5c9af5` (round-1 candidate `ebac7bf…` FAILED both
-independent reviews; repairs independently rechecked). U1 ACCEPTED by the owner at
-`345b5c62…`. Awaiting the FOUNDER checkpoint — owner experience acceptance PENDING.**
+**Status: CLOSED — PASS WITH NON-BLOCKING FINDINGS (2026-10-07). Owner experience
+acceptance RECORDED for the integrated Inspector. Current combined implementation:
+`471952bb5e9810ec30e370658f812cf9ae6a4eca` (independently verified; repaired from the
+round-1 combined FAIL at `2a1ab4c0…`); closure/acceptance record:
+[U2-OWNER-ACCEPTANCE-01](reviews/u2/U2-OWNER-ACCEPTANCE-01.md); integration record:
+[U2-UX-INTEGRATION-01](reviews/u2/U2-UX-INTEGRATION-01.md); next:
+[U3-HANDOFF](U3-HANDOFF.md) PREPARED — IMPLEMENTATION NOT AUTHORIZED.**
+
+> **Historical vs current.** The candidate documented below (`19bb4b9…`, with round-1
+> `ebac7bf…` FAILED and independently rechecked repairs) was the **pre-integration U2
+> stage result** — its verdicts and reports remain preserved evidence of that exact
+> snapshot. The **current result** is the combined candidate: the owner-authorized
+> Inspector/Layers UX track (`codex/ui-foundation-u2-inspector-ux`, tested `1bd745a…`,
+> records `f31477d…`) merged with lineage preserved (merge `1a61389…` = `e0893fe… ×
+> f31477d…`), manager repairs and a bounded repair round later (`2a1ab4c0…` round-1
+> combined verification FAIL — canvas selection outline silently inert since U1-era
+> `7f49cd0`; repaired at `471952b…` — final independent verdict "PASS WITH NON-BLOCKING
+> FINDINGS", [U2-COMBINED-VERIFY-05](reviews/u2/U2-COMBINED-VERIFY-05.md), sha256
+> `6ac54af9…`). Nothing below is retracted; sections describe the historical stage
+> evidence unless explicitly marked current.
 
 ## Baseline and authority
 
@@ -69,7 +85,7 @@ goes in public package modules; the host composes them.
 - Document safe orchestration for hosts using the lower-level session API
   (save-window ownership, stage/commit, releaseSaveWindow).
 
-## Verification plan — EXECUTED (2026-10-06)
+## Verification plan — EXECUTED (2026-10-06, extended 2026-10-07)
 
 1. ✅ Independent technical challenge at `ebac7bf` (FAIL: pseudo CSS blocker, red
    integration gate; U2-01/02/04/07/08 passed) — report preserved.
@@ -79,11 +95,25 @@ goes in public package modules; the host composes them.
    "U2-RECHECK: PASS WITH FINDINGS" + independent experience re-verification
    "U2-EXPERIENCE-RECHECK: PASS WITH FINDINGS" at the required sizes — reports + evidence
    preserved under `reviews/u2/`.
-4. Performance measured within all frozen budgets (`U2-PERFORMANCE.json`).
+4. ✅ Performance measured within all frozen budgets (`U2-PERFORMANCE.json`).
+5. ✅ **(Current)** Inspector/Layers integration verified end-to-end: manager integration
+   records [U2-UX-INTEGRATION-01](reviews/u2/U2-UX-INTEGRATION-01.md); combined round-1
+   independent verification at `2a1ab4c0…` **FAIL** (outline finding; report preserved
+   verbatim with full evidence); bounded repairs at `471952b…`; combined round-2
+   independent re-verification **PASS WITH NON-BLOCKING FINDINGS**
+   ([U2-COMBINED-VERIFY-05](reviews/u2/U2-COMBINED-VERIFY-05.md)) — all eight journeys,
+   zero page exceptions, battery reproduced (renderer 125/125, unit 70/70, integration
+   4/4, design 12/12, root typecheck 0, check:ui 0/2, broad Svelte check 0/2 known,
+   design tsc 0, production build).
+6. ✅ **(Current)** Owner acceptance recorded and stage closed:
+   [U2-OWNER-ACCEPTANCE-01](reviews/u2/U2-OWNER-ACCEPTANCE-01.md).
 
-## Checkpoint
+## Checkpoint — SATISFIED (2026-10-07)
 
-The owner checkpoint is a founder-facing walkthrough (~10 min, ordinary tasks, plain
+The owner checkpoint was a founder-facing walkthrough (~10 min, ordinary tasks, plain
 labels; advanced detail optional). Independent technical/experience verdicts are
-necessary but NOT sufficient: **owner experience acceptance remains pending** at the end
-of this stage.
+necessary but NOT sufficient. **The owner reviewed and approved the integrated Inspector
+experience (the walkthrough as amended); acceptance is recorded with exact scope in
+[U2-OWNER-ACCEPTANCE-01](reviews/u2/U2-OWNER-ACCEPTANCE-01.md), and U2 is closed as PASS
+WITH NON-BLOCKING FINDINGS.** Retained findings, owners and next checks are in that
+record. U3 remains unauthorized until the owner accepts [U3-HANDOFF](U3-HANDOFF.md).

@@ -653,6 +653,46 @@ Svelte dev-mode studio warning) are recorded in the round-2 report. Retained fro
 in-memory store (U3-05), diagnostic code-name reconciliation vs PROOF-DESIGN sketches,
 host-side timing method, extension placeholders (U2+).
 
+## U2 Inspector/Layers integration and combined verification (2026-10-07)
+
+The owner-authorized Inspector/Layers UX track (`codex/ui-foundation-u2-inspector-ux`,
+tested `1bd745a…`, records `f31477d…`) was integrated into `codex/ui-foundation-u2` with
+lineage preserved (merge `1a61389…` = `e0893fe… × f31477d…`). Integration, manager-owned
+repairs (broad Svelte check 23 errors → 0/2 known; unitless-CSS and mid-typing field-identity
+defects fixed and regression-pinned; checksum reconciliation A9E855… restored byte-exact)
+at `2a1ab4c…`; fresh independent verification there **FAILED** (canvas selection outline
+silently inert since U1-era `7f49cd0` — never previously tested; report preserved verbatim,
+sha256 `4f432023…`). Bounded repairs (outline via `data-ui-selected` + static CSS,
+regression-pinned; ≤860px workbench layout) at `471952b…`: fresh independent re-verification
+**PASS WITH NON-BLOCKING FINDINGS** (repairs confirmed 14/14 and 10/10; journeys E1–E5/E7
+identical; zero page exceptions; full battery reproduced; sha256 `6ac54af9…`). Full record:
+[U2-UX-INTEGRATION-01](reviews/u2/U2-UX-INTEGRATION-01.md). Retained: F3 (ui-editor dist
+build TS2307), F4 (Inspector scope persistence), NF-2 (favicon 404, pre-existing); NF-1
+(format-check evidence scope) fixed records-only.
+
+## U2 owner acceptance and stage closure (2026-10-07)
+
+The owner APPROVED the integrated Inspector (relayed by the operator, 2026-10-07). Exact
+recorded scope: the founder-facing [U2-WALKTHROUGH](U2-WALKTHROUGH.md) experience as
+amended for the integrated Inspector/Layers (friendly labels, scope-driven Layers with
+search/keyboard selection, visible canvas selection outline, Browser-now effective values,
+per-control Reset, linked spacing, shared/instance scope with the Adaptations override,
+first-screen Inspector at 390), against combined implementation `471952bb…` as documented
+at records `1fe5383…`. NOT claimed as owner-reviewed: `/editor-review` standalone, any U3
+experience, `apps/studio`, U4 packaging.
+
+This satisfied the only pending U2 owner item (the founder checkpoint; U1 was already
+accepted at `345b5c62…`; U3/U4 never reached owner checkpoints), so **U2 is CLOSED as PASS
+WITH NON-BLOCKING FINDINGS** — acceptance and disposition record:
+[U2-OWNER-ACCEPTANCE-01](reviews/u2/U2-OWNER-ACCEPTANCE-01.md). Retained findings carry
+owners and next checks: F3 → **U4 packaging readiness** (must be resolved before any
+built-artifact reuse claim); F4 → U3+ UX iteration; NF-2 → U3 host polish; R2-1 in-memory
+store desync → **U3-05** durability slice; R2-2/R2-3 → U3 polish; carried NOT-DEMONSTRATED
+(literal browser-process restart) → U3-05 restart evidence requirement. Closure authorizes
+nothing by itself: [U3-HANDOFF](U3-HANDOFF.md) is PREPARED — IMPLEMENTATION NOT AUTHORIZED;
+U4, `apps/studio`, Stage 9, merge-to-main, force-push, publication and deployment remain
+unauthorized.
+
 ## Future evidence entry format
 
 Identity: repository, branch, full base/candidate/reviewer SHAs, environment and contract pins.

@@ -1,9 +1,41 @@
 # UI foundation — current state
 
-**2026-10-07 — U2 INSPECTOR/LAYERS UX INTEGRATED; combined candidate
-independently verified PASS WITH NON-BLOCKING FINDINGS at
-`471952bb5e9810ec30e370658f812cf9ae6a4eca` (after one bounded repair round);
-awaiting the FOUNDER checkpoint — owner experience acceptance PENDING.**
+**2026-10-07 — U2 CLOSED: PASS WITH NON-BLOCKING FINDINGS; owner acceptance
+RECORDED for the integrated Inspector. U3 handoff PREPARED — IMPLEMENTATION
+NOT AUTHORIZED.**
+
+The owner approved the integrated Inspector/Layers workbench experience
+(exact scope in [U2-OWNER-ACCEPTANCE-01](reviews/u2/U2-OWNER-ACCEPTANCE-01.md):
+the founder-facing [U2-WALKTHROUGH](U2-WALKTHROUGH.md) as amended — friendly
+labels, scope-driven Layers with search/keyboard selection, visible selection
+outline, Browser-now effective values, Reset, linked spacing, shared/instance
+scope with the Adaptations override, first-screen Inspector at 390). That was
+the only pending U2 owner item, so **U2 is formally closed as PASS WITH
+NON-BLOCKING FINDINGS**: independent lineage `e0893fe… × f31477d… → 1a61389… →
+2a1ab4c0… (round-1 FAIL, preserved) → 471952bb… (final verdict`
+[U2-COMBINED-VERIFY-05](reviews/u2/U2-COMBINED-VERIFY-05.md)`, sha256
+6ac54af9…)`; records at `1fe5383…` and this closure commit. Retained findings
+have owners and next checks (F3 ui-editor dist build → **U4 packaging
+readiness**; F4 Inspector scope persistence → U3+ UX iteration; NF-2 favicon
+404 → U3 polish; R2-1 store desync → **U3-05**; R2-2/R2-3 → U3 polish;
+carried NOT-DEMONSTRATED: literal restart → U3-05 requirement). Closure
+authorizes nothing by itself.
+
+**Next: the owner decides whether to authorize U3**
+([U3-HANDOFF](U3-HANDOFF.md) — PREPARED — IMPLEMENTATION NOT AUTHORIZED:
+inspection journey, eight-scenario matrix, runtime domain checks, durable
+replacement surviving restart through the declared boundary, adapter
+conformance, honest coverage labels, founder walkthrough). U3/U4
+implementation, `apps/studio`, Stage 9, merge to main, publication and
+deployment remain unauthorized.
+
+---
+
+**2026-10-07 (superseded by the closure record above) — U2 INSPECTOR/LAYERS UX
+INTEGRATED; combined candidate independently verified PASS WITH NON-BLOCKING
+FINDINGS at `471952bb5e9810ec30e370658f812cf9ae6a4eca` (after one bounded
+repair round); awaiting the FOUNDER checkpoint — owner experience acceptance
+PENDING.**
 
 The owner-authorized Inspector/Layers UX track (Codex, branch
 `codex/ui-foundation-u2-inspector-ux`, final records `f31477d8…`, independently
@@ -157,7 +189,7 @@ for U1: COMPLETE — owner accepted U1 at the verified candidate and authorized 
 of this file).**
 
 | U1 rendering/editing loop | **ACCEPTED by owner 2026-10-06** (handoff [U1-HANDOFF](U1-HANDOFF.md)) | Accepted candidate `345b5c62…`; verdict "U1-ROUND4 GATE: PASS" ([U1-ROUND4-REVIEW-05](reviews/U1-ROUND4-REVIEW-05.md)); NF-1..3 non-blocking notes retained with U2 | Closed at U2 start; U3 unauthorized |
-| U2 designer/workbench breadth + Inspector/Layers UX | **INTEGRATED + INDEPENDENTLY VERIFIED (PASS WITH NON-BLOCKING FINDINGS at `471952b…`) — founder checkpoint pending** (handoff [U2-HANDOFF](U2-HANDOFF.md), integration record [U2-UX-INTEGRATION-01](reviews/u2/U2-UX-INTEGRATION-01.md)) | Combined candidate lineage `e0893fe… × f31477d… → 1a61389… → 2a1ab4c… → 471952b…`; round-1 FAIL at `2a1ab4c0…` preserved ([U2-COMBINED-VERIFY-04](reviews/u2/U2-COMBINED-VERIFY-04.md)); final "PASS WITH NON-BLOCKING FINDINGS" ([U2-COMBINED-VERIFY-05](reviews/u2/U2-COMBINED-VERIFY-05.md)); earlier U2 candidates `19bb4b9…`/`83ba87f…` and UX rounds (ROUND-1 FAIL, ROUND-2, iteration-2, n1-candidate FAIL, n1-recheck PASS) all preserved; broad Svelte check now 0 errors / 2 known warnings; N1/N2 notes retained | **Founder walks [U2-WALKTHROUGH](U2-WALKTHROUGH.md)** → owner experience acceptance; U3/U4 unauthorized |
+| U2 designer/workbench breadth + Inspector/Layers UX | **CLOSED — PASS WITH NON-BLOCKING FINDINGS + owner acceptance RECORDED (2026-10-07)** (handoff [U2-HANDOFF](U2-HANDOFF.md), integration record [U2-UX-INTEGRATION-01](reviews/u2/U2-UX-INTEGRATION-01.md), acceptance + closure [U2-OWNER-ACCEPTANCE-01](reviews/u2/U2-OWNER-ACCEPTANCE-01.md)) | Combined candidate lineage `e0893fe… × f31477d… → 1a61389… → 2a1ab4c… → 471952b…`; round-1 FAIL at `2a1ab4c0…` preserved ([U2-COMBINED-VERIFY-04](reviews/u2/U2-COMBINED-VERIFY-04.md)); final "PASS WITH NON-BLOCKING FINDINGS" ([U2-COMBINED-VERIFY-05](reviews/u2/U2-COMBINED-VERIFY-05.md)); earlier U2 candidates `19bb4b9…`/`83ba87f…` and UX rounds (ROUND-1 FAIL, ROUND-2, iteration-2, n1-candidate FAIL, n1-recheck PASS) all preserved; broad Svelte check now 0 errors / 2 known warnings; N1/N2 notes retained | Owner walked the integrated Inspector ([U2-WALKTHROUGH](U2-WALKTHROUGH.md)) and approved it; retained findings carried to U3/U4 per the acceptance record; **U3 unauthorized until the owner accepts [U3-HANDOFF](U3-HANDOFF.md)** |
 Fresh independent verification of candidate `c1e3d0fec930a2a11341181061d537f16ec065ab`
 ([U1-ROUND3-REVIEW-04.md](reviews/U1-ROUND3-REVIEW-04.md), sha256
 `fd151713aa4345eb0653c648eace64eeb4a774cc8a796d0f74c760bd082cd12b`; 11 evidence screenshots;

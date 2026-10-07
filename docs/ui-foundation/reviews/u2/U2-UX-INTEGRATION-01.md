@@ -146,3 +146,16 @@ FAIL at `2a1ab4c0` stands preserved in U2-COMBINED-VERIFY-04.md.
 follow-up commit on top). Owner experience acceptance and U2 closure remain
 PENDING; this verdict does not authorize U3/U4, apps/studio changes, merge to
 main, publication or deployment.
+
+## Round 4 — owner acceptance recorded; U2 closed (2026-10-07)
+
+The owner approved the integrated Inspector (exact scope recorded in
+[U2-OWNER-ACCEPTANCE-01](U2-OWNER-ACCEPTANCE-01.md)). That satisfied the only
+pending U2 owner item, so **U2 is formally CLOSED as PASS WITH NON-BLOCKING
+FINDINGS** at combined implementation `471952bb…` (records `1fe5383…` and the
+closure commit). This integration record remains the manager-side account of
+the integration and repair cycle; the acceptance record owns the closure
+statement and the retained-findings disposition table. U3 is PREPARED —
+IMPLEMENTATION NOT AUTHORIZED ([U3-HANDOFF](../../U3-HANDOFF.md)); nothing in
+this closure authorizes U3/U4 implementation, `apps/studio` changes, merge to
+main, publication or deployment.
