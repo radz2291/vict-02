@@ -1,8 +1,10 @@
 # U2 UX integration — manager record 01 (combined candidate)
 
-**Status: COMBINED CANDIDATE BUILT + BUILDER-VERIFIED (2026-10-07); fresh
-independent verification of the exact pushed candidate is the next gate; owner
-experience acceptance and U2 closure remain PENDING.**
+**Status: U2 CLOSED — PASS WITH NON-BLOCKING FINDINGS; owner acceptance
+RECORDED (2026-10-07, [U2-OWNER-ACCEPTANCE-01](U2-OWNER-ACCEPTANCE-01.md)).
+This record below is the round-by-round manager account (rounds 1–3
+verification + repairs; round 4 closure); its early-round status lines are
+historical.**
 
 ## Lineage
 

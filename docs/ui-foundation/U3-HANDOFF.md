@@ -15,7 +15,7 @@ any task, and stop/reconcile if any has moved:
 | Work branch (to be created at authorization) | `codex/ui-foundation-u3`, worktree `C:/Users/RZ1/Desktop/RZ/vict-02-u3` (must not exist before authorization; verify) |
 | Entry tip | `codex/ui-foundation-u2` at `1fe5383c085ef5c2a2289c54116c8762467c7257` (verify live via `git ls-remote`) |
 | U2 closure prerequisite (STAGES §5) | U2 CLOSED — PASS WITH NON-BLOCKING FINDINGS at implementation `471952bb5e9810ec30e370658f812cf9ae6a4eca`; acceptance/closure [reviews/u2/U2-OWNER-ACCEPTANCE-01](reviews/u2/U2-OWNER-ACCEPTANCE-01.md) |
-| Frozen amended U0 contract | `9ec87f3e7eb8eb7793f972111258940aac635346` (tip of `codex/ui-foundation-u0`; ancestor of the U1/U2 tracks) |
+| Frozen amended U0 contract | `9ec87f3e7eb8eb7793f972111258940aac635346` (frozen contract commit on `codex/ui-foundation-u0`; the branch tip has since moved to confirmation-only records commits `9734690…` with the frozen governing docs byte-identical — see [reviews/u2/U2-CLOSURE-CHECK-01](reviews/u2/U2-CLOSURE-CHECK-01.md); ancestor of the U1/U2 tracks) |
 | Freeze record | `ea47edd68e302dc5b6cacb2e43635d11781619ad` |
 | Main baseline (must remain untouched) | `4d2df037d8a82d36c60bf1bff16919650643ce22` |
 | Governing documents | Root `AGENTS.md`; `docs/ui-foundation/AGENTS.addendum.md`; frozen `STAGES-AND-VERIFICATION.md` (§1 discipline, §5 = U3-01…U3-08, §7–§9), `PROOF-DESIGN.md` (§1 inspection domain operations; §2 scenario matrix; durable-replacement design), `API-SPEC.md` (§6.2 scenario orchestration; §10 coverage/fixtures), `CONTRACTS.md`, `PRODUCT-ARCHITECTURE.md` (§6 scenarios); `STATE.md`; `DECISIONS-AND-EVIDENCE.md`; [U2-HANDOFF](U2-HANDOFF.md) |

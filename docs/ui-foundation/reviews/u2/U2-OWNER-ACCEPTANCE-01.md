@@ -91,6 +91,16 @@ referenced reports):
 | R2-2/R2-3 (from U1, carried): scenario-note live-region role; benign dev-mode warning | Minor a11y/dev-noise items in U1 surfaces | U3 host polish | U3-08 experience review |
 | NOT DEMONSTRATED (carried honestly): literal browser-process restart; owner review of experiences beyond the recorded scope | No claim made | U3 (restart evidence is a U3-05 requirement) | U3-05 |
 
+### Records check
+
+The closure and handoff records (this record, U3-HANDOFF, and the four
+reconciled documents) passed a fresh independent documentation-only check:
+"CLOSURE-AND-HANDOFF RECORDS: PASS WITH NON-BLOCKING FINDINGS" at candidate
+`4c72228b…` — [U2-CLOSURE-CHECK-01](U2-CLOSURE-CHECK-01.md) (sha256
+`aeebf28b7042b994048d6101b597241a194f09f621f97853d5e64437e24ba346`). Its two
+MINOR findings (u0 tip wording; stale status banner atop the integration
+record) are fixed in this commit.
+
 ### What closure authorizes
 
 Nothing by itself. Per STAGES §1, a passing stage permits dependent work only
