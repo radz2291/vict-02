@@ -70,3 +70,39 @@ n1-candidate FAILs) and every earlier verdict remain preserved.
 Separate branch verdicts do not establish that the combined build passes: the
 fresh independent verification of the exact combined candidate does that work
 next, followed by the founder checkpoint.
+
+## Round 2 — independent verdict on 2a1ab4c and bounded repairs
+
+Fresh independent verification at exact pushed candidate
+`2a1ab4c0843ac0512ce23519bbe3569d8479a116` (separate detached worktree, own
+port 5210 and Chrome profile): **FAIL** — one blocking finding (F-1: canvas
+selection outline silently never rendered; a Svelte expression inside the
+markup style element is not interpolated, so the selector never matched;
+byte-identical since U1-era `7f49cd0` and never previously tested), plus
+non-blocking F-2 (390×844 first-screen reachability of the Text size control on
+the workbench), F-3 (pre-existing ui-editor workspace build TS2307, not a
+claimed gate) and F-4 (Inspector scope persistence sharp edge). All lineage,
+checksums and automated check numbers were independently reproduced; seven of
+eight demonstrations passed in full. Report imported verbatim:
+[U2-COMBINED-VERIFY-04.md](U2-COMBINED-VERIFY-04.md) (sha256
+4f43202343096cb60dcea89cf102c77ceaa4503d2364ffb8bd91578848061957) with all
+evidence under [combined-verify-evidence/](combined-verify-evidence/).
+
+Manager repairs at the follow-up candidate (this commit):
+
+- **F-1**: EditorCanvas marks the exact selected occurrence with
+  `data-ui-selected` (effect + tick; moved on selection/source changes) and a
+  static CSS rule draws the outline; regression-pinned (renderer 125/125).
+  Builder browser recheck: solid 2px outline via mouse AND keyboard selection,
+  exactly one marked element, zero page exceptions.
+- **F-2**: the ≤860px workbench layout bounds the canvas region so it scrolls
+  internally; the Inspector with the Text size control now starts within the
+  first screen at 390×844 (observed y≈757), no horizontal overflow.
+- F-3/F-4 remain recorded, non-blocking.
+
+Battery at the repaired candidate: root typecheck 0; check:ui 0/2 known; broad
+svelte-check 0/2 known; renderer 125/125; unit 70/70; design 12/12; integration
+4/4; design tsc + production build; format clean. Selected-state screenshots
+refreshed (outline now visible). Fresh independent re-verification of the exact
+repaired candidate is the next gate; the combined candidate verdict remains
+FAIL-then-pending until that re-verification returns.

@@ -1,0 +1,166 @@
+{
+  "journey": "E4 browser-now vs actual across states",
+  "steps": {
+    "railBefore": {
+      "spans": [
+        "Documents",
+        "Edit",
+        "Status",
+        "Saved stored revision 1"
+      ],
+      "buttons": {
+        "Service page": false,
+        "Graph fixture": false,
+        "Undo": true,
+        "Redo": true,
+        "Save": false,
+        "Reload stored": false
+      }
+    },
+    "activityBefore": [],
+    "detailsA1440": [
+      "Browser now: 56px",
+      "Shared source src.hero-title: clamp(34px, 5vw, 56px); Shared source src.hero-title-narrow · condition cond.narrow: 30px"
+    ],
+    "computedA1440": {
+      "found": true,
+      "tag": "H1",
+      "value": "56px",
+      "outline": "rgb(28, 42, 36) none 2.4px"
+    },
+    "detailsB1024": [
+      "Browser now: 51.2px",
+      "Shared source src.hero-title: clamp(34px, 5vw, 56px); Shared source src.hero-title-narrow · condition cond.narrow: 30px"
+    ],
+    "computedB1024": {
+      "found": true,
+      "tag": "H1",
+      "value": "51.2px",
+      "outline": "rgb(28, 42, 36) none 2.4px"
+    },
+    "detailsC390container": [
+      "Browser now: 51.2px",
+      "Shared source src.hero-title: clamp(34px, 5vw, 56px); Shared source src.hero-title-narrow · condition cond.narrow: 30px"
+    ],
+    "computedC390container": {
+      "found": true,
+      "tag": "H1",
+      "value": "51.2px",
+      "outline": "rgb(28, 42, 36) none 2.4px"
+    },
+    "frameWidth390": 391.6000061035156,
+    "detailsD390window": [
+      "Browser now: 30px",
+      "Shared source src.hero-title: clamp(34px, 5vw, 56px); Shared source src.hero-title-narrow · condition cond.narrow: 30px"
+    ],
+    "computedD390window": {
+      "found": true,
+      "tag": "H1",
+      "value": "30px",
+      "outline": "rgb(28, 42, 36) none 2.4px"
+    },
+    "borderDetailsNormal": [
+      "Browser now: rgb(217, 210, 197)",
+      "Shared source src.card-hover · hover: token color.accent"
+    ],
+    "borderComputedNormal": {
+      "found": true,
+      "tag": "ARTICLE",
+      "value": "rgb(217, 210, 197)",
+      "outline": "rgb(28, 42, 36) none 2.4px"
+    },
+    "borderDetailsHover": [
+      "Browser now: rgb(31, 111, 84)",
+      "Shared source src.card-hover · hover: token color.accent"
+    ],
+    "borderComputedHover": {
+      "found": true,
+      "tag": "ARTICLE",
+      "value": "rgb(31, 111, 84)",
+      "outline": "rgb(122, 167, 255) dashed 0.8px"
+    },
+    "borderDetailsLeave": [
+      "Browser now: rgb(217, 210, 197)",
+      "Shared source src.card-hover · hover: token color.accent"
+    ],
+    "borderComputedLeave": {
+      "found": true,
+      "tag": "ARTICLE",
+      "value": "rgb(217, 210, 197)",
+      "outline": "rgb(28, 42, 36) none 2.4px"
+    },
+    "railAfter": {
+      "spans": [
+        "Documents",
+        "Edit",
+        "Status",
+        "Saved stored revision 1"
+      ],
+      "buttons": {
+        "Service page": false,
+        "Graph fixture": false,
+        "Undo": true,
+        "Redo": true,
+        "Save": false,
+        "Reload stored": false
+      }
+    },
+    "activityAfter": [
+      "info: 08:46:21 Selected doc.northwind|svc.card|svc.cardKitchens@def.serviceCard",
+      "info: 08:46:15 Selected doc.northwind|svc.heroTitle"
+    ],
+    "samples": [
+      {
+        "state": "window 1440x900",
+        "annotation": "56px",
+        "actual": "56px",
+        "agree": true
+      },
+      {
+        "state": "window 1024x800",
+        "annotation": "51.2px",
+        "actual": "51.2px",
+        "agree": true
+      },
+      {
+        "state": "preview 390 (container)",
+        "annotation": "51.2px",
+        "actual": "51.2px",
+        "agree": true
+      },
+      {
+        "state": "window 390x844 (media narrow)",
+        "annotation": "30px",
+        "actual": "30px",
+        "agree": true
+      },
+      {
+        "state": "card normal",
+        "annotation": "rgb(217, 210, 197)",
+        "actual": "rgb(217, 210, 197)",
+        "agree": true
+      },
+      {
+        "state": "card hover",
+        "annotation": "rgb(31, 111, 84)",
+        "actual": "rgb(31, 111, 84)",
+        "agree": true
+      },
+      {
+        "state": "card leave",
+        "annotation": "rgb(217, 210, 197)",
+        "actual": "rgb(217, 210, 197)",
+        "agree": true
+      }
+    ],
+    "assert": {
+      "allSamplesAgree": true,
+      "railUnchangedByMeasuring": true,
+      "noAppliedCommands": true
+    },
+    "verdict": "PASS"
+  },
+  "exceptions": [
+    "console.error: Failed to load resource: the server responded with a status of 404 (Not Found)"
+  ]
+}

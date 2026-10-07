@@ -7,6 +7,7 @@
    * The selection outline is a canvas-level presentation rule — never
    * document source.
    */
+  import { tick } from 'svelte';
   import { DocumentHost } from '@victframework/ui-svelte';
   import {
     compileUiDocument,
@@ -76,6 +77,31 @@
     if (compiled.ok) onPlan?.(compiled.plan);
   });
 
+  // Selection outline: applied as a data attribute on the exact selected
+  // occurrence element. A dynamic selector cannot be expressed in the
+  // component's style sheet (the markup-level style element is static), so
+  // the previous inline rule never matched anything and the outline
+  // silently never rendered.
+  let canvasEl = $state<HTMLElement | undefined>(undefined);
+  $effect(() => {
+    const occurrence = selectedOccurrence;
+    const ok = compiled.ok;
+    let cancelled = false;
+    void tick().then(() => {
+      if (cancelled || canvasEl === undefined) return;
+      for (const el of canvasEl.querySelectorAll('[data-ui-selected]')) {
+        el.removeAttribute('data-ui-selected');
+      }
+      if (occurrence !== undefined) {
+        const target = canvasEl.querySelector(`[data-ui-occ='${escapeSelector(occurrence)}']`);
+        if (target !== null) target.setAttribute('data-ui-selected', '');
+      }
+    });
+    return () => {
+      cancelled = true;
+    };
+  });
+
   function escapeSelector(value: string): string {
     return value.replace(/"/g, '\\"');
   }
@@ -86,21 +112,17 @@
 </script>
 
 {#if compiled.ok}
-  <div class={canvasClasses}>
+  <div class={canvasClasses} bind:this={canvasEl}>
     <style>
       .uv-canvas [data-ui-occ]:hover {
         outline: 1px dashed var(--ui-editor-hover, #7aa7ff);
         cursor: pointer;
       }
+      .uv-canvas [data-ui-selected] {
+        outline: 2px solid var(--ui-editor-selected, #2b6cff);
+        outline-offset: 1px;
+      }
     </style>
-    {#if selectedOccurrence !== undefined}
-      <style>
-        .uv-canvas [data-ui-occ='{escapeSelector(selectedOccurrence)}'] {
-          outline: 2px solid var(--ui-editor-selected, #2b6cff);
-          outline-offset: 1px;
-        }
-      </style>
-    {/if}
     <DocumentHost
       plan={compiled.plan}
       {view}

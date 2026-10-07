@@ -1,0 +1,149 @@
+{
+  "journey": "E2 reset reveals next cascade value, one-step undo",
+  "steps": {
+    "beforeReset": {
+      "kitchens": {
+        "found": true,
+        "tag": "ARTICLE",
+        "value": "rgb(29, 78, 216)",
+        "outline": "rgb(28, 42, 36) none 2.4px"
+      },
+      "bathrooms": {
+        "found": true,
+        "tag": "ARTICLE",
+        "value": "rgb(29, 78, 216)",
+        "outline": "rgb(28, 42, 36) none 2.4px"
+      },
+      "adaptations": {
+        "found": true,
+        "tag": "ARTICLE",
+        "value": "rgb(255, 105, 180)",
+        "outline": "rgb(28, 42, 36) none 2.4px"
+      }
+    },
+    "detailsBeforeReset": [
+      "Browser now: rgb(255, 105, 180)",
+      "Local override"
+    ],
+    "afterReset": {
+      "kitchens": {
+        "found": true,
+        "tag": "ARTICLE",
+        "value": "rgb(29, 78, 216)",
+        "outline": "rgb(28, 42, 36) none 2.4px"
+      },
+      "bathrooms": {
+        "found": true,
+        "tag": "ARTICLE",
+        "value": "rgb(29, 78, 216)",
+        "outline": "rgb(28, 42, 36) none 2.4px"
+      },
+      "adaptations": {
+        "found": true,
+        "tag": "ARTICLE",
+        "value": "rgb(231, 242, 236)",
+        "outline": "rgb(28, 42, 36) none 2.4px"
+      }
+    },
+    "detailsAfterReset": [
+      "Browser now: rgb(231, 242, 236)",
+      "No declaration here. Browser preview includes inheritance and defaults; origin unavailable."
+    ],
+    "railAfterReset": {
+      "spans": [
+        "Documents",
+        "Edit",
+        "Status",
+        "Unsaved changes stored revision 1"
+      ],
+      "buttons": {
+        "Service page": false,
+        "Graph fixture": false,
+        "Undo": false,
+        "Redo": true,
+        "Save": false,
+        "Reload stored": false
+      }
+    },
+    "undoClicked": "clicked",
+    "afterOneUndo": {
+      "kitchens": {
+        "found": true,
+        "tag": "ARTICLE",
+        "value": "rgb(29, 78, 216)",
+        "outline": "rgb(28, 42, 36) none 2.4px"
+      },
+      "bathrooms": {
+        "found": true,
+        "tag": "ARTICLE",
+        "value": "rgb(29, 78, 216)",
+        "outline": "rgb(28, 42, 36) none 2.4px"
+      },
+      "adaptations": {
+        "found": true,
+        "tag": "ARTICLE",
+        "value": "rgb(255, 105, 180)",
+        "outline": "rgb(28, 42, 36) none 2.4px"
+      }
+    },
+    "railAfterUndo": {
+      "spans": [
+        "Documents",
+        "Edit",
+        "Status",
+        "Unsaved changes stored revision 1"
+      ],
+      "buttons": {
+        "Service page": false,
+        "Graph fixture": false,
+        "Undo": false,
+        "Redo": false,
+        "Save": false,
+        "Reload stored": false
+      }
+    },
+    "redoClicked": "clicked",
+    "afterRedo": {
+      "kitchens": {
+        "found": true,
+        "tag": "ARTICLE",
+        "value": "rgb(29, 78, 216)",
+        "outline": "rgb(28, 42, 36) none 2.4px"
+      },
+      "bathrooms": {
+        "found": true,
+        "tag": "ARTICLE",
+        "value": "rgb(29, 78, 216)",
+        "outline": "rgb(28, 42, 36) none 2.4px"
+      },
+      "adaptations": {
+        "found": true,
+        "tag": "ARTICLE",
+        "value": "rgb(231, 242, 236)",
+        "outline": "rgb(28, 42, 36) none 2.4px"
+      }
+    },
+    "activity": [
+      "info: 08:43:42 Redo",
+      "info: 08:43:42 Undo",
+      "info: 08:43:41 Applied setStyleDeclaration on svc.cardAdaptations",
+      "info: 08:43:41 Applied setStyleDeclaration on svc.cardAdaptations",
+      "info: 08:43:40 Selected doc.northwind|svc.card|svc.cardAdaptations@def.serviceCard",
+      "info: 08:43:39 Applied setStyleDeclaration on svc.card",
+      "info: 08:43:38 Selected doc.northwind|svc.card|svc.cardKitchens@def.serviceCard"
+    ],
+    "assert": {
+      "setupPinkBefore": true,
+      "setupBlueBefore": true,
+      "resetRevealsAttachedSoftGreen": true,
+      "resetKeepsSharedBlueElsewhere": true,
+      "oneUndoRestoresPink": true,
+      "undoKeepsBlue": true,
+      "redoRemovesPinkAgain": true
+    },
+    "verdict": "PASS"
+  },
+  "exceptions": [
+    "console.error: Failed to load resource: the server responded with a status of 404 (Not Found)"
+  ]
+}

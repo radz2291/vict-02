@@ -1,0 +1,139 @@
+{
+  "journey": "E6 layers search + keyboard selection sync + outline honesty check",
+  "steps": {
+    "headerAfterCanvasClick": {
+      "h2": "Northwind Atelier",
+      "crumb": "Location · Page heading",
+      "crumbFull": "Home page / Introduction / Page heading / Northwind Atelier"
+    },
+    "search": {
+      "status": "3 matches · ancestors shown",
+      "keys": [
+        "doc.northwind|svc.root",
+        "doc.northwind|svc.services",
+        "doc.northwind|svc.cardsGrid",
+        "doc.northwind|svc.cardBathrooms",
+        "doc.northwind|svc.card|svc.cardBathrooms@def.serviceCard",
+        "doc.northwind|svc.cardHeading|svc.cardBathrooms@def.serviceCard",
+        "doc.northwind|svc.cardTitleSlot|svc.cardBathrooms@def.serviceCard",
+        "doc.northwind|svc.cardBathroomsTitle",
+        "doc.northwind|svc.cardBodyWrap|svc.cardBathrooms@def.serviceCard",
+        "doc.northwind|svc.cardBodySlot|svc.cardBathrooms@def.serviceCard",
+        "doc.northwind|svc.cardBathroomsBody"
+      ]
+    },
+    "headerAfterMouse": {
+      "h2": "Card",
+      "crumb": "Location · Bathrooms card",
+      "crumbFull": "Bathrooms card / Card"
+    },
+    "outlineAfterMouse": {
+      "style": "none",
+      "color": "rgb(28, 42, 36)",
+      "width": "2.4px"
+    },
+    "outlineHover": {
+      "style": "dashed",
+      "color": "rgb(122, 167, 255)",
+      "width": "0.8px"
+    },
+    "afterEscape": {
+      "status": null,
+      "keys": [
+        "doc.northwind|svc.root",
+        "doc.northwind|svc.hero",
+        "doc.northwind|svc.heroTitle",
+        "doc.northwind|svc.heroTitleText",
+        "doc.northwind|svc.heroTag",
+        "doc.northwind|svc.overlapWrap",
+        "doc.northwind|svc.overlapCard",
+        "doc.northwind|svc.services",
+        "doc.northwind|svc.servicesHeading",
+        "doc.northwind|svc.cardsGrid",
+        "doc.northwind|svc.cardKitchens",
+        "doc.northwind|svc.cardBathrooms",
+        "doc.northwind|svc.card|svc.cardBathrooms@def.serviceCard",
+        "doc.northwind|svc.cardHeading|svc.cardBathrooms@def.serviceCard",
+        "doc.northwind|svc.cardTitleSlot|svc.cardBathrooms@def.serviceCard",
+        "doc.northwind|svc.cardBathroomsTitle",
+        "doc.northwind|svc.cardBodyWrap|svc.cardBathrooms@def.serviceCard",
+        "doc.northwind|svc.cardBodySlot|svc.cardBathrooms@def.serviceCard",
+        "doc.northwind|svc.cardBathroomsBody",
+        "doc.northwind|svc.cardAdaptations",
+        "doc.northwind|svc.story",
+        "doc.northwind|svc.storyMain",
+        "doc.northwind|svc.storyHeading",
+        "doc.northwind|svc.storyCopyA",
+        "doc.northwind|svc.storyCopyB",
+        "doc.northwind|svc.storyAside",
+        "doc.northwind|svc.stickyCard",
+        "doc.northwind|svc.contact",
+        "doc.northwind|svc.contactHeading",
+        "doc.northwind|svc.contactIntro",
+        "doc.northwind|svc.form",
+        "doc.northwind|svc.fieldNameLabel",
+        "doc.northwind|svc.fieldName",
+        "doc.northwind|svc.fieldEmailLabel",
+        "doc.northwind|svc.fieldEmail",
+        "doc.northwind|svc.fieldMessageLabel",
+        "doc.northwind|svc.fieldMessage",
+        "doc.northwind|svc.formRow",
+        "doc.northwind|svc.submitButton",
+        "doc.northwind|svc.formFeedbackNote"
+      ]
+    },
+    "selectionSurvivesEscape": "Card",
+    "focusedBeforeEnter": "doc.northwind|svc.card|svc.cardBathrooms@def.serviceCard",
+    "headerAfterKeyboard": {
+      "h2": "Card",
+      "crumb": "Location · Bathrooms card",
+      "crumbFull": "Bathrooms card / Card"
+    },
+    "outlineAfterKeyboard": {
+      "style": "none",
+      "color": "rgb(28, 42, 36)",
+      "width": "2.4px"
+    },
+    "selectedRowAfterKeyboard": [
+      "doc.northwind|svc.card|svc.cardBathrooms@def.serviceCard"
+    ],
+    "assert": {
+      "canvasClickSelectsHeading": true,
+      "searchFoundMatches": true,
+      "mouseSelectionHeader": true,
+      "mouseCrumbNamesBathrooms": true,
+      "escapeClearsSearch": true,
+      "normalTreeBack": true,
+      "keyboardFocusedCardRow": true,
+      "keyboardSelectionHeader": true,
+      "keyboardCrumbNamesBathrooms": true,
+      "layersRowSelectedAfterKeyboard": true,
+      "hoverOutlineShows": true
+    },
+    "FINDING_selectionOutlineMissing": {
+      "outlineStyleAfterSelection": [
+        "none",
+        "none"
+      ],
+      "expected": "solid (2px, --ui-editor-selected)",
+      "rootCause": "packages/ui-editor/src/EditorCanvas.svelte:97 — '{escapeSelector(selectedOccurrence)}' is emitted verbatim inside <style>; Svelte does not interpolate style blocks",
+      "preExistingSince": "7f49cd0 (U1-era editor modules); byte-identical at 83ba87f, 19bb4b9, e0893fe, f31477d"
+    },
+    "syncAsserts": {
+      "canvasClickSelectsHeading": true,
+      "searchFoundMatches": true,
+      "mouseSelectionHeader": true,
+      "mouseCrumbNamesBathrooms": true,
+      "escapeClearsSearch": true,
+      "normalTreeBack": true,
+      "keyboardFocusedCardRow": true,
+      "keyboardSelectionHeader": true,
+      "keyboardCrumbNamesBathrooms": true,
+      "layersRowSelectedAfterKeyboard": true
+    },
+    "verdict": "PASS"
+  },
+  "exceptions": [
+    "console.error: Failed to load resource: the server responded with a status of 404 (Not Found)"
+  ]
+}

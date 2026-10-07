@@ -12,6 +12,7 @@ import {
   type UiDocument,
 } from '@victframework/ui';
 import type { TransactionDraft } from '../src/commands.js';
+import EditorCanvas from '../src/EditorCanvas.svelte';
 import Inspector from '../src/Inspector.svelte';
 import Layers from '../src/Layers.svelte';
 
@@ -183,6 +184,32 @@ describe('Inspector (U2-04)', () => {
       expect(target.textContent?.replace(/\s+/g, ' ')).toContain('2 authored instances');
     } finally {
       unmount(instance);
+      target.remove();
+    }
+  });
+});
+
+describe('EditorCanvas selection affordance (U2-04/U2-06)', () => {
+  it('marks exactly the selected occurrence element for the outline', async () => {
+    const target = document.createElement('div');
+    document.body.append(target);
+    const instance = mount(EditorCanvas, {
+      target,
+      props: {
+        document: fixtureDocument(),
+        selectedOccurrence: makeSelection('doc.u2tool|n.card'),
+        onSelect: () => {},
+      },
+    });
+    try {
+      flushSync();
+      await new Promise((resolve) => setTimeout(resolve, 0));
+      flushSync();
+      const marked = target.querySelectorAll('[data-ui-selected]');
+      expect(marked.length).toBe(1);
+      expect((marked[0] as HTMLElement).dataset.uiOcc).toBe('doc.u2tool|n.card');
+    } finally {
+      await unmount(instance);
       target.remove();
     }
   });

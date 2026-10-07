@@ -1,0 +1,158 @@
+{
+  "journey": "E3 heading 61px undo/redo/save/reload/reopen",
+  "steps": {
+    "search": {
+      "status": "1 matches · ancestors shown",
+      "keys": [
+        "doc.northwind|svc.root",
+        "doc.northwind|svc.hero",
+        "doc.northwind|svc.heroTitle"
+      ]
+    },
+    "controlBefore": {
+      "kind": "text",
+      "value": "clamp(34px, 5vw, 56px)"
+    },
+    "detailsBefore": [
+      "Browser now: 56px",
+      "Shared source src.hero-title: clamp(34px, 5vw, 56px); Shared source src.hero-title-narrow · condition cond.narrow: 30px"
+    ],
+    "computedBefore": {
+      "found": true,
+      "tag": "H1",
+      "value": "56px",
+      "outline": "rgb(28, 42, 36) none 2.4px"
+    },
+    "editorUsed": {
+      "kind": "text",
+      "value": "clamp(34px, 5vw, 56px)"
+    },
+    "controlAfterEdit": {
+      "kind": "number",
+      "value": "61"
+    },
+    "detailsAfterEdit": [
+      "Browser now: 61px",
+      "Local override"
+    ],
+    "computedAfterEdit": {
+      "found": true,
+      "tag": "H1",
+      "value": "61px",
+      "outline": "rgb(28, 42, 36) none 2.4px"
+    },
+    "undoClicked": "clicked",
+    "detailsAfterUndo": [
+      "Browser now: 56px",
+      "Shared source src.hero-title: clamp(34px, 5vw, 56px); Shared source src.hero-title-narrow · condition cond.narrow: 30px"
+    ],
+    "controlAfterUndo": {
+      "kind": "text",
+      "value": "clamp(34px, 5vw, 56px)"
+    },
+    "computedAfterUndo": {
+      "found": true,
+      "tag": "H1",
+      "value": "56px",
+      "outline": "rgb(28, 42, 36) none 2.4px"
+    },
+    "redoClicked": "clicked",
+    "computedAfterRedo": {
+      "found": true,
+      "tag": "H1",
+      "value": "61px",
+      "outline": "rgb(28, 42, 36) none 2.4px"
+    },
+    "detailsAfterRedo": [
+      "Browser now: 61px",
+      "Local override"
+    ],
+    "saveClicked": "clicked",
+    "railAfterSave": {
+      "spans": [
+        "Documents",
+        "Edit",
+        "Status",
+        "Saved stored revision 2"
+      ],
+      "buttons": {
+        "Service page": false,
+        "Graph fixture": false,
+        "Undo": false,
+        "Redo": true,
+        "Save": false,
+        "Reload stored": false
+      }
+    },
+    "activityAfterSave": [
+      "save: 08:44:50 Saved as stored revision 2 (persists across reload)",
+      "info: 08:44:50 Redo",
+      "info: 08:44:50 Undo",
+      "info: 08:44:49 Applied setStyleDeclaration on svc.heroTitle",
+      "info: 08:44:48 Selected doc.northwind|svc.heroTitle"
+    ],
+    "computedAfterReload": {
+      "found": true,
+      "tag": "H1",
+      "value": "61px",
+      "outline": "rgb(28, 42, 36) none 2.4px"
+    },
+    "controlAfterReload": {
+      "kind": "number",
+      "value": "61"
+    },
+    "detailsAfterReload": [
+      "Browser now: 61px",
+      "Local override"
+    ],
+    "reloadStoredClicked": "clicked",
+    "computedAfterReopen": {
+      "found": true,
+      "tag": "H1",
+      "value": "61px",
+      "outline": "rgb(28, 42, 36) none 2.4px"
+    },
+    "detailsAfterReopen": [
+      "Browser now: 61px",
+      "Local override"
+    ],
+    "controlAfterReopen": {
+      "kind": "number",
+      "value": "61"
+    },
+    "railAfterReopen": {
+      "spans": [
+        "Documents",
+        "Edit",
+        "Status",
+        "Saved stored revision 2"
+      ],
+      "buttons": {
+        "Service page": false,
+        "Graph fixture": false,
+        "Undo": true,
+        "Redo": true,
+        "Save": false,
+        "Reload stored": false
+      }
+    },
+    "assert": {
+      "baselineComputedIs56": true,
+      "baselineAnnotation56": true,
+      "editorWasTextual": true,
+      "editComputed61": true,
+      "editAnnotation61": true,
+      "undoComputedBack": true,
+      "undoAnnotationBack": true,
+      "redoComputed61": true,
+      "savedStateClean": true,
+      "reloadPreserves61": true,
+      "reopenPreserves61": true,
+      "reopenAnnotation61": true
+    },
+    "verdict": "PASS"
+  },
+  "exceptions": [
+    "console.error: Failed to load resource: the server responded with a status of 404 (Not Found)"
+  ]
+}

@@ -1,0 +1,165 @@
+{
+  "journey": "E1 shared blue vs attached/instance override",
+  "steps": {
+    "initial": "C:\\Users\\RZ1\\Desktop\\RZ\\vict-02-u2-combined-verify\\combined-verify-evidence\\shots\\j1-01-initial-1440.png",
+    "baselineBackgrounds": {
+      "kitchens": {
+        "found": true,
+        "tag": "ARTICLE",
+        "value": "rgb(255, 255, 255)",
+        "outline": "rgb(28, 42, 36) none 2.4px"
+      },
+      "bathrooms": {
+        "found": true,
+        "tag": "ARTICLE",
+        "value": "rgb(255, 255, 255)",
+        "outline": "rgb(28, 42, 36) none 2.4px"
+      },
+      "adaptations": {
+        "found": true,
+        "tag": "ARTICLE",
+        "value": "rgb(231, 242, 236)",
+        "outline": "rgb(28, 42, 36) none 2.4px"
+      }
+    },
+    "searchKitchens": {
+      "status": "3 matches · ancestors shown",
+      "keys": [
+        "doc.northwind|svc.root",
+        "doc.northwind|svc.services",
+        "doc.northwind|svc.cardsGrid",
+        "doc.northwind|svc.cardKitchens",
+        "doc.northwind|svc.card|svc.cardKitchens@def.serviceCard",
+        "doc.northwind|svc.cardHeading|svc.cardKitchens@def.serviceCard",
+        "doc.northwind|svc.cardTitleSlot|svc.cardKitchens@def.serviceCard",
+        "doc.northwind|svc.cardKitchensTitle",
+        "doc.northwind|svc.cardBodyWrap|svc.cardKitchens@def.serviceCard",
+        "doc.northwind|svc.cardBodySlot|svc.cardKitchens@def.serviceCard",
+        "doc.northwind|svc.cardKitchensBody"
+      ]
+    },
+    "headerKitchens": {
+      "h2": "Card",
+      "crumb": "Location · Kitchens card",
+      "crumbFull": "Kitchens card / Card"
+    },
+    "backgroundDetailsBefore": [
+      "Browser now: rgb(255, 255, 255)",
+      "No declaration here. Browser preview includes inheritance and defaults; origin unavailable."
+    ],
+    "scopeBefore": "shared",
+    "afterSharedBlue": {
+      "kitchens": {
+        "found": true,
+        "tag": "ARTICLE",
+        "value": "rgb(29, 78, 216)",
+        "outline": "rgb(28, 42, 36) none 2.4px"
+      },
+      "bathrooms": {
+        "found": true,
+        "tag": "ARTICLE",
+        "value": "rgb(29, 78, 216)",
+        "outline": "rgb(28, 42, 36) none 2.4px"
+      },
+      "adaptations": {
+        "found": true,
+        "tag": "ARTICLE",
+        "value": "rgb(231, 242, 236)",
+        "outline": "rgb(28, 42, 36) none 2.4px"
+      }
+    },
+    "backgroundDetailsAfterBlue": [
+      "Browser now: rgb(29, 78, 216)",
+      "Shared definition override"
+    ],
+    "searchAdaptations": {
+      "status": "3 matches · ancestors shown",
+      "keys": [
+        "doc.northwind|svc.root",
+        "doc.northwind|svc.services",
+        "doc.northwind|svc.cardsGrid",
+        "doc.northwind|svc.cardAdaptations",
+        "doc.northwind|svc.card|svc.cardAdaptations@def.serviceCard",
+        "doc.northwind|svc.cardHeading|svc.cardAdaptations@def.serviceCard",
+        "doc.northwind|svc.cardTitleSlot|svc.cardAdaptations@def.serviceCard",
+        "doc.northwind|svc.cardAdaptationsTitle",
+        "doc.northwind|svc.cardBodyWrap|svc.cardAdaptations@def.serviceCard",
+        "doc.northwind|svc.cardBodySlot|svc.cardAdaptations@def.serviceCard",
+        "doc.northwind|svc.cardAdaptationsBody"
+      ]
+    },
+    "headerAdaptations": {
+      "h2": "Card",
+      "crumb": "Location · Adaptations card (accent override)",
+      "crumbFull": "Adaptations card (accent override) / Card"
+    },
+    "scopeAfter": "instance",
+    "backgroundDetailsAdaptationsBefore": [
+      "Browser now: rgb(231, 242, 236)",
+      "No declaration here. Browser preview includes inheritance and defaults; origin unavailable."
+    ],
+    "afterInstancePink": {
+      "kitchens": {
+        "found": true,
+        "tag": "ARTICLE",
+        "value": "rgb(29, 78, 216)",
+        "outline": "rgb(28, 42, 36) none 2.4px"
+      },
+      "bathrooms": {
+        "found": true,
+        "tag": "ARTICLE",
+        "value": "rgb(29, 78, 216)",
+        "outline": "rgb(28, 42, 36) none 2.4px"
+      },
+      "adaptations": {
+        "found": true,
+        "tag": "ARTICLE",
+        "value": "rgb(255, 105, 180)",
+        "outline": "rgb(28, 42, 36) none 2.4px"
+      }
+    },
+    "backgroundDetailsAdaptationsAfter": [
+      "Browser now: rgb(255, 105, 180)",
+      "Local override"
+    ],
+    "rail": {
+      "spans": [
+        "Documents",
+        "Edit",
+        "Status",
+        "Unsaved changes stored revision 1"
+      ],
+      "buttons": {
+        "Service page": false,
+        "Graph fixture": false,
+        "Undo": false,
+        "Redo": true,
+        "Save": false,
+        "Reload stored": false
+      }
+    },
+    "activityTail": [
+      "info: 08:43:03 Applied setStyleDeclaration on svc.cardAdaptations",
+      "info: 08:43:02 Selected doc.northwind|svc.card|svc.cardAdaptations@def.serviceCard",
+      "info: 08:43:01 Applied setStyleDeclaration on svc.card",
+      "info: 08:43:00 Selected doc.northwind|svc.card|svc.cardKitchens@def.serviceCard"
+    ],
+    "assert": {
+      "baselineAdaptationsSoftGreen": true,
+      "sharedBlueReachedKitchens": true,
+      "sharedBlueReachedBathrooms": true,
+      "attachedSoftGreenSurvivedOnAdaptations": true,
+      "instancePinkOnAdaptations": true,
+      "kitchensUnaffectedByPink": true,
+      "bathroomsUnaffectedByPink": true
+    },
+    "verdict": "PASS"
+  },
+  "log": [
+    "baseline: K=rgb(255, 255, 255) B=rgb(255, 255, 255) A=rgb(231, 242, 236)",
+    "after blue: K=rgb(29, 78, 216) B=rgb(29, 78, 216) A=rgb(231, 242, 236)"
+  ],
+  "exceptions": [
+    "console.error: Failed to load resource: the server responded with a status of 404 (Not Found)"
+  ]
+}

@@ -1,0 +1,135 @@
+{
+  "journey": "E5 linked padding = one undoable transaction",
+  "steps": {
+    "groupOpened": "opened",
+    "inputsBefore": {
+      "top": "72px",
+      "right": "0px",
+      "bottom": "24px",
+      "left": "0px",
+      "linked": "false"
+    },
+    "computedBefore": {
+      "top": {
+        "found": true,
+        "tag": "HEADER",
+        "value": "72px",
+        "outline": "rgb(28, 42, 36) none 2.4px"
+      },
+      "right": {
+        "found": true,
+        "tag": "HEADER",
+        "value": "0px",
+        "outline": "rgb(28, 42, 36) none 2.4px"
+      },
+      "bottom": {
+        "found": true,
+        "tag": "HEADER",
+        "value": "24px",
+        "outline": "rgb(28, 42, 36) none 2.4px"
+      },
+      "left": {
+        "found": true,
+        "tag": "HEADER",
+        "value": "0px",
+        "outline": "rgb(28, 42, 36) none 2.4px"
+      }
+    },
+    "inputsLinked": {
+      "top": "72px",
+      "right": "0px",
+      "bottom": "24px",
+      "left": "0px",
+      "linked": "true"
+    },
+    "editorUsed": {
+      "kind": "text",
+      "value": "72px"
+    },
+    "inputsAfter": {
+      "top": "29px",
+      "right": "29px",
+      "bottom": "29px",
+      "left": "29px",
+      "linked": "true"
+    },
+    "computedAfter": {
+      "top": {
+        "found": true,
+        "tag": "HEADER",
+        "value": "29px",
+        "outline": "rgb(28, 42, 36) none 2.4px"
+      },
+      "right": {
+        "found": true,
+        "tag": "HEADER",
+        "value": "29px",
+        "outline": "rgb(28, 42, 36) none 2.4px"
+      },
+      "bottom": {
+        "found": true,
+        "tag": "HEADER",
+        "value": "29px",
+        "outline": "rgb(28, 42, 36) none 2.4px"
+      },
+      "left": {
+        "found": true,
+        "tag": "HEADER",
+        "value": "29px",
+        "outline": "rgb(28, 42, 36) none 2.4px"
+      }
+    },
+    "undoClicked": "clicked",
+    "inputsAfterUndo": {
+      "top": "72px",
+      "right": "0px",
+      "bottom": "24px",
+      "left": "0px",
+      "linked": "true"
+    },
+    "computedAfterUndo": {
+      "top": {
+        "found": true,
+        "tag": "HEADER",
+        "value": "72px",
+        "outline": "rgb(28, 42, 36) none 2.4px"
+      },
+      "right": {
+        "found": true,
+        "tag": "HEADER",
+        "value": "0px",
+        "outline": "rgb(28, 42, 36) none 2.4px"
+      },
+      "bottom": {
+        "found": true,
+        "tag": "HEADER",
+        "value": "24px",
+        "outline": "rgb(28, 42, 36) none 2.4px"
+      },
+      "left": {
+        "found": true,
+        "tag": "HEADER",
+        "value": "0px",
+        "outline": "rgb(28, 42, 36) none 2.4px"
+      }
+    },
+    "activity": [
+      "info: 08:49:08 Undo",
+      "info: 08:49:07 Applied setStyleDeclaration on svc.hero",
+      "info: 08:49:06 Selected doc.northwind|svc.hero"
+    ],
+    "appliedCount": 1,
+    "assert": {
+      "linkedPressed": true,
+      "allFourInputs29px": true,
+      "allFourComputed29": true,
+      "oneAppliedCommand": true,
+      "oneUndoRestoresAll": true,
+      "undoRestoresInputs": true
+    },
+    "verdict": "PASS"
+  },
+  "exceptions": [
+    "console.error: Failed to load resource: the server responded with a status of 404 (Not Found)"
+  ]
+}

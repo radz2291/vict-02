@@ -228,6 +228,15 @@
   .wb-body {
     flex-direction: column;
   }
+  /* Bound the canvas region so it scrolls internally and the Inspector
+     stays within the first screen on phones (the tall rendered page must
+     not push the editing controls several screens down). */
+  .wb-main {
+    min-height: 0;
+  }
+  .wb-canvas-scroll {
+    min-height: 0;
+  }
   .wb-rail {
     width: auto;
     flex-direction: row;

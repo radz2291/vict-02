@@ -1,0 +1,50 @@
+Loading svelte-check in workspace: c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify
+Getting Svelte diagnostics...
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-svelte\src\document\RenderNode.svelte[39m:172:3
+[33mWarn[39m: Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events (svelte)
+[36m{:else if instruction.kind === 'text'}
+  [35m<span
+    class="uv-text"
+    data-ui-node={instruction.nodeId}
+    data-ui-occ={occ}
+    style="display: contents"
+    onclick={(event) => {
+      event.stopPropagation();
+      selectOccurrence?.(occ);
+    }}
+  >
+    {#if instruction.content.type === 'literal'}
+      {instruction.content.value}
+    {:else}
+      {String(resolveValue({ type: 'expression', expression: instruction.content.expression }, scope) ?? '')}
+    {/if}
+  </span[36m>
+{:else if instruction.kind === 'component'}[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-svelte\src\document\RenderNode.svelte[39m:172:3
+[33mWarn[39m: `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions (svelte)
+[36m{:else if instruction.kind === 'text'}
+  [35m<span
+    class="uv-text"
+    data-ui-node={instruction.nodeId}
+    data-ui-occ={occ}
+    style="display: contents"
+    onclick={(event) => {
+      event.stopPropagation();
+      selectOccurrence?.(occ);
+    }}
+  >
+    {#if instruction.content.type === 'literal'}
+      {instruction.content.value}
+    {:else}
+      {String(resolveValue({ type: 'expression', expression: instruction.content.expression }, scope) ?? '')}
+    {/if}
+  </span[36m>
+{:else if instruction.kind === 'component'}[39m
+
+====================================
+[33msvelte-check found 0 errors and 2 warnings in 1 file
+[39m

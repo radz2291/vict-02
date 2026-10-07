@@ -137,3 +137,57 @@ file's "Precise manager requests", inside the authorized U2 scope.
 These records do not close U2: owner experience acceptance, the fresh
 independent verdict on the exact combined candidate, and U2 closure remain
 pending.
+
+## Combined-candidate independent verification round 1 and bounded repairs (2026-10-07)
+
+The fresh independent verifier (separate detached checkout at the exact pushed
+candidate 2a1ab4c0843ac0512ce23519bbe3569d8479a116, own server/Chrome, no
+repairs) returned **FAIL with one blocking finding**; the full report is
+imported verbatim as
+[reviews/u2/U2-COMBINED-VERIFY-04.md](../reviews/u2/U2-COMBINED-VERIFY-04.md)
+with all journeys, harnesses, check logs and 32 screenshots under
+reviews/u2/combined-verify-evidence/ (bytes preserved via scoped .gitattributes;
+report sha256 4f43202343096cb60dcea89cf102c77ceaa4503d2364ffb8bd91578848061957).
+Everything else verified: lineage/parents, all five recorded evidence checksums,
+every automated check number (renderer 124/124, unit 70/70, integration 4/4,
+design 12/12, broad svelte-check 0/2, builds, format clean before and after
+build), and seven of eight demonstrations in full.
+
+8. **F-1 (blocking) repaired — canvas selection outline silently inert.**
+   EditorCanvas emitted the selection rule with a Svelte expression inside the
+   markup style element; Svelte does not interpolate expressions there, so the
+   selector never matched and the outline never rendered (computed
+   outline-style none after mouse and keyboard selection). Byte-identical since
+   the U1-era commit 7f49cd0 through every previously verified candidate; no
+   earlier retained report ever tested the outline — this verification was the
+   first. Repair: EditorCanvas now marks the exact selected occurrence element
+   with a `data-ui-selected` attribute (Svelte effect + tick, moved/cleared on
+   selection and source changes) and a static CSS rule draws the outline
+   (var(--ui-editor-selected)). Regression-pinned in
+   packages/ui-editor/test/editor-tooling-u2.svelte.test.ts (renderer 125/125).
+   Builder browser recheck: solid 2px outline on the exact selected element via
+   mouse AND Layers keyboard selection; exactly one marked element at all
+   times; zero page exceptions.
+   Recording note: an early version of the repair comment contained the literal
+   text "style tag" phrasing with brace/glyph characters that tripped
+   svelte-check's parser ("script was left open") even though the Svelte
+   compiler accepted the file; the comment was rephrased and the broad check
+   returned to 0 errors / 2 known warnings. Kept as a recorded gotcha for
+   future component edits.
+9. **F-2 (non-blocking) repaired — workbench narrow-screen arrangement.** At
+   390×844 the stacked workbench let the unconstrained canvas region push the
+   Inspector (Text size control) to y≈3499px — several screens down. Repair:
+   the ≤860px workbench layout now bounds the canvas region (min-height: 0 on
+   .wb-main/.wb-canvas-scroll) so the canvas scrolls internally and the
+   Inspector starts within the first screen. Builder browser recheck: Text
+   size control at y≈757 (inside 844), no horizontal overflow, canvas fully
+   usable via its own scroll; refreshed selected-state screenshots reflect the
+   outline repair.
+
+F-3 (ui-editor workspace build TS2307, pre-existing, nothing consumes the
+dist) and F-4 (Inspector scope persists across selection changes; badge always
+names the active destination) remain recorded non-blocking findings with the
+report. NOT DEMONSTRATED items from round 1: literal browser-process restart;
+owner experience acceptance. The repaired candidate requires fresh independent
+re-verification (E6 outline, E8 first-screen sub-item, plus regression of the
+other journeys) before any combined verdict changes.

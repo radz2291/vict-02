@@ -1,0 +1,4 @@
+# Preserve the imported combined-candidate verifier evidence and report bytes
+# exactly as delivered (authored by the independent verifier on Windows).
+combined-verify-evidence/** -text
+U2-COMBINED-VERIFY-04.md -text

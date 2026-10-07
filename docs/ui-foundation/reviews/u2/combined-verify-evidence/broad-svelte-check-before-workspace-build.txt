@@ -1,0 +1,858 @@
+Loading svelte-check in workspace: c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify
+Getting Svelte diagnostics...
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mexamples\ui-design-proof\src\lib\design\adapter.ts[39m:9:64
+[31mError[39m: Cannot find module '@victframework/ui' or its corresponding type declarations. 
+[36m */
+import { defaultSemanticElementCatalog, type UiCatalogs } from [35m'@victframework/ui'[36m;[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mexamples\ui-design-proof\src\lib\design\fixture-document.ts[39m:9:33
+[31mError[39m: Cannot find module '@victframework/ui' or its corresponding type declarations. 
+[36m */
+import type { UiDocument } from [35m'@victframework/ui'[36m;[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-svelte\src\document\logic.ts[39m:15:8
+[31mError[39m: Cannot find module '@victframework/ui' or its corresponding type declarations. 
+[36m  type UiResolvedValue,
+} from [35m'@victframework/ui'[36m;[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-svelte\src\document\logic.ts[39m:93:58
+[31mError[39m: Parameter 'condition' implicitly has an 'any' type. 
+[36m): Readonly<Record<string, (typeof plan.dynamic.conditions)[number]>> {
+  return Object.fromEntries(plan.dynamic.conditions.map(([35mcondition[36m) => [condition.id, condition]));
+}[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-svelte\src\document\logic.ts[39m:220:37
+[31mError[39m: Parameter 'child' implicitly has an 'any' type. 
+[36m    case 'element':
+      instruction.children.forEach(([35mchild[36m) => walkInstructions(child, visit));
+      break;[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-svelte\src\document\logic.ts[39m:225:9
+[31mError[39m: 'children' is of type 'unknown'. 
+[36m      Object.values(instruction.slots).forEach((children) =>
+        [35mchildren[36m.forEach((child) => walkInstructions(child, visit)),
+      );[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-svelte\src\document\logic.ts[39m:225:27
+[31mError[39m: Parameter 'child' implicitly has an 'any' type. 
+[36m      Object.values(instruction.slots).forEach((children) =>
+        children.forEach(([35mchild[36m) => walkInstructions(child, visit)),
+      );[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-svelte\src\document\logic.ts[39m:232:37
+[31mError[39m: Parameter 'branch' implicitly has an 'any' type. 
+[36m    case 'conditional':
+      instruction.branches.forEach(([35mbranch[36m) =>
+        branch.children.forEach((child) => walkInstructions(child, visit)),[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-svelte\src\document\logic.ts[39m:233:34
+[31mError[39m: Parameter 'child' implicitly has an 'any' type. 
+[36m      instruction.branches.forEach((branch) =>
+        branch.children.forEach(([35mchild[36m) => walkInstructions(child, visit)),
+      );[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-svelte\src\document\logic.ts[39m:237:37
+[31mError[39m: Parameter 'child' implicitly has an 'any' type. 
+[36m    case 'slot':
+      instruction.fallback.forEach(([35mchild[36m) => walkInstructions(child, visit));
+      break;[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-svelte\src\document\logic.ts[39m:240:37
+[31mError[39m: Parameter 'child' implicitly has an 'any' type. 
+[36m    case 'unsupported':
+      instruction.children.forEach(([35mchild[36m) => walkInstructions(child, visit));
+      break;[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-svelte\src\document\RenderNode.svelte[39m:172:3
+[33mWarn[39m: Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events (svelte)
+[36m{:else if instruction.kind === 'text'}
+  [35m<span
+    class="uv-text"
+    data-ui-node={instruction.nodeId}
+    data-ui-occ={occ}
+    style="display: contents"
+    onclick={(event) => {
+      event.stopPropagation();
+      selectOccurrence?.(occ);
+    }}
+  >
+    {#if instruction.content.type === 'literal'}
+      {instruction.content.value}
+    {:else}
+      {String(resolveValue({ type: 'expression', expression: instruction.content.expression }, scope) ?? '')}
+    {/if}
+  </span[36m>
+{:else if instruction.kind === 'component'}[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-svelte\src\document\RenderNode.svelte[39m:172:3
+[33mWarn[39m: `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions (svelte)
+[36m{:else if instruction.kind === 'text'}
+  [35m<span
+    class="uv-text"
+    data-ui-node={instruction.nodeId}
+    data-ui-occ={occ}
+    style="display: contents"
+    onclick={(event) => {
+      event.stopPropagation();
+      selectOccurrence?.(occ);
+    }}
+  >
+    {#if instruction.content.type === 'literal'}
+      {instruction.content.value}
+    {:else}
+      {String(resolveValue({ type: 'expression', expression: instruction.content.expression }, scope) ?? '')}
+    {/if}
+  </span[36m>
+{:else if instruction.kind === 'component'}[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-svelte\src\document\RenderNode.svelte[39m:11:10
+[31mError[39m: Cannot find module '@victframework/ui' or its corresponding type declarations. (ts)
+[36m    UiRenderPlan,
+  } from [35m'@victframework/ui'[36m;
+  import {[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-svelte\src\document\RenderNode.svelte[39m:137:42
+[31mError[39m: Parameter 'interaction' implicitly has an 'any' type. (ts)
+[36m      event.stopPropagation();
+      if (instruction.interactions.some(([35minteraction[36m) => interaction.on === 'click')) {
+        void runInteractions(event);[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-svelte\src\document\RenderNode.svelte[39m:145:42
+[31mError[39m: Parameter 'interaction' implicitly has an 'any' type. (ts)
+[36m      event.stopPropagation();
+      if (instruction.interactions.some(([35minteraction[36m) => interaction.on === 'submit')) {
+        void runInteractions(event);[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-svelte\src\document\DocumentHost.svelte[39m:12:55
+[31mError[39m: Cannot find module '@victframework/ui' or its corresponding type declarations. (ts)
+[36m   */
+  import type { UiRenderPlan, UiLocalStateDecl } from [35m'@victframework/ui'[36m;
+  import RenderNode from './RenderNode.svelte';[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-svelte\src\document\DocumentHost.svelte[39m:79:31
+[31mError[39m: Parameter 'rule' implicitly has an 'any' type. (ts)
+[36m    Object.fromEntries(
+      (plan.style.rules.find(([35mrule[36m) => rule.layer === 'token')?.declarations ?? []).map(
+        (declaration) => [[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-svelte\src\document\DocumentHost.svelte[39m:80:10
+[31mError[39m: Parameter 'declaration' implicitly has an 'any' type. (ts)
+[36m      (plan.style.rules.find((rule) => rule.layer === 'token')?.declarations ?? []).map(
+        ([35mdeclaration[36m) => [
+          declaration.property.replace('--ui-token-', ''),[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-svelte\src\Select.svelte[39m:2:39
+[31mError[39m: Cannot find module '@victframework/ui' or its corresponding type declarations. (ts)
+[36m<script lang="ts">
+  import type { UiSelectOption } from [35m'@victframework/ui'[36m;
+  let { id, name, value, options, required = false, disabled = false, invalid = false, describedBy, onChange }:[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-svelte\src\logic.ts[39m:1:34
+[31mError[39m: Cannot find module '@victframework/sdk' or its corresponding type declarations. 
+[36mimport type { SurfaceRole } from [35m'@victframework/sdk'[36m;
+import { RendererDiagnostic } from '@victframework/application/renderer';[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-svelte\src\logic.ts[39m:2:36
+[31mError[39m: Cannot find module '@victframework/application/renderer' or its corresponding type declarations. 
+[36mimport type { SurfaceRole } from '@victframework/sdk';
+import { RendererDiagnostic } from [35m'@victframework/application/renderer'[36m;[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-svelte\src\logic.ts[39m:53:32
+[31mError[39m: Cannot find module '@victframework/ui' or its corresponding type declarations. 
+[36mexport interface PlanScreen {
+  readonly layoutMode?: import([35m'@victframework/ui'[36m).UiLayoutMode;
+  readonly composition?: import('@victframework/ui').UiPageComposition;[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-svelte\src\logic.ts[39m:54:33
+[31mError[39m: Cannot find module '@victframework/ui' or its corresponding type declarations. 
+[36m  readonly layoutMode?: import('@victframework/ui').UiLayoutMode;
+  readonly composition?: import([35m'@victframework/ui'[36m).UiPageComposition;
+  readonly id: string;[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-svelte\src\logic.ts[39m:91:38
+[31mError[39m: Cannot find module '@victframework/ui' or its corresponding type declarations. 
+[36m          readonly routeId?: string;
+          readonly feedback?: import([35m'@victframework/ui'[36m).UiActionFeedbackText;
+        }[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-svelte\src\logic.ts[39m:99:35
+[31mError[39m: Cannot find module '@victframework/ui' or its corresponding type declarations. 
+[36m    readonly name?: string;
+    readonly composition?: import([35m'@victframework/ui'[36m).UiApplicationComposition;
+  };[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-svelte\src\logic.ts[39m:597:21
+[31mError[39m: Cannot find module '@victframework/ui' or its corresponding type declarations. 
+[36mexport function resolveRowDetailLink(
+  rowDetail: import([35m'@victframework/ui'[36m).UiRowDetail | undefined,
+  routes: readonly PlanRouteEntry[],[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-svelte\src\logic.ts[39m:608:23
+[31mError[39m: Type 'unknown' cannot be used as an index type. 
+[36m  for (const [routeParam, rowField] of Object.entries(rowDetail.param)) {
+    const value = row[[35mrowField[36m];
+    if (typeof value !== 'string' && typeof value !== 'number') return undefined;[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-svelte\src\RecordsTable.svelte[39m:5:42
+[31mError[39m: Cannot find module '@victframework/application/renderer' or its corresponding type declarations. (ts)
+[36m  import ComponentSlot from './ComponentSlot.svelte';
+  import type { ComponentRegistry } from [35m'@victframework/application/renderer'[36m;
+  import type { UiTableIntent, UiTableState } from '@victframework/ui';[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-svelte\src\RecordsTable.svelte[39m:6:52
+[31mError[39m: Cannot find module '@victframework/ui' or its corresponding type declarations. (ts)
+[36m  import type { ComponentRegistry } from '@victframework/application/renderer';
+  import type { UiTableIntent, UiTableState } from [35m'@victframework/ui'[36m;[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-svelte\src\AppShell.svelte[39m:4:147
+[31mError[39m: Cannot find module '@victframework/ui' or its corresponding type declarations. (ts)
+[36m  import { Dialog } from 'bits-ui';
+  import { resolveApplicationComposition, resolvePageComposition, type UiApplicationComposition, type UiShellBreadcrumb, type UiShellGroup } from [35m'@victframework/ui'[36m;[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-svelte\src\Button.svelte[39m:2:40
+[31mError[39m: Cannot find module '@victframework/ui' or its corresponding type declarations. (ts)
+[36m<script lang="ts">
+  import type { UiButtonVariant } from [35m'@victframework/ui'[36m;[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-svelte\src\StatusBadge.svelte[39m:2:37
+[31mError[39m: Cannot find module '@victframework/ui' or its corresponding type declarations. (ts)
+[36m<script lang="ts">
+  import type { UiStatusTone } from [35m'@victframework/ui'[36m;
+  interface Props { value: string; tone?: UiStatusTone; surfaceId?: string }[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-svelte\src\ActionFeedback.svelte[39m:2:41
+[31mError[39m: Cannot find module '@victframework/ui' or its corresponding type declarations. (ts)
+[36m<script lang="ts">
+  import type { UiActionFeedback } from [35m'@victframework/ui'[36m;
+  let { feedback = null, actionId }: { feedback?: UiActionFeedback | null; actionId?: string } = $props();[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-svelte\src\Tabs.svelte[39m:4:30
+[31mError[39m: Cannot find module '@victframework/ui' or its corresponding type declarations. (ts)
+[36m  import type { Snippet } from 'svelte';
+  import type { UiTab } from [35m'@victframework/ui'[36m;
+  let { surfaceId, tabs, panel }: { surfaceId: string; tabs: readonly UiTab[]; panel: Snippet<[number]> } = $props();[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-svelte\src\FormField.svelte[39m:3:36
+[31mError[39m: Cannot find module '@victframework/ui' or its corresponding type declarations. (ts)
+[36m  import Select from './Select.svelte';
+  import type { UiFormField } from [35m'@victframework/ui'[36m;
+  interface Props {[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-svelte\src\Form.svelte[39m:2:54
+[31mError[39m: Cannot find module '@victframework/ui' or its corresponding type declarations. (ts)
+[36m<script lang="ts">
+  import type { UiFormField, UiActionFeedback } from [35m'@victframework/ui'[36m;
+  import Button from './Button.svelte';[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-svelte\src\Overlay.svelte[39m:4:40
+[31mError[39m: Cannot find module '@victframework/ui' or its corresponding type declarations. (ts)
+[36m  import type { Snippet } from 'svelte';
+  import type { UiOverlayIntent } from [35m'@victframework/ui'[36m;
+  let { surfaceId, intent, content, onOpenChange }: { surfaceId: string; intent: UiOverlayIntent; content: Snippet; onOpenChange?: (open: boolean) => void } = $props();[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-svelte\src\List.svelte[39m:2:35
+[31mError[39m: Cannot find module '@victframework/ui' or its corresponding type declarations. (ts)
+[36m<script lang="ts">
+  import type { UiListItem } from [35m'@victframework/ui'[36m;
+  import Feedback from './Feedback.svelte';[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-svelte\src\Detail.svelte[39m:2:39
+[31mError[39m: Cannot find module '@victframework/ui' or its corresponding type declarations. (ts)
+[36m<script lang="ts">
+  import type { UiDisplayField } from [35m'@victframework/ui'[36m;
+  import Feedback from './Feedback.svelte';[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-svelte\src\Chart.svelte[39m:2:37
+[31mError[39m: Cannot find module '@victframework/ui' or its corresponding type declarations. (ts)
+[36m<script lang="ts">
+  import type { UiChartPoint } from [35m'@victframework/ui'[36m;
+  interface Props {[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-svelte\src\Conversation.svelte[39m:3:46
+[31mError[39m: Cannot find module '@victframework/ui' or its corresponding type declarations. (ts)
+[36m  import { tick } from 'svelte';
+  import type { UiConversationMessage } from [35m'@victframework/ui'[36m;
+  interface Props {[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-svelte\src\ActionButton.svelte[39m:3:57
+[31mError[39m: Cannot find module '@victframework/ui' or its corresponding type declarations. (ts)
+[36m  import { tick } from 'svelte';
+  import { actionFeedback, type UiActionFeedback } from [35m'@victframework/ui'[36m;
+  import type { ActionResult, PlanSurface, VictPlanView } from './logic.js';[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-svelte\src\presentation.ts[39m:6:8
+[31mError[39m: Cannot find module '@victframework/ui' or its corresponding type declarations. 
+[36m  UiListItem,
+} from [35m'@victframework/ui'[36m;[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-svelte\src\TableAdapter.svelte[39m:3:42
+[31mError[39m: Cannot find module '@victframework/application/renderer' or its corresponding type declarations. (ts)
+[36m  /** Transitional owner of query dispatch and local table behavior. */
+  import type { ComponentRegistry } from [35m'@victframework/application/renderer'[36m;
+  import type { UiTableIntent, UiTableState } from '@victframework/ui';[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-svelte\src\TableAdapter.svelte[39m:4:52
+[31mError[39m: Cannot find module '@victframework/ui' or its corresponding type declarations. (ts)
+[36m  import type { ComponentRegistry } from '@victframework/application/renderer';
+  import type { UiTableIntent, UiTableState } from [35m'@victframework/ui'[36m;
+  import RecordsTable from './RecordsTable.svelte';[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-svelte\src\TableAdapter.svelte[39m:80:36
+[31mError[39m: Parameter 'field' implicitly has an 'any' type. (ts)
+[36m      rows = rows.filter((row) =>
+        intent.search.fields.some(([35mfield[36m) => String(row[field] ?? '').toLowerCase().includes(needle)),
+      );[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-svelte\src\FormSurface.svelte[39m:17:75
+[31mError[39m: Cannot find module '@victframework/ui' or its corresponding type declarations. (ts)
+[36m  import { tick, onDestroy } from 'svelte';
+  import { actionFeedback, type UiFormField, type UiActionFeedback } from [35m'@victframework/ui'[36m;
+  import Form from './Form.svelte';[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-svelte\src\OverlaySurface.svelte[39m:3:42
+[31mError[39m: Cannot find module '@victframework/application/renderer' or its corresponding type declarations. (ts)
+[36m  /** Application surface traversal stays in the adapter; modal behavior belongs to UI. */
+  import type { ComponentRegistry } from [35m'@victframework/application/renderer'[36m;
+  import type { UiOverlayIntent, UiPlan } from '@victframework/ui';[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-svelte\src\OverlaySurface.svelte[39m:4:48
+[31mError[39m: Cannot find module '@victframework/ui' or its corresponding type declarations. (ts)
+[36m  import type { ComponentRegistry } from '@victframework/application/renderer';
+  import type { UiOverlayIntent, UiPlan } from [35m'@victframework/ui'[36m;
+  import Overlay from './Overlay.svelte';[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-svelte\src\Surface.svelte[39m:6:42
+[31mError[39m: Cannot find module '@victframework/application/renderer' or its corresponding type declarations. (ts)
+[36m   */
+  import type { ComponentRegistry } from [35m'@victframework/application/renderer'[36m;
+  import type { VictPlanView, PlanSurface } from './logic.js';[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-svelte\src\Surface.svelte[39m:8:45
+[31mError[39m: Cannot find module '@victframework/ui' or its corresponding type declarations. (ts)
+[36m  import type { VictPlanView, PlanSurface } from './logic.js';
+  import type { UiPlan, UiStatusTone } from [35m'@victframework/ui'[36m;
+  import ActionButton from './ActionButton.svelte';[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-svelte\src\Surface.svelte[39m:142:60
+[31mError[39m: Cannot find module '@victframework/ui' or its corresponding type declarations. (ts)
+[36m      {@const fields = viewFieldNames(sn.viewId)}
+      {@const viewIntent = uiPlan.views?.[sn.id] as import([35m'@victframework/ui'[36m).UiViewIntent | undefined}
+      {@const viewBinding = viewIntent?.rowDetail}[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-svelte\src\VitApp.svelte[39m:14:62
+[31mError[39m: Cannot find module '@victframework/application/renderer' or its corresponding type declarations. (ts)
+[36m   */
+  import { RendererDiagnostic, type ComponentRegistry } from [35m'@victframework/application/renderer'[36m;
+  import { deriveUiPlan, resolvePageComposition, actionFeedback } from '@victframework/ui';[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-svelte\src\VitApp.svelte[39m:15:72
+[31mError[39m: Cannot find module '@victframework/ui' or its corresponding type declarations. (ts)
+[36m  import { RendererDiagnostic, type ComponentRegistry } from '@victframework/application/renderer';
+  import { deriveUiPlan, resolvePageComposition, actionFeedback } from [35m'@victframework/ui'[36m;
+  import AppShell from './AppShell.svelte';[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-svelte\src\VitApp.svelte[39m:77:47
+[31mError[39m: 'error' is of type 'unknown'. (ts)
+[36m      if (error instanceof RendererDiagnostic) {
+        return { ok: false as const, message: [35merror[36m.message };
+      }[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-svelte\src\renderer.ts[39m:1:59
+[31mError[39m: Cannot find module '@victframework/application' or its corresponding type declarations. 
+[36mimport type { ApplicationPlan, ApplicationRenderer } from [35m'@victframework/application'[36m;
+import type { RenderedApplication, RendererBindings } from '@victframework/application/renderer';[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-svelte\src\renderer.ts[39m:2:60
+[31mError[39m: Cannot find module '@victframework/application/renderer' or its corresponding type declarations. 
+[36mimport type { ApplicationPlan, ApplicationRenderer } from '@victframework/application';
+import type { RenderedApplication, RendererBindings } from [35m'@victframework/application/renderer'[36m;
+import { BUILT_IN_ROLES, validatePlanForRenderer, type VictPlanView } from './logic.js';[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-svelte\src\index.ts[39m:65:36
+[31mError[39m: Cannot find module '@victframework/application/renderer' or its corresponding type declarations. 
+[36m} from './logic.js';
+export { RendererDiagnostic } from [35m'@victframework/application/renderer'[36m;[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-editor\src\EditorCanvas.svelte[39m:19:10
+[31mError[39m: Cannot find module '@victframework/ui' or its corresponding type declarations. (ts)
+[36m    type UiRenderPlan,
+  } from [35m'@victframework/ui'[36m;[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-editor\src\occurrence.ts[39m:9:41
+[31mError[39m: Cannot find module '@victframework/ui' or its corresponding type declarations. 
+[36m
+import type { UiDocument, UiNode } from [35m'@victframework/ui'[36m;[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-editor\src\commands.ts[39m:18:8
+[31mError[39m: Cannot find module '@victframework/ui' or its corresponding type declarations. 
+[36m  UiStyleValue,
+} from [35m'@victframework/ui'[36m;[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-editor\src\commands.ts[39m:189:14
+[31mError[39m: Cannot find module '@victframework/ui' or its corresponding type declarations. 
+[36m    ? never
+    : import([35m'@victframework/ui'[36m).UiStyleValue;
+  readonly conditionId?: string;[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-editor\src\inspector-ux.ts[39m:1:55
+[31mError[39m: Cannot find module '@victframework/ui' or its corresponding type declarations. 
+[36mimport type { UiDocument, UiNode, UiStyleValue } from [35m'@victframework/ui'[36m;[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-editor\src\inspector-ux.ts[39m:40:13
+[31mError[39m: Parameter 'child' implicitly has an 'any' type. 
+[36m    const text = node.children
+      .map(([35mchild[36m) => document.nodes[child])
+      .find((child) => child?.kind === 'text');[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-editor\src\inspector-ux.ts[39m:41:14
+[31mError[39m: Parameter 'child' implicitly has an 'any' type. 
+[36m      .map((child) => document.nodes[child])
+      .find(([35mchild[36m) => child?.kind === 'text');
+    return text?.kind === 'text' && text.content.type === 'literal' && text.content.value[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-editor\src\inspector-ux.ts[39m:61:66
+[31mError[39m: Parameter 'b' implicitly has an 'any' type. 
+[36m  if (node.kind === 'repeat') return [node.templateRoot];
+  if (node.kind === 'conditional') return node.branches.flatMap(([35mb[36m) => b.children);
+  if (node.kind === 'slot') return node.fallback ?? [];[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-editor\src\inspector-ux.ts[39m:63:88
+[31mError[39m: 's' is of type 'unknown'. 
+[36m  if (node.kind === 'slot') return node.fallback ?? [];
+  if (node.kind === 'component') return Object.values(node.slots ?? {}).flatMap((s) => [35ms[36m.children);
+  return [];[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-editor\src\inspector-ux.ts[39m:79:88
+[31mError[39m: Property 'id' does not exist on type '{}'. 
+[36m    const target: string = current;
+    current = Object.values(document.nodes).find((n) => childIds(n).includes(target))?.[35mid[36m;
+  }[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-editor\src\inspector-ux.ts[39m:101:60
+[31mError[39m: Parameter 'd' implicitly has an 'any' type. 
+[36m  if (!node) return undefined;
+  if (!condition && !pseudo) return node.localStyle?.find(([35md[36m) => d.property === property)?.value;
+  return document.styleSources[[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-editor\src\inspector-ux.ts[39m:104:25
+[31mError[39m: Parameter 'd' implicitly has an 'any' type. 
+[36m    `src.${nodeId}.${condition ?? 'always'}.${pseudo ?? 'plain'}`
+  ]?.declarations.find(([35md[36m) => d.property === property)?.value;
+}[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-editor\src\inspector-ux.ts[39m:111:45
+[31mError[39m: Parameter 'id' implicitly has an 'any' type. 
+[36m  if (!node) return [];
+  return (node.styleSources ?? []).flatMap(([35mid[36m) => {
+    const source = document.styleSources[id];[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-editor\src\inspector-ux.ts[39m:113:46
+[31mError[39m: Parameter 'd' implicitly has an 'any' type. 
+[36m    const source = document.styleSources[id];
+    const value = source?.declarations.find(([35md[36m) => d.property === property)?.value;
+    return value[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-editor\src\Inspector.svelte[39m:3:49
+[31mError[39m: Cannot find module '@victframework/ui' or its corresponding type declarations. (ts)
+[36m  import { tick } from 'svelte';
+  import type { UiDocument, UiStyleValue } from [35m'@victframework/ui'[36m;
+  type UiPseudoState = 'hover' | 'focus' | 'active' | 'disabled';[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-editor\src\Inspector.svelte[39m:75:98
+[31mError[39m: 'n' is of type 'unknown'. (ts)
+[36m  const shared = $derived(owner !== undefined);
+  const styleSourceId = $derived(node?.kind === 'text' ? Object.values(document.nodes).find(n => [35mn[36m.kind === 'element' && n.children.includes(node.id))?.id ?? node.id : node?.id ?? '');
+  const target = $derived(scope === 'instance' && nearest ? nearest.sourceNodeId : styleSourceId);[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-editor\src\Inspector.svelte[39m:75:122
+[31mError[39m: 'n' is of type 'unknown'. (ts)
+[36m  const shared = $derived(owner !== undefined);
+  const styleSourceId = $derived(node?.kind === 'text' ? Object.values(document.nodes).find(n => n.kind === 'element' && [35mn[36m.children.includes(node.id))?.id ?? node.id : node?.id ?? '');
+  const target = $derived(scope === 'instance' && nearest ? nearest.sourceNodeId : styleSourceId);[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-editor\src\Inspector.svelte[39m:75:153
+[31mError[39m: Property 'id' does not exist on type '{}'. (ts)
+[36m  const shared = $derived(owner !== undefined);
+  const styleSourceId = $derived(node?.kind === 'text' ? Object.values(document.nodes).find(n => n.kind === 'element' && n.children.includes(node.id))?.[35mid[36m ?? node.id : node?.id ?? '');
+  const target = $derived(scope === 'instance' && nearest ? nearest.sourceNodeId : styleSourceId);[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-editor\src\Inspector.svelte[39m:78:68
+[31mError[39m: 'n' is of type 'unknown'. (ts)
+[36m  const targetNode = $derived(document.nodes[target]);
+  const count = $derived(Object.values(document.nodes).filter(n => [35mn[36m.kind === 'component' && n.definitionId === owner).length);
+  const textNode = $derived(node?.kind === 'text' ? node : node?.kind === 'element' ? node.children.map(id => document.nodes[id]).find(n => n?.kind === 'text') : undefined);[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-editor\src\Inspector.svelte[39m:78:94
+[31mError[39m: 'n' is of type 'unknown'. (ts)
+[36m  const targetNode = $derived(document.nodes[target]);
+  const count = $derived(Object.values(document.nodes).filter(n => n.kind === 'component' && [35mn[36m.definitionId === owner).length);
+  const textNode = $derived(node?.kind === 'text' ? node : node?.kind === 'element' ? node.children.map(id => document.nodes[id]).find(n => n?.kind === 'text') : undefined);[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-editor\src\Inspector.svelte[39m:79:105
+[31mError[39m: Parameter 'id' implicitly has an 'any' type. (ts)
+[36m  const count = $derived(Object.values(document.nodes).filter(n => n.kind === 'component' && n.definitionId === owner).length);
+  const textNode = $derived(node?.kind === 'text' ? node : node?.kind === 'element' ? node.children.map([35mid[36m => document.nodes[id]).find(n => n?.kind === 'text') : undefined);
+  const canStyle = $derived(targetNode?.kind === 'element' || targetNode?.kind === 'component');[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-editor\src\Inspector.svelte[39m:79:136
+[31mError[39m: Parameter 'n' implicitly has an 'any' type. (ts)
+[36m  const count = $derived(Object.values(document.nodes).filter(n => n.kind === 'component' && n.definitionId === owner).length);
+  const textNode = $derived(node?.kind === 'text' ? node : node?.kind === 'element' ? node.children.map(id => document.nodes[id]).find([35mn[36m => n?.kind === 'text') : undefined);
+  const canStyle = $derived(targetNode?.kind === 'element' || targetNode?.kind === 'component');[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-editor\src\Inspector.svelte[39m:92:44
+[31mError[39m: Parameter 'i' implicitly has an 'any' type. (ts)
+[36m  $effect(() => {
+    const click = node?.interactions?.find([35mi[36m => i.on === 'click');
+    action = click?.action === 'invokeAction' ? click.actionId : '';[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-editor\src\Inspector.svelte[39m:103:45
+[31mError[39m: Parameter 'i' implicitly has an 'any' type. (ts)
+[36m    if (!node) return;
+    const current = node.interactions?.find([35mi[36m => i.on === 'click');
+    onApply(connectInteraction({ requestId: request(), nodeId: node.id, interaction: { on: 'click', action: 'navigate', routeId: route, ...(current?.action === 'navigate' && current.params ? { params: current.params } : {}) } }));[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-editor\src\Inspector.svelte[39m:120:50
+[31mError[39m: Parameter 'id' implicitly has an 'any' type. (ts)
+[36m  function originLabel(property: string) {
+    return (targetNode?.styleSources ?? []).some([35mid[36m => { const source = document.styleSources[id]; return source?.conditionId === (condition || undefined) && source.pseudo === pseudo && source.declarations.some(d => d.property === property); }) ? 'Source' : 'Preview';
+  }[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-editor\src\Inspector.svelte[39m:120:212
+[31mError[39m: Parameter 'd' implicitly has an 'any' type. (ts)
+[36m  function originLabel(property: string) {
+    return (targetNode?.styleSources ?? []).some(id => { const source = document.styleSources[id]; return source?.conditionId === (condition || undefined) && source.pseudo === pseudo && source.declarations.some([35md[36m => d.property === property); }) ? 'Source' : 'Preview';
+  }[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-editor\src\Inspector.svelte[39m:126:58
+[31mError[39m: Parameter 'id' implicitly has an 'any' type. (ts)
+[36m    // Show unconditioned attached authored values, separately labeled from preview.
+    const sources = (targetNode?.styleSources ?? []).map([35mid[36m => document.styleSources[id]).filter(s => s && s.conditionId === (condition || undefined) && s.pseudo === pseudo);
+    const authored = sources.flatMap(s => s.declarations).filter(d => d.property === property).at(-1)?.value;[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-editor\src\Inspector.svelte[39m:126:98
+[31mError[39m: Parameter 's' implicitly has an 'any' type. (ts)
+[36m    // Show unconditioned attached authored values, separately labeled from preview.
+    const sources = (targetNode?.styleSources ?? []).map(id => document.styleSources[id]).filter([35ms[36m => s && s.conditionId === (condition || undefined) && s.pseudo === pseudo);
+    const authored = sources.flatMap(s => s.declarations).filter(d => d.property === property).at(-1)?.value;[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-editor\src\Inspector.svelte[39m:127:38
+[31mError[39m: Parameter 's' implicitly has an 'any' type. (ts)
+[36m    const sources = (targetNode?.styleSources ?? []).map(id => document.styleSources[id]).filter(s => s && s.conditionId === (condition || undefined) && s.pseudo === pseudo);
+    const authored = sources.flatMap([35ms[36m => s.declarations).filter(d => d.property === property).at(-1)?.value;
+    return styleText(authored, document) || effective(property);[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-editor\src\Inspector.svelte[39m:127:66
+[31mError[39m: Parameter 'd' implicitly has an 'any' type. (ts)
+[36m    const sources = (targetNode?.styleSources ?? []).map(id => document.styleSources[id]).filter(s => s && s.conditionId === (condition || undefined) && s.pseudo === pseudo);
+    const authored = sources.flatMap(s => s.declarations).filter([35md[36m => d.property === property).at(-1)?.value;
+    return styleText(authored, document) || effective(property);[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-editor\src\Inspector.svelte[39m:137:76
+[31mError[39m: 'n' is of type 'unknown'. (ts)
+[36m    if (['color', 'font-family', 'font-size', 'font-weight', 'line-height', 'text-align'].includes(property) && node) {
+      let ancestor = Object.values(document.nodes).find(n => 'children' in [35mn[36m && n.children.includes(node.id));
+      const seen = new Set<string>();[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-editor\src\Inspector.svelte[39m:137:81
+[31mError[39m: 'n.children' is of type 'unknown'. (ts)
+[36m    if (['color', 'font-family', 'font-size', 'font-weight', 'line-height', 'text-align'].includes(property) && node) {
+      let ancestor = Object.values(document.nodes).find(n => 'children' in n && [35mn.children[36m.includes(node.id));
+      const seen = new Set<string>();[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-editor\src\Inspector.svelte[39m:139:45
+[31mError[39m: Property 'id' does not exist on type '{}'. (ts)
+[36m      const seen = new Set<string>();
+      while (ancestor && !seen.has(ancestor.[35mid[36m)) {
+        seen.add(ancestor.id);[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-editor\src\Inspector.svelte[39m:140:27
+[31mError[39m: Property 'id' does not exist on type '{}'. (ts)
+[36m      while (ancestor && !seen.has(ancestor.id)) {
+        seen.add(ancestor.[35mid[36m);
+        const declaration = ancestor.localStyle?.find(d => d.property === property);[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-editor\src\Inspector.svelte[39m:141:38
+[31mError[39m: Property 'localStyle' does not exist on type '{}'. (ts)
+[36m        seen.add(ancestor.id);
+        const declaration = ancestor.[35mlocalStyle[36m?.find(d => d.property === property);
+        const attached = sourceStyles(document, ancestor.id, property);[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-editor\src\Inspector.svelte[39m:141:55
+[31mError[39m: Parameter 'd' implicitly has an 'any' type. (ts)
+[36m        seen.add(ancestor.id);
+        const declaration = ancestor.localStyle?.find([35md[36m => d.property === property);
+        const attached = sourceStyles(document, ancestor.id, property);[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-editor\src\Inspector.svelte[39m:142:58
+[31mError[39m: Property 'id' does not exist on type '{}'. (ts)
+[36m        const declaration = ancestor.localStyle?.find(d => d.property === property);
+        const attached = sourceStyles(document, ancestor.[35mid[36m, property);
+        if (declaration || attached.length) return `Inheritable property · ancestor ${nodeLabel(document, ancestor.id, labels)} declares ${declaration ? styleText(declaration.value, document) : attached.join('; ')}. Browser now shows the result; external cascade origin is not inferred.`;[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-editor\src\Inspector.svelte[39m:143:116
+[31mError[39m: Property 'id' does not exist on type '{}'. (ts)
+[36m        const attached = sourceStyles(document, ancestor.id, property);
+        if (declaration || attached.length) return `Inheritable property · ancestor ${nodeLabel(document, ancestor.[35mid[36m, labels)} declares ${declaration ? styleText(declaration.value, document) : attached.join('; ')}. Browser now shows the result; external cascade origin is not inferred.`;
+        const ancestorId = ancestor.id;[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-editor\src\Inspector.svelte[39m:144:37
+[31mError[39m: Property 'id' does not exist on type '{}'. (ts)
+[36m        if (declaration || attached.length) return `Inheritable property · ancestor ${nodeLabel(document, ancestor.id, labels)} declares ${declaration ? styleText(declaration.value, document) : attached.join('; ')}. Browser now shows the result; external cascade origin is not inferred.`;
+        const ancestorId = ancestor.[35mid[36m;
+        ancestor = Object.values(document.nodes).find(n => 'children' in n && n.children.includes(ancestorId));[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-editor\src\Inspector.svelte[39m:145:74
+[31mError[39m: 'n' is of type 'unknown'. (ts)
+[36m        const ancestorId = ancestor.id;
+        ancestor = Object.values(document.nodes).find(n => 'children' in [35mn[36m && n.children.includes(ancestorId));
+        if (!ancestor) {[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-editor\src\Inspector.svelte[39m:145:79
+[31mError[39m: 'n.children' is of type 'unknown'. (ts)
+[36m        const ancestorId = ancestor.id;
+        ancestor = Object.values(document.nodes).find(n => 'children' in n && [35mn.children[36m.includes(ancestorId));
+        if (!ancestor) {[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-editor\src\Inspector.svelte[39m:202:258
+[31mError[39m: Parameter 'i' implicitly has an 'any' type. (ts)
+[36m          <label>Declared action<select aria-label="Declared action" value={action} onchange={e => action = e.currentTarget.value}><option value="">Choose an action…</option>{#each knownActionIds as id}<option value={id}>{labels.actions?.[id] ?? id}</option>{/each}</select></label>
+          <button type="button" disabled={!knownActionIds.includes(action)} onclick={() => onApply(connectInteraction({ requestId: request(), nodeId: node.id, interaction: { on: 'click', action: 'invokeAction', actionId: action, ...(node.interactions?.find([35mi[36m => i.on === 'click' && i.action === 'invokeAction')?.action === 'invokeAction' ? { input: (node.interactions.find(i => i.on === 'click' && i.action === 'invokeAction') as { input?: Readonly<Record<string, import('@victframework/ui').UiExpression>> }).input } : {}) } }))}>Connect action</button>
+          {#if !knownActionIds.length}<p>No declared actions supplied by the host.</p>{/if}[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-editor\src\Inspector.svelte[39m:202:374
+[31mError[39m: Parameter 'i' implicitly has an 'any' type. (ts)
+[36m          <label>Declared action<select aria-label="Declared action" value={action} onchange={e => action = e.currentTarget.value}><option value="">Choose an action…</option>{#each knownActionIds as id}<option value={id}>{labels.actions?.[id] ?? id}</option>{/each}</select></label>
+          <button type="button" disabled={!knownActionIds.includes(action)} onclick={() => onApply(connectInteraction({ requestId: request(), nodeId: node.id, interaction: { on: 'click', action: 'invokeAction', actionId: action, ...(node.interactions?.find(i => i.on === 'click' && i.action === 'invokeAction')?.action === 'invokeAction' ? { input: (node.interactions.find([35mi[36m => i.on === 'click' && i.action === 'invokeAction') as { input?: Readonly<Record<string, import('@victframework/ui').UiExpression>> }).input } : {}) } }))}>Connect action</button>
+          {#if !knownActionIds.length}<p>No declared actions supplied by the host.</p>{/if}[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-editor\src\Inspector.svelte[39m:202:472
+[31mError[39m: Cannot find module '@victframework/ui' or its corresponding type declarations. (ts)
+[36m          <label>Declared action<select aria-label="Declared action" value={action} onchange={e => action = e.currentTarget.value}><option value="">Choose an action…</option>{#each knownActionIds as id}<option value={id}>{labels.actions?.[id] ?? id}</option>{/each}</select></label>
+          <button type="button" disabled={!knownActionIds.includes(action)} onclick={() => onApply(connectInteraction({ requestId: request(), nodeId: node.id, interaction: { on: 'click', action: 'invokeAction', actionId: action, ...(node.interactions?.find(i => i.on === 'click' && i.action === 'invokeAction')?.action === 'invokeAction' ? { input: (node.interactions.find(i => i.on === 'click' && i.action === 'invokeAction') as { input?: Readonly<Record<string, import([35m'@victframework/ui'[36m).UiExpression>> }).input } : {}) } }))}>Connect action</button>
+          {#if !knownActionIds.length}<p>No declared actions supplied by the host.</p>{/if}[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-editor\src\Layers.svelte[39m:2:70
+[31mError[39m: Cannot find module '@victframework/ui' or its corresponding type declarations. (ts)
+[36m<script lang="ts">
+  import type { UiDocument, UiRenderPlan, UiRenderInstruction } from [35m'@victframework/ui'[36m;
+  import { occurrenceKey, resolveValue, uniqueRepeatKeys, asRecord, evaluatedComponentProps, conditionsOf, evaluateCondition, type DocumentScope } from '@victframework/ui-svelte';[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-editor\src\Layers.svelte[39m:23:192
+[31mError[39m: Parameter 'c' implicitly has an 'any' type. (ts)
+[36m      const start = out.length;
+      out.push({ key, nodeId: i.nodeId, label, depth, parent, children: false, component: i.kind === 'component', compact: i.kind === 'component' || (i.kind === 'element' && i.children.every([35mc[36m => c.kind === 'text')), selectable: !template && !['component', 'repeat', 'conditional', 'slot'].includes(i.kind), detail: `${i.nodeId}${i.kind === 'component' ? ` · definition ${i.definitionId} @ ${i.definitionRevision}` : ''}${keys.length ? ` · record ${keys.join(' / ')}` : ''}${template ? ' · template (runtime scope unavailable)' : ''}` });
+      const child = (instruction: UiRenderInstruction, childValues = values, childKeys = keys, childFills = fills, isTemplate = template) => walk(instruction, depth + 1, childKeys, key, childValues, childFills, isTemplate);[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-editor\src\Layers.svelte[39m:25:80
+[31mError[39m: Parameter 'c' implicitly has an 'any' type. (ts)
+[36m      const child = (instruction: UiRenderInstruction, childValues = values, childKeys = keys, childFills = fills, isTemplate = template) => walk(instruction, depth + 1, childKeys, key, childValues, childFills, isTemplate);
+      if (i.kind === 'element' || i.kind === 'unsupported') i.children.forEach([35mc[36m => child(c));
+      if (i.kind === 'component') child(i.body, values ? { ...values, props: evaluatedComponentProps(i, values) } : undefined, keys, i.slots);[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-editor\src\Layers.svelte[39m:27:91
+[31mError[39m: Parameter 'c' implicitly has an 'any' type. (ts)
+[36m      if (i.kind === 'component') child(i.body, values ? { ...values, props: evaluatedComponentProps(i, values) } : undefined, keys, i.slots);
+      if (i.kind === 'slot') (fills[i.name]?.length ? fills[i.name] : i.fallback).forEach([35mc[36m => child(c, values, keys, {}));
+      if (i.kind === 'conditional') {[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-editor\src\Layers.svelte[39m:30:42
+[31mError[39m: Parameter 'b' implicitly has an 'any' type. (ts)
+[36m        if (values) {
+          const branch = i.branches.find([35mb[36m => b.when === undefined || evaluateCondition(b.when, conditionsOf(plan), values));
+          branch?.children.forEach(c => child(c));[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-editor\src\Layers.svelte[39m:31:36
+[31mError[39m: Parameter 'c' implicitly has an 'any' type. (ts)
+[36m          const branch = i.branches.find(b => b.when === undefined || evaluateCondition(b.when, conditionsOf(plan), values));
+          branch?.children.forEach([35mc[36m => child(c));
+        } else i.branches.forEach(b => b.children.forEach(c => child(c, values, keys, fills, true)));[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-editor\src\Layers.svelte[39m:32:35
+[31mError[39m: Parameter 'b' implicitly has an 'any' type. (ts)
+[36m          branch?.children.forEach(c => child(c));
+        } else i.branches.forEach([35mb[36m => b.children.forEach(c => child(c, values, keys, fills, true)));
+      }[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-editor\src\Layers.svelte[39m:32:59
+[31mError[39m: Parameter 'c' implicitly has an 'any' type. (ts)
+[36m          branch?.children.forEach(c => child(c));
+        } else i.branches.forEach(b => b.children.forEach([35mc[36m => child(c, values, keys, fills, true)));
+      }[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-editor\src\Layers.svelte[39m:44:28
+[31mError[39m: Parameter 'i' implicitly has an 'any' type. (ts)
+[36m    }
+    plan.structure.forEach([35mi[36m => walk(i, 0, [], undefined, scope));
+    return out;[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-editor\src\bridge.ts[39m:20:8
+[31mError[39m: Cannot find module '@victframework/ui' or its corresponding type declarations. 
+[36m  type UiSaveOutcome,
+} from [35m'@victframework/ui'[36m;
+import type { TransactionDraft } from './commands.js';[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mpackages\ui-editor\src\local-storage-store.ts[39m:15:33
+[31mError[39m: Cannot find module '@victframework/ui' or its corresponding type declarations. 
+[36mimport type { DocumentStorePort, DocumentStoreLoadResult } from './bridge.js';
+import type { UiDocument } from [35m'@victframework/ui'[36m;[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mexamples\ui-design-proof\src\lib\design\service-document.ts[39m:10:33
+[31mError[39m: Cannot find module '@victframework/ui' or its corresponding type declarations. 
+[36m */
+import type { UiDocument } from [35m'@victframework/ui'[36m;[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mexamples\ui-design-proof\src\lib\design\persistence.ts[39m:17:53
+[31mError[39m: Cannot find module '@victframework/ui' or its corresponding type declarations. 
+[36m} from '@victframework/ui-editor';
+import { validateUiDocument, type UiDocument } from [35m'@victframework/ui'[36m;
+import { designCatalogs } from './adapter.js';[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mexamples\ui-design-proof\src\lib\design\persistence.ts[39m:43:57
+[31mError[39m: Parameter 'issue' implicitly has an 'any' type. 
+[36m    validateDocument: (document) =>
+      validateUiDocument(document, designCatalogs).map(([35missue[36m) => ({
+        code: issue.code,[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mexamples\ui-design-proof\src\routes\editor-review\review-document.ts[39m:5:8
+[31mError[39m: Cannot find module '@victframework/ui' or its corresponding type declarations. 
+[36m  type UiStyleDeclaration,
+} from [35m'@victframework/ui'[36m;
+import type { EditorLabels } from '@victframework/ui-editor';[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mexamples\ui-design-proof\src\routes\editor-review\+page.svelte[39m:5:57
+[31mError[39m: Cannot find module '@victframework/ui' or its corresponding type declarations. (ts)
+[36m  import { EditorBridge, EditorCanvas, Inspector, Layers, createLocalStorageDocumentStore, type TransactionDraft } from '@victframework/ui-editor';
+  import { compileUiDocument, validateUiDocument } from [35m'@victframework/ui'[36m;
+  import { reviewDocument, reviewLabels, reviewCatalogs, REVIEW_STORE_KEY } from './review-document';[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mexamples\ui-design-proof\src\routes\service\+page.svelte[39m:10:54
+[31mError[39m: Cannot find module '@victframework/ui' or its corresponding type declarations. (ts)
+[36m  import { DocumentHost } from '@victframework/ui-svelte';
+  import { compileUiDocument, type UiDocument } from [35m'@victframework/ui'[36m;
+  import {[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mexamples\ui-design-proof\src\routes\workbench\+page.svelte[39m:36:37
+[31mError[39m: Cannot find module '@victframework/ui' or its corresponding type declarations. (ts)
+[36m  import { fixtureDocument, FIXTURE_STORE_KEY } from '$lib/design/fixture-document';
+  import type { UiRenderPlan } from [35m'@victframework/ui'[36m;[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mexamples\ui-design-proof\src\routes\workbench\+page.svelte[39m:277:34
+[31mError[39m: 'condition' is of type 'unknown'. (ts)
+[36m    Object.entries(current.doc.seed.conditions ?? {})
+      .filter(([, condition]) => [35mcondition[36m.kind === 'media' || condition.kind === 'container')
+      .map(([id, condition]) => {[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mexamples\ui-design-proof\src\routes\workbench\+page.svelte[39m:277:64
+[31mError[39m: 'condition' is of type 'unknown'. (ts)
+[36m    Object.entries(current.doc.seed.conditions ?? {})
+      .filter(([, condition]) => condition.kind === 'media' || [35mcondition[36m.kind === 'container')
+      .map(([id, condition]) => {[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mexamples\ui-design-proof\src\routes\workbench\+page.svelte[39m:279:13
+[31mError[39m: 'condition' is of type 'unknown'. (ts)
+[36m      .map(([id, condition]) => {
+        if ([35mcondition[36m.kind === 'media') {
+          return { id, label: `Window: ${condition.query}` };[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mexamples\ui-design-proof\src\routes\workbench\+page.svelte[39m:280:42
+[31mError[39m: 'condition' is of type 'unknown'. (ts)
+[36m        if (condition.kind === 'media') {
+          return { id, label: `Window: ${[35mcondition[36m.query}` };
+        }[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mexamples\ui-design-proof\src\routes\workbench\+page.svelte[39m:285:13
+[31mError[39m: 'condition' is of type 'unknown'. (ts)
+[36m          label:
+            [35mcondition[36m.kind === 'container'
+              ? `Container “${condition.name}”: ${condition.query}`[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mexamples\ui-design-proof\src\routes\workbench\+page.svelte[39m:286:31
+[31mError[39m: 'condition' is of type 'unknown'. (ts)
+[36m            condition.kind === 'container'
+              ? `Container “${[35mcondition[36m.name}”: ${condition.query}`
+              : id,[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mexamples\ui-design-proof\src\routes\workbench\+page.svelte[39m:286:51
+[31mError[39m: 'condition' is of type 'unknown'. (ts)
+[36m            condition.kind === 'container'
+              ? `Container “${condition.name}”: ${[35mcondition[36m.query}`
+              : id,[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mexamples\ui-design-proof\test\design-proof.test.ts[39m:8:70
+[31mError[39m: Cannot find module '@victframework/ui' or its corresponding type declarations. 
+[36mimport { Window } from 'happy-dom';
+import { compileUiDocument, UiEditSession, validateUiDocument } from [35m'@victframework/ui'[36m;
+import { classifyStored, createLocalStorageDocumentStore } from '@victframework/ui-editor';[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mexamples\ui-design-proof\test\design-proof.test.ts[39m:90:59
+[31mError[39m: Parameter 'issue' implicitly has an 'any' type. 
+[36m      validateDocument: (document) =>
+        validateUiDocument(document, designCatalogs).map(([35missue[36m) => ({
+          code: issue.code,[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mexamples\ui-design-proof\test\design-proof.test.ts[39m:139:25
+[31mError[39m: Parameter 'issue' implicitly has an 'any' type. 
+[36m    const issues = validateUiDocument(serviceDocument, designCatalogs);
+    expect(issues.some(([35missue[36m) => issue.code === 'UI_DOC_REQUIRED_SLOT_MISSING')).toBe(false);
+    expect(issues.filter((issue) => issue.severity === 'error')).toEqual([]);[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mexamples\ui-design-proof\test\design-proof.test.ts[39m:140:27
+[31mError[39m: Parameter 'issue' implicitly has an 'any' type. 
+[36m    expect(issues.some((issue) => issue.code === 'UI_DOC_REQUIRED_SLOT_MISSING')).toBe(false);
+    expect(issues.filter(([35missue[36m) => issue.severity === 'error')).toEqual([]);
+    const instances = Object.values(serviceDocument.nodes).filter([39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mexamples\ui-design-proof\test\design-proof.test.ts[39m:142:17
+[31mError[39m: 'node' is of type 'unknown'. 
+[36m    const instances = Object.values(serviceDocument.nodes).filter(
+      (node) => [35mnode[36m.kind === 'component' && node.definitionId === 'def.serviceCard',
+    );[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mexamples\ui-design-proof\test\design-proof.test.ts[39m:142:46
+[31mError[39m: 'node' is of type 'unknown'. 
+[36m    const instances = Object.values(serviceDocument.nodes).filter(
+      (node) => node.kind === 'component' && [35mnode[36m.definitionId === 'def.serviceCard',
+    );[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mexamples\ui-design-proof\test\design-proof.test.ts[39m:146:11
+[31mError[39m: 'instance' is of type 'unknown'. 
+[36m    for (const instance of instances) {
+      if ([35minstance[36m.kind !== 'component') continue;
+      expect(instance.slots?.['title']?.children.length ?? 0).toBeGreaterThan(0);[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mexamples\ui-design-proof\test\design-proof.test.ts[39m:147:14
+[31mError[39m: 'instance' is of type 'unknown'. 
+[36m      if (instance.kind !== 'component') continue;
+      expect([35minstance[36m.slots?.['title']?.children.length ?? 0).toBeGreaterThan(0);
+    }[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mexamples\ui-design-proof\test\design-proof.test.ts[39m:179:14
+[31mError[39m: 'node' is of type 'unknown'. 
+[36m    for (const node of Object.values(fixtureDocument.nodes)) {
+      expect([35mnode[36m.interactions ?? []).toEqual([]);
+    }[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mexamples\ui-design-proof\test\measure-u2.ts[39m:22:8
+[31mError[39m: Cannot find module '@victframework/ui' or its corresponding type declarations. 
+[36m  type UiDocument,
+} from [35m'@victframework/ui'[36m;[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mexamples\ui-design-proof\test\measure-u2.ts[39m:217:61
+[31mError[39m: Parameter 'entry' implicitly has an 'any' type. 
+[36m  // visible repeated occurrences render 100 rows × template + 20 instances × body
+  const repeatOccurrences = lastPlan.plan.sourceMap.filter(([35mentry[36m) =>
+    entry.sourceNodeId.startsWith('n.row'),[39m
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u2-combined-verify\[32mexamples\ui-design-proof\test\measure-u2.ts[39m:220:63
+[31mError[39m: Parameter 'entry' implicitly has an 'any' type. 
+[36m  ).length;
+  const instanceOccurrences = lastPlan.plan.sourceMap.filter(([35mentry[36m) =>
+    entry.sourceNodeId.startsWith('def.meterCard'),[39m
+
+====================================
+[31msvelte-check found 138 errors and 2 warnings in 45 files
+[39m

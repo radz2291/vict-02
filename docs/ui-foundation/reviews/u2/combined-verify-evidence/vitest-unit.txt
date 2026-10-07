@@ -1,0 +1,9 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/Desktop/RZ/vict-02-u2-combined-verify
+
+
+ Test Files  7 passed (7)
+      Tests  70 passed (70)
+   Start at  08:26:08
+   Duration  1.14s (transform 2.32s, setup 0ms, import 3.56s, tests 348ms, environment 2ms)
+
