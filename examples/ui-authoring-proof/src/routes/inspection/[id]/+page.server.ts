@@ -14,6 +14,7 @@ export const load: PageServerLoad = ({ params, url }) => {
       activity: product.server.adapter.activityFor(String(record['id'])),
       actorRole: actor.role,
       scenario: product.scenario,
+      mode: product.mode,
     };
   });
 };

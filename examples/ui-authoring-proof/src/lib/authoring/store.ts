@@ -24,7 +24,7 @@ import type { DocumentStoreLoadResult, DocumentStorePort } from '@victframework/
 const STORAGE_KEY = 'vict.u1.authoring.doc';
 const STORE_FORMAT = 'vict.authoring-store@1';
 /** The stored revision a freshly seeded (empty-store) session starts from. */
-export const SEED_STORED_REVISION = '1';
+export const SEED_STORED_REVISION = '2';
 
 /**
  * Load failure detail. `overwritable` distinguishes the two corruption

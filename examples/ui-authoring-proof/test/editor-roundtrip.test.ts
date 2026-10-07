@@ -3,10 +3,12 @@ import { EditorBridge } from '@victframework/ui-editor';
 import { setStyle, setTextLiteral } from '@victframework/ui-editor';
 import { canonicalUiDocument, type UiDocument } from '@victframework/ui';
 import { inspectionDetailDocument } from '../src/lib/product/definitions.js';
+import { SEED_STORED_REVISION } from '../src/lib/authoring/store.js';
+const NEXT_STORED_REVISION = String(Number(SEED_STORED_REVISION) + 1);
 
 function bridgeOverDocument() {
   let stored: UiDocument = structuredClone(inspectionDetailDocument);
-  let storedRevision = '1';
+  let storedRevision = SEED_STORED_REVISION;
   const bridge = new EditorBridge({
     initial: { document: stored, storedRevision },
     store: {
@@ -80,8 +82,9 @@ describe('U1-03/U1-04: source-aware editing and the round trip', () => {
     const save = bridge.save();
     expect(save.ok).toBe(true);
     if (!save.ok) return;
-    expect(save.storedRevision).toBe('2');
-    expect(storedRevisionRef()).toBe('2');
+    expect(save.storedRevision).toBe(NEXT_STORED_REVISION);
+    expect(storedRevisionRef()).toBe(NEXT_STORED_REVISION);
+    expect(storedRef().revision).toBe(NEXT_STORED_REVISION);
     // reopen: fresh session over the stored bytes — IDs/layout/bindings preserved
     const reopenedOutcome = bridge.reopen();
     expect(reopenedOutcome.ok).toBe(true);

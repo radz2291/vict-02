@@ -1,5 +1,6 @@
 export { default as DocumentHost } from './document/DocumentHost.svelte';
 export { default as DocumentRenderNode } from './document/RenderNode.svelte';
+export * from './document/extensions.js';
 export {
   occurrenceKey,
   rootClassFor,

@@ -9,17 +9,24 @@
    * under a root class), interaction dispatch and accessible surfaces.
    * Editor and scenario concerns stay OUT of this component.
    */
-  import type { UiRenderPlan, UiLocalStateDecl } from '@victframework/ui';
+  import type { UiRenderPlan, UiLocalStateDecl, UiExtensionDescriptor } from '@victframework/ui';
+  import { untrack } from 'svelte';
+  import type { UiSvelteExtensionImplementation } from './extensions.js';
   import RenderNode from './RenderNode.svelte';
   import { rootClassFor, styleRulesToCss, type DocumentScope } from './logic.js';
 
   interface Props {
     readonly plan: UiRenderPlan;
+    /** Explicit metadata/code registration, shared by product and editor. */
+    readonly extensionDescriptors?: readonly UiExtensionDescriptor[];
+    readonly extensionImplementations?: readonly UiSvelteExtensionImplementation[];
     /** Data scope: view fields / record fields for `view.*` / `record.*` refs. */
     readonly view?: Readonly<Record<string, unknown>>;
     readonly record?: Readonly<Record<string, unknown>>;
     /** Local state declarations from the SOURCE document (typed initials). */
     readonly localState?: Readonly<Record<string, UiLocalStateDecl>>;
+    /** Ephemeral orchestration values for declared local presentation state only. */
+    readonly stateValues?: Readonly<Record<string, string | number | boolean>>;
     /** Action dispatch below the renderer boundary (the ONLY way actions run). */
     readonly dispatch: (actionId: string, input?: unknown) => Promise<unknown>;
     /** Route navigation hook (route id + resolved params). */
@@ -37,9 +44,12 @@
 
   let {
     plan,
+    extensionDescriptors = [],
+    extensionImplementations = [],
     view = {},
     record = {},
     localState = {},
+    stateValues = {},
     dispatch,
     navigate,
     selectOccurrence,
@@ -54,6 +64,12 @@
     for (const [key, decl] of Object.entries(localState)) {
       bag[key] = decl.initial;
     }
+    // Seed SSR and the first client render consistently. The reactive merge
+    // below reports invalid supplied keys without leaking their values.
+    for (const [key, value] of Object.entries(stateValues)) {
+      const decl = Object.hasOwn(localState, key) ? localState[key] : undefined;
+      if (decl !== undefined && typeof value === decl.type && (typeof value !== 'number' || Number.isFinite(value))) bag[key] = value;
+    }
     return bag;
   }
 
@@ -61,12 +77,32 @@
   let lastSignal: symbol | undefined = $state<symbol | undefined>(undefined);
 
   $effect(() => {
-    if (resetSignal !== undefined && resetSignal !== lastSignal) {
-      lastSignal = resetSignal;
-      const fresh = initialValues();
-      for (const key of Object.keys(stateBag)) delete stateBag[key];
-      Object.assign(stateBag, fresh);
-    }
+    const signal = resetSignal;
+    const values = stateValues;
+    const declarations = localState;
+    const supplied = Object.entries(values ?? {});
+    // Local edits must not retrigger the merge. Reset precedes supplied values
+    // in the same effect, so one host update has deterministic ordering.
+    untrack(() => {
+      if (signal !== undefined && signal !== lastSignal) {
+        lastSignal = signal;
+        const fresh = initialValues();
+        for (const key of Object.keys(stateBag)) delete stateBag[key];
+        Object.assign(stateBag, fresh);
+      }
+      for (const [key, value] of supplied) {
+        const declaration = Object.hasOwn(declarations, key) ? declarations[key] : undefined;
+        if (declaration === undefined || typeof value !== declaration.type || (typeof value === 'number' && !Number.isFinite(value))) {
+          onRenderDiagnostic?.({
+            code: 'UI_RENDER_STATE_VALUE_REJECTED',
+            message: 'Host presentation state must match an explicitly declared local state type.',
+            detail: { stateKey: key, reason: declaration === undefined ? 'undeclared' : 'type-mismatch' },
+          });
+          continue;
+        }
+        stateBag[key] = value;
+      }
+    });
   });
 
   function setState(key: string, value: unknown): void {
@@ -112,6 +148,8 @@
       <RenderNode
         {instruction}
         {plan}
+        {extensionDescriptors}
+        {extensionImplementations}
         {scope}
         instancePath={[]}
         repeatKeys={[]}

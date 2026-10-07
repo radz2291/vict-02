@@ -8,7 +8,9 @@
   import type {
     UiRenderInstruction,
     UiRenderPlan,
+    UiExtensionDescriptor,
   } from '@victframework/ui';
+  import { resolveSvelteExtension, type UiSvelteExtensionImplementation } from './extensions.js';
   import {
     asRecord,
     conditionsOf,
@@ -24,6 +26,8 @@
   interface Props {
     readonly instruction: UiRenderInstruction;
     readonly plan: UiRenderPlan;
+    readonly extensionDescriptors?: readonly UiExtensionDescriptor[];
+    readonly extensionImplementations?: readonly UiSvelteExtensionImplementation[];
     readonly scope: DocumentScope;
     readonly instancePath: readonly string[];
     readonly repeatKeys: readonly string[];
@@ -42,6 +46,8 @@
   let {
     instruction,
     plan,
+    extensionDescriptors = [],
+    extensionImplementations = [],
     scope,
     instancePath,
     repeatKeys,
@@ -56,6 +62,12 @@
 
   const conditions = $derived(conditionsOf(plan));
   const occ = $derived(occurrenceKey(instruction.occurrenceKey, repeatKeys));
+  const extension = $derived(instruction.kind === 'extension'
+    ? resolveSvelteExtension(instruction, extensionDescriptors, extensionImplementations)
+    : undefined);
+  $effect(() => {
+    if (extension !== undefined && !extension.ok) reportDiagnostic?.(extension.diagnostic);
+  });
 
   const evaluatedAttributes = $derived.by(() => {
     if (instruction.kind !== 'element') return {} as Record<string, unknown>;
@@ -154,6 +166,8 @@
       <Self
         instruction={child}
         {plan}
+        {extensionDescriptors}
+        {extensionImplementations}
         {scope}
         {instancePath}
         {repeatKeys}
@@ -175,8 +189,10 @@
     data-ui-occ={occ}
     style="display: contents"
     onclick={(event) => {
-      event.stopPropagation();
-      selectOccurrence?.(occ);
+      if (selectOccurrence !== undefined) {
+        event.stopPropagation();
+        selectOccurrence(occ);
+      }
     }}
   >
     {#if instruction.content.type === 'literal'}
@@ -191,6 +207,8 @@
   <Self
     instruction={instruction.body}
     {plan}
+    {extensionDescriptors}
+    {extensionImplementations}
     scope={bodyScope}
     instancePath={childPath}
     {repeatKeys}
@@ -204,17 +222,25 @@
   />
 {:else if instruction.kind === 'extension'}
   {@const extensionProps = evaluatedComponentProps(instruction, scope)}
-  <!-- Declared U1 limit: extensions render as labeled placeholders. -->
+  <!-- Selection metadata only: the registered component supplies its own keyboard controls. -->
+  <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
   <div
-    class="uv-extension-placeholder"
     data-ui-node={instruction.nodeId}
     data-ui-occ={occ}
     data-extension-id={instruction.extensionId}
-    role="img"
-    aria-label={`Extension ${instruction.extensionId} (renderer pending in U1)`}
+    style="display: contents"
+    onclick={(event) => {
+      selectOccurrence?.(occ);
+      // Authored parent interactions and native submit semantics remain active.
+      if (!(event.target instanceof Element) || event.target.closest('button,input,select,textarea,a') === null) event.stopPropagation();
+    }}
   >
-    <span>Extension {instruction.extensionId}</span>
-    <pre>{JSON.stringify(extensionProps)}</pre>
+    {#if extension?.ok}
+      {@const Implementation = extension.component}
+      <Implementation props={extensionProps} occurrenceKey={occ} nodeId={instruction.nodeId} />
+    {:else}
+      <span class="uv-extension-unavailable" role="note">This component is unavailable.</span>
+    {/if}
   </div>
 {:else if instruction.kind === 'repeat'}
   {@const rows = resolveValue({ type: 'expression', expression: instruction.collection }, scope)}
@@ -226,6 +252,8 @@
       <Self
         instruction={instruction.template}
         {plan}
+        {extensionDescriptors}
+        {extensionImplementations}
         scope={itemScope}
         {instancePath}
         repeatKeys={[...repeatKeys, uniqueRowKeys[index] ?? String(index)]}
@@ -245,6 +273,8 @@
     <Self
       instruction={child}
       {plan}
+      {extensionDescriptors}
+      {extensionImplementations}
       {scope}
       {instancePath}
       {repeatKeys}
@@ -263,6 +293,8 @@
       <Self
         instruction={child}
         {plan}
+        {extensionDescriptors}
+        {extensionImplementations}
         {scope}
         {instancePath}
         {repeatKeys}
@@ -279,6 +311,8 @@
       <Self
         instruction={child}
         {plan}
+        {extensionDescriptors}
+        {extensionImplementations}
         {scope}
         {instancePath}
         {repeatKeys}
@@ -298,6 +332,8 @@
       <Self
         instruction={child}
         {plan}
+        {extensionDescriptors}
+        {extensionImplementations}
         {scope}
         {instancePath}
         {repeatKeys}

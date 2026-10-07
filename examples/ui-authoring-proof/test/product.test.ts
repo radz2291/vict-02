@@ -4,12 +4,14 @@ import { canonicalUiDocument, type UiDocument } from '@victframework/ui';
 import {
   inspectionApplication,
   inspectionDetailDocument,
-  evidenceViewerExtension,
+  inspectionQueueDocument,
+  inspectionQueueProjection,
   inspectionResource,
   findingResource,
   evidenceResource,
   activityResource,
 } from '../src/lib/product/definitions.js';
+import { productExtensions } from '../src/lib/product/documents.js';
 import {
   InspectionDataAdapter,
   createInspectionServer,
@@ -20,13 +22,19 @@ import type { InspectionRow } from '../src/lib/product/domain.js';
 function compileInspection() {
   return compileApplication({
     application: inspectionApplication as never,
-    resources: [inspectionResource, findingResource, evidenceResource, activityResource],
+    resources: [
+      inspectionQueueProjection,
+      inspectionResource,
+      findingResource,
+      evidenceResource,
+      activityResource,
+    ],
     contracts: [
       { id: 'c.unit', revision: '1' },
       { id: 'c.decision', revision: '1' },
     ],
-    uiDocuments: [{ document: inspectionDetailDocument }],
-    uiExtensions: [evidenceViewerExtension],
+    uiDocuments: [{ document: inspectionDetailDocument }, { document: inspectionQueueDocument }],
+    uiExtensions: productExtensions,
   });
 }
 
@@ -54,24 +62,27 @@ describe('U1-01/U1-02: canonical attachment and the one renderer', () => {
     const result = compileInspection();
     expect(result.ok).toBe(true);
     if (!result.ok) return;
-    const detailKey = 'doc.inspection-detail@1';
+    const detailKey = 'doc.inspection-detail@2';
     expect(result.plan.uiDocuments?.[detailKey]?.contentDigest).toBe(
       canonicalUiDocument(inspectionDetailDocument).contentDigest,
     );
     expect(result.plan.documentPlans?.[detailKey]?.structure.length).toBe(1);
+    expect(result.plan.documentPlans?.['doc.inspection-queue@1']?.sourceDigest).toBe(
+      canonicalUiDocument(inspectionQueueDocument).contentDigest,
+    );
   });
 
   it('changed UI source changes the applicationVersion (round trip of A)', () => {
     const before = compileInspection();
     const edited: UiDocument = {
       ...inspectionDetailDocument,
-      revision: '2',
+      revision: '3',
       nodes: {
         ...inspectionDetailDocument.nodes,
         'n.approveLabel': {
           kind: 'text',
           id: 'n.approveLabel',
-          content: { type: 'literal', value: 'Approve inspection (v2)' },
+          content: { type: 'literal', value: 'Approve inspection (edited)' },
         },
       },
     };
@@ -79,19 +90,25 @@ describe('U1-01/U1-02: canonical attachment and the one renderer', () => {
       ...inspectionApplication,
       screens: inspectionApplication.screens.map((screen) =>
         screen.uiDocument !== undefined && screen.uiDocument.documentId === 'doc.inspection-detail'
-          ? { ...screen, uiDocument: { documentId: 'doc.inspection-detail', revision: '2' } }
+          ? { ...screen, uiDocument: { documentId: 'doc.inspection-detail', revision: '3' } }
           : screen,
       ),
     } as typeof inspectionApplication;
     const after = compileApplication({
       application: editedApplication as never,
-      resources: [inspectionResource, findingResource, evidenceResource, activityResource],
+      resources: [
+        inspectionQueueProjection,
+        inspectionResource,
+        findingResource,
+        evidenceResource,
+        activityResource,
+      ],
       contracts: [
         { id: 'c.unit', revision: '1' },
         { id: 'c.decision', revision: '1' },
       ],
-      uiDocuments: [{ document: edited }],
-      uiExtensions: [evidenceViewerExtension],
+      uiDocuments: [{ document: edited }, { document: inspectionQueueDocument }],
+      uiExtensions: productExtensions,
     });
     expect(before.ok && after.ok).toBe(true);
     if (!before.ok || !after.ok) return;
@@ -105,7 +122,7 @@ describe('U1-01/U1-02: canonical attachment and the one renderer', () => {
     const result = compileInspection();
     expect(result.ok).toBe(true);
     if (!result.ok) return;
-    const plan = result.plan.documentPlans?.['doc.inspection-detail@1'];
+    const plan = result.plan.documentPlans?.['doc.inspection-detail@2'];
     expect(plan?.documentId).toBe('doc.inspection-detail');
     expect(plan?.sourceDigest).toBe(canonicalUiDocument(inspectionDetailDocument).contentDigest);
   });

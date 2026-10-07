@@ -11,8 +11,11 @@ import {
   inspectionResource,
   activityResource,
   inspectionDetailDocument,
+  inspectionQueueDocument,
+  inspectionQueueProjection,
   inspectionApplication,
 } from '../src/lib/product/definitions.js';
+import { inspectionPlan } from '../src/lib/product/compile.js';
 import {
   InspectionDataAdapter,
   createInspectionServer,
@@ -127,14 +130,26 @@ describe('durable replacement (U3-05): identity, contracts, persistence', () => 
     const digest = canonicalUiDocument(inspectionDetailDocument).contentDigest;
     expect(typeof digest).toBe('string');
     expect(digest.length).toBeGreaterThan(0);
+    const compiled = inspectionPlan();
+    expect(compiled.detailPlan.revision).toBe('2');
+    expect(compiled.detailPlan.sourceDigest).toBe(digest);
+    expect(compiled.queuePlan.sourceDigest).toBe(
+      canonicalUiDocument(inspectionQueueDocument).contentDigest,
+    );
     // The declared approve interaction dispatches inspection.approve in BOTH
     // modes (the same compiled plan is served regardless of the mode).
     const simulated = createInspectionServer(new InspectionDataAdapter(seedDomain()));
     void simulated;
     expect(inspectionApplication.id).toBe('app.inspection');
     expect(
-      [inspectionResource, findingResource, evidenceResource, activityResource].map((r) => r.id),
-    ).toEqual(['inspection', 'finding', 'evidence', 'activity']);
+      [
+        inspectionQueueProjection,
+        inspectionResource,
+        findingResource,
+        evidenceResource,
+        activityResource,
+      ].map((r) => r.id),
+    ).toEqual(['inspectionQueue', 'inspection', 'finding', 'evidence', 'activity']);
   });
 
   it('the same action id and compatible contracts through BOTH implementations', async () => {

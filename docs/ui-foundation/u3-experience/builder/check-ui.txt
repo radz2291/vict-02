@@ -1,0 +1,57 @@
+
+> vict-monorepo@0.1.0 check:ui
+> svelte-check --tsconfig packages/ui-svelte/tsconfig.check.json
+
+Loading svelte-check in workspace: c:\Users\RZ1\Desktop\RZ\vict-02-u3-experience
+Getting Svelte diagnostics...
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u3-experience\packages\ui-svelte\src\document\RenderNode.svelte:186:3
+Warn: Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events (svelte)
+{:else if instruction.kind === 'text'}
+  <span
+    class="uv-text"
+    data-ui-node={instruction.nodeId}
+    data-ui-occ={occ}
+    style="display: contents"
+    onclick={(event) => {
+      if (selectOccurrence !== undefined) {
+        event.stopPropagation();
+        selectOccurrence(occ);
+      }
+    }}
+  >
+    {#if instruction.content.type === 'literal'}
+      {instruction.content.value}
+    {:else}
+      {String(resolveValue({ type: 'expression', expression: instruction.content.expression }, scope) ?? '')}
+    {/if}
+  </span>
+{:else if instruction.kind === 'component'}
+
+c:\Users\RZ1\Desktop\RZ\vict-02-u3-experience\packages\ui-svelte\src\document\RenderNode.svelte:186:3
+Warn: `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions (svelte)
+{:else if instruction.kind === 'text'}
+  <span
+    class="uv-text"
+    data-ui-node={instruction.nodeId}
+    data-ui-occ={occ}
+    style="display: contents"
+    onclick={(event) => {
+      if (selectOccurrence !== undefined) {
+        event.stopPropagation();
+        selectOccurrence(occ);
+      }
+    }}
+  >
+    {#if instruction.content.type === 'literal'}
+      {instruction.content.value}
+    {:else}
+      {String(resolveValue({ type: 'expression', expression: instruction.content.expression }, scope) ?? '')}
+    {/if}
+  </span>
+{:else if instruction.kind === 'component'}
+
+====================================
+svelte-check found 0 errors and 2 warnings in 1 file

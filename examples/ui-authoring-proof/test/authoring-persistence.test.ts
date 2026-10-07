@@ -11,6 +11,7 @@ import { canonicalUiDocument, type UiDocument } from '@victframework/ui';
 import { createAuthoringStore, SEED_STORED_REVISION } from '../src/lib/authoring/store.js';
 import { studioDocumentCatalogs } from '../src/lib/product/compile.js';
 import { inspectionDetailDocument } from '../src/lib/product/definitions.js';
+const NEXT_STORED_REVISION = String(Number(SEED_STORED_REVISION) + 1);
 
 /**
  * U1-04 reopen-round: authoring persistence through the REAL localStorage
@@ -40,6 +41,7 @@ describe('U1-04: authoring persistence (localStorage store)', () => {
     const first = freshBridgeFromStorage();
     expect(first.load.status).toBe('empty');
     expect(first.bridge.getSnapshot().storedRevision).toBe(SEED_STORED_REVISION);
+    expect(SEED_STORED_REVISION).toBe(inspectionDetailDocument.revision);
 
     // edit + save (persisted)
     const t1 = setTextLiteral({
@@ -51,6 +53,8 @@ describe('U1-04: authoring persistence (localStorage store)', () => {
     const save = first.bridge.save();
     expect(save.ok).toBe(true);
     if (!save.ok) return;
+    expect(save.storedRevision).toBe(NEXT_STORED_REVISION);
+    expect(first.bridge.document.revision).toBe(NEXT_STORED_REVISION);
 
     // "full page reload": a brand-new bridge reads the same storage
     const second = freshBridgeFromStorage();
@@ -198,14 +202,14 @@ describe('U1-04: authoring persistence (localStorage store)', () => {
       a.bridge.apply(setTextLiteral({ requestId: 'a1', nodeId: 'n.approveLabel', value: 'from A' }))
         .ok,
     ).toBe(true);
-    expect(a.bridge.save().ok).toBe(true); // store now at revision 2
+    expect(a.bridge.save().ok).toBe(true); // store now at the next seed revision
 
-    // editor B was opened from the SAME pre-save storage state (revision 1)
+    // editor B was opened from the SAME pre-save storage state (seed revision)
     const bDocument: UiDocument = structuredClone(inspectionDetailDocument);
     const storeB = createAuthoringStore(window.localStorage, studioDocumentCatalogs);
     const bridgeB = new EditorBridge({
       store: storeB,
-      initial: { document: bDocument, storedRevision: '1' },
+      initial: { document: bDocument, storedRevision: SEED_STORED_REVISION },
     });
     expect(
       bridgeB.apply(setTextLiteral({ requestId: 'b1', nodeId: 'n.approveLabel', value: 'from B' }))
@@ -218,7 +222,7 @@ describe('U1-04: authoring persistence (localStorage store)', () => {
     const after = createAuthoringStore(window.localStorage, studioDocumentCatalogs).rawLoad();
     expect(after.status).toBe('loaded');
     if (after.status === 'loaded') {
-      expect(after.storedRevision).toBe('2');
+      expect(after.storedRevision).toBe(NEXT_STORED_REVISION);
       expect(after.document.nodes['n.approveLabel']).toMatchObject({
         content: { type: 'literal', value: 'from A' },
       });
@@ -254,7 +258,7 @@ describe('U1-04: authoring persistence (localStorage store)', () => {
     // retry succeeds at the correct next revision
     const retry = bridge.save();
     expect(retry.ok).toBe(true);
-    if (retry.ok) expect(retry.storedRevision).toBe('2');
+    if (retry.ok) expect(retry.storedRevision).toBe(NEXT_STORED_REVISION);
     const reloaded = freshBridgeFromStorage();
     expect(reloaded.load.status).toBe('loaded');
     if (reloaded.load.status === 'loaded') {
@@ -262,6 +266,50 @@ describe('U1-04: authoring persistence (localStorage store)', () => {
         content: { type: 'literal', value: 'kept' },
       });
     }
+  });
+
+  it('previous revision1 envelopes remain readable and save against their recorded revision', () => {
+    window.localStorage.clear();
+    const legacy: UiDocument = {
+      ...inspectionDetailDocument,
+      revision: '1',
+      root: 'legacy.root',
+      nodes: {
+        'legacy.root': { kind: 'element', id: 'legacy.root', tag: 'p', children: ['legacy.text'] },
+        'legacy.text': {
+          kind: 'text',
+          id: 'legacy.text',
+          content: { type: 'literal', value: 'Saved presentation' },
+        },
+      },
+      componentDefinitions: {},
+      styleSources: {},
+      tokens: {},
+      conditions: {},
+      localState: {},
+    };
+    window.localStorage.setItem(
+      'vict.u1.authoring.doc',
+      JSON.stringify({ format: 'vict.authoring-store@1', storedRevision: '1', document: legacy }),
+    );
+    const loaded = freshBridgeFromStorage();
+    expect(loaded.load.status).toBe('loaded');
+    expect(loaded.bridge.getSnapshot().storedRevision).toBe('1');
+    expect(
+      loaded.bridge.apply(
+        setTextLiteral({
+          requestId: 'legacy-edit',
+          nodeId: 'legacy.text',
+          value: 'Preserved and edited',
+        }),
+      ).ok,
+    ).toBe(true);
+    const saved = loaded.bridge.save();
+    expect(saved.ok).toBe(true);
+    if (saved.ok) expect(saved.storedRevision).toBe('2');
+    expect(createAuthoringStore(window.localStorage, studioDocumentCatalogs).rawLoad().status).toBe(
+      'loaded',
+    );
   });
 });
 
@@ -387,7 +435,7 @@ describe('round 3: malformed stored documents diagnose reliably', () => {
   });
 
   describe('round 4: preservation policy enforced in save (same as load)', () => {
-    it('wrong-format envelope (readable storedRevision) is refused at the SEED revision; bytes intact', () => {
+    it('wrong-format envelope (readable storedRevision) is refused at legacy revision1; bytes intact', () => {
       const window = new Window();
       const stored = JSON.stringify({ format: 'future.format', storedRevision: '1', document: {} });
       window.localStorage.setItem('vict.u1.authoring.doc', stored);
@@ -407,7 +455,7 @@ describe('round 3: malformed stored documents diagnose reliably', () => {
       window.close();
     });
 
-    it('envelope with missing document is refused at the SEED revision; bytes intact', () => {
+    it('envelope with missing document is refused at legacy revision1; bytes intact', () => {
       const window = new Window();
       const stored = JSON.stringify({ format: 'vict.authoring-store@1', storedRevision: '1' });
       window.localStorage.setItem('vict.u1.authoring.doc', stored);

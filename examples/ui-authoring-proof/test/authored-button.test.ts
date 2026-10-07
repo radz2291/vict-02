@@ -8,8 +8,6 @@ import {
   seedDomain,
 } from '../src/lib/product/domain.js';
 
-vi.mock('$app/navigation', () => ({ invalidateAll: async () => {} }));
-
 /**
  * U1-05 regression (kept current for U3): the AUTHORED document Approve
  * button (the component-declared interaction) must dispatch through the REAL
@@ -62,7 +60,7 @@ async function loadRecord(role: Actors): Promise<{
 }
 
 describe('U1-05: the authored Approve button dispatches through the real boundary', () => {
-  it('clicking the authored button approves through the adapter (supervisor)', async () => {
+  it('clicking the authored button label approves through the adapter (supervisor)', async () => {
     const { record, activity } = await loadRecord('supervisor');
     const target = document.createElement('div');
     document.body.appendChild(target);
@@ -72,9 +70,7 @@ describe('U1-05: the authored Approve button dispatches through the real boundar
     });
     try {
       flushSync();
-      const authoredButton = target.querySelector(
-        '[data-ui-node="n.approveButton"]',
-      ) as HTMLElement;
+      const authoredButton = target.querySelector('[data-ui-node="n.approveLabel"]') as HTMLElement;
       expect(authoredButton).not.toBeNull();
       authoredButton.click();
       await new Promise((r) => setTimeout(r, 100));
@@ -85,8 +81,9 @@ describe('U1-05: the authored Approve button dispatches through the real boundar
         (e) => e.textContent ?? '',
       );
       expect(activityNodes.some((entry) => entry.includes('approved'))).toBe(true);
-      const feedback = target.querySelector('[role="status"], [role="alert"]');
-      expect(feedback?.textContent).toContain('Recorded');
+      const feedback = target.querySelector('[data-ui-node="n.feedback"]');
+      expect(feedback?.textContent).toContain('Inspection approved.');
+      expect(target.querySelector('[data-ui-node="n.approveButton"]')).toBeNull();
     } finally {
       vi.unstubAllGlobals();
       unmount(instance);
@@ -94,7 +91,7 @@ describe('U1-05: the authored Approve button dispatches through the real boundar
     }
   });
 
-  it('clicking the authored button as technician surfaces the boundary denial (state unchanged)', async () => {
+  it('hides approval for technician and direct boundary dispatch still denies it (state unchanged)', async () => {
     const { record, activity } = await loadRecord('technician');
     const target = document.createElement('div');
     document.body.appendChild(target);
@@ -104,17 +101,44 @@ describe('U1-05: the authored Approve button dispatches through the real boundar
     });
     try {
       flushSync();
-      const authoredButton = target.querySelector(
-        '[data-ui-node="n.approveButton"]',
-      ) as HTMLElement;
-      authoredButton.click();
-      await new Promise((r) => setTimeout(r, 100));
-      flushSync();
+      expect(target.querySelector('[data-ui-node="n.approveButton"]')).toBeNull();
+      const denied = await server.dispatch(
+        'inspection.approve',
+        { id: 'i-101', expectedDomainRevision: record['domainRevision'] },
+        technician,
+      );
+      expect(denied.ok).toBe(false);
+      if (!denied.ok) expect(denied.code).toBe('DATA_UNAUTHORIZED');
       const status = target.querySelector('[data-ui-node="n.status"]');
       expect(status?.textContent).toBe('submitted'); // unchanged
-      const alert = target.querySelector('[role="alert"]');
-      expect(alert?.textContent).toContain('DATA_UNAUTHORIZED');
       expect(grantsForRole('technician')).not.toContain('qlt.inspection.approve');
+    } finally {
+      unmount(instance);
+      target.remove();
+    }
+  });
+
+  it('terminal approved records offer no approve or return action', async () => {
+    const { record } = await loadRecord('supervisor');
+    const decision = await server.dispatch(
+      'inspection.approve',
+      { id: 'i-101', expectedDomainRevision: record['domainRevision'] },
+      supervisor,
+    );
+    expect(decision.ok).toBe(true);
+    const approved = await loadRecord('supervisor');
+    const target = document.createElement('div');
+    const instance = mount(DetailPage, {
+      target,
+      props: { data: { id: 'i-101', actorRole: 'supervisor', ...approved } },
+    });
+    try {
+      flushSync();
+      expect(target.querySelector('[data-ui-node="n.approveButton"]')).toBeNull();
+      expect(target.querySelector('[data-ui-node="n.rejectForm"]')).toBeNull();
+      expect(target.querySelector('[data-ui-node="n.nextAction"]')?.textContent).toContain(
+        'review is complete',
+      );
     } finally {
       unmount(instance);
       target.remove();

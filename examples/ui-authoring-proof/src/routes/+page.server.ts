@@ -23,6 +23,7 @@ export const load: PageServerLoad = ({ url }) => {
     product.reset(product.scenario, mode as ImplementationMode);
   }
   return product.server.dispatch('inspection.list', {}, actor).then((result) => ({
+    loadError: !result.ok,
     rows: result.ok ? ((result.value as { rows: Record<string, unknown>[] }).rows ?? []) : [],
     scenario: product.scenario,
     mode: product.mode,

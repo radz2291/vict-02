@@ -1,0 +1,204 @@
+You are the Codex product experience and UI composition agent for VICT.
+
+The owner reviewed U3 and rejected its product experience. The integrated U2 Inspector was accepted and provides the quality reference.
+
+Your task is to repair the fictional inspection application into a coherent, professional product experience, while proving that VICT’s existing UI capabilities can be reused through its canonical authoring model.
+
+Own this bounded repair through investigation, implementation, independent challenge, repairs and handoff. Do not stop after a critique or static mockup.
+
+1. Repository and entry authority
+
+Repository: radz2291/vict-02
+
+Start from U3 final records:
+aaeea16f9cabccad05650eefdd8771c756326f17
+
+Existing independently verified U3 implementation:
+cbb3fb6584226c48633a2f3d21bccee674ce59c0
+
+Accepted U2 combined implementation:
+471952bb5e9810ec30e370658f812cf9ae6a4eca
+
+Frozen amended U0 contract:
+9ec87f3e7eb8eb7793f972111258940aac635346
+
+Main baseline:
+4d2df037d8a82d36c60bf1bff16919650643ce22
+
+Verify live references, repository identity, working tree and concurrent work.
+
+Create an isolated branch/worktree:
+codex/ui-foundation-u3-experience
+
+If it already exists, inspect and reconcile legitimate work. Do not reset or overwrite another agent’s checkout.
+
+Read:
+- Root AGENTS.md.
+- govern-project-agents, if installed.
+- UI-foundation STATE, architecture, contracts, API specification, stages and proof design.
+- U3-HANDOFF, U3-COVERAGE, U3-WALKTHROUGH and U3-VERIFY-01.
+- U2 Inspector/Layers UX handoffs and accepted screenshots.
+
+Current owner instruction supersedes the previous experience-pass assessment. Preserve the technical evidence and original reports.
+
+2. Investigate why available capabilities were not composed successfully
+
+Inspect both:
+- Existing public components, packaged styles, themes and component registry.
+- The newer canonical UI document compiler and DocumentHost rendering path.
+
+The repository exports components such as AppShell, Button, StatusBadge, Form, FormField, Feedback, Tabs, Detail and RecordsTable.
+
+The current inspection implementation largely uses raw HTML/local CSS. Its document renderer renders extension IDs and JSON as placeholders. New decision/correction controls sit outside the authored document.
+
+Produce a short factual inventory:
+- Which existing capabilities are usable through public exports?
+- Which are reachable from canonical UI documents?
+- Which require theme/style mounting?
+- Which lack a renderer or registry connection?
+- Which are unnecessary for this product?
+
+Do not assume that importing a Button automatically supplies its styling. Trace the actual rendering and theme paths.
+
+3. Repair the product composition
+
+The screenshots show:
+- Two Approve controls.
+- Two activity presentations.
+- Evidence rendered as extension identifiers and raw JSON.
+- A stray “)” on the detail page.
+- Test controls and technical explanations dominating the queue.
+- Poor mobile arrangement around decisions and activity.
+
+Resolve these through coherent composition.
+
+Queue:
+- Clear application identity, navigation and page hierarchy.
+- Readable inspection rows/cards with meaningful status treatment.
+- Useful emphasis based on existing data.
+- Intentional empty/loading/error states.
+- Compact, clearly labelled demo controls.
+
+Inspection detail:
+- Clear title, status, relevant context and next action.
+- Readable findings with consistent severity treatment.
+- Useful evidence cards/placeholders.
+- One decision area appropriate to role and lifecycle state.
+- One chronological activity trail.
+- Integrated correction forms and rejection flow.
+- Clear success, pending, denial, failure and conflict feedback.
+
+The frozen scope permits labelled evidence placeholders. It does not require exposing extension IDs or JSON. Do not pretend that unavailable images were loaded.
+
+Keep simulation/durable/unavailable modes truthful and discoverable. Present technical diagnostics in an appropriate disclosure or demo console. Ordinary workflow text should explain what happened and what the person can do next.
+
+Do not add unsupported business features, invented record facts or decorative widgets merely to make the page appear richer.
+
+4. Keep the primary journey in canonical authored UI
+
+This is a foundation reuse proof. The founder must be able to inspect and edit the product’s presentation through the canonical source.
+
+Do not create a polished Svelte frontend that wraps an unchanged, skeletal UI document.
+
+Represent the primary queue/detail composition, decision controls, correction forms, bindings and interactions through the existing authoring model and declared component/extension boundaries.
+
+The host may supply data, dispatch, navigation, registered implementations and ephemeral orchestration. Explain any remaining host-owned presentation and why it belongs there.
+
+Reuse existing styled components where suitable. Use reusable authored component definitions where that is the appropriate path.
+
+If a genuine missing connection prevents reuse, implement the smallest reusable bridge at the existing compiler/renderer/extension boundary:
+- Typed, declared interfaces.
+- Explicit registration.
+- Compatible theme/style mounting.
+- Preserved source occurrence mapping.
+- Consistent preview and normal-product rendering.
+- Honest diagnostics for unavailable implementations.
+
+Do not hard-code inspection-specific rendering into the generic renderer, add arbitrary Svelte imports to UI documents, or introduce a parallel UI model.
+
+If a solution requires a material frozen-contract change, prepare the concrete amendment and explain the decision required before dependent implementation. Do not silently rewrite frozen contracts.
+
+5. Preserve verified behavior
+
+Retain:
+- The complete rejection → revision → correction → resubmission loop.
+- Runtime permissions and lifecycle validation.
+- Expected domain revisions, conflict and replay protection.
+- Deterministic scenarios, reset coherence and in-flight fencing.
+- Real adapter/dispatch paths.
+- Durable SQLite behavior and conformance.
+- Accepted Inspector/Layers behavior.
+
+Repair the status-ungated Approve affordance. Terminal-state inspections should not offer an enabled action that can only fail.
+
+UI visibility must remain presentation; runtime enforcement stays authoritative.
+
+UI source may change during this repair. The unchanged-source requirement applies across the simulated-to-durable implementation swap:
+- Establish the repaired UI baseline.
+- Compare simulated and durable modes using that same source.
+- Reproduce unchanged UI/binding digests across the swap.
+- Preserve normal application identity/version behavior for actual UI edits.
+
+Do not freeze the poor UI to preserve the old digest.
+
+6. Scope and ownership
+
+Own necessary presentation, authored-document, rendering-integration and UI-test changes in:
+- examples/ui-authoring-proof.
+- packages/ui-svelte.
+- Narrow supporting changes in packages/ui and packages/ui-editor where required for reusable authoring/rendering behavior.
+- Relevant public metadata, styles, tests and build wiring.
+- Repair records under docs/ui-foundation/u3-experience/.
+
+Keep the U3 domain, server, durable adapter and preview-session implementation unchanged unless a reproduced defect requires a coordinated bounded repair.
+
+Keep the manager branch untouched. Preserve original reports, evidence bytes and frozen records. Your handoff must identify every changed path for integration.
+
+No apps/studio, Stage 9, U4 packaging, unrelated workstreams, merge-to-main, force-push, publication or deployment.
+
+7. Independent review and repair
+
+Obtain independent challenge of an exact committed candidate.
+
+Require both:
+A. Technical/source-ownership review:
+- Existing capabilities genuinely reused.
+- Primary UI represented in canonical source.
+- Source mapping and editor/product parity.
+- Correct theme and extension mounting.
+- Verified U3 behavior preserved.
+- Relevant tests, type/Svelte checks and builds.
+
+B. Product experience review in a real browser:
+- Task hierarchy and understandable next actions.
+- Consistent navigation, controls, typography, spacing and density.
+- One decision area and one activity trail.
+- Coherent role/lifecycle states and recovery.
+- Readable evidence placeholders.
+- Keyboard/focus behavior.
+- Long content, empty/loading/error states and overflow.
+- 1440×900, 1024×768, 390×844 and a 480px container.
+
+The experience reviewer must judge actual usability and composition, not merely whether scripted clicks succeed.
+
+Record confusing or broken required behavior as failures. Do not carry required UX defects merely to keep a reviewed candidate byte-stable. Repair, commit and reverify affected behavior.
+
+Preserve failed evidence and candidate lineage. Do not call your own review independent.
+
+8. Required output
+
+Deliver:
+- A working repaired application with one primary launch URL.
+- Before/after screenshots at readable scale.
+- A concise component-reuse and UI-ownership map.
+- Evidence that ordinary presentation edits affect the actual product.
+- Independent technical and experience reports with exact candidate SHAs.
+- Relevant regression results and simulated/durable parity evidence.
+- A short founder walkthrough requiring no knowledge of adapters, digests or diagnostic codes.
+- An integration handoff listing changed paths, public API additions, mounting requirements, limitations and retained findings.
+
+Normally push your isolated branch and verify its full remote SHA.
+
+Final report should lead with what improved for the person using the application, then provide tested/pushed SHAs, independent verdicts, evidence and integration instructions.
+
+STOP after the reviewed repair and handoff. Owner acceptance remains pending. The U3 manager must integrate and independently verify the combined candidate before U3 closure or any U4 continuation.

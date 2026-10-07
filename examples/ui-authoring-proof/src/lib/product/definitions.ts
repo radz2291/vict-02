@@ -133,361 +133,31 @@ export const activityResource: ResourceDefinition = {
   authorization: {},
 } as unknown as ResourceDefinition;
 
+/** Read-only rendering projection of the existing inspection.list result.
+ * No storage, mutation, new record facts, or server implementation. */
+export const inspectionQueueProjection: ResourceDefinition = {
+  schema: 'vict.resource@1',
+  id: 'inspectionQueue',
+  revision: '1',
+  identity: { key: 'id' },
+  fields: [
+    { name: 'id', type: 'string', required: true },
+    { name: 'inspections', type: 'json' },
+  ],
+  authorization: { effect: 'read' },
+} as ResourceDefinition;
+
 /* ------------------------------------------------------------------ */
 /* The authored detail document (vict.ui-document@1)                   */
 /* ------------------------------------------------------------------ */
 
-export const inspectionDetailDocument: UiDocument = {
-  schema: 'vict.ui-document@1',
-  id: 'doc.inspection-detail',
-  revision: '1',
-  root: 'n.root',
-  nodes: {
-    'n.root': {
-      kind: 'element',
-      id: 'n.root',
-      tag: 'section',
-      classes: ['detail'],
-      styleSources: ['ss.detailLayout', 'ss.detailNarrow'],
-      children: ['n.header', 'n.columns', 'n.actions'],
-    },
-    'n.header': {
-      kind: 'element',
-      id: 'n.header',
-      tag: 'header',
-      localStyle: [
-        { property: 'display', value: { type: 'text', value: 'flex' } },
-        { property: 'align-items', value: { type: 'text', value: 'baseline' } },
-        { property: 'gap', value: { type: 'token', id: 'space.md' } },
-        { property: 'border-bottom', value: { type: 'text', value: '1px solid #d9dde3' } },
-      ],
-      children: ['n.title', 'n.status'],
-    },
-    'n.title': {
-      kind: 'element',
-      id: 'n.title',
-      tag: 'h1',
-      children: ['n.titleText'],
-    },
-    'n.titleText': {
-      kind: 'text',
-      id: 'n.titleText',
-      content: { type: 'expression', expression: { type: 'ref', path: 'record.title' } },
-    },
-    'n.status': {
-      kind: 'element',
-      id: 'n.status',
-      tag: 'span',
-      attributes: { 'data-status': { type: 'ref', path: 'record.status' }, role: 'status' },
-      localStyle: [
-        { property: 'font-weight', value: { type: 'text', value: '600' } },
-        { property: 'color', value: { type: 'token', id: 'color.accent' } },
-      ],
-      children: ['n.statusText'],
-    },
-    'n.statusText': {
-      kind: 'text',
-      id: 'n.statusText',
-      content: { type: 'expression', expression: { type: 'ref', path: 'record.status' } },
-    },
-    'n.columns': {
-      kind: 'element',
-      id: 'n.columns',
-      tag: 'div',
-      styleSources: ['ss.columns', 'ss.columnsNarrow'],
-      children: ['n.findingsSection', 'n.sideRail'],
-    },
-    'n.findingsSection': {
-      kind: 'element',
-      id: 'n.findingsSection',
-      tag: 'section',
-      attributes: { 'aria-label': 'Findings' },
-      children: ['n.findingsHeading', 'n.findingsList'],
-    },
-    'n.findingsHeading': {
-      kind: 'element',
-      id: 'n.findingsHeading',
-      tag: 'h2',
-      children: ['n.findingsHeadingText'],
-    },
-    'n.findingsHeadingText': {
-      kind: 'text',
-      id: 'n.findingsHeadingText',
-      content: { type: 'literal', value: 'Findings' },
-    },
-    'n.findingsList': {
-      kind: 'element',
-      id: 'n.findingsList',
-      tag: 'ul',
-      localStyle: [
-        { property: 'display', value: { type: 'text', value: 'flex' } },
-        { property: 'flex-direction', value: { type: 'text', value: 'column' } },
-        { property: 'gap', value: { type: 'token', id: 'space.sm' } },
-      ],
-      children: ['n.findingsRepeat'],
-    },
-    'n.findingsRepeat': {
-      kind: 'repeat',
-      id: 'n.findingsRepeat',
-      collection: { type: 'ref', path: 'view.findings' },
-      key: { type: 'ref', path: 'repeat.finding.description' },
-      itemName: 'finding',
-      templateRoot: 'n.findingCard',
-    },
-    'n.findingCard': {
-      kind: 'component',
-      id: 'n.findingCard',
-      definitionId: 'def.findingCard',
-      props: {
-        severity: { type: 'ref', path: 'repeat.finding.severity' },
-        description: { type: 'ref', path: 'repeat.finding.description' },
-      },
-    },
-    // def.findingCard body (prop scope: severity/description)
-    'n.card': {
-      kind: 'element',
-      id: 'n.card',
-      tag: 'article',
-      attributes: { 'aria-label': { type: 'ref', path: 'prop.description' } },
-      children: ['n.cardSeverity', 'n.cardDescription'],
-    },
-    'n.cardSeverity': {
-      kind: 'element',
-      id: 'n.cardSeverity',
-      tag: 'strong',
-      children: ['n.cardSeverityText'],
-    },
-    'n.cardSeverityText': {
-      kind: 'text',
-      id: 'n.cardSeverityText',
-      content: {
-        type: 'expression',
-        expression: {
-          type: 'conditionalValue',
-          when: {
-            type: 'compare',
-            op: 'eq',
-            left: { type: 'ref', path: 'prop.severity' },
-            right: { type: 'literal', value: 'high' },
-          },
-          then: { type: 'literal', value: 'HIGH severity' },
-          otherwise: { type: 'ref', path: 'prop.severity' },
-        },
-      },
-    },
-    'n.cardDescription': {
-      kind: 'text',
-      id: 'n.cardDescription',
-      content: { type: 'expression', expression: { type: 'ref', path: 'prop.description' } },
-    },
-    'n.sideRail': {
-      kind: 'element',
-      id: 'n.sideRail',
-      tag: 'aside',
-      attributes: { 'aria-label': 'Evidence and activity' },
-      localStyle: [
-        { property: 'display', value: { type: 'text', value: 'flex' } },
-        { property: 'flex-direction', value: { type: 'text', value: 'column' } },
-        { property: 'gap', value: { type: 'token', id: 'space.md' } },
-      ],
-      children: ['n.evidenceHeading', 'n.evidenceList'],
-    },
-    'n.evidenceHeading': {
-      kind: 'element',
-      id: 'n.evidenceHeading',
-      tag: 'h2',
-      children: ['n.evidenceHeadingText'],
-    },
-    'n.evidenceHeadingText': {
-      kind: 'text',
-      id: 'n.evidenceHeadingText',
-      content: { type: 'literal', value: 'Evidence' },
-    },
-    'n.evidenceList': {
-      kind: 'element',
-      id: 'n.evidenceList',
-      tag: 'ul',
-      children: ['n.evidenceRepeat'],
-    },
-    'n.evidenceRepeat': {
-      kind: 'repeat',
-      id: 'n.evidenceRepeat',
-      collection: { type: 'ref', path: 'view.evidence' },
-      key: { type: 'ref', path: 'repeat.evidenceItem.label' },
-      itemName: 'evidenceItem',
-      templateRoot: 'n.evidenceViewer',
-    },
-    'n.evidenceViewer': {
-      kind: 'component',
-      id: 'n.evidenceViewer',
-      definitionId: 'ext.evidenceViewer',
-      props: { label: { type: 'ref', path: 'repeat.evidenceItem.label' } },
-    },
-    'n.actions': {
-      kind: 'element',
-      id: 'n.actions',
-      tag: 'div',
-      attributes: { role: 'group', 'aria-label': 'Decision' },
-      localStyle: [
-        { property: 'display', value: { type: 'text', value: 'flex' } },
-        { property: 'gap', value: { type: 'token', id: 'space.md' } },
-      ],
-      children: ['n.approveButton', 'n.activityHeading', 'n.activityList'],
-    },
-    'n.approveButton': {
-      kind: 'element',
-      id: 'n.approveButton',
-      tag: 'button',
-      attributes: { type: 'button', 'aria-label': 'Approve inspection' },
-      interactions: [
-        {
-          on: 'click',
-          action: 'invokeAction',
-          actionId: 'inspection.approve',
-          input: {
-            id: { type: 'ref', path: 'record.id' },
-            expectedDomainRevision: { type: 'ref', path: 'record.domainRevision' },
-          },
-        },
-      ],
-      children: ['n.approveLabel'],
-    },
-    'n.approveLabel': {
-      kind: 'text',
-      id: 'n.approveLabel',
-      content: { type: 'literal', value: 'Approve inspection' },
-    },
-    'n.activityHeading': {
-      kind: 'element',
-      id: 'n.activityHeading',
-      tag: 'h2',
-      children: ['n.activityHeadingText'],
-    },
-    'n.activityHeadingText': {
-      kind: 'text',
-      id: 'n.activityHeadingText',
-      content: { type: 'literal', value: 'Activity' },
-    },
-    'n.activityList': {
-      kind: 'element',
-      id: 'n.activityList',
-      tag: 'ul',
-      children: ['n.activityRepeat'],
-    },
-    'n.activityRepeat': {
-      kind: 'repeat',
-      id: 'n.activityRepeat',
-      collection: { type: 'ref', path: 'view.activity' },
-      key: { type: 'ref', path: 'repeat.activityItem.entry' },
-      itemName: 'activityItem',
-      templateRoot: 'n.activityItem',
-    },
-    'n.activityItem': {
-      kind: 'element',
-      id: 'n.activityItem',
-      tag: 'li',
-      children: ['n.activityText'],
-    },
-    'n.activityText': {
-      kind: 'text',
-      id: 'n.activityText',
-      content: {
-        type: 'expression',
-        expression: {
-          type: 'op',
-          name: 'concat',
-          args: [
-            { type: 'ref', path: 'repeat.activityItem.actor' },
-            { type: 'literal', value: ': ' },
-            { type: 'ref', path: 'repeat.activityItem.entry' },
-          ],
-        },
-      },
-    },
-  },
-  componentDefinitions: {
-    'def.findingCard': {
-      id: 'def.findingCard',
-      revision: '1',
-      root: 'n.card',
-      props: [
-        { name: 'severity', type: 'string', default: 'low' },
-        { name: 'description', type: 'string', default: '' },
-      ],
-      slots: {},
-      baseStyle: 'ss.findingCard',
-    },
-  },
-  styleSources: {
-    'ss.detailLayout': {
-      id: 'ss.detailLayout',
-      declarations: [
-        { property: 'display', value: { type: 'text', value: 'flex' } },
-        { property: 'flex-direction', value: { type: 'text', value: 'column' } },
-        { property: 'gap', value: { type: 'token', id: 'space.lg' } },
-        { property: 'max-width', value: { type: 'text', value: '960px' } },
-      ],
-    },
-    'ss.detailNarrow': {
-      id: 'ss.detailNarrow',
-      conditionId: 'cond.narrow',
-      declarations: [{ property: 'max-width', value: { type: 'text', value: '100%' } }],
-    },
-    'ss.columnsNarrow': {
-      id: 'ss.columnsNarrow',
-      conditionId: 'cond.narrow',
-      declarations: [{ property: 'grid-template-columns', value: { type: 'text', value: '1fr' } }],
-    },
-    'ss.columns': {
-      id: 'ss.columns',
-      declarations: [
-        { property: 'display', value: { type: 'text', value: 'grid' } },
-        { property: 'grid-template-columns', value: { type: 'text', value: '2fr 1fr' } },
-        { property: 'gap', value: { type: 'token', id: 'space.lg' } },
-      ],
-    },
-    'ss.findingCard': {
-      id: 'ss.findingCard',
-      declarations: [
-        { property: 'border', value: { type: 'text', value: '1px solid #d9dde3' } },
-        { property: 'border-radius', value: { type: 'token', id: 'radius.md' } },
-        { property: 'padding', value: { type: 'token', id: 'space.md' } },
-        { property: 'display', value: { type: 'text', value: 'flex' } },
-        { property: 'flex-direction', value: { type: 'text', value: 'column' } },
-        { property: 'gap', value: { type: 'token', id: 'space.xs' } },
-      ],
-    },
-  },
-  tokens: {
-    'space.xs': { id: 'space.xs', value: '4px' },
-    'space.sm': { id: 'space.sm', value: '8px' },
-    'space.md': { id: 'space.md', value: '16px' },
-    'space.lg': { id: 'space.lg', value: '24px' },
-    'color.accent': { id: 'color.accent', value: '#0a6c96' },
-    'radius.md': { id: 'radius.md', value: '8px' },
-  },
-  conditions: {
-    'cond.narrow': { id: 'cond.narrow', kind: 'media', query: '(max-width: 700px)' },
-  },
-  assets: {},
-  localState: {
-    showDetails: { key: 'showDetails', type: 'boolean', initial: false },
-  },
-};
-
-/** Declared extension descriptor: evidence viewer (labeled placeholder in U1). */
-export const evidenceViewerExtension = {
-  id: 'ext.evidenceViewer',
-  revision: '1',
-  props: [{ name: 'label', type: 'string', default: '' }],
-  events: [],
-  slots: [],
-  styleTargets: [],
-  rendererImplementationId: 'impl.evidenceViewer.placeholder',
-  inspectionLimits: ['image-refs render as labeled placeholders in U1-U3'],
-} as const;
-
-/** The document's content digest (identity, U1-01). */
+export { inspectionDetailDocument, inspectionQueueDocument } from './documents.js';
+import {
+  inspectionDetailDocument,
+  inspectionQueueDocument,
+  productExtensions,
+} from './documents.js';
+export const evidenceViewerExtension = productExtensions[0]!;
 export const inspectionDetailDigest = (): string =>
   canonicalUiDocument(inspectionDetailDocument).contentDigest;
 
@@ -498,44 +168,58 @@ export const inspectionDetailDigest = (): string =>
 export const inspectionApplication: ApplicationDefinitionV3 = {
   schema: APPLICATION_DEFINITION_SCHEMA_V3,
   id: 'app.inspection',
-  revision: '1',
-  name: 'Inspection proof',
+  revision: '2',
+  name: 'VICT Inspections',
   routes: [
     { id: 'queue', path: '/', screenId: 's.queue' },
-    { id: 'detail', path: '/inspections/:id', screenId: 's.detail' },
+    { id: 'detail', path: '/inspection/:id', screenId: 's.detail' },
   ],
   screens: [
     {
       id: 's.queue',
       title: 'Inspection queue',
-      layout: [
-        { name: 'main', surfaces: [{ role: 'text', id: 't.queue', content: 'Inspection queue' }] },
-      ],
+      uiDocument: { documentId: 'doc.inspection-queue', revision: '1' },
     },
     {
       id: 's.detail',
       title: 'Inspection detail',
-      uiDocument: { documentId: 'doc.inspection-detail', revision: '1' },
+      uiDocument: { documentId: 'doc.inspection-detail', revision: '2' },
     },
   ],
   views: [
     {
+      viewId: 'v.queue',
+      resourceId: 'inspectionQueue',
+      resourceRevision: '1',
+      fields: ['inspections'],
+    },
+    {
       viewId: 'v.inspections',
       resourceId: 'inspection',
       resourceRevision: '1',
-      fields: ['id', 'title', 'status', 'domainRevision', 'findings', 'evidence', 'activity'],
+      fields: [
+        'id',
+        'title',
+        'status',
+        'technician',
+        'supervisor',
+        'domainRevision',
+        'findings',
+        'evidence',
+        'activity',
+      ],
     },
     {
       viewId: 'v.activity',
       resourceId: 'activity',
       resourceRevision: '1',
-      fields: ['entry', 'actor'],
+      fields: ['id', 'entry', 'actor', 'at'],
     },
   ],
   actions: [
-    {
-      kind: 'query',
-      id: 'inspection.list',
+    ...['list', 'get'].map((op) => ({
+      kind: 'query' as const,
+      id: `inspection.${op}`,
       revision: '1',
       resourceId: 'inspection',
       resourceRevision: '1',
@@ -543,21 +227,34 @@ export const inspectionApplication: ApplicationDefinitionV3 = {
       inputContractRevision: '1',
       outputContractId: 'c.unit',
       outputContractRevision: '1',
-    },
-    {
-      kind: 'mutation',
-      id: 'inspection.approve',
+    })),
+    ...['approve', 'reject', 'revise', 'submit'].map((op) => ({
+      kind: 'mutation' as const,
+      id: `inspection.${op}`,
       revision: '1',
       resourceId: 'inspection',
       resourceRevision: '1',
-      op: 'approve',
+      op,
       inputContractId: 'c.unit',
       inputContractRevision: '1',
       outputContractId: 'c.unit',
       outputContractRevision: '1',
-    },
+    })),
+    ...['finding', 'evidence'].map((resourceId) => ({
+      kind: 'mutation' as const,
+      id: `${resourceId}.add`,
+      revision: '1',
+      resourceId,
+      resourceRevision: '1',
+      op: 'add',
+      inputContractId: 'c.unit',
+      inputContractRevision: '1',
+      outputContractId: 'c.unit',
+      outputContractRevision: '1',
+    })),
   ],
   resources: [
+    { resourceId: 'inspectionQueue', revision: '1' },
     { resourceId: 'inspection', revision: '1' },
     { resourceId: 'finding', revision: '1' },
     { resourceId: 'evidence', revision: '1' },

@@ -113,6 +113,7 @@ function mountPlan(
     dispatch?: (actionId: string, input?: unknown) => Promise<unknown>;
     navigate?: (routeId: string, params?: Record<string, unknown>) => void;
     view?: Readonly<Record<string, unknown>>;
+    selectOccurrence?: (occurrence: string) => void;
     onRenderDiagnostic?: (diagnostic: {
       code: string;
       message: string;
@@ -126,6 +127,9 @@ function mountPlan(
     target,
     props: {
       plan,
+      ...(handlers.selectOccurrence !== undefined
+        ? { selectOccurrence: handlers.selectOccurrence }
+        : {}),
       view: handlers.view ?? {
         findings: [
           { description: 'Seal wear', severity: 'high' },
@@ -196,12 +200,29 @@ describe('DocumentHost (the one renderer)', () => {
       },
     });
     try {
-      const button = target.querySelector('[data-ui-node="n.approve"]') as HTMLButtonElement;
+      const button = target.querySelector('[data-ui-node="n.approveLabel"]') as HTMLElement;
       expect(button).not.toBeNull();
       button.click();
       await Promise.resolve();
       flushSync();
       expect(dispatched).toEqual([{ actionId: 'inspection.approve', input: {} }]);
+    } finally {
+      unmount(instance);
+      target.remove();
+    }
+  });
+
+  it('editor text selection retains the innermost repeated source occurrence', () => {
+    if (!plan.ok) throw new Error('fixture failed to compile');
+    const selected: string[] = [];
+    const { target, instance } = mountPlan(plan.plan, {
+      selectOccurrence: (occurrence) => selected.push(occurrence),
+    });
+    try {
+      const label = target.querySelector('[data-ui-node="n.findingText"]') as HTMLElement;
+      label.click();
+      expect(selected).toEqual([label.getAttribute('data-ui-occ')]);
+      expect(selected[0]).toContain('Seal wear');
     } finally {
       unmount(instance);
       target.remove();

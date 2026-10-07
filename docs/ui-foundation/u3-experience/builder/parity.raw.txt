@@ -1,0 +1,61 @@
+{
+  "before": {
+    "queueDigest": "fcad3ea856aa53a9142be89f18cbc97d5f93a4c6bbb312584231b1cb2c6b4fc0",
+    "detailDigest": "1a001e8c6e21a3f5cc5d39e40765ccb8cfd40234c31febed9652995954dc7426",
+    "bindingDigest": "9be43237c4cef657e2d9d043959117db90f65b094f915ff2db31fbf7689f8ab8",
+    "applicationVersion": "v1_50c9abcc3bdcf220f507b2309a811ffef5819abbbad4519dea3e21b18cb39795",
+    "approve": {
+      "kind": "mutation",
+      "id": "inspection.approve",
+      "revision": "1",
+      "resourceId": "inspection",
+      "resourceRevision": "1",
+      "op": "approve",
+      "inputContractId": "c.unit",
+      "inputContractRevision": "1",
+      "outputContractId": "c.unit",
+      "outputContractRevision": "1"
+    }
+  },
+  "after": {
+    "queueDigest": "fcad3ea856aa53a9142be89f18cbc97d5f93a4c6bbb312584231b1cb2c6b4fc0",
+    "detailDigest": "1a001e8c6e21a3f5cc5d39e40765ccb8cfd40234c31febed9652995954dc7426",
+    "bindingDigest": "9be43237c4cef657e2d9d043959117db90f65b094f915ff2db31fbf7689f8ab8",
+    "applicationVersion": "v1_50c9abcc3bdcf220f507b2309a811ffef5819abbbad4519dea3e21b18cb39795",
+    "approve": {
+      "kind": "mutation",
+      "id": "inspection.approve",
+      "revision": "1",
+      "resourceId": "inspection",
+      "resourceRevision": "1",
+      "op": "approve",
+      "inputContractId": "c.unit",
+      "inputContractRevision": "1",
+      "outputContractId": "c.unit",
+      "outputContractRevision": "1"
+    }
+  },
+  "equal": true,
+  "decisions": [
+    {
+      "mode": "simulated",
+      "status": "approved",
+      "revision": 4,
+      "trail": [
+        "Inspection submitted for decision",
+        "Inspection approved"
+      ]
+    },
+    {
+      "mode": "durable-local",
+      "status": "approved",
+      "revision": 4,
+      "trail": [
+        "Inspection submitted for decision",
+        "Inspection approved"
+      ]
+    }
+  ],
+  "sqliteCloseReopen": "approved",
+  "file": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\u3-experience-parity-SYzl6Z\\inspection.sqlite"
+}

@@ -26,6 +26,8 @@
     /* the shared compiled artifact (U1-02): the studio starts from the SAME bytes */
     void inspectionPlan();
   }
+  import { productExtensions } from '$lib/product/documents.js';
+  import { productImplementations } from '$lib/product/extensions.js';
   import { inspectionDetailDocument } from '$lib/product/definitions.js';
   import { createAuthoringStore, SEED_STORED_REVISION, type StorageLike } from '$lib/authoring/store.js';
 
@@ -185,7 +187,7 @@
 
   /* ---- studio-side compile of the working document ------------------- */
   const workingPlan = $derived.by(() =>
-    compileUiDocument(workingDocument, defaultSemanticElementCatalog(), [], studioDocumentCatalogs),
+    compileUiDocument(workingDocument, defaultSemanticElementCatalog(), productExtensions, studioDocumentCatalogs),
   );
 
   let selectedOccurrence: string | undefined = $state(undefined);
@@ -299,17 +301,10 @@
     </p>
     <EditorCanvas
       document={workingDocument}
-      catalogs={{
-        elements: defaultSemanticElementCatalog(),
-        actionIds: ['inspection.approve'],
-        routeIds: ['queue', 'detail'],
-        viewFields: {
-          id: 'string', title: 'string', status: 'string', domainRevision: 'number',
-          findings: 'array', 'findings.severity': 'string', 'findings.description': 'string',
-          evidence: 'array', 'evidence.label': 'string',
-          activity: 'array', 'activity.entry': 'string', 'activity.actor': 'string',
-        },
-      }}
+      catalogs={{ elements: defaultSemanticElementCatalog(), ...studioDocumentCatalogs }}
+      extensions={productExtensions}
+      extensionImplementations={productImplementations}
+      stateValues={{ actorRole: 'supervisor', actorId: 's.hart', hasFindings: true, hasEvidence: true, findingCount: 2, evidenceCount: 1 }}
       selectedOccurrence={selectedOccurrence}
       onSelect={(occurrence) => {
         selectedOccurrence = occurrence;
@@ -326,10 +321,10 @@
       }}
       navigate={() => undefined}
       view={{ findings: [
-        { description: 'Seal wear beyond tolerance', severity: 'high' },
-        { description: 'Label fade on shutoff valve', severity: 'low' },
-      ], evidence: [{ label: 'Compressor seal photo' }], activity: [{ entry: 'Inspection submitted', actor: 't.nguyen' }] }}
-      record={{ title: 'Cold-chain compressor room', status: 'submitted' }}
+        { id: 'f-1', description: 'Seal wear beyond tolerance', severity: 'high' },
+        { id: 'f-2', description: 'Label fade on shutoff valve', severity: 'low' },
+      ], evidence: [{ id: 'e-1', kind: 'image-ref', label: 'Compressor seal photo' }], activity: [{ id: 'a-1', at: '2026-10-06T09:00:00.000Z', entry: 'Inspection submitted', actor: 't.nguyen' }] }}
+      record={{ id: 'i-101', title: 'Cold-chain compressor room', status: 'submitted', technician: 't.nguyen', supervisor: 's.hart', domainRevision: 3 }}
       localState={workingDocument.localState}
       ariaLabel="Inspection detail canvas"
     />

@@ -1,0 +1,49 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/Desktop/RZ/vict-02-u3-experience
+
+3:23:07 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:186:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+3:23:07 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:186:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+ ❯ |renderer| packages/ui-svelte/test/document-renderer.test.ts (5 tests | 5 failed) 148ms
+     × renders the compiled plan: bindings, attributes, repeats and occurrence provenance 107ms
+     × interaction click dispatches the declared action through the boundary 5ms
+     × editor text selection retains the innermost repeated source occurrence 5ms
+     × scopes style rules under the root class and emits the token layer 6ms
+     × U2-02: duplicate repeat keys keep unique occurrence identities and are reported 5ms
+ ❯ |renderer| packages/ui-svelte/test/document-extensions.test.ts (4 tests | 3 failed) 127ms
+     × forwards registration through visual components, conditional branches and slot fills 92ms
+     × renders bound props and repeated source occurrences; native submit reaches the canonical action in product and selection hosts 6ms
+     × reports unavailable implementations without exposing bound data as JSON 5ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 8 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |renderer| packages/ui-svelte/test/document-extensions.test.ts > explicit document extension registration > forwards registration through visual components, conditional branches and slot fills
+ FAIL  |renderer| packages/ui-svelte/test/document-extensions.test.ts > explicit document extension registration > renders bound props and repeated source occurrences; native submit reaches the canonical action in product and selection hosts
+ FAIL  |renderer| packages/ui-svelte/test/document-extensions.test.ts > explicit document extension registration > reports unavailable implementations without exposing bound data as JSON
+ FAIL  |renderer| packages/ui-svelte/test/document-renderer.test.ts > DocumentHost (the one renderer) > renders the compiled plan: bindings, attributes, repeats and occurrence provenance
+ FAIL  |renderer| packages/ui-svelte/test/document-renderer.test.ts > DocumentHost (the one renderer) > interaction click dispatches the declared action through the boundary
+ FAIL  |renderer| packages/ui-svelte/test/document-renderer.test.ts > DocumentHost (the one renderer) > editor text selection retains the innermost repeated source occurrence
+ FAIL  |renderer| packages/ui-svelte/test/document-renderer.test.ts > DocumentHost (the one renderer) > scopes style rules under the root class and emits the token layer
+ FAIL  |renderer| packages/ui-svelte/test/document-renderer.test.ts > DocumentHost (the one renderer) > U2-02: duplicate repeat keys keep unique occurrence identities and are reported
+TypeError: Cannot convert undefined or null to object
+
+	in <unknown>
+
+ ❯ initialValues packages/ui-svelte/src/document/DocumentHost.svelte:69:39
+     67|     // Seed SSR and the first client render consistently. The reactive…
+     68|     // below reports invalid supplied keys without leaking their value…
+     69|     for (const [key, value] of Object.entries(stateValues)) {
+       |                                       ^
+     70|       const decl = Object.hasOwn(localState, key) ? localState[key] : …
+     71|       if (decl !== undefined && typeof value === decl.type && (typeof …
+ ❯ DocumentHost packages/ui-svelte/src/document/DocumentHost.svelte:76:50
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/8]⎯
+
+
+ Test Files  2 failed | 18 passed (20)
+      Tests  8 failed | 123 passed (131)
+   Start at  15:23:00
+   Duration  41.59s (transform 68.64s, setup 0ms, import 166.20s, tests 14.94s, environment 69.67s)
+
