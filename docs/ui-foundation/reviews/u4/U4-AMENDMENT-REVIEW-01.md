@@ -171,3 +171,19 @@ Handoff §6 negatives now include `$output` scope leak (`UI_COMPONENT_OUTPUT_PAY
 All eight assigned items verified repaired against the pinned candidate `d84035a`; the B-1 compile delta is specified consistently with the source as found; no new unsupported claim introduced. Two new non-blocking observations (N-1, N-2) recorded for the freeze-editing pass.
 
 U4 AMENDMENT REVIEW ROUND 2: PASS WITH NON-BLOCKING FINDINGS
+
+## Round 3
+
+Final narrow verification of the N-1/N-2 freeze-pass edits at `457eb74fc8e9d4257fe1606fadd4043b23b6a754` (amended commit; `codex/ui-foundation-u4-component-amendment`, worktree clean, `git rev-parse HEAD` verified). Read-only; no repo file modified.
+
+**1. N-1 repair — VERIFIED.** `SLOT_REQUIRED` scoping is consistent in all three amendment places: §3.4 declares `required?: readonly string[]` on `UiSvelteComponentImplementation` ("subset of `slots` the implementation contract requires… render-side for descriptor instances; compile-side for stored definitions"); §3.7 states the dual scoping ("compile-side for stored definitions (existing requiredness semantics), render-side for descriptor instances via the implementation's `required` capability"); the §5.1 row's layer column reads "compile (stored definitions — existing requiredness semantics) / render (descriptor instances — the implementation's `required` capability, §3.4)" with the explicit note that "the descriptor `slots` field is a plain name list and carries no requiredness marker". No remaining claim that the descriptor name-list carries requiredness; no remaining compile-only claim for descriptor instances. Fixtures make no SLOT_REQUIRED claim. **Handoff §6 correction (amend mid-verification):** at `457eb74` the handoff still read "(`UI_COMPONENT_SLOT_REQUIRED`, author-time)" — a contradiction with the render-side scoping, exactly as the assignment anticipated; the final amend `d78a309d` (handoff-only, +3/−1) replaces it with "(`UI_COMPONENT_SLOT_REQUIRED` — compile-side for stored definitions, render-side for descriptor instances via the implementation contract)" — **contradiction resolved at the final tip**. §12.2(5)'s "required slot unfilled" mention is generic (no layer claim).
+
+**2. N-2 repair — VERIFIED.** `reviews/u4/.gitattributes` carries BOTH lines (`U4-HANDOFF-REVIEW-01.md -text` and `U4-AMENDMENT-REVIEW-01.md -text`). Byte-intactness: `U4-HANDOFF-REVIEW-01.md` = `3b41263d1ce53ab629a804da9264730d9119704a2723b023fae302990b98d0db` (matches the recorded round-4 value); the imported round-2 review's first 118 lines (round-1 section) hash to `9ce2267c55e3382f0865dec099b236836512c32858b2912ad10560471e83b933` (round-1 bytes unchanged), and the full imported file (173 lines) is byte-identical to this file's pre-round-3 content (`48c9e6de…9714c`).
+
+**3. New-claim scan — CLEAN.** The amendment delta (`d84035a..457eb74`; 15 lines — the pre-amend `8cc0a97` no longer resolves, same change) introduces exactly two added "existing" phrases ("existing requiredness semantics", twice) — both true (stored definitions declare requiredness in the slot record; `UI_DOC_REQUIRED_SLOT_MISSING` at validate.ts:590–607). No other new "already/existing/today" attribution. Delta touches only the amendment, the .gitattributes (+1 line), and the imported round-2 report (+55); the final amend's handoff hunk adds no new attribution.
+
+Note for the record: the assigned candidate `457eb74` was superseded mid-verification by `d78a309d` (amend; handoff §6 hunk only — every other verified item is byte-identical across the two, confirmed by `git diff 457eb74..d78a309d --stat` = 1 file). The verdict applies to the final state at `d78a309d`, which contains all `457eb74` changes plus the handoff §6 fix.
+
+Verdict: all three assigned items verified — N-1 scoped consistently and the handoff contradiction fixed; N-2 both attributes present with both reports byte-intact; no new unsupported claim.
+
+U4 AMENDMENT REVIEW ROUND 3: PASS
