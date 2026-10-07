@@ -192,9 +192,13 @@ recorded numbers describe this one bounded exercise.
   break (raw newline mid-cell in the ui-svelte row); every corrected
   statement verified truthful. This commit fixes both; the imported report
   carries all three rounds (final sha256
-  `e54921adc36f798f27f397bb6a637aae99f2dea9a29f0a1312774735d7f336b8`;
+  `3b41263d1ce53ab629a804da9264730d9119704a2723b023fae302990b98d0db`;
   round-1 section byte-identical to `0b4c3ef3…`). Round 4 (verification of
-  this exact fix) recorded below.
+  this exact fix, same reviewer, at `2202499…`): **PASS WITH NON-BLOCKING
+  FINDINGS** — all round-3 defects verified fixed against actual file
+  bytes; NF-1 (this round-4 record) and NF-2 (branch push) are
+  delivery-coupled completions, resolved by the delivery records commit
+  and push of the documentation branch.
 
 ## 9. Founder checkpoint and stop boundary
 

@@ -838,6 +838,52 @@ dist build TS2307 ×4 (F3) + dist-dependent unit suite (N-2) must be resolved
 before any built-artifact reuse claim; V-F1 in the next product-host UX pass;
 see [U3-HANDOFF](U3-HANDOFF.md) closure table.
 
+## U4 handoff preparation record (2026-10-07) — implementation NOT authorized
+
+Documentation-only cycle on `codex/ui-foundation-u4-handoff` (from the U3
+closure records `16df3bf…`). Deliverables:
+[U4-HANDOFF](U4-HANDOFF.md) (PREPARED — IMPLEMENTATION NOT AUTHORIZED; all
+seven frozen U4 criteria mapped; the representative component proof is an
+explicit additional owner requirement that cannot be relabelled a minor
+finding; packed-tarball isolation; copy-paste authorization prompt),
+[U4-COMPONENT-REUSE-MATRIX](U4-COMPONENT-REUSE-MATRIX.md) (source-backed,
+support levels A/B/C, explicit non-claims),
+[U4-COMPONENT-INTEGRATION-DESIGN](U4-COMPONENT-INTEGRATION-DESIGN.md)
+(representative proof on registered components + document elements; zero
+frozen-contract changes; the props-only extension gap documented with a
+scoped extension-v2 amendment proposal requiring owner authority, NOT
+implemented). U3-HANDOFF opening status corrected (IMPLEMENTED → CLOSED;
+historical bytes untouched).
+
+Decisions of record:
+
+1. **Recommended integration route**: registered components (P3) + document
+   elements (P2) — both use existing public exports and recorded-tested
+   patterns; no contract amendment needed for the U4 proofs.
+2. **ui-editor packaging repair (F3) restated truthfully** after reviewer
+   verification: the package is source-only today and its build is a
+   `noEmit` typecheck that fails — the U4 repair is an emitting build (or
+   the documented source-exports fallback, an explicit recorded choice) plus
+   the four TS2307 fixes; no editor behavior change.
+3. **Owner decisions surfaced** (not assumed): acceptance of the
+   registered-component route as catalog reuse for U4; the ui-editor repair
+   scope; packed-tarball install as the isolation mechanism and the pack
+   list.
+4. **Independent handoff review** (fresh documentation reviewer, read-only):
+   round 1 FAIL (3 blockers: self-citing review reference, ui-editor
+   packaging contradiction, non-exported ActionButton in the design; 4
+   minors + process) → repairs → round 2 FAIL (narrow: three superseded
+   statements survived; premature push claim; table nits) → repairs →
+   round 3 FAIL (§8 record was a silent no-op edit; one table break) →
+   repairs made against actual file bytes with post-edit verification →
+   **round 4 PASS WITH NON-BLOCKING FINDINGS** (delivery-coupled NF-1/NF-2
+   resolved by this delivery commit + push). Report imported verbatim:
+   [U4-HANDOFF-REVIEW-01](reviews/u4/U4-HANDOFF-REVIEW-01.md) (final sha256
+   `3b41263d1ce53ab629a804da9264730d9119704a2723b023fae302990b98d0db`;
+   round-1 section byte-identical to `0b4c3ef3…`, preserved via scoped
+   .gitattributes). Process lesson recorded: string-replacement edits must
+   be verified against file bytes — a missed match is silent.
+
 ## Future evidence entry format
 
 Identity: repository, branch, full base/candidate/reviewer SHAs, environment and contract pins.

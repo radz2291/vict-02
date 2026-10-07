@@ -6,7 +6,16 @@ combined-gate verified ("U3 COMBINED GATE: PASS WITH NON-BLOCKING FINDINGS",
 [U3-COMBINED-VERIFY-01](reviews/u3/U3-COMBINED-VERIFY-01.md)), and the owner
 experienced the repaired product ("I have try it, it work simply." —
 scope-bounded, [OWNER-FEEDBACK-01](reviews/u3/OWNER-FEEDBACK-01.md)).
-U4 is NOT authorized and NOT started. The owner-authorized U3 cycle (U3 only) delivered the complete
+U4 is NOT authorized and NOT started. The U4 handoff has been PREPARED and
+independently reviewed on `codex/ui-foundation-u4-handoff`:
+[U4-HANDOFF](U4-HANDOFF.md) (PREPARED — IMPLEMENTATION NOT AUTHORIZED),
+[U4-COMPONENT-REUSE-MATRIX](U4-COMPONENT-REUSE-MATRIX.md),
+[U4-COMPONENT-INTEGRATION-DESIGN](U4-COMPONENT-INTEGRATION-DESIGN.md);
+independent handoff review
+[U4-HANDOFF-REVIEW-01](reviews/u4/U4-HANDOFF-REVIEW-01.md): round 1 FAIL →
+repairs → round 2 FAIL (narrow) → repairs → round 3 FAIL (one defect class,
+silent no-op edits) → repairs → **round 4 PASS WITH NON-BLOCKING FINDINGS**
+(delivery-coupled completions resolved by the delivery commit/push). The owner-authorized U3 cycle (U3 only) delivered the complete
 inspection journey with the rejection → correction → resubmission loop in
 the frozen product host `examples/ui-authoring-proof`; the eight-scenario
 matrix with deterministic resets, fencing and truthful implementation-mode

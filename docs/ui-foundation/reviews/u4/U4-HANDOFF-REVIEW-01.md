@@ -149,3 +149,21 @@ Repaired and verified: F-1, F-3, F-5, F-6, F-7 (and F-4's core). Remaining for o
 **U4 HANDOFF REVIEW ROUND 3: FAIL** (revision required — single remaining defect class: the §8 F-8 record is still false at the tip and the branch is still absent from origin; all other round-2 findings verified repaired)
 
 *Round 3 method: read-only git/grep/read at `6b9e328`; no builds, no repairs; this section appended only; rounds 1-2 above preserved verbatim.*
+
+---
+
+## Round 4 (verification of the exact round-3 fix)
+
+- **Tested SHA:** `220249920e067ef3aa391a4aed8129975178b783` (amended commit; branch `codex/ui-foundation-u4-handoff`, worktree clean). Diff `6b9e328..2202499` touches exactly: matrix §1 (row join), U4-HANDOFF §8 (record rewrite), and the imported report (+20 lines = my round-3 section, byte-identical — the full-file diff against my pre-append local file is empty).
+
+**1. §8 record — VERIFIED REPAIRED.** `grep "branch now pushed"` → empty. The rewritten §8 now: states F-8 truthfully ("the branch was local-only at review time; it is pushed before handoff delivery and the final records report the live remote SHA" — prospective, asserting no completed push); records the round-2 verdict (FAIL — three superseded statements incl. the authorization prompt, premature push claim, two table nits) and its repair `6b9e328…`; records the round-3 verdict (FAIL — §8 silent no-op string replacement + cosmetic table break) and this fix; and pins both report hashes, both of which I verified against the imported file at this commit: full 151-line report = `e54921adc36f798f27f397bb6a637aae99f2dea9a29f0a1312774735d7f336b8` (matches §8), first 91 lines = `0b4c3ef3…a97e` (round-1 byte-identical to my original). My local file was byte-identical to the import before this append, so the round-3 import is verbatim as well. My round-2/round-3 summaries quoted in §8 match my reports' actual findings and verdicts.
+
+**2. Matrix ui-svelte row — VERIFIED FIXED.** The two-physical-line row is now one line; `grep '^> |'` → empty; lines 28-32 form one intact GFM table (ui, ui-svelte, ui-editor, ui-preview, application, sdk) with the blank line after. Row content is byte-wise the round-2-verified text (root exports, ControlScope via `./controls`, internal list, 38 recipes / 41 families) — merely joined, no content change.
+
+**3. New-claims audit — CLEAN, with two non-blocking delivery-coupled items.** The §8 rewrite introduces no unsupported claims about completed facts; my round-2/3 verdicts and findings are quoted accurately. Two items remain open **by the document's own framing**, both completing at delivery rather than at this tip:
+- NF-1: §8's closing "Round 4 (verification of this exact fix) recorded below" is a forward reference — no round-4 record exists in the tree at `2202499` (the imported report ends at round 3). It becomes true when this round-4 report is imported at the delivery tip; until then it is anticipatory. Recorded here as a nit, not a falsity about any completed fact.
+- NF-2: the branch is still absent from origin at recheck time (`git ls-remote`: 0 `u4-handoff` refs). §8 no longer claims otherwise; its own text makes push-before-delivery with the live remote SHA an explicit delivery requirement. That requirement remains outstanding and must be discharged (push + record the SHA) before owner delivery.
+
+**U4 HANDOFF REVIEW ROUND 4: PASS WITH NON-BLOCKING FINDINGS** (all round-3 defects verified fixed against actual bytes; remaining items NF-1/NF-2 are delivery-coupled completions that §8 itself now frames truthfully)
+
+*Round 4 method: read-only git/grep/read at `2202499`; no builds, no repairs; this section appended only; rounds 1-3 above preserved verbatim. Post-append, this file is the artifact NF-1 anticipates — importing it at the delivery tip (with the push) discharges both findings.*
