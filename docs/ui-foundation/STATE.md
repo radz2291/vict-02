@@ -13,10 +13,11 @@ through the authoring experience); the registered-component (P3) proof no
 longer satisfies the requirement, and the prepared handoff's proof section
 and authorization prompt are superseded by
 [U4-COMPONENT-AMENDMENT](U4-COMPONENT-AMENDMENT.md) — review complete
-(round 1 FAIL -> round 2 PASS WNF -> round 3 PASS) and FROZEN as a
-candidate: payload `68e166f…`, pins in
-[U4-AMENDMENT-FREEZE](U4-AMENDMENT-FREEZE.md) (freeze-check recorded
-there before delivery).
+(round 1 FAIL -> round 2 PASS WNF -> round 3 PASS) and FROZEN — VERIFIED:
+payload `68e166f…`, pins in
+[U4-AMENDMENT-FREEZE](U4-AMENDMENT-FREEZE.md); separate fresh freeze-check
+`U4 AMENDMENT FREEZE CHECK: VERIFIED`
+([reviews/u4/FREEZE-CHECK-01.md](reviews/u4/FREEZE-CHECK-01.md)).
 Amendment work is isolated on `codex/ui-foundation-u4-component-amendment`
 (from the prepared handoff records `cfbd6d3…`); U0–U3 records untouched.
 The prepared U4 handoff was independently reviewed on

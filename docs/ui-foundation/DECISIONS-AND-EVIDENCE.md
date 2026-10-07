@@ -900,14 +900,16 @@ remain unauthorized):
    [U4-AMENDMENT-REVIEW-01](reviews/u4/U4-AMENDMENT-REVIEW-01.md)
    (final sha256 `34506ab9…`; round-1 section byte-identical to the
    delivered `9ce2267c…`).
-7. Amendment FROZEN as a candidate: immutable payload commit `68e166f…`
+7. Amendment FROZEN — VERIFIED: immutable payload commit `68e166f…`
    (empty marker; payload paths byte-exact), per-file SHA-256 pins and
    supersedes/governing statement in
    [U4-AMENDMENT-FREEZE](U4-AMENDMENT-FREEZE.md); a separate fresh checker
-   reproduces the pins and verifies scope/lineage before delivery.
-   Implementation remains unauthorized; the operative U4 authorization
-   prompt is [U4-HANDOFF](U4-HANDOFF.md) §12.2 pinned to the frozen
-   amendment.
+   reproduced all pins (18/18), verified docs-only scope and the lineage,
+   verdict `U4 AMENDMENT FREEZE CHECK: VERIFIED`
+   ([reviews/u4/FREEZE-CHECK-01.md](reviews/u4/FREEZE-CHECK-01.md), sha256
+   `18b213f3…`). Implementation remains unauthorized; the operative U4
+   authorization prompt is [U4-HANDOFF](U4-HANDOFF.md) §12.2 pinned to the
+   frozen amendment.
 
 ## U4 handoff preparation record (2026-10-07) — implementation NOT authorized
 

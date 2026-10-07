@@ -1,9 +1,8 @@
 # U4 component-amendment freeze record
 
-Status: **FROZEN (candidate `68e166f…`, pending independent freeze-check)** —
-the checker's reproduction is recorded at the bottom; until it verifies, the
-freeze is a candidate. Runtime/U4 implementation remains UNAUTHORIZED; this
-record freezes the **contract** only.
+Status: **FROZEN — VERIFIED** (payload `68e166f…`; independent freeze-check
+`U4 AMENDMENT FREEZE CHECK: VERIFIED`, §4 below). Runtime/U4 implementation
+remains UNAUTHORIZED; this record freezes the **contract** only.
 
 ## 1. Frozen payload
 
@@ -67,15 +66,21 @@ Report imported verbatim (rounds 1–3):
 `9ce2267c55e3382f0865dec099b236836512c32858b2912ad10560471e83b933`;
 bytes preserved via scoped `.gitattributes`).
 
-## 4. Freeze check (separate fresh checker)
+## 4. Freeze check (separate fresh checker) — VERIFIED
 
-PENDING at this record's first commit: a checker independent of both the
-payload authors and the contract reviewer must (a) reproduce every pin in
-§1 from the payload commit, (b) verify the payload paths contain no other
-files and no source-code changes in the freeze lineage, (c) verify the
-supersedes/governing statement against the named records, and (d) confirm
-the review lineage SHAs exist in history. Its verdict is appended below at
-the final records commit.
+Checker independent of both the payload authors and the contract reviewer.
+Full report imported verbatim:
+[reviews/u4/FREEZE-CHECK-01.md](reviews/u4/FREEZE-CHECK-01.md) (sha256
+`18b213f3d582a985915fbe7e848352e99513cf3179af52f9661ccb53460e09ca`), ending
+**`U4 AMENDMENT FREEZE CHECK: VERIFIED`** at pinned HEAD `62ce2c8…`. All
+eight steps passed: (1) orientation; (2) all nine SHA-256 pins reproduce
+from the payload commit AND live bytes (18/18); (3) `68e166f…` is an empty
+marker whose parent carries the payload at pinned bytes; (4) lineage SHAs
+all exist in order (`8cc0a97…` off-chain superseded); (5) scope `cfbd6d3…→62ce2c8…`
+touches only docs/ui-foundation — zero source paths; (6) §12.1 SUPERSEDED /
+§12.2 pinned, U0 authority `9ec87f3…` criteria byte-identical; (7) report
+integrity verified (full `34506ab9…`, round-1 section `9ce2267c…` byte-
+identical); (8) `.gitattributes` carries all three `-text` lines.
 
 ## 5. Decisions of record (carried from this cycle)
 
