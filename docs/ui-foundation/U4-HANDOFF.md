@@ -179,7 +179,12 @@ instance output not declared by its descriptor
 (`UI_COMPONENT_OUTPUT_UNKNOWN`, author-time); incompatible output binding
 (state key type ≠ payload type, `UI_COMPONENT_BINDING_INCOMPATIBLE`,
 author-time); implementation emitting an undeclared or wrong-typed output
-(dropped by the bridge, `UI_COMPONENT_OUTPUT_REJECTED`); stale emit after
+(dropped by the bridge, `UI_COMPONENT_OUTPUT_REJECTED`); `$output` used
+outside an output-binding scope (`UI_COMPONENT_OUTPUT_PAYLOAD_INVALID`,
+author-time); declared required slot left unfilled
+(`UI_COMPONENT_SLOT_REQUIRED`, author-time); instance revision pin matching
+no registered revision (`UI_COMPONENT_REVISION_UNRESOLVED`, author-time);
+stale emit after
 document replacement (dropped, `UI_COMPONENT_OUTPUT_STALE`); extension
 descriptor declaring untyped events
 (`UI_RENDER_EXTENSION_INTERFACE_UNSUPPORTED`); corrupt/incompatible saved
@@ -349,10 +354,11 @@ new authorization.
 > examples; a missing required interaction or editing path is FAIL or NOT
 > DEMONSTRATED, never a non-blocking finding;
 > (5) demonstrate the specified negatives (unknown output, incompatible
-> binding, missing/mismatched implementation, ABI mismatch, stale and
-> rejected emits) and reproduce the U3 extension evidence
-> (document-extensions tests, forgery matrix, state-values) against the
-> amended bridge;
+> binding, wrong-typed prop literal, `$output` scope leak, required slot
+> unfilled, unresolvable revision pin, missing/mismatched implementation,
+> ABI mismatch, stale and rejected emits) and reproduce the U3 extension
+> evidence (document-extensions tests, forgery matrix, state-values)
+> against the amended bridge;
 > (6) deliver preview/production parity with bundle separation, the
 > unfamiliar-agent bounded exercise (authoring-experience version), the
 > complete walkthrough with required negatives, and the handoff artifacts.

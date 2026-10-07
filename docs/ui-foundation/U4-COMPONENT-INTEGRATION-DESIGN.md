@@ -47,7 +47,10 @@ application** — on the SAME catalog control (fixtures:
 ### 1.1 Button — declared action + disabled/loading/feedback
 
 - **Authored instance**: `vict.catalog.button` (descriptor `abi@1`): props
-  `label`, `disabled`, `loading`; output `press` (void intent).
+  `label`, `disabled`, `loading`; output `press` (void intent). The
+  wrapper's pending presentation adapts the existing `ActionButton.svelte`
+  pattern ('Working…', `aria-busy`, disabled-while-pending) —
+  `Button.svelte` itself has no `loading` prop today; the wrapper adds it.
 - **Founder edits**: label as a literal; `disabled` bound to an expression
   (e.g. `state.currentNote` emptiness); `loading` bound to
   `state.approving`; `press` connected in the Inspector's Behavior tab to
@@ -106,8 +109,12 @@ application** — on the SAME catalog control (fixtures:
   declared `assignment.assignRegion` input.
 - **Authored Dialog**: `vict.catalog.dialog` — `open` bound to
   `state.dialogOpen`; `openChange` → `setState` (covers open requests AND
-  Escape/overlay close through one authored binding); a declared **body slot
-  fill** containing an authored confirm control
+  Escape/overlay close through one authored binding). The wrapper implements
+  the controlled `open` input/output pair on top of bits-ui `Dialog.Root`
+  (controlled open is a bits-ui capability; today's `Overlay.svelte` is
+  trigger-driven — the controlled pair is wrapper-added, declared here so it
+  is not mistaken for an existing property); a declared **body slot fill**
+  containing an authored confirm control
   (`click→invokeAction assignment.confirm`); portal renders to the
   **ControlScope root** (`BitsConfig defaultPortalTo` — tokens and catalog
   styling stay with the controls; NOT `document.body`); focus moves in on

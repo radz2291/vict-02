@@ -3,6 +3,33 @@
   "proves": "fail-closed render behavior for missing/mismatched implementations, ABI mismatch, unsupported slot rendering — with the exact codes and never a silent fallback",
   "cases": [
     {
+      "case": "instance revision pin matches no registered descriptor revision (compile-side falsifier for the B-1 repair)",
+      "compiled": {
+        "kind": "extension",
+        "nodeId": "cbA",
+        "extensionId": "vict.catalog.checkbox",
+        "revision": "7",
+        "propDecls": [],
+        "propValues": {},
+        "note": "node pinned revision '7'; registered descriptors carry revision '1' only"
+      },
+      "registered": {
+        "descriptors": [
+          {
+            "id": "vict.catalog.checkbox",
+            "revision": "1"
+          }
+        ],
+        "implementations": [
+          {
+            "revision": "1"
+          }
+        ]
+      },
+      "expectedCode": "UI_COMPONENT_REVISION_UNRESOLVED",
+      "expectedBehavior": "compile fails closed; no instruction is emitted; the id-keyed last-wins descriptor map must not silently resolve the un-pinned revision"
+    },
+    {
       "case": "descriptor present, no implementation registered",
       "compiled": {
         "kind": "extension",
@@ -12,7 +39,10 @@
         "propDecls": [],
         "propValues": {}
       },
-      "registered": { "descriptors": 1, "implementations": 0 },
+      "registered": {
+        "descriptors": 1,
+        "implementations": 0
+      },
       "expectedCode": "UI_COMPONENT_UNAVAILABLE"
     },
     {
@@ -25,7 +55,10 @@
         "propDecls": [],
         "propValues": {}
       },
-      "registered": { "descriptors": 1, "implementations": 2 },
+      "registered": {
+        "descriptors": 1,
+        "implementations": 2
+      },
       "expectedCode": "UI_COMPONENT_UNAVAILABLE"
     },
     {
@@ -38,7 +71,11 @@
         "propDecls": [],
         "propValues": {}
       },
-      "registered": { "descriptors": 1, "implementations": 1, "implementationRevision": "2" },
+      "registered": {
+        "descriptors": 1,
+        "implementations": 1,
+        "implementationRevision": "2"
+      },
       "expectedCode": "UI_COMPONENT_UNAVAILABLE"
     },
     {
@@ -67,9 +104,19 @@
         "revision": "1",
         "propDecls": [],
         "propValues": {},
-        "outputDecls": [{ "name": "checkedChange", "payload": "boolean" }]
+        "outputDecls": [
+          {
+            "name": "checkedChange",
+            "payload": "boolean"
+          }
+        ]
       },
-      "registered": { "descriptors": 1, "implementations": 1, "abi": "vict.ui-component-abi@2" },
+      "registered": {
+        "descriptors": 1,
+        "implementations": 1,
+        "abi": "vict.ui-component-abi@2",
+        "slots": ["body"]
+      },
       "expectedCode": "UI_COMPONENT_ABI_UNSUPPORTED"
     },
     {
@@ -81,13 +128,15 @@
         "revision": "1",
         "propDecls": [],
         "propValues": {},
-        "slots": { "body": [] }
+        "slots": {
+          "body": []
+        }
       },
       "registered": {
         "descriptors": 1,
         "implementations": 1,
         "abi": "vict.ui-component-abi@1",
-        "rendersSlots": false
+        "slots": []
       },
       "expectedCode": "UI_COMPONENT_SLOT_UNAVAILABLE"
     },

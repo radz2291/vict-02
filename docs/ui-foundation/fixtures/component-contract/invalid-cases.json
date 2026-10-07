@@ -10,10 +10,21 @@
           "id": "cbX",
           "definitionId": "vict.catalog.checkbox",
           "revision": "1",
-          "props": { "checked": { "type": "ref", "path": "state.ackA" } },
+          "props": {
+            "checked": {
+              "type": "ref",
+              "path": "state.ackA"
+            }
+          },
           "outputs": {
             "toggled": {
-              "setState": { "key": "ackA", "value": { "type": "ref", "path": "$output" } }
+              "setState": {
+                "key": "ackA",
+                "value": {
+                  "type": "ref",
+                  "path": "$output"
+                }
+              }
             }
           }
         }
@@ -23,24 +34,42 @@
     {
       "case": "payload type mismatch against target state key",
       "documentExcerpt": {
-        "localState": { "count": { "key": "count", "type": "number", "initial": 0 } },
+        "localState": {
+          "count": {
+            "key": "count",
+            "type": "number",
+            "initial": 0
+          }
+        },
         "node": {
           "kind": "component",
           "id": "cbX",
           "definitionId": "vict.catalog.checkbox",
           "revision": "1",
-          "props": { "checked": { "type": "ref", "path": "state.count" } },
+          "props": {
+            "checked": {
+              "type": "ref",
+              "path": "state.count"
+            }
+          },
           "outputs": {
             "checkedChange": {
-              "setState": { "key": "count", "value": { "type": "ref", "path": "$output" } }
+              "setState": {
+                "key": "count",
+                "value": {
+                  "type": "ref",
+                  "path": "$output"
+                }
+              }
             }
           }
         }
       },
-      "expectedCodes": ["UI_COMPONENT_BINDING_INCOMPATIBLE"]
+      "expectedCodes": ["UI_EXPR_TYPE_MISMATCH", "UI_COMPONENT_BINDING_INCOMPATIBLE"],
+      "note": "prop 'checked' (boolean) bound to number-typed state key: the amended compile prop check (reference source typing) fires UI_EXPR_TYPE_MISMATCH; the output-side rule fires UI_COMPONENT_BINDING_INCOMPATIBLE"
     },
     {
-      "case": "invalid payload expression ($output used as a boolean in a non-binding scope is rejected; here also wrong comparison operand type)",
+      "case": "descriptor prop literal of the wrong type (compile-time, built by the amendment for descriptor instances)",
       "documentExcerpt": {
         "node": {
           "kind": "component",
@@ -48,18 +77,9 @@
           "definitionId": "vict.catalog.checkbox",
           "revision": "1",
           "props": {
-            "label": { "type": "boolean", "value": "not-a-boolean-literal" }
-          },
-          "outputs": {
-            "checkedChange": {
-              "setState": {
-                "key": "ackA",
-                "value": {
-                  "type": "boolean",
-                  "op": "not",
-                  "terms": [{ "type": "ref", "path": "$output" }]
-                }
-              }
+            "label": {
+              "type": "literal",
+              "value": false
             }
           }
         }
@@ -72,7 +92,13 @@
         "node": {
           "kind": "text",
           "id": "leak",
-          "content": { "type": "expression", "expression": { "type": "ref", "path": "$output" } }
+          "content": {
+            "type": "expression",
+            "expression": {
+              "type": "ref",
+              "path": "$output"
+            }
+          }
         }
       },
       "expectedCodes": ["UI_COMPONENT_OUTPUT_PAYLOAD_INVALID"]
@@ -85,8 +111,18 @@
           "id": "cbX",
           "definitionId": "vict.catalog.checkbox",
           "revision": "1",
-          "props": { "checked": { "type": "ref", "path": "state.ackA" } },
-          "slots": { "body": { "name": "body", "children": [] } }
+          "props": {
+            "checked": {
+              "type": "ref",
+              "path": "state.ackA"
+            }
+          },
+          "slots": {
+            "body": {
+              "name": "body",
+              "children": []
+            }
+          }
         }
       },
       "expectedCodes": ["UI_DOC_UNKNOWN_COMPONENT"]
@@ -100,10 +136,17 @@
           "definitionId": "vict.catalog.button",
           "revision": "1",
           "props": {},
-          "outputs": { "press": { "invokeAction": { "actionId": "not.declared" } } }
+          "outputs": {
+            "press": {
+              "invokeAction": {
+                "actionId": "not.declared"
+              }
+            }
+          }
         }
       },
-      "expectedCodes": ["UI_DOC_UNKNOWN_ACTION"]
+      "expectedCodes": ["UI_DOC_UNKNOWN_PRODUCT_REFERENCE"],
+      "note": "existing code (validate.ts action/route catalog checks), extended by the amendment to output bindings"
     }
   ]
 }

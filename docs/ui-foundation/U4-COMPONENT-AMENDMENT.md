@@ -103,12 +103,26 @@ A catalog component instance is an existing `kind:'component'` node whose
 resolution catalog extensions already use: document-level validation reports
 `UI_DOC_UNKNOWN_COMPONENT` as a compiler-deferred code, and
 `compileUiDocument` resolves the node through the registered descriptor map).
-Already-supported instance machinery, unchanged: `revision` pinning, typed
-`props` (expressions resolved in the instance scope), `slots` fills
-(`UiSlotFill`, resolved in the instance scope, authored via `fillSlot`),
-occurrence identity (`UiOccurrenceRef`: `documentId + sourceNodeId +
-componentInstancePath + repeatRecordKeyPath`; occurrence keys are logical
-addresses, never DOM handles).
+Already-supported instance machinery, unchanged: typed `props` (expressions
+resolved in the instance scope), `slots` fills (`UiSlotFill`, resolved in
+the instance scope, authored via `fillSlot`), occurrence identity
+(`UiOccurrenceRef`: `documentId + sourceNodeId + componentInstancePath +
+repeatRecordKeyPath`; occurrence keys are logical addresses, never DOM
+handles).
+
+**Not unchanged — built by this amendment** (verified absent on the
+extension path today; part of the compile delta, §3.3):
+
+1. **Instance revision pinning.** The extension compile branch today emits
+   the descriptor's own revision and never reads `node.revision` (the only
+   honored node pin is the stored-definition branch), and compile resolves
+   descriptors through an id-keyed, last-registration-wins map. The
+   amendment makes the compiled extension instruction carry the instance's
+   **effective revision** — `node.revision` when pinned, else the
+   registered-current descriptor revision at compile time — and resolves
+   the descriptor by `(id, effective revision)` fail-closed (§4.1). A pin
+   matching no registered revision is a compile diagnostic
+   (`UI_COMPONENT_REVISION_UNRESOLVED`), never a silent fallback.
 
 **One additive optional node field** (the only document-model change):
 
@@ -174,7 +188,8 @@ array-typed prop is always bound to an expression resolving to an array
 catalog. Literal/default checks keep their existing shape (literals are
 compared against the declared primitive type; `UI_EXPR_TYPE_MISMATCH`
 continues to fire for wrong literal types; array-typed props accept only
-reference expressions — new validator rule, Section 5.1).
+reference expressions — the diagnostics are specified in Section 5.1 and
+built by this amendment for descriptor instances).
 
 ### 3.3 Compiled instruction
 
@@ -192,17 +207,42 @@ Compilation resolves prop values against `propDecls` exactly as the
 component-instruction path does today; compile resolves binding payloads and
 target references (state keys against `document.localState`; action ids
 against the declared `actionIds` catalog) and emits new diagnostics
-(Section 5.1). Slot fills compile in the instance scope exactly as
+(Section 5.1). The compiled `extension` instruction's `revision` field
+carries the instance's **effective revision** (node pin, else
+registered-current at compile time — §3.1); the descriptor resolves by
+`(id, effective revision)` fail-closed, replacing the id-keyed last-wins
+map for this path: zero matches → `UI_COMPONENT_REVISION_UNRESOLVED`
+(compile, error); more than one matching descriptor surfaces as
+`UI_COMPONENT_UNAVAILABLE` at render (§5.2). Slot fills on
+descriptor-backed instances compile in the instance scope exactly as
 `kind:'component'` slot fills already do — same code path, same scoping
-guarantees. The plan schema string does not change; consumers that ignore
-the new optional fields behave exactly as before on unchanged documents.
+guarantees — **including the undeclared-fill rejection, which the
+amendment builds for this path** (today such fills are silently dropped;
+§3.7). The plan schema string does not change; consumers that ignore the
+new optional fields behave exactly as before on unchanged documents.
 
 ### 3.4 Registered implementation (Svelte bridge)
 
 Implementations follow the existing `UiSvelteExtensionImplementation`
 identity pattern (extensionId + revision + rendererImplementationId, exact
 match, fail-closed on absent/competing registrations) extended to
-`UiSvelteComponentImplementation`:
+`UiSvelteComponentImplementation` — declared in full, since the ABI gate
+(§4.1) and the slot-capability check (§5.2) require fields this contract
+adds:
+
+```ts
+export interface UiSvelteComponentImplementation {
+  readonly extensionId: string;
+  readonly revision: string;
+  readonly rendererImplementationId: string;
+  /** Must equal the descriptor's `abi`; mismatch is fail-closed (§5.2). */
+  readonly abi: 'vict.ui-component-abi@1';
+  /** Descriptor slot names this implementation can render (capability).
+   *  A declared+filled slot outside this set is `UI_COMPONENT_SLOT_UNAVAILABLE`. */
+  readonly slots: readonly string[];
+  readonly component: Component<UiSvelteComponentProps>;
+}
+```
 
 ```ts
 export interface UiSvelteComponentIO {
@@ -241,12 +281,19 @@ Rules (all enforced by the bridge, not by wrapper discipline):
   renderer's document/plan generation. The bridge drops emissions from
   unmounted occurrences and from instances of a superseded document/plan
   (after save/reload, undo past the instance, or navigation) — Section 5.3.
+- **Ordering.** Outputs are delivered per occurrence in emission order;
+  reactive input re-evaluation and output delivery are independent; the
+  bridge makes no cross-occurrence ordering guarantee. Implementations that
+  need ordering between an output and a subsequent prop update sequence
+  their own emits; the contract does not co-schedule them.
 - **Slots.** Declared slot fills arrive as rendered Svelte snippets resolved
   in the instance scope; the implementation renders them where its public
   component takes content (`children`, Overlay `content`). Undeclared slot
-  fills are already rejected at validation/compile
-  (`UI_DOC_UNKNOWN_COMPONENT`, definition 'declares no slot'); a declared
-  slot filled by the author but unsupported by the implementation's ABI is a
+  fills are rejected — for stored definitions by today's validation
+  (`UI_DOC_UNKNOWN_COMPONENT`, definition 'declares no slot'), and for
+  descriptor-backed instances by the compile rule this amendment builds
+  (§3.7); a declared slot filled by the author but unsupported by the
+  implementation's slot capability is a
   fail-closed render diagnostic (`UI_COMPONENT_SLOT_UNAVAILABLE`).
 
 ### 3.5 Typed output → authored connection
@@ -264,10 +311,17 @@ authority, contract-checked inputs, unchanged):
   `UI_COMPONENT_BINDING_INCOMPATIBLE` otherwise).
 - `{invokeAction:{actionId, input?}}` — run the declared action through the
   host dispatcher; `input` expressions may reference `$output` and the
-  instance scope. Unknown action ids are already rejected at validation
-  (`actionIds` catalog); payload expressions are type-checked against the
-  action input catalog where the application declares types, and shape
-  errors surface `UI_COMPONENT_BINDING_INCOMPATIBLE` at compile.
+  instance scope. Unknown action ids are rejected against the declared
+  `actionIds` catalog — the existing check for interactions
+  (`UI_DOC_UNKNOWN_PRODUCT_REFERENCE`), extended by this amendment to
+  output bindings; payload expressions are type-checked against the
+  action-input catalog where the application declares input types: the
+  application compiler derives this catalog from the declared action
+  contracts (existing `inputContractId` + contracts registry — a new
+  compile catalog input, additive; no application-schema change), and the
+  fixtures' `applicationInputs.actionInputs` blocks illustrate the derived
+  shape. Shape/type errors surface `UI_COMPONENT_BINDING_INCOMPATIBLE` at
+  compile.
 
 `$output` in binding expressions: `{type:'ref', path:'$output'}` resolves to
 the emitted payload inside `value`/`input` templates only — it is rejected
@@ -341,19 +395,28 @@ currently fail-closes on it (`UI_RENDER_EXTENSION_INTERFACE_UNSUPPORTED`)
 and this amendment upgrades exactly that path to deliver instance-scope
 snippets (Section 3.4), keeping required/optional semantics: a declared
 required slot left unfilled is a compile diagnostic
-(`UI_COMPONENT_SLOT_REQUIRED`); an undeclared slot fill is rejected exactly
-as today.
+(`UI_COMPONENT_SLOT_REQUIRED`); an undeclared slot fill is rejected — for
+stored definitions this exists today (`UI_DOC_UNKNOWN_COMPONENT`,
+'declares no slot'), and the amendment builds the same rejection for
+descriptor-backed instances at compile (same code, compile-raised; today
+such fills are silently dropped — that is one of the gaps this contract
+closes).
 
 ## 4. Identity, versions, compatibility
 
-### 4.1 Identity matching (fail-closed, existing pattern extended)
+### 4.1 Identity matching (fail-closed; the pin rule is built by this amendment)
 
-- Instance → descriptor: `node.definitionId` equals `descriptor.id`, and the
-  instance's effective revision (`node.revision` pin, else document
-  revision pin semantics already used by extensions) equals
-  `descriptor.revision`. Exactly one descriptor may match; zero or >1 is
-  `UI_COMPONENT_UNAVAILABLE` at render (mirroring
-  `UI_RENDER_EXTENSION_UNAVAILABLE`).
+- Instance → descriptor: `node.definitionId` equals `descriptor.id`, and
+  the instance's effective revision — `node.revision` when pinned, else
+  the registered-current descriptor revision at compile time — equals
+  `descriptor.revision`. This is **built by the amendment** (§3.1: today's
+  extension path echoes the descriptor revision and resolves id-keyed
+  last-wins): compile resolves the descriptor by `(id, effective revision)`
+  fail-closed. Zero matches → `UI_COMPONENT_REVISION_UNRESOLVED` (compile,
+  error). More than one registered descriptor with the same `(id, revision)`
+  is a registration error surfaced as `UI_COMPONENT_UNAVAILABLE` at render
+  (mirroring `UI_RENDER_EXTENSION_UNAVAILABLE`, which already implements
+  this discipline on the render side).
 - Descriptor → implementation: `extensionId`, `revision` and
   `rendererImplementationId` must all equal; exactly one implementation may
   match. Never guessed by id alone; never a component from a different
@@ -419,7 +482,11 @@ as today.
     them.
   - `@victframework/ui-editor`: Inspector property/output controls and the
     `setOutputBinding` op surface. No renderer internals imported.
-  - `@victframework/application`: registration list plumbing (existing).
+  - `@victframework/application`: registration list plumbing (existing —
+    the existing `components`/`uiExtensions` compile inputs are expected to
+    suffice; no change is anticipated. If implementation discovers a need
+    here, that is a recorded scope decision at the gate, not a silent
+    expansion of the allowed paths).
   Consumers use public exports only; the U4 packed-tarball isolation
   (no workspace links, no repo source aliases, no original-example imports)
   applies unchanged, and `@victframework/ui-svelte` ships the wrappers from
@@ -433,9 +500,24 @@ as today.
 | --- | --- | --- | --- |
 | `UI_COMPONENT_OUTPUT_UNKNOWN` | compile | error | instance `outputs` key is not declared by the resolved descriptor |
 | `UI_COMPONENT_OUTPUT_PAYLOAD_INVALID` | validate/compile | error | bound `$output` used at mismatched type; payload expression type ≠ declared payload |
-| `UI_COMPONENT_BINDING_INCOMPATIBLE` | validate/compile | error | target state key missing or declared type ≠ payload type; action input shape/type mismatch; `setState` value expression not type-compatible with the state key |
+| `UI_COMPONENT_BINDING_INCOMPATIBLE` | validate/compile | error | target state key missing or declared type ≠ payload type; action input shape/type mismatch (against the derived action-input catalog, §3.5); `setState` value expression not type-compatible with the state key; array-typed prop bound to a non-reference or non-array-typed expression |
+| `UI_EXPR_TYPE_MISMATCH` | validate (stored defs) / compile (descriptor instances — built by this amendment) | error | literal prop value type ≠ `propDecl.type`; reference prop value resolving to a typed source (state key / view field) whose type ≠ `propDecl.type` |
 | `UI_COMPONENT_SLOT_REQUIRED` | compile | error | declared required slot unfilled |
-| `UI_DOC_UNKNOWN_COMPONENT` | validate (deferred) / compile | error (when unresolved) | definitionId matches neither stored definitions nor registered descriptors (existing behavior preserved) |
+| `UI_COMPONENT_REVISION_UNRESOLVED` | compile | error | instance revision pin matches no registered descriptor revision (§4.1) |
+| `UI_DOC_UNKNOWN_COMPONENT` | validate (deferred) / compile | error (when unresolved) | definitionId matches neither stored definitions nor registered descriptors (existing behavior preserved); also compile-raised for undeclared slot fills on descriptor instances (§3.7) |
+| `UI_DOC_UNKNOWN_PRODUCT_REFERENCE` | validate / compile | error | action id in an output binding absent from the declared `actionIds` catalog (existing code, extended scope) |
+
+Prop typing for descriptor-backed instances (the `UI_EXPR_TYPE_MISMATCH`
+compile rows and the array-reference rule) is built by this amendment:
+today's literal check runs only for stored definitions; the amendment
+extends prop checking to descriptor instances at compile, using
+`propDecls` from the resolved descriptor. Array-typed props accept only
+reference expressions (the expression language has no array literal); a
+literal or non-array reference is `UI_COMPONENT_BINDING_INCOMPATIBLE` /
+`UI_EXPR_TYPE_MISMATCH` respectively. Declared limit: `'array'` is
+element-untyped (`UiFieldType` carries no element type), so a wrong-shaped
+array is not diagnosable by this contract — runtime behavior only, recorded
+as an inspection limit.
 
 `$output` is valid **only** inside `outputs[*].setState.value` and
 `outputs[*].invokeAction.input` expression scopes; any other occurrence is
@@ -491,7 +573,7 @@ comparison examples and must be clearly labelled as such.
 
 | Control | Authored inputs (founder edits) | Authored outputs/connections | Founder sees |
 | --- | --- | --- | --- |
-| Button | `label`, `disabled`, `loading` (literal or bound; `loading` from state drives the pending/disabled presentation) | `press` → `invokeAction` (declared action, `$output`-free input mapping) with success/failure feedback | edited label/disabled/loading in canvas; action runs through declared dispatch with feedback; persisted and replayed |
+| Button | `label`, `disabled`, `loading` (literal or bound; `loading` from state drives the pending/disabled presentation — the wrapper adapts the existing `ActionButton.svelte` pending pattern: 'Working…', `aria-busy`, disabled-while-pending; `Button.svelte` itself has no `loading` prop today) | `press` → `invokeAction` (declared action, `$output`-free input mapping) with success/failure feedback | edited label/disabled/loading in canvas; action runs through declared dispatch with feedback; persisted and replayed |
 | Checkbox (catalog) | `label`; `checked` bound to a state key (reactive) | `checkedChange` → `setState` (payload boolean) — plus an Acknowledge/submit control dispatching a declared action consuming the state | toggle in canvas updates bound state; two instances with distinct keys stay isolated; state survives save/reload and drives the finished app |
 | AppShell (sidebar) | composition (`navigation:'sidebar'`, `responsive.navigationAt` via application manifest — existing semantics); authored content slot fill | declared navigation links (renderer-resolved `current`), active selection, responsive collapse (720/960 matchMedia behavior already in AppShell) | content authored inside the shell; navigation highlights the active route; drawer below breakpoint — identical in editor canvas and finished app |
 | Select + Dialog (catalog) | `options` bound to an array-typed view field; `value` bound to state; Dialog `open` bound to state; authored dialog body slot with a confirm control (`click→invokeAction`) | `valueChange` → `setState`; `openChange` → `setState`; confirm → declared action; Escape/overlay close → `openChange` | choose a value → state updates → dialog opens from a declared-action success → keyboard/focus/portal behavior (bits-ui focus scope, portal to ControlScope root) → confirm dispatches |

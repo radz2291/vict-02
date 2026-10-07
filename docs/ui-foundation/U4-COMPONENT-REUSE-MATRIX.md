@@ -197,8 +197,11 @@ claimed:
 | --- | --- | --- |
 | `UiOutputDecl` / `UiOutputBinding`; descriptor `outputs`/`abi`; additive plan fields (`outputDecls`, `outputBindings`, instance-scope `slots`) | ui | C (types documented in the amendment; not in source) |
 | Validator/compile rules: declared-output resolution, payload typing, `$output` scoping, state/action target checks; diagnostics `UI_COMPONENT_OUTPUT_UNKNOWN`, `UI_COMPONENT_OUTPUT_PAYLOAD_INVALID`, `UI_COMPONENT_BINDING_INCOMPATIBLE`, `UI_COMPONENT_SLOT_REQUIRED` | ui | C |
+| Instance revision-pin resolution: compiled instruction carries the effective revision; descriptor resolves by (id, effective revision) fail-closed; `UI_COMPONENT_REVISION_UNRESOLVED` (today the extension path echoes the descriptor revision and resolves id-keyed last-wins) | ui | C |
+| Descriptor-instance prop checking: literal + reference typing against `propDecls` (today literal checks run only for stored definitions); array-typed props reference-only; `UI_EXPR_TYPE_MISMATCH` extended scope | ui | C |
+| Undeclared-slot-fill rejection for descriptor instances (today silently dropped; `UI_DOC_UNKNOWN_COMPONENT` compile-raised) + action-input catalog derived from declared contracts for typed output checks | ui | C |
 | `setOutputBinding` edit op | ui | C |
-| Svelte bridge: `UiSvelteComponentImplementation` (+`io.emit`, slot snippets), ABI gate, generation-gated stale-drop, rejected-emit handling | ui-svelte | C |
+| Svelte bridge: `UiSvelteComponentImplementation` (+`abi` gate, `slots` capability, `io.emit`, slot snippets), generation-gated stale-drop, rejected-emit handling | ui-svelte | C |
 | Catalog wrappers: button / checkbox / select / dialog / app-shell adapting public components | ui-svelte | C |
 | Inspector: descriptor-driven property editors; Behavior-tab output-connection editor (type-filtered state picker, action picker, `$output` mapping) | ui-editor | C |
 | Render diagnostics `UI_COMPONENT_UNAVAILABLE`, `UI_COMPONENT_ABI_UNSUPPORTED`, `UI_COMPONENT_SLOT_UNAVAILABLE`; stale `UI_COMPONENT_OUTPUT_STALE` | ui-svelte | C |

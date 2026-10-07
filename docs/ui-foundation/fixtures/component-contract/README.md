@@ -14,8 +14,8 @@ nodes inside a full `vict.ui-document@1`.
 | `button-action.json` | void `press` output → invokeAction with authored input mapping; `loading`/`disabled` reactive from state |
 | `dialog-slot.json` | declared slot fill in instance scope; open-state loop; authored confirm child dispatching inside a catalog host; portal to ControlScope root |
 | `appshell-content.json` | content slot fill; navigation/active/responsive from existing composition semantics |
-| `invalid-cases.json` | author-time diagnostics: unknown output, incompatible binding, `$output` misuse, undeclared slot, unknown action |
-| `render-failures.json` | fail-closed render matrix: missing/competing/mismatched implementations, ABI mismatch, unsupported slots, stale and rejected emits |
+| `invalid-cases.json` | author-time diagnostics: unknown output, incompatible binding (prop-side and output-side), wrong-typed prop literal, `$output` misuse, undeclared slot, unknown action (existing `UI_DOC_UNKNOWN_PRODUCT_REFERENCE` code, extended scope) |
+| `render-failures.json` | fail-closed render/compile matrix: unresolvable instance revision pin (`UI_COMPONENT_REVISION_UNRESOLVED`), missing/competing/mismatched implementations, ABI mismatch, unsupported slots, stale and rejected emits |
 
 Conventions:
 
@@ -24,5 +24,10 @@ Conventions:
 - Descriptors carry `abi: "vict.ui-component-abi@1"` whenever `outputs` is
   declared; implementations must match it exactly.
 - Product state keys, action ids and input mappings appear only in the
-  instance excerpts — never in descriptor metadata.
+  instance excerpts — never in descriptor metadata. The
+  `applicationInputs.actionInputs` blocks illustrate the action-input
+  catalog the application compiler derives from declared action contracts
+  (amendment §3.5); they are not an application-schema field.
 - Invalid fixtures list their expected diagnostic codes next to the excerpt.
+  Codes marked "compile, built by the amendment" do not exist in today's
+  validator; they exist at the contract level only.
