@@ -9,6 +9,7 @@
    * persisted). Panel sizing works by pointer AND keyboard (the separator
    * is a focusable ARIA separator).
    */
+  import { tick } from 'svelte';
   import { browser } from '$app/environment';
   import {
     EditorBridge,
@@ -16,6 +17,7 @@
     HistoryPanel,
     Inspector,
     Layers,
+    type EditorLabels,
   } from '@victframework/ui-editor';
   import { loadPresentable, openDesignStore } from '$lib/design/persistence';
   import {
@@ -33,6 +35,42 @@
   import { fixtureDocument, FIXTURE_STORE_KEY } from '$lib/design/fixture-document';
   import type { UiRenderPlan } from '@victframework/ui';
 
+  const SERVICE_LABELS: EditorLabels = {
+    nodes: {
+      'svc.root': 'Home page',
+      'svc.hero': 'Introduction',
+      'svc.heroTitle': 'Page heading',
+      'svc.overlapWrap': 'Survey banner position',
+      'svc.overlapCard': 'Survey card',
+      'svc.services': 'Services section',
+      'svc.cardsGrid': 'Service cards',
+      'svc.cardKitchens': 'Kitchens card',
+      'svc.cardBathrooms': 'Bathrooms card',
+      'svc.cardAdaptations': 'Adaptations card (accent override)',
+      'svc.story': 'How we work',
+      'svc.storyAside': 'At a glance (sticky)',
+      'svc.stickyCard': 'Documented card',
+      'svc.contact': 'Request a quote',
+      'svc.form': 'Quote form',
+      'svc.submitButton': 'Send request button',
+    },
+    definitions: { 'def.serviceCard': 'Service card' },
+    actions: { 'design.submitContact': 'Send request (simulated)' },
+  };
+  const FIXTURE_LABELS: EditorLabels = {
+    nodes: {
+      'fx.root': 'Fixture canvas',
+      'fx.graph': 'Graph sample',
+      'fx.boxIntake': 'Intake box',
+      'fx.boxTriage': 'Triage box',
+      'fx.boxReview': 'Review panel box',
+      'fx.boxArchive': 'Archive box',
+      'fx.boxNotesColumn': 'Margin notes',
+    },
+  };
+  const labelsFor = (id: 'service' | 'fixture'): EditorLabels =>
+    id === 'service' ? SERVICE_LABELS : FIXTURE_LABELS;
+
   interface WorkbenchDocument {
     readonly id: 'service' | 'fixture';
     readonly label: string;
@@ -48,7 +86,8 @@
   interface Blade {
     readonly doc: WorkbenchDocument;
     readonly bridge: EditorBridge;
-    readonly banner: string | null;
+    /** Truthful stored-data notice; cleared only on an acknowledged save. */
+    banner: string | null;
   }
 
   function openBlade(doc: WorkbenchDocument): Blade {
@@ -79,12 +118,18 @@
   let version = $state(0);
 
   const current = $derived(blades.find((blade) => blade.doc.id === currentId) ?? blades[0]);
-  const state = $derived(
-    (version, current?.bridge.getSnapshot()),
-  );
-  // Version-tracked working document: bridge mutations are external to
+  // `snapshotState` (renamed from `state`: the identifier collided with the
+  // $state rune under broad svelte-check). Reading `version` keeps these
+  // derived values version-tracked: bridge mutations are external to
   // Svelte's reactivity, so the canvas/inspector re-render off `version`.
-  const workingDocument = $derived((version, current.bridge.document));
+  const snapshotState = $derived.by(() => {
+    void version;
+    return current?.bridge.getSnapshot();
+  });
+  const workingDocument = $derived.by(() => {
+    void version;
+    return current.bridge.document;
+  });
 
   $effect(() => {
     const unsubs = blades.map((blade) => blade.bridge.subscribe(() => (version += 1)));
@@ -94,6 +139,14 @@
   // --- selection + plan + activity --------------------------------------
   let selectedOccurrence = $state<string | undefined>(undefined);
   let plan = $state<UiRenderPlan | undefined>(undefined);
+  // Renderer-scope invalidation for effective-value measurements: bumped by
+  // Svelte ticks after source/DOM changes, window resizes and canvas-frame
+  // ResizeObserver callbacks (the documented mounting requirement).
+  let domVersion = $state(0);
+  // Canvas frame element: observed so container-driven width changes (the
+  // preview size control) also invalidate effective-value measurements.
+  let frameEl = $state<HTMLElement | undefined>(undefined);
+  let lastIssues = $state<readonly { code: string; message: string }[]>([]);
   let activity = $state<{ at: number; kind: 'info' | 'error' | 'save'; text: string }[]>([]);
   let activityOpen = $state(true);
 
@@ -104,12 +157,16 @@
   }
 
   function select(occurrence: string): void {
+    // Single source of selection truth: the bridge. Canvas, Layers and
+    // Inspector all derive from the same occurrence.
+    current.bridge.select(occurrence);
     selectedOccurrence = occurrence;
     log('info', `Selected ${occurrence}`);
   }
 
   function applyDraft(draft: Parameters<EditorBridge['apply']>[0]): void {
     const outcome = current.bridge.apply(draft);
+    lastIssues = outcome.ok ? [] : outcome.issues;
     if (outcome.ok) {
       const command = draft.commands[0];
       const target = 'nodeId' in command ? command.nodeId : (command as { id?: string }).id ?? '';
@@ -176,11 +233,8 @@
     event.preventDefault();
     const startX = event.clientX;
     const startWidth = inspectorWidth;
-    const move = (moveEvent: PointerEvent) => {
-      resizeBy(startWidth - moveEvent.clientX - (startX - moveEvent.clientX) * 0 - startX + startX);
-    };
     const up = () => {
-      window.removeEventListener('pointermove', move);
+      window.removeEventListener('pointermove', onMove);
       window.removeEventListener('pointerup', up);
     };
     const onMove = (moveEvent: PointerEvent) => {
@@ -221,21 +275,50 @@
   const styleConditions = $derived(
     Object.entries(current.doc.seed.conditions ?? {})
       .filter(([, condition]) => condition.kind === 'media' || condition.kind === 'container')
-      .map(([id, condition]) => ({
-        id,
-        label:
-          condition.kind === 'media'
-            ? `Window: ${condition.query}`
-            : `Container “${condition.name}”: ${condition.query}`,
-      })),
+      .map(([id, condition]) => {
+        if (condition.kind === 'media') {
+          return { id, label: `Window: ${condition.query}` };
+        }
+        return {
+          id,
+          label:
+            condition.kind === 'container'
+              ? `Container “${condition.name}”: ${condition.query}`
+              : id,
+        };
+      }),
   );
 
   function readEffective(occurrence: string, property: string): string | undefined {
+    // Reading domVersion makes every Inspector measurement reactive to the
+    // host invalidation effects below (source ticks, frame resize, window
+    // resize) — the documented mounting requirement.
+    void domVersion;
     if (!browser) return undefined;
     const el = document.querySelector(`[data-ui-occ='${occurrence.replace(/'/g, "\\'")}']`);
     if (el === null) return undefined;
     return window.getComputedStyle(el).getPropertyValue(property) || undefined;
   }
+
+  // Host-side measurement invalidation: source/DOM ticks (including preview
+  // width changes), canvas-frame resizing and window resizing all bump
+  // domVersion, which readEffective depends on.
+  $effect(() => {
+    version;
+    sizeId;
+    void tick().then(() => (domVersion += 1));
+  });
+  $effect(() => {
+    if (!browser || !frameEl) return;
+    const observer = new ResizeObserver(() => (domVersion += 1));
+    observer.observe(frameEl);
+    const refresh = () => (domVersion += 1);
+    window.addEventListener('resize', refresh);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('resize', refresh);
+    };
+  });
 </script>
 
 <div class="wb">
@@ -257,15 +340,15 @@
         </button>
       {/each}
       <span class="wb-rail-heading">Edit</span>
-      <button type="button" onclick={undo} disabled={!state?.canUndo}>Undo</button>
-      <button type="button" onclick={redo} disabled={!state?.canRedo}>Redo</button>
+      <button type="button" onclick={undo} disabled={!snapshotState?.canUndo}>Undo</button>
+      <button type="button" onclick={redo} disabled={!snapshotState?.canRedo}>Redo</button>
       <button type="button" onclick={save}>Save</button>
       <button type="button" onclick={reloadStored}>Reload stored</button>
       <span class="wb-rail-heading">Status</span>
       <span style="padding: 0 10px; font-size: 12px; color: #a7b5ad">
-        {#if state?.dirty}Unsaved changes{:else}Saved{/if}
+        {#if snapshotState?.dirty}Unsaved changes{:else}Saved{/if}
         <br />
-        stored revision {state?.storedRevision}
+        stored revision {snapshotState?.storedRevision}
       </span>
     </nav>
 
@@ -291,7 +374,7 @@
         {/if}
       </div>
       <div class="wb-canvas-scroll">
-        <div class="wb-canvas-frame" style={`width:${frameWidth}; max-width:100%`}>
+        <div class="wb-canvas-frame" bind:this={frameEl} style={`width:${frameWidth}; max-width:100%`}>
           <EditorCanvas
             document={workingDocument}
             catalogs={designCatalogs}
@@ -300,13 +383,18 @@
             dispatch={dispatch}
             navigate={navigate}
             onRenderDiagnostic={(diagnostic) => log('error', `${diagnostic.code}: ${diagnostic.message}`)}
-            onPlan={(compiledPlan) => (plan = compiledPlan)}
+            onPlan={(compiledPlan) => { plan = compiledPlan; void tick().then(() => (domVersion += 1)); }}
             ariaLabel={`${current.doc.label} canvas`}
           />
         </div>
       </div>
     </div>
 
+    <!-- Focusable ARIA separator: the WAI-ARIA splitter pattern (pointer +
+         arrow-key resizing). svelte-check's a11y rules do not model
+         role="separator" as interactive, so the two warnings are justified. -->
+    <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
+    <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
     <div
       class="wb-resizer"
       role="separator"
@@ -322,23 +410,30 @@
         document={workingDocument}
         selectedOccurrence={selectedOccurrence}
         onApply={applyDraft}
+        lastIssues={lastIssues}
+        knownActionIds={designCatalogs.actionIds}
+        knownTokenIds={Object.keys(current.doc.seed.tokens)}
         styleConditions={styleConditions}
+        labels={labelsFor(currentId)}
         readEffective={readEffective}
       />
       {#if plan !== undefined}
         <Layers
           plan={plan}
+          document={workingDocument}
+          labels={labelsFor(currentId)}
           selectedOccurrence={selectedOccurrence}
           onSelect={select}
+          scope={{ view: {}, record: {}, state: {}, tokens: {} }}
           ariaLabel="Layers"
         />
       {/if}
       <HistoryPanel
-        revision={state?.revision ?? ''}
-        storedRevision={state?.storedRevision ?? ''}
-        dirty={state?.dirty ?? false}
-        canUndo={state?.canUndo ?? false}
-        canRedo={state?.canRedo ?? false}
+        revision={snapshotState?.revision ?? ''}
+        storedRevision={snapshotState?.storedRevision ?? ''}
+        dirty={snapshotState?.dirty ?? false}
+        canUndo={snapshotState?.canUndo ?? false}
+        canRedo={snapshotState?.canRedo ?? false}
         onUndo={undo}
         onRedo={redo}
         onSave={save}

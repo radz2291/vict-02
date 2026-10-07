@@ -151,6 +151,72 @@ describe('Inspector iteration: atomic spacing, color fidelity and Layers search'
       target.remove();
     }
   });
+  it('bare numbers commit with px on both editor paths; expressions stay textual', async () => {
+    const target = document.createElement('div');
+    document.body.append(target);
+    const changes: string[] = [];
+    // Expression display value -> textual editor path.
+    const instance = mount(InspectorControl, {
+      target,
+      props: {
+        label: 'Text size',
+        kind: 'number',
+        value: 'clamp(34px, 5vw, 56px)',
+        onChange: (v: string) => changes.push(v),
+        onReset: () => {},
+      },
+    });
+    try {
+      flushSync();
+      const textual = target.querySelector<HTMLInputElement>('[aria-label="Text size"]')!;
+      expect(textual.type).toBe('text');
+      textual.value = '61';
+      textual.dispatchEvent(new Event('input', { bubbles: true }));
+      textual.dispatchEvent(new Event('change', { bubbles: true }));
+      expect(changes[0]).toBe('61px');
+      // Typing a bare number must not flip the field to the numeric editor
+      // mid-typing (keystroke loss): the branch keys on the committed value.
+      textual.value = '6';
+      textual.dispatchEvent(new Event('input', { bubbles: true }));
+      flushSync();
+      const stillTextual = target.querySelector<HTMLInputElement>('[aria-label="Text size"]');
+      expect(stillTextual).toBeDefined();
+      expect(stillTextual!.type).toBe('text');
+      expect(changes.length).toBe(1);
+      textual.value = 'calc(1em + 2px)';
+      textual.dispatchEvent(new Event('input', { bubbles: true }));
+      textual.dispatchEvent(new Event('change', { bubbles: true }));
+      expect(changes[1]).toBe('calc(1em + 2px)');
+    } finally {
+      await unmount(instance);
+      target.remove();
+    }
+    // Unitized authored value -> numeric editor path keeps/derives px.
+    const target2 = document.createElement('div');
+    document.body.append(target2);
+    const changes2: string[] = [];
+    const instance2 = mount(InspectorControl, {
+      target: target2,
+      props: {
+        label: 'Text size',
+        kind: 'number',
+        value: '56px',
+        onChange: (v: string) => changes2.push(v),
+        onReset: () => {},
+      },
+    });
+    try {
+      flushSync();
+      const numericInput = target2.querySelector<HTMLInputElement>('[aria-label="Text size"]')!;
+      expect(numericInput.type).toBe('number');
+      numericInput.value = '61';
+      numericInput.dispatchEvent(new Event('change', { bubbles: true }));
+      expect(changes2[0]).toBe('61px');
+    } finally {
+      await unmount(instance2);
+      target2.remove();
+    }
+  });
   it('search exposes matching content with ancestors and selects the exact source occurrence', async () => {
     const compiled = compileUiDocument(fixture, defaultSemanticElementCatalog());
     expect(compiled.ok).toBe(true);

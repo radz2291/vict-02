@@ -1,3 +1,7 @@
 # Preserve independent N1 review evidence bytes, including original line endings.
 independent-review/n1-candidate/** -text
 independent-review/n1-recheck/** -text
+# Preserve the imported iteration-2 evaluator evidence bytes. The recorded
+# ITERATION-2-REVIEW.md checksum (A9E855…) is the evaluator's original artifact;
+# an earlier import normalized its final CRLF, breaking in-tree verification.
+independent-review/iteration2-candidate/** -text

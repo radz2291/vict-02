@@ -6,11 +6,19 @@
   } = $props();
   let draft = $state('');
   $effect(() => { draft = value; });
-  const numeric = $derived(/^(-?\d*\.?\d+)(px|rem|em|%|vh|vw)?$/.exec(draft));
+  // The editor branch is chosen from the committed value, never the live
+  // draft: a field must not switch identity mid-typing (a bare number typed
+  // into the textual path used to flip it to the numeric field and drop
+  // keystrokes). Commits update `value`, then the branch follows.
+  const numeric = $derived(/^(-?\d*\.?\d+)(px|rem|em|%|vh|vw)?$/.exec(value));
   const color = $derived(kind === 'color' ? resolvePanelColor(draft) : undefined);
   const measuredColor = $derived(kind === 'color' ? resolvePanelColor(effective) : undefined);
   const differs = $derived(!!effective && !!value && (color && measuredColor ? color.css !== measuredColor.css : value.trim() !== effective.trim()));
   function commit(value: string) { if (value.trim()) onChange(value.trim()); }
+  // Documented design: numbers without units use px; expressions such as
+  // auto/calc/clamp remain textual. Applies to the textual editor path, which
+  // is used whenever the displayed value is not a plain unitized number.
+  function commitText(raw: string) { const t = raw.trim(); commit(/^-?\d*\.?\d+$/.test(t) ? `${t}px` : t); }
   function alignmentPath(option: string) { return ({ left: 'M2 4h16M2 10h10M2 16h16', center: 'M2 4h16M5 10h10M2 16h16', right: 'M2 4h16M8 10h10M2 16h16', justify: 'M2 4h16M2 10h16M2 16h16' } as Record<string, string>)[option]; }
   function icon(option: string) { return ({ left: '☰', center: '≡', right: '☷', justify: '▤', row: '→', column: '↓', 'row-reverse': '←', 'column-reverse': '↑', start: '⊢', end: '⊣', stretch: '↔', 'space-between': '⇤⇥', 'space-around': '↔', nowrap: '→', wrap: '↵', 'wrap-reverse': '↰' } as Record<string, string>)[option]; }
 </script>
@@ -20,8 +28,8 @@
     {#if kind === 'color'}<div class="swatch" class:unknown={!color} title={color ? `${draft} · ${Math.round(color.alpha * 100)}% opacity` : 'Color preview unavailable; authored value retained'}>{#if color}<span style:background={color.css}></span>{:else}<span class="unknown">?</span>{/if}<input type="color" aria-label={`${label} picker`} title="Choose color; opacity is preserved" value={color?.hex ?? '#000000'} {disabled} onchange={e => commit(color && color.alpha < 1 ? colorWithAlpha(e.currentTarget.value, color.alpha) : e.currentTarget.value)} /></div>{/if}
     {#if kind === 'segments'}<div class="segments" role="group" aria-label={label}>{#if draft && !options.includes(draft)}<span class="custom">{draft}</span>{/if}{#each options as option}<button type="button" aria-label={`${label}: ${option}`} title={option.replaceAll('-', ' ')} aria-pressed={draft === option} {disabled} onclick={() => commit(option)}>{#if label === 'Text alignment' && alignmentPath(option)}<svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d={alignmentPath(option)} stroke="currentColor" stroke-width="1.5" fill="none" /></svg><span class="sr-only">{option}</span>{:else if icon(option)}<span aria-hidden="true">{icon(option)}</span><span class="sr-only">{option}</span>{:else}{option}{/if}</button>{/each}</div>
     {:else if kind === 'choice'}<select aria-label={label} value={draft} {disabled} onchange={e => commit(e.currentTarget.value)}><option value="">Choose…</option>{#if draft && !options.includes(draft)}<option value={draft}>{draft}</option>{/if}{#each options as option}<option value={option}>{option}</option>{/each}</select>
-    {:else if kind === 'number' && (!draft || numeric)}<input type="number" step="any" aria-label={label} value={numeric?.[1] ?? ''} {disabled} placeholder="Auto" onchange={e => { if (e.currentTarget.value !== '') commit(`${e.currentTarget.value}${numeric ? numeric[2] ?? '' : 'px'}`); }} /><select aria-label={`${label} unit`} value={numeric ? numeric[2] ?? '' : 'px'} {disabled} onchange={e => { if (numeric) commit(`${numeric[1]}${e.currentTarget.value}`); }}>{#each ['px', 'rem', 'em', '%', 'vh', 'vw', ''] as unit}<option value={unit}>{unit || '—'}</option>{/each}</select>
-    {:else}<input type="text" aria-label={label} bind:value={draft} {disabled} placeholder="Not set" onchange={() => commit(draft)} />{/if}
+    {:else if kind === 'number' && (!value || numeric)}<input type="number" step="any" aria-label={label} value={numeric?.[1] ?? ''} {disabled} placeholder="Auto" onchange={e => { if (e.currentTarget.value !== '') commit(`${e.currentTarget.value}${numeric ? numeric[2] || 'px' : 'px'}`); }} /><select aria-label={`${label} unit`} value={numeric ? numeric[2] ?? '' : 'px'} {disabled} onchange={e => { if (numeric) commit(`${numeric[1]}${e.currentTarget.value}`); }}>{#each ['px', 'rem', 'em', '%', 'vh', 'vw', ''] as unit}<option value={unit}>{unit || '—'}</option>{/each}</select>
+    {:else}<input type="text" aria-label={label} bind:value={draft} {disabled} placeholder="Not set" onchange={() => commitText(draft)} />{/if}
     <button type="button" class="reset" aria-label={`Reset ${label}`} title="Remove this override to reveal the next applicable cascade value. Undo restores it." disabled={disabled || !authored} onclick={onReset}>Reset</button>
   </div>
   {#if kind === 'color'}<label class="opacity">Opacity <input type="number" aria-label={`${label} opacity`} min="0" max="100" step="1" value={color ? Number((color.alpha * 100).toFixed(2)) : ''} disabled={disabled || !color} onchange={e => { const v = Number(e.currentTarget.value); if (color && e.currentTarget.value !== '' && Number.isFinite(v)) commit(colorWithAlpha(color.hex, Math.max(0, Math.min(100, v)) / 100)); }} /><span>%</span></label>{/if}

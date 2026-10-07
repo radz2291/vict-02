@@ -63,3 +63,77 @@ Independent e5931cf30fd2c2cdb0d03a017d77c46b0f35ba31 challenge was FAIL: M4 nati
 Broad Svelte remains23 errors/four existing warnings in unchanged files; manager technical requests remain. Arbitrary external/container CSS changes still require host measurement invalidation. All six earlier UX improvements remain in scope and source; prior comprehensive verification lineage is preserved. The final handoff is evidence-only, not compiler acceptance, owner acceptance or U2 closure.
 
 Final artifact whitespace observations are recorded in n1-followup/artifact-whitespace.txt. Imported evaluator fixtures/reports/logs have trailing blank lines retained verbatim; no implementation whitespace errors. Scoped .gitattributes disables newline normalization only for the two new independent evidence directories, preserving evaluator report SHA256 in both working files and stored Git blobs. The evidence check permits CR at EOL for these original CRLF files; it still reports their EOF blank lines.
+
+## U2 manager integration — combined candidate (2026-10-07)
+
+The overall U2 manager integrated the reviewed Inspector/Layers UX branch
+(merged at the UX tip f31477d8 with the U2 manager lineage e0893feeb; merge
+commit records both parents) and executed the manager-owned repairs in this
+file's "Precise manager requests", inside the authorized U2 scope.
+
+1. `UiRenderPlan` is now imported in packages/ui-editor/src/EditorCanvas.svelte
+   (onPlan prop typing) — manager request 1 executed.
+2. The existing workbench route no longer names a component state `state`
+   (renamed `snapshotState`; the identifier collided with the $state rune under
+   broad svelte-check), derived values are typed through `$derived.by` with the
+   version signal, and examples/ui-design-proof/tsconfig.check.json now includes
+   the generated SvelteKit ambient/non-ambient/$types declarations and no longer
+   excludes `.svelte-kit` from the check — manager request 2 executed.
+3. Broad Svelte check (`npx svelte-check --tsconfig
+   examples/ui-design-proof/tsconfig.check.json`) at the combined candidate:
+   **0 errors / 2 warnings** — the two known renderer accessibility warnings
+   (packages/ui-svelte RenderNode.svelte, unchanged). The previously reported
+   23 errors are resolved; no suppression shims were added.
+4. Workbench mounting completed per the UX handoffs: canonical working document
+   and renderer scope into Layers, friendly EditorLabels into Inspector and
+   Layers, selection synchronized through bridge.select (canvas, Layers and
+   Inspector derive from the same occurrence), `readEffective` re-measured via a
+   host `domVersion` signal (Svelte ticks after source/preview-size changes,
+   canvas-frame ResizeObserver, window resize), `lastIssues` passed from apply
+   outcomes, bridge-owned editing/history/revision/persistence unchanged. The
+   dedicated /editor-review route remains as supporting evidence.
+5. Integration-level browser testing found one real combined-candidate defect in
+   the reusable Inspector numeric editor (packages/ui-editor/src/
+   InspectorControl.svelte): when the displayed value is a non-unitized
+   expression (e.g. the service heading's `clamp(34px, 5vw, 56px)` attached
+   source), committing a bare number produced a unitless `61` (invalid CSS, so
+   the honest Browser now annotation kept showing 56px and the edit appeared
+   ineffective), and typing a bare number flipped the field from the textual to
+   the numeric editor mid-typing, dropping keystrokes. Repaired per the
+   documented design ("numbers without units use px; expressions such as
+   auto/calc remain textual"): both editor paths commit unitless numbers with
+   px, and the editor branch is chosen from the committed value so a field never
+   switches identity mid-typing. Regression-pinned in
+   packages/ui-editor/test/inspector-iteration-ux.svelte.test.ts. The review
+   fixture never exposed this because its heading value was authored `46px`
+   (numeric path from the start).
+6. Root `format:check` is clean at the combined candidate: `.prettierignore` now
+   excludes `examples/ui-design-proof/build/` (generated output made the check
+   misleading after builds) and the three verbatim-evidence directories under
+   docs/ui-foundation/u2-ux/ (independent-review/, iteration-2/, n1-followup/),
+   whose imported evaluator/builder bytes carry recorded identities. During
+   worktree reconciliation, 67 evidence files that a prior uncommitted session
+   had reformat-modified were restored byte-identical to HEAD before any
+   commit; no evidence content changed.
+7. Historical evidence checksum reconciled: iteration-2/HANDOFF records SHA-256
+   A9E8551093779D507D604F626AFD8EC803D3F896D94221F70ACFF1E09A9944DA for
+   ITERATION-2-REVIEW.md, while the committed copy hashed to
+   a927c3d38855f79751f9de9217dfc10b8bad7ab89fbd5f99740f9b4d2b8c689f. The
+   original evaluator artifact — preserved untracked in the evaluator's own
+   detached worktree (vict-02-u2-iteration2-review, exact candidate a82ca8e) —
+   hashes to exactly A9E855… and ends with a CRLF-terminated final blank line;
+   the import into codex/ui-foundation-u2 normalized that one trailing CRLF to
+   LF (root `.gitattributes` `* text=auto eol=lf`). Content is byte-identical
+   modulo that single trailing CR; verdict and every reported observation are
+   unchanged. The in-tree file is restored to the evaluator's original bytes
+   and docs/ui-foundation/u2-ux/.gitattributes now covers
+   independent-review/iteration2-candidate/** (the same protection the n1
+   evidence directories already had), so the recorded checksum verifies in-tree
+   from this candidate onward. Historical commits keep the normalized copy and
+   are not rewritten. All other recorded report checksums verify byte-exact
+   in-tree: ROUND-1 B99907F9…, ROUND-2 6ABBD9F0…, n1-candidate CEF99725…,
+   n1-recheck 1717C185….
+
+These records do not close U2: owner experience acceptance, the fresh
+independent verdict on the exact combined candidate, and U2 closure remain
+pending.

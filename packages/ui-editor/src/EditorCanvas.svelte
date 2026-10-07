@@ -15,6 +15,7 @@
     type UiDocument,
     type UiExtensionDescriptor,
     type UiLocalStateDecl,
+    type UiRenderPlan,
   } from '@victframework/ui';
 
   interface Props {

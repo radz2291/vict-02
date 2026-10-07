@@ -9,7 +9,16 @@ examples/application-proof/
 examples/reference-app/build/
 examples/ui-showcase/build/
 examples/ui-authoring-proof/build/
+examples/ui-design-proof/build/
 
 qa-artifacts/
 apps/studio/build/
 apps/studio/.svelte-kit
+
+# Imported evaluator/builder evidence under docs/ui-foundation/u2-ux/ is
+# retained verbatim (reports, harnesses, journeys); several recorded evidence
+# checksums depend on the exact bytes, so formatting must not rewrite or flag
+# them. Prose records (*.md) are already ignored above.
+docs/ui-foundation/u2-ux/independent-review/
+docs/ui-foundation/u2-ux/iteration-2/
+docs/ui-foundation/u2-ux/n1-followup/
