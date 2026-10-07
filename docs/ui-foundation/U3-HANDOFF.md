@@ -1,13 +1,20 @@
 # U3 handoff — product realism and durable replacement
 
-**Status: IMPLEMENTED — INDEPENDENT VERIFICATION IS THE NEXT GATE (owner
-authorization 2026-10-07; U3 only).** The owner authorized U3 — product realism
-and durable replacement (frozen STAGES §5, U3-01…U3-08) through implementation,
-independent verification, bounded repairs, and the founder checkpoint. U4
-remains unauthorized. Implementation record: [U3-COVERAGE](U3-COVERAGE.md)
+**Status: CLOSED — PASS WITH NON-BLOCKING FINDINGS (2026-10-07).** The owner
+authorized U3 — product realism and durable replacement (frozen STAGES §5,
+U3-01…U3-08) through implementation, independent verification, bounded
+repairs, and the founder checkpoint. All of that happened: implementation
+`cbb3fb6…` (manager gate PASS WNF, [U3-VERIFY-01](reviews/u3/U3-VERIFY-01.md)),
+reviewed experience repair integrated by fast-forward, combined candidate
+`952d92d…` verified PASS WNF ([U3-COMBINED-VERIFY-01](reviews/u3/U3-COMBINED-VERIFY-01.md)),
+owner feedback recorded ([OWNER-FEEDBACK-01](reviews/u3/OWNER-FEEDBACK-01.md)).
+Final U3 records: `16df3bf…` on `codex/ui-foundation-u3`. Closure details,
+retained findings and owners: the "Integration, combined verification and
+closure" section at the end of this document. **U4 is NOT authorized** by
+this closure; the U4 handoff, when prepared, is documentation only.
+Implementation record: [U3-COVERAGE](U3-COVERAGE.md)
 (scenario matrix + truthful implementation modes), [U3-PERFORMANCE](U3-PERFORMANCE.json),
-[U3-WALKTHROUGH](U3-WALKTHROUGH.md); founder checkpoint prepared at the
-verified candidate.
+[U3-WALKTHROUGH](U3-WALKTHROUGH.md).
 
 Entry references (corrected at authorization — the originally prepared handoff
 named `1fe5383…`; the completed U2 closure records are the actual entry):
