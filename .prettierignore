@@ -22,3 +22,7 @@ apps/studio/.svelte-kit
 docs/ui-foundation/u2-ux/independent-review/
 docs/ui-foundation/u2-ux/iteration-2/
 docs/ui-foundation/u2-ux/n1-followup/
+
+# The imported combined-candidate verifier harnesses/journeys are verbatim
+# evidence (see reviews/u2/); formatting must not rewrite or flag them.
+docs/ui-foundation/reviews/u2/combined-verify-evidence/

@@ -106,3 +106,43 @@ svelte-check 0/2 known; renderer 125/125; unit 70/70; design 12/12; integration
 refreshed (outline now visible). Fresh independent re-verification of the exact
 repaired candidate is the next gate; the combined candidate verdict remains
 FAIL-then-pending until that re-verification returns.
+
+## Round 3 — independent re-verification verdict (final combined verdict)
+
+Fresh independent re-verification at exact pushed candidate
+`471952bb5e9810ec30e370658f812cf9ae6a4eca`: **PASS WITH NON-BLOCKING
+FINDINGS**. Report imported verbatim:
+[U2-COMBINED-VERIFY-05.md](U2-COMBINED-VERIFY-05.md) (sha256
+6ac54af9eb4ff29c8732ab3de282803448a6afa55b3ba269af6b4ece1bf3ec0d). Round-1
+FAIL at `2a1ab4c0` stands preserved in U2-COMBINED-VERIFY-04.md.
+
+- Delta boundedness verified (72 files, exactly the claimed scope); the
+  round-1 report import confirmed byte-identical both ways (sha256
+  4f432023…); 5/5 evidence spot-checks byte-identical.
+- F-1/E6 outline: PASS 14/14 (solid outline on the exact selected occurrence
+  after mouse AND keyboard selection, exactly one marked element, moves and
+  clears correctly). F-2/E8: PASS 10/10 (Text size first screen at 390×844 —
+  y≈682 vs 3499 in round 1; no horizontal overflow; honest annotations).
+- Regression journeys E1–E5/E7: PASS with identical values to round 1; zero
+  page exceptions across all 8 journeys. Automated battery independently
+  reproduced: renderer 125/125, unit 70/70, integration 4/4, design 12/12,
+  root typecheck 0, check:ui 0/2, broad svelte-check 0/2, design tsc 0,
+  production build pass.
+- Carried non-blocking findings: **NF-1** — root `format:check` failed at the
+  pushed round-2 candidate on the 40 imported verifier evidence files; the
+  round-2 record's "format clean" line was true of the pre-import working
+  tree and is amended here. Fixed by a records-only `.prettierignore` scope
+  for `docs/ui-foundation/reviews/u2/combined-verify-evidence/` (evidence
+  bytes untouched; `format:check` now clean at the follow-up records commit).
+  **NF-2** — favicon.png 404 console noise (verifier falsified it as
+  pre-existing by probing both SHAs). **F-3** — ui-editor workspace build
+  TS2307 (pre-existing; nothing consumes the dist; not a claimed gate).
+  **F-4** — Inspector scope persists across selection changes (badge always
+  names the active destination). NOT DEMONSTRATED (carried honestly): literal
+  browser-process restart; owner/founder experience acceptance.
+
+**Combined candidate verdict: PASS WITH NON-BLOCKING FINDINGS at
+`471952bb5e9810ec30e370658f812cf9ae6a4eca`** (with the records-only NF-1
+follow-up commit on top). Owner experience acceptance and U2 closure remain
+PENDING; this verdict does not authorize U3/U4, apps/studio changes, merge to
+main, publication or deployment.

@@ -1,6 +1,55 @@
 # UI foundation — current state
 
-**2026-10-06 (latest) — U2 IMPLEMENTATION COMPLETE; independent technical gate PASS (after one repair round); independent experience re-verification PASS WITH FINDINGS; records final; awaiting the FOUNDER checkpoint — owner experience acceptance PENDING.**
+**2026-10-07 — U2 INSPECTOR/LAYERS UX INTEGRATED; combined candidate
+independently verified PASS WITH NON-BLOCKING FINDINGS at
+`471952bb5e9810ec30e370658f812cf9ae6a4eca` (after one bounded repair round);
+awaiting the FOUNDER checkpoint — owner experience acceptance PENDING.**
+
+The owner-authorized Inspector/Layers UX track (Codex, branch
+`codex/ui-foundation-u2-inspector-ux`, final records `f31477d8…`, independently
+tested implementation `1bd745a0…`) is integrated into `codex/ui-foundation-u2`
+with lineage preserved: merge `1a61389…` has parents exactly `e0893fe…` (U2
+manager track) × `f31477d…` (UX tip). Integration + manager-owned repairs at
+`2a1ab4c0…`; fresh independent verification there returned **FAIL** (one
+blocking finding — the canvas selection outline was silently inert, a Svelte
+expression inside a markup style element, never interpolated, byte-identical
+since U1-era `7f49cd0` and never previously tested; report preserved as
+[U2-COMBINED-VERIFY-04](reviews/u2/U2-COMBINED-VERIFY-04.md), sha256
+`4f432023…`). Bounded repairs (outline via `data-ui-selected` + static CSS,
+regression-pinned; workbench ≤860px layout bounds the canvas so the Inspector
+is in the first screen at 390×844) at `471952b…`: fresh independent
+re-verification returned **PASS WITH NON-BLOCKING FINDINGS**
+([U2-COMBINED-VERIFY-05](reviews/u2/U2-COMBINED-VERIFY-05.md), sha256
+`6ac54af9…`) — repairs confirmed (outline 14/14; first screen 10/10), all
+eight demonstrations pass with zero page exceptions, every automated number
+reproduced (renderer 125/125, unit 70/70, integration 4/4, design 12/12, root
+typecheck 0, check:ui 0/2, broad design-proof Svelte check 0 errors / 2 known
+warnings, design tsc 0, production build pass, format clean at the records
+commit). Carried non-blocking findings: NF-1 format:check evidence scope
+(fixed records-only), NF-2 favicon 404 noise (pre-existing), F3 ui-editor
+workspace build TS2307 (pre-existing, nothing consumes the dist), F4 Inspector
+scope persistence sharp edge. The reusable Inspector/Layers modules are now
+the workbench's editing UI (friendly labels, document/scope-driven Layers,
+bridge-synchronized selection, live effective-value measurements, visible
+Reset, linked spacing, search + keyboard Layers); the dedicated /editor-review
+route remains as supporting evidence. The broad Svelte check that previous
+rounds reported as 23 errors in manager-owned files is now **0 errors / 2
+known warnings** (manager requests executed; no suppressions). The historical
+checksum reconciliation is recorded (ITERATION-2-REVIEW.md: recorded A9E855… =
+the evaluator's original artifact, restored in-tree byte-exact with scoped
+newline protection; the earlier committed copy differed by exactly one
+import-time trailing-CR normalization — content and verdict unchanged).
+
+**Next: the FOUNDER walks the updated U2 proofs ([U2-WALKTHROUGH](U2-WALKTHROUGH.md),
+~10 min, plain language). Owner experience acceptance is PENDING — independent
+verdicts are necessary, not sufficient.** U3/U4 remain unauthorized.
+
+---
+
+**2026-10-06 (superseded by the integration record above) — U2 IMPLEMENTATION
+COMPLETE; independent technical gate PASS (after one repair round);
+independent experience re-verification PASS WITH FINDINGS; records final;
+awaiting the FOUNDER checkpoint — owner experience acceptance PENDING.****
 
 U2 (designer and workbench breadth, STAGES §4 U2-01…U2-08) is implemented and
 independently verified on branch `codex/ui-foundation-u2`:
@@ -108,7 +157,7 @@ for U1: COMPLETE — owner accepted U1 at the verified candidate and authorized 
 of this file).**
 
 | U1 rendering/editing loop | **ACCEPTED by owner 2026-10-06** (handoff [U1-HANDOFF](U1-HANDOFF.md)) | Accepted candidate `345b5c62…`; verdict "U1-ROUND4 GATE: PASS" ([U1-ROUND4-REVIEW-05](reviews/U1-ROUND4-REVIEW-05.md)); NF-1..3 non-blocking notes retained with U2 | Closed at U2 start; U3 unauthorized |
-| U2 designer/workbench breadth | **IMPLEMENTED + INDEPENDENTLY VERIFIED — founder checkpoint pending** (handoff [U2-HANDOFF](U2-HANDOFF.md)) | Verified code candidate `19bb4b9…` (round-1 `ebac7bf…` FAILED both reviews — preserved); "U2-RECHECK: PASS WITH FINDINGS" + "U2-EXPERIENCE-RECHECK: PASS WITH FINDINGS" (reports in `reviews/u2/`); performance within all frozen budgets; N1/N2 non-blocking + notes | **Founder walks [U2-WALKTHROUGH](U2-WALKTHROUGH.md)** → owner experience acceptance; U3/U4 unauthorized |
+| U2 designer/workbench breadth + Inspector/Layers UX | **INTEGRATED + INDEPENDENTLY VERIFIED (PASS WITH NON-BLOCKING FINDINGS at `471952b…`) — founder checkpoint pending** (handoff [U2-HANDOFF](U2-HANDOFF.md), integration record [U2-UX-INTEGRATION-01](reviews/u2/U2-UX-INTEGRATION-01.md)) | Combined candidate lineage `e0893fe… × f31477d… → 1a61389… → 2a1ab4c… → 471952b…`; round-1 FAIL at `2a1ab4c0…` preserved ([U2-COMBINED-VERIFY-04](reviews/u2/U2-COMBINED-VERIFY-04.md)); final "PASS WITH NON-BLOCKING FINDINGS" ([U2-COMBINED-VERIFY-05](reviews/u2/U2-COMBINED-VERIFY-05.md)); earlier U2 candidates `19bb4b9…`/`83ba87f…` and UX rounds (ROUND-1 FAIL, ROUND-2, iteration-2, n1-candidate FAIL, n1-recheck PASS) all preserved; broad Svelte check now 0 errors / 2 known warnings; N1/N2 notes retained | **Founder walks [U2-WALKTHROUGH](U2-WALKTHROUGH.md)** → owner experience acceptance; U3/U4 unauthorized |
 Fresh independent verification of candidate `c1e3d0fec930a2a11341181061d537f16ec065ab`
 ([U1-ROUND3-REVIEW-04.md](reviews/U1-ROUND3-REVIEW-04.md), sha256
 `fd151713aa4345eb0653c648eace64eeb4a774cc8a796d0f74c760bd082cd12b`; 11 evidence screenshots;

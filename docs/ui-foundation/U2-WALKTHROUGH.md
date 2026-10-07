@@ -85,3 +85,41 @@ views — this walkthrough never needs them.
 Clarity, appearance, coherence and useful behavior. Technical correctness
 (contracts, identity, persistence, accessibility, performance) is proven
 separately by independent verification and is not part of this walkthrough.
+
+---
+
+# Integration addendum — the improved Inspector/Layers in the workbench (2026-10-07)
+
+The workbench now uses the redesigned reusable Inspector and Layers modules
+(the same ones demonstrated on `/editor-review`). Re-run section 2 and 3 of the
+walkthrough above with these upgrades — expected results have changed for the
+better:
+
+1. Click the big **Northwind Atelier** headline. _Expect: a solid blue outline
+   appears around the selected element on the canvas (this outline was broken
+   and is newly repaired); the Inspector names it in plain language
+   ("Page heading") with a breadcrumb trail, and advanced identifiers stay
+   behind "Advanced"._
+2. Open the **Style** tab. _Expect: grouped, labelled controls starting with
+   **Text size** (a number + unit selector), Text color with a picker and
+   Opacity, Font family, Weight — each with a small **Reset** button and a
+   "Preview ⓘ" disclosure that shows **Browser now** (the real measured value
+   next to the authored one). Change Text size to `61`: the heading really
+   changes, and Browser now says 61px._
+3. Click a **service card**, open **Style → Fill & border → Background**. 
+   _Expect: "Shared · 5 authored instances" — an **Edits apply to** selector.
+   Pick a blue: every card changes except the Adaptations card, which keeps
+   its own soft-green override. Switch to **This instance · component
+   wrapper** and pick pink: only that card changes. Click the pink control's
+   **Reset**: the pink override is removed, the card reveals the next
+   applicable value, and one Undo brings pink back._
+4. Open **Size & spacing**, click **Link sides** on Padding, and type `29`
+   into one field. _Expect: all four sides become 29px together, and a single
+   Undo returns all four at once._
+5. In **Layers**, type `Bathrooms` in the search field. _Expect: matching rows
+   with their ancestors; click the exact "Bathrooms card" row (or use
+   ArrowDown + Enter): the canvas outline and the Inspector follow that exact
+   card. Escape clears the search and the full tree returns._
+6. At phone size (or the 390 preview), the Inspector with the Text size
+   control is now reachable within the first screen; the page preview scrolls
+   inside its own panel.
