@@ -172,10 +172,10 @@ shape (id, revision, `props: UiPropDecl[]`, `rendererImplementationId`,
 
   Outputs are granted only by the typed `outputs` field.
 - **The compatibility gate rides `events` — chosen from verified legacy
-  behavior.** The one fail-closed descriptor check the current renderer
-  performs — verified on the exact `952d92d…` bytes and reproduced at
-  resolver level (§4.3 probe) — is: a descriptor declaring any `events`
-  or `slots` entry is rejected with
+  behavior.** The one fail-closed descriptor interface-field gate the
+  current renderer performs — verified on the exact `952d92d…` bytes and
+  reproduced at resolver level (§4.3 probe) — is: a descriptor declaring
+  any `events` or `slots` entry is rejected with
   `UI_RENDER_EXTENSION_INTERFACE_UNSUPPORTED`. Fields a legacy resolver
   does not read (`abi`, `outputs`) are silently ignored: the probe's
   counterexample case shows an output-wired descriptor being ACCEPTED.
@@ -190,9 +190,10 @@ shape (id, revision, `props: UiPropDecl[]`, `rendererImplementationId`,
 
   The marker entry is a capability declaration, not a DOM event:
   component-ABI-aware compilers and renderers treat it as the ABI marker
-  and never wire it as an event listener. Every legacy consumer rejects
-  such a descriptor outright with its own existing diagnostic (probe
-  case C2) — an output-wired instance can never present an apparently
+  and never wire it as an event listener. This repo's legacy consumer of
+  descriptor `events`/`slots` — the probed resolver — rejects such a
+  descriptor outright with its existing diagnostic (probe case C2) — an
+  output-wired instance can never present an apparently
   functional control while its authored wiring is silently dropped.
   Descriptors without the marker keep today's exact behavior: untyped
   non-marker events keep failing closed

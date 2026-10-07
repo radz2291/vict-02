@@ -125,7 +125,8 @@
           }
         }
       },
-      "expectedCodes": ["UI_DOC_UNKNOWN_COMPONENT"]
+      "expectedCodes": ["UI_DOC_UNKNOWN_COMPONENT"],
+      "note": "descriptor-instance undeclared slot fill: UI_DOC_UNKNOWN_COMPONENT is compile-RAISED BY THE AMENDMENT for this case (today such fills are silently dropped - amendment 3.7/5.1); the code exists today only as the validate-deferred code for stored definitions"
     },
     {
       "case": "unknown action id in an output binding",

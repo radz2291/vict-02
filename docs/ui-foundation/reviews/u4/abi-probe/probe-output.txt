@@ -1,16 +1,16 @@
-PASS  C1 original fixture descriptor (abi+outputs, no events/slots)
-      expected: ok:true  (ACCEPTED — the defect this repair closes)
-      got:      ok:true  ACCEPTED
-PASS  C2 same descriptor + events:["vict.ui-component-abi@1"]
-      expected: ok:false UI_RENDER_EXTENSION_INTERFACE_UNSUPPORTED (legacy rejection gate)
+PASS  C1 original counterexample (abi+outputs, no events/slots)
+      expected: ok:true ACCEPTED
+      got:      ok:true ACCEPTED
+PASS  C2 same descriptor + events marker
+      expected: ok:false UI_RENDER_EXTENSION_INTERFACE_UNSUPPORTED
       got:      ok:false UI_RENDER_EXTENSION_INTERFACE_UNSUPPORTED
-PASS  C3 legacy props-only descriptor (no events/slots/abi/outputs)
-      expected: ok:true  (unchanged legacy behavior preserved)
-      got:      ok:true  ACCEPTED
-PASS  C4 legacy descriptor declaring untyped event "change"
-      expected: ok:false UI_RENDER_EXTENSION_INTERFACE_UNSUPPORTED (existing fail-closed)
+PASS  C3 legacy props-only descriptor
+      expected: ok:true ACCEPTED
+      got:      ok:true ACCEPTED
+PASS  C4 legacy untyped-event descriptor
+      expected: ok:false UI_RENDER_EXTENSION_INTERFACE_UNSUPPORTED
       got:      ok:false UI_RENDER_EXTENSION_INTERFACE_UNSUPPORTED
-PASS  C5 fixture descriptor, no implementation registered
+PASS  C5 no implementation registered
       expected: ok:false UI_RENDER_EXTENSION_UNAVAILABLE
       got:      ok:false UI_RENDER_EXTENSION_UNAVAILABLE
 
