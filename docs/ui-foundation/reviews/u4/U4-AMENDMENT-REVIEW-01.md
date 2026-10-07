@@ -116,3 +116,58 @@ Feasible overall, with named caveats:
 The amendment is well-grounded overall: ten of eleven source-claim groups verified exactly (A1–A10), the compatibility matrix is honest, the failure model is mostly complete, the fixtures match the real document/expression/descriptor shapes, the four proofs are feasible against real components, and the handoff/prompt pair is consistent with the anti-downgrade rule. One blocker prevents freeze: the identity/revision-pin mechanism — the safety backbone the ABI gate, stale-drop, and version semantics all depend on — is (a) attributed to machinery the source shows does not exist on the extension path and (b) specified such that an implementer following §3.3+§4.1 literally ships a circular self-echo pin. This is repairable with bounded design edits (as this handoff's own review history demonstrates), but at these exact bytes it is not freeze-ready.
 
 U4 AMENDMENT REVIEW: FAIL
+
+## Round 2 (affected recheck)
+
+Scope: affected surfaces only, per assignment. Repair candidate: `d84035aa19ba8247c57f62eb28ededcbeb9a98d8` on `codex/ui-foundation-u4-component-amendment` (worktree clean; `git rev-parse HEAD` verified; delta `9c31fae..d84035a` = 9 files, +390/−78, docs/fixtures/attributes + the imported round-1 report — no source changes). Same reviewer, still read-only: `git status` clean after all checks; no repo file modified.
+
+### 1. B-1 (blocker) — RESOLVED
+
+- `grep "already used by extensions"` and the "Already-supported… `revision` pinning" phrasing: **gone** (grep exit 1). §3.1 now carries an explicit "**Not unchanged — built by this amendment** (verified absent on the extension path today)" block whose description matches the source exactly: extension branch emits `extension.revision` and never reads `node.revision` (compile.ts:438/444), the only honored node pin is the stored-definition branch (compile.ts:516), and the descriptor map is id-keyed last-registration-wins (compile.ts:241) — all verified in round 1.
+- The compile delta is now specified: compiled `extension` instruction carries the **effective revision** (`node.revision` pin, else registered-current at compile time); descriptor resolves by `(id, effective revision)` fail-closed; zero matches → `UI_COMPONENT_REVISION_UNRESOLVED` (compile, error); >1 match → `UI_COMPONENT_UNAVAILABLE` at render, explicitly anchored to the render-side discipline `resolveSvelteExtension` already implements (extensions.ts id+revision filter, ≠1 fails closed) — consistent with compile.ts as found. With the instruction revision no longer descriptor-echoed, the render check is genuinely non-circular.
+- render-failures.json carries the assigned pin falsifier: node pinned `'7'` vs registered `'1'` → `UI_COMPONENT_REVISION_UNRESOLVED`, with the explicit negative "the id-keyed last-wins descriptor map must not silently resolve the un-pinned revision".
+- §4.2 is unchanged and now honest via cross-reference: its byte-level claims (re-pinning changes canonical bytes) were always true; the mechanism they depend on is now specified as built (§3.1/§4.1), not misattributed. The remaining five "already/existing" usages in the amendment (lines 103/197/218/379/418/578) were each verified true in round 1 (deferred resolution, component-instruction fields, instance-scope slot compiles, composition semantics, render-side matching, AppShell matchMedia).
+
+### 2. M-1 / M-4 / M-5 — RESOLVED
+
+- §3.4/§3.7 undeclared-slot wording is now honest: rejection attributed to stored definitions as existing and to descriptor instances as **built by this amendment** ("today such fills are silently dropped") — matches source (validator `break` at validate.ts:515–521; compile extension branch never reads `node.slots`).
+- §5.1 gains the missing rows: `UI_EXPR_TYPE_MISMATCH` (validate for stored defs / compile for descriptor instances — literal **and reference source** typing against `propDecls`), `UI_COMPONENT_REVISION_UNRESOLVED`, `UI_DOC_UNKNOWN_PRODUCT_REFERENCE` (existing code, extended scope to output bindings), the array-reference rule with codes (`UI_COMPONENT_BINDING_INCOMPATIBLE` / `UI_EXPR_TYPE_MISMATCH`), and the declared element-untyped `'array'` limit. §3.2 no longer promises an unspecified "new validator rule" — it now points at the specified, to-be-built diagnostics.
+- M-5's asymmetry is closed: reference source typing is specified (boolean prop vs number state key now diagnosable), and invalid-cases case 2 pins it.
+
+### 3. M-2 / M-3 — RESOLVED
+
+- invalid-cases case 2: dual codes `["UI_EXPR_TYPE_MISMATCH","UI_COMPONENT_BINDING_INCOMPATIBLE"]` with an accurate explanatory note. Case 3: rewritten to a real literal mismatch (boolean literal against the descriptor's `string` `label` decl) — the malformed `{type:'boolean', value:…}` shape is gone, and its expected `UI_EXPR_TYPE_MISMATCH` is justified by the specified descriptor-prop compile rule. Case 6: now `UI_DOC_UNKNOWN_PRODUCT_REFERENCE` with a note citing the existing interaction check. All seven fixture files parse as valid JSON (`node -e JSON.parse` on each: OK).
+
+### 4. M-6 — RESOLVED
+
+`UiSvelteComponentImplementation` is declared in full: identity triple + `abi: 'vict.ui-component-abi@1'` + `slots: readonly string[]` capability + `component`. render-failures cases now use the declared shapes: the ABI-mismatch implementation registration carries `slots: ["body"]`, and the slot-unavailable case replaces the ad-hoc `rendersSlots: false` with `slots: []`.
+
+### 5. M-7 — RESOLVED
+
+Handoff §6 negatives now include `$output` scope leak (`UI_COMPONENT_OUTPUT_PAYLOAD_INVALID`), `UI_COMPONENT_SLOT_REQUIRED`, and `UI_COMPONENT_REVISION_UNRESOLVED`; §12.2(5) enumerates wrong-typed prop literal, `$output` scope leak, required slot unfilled, unresolvable revision pin alongside the prior set. (Residual, non-blocking: the §5.1 reference-source-typing negative is not named verbatim in §6/§12.2 — §5.1 remains the authoritative failure model; acceptable.)
+
+### 6. M-8 — RESOLVED
+
+§3.5 names the mechanism: the application compiler derives the action-input catalog from declared action contracts (existing `inputContractId` + contracts registry — verified in round 1 at sdk/application.ts:661+ and the application compile input) as a new additive compile catalog input; no application-schema change. README annotates the fixture `applicationInputs.actionInputs` shorthand as illustration of the derived shape, and adds the honest convention that codes marked "compile, built by the amendment" exist at contract level only.
+
+### 7. I-1..I-4 and new-claim scan
+
+- I-1: amendment §6 Button row and design §1.1 now state the wrapper adapts the `ActionButton.svelte` pending pattern and that `Button.svelte` has no `loading` prop today — true (round-1 evidence).
+- I-2: element-untyped `'array'` limit now declared in §5.1 prose. I-3: §3.4 adds an Ordering paragraph (emission order, no cross-occurrence guarantee, no co-scheduling with prop re-evaluation). I-4: §4.3 now states the application package expectation ("existing `components`/`uiExtensions` compile inputs… no change anticipated; a discovered need is a recorded scope decision, not a silent expansion").
+- Design also adds the Dialog honesty note (controlled open is wrapper-added on bits-ui `Dialog.Root`; today's `Overlay.svelte` is trigger-driven — matches round-1 source findings). Reuse-matrix §5 gains honest C-rows for the pin rule, descriptor-prop checking, undeclared-slot rejection, and the derived action-input catalog.
+- New-attribution scan over the whole diff: every new "already/existing/today" statement (§3.1 absence claims, §3.3 silent-drop claim, §3.4 Button/Overlay notes, §3.5 interaction-check + inputContractId/registry, §4.1 render-side discipline, §4.3 compile inputs, README existing-code note, render-failures last-wins note) was re-verified against source as found in round 1 — **no new unsupported claim found**.
+
+### 8. Imported report byte-identity — CONFIRMED
+
+`sha256(docs/ui-foundation/reviews/u4/U4-AMENDMENT-REVIEW-01.md)` = `9ce2267c55e3382f0865dec099b236836512c32858b2912ad10560471e83b933`, identical to the assigned value and byte-identical to this file's pre-append content; `U4-AMENDMENT-REVIEW-01.md -text` attribute present.
+
+### New round-2 observations (non-blocking)
+
+- **N-1 (spec sharpening, non-blocking):** `UI_COMPONENT_SLOT_REQUIRED` applicability is loose — descriptor `slots` is `readonly string[]` with no required marker, so the code can only fire for stored definitions (where the equivalent today exists as `UI_DOC_REQUIRED_SLOT_MISSING`, validate.ts:590–607). Pre-existing from round 1 (not flagged then; no source misattribution — the row is a to-build rule). Recommend pinning applicability at freeze editing (descriptor slots all-optional, or extend the descriptor slot declaration with a required flag).
+- **N-2 (minor, non-blocking housekeeping):** `reviews/u4/.gitattributes` **replaced** the `U4-HANDOFF-REVIEW-01.md -text` line instead of adding alongside it (`git check-attr`: old report now `text: auto`). The historical report's committed bytes are intact and the tree is clean (no pending renormalization), but the handoff §11 "bytes-preserved via scoped .gitattributes" posture no longer covers that delivered report if it is ever rewritten under a CRLF-converting config. One-line restore recommended at freeze editing.
+
+### Verdict
+
+All eight assigned items verified repaired against the pinned candidate `d84035a`; the B-1 compile delta is specified consistently with the source as found; no new unsupported claim introduced. Two new non-blocking observations (N-1, N-2) recorded for the freeze-editing pass.
+
+U4 AMENDMENT REVIEW ROUND 2: PASS WITH NON-BLOCKING FINDINGS

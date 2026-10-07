@@ -182,7 +182,9 @@ author-time); implementation emitting an undeclared or wrong-typed output
 (dropped by the bridge, `UI_COMPONENT_OUTPUT_REJECTED`); `$output` used
 outside an output-binding scope (`UI_COMPONENT_OUTPUT_PAYLOAD_INVALID`,
 author-time); declared required slot left unfilled
-(`UI_COMPONENT_SLOT_REQUIRED`, author-time); instance revision pin matching
+(`UI_COMPONENT_SLOT_REQUIRED` — compile-side for stored definitions,
+render-side for descriptor instances via the implementation contract);
+instance revision pin matching
 no registered revision (`UI_COMPONENT_REVISION_UNRESOLVED`, author-time);
 stale emit after
 document replacement (dropped, `UI_COMPONENT_OUTPUT_STALE`); extension

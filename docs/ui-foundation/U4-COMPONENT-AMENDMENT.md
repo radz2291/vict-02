@@ -240,6 +240,11 @@ export interface UiSvelteComponentImplementation {
   /** Descriptor slot names this implementation can render (capability).
    *  A declared+filled slot outside this set is `UI_COMPONENT_SLOT_UNAVAILABLE`. */
   readonly slots: readonly string[];
+  /** Subset of `slots` the implementation contract requires to be filled.
+   *  An unfilled required slot is `UI_COMPONENT_SLOT_REQUIRED` (render-side
+   *  for descriptor instances; compile-side for stored definitions, where
+   *  requiredness is declared in the definition's slot record). */
+  readonly required?: readonly string[];
   readonly component: Component<UiSvelteComponentProps>;
 }
 ```
@@ -393,9 +398,11 @@ Slot declaration on descriptors reuses the existing additive optional
 `slots?: readonly string[]` field of `UiExtensionDescriptor`; the renderer
 currently fail-closes on it (`UI_RENDER_EXTENSION_INTERFACE_UNSUPPORTED`)
 and this amendment upgrades exactly that path to deliver instance-scope
-snippets (Section 3.4), keeping required/optional semantics: a declared
-required slot left unfilled is a compile diagnostic
-(`UI_COMPONENT_SLOT_REQUIRED`); an undeclared slot fill is rejected — for
+snippets (Section 3.4), keeping required/optional semantics: a required
+slot left unfilled is `UI_COMPONENT_SLOT_REQUIRED` — compile-side for
+stored definitions (existing requiredness semantics), render-side for
+descriptor instances via the implementation's `required` capability
+(§3.4, §5.1); an undeclared slot fill is rejected — for
 stored definitions this exists today (`UI_DOC_UNKNOWN_COMPONENT`,
 'declares no slot'), and the amendment builds the same rejection for
 descriptor-backed instances at compile (same code, compile-raised; today
@@ -502,7 +509,7 @@ closes).
 | `UI_COMPONENT_OUTPUT_PAYLOAD_INVALID` | validate/compile | error | bound `$output` used at mismatched type; payload expression type ≠ declared payload |
 | `UI_COMPONENT_BINDING_INCOMPATIBLE` | validate/compile | error | target state key missing or declared type ≠ payload type; action input shape/type mismatch (against the derived action-input catalog, §3.5); `setState` value expression not type-compatible with the state key; array-typed prop bound to a non-reference or non-array-typed expression |
 | `UI_EXPR_TYPE_MISMATCH` | validate (stored defs) / compile (descriptor instances — built by this amendment) | error | literal prop value type ≠ `propDecl.type`; reference prop value resolving to a typed source (state key / view field) whose type ≠ `propDecl.type` |
-| `UI_COMPONENT_SLOT_REQUIRED` | compile | error | declared required slot unfilled |
+| `UI_COMPONENT_SLOT_REQUIRED` | compile (stored definitions — existing requiredness semantics) / render (descriptor instances — the implementation's `required` capability, §3.4) | error | a required slot has no fill. The descriptor `slots` field is a plain name list and carries no requiredness marker; descriptor-instance requiredness lives in the implementation contract |
 | `UI_COMPONENT_REVISION_UNRESOLVED` | compile | error | instance revision pin matches no registered descriptor revision (§4.1) |
 | `UI_DOC_UNKNOWN_COMPONENT` | validate (deferred) / compile | error (when unresolved) | definitionId matches neither stored definitions nor registered descriptors (existing behavior preserved); also compile-raised for undeclared slot fills on descriptor instances (§3.7) |
 | `UI_DOC_UNKNOWN_PRODUCT_REFERENCE` | validate / compile | error | action id in an output binding absent from the declared `actionIds` catalog (existing code, extended scope) |
