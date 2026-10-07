@@ -693,6 +693,38 @@ nothing by itself: [U3-HANDOFF](U3-HANDOFF.md) is PREPARED — IMPLEMENTATION NO
 U4, `apps/studio`, Stage 9, merge-to-main, force-push, publication and deployment remain
 unauthorized.
 
+## U3 authorization and startup (2026-10-07)
+
+The owner AUTHORIZED **U3 ONLY** — product realism and durable replacement (frozen
+STAGES §5, U3-01…U3-08): the complete inspection journey with the rejection → correction
+→ resubmission loop; the eight-scenario matrix with deterministic resets, coherent
+seed/cache reset, capability snapshots, in-flight fencing and truthful per-operation
+implementation modes; runtime permissions/validation/stale-and-replayed-decision checks at
+the adapter boundary; one durable local replacement (scenario 1's `inspection.approve`)
+through the existing `ApplicationDataAdapter`/capability-dispatch boundaries with unchanged
+action identity, compatible contracts and UI source/binding digests, plus real process
+restart evidence and shared adapter conformance; and a founder walkthrough. U4, `apps/studio`,
+Stage 9, merge-to-main, force-push, publication, deployment and external production services
+remain unauthorized. Scope corrections recorded at startup:
+
+1. **Entry reference corrected:** the prepared handoff named `1fe5383…`; the actual U2
+   final closure records are `a8379110e378357c3732fd051a3f327d897a018c` (remote-verified),
+   which the U3 branch/worktree was created from. Verified `codex/ui-foundation-u3` did
+   not exist (local or remote) before creation — no concurrent work reconciled.
+2. **R2-1 carry-forward corrected:** the failed-save session desync was already repaired
+   and independently verified in U1 round 4 (F2 guard; "U1-ROUND4 GATE: PASS"). The
+   historical finding and the withdrawn round-2 commit-message claim remain preserved
+   above; U3-05 owns only INSPECTION-domain durability (scenario 1 approve), not the
+   authoring store (those are different persistence concerns).
+3. **Product host clarified:** `examples/ui-authoring-proof` is the frozen inspection
+   product host (queue/inspection-detail/studio already live there with the real in-memory
+   `InspectionDataAdapter`); the U3 journey completes THAT host. `examples/ui-design-proof`
+   remains the contrasting page/workbench proof — necessary maintenance only. The prepared
+   handoff's U3-01 row erroneously named the design proof as the journey host; corrected.
+
+New branch/worktree: `codex/ui-foundation-u3` at `C:/Users/RZ1/Desktop/RZ/vict-02-u3`
+(from `a8379110…`). Handoff: [U3-HANDOFF](U3-HANDOFF.md).
+
 ## Future evidence entry format
 
 Identity: repository, branch, full base/candidate/reviewer SHAs, environment and contract pins.

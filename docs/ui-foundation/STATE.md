@@ -1,8 +1,20 @@
 # UI foundation — current state
 
-**2026-10-07 — U2 CLOSED: PASS WITH NON-BLOCKING FINDINGS; owner acceptance
-RECORDED for the integrated Inspector. U3 handoff PREPARED — IMPLEMENTATION
-NOT AUTHORIZED.**
+**2026-10-07 — U3 AUTHORIZED AND IN PROGRESS (product realism and durable
+replacement; U3 only).** The owner authorized U3 on 2026-10-07
+([U3-HANDOFF](U3-HANDOFF.md), startup corrections recorded:
+[U3-authorization entry](DECISIONS-AND-EVIDENCE.md)). Work proceeds on
+`codex/ui-foundation-u3` from the U2 closure records `a8379110…`. Owner
+experience acceptance for U3 is **PENDING** until the founder checkpoint.
+
+U2 remains CLOSED as described below. U4, `apps/studio`, Stage 9, merge to
+main, publication and deployment remain unauthorized.
+
+---
+
+**2026-10-07 (superseded by the U3 authorization above) — U2 CLOSED: PASS
+WITH NON-BLOCKING FINDINGS; owner acceptance RECORDED for the integrated
+Inspector. U3 handoff PREPARED — IMPLEMENTATION NOT AUTHORIZED.**
 
 The owner approved the integrated Inspector/Layers workbench experience
 (exact scope in [U2-OWNER-ACCEPTANCE-01](reviews/u2/U2-OWNER-ACCEPTANCE-01.md):

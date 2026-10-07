@@ -1,8 +1,12 @@
 # U3 handoff — product realism and durable replacement
 
-**Status: PREPARED — IMPLEMENTATION NOT AUTHORIZED.** No work may start until
-the owner authorizes this handoff. Nothing here grants implementation, branch
-creation, or dependency installation authority.
+**Status: AUTHORIZED — IMPLEMENTATION IN PROGRESS (owner authorization 2026-10-07;
+U3 only).** The owner authorized U3 — product realism and durable replacement
+(frozen STAGES §5, U3-01…U3-08) through implementation, independent verification,
+bounded repairs, and the founder checkpoint. U4 remains unauthorized.
+
+Entry references (corrected at authorization — the originally prepared handoff
+named `1fe5383…`; the completed U2 closure records are the actual entry):
 
 ## Entry authority (verify live before starting)
 
@@ -12,9 +16,9 @@ any task, and stop/reconcile if any has moved:
 | Item | Value |
 | --- | --- |
 | Repository / remote | `radz2291/vict-02` |
-| Work branch (to be created at authorization) | `codex/ui-foundation-u3`, worktree `C:/Users/RZ1/Desktop/RZ/vict-02-u3` (must not exist before authorization; verify) |
-| Entry tip | `codex/ui-foundation-u2` at `1fe5383c085ef5c2a2289c54116c8762467c7257` (verify live via `git ls-remote`) |
-| U2 closure prerequisite (STAGES §5) | U2 CLOSED — PASS WITH NON-BLOCKING FINDINGS at implementation `471952bb5e9810ec30e370658f812cf9ae6a4eca`; acceptance/closure [reviews/u2/U2-OWNER-ACCEPTANCE-01](reviews/u2/U2-OWNER-ACCEPTANCE-01.md) |
+| Work branch | `codex/ui-foundation-u3`, worktree `C:/Users/RZ1/Desktop/RZ/vict-02-u3` (created at authorization from the entry tip; verified not to exist before) |
+| Entry tip | `codex/ui-foundation-u2` at `a8379110e378357c3732fd051a3f327d897a018c` (U2 final closure records; verified live via `git ls-remote`) |
+| U2 closure prerequisite (STAGES §5) | U2 CLOSED — PASS WITH NON-BLOCKING FINDINGS at implementation `471952bb5e9810ec30e370658f812cf9ae6a4eca`; acceptance/closure [reviews/u2/U2-OWNER-ACCEPTANCE-01](reviews/u2/U2-OWNER-ACCEPTANCE-01.md); records check [reviews/u2/U2-CLOSURE-CHECK-01](reviews/u2/U2-CLOSURE-CHECK-01.md) |
 | Frozen amended U0 contract | `9ec87f3e7eb8eb7793f972111258940aac635346` (frozen contract commit on `codex/ui-foundation-u0`; the branch tip has since moved to confirmation-only records commits `9734690…` with the frozen governing docs byte-identical — see [reviews/u2/U2-CLOSURE-CHECK-01](reviews/u2/U2-CLOSURE-CHECK-01.md); ancestor of the U1/U2 tracks) |
 | Freeze record | `ea47edd68e302dc5b6cacb2e43635d11781619ad` |
 | Main baseline (must remain untouched) | `4d2df037d8a82d36c60bf1bff16919650643ce22` |
@@ -35,7 +39,7 @@ backend feasibility or production readiness.
 
 | ID | Frozen criterion (STAGES §5) | Concrete work | Required evidence |
 | --- | --- | --- | --- |
-| U3-01 | Journey: Queue → evidence/findings → decision → status/activity/queue refresh | Build the complete inspection journey on the frozen inspection domain (PROOF-DESIGN §1: `inspection.submit/approve/reject/revise`, `finding.add`, `evidence.add` with their permission and revision rules), hosted in `examples/ui-design-proof` against the existing adapter/dispatch boundary. **Must include the full rejection loop:** reject (mandatory reason) → revise (assigned technician; record decision fields cleared, reason preserved in the activity trail) → resubmit → fresh decision against a new `expectedDomainRevision` | Real-browser journey (1440×900 / 1024×768 / 390×844): every transition observable; queue, detail, status and activity views refresh coherently; rejection reason quoted in history; no UI-only state bypass |
+| U3-01 | Journey: Queue → evidence/findings → decision → status/activity/queue refresh | Complete the inspection journey in the FROZEN INSPECTION PRODUCT HOST `examples/ui-authoring-proof` (queue, inspection detail, findings/evidence, submit, supervisor decision, refreshed status/activity/queue) on the frozen inspection domain (PROOF-DESIGN §1: `inspection.submit/approve/reject/revise`, `finding.add`, `evidence.add` with their permission and revision rules), using the canonical UI documents, the shared renderer, the exported tooling, and the existing adapter/dispatch boundaries. `examples/ui-design-proof` remains the contrasting page/workbench proof — necessary maintenance only, never a duplicate inspection product. **Must include the full rejection loop:** reject (mandatory reason) → revise (assigned technician; record decision fields cleared, reason preserved in the activity trail) → resubmit → fresh decision against a new `expectedDomainRevision` | Real-browser journey (1440×900 / 1024×768 / 390×844): every transition observable; queue, detail, status and activity views refresh coherently; rejection reason quoted in history; no UI-only state bypass |
 | U3-02 | Scenarios: normal/empty/long/latency/failure/denied/conflict/missing operation reproducibly reset | Implement the frozen eight-scenario matrix (PROOF-DESIGN §2) as declarative scenario coverage (`vict.ui-scenario@1`) through the existing `packages/ui-preview` session orchestration (API-SPEC §6.2) | Reproducible scenario runs (scripted, repeatable, deterministically seeded) with per-scenario expected observables exactly as the frozen matrix table states; reset returns to the seeded state each time |
 | U3-03 | Domain correctness: actor permissions, validation, domain revision and stale decision checked at runtime; no UI-only authorization | Enforce the frozen domain rules in the adapter/dispatch context, never in UI visibility: technician-vs-supervisor permissions; `submit` requires `draft`; `revise` requires `rejected` + assigned technician; `approve`/`reject` require `submitted` + `expectedDomainRevision`; stale/replayed decisions yield `DOMAIN_CONFLICT` / `DATA_IDEMPOTENT_REPLAY` with state unchanged | Runtime probes (not UI-driven) demonstrating each rule firing: denied actor, wrong-state transition, stale revision, replay; UI shows the resulting denial/conflict states honestly |
 | U3-04 | Scenario identity: cache/local-state/domain-seed reset coherent; capability snapshots and in-flight operations fenced | Coherent reset across every cache layer the workbench uses (design-store session keys, scenario/local domain state, domain seed); capability snapshots recorded per scenario; in-flight operations fenced on reset (late results discarded) | Reset-coherence probes (state before/during/after reset at each layer); latency-scenario fencing evidence (late approve after reset changes nothing); snapshot contents recorded |
@@ -58,8 +62,17 @@ merge to main; force-push; publication; deployment; U4 packaging work.
 
 ## Carried obligations entering U3
 
-- **R2-1 (MAJOR, record integrity):** in-memory example store failed-write
-  save-window desync — actual fix owned by the U3-05 slice (see above).
+- **R2-1 status correction (2026-10-07, at authorization).** The historical R2-1
+  finding and the withdrawn round-2 commit-message claim are PRESERVED in
+  [DECISIONS-AND-EVIDENCE](DECISIONS-AND-EVIDENCE.md). Current status: the
+  failed-save session desync was **already repaired and independently verified
+  in U1 round 4** (F2: `commitSave` refuses when the working session moved
+  since the stage; edits preserved; save-window lock; "U1-ROUND4 GATE: PASS",
+  17/17 attacks + 4/4 browser journeys). That finding concerned
+  **authoring-document persistence** (the studio's `EditorBridge` store save),
+  which is distinct from inspection-domain durability. **U3-05 owns only the
+  inspection-domain durable replacement** (scenario 1's approve); no
+  authoring-store repair is owed here.
 - **R2-2/R2-3:** scenario-note live-region role; benign dev-mode warning —
   U3 host polish.
 - **NF-2 (from U2):** favicon.png 404 console noise — U3 host polish; the U3
@@ -67,7 +80,7 @@ merge to main; force-push; publication; deployment; U4 packaging work.
 - **F4 (from U2):** Inspector scope persistence sharp edge — non-blocking;
   may be addressed only if it touches U3 surfaces, else remains recorded.
 - **NOT DEMONSTRATED carried from U2:** literal browser-process restart —
-  U3-05 makes real restart evidence a requirement.
+  U3-05 makes real restart evidence a mandatory requirement.
 - **Explicitly deferred to U4 (not a U3 obligation):** the
   `@victframework/ui-editor` workspace dist build failure (TS2307 ×4,
   pre-existing). It must be resolved before any U4 built-artifact reuse claim
