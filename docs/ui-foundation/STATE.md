@@ -1,8 +1,12 @@
 # UI foundation — current state
 
-**2026-10-07 — U3 IMPLEMENTED AND INDEPENDENTLY VERIFIED: "U3 GATE: PASS
-WITH NON-BLOCKING FINDINGS" at `cbb3fb6…`; founder checkpoint NEXT; owner
-experience acceptance PENDING.** The owner-authorized U3 cycle (U3 only) delivered the complete
+**2026-10-07 — U3 CLOSED: PASS WITH NON-BLOCKING FINDINGS.** The experience
+repair is integrated (fast-forward; combined implementation `952d92d…`),
+combined-gate verified ("U3 COMBINED GATE: PASS WITH NON-BLOCKING FINDINGS",
+[U3-COMBINED-VERIFY-01](reviews/u3/U3-COMBINED-VERIFY-01.md)), and the owner
+experienced the repaired product ("I have try it, it work simply." —
+scope-bounded, [OWNER-FEEDBACK-01](reviews/u3/OWNER-FEEDBACK-01.md)).
+U4 is NOT authorized and NOT started. The owner-authorized U3 cycle (U3 only) delivered the complete
 inspection journey with the rejection → correction → resubmission loop in
 the frozen product host `examples/ui-authoring-proof`; the eight-scenario
 matrix with deterministic resets, fencing and truthful implementation-mode
@@ -16,15 +20,20 @@ file). Shared conformance: both implementations pass
 `runApplicationDataAdapterSuite` over the same fixture. Performance within
 all frozen budgets ([U3-PERFORMANCE](U3-PERFORMANCE.json)); coverage matrix
 [U3-COVERAGE](U3-COVERAGE.md); founder-facing [U3-WALKTHROUGH](U3-WALKTHROUGH.md).
-Fresh independent verification at the exact candidate (separate checkout,
-no repairs): **PASS WITH NON-BLOCKING FINDINGS** — all eight criteria PASS on
-the verifier's own evidence (109/109 node probes, 48-check browser journey,
-real restart reproduced, 9/9 adversarial attacks refused, battery + budgets
-reproduced; report [U3-VERIFY-01](reviews/u3/U3-VERIFY-01.md), sha256
-`9412d96c…`). One MINOR finding retained with owner (F-1 document-level
-approve control status-ungated; every click honestly refused by the
-boundary — U3+ UX iteration). U4, `apps/studio`, Stage 9, merge to main,
-publication and deployment remain unauthorized.
+Stage gate: independent verification at `cbb3fb6…` PASS WNF
+([U3-VERIFY-01](reviews/u3/U3-VERIFY-01.md)), then the reviewed experience
+repair integrated by fast-forward and re-verified as a combined candidate at
+`952d92d…` PASS WNF ([U3-COMBINED-VERIFY-01](reviews/u3/U3-COMBINED-VERIFY-01.md),
+sha256 `e101b4c7…`): full battery reproduced (68/131/2499/4/12, checks,
+format, production build, performance), complete journey + rejection loop +
+F-1 terminal state at four widths, domain probes vs both adapters, fencing,
+the required actual restart demonstration on the combined app, shared
+conformance, extension forgery matrix. Owner feedback recorded with exact
+scope. F-1 (dead approve affordance) was repaired by the experience
+integration; V-F1 (saved-source diagnostic wiped on detail first mount;
+fails safe) and the packaging items (F3 + N-2 → U4 readiness) are retained
+with owners in [U3-HANDOFF](U3-HANDOFF.md). U4, `apps/studio`, Stage 9,
+merge to main, publication and deployment remain unauthorized.
 
 U2 remains CLOSED as described below.
 

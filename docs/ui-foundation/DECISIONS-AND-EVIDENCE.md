@@ -794,6 +794,50 @@ unit suite needs built package dists — next check U4 packaging readiness
 (alongside F3). Founder checkpoint prepared ([U3-WALKTHROUGH](U3-WALKTHROUGH.md));
 owner experience acceptance PENDING. U4 remains unauthorized.
 
+## U3 integration, combined verification and closure (2026-10-07)
+
+The owner authorized integrating the Codex experience repair, independent
+combined verification, runnable-example preservation/documentation and U3
+closure. Decisions of record:
+
+1. **Fast-forward integration.** `codex/ui-foundation-u3` advanced by normal
+   fast-forward over the linear experience chain (`8d99f36` FAIL-preserved →
+   `e0dd026` repaired PASS → `9c34679` records) plus one records-only
+   `.prettierignore` commit protecting imported evidence bytes
+   (`952d92da5131d6ab595b45b3bf18bc7ce3b3466d`). The experience branch and
+   all review history remain untouched at `9c34679…`.
+2. **Combined gate.** Fresh independent verifier at the exact integrated SHA:
+   "U3 COMBINED GATE: PASS WITH NON-BLOCKING FINDINGS" — report verbatim at
+   [U3-COMBINED-VERIFY-01](reviews/u3/U3-COMBINED-VERIFY-01.md) (sha256
+   `e101b4c705cc9c13ce6b5f44b2f31a33264acb54f3f14e19f60d74a23653efe4`) with
+   21 evidence files; per-criterion evidence labelled reproduced-now vs
+   standing (standing legs justified by byte-identical files).
+3. **Owner feedback scope.** "I have try it, it work simply." recorded
+   verbatim, scoped to the repaired queue/detail experience
+   ([OWNER-FEEDBACK-01](reviews/u3/OWNER-FEEDBACK-01.md)); it does not attest
+   scenario internals, the durable restart or Studio surfaces.
+4. **Closure.** U3 closed PASS WITH NON-BLOCKING FINDINGS: gate + owner
+   criterion satisfied; F-1 repaired by the integration (combined verifier
+   confirmed terminal records carry no enabled approve affordance);
+   V-F1 minor (invalid-saved-source diagnostic wiped on detail first mount,
+   fails safe) retained with owner; F3 + N-2 carried to U4 packaging
+   readiness; the durable restart named as the single owner-unattested
+   (triple-independently-verified) headline item with a short walkthrough.
+5. **Runnable examples preserved and documented.** Both examples stay
+   committed; `examples/ui-authoring-proof/README.md` rewritten to U3 truth
+   (roles, presets, storage modes, data locations, seed recreation),
+   `examples/ui-design-proof/README.md` created, central index
+   [examples/README.md](../../examples/README.md) added; launch instructions
+   validated against a real fresh clone (npm ci → package builds → dev +
+   production `node build`, all documented routes HTTP 200). Git preserves
+   source/fixtures; servers, builds and runtime data (SQLite file, browser
+   localStorage) are separate; browser-saved edits are not Git commits.
+
+U4 handoff obligations (documentation only, NOT authorized to start): ui-editor
+dist build TS2307 ×4 (F3) + dist-dependent unit suite (N-2) must be resolved
+before any built-artifact reuse claim; V-F1 in the next product-host UX pass;
+see [U3-HANDOFF](U3-HANDOFF.md) closure table.
+
 ## Future evidence entry format
 
 Identity: repository, branch, full base/candidate/reviewer SHAs, environment and contract pins.

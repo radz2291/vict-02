@@ -179,3 +179,69 @@ verifier's journey harness and 29 screenshots under
 **Founder checkpoint: prepared.** [U3-WALKTHROUGH](U3-WALKTHROUGH.md) is the
 owner-facing sheet; the owner experience acceptance remains PENDING until
 explicitly given. U4 requires a U3 pass AND an authorized U4 handoff.
+
+## Integration, combined verification and closure (2026-10-07)
+
+The Codex experience repair was integrated into this branch by **normal
+fast-forward** (linear ancestry from the U3 records `aaeea16…`):
+`8d99f36` (candidate 1 — experience review FAIL, preserved on the experience
+branch) → `e0dd026` (repaired implementation — independent technical PASS +
+experience PASS) → `9c34679` (records-only) → `952d92d…` (one records-only
+`.prettierignore` commit on top; implementation bytes identical to
+`e0dd026`). The experience branch `codex/ui-foundation-u3-experience` is
+preserved untouched at `9c34679…`. The repair keeps the queue/detail authored
+through canonical VICT UI, adds the reusable ui-svelte extension bridge
+(explicit registration, props-only, visible-and-safe failures) and changes
+no domain, durable-adapter, server-operation or preview-session code.
+
+**Combined independent verification** at the exact integrated SHA
+`952d92da5131d6ab595b45b3bf18bc7ce3b3466d` (fresh verifier, separate
+checkout, falsification-only, no repairs): **"U3 COMBINED GATE: PASS WITH
+NON-BLOCKING FINDINGS"** — report imported verbatim as
+[U3-COMBINED-VERIFY-01](reviews/u3/U3-COMBINED-VERIFY-01.md) (sha256
+`e101b4c705cc9c13ce6b5f44b2f31a33264acb54f3f14e19f60d74a23653efe4`) with 21
+evidence files under `reviews/u3/u3-combined-verify-evidence/` (bytes
+preserved via scoped .gitattributes). Reproduced now: full battery (68/131/
+2499/4/12, typecheck, check:ui 0/2, svelte-check 0/2, format, production
+build, performance p95 0.19/0.17 ms), the complete journey including the
+rejection loop and terminal F-1 state at 1440/1024/390 + 480 container with
+zero console errors, domain probes vs both adapters with zero-mutation
+proofs, fencing, **the required actual restart demonstration on the combined
+app** (durable approve → force-kill → hash-unchanged file → fresh process +
+fresh browser recovers the decision; simulated forgets), shared conformance,
+truthful console, corrupt-saved-source failsafe, and the extension forgery
+matrix (missing/mismatched/wrong-revision → `UI_RENDER_EXTENSION_UNAVAILABLE`;
+events/slots → `UI_RENDER_EXTENSION_INTERFACE_UNSUPPORTED`).
+
+**Owner feedback** (verbatim, scope-bounded):
+[OWNER-FEEDBACK-01](reviews/u3/OWNER-FEEDBACK-01.md) — "I have try it, it
+work simply." — hands-on positive against the repaired queue/detail
+experience; it does not attest the scenario internals, the durable restart
+or Studio surfaces.
+
+**U3 IS CLOSED: PASS WITH NON-BLOCKING FINDINGS.** Gate (independent
+verification of U3-01..08) and owner requirement (founder checkpoint
+experience) are satisfied. Retained findings and owners:
+
+| Finding | Severity | Owner | Next check |
+| --- | --- | --- | --- |
+| V-F1 detail page wipes its invalid-saved-source diagnostic on first mount (route-key `$effect`); studio discloses loudly; fails safe | minor | U3+ product-host UX iteration | next stage touching the product host routes |
+| F-1 document-level approve control status-ungated (dead affordance on decided records) | minor | repaired by the experience integration (terminal records have no enabled approve affordance — confirmed by the combined verifier) | closed this cycle |
+| F3 ui-editor workspace dist build fails (four TS2307 Svelte declarations) + V-F2 honest packaging limitation | info | **U4 packaging readiness** — must resolve before any built-artifact reuse claim | U4 entry gate |
+| V-F3 Inspector 42px round-trip + browser-level stateValues forgery standing on byte-identical files (EXPERIENCE-E0DD), not re-reproduced | info | combined evidence is sufficient; re-reproduce only if those files change | any stage editing ui-svelte document bridge |
+| V-F4 fresh boot is simulated by design; durable recovery needs the Storage switch | info | by design; documented in the README + walkthrough | none |
+| N-2 root unit suite needs built package dists | info | U4 packaging readiness (alongside F3) | U4 entry gate |
+
+**Distinct owner-unattested item (named, not a generic pending banner):**
+the durable restart demonstration has not been explicitly attested by the
+owner. Short walkthrough: on the queue, Demo controls → Storage →
+"Saved locally (SQLite)", approve an inspection as Supervisor, stop the
+server (Ctrl+C), start it again (`node build` or the dev server), reload —
+the inspection is still approved with its full trail. Switching back to
+"Simulated" honestly shows the fresh seed. Independently verified three
+times (manager `5bb145f`/`986a609` cycle, experience technical review,
+combined verifier at `952d92d`); owner confirmation is welcome but optional.
+
+**U4 remains unauthorized** and is not started. U4 handoff obligations are
+recorded documentation-only in STATE/DECISIONS (packaging readiness: F3 +
+N-2; see also the U2 carried F4 scope-persistence item owned by U3+ UX).
