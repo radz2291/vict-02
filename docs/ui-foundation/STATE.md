@@ -19,10 +19,11 @@ claim was FALSIFIED by the resolver-level probe against `952d92d…` bytes;
 the gate was rebuilt from verified legacy behavior (events ABI marker +
 compile-artifact marker + implementation abi). Cycle 2 review: R2 round 1
 **PASS WNF** at `0ad3a2a…` -> repairs -> round 2 **PASS WNF**. Now FROZEN
-(SUPERSEDING): payload `460d963…`, pins in
+— VERIFIED (SUPERSEDING): payload `460d963…`, pins in
 [U4-AMENDMENT-FREEZE-02](U4-AMENDMENT-FREEZE-02.md), which supersedes
 [U4-AMENDMENT-FREEZE](U4-AMENDMENT-FREEZE.md) (preserved byte-exact);
-freeze-check recorded there before delivery.
+freeze-check `U4 AMENDMENT FREEZE CHECK 02: VERIFIED`
+([reviews/u4/FREEZE-CHECK-02.md](reviews/u4/FREEZE-CHECK-02.md)).
 Amendment work is isolated on `codex/ui-foundation-u4-component-amendment`
 (from the prepared handoff records `cfbd6d3…`); U0–U3 records untouched.
 The prepared U4 handoff was independently reviewed on

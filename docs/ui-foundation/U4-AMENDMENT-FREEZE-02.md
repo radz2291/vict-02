@@ -1,10 +1,10 @@
 # U4 component-amendment freeze record — SUPERSEDING (repair cycle)
 
-Status: **SUPERSEDES [U4-AMENDMENT-FREEZE](U4-AMENDMENT-FREEZE.md) — FROZEN
-(payload `460d963…`, pending independent freeze-check)** — the checker's
-reproduction is recorded in §6; until it verifies, the supersede is a
-candidate. Runtime/U4 implementation remains UNAUTHORIZED; this record
-freezes the **contract** only.
+Status: **SUPERSEDES [U4-AMENDMENT-FREEZE](U4-AMENDMENT-FREEZE.md) — FROZEN,
+VERIFIED** (payload `460d963…`; independent freeze-check
+`U4 AMENDMENT FREEZE CHECK 02: VERIFIED`, §6 below). Runtime/U4
+implementation remains UNAUTHORIZED; this record freezes the **contract**
+only.
 
 ## 1. Why this record supersedes the first freeze
 
@@ -90,13 +90,24 @@ amendment §4.3: the probe is resolver-level (not a browser rendering
 test); new compiler/renderer rows are contract requirements until
 implemented and have NOT been runtime-tested.
 
-## 6. Freeze check (separate fresh checker)
+## 6. Freeze check (separate fresh checker) — VERIFIED
 
-PENDING at this record's first commit: a checker independent of both the
-payload authors and the R2 reviewer must (a) reproduce every §3 pin from
-the payload commit and the live bytes, (b) confirm the superseded payload
-`68e166f…` and its freeze record remain byte-preserved at their original
-commit, (c) verify scope (docs/ui-foundation only across
-`24347a0…→` tip) and the review lineage SHAs, and (d) confirm the
-repo-scoped legacy-consumer wording in the two aligned spots. Its verdict
-is appended below at the final records commit.
+Checker independent of both the payload authors and the R2 reviewer, all
+evidence byte-derived. Full report imported verbatim:
+[reviews/u4/FREEZE-CHECK-02.md](reviews/u4/FREEZE-CHECK-02.md) (sha256
+`1bb615841973d22b394054e18199b65bdd8eb86d66ec3e956275e67e1704baf2`), ending
+**`U4 AMENDMENT FREEZE CHECK 02: VERIFIED`** at pinned HEAD `08cfe28…`. All
+eleven steps passed: (1–2) all ten SHA-256 pins reproduce from the payload
+commit AND live bytes (20/20, deterministic on a second pass); (3) `460d963…`
+is an empty marker whose parent carries the pinned bytes; (4) the superseded
+freeze artifacts are blob-identical at `24347a0…` and HEAD, and payload
+`68e166f…` remains committed and reachable; (5) all 13 lineage SHAs exist
+in record order; (6) scope `24347a0…→08cfe28…` touches only docs/
+ui-foundation + .prettierignore — zero source paths; (7) probe evidence
+integrity: legacy extraction byte-identical to the `952d92d…` resolver
+bytes, recorded 5/5, checker's own temp-dir rerun reproduced
+`probe-output.txt` byte-for-byte; (8) R2 report round-1 prefix hashes
+to `9f0423a1…` and the file ends with the R2 round-2 verdict; (9) MINOR-2
+closed — §12.2 pins `460d963…` via this SUPERSEDING record, no operative
+`68e166f…` authority references remain; (10) repo-scoped wording and
+annotations present; (11) all five `-text` lines present.

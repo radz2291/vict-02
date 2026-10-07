@@ -900,6 +900,15 @@ remain unauthorized):
    [U4-AMENDMENT-REVIEW-01](reviews/u4/U4-AMENDMENT-REVIEW-01.md)
    (final sha256 `34506ab9…`; round-1 section byte-identical to the
    delivered `9ce2267c…`).
+7b. Superseding freeze — VERIFIED: payload commit `460d963…` (empty
+    marker; ten byte-pins), record
+    [U4-AMENDMENT-FREEZE-02](U4-AMENDMENT-FREEZE-02.md); separate fresh
+    checker reproduced 20/20 pins, confirmed the superseded payload and
+    record byte-preserved, docs-only scope, lineage and probe evidence
+    (verbatim rerun byte-identical), verdict `U4 AMENDMENT FREEZE CHECK
+    02: VERIFIED` ([reviews/u4/FREEZE-CHECK-02.md](reviews/u4/FREEZE-CHECK-02.md),
+    sha256 `1bb61584…`). MINOR-2 closed: handoff §12.2 pins the
+    superseding record; the first freeze is marked must-not-use.
 7a. Owner-directed REPAIR CYCLE (supersedes decision 7's payload, not its
     process): the first freeze's compatibility claim ("old renderer
     rejects via the descriptor abi field") was FALSIFIED — resolver-level
