@@ -10,9 +10,12 @@ const EXAMPLE_ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const PRODUCT_ENTRIES = [
   'src/routes/+layout.svelte',
   'src/routes/+page.svelte',
-  'src/routes/+page.ts',
+  'src/routes/+page.server.ts',
   'src/routes/inspection/[id]/+page.svelte',
-  'src/routes/inspection/[id]/+page.ts',
+  'src/routes/inspection/[id]/+page.server.ts',
+  'src/routes/api/inspection/[action]/+server.ts',
+  'src/lib/server/inspection.ts',
+  'src/lib/product/domain.ts',
 ];
 
 const FORBIDDEN_IN_PRODUCT_GRAPH = ['ui-editor', 'ui-preview', 'EditorBridge', 'PreviewSession'];

@@ -81,7 +81,7 @@ export function grantsForRole(role: string): readonly string[] {
   return roleGrants[role] ?? ['qlt.inspection.read'];
 }
 
-interface SeedInput {
+export interface SeedInput {
   readonly inspections: readonly InspectionRow[];
   readonly findings: readonly FindingRow[];
   readonly evidence: readonly EvidenceRow[];
@@ -376,17 +376,18 @@ export function applyInspectionMutation(
         `Submit requires status 'draft' (found '${row.status}').`,
       );
     }
+    const at = clock.now();
     const updated: InspectionRow = {
       ...row,
       status: 'submitted',
-      submittedAt: clock.now(),
+      submittedAt: at,
       domainRevision: row.domainRevision + 1,
     };
     tables.inspections[tables.inspections.indexOf(row)] = updated;
     tables.activity.push({
       id: `a-${tables.activity.length + 1}`,
       inspectionId: row.id,
-      at: updated.submittedAt,
+      at,
       actor: context.actor ?? 'unknown',
       entry: 'Inspection submitted for decision',
     });
@@ -467,7 +468,7 @@ export function applyChildAdd(
   if (typeof id !== 'string' || id.length === 0) {
     return failure('DATA_INVALID_INPUT', 'A row id is required.');
   }
-  const rows = request.resourceId === 'finding' ? tables.findings : tables.evidence;
+  const isFinding = request.resourceId === 'finding';
   const digest = digestOf({ op: 'add', resourceId: request.resourceId, input });
   if (request.idempotencyKey !== undefined) {
     const seen = ledger.lookup(request.idempotencyKey, digest);
@@ -482,7 +483,10 @@ export function applyChildAdd(
       );
     }
   }
-  if (rows.some((candidate) => candidate.id === id)) {
+  const existing = isFinding
+    ? tables.findings.some((candidate) => candidate.id === id)
+    : tables.evidence.some((candidate) => candidate.id === id);
+  if (existing) {
     return failure('DATA_CONTRACT_REJECTED', `A ${request.resourceId} row '${id}' already exists.`);
   }
   const inspectionId = input['inspectionId'];
@@ -501,21 +505,29 @@ export function applyChildAdd(
       );
     }
   }
-  const stored =
-    request.resourceId === 'finding'
-      ? ({
-          id,
-          inspectionId: String(inspectionId ?? ''),
-          severity: (input['severity'] as FindingRow['severity'] ?? 'low'),
-          description: String(input['description'] ?? ''),
-        } satisfies FindingRow)
-      : ({
-          id,
-          inspectionId: String(inspectionId ?? ''),
-          label: String(input['label'] ?? ''),
-          kind: (input['kind'] as EvidenceRow['kind'] ?? 'note'),
-        } satisfies EvidenceRow);
-  rows.push(stored);
+  let stored: FindingRow | EvidenceRow;
+  let entry: string;
+  if (isFinding) {
+    const finding: FindingRow = {
+      id,
+      inspectionId: String(inspectionId ?? ''),
+      severity: (input['severity'] as FindingRow['severity'] ?? 'low'),
+      description: String(input['description'] ?? ''),
+    };
+    tables.findings.push(finding);
+    stored = finding;
+    entry = `Finding added: ${finding.description}`;
+  } else {
+    const evidence: EvidenceRow = {
+      id,
+      inspectionId: String(inspectionId ?? ''),
+      label: String(input['label'] ?? ''),
+      kind: (input['kind'] as EvidenceRow['kind'] ?? 'note'),
+    };
+    tables.evidence.push(evidence);
+    stored = evidence;
+    entry = `Evidence added: ${evidence.label}`;
+  }
   if (request.idempotencyKey !== undefined) {
     ledger.record(request.idempotencyKey, digest, JSON.stringify(stored));
   }
@@ -524,10 +536,7 @@ export function applyChildAdd(
     inspectionId: String(inspectionId ?? ''),
     at: clock.now(),
     actor: context.actor ?? 'unknown',
-    entry:
-      request.resourceId === 'finding'
-        ? `Finding added: ${stored['description']}`
-        : `Evidence added: ${stored['label']}`,
+    entry,
   });
   return { ok: true, row: { ...stored } };
 }
@@ -706,7 +715,7 @@ export type InspectionActionId =
   | 'finding.add'
   | 'evidence.add';
 
-const READ_ACTIONS: readonly string[] = ['inspection.list', 'inspection.get'];
+const READ_ACTIONS: readonly string[] = ['inspection.list', 'inspection.get', 'inspection.activity'];
 const INSPECTION_VERBS: readonly string[] = ['submit', 'approve', 'reject', 'revise'];
 
 /** Map an action id to its adapter mutation verb (or undefined for reads). */
@@ -750,6 +759,15 @@ export function createInspectionServer(data: InspectionDataAdapter) {
         );
         if (!result.ok) return { ok: false, code: result.code, message: result.message };
         return { ok: true, value: result.row };
+      }
+      if (actionId === 'inspection.activity') {
+        const payload = (input ?? {}) as { id?: string };
+        const result = await data.query(
+          { op: 'list', resourceId: 'activity', filters: { inspectionId: payload.id ?? '' } },
+          context,
+        );
+        if (!result.ok) return { ok: false, code: result.code, message: result.message };
+        return { ok: true, value: { rows: result.rows ?? [] } };
       }
       if (actionId === 'finding.add' || actionId === 'evidence.add') {
         const payload = (input ?? {}) as Record<string, unknown>;
