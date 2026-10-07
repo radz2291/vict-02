@@ -152,7 +152,8 @@ describe('U1-05: the product path through the real boundaries', () => {
       supervisor,
     );
     expect(result.ok).toBe(false);
-    if (!result.ok) expect(result.code).toBe('DATA_CONTRACT_REJECTED');
+    // Frozen diagnostic (API-SPEC §7): stale decisions are DOMAIN_CONFLICT.
+    if (!result.ok) expect(result.code).toBe('DOMAIN_CONFLICT');
     const after = await loadRecord(server, 'i-101');
     expect(after['status']).toBe(record['status']);
   });
