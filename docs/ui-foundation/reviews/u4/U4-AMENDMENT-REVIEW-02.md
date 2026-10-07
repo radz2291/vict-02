@@ -105,3 +105,28 @@ Greped the added lines of the delta for `verified|always|never|probe` and resolv
 No blockers. Every attacked claim either held against source/bytes or is honestly scoped as a new-side contract requirement; the counterexample, the gate choice, the type corrections, the action-input ownership, the fixture set, scope and byte-preservation all verify.
 
 U4 AMENDMENT REVIEW R2: PASS WITH NON-BLOCKING FINDINGS
+
+## R2 Round 2 (affected recheck)
+
+- Reviewer: same fresh independent reviewer (round 1); review-only, read-only; working tree left as found.
+- Candidate tested: `9f5acddb81450101cc1ca33aed0c5757fef8d17d` (same branch `codex/ui-foundation-u4-component-amendment`, worktree `C:/Users/RZ1/Desktop/RZ/vict-02-u4-handoff`, tree clean). Delta rechecked: `git diff 0ad3a2a..9f5acdd` — exactly 6 files: amendment, invalid-cases.json, reviews/u4/.gitattributes (+1 scoped line `U4-AMENDMENT-REVIEW-02.md -text`), reviews/u4/U4-AMENDMENT-REVIEW-02.md (my round-1 report imported **verbatim**, sha256 `9f0423a1540f812a42858a411ea60818c0a2edb6e99377c23e56d31a47f00ff9` — matches the delivered bytes), abi-probe/probe.mjs, abi-probe/probe-output.txt. `extensions.legacy.ts` unchanged in the delta (still the byte-faithful legacy copy verified in round 1).
+- Operational observation (not a content finding): branch is `ahead 2` of origin — both `0ad3a2a` and `9f5acdd` are not yet on the remote at recheck time.
+
+**1. MINOR-1 (probe harness reproducibility) — REPAIRED AND VERIFIED.**
+- `probe.mjs` is now self-contained: the C1 counterexample descriptor is embedded inline (`ORIGINAL_DESCRIPTOR`), no longer read from `checkbox-valid.json`; the header documents the exact run commands (`npx esbuild extensions.legacy.ts --bundle --format=esm --outfile=extensions.legacy.mjs --external:svelte --external:@victframework/ui` then `node probe.mjs`) and the `.mjs` provenance.
+- Embedded descriptor equivalence: extracted `ORIGINAL_DESCRIPTOR` from the committed probe.mjs and deep-compared (stringified JSON) against the descriptor in `git show 68e166f3eeb27657ff5b28e21c255960256ccdc6:docs/ui-foundation/fixtures/component-contract/checkbox-valid.json` — **deep-equal including key order**.
+- Verbatim rerun by me in a fresh temp dir from committed files alone (`extensions.legacy.ts` + `probe.mjs`, header commands, nothing else): **5/5 PASS**, and my run's stdout is **byte-identical** to the committed regenerated `probe-output.txt` (`diff` clean).
+
+**2. INFO-1 — REPAIRED.** §3.2 now reads "The one fail-closed descriptor **interface-field gate** the current renderer performs" — exactly the precision the finding asked for.
+
+**3. INFO-2 — REPAIRED at the directed surface.** §3.2 now reads "This repo's legacy consumer of descriptor `events`/`slots` — the probed resolver — rejects such a descriptor outright with its existing diagnostic (probe case C2)". Residual note (non-blocking): the generic plural survives at two untouched spots — amendment §4.3 line ~530 ("the marker makes every legacy consumer reject them") and fixtures README line ~28 ("legacy consumers reject any events-bearing descriptor"). Same claim class already verified true-in-repo (exactly one such consumer exists); no overclaim of evidence, only possible momentary over-reading beyond the repo.
+
+**4. INFO-3 — REPAIRED.** invalid-cases.json undeclared-slot-fill case now carries the note: "…UI_DOC_UNKNOWN_COMPONENT is compile-RAISED BY THE AMENDMENT for this case (today such fills are silently dropped - amendment 3.7/5.1); the code exists today only as the validate-deferred code for stored definitions" — accurate against `compile.ts@952d92d` (extension branch drops `node.slots`; validate defers). File parses (`JSON.parse` OK); `npx prettier --check` passes on invalid-cases.json, all fixture JSONs, and the amendment.
+
+**5. No new unsupported claims in the delta.** Every added sentence checked: "EXACT legacy bytes … see extensions.legacy.ts" (copy verified byte-faithful in round 1, unchanged here); "embedded verbatim … as first frozen at payload 68e166f…" (deep-equal verified); "Recorded outcomes: probe-output.txt (5/5)" (byte-identical to my rerun); "interface-field gate" / repo-scoped rejection sentence (true per `extensions.ts@952d92d:58`); invalid-cases note (true per compile/validate behavior); .gitattributes line is scoped preservation only.
+
+**6. MINOR-2 — confirmed OPEN exactly as scoped.** `U4-HANDOFF.md` and `U4-AMENDMENT-FREEZE.md` are untouched in this delta (0 matching files in `git diff --name-only`); handoff line ~259 still reads "amendment is FROZEN as a candidate: payload commit `68e166f…`"; no new freeze record exists; amendment status remains "PROPOSED — UNDER INDEPENDENT REVIEW (implementation NOT authorized)". The supersede step (new freeze record + §12.2 repoint + handoff status correction) has NOT run — as expected; it remains a required gate before any §12.2 authorization.
+
+All six recheck items verified against artifacts, not prose. Remaining non-blocking items: the by-design-open MINOR-2 (pending supersede step) and the two residual plural phrasings noted under item 3.
+
+U4 AMENDMENT REVIEW R2 ROUND 2: PASS WITH NON-BLOCKING FINDINGS

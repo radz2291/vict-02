@@ -25,7 +25,8 @@ Conventions:
 - Descriptors carry `abi: "vict.ui-component-abi@1"` and the matching
   `events: ["vict.ui-component-abi@1"]` marker whenever `outputs` (or
   renderable slots) is declared; implementations must match `abi` exactly.
-  The marker is the compatibility gate: legacy consumers reject any
+  The marker is the compatibility gate: the repo's legacy consumer (the
+  probed resolver) rejects any
   `events`-bearing descriptor with their existing diagnostic, so an
   output-wired instance can never render with its wiring silently dropped
   (amendment §3.2/§4.3; probe-verified on the `952d92d…` resolver bytes).

@@ -527,7 +527,9 @@ closes).
   (§3.2), plus the compile-artifact marker (`outputDecls` always emitted
   for abi@1 descriptors, §3.3) and the implementation `abi` field. An ABI
   check added only to the new renderer could never make an old renderer
-  reject new artifacts; the marker makes every legacy consumer reject
+  reject new artifacts; the marker makes the repo's legacy consumer (the
+  probed resolver — and any consumer sharing its interface-field gate)
+  reject
   them with its own existing diagnostic
   (`UI_RENDER_EXTENSION_INTERFACE_UNSUPPORTED`).
 - **Compatibility matrix.**
