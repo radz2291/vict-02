@@ -1,0 +1,124 @@
+
+> ui-authoring-proof@0.1.0 build
+> svelte-kit sync && vite build
+
+vite v6.4.3 building SSR bundle for production...
+transforming...
+3:38:53 pm [vite-plugin-svelte] C:/Users/RZ1/Desktop/RZ/vict-02-u3-experience/packages/ui-svelte/src/document/RenderNode.svelte:186:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+184:   </svelte:element>
+185: {:else if instruction.kind === 'text'}
+186:   <span
+            ^
+187:     class="uv-text"
+188:     data-ui-node={instruction.nodeId}
+3:38:53 pm [vite-plugin-svelte] C:/Users/RZ1/Desktop/RZ/vict-02-u3-experience/packages/ui-svelte/src/document/RenderNode.svelte:186:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+184:   </svelte:element>
+185: {:else if instruction.kind === 'text'}
+186:   <span
+            ^
+187:     class="uv-text"
+188:     data-ui-node={instruction.nodeId}
+✓ 845 modules transformed.
+rendering chunks...
+(node:35696) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+vite v6.4.3 building for production...
+transforming...
+3:39:14 pm [vite-plugin-svelte] C:/Users/RZ1/Desktop/RZ/vict-02-u3-experience/packages/ui-svelte/src/document/RenderNode.svelte:186:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+184:   </svelte:element>
+185: {:else if instruction.kind === 'text'}
+186:   <span
+            ^
+187:     class="uv-text"
+188:     data-ui-node={instruction.nodeId}
+3:39:14 pm [vite-plugin-svelte] C:/Users/RZ1/Desktop/RZ/vict-02-u3-experience/packages/ui-svelte/src/document/RenderNode.svelte:186:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+184:   </svelte:element>
+185: {:else if instruction.kind === 'text'}
+186:   <span
+            ^
+187:     class="uv-text"
+188:     data-ui-node={instruction.nodeId}
+✓ 832 modules transformed.
+rendering chunks...
+computing gzip size...
+.svelte-kit/output/client/_app/version.json                                  0.03 kB │ gzip:  0.05 kB
+.svelte-kit/output/client/.vite/manifest.json                                7.76 kB │ gzip:  1.17 kB
+.svelte-kit/output/client/_app/immutable/assets/extensions.D7FuwKZk.css      0.43 kB │ gzip:  0.27 kB
+.svelte-kit/output/client/_app/immutable/assets/DemoControls.B1qLHcma.css    0.73 kB │ gzip:  0.36 kB
+.svelte-kit/output/client/_app/immutable/assets/4.BiaeOuRq.css               1.92 kB │ gzip:  0.67 kB
+.svelte-kit/output/client/_app/immutable/assets/5.VDdkhoM_.css               8.78 kB │ gzip:  2.05 kB
+.svelte-kit/output/client/_app/immutable/assets/0.BiXIwepp.css              23.33 kB │ gzip:  4.87 kB
+.svelte-kit/output/client/_app/immutable/chunks/DNsgxp1J.js                  0.12 kB │ gzip:  0.12 kB
+.svelte-kit/output/client/_app/immutable/chunks/q9GBVLET.js                  0.33 kB │ gzip:  0.25 kB
+.svelte-kit/output/client/_app/immutable/chunks/CppDk5gP.js                  0.38 kB │ gzip:  0.27 kB
+.svelte-kit/output/client/_app/immutable/chunks/CmvhMQqB.js                  0.41 kB │ gzip:  0.30 kB
+.svelte-kit/output/client/_app/immutable/chunks/DeatMgZp.js                  0.47 kB │ gzip:  0.31 kB
+.svelte-kit/output/client/_app/immutable/nodes/0.bl6XrqTf.js                 0.64 kB │ gzip:  0.43 kB
+.svelte-kit/output/client/_app/immutable/chunks/Cx3sKanV.js                  0.70 kB │ gzip:  0.38 kB
+.svelte-kit/output/client/_app/immutable/nodes/2.BhNJrojR.js                 1.02 kB │ gzip:  0.55 kB
+.svelte-kit/output/client/_app/immutable/chunks/BAGv-pdk.js                  1.04 kB │ gzip:  0.62 kB
+.svelte-kit/output/client/_app/immutable/nodes/1.BevrLPNz.js                 1.24 kB │ gzip:  0.73 kB
+.svelte-kit/output/client/_app/immutable/chunks/BZbVXjqy.js                  1.33 kB │ gzip:  0.73 kB
+.svelte-kit/output/client/_app/immutable/chunks/wbPk3Yxo.js                  1.37 kB │ gzip:  0.66 kB
+.svelte-kit/output/client/_app/immutable/chunks/Bh02WAUV.js                  2.14 kB │ gzip:  1.09 kB
+.svelte-kit/output/client/_app/immutable/chunks/DQ9emHVb.js                  2.25 kB │ gzip:  0.99 kB
+.svelte-kit/output/client/_app/immutable/chunks/CF8o8Q-E.js                  3.09 kB │ gzip:  1.54 kB
+.svelte-kit/output/client/_app/immutable/chunks/Cc6GjE64.js                  4.80 kB │ gzip:  2.25 kB
+.svelte-kit/output/client/_app/immutable/nodes/3.CMtYk78X.js                 5.03 kB │ gzip:  2.34 kB
+.svelte-kit/output/client/_app/immutable/chunks/1lTJtlkV.js                  6.11 kB │ gzip:  2.78 kB
+.svelte-kit/output/client/_app/immutable/chunks/BkjU0kUR.js                  6.90 kB │ gzip:  3.13 kB
+.svelte-kit/output/client/_app/immutable/entry/app.CUpWhvqL.js               7.03 kB │ gzip:  3.09 kB
+.svelte-kit/output/client/_app/immutable/chunks/BPuUzcq-.js                  8.65 kB │ gzip:  2.70 kB
+.svelte-kit/output/client/_app/immutable/chunks/Cm7yJTqh.js                  9.46 kB │ gzip:  3.99 kB
+.svelte-kit/output/client/_app/immutable/chunks/DoRnLIq5.js                 14.33 kB │ gzip:  4.34 kB
+.svelte-kit/output/client/_app/immutable/nodes/4.C_OmC8N1.js                21.38 kB │ gzip:  7.26 kB
+.svelte-kit/output/client/_app/immutable/chunks/B-bkb8g5.js                 29.23 kB │ gzip: 11.14 kB
+.svelte-kit/output/client/_app/immutable/entry/start.CPJ3n0dS.js            29.52 kB │ gzip: 11.22 kB
+.svelte-kit/output/client/_app/immutable/nodes/5.CJC0E9Ln.js                62.83 kB │ gzip: 21.46 kB
+.svelte-kit/output/client/_app/immutable/chunks/CaMRFAUg.js                146.67 kB │ gzip: 42.02 kB
+✓ built in 15.21s
+.svelte-kit/output/server/.vite/manifest.json                                        6.17 kB
+.svelte-kit/output/server/_app/immutable/assets/extensions.D7FuwKZk.css              0.43 kB
+.svelte-kit/output/server/_app/immutable/assets/DemoControls.B1qLHcma.css            0.73 kB
+.svelte-kit/output/server/_app/immutable/assets/_page.BiaeOuRq.css                   1.92 kB
+.svelte-kit/output/server/_app/immutable/assets/_page.C9OYjgfE.css                   3.53 kB
+.svelte-kit/output/server/_app/immutable/assets/_layout.RBmoelP_.css                23.25 kB
+.svelte-kit/output/server/env.js                                                     0.23 kB
+.svelte-kit/output/server/internal.js                                                0.35 kB
+.svelte-kit/output/server/chunks/diagnostics.js                                      0.47 kB
+.svelte-kit/output/server/entries/pages/_layout.svelte.js                            0.52 kB
+.svelte-kit/output/server/chunks/server.js                                           0.62 kB
+.svelte-kit/output/server/entries/pages/inspection/_id_/_page.server.ts.js           0.67 kB
+.svelte-kit/output/server/chunks/Feedback.js                                         0.69 kB
+.svelte-kit/output/server/chunks/index.js                                            0.75 kB
+.svelte-kit/output/server/entries/pages/_error.svelte.js                             0.76 kB
+.svelte-kit/output/server/entries/pages/_page.server.ts.js                           0.88 kB
+.svelte-kit/output/server/chunks/utils.js                                            1.09 kB
+.svelte-kit/output/server/entries/pages/_page.svelte.js                              1.41 kB
+.svelte-kit/output/server/entries/endpoints/api/inspection/_action_/_server.ts.js    1.64 kB
+.svelte-kit/output/server/chunks/internal.js                                         3.30 kB
+.svelte-kit/output/server/chunks/DemoControls.js                                     3.82 kB
+.svelte-kit/output/server/chunks/exports.js                                          5.54 kB
+.svelte-kit/output/server/entries/pages/inspection/_id_/_page.svelte.js              6.53 kB
+.svelte-kit/output/server/entries/pages/scenarios/_page.svelte.js                    8.19 kB
+.svelte-kit/output/server/chunks/session.js                                         14.23 kB
+.svelte-kit/output/server/chunks/inspection.js                                      15.43 kB
+.svelte-kit/output/server/chunks/scenario-seeds.js                                  24.45 kB
+.svelte-kit/output/server/chunks/utils2.js                                          34.21 kB
+.svelte-kit/output/server/remote-entry.js                                           36.81 kB
+.svelte-kit/output/server/chunks/index2.js                                          43.29 kB
+.svelte-kit/output/server/entries/pages/studio/_page.svelte.js                      80.57 kB
+.svelte-kit/output/server/chunks/root.js                                            88.78 kB
+.svelte-kit/output/server/index.js                                                 132.25 kB
+.svelte-kit/output/server/chunks/extensions.js                                     252.18 kB
+✓ built in 42.72s
+
+Run npm run preview to preview your production build locally.
+
+> Using @sveltejs/adapter-node
+"node:sqlite" is imported by ".svelte-kit/output/server/chunks/inspection.js", but could not be resolved – treating it as an external dependency.
+  ✔ done

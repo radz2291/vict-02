@@ -1,0 +1,7 @@
+npm error Lifecycle script `check` failed with error:
+npm error workspace ui-authoring-proof@0.1.0
+npm error location C:\Users\RZ1\Desktop\RZ\vict-02-u3-experience\examples\ui-authoring-proof
+npm error Missing script: "check"
+npm error
+npm error To see a list of scripts, run:
+npm error   npm run --workspace=ui-authoring-proof@0.1.0

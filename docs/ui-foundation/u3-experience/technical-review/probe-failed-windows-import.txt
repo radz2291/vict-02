@@ -1,0 +1,18 @@
+
+node:internal/modules/run_main:122
+    triggerUncaughtException(
+    ^
+Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'
+    at throwIfUnsupportedURLScheme (node:internal/modules/esm/load:209:11)
+    at defaultLoad (node:internal/modules/esm/load:107:3)
+    at nextLoad (node:internal/modules/esm/hooks:748:28)
+    at load (file:///C:/Users/RZ1/Desktop/RZ/vict-02-u3-experience/node_modules/tsx/dist/register-SoqaU4rg.mjs:2:4106)
+    at nextLoad (node:internal/modules/esm/hooks:748:28)
+    at Hooks.load (node:internal/modules/esm/hooks:385:26)
+    at handleMessage (node:internal/modules/esm/worker:199:24)
+    at Immediate.checkForMessages (node:internal/modules/esm/worker:141:28)
+    at process.processImmediate (node:internal/timers:491:21) {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+
+Node.js v22.13.1

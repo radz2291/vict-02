@@ -1,0 +1,16 @@
+{
+  "candidate": "8d99f3645691b4c3882cdfe88f298d6f0306eae0",
+  "baseline": "aaeea16f9cabccad05650eefdd8771c756326f17",
+  "protectedChanged": [],
+  "beforeScreenshots": [
+    {
+      "file": "detail-1440.png",
+      "sha256": "4afe3a723bf19689dfa1fb50f1ee691f2f661890440ba518e22c03c06e1da4b7"
+    },
+    {
+      "file": "queue-1440.png",
+      "sha256": "dea5372c02e7b338fed0d7c0e52a0c6e33df2e7b47b979f44e024c85f2ef2b78"
+    }
+  ],
+  "remoteMain": "4d2df037d8a82d36c60bf1bff16919650643ce22\trefs/heads/main"
+}

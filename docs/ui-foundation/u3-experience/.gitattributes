@@ -1,3 +1,7 @@
 OWNER-INSTRUCTION.txt -text
 *.jpg -text
 *.png -text
+# Preserve independent evidence bytes including Windows line endings.
+technical-review/** -text -whitespace
+experience-review/** -text -whitespace
+builder/*.txt whitespace=-blank-at-eof

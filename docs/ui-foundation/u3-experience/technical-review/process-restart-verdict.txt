@@ -1,0 +1,1 @@
+PASS: actual owned exec process33640 terminated using sessionCtrlC, new5222process recovers approvedrev4; simulated negativecontrol submittedrev3

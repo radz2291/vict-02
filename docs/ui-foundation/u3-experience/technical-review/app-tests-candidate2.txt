@@ -1,0 +1,21 @@
+
+> ui-authoring-proof@0.1.0 test
+> vitest run
+
+
+ RUN  v4.1.11 C:/Users/RZ1/Desktop/RZ/vict-02-u3-experience/examples/ui-authoring-proof
+
+(node:41636) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:43756) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+3:47:25 pm [vite-plugin-svelte] C:/Users/RZ1/Desktop/RZ/vict-02-u3-experience/packages/ui-svelte/src/document/RenderNode.svelte:186:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+3:47:25 pm [vite-plugin-svelte] C:/Users/RZ1/Desktop/RZ/vict-02-u3-experience/packages/ui-svelte/src/document/RenderNode.svelte:186:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+
+ Test Files  9 passed (9)
+      Tests  68 passed (68)
+   Start at  15:47:15
+   Duration  26.22s (transform 50.40s, setup 0ms, import 70.58s, tests 6.05s, environment 24.26s)
+

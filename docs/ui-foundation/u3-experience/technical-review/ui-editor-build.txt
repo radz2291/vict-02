@@ -1,0 +1,15 @@
+
+> @victframework/ui-editor@0.4.0-rc.1 build
+> tsc -p tsconfig.json
+
+src/index.ts(7,41): error TS2307: Cannot find module './EditorCanvas.svelte' or its corresponding type declarations.
+src/index.ts(8,41): error TS2307: Cannot find module './HistoryPanel.svelte' or its corresponding type declarations.
+src/index.ts(9,38): error TS2307: Cannot find module './Inspector.svelte' or its corresponding type declarations.
+src/index.ts(10,35): error TS2307: Cannot find module './Layers.svelte' or its corresponding type declarations.
+npm error Lifecycle script `build` failed with error:
+npm error code 2
+npm error path C:\Users\RZ1\Desktop\RZ\vict-02-u3-experience\packages\ui-editor
+npm error workspace @victframework/ui-editor@0.4.0-rc.1
+npm error location C:\Users\RZ1\Desktop\RZ\vict-02-u3-experience\packages\ui-editor
+npm error command failed
+npm error command C:\WINDOWS\system32\cmd.exe /d /s /c tsc -p tsconfig.json

@@ -1,0 +1,13 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/Desktop/RZ/vict-02-u3-experience
+
+No test files found, exiting with code 1
+
+filter: examples/ui-foundation-integration
+projects: integration
+
+|integration| 
+
+include: examples/**/*.test.ts
+exclude:  examples/application-proof/**, examples/reference-app/**, examples/ui-showcase/**, examples/ui-authoring-proof/**, examples/ui-design-proof/**
+

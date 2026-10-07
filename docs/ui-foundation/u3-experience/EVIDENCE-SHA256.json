@@ -1,0 +1,242 @@
+[
+  {
+    "file": "before/detail-1440.png",
+    "sha256": "4afe3a723bf19689dfa1fb50f1ee691f2f661890440ba518e22c03c06e1da4b7"
+  },
+  {
+    "file": "before/queue-1440.png",
+    "sha256": "dea5372c02e7b338fed0d7c0e52a0c6e33df2e7b47b979f44e024c85f2ef2b78"
+  },
+  {
+    "file": "experience-review/approved-1024.jpg",
+    "sha256": "5db2273d779548ca8e0e14fc71897dacede9ee9db923b2ac6da3cfbdbaf62623"
+  },
+  {
+    "file": "experience-review/conflict-product.jpg",
+    "sha256": "f7ec557f9e6d78c38d3418fcca3edeed22ab1b0a74b1bd6465520c40cded66f3"
+  },
+  {
+    "file": "experience-review/container-480.jpg",
+    "sha256": "9a65db6503277dbfec604275d962228af7c0ad25b77401326ce7b057476c41bd"
+  },
+  {
+    "file": "experience-review/correction-390.jpg",
+    "sha256": "50677f9efaf30c5e3d444a1e005d5a0d402c113b5814bfd7d36105837bcbb194"
+  },
+  {
+    "file": "experience-review/detail-1440.jpg",
+    "sha256": "de5636066ed406a822983a52336c0ea6fb22c2045afb8b726b3a98f756ba23ac"
+  },
+  {
+    "file": "experience-review/empty-390.jpg",
+    "sha256": "c3f8a402bdd773bdbfe64855e5e55988e76b28cb7f9ae0ff6b06cd531545d4cc"
+  },
+  {
+    "file": "experience-review/EXPERIENCE-8D99.md",
+    "sha256": "4ced5806ca9a7c1afb8b129b0664962459b8354f37ec9c4992fbbc9cf6d92863"
+  },
+  {
+    "file": "experience-review/EXPERIENCE-E0DD.md",
+    "sha256": "045a1cdc8e53d86d6a368e642417ab6c038446623454d7e993ff8acae6ad45e2"
+  },
+  {
+    "file": "experience-review/failure-390.jpg",
+    "sha256": "69d58015b329bb73c73dc8791d0bda8fadeaa09efe539edabf9c760d0b917caf"
+  },
+  {
+    "file": "experience-review/failure-console.jpg",
+    "sha256": "372ae4de49d8133fd5133b562fa7b10b3345d4a32087bceb44fa40d11a8a2f4d"
+  },
+  {
+    "file": "experience-review/final/approved-1440.jpg",
+    "sha256": "2589ececb74619205f696ded2b1366f9d21e2515ecd0bf99de434fe906b41240"
+  },
+  {
+    "file": "experience-review/final/container-480.jpg",
+    "sha256": "0594e78d1f8c46cdb82e4a47337d5c4202ee76cee47f6f593acd1d1afe41923c"
+  },
+  {
+    "file": "experience-review/final/correction-390.jpg",
+    "sha256": "6477253dcc33b124450fa84ed4e094a65d0a49d6a125d0e58a04f01d503b21b6"
+  },
+  {
+    "file": "experience-review/final/denied-console.jpg",
+    "sha256": "f20c4012bc3f96cbbd754f36008eb82722ef62dbb8209c3811039c7c66f2aced"
+  },
+  {
+    "file": "experience-review/final/detail-1024.jpg",
+    "sha256": "ed85c31bc113cdcd9c1c769085ef792aedb1edf99247f42bbfc693ed69e29800"
+  },
+  {
+    "file": "experience-review/final/detail-1440.jpg",
+    "sha256": "3b0d02993f403cd8dfa8f28e1c4a3f55ad5d30d359da38c71c990b320cb88f90"
+  },
+  {
+    "file": "experience-review/final/detail-390.jpg",
+    "sha256": "2124244898b4a1e05d6ae3ca04fd2dc5732f8d3ff96cd0ac1c8afbcef0a10127"
+  },
+  {
+    "file": "experience-review/final/empty-390.jpg",
+    "sha256": "f671812b4a517af09175493aaa5c583d27ea7bf45b121d4cbeb93c87b80010b2"
+  },
+  {
+    "file": "experience-review/final/keyboard-focus.jpg",
+    "sha256": "0c1b0e558595533bf9cd3c56832490bdafea56740df7b9ee312ce239740b5dd6"
+  },
+  {
+    "file": "experience-review/final/not-found.jpg",
+    "sha256": "da60d3850cc1faa7deb04b4e9571546db3791b4c8fc93db1025c82c6527e1c86"
+  },
+  {
+    "file": "experience-review/final/queue-1024.jpg",
+    "sha256": "c6f72ab9a9dc50d6acf55d4b1e873acb2c633644146e720c5131e5f65edef111"
+  },
+  {
+    "file": "experience-review/final/queue-1440.jpg",
+    "sha256": "df8d4db0e4a2426ca180dd2d3e75306c8343c4ad3986bac9a19abbdec421b0e4"
+  },
+  {
+    "file": "experience-review/final/queue-390.jpg",
+    "sha256": "d56034b54f32c8eaae4fc856051b04459f10f541c0f4f9f408931f7d4422af88"
+  },
+  {
+    "file": "experience-review/final/responsive-metrics.json",
+    "sha256": "a3706c85111667c18d2db0bb06804792f8c1608dff4da5517c31fa86e8c643c7"
+  },
+  {
+    "file": "experience-review/final/saved-edit-canvas.jpg",
+    "sha256": "f768adbec1403fb064bbca18e5e3eb85627b12dd1259668cc1dd9775d92b2671"
+  },
+  {
+    "file": "experience-review/final/saved-edit-product.jpg",
+    "sha256": "c98061ae5a6dff881abdad7d7a27431ba10e2dc0b6630d5346f7d68e87d2d383"
+  },
+  {
+    "file": "experience-review/final/saved-edit-proof.json",
+    "sha256": "e2ab1d7acc72b034f0d0ddc9273a5256d9c42ff3bcb457eaa676a84b18309f39"
+  },
+  {
+    "file": "experience-review/final/stale-terminal.jpg",
+    "sha256": "183a425c964b6f5231e8619ccae75e6299208bef682b3faab2be2e1a3cb6ebee"
+  },
+  {
+    "file": "experience-review/loading-console.jpg",
+    "sha256": "f2def7f74b4d01df488f57860e1068f1a502d6dab4a7399b5ce145f9cd99c63a"
+  },
+  {
+    "file": "experience-review/long-390.jpg",
+    "sha256": "dbb35c557b3cc53e32b4873a1507014628bc9f3345d12c759e0ef94a14ad1a58"
+  },
+  {
+    "file": "experience-review/missing-console.jpg",
+    "sha256": "37e5a3aba0adbcc68d39dec135088e45024f9431953b1dedf87bae7dcd0e115b"
+  },
+  {
+    "file": "experience-review/not-found.jpg",
+    "sha256": "61ef04ec1514945b0dfa6750c1e90dd4d33d9c53a4b2e35f8af7f8a58792a45e"
+  },
+  {
+    "file": "experience-review/queue-1440.jpg",
+    "sha256": "d087b874d26f8864e30b67fcf47b23d48266cb86f3e2edcb26eaeac88aa73642"
+  },
+  {
+    "file": "experience-review/revision-conflict-product.jpg",
+    "sha256": "43e73beebf154872cea43de0f60918cb0e0adda1482606eab6b1d6ad74d255d6"
+  },
+  {
+    "file": "experience-review/saved-edit-canvas.jpg",
+    "sha256": "5963dea1fef7a990686d36e54e470a8a12ae80e32ebe16ed7dd863d99da0ded1"
+  },
+  {
+    "file": "experience-review/saved-edit-product.jpg",
+    "sha256": "fe02cb127fdc295f7a0116b6e35979d7719d1076dd61ccc3f33722ada0065652"
+  },
+  {
+    "file": "technical-review/app-check-candidate2.txt",
+    "sha256": "5b1cec0e18b1f32d2f0aa468557c9913759d763bdc744661803a33d827489316"
+  },
+  {
+    "file": "technical-review/app-check.txt",
+    "sha256": "5b1cec0e18b1f32d2f0aa468557c9913759d763bdc744661803a33d827489316"
+  },
+  {
+    "file": "technical-review/app-tests-candidate2.txt",
+    "sha256": "4d9a9019af4cafd08972a74fc645b5d74826b7428088156b8e027bbc6e5d5021"
+  },
+  {
+    "file": "technical-review/check-0.txt",
+    "sha256": "41780996406455d2e015d106c763cd1af8fadebc2c3e2ba58aa109d1dd662327"
+  },
+  {
+    "file": "technical-review/check-1.txt",
+    "sha256": "5bae588790d6e82adf999a2a8692533b248cccace0f2330963e54cd024c0c54a"
+  },
+  {
+    "file": "technical-review/check-2.txt",
+    "sha256": "d8fb0ffce5f9293308f7b064052c0777435f5931dcf2e51b66d7283db1bb8e48"
+  },
+  {
+    "file": "technical-review/check-3.txt",
+    "sha256": "bd65a805725be39f9645e5bdd2cb26026e1a75a3173a9997c103ad107f6c411a"
+  },
+  {
+    "file": "technical-review/check-4.txt",
+    "sha256": "7d500641d1d8e94c5aabba7473cf836433dd8992a70d79d5c633d5e17874f905"
+  },
+  {
+    "file": "technical-review/independent-probe.mts",
+    "sha256": "a263699abbc6329acbc4ffb6e068e680ae8875aa6683a1d18d04e98432906110"
+  },
+  {
+    "file": "technical-review/independent-probe.txt",
+    "sha256": "7ad9cff67e294f07bc0202a34b6fb9905c7b6d7f4bbe991f0acf7b463687dfed"
+  },
+  {
+    "file": "technical-review/integration.txt",
+    "sha256": "3fbc734ed964128210de7dc85af33d4ddfc6f175dd8d97e2cbbe5349b833767c"
+  },
+  {
+    "file": "technical-review/parity-correct-cwd.txt",
+    "sha256": "43ddc58d3c39d8d94f68354ae345e861d11774738c6f191229a671dfa26342d7"
+  },
+  {
+    "file": "technical-review/parity.txt",
+    "sha256": "668092d1f0620b391c0e964eef21834567fee914d341e7edc5e47935ff8ea7d0"
+  },
+  {
+    "file": "technical-review/probe-failed-windows-import.txt",
+    "sha256": "c5d6eba1968af3e1fd4eed11162f3e1ddc1693f7f17c870903c6aaeb4bdc42bb"
+  },
+  {
+    "file": "technical-review/process-after.json",
+    "sha256": "8064827387915de77df1df86c70329c88a8608f22499bc61ff4c33717932cc1c"
+  },
+  {
+    "file": "technical-review/process-before.json",
+    "sha256": "8064827387915de77df1df86c70329c88a8608f22499bc61ff4c33717932cc1c"
+  },
+  {
+    "file": "technical-review/process-restart-verdict.txt",
+    "sha256": "e7a27c4957c1eb95126781b6eacb57475d22032fa2d61f9817a8ca16936163e0"
+  },
+  {
+    "file": "technical-review/product-build.txt",
+    "sha256": "39db224463af36a0b35bd724e76a690b73c0a833f4253c25509714e0f4336bce"
+  },
+  {
+    "file": "technical-review/TECHNICAL-REVIEW-01.md",
+    "sha256": "dd1471710b4505884d519c4eefd313f977a45ab4117162e034ee91dfee3114fe"
+  },
+  {
+    "file": "technical-review/TECHNICAL-REVIEW-02.md",
+    "sha256": "78c506e91391dfae21dd0fbdbba4cf5b839d96cb2780785c78e10f12c44606b4"
+  },
+  {
+    "file": "technical-review/ui-editor-build.txt",
+    "sha256": "9fb469f5c45d119a1f67c0f4002f41d56209c8b2e97dd8265ca163a210787c1f"
+  },
+  {
+    "file": "technical-review/ui-svelte-build.txt",
+    "sha256": "0f1e657fdd0b43ee9b01ad0b20d6d461506fb07dc5413268ff4efe6e5637cee8"
+  }
+]

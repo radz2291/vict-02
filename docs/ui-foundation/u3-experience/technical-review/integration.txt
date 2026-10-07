@@ -1,0 +1,9 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/Desktop/RZ/vict-02-u3-experience
+
+
+ Test Files  1 passed (1)
+      Tests  4 passed (4)
+   Start at  15:37:06
+   Duration  3.28s (transform 1.99s, setup 0ms, import 2.49s, tests 82ms, environment 2ms)
+

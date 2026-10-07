@@ -1,0 +1,13 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/Desktop/RZ/vict-02-u3-experience
+
+3:35:39 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:186:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+3:35:40 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:186:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+
+ Test Files  20 passed (20)
+      Tests  131 passed (131)
+   Start at  15:35:30
+   Duration  63.54s (transform 155.69s, setup 0ms, import 276.88s, tests 19.89s, environment 88.03s)
+
