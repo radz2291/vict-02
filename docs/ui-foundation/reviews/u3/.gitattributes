@@ -1,0 +1,4 @@
+# Preserve the imported U3 verifier report and harness bytes exactly as
+# delivered (authored by the independent verifier on Windows).
+U3-VERIFY-01.md -text
+evidence/harness/** -text

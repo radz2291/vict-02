@@ -136,3 +136,46 @@ SHA verification, and the owner checkpoint report. The U3 owner checkpoint
 not infer it. U4 requires a U3 pass AND an authorized U4 handoff. No npm
 publication, merge to main, Studio integration or production activation is
 implied by any U3 outcome.
+
+## Verification plan — EXECUTED (2026-10-07)
+
+Fresh independent verification at the exact pinned candidate
+`cbb3fb6584226c48633a2f3d21bccee674ce59c0` (separate detached checkout; the
+verifier implemented nothing and repaired nothing): **"U3 GATE: PASS WITH
+NON-BLOCKING FINDINGS"** — report imported verbatim as
+[U3-VERIFY-01](reviews/u3/U3-VERIFY-01.md) (sha256
+`9412d96c7335f85618fd53344f039393c56817825f625f38109d6dec58db5a2e`), with the
+verifier's journey harness and 29 screenshots under
+`reviews/u3/evidence/` (bytes preserved via scoped .gitattributes).
+
+- **All eight criteria PASS** on the verifier's own evidence: 109/109
+  independent node probes (domain rules against BOTH adapters, scenario
+  declarations vs the frozen matrix, reset identity/determinism, latency
+  fencing, zero-invocation missing coverage, conformance both adapters, swap
+  identity/contracts); 48-check browser journey (46 pass + 2 resolved as
+  harness artifacts, documented in the report) with 23 screenshots at the
+  required sizes; 9/9 adversarial API attacks refused; clean console sweep.
+- **Real restart reproduced independently**: production build, durable UI
+  approve, force-kill (port dead), on-disk node:sqlite read, fresh process +
+  fresh browser recovery; simulated mode honestly forgets; stale-after-
+  restart and replay refused.
+- Battery: typecheck/check:ui/format clean; renderer 125/125; integration
+  4/4; authoring 66/66; design 12/12; svelte-check 0/2 known; performance
+  reproduced (edit 0.14 ms, reset 0.11 ms, durable write 3.67 ms — within
+  frozen budgets). Diff boundedness: 47 files, all allowed paths; packages/
+  application and packages/sdk untouched by the delta.
+- **F-1 (MINOR, retained)**: the document-level "Approve inspection" control
+  is status-ungated and renders enabled on decided inspections; every click
+  is refused honestly by the boundary (no bypass; state unchanged) — a dead
+  affordance (U3-08 wart). Owner: U3+ UX iteration (Inspector/document
+  surfaces); next check: the next stage touching the inspection document.
+  NOT repaired post-verification: a behavior change after the gate would
+  require affected re-verification for zero boundary risk.
+- Environment notes N-1..N-3 in the report, including N-2: the root unit
+  suite requires built package dists (4 failures in a dist-less fresh
+  checkout; 10/10 reproduced green at identical bytes where dist exists) —
+  recorded for U4 packaging readiness alongside F3.
+
+**Founder checkpoint: prepared.** [U3-WALKTHROUGH](U3-WALKTHROUGH.md) is the
+owner-facing sheet; the owner experience acceptance remains PENDING until
+explicitly given. U4 requires a U3 pass AND an authorized U4 handoff.

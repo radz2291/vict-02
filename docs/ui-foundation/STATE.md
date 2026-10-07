@@ -1,8 +1,8 @@
 # UI foundation — current state
 
-**2026-10-07 — U3 IMPLEMENTED (product realism and durable replacement);
-independent verification is the next gate; owner experience acceptance
-PENDING.** The owner-authorized U3 cycle (U3 only) delivered the complete
+**2026-10-07 — U3 IMPLEMENTED AND INDEPENDENTLY VERIFIED: "U3 GATE: PASS
+WITH NON-BLOCKING FINDINGS" at `cbb3fb6…`; founder checkpoint NEXT; owner
+experience acceptance PENDING.** The owner-authorized U3 cycle (U3 only) delivered the complete
 inspection journey with the rejection → correction → resubmission loop in
 the frozen product host `examples/ui-authoring-proof`; the eight-scenario
 matrix with deterministic resets, fencing and truthful implementation-mode
@@ -16,9 +16,15 @@ file). Shared conformance: both implementations pass
 `runApplicationDataAdapterSuite` over the same fixture. Performance within
 all frozen budgets ([U3-PERFORMANCE](U3-PERFORMANCE.json)); coverage matrix
 [U3-COVERAGE](U3-COVERAGE.md); founder-facing [U3-WALKTHROUGH](U3-WALKTHROUGH.md).
-The fresh independent verification of the exact candidate is the next gate
-(reports will land under `reviews/u3/`). U4, `apps/studio`, Stage 9, merge
-to main, publication and deployment remain unauthorized.
+Fresh independent verification at the exact candidate (separate checkout,
+no repairs): **PASS WITH NON-BLOCKING FINDINGS** — all eight criteria PASS on
+the verifier's own evidence (109/109 node probes, 48-check browser journey,
+real restart reproduced, 9/9 adversarial attacks refused, battery + budgets
+reproduced; report [U3-VERIFY-01](reviews/u3/U3-VERIFY-01.md), sha256
+`9412d96c…`). One MINOR finding retained with owner (F-1 document-level
+approve control status-ungated; every click honestly refused by the
+boundary — U3+ UX iteration). U4, `apps/studio`, Stage 9, merge to main,
+publication and deployment remain unauthorized.
 
 U2 remains CLOSED as described below.
 

@@ -766,6 +766,34 @@ Founder checkpoint: prepared at the verified candidate; U3-WALKTHROUGH.md is
 the owner-facing sheet. U4, apps/studio, Stage 9, merge-to-main, force-push,
 publication and deployment remain unauthorized.
 
+## U3 independent verification record (2026-10-07) — founder checkpoint next
+
+Fresh independent verifier (separate detached checkout, falsification-only,
+no repairs) at the exact candidate `cbb3fb6584226c48633a2f3d21bccee674ce59c0`:
+**"U3 GATE: PASS WITH NON-BLOCKING FINDINGS"** — all eight criteria PASS on
+the verifier's own evidence. Report imported verbatim:
+[U3-VERIFY-01](reviews/u3/U3-VERIFY-01.md) (sha256
+`9412d96c7335f85618fd53344f039393c56817825f625f38109d6dec58db5a2e`,
+bytes preserved via scoped .gitattributes) with the verifier's harness and 29
+screenshots under reviews/u3/evidence/. Highlights: 109/109 independent node
+probes; the two initial journey FAILs resolved as harness artifacts with the
+re-verification documented (J10 approve leg: DOMAIN_CONFLICT at the stale
+revision then approved at the fresh one — exactly the frozen semantics; S1:
+the flagged text is the mandatory honest disclaimer, the only "production"
+occurrence); real restart reproduced independently (force-kill, on-disk
+read, fresh process + fresh browser, negative control); 9/9 adversarial API
+attacks refused; battery and frozen budgets reproduced.
+
+Retained findings with owners: **F-1 (MINOR)** document-level approve control
+status-ungated (dead affordance on decided inspections; every click honestly
+refused; no bypass) — owner U3+ UX iteration, next check the next stage
+touching the inspection document; retained unrepaired to keep the verified
+candidate byte-stable (a post-gate behavior change would demand affected
+re-verification for zero boundary risk). **N-2 (environment)**: the root
+unit suite needs built package dists — next check U4 packaging readiness
+(alongside F3). Founder checkpoint prepared ([U3-WALKTHROUGH](U3-WALKTHROUGH.md));
+owner experience acceptance PENDING. U4 remains unauthorized.
+
 ## Future evidence entry format
 
 Identity: repository, branch, full base/candidate/reviewer SHAs, environment and contract pins.
