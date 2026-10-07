@@ -37,10 +37,16 @@ honestly labelled as two patterns.
 
 - **Canonical source**: application definition declares an action
   (`review.approve`, input contract via `defineContract`) and the screen's
-  composition references it; the registered surface renders the existing
-  `ActionButton` (pending "Working…" + `aria-busy` + disabled-while-pending,
-  declared-outcome `ActionFeedback`, focus restore) — plus one document-route
-  button (element + `click → invokeAction`) to show authored-element actions.
+  composition references it; the registered surface implements the action
+  choreography by composing **public exports only**: `Button` +
+  `ActionFeedback` (@victframework/ui-svelte root) and the `actionFeedback`
+  result→feedback mapper (@victframework/ui, re-exported from feedback.js) —
+  pending "Working…" state with `aria-busy`, disabled-while-pending, focus
+  restore. The in-repo reference implementation for this exact choreography
+  is `ActionButton.svelte` (NOT publicly exported; it stays internal — the
+  consumer re-implements the pattern from the exported pieces, it does not
+  deep-import). Plus one document-route button (element +
+  `click → invokeAction`) to show authored-element actions.
 - **Exposed properties**: label, variant, disabled (expression-bound to
   busy/permission state in documents; prop in P3).
 - **Selection/ownership**: P3 surfaces are identified by componentId +
@@ -61,9 +67,10 @@ honestly labelled as two patterns.
 
 - **Canonical source**: registered surface `reviewChecklist` (componentId
   `u4.checklist`, revision `1`) declared in the application; it composes the
-  **catalog `Checkbox`** (bits-ui) inside `ComponentScope`/`ControlScope`
-  styling; checked value is component-owned Svelte state; **Acknowledge &
-  submit** dispatches the declared `checklist.submit` action with
+  **catalog `Checkbox`** (bits-ui) under `ControlScope` styling
+  (`ControlScope` + `catalog.css` are the public styling contract); checked
+  value is component-owned Svelte state; an **Acknowledge & submit** control
+  dispatches the declared `checklist.submit` action with
   `{ acknowledged: boolean, noteIds: string[] }` through `useVictActions`.
 - **Value connection**: `bind:checked` → component state → submit payload.
   This is the honest catalog-reuse route; a document-route checkbox
@@ -108,9 +115,11 @@ honestly labelled as two patterns.
     identity (value → state → declared action input).
   - Dialog: registered surface using the catalog `Dialog` (bits-ui):
     opens from a declared-action success (`assignment.request`), focus moves
-    into the dialog on open (bits-ui focus scope), portal renders to
-    `document.body`, Escape/overlay close returns focus to the trigger;
-    dialog confirms into a second declared action (`assignment.confirm`).
+    into the dialog on open (bits-ui focus scope), portal renders to the
+    **ControlScope root** (`BitsConfig defaultPortalTo` — product tokens and
+    catalog styling stay with the controls; NOT `document.body`), Escape and
+    overlay close return focus to the trigger; the dialog confirms into a
+    second declared action (`assignment.confirm`).
 - **Persistence**: dialog content/labels are definition data; the value the
   dialog submits is persisted via the action's input contract + resource
   update.

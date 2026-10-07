@@ -1,4 +1,4 @@
-# U4 component reuse matrix (2026-07-10, preparation phase)
+# U4 component reuse matrix (2026-10-07, preparation phase)
 
 **Method and honesty legend.** This matrix was produced by read-only source
 inspection of `codex/ui-foundation-u4-handoff` at the U3 closure records
@@ -25,7 +25,7 @@ Support levels used:
 | Package | Consumable as | Build state | Key exports (public) |
 | --- | --- | --- | --- |
 | `@victframework/ui` | dist (`files: ["dist"]`) | builds clean (root build) | document model (`UiDocument`, `vict.ui-document@1`), expressions, compiler (`compile` → `vict.ui-render-plan@1`), edit ops (`applyUiEdit`, `UiEditCommand*`), diagnostics, scenario |
-| `@victframework/ui-svelte` | **source exports** (`exports` → `./src/*`, `files` includes `src`) | n/a (source); `svelte-check` 0/2 retained warnings | `DocumentHost`, `RenderNode` (via document/), `renderVictApplication` (generic app host), built-in components (Button, ActionButton, ActionFeedback, Select, AppShell, Tabs, FormField, FormSurface, RecordsTable, Text, StatusBadge, Overlay/OverlaySurface, Popover, Tooltip, …), `ComponentSlot` + `useVictActions`, `catalog/*` (41 bits-ui recipes), `ControlScope`, `styles.css`/`catalog.css`, extension bridge types + resolver, `form-values` |
+> | `@victframework/ui-svelte` | **source exports** (`exports` → `./src/*`, `files` includes `src`) | n/a (source); `svelte-check` 0/2 retained warnings | **public root exports** (src/index.ts): DocumentHost, DocumentRenderNode, renderVictApplication, createVictRenderer, Button, ActionFeedback, Feedback, Select, AppShell, Tabs, Form, FormField, Overlay, Popover, Tooltip, RecordsTable, Text, StatusBadge, DataView, List, Detail, Chart, Conversation, Count, ComponentSlot, ControlScope, VitApp + registry/diagnostic types. **Internal (not exported)**: ActionButton, FormSurface, OverlaySurface, form-values, document/ internals. `catalog/*` sub-exports: **38 recipe modules** re-exporting bits-ui parts (catalog-coverage.json records **41 families**: 30 "styled and usable", 8 "supported direct composition", 3 "deferred"). Styles: `styles.css`/`catalog.css`. Extension bridge types + resolver |
 | `@victframework/ui-editor` | dist declared; **build FAILS** — four TS2307 Svelte-declaration errors (accepted U2 F3, re-confirmed in U3 records V-F2) | ❌ | (source) `EditorCanvas` (extension forwarding), `Inspector` (Content/Style/Behavior; `connectInteraction` authoring), `Layers`, `HistoryPanel`, `commands`, `bridge` |
 | `@victframework/ui-preview` | dist | builds clean | preview session orchestration, `PreviewDataAdapterPort` (U3) |
 | `@victframework/application` | dist | builds clean | `createComponentRegistry` (versioned trusted-component registry), application compiler, `runApplicationDataAdapterSuite` |
@@ -57,7 +57,10 @@ via `ControlScope` + `catalog.css` / `styles.css`.
 - **Caveat**: `catalog/*` files are re-exports of `bits-ui` parts (e.g.
   `catalog/button.ts`, `catalog/checkbox.ts`, `catalog/select.ts`,
   `catalog/dialog.ts`); they are headless — VICT styling comes from
-  `ControlScope`/`catalog.css`, not from the recipe itself.
+  `ControlScope`/`catalog.css`, not from the recipe itself. Dialog-family
+  portals render to the **ControlScope root** (`BitsConfig defaultPortalTo`),
+  keeping product tokens and catalog styling with the controls — not to
+  `document.body`.
 
 ### P2 — document element route (authored native elements)
 

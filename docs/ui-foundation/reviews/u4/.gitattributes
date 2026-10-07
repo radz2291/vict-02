@@ -1,0 +1,3 @@
+# Preserve the imported independent handoff-review report bytes exactly as
+# delivered (authored by the independent reviewer on Windows).
+U4-HANDOFF-REVIEW-01.md -text

@@ -33,8 +33,12 @@ untouched.
 - **Allowed paths**:
   - `examples/u4-consumer/` (NEW — the independent clean consumer; the only
     new example),
-  - `packages/ui-editor/` — **type-level dist-build repair only** (F3: four
-    TS2307 Svelte-declaration errors; no behavior change),
+  - `packages/ui-editor/` — **packaging repair only** (F3): fix the four
+    TS2307 Svelte-declaration errors AND give the package an emitting build
+    (its build is currently `noEmit: true` typecheck-only and cannot produce
+    dist at all); no editor behavior/logic change. Fallback if emit-based
+    dist proves disruptive: adopt the ui-svelte-style source-exports
+    packaging — an explicit, recorded choice (see §10), not a silent one,
   - `packages/*/test/`, `scripts/` — new packaging/consumer tests and the
     pack script,
   - `docs/ui-foundation/` — records (coverage, walkthrough, review reports),
@@ -91,8 +95,8 @@ Pack (from the implementation branch, after `npm run build`):
 - `@victframework/application` (dist) — registry, application compiler,
   conformance suite
 - `@victframework/sdk` (dist) — definition DSL
-- `@victframework/ui-editor` (dist — **after the F3 repair**) — editor
-  modules
+- `@victframework/ui-editor` (**after the F3 packaging repair** — emitting
+  dist, or source-exports fallback per §10) — editor modules
 - `@victframework/ui-preview` (dist) — preview orchestration
 - transitive workspace deps required by the above (contracts, kernel,
   runtime, control, store-sqlite / appdata-sqlite if the consumer persists
@@ -160,8 +164,22 @@ recorded numbers describe this one bounded exercise.
   isolated at the exact candidate) owns the U4-07 gate; the manager repairs
   in-scope findings; affected-surface rechecks follow every repair; failed
   reports are preserved verbatim (`reviews/u4/`).
-- This handoff itself was reviewed at preparation time:
-  [U4-HANDOFF-REVIEW-01](reviews/u4/U4-HANDOFF-REVIEW-01.md).
+- This handoff itself was independently reviewed at preparation time
+  (documentation-only; reviewer authored nothing in it):
+  [U4-HANDOFF-REVIEW-01](reviews/u4/U4-HANDOFF-REVIEW-01.md) (sha256
+  `0b4c3ef3c0b118d89a46cd1066ab639abe2ce1d42530c7f8b03fdd71d777a97e`,
+  imported verbatim) — **round 1 verdict: FAIL (revision required)** at
+  candidate `ebc3461…`: F-1 blocker (this document cited its review report
+  before the report existed — resolved by importing it with this repair
+  commit), F-2 blocker (ui-editor packaging posture misstated: source-only
+  package, `noEmit` typecheck-only build — §allowed-paths and carry-forwards
+  corrected), F-3 blocker (design §1.1 used the non-exported ActionButton —
+  redesigned onto public exports Button + ActionFeedback + actionFeedback),
+  F-4..F-7 minor (public-export list accuracy; 38 recipes vs 41 coverage
+  families; Dialog portal target = ControlScope root; stray "ComponentScope";
+  date transposition), F-8 process (branch now pushed). All package-
+  capability claims in the documents were verified true by the reviewer.
+  Affected recheck: round 2 over the repaired documents.
 
 ## 9. Founder checkpoint and stop boundary
 
@@ -177,7 +195,7 @@ new authorization.
 
 | Item | Origin | U4 obligation | Next check |
 | --- | --- | --- | --- |
-| ui-editor dist build fails (four TS2307 Svelte declarations) | U2 F3, re-confirmed U3 (V-F2) | **repair as in-scope package maintenance** (type-level; no behavior change); record before/after | U4-01/U4-02 packaging + consumer editor mount |
+| ui-editor cannot produce a consumable build (four TS2307 declaration errors AND a `noEmit` typecheck-only build script) | U2 F3, re-confirmed U3 (V-F2), sharpened by handoff review round 1 | **repair as in-scope package maintenance**: emitting build (repo dist conventions or documented source-exports fallback) + the four declaration fixes; no behavior change; record before/after | U4-01/U4-02 packaging + consumer editor mount |
 | Fresh-checkout tests require built dependency artifacts (unit suite fails without dists) | U3 N-2 | pack script + consumer setup must encode the build order; record in README | U4-01 |
 | Extension/authoring evidence to reproduce if the bridge changes | U3 combined verifier (forgery matrix, state-values tests) | bridge is NOT changed in U4; if any bridge file changes, reproduce `document-extensions.test.ts` + forgery matrix + state-values tests | pre-merge check |
 | Saved-source diagnostic wiped on detail first mount (fails safe; studio discloses) | U3 V-F1 | consumer implements the disclosed-fallback correctly; the diagnostic-wipe fix remains owned by U3+ product-host UX (NOT a U4 obligation) | U4-05 walkthrough (consumer-side); V-F1 fix at next product-host pass |
