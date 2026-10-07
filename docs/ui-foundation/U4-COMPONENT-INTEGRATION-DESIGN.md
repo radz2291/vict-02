@@ -189,7 +189,8 @@ route P3 covers the required proofs with zero frozen-contract changes.
    document-native catalog integration (a contract amendment, §5). The design
    recommends the former.
 2. **ui-editor dist repair (F3) is authorized as in-scope U4 package
-   maintenance** (type-level fixes only; no behavior change) — without it
+   maintenance**: an emitting build plus the four TS2307 declaration fixes;
+   no editor behavior change — without it
    U4-01/U4-02 editor-module reuse cannot pass.
 3. **Packed-tarball install as the isolation mechanism** (`npm pack` the
    closure set; consumer installs from copies — no workspace links, no

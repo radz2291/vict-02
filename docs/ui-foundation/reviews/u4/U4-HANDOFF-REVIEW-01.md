@@ -89,3 +89,43 @@ Additional spot-checks that **passed**: `catalog.css` IS a declared export (`./s
 All three blockers are documentation-repairable at a new docs tip; **no source-code defect was found** — every tested capability claim about the packages themselves verified true, and the plan's structure (criteria mapping, isolation design, honesty legend, authority boundaries, founder checkpoint) is sound. Required for re-review: land the review artifact and repair F-1/F-2/F-3 (F-4..F-7 recommended in the same pass), push the tip (F-8), then a fresh verification of the repaired bytes can credibly return PASS.
 
 *No secrets in any artifact. No builds, servers, or runtime proofs were run. Working tree left untouched; the only file written is this report at the supervisor-designated output path.*
+
+---
+
+## Round 2 (affected recheck)
+
+- **Scope:** affected surfaces only (F-1..F-8 from round 1), same read-only rules; no full re-review.
+- **Tested SHA:** `f6bca52b5c5b61c26560318379ffc420eb8d4e64` on `codex/ui-foundation-u4-handoff` (worktree clean; single docs-only commit on `ebc3461`). Diff touches exactly: the three handoff docs, `reviews/u4/.gitattributes` (new, scoped `U4-HANDOFF-REVIEW-01.md -text`), and the imported review report.
+
+### Per-finding disposition
+
+**F-1 — REPAIRED, verified.** `git show f6bca52:docs/ui-foundation/reviews/u4/U4-HANDOFF-REVIEW-01.md` is **byte-identical to the round-1 report I wrote** (SHA-256 `0b4c3ef3c0b118d89a46cd1066ab639abe2ce1d42530c7f8b03fdd71d777a97e` on both blob and my retained copy; 91 lines each; verified BEFORE any edit of my local copy). Scoped `.gitattributes -text` present. U4-HANDOFF §8 now records the round-1 **FAIL (revision required)** verdict at `ebc3461` with the report's sha256 and an accurate F-1..F-8 summary. The citation is now truthful.
+
+**F-2 — PARTIALLY REPAIRED.** The operative sections are corrected and truthful: §1 allowed-paths now states the real posture (`noEmit: true` typecheck-only build, cannot produce dist) and scopes the repair as emitting build + four TS2307 fixes with a documented source-exports fallback; §4 pack list and the §10 carry-forward row match. **But the sweep the recheck demanded does not come back clean — three superseded statements remain:**
+1. `U4-HANDOFF.md:221` — the §12 **copy-paste authorization prompt** still says "repair the ui-editor dist build (type-level F3)", contradicting the corrected §1 in the same file. This is the operative owner-facing text; authorizing off it recreates the round-1 stall (type-level fix → no dist → pack fails).
+2. `U4-COMPONENT-INTEGRATION-DESIGN.md:192` — §6 decision 2 still says "**type-level fixes only**; no behavior change".
+3. `U4-COMPONENT-REUSE-MATRIX.md:29` — the §1 ui-editor row is **untouched** and still says "**dist declared**; build FAILS", the exact false statement round 1 flagged.
+
+**F-3 — REPAIRED, verified.** Design §1.1 now composes public exports only: `Button` (ui-svelte root `index.ts:17`), `ActionFeedback` (root `index.ts:20`), `actionFeedback` (public via `packages/ui/src/index.ts:138` `export * from './feedback.js'`); `ActionButton.svelte` is explicitly cited as the NOT-exported in-repo reference implementation and the text forbids deep imports. No deep import remains in the design. All named exports verified public at `f6bca52`.
+
+**F-4 — REPAIRED, with two new nits.** The matrix §1 ui-svelte row now lists the actual root exports with ActionButton/FormSurface/OverlaySurface/form-values marked internal, and says "38 recipe modules / 41 recorded coverage families (30/8/3)" — all accurate against `src/index.ts` and `catalog-coverage.json`. Nits: (a) the row is prefixed `> ` (blockquote) — line 28 of the matrix is `> | …`, so the corrected row is no longer part of the markdown table and renders as plain blockquote text; (b) `ControlScope` is listed under "public root exports (src/index.ts)" but it is **not** in the root index — it is public via the `./controls` subpath (`controls.ts:2`). Public, wrong shelf.
+
+**F-5 — REPAIRED, verified.** Portal target now stated as the **ControlScope root** (`BitsConfig defaultPortalTo`, "NOT `document.body`") in both matrix P1 caveat and design §1.4 — matches `ControlScope.svelte`.
+
+**F-6 — REPAIRED, verified.** No live "ComponentScope" remains; the only occurrence is the truthful round-1 finding record inside §8's verdict summary.
+
+**F-7 — REPAIRED, verified.** Matrix date is now 2026-10-07.
+
+**F-8 — NOT REPAIRED; made worse.** §8 now asserts "F-8 process (**branch now pushed**)". `git ls-remote origin | grep u4-handoff` → **0 refs** at recheck time; the branch is still local-only. The repair commit introduces a new claim the remote does not support — the same assert-before-evidence class as round-1 F-1. Repair: push the branch (then the claim becomes true) or reword to "push pending".
+
+### New-claims audit (item 5)
+
+Beyond the F-8 "now pushed" claim: §8's sha256 pin is correct; the "imported verbatim" claim is verified byte-for-byte; the §8 summary of round-1 findings is accurate; design/matrix rewrites introduce no capability claims beyond what round 1 already verified (all named exports re-verified public). The §12/design §6.2/matrix-row leftovers are stale rather than new, but they leave the document set internally inconsistent on the exact point F-2 flagged.
+
+### Round-2 disposition
+
+Repaired and verified: F-1, F-3, F-5, F-6, F-7 (and F-4's core). Remaining for one mechanical docs revision: the three F-2 leftovers (§12 prompt, design §6.2, matrix §1 ui-editor row — plus the `> ` blockquote table break and the ControlScope shelf nit while there), and the false "branch now pushed" record (push or reword). Because the operative authorization prompt still carries the superseded repair scope, the set is not yet implementation-ready under the same standard round 1 applied.
+
+**U4 HANDOFF REVIEW ROUND 2: FAIL** (revision required — narrow: F-2 leftovers + F-8 record; everything else verified repaired)
+
+*Round 2 method: read-only git/grep/read at `f6bca52`; no builds, no repairs; report updated by appending this section only; round-1 content above preserved verbatim. The pre-append hash of this file matched the imported blob (`0b4c3ef3…`), so the verbatim-import verification was performed against unmodified round-1 bytes.*

@@ -219,7 +219,8 @@ new authorization.
 > Authorize U4 for radz2291/vict-02 per docs/ui-foundation/U4-HANDOFF.md at
 > its recorded tip (PREPARED — IMPLEMENTATION NOT AUTHORIZED → AUTHORIZED).
 > Implement on a new isolated branch codex/ui-foundation-u4 from the U3
-> closure lineage: repair the ui-editor dist build (type-level F3), pack the
+> closure lineage: repair ui-editor packaging (F3: emitting build + the four
+> TS2307 declaration fixes, per the handoff's allowed-paths scope), pack the
 > closure set, build examples/u4-consumer strictly from packed artifacts
 > (no workspace links, source aliases or original-example imports), deliver
 > the representative component proof (Button declared-action
