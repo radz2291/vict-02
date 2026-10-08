@@ -1,10 +1,12 @@
 <script lang="ts">
   import { tick } from 'svelte';
-  import type { UiDocument, UiStyleValue, UiExtensionDescriptor, UiOutputBinding } from '@victframework/ui';
+  import type { UiDocument, UiStyleValue, UiExtensionDescriptor, UiOutputBinding, UiExpression, UiValueType, UiFieldTypes } from '@victframework/ui';
+  import { repeatExpressionFields } from '@victframework/ui';
   type UiPseudoState = 'hover' | 'focus' | 'active' | 'disabled';
   import { resolveOccurrence } from './occurrence.js';
   import { connectInteraction, bindExpression, setAttribute, setConditionalStyle, setOutputBinding, setStyle, setTextLiteral, type TransactionDraft } from './commands.js';
   import { nodeLabel, sourceBreadcrumb, editableStyle, sourceStyles, styleText, styleGroups, type EditorLabels } from './inspector-ux.js';
+  import ExpressionEditor from './ExpressionEditor.svelte';
   import InspectorControl from './InspectorControl.svelte';
   import InspectorSpacing from './InspectorSpacing.svelte';
   interface Props {
@@ -17,9 +19,10 @@
     /** Registered component descriptors: descriptor-driven editors (amendment §3.6). */
     componentDescriptors?: readonly UiExtensionDescriptor[];
     /** View-field types for array-prop reference binding (type-filtered). */
-    knownViewFields?: Readonly<Record<string, string>>;
+    knownViewFields?: UiFieldTypes;
+    actionInputs?: Readonly<Record<string, Readonly<Record<string, UiValueType>>>>;
   }
-  let { document, selectedOccurrence, onApply, lastIssues = [], knownActionIds = [], knownRouteIds = [], knownTokenIds = [], styleConditions = [], readEffective, labels = {}, componentDescriptors = [], knownViewFields = {} }: Props = $props();
+  let { document, selectedOccurrence, onApply, lastIssues = [], knownActionIds = [], knownRouteIds = [], knownTokenIds = [], styleConditions = [], readEffective, labels = {}, componentDescriptors = [], knownViewFields = {}, actionInputs = {} }: Props = $props();
   // DOM measurements must run again after the canvas consumes new source/selection.
   let measurementVersion = $state(0);
   $effect(() => {
@@ -76,65 +79,75 @@
   // Descriptor-driven editors (amendment §3.6): one control per declared
   // prop, one output row per declared output.
   const componentNode = $derived(node?.kind === 'component' ? node : undefined);
-  const componentDescriptor = $derived(
-    componentNode ? componentDescriptors.find((entry) => entry.id === componentNode.definitionId) : undefined,
-  );
-  const stateKeysTyped = $derived(
-    Object.values(document.localState).map((decl) => ({ key: decl.key, type: decl.type })),
-  );
-  function propLiteralRaw(descriptor2: UiExtensionDescriptor, name: string): string {
-    void descriptor2;
-    const expression = componentNode?.props?.[name];
-    if (expression === undefined) return '';
-    if (expression.type === 'literal') return String(expression.value ?? '');
-    if (expression.type === 'ref') return expression.path;
-    return '';
-  }
-  function applyPropLiteral(name: string, type: string, raw: string) {
-    if (!componentNode) return;
-    let expression: UiExpression;
-    if (raw.startsWith('state.') || raw.startsWith('view.') || raw.startsWith('record.')) {
-      expression = { type: 'ref', path: raw };
-    } else if (type === 'number') {
-      const parsed = Number(raw);
-      expression = { type: 'literal', value: Number.isFinite(parsed) ? parsed : raw };
-    } else if (type === 'boolean') {
-      expression = { type: 'literal', value: raw === 'true' };
-    } else {
-      expression = { type: 'literal', value: raw };
+  const componentDescriptor = $derived.by(() => {
+    if (!componentNode) return undefined;
+    const candidates = componentDescriptors.filter(entry => entry.id === componentNode.definitionId);
+    const revision = componentNode.revision ?? candidates.at(-1)?.revision;
+    const matches = candidates.filter(entry => entry.revision === revision);
+    return matches.length === 1 ? matches[0] : undefined;
+  });
+  const stateKeysTyped = $derived(Object.entries(document.localState).map(([key, decl]) => ({ key, type: decl.type })));
+  function refs(type: string, payload?: string): string[] {
+    const compatible = (actual: string) => actual === type || (type === 'array' && (actual === 'stringList' || actual === 'numberList'));
+    const contains = (id: string, sought: string, seen = new Set<string>()): boolean => {
+      if (id === sought) return true;
+      if (seen.has(id)) return false;
+      seen.add(id);
+      const candidate = document.nodes[id];
+      const children = candidate?.kind === 'element' || candidate?.kind === 'portal' ? candidate.children
+        : candidate?.kind === 'component' ? Object.values(candidate.slots ?? {}).flatMap(fill => fill.children)
+        : candidate?.kind === 'repeat' ? [candidate.templateRoot]
+        : candidate?.kind === 'slot' ? candidate.fallback ?? []
+        : candidate?.kind === 'conditional' ? candidate.branches.flatMap(branch => branch.children) : [];
+      return children.some(child => contains(child, sought, seen));
+    };
+    const definition = componentNode && Object.values(document.componentDefinitions).find(entry => contains(entry.root, componentNode.id));
+    const references = definition
+      ? definition.props.filter(prop => compatible(prop.type)).map(prop => `prop.${prop.name}`)
+      : [
+        ...stateKeysTyped.filter(entry => compatible(entry.type)).map(entry => `state.${entry.key}`),
+        ...Object.entries(knownViewFields).filter(([name, actual]) => !name.includes('.') && compatible(actual)).flatMap(([name]) => [`view.${name}`, `record.${name}`]),
+      ];
+    // Offer repeat fields only in the authored lexical template containing this instance.
+    if (!definition) for (const candidate of Object.values(document.nodes)) {
+      if (candidate.kind === 'repeat' && componentNode && contains(candidate.templateRoot, componentNode.id)) {
+        for (const [name, actual] of Object.entries(repeatExpressionFields(candidate.collection, knownViewFields))) {
+          if (compatible(actual)) references.push(`repeat.${candidate.itemName}.${name}`);
+        }
+      }
     }
+    if (payload !== 'void' && payload !== undefined && compatible(payload)) references.unshift('$output');
+    return [...new Set(references)];
+  }
+  function applyProp(name: string, expression?: UiExpression): void {
+    if (!componentNode) return;
     onApply(bindExpression({ requestId: request(), nodeId: componentNode.id, target: { kind: 'prop', name }, expression }));
   }
-  function stateKeysOfType(type: string): string[] {
-    if (type === 'array') {
-      return [
-        ...stateKeysTyped.filter((entry) => entry.type === 'stringList' || entry.type === 'numberList').map((entry) => `state.${entry.key}`),
-        ...Object.entries(knownViewFields).filter(([, fieldType]) => fieldType === 'array').map(([name]) => `view.${name}`),
-      ];
-    }
-    const iso = type === 'isoDate' || type === 'isoTime';
-    return stateKeysTyped
-      .filter((entry) => entry.type === type || (iso && (entry.type === 'isoDate' || entry.type === 'isoTime')))
-      .map((entry) => `state.${entry.key}`);
-  }
-  function outputBindingRaw(output: string): UiOutputBinding | undefined {
-    return componentNode?.outputs?.[output];
-  }
-  function applySetStateBinding(output: string, key: string) {
-    if (!componentNode || key === '') return;
-    const binding: UiOutputBinding = { setState: { key, value: { type: 'ref', path: '$output' } } };
-    onApply(setOutputBinding({ requestId: request(), nodeId: componentNode.id, output, binding }));
-  }
-  function applyActionBinding(output: string, actionId: string) {
-    if (!componentNode || actionId === '') return;
-    const binding: UiOutputBinding = { invokeAction: { actionId } };
-    onApply(setOutputBinding({ requestId: request(), nodeId: componentNode.id, output, binding }));
-  }
-  function clearBinding(output: string) {
+  function outputBindingRaw(output: string): UiOutputBinding | undefined { return componentNode?.outputs?.[output]; }
+  function commitBinding(output: string, binding?: UiOutputBinding): void {
     if (!componentNode) return;
-    onApply(setOutputBinding({ requestId: request(), nodeId: componentNode.id, output }));
+    onApply(setOutputBinding({ requestId: request(), nodeId: componentNode.id, output, binding }));
   }
-  const nearest = $derived(report?.instancePath.at(-1));
+  function applySetStateBinding(output: string, key: string): void {
+    if (!key) return;
+    const prior = outputBindingRaw(output);
+    commitBinding(output, { setState: { key, ...(prior && 'setState' in prior && prior.setState.value ? { value: prior.setState.value } : {}) } });
+  }
+  function applyActionBinding(output: string, actionId: string): void {
+    if (!actionId) return;
+    const prior = outputBindingRaw(output);
+    commitBinding(output, { invokeAction: { actionId, ...(prior && 'invokeAction' in prior ? { input: prior.invokeAction.input } : {}) } });
+  }
+  function mapInput(output: string, name: string, expression?: UiExpression): void {
+    const prior = outputBindingRaw(output);
+    if (!prior || !('invokeAction' in prior)) return;
+    const input = { ...prior.invokeAction.input };
+    if (expression === undefined) delete input[name]; else input[name] = expression;
+    commitBinding(output, { invokeAction: { ...prior.invokeAction, input } });
+  }
+  function clearBinding(output: string): void { commitBinding(output); }
+  // Descriptor slot ownership is composition, not a shared stored-definition body.
+  const nearest = $derived(report?.instancePath.filter(step => document.componentDefinitions[step.definitionId] !== undefined).at(-1));
   const owner = $derived(nearest?.definitionId);
   const shared = $derived(owner !== undefined);
   const styleSourceId = $derived(node?.kind === 'text' ? Object.values(document.nodes).find(n => n.kind === 'element' && n.children.includes(node.id))?.id ?? node.id : node?.id ?? '');
@@ -142,7 +155,7 @@
   const targetNode = $derived(document.nodes[target]);
   const count = $derived(Object.values(document.nodes).filter(n => n.kind === 'component' && n.definitionId === owner).length);
   const textNode = $derived(node?.kind === 'text' ? node : node?.kind === 'element' ? node.children.map(id => document.nodes[id]).find(n => n?.kind === 'text') : undefined);
-  const canStyle = $derived(targetNode?.kind === 'element' || targetNode?.kind === 'component');
+  const canStyle = $derived(targetNode?.kind === 'element' || (targetNode?.kind === 'component' && (!componentDescriptor || (componentDescriptor.styleTargets?.length ?? 0) > 0)));
   const unsupportedTarget = $derived(!!(condition || pseudo) && targetNode?.kind !== 'element');
   const breadcrumb = $derived(node ? sourceBreadcrumb(document, node.id, labels) : []);
   const location = $derived([...(report?.instancePath.map(step => nodeLabel(document, step.sourceNodeId, labels)) ?? []), ...breadcrumb]);
@@ -245,43 +258,19 @@
       </section>
       {#if componentNode && componentDescriptor}
         <section><h3>Component properties</h3>
-          <p class="muted">Descriptor {componentDescriptor.id} · rev {componentDescriptor.revision}. A value starting with <code>state.</code>/<code>view.</code> binds by reference; anything else is a literal.</p>
+          <p class="muted">Descriptor {componentDescriptor.id} · revision {componentDescriptor.revision}.</p>
           {#each componentDescriptor.props as propDecl (propDecl.name)}
-            <label>{propDecl.name} <span class="prop-type">({propDecl.type})</span>
-              {#if propDecl.type === 'boolean'}
-                <select
-                  aria-label={`${propDecl.name} value`}
-                  value={propLiteralRaw(componentDescriptor, propDecl.name) || 'false'}
-                  onchange={(e) => applyPropLiteral(propDecl.name, 'boolean', e.currentTarget.value)}
-                >
-                  <option value="false">false</option>
-                  <option value="true">true</option>
-                </select>
-              {:else}
-                <input
-                  aria-label={`${propDecl.name} value`}
-                  value={propLiteralRaw(componentDescriptor, propDecl.name)}
-                  placeholder={propDecl.type === 'array'
-                    ? (stateKeysOfType('array')[0] ?? 'bind an array reference, e.g. view.options')
-                    : (propDecl.default !== undefined ? String(propDecl.default) : '')}
-                  onkeydown={(e) => { if (e.key === 'Enter') applyPropLiteral(propDecl.name, propDecl.type, (e.currentTarget as HTMLInputElement).value); }}
-                />
-                {#if propDecl.type === 'array' || stateKeysOfType(propDecl.type).length > 0}
-                  <select
-                    aria-label={`${propDecl.name} reference`}
-                    value=""
-                    onchange={(e) => { if (e.currentTarget.value !== '') applyPropLiteral(propDecl.name, propDecl.type, e.currentTarget.value); }}
-                  >
-                    <option value="">Bind a reference…</option>
-                    {#each stateKeysOfType(propDecl.type) as reference (reference)}<option value={reference}>{reference}</option>{/each}
-                  </select>
-                {/if}
-              {/if}
-            </label>
+            {#key `${componentNode.id}:${propDecl.name}`}
+              <ExpressionEditor label={propDecl.name} type={propDecl.type} value={componentNode.props?.[propDecl.name]}
+                defaultValue={propDecl.default} references={refs(propDecl.type)} onCommit={expression => applyProp(propDecl.name, expression)} />
+            {/key}
           {/each}
         </section>
       {/if}
     {:else if tab === 'Style'}
+      {#if componentDescriptor}
+        <p>Instance styling targets {componentDescriptor.styleTargets?.[0] ?? 'no exposed part'}. {componentDescriptor.inspectionLimits?.join(' ') ?? ''}</p>
+      {/if}
       <details class="context" open={!!(condition || pseudo)}><summary>Editing · {styleConditions.find(c => c.id === condition)?.label ?? (condition || 'Base · all sizes')}{pseudo ? ` · ${pseudo}` : ' · normal'}</summary><section><label>Editing condition<select aria-label="Style target" value={condition} onchange={e => condition = e.currentTarget.value}><option value="">Base · all sizes</option>{#each styleConditions as c}<option value={c.id}>{c.label}</option>{/each}</select></label>
         <label>Element state<select aria-label="Pseudo state" value={pseudo ?? ''} onchange={e => pseudo = (e.currentTarget.value || undefined) as UiPseudoState | undefined}><option value="">Normal</option>{#each ['hover', 'focus', 'active', 'disabled'] as p}<option value={p}>{p}</option>{/each}</select></label>
         <p>{condition ? 'Edits are saved in this condition. Resize the preview to test its query.' : 'Base styling applies at every size.'} {pseudo ? `Editing ${pseudo}; this does not force the browser into that state.` : ''}</p>
@@ -317,37 +306,39 @@
               <strong>{output.name}</strong>
               <span class="prop-type">({output.payload})</span>
               {#if output.description}<p class="muted">{output.description}</p>{/if}
-              {#if binding && 'setState' in binding}
-                <p>Set state <code>{binding.setState.key}</code>
-                  {#if binding.setState.value && binding.setState.value.type === 'ref' && binding.setState.value.path === '$output'} from the emitted payload{/if}</p>
-                <button type="button" onclick={() => clearBinding(output.name)}>Remove connection</button>
-              {:else if binding && 'invokeAction' in binding}
-                <p>Run action <code>{binding.invokeAction.actionId}</code></p>
-                <button type="button" onclick={() => clearBinding(output.name)}>Remove connection</button>
-              {:else}
+              {#if output.payload !== 'void'}
                 <label>Set state
-                  <select
-                    aria-label={`${output.name} state target`}
-                    value=""
-                    onchange={(e) => { applySetStateBinding(output.name, e.currentTarget.value); }}
-                  >
+                  <select aria-label={`${output.name} state target`} value={binding && 'setState' in binding ? binding.setState.key : ''}
+                    onchange={event => applySetStateBinding(output.name, event.currentTarget.value)}>
                     <option value="">Choose a state key…</option>
-                    {#each stateKeysTyped.filter((entry) => entry.type === output.payload) as entry (entry.key)}
-                      <option value={entry.key}>{entry.key} ({entry.type})</option>
-                    {/each}
-                  </select>
-                </label>
-                <label>Run action
-                  <select
-                    aria-label={`${output.name} action`}
-                    value=""
-                    onchange={(e) => { applyActionBinding(output.name, e.currentTarget.value); }}
-                  >
-                    <option value="">Choose an action…</option>
-                    {#each knownActionIds as id (id)}<option value={id}>{labels.actions?.[id] ?? id}</option>{/each}
+                    {#each stateKeysTyped.filter(entry => entry.type === output.payload) as entry (entry.key)}<option value={entry.key}>{entry.key} ({entry.type})</option>{/each}
                   </select>
                 </label>
               {/if}
+              <label>Run action
+                <select aria-label={`${output.name} action`} value={binding && 'invokeAction' in binding ? binding.invokeAction.actionId : ''}
+                  onchange={event => applyActionBinding(output.name, event.currentTarget.value)}>
+                  <option value="">Choose an action…</option>
+                  {#each knownActionIds as id (id)}<option value={id}>{labels.actions?.[id] ?? id}</option>{/each}
+                </select>
+              </label>
+              {#if binding && 'invokeAction' in binding}
+                {@const declaredInputs = actionInputs[binding.invokeAction.actionId]}
+                {#if declaredInputs === undefined}<p>Static input types are unavailable. Existing mappings are preserved; runtime contracts validate execution.</p>{/if}
+                {#each Object.entries(declaredInputs ?? {}) as [name, type] (name)}
+                  <ExpressionEditor label={`${output.name} input ${name}`} {type} value={binding.invokeAction.input?.[name]}
+                    references={refs(type, output.payload)} onCommit={expression => mapInput(output.name, name, expression)} />
+                {/each}
+                {#each Object.entries(binding.invokeAction.input ?? {}).filter(([name]) => declaredInputs?.[name] === undefined) as [name, expression] (name)}
+                  <p>{name}: {expression.type === 'ref' ? expression.path : expression.type === 'literal' ? String(expression.value) : 'Computed expression'}</p>
+                  <button type="button" onclick={() => mapInput(output.name, name)}>Remove {name} mapping</button>
+                {/each}
+              {:else if binding && 'setState' in binding && binding.setState.value}
+                <ExpressionEditor label={`${output.name} state value`} type={output.payload === 'void' ? 'string' : output.payload}
+                  value={binding.setState.value} references={refs(output.payload, output.payload)}
+                  onCommit={expression => commitBinding(output.name, { setState: { key: binding && 'setState' in binding ? binding.setState.key : '', value: expression } })} />
+              {/if}
+              {#if binding}<button type="button" onclick={() => clearBinding(output.name)}>Remove connection</button>{/if}
             </div>
           {/each}
         </section>

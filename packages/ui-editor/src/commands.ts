@@ -137,7 +137,7 @@ export function bindExpression(input: {
     | { readonly kind: 'text' }
     | { readonly kind: 'attribute'; readonly name: string }
     | { readonly kind: 'prop'; readonly name: string };
-  readonly expression: UiExpression;
+  readonly expression?: UiExpression;
 }): TransactionDraft {
   return {
     requestId: input.requestId,

@@ -16,15 +16,19 @@
   let root: HTMLElement;
   const all = $derived.by(() => {
     const out: Entry[] = [];
-    function walk(i: UiRenderInstruction, depth: number, keys: readonly string[], parent?: string, values?: DocumentScope, fills: Readonly<Record<string, readonly UiRenderInstruction[]>> = {}, template = false) {
+    function walk(i: UiRenderInstruction, depth: number, keys: readonly string[], parent?: string, values?: DocumentScope, fills: Readonly<Record<string, readonly UiRenderInstruction[]>> = {}, template = false, fillScope?: DocumentScope) {
       const key = occurrenceKey(i.occurrenceKey, keys);
       const label = document ? nodeLabel(document, i.nodeId, labels) : i.kind === 'text' && i.content.type === 'literal' ? i.content.value : i.kind === 'element' ? i.tag : i.kind === 'component' ? labels.definitions?.[i.definitionId] ?? 'Component' : i.kind;
       const start = out.length;
-      out.push({ key, nodeId: i.nodeId, label, depth, parent, children: false, component: i.kind === 'component', compact: i.kind === 'component' || (i.kind === 'element' && i.children.every(c => c.kind === 'text')), selectable: !template && !['component', 'repeat', 'conditional', 'slot'].includes(i.kind), detail: `${i.nodeId}${i.kind === 'component' ? ` · definition ${i.definitionId} @ ${i.definitionRevision}` : ''}${keys.length ? ` · record ${keys.join(' / ')}` : ''}${template ? ' · template (runtime scope unavailable)' : ''}` });
-      const child = (instruction: UiRenderInstruction, childValues = values, childKeys = keys, childFills = fills, isTemplate = template) => walk(instruction, depth + 1, childKeys, key, childValues, childFills, isTemplate);
+      out.push({ key, nodeId: i.nodeId, label, depth, parent, children: false, component: i.kind === 'component' || i.kind === 'extension', compact: i.kind === 'component' || i.kind === 'extension' || (i.kind === 'element' && i.children.every(c => c.kind === 'text')), selectable: !template && !['component', 'repeat', 'conditional', 'slot'].includes(i.kind), detail: `${i.nodeId}${i.kind === 'component' ? ` · definition ${i.definitionId} @ ${i.definitionRevision}` : ''}${keys.length ? ` · record ${keys.join(' / ')}` : ''}${template ? ' · template (runtime scope unavailable)' : ''}` });
+      const child = (instruction: UiRenderInstruction, childValues = values, childKeys = keys, childFills = fills, isTemplate = template, childFillScope = fillScope) => walk(instruction, depth + 1, childKeys, key, childValues, childFills, isTemplate, childFillScope);
       if (i.kind === 'element' || i.kind === 'unsupported') i.children.forEach(c => child(c));
-      if (i.kind === 'component') child(i.body, values ? { ...values, props: evaluatedComponentProps(i, values) } : undefined, keys, i.slots);
-      if (i.kind === 'slot') (fills[i.name]?.length ? fills[i.name] : i.fallback).forEach(c => child(c, values, keys, {}));
+      if (i.kind === 'extension') Object.values(i.slots ?? {}).forEach(children => children.forEach(c => child(c, values, keys, {})));
+      if (i.kind === 'component') child(i.body, values ? { ...values, props: evaluatedComponentProps(i, values) } : undefined, keys, i.slots, template, values);
+      if (i.kind === 'slot') {
+        const filled = (fills[i.name]?.length ?? 0) > 0;
+        (filled ? fills[i.name]! : i.fallback).forEach(c => child(c, filled ? fillScope ?? values : values, keys, filled ? {} : fills, template, filled ? undefined : fillScope));
+      }
       if (i.kind === 'conditional') {
         if (values) {
           const branch = i.branches.find(b => b.when === undefined || evaluateCondition(b.when, conditionsOf(plan), values));
@@ -34,7 +38,7 @@
       if (i.kind === 'repeat') {
         const rows = values ? resolveValue({ type: 'expression', expression: i.collection }, values) : undefined;
         if (values && Array.isArray(rows)) {
-          const rowScopes = rows.map(row => ({ ...values, repeatItem: { name: i.itemName, value: asRecord(row) } }));
+          const rowScopes = rows.map(row => { const record = asRecord(row); return { ...values, repeatItem: { name: i.itemName, value: record }, repeatItems: { ...values.repeatItems, [i.itemName]: record } }; });
           const rowKeys = uniqueRepeatKeys(rowScopes.map((s, index) => String(resolveValue({ type: 'expression', expression: i.key }, s) ?? index)), i.nodeId);
           rowScopes.forEach((s, index) => child(i.template, s, [...keys, rowKeys[index]], fills));
         } else child(i.template, values, keys, fills, true);

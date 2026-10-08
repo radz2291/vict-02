@@ -32,6 +32,9 @@
       | UiSvelteExtensionImplementation
       | UiSvelteComponentImplementation
     )[];
+    readonly actionState?: Readonly<Record<string, import('@victframework/ui-svelte').UiActionStateConnection>>;
+    readonly resetSignal?: symbol;
+    readonly onStateChange?: (key: string, value: UiValue) => void;
     readonly stateValues?: Readonly<Record<string, UiValue>>;
     readonly localState?: Readonly<Record<string, UiLocalStateDecl>>;
     readonly view?: Readonly<Record<string, unknown>>;
@@ -56,6 +59,9 @@
     catalogs,
     extensions = [],
     extensionImplementations = [],
+    actionState,
+    resetSignal,
+    onStateChange,
     stateValues = {},
     localState = {},
     view = {},
@@ -77,6 +83,7 @@
     return compileUiDocument(document, effectiveCatalogs.elements, extensions, {
       ...(effectiveCatalogs.actionIds !== undefined ? { actionIds: effectiveCatalogs.actionIds } : {}),
       ...(effectiveCatalogs.routeIds !== undefined ? { routeIds: effectiveCatalogs.routeIds } : {}),
+      actionInputs: effectiveCatalogs.actionInputs,
       ...(effectiveCatalogs.viewFields !== undefined ? { viewFields: effectiveCatalogs.viewFields } : {}),
     });
   });
@@ -101,22 +108,20 @@
     let cancelled = false;
     void tick().then(() => {
       if (cancelled || canvasEl === undefined) return;
-      for (const el of canvasEl.querySelectorAll('[data-ui-selected]')) {
-        el.removeAttribute('data-ui-selected');
-      }
+      const owner = canvasEl.querySelector<HTMLElement>('[data-ui-owner-root]')?.dataset.uiOwnerRoot;
+      const targets = Array.from(globalThis.document.querySelectorAll<HTMLElement>('[data-ui-owner]')).filter(element => element.dataset.uiOwner === owner);
+      for (const element of targets) element.removeAttribute('data-ui-selected');
       if (occurrence !== undefined) {
-        const target = canvasEl.querySelector(`[data-ui-occ='${escapeSelector(occurrence)}']`);
-        if (target !== null) target.setAttribute('data-ui-selected', '');
+        const matching = targets.filter(element => element.dataset.uiOcc === occurrence);
+        const target = matching.find(element => element.hasAttribute('data-ui-primary') && element.getBoundingClientRect().width > 0)
+          ?? matching.find(element => element.getBoundingClientRect().width > 0);
+        target?.setAttribute('data-ui-selected', '');
       }
     });
     return () => {
       cancelled = true;
     };
   });
-
-  function escapeSelector(value: string): string {
-    return value.replace(/"/g, '\\"');
-  }
 
   const canvasClasses = $derived(
     selectedOccurrence !== undefined ? 'uv-canvas uv-canvas-has-selection' : 'uv-canvas',
@@ -130,7 +135,7 @@
         outline: 1px dashed var(--ui-editor-hover, #7aa7ff);
         cursor: pointer;
       }
-      .uv-canvas [data-ui-selected] {
+      [data-ui-selected] {
         outline: 2px solid var(--ui-editor-selected, #2b6cff);
         outline-offset: 1px;
       }
@@ -142,7 +147,10 @@
       {stateValues}
       {view}
       {record}
-      {localState}
+      localState={Object.keys(localState).length ? localState : document.localState}
+      {resetSignal}
+      {actionState}
+      {onStateChange}
       {dispatch}
       {navigate}
       selectOccurrence={handleSelect}
