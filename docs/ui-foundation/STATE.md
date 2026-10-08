@@ -37,8 +37,9 @@ round 2 **PASS WNF** (8/9 verified; pointer residual) -> repairs. FROZEN
 — VERIFIED (SUPERSEDING, scope): payload `52684696…`, pins in
 [U4-CATALOG-RECALIBRATION-FREEZE](U4-CATALOG-RECALIBRATION-FREEZE.md);
 freeze-check `U4 CATALOG RECALIBRATION FREEZE CHECK 03: VERIFIED`
-([reviews/u4/FREEZE-CHECK-03.md](reviews/u4/FREEZE-CHECK-03.md)). Next
-authorized action: owner decision on batch B1 (handoff §13.1 prompt).
+([reviews/u4/FREEZE-CHECK-03.md](reviews/u4/FREEZE-CHECK-03.md)). (That
+"next authorized action" line predates the repair below; the repair
+paragraph re-sequences it.)
 **BOUNDED REPAIR (owner findings F1–F4) in progress** on
 `codex/ui-foundation-u4-catalog-repair`: F1 complete value path
 (amendment §10.1a: `UiValue` carrier + `isUiValueOfType` guard + all

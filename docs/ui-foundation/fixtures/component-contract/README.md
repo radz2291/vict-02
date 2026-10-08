@@ -20,7 +20,7 @@ nodes inside a full `vict.ui-document@1`.
 | `multiselect-binding.json` | stringList value vocabulary (amendment §10): multiple-select descriptor, stringList payload → stringList state, options authored as item content, `[]` empty convention |
 | `date-field-binding.json` | isoDate typed marker: `'YYYY-MM-DD'` strings persisted, `''` empty convention, adapter-only `DateValue` conversion, format-rejection expectation |
 | `slider-range-binding.json` | numberList value vocabulary: range-slider thumbs as an ascending number list, min/max/step number props, single-thumb = one-entry list |
-| `invalid-cases-recal.json` | recalibration negatives: list payload → scalar state, malformed `isoDate`/`isoTime` literals, `null` array member, range start > end |
+| `invalid-cases-recal.json` | recalibration negatives: list payload → scalar state, malformed `isoDate`/`isoTime` literals, `null` array member, mixed members (R7), range start > end |
 
 Conventions:
 

@@ -43,6 +43,13 @@
       "input": "prop value = {type:'literal', value:'25:99:00'} against an isoTime prop decl",
       "expected": "rejected by the format rule (must parse as a valid time)",
       "diagnostic": "UI_DOC_INVALID_LITERAL"
+    },
+    {
+      "id": "R7",
+      "case": "mixed-member array literal is not a UiValue (repair review F-2)",
+      "input": "io.emit('valuesChange', ['alpha', 1]) against an output declared payload stringList",
+      "expected": "rejected at the emit boundary: the value is not a UiValue (homogeneous members required; no null/mixed members, amendment section 10.1a)",
+      "diagnostic": "UI_COMPONENT_OUTPUT_PAYLOAD_INVALID"
     }
   ]
 }

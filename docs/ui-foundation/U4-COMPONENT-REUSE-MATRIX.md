@@ -261,18 +261,8 @@ listed; unlisted modes are unproven even when the family row shows a batch.
 | AlertDialog / Popover / Tooltip / LinkPreview | open/hover overlays, portal | C → B5 | B5 · P-overlay |
 | Avatar / AspectRatio / Separator / Label / ScrollArea / Toolbar | display/composition (no value state) | C → B5 | B5 · composition |
 | PinInput / RatingGroup / TimeRangeField | — no VICT module | **X** | deferred (unchanged) |
-
-**Programmatic reconciliation (standing rule, recalibration §7):**
-`catalog-coverage.json` (41 families) is checked against this ledger by
-`reviews/u4/ledger-reconciliation/reconcile-ledger.mjs` — 38 available
-families must each appear in an assignable row above; the three deferred
-families only in the X-exclusion row. Repair-cycle result: exactly one gap
-found (collapsible — row added above, B5), zero misplaced exclusions; the
-re-run output (`output-after-repair.txt`) records RECONCILIATION OK.
-Re-run at every batch gate.
 | RecordsTable / Chart / Conversation / DataView / List / Detail / Form+FormField/FormSurface / VitApp | application-plan intents (`UiTableIntent`, `UiChartPoint`, `UiConversationMessage`, `UiFormField`, …) | **P3** | application-plan governed; plan config canonical; Studio config inspect/edit = PENDING owner decision (recalibration §4.0 roadmap); document-node authoring not planned |
 | StatusBadge / Feedback / Text / Count (display) | props-only presentation; **StatusBadge + Feedback already document-mounted** via `ext.status`/`ext.feedback` registered implementations (U3 authored instances, §4.0 evidence); Text/Count route pending investigation | **P3 (extension mount route, evidenced)** | extension route stands; Inspector editor depth for the wrappers = pending owner authorization (not a batch claim) |
-
 Honesty rules (unchanged): an export or showcase example proves library
 availability only; ledger changes to **B-n** require that batch's recorded
 end-to-end authoring evidence (edit → undo/redo → save → reload → finished
@@ -287,3 +277,12 @@ date-field/types.d.ts:12–17 `DateValue`; date-range-field/types.d.ts:7–17
 accordion/types.d.ts:33,61–65), the recorded showcase examples, and
 `catalog.test.ts` — see the recalibration document's §3.1 table for the
 complete citation set.
+
+**Programmatic reconciliation (standing rule, recalibration §7):**
+`catalog-coverage.json` (41 families) is checked against this ledger by
+`reviews/u4/ledger-reconciliation/reconcile-ledger.mjs` — 38 available
+families must each appear in an assignable row above; the three deferred
+families only in the X-exclusion row. Repair-cycle result: exactly one gap
+found (collapsible — row added above, B5), zero misplaced exclusions; the
+re-run output (`output-after-repair.txt`) records RECONCILIATION OK.
+Re-run at every batch gate.

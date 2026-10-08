@@ -215,6 +215,8 @@ source, the working evidence and the unresolved authoring work are:
   vocabulary (`index.ts:132–149`). Works: U3 product forms (authored P2
   elements + form surfaces). Unavailable: widget-level document authoring
   (P2 authored elements remain the document-side form route).
+- **VitApp** — the plan renderer itself (renders compiled plans, not a
+  config surface); recorded as renderer machinery, no authoring roadmap.
 - **AppShell** — ALREADY a document-authoring target (frozen five; B1
   ledger row) — listed here only because §4(a)/(b) previously blurred it.
 - **Text / Count** — display; document-mounted routes not yet evidenced;
@@ -257,7 +259,7 @@ Inspector (descriptor-driven property editors, output-connection editor) →
 
 | # | Capability (family · mode) | E frozen? | I? | D? | Verdict |
 | --- | --- | --- | --- | --- | --- |
-| S-1 | Boolean scalar state + change output (checkbox, switch, toggle, collapsible open, dialog open) | Yes — payload `boolean`, state `boolean` | Yes | D for binding mechanics (`catalog.test.ts:29`); D for authored route: contract-stage only (C) | **E** — B1 proves |
+| S-1 | Boolean scalar state + change output (checkbox, switch, toggle, collapsible open, dialog open) | Yes — payload `boolean`, state `boolean` | Yes | D for binding mechanics (`catalog.test.ts:29`); D for authored route: contract-stage only (C) | **E — the loop pattern is proven at B1 on B1's own families; per-family ledger rows re-run it (collapsible re-runs the loop at B5, matrix §6)** |
 | S-2 | String scalar (radio-group, select single, tabs value, toggle-group single, combobox single) | Yes — payload/state `string` | Yes (modules) | D for multi-toggle/select styling+binding; **empty-value convention missing** (below) | **E + empty-value rule needed** — B1/B2 |
 | S-3 | Number scalar (slider one thumb, meter, progress, pagination page) | Yes — payload/state `number` | Yes | D: slider/meter/progress styled (`catalog-coverage`); no recorded change-output test | **E** — B3 proves |
 | L-1 | `string[]` values (select multiple, toggle-group multiple, combobox multiple, accordion multiple) | **No** — `UiOutputDecl.payload` is `'void' \| UiPrimitiveType` (amendment §3.2); `UiLocalStateDecl.type` is `UiPrimitiveType` (`document.ts:135–139` — `initial: string \| number \| boolean`); `UiPropDecl.type` is `UiPrimitiveType` (`document.ts:148–152`) | Yes (modules + showcase) | D for native-library behavior (`catalog.test.ts:38`; showcase) | **M — value-vocabulary extension (§6.1)** — B2 |
@@ -271,7 +273,7 @@ Inspector (descriptor-driven property editors, output-connection editor) →
 | X-1 | Tri-state checkbox (indeterminate) | `checked` boolean state yes; **indeterminate as authored presentation binding undesigned** | Yes (`checkbox/types.d.ts:5`; showcase:41) | D styling | **E via prop-binding rule (§6.4)** — B2 |
 | X-2 | Empty values (unset select, cleared date, indeterminate progress) | **Missing conventions**: state `initial` is `string\|number\|boolean` — no null; literal `null` exists in expressions but is not a state type; bits Progress `value?: number \| null` | Yes | — | **M — empty-value conventions (§6.5)** — B1–B3 |
 | X-3 | Rich text / JSON field editing (application `json` widget) | Application-surface widget (`UiFieldWidget`); no document equivalent | Yes (application surface) | D (U3 product forms) | **Out of document scope; recorded** — §4(b) row |
-| D-1 | Overlays/focus/portal (dialog, alert-dialog, popover, tooltip, link-preview; portal to ControlScope root) | Yes for dialog via frozen §6; alert-dialog/popover/tooltip same mechanism, undesigned rows | Yes | D styling; portal-to-root recorded in design | **E (mechanism); rows authored in B1/B4** |
+| D-1 | Overlays/focus/portal (dialog, alert-dialog, popover, tooltip, link-preview; portal to ControlScope root) | Yes for dialog via frozen §6; alert-dialog/popover/tooltip same mechanism, undesigned rows | Yes | D styling; portal-to-root recorded in design | **E (mechanism); per ledger: dialog authored B1 (P-overlay), alert-dialog/popover/tooltip/link-preview B5** |
 | A-1…A-9 | Application-surface components (RecordsTable, Chart, Conversation, DataView, List, Detail, Form/FormSurface, VitApp; display components tracked separately in §4.0) | Document-NODE authoring for the intent-driven surfaces: **No** (application-plan config is canonical); **display components StatusBadge/Feedback/Button ALREADY document-mounted** via `ext.status`/`ext.feedback`/`ext.button` (§4.0 evidence) | Yes (P3/plan surfaces; extension route for the display three) | D (U3 product: authored `ext.status`/`ext.feedback` instances; renderer suites) | **Intent-driven: recorded boundary; config inspect/edit = PENDING owner decision (§4.0 roadmap). Display three: E via extension route; editor depth = pending** |
 | DEF | pin-input, rating-group, time-range-field | No | **No module** | — | **X deferred (unchanged status)** |
 
