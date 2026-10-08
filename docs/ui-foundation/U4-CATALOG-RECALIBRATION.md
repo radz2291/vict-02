@@ -106,7 +106,7 @@ styling, no showcase example). 38 modules + 3 deferred entries = 41.
 | Combobox | Root/Input/Trigger/Portal/Content(ContentStatic)/Item/Group/… | single|multiple union, `string` / `string[]` (`combobox/types.d.ts:18`; re-uses select parts) |
 | ToggleGroup | Root/Item | `type:"single"` → `string`; `type:"multiple"` → `string[]` (`toggle-group/types.d.ts:33–41`); showcase exercises both (`SelectionExamples.svelte:155–161`; recorded test "keeps multiple toggle values and ignores a disabled option", `catalog.test.ts:38`) |
 | Accordion | Root/Item/Header/Trigger/Content | `type:"single"` (string) / multiple (`string[]`) (`accordion/types.d.ts:33,61–65`) |
-| Slider | Root/Range/Thumb | `value: number[]` — one thumb (scalar) or several (range); `step?: number \| number[]` (`slider/types.d.ts:85,160`); showcase range `type="multiple"` with two labelled thumbs (`SelectionExamples.svelte:126–138`) |
+| Slider | Root (single: `value?: number`, `slider/types.d.ts:137`) / multi-Root (range: `value?: number[]`, `:160`) | Range = multiple thumbs (`type:"multiple"`), `step?: number \| number[]` (`:85`); showcase range with two labelled thumbs (`SelectionExamples.svelte:126–138`) |
 | Checkbox | Root (+ checked binding) | `checked: boolean`, `indeterminate: boolean` (`checkbox/types.d.ts:4–5`); showcase checked / indeterminate / disabled rows (`SelectionExamples.svelte:38–41`); recorded independent-binding test (`catalog.test.ts:29`) |
 | RadioGroup | Root/Item | scalar string (single-required choice; showcase `SelectionExamples.svelte`) |
 | Switch, Toggle | Root | boolean scalar; recorded independent binding (`catalog.test.ts:29,38`) |
@@ -127,18 +127,16 @@ styling, no showcase example). 38 modules + 3 deferred entries = 41.
 
 ### 3.2 The 38 modules ↔ 41 families reconciliation table
 
-Styled and usable (30): accordion, alert-dialog, avatar, button, calendar,
-checkbox, combobox, command, context-menu, date-field, date-picker,
-date-range-field, date-range-picker, dialog, dropdown-menu, label, meter,
-navigation-menu, pagination, popover, progress, radio-group, range-calendar,
-scroll-area, select, slider, switch, tabs, time-field, toggle,
-toggle-group, toolbar, tooltip. Direct composition (8): aspect-ratio,
-collapsible, link-preview, menubar, separator — plus the three display
-entries recorded in the coverage file. Deferred (3): pin-input,
-rating-group, time-range-field. (Module count check: 38 `.ts` files, each a
-one-line bits-ui re-export with the ControlScope styling note — verified by
-reading every file; the eight "supported direct composition" families are
-among the 38. The precise per-family status strings live in
+The authority for per-family status is `catalog-coverage.json` — 30
+"styled and usable", 8 "supported direct composition", 3 "deferred"
+(pin-input, rating-group, time-range-field); this document deliberately
+does not re-enumerate the buckets by slug (a prose list drifts; the
+coverage file cannot). The reconciliation arithmetic: 38 `.ts` recipe
+modules exist (each a one-line bits-ui re-export with the ControlScope
+styling note — verified by reading every file); the 38 covered families
+comprise the 30 styled-and-usable plus the 8 direct-composition families;
+the 3 deferred families have no module. 38 + 3 = 41. The precise
+per-family status strings live in
 `catalog-coverage.json`, which is the recorded authority.)
 
 ## 4. Higher-level public components (`src/index.ts` exports)
@@ -207,19 +205,19 @@ Inspector (descriptor-driven property editors, output-connection editor) →
 | S-1 | Boolean scalar state + change output (checkbox, switch, toggle, collapsible open, dialog open) | Yes — payload `boolean`, state `boolean` | Yes | D for binding mechanics (`catalog.test.ts:29`); D for authored route: contract-stage only (C) | **E** — B1 proves |
 | S-2 | String scalar (radio-group, select single, tabs value, toggle-group single, combobox single) | Yes — payload/state `string` | Yes (modules) | D for multi-toggle/select styling+binding; **empty-value convention missing** (below) | **E + empty-value rule needed** — B1/B2 |
 | S-3 | Number scalar (slider one thumb, meter, progress, pagination page) | Yes — payload/state `number` | Yes | D: slider/meter/progress styled (`catalog-coverage`); no recorded change-output test | **E** — B3 proves |
-| L-1 | `string[]` values (select multiple, toggle-group multiple, combobox multiple, accordion multiple) | **No** — `UiOutputDecl.payload` is `'void' \| UiPrimitiveType` (amendment §3.2); `UiLocalStateDecl.type` is `UiPrimitiveType` (`document.ts:99–102`); `UiPropDecl.type` is `UiPrimitiveType` (`document.ts:139–143`) | Yes (modules + showcase) | D for native-library behavior (`catalog.test.ts:38`; showcase) | **M — value-vocabulary extension (§6.1)** — B2 |
+| L-1 | `string[]` values (select multiple, toggle-group multiple, combobox multiple, accordion multiple) | **No** — `UiOutputDecl.payload` is `'void' \| UiPrimitiveType` (amendment §3.2); `UiLocalStateDecl.type` is `UiPrimitiveType` (`document.ts:135–139` — `initial: string \| number \| boolean`); `UiPropDecl.type` is `UiPrimitiveType` (`document.ts:148–152`) | Yes (modules + showcase) | D for native-library behavior (`catalog.test.ts:38`; showcase) | **M — value-vocabulary extension (§6.1)** — B2 |
 | L-2 | `number[]` values (slider range thumbs) | **No** — same ceiling | Yes (showcase range) | D for library behavior (showcase; no recorded test asserts range binding) | **M — same extension** — B3 |
 | L-3 | Options/item lists as authored content (select items, menu items, tabs panels, accordion sections) | Partially — slot composition exists (§3.7); **no documented item-authoring shape** for list controls (options are content, not value state) | Yes | D styling only | **M — content-authoring rule (§6.3)** — B2/B4 |
 | T-1 | Date/time values (calendar, date-field, date-picker, time-field) | **No as typed values** — `DateValue`/`Time` are library objects; the frozen contract has only primitives; no ISO date type, no format validation, no date-aware Inspector editor | Yes | D for serialization discipline (`catalog.test.ts:47` — "without timezone conversion") | **M — typed ISO markers (§6.2)** — B3 |
 | T-2 | Date ranges (date-range-field/picker, range-calendar) | **No** — range is a structured `{start,end}` object; contract has no structure | Yes | D library behavior (showcase) | **M — dual-scalar pattern (§6.2)** — B3 |
 | N-1 | Nested composition (dropdown/context/menubar Sub*, command groups, navigation-menu) | Slot composition exists but **nested/dynamic item structure is undesigned** (no repeat-inside-slot rule documented for menus) | Yes | D styling only | **M — composition rule (§6.3)** — B4 |
 | N-2 | Tabs/accordion panel composition | Slot fills resolved in instance scope (frozen §3.7) — panels are content | Yes | D (VICT Tabs uses exactly this shape natively) | **E (rule needs stating for document-authored panels)** — B2/B5 |
-| R-1 | Repeated items / structured rows (repeat nodes over view arrays; RecordsTable/DataView/List application surfaces) | Document `repeat` nodes + array view fields exist (frozen U1); array-typed props reference-only (frozen §3.2/§3.6) | Yes | D (renderer tests; U3 product) | **E for document repeat; application surfaces out of document scope (§4b)** — compare in B2 proof |
+| R-1 | Repeated items / structured rows (repeat nodes over view arrays; RecordsTable/DataView/List application surfaces) | Document `repeat` nodes + array view fields exist (frozen U1); array-typed props reference-only (frozen §3.2/§3.6) | Yes | D (renderer tests; U3 product) | **E for document repeat; application surfaces out of document scope (§4(b))** — compare in B2 proof |
 | X-1 | Tri-state checkbox (indeterminate) | `checked` boolean state yes; **indeterminate as authored presentation binding undesigned** | Yes (`checkbox/types.d.ts:5`; showcase:41) | D styling | **E via prop-binding rule (§6.4)** — B2 |
 | X-2 | Empty values (unset select, cleared date, indeterminate progress) | **Missing conventions**: state `initial` is `string\|number\|boolean` — no null; literal `null` exists in expressions but is not a state type; bits Progress `value?: number \| null` | Yes | — | **M — empty-value conventions (§6.5)** — B1–B3 |
-| X-3 | Rich text / JSON field editing (application `json` widget) | Application-surface widget (`UiFieldWidget`); no document equivalent | Yes (application surface) | D (U3 product forms) | **Out of document scope; recorded** — §4b row |
+| X-3 | Rich text / JSON field editing (application `json` widget) | Application-surface widget (`UiFieldWidget`); no document equivalent | Yes (application surface) | D (U3 product forms) | **Out of document scope; recorded** — §4(b) row |
 | D-1 | Overlays/focus/portal (dialog, alert-dialog, popover, tooltip, link-preview; portal to ControlScope root) | Yes for dialog via frozen §6; alert-dialog/popover/tooltip same mechanism, undesigned rows | Yes | D styling; portal-to-root recorded in design | **E (mechanism); rows authored in B1/B4** |
-| A-1…A-9 | Application-surface components (RecordsTable, Chart, Conversation, DataView, List, Detail, Form/FormSurface, Feedback, Count/StatusBadge/Text) | Document-node authoring: **No — by boundary decision** (application-plan governed) | Yes (P3/plan surfaces) | D (U3 product; renderer suites) | **Recorded boundary; P3 remains their authoring route** — §4b |
+| A-1…A-9 | Application-surface components (RecordsTable, Chart, Conversation, DataView, List, Detail, Form/FormSurface, Feedback, Count/StatusBadge/Text) | Document-node authoring: **No — by boundary decision** (application-plan governed) | Yes (P3/plan surfaces) | D (U3 product; renderer suites) | **Recorded boundary; P3 remains their authoring route** — §4(b) |
 | DEF | pin-input, rating-group, time-range-field | No | **No module** | — | **X deferred (unchanged status)** |
 
 ### 5.1 What the trace establishes
@@ -237,7 +235,7 @@ Inspector (descriptor-driven property editors, output-connection editor) →
 4. **Empty values** lack declared conventions (X-2) — a correctness rule,
    not a mechanism.
 5. Application-surface components are out of the document model by design;
-   the inventory records them as governed elsewhere (§4b) so no batch
+   the inventory records them as governed elsewhere (§4(b)) so no batch
    claims them.
 6. The deferred three stay deferred (no module exists to wrap).
 
@@ -324,7 +322,7 @@ third persisted value of `checked`. Persisted checked values are `true`/
 | Type | Empty representation | Validator/adapter rule |
 | --- | --- | --- |
 | string / isoDate / isoTime | `''` | legal everywhere; adapters map `'' → undefined` for library props (e.g. unset select value, cleared date field) |
-| number | no empty — initial required; a cleared numeric input is an authoring error (`UI_DOC_INVALID_LITERAL`-class diagnostic) | no NaN/Infinity (JSON-hostile) |
+| number | no empty — initial required; a cleared numeric input is an authoring error (new diagnostic `UI_DOC_INVALID_LITERAL`) | no NaN/Infinity (JSON-hostile) |
 | boolean | no empty | — |
 | stringList / numberList | `[]` initial | legal; no null elements (validator rejects `null` array members) |
 | unset state at render | n/a | state keys always have declared initials; `$output` never writes undeclared keys (frozen rule) |
@@ -356,8 +354,10 @@ document never stores null.
   `UI_COMPONENT_OUTPUT_PAYLOAD_INVALID` / `UI_COMPONENT_BINDING_INCOMPATIBLE`
   / `UI_EXPR_TYPE_MISMATCH` scope — same diagnostics, widened trigger
   conditions (the frozen §5.1 table gains trigger text, not new codes,
-  except one new code for date-format literals: `UI_DOC_INVALID_LITERAL`
-  scope extension, documented in the amendment update).
+  except ONE NEW code for date/time literal formats:
+  `UI_DOC_INVALID_LITERAL` — new, introduced by this extension; today's
+  validator has no such code — verified against `packages/ui/src/
+diagnostics.ts`).
 
 ### 6.7 What stays frozen and untouched
 

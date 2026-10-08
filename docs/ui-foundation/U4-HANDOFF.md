@@ -446,14 +446,18 @@ own gate; a batch PASS proves only its ledger rows):
 > codex/ui-foundation-u4-b1 from this lineage: (1) land the UiValueType
 > vocabulary (stringList/numberList/isoDate/isoTime), empty-value and
 > item-content rules, and their validator/compile diagnostics exactly as
-> specified in amendment §10 and fixtures multiselect-binding.json,
+> specified in amendment §10 and the vocabulary/empty-value parts of
+> fixtures multiselect-binding.json,
 > date-field-binding.json, slider-range-binding.json,
-> invalid-cases-recal.json; (2) implement the five frozen contract
+> invalid-cases-recal.json (item-content AUTHORING is a B2/B4 obligation
+> per recalibration §7 — B1 pins its contract shape only); (2) implement
+> the five frozen contract
 > families (button, catalog checkbox, catalog select single, catalog
 > dialog, app-shell) plus switch, toggle, radio-group wrappers — each
 > descriptor carrying the ABI marker (`events:
 > ['vict.ui-component-abi@1']`), abi match, and declared outputs; (3)
-> repair ui-editor packaging (F3) as specified in §10 carry-forwards;
+> repair ui-editor packaging (the §10 carry-forwards table's first row:
+> emitting build + the four declaration fixes, origin F3);
 > derive the action-input catalog via deriveActionInputCatalog →
 > compileUiDocument catalogs option actionInputs at the existing ui-attach
 > call site (amendment §3.5); (4) implement the descriptor-driven

@@ -789,8 +789,10 @@ occurrence isolation, generation fencing, and two-phase save are
 payload-shape-agnostic (drops compare declared types, not shapes). The
 §4.3 supersession matrix applies verbatim to the widened vocabulary (old
 compilers drop the new optional fields; markers still fail-close).
-Diagnostics: no new codes except the date/time literal format rule, which
-extends the `UI_DOC_INVALID_LITERAL`-class scope; list/isoDate mismatches
+Diagnostics: no new codes except ONE NEW code for date/time literal
+formats: `UI_DOC_INVALID_LITERAL` (new — today's validator has no such
+code, verified against `packages/ui/src/diagnostics.ts`; date/time
+formats and non-JSON numerics raise it); list/isoDate mismatches
 extend `UI_COMPONENT_OUTPUT_PAYLOAD_INVALID` /
 `UI_COMPONENT_BINDING_INCOMPATIBLE` / `UI_EXPR_TYPE_MISMATCH` triggers.
 

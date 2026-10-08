@@ -238,7 +238,7 @@ listed; unlisted modes are unproven even when the family row shows a batch.
 | Family | Modes (value shape) | Ledger | Batch / proof pattern |
 | --- | --- | --- | --- |
 | Button (catalog) | press (void), label/disabled/loading | C → B1 | B1 · P-scalar |
-| Checkbox (catalog) | boolean + indeterminate presentation binding | C → B1 | B1 · P-scalar |
+| Checkbox (catalog) | boolean checked → B1; indeterminate presentation binding → B2 (recalibration X-1/B2) | C → B1 (checked); C → B2 (indeterminate) | B1 · P-scalar; B2 · presentation binding |
 | Select (catalog) | single string → B1; multiple stringList → B2 | C → B1/B2 | B1 · P-scalar; B2 · P-multi |
 | Dialog | open loop, portal/focus, body slot | C → B1 | B1 · P-overlay |
 | AppShell (composition) | content slot, nav/active/responsive | C → B1 | B1 · composition |
@@ -246,7 +246,7 @@ listed; unlisted modes are unproven even when the family row shows a batch.
 | RadioGroup | scalar string | C → B1 | B1 · P-scalar |
 | ToggleGroup | single string / multiple stringList | C → B2 | B2 · P-multi |
 | Combobox | single string (multiple only if adapter adds no new mechanism) | C → B2 | B2 · P-multi |
-| Accordion | single/multiple panels; sections are content | C → B2 | B2 · P-nested |
+| Accordion | single/multiple panels; sections are content | C → B2 | B2 · P-multi (sections composition: P-nested informs too) |
 | Tabs (document composition) | active value string; panels content | C → B2/B5 | B2/B5 · P-nested |
 | Slider | one thumb numberList(1) / range numberList(n) | C → B3 | B3 · P-range-date |
 | Meter / Progress | number; Progress null = presentation-only | C → B3 | B3 · P-range-date |
