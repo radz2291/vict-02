@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Select } from 'bits-ui';
+  import { Select } from '../select.js';
   import CatalogPortal from './CatalogPortal.svelte';
   import type { UiSvelteComponentIO, UiComponentPresentation } from '../../document/extensions.js';
   let { props, io, presentation }: { props: Readonly<Record<string, unknown>>; io?: UiSvelteComponentIO; presentation?: UiComponentPresentation } = $props();
@@ -7,7 +7,7 @@
   let multiple = $derived(Array.isArray(props.values) ? [...props.values] as string[] : []);
   let open = $state(false);
   let search = $state('');
-  const options = $derived(Array.isArray(props.options) ? props.options as { value: string; label: string; disabled?: boolean }[] : []);
+  const options = $derived(Array.isArray(props.options) ? props.options.map(option => ({ value: String(option?.value ?? ''), label: String(option?.label ?? option?.value ?? ''), disabled: option?.disabled === true })) : []);
   const disabled = $derived(props.disabled === true);
 </script>
 <span style="display: contents">
@@ -27,7 +27,7 @@
 {:else}
   <Select.Root type="single" bind:value={single} {disabled} bind:open
     onValueChange={next => io?.emit('valueChange', next)}>
-    <Select.Trigger {...presentation?.target('root')}>{options.find(option => option.value === single)?.label ?? single || String(props.label ?? 'Choose an option')}</Select.Trigger>
+    <Select.Trigger {...presentation?.target('root')}>{(options.find(option => option.value === single)?.label ?? single) || String(props.label ?? 'Choose an option')}</Select.Trigger>
       <CatalogPortal {open} {presentation}>
         <Select.Content {...presentation?.target('content')} sideOffset={6} align="start">
           {@render io?.slots?.items?.()}

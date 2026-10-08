@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Accordion } from 'bits-ui';
+  import { Accordion } from '../accordion.js';
   import type { UiSvelteComponentIO, UiComponentPresentation } from '../../document/extensions.js';
   let { props, io, presentation }: { props: Readonly<Record<string, unknown>>; io?: UiSvelteComponentIO; presentation?: UiComponentPresentation } = $props();
 </script>

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { UiDocument, UiNode, UiExtensionDescriptor } from '@victframework/ui';
+  import type { UiDocument, UiNode, UiExtensionDescriptor, UiEditCommand } from '@victframework/ui';
   import type { TransactionDraft } from './commands.js';
   let { document, node, descriptor, onApply }: { document: UiDocument; node: Extract<UiNode, { kind: 'component' }>; descriptor: UiExtensionDescriptor; onApply: (draft: TransactionDraft) => void } = $props();
   let choices = $state<Record<string, string>>({});
@@ -12,17 +12,48 @@
     const children = [...(node.slots?.[slot]?.children ?? [])];
     const destination = index + delta;
     if (destination < 0 || destination >= children.length) return;
-    [children[index], children[destination]] = [children[destination], children[index]];
+    const previous = children[index]!;
+    children[index] = children[destination]!;
+    children[destination] = previous;
     fill(slot, children);
   }
-  const available = $derived(Object.values(document.nodes).filter(candidate => candidate.id !== node.id &&
-    (candidate.kind === 'element' || candidate.kind === 'text' || candidate.kind === 'component')));
+  function add(slot: string, selected: string): void {
+    const commands: UiEditCommand[] = [];
+    for (const owner of Object.values(document.nodes)) {
+      if (owner.kind !== 'component') continue;
+      for (const [name, fill] of Object.entries(owner.slots ?? {})) {
+        if (fill.children.includes(selected)) commands.push({ op: 'fillSlot', nodeId: owner.id,
+          slotName: name, children: fill.children.filter(id => id !== selected) });
+      }
+    }
+    commands.push({ op: 'fillSlot', nodeId: node.id, slotName: slot,
+      children: [...(node.slots?.[slot]?.children ?? []), selected] });
+    onApply({ requestId: `composition-${node.id}-${++serial}-${Date.now()}`, reason: `Move content to ${slot}`, commands });
+    choices[slot] = '';
+  }
+  const available = $derived.by(() => {
+    // Component fills can move atomically with the frozen fillSlot command.
+    // Other source parents retain their ownership; detached content can be reused.
+    const unavailable = new Set<string>([node.id, document.root]);
+    for (const owner of Object.values(document.nodes)) {
+      if (owner.kind === 'element' || owner.kind === 'portal') owner.children?.forEach(id => unavailable.add(id));
+      else if (owner.kind === 'repeat') unavailable.add(owner.templateRoot);
+      else if (owner.kind === 'slot') owner.fallback?.forEach(id => unavailable.add(id));
+      else if (owner.kind === 'conditional') owner.branches.forEach(branch => branch.children.forEach(id => unavailable.add(id)));
+    }
+    for (const definition of Object.values(document.componentDefinitions ?? {})) {
+      unavailable.add(definition.root);
+      Object.values(definition.slots ?? {}).forEach(slot => slot.fallback?.forEach(id => unavailable.add(id)));
+    }
+    return Object.values(document.nodes).filter(candidate => !unavailable.has(candidate.id) &&
+      (candidate.kind === 'element' || candidate.kind === 'text' || candidate.kind === 'component'));
+  });
 </script>
 
 {#if descriptor.slots?.length}
   <section aria-label="Component composition">
     <h3>Content composition</h3>
-    <p>Slot fills are canonical source. Select their children in Layers to edit properties, text and connections.</p>
+    <p>Select slot children in Layers to edit properties, text and connections. Add detached content or move content from another component slot in one transaction.</p>
     {#each descriptor.slots as slot (slot)}
       {@const children = node.slots?.[slot]?.children ?? []}
       <div class="slot-fill">
@@ -44,7 +75,7 @@
             {/each}
           </select>
         </label>
-        <button type="button" disabled={!choices[slot]} onclick={() => { fill(slot, [...children, choices[slot]]); choices[slot] = ''; }}>Add to {slot}</button>
+        <button type="button" disabled={!choices[slot]} onclick={() => { const selected = choices[slot]; if (selected) add(slot, selected); }}>Add to {slot}</button>
       </div>
     {/each}
   </section>

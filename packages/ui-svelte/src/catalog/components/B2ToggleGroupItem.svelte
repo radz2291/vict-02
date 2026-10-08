@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { ToggleGroup } from 'bits-ui';
+  import { ToggleGroup } from '../toggle-group.js';
   import type { UiSvelteComponentIO, UiComponentPresentation } from '../../document/extensions.js';
   let { props, io, presentation }: { props: Readonly<Record<string, unknown>>; io?: UiSvelteComponentIO; presentation?: UiComponentPresentation } = $props();
 </script>

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { ToggleGroup } from 'bits-ui';
+  import { ToggleGroup } from '../toggle-group.js';
   
   import type { UiSvelteComponentIO, UiComponentPresentation } from '../../document/extensions.js';
   let { props, io, presentation }: { props: Readonly<Record<string, unknown>>; io?: UiSvelteComponentIO; presentation?: UiComponentPresentation } = $props();
@@ -7,7 +7,7 @@
   let multiple = $derived(Array.isArray(props.values) ? [...props.values] as string[] : []);
   let open = $state(false);
   let search = $state('');
-  const options = $derived(Array.isArray(props.options) ? props.options as { value: string; label: string; disabled?: boolean }[] : []);
+  const options = $derived(Array.isArray(props.options) ? props.options.map(option => ({ value: String(option?.value ?? ''), label: String(option?.label ?? option?.value ?? ''), disabled: option?.disabled === true })) : []);
   const disabled = $derived(props.disabled === true);
 </script>
 <span style="display: contents">
