@@ -10,6 +10,7 @@
    */
   import { Dialog } from 'bits-ui';
   import CatalogPortal from './CatalogPortal.svelte';
+  import { catalogFocusReturn } from './focus-return.js';
   import type { UiSvelteComponentIO, UiComponentPresentation } from '../../document/extensions.js';
 
   interface Props {
@@ -21,15 +22,7 @@
   const title = $derived(typeof props.title === 'string' ? props.title : '');
   let open = $derived(props.open === true);
   let triggerRef = $state<HTMLButtonElement | null>(null);
-  function restoreTrigger(event: Event): void {
-    // Bits invokes this at focus-scope teardown. State-driven opens may not
-    // have a pre-focused trigger for the library to remember. Use only this
-    // occurrence's live public ref, never a document-wide selector.
-    event.preventDefault();
-    if (triggerRef?.isConnected && !triggerRef.disabled && !triggerRef.closest('[inert]')) {
-      triggerRef.focus({ preventScroll: true });
-    }
-  }
+  const restoreTrigger = catalogFocusReturn(() => triggerRef);
 </script>
 
 <span data-testid="catalog-dialog" style="display: contents">
