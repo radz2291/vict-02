@@ -80,6 +80,34 @@ it). REMAINING for the B1 gate: browser-based authoring evidence + walkthrough,
 records (ledger rows + reconciliation, U4-B1-HANDOFF, DECISIONS), the
 three independent reviews + repairs + rechecks, push + delivery. Owner
 acceptance stays PENDING at the founder checkpoint.
+**CORE-REFACTOR CANDIDATE DELIVERED UNVERIFIED (2026-10-08)**:
+`codex/ui-foundation-u4-b1-core-refactor` at `098b84e3…` (4 commits on
+`295064b…`).
+**VERIFICATION ROUND 1 (2026-10-08, fresh verifier, isolated worktree
+`vict-02-u4-b1-core-verification`, branch
+codex/ui-foundation-u4-b1-core-verification): VERDICT FAIL — REVISION
+REQUIRED** ([U4-B1-CORE-VERIFY-01](reviews/u4/b1-core-verify/U4-B1-CORE-VERIFY-01.md)).
+The candidate breaks 14 committed workspace tests (all green at the
+baseline), 7 consumer tests, its own consumer build (4 packaging defects:
+missing `deriveActionInputCatalog` export, ui-preview absent from the
+pack closure, `ROUTE_PATH_INVALID` on the seed application — the "blank
+rendering" cause — and packed `.svelte.ts` breaking the Vite dev
+optimizer), and the governed Dialog journey (portaled layer never
+unmounts on close; focus never enters; Escape inert — probe-reproduced).
+An unauthorized render diagnostic (`UI_COMPONENT_STYLE_UNAVAILABLE`) and
+a pseudo-state CSS selector change (cascade/specificity) regress the U3
+extension evidence and U2 styling evidence; a new host-state merge
+revert discards local edits. Verifier delivery repairs (lock, pack
+closure, route path, vite exclude, typecheck, manifest) are on the
+verification branch; the substantial defects (compile fatal gate,
+dialog lifecycle, workbench post-dispatch writes, select runtime loop,
+style gate, CSS emission, state merge, selection outline) returned to
+Codex with an implementation-ready handoff (VERIFY-01 §7). Bundle
+separation PROVEN on the isolated build; value vocabulary, Inspector
+authoring, checkbox same-control loop, button pending/truthful
+activity, and responsive shell preserved as positive evidence. The
+three independent reviews are deferred to the repaired candidate. B1
+and U4 remain OPEN; owner acceptance PENDING; no ledger row moved.
 **OWNER FEEDBACK RECORDED (2026-10-08, B1 mid-cycle)**: the running
 controls look substantially worse than the existing VICT catalog —
 appearance NOT accepted. Cause found: the consumer never imported

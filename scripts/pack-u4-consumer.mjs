@@ -26,6 +26,7 @@ const PACKAGES = [
   'ui',
   'ui-svelte',
   'ui-editor',
+  'ui-preview',
   'application',
   'sdk',
   'contracts',

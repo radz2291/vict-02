@@ -51,13 +51,16 @@ function docWithOutputs(outputs: unknown): UiDocument {
         kind: 'component',
         id: 'cb',
         definitionId: 'vict.catalog.checkbox',
-        ...(outputs !== undefined ? { outputs: outputs as UiDocument['nodes'][string] } : {}),
+        ...(outputs !== undefined
+          ? { outputs: outputs as Extract<UiDocument['nodes'][string], { kind: 'component' }>['outputs'] }
+          : {}),
       },
     },
     componentDefinitions: {},
     styleSources: {},
     tokens: {},
     conditions: {},
+    assets: {},
     localState: { ack: { key: 'ack', type: 'boolean', initial: false } },
   };
 }
@@ -105,7 +108,7 @@ describe('resolveSvelteComponent gates (§4.1/§5.2)', () => {
       slots: {
         body: [
           {
-            kind: 'text',
+            kind: 'text' as const,
             nodeId: 't',
             occurrenceKey: 'k2',
             content: { type: 'literal' as const, value: 'x' },

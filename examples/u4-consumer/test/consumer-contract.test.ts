@@ -12,10 +12,9 @@ import {
   validateUiDocument,
   type UiDocument,
 } from '@victframework/ui';
-import { b1CatalogDescriptors, compileConsumerDocuments } from '../src/product/registrations.js';
+import { b1CatalogDescriptors, compileConsumerDocuments, consumerActionInputs } from '../src/product/registrations.js';
 import {
   consumerActionIds,
-  consumerContractInputTypes,
   consumerViewFields,
 } from '../src/product/definition.js';
 import { taskControlsDocument, taskShellDocument } from '../src/product/documents.js';
@@ -46,11 +45,13 @@ function withProbe(probe: UiDocument['nodes'][string]): UiDocument {
 describe('seeded documents compile through the application path', () => {
   const result = compileConsumerDocuments();
   it('compiles both documents with zero fatal issues', () => {
-    expect(result.issues).toEqual([]);
-    expect(Object.keys(result.documentPlans).length).toBe(2);
+    expect(result.ok, result.ok ? '' : JSON.stringify([result.issues, result.uiIssues])).toBe(true);
+    if (!result.ok) return;
+    expect(Object.keys(result.plan.documentPlans ?? {}).length).toBe(2);
   });
   it('every B1 instance carries the compile-artifact marker (outputDecls)', () => {
-    expect(result.issues).toEqual([]);
+    expect(result.ok, result.ok ? '' : JSON.stringify([result.issues, result.uiIssues])).toBe(true);
+    if (!result.ok) return;
     let markers = 0;
     const walk = (instruction: {
       kind: string;
@@ -67,7 +68,7 @@ describe('seeded documents compile through the application path', () => {
         for (const child of fills) walk(child as never);
       }
     };
-    for (const plan of Object.values(result.documentPlans)) {
+    for (const plan of Object.values(result.plan.documentPlans ?? {})) {
       for (const instruction of plan.structure) walk(instruction as never);
     }
     // button + 2 checkboxes + select + switch + toggle + radio-group + dialog + appshell
@@ -201,7 +202,7 @@ describe('amendment negatives (§5 failure model)', () => {
       b1CatalogDescriptors,
       {
         actionIds: consumerActionIds,
-        actionInputs: { 'task.submit': { ...consumerContractInputTypes['c.taskSubmit'] } },
+        actionInputs: { 'task.submit': { ...consumerActionInputs['task.submit'] } },
       },
     );
     if (!result.ok) throw new Error('compile failed');
@@ -240,6 +241,7 @@ describe('primitive compatibility preserved (probe-matrix row)', () => {
       styleSources: {},
       tokens: {},
       conditions: {},
+      assets: {},
       localState: { flag: { key: 'flag', type: 'boolean', initial: false } },
       nodes: {
         root: { kind: 'element', id: 'root', tag: 'p', children: ['label'] },

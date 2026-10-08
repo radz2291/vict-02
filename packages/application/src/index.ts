@@ -43,7 +43,7 @@ export type {
   RendererDiagnosticCode,
 } from './renderer.js';
 export { APPLICATION_IDENTITY_SCHEMA_V3_MARKER } from './compile.js';
-export { resolveUiAttachments } from './ui-attach.js';
+export { resolveUiAttachments, deriveActionInputCatalog } from './ui-attach.js';
 export type {
   ResolveUiAttachmentsInput,
   ResolvedUiAttachments,

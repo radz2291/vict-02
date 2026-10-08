@@ -1,0 +1,189 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/Desktop/RZ/vict-02-u4-b1-core-verification
+
+ ❯ |renderer| packages/ui-svelte/test/pseudo-css-u2.test.ts (4 tests | 4 failed) 37ms
+     × emits a matchable .class:hover rule 27ms
+     × emits a matchable .class:focus rule 3ms
+     × emits a matchable .class:active rule 2ms
+     × emits a matchable .class:disabled rule 2ms
+8:35:34 pm [vite-plugin-svelte] packages/ui-svelte/src/document/DocumentHost.svelte:102:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+8:35:34 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:290:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+8:35:34 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:290:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+8:35:34 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:357:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+8:35:34 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:357:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+stderr | packages/ui-svelte/test/document-state-values.test.ts > merges only correctly typed declared host state, preserves local edits, and applies values after reset
+[svelte] dynamic_void_element_content
+`<svelte:element this="input">` is a void element — it cannot have content
+https://svelte.dev/e/dynamic_void_element_content
+
+ ❯ |renderer| packages/ui-svelte/test/document-state-values.test.ts (1 test | 1 failed) 114ms
+   × merges only correctly typed declared host state, preserves local edits, and applies values after reset 111ms
+ ❯ |renderer| packages/ui-svelte/test/document-extensions.test.ts (4 tests | 2 failed) 162ms
+     × forwards registration through visual components, conditional branches and slot fills 96ms
+     × renders bound props and repeated source occurrences; native submit reaches the canonical action in product and selection hosts 43ms
+ ❯ |renderer| packages/ui-editor/test/editor-tooling-u2.svelte.test.ts (4 tests | 1 failed) 366ms
+     × marks exactly the selected occurrence element for the outline 39ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 8 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |renderer| packages/ui-editor/test/editor-tooling-u2.svelte.test.ts > EditorCanvas selection affordance (U2-04/U2-06) > marks exactly the selected occurrence element for the outline
+AssertionError: expected +0 to be 1 // Object.is equality
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ packages/ui-editor/test/editor-tooling-u2.svelte.test.ts:209:29
+    207|       flushSync();
+    208|       const marked = target.querySelectorAll('[data-ui-selected]');
+    209|       expect(marked.length).toBe(1);
+       |                             ^
+    210|       expect((marked[0] as HTMLElement).dataset.uiOcc).toBe('doc.u2too…
+    211|     } finally {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/8]⎯
+
+ FAIL  |renderer| packages/ui-svelte/test/document-extensions.test.ts > explicit document extension registration > forwards registration through visual components, conditional branches and slot fills
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ packages/ui-svelte/test/document-extensions.test.ts:124:9
+    122|           (entry) => entry.occurrenceKey === occurrence && entry.sourc…
+    123|         ),
+    124|       ).toBe(true);
+       |         ^
+    125|     } finally {
+    126|       unmount(instance);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/8]⎯
+
+ FAIL  |renderer| packages/ui-svelte/test/document-extensions.test.ts > explicit document extension registration > renders bound props and repeated source occurrences; native submit reaches the canonical action in product and selection hosts
+AssertionError: the given combination of arguments (undefined and string) is invalid for this assertion. You can use an array, a map, an object, a set, a string, or a weakset instead of a string
+ ❯ packages/ui-svelte/test/document-extensions.test.ts:162:32
+    160|           element.getAttribute('data-ui-occ'),
+    161|         );
+    162|         expect(occurrences[0]).toContain('|a');
+       |                                ^
+    163|         expect(occurrences[1]).toContain('|b');
+    164|         buttons[0]!.click();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/8]⎯
+
+ FAIL  |renderer| packages/ui-svelte/test/document-state-values.test.ts > merges only correctly typed declared host state, preserves local edits, and applies values after reset
+AssertionError: expected 'initial' to be 'local correction' // Object.is equality
+
+Expected: "local correction"
+Received: "initial"
+
+ ❯ packages/ui-svelte/test/document-state-values.test.ts:83:27
+     81|     flushSync();
+     82|     expect(text('busy')).toBe('false');
+     83|     expect(text('draft')).toBe('local correction');
+       |                           ^
+     84|     instance.update({ busy: true }, true);
+     85|     flushSync();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/8]⎯
+
+ FAIL  |renderer| packages/ui-svelte/test/pseudo-css-u2.test.ts > U2-03 pseudo-state CSS emission (F1 regression) > emits a matchable .class:hover rule
+AssertionError: expected '.uv-root-doc_pseudo-1 .uv-f95fe7ba-n_…' to contain '.uv-root-doc_pseudo-1 .uv-f95fe7ba-n_…'
+
+- Expected
++ Received
+
+- .uv-root-doc_pseudo-1 .uv-f95fe7ba-n_root:hover {
++ .uv-root-doc_pseudo-1 .uv-f95fe7ba-n_root:hover, .uv-f95fe7ba-n_root.uv-root-doc_pseudo-1:hover {
++   background: navy;
++ }
+
+ ❯ packages/ui-svelte/test/pseudo-css-u2.test.ts:55:19
+     53|       expect(rule?.selector).toMatch(/^\.uv-[0-9a-f]+-n_root$/);
+     54|       const css = styleRulesToCss(compiled.plan, 'uv-root-doc_pseudo-1…
+     55|       expect(css).toContain(`.uv-root-doc_pseudo-1 .uv-f95fe7ba-n_root…
+       |                   ^
+     56|       expect(css).not.toContain('${');
+     57|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/8]⎯
+
+ FAIL  |renderer| packages/ui-svelte/test/pseudo-css-u2.test.ts > U2-03 pseudo-state CSS emission (F1 regression) > emits a matchable .class:focus rule
+AssertionError: expected '.uv-root-doc_pseudo-1 .uv-f95fe7ba-n_…' to contain '.uv-root-doc_pseudo-1 .uv-f95fe7ba-n_…'
+
+- Expected
++ Received
+
+- .uv-root-doc_pseudo-1 .uv-f95fe7ba-n_root:focus {
++ .uv-root-doc_pseudo-1 .uv-f95fe7ba-n_root:focus, .uv-f95fe7ba-n_root.uv-root-doc_pseudo-1:focus {
++   background: navy;
++ }
+
+ ❯ packages/ui-svelte/test/pseudo-css-u2.test.ts:55:19
+     53|       expect(rule?.selector).toMatch(/^\.uv-[0-9a-f]+-n_root$/);
+     54|       const css = styleRulesToCss(compiled.plan, 'uv-root-doc_pseudo-1…
+     55|       expect(css).toContain(`.uv-root-doc_pseudo-1 .uv-f95fe7ba-n_root…
+       |                   ^
+     56|       expect(css).not.toContain('${');
+     57|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/8]⎯
+
+ FAIL  |renderer| packages/ui-svelte/test/pseudo-css-u2.test.ts > U2-03 pseudo-state CSS emission (F1 regression) > emits a matchable .class:active rule
+AssertionError: expected '.uv-root-doc_pseudo-1 .uv-f95fe7ba-n_…' to contain '.uv-root-doc_pseudo-1 .uv-f95fe7ba-n_…'
+
+- Expected
++ Received
+
+- .uv-root-doc_pseudo-1 .uv-f95fe7ba-n_root:active {
++ .uv-root-doc_pseudo-1 .uv-f95fe7ba-n_root:active, .uv-f95fe7ba-n_root.uv-root-doc_pseudo-1:active {
++   background: navy;
++ }
+
+ ❯ packages/ui-svelte/test/pseudo-css-u2.test.ts:55:19
+     53|       expect(rule?.selector).toMatch(/^\.uv-[0-9a-f]+-n_root$/);
+     54|       const css = styleRulesToCss(compiled.plan, 'uv-root-doc_pseudo-1…
+     55|       expect(css).toContain(`.uv-root-doc_pseudo-1 .uv-f95fe7ba-n_root…
+       |                   ^
+     56|       expect(css).not.toContain('${');
+     57|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/8]⎯
+
+ FAIL  |renderer| packages/ui-svelte/test/pseudo-css-u2.test.ts > U2-03 pseudo-state CSS emission (F1 regression) > emits a matchable .class:disabled rule
+AssertionError: expected '.uv-root-doc_pseudo-1 .uv-f95fe7ba-n_…' to contain '.uv-root-doc_pseudo-1 .uv-f95fe7ba-n_…'
+
+- Expected
++ Received
+
+- .uv-root-doc_pseudo-1 .uv-f95fe7ba-n_root:disabled {
++ .uv-root-doc_pseudo-1 .uv-f95fe7ba-n_root:disabled, .uv-f95fe7ba-n_root.uv-root-doc_pseudo-1:disabled {
++   background: navy;
++ }
+
+ ❯ packages/ui-svelte/test/pseudo-css-u2.test.ts:55:19
+     53|       expect(rule?.selector).toMatch(/^\.uv-[0-9a-f]+-n_root$/);
+     54|       const css = styleRulesToCss(compiled.plan, 'uv-root-doc_pseudo-1…
+     55|       expect(css).toContain(`.uv-root-doc_pseudo-1 .uv-f95fe7ba-n_root…
+       |                   ^
+     56|       expect(css).not.toContain('${');
+     57|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/8]⎯
+
+
+ Test Files  4 failed (4)
+      Tests  8 failed | 5 passed (13)
+   Start at  20:35:30
+   Duration  13.74s (transform 12.84s, setup 0ms, import 17.12s, tests 679ms, environment 4.73s)
+

@@ -41,6 +41,7 @@ function docWith(nodes: UiDocument['nodes'], localState: UiDocument['localState'
     styleSources: {},
     tokens: {},
     conditions: {},
+    assets: {},
     localState,
   };
 }
@@ -217,7 +218,9 @@ describe('compile: descriptor instances (§3.1–§3.3, §5.1)', () => {
     const result = compileUiDocument(document, defaultSemanticElementCatalog(), [ABI_DESCRIPTOR]);
     expect(result.ok).toBe(true);
     if (!result.ok) return;
-    const instruction = result.plan.structure[0]!.children[0]!;
+    const rootInstruction = result.plan.structure[0]!;
+    if (rootInstruction.kind !== 'element') throw new Error('not element');
+    const instruction = rootInstruction.children[0]!;
     expect(instruction.kind).toBe('extension');
     if (instruction.kind !== 'extension') return;
     expect(instruction.revision).toBe('1');
@@ -235,7 +238,9 @@ describe('compile: descriptor instances (§3.1–§3.3, §5.1)', () => {
     );
     const result = compileUiDocument(document, defaultSemanticElementCatalog(), [ABI_DESCRIPTOR]);
     if (!result.ok) throw new Error('compile failed');
-    const instruction = result.plan.structure[0]!.children[0]!;
+    const rootInstruction = result.plan.structure[0]!;
+    if (rootInstruction.kind !== 'element') throw new Error('not element');
+    const instruction = rootInstruction.children[0]!;
     if (instruction.kind !== 'extension') throw new Error('not extension');
     // §3.3: the DECLARED list is always emitted (the marker), independent
     // of authored wiring; bindings are {} when unwired.
@@ -391,7 +396,9 @@ describe('compile: descriptor instances (§3.1–§3.3, §5.1)', () => {
     );
     const result = compileUiDocument(document, defaultSemanticElementCatalog(), [dialog]);
     if (!result.ok) throw new Error('compile failed');
-    const instruction = result.plan.structure[0]!.children[0]!;
+    const rootInstruction = result.plan.structure[0]!;
+    if (rootInstruction.kind !== 'element') throw new Error('not element');
+    const instruction = rootInstruction.children[0]!;
     if (instruction.kind !== 'extension') throw new Error('not extension');
     expect(instruction.slots?.body?.length).toBe(1);
     expect(instruction.slots?.body?.[0]?.nodeId).toBe('confirm');

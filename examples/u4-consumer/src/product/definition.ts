@@ -8,7 +8,7 @@
  */
 import { copyUiValue, isUiValueOfType, type UiValue, type UiValueType, type UiDocument, type UiFieldTypes } from '@victframework/ui';
 import { defineContract } from '@victframework/contracts';
-import type { ApplicationDefinition, ResourceDefinition } from '@victframework/sdk';
+import type { ApplicationDefinitionV3, ResourceDefinition } from '@victframework/sdk';
 
 export interface ConsumerAction {
   readonly kind: 'mutation';
@@ -106,13 +106,13 @@ export const consumerResource: ResourceDefinition = {
   mutations: consumerActions.map(action => ({ op: action.op, effect: 'write', inputContractId: action.inputContractId,
     outputContractId: action.outputContractId, permissions: ['task.write'] })),
 };
-export function consumerApplication(documents: readonly UiDocument[]): ApplicationDefinition {
+export function consumerApplication(documents: readonly UiDocument[]): ApplicationDefinitionV3 {
   return {
     schema: 'vict.application@3', id: 'u4.consumer', revision: '1', name: 'Task review',
     compatibility: { applicationSchema: 'vict.application@3' },
     composition: { navigation: 'sidebar', responsive: { navigationAt: 'small' } },
     routes: [
-      { id: 'controls', path: '/app.html', screenId: 'controls', nav: { label: 'Controls' } },
+      { id: 'controls', path: '/', screenId: 'controls', nav: { label: 'Controls' } },
       { id: 'shell', path: '/shell', screenId: 'shell', nav: { label: 'Shell and dialog' } },
     ].filter(route => documents.some(document => (document.id === 'consumer.taskShell' ? 'shell' : 'controls') === route.screenId)),
     screens: documents.map(document => ({ id: document.id === 'consumer.taskShell' ? 'shell' : 'controls', title: 'Task review',

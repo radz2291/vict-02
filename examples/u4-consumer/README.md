@@ -48,3 +48,17 @@ The authoring seeds are the committed documents in `src/product/documents.ts`
 stored envelope and reloads. Saved edits persist in `localStorage` under
 `u4-consumer.controls` / `u4-consumer.shell` and are what the finished app
 replays.
+
+## Verification status (U4-B1 core-refactor round 1 — 2026-10-08)
+
+This consumer builds and launches ONLY on the verification branch
+`codex/ui-foundation-u4-b1-core-verification` (delivery repairs: application
+public re-export, pack closure incl. ui-preview, seed route path, vite
+dep-optimization exclusion, pinned dev toolchain). On the unmodified
+implementation candidate `098b84e3…` the consumer cannot build. Round-1
+verdict FAIL with known defects recorded in
+`docs/ui-foundation/reviews/u4/b1-core-verify/U4-B1-CORE-VERIFY-01.md`;
+founder-visible ones: the catalog Dialog cannot be dismissed (✕/Escape inert),
+select options cannot be chosen from the portaled listbox, and the workbench
+preview does not surface action failure/success feedback near the button
+(the finished app and activity log do). Wait for the repaired candidate.

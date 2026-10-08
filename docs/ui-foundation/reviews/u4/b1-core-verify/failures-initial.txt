@@ -1,0 +1,98 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/Desktop/RZ/vict-02-u4-b1-core-verification
+
+ ❯ |unit| packages/ui/test/contract-u4-b1.test.ts (22 tests | 6 failed) 57ms
+     × fails closed on a revision pin matching no registered revision 13ms
+     × raises UI_COMPONENT_ABI_UNSUPPORTED for a malformed marker/abi pair 2ms
+     × rejects unknown outputs and payload/state type mismatches (R1) 2ms
+     × types action inputs against the derived catalog and flags undeclared inputs 3ms
+     × rejects undeclared slot fills at compile (never silently dropped) 3ms
+     × checks literal and reference prop types for descriptor instances 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 6 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| packages/ui/test/contract-u4-b1.test.ts > compile: descriptor instances (§3.1–§3.3, §5.1) > fails closed on a revision pin matching no registered revision
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ packages/ui/test/contract-u4-b1.test.ts:260:23
+    258|     );
+    259|     const result = compileUiDocument(document, defaultSemanticElementC…
+    260|     expect(result.ok).toBe(true);
+       |                       ^
+    261|     if (!result.ok) return;
+    262|     expect(result.plan.diagnostics.map((issue) => issue.code)).toConta…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/6]⎯
+
+ FAIL  |unit| packages/ui/test/contract-u4-b1.test.ts > compile: descriptor instances (§3.1–§3.3, §5.1) > raises UI_COMPONENT_ABI_UNSUPPORTED for a malformed marker/abi pair
+Error: compile failed
+ ❯ packages/ui/test/contract-u4-b1.test.ts:281:27
+    279|     );
+    280|     const result = compileUiDocument(document, defaultSemanticElementC…
+    281|     if (!result.ok) throw new Error('compile failed');
+       |                           ^
+    282|     expect(result.plan.diagnostics.map((issue) => issue.code)).toConta…
+    283|       'UI_COMPONENT_ABI_UNSUPPORTED',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/6]⎯
+
+ FAIL  |unit| packages/ui/test/contract-u4-b1.test.ts > compile: descriptor instances (§3.1–§3.3, §5.1) > rejects unknown outputs and payload/state type mismatches (R1)
+Error: compile failed
+ ❯ packages/ui/test/contract-u4-b1.test.ts:304:27
+    302|     );
+    303|     const result = compileUiDocument(document, defaultSemanticElementC…
+    304|     if (!result.ok) throw new Error('compile failed');
+       |                           ^
+    305|     const codes = result.plan.diagnostics.map((issue) => issue.code);
+    306|     expect(codes).toContain('UI_COMPONENT_OUTPUT_UNKNOWN');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/6]⎯
+
+ FAIL  |unit| packages/ui/test/contract-u4-b1.test.ts > compile: descriptor instances (§3.1–§3.3, §5.1) > types action inputs against the derived catalog and flags undeclared inputs
+Error: compile failed
+ ❯ packages/ui/test/contract-u4-b1.test.ts:343:27
+    341|       actionInputs: { 'review.approve': { noteId: 'string' } },
+    342|     });
+    343|     if (!result.ok) throw new Error('compile failed');
+       |                           ^
+    344|     const codes = result.plan.diagnostics.map((issue) => issue.code);
+    345|     expect(codes).toContain('UI_COMPONENT_BINDING_INCOMPATIBLE');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/6]⎯
+
+ FAIL  |unit| packages/ui/test/contract-u4-b1.test.ts > compile: descriptor instances (§3.1–§3.3, §5.1) > rejects undeclared slot fills at compile (never silently dropped)
+Error: compile failed
+ ❯ packages/ui/test/contract-u4-b1.test.ts:362:27
+    360|     );
+    361|     const result = compileUiDocument(document, defaultSemanticElementC…
+    362|     if (!result.ok) throw new Error('compile failed');
+       |                           ^
+    363|     expect(result.plan.diagnostics.map((issue) => issue.code)).toConta…
+    364|       'UI_DOC_UNKNOWN_COMPONENT',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/6]⎯
+
+ FAIL  |unit| packages/ui/test/contract-u4-b1.test.ts > compile: descriptor instances (§3.1–§3.3, §5.1) > checks literal and reference prop types for descriptor instances
+Error: compile failed
+ ❯ packages/ui/test/contract-u4-b1.test.ts:414:27
+    412|     );
+    413|     const result = compileUiDocument(document, defaultSemanticElementC…
+    414|     if (!result.ok) throw new Error('compile failed');
+       |                           ^
+    415|     expect(result.plan.diagnostics.map((issue) => issue.code)).toConta…
+    416|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/6]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  6 failed | 26 passed (32)
+   Start at  20:21:57
+   Duration  1.10s (transform 1.12s, setup 0ms, import 1.42s, tests 82ms, environment 0ms)
+

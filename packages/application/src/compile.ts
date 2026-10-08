@@ -21,10 +21,12 @@ import {
 import type {
   ActionDefinition,
   ApplicationDefinition,
+  ApplicationDefinitionV3,
   ComponentReference,
   FormBinding,
   ResourceDefinition,
   ScreenDefinition,
+  ScreenDefinitionV3,
   Surface,
   ThemeDeclaration,
   ViewBinding,
@@ -123,7 +125,8 @@ export interface CapabilityRegistryEntry {
 }
 
 export interface CompileApplicationInput {
-  readonly application: ApplicationDefinition;
+  /** `vict.application@2` legacy shape or the `vict.application@3` explicit-catalog shape. */
+  readonly application: ApplicationDefinition | ApplicationDefinitionV3;
   readonly resources: readonly ResourceDefinition[];
   readonly contracts?: readonly ContractRegistryEntry[];
   readonly capabilities?: readonly CapabilityRegistryEntry[];
@@ -1143,7 +1146,7 @@ function identitySchemaFor(applicationSchema: string): string {
  * while meaningful UI sequence order always does.
  */
 export function canonicalApplicationManifest(
-  application: ApplicationDefinition,
+  application: ApplicationDefinition | ApplicationDefinitionV3,
 ): Record<string, unknown> {
   const byId = <T>(items: readonly T[], key: (item: T) => string): T[] =>
     [...items].sort((a, b) => {
@@ -1152,7 +1155,8 @@ export function canonicalApplicationManifest(
       return keyA < keyB ? -1 : keyA > keyB ? 1 : 0;
     });
 
-  const screens = byId(application.screens, (screen) => screen.id).map((screen) => ({
+  type AnyScreen = ApplicationDefinition['screens'][number] | ApplicationDefinitionV3['screens'][number];
+  const screens = byId(application.screens as readonly AnyScreen[], (screen) => screen.id).map((screen) => ({
     ...screen,
     // Regions are ordered layout semantics; surfaces are ordered semantics.
     // Region NAMES form a set within a screen; keep declared order (they are
@@ -1212,7 +1216,7 @@ export function canonicalApplicationManifest(
  * declarations do not.
  */
 export function computeApplicationVersion(input: {
-  readonly application: ApplicationDefinition;
+  readonly application: ApplicationDefinition | ApplicationDefinitionV3;
   readonly resources: readonly ResourceDefinition[];
   /** @3: A-03-ordered identity entries (deduplicated, code-point sorted). */
   readonly uiDocuments?: readonly UiDocumentIdentityEntry[];
@@ -2987,7 +2991,10 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
     const componentsFrozen = deepFreeze([...(application.components ?? [])].map(cloneForFreeze));
     const screensFrozen: Record<string, Readonly<ScreenDefinition>> = {};
     for (const screen of application.screens) {
-      screensFrozen[screen.id] = deepFreezeClone(screen);
+      // @3 document-mode screens ride the same plan field at runtime (the
+      // frozen plan type predates the @3 screen shape); validation above has
+      // already enforced the V3 screen contract.
+      screensFrozen[screen.id] = deepFreezeClone(screen) as Readonly<ScreenDefinition>;
     }
     const viewsFrozen: Record<string, Readonly<ViewBinding>> = {};
     for (const view of application.views ?? []) {
@@ -4277,7 +4284,7 @@ function collectSurface(
 
 function collectResourceReference(
   collector: Collector,
-  application: ApplicationDefinition,
+  application: Pick<ApplicationDefinition, 'resources'>,
   resourceId: string,
   resourceRevision: string,
   provided: ReadonlyMap<string, ResourceDefinition>,

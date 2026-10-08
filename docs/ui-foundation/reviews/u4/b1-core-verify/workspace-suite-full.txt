@@ -1,0 +1,47 @@
+
+> vict-monorepo@0.1.0 test
+> vitest run
+
+
+ RUN  v4.1.11 C:/Users/RZ1/Desktop/RZ/vict-02-u4-b1-core-verification
+
+ ❯ |integration| examples/u4-consumer/test/consumer-contract.test.ts (0 test)
+ ❯ |renderer| packages/ui-svelte/test/pseudo-css-u2.test.ts (4 tests | 4 failed) 54ms
+     × emits a matchable .class:hover rule 34ms
+     × emits a matchable .class:focus rule 6ms
+     × emits a matchable .class:active rule 4ms
+     × emits a matchable .class:disabled rule 4ms
+8:28:27 pm [vite-plugin-svelte] packages/ui-svelte/src/document/DocumentHost.svelte:102:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+8:28:27 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:290:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+8:28:27 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:290:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+8:28:27 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:357:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+8:28:27 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:357:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+ ❯ |renderer| packages/ui-svelte/test/document-state-values.test.ts (1 test | 1 failed) 202ms
+   × merges only correctly typed declared host state, preserves local edits, and applies values after reset 198ms
+ ❯ |renderer| packages/ui-svelte/test/document-extensions.test.ts (4 tests | 2 failed) 208ms
+     × forwards registration through visual components, conditional branches and slot fills 138ms
+     × renders bound props and repeated source occurrences; native submit reaches the canonical action in product and selection hosts 42ms
+ ❯ |renderer| packages/ui-editor/test/editor-tooling-u2.svelte.test.ts (4 tests | 1 failed) 910ms
+     × marks exactly the selected occurrence element for the outline 102ms
+ ❯ |unit| packages/ui/test/contract-u4-b1.test.ts (22 tests | 6 failed) 111ms
+     × fails closed on a revision pin matching no registered revision 27ms
+     × raises UI_COMPONENT_ABI_UNSUPPORTED for a malformed marker/abi pair 4ms
+     × rejects unknown outputs and payload/state type mismatches (R1) 6ms
+     × types action inputs against the derived catalog and flags undeclared inputs 3ms
+     × rejects undeclared slot fills at compile (never silently dropped) 3ms
+     × checks literal and reference prop types for descriptor instances 3ms
+8:28:52 pm [vite-plugin-svelte] packages/ui-svelte/test/CatalogCheckboxFixture.svelte:27:0 Buttons and links should either contain text or have an `aria-label`, `aria-labelledby` or `title` attribute
+https://svelte.dev/e/a11y_consider_explicit_label
+8:28:52 pm [vite-plugin-svelte] packages/ui-svelte/test/CatalogCheckboxFixture.svelte:32:0 Buttons and links should either contain text or have an `aria-label`, `aria-labelledby` or `title` attribute
+https://svelte.dev/e/a11y_consider_explicit_label
+
+ Test Files  6 failed | 172 passed | 1 skipped (179)
+      Tests  14 failed | 2974 passed | 3 skipped (2991)
+   Start at  20:27:49
+   Duration  278.97s (transform 93.99s, setup 0ms, import 341.43s, tests 873.12s, environment 35.55s)
+
