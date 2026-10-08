@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { RangeCalendar } from 'bits-ui';
+  import { RangeCalendar } from '../range-calendar.js';
   import CalendarGrid from '../../CalendarGrid.svelte';
   import { dateValue, rangeIsOrdered, emitRange, type CatalogDateRange, numeric } from './b3-values.js';
   import type { DateValue } from '../../dates.js';

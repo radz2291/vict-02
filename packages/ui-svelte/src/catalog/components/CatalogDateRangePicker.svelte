@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { DateRangePicker, RangeCalendar } from 'bits-ui';
+  import { DateRangePicker } from '../date-range-picker.js';
+  import { RangeCalendar } from '../range-calendar.js';
   import CalendarGrid from '../../CalendarGrid.svelte';
   import CatalogPortal from './CatalogPortal.svelte';
   import CatalogPart from './CatalogPart.svelte';

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Slider } from 'bits-ui';
+  import { Slider } from '../slider.js';
   import { numeric } from './b3-values.js';
   import type { UiSvelteComponentProps } from '../../document/extensions.js';
   let { props, io, presentation }: UiSvelteComponentProps = $props();

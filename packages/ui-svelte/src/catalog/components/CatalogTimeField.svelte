@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { TimeField } from 'bits-ui';
+  import { TimeField } from '../time-field.js';
   import { timeValue } from './b3-values.js';
   import type { UiSvelteComponentProps } from '../../document/extensions.js';
   let { props, io, presentation }: UiSvelteComponentProps = $props();

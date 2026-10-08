@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Progress } from 'bits-ui';
+  import { Progress } from '../progress.js';
   import { numeric } from './b3-values.js';
   import type { UiSvelteComponentProps } from '../../document/extensions.js';
   let { props, io, presentation }: UiSvelteComponentProps = $props();

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { DateRangeField } from 'bits-ui';
+  import { DateRangeField } from '../date-range-field.js';
   import { dateValue, rangeIsOrdered, emitRange, type CatalogDateRange, numeric } from './b3-values.js';
   import type { DateValue } from '../../dates.js';
   import type { UiSvelteComponentProps } from '../../document/extensions.js';

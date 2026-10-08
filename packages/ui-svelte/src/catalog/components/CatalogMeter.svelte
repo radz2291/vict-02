@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Meter } from 'bits-ui';
+  import { Meter } from '../meter.js';
   import { numeric } from './b3-values.js';
   import type { UiSvelteComponentProps } from '../../document/extensions.js';
   let { props, io, presentation }: UiSvelteComponentProps = $props();

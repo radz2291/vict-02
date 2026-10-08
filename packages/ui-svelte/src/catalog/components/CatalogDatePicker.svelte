@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { DatePicker } from 'bits-ui';
+  import { DatePicker } from '../date-picker.js';
   import CalendarGrid from '../../CalendarGrid.svelte';
   import CatalogPortal from './CatalogPortal.svelte';
   import CatalogPart from './CatalogPart.svelte';

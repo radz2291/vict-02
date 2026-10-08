@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Calendar } from 'bits-ui';
+  import { Calendar } from '../calendar.js';
   import CalendarGrid from '../../CalendarGrid.svelte';
   import { dateValue, dateText, numeric } from './b3-values.js';
   import type { UiSvelteComponentProps } from '../../document/extensions.js';
