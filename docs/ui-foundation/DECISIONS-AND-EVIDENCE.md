@@ -917,6 +917,11 @@ remain unauthorized):
    recommended first (scalar foundation). Runtime implementation remains
    unauthorized; supersedes the amendment §8 five-family limit and its
    "must not expand" clause (both preserved in frozen bytes at `460d963…`).
+   Review: R1 **PASS WNF** (9 findings, all repaired) -> round-2 recheck
+   **PASS WNF** (8/9; pointer residual repaired). Frozen (SUPERSEDING,
+   scope): payload `52684696…` (seven pins incl. amendment-with-§10 and
+   the recalibration document), record
+   [U4-CATALOG-RECALIBRATION-FREEZE](U4-CATALOG-RECALIBRATION-FREEZE.md).
 7b. Superseding freeze — VERIFIED: payload commit `460d963…` (empty
     marker; ten byte-pins), record
     [U4-AMENDMENT-FREEZE-02](U4-AMENDMENT-FREEZE-02.md); separate fresh

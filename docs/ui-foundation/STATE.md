@@ -32,6 +32,11 @@ families + the higher-level public components, challenges the contract, and
 plans batches B1–B5; amendment §10 extends the value vocabulary
 (`UiValueType`); the standing ledger lives in the reuse matrix §6. PROPOSED
 — under independent review; implementation NOT authorized.
+Recalibration review complete: R1 **PASS WNF** (9 findings) -> repairs ->
+round 2 **PASS WNF** (8/9 verified; pointer residual) -> repairs. FROZEN
+(SUPERSEDING, scope): payload `52684696…`, pins in
+[U4-CATALOG-RECALIBRATION-FREEZE](U4-CATALOG-RECALIBRATION-FREEZE.md);
+freeze-check recorded there before delivery.
 Amendment work is isolated on `codex/ui-foundation-u4-component-amendment`
 (from the prepared handoff records `cfbd6d3…`); U0–U3 records untouched.
 The prepared U4 handoff was independently reviewed on
