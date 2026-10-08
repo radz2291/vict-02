@@ -233,7 +233,12 @@ package directories (`packages/*/victframework-*.tgz`) — handoff §11 records
 "tarballs themselves not committed — manifest + reproducible script only".
 They went stale immediately and churn on every pack run (npm pack overwrote
 five during this verification; restored). Remove them from tracking in the
-repair (keep `pack-manifest.json` + the script).
+repair (keep `pack-manifest.json` + the script). Related hygiene: the dist
+packages ship `.map` files whose `../src` targets are not in the tarball, so
+`npm run dev` prints a wall of benign "Sourcemap … points to missing source
+files" warnings (observed on the isolated consumer; pages serve and journeys
+run normally). Either drop the maps from `files` or ship sources, so the
+founder launch is quiet.
 
 ## 4. Criterion verdicts (handoff §13.1 scope)
 
