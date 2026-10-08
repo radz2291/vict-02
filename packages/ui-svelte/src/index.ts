@@ -75,3 +75,6 @@ export type { UiComponentPresentation, UiComponentTargetAttributes, UiActionStat
 
 export { b2CatalogDescriptors } from './catalog/components/b2-descriptors.js';
 export { b2CatalogImplementations } from './catalog/components/b2-implementations.js';
+
+export { b3CatalogDescriptors } from './catalog/components/b3-descriptors.js';
+export { b3CatalogImplementations } from './catalog/components/b3-implementations.js';
