@@ -49,8 +49,13 @@ the VALIDATION gate — matrix rows split accordingly), F3 Collapsible
 assigned B5 + programmatic ledger reconciliation (RECONCILIATION OK; one
 gap found and fixed), F4 higher-level authoring roadmap (display
 components already document-mounted via ext.status/ext.feedback;
-Studio config editing recorded PENDING owner decision). Superseding
-freeze to follow review.
+Studio config editing recorded PENDING owner decision).
+Repair review: fresh R1 **PASS WNF** (0 blocking/4 minor/5 info) ->
+repairs -> round 2 **FAIL** (R2-B1: handoff splice duplication blocker
+— preserved in the record) -> repairs -> round 2b **PASS**.
+FROZEN — VERIFIED (SUPERSEDING): repaired-contract payload
+`4cfe5b37…`, pins in
+[U4-CATALOG-RECALIBRATION-FREEZE-02](U4-CATALOG-RECALIBRATION-FREEZE-02.md).
 Amendment work is isolated on `codex/ui-foundation-u4-component-amendment`
 (from the prepared handoff records `cfbd6d3…`); U0–U3 records untouched.
 The prepared U4 handoff was independently reviewed on

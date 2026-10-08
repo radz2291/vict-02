@@ -96,3 +96,56 @@ Probe-directory scripts (`C:/Users/RZ1/Desktop/RZ/u4-f2-probe/`) are byte-identi
 All four repair findings (F1–F4) are genuinely repaired with accurate cites, reproducible evidence, and no residual contradictions; the negative cases I constructed did not break any claim. Remaining findings are two process-timing MINORs that resolve at the already-sequenced superseding freeze, plus cosmetic/imprecision notes.
 
 U4 CATALOG REPAIR REVIEW R1: PASS WITH NON-BLOCKING FINDINGS
+
+## R1 Round 2 (affected recheck)
+
+Scope: affected spots only, at repair commit `cee2f0eb76b7881d34f6c4a24bd7c6e8f0075b17` (same worktree, tree clean, HEAD verified). R1 report imported verbatim at `docs/ui-foundation/reviews/u4/U4-REPAIR-REVIEW-01.md` — sha256 `d86bdb917878c98902a363c6e912b722cdc823ca39e2542f21506f2c08606798` reproduced from both the worktree file and `git show cee2f0e:…`; `-text` attribute scoped (new `.gitattributes` line, `git check-attr` = explicitly unset). Read-only; nothing repaired.
+
+### Per-item recheck results
+
+| Item | Verdict | Evidence |
+| --- | --- | --- |
+| 1. F-2 (mixed-members negative) | **VERIFIED** | `invalid-cases-recal.json` parses; 7 cases; R7 = mixed-member `['alpha', 1]` emitted against a `stringList` payload, expected "rejected at the emit boundary: … not a UiValue", diagnostic `UI_COMPONENT_OUTPUT_PAYLOAD_INVALID` — agrees with amendment §10.1a's mixed-members negative (emit-boundary, payload-invalid family). README manifest row now lists "mixed members (R7)". Handoff §13.1(6) now cites "the frozen invalid-cases-recal.json set R1–R7" enumerating exactly the seven frozen cases. |
+| 2. F-3 (trace cells vs ledger) | **VERIFIED** | Recalibration S-1 verdict cell: "E — the loop pattern is proven at B1 on B1's own families; per-family ledger rows re-run it (collapsible re-runs the loop at B5, matrix §6)". D-1 verdict cell: "E (mechanism); per ledger: dialog authored B1 (P-overlay), alert-dialog/popover/tooltip/link-preview B5" — both now consistent with matrix §6 rows. |
+| 3. F-4 (matrix contiguity) | **VERIFIED** | Ledger table is contiguous again (RecordsTable/StatusBadge rows directly follow the X row under the header); the reconciliation prose moved below the value-shape citations at section end. Rerun `node reconcile-ledger.mjs`: exit 0, `RECONCILIATION OK`. |
+| 4. F-5 (§13 intro wording) | **TEXT PRESENT — DELIVERY CORRUPTED (see R2-B1)** | The required wording exists (handoff lines 396–412: display components document-mountable per §4.0, Studio editing PENDING, "a recorded position, not a permanent exclusion") but line 413 fuses mid-word into a duplicated document body, and the OLD intro ("…Feedback family … recorded boundary") reappears inside that duplicate at lines 808–825. |
+| 5. F-8 (VitApp roadmap bullet) | **VERIFIED** | Recalibration §4.0 bullet added: "VitApp — the plan renderer itself (renders compiled plans, not a config surface); recorded as renderer machinery, no authoring roadmap." |
+| 6. F-9 (STATE note) | **VERIFIED** | STATE adds the parenthetical: "(That \"next authorized action\" line predates the repair below; the repair paragraph re-sequences it.)" |
+| 7. Noted-not-repaired (F-1/F-6/F-7) | **CONFIRMED UNCHANGED** | F-1: §13.1 pin text byte-unchanged (still "at the payload SHA recorded in docs/ui-foundation/U4-CATALOG-RECALIBRATION-FREEZE.md", lines 856–857). F-6: `reviews/u4/validator-probe/*` and `ledger-reconciliation/*` diff-empty 009befe→cee2f0e. F-7: `.prettierignore` diff-empty. |
+| 8. Delta scan 009befe→cee2f0e | **FAIL — BLOCKER R2-B1** | See below. |
+
+### R2-B1 (BLOCKING): U4-HANDOFF.md is corrupted by a ~392-line self-duplication with a mid-word splice
+
+`git diff --numstat 009befe..cee2f0e -- docs/ui-foundation/U4-HANDOFF.md` = **+416/−3**; the file grows **506 → 919 lines**. Structure at cee2f0e:
+
+- Lines 1–393: original head (title, §0–§12.2) intact.
+- Lines 396–412: the F-5 replacement intro (correct text).
+- **Line 413 (corrupted fuse):** `a recorded position, not a permanent exclusionilt-artifact reuse and Studio-agent handoff` — the intro's last line spliced mid-word into the duplicate's title (`# U4 handoff — built-artifact reuse and Studio-agent handoff`, whose beginning was consumed).
+- Lines 414–805: a near-verbatim DUPLICATE of the document body — `**PREPARED — IMPLEMENTATION NOT AUTHORIZED.**`, a second `## 0. Entry authority` table, second §1, §2, …, second §12.1 and §12.2. Duplication scan: `## 0. Entry authority` ×2, `## 1.` ×2, `## 2.` ×2, `## 12.` ×2, `### 12.2` ×2, `PREPARED — IMPLEMENTATION NOT AUTHORIZED` ×6, `## 13.` ×2.
+- Lines 806–848: a SECOND `## 13` header carrying the OLD pre-F-5 intro ("…Application-surface components (…, Feedback family) stay application-plan governed … this is a recorded boundary") — the exact wording F-5 was meant to retire, resurrected contradictorily alongside the fixed intro at 396–412.
+- Lines 849–919: the single surviving §13.1 prompt (correct, F-2-updated).
+
+User effect: the governing implementation handoff is no longer citable or trustworthy — two conflicting §13 intros (one fixing F-5, one reverting it), two Entry Authority tables and two copies of the superseded prompts invite divergent future edits; the fused line is byte-level corruption. Any consumer of §13 (owner authorization, B1 builder, gate checker) cannot tell which §13 body governs. This is a mechanical editing accident, not a reasoned change — but it sits in the same commit as the otherwise-correct repairs, so the commit cannot be accepted as-is.
+
+No regression to R1's other passes: the amendment, recalibration (beyond the two trace cells + VitApp bullet), matrix, fixtures (additive R7 only), probe evidence, frozen bytes, and `.prettierignore` are otherwise untouched; the reconciliation and validator evidence still reproduce byte-identically.
+
+Required repair (single mechanical operation): delete handoff lines 414–806 up to the surviving original `## 13` body (or equivalently remove the duplicated block and restore line 413 to end at "…not a permanent exclusion."), leaving ONE §13 with the F-5 intro, one §0–§12, and the §13.1 prompt; then re-verify by structure scan (each header once) and a full-file diff against intent. F-1 remains correctly deferred to the superseding freeze.
+
+U4 CATALOG REPAIR REVIEW R1 ROUND 2: FAIL
+
+## R1 Round 2b (blocker recheck)
+
+Scope: blocker R2-B1 only, at repair commit `46c506400d67291634fc64c0d59ac515239dc8f1` (same worktree, tree clean, HEAD verified). Read-only; nothing repaired.
+
+| Check | Verdict | Evidence |
+| --- | --- | --- |
+| 1. Handoff structure | **PASS** | `U4-HANDOFF.md` is exactly **510 lines** (009befe baseline 506 + net +4 from the two intended edits — arithmetically consistent). `## 13` ×1, `### 13.1` ×1, `## 0. Entry authority` ×1, `## 1.` ×1, `## 2.` ×1, `### 12.2` ×1 — every top-level header once, no duplication. Fused-line marker `exclusionilt` ×0; `Feedback family` ×0. `PREPARED — IMPLEMENTATION NOT AUTHORIZED` ×3 at lines 3 (top banner), 317 (§12.1 quoted prompt), 344 (§12.2 quoted prompt) — byte-identical distribution to the clean 009befe baseline (×3), so exactly ONE banner block; the other two hits are inside the superseded §12.1/§12.2 prompt quotes, as in the candidate bytes the rebuild started from. |
+| 2. §13 intro + §13.1 segments | **PASS** | §13 intro now reads: application-plan surfaces (…, VitApp) plan-governed; display components (StatusBadge, Feedback, Button) additionally already document-mountable via registered extension implementations (recalibration §4.0 evidence); Studio config editing PENDING owner decision; "a recorded position, not a permanent exclusion." §13.1(6) carries the frozen-set negatives wording: "the frozen invalid-cases-recal.json set R1–R7: stringList payload → scalar state, malformed isoDate/isoTime literals, null array member, mixed members R7, range start > end, numberList payload → number state" — matches the seven frozen cases verified in round 2 (R1–R7). The F-1 pin is untouched: still the pre-freeze pointer "at the payload SHA recorded in docs/ui-foundation/U4-CATALOG-RECALIBRATION-FREEZE.md", exactly as declared (no hunk touches it). |
+| 3. Diff isolation vs 009befe | **PASS** | `git diff 009befe..46c5064 -- docs/ui-foundation/U4-HANDOFF.md` contains EXACTLY two hunks: the §13 intro segment (@@ -403,11 +403,14 @@) and the §13.1 negatives segment (@@ -482,9 +485,10 @@). No other drift. |
+| 4. Full delta scan 009befe..46c5064 | **PASS** | All-files delta = the 8-path round-2 repair set (STATE, recalibration, matrix, handoff, fixture README, invalid-cases-recal.json, .gitattributes, imported R1 report). `git diff cee2f0e..46c5064` = handoff ONLY (+1/−410 = the duplication removal); every other file byte-identical to the state I verified in round 2 (fixture R7, trace cells, matrix table, VitApp bullet, STATE note). No new unsupported claims introduced. |
+
+Cosmetic note (non-blocking, unchanged class from R1 F-6/INFO): two re-wrapped lines in the edited segments run longer than the file's typical wrap width (intro line ending "…not a permanent exclusion. The seven governing U4 criteria, packaging repair (F3),"; the §13.1 negatives line citing the frozen set). No corruption, no semantic effect.
+
+R2-B1 is resolved: the handoff is again a single, internally consistent governing document — one §13 with the corrected intro, one §0–§12 lineage, one §13.1 prompt, and a delta that contains only the two intended edits.
+
+U4 CATALOG REPAIR REVIEW R1 ROUND 2B: PASS

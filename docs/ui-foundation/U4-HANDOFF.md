@@ -445,8 +445,10 @@ own gate; a batch PASS proves only its ledger rows):
 > amendment docs/ui-foundation/U4-COMPONENT-AMENDMENT.md and
 > recalibration docs/ui-foundation/U4-CATALOG-RECALIBRATION.md at the
 > payload SHA recorded in
-> docs/ui-foundation/U4-CATALOG-RECALIBRATION-FREEZE.md (as superseded
-> in scope by that freeze; the §8 five-family claim stays superseded).
+> docs/ui-foundation/U4-CATALOG-RECALIBRATION-FREEZE-02.md (payload
+> 4cfe5b373481e29cff7d9bd02d9c473064a8aa9c; supersedes the earlier
+> recalibration freeze payload — earlier freezes stay preserved; the
+> §8 five-family claim stays superseded).
 > Implement ONLY batch B1 on a new isolated branch
 > codex/ui-foundation-u4-b1 from this lineage:
 > (1) Land the shared value vocabulary AS CODE exactly per amendment

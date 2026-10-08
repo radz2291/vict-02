@@ -1071,6 +1071,15 @@ Owner findings F1–F4, repaired on `codex/ui-foundation-u4-catalog-repair`
   proofs stay limited to B1 rows. All seven U4 criteria, packaging
   repair, packed-artifact isolation, parity, bundle separation,
   unfamiliar-agent exercise and founder checkpoint preserved.
+- Repair review: fresh R1 **PASS WNF** -> repairs -> round 2 **FAIL**
+  (R2-B1 handoff-duplication blocker, repaired by rebuilding from clean
+  candidate bytes + re-anchored edits) -> round 2b **PASS**. Frozen
+  (SUPERSEDING): repaired-contract payload `4cfe5b37…`, record
+  [U4-CATALOG-RECALIBRATION-FREEZE-02](U4-CATALOG-RECALIBRATION-FREEZE-02.md)
+  (7 pins; report sha256 `4fb82541…`). Noted-not-repaired, deliberately:
+  F-1 (13.1 pin — closed in the records commit by pointing at FREEZE-02),
+  F-6 (evidence annotations byte-verbatim), F-7 (repair-cycle scope:
+  docs/ui-foundation/** + mechanical .prettierignore additions only).
 
 ## Future evidence entry format
 
