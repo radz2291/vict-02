@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { NavigationMenu } from 'bits-ui';
+  import { NavigationMenu } from '../navigation-menu.js';
   import CatalogPart from './CatalogPart.svelte';
   import type { UiSvelteComponentIO, UiComponentPresentation } from '../../document/extensions.js';
   let { props, io, presentation }: {

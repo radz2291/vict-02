@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { DropdownMenu } from 'bits-ui';
+  import { DropdownMenu } from '../dropdown-menu.js';
   import CatalogPart from './CatalogPart.svelte';
   import CatalogPortal from './CatalogPortal.svelte';
   import type { UiSvelteComponentIO, UiComponentPresentation } from '../../document/extensions.js';

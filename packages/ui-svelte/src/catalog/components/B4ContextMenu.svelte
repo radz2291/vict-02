@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { ContextMenu } from 'bits-ui';
+  import { ContextMenu } from '../context-menu.js';
   import CatalogPart from './CatalogPart.svelte';
   import CatalogPortal from './CatalogPortal.svelte';
   import type { UiSvelteComponentIO, UiComponentPresentation } from '../../document/extensions.js';

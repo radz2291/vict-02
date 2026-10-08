@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Command } from 'bits-ui';
+  import { Command } from '../command.js';
   import CatalogPart from './CatalogPart.svelte';
   import type { UiSvelteComponentIO, UiComponentPresentation } from '../../document/extensions.js';
   let { props, io, presentation }: {

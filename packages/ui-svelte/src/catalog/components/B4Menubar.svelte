@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Menubar } from 'bits-ui';
+  import { Menubar } from '../menubar.js';
   import CatalogPart from './CatalogPart.svelte';
   import type { UiSvelteComponentIO, UiComponentPresentation } from '../../document/extensions.js';
   let { props, io, presentation }: {
