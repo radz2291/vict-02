@@ -25,6 +25,8 @@ export interface DocumentScope {
     readonly name: string;
     readonly value: Readonly<Record<string, unknown>>;
   };
+  /** The emitted payload while resolving an output-binding template. */
+  readonly output?: unknown;
 }
 
 export function toScopeValues(scope: DocumentScope): UiScopeValues {
@@ -35,6 +37,7 @@ export function toScopeValues(scope: DocumentScope): UiScopeValues {
     state: scope.state,
     tokens: scope.tokens,
     ...(scope.repeatItem !== undefined ? { repeatItem: scope.repeatItem } : {}),
+    ...(scope.output !== undefined ? { output: scope.output } : {}),
   };
 }
 

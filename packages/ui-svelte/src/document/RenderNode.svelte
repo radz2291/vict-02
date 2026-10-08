@@ -9,8 +9,15 @@
     UiRenderInstruction,
     UiRenderPlan,
     UiExtensionDescriptor,
+    UiValue,
   } from '@victframework/ui';
-  import { resolveSvelteExtension, type UiSvelteExtensionImplementation } from './extensions.js';
+  import { isUiValueOfType } from '@victframework/ui';
+  import {
+    resolveSvelteComponent,
+    type UiSvelteComponentImplementation,
+    type UiSvelteComponentIO,
+    type UiSvelteExtensionImplementation,
+  } from './extensions.js';
   import {
     asRecord,
     conditionsOf,
@@ -26,8 +33,17 @@
   interface Props {
     readonly instruction: UiRenderInstruction;
     readonly plan: UiRenderPlan;
+    /**
+     * The host's plan holder: `holder.plan` tracks the currently mounted
+     * plan identity so late emissions from a superseded plan are dropped
+     * (amendment §5.3 generation gate).
+     */
+    readonly planHolder: { readonly plan: UiRenderPlan };
     readonly extensionDescriptors?: readonly UiExtensionDescriptor[];
-    readonly extensionImplementations?: readonly UiSvelteExtensionImplementation[];
+    readonly extensionImplementations?: readonly (
+      | UiSvelteExtensionImplementation
+      | UiSvelteComponentImplementation
+    )[];
     readonly scope: DocumentScope;
     readonly instancePath: readonly string[];
     readonly repeatKeys: readonly string[];
@@ -37,7 +53,7 @@
     readonly navigate: (routeId: string, params?: Readonly<Record<string, unknown>>) => void;
     readonly setState: (key: string, value: unknown) => void;
     readonly selectOccurrence?: (occurrence: string) => void;
-    /** Render-time diagnostic channel (e.g. duplicate repeat keys). */
+    /** Render-time diagnostic channel (duplicate keys, component gates, …). */
     readonly reportDiagnostic?: (diagnostic: { readonly code: string; readonly message: string; readonly detail?: Readonly<Record<string, unknown>> }) => void;
     /** Additional class for the ROOT element of this subtree (component instance frames). */
     readonly extraClass?: string;
@@ -46,6 +62,7 @@
   let {
     instruction,
     plan,
+    planHolder,
     extensionDescriptors = [],
     extensionImplementations = [],
     scope,
@@ -63,11 +80,73 @@
   const conditions = $derived(conditionsOf(plan));
   const occ = $derived(occurrenceKey(instruction.occurrenceKey, repeatKeys));
   const extension = $derived(instruction.kind === 'extension'
-    ? resolveSvelteExtension(instruction, extensionDescriptors, extensionImplementations)
+    ? resolveSvelteComponent(instruction, extensionDescriptors, extensionImplementations)
     : undefined);
   $effect(() => {
     if (extension !== undefined && !extension.ok) reportDiagnostic?.(extension.diagnostic);
   });
+
+  // ---- component-ABI output channel (amendment §3.4/§5.3) -----------------
+  // Stale safety: each emission is stamped with the occurrence and the
+  // mounted plan generation. Emissions after unmount or after the host's
+  // plan was replaced are dropped with a dev-only diagnostic — a stale
+  // callback can never write state or dispatch an action for a different
+  // document generation. Renderer-enforced; wrappers cannot opt out.
+  let mounted = $state(true);
+  $effect(() => () => { mounted = false; });
+  function emitOutput(output: string, payload?: UiValue): void {
+    if (instruction.kind !== 'extension') return;
+    const stale = !mounted || planHolder.plan !== plan;
+    if (
+      stale ||
+      instruction.outputDecls === undefined ||
+      instruction.outputDecls.find((decl) => decl.name === output) === undefined ||
+      (() => {
+        const decl = instruction.outputDecls?.find((decl) => decl.name === output);
+        if (decl === undefined) return true;
+        if (decl.payload === 'void') return payload !== undefined;
+        if (payload === undefined) return false;
+        return !isUiValueOfType(payload, decl.payload);
+      })()
+    ) {
+      reportDiagnostic?.({
+        code: stale ? 'UI_COMPONENT_OUTPUT_STALE' : 'UI_COMPONENT_OUTPUT_REJECTED',
+        message: stale
+          ? 'Output emission arrived after its occurrence unmounted or its plan was replaced.'
+          : `Output emission '${output}' does not match a declared, correctly-typed output.`,
+        detail: { nodeId: instruction.nodeId, occurrenceKey: occ, output },
+      });
+      return;
+    }
+    const decl = instruction.outputDecls.find((decl) => decl.name === output)!;
+    // Ownership (§10.1a): the bridge copies array payloads before delivery —
+    // a wrapper holding a mutable array cannot mutate delivered history.
+    const delivered: UiValue | undefined = Array.isArray(payload) ? [...payload] : payload;
+    const binding = instruction.outputBindings?.[output];
+    if (binding === undefined) return; // declared but unwired: authored no-op
+    const bindingScope: DocumentScope = { ...scope, output: delivered };
+    if ('setState' in binding) {
+      const value =
+        binding.setState.value !== undefined
+          ? resolveValue({ type: 'expression', expression: binding.setState.value }, bindingScope)
+          : delivered;
+      setState(binding.setState.key, value);
+    } else {
+      const input: Record<string, unknown> = {};
+      for (const [name, expression] of Object.entries(binding.invokeAction.input ?? {})) {
+        input[name] = resolveValue({ type: 'expression', expression }, bindingScope);
+      }
+      void dispatch(
+        binding.invokeAction.actionId,
+        Object.keys(input).length > 0 ? input : undefined,
+      );
+    }
+  }
+  const io: UiSvelteComponentIO = $derived({ emit: emitOutput });
+  /** Declared, filled slot names (capability-validated by the resolver). */
+  const filledSlotNames = $derived(
+    instruction.kind === 'extension' ? Object.keys(instruction.slots ?? {}) : [],
+  );
 
   const evaluatedAttributes = $derived.by(() => {
     if (instruction.kind !== 'element') return {} as Record<string, unknown>;
@@ -166,6 +245,7 @@
       <Self
         instruction={child}
         {plan}
+    {planHolder}
         {extensionDescriptors}
         {extensionImplementations}
         {scope}
@@ -207,6 +287,7 @@
   <Self
     instruction={instruction.body}
     {plan}
+    {planHolder}
     {extensionDescriptors}
     {extensionImplementations}
     scope={bodyScope}
@@ -235,7 +316,43 @@
       if (!(event.target instanceof Element) || event.target.closest('button,input,select,textarea,a') === null) event.stopPropagation();
     }}
   >
-    {#if extension?.ok}
+    {#if extension?.ok && extension.kind === 'component'}
+      {@const Implementation = extension.component}
+      {#snippet renderFill(children: readonly UiRenderInstruction[])}
+        {#each children as child (child.occurrenceKey)}
+          <Self
+            instruction={child}
+            {plan}
+            {planHolder}
+            {extensionDescriptors}
+            {extensionImplementations}
+            {scope}
+            {instancePath}
+            {repeatKeys}
+            slotFills={{}}
+            {dispatch}
+            {navigate}
+            {setState}
+            {selectOccurrence}
+            {reportDiagnostic}
+          />
+        {/each}
+      {/snippet}
+      {@const componentIo: UiSvelteComponentIO = {
+        emit: emitOutput,
+        ...(filledSlotNames.length > 0
+          ? {
+              slots: Object.fromEntries(
+                filledSlotNames.map((name) => [
+                  name,
+                  () => renderFill((instruction.slots ?? {})[name] ?? []),
+                ]),
+              ),
+            }
+          : {}),
+      }}
+      <Implementation props={extensionProps} occurrenceKey={occ} nodeId={instruction.nodeId} io={componentIo} />
+    {:else if extension?.ok}
       {@const Implementation = extension.component}
       <Implementation props={extensionProps} occurrenceKey={occ} nodeId={instruction.nodeId} />
     {:else}
@@ -252,6 +369,7 @@
       <Self
         instruction={instruction.template}
         {plan}
+    {planHolder}
         {extensionDescriptors}
         {extensionImplementations}
         scope={itemScope}
@@ -273,6 +391,7 @@
     <Self
       instruction={child}
       {plan}
+    {planHolder}
       {extensionDescriptors}
       {extensionImplementations}
       {scope}
@@ -293,6 +412,7 @@
       <Self
         instruction={child}
         {plan}
+    {planHolder}
         {extensionDescriptors}
         {extensionImplementations}
         {scope}
@@ -311,6 +431,7 @@
       <Self
         instruction={child}
         {plan}
+    {planHolder}
         {extensionDescriptors}
         {extensionImplementations}
         {scope}
@@ -332,6 +453,7 @@
       <Self
         instruction={child}
         {plan}
+    {planHolder}
         {extensionDescriptors}
         {extensionImplementations}
         {scope}

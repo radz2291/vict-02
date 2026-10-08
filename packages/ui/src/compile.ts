@@ -18,16 +18,24 @@ import type {
   UiExpression,
   UiInteraction,
   UiNode,
+  UiOutputBinding,
+  UiOutputDecl,
   UiPseudoState,
+  UiPrimitiveType,
   UiPropDecl,
   UiStyleSource,
   UiStyleValue,
+  UiValueType,
 } from './document.js';
 import { UI_RENDER_PLAN_SCHEMA } from './document.js';
 import { canonicalUiDocument } from './canonical.js';
 import { hasErrors, uiDiagnostic, type UiDiagnostic } from './diagnostics.js';
+import { checkExpression } from './expressions.js';
 import { sha256 } from './sha256.js';
 import { validateUiDocument } from './validate.js';
+
+/** The component-ABI marker (amendment §3.2): declared as an events capability. */
+export const UI_COMPONENT_ABI = 'vict.ui-component-abi@1' as const;
 
 /** Declared extension metadata (registered OUTSIDE serialized source). */
 export interface UiExtensionDescriptor {
@@ -36,6 +44,13 @@ export interface UiExtensionDescriptor {
   readonly props: readonly UiPropDecl[];
   readonly events?: readonly string[];
   readonly slots?: readonly string[];
+  /**
+   * Component-ABI marker (amendment §3.2): required for descriptors
+   * declaring `outputs` or renderable slots, must equal the events marker.
+   */
+  readonly abi?: typeof UI_COMPONENT_ABI;
+  /** Declared outputs (the reusable interface instances wire). */
+  readonly outputs?: readonly UiOutputDecl[];
   readonly styleTargets?: readonly string[];
   /** Declared renderer implementation identity (never serialized source). */
   readonly rendererImplementationId: string;
@@ -111,9 +126,20 @@ export type UiRenderInstruction =
       readonly nodeId: string;
       readonly occurrenceKey: string;
       readonly extensionId: string;
+      /** The instance's EFFECTIVE revision (node pin, else registered-current). */
       readonly revision: string;
       readonly propDecls: readonly UiPropDecl[];
       readonly propValues: Readonly<Record<string, UiExpression>>;
+      /**
+       * Compile-artifact marker (amendment §3.3): ALWAYS emitted for
+       * component-ABI descriptors — `[]` when the author wired no outputs.
+       * Its absence on an abi@1 instruction marks a pre-amendment artifact.
+       */
+      readonly outputDecls?: readonly UiOutputDecl[];
+      /** Authored connections, compile-checked. */
+      readonly outputBindings?: Readonly<Record<string, UiOutputBinding>>;
+      /** Instance-scope slot fills (declared slots only). */
+      readonly slots?: Readonly<Record<string, readonly UiRenderInstruction[]>>;
     }
   | {
       readonly kind: 'repeat';
@@ -192,6 +218,13 @@ export function compileUiDocument(
     readonly routeIds?: readonly string[];
     readonly viewFields?: UiCatalogs['viewFields'];
     readonly opNames?: readonly string[];
+    /**
+     * Derived action-input catalog (amendment §3.5):
+     * `actionId → { inputName → primitive type }`, derived by
+     * `@victframework/application` from the action registry's input
+     * contracts and passed through at the application compile call site.
+     */
+    readonly actionInputs?: Readonly<Record<string, Readonly<Record<string, UiPrimitiveType>>>>;
   } = {},
 ): UiCompileResult {
   const validation = validateUiDocument(document, {
@@ -420,8 +453,8 @@ export function compileUiDocument(
       case 'component': {
         const definition = definitions[node.definitionId];
         if (definition === undefined) {
-          const extension = extensionById.get(node.definitionId);
-          if (extension === undefined) {
+          const withId = extensions.filter((extension) => extension.id === node.definitionId);
+          if (withId.length === 0) {
             issues.push(
               uiDiagnostic('EXTENSION_UNAVAILABLE', `Neither definition nor extension resolves.`, {
                 extensionId: node.definitionId,
@@ -435,16 +468,48 @@ export function compileUiDocument(
               children: [],
             };
           }
-          extensionRefs.push({ extensionId: extension.id, revision: extension.revision });
-          return {
-            kind: 'extension',
-            nodeId,
-            occurrenceKey: key,
-            extensionId: extension.id,
-            revision: extension.revision,
-            propDecls: extension.props,
-            propValues: (node.props ?? {}) as Record<string, UiExpression>,
-          };
+          // Effective revision (amendment §3.1/§4.1): the node pin when
+          // present, else the registered-current descriptor revision (the
+          // last registration for the id — today's exact semantics).
+          const current = extensionById.get(node.definitionId)!;
+          const effectiveRevision = node.revision ?? current.revision;
+          const descriptor = withId.find((entry) => entry.revision === effectiveRevision);
+          if (descriptor === undefined) {
+            // Fail closed: a pin matching no registered revision is a
+            // compile diagnostic, never a silent fallback to another
+            // revision (the render side also fails: no descriptor matches
+            // the compiled identity).
+            issues.push(
+              uiDiagnostic(
+                'UI_COMPONENT_REVISION_UNRESOLVED',
+                `Instance pin (${node.definitionId}, ${effectiveRevision}) matches no registered descriptor revision.`,
+                { documentId, nodeId, extensionId: node.definitionId, revision: effectiveRevision },
+              ),
+            );
+            extensionRefs.push({ extensionId: node.definitionId, revision: effectiveRevision });
+            return {
+              kind: 'extension',
+              nodeId,
+              occurrenceKey: key,
+              extensionId: node.definitionId,
+              revision: effectiveRevision,
+              propDecls: [],
+              propValues: (node.props ?? {}) as Record<string, UiExpression>,
+            };
+          }
+          const compiledExtension = compileExtensionInstance(
+            node,
+            descriptor,
+            effectiveRevision,
+            key,
+            documentId,
+            document,
+            { ...catalogs, elements: semanticCatalog },
+            (childId) => compileNode(childId, scope),
+          );
+          issues.push(...compiledExtension.issues);
+          extensionRefs.push({ extensionId: descriptor.id, revision: effectiveRevision });
+          return compiledExtension.instruction;
         }
         definitionExpansionGuard += 1;
         if (definitionExpansionGuard > 256) {
@@ -624,6 +689,264 @@ export function compileUiDocument(
   return { ok: true, plan };
 }
 
+interface UiCompileCatalogs {
+  readonly elements: SemanticElementCatalog;
+  readonly actionIds?: readonly string[];
+  readonly routeIds?: readonly string[];
+  readonly viewFields?: UiCatalogs['viewFields'];
+  readonly opNames?: readonly string[];
+  readonly actionInputs?: Readonly<Record<string, Readonly<Record<string, UiPrimitiveType>>>>;
+}
+
+interface CompileExtensionOutcome {
+  readonly instruction: Extract<UiRenderInstruction, { kind: 'extension' }>;
+  readonly issues: UiDiagnostic[];
+}
+
+/**
+ * Compile one descriptor-backed component instance (amendment §3.2–§3.7):
+ * the ABI gate, effective-revision carry, always-emitted `outputDecls`
+ * (the compile-artifact marker), compile-checked output bindings and
+ * typed prop checks, and instance-scope slot fills (declared slots only —
+ * undeclared fills are REJECTED, never silently dropped).
+ */
+function compileExtensionInstance(
+  node: Extract<UiNode, { kind: 'component' }>,
+  descriptor: UiExtensionDescriptor,
+  effectiveRevision: string,
+  occurrenceKey: string,
+  documentId: string,
+  document: UiDocument,
+  catalogs: UiCompileCatalogs,
+  compileChild: (childId: string) => UiRenderInstruction,
+): CompileExtensionOutcome {
+  const issues: UiDiagnostic[] = [];
+  const hasOutputs = (descriptor.outputs?.length ?? 0) > 0;
+  const hasSlots = (descriptor.slots?.length ?? 0) > 0;
+  const isComponentAbi = descriptor.abi !== undefined || hasOutputs || hasSlots;
+  if (
+    isComponentAbi &&
+    (descriptor.abi !== UI_COMPONENT_ABI ||
+      descriptor.events?.length !== 1 ||
+      descriptor.events[0] !== UI_COMPONENT_ABI)
+  ) {
+    // Malformed component-ABI descriptor: missing `abi`, missing the events
+    // marker, or a disagreeing marker/abi pair (§5.1). The render side
+    // re-checks and fail-closes independently.
+    issues.push(
+      uiDiagnostic(
+        'UI_COMPONENT_ABI_UNSUPPORTED',
+        `Descriptor '${descriptor.id}' declares component-ABI surface without a consistent ${UI_COMPONENT_ABI} marker/abi pair.`,
+        { documentId, nodeId: node.id, extensionId: descriptor.id, revision: effectiveRevision },
+      ),
+    );
+  }
+
+  // --- typed prop checks for descriptor instances (§5.1, built here) ------
+  for (const [propName, expression] of Object.entries(node.props ?? {})) {
+    const propDecl = descriptor.props.find((candidate) => candidate.name === propName);
+    if (propDecl === undefined) {
+      issues.push(
+        uiDiagnostic(
+          'UI_DOC_UNKNOWN_PROP',
+          `Descriptor '${descriptor.id}' declares no prop '${propName}'.`,
+          { documentId, nodeId: node.id, definitionId: descriptor.id, prop: propName },
+        ),
+      );
+      continue;
+    }
+    if (expression.type === 'literal') {
+      const actual = expression.value === null ? 'null' : typeof expression.value;
+      if (propDecl.type === 'array' || (actual !== 'null' && actual !== propDecl.type)) {
+        // Array-typed props take references only (no array literal exists).
+        issues.push(
+          uiDiagnostic('UI_EXPR_TYPE_MISMATCH', `Prop '${propName}' expects ${propDecl.type}.`, {
+            documentId,
+            nodeId: node.id,
+            expected: propDecl.type,
+            actual: propDecl.type === 'array' ? actual : actual,
+          }),
+        );
+      }
+    } else if (expression.type === 'ref') {
+      const inferred = inferRefTypeForCompile(expression.path, document, catalogs.viewFields);
+      if (propDecl.type === 'array') {
+        if (inferred !== 'array' && inferred !== 'unknown' && inferred !== 'any') {
+          issues.push(
+            uiDiagnostic(
+              'UI_EXPR_TYPE_MISMATCH',
+              `Array prop '${propName}' accepts only array-typed references.`,
+              { documentId, nodeId: node.id, expected: 'array', actual: inferred },
+            ),
+          );
+        }
+      } else if (inferred !== 'unknown' && inferred !== 'any' && inferred !== propDecl.type) {
+        issues.push(
+          uiDiagnostic(
+            'UI_EXPR_TYPE_MISMATCH',
+            `Prop '${propName}' expects ${propDecl.type}; the bound reference resolves to ${inferred}.`,
+            { documentId, nodeId: node.id, expected: propDecl.type, actual: inferred },
+          ),
+        );
+      }
+    }
+  }
+
+  // --- output bindings (§3.5/§5.1) -----------------------------------------
+  const outputDecls = isComponentAbi ? (descriptor.outputs ?? []) : undefined;
+  const authoredBindings = node.outputs ?? {};
+  for (const [outputName, binding] of Object.entries(authoredBindings)) {
+    if (outputDecls === undefined) break; // non-ABI descriptor: nothing declared to check against
+    const decl = outputDecls.find((candidate) => candidate.name === outputName);
+    if (decl === undefined) {
+      issues.push(
+        uiDiagnostic(
+          'UI_COMPONENT_OUTPUT_UNKNOWN',
+          `Descriptor '${descriptor.id}' declares no output '${outputName}'.`,
+          { documentId, nodeId: node.id, extensionId: descriptor.id, output: outputName },
+        ),
+      );
+      continue;
+    }
+    if ('setState' in binding) {
+      const stateDecl = (document.localState ?? {})[binding.setState.key];
+      if (stateDecl !== undefined) {
+        if (decl.payload === 'void' || stateDecl.type !== decl.payload) {
+          // Widened compatibility compares declared types with NO coercion
+          // (§10.1a boundary 7); a 'void' payload equals no state type.
+          issues.push(
+            uiDiagnostic(
+              'UI_COMPONENT_BINDING_INCOMPATIBLE',
+              `Output '${outputName}' payload ${decl.payload} is incompatible with state '${binding.setState.key}' type ${stateDecl.type}.`,
+              {
+                documentId,
+                nodeId: node.id,
+                output: outputName,
+                payload: decl.payload,
+                stateKey: binding.setState.key,
+                stateType: stateDecl.type,
+              },
+            ),
+          );
+        } else if (binding.setState.value !== undefined) {
+          issues.push(
+            ...checkBindingExpression(
+              binding.setState.value,
+              uiValueTypeToExpressionType(stateDecl.type),
+              decl.payload,
+              catalogs,
+              documentId,
+              node.id,
+            ),
+          );
+        }
+      }
+    } else if ('invokeAction' in binding) {
+      const inputTypes = catalogs.actionInputs?.[binding.invokeAction.actionId];
+      for (const [inputName, expression] of Object.entries(binding.invokeAction.input ?? {})) {
+        if (inputTypes === undefined) {
+          // No derived input catalog: expression validity only ($output
+          // typed); shape checking stays with the dispatcher's contract
+          // checks (unchanged authority).
+          issues.push(
+            ...checkBindingExpression(
+              expression,
+              undefined,
+              decl.payload,
+              catalogs,
+              documentId,
+              node.id,
+            ),
+          );
+          continue;
+        }
+        const expected = inputTypes[inputName];
+        if (expected === undefined) {
+          issues.push(
+            uiDiagnostic(
+              'UI_COMPONENT_BINDING_INCOMPATIBLE',
+              `Action '${binding.invokeAction.actionId}' declares no input '${inputName}'.`,
+              {
+                documentId,
+                nodeId: node.id,
+                output: outputName,
+                actionId: binding.invokeAction.actionId,
+                input: inputName,
+              },
+            ),
+          );
+          continue;
+        }
+        issues.push(
+          ...checkBindingExpression(
+            expression,
+            expected,
+            decl.payload,
+            catalogs,
+            documentId,
+            node.id,
+          ),
+        );
+      }
+    }
+  }
+
+  // --- slot fills: declared slots only (§3.7) -------------------------------
+  const slots: Record<string, readonly UiRenderInstruction[]> = {};
+  for (const [slotName, fill] of Object.entries(node.slots ?? {})) {
+    if (!(descriptor.slots ?? []).includes(slotName)) {
+      // Undeclared fills are REJECTED at compile (today's path silently
+      // dropped them — one of the gaps this contract closes).
+      issues.push(
+        uiDiagnostic(
+          'UI_DOC_UNKNOWN_COMPONENT',
+          `Descriptor '${descriptor.id}' declares no slot '${slotName}'.`,
+          { documentId, nodeId: node.id, definitionId: `${descriptor.id}#${slotName}` },
+        ),
+      );
+      continue;
+    }
+    slots[slotName] = fill.children.map(compileChild);
+  }
+
+  const instruction: Extract<UiRenderInstruction, { kind: 'extension' }> = {
+    kind: 'extension',
+    nodeId: node.id,
+    occurrenceKey,
+    extensionId: descriptor.id,
+    revision: effectiveRevision,
+    propDecls: descriptor.props,
+    propValues: (node.props ?? {}) as Record<string, UiExpression>,
+    ...(outputDecls !== undefined ? { outputDecls } : {}),
+    ...(outputDecls !== undefined ? { outputBindings: authoredBindings } : {}),
+    ...(Object.keys(slots).length > 0 ? { slots } : {}),
+  };
+  return { instruction, issues };
+}
+
+/** Compile-time reference type inference with document-level knowledge. */
+function inferRefTypeForCompile(
+  path: string,
+  document: UiDocument,
+  viewFields: UiCatalogs['viewFields'],
+): 'string' | 'number' | 'boolean' | 'array' | 'unknown' | 'any' {
+  const parts = path.split('.');
+  const head = parts[0];
+  if (head === 'state' && parts.length === 2) {
+    const decl = (document.localState ?? {})[parts[1] as string];
+    if (decl === undefined) return 'unknown';
+    return uiValueTypeToExpressionType(decl.type);
+  }
+  if ((head === 'view' || head === 'record') && parts.length === 2) {
+    const fieldType = (viewFields ?? {})[parts[1] as string];
+    if (fieldType === undefined) return 'unknown';
+    return fieldType === 'array' ? 'array' : fieldType;
+  }
+  if (head === 'token') return 'string';
+  if (head === 'prop') return 'any';
+  return 'unknown';
+}
+
 function resolveAttributeValue(value: UiAttributeValue): UiResolvedValue {
   if (typeof value === 'string') return { type: 'literal', value };
   return { type: 'expression', expression: value };
@@ -653,4 +976,82 @@ function extractInteraction(interaction: UiInteraction): UiNodeExtractedInteract
     stateKey: interaction.key,
     params: { value: interaction.value },
   };
+}
+
+/**
+ * Map a widened `UiValueType` to the expression-side type vocabulary used
+ * by compile-time compatibility comparisons (§10.1a boundary 7): list
+ * types behave as `array`, ISO date/time markers carry strings. Widened
+ * comparisons never coerce — `boolean` never matches `string`, lists
+ * never match scalars.
+ */
+function uiValueTypeToExpressionType(type: UiValueType): 'string' | 'number' | 'boolean' | 'array' {
+  if (type === 'stringList' || type === 'numberList') return 'array';
+  if (type === 'isoDate' || type === 'isoTime') return 'string';
+  return type;
+}
+
+/**
+ * Type-check one output-binding expression: `$output` carries the
+ * declared payload type inside the binding scope; when `expected` is
+ * given (the state-key type or a declared action-input type), a provable
+ * mismatch is `UI_COMPONENT_BINDING_INCOMPATIBLE` (§5.1) — no coercion.
+ * `unknown`/`any`/`null` inferred types do not fail (the expression
+ * language's declared tolerance; runtime is still guarded).
+ */
+function checkBindingExpression(
+  expression: UiExpression,
+  expected: 'string' | 'number' | 'boolean' | 'array' | undefined,
+  payloadType: UiValueType | 'void',
+  catalogs: UiCatalogs,
+  documentId: string,
+  nodeId: string,
+): UiDiagnostic[] {
+  const issues = checkExpression(
+    expression,
+    catalogs,
+    {
+      repeatItems: {},
+      inDefinition: false,
+      output: payloadType,
+    },
+    documentId,
+    nodeId,
+  );
+  if (expected === undefined) return issues;
+  const inferred = inferBindingExpressionType(expression, payloadType);
+  if (inferred === 'unknown' || inferred === 'any' || inferred === 'null') return issues;
+  if (inferred !== expected) {
+    issues.push(
+      uiDiagnostic(
+        'UI_COMPONENT_BINDING_INCOMPATIBLE',
+        `Binding expression resolves to ${inferred}; the target expects ${expected}.`,
+        { documentId, nodeId, expected, actual: inferred },
+      ),
+    );
+  }
+  return issues;
+}
+
+/** Payload-aware expression type inference for binding targets. */
+function inferBindingExpressionType(
+  expression: UiExpression,
+  payloadType: UiValueType | 'void',
+): string {
+  switch (expression.type) {
+    case 'literal':
+      return expression.value === null ? 'null' : typeof expression.value;
+    case 'ref':
+      if (expression.path === '$output') {
+        return payloadType === 'void' ? 'unknown' : uiValueTypeToExpressionType(payloadType);
+      }
+      return 'unknown';
+    case 'compare':
+    case 'boolean':
+      return 'boolean';
+    case 'conditionalValue':
+      return inferBindingExpressionType(expression.then, payloadType);
+    case 'op':
+      return 'unknown';
+  }
 }

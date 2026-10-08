@@ -18,9 +18,11 @@ import type {
   UiFieldType,
   UiInteraction,
   UiNode,
+  UiOutputBinding,
 } from './document.js';
 import { UI_DOCUMENT_SCHEMA } from './document.js';
 import { hasErrors, uiDiagnostic, type UiDiagnostic } from './diagnostics.js';
+import { isUiValueOfType, isUiValueType } from './values.js';
 import { checkExpression, type UiScopeInfo } from './expressions.js';
 import { isAllowedAttribute, isKnownElement, isLeafElement } from './semantic.js';
 
@@ -379,23 +381,48 @@ export function validateUiDocument(input: unknown, catalogs: UiCatalogs): readon
     if (!isPlainObject(decl)) continue;
     const type = (decl as { type?: unknown }).type;
     const initial = (decl as { initial?: unknown }).initial;
-    const matches =
-      (type === 'string' && typeof initial === 'string') ||
-      (type === 'number' && typeof initial === 'number') ||
-      (type === 'boolean' && typeof initial === 'boolean');
-    if (!matches) {
+    if (typeof type !== 'string' || !isUiValueType(type)) {
+      // Unknown/unwidened type vocabulary: keep the mismatch shape (the
+      // guard never matches a non-vocabulary type).
       issues.push(
         uiDiagnostic(
           'UI_EXPR_TYPE_MISMATCH',
-          `Local state '${key}' initial value does not match its type.`,
+          `Local state '${key}' declares a type outside the vocabulary.`,
           {
             documentId,
             nodeId: document.root,
             expected: String(type),
-            actual: typeof initial,
+            actual: Array.isArray(initial) ? 'array' : typeof initial,
           },
         ),
       );
+      continue;
+    }
+    if (!isUiValueOfType(initial, type)) {
+      if ((type === 'isoDate' || type === 'isoTime') && typeof initial === 'string') {
+        // Format/calendar-invalid literal (e.g. '2026-13-45') — the ONE new
+        // author-time code (amendment §10.3).
+        issues.push(
+          uiDiagnostic(
+            'UI_DOC_INVALID_LITERAL',
+            `Local state '${key}' initial is not a valid ${type === 'isoDate' ? 'ISO date (YYYY-MM-DD)' : 'ISO time (HH:MM[:SS])'} literal.`,
+            { documentId, nodeId: document.root, type, valueKind: type },
+          ),
+        );
+      } else {
+        issues.push(
+          uiDiagnostic(
+            'UI_EXPR_TYPE_MISMATCH',
+            `Local state '${key}' initial value does not match its type.`,
+            {
+              documentId,
+              nodeId: document.root,
+              expected: type,
+              actual: Array.isArray(initial) ? 'array' : typeof initial,
+            },
+          ),
+        );
+      }
     }
   }
 
@@ -423,6 +450,77 @@ function collectNodeSubtree(
     }
   }
   return into;
+}
+
+/**
+ * Document-level validation of one component instance's authored output
+ * bindings (amendment §3.1/§3.5). `$output` is visible (typed 'unknown' at
+ * this layer) inside binding value/input expressions only.
+ */
+function validateOutputBindings(
+  ctx: ValidateContext,
+  node: Extract<UiNode, { kind: 'component' }>,
+  scope: UiScopeInfo,
+): void {
+  const outputs = node.outputs;
+  if (outputs === undefined) return;
+  const { catalogs, issues } = ctx;
+  const documentId = String(ctx.document.id);
+  const localState = registryOf(
+    ctx.document as unknown as Record<string, unknown>,
+    'localState',
+  ) as Record<string, { type?: unknown }>;
+  const outputScope: UiScopeInfo = { ...scope, output: 'unknown' };
+  for (const [outputName, binding] of Object.entries(outputs)) {
+    if (outputName.length === 0) {
+      issues.push(
+        uiDiagnostic(
+          'UI_COMPONENT_OUTPUT_UNKNOWN',
+          `An output binding needs a non-empty output name.`,
+          { documentId, nodeId: node.id, output: outputName },
+        ),
+      );
+    }
+    if ('setState' in binding) {
+      const target = localState[binding.setState.key];
+      if (target === undefined) {
+        issues.push(
+          uiDiagnostic(
+            'UI_COMPONENT_BINDING_INCOMPATIBLE',
+            `Output binding targets undeclared state key '${binding.setState.key}'.`,
+            { documentId, nodeId: node.id, output: outputName, stateKey: binding.setState.key },
+          ),
+        );
+      }
+      if (binding.setState.value !== undefined) {
+        issues.push(
+          ...checkExpression(binding.setState.value, catalogs, outputScope, documentId, node.id),
+        );
+      }
+    } else if ('invokeAction' in binding) {
+      if (
+        catalogs.actionIds !== undefined &&
+        !catalogs.actionIds.includes(binding.invokeAction.actionId)
+      ) {
+        issues.push(
+          uiDiagnostic(
+            'UI_DOC_UNKNOWN_PRODUCT_REFERENCE',
+            `Output binding references undeclared action '${binding.invokeAction.actionId}'.`,
+            {
+              documentId,
+              nodeId: node.id,
+              output: outputName,
+              kind: 'action',
+              ref: binding.invokeAction.actionId,
+            },
+          ),
+        );
+      }
+      for (const expression of Object.values(binding.invokeAction.input ?? {})) {
+        issues.push(...checkExpression(expression, catalogs, outputScope, documentId, node.id));
+      }
+    }
+  }
 }
 
 function validateNode(
@@ -501,6 +599,12 @@ function validateNode(
       break;
     }
     case 'component': {
+      // Authored output connections (amendment §3.1): document-level checks
+      // (binding shape, target-key existence, expression validity with the
+      // `$output` scope, declared action ids). Descriptor-dependent checks
+      // (declared output names, payload/type compatibility) are the joint
+      // compiler's obligation — resolved where the descriptor is known.
+      validateOutputBindings(ctx, node, scope);
       // Definition closure against THIS document's registry; extension
       // descriptors are resolved by the compiler (catalogs carry none here).
       const definition = (registryOf(docRecord, 'componentDefinitions') as Record<string, unknown>)[

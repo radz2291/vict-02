@@ -8,6 +8,8 @@
  * viewport condition) and keeps later capabilities explicitly pending.
  */
 
+import type { UiValue } from './values.js';
+
 export const UI_DOCUMENT_SCHEMA = 'vict.ui-document@1';
 export const UI_RENDER_PLAN_SCHEMA = 'vict.ui-render-plan@1';
 export const UI_EDIT_SCHEMA = 'vict.ui-edit@1';
@@ -25,6 +27,13 @@ export type AssetId = string;
 export type UiPrimitiveType = 'string' | 'number' | 'boolean';
 /** Catalog field types: primitives plus array-valued fields (repeat collections). */
 export type UiFieldType = UiPrimitiveType | 'array';
+
+/**
+ * Widened value vocabulary (amendment §10.1, frozen payload `4cfe5b37…`):
+ * the shipped primitives plus the list/date vocabulary. Schema strings are
+ * unchanged; absent fields keep today's exact behavior.
+ */
+export type UiValueType = UiPrimitiveType | 'stringList' | 'numberList' | 'isoDate' | 'isoTime';
 
 /** Finite, declarative expression tree (API-SPEC §5). Never `eval`. */
 export type UiExpression =
@@ -135,8 +144,10 @@ export type UiCondition =
 /** Typed local state declaration with a serializable initial value. */
 export interface UiLocalStateDecl {
   readonly key: StateKey;
-  readonly type: UiPrimitiveType;
-  readonly initial: string | number | boolean;
+  /** Widened vocabulary (§10.1): primitives plus stringList/numberList/isoDate/isoTime. */
+  readonly type: UiValueType;
+  /** Widened carrier (§10.1a): `[]` is the canonical empty list. */
+  readonly initial: UiValue;
 }
 
 /** Asset reference: content digests or external hrefs; never embedded binaries. */
@@ -147,9 +158,43 @@ export type UiAssetRef =
 /** Typed component prop declaration. */
 export interface UiPropDecl {
   readonly name: string;
-  readonly type: UiPrimitiveType;
-  readonly default?: string | number | boolean;
+  /** Primitives plus `'array'` (reference-only binding, amendment §3.2). */
+  readonly type: UiPrimitiveType | 'array';
+  /** Widened carrier (§10.1a boundary 3); array literals never appear in documents. */
+  readonly default?: UiValue;
 }
+
+/**
+ * One declared component output (amendment §3.2). Outputs are granted
+ * only by the typed `outputs` field on the descriptor.
+ */
+export interface UiOutputDecl {
+  /** Declared output name (the `outputs` map key on instances). */
+  readonly name: string;
+  /** `'void'` for pure intent (no payload), or one widened value type. */
+  readonly payload: 'void' | UiValueType;
+  /** Editor-facing description of when the output fires. */
+  readonly description?: string;
+}
+
+/**
+ * Authored connection of a component instance's declared outputs
+ * (amendment §3.1 — the only additive node field).
+ */
+export type UiOutputBinding =
+  | {
+      readonly setState: {
+        readonly key: StateKey;
+        /** Payload expression; `$output` resolves to the emitted payload. */
+        readonly value?: UiExpression;
+      };
+    }
+  | {
+      readonly invokeAction: {
+        readonly actionId: string;
+        readonly input?: Readonly<Record<string, UiExpression>>;
+      };
+    };
 
 /** Declared variant condition reference (pending beyond U1). */
 export interface UiVariantConditionRef {
@@ -218,6 +263,8 @@ export type UiNode = UiNodeCommon &
         readonly props?: Readonly<Record<string, UiExpression>>;
         /** Instance slot fillings (resolved in the instance scope). */
         readonly slots?: Readonly<Record<string, UiSlotFill>>;
+        /** Authored output connections (amendment §3.1): output name → binding. */
+        readonly outputs?: Readonly<Record<string, UiOutputBinding>>;
       }
     | {
         readonly kind: 'repeat';

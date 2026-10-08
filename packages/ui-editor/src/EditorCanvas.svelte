@@ -8,7 +8,11 @@
    * document source.
    */
   import { tick } from 'svelte';
-  import { DocumentHost, type UiSvelteExtensionImplementation } from '@victframework/ui-svelte';
+  import {
+    DocumentHost,
+    type UiSvelteComponentImplementation,
+    type UiSvelteExtensionImplementation,
+  } from '@victframework/ui-svelte';
   import {
     compileUiDocument,
     defaultSemanticElementCatalog,
@@ -17,14 +21,18 @@
     type UiExtensionDescriptor,
     type UiLocalStateDecl,
     type UiRenderPlan,
+    type UiValue,
   } from '@victframework/ui';
 
   interface Props {
     readonly document: UiDocument;
     readonly catalogs?: UiCatalogs;
     readonly extensions?: readonly UiExtensionDescriptor[];
-    readonly extensionImplementations?: readonly UiSvelteExtensionImplementation[];
-    readonly stateValues?: Readonly<Record<string, string | number | boolean>>;
+    readonly extensionImplementations?: readonly (
+      | UiSvelteExtensionImplementation
+      | UiSvelteComponentImplementation
+    )[];
+    readonly stateValues?: Readonly<Record<string, UiValue>>;
     readonly localState?: Readonly<Record<string, UiLocalStateDecl>>;
     readonly view?: Readonly<Record<string, unknown>>;
     readonly record?: Readonly<Record<string, unknown>>;

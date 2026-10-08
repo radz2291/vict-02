@@ -31,6 +31,7 @@ import {
   type UiDiagnostic,
   type UiDocument,
   type UiFieldTypes,
+  type UiPrimitiveType,
   type UiRenderPlan,
   type UiDocumentIdentityEntry,
   type UiExtensionDescriptor,
@@ -51,12 +52,71 @@ export interface ResolveUiAttachmentsInput {
   readonly uiDocuments?: readonly UiDocumentCatalogEntryInput[];
   readonly uiDocumentPins?: readonly UiDocumentPinInput[];
   readonly uiExtensions?: readonly unknown[];
+  /**
+   * The contracts registry the application compile already loads
+   * (`{id, revision}` entries); `deriveActionInputCatalog` resolves each
+   * action's input-contract reference against it (fail-closed).
+   */
+  readonly contracts?: readonly unknown[];
   /** Declared application action ids (rule 4). */
   readonly actionIds: readonly string[];
   /** Declared application route ids (rule 4). */
   readonly routeIds: readonly string[];
   /** Typed view fields visible as `view.<field>` (rule 4). */
   readonly viewFields?: UiFieldTypes;
+  /**
+   * Declarative input types per contract (`contractId → { inputName →
+   * primitive type }`), sourced from the application's own contract
+   * declarations (amendment §3.5). The neutral contracts API carries
+   * `parse` functions — declarative typing enters here or nowhere;
+   * actions whose contract has no declared types contribute no input
+   * typing (the dispatcher's contract checks stay the authority).
+   */
+  readonly contractInputTypes?: Readonly<Record<string, Readonly<Record<string, UiPrimitiveType>>>>;
+}
+
+/**
+ * Derive the typed action-input catalog (amendment §3.5):
+ * `actionId → { inputName → primitive type }`.
+ *
+ * Each declared action's `inputContractId`/`inputContractRevision` is
+ * resolved against the contracts registry the application compile already
+ * loads — an action whose contract reference does not resolve contributes
+ * NO entry (fail-closed). When the application declares input types for
+ * the referenced contract (`contractInputTypes`), they become the
+ * action's input typing. No application-schema change; `actionIds`
+ * semantics, document identity and dispatch authority are unchanged.
+ */
+export function deriveActionInputCatalog(
+  actions: readonly unknown[],
+  contracts: readonly unknown[] | undefined,
+  contractInputTypes: Readonly<Record<string, Readonly<Record<string, UiPrimitiveType>>>> = {},
+): Readonly<Record<string, Readonly<Record<string, UiPrimitiveType>>>> {
+  const registered = new Map<string, Set<string>>();
+  for (const contract of contracts ?? []) {
+    if (!isPlainObject(contract)) continue;
+    if (typeof contract.id !== 'string') continue;
+    const revisions = registered.get(contract.id) ?? new Set<string>();
+    if (typeof contract.revision === 'string') revisions.add(contract.revision);
+    registered.set(contract.id, revisions);
+  }
+  const catalog: Record<string, Readonly<Record<string, UiPrimitiveType>>> = {};
+  for (const action of actions) {
+    if (!isPlainObject(action) || typeof action.id !== 'string') continue;
+    if (typeof action.inputContractId !== 'string') continue;
+    const revisions = registered.get(action.inputContractId);
+    if (revisions === undefined) continue; // unresolvable reference: no entry
+    if (
+      typeof action.inputContractRevision === 'string' &&
+      revisions.size > 0 &&
+      !revisions.has(action.inputContractRevision)
+    ) {
+      continue; // declared revision not registered: no entry (fail-closed)
+    }
+    const types = contractInputTypes[action.inputContractId];
+    if (types !== undefined) catalog[action.id] = types;
+  }
+  return catalog;
 }
 
 export interface ResolvedUiAttachments {
@@ -312,6 +372,13 @@ export function resolveUiAttachments(input: ResolveUiAttachmentsInput): Resolved
       actionIds: input.actionIds,
       routeIds: input.routeIds,
       ...(input.viewFields !== undefined ? { viewFields: input.viewFields } : {}),
+      actionInputs: deriveActionInputCatalog(
+        Array.isArray((input.application as { actions?: unknown })?.actions)
+          ? (input.application as { actions: readonly unknown[] }).actions
+          : [],
+        input.contracts,
+        input.contractInputTypes,
+      ),
     });
     if (!compiled.ok) {
       issues.push(...compiled.issues);

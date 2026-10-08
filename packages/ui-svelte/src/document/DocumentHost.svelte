@@ -9,9 +9,13 @@
    * under a root class), interaction dispatch and accessible surfaces.
    * Editor and scenario concerns stay OUT of this component.
    */
-  import type { UiRenderPlan, UiLocalStateDecl, UiExtensionDescriptor } from '@victframework/ui';
+  import type { UiRenderPlan, UiLocalStateDecl, UiExtensionDescriptor, UiValue } from '@victframework/ui';
+  import { isUiValueOfType } from '@victframework/ui';
   import { untrack } from 'svelte';
-  import type { UiSvelteExtensionImplementation } from './extensions.js';
+  import type {
+    UiSvelteComponentImplementation,
+    UiSvelteExtensionImplementation,
+  } from './extensions.js';
   import RenderNode from './RenderNode.svelte';
   import { rootClassFor, styleRulesToCss, type DocumentScope } from './logic.js';
 
@@ -19,14 +23,17 @@
     readonly plan: UiRenderPlan;
     /** Explicit metadata/code registration, shared by product and editor. */
     readonly extensionDescriptors?: readonly UiExtensionDescriptor[];
-    readonly extensionImplementations?: readonly UiSvelteExtensionImplementation[];
+    readonly extensionImplementations?: readonly (
+      | UiSvelteExtensionImplementation
+      | UiSvelteComponentImplementation
+    )[];
     /** Data scope: view fields / record fields for `view.*` / `record.*` refs. */
     readonly view?: Readonly<Record<string, unknown>>;
     readonly record?: Readonly<Record<string, unknown>>;
     /** Local state declarations from the SOURCE document (typed initials). */
     readonly localState?: Readonly<Record<string, UiLocalStateDecl>>;
-    /** Ephemeral orchestration values for declared local presentation state only. */
-    readonly stateValues?: Readonly<Record<string, string | number | boolean>>;
+    /** Ephemeral orchestration values for declared local presentation state only (widened carrier, §10.1a). */
+    readonly stateValues?: Readonly<Record<string, UiValue>>;
     /** Action dispatch below the renderer boundary (the ONLY way actions run). */
     readonly dispatch: (actionId: string, input?: unknown) => Promise<unknown>;
     /** Route navigation hook (route id + resolved params). */
@@ -59,6 +66,15 @@
     ariaLabel,
   }: Props = $props();
 
+  /**
+   * The mounted-plan holder (amendment §5.3): emissions compare against
+   * this identity so late callbacks from a superseded plan are dropped.
+   */
+  const planHolder: { plan: typeof plan } = { plan };
+  $effect(() => {
+    planHolder.plan = plan;
+  });
+
   function initialValues(): Record<string, unknown> {
     const bag: Record<string, unknown> = {};
     for (const [key, decl] of Object.entries(localState)) {
@@ -68,7 +84,7 @@
     // below reports invalid supplied keys without leaking their values.
     for (const [key, value] of Object.entries(stateValues)) {
       const decl = Object.hasOwn(localState, key) ? localState[key] : undefined;
-      if (decl !== undefined && typeof value === decl.type && (typeof value !== 'number' || Number.isFinite(value))) bag[key] = value;
+      if (decl !== undefined && isUiValueOfType(value, decl.type)) bag[key] = value;
     }
     return bag;
   }
@@ -92,7 +108,7 @@
       }
       for (const [key, value] of supplied) {
         const declaration = Object.hasOwn(declarations, key) ? declarations[key] : undefined;
-        if (declaration === undefined || typeof value !== declaration.type || (typeof value === 'number' && !Number.isFinite(value))) {
+        if (declaration === undefined || !isUiValueOfType(value, declaration.type)) {
           onRenderDiagnostic?.({
             code: 'UI_RENDER_STATE_VALUE_REJECTED',
             message: 'Host presentation state must match an explicitly declared local state type.',
@@ -148,6 +164,7 @@
       <RenderNode
         {instruction}
         {plan}
+        {planHolder}
         {extensionDescriptors}
         {extensionImplementations}
         {scope}

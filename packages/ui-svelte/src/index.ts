@@ -1,6 +1,8 @@
 export { default as DocumentHost } from './document/DocumentHost.svelte';
 export { default as DocumentRenderNode } from './document/RenderNode.svelte';
 export * from './document/extensions.js';
+export { b1CatalogDescriptors } from './catalog/components/descriptors.js';
+export { b1CatalogImplementations } from './catalog/components/implementations.js';
 export {
   occurrenceKey,
   rootClassFor,

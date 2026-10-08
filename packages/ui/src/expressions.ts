@@ -9,7 +9,13 @@
  * `eval`, no `Function`, no raw expression strings.
  */
 
-import type { UiCatalogs, UiExpression, UiFieldTypes, UiPrimitiveType } from './document.js';
+import type {
+  UiCatalogs,
+  UiExpression,
+  UiFieldTypes,
+  UiPrimitiveType,
+  UiValueType,
+} from './document.js';
 import { uiDiagnostic, type UiDiagnostic } from './diagnostics.js';
 
 /** The lexical scopes visible at one position in a document. */
@@ -18,6 +24,13 @@ export interface UiScopeInfo {
   readonly repeatItems: Readonly<Record<string, UiFieldTypes>>;
   /** True inside a definition registry (prop-only scope). */
   readonly inDefinition: boolean;
+  /**
+   * Declared type of `$output` in this scope (amendment §3.5), or undefined
+   * when `$output` is not visible. Present ONLY inside output-binding
+   * value/input expressions; any other occurrence of the `$output` ref is
+   * `UI_COMPONENT_OUTPUT_PAYLOAD_INVALID`.
+   */
+  readonly output?: UiPrimitiveType | UiValueType | 'void' | 'unknown';
 }
 
 export interface ResolvedRefType {
@@ -233,6 +246,27 @@ function checkRef(
     }
     return 'string';
   }
+  if (head === '$output') {
+    // Amendment §3.5/§5.1: `$output` resolves ONLY inside output-binding
+    // value/input templates (scope.output present). Elsewhere it is a
+    // payload-scope violation with a path-annotated diagnostic. The
+    // payload type maps onto the expression-side vocabulary (lists are
+    // arrays; ISO date/time markers carry strings).
+    if (scope.output === undefined) {
+      issues.push(
+        uiDiagnostic(
+          'UI_COMPONENT_OUTPUT_PAYLOAD_INVALID',
+          `'$output' resolves only inside output binding value/input expressions.`,
+          { documentId, nodeId, path },
+        ),
+      );
+      return 'unknown';
+    }
+    if (scope.output === 'void' || scope.output === 'unknown') return 'unknown';
+    if (scope.output === 'stringList' || scope.output === 'numberList') return 'array';
+    if (scope.output === 'isoDate' || scope.output === 'isoTime') return 'string';
+    return scope.output;
+  }
   return unknown();
 }
 
@@ -248,6 +282,11 @@ export interface UiScopeValues {
   readonly props?: Readonly<Record<string, unknown>>;
   readonly state?: Readonly<Record<string, unknown>>;
   readonly tokens?: Readonly<Record<string, string>>;
+  /**
+   * The emitted payload inside output-binding value/input templates
+   * (amendment §3.5). `$output` resolves to it; absent elsewhere.
+   */
+  readonly output?: unknown;
 }
 
 /** Pure evaluation. Unknown references evaluate to `undefined` (validation is the gate). */
@@ -275,6 +314,7 @@ export function evaluateExpression(
       if (head === 'prop' && parts.length === 2) return values.props?.[parts[1] as string];
       if (head === 'state' && parts.length === 2) return values.state?.[parts[1] as string];
       if (head === 'token' && parts.length === 2) return values.tokens?.[parts[1] as string];
+      if (head === '$output' && parts.length === 1) return values.output;
       return undefined;
     }
     case 'compare': {

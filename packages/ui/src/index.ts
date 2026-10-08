@@ -391,6 +391,8 @@ export type {
   UiLocalStateDecl,
   UiNode,
   UiNodeCommon,
+  UiOutputBinding,
+  UiOutputDecl,
   UiPrimitiveType,
   UiPropDecl,
   UiSlotFill,
@@ -399,8 +401,11 @@ export type {
   UiStyleValue,
   UiTextContent,
   UiToken,
+  UiValueType,
   UiVariantConditionRef,
 } from './document.js';
+export { isUiValueOfType, isUiValueType, uiValueEmptyFor } from './values.js';
+export type { UiValue } from './values.js';
 export { CanonicalUiError } from './canonical-error.js';
 export {
   canonicalUiDocument,

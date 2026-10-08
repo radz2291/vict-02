@@ -15,6 +15,7 @@ import type {
   UiExpression,
   UiInteraction,
   UiNode,
+  UiOutputBinding,
   UiPropDecl,
   UiStyleSource,
   UiStyleDeclaration,
@@ -113,6 +114,21 @@ export interface UiEditCommandFillSlot {
   readonly children: readonly string[];
 }
 
+/**
+ * Authored output connections (amendment §3.6): set or clear one output
+ * binding on a component instance. The whole transaction re-validates, so
+ * incompatible connections (unknown output, payload/state type mismatch,
+ * undeclared action) reject atomically when the compiler resolves the
+ * descriptor; clearing (`binding: undefined`) removes the entry.
+ */
+export interface UiEditCommandSetOutputBinding {
+  readonly op: 'setOutputBinding';
+  readonly nodeId: string;
+  readonly output: string;
+  /** `undefined` clears the binding. */
+  readonly binding?: UiOutputBinding;
+}
+
 export type UiEditCommand =
   | UiEditCommandInsert
   | UiEditCommandMove
@@ -126,7 +142,8 @@ export type UiEditCommand =
   | UiEditCommandConnectInteraction
   | UiEditCommandCreateComponentDefinition
   | UiEditCommandUpdateComponentDefinition
-  | UiEditCommandFillSlot;
+  | UiEditCommandFillSlot
+  | UiEditCommandSetOutputBinding;
 
 export interface UiEditTransaction {
   readonly requestId: string;
@@ -574,6 +591,25 @@ export function applyUiEdit(
         }
         slots[command.slotName] = { name: command.slotName, children: [...command.children] };
         doc.nodes[node.id] = { ...node, slots } as UiNode;
+        return;
+      }
+      case 'setOutputBinding': {
+        const node = doc.nodes[command.nodeId];
+        if (node === undefined || node.kind !== 'component') {
+          fail('setOutputBinding requires a component node.');
+          return;
+        }
+        if (command.output.length === 0) {
+          fail('setOutputBinding needs a non-empty output name.');
+          return;
+        }
+        const outputs: Record<string, UiOutputBinding> = { ...(node.outputs ?? {}) };
+        if (command.binding === undefined) delete outputs[command.output];
+        else outputs[command.output] = command.binding;
+        doc.nodes[node.id] = {
+          ...node,
+          ...(Object.keys(outputs).length > 0 ? { outputs } : { outputs: undefined }),
+        } as UiNode;
         return;
       }
       default:

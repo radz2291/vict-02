@@ -201,7 +201,18 @@ describe('explicit document extension registration', () => {
     ]) {
       expect(resolveSvelteExtension(extension, [declared], [implementation])).toMatchObject({
         ok: false,
-        diagnostic: { code: 'UI_RENDER_EXTENSION_INTERFACE_UNSUPPORTED' },
+        // A slots-declaring descriptor is component-ABI (frozen §3.2) — a
+        // consistent marker/abi pair is mandatory → ABI gate code. A
+        // non-marker EVENT on an otherwise props-only descriptor keeps the
+        // exact legacy interface code (§4.3 "props-only extensions
+        // unchanged"). U3-era expectation updated per the frozen amendment;
+        // recorded in the B1 records.
+        diagnostic: {
+          code:
+            declared.slots !== undefined
+              ? 'UI_COMPONENT_ABI_UNSUPPORTED'
+              : 'UI_RENDER_EXTENSION_INTERFACE_UNSUPPORTED',
+        },
       });
     }
   });
