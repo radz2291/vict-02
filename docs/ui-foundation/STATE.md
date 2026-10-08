@@ -108,6 +108,31 @@ authoring, checkbox same-control loop, button pending/truthful
 activity, and responsive shell preserved as positive evidence. The
 three independent reviews are deferred to the repaired candidate. B1
 and U4 remain OPEN; owner acceptance PENDING; no ledger row moved.
+**VERIFICATION ROUND 2 (2026-10-09, fresh verifier, isolated worktree
+`vict-02-u4-b1-repair-verify-02`, branch
+codex/ui-foundation-u4-b1-core-repair-verify-02): VERDICT FAIL — ONE
+FOCUSED RESIDUAL** ([U4-B1-CORE-REPAIR-VERIFY-02](reviews/u4/b1-core-verify/U4-B1-CORE-REPAIR-VERIFY-02.md)).
+Candidate `2f82fc0…` (codex/ui-foundation-u4-b1-core-repair-01, on
+round-1 tip `53f12a2…`): every round-1 defect repaired and re-verified
+against unchanged oracles — contract 22/22, consumer 16/16 (workspace
+and packed), editor/renderer/extension/css/state suites 72/72, both
+dialog probes pass, full battery **2990 passed / 0 failed**, typecheck
+0, svelte-check 0 errors, pack closure 10 tarballs (no repo-tree
+tarballs — F13 fixed), isolated consumer clean, bundle separation
+proven, dialog open/✕/Escape/overlay/authored-confirm close and the
+full select value journey verified in the browser. Delivery repairs on
+the verify branch: CatalogPart type hygiene, probe-file typing, F10
+nav-toggle scoping (browser-verified desktop+mobile), F13 tarball
+untracking + pack-destination, root vitest integration exclusion (with
+in-repo precedent). ONE governing requirement still fails: **the dialog
+never transfers focus into the open modal** (amendment focus/portal/
+Escape obligation; journey "keyboard/focus/portal"; handoff U4-05
+"Dialog focus/portal") — activeElement stays BODY across 600 ms of
+samples, click-free and click paths, both entries, packed artifacts.
+Returned to Codex as a single focused repair with a new focus oracle
+(VERIFY-02 §7); the three independent reviews are deferred to the
+repaired candidate. B1 and U4 remain OPEN; owner acceptance PENDING;
+no ledger row moved.
 **OWNER FEEDBACK RECORDED (2026-10-08, B1 mid-cycle)**: the running
 controls look substantially worse than the existing VICT catalog —
 appearance NOT accepted. Cause found: the consumer never imported

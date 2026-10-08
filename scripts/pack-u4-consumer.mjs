@@ -61,13 +61,12 @@ fs.mkdirSync(vendorDir, { recursive: true });
 const manifest = { packedAt: new Date().toISOString(), tarballs: {} };
 for (const name of PACKAGES) {
   const packageDir = path.join(repoRoot, 'packages', name);
-  const stdout = sh('npm pack --json', { cwd: packageDir });
+  // Pack straight into the isolated vendor dir: tarballs are build outputs,
+  // never committed source (round-1 F13), so they must not land in the
+  // repository tree at all.
+  const stdout = sh(`npm pack --json --pack-destination ${JSON.stringify(vendorDir)}`, { cwd: packageDir });
   const packed = JSON.parse(stdout)[0];
-  const tarball = path.resolve(
-    packed.filename.startsWith('/') || /^[A-Za-z]:/.test(packed.filename)
-      ? packed.filename
-      : path.join(packageDir, packed.filename),
-  );
+  const tarball = path.join(vendorDir, packed.filename);
   const target = path.join(vendorDir, path.basename(tarball));
   fs.copyFileSync(tarball, target);
   manifest.tarballs[`@victframework/${name}`] = {

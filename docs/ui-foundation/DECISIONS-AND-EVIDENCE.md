@@ -1087,6 +1087,34 @@ Owner findings F1–F4, repaired on `codex/ui-foundation-u4-catalog-repair`
   F-6 (evidence annotations byte-verbatim), F-7 (repair-cycle scope:
   docs/ui-foundation/** + mechanical .prettierignore additions only).
 
+## U4-B1 verification rounds 1 and 2 (2026-10-08/09) — FAIL, FAIL (one focused residual)
+
+- Round 1 against the core-refactor candidate `098b84e3…`: FAIL — 14
+  workspace + 7 consumer test regressions (all green at baseline `295064b…`),
+  consumer unbuildable (4 packaging defects incl. the seed-route
+  `ROUTE_PATH_INVALID` behind the blank-rendering class), dialog leak,
+  unauthorized `UI_COMPONENT_STYLE_UNAVAILABLE` gate, cascade-changing CSS
+  emission, state-merge revert, selection regression. Verifier delivery
+  repairs on `codex/ui-foundation-u4-b1-core-verification` (`53f12a2…`);
+  report [reviews/u4/b1-core-verify/U4-B1-CORE-VERIFY-01.md](reviews/u4/b1-core-verify/U4-B1-CORE-VERIFY-01.md).
+- Round 2 against the core-repair candidate `2f82fc05…`: FAIL — ONE FOCUSED
+  RESIDUAL (dialog focus transfer; amendment focus/portal/Escape obligation).
+  Everything else green on unchanged oracles: contract 22/22, consumer 16/16
+  (workspace + packed), 72/72 affected suites, full battery 2990/0,
+  typecheck/svelte-check 0, pack 10 tarballs without repo-tree pollution,
+  isolated consumer clean, bundle separation proven; dialog
+  close/Escape/overlay/authored-confirm and the select/button/switch/toggle/
+  radio journeys browser-verified. Verifier delivery repairs (CatalogPart
+  type hygiene, probe typing, F10 nav-toggle scoping, F13 tarball
+  untracking + pack-destination, root-vitest consumer exclusion with
+  in-repo precedent) on
+  `codex/ui-foundation-u4-b1-core-repair-verify-02`; report
+  [reviews/u4/b1-core-verify/U4-B1-CORE-REPAIR-VERIFY-02.md](reviews/u4/b1-core-verify/U4-B1-CORE-REPAIR-VERIFY-02.md).
+- Verdicts are the verifier's own screening outcomes; the three fresh
+  independent reviews stay deferred until a screening-pass candidate exists.
+  B1/U4 OPEN; owner acceptance PENDING; no §6 ledger row moved (reconciliation
+  re-run: OK, rows unchanged).
+
 ## Future evidence entry format
 
 Identity: repository, branch, full base/candidate/reviewer SHAs, environment and contract pins.

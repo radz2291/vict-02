@@ -1,13 +1,15 @@
 <script lang="ts" generics="T extends HTMLElement">
   import type { Snippet } from 'svelte';
-  interface Props {
+  let { as, attributes, ref = $bindable(null), children }: {
     as: 'button' | 'div';
-    attributes: Readonly<Record<string | symbol, unknown>>;
+    attributes: Readonly<Record<string, unknown> & Record<symbol, unknown>>;
     ref?: T | null;
     children?: Snippet;
-  }
-  let { as, attributes, ref = $bindable(null), children }: Props = $props();
+  } = $props();
   const domAttributes = $derived(as === 'button' ? { type: 'button', ...attributes } : attributes);
+  // bits-ui supplies attachment symbols alongside string attributes; the DOM
+  // spread owns both, while the declaration above keeps authors type-honest.
+  const domSpread = $derived(domAttributes as Record<string, unknown>);
 </script>
 
 <!-- The catalog's child API supplies ALL handlers and attachment symbols.
@@ -15,7 +17,7 @@
      activation must never depend on a presentation wrapper's DOM identity. -->
 <svelte:element
   this={as}
-  {...domAttributes}
+  {...domSpread}
   bind:this={() => ref, (node: Element | null) => { ref = node as T | null; }}
 >
   {@render children?.()}

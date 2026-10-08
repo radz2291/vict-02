@@ -99,6 +99,12 @@ export default defineConfig({
             // Svelte editor components via @victframework/ui-editor, which
             // needs the svelte toolchain this project deliberately lacks).
             'examples/ui-design-proof/**',
+            // Same class: the u4-consumer suite mounts the Svelte catalog
+            // renderer (ui-svelte sources), so it runs through its own
+            // svelte-toolchain vite config (16/16 there; verified packed in
+            // the isolated consumer). Under this project it would only fail
+            // collection parsing .svelte imports.
+            'examples/u4-consumer/**',
           ],
         },
         resolve: { alias: aliases },

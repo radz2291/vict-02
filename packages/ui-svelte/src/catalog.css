@@ -115,6 +115,15 @@
   text-decoration: none;
   max-width: 100%;
 }
+/* The AppShell navigation toggle owns its visibility contract in styles.css
+   (hidden while the sidebar is present; revealed only in the medium/small
+   drawers). This trigger baseline ties it at (0,1,0) and loads later, which
+   wrongly reopened the toggle on desktop. Scope the shell's own class with
+   its trigger role at (0,2,0): above the baseline, below the (0,2,1)
+   medium/small reveals, so the responsive contract stays in styles.css. */
+.vict-nav-toggle[data-dialog-trigger] {
+  display: none;
+}
 .vict-controls
   :where(
     [data-state='on'],

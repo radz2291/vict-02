@@ -54,9 +54,9 @@ const shellDocument: UiDocument = {
         body: { name: 'body', children: ['bodyText'] },
       },
     },
+    bodyText: { kind: 'text', id: 'bodyText', content: { type: 'literal', value: 'Reviewer assignment body' } } as never,
   },
 };
-shellDocument.nodes.bodyText = { kind: 'text', id: 'bodyText', content: { type: 'literal', value: 'Reviewer assignment body' } } as never;
 
 describe('PROBE: dialog controlled loop (stale-callback/lifecycle evidence)', () => {
   it('opens from the trigger and closes through the state loop', () => {

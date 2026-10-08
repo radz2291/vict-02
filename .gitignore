@@ -21,3 +21,6 @@ examples/reference-app/.data/
 
 # Builder Kit task packs and denial records (generated, never committed)
 .builder-kit/
+
+# Packed tarballs are build outputs (U4-B1 F13) — never committed.
+packages/**/*.tgz

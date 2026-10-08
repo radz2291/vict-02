@@ -1,82 +1,77 @@
 {
-  "packedAt": "2026-10-08T13:12:24.720Z",
-  "candidate": "098b84e3a342793c6bdb19b1e8b8e6a72f1c2220 (verification branch codex/ui-foundation-u4-b1-core-verification)",
-  "deliveryRepairs": [
-    "deriveActionInputCatalog re-exported from @victframework/application (consumer build was broken)",
-    "ui-preview added to the pack closure (consumer declares it; not on the public registry)",
-    "consumer route path /app.html -> / (ROUTE_PATH_INVALID: dot segments rejected)",
-    "consumer vite config excludes @victframework/* from dep optimization (.svelte.ts modules break the esbuild optimizer)",
-    "consumer devDependencies pinned to root-lockfile versions",
-    "package-lock.json normalized (consumer nested dev-tool duplicates removed)"
-  ],
+  "packedAt": "2026-10-08T17:08:59.350Z",
   "tarballs": {
-    "@victframework/application": {
-      "tarball": "vendor/victframework-application-0.4.0-rc.1.tgz",
-      "sha256": "7b843e7643ddb2ecc82403cc1f0023748a8ada63d7a0abf17a4341592207e067",
-      "bytes": 104781
-    },
-    "@victframework/contracts": {
-      "tarball": "vendor/victframework-contracts-0.4.0-rc.1.tgz",
-      "sha256": "017c0587843869653f6bd723566dcaf39f2e89b2fb55bc923f35667be9d618de",
-      "bytes": 25610
-    },
-    "@victframework/control": {
-      "tarball": "vendor/victframework-control-0.4.0-rc.1.tgz",
-      "sha256": "3cf09cb1bf97f90f50e6f4bbf76a690f309b9a3d39833e54bac0d361ab61386f",
-      "bytes": 36577
-    },
-    "@victframework/kernel": {
-      "tarball": "vendor/victframework-kernel-0.4.0-rc.1.tgz",
-      "sha256": "c40b7377be433f4b5e731fcfc26607d45200c0e44fd7a38c1701ac26b4565ddd",
-      "bytes": 57501
-    },
-    "@victframework/runtime": {
-      "tarball": "vendor/victframework-runtime-0.4.0-rc.1.tgz",
-      "sha256": "92e12395499c029be449f0bfda309cffbbe54d4af880d1c8887db31596a1d8a3",
-      "bytes": 308226
-    },
-    "@victframework/sdk": {
-      "tarball": "vendor/victframework-sdk-0.4.0-rc.1.tgz",
-      "sha256": "26ba8993f73f70071e57cec97471bf9c4bc4abde3137084be4fd4ee064f338f4",
-      "bytes": 39172
-    },
     "@victframework/ui": {
-      "tarball": "vendor/victframework-ui-0.4.0-rc.1.tgz",
-      "sha256": "a3fb0bf0f6790ee88aca158b26ef1a0bc5784ea1352e7fb58441ee385ad6d835",
-      "bytes": 85571
-    },
-    "@victframework/ui-editor": {
-      "tarball": "vendor/victframework-ui-editor-0.4.0-rc.1.tgz",
-      "sha256": "967717fc92ae40c23c767eb1297595389fdb0aae04f7d20e50faf5699f391a86",
-      "bytes": 43534
-    },
-    "@victframework/ui-preview": {
-      "tarball": "vendor/victframework-ui-preview-0.4.0-rc.1.tgz",
-      "sha256": "38fc0dffc878751b29a0b9f1963d87fa113afa6e9a7d0588b2982cc94d690f45",
-      "bytes": 9986
+      "tarball": "victframework-ui-0.4.0-rc.1.tgz",
+      "sha256": "941bc0f3362a39d7e3044bcd346489c81ecf62aa4fb66674644cb254dfb090ca",
+      "bytes": 86718,
+      "integrity": "sha512-jwIIbwIeLC+DBEKgBFDUspxfuUaLLlS7EU0CqG86WQQx18l7vUpHSPkmOpuRlueVvX8bRp7Cnt9WHfZC4nGI1A=="
     },
     "@victframework/ui-svelte": {
-      "tarball": "vendor/victframework-ui-svelte-0.4.0-rc.1.tgz",
-      "sha256": "bf6359e9c4d0f1bf1201065e1206128f3101266db2c80447aa374ab73c284d7d",
-      "bytes": 78916
+      "tarball": "victframework-ui-svelte-0.4.0-rc.1.tgz",
+      "sha256": "7f0de53c0d9846e40d274a8938b37f40a8582dc43a49d53b645879e8e1b05a52",
+      "bytes": 80540,
+      "integrity": "sha512-fNkpOuodYoSo7L3nQa9BzFk/P6Ohf+3BJjmrA//LV4HkLhAQp2PmB1tmXxZXoVfpbNzoSdwDSVhdcY7uBIqV3Q=="
+    },
+    "@victframework/ui-editor": {
+      "tarball": "victframework-ui-editor-0.4.0-rc.1.tgz",
+      "sha256": "7d18e519a9279cc3082ebbe879f8155bd1972874aa9c55cab8dcb4f996b3dcc0",
+      "bytes": 44066,
+      "integrity": "sha512-Cs50lpD5K/RJmT/cK/4gocPysoJ2eflwzBLrfqX7vPzbMJhzWedA2ZjnGf8aQkrJfGsNyw7WD6SZG4eFKSgzCw=="
+    },
+    "@victframework/ui-preview": {
+      "tarball": "victframework-ui-preview-0.4.0-rc.1.tgz",
+      "sha256": "38fc0dffc878751b29a0b9f1963d87fa113afa6e9a7d0588b2982cc94d690f45",
+      "bytes": 9986,
+      "integrity": "sha512-35bOQRmr7MADqEm6C8Hnx3M8sTNWWp5bqXZnhrG4ux9xSV60wh6TzWZ+Y/xrSGlxl3gehMXcTN1AtOzrNyiYFQ=="
+    },
+    "@victframework/application": {
+      "tarball": "victframework-application-0.4.0-rc.1.tgz",
+      "sha256": "ea0fdde59f165379154517f4be4ca99e3c8790033862e4a56f6df5fdb09b5db7",
+      "bytes": 104817,
+      "integrity": "sha512-In1UqfocrTrjBQ/9B6QzPGxadtJQERbW9r+CX9FWB3LWbI6ADXuJB4OHEYoKJ43uokupx5PHRydCp2KPlTCkDg=="
+    },
+    "@victframework/sdk": {
+      "tarball": "victframework-sdk-0.4.0-rc.1.tgz",
+      "sha256": "26ba8993f73f70071e57cec97471bf9c4bc4abde3137084be4fd4ee064f338f4",
+      "bytes": 39172,
+      "integrity": "sha512-EDJQJrTsEh/yp3IqFSYruaW2HMdnJVHKDBMyRrBMkC1MXb/4c0lbRfGdHAQBsuY2vN8tIfERdluSjnqxpvlVtA=="
+    },
+    "@victframework/contracts": {
+      "tarball": "victframework-contracts-0.4.0-rc.1.tgz",
+      "sha256": "017c0587843869653f6bd723566dcaf39f2e89b2fb55bc923f35667be9d618de",
+      "bytes": 25610,
+      "integrity": "sha512-3IIitqyuG38bYE4D4ByLxTiwGeUbKncjkAyfKLmv0dPzR1W2/RVEAjLsuCqdJgv9tvuB1vWslidUA0+FB/ClrQ=="
+    },
+    "@victframework/kernel": {
+      "tarball": "victframework-kernel-0.4.0-rc.1.tgz",
+      "sha256": "c40b7377be433f4b5e731fcfc26607d45200c0e44fd7a38c1701ac26b4565ddd",
+      "bytes": 57501,
+      "integrity": "sha512-LAXNOGARIORv1Sk021Rn7N5a5n5r574iV0a8Pa3cGg6xUT0w4Qfk5QpOiqQkMUyHX2DpEQX1J+yTLvMEAjE5Qw=="
+    },
+    "@victframework/runtime": {
+      "tarball": "victframework-runtime-0.4.0-rc.1.tgz",
+      "sha256": "92e12395499c029be449f0bfda309cffbbe54d4af880d1c8887db31596a1d8a3",
+      "bytes": 308226,
+      "integrity": "sha512-x7nWTPXDHcMrdq6ihSi6zE8KUk8/KuYm+KeMdT2M5EBGvwcmy5uMKhnGX27HHjlrNDEq+m7o8lhZOmQe0jC6Ng=="
+    },
+    "@victframework/control": {
+      "tarball": "victframework-control-0.4.0-rc.1.tgz",
+      "sha256": "3cf09cb1bf97f90f50e6f4bbf76a690f309b9a3d39833e54bac0d361ab61386f",
+      "bytes": 36577,
+      "integrity": "sha512-Y39NXqHGydV4bf4R6yHQhBXWst1zlkdlDbtiyaoXFk0GBPcfSevGLUTbrz8NuCbgshLBNJy9rntlPvb48Fh9HA=="
     }
   },
   "isolation": {
-    "root": "C:/Users/RZ1/Desktop/RZ/u4-consumer-isolated (outside the workspace graph)",
+    "root": "C:\\Users\\RZ1\\Desktop\\RZ\\u4-consumer-isolated",
     "workspaceLinkViolations": [],
     "builtAssets": [
-      "app-CxXW7QDm.js",
+      "app-DVQYm-Of.js",
       "authoring-B-PFoYVY.css",
-      "authoring-T3Cys9DV.js",
-      "execution-BRoh0nng.js",
-      "execution-QNrMoyXk.css"
+      "authoring-RykF42Hq.js",
+      "execution-9guXdt8j.js",
+      "execution-ns_bJCw9.css"
     ],
-    "verifiedAt": "2026-10-08T13:12:24.721Z"
-  },
-  "testStatus": {
-    "suite": "npx vitest run (packed artifacts)",
-    "passed": 9,
-    "failed": 7,
-    "note": "the 7 failures are the candidate compile-gate regression (F1 in the verification report); identical results in the workspace-linked consumer"
+    "verifiedAt": "2026-10-08T17:10:35.116Z"
   }
 }

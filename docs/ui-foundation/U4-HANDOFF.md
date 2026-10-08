@@ -511,3 +511,21 @@ own gate; a batch PASS proves only its ledger rows):
 > findings with affected rechecks, and stop at the founder checkpoint
 > with acceptance PENDING. No npm publication, merge to main,
 > apps/studio integration, or deployment.
+## 14. B1 execution status (append-only verifier record)
+
+- **2026-10-08 — round 1** (`098b84e3…`, core refactor): FAIL, 14+7 test
+  regressions, consumer unbuildable, dialog leak, unauthorized diagnostic,
+  cascade change — see
+  [reviews/u4/b1-core-verify/U4-B1-CORE-VERIFY-01.md](reviews/u4/b1-core-verify/U4-B1-CORE-VERIFY-01.md).
+- **2026-10-09 — round 2** (`2f82fc05…`, core repair-01; verify branch
+  `codex/ui-foundation-u4-b1-core-repair-verify-02`): FAIL — ONE FOCUSED
+  RESIDUAL. All round-1 defects repaired and re-verified against unchanged
+  oracles (battery 2990/0, consumer 16/16 ×2, typecheck/svelte-check 0,
+  pack+isolation clean, bundle separation proven, dialog close/select/confirm
+  and select/button/switch/toggle/radio journeys browser-verified). Remaining:
+  the dialog never transfers focus into the open modal (amendment focus
+  obligation; journey "keyboard/focus/portal"; U4-05 "Dialog focus/portal") —
+  focused repair handoff in
+  [reviews/u4/b1-core-verify/U4-B1-CORE-REPAIR-VERIFY-02.md](reviews/u4/b1-core-verify/U4-B1-CORE-REPAIR-VERIFY-02.md)
+  §7. B1/U4 OPEN; acceptance PENDING; no §6 ledger row moved (all B1 rows stay
+  C until a gate PASS).

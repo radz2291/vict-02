@@ -9,7 +9,7 @@ import DocumentHost from '../src/document/DocumentHost.svelte';
 import { b1CatalogDescriptors } from '../src/catalog/components/descriptors.js';
 import { b1CatalogImplementations } from '../src/catalog/components/implementations.js';
 
-const doc: UiDocument = {
+const docTemplate: UiDocument = {
   schema: 'vict.ui-document@1',
   id: 'probe.bare',
   revision: 'r1',
@@ -39,7 +39,13 @@ const doc: UiDocument = {
     },
   },
 };
-doc.nodes.bodyText = { kind: 'text', id: 'bodyText', content: { type: 'literal', value: 'body' } } as never;
+const doc: typeof docTemplate = {
+  ...docTemplate,
+  nodes: {
+    ...docTemplate.nodes,
+    bodyText: { kind: 'text', id: 'bodyText', content: { type: 'literal', value: 'body' } } as never,
+  },
+};
 
 describe('PROBE 2: bare dialog (no appshell)', () => {
   it('opens and closes', () => {
