@@ -922,6 +922,12 @@ remain unauthorized):
    scope): payload `52684696…` (seven pins incl. amendment-with-§10 and
    the recalibration document), record
    [U4-CATALOG-RECALIBRATION-FREEZE](U4-CATALOG-RECALIBRATION-FREEZE.md).
+   Freeze-check (separate fresh checker): `U4 CATALOG RECALIBRATION FREEZE
+   CHECK 03: VERIFIED`
+   ([reviews/u4/FREEZE-CHECK-03.md](reviews/u4/FREEZE-CHECK-03.md),
+   sha256 `b60a6041…`): 14/14 pins, marker-commit proof, prior payloads
+   and artifacts preserved, lineage/scope/report-integrity/static-contract
+   checks all pass.
 7b. Superseding freeze — VERIFIED: payload commit `460d963…` (empty
     marker; ten byte-pins), record
     [U4-AMENDMENT-FREEZE-02](U4-AMENDMENT-FREEZE-02.md); separate fresh

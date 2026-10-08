@@ -34,9 +34,11 @@ plans batches B1–B5; amendment §10 extends the value vocabulary
 — under independent review; implementation NOT authorized.
 Recalibration review complete: R1 **PASS WNF** (9 findings) -> repairs ->
 round 2 **PASS WNF** (8/9 verified; pointer residual) -> repairs. FROZEN
-(SUPERSEDING, scope): payload `52684696…`, pins in
+— VERIFIED (SUPERSEDING, scope): payload `52684696…`, pins in
 [U4-CATALOG-RECALIBRATION-FREEZE](U4-CATALOG-RECALIBRATION-FREEZE.md);
-freeze-check recorded there before delivery.
+freeze-check `U4 CATALOG RECALIBRATION FREEZE CHECK 03: VERIFIED`
+([reviews/u4/FREEZE-CHECK-03.md](reviews/u4/FREEZE-CHECK-03.md)). Next
+authorized action: owner decision on batch B1 (handoff §13.1 prompt).
 Amendment work is isolated on `codex/ui-foundation-u4-component-amendment`
 (from the prepared handoff records `cfbd6d3…`); U0–U3 records untouched.
 The prepared U4 handoff was independently reviewed on

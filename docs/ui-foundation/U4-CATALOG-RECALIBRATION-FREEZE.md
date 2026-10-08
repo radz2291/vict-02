@@ -1,12 +1,11 @@
 # U4 catalog recalibration freeze record — SUPERSEDING (owner decision 8)
 
 Status: **SUPERSEDES the scope of
-[U4-AMENDMENT-FREEZE-02](U4-AMENDMENT-FREEZE-02.md) — FROZEN (payload
-`52684696…`, pending independent freeze-check)** — the checker's
-reproduction is recorded in §6; until it verifies, the supersede is a
-candidate. Runtime/U4 implementation remains UNAUTHORIZED; this record
-freezes the **contract** (the recalibrated authoring contract and its
-batch plan) only.
+[U4-AMENDMENT-FREEZE-02](U4-AMENDMENT-FREEZE-02.md) — FROZEN, VERIFIED**
+(payload `52684696…`; independent freeze-check
+`U4 CATALOG RECALIBRATION FREEZE CHECK 03: VERIFIED`, §6 below). Runtime/U4
+implementation remains UNAUTHORIZED; this record freezes the **contract**
+(the recalibrated authoring contract and its batch plan) only.
 
 ## 1. Why this record supersedes the second freeze's scope
 
@@ -112,17 +111,28 @@ covers them.
 - Deferred (X): pin-input, rating-group, time-range-field.
   Application-surface components: application-plan governed (P3).
 
-## 6. Freeze check (separate fresh checker)
+## 6. Freeze check (separate fresh checker) — VERIFIED
 
-PENDING at this record's first commit: a checker independent of the
-payload authors and the R1 reviewer must (a) reproduce every §3 pin from
-the payload commit and the live bytes, (b) confirm payloads `460d963…`
-and `68e166f…` and both freeze records remain byte-preserved at their
-original commits, (c) verify scope (docs/ui-foundation only across
-`7a9477f…→` tip) and the review lineage SHAs including the round-2
-verdict line, (d) confirm the two post-recheck changes, and (e) confirm
-the amendment §10 contract statements the checker can verify
-statically (schema strings unchanged; marker requirement present in the
-frozen amendment bytes; fixture descriptors carry `abi` + marker +
-typed outputs). Its verdict is appended below at the final records
-commit.
+Checker independent of the payload authors and the R1 reviewer, all
+evidence byte-derived. Full report imported verbatim:
+[reviews/u4/FREEZE-CHECK-03.md](reviews/u4/FREEZE-CHECK-03.md) (sha256
+`b60a6041c03ac2f25a9bb1763935c48f1d32718a1949d46fd300d5953dd5ed3e`),
+ending **`U4 CATALOG RECALIBRATION FREEZE CHECK 03: VERIFIED`** at pinned
+HEAD `3da34cd…`. All ten steps passed: (1–2) all seven SHA-256 pins
+reproduce from the payload commit AND live bytes (14/14, both methods);
+(3) `52684696…` is an empty marker whose parent carries the pinned bytes;
+(4) preservation — FREEZE-02's ten pins all reproduce from `460d963…`
+(amendment pin `b0b782ba…` there, `b3e68055…` here: supersession as
+claimed), `68e166f…` reachable, the eight original fixtures byte-identical
+`460d963…→HEAD`, and all preservation artifacts blob-identical from last
+touch through HEAD (import-blob deltas are the recorded pre-base lineage,
+all ancestors of the branch base); (5–6) spine ancestry in record order;
+diff `7a9477f…→3da34cd…` = 14 paths, all docs/ui-foundation; (7) R1
+report prefix hashes to `8a6bc562…` and the file ends with the round-2
+verdict, `-text` confirmed; (8) both post-recheck changes present; (9)
+static contract checks — schema strings unchanged, ABI marker present in
+the frozen amendment bytes, four fixtures parse with abi + marker +
+non-empty outputs, six negative cases with diagnostics, and 0 occurrences
+of `UI_DOC_INVALID_LITERAL` in `packages/ui/src/diagnostics.ts` (the
+new-code claim); (10) STATE/DECISIONS consistent, no contradictory
+status.
