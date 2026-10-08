@@ -1,5 +1,10 @@
 <script lang="ts">
-  /** B1 catalog wrapper: bits-ui Switch (S-scalar boolean loop). */
+  /**
+   * B1 catalog wrapper: the catalog Switch (bits-ui Switch parts styled by
+   * catalog.css, showcase reference markup — `vict-control-row` label +
+   * `Switch.Thumb`). S-scalar boolean loop: `checked` in, `checkedChange`
+   * out.
+   */
   import { Switch } from 'bits-ui';
   import type { UiSvelteComponentIO } from '../../document/extensions.js';
 
@@ -13,12 +18,12 @@
   const disabled = $derived(props.disabled === true);
 </script>
 
-<label class="vict-catalog-field" data-testid="catalog-switch">
+<label class="vict-control-row" data-testid="catalog-switch">
   <Switch.Root
     {checked}
     {disabled}
     onCheckedChange={(next) => io?.emit('checkedChange', next === true)}
-    class="vict-catalog-switch"
-  />
+    ><Switch.Thumb /></Switch.Root
+  >
   <span>{label}</span>
 </label>

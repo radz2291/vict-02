@@ -1,5 +1,4 @@
-import type { Component } from 'svelte';
-import type { Snippet } from 'svelte';
+import type { Component, Snippet } from 'svelte';
 import type {
   UiExtensionDescriptor,
   UiOutputDecl,
@@ -37,13 +36,13 @@ export interface UiSvelteExtensionImplementation {
 export interface UiSvelteComponentIO {
   /** Emit a declared output. Only declared names are delivered. */
   readonly emit: (output: string, payload?: UiValue) => void;
-  /** Declared slot fills as rendered snippets (instance scope). */
-  readonly slots?: Readonly<Record<string, Snippet>>;
 }
 
 /** Props + IO contract for a component-ABI implementation (amendment §3.4). */
 export interface UiSvelteComponentProps extends UiSvelteExtensionProps {
   readonly io?: UiSvelteComponentIO;
+  /** Declared slot fills rendered in the instance scope (single-slot). */
+  readonly children?: Snippet;
 }
 
 /**

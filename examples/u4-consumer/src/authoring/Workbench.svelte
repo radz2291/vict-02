@@ -7,6 +7,7 @@
    * engine. Preview state seeds the canvas run only.
    */
   import { tick } from 'svelte';
+  import { defaultSemanticElementCatalog } from '@victframework/ui';
   import { ControlScope } from '@victframework/ui-svelte';
   import type { UiRenderPlan, UiValue } from '@victframework/ui';
   import {
@@ -104,7 +105,7 @@
   }
 
   const catalogs = {
-    ...{ elements: { elements: [], globalAttributes: ['role', 'aria-label', 'data-test-id'] } },
+    elements: defaultSemanticElementCatalog(),
     actionIds: consumerActionIds,
     viewFields: consumerViewFields,
   };
@@ -187,6 +188,7 @@
 </script>
 
 <ControlScope>
+<div class="vict-app">
 <div class="consumer-workbench">
   <nav class="rail" aria-label="Workbench controls">
     <span class="rail-heading">Documents</span>
@@ -210,6 +212,7 @@
     <div class="canvas-scroll">
       <EditorCanvas
         document={workingDocument}
+        view={consumerViewData}
         {catalogs}
         extensions={b1CatalogDescriptors}
         extensionImplementations={b1CatalogImplementations}
@@ -273,6 +276,7 @@
       </ul>
     </details>
   </div>
+</div>
 </div>
 </ControlScope>
 

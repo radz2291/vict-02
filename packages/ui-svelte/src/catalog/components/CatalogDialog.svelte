@@ -1,10 +1,12 @@
 <script lang="ts">
   /**
-   * B1 catalog wrapper: bits-ui Dialog adapted to the IO contract (frozen
-   * fixture dialog-slot.json). Controlled open loop: `open` prop in;
-   * `openChange` out (trigger, Escape, overlay close); the `body` slot
-   * carries authored content (instance scope) with its own declared
-   * actions; portals to the nearest app/controls root.
+   * B1 catalog wrapper: the catalog Dialog (bits-ui Dialog parts styled by
+   * catalog.css — the showcase reference surface, frozen fixture
+   * dialog-slot.json). CONTROLLED open loop: `open` prop in; `openChange`
+   * emits for trigger/Escape/overlay closes; the `body` slot carries
+   * authored content (instance scope) with its own declared actions.
+   * Portals render through bits-ui's configured portal target (the
+   * ControlScope root).
    */
   import { Dialog } from 'bits-ui';
   import type { Snippet } from 'svelte';
@@ -13,34 +15,28 @@
   interface Props {
     readonly props: Readonly<Record<string, unknown>>;
     readonly io?: UiSvelteComponentIO;
+    readonly children?: Snippet;
   }
-  let { props, io }: Props = $props();
+  let { props, io, children }: Props = $props();
   const title = $derived(typeof props.title === 'string' ? props.title : '');
   const open = $derived(props.open === true);
-  let portalTarget = $state<HTMLElement | null>(null);
 </script>
 
-<span bind:this={portalTarget} hidden data-testid="catalog-dialog-anchor"></span>
-<Dialog.Root
-  {open}
-  onOpenChange={(next) => io?.emit('openChange', next === true)}
->
-  <Dialog.Trigger
-    class="vict-btn vict-btn--secondary"
-    data-testid="dialog-trigger"
-  >Open {title}</Dialog.Trigger>
-  <Dialog.Portal to={portalTarget?.closest('.vict-app, .vict-controls') ?? 'body'}>
-    <Dialog.Overlay class="vict-overlay-backdrop" data-testid="dialog-overlay" />
-    <Dialog.Content class="vict-dialog" data-testid="dialog-panel">
-      <header class="vict-overlay-header">
-        <Dialog.Title>
-          {#snippet child({ props: titleProps })}<h2 {...titleProps}>{title || 'Dialog'}</h2>{/snippet}
-        </Dialog.Title>
-        <Dialog.Close class="vict-btn vict-btn--quiet" aria-label="Close" data-testid="dialog-close">✕</Dialog.Close>
-      </header>
-      <div class="vict-overlay-body">
-        {@render io?.slots?.body?.()}
-      </div>
-    </Dialog.Content>
-  </Dialog.Portal>
-</Dialog.Root>
+<span data-testid="catalog-dialog" style="display: contents">
+  <Dialog.Root
+    {open}
+    onOpenChange={(next) => io?.emit('openChange', next === true)}
+  >
+    <Dialog.Trigger data-testid="dialog-trigger">Open {title}</Dialog.Trigger>
+    <Dialog.Portal>
+      <Dialog.Overlay data-testid="dialog-overlay" />
+      <Dialog.Content data-testid="dialog-panel">
+        <Dialog.Title>{title || 'Dialog'}</Dialog.Title>
+        <Dialog.Close aria-label="Close" data-testid="dialog-close">✕</Dialog.Close>
+        <div class="vict-overlay-body">
+          {@render children?.()}
+        </div>
+      </Dialog.Content>
+    </Dialog.Portal>
+  </Dialog.Root>
+</span>

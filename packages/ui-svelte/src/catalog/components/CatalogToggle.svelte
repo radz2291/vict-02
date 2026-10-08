@@ -1,5 +1,9 @@
 <script lang="ts">
-  /** B1 catalog wrapper: bits-ui Toggle (S-scalar pressed loop). */
+  /**
+   * B1 catalog wrapper: the catalog Toggle (bits-ui Toggle part styled by
+   * catalog.css `[data-toggle-root]`, showcase reference markup).
+   * S-scalar pressed loop: `pressed` in, `pressedChange` out.
+   */
   import { Toggle } from 'bits-ui';
   import type { UiSvelteComponentIO } from '../../document/extensions.js';
 
@@ -13,10 +17,13 @@
   const disabled = $derived(props.disabled === true);
 </script>
 
-<Toggle.Root
-  {pressed}
-  {disabled}
-  onPressedChange={(next) => io?.emit('pressedChange', next === true)}
-  class="vict-btn"
-  data-testid="catalog-toggle"
->{label}</Toggle.Root>
+<span data-testid="catalog-toggle" style="display: inline-block">
+  <Toggle.Root
+    {pressed}
+    {disabled}
+    onPressedChange={(next) => io?.emit('pressedChange', next === true)}
+    aria-label={label || undefined}
+  >
+    {label}
+  </Toggle.Root>
+</span>

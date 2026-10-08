@@ -1,5 +1,10 @@
 <script lang="ts">
-  /** B1 catalog wrapper: bits-ui RadioGroup (S-scalar string selection). */
+  /**
+   * B1 catalog wrapper: the catalog RadioGroup (bits-ui RadioGroup parts
+   * styled by catalog.css, showcase reference markup — `vict-control-row`
+   * labels per item). S-scalar string selection: `value` in,
+   * `valueChange` out.
+   */
   import { RadioGroup } from 'bits-ui';
   import type { UiSvelteComponentIO } from '../../document/extensions.js';
 
@@ -8,6 +13,7 @@
     readonly io?: UiSvelteComponentIO;
   }
   let { props, io }: Props = $props();
+  const label = $derived(typeof props.label === 'string' ? props.label : '');
   const options = $derived(
     Array.isArray(props.options)
       ? (props.options as readonly { value?: unknown; label?: unknown }[]).map((option) => ({
@@ -20,23 +26,21 @@
   const disabled = $derived(props.disabled === true);
 </script>
 
-<div
-  class="vict-catalog-radio"
-  role="radiogroup"
-  aria-label={typeof props.label === 'string' ? props.label : undefined}
-  data-testid="catalog-radio-group"
->
-  {#each options as option (option.value)}
-    <label class="vict-catalog-field">
-      <RadioGroup.Root
-        {value}
-        {disabled}
-        onValueChange={(next) => io?.emit('valueChange', next)}
-        name=""
-      >
-        <RadioGroup.Item value={option.value} class="vict-catalog-radio-item" />
-      </RadioGroup.Root>
-      <span>{option.label}</span>
-    </label>
-  {/each}
+<div data-testid="catalog-radio-group" style="display: inline-block">
+  {#if label !== ''}<span class="vict-control-label">{label}</span>{/if}
+  <RadioGroup.Root
+    {value}
+    {disabled}
+    onValueChange={(next) => {
+      if (typeof next === 'string') io?.emit('valueChange', next);
+    }}
+    aria-label={label || undefined}
+  >
+    {#each options as option (option.value)}
+      <label class="vict-control-row">
+        <RadioGroup.Item value={option.value} />
+        <span>{option.label}</span>
+      </label>
+    {/each}
+  </RadioGroup.Root>
 </div>

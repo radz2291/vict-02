@@ -80,6 +80,19 @@ it). REMAINING for the B1 gate: browser-based authoring evidence + walkthrough,
 records (ledger rows + reconciliation, U4-B1-HANDOFF, DECISIONS), the
 three independent reviews + repairs + rechecks, push + delivery. Owner
 acceptance stays PENDING at the founder checkpoint.
+**OWNER FEEDBACK RECORDED (2026-10-08, B1 mid-cycle)**: the running
+controls look substantially worse than the existing VICT catalog —
+appearance NOT accepted. Cause found: the consumer never imported
+styles.css/catalog.css (no theme/tokens at all), the workbench lacked the
+.vict-app context, and checkbox/switch/toggle/radio/dialog/select
+adapters were hand-styled instead of the showcase reference markup
+(vict-control-row labels + bare catalog parts styled by catalog.css under
+.vict-controls + Switch.Thumb). Repairs: reuse reference markup, import
+styles.css THEN catalog.css in both entries, .vict-app context in both
+pages, controlled-open dialog on bare catalog parts, replace the native
+select with the catalog Select (single mode). Founder acceptance stays
+PENDING; affected B1 proofs held until reuse+styling verified on the
+PACKED consumer by the independent reviewer.
 Amendment work is isolated on `codex/ui-foundation-u4-component-amendment`
 (from the prepared handoff records `cfbd6d3…`); U0–U3 records untouched.
 The prepared U4 handoff was independently reviewed on

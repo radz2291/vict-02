@@ -16,10 +16,13 @@ import {
 } from './definition.js';
 import { consumerDocuments } from './documents.js';
 
-export function compileConsumerDocuments(): ResolvedUiAttachments {
+export function compileConsumerDocuments(
+  /** Defaults to the committed seeds; the finished app passes the SAVED documents. */
+  documents: readonly import('@victframework/ui').UiDocument[] = consumerDocuments,
+): ResolvedUiAttachments {
   return resolveUiAttachments({
     application: { actions: consumerActions, screens: [] },
-    uiDocuments: consumerDocuments.map((document) => ({ document })),
+    uiDocuments: documents.map((document) => ({ document })),
     uiExtensions: b1CatalogDescriptors,
     actionIds: consumerActionIds,
     routeIds: [],

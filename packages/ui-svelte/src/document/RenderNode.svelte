@@ -338,20 +338,12 @@
           />
         {/each}
       {/snippet}
-      {@const componentIo: UiSvelteComponentIO = {
-        emit: emitOutput,
-        ...(filledSlotNames.length > 0
-          ? {
-              slots: Object.fromEntries(
-                filledSlotNames.map((name) => [
-                  name,
-                  () => renderFill((instruction.slots ?? {})[name] ?? []),
-                ]),
-              ),
-            }
-          : {}),
-      }}
-      <Implementation props={extensionProps} occurrenceKey={occ} nodeId={instruction.nodeId} io={componentIo} />
+      {@const componentIo: UiSvelteComponentIO = { emit: emitOutput }}
+      <Implementation props={extensionProps} occurrenceKey={occ} nodeId={instruction.nodeId} io={componentIo}>
+        {#if filledSlotNames.length > 0}
+          {@render renderFill((instruction.slots ?? {})[filledSlotNames[0] as string] ?? [])}
+        {/if}
+      </Implementation>
     {:else if extension?.ok}
       {@const Implementation = extension.component}
       <Implementation props={extensionProps} occurrenceKey={occ} nodeId={instruction.nodeId} />

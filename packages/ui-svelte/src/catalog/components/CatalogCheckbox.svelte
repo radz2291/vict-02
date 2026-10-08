@@ -1,7 +1,9 @@
 <script lang="ts">
   /**
-   * B1 catalog wrapper: bits-ui Checkbox with VICT control styling (frozen
-   * fixture checkbox-valid.json). Controlled boolean: `checked` flows in;
+   * B1 catalog wrapper: the catalog Checkbox (bits-ui part styled by
+   * catalog.css under `.vict-controls`) in the showcase reference markup —
+   * `vict-control-row` label + bare `Checkbox.Root` (frozen fixture
+   * checkbox-valid.json). Controlled boolean: `checked` flows in;
    * `checkedChange` emits out; the authored binding closes the loop.
    */
   import { Checkbox } from 'bits-ui';
@@ -17,12 +19,11 @@
   const disabled = $derived(props.disabled === true);
 </script>
 
-<label class="vict-catalog-field" data-testid="catalog-checkbox">
+<label class="vict-control-row" data-testid="catalog-checkbox">
   <Checkbox.Root
     {checked}
     {disabled}
     onCheckedChange={(next) => io?.emit('checkedChange', next === true)}
-    class="vict-catalog-check"
   />
   <span>{label}</span>
 </label>
