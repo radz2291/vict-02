@@ -14,6 +14,7 @@ import type {
   UiExpression,
   UiInteraction,
   UiNode,
+  UiOutputBinding,
   UiStyleValue,
 } from '@victframework/ui';
 
@@ -174,6 +175,31 @@ export function fillSlot(input: {
     requestId: input.requestId,
     commands: [
       { op: 'fillSlot', nodeId: input.nodeId, slotName: input.slotName, children: input.children },
+    ],
+  };
+}
+
+/**
+ * Set or clear one authored output binding on a component instance
+ * (amendment §3.6 — transactional, undoable through the session like
+ * every other op).
+ */
+export function setOutputBinding(input: {
+  readonly requestId: string;
+  readonly nodeId: string;
+  readonly output: string;
+  /** `undefined` clears the binding. */
+  readonly binding?: UiOutputBinding;
+}): TransactionDraft {
+  return {
+    requestId: input.requestId,
+    commands: [
+      {
+        op: 'setOutputBinding',
+        nodeId: input.nodeId,
+        output: input.output,
+        ...(input.binding !== undefined ? { binding: input.binding } : {}),
+      },
     ],
   };
 }

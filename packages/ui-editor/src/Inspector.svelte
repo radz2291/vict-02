@@ -1,9 +1,9 @@
 <script lang="ts">
   import { tick } from 'svelte';
-  import type { UiDocument, UiStyleValue } from '@victframework/ui';
+  import type { UiDocument, UiStyleValue, UiExtensionDescriptor, UiOutputBinding } from '@victframework/ui';
   type UiPseudoState = 'hover' | 'focus' | 'active' | 'disabled';
   import { resolveOccurrence } from './occurrence.js';
-  import { connectInteraction, setAttribute, setConditionalStyle, setStyle, setTextLiteral, type TransactionDraft } from './commands.js';
+  import { connectInteraction, bindExpression, setAttribute, setConditionalStyle, setOutputBinding, setStyle, setTextLiteral, type TransactionDraft } from './commands.js';
   import { nodeLabel, sourceBreadcrumb, editableStyle, sourceStyles, styleText, styleGroups, type EditorLabels } from './inspector-ux.js';
   import InspectorControl from './InspectorControl.svelte';
   import InspectorSpacing from './InspectorSpacing.svelte';
@@ -14,8 +14,12 @@
     styleConditions?: readonly { id: string; label: string }[];
     readEffective?: (occurrence: string, property: string) => string | undefined;
     labels?: EditorLabels;
+    /** Registered component descriptors: descriptor-driven editors (amendment §3.6). */
+    componentDescriptors?: readonly UiExtensionDescriptor[];
+    /** View-field types for array-prop reference binding (type-filtered). */
+    knownViewFields?: Readonly<Record<string, string>>;
   }
-  let { document, selectedOccurrence, onApply, lastIssues = [], knownActionIds = [], knownRouteIds = [], knownTokenIds = [], styleConditions = [], readEffective, labels = {} }: Props = $props();
+  let { document, selectedOccurrence, onApply, lastIssues = [], knownActionIds = [], knownRouteIds = [], knownTokenIds = [], styleConditions = [], readEffective, labels = {}, componentDescriptors = [], knownViewFields = {} }: Props = $props();
   // DOM measurements must run again after the canvas consumes new source/selection.
   let measurementVersion = $state(0);
   $effect(() => {
@@ -69,6 +73,67 @@
   });
   const report = $derived(selectedOccurrence ? resolveOccurrence(selectedOccurrence, document) : undefined);
   const node = $derived(report?.node);
+  // Descriptor-driven editors (amendment §3.6): one control per declared
+  // prop, one output row per declared output.
+  const componentNode = $derived(node?.kind === 'component' ? node : undefined);
+  const componentDescriptor = $derived(
+    componentNode ? componentDescriptors.find((entry) => entry.id === componentNode.definitionId) : undefined,
+  );
+  const stateKeysTyped = $derived(
+    Object.values(document.localState).map((decl) => ({ key: decl.key, type: decl.type })),
+  );
+  function propLiteralRaw(descriptor2: UiExtensionDescriptor, name: string): string {
+    void descriptor2;
+    const expression = componentNode?.props?.[name];
+    if (expression === undefined) return '';
+    if (expression.type === 'literal') return String(expression.value ?? '');
+    if (expression.type === 'ref') return expression.path;
+    return '';
+  }
+  function applyPropLiteral(name: string, type: string, raw: string) {
+    if (!componentNode) return;
+    let expression: UiExpression;
+    if (raw.startsWith('state.') || raw.startsWith('view.') || raw.startsWith('record.')) {
+      expression = { type: 'ref', path: raw };
+    } else if (type === 'number') {
+      const parsed = Number(raw);
+      expression = { type: 'literal', value: Number.isFinite(parsed) ? parsed : raw };
+    } else if (type === 'boolean') {
+      expression = { type: 'literal', value: raw === 'true' };
+    } else {
+      expression = { type: 'literal', value: raw };
+    }
+    onApply(bindExpression({ requestId: request(), nodeId: componentNode.id, target: { kind: 'prop', name }, expression }));
+  }
+  function stateKeysOfType(type: string): string[] {
+    if (type === 'array') {
+      return [
+        ...stateKeysTyped.filter((entry) => entry.type === 'stringList' || entry.type === 'numberList').map((entry) => `state.${entry.key}`),
+        ...Object.entries(knownViewFields).filter(([, fieldType]) => fieldType === 'array').map(([name]) => `view.${name}`),
+      ];
+    }
+    const iso = type === 'isoDate' || type === 'isoTime';
+    return stateKeysTyped
+      .filter((entry) => entry.type === type || (iso && (entry.type === 'isoDate' || entry.type === 'isoTime')))
+      .map((entry) => `state.${entry.key}`);
+  }
+  function outputBindingRaw(output: string): UiOutputBinding | undefined {
+    return componentNode?.outputs?.[output];
+  }
+  function applySetStateBinding(output: string, key: string) {
+    if (!componentNode || key === '') return;
+    const binding: UiOutputBinding = { setState: { key, value: { type: 'ref', path: '$output' } } };
+    onApply(setOutputBinding({ requestId: request(), nodeId: componentNode.id, output, binding }));
+  }
+  function applyActionBinding(output: string, actionId: string) {
+    if (!componentNode || actionId === '') return;
+    const binding: UiOutputBinding = { invokeAction: { actionId } };
+    onApply(setOutputBinding({ requestId: request(), nodeId: componentNode.id, output, binding }));
+  }
+  function clearBinding(output: string) {
+    if (!componentNode) return;
+    onApply(setOutputBinding({ requestId: request(), nodeId: componentNode.id, output }));
+  }
   const nearest = $derived(report?.instancePath.at(-1));
   const owner = $derived(nearest?.definitionId);
   const shared = $derived(owner !== undefined);
@@ -178,6 +243,44 @@
         {:else if textNode?.kind === 'text'}<p>Text comes from a binding. Its expression is available in Advanced; literal editing would replace that binding.</p>
         {:else}<p>No direct text content. Expand this element in Layers to select its content.</p>{/if}
       </section>
+      {#if componentNode && componentDescriptor}
+        <section><h3>Component properties</h3>
+          <p class="muted">Descriptor {componentDescriptor.id} · rev {componentDescriptor.revision}. A value starting with <code>state.</code>/<code>view.</code> binds by reference; anything else is a literal.</p>
+          {#each componentDescriptor.props as propDecl (propDecl.name)}
+            <label>{propDecl.name} <span class="prop-type">({propDecl.type})</span>
+              {#if propDecl.type === 'boolean'}
+                <select
+                  aria-label={`${propDecl.name} value`}
+                  value={propLiteralRaw(componentDescriptor, propDecl.name) || 'false'}
+                  onchange={(e) => applyPropLiteral(propDecl.name, 'boolean', e.currentTarget.value)}
+                >
+                  <option value="false">false</option>
+                  <option value="true">true</option>
+                </select>
+              {:else}
+                <input
+                  aria-label={`${propDecl.name} value`}
+                  value={propLiteralRaw(componentDescriptor, propDecl.name)}
+                  placeholder={propDecl.type === 'array'
+                    ? (stateKeysOfType('array')[0] ?? 'bind an array reference, e.g. view.options')
+                    : (propDecl.default !== undefined ? String(propDecl.default) : '')}
+                  onkeydown={(e) => { if (e.key === 'Enter') applyPropLiteral(propDecl.name, propDecl.type, (e.currentTarget as HTMLInputElement).value); }}
+                />
+                {#if propDecl.type === 'array' || stateKeysOfType(propDecl.type).length > 0}
+                  <select
+                    aria-label={`${propDecl.name} reference`}
+                    value=""
+                    onchange={(e) => { if (e.currentTarget.value !== '') applyPropLiteral(propDecl.name, propDecl.type, e.currentTarget.value); }}
+                  >
+                    <option value="">Bind a reference…</option>
+                    {#each stateKeysOfType(propDecl.type) as reference (reference)}<option value={reference}>{reference}</option>{/each}
+                  </select>
+                {/if}
+              {/if}
+            </label>
+          {/each}
+        </section>
+      {/if}
     {:else if tab === 'Style'}
       <details class="context" open={!!(condition || pseudo)}><summary>Editing · {styleConditions.find(c => c.id === condition)?.label ?? (condition || 'Base · all sizes')}{pseudo ? ` · ${pseudo}` : ' · normal'}</summary><section><label>Editing condition<select aria-label="Style target" value={condition} onchange={e => condition = e.currentTarget.value}><option value="">Base · all sizes</option>{#each styleConditions as c}<option value={c.id}>{c.label}</option>{/each}</select></label>
         <label>Element state<select aria-label="Pseudo state" value={pseudo ?? ''} onchange={e => pseudo = (e.currentTarget.value || undefined) as UiPseudoState | undefined}><option value="">Normal</option>{#each ['hover', 'focus', 'active', 'disabled'] as p}<option value={p}>{p}</option>{/each}</select></label>
@@ -205,6 +308,52 @@
           <p>Connecting replaces the existing click interaction. {shared ? 'Behavior edits change shared source.' : ''}</p>
         {:else}<p>Click actions are available on elements. Select an inner button or link.</p>{/if}
       </section>
+      {#if componentNode && componentDescriptor && (componentDescriptor.outputs?.length ?? 0) > 0}
+        <section><h3>Component outputs</h3>
+          <p class="muted">Declared outputs of {componentDescriptor.id}. A binding writes the emitted payload into matching state or runs a declared action; clearing is transactional and undoable.</p>
+          {#each componentDescriptor.outputs as output (output.name)}
+            {@const binding = outputBindingRaw(output.name)}
+            <div class="output-row">
+              <strong>{output.name}</strong>
+              <span class="prop-type">({output.payload})</span>
+              {#if output.description}<p class="muted">{output.description}</p>{/if}
+              {#if binding && 'setState' in binding}
+                <p>Set state <code>{binding.setState.key}</code>
+                  {#if binding.setState.value && binding.setState.value.type === 'ref' && binding.setState.value.path === '$output'} from the emitted payload{/if}</p>
+                <button type="button" onclick={() => clearBinding(output.name)}>Remove connection</button>
+              {:else if binding && 'invokeAction' in binding}
+                <p>Run action <code>{binding.invokeAction.actionId}</code></p>
+                <button type="button" onclick={() => clearBinding(output.name)}>Remove connection</button>
+              {:else}
+                <label>Set state
+                  <select
+                    aria-label={`${output.name} state target`}
+                    value=""
+                    onchange={(e) => { applySetStateBinding(output.name, e.currentTarget.value); }}
+                  >
+                    <option value="">Choose a state key…</option>
+                    {#each stateKeysTyped.filter((entry) => entry.type === output.payload) as entry (entry.key)}
+                      <option value={entry.key}>{entry.key} ({entry.type})</option>
+                    {/each}
+                  </select>
+                </label>
+                <label>Run action
+                  <select
+                    aria-label={`${output.name} action`}
+                    value=""
+                    onchange={(e) => { applyActionBinding(output.name, e.currentTarget.value); }}
+                  >
+                    <option value="">Choose an action…</option>
+                    {#each knownActionIds as id (id)}<option value={id}>{labels.actions?.[id] ?? id}</option>{/each}
+                  </select>
+                </label>
+              {/if}
+            </div>
+          {/each}
+        </section>
+      {:else if componentNode && componentDescriptor}
+        <section><h3>Component outputs</h3><p class="muted">{componentDescriptor.id} declares no outputs.</p></section>
+      {/if}
     {/if}
     <details class="advanced"><summary>Advanced · source & declarations</summary><section>
       <dl><dt>Source node</dt><dd>{node.id}</dd><dt>Component path</dt><dd>{report?.instancePath.map(p => `${p.sourceNodeId}@${p.definitionId}`).join(' / ') || 'None'}</dd><dt>Repeat record keys</dt><dd>{report?.repeatKeys.join(' / ') || 'None'}</dd><dt>Portal ownership</dt><dd>{JSON.stringify(report?.portalPath)}</dd></dl>
@@ -246,5 +395,8 @@
   pre { overflow: auto; max-height: 240px; font-size: 10px; background: var(--ui-editor-input, #fff); padding: 8px; }
   :focus-visible { outline: 2px solid var(--ui-editor-accent, #355cc9); outline-offset: 2px; }
   :disabled { opacity: .5; cursor: default; }
+  .muted { color: var(--ui-editor-muted, #667085); font-size: 11px; }
+  .prop-type { color: var(--ui-editor-muted, #667085); font-size: 10px; }
+  .output-row { border: 1px solid var(--ui-editor-line, #d7dce5); border-radius: 5px; padding: 6px 8px; margin: 6px 0; background: var(--ui-editor-input, #fff); }
   .issues { background: #fff0ef; }
 </style>

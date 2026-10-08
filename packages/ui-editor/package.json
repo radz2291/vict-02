@@ -5,15 +5,16 @@
   "description": "UI editor session core + canvas/layers/inspector/history modules (Svelte at the boundary) for the Vict UI foundation. (private: not on the frozen release set; publication is out of U-track scope)",
   "exports": {
     ".": {
-      "types": "./src/index.ts",
+      "types": "./dist/index.d.ts",
       "svelte": "./src/index.ts",
       "default": "./src/index.ts"
     }
   },
   "main": "./src/index.ts",
-  "types": "./src/index.ts",
+  "types": "./dist/index.d.ts",
   "files": [
-    "src"
+    "src",
+    "dist"
   ],
   "scripts": {
     "build": "tsc -p tsconfig.json"
