@@ -72,3 +72,6 @@ export { RendererDiagnostic } from '@victframework/application/renderer';
 export * from './document/logic.js';
 
 export type { UiComponentPresentation, UiComponentTargetAttributes, UiActionStateConnection, UiComponentActionStatus } from './document/extensions.js';
+
+export { b2CatalogDescriptors } from './catalog/components/b2-descriptors.js';
+export { b2CatalogImplementations } from './catalog/components/b2-implementations.js';

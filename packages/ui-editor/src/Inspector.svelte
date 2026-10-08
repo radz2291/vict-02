@@ -9,6 +9,7 @@
   import ExpressionEditor from './ExpressionEditor.svelte';
   import InspectorControl from './InspectorControl.svelte';
   import InspectorSpacing from './InspectorSpacing.svelte';
+  import ComponentComposition from './ComponentComposition.svelte';
   interface Props {
     document: UiDocument; selectedOccurrence?: string; onApply: (draft: TransactionDraft) => void;
     lastIssues?: readonly { code: string; message: string }[];
@@ -266,6 +267,9 @@
             {/key}
           {/each}
         </section>
+      {/if}
+      {#if componentNode && componentDescriptor}
+        <ComponentComposition {document} node={componentNode} descriptor={componentDescriptor} {onApply} />
       {/if}
     {:else if tab === 'Style'}
       {#if componentDescriptor}

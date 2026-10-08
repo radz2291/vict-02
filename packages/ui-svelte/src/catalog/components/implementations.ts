@@ -40,7 +40,7 @@ export const b1CatalogImplementations: readonly UiSvelteComponentImplementation[
     rendererImplementationId: 'vict.svelte.catalog',
     abi: 'vict.ui-component-abi@1',
     styleTargets: ['root', 'content'],
-    slots: [],
+    slots: ['items'],
     component: Select,
   },
   {

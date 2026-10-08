@@ -23,6 +23,7 @@
 <label {...presentation?.target('root')} class={['vict-control-row', presentation?.target('root').class ?? ''].join(' ')} data-testid="catalog-checkbox">
   <Checkbox.Root
     {checked}
+    indeterminate={props.indeterminate === true}
     {disabled}
     onCheckedChange={(next) => io?.emit('checkedChange', next === true)}
   />

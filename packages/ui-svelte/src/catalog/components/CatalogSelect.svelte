@@ -57,6 +57,7 @@
         {#snippet child({ props: attributes, wrapperProps })}
           <div {...wrapperProps}>
             <CatalogPart as="div" {attributes} bind:ref={contentRef}>
+              {@render io?.slots?.items?.()}
               {#each options as option (option.value)}
                 <CatalogSelectOption {...option} />
               {/each}

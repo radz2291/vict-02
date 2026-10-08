@@ -40,6 +40,7 @@ export const catalogCheckboxDescriptor: UiExtensionDescriptor = {
     { name: 'disabled', type: 'boolean', default: false },
     { name: 'label', type: 'string', default: '' },
     { name: 'checked', type: 'boolean', default: false },
+    { name: 'indeterminate', type: 'boolean', default: false },
   ],
   outputs: [
     {
@@ -71,6 +72,7 @@ export const catalogSelectDescriptor: UiExtensionDescriptor = {
     },
   ],
   rendererImplementationId: 'vict.svelte.catalog',
+  slots: ['items'],
   styleTargets: ['root', 'content'],
 };
 

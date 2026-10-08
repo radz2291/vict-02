@@ -1,0 +1,17 @@
+import type { UiExtensionDescriptor } from '@victframework/ui';
+function descriptor(name: string, props: UiExtensionDescriptor['props'], outputs: UiExtensionDescriptor['outputs'], slots: string[], styleTargets = ['root']): UiExtensionDescriptor {
+  return { id: `vict.catalog.${name}`, revision: '1', abi: 'vict.ui-component-abi@1', events: ['vict.ui-component-abi@1'], rendererImplementationId: 'vict.svelte.catalog', props, outputs, slots, styleTargets };
+}
+export const b2CatalogDescriptors: readonly UiExtensionDescriptor[] = [
+  descriptor('select-multiple', [{ name: 'values', type: 'stringList' }, { name: 'label', type: 'string', default: '' }, { name: 'disabled', type: 'boolean', default: false }, { name: 'options', type: 'array' }], [{ name: 'valuesChange', payload: 'stringList' }], ['items'], ['root', 'content']),
+  descriptor('select-item', [{ name: 'value', type: 'string', default: '' }, { name: 'label', type: 'string', default: '' }, { name: 'disabled', type: 'boolean', default: false }], [], ['content']),
+  descriptor('combobox', [{ name: 'value', type: 'string', default: '' }, { name: 'label', type: 'string', default: '' }, { name: 'disabled', type: 'boolean', default: false }, { name: 'options', type: 'array' }], [{ name: 'valueChange', payload: 'string' }], ['items'], ['root', 'content']),
+  descriptor('combobox-multiple', [{ name: 'values', type: 'stringList' }, { name: 'label', type: 'string', default: '' }, { name: 'disabled', type: 'boolean', default: false }, { name: 'options', type: 'array' }], [{ name: 'valuesChange', payload: 'stringList' }], ['items'], ['root', 'content']),
+  descriptor('combobox-item', [{ name: 'value', type: 'string', default: '' }, { name: 'label', type: 'string', default: '' }, { name: 'disabled', type: 'boolean', default: false }], [], ['content']),
+  descriptor('toggle-group', [{ name: 'value', type: 'string', default: '' }, { name: 'label', type: 'string', default: '' }, { name: 'disabled', type: 'boolean', default: false }, { name: 'options', type: 'array' }], [{ name: 'valueChange', payload: 'string' }], ['items'], ['root']),
+  descriptor('toggle-group-multiple', [{ name: 'values', type: 'stringList' }, { name: 'label', type: 'string', default: '' }, { name: 'disabled', type: 'boolean', default: false }, { name: 'options', type: 'array' }], [{ name: 'valuesChange', payload: 'stringList' }], ['items'], ['root']),
+  descriptor('toggle-group-item', [{ name: 'value', type: 'string', default: '' }, { name: 'label', type: 'string', default: '' }, { name: 'disabled', type: 'boolean', default: false }], [], ['content']),
+  descriptor('accordion', [{ name: 'value', type: 'string', default: '' }, { name: 'label', type: 'string', default: '' }, { name: 'disabled', type: 'boolean', default: false }], [{ name: 'valueChange', payload: 'string' }], ['items'], ['root']),
+  descriptor('accordion-multiple', [{ name: 'values', type: 'stringList' }, { name: 'label', type: 'string', default: '' }, { name: 'disabled', type: 'boolean', default: false }], [{ name: 'valuesChange', payload: 'stringList' }], ['items'], ['root']),
+  descriptor('accordion-item', [{ name: 'value', type: 'string', default: '' }, { name: 'label', type: 'string', default: '' }, { name: 'disabled', type: 'boolean', default: false }], [], ['trigger', 'content']),
+];
