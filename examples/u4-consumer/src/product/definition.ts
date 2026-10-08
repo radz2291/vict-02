@@ -7,6 +7,7 @@
  * props bind to `view.*` fields).
  */
 import { copyUiValue, isUiValueOfType, type UiValue, type UiValueType, type UiDocument, type UiFieldTypes } from '@victframework/ui';
+import { inspectionRoutes, type ConsumerRouteId } from './operations.js';
 import { defineContract } from '@victframework/contracts';
 import type { ApplicationDefinitionV3, ResourceDefinition } from '@victframework/sdk';
 
@@ -72,6 +73,10 @@ export const consumerActions: readonly ConsumerAction[] = [
     outputContractId: 'c.unit',
     outputContractRevision: '1',
   },
+  ...([
+    ['operation', 'c.inspectionOperation'], ['configure', 'c.inspectionConfiguration'],
+    ['schedule', 'c.inspectionSchedule'], ['archive', 'c.inspectionArchive'],
+  ] as const).map(([op, contract]) => ({ kind: 'mutation' as const, id: `task.${op}`, revision: '1', resourceId: 'task', resourceRevision: '1', op, inputContractId: contract, inputContractRevision: '1', outputContractId: 'c.unit', outputContractRevision: '1' })),
 ];
 
 /** Executable contracts carry their passive field metadata at the same exact revision. */
@@ -96,6 +101,10 @@ export const consumerContracts = [
   inputContract('c.taskSubmit', { noteId: 'string', ackFindings: 'boolean', ackPricing: 'boolean', region: 'string' }),
   inputContract('c.taskAssign', { noteId: 'string', reviewer: 'string' }),
   inputContract('c.taskRegion', { region: 'string' }),
+  inputContract('c.inspectionOperation', { noteId: 'string', operation: 'string' }),
+  inputContract('c.inspectionConfiguration', { noteId: 'string', owner: 'string', allFindings: 'boolean', teams: 'stringList', reviewers: 'stringList', priority: 'string', evidence: 'stringList' }),
+  inputContract('c.inspectionSchedule', { noteId: 'string', date: 'isoDate', start: 'isoDate', end: 'isoDate', time: 'isoTime', duration: 'numberList', capacity: 'numberList' }),
+  inputContract('c.inspectionArchive', { noteId: 'string' }),
   defineContract<string>({ id: 'c.unit', revision: '1', parse: input => typeof input === 'string'
     ? { ok: true, value: input } : { ok: false, issues: [{ code: 'invalid_type', path: '(root)', message: 'Expected a result message.' }] } }),
 ];
@@ -108,14 +117,11 @@ export const consumerResource: ResourceDefinition = {
 };
 export function consumerApplication(documents: readonly UiDocument[]): ApplicationDefinitionV3 {
   return {
-    schema: 'vict.application@3', id: 'u4.consumer', revision: '1', name: 'Task review',
+    schema: 'vict.application@3', id: 'u4.consumer', revision: '1', name: 'Inspection Operations',
     compatibility: { applicationSchema: 'vict.application@3' },
     composition: { navigation: 'sidebar', responsive: { navigationAt: 'small' } },
-    routes: [
-      { id: 'controls', path: '/', screenId: 'controls', nav: { label: 'Controls' } },
-      { id: 'shell', path: '/shell', screenId: 'shell', nav: { label: 'Shell and dialog' } },
-    ].filter(route => documents.some(document => (document.id === 'consumer.taskShell' ? 'shell' : 'controls') === route.screenId)),
-    screens: documents.map(document => ({ id: document.id === 'consumer.taskShell' ? 'shell' : 'controls', title: 'Task review',
+    routes: inspectionRoutes.filter(route => documents.some(document => document.id === route.documentId)).map(route => ({ id: route.id, path: route.id === 'controls' ? '/' : `/${route.id}`, screenId: route.id, nav: { label: route.label } })),
+    screens: documents.map(document => ({ id: inspectionRoutes.find(route => route.documentId === document.id)?.id ?? document.id, title: 'Inspection Operations',
       uiDocument: { documentId: document.id, revision: document.revision } })),
     actions: consumerActions, resources: [{ resourceId: 'task', revision: '1' }], views: [], forms: [], components: [],
   };
@@ -155,12 +161,16 @@ export const consumerActionState = {
   'task.submit': { pending: 'approving', error: 'submissionError', result: 'submissionResult' },
   'task.approve': { successValues: { assignOpen: true } },
   'task.assign': { successValues: { assignOpen: false } },
+  'task.operation': { pending: 'busy', error: 'lastError', result: 'lastResult' },
+  'task.configure': { pending: 'busy', error: 'lastError', result: 'lastResult' },
+  'task.schedule': { pending: 'busy', error: 'lastError', result: 'lastResult' },
+  'task.archive': { pending: 'busy', error: 'lastError', result: 'lastResult', successValues: { archiveOpen: false } },
 } as const;
 
 /** Browser URL routing is a consumer concern; navigation labels/composition come from the manifest. */
-export function consumerViewFor(documents: readonly UiDocument[], id: 'controls' | 'shell') {
+export function consumerViewFor(documents: readonly UiDocument[], id: ConsumerRouteId) {
   const application = consumerApplication(documents);
-  const href = (routeId: string) => routeId === 'shell' ? '/app.html?doc=shell' : '/app.html';
+  const href = (routeId: string) => `/app.html?doc=${routeId}`;
   return { ...consumerViewData, path: href(id),
     shellNavigation: application.routes.filter(route => route.nav).map(route => ({ label: route.nav?.label, href: href(route.id) })),
     navigationMode: application.composition?.navigation ?? 'sidebar', navigationAt: application.composition?.responsive?.navigationAt ?? 'small' };

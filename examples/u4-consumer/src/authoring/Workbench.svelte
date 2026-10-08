@@ -22,21 +22,22 @@
   import { createConsumerAdapter, createConsumerDispatcher } from '../product/execution.js';
   import {
     consumerCatalogs, consumerActionInputs, documentIssues,
-    b1CatalogDescriptors,
-    b1CatalogImplementations,
+    catalogDescriptors,
+    catalogImplementations,
     compileConsumerDocuments,
   } from '../product/registrations.js';
   import {
     consumerActionIds, consumerActions, consumerActionState, consumerViewFor,
     consumerViewFields,
   } from '../product/definition.js';
-  import { taskControlsDocument, taskShellDocument } from '../product/documents.js';
+  import { inspectionDocuments, inspectionRoutes, type ConsumerRouteId } from '../product/operations.js';
+  import type { UiDocument } from '@victframework/ui';
 
-  type DocId = 'controls' | 'shell';
+  type DocId = ConsumerRouteId;
   interface Blade {
     readonly id: DocId;
     readonly label: string;
-    readonly seed: typeof taskControlsDocument;
+    readonly seed: UiDocument;
     readonly storeKey: string;
     readonly bridge: EditorBridge;
   }
@@ -56,7 +57,7 @@
   }
 
   let loadIssues = $state<string[]>([]);
-  function openBlade(id: DocId, label: string, seed: typeof taskControlsDocument): Blade {
+  function openBlade(id: DocId, label: string, seed: UiDocument): Blade {
     const store = openStore(`u4-consumer.${id}`);
     const stored = store.rawLoad();
     if (stored.status === 'invalid') loadIssues.push(stored.message);
@@ -73,11 +74,9 @@
     };
   }
 
-  const blades: Blade[] = $state([
-    openBlade('controls', 'Task controls', taskControlsDocument),
-    openBlade('shell', 'App shell + dialog', taskShellDocument),
-  ]);
-  let currentId = $state<DocId>('controls');
+  const blades: Blade[] = $state(inspectionRoutes.map(route => openBlade(route.id, route.label,
+    inspectionDocuments.find(document => document.id === route.documentId)!)));
+  let currentId = $state<DocId>('queue');
   let version = $state(0);
   const current = $derived(blades.find((blade) => blade.id === currentId) ?? blades[0]);
   const snapshotState = $derived.by(() => {
@@ -96,7 +95,7 @@
   let selectedOccurrence = $state<string | undefined>(undefined);
   let plan = $state<UiRenderPlan | undefined>(undefined);
   let lastIssues = $state<readonly { code: string; message: string }[]>([]);
-  let stateByDocument = $state<Record<DocId, Record<string, UiValue>>>({ controls: {}, shell: {} });
+  let stateByDocument = $state<Record<DocId, Record<string, UiValue>>>({ controls: {}, shell: {}, queue: {}, detail: {}, schedule: {} });
   const stateValues = $derived(stateByDocument[currentId]);
   let resetSignal = $state(Symbol('preview'));
   let simulation = $state({ denied: false, failNext: false });
@@ -109,7 +108,7 @@
   });
   const productCompilation = $derived.by(() => { void version; return compileConsumerDocuments(blades.map(blade => blade.bridge.document)); });
   const productView = $derived(consumerViewFor(blades.map(blade => blade.bridge.document), currentId));
-  function resetRuntime() { preview = preview.reset(); resetSignal = Symbol('preview-reset'); stateByDocument[currentId] = {}; }
+  function resetRuntime() { adapter.reset(); preview = preview.reset(); resetSignal = Symbol('preview-reset'); stateByDocument[currentId] = {}; }
   $effect(() => { void currentId; untrack(resetRuntime); });
   let activity = $state<string[]>([]);
   function log(text: string): void {
@@ -174,7 +173,7 @@
     return result;
   }
   function navigate(routeId: string): void {
-    if (routeId === 'controls' || routeId === 'shell') { currentId = routeId; selectedOccurrence = undefined; }
+    if (inspectionRoutes.some(route => route.id === routeId)) { currentId = routeId as DocId; selectedOccurrence = undefined; }
   }
   function readEffective(occurrence: string, property: string): string | undefined {
     const targets = Array.from(globalThis.document.querySelectorAll<HTMLElement>('[data-ui-occ]')).filter(element => element.dataset.uiOcc === occurrence);
@@ -203,7 +202,7 @@
     <button type="button" onclick={resetSeed}>Reset to seed</button>
     <span class="rail-heading">Status</span>
     <span class="status">{snapshotState?.dirty ? 'Unsaved changes' : 'Saved'} · rev {snapshotState?.storedRevision}</span>
-    <a class="app-link" href="/app.html" target="_blank" rel="noreferrer">Open finished app ↗</a>
+    <a class="app-link" href={`/app.html?doc=${currentId}`} target="_blank" rel="noreferrer">Open finished app ↗</a>
   </nav>
 
   <div class="main">
@@ -218,8 +217,8 @@
         document={workingDocument}
         view={productView}
         {catalogs}
-        extensions={b1CatalogDescriptors}
-        extensionImplementations={b1CatalogImplementations}
+        extensions={catalogDescriptors}
+        extensionImplementations={catalogImplementations}
         {stateValues}
         {resetSignal}
         actionState={consumerActionState}
@@ -252,10 +251,11 @@
       onApply={applyDraft}
       lastIssues={[...lastIssues, ...(plan?.diagnostics ?? [])]}
       knownActionIds={consumerActionIds}
+      knownRouteIds={inspectionRoutes.map(route => route.id)}
       actionInputs={consumerActionInputs}
       {readEffective}
       knownViewFields={consumerViewFields}
-      componentDescriptors={b1CatalogDescriptors}
+      componentDescriptors={catalogDescriptors}
     />
     {#if plan !== undefined}
       <Layers

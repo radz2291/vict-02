@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" aria-labelledby="title desc">
+<title id="title">Riverside Plant — north loading bay</title><desc id="desc">Inspection diagram highlighting the handrail fixing for finding F-01.</desc>
+<rect width="960" height="540" fill="#eaf0f2"/><path d="M0 410H960V540H0Z" fill="#c4d2d8"/>
+<path d="M80 120H760V410H80Z" fill="#d4e0e5" stroke="#72868e" stroke-width="4"/>
+<path d="M120 165H450V410H120Z" fill="#5f7680"/><path d="M138 182H432V410H138Z" fill="#385762"/>
+<path d="M520 260H900V410H520Z" fill="#aabdc6" stroke="#72868e" stroke-width="4"/>
+<path d="M540 300H840M540 340H840M540 220V410M640 220V410M740 220V410M840 220V410M540 225H840" fill="none" stroke="#3c626f" stroke-width="10"/>
+<circle cx="740" cy="340" r="38" fill="none" stroke="#b54133" stroke-width="7"/><path d="M770 316L844 144" stroke="#b54133" stroke-width="3"/>
+<rect x="735" y="96" width="175" height="56" rx="8" fill="#fff"/><text x="750" y="132" font-family="system-ui,sans-serif" font-size="24" fill="#8c3228">F-01 fixing</text>
+<rect x="24" y="24" width="450" height="52" rx="8" fill="#fff"/><text x="42" y="58" font-family="system-ui,sans-serif" font-size="24" fill="#223e4b">INSP-1042 · North loading bay</text>
+<text x="42" y="496" font-family="system-ui,sans-serif" font-size="20" fill="#223e4b">Inspection diagram · site evidence summary</text>
+</svg>
