@@ -78,3 +78,6 @@ export { b2CatalogImplementations } from './catalog/components/b2-implementation
 
 export { b3CatalogDescriptors } from './catalog/components/b3-descriptors.js';
 export { b3CatalogImplementations } from './catalog/components/b3-implementations.js';
+
+export { b4CatalogDescriptors } from './catalog/components/b4-descriptors.js';
+export { b4CatalogImplementations } from './catalog/components/b4-implementations.js';
