@@ -10,7 +10,6 @@
    */
   import { Dialog } from 'bits-ui';
   import CatalogPortal from './CatalogPortal.svelte';
-  import CatalogPart from './CatalogPart.svelte';
   import type { UiSvelteComponentIO, UiComponentPresentation } from '../../document/extensions.js';
 
   interface Props {
@@ -22,8 +21,15 @@
   const title = $derived(typeof props.title === 'string' ? props.title : '');
   let open = $derived(props.open === true);
   let triggerRef = $state<HTMLButtonElement | null>(null);
-  let contentRef = $state<HTMLDivElement | null>(null);
-  let overlayRef = $state<HTMLDivElement | null>(null);
+  function restoreTrigger(event: Event): void {
+    // Bits invokes this at focus-scope teardown. State-driven opens may not
+    // have a pre-focused trigger for the library to remember. Use only this
+    // occurrence's live public ref, never a document-wide selector.
+    event.preventDefault();
+    if (triggerRef?.isConnected && !triggerRef.disabled && !triggerRef.closest('[inert]')) {
+      triggerRef.focus({ preventScroll: true });
+    }
+  }
 </script>
 
 <span data-testid="catalog-dialog" style="display: contents">
@@ -31,27 +37,21 @@
     bind:open
     onOpenChange={(next) => io?.emit('openChange', next === true)}
   >
+    <!-- Use the library's native DOM path: its attachment alone owns the
+         ref consumed by PresenceManager and FocusScope. No second bind:this
+         writer in a delegated child can clear or pre-empt that ref. -->
     <Dialog.Trigger {...presentation?.target('trigger')} bind:ref={triggerRef} data-testid="dialog-trigger">
-      {#snippet child({ props: attributes })}
-        <CatalogPart as="button" {attributes} bind:ref={triggerRef}>Open {title}</CatalogPart>
-      {/snippet}
+      Open {title}
     </Dialog.Trigger>
     <CatalogPortal {open} {presentation}>
-      <Dialog.Overlay bind:ref={overlayRef} data-testid="dialog-overlay">
-        {#snippet child({ props: attributes })}
-          <CatalogPart as="div" {attributes} bind:ref={overlayRef} />
-        {/snippet}
-      </Dialog.Overlay>
-      <Dialog.Content {...presentation?.target('root')} bind:ref={contentRef} data-testid="dialog-panel">
-        {#snippet child({ props: attributes })}
-          <CatalogPart as="div" {attributes} bind:ref={contentRef}>
-            <Dialog.Title>{title || 'Dialog'}</Dialog.Title>
-            <Dialog.Close aria-label="Close" data-testid="dialog-close">✕</Dialog.Close>
-            <div class="vict-overlay-body">
-              {@render io?.slots?.body?.()}
-            </div>
-          </CatalogPart>
-        {/snippet}
+      <Dialog.Overlay data-testid="dialog-overlay" />
+      <Dialog.Content {...presentation?.target('root')} data-testid="dialog-panel"
+        onCloseAutoFocus={restoreTrigger}>
+        <Dialog.Title>{title || 'Dialog'}</Dialog.Title>
+        <Dialog.Close aria-label="Close" data-testid="dialog-close">✕</Dialog.Close>
+        <div class="vict-overlay-body">
+          {@render io?.slots?.body?.()}
+        </div>
       </Dialog.Content>
     </CatalogPortal>
   </Dialog.Root>
