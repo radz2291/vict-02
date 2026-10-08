@@ -404,7 +404,7 @@ export type {
   UiValueType,
   UiVariantConditionRef,
 } from './document.js';
-export { isUiValueOfType, isUiValueType, uiValueEmptyFor } from './values.js';
+export { copyUiValue, isUiValueOfType, isUiValueType, uiValueEmptyFor } from './values.js';
 export type { UiValue } from './values.js';
 export { CanonicalUiError } from './canonical-error.js';
 export {
@@ -459,3 +459,8 @@ export type {
   SeedSpec,
   UiScenario,
 } from './scenario.js';
+
+export * from './storage.js';
+export * from './local-storage-store.js';
+
+export { repeatExpressionFields } from './expressions.js';

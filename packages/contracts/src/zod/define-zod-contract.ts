@@ -1,11 +1,12 @@
 import type { ZodType } from 'zod';
 import { brandOfficialContract, validateContractIdentity } from '../define-contract.js';
 import { toSafeIssue } from '../issue-mapping.js';
-import type { Contract, ContractResult } from '../types.js';
+import type { Contract, ContractResult, ContractPresentationValueType } from '../types.js';
 
 export interface DefineZodContractOptions {
   /** Overrides the human-readable shape description (falls back to the schema's `.describe()` text, then the id). */
   readonly description?: string;
+  readonly presentationFields?: Readonly<Record<string, ContractPresentationValueType>>;
   /**
    * When true, the schema library's own message is preserved in
    * `issue.safeMessage`. Schema messages are author-controlled content and
@@ -39,6 +40,7 @@ export function defineZodContract<T>(
     id,
     revision,
     expected,
+    ...(options.presentationFields !== undefined ? { presentationFields: Object.freeze({ ...options.presentationFields }) } : {}),
     parse(input: unknown): ContractResult<T> {
       const result = schema.safeParse(input);
       if (result.success) {

@@ -31,6 +31,9 @@ export type ContractResult<T> =
   | { readonly ok: true; readonly value: T }
   | { readonly ok: false; readonly issues: readonly ContractIssue[] };
 
+/** Passive field vocabulary for typed presentation; parse remains execution authority. */
+export type ContractPresentationValueType = 'string' | 'number' | 'boolean' | 'stringList' | 'numberList' | 'isoDate' | 'isoTime';
+
 export interface Contract<T = unknown> {
   /** Stable identifier, unique within a runtime. */
   readonly id: string;
@@ -48,6 +51,8 @@ export interface Contract<T = unknown> {
    * (invalid presentation data fails closed at capture).
    */
   readonly descriptiveJsonSchema?: unknown;
+  /** Optional declared top-level input field types, attached to this exact contract revision. */
+  readonly presentationFields?: Readonly<Record<string, ContractPresentationValueType>>;
   /** Validate an untrusted value. Never throws for invalid input; returns issues instead. */
   parse(input: unknown): ContractResult<T>;
 }
@@ -72,6 +77,8 @@ export interface ContractDefinition<T = unknown> {
    * in inert-data form (no author code executes at capture time).
    */
   readonly descriptiveJsonSchema?: unknown;
+  /** Optional declared top-level input field types, attached to this exact contract revision. */
+  readonly presentationFields?: Readonly<Record<string, ContractPresentationValueType>>;
   parse(input: unknown): ContractResult<T>;
 }
 

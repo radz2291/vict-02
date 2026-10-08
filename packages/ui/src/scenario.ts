@@ -4,7 +4,8 @@
  * neutral protocol shapes every participant speaks.
  */
 
-import type { UiPrimitiveType } from './document.js';
+import type { UiValueType } from './document.js';
+import type { UiValue } from './values.js';
 
 export type ScenarioImplementation = 'simulated' | 'local' | 'external' | 'unavailable';
 
@@ -69,8 +70,8 @@ export interface UiScenario {
 /** Typed actor-facing state declaration helper (scenario local state). */
 export interface ScenarioStateDecl {
   readonly key: string;
-  readonly type: UiPrimitiveType;
-  readonly initial: string | number | boolean;
+  readonly type: UiValueType;
+  readonly initial: UiValue;
 }
 
 /** Guard: the minimal structural shape a scenario must satisfy. */

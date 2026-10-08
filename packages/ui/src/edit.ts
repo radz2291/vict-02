@@ -24,6 +24,7 @@ import type {
 } from './document.js';
 import { UI_DOCUMENT_SCHEMA } from './document.js';
 import { uiDiagnostic, type UiDiagnostic } from './diagnostics.js';
+import { compileUiDocument } from './compile.js';
 import { validateUiDocument } from './validate.js';
 import type { UiCatalogs } from './document.js';
 
@@ -639,6 +640,10 @@ export function applyUiEdit(
         }),
       ],
     };
+  }
+  if (catalogs?.extensions !== undefined) {
+    const compiled = compileUiDocument(working, catalogs.elements, catalogs.extensions, catalogs);
+    if (!compiled.ok) return { ok: false, issues: compiled.issues };
   }
   return {
     ok: true,

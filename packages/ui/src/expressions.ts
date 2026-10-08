@@ -16,6 +16,7 @@ import type {
   UiPrimitiveType,
   UiValueType,
 } from './document.js';
+import { isUiValueOfType } from './values.js';
 import { uiDiagnostic, type UiDiagnostic } from './diagnostics.js';
 
 /** The lexical scopes visible at one position in a document. */
@@ -24,6 +25,7 @@ export interface UiScopeInfo {
   readonly repeatItems: Readonly<Record<string, UiFieldTypes>>;
   /** True inside a definition registry (prop-only scope). */
   readonly inDefinition: boolean;
+  readonly propTypes?: Readonly<Record<string, UiValueType | 'array'>>;
   /**
    * Declared type of `$output` in this scope (amendment §3.5), or undefined
    * when `$output` is not visible. Present ONLY inside output-binding
@@ -35,7 +37,7 @@ export interface UiScopeInfo {
 
 export interface ResolvedRefType {
   readonly namespace: 'view' | 'record' | 'repeat' | 'prop' | 'state' | 'token';
-  readonly type: UiPrimitiveType | 'unknown' | 'array' | 'any';
+  readonly type: UiValueType | 'unknown' | 'array' | 'any';
 }
 
 const PRIMITIVES: ReadonlySet<string> = new Set(['string', 'number', 'boolean']);
@@ -49,7 +51,7 @@ function typesCompatible(expected: string, actual: string): boolean {
   if (expected === actual) return true;
   if (expected === 'any' || actual === 'any' || actual === 'unknown') return true;
   if (actual === 'null') return true;
-  if (expected === 'array') return actual === 'array';
+  if (expected === 'array') return actual === 'array' || actual === 'stringList' || actual === 'numberList';
   return PRIMITIVES.has(expected) && PRIMITIVES.has(actual) && expected === actual;
 }
 
@@ -70,7 +72,7 @@ export function checkExpression(
   const walk = (
     expr: UiExpression,
     localScope: UiScopeInfo,
-  ): UiPrimitiveType | 'unknown' | 'array' | 'null' | 'any' => {
+  ): UiValueType | 'unknown' | 'array' | 'null' | 'any' => {
     switch (expr.type) {
       case 'literal':
         return literalType(expr.value);
@@ -218,7 +220,8 @@ function checkRef(
       );
       return 'unknown';
     }
-    return 'any'; // prop types are checked against the definition's prop schema at expansion
+    if (parts.length !== 2) return unknown();
+    return scope.propTypes === undefined ? 'any' : scope.propTypes[parts[1] as string] ?? unknown();
   }
   if (head === 'state') {
     if (scope.inDefinition) {
@@ -231,7 +234,8 @@ function checkRef(
       );
       return 'unknown';
     }
-    return 'any'; // state type known at validation via document.localState (checked by the caller's scope build)
+    if (parts.length !== 2) return unknown();
+    return catalogs.stateTypes === undefined ? 'any' : catalogs.stateTypes[parts[1] as string] ?? unknown();
   }
   if (head === 'token') {
     if (scope.inDefinition) {
@@ -250,8 +254,7 @@ function checkRef(
     // Amendment §3.5/§5.1: `$output` resolves ONLY inside output-binding
     // value/input templates (scope.output present). Elsewhere it is a
     // payload-scope violation with a path-annotated diagnostic. The
-    // payload type maps onto the expression-side vocabulary (lists are
-    // arrays; ISO date/time markers carry strings).
+    // Payload identity stays distinct for lists and ISO presentation values.
     if (scope.output === undefined) {
       issues.push(
         uiDiagnostic(
@@ -262,9 +265,11 @@ function checkRef(
       );
       return 'unknown';
     }
-    if (scope.output === 'void' || scope.output === 'unknown') return 'unknown';
-    if (scope.output === 'stringList' || scope.output === 'numberList') return 'array';
-    if (scope.output === 'isoDate' || scope.output === 'isoTime') return 'string';
+    if (scope.output === 'void' || parts.length !== 1) {
+      issues.push(uiDiagnostic('UI_COMPONENT_OUTPUT_PAYLOAD_INVALID', 'This output has no addressable payload.', { documentId, nodeId, path }));
+      return 'unknown';
+    }
+    if (scope.output === 'unknown') return 'unknown';
     return scope.output;
   }
   return unknown();
@@ -279,6 +284,7 @@ export interface UiScopeValues {
     readonly name: string;
     readonly value: Readonly<Record<string, unknown>>;
   };
+  readonly repeatItems?: Readonly<Record<string, Readonly<Record<string, unknown>>>>;
   readonly props?: Readonly<Record<string, unknown>>;
   readonly state?: Readonly<Record<string, unknown>>;
   readonly tokens?: Readonly<Record<string, string>>;
@@ -309,7 +315,7 @@ export function evaluateExpression(
         if (values.repeatItem !== undefined && values.repeatItem.name === parts[1]) {
           return values.repeatItem.value[parts[2] as string];
         }
-        return undefined;
+        return values.repeatItems?.[parts[1] as string]?.[parts[2] as string];
       }
       if (head === 'prop' && parts.length === 2) return values.props?.[parts[1] as string];
       if (head === 'state' && parts.length === 2) return values.state?.[parts[1] as string];
@@ -354,4 +360,46 @@ export function evaluateExpression(
       return op(expression.args.map((arg) => evaluateExpression(arg, values, ops)));
     }
   }
+}
+
+/** Check a typed value target without erasing list/date identity or skipping conditional arms. */
+export function checkExpressionTarget(
+  expression: UiExpression, expected: UiValueType | 'array', catalogs: UiCatalogs,
+  scope: UiScopeInfo, documentId: string, nodeId: string,
+  code: 'UI_EXPR_TYPE_MISMATCH' | 'UI_COMPONENT_BINDING_INCOMPATIBLE' = 'UI_EXPR_TYPE_MISMATCH',
+): UiDiagnostic[] {
+  const issues = checkExpression(expression, catalogs, scope, documentId, nodeId);
+  if (expected === 'array' && expression.type !== 'ref') {
+    issues.push(uiDiagnostic('UI_COMPONENT_BINDING_INCOMPATIBLE', 'Structured array props require a reference to declared array data.', { documentId, nodeId }));
+    return issues;
+  }
+  const reject = (actual: string) => issues.push(uiDiagnostic(code,
+    `Expression expects ${expected}; received ${actual}.`, { documentId, nodeId, expected, actual }));
+  const inspect = (expr: UiExpression): void => {
+    if (expr.type === 'conditionalValue') { inspect(expr.then); inspect(expr.otherwise); return; }
+    if (expr.type === 'literal') {
+      if ((expected === 'isoDate' || expected === 'isoTime') && typeof expr.value === 'string' && !isUiValueOfType(expr.value, expected)) {
+        issues.push(uiDiagnostic('UI_DOC_INVALID_LITERAL', `Literal is not a valid ${expected}.`, { documentId, nodeId, expected }));
+        return;
+      }
+      if (expected === 'array' || !isUiValueOfType(expr.value, expected)) reject(expr.value === null ? 'null' : typeof expr.value);
+      return;
+    }
+    if (expected === 'array' && expr.type !== 'ref') { reject(expr.type); return; }
+    let actual: string = 'unknown';
+    if (expr.type === 'ref') actual = checkRef(expr.path, catalogs, scope, documentId, nodeId, []);
+    if (expr.type === 'boolean' || expr.type === 'compare') actual = 'boolean';
+    if (actual !== 'unknown' && actual !== 'any' && !typesCompatible(expected, actual)) reject(actual);
+  };
+  inspect(expression);
+  return issues;
+}
+
+/** Declared repeat item fields use the existing collection.field catalog convention. */
+export function repeatExpressionFields(collection: UiExpression, fields: UiFieldTypes = {}): UiFieldTypes {
+  if (collection.type !== 'ref') return {};
+  const [namespace, name, extra] = collection.path.split('.');
+  if ((namespace !== 'view' && namespace !== 'record') || !name || extra !== undefined) return {};
+  const prefix = `${name}.`;
+  return Object.fromEntries(Object.entries(fields).filter(([field]) => field.startsWith(prefix)).map(([field, type]) => [field.slice(prefix.length), type]));
 }

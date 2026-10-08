@@ -25,8 +25,8 @@ export type AssetId = string;
 
 /** Primitive expression/value types shared by props, state and fields. */
 export type UiPrimitiveType = 'string' | 'number' | 'boolean';
-/** Catalog field types: primitives plus array-valued fields (repeat collections). */
-export type UiFieldType = UiPrimitiveType | 'array';
+/** Declared presentation fields plus structured array-valued view data. */
+export type UiFieldType = UiValueType | 'array';
 
 /**
  * Widened value vocabulary (amendment §10.1, frozen payload `4cfe5b37…`):
@@ -158,8 +158,8 @@ export type UiAssetRef =
 /** Typed component prop declaration. */
 export interface UiPropDecl {
   readonly name: string;
-  /** Primitives plus `'array'` (reference-only binding, amendment §3.2). */
-  readonly type: UiPrimitiveType | 'array';
+  /** Presentation value types plus reference-only structured `'array'` data. */
+  readonly type: UiValueType | 'array';
   /** Widened carrier (§10.1a boundary 3); array literals never appear in documents. */
   readonly default?: UiValue;
 }
@@ -347,4 +347,9 @@ export interface UiCatalogs {
   readonly viewFields?: UiFieldTypes;
   /** Registered pure operations usable by `{type:'op'}` expressions. */
   readonly opNames?: readonly string[];
+  /** Optional descriptor authority for atomic component edits. */
+  readonly extensions?: readonly import('./compile.js').UiExtensionDescriptor[];
+  /** Declared presentation input types; runtime contracts remain authoritative. */
+  readonly actionInputs?: Readonly<Record<string, Readonly<Record<string, UiValueType>>>>;
+  readonly stateTypes?: Readonly<Record<string, UiValueType>>;
 }

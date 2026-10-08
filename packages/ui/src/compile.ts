@@ -21,7 +21,6 @@ import type {
   UiOutputBinding,
   UiOutputDecl,
   UiPseudoState,
-  UiPrimitiveType,
   UiPropDecl,
   UiStyleSource,
   UiStyleValue,
@@ -30,8 +29,9 @@ import type {
 import { UI_RENDER_PLAN_SCHEMA } from './document.js';
 import { canonicalUiDocument } from './canonical.js';
 import { hasErrors, uiDiagnostic, type UiDiagnostic } from './diagnostics.js';
-import { checkExpression } from './expressions.js';
+import { checkExpression, checkExpressionTarget, repeatExpressionFields, type UiScopeInfo } from './expressions.js';
 import { sha256 } from './sha256.js';
+import { isUiValueOfType } from './values.js';
 import { validateUiDocument } from './validate.js';
 
 /** The component-ABI marker (amendment §3.2): declared as an events capability. */
@@ -135,6 +135,9 @@ export type UiRenderInstruction =
        * component-ABI descriptors — `[]` when the author wired no outputs.
        * Its absence on an abi@1 instruction marks a pre-amendment artifact.
        */
+      readonly classes?: readonly string[];
+      readonly styleRuleIds?: readonly string[];
+      readonly styleTargets?: readonly string[];
       readonly outputDecls?: readonly UiOutputDecl[];
       /** Authored connections, compile-checked. */
       readonly outputBindings?: Readonly<Record<string, UiOutputBinding>>;
@@ -218,13 +221,14 @@ export function compileUiDocument(
     readonly routeIds?: readonly string[];
     readonly viewFields?: UiCatalogs['viewFields'];
     readonly opNames?: readonly string[];
+    readonly stateTypes?: UiCatalogs['stateTypes'];
     /**
      * Derived action-input catalog (amendment §3.5):
      * `actionId → { inputName → primitive type }`, derived by
      * `@victframework/application` from the action registry's input
      * contracts and passed through at the application compile call site.
      */
-    readonly actionInputs?: Readonly<Record<string, Readonly<Record<string, UiPrimitiveType>>>>;
+    readonly actionInputs?: Readonly<Record<string, Readonly<Record<string, UiValueType>>>>;
   } = {},
 ): UiCompileResult {
   const validation = validateUiDocument(document, {
@@ -233,6 +237,7 @@ export function compileUiDocument(
     ...(catalogs.routeIds !== undefined ? { routeIds: catalogs.routeIds } : { routeIds: [] }),
     ...(catalogs.viewFields !== undefined ? { viewFields: catalogs.viewFields } : {}),
     ...(catalogs.opNames !== undefined ? { opNames: catalogs.opNames } : {}),
+    stateTypes: catalogs.stateTypes,
   });
   // Document-level validation cannot resolve product references (no
   // application inputs here); those UI_DOC_UNKNOWN_COMPONENT /
@@ -251,7 +256,7 @@ export function compileUiDocument(
   const structural = validation.filter(
     (issue) =>
       issue.code !== 'UI_DOC_UNKNOWN_COMPONENT' &&
-      issue.code !== 'UI_DOC_UNKNOWN_PRODUCT_REFERENCE' &&
+      !(issue.code === 'UI_DOC_UNKNOWN_PRODUCT_REFERENCE' && (issue.kind === 'action' ? catalogs.actionIds === undefined : issue.kind === 'route' ? catalogs.routeIds === undefined : true)) &&
       issue.code !== 'UI_DOC_UNSUPPORTED_FEATURE' &&
       !isDeferredProductRef(issue),
   );
@@ -259,6 +264,7 @@ export function compileUiDocument(
   if (hasErrors(structural)) {
     return { ok: false, issues: structural };
   }
+  catalogs = { ...catalogs, stateTypes: Object.fromEntries(Object.entries(document.localState ?? {}).map(([key, decl]) => [key, decl.type])) };
   const { bytes, contentDigest } = canonicalUiDocument(document);
   void bytes;
   const documentId = String(document.id);
@@ -374,7 +380,7 @@ export function compileUiDocument(
 
   const compileNode = (
     nodeId: string,
-    scope: { inDefinition: boolean; instancePath: readonly string[] },
+    scope: { inDefinition: boolean; instancePath: readonly string[]; repeatItems?: UiScopeInfo['repeatItems']; propTypes?: UiScopeInfo['propTypes'] },
   ): UiRenderInstruction => {
     const node = nodes[nodeId];
     if (node === undefined) {
@@ -473,7 +479,10 @@ export function compileUiDocument(
           // last registration for the id — today's exact semantics).
           const current = extensionById.get(node.definitionId)!;
           const effectiveRevision = node.revision ?? current.revision;
-          const descriptor = withId.find((entry) => entry.revision === effectiveRevision);
+          const matches = withId.filter(entry => entry.revision === effectiveRevision);
+          if (matches.length > 1) issues.push(uiDiagnostic('UI_COMPONENT_REVISION_UNRESOLVED',
+            'Competing descriptors have the same effective identity.', { documentId, nodeId, extensionId: node.definitionId, revision: effectiveRevision }));
+          const descriptor = matches.length === 1 ? matches[0] : undefined;
           if (descriptor === undefined) {
             // Fail closed: a pin matching no registered revision is a
             // compile diagnostic, never a silent fallback to another
@@ -505,11 +514,25 @@ export function compileUiDocument(
             documentId,
             document,
             { ...catalogs, elements: semanticCatalog },
-            (childId) => compileNode(childId, scope),
+            (childId) => compileNode(childId, { ...scope, instancePath: [...scope.instancePath, `${nodeId}@${node.definitionId}`] }),
+            { inDefinition: scope.inDefinition, repeatItems: scope.repeatItems ?? {}, propTypes: scope.propTypes },
           );
           issues.push(...compiledExtension.issues);
           extensionRefs.push({ extensionId: descriptor.id, revision: effectiveRevision });
-          return compiledExtension.instruction;
+          const styleRuleIds: string[] = [];
+          if ((node.localStyle?.length ?? 0) > 0 || (node.styleSources?.length ?? 0) > 0 || (node.classes?.length ?? 0) > 0) {
+            if ((descriptor.styleTargets?.length ?? 0) === 0) issues.push(uiDiagnostic('UI_COMPONENT_BINDING_INCOMPATIBLE',
+              'This component declares no editable style target.', { documentId, nodeId, feature: 'component-style' }));
+          }
+          for (const sourceId of node.styleSources ?? []) {
+            const source = document.styleSources[sourceId];
+            const id = compileStyleDeclarations(source?.declarations, `${classFor(nodeId)}-s${styleRuleIds.length}`,
+              scope.inDefinition ? 'componentBase' : 'source', `.${classFor(nodeId)}`, { conditionId: source?.conditionId, pseudo: source?.pseudo });
+            if (id !== undefined) styleRuleIds.push(id);
+          }
+          const localId = compileStyleDeclarations(node.localStyle, `${classFor(nodeId)}-l`, scope.inDefinition ? 'componentBase' : 'local', `.${classFor(nodeId)}`);
+          if (localId !== undefined) styleRuleIds.push(localId);
+          return { ...compiledExtension.instruction, classes: [...(node.classes ?? []), classFor(nodeId)], styleRuleIds, styleTargets: descriptor.styleTargets ?? [] };
         }
         definitionExpansionGuard += 1;
         if (definitionExpansionGuard > 256) {
@@ -530,6 +553,7 @@ export function compileUiDocument(
         }
         const body = compileNode(definition.root, {
           inDefinition: true,
+          propTypes: Object.fromEntries(definition.props.map(prop => [prop.name, prop.type])),
           instancePath: [...scope.instancePath, `${nodeId}@${node.definitionId}`],
         });
         definitionExpansionGuard -= 1;
@@ -581,7 +605,7 @@ export function compileUiDocument(
           definitionRevision: node.revision ?? definition.revision,
           propDecls: definition.props,
           propValues: (node.props ?? {}) as Record<string, UiExpression>,
-          classes: [classFor(nodeId)],
+          classes: [...(node.classes ?? []), classFor(nodeId)],
           body,
           slots,
           styleRuleIds,
@@ -595,7 +619,7 @@ export function compileUiDocument(
           collection: node.collection,
           key: node.key,
           itemName: node.itemName,
-          template: compileNode(node.templateRoot, scope),
+          template: compileNode(node.templateRoot, { ...scope, repeatItems: { ...scope.repeatItems, [node.itemName]: repeatExpressionFields(node.collection, catalogs.viewFields) } }),
         };
       case 'conditional':
         return {
@@ -661,6 +685,8 @@ export function compileUiDocument(
     } else if (instruction.kind === 'component') {
       collectRepeats(instruction.body);
       Object.values(instruction.slots).forEach((children) => children.forEach(collectRepeats));
+    } else if (instruction.kind === 'extension') {
+      Object.values(instruction.slots ?? {}).forEach(children => children.forEach(collectRepeats));
     } else if (instruction.kind === 'conditional') {
       instruction.branches.forEach((branch) => branch.children.forEach(collectRepeats));
     } else if (instruction.kind === 'slot') {
@@ -670,6 +696,8 @@ export function compileUiDocument(
     }
   };
   structure.forEach(collectRepeats);
+
+  if (hasErrors(issues)) return { ok: false, issues };
 
   const plan: UiRenderPlan = {
     schema: UI_RENDER_PLAN_SCHEMA,
@@ -695,7 +723,8 @@ interface UiCompileCatalogs {
   readonly routeIds?: readonly string[];
   readonly viewFields?: UiCatalogs['viewFields'];
   readonly opNames?: readonly string[];
-  readonly actionInputs?: Readonly<Record<string, Readonly<Record<string, UiPrimitiveType>>>>;
+  readonly stateTypes?: UiCatalogs['stateTypes'];
+  readonly actionInputs?: Readonly<Record<string, Readonly<Record<string, UiValueType>>>>;
 }
 
 interface CompileExtensionOutcome {
@@ -719,6 +748,7 @@ function compileExtensionInstance(
   document: UiDocument,
   catalogs: UiCompileCatalogs,
   compileChild: (childId: string) => UiRenderInstruction,
+  lexicalScope: UiScopeInfo,
 ): CompileExtensionOutcome {
   const issues: UiDiagnostic[] = [];
   const hasOutputs = (descriptor.outputs?.length ?? 0) > 0;
@@ -755,40 +785,11 @@ function compileExtensionInstance(
       );
       continue;
     }
-    if (expression.type === 'literal') {
-      const actual = expression.value === null ? 'null' : typeof expression.value;
-      if (propDecl.type === 'array' || (actual !== 'null' && actual !== propDecl.type)) {
-        // Array-typed props take references only (no array literal exists).
-        issues.push(
-          uiDiagnostic('UI_EXPR_TYPE_MISMATCH', `Prop '${propName}' expects ${propDecl.type}.`, {
-            documentId,
-            nodeId: node.id,
-            expected: propDecl.type,
-            actual: propDecl.type === 'array' ? actual : actual,
-          }),
-        );
-      }
-    } else if (expression.type === 'ref') {
-      const inferred = inferRefTypeForCompile(expression.path, document, catalogs.viewFields);
-      if (propDecl.type === 'array') {
-        if (inferred !== 'array' && inferred !== 'unknown' && inferred !== 'any') {
-          issues.push(
-            uiDiagnostic(
-              'UI_EXPR_TYPE_MISMATCH',
-              `Array prop '${propName}' accepts only array-typed references.`,
-              { documentId, nodeId: node.id, expected: 'array', actual: inferred },
-            ),
-          );
-        }
-      } else if (inferred !== 'unknown' && inferred !== 'any' && inferred !== propDecl.type) {
-        issues.push(
-          uiDiagnostic(
-            'UI_EXPR_TYPE_MISMATCH',
-            `Prop '${propName}' expects ${propDecl.type}; the bound reference resolves to ${inferred}.`,
-            { documentId, nodeId: node.id, expected: propDecl.type, actual: inferred },
-          ),
-        );
-      }
+    issues.push(...checkExpressionTarget(expression, propDecl.type, catalogs, lexicalScope, documentId, node.id));
+  }
+  for (const prop of descriptor.props) {
+    if (prop.default !== undefined && (prop.type === 'array' || !isUiValueOfType(prop.default, prop.type))) {
+      issues.push(uiDiagnostic(prop.type === 'isoDate' || prop.type === 'isoTime' ? 'UI_DOC_INVALID_LITERAL' : 'UI_EXPR_TYPE_MISMATCH', `Invalid default for prop '${prop.name}'.`, { documentId, nodeId: node.id, expected: prop.type, actual: typeof prop.default }));
     }
   }
 
@@ -796,7 +797,10 @@ function compileExtensionInstance(
   const outputDecls = isComponentAbi ? (descriptor.outputs ?? []) : undefined;
   const authoredBindings = node.outputs ?? {};
   for (const [outputName, binding] of Object.entries(authoredBindings)) {
-    if (outputDecls === undefined) break; // non-ABI descriptor: nothing declared to check against
+    if (outputDecls === undefined) {
+      issues.push(uiDiagnostic('UI_COMPONENT_ABI_UNSUPPORTED', 'Output bindings require a component ABI descriptor.', { documentId, nodeId: node.id, extensionId: descriptor.id }));
+      break;
+    } // non-ABI descriptor: nothing declared to check against
     const decl = outputDecls.find((candidate) => candidate.name === outputName);
     if (decl === undefined) {
       issues.push(
@@ -832,11 +836,12 @@ function compileExtensionInstance(
           issues.push(
             ...checkBindingExpression(
               binding.setState.value,
-              uiValueTypeToExpressionType(stateDecl.type),
+              stateDecl.type,
               decl.payload,
               catalogs,
               documentId,
               node.id,
+              lexicalScope,
             ),
           );
         }
@@ -856,6 +861,7 @@ function compileExtensionInstance(
               catalogs,
               documentId,
               node.id,
+              lexicalScope,
             ),
           );
           continue;
@@ -885,6 +891,7 @@ function compileExtensionInstance(
             catalogs,
             documentId,
             node.id,
+            lexicalScope,
           ),
         );
       }
@@ -924,29 +931,6 @@ function compileExtensionInstance(
   return { instruction, issues };
 }
 
-/** Compile-time reference type inference with document-level knowledge. */
-function inferRefTypeForCompile(
-  path: string,
-  document: UiDocument,
-  viewFields: UiCatalogs['viewFields'],
-): 'string' | 'number' | 'boolean' | 'array' | 'unknown' | 'any' {
-  const parts = path.split('.');
-  const head = parts[0];
-  if (head === 'state' && parts.length === 2) {
-    const decl = (document.localState ?? {})[parts[1] as string];
-    if (decl === undefined) return 'unknown';
-    return uiValueTypeToExpressionType(decl.type);
-  }
-  if ((head === 'view' || head === 'record') && parts.length === 2) {
-    const fieldType = (viewFields ?? {})[parts[1] as string];
-    if (fieldType === undefined) return 'unknown';
-    return fieldType === 'array' ? 'array' : fieldType;
-  }
-  if (head === 'token') return 'string';
-  if (head === 'prop') return 'any';
-  return 'unknown';
-}
-
 function resolveAttributeValue(value: UiAttributeValue): UiResolvedValue {
   if (typeof value === 'string') return { type: 'literal', value };
   return { type: 'expression', expression: value };
@@ -978,80 +962,13 @@ function extractInteraction(interaction: UiInteraction): UiNodeExtractedInteract
   };
 }
 
-/**
- * Map a widened `UiValueType` to the expression-side type vocabulary used
- * by compile-time compatibility comparisons (§10.1a boundary 7): list
- * types behave as `array`, ISO date/time markers carry strings. Widened
- * comparisons never coerce — `boolean` never matches `string`, lists
- * never match scalars.
- */
-function uiValueTypeToExpressionType(type: UiValueType): 'string' | 'number' | 'boolean' | 'array' {
-  if (type === 'stringList' || type === 'numberList') return 'array';
-  if (type === 'isoDate' || type === 'isoTime') return 'string';
-  return type;
-}
-
-/**
- * Type-check one output-binding expression: `$output` carries the
- * declared payload type inside the binding scope; when `expected` is
- * given (the state-key type or a declared action-input type), a provable
- * mismatch is `UI_COMPONENT_BINDING_INCOMPATIBLE` (§5.1) — no coercion.
- * `unknown`/`any`/`null` inferred types do not fail (the expression
- * language's declared tolerance; runtime is still guarded).
- */
+/** Binding targets use the same value-aware checker as properties. */
 function checkBindingExpression(
-  expression: UiExpression,
-  expected: 'string' | 'number' | 'boolean' | 'array' | undefined,
-  payloadType: UiValueType | 'void',
-  catalogs: UiCatalogs,
-  documentId: string,
-  nodeId: string,
+  expression: UiExpression, expected: UiValueType | undefined, payloadType: UiValueType | 'void',
+  catalogs: UiCatalogs, documentId: string, nodeId: string, lexicalScope: UiScopeInfo,
 ): UiDiagnostic[] {
-  const issues = checkExpression(
-    expression,
-    catalogs,
-    {
-      repeatItems: {},
-      inDefinition: false,
-      output: payloadType,
-    },
-    documentId,
-    nodeId,
-  );
-  if (expected === undefined) return issues;
-  const inferred = inferBindingExpressionType(expression, payloadType);
-  if (inferred === 'unknown' || inferred === 'any' || inferred === 'null') return issues;
-  if (inferred !== expected) {
-    issues.push(
-      uiDiagnostic(
-        'UI_COMPONENT_BINDING_INCOMPATIBLE',
-        `Binding expression resolves to ${inferred}; the target expects ${expected}.`,
-        { documentId, nodeId, expected, actual: inferred },
-      ),
-    );
-  }
-  return issues;
-}
-
-/** Payload-aware expression type inference for binding targets. */
-function inferBindingExpressionType(
-  expression: UiExpression,
-  payloadType: UiValueType | 'void',
-): string {
-  switch (expression.type) {
-    case 'literal':
-      return expression.value === null ? 'null' : typeof expression.value;
-    case 'ref':
-      if (expression.path === '$output') {
-        return payloadType === 'void' ? 'unknown' : uiValueTypeToExpressionType(payloadType);
-      }
-      return 'unknown';
-    case 'compare':
-    case 'boolean':
-      return 'boolean';
-    case 'conditionalValue':
-      return inferBindingExpressionType(expression.then, payloadType);
-    case 'op':
-      return 'unknown';
-  }
+  const scope = { ...lexicalScope, output: payloadType };
+  return expected === undefined
+    ? checkExpression(expression, catalogs, scope, documentId, nodeId)
+    : checkExpressionTarget(expression, expected, catalogs, scope, documentId, nodeId, 'UI_COMPONENT_BINDING_INCOMPATIBLE');
 }

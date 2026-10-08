@@ -6,11 +6,12 @@ import {
   RESOURCE_DEFINITION_SCHEMA,
   THEME_TOKEN_NAMES,
 } from '@victframework/sdk';
-import type { UiDiagnostic, UiDocumentIdentityEntry, UiRenderPlan } from '@victframework/ui';
+import type { UiDiagnostic, UiDocumentIdentityEntry, UiRenderPlan, UiFieldTypes, UiValueType } from '@victframework/ui';
 import { resolveUiAttachments } from './ui-attach.js';
 import type { UiDocumentCatalogEntryInput, UiDocumentPinInput } from './ui-attach.js';
 import { sha256 } from './sha256.js';
 import {
+  isUiValueType,
   validateApplicationComposition,
   validatePageComposition,
   validateActionFeedback,
@@ -111,6 +112,7 @@ export interface ApplicationIssue {
 }
 
 export interface ContractRegistryEntry {
+  readonly presentationFields?: Readonly<Record<string, UiValueType>>;
   readonly id: string;
   readonly revision: string;
 }
@@ -132,6 +134,8 @@ export interface CompileApplicationInput {
   readonly uiDocumentPins?: readonly UiDocumentPinInput[];
   /** @3 only: declared extension descriptors (registered outside serialized source). */
   readonly uiExtensions?: readonly unknown[];
+  /** Optional declared document view fields (supplement the resource field catalog). */
+  readonly uiViewFields?: UiFieldTypes;
 }
 
 /* ------------------------------------------------------------------ */
@@ -904,6 +908,7 @@ function collectCanonicalInputIssues(input: CompileApplicationInput): readonly A
   if (input.uiDocumentPins !== undefined)
     walkCollection(input.uiDocumentPins, 'uiDocumentPins', walk);
   if (input.uiExtensions !== undefined) walkCollection(input.uiExtensions, 'uiExtensions', walk);
+  if (input.uiViewFields !== undefined) walk(input.uiViewFields, 'uiViewFields');
   return collector.sorted();
 }
 
@@ -1621,7 +1626,7 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
         providedResources.set(resource.id, resource);
       }
     }
-    const providedContracts = new Map<string, string>();
+    const providedContracts = new Map<string, Set<string>>();
     for (const [contractIndex, contract] of (input.contracts ?? []).entries()) {
       const idValid = requireIdentifierMember(
         collector,
@@ -1638,7 +1643,11 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
         'Contract registry revision',
       );
       if (idValid && revisionValid) {
-        providedContracts.set(contract.id, contract.revision);
+        const revisions = providedContracts.get(contract.id) ?? new Set<string>();
+        if (revisions.has(contract.revision)) collector.add('CONTRACT_REVISION_MISMATCH',
+          'Exactly one contract registry entry may declare an identity and revision.', `contracts[${contractIndex}]`);
+        revisions.add(contract.revision);
+        providedContracts.set(contract.id, revisions);
       }
     }
     const providedCapabilities = new Map<string, string>();
@@ -2847,6 +2856,12 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
     > = {};
     let uiDiagnostics: readonly UiDiagnostic[] = [];
     if (isV3) {
+      const resourceFields = buildViewFieldCatalog(declaredViews, providedResources);
+      for (const [name, type] of Object.entries(input.uiViewFields ?? {})) {
+        if ((type !== 'array' && !isUiValueType(type)) || (resourceFields[name] !== undefined && resourceFields[name] !== type)) {
+          collector.add('INVALID_SURFACE_DECLARATION', 'UI view-field types must be declared and agree with resource field authority.', `uiViewFields.${name}`);
+        }
+      }
       const attachments = resolveUiAttachments({
         application: application as unknown,
         ...(input.uiDocuments !== undefined ? { uiDocuments: input.uiDocuments } : {}),
@@ -2860,7 +2875,8 @@ export function compileApplication(input: CompileApplicationInput): CompileAppli
         routeIds: routes
           .map((route) => (isPlainObject(route) && typeof route.id === 'string' ? route.id : ''))
           .filter((id) => id !== ''),
-        viewFields: buildViewFieldCatalog(declaredViews, providedResources),
+        viewFields: { ...resourceFields, ...input.uiViewFields },
+        contracts: input.contracts,
       });
       const fatalUi = attachments.issues;
       if (fatalUi.length > 0) {
@@ -4322,13 +4338,13 @@ function checkCatalogueField(
 
 function checkContractReference(
   collector: Collector,
-  provided: ReadonlyMap<string, string>,
+  provided: ReadonlyMap<string, ReadonlySet<string>>,
   contractId: string,
   expectedRevision: string | undefined,
   path: string,
 ): void {
-  const revision = provided.get(contractId);
-  if (revision === undefined) {
+  const revisions = provided.get(contractId);
+  if (revisions === undefined) {
     collector.add(
       'UNKNOWN_CONTRACT_REFERENCE',
       `Contract reference '${contractId}' is unknown.`,
@@ -4336,10 +4352,10 @@ function checkContractReference(
     );
     return;
   }
-  if (expectedRevision !== undefined && expectedRevision !== revision) {
+  if ((expectedRevision !== undefined && !revisions.has(expectedRevision)) || (expectedRevision === undefined && revisions.size !== 1)) {
     collector.add(
       'CONTRACT_REVISION_MISMATCH',
-      `Contract '${contractId}' reference expects revision '${expectedRevision}' but the registry declares '${revision}'.`,
+      `Contract '${contractId}' reference expects revision '${expectedRevision}' but the registry declares '${[...revisions].join(', ')}'.`,
       path,
     );
   }

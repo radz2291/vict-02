@@ -66,6 +66,8 @@ export function defineContract<T>(definition: ContractDefinition<T>): Contract<T
     ...(definition.descriptiveJsonSchema !== undefined
       ? { descriptiveJsonSchema: definition.descriptiveJsonSchema }
       : {}),
+    ...(definition.presentationFields !== undefined
+      ? { presentationFields: Object.freeze({ ...definition.presentationFields }) } : {}),
     parse: (input: unknown): ContractResult<T> => definition.parse(input),
   };
   // Non-enumerable brand: official identity marker for capture semantics.

@@ -23,7 +23,7 @@ import type {
 import { UI_DOCUMENT_SCHEMA } from './document.js';
 import { hasErrors, uiDiagnostic, type UiDiagnostic } from './diagnostics.js';
 import { isUiValueOfType, isUiValueType } from './values.js';
-import { checkExpression, type UiScopeInfo } from './expressions.js';
+import { checkExpression, checkExpressionTarget, repeatExpressionFields, type UiScopeInfo } from './expressions.js';
 import { isAllowedAttribute, isKnownElement, isLeafElement } from './semantic.js';
 
 export type { UiDocument };
@@ -113,6 +113,11 @@ export function validateUiDocument(input: unknown, catalogs: UiCatalogs): readon
   const conditions = registryOf(docRecord, 'conditions');
   const localState = registryOf(docRecord, 'localState');
 
+  const stateTypes: Record<string, import('./document.js').UiValueType> = {};
+  for (const [key, declaration] of Object.entries(localState)) {
+    if (isPlainObject(declaration) && typeof declaration.type === 'string' && isUiValueType(declaration.type)) stateTypes[key] = declaration.type;
+  }
+  catalogs = { ...catalogs, stateTypes };
   const ctx: ValidateContext = { document, catalogs, issues };
   const documentId = String(document.id);
 
@@ -230,7 +235,7 @@ export function validateUiDocument(input: unknown, catalogs: UiCatalogs): readon
   // in the definition scope; instance slot fills authored inside a body are
   // resolved in that body's scope.
   for (const definition of Object.values(definitions)) {
-    const defScope: UiScopeInfo = { repeatItems: {}, inDefinition: true };
+    const defScope: UiScopeInfo = { repeatItems: {}, inDefinition: true, propTypes: Object.fromEntries((definition.props ?? []).map(prop => [prop.name, prop.type])) };
     const stack: { id: string; scope: UiScopeInfo }[] = [{ id: definition.root, scope: defScope }];
     const defSeen = new Set<string>();
     while (stack.length > 0) {
@@ -378,7 +383,10 @@ export function validateUiDocument(input: unknown, catalogs: UiCatalogs): readon
     validateCondition(ctx, conditionId, condition, localState);
   }
   for (const [key, decl] of Object.entries(localState)) {
-    if (!isPlainObject(decl)) continue;
+    if (!isPlainObject(decl)) {
+      issues.push(uiDiagnostic('UI_EXPR_TYPE_MISMATCH', 'Local state must declare a typed initial value.', { documentId, nodeId: document.root, stateKey: key }));
+      continue;
+    }
     const type = (decl as { type?: unknown }).type;
     const initial = (decl as { initial?: unknown }).initial;
     if (typeof type !== 'string' || !isUiValueType(type)) {
@@ -640,24 +648,11 @@ function validateNode(
           );
           continue;
         }
-        if (expression.type === 'literal') {
-          const actual = expression.value === null ? 'null' : typeof expression.value;
-          if (actual !== 'null' && actual !== propDecl.type) {
-            issues.push(
-              uiDiagnostic(
-                'UI_EXPR_TYPE_MISMATCH',
-                `Prop '${propName}' expects ${propDecl.type}.`,
-                {
-                  documentId,
-                  nodeId: node.id,
-                  expected: propDecl.type,
-                  actual,
-                },
-              ),
-            );
-          }
-        }
+        issues.push(...checkExpressionTarget(expression, propDecl.type,
+          catalogs,
+          scope, documentId, node.id));
       }
+
       for (const [slotName, fill] of Object.entries(node.slots ?? {})) {
         const declared = (definition as UiComponentDefinition).slots?.[slotName];
         if (declared === undefined) {
@@ -813,16 +808,7 @@ function repeatItemFields(
   ctx: ValidateContext,
   collection: UiExpression,
 ): Readonly<Record<string, UiFieldType>> {
-  if (collection.type !== 'ref') return {};
-  const parts = collection.path.split('.');
-  if ((parts[0] !== 'view' && parts[0] !== 'record') || parts.length !== 2) return {};
-  const fields = ctx.catalogs.viewFields ?? {};
-  const prefix = `${parts[1] as string}.`;
-  const itemFields: Record<string, UiFieldType> = {};
-  for (const [name, type] of Object.entries(fields)) {
-    if (name.startsWith(prefix)) itemFields[name.slice(prefix.length)] = type;
-  }
-  return itemFields;
+  return repeatExpressionFields(collection, ctx.catalogs.viewFields);
 }
 
 function checkExpressionTypeOf(
@@ -1112,6 +1098,12 @@ function validateDefinition(
         reference: `styleSource:${definition.baseStyle}`,
       }),
     );
+  }
+  for (const prop of definition.props ?? []) {
+    if (prop.default !== undefined && (prop.type === 'array' || !isUiValueOfType(prop.default, prop.type))) {
+      issues.push(uiDiagnostic(prop.type === 'isoDate' || prop.type === 'isoTime' ? 'UI_DOC_INVALID_LITERAL' : 'UI_EXPR_TYPE_MISMATCH', `Invalid default for prop '${prop.name}'.`,
+        { documentId, nodeId: definition.root, expected: prop.type, actual: typeof prop.default }));
+    }
   }
   for (const [variant, ref] of Object.entries(definition.variants ?? {})) {
     if (conditions[ref.conditionId] === undefined) {

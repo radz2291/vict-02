@@ -79,7 +79,7 @@ export function isUiValueType(type: string): type is UiValueType {
  * Non-array non-scalars (library objects, plain objects) are never a
  * `UiValue` for any type.
  */
-export function isUiValueOfType(value: unknown, type: UiValueType): boolean {
+export function isUiValueOfType(value: unknown, type: UiValueType): value is UiValue {
   switch (type) {
     case 'string':
       return typeof value === 'string';
@@ -88,16 +88,16 @@ export function isUiValueOfType(value: unknown, type: UiValueType): boolean {
     case 'boolean':
       return typeof value === 'boolean';
     case 'stringList':
-      return Array.isArray(value) && value.every((member) => typeof member === 'string');
+      return Array.isArray(value) && Array.from(value).every((member) => typeof member === 'string');
     case 'numberList':
       return (
         Array.isArray(value) &&
-        value.every((member) => typeof member === 'number' && Number.isFinite(member))
+        Array.from(value).every((member) => typeof member === 'number' && Number.isFinite(member))
       );
     case 'isoDate':
-      return typeof value === 'string' && isIsoCalendarDate(value);
+      return typeof value === 'string' && (value === '' || isIsoCalendarDate(value));
     case 'isoTime':
-      return typeof value === 'string' && isIsoClockTime(value);
+      return typeof value === 'string' && (value === '' || isIsoClockTime(value));
     default:
       return false;
   }
@@ -105,13 +105,14 @@ export function isUiValueOfType(value: unknown, type: UiValueType): boolean {
 
 /**
  * The canonical empty value for a type per the §10.1 empty-value
- * conventions: `''` for string, `[]` for lists; numbers, booleans and
- * ISO date/time scalars have no empty representation (absence is
- * expressed by omitting the key, never by a sentinel).
+ * conventions: `''` for strings and ISO date/time, `[]` for lists.
+ * Numbers and booleans have no universal empty value.
  */
 export function uiValueEmptyFor(type: UiValueType): UiValue | undefined {
   switch (type) {
     case 'string':
+    case 'isoDate':
+    case 'isoTime':
       return '';
     case 'stringList':
       return [];
@@ -120,4 +121,10 @@ export function uiValueEmptyFor(type: UiValueType): UiValue | undefined {
     default:
       return undefined;
   }
+}
+
+/** Copy a validated value at a presentation-state ownership boundary. */
+export function copyUiValue(value: UiValue): UiValue {
+  if (Array.isArray(value)) return value.slice();
+  return value;
 }

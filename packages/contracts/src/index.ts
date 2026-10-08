@@ -9,6 +9,7 @@
 export type {
   Contract,
   ContractDefinition,
+  ContractPresentationValueType,
   ContractIssue,
   ContractResult,
   VictError,

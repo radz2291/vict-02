@@ -31,7 +31,8 @@ import {
   type UiDiagnostic,
   type UiDocument,
   type UiFieldTypes,
-  type UiPrimitiveType,
+  isUiValueType,
+  type UiValueType,
   type UiRenderPlan,
   type UiDocumentIdentityEntry,
   type UiExtensionDescriptor,
@@ -72,51 +73,33 @@ export interface ResolveUiAttachmentsInput {
    * actions whose contract has no declared types contribute no input
    * typing (the dispatcher's contract checks stay the authority).
    */
-  readonly contractInputTypes?: Readonly<Record<string, Readonly<Record<string, UiPrimitiveType>>>>;
+  readonly contractInputTypes?: Readonly<Record<string, Readonly<Record<string, UiValueType>>>>;
 }
 
-/**
- * Derive the typed action-input catalog (amendment §3.5):
- * `actionId → { inputName → primitive type }`.
- *
- * Each declared action's `inputContractId`/`inputContractRevision` is
- * resolved against the contracts registry the application compile already
- * loads — an action whose contract reference does not resolve contributes
- * NO entry (fail-closed). When the application declares input types for
- * the referenced contract (`contractInputTypes`), they become the
- * action's input typing. No application-schema change; `actionIds`
- * semantics, document identity and dispatch authority are unchanged.
- */
+/** Resolve passive field declarations from the exact input contract. Never execute parsers. */
 export function deriveActionInputCatalog(
-  actions: readonly unknown[],
-  contracts: readonly unknown[] | undefined,
-  contractInputTypes: Readonly<Record<string, Readonly<Record<string, UiPrimitiveType>>>> = {},
-): Readonly<Record<string, Readonly<Record<string, UiPrimitiveType>>>> {
-  const registered = new Map<string, Set<string>>();
-  for (const contract of contracts ?? []) {
-    if (!isPlainObject(contract)) continue;
-    if (typeof contract.id !== 'string') continue;
-    const revisions = registered.get(contract.id) ?? new Set<string>();
-    if (typeof contract.revision === 'string') revisions.add(contract.revision);
-    registered.set(contract.id, revisions);
-  }
-  const catalog: Record<string, Readonly<Record<string, UiPrimitiveType>>> = {};
+  actions: readonly unknown[], contracts: readonly unknown[] | undefined,
+  /** @deprecated Use contract.presentationFields. Id-only fallback requires one registered revision. */
+  legacyTypes: Readonly<Record<string, Readonly<Record<string, UiValueType>>>> = {},
+): Readonly<Record<string, Readonly<Record<string, UiValueType>>>> {
+  const catalog: Record<string, Readonly<Record<string, UiValueType>>> = {};
   for (const action of actions) {
-    if (!isPlainObject(action) || typeof action.id !== 'string') continue;
-    if (typeof action.inputContractId !== 'string') continue;
-    const revisions = registered.get(action.inputContractId);
-    if (revisions === undefined) continue; // unresolvable reference: no entry
-    if (
-      typeof action.inputContractRevision === 'string' &&
-      revisions.size > 0 &&
-      !revisions.has(action.inputContractRevision)
-    ) {
-      continue; // declared revision not registered: no entry (fail-closed)
-    }
-    const types = contractInputTypes[action.inputContractId];
-    if (types !== undefined) catalog[action.id] = types;
+    if (!isPlainObject(action) || typeof action.id !== 'string' || typeof action.inputContractId !== 'string') continue;
+    const matching = (contracts ?? []).filter(contract => isPlainObject(contract) && contract.id === action.inputContractId &&
+      (action.inputContractRevision === undefined || contract.revision === action.inputContractRevision));
+    if (matching.length !== 1 || !isPlainObject(matching[0]) || typeof matching[0].revision !== 'string') continue;
+    const contract = matching[0];
+    const sameId = (contracts ?? []).filter(entry => isPlainObject(entry) && entry.id === contract.id);
+    const fields = contract.presentationFields ?? legacyTypes[`${String(contract.id)}@${contract.revision}`]
+      ?? (sameId.length === 1 ? legacyTypes[String(contract.id)] : undefined);
+    if (!isPlainObject(fields)) continue; // absent: static shape unknown; runtime contract validation still required
+    const entries = Object.entries(fields);
+    if (!entries.every(([, type]) => typeof type === 'string' && isUiValueType(type))) continue;
+    const types: Record<string, UiValueType> = {};
+    for (const [name, type] of entries) if (typeof type === 'string' && isUiValueType(type)) types[name] = type;
+    catalog[action.id] = Object.freeze(types);
   }
-  return catalog;
+  return Object.freeze(catalog);
 }
 
 export interface ResolvedUiAttachments {
@@ -161,6 +144,13 @@ function collectComponentReferences(document: UiDocument): readonly string[] {
 export function resolveUiAttachments(input: ResolveUiAttachmentsInput): ResolvedUiAttachments {
   const issues: UiDiagnostic[] = [];
   const warnings: UiDiagnostic[] = [];
+  for (const contract of input.contracts ?? []) {
+    if (!isPlainObject(contract) || contract.presentationFields === undefined) continue;
+    const fields = contract.presentationFields;
+    if (!isPlainObject(fields) || !Object.values(fields).every(type => typeof type === 'string' && isUiValueType(type))) {
+      issues.push(uiDiagnostic('UI_COMPONENT_BINDING_INCOMPATIBLE', 'Declared action-input presentation types are invalid.', { documentId: '', nodeId: '', contractId: contract.id, revision: contract.revision }));
+    }
+  }
 
   // ---- shape + digests -----------------------------------------------------
   const byKey = new Map<string, { document: UiDocument; digest: string }>();
