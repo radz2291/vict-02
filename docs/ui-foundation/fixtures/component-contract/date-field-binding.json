@@ -1,0 +1,70 @@
+{
+  "name": "catalog-date-field-binding",
+  "proves": "isoDate typed marker (recalibration section 10.1/10.2): a date-field descriptor whose DateValue library type is converted at the adapter boundary only; the document persists 'YYYY-MM-DD' strings; '' is the empty convention",
+  "descriptor": {
+    "id": "vict.catalog.date-field",
+    "revision": "1",
+    "abi": "vict.ui-component-abi@1",
+    "events": ["vict.ui-component-abi@1"],
+    "props": [
+      {
+        "name": "label",
+        "type": "string",
+        "default": ""
+      },
+      {
+        "name": "value",
+        "type": "isoDate",
+        "default": ""
+      }
+    ],
+    "outputs": [
+      {
+        "name": "valueChange",
+        "payload": "isoDate",
+        "description": "Fires with the selected calendar date, or '' when the field is cleared."
+      }
+    ],
+    "rendererImplementationId": "vict.svelte.catalog",
+    "inspectionLimits": ["internal segment focus styling"]
+  },
+  "documentExcerpt": {
+    "localState": {
+      "deliveryDate": {
+        "key": "deliveryDate",
+        "type": "isoDate",
+        "initial": ""
+      }
+    },
+    "nodes": {
+      "dateField": {
+        "kind": "component",
+        "id": "dateField",
+        "definitionId": "vict.catalog.date-field",
+        "revision": "1",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Delivery date"
+          },
+          "value": {
+            "type": "ref",
+            "path": "state.deliveryDate"
+          }
+        },
+        "outputs": {
+          "valueChange": {
+            "setState": {
+              "key": "deliveryDate",
+              "value": {
+                "type": "ref",
+                "path": "$output"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "expected": "picking 2026-10-08 writes state.deliveryDate = '2026-10-08' (string, no timezone conversion — the catalog.test.ts discipline); clearing the field writes ''; the adapter maps '' to undefined for the library prop; a literal like '10/08/2026' is rejected at authoring time (format rule); value survives save/reload and drives the finished app"
+}

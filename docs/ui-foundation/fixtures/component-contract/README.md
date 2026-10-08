@@ -17,6 +17,10 @@ nodes inside a full `vict.ui-document@1`.
 | `invalid-cases.json` | author-time diagnostics: unknown output, incompatible binding (prop-side and output-side), wrong-typed prop literal, `$output` misuse, undeclared slot, unknown action (existing `UI_DOC_UNKNOWN_PRODUCT_REFERENCE` code, extended scope) |
 | `abi-compat-probe.json` | the compatibility gate, chosen from verified legacy behavior: the ORIGINAL ACCEPTED COUNTEREXAMPLE (output-wired descriptor without the events marker — the legacy resolver accepts it, abi/outputs invisible) and the REPAIRED rejection (events marker → legacy `UI_RENDER_EXTENSION_INTERFACE_UNSUPPORTED`), plus controls; resolver-level reproduction on the exact `952d92d…` bytes — not a browser test |
 | `render-failures.json` | fail-closed render/compile matrix: unresolvable instance revision pin (`UI_COMPONENT_REVISION_UNRESOLVED`), missing/competing/mismatched implementations, ABI mismatch, old plan artifact for an abi@1 descriptor (no `outputDecls`), unsupported slots, stale and rejected emits |
+| `multiselect-binding.json` | stringList value vocabulary (amendment §10): multiple-select descriptor, stringList payload → stringList state, options authored as item content, `[]` empty convention |
+| `date-field-binding.json` | isoDate typed marker: `'YYYY-MM-DD'` strings persisted, `''` empty convention, adapter-only `DateValue` conversion, format-rejection expectation |
+| `slider-range-binding.json` | numberList value vocabulary: range-slider thumbs as an ascending number list, min/max/step number props, single-thumb = one-entry list |
+| `invalid-cases-recal.json` | recalibration negatives: list payload → scalar state, malformed `isoDate`/`isoTime` literals, `null` array member, range start > end |
 
 Conventions:
 

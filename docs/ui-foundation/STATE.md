@@ -24,6 +24,14 @@ compile-artifact marker + implementation abi). Cycle 2 review: R2 round 1
 [U4-AMENDMENT-FREEZE](U4-AMENDMENT-FREEZE.md) (preserved byte-exact);
 freeze-check `U4 AMENDMENT FREEZE CHECK 02: VERIFIED`
 ([reviews/u4/FREEZE-CHECK-02.md](reviews/u4/FREEZE-CHECK-02.md)).
+
+Owner decision 8 (catalog recalibration) is IN PROGRESS on isolated branch
+`codex/ui-foundation-u4-catalog-recalibration` (from `7a9477f…`):
+[U4-CATALOG-RECALIBRATION](U4-CATALOG-RECALIBRATION.md) inventories all 41
+families + the higher-level public components, challenges the contract, and
+plans batches B1–B5; amendment §10 extends the value vocabulary
+(`UiValueType`); the standing ledger lives in the reuse matrix §6. PROPOSED
+— under independent review; implementation NOT authorized.
 Amendment work is isolated on `codex/ui-foundation-u4-component-amendment`
 (from the prepared handoff records `cfbd6d3…`); U0–U3 records untouched.
 The prepared U4 handoff was independently reviewed on

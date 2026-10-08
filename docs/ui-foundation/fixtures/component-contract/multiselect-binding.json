@@ -1,0 +1,123 @@
+{
+  "name": "catalog-multiselect-binding",
+  "proves": "stringList value vocabulary (recalibration section 10.1): a multiple-mode select descriptor with a stringList payload output bound to stringList state; options authored as item content; empty convention ([] initial)",
+  "descriptor": {
+    "id": "vict.catalog.select-multi",
+    "revision": "1",
+    "abi": "vict.ui-component-abi@1",
+    "events": ["vict.ui-component-abi@1"],
+    "props": [
+      {
+        "name": "label",
+        "type": "string",
+        "default": ""
+      },
+      {
+        "name": "value",
+        "type": "stringList",
+        "default": []
+      }
+    ],
+    "outputs": [
+      {
+        "name": "valueChange",
+        "payload": "stringList",
+        "description": "Fires with the full selected-value list when the selection changes."
+      }
+    ],
+    "rendererImplementationId": "vict.svelte.catalog",
+    "inspectionLimits": ["internal focus ring styling"]
+  },
+  "documentExcerpt": {
+    "localState": {
+      "teams": {
+        "key": "teams",
+        "type": "stringList",
+        "initial": []
+      }
+    },
+    "nodes": {
+      "selMulti": {
+        "kind": "component",
+        "id": "selMulti",
+        "definitionId": "vict.catalog.select-multi",
+        "revision": "1",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Teams to notify"
+          },
+          "value": {
+            "type": "ref",
+            "path": "state.teams"
+          }
+        },
+        "slots": {
+          "options": {
+            "children": ["optEng", "optDesign", "optOps"]
+          }
+        },
+        "outputs": {
+          "valueChange": {
+            "setState": {
+              "key": "teams",
+              "value": {
+                "type": "ref",
+                "path": "$output"
+              }
+            }
+          }
+        }
+      },
+      "optEng": {
+        "kind": "component",
+        "id": "optEng",
+        "definitionId": "vict.catalog.option",
+        "revision": "1",
+        "props": {
+          "value": {
+            "type": "literal",
+            "value": "eng"
+          },
+          "label": {
+            "type": "literal",
+            "value": "Engineering"
+          }
+        }
+      },
+      "optDesign": {
+        "kind": "component",
+        "id": "optDesign",
+        "definitionId": "vict.catalog.option",
+        "revision": "1",
+        "props": {
+          "value": {
+            "type": "literal",
+            "value": "design"
+          },
+          "label": {
+            "type": "literal",
+            "value": "Design"
+          }
+        }
+      },
+      "optOps": {
+        "kind": "component",
+        "id": "optOps",
+        "definitionId": "vict.catalog.option",
+        "revision": "1",
+        "props": {
+          "value": {
+            "type": "literal",
+            "value": "ops"
+          },
+          "label": {
+            "type": "literal",
+            "value": "Operations"
+          }
+        }
+      }
+    }
+  },
+  "expected": "selecting Engineering and Operations writes state.teams = ['eng','ops'] (order preserved); deselecting one writes the remaining list; empty selection writes []; list survives undo/redo/save/reload; Inspector shows the stringList binding filtered to list-typed state keys"
+}

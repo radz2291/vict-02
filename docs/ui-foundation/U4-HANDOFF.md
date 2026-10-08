@@ -331,7 +331,12 @@ new authorization.
 > checkpoint with acceptance PENDING. No npm publication, merge to main,
 > apps/studio integration, or deployment.
 
-### 12.2 CURRENT — the amended prompt (pinned to the amendment)
+### 12.2 CURRENT for the original five-family U4 scope — SUPERSEDED IN PART by §13.1 for the recalibrated full-catalog program (owner decision 8)
+
+> Overlap note: §13.1's batch-B1 prompt covers this prompt's five-family
+> scope PLUS the value-vocabulary extension and three additional wrappers.
+> Authorizing §13.1 makes this prompt redundant; authorizing this prompt
+> alone leaves the recalibration unimplemented. Do not authorize both.
 
 > Authorize U4 for radz2291/vict-02 per docs/ui-foundation/U4-HANDOFF.md at
 > its recorded tip (PREPARED — IMPLEMENTATION NOT AUTHORIZED → AUTHORIZED)
@@ -383,3 +388,88 @@ new authorization.
 > findings with affected rechecks, preserve all reports, and stop at the
 > founder checkpoint with acceptance PENDING. No npm publication, merge to
 > main, apps/studio integration, or deployment.
+
+## 13. Catalog recalibration (owner decision 8) — batches and first-batch authorization
+
+The owner clarified the UI library is much richer than the amendment's five
+compositions and required a full-catalog architecture and delivery plan.
+The authoritative documents are
+[U4-CATALOG-RECALIBRATION](U4-CATALOG-RECALIBRATION.md) (inventory of all
+41 families + higher-level public components, contract challenge, batch
+plan) and [U4-COMPONENT-AMENDMENT](U4-COMPONENT-AMENDMENT.md) §10 (the
+`UiValueType` vocabulary extension: `stringList`/`numberList`/`isoDate`/
+`isoTime`; dual-scalar date ranges; empty-value conventions; item-content
+authoring; the ABI gate re-checked family-agnostically). The standing
+per-family ledger is the reuse matrix §6. Deferred, unchanged:
+pin-input, rating-group, time-range-field. Application-surface components
+(RecordsTable, Chart, Conversation, DataView, List, Detail, Form/
+FormSurface, Feedback family) stay application-plan governed — the
+registered-component route (P3) remains theirs; this is a recorded
+boundary. The seven governing U4 criteria, packaging repair (F3),
+packed-artifact isolation, preview/production parity, bundle separation,
+the unfamiliar-agent exercise, and the founder checkpoint apply to every
+batch unchanged.
+
+**Batches** (each a separately authorized implementation effort with its
+own gate; a batch PASS proves only its ledger rows):
+
+- **B1 — scalar foundation (RECOMMENDED FIRST)**: the frozen five-family
+  contract + the §10 value vocabulary as landed contract + switch/toggle/
+  radio-group wrappers; F3 packaging repair; Inspector scalar editors +
+  output-binding editor. Founder gains: working declared-action controls
+  (buttons with pending/feedback, checkboxes/switches on real state,
+  single select, open/confirm dialog, authored app shell) — edited,
+  undone/redone, saved, reloaded, replayed.
+- **B2 — selection modes and lists** (P-multi): select multiple,
+  toggle-group single/multiple, combobox, accordion; item-content
+  authoring; tri-state presentation binding; list Inspector editors.
+- **B3 — numeric ranges and dates/times** (P-range-date): slider
+  single/range, meter, progress, pagination; isoDate/isoTime fields and
+  pickers; dual-scalar date ranges; empty-value handling.
+- **B4 — menus and nested composition** (P-nested): dropdown/context/
+  menubar/command, navigation-menu; per-item activation outputs/actions.
+- **B5 — display and composition chrome**: avatar, aspect-ratio,
+  separator, label, scroll-area, toolbar, link-preview, tooltip, popover,
+  alert-dialog, tabs composition.
+
+### 13.1 First-batch authorization prompt (copy-paste when ready)
+
+> Authorize U4 batch B1 (catalog recalibration) for radz2291/vict-02 per
+> docs/ui-foundation/U4-HANDOFF.md §13 at its recorded tip (PROPOSED →
+> AUTHORIZED-B1) governed by the frozen component amendment
+> docs/ui-foundation/U4-COMPONENT-AMENDMENT.md (payload SHA
+> recorded in docs/ui-foundation/U4-AMENDMENT-FREEZE-02.md, as superseded
+> for scope by the recalibration: docs/ui-foundation/U4-CATALOG-RECALIBRATION.md
+> and amendment §10 — the value-vocabulary extension §10.1–§10.5 is IN
+> SCOPE for B1 implementation; the §8 five-family coverage claim is
+> superseded). Implement ONLY batch B1 on a new isolated branch
+> codex/ui-foundation-u4-b1 from this lineage: (1) land the UiValueType
+> vocabulary (stringList/numberList/isoDate/isoTime), empty-value and
+> item-content rules, and their validator/compile diagnostics exactly as
+> specified in amendment §10 and fixtures multiselect-binding.json,
+> date-field-binding.json, slider-range-binding.json,
+> invalid-cases-recal.json; (2) implement the five frozen contract
+> families (button, catalog checkbox, catalog select single, catalog
+> dialog, app-shell) plus switch, toggle, radio-group wrappers — each
+> descriptor carrying the ABI marker (`events:
+> ['vict.ui-component-abi@1']`), abi match, and declared outputs; (3)
+> repair ui-editor packaging (F3) as specified in §10 carry-forwards;
+> derive the action-input catalog via deriveActionInputCatalog →
+> compileUiDocument catalogs option actionInputs at the existing ui-attach
+> call site (amendment §3.5); (4) implement the descriptor-driven
+> Inspector editors for scalar state and output connections (approved
+> Inspector patterns are the experience baseline); (5) pack the closure
+> set and build examples/u4-consumer strictly from packed artifacts; (6)
+> deliver the §6 catalog proof for each B1 family (select → Inspector
+> edit → undo/redo → save → reload → finished app, same control each
+> time), the P-scalar and P-overlay proof patterns, the negative
+> fixtures executed at runtime, and the failure model (unknown output,
+> payload mismatch, incompatible binding, revision pin, ABI mismatch);
+> (7) preview/production parity with bundle separation, the
+> unfamiliar-agent exercise, and the walkthrough recording. Update the
+> reuse-matrix §6 ledger rows for B1 families ONLY. B2–B5 families, the
+> deferred three, and application-surface components are OUT OF SCOPE — a
+> B1 report claiming them is a finding. Then run the fresh independent
+> gate, repair in-scope findings with affected rechecks, and stop at the
+> founder checkpoint with acceptance PENDING. No npm publication, merge
+> to main, apps/studio integration, or deployment.

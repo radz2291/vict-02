@@ -220,3 +220,59 @@ fields inside `vict.ui-document@1`, no version bump); `UiEditSession`
 transactions/undo/redo/two-phase save; composition semantics for shell
 navigation (`UiApplicationComposition`, renderer-resolved
 `UiShellLink.current`).
+
+---
+
+## 6. Full-catalog authoring ledger (recalibration, owner decision 8)
+
+The authoritative inventory, contract challenge and batch plan live in
+[U4-CATALOG-RECALIBRATION](U4-CATALOG-RECALIBRATION.md). This ledger is the
+standing coverage record it obligates (recalibration §7): every family's
+authoring status, updated ONLY by batch evidence. Status values: **C**
+(contract defined, unimplemented), **B-n** (claimed authoring-supported by
+batch n — requires that batch's direct evidence), **P3** (application-plan
+or registered-component route; not a document-authoring claim), **X**
+(deferred). Every row is family-AND-mode: a family's supported modes are
+listed; unlisted modes are unproven even when the family row shows a batch.
+
+| Family | Modes (value shape) | Ledger | Batch / proof pattern |
+| --- | --- | --- | --- |
+| Button (catalog) | press (void), label/disabled/loading | C → B1 | B1 · P-scalar |
+| Checkbox (catalog) | boolean + indeterminate presentation binding | C → B1 | B1 · P-scalar |
+| Select (catalog) | single string → B1; multiple stringList → B2 | C → B1/B2 | B1 · P-scalar; B2 · P-multi |
+| Dialog | open loop, portal/focus, body slot | C → B1 | B1 · P-overlay |
+| AppShell (composition) | content slot, nav/active/responsive | C → B1 | B1 · composition |
+| Switch / Toggle | boolean | C → B1 | B1 · P-scalar |
+| RadioGroup | scalar string | C → B1 | B1 · P-scalar |
+| ToggleGroup | single string / multiple stringList | C → B2 | B2 · P-multi |
+| Combobox | single string (multiple only if adapter adds no new mechanism) | C → B2 | B2 · P-multi |
+| Accordion | single/multiple panels; sections are content | C → B2 | B2 · P-nested |
+| Tabs (document composition) | active value string; panels content | C → B2/B5 | B2/B5 · P-nested |
+| Slider | one thumb numberList(1) / range numberList(n) | C → B3 | B3 · P-range-date |
+| Meter / Progress | number; Progress null = presentation-only | C → B3 | B3 · P-range-date |
+| Pagination | page number | C → B3 | B3 · P-range-date |
+| DateField / DatePicker / Calendar | isoDate marker, adapter-only conversion | C → B3 | B3 · P-range-date |
+| TimeField | isoTime marker, granularity | C → B3 | B3 · P-range-date |
+| DateRangeField / DateRangePicker / RangeCalendar | dual isoDate scalars (start/end), partial ranges | C → B3 | B3 · P-range-date |
+| DropdownMenu / ContextMenu / Menubar | nested item content; itemActivate string; CheckboxItem boolean; RadioItem string | C → B4 | B4 · P-nested |
+| Command | searchable menu composition | C → B4 | B4 · P-nested |
+| NavigationMenu | menu composition | C → B4 | B4 · P-nested |
+| AlertDialog / Popover / Tooltip / LinkPreview | open/hover overlays, portal | C → B5 | B5 · P-overlay |
+| Avatar / AspectRatio / Separator / Label / ScrollArea / Toolbar | display/composition (no value state) | C → B5 | B5 · composition |
+| PinInput / RatingGroup / TimeRangeField | — no VICT module | **X** | deferred (unchanged) |
+| RecordsTable / Chart / Conversation / DataView / List / Detail / Form+FormField/FormSurface / Feedback / Count / StatusBadge / Text / VitApp | application-plan intents (`UiTableIntent`, `UiChartPoint`, `UiConversationMessage`, `UiFormField`, …) | **P3** | application-plan governed; document-node authoring is a recorded non-goal; P3/P4 remains their in-document route |
+
+Honesty rules (unchanged): an export or showcase example proves library
+availability only; ledger changes to **B-n** require that batch's recorded
+end-to-end authoring evidence (edit → undo/redo → save → reload → finished
+app) for the named modes; partial support names exactly which modes remain
+unproven. Value-shape evidence for the inventory rows: pinned
+`bits-ui@2.19.3` typings (select/types.d.ts:95–135 single `string` /
+multiple `string[]`; toggle-group/types.d.ts:33–41; slider/types.d.ts:160
+`number[]`; checkbox/types.d.ts:4–5 `checked`/`indeterminate`;
+date-field/types.d.ts:12–17 `DateValue`; date-range-field/types.d.ts:7–17
+`DateRange`; pagination/types.d.ts:33 `page`; progress/types.d.ts:10
+`number | null`; combobox/types.d.ts:18 single/multiple union;
+accordion/types.d.ts:33,61–65), the recorded showcase examples, and
+`catalog.test.ts` — see the recalibration document's §3.1 table for the
+complete citation set.

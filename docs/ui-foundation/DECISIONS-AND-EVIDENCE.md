@@ -900,6 +900,23 @@ remain unauthorized):
    [U4-AMENDMENT-REVIEW-01](reviews/u4/U4-AMENDMENT-REVIEW-01.md)
    (final sha256 `34506ab9…`; round-1 section byte-identical to the
    delivered `9ce2267c…`).
+8. Owner decision 8 — CATALOG RECALIBRATION (this cycle): the owner
+   clarified the UI library is much richer than the amendment's five
+   compositions and required a full-catalog architecture and delivery plan
+   (41 families reconciled with 38 recipe modules; higher-level public
+   components inventoried; family-and-mode capability; contract challenge;
+   explicit batches). Output: [U4-CATALOG-RECALIBRATION](U4-CATALOG-RECALIBRATION.md)
+   (inventory + trace + design + batches), amendment §10 (UiValueType
+   widening: stringList/numberList/isoDate/isoTime; dual-scalar date
+   ranges; empty-value conventions; item-content authoring rule; gate
+   re-checked family-agnostically), four new contract fixtures, and the
+   reuse-matrix §6 standing ledger. Application-surface components
+   (RecordsTable, Chart, Conversation, Form, …) are recorded as
+   application-plan governed (P3), not document-authoring targets; the
+   three deferred families stay deferred. Batches B1–B5 with B1
+   recommended first (scalar foundation). Runtime implementation remains
+   unauthorized; supersedes the amendment §8 five-family limit and its
+   "must not expand" clause (both preserved in frozen bytes at `460d963…`).
 7b. Superseding freeze — VERIFIED: payload commit `460d963…` (empty
     marker; ten byte-pins), record
     [U4-AMENDMENT-FREEZE-02](U4-AMENDMENT-FREEZE-02.md); separate fresh

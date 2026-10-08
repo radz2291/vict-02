@@ -1,0 +1,97 @@
+{
+  "name": "catalog-slider-range-binding",
+  "proves": "numberList value vocabulary (recalibration section 10.1): a range-mode slider descriptor whose two thumbs bind numberList state; min/max/step are number props; thumbs as a range is a list value, never a nested object",
+  "descriptor": {
+    "id": "vict.catalog.slider-range",
+    "revision": "1",
+    "abi": "vict.ui-component-abi@1",
+    "events": ["vict.ui-component-abi@1"],
+    "props": [
+      {
+        "name": "label",
+        "type": "string",
+        "default": ""
+      },
+      {
+        "name": "value",
+        "type": "numberList",
+        "default": []
+      },
+      {
+        "name": "min",
+        "type": "number",
+        "default": 0
+      },
+      {
+        "name": "max",
+        "type": "number",
+        "default": 100
+      },
+      {
+        "name": "step",
+        "type": "number",
+        "default": 1
+      }
+    ],
+    "outputs": [
+      {
+        "name": "valueChange",
+        "payload": "numberList",
+        "description": "Fires with the thumb values, ascending; one entry per thumb."
+      }
+    ],
+    "rendererImplementationId": "vict.svelte.catalog",
+    "inspectionLimits": ["internal thumb focus ring styling"]
+  },
+  "documentExcerpt": {
+    "localState": {
+      "capacity": {
+        "key": "capacity",
+        "type": "numberList",
+        "initial": [20, 80]
+      }
+    },
+    "nodes": {
+      "rangeSlider": {
+        "kind": "component",
+        "id": "rangeSlider",
+        "definitionId": "vict.catalog.slider-range",
+        "revision": "1",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Capacity range"
+          },
+          "value": {
+            "type": "ref",
+            "path": "state.capacity"
+          },
+          "min": {
+            "type": "literal",
+            "value": 0
+          },
+          "max": {
+            "type": "literal",
+            "value": 100
+          },
+          "step": {
+            "type": "literal",
+            "value": 5
+          }
+        },
+        "outputs": {
+          "valueChange": {
+            "setState": {
+              "key": "capacity",
+              "value": {
+                "type": "ref",
+                "path": "$output"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "expected": "dragging thumbs to 35/70 writes state.capacity = [35,70]; single-thumb instances bind a one-entry numberList; the list length (thumb count) is descriptor-validated against the declared mode; values survive undo/redo/save/reload; Inspector shows the numberList binding filtered to list-typed state keys"
+}

@@ -1,6 +1,9 @@
 # U4 component-integration amendment — catalog components as canonical authored UI
 
-Status: **PROPOSED — UNDER INDEPENDENT REVIEW (implementation NOT authorized)**
+Status: **PROPOSED — UNDER INDEPENDENT REVIEW (implementation NOT authorized)**.
+Recalibration extension (§10 — full-catalog value vocabulary and batches)
+applied per owner decision 8; the extension is under the same review
+umbrella as [U4-CATALOG-RECALIBRATION](U4-CATALOG-RECALIBRATION.md).
 Contract ABI: `vict.ui-component-abi@1` (introduced by this amendment)
 Document schema: unchanged (`vict.ui-document@1`, additive optional fields only)
 Plan schema: unchanged (`vict.ui-render-plan@1`, additive optional fields only)
@@ -711,3 +714,102 @@ No two-way binding abstraction. No document schema-string change. No
 Svelte/Bits UI types in `@victframework/ui` contracts. No change to U0–U3
 frozen bytes, to the seven U4 criteria, to packaging isolation, to preview
 fencing, or to the founder checkpoint.
+
+## 10. Catalog recalibration extension (owner decision 8 — supersedes §8's scope limit)
+
+The owner clarified that the UI library is much richer than the five
+compositions above and required a full-catalog architecture and delivery
+plan. The authoritative recalibration document is
+[U4-CATALOG-RECALIBRATION](U4-CATALOG-RECALIBRATION.md) (inventory of all
+41 families and the higher-level public components, the contract challenge
+trace, the batch plan, and evidence limits). This section records what that
+recalibration changes IN THIS CONTRACT; everything else above (§1–§7
+mechanics, the ABI marker gate, identity/revision pinning, the failure
+model) stays governing verbatim.
+
+Superseded by §10: the §8 sentence "This amendment must not expand into
+wrapping every catalog family" and the five-family coverage claim. NOT
+superseded: §8's honesty rules (per-family evidence; no silent claims) and
+§9's non-goals, all restated in the recalibration document.
+
+### 10.1 Value-type vocabulary (one additive union; schema strings unchanged)
+
+```ts
+/** Additive widening used by state decls, prop decls, and output payloads. */
+export type UiValueType =
+  | UiPrimitiveType               // 'string' | 'number' | 'boolean' — unchanged
+  | 'stringList' | 'numberList'   // JSON arrays of scalars (multi-select, toggle multiple, slider range)
+  | 'isoDate' | 'isoTime';        // string-encoded, format-validated date/time markers
+```
+
+- `UiLocalStateDecl.type` widens to `UiValueType`; list initials are JSON
+  arrays (canonical `[]`); `isoDate`/`isoTime` initials are strings.
+- `UiPropDecl.type` widens to `UiValueType`; descriptors' `propDecls`
+  follow. Array-shaped values bind only to array-typed sources (array view
+  field or list state key — the expression language has no array literal,
+  unchanged); the frozen reference-only rule extends to list state.
+- `UiOutputDecl.payload` widens from `'void' | UiPrimitiveType` to
+  `'void' | UiValueType`. Binding compatibility checks compare the widened
+  types with no coercion: `stringList` payload → `stringList` state only.
+- Dates/times: `isoDate` = `'YYYY-MM-DD'`, `isoTime` = `'HH:MM:SS'`
+  (granularity permitting `HH:MM`) — validated against exactly what
+  `@internationalized/date` `parseDate`/`parseTime` accept; adapters do the
+  only `DateValue`/`Time` conversions (library types never enter
+  `@victframework/ui`). Date RANGES persist as TWO `isoDate` scalar state
+  keys (start, end); the adapter assembles/splits `{ start, end }` — no
+  nested objects in the document, partial ranges first-class via the empty
+  convention.
+- Empty values: `''` is the empty value for string/isoDate/isoTime
+  (adapters map `'' → undefined` for library props); `[]` for lists;
+  numbers and booleans have no empty (a cleared numeric input is an
+  authoring error); array members may not be `null`; Progress's
+  `value: null` (indeterminate) is presentation-only, mapped by the adapter,
+  never persisted.
+- Tri-state checkbox: `indeterminate` is a prop binding (boolean
+  expression), never a third persisted `checked` value.
+
+### 10.2 Item/panel content authoring
+
+List-control options, menu items, and tab/accordion panels are authored
+CONTENT through instance slot fills (§3.7 mechanics, unchanged): option
+children carry `value` + display content; menu activation is an output
+(`itemActivate`, payload string) or per-item `click → invokeAction`;
+CheckboxItem binds boolean state, RadioItem groups scalar string. Dynamic
+option lists stay the array-view-field binding (§6 select row). Nested
+menus (Sub* parts) nest slot-filled item groups. Required-part validation
+extends §5.1 per family.
+
+### 10.3 Compatibility gate — unchanged, checked against the extension
+
+Every new wrapper descriptor MUST carry the ABI marker
+(`events: ['vict.ui-component-abi@1']`) + `abi` + declared `outputs` — the
+gate is family-agnostic and no batch introduces new gate logic. List
+payloads ride the same `io.emit` channel (JSON-serializable); stale-drop,
+occurrence isolation, generation fencing, and two-phase save are
+payload-shape-agnostic (drops compare declared types, not shapes). The
+§4.3 supersession matrix applies verbatim to the widened vocabulary (old
+compilers drop the new optional fields; markers still fail-close).
+Diagnostics: no new codes except the date/time literal format rule, which
+extends the `UI_DOC_INVALID_LITERAL`-class scope; list/isoDate mismatches
+extend `UI_COMPONENT_OUTPUT_PAYLOAD_INVALID` /
+`UI_COMPONENT_BINDING_INCOMPATIBLE` / `UI_EXPR_TYPE_MISMATCH` triggers.
+
+### 10.4 Delivery batches (summary — full plan in the recalibration document)
+
+B1 scalar foundation (frozen five + switch/toggle/radio-group + the value
+vocabulary as landed contract) → B2 selection modes and lists (P-multi) →
+B3 numeric ranges and dates/times (P-range-date) → B4 menus and nested
+composition (P-nested) → B5 display/composition chrome. Deferred,
+unchanged: pin-input, rating-group, time-range-field. Application-surface
+components (RecordsTable, Chart, Conversation, DataView, List, Detail,
+Form/FormSurface, Feedback family) stay application-plan governed — a
+recorded boundary, not an oversight. Every family claim is ledgered per
+batch; a batch PASS proves only its rows.
+
+### 10.5 Fixtures (added by the recalibration; same execution status as §7)
+
+`multiselect-binding.json`, `date-field-binding.json`,
+`slider-range-binding.json` (positive); `invalid-cases-recal.json`
+(negative: list payload → scalar state, malformed `isoDate`, `null` array
+member, range start > end). The §7 fixtures stay pinned at their frozen
+bytes; these are additions, and the superseding freeze re-pins the set.

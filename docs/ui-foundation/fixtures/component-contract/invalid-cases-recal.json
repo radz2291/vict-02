@@ -1,0 +1,48 @@
+{
+  "name": "recalibration-invalid-cases",
+  "proves": "negative contract examples for the recalibration value vocabulary (amendment section 10): list/type mismatches, date format, null members, range sanity — each with its expected authoring-time diagnostic class",
+  "cases": [
+    {
+      "id": "R1",
+      "case": "stringList payload bound to string state",
+      "input": "descriptor vict.catalog.select-multi outputs valueChange payload stringList; instance binds valueChange setState to state key 'team' declared type string",
+      "expected": "UI_COMPONENT_BINDING_INCOMPATIBLE (target state declared type string != payload stringList; no coercion)",
+      "diagnostic": "UI_COMPONENT_BINDING_INCOMPATIBLE"
+    },
+    {
+      "id": "R2",
+      "case": "isoDate literal in a non-ISO format",
+      "input": "component node prop value = {type:'literal', value:'10/08/2026'} against an isoDate prop decl",
+      "expected": "rejected at authoring time by the date/time literal format rule (UI_DOC_INVALID_LITERAL scope extension: must match YYYY-MM-DD and parse via the same parser the adapter uses)",
+      "diagnostic": "UI_DOC_INVALID_LITERAL"
+    },
+    {
+      "id": "R3",
+      "case": "null array member in a list state initial",
+      "input": "localState entry {key:'teams', type:'stringList', initial:['eng', null]}",
+      "expected": "rejected (array members may not be null; lists are JSON arrays of scalars)",
+      "diagnostic": "UI_DOC_INVALID_LITERAL"
+    },
+    {
+      "id": "R4",
+      "case": "date-range start after end",
+      "input": "date-range instance bound to state keys rangeStart='2026-11-01', rangeEnd='2026-10-01'",
+      "expected": "validator-level sanity diagnostic (start > end); runtime library validation still owns user-level correction",
+      "diagnostic": "UI_COMPONENT_BINDING_INCOMPATIBLE"
+    },
+    {
+      "id": "R5",
+      "case": "numberList payload bound to number state",
+      "input": "slider-range instance binds valueChange setState to scalar number state key 'volume'",
+      "expected": "UI_COMPONENT_BINDING_INCOMPATIBLE (numberList != number)",
+      "diagnostic": "UI_COMPONENT_BINDING_INCOMPATIBLE"
+    },
+    {
+      "id": "R6",
+      "case": "isoTime literal with out-of-range components",
+      "input": "prop value = {type:'literal', value:'25:99:00'} against an isoTime prop decl",
+      "expected": "rejected by the format rule (must parse as a valid time)",
+      "diagnostic": "UI_DOC_INVALID_LITERAL"
+    }
+  ]
+}
