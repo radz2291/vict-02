@@ -6,13 +6,14 @@
    * `valueChange` out.
    */
   import { RadioGroup } from 'bits-ui';
-  import type { UiSvelteComponentIO } from '../../document/extensions.js';
+  import type { UiSvelteComponentIO, UiComponentPresentation } from '../../document/extensions.js';
 
   interface Props {
     readonly props: Readonly<Record<string, unknown>>;
     readonly io?: UiSvelteComponentIO;
+    readonly presentation?: UiComponentPresentation;
   }
-  let { props, io }: Props = $props();
+  let { props, io, presentation }: Props = $props();
   const label = $derived(typeof props.label === 'string' ? props.label : '');
   const options = $derived(
     Array.isArray(props.options)
@@ -29,6 +30,7 @@
 <div data-testid="catalog-radio-group" style="display: inline-block">
   {#if label !== ''}<span class="vict-control-label">{label}</span>{/if}
   <RadioGroup.Root
+    {...presentation?.target('root')}
     {value}
     {disabled}
     onValueChange={(next) => {

@@ -10,8 +10,8 @@
    * Editor and scenario concerns stay OUT of this component.
    */
   import type { UiRenderPlan, UiLocalStateDecl, UiExtensionDescriptor, UiValue } from '@victframework/ui';
-  import { isUiValueOfType } from '@victframework/ui';
-  import { untrack } from 'svelte';
+  import { isUiValueOfType, copyUiValue, actionFeedback } from '@victframework/ui';
+  import { untrack, onDestroy } from 'svelte';
   import type {
     UiSvelteComponentImplementation,
     UiSvelteExtensionImplementation,
@@ -44,6 +44,9 @@
     readonly onRenderDiagnostic?: (diagnostic: { readonly code: string; readonly message: string; readonly detail?: Readonly<Record<string, unknown>> }) => void;
     /** Reset signal: a NEW symbol re-initializes local state (preview reset). */
     readonly resetSignal?: symbol;
+    readonly actionState?: Readonly<Record<string, import('./extensions.js').UiActionStateConnection>>;
+    readonly onActionResult?: (actionId: string, result: unknown) => void;
+    readonly onStateChange?: (key: string, value: UiValue) => void;
     /** Root element for the document subtree. */
     readonly as?: 'div' | 'section' | 'article';
     readonly ariaLabel?: string;
@@ -62,37 +65,45 @@
     selectOccurrence,
     onRenderDiagnostic,
     resetSignal,
+    onStateChange,
+    actionState = {},
+    onActionResult,
     as = 'div',
     ariaLabel,
   }: Props = $props();
 
-  /**
-   * The mounted-plan holder (amendment §5.3): emissions compare against
-   * this identity so late callbacks from a superseded plan are dropped.
-   */
-  const planHolder: { plan: typeof plan } = { plan };
-  $effect(() => {
-    planHolder.plan = plan;
+  // A new token expires every retained emission on plan replacement or reset,
+  // including a replacement whose canonical source digest is unchanged.
+  const ownerId = $props.id();
+  let alive = true;
+  onDestroy(() => { alive = false; });
+  const generation = $derived.by(() => {
+    void plan;
+    void resetSignal;
+    return Symbol('document-generation');
   });
 
   function initialValues(): Record<string, unknown> {
     const bag: Record<string, unknown> = {};
     for (const [key, decl] of Object.entries(localState)) {
-      bag[key] = decl.initial;
+      if (isUiValueOfType(decl.initial, decl.type)) bag[key] = copyUiValue(decl.initial);
     }
     // Seed SSR and the first client render consistently. The reactive merge
     // below reports invalid supplied keys without leaking their values.
     for (const [key, value] of Object.entries(stateValues)) {
       const decl = Object.hasOwn(localState, key) ? localState[key] : undefined;
-      if (decl !== undefined && isUiValueOfType(value, decl.type)) bag[key] = value;
+      if (decl !== undefined && isUiValueOfType(value, decl.type)) bag[key] = copyUiValue(value);
     }
     return bag;
   }
 
   let stateBag: Record<string, unknown> = $state(initialValues());
+  let priorSupplied = new Set<string>();
+  let lastDocumentId = $state(plan.documentId);
   let lastSignal: symbol | undefined = $state<symbol | undefined>(undefined);
 
   $effect(() => {
+    const documentId = plan.documentId;
     const signal = resetSignal;
     const values = stateValues;
     const declarations = localState;
@@ -100,12 +111,24 @@
     // Local edits must not retrigger the merge. Reset precedes supplied values
     // in the same effect, so one host update has deterministic ordering.
     untrack(() => {
-      if (signal !== undefined && signal !== lastSignal) {
+      if (documentId !== lastDocumentId || (signal !== undefined && signal !== lastSignal)) {
+        lastDocumentId = documentId;
         lastSignal = signal;
         const fresh = initialValues();
         for (const key of Object.keys(stateBag)) delete stateBag[key];
         Object.assign(stateBag, fresh);
       }
+      for (const key of Object.keys(stateBag)) {
+        const declaration = declarations[key];
+        if (declaration === undefined) delete stateBag[key];
+        else if (!isUiValueOfType(stateBag[key], declaration.type) || (priorSupplied.has(key) && !Object.hasOwn(values, key))) {
+          if (isUiValueOfType(declaration.initial, declaration.type)) stateBag[key] = copyUiValue(declaration.initial);
+        }
+      }
+      for (const [key, declaration] of Object.entries(declarations)) {
+        if (!Object.hasOwn(stateBag, key) && isUiValueOfType(declaration.initial, declaration.type)) stateBag[key] = copyUiValue(declaration.initial);
+      }
+      priorSupplied = new Set(supplied.map(([key]) => key));
       for (const [key, value] of supplied) {
         const declaration = Object.hasOwn(declarations, key) ? declarations[key] : undefined;
         if (declaration === undefined || !isUiValueOfType(value, declaration.type)) {
@@ -116,14 +139,58 @@
           });
           continue;
         }
-        stateBag[key] = value;
+        stateBag[key] = copyUiValue(value);
       }
     });
   });
 
   function setState(key: string, value: unknown): void {
-    if (localState[key] === undefined) return; // undeclared keys are validation errors; never invented here
-    stateBag[key] = value;
+    const declaration = Object.hasOwn(localState, key) ? localState[key] : undefined;
+    if (declaration === undefined || !isUiValueOfType(value, declaration.type)) {
+      onRenderDiagnostic?.({ code: 'UI_RENDER_STATE_VALUE_REJECTED',
+        message: 'An evaluated state write must match its declared type.', detail: { stateKey: key } });
+      return;
+    }
+    stateBag[key] = copyUiValue(value);
+    onStateChange?.(key, copyUiValue(value));
+  }
+
+  let actionStatuses = $state<Record<string, import('./extensions.js').UiComponentActionStatus>>({});
+  const runs = new Map<string, symbol>();
+  $effect(() => {
+    void generation;
+    untrack(() => {
+      for (const [id, status] of Object.entries(actionStatuses)) {
+        const key = actionState[id]?.pending;
+        if (status.pending && key && localState[key]?.type === 'boolean') setState(key, false);
+      }
+      actionStatuses = {}; runs.clear();
+    });
+  });
+  async function runAction(actionId: string, input?: unknown): Promise<unknown> {
+    const token = generation;
+    const run = Symbol(actionId);
+    const connection = actionState[actionId];
+    runs.set(actionId, run);
+    actionStatuses[actionId] = { pending: true, feedback: null };
+    if (connection?.pending) setState(connection.pending, true);
+    if (connection?.error) setState(connection.error, '');
+    let result: unknown;
+    try { result = await dispatch(actionId, input); }
+    catch { result = { ok: false, code: 'ACTION_FAILED', message: 'The action could not be completed.' }; }
+    if (!alive || token !== generation || runs.get(actionId) !== run) return result;
+    const outcome = typeof result === 'object' && result !== null && 'ok' in result && typeof result.ok === 'boolean'
+      ? { ok: result.ok, ...('code' in result && typeof result.code === 'string' ? { code: result.code } : {}), ...('message' in result && typeof result.message === 'string' ? { message: result.message } : {}) }
+      : { ok: false, code: 'ACTION_RESULT_INVALID', message: 'The action returned an invalid result.' };
+    actionStatuses[actionId] = { pending: false, feedback: actionFeedback(outcome) };
+    if (connection?.pending) setState(connection.pending, false);
+    if (connection?.error) setState(connection.error, outcome.ok ? '' : outcome.message ?? 'The action failed.');
+    if (outcome.ok) {
+      if (connection?.result && typeof result === 'object' && result !== null && 'value' in result) setState(connection.result, result.value);
+      for (const [key, value] of Object.entries(connection?.successValues ?? {})) setState(key, value);
+    }
+    onActionResult?.(actionId, result);
+    return result;
   }
 
   const tokens: Record<string, string> = $derived(
@@ -155,23 +222,26 @@
 <svelte:element
   this={as}
   class={rootClass}
+  data-ui-owner-root={ownerId}
   data-ui-document={plan.documentId}
   data-ui-revision={plan.revision}
   aria-label={ariaLabel}
 >
-  {#key plan.sourceDigest}
+  {#key generation}
     {#each plan.structure as instruction (instruction.occurrenceKey)}
       <RenderNode
         {instruction}
         {plan}
-        {planHolder}
+        {generation}
+        {ownerId}
         {extensionDescriptors}
         {extensionImplementations}
         {scope}
         instancePath={[]}
         repeatKeys={[]}
         slotFills={{}}
-        {dispatch}
+        dispatch={runAction}
+        {actionStatuses}
         {navigate}
         {setState}
         {selectOccurrence}

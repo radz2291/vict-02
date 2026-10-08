@@ -1,9 +1,11 @@
 <script lang="ts">
+  import type { UiComponentTargetAttributes } from './document/extensions.js';
   import type { Snippet } from 'svelte';
   import { Dialog } from 'bits-ui';
   import { resolveApplicationComposition, resolvePageComposition, type UiApplicationComposition, type UiShellBreadcrumb, type UiShellGroup } from '@victframework/ui';
 
   interface Props {
+    presentation?: UiComponentTargetAttributes;
     title?: string;
     brand?: string;
     screenId?: string;
@@ -14,7 +16,7 @@
     breadcrumbs?: readonly UiShellBreadcrumb[];
     children: Snippet;
   }
-  let { title = '', brand = 'Workspace', screenId, path, composition, pageComposition, groups = [], breadcrumbs = [], children }: Props = $props();
+  let { presentation, title = '', brand = 'Workspace', screenId, path, composition, pageComposition, groups = [], breadcrumbs = [], children }: Props = $props();
   const shell = $derived(resolveApplicationComposition(composition));
   const page = $derived(pageComposition ?? resolvePageComposition(composition));
   const hasNavigation = $derived(shell.navigation !== 'none' && groups.some(group => group.links.length > 0));
@@ -47,7 +49,7 @@
   {/each}
 {/snippet}
 
-<div class="vict-shell" data-navigation={hasNavigation ? shell.navigation : 'none'}
+<div {...presentation} class={['vict-shell', presentation?.class ?? ''].join(' ')} data-navigation={hasNavigation ? shell.navigation : 'none'}
   data-navigation-at={shell.navigationAt} data-density={page.density}>
   <header class="vict-header">
     {#if hasNavigation}

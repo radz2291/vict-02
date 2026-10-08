@@ -7,6 +7,8 @@
 
 import {
   evaluateExpression,
+  isUiValueOfType,
+  type UiPropDecl,
   type UiExpression,
   type UiScopeValues,
   type UiRenderInstruction,
@@ -25,6 +27,7 @@ export interface DocumentScope {
     readonly name: string;
     readonly value: Readonly<Record<string, unknown>>;
   };
+  readonly repeatItems?: Readonly<Record<string, Readonly<Record<string, unknown>>>>;
   /** The emitted payload while resolving an output-binding template. */
   readonly output?: unknown;
 }
@@ -37,6 +40,7 @@ export function toScopeValues(scope: DocumentScope): UiScopeValues {
     state: scope.state,
     tokens: scope.tokens,
     ...(scope.repeatItem !== undefined ? { repeatItem: scope.repeatItem } : {}),
+    ...(scope.repeatItems !== undefined ? { repeatItems: scope.repeatItems } : {}),
     ...(scope.output !== undefined ? { output: scope.output } : {}),
   };
 }
@@ -146,7 +150,7 @@ export function styleRulesToCss(plan: UiRenderPlan, rootClass: string): string {
   const plain: string[] = [];
   for (const rule of sorted) {
     const lines: string[] = [];
-    for (const declaration of rule.declarations) {
+    for (const [index, declaration] of rule.declarations.entries()) {
       if (declaration.value.type === 'literal') {
         lines.push(`  ${declaration.property}: ${String(declaration.value.value)};`);
       } else if (declaration.value.type === 'token') {
@@ -154,7 +158,7 @@ export function styleRulesToCss(plan: UiRenderPlan, rootClass: string): string {
           `  ${declaration.property}: var(--ui-token-${sanitizeTokenId(declaration.value.id)});`,
         );
       }
-      // binding values are runtime expressions; skipped in static CSS
+      if (declaration.value.type === 'expression') lines.push(`  ${declaration.property}: var(${bindingVariable(rule.ruleId, index)});`);
     }
     const declarations = lines.join('\n');
     if (declarations === '') continue;
@@ -167,7 +171,8 @@ export function styleRulesToCss(plan: UiRenderPlan, rootClass: string): string {
           rule.pseudo !== undefined
           ? `.${escapedRoot} ${escapeCss(rule.selector)}:${rule.pseudo}`
           : `.${escapedRoot} ${escapeCss(rule.selector)}`;
-    const css = `${selector} {\n${declarations}\n}`;
+    const ownedSelector = rule.selector === ':root' ? selector : `${selector}, .${escapeCss(rule.selector).slice(1)}.${escapedRoot}${rule.pseudo ? `:${rule.pseudo}` : ''}`;
+    const css = `${ownedSelector} {\n${declarations}\n}`;
     if (rule.containerConditionId !== undefined) {
       const condition = conditions[rule.containerConditionId];
       if (condition?.kind === 'container') {
@@ -242,8 +247,10 @@ export function walkInstructions(
     case 'unsupported':
       instruction.children.forEach((child) => walkInstructions(child, visit));
       break;
-    case 'text':
     case 'extension':
+      Object.values(instruction.slots ?? {}).forEach(children => children.forEach(child => walkInstructions(child, visit)));
+      break;
+    case 'text':
       break;
   }
 }
@@ -265,21 +272,50 @@ export function asRecord(value: unknown): Record<string, unknown> {
 /** Evaluate a component/extension instruction's declared props (typed, with defaults). */
 export function evaluatedComponentProps(
   instruction: {
-    readonly propDecls: readonly {
-      readonly name: string;
-      readonly default?: string | number | boolean;
-    }[];
+    readonly propDecls: readonly UiPropDecl[];
     readonly propValues: Readonly<Record<string, UiExpression>>;
   },
   scope: DocumentScope,
 ): Record<string, unknown> {
+  return evaluateComponentPropValues(instruction, scope).values;
+}
+
+/** Invalid evaluated props refuse rendering rather than falling through to adapter defaults. */
+export function evaluateComponentPropValues(
+  instruction: { readonly propDecls: readonly UiPropDecl[]; readonly propValues: Readonly<Record<string, UiExpression>> },
+  scope: DocumentScope,
+): { readonly values: Record<string, unknown>; readonly invalidNames: readonly string[] } {
   const out: Record<string, unknown> = {};
+  const invalidNames: string[] = [];
   for (const declaration of instruction.propDecls) {
     const declared = instruction.propValues[declaration.name];
-    out[declaration.name] =
+    const value =
       declared !== undefined
         ? resolveValue({ type: 'expression', expression: declared }, scope)
         : declaration.default;
+    if (value === undefined && declared === undefined && declaration.default === undefined) continue;
+    if (declaration.type === 'array' ? Array.isArray(value) : isUiValueOfType(value, declaration.type)) {
+      out[declaration.name] = Array.isArray(value) ? value.slice() : value;
+    } else invalidNames.push(declaration.name);
   }
-  return out;
+  return { values: out, invalidNames };
+}
+
+function bindingVariable(ruleId: string, index: number): string {
+  return `--ui-binding-${ruleId.replace(/[^A-Za-z0-9_-]/g, '_')}-${index}`;
+}
+/** Runtime CSS variables preserve static cascade/gating for authored binding values. */
+export function bindingStyleVariables(ids: readonly string[], plan: UiRenderPlan, scope: DocumentScope): string {
+  const declarations: string[] = [];
+  for (const rule of plan.style.rules) {
+    if (!ids.includes(rule.ruleId)) continue;
+    rule.declarations.forEach((decl, index) => {
+      if (decl.value.type !== 'expression') return;
+      const value = resolveValue(decl.value, scope);
+      if ((typeof value === 'string' && !/[;{}<>]/.test(value)) || (typeof value === 'number' && Number.isFinite(value))) {
+        declarations.push(`${bindingVariable(rule.ruleId, index)}: ${String(value)};`);
+      }
+    });
+  }
+  return declarations.join(' ');
 }

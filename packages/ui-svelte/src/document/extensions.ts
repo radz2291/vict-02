@@ -17,6 +17,8 @@ export interface UiSvelteExtensionProps {
   readonly props: Readonly<Record<string, unknown>>;
   readonly occurrenceKey: string;
   readonly nodeId: string;
+  /** Declared rendered targets, including portal ownership and selection metadata. */
+  readonly presentation?: UiComponentPresentation;
 }
 
 /** Code registration is outside serialized source and requires exact identity. */
@@ -25,6 +27,7 @@ export interface UiSvelteExtensionImplementation {
   readonly revision: string;
   readonly rendererImplementationId: string;
   readonly component: Component<UiSvelteExtensionProps>;
+  readonly styleTargets?: readonly string[];
 }
 
 /**
@@ -36,13 +39,14 @@ export interface UiSvelteExtensionImplementation {
 export interface UiSvelteComponentIO {
   /** Emit a declared output. Only declared names are delivered. */
   readonly emit: (output: string, payload?: UiValue) => void;
+  readonly slots?: Readonly<Record<string, Snippet>>;
+  readonly action?: UiComponentActionStatus;
 }
 
 /** Props + IO contract for a component-ABI implementation (amendment §3.4). */
 export interface UiSvelteComponentProps extends UiSvelteExtensionProps {
   readonly io?: UiSvelteComponentIO;
-  /** Declared slot fills rendered in the instance scope (single-slot). */
-  readonly children?: Snippet;
+
 }
 
 /**
@@ -58,6 +62,8 @@ export interface UiSvelteComponentImplementation {
   readonly abi: typeof UI_COMPONENT_ABI;
   /** Descriptor slot names this implementation can render (capability). */
   readonly slots: readonly string[];
+  /** Exposed presentation targets this implementation actually forwards. */
+  readonly styleTargets?: readonly string[];
   /** Subset of `slots` the implementation contract requires to be filled. */
   readonly required?: readonly string[];
   readonly component: Component<UiSvelteComponentProps>;
@@ -164,6 +170,10 @@ export function resolveSvelteComponent(
         'UI_RENDER_EXTENSION_UNAVAILABLE',
         'Exactly one renderer implementation matching the declared identity is required.',
       );
+    if (((instruction.styleRuleIds?.length ?? 0) > 0 || (instruction.classes?.length ?? 0) > 1) &&
+      descriptor.styleTargets?.some(target => !legacyMatches[0]!.styleTargets?.includes(target))) {
+      return fail('UI_COMPONENT_STYLE_UNAVAILABLE', 'The legacy implementation does not forward the declared style target.');
+    }
     return { ok: true, kind: 'extension', component: legacyMatches[0]!.component };
   }
   // Component-ABI path: the marker must be present and consistent, and the
@@ -203,9 +213,14 @@ export function resolveSvelteComponent(
       'Descriptor ABI and implementation ABI must be the same literal.',
     );
   }
+  if ((instruction.styleRuleIds?.length ?? 0) > 0 || (instruction.classes?.length ?? 0) > 1) {
+    if ((descriptor.styleTargets?.length ?? 0) === 0 || descriptor.styleTargets?.some(target => !implementation.styleTargets?.includes(target))) {
+      return fail('UI_COMPONENT_STYLE_UNAVAILABLE', 'The implementation cannot forward the declared style target.');
+    }
+  }
   const filledSlots = Object.keys(instruction.slots ?? {});
   for (const slotName of filledSlots) {
-    if (!implementation.slots.includes(slotName)) {
+    if (!descriptor.slots?.includes(slotName) || !implementation.slots.includes(slotName)) {
       return fail(
         'UI_COMPONENT_SLOT_UNAVAILABLE',
         `The implementation cannot render the declared, filled slot '${slotName}'.`,
@@ -249,4 +264,32 @@ export function resolveSvelteExtension(
         };
   }
   return { ok: false, diagnostic: resolution.diagnostic };
+}
+
+/** Attributes must be spread on a real declared root/part, never a measurement wrapper. */
+export interface UiComponentTargetAttributes {
+  readonly class: string;
+  readonly style?: string;
+  readonly 'data-ui-owner'?: string;
+  readonly 'data-ui-primary'?: string;
+  readonly 'data-ui-node'?: string;
+  readonly 'data-ui-occ'?: string;
+  readonly 'data-ui-part'?: string;
+  readonly onpointerdown?: (event: PointerEvent) => void;
+}
+export interface UiComponentPresentation {
+  /** The first declared style target owns instance styles; other targets expose inspection. */
+  readonly target: (name: string) => UiComponentTargetAttributes;
+}
+
+/** Execution status is ephemeral presentation state, separate from authored bindings. */
+export interface UiComponentActionStatus {
+  readonly pending: boolean;
+  readonly feedback: import('@victframework/ui').UiActionFeedback | null;
+}
+export interface UiActionStateConnection {
+  readonly pending?: string;
+  readonly error?: string;
+  readonly result?: string;
+  readonly successValues?: Readonly<Record<string, UiValue>>;
 }

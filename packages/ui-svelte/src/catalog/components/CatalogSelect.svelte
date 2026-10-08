@@ -8,13 +8,14 @@
    * render through bits-ui's configured portal target (ControlScope root).
    */
   import { Select } from 'bits-ui';
-  import type { UiSvelteComponentIO } from '../../document/extensions.js';
+  import type { UiSvelteComponentIO, UiComponentPresentation } from '../../document/extensions.js';
 
   interface Props {
     readonly props: Readonly<Record<string, unknown>>;
     readonly io?: UiSvelteComponentIO;
+    readonly presentation?: UiComponentPresentation;
   }
-  let { props, io }: Props = $props();
+  let { props, io, presentation }: Props = $props();
   const options = $derived(
     Array.isArray(props.options)
       ? (props.options as readonly { value?: unknown; label?: unknown }[]).map((option) => ({
@@ -39,11 +40,11 @@
       if (typeof next === 'string') io?.emit('valueChange', next);
     }}
   >
-    <Select.Trigger>
+    <Select.Trigger {...presentation?.target('root')}>
       <span>{selectedLabel}</span>
     </Select.Trigger>
     <Select.Portal>
-      <Select.Content sideOffset={6} align="start" collisionPadding={16}>
+      <Select.Content {...presentation?.target('content')} sideOffset={6} align="start" collisionPadding={16}>
         {#each options as option (option.value)}
           <Select.Item {...option}>{option.label}</Select.Item>
         {/each}

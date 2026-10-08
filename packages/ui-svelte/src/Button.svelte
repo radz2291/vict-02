@@ -1,7 +1,10 @@
 <script lang="ts">
+  import type { UiComponentTargetAttributes } from './document/extensions.js';
   import type { UiButtonVariant } from '@victframework/ui';
 
   interface Props {
+    presentation?: UiComponentTargetAttributes;
+    busy?: boolean;
     label: string;
     variant?: UiButtonVariant;
     type?: 'button' | 'submit';
@@ -15,12 +18,14 @@
     onclick?: (event: MouseEvent) => void;
   }
 
-  let { label, variant = 'primary', type = 'button', disabled = false, surfaceId, actionKind, actionId, testId, haspopup, expanded, onclick }: Props = $props();
+  let { presentation, busy, label, variant = 'primary', type = 'button', disabled = false, surfaceId, actionKind, actionId, testId, haspopup, expanded, onclick }: Props = $props();
 </script>
 
 <button
+  {...presentation}
+  aria-busy={busy || undefined}
   {type}
-  class="vict-btn"
+  class={['vict-btn', presentation?.class ?? ''].join(' ')}
   class:vict-btn--secondary={variant === 'secondary'}
   class:vict-btn--danger={variant === 'danger'}
   data-surface={surfaceId}

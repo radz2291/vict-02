@@ -70,3 +70,5 @@ export { RendererDiagnostic } from '@victframework/application/renderer';
 
 // ---- U1 document renderer (vict.ui-render-plan@1 consumer) ------------------
 export * from './document/logic.js';
+
+export type { UiComponentPresentation, UiComponentTargetAttributes, UiActionStateConnection, UiComponentActionStatus } from './document/extensions.js';

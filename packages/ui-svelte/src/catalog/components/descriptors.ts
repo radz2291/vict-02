@@ -28,6 +28,7 @@ export const catalogButtonDescriptor: UiExtensionDescriptor = {
     },
   ],
   rendererImplementationId: 'vict.svelte.catalog',
+  styleTargets: ['root'],
 };
 
 export const catalogCheckboxDescriptor: UiExtensionDescriptor = {
@@ -36,6 +37,7 @@ export const catalogCheckboxDescriptor: UiExtensionDescriptor = {
   abi: 'vict.ui-component-abi@1',
   events: [...ABI],
   props: [
+    { name: 'disabled', type: 'boolean', default: false },
     { name: 'label', type: 'string', default: '' },
     { name: 'checked', type: 'boolean', default: false },
   ],
@@ -47,6 +49,7 @@ export const catalogCheckboxDescriptor: UiExtensionDescriptor = {
     },
   ],
   rendererImplementationId: 'vict.svelte.catalog',
+  styleTargets: ['root'],
   inspectionLimits: ['internal focus ring styling'],
 };
 
@@ -68,6 +71,7 @@ export const catalogSelectDescriptor: UiExtensionDescriptor = {
     },
   ],
   rendererImplementationId: 'vict.svelte.catalog',
+  styleTargets: ['root', 'content'],
 };
 
 export const catalogDialogDescriptor: UiExtensionDescriptor = {
@@ -79,6 +83,7 @@ export const catalogDialogDescriptor: UiExtensionDescriptor = {
     { name: 'title', type: 'string', default: '' },
     { name: 'open', type: 'boolean', default: false },
   ],
+  inspectionLimits: ['Focus management and closed internal parts are implementation-owned.'],
   outputs: [
     {
       name: 'openChange',
@@ -88,6 +93,7 @@ export const catalogDialogDescriptor: UiExtensionDescriptor = {
   ],
   slots: ['body'],
   rendererImplementationId: 'vict.svelte.catalog',
+  styleTargets: ['root', 'trigger'],
 };
 
 export const catalogAppShellDescriptor: UiExtensionDescriptor = {
@@ -95,10 +101,17 @@ export const catalogAppShellDescriptor: UiExtensionDescriptor = {
   revision: '1',
   abi: 'vict.ui-component-abi@1',
   events: [...ABI],
-  props: [{ name: 'title', type: 'string', default: '' }],
+  props: [
+    { name: 'title', type: 'string', default: '' },
+    { name: 'navigation', type: 'array' },
+    { name: 'path', type: 'string', default: '' },
+    { name: 'navigationMode', type: 'string', default: 'sidebar' },
+    { name: 'navigationAt', type: 'string', default: 'small' },
+  ],
   outputs: [],
   slots: ['content'],
   rendererImplementationId: 'vict.svelte.catalog',
+  styleTargets: ['root'],
 };
 
 export const catalogSwitchDescriptor: UiExtensionDescriptor = {
@@ -107,6 +120,7 @@ export const catalogSwitchDescriptor: UiExtensionDescriptor = {
   abi: 'vict.ui-component-abi@1',
   events: [...ABI],
   props: [
+    { name: 'disabled', type: 'boolean', default: false },
     { name: 'label', type: 'string', default: '' },
     { name: 'checked', type: 'boolean', default: false },
   ],
@@ -118,6 +132,7 @@ export const catalogSwitchDescriptor: UiExtensionDescriptor = {
     },
   ],
   rendererImplementationId: 'vict.svelte.catalog',
+  styleTargets: ['root'],
 };
 
 export const catalogToggleDescriptor: UiExtensionDescriptor = {
@@ -126,6 +141,7 @@ export const catalogToggleDescriptor: UiExtensionDescriptor = {
   abi: 'vict.ui-component-abi@1',
   events: [...ABI],
   props: [
+    { name: 'disabled', type: 'boolean', default: false },
     { name: 'label', type: 'string', default: '' },
     { name: 'pressed', type: 'boolean', default: false },
   ],
@@ -137,6 +153,7 @@ export const catalogToggleDescriptor: UiExtensionDescriptor = {
     },
   ],
   rendererImplementationId: 'vict.svelte.catalog',
+  styleTargets: ['root'],
 };
 
 export const catalogRadioGroupDescriptor: UiExtensionDescriptor = {
@@ -145,6 +162,7 @@ export const catalogRadioGroupDescriptor: UiExtensionDescriptor = {
   abi: 'vict.ui-component-abi@1',
   events: [...ABI],
   props: [
+    { name: 'disabled', type: 'boolean', default: false },
     { name: 'label', type: 'string', default: '' },
     { name: 'options', type: 'array' },
     { name: 'value', type: 'string', default: '' },
@@ -157,6 +175,7 @@ export const catalogRadioGroupDescriptor: UiExtensionDescriptor = {
     },
   ],
   rendererImplementationId: 'vict.svelte.catalog',
+  styleTargets: ['root'],
 };
 
 /** All eight B1 descriptors in stable registration order. */

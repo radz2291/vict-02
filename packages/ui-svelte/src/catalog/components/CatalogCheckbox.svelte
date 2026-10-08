@@ -7,19 +7,20 @@
    * `checkedChange` emits out; the authored binding closes the loop.
    */
   import { Checkbox } from 'bits-ui';
-  import type { UiSvelteComponentIO } from '../../document/extensions.js';
+  import type { UiSvelteComponentIO, UiComponentPresentation } from '../../document/extensions.js';
 
   interface Props {
     readonly props: Readonly<Record<string, unknown>>;
     readonly io?: UiSvelteComponentIO;
+    readonly presentation?: UiComponentPresentation;
   }
-  let { props, io }: Props = $props();
+  let { props, io, presentation }: Props = $props();
   const label = $derived(typeof props.label === 'string' ? props.label : '');
   const checked = $derived(props.checked === true);
   const disabled = $derived(props.disabled === true);
 </script>
 
-<label class="vict-control-row" data-testid="catalog-checkbox">
+<label {...presentation?.target('root')} class={['vict-control-row', presentation?.target('root').class ?? ''].join(' ')} data-testid="catalog-checkbox">
   <Checkbox.Root
     {checked}
     {disabled}

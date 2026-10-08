@@ -9,15 +9,14 @@
    * ControlScope root).
    */
   import { Dialog } from 'bits-ui';
-  import type { Snippet } from 'svelte';
-  import type { UiSvelteComponentIO } from '../../document/extensions.js';
+  import type { UiSvelteComponentIO, UiComponentPresentation } from '../../document/extensions.js';
 
   interface Props {
     readonly props: Readonly<Record<string, unknown>>;
     readonly io?: UiSvelteComponentIO;
-    readonly children?: Snippet;
+    readonly presentation?: UiComponentPresentation;
   }
-  let { props, io, children }: Props = $props();
+  let { props, io, presentation }: Props = $props();
   const title = $derived(typeof props.title === 'string' ? props.title : '');
   const open = $derived(props.open === true);
 </script>
@@ -27,14 +26,14 @@
     {open}
     onOpenChange={(next) => io?.emit('openChange', next === true)}
   >
-    <Dialog.Trigger data-testid="dialog-trigger">Open {title}</Dialog.Trigger>
+    <Dialog.Trigger {...presentation?.target('trigger')} data-testid="dialog-trigger">Open {title}</Dialog.Trigger>
     <Dialog.Portal>
       <Dialog.Overlay data-testid="dialog-overlay" />
-      <Dialog.Content data-testid="dialog-panel">
+      <Dialog.Content {...presentation?.target('root')} data-testid="dialog-panel">
         <Dialog.Title>{title || 'Dialog'}</Dialog.Title>
         <Dialog.Close aria-label="Close" data-testid="dialog-close">✕</Dialog.Close>
         <div class="vict-overlay-body">
-          {@render children?.()}
+          {@render io?.slots?.body?.()}
         </div>
       </Dialog.Content>
     </Dialog.Portal>

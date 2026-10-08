@@ -5,13 +5,14 @@
    * S-scalar pressed loop: `pressed` in, `pressedChange` out.
    */
   import { Toggle } from 'bits-ui';
-  import type { UiSvelteComponentIO } from '../../document/extensions.js';
+  import type { UiSvelteComponentIO, UiComponentPresentation } from '../../document/extensions.js';
 
   interface Props {
     readonly props: Readonly<Record<string, unknown>>;
     readonly io?: UiSvelteComponentIO;
+    readonly presentation?: UiComponentPresentation;
   }
-  let { props, io }: Props = $props();
+  let { props, io, presentation }: Props = $props();
   const label = $derived(typeof props.label === 'string' ? props.label : '');
   const pressed = $derived(props.pressed === true);
   const disabled = $derived(props.disabled === true);
@@ -19,6 +20,7 @@
 
 <span data-testid="catalog-toggle" style="display: inline-block">
   <Toggle.Root
+    {...presentation?.target('root')}
     {pressed}
     {disabled}
     onPressedChange={(next) => io?.emit('pressedChange', next === true)}
