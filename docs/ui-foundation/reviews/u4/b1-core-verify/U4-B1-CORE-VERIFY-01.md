@@ -297,6 +297,12 @@ cd ../u4-consumer-isolated/u4-consumer
 npm run dev                                # / = authoring, /app.html = finished app
 ```
 
+Environment note (this round): running `scripts/pack-u4-consumer.mjs` from a
+tmux/Git-Shell pane aborts with `stdout is not a tty` (execSync + npm.cmd
+piping quirk). Run it directly from a normal shell — it then executes the
+full pipeline (this round's log: `pack-run2.log`; its nonzero exit was ONLY
+the 7 known F1 test failures, everything else green).
+
 ## 7. Codex repair handoff (implementation-ready)
 
 **Candidate**: `098b84e3a342793c6bdb19b1e8b8e6a72f1c2220`.
