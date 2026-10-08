@@ -1,0 +1,31 @@
+{
+  "name": "u4-consumer",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "U4-B1 independent clean consumer: authors B1 catalog controls through the Inspector (editor entry) and replays the saved document in the finished application (app entry). Built strictly from packed artifacts in the isolated verification.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@victframework/application": "0.4.0-rc.1",
+    "@victframework/control": "0.4.0-rc.1",
+    "@victframework/contracts": "0.4.0-rc.1",
+    "@victframework/kernel": "0.4.0-rc.1",
+    "@victframework/runtime": "0.4.0-rc.1",
+    "@victframework/ui": "0.4.0-rc.1",
+    "@victframework/ui-editor": "0.4.0-rc.1",
+    "@victframework/ui-svelte": "0.4.0-rc.1"
+  },
+  "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "^5.0.3",
+    "happy-dom": "^15.11.7",
+    "svelte": "^5.28.0",
+    "vite": "^6.3.5",
+    "vitest": "^3.1.1"
+  },
+  "license": "Apache-2.0"
+}

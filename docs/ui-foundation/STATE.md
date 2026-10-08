@@ -60,6 +60,22 @@ freeze-check `U4 CATALOG REPAIR FREEZE CHECK 04: VERIFIED`
 ([reviews/u4/FREEZE-CHECK-04.md](reviews/u4/FREEZE-CHECK-04.md)). Next
 authorized action: owner decision on batch B1 via the handoff §13.1
 prompt (which pins FREEZE-02 + payload 4cfe5b37…).
+**AUTHORIZED-B1 IN FLIGHT** (branch codex/ui-foundation-u4-b1 from
+e469145, worktree vict-02-u4-b1): contract core landed — values.ts
+carrier+guard, 8-boundary widening, compile gates (effective revision,
+ABI marker, outputDecls artifact marker, binding checks, slot
+rejection), setOutputBinding op, application action-input catalog,
+ui-svelte component bridge (typed emit, stale gate, slot snippets), 8
+wrappers+descriptors, editor scope (descriptor-driven Inspector +
+output connections + StateValuesPanel), F3 packaging repair (emitting
+dist + declaration fixes), consumer example (multi-entry Vite;
+authoring 89.9 kB vs finished-app 2.6 kB bundles; 16/16 consumer tests;
+workspace suite 2662/2662 green). REMAINING for the B1 gate: run
+scripts/pack-u4-consumer.mjs to green (npm pack tty quirk on Windows —
+fix execSync invocation), browser-based authoring evidence + walkthrough,
+records (ledger rows + reconciliation, U4-B1-HANDOFF, DECISIONS), the
+three independent reviews + repairs + rechecks, push + delivery. Owner
+acceptance stays PENDING at the founder checkpoint.
 Amendment work is isolated on `codex/ui-foundation-u4-component-amendment`
 (from the prepared handoff records `cfbd6d3…`); U0–U3 records untouched.
 The prepared U4 handoff was independently reviewed on

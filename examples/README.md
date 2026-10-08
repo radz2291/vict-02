@@ -68,3 +68,16 @@ and reproducible:
 
 Demo state always rebuilds deterministically from the committed seeds
 (**Reset demo** buttons; delete the SQLite file for a durable reset).
+
+## u4-consumer (U4 batch B1)
+
+`examples/u4-consumer/` — the independent clean consumer for the U4 batch B1
+catalog-authoring proof: a multi-entry Vite app whose AUTHORING workbench
+(`index.html`; EditorCanvas + Inspector + Layers + HistoryPanel +
+StateValuesPanel over a UiEditSession-backed store) edits the eight B1
+catalog controls, and whose FINISHED application (`app.html`; DocumentHost)
+replays the saved documents with **no authoring machinery in its bundle**.
+Built strictly from packed artifacts in the isolated verification
+(`scripts/pack-u4-consumer.mjs` — vendor tarballs, no workspace links,
+SHA-256 manifest in `pack-manifest.json`). Clean install/build/launch
+instructions in [u4-consumer/README.md](u4-consumer/README.md).
