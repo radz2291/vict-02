@@ -55,7 +55,11 @@ repairs -> round 2 **FAIL** (R2-B1: handoff splice duplication blocker
 — preserved in the record) -> repairs -> round 2b **PASS**.
 FROZEN — VERIFIED (SUPERSEDING): repaired-contract payload
 `4cfe5b37…`, pins in
-[U4-CATALOG-RECALIBRATION-FREEZE-02](U4-CATALOG-RECALIBRATION-FREEZE-02.md).
+[U4-CATALOG-RECALIBRATION-FREEZE-02](U4-CATALOG-RECALIBRATION-FREEZE-02.md);
+freeze-check `U4 CATALOG REPAIR FREEZE CHECK 04: VERIFIED`
+([reviews/u4/FREEZE-CHECK-04.md](reviews/u4/FREEZE-CHECK-04.md)). Next
+authorized action: owner decision on batch B1 via the handoff §13.1
+prompt (which pins FREEZE-02 + payload 4cfe5b37…).
 Amendment work is isolated on `codex/ui-foundation-u4-component-amendment`
 (from the prepared handoff records `cfbd6d3…`); U0–U3 records untouched.
 The prepared U4 handoff was independently reviewed on

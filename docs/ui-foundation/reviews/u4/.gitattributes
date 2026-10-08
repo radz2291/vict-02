@@ -13,3 +13,4 @@ reconcile-ledger.mjs -text
 output-after-repair.txt -text
 f1-signatures.ts -text
 U4-REPAIR-REVIEW-01.md -text
+FREEZE-CHECK-04.md -text

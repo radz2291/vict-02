@@ -5,7 +5,8 @@ Status: **SUPERSEDES the payload of
 FROZEN, VERIFIED** (payload `4cfe5b37…`; independent freeze-check
 `U4 CATALOG REPAIR FREEZE CHECK 04: VERIFIED`, §6 below). U4 runtime
 implementation remains UNAUTHORIZED; this record freezes the **repaired
-contract** only.
+contract** only. Next authorized action: owner decision on batch B1 via
+the handoff §13.1 prompt (which pins THIS record and payload).
 
 ## 1. Why this record supersedes the recalibration freeze's payload
 
@@ -120,21 +121,37 @@ every batch gate; probes are validator/byte-level only (no browser);
 bits-ui cited shapes require re-verification on upgrade; Studio config
 editing for higher-level components remains PENDING owner authorization.
 
-## 6. Freeze check (separate fresh checker)
+## 6. Freeze check (separate fresh checker) — VERIFIED
 
-PENDING at this record's first commit: a checker independent of the
-repair authors and the R1 reviewer must (a) reproduce every §3 pin from
-the payload commit and the live bytes (both methods), (b) confirm the
-empty-marker nature of `4cfe5b37…` and that its parent carries the
-pinned bytes, (c) confirm payloads `52684696…`, `460d963…`, `68e166f…`
-and all earlier freeze records/reviews/probe evidence remain
-byte-preserved, (d) verify scope (the repair-cycle diff:
-docs/ui-foundation/** + the mechanical root `.prettierignore` additions
-for the two new evidence dirs — nothing else, no source code), (e)
-verify the review lineage including the FAIL round and the 2b PASS,
-(f) statically verify the frozen contract statements (schema strings
-unchanged; ABI marker requirement present; fixture set = 3 positive + 7
-negative cases, each with a diagnostic; `UI_DOC_INVALID_LITERAL` absent
-from `packages/ui/src/diagnostics.ts`; §10.1a/§3.4 signature agreement),
-and (g) confirm the §13.1 authority pin names THIS record. Its verdict
-is appended below at the final records commit.
+Checker independent of the repair authors and the R1/R2 reviewer, all
+evidence byte-derived. Full report imported verbatim:
+[reviews/u4/FREEZE-CHECK-04.md](reviews/u4/FREEZE-CHECK-04.md) (sha256
+`3e17de2c2c83656470a4f8b70078a7b6b3ecd83061ee6aa7c3d1e28141e301d4`),
+ending **`U4 CATALOG REPAIR FREEZE CHECK 04: VERIFIED`** at pinned HEAD
+`7554294…`. All ten steps passed: (1–2) all seven SHA-256 pins reproduce
+from the payload commit AND live bytes (14/14, both methods); (3)
+`4cfe5b37…` confirmed an empty marker whose parent `46c5064…` carries
+the pinned bytes; (4) preservation — the recalibration payload's seven
+pins reproduce from `52684696…` (amendment pin `b3e68055…` there, absent
+at the new payload: supersession as claimed), amendment payloads
+`460d963…`/`68e166f…` reachable, the three positive fixtures hash-
+identical across both payloads (re-pinned unchanged) while
+amendment/recalibration/README/invalid-cases-recal hashes differ (6→7
+cases: R7 added), and ALL earlier preservation artifacts blob-identical
+between the branch base `b05d016…` (= live remote recalibration tip) and
+HEAD; (5) lineage in first-parent order including the PRESERVED FAIL
+round; (6) repair-cycle scope exactly docs/ui-foundation/** + the two
+mechanical `.prettierignore` evidence-dir lines; (7) report integrity —
+round-1 prefix hash `d86bdb91…` (with the documented newline-inclusive
+pin rule), round-2 FAIL line preserved, file ends with the round-2b
+PASS verdict, `-text` confirmed; (8) BOTH probes rerun byte-
+consistently (validator probe verdict lines + PROBE OK; reconciliation
+output byte-identical, RECONCILIATION OK) and the strict typecheck
+exits 0; (9) static contract checks — §10.1a/§3.4/§3.2 signature
+agreement, the split §4.3 rows with validation-gate rejection, schema
+strings matching source constants, ABI marker present, fixtures parse,
+`UI_DOC_INVALID_LITERAL` absent from `packages/ui/src/diagnostics.ts`,
+collapsible assigned in §7 + matrix with the prose after the contiguous
+table; (10) STATE/DECISIONS/§13.1 consistent — the authority pin names
+THIS record + payload (F-1 closed), §12.2 visibly superseded, runtime
+unauthorized.

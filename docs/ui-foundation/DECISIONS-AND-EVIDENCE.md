@@ -1076,7 +1076,13 @@ Owner findings F1–F4, repaired on `codex/ui-foundation-u4-catalog-repair`
   candidate bytes + re-anchored edits) -> round 2b **PASS**. Frozen
   (SUPERSEDING): repaired-contract payload `4cfe5b37…`, record
   [U4-CATALOG-RECALIBRATION-FREEZE-02](U4-CATALOG-RECALIBRATION-FREEZE-02.md)
-  (7 pins; report sha256 `4fb82541…`). Noted-not-repaired, deliberately:
+  (7 pins; report sha256 `4fb82541…`). Freeze-check (separate fresh
+  checker): `U4 CATALOG REPAIR FREEZE CHECK 04: VERIFIED`
+  ([reviews/u4/FREEZE-CHECK-04.md](reviews/u4/FREEZE-CHECK-04.md),
+  sha256 `3e17de2c…`): 14/14 pins, marker-commit proof, ALL earlier
+  payloads/artifacts preserved, FAIL-round lineage intact, both probes
+  rerun byte-consistently, strict typecheck exit 0, static contract
+  checks pass. Noted-not-repaired, deliberately:
   F-1 (13.1 pin — closed in the records commit by pointing at FREEZE-02),
   F-6 (evidence annotations byte-verbatim), F-7 (repair-cycle scope:
   docs/ui-foundation/** + mechanical .prettierignore additions only).
