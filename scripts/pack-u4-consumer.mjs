@@ -22,21 +22,39 @@ const repoRoot = path.resolve(
 const consumerSource = path.join(repoRoot, 'examples', 'u4-consumer');
 const isolatedRoot =
   process.env.U4_ISOLATED_ROOT ?? path.resolve(repoRoot, '..', 'u4-consumer-isolated');
-const PACKAGES = ['ui', 'ui-svelte', 'application', 'contracts', 'kernel', 'runtime', 'control'];
+const PACKAGES = [
+  'ui',
+  'ui-svelte',
+  'ui-editor',
+  'application',
+  'sdk',
+  'contracts',
+  'kernel',
+  'runtime',
+  'control',
+];
 
 function sh(command, options = {}) {
-  return execSync(command, {
-    stdio: ['pipe', 'pipe', 'inherit'],
-    encoding: 'utf8',
-    shell: true,
-    ...options,
-  });
+  try {
+    return execSync(command, {
+      stdio: ['pipe', 'pipe', 'pipe'],
+      encoding: 'utf8',
+      shell: process.platform === 'win32',
+      ...options,
+    });
+  } catch (error) {
+    console.error(`COMMAND FAILED: ${command}`);
+    console.error(String(error.stdout ?? '').slice(-1500));
+    console.error(String(error.stderr ?? '').slice(-1500));
+    throw error;
+  }
 }
 
 const sha256 = (file) => createHash('sha256').update(fs.readFileSync(file)).digest('hex');
 
 console.log('== 1. pack the closure ==');
-const vendorDir = path.join(isolatedRoot, 'vendor');
+// vendor lives INSIDE the copied consumer so its file: refs resolve
+const vendorDir = path.join(isolatedRoot, 'u4-consumer', 'vendor');
 fs.rmSync(isolatedRoot, { recursive: true, force: true });
 fs.mkdirSync(vendorDir, { recursive: true });
 const manifest = { packedAt: new Date().toISOString(), tarballs: {} };
@@ -80,6 +98,9 @@ sh('npm install --no-audit --no-fund --ignore-scripts=false', {
   cwd: isolatedConsumer,
   stdio: 'inherit',
 });
+
+console.log('== 3b. build from packed artifacts ==');
+sh('npx vite build', { cwd: isolatedConsumer, stdio: 'inherit' });
 
 console.log('== 4. verify isolation ==');
 const violations = [];

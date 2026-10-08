@@ -70,9 +70,13 @@ wrappers+descriptors, editor scope (descriptor-driven Inspector +
 output connections + StateValuesPanel), F3 packaging repair (emitting
 dist + declaration fixes), consumer example (multi-entry Vite;
 authoring 89.9 kB vs finished-app 2.6 kB bundles; 16/16 consumer tests;
-workspace suite 2662/2662 green). REMAINING for the B1 gate: run
-scripts/pack-u4-consumer.mjs to green (npm pack tty quirk on Windows —
-fix execSync invocation), browser-based authoring evidence + walkthrough,
+workspace suite 2662/2662 green). PACK-ISOLATION GREEN: scripts/pack-u4-consumer.mjs — 9 tarballs
+(closure incl. private ui-editor + sdk), isolated install/build/tests at
+C:/Users/RZ1/Desktop/RZ/u4-consumer-isolated (outside the workspace
+graph), zero link/repo-path violations, SHA-256 pack-manifest.json
+committed. The isolation check CAUGHT an incomplete closure
+(@victframework/sdk resolved from the public registry — fixed by packing
+it). REMAINING for the B1 gate: browser-based authoring evidence + walkthrough,
 records (ledger rows + reconciliation, U4-B1-HANDOFF, DECISIONS), the
 three independent reviews + repairs + rechecks, push + delivery. Owner
 acceptance stays PENDING at the founder checkpoint.
