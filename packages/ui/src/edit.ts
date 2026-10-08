@@ -24,7 +24,7 @@ import type {
 } from './document.js';
 import { UI_DOCUMENT_SCHEMA } from './document.js';
 import { uiDiagnostic, type UiDiagnostic } from './diagnostics.js';
-import { compileUiDocument } from './compile.js';
+import { compileUiDocument, isUiComponentPlanDiagnostic } from './compile.js';
 import { validateUiDocument } from './validate.js';
 import type { UiCatalogs } from './document.js';
 
@@ -628,7 +628,7 @@ export function applyUiEdit(
   // application inputs defers those diagnostics instead of failing edits
   // on pre-existing declared references. Structural validity stays fatal.
   const validation = validateUiDocument(working, catalogs ?? emptyCatalogs()).filter(
-    (issue) => !isDeferredProductReference(issue),
+    (issue) => !isDeferredProductReference(issue) && !isUiComponentPlanDiagnostic(issue, working, catalogs?.extensions ?? []),
   );
   if (validation.some((issue) => issue.severity === 'error')) {
     return {

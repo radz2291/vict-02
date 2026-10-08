@@ -425,7 +425,7 @@ export {
   isLeafElement,
 } from './semantic.js';
 export { isBoundedMediaQuery, validateUiDocument } from './validate.js';
-export { compileUiDocument } from './compile.js';
+export { compileUiDocument, isUiComponentPlanDiagnostic } from './compile.js';
 export type {
   UiCompileResult,
   UiExtensionDescriptor,

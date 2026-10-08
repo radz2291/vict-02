@@ -79,13 +79,21 @@
     catalogs ?? { elements: defaultSemanticElementCatalog(), actionIds: [], routeIds: [] },
   );
 
+  // Compiling reads the authored source only. Selection notifications and
+  // host-state mirrors can re-evaluate this derived without changing source;
+  // they must not manufacture a replacement plan / expire an active action.
+  let priorCompilation: { source: UiDocument; inputs: string; result: ReturnType<typeof compileUiDocument> } | undefined;
   const compiled = $derived.by(() => {
-    return compileUiDocument(document, effectiveCatalogs.elements, extensions, {
+    const inputs = JSON.stringify([document, effectiveCatalogs, extensions]);
+    if (priorCompilation?.source === document && priorCompilation.inputs === inputs) return priorCompilation.result;
+    const result = compileUiDocument(document, effectiveCatalogs.elements, extensions, {
       ...(effectiveCatalogs.actionIds !== undefined ? { actionIds: effectiveCatalogs.actionIds } : {}),
       ...(effectiveCatalogs.routeIds !== undefined ? { routeIds: effectiveCatalogs.routeIds } : {}),
       actionInputs: effectiveCatalogs.actionInputs,
       ...(effectiveCatalogs.viewFields !== undefined ? { viewFields: effectiveCatalogs.viewFields } : {}),
     });
+    priorCompilation = { source: document, inputs, result };
+    return result;
   });
 
   function handleSelect(occurrence: string): void {
@@ -104,23 +112,36 @@
   let canvasEl = $state<HTMLElement | undefined>(undefined);
   $effect(() => {
     const occurrence = selectedOccurrence;
-    const ok = compiled.ok;
+    void compiled;
     let cancelled = false;
-    void tick().then(() => {
+    let observer: MutationObserver | undefined;
+    let marked: HTMLElement | undefined;
+    const mark = () => {
       if (cancelled || canvasEl === undefined) return;
       const owner = canvasEl.querySelector<HTMLElement>('[data-ui-owner-root]')?.dataset.uiOwnerRoot;
-      const targets = Array.from(globalThis.document.querySelectorAll<HTMLElement>('[data-ui-owner]')).filter(element => element.dataset.uiOwner === owner);
+      if (owner === undefined) return;
+      // Include detached canvases as well as owned portals. An absent owner
+      // never matches another editor's unowned occurrences.
+      const targets = [...new Set([
+        ...canvasEl.querySelectorAll<HTMLElement>('[data-ui-occ]'),
+        ...globalThis.document.querySelectorAll<HTMLElement>('[data-ui-owner]'),
+      ])].filter(element => element.dataset.uiOwner === owner);
       for (const element of targets) element.removeAttribute('data-ui-selected');
-      if (occurrence !== undefined) {
-        const matching = targets.filter(element => element.dataset.uiOcc === occurrence);
-        const target = matching.find(element => element.hasAttribute('data-ui-primary') && element.getBoundingClientRect().width > 0)
-          ?? matching.find(element => element.getBoundingClientRect().width > 0);
-        target?.setAttribute('data-ui-selected', '');
-      }
-    });
-    return () => {
-      cancelled = true;
+      const matching = targets.filter(element => element.dataset.uiOcc === occurrence);
+      marked = occurrence === undefined ? undefined
+        : matching.find(element => element.hasAttribute('data-ui-primary')) ?? matching[0];
+      marked?.setAttribute('data-ui-selected', '');
     };
+    void tick().then(() => {
+      if (cancelled || canvasEl === undefined) return;
+      mark();
+      // A selected closed part can acquire its primary portal target later.
+      // Observe membership, never layout, and mark only this canvas's owner.
+      observer = new MutationObserver(mark);
+      observer.observe(globalThis.document.body, { childList: true, subtree: true });
+      observer.observe(canvasEl, { childList: true, subtree: true });
+    });
+    return () => { cancelled = true; observer?.disconnect(); marked?.removeAttribute('data-ui-selected'); };
   });
 
   const canvasClasses = $derived(
@@ -130,6 +151,13 @@
 
 {#if compiled.ok}
   <div class={canvasClasses} bind:this={canvasEl}>
+    {#if compiled.plan.diagnostics.length > 0}
+      <ul class="uv-canvas-diagnostics" aria-label="Document diagnostics">
+        {#each compiled.plan.diagnostics as diagnostic}
+          <li>{diagnostic.code}: {diagnostic.message}</li>
+        {/each}
+      </ul>
+    {/if}
     <style>
       .uv-canvas [data-ui-occ]:hover {
         outline: 1px dashed var(--ui-editor-hover, #7aa7ff);

@@ -30,7 +30,7 @@
     uniqueRepeatKeys,
     type DocumentScope,
   } from './logic.js';
-  import { onDestroy } from 'svelte';
+  import { onDestroy, untrack } from 'svelte';
   import SlotSnippets from './SlotSnippets.svelte';
   import Self from './RenderNode.svelte';
 
@@ -86,13 +86,19 @@
     extraStyle,
   }: Props = $props();
 
+  // Observer callbacks belong to the host. Reading/writing its activity
+  // state must not become a dependency of a renderer effect or derived.
+  function diagnose(diagnostic: Parameters<NonNullable<Props['reportDiagnostic']>>[0]): void {
+    untrack(() => reportDiagnostic?.(diagnostic));
+  }
+
   const conditions = $derived(conditionsOf(plan));
   const occ = $derived(occurrenceKey(instruction.occurrenceKey, repeatKeys));
   const extension = $derived(instruction.kind === 'extension'
     ? resolveSvelteComponent(instruction, extensionDescriptors, extensionImplementations)
     : undefined);
   $effect(() => {
-    if (extension !== undefined && !extension.ok) reportDiagnostic?.(extension.diagnostic);
+    if (extension !== undefined && !extension.ok) diagnose(extension.diagnostic);
   });
 
   let alive = true;
@@ -114,7 +120,7 @@
   const componentValues = $derived(instruction.kind === 'component' || instruction.kind === 'extension'
     ? evaluateComponentPropValues(instruction, scope) : { values: {}, invalidNames: [] });
   $effect(() => {
-    if (componentValues.invalidNames.length) reportDiagnostic?.({ code: 'UI_COMPONENT_PROP_VALUE_REJECTED',
+    if (componentValues.invalidNames.length) diagnose({ code: 'UI_EXPR_TYPE_MISMATCH',
       message: 'Evaluated component properties must match their declared types.',
       detail: { nodeId: instruction.nodeId, occurrenceKey: occ, properties: componentValues.invalidNames } });
   });
@@ -128,7 +134,7 @@
       if (owner.kind !== 'extension') return;
       const decl = owner.outputDecls?.find(entry => entry.name === output);
       if (stale || decl === undefined || (decl.payload === 'void' ? payload !== undefined : !isUiValueOfType(payload, decl.payload))) {
-        reportDiagnostic?.({ code: stale ? 'UI_COMPONENT_OUTPUT_STALE' : 'UI_COMPONENT_OUTPUT_REJECTED',
+        diagnose({ code: stale ? 'UI_COMPONENT_OUTPUT_STALE' : 'UI_COMPONENT_OUTPUT_REJECTED',
           message: stale ? 'Output belongs to an expired occurrence or generation.' : `Output '${output}' requires its declared payload.`,
           detail: { nodeId: owner.nodeId, occurrenceKey: captured.occurrence, output } });
         return;
@@ -151,18 +157,22 @@
     const value = resolveValue({ type: 'expression', expression }, values);
     return Array.isArray(value) ? value.slice() : value;
   }
+  function selectTarget(event: PointerEvent): void {
+    const closest = (event.target as Element | null)?.closest('[data-ui-occ]');
+    if (closest === event.currentTarget) selectOccurrence?.(occ);
+  }
   const presentation = $derived.by(() => {
     const owner = instruction;
     const root = rootClassFor(plan);
-    return { target(name: string) {
+    return { scopeClass: root, target(name: string) {
       if (owner.kind !== 'extension' || !owner.styleTargets?.includes(name)) return { class: '' };
       const primary = name === owner.styleTargets[0];
       return {
-        class: [root, ...(primary ? owner.classes ?? [] : []) , ...(primary && extraClass ? [extraClass] : [])].join(' '),
+        class: [...(primary ? owner.classes ?? [] : []), ...(primary && extraClass ? [extraClass] : [])].join(' '),
         style: primary ? [bindingStyleVariables(owner.styleRuleIds ?? [], plan, scope), extraStyle ?? ''].join(' ') : undefined,
         'data-ui-owner': ownerId, 'data-ui-primary': primary ? '' : undefined,
         'data-ui-node': owner.nodeId, 'data-ui-occ': occ, 'data-ui-part': name,
-        onpointerdown(event: PointerEvent) { event.stopPropagation(); selectOccurrence?.(occ); },
+        onpointerdowncapture: selectTarget,
       };
     } };
   });
@@ -248,7 +258,7 @@
       event.stopPropagation();
       if (instruction.interactions.some((interaction) => interaction.on === 'click')) {
         void runInteractions(event);
-      } else {
+      } else if ((event.target as Element | null)?.closest('[data-ui-occ]') === event.currentTarget) {
         selectOccurrence?.(occ);
       }
     }}
@@ -307,7 +317,7 @@
     {/if}
   </span>
 {:else if (instruction.kind === 'component' || instruction.kind === 'extension') && componentValues.invalidNames.length}
-  <span class="uv-extension-unavailable" data-ui-owner={ownerId} data-ui-occ={occ} data-ui-node={instruction.nodeId} role="alert">This component has incompatible bound properties.</span>
+  <span class="uv-extension-unavailable" data-ui-owner={ownerId} onpointerdowncapture={selectTarget} data-ui-occ={occ} data-ui-node={instruction.nodeId} role="alert">This component has incompatible bound properties.</span>
 {:else if instruction.kind === 'component'}
   {@const bodyScope = { ...scope, props: componentValues.values }}
   {@const childPath = [...instancePath, `${instruction.nodeId}@${instruction.definitionId}`]}
@@ -354,18 +364,18 @@
     </SlotSnippets>
   {:else if extension?.ok}
     {@const Implementation = extension.component}
-    <span style="display: contents" data-ui-owner={ownerId} data-ui-occ={occ} data-ui-node={instruction.nodeId}
+    <span style="display: contents" data-extension-id={instruction.extensionId} data-ui-owner={ownerId} data-ui-occ={occ} data-ui-node={instruction.nodeId}
       onclick={event => { event.stopPropagation(); selectOccurrence?.(occ); }}>
       <Implementation props={extensionProps} occurrenceKey={occ} nodeId={instruction.nodeId} {presentation} />
     </span>
   {:else}
-    <span class="uv-extension-unavailable" data-ui-occ={occ} data-ui-node={instruction.nodeId} role="note">This component is unavailable.</span>
+    <span class="uv-extension-unavailable" data-ui-owner={ownerId} onpointerdowncapture={selectTarget} data-ui-occ={occ} data-ui-node={instruction.nodeId} role="note">This component is unavailable.</span>
   {/if}
 {:else if instruction.kind === 'repeat'}
   {@const rows = resolveValue({ type: 'expression', expression: instruction.collection }, scope)}
   {#if Array.isArray(rows)}
     {@const resolvedRowKeys = rows.map((row, index) => String(resolveValue({ type: 'expression', expression: instruction.key }, { ...scope, repeatItem: { name: instruction.itemName, value: asRecord(row) } }) ?? index))}
-    {@const uniqueRowKeys = uniqueRepeatKeys(resolvedRowKeys, instruction.nodeId, reportDiagnostic)}
+    {@const uniqueRowKeys = uniqueRepeatKeys(resolvedRowKeys, instruction.nodeId, diagnose)}
     {#each rows as row, index (uniqueRowKeys[index])}
       {@const itemRecord = asRecord(row)}
       {@const itemScope = { ...scope, repeatItem: { name: instruction.itemName, value: itemRecord }, repeatItems: { ...scope.repeatItems, [instruction.itemName]: itemRecord } }}
@@ -390,7 +400,7 @@
       />
     {/each}
   {:else}
-    <span class="uv-error" data-ui-occ={occ}>repeat collection is not an array</span>
+    <span class="uv-error" data-ui-owner={ownerId} onpointerdowncapture={selectTarget} data-ui-occ={occ}>repeat collection is not an array</span>
   {/if}
 {:else if instruction.kind === 'conditional'}
   {#each branchChildren as child (child.occurrenceKey)}
@@ -462,7 +472,7 @@
     {/each}
   {/if}
 {:else if instruction.kind === 'unsupported'}
-  <div class="uv-unsupported" data-ui-node={instruction.nodeId} data-ui-occ={occ} role="note">
+  <div class="uv-unsupported" data-ui-owner={ownerId} onpointerdowncapture={selectTarget} data-ui-node={instruction.nodeId} data-ui-occ={occ} role="note">
     Unsupported feature: {instruction.feature}
     {#each instruction.children as child (child.occurrenceKey)}
       <Self

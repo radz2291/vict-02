@@ -170,10 +170,6 @@ export function resolveSvelteComponent(
         'UI_RENDER_EXTENSION_UNAVAILABLE',
         'Exactly one renderer implementation matching the declared identity is required.',
       );
-    if (((instruction.styleRuleIds?.length ?? 0) > 0 || (instruction.classes?.length ?? 0) > 1) &&
-      descriptor.styleTargets?.some(target => !legacyMatches[0]!.styleTargets?.includes(target))) {
-      return fail('UI_COMPONENT_STYLE_UNAVAILABLE', 'The legacy implementation does not forward the declared style target.');
-    }
     return { ok: true, kind: 'extension', component: legacyMatches[0]!.component };
   }
   // Component-ABI path: the marker must be present and consistent, and the
@@ -215,7 +211,7 @@ export function resolveSvelteComponent(
   }
   if ((instruction.styleRuleIds?.length ?? 0) > 0 || (instruction.classes?.length ?? 0) > 1) {
     if ((descriptor.styleTargets?.length ?? 0) === 0 || descriptor.styleTargets?.some(target => !implementation.styleTargets?.includes(target))) {
-      return fail('UI_COMPONENT_STYLE_UNAVAILABLE', 'The implementation cannot forward the declared style target.');
+      return fail('UI_COMPONENT_UNAVAILABLE', 'The implementation cannot forward the declared style target.');
     }
   }
   const filledSlots = Object.keys(instruction.slots ?? {});
@@ -275,9 +271,13 @@ export interface UiComponentTargetAttributes {
   readonly 'data-ui-node'?: string;
   readonly 'data-ui-occ'?: string;
   readonly 'data-ui-part'?: string;
+  /** Compatibility for consumers supplying their own target attributes. */
   readonly onpointerdown?: (event: PointerEvent) => void;
+  readonly onpointerdowncapture?: (event: PointerEvent) => void;
 }
 export interface UiComponentPresentation {
+  /** Canonical document scope placed on an ancestor of portaled parts. */
+  readonly scopeClass?: string;
   /** The first declared style target owns instance styles; other targets expose inspection. */
   readonly target: (name: string) => UiComponentTargetAttributes;
 }

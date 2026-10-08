@@ -139,6 +139,8 @@ export type UiRenderInstruction =
       readonly styleRuleIds?: readonly string[];
       readonly styleTargets?: readonly string[];
       readonly outputDecls?: readonly UiOutputDecl[];
+      /** Descriptor property errors refuse only this occurrence at render. */
+      readonly rejectedProps?: readonly string[];
       /** Authored connections, compile-checked. */
       readonly outputBindings?: Readonly<Record<string, UiOutputBinding>>;
       /** Instance-scope slot fills (declared slots only). */
@@ -212,6 +214,17 @@ export type UiCompileResult =
   | { readonly ok: true; readonly plan: UiRenderPlan }
   | { readonly ok: false; readonly issues: readonly UiDiagnostic[] };
 
+/** Only descriptor-dependent connection diagnostics cross into a usable plan.
+ * Structural source/declaration errors retain the document validation gate. */
+export function isUiComponentPlanDiagnostic(
+  issue: UiDiagnostic, document: UiDocument, extensions: readonly UiExtensionDescriptor[],
+): boolean {
+  if (!['UI_COMPONENT_OUTPUT_UNKNOWN', 'UI_COMPONENT_OUTPUT_PAYLOAD_INVALID', 'UI_COMPONENT_BINDING_INCOMPATIBLE'].includes(issue.code)) return false;
+  const node = typeof issue.nodeId === 'string' ? document.nodes?.[issue.nodeId] : undefined;
+  return node?.kind === 'component' && document.componentDefinitions?.[node.definitionId] === undefined
+    && extensions.some(descriptor => descriptor.id === node.definitionId);
+}
+
 export function compileUiDocument(
   document: UiDocument,
   semanticCatalog: SemanticElementCatalog,
@@ -258,7 +271,8 @@ export function compileUiDocument(
       issue.code !== 'UI_DOC_UNKNOWN_COMPONENT' &&
       !(issue.code === 'UI_DOC_UNKNOWN_PRODUCT_REFERENCE' && (issue.kind === 'action' ? catalogs.actionIds === undefined : issue.kind === 'route' ? catalogs.routeIds === undefined : true)) &&
       issue.code !== 'UI_DOC_UNSUPPORTED_FEATURE' &&
-      !isDeferredProductRef(issue),
+      !isDeferredProductRef(issue) &&
+      !isUiComponentPlanDiagnostic(issue, document, extensions),
   );
   const deferredRefs = validation.filter(isDeferredProductRef);
   if (hasErrors(structural)) {
@@ -268,7 +282,7 @@ export function compileUiDocument(
   const { bytes, contentDigest } = canonicalUiDocument(document);
   void bytes;
   const documentId = String(document.id);
-  const issues: UiDiagnostic[] = validation.filter((issue) => issue.severity === 'warning');
+  const issues: UiDiagnostic[] = validation.filter((issue) => issue.severity === 'warning' || isUiComponentPlanDiagnostic(issue, document, extensions));
   const rules: UiStyleRule[] = [];
   const sourceMap: UiSourceMapEntry[] = [];
   const extensionRefs: { extensionId: string; revision: string }[] = [];
@@ -697,14 +711,21 @@ export function compileUiDocument(
   };
   structure.forEach(collectRepeats);
 
-  if (hasErrors(issues)) return { ok: false, issues };
+  // Expansion bounds are a structural refusal even if reached only after
+  // resolution. They must not be confused with descriptor diagnostics.
+  const expansionErrors = issues.filter(issue => issue.code === 'UI_DOC_CYCLE');
+  if (hasErrors(expansionErrors)) return { ok: false, issues: expansionErrors };
 
+  // Validation above owns structural refusal. Descriptor checks below that
+  // boundary are author-time plan diagnostics; one unfinished connection
+  // must not discard the document's unaffected rendering instructions.
   const plan: UiRenderPlan = {
     schema: UI_RENDER_PLAN_SCHEMA,
     documentId,
     revision: String(document.revision),
     sourceDigest: contentDigest,
-    diagnostics: [...issues, ...deferredRefs],
+    diagnostics: [...issues, ...deferredRefs].map(issue => isDeferredProductRef(issue)
+      ? { ...issue, severity: 'warning' as const } : issue),
     structure,
     style: {
       rules,
@@ -725,6 +746,11 @@ interface UiCompileCatalogs {
   readonly opNames?: readonly string[];
   readonly stateTypes?: UiCatalogs['stateTypes'];
   readonly actionInputs?: Readonly<Record<string, Readonly<Record<string, UiValueType>>>>;
+}
+
+function isDeferredFieldReference(issue: UiDiagnostic, catalogs: UiCompileCatalogs): boolean {
+  return catalogs.viewFields === undefined && issue.code === 'UI_EXPR_UNKNOWN_REFERENCE'
+    && typeof issue.path === 'string' && (issue.path.startsWith('view.') || issue.path.startsWith('record.'));
 }
 
 interface CompileExtensionOutcome {
@@ -773,6 +799,7 @@ function compileExtensionInstance(
   }
 
   // --- typed prop checks for descriptor instances (§5.1, built here) ------
+  const rejectedProps: string[] = [];
   for (const [propName, expression] of Object.entries(node.props ?? {})) {
     const propDecl = descriptor.props.find((candidate) => candidate.name === propName);
     if (propDecl === undefined) {
@@ -785,7 +812,9 @@ function compileExtensionInstance(
       );
       continue;
     }
-    issues.push(...checkExpressionTarget(expression, propDecl.type, catalogs, lexicalScope, documentId, node.id));
+    const propIssues = checkExpressionTarget(expression, propDecl.type, catalogs, lexicalScope, documentId, node.id);
+    issues.push(...propIssues);
+    if (propIssues.some(issue => issue.severity === 'error' && !isDeferredFieldReference(issue, catalogs))) rejectedProps.push(propName);
   }
   for (const prop of descriptor.props) {
     if (prop.default !== undefined && (prop.type === 'array' || !isUiValueOfType(prop.default, prop.type))) {
@@ -796,7 +825,9 @@ function compileExtensionInstance(
   // --- output bindings (§3.5/§5.1) -----------------------------------------
   const outputDecls = isComponentAbi ? (descriptor.outputs ?? []) : undefined;
   const authoredBindings = node.outputs ?? {};
+  const acceptedBindings: Record<string, UiOutputBinding> = {};
   for (const [outputName, binding] of Object.entries(authoredBindings)) {
+    const issueStart = issues.length;
     if (outputDecls === undefined) {
       issues.push(uiDiagnostic('UI_COMPONENT_ABI_UNSUPPORTED', 'Output bindings require a component ABI descriptor.', { documentId, nodeId: node.id, extensionId: descriptor.id }));
       break;
@@ -814,7 +845,10 @@ function compileExtensionInstance(
     }
     if ('setState' in binding) {
       const stateDecl = (document.localState ?? {})[binding.setState.key];
-      if (stateDecl !== undefined) {
+      if (stateDecl === undefined) {
+        issues.push(uiDiagnostic('UI_COMPONENT_BINDING_INCOMPATIBLE', 'Output binding targets undeclared state.',
+          { documentId, nodeId: node.id, output: outputName, stateKey: binding.setState.key }));
+      } else {
         if (decl.payload === 'void' || stateDecl.type !== decl.payload) {
           // Widened compatibility compares declared types with NO coercion
           // (§10.1a boundary 7); a 'void' payload equals no state type.
@@ -896,6 +930,8 @@ function compileExtensionInstance(
         );
       }
     }
+    const invalid = issues.slice(issueStart).some(issue => issue.severity === 'error' && !isDeferredFieldReference(issue, catalogs));
+    if (!invalid) acceptedBindings[outputName] = binding;
   }
 
   // --- slot fills: declared slots only (§3.7) -------------------------------
@@ -924,8 +960,9 @@ function compileExtensionInstance(
     revision: effectiveRevision,
     propDecls: descriptor.props,
     propValues: (node.props ?? {}) as Record<string, UiExpression>,
+    ...(rejectedProps.length > 0 ? { rejectedProps } : {}),
     ...(outputDecls !== undefined ? { outputDecls } : {}),
-    ...(outputDecls !== undefined ? { outputBindings: authoredBindings } : {}),
+    ...(outputDecls !== undefined ? { outputBindings: acceptedBindings } : {}),
     ...(Object.keys(slots).length > 0 ? { slots } : {}),
   };
   return { instruction, issues };

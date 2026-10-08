@@ -171,8 +171,7 @@ export function styleRulesToCss(plan: UiRenderPlan, rootClass: string): string {
           rule.pseudo !== undefined
           ? `.${escapedRoot} ${escapeCss(rule.selector)}:${rule.pseudo}`
           : `.${escapedRoot} ${escapeCss(rule.selector)}`;
-    const ownedSelector = rule.selector === ':root' ? selector : `${selector}, .${escapeCss(rule.selector).slice(1)}.${escapedRoot}${rule.pseudo ? `:${rule.pseudo}` : ''}`;
-    const css = `${ownedSelector} {\n${declarations}\n}`;
+    const css = `${selector} {\n${declarations}\n}`;
     if (rule.containerConditionId !== undefined) {
       const condition = conditions[rule.containerConditionId];
       if (condition?.kind === 'container') {
@@ -282,12 +281,13 @@ export function evaluatedComponentProps(
 
 /** Invalid evaluated props refuse rendering rather than falling through to adapter defaults. */
 export function evaluateComponentPropValues(
-  instruction: { readonly propDecls: readonly UiPropDecl[]; readonly propValues: Readonly<Record<string, UiExpression>> },
+  instruction: { readonly propDecls: readonly UiPropDecl[]; readonly propValues: Readonly<Record<string, UiExpression>>; readonly rejectedProps?: readonly string[] },
   scope: DocumentScope,
 ): { readonly values: Record<string, unknown>; readonly invalidNames: readonly string[] } {
   const out: Record<string, unknown> = {};
-  const invalidNames: string[] = [];
+  const invalidNames: string[] = [...(instruction.rejectedProps ?? [])];
   for (const declaration of instruction.propDecls) {
+    if (invalidNames.includes(declaration.name)) continue;
     const declared = instruction.propValues[declaration.name];
     const value =
       declared !== undefined

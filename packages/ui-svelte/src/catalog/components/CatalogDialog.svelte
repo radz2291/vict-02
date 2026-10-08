@@ -9,6 +9,8 @@
    * ControlScope root).
    */
   import { Dialog } from 'bits-ui';
+  import CatalogPortal from './CatalogPortal.svelte';
+  import CatalogPart from './CatalogPart.svelte';
   import type { UiSvelteComponentIO, UiComponentPresentation } from '../../document/extensions.js';
 
   interface Props {
@@ -18,24 +20,39 @@
   }
   let { props, io, presentation }: Props = $props();
   const title = $derived(typeof props.title === 'string' ? props.title : '');
-  const open = $derived(props.open === true);
+  let open = $derived(props.open === true);
+  let triggerRef = $state<HTMLButtonElement | null>(null);
+  let contentRef = $state<HTMLDivElement | null>(null);
+  let overlayRef = $state<HTMLDivElement | null>(null);
 </script>
 
 <span data-testid="catalog-dialog" style="display: contents">
   <Dialog.Root
-    {open}
+    bind:open
     onOpenChange={(next) => io?.emit('openChange', next === true)}
   >
-    <Dialog.Trigger {...presentation?.target('trigger')} data-testid="dialog-trigger">Open {title}</Dialog.Trigger>
-    <Dialog.Portal>
-      <Dialog.Overlay data-testid="dialog-overlay" />
-      <Dialog.Content {...presentation?.target('root')} data-testid="dialog-panel">
-        <Dialog.Title>{title || 'Dialog'}</Dialog.Title>
-        <Dialog.Close aria-label="Close" data-testid="dialog-close">✕</Dialog.Close>
-        <div class="vict-overlay-body">
-          {@render io?.slots?.body?.()}
-        </div>
+    <Dialog.Trigger {...presentation?.target('trigger')} bind:ref={triggerRef} data-testid="dialog-trigger">
+      {#snippet child({ props: attributes })}
+        <CatalogPart as="button" {attributes} bind:ref={triggerRef}>Open {title}</CatalogPart>
+      {/snippet}
+    </Dialog.Trigger>
+    <CatalogPortal {open} {presentation}>
+      <Dialog.Overlay bind:ref={overlayRef} data-testid="dialog-overlay">
+        {#snippet child({ props: attributes })}
+          <CatalogPart as="div" {attributes} bind:ref={overlayRef} />
+        {/snippet}
+      </Dialog.Overlay>
+      <Dialog.Content {...presentation?.target('root')} bind:ref={contentRef} data-testid="dialog-panel">
+        {#snippet child({ props: attributes })}
+          <CatalogPart as="div" {attributes} bind:ref={contentRef}>
+            <Dialog.Title>{title || 'Dialog'}</Dialog.Title>
+            <Dialog.Close aria-label="Close" data-testid="dialog-close">✕</Dialog.Close>
+            <div class="vict-overlay-body">
+              {@render io?.slots?.body?.()}
+            </div>
+          </CatalogPart>
+        {/snippet}
       </Dialog.Content>
-    </Dialog.Portal>
+    </CatalogPortal>
   </Dialog.Root>
 </span>

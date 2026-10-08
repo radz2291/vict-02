@@ -8,6 +8,9 @@
    * render through bits-ui's configured portal target (ControlScope root).
    */
   import { Select } from 'bits-ui';
+  import CatalogPortal from './CatalogPortal.svelte';
+  import CatalogPart from './CatalogPart.svelte';
+  import CatalogSelectOption from './CatalogSelectOption.svelte';
   import type { UiSvelteComponentIO, UiComponentPresentation } from '../../document/extensions.js';
 
   interface Props {
@@ -24,7 +27,10 @@
         }))
       : [],
   );
-  const value = $derived(typeof props.value === 'string' ? props.value : '');
+  let value = $derived(typeof props.value === 'string' ? props.value : '');
+  let open = $state(false);
+  let triggerRef = $state<HTMLButtonElement | null>(null);
+  let contentRef = $state<HTMLDivElement | null>(null);
   const disabled = $derived(props.disabled === true);
   const selectedLabel = $derived(
     options.find((option) => option.value === value)?.label ?? 'Choose an option',
@@ -34,21 +40,30 @@
 <span data-testid="catalog-select" style="display: inline-block; min-width: 220px">
   <Select.Root
     type="single"
-    {value}
+    bind:value
+    bind:open
     {disabled}
     onValueChange={(next) => {
       if (typeof next === 'string') io?.emit('valueChange', next);
     }}
   >
-    <Select.Trigger {...presentation?.target('root')}>
-      <span>{selectedLabel}</span>
+    <Select.Trigger {...presentation?.target('root')} bind:ref={triggerRef}>
+      {#snippet child({ props: attributes })}
+        <CatalogPart as="button" {attributes} bind:ref={triggerRef}><span>{selectedLabel}</span></CatalogPart>
+      {/snippet}
     </Select.Trigger>
-    <Select.Portal>
-      <Select.Content {...presentation?.target('content')} sideOffset={6} align="start" collisionPadding={16}>
-        {#each options as option (option.value)}
-          <Select.Item {...option}>{option.label}</Select.Item>
-        {/each}
+    <CatalogPortal {open} {presentation}>
+      <Select.Content {...presentation?.target('content')} bind:ref={contentRef} sideOffset={6} align="start" collisionPadding={16}>
+        {#snippet child({ props: attributes, wrapperProps })}
+          <div {...wrapperProps}>
+            <CatalogPart as="div" {attributes} bind:ref={contentRef}>
+              {#each options as option (option.value)}
+                <CatalogSelectOption {...option} />
+              {/each}
+            </CatalogPart>
+          </div>
+        {/snippet}
       </Select.Content>
-    </Select.Portal>
+    </CatalogPortal>
   </Select.Root>
 </span>

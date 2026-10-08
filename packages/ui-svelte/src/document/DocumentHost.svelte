@@ -98,7 +98,7 @@
   }
 
   let stateBag: Record<string, unknown> = $state(initialValues());
-  let priorSupplied = new Set<string>();
+  let acceptedSupplied: Record<string, UiValue> = {};
   let lastDocumentId = $state(plan.documentId);
   let lastSignal: symbol | undefined = $state<symbol | undefined>(undefined);
 
@@ -117,18 +117,23 @@
         const fresh = initialValues();
         for (const key of Object.keys(stateBag)) delete stateBag[key];
         Object.assign(stateBag, fresh);
+        acceptedSupplied = {};
       }
       for (const key of Object.keys(stateBag)) {
         const declaration = declarations[key];
         if (declaration === undefined) delete stateBag[key];
-        else if (!isUiValueOfType(stateBag[key], declaration.type) || (priorSupplied.has(key) && !Object.hasOwn(values, key))) {
+        else if (!isUiValueOfType(stateBag[key], declaration.type)) {
           if (isUiValueOfType(declaration.initial, declaration.type)) stateBag[key] = copyUiValue(declaration.initial);
         }
       }
       for (const [key, declaration] of Object.entries(declarations)) {
         if (!Object.hasOwn(stateBag, key) && isUiValueOfType(declaration.initial, declaration.type)) stateBag[key] = copyUiValue(declaration.initial);
       }
-      priorSupplied = new Set(supplied.map(([key]) => key));
+      const nextSupplied: Record<string, UiValue> = {};
+      // Supply is an update channel, not ownership of the local key. Removal
+      // relinquishes supply without undoing a local correction. Invalid
+      // values never enter the accepted snapshot.
+
       for (const [key, value] of supplied) {
         const declaration = Object.hasOwn(declarations, key) ? declarations[key] : undefined;
         if (declaration === undefined || !isUiValueOfType(value, declaration.type)) {
@@ -139,10 +144,20 @@
           });
           continue;
         }
-        stateBag[key] = copyUiValue(value);
+        nextSupplied[key] = copyUiValue(value);
+        if (!Object.hasOwn(acceptedSupplied, key) || !sameValue(acceptedSupplied[key], value)) {
+          stateBag[key] = copyUiValue(value);
+        }
       }
+      acceptedSupplied = nextSupplied;
     });
   });
+
+  function sameValue(left: unknown, right: UiValue): boolean {
+    return Array.isArray(left) && Array.isArray(right)
+      ? left.length === right.length && left.every((value, index) => value === right[index])
+      : left === right;
+  }
 
   function setState(key: string, value: unknown): void {
     const declaration = Object.hasOwn(localState, key) ? localState[key] : undefined;
@@ -151,6 +166,7 @@
         message: 'An evaluated state write must match its declared type.', detail: { stateKey: key } });
       return;
     }
+    if (sameValue(stateBag[key], value)) return;
     stateBag[key] = copyUiValue(value);
     onStateChange?.(key, copyUiValue(value));
   }

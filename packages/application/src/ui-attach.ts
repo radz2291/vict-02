@@ -23,6 +23,7 @@
 import {
   canonicalUiDocument,
   compileUiDocument,
+  isUiComponentPlanDiagnostic,
   defaultSemanticElementCatalog,
   orderUiDocumentIdentityEntries,
   uiDiagnostic,
@@ -348,6 +349,7 @@ export function resolveUiAttachments(input: ResolveUiAttachmentsInput): Resolved
     const fatal = validation.filter(
       (issue) =>
         issue.severity === 'error' &&
+        !isUiComponentPlanDiagnostic(issue, fact.document, extensionRegistry) &&
         !(
           issue.code === 'UI_DOC_UNKNOWN_COMPONENT' &&
           typeof issue.definitionId === 'string' &&

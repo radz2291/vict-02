@@ -250,7 +250,7 @@
       document={workingDocument}
       {selectedOccurrence}
       onApply={applyDraft}
-      {lastIssues}
+      lastIssues={[...lastIssues, ...(plan?.diagnostics ?? [])]}
       knownActionIds={consumerActionIds}
       actionInputs={consumerActionInputs}
       {readEffective}
