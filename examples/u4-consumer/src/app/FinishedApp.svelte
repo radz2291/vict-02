@@ -1,86 +1,46 @@
 <script lang="ts">
-  /**
-   * The FINISHED application: replays the SAVED documents through the same
-   * DocumentHost the editor canvas uses (preview/production parity). This
-   * entry imports NO authoring machinery — the bundle-separation check
-   * proves it (the app bundle contains no editor modules).
-   */
-  import type { UiRenderPlan } from '@victframework/ui';
+  import { createLocalStorageDocumentStore, type UiDocument } from '@victframework/ui';
   import { ControlScope, DocumentHost } from '@victframework/ui-svelte';
-  import {
-    b1CatalogDescriptors,
-    b1CatalogImplementations,
-    compileConsumerDocuments,
-  } from '../product/registrations.js';
-  import { consumerViewData } from '../product/definition.js';
-  import { taskControlsDocument, taskShellDocument } from '../product/documents.js';
-  import FinishedShell from './FinishedShell.svelte';
-
+  import { b1CatalogDescriptors, b1CatalogImplementations, compileConsumerDocuments, documentIssues } from '../product/registrations.js';
+  import { consumerActionState, consumerViewFor } from '../product/definition.js';
+  import { consumerDocuments } from '../product/documents.js';
+  import { createConsumerAdapter, createConsumerDispatcher } from '../product/execution.js';
   type DocId = 'controls' | 'shell';
-  let feedback = $state<string[]>([]);
-
-  function currentDocId(): DocId {
-    return new URLSearchParams(location.search).get('doc') === 'shell' ? 'shell' : 'controls';
+  const id: DocId = typeof location !== 'undefined' && new URLSearchParams(location.search).get('doc') === 'shell' ? 'shell' : 'controls';
+  let notices: string[] = [];
+  const documents: UiDocument[] = consumerDocuments.map((seed, index) => {
+    if (typeof localStorage === 'undefined') return seed;
+    const key = index === 0 ? 'controls' : 'shell';
+    const store = createLocalStorageDocumentStore(localStorage, { key: `u4-consumer.${key}`, format: 'vict.u4-consumer-store@1', seedStoredRevision: 'r1', validateDocument: documentIssues });
+    const stored = store.rawLoad();
+    if (stored.status === 'loaded') return stored.document;
+    if (stored.status === 'invalid') notices.push(`${stored.message}. Using the seed; saved bytes are preserved.`);
+    return seed;
+  });
+  const compilation = compileConsumerDocuments(documents);
+  const activeDocument = documents.find(document => document.id === (id === 'shell' ? 'consumer.taskShell' : 'consumer.taskControls'));
+  const activePlan = compilation.ok && activeDocument ? compilation.plan.documentPlans?.[`${activeDocument.id}@${activeDocument.revision}`] : undefined;
+  const view = consumerViewFor(documents, id);
+  let simulation = $state({ denied: false, failNext: false });
+  const adapter = createConsumerAdapter(simulation);
+  const dispatcher = compilation.ok ? createConsumerDispatcher(compilation.plan, adapter) : undefined;
+  async function dispatch(actionId: string, input?: unknown) {
+    return dispatcher ? dispatcher.execute(actionId, input) : { ok: false, code: 'APPLICATION_INVALID', message: 'Application compilation failed.' };
   }
-
-  function savedOrSeed(id: DocId): typeof taskControlsDocument {
-    try {
-      const raw = localStorage.getItem(`u4-consumer.${id}`);
-      if (raw !== null) {
-        const envelope = JSON.parse(raw) as { document?: unknown };
-        if (
-          envelope.document !== undefined &&
-          (envelope.document as { schema?: string }).schema === 'vict.ui-document@1'
-        ) {
-          return envelope.document as typeof taskControlsDocument;
-        }
-      }
-    } catch {
-      // fall through to the seed
-    }
-    return id === 'controls' ? taskControlsDocument : taskShellDocument;
-  }
-
-  function planFor(id: DocId): UiRenderPlan | undefined {
-    const result = compileConsumerDocuments([savedOrSeed('controls'), savedOrSeed('shell')]);
-    if (result.issues.some((issue) => issue.severity === 'error')) return undefined;
-    const key = id === 'controls' ? 'consumer.taskControls' : 'consumer.taskShell';
-    for (const [planKey, plan] of Object.entries(result.documentPlans)) {
-      if ((planKey.split('@')[0] as string) === key) return plan;
-    }
-    return undefined;
-  }
-
-  const docId = $derived(currentDocId());
-  const activePlan = $derived(planFor(currentDocId()));
-  const activeDocument = $derived(savedOrSeed(currentDocId()));
-
-  async function dispatch(actionId: string, input?: unknown): Promise<unknown> {
-    feedback = [...feedback.slice(-4), `${actionId}${input ? ` ${JSON.stringify(input)}` : ''}`];
-    return { ok: true };
-  }
-  function navigate(): void {}
+  function navigate(routeId: string): void { location.href = routeId === 'shell' ? '/app.html?doc=shell' : '/app.html'; }
 </script>
 
-{#snippet nav()}
-  <a href="/app.html" aria-current={docId === 'controls' ? 'page' : undefined}>Controls</a>
-  <a href="/app.html?doc=shell" aria-current={docId === 'shell' ? 'page' : undefined}>Shell + dialog</a>
-{/snippet}
-
 <ControlScope>
-  <FinishedShell {nav} {feedback}>
-    {#if activePlan !== undefined}
-      <DocumentHost
-        plan={activePlan}
-        extensionDescriptors={b1CatalogDescriptors}
-        extensionImplementations={b1CatalogImplementations}
-        localState={activeDocument.localState}
-        view={consumerViewData}
-        {dispatch}
-        {navigate}
-      />
-    {:else}
-      <p role="alert">The saved documents failed to compile — open the authoring workbench.</p>
-    {/if}
-  </FinishedShell>
+  <div class="vict-app">
+    {#each notices as notice}<p role="alert">{notice}</p>{/each}
+    <fieldset><legend>Simulated execution</legend>
+      <label><input type="checkbox" bind:checked={simulation.denied} /> Deny write permission</label>
+      <label><input type="checkbox" bind:checked={simulation.failNext} /> Fail the next operation</label>
+    </fieldset>
+    {#if id === 'controls'}<a href="/app.html?doc=shell">Open authored shell and dialog</a>{/if}
+    {#if activePlan && activeDocument}
+      <DocumentHost plan={activePlan} extensionDescriptors={b1CatalogDescriptors} extensionImplementations={b1CatalogImplementations}
+        localState={activeDocument.localState} {view} {dispatch} {navigate} actionState={consumerActionState} />
+    {:else}<p role="alert">The saved application failed to compile. Open the authoring workbench.</p>{/if}
+  </div>
 </ControlScope>

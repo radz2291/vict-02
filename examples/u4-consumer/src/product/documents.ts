@@ -12,6 +12,7 @@ const registries = {
   styleSources: {},
   tokens: {},
   conditions: {},
+  assets: {},
 } as const;
 
 /** Task controls: button (declared action + loading), checkboxes A/B feeding a declared submission, select, switch, toggle, radio-group. */
@@ -25,6 +26,8 @@ export const taskControlsDocument: UiDocument = {
     ackFindings: { key: 'ackFindings', type: 'boolean', initial: false },
     ackPricing: { key: 'ackPricing', type: 'boolean', initial: false },
     approving: { key: 'approving', type: 'boolean', initial: false },
+    submissionError: { key: 'submissionError', type: 'string', initial: '' },
+    submissionResult: { key: 'submissionResult', type: 'string', initial: '' },
     region: { key: 'region', type: 'string', initial: '' },
     reviewer: { key: 'reviewer', type: 'string', initial: '' },
     notifications: { key: 'notifications', type: 'boolean', initial: true },
@@ -155,18 +158,17 @@ export const taskControlsDocument: UiDocument = {
       props: {
         label: { type: 'literal', value: 'Submit review' },
         loading: { type: 'ref', path: 'state.approving' },
-        disabled: {
-          type: 'compare',
-          op: 'eq',
-          left: { type: 'ref', path: 'state.ackFindings' },
-          right: { type: 'literal', value: false },
-        },
+        disabled: { type: 'boolean', op: 'or', terms: [
+          { type: 'boolean', op: 'not', terms: [{ type: 'ref', path: 'state.ackFindings' }] },
+          { type: 'boolean', op: 'not', terms: [{ type: 'ref', path: 'state.ackPricing' }] },
+          { type: 'compare', op: 'eq', left: { type: 'ref', path: 'state.region' }, right: { type: 'literal', value: '' } },
+        ] },
       },
       outputs: {
         press: {
           invokeAction: {
             actionId: 'task.submit',
-            input: { noteId: { type: 'literal', value: 't_1' } },
+            input: { noteId: { type: 'literal', value: 't_1' }, ackFindings: { type: 'ref', path: 'state.ackFindings' }, ackPricing: { type: 'ref', path: 'state.ackPricing' }, region: { type: 'ref', path: 'state.region' } },
           },
         },
       },
@@ -183,20 +185,21 @@ export const taskShellDocument: UiDocument = {
   ...registries,
   localState: {
     assignOpen: { key: 'assignOpen', type: 'boolean', initial: false },
+    reviewer: { key: 'reviewer', type: 'string', initial: '' },
   },
   nodes: {
     shell: {
       kind: 'component',
       id: 'shell',
       definitionId: 'vict.catalog.appshell',
-      props: { title: { type: 'literal', value: 'Review queue' } },
+      props: { title: { type: 'literal', value: 'Review queue' }, navigation: { type: 'ref', path: 'view.shellNavigation' }, path: { type: 'ref', path: 'view.path' }, navigationMode: { type: 'ref', path: 'view.navigationMode' }, navigationAt: { type: 'ref', path: 'view.navigationAt' } },
       slots: { content: { name: 'content', children: ['content'] } },
     },
     content: {
       kind: 'element',
       id: 'content',
       tag: 'div',
-      children: ['title', 'assignTrigger'],
+      children: ['title', 'requestAssignment', 'assignTrigger'],
       localStyle: [
         { property: 'display', value: { type: 'text', value: 'flex' } },
         { property: 'flex-direction', value: { type: 'text', value: 'column' } },
@@ -210,6 +213,13 @@ export const taskShellDocument: UiDocument = {
       id: 'titleText',
       content: { type: 'literal', value: 'Queue: 3 tasks awaiting review' },
     },
+    requestAssignment: {
+      kind: 'component', id: 'requestAssignment', definitionId: 'vict.catalog.button',
+      props: { label: { type: 'literal', value: 'Request reviewer assignment' } },
+      outputs: { press: { invokeAction: { actionId: 'task.approve', input: {
+        noteId: { type: 'literal', value: 't_1' }, ack: { type: 'literal', value: true },
+      } } } },
+    },
     assignTrigger: {
       kind: 'component',
       id: 'assignTrigger',
@@ -222,28 +232,20 @@ export const taskShellDocument: UiDocument = {
         openChange: { setState: { key: 'assignOpen', value: { type: 'ref', path: '$output' } } },
       },
       slots: {
-        body: { name: 'body', children: ['confirmBtn'] },
+        body: { name: 'body', children: ['dialogSelect', 'confirmBtn'] },
       },
     },
-    confirmBtn: {
-      kind: 'element',
-      id: 'confirmBtn',
-      tag: 'button',
-      children: ['confirmText'],
-      localStyle: [{ property: 'min-width', value: { type: 'text', value: '120px' } }],
-      interactions: [
-        {
-          on: 'click',
-          action: 'invokeAction',
-          actionId: 'task.assign',
-          input: { noteId: { type: 'literal', value: 't_1' } },
-        },
-      ],
+    dialogSelect: {
+      kind: 'component', id: 'dialogSelect', definitionId: 'vict.catalog.select',
+      props: { options: { type: 'ref', path: 'view.reviewers' }, value: { type: 'ref', path: 'state.reviewer' } },
+      outputs: { valueChange: { setState: { key: 'reviewer' } } },
     },
-    confirmText: {
-      kind: 'text',
-      id: 'confirmText',
-      content: { type: 'literal', value: 'Confirm assignment' },
+    confirmBtn: {
+      kind: 'component', id: 'confirmBtn', definitionId: 'vict.catalog.button',
+      props: { label: { type: 'literal', value: 'Confirm assignment' } },
+      outputs: { press: { invokeAction: { actionId: 'task.assign', input: {
+        noteId: { type: 'literal', value: 't_1' }, reviewer: { type: 'ref', path: 'state.reviewer' },
+      } } } },
     },
   },
 };

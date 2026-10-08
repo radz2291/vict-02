@@ -6,8 +6,7 @@
    * @victframework/ui-editor; document semantics stay in the frozen session
    * engine. Preview state seeds the canvas run only.
    */
-  import { tick } from 'svelte';
-  import { defaultSemanticElementCatalog } from '@victframework/ui';
+  import { tick, untrack } from 'svelte';
   import { ControlScope } from '@victframework/ui-svelte';
   import type { UiRenderPlan, UiValue } from '@victframework/ui';
   import {
@@ -19,14 +18,16 @@
     StateValuesPanel,
     createLocalStorageDocumentStore,
   } from '@victframework/ui-editor';
+  import { createPreviewSession } from '@victframework/ui-preview';
+  import { createConsumerAdapter, createConsumerDispatcher } from '../product/execution.js';
   import {
+    consumerCatalogs, consumerActionInputs, documentIssues,
     b1CatalogDescriptors,
     b1CatalogImplementations,
     compileConsumerDocuments,
   } from '../product/registrations.js';
   import {
-    consumerActionIds,
-    consumerViewData,
+    consumerActionIds, consumerActions, consumerActionState, consumerViewFor,
     consumerViewFields,
   } from '../product/definition.js';
   import { taskControlsDocument, taskShellDocument } from '../product/documents.js';
@@ -46,7 +47,7 @@
   function openStore(key: string) {
     return createLocalStorageDocumentStore(
       typeof localStorage !== 'undefined' ? localStorage : memoryStorage(),
-      { key, format: FORMAT, seedStoredRevision: SEED_REVISION },
+      { key, format: FORMAT, seedStoredRevision: SEED_REVISION, validateDocument: documentIssues },
     );
   }
   function memoryStorage(): Pick<Storage, 'getItem' | 'setItem'> {
@@ -54,19 +55,21 @@
     return { getItem: (k) => map.get(k) ?? null, setItem: (k, v) => void map.set(k, v) };
   }
 
+  let loadIssues = $state<string[]>([]);
   function openBlade(id: DocId, label: string, seed: typeof taskControlsDocument): Blade {
     const store = openStore(`u4-consumer.${id}`);
     const stored = store.rawLoad();
+    if (stored.status === 'invalid') loadIssues.push(stored.message);
     const initial =
       stored.status === 'loaded'
         ? { document: stored.document, storedRevision: stored.storedRevision }
-        : { document: seed, storedRevision: SEED_REVISION };
+        : { document: seed, storedRevision: stored.status === 'invalid' && stored.storedRevision ? stored.storedRevision : SEED_REVISION };
     return {
       id,
       label,
       seed,
       storeKey: `u4-consumer.${id}`,
-      bridge: new EditorBridge({ store, initial }),
+      bridge: new EditorBridge({ store, initial, catalogs: consumerCatalogs }),
     };
   }
 
@@ -93,7 +96,21 @@
   let selectedOccurrence = $state<string | undefined>(undefined);
   let plan = $state<UiRenderPlan | undefined>(undefined);
   let lastIssues = $state<readonly { code: string; message: string }[]>([]);
-  let stateValues = $state<Record<string, UiValue>>({});
+  let stateByDocument = $state<Record<DocId, Record<string, UiValue>>>({ controls: {}, shell: {} });
+  const stateValues = $derived(stateByDocument[currentId]);
+  let resetSignal = $state(Symbol('preview'));
+  let simulation = $state({ denied: false, failNext: false });
+  const adapter = createConsumerAdapter(simulation);
+  let preview = createPreviewSession({
+    scenario: { schema: 'vict.ui-scenario@1', scenarioId: 'u4.task-preview', references: { application: { id: 'u4.consumer', revision: '1' }, documents: {} },
+      seeds: { domain: { rows: {} } }, actors: [{ actorId: 'consumer', role: 'reviewer', permissions: ['task.write'] }],
+      operations: consumerActions.map(action => ({ op: `${action.resourceId}:${action.op}`, implementation: 'simulated' })), resetBoundary: 'session' },
+    dataAdapter: { adapter, context: actor => ({ permissions: actor.permissions, effect: 'write', actor: actor.actorId }) },
+  });
+  const productCompilation = $derived.by(() => { void version; return compileConsumerDocuments(blades.map(blade => blade.bridge.document)); });
+  const productView = $derived(consumerViewFor(blades.map(blade => blade.bridge.document), currentId));
+  function resetRuntime() { preview = preview.reset(); resetSignal = Symbol('preview-reset'); stateByDocument[currentId] = {}; }
+  $effect(() => { void currentId; untrack(resetRuntime); });
   let activity = $state<string[]>([]);
   function log(text: string): void {
     const stamp = new Date().toLocaleTimeString();
@@ -104,15 +121,7 @@
     selectedOccurrence = occurrence;
   }
 
-  const catalogs = {
-    elements: defaultSemanticElementCatalog(),
-    actionIds: consumerActionIds,
-    viewFields: consumerViewFields,
-  };
-  const compilePlan = compileConsumerDocuments();
-  if (!compilePlan.ok) {
-    log(`SEEDED DOCUMENTS FAILED TO COMPILE (${compilePlan.issues.length} issues)`);
-  }
+  const catalogs = consumerCatalogs;
 
   function applyDraft(draft: Parameters<EditorBridge['apply']>[0]): void {
     const outcome = current.bridge.apply(draft);
@@ -143,6 +152,7 @@
     const result = current.bridge.reopen();
     if (result.ok) {
       selectedOccurrence = undefined;
+      resetRuntime();
       log(`Reopened stored revision ${result.storedRevision}`);
     } else {
       log(`Reopen refused (${result.code})`);
@@ -155,36 +165,24 @@
     location.reload();
   }
 
-  // Declared-action feedback: the app's own action authority (unchanged by
-  // the component ABI). Button loading is authored state wired reactively.
   async function dispatch(actionId: string, input?: unknown): Promise<unknown> {
-    log(`Action ${actionId} ${input ? JSON.stringify(input) : ''}`);
-    if (actionId === 'task.submit') {
-      applyDraft({
-        requestId: `app-loading-${Date.now()}`,
-        commands: [
-          { op: 'bindExpression', nodeId: 'submitBtn', target: { kind: 'prop', name: 'loading' }, expression: { type: 'literal', value: true } },
-        ],
-      });
-      await new Promise((resolve) => setTimeout(resolve, 500));
-      applyDraft({
-        requestId: `app-done-${Date.now()}`,
-        commands: [
-          { op: 'bindExpression', nodeId: 'submitBtn', target: { kind: 'prop', name: 'loading' }, expression: { type: 'literal', value: false } },
-        ],
-      });
-    }
-    if (actionId === 'task.assign') {
-      applyDraft({
-        requestId: `app-close-${Date.now()}`,
-        commands: [
-          { op: 'setOutputBinding', nodeId: 'assignTrigger', output: 'openChange', binding: { setState: { key: 'assignOpen', value: { type: 'literal', value: false } } } },
-        ],
-      });
-    }
-    return { ok: true };
+    const compilation = productCompilation;
+    if (!compilation.ok) return { ok: false, code: 'APPLICATION_INVALID', message: 'The working application cannot compile.' };
+    const dispatcher = createConsumerDispatcher(compilation.plan, adapter, async (op, payload) => { const result = await preview.run(op, payload); return result.ok ? { ok: true, value: result.value } : { ok: false, code: result.code, message: result.message }; });
+    const result = await dispatcher.execute(actionId, input);
+    log(`${actionId}: ${result.ok ? result.message ?? 'Succeeded' : result.message}`);
+    return result;
   }
-  function navigate(): void {}
+  function navigate(routeId: string): void {
+    if (routeId === 'controls' || routeId === 'shell') { currentId = routeId; selectedOccurrence = undefined; }
+  }
+  function readEffective(occurrence: string, property: string): string | undefined {
+    const targets = Array.from(globalThis.document.querySelectorAll<HTMLElement>('[data-ui-occ]')).filter(element => element.dataset.uiOcc === occurrence);
+    const primary = targets.find(element => element.hasAttribute('data-ui-primary'));
+    // A closed primary part has no measurable value; its trigger is a separate part.
+    const target = primary ? (primary.getBoundingClientRect().width > 0 ? primary : undefined) : targets.find(element => element.dataset.uiPart === undefined && element.getBoundingClientRect().width > 0);
+    return target ? getComputedStyle(target).getPropertyValue(property) : undefined;
+  }
 </script>
 
 <ControlScope>
@@ -209,14 +207,23 @@
   </nav>
 
   <div class="main">
+    {#each loadIssues as issue}<p role="alert">{issue}. Using the seed; saved bytes are preserved.</p>{/each}
+    <fieldset><legend>Simulated execution</legend>
+      <label><input type="checkbox" bind:checked={simulation.denied} /> Deny write permission</label>
+      <label><input type="checkbox" bind:checked={simulation.failNext} /> Fail the next operation</label>
+      <button type="button" onclick={resetRuntime}>Reset preview state</button>
+    </fieldset>
     <div class="canvas-scroll">
       <EditorCanvas
         document={workingDocument}
-        view={consumerViewData}
+        view={productView}
         {catalogs}
         extensions={b1CatalogDescriptors}
         extensionImplementations={b1CatalogImplementations}
         {stateValues}
+        {resetSignal}
+        actionState={consumerActionState}
+        onStateChange={(key, value) => stateByDocument[currentId] = { ...stateValues, [key]: value }}
         selectedOccurrence={selectedOccurrence}
         onSelect={select}
         {dispatch}
@@ -236,7 +243,7 @@
         const next = { ...stateValues };
         if (value === undefined) delete next[key];
         else next[key] = value;
-        stateValues = next;
+        stateByDocument[currentId] = next;
       }}
     />
     <Inspector
@@ -245,6 +252,8 @@
       onApply={applyDraft}
       {lastIssues}
       knownActionIds={consumerActionIds}
+      actionInputs={consumerActionInputs}
+      {readEffective}
       knownViewFields={consumerViewFields}
       componentDescriptors={b1CatalogDescriptors}
     />
@@ -254,7 +263,7 @@
         document={workingDocument}
         {selectedOccurrence}
         onSelect={select}
-        scope={{ view: consumerViewData, record: {}, state: {}, tokens: {} }}
+        scope={{ view: productView, record: {}, state: stateValues, tokens: {} }}
         ariaLabel="Layers"
       />
     {/if}

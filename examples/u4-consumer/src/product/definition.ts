@@ -6,7 +6,9 @@
  * View data supplies the select/radio options (array-typed reference-only
  * props bind to `view.*` fields).
  */
-import type { UiFieldTypes } from '@victframework/ui';
+import { copyUiValue, isUiValueOfType, type UiValue, type UiValueType, type UiDocument, type UiFieldTypes } from '@victframework/ui';
+import { defineContract } from '@victframework/contracts';
+import type { ApplicationDefinition, ResourceDefinition } from '@victframework/sdk';
 
 export interface ConsumerAction {
   readonly kind: 'mutation';
@@ -72,38 +74,70 @@ export const consumerActions: readonly ConsumerAction[] = [
   },
 ];
 
-export const consumerContracts: readonly { id: string; revision: string }[] = [
-  { id: 'c.taskAck', revision: '1' },
-  { id: 'c.taskSubmit', revision: '1' },
-  { id: 'c.taskAssign', revision: '1' },
-  { id: 'c.taskRegion', revision: '1' },
-  { id: 'c.unit', revision: '1' },
+/** Executable contracts carry their passive field metadata at the same exact revision. */
+function inputContract(id: string, fields: Readonly<Record<string, UiValueType>>) {
+  return defineContract<Record<string, UiValue>>({ id, revision: '1', presentationFields: fields,
+    parse(input) {
+      if (typeof input !== 'object' || input === null || Array.isArray(input)) return { ok: false, issues: [{ code: 'invalid_type', path: '(root)', message: 'Expected declared input fields.' }] };
+      const record: Record<string, unknown> = Object.fromEntries(Object.entries(input));
+      const value: Record<string, UiValue> = {};
+      if (Object.keys(record).some(name => !Object.hasOwn(fields, name))) return { ok: false, issues: [{ code: 'unknown_field', path: '(root)', message: 'Unknown input field.' }] };
+      for (const [name, type] of Object.entries(fields)) {
+        const candidate = record[name];
+        if (!isUiValueOfType(candidate, type)) return { ok: false, issues: [{ code: 'invalid_type', path: name, message: 'Input does not match the declared type.' }] };
+        value[name] = copyUiValue(candidate);
+      }
+      return { ok: true, value };
+    },
+  });
+}
+export const consumerContracts = [
+  inputContract('c.taskAck', { noteId: 'string', ack: 'boolean' }),
+  inputContract('c.taskSubmit', { noteId: 'string', ackFindings: 'boolean', ackPricing: 'boolean', region: 'string' }),
+  inputContract('c.taskAssign', { noteId: 'string', reviewer: 'string' }),
+  inputContract('c.taskRegion', { region: 'string' }),
+  defineContract<string>({ id: 'c.unit', revision: '1', parse: input => typeof input === 'string'
+    ? { ok: true, value: input } : { ok: false, issues: [{ code: 'invalid_type', path: '(root)', message: 'Expected a result message.' }] } }),
 ];
 
-/**
- * Declarative input types per contract (amendment §3.5): the neutral
- * contracts API carries `parse` functions, so the application declares the
- * input NAMES AND TYPES its contracts accept; the derived catalog types
- * output-binding action inputs against these.
- */
-export const consumerContractInputTypes: Readonly<
-  Record<string, Readonly<Record<string, 'string' | 'number' | 'boolean'>>>
-> = {
-  'c.taskAck': { noteId: 'string', ack: 'boolean' },
-  'c.taskSubmit': { noteId: 'string' },
-  'c.taskAssign': { noteId: 'string' },
-  'c.taskRegion': { region: 'string' },
+export const consumerResource: ResourceDefinition = {
+  schema: 'vict.resource@1', id: 'task', revision: '1', identity: { key: 'noteId' },
+  fields: [{ name: 'noteId', type: 'string', required: true }],
+  mutations: consumerActions.map(action => ({ op: action.op, effect: 'write', inputContractId: action.inputContractId,
+    outputContractId: action.outputContractId, permissions: ['task.write'] })),
 };
+export function consumerApplication(documents: readonly UiDocument[]): ApplicationDefinition {
+  return {
+    schema: 'vict.application@3', id: 'u4.consumer', revision: '1', name: 'Task review',
+    compatibility: { applicationSchema: 'vict.application@3' },
+    composition: { navigation: 'sidebar', responsive: { navigationAt: 'small' } },
+    routes: [
+      { id: 'controls', path: '/app.html', screenId: 'controls', nav: { label: 'Controls' } },
+      { id: 'shell', path: '/shell', screenId: 'shell', nav: { label: 'Shell and dialog' } },
+    ].filter(route => documents.some(document => (document.id === 'consumer.taskShell' ? 'shell' : 'controls') === route.screenId)),
+    screens: documents.map(document => ({ id: document.id === 'consumer.taskShell' ? 'shell' : 'controls', title: 'Task review',
+      uiDocument: { documentId: document.id, revision: document.revision } })),
+    actions: consumerActions, resources: [{ resourceId: 'task', revision: '1' }], views: [], forms: [], components: [],
+  };
+}
 
 export const consumerActionIds: readonly string[] = consumerActions.map((action) => action.id);
 
 export const consumerViewFields: UiFieldTypes = {
   regions: 'array',
   reviewers: 'array',
+  shellNavigation: 'array',
+  path: 'string',
+  navigationMode: 'string',
+  navigationAt: 'string',
 };
 
 /** View data: option objects for the select/radio-group array props. */
 export const consumerViewData: Record<string, unknown> = {
+  shellNavigation: [],
+  path: '/app.html',
+  navigationMode: 'sidebar',
+  navigationAt: 'small',
   regions: [
     { value: 'eu', label: 'EU West' },
     { value: 'us', label: 'US East' },
@@ -115,3 +149,19 @@ export const consumerViewData: Record<string, unknown> = {
     { value: 'cy', label: 'Cy' },
   ],
 };
+
+/** Runtime presentation connections; they never mutate document source or revision. */
+export const consumerActionState = {
+  'task.submit': { pending: 'approving', error: 'submissionError', result: 'submissionResult' },
+  'task.approve': { successValues: { assignOpen: true } },
+  'task.assign': { successValues: { assignOpen: false } },
+} as const;
+
+/** Browser URL routing is a consumer concern; navigation labels/composition come from the manifest. */
+export function consumerViewFor(documents: readonly UiDocument[], id: 'controls' | 'shell') {
+  const application = consumerApplication(documents);
+  const href = (routeId: string) => routeId === 'shell' ? '/app.html?doc=shell' : '/app.html';
+  return { ...consumerViewData, path: href(id),
+    shellNavigation: application.routes.filter(route => route.nav).map(route => ({ label: route.nav?.label, href: href(route.id) })),
+    navigationMode: application.composition?.navigation ?? 'sidebar', navigationAt: application.composition?.responsive?.navigationAt ?? 'small' };
+}
