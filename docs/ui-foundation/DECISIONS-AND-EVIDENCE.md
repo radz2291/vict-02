@@ -1012,6 +1012,66 @@ Decisions of record:
    .gitattributes). Process lesson recorded: string-replacement edits must
    be verified against file bytes — a missed match is silent.
 
+## U4 catalog recalibration bounded repair (2026-10-07) — documentation/design only
+
+Owner findings F1–F4, repaired on `codex/ui-foundation-u4-catalog-repair`
+(base `b05d016…`):
+
+- **F1 complete value path** — amendment §10.1a added: the serializable
+  carrier `UiValue` (= `string | number | boolean | readonly string[] |
+  readonly number[]`), the ONE shared guard `isUiValueOfType` (new
+  `packages/ui/src/values.ts`, owner `@victframework/ui`), and the
+  boundary table widening all eight public interfaces: `io.emit` payload
+  (bridge copies arrays), state initials, prop defaults, host
+  `stateValues` (DocumentHost + EditorCanvas), render-side validation
+  (replacing `typeof value === declaration.type`,
+  `DocumentHost.svelte:95`), author-time validation (replacing the
+  three-way typeof conjunction, `validate.ts:383–385`), compiled
+  `outputDecls`/`actionInputs` typing, preview forwarding. Reference-only
+  array props preserved alongside list-state sources; ownership/copy
+  discipline recorded; illustrative signatures typechecked under
+  `--strict` with negative cases failing (`reviews/u4/validator-probe/
+  f1-signatures.ts`). §3.2/§3.4 inline blocks updated to agree.
+- **F2 legacy-validator compatibility** — disposable probe against the
+  pinned legacy bytes (`952d92d` ≡ `b05d016` for `packages/ui/src/**`):
+  all four widened declarations REJECTED with `UI_EXPR_TYPE_MISMATCH`
+  (severity error; lists `actual: 'object'`, iso markers `'string'`);
+  string/string control ACCEPTED. Evidence:
+  `reviews/u4/validator-probe/{probe.mjs,output.txt}`. The §4.3 matrix
+  "new document → old validator: accepted" row is replaced by split
+  rows: primitive-state output documents accepted; widened-vocabulary
+  documents REJECTED at the VALIDATION gate (earliest fail-closed stage
+  — not the descriptor marker); new-instructions→legacy-renderer row
+  noted as normally unreachable upstream. Probe is validator-level only
+  (no browser). The verified events-marker gate, outputDecls compile
+  marker and implementation `abi` requirements are unchanged; new-side
+  acceptance is a contract requirement until B1 lands it.
+- **F3 Collapsible + ledger reconciliation** — collapsible assigned B5
+  (open boolean loop + trigger/content composition + acceptance row);
+  programmatic manifest↔ledger reconciliation added as a standing rule
+  (`reviews/u4/ledger-reconciliation/reconcile-ledger.mjs`): 38 available
+  families must each hold an assignable row, deferred three only in the
+  X-exclusion row. Repair run: exactly one gap (collapsible — fixed),
+  zero misplaced exclusions; re-run output RECONCILIATION OK.
+- **F4 ownership vs founder authoring** — the overbroad blanket
+  "document-node authoring: No — by boundary decision" is corrected:
+  StatusBadge/Feedback/Button ALREADY mount in documents via
+  `ext.status`/`ext.feedback`/`ext.button` registered implementations
+  (U3 descriptors + authored instances wrapping the PUBLIC components —
+  direct evidence in `examples/ui-authoring-proof`); per-component
+  roadmap added (recalibration §4.0): canonical config source, working
+  evidence, unavailable-to-founder surface, proposed Studio editing
+  surface — ALL recorded PENDING owner decision; agent-selected
+  boundaries are not owner acceptance. Application-plan ownership
+  retained for intent-driven surfaces; no component forced into a
+  document node; apps/studio untouched.
+- Governing documents reconciled (amendment, recalibration, matrix,
+  handoff §13.1 single current B1 prompt with §12.2 superseded visibly);
+  B1 scope made explicit: vocabulary + boundary plumbing lands, founder
+  proofs stay limited to B1 rows. All seven U4 criteria, packaging
+  repair, packed-artifact isolation, parity, bundle separation,
+  unfamiliar-agent exercise and founder checkpoint preserved.
+
 ## Future evidence entry format
 
 Identity: repository, branch, full base/candidate/reviewer SHAs, environment and contract pins.

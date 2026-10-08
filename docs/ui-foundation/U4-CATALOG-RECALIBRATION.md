@@ -177,6 +177,61 @@ records them, plans no document-node authoring for them, and marks that
 position explicitly (§5 rows A-1…A-9) so the boundary is a decision, not an
 oversight.
 
+### 4.0 Display components are ALREADY document-mountable — and the
+higher-level authoring roadmap (repair correction)
+
+The blanket "document-node authoring: **No**" in trace rows A-1…A-9 was
+overbroad: it conflated permanent non-goals with unresolved future work.
+The recorded U3 evidence shows three public components ALREADY mount in
+documents through the extension route (descriptors + registered
+implementations + authored instances in the product documents):
+
+| Component | Extension route (U3 evidence) | What works today (direct evidence) | Not yet founder-editable | Proposed editing surface (PENDING owner decision — not approved work) |
+| --- | --- | --- | --- | --- |
+| StatusBadge | `ext.status` rev 1 / `impl.vict.status` (`StatusExtension.svelte` wraps the PUBLIC `StatusBadge`); authored instances `ext('n.cardSeverity', 'ext.status', …)` with conditional `tone` expressions (`documents.ts:523–531`) | typed props (`value: string`, `tone: string` with conditional literals), rendering inside document cards, conditional tone switching | Inspector editors for the wrapper's prop vocabulary; tone-vocabulary validation; output connections | descriptor-driven Inspector editors (existing pattern); owner decides batch placement |
+| Feedback | `ext.feedback` rev 1 / `impl.vict.feedback` (`FeedbackExtension.svelte` wraps the PUBLIC `Feedback`); authored instance `ext('n.feedback', 'ext.feedback', …)` (`documents.ts:666`) | typed props (`message`, `kind` empty/status/error/denied), focus-target wrapper, in-document feedback display | same as above + kind vocabulary guard | same pattern |
+| Button (VICT presentational) | `ext.button` rev 1 / `impl.vict.button.submit` (`ButtonExtension.svelte` wraps the PUBLIC `Button`, variant/disabled) | typed props incl. boolean `disabled`, submit behavior in authored documents | pending/loading/feedback choreography as authored contract (the amendment's U4 target, currently contract-stage) | the amendment's catalog wrapper proof (B1) |
+
+For every REMAINING higher-level component the canonical configuration
+source, the working evidence and the unresolved authoring work are:
+
+- **RecordsTable** — config: `UiTableIntent` (columns + component islands,
+  search/filter/sort/page callbacks, row actions, FT-1 links,
+  `RecordsTable.svelte:9–33`). Works: plan-driven tables in U3 product
+  (renderer suites). Unavailable to founder editing: column set, island
+  composition, row-action wiring — plan-authored only. Proposed (pending):
+  Studio inspects/edits the intent through a table-intent editor; NOT a
+  document node.
+- **Chart** — config: `UiChartPoint[]` + `kind`. Works: plan surfaces.
+  Unavailable: data binding, kind, axes. Proposed (pending): intent
+  editor in Studio; document-node authoring not planned.
+- **Conversation** — config: `UiConversationMessage[]` + `onSend`. Works:
+  U0/U2 surfaces. Unavailable: message schemas, send wiring. Proposed
+  (pending): plan-surface editing only.
+- **DataView / List / Detail** — config: `UiListItem[]` /
+  `UiDisplayField[]`. Works: plan surfaces. Unavailable: field
+  composition, item templates. Proposed (pending): intent editors.
+- **Form / FormField / FormSurface** — config: `UiFormField` widget
+  vocabulary (`index.ts:132–149`). Works: U3 product forms (authored P2
+  elements + form surfaces). Unavailable: widget-level document authoring
+  (P2 authored elements remain the document-side form route).
+- **AppShell** — ALREADY a document-authoring target (frozen five; B1
+  ledger row) — listed here only because §4(a)/(b) previously blurred it.
+- **Text / Count** — display; document-mounted routes not yet evidenced;
+  status recorded as pending investigation with the same extension-route
+  pattern as StatusBadge/Feedback (no claim made either way).
+
+**Ownership statement (replacing the overbroad one):** application-plan
+ownership is retained where it exists (the intent-driven components
+above). That ownership does NOT permanently exclude founder editing of a
+component's CONFIGURATION: a component can stay application-plan governed
+while its configuration becomes inspectable and editable in Studio. All
+such Studio editing work is recorded here as PENDING with the proposed
+delivery location (Studio Inspector intent editors, later batch or Stage
+9 planning) and requires explicit owner authorization — an agent-selected
+boundary is not owner acceptance. `apps/studio` work remains outside this
+task.
+
 ### 4.1 Name overlaps (disambiguation)
 
 | Name | `src/<Name>.svelte` | `catalog/<slug>.ts` | Difference that matters |
@@ -217,7 +272,7 @@ Inspector (descriptor-driven property editors, output-connection editor) →
 | X-2 | Empty values (unset select, cleared date, indeterminate progress) | **Missing conventions**: state `initial` is `string\|number\|boolean` — no null; literal `null` exists in expressions but is not a state type; bits Progress `value?: number \| null` | Yes | — | **M — empty-value conventions (§6.5)** — B1–B3 |
 | X-3 | Rich text / JSON field editing (application `json` widget) | Application-surface widget (`UiFieldWidget`); no document equivalent | Yes (application surface) | D (U3 product forms) | **Out of document scope; recorded** — §4(b) row |
 | D-1 | Overlays/focus/portal (dialog, alert-dialog, popover, tooltip, link-preview; portal to ControlScope root) | Yes for dialog via frozen §6; alert-dialog/popover/tooltip same mechanism, undesigned rows | Yes | D styling; portal-to-root recorded in design | **E (mechanism); rows authored in B1/B4** |
-| A-1…A-9 | Application-surface components (RecordsTable, Chart, Conversation, DataView, List, Detail, Form/FormSurface, Feedback, Count/StatusBadge/Text) | Document-node authoring: **No — by boundary decision** (application-plan governed) | Yes (P3/plan surfaces) | D (U3 product; renderer suites) | **Recorded boundary; P3 remains their authoring route** — §4(b) |
+| A-1…A-9 | Application-surface components (RecordsTable, Chart, Conversation, DataView, List, Detail, Form/FormSurface, VitApp; display components tracked separately in §4.0) | Document-NODE authoring for the intent-driven surfaces: **No** (application-plan config is canonical); **display components StatusBadge/Feedback/Button ALREADY document-mounted** via `ext.status`/`ext.feedback`/`ext.button` (§4.0 evidence) | Yes (P3/plan surfaces; extension route for the display three) | D (U3 product: authored `ext.status`/`ext.feedback` instances; renderer suites) | **Intent-driven: recorded boundary; config inspect/edit = PENDING owner decision (§4.0 roadmap). Display three: E via extension route; editor depth = pending** |
 | DEF | pin-input, rating-group, time-range-field | No | **No module** | — | **X deferred (unchanged status)** |
 
 ### 5.1 What the trace establishes
@@ -234,9 +289,11 @@ Inspector (descriptor-driven property editors, output-connection editor) →
    and fixtures, not new mechanics.
 4. **Empty values** lack declared conventions (X-2) — a correctness rule,
    not a mechanism.
-5. Application-surface components are out of the document model by design;
-   the inventory records them as governed elsewhere (§4(b)) so no batch
-   claims them.
+5. Application-surface components are governed by their plan contracts
+   (§4/§4.0): the intent-driven surfaces are not document nodes; the
+   display components already mount through the extension route. Studio
+   config editing for either group is PENDING owner authorization, not a
+   recorded acceptance.
 6. The deferred three stay deferred (no module exists to wrap).
 
 ## 6. The smallest coherent solution to the actual gaps
@@ -252,7 +309,26 @@ export type UiValueType =
   | UiPrimitiveType            // 'string' | 'number' | 'boolean' (unchanged)
   | 'stringList' | 'numberList' // JSON arrays of scalars (L-1, L-2)
   | 'isoDate' | 'isoTime';      // string-encoded, format-validated markers (T-1)
+
+/** The serializable VALUE carrier crossing every UiValueType boundary
+ *  (amendment §10.1a — the authoritative boundary table lives there). */
+export type UiValue =
+  | string | number | boolean
+  | readonly string[] | readonly number[];
 ```
+
+The complete value path — the `UiValue` carrier, the ONE shared type
+guard (`isUiValueOfType`, new `packages/ui/src/values.ts`), and the
+boundary-by-boundary widening (emit payload, state initials, prop
+defaults, host `stateValues`, renderer validation replacing the
+`typeof value === declaration.type` check, author-time validation
+replacing the three-way `typeof` conjunction, compiled `outputDecls` /
+`actionInputs` typing, editor/preview forwarding), plus ownership/copy
+discipline for mutable arrays — is specified in amendment §10.1a and is
+not duplicated here. Note the repair finding it fixes: the current host
+check (`DocumentHost.svelte:95`) and current validator
+(`validate.ts:383–385`) cannot recognize the new type labels at all; the
+widening of BOTH is B1 plumbing, contract-stage until landed.
 
 - `UiLocalStateDecl.type: UiPrimitiveType` → `UiValueType`; `initial`
   widens to `readonly (string|number)[]` for the list types (JSON-serializable
@@ -457,22 +533,38 @@ family listed and families outside the list need their own checks):
 
 - **Scope**: avatar, aspect-ratio, separator, label, scroll-area, toolbar,
   link-preview, tooltip, popover, alert-dialog (overlay rows), tabs
-  document-composition row.
+  document-composition row, **collapsible** (reconciliation repair F3:
+  the family had inventory presence but no ledger row or batch).
+- **Collapsible assignment** (meaningful properties, controlled open,
+  content composition, acceptance): wrapper descriptor
+  `vict.catalog.collapsible` with props `open` (boolean — controlled via
+  state binding, the S-1 scalar loop), `disabled` (boolean); content via
+  the trigger + content slot fills (§3.7 mechanics); output
+  `openChange` (payload `boolean`) bound `setState` — the same
+  open-loop pattern as the dialog row. Acceptance evidence: the P-scalar
+  open loop (bind boolean state → toggle → `openChange` → setState →
+  undo/redo → save → reload → replay) plus composition evidence for
+  authored content; ledger row added in matrix §6.
 - **Founder gains**: polished composition chrome and contextual helpers.
 - **Acceptance**: P-overlay/P-nested rows as applicable; display families
-  need composition evidence only (no value mechanics).
+  need composition evidence only (no value mechanics); collapsible per
+  its row above.
 
 ### Exclusions and boundaries
 
 - **X deferred (unchanged)**: pin-input, rating-group, time-range-field —
   no VICT module exists; status changes only with new evidence + owner
   authority.
-- **Application-surface components** (RecordsTable, Chart, Conversation,
-  DataView, List, Detail, Form/FormSurface, Feedback, Count/StatusBadge/
-  Text/VitApp): application-plan governed; document-node authoring is a
-  recorded non-goal; they remain reachable in documents via registered
-  components (P3) and are exercised as the P-structured comparison, not as
-  authoring targets.
+- **Application-plan surfaces** (RecordsTable, Chart, Conversation,
+  DataView, List, Detail, Form/FormSurface, VitApp): plan contracts are
+  the canonical configuration source; document-NODE authoring is not
+  planned. This is NOT a permanent exclusion from founder editing of
+  configuration: Studio inspect/edit surfaces for these components are
+  recorded as PENDING work awaiting owner authorization (§4.0 roadmap).
+  The display components (StatusBadge, Feedback, Button, Text, Count)
+  already have or are candidates for the extension mount route (§4.0
+  evidence); they are exercised as the P-structured comparison where
+  relevant, not as batch authoring targets.
 - **Editor ergonomics out of scope (unchanged from frozen §8)**: visual
   binding-mapping canvas, per-option authoring UIs beyond descriptor-driven
   editors, grid editors for record-valued props.
@@ -484,6 +576,15 @@ Every family claimed as authoring-supported must have a ledger row in
 supported, batch, proof pattern, evidence artifact, and — for partial
 support — exactly which modes remain unproven. A batch report that claims
 beyond its ledger rows is a finding.
+
+**Programmatic reconciliation (repair F3, standing rule):** the coverage
+manifest (`catalog-coverage.json`) is reconciled against the ledger by
+script — every AVAILABLE family must appear in an assignable row (C →
+B-n / B-n), the three DEFERRED families only in the named-exclusion row.
+The repair-cycle run found exactly one gap (collapsible — now assigned,
+B5) and no misplaced exclusions; the script + output are preserved at
+`reviews/u4/ledger-reconciliation/`. Re-run the reconciliation at every
+batch gate.
 
 ## 8. Package ownership and allowed paths (per batch)
 
@@ -500,15 +601,21 @@ beyond its ledger rows is a finding.
 
 - This recalibration is **contract-stage**: every proposed behavior above
   is unimplemented. Source inspection + pinned upstream declarations + the
-  recorded showcase/tests are the entire evidence base; no new runtime
-  probe was run (the value vocabulary is decided by the cited `packages/ui`
-  type files — a renderer probe would have tested nothing this document
-  claims).
+  recorded showcase/tests are the evidence base for the inventory; the
+  repair cycle added two disposable probes, both recorded with limits:
+  the VALIDATOR probe (`reviews/u4/validator-probe/` — legacy validation
+  of widened declarations, validator-level only, no renderer/browser run)
+  and the LEDGER reconciliation
+  (`reviews/u4/ledger-reconciliation/` — manifest↔ledger script, doc
+  bytes only).
 - bits-ui value shapes are cited from the installed `bits-ui@2.19.3`
   typings (pinned by `catalog-coverage.json`); a dependency upgrade would
   require re-verification before relying on any cited shape.
 - Library-level keyboard/focus/portal behaviors are upstream-provided and
   adapter-revealed; batches must demonstrate them, not assume them.
-- The 3 deferred families and the application-surface boundary are
-  decisions recorded here; both are revisitable only with new evidence and
+- The 3 deferred families and the application-plan boundary are
+  decisions recorded here; the display components' document-mount route
+  is recorded U3 evidence (§4.0); Studio config editing for any
+  higher-level component is PENDING owner authorization, not claimed
+  here. Both boundary groups are revisitable only with new evidence and
   owner authority.

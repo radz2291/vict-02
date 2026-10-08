@@ -39,6 +39,17 @@ round 2 **PASS WNF** (8/9 verified; pointer residual) -> repairs. FROZEN
 freeze-check `U4 CATALOG RECALIBRATION FREEZE CHECK 03: VERIFIED`
 ([reviews/u4/FREEZE-CHECK-03.md](reviews/u4/FREEZE-CHECK-03.md)). Next
 authorized action: owner decision on batch B1 (handoff §13.1 prompt).
+**BOUNDED REPAIR (owner findings F1–F4) in progress** on
+`codex/ui-foundation-u4-catalog-repair`: F1 complete value path
+(amendment §10.1a: `UiValue` carrier + `isUiValueOfType` guard + all
+eight boundaries widened), F2 legacy-validator compatibility corrected
+(probe: all four widened types REJECTED with `UI_EXPR_TYPE_MISMATCH` at
+the VALIDATION gate — matrix rows split accordingly), F3 Collapsible
+assigned B5 + programmatic ledger reconciliation (RECONCILIATION OK; one
+gap found and fixed), F4 higher-level authoring roadmap (display
+components already document-mounted via ext.status/ext.feedback;
+Studio config editing recorded PENDING owner decision). Superseding
+freeze to follow review.
 Amendment work is isolated on `codex/ui-foundation-u4-component-amendment`
 (from the prepared handoff records `cfbd6d3…`); U0–U3 records untouched.
 The prepared U4 handoff was independently reviewed on

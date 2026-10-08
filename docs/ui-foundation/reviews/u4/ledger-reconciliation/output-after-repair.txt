@@ -1,0 +1,6 @@
+coverage families: 41 (38 available, 3 deferred; bits 2.19.3)
+available families missing a ledger row: NONE
+available families sitting in an X-exclusion row: NONE
+deferred families outside a named-exclusion row: NONE
+sample assignments: accordion=C → B2 (B2 · P-multi (sections composition: P-nested informs too)); alert-dialog=C → B5 (B5 · P-overlay); aspect-ratio=C → B5 (B5 · composition); avatar=C → B5 (B5 · composition)
+RECONCILIATION OK: every available family has an explicit ledger assignment; the three deferred families remain named exclusions only

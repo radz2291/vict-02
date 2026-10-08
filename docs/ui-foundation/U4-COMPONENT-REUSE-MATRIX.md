@@ -255,12 +255,23 @@ listed; unlisted modes are unproven even when the family row shows a batch.
 | TimeField | isoTime marker, granularity | C → B3 | B3 · P-range-date |
 | DateRangeField / DateRangePicker / RangeCalendar | dual isoDate scalars (start/end), partial ranges | C → B3 | B3 · P-range-date |
 | DropdownMenu / ContextMenu / Menubar | nested item content; itemActivate string; CheckboxItem boolean; RadioItem string | C → B4 | B4 · P-nested |
+| Collapsible | open boolean (controlled state binding), disabled; trigger + content slots (repair F3: was missing from this ledger entirely) | C → B5 | B5 · P-scalar open loop + composition |
 | Command | searchable menu composition | C → B4 | B4 · P-nested |
 | NavigationMenu | menu composition | C → B4 | B4 · P-nested |
 | AlertDialog / Popover / Tooltip / LinkPreview | open/hover overlays, portal | C → B5 | B5 · P-overlay |
 | Avatar / AspectRatio / Separator / Label / ScrollArea / Toolbar | display/composition (no value state) | C → B5 | B5 · composition |
 | PinInput / RatingGroup / TimeRangeField | — no VICT module | **X** | deferred (unchanged) |
-| RecordsTable / Chart / Conversation / DataView / List / Detail / Form+FormField/FormSurface / Feedback / Count / StatusBadge / Text / VitApp | application-plan intents (`UiTableIntent`, `UiChartPoint`, `UiConversationMessage`, `UiFormField`, …) | **P3** | application-plan governed; document-node authoring is a recorded non-goal; P3/P4 remains their in-document route |
+
+**Programmatic reconciliation (standing rule, recalibration §7):**
+`catalog-coverage.json` (41 families) is checked against this ledger by
+`reviews/u4/ledger-reconciliation/reconcile-ledger.mjs` — 38 available
+families must each appear in an assignable row above; the three deferred
+families only in the X-exclusion row. Repair-cycle result: exactly one gap
+found (collapsible — row added above, B5), zero misplaced exclusions; the
+re-run output (`output-after-repair.txt`) records RECONCILIATION OK.
+Re-run at every batch gate.
+| RecordsTable / Chart / Conversation / DataView / List / Detail / Form+FormField/FormSurface / VitApp | application-plan intents (`UiTableIntent`, `UiChartPoint`, `UiConversationMessage`, `UiFormField`, …) | **P3** | application-plan governed; plan config canonical; Studio config inspect/edit = PENDING owner decision (recalibration §4.0 roadmap); document-node authoring not planned |
+| StatusBadge / Feedback / Text / Count (display) | props-only presentation; **StatusBadge + Feedback already document-mounted** via `ext.status`/`ext.feedback` registered implementations (U3 authored instances, §4.0 evidence); Text/Count route pending investigation | **P3 (extension mount route, evidenced)** | extension route stands; Inspector editor depth for the wrappers = pending owner authorization (not a batch claim) |
 
 Honesty rules (unchanged): an export or showcase example proves library
 availability only; ledger changes to **B-n** require that batch's recorded

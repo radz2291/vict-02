@@ -32,3 +32,5 @@ docs/ui-foundation/reviews/u2/combined-verify-evidence/
 # Imported independent experience-review evidence bytes (verbatim)
 docs/ui-foundation/u3-experience/
 docs/ui-foundation/reviews/u4/abi-probe/
+docs/ui-foundation/reviews/u4/validator-probe/
+docs/ui-foundation/reviews/u4/ledger-reconciliation/

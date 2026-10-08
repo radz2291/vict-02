@@ -1,0 +1,15 @@
+C0 control: string/string: ACCEPTED
+C1 stringList: REJECTED
+  code=UI_EXPR_TYPE_MISMATCH message="Local state 'k' initial value does not match its type."
+  diagnostic={"code":"UI_EXPR_TYPE_MISMATCH","message":"Local state 'k' initial value does not match its type.","severity":"error","documentId":"doc.f2probe","nodeId":"n.root","expected":"stringList","actual":"object"}
+C2 numberList: REJECTED
+  code=UI_EXPR_TYPE_MISMATCH message="Local state 'k' initial value does not match its type."
+  diagnostic={"code":"UI_EXPR_TYPE_MISMATCH","message":"Local state 'k' initial value does not match its type.","severity":"error","documentId":"doc.f2probe","nodeId":"n.root","expected":"numberList","actual":"object"}
+C3 isoDate: REJECTED
+  code=UI_EXPR_TYPE_MISMATCH message="Local state 'k' initial value does not match its type."
+  diagnostic={"code":"UI_EXPR_TYPE_MISMATCH","message":"Local state 'k' initial value does not match its type.","severity":"error","documentId":"doc.f2probe","nodeId":"n.root","expected":"isoDate","actual":"string"}
+C4 isoTime: REJECTED
+  code=UI_EXPR_TYPE_MISMATCH message="Local state 'k' initial value does not match its type."
+  diagnostic={"code":"UI_EXPR_TYPE_MISMATCH","message":"Local state 'k' initial value does not match its type.","severity":"error","documentId":"doc.f2probe","nodeId":"n.root","expected":"isoTime","actual":"string"}
+PROBE OK: control accepted; all four widened types rejected by the legacy validator (UI_EXPR_TYPE_MISMATCH)
+Evidence limits: validator-level only (no renderer/browser run); render-side host check is DocumentHost.svelte:95 typeof comparison (cited, not executed here).

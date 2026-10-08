@@ -331,12 +331,14 @@ new authorization.
 > checkpoint with acceptance PENDING. No npm publication, merge to main,
 > apps/studio integration, or deployment.
 
-### 12.2 CURRENT for the original five-family U4 scope — SUPERSEDED IN PART by §13.1 for the recalibrated full-catalog program (owner decision 8)
+### 12.2 SUPERSEDED for the recalibrated program (owner decision 8) — retained visibly; the CURRENT prompt is §13.1 (post-repair)
 
-> Overlap note: §13.1's batch-B1 prompt covers this prompt's five-family
-> scope PLUS the value-vocabulary extension and three additional wrappers.
-> Authorizing §13.1 makes this prompt redundant; authorizing this prompt
-> alone leaves the recalibration unimplemented. Do not authorize both.
+> Overlap note (historical): earlier §13.1 wordings covered this
+> prompt's five-family scope plus the recalibration. The current
+> (post-repair) §13.1 prompt additionally lands the §10.1a value-path
+> plumbing. Authorizing §13.1 makes this prompt redundant; authorizing
+> this prompt alone leaves the recalibration unimplemented. Do not
+> authorize both.
 
 > Authorize U4 for radz2291/vict-02 per docs/ui-foundation/U4-HANDOFF.md at
 > its recorded tip (PREPARED — IMPLEMENTATION NOT AUTHORIZED → AUTHORIZED)
@@ -432,49 +434,74 @@ own gate; a batch PASS proves only its ledger rows):
   separator, label, scroll-area, toolbar, link-preview, tooltip, popover,
   alert-dialog, tabs composition.
 
-### 13.1 First-batch authorization prompt (copy-paste when ready)
+### 13.1 First-batch authorization prompt (copy-paste when ready — CURRENT; supersedes every earlier B1 wording, including the pre-repair recalibration prompt and any §12.2-era text, which remain visible history only)
 
-> Authorize U4 batch B1 (catalog recalibration) for radz2291/vict-02 per
-> docs/ui-foundation/U4-HANDOFF.md §13 at its recorded tip (PROPOSED →
-> AUTHORIZED-B1) governed by the frozen component amendment
-> docs/ui-foundation/U4-COMPONENT-AMENDMENT.md (payload SHA
-> recorded in docs/ui-foundation/U4-AMENDMENT-FREEZE-02.md, as superseded
-> for scope by the recalibration: docs/ui-foundation/U4-CATALOG-RECALIBRATION.md
-> and amendment §10 — the value-vocabulary extension §10.1–§10.5 is IN
-> SCOPE for B1 implementation; the §8 five-family coverage claim is
-> superseded). Implement ONLY batch B1 on a new isolated branch
-> codex/ui-foundation-u4-b1 from this lineage: (1) land the UiValueType
-> vocabulary (stringList/numberList/isoDate/isoTime), empty-value and
-> item-content rules, and their validator/compile diagnostics exactly as
-> specified in amendment §10 and the vocabulary/empty-value parts of
-> fixtures multiselect-binding.json,
-> date-field-binding.json, slider-range-binding.json,
-> invalid-cases-recal.json (item-content AUTHORING is a B2/B4 obligation
-> per recalibration §7 — B1 pins its contract shape only); (2) implement
-> the five frozen contract
-> families (button, catalog checkbox, catalog select single, catalog
-> dialog, app-shell) plus switch, toggle, radio-group wrappers — each
-> descriptor carrying the ABI marker (`events:
-> ['vict.ui-component-abi@1']`), abi match, and declared outputs; (3)
-> repair ui-editor packaging (the U4-HANDOFF §10 carry-forwards table's
-> first row:
-> emitting build + the four declaration fixes, origin F3);
-> derive the action-input catalog via deriveActionInputCatalog →
-> compileUiDocument catalogs option actionInputs at the existing ui-attach
-> call site (amendment §3.5); (4) implement the descriptor-driven
-> Inspector editors for scalar state and output connections (approved
-> Inspector patterns are the experience baseline); (5) pack the closure
-> set and build examples/u4-consumer strictly from packed artifacts; (6)
-> deliver the §6 catalog proof for each B1 family (select → Inspector
-> edit → undo/redo → save → reload → finished app, same control each
-> time), the P-scalar and P-overlay proof patterns, the negative
-> fixtures executed at runtime, and the failure model (unknown output,
-> payload mismatch, incompatible binding, revision pin, ABI mismatch);
-> (7) preview/production parity with bundle separation, the
-> unfamiliar-agent exercise, and the walkthrough recording. Update the
-> reuse-matrix §6 ledger rows for B1 families ONLY. B2–B5 families, the
-> deferred three, and application-surface components are OUT OF SCOPE — a
-> B1 report claiming them is a finding. Then run the fresh independent
-> gate, repair in-scope findings with affected rechecks, and stop at the
-> founder checkpoint with acceptance PENDING. No npm publication, merge
-> to main, apps/studio integration, or deployment.
+> Authorize U4 batch B1 (catalog recalibration, post-repair) for
+> radz2291/vict-02 per docs/ui-foundation/U4-HANDOFF.md §13 at its
+> recorded tip (PROPOSED → AUTHORIZED-B1), governed by the frozen
+> amendment docs/ui-foundation/U4-COMPONENT-AMENDMENT.md and
+> recalibration docs/ui-foundation/U4-CATALOG-RECALIBRATION.md at the
+> payload SHA recorded in
+> docs/ui-foundation/U4-CATALOG-RECALIBRATION-FREEZE.md (as superseded
+> in scope by that freeze; the §8 five-family claim stays superseded).
+> Implement ONLY batch B1 on a new isolated branch
+> codex/ui-foundation-u4-b1 from this lineage:
+> (1) Land the shared value vocabulary AS CODE exactly per amendment
+> §10.1/§10.1a: new `packages/ui/src/values.ts` with
+> `isUiValueOfType(value, type)`; widen `UiLocalStateDecl.initial`,
+> `UiPropDecl.type`/`default`, `UiOutputDecl.payload` ('void' |
+> UiValueType), the `io.emit` payload to `UiValue` (bridge copies array
+> payloads before delivery), `DocumentHost`/`EditorCanvas` `stateValues`
+> to `Readonly<Record<string, UiValue>>`; REPLACE the host check
+> `typeof value === declaration.type` (DocumentHost.svelte:95) and the
+> validator's three-way typeof conjunction (validate.ts:383–385) with
+> the shared guard (rejection diagnostics unchanged:
+> UI_RENDER_STATE_VALUE_REJECTED / UI_EXPR_TYPE_MISMATCH with specific
+> list-member and iso-format messages; add UI_DOC_INVALID_LITERAL for
+> date/time literal formats); keep array-typed props reference-only and
+> add list-state keys as legal reference sources; widen the
+> action-input catalog typing at the ui-attach.ts call site. Empty-value
+> conventions per amendment §10.1 ('' / [], no null members, numbers
+> and booleans have no empty).
+> (2) Implement the five frozen contract families (button, catalog
+> checkbox, catalog select single, catalog dialog, app-shell) plus
+> switch, toggle, radio-group wrappers — each descriptor carrying the
+> ABI marker (`events: ['vict.ui-component-abi@1']`), abi match, and
+> declared outputs.
+> (3) Repair ui-editor packaging (the U4-HANDOFF §10 carry-forwards
+> table's first row: emitting build + the four declaration fixes, origin
+> F3); derive the action-input catalog via deriveActionInputCatalog →
+> compileUiDocument catalogs option actionInputs at the existing
+> ui-attach call site (amendment §3.5).
+> (4) Implement the descriptor-driven Inspector editors for scalar AND
+> list-value state (display/edit stringList/numberList values) and
+> output connections (approved Inspector patterns are the experience
+> baseline).
+> (5) Pack the closure set and build examples/u4-consumer strictly from
+> packed artifacts.
+> (6) Deliver the §6 catalog proof for each B1 family (select →
+> Inspector edit → undo/redo → save → reload → finished app, same
+> control each time), the P-scalar and P-overlay proof patterns, the
+> negative fixtures executed at runtime (now including widened-type
+> negatives: null array member, mixed members, malformed isoDate
+> literal, stringList payload → scalar state), and the failure model
+> (unknown output, payload mismatch, incompatible binding, revision
+> pin, ABI mismatch).
+> (7) Preview/production parity with bundle separation, the
+> unfamiliar-agent exercise, and the walkthrough recording.
+> SCOPE LIMIT: B1 lands the shared vocabulary and boundary plumbing, but
+> its founder-facing control proofs stay limited to B1's assigned
+> families and modes (matrix §6 B1 rows). Multi-value selection, dates,
+> numeric ranges, menus, collapsible, and all B2–B5 rows retain their
+> later-batch obligations even though the vocabulary that will carry
+> them lands now — a B1 report claiming them is a finding. The deferred
+> three (pin-input, rating-group, time-range-field) and application-plan
+> surfaces (RecordsTable, Chart, Conversation, DataView, List, Detail,
+> Form/FormSurface, VitApp) are OUT OF SCOPE; display-component editor
+> depth (StatusBadge/Feedback/Text/Count) is pending owner decision, not
+> B1 work. Update the reuse-matrix §6 ledger rows for B1 families ONLY
+> and re-run reviews/u4/ledger-reconciliation/reconcile-ledger.mjs at
+> the gate. Then run the fresh independent gate, repair in-scope
+> findings with affected rechecks, and stop at the founder checkpoint
+> with acceptance PENDING. No npm publication, merge to main,
+> apps/studio integration, or deployment.

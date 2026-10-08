@@ -166,8 +166,10 @@ shape (id, revision, `props: UiPropDecl[]`, `rendererImplementationId`,
   export interface UiOutputDecl {
     /** Declared output name (the `outputs` map key on instances). */
     readonly name: string;
-    /** `'void'` for pure intent (no payload), or a primitive payload type. */
-    readonly payload: 'void' | UiPrimitiveType;
+    /** `'void'` for pure intent (no payload), or a widened value type
+     *  (`'void' \| UiValueType` after §10.1 — primitives as shipped
+     *  today, plus the list/date vocabulary). */
+    readonly payload: 'void' | UiValueType;
     /** Editor-facing description of when the output fires. */
     readonly description?: string;
   }
@@ -289,8 +291,11 @@ export interface UiSvelteComponentImplementation {
 
 ```ts
 export interface UiSvelteComponentIO {
-  /** Emit a declared output. Only declared names are delivered. */
-  readonly emit: (output: string, payload?: string | number | boolean) => void;
+  /** Emit a declared output. Only declared names are delivered.
+   *  Payload widened to the serializable carrier `UiValue` (§10.1a):
+   *  scalars as today, plus homogeneous JSON arrays for list payloads;
+   *  the bridge copies array payloads before delivery. */
+  readonly emit: (output: string, payload?: UiValue) => void;
   /** Declared slot fills as rendered snippets (instance scope). */
   readonly slots?: Readonly<Record<string, import('svelte').Snippet>>;
 }
@@ -541,11 +546,12 @@ closes).
   | --- | --- |
   | Old documents/descriptors → new compiler + renderer | Byte-identical (no marker anywhere) — same props-only resolution, digests and `applicationVersion`; old-document behavior and identity preserved unchanged |
   | New output-enabled documents → old compiler | The property-based old compiler drops the new instance fields (extension instructions carry `propDecls`/`propValues` only — verified at `952d92d…`); the descriptor marker remains → old renderer rejects at resolution (`UI_RENDER_EXTENSION_INTERFACE_UNSUPPORTED`, probe C2); new renderer rejects the marker-less plan artifact (`UI_COMPONENT_ABI_UNSUPPORTED`, §5.2). Never an apparently functional control with silently dropped wiring |
-  | New compiled instructions → old renderer | New instruction fields are unread by legacy code, but resolution rejects via the descriptor marker — `UI_RENDER_EXTENSION_INTERFACE_UNSUPPORTED` (probe C2 shape; resolver-level result) |
+  | New output-enabled document, PRIMITIVE state/props only → old validator | Accepted (property-based validation tolerates the additive optional fields — outputs maps, descriptor fields); semantic misses surface at the failing consumer per the rows above — never silent misbehavior |
+  | New document using the WIDENED state vocabulary (`stringList`/`numberList`/`isoDate`/`isoTime`) → old validator | **REJECTED, probe-verified** — the legacy initial check is a three-way `typeof` conjunction (`validate.ts:383–385`); every widened declaration fails with `UI_EXPR_TYPE_MISMATCH` (severity error, `expected: 'stringList'`, `actual: 'object'` for lists / `'string'` for iso markers — validator-probe evidence, all four types + accepted control). Rejection occurs at the VALIDATION gate — the earliest fail-closed stage, before compile and before any descriptor resolution — NOT via the ABI descriptor marker (that marker governs render-side resolution of output-enabled descriptors; it never gets the chance here). Legitimate fail-closed behavior, unchanged by this contract |
+  | New compiled instructions → old renderer | New instruction fields are unread by legacy code, but resolution rejects via the descriptor marker — `UI_RENDER_EXTENSION_INTERFACE_UNSUPPORTED` (probe C2 shape; resolver-level result). For widened-vocabulary documents this row is normally unreachable: the old VALIDATOR row above rejects upstream first |
   | Old compiled instructions → new renderer + output-enabled descriptors | The instruction lacks `outputDecls` for an abi@1 descriptor → fail-closed `UI_COMPONENT_ABI_UNSUPPORTED` (§5.2); pre-amendment compile artifacts cannot masquerade as current |
   | Fully compatible new artifacts | Full authored path: compile checks (§5.1), typed delivery, generation-gated stale handling (§5.3) |
   | Missing / mismatched / unsupported implementations | `UI_COMPONENT_UNAVAILABLE` (absent, competing, identity mismatch — existing discipline); `UI_COMPONENT_ABI_UNSUPPORTED` (abi mismatch, malformed marker, or marker-less plan artifact); `UI_RENDER_EXTENSION_INTERFACE_UNSUPPORTED` (legacy consumers — existing diagnostic) |
-  | New document → old validator | Accepted (property-based validation tolerates the new optional fields); semantic misses surface at the failing consumer per the rows above — never silent misbehavior |
   | Props-only extensions | Unchanged — descriptors without the marker keep today's exact resolution semantics; untyped non-marker events keep failing closed |
 
   Evidence limits, stated plainly: the probe is a **resolver-level**
@@ -735,12 +741,24 @@ superseded: §8's honesty rules (per-family evidence; no silent claims) and
 ### 10.1 Value-type vocabulary (one additive union; schema strings unchanged)
 
 ```ts
+/** The serializable runtime value carried across every UiValueType boundary. */
+export type UiValue =
+  | string
+  | number
+  | boolean
+  | readonly string[]      // the value side of 'stringList'
+  | readonly number[];     // the value side of 'numberList'
+
 /** Additive widening used by state decls, prop decls, and output payloads. */
 export type UiValueType =
   | UiPrimitiveType               // 'string' | 'number' | 'boolean' — unchanged
   | 'stringList' | 'numberList'   // JSON arrays of scalars (multi-select, toggle multiple, slider range)
   | 'isoDate' | 'isoTime';        // string-encoded, format-validated date/time markers
 ```
+
+`UiValueType` is the TYPE side (declarations); `UiValue` is the VALUE side
+(what actually flows). §10.1a defines the one shared type guard that maps
+between them, and the full boundary-by-boundary application of both.
 
 - `UiLocalStateDecl.type` widens to `UiValueType`; list initials are JSON
   arrays (canonical `[]`); `isoDate`/`isoTime` initials are strings.
@@ -768,6 +786,100 @@ export type UiValueType =
 - Tri-state checkbox: `indeterminate` is a prop binding (boolean
   expression), never a third persisted `checked` value.
 
+### 10.1a The complete value path (boundaries, validation, ownership)
+
+**Contract requirement (proposed, unimplemented)** — introduced after the
+independent repair review flagged that §10.1 widened declarations without
+following the values through every public interface.
+
+**The serializable value carrier.** Every runtime value that crosses a
+`UiValueType`-typed boundary is a `UiValue` (above): a scalar, or a
+frozen-order JSON array of homogeneous scalars. Library objects
+(`DateValue`, `Time`, `DateRange`, Svelte/Bits types) never appear in any
+signature below; adapters convert at the library boundary only (§10.1
+dates rule).
+
+**The one shared type guard** (new `packages/ui/src/values.ts`, owned by
+`@victframework/ui`; illustrative signature, not yet in source):
+
+```ts
+export function isUiValueOfType(value: unknown, type: UiValueType): boolean
+// string    → typeof 'string'
+// number    → typeof 'number' && Number.isFinite
+// boolean   → typeof 'boolean'
+// stringList → Array.isArray && every member typeof 'string'
+// numberList → Array.isArray && every member typeof 'number' && every member finite
+// isoDate   → string matching ^\d{4}-\d{2}-\d{2}$ AND accepted by
+//             @internationalized/date parseDate (the neutral contract
+//             checks the literal format; calendar validity is the adapter
+//             boundary's parse — a format-invalid literal is
+//             UI_DOC_INVALID_LITERAL at author time)
+// isoTime   → string matching ^\d{2}:\d{2}(:\d{2})?$ AND accepted by parseTime
+```
+
+Arrays must be **homogeneous** (no `null` members, no mixed member types,
+no NaN members) and `[]` is the valid empty list. This ONE function
+replaces every per-boundary structural check listed below; it is the only
+place value-shape rules live (no per-package reimplementations).
+
+**Boundary-by-boundary application** (each widened from primitives;
+additive — absent fields keep today's exact behavior):
+
+| # | Boundary | Today (primitive-only) | Widened contract | Owner |
+| --- | --- | --- | --- | --- |
+| 1 | Output emission (`UiSvelteComponentIO.emit`, §3.4) | `payload?: string \| number \| boolean` | `payload?: UiValue`; the bridge copies array payloads before delivery | `@victframework/ui-svelte` bridge |
+| 2 | State initials (`UiLocalStateDecl`, `document.ts:135–139`) | `initial: string \| number \| boolean` | `initial: UiValue`; `[]` canonical empty list | `@victframework/ui` |
+| 3 | Prop defaults (`UiPropDecl.default`, `document.ts:148–152`) | `default?: string \| number \| boolean` | `default?: UiValue` (descriptor/catalog metadata; authored prop VALUES still bind by expression reference — array literals do not exist in the expression language) | `@victframework/ui` |
+| 4 | Host presentation state (`DocumentHost` `stateValues`, `DocumentHost.svelte:29`; editor forwarding `EditorCanvas.svelte:27`) | `Readonly<Record<string, string \| number \| boolean>>` | `Readonly<Record<string, UiValue>>` | `@victframework/ui-svelte`; `@victframework/ui-editor` forwards unchanged |
+| 5 | Host/render-side validation (`DocumentHost.svelte:69,95`) | `typeof value === declaration.type` (cannot recognize `stringList`/`isoDate`/…) | `isUiValueOfType(value, declaration.type)` (+ finite-number rule kept) — rejection diagnostic unchanged (`UI_RENDER_STATE_VALUE_REJECTED`) | `@victframework/ui-svelte`, importing the guard from `@victframework/ui` |
+| 6 | Author-time validation (`validate.ts:383–385` initial check) | three-way `typeof` conjunction (PROBE: rejects all four widened types with `UI_EXPR_TYPE_MISMATCH` — validator-probe evidence) | `isUiValueOfType(initial, type)`; list-member and iso-format failures carry specific messages | `@victframework/ui` |
+| 7 | Compiled values (`UiOutputDecl.payload` §3.2; `outputDecls` §3.3; `actionInputs` input-catalog typing) | `'void' \| UiPrimitiveType` | `'void' \| UiValueType` throughout; output→state/action binding compatibility compares widened types with no coercion | `@victframework/ui`; `@victframework/application` passes the catalog at the `ui-attach.ts` call site |
+| 8 | Preview/production parity | n/a | `ui-preview` forwards `stateValues` typed with the same `UiValue`; no preview-side reshaping | `@victframework/ui-preview` |
+
+**Reference-only array props preserved.** The frozen rule (§3.2 typed
+inputs) is unchanged and sits ALONGSIDE list state: an array-typed prop
+(`type: 'array'`) still binds only to an expression reference (view/record
+field); a list-typed state key (`stringList`/`numberList`) is a NEW
+referenceable source for those bindings. Documents never embed array
+literals in either path.
+
+**Ownership and copy discipline** (mutable arrays must not undermine
+snapshots or saved state):
+
+- The bridge copies array payloads at the emit boundary (`[...payload]`)
+  before delivery, `$output` scoping, and any snapshot capture; a wrapper
+  holding a mutable array cannot mutate delivered history.
+- The host copies arrays when seeding from `stateValues` and on every
+  merge (`initialValues` / reset effect); `stateBag` owns its arrays.
+- Wrappers treat list state as replace-whole (bind a new array on change,
+  never splice in place); edit-session drafts replace list initials
+  wholesale (same immutable-draft discipline as every other edit op).
+- Documents are JSON-serialized at save/canonicalization, so persisted
+  state is structurally copied; the rules above close the in-memory
+  aliasing gap between those serialized snapshots.
+
+**Contract examples (agreeing across amendment, recalibration and
+fixtures).** Positive: descriptor declares `outputs: [{ name:
+'valuesChange', payload: 'stringList' }, { name: 'openChange', payload:
+'boolean' }]`; document declares `localState: { sel: { type:
+'stringList', initial: [] }, open: { type: 'boolean', initial: false } }`;
+host feeds `stateValues: { sel: ['a','b'], open: false }`; wrapper calls
+`io.emit('valuesChange', ['a','b'])` → bridge copies → `setState('sel',
+['a','b'])` passes `isUiValueOfType`. Negative (each fails closed):
+`io.emit('x', [null])` (null member — not a `UiValue`);
+`io.emit('x', new Date())` (library object — never crosses the contract);
+`stringList` payload → `string` state (`UI_COMPONENT_OUTPUT_PAYLOAD_INVALID`);
+`io.emit('x', ['a', 1])` (mixed members — not a `UiValue`);
+`initial: '2026-13-45'` for `isoDate` (`UI_DOC_INVALID_LITERAL`);
+host-supplied `stateValues: { sel: 'a' }` for a `stringList` declaration
+(`UI_RENDER_STATE_VALUE_REJECTED`, same code as today).
+
+All signatures above are **illustrative TypeScript in this contract**
+(the repair cycle typechecked them under `--strict` with the negative
+cases failing compilation — repair evidence), not landed source. Landing
+them is B1's first obligation, including `values.ts` + guard wiring at
+boundaries 5/6 and the diagnostics table trigger updates in §5.1.
+
 ### 10.2 Item/panel content authoring
 
 List-control options, menu items, and tab/accordion panels are authored
@@ -792,20 +904,36 @@ compilers drop the new optional fields; markers still fail-close).
 Diagnostics: no new codes except ONE NEW code for date/time literal
 formats: `UI_DOC_INVALID_LITERAL` (new — today's validator has no such
 code, verified against `packages/ui/src/diagnostics.ts`; date/time
-formats and non-JSON numerics raise it); list/isoDate mismatches
-extend `UI_COMPONENT_OUTPUT_PAYLOAD_INVALID` /
-`UI_COMPONENT_BINDING_INCOMPATIBLE` / `UI_EXPR_TYPE_MISMATCH` triggers.
+formats and non-JSON numerics raise it). Widened-declaration handling:
+TODAY's validator rejects `stringList`/`numberList`/`isoDate`/`isoTime`
+declarations with `UI_EXPR_TYPE_MISMATCH` (probe-verified —
+`reviews/u4/validator-probe/`); the new-side acceptance (the `values.ts`
+guard, `isUiValueOfType`, replacing the three-way `typeof` checks at
+`validate.ts:383–385` and `DocumentHost.svelte:95`) is a §10.1a CONTRACT
+REQUIREMENT until implemented, not a behavior claim. List/isoDate
+mismatch TRIGGERS widen `UI_COMPONENT_OUTPUT_PAYLOAD_INVALID` /
+`UI_COMPONENT_BINDING_INCOMPATIBLE` / `UI_EXPR_TYPE_MISMATCH` (existing
+codes, new trigger conditions); the render-side rejection code stays
+`UI_RENDER_STATE_VALUE_REJECTED`.
 
 ### 10.4 Delivery batches (summary — full plan in the recalibration document)
 
 B1 scalar foundation (frozen five + switch/toggle/radio-group + the value
-vocabulary as landed contract) → B2 selection modes and lists (P-multi) →
-B3 numeric ranges and dates/times (P-range-date) → B4 menus and nested
-composition (P-nested) → B5 display/composition chrome. Deferred,
-unchanged: pin-input, rating-group, time-range-field. Application-surface
-components (RecordsTable, Chart, Conversation, DataView, List, Detail,
-Form/FormSurface, Feedback family) stay application-plan governed — a
-recorded boundary, not an oversight. Every family claim is ledgered per
+vocabulary as landed contract, INCLUDING the §10.1a value-path plumbing:
+`values.ts` guard, validator/host/emit/stateValues widening, action-input
+typing) → B2 selection modes and lists (P-multi) → B3 numeric ranges and
+dates/times (P-range-date) → B4 menus and nested composition (P-nested) →
+B5 display/composition chrome. B1's founder-facing control proofs stay
+limited to its assigned families and modes (recalibration §7 B1); later
+list/date/range controls retain their later-batch obligations regardless
+of the shared vocabulary landing in B1. Deferred, unchanged: pin-input,
+rating-group, time-range-field. Application-surface components
+(RecordsTable, Chart, Conversation, DataView, List, Detail,
+Form/FormSurface, VitApp) stay application-plan governed — while
+StatusBadge/Feedback already mount in documents through registered
+extension implementations (§4 display-components evidence) and remain
+inspectable/editable candidates for Studio; see recalibration §4 for the
+per-component authoring roadmap. Every family claim is ledgered per
 batch; a batch PASS proves only its rows.
 
 ### 10.5 Fixtures (added by the recalibration; same execution status as §7)
