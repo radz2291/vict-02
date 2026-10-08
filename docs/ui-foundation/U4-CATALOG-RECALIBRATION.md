@@ -356,8 +356,8 @@ document never stores null.
   conditions (the frozen §5.1 table gains trigger text, not new codes,
   except ONE NEW code for date/time literal formats:
   `UI_DOC_INVALID_LITERAL` — new, introduced by this extension; today's
-  validator has no such code — verified against `packages/ui/src/
-diagnostics.ts`).
+  validator has no such code — verified against
+  `packages/ui/src/diagnostics.ts`).
 
 ### 6.7 What stays frozen and untouched
 

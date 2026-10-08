@@ -456,7 +456,8 @@ own gate; a batch PASS proves only its ledger rows):
 > dialog, app-shell) plus switch, toggle, radio-group wrappers — each
 > descriptor carrying the ABI marker (`events:
 > ['vict.ui-component-abi@1']`), abi match, and declared outputs; (3)
-> repair ui-editor packaging (the §10 carry-forwards table's first row:
+> repair ui-editor packaging (the U4-HANDOFF §10 carry-forwards table's
+> first row:
 > emitting build + the four declaration fixes, origin F3);
 > derive the action-input catalog via deriveActionInputCatalog →
 > compileUiDocument catalogs option actionInputs at the existing ui-attach
