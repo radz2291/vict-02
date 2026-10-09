@@ -1124,3 +1124,21 @@ Findings: severity, effect, owner, fix/carry decision, next check.
 Verdict: independent conclusion and exact audited snapshot.
 Repair: prior failure, fix commit, affected checks and new verifier snapshot.
 Authority: next accepted action; never derive it from an agent's own proposal.
+## U4 full-catalog verification round 3 (2026-10-09) — FAIL, repair round required
+
+- Scope expanded by owner decision: all 38 available families + AppShell
+  (B2–B5 roadmap), three deferred families unchanged. Candidate `5174219c…`
+  (18 commits on dialog repair `c76714e…`). Both disclosed defects
+  reproduced with committed failing probes: A — external state supply dead
+  for date fields (single + range; boundary: host supply/props reactivity),
+  garbage intermediate isoDates on clearing; B — TimeField en-GB 12h broken
+  at the primitive (missing dayPeriod, "13 AM" announcements) and the
+  adapter (dayPeriod shows AM for PM). New: tooltip controlled-open never
+  renders; command search misses labels (minor). Dialog focus lifecycle
+  VERIFIED (source + packed) with the focus-emulation protocol documented
+  after two invalidated hidden-window measurements. Inherited suites
+  2990/0, consumer 16/16 ×2, pack/isolation/bundle-separation clean
+  (execution chunk 950 kB recorded, no budget exists). SSR: no stack entry
+  exists — not demonstrated. Reviews deferred to the repaired candidate;
+  ledger rows hold; B1–B5/U4 OPEN; acceptance PENDING. Report:
+  reviews/u4/b1-core-verify/U4-FULL-CATALOG-VERIFY-03.md.

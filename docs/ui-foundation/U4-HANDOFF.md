@@ -529,3 +529,27 @@ own gate; a batch PASS proves only its ledger rows):
   [reviews/u4/b1-core-verify/U4-B1-CORE-REPAIR-VERIFY-02.md](reviews/u4/b1-core-verify/U4-B1-CORE-REPAIR-VERIFY-02.md)
   §7. B1/U4 OPEN; acceptance PENDING; no §6 ledger row moved (all B1 rows stay
   C until a gate PASS).
+### 14.1 Scope expansion and round-3 record (2026-10-09, verifier record)
+
+- **Owner decision (recorded)**: U4 scope expanded to ALL 38 available catalog
+  families plus AppShell, using the existing B2–B5 roadmap structure;
+  PinInput / RatingGroup / TimeRangeField stay deferred. Codex's browser
+  self-check is authorized; builder self-checks remain non-authoritative.
+- **Round 3** against `codex/ui-foundation-u4-b1-core-repair-02` @ `5174219c…`
+  (18 commits on dialog repair `c76714e…`, which sits on round-2 tip
+  `b6beb23…`; `bc4e08d…` superseded): **FAIL — repair round required**.
+  Disclosed defect A (external state updates dead for date/range controls +
+  garbage intermediate emits on clearing) and defect B (TimeField en-GB 12h:
+  primitive drops the dayPeriod and announces "13 AM"; adapter's dayPeriod
+  shows AM for a PM value) are reproduced and pinned with committed failing
+  probes; tooltip controlled-open never renders (new, both environments);
+  command search matches only raw values (non-blocking). Dialog focus
+  lifecycle (round-2 residual) VERIFIED on source and packed artifacts.
+  Inherited suites 2990/0; consumer 16/16 ×2; typecheck/check:ui 0; pack +
+  isolation clean; bundle separation holds (execution chunk 381→950 kB
+  recorded, no budget exists). SSR: no server-render entry exists in the
+  stack — not demonstrated, no governing requirement. Three fresh reviews
+  deferred to the repaired candidate. Report:
+  [reviews/u4/b1-core-verify/U4-FULL-CATALOG-VERIFY-03.md](reviews/u4/b1-core-verify/U4-FULL-CATALOG-VERIFY-03.md).
+  B1–B5 and U4 remain OPEN; owner acceptance PENDING; no ledger row advances
+  to B-n (honesty rule: batch evidence requires the repaired gate).

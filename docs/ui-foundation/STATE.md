@@ -133,6 +133,19 @@ Returned to Codex as a single focused repair with a new focus oracle
 (VERIFY-02 §7); the three independent reviews are deferred to the
 repaired candidate. B1 and U4 remain OPEN; owner acceptance PENDING;
 no ledger row moved.
+**VERIFICATION ROUND 3 (2026-10-09, fresh verifier, isolated worktree
+`vict-02-u4-full-verify-03`, branch
+codex/ui-foundation-u4-full-verify-03): VERDICT FAIL — REPAIR ROUND
+REQUIRED** (owner expanded U4 to all 38 families + AppShell; recorded in
+U4-HANDOFF §14.1). Candidate `2f82fc0→5174219c…` (repair-02, 18 commits on
+dialog repair `c76714e…`): disclosed defect A (external state supply dead
+for date fields; garbage intermediate emits) and defect B (TimeField en-GB
+12h primitive + adapter dayPeriod wrong) reproduced with committed failing
+probes; tooltip controlled-open never renders (new); dialog focus
+lifecycle VERIFIED source+packed; inherited suites 2990/0, consumer 16/16
+×2, pack/isolation/bundle separation clean; SSR absent from the stack
+(recorded, not demonstrated). Reviews deferred to the repaired candidate;
+B1–B5/U4 OPEN; owner acceptance PENDING; no ledger row advanced.
 **OWNER FEEDBACK RECORDED (2026-10-08, B1 mid-cycle)**: the running
 controls look substantially worse than the existing VICT catalog —
 appearance NOT accepted. Cause found: the consumer never imported
