@@ -1,0 +1,20 @@
+import { writeFileSync } from 'node:fs';
+import { it } from 'vitest';
+import { flushSync } from 'svelte';
+import { mountDoc } from './probe-kit.js';
+const lit = (value: string | number | boolean) => ({ type: 'literal', value }) as never;
+const ref = (path: string) => ({ type: 'ref', path }) as never;
+it('dump slider + pagination interaction', () => {
+  const out: Record<string, unknown> = {};
+  const t1 = mountDoc({ root: 'root', nodes: { root: { kind: 'element', id: 'root', tag: 'div', children: ['sl'] }, sl: { kind: 'component', id: 'sl', definitionId: 'vict.catalog.slider', props: { label: lit('C'), value: ref('state.coverage'), min: lit(0), max: lit(100) }, outputs: { valueChange: { setState: { key: 'coverage', value: ref('$output') } } } } } }, { coverage: { key: 'coverage', type: 'numberList', initial: [40] } as never });
+  const slider = t1.querySelector('[role="slider"]') as HTMLElement;
+  out.sliderNow = slider.getAttribute('aria-valuenow');
+  slider.focus();
+  slider.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
+  flushSync();
+  out.sliderAfter = slider.getAttribute('aria-valuenow');
+  out.sliderThumb = t1.querySelector('[role="slider"]')?.outerHTML.slice(0, 300) ?? 'none';
+  const t3 = mountDoc({ root: 'root', nodes: { root: { kind: 'element', id: 'root', tag: 'div', children: ['pn'] }, pn: { kind: 'component', id: 'pn', definitionId: 'vict.catalog.pagination', props: { page: ref('state.page'), count: lit(10), itemsPerPage: lit(1) }, outputs: { pageChange: { setState: { key: 'page', value: ref('$output') } } } } } }, { page: { key: 'page', type: 'number', initial: 2 } as never });
+  out.paginationHtml = t3.querySelector('[data-pagination-root]')?.innerHTML.replace(/<!--.*?-->/g, '').replace(/\s+/g, ' ').slice(0, 800) ?? 'none';
+  writeFileSync('dump6.json', JSON.stringify(out));
+});
