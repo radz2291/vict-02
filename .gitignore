@@ -24,3 +24,4 @@ examples/reference-app/.data/
 
 # Packed tarballs are build outputs (U4-B1 F13) — never committed.
 packages/**/*.tgz
+.tmp-scaffold-check-*/
