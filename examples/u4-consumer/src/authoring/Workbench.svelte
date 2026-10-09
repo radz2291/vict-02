@@ -281,7 +281,7 @@
     <details class="activity" open>
       <summary>Activity</summary>
       <ul>
-        {#each activity as line (line)}<li>{line}</li>{/each}
+        {#each activity as line}<li>{line}</li>{/each}
       </ul>
     </details>
   </div>
