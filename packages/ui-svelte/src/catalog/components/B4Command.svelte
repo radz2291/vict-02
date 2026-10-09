@@ -14,7 +14,7 @@
 
 <Command.Root {...presentation?.target('root')} bind:ref bind:value label={String(props.label ?? '')} loop={props.loop !== false} onValueChange={(next) => io?.emit('valueChange', next)}>
   {#snippet child({ props: attributes })}<CatalogPart as="div" {attributes} bind:ref>
-    <Command.Input bind:value={search} aria-label={String(props.label ?? 'Search commands')} placeholder={String(props.placeholder ?? '')} oninput={(event) => { search = event.currentTarget.value; io?.emit('searchChange', search); }} />
+    <Command.Input value={search} aria-label={String(props.label ?? 'Search commands')} placeholder={String(props.placeholder ?? '')} oninput={(event) => io?.emit('searchChange', event.currentTarget.value)} />
     <Command.List><Command.Viewport>{@render io?.slots?.items?.()}</Command.Viewport><Command.Empty>{#if io?.slots?.empty}{@render io.slots.empty()}{:else}No matching commands{/if}</Command.Empty></Command.List>
   </CatalogPart>{/snippet}
 </Command.Root>

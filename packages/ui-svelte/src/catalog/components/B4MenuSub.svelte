@@ -1,6 +1,6 @@
 <script lang="ts">
+  import { onDestroy } from 'svelte';
   import { DropdownMenu } from '../dropdown-menu.js';
-  import CatalogPart from './CatalogPart.svelte';
   import CatalogPortal from './CatalogPortal.svelte';
   import type { UiSvelteComponentIO, UiComponentPresentation } from '../../document/extensions.js';
   let { props, io, presentation }: {
@@ -8,24 +8,21 @@
     io?: UiSvelteComponentIO;
     presentation?: UiComponentPresentation;
   } = $props();
-  let open = $derived(props.open === true);
+  const authoredOpen = $derived(props.open === true);
+  let open = $derived(authoredOpen);
+  $effect(() => { if (open !== authoredOpen) io?.emit('openChange', open); });
+  // Closing the parent portal destroys its submenu. Keep the declared value
+  // closed so reopening the parent starts from its own menu, not a stale layer.
+  onDestroy(() => { if (open) io?.emit('openChange', false); });
   let triggerRef = $state<HTMLDivElement | null>(null);
   let contentRef = $state<HTMLDivElement | null>(null);
 </script>
 
 <DropdownMenu.Sub bind:open onOpenChange={(next) => io?.emit('openChange', next)}>
   <DropdownMenu.SubTrigger {...presentation?.target('root')} disabled={props.disabled === true} textValue={String(props.label ?? '')} bind:ref={triggerRef}>
-    {#snippet child({ props: attributes })}
-      <CatalogPart as="div" {attributes} bind:ref={triggerRef}>
-        {#if io?.slots?.trigger}{@render io.slots.trigger()}{:else}{String(props.label ?? '')}{/if}
-      </CatalogPart>
-    {/snippet}
+    {#if io?.slots?.trigger}{@render io.slots.trigger()}{:else}{String(props.label ?? '')}{/if}
   </DropdownMenu.SubTrigger>
   <CatalogPortal {open} {presentation}><DropdownMenu.SubContent {...presentation?.target('content')} bind:ref={contentRef} sideOffset={6} collisionPadding={16}>
-  {#snippet child({ props: attributes, wrapperProps })}
-    <div {...wrapperProps}><CatalogPart as="div" {attributes} bind:ref={contentRef}>
-      {@render io?.slots?.items?.()}
-    </CatalogPart></div>
-  {/snippet}
+  {@render io?.slots?.items?.()}
 </DropdownMenu.SubContent></CatalogPortal>
 </DropdownMenu.Sub>
