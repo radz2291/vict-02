@@ -1,5 +1,5 @@
 {
-  "packedAt": "2026-10-09T05:36:51.966Z",
+  "packedAt": "2026-10-09T10:44:11.490Z",
   "tarballs": {
     "@victframework/ui": {
       "tarball": "victframework-ui-0.4.0-rc.1.tgz",
@@ -9,9 +9,9 @@
     },
     "@victframework/ui-svelte": {
       "tarball": "victframework-ui-svelte-0.4.0-rc.1.tgz",
-      "sha256": "0f250f97e4b94c05b7a0c30597f43bd3fe4bce2056a3223841a914cf33c82a7e",
+      "sha256": "9d52c038833dcccfcb485fbce9786094df3fac417fa9b42f461f4ec35d8b114b",
       "bytes": 97382,
-      "integrity": "sha512-ITr7Vw5MNHkNm+63mp9atf002wUTSCSyFjpHHeGnfCQFffnkeeSNkOs0NLXW05qnyeN2Fqb6PaO+CWXiB0opNw=="
+      "integrity": "sha512-T1J7Ue1TyhE73ekTz/pqzY4emaV07VOcrT2VVXLun38r38Re2+c0YlQu3VxVZLowmD9VkWaFvAXs/Z7uTHmbMQ=="
     },
     "@victframework/ui-editor": {
       "tarball": "victframework-ui-editor-0.4.0-rc.1.tgz",
@@ -66,12 +66,12 @@
     "root": "C:\\Users\\RZ1\\Desktop\\RZ\\u4-consumer-isolated",
     "workspaceLinkViolations": [],
     "builtAssets": [
-      "app-DbRLQuq6.js",
+      "app-B6eKCYGZ.js",
+      "authoring-asaMRlVU.js",
       "authoring-DPx2bU8P.css",
-      "authoring-DZA2_odW.js",
       "execution-BldTp5Gl.css",
-      "execution-DYx0cyMW.js"
+      "execution-E2vuuYxj.js"
     ],
-    "verifiedAt": "2026-10-09T05:38:41.908Z"
+    "verifiedAt": "2026-10-09T10:45:52.595Z"
   }
 }

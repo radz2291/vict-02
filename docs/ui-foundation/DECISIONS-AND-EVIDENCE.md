@@ -1142,3 +1142,21 @@ Authority: next accepted action; never derive it from an agent's own proposal.
   exists — not demonstrated. Reviews deferred to the repaired candidate;
   ledger rows hold; B1–B5/U4 OPEN; acceptance PENDING. Report:
   reviews/u4/b1-core-verify/U4-FULL-CATALOG-VERIFY-03.md.
+## U4 round 3a (2026-10-09) — oracle correction, corrected findings, authoring coverage
+
+- Oracle correction recorded with source justification (bits-ui 2.19.3
+  backspace semantics + year padding): A2 "garbage intermediates" withdrawn;
+  original probe preserved at test/historical/. Corrected full-clear oracle
+  passes (empty convention, endpoint preservation, restoration, no echo).
+- Corrected calendar probes replaced weak assertions and exposed 4 genuine
+  defects (emission duplication; end-only silent reversal). Pinned set now
+  10 oracles: A1 x2, calendar x4, TimeField x3, tooltip x1.
+- Authoring coverage: 75-test probe drives bindExpression + UiEditSession +
+  compile + DocumentHost for every family (composition chains included);
+  structural parts documented; metadata-echo classification is an explicit
+  allowlist.
+- Delivery: bits-ui exact 2.19.3 (workspace, consumer, locks, fresh
+  isolated install); pack manifest 2026-10-09T10:44:11.490Z; packed dialog
+  focus protocol all green (focus-emulation protocol). Battery 3093/10/3.
+  Verdict FAIL; repairs to Codex (report section 14); reviews deferred;
+  acceptance PENDING.

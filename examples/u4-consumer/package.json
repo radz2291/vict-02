@@ -12,15 +12,16 @@
   },
   "dependencies": {
     "@victframework/application": "0.4.0-rc.1",
-    "@victframework/control": "0.4.0-rc.1",
     "@victframework/contracts": "0.4.0-rc.1",
+    "@victframework/control": "0.4.0-rc.1",
     "@victframework/kernel": "0.4.0-rc.1",
     "@victframework/runtime": "0.4.0-rc.1",
+    "@victframework/sdk": "0.4.0-rc.1",
     "@victframework/ui": "0.4.0-rc.1",
     "@victframework/ui-editor": "0.4.0-rc.1",
+    "@victframework/ui-preview": "0.4.0-rc.1",
     "@victframework/ui-svelte": "0.4.0-rc.1",
-    "@victframework/sdk": "0.4.0-rc.1",
-    "@victframework/ui-preview": "0.4.0-rc.1"
+    "bits-ui": "2.19.3"
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "5.1.1",

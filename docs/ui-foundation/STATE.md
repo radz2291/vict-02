@@ -146,6 +146,19 @@ lifecycle VERIFIED source+packed; inherited suites 2990/0, consumer 16/16
 ×2, pack/isolation/bundle separation clean; SSR absent from the stack
 (recorded, not demonstrated). Reviews deferred to the repaired candidate;
 B1–B5/U4 OPEN; owner acceptance PENDING; no ledger row advanced.
+**ROUND 3A (2026-10-09): ORACLE CORRECTION + corrected findings.**
+Owner-directed re-examination withdrew the date-clearing "garbage" finding
+(bits-ui 2.19.3 deletes incrementally; `0202` is valid padding) — original
+probe preserved as historical evidence, corrected full-clear oracle passes
+in full. Corrected keyboard calendar oracles exposed 4 genuine defects
+(duplicated emissions 4-6x; silent reversed range from end-only mounts).
+Authoring coverage now per-family (75-test probe, all green) through the
+real UiEditSession path. bits-ui exact-pinned 2.19.3 everywhere; pack +
+isolation rebuilt. Battery 3093/10/3 (failures = exactly the 10 pinned
+oracles); typecheck 0; svelte-check 0/5; consumer 16/16 x2; packed dialog
+protocol all green under the focus-emulation protocol. Verdict FAIL —
+repairs go to Codex per report section 14; reviews + founder checkpoint
+deferred to the repaired candidate; B1-B5/U4 OPEN; acceptance PENDING.
 **OWNER FEEDBACK RECORDED (2026-10-08, B1 mid-cycle)**: the running
 controls look substantially worse than the existing VICT catalog —
 appearance NOT accepted. Cause found: the consumer never imported

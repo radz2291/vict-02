@@ -553,3 +553,34 @@ own gate; a batch PASS proves only its ledger rows):
   [reviews/u4/b1-core-verify/U4-FULL-CATALOG-VERIFY-03.md](reviews/u4/b1-core-verify/U4-FULL-CATALOG-VERIFY-03.md).
   B1–B5 and U4 remain OPEN; owner acceptance PENDING; no ledger row advances
   to B-n (honesty rule: batch evidence requires the repaired gate).
+### 14.2 Round 3a — oracle correction and corrected findings (2026-10-09, verifier record)
+
+- **Oracle correction (owner-directed, recorded)**: the round-3 "garbage
+  intermediate" date-clearing finding was an oracle error — pinned
+  bits-ui@2.19.3 deletes digits incrementally and pads partial years
+  (`202`→`0202`, a valid year) on segment exit. Original probe preserved
+  verbatim at
+  `packages/ui-svelte/test/historical/probe-date-range-partial-v1.historical.ts`;
+  corrected oracle `probe-date-clear-sequence.test.ts` (full-clear sequence)
+  passes in full: the empty convention emits, the other endpoint stays
+  displayed, restoration and controlled synchronization are clean, no echo
+  emissions. A2 is withdrawn at the field level.
+- **Corrected calendar oracles** (keyboard path; weak round-3 assertions
+  replaced) exposed four genuine defects: duplicated identical emissions
+  (4–6× per selection) and a silent reversed range from an end-only mount
+  (display/state disagreement, zero emissions). These join A1 (2), TimeField
+  (3), tooltip (1) — **10 pinned oracles total**.
+- **Authoring coverage**: `probe-authoring-coverage.test.ts` (75 tests, all
+  green) drives the Inspector data path — descriptors → bindExpression →
+  UiEditSession.applyTransaction → compile → DocumentHost — for every catalog
+  family incl. composition chains, replacing the single-slider demonstration.
+- **Delivery repairs**: bits-ui exact-pinned 2.19.3 (workspace + consumer +
+  locks; the consumer previously resolved ^2.19.3 → 2.19.5); packed
+  artifacts regenerated; isolated consumer rebuilt fresh (16/16, build
+  clean). Packed browser evidence with the focus-emulation protocol: dialog
+  lifecycle all green, end-only ranges displayed, calendar selection green.
+- Gate: battery 3093/10/3 (failures = exactly the pinned oracles), typecheck
+  0, svelte-check 0/5, consumer 16/16 ×2. Report §11–§15. **Verdict stands:
+  FAIL — the 10 oracles go to Codex per report §14.** Reviews and founder
+  checkpoint remain deferred to the repaired candidate; B1–B5/U4 OPEN;
+  owner acceptance PENDING; no ledger row advanced.

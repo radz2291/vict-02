@@ -3,11 +3,14 @@
  * updates through the host supply channel (the preview-state panel path).
  * Visible values and authored state must agree after every external edit.
  */
-import { describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it } from 'vitest';
 import { flushSync, mount, unmount } from 'svelte';
 import RangeStateFixture from './RangeStateFixture.svelte';
 
 const cleanups: (() => void | Promise<void>)[] = [];
+afterEach(() => {
+  for (const cleanup of cleanups.splice(0)) void cleanup();
+});
 function host(): HTMLElement {
   const target = document.createElement('div');
   document.body.append(target);
@@ -16,8 +19,10 @@ function host(): HTMLElement {
 function rangeDisplay(target: HTMLElement): string[] {
   flushSync();
   const rows = [...target.querySelectorAll('.vict-control-row')];
-  return rows.map(row =>
-    [...row.querySelectorAll('[role="spinbutton"]')].map(s => (s.textContent ?? '').trim()).join('/'),
+  return rows.map((row) =>
+    [...row.querySelectorAll('[role="spinbutton"]')]
+      .map((s) => (s.textContent ?? '').trim())
+      .join('/'),
   );
 }
 
@@ -33,7 +38,9 @@ describe('disclosed defect A part 3: external state updates reach the range disp
       windowEnd: '2026-10-16',
     });
     const after = rangeDisplay(target);
-    expect(after, 'start cleared externally, end preserved on display').toEqual(['dd/mm/yyyy/16/10/2026']);
+    expect(after, 'start cleared externally, end preserved on display').toEqual([
+      'dd/mm/yyyy/16/10/2026',
+    ]);
   });
 
   it('clearing the supplied end blanks the displayed end; the start stays', () => {
@@ -44,7 +51,9 @@ describe('disclosed defect A part 3: external state updates reach the range disp
       windowStart: '2026-10-12',
       windowEnd: '',
     });
-    expect(rangeDisplay(target), 'end cleared externally, start preserved on display').toEqual(['12/10/2026/dd/mm/yyyy']);
+    expect(rangeDisplay(target), 'end cleared externally, start preserved on display').toEqual([
+      '12/10/2026/dd/mm/yyyy',
+    ]);
   });
 
   it('restoring both supplied endpoints re-displays the complete range', () => {

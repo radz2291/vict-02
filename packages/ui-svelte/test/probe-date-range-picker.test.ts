@@ -1,99 +1,166 @@
 /**
- * VERIFICATION PROBE (round 3) — disclosed defect A, part 2: the
- * picker/calendar range surfaces. Single-select (start-only), complete window,
- * clearing, end-only entry, and displayed-vs-state agreement.
+ * VERIFICATION PROBE (round 3a) — CORRECTED ORACLES for calendar/picker range
+ * selection. Replaces the round-3 pointer-click tests, which happy-dom could
+ * not deliver (documented environment limit) and whose weak fallback
+ * assertions ("truthy JSON string", "permitting no emissions") proved
+ * nothing. Interaction now uses the keyboard path (focus + Enter), which is
+ * a genuine user input path that runs in happy-dom AND the browser; pointer
+ * selection remains browser-verified (U4-FULL-CATALOG-VERIFY-03 §6).
+ *
+ * Pinned contracts (bits-ui 2.19.3 + catalog adapter):
+ *   - one user selection action emits each state transition EXACTLY ONCE;
+ *   - selecting from an end-only mount must stay ordered: it restarts the
+ *     selection (start = picked day, end cleared) — never a silent reversed
+ *     range, and the displayed selection must agree with the emitted state;
+ *   - end-only mounts keep the end displayed with placeholders on start.
  */
-import { describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it } from 'vitest';
 import { flushSync, mount, unmount } from 'svelte';
 import CatalogDateRangePicker from '../src/catalog/components/CatalogDateRangePicker.svelte';
 import CatalogRangeCalendar from '../src/catalog/components/CatalogRangeCalendar.svelte';
 import type { UiSvelteComponentIO } from '../src/document/extensions.js';
 
 const cleanups: (() => void | Promise<void>)[] = [];
-function host(): HTMLElement {
+afterEach(() => {
+  for (const cleanup of cleanups.splice(0)) void cleanup();
+});
+
+function ioCap(log: { name: string; value: unknown }[]): UiSvelteComponentIO {
+  return {
+    emit: (name: string, value: unknown) => {
+      log.push({ name, value });
+    },
+  } as unknown as UiSvelteComponentIO;
+}
+
+function mountPicker(props: Record<string, unknown>) {
   const target = document.createElement('div');
   document.body.append(target);
-  return target;
-}
-function ioCap(log: { name: string; value: unknown }[]): UiSvelteComponentIO {
-  return { emit: (name: string, value: unknown) => { log.push({ name, value }); } } as unknown as UiSvelteComponentIO;
-}
-function mountPicker(props: Record<string, unknown>) {
-  const target = host();
   const emits: { name: string; value: unknown }[] = [];
-  const instance = mount(CatalogDateRangePicker, { target, props: { props, io: ioCap(emits), presentation: undefined } });
+  const instance = mount(CatalogDateRangePicker, {
+    target,
+    props: { props, io: ioCap(emits), presentation: undefined },
+  });
   cleanups.push(() => unmount(instance));
   return { target, emits };
 }
+
 function mountCalendar(props: Record<string, unknown>) {
-  const target = host();
+  const target = document.createElement('div');
+  document.body.append(target);
   const emits: { name: string; value: unknown }[] = [];
-  const instance = mount(CatalogRangeCalendar, { target, props: { props, io: ioCap(emits), presentation: undefined } });
+  const instance = mount(CatalogRangeCalendar, {
+    target,
+    props: { props, io: ioCap(emits), presentation: undefined },
+  });
   cleanups.push(() => unmount(instance));
   return { target, emits };
 }
-function dayButton(target: HTMLElement, iso: string): HTMLElement | undefined {
-  return (target.querySelector(`[data-value="${iso}"] [role="button"], [data-value="${iso}"]`) as HTMLElement) ?? undefined;
+
+/** The interactive day element (bits-ui renders a focusable button inside the
+ * grid cell). */
+function dayButton(target: HTMLElement, iso: string): HTMLElement {
+  const cell = target.querySelector(`[data-value="${iso}"]`);
+  const inner = cell?.querySelector('button, [role="button"], [tabindex]');
+  const el = (inner ?? cell) as HTMLElement | null;
+  if (!el) throw new Error(`day ${iso} not reachable`);
+  return el;
 }
-function fieldTexts(target: HTMLElement) {
+
+function pressEnter(el: HTMLElement): void {
+  el.focus();
+  el.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
   flushSync();
-  const fields = [...target.querySelectorAll('.vict-control-row > *')].filter(e => e.tagName !== 'SPAN');
-  return fields.map(f => [...f.querySelectorAll('[role="spinbutton"]')].map(s => (s.textContent ?? '').trim()).join('/'));
 }
 
-describe('disclosed defect A part 2: picker/calendar partial ranges', () => {
-  it('picker: end-only mount keeps the end displayed', () => {
+function isSelected(target: HTMLElement, iso: string): boolean {
+  flushSync();
+  const cell = target.querySelector(`[data-value="${iso}"]`);
+  return cell?.getAttribute('aria-selected') === 'true';
+}
+
+function isSelectionStart(target: HTMLElement, iso: string): boolean {
+  return (
+    target.querySelector(`[data-value="${iso}"]`)?.hasAttribute('data-selection-start') ?? false
+  );
+}
+
+describe('oracle correction: calendar/picker range selection (keyboard path)', () => {
+  it('picker: end-only mount keeps the end displayed and the start placeholder', () => {
     const m = mountPicker({ start: '', end: '2026-10-16', locale: 'en-GB', weekStartsOn: 1 });
-    const [start, end] = fieldTexts(m.target);
-    expect(end, 'end stays displayed with empty start').toBe('16/10/2026');
-    expect(start).not.toBe('16/10/2026');
+    flushSync();
+    const fields = [...m.target.querySelectorAll('.vict-control-row > *')].filter(
+      (e) => e.tagName !== 'SPAN',
+    );
+    const texts = fields.map((f) =>
+      [...f.querySelectorAll('[role="spinbutton"]')]
+        .map((s) => (s.textContent ?? '').trim())
+        .join('/'),
+    );
+    expect(texts[1], 'end stays displayed with empty start').toBe('16/10/2026');
+    expect(texts[0], 'start shows placeholders').toBe('dd/mm/yyyy');
+    expect(m.emits, 'mount emits nothing').toEqual([]);
   });
 
-  it('calendar: selecting a single day emits start-only (first-class partial)', () => {
+  it('calendar: the first selection emits exactly one startChange', () => {
     const m = mountCalendar({ start: '', end: '', locale: 'en-GB', weekStartsOn: 1 });
-    const day12 = dayButton(m.target, '2026-10-12');
-    expect(day12, 'day 12 reachable').toBeTruthy();
-    day12!.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, pointerId: 1 }));
-    day12!.click();
-    flushSync();
-    expect(m.emits, 'startChange emitted for start-only selection').toContainEqual({ name: 'startChange', value: '2026-10-12' });
+    pressEnter(dayButton(m.target, '2026-10-20'));
+    expect(m.emits, 'one user action, one emitted transition (no duplicate emissions)').toEqual([
+      { name: 'startChange', value: '2026-10-20' },
+    ]);
+    expect(isSelected(m.target, '2026-10-20'), 'picked day displayed as selected').toBe(true);
+    expect(
+      isSelectionStart(m.target, '2026-10-20'),
+      'picked day displayed as the selection start',
+    ).toBe(true);
   });
 
-  it('calendar: complete window from start-only then a later day', () => {
+  it('calendar: completing from start-only emits exactly one endChange', () => {
     const m = mountCalendar({ start: '2026-10-12', end: '', locale: 'en-GB', weekStartsOn: 1 });
-    const day16 = dayButton(m.target, '2026-10-16');
-    expect(day16).toBeTruthy();
-    day16!.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, pointerId: 1 }));
-    day16!.click();
-    flushSync();
-    expect(m.emits).toContainEqual({ name: 'endChange', value: '2026-10-16' });
+    pressEnter(dayButton(m.target, '2026-10-16'));
+    expect(m.emits, 'completing the window emits the end exactly once').toEqual([
+      { name: 'endChange', value: '2026-10-16' },
+    ]);
+    expect(isSelected(m.target, '2026-10-16'), 'end day displayed as selected').toBe(true);
+    expect(isSelectionStart(m.target, '2026-10-12'), 'start day still the selection start').toBe(
+      true,
+    );
   });
 
-  it('calendar: clearing a complete window emits cleared endpoints, order kept', () => {
-    const m = mountCalendar({ start: '2026-10-12', end: '2026-10-16', locale: 'en-GB', weekStartsOn: 1 });
-    const day12 = dayButton(m.target, '2026-10-12');
-    day12!.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, pointerId: 1 }));
-    day12!.click();
-    flushSync();
-    // Clicking inside a complete window restarts selection: the end must be
-    // cleared too (or re-anchored) — never kept while displayed empty.
-    const endStillSelected = m.emits.some(e => e.name === 'endChange' && e.value === '');
-    expect(endStillSelected || m.emits.length === 0, JSON.stringify(m.emits)).toBe(true);
+  it('calendar: restarting from a complete window emits exactly the end-clear', () => {
+    const m = mountCalendar({
+      start: '2026-10-12',
+      end: '2026-10-16',
+      locale: 'en-GB',
+      weekStartsOn: 1,
+    });
+    pressEnter(dayButton(m.target, '2026-10-12'));
+    expect(
+      m.emits,
+      'restart clears the end exactly once; the unchanged start is not re-emitted',
+    ).toEqual([{ name: 'endChange', value: '' }]);
+    expect(isSelectionStart(m.target, '2026-10-12'), 'start stays the selection start').toBe(true);
+    expect(isSelected(m.target, '2026-10-16'), 'previous end is deselected on display').toBe(false);
   });
 
-  it('calendar: end-only selection (first click lands on end only)', () => {
+  it('calendar: selecting from an end-only mount stays ordered and display agrees with state', () => {
     const m = mountCalendar({ start: '', end: '2026-10-16', locale: 'en-GB', weekStartsOn: 1 });
-    // Re-selecting: clicking day 20 must emit a NEW start (restart) or extend;
-    // whatever the semantics, start and end state must agree with display.
-    const day20 = dayButton(m.target, '2026-10-20');
-    day20!.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, pointerId: 1 }));
-    day20!.click();
-    flushSync();
-    const starts = m.emits.filter(e => e.name === 'startChange').map(e => e.value);
-    const ends = m.emits.filter(e => e.name === 'endChange').map(e => e.value);
-    // Either restart (start=20, end='') or a start-only selection — but never
-    // a reversed or silently-dropped end.
-    expect(JSON.stringify({ starts, ends })).toBeTruthy();
-    expect(ends.at(-1) === '' || ends.at(-1) === undefined || String(ends.at(-1)) >= String(starts.at(-1) ?? ''), JSON.stringify({ starts, ends })).toBe(true);
+    pressEnter(dayButton(m.target, '2026-10-20'));
+    // Restart semantics: the picked day becomes the start, the old end is
+    // cleared — one coherent transition, never a silent reversed range.
+    expect(m.emits, 'end-only selection emits the coherent restart transition').toEqual([
+      { name: 'startChange', value: '2026-10-20' },
+      { name: 'endChange', value: '' },
+    ]);
+    expect(isSelectionStart(m.target, '2026-10-20'), 'picked day displayed as the new start').toBe(
+      true,
+    );
+    expect(isSelected(m.target, '2026-10-16'), 'old end deselected — no reversed display').toBe(
+      false,
+    );
+    expect(
+      m.target.querySelector('[aria-invalid="true"]'),
+      'no invalid state after an ordered interaction',
+    ).toBeNull();
   });
 });

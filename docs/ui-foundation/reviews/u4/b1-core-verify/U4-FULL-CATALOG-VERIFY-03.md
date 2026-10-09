@@ -159,3 +159,145 @@ fact, not a defect. A client build does not claim server rendering.
    reviews (falsification, real-browser authoring/experience, unfamiliar-agent
    on packed capabilities) → founder checkpoint. Ledger rows advance to B-n
    only with that recorded evidence.
+
+---
+
+# ROUND 3A (2026-10-09, same verifier) — ORACLE CORRECTION + corrected findings
+
+## 11. Oracle correction record: date clearing (supersedes §2 A2 "garbage intermediates")
+
+The owner directed a re-examination of the round-3 clearing oracle. The
+pinned bits-ui@2.19.3 source (`dist/bits/date-field/date-field.svelte.js`)
+deletes digits incrementally:
+
+- `BaseNumericSegmentState.#handleBackspace`: `"12" → "1" → null`,
+  `"10" → "1" → null` (two-digit values starting with `0` clear in one press);
+- `DateFieldYearSegmentState.#handleYearBackspace`: `"2026" → "202" → "20" →
+  "2" → null` (string slice, no digit shifting);
+- `DateFieldYearSegmentState.onfocusout`: pads a partial year with
+  `prependYearZeros` (`"202" → "0202"`) — **a valid calendar year**, not
+  garbage.
+
+One Backspace per segment therefore never established a cleared endpoint, and
+the round-3 claim that clearing "emits garbage intermediates (`0202-10-12`)"
+was an oracle error. Corrections, all recorded as evidence:
+
+1. The original probe is preserved verbatim as historical evidence:
+   `packages/ui-svelte/test/historical/probe-date-range-partial-v1.historical.ts`
+   (excluded from the vitest glob by its `.historical.ts` suffix; the only
+   edit is the import-depth adjustment required by the move).
+2. The corrected oracle `probe-date-clear-sequence.test.ts` uses a genuine
+   complete-clearing sequence (2 Backspaces per 2-digit segment, 4 for the
+   year, per the pinned semantics) and asserts: a fully cleared endpoint
+   emits the empty convention `''`; the other endpoint stays intact and
+   displayed; restoration works; display and accepted state agree; and
+   controlled synchronization produces **no repeated echo emissions**. All
+   intermediate emissions must parse as valid calendar dates.
+3. Result: **the field-clearing path passes the corrected oracle in full** —
+   A2 is WITHDRAWN as a field-level defect. The intermediate `0202` padding
+   behavior is documented as pinned bits-ui semantics in the probe.
+
+## 12. Corrected defect set (round 3a): 10 pinned oracles
+
+The corrected calendar probes (`probe-date-range-picker.test.ts`, keyboard
+path — pointer clicks remain a documented happy-dom limit with browser
+coverage) replace the round-3 weak assertions ("truthy JSON string",
+"permitting no emissions"), which proved nothing. New genuine defects the
+correction exposed:
+
+| # | Defect | Pinned oracle (failing) |
+| --- | --- | --- |
+| A2-cal-1 | **Duplicated identical emissions**: one calendar selection emits the same `startChange` 4× (first selection) | `calendar: the first selection emits exactly one startChange` |
+| A2-cal-2 | Duplicated `endChange ''` 6× when restarting from a complete window; the unchanged start must not re-emit | `calendar: restarting from a complete window emits exactly the end-clear` |
+| A2-cal-3 | Duplicated `endChange` 4× when completing from start-only | `calendar: completing from start-only emits exactly one endChange` |
+| A2-cal-4 | **End-only mount + selecting a day silently builds a REVERSED internal range** (display shows start=20 AND end=16 selected) with ZERO emissions — authored state and display permanently disagree, violating the partial-range amendment's agreement requirement | `calendar: selecting from an end-only mount stays ordered and display agrees with state` |
+| A1 | External state supply dead for date controls (unchanged from §2) | `probe-datefield-supply`, `probe-range-external-state` (2 tests) |
+| B | TimeField en-GB 12h primitive + adapter (unchanged from §3) | `probe-time-hour-cycle` (3 tests) |
+| A4 | Tooltip controlled-open never renders (unchanged from §4) | `probe-b5-interactive` (1 test) |
+
+Root-cause direction for A2-cal-1..3: the calendar adapter wires
+`onValueChange` AND `onStartValueChange`/`onEndValueChange` to the same
+`emitRange` path without consecutive-transition dedup, and bits-ui fires the
+pair multiple times per interaction. The field adapters already dedup against
+authored props; the calendar needs the same single-source emission contract.
+A2-cal-4 additionally needs the ordered-range guard to apply BEFORE mutating
+the internal value (restart semantics: picked day becomes start, old end
+cleared, both emitted once).
+
+## 13. Authoring coverage (family-and-mode) — new probe, all green
+
+`probe-authoring-coverage.test.ts` (75 tests) drives the Inspector's exact
+data path — descriptor prop declarations → `bindExpression` with the
+editor-bridge `expectedDocumentRevision` contract → the real `UiEditSession`
+state machine (idempotency, revision history) → joint compile →
+DocumentHost render — for EVERY descriptor in the catalog:
+
+- 38+ families inventoried (+ AppShell decompositions); 6 structural parts
+  (menu separators / checkbox groups) documented as composition-authored by
+  design, with no value prop;
+- every non-structural family: transaction accepted, working revision
+  advances, authored literal persists into the compiled plan;
+- parts are authored inside their real composition chains (e.g. menubar >
+  menubar.menu > radio-group > radio-item; tabs > panels);
+- open-render families must echo the authored edit in the canvas (text or
+  aria-label); closed-surface/menu/aria-metadata families are covered by the
+  plan-persistence assertion with their open-state echo browser-verified
+  (§6) — the classification is an explicit allowlist in the probe, so any
+  rendering change re-classifies loudly.
+
+This replaces the single-slider demonstration with per-family evidence.
+
+## 14. Focused Codex repair handoff (round 3a)
+
+Same agent, same rules as §7 (runtime/authored-state separation, no forced
+remounts or refresh counters, no date-specific bypasses, assertions never
+weakened). Reproducible oracles are the committed failing probes; green is
+defined by them.
+
+1. **A1 — external state supply (2 oracles).** Trace the shared
+   host/props-reactivity boundary in `DocumentHost`/state supply: post-mount
+   `stateValues` changes must reach date/range displays (non-empty change,
+   clear, restore). `probe-datefield-supply.test.ts` +
+   `probe-range-external-state.test.ts`.
+2. **A2' — calendar emission contract (4 oracles).** One user action, one
+   emitted transition per changed endpoint; restart from complete emits the
+   end-clear exactly once; selection from an end-only mount must stay
+   ordered (restart semantics), emit the coherent transition, and keep
+   display == state. `probe-date-range-picker.test.ts` (4 failing tests).
+   No blacklists of valid years; field keyboard semantics stay as pinned.
+3. **TimeField — primitive + adapter (3 oracles).** en-GB 12-hour: visible
+   hour, `aria-valuenow`, `aria-valuetext`, dayPeriod segment presence and
+   value, and the PM⇄AM toggle must all agree (13:30 renders/announces PM).
+   Retain the en-US 12-hour and en-GB 24-hour controls.
+   `probe-time-hour-cycle.test.ts`.
+4. **A4 — Tooltip (1 oracle + interactions).** Controlled `open=true` must
+   mount `[role=tooltip]`; hover and keyboard-focus open paths; close/reset;
+   portal ownership per the dialog-family repair pattern.
+   `probe-b5-interactive.test.ts`.
+5. **N1 — Command label search (non-blocking).** Match authored labels
+   (e.g. "Prepare inspection summary") while item `value`s and action
+   identity stay stable; suggested direction: label as `keywords`.
+
+Self-check requirements: full pipeline green, browser self-checks with the
+documented focus protocol (§9: visible window or
+`Emulation.setFocusEmulationEnabled(true)`), synthetic events labelled as
+such. Do NOT claim SSR (out of scope, unclaimed). bits-ui stays exact-pinned
+`2.19.3` (this round's delivery repair — the consumer previously resolved
+^2.19.3 → 2.19.5).
+
+## 15. Gate (round 3a) — actual results
+
+| Gate | Result |
+| --- | --- |
+| Root `npm run build` | clean (incl. server dist for the battery) |
+| `npm run typecheck` | **0 errors** (including all new probe files + historical) |
+| `npm run check:ui` | **0 errors** / 5 warnings (unchanged) |
+| Root battery `npm test` | **3093 passed / 10 failed / 3 skipped** (3106) — the 10 failures are exactly the pinned §12 oracles; inherited suites unchanged and green |
+| Renderer probe suite | 244 tests: 234 green, 10 pinned-failing; authoring coverage 75/75; corrected clear oracle 4/4 |
+| Consumer suite (workspace) | **16/16** |
+| Pack | 10 tarballs, manifest regenerated `2026-10-09T10:44:11.490Z`, zero tarballs in the repo tree (F13 holds) |
+| bits-ui | **exact `2.19.3`** in `packages/ui-svelte` and the consumer manifest; workspace lock + fresh isolated install both resolve 2.19.3 (drift closed) |
+| Isolated consumer (fresh install from packed tarballs) | **16/16**, `vite build` clean, zero repo-path strings |
+| Packed browser evidence (focus-emulation protocol) | dialog lifecycle **all green** (entry, Tab containment, Escape close + trigger restore); schedule surfaces render values incl. **end-only ranges displayed** (`20/10/2026` + `dd/mm/yyyy`); calendar pointer selection selects (`aria-selected=true`) |
+| Packed authoring entry | boots; Inspector style/state panels interactive; the full prop-editor journey remains the round-3 recorded slider demonstration — additional browser family journeys belong to the fresh browser-experience review |
+| Formatting | all round-3a added/modified prettier-covered files formatted; no unrelated churn (the pre-existing 38-file drift list is untouched, recorded in §7) |

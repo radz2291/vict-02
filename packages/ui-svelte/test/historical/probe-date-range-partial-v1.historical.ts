@@ -1,4 +1,22 @@
 /**
+ * HISTORICAL EVIDENCE — SUPERSEDED ORACLE (round 3, v1). DO NOT RUN.
+ *
+ * This probe asserted that ONE Backspace per segment fully clears a date
+ * endpoint. The pinned bits-ui@2.19.3 source (dist/bits/date-field/
+ * date-field.svelte.js) deletes digits incrementally:
+ *   - BaseNumericSegmentState.#handleBackspace: "12"->"1"->null; "10"->"1"->null
+ *   - DateFieldYearSegmentState.#handleYearBackspace: "2026"->"202"->"20"->"2"->null
+ * and DateFieldYearSegmentState.onfocusout pads a partial year with
+ * prependYearZeros ("202" -> "0202"), which is a VALID calendar year.
+ *
+ * One Backspace per segment therefore does not establish a cleared date; the
+ * "0202-10-12" intermediate this probe called garbage is bits-ui's legitimate
+ * padding of a partially-cleared year. Superseded by
+ * ../probe-date-clear-sequence.test.ts (round 3a oracle correction). The
+ * `.historical.ts` suffix keeps it out of the vitest glob; preserved verbatim
+ * as failing-evidence history per the verification mandate.
+ */
+/**
  * VERIFICATION PROBE (round 3) — disclosed defect A: end-only / partial date
  * ranges. The amendment makes partial ranges first-class: empty, start-only,
  * end-only, complete, clearing either endpoint, restoring, external updates.
@@ -7,8 +25,8 @@
  */
 import { describe, expect, it } from 'vitest';
 import { flushSync, mount, unmount } from 'svelte';
-import CatalogDateRangeField from '../src/catalog/components/CatalogDateRangeField.svelte';
-import type { UiSvelteComponentIO } from '../src/document/extensions.js';
+import CatalogDateRangeField from '../../src/catalog/components/CatalogDateRangeField.svelte';
+import type { UiSvelteComponentIO } from '../../src/document/extensions.js';
 
 const cleanups: (() => void | Promise<void>)[] = [];
 function host(): HTMLElement {
@@ -23,7 +41,11 @@ function ioCapturing(emitLog: { name: string; value: unknown }[]): UiSvelteCompo
     },
   } as unknown as UiSvelteComponentIO;
 }
-type Mount = { target: HTMLElement; emits: { name: string; value: unknown }[]; setProps: (next: Record<string, unknown>) => void };
+type Mount = {
+  target: HTMLElement;
+  emits: { name: string; value: unknown }[];
+  setProps: (next: Record<string, unknown>) => void;
+};
 function mountRange(props: Record<string, unknown>): Mount {
   const target = host();
   const emits: { name: string; value: unknown }[] = [];
@@ -37,7 +59,9 @@ function mountRange(props: Record<string, unknown>): Mount {
     emits,
     setProps(next) {
       Object.assign(props, next);
-      (instance as unknown as { $set(next: { props: Record<string, unknown> }): void }).$set({ props: { ...props } });
+      (instance as unknown as { $set(next: { props: Record<string, unknown> }): void }).$set({
+        props: { ...props },
+      });
       flushSync();
     },
   };
@@ -46,15 +70,23 @@ function inputs(m: Mount) {
   flushSync();
   type Dump = { segs: string[]; placeholders: (string | null)[] };
   const read = (f: Element | undefined): Dump => ({
-    segs: f ? [...f.querySelectorAll('[role="spinbutton"]')].map(s => (s.textContent ?? '').trim()) : [],
-    placeholders: f ? [...f.querySelectorAll('[data-placeholder]')].map(s => s.getAttribute('data-placeholder')) : [],
+    segs: f
+      ? [...f.querySelectorAll('[role="spinbutton"]')].map((s) => (s.textContent ?? '').trim())
+      : [],
+    placeholders: f
+      ? [...f.querySelectorAll('[data-placeholder]')].map((s) => s.getAttribute('data-placeholder'))
+      : [],
   });
-  const fields = [...m.target.querySelectorAll('.vict-control-row > *')].filter(e => e.tagName !== 'SPAN');
+  const fields = [...m.target.querySelectorAll('.vict-control-row > *')].filter(
+    (e) => e.tagName !== 'SPAN',
+  );
   return fields.map(read);
 }
 function segEls(m: Mount, which: 0 | 1) {
   flushSync();
-  const fields = [...m.target.querySelectorAll('.vict-control-row > *')].filter(e => e.tagName !== 'SPAN');
+  const fields = [...m.target.querySelectorAll('.vict-control-row > *')].filter(
+    (e) => e.tagName !== 'SPAN',
+  );
   const field = fields[which];
   return field ? [...field.querySelectorAll<HTMLElement>('[role="spinbutton"]')] : [];
 }
@@ -88,21 +120,30 @@ describe('disclosed defect A: partial date ranges are first-class (DateRangeFiel
     const startSegs = segEls(m, 0);
     for (let i = startSegs.length - 1; i >= 0; i -= 1) pressKey(startSegs[i]!, 'Backspace');
     const [start, end] = inputs(m);
-    expect(end?.segs.join('/'), 'end must remain displayed after clearing start').toBe('16/10/2026');
-    expect(m.emits.filter(e => e.name === 'startChange')).toContainEqual({ name: 'startChange', value: '' });
+    expect(end?.segs.join('/'), 'end must remain displayed after clearing start').toBe(
+      '16/10/2026',
+    );
+    expect(m.emits.filter((e) => e.name === 'startChange')).toContainEqual({
+      name: 'startChange',
+      value: '',
+    });
   });
 
   it('restoring the cleared start re-completes the range', () => {
     const m = mountRange({ start: '', end: '2026-10-16', locale: 'en-GB' });
     const startSegs = segEls(m, 0);
     // day, month, year segments in order
-    for (const [i, digits] of [['1', '2'], ['1', '0'], ['2', '0', '2', '6']].entries()) {
+    for (const [i, digits] of [
+      ['1', '2'],
+      ['1', '0'],
+      ['2', '0', '2', '6'],
+    ].entries()) {
       for (const d of digits as string[]) pressKey(startSegs[i]!, d);
     }
     const [start, end] = inputs(m);
     expect(start?.segs.join('/'), 'start restored').toBe('12/10/2026');
     expect(end?.segs.join('/'), 'end unaffected').toBe('16/10/2026');
-    expect(m.emits.filter(e => e.name === 'startChange').at(-1)?.value).toBe('2026-10-12');
+    expect(m.emits.filter((e) => e.name === 'startChange').at(-1)?.value).toBe('2026-10-12');
   });
 
   it('external state update: changing props.start updates the display without noise emits', () => {

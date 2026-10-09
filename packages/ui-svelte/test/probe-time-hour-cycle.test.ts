@@ -5,7 +5,7 @@
  * 24-hour behavior. Locates the defect at the primitive, adapter or
  * configuration boundary. Assertions are additive — never weaken them.
  */
-import { describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it } from 'vitest';
 import { flushSync, mount, unmount } from 'svelte';
 import TimePrimitiveFixture from './TimePrimitiveFixture.svelte';
 import type { UiDocument } from '@victframework/ui';
@@ -15,6 +15,9 @@ import { catalogDescriptors, catalogImplementations } from '../src/catalog/compo
 import type { UiSvelteComponentImplementation } from '../src/document/extensions.js';
 
 const cleanups: (() => void | Promise<void>)[] = [];
+afterEach(() => {
+  for (const cleanup of cleanups.splice(0)) void cleanup();
+});
 
 function host(): HTMLElement {
   const target = document.createElement('div');
@@ -26,7 +29,7 @@ type Seg = { text: string; now: string | null; vt: string | null; label: string 
 
 function segmentDump(target: HTMLElement): Seg[] {
   flushSync();
-  return [...target.querySelectorAll('[role="spinbutton"]')].map(e => ({
+  return [...target.querySelectorAll('[role="spinbutton"]')].map((e) => ({
     text: (e.textContent ?? '').trim(),
     now: e.getAttribute('aria-valuenow'),
     vt: e.getAttribute('aria-valuetext'),
@@ -35,17 +38,26 @@ function segmentDump(target: HTMLElement): Seg[] {
 }
 
 function hourOf(segs: Seg[]): Seg | undefined {
-  return segs.find(s => (s.label ?? '').toLowerCase().includes('hour'));
+  return segs.find((s) => (s.label ?? '').toLowerCase().includes('hour'));
 }
 
 function periodText(target: HTMLElement): string {
-  return ((target.querySelector('[data-testid="day-period"], [role="spinbutton"][aria-label*="period" i], [aria-label*="AM" i], [aria-label*="PM" i]')?.textContent ?? target.textContent ?? '').match(/AM|PM/i) ?? [''])[0];
+  return ((
+    target.querySelector(
+      '[data-testid="day-period"], [role="spinbutton"][aria-label*="period" i], [aria-label*="AM" i], [aria-label*="PM" i]',
+    )?.textContent ??
+    target.textContent ??
+    ''
+  ).match(/AM|PM/i) ?? [''])[0];
 }
 
 describe('disclosed defect B: TimeField hour cycle — primitive vs adapter (en-GB 12h)', () => {
   it('primitive en-GB + hourCycle 12: hour shows 12-hour text with a day period', () => {
     const target = host();
-    const instance = mount(TimePrimitiveFixture, { target, props: { locale: 'en-GB', hourCycle: 12, value: '13:30' } });
+    const instance = mount(TimePrimitiveFixture, {
+      target,
+      props: { locale: 'en-GB', hourCycle: 12, value: '13:30' },
+    });
     cleanups.push(() => unmount(instance));
     const segs = segmentDump(target);
     const hour = hourOf(segs);
@@ -61,22 +73,34 @@ describe('disclosed defect B: TimeField hour cycle — primitive vs adapter (en-
 
   it('primitive en-GB + hourCycle 24: hour shows 24-hour text, no day period', () => {
     const target = host();
-    const instance = mount(TimePrimitiveFixture, { target, props: { locale: 'en-GB', hourCycle: 24, value: '13:30' } });
+    const instance = mount(TimePrimitiveFixture, {
+      target,
+      props: { locale: 'en-GB', hourCycle: 24, value: '13:30' },
+    });
     cleanups.push(() => unmount(instance));
     const segs = segmentDump(target);
     const hour = hourOf(segs);
     const period = periodText(target);
-    expect({ hourText: hour?.text, period }, JSON.stringify(segs)).toEqual({ hourText: '13', period: '' });
+    expect({ hourText: hour?.text, period }, JSON.stringify(segs)).toEqual({
+      hourText: '13',
+      period: '',
+    });
   });
 
   it('primitive en-US + hourCycle 12 (control): hour shows 12-hour text with PM', () => {
     const target = host();
-    const instance = mount(TimePrimitiveFixture, { target, props: { locale: 'en-US', hourCycle: 12, value: '13:30' } });
+    const instance = mount(TimePrimitiveFixture, {
+      target,
+      props: { locale: 'en-US', hourCycle: 12, value: '13:30' },
+    });
     cleanups.push(() => unmount(instance));
     const segs = segmentDump(target);
     const hour = hourOf(segs);
     const period = periodText(target);
-    expect({ hourText: hour?.text, period }, JSON.stringify(segs)).toEqual({ hourText: '01', period: 'PM' });
+    expect({ hourText: hour?.text, period }, JSON.stringify(segs)).toEqual({
+      hourText: '01',
+      period: 'PM',
+    });
   });
 
   it('adapter en-GB + hourCycle 12: authored time-field agrees with the primitive', () => {
@@ -115,7 +139,8 @@ describe('disclosed defect B: TimeField hour cycle — primitive vs adapter (en-
       props: {
         plan: compiled.plan,
         extensionDescriptors: catalogDescriptors,
-        extensionImplementations: catalogImplementations as readonly UiSvelteComponentImplementation[],
+        extensionImplementations:
+          catalogImplementations as readonly UiSvelteComponentImplementation[],
         localState: {},
         view: {},
         dispatch: async () => ({ ok: true }),
@@ -171,7 +196,8 @@ describe('disclosed defect B: TimeField hour cycle — primitive vs adapter (en-
       props: {
         plan: compiled.plan,
         extensionDescriptors: catalogDescriptors,
-        extensionImplementations: catalogImplementations as readonly UiSvelteComponentImplementation[],
+        extensionImplementations:
+          catalogImplementations as readonly UiSvelteComponentImplementation[],
         localState: {},
         view: {},
         dispatch: async () => ({ ok: true }),
@@ -179,7 +205,7 @@ describe('disclosed defect B: TimeField hour cycle — primitive vs adapter (en-
       },
     });
     cleanups.push(() => unmount(instance));
-    const periodSeg = [...target.querySelectorAll('[role="spinbutton"]')].find(e =>
+    const periodSeg = [...target.querySelectorAll('[role="spinbutton"]')].find((e) =>
       (e.getAttribute('aria-label') ?? '').includes('AM/PM'),
     ) as HTMLElement | undefined;
     expect(periodSeg, 'dayPeriod segment must exist for 12-hour en-GB').toBeTruthy();
@@ -191,7 +217,10 @@ describe('disclosed defect B: TimeField hour cycle — primitive vs adapter (en-
     flushSync();
     expect((periodSeg!.textContent ?? '').trim()).toBe('AM');
     const hourAfter = hourOf(segmentDump(target));
-    expect({ hourText: hourAfter?.text, hourNow: hourAfter?.now }, 'after PM→AM toggle').toEqual({ hourText: '01', hourNow: '1' });
+    expect({ hourText: hourAfter?.text, hourNow: hourAfter?.now }, 'after PM→AM toggle').toEqual({
+      hourText: '01',
+      hourNow: '1',
+    });
     // The underlying ISO value must be 01:30, not 13:30.
     const vt = hourAfter?.vt ?? '';
     expect(vt).toContain('AM');
