@@ -22,7 +22,25 @@
   disabled={props.disabled === true} readonly={props.readonly === true} required={props.required === true}
   onValueChange={(next) => { const text = next ? (granularity === 'second' ? next.toString() : next.toString().slice(0, 5)) : ''; if (text !== props.value) io?.emit('valueChange', text); }}>
   <TimeField.Label>{String(props.label ?? 'Inspection time')}</TimeField.Label>
-  <TimeField.Input>{#snippet children({ segments })}{#each segments as segment}<TimeField.Segment part={segment.part}>{segment.value}</TimeField.Segment>{/each}{/snippet}</TimeField.Input>
+  <TimeField.Input>
+    {#snippet children({ segments })}
+      {#each segments as segment}
+        {#if segment.part === 'hour'}
+          <TimeField.Segment part={segment.part}>
+            {#snippet child({ props: attributes })}
+              <!-- Keep the public attachment and handlers while announcing
+                   the displayed hour in the configured 12/24-hour range. -->
+              <span {...attributes}
+                aria-valuenow={hourCycle === 12 ? (Number(attributes['aria-valuenow']) % 12 || 12) : Number(attributes['aria-valuenow'])}
+                aria-valuetext={attributes['aria-valuetext'] === 'Empty' ? 'Empty' : hourCycle === 24 ? segment.value : `${segment.value} ${value && value.hour >= 12 ? 'PM' : 'AM'}`}>{segment.value}</span>
+            {/snippet}
+          </TimeField.Segment>
+        {:else}
+          <TimeField.Segment part={segment.part}>{segment.value}</TimeField.Segment>
+        {/if}
+      {/each}
+    {/snippet}
+  </TimeField.Input>
   {@render io?.slots?.help?.()}
 </TimeField.Root>
 </div>
