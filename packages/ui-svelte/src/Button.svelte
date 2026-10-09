@@ -24,6 +24,7 @@
 <button
   {...presentation}
   aria-busy={busy || undefined}
+  aria-disabled={busy || disabled || undefined}
   {type}
   class={['vict-btn', presentation?.class ?? ''].join(' ')}
   class:vict-btn--secondary={variant === 'secondary'}
@@ -35,5 +36,8 @@
   aria-haspopup={haspopup}
   aria-expanded={expanded}
   {disabled}
-  {onclick}
+  onclick={(event) => {
+    if (busy) { event.preventDefault(); return; }
+    onclick?.(event);
+  }}
 >{label}</button>

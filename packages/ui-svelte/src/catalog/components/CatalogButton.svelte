@@ -24,6 +24,6 @@
 
 <span data-testid="catalog-button" style="display: inline-flex; align-items: center; gap: 8px">
   <Button presentation={presentation?.target('root')} busy={loading} label={loading ? 'Working...' : label}
-    disabled={disabled || loading} onclick={() => io?.emit('press')} />
+    {disabled} onclick={() => io?.emit('press')} />
   <ActionFeedback feedback={io?.action?.feedback} />
 </span>

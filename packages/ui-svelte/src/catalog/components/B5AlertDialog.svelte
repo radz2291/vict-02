@@ -24,12 +24,13 @@
         <AlertDialog.Cancel {...presentation?.target('cancel')}>
           {#if io?.slots?.cancel}{@render io.slots.cancel()}{:else}{typeof props.cancelLabel === 'string' ? props.cancelLabel : 'Cancel'}{/if}
         </AlertDialog.Cancel>
-        <AlertDialog.Action {...presentation?.target('action')} disabled={props.disabled === true || io?.action?.pending === true} onclick={() => io?.emit('confirm')}>
+        <AlertDialog.Action {...presentation?.target('action')} disabled={props.disabled === true} aria-disabled={io?.action?.pending || undefined} aria-busy={io?.action?.pending || undefined} onclick={(event) => { if (io?.action?.pending) { event.preventDefault(); return; } io?.emit('confirm'); }}>
           {#if io?.slots?.action}{@render io.slots.action()}{:else}{typeof props.confirmLabel === 'string' ? props.confirmLabel : 'Confirm'}{/if}
         </AlertDialog.Action>
       </div>
+      <ActionFeedback feedback={io?.action?.feedback} />
     </AlertDialog.Content>
   </CatalogPortal>
 </AlertDialog.Root>
 
-<ActionFeedback feedback={io?.action?.feedback} />
+{#if !open}<ActionFeedback feedback={io?.action?.feedback} />{/if}

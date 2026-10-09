@@ -28,7 +28,7 @@
 .vict-controls [hidden] {
   display: none !important;
 }
-.vict-controls :where([data-disabled], :disabled) {
+.vict-controls :where([data-disabled], :disabled, [aria-disabled='true']) {
   opacity: 0.48;
   cursor: not-allowed;
 }
@@ -494,6 +494,7 @@
   transform: translateX(16px);
 }
 .vict-controls [data-slider-root] {
+  display: block;
   position: relative;
   height: 8px;
   margin: 20px 12px;

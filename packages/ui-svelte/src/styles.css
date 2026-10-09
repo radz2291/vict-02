@@ -291,7 +291,7 @@ h3.vict-text {
 .vict-nav-toggle {
   display: none;
 }
-.vict-btn:hover:not(:disabled) {
+.vict-btn:hover:not(:disabled):not([aria-disabled='true']) {
   box-shadow: inset 0 0 0 100px #0000000a;
 }
 .vict-btn--secondary,
@@ -312,6 +312,7 @@ h3.vict-text {
   color: white;
 }
 .vict-app button:disabled,
+.vict-app button[aria-disabled='true'],
 .vict-app input:disabled,
 .vict-app select:disabled {
   opacity: 0.45;
