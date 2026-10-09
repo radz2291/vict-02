@@ -14,3 +14,14 @@ export function catalogFocusReturn(getTrigger: () => HTMLButtonElement | null): 
     }
   };
 }
+
+/** Pickers may coexist with inline calendars or other document hosts. Restrict
+ * open focus to this native content ref rather than a document-wide day query. */
+export function catalogPickerOpenFocus(getContent: () => HTMLElement | null): (event: Event) => void {
+  return (event) => {
+    event.preventDefault();
+    const content = getContent();
+    const day = content?.querySelector<HTMLElement>('[data-bits-day][data-focused]:not([aria-disabled="true"])');
+    (day ?? content)?.focus({ preventScroll: true });
+  };
+}
