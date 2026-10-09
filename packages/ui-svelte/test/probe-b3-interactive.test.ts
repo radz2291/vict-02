@@ -26,9 +26,9 @@ describe('B3: slider (numberList one-thumb / range modes)', () => {
     }, { capacity: { key: 'capacity', type: 'numberList', initial: [20, 80] } as never });
     const thumbs = [...target.querySelectorAll('[role="slider"]')];
     expect(thumbs.length).toBe(2);
-    expect(thumbs[0].getAttribute('aria-valuenow')).toBe('20');
-    expect(thumbs[1].getAttribute('aria-valuenow')).toBe('80');
-    expect(thumbs[0].getAttribute('tabindex')).toBe('0');
+    expect(thumbs[0]?.getAttribute('aria-valuenow')).toBe('20');
+    expect(thumbs[1]?.getAttribute('aria-valuenow')).toBe('80');
+    expect(thumbs[0]?.getAttribute('tabindex')).toBe('0');
     // Keyboard stepping (ArrowRight steps by `step`) is browser-verified:
     // 60 -> 75 with step 15 on the schedule document (happy-dom synthetic
     // keydown does not drive the bits-ui slider).

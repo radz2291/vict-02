@@ -37,24 +37,26 @@ function mountRange(props: Record<string, unknown>): Mount {
     emits,
     setProps(next) {
       Object.assign(props, next);
-      instance.$set({ props: { ...props } });
+      (instance as unknown as { $set(next: { props: Record<string, unknown> }): void }).$set({ props: { ...props } });
       flushSync();
     },
   };
 }
 function inputs(m: Mount) {
   flushSync();
+  type Dump = { segs: string[]; placeholders: (string | null)[] };
+  const read = (f: Element | undefined): Dump => ({
+    segs: f ? [...f.querySelectorAll('[role="spinbutton"]')].map(s => (s.textContent ?? '').trim()) : [],
+    placeholders: f ? [...f.querySelectorAll('[data-placeholder]')].map(s => s.getAttribute('data-placeholder')) : [],
+  });
   const fields = [...m.target.querySelectorAll('.vict-control-row > *')].filter(e => e.tagName !== 'SPAN');
-  const dump = fields.map(f => ({
-    segs: [...f.querySelectorAll('[role="spinbutton"]')].map(s => (s.textContent ?? '').trim()),
-    placeholders: [...f.querySelectorAll('[data-placeholder]')].map(s => s.getAttribute('data-placeholder')),
-  }));
-  return dump;
+  return fields.map(read);
 }
 function segEls(m: Mount, which: 0 | 1) {
   flushSync();
   const fields = [...m.target.querySelectorAll('.vict-control-row > *')].filter(e => e.tagName !== 'SPAN');
-  return [...fields[which].querySelectorAll<HTMLElement>('[role="spinbutton"]')];
+  const field = fields[which];
+  return field ? [...field.querySelectorAll<HTMLElement>('[role="spinbutton"]')] : [];
 }
 function pressKey(el: HTMLElement, key: string) {
   el.focus();
@@ -66,8 +68,8 @@ describe('disclosed defect A: partial date ranges are first-class (DateRangeFiel
   it('complete range renders both fields with values and emits nothing', () => {
     const m = mountRange({ start: '2026-10-12', end: '2026-10-16', locale: 'en-GB' });
     const [start, end] = inputs(m);
-    expect(start.segs.join('/')).toBe('12/10/2026');
-    expect(end.segs.join('/')).toBe('16/10/2026');
+    expect(start?.segs.join('/')).toBe('12/10/2026');
+    expect(end?.segs.join('/')).toBe('16/10/2026');
     expect(m.emits).toEqual([]);
   });
 
@@ -76,17 +78,17 @@ describe('disclosed defect A: partial date ranges are first-class (DateRangeFiel
     const [start, end] = inputs(m);
     // The end value MUST stay visible; empty start is first-class, not a
     // reason to blank the whole range.
-    expect(end.segs.join('/'), 'end stays displayed with start empty').toBe('16/10/2026');
-    expect(start.segs.join('')).not.toContain('2026');
+    expect(end?.segs.join('/'), 'end stays displayed with start empty').toBe('16/10/2026');
+    expect(start?.segs.join('') ?? '').not.toContain('2026');
     expect(m.emits).toEqual([]);
   });
 
   it('clearing the start of a complete range preserves the displayed end', () => {
     const m = mountRange({ start: '2026-10-12', end: '2026-10-16', locale: 'en-GB' });
     const startSegs = segEls(m, 0);
-    for (let i = startSegs.length - 1; i >= 0; i -= 1) pressKey(startSegs[i], 'Backspace');
+    for (let i = startSegs.length - 1; i >= 0; i -= 1) pressKey(startSegs[i]!, 'Backspace');
     const [start, end] = inputs(m);
-    expect(end.segs.join('/'), 'end must remain displayed after clearing start').toBe('16/10/2026');
+    expect(end?.segs.join('/'), 'end must remain displayed after clearing start').toBe('16/10/2026');
     expect(m.emits.filter(e => e.name === 'startChange')).toContainEqual({ name: 'startChange', value: '' });
   });
 
@@ -95,11 +97,11 @@ describe('disclosed defect A: partial date ranges are first-class (DateRangeFiel
     const startSegs = segEls(m, 0);
     // day, month, year segments in order
     for (const [i, digits] of [['1', '2'], ['1', '0'], ['2', '0', '2', '6']].entries()) {
-      for (const d of digits as string[]) pressKey(startSegs[i], d);
+      for (const d of digits as string[]) pressKey(startSegs[i]!, d);
     }
     const [start, end] = inputs(m);
-    expect(start.segs.join('/'), 'start restored').toBe('12/10/2026');
-    expect(end.segs.join('/'), 'end unaffected').toBe('16/10/2026');
+    expect(start?.segs.join('/'), 'start restored').toBe('12/10/2026');
+    expect(end?.segs.join('/'), 'end unaffected').toBe('16/10/2026');
     expect(m.emits.filter(e => e.name === 'startChange').at(-1)?.value).toBe('2026-10-12');
   });
 
@@ -107,7 +109,7 @@ describe('disclosed defect A: partial date ranges are first-class (DateRangeFiel
     const m = mountRange({ start: '2026-10-12', end: '2026-10-16', locale: 'en-GB' });
     m.setProps({ start: '2026-10-11' });
     const [start] = inputs(m);
-    expect(start.segs.join('/')).toBe('11/10/2026');
+    expect(start?.segs.join('/')).toBe('11/10/2026');
     expect(m.emits).toEqual([]);
   });
 

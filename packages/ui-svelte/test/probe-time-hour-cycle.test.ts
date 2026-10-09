@@ -13,7 +13,6 @@ import DocumentHost from '../src/document/DocumentHost.svelte';
 import { compileUiDocument, defaultSemanticElementCatalog } from '@victframework/ui';
 import { catalogDescriptors, catalogImplementations } from '../src/catalog/components/catalog.js';
 import type { UiSvelteComponentImplementation } from '../src/document/extensions.js';
-import { catalogDescriptors } from '../src/catalog/components/catalog.js';
 
 const cleanups: (() => void | Promise<void>)[] = [];
 

@@ -27,7 +27,6 @@ export function mountDoc(doc: Partial<UiDocument> & Pick<UiDocument, 'root' | 'n
     tokens: {},
     conditions: {},
     assets: {},
-    localState,
     ...doc,
     localState: { ...(doc.localState ?? {}), ...localState },
   } as UiDocument;

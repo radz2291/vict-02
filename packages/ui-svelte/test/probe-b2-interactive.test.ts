@@ -155,9 +155,9 @@ describe('B2: tabs (active value)', () => {
     }, { tab: { key: 'tab', type: 'string', initial: 'log' } as never });
     const tabs = [...target.querySelectorAll('[role="tab"]')] as HTMLElement[];
     expect(tabs.length).toBe(2);
-    expect(tabs[0].getAttribute('aria-selected')).toBe('true');
+    expect(tabs[0]?.getAttribute('aria-selected')).toBe('true');
     click(tabs[1]);
-    expect(tabs[1].getAttribute('aria-selected')).toBe('true');
+    expect(tabs[1]?.getAttribute('aria-selected')).toBe('true');
     expect(text(target)).toContain('Notes panel');
   });
 });
