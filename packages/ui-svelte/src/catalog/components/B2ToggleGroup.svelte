@@ -10,7 +10,8 @@
   const options = $derived(Array.isArray(props.options) ? props.options.map(option => ({ value: String(option?.value ?? ''), label: String(option?.label ?? option?.value ?? ''), disabled: option?.disabled === true })) : []);
   const disabled = $derived(props.disabled === true);
 </script>
-<span style="display: contents">
+<div class="vict-field">
+<span class="vict-control-label">{String(props.label ?? 'Options')}</span>
 {#if props.values !== undefined}
   <ToggleGroup.Root type="multiple" bind:value={multiple} {disabled} {...presentation?.target('root')} aria-label={String(props.label ?? 'Choices')}
     onValueChange={next => io?.emit('valuesChange', [...next])}>
@@ -24,4 +25,4 @@
       {#each options as option (option.value)}<ToggleGroup.Item value={option.value} disabled={option.disabled}>{option.label}</ToggleGroup.Item>{/each}
   </ToggleGroup.Root>
 {/if}
-</span>
+</div>

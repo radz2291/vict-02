@@ -12,8 +12,11 @@
   setContext(COMBOBOX_SEARCH, () => search);
   const options = $derived(Array.isArray(props.options) ? props.options.map(option => ({ value: String(option?.value ?? ''), label: String(option?.label ?? option?.value ?? ''), disabled: option?.disabled === true })) : []);
   const disabled = $derived(props.disabled === true);
+  const selected = $derived((props.values !== undefined ? multiple : single ? [single] : []).map(value => options.find(option => option.value === value)?.label ?? value).join(', '));
 </script>
-<span style="display: contents">
+<div class="vict-field">
+<span class="vict-control-label">{String(props.label ?? 'Search options')}</span>
+{#if selected}<span aria-live="polite">Selected: {selected}</span>{/if}
 {#if props.values !== undefined}
   <Combobox.Root type="multiple" bind:value={multiple} inputValue={search} {disabled} bind:open
     onValueChange={next => io?.emit('valuesChange', [...next])}>
@@ -43,4 +46,4 @@
       </CatalogPortal>
   </Combobox.Root>
 {/if}
-</span>
+</div>

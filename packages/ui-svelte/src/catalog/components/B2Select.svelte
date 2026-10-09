@@ -10,7 +10,8 @@
   const options = $derived(Array.isArray(props.options) ? props.options.map(option => ({ value: String(option?.value ?? ''), label: String(option?.label ?? option?.value ?? ''), disabled: option?.disabled === true })) : []);
   const disabled = $derived(props.disabled === true);
 </script>
-<span style="display: contents">
+<div class="vict-field">
+<span class="vict-control-label">{String(props.label ?? 'Choose options')}</span>
 {#if props.values !== undefined}
   <Select.Root type="multiple" bind:value={multiple} {disabled} bind:open
     onValueChange={next => io?.emit('valuesChange', [...next])}>
@@ -38,4 +39,4 @@
       </CatalogPortal>
   </Select.Root>
 {/if}
-</span>
+</div>
