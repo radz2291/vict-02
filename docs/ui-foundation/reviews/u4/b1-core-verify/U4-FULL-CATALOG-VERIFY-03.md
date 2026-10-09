@@ -111,7 +111,7 @@ fact, not a defect. A client build does not claim server rendering.
 
 | Gate | Result |
 | --- | --- |
-| Root `npm test` (inherited suites; after full build) | **2990 passed / 0 failed / 3 skipped** (the 3 `restart-sigkill` failures observed pre-build were environmental: missing `packages/server/dist`; pass 3/3 after `npm run build`) |
+| Root `npm test` (inherited suites; after full build) | **2990 passed / 0 failed / 3 skipped** (the 3 `restart-sigkill` failures observed pre-build were environmental: missing `packages/server/dist`; pass 3/3 after `npm run build`). **Definitive full-battery re-run with the probe files in the tree: 3020 passed / 10 failed / 3 skipped (3033)** — the 10 failures are exactly the committed pinned probes (§2/§3/§4: 6 genuine defects + 4 documented environment-limited); zero inherited failures |
 | Round-3 probe suite (committed, renderer project) | 41 tests: **31 green, 10 pinned-failing** (6 genuine defects + 4 documented happy-dom input limits whose assertions are browser-covered) |
 | consumer suite (workspace) | **16/16** |
 | consumer suite (packed, isolated install) | **16/16** |
