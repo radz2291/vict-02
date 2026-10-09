@@ -3,6 +3,7 @@
   import { occurrenceKey, resolveValue, uniqueRepeatKeys, asRecord, evaluatedComponentProps, conditionsOf, evaluateCondition, type DocumentScope } from '@victframework/ui-svelte';
   import { nodeLabel, type EditorLabels } from './inspector-ux.js';
   import { tick, untrack } from 'svelte';
+  import { previewValues } from './preview-values.js';
   let { plan, document, selectedOccurrence, onSelect, ariaLabel = 'Layers', labels = {}, scope }: {
     plan: UiRenderPlan; document?: UiDocument; selectedOccurrence?: string; onSelect?: (occurrence: string) => void;
     ariaLabel?: string; labels?: EditorLabels; scope?: DocumentScope;
@@ -14,6 +15,7 @@
   let search = $state('');
   const query = $derived(search.trim().toLocaleLowerCase());
   let root: HTMLElement;
+  const effectiveScope = $derived(scope ? { ...scope, state: { ...scope.state, ...previewValues(document?.localState ?? {}, scope.state ?? {}) } } : undefined);
   const all = $derived.by(() => {
     const out: Entry[] = [];
     function walk(i: UiRenderInstruction, depth: number, keys: readonly string[], parent?: string, values?: DocumentScope, fills: Readonly<Record<string, readonly UiRenderInstruction[]>> = {}, template = false, fillScope?: DocumentScope) {
@@ -45,7 +47,7 @@
       }
       out[start] = { ...out[start], children: out.length > start + 1 };
     }
-    plan.structure.forEach(i => walk(i, 0, [], undefined, scope));
+    plan.structure.forEach(i => walk(i, 0, [], undefined, effectiveScope));
     return out;
   });
   function isOpen(entry: Entry) { return !closed.has(entry.key) && (!entry.compact || expanded.has(entry.key)); }

@@ -102,7 +102,7 @@
   let lastDocumentId = $state(plan.documentId);
   let lastSignal: symbol | undefined = $state<symbol | undefined>(undefined);
 
-  $effect(() => {
+  $effect.pre(() => {
     const documentId = plan.documentId;
     const signal = resetSignal;
     const values = stateValues;

@@ -14,7 +14,16 @@ export function nodeLabel(document: UiDocument, id: string, labels: EditorLabels
   if (!node) return 'Unavailable element';
   if (node.kind === 'text')
     return node.content.type === 'literal' ? node.content.value || 'Empty text' : 'Bound text';
-  if (node.kind === 'component') return labels.definitions?.[node.definitionId] ?? 'Component';
+  if (node.kind === 'component') {
+    if (labels.definitions?.[node.definitionId]) return labels.definitions[node.definitionId]!;
+    for (const name of ['label', 'title', 'alt']) {
+      const expression = node.props?.[name];
+      if (expression?.type === 'literal' && typeof expression.value === 'string' && expression.value.trim()) return expression.value;
+    }
+    return node.definitionId.startsWith('vict.catalog.')
+      ? node.definitionId.slice('vict.catalog.'.length).split('-').map(word => word[0]?.toUpperCase() + word.slice(1)).join(' ')
+      : 'Component';
+  }
   if (node.kind === 'element') {
     const accessible = node.attributes?.['aria-label'];
     if (typeof accessible === 'string' && accessible) return accessible;

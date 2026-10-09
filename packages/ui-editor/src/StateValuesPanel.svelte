@@ -10,6 +10,7 @@
    */
   import type { UiLocalStateDecl, UiValue } from '@victframework/ui';
   import { isUiValueOfType } from '@victframework/ui';
+  import { previewValues } from './preview-values.js';
 
   interface Props {
     readonly localState: Readonly<Record<string, UiLocalStateDecl>>;
@@ -18,6 +19,7 @@
   }
   let { localState, stateValues, onChange }: Props = $props();
 
+  const values = $derived(previewValues(localState, stateValues));
   const declarations = $derived(Object.values(localState));
   const draftText = $state<Record<string, string>>({});
   const listDraft = $state<Record<string, string>>({});
@@ -66,7 +68,7 @@
   function addListItem(decl: UiLocalStateDecl): void {
     const raw = (listDraft[decl.key] ?? '').trim();
     if (raw === '') return;
-    const current = stateValues[decl.key];
+    const current = values[decl.key];
     const list = Array.isArray(current) ? [...current] : [];
     const member = decl.type === 'stringList' ? raw : Number(raw);
     if (decl.type === 'numberList' && !Number.isFinite(member)) {
@@ -79,7 +81,7 @@
   }
 
   function removeListItem(decl: UiLocalStateDecl, index: number): void {
-    const current = stateValues[decl.key];
+    const current = values[decl.key];
     if (!Array.isArray(current)) return;
     apply(decl, current.filter((_, i) => i !== index));
   }
@@ -98,15 +100,15 @@
         <label class="state-inline">
           <input
             type="checkbox"
-            checked={stateValues[decl.key] === true}
+            checked={values[decl.key] === true}
             onchange={(event) => scalarChange(decl, '', event.currentTarget.checked)}
           />
-          <span>{stateValues[decl.key] === true ? 'true' : 'false'}</span>
+          <span>{values[decl.key] === true ? 'true' : 'false'}</span>
         </label>
       {:else if decl.type === 'stringList' || decl.type === 'numberList'}
         <div class="list-editor">
           <ul>
-            {#each Array.isArray(stateValues[decl.key]) ? (stateValues[decl.key] as readonly unknown[]) : [] as member, index (index)}
+            {#each Array.isArray(values[decl.key]) ? (values[decl.key] as readonly unknown[]) : [] as member, index (index)}
               <li>
                 <span>{String(member)}</span>
                 <button
@@ -130,7 +132,7 @@
       {:else}
         <input
           type={scalarInputType(decl.type)}
-          value={stateValues[decl.key] === undefined ? '' : String(stateValues[decl.key])}
+          value={values[decl.key] === undefined ? '' : String(values[decl.key])}
           placeholder={decl.type === 'isoDate' ? 'YYYY-MM-DD' : decl.type === 'isoTime' ? 'HH:MM' : ''}
           aria-label={`${decl.key} value`}
           oninput={(event) => scalarChange(decl, event.currentTarget.value, false)}
