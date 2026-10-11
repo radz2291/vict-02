@@ -123,7 +123,8 @@
             <input
               type={decl.type === 'numberList' ? 'number' : 'text'}
               placeholder={decl.type === 'numberList' ? 'number' : 'text'}
-              bind:value={listDraft[decl.key]}
+              value={listDraft[decl.key] ?? ''}
+              oninput={(event) => (listDraft[decl.key] = event.currentTarget.value)}
               aria-label={`Add ${decl.key} member`}
             />
             <button type="button" onclick={() => addListItem(decl)}>Add</button>
