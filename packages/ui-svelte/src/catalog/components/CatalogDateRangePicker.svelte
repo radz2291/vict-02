@@ -4,8 +4,9 @@
   import CalendarGrid from '../../CalendarGrid.svelte';
   import CatalogPortal from './CatalogPortal.svelte';
   import { catalogFocusReturn, catalogPickerOpenFocus } from './focus-return.js';
-  import { dateValue, dateText, rangeIsOrdered, emitRange, type CatalogDateRange, numeric } from './b3-values.js';
-  import type { DateValue } from '../../dates.js';
+  import { dateValue, rangeIsOrdered, numeric } from './b3-values.js';
+  import { catalogRangeState } from './range-state.svelte.js';
+  import CatalogRangeInputs from './CatalogRangeInputs.svelte';
   import type { UiSvelteComponentProps } from '../../document/extensions.js';
   let { props, io, presentation }: UiSvelteComponentProps = $props();
   const locale = $derived(String(props.locale ?? 'en-GB'));
@@ -20,17 +21,8 @@
   const label = $derived(String(props.label ?? 'Inspection window'));
   const weekStartsOn = $derived(Math.min(6, Math.max(0, Math.floor(numeric(props.weekStartsOn, 1)))) as 0 | 1 | 2 | 3 | 4 | 5 | 6);
   const numberOfMonths = $derived(Math.max(1, Math.floor(numeric(props.numberOfMonths, 1))));
-  const startText = $derived(props.start);
-  const endText = $derived(props.end);
-  let value = $derived({ start: dateValue(startText), end: dateValue(endText) });
-  const invalid = $derived(!rangeIsOrdered(value));
-  function change(next: CatalogDateRange | undefined) {
-    const range = next ?? { start: undefined, end: undefined };
-    if (dateText(value.start) !== dateText(range.start) || dateText(value.end) !== dateText(range.end)) value = range;
-    emitRange(io, props, range);
-  }
-  function changeStart(start: DateValue | undefined) { change({ start, end: value.end }); }
-  function changeEnd(end: DateValue | undefined) { change({ start: value.start, end }); }
+  const range = catalogRangeState(() => props, () => io);
+  const invalid = $derived(!rangeIsOrdered(range.value));
   const authoredOpen = $derived(props.open === true);
   let open = $derived(authoredOpen);
   $effect(() => { if (open !== authoredOpen) io?.emit('openChange', open); });
@@ -40,19 +32,17 @@
   const restoreTrigger = catalogFocusReturn(() => triggerRef);
 </script>
 <div {...presentation?.target('root')} aria-invalid={invalid || undefined}>
-  <DateRangePicker.Root bind:value bind:open {locale} {minValue} {maxValue} {placeholder} {disabled} {readonly} {weekStartsOn} {numberOfMonths}
+  <DateRangePicker.Root bind:value={() => range.value, (next) => range.set(next, true)} bind:open {locale} {minValue} {maxValue} {placeholder} {disabled} {readonly} {weekStartsOn} {numberOfMonths}
     required={props.required === true} granularity="day"
     validate={(range) => rangeIsOrdered(range) ? undefined : 'End must not precede start.'}
-    onValueChange={change} onStartValueChange={changeStart} onEndValueChange={changeEnd}
     onOpenChange={(next) => io?.emit('openChange', next)}>
     <DateRangePicker.Label>{label}</DateRangePicker.Label>
-    <div class="vict-control-row">
-      <DateRangePicker.Input type="start">{#snippet children({ segments })}{#each segments as segment}<DateRangePicker.Segment part={segment.part}>{segment.value}</DateRangePicker.Segment>{/each}{/snippet}</DateRangePicker.Input><span>to</span><DateRangePicker.Input type="end">{#snippet children({ segments })}{#each segments as segment}<DateRangePicker.Segment part={segment.part}>{segment.value}</DateRangePicker.Segment>{/each}{/snippet}</DateRangePicker.Input>
+    <CatalogRangeInputs value={range.value} change={range.set} {label} {locale} {minValue} {maxValue} {placeholder} {disabled} {readonly} required={props.required === true}>
       <DateRangePicker.Trigger class="vict-btn vict-btn--secondary" bind:ref={triggerRef} aria-label={`Open ${label} calendar`}>Calendar</DateRangePicker.Trigger>
-    </div>
+    </CatalogRangeInputs>
     <CatalogPortal {open} {presentation}>
       <DateRangePicker.Content {...presentation?.target('content')} class={`${presentation?.target('content').class ?? ''} vict-control-panel`} sideOffset={8} collisionPadding={16} bind:ref={contentRef} onOpenAutoFocus={focusCalendar} onCloseAutoFocus={restoreTrigger}>
-            <DateRangePicker.Calendar>{#snippet children({ months, weekdays })}<CalendarGrid parts={RangeCalendar} {months} {weekdays} />{/snippet}</DateRangePicker.Calendar>
+            <DateRangePicker.Calendar>{#snippet children({ months, weekdays })}<CalendarGrid parts={RangeCalendar} {months} {weekdays} range={range.value} onSelectDate={(date) => { range.select(date); if (range.value.start && range.value.end) open = false; }} />{/snippet}</DateRangePicker.Calendar>
             {@render io?.slots?.content?.()}
             <DateRangePicker.Close class="vict-btn vict-btn--quiet">Close calendar</DateRangePicker.Close>
       </DateRangePicker.Content>
