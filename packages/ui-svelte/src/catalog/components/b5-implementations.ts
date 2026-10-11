@@ -30,7 +30,7 @@ export const b5CatalogImplementations: readonly UiSvelteComponentImplementation[
   { ...identity, extensionId: 'vict.catalog.toolbar', component: Toolbar, slots: ["tools"], styleTargets: ["root"], required: ["tools"] },
   { ...identity, extensionId: 'vict.catalog.toolbar-button', component: ToolbarButton, slots: ["content"], styleTargets: ["root"] },
   { ...identity, extensionId: 'vict.catalog.link-preview', component: LinkPreview, slots: ["trigger", "content"], styleTargets: ["root", "trigger"], required: ["content"] },
-  { ...identity, extensionId: 'vict.catalog.tooltip', component: Tooltip, slots: ["trigger", "content"], styleTargets: ["root", "trigger"], required: ["content"] },
+  { ...identity, extensionId: 'vict.catalog.tooltip', component: Tooltip, slots: ["trigger", "content"], styleTargets: ["root", "trigger"] },
   { ...identity, extensionId: 'vict.catalog.popover', component: Popover, slots: ["trigger", "content"], styleTargets: ["root", "trigger"], required: ["content"] },
   { ...identity, extensionId: 'vict.catalog.alert-dialog', component: AlertDialog, slots: ["trigger", "body", "cancel", "action"], styleTargets: ["root", "trigger", "cancel", "action"], required: ["body"] },
   { ...identity, extensionId: 'vict.catalog.tabs', component: Tabs, slots: ["tabs", "panels"], styleTargets: ["root", "list"], required: ["tabs", "panels"] },
