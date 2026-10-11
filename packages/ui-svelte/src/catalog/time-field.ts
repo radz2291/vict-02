@@ -1,2 +1,2 @@
 /** Supported TimeField parts. Use ControlScope and catalog.css for VICT styling. */
-export { TimeField } from 'bits-ui';
+export * as TimeField from './time-field-parts.js';

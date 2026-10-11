@@ -1,0 +1,11 @@
+import { TimeField } from 'bits-ui';
+import type { Time } from '@internationalized/date';
+import type { TimeValue } from './time-field-context.js';
+export { default as Root } from './TimeFieldRoot.svelte';
+export { default as Segment } from './TimeFieldSegment.svelte';
+export { default as Input } from './TimeFieldInput.svelte';
+export const Label = TimeField.Label;
+export type RootProps<T extends TimeValue = Time> = TimeField.RootProps<T>;
+export type InputProps = TimeField.InputProps;
+export type SegmentProps = TimeField.SegmentProps;
+export type LabelProps = TimeField.LabelProps;

@@ -12,7 +12,7 @@
   const placeholderText = $derived(props.placeholder);
   const placeholder = $derived(timeValue(placeholderText));
   const hourCycle = $derived(props.hourCycle === 12 ? 12 : 24);
-  const locale = $derived(new Intl.Locale(String(props.locale ?? 'en-GB'), { hourCycle: hourCycle === 12 ? 'h12' : 'h23' }).toString());
+  const locale = $derived(String(props.locale ?? 'en-GB'));
   const granularity = $derived(props.granularity === 'second' ? 'second' : props.granularity === 'hour' ? 'hour' : 'minute');
 </script>
 <div {...presentation?.target('root')}>
@@ -25,19 +25,7 @@
   <TimeField.Input>
     {#snippet children({ segments })}
       {#each segments as segment}
-        {#if segment.part === 'hour'}
-          <TimeField.Segment part={segment.part}>
-            {#snippet child({ props: attributes })}
-              <!-- Keep the public attachment and handlers while announcing
-                   the displayed hour in the configured 12/24-hour range. -->
-              <span {...attributes}
-                aria-valuenow={hourCycle === 12 ? (Number(attributes['aria-valuenow']) % 12 || 12) : Number(attributes['aria-valuenow'])}
-                aria-valuetext={attributes['aria-valuetext'] === 'Empty' ? 'Empty' : hourCycle === 24 ? segment.value : `${segment.value} ${value && value.hour >= 12 ? 'PM' : 'AM'}`}>{segment.value}</span>
-            {/snippet}
-          </TimeField.Segment>
-        {:else}
-          <TimeField.Segment part={segment.part}>{segment.value}</TimeField.Segment>
-        {/if}
+        <TimeField.Segment part={segment.part}>{segment.value}</TimeField.Segment>
       {/each}
     {/snippet}
   </TimeField.Input>
