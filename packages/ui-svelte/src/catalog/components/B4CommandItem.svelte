@@ -10,6 +10,6 @@
   let ref = $state<HTMLDivElement | null>(null);
 </script>
 
-<Command.Item {...presentation?.target('root')} bind:ref value={String(props.value ?? '')} disabled={props.disabled === true} keywords={Array.isArray(props.keywords) ? props.keywords as string[] : []} onSelect={() => io?.emit('itemActivate', String(props.value ?? ''))}>
+<Command.Item {...presentation?.target('root')} bind:ref value={String(props.value ?? '')} disabled={props.disabled === true} keywords={[String(props.label ?? ''), ...(Array.isArray(props.keywords) ? props.keywords as string[] : [])]} onSelect={() => io?.emit('itemActivate', String(props.value ?? ''))}>
   {#snippet child({ props: attributes })}<CatalogPart as="div" {attributes} bind:ref>{#if io?.slots?.content}{@render io.slots.content()}{:else}{String(props.label ?? '')}{/if}</CatalogPart>{/snippet}
 </Command.Item>
