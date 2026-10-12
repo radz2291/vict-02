@@ -659,3 +659,15 @@ pack OK isolated, bits-ui 2.19.3, focus checks 10/10, journeys 50/50
 (50 persisted, 41 echoes, 10 plan-tier). Independent combined gate:
 in flight at handoff time - see the round-5 report section 24 for
 verdicts once recorded.
+
+### 14.6 Round 5 final - combined gate verdict (2026-10-13)
+
+Combined tested SHA re-pinned to `dcd3cbea255af9aa...` after the
+technical gate falsified the F17 candidate boundary (refusal had landed
+in the evidence commit). Full pipeline re-run from the exact re-pinned
+tree: 3119/0/3 battery (full capture), pack OK uncontended, focus 10/10,
+journeys 50/50 (50 persisted, 41 echoes), probe (e) PASS. Gate verdicts:
+technical FAIL->remedied; cold-start PASS (G-A/G-B/G-C resolved);
+browser recheck 10/10 + 50/50 + probes (a)-(d) (probe (e) completed by
+the verifier, disclosed). **Combined gate: PASS WITH FINDINGS.**
+Founder checkpoint next; owner acceptance PENDING.

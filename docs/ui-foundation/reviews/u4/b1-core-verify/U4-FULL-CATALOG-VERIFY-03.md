@@ -706,16 +706,24 @@ itself, pinned by checksums:
 
 ### 23d. Reproducible pipeline from the candidate SHA
 
-All results below were produced from the exact committed tree
-`fe800369968489390428d3be7808b0799f9d944d` (working tree clean at commit
-time; browser evidence added in a later evidence-only commit):
+**PROVENANCE CORRECTED AFTER THE GATE (see section 24):** the original
+text of this table attributed every result to `fe800369...`; the gate
+falsified that for the browser rows - the F17 Add-refusal delta plus its
+pinning-oracle change lived in the evidence-labeled commit `60b95e6e`,
+not in `fe80036`. Remedy adopted: the candidate was RE-PINNED as
+`dcd3cbea255af9aa...` (the refusal inside the candidate, plus the
+cold-start gate fixes: U4_ISOLATED_ROOT resolution, README gaps G-A/G-B)
+and the COMPLETE pipeline was re-run from that exact committed tree
+(working tree clean). The table below reports the re-pinned results;
+the per-SHA history is kept in section 24a. Original (superseded)
+introduction kept for the record:
 
 | Check | Result |
 | --- | --- |
 | Root build (F14 workflow, from no-dists state) | clean; ui-editor + ui-preview dists produced |
 | Typecheck (ui-svelte tsc --noEmit) | 0 errors |
 | svelte-check | ui-svelte 0 errors / 5 warnings; ui-editor 0 errors / 6 warnings (pre-existing a11y/lint patterns) |
-| Full battery `npm test` | **3119 passed / 0 failed / 3 skipped (3122)** |
+| Full battery `npm test` | **3119 passed / 0 failed / 3 skipped (3122)** at `fe80036`; re-run at the re-pinned candidate `dcd3cbea` with full log capture: **3119 passed / 0 failed / 3 skipped (3122)** (an intermediate under-capture reading of 3118/194-files was superseded by the authoritative full-capture run; the earlier load-flake note below documents the SIGKILL fixture sensitivity) |
 | Battery re-run note | one pipeline re-run showed 3 load-flakes in the real-child-process SIGKILL fixtures (`restart-sigkill`, `agent-governance-corrective`); both files pass 10/10 in isolation and the identical tree was green in the primary run - flakiness documented, not a product defect |
 | Pack + isolated verify | **ISOLATED PACKED-ARTIFACT VERIFICATION: OK**; isolated bits-ui **2.19.3** exact; isolated suite 16/16; both entries build |
 | Focused browser checks | **10/10 PASS** (23b table + keyboard-nav + mobile + F17 real-Chrome); results `u5-focus-results.json` |
@@ -733,3 +741,97 @@ F14/F15/F16/F17 + docs are VERIFIER-MADE with full disclosure. They are
 compensated by the fresh independent combined gate (section 24): none of
 the gate reviewers authored any repair. The owner may re-assign any of
 these repairs to Codex; the corrected tests pin the contracts either way.
+
+
+---
+
+## 24. INDEPENDENT COMBINED GATE (round 5) — verdicts and reconciliation
+
+Three fresh reviewers at the frozen candidate; none authored any repair.
+
+### 24a. Technical falsification — `U4-R5-COMBINED-TECHNICAL-GATE.md`
+
+- Lineage VERIFIED (both parents ancestors; no rewrites; corrected
+  oracles survive). Owner-UI diff VERIFIED TRUTHFUL against the seven
+  issues (13 files, file-by-file). F14/F15/F16 + README VERIFIED.
+- **F17 FALSIFIED as claimed at `fe80036`**: the Add-refusal was absent
+  there (it sat in the evidence-labeled commit `60b95e6`) — a candidate-
+  boundary/record-truthfulness defect. Its own stale-prefix probe failed
+  at `fe80036` and PASSED at `60b95e6`. Gate verdict: FAIL with the
+  remedy "re-pin the candidate (or correct the record) + one
+  uncontended packed-closure re-run".
+- **REMEDY APPLIED (this record, commit `dcd3cbea`)**: candidate
+  re-pinned WITH the refusal; complete pipeline re-run from the exact
+  re-pinned tree (table above); packed closure re-run UNCONTENDED →
+  `ISOLATED PACKED-ARTIFACT VERIFICATION: OK`. The falsified claim is
+  cured: at `dcd3cbea` the refusal is candidate code, pinned by the
+  oracle the gate itself verified passing at this tree.
+- Adversarial probes 12/12 at this tree. Non-blocking observation:
+  sibling page-level portals share depth 100 (popover == dialog at the
+  same depth; DOM order tie-breaks) — recorded as a future hardening
+  note, no failure.
+- Its packed-closure attempt was EBUSY-blocked by a concurrent
+  reviewer's server (correctly reported INCOMPLETE, not a pass) — the
+  uncontended re-run above stands as the evidence.
+- Battery observed by the gate: 3118/1/3 with the single failure being
+  the `release-authority` timeout under load, 65/65 in isolation —
+  consistent with the documented load-flake class.
+
+### 24b. Fresh unfamiliar-agent cold-start — `U4-R5-COMBINED-COLDSTART-GATE.md`
+
+- **PASS** — install, build, run, author, undo/redo, save, reload,
+  finished-app replay, programmatic `Button.Root` consumption (README
+  requirement 3 verified accurate), contract suite 16/16 (+2 scratch) —
+  all from the documented path.
+- Gaps found and RESOLVED in the re-pinned candidate: **G-C** real
+  script bug (`U4_ISOLATED_ROOT` not `path.resolve`d — forward-slash
+  overrides always failed isolation verification) FIXED;
+  **G-A** (bare example copy has no vendor tarballs) and **G-B**
+  (isolated-dir hard-delete/EBUSY + the override) now DOCUMENTED in the
+  README.
+
+### 24c. Real-browser recheck — `U4-R5-COMBINED-BROWSER-GATE.md`
+
+- Focus driver independently re-run: **10/10 PASS** (first-run
+  `stable-button-feedback` failure investigated and classified as a
+  hydration-timing environment flake, screenshot kept).
+- Journey matrix independently re-run: **50/50 PASS, 50/50 persisted**.
+- Own probes: (a) combobox inset geometry PASS; (b) select listbox above
+  the assignment dialog PASS (z 260 vs dialog 181, elementFromPoint);
+  (c) menubar scroll preservation + focus restoration PASS; (d) accordion
+  `findings` label as the group root's `aria-label` in the finished app
+  PASS; (e) Inspector slot-owned note NOT COMPLETED in its window (the
+  preview was restarted mid-session by the verifier's uncontended pack —
+  environment, disclosed).
+- Probe (e) was completed afterwards by the VERIFIER on the re-pinned
+  build (labelled: not independent): the truthful note 'Shown from the
+  "content" slot content while that slot is filled; this value is the
+  fallback text.' renders under the command.item label prop.
+  Product defects found by this reviewer: NONE among completed checks.
+- NOTE: this reviewer's runs executed on the `60b95e6`/`ea6c6e2` trees,
+  whose browser-relevant code is IDENTICAL to `dcd3cbea` (the re-pin
+  changed only the pack script, README, records); the verifier's
+  focus/journey/probe re-runs above cover the re-pinned tree directly.
+
+### 24d. Verifier's re-pin pipeline at `dcd3cbea` (exact committed tree)
+
+- battery **3119/0/3** (full capture); typecheck 0; svelte-check 0
+  errors (6+5 warnings, pre-existing patterns); pack uncontended
+  **ISOLATED PACKED-ARTIFACT VERIFICATION: OK**, bits-ui 2.19.3 exact,
+  16/16 isolated; focus **10/10** (re-run; one first-run hydration
+  flake, same classification as the independent reviewer's); journeys
+  **50/50 PASS, 50/50 persisted, 41 app echoes**; probe (e) PASS.
+
+## 25. ROUND-5 COMBINED-GATE VERDICT
+
+**PASS WITH FINDINGS** (after remedy). The single falsified claim
+(F17 candidate boundary) was cured by re-pinning and a full same-SHA
+pipeline re-run; the record now attributes each result to the exact
+tree that produced it. Non-blocking findings carried forward:
+portal-depth-100 sibling observation; button label→spinner width swap
+(anchor stable); cold-start gaps G-A/G-B/G-C (resolved in this
+candidate); 10 plan-tier journeys (honestly tiered); SSR and
+performance budgets remain UNCLAIMED. **Combined tested SHA:
+`dcd3cbea255af9aa…`** (record tip: see push line in the delivery).
+B1–B5/U4 remain OPEN; the ledger does not advance; owner acceptance
+PENDING at the founder checkpoint.

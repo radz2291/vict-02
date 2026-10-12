@@ -1,0 +1,43 @@
+[
+  {
+    "name": "combobox-placement",
+    "ok": true
+  },
+  {
+    "name": "decision-layout",
+    "ok": true
+  },
+  {
+    "name": "obs-button-width-delta",
+    "ok": true,
+    "note": "button width may change while loading (label swapped for spinner); anchor x/y verified stable"
+  },
+  {
+    "name": "stable-button-feedback",
+    "ok": true
+  },
+  {
+    "name": "dropdown-above-dialog",
+    "ok": true
+  },
+  {
+    "name": "page-position-preservation",
+    "ok": true
+  },
+  {
+    "name": "selection-outlines",
+    "ok": true
+  },
+  {
+    "name": "mobile-layouts",
+    "ok": true
+  },
+  {
+    "name": "f17-real-chrome-numeric-feedback",
+    "ok": true
+  },
+  {
+    "name": "keyboard-nav-focus-restoration",
+    "ok": true
+  }
+]

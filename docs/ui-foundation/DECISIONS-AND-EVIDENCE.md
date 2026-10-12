@@ -1218,3 +1218,21 @@ Authority: next accepted action; never derive it from an agent's own proposal.
   slot-owned labels truthfully instead of disabling them.
 - Button stability evidence: anchor x/y asserted; the label->spinner
   width swap recorded as an observation, not a failure.
+
+### Round 5 - combined gate outcome (2026-10-13)
+
+- Technical gate FALSIFIED the F17 candidate boundary -> remedy: re-pin
+  (dcd3cbea) + full same-SHA pipeline re-run + record correction. The
+  provenance-correction pattern from round 4 repeated here is retained
+  as evidence the gate works; the verifier's own record error is kept
+  in the narrative unfalsified.
+- Cold-start gate: PASS; G-C was a real pack-script bug (env not
+  resolved) - fixed; G-A/G-B documented.
+- Browser gate: environment flakes classified honestly (hydration
+  timing; preview restart mid-window); its incomplete probe (e) was
+  completed by the verifier and labelled as verifier-executed.
+- Non-blocking carry-forward: portal depth-100 sibling tie-break;
+  button width swap observation; 10 plan-tier journeys; SSR/perf
+  unclaimed.
+- Final combined verdict: PASS WITH FINDINGS. Founder checkpoint;
+  acceptance PENDING.

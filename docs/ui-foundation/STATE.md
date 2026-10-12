@@ -1,34 +1,28 @@
 # UI foundation — current state
 
-**2026-10-13 — ROUND 5: COMBINED INTEGRATION + VERIFICATION COMPLETE;
-INDEPENDENT COMBINED GATE IN FLIGHT; FOUNDER CHECKPOINT NEXT; OWNER
-ACCEPTANCE PENDING.** Combined candidate
-`fe800369968489390428d3be7808b0799f9d944d` on
-`codex/ui-foundation-u4-combined-verify-05` (evidence tip `60b95e6e…`):
-merge `4e2e4fe` integrates the verification track (`143ffc4…`) with the
-owner-UI track (`954f93f…`, two commits on the common base `32d8465a…`)
-with preserved ancestry; both source branches preserved; main untouched;
-governing payload `4cfe5b37…` unchanged; scope 38 families + AppShell,
-three named deferrals. Owner-UI provenance gap recorded (the referenced
-`U4-OWNER-FEEDBACK-DELIVERY.md` does not exist anywhere; issues derived
-from the owner instruction + the diff, SHA-256 checksums pinned — report
-§23a). Verifier-made in-scope repairs DISCLOSED (Codex external CLI not
-installed in this session — report §23e): F14 root build completes pack
-prerequisites from a fresh checkout; F17 truthful badInput numeric
-feedback (never seeds or clears; Add refuses stale drafts); F15 Inspector
-slot-owned label annotations (16 component ids); F16 accordion label =
-accessible group name (journey upgraded plan→aria); consumer README
-rewritten (five documented requirements; stale round-1 status removed).
-Evidence from the candidate tree: battery **3119/0/3** (one documented
-load-flake re-run green in isolation); typecheck 0; svelte-check 0
-errors; **ISOLATED PACKED-ARTIFACT VERIFICATION: OK**, bits-ui exact
-2.19.3, 16/16 isolated; focused browser checks **10/10** (seven owner
-fixes + keyboard nav + mobile + F17 real-Chrome genuine keys); journey
-replay **50/50 PASS, 50/50 persisted, 41 finished-app echoes, 10 honest
-plan-tier**. NEXT: independent combined gate (technical falsification +
-browser recheck + fresh unfamiliar cold-start — workflow in flight),
-then founder checkpoint. B1–B5/U4 OPEN; no ledger row advances before
-the final gate AND owner acceptance (AGENTS.md rule).
+**2026-10-13 — ROUND 5 FINAL: COMBINED CANDIDATE RE-PINNED AND FULLY
+VERIFIED; COMBINED GATE PASS WITH FINDINGS (AFTER REMEDY); FOUNDER
+CHECKPOINT NEXT; OWNER ACCEPTANCE PENDING.** The independent technical
+gate FALSIFIED one record claim — the F17 Add-refusal sat in the
+evidence commit (`60b95e6…`), not the declared candidate `fe80036…`.
+Remedy applied: candidate RE-PINNED as
+`dcd3cbea255af9aa…` (refusal inside the candidate + cold-start gate
+fixes: U4_ISOLATED_ROOT resolution [G-C real script bug], README gaps
+G-A/G-B documented) and the COMPLETE pipeline re-run from that exact
+committed tree: battery **3119/0/3** (full capture), typecheck 0,
+svelte-check 0 errors, uncontended pack **ISOLATED PACKED-ARTIFACT
+VERIFICATION: OK** (bits-ui exact 2.19.3, 16/16), focus checks **10/10**,
+journeys **50/50 PASS / 50/50 persisted / 41 echoes**, Inspector
+slot-owned note verified in the real browser. Gate verdicts: technical
+FAIL→remedied (falsified claim cured; adversarial 12/12 at this tree);
+fresh unfamiliar cold-start **PASS** (three gaps, all resolved);
+browser recheck: focus 10/10, journeys 50/50, own probes (a)-(d) PASS,
+probe (e) completed by the verifier after the reviewer's window hit a
+preview restart (disclosed). **Combined-gate verdict: PASS WITH
+FINDINGS** — non-blocking: portal depth-100 sibling observation, button
+label→spinner width swap (anchor stable), 10 plan-tier journeys, SSR +
+performance budgets UNCLAIMED. Combined tested SHA `dcd3cbea…`; B1–B5/U4
+OPEN; no ledger row advances before owner acceptance (AGENTS.md rule).
 
 ---
 
