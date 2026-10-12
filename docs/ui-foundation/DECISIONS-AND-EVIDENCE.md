@@ -1195,3 +1195,26 @@ Authority: next accepted action; never derive it from an agent's own proposal.
   public-doc gaps recorded (exports/bundler/CSS coupling/stale README).
 - Screening: candidate 32d8465a passes WITH the provenance correction.
   Founder checkpoint next; acceptance PENDING.
+
+### Round 5 - combined integration decisions (2026-10-13)
+
+- Integration by merge commit (4e2e4fe) preserving both parents; no
+  rebases; both source branches untouched.
+- Owner-UI delivery document absent -> provenance gap recorded; issue
+  mapping derived from owner instruction + diff; checksums pinned.
+- Codex channel absent (external CLI not installed) -> verifier-made
+  in-scope repairs F14/F15/F16/F17 + README, disclosed (report 23e),
+  compensated by the fresh independent combined gate (no gate reviewer
+  authored any repair). Owner may re-assign repairs to Codex; the
+  corrected oracles pin the contracts.
+- F17 semantics: invalid input is truthful feedback and never seeds or
+  clears; deliberate empty still clears; Add refuses while the visible
+  draft is invalid. Round-4 raw-text expectation superseded and preserved
+  as historical.
+- F16 semantics: accordion label = accessible group name (aria-label on
+  the root when non-empty); item labels untouched; journey upgraded
+  plan->aria.
+- F15 semantics: slot precedence preserved; Inspector annotates
+  slot-owned labels truthfully instead of disabling them.
+- Button stability evidence: anchor x/y asserted; the label->spinner
+  width swap recorded as an observation, not a failure.

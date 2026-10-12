@@ -647,3 +647,15 @@ At the frozen candidate `32d8465aa9c8…`:
 Screening: candidate passes WITH the §20 provenance correction. Next:
 founder checkpoint with the round-4 delivery; B1–B5/U4 OPEN; acceptance
 PENDING.
+
+### 14.5 Round 5 - combined integration (2026-10-13)
+
+Combined candidate `fe800369968489390428d3be7808b0799f9d944d` (= merge
+`4e2e4fe` of verification `143ffc4` + owner-UI `954f93f`; evidence tip
+`60b95e6e`). Owner-UI provenance gap recorded (delivery document absent;
+checksums pinned). Verifier-made repairs disclosed: F14/F15/F16/F17 +
+docs (report 23c/23e). Pipeline from the candidate: battery 3119/0/3,
+pack OK isolated, bits-ui 2.19.3, focus checks 10/10, journeys 50/50
+(50 persisted, 41 echoes, 10 plan-tier). Independent combined gate:
+in flight at handoff time - see the round-5 report section 24 for
+verdicts once recorded.

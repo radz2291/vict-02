@@ -1,30 +1,34 @@
 # UI foundation — current state
 
-**2026-10-12 — U4 FULL-CATALOG REPAIR-03 RECHECKED: ALL GATES GREEN;
-REVIEWS + FOUNDER CHECKPOINT PENDING.** Owner decision 8 (catalog
-recalibration) is live: all 38 available catalog families + AppShell are
-implemented, authorable and exercised end-to-end. The round-3a corrected
-oracle set (10 pins) passed at repair candidate `32d8465a…` with ZERO test
-changes by the builder, plus new verifier oracles (command label search,
-numeric-list drafts, host isolation, datefield-supply boundary correction —
-round-3 oracle preserved as historical evidence). Full battery: 3113
-passed / 0 failed / 3 skipped — the first zero-failure battery of the U4
-cycle. Packed closure: 10 tarballs, isolated install/build/test OK, bits-ui
-exact 2.19.3, bundle separation verified (delivery finding F14: root build
-omits ui-preview). Real packed-UI authoring coverage: 50/50 family journeys
-(all 38 families + AppShell, genuine pointer/keyboard, undo/redo/save/
-reload/finished-app), all 5 closed surfaces demonstrated on their saved
-changes; preview/production parity IDENTICAL. Non-blocking findings F14–F17
-recorded (F17 after review: numeric-list badInput unreachable in real
-Chrome). THREE FRESH REVIEWS COMPLETE (2026-10-12): technical
-falsification falsified the gate PRESENTATION (battery provenance —
-verify-04 tree vs bare candidate 3102/1/3; §20 corrected); repair
-substance independently confirmed by all three reviews (18 adversarial
-probes x2; 50/50 authoring matrix reproduced; cold-start packed exercise
-PASS). Screening: candidate `32d8465aa9c810e4285995549a562957c85d2e36`
-passes WITH the provenance correction. NEXT: founder checkpoint.
-B1–B5/U4 OPEN; owner acceptance PENDING; no ledger row is Verified until
-the final gate and owner acceptance (AGENTS.md rule).
+**2026-10-13 — ROUND 5: COMBINED INTEGRATION + VERIFICATION COMPLETE;
+INDEPENDENT COMBINED GATE IN FLIGHT; FOUNDER CHECKPOINT NEXT; OWNER
+ACCEPTANCE PENDING.** Combined candidate
+`fe800369968489390428d3be7808b0799f9d944d` on
+`codex/ui-foundation-u4-combined-verify-05` (evidence tip `60b95e6e…`):
+merge `4e2e4fe` integrates the verification track (`143ffc4…`) with the
+owner-UI track (`954f93f…`, two commits on the common base `32d8465a…`)
+with preserved ancestry; both source branches preserved; main untouched;
+governing payload `4cfe5b37…` unchanged; scope 38 families + AppShell,
+three named deferrals. Owner-UI provenance gap recorded (the referenced
+`U4-OWNER-FEEDBACK-DELIVERY.md` does not exist anywhere; issues derived
+from the owner instruction + the diff, SHA-256 checksums pinned — report
+§23a). Verifier-made in-scope repairs DISCLOSED (Codex external CLI not
+installed in this session — report §23e): F14 root build completes pack
+prerequisites from a fresh checkout; F17 truthful badInput numeric
+feedback (never seeds or clears; Add refuses stale drafts); F15 Inspector
+slot-owned label annotations (16 component ids); F16 accordion label =
+accessible group name (journey upgraded plan→aria); consumer README
+rewritten (five documented requirements; stale round-1 status removed).
+Evidence from the candidate tree: battery **3119/0/3** (one documented
+load-flake re-run green in isolation); typecheck 0; svelte-check 0
+errors; **ISOLATED PACKED-ARTIFACT VERIFICATION: OK**, bits-ui exact
+2.19.3, 16/16 isolated; focused browser checks **10/10** (seven owner
+fixes + keyboard nav + mobile + F17 real-Chrome genuine keys); journey
+replay **50/50 PASS, 50/50 persisted, 41 finished-app echoes, 10 honest
+plan-tier**. NEXT: independent combined gate (technical falsification +
+browser recheck + fresh unfamiliar cold-start — workflow in flight),
+then founder checkpoint. B1–B5/U4 OPEN; no ledger row advances before
+the final gate AND owner acceptance (AGENTS.md rule).
 
 ---
 
