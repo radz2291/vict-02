@@ -23,6 +23,7 @@
   const declarations = $derived(Object.values(localState));
   const draftText = $state<Record<string, string>>({});
   const listDraft = $state<Record<string, string>>({});
+  const invalidDraft = $state<Record<string, boolean>>({});
   const errors = $state<Record<string, string>>({});
 
   function typeLabel(type: UiLocalStateDecl['type']): string {
@@ -73,6 +74,9 @@
   }
 
   function addListItem(decl: UiLocalStateDecl): void {
+    // While the visible draft is invalid (badInput), Add must refuse — a
+    // previously typed valid prefix must not commit behind the user's back.
+    if (invalidDraft[decl.key]) return;
     const raw = (listDraft[decl.key] ?? '').trim();
     if (raw === '') return;
     const current = values[decl.key];
@@ -137,9 +141,11 @@
                 // member from invalid input; deliberate empty stays silent.
                 if (decl.type === 'numberList' && event.currentTarget.validity.badInput) {
                   errors[decl.key] = 'Enter a valid number.';
+                  invalidDraft[decl.key] = true;
                   return;
                 }
                 delete errors[decl.key];
+                invalidDraft[decl.key] = false;
                 listDraft[decl.key] = event.currentTarget.value;
               }}
               aria-label={`Add ${decl.key} member`}

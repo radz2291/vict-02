@@ -617,3 +617,119 @@ README still carries the stale round-1 status text.
   §20 provenance correction applied.** B1–B5/U4 remain OPEN; the ledger
   does not advance; owner acceptance remains PENDING until the final gate
   and founder checkpoint.
+
+---
+
+# ROUND 5 — U4 COMBINED INTEGRATION AND VERIFICATION (2026-10-13)
+
+## 23. Combined candidate and lineage
+
+- **Combined tested SHA: `fe800369968489390428d3be7808b0799f9d944d`**
+  (branch `codex/ui-foundation-u4-combined-verify-05`).
+- Merge commit `4e2e4fe` integrates, with preserved ancestry:
+  - verification track `codex/ui-foundation-u4-repair-verify-04` @
+    `143ffc431f1f88b74795a91d9ed5bd031758c4cc` (corrected oracles,
+    verifier probes, packed evidence, three round-4 reviews);
+  - owner-UI track `codex/ui-foundation-u4-full-catalog-repair-03` @
+    `954f93ffa70b34abe7f72c4bee04474bdd751aea` (two commits on the common
+    base `32d8465aa9c8...`: `e1ab78a` catalog layouts/nested overlays,
+    `954f93f` decision spacing/assignment clarity).
+- Both source branches untouched; no forced writes; main untouched.
+- Governing payload unchanged: `4cfe5b373481e29cff7d9bd02d9c473064a8aa9c`.
+  Full-catalog scope unchanged: 38 assigned families + AppShell; three
+  named deferred families excluded.
+
+### 23a. Owner-UI provenance (delivery document gap)
+
+The owner-referenced `U4-OWNER-FEEDBACK-DELIVERY.md` was NOT FOUND - not on
+the owner-UI branch, not in any local ref, not on disk (searched all refs
+and the filesystem). Recorded as a provenance gap. The seven owner issues
+are therefore derived from the owner's instruction and the owner-UI diff
+itself, pinned by checksums:
+- `e1ab78a` patch SHA-256
+  `be5276c4d8aa290bd48c1fb290e9ec3b0cb60158cee8fdcf02acb18065bb084c`
+- `954f93f` patch SHA-256
+  `5ed4d129d9222522a0aa92dee27c379eb8c105f25eca703ecdba3ed68163dcb3`
+- full owner-UI diff (29306 bytes) SHA-256
+  `fa1e39bf8028fc231a48f7ad3604d4804b84a183c57268657f2012020d6b91d2`
+
+### 23b. Seven owner issues -> changes -> combined evidence
+
+| # | Issue | Change (owner-UI diff) | Combined evidence |
+| --- | --- | --- | --- |
+| 1 | Combobox input/arrow placement | `.vict-combobox-control` wrapper; arrow in `aria-hidden` span; input `padding-inline-end: 52px`; 40px absolute trigger | focus check `combobox-placement` PASS (geometry asserted); screenshot `r5-combobox-placement.png` |
+| 2 | Decision area layout | `decision-actions` flex row (gap 12) in the detail seed; popover header/body grid | `decision-layout` PASS (same-row + >=8px gap asserted) |
+| 3 | Popover layout | `vict-catalog-overlay-header` (title + close) and `.vict-catalog-popover-body` | `decision-layout` PASS; `r5-decision-layout.png` |
+| 4 | Dialog layout | overlay/content layer-calc z-index + grid gap | `dropdown-above-dialog` PASS (dialog over page content) |
+| 5 | Stable buttons + adjacent feedback | ActionFeedback moved inside `.vict-action-control` (flex column, button anchored); schedule/global feedback de-duplicated in seeds | `stable-button-feedback` PASS: aria-busy truthful ~600ms, anchor x/y stable, feedback text appears in-control; width delta (label->spinner swap) recorded as observation `obs-button-width-delta` |
+| 6 | Dropdown layering above dialogs | `portal-layer.ts` Svelte-context depth; `--vict-catalog-layer: layer*100`; all overlay z-indexes layer-calc | `dropdown-above-dialog` PASS: the dialog select's portaled listbox paints above the dialog (elementFromPoint), dialog content z=181 |
+| 7 | Page-position preservation (ordinary + nested menus) | `strategy="fixed"` on menu contents; `catalogMenuOpenFocus` (preventScroll); `catalogFocusReturn` | `page-position-preservation` PASS: scrollY identical on open/nested-open/close; focus returns to trigger; `r5-page-position.png` |
+| - | Selection outlines scoping | attribute-specific selectors replace bare `[data-state]`/`[data-selected]` | `selection-outlines` PASS: selected toggle gets the selected style; unselected controls do not |
+| - | Mobile | responsive contract (styles.css) + fixed-position menus | `mobile-layouts` PASS: no horizontal overflow at 390px on schedule + shell; screenshots |
+
+### 23c. Delivery findings disposition (F14-F17) and documentation
+
+- **F14 RESOLVED (verifier, routine build work).** Root `build` now also
+  builds `@victframework/ui-editor` and `@victframework/ui-preview` - the
+  packed closure's prerequisites - so the documented build+pack sequence
+  completes from a fresh checkout with no manual pre-build. Validated on
+  this worktree: root build from a no-dists state produced both dists and
+  a clean typecheck. Pack re-run from the candidate:
+  `ISOLATED PACKED-ARTIFACT VERIFICATION: OK`.
+- **F17 RESOLVED (verifier-made repair - see 23e).**
+  StateValuesPanel scalar number and number-list draft inputs read
+  `validity.badInput`: invalid partial input surfaces 'Enter a valid
+  number.' and never seeds or clears a value; deliberate empty still
+  clears; Add refuses while the visible draft is invalid (a stale valid
+  prefix cannot commit behind the user's back). Component oracle extended
+  (simulated badInput, labelled); the round-4 raw-text expectation is
+  superseded and preserved verbatim at
+  `test/historical/state-values-panel-numeric-list-v1.historical.ts`.
+  REAL-Chrome behavior exercised by genuine keys:
+  `f17-real-chrome-numeric-feedback` PASS (error text, value untouched,
+  list refusal, valid entry applies and clears).
+- **F15 RESOLVED (verifier-made repair).** Slot precedence preserved. The
+  Inspector annotates a `label` prop whose visible text is owned by a
+  FILLED slot for 16 affected catalog component ids ('Shown from the
+  <slot> slot content while that slot is filled; this value is the
+  fallback text.'); no annotation when unfilled. Oracle:
+  `inspector-slot-owned-label.svelte.test.ts` (2 tests).
+- **F16 RESOLVED (verifier-made repair).** B2Accordion (single + multiple)
+  wires a non-empty authored `label` to `aria-label` on the group root;
+  empty/unset leaves the attribute off. The previously plan-only journey
+  UPGRADED to a real aria echo (50/50 matrix). Oracle:
+  `probe-accordion-label.test.ts` (2 tests).
+- **Documentation findings RESOLVED (verifier).** Consumer README
+  rewritten: Svelte-capable bundler requirement, optimizeDeps exclusion
+  recipe, bits-ui namespace exports, ControlScope + catalog.css setup,
+  fresh-checkout build (F14). Stale round-1 FAIL status removed.
+
+### 23d. Reproducible pipeline from the candidate SHA
+
+All results below were produced from the exact committed tree
+`fe800369968489390428d3be7808b0799f9d944d` (working tree clean at commit
+time; browser evidence added in a later evidence-only commit):
+
+| Check | Result |
+| --- | --- |
+| Root build (F14 workflow, from no-dists state) | clean; ui-editor + ui-preview dists produced |
+| Typecheck (ui-svelte tsc --noEmit) | 0 errors |
+| svelte-check | ui-svelte 0 errors / 5 warnings; ui-editor 0 errors / 6 warnings (pre-existing a11y/lint patterns) |
+| Full battery `npm test` | **3119 passed / 0 failed / 3 skipped (3122)** |
+| Battery re-run note | one pipeline re-run showed 3 load-flakes in the real-child-process SIGKILL fixtures (`restart-sigkill`, `agent-governance-corrective`); both files pass 10/10 in isolation and the identical tree was green in the primary run - flakiness documented, not a product defect |
+| Pack + isolated verify | **ISOLATED PACKED-ARTIFACT VERIFICATION: OK**; isolated bits-ui **2.19.3** exact; isolated suite 16/16; both entries build |
+| Focused browser checks | **10/10 PASS** (23b table + keyboard-nav + mobile + F17 real-Chrome); results `u5-focus-results.json` |
+| Full-catalog journey replay | **50/50 PASS; 50/50 persisted after Save + Reload stored; 41 finished-app echoes; 10 honest plan-tier** (accordion label upgraded plan->aria this round); results `u4-journeys-r5.json`, config `u5-journey-config.json` |
+
+Pack manifest: regenerated by the candidate pack run (10 tarballs,
+SHA-256 manifest at `u4-consumer-isolated/u4-consumer/pack-manifest.json`).
+NOT SHIPPED/CLAIMED: SSR, performance budgets.
+
+### 23e. In-scope repair provenance for this round
+
+The Codex builder channel (external CLI) is NOT installed in this session
+(`external-cli:codex missing`), so the owner-directed in-scope repairs
+F14/F15/F16/F17 + docs are VERIFIER-MADE with full disclosure. They are
+compensated by the fresh independent combined gate (section 24): none of
+the gate reviewers authored any repair. The owner may re-assign any of
+these repairs to Codex; the corrected tests pin the contracts either way.

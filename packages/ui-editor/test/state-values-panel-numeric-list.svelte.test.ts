@@ -158,13 +158,17 @@ describe('round 4 recheck: numeric-list editor drafts, validation, application',
     expect(changes.at(-1), 'deliberate empty clears the stored number').toEqual({ key: 'budget', value: undefined });
 
     const add = addInput(target, 'weights');
+    // a valid keystroke first, then invalid text: the stale valid prefix must
+    // NOT be committed by Add while the visible draft is invalid (round-5)
+    Object.defineProperty(add, 'validity', { value: { badInput: false }, configurable: true });
+    type(add, '1');
     Object.defineProperty(add, 'validity', { value: { badInput: true }, configurable: true });
     type(add, '');
     expect(target.querySelector('.state-error')?.textContent).toContain('Enter a valid number');
     target.querySelector<HTMLButtonElement>('.list-add button')?.click();
     flushSync();
-    expect(changes.filter((c) => c.key === 'weights'), 'Add never seeds from invalid input').toHaveLength(0);
-    // The truthful error stays until valid text arrives.
+    expect(changes.filter((c) => c.key === 'weights'), 'Add refuses while the visible draft is invalid').toHaveLength(0);
+    // The truthful error stays until valid text arrives; then Add applies.
     Object.defineProperty(add, 'validity', { value: { badInput: false }, configurable: true });
     type(add, '5');
     expect(target.querySelector('.state-error')).toBeNull();

@@ -1,0 +1,597 @@
+[
+ {
+  "route": "queue",
+  "routeLabel": "Inspection queue",
+  "families": [
+   {
+    "family": "dropdown-menu",
+    "occ": "queue-actions",
+    "prop": "label",
+    "value": "Queue actions R5",
+    "find": "[data-ui-occ*=\"|queue-actions\"]",
+    "match": {
+     "text": "Queue actions R5"
+    },
+    "echo": "plan"
+   },
+   {
+    "family": "tooltip",
+    "occ": "priority-help",
+    "prop": "title",
+    "value": "Priority help R5",
+    "find": "[data-ui-occ*=\"|priority-help\"]",
+    "match": {
+     "text": "Priority help R5"
+    },
+    "echo": "closed",
+    "open": {
+     "hover": true,
+     "trigger": "[data-ui-occ*=\"|priority-help\"]",
+     "portal": "[role=\"tooltip\"]"
+    }
+   },
+   {
+    "family": "avatar",
+    "occ": "lead-avatar",
+    "prop": "fallback",
+    "value": "R5",
+    "find": "[data-ui-occ*=\"|lead-avatar\"]",
+    "match": {
+     "text": "R5"
+    }
+   },
+   {
+    "family": "link-preview",
+    "occ": "site-preview",
+    "prop": "title",
+    "value": "Riverside plant reference R5",
+    "find": "[data-ui-occ*=\"|site-preview\"]",
+    "match": {
+     "text": "Riverside plant reference R5"
+    },
+    "echo": "closed",
+    "open": {
+     "hover": true,
+     "trigger": "[data-ui-occ*=\"|site-preview\"]",
+     "portal": "[data-link-preview-content], [role=\"tooltip\"]"
+    }
+   },
+   {
+    "family": "pagination",
+    "occ": "queue-pages",
+    "prop": "label",
+    "value": "Queue pages R5",
+    "find": "[data-ui-occ*=\"|queue-pages\"]",
+    "match": {
+     "attr": "aria-label",
+     "contains": "Queue pages R5"
+    },
+    "echo": "aria"
+   },
+   {
+    "family": "context-menu",
+    "occ": "inspection-context",
+    "prop": "label",
+    "value": "Inspection context R5",
+    "find": "[data-ui-occ*=\"|inspection-context\"]",
+    "match": {
+     "text": "Inspection context R5"
+    },
+    "echo": "plan"
+   }
+  ]
+ },
+ {
+  "route": "detail",
+  "routeLabel": "Evidence & corrections",
+  "families": [
+   {
+    "family": "tabs",
+    "occ": "inspection-tabs",
+    "prop": "label",
+    "value": "Inspection sections R5",
+    "find": "[data-ui-occ*=\"|inspection-tabs\"] [role=\"tablist\"]",
+    "match": {
+     "attr": "aria-label",
+     "contains": "Inspection sections R5"
+    }
+   },
+   {
+    "family": "tabs-trigger",
+    "occ": "tab-evidence",
+    "prop": "label",
+    "value": "Evidence R5",
+    "find": "[data-ui-occ*=\"|tab-evidence\"]",
+    "match": {
+     "text": "Evidence R5"
+    }
+   },
+   {
+    "family": "accordion-multiple",
+    "occ": "findings",
+    "prop": "label",
+    "value": "Open findings R5",
+    "find": "[data-ui-occ*=\"|findings\"]",
+    "match": {
+     "attr": "aria-label",
+     "contains": "Open findings R5"
+    },
+    "echo": "aria",
+    "note": "round-5 F16: label now carries the accessible group name (was plan-level in r4)"
+   },
+   {
+    "family": "accordion-item",
+    "occ": "finding-handrail",
+    "prop": "label",
+    "value": "Handrail R5",
+    "find": "[data-ui-occ*=\"|finding-handrail\"]",
+    "match": {
+     "text": "Handrail R5"
+    }
+   },
+   {
+    "family": "alert-dialog",
+    "occ": "archive-inspection",
+    "prop": "title",
+    "value": "Archive this inspection R5",
+    "find": "[data-ui-occ*=\"|archive-inspection\"]",
+    "match": {
+     "text": "Archive this inspection R5"
+    },
+    "echo": "closed",
+    "open": {
+     "trigger": "[data-ui-occ*=\"|archive-inspection\"]",
+     "portal": "[role=\"alertdialog\"]",
+     "preTab": "Corrections"
+    }
+   },
+   {
+    "family": "button",
+    "occ": "save-corrections",
+    "prop": "label",
+    "value": "Save corrections R5",
+    "find": "[data-ui-occ*=\"|save-corrections\"]",
+    "match": {
+     "text": "Save corrections R5"
+    }
+   },
+   {
+    "family": "checkbox",
+    "occ": "partial-findings",
+    "prop": "label",
+    "value": "Partial findings R5",
+    "find": "[data-ui-occ*=\"|partial-findings\"]",
+    "match": {
+     "text": "Partial findings R5"
+    }
+   },
+   {
+    "family": "collapsible",
+    "occ": "inspection-notes",
+    "prop": "label",
+    "value": "Inspection notes R5",
+    "find": "[data-ui-occ*=\"|inspection-notes\"]",
+    "match": {
+     "attr": "aria-label",
+     "contains": "Inspection notes R5"
+    },
+    "echo": "plan"
+   },
+   {
+    "family": "combobox",
+    "occ": "correction-owner",
+    "prop": "label",
+    "value": "Correction owner R5",
+    "find": "[data-ui-occ*=\"|correction-owner\"]",
+    "match": {
+     "attr": "aria-label",
+     "contains": "Correction owner R5"
+    }
+   },
+   {
+    "family": "popover",
+    "occ": "decision-guidance",
+    "prop": "title",
+    "value": "Decision guidance R5",
+    "find": "[data-ui-occ*=\"|decision-guidance\"]",
+    "match": {
+     "text": "Decision guidance R5"
+    },
+    "echo": "closed",
+    "open": {
+     "trigger": "[data-ui-occ*=\"|decision-guidance\"]",
+     "portal": "[data-bits-floating-content-wrapper]",
+     "preTab": "Corrections"
+    }
+   },
+   {
+    "family": "select-multiple",
+    "occ": "notify-teams",
+    "prop": "label",
+    "value": "Notify teams R5",
+    "find": ".vict-field:has([data-ui-occ*=\"|notify-teams\"])",
+    "match": {
+     "text": "Notify teams R5"
+    }
+   },
+   {
+    "family": "separator",
+    "occ": "evidence-divider",
+    "prop": "orientation",
+    "value": "vertical",
+    "find": "[data-ui-occ*=\"|evidence-divider\"]",
+    "match": {
+     "attr": "aria-orientation",
+     "contains": "vertical"
+    },
+    "echo": "aria"
+   },
+   {
+    "family": "toggle-group",
+    "occ": "correction-priority",
+    "prop": "label",
+    "value": "Correction priority R5",
+    "find": "[data-ui-occ*=\"|correction-priority\"]",
+    "match": {
+     "attr": "aria-label",
+     "contains": "Correction priority R5"
+    }
+   },
+   {
+    "family": "toggle-group-multiple",
+    "occ": "evidence-types",
+    "prop": "label",
+    "value": "Evidence types R5",
+    "find": "[data-ui-occ*=\"|evidence-types\"]",
+    "match": {
+     "attr": "aria-label",
+     "contains": "Evidence types R5"
+    }
+   },
+   {
+    "family": "aspect-ratio",
+    "occ": "evidence-photo",
+    "prop": "ratio",
+    "value": "1.5",
+    "find": "[data-ui-occ*=\"|evidence-photo\"]",
+    "match": {
+     "attr": "style",
+     "contains": "1.5"
+    },
+    "echo": "plan"
+   }
+  ]
+ },
+ {
+  "route": "schedule",
+  "routeLabel": "Scheduling",
+  "families": [
+   {
+    "family": "calendar",
+    "occ": "visit-calendar",
+    "prop": "label",
+    "value": "Visit calendar R5",
+    "find": "[data-ui-occ*=\"|visit-calendar\"]",
+    "match": {
+     "attr": "aria-label",
+     "contains": "Visit calendar R5"
+    }
+   },
+   {
+    "family": "date-field",
+    "occ": "visit-date-entry",
+    "prop": "label",
+    "value": "Visit date entry R5",
+    "find": "[data-ui-occ*=\"|visit-date-entry\"]",
+    "match": {
+     "text": "Visit date entry R5"
+    }
+   },
+   {
+    "family": "date-picker",
+    "occ": "visit-date-picker",
+    "prop": "label",
+    "value": "Visit date picker R5",
+    "find": "[data-ui-occ*=\"|visit-date-picker\"]",
+    "match": {
+     "text": "Visit date picker R5"
+    }
+   },
+   {
+    "family": "time-field",
+    "occ": "visit-time",
+    "prop": "label",
+    "value": "Visit time R5",
+    "find": "[data-ui-occ*=\"|visit-time\"]",
+    "match": {
+     "text": "Visit time R5"
+    }
+   },
+   {
+    "family": "date-range-field",
+    "occ": "window-fields",
+    "prop": "label",
+    "value": "Correction window dates R5",
+    "find": "[data-ui-occ*=\"|window-fields\"]",
+    "match": {
+     "text": "Correction window dates R5"
+    }
+   },
+   {
+    "family": "date-range-picker",
+    "occ": "window-picker",
+    "prop": "label",
+    "value": "Choose correction window R5",
+    "find": "[data-ui-occ*=\"|window-picker\"]",
+    "match": {
+     "text": "Choose correction window R5"
+    }
+   },
+   {
+    "family": "range-calendar",
+    "occ": "window-calendar",
+    "prop": "label",
+    "value": "Correction window calendar R5",
+    "find": "[data-ui-occ*=\"|window-calendar\"]",
+    "match": {
+     "attr": "aria-label",
+     "contains": "Correction window calendar R5"
+    }
+   },
+   {
+    "family": "meter",
+    "occ": "capacity-meter",
+    "prop": "label",
+    "value": "Capacity meter R5",
+    "find": "[data-ui-occ*=\"|capacity-meter\"]",
+    "match": {
+     "attr": "aria-label",
+     "contains": "Capacity meter R5"
+    }
+   },
+   {
+    "family": "progress",
+    "occ": "preparation-progress",
+    "prop": "label",
+    "value": "Preparation progress R5",
+    "find": "[data-ui-occ*=\"|preparation-progress\"]",
+    "match": {
+     "attr": "aria-label",
+     "contains": "Preparation progress R5"
+    }
+   },
+   {
+    "family": "slider",
+    "occ": "visit-duration",
+    "prop": "label",
+    "value": "Visit duration R5",
+    "find": "[data-ui-occ*=\"|visit-duration\"]",
+    "match": {
+     "attr": "aria-label",
+     "contains": "Visit duration R5"
+    }
+   },
+   {
+    "family": "button",
+    "occ": "confirm-schedule",
+    "prop": "label",
+    "value": "Confirm schedule R5",
+    "find": "[data-ui-occ*=\"|confirm-schedule\"]",
+    "match": {
+     "text": "Confirm schedule R5"
+    }
+   },
+   {
+    "family": "collapsible",
+    "occ": "visit-availability",
+    "prop": "label",
+    "value": "Visit availability R5",
+    "find": "[data-ui-occ*=\"|visit-availability\"]",
+    "match": {
+     "attr": "aria-label",
+     "contains": "Visit availability R5"
+    },
+    "echo": "plan"
+   }
+  ]
+ },
+ {
+  "route": "shell",
+  "routeLabel": "Workspace & assignment",
+  "families": [
+   {
+    "family": "navigation-menu.item",
+    "occ": "workspace-navigation-group",
+    "prop": "label",
+    "value": "Inspections R5",
+    "find": "[data-ui-occ*=\"|workspace-navigation-group\"]",
+    "match": {
+     "text": "Inspections R5"
+    },
+    "echo": "plan"
+   },
+   {
+    "family": "menubar.menu",
+    "occ": "workspace-file-menu",
+    "prop": "label",
+    "value": "Inspection R5",
+    "find": "[data-ui-occ*=\"|workspace-file-menu\"]",
+    "match": {
+     "text": "Inspection R5"
+    },
+    "echo": "plan"
+   },
+   {
+    "family": "menubar.item",
+    "occ": "workspace-export",
+    "prop": "label",
+    "value": "Prepare summary R5",
+    "find": "[data-ui-occ*=\"|workspace-export\"]",
+    "match": {
+     "text": "Prepare summary R5"
+    },
+    "echo": "plan"
+   },
+   {
+    "family": "toolbar",
+    "occ": "workspace-toolbar",
+    "prop": "label",
+    "value": "Inspection tools R5",
+    "find": "[data-ui-occ*=\"|workspace-toolbar\"]",
+    "match": {
+     "attr": "aria-label",
+     "contains": "Inspection tools R5"
+    }
+   },
+   {
+    "family": "toolbar-button",
+    "occ": "refresh-queue",
+    "prop": "label",
+    "value": "Refresh queue R5",
+    "find": "[data-ui-occ*=\"|refresh-queue\"]",
+    "match": {
+     "text": "Refresh queue R5"
+    }
+   },
+   {
+    "family": "command",
+    "occ": "workspace-command",
+    "prop": "placeholder",
+    "value": "Search operations R5\u2026",
+    "find": "input[data-command-input]",
+    "match": {
+     "attr": "placeholder",
+     "contains": "Search operations R5"
+    },
+    "echo": "attr"
+   },
+   {
+    "family": "command.item",
+    "occ": "command-assign",
+    "prop": "label",
+    "value": "Request reviewer assignment R5",
+    "find": "[data-ui-occ*=\"|command-assign\"]",
+    "match": {
+     "text": "Request reviewer assignment R5"
+    },
+    "echo": "plan"
+   },
+   {
+    "family": "scroll-area",
+    "occ": "workspace-activity",
+    "prop": "type",
+    "value": "hover",
+    "find": "[data-ui-occ*=\"|workspace-activity\"]",
+    "match": {
+     "attr": "data-ui-occ",
+     "contains": "workspace-activity"
+    },
+    "echo": "plan"
+   },
+   {
+    "family": "label",
+    "occ": "workspace-label",
+    "prop": "label",
+    "value": "Inspection reference R5",
+    "find": "[data-ui-occ*=\"|workspace-label\"]",
+    "match": {
+     "text": "Inspection reference R5"
+    }
+   },
+   {
+    "family": "appshell",
+    "occ": "shell",
+    "prop": "title",
+    "value": "Inspection Operations R5",
+    "find": "[data-ui-occ*=\"|shell\"]",
+    "match": {
+     "text": "Inspection Operations R5"
+    }
+   },
+   {
+    "family": "dialog",
+    "occ": "assignTrigger",
+    "prop": "title",
+    "value": "Review guidance R5",
+    "find": "[data-ui-occ*=\"|assignTrigger\"]",
+    "match": {
+     "text": "Review guidance R5"
+    },
+    "echo": "closed",
+    "open": {
+     "trigger": "[data-ui-occ*=\"|assignTrigger\"]",
+     "portal": "[role=\"dialog\"]:not([role=\"alertdialog\"])"
+    }
+   }
+  ]
+ },
+ {
+  "route": "controls",
+  "routeLabel": "Submit review",
+  "families": [
+   {
+    "family": "checkbox",
+    "occ": "ackA",
+    "prop": "label",
+    "value": "Acknowledge checks R5",
+    "find": "[data-ui-occ*=\"|ackA\"]",
+    "match": {
+     "text": "Acknowledge checks R5"
+    }
+   },
+   {
+    "family": "select",
+    "occ": "regionSelect",
+    "prop": "disabled",
+    "value": "true",
+    "find": "[data-ui-occ*=\"|regionSelect\"]",
+    "match": {
+     "attr": "disabled",
+     "contains": ""
+    },
+    "boolean": true
+   },
+   {
+    "family": "switch",
+    "occ": "notifySwitch",
+    "prop": "label",
+    "value": "Publish verdict R5",
+    "find": "[data-ui-occ*=\"|notifySwitch\"]",
+    "match": {
+     "text": "Publish verdict R5"
+    }
+   },
+   {
+    "family": "toggle",
+    "occ": "escalateToggle",
+    "prop": "label",
+    "value": "Notify applicant R5",
+    "find": "[data-ui-occ*=\"|escalateToggle\"]",
+    "match": {
+     "text": "Notify applicant R5"
+    }
+   },
+   {
+    "family": "radio-group",
+    "occ": "reviewerRadio",
+    "prop": "label",
+    "value": "Review outcome R5",
+    "find": "[data-ui-occ*=\"|reviewerRadio\"]",
+    "match": {
+     "attr": "aria-label",
+     "contains": "Review outcome R5"
+    }
+   },
+   {
+    "family": "button",
+    "occ": "submitBtn",
+    "prop": "label",
+    "value": "Submit review R5",
+    "find": "[data-ui-occ*=\"|submitBtn\"]",
+    "match": {
+     "text": "Submit review R5"
+    }
+   }
+  ]
+ }
+]

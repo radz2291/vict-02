@@ -1,5 +1,5 @@
 {
-  "packedAt": "2026-10-12T14:49:31.115Z",
+  "packedAt": "2026-10-12T20:15:44.764Z",
   "tarballs": {
     "@victframework/ui": {
       "tarball": "victframework-ui-0.4.0-rc.1.tgz",
@@ -9,15 +9,15 @@
     },
     "@victframework/ui-svelte": {
       "tarball": "victframework-ui-svelte-0.4.0-rc.1.tgz",
-      "sha256": "0465d9dcd169a518d2583c689530208feb520e7e49bcfb07ddf97842966696d8",
-      "bytes": 102104,
-      "integrity": "sha512-3A+WH7p5XhTuJckXF42x7/3oGAKfRsSk6ZPN5WXviPZg3AsyWP8O4X5rylVXL9qVjkJDplf7wV3DWvv5b4Yg9g=="
+      "sha256": "f810f46f8cf9002eca32ea6060abe964484efda30455e45c00f50369a34c26ff",
+      "bytes": 102964,
+      "integrity": "sha512-RmoeCMY5TN87y7msaD3Xurto4vsQMneJkDAhIOzM/HpmCS1wzuOUIK1pogt7vK4DLxpwS4T+Ax0tE8IUJafQJQ=="
     },
     "@victframework/ui-editor": {
       "tarball": "victframework-ui-editor-0.4.0-rc.1.tgz",
-      "sha256": "1541653af52bfecec51102eeb37c780e1c45d63aa68c2d8385f51d278425b6b7",
-      "bytes": 32418,
-      "integrity": "sha512-G4SuBHY/eczBXIRAujuxhYpF4psK8Fon0LSiv0tZwgtyt/a6WcuQNSb3BZrNg1c8BR+aGwnXHGdmooL8T1scSQ=="
+      "sha256": "a416a62da5eb5d476ceae81378fdd1a15191968f1432714346c2d8064aef2786",
+      "bytes": 47569,
+      "integrity": "sha512-mUpMQG1ncBbWYbmi9foUsdOptDmjXSrV70kE3QneuycfRnAmQpyum+sZ1IJ4Xv2ScOi979QsSktAOn8OjnftPg=="
     },
     "@victframework/ui-preview": {
       "tarball": "victframework-ui-preview-0.4.0-rc.1.tgz",
@@ -66,12 +66,12 @@
     "root": "C:\\Users\\RZ1\\Desktop\\RZ\\u4-consumer-isolated",
     "workspaceLinkViolations": [],
     "builtAssets": [
-      "app-BC_Tf0ez.js",
-      "authoring-CCeN1LX1.js",
+      "app-hPFmcqkE.js",
       "authoring-DPx2bU8P.css",
-      "execution-CUpUsJUp.js",
-      "execution-CXpQFob4.css"
+      "authoring-ziMa_Td1.js",
+      "execution-B7Uiexmp.js",
+      "execution-CDafu5wJ.css"
     ],
-    "verifiedAt": "2026-10-12T14:50:51.055Z"
+    "verifiedAt": "2026-10-12T20:17:18.396Z"
   }
 }
