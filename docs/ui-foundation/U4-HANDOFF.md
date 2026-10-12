@@ -625,3 +625,25 @@ test files; every round-3a oracle ran unchanged.
   falsification, real-browser authoring/experience, unfamiliar-agent packed
   exercise. Reviews and founder checkpoint pending; B1–B5/U4 OPEN; owner
   acceptance PENDING.
+
+### 14.4 Round 4 — three fresh reviews (2026-10-12, verifier record)
+
+At the frozen candidate `32d8465aa9c8…`:
+- **Technical falsification** (report `U4-R4-TECHNICAL-FALSIFY.md`):
+  FALSIFIED the round-4 gate PRESENTATION — the 3113/0/3 battery ran on the
+  verification tree (candidate + verifier commit b874205: corrected oracle
+  + 10 probes), not the bare candidate (3102/1/3; the 1 = the known
+  pre-boundary round-3 oracle). §20/§20a corrected by the verifier after
+  review. Repair substance independently confirmed: 9/10 pinned oracles at
+  the candidate, 18 adversarial probes pass twice, F14 ordering confirmed.
+- **Authoring/experience** (`U4-R4-AUTHORING-EXPERIENCE.md`): PASS WITH
+  FINDINGS — 50/50 matrix reproduced independently; repair checks
+  confirmed; **F17** recorded (numeric-list badInput unreachable in real
+  Chrome — repair-candidate).
+- **Unfamiliar-agent** (`U4-R4-UNFAMILIAR-EXERCISE.md`): PASS WITH
+  FINDINGS — cold-start succeeds on packed public artifacts; public-doc
+  gaps recorded (exports declaration, bundler requirement, stale README).
+
+Screening: candidate passes WITH the §20 provenance correction. Next:
+founder checkpoint with the round-4 delivery; B1–B5/U4 OPEN; acceptance
+PENDING.

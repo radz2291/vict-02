@@ -472,12 +472,58 @@ with byte-identical snapshots.
 Neither F15 nor F16 is part of the pinned defect set; both are repair-
 candidate items for the next builder cycle and do not block this round.
 
+## 20a. Ledger reconciliation + launch instructions + founder walkthrough
+
+**Ledger**: `reconcile-ledger.mjs` re-run against this worktree:
+RECONCILIATION OK — 41 coverage families (38 available, 3 deferred,
+bits-ui 2.19.3); every available family keeps an explicit ledger
+assignment; PinInput/RatingGroup/TimeRangeField remain the only named
+exclusions. Ledger rows stay at their batch status — per AGENTS.md they
+advance to Verified only at the final gate + owner acceptance.
+
+**Reliable launch instructions (packed, reproducible from a clean clone —
+note F14 for ui-preview)**:
+```
+git clone https://github.com/radz2291/vict-02 && cd vict-02
+git checkout 32d8465aa9c810e4285995549a562957c85d2e36
+npm ci
+npm run build && npm run build -w @victframework/ui-preview   # F14
+npm test            # at the bare candidate: 3102/1/3 (the 1 = the round-3 datefield-supply
+                    #   oracle asserting before the update boundary; see §16/§20)
+                    # on verify-04 (with the verifier commit): 3113/0/3
+node scripts/pack-u4-consumer.mjs                             # -> ISOLATED PACKED-ARTIFACT VERIFICATION: OK
+cd ../u4-consumer-isolated/u4-consumer && npx vite preview --port 5450
+# authoring: http://127.0.0.1:5450/     finished app: /app.html?doc=<queue|detail|schedule|shell|controls>
+```
+
+**Founder walkthrough (5 minutes)**:
+1. Open the authoring entry `/` — five route blades on the left rail
+   (Inspection queue, Evidence & corrections, Scheduling, Workspace &
+   assignment, Submit review); click `Scheduling`.
+2. In the Layers panel (right), search `visit-duration`, click the row —
+   the Inspector shows the slider's authored props; edit `label`, press
+   Enter; the canvas echoes the change; `Undo` reverts it, `Redo` restores
+   it; the status line shows `Unsaved changes · rev …`.
+3. `Save` — the status flips to `Saved · rev …`; `Reload stored` re-reads
+   the saved bytes; `Open finished app ↗` shows the saved result in the
+   running product (labels, values, aria names all carried).
+4. Closed surfaces: on `Evidence & corrections`, open `Corrections` tab →
+   `Archive inspection` opens the alert-dialog with its authored title;
+   on `Workspace & assignment`, the dialog trigger shows the authored
+   `Review guidance` title; on `Inspection queue`, hover `Priority help`
+   (tooltip) — all saved changes survive reload.
+5. Dates/times behave per locale: `13:30` renders `PM` in the en-GB 12h
+   time field; one calendar selection emits one coherent range change;
+   clearing a field endpoint leaves the other displayed.
+
+(This walkthrough was exercised by the round-4 journey matrix, §19.)
+
 ## 20. Gate (round 4) — actual results
 
 | Gate | Result |
 | --- | --- |
 | Root `npm run build` | clean — **with one delivery finding (F14)**: the root build script omits `@victframework/ui-preview` (and `ui-editor`), so from a clean checkout the packed closure cannot be produced by the documented command alone; `npm run build -w @victframework/ui-preview` was required before packing (ui-editor ships Svelte sources and resolves without dist). Builder-repair item, not a runtime defect. |
-| `npm test` (full battery) | **3113 passed / 0 failed / 3 skipped** (3116) — every previously pinned oracle and all round-4 probes green; first zero-failure battery of the U4 cycle |
+| `npm test` (full battery) | **3113 passed / 0 failed / 3 skipped** (3116) on THIS verification tree (candidate + the round-4 verifier commit: corrected datefield-supply oracle + 10 new verifier probes). **At the bare candidate `32d8465a` the battery is 3102/1/3** (independently reproduced, deterministic across 3 runs): the single failure is exactly the UNCORRECTED round-3 `probe-datefield-supply` (asserts before the Svelte 5 update boundary — see §16; its correction is this tree's verifier commit `b874205…`, together with the 10 new tests: 3106 + 10 + 1 = 3113). PROVENANCE CORRECTION after independent review — the repairs themselves are unaffected |
 | `npm run typecheck` | **0 errors** (after fixing two type slips in the new verifier probes; the candidate's own sources never errored) |
 | `npm run check:ui` | **0 errors / 5 warnings** (unchanged) |
 | Consumer suite (workspace) | **16/16** |
@@ -493,3 +539,81 @@ clean clone, `npm run build && node scripts/pack-u4-consumer.mjs` fails at
 the isolated build (`Failed to resolve entry for package
 "@victframework/ui-preview"`). Repair: add the workspace build (or build the
 closure from the pack script). Recorded for the next builder cycle.
+
+
+---
+
+# ROUND 4 — THREE FRESH REVIEWS (frozen candidate `32d8465aa9c810e4285995549a562957c85d2e36`)
+
+Reports (imported verbatim, reviewer-authored):
+- `U4-R4-TECHNICAL-FALSIFY.md` — independent technical falsification
+  (vict-verifier agent, fresh context; its session hit the run timeout once
+  and was revived solely to write up findings already gathered — the packed
+  closure re-run was cut off and is explicitly NOT its evidence).
+- `U4-R4-AUTHORING-EXPERIENCE.md` — real-browser authoring/experience review.
+- `U4-R4-UNFAMILIAR-EXERCISE.md` — unfamiliar-agent exercise on packed
+  public capabilities only.
+
+## 21. Review verdicts and reconciliations
+
+**Technical falsification** — overall: "repair substance real, round-4 gate
+presentation of battery/oracle provenance not reproducible at the pinned
+candidate." Accepted in full; §20 and §20a carry the provenance correction
+(battery on verify-04 tree vs bare candidate; the one bare-candidate failure
+is the known pre-boundary round-3 oracle). Independently confirmed: 9/10
+pinned oracles pass at the candidate unchanged; 18 adversarial probes pass
+twice (rapid-selection dedup, earlier-day ordering, PM→AM→PM rapid toggles,
+mid-flight unmount, author-while-canvas-runs + stale-revision replay
+rejection, invalid StateValuesPanel values, partial-label search); F14
+ordering confirmed structurally. The D-edge failures were the reviewer's
+own probe artifacts (documented as such by the reviewer) — the verifier
+additionally reproduced the mid-flight-destroy edge directly: no portal
+leak in either path (scratch probe, not committed). Non-blocking
+observations recorded: from-complete restart emits end-clear before start
+(order asymmetry vs the end-only restart; both exactly-once); the
+numeric-list guard is finiteness-based, so `-3` is accepted as a member.
+Claim 5 (packed closure) — not verified by the reviewer (timeout cut);
+the verifier's own completed run (§20, `ISOLATED PACKED-ARTIFACT
+VERIFICATION: OK`) stands as the evidence of record.
+
+**Authoring/experience review** — verdict: PASS WITH FINDINGS.
+Independently reproduced the entire journey matrix (50/50, 50/50 persisted,
+40/50 app echo + 10 plan-level), confirmed all three repair checks from the
+user standpoint (single coherent range transition; en-GB 12h 13:30 → PM;
+tooltip opens on genuine hover), confirmed all five closed-surface
+demonstrations (5 screenshots). New findings:
+- **F17 [moderate, repair-candidate]**: the numeric-list invalid-draft
+  validation is unreachable in real Chrome — `type=number` sanitizes
+  partial drafts to `value=""` (badInput) before `oninput`, so the user
+  experiences a silent no-op; the pinned component-level oracle's contract
+  holds in the test engine only. The builder should surface `badInput`
+  explicitly.
+- F2/F3 [minor]: number-input error paths cannot be reached by typing in
+  Chrome; Enter does not commit a list member (click-only).
+
+**Unfamiliar-agent exercise** — verdict: PASS WITH FINDINGS. Cold-start
+succeeded on all three exercises using only packed public artifacts
+(finished-app render; full authoring round-trip with Save/reload;
+programmatic catalog consumption from the packed dist). Gaps recorded for
+the next builder cycle: undeclared bits-ui namespace exports
+(`Button.Root`) with an opaque failure mode; tarball exports point at
+Svelte sources, making a Svelte/TS-capable bundler an undeclared hard
+requirement; ControlScope/catalog.css coupling and the vite
+dep-optimization recipe are undiscoverable from public docs; the consumer
+README still carries the stale round-1 status text.
+
+## 22. Round-4 verdict
+
+- Repair substance (A1/A2′/TimeField/A4/N1/numeric-drafts): VERIFIED by the
+  verifier and independently confirmed by all three reviews. No pinned
+  oracle was weakened and the builder changed no tests.
+- Delivery/gate presentation: one falsification (battery provenance),
+  corrected in §20/§20a by the verifier after review — the correction is
+  itself evidence of the review process working.
+- New findings for the next builder cycle: F14 (gate), F15/F16 (plan-level
+  label props), F17 (Chrome numeric-list badInput), plus the unfamiliar
+  review's public-capability gaps and the falsifier's two observations.
+- **Screening result: candidate `32d8465a…` passes screening with the
+  §20 provenance correction applied.** B1–B5/U4 remain OPEN; the ledger
+  does not advance; owner acceptance remains PENDING until the final gate
+  and founder checkpoint.

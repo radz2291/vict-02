@@ -1181,3 +1181,17 @@ Authority: next accepted action; never derive it from an agent's own proposal.
 - Verdict: candidate `32d8465a…` passes screening — the three fresh reviews
   proceed at the frozen SHA. Reviews + founder checkpoint pending; B1–B5/U4
   OPEN; owner acceptance PENDING.
+
+### Round 4 — three fresh reviews (2026-10-12)
+
+- Technical falsification: gate PRESENTATION falsified (battery provenance —
+  verify-04 tree vs bare candidate); corrected in §20/§20a. Repair substance
+  independently confirmed (9/10 pinned oracles at candidate; 18 adversarial
+  probes x2; F14 structural). D-edge = reviewer probe artifact, independently
+  reproduced clean by the verifier.
+- Authoring/experience: PASS WITH FINDINGS; 50/50 matrix reproduced; F17
+  (numeric-list badInput unreachable in Chrome — repair-candidate).
+- Unfamiliar-agent: PASS WITH FINDINGS; cold-start OK on packed artifacts;
+  public-doc gaps recorded (exports/bundler/CSS coupling/stale README).
+- Screening: candidate 32d8465a passes WITH the provenance correction.
+  Founder checkpoint next; acceptance PENDING.

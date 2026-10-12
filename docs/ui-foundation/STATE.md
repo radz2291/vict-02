@@ -14,11 +14,17 @@ exact 2.19.3, bundle separation verified (delivery finding F14: root build
 omits ui-preview). Real packed-UI authoring coverage: 50/50 family journeys
 (all 38 families + AppShell, genuine pointer/keyboard, undo/redo/save/
 reload/finished-app), all 5 closed surfaces demonstrated on their saved
-changes; preview/production parity IDENTICAL. Non-blocking findings F14–F16
-recorded. NEXT (owner-directed): three fresh independent reviews at the
-frozen candidate `32d8465aa9c810e4285995549a562957c85d2e36`, then the
-founder checkpoint. B1–B5/U4 OPEN; owner acceptance PENDING; no ledger row
-is Verified until the final gate and owner acceptance (AGENTS.md rule).
+changes; preview/production parity IDENTICAL. Non-blocking findings F14–F17
+recorded (F17 after review: numeric-list badInput unreachable in real
+Chrome). THREE FRESH REVIEWS COMPLETE (2026-10-12): technical
+falsification falsified the gate PRESENTATION (battery provenance —
+verify-04 tree vs bare candidate 3102/1/3; §20 corrected); repair
+substance independently confirmed by all three reviews (18 adversarial
+probes x2; 50/50 authoring matrix reproduced; cold-start packed exercise
+PASS). Screening: candidate `32d8465aa9c810e4285995549a562957c85d2e36`
+passes WITH the provenance correction. NEXT: founder checkpoint.
+B1–B5/U4 OPEN; owner acceptance PENDING; no ledger row is Verified until
+the final gate and owner acceptance (AGENTS.md rule).
 
 ---
 
