@@ -1,5 +1,5 @@
 {
-  "packedAt": "2026-10-12T20:15:44.764Z",
+  "packedAt": "2026-10-12T20:53:38.788Z",
   "tarballs": {
     "@victframework/ui": {
       "tarball": "victframework-ui-0.4.0-rc.1.tgz",
@@ -63,7 +63,7 @@
     }
   },
   "isolation": {
-    "root": "C:\\Users\\RZ1\\Desktop\\RZ\\u4-consumer-isolated",
+    "root": "C:\\Users\\RZ1\\Desktop\\RZ\\u5-coldstart",
     "workspaceLinkViolations": [],
     "builtAssets": [
       "app-hPFmcqkE.js",
@@ -72,6 +72,6 @@
       "execution-B7Uiexmp.js",
       "execution-CDafu5wJ.css"
     ],
-    "verifiedAt": "2026-10-12T20:17:18.396Z"
+    "verifiedAt": "2026-10-12T20:55:32.593Z"
   }
 }

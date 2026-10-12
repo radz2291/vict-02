@@ -76,6 +76,20 @@ exercise; none of them are optional:
    `@victframework/ui-preview` (round-5 fix for finding F14: no manual
    pre-build step is needed any more).
 
+## Isolated install: what the pack step does (round-5 cold-start findings)
+
+- The packed tarballs live in the ISOLATED directory (`u4-consumer-isolated/
+  u4-consumer/vendor/`), NOT inside `examples/u4-consumer`. A bare copy of
+  this example directory cannot install by itself (round-5 gap G-A) — run
+  the pack step from the repository root first (it builds every workspace
+  package, packs the closure, creates the isolated directory, installs from
+  the tarballs, runs the contract suite, and builds both entries).
+- The packer DELETES and recreates the isolated directory on every run.
+  Any server or editor holding that directory open fails the run with
+  `EBUSY` — stop previews/servers from that directory first (round-5 gap
+  G-B). Set `U4_ISOLATED_ROOT` to place the isolated directory elsewhere;
+  the value may be relative or use forward slashes (resolved).
+
 ## Status (round 5 combined candidate — 2026-10-12)
 
 This consumer is the packed-closure proof surface for the U4 combined

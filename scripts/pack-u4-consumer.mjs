@@ -20,8 +20,12 @@ const repoRoot = path.resolve(
   new URL('..', import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '$1'),
 );
 const consumerSource = path.join(repoRoot, 'examples', 'u4-consumer');
-const isolatedRoot =
-  process.env.U4_ISOLATED_ROOT ?? path.resolve(repoRoot, '..', 'u4-consumer-isolated');
+// U4_ISOLATED_ROOT (round-5 cold-start finding G-C): resolve the override so
+// forward-slash or relative values compare equal to the resolved isolation
+// check below; raw env values made every override path fail verification.
+const isolatedRoot = process.env.U4_ISOLATED_ROOT
+  ? path.resolve(process.env.U4_ISOLATED_ROOT)
+  : path.resolve(repoRoot, '..', 'u4-consumer-isolated');
 const PACKAGES = [
   'ui',
   'ui-svelte',
