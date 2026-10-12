@@ -42,10 +42,10 @@
         if (values && Array.isArray(rows)) {
           const rowScopes = rows.map(row => { const record = asRecord(row); return { ...values, repeatItem: { name: i.itemName, value: record }, repeatItems: { ...values.repeatItems, [i.itemName]: record } }; });
           const rowKeys = uniqueRepeatKeys(rowScopes.map((s, index) => String(resolveValue({ type: 'expression', expression: i.key }, s) ?? index)), i.nodeId);
-          rowScopes.forEach((s, index) => child(i.template, s, [...keys, rowKeys[index]], fills));
+          rowScopes.forEach((s, index) => child(i.template, s, [...keys, rowKeys[index] ?? `${index}`], fills));
         } else child(i.template, values, keys, fills, true);
       }
-      out[start] = { ...out[start], children: out.length > start + 1 };
+      if (out[start]) out[start] = { ...out[start]!, children: out.length > start + 1 };
     }
     plan.structure.forEach(i => walk(i, 0, [], undefined, effectiveScope));
     return out;

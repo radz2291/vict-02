@@ -41,12 +41,19 @@
     return type === 'number' ? 'number' : type === 'boolean' ? 'checkbox' : 'text';
   }
 
-  function scalarChange(decl: UiLocalStateDecl, raw: string, checked: boolean): void {
+  function scalarChange(decl: UiLocalStateDecl, raw: string, checked: boolean, badInput = false): void {
     if (decl.type === 'boolean') {
       apply(decl, checked);
       return;
     }
     if (decl.type === 'number') {
+      // Browsers sanitize unparsable text in type=number inputs to value=""
+      // with validity.badInput set (real Chrome). That is INVALID input, not a
+      // deliberate empty value: surface truthful feedback and never seed.
+      if (badInput) {
+        errors[decl.key] = 'Enter a valid number.';
+        return;
+      }
       const parsed = Number(raw);
       if (raw !== '' && Number.isFinite(parsed)) apply(decl, parsed);
       else if (raw === '') onChange(decl.key, undefined);
@@ -124,7 +131,17 @@
               type={decl.type === 'numberList' ? 'number' : 'text'}
               placeholder={decl.type === 'numberList' ? 'number' : 'text'}
               value={listDraft[decl.key] ?? ''}
-              oninput={(event) => (listDraft[decl.key] = event.currentTarget.value)}
+              oninput={(event) => {
+                // Real Chrome sanitizes unparsable number text to value="" with
+                // validity.badInput. Surface truthful feedback and never seed a
+                // member from invalid input; deliberate empty stays silent.
+                if (decl.type === 'numberList' && event.currentTarget.validity.badInput) {
+                  errors[decl.key] = 'Enter a valid number.';
+                  return;
+                }
+                delete errors[decl.key];
+                listDraft[decl.key] = event.currentTarget.value;
+              }}
               aria-label={`Add ${decl.key} member`}
             />
             <button type="button" onclick={() => addListItem(decl)}>Add</button>
@@ -136,7 +153,7 @@
           value={values[decl.key] === undefined ? '' : String(values[decl.key])}
           placeholder={decl.type === 'isoDate' ? 'YYYY-MM-DD' : decl.type === 'isoTime' ? 'HH:MM' : ''}
           aria-label={`${decl.key} value`}
-          oninput={(event) => scalarChange(decl, event.currentTarget.value, false)}
+          oninput={(event) => scalarChange(decl, event.currentTarget.value, false, event.currentTarget.validity.badInput)}
         />
       {/if}
       {#if errors[decl.key]}<p class="state-error" role="alert">{errors[decl.key]}</p>{/if}

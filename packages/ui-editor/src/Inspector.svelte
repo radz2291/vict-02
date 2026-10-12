@@ -80,6 +80,37 @@
   // Descriptor-driven editors (amendment §3.6): one control per declared
   // prop, one output row per declared output.
   const componentNode = $derived(node?.kind === 'component' ? node : undefined);
+
+  // Finding F15 truthfulness: for these components the `label` prop's visible
+  // text is owned by a slot whenever that slot is filled (renderers prefer
+  // slot content over the label prop). The Inspector says so instead of
+  // silently accepting edits with no visible effect. Slot precedence itself
+  // is legitimate and stays.
+  const SLOT_OWNED_LABEL: Readonly<Record<string, string>> = {
+    'vict.catalog.dropdown-menu': 'trigger',
+    'vict.catalog.context-menu': 'trigger',
+    'vict.catalog.menubar.menu': 'trigger',
+    'vict.catalog.dropdown-menu.item': 'content',
+    'vict.catalog.dropdown-menu.sub': 'trigger',
+    'vict.catalog.context-menu.item': 'content',
+    'vict.catalog.context-menu.sub': 'trigger',
+    'vict.catalog.menubar.item': 'content',
+    'vict.catalog.menubar.sub': 'trigger',
+    'vict.catalog.command.item': 'content',
+    'vict.catalog.navigation-menu.item': 'trigger',
+    'vict.catalog.navigation-menu.link': 'content',
+    'vict.catalog.combobox-item': 'content',
+    'vict.catalog.select-item': 'content',
+    'vict.catalog.toggle-group-item': 'content',
+    'vict.catalog.accordion-item': 'trigger'
+  };
+  function slotOwnedLabelSlot(descriptorId: string, propName: string, candidate: { kind: string; slots?: Readonly<Record<string, { children: readonly unknown[] }>> } | undefined): string | undefined {
+    if (propName !== 'label' || !candidate || candidate.kind !== 'component') return undefined;
+    const slot = SLOT_OWNED_LABEL[descriptorId];
+    if (!slot) return undefined;
+    const fill = candidate.slots?.[slot];
+    return fill && fill.children.length > 0 ? slot : undefined;
+  }
   const componentDescriptor = $derived.by(() => {
     if (!componentNode) return undefined;
     const candidates = componentDescriptors.filter(entry => entry.id === componentNode.definitionId);
@@ -196,13 +227,13 @@
   }
   function ownStyle(property: string) { return editableStyle(document, target, property, condition || undefined, pseudo); }
   function originLabel(property: string) {
-    return (targetNode?.styleSources ?? []).some(id => { const source = document.styleSources[id]; return source?.conditionId === (condition || undefined) && source.pseudo === pseudo && source.declarations.some(d => d.property === property); }) ? 'Source' : 'Preview';
+    return (targetNode?.styleSources ?? []).some(id => { const source = document.styleSources[id]; return !!source && source.conditionId === (condition || undefined) && source.pseudo === pseudo && source.declarations.some(d => d.property === property); }) ? 'Source' : 'Preview';
   }
   function display(property: string) {
     const local = editableStyle(document, target, property, condition || undefined, pseudo);
     if (local) return styleText(local, document);
     // Show unconditioned attached authored values, separately labeled from preview.
-    const sources = (targetNode?.styleSources ?? []).map(id => document.styleSources[id]).filter(s => s && s.conditionId === (condition || undefined) && s.pseudo === pseudo);
+    const sources = (targetNode?.styleSources ?? []).map(id => document.styleSources[id]).filter((s): s is NonNullable<typeof s> => !!s && s.conditionId === (condition || undefined) && s.pseudo === pseudo);
     const authored = sources.flatMap(s => s.declarations).filter(d => d.property === property).at(-1)?.value;
     return styleText(authored, document) || effective(property);
   }
@@ -261,9 +292,11 @@
         <section><h3>Component properties</h3>
           <p class="muted">Descriptor {componentDescriptor.id} · revision {componentDescriptor.revision}.</p>
           {#each componentDescriptor.props as propDecl (propDecl.name)}
+            {@const ownedBySlot = slotOwnedLabelSlot(componentDescriptor.id, propDecl.name, componentNode)}
             {#key `${componentNode.id}:${propDecl.name}`}
               <ExpressionEditor label={propDecl.name} type={propDecl.type} value={componentNode.props?.[propDecl.name]}
                 defaultValue={propDecl.default} references={refs(propDecl.type)} onCommit={expression => applyProp(propDecl.name, expression)} />
+              {#if ownedBySlot}<p class="muted">Shown from the “{ownedBySlot}” slot content while that slot is filled; this value is the fallback text.</p>{/if}
             {/key}
           {/each}
         </section>

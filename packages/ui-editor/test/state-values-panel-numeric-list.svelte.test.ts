@@ -10,6 +10,15 @@
  * behavior of reporting '' for partial drafts ('1.', '-'), so the
  * engine-level reset the builder fixed is browser-covered (authoring
  * journey evidence); this probe pins the CONTRACT at the component level.
+ *
+ * Round 5 (finding F17): real Chrome goes further — an unparsable partial
+ * draft reports value="" WITH validity.badInput set, which the unrepaired
+ * panel treated as a DELIBERATE empty value and silently cleared the stored
+ * number. The tests below simulate that browser behavior by stubbing
+ * `validity.badInput` (labelled simulation; the real-Chrome path is also
+ * exercised manually in the round-5 browser evidence): invalid input must
+ * produce truthful feedback and never seed or clear a value, while a
+ * deliberate empty entry (badInput false) still clears.
  */
 import { afterEach, describe, expect, it } from 'vitest';
 import { flushSync, mount, unmount } from 'svelte';
@@ -72,23 +81,27 @@ describe('round 4 recheck: numeric-list editor drafts, validation, application',
     expect(input.value, 'input cleared after application').toBe('');
   });
 
-  it('an invalid draft surfaces the validation error, keeps the draft, and never seeds', () => {
+  it('an invalid draft surfaces truthful validation, never seeds, and cannot be committed (round-5 F17 contract)', () => {
+    // ROUND-5 CORRECTION (finding F17): this engine (like real Chrome) reports
+    // validity.badInput for '1e999', so the truthful feedback is the badInput
+    // message and the draft is not committed by Add. The round-4 expectation
+    // (raw '1e999' preserved verbatim + 'List members must be finite
+    // numbers.') described the engine's raw-text path and is preserved
+    // verbatim in test/historical/state-values-panel-numeric-list-v1.historical.ts.
+    // The finiteness guard remains in the component as defense-in-depth for
+    // engines that report raw text.
     const { target, changes } = mountPanel({ weights: [1, 2], budget: 0 });
-    // '1e999' survives the number-input sanitizer (unlike 'abc') and is
-    // non-finite for Number() — the genuine invalid-draft path in this engine
     const input = addInput(target, 'weights');
     type(input, '1e999');
+    expect(target.querySelector('.state-error')?.textContent, 'truthful feedback for the overflow draft').toContain('Enter a valid number');
     const add = [...target.querySelectorAll('button')].find(
       (b) => (b.textContent ?? '').trim() === 'Add',
     );
     add!.click();
     flushSync();
-    expect(target.textContent ?? '', 'validation error surfaced').toContain(
-      'List members must be finite numbers.',
-    );
     expect(changes, 'no silent seed on invalid draft').toEqual([]);
-    expect(input.value, 'invalid draft preserved for correction').toBe('1e999');
     // correcting the draft applies without a stale error
+    Object.defineProperty(input, 'validity', { value: { badInput: false }, configurable: true });
     type(input, '5');
     add!.click();
     flushSync();
@@ -119,4 +132,46 @@ describe('round 4 recheck: numeric-list editor drafts, validation, application',
       value: undefined,
     });
   });
+
+  it('round 5 / simulated real-Chrome badInput: invalid scalar entry is truthful and never clears or seeds', () => {
+    const { target, changes } = mountPanel({ weights: [], budget: 42 });
+    const scalar = target.querySelector<HTMLInputElement>('input[aria-label="budget value"]');
+    expect(scalar, 'scalar number input').toBeTruthy();
+    // Chrome sanitizes an unparsable draft to '' and flags badInput.
+    Object.defineProperty(scalar!, 'validity', { value: { badInput: true }, configurable: true });
+    type(scalar!, '');
+    expect(target.querySelector('.state-error')?.textContent).toContain('Enter a valid number');
+    expect(changes.some((c) => c.key === 'budget'), 'no onChange while invalid').toBe(false);
+    expect(target.querySelector('.state-error')?.textContent).toBeTruthy();
+    // Recovery: a valid entry applies and the truthful error clears.
+    Object.defineProperty(scalar!, 'validity', { value: { badInput: false }, configurable: true });
+    type(scalar!, '7');
+    expect(changes.at(-1)).toEqual({ key: 'budget', value: 7 });
+    expect(target.querySelector('.state-error')).toBeNull();
+  });
+
+  it('round 5: deliberate empty still clears; invalid list draft never seeds a member', () => {
+    const { target, changes } = mountPanel({ weights: [1], budget: 3 });
+    const scalar = target.querySelector<HTMLInputElement>('input[aria-label="budget value"]')!;
+    Object.defineProperty(scalar, 'validity', { value: { badInput: false }, configurable: true });
+    type(scalar, '');
+    expect(changes.at(-1), 'deliberate empty clears the stored number').toEqual({ key: 'budget', value: undefined });
+
+    const add = addInput(target, 'weights');
+    Object.defineProperty(add, 'validity', { value: { badInput: true }, configurable: true });
+    type(add, '');
+    expect(target.querySelector('.state-error')?.textContent).toContain('Enter a valid number');
+    target.querySelector<HTMLButtonElement>('.list-add button')?.click();
+    flushSync();
+    expect(changes.filter((c) => c.key === 'weights'), 'Add never seeds from invalid input').toHaveLength(0);
+    // The truthful error stays until valid text arrives.
+    Object.defineProperty(add, 'validity', { value: { badInput: false }, configurable: true });
+    type(add, '5');
+    expect(target.querySelector('.state-error')).toBeNull();
+    target.querySelector<HTMLButtonElement>('.list-add button')?.click();
+    flushSync();
+    expect(changes.filter((c) => c.key === 'weights')).toHaveLength(1);
+    expect(changes.find((c) => c.key === 'weights')?.value).toEqual([1, 5]);
+  });
+
 });

@@ -49,16 +49,40 @@ stored envelope and reloads. Saved edits persist in `localStorage` under
 `u4-consumer.controls` / `u4-consumer.shell` and are what the finished app
 replays.
 
-## Verification status (U4-B1 core-refactor round 1 — 2026-10-08)
+## Consuming the packed packages — public requirements (read first)
 
-This consumer builds and launches ONLY on the verification branch
-`codex/ui-foundation-u4-b1-core-verification` (delivery repairs: application
-public re-export, pack closure incl. ui-preview, seed route path, vite
-dep-optimization exclusion, pinned dev toolchain). On the unmodified
-implementation candidate `098b84e3…` the consumer cannot build. Round-1
-verdict FAIL with known defects recorded in
-`docs/ui-foundation/reviews/u4/b1-core-verify/U4-B1-CORE-VERIFY-01.md`;
-founder-visible ones: the catalog Dialog cannot be dismissed (✕/Escape inert),
-select options cannot be chosen from the portaled listbox, and the workbench
-preview does not surface action failure/success feedback near the button
-(the finished app and activity log do). Wait for the repaired candidate.
+These are hard requirements discovered by the round-4 unfamiliar-agent
+exercise; none of them are optional:
+
+1. **Svelte-capable bundler required.** The packed `@victframework/*`
+   tarballs ship TypeScript/Svelte SOURCES (`exports` point at `src/*.ts`),
+   not prebuilt JS. Consume them with Vite + `@sveltejs/vite-plugin-svelte`
+   (as this consumer does) or any bundler with equivalent Svelte/TS
+   support. A plain Node/JS bundler will fail on the sources.
+2. **Dependency pre-bundling exclusion.** Svelte component sources must not
+   be pre-bundled by esbuild. Exclude every `@victframework/*` package from
+   `optimizeDeps` (see `vite.config.ts` in this consumer for the exact list).
+3. **Catalog namespace exports.** Catalog families export bits-ui
+   namespaces, e.g. `import { Button } from '@victframework/ui-svelte/catalog/button'`
+   gives `Button.Root` — there is no flat `<Button>` component. Mounting
+   `Button` itself fails with an opaque "Component is not a function".
+4. **Control scope + stylesheet.** Wrap rendered documents in
+   `ControlScope` (from `@victframework/ui-svelte`) and import
+   `@victframework/ui-svelte/catalog.css` once per entry. Without these the
+   controls render unstyled and keyboard focus policies do not apply.
+5. **Build everything first.** From a fresh checkout run the repository
+   root `npm run build` — it now builds every workspace package the packer
+   consumes, including `@victframework/ui-editor` and
+   `@victframework/ui-preview` (round-5 fix for finding F14: no manual
+   pre-build step is needed any more).
+
+## Status (round 5 combined candidate — 2026-10-12)
+
+This consumer is the packed-closure proof surface for the U4 combined
+candidate `codex/ui-foundation-u4-combined-verify-05` (verification track
+`143ffc4` + owner-UI track `954f93f` on the common implementation base
+`32d8465a`). The stale round-1 FAIL text that stood here before has been
+removed — that status described `098b84e3` and does not describe this
+candidate. Current verification evidence lives in
+`docs/ui-foundation/reviews/u4/b1-core-verify/` (rounds 1–4 reports kept
+intact, each naming the SHA it evaluated).
