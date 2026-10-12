@@ -166,17 +166,6 @@ describe('round 4 N1 recheck: command searches by authored label', () => {
     await new Promise((r) => setTimeout(r, 80));
     flushSync();
     const marker = [...target.querySelectorAll('[data-ui-node=marker]')].at(-1);
-    const afterEnter = (marker?.textContent ?? '').trim();
-    if (afterEnter !== 'export') {
-      // pointer activation fallback: the selected option responds to pointer
-      // selection in the happy-dom renderer (round-3 protocol: pointerdown+click)
-      const item = [...document.querySelectorAll('[data-command-item]')].find((el) =>
-        (el.textContent ?? '').includes('Prepare inspection summary'),
-      );
-      click(item as HTMLElement);
-      await new Promise((r) => setTimeout(r, 80));
-      flushSync();
-    }
     expect(
       (marker?.textContent ?? '').trim(),
       'activation applied the authored VALUE to the bound state',

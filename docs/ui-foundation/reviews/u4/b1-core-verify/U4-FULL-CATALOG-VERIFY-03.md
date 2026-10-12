@@ -302,3 +302,133 @@ such. Do NOT claim SSR (out of scope, unclaimed). bits-ui stays exact-pinned
 | Packed authoring entry | boots; Inspector style/state panels interactive; the full prop-editor journey remains the round-3 recorded slider demonstration — additional browser family journeys belong to the fresh browser-experience review |
 | Formatting | all round-3a added/modified prettier-covered files formatted; no unrelated churn (the pre-existing 38-file drift list is untouched, recorded in §7) |
 | Branch hygiene | the round-3a commit accidentally included a build-generated `.tmp-scaffold-check-*` directory; removed in the follow-up hygiene commit and the pattern gitignored (no force-push) |
+
+---
+
+# ROUND 4 (2026-10-12, same verifier) — repair-03 independent recheck
+
+Candidate under verification: `32d8465aa9c810e4285995549a562957c85d2e36`
+(branch `codex/ui-foundation-u4-full-catalog-repair-03`), a linear 5-commit
+repair on top of this report's round-3a delivery tip `05c1f9a0b899…`
+(range unification `6f24ca7`, TimeField `78e66e2`, tooltip `1cb7447`,
+command labels `74a2216`, numeric-list drafts `32d8465`). Isolated
+verification branch: `codex/ui-foundation-u4-repair-verify-04`. The builder
+changed NO test files — every round-3a oracle ran unchanged against the
+repairs.
+
+Provenance note: the owner-referenced builder report
+`U4-REPAIR-03-DELIVERY.md` was not present in the repository, the builder
+worktree, or local disk at verification start and therefore could not be
+imported with a checksum. The five repair commits themselves are treated as
+the builder's claims; every finding below is from independent reproduction
+at the exact candidate.
+
+## 16. Task 1 — the remaining datefield-supply probe: builder explanation CONFIRMED
+
+`probe-datefield-supply.test.ts` was reproduced failing exactly as
+committed. Root cause: the round-3 fixture calls `setValue(...)` (a Svelte 5
+`$state` write, which batches a reactive update) and asserted the display
+immediately — before any supported update boundary. The initial assertion
+passed only because the probe explicitly `flushSync()`-ed after mount.
+
+Verification: in a scratch run (deleted after use), the identical
+expectations pass with `flushSync()` after each external change AND with
+`await tick()` — both public Svelte 5 boundaries — at the exact candidate.
+The supply channel itself is live; the round-3 A1 reading for the single
+DateField was a probe timing artifact.
+
+Oracle correction, recorded: the committed probe now reads the display
+through `flushSync()` — the supported synchronous boundary — with
+expectations unchanged (`09/10/2026`, `dd/mm/yyyy`, `02/11/2026`, no sleeps,
+no remounts, no weakened assertions). The round-3 version is preserved
+verbatim as historical evidence at
+`packages/ui-svelte/test/historical/probe-datefield-supply-v1.historical.ts`
+(excluded from the vitest glob). The range half of A1 was genuine: its probe
+already observed the boundary and only passes with the builder's
+`catalogRangeState` unification.
+
+## 17. Task 2 — every repair independently reproduced
+
+The 10 pinned round-3a oracles all pass at the candidate (builder untouched;
+exact contracts intact), plus new oracles where none existed:
+
+| Repair | Independent evidence (this round) |
+| --- | --- |
+| A1 external supply (range) | `probe-range-external-state` 3/3 (boundary-observed; clear/restore/start-only/end-only display agreement) |
+| A1 external supply (single field) | corrected `probe-datefield-supply` (§16) |
+| A2′ calendar emission dedup + ordered end-only restart | `probe-date-range-picker` 5/5 — one action = one emitted transition; end-only selection stays ordered with display/state agreement |
+| Field clearing (withdrawn A2 stays withdrawn) | `probe-date-clear-sequence` 4/4 — full-clear sequence, empty convention, intact endpoint, restoration, no echo; incremental Backspace semantics preserved |
+| TimeField en-GB 12h / en-US 12h / en-GB 24h | `probe-time-hour-cycle` 3/3 — keyboard changes, visible 12-hour text, `aria-valuenow`/`aria-valuetext`, dayPeriod presence and PM⇄AM, ISO value agreement |
+| A4 tooltip controlled-open | `probe-b5-interactive` — controlled `open` mounts `[role=tooltip]`; hover/keyboard/dismissal browser-verified this round (§19) |
+| N1 command label search | NEW `probe-command-label-search` 3/3 — authored label matches (full + mid-word), value search retained, authored empty slot on non-match, Enter activation emits the authored VALUE (discovered: the output binding must be declared on the item node — the emission comes from the item's io) |
+| Numeric-list drafts (new repair) | NEW `state-values-panel-numeric-list` 4/4 — draft kept verbatim (`1e999` survives the number-input sanitizer and is non-finite: genuine invalid path), validation surfaced without seeding or clearing the draft, application clears, removal filters, scalar finite-number guard; engine-level partial-draft reset is browser-covered |
+
+Range state matrix re-verified across the probes: empty / start-only /
+end-only / complete / clearing / restoration / display-state agreement /
+reversed-range refusal (ordering guard runs before state mutation).
+
+## 18. Task 3 — host isolation and lifecycles
+
+NEW `probe-host-isolation.test.ts` (+ `HostIsoFixture`): TWO DocumentHosts
+mounted simultaneously with identical document ids and component node ids.
+
+- Supply isolation: each host's `stateValues` reaches only its own display;
+  updating A leaves B byte-identical.
+- Portal ownership: A's controlled tooltip opens exactly one portal in the
+  document, stamped with A's `data-ui-owner`; unmounting A removes its
+  portal from the document; B can then open its own portal, owned by B.
+- Styling: the cascade scope class is keyed by the DOCUMENT (identical plans
+  share one scope — byte-identical styles by design); instance isolation is
+  carried by the distinct per-host `data-ui-owner` ids. Recorded as design,
+  not defect.
+- Lifecycle: the surviving host stays interactive (checkbox toggles through
+  the state loop) and keeps accepting supply after its sibling unmounts;
+  retained callbacks keep flowing.
+- Runtime/authored-state separation: runtime canvas interactions leave the
+  authored `UiEditSession` untouched — working revision, source bytes,
+  dirty flag and undo history all unchanged — and authoring still works
+  afterwards (accepted `bindExpression`, revision advances, edit undoable).
+
+Repair-mechanism review (reusability / consumer independence): the range
+repairs live in one reusable module (`range-state.svelte.ts` /
+`catalogRangeState`) consumed by the field, picker and calendar surfaces —
+`emitRange` is now referenced only there and in its definition; no
+duplicated emission logic remains in adapters. The TimeField primitive
+(Root/Input/Segment + locale-carried `hourCycle` via `Intl.Locale`) is
+generic and seed-independent. The tooltip ids/anchor and command keyword
+repairs are generic.
+
+Seed-specific exception recorded: the schedule seed's `handover-time`
+time-field was re-pointed `en-US` → `en-GB` (12h) in `78e66e2` — the
+finished-app document now exercises the en-GB 12h path; en-US 12h remains
+covered by the retained probe control. Documentation nuance recorded (not a
+defect): a comment in `CatalogRangeInputs.svelte` still describes the
+composite field's watcher as omitting end-only external updates; the
+oracles demonstrate the current behavior is correct via the range-state
+normalization.
+
+## 19. Browser evidence (focus-emulation protocol)
+
+(pending — filled with the packed-artifact journeys)
+
+## 20. Gate (round 4) — actual results
+
+| Gate | Result |
+| --- | --- |
+| Root `npm run build` | clean — **with one delivery finding (F14)**: the root build script omits `@victframework/ui-preview` (and `ui-editor`), so from a clean checkout the packed closure cannot be produced by the documented command alone; `npm run build -w @victframework/ui-preview` was required before packing (ui-editor ships Svelte sources and resolves without dist). Builder-repair item, not a runtime defect. |
+| `npm test` (full battery) | **3113 passed / 0 failed / 3 skipped** (3116) — every previously pinned oracle and all round-4 probes green; first zero-failure battery of the U4 cycle |
+| `npm run typecheck` | **0 errors** (after fixing two type slips in the new verifier probes; the candidate's own sources never errored) |
+| `npm run check:ui` | **0 errors / 5 warnings** (unchanged) |
+| Consumer suite (workspace) | **16/16** |
+| Pack | 10 tarballs, fresh manifest, zero tarballs in the repository tree (F13 holds) |
+| bits-ui | **exact `2.19.3`** in both manifests, workspace lock and the fresh isolated install |
+| Isolated consumer (script-driven: pack → isolate → rewrite to `file:vendor` → install → build → test → verify) | **`ISOLATED PACKED-ARTIFACT VERIFICATION: OK`** — 16/16 from packed artifacts, zero workspace links, zero repository source paths in built bundles |
+| Packed entries & bundle separation | authoring entry (`index.html`) + finished app (`app.html`) both present; `app-*`, `authoring-*`, `execution-*` chunks separate across the transitive graph; catalog/theme CSS ships in the packed ui-svelte artifact |
+| Formatting | all round-4 verifier files prettier-clean |
+
+**F14 (delivery, non-runtime)**: root `package.json` `build` does not build
+`@victframework/ui-preview`; `scripts/pack-u4-consumer.mjs` packs it. From a
+clean clone, `npm run build && node scripts/pack-u4-consumer.mjs` fails at
+the isolated build (`Failed to resolve entry for package
+"@victframework/ui-preview"`). Repair: add the workspace build (or build the
+closure from the pack script). Recorded for the next builder cycle.

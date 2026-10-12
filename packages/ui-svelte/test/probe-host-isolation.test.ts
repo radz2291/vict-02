@@ -12,11 +12,10 @@
  * assertion, which is scoped by the host's owner id.
  */
 import { afterEach, describe, expect, it } from 'vitest';
-import { flushSync, mount, unmount, type component } from 'svelte';
+import { flushSync, mount, unmount } from 'svelte';
 import { UiEditSession } from '@victframework/ui';
 import HostIsoFixture from './HostIsoFixture.svelte';
 
-type Fixture = ReturnType<typeof component<typeof HostIsoFixture>>;
 const cleanups: (() => void)[] = [];
 afterEach(() => {
   for (const cleanup of cleanups.splice(0)) cleanup();
@@ -25,7 +24,7 @@ afterEach(() => {
 function mountHost(initial: Record<string, unknown>) {
   const target = document.createElement('div');
   document.body.append(target);
-  const instance = mount(HostIsoFixture, { target, props: {} }) as Fixture;
+  const instance = mount(HostIsoFixture, { target, props: {} });
   const controls = instance as unknown as { setValue(next: Record<string, unknown>): void };
   controls.setValue(initial);
   flushSync();
@@ -187,7 +186,6 @@ describe('round 4: two simultaneous hosts with matching component ids', () => {
     // authoring still works after runtime interactions
     const outcome = session.applyTransaction({
       requestId: 'r4-runtime-sep',
-      documentId: 'probe.host.iso',
       expectedDocumentRevision: session.workingRevision,
       commands: [
         {
