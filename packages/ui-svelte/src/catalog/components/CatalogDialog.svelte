@@ -40,8 +40,10 @@
       <Dialog.Overlay data-testid="dialog-overlay" />
       <Dialog.Content {...presentation?.target('root')} data-testid="dialog-panel"
         onCloseAutoFocus={restoreTrigger}>
-        <Dialog.Title>{title || 'Dialog'}</Dialog.Title>
-        <Dialog.Close aria-label="Close" data-testid="dialog-close">✕</Dialog.Close>
+        <header class="vict-catalog-overlay-header">
+          <Dialog.Title>{title || 'Dialog'}</Dialog.Title>
+          <Dialog.Close aria-label="Close" data-testid="dialog-close">✕</Dialog.Close>
+        </header>
         <div class="vict-overlay-body">
           {@render io?.slots?.body?.()}
         </div>

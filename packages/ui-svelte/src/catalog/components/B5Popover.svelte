@@ -18,10 +18,12 @@
 
     <Popover.Content {...presentation?.target('root')} side={side} sideOffset={typeof props.sideOffset === 'number' ? props.sideOffset : 8} onCloseAutoFocus={restoreTrigger}>
 
-      {#if typeof props.title === 'string' && props.title}<strong>{props.title}</strong>{/if}
+      <header class="vict-catalog-overlay-header">
+        {#if typeof props.title === 'string' && props.title}<strong>{props.title}</strong>{/if}
+        <Popover.Close aria-label="Close">✕</Popover.Close>
+      </header>
       {#if typeof props.description === 'string' && props.description}<p>{props.description}</p>{/if}
-      {@render io?.slots?.content?.()}
-      <Popover.Close aria-label="Close">✕</Popover.Close>
+      <div class="vict-catalog-popover-body">{@render io?.slots?.content?.()}</div>
     </Popover.Content>
   </CatalogPortal>
 </Popover.Root>

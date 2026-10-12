@@ -27,7 +27,7 @@
   <DropdownMenu.SubTrigger {...presentation?.target('root')} disabled={props.disabled === true} textValue={String(props.label ?? '')} bind:ref={triggerRef}>
     {#if io?.slots?.trigger}{@render io.slots.trigger()}{:else}{String(props.label ?? '')}{/if}
   </DropdownMenu.SubTrigger>
-  <CatalogPortal {open} {presentation}><DropdownMenu.SubContent {...presentation?.target('content')} bind:ref={contentRef} side={narrow.current ? 'bottom' : 'right'} sideOffset={6} collisionPadding={16}>
+  <CatalogPortal {open} {presentation}><DropdownMenu.SubContent {...presentation?.target('content')} bind:ref={contentRef} strategy="fixed" side={narrow.current ? 'bottom' : 'right'} sideOffset={6} collisionPadding={16}>
   {@render io?.slots?.items?.()}
 </DropdownMenu.SubContent></CatalogPortal>
 </DropdownMenu.Sub>

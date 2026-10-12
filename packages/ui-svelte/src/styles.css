@@ -1213,6 +1213,10 @@ h3.vict-text {
   align-items: flex-start;
   gap: 8px;
   min-width: 0;
+  max-width: 100%;
+}
+.vict-action-control > :where(button) {
+  flex: none;
 }
 .vict-action-feedback {
   font-size: 13px;

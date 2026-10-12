@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Menubar } from '../menubar.js';
-  import CatalogPart from './CatalogPart.svelte';
   import CatalogPortal from './CatalogPortal.svelte';
+  import { catalogMenuOpenFocus, catalogFocusReturn } from './focus-return.js';
   import type { UiSvelteComponentIO, UiComponentPresentation } from '../../document/extensions.js';
   let { props, io, presentation }: {
     props: Readonly<Record<string, unknown>>;
@@ -15,19 +15,15 @@
   const open = $derived(activeMenu?.() === value);
   let triggerRef = $state<HTMLButtonElement | null>(null);
   let contentRef = $state<HTMLDivElement | null>(null);
+  const focusContent = catalogMenuOpenFocus(() => contentRef);
+  const restoreTrigger = catalogFocusReturn(() => triggerRef);
 </script>
 
 <Menubar.Menu {value} onOpenChange={(next) => io?.emit('openChange', next)}>
   <Menubar.Trigger {...presentation?.target('root')} disabled={props.disabled === true} bind:ref={triggerRef}>
-    {#snippet child({ props: attributes })}<CatalogPart as="button" {attributes} bind:ref={triggerRef}>
-      {#if io?.slots?.trigger}{@render io.slots.trigger()}{:else}{String(props.label ?? '')}{/if}
-    </CatalogPart>{/snippet}
+    {#if io?.slots?.trigger}{@render io.slots.trigger()}{:else}{String(props.label ?? '')}{/if}
   </Menubar.Trigger>
-  <CatalogPortal {open} {presentation}><Menubar.Content {...presentation?.target('content')} bind:ref={contentRef} sideOffset={6} collisionPadding={16}>
-  {#snippet child({ props: attributes, wrapperProps })}
-    <div {...wrapperProps}><CatalogPart as="div" {attributes} bind:ref={contentRef}>
-      {@render io?.slots?.items?.()}
-    </CatalogPart></div>
-  {/snippet}
+  <CatalogPortal {open} {presentation}><Menubar.Content {...presentation?.target('content')} bind:ref={contentRef} strategy="fixed" sideOffset={6} collisionPadding={16} onOpenAutoFocus={focusContent} onCloseAutoFocus={restoreTrigger}>
+  {@render io?.slots?.items?.()}
 </Menubar.Content></CatalogPortal>
 </Menubar.Menu>

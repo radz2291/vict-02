@@ -25,3 +25,13 @@ export function catalogPickerOpenFocus(getContent: () => HTMLElement | null): (e
     (day ?? content)?.focus({ preventScroll: true });
   };
 }
+
+/** Menubar's default content focus can scroll a portaled popup into view before
+ * its position settles. Keep the library's focus target and keyboard handlers,
+ * but use the same scroll-preserving focus policy as other catalog overlays. */
+export function catalogMenuOpenFocus(getContent: () => HTMLElement | null): (event: Event) => void {
+  return (event) => {
+    event.preventDefault();
+    getContent()?.focus({ preventScroll: true });
+  };
+}
