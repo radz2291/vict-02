@@ -20,8 +20,10 @@
 {#if props.values !== undefined}
   <Combobox.Root type="multiple" bind:value={multiple} inputValue={search} {disabled} bind:open
     onValueChange={next => io?.emit('valuesChange', [...next])}>
-    <Combobox.Input {...presentation?.target('root')} aria-label={String(props.label ?? 'Search options')} placeholder={String(props.label ?? 'Search options')} oninput={event => { search = event.currentTarget.value; io?.emit('searchChange', search); }} />
-      <Combobox.Trigger aria-label="Show options">⌄</Combobox.Trigger>
+    <div class="vict-combobox-control">
+      <Combobox.Input {...presentation?.target('root')} aria-label={String(props.label ?? 'Search options')} placeholder={String(props.label ?? 'Search options')} oninput={event => { search = event.currentTarget.value; io?.emit('searchChange', search); }} />
+      <Combobox.Trigger aria-label="Show options"><span aria-hidden="true">⌄</span></Combobox.Trigger>
+    </div>
       <CatalogPortal {open} {presentation}>
         <Combobox.Content {...presentation?.target('content')} sideOffset={6} align="start">
           {@render io?.slots?.items?.()}
@@ -34,8 +36,10 @@
 {:else}
   <Combobox.Root type="single" bind:value={single} inputValue={search} {disabled} bind:open
     onValueChange={next => io?.emit('valueChange', next)}>
-    <Combobox.Input {...presentation?.target('root')} aria-label={String(props.label ?? 'Search options')} placeholder={String(props.label ?? 'Search options')} oninput={event => { search = event.currentTarget.value; io?.emit('searchChange', search); }} />
-      <Combobox.Trigger aria-label="Show options">⌄</Combobox.Trigger>
+    <div class="vict-combobox-control">
+      <Combobox.Input {...presentation?.target('root')} aria-label={String(props.label ?? 'Search options')} placeholder={String(props.label ?? 'Search options')} oninput={event => { search = event.currentTarget.value; io?.emit('searchChange', search); }} />
+      <Combobox.Trigger aria-label="Show options"><span aria-hidden="true">⌄</span></Combobox.Trigger>
+    </div>
       <CatalogPortal {open} {presentation}>
         <Combobox.Content {...presentation?.target('content')} sideOffset={6} align="start">
           {@render io?.slots?.items?.()}

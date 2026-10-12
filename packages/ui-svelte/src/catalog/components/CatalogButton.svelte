@@ -22,8 +22,8 @@
   const loading = $derived(props.loading === true || io?.action?.pending === true);
 </script>
 
-<span data-testid="catalog-button" style="display: inline-flex; align-items: center; gap: 8px">
+<div data-testid="catalog-button" class="vict-action-control">
   <Button presentation={presentation?.target('root')} busy={loading} label={loading ? 'Working...' : label}
     {disabled} onclick={() => io?.emit('press')} />
   <ActionFeedback feedback={io?.action?.feedback} />
-</span>
+</div>
