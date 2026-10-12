@@ -1,5 +1,29 @@
 # UI foundation — current state
 
+**2026-10-12 — U4 FULL-CATALOG REPAIR-03 RECHECKED: ALL GATES GREEN;
+REVIEWS + FOUNDER CHECKPOINT PENDING.** Owner decision 8 (catalog
+recalibration) is live: all 38 available catalog families + AppShell are
+implemented, authorable and exercised end-to-end. The round-3a corrected
+oracle set (10 pins) passed at repair candidate `32d8465a…` with ZERO test
+changes by the builder, plus new verifier oracles (command label search,
+numeric-list drafts, host isolation, datefield-supply boundary correction —
+round-3 oracle preserved as historical evidence). Full battery: 3113
+passed / 0 failed / 3 skipped — the first zero-failure battery of the U4
+cycle. Packed closure: 10 tarballs, isolated install/build/test OK, bits-ui
+exact 2.19.3, bundle separation verified (delivery finding F14: root build
+omits ui-preview). Real packed-UI authoring coverage: 50/50 family journeys
+(all 38 families + AppShell, genuine pointer/keyboard, undo/redo/save/
+reload/finished-app), all 5 closed surfaces demonstrated on their saved
+changes; preview/production parity IDENTICAL. Non-blocking findings F14–F16
+recorded. NEXT (owner-directed): three fresh independent reviews at the
+frozen candidate `32d8465aa9c810e4285995549a562957c85d2e36`, then the
+founder checkpoint. B1–B5/U4 OPEN; owner acceptance PENDING; no ledger row
+is Verified until the final gate and owner acceptance (AGENTS.md rule).
+
+---
+
+## HISTORICAL STATUS (frozen narrative — superseded by the summary above; preserved verbatim)
+
 **2026-10-07 — U3 CLOSED: PASS WITH NON-BLOCKING FINDINGS.** The experience
 repair is integrated (fast-forward; combined implementation `952d92d…`),
 combined-gate verified ("U3 COMBINED GATE: PASS WITH NON-BLOCKING FINDINGS",

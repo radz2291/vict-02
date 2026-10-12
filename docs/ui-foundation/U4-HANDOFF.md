@@ -584,3 +584,44 @@ own gate; a batch PASS proves only its ledger rows):
   FAIL — the 10 oracles go to Codex per report §14.** Reviews and founder
   checkpoint remain deferred to the repaired candidate; B1–B5/U4 OPEN;
   owner acceptance PENDING; no ledger row advanced.
+### 14.3 Round 4 — repair-03 independent recheck (2026-10-12, verifier record)
+
+Candidate `32d8465aa9c8…` (branch `codex/ui-foundation-u4-full-catalog-repair-03`,
+five commits on the round-3a tip `05c1f9a0b899…`), verified on isolated
+branch `codex/ui-foundation-u4-repair-verify-04`. The builder changed no
+test files; every round-3a oracle ran unchanged.
+
+- **Task 1 (datefield-supply)**: builder explanation CONFIRMED — the round-3
+  probe asserted before Svelte 5's update boundary; with either supported
+  boundary (`flushSync`/`await tick`) the identical expectations pass at the
+  candidate. Oracle corrected (boundary-observed, expectations unchanged);
+  round-3 version preserved at `test/historical/`. The range half of A1 was
+  genuine and is fixed.
+- **Task 2 (all repairs)**: 10 pinned oracles green unchanged + new oracles
+  where none existed (command label search ×3, numeric-list drafts ×4).
+  Full battery **3113 passed / 0 failed / 3 skipped** — first zero-failure
+  battery of the U4 cycle.
+- **Task 3 (isolation)**: new probe — two simultaneous hosts with matching
+  ids: supply isolation, portal ownership + teardown, document-keyed cascade
+  scope (by design), survivor interactivity, runtime interactions never
+  touch the authored session. Repair mechanisms reviewed: single reusable
+  `catalogRangeState`; TimeField primitive generic; seed-specific exception
+  recorded (handover-time re-pointed en-US→en-GB 12h).
+- **Task 4 (gate/pack)**: F14 recorded (root build omits ui-preview — clean
+  checkouts cannot run the documented pack sequence without one extra
+  workspace build). Packed closure rebuilt: 10 tarballs, isolated install →
+  build → 16/16 → `ISOLATED PACKED-ARTIFACT VERIFICATION: OK`, bits-ui
+  exact 2.19.3 everywhere, bundle separation + no repo paths verified.
+- **Task 5 (real authoring coverage)**: **50/50 packed-UI journeys pass**
+  (all 38 families + AppShell, genuine pointer/keyboard, focus-emulation
+  protocol): select → edit → undo/redo → save → reload → finished-app
+  demonstration; all 5 closed surfaces (alert-dialog, popover, dialog,
+  tooltip, link-preview) OPENED on their saved changes; 36 direct echoes +
+  5 closed-surface demos; 10 plan-level (F15/F16/slot-wins, recorded).
+  Preview/production parity IDENTICAL.
+- **New non-blocking findings**: F14 (above), F15 (menu label props not
+  reflected with slot content), F16 (accordion-multiple label unused).
+- **Next**: three fresh reviews at the frozen candidate — technical
+  falsification, real-browser authoring/experience, unfamiliar-agent packed
+  exercise. Reviews and founder checkpoint pending; B1–B5/U4 OPEN; owner
+  acceptance PENDING.

@@ -407,9 +407,70 @@ composite field's watcher as omitting end-only external updates; the
 oracles demonstrate the current behavior is correct via the range-state
 normalization.
 
-## 19. Browser evidence (focus-emulation protocol)
+## 19. Browser evidence (focus-emulation protocol) — real authoring journeys
 
-(pending — filled with the packed-artifact journeys)
+The complete packed UI journey ran on the **production preview of the
+isolated packed consumer** (`vite preview`, fresh install from the 10
+packed tarballs): per family — route blade select → Layers-panel search +
+row click (genuine pointer) → Inspector prop edit (genuine CDP keyboard:
+focus, select-all, type, Enter) → canvas echo → Undo removes → Redo
+restores → per route Save → Reload stored → persistence → **finished-app
+(`app.html`) demonstrates the saved result**. Seed reset per route before
+each journey. Focus-emulation protocol enabled for the page lifetime;
+all input was genuine pointer/keyboard (no synthetic DOM events).
+
+**50/50 family journeys pass, covering all 38 available families + AppShell
+across their governing modes** (single/multiple, field/picker/calendar,
+menu/sub/checkbox/radio parts). Per-family edit: select → edit applicable
+properties/connections/composition → undo/redo → save → reload/reopen →
+finished app.
+
+Evidence tiers (recorded honestly):
+- **Text echo in canvas + finished app (36 journeys)** — button, tabs-trigger,
+  accordion-item, checkbox, switch, toggle, radio-group, combobox,
+  select-multiple, avatar, date/time/range family labels, meter/progress/
+  slider (aria-label tier), pagination/toolbar/tabs (aria tier), separator
+  (aria-orientation vertical), command placeholder, label, appshell title, …
+- **Closed surfaces OPENED in the finished app (5)** — alert-dialog
+  (Corrections tab → trigger → `[role=alertdialog]` shows the authored
+  title), popover (floating content), dialog (shell route), tooltip
+  (hover → `[role=tooltip]`), link-preview (hover → floating card): all five
+  demonstrate their saved changes.
+- **Plan-level authoring (10, recorded with reason)** — dropdown-menu,
+  context-menu, menubar.menu/item, command.item, navigation-menu.item
+  (slot content wins over the `label` prop — F15), accordion-multiple
+  (label prop unimplemented — F16), collapsible ×2 (trigger slot wins),
+  scroll-area (non-visual prop), aspect-ratio (CSS-only): the authored
+  value is verified through the Inspector's authored-prop editor after
+  Undo/Redo/Save+Reload; no visual echo exists BY IMPLEMENTATION.
+
+Artifacts: journey driver + config + result matrix recorded in the round-4
+review evidence; screenshots `browser-r4/r4-01…03.png` (workbench,
+finished app, opened dialog with authored title).
+
+**Preview/production parity: IDENTICAL** — the packed production preview
+and the workspace dev server were driven through the same schedule + queue
+surfaces (segment displays, menu text, page titles, occurrence counts 53/41)
+with byte-identical snapshots.
+
+## 19a. New findings (round 4, non-blocking delivery findings)
+
+- **F14 (gate)**: the root `build` script omits `@victframework/ui-preview`,
+  which the pack closure includes — from a clean checkout, the documented
+  `npm run build && node scripts/pack-u4-consumer.mjs` sequence fails at the
+  isolated build. Verified twice; worked around by building the workspace
+  package explicitly. Builder-repair item.
+- **F15 (accessibility, non-blocking)**: the `label` prop of
+  dropdown-menu/context-menu/menubar.menu/menubar.item/command.item/
+  navigation-menu.item is accepted by the authoring surface but is not
+  reflected as an accessible name when the seed provides slot content
+  (slots always win); the authored value persists in the plan only.
+- **F16 (dead prop, non-blocking)**: accordion-multiple's `label` prop is
+  declared in the descriptor but unused by the implementation (the accordion
+  items carry their own labels).
+
+Neither F15 nor F16 is part of the pinned defect set; both are repair-
+candidate items for the next builder cycle and do not block this round.
 
 ## 20. Gate (round 4) — actual results
 

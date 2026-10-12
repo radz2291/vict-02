@@ -1160,3 +1160,24 @@ Authority: next accepted action; never derive it from an agent's own proposal.
   focus protocol all green (focus-emulation protocol). Battery 3093/10/3.
   Verdict FAIL; repairs to Codex (report section 14); reviews deferred;
   acceptance PENDING.
+## U4 round 4 (2026-10-12) — repair-03 rechecked, zero-failure gate, real authoring coverage
+
+- Datefield-supply oracle correction CONFIRMED against the candidate: the
+  round-3 failure asserted before Svelte 5's update boundary; corrected
+  oracle passes with identical expectations (flushSync/tick); round-3 probe
+  preserved at test/historical/. Range A1 was genuine and fixed.
+- New verifier oracles: command label search (label fragment, value search,
+  empty slot, value-identity activation via item-node output bindings),
+  numeric-list editor drafts/validation/application, two-host isolation
+  (supply/portal/lifecycle + runtime-vs-authored separation).
+- Gate: battery 3113/0/3 (first zero-failure U4 battery); typecheck 0;
+  svelte-check 0/5; consumer 16/16 workspace + packed-isolated; bits-ui
+  exact 2.19.3; F14 recorded (root build omits ui-preview).
+- Real authoring coverage: 50/50 packed-UI journeys across all 38 families
+  + AppShell with genuine input; closed surfaces opened on saved changes
+  (alert-dialog, popover, dialog, tooltip, link-preview); plan-level
+  authoring honestly tiered (F15 menu labels, F16 accordion-multiple
+  label); preview/production parity IDENTICAL.
+- Verdict: candidate `32d8465a…` passes screening — the three fresh reviews
+  proceed at the frozen SHA. Reviews + founder checkpoint pending; B1–B5/U4
+  OPEN; owner acceptance PENDING.
