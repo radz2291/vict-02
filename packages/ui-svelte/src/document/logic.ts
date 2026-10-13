@@ -145,64 +145,71 @@ export function styleRulesToCss(plan: UiRenderPlan, rootClass: string): string {
   const sorted = [...plan.style.rules].sort(
     (a, b) => layerOrder.indexOf(a.layer) - layerOrder.indexOf(b.layer),
   );
-  const mediaBuckets = new Map<string, string[]>();
-  const containerBuckets = new Map<string, string[]>();
-  const plain: string[] = [];
-  for (const rule of sorted) {
-    const lines: string[] = [];
-    for (const [index, declaration] of rule.declarations.entries()) {
-      if (declaration.value.type === 'literal') {
-        lines.push(`  ${declaration.property}: ${String(declaration.value.value)};`);
-      } else if (declaration.value.type === 'token') {
-        lines.push(
-          `  ${declaration.property}: var(--ui-token-${sanitizeTokenId(declaration.value.id)});`,
-        );
+  // Condition buckets belong to their declared cascade layer. Emitting all
+  // conditions last would let a source rule override an innermost local rule.
+  const output: string[] = [];
+  for (const layer of layerOrder) {
+    const mediaBuckets = new Map<string, string[]>();
+    const containerBuckets = new Map<string, string[]>();
+    const plain: string[] = [];
+    for (const rule of sorted.filter((rule) => rule.layer === layer)) {
+      const lines: string[] = [];
+      for (const [index, declaration] of rule.declarations.entries()) {
+        if (declaration.value.type === 'literal') {
+          lines.push(`  ${declaration.property}: ${String(declaration.value.value)};`);
+        } else if (declaration.value.type === 'token') {
+          lines.push(
+            `  ${declaration.property}: var(--ui-token-${sanitizeTokenId(declaration.value.id)});`,
+          );
+        }
+        if (declaration.value.type === 'expression')
+          lines.push(`  ${declaration.property}: var(${bindingVariable(rule.ruleId, index)});`);
       }
-      if (declaration.value.type === 'expression') lines.push(`  ${declaration.property}: var(${bindingVariable(rule.ruleId, index)});`);
-    }
-    const declarations = lines.join('\n');
-    if (declarations === '') continue;
-    const selector =
-      rule.selector === ':root'
-        ? `.${escapedRoot}`
-        : // The pseudo suffix is appended AFTER escaping: a pseudo colon is
-          // selector syntax, not a character to escape (F1 — an escaped
-          // `\:hover` matches nothing).
-          rule.pseudo !== undefined
-          ? `.${escapedRoot} ${escapeCss(rule.selector)}:${rule.pseudo}`
-          : `.${escapedRoot} ${escapeCss(rule.selector)}`;
-    const css = `${selector} {\n${declarations}\n}`;
-    if (rule.containerConditionId !== undefined) {
-      const condition = conditions[rule.containerConditionId];
-      if (condition?.kind === 'container') {
-        const bucket = containerBuckets.get(`${condition.name} ${condition.query}`) ?? [];
-        bucket.push(css);
-        containerBuckets.set(`${condition.name} ${condition.query}`, bucket);
-        continue;
-      }
-      plain.push(css);
-    } else if (rule.mediaConditionId !== undefined) {
-      const condition = conditions[rule.mediaConditionId];
-      const query = condition?.kind === 'media' ? condition.query : undefined;
-      if (query === undefined) {
+      const declarations = lines.join('\n');
+      if (declarations === '') continue;
+      const selector =
+        rule.selector === ':root'
+          ? `.${escapedRoot}`
+          : // The pseudo suffix is appended AFTER escaping: a pseudo colon is
+            // selector syntax, not a character to escape (F1 — an escaped
+            // `\:hover` matches nothing).
+            rule.pseudo !== undefined
+            ? `.${escapedRoot} ${escapeCss(rule.selector)}:where(:${rule.pseudo})`
+            : `.${escapedRoot} ${escapeCss(rule.selector)}`;
+      const css = `${selector} {\n${declarations}\n}`;
+      if (rule.containerConditionId !== undefined) {
+        const condition = conditions[rule.containerConditionId];
+        if (condition?.kind === 'container') {
+          const bucket = containerBuckets.get(`${condition.name} ${condition.query}`) ?? [];
+          bucket.push(css);
+          containerBuckets.set(`${condition.name} ${condition.query}`, bucket);
+          continue;
+        }
         plain.push(css);
-        continue;
+      } else if (rule.mediaConditionId !== undefined) {
+        const condition = conditions[rule.mediaConditionId];
+        const query = condition?.kind === 'media' ? condition.query : undefined;
+        if (query === undefined) {
+          plain.push(css);
+          continue;
+        }
+        const bucket = mediaBuckets.get(query) ?? [];
+        bucket.push(css);
+        mediaBuckets.set(query, bucket);
+      } else {
+        plain.push(css);
       }
-      const bucket = mediaBuckets.get(query) ?? [];
-      bucket.push(css);
-      mediaBuckets.set(query, bucket);
-    } else {
-      plain.push(css);
     }
+    let css = plain.join('\n\n');
+    for (const [query, rules] of mediaBuckets) {
+      css += `\n\n@media ${query} {\n${rules.join('\n\n')}\n}`;
+    }
+    for (const [containerQuery, rules] of containerBuckets) {
+      css += `\n\n@container ${containerQuery} {\n${rules.join('\n\n')}\n}`;
+    }
+    output.push(css);
   }
-  let css = plain.join('\n\n');
-  for (const [query, rules] of mediaBuckets) {
-    css += `\n\n@media ${query} {\n${rules.join('\n\n')}\n}`;
-  }
-  for (const [containerQuery, rules] of containerBuckets) {
-    css += `\n\n@container ${containerQuery} {\n${rules.join('\n\n')}\n}`;
-  }
-  return css;
+  return output.filter(Boolean).join('\n\n');
 }
 
 /** CSS custom-property-safe token id (declared ids may contain dots). */
@@ -247,7 +254,9 @@ export function walkInstructions(
       instruction.children.forEach((child) => walkInstructions(child, visit));
       break;
     case 'extension':
-      Object.values(instruction.slots ?? {}).forEach(children => children.forEach(child => walkInstructions(child, visit)));
+      Object.values(instruction.slots ?? {}).forEach((children) =>
+        children.forEach((child) => walkInstructions(child, visit)),
+      );
       break;
     case 'text':
       break;
@@ -281,7 +290,11 @@ export function evaluatedComponentProps(
 
 /** Invalid evaluated props refuse rendering rather than falling through to adapter defaults. */
 export function evaluateComponentPropValues(
-  instruction: { readonly propDecls: readonly UiPropDecl[]; readonly propValues: Readonly<Record<string, UiExpression>>; readonly rejectedProps?: readonly string[] },
+  instruction: {
+    readonly propDecls: readonly UiPropDecl[];
+    readonly propValues: Readonly<Record<string, UiExpression>>;
+    readonly rejectedProps?: readonly string[];
+  },
   scope: DocumentScope,
 ): { readonly values: Record<string, unknown>; readonly invalidNames: readonly string[] } {
   const out: Record<string, unknown> = {};
@@ -293,8 +306,11 @@ export function evaluateComponentPropValues(
       declared !== undefined
         ? resolveValue({ type: 'expression', expression: declared }, scope)
         : declaration.default;
-    if (value === undefined && declared === undefined && declaration.default === undefined) continue;
-    if (declaration.type === 'array' ? Array.isArray(value) : isUiValueOfType(value, declaration.type)) {
+    if (value === undefined && declared === undefined && declaration.default === undefined)
+      continue;
+    if (
+      declaration.type === 'array' ? Array.isArray(value) : isUiValueOfType(value, declaration.type)
+    ) {
       out[declaration.name] = Array.isArray(value) ? value.slice() : value;
     } else invalidNames.push(declaration.name);
   }
@@ -305,14 +321,21 @@ function bindingVariable(ruleId: string, index: number): string {
   return `--ui-binding-${ruleId.replace(/[^A-Za-z0-9_-]/g, '_')}-${index}`;
 }
 /** Runtime CSS variables preserve static cascade/gating for authored binding values. */
-export function bindingStyleVariables(ids: readonly string[], plan: UiRenderPlan, scope: DocumentScope): string {
+export function bindingStyleVariables(
+  ids: readonly string[],
+  plan: UiRenderPlan,
+  scope: DocumentScope,
+): string {
   const declarations: string[] = [];
   for (const rule of plan.style.rules) {
     if (!ids.includes(rule.ruleId)) continue;
     rule.declarations.forEach((decl, index) => {
       if (decl.value.type !== 'expression') return;
       const value = resolveValue(decl.value, scope);
-      if ((typeof value === 'string' && !/[;{}<>]/.test(value)) || (typeof value === 'number' && Number.isFinite(value))) {
+      if (
+        (typeof value === 'string' && !/[;{}<>]/.test(value)) ||
+        (typeof value === 'number' && Number.isFinite(value))
+      ) {
         declarations.push(`${bindingVariable(rule.ruleId, index)}: ${String(value)};`);
       }
     });

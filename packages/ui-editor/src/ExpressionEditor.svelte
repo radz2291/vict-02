@@ -2,13 +2,15 @@
   import { isUiValueOfType, type UiExpression, type UiValue, type UiValueType } from '@victframework/ui';
   interface Props {
     label: string;
+    displayLabel?: string;
+    referenceLabels?: Readonly<Record<string, string>>;
     type: UiValueType | 'array';
     value?: UiExpression;
     defaultValue?: UiValue;
     references: readonly string[];
     onCommit: (expression: UiExpression | undefined) => void;
   }
-  let { label, type, value, defaultValue, references, onCommit }: Props = $props();
+  let { label, displayLabel, referenceLabels = {}, type, value, defaultValue, references, onCommit }: Props = $props();
   let mode = $state('default');
   let raw = $state('');
   let error = $state('');
@@ -45,11 +47,11 @@
 </script>
 
 <div class="expression-editor">
-  <label>{label} <span>({type})</span>
+  <label>{displayLabel ?? label} {#if !displayLabel}<span>({type})</span>{/if}
     <select aria-label={`${label} source`} value={mode} onchange={event => choose(event.currentTarget.value)}>
       <option value="default">{defaultValue === undefined ? 'Unset' : 'Default'}</option>
-      {#if !list}<option value="literal">Literal</option>{/if}
-      <option value="binding">Binding</option>
+      {#if !list}<option value="literal">{displayLabel ? 'Fixed value' : 'Literal'}</option>{/if}
+      <option value="binding">{displayLabel ? 'State / expression' : 'Binding'}</option>
     </select>
   </label>
   {#if mode === 'default'}
@@ -65,11 +67,11 @@
       <button type="button" onclick={literal}>Apply value</button>
     {/if}
   {:else}
-    {#if value !== undefined && value.type !== 'literal'}<p>Bound to: {describe(value)}</p>{/if}
+    {#if value !== undefined && value.type !== 'literal'}<p>Bound to: {value.type === 'ref' ? referenceLabels[value.path] ?? describe(value) : describe(value)}</p>{/if}
     <select aria-label={`${label} reference`} value={binding ?? ''} onchange={event => { if (event.currentTarget.value) onCommit({ type: 'ref', path: event.currentTarget.value }); }}>
       <option value="">Choose a compatible reference…</option>
       {#if binding && !references.includes(binding)}<option value={binding}>{binding} (existing)</option>{/if}
-      {#each references as reference (reference)}<option value={reference}>{reference}</option>{/each}
+      {#each references as reference (reference)}<option value={reference}>{referenceLabels[reference] ?? reference}</option>{/each}
     </select>
     {#if !references.length}<p>No compatible references are declared.</p>{/if}
   {/if}

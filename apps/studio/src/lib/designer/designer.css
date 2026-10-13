@@ -309,7 +309,7 @@
 .design-inspector {
   background: #fff;
   border-left: 1px solid #e1e6ee;
-  overflow: auto;
+  overflow: hidden;
   min-width: 0;
 }
 .design-inspector .inspector {
@@ -606,5 +606,110 @@ body:has(.finished-screen) {
   }
   .source-editor {
     height: 50dvh;
+  }
+}
+/* Iteration 2: reserve room for the screen; panels are independently adjustable. */
+.design-toolbar {
+  gap: 10px;
+}
+.canvas-modes {
+  display: flex;
+  gap: 2px;
+  padding: 3px;
+  background: #f0f3fa;
+  border-radius: 7px;
+}
+.canvas-modes button {
+  border: 0;
+  background: transparent;
+  padding: 6px 10px;
+  color: #78869c;
+}
+.canvas-modes button[aria-pressed='true'] {
+  background: #fff;
+  color: #5269bd;
+  box-shadow: 0 1px 4px #25334f14;
+}
+.design-workspace {
+  position: relative;
+  --left-column: var(--left-width);
+  --right-column: var(--right-width);
+  --left-gutter: 6px;
+  --right-gutter: 6px;
+  grid-template-columns:
+    var(--left-column) var(--left-gutter) minmax(0, 1fr) var(--right-gutter)
+    var(--right-column);
+}
+.design-workspace.left-hidden {
+  --left-column: 0px;
+  --left-gutter: 0px;
+}
+.design-workspace.right-hidden {
+  --right-column: 0px;
+  --right-gutter: 0px;
+}
+.design-sidebar {
+  grid-column: 1;
+}
+.left-resizer {
+  grid-column: 2;
+  display: grid;
+}
+.design-stage {
+  grid-column: 3;
+}
+.right-resizer {
+  grid-column: 4;
+  display: grid;
+}
+.design-inspector {
+  grid-column: 5;
+}
+.left-hidden .design-sidebar,
+.left-hidden .left-resizer,
+.right-hidden .design-inspector,
+.right-hidden .right-resizer {
+  display: none;
+}
+@media (max-width: 1100px) and (min-width: 761px) {
+  .design-workspace {
+    --right-column: 0px;
+    --right-gutter: 0px;
+  }
+  .right-resizer {
+    display: none;
+  }
+  .design-inspector {
+    grid-column: auto;
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: min(var(--right-width), 90%);
+    z-index: 5;
+    box-shadow: -12px 0 40px #24304720;
+  }
+  .save-state {
+    display: none;
+  }
+}
+@media (max-width: 760px) {
+  .panel-toggle,
+  .left-resizer,
+  .right-resizer {
+    display: none !important;
+  }
+  .design-workspace .design-sidebar.mobile-active,
+  .design-workspace .design-inspector.mobile-active {
+    display: block;
+  }
+  .design-toolbar {
+    gap: 6px;
+  }
+  .canvas-modes button {
+    padding: 5px 8px;
+  }
+  .toolbar-end {
+    gap: 4px;
   }
 }

@@ -1,18 +1,47 @@
 <script lang="ts">
   import type { UiDocument, UiRenderPlan, UiRenderInstruction } from '@victframework/ui';
   import { occurrenceKey, resolveValue, uniqueRepeatKeys, asRecord, evaluatedComponentProps, conditionsOf, evaluateCondition, type DocumentScope } from '@victframework/ui-svelte';
-  import { nodeLabel, type EditorLabels } from './inspector-ux.js';
+  import { type EditorLabels } from './inspector-ux.js';
   import { tick, untrack } from 'svelte';
   import { previewValues } from './preview-values.js';
-  let { plan, document, selectedOccurrence, onSelect, ariaLabel = 'Layers', labels = {}, scope }: {
+  import { compositionName, moveRelative, type CompositionPlacement } from './composition.js';
+  import type { TransactionDraft } from './commands.js';
+  let { plan, document, selectedOccurrence, onSelect, ariaLabel = 'Layers', labels = {}, scope, onApply, componentDescriptors = [] }: {
     plan: UiRenderPlan; document?: UiDocument; selectedOccurrence?: string; onSelect?: (occurrence: string) => void;
     ariaLabel?: string; labels?: EditorLabels; scope?: DocumentScope;
+    onApply?: (draft: TransactionDraft) => boolean; componentDescriptors?: readonly import('@victframework/ui').UiExtensionDescriptor[];
   } = $props();
   interface Entry { key: string; nodeId: string; label: string; detail: string; parent?: string; depth: number; children: boolean; component: boolean; compact: boolean; selectable: boolean; }
   let expanded = $state(new Set<string>());
   let closed = $state(new Set<string>());
   let focusKey = $state('');
   let search = $state('');
+  let draggedId = $state('');
+  let dropKey = $state('');
+  let dropPosition = $state<CompositionPlacement>('before');
+  let moveMessage = $state('');
+  function direct(entry: Entry) { return !!document && entry.selectable && entry.nodeId !== document.root && entry.key === `${document.id}|${entry.nodeId}`; }
+  function dragOver(event: DragEvent, entry: Entry) {
+    if (!document || !draggedId || (!direct(entry) && entry.nodeId !== document.root)) return;
+    const box = (event.currentTarget as HTMLElement).getBoundingClientRect();
+    const ratio = (event.clientY - box.top) / box.height;
+    const inside = moveRelative(document, draggedId, entry.nodeId, 'inside', componentDescriptors);
+    const position: CompositionPlacement = ratio > .25 && ratio < .75 && inside ? 'inside' : ratio < .5 ? 'before' : 'after';
+    if (!moveRelative(document, draggedId, entry.nodeId, position, componentDescriptors)) return;
+    event.preventDefault(); if (event.dataTransfer) event.dataTransfer.dropEffect = 'move';
+    dropKey = entry.key; dropPosition = position;
+    moveMessage = `Move ${compositionName(document, draggedId)} ${position} ${entry.label}`;
+  }
+  function drop(event: DragEvent, entry: Entry) {
+    event.preventDefault();
+    if (document && dropKey === entry.key) {
+      const command = moveRelative(document, draggedId, entry.nodeId, dropPosition, componentDescriptors);
+      if (command && onApply?.({ requestId: crypto.randomUUID(), reason: moveMessage, commands: [command] })) {
+        const key = `${document.id}|${draggedId}`; onSelect?.(key); void focus(key);
+      }
+    }
+    draggedId = ''; dropKey = ''; moveMessage = '';
+  }
   const query = $derived(search.trim().toLocaleLowerCase());
   let root: HTMLElement;
   const effectiveScope = $derived(scope ? { ...scope, state: { ...scope.state, ...previewValues(document?.localState ?? {}, scope.state ?? {}) } } : undefined);
@@ -20,7 +49,7 @@
     const out: Entry[] = [];
     function walk(i: UiRenderInstruction, depth: number, keys: readonly string[], parent?: string, values?: DocumentScope, fills: Readonly<Record<string, readonly UiRenderInstruction[]>> = {}, template = false, fillScope?: DocumentScope) {
       const key = occurrenceKey(i.occurrenceKey, keys);
-      const label = document ? nodeLabel(document, i.nodeId, labels) : i.kind === 'text' && i.content.type === 'literal' ? i.content.value : i.kind === 'element' ? i.tag : i.kind === 'component' ? labels.definitions?.[i.definitionId] ?? 'Component' : i.kind;
+      const label = document ? compositionName(document, i.nodeId, labels) : i.kind === 'text' && i.content.type === 'literal' ? i.content.value : i.kind === 'element' ? i.tag : i.kind === 'component' ? labels.definitions?.[i.definitionId] ?? 'Component' : i.kind;
       const start = out.length;
       out.push({ key, nodeId: i.nodeId, label, depth, parent, children: false, component: i.kind === 'component' || i.kind === 'extension', compact: i.kind === 'component' || i.kind === 'extension' || (i.kind === 'element' && i.children.every(c => c.kind === 'text')), selectable: !template && !['component', 'repeat', 'conditional', 'slot'].includes(i.kind), detail: `${i.nodeId}${i.kind === 'component' ? ` · definition ${i.definitionId} @ ${i.definitionRevision}` : ''}${keys.length ? ` · record ${keys.join(' / ')}` : ''}${template ? ' · template (runtime scope unavailable)' : ''}` });
       const child = (instruction: UiRenderInstruction, childValues = values, childKeys = keys, childFills = fills, isTemplate = template, childFillScope = fillScope) => walk(instruction, depth + 1, childKeys, key, childValues, childFills, isTemplate, childFillScope);
@@ -118,14 +147,16 @@
     {#each entries as entry (entry.key)}
       <li role="none" style:padding-left={`${entry.depth * 12}px`}>
         {#if entry.children}<button class="disclosure" type="button" tabindex="-1" disabled={!!query} aria-label={`${query || isOpen(entry) ? 'Collapse' : 'Expand'} ${entry.label}`} onclick={() => toggle(entry)}>{query || isOpen(entry) ? '⌄' : '›'}</button>{:else}<span class="spacer"></span>{/if}
-        <button type="button" role="treeitem" data-key={entry.key} aria-level={entry.depth + 1} aria-expanded={entry.children ? !!query || isOpen(entry) : undefined} aria-selected={entry.key === selectedOccurrence} tabindex={entry.key === tabStop ? 0 : -1} title={`${entry.label} · ${entry.detail}`} onclick={() => select(entry)} onkeydown={e => keyboard(e, entry)} onfocus={() => focusKey = entry.key}>
+        <button type="button" role="treeitem" data-key={entry.key} data-drop={dropKey === entry.key ? dropPosition : undefined} aria-level={entry.depth + 1} aria-expanded={entry.children ? !!query || isOpen(entry) : undefined} aria-selected={entry.key === selectedOccurrence} tabindex={entry.key === tabStop ? 0 : -1} title={`${entry.label} · ${entry.detail}`} onclick={() => select(entry)} onkeydown={e => keyboard(e, entry)} onfocus={() => focusKey = entry.key}
+          draggable={!!onApply && direct(entry) && !query} ondragstart={event => { if (!direct(entry)) { event.preventDefault(); return; } draggedId = entry.nodeId; if (event.dataTransfer) { event.dataTransfer.effectAllowed = 'move'; event.dataTransfer.setData('text/plain', entry.nodeId); } }}
+          ondragover={event => dragOver(event, entry)} ondrop={event => drop(event, entry)} ondragleave={() => { dropKey = ''; }} ondragend={() => { draggedId = ''; dropKey = ''; moveMessage = ''; }}>
           <span class="icon" aria-hidden="true">{entry.component ? '◇' : entry.children ? '▤' : '·'}</span><span class="name">{visibleLabel(entry)}</span>{#if entry.component}<span class="badge" title="Component" aria-label="Component">◇</span>{/if}
         </button>
       </li>
     {/each}
   </ul>
   {#if query && !matches.length}<p class="empty" role="status">No matching elements. Clear search to return to the page.</p>{/if}
-  <footer><p>↑ ↓ navigate · → expand · ← collapse · Enter select</p><details><summary>Selection details & provenance</summary><p><strong>{all.find(e => e.key === selectedOccurrence)?.label ?? 'No selected element'}</strong></p><p>{all.find(e => e.key === selectedOccurrence)?.detail}</p><code>{selectedOccurrence ?? ''}</code></details></footer>
+  <footer><p>↑ ↓ navigate · → expand · ← collapse · Enter select</p>{#if onApply}<p>Drag to move, or use Arrange selection.</p><p role="status">{moveMessage}</p>{/if}<details><summary>Selection details & provenance</summary><p><strong>{all.find(e => e.key === selectedOccurrence)?.label ?? 'No selected element'}</strong></p><p>{all.find(e => e.key === selectedOccurrence)?.detail}</p><code>{selectedOccurrence ?? ''}</code></details></footer>
 </nav>
 <style>
   .uv-layers { font: 12px/1.5 var(--ui-editor-font, 'Segoe UI', sans-serif); color: var(--ui-editor-ink, #202938); background: var(--ui-editor-panel, #f8f9fb); min-width: 0; display: flex; flex-direction: column; height: 100%; }
@@ -137,6 +168,7 @@
   [role=treeitem] { display: flex; align-items: center; gap: 5px; flex: 1; padding: 5px; text-align: left; }
   [aria-selected=true] { background: var(--ui-editor-selection, #edf1ff); color: var(--ui-editor-accent, #355cc9); }
   .disclosure, .spacer { flex: 0 0 20px; width: 20px; }
+  [data-drop=before] {box-shadow:inset 0 2px #5269bd;} [data-drop=after] {box-shadow:inset 0 -2px #5269bd;} [data-drop=inside] {outline:2px solid #5269bd;outline-offset:-2px;} [draggable=true] {cursor:grab;}
   .name { overflow-wrap: anywhere; min-width: 0; flex: 1; display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
   .icon { color: var(--ui-editor-muted, #667085); }
   .badge { font-size: 9px; color: var(--ui-editor-muted, #667085); }

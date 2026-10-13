@@ -26,6 +26,8 @@
 
   interface Props {
     readonly document: UiDocument;
+    /** Design suppresses owned runtime input, including portals; omitted preserves existing consumers. */
+    readonly interactionMode?: 'design' | 'interact';
     readonly catalogs?: UiCatalogs;
     readonly extensions?: readonly UiExtensionDescriptor[];
     readonly extensionImplementations?: readonly (
@@ -56,6 +58,7 @@
 
   let {
     document,
+    interactionMode = 'interact',
     catalogs,
     extensions = [],
     extensionImplementations = [],
@@ -111,6 +114,25 @@
   // silently never rendered.
   let canvasEl = $state<HTMLElement | undefined>(undefined);
   $effect(() => {
+    if (interactionMode !== 'design' || !canvasEl) return;
+    const intercept = (event: Event) => {
+      const target = event.target instanceof Element ? event.target.closest<HTMLElement>('[data-ui-occ]') : null;
+      const owner = canvasEl?.querySelector<HTMLElement>('[data-ui-owner-root]')?.dataset.uiOwnerRoot;
+      if (!owner || target?.dataset.uiOwner !== owner) return;
+      // Tab and Escape remain available for navigation and overlay dismissal. Activation/editing
+      // events stop before catalog handlers, native inputs and form submission.
+      if (event instanceof KeyboardEvent && (['Tab', 'Escape'].includes(event.key) || event.ctrlKey || event.metaKey)) return;
+      if (event.cancelable) event.preventDefault();
+      event.stopImmediatePropagation();
+      if (event.type === 'pointerdown' || event.type === 'click' || (event instanceof KeyboardEvent && ['Enter', ' '].includes(event.key))) {
+        if (target.dataset.uiOcc) onSelect(target.dataset.uiOcc);
+      }
+    };
+    const events = ['pointerdown', 'click', 'keydown', 'keyup', 'beforeinput', 'input', 'change', 'submit'] as const;
+    for (const event of events) globalThis.document.addEventListener(event, intercept, true);
+    return () => { for (const event of events) globalThis.document.removeEventListener(event, intercept, true); };
+  });
+  $effect(() => {
     const occurrence = selectedOccurrence;
     void compiled;
     let cancelled = false;
@@ -150,7 +172,7 @@
 </script>
 
 {#if compiled.ok}
-  <div class={canvasClasses} bind:this={canvasEl}>
+  <div class={canvasClasses} class:uv-canvas-design={interactionMode === 'design'} bind:this={canvasEl}>
     {#if compiled.plan.diagnostics.length > 0}
       <ul class="uv-canvas-diagnostics" aria-label="Document diagnostics">
         {#each compiled.plan.diagnostics as diagnostic}
@@ -159,7 +181,7 @@
       </ul>
     {/if}
     <style>
-      .uv-canvas [data-ui-occ]:hover {
+      .uv-canvas-design [data-ui-occ]:hover:not(:has([data-ui-occ]:hover)) {
         outline: 1px dashed var(--ui-editor-hover, #7aa7ff);
         cursor: pointer;
       }
@@ -179,9 +201,9 @@
       {resetSignal}
       {actionState}
       {onStateChange}
-      {dispatch}
-      {navigate}
-      selectOccurrence={handleSelect}
+      dispatch={interactionMode === 'design' ? async () => ({ ok: false, code: 'UI_EDITOR_DESIGN_MODE', message: 'Switch to Interact to run behavior.' }) : dispatch}
+      navigate={interactionMode === 'design' ? () => {} : navigate}
+      selectOccurrence={interactionMode === 'interact' ? handleSelect : undefined}
       onRenderDiagnostic={onRenderDiagnostic}
       ariaLabel={ariaLabel}
     />

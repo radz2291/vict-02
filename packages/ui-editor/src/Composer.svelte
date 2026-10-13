@@ -10,6 +10,7 @@
   let search = $state('');
   let destination = $state('');
   let moveDestination = $state('');
+  let placement = $state<'inside' | 'before' | 'after'>('inside');
   const targets = $derived(compositionTargets(document, descriptors));
   const moveTargets = $derived(compositionTargets(document, descriptors, selectedNodeId));
   const parent = $derived(selectedNodeId ? compositionParent(document, selectedNodeId) : undefined);
@@ -21,9 +22,12 @@
     const target = selectedTarget ?? parentTarget ?? targets[0];
     destination = target ? key(target) : '';
     moveDestination = '';
+    placement = selectedTarget ? 'inside' : 'after';
   });
   function insert(recipe: InsertRecipe) {
-    const target = targets.find(t => key(t) === destination);
+    const chosen = targets.find(t => key(t) === destination);
+    const target = placement !== 'inside' && parent && selectedNodeId
+      ? { ...parent, index: parent.children.indexOf(selectedNodeId) + (placement === 'after' ? 1 : 0) } : chosen;
     if (!target) return;
     const id = `${recipe.id}-${globalThis.crypto.randomUUID().slice(0, 8)}`;
     if (onApply(insertSubtree(globalThis.crypto.randomUUID(), recipe.create(id), target))) onInserted?.(id);
@@ -35,13 +39,6 @@
 </script>
 
 <section class="composer" aria-label="Compose screen">
-  {#if showInsert}
-  <label>Insert into<select aria-label="Insert into" bind:value={destination}>{#each targets as target (key(target))}<option value={key(target)}>{target.label}</option>{/each}</select></label>
-  <input type="search" aria-label="Search elements" placeholder="Find an element or component…" bind:value={search} />
-  <div class="recipes">{#each recipes.filter(r => `${r.label} ${r.description}`.toLowerCase().includes(search.toLowerCase())) as recipe (recipe.id)}
-    <button class="recipe" type="button" disabled={!destination} onclick={() => insert(recipe)}><span class="plus">+</span><span><strong>{recipe.label}</strong><small>{recipe.description}</small></span></button>
-  {/each}</div>
-  {/if}
   {#if selectedNodeId && selectedNodeId !== document.root}
     <div class="arrange"><h3>Arrange selection</h3>
       <div class="order"><button type="button" disabled={!parent || position < 1} onclick={() => reorder(-1)}>Move up</button><button type="button" disabled={!parent || position >= parent.children.length - 1} onclick={() => reorder(1)}>Move down</button></div>
@@ -49,6 +46,14 @@
       <button type="button" disabled={!moveDestination} onclick={() => { const target = moveTargets.find(t => key(t) === moveDestination); if (target) onApply({ requestId: globalThis.crypto.randomUUID(), reason: 'Move selection', commands: [{ op: 'move', nodeId: selectedNodeId!, newParentId: target.nodeId, slotName: target.slotName }] }); }}>Move selection</button>
       <button class="remove" type="button" onclick={() => onApply({ requestId: globalThis.crypto.randomUUID(), reason: 'Remove selection', commands: [{ op: 'remove', nodeId: selectedNodeId!, detachFromParent: true }] })}>Remove selection</button>
     </div>
+  {/if}
+  {#if showInsert}
+  <label>Insert position<select aria-label="Insert position" bind:value={placement}><option value="inside">Inside a container or slot</option>{#if parent}<option value="before">Before selection</option><option value="after">After selection</option>{/if}</select></label>
+  <label>Insert into<select aria-label="Insert into" bind:value={destination} disabled={placement !== 'inside'}>{#each targets as target (key(target))}<option value={key(target)}>{target.label}</option>{/each}</select></label>
+  <input type="search" aria-label="Search elements" placeholder="Find an element or component…" bind:value={search} />
+  <div class="recipes">{#each recipes.filter(r => `${r.label} ${r.description}`.toLowerCase().includes(search.toLowerCase())) as recipe (recipe.id)}
+    <button class="recipe" type="button" disabled={!destination} onclick={() => insert(recipe)}><span class="plus">+</span><span><strong>{recipe.label}</strong><small>{recipe.description}</small></span></button>
+  {/each}</div>
   {/if}
 </section>
 <style>

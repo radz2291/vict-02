@@ -1,9 +1,11 @@
 import type { UiDocument, UiNode, UiEditCommand, UiExtensionDescriptor } from '@victframework/ui';
 import type { TransactionDraft } from './commands.js';
+import { nodeLabel, type EditorLabels } from './inspector-ux.js';
 
 export interface CompositionTarget {
   readonly nodeId: string;
   readonly slotName?: string;
+  readonly index?: number;
 }
 export interface InsertRecipe {
   readonly id: string;
@@ -23,6 +25,7 @@ export function compositionTargets(
   document: UiDocument,
   descriptors: readonly UiExtensionDescriptor[],
   exclude?: string,
+  labels: EditorLabels = {},
 ): (CompositionTarget & { readonly label: string })[] {
   const excluded = new Set<string>();
   const walk = (id: string) => {
@@ -56,15 +59,65 @@ export function compositionTargets(
         return [
           {
             nodeId: node.id,
-            label: node.id === document.root ? 'Screen' : `${node.tag} · ${node.id}`,
+            label:
+              node.id === document.root ? 'Screen' : compositionName(document, node.id, labels),
           },
         ];
       if (node.kind === 'component')
         return (descriptors.find((d) => d.id === node.definitionId)?.slots ?? []).map(
-          (slotName) => ({ nodeId: node.id, slotName, label: `${node.id} / ${slotName}` }),
+          (slotName) => ({
+            nodeId: node.id,
+            slotName,
+            label: `${compositionName(document, node.id, labels)} / ${slotName.replace(/^./, (c) => c.toUpperCase())}`,
+          }),
         );
       return [];
     });
+}
+export function compositionName(
+  document: UiDocument,
+  id: string,
+  labels: EditorLabels = {},
+): string {
+  const name = nodeLabel(document, id, labels);
+  const peers = Object.keys(document.nodes).filter(
+    (key) => nodeLabel(document, key, labels) === name,
+  );
+  return peers.length > 1 ? `${name} ${peers.indexOf(id) + 1}` : name;
+}
+export type CompositionPlacement = 'before' | 'inside' | 'after';
+/** Source-addressed tree moves; the edit engine still owns final cycle/closure validation. */
+export function moveRelative(
+  document: UiDocument,
+  nodeId: string,
+  anchorId: string,
+  placement: CompositionPlacement,
+  descriptors: readonly UiExtensionDescriptor[],
+): Extract<UiEditCommand, { op: 'move' }> | undefined {
+  if (nodeId === anchorId || nodeId === document.root) return undefined;
+  const targets = compositionTargets(document, descriptors, nodeId);
+  if (placement === 'inside') {
+    const matches = targets.filter((target) => target.nodeId === anchorId);
+    if (matches.length !== 1) return undefined; // Multi-slot owners require an explicit slot choice.
+    return { op: 'move', nodeId, newParentId: anchorId, slotName: matches[0]!.slotName };
+  }
+  const parent = compositionParent(document, anchorId);
+  if (
+    !parent ||
+    !targets.some(
+      (target) => target.nodeId === parent.nodeId && target.slotName === parent.slotName,
+    )
+  )
+    return undefined;
+  let index = parent.children.indexOf(anchorId) + (placement === 'after' ? 1 : 0);
+  const current = compositionParent(document, nodeId);
+  if (
+    current?.nodeId === parent.nodeId &&
+    current.slotName === parent.slotName &&
+    current.children.indexOf(nodeId) < index
+  )
+    index--;
+  return { op: 'move', nodeId, newParentId: parent.nodeId, slotName: parent.slotName, index };
 }
 export function compositionParent(
   document: UiDocument,
@@ -94,6 +147,7 @@ export function insertSubtree(
       op: 'insert',
       parentId: into.nodeId,
       ...(into.slotName ? { slotName: into.slotName } : {}),
+      ...(into.index !== undefined ? { index: into.index } : {}),
       node:
         node.kind === 'element' || node.kind === 'portal'
           ? { ...node, children: [] }

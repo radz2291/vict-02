@@ -42,6 +42,32 @@ function pseudoDocument(pseudo: 'hover' | 'focus' | 'active' | 'disabled'): UiDo
 }
 
 describe('U2-03 pseudo-state CSS emission (F1 regression)', () => {
+  it('keeps conditioned source rules before innermost local styles with equal specificity', () => {
+    const source = pseudoDocument('hover');
+    const document: UiDocument = {
+      ...source,
+      nodes: {
+        ...source.nodes,
+        'n.root': {
+          ...source.nodes['n.root']!,
+          localStyle: [{ property: 'background', value: { type: 'text', value: 'pink' } }],
+        },
+      },
+      conditions: {
+        compact: { id: 'compact', kind: 'container', name: 'screen', query: '(max-width: 600px)' },
+      },
+      styleSources: {
+        'src.pseudo': { ...source.styleSources['src.pseudo']!, conditionId: 'compact' },
+      },
+    };
+    const compiled = compileUiDocument(document, defaultSemanticElementCatalog());
+    expect(compiled.ok).toBe(true);
+    if (!compiled.ok) return;
+    const css = styleRulesToCss(compiled.plan, 'root');
+    expect(css).toContain('@container screen (max-width: 600px)');
+    expect(css.indexOf('background: navy')).toBeLessThan(css.indexOf('background: pink'));
+    expect(css).toContain(':where(:hover)');
+  });
   for (const pseudo of ['hover', 'focus', 'active', 'disabled'] as const) {
     it(`emits a matchable .class:${pseudo} rule`, () => {
       const compiled = compileUiDocument(pseudoDocument(pseudo), defaultSemanticElementCatalog());
@@ -52,7 +78,7 @@ describe('U2-03 pseudo-state CSS emission (F1 regression)', () => {
       // selector = generated class + pseudo suffix (interpolated, no template junk)
       expect(rule?.selector).toMatch(/^\.uv-[0-9a-f]+-n_root$/);
       const css = styleRulesToCss(compiled.plan, 'uv-root-doc_pseudo-1');
-      expect(css).toContain(`.uv-root-doc_pseudo-1 .uv-f95fe7ba-n_root:${pseudo} {`);
+      expect(css).toContain(`.uv-root-doc_pseudo-1 .uv-f95fe7ba-n_root:where(:${pseudo}) {`);
       expect(css).not.toContain('${');
     });
   }

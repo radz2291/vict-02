@@ -44,6 +44,59 @@ function click(target: HTMLElement, label: string) {
 }
 
 describe('Inspector / Layers UX semantic regressions', () => {
+  it('edits and resets a promoted base source without reintroducing a masking local override', async () => {
+    const base = {
+      id: 'src.title.always.plain',
+      declarations: [{ property: 'font-size', value: { type: 'text' as const, value: '36px' } }],
+    };
+    const source: UiDocument = {
+      ...fixture,
+      nodes: { ...fixture.nodes, title: { ...fixture.nodes.title!, styleSources: [base.id] } },
+      styleSources: { [base.id]: base },
+    };
+    const session = UiEditSession.open({ document: source, storedRevision: '1' });
+    const target = document.createElement('div');
+    document.body.append(target);
+    const inspector = mount(Inspector, {
+      target,
+      props: {
+        document: source,
+        selectedOccurrence: 'ux|title',
+        onApply: (draft: TransactionDraft) => {
+          expect(
+            session.applyTransaction({
+              ...draft,
+              expectedDocumentRevision: session.workingRevision,
+            }).ok,
+          ).toBe(true);
+        },
+      },
+    });
+    try {
+      flushSync();
+      click(target, 'Style');
+      const input = target.querySelector<HTMLInputElement>('[aria-label="Text size"]')!;
+      input.value = '40';
+      input.dispatchEvent(new Event('change', { bubbles: true }));
+      flushSync();
+      expect(session.document.styleSources[base.id]?.declarations[0]?.value).toEqual({
+        type: 'text',
+        value: '40px',
+      });
+      expect(session.document.nodes.title?.localStyle).toBeUndefined();
+      target.querySelector<HTMLButtonElement>('[aria-label="Reset Text size"]')!.click();
+      flushSync();
+      expect(session.document.styleSources[base.id]).toBeUndefined();
+      expect(session.undo().ok).toBe(true);
+      expect(session.document.styleSources[base.id]?.declarations[0]?.value).toEqual({
+        type: 'text',
+        value: '40px',
+      });
+    } finally {
+      await unmount(inspector);
+      target.remove();
+    }
+  });
   it('reconnecting navigation preserves the existing canonical parameter bindings', async () => {
     const documentWithRoute: UiDocument = {
       ...fixture,
@@ -174,7 +227,9 @@ describe('Inspector / Layers UX semantic regressions', () => {
           (e) => e.getAttribute('tabindex') === '0',
         ),
       ).toHaveLength(1);
-      const collapse = target.querySelector<HTMLButtonElement>('[aria-label="Collapse Component"]');
+      const collapse = target.querySelector<HTMLButtonElement>(
+        '[aria-label="Collapse Component 1"]',
+      );
       expect(collapse).not.toBeNull();
       collapse?.click();
       flushSync();

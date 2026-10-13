@@ -1,7 +1,9 @@
 <script lang="ts">
   import type { UiDocument, UiNode, UiExtensionDescriptor, UiEditCommand } from '@victframework/ui';
+  import { compositionName } from './composition.js';
+  import type { EditorLabels } from './inspector-ux.js';
   import type { TransactionDraft } from './commands.js';
-  let { document, node, descriptor, onApply }: { document: UiDocument; node: Extract<UiNode, { kind: 'component' }>; descriptor: UiExtensionDescriptor; onApply: (draft: TransactionDraft) => void } = $props();
+  let { document, node, descriptor, onApply, labels = {} }: { document: UiDocument; node: Extract<UiNode, { kind: 'component' }>; descriptor: UiExtensionDescriptor; labels?: EditorLabels; onApply: (draft: TransactionDraft) => void } = $props();
   let choices = $state<Record<string, string>>({});
   let serial = 0;
   function fill(slot: string, children: readonly string[]): void {
@@ -60,10 +62,10 @@
         <strong>{slot}</strong>
         <ol>
           {#each children as id, index (`${id}-${index}`)}
-            <li><span>{id}</span>
-              <button type="button" aria-label={`Move ${id} earlier in ${slot}`} disabled={index === 0} onclick={() => reorder(slot, index, -1)}>↑</button>
-              <button type="button" aria-label={`Move ${id} later in ${slot}`} disabled={index === children.length - 1} onclick={() => reorder(slot, index, 1)}>↓</button>
-              <button type="button" aria-label={`Remove ${id} from ${slot}`} onclick={() => fill(slot, children.filter((_, position) => position !== index))}>Remove</button>
+            <li><span title={id}>{compositionName(document, id, labels)}</span>
+              <button type="button" aria-label={`Move ${compositionName(document, id, labels)} earlier in ${slot}`} disabled={index === 0} onclick={() => reorder(slot, index, -1)}>↑</button>
+              <button type="button" aria-label={`Move ${compositionName(document, id, labels)} later in ${slot}`} disabled={index === children.length - 1} onclick={() => reorder(slot, index, 1)}>↓</button>
+              <button type="button" aria-label={`Remove ${compositionName(document, id, labels)} from ${slot}`} onclick={() => fill(slot, children.filter((_, position) => position !== index))}>Remove</button>
             </li>
           {/each}
         </ol>
@@ -71,7 +73,7 @@
           <select aria-label={`${slot} content node`} bind:value={choices[slot]}>
             <option value="">Choose a source node…</option>
             {#each available.filter(candidate => !children.includes(candidate.id)) as candidate (candidate.id)}
-              <option value={candidate.id}>{candidate.id} ({candidate.kind})</option>
+              <option value={candidate.id}>{compositionName(document, candidate.id, labels)}</option>
             {/each}
           </select>
         </label>

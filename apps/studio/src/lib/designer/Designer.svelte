@@ -2,7 +2,7 @@
   import { onMount, tick, untrack } from 'svelte';
   import { beforeNavigate } from '$app/navigation';
   import { ControlScope } from '@victframework/ui-svelte';
-  import { Composer, EditorBridge, EditorCanvas, Inspector, Layers, StateValuesPanel, resolveOccurrence, type TransactionDraft } from '@victframework/ui-editor';
+  import { Composer, EditorBridge, EditorCanvas, Inspector, Layers, StateValuesPanel, PanelResizer, resolveOccurrence, type TransactionDraft } from '@victframework/ui-editor';
   import { createPreviewSession } from '@victframework/ui-preview';
   import type { UiDocument, UiRenderPlan, UiValue } from '@victframework/ui';
   import { newScreen, compileScreen, screenIssues, screenApplication, screenName, screenActionState, designerCatalogs, actionInputs, catalogDescriptors, catalogImplementations } from './application.js';
@@ -30,6 +30,14 @@
   let leftTab = $state('Insert');
   let mobilePane = $state('Canvas');
   let width = $state('fluid');
+  let mode = $state<'design' | 'interact'>('design');
+  let leftOpen = $state(true), rightOpen = $state(true), compactWorkspace = $state(false);
+  let leftWidth = $state(240), rightWidth = $state(320);
+  const editorLabels = { actions: { 'demo.submit': 'Submit (simulated)' }, nodes: { screen: 'Screen' },
+    state: { message: 'Message', accepted: 'Agreement', dialogOpen: 'Dialog open', busy: 'Submitting', actionError: 'Action error', actionResult: 'Action result' },
+    actionInputs: { message: 'Message', accepted: 'Agreement' } };
+  function selectOccurrence(occurrence: string) { bridge?.select(occurrence); if (compactWorkspace) rightOpen = true; }
+  function changeMode(next: 'design' | 'interact') { mode = next; resetRuntime(); notice = next === 'design' ? 'Design mode · select and edit without running behavior.' : 'Interact mode · simulated behavior, no live effects.'; }
   let createDialog: HTMLDialogElement;
   let nameInput: HTMLInputElement;
   let screenTitle = $state('My first screen');
@@ -87,6 +95,9 @@
     sessions.set(id, next); openSession(next); notice = 'Reopened the saved source.';
   }
   onMount(() => {
+    const media = matchMedia('(max-width: 1100px)');
+    const adapt = () => { compactWorkspace = media.matches; rightOpen = !media.matches; };
+    adapt(); media.addEventListener('change', adapt);
     try {
       library = savedScreens(localStorage);
       const active = localStorage.getItem('vict.studio.active-screen');
@@ -94,7 +105,7 @@
       else if (library[0]) openScreen(library[0].id);
       else createScreen('Untitled screen');
     } catch { issues = [{ code: 'STUDIO_STORAGE_UNAVAILABLE', message: 'Browser storage is unavailable. Enable storage to author and save screens.' }]; }
-    return () => unsubscribe?.();
+    return () => { unsubscribe?.(); media.removeEventListener('change', adapt); };
   });
   function apply(draft: TransactionDraft): boolean {
     if (!bridge) return false;
@@ -126,6 +137,7 @@
     resetRuntime(); bridge.select(`${bridge.document.id}|${bridge.document.root}`); issues = []; notice = `Reopened revision ${result.storedRevision}; runtime state reset.`;
   }
   async function dispatch(actionId: string, input?: unknown) {
+    if (mode === 'design') return { ok: false, code: 'UI_EDITOR_DESIGN_MODE', message: 'Switch to Interact to run behavior.' };
     if (!compilation?.ok) return { ok: false, code: 'APPLICATION_INVALID', message: 'The application does not compile.' };
     const active = preview;
     const result = await screenDispatcher(compilation.plan, adapter, async (op, value) => {
@@ -141,6 +153,7 @@
     return element ? getComputedStyle(element).getPropertyValue(property) : undefined;
   }
   function shortcuts(event: KeyboardEvent) {
+    if (event.key === 'Escape' && compactWorkspace) rightOpen = false;
     if (!(event.ctrlKey || event.metaKey)) return;
     const editable = event.target instanceof HTMLElement && (event.target.matches('input,textarea,select') || event.target.isContentEditable);
     if (event.key.toLowerCase() === 's') { event.preventDefault(); save(); }
@@ -163,7 +176,7 @@
     } catch { issues = [{ code: 'STUDIO_JSON_INVALID', message: 'Enter valid canonical UI document JSON.' }]; }
   }
   // Authored revisions invalidate any in-flight simulation without adding history.
-  $effect(() => { if (authoredRevision) untrack(resetRuntime); });
+  $effect.pre(() => { if (authoredRevision) untrack(resetRuntime); });
 </script>
 
 <svelte:window onkeydown={shortcuts} onbeforeunload={event => { if (sourceDraftDirty || [...sessions.values()].some(session => session.getSnapshot().dirty)) { event.preventDefault(); event.returnValue = ''; } }} />
@@ -173,20 +186,21 @@
   <div class="design-toolbar">
     <div class="screen-picker"><label class="sr-only" for="screen-picker">Screen</label><select id="screen-picker" value={source?.id ?? ''} onchange={event => openScreen(event.currentTarget.value)}>{#each library as item (item.id)}<option value={item.id}>{item.name}</option>{/each}</select><button type="button" onclick={beginCreate} aria-label="New screen">＋ New</button></div>
     <div class="history-controls"><button type="button" disabled={!snapshot?.canUndo} onclick={undo} title="Undo · Ctrl+Z">Undo</button><button type="button" disabled={!snapshot?.canRedo} onclick={redo} title="Redo · Ctrl+Shift+Z">Redo</button></div>
+    <div class="canvas-modes" aria-label="Canvas mode"><button type="button" aria-pressed={mode === 'design'} onclick={() => changeMode('design')}>Design</button><button type="button" aria-pressed={mode === 'interact'} onclick={() => changeMode('interact')}>Interact</button></div>
     <span class="save-state">{sourceDraftDirty ? '● Unapplied JSON draft' : snapshot?.dirty ? '● Unsaved changes' : snapshot?.storedRevision === 'r1' ? '○ New screen' : '✓ Saved'}</span>
-    <div class="toolbar-end"><button type="button" onclick={reopen} disabled={!source || snapshot?.dirty || sourceDraftDirty || snapshot?.storedRevision === 'r1'}>Reopen</button><button type="button" onclick={save} disabled={!compilation?.ok || sourceDraftDirty}>Save</button><a class="run-button" aria-disabled={!source || snapshot?.dirty || sourceDraftDirty || snapshot?.storedRevision === 'r1'} href={source && !snapshot?.dirty && !sourceDraftDirty && snapshot?.storedRevision !== 'r1' ? `/run-screen?screen=${encodeURIComponent(source.id)}` : undefined}>Run saved ↗</a></div>
+    <div class="toolbar-end"><button type="button" class="panel-toggle" aria-label={leftOpen ? 'Hide document panel' : 'Show document panel'} aria-pressed={leftOpen} onclick={() => leftOpen = !leftOpen}>Document</button><button type="button" class="panel-toggle" aria-label={rightOpen ? 'Hide Inspector' : 'Show Inspector'} aria-pressed={rightOpen} onclick={() => rightOpen = !rightOpen}>Inspector</button><button type="button" onclick={reopen} disabled={!source || snapshot?.dirty || sourceDraftDirty || snapshot?.storedRevision === 'r1'}>Reopen</button><button type="button" onclick={save} disabled={!compilation?.ok || sourceDraftDirty}>Save</button><a class="run-button" aria-disabled={!source || snapshot?.dirty || sourceDraftDirty || snapshot?.storedRevision === 'r1'} href={source && !snapshot?.dirty && !sourceDraftDirty && snapshot?.storedRevision !== 'r1' ? `/run-screen?screen=${encodeURIComponent(source.id)}` : undefined}>Run saved ↗</a></div>
   </div>
   <nav class="mobile-panes" aria-label="Designer panels">{#each ['Insert', 'Layers', 'Canvas', 'Inspect', 'Source'] as pane}<button type="button" aria-pressed={mobilePane === pane} onclick={() => { mobilePane = pane; if (['Insert', 'Layers', 'Source'].includes(pane)) leftTab = pane; }}>{pane}</button>{/each}</nav>
   {#if source && bridge}
-  <div class="design-workspace">
+  <div class="design-workspace" class:left-hidden={!leftOpen} class:right-hidden={!rightOpen} style:--left-width={`${leftWidth}px`} style:--right-width={`${rightWidth}px`}>
     <aside class:mobile-active={['Insert', 'Layers', 'Source'].includes(mobilePane)} class="design-sidebar">
       <nav class="sidebar-tabs" aria-label="Document panels">{#each ['Insert', 'Layers', 'Source'] as tab}<button type="button" aria-pressed={leftTab === tab} onclick={() => leftTab = tab}>{tab}</button>{/each}</nav>
       <div class="sidebar-body">
         {#if leftTab === 'Insert'}
           <p class="panel-eyebrow">BUILD YOUR SCREEN</p><p class="panel-hint">Add to the selection, or choose a parent. Every addition is undoable.</p>
-          <Composer document={source} selectedNodeId={selectedNode?.id} recipes={screenRecipes} descriptors={catalogDescriptors} onApply={apply} onInserted={(id: string) => { bridge?.select(`${source.id}|${id}`); notice = 'Added to your screen. Configure it in the Inspector.'; }} />
+          <Composer document={source} selectedNodeId={selectedNode?.id} recipes={screenRecipes} descriptors={catalogDescriptors} onApply={apply} onInserted={(id: string) => { selectOccurrence(`${source.id}|${id}`); notice = 'Added to your screen. Configure it in the Inspector.'; }} />
         {:else if leftTab === 'Layers'}
-          {#if plan}<Layers {plan} document={source} selectedOccurrence={selected} onSelect={(occurrence: string) => bridge?.select(occurrence)} />{/if}
+          {#if plan}<Layers {plan} document={source} selectedOccurrence={selected} onSelect={selectOccurrence} onApply={apply} componentDescriptors={catalogDescriptors} />{/if}
           <Composer document={source} selectedNodeId={selectedNode?.id} recipes={[]} descriptors={catalogDescriptors} showInsert={false} onApply={apply} />
         {:else}
           <p class="panel-eyebrow">CANONICAL SOURCE</p><p class="panel-hint">Humans and agents edit this same UI document. Keep its id and revision. Apply validates the source and creates one undoable change.</p>
@@ -197,12 +211,13 @@
         {/if}
       </div>
     </aside>
+    <div class="left-resizer"><PanelResizer label="Document panel width" value={leftWidth} min={180} max={360} onChange={(value: number) => leftWidth = value} /></div>
     <main class:mobile-active={mobilePane === 'Canvas'} class="design-stage">
-      <div class="canvas-toolbar"><span><span class="live-dot"></span> Working preview</span><label><span class="sr-only">Canvas width</span><select aria-label="Canvas width" bind:value={width}><option value="fluid">Fit canvas</option><option value="768">Tablet · 768</option><option value="390">Phone · 390</option></select></label><button type="button" onclick={resetRuntime} title="Reset ephemeral runtime values">Reset preview</button></div>
+      <div class="canvas-toolbar"><span><span class="live-dot"></span>{mode === 'design' ? 'Design · selection only' : 'Interact · simulated'}</span><label><span class="sr-only">Canvas width</span><select aria-label="Canvas width" bind:value={width}><option value="fluid">Fit canvas</option><option value="768">Tablet · 768</option><option value="390">Phone · 390</option></select></label><button type="button" onclick={resetRuntime} title="Reset ephemeral runtime values">Reset preview</button></div>
       <div class="canvas-scroll"><div class="canvas-caption">{screenName(source)} <span>{width === 'fluid' ? 'Responsive' : `${width}px`}</span></div>
         <div class="design-frame" style:max-width={width === 'fluid' ? 'none' : `${width}px`}>
           <EditorCanvas document={source} catalogs={designerCatalogs} extensions={catalogDescriptors} extensionImplementations={catalogImplementations}
-            selectedOccurrence={selected} onSelect={(occurrence: string) => bridge?.select(occurrence)} {dispatch} navigate={() => { notice = 'This application contains one screen.'; }}
+            interactionMode={mode} selectedOccurrence={mode === 'design' ? selected : undefined} onSelect={mode === 'design' ? selectOccurrence : () => {}} {dispatch} navigate={() => { notice = 'This application contains one screen.'; }}
             stateValues={runtimeValues} onStateChange={(key: string, value: UiValue) => runtimeValues = { ...runtimeValues, [key]: value }} {resetSignal}
             actionState={screenActionState} onPlan={(next: UiRenderPlan) => { plan = next; }}
             onRenderDiagnostic={(diagnostic: { code: string; message: string }) => { issues = [...issues.slice(-4), diagnostic]; }} ariaLabel="Screen canvas" />
@@ -211,7 +226,8 @@
       </div>
       <details class="simulation-panel"><summary>Simulated execution <span>Local preview · no live effects</span></summary><div class="simulation-body"><label><input type="checkbox" bind:checked={simulation.denied} /> Deny demo writes</label><label><input type="checkbox" bind:checked={simulation.failNext} /> Fail next action</label><StateValuesPanel localState={source.localState} stateValues={runtimeValues} onChange={(key: string, value: UiValue | undefined) => { const next = { ...runtimeValues }; if (value === undefined) delete next[key]; else next[key] = value; runtimeValues = next; }} />{#each activity as entry}<p role="status">{entry}</p>{/each}<p class="panel-hint">Connect checkedChange to accepted, bind checked to state.accepted, then map a Button's press → Submit using state.message and state.accepted. Runtime values never enter undo history.</p></div></details>
     </main>
-    <aside class:mobile-active={mobilePane === 'Inspect'} class="design-inspector"><Inspector document={source} selectedOccurrence={selected} onApply={apply} lastIssues={issues} componentDescriptors={catalogDescriptors} knownActionIds={designerCatalogs.actionIds} {actionInputs} knownRouteIds={['screen']} labels={{ actions: { 'demo.submit': 'Submit (simulated)' }, nodes: { screen: 'Screen' } }} styleConditions={[{ id: 'compact', label: 'Compact · ≤600px' }]} readEffective={effective} /></aside>
+    <div class="right-resizer"><PanelResizer label="Inspector width" value={rightWidth} min={280} max={420} reverse onChange={(value: number) => rightWidth = value} /></div>
+    <aside class:mobile-active={mobilePane === 'Inspect'} class="design-inspector"><Inspector document={source} selectedOccurrence={selected} onApply={apply} lastIssues={issues} componentDescriptors={catalogDescriptors} knownActionIds={designerCatalogs.actionIds} {actionInputs} knownRouteIds={['screen']} labels={editorLabels} styleConditions={[{ id: 'compact', label: 'Compact · ≤600px' }]} readEffective={effective} /></aside>
   </div>
   {/if}
   <footer class="design-status"><span role="status">{notice}</span><span title={compilation?.ok ? compilation.plan.applicationVersion : 'Application compilation pending'}>{compilation?.ok ? `@3 · ${compilation.plan.applicationVersion.slice(0, 15)}…` : 'Application source pending'}</span></footer>

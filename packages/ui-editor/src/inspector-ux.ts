@@ -6,6 +6,8 @@ export interface EditorLabels {
   readonly definitions?: Readonly<Record<string, string>>;
   readonly actions?: Readonly<Record<string, string>>;
   readonly routes?: Readonly<Record<string, string>>;
+  readonly state?: Readonly<Record<string, string>>;
+  readonly actionInputs?: Readonly<Record<string, string>>;
 }
 
 export function nodeLabel(document: UiDocument, id: string, labels: EditorLabels = {}): string {
@@ -18,10 +20,19 @@ export function nodeLabel(document: UiDocument, id: string, labels: EditorLabels
     if (labels.definitions?.[node.definitionId]) return labels.definitions[node.definitionId]!;
     for (const name of ['label', 'title', 'alt']) {
       const expression = node.props?.[name];
-      if (expression?.type === 'literal' && typeof expression.value === 'string' && expression.value.trim()) return expression.value;
+      if (
+        expression?.type === 'literal' &&
+        typeof expression.value === 'string' &&
+        expression.value.trim()
+      )
+        return expression.value;
     }
     return node.definitionId.startsWith('vict.catalog.')
-      ? node.definitionId.slice('vict.catalog.'.length).split('-').map(word => word[0]?.toUpperCase() + word.slice(1)).join(' ')
+      ? node.definitionId
+          .slice('vict.catalog.'.length)
+          .split('-')
+          .map((word) => word[0]?.toUpperCase() + word.slice(1))
+          .join(' ')
       : 'Component';
   }
   if (node.kind === 'element') {
@@ -39,7 +50,18 @@ export function nodeLabel(document: UiDocument, id: string, labels: EditorLabels
           section: 'Section',
           article: 'Card',
           main: 'Page',
-          div: 'Container',
+          div: node.localStyle?.some(
+            (d) => d.property === 'display' && d.value.type === 'text' && d.value.value === 'flex',
+          )
+            ? node.localStyle?.some(
+                (d) =>
+                  d.property === 'flex-direction' &&
+                  d.value.type === 'text' &&
+                  d.value.value === 'column',
+              )
+              ? 'Stack'
+              : 'Row'
+            : 'Container',
           input: 'Input',
           form: 'Form',
           nav: 'Navigation',
@@ -107,7 +129,13 @@ export function editableStyle(
 ): UiStyleValue | undefined {
   const node = document.nodes[nodeId];
   if (!node) return undefined;
-  if (!condition && !pseudo) return node.localStyle?.find((d) => d.property === property)?.value;
+  if (!condition && !pseudo)
+    return (
+      node.localStyle?.find((d) => d.property === property)?.value ??
+      document.styleSources[`src.${nodeId}.always.plain`]?.declarations.find(
+        (d) => d.property === property,
+      )?.value
+    );
   return document.styleSources[
     `src.${nodeId}.${condition ?? 'always'}.${pseudo ?? 'plain'}`
   ]?.declarations.find((d) => d.property === property)?.value;

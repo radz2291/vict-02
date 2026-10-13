@@ -78,6 +78,34 @@ it('keeps runtime input and checkbox state across pointer selection and leaves a
   instance = mount(Designer, { target: document.body });
   await tick();
   await tick();
+  const designButton = [...document.querySelectorAll<HTMLButtonElement>('button')].find(
+    (node) => node.textContent?.trim() === 'Submit preview',
+  )!;
+  designButton.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, cancelable: true }));
+  designButton.click();
+  await tick();
+  for (const type of ['keydown', 'keyup']) {
+    expect(
+      designButton.dispatchEvent(
+        new KeyboardEvent(type, { key: ' ', bubbles: true, cancelable: true }),
+      ),
+    ).toBe(false);
+  }
+  const designCheckbox = document.querySelector<HTMLElement>(
+    '[data-testid="catalog-checkbox"] button',
+  )!;
+  designCheckbox.dispatchEvent(
+    new PointerEvent('pointerdown', { bubbles: true, cancelable: true }),
+  );
+  designCheckbox.click();
+  await tick();
+  expect(designCheckbox.getAttribute('aria-checked')).toBe('false');
+  expect(document.body.textContent).not.toContain('Simulated submission:');
+  expect(document.querySelector('.save-state')?.textContent).toContain('Saved');
+  [...document.querySelectorAll<HTMLButtonElement>('button')]
+    .find((node) => node.textContent?.trim() === 'Interact')!
+    .click();
+  await tick();
   const input = document.querySelector<HTMLInputElement>('input[aria-label="Message"]')!;
   input.value = 'Runtime stays separate';
   input.dispatchEvent(new Event('input', { bubbles: true }));
