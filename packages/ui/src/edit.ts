@@ -31,6 +31,8 @@ import type { UiCatalogs } from './document.js';
 export interface UiEditCommandInsert {
   readonly op: 'insert';
   readonly parentId: string;
+  /** Explicit component slot destination; omitted retains element/portal semantics. */
+  readonly slotName?: string;
   /** Where to insert among the parent's ordered children (default: end). */
   readonly index?: number;
   readonly node: UiNode;
@@ -39,11 +41,19 @@ export interface UiEditCommandMove {
   readonly op: 'move';
   readonly nodeId: string;
   readonly newParentId: string;
+  readonly slotName?: string;
   readonly index?: number;
 }
 export interface UiEditCommandRemove {
   readonly op: 'remove';
   readonly nodeId: string;
+  /** Detach structural ownership before reference checks; definition references still refuse. */
+  readonly detachFromParent?: boolean;
+}
+/** Import agent/human canonical source as one undoable edit. Identity/revision cannot be replaced. */
+export interface UiEditCommandReplaceDocument {
+  readonly op: 'replaceDocument';
+  readonly document: UiDocument;
 }
 export interface UiEditCommandSetProperty {
   readonly op: 'setProperty';
@@ -131,6 +141,7 @@ export interface UiEditCommandSetOutputBinding {
 }
 
 export type UiEditCommand =
+  | UiEditCommandReplaceDocument
   | UiEditCommandInsert
   | UiEditCommandMove
   | UiEditCommandRemove
@@ -244,13 +255,45 @@ export function applyUiEdit(
       );
     };
     switch (command.op) {
+      case 'replaceDocument': {
+        if (
+          !isPlainObject(command.document) ||
+          command.document.schema !== UI_DOCUMENT_SCHEMA ||
+          command.document.id !== working.id ||
+          command.document.revision !== working.revision ||
+          typeof command.document.root !== 'string' ||
+          ![
+            'nodes',
+            'componentDefinitions',
+            'styleSources',
+            'tokens',
+            'conditions',
+            'assets',
+            'localState',
+          ].every((key) =>
+            isPlainObject((command.document as unknown as Record<string, unknown>)[key]),
+          )
+        ) {
+          fail('Source replacement must retain the document schema, id and revision.');
+          return;
+        }
+        // Replace the complete closed record (including unknown fields, which
+        // validation must reject), rather than silently retaining old members.
+        for (const key of Object.keys(working))
+          delete (working as unknown as Record<string, unknown>)[key];
+        Object.assign(working, cloneDocument(command.document));
+        return;
+      }
       case 'insert': {
         const parent = doc.nodes[command.parentId];
         if (parent === undefined) {
           fail(`Insert parent '${command.parentId}' does not exist.`);
           return;
         }
-        if (parent.kind !== 'element' && parent.kind !== 'portal') {
+        if (
+          ownedChildren(parent, command.slotName) === undefined ||
+          !declaredSlot(parent, command.slotName, working, catalogs)
+        ) {
           fail(`Insert parent '${command.parentId}' cannot own children (${parent.kind}).`);
           return;
         }
@@ -274,7 +317,7 @@ export function applyUiEdit(
           ]);
           return;
         }
-        const children = [...(parent.children as readonly string[])];
+        const children = [...ownedChildren(parent, command.slotName)!];
         const index = command.index ?? children.length;
         if (index < 0 || index > children.length) {
           fail(`Insert index ${String(command.index)} out of range.`);
@@ -282,8 +325,7 @@ export function applyUiEdit(
         }
         children.splice(index, 0, node.id);
         doc.nodes[node.id] = node;
-        const updatedParent: UiNode =
-          parent.kind === 'element' ? { ...parent, children } : { ...parent, children };
+        const updatedParent = withOwnedChildren(parent, children, command.slotName);
         doc.nodes[updatedParent.id] = updatedParent;
         return;
       }
@@ -294,7 +336,11 @@ export function applyUiEdit(
           fail('Move source or target does not exist.');
           return;
         }
-        if (newParent.kind !== 'element' && newParent.kind !== 'portal') {
+        if (
+          command.nodeId === working.root ||
+          ownedChildren(newParent, command.slotName) === undefined ||
+          !declaredSlot(newParent, command.slotName, working, catalogs)
+        ) {
           fail(`Move target '${command.newParentId}' cannot own children.`);
           return;
         }
@@ -313,15 +359,17 @@ export function applyUiEdit(
           return;
         }
         detach(doc.nodes, command.nodeId);
-        const children = [...(newParent.children as readonly string[])];
+        // Detach replaces source owners, including the destination during a
+        // same-parent reorder. Read it again to avoid retaining the old child.
+        const destination = doc.nodes[command.newParentId]!;
+        const children = [...ownedChildren(destination, command.slotName)!];
         const index = command.index ?? children.length;
         if (index < 0 || index > children.length) {
           fail(`Move index ${String(command.index)} out of range.`);
           return;
         }
         children.splice(index, 0, command.nodeId);
-        const updatedTarget: UiNode =
-          newParent.kind === 'element' ? { ...newParent, children } : { ...newParent, children };
+        const updatedTarget = withOwnedChildren(destination, children, command.slotName);
         doc.nodes[updatedTarget.id] = updatedTarget;
         return;
       }
@@ -335,6 +383,7 @@ export function applyUiEdit(
           fail('The root node cannot be removed.');
           return;
         }
+        if (command.detachFromParent === true) detach(doc.nodes, command.nodeId);
         const remaining = collectReferences(doc, command.nodeId);
         if (remaining.length > 0) {
           fail(`Node '${command.nodeId}' is still referenced.`, [
@@ -351,7 +400,9 @@ export function applyUiEdit(
         }
         detach(doc.nodes, command.nodeId);
         // Remove the subtree owned solely by this node.
-        for (const ownedId of collectNodeSubtree(doc.nodes, command.nodeId)) {
+        const subtree = collectNodeSubtree(doc.nodes, command.nodeId);
+        delete doc.nodes[command.nodeId];
+        for (const ownedId of subtree) {
           const stillReferenced = collectReferences(doc, ownedId);
           if (stillReferenced.length === 0 && ownedId !== working.root) {
             delete doc.nodes[ownedId];
@@ -628,7 +679,9 @@ export function applyUiEdit(
   // application inputs defers those diagnostics instead of failing edits
   // on pre-existing declared references. Structural validity stays fatal.
   const validation = validateUiDocument(working, catalogs ?? emptyCatalogs()).filter(
-    (issue) => !isDeferredProductReference(issue) && !isUiComponentPlanDiagnostic(issue, working, catalogs?.extensions ?? []),
+    (issue) =>
+      !isDeferredProductReference(issue) &&
+      !isUiComponentPlanDiagnostic(issue, working, catalogs?.extensions ?? []),
   );
   if (validation.some((issue) => issue.severity === 'error')) {
     return {
@@ -686,6 +739,41 @@ function subtreeContains(
   maybeDescendantId: string,
 ): boolean {
   return collectNodeSubtree(nodes, ancestorId).has(maybeDescendantId);
+}
+
+function declaredSlot(
+  node: UiNode,
+  slotName: string | undefined,
+  document: UiDocument,
+  catalogs?: UiCatalogs,
+): boolean {
+  if (slotName === undefined) return true;
+  if (node.kind !== 'component') return false;
+  const definition = document.componentDefinitions[node.definitionId];
+  if (definition) return Object.hasOwn(definition.slots, slotName);
+  const descriptor = catalogs?.extensions?.find(
+    (entry) =>
+      entry.id === node.definitionId &&
+      (node.revision === undefined || entry.revision === node.revision),
+  );
+  return descriptor?.slots?.includes(slotName) ?? false;
+}
+
+function ownedChildren(node: UiNode, slotName?: string): readonly string[] | undefined {
+  if (slotName !== undefined)
+    return node.kind === 'component' && slotName.length > 0
+      ? (node.slots?.[slotName]?.children ?? [])
+      : undefined;
+  return node.kind === 'element' || node.kind === 'portal' ? node.children : undefined;
+}
+
+function withOwnedChildren(node: UiNode, children: readonly string[], slotName?: string): UiNode {
+  if (node.kind === 'component' && slotName !== undefined)
+    return {
+      ...node,
+      slots: { ...node.slots, [slotName]: { name: slotName, children } },
+    };
+  return { ...node, children } as UiNode;
 }
 
 function detach(nodes: Record<string, UiNode>, nodeId: string): void {

@@ -5,6 +5,9 @@
  */
 
 export { default as EditorCanvas } from './EditorCanvas.svelte';
+export { default as Composer } from './Composer.svelte';
+export { insertSubtree, compositionTargets, compositionParent, compositionChildren } from './composition.js';
+export type { CompositionTarget, InsertRecipe } from './composition.js';
 export { default as HistoryPanel } from './HistoryPanel.svelte';
 export { default as Inspector } from './Inspector.svelte';
 export { default as Layers } from './Layers.svelte';

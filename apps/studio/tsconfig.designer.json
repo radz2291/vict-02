@@ -1,0 +1,16 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": { "types": ["svelte", "vite/client", "@sveltejs/kit"] },
+  "include": [
+    ".svelte-kit/ambient.d.ts",
+    ".svelte-kit/non-ambient.d.ts",
+    "src/app.d.ts",
+    "src/lib/designer/**/*.ts",
+    "src/lib/designer/**/*.svelte",
+    "src/routes/design/**/*.ts",
+    "src/routes/design/**/*.svelte",
+    "src/routes/run-screen/**/*.ts",
+    "src/routes/run-screen/**/*.svelte",
+    "../../packages/ui-editor/src/**/*.svelte"
+  ]
+}

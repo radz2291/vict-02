@@ -35,6 +35,8 @@
 
 <svelte:head><title>VICT Studio</title></svelte:head>
 
+<nav class="studio-designer-entry" aria-label="Studio workspace"><a href="/design">Open UI designer ↗</a></nav>
+
 <VitApp
   plan={data.plan as never}
   {registry}
@@ -45,3 +47,8 @@
   onInvalidate={() => void invalidateAll()}
   navigate={(target) => void goto(target)}
 />
+
+<style>
+  .studio-designer-entry { padding: 10px 20px; text-align: right; font: 12px system-ui,sans-serif; border-bottom: 1px solid #e1e6ee; }
+  .studio-designer-entry a { color: #5269bd; text-decoration: none; }
+</style>
