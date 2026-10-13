@@ -24,6 +24,33 @@ label→spinner width swap (anchor stable), 10 plan-tier journeys, SSR +
 performance budgets UNCLAIMED. Combined tested SHA `dcd3cbea…`; B1–B5/U4
 OPEN; no ledger row advances before owner acceptance (AGENTS.md rule).
 
+**2026-10-13 — FINAL INDEPENDENT REMEDY RECHECK: ALL CHECKS VERIFIED;
+gate summary stands at PASS WITH FINDINGS; owner acceptance PENDING.**
+A fresh reviewer (authored no repairs, separate checkout
+`vict-02-u4-remedy-recheck` detached at the exact candidate
+`dcd3cbea255af9aa…`, unique isolated roots, own port 5470; founder
+preview 5460 untouched) rechecked the affected claims only:
+R1 clean build exit 0; R2/R3 pack with forward-slash AND relative
+`U4_ISOLATED_ROOT` both `VERIFICATION: OK` (G-C fix holds);
+R4 isolated 10 tarballs, 16/16, both entries, bits-ui exactly 2.19.3;
+R5 F17 stale-prefix refusal in genuine Chrome VERIFIED (asserts a–g all
+true: invalid `65e` Add refused, stored list untouched, truthful error,
+no spurious dirty/rev, valid add exactly +1; scalar badInput truthful);
+R6 previously incomplete Inspector slot-owned note VERIFIED verbatim in
+the real browser; R7 carryover runtime equivalence VERIFIED (focus
+10/10, journeys 50/50, normalized old-vs-new diffs EMPTY). Reviewer
+notes (not defects): the added member displays 75 after Add of 70
+(bound slider `step: 15` snap/echo); its own first R6 drive clicked a
+wrong row and was corrected — reported, not hidden. Report imported
+verbatim at
+`reviews/u4/b1-core-verify/remedy-recheck/U4-R5-REMEDY-RECHECK.md`;
+the prior technical report ending FAIL at `fe80036` is preserved
+untouched. Journey-count reconciliation (manager, field-level from
+`u4-journeys-r5-dcd.json`): 50 cases all persist-verified; 41 assert a
+finished-app value echo; 10 are plan-tier behavior cases (`echo:"plan"`);
+9 plan-tier cases are exactly the complement of the 41 (41+9=50) and 1
+(shell/command) is counted in BOTH (hence 41+10=51).
+
 ---
 
 ## HISTORICAL STATUS (frozen narrative — superseded by the summary above; preserved verbatim)

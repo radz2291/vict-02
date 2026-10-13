@@ -1,0 +1,18 @@
+BEFORE: {"count":1,"members":["60 ×"],"type":"number","status":"(saved)","ls":"71861:6331878"}
+DRAFT AFTER 65: "65"
+DRAFT AFTER e: {"value":"","badInput":true}
+AFTER-REFUSED-ADD: {"count":1,"members":["60 ×"],"err":"Enter a valid number.","inputValue":"","status":"(saved)","ls":"71861:6331878"}
+ASSERT a) no new member: true
+ASSERT b) stored list unchanged: true
+ASSERT c) truthful error visible: true "Enter a valid number."
+ASSERT d) no spurious dirty/rev change: true status "(saved)"->"(saved)", ls 71861:6331878->71861:6331878
+SHOT r5-refused-add-65e
+DRAFT AFTER 70: "70"
+AFTER-VALID-ADD-70: {"count":2,"members":["60 ×","75 ×"],"err":null,"inputValue":""}
+ASSERT e) exactly +1 member: true (1 -> 2)
+SHOT r5-valid-add-70
+SCALAR BEFORE: {"value":"65","type":"number"}
+SCALAR AFTER badInput: {"value":"","badInput":true,"err":"Enter a valid number.","meter":"65"}
+ASSERT f) scalar truthful badInput error: true "Enter a valid number."
+ASSERT g) stored scalar untouched (badInput, meter 65): true
+SHOT r5-scalar-badinput

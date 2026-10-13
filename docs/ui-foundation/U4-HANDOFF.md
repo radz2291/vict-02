@@ -671,3 +671,16 @@ technical FAIL->remedied; cold-start PASS (G-A/G-B/G-C resolved);
 browser recheck 10/10 + 50/50 + probes (a)-(d) (probe (e) completed by
 the verifier, disclosed). **Combined gate: PASS WITH FINDINGS.**
 Founder checkpoint next; owner acceptance PENDING.
+
+### 14.7 Final remedy recheck (2026-10-13)
+
+Fresh independent reviewer, no repair authorship, separate checkout at
+exact candidate `dcd3cbea...`, own isolated roots + port 5470 (founder
+preview untouched): R1-R7 ALL VERIFIED - clean build; pack
+forward-slash + relative (G-C); isolated 16/16 + bits-ui 2.19.3; F17
+stale-prefix refusal genuine-Chrome asserts a-g true; Inspector
+slot-owned note verbatim (previously incomplete check now closed);
+carryover equivalence with EMPTY normalized diffs (focus 10/10,
+journeys 50/50). Report: reviews/u4/b1-core-verify/remedy-recheck/.
+Prior technical report (FAIL at fe80036) preserved. Gate summary:
+PASS WITH FINDINGS. Owner acceptance PENDING.

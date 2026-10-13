@@ -1236,3 +1236,19 @@ Authority: next accepted action; never derive it from an agent's own proposal.
   unclaimed.
 - Final combined verdict: PASS WITH FINDINGS. Founder checkpoint;
   acceptance PENDING.
+
+### Round 5 - final remedy recheck (2026-10-13)
+
+- Owner-directed scoped recheck by a fresh reviewer (no repairs
+  authored): all R1-R7 VERIFIED at exact candidate dcd3cbea in a
+  separate checkout with unique U4_ISOLATED_ROOTs; founder preview
+  never disturbed. Reviewer results kept distinct from manager reruns;
+  manager carries prior numbers, reviewer re-observed the affected set.
+- Journey-count reconciliation (manager, field-level): 50 persisted;
+  41 app echoes; 10 plan-tier; 9 plan-tier = complement of the 41,
+  shell/command in both (41+10=51 by double count, 50 unique).
+- Reviewer non-defect observations carried honestly: step:15 snap
+  display after valid add; reviewer's own first R6 drive failure
+  corrected and disclosed.
+- Combined gate summary remains PASS WITH FINDINGS; acceptance
+  PENDING; no new scope, no main merge, no publication.
