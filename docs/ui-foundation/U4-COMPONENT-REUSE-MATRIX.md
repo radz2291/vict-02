@@ -1,5 +1,13 @@
 # U4 component reuse matrix (2026-10-07, amended preparation phase)
 
+> **Closure status 2026-10-13:** U4/B1-B5 CLOSED - PASS WITH FINDINGS
+> under owner scoped acceptance (implementation `dcd3cbea...`; see
+> [STATE](STATE.md) closure block and
+> [U4-STUDIO-HANDOFF](U4-STUDIO-HANDOFF.md)). The preparation-time
+> support levels below are historical; the verified final state is the
+> round-5 combined gate + remedy recheck (38 families + AppShell
+> exercised; 10 plan-tier journeys; 3 families honestly deferred).
+
 **Amendment context.** The owner requires catalog components to be
 canonically authorable ([U4-COMPONENT-AMENDMENT](U4-COMPONENT-AMENDMENT.md)).
 This matrix records today's source truth AND, in section 5, the support

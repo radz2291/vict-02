@@ -24,6 +24,33 @@ label→spinner width swap (anchor stable), 10 plan-tier journeys, SSR +
 performance budgets UNCLAIMED. Combined tested SHA `dcd3cbea…`; B1–B5/U4
 OPEN; no ledger row advances before owner acceptance (AGENTS.md rule).
 
+**2026-10-13 — U4 CLOSED: PASS WITH FINDINGS UNDER OWNER SCOPED
+ACCEPTANCE (documentation-only closure; implementation bytes unchanged).**
+The owner accepted implementation `dcd3cbea255af9aa…` (entry records
+`43a2c74c…`) as the working UI-foundation baseline. Owner statement,
+verbatim: "It's actually not really. But can we just accept it for now
+and I refine further in studio? Because the only behavior that I can
+accept is actually from the actual studio itself. But it has the basic.
+It is there, the basic." Scope: (1) accepted as the working UI foundation
+baseline; (2) the independent technical gate and remedy recheck stand;
+(3) usability/interaction/visual refinement will be evaluated in the
+actual Studio; (4) NOT a claim that the owner personally verified every
+catalog journey or approved the final Studio experience. Effect on the
+experience checkpoint: the U4/B1–B5 combined experience checkpoint is
+CLOSED as PASS WITH FINDINGS under this scoped acceptance; retained
+findings and honest evidence tiers (38 families + AppShell verified,
+10 plan-tier journeys, 3 deferred families, U2-derived catalog limits,
+SSR/performance unclaimed) are preserved unchanged below and in the
+handoff. The gate summary above (PASS WITH FINDINGS after remedy; all
+remedy-recheck checks VERIFIED) is the final gate state of record.
+Ledger note (AGENTS.md rows-advance rule): the final gate AND owner
+acceptance both now exist, so closure rows may advance — they advance
+ONLY in the closure-records commit `43a2c74c…` descendant (this block);
+no implementation bytes change. Studio continuation:
+[U4-STUDIO-HANDOFF](U4-STUDIO-HANDOFF.md).
+
+---
+
 **2026-10-13 — FINAL INDEPENDENT REMEDY RECHECK: ALL CHECKS VERIFIED;
 gate summary stands at PASS WITH FINDINGS; owner acceptance PENDING.**
 A fresh reviewer (authored no repairs, separate checkout

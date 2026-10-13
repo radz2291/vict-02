@@ -1252,3 +1252,28 @@ Authority: next accepted action; never derive it from an agent's own proposal.
   corrected and disclosed.
 - Combined gate summary remains PASS WITH FINDINGS; acceptance
   PENDING; no new scope, no main merge, no publication.
+
+### Round 5 - OWNER SCOPED ACCEPTANCE and U4 closure (2026-10-13)
+
+Owner decision, VERBATIM: "It's actually not really. But can we just
+accept it for now and I refine further in studio? Because the only
+behavior that I can accept is actually from the actual studio itself.
+But it has the basic. It is there, the basic."
+
+Accepted implementation: `dcd3cbea255af9aa3b601236e5ee8639cfcb55a4`.
+Entry records for the decision: `43a2c74cca5ad1d7808dc4f62ac16d3be0a3bc0d`.
+Scope recorded by the owner's instruction: accepted as the working UI
+foundation baseline; the independent technical gate and remedy recheck
+stand; further usability/interaction/visual refinement will be evaluated
+in the actual Studio; NOT a claim that the owner personally verified
+every catalog journey or approved the final Studio experience.
+
+Effect: U4/B1-B5 CLOSED - PASS WITH FINDINGS under scoped acceptance.
+Retained findings and honest tiers preserved (portal depth-100 sibling
+tie-break; button label->spinner width swap; step:15 display echo after
+list Add; combobox dual inputs; 10 plan-tier journeys; 3 deferred
+families; SSR/performance unclaimed). Implementation bytes unchanged by
+closure; docs-only commit. Next authorized work: Studio evaluation per
+[U4-STUDIO-HANDOFF](U4-STUDIO-HANDOFF.md); main integration,
+publication, deployment and apps/studio implementation remain separately
+authorized.

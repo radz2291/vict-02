@@ -90,7 +90,14 @@ exercise; none of them are optional:
   G-B). Set `U4_ISOLATED_ROOT` to place the isolated directory elsewhere;
   the value may be relative or use forward slashes (resolved).
 
-## Status (round 5 combined candidate — 2026-10-12)
+## Status (2026-10-13 — ACCEPTED baseline `dcd3cbea`)
+
+This example is the accepted U4 UI-foundation baseline (owner scoped
+acceptance; closure records `43a2c74c`). Verified by the round-5
+combined gate and the independent remedy recheck: clean install from
+this README's path, contract suite, both entries, catalog consumption.
+Remaining refinement happens in the actual Studio
+([U4-STUDIO-HANDOFF](../../docs/ui-foundation/U4-STUDIO-HANDOFF.md)).
 
 This consumer is the packed-closure proof surface for the U4 combined
 candidate `codex/ui-foundation-u4-combined-verify-05` (verification track

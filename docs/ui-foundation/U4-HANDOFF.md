@@ -1,5 +1,9 @@
 # U4 handoff — built-artifact reuse and Studio-agent handoff
 
+**STATUS 2026-10-13: IMPLEMENTED AND CLOSED — PASS WITH FINDINGS under
+owner scoped acceptance; see §14.8 and [U4-STUDIO-HANDOFF](U4-STUDIO-HANDOFF.md).**
+The historical text below is preserved as written.
+
 **PREPARED — IMPLEMENTATION NOT AUTHORIZED.**
 
 This document is the implementation-ready plan for U4 (frozen STAGES §6,
@@ -684,3 +688,26 @@ carryover equivalence with EMPTY normalized diffs (focus 10/10,
 journeys 50/50). Report: reviews/u4/b1-core-verify/remedy-recheck/.
 Prior technical report (FAIL at fe80036) preserved. Gate summary:
 PASS WITH FINDINGS. Owner acceptance PENDING.
+
+### 14.8 U4 closure (2026-10-13, documentation-only)
+
+Owner accepted implementation `dcd3cbea255af9aa...` (entry records
+`43a2c74c...`) as the working UI-foundation baseline; statement and
+scope verbatim in DECISIONS-AND-EVIDENCE and STATE. U4/B1-B5 CLOSED as
+PASS WITH FINDINGS under this scoped acceptance. Criteria U4-01..U4-07
+final state: packaging, independent consumer, build parity, agent speed,
+walkthrough, handoff and final gate all satisfied through the round-5
+combined gate (technical FAIL->remedied, remedy recheck all VERIFIED,
+cold-start PASS, browser recheck) plus this acceptance. Preserved:
+runnable examples and launch instructions (consumer README updated for
+status wording only), honest evidence tiers, 3 deferred families, 10
+plan-tier journeys, retained findings (portal depth-100 tie-break,
+button width swap, step:15 display echo, combobox dual inputs, flaky
+under load: restart-sigkill / agent-governance-corrective /
+release-authority), SSR/performance UNCLAIMED, all historical reports
+with their evaluated SHAs. Refinement continues in the actual Studio:
+[U4-STUDIO-HANDOFF](U4-STUDIO-HANDOFF.md) records reusable capabilities,
+consumption requirements, the accepted Inspector/Layers baseline, the
+six real Studio tasks that need owner acceptance, and the
+shared-package (no-fork) refinement rule. No main merge, publication,
+deployment or apps/studio work was performed by closure.
