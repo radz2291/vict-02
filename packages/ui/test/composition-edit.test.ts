@@ -52,6 +52,69 @@ function apply(editor: UiEditSession, commands: readonly UiEditCommand[]) {
   });
 }
 describe('composition ownership transactions', () => {
+  it('retains registered slots and action authority after reopening stored source', () => {
+    const initial = fixture();
+    const document: UiDocument = {
+      ...initial,
+      componentDefinitions: {},
+      nodes: {
+        ...initial.nodes,
+        dialog: { id: 'dialog', kind: 'component', definitionId: 'test.dialog' },
+      },
+    };
+    const editor = UiEditSession.open({
+      document,
+      storedRevision: 'r1',
+      catalogs: {
+        elements: defaultSemanticElementCatalog(),
+        actionIds: ['allowed'],
+        extensions: [
+          {
+            id: 'test.dialog',
+            revision: '1',
+            props: [],
+            abi: 'vict.ui-component-abi@1',
+            events: ['vict.ui-component-abi@1'],
+            slots: ['body'],
+            outputs: [],
+            styleTargets: ['root'],
+            rendererImplementationId: 'test.renderer',
+          },
+        ],
+      },
+    }).reopen({ document, storedRevision: 'r1' });
+    expect(
+      apply(editor, [
+        {
+          op: 'insert',
+          parentId: 'dialog',
+          slotName: 'missing',
+          node: { id: 'bad', kind: 'text', content: { type: 'literal', value: 'Bad' } },
+        },
+      ]).ok,
+    ).toBe(false);
+    expect(
+      apply(editor, [
+        {
+          op: 'insert',
+          parentId: 'dialog',
+          slotName: 'body',
+          node: { id: 'new', kind: 'text', content: { type: 'literal', value: 'New' } },
+        },
+      ]).ok,
+    ).toBe(true);
+    expect(editor.document.nodes.dialog).toMatchObject({ slots: { body: { children: ['new'] } } });
+    expect(editor.undo().ok).toBe(true);
+    expect(
+      apply(editor, [
+        {
+          op: 'connectInteraction',
+          nodeId: 'a',
+          interaction: { on: 'click', action: 'invokeAction', actionId: 'undeclared' },
+        },
+      ]).ok,
+    ).toBe(false);
+  });
   it('applies agent source with the same history and refuses identity/schema changes and broken structure', () => {
     const editor = session();
     const before = editor.document;

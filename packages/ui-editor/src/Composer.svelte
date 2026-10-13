@@ -2,9 +2,9 @@
   import type { UiDocument, UiExtensionDescriptor } from '@victframework/ui';
   import { compositionTargets, compositionParent, insertSubtree, type InsertRecipe } from './composition.js';
   import type { TransactionDraft } from './commands.js';
-  let { document, selectedNodeId, recipes, descriptors = [], showInsert = true, onApply, onInserted }: {
+  let { document, selectedNodeId, recipes, descriptors = [], showInsert = true, showArrange = true, onApply, onInserted }: {
     document: UiDocument; selectedNodeId?: string; recipes: readonly InsertRecipe[];
-    descriptors?: readonly UiExtensionDescriptor[]; showInsert?: boolean; onApply: (draft: TransactionDraft) => boolean;
+    descriptors?: readonly UiExtensionDescriptor[]; showInsert?: boolean; showArrange?: boolean; onApply: (draft: TransactionDraft) => boolean;
     onInserted?: (nodeId: string) => void;
   } = $props();
   let search = $state('');
@@ -39,7 +39,7 @@
 </script>
 
 <section class="composer" aria-label="Compose screen">
-  {#if selectedNodeId && selectedNodeId !== document.root}
+  {#if showArrange && selectedNodeId && selectedNodeId !== document.root}
     <div class="arrange"><h3>Arrange selection</h3>
       <div class="order"><button type="button" disabled={!parent || position < 1} onclick={() => reorder(-1)}>Move up</button><button type="button" disabled={!parent || position >= parent.children.length - 1} onclick={() => reorder(1)}>Move down</button></div>
       <label>Move into<select aria-label="Move into" bind:value={moveDestination}><option value="">Choose a parent or slot…</option>{#each moveTargets as target (key(target))}<option value={key(target)}>{target.label}</option>{/each}</select></label>

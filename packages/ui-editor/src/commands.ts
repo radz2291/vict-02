@@ -16,12 +16,40 @@ import type {
   UiNode,
   UiOutputBinding,
   UiStyleValue,
+  UiValue,
 } from '@victframework/ui';
 
 export interface TransactionDraft {
   readonly requestId: string;
   readonly reason?: string;
   readonly commands: readonly UiEditCommand[];
+}
+
+/** Edit authored state through the existing atomic source replacement boundary. */
+export function setStateInitial(input: {
+  requestId: string;
+  document: UiDocument;
+  key: string;
+  value: UiValue;
+}): TransactionDraft {
+  const declaration = input.document.localState[input.key];
+  if (!declaration) throw new Error(`Unknown local state '${input.key}'.`);
+  return {
+    requestId: input.requestId,
+    reason: 'Edit saved starting value',
+    commands: [
+      {
+        op: 'replaceDocument',
+        document: {
+          ...input.document,
+          localState: {
+            ...input.document.localState,
+            [input.key]: { ...declaration, initial: input.value },
+          },
+        },
+      },
+    ],
+  };
 }
 
 /** Insert a text node with a literal (or bound) value into an element. */

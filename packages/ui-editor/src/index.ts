@@ -44,6 +44,7 @@ export {
   setConditionalStyle,
   setOutputBinding,
   setStyle,
+  setStateInitial,
   setTextLiteral,
 } from './commands.js';
 export type { TransactionDraft } from './commands.js';

@@ -10,6 +10,8 @@
   import InspectorControl from './InspectorControl.svelte';
   import InspectorSpacing from './InspectorSpacing.svelte';
   import ComponentComposition from './ComponentComposition.svelte';
+  import NativeInputContent from './NativeInputContent.svelte';
+  import StateInitialEditor from './StateInitialEditor.svelte';
   import { conditionalStyleConflicts, allowConditionalStyles } from './responsive-style.js';
   interface Props {
     document: UiDocument; selectedOccurrence?: string; onApply: (draft: TransactionDraft) => void;
@@ -298,7 +300,9 @@
   {#if node}
     {#if tab === 'Content'}
       <section><h3>Content</h3>
-        {#if textNode?.kind === 'text' && textNode.content.type === 'literal'}
+        {#if node.kind === 'element' && ['input','textarea'].includes(node.tag)}
+          <NativeInputContent {document} {node} references={refs('string')} {referenceLabels} {labels} disabled={shared && scope === 'instance'} {onApply} />
+        {:else if textNode?.kind === 'text' && textNode.content.type === 'literal'}
           <label>Text content<textarea aria-label="Text content" bind:value={text} disabled={shared && scope === 'instance'} rows="4"></textarea></label>
           {#if shared}<p>Text edits change the shared source. This instance cannot replace definition text.</p>{/if}
           <button type="button" class="primary" disabled={shared && scope === 'instance'} onclick={() => onApply(setTextLiteral({ requestId: request(), nodeId: textNode.id, value: text }))}>Apply text</button>
@@ -313,6 +317,7 @@
             {#key `${componentNode.id}:${propDecl.name}`}
               <ExpressionEditor label={propDecl.name} displayLabel={friendly(propDecl.name)} {referenceLabels} type={propDecl.type} value={componentNode.props?.[propDecl.name]}
                 defaultValue={propDecl.default} references={refs(propDecl.type)} onCommit={expression => applyProp(propDecl.name, expression)} />
+              <StateInitialEditor {document} expression={componentNode.props?.[propDecl.name]} {labels} {onApply} />
               {#if ownedBySlot}<p class="muted">Shown from the “{ownedBySlot}” slot content while that slot is filled; this value is the fallback text.</p>{/if}
             {/key}
           {/each}

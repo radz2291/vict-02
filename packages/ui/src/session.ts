@@ -475,7 +475,7 @@ export class UiEditSession {
 
   /** Reopen a fresh session over stored bytes (history cleared). */
   reopen(input: { readonly document: UiDocument; readonly storedRevision: string }): UiEditSession {
-    return UiEditSession.open(input);
+    return UiEditSession.open({ ...input, catalogs: this.#catalogs });
   }
 
   /** Structural snapshot for inspector surfaces. */

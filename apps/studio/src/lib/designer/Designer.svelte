@@ -198,7 +198,7 @@
       <div class="sidebar-body">
         {#if leftTab === 'Insert'}
           <p class="panel-eyebrow">BUILD YOUR SCREEN</p><p class="panel-hint">Add to the selection, or choose a parent. Every addition is undoable.</p>
-          <Composer document={source} selectedNodeId={selectedNode?.id} recipes={screenRecipes} descriptors={catalogDescriptors} onApply={apply} onInserted={(id: string) => { selectOccurrence(`${source.id}|${id}`); notice = 'Added to your screen. Configure it in the Inspector.'; }} />
+          <Composer document={source} selectedNodeId={selectedNode?.id} recipes={screenRecipes} descriptors={catalogDescriptors} showArrange={false} onApply={apply} onInserted={(id: string) => { selectOccurrence(`${source.id}|${id}`); notice = 'Added to your screen. Configure it in the Inspector.'; }} />
         {:else if leftTab === 'Layers'}
           {#if plan}<Layers {plan} document={source} selectedOccurrence={selected} onSelect={selectOccurrence} onApply={apply} componentDescriptors={catalogDescriptors} />{/if}
           <Composer document={source} selectedNodeId={selectedNode?.id} recipes={[]} descriptors={catalogDescriptors} showInsert={false} onApply={apply} />

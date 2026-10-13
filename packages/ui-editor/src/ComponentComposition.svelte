@@ -55,42 +55,50 @@
 {#if descriptor.slots?.length}
   <section aria-label="Component composition">
     <h3>Content composition</h3>
-    <p>Select slot children in Layers to edit properties, text and connections. Add detached content or move content from another component slot in one transaction.</p>
+    <p>Slot content appears inside this component. Select its children in Layers to edit them.</p>
     {#each descriptor.slots as slot (slot)}
       {@const children = node.slots?.[slot]?.children ?? []}
       <div class="slot-fill">
-        <strong>{slot}</strong>
+        <h4>{slot}</h4>
         <ol>
           {#each children as id, index (`${id}-${index}`)}
             <li><span title={id}>{compositionName(document, id, labels)}</span>
+              <div class="child-actions">
               <button type="button" aria-label={`Move ${compositionName(document, id, labels)} earlier in ${slot}`} disabled={index === 0} onclick={() => reorder(slot, index, -1)}>↑</button>
               <button type="button" aria-label={`Move ${compositionName(document, id, labels)} later in ${slot}`} disabled={index === children.length - 1} onclick={() => reorder(slot, index, 1)}>↓</button>
-              <button type="button" aria-label={`Remove ${compositionName(document, id, labels)} from ${slot}`} onclick={() => fill(slot, children.filter((_, position) => position !== index))}>Remove</button>
+              <button class="remove" type="button" aria-label={`Remove ${compositionName(document, id, labels)} from ${slot}`} onclick={() => fill(slot, children.filter((_, position) => position !== index))}>Remove</button>
+              </div>
             </li>
           {/each}
         </ol>
-        <label>Add authored content to {slot}
+        {#if available.some(candidate => !children.includes(candidate.id))}
+        <label>Add existing content
           <select aria-label={`${slot} content node`} bind:value={choices[slot]}>
-            <option value="">Choose a source node…</option>
+            <option value="">Choose content…</option>
             {#each available.filter(candidate => !children.includes(candidate.id)) as candidate (candidate.id)}
               <option value={candidate.id}>{compositionName(document, candidate.id, labels)}</option>
             {/each}
           </select>
         </label>
         <button type="button" disabled={!choices[slot]} onclick={() => { const selected = choices[slot]; if (selected) add(slot, selected); }}>Add to {slot}</button>
+        {:else}<p>Use Insert to add content to this slot.</p>{/if}
       </div>
     {/each}
   </section>
 {/if}
 
 <style>
-  section { display: grid; gap: 10px; }
-  h3, p { margin: 0; }
-  p { color: #637083; font-size: 12px; }
-  .slot-fill { display: grid; gap: 6px; }
-  ol { padding-left: 20px; margin: 0; }
-  li { margin-block: 4px; }
-  button, select { font: inherit; }
-  button { margin-left: 4px; }
-  label { display: grid; gap: 4px; }
+  section {display:grid;gap:10px;padding:10px 14px;min-width:0;font:inherit;color:inherit;}
+  h3,h4,p {margin:0;} h3 {font-size:12px;font-weight:600;} h4 {font-size:11px;font-weight:600;text-transform:capitalize;}
+  p {color:var(--ui-editor-muted,#667085);font-size:11px;line-height:1.5;}
+  .slot-fill {display:grid;gap:8px;padding:10px;border:1px solid var(--ui-editor-line,#d7dce5);border-radius:6px;background:var(--ui-editor-input,#fff);min-width:0;}
+  ol {list-style:none;padding:0;margin:0;display:grid;gap:8px;}
+  li {display:grid;gap:6px;min-width:0;padding-bottom:8px;border-bottom:1px solid var(--ui-editor-line,#d7dce5);}
+  li span {overflow-wrap:anywhere;font-size:11px;line-height:1.5;}
+  .child-actions {display:flex;gap:4px;}
+  button,select {font:inherit;box-sizing:border-box;border:1px solid var(--ui-editor-line,#d7dce5);border-radius:4px;background:var(--ui-editor-input,#fff);color:inherit;padding:6px 8px;min-height:28px;}
+  button {cursor:pointer;} button:disabled {opacity:.45;cursor:default;}
+  .child-actions button {min-width:30px;} .remove {color:#a13c4b;margin-left:auto;}
+  select {width:100%;min-width:0;} label {display:grid;gap:5px;font-size:11px;}
+  :focus-visible {outline:2px solid var(--ui-editor-accent,#355cc9);outline-offset:2px;}
 </style>

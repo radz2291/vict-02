@@ -80,8 +80,10 @@
 
 <style>
   .expression-editor { margin-block: 8px; }
-  label { display: grid; gap: 4px; font-size: 12px; }
-  label span, p { color: #67758c; font-size: 11px; }
-  select, input { width: 100%; box-sizing: border-box; padding: 5px; border: 1px solid #dfe4ec; border-radius: 4px; }
-  button { margin-top: 4px; }
+  label { display: grid; gap: 4px; font-size: 11px; }
+  label span, p { color: var(--ui-editor-muted,#667085); font-size: 11px; line-height:1.5; }
+  select,input,button {font:inherit;box-sizing:border-box;padding:6px 8px;border:1px solid var(--ui-editor-line,#d7dce5);border-radius:4px;background:var(--ui-editor-input,#fff);color:inherit;min-height:28px;}
+  select,input {width:100%;min-width:0;}
+  button {margin-top:4px;cursor:pointer;}
+  :focus-visible {outline:2px solid var(--ui-editor-accent,#355cc9);outline-offset:2px;}
 </style>
