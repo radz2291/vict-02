@@ -29,7 +29,7 @@
     </div>
     <span title={name}>{name}</span>
   </div>
-  <div role="tabpanel" id={`${uid}-panel`} aria-labelledby={`${uid}-${page}`} tabindex="0" class="palette-body">
+  <div role="tabpanel" id={`${uid}-panel`} aria-labelledby={`${uid}-${page}`} tabindex="0" class="palette-body" data-ui-tool-body>
     {#if page === 'format'}{@render format()}{:else if page === 'insert'}{@render insert()}{:else if page === 'arrange'}{@render arrange()}{:else}{@render connect?.()}{/if}
   </div>
 </div>
@@ -40,7 +40,7 @@
   [role=tab] {width:58px;text-align:center;border:0;border-radius:4px;background:transparent;color:#78869c;padding:5px 8px;font:inherit;cursor:pointer;}
   [role=tab][aria-selected=true] {background:#edf1ff;color:#405abd;font-weight:600;}
   .palette-header > span {margin-left:auto;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;color:#8a96a8;font-size:10px;}
-  .palette-body {height:min(244px,calc(100dvh - 220px));min-height:120px;overflow:auto;padding:7px;box-sizing:border-box;overscroll-behavior:contain;}
+  .palette-body {height:auto;max-height:min(244px,calc(100dvh - 220px));min-height:0;overflow:auto;padding:7px;box-sizing:border-box;overscroll-behavior:contain;}
   .palette-body > :global(*) {max-width:100%;} :disabled {opacity:.4;cursor:default;}
   :focus-visible {outline:2px solid #5269bd;outline-offset:-1px;}
 </style>

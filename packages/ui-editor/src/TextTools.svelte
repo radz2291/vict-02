@@ -60,14 +60,14 @@
   <div class="context-label">{contextLabel}</div>
 </div>
 <style>
-  .text-tools {height:100%;min-height:0;display:flex;flex-direction:column;font:11px/1.4 'Segoe UI',system-ui,sans-serif;color:#536176;}
+  .text-tools {height:auto;min-height:0;display:flex;flex-direction:column;font:11px/1.4 'Segoe UI',system-ui,sans-serif;color:#536176;}
   .pages {display:flex;gap:2px;flex-shrink:0;overflow-x:auto;border-bottom:1px solid #e4e8f0;padding-bottom:4px;scrollbar-width:thin;}
   button,input,select {font:inherit;color:#34425a;border:1px solid #dce2eb;border-radius:4px;background:white;box-sizing:border-box;min-width:0;height:27px;padding:3px 6px;}button {cursor:pointer;}
   .pages button {border:0;color:#78869c;background:transparent;white-space:nowrap;flex-shrink:0;}.pages button[aria-selected=true] {background:#f0f3fa;color:#405abd;font-weight:600;}
-  .page {flex:1;min-height:0;overflow:auto;padding:8px 0;overscroll-behavior:contain;}
+  .page {flex:0 0 auto;min-height:0;overflow:auto;padding:8px 0;overscroll-behavior:contain;}
   .fields {display:grid;gap:6px;}.row,label {display:flex;align-items:center;gap:6px;min-width:0;}.row>input,.row>select {flex:1;}.row {flex-wrap:nowrap;}
   input {min-width:0;width:100%;}.short {width:65px;}.opacity {width:50px;padding:3px;}.color-value {flex:1;}.color-value input:not(.swatch) {flex:1;width:65px;}.swatch {width:27px;flex:0 0 27px;padding:2px;}
-  .content {height:100%;display:flex;flex-direction:column;gap:5px;}.content textarea {flex:1;min-height:35px;width:100%;resize:none;box-sizing:border-box;border:1px solid #dce2eb;border-radius:4px;padding:6px;font:12px/1.4 "Segoe UI",system-ui,sans-serif;color:#34425a;background:white;}.content-actions {display:flex;align-items:center;gap:5px;}.content-actions span {margin-left:auto;font-size:10px;color:#8a96a8;}
+  .content {height:auto;display:flex;flex-direction:column;gap:5px;}.content textarea {flex:0 0 72px;height:72px;min-height:35px;width:100%;resize:none;box-sizing:border-box;border:1px solid #dce2eb;border-radius:4px;padding:6px;font:12px/1.4 "Segoe UI",system-ui,sans-serif;color:#34425a;background:white;}.content-actions {display:flex;align-items:center;gap:5px;}.content-actions span {margin-left:auto;font-size:10px;color:#8a96a8;}
   .context-label {font-size:10px;color:#8a96a8;flex-shrink:0;border-top:1px solid #eef0f5;padding-top:4px;}
   :disabled {opacity:.4;cursor:default;}:focus-visible {outline:2px solid #5269bd;outline-offset:-1px;}
 </style>

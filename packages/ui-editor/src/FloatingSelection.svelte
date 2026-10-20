@@ -42,7 +42,12 @@
         if (!scroller && /(auto|scroll)/.test(style.overflowY)) scroller = ancestor;
         if (/(auto|scroll|hidden|clip)/.test(style.overflowY)) { top = Math.max(top, bounds.top + 8); bottom = Math.min(bottom, bounds.bottom - 8); }
       }
-      const height = palette.getBoundingClientRect().height || 42;
+      const actualHeight = palette.getBoundingClientRect().height || 42;
+      const body = palette.querySelector<HTMLElement>('[data-ui-tool-body]');
+      const cap = body ? Number.parseFloat(getComputedStyle(body).maxHeight) : NaN;
+      // Place the capped envelope once, while the visible surface fits its
+      // content. Switching to a taller page then cannot flip the header.
+      const height = body && Number.isFinite(cap) ? Math.max(actualHeight, cap + actualHeight - body.getBoundingClientRect().height) : actualHeight;
       const candidate = floatingPlacement(box, { left, right, top, bottom }, height, preference, untrack(()=>placement));
       const overlaps = candidate && box.left < candidate.left+candidate.width && box.right > candidate.left && box.top < candidate.top+height && box.bottom > candidate.top;
       const dock = innerWidth <= 600 || overlaps;

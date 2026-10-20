@@ -30,5 +30,5 @@
  {:else}<p>In Design, edit the saved content here. In Interact, type into the field to test it.</p>{#each fields as field (field.name)}{@render fieldEditor(field)}{/each}{/if}
 </fieldset>
 <style>
- fieldset {border:0;padding:0;margin:0;min-width:0;}.compact {height:100%;min-height:0;}p {font-size:11px;line-height:1.5;color:var(--ui-editor-muted,#667085);margin:6px 0;}
+ fieldset {border:0;padding:0;margin:0;min-width:0;}.compact {height:auto;min-height:0;}p {font-size:11px;line-height:1.5;color:var(--ui-editor-muted,#667085);margin:6px 0;}
 </style>

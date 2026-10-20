@@ -569,9 +569,9 @@
   .connection-summary {color:var(--ui-editor-accent,#355cc9);font-weight:600;}
   .output-row { border: 1px solid var(--ui-editor-line, #d7dce5); border-radius: 5px; padding: 6px 8px; margin: 6px 0; background: var(--ui-editor-input, #fff); }
   .issues { background: #fff0ef; }
-  .contextual {height:100%;min-height:0;overflow:auto;background:#fff;font-size:11px;--ui-editor-section-padding:6px 2px;}
+  .contextual {height:auto;min-height:0;overflow:visible;background:#fff;font-size:11px;--ui-editor-section-padding:6px 2px;}
   .contextual .selection-bar {position:static;box-shadow:none;}
-  .content-boundary {border:0;padding:0;margin:0;min-width:0;}.content-boundary.full {height:100%;}
+  .content-boundary {border:0;padding:0;margin:0;min-width:0;}.content-boundary.full {height:auto;}
   .compact-grid {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 10px;}.rule-context {font-size:10px;color:#8a96a8;} .contextual button {padding:4px 7px;font-size:11px;margin:2px 3px 2px 0;}.contextual label {margin:3px 0;font-size:11px;}.contextual label select {padding:4px 6px;min-height:27px;font-size:11px;}
   .contextual h3 {font-size:11px;margin-bottom:5px;}
 </style>
