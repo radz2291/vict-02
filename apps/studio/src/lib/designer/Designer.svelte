@@ -2,7 +2,7 @@
   import { onMount, tick, untrack } from 'svelte';
   import { beforeNavigate } from '$app/navigation';
   import { ControlScope } from '@victframework/ui-svelte';
-  import { Composer, EditorBridge, EditorCanvas, Inspector, Layers, StateValuesPanel, PanelResizer, resolveOccurrence, type TransactionDraft } from '@victframework/ui-editor';
+  import { Composer, EditorBridge, EditorCanvas, Inspector, Layers, StateValuesPanel, PanelResizer, SelectionToolbar, resolveOccurrence, compositionParent, compositionTargets, compositionName, insertSubtree, duplicateSubtree, type InsertRecipe, type TransactionDraft } from '@victframework/ui-editor';
   import { createPreviewSession } from '@victframework/ui-preview';
   import type { UiDocument, UiRenderPlan, UiValue } from '@victframework/ui';
   import { newScreen, compileScreen, screenIssues, screenApplication, screenName, screenActionState, designerCatalogs, actionInputs, catalogDescriptors, catalogImplementations } from './application.js';
@@ -27,17 +27,28 @@
   let plan = $state<UiRenderPlan>();
   let issues = $state<readonly { code: string; message: string }[]>([]);
   let notice = $state('Start with an empty screen. Add a heading or section to begin.');
-  let leftTab = $state('Insert');
+  let leftTab = $state('Layers');
+  let editTextSignal = $state<symbol>();
+  let canvasTextEditing = $state(false);
+  let insertOpen = $state(false);
   let mobilePane = $state('Canvas');
   let width = $state('fluid');
   let mode = $state<'design' | 'interact'>('design');
   let leftOpen = $state(true), rightOpen = $state(true), compactWorkspace = $state(false);
-  let leftWidth = $state(240), rightWidth = $state(320);
+  let leftWidth = $state(200), rightWidth = $state(280);
   const editorLabels = { actions: { 'demo.submit': 'Submit (simulated)' }, nodes: { screen: 'Screen' },
     state: { message: 'Message', accepted: 'Agreement', dialogOpen: 'Dialog open', busy: 'Submitting', actionError: 'Action error', actionResult: 'Action result' },
     actionInputs: { message: 'Message', accepted: 'Agreement' } };
-  function selectOccurrence(occurrence: string) { bridge?.select(occurrence); if (compactWorkspace) rightOpen = true; }
-  function changeMode(next: 'design' | 'interact') { mode = next; resetRuntime(); notice = next === 'design' ? 'Design mode · select and edit without running behavior.' : 'Interact mode · simulated behavior, no live effects.'; }
+  function selectOccurrence(occurrence: string) {
+    if (source) {
+      const report = resolveOccurrence(occurrence, source);
+      const parent = report.node?.kind === 'text' && !report.instancePath.length && !report.repeatKeys.length ? compositionParent(source, report.node.id) : undefined;
+      const owner = parent ? source.nodes[parent.nodeId] : undefined;
+      if (owner?.kind === 'element' && owner.children.length === 1) occurrence = `${source.id}|${owner.id}`;
+    }
+    bridge?.select(occurrence);
+  }
+  function changeMode(next: 'design' | 'interact') { if (canvasTextEditing) { notice = 'Apply or cancel your canvas text edit first.'; return; } mode = next; resetRuntime(); notice = next === 'design' ? 'Design mode · select and edit without running behavior.' : 'Interact mode · simulated behavior, no live effects.'; }
   let createDialog: HTMLDialogElement;
   let nameInput: HTMLInputElement;
   let screenTitle = $state('My first screen');
@@ -46,7 +57,7 @@
   let sourceDraftDirty = $state(false);
   $effect(() => { if (source && !untrack(() => sourceDraftDirty)) { sourceDraft = JSON.stringify(source, null, 2); sourceDraftRevision = snapshot?.revision ?? ''; } });
   beforeNavigate(navigation => {
-    if (!navigation.willUnload && (sourceDraftDirty || [...sessions.values()].some(session => session.getSnapshot().dirty))) {
+    if (!navigation.willUnload && (canvasTextEditing || sourceDraftDirty || [...sessions.values()].some(session => session.getSnapshot().dirty))) {
       navigation.cancel(); notice = 'Save or undo your authored changes before leaving the designer.';
     }
   });
@@ -81,10 +92,11 @@
     const next = new EditorBridge({ catalogs: designerCatalogs, store: screenStore(localStorage, document.id), initial: { document, storedRevision: 'r1' } });
     sessions.set(document.id, next);
     library = [...library, { id: document.id, name: title }];
-    openSession(next); leftTab = 'Insert'; mobilePane = 'Canvas';
+    openSession(next); leftTab = 'Layers'; mobilePane = 'Canvas';
     notice = 'New screen · not saved yet.';
   }
   function openScreen(id: string) {
+    if (canvasTextEditing) { notice = 'Apply or cancel your canvas text edit before switching screens.'; return; }
     if (sourceDraftDirty) { notice = 'Apply or discard your JSON draft before switching screens.'; return; }
     const existing = sessions.get(id);
     if (existing) { openSession(existing); notice = 'Screen opened. In-session edits are retained.'; return; }
@@ -108,6 +120,7 @@
     return () => { unsubscribe?.(); media.removeEventListener('change', adapt); };
   });
   function apply(draft: TransactionDraft): boolean {
+    if (canvasTextEditing) { notice = 'Apply or cancel your canvas text edit first.'; return false; }
     if (!bridge) return false;
     const result = bridge.apply(draft);
     issues = result.ok ? [] : result.issues;
@@ -117,9 +130,10 @@
     }
     return result.ok;
   }
-  function undo() { if (!bridge) return; const result = bridge.undo(); issues = result.ok ? [] : result.issues; notice = result.ok ? 'Undid the last authored change.' : 'Nothing to undo.'; }
-  function redo() { if (!bridge) return; const result = bridge.redo(); issues = result.ok ? [] : result.issues; notice = result.ok ? 'Redid the authored change.' : 'Nothing to redo.'; }
+  function undo() { if (!bridge) return; if (canvasTextEditing) { notice = 'Apply or cancel your canvas text edit first.'; return; } const result = bridge.undo(); issues = result.ok ? [] : result.issues; notice = result.ok ? 'Undid the last authored change.' : 'Nothing to undo.'; }
+  function redo() { if (!bridge) return; if (canvasTextEditing) { notice = 'Apply or cancel your canvas text edit first.'; return; } const result = bridge.redo(); issues = result.ok ? [] : result.issues; notice = result.ok ? 'Redid the authored change.' : 'Nothing to redo.'; }
   function save(): boolean {
+    if (canvasTextEditing) { notice = 'Apply or cancel your canvas text edit before saving.'; return false; }
     if (sourceDraftDirty) { notice = 'Apply or discard your JSON draft before saving.'; return false; }
     if (!bridge || !compilation?.ok) { notice = 'Resolve source diagnostics before saving.'; return false; }
     const result = bridge.save(); issues = result.ok ? [] : result.issues;
@@ -129,6 +143,7 @@
     return true;
   }
   function reopen() {
+    if (canvasTextEditing) { notice = 'Apply or cancel your canvas text edit before reopening.'; return; }
     if (!bridge) return;
     if (sourceDraftDirty) { notice = 'Apply or discard your JSON draft before reopening.'; return; }
     if (snapshot?.dirty) { notice = 'Save or undo your changes before reopening the stored source.'; return; }
@@ -154,12 +169,58 @@
   }
   function shortcuts(event: KeyboardEvent) {
     if (event.key === 'Escape' && compactWorkspace) rightOpen = false;
-    if (!(event.ctrlKey || event.metaKey)) return;
+    if (event.key === 'Escape') insertOpen = false;
     const editable = event.target instanceof HTMLElement && (event.target.matches('input,textarea,select') || event.target.isContentEditable);
+    if (!editable && mode === 'design') {
+      if (['Delete', 'Backspace'].includes(event.key)) { event.preventDefault(); removeSelection(); }
+      if (event.key === 'F2') { event.preventDefault(); editTextSignal = Symbol('edit'); }
+      if (event.altKey && ['ArrowUp', 'ArrowDown'].includes(event.key)) { event.preventDefault(); reorderSelection(event.key === 'ArrowUp' ? -1 : 1); }
+      if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'd') { event.preventDefault(); duplicateSelection(); }
+    }
+    if (!(event.ctrlKey || event.metaKey)) return;
     if (event.key.toLowerCase() === 's') { event.preventDefault(); save(); }
     else if (!editable && event.key.toLowerCase() === 'z') { event.preventDefault(); event.shiftKey ? redo() : undo(); }
   }
-  async function beginCreate() { if (sourceDraftDirty) { notice = 'Apply or discard your JSON draft before creating a screen.'; return; } createDialog.showModal(); await tick(); nameInput.focus(); nameInput.select(); }
+  function removeSelection() {
+    if (!source || !selectedNode || selectedNode.id === source.root) return;
+    const parent = compositionParent(source, selectedNode.id);
+    if (apply({ requestId: crypto.randomUUID(), reason: 'Delete selection', commands: [{ op: 'remove', nodeId: selectedNode.id, detachFromParent: true }] }) && parent) selectOccurrence(`${source.id}|${parent.nodeId}`);
+  }
+  function duplicateSelection() {
+    if (!source || !selectedNode) return;
+    const copy = duplicateSubtree(source, selectedNode.id);
+    if (copy && apply(copy.draft)) selectOccurrence(`${source.id}|${copy.nodeId}`);
+    else notice = 'Select a source element or container to duplicate.';
+  }
+  function reorderSelection(delta: number) {
+    if (!source || !selectedNode) return;
+    const parent = compositionParent(source, selectedNode.id);
+    if (!parent) return;
+    const index = parent.children.indexOf(selectedNode.id) + delta;
+    if (index < 0 || index >= parent.children.length) return;
+    apply({ requestId: crypto.randomUUID(), reason: 'Reorder selection', commands: [{ op: 'move', nodeId: selectedNode.id, newParentId: parent.nodeId, slotName: parent.slotName, index }] });
+  }
+  const insertionTarget = $derived.by(() => {
+    if (!source) return undefined;
+    const targets = compositionTargets(source, catalogDescriptors);
+    const matches = targets.filter(target => target.nodeId === selectedNode?.id);
+    if (matches.length === 1) return matches[0];
+    if (matches.length > 1) return undefined;
+    let anchor = selectedNode?.id;
+    while (anchor) {
+      const parent = compositionParent(source, anchor);
+      if (!parent) break;
+      if (targets.some(target => target.nodeId === parent.nodeId && target.slotName === parent.slotName)) return { ...parent, index: parent.children.indexOf(anchor) + 1, label: `after ${compositionName(source, anchor)}` };
+      anchor = parent.nodeId;
+    }
+    return targets.find(target => target.nodeId === source.root);
+  });
+  function quickInsert(recipe: InsertRecipe) {
+    if (!source || !insertionTarget) { leftTab = 'Insert'; leftOpen = true; mobilePane = 'Insert'; insertOpen = false; notice = 'Choose the component slot in Insert, then add your element.'; return; }
+    const id = `${recipe.id}-${crypto.randomUUID().slice(0, 8)}`;
+    if (apply(insertSubtree(crypto.randomUUID(), recipe.create(id), insertionTarget))) { selectOccurrence(`${source.id}|${id}`); insertOpen = false; mobilePane = 'Canvas'; notice = `Added ${recipe.label}. Double-click text to edit; drag in Layers to arrange.`; }
+  }
+  async function beginCreate() { if (canvasTextEditing || sourceDraftDirty) { notice = 'Apply or cancel your text/source draft before creating a screen.'; return; } createDialog.showModal(); await tick(); nameInput.focus(); nameInput.select(); }
   function exportSource() {
     if (!source) return;
     const url = URL.createObjectURL(new Blob([JSON.stringify({ application: screenApplication(source), uiDocuments: [{ document: source }] }, null, 2)], { type: 'application/json' }));
@@ -179,7 +240,7 @@
   $effect.pre(() => { if (authoredRevision) untrack(resetRuntime); });
 </script>
 
-<svelte:window onkeydown={shortcuts} onbeforeunload={event => { if (sourceDraftDirty || [...sessions.values()].some(session => session.getSnapshot().dirty)) { event.preventDefault(); event.returnValue = ''; } }} />
+<svelte:window onkeydown={shortcuts} onbeforeunload={event => { if (canvasTextEditing || sourceDraftDirty || [...sessions.values()].some(session => session.getSnapshot().dirty)) { event.preventDefault(); event.returnValue = ''; } }} />
 <ControlScope>
 <div class="vict-app studio-designer">
   <header class="studio-header"><a class="studio-brand" href="/design"><span class="brand-mark">V</span><strong>VICT <span>Studio</span></strong></a><span class="product-mode">DESIGNER</span><div class="header-spacer"></div><a class="operator-link" href="/">Operator tools ↗</a></header>
@@ -190,6 +251,16 @@
     <span class="save-state">{sourceDraftDirty ? '● Unapplied JSON draft' : snapshot?.dirty ? '● Unsaved changes' : snapshot?.storedRevision === 'r1' ? '○ New screen' : '✓ Saved'}</span>
     <div class="toolbar-end"><button type="button" class="panel-toggle" aria-label={leftOpen ? 'Hide document panel' : 'Show document panel'} aria-pressed={leftOpen} onclick={() => leftOpen = !leftOpen}>Document</button><button type="button" class="panel-toggle" aria-label={rightOpen ? 'Hide Inspector' : 'Show Inspector'} aria-pressed={rightOpen} onclick={() => rightOpen = !rightOpen}>Inspector</button><button type="button" onclick={reopen} disabled={!source || snapshot?.dirty || sourceDraftDirty || snapshot?.storedRevision === 'r1'}>Reopen</button><button type="button" onclick={save} disabled={!compilation?.ok || sourceDraftDirty}>Save</button><a class="run-button" aria-disabled={!source || snapshot?.dirty || sourceDraftDirty || snapshot?.storedRevision === 'r1'} href={source && !snapshot?.dirty && !sourceDraftDirty && snapshot?.storedRevision !== 'r1' ? `/run-screen?screen=${encodeURIComponent(source.id)}` : undefined}>Run saved ↗</a></div>
   </div>
+  {#if source && mode === 'design'}
+    <div class="insert-ribbon" aria-label="Insert elements">
+      <strong>Insert</strong>
+      {#each screenRecipes.slice(0, 6) as recipe}<button type="button" onclick={() => quickInsert(recipe)} title={recipe.description}>＋ {recipe.label}</button>{/each}
+      <div class="more-insert"><button type="button" aria-expanded={insertOpen} onclick={() => insertOpen = !insertOpen}>More ▾</button>
+        {#if insertOpen}<div class="insert-menu">{#each screenRecipes.slice(6) as recipe}<button type="button" onclick={() => quickInsert(recipe)}>{recipe.label}</button>{/each}<button type="button" onclick={() => { leftTab = 'Insert'; leftOpen = true; mobilePane = 'Insert'; insertOpen = false; }}>Choose placement…</button></div>{/if}
+      </div>
+      <span class="insert-destination">{insertionTarget ? `Add ${insertionTarget.label.startsWith('after ') ? insertionTarget.label : `inside ${insertionTarget.label}`}` : 'Choose a slot in Insert'}</span>
+    </div>
+  {/if}
   <nav class="mobile-panes" aria-label="Designer panels">{#each ['Insert', 'Layers', 'Canvas', 'Inspect', 'Source'] as pane}<button type="button" aria-pressed={mobilePane === pane} onclick={() => { mobilePane = pane; if (['Insert', 'Layers', 'Source'].includes(pane)) leftTab = pane; }}>{pane}</button>{/each}</nav>
   {#if source && bridge}
   <div class="design-workspace" class:left-hidden={!leftOpen} class:right-hidden={!rightOpen} style:--left-width={`${leftWidth}px`} style:--right-width={`${rightWidth}px`}>
@@ -201,7 +272,7 @@
           <Composer document={source} selectedNodeId={selectedNode?.id} recipes={screenRecipes} descriptors={catalogDescriptors} showArrange={false} onApply={apply} onInserted={(id: string) => { selectOccurrence(`${source.id}|${id}`); notice = 'Added to your screen. Configure it in the Inspector.'; }} />
         {:else if leftTab === 'Layers'}
           {#if plan}<Layers {plan} document={source} selectedOccurrence={selected} onSelect={selectOccurrence} onApply={apply} componentDescriptors={catalogDescriptors} />{/if}
-          <Composer document={source} selectedNodeId={selectedNode?.id} recipes={[]} descriptors={catalogDescriptors} showInsert={false} onApply={apply} />
+          <details class="advanced-arrange"><summary>Arrange & move…</summary><Composer document={source} selectedNodeId={selectedNode?.id} recipes={[]} descriptors={catalogDescriptors} showInsert={false} onApply={apply} /></details>
         {:else}
           <p class="panel-eyebrow">CANONICAL SOURCE</p><p class="panel-hint">Humans and agents edit this same UI document. Keep its id and revision. Apply validates the source and creates one undoable change.</p>
           <label class="sr-only" for="canonical-source">Canonical UI document</label><textarea id="canonical-source" class="source-editor" spellcheck="false" bind:value={sourceDraft} oninput={() => sourceDraftDirty = true}></textarea>
@@ -213,15 +284,17 @@
     </aside>
     <div class="left-resizer"><PanelResizer label="Document panel width" value={leftWidth} min={180} max={360} onChange={(value: number) => leftWidth = value} /></div>
     <main class:mobile-active={mobilePane === 'Canvas'} class="design-stage">
+      {#if mode === 'design'}<SelectionToolbar document={source} nodeId={selectedNode?.id} onApply={apply} onEdit={() => editTextSignal = Symbol('edit')} onDuplicate={duplicateSelection} onRemove={removeSelection} />{/if}
       <div class="canvas-toolbar"><span><span class="live-dot"></span>{mode === 'design' ? 'Design · selection only' : 'Interact · simulated'}</span><label><span class="sr-only">Canvas width</span><select aria-label="Canvas width" bind:value={width}><option value="fluid">Fit canvas</option><option value="768">Tablet · 768</option><option value="390">Phone · 390</option></select></label><button type="button" onclick={resetRuntime} title="Reset ephemeral runtime values">Reset preview</button></div>
       <div class="canvas-scroll"><div class="canvas-caption">{screenName(source)} <span>{width === 'fluid' ? 'Responsive' : `${width}px`}</span></div>
         <div class="design-frame" style:max-width={width === 'fluid' ? 'none' : `${width}px`}>
           <EditorCanvas document={source} catalogs={designerCatalogs} extensions={catalogDescriptors} extensionImplementations={catalogImplementations}
+            onApply={(draft: TransactionDraft) => { canvasTextEditing = false; return apply(draft); }} {editTextSignal} onTextEditingChange={(editing: boolean) => canvasTextEditing = editing}
             interactionMode={mode} selectedOccurrence={mode === 'design' ? selected : undefined} onSelect={mode === 'design' ? selectOccurrence : () => {}} {dispatch} navigate={() => { notice = 'This application contains one screen.'; }}
             stateValues={runtimeValues} onStateChange={(key: string, value: UiValue) => runtimeValues = { ...runtimeValues, [key]: value }} {resetSignal}
             actionState={screenActionState} onPlan={(next: UiRenderPlan) => { plan = next; }}
             onRenderDiagnostic={(diagnostic: { code: string; message: string }) => { issues = [...issues.slice(-4), diagnostic]; }} ariaLabel="Screen canvas" />
-          {#if Object.keys(source.nodes).length === 1}<div class="empty-canvas"><span>＋</span><h1>Your screen starts here.</h1><p>Add elements from Insert, then make them yours.</p><button type="button" onclick={() => { leftTab = 'Insert'; mobilePane = 'Insert'; }}>Explore elements</button></div>{/if}
+          {#if Object.keys(source.nodes).length === 1}<div class="empty-canvas"><span>＋</span><h1>What will you make?</h1><p>Start with a title. Double-click it to write your own.</p><button type="button" onclick={() => quickInsert(screenRecipes.find(recipe => recipe.id === 'heading')!)}>＋ Add a heading</button><button type="button" onclick={() => quickInsert(screenRecipes[0]!)}>＋ Add a section</button></div>{/if}
         </div>
       </div>
       <details class="simulation-panel"><summary>Simulated execution <span>Local preview · no live effects</span></summary><div class="simulation-body"><label><input type="checkbox" bind:checked={simulation.denied} /> Deny demo writes</label><label><input type="checkbox" bind:checked={simulation.failNext} /> Fail next action</label><StateValuesPanel localState={source.localState} stateValues={runtimeValues} onChange={(key: string, value: UiValue | undefined) => { const next = { ...runtimeValues }; if (value === undefined) delete next[key]; else next[key] = value; runtimeValues = next; }} />{#each activity as entry}<p role="status">{entry}</p>{/each}<p class="panel-hint">Connect checkedChange to accepted, bind checked to state.accepted, then map a Button's press → Submit using state.message and state.accepted. Runtime values never enter undo history.</p></div></details>

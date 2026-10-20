@@ -137,6 +137,19 @@ export function setStyle(input: {
   };
 }
 
+/** Keep promoted base declarations in their attached source so responsive overrides survive. */
+export function setBaseStyle(
+  document: UiDocument,
+  input: Parameters<typeof setStyle>[0],
+): TransactionDraft {
+  const attachedBase =
+    !document.nodes[input.nodeId]?.localStyle?.some((d) => d.property === input.property) &&
+    document.styleSources[`src.${input.nodeId}.always.plain`]?.declarations.some(
+      (d) => d.property === input.property,
+    );
+  return attachedBase ? setConditionalStyle(input) : setStyle(input);
+}
+
 /** Set/remove an attribute (literal or typed expression). */
 export function setAttribute(input: {
   readonly requestId: string;

@@ -7,7 +7,10 @@
    * The selection outline is a canvas-level presentation rule — never
    * document source.
    */
-  import { tick } from 'svelte';
+  import { tick, untrack } from 'svelte';
+  import { literalTextTarget, editLiteralText } from './selection-tools.js';
+  import { resolveOccurrence } from './occurrence.js';
+  import type { TransactionDraft } from './commands.js';
   import {
     DocumentHost,
     type UiSvelteComponentImplementation,
@@ -28,6 +31,10 @@
     readonly document: UiDocument;
     /** Design suppresses owned runtime input, including portals; omitted preserves existing consumers. */
     readonly interactionMode?: 'design' | 'interact';
+    /** Enables literal text editing in Design through the canonical transaction boundary. */
+    readonly onApply?: (draft: TransactionDraft) => boolean;
+    readonly editTextSignal?: symbol;
+    readonly onTextEditingChange?: (editing: boolean) => void;
     readonly catalogs?: UiCatalogs;
     readonly extensions?: readonly UiExtensionDescriptor[];
     readonly extensionImplementations?: readonly (
@@ -59,6 +66,9 @@
   let {
     document,
     interactionMode = 'interact',
+    onApply,
+    editTextSignal,
+    onTextEditingChange,
     catalogs,
     extensions = [],
     extensionImplementations = [],
@@ -113,12 +123,43 @@
   // the previous inline rule never matched anything and the outline
   // silently never rendered.
   let canvasEl = $state<HTMLElement | undefined>(undefined);
+  let inlineEdit = $state<{ nodeId: string; value: string; left: number; top: number; width: number; revision: string }>();
+  let textInput = $state<HTMLTextAreaElement>();
+  $effect(() => { const editing = inlineEdit !== undefined; untrack(() => onTextEditingChange?.(editing)); });
+  async function beginText(occurrence: string, target?: HTMLElement) {
+    if (!onApply || interactionMode !== 'design' || !canvasEl) return;
+    const report = resolveOccurrence(occurrence, document);
+    if (report.instancePath.length || report.repeatKeys.length) return;
+    const content = literalTextTarget(document, report.sourceNodeId);
+    let element = target ?? [...canvasEl.querySelectorAll<HTMLElement>('[data-ui-occ]')].find(el => el.dataset.uiOcc === occurrence);
+    if (!content || !element) return;
+    while (element && element !== canvasEl && element.getBoundingClientRect().width === 0) element = element.parentElement ?? undefined;
+    if (!element) return;
+    const bounds = element.getBoundingClientRect(), canvas = canvasEl.getBoundingClientRect();
+    const width = Math.min(Math.max(180, bounds.width), canvas.width);
+    inlineEdit = { nodeId: report.sourceNodeId, value: content.value, left: Math.max(0, Math.min(bounds.left - canvas.left, canvas.width - width)), top: bounds.top - canvas.top, width, revision: JSON.stringify(document) };
+    await tick(); textInput?.focus(); textInput?.select();
+  }
+  function finishText(commit: boolean) {
+    const edit = inlineEdit;
+    inlineEdit = undefined;
+    if (commit && edit && edit.revision === JSON.stringify(document)) {
+      const target = literalTextTarget(document, edit.nodeId);
+      if (target && target.value !== edit.value) { const draft = editLiteralText(document, edit.nodeId, edit.value); if (draft) onApply?.(draft); }
+    }
+    canvasEl?.focus({ preventScroll: true });
+  }
+  $effect(() => { if (editTextSignal) untrack(() => { if (selectedOccurrence) void beginText(selectedOccurrence); }); });
+  $effect(() => { if (inlineEdit && (inlineEdit.revision !== JSON.stringify(document) || interactionMode !== 'design')) inlineEdit = undefined; });
   $effect(() => {
     if (interactionMode !== 'design' || !canvasEl) return;
     const intercept = (event: Event) => {
+      if (event.target instanceof Element && event.target.closest('[data-ui-inline-editor]')) return;
       const target = event.target instanceof Element ? event.target.closest<HTMLElement>('[data-ui-occ]') : null;
       const owner = canvasEl?.querySelector<HTMLElement>('[data-ui-owner-root]')?.dataset.uiOwnerRoot;
       if (!owner || target?.dataset.uiOwner !== owner) return;
+      if (onApply && event instanceof KeyboardEvent && (['F2', 'Delete', 'Backspace'].includes(event.key) || (event.altKey && ['ArrowUp', 'ArrowDown'].includes(event.key)))) return;
+      if (event.type === 'dblclick' && target.dataset.uiOcc) { void beginText(target.dataset.uiOcc, target); }
       // Tab and Escape remain available for navigation and overlay dismissal. Activation/editing
       // events stop before catalog handlers, native inputs and form submission.
       if (event instanceof KeyboardEvent && (['Tab', 'Escape'].includes(event.key) || event.ctrlKey || event.metaKey)) return;
@@ -128,7 +169,7 @@
         if (target.dataset.uiOcc) onSelect(target.dataset.uiOcc);
       }
     };
-    const events = ['pointerdown', 'click', 'keydown', 'keyup', 'beforeinput', 'input', 'change', 'submit'] as const;
+    const events = ['pointerdown', 'click', 'dblclick', 'keydown', 'keyup', 'beforeinput', 'input', 'change', 'submit'] as const;
     for (const event of events) globalThis.document.addEventListener(event, intercept, true);
     return () => { for (const event of events) globalThis.document.removeEventListener(event, intercept, true); };
   });
@@ -172,7 +213,13 @@
 </script>
 
 {#if compiled.ok}
-  <div class={canvasClasses} class:uv-canvas-design={interactionMode === 'design'} bind:this={canvasEl}>
+  <div class={canvasClasses} class:uv-canvas-design={interactionMode === 'design'} bind:this={canvasEl} tabindex="-1" style:position="relative">
+    {#if inlineEdit}
+      <div data-ui-inline-editor class="inline-text-editor" style:left={`${inlineEdit.left}px`} style:top={`${inlineEdit.top}px`} style:width={`${inlineEdit.width}px`}>
+        <textarea aria-label="Edit canvas text" bind:this={textInput} value={inlineEdit.value} oninput={event => { if (inlineEdit) inlineEdit.value = event.currentTarget.value; }} onkeydown={event => { event.stopPropagation(); if (event.key === 'Escape') { event.preventDefault(); finishText(false); } else if (event.key === 'Enter' && (event.ctrlKey || event.metaKey)) { event.preventDefault(); finishText(true); } }}></textarea>
+        <div><button type="button" onclick={() => finishText(true)}>Apply</button><button type="button" onclick={() => finishText(false)}>Cancel</button><span>Ctrl+Enter · apply</span></div>
+      </div>
+    {/if}
     {#if compiled.plan.diagnostics.length > 0}
       <ul class="uv-canvas-diagnostics" aria-label="Document diagnostics">
         {#each compiled.plan.diagnostics as diagnostic}
@@ -218,3 +265,10 @@
     </ul>
   </div>
 {/if}
+<style>
+  .inline-text-editor { position:absolute; z-index:10; max-width:100%; padding:6px; background:white; border:2px solid #5269bd; border-radius:4px; box-shadow:0 6px 24px #25334f26; box-sizing:border-box; }
+  .inline-text-editor textarea { width:100%; min-height:68px; resize:vertical; padding:7px; border:1px solid #dce2eb; color:#263246; background:white; font:16px/1.4 system-ui,sans-serif; box-sizing:border-box; }
+  .inline-text-editor > div { display:flex; align-items:center; gap:5px; margin-top:4px; }
+  .inline-text-editor button { font:12px system-ui,sans-serif; padding:4px 8px; background:#fff; border:1px solid #dce2eb; border-radius:4px; cursor:pointer; }
+  .inline-text-editor span { font:10px system-ui,sans-serif; color:#74829a; }
+</style>

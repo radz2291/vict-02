@@ -713,3 +713,242 @@ body:has(.finished-screen) {
     gap: 4px;
   }
 }
+/* Canvas-first experiment: compact application chrome, familiar insertion and selection tools. */
+.studio-header {
+  height: 36px;
+  padding: 0 12px;
+  gap: 14px;
+}
+.studio-brand {
+  font-size: 13px;
+  gap: 7px;
+}
+.brand-mark {
+  width: 21px;
+  height: 21px;
+  border-radius: 5px;
+  font-size: 13px;
+}
+.product-mode {
+  font-size: 9px;
+}
+.operator-link {
+  font-size: 10px;
+}
+.design-toolbar {
+  min-height: 42px;
+  padding: 5px 10px;
+  gap: 7px;
+}
+.design-toolbar button {
+  padding: 5px 8px;
+  font-size: 11px;
+  border-radius: 4px;
+}
+.screen-picker select {
+  font-size: 12px;
+  max-width: 180px;
+}
+.history-controls {
+  padding-left: 7px;
+  gap: 2px;
+}
+.run-button {
+  padding: 6px 10px;
+  font-size: 11px;
+}
+.toolbar-end {
+  gap: 4px;
+}
+.canvas-modes {
+  padding: 2px;
+}
+.sidebar-tabs {
+  min-height: 34px;
+  padding: 0 6px;
+}
+.sidebar-tabs button {
+  padding: 8px 4px;
+  font-size: 11px;
+}
+.sidebar-body {
+  padding: 8px;
+}
+.canvas-toolbar {
+  min-height: 31px;
+  padding: 4px 10px;
+  gap: 6px;
+}
+.canvas-scroll {
+  padding: 16px 18px 30px;
+}
+.canvas-caption {
+  margin-bottom: 6px;
+  font-size: 10px;
+}
+.design-status {
+  min-height: 24px;
+  padding: 4px 10px;
+}
+.simulation-panel > summary {
+  padding: 7px 10px;
+  font-size: 10px;
+}
+.design-sidebar .uv-layers header {
+  padding: 7px;
+}
+.design-sidebar .uv-layers h2 {
+  display: none;
+}
+.design-sidebar .uv-layers li {
+  min-height: 27px;
+}
+.design-sidebar .uv-layers footer {
+  padding: 7px;
+}
+.design-sidebar .composer .arrange {
+  gap: 5px;
+  padding-top: 9px;
+}
+.design-sidebar .composer .arrange h3 {
+  font-size: 9px;
+}
+.design-sidebar .composer .arrange button {
+  padding: 5px;
+  font-size: 11px;
+}
+.studio-designer .uv-inspector {
+  --ui-editor-font: 'Segoe UI', sans-serif;
+  font-size: 12px;
+}
+.insert-ribbon {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 36px;
+  padding: 4px 10px;
+  background: #f9fafc;
+  border-bottom: 1px solid #dce2eb;
+  flex-shrink: 0;
+  z-index: 6;
+}
+.insert-ribbon > strong {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-right: 8px;
+  color: #708097;
+}
+.insert-ribbon button {
+  border: 1px solid transparent;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background: transparent;
+  font-size: 11px;
+  color: #34425a;
+  white-space: nowrap;
+}
+.insert-ribbon button:hover {
+  background: #edf1ff;
+  border-color: #dce2eb;
+}
+.insert-destination {
+  font-size: 10px;
+  color: #7a879b;
+  margin-left: auto;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.more-insert {
+  position: relative;
+}
+.insert-menu {
+  position: absolute;
+  top: 30px;
+  left: 0;
+  min-width: 175px;
+  padding: 5px;
+  display: grid;
+  gap: 2px;
+  background: white;
+  border: 1px solid #dce2eb;
+  border-radius: 6px;
+  box-shadow: 0 8px 24px #25334f26;
+}
+.insert-menu button {
+  text-align: left;
+}
+.empty-canvas button {
+  border: 1px solid #dce2eb;
+  border-radius: 5px;
+  margin: 10px 4px;
+  padding: 8px 12px;
+  background: white;
+}
+@media (max-width: 1100px) {
+  .insert-destination {
+    display: none;
+  }
+}
+@media (max-width: 760px) {
+  .studio-header {
+    height: 32px;
+  }
+  .design-toolbar {
+    padding: 4px 8px;
+  }
+  .screen-picker {
+    width: auto;
+    flex: 1;
+  }
+  .screen-picker select {
+    max-width: 150px;
+  }
+  .history-controls {
+    border: 0;
+  }
+  .toolbar-end {
+    margin-left: 0;
+  }
+  .insert-ribbon {
+    overflow: visible;
+    flex-wrap: wrap;
+    padding: 4px 8px;
+    gap: 1px;
+  }
+  .insert-ribbon button {
+    padding: 5px 6px;
+  }
+  .insert-ribbon > strong {
+    display: none;
+  }
+  .mobile-panes button {
+    padding: 8px 3px;
+  }
+  .canvas-scroll {
+    padding: 12px 10px 24px;
+  }
+}
+.studio-designer {
+  --ui-editor-section-padding: 8px 10px;
+}
+.advanced-arrange {
+  border-top: 1px solid #dce2eb;
+  margin-top: 8px;
+  padding-top: 7px;
+}
+.advanced-arrange > summary {
+  color: #647187;
+  font-size: 11px;
+  cursor: pointer;
+  padding: 4px 2px;
+}
+.advanced-arrange .composer {
+  margin-top: 6px;
+}
+@media (max-width: 760px) {
+  .studio-designer {
+    --ui-editor-section-padding: 10px 14px;
+  }
+}

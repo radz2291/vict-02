@@ -4,7 +4,7 @@
   import { repeatExpressionFields } from '@victframework/ui';
   type UiPseudoState = 'hover' | 'focus' | 'active' | 'disabled';
   import { resolveOccurrence } from './occurrence.js';
-  import { connectInteraction, bindExpression, setAttribute, setConditionalStyle, setOutputBinding, setStyle, setTextLiteral, type TransactionDraft } from './commands.js';
+  import { connectInteraction, bindExpression, setAttribute, setConditionalStyle, setOutputBinding, setStyle, setBaseStyle, setTextLiteral, type TransactionDraft } from './commands.js';
   import { nodeLabel, sourceBreadcrumb, editableStyle, sourceStyles, styleText, styleGroups, type EditorLabels } from './inspector-ux.js';
   import ExpressionEditor from './ExpressionEditor.svelte';
   import InspectorControl from './InspectorControl.svelte';
@@ -226,11 +226,9 @@
     onApply(connectInteraction({ requestId: request(), nodeId: node.id, interaction: { on: 'click', action: 'navigate', routeId: route, ...(current?.action === 'navigate' && current.params ? { params: current.params } : {}) } }));
   }
   function styleDraft(input: Parameters<typeof setStyle>[0]) {
-    const attachedBase = !targetNode?.localStyle?.some(d => d.property === input.property)
-      && document.styleSources[`src.${target}.always.plain`]?.declarations.some(d => d.property === input.property);
-    return condition || pseudo || attachedBase
+    return condition || pseudo
       ? setConditionalStyle({ ...input, ...(condition ? { conditionId: condition } : {}), ...(pseudo ? { pseudo } : {}) })
-      : setStyle(input);
+      : setBaseStyle(document, input);
   }
   function changeStyle(property: string, value?: UiStyleValue) {
     const input = { requestId: request(), nodeId: target, property, ...(value ? { value } : {}) };
@@ -427,7 +425,7 @@
 
 <style>
   .ux-panel { background: var(--ui-editor-panel, #f8f9fb); color: var(--ui-editor-ink, #202938); font: 12px/1.5 var(--ui-editor-font, 'Segoe UI', sans-serif); min-width: 0; width: 100%; height: 100%; overflow: auto; box-sizing: border-box; }
-  header, section, .scope { padding: 10px 14px; min-width: 0; }
+  header, section, .scope { padding: var(--ui-editor-section-padding, 10px 14px); min-width: 0; }
   .selection-bar { position: sticky; top: 0; z-index: 2; background: var(--ui-editor-panel, #f8f9fb); box-shadow: 0 1px 0 var(--ui-editor-line, #d7dce5); }
   header { background: var(--ui-editor-input, #fff); border-bottom: 1px solid var(--ui-editor-line, #d7dce5); }
   h2 { font-size: 14px; line-height: 1.35; margin: 0 0 4px; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
