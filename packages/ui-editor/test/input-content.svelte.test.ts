@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { mount, unmount, flushSync } from 'svelte';
+import { mount, unmount, flushSync, tick } from 'svelte';
 import { UiEditSession, type UiDocument } from '@victframework/ui';
 import Inspector from '../src/Inspector.svelte';
 import Composer from '../src/Composer.svelte';
@@ -155,14 +155,28 @@ it('gives contextual properties one category at a time and leaves state definiti
     expect(target.querySelector('[aria-label="Text size"]')).not.toBeNull();
     expect(target.querySelector('[aria-label="Font family"]')).toBeNull();
     expect(target.querySelector('[aria-label="Inspector sections"]')).toBeNull();
-    const category = target.querySelector<HTMLSelectElement>('[aria-label="Format category"]')!;
-    category.value = 'Typography';
-    category.dispatchEvent(new Event('change', { bubbles: true }));
+    const categories = target.querySelector('[role="tablist"][aria-label="Format categories"]')!;
+    const buttons = [...categories.querySelectorAll<HTMLButtonElement>('button')];
+    expect(buttons.map((button) => button.textContent)).toEqual([
+      'Content',
+      'Text',
+      'Typography',
+      'Fill',
+      'Spacing',
+      'Layout',
+    ]);
+    buttons.find((button) => button.textContent === 'Typography')!.click();
     flushSync();
     expect(target.querySelector('[aria-label="Font family"]')).not.toBeNull();
     expect(target.querySelector('[aria-label="Text size"]')).toBeNull();
-    category.value = 'Content';
-    category.dispatchEvent(new Event('change', { bubbles: true }));
+    const typography = buttons.find((button) => button.textContent === 'Typography')!;
+    typography.dispatchEvent(new KeyboardEvent('keydown', { key: 'Home', bubbles: true }));
+    await tick();
+    expect(document.activeElement).toBe(buttons[0]);
+    expect(buttons[0]!.getAttribute('aria-selected')).toBe('true');
+    expect(target.querySelector('[role=tabpanel]')?.getAttribute('aria-labelledby')).toBe(
+      buttons[0]!.id,
+    );
     flushSync();
     expect(target.querySelector('[aria-label="placeholder value"]')).not.toBeNull();
     expect(target.querySelector('[aria-label="Starting value"]')).toBeNull();

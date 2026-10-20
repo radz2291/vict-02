@@ -62,6 +62,7 @@
   let condition = $state('');
   let pseudo = $state<UiPseudoState | undefined>(undefined);
   let groupName = $state('Quick');
+  const formatId = $props.id();
   let text = $state('');
   let property = $state('color');
   let value = $state('');
@@ -202,6 +203,37 @@
     { title: 'Quick', controls: styleGroups.flatMap(group => [...group.controls]).filter(control => quickProperties.includes(control.property)) },
     ...orderedGroups.map(group => ({ ...group, controls: group.controls.filter(control => !quickProperties.includes(control.property)) })),
   ]);
+  const formatCategories = $derived(['Content', ...contextualGroups.map(group => group.title)]);
+  const activeCategory = $derived(tab === 'Content' ? 'Content' : groupName);
+  function categoryLabel(category: string) {
+    if (category === 'Quick') return container ? 'Layout' : 'Text';
+    if (category === 'Size & spacing') return 'Spacing';
+    if (category === 'Fill & border') return 'Fill';
+    if (category === 'Layout' && container) return 'Alignment';
+    return category;
+  }
+  function revealCategory(category: string, focus = false) {
+    const button = globalThis.document.getElementById(`${formatId}-${formatCategories.indexOf(category)}`);
+    if (focus) button?.focus();
+    const row = button?.parentElement;
+    if (!button || !row) return;
+    const item = button.getBoundingClientRect(), bounds = row.getBoundingClientRect();
+    if (item.right > bounds.right) row.scrollLeft += item.right - bounds.right;
+    else if (item.left < bounds.left) row.scrollLeft -= bounds.left - item.left;
+  }
+  function chooseCategory(category: string) {
+    if (category === 'Content') tab = 'Content';
+    else { groupName = category; tab = 'Style'; }
+    void tick().then(() => revealCategory(category));
+  }
+  function navigateCategory(event: KeyboardEvent, category: string) {
+    if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+    event.preventDefault(); event.stopPropagation();
+    const index = formatCategories.indexOf(category);
+    const next = formatCategories[event.key === 'Home' ? 0 : event.key === 'End' ? formatCategories.length - 1 : (index + (event.key === 'ArrowRight' ? 1 : formatCategories.length - 1)) % formatCategories.length]!;
+    chooseCategory(next);
+    void tick().then(() => revealCategory(next, true));
+  }
   const shownGroups = $derived(contextual ? contextualGroups.filter(group => group.title === groupName) : orderedGroups);
   const referenceLabels = $derived(Object.fromEntries(Object.entries(labels.state ?? {}).map(([key, label]) => [`state.${key}`, label])));
   function friendly(value: string) { return value.replace(/([a-z])([A-Z])/g, '$1 $2').replaceAll('-', ' ').replace(/^./, c => c.toUpperCase()); }
@@ -305,7 +337,13 @@
     {#if !contextual}<nav class="tabs" aria-label="Inspector sections">{#each ['Content', 'Style', 'Behavior'] as const as section}<button type="button" aria-pressed={tab === section} onclick={() => tab = section}>{section}</button>{/each}</nav>{/if}
   {/if}</div>{/if}
   {#if node}
-    {#if contextual && tab !== 'Behavior'}<div class="focused-groups"><label class="sr-only" for={`${epoch}-group`}>Format category</label><select id={`${epoch}-group`} aria-label="Format category" value={tab === 'Content' ? 'Content' : groupName} onchange={event => { if (event.currentTarget.value === 'Content') tab = 'Content'; else { groupName = event.currentTarget.value; tab = 'Style'; } }}><option value="Content">Content</option>{#each contextualGroups as group}<option value={group.title}>{group.title === 'Quick' ? (container ? 'Layout essentials' : 'Text essentials') : group.title === 'Typography' ? 'More typography' : group.title === 'Layout' && container ? 'More layout' : group.title}</option>{/each}</select></div>{/if}
+    {#if contextual && tab !== 'Behavior'}
+      <div class="focused-groups" role="tablist" aria-label="Format categories">
+        {#each formatCategories as category}<button type="button" role="tab" id={`${formatId}-${formatCategories.indexOf(category)}`} aria-controls={`${formatId}-properties`} aria-selected={activeCategory === category} tabindex={activeCategory === category ? 0 : -1} title={category === 'Quick' ? (container ? 'Layout essentials' : 'Text essentials') : category} onclick={() => chooseCategory(category)} onkeydown={event => navigateCategory(event, category)}>{categoryLabel(category)}</button>{/each}
+      </div>
+    {/if}
+    <div role={contextual && tab !== 'Behavior' ? 'tabpanel' : undefined} id={`${formatId}-properties`} aria-labelledby={contextual && tab !== 'Behavior' ? `${formatId}-${formatCategories.indexOf(activeCategory)}` : undefined}>
+
     {#if tab === 'Content'}
       <section><h3>Content</h3>
         {#if node.kind === 'element' && ['input','textarea'].includes(node.tag)}
@@ -429,6 +467,7 @@
       {#if node.kind === 'element'}<label>Attribute name<input aria-label="Attribute name" bind:value={attr} /></label><label>Attribute value<input aria-label="Attribute value" bind:value={attrValue} /></label><button type="button" onclick={() => onApply(setAttribute({ requestId: request(), nodeId: node.id, name: attr, value: attrValue }))}>Set attribute</button>{/if}
       <h3>Canonical source (read only)</h3><pre>{JSON.stringify(node, null, 2)}</pre>
     </section></details>{/if}
+    </div>
   {/if}
   {#if lastIssues.length}<section role="alert" class="issues"><strong>Change rejected · source unchanged</strong>{#each lastIssues as issue}<p>{issue.code}: {issue.message}</p>{/each}</section>{/if}
 </aside>
@@ -467,8 +506,9 @@
   .issues { background: #fff0ef; }
   .contextual {height:auto;overflow:visible;background:#fff;font-size:11px;--ui-editor-section-padding:6px 2px;}
   .contextual .selection-bar {position:static;box-shadow:none;}
-  .focused-groups {padding:0 0 6px;}
-  .focused-groups select {padding:4px 6px;height:27px;margin:0;font-size:11px;}
+  .focused-groups {display:flex;gap:2px;overflow-x:auto;scrollbar-width:thin;overscroll-behavior-x:contain;position:sticky;top:-7px;z-index:3;background:#fff;margin:-4px -2px 5px;padding:0 0 3px;border-bottom:1px solid #e4e8f0;}
+  .focused-groups button {flex-shrink:0;white-space:nowrap;margin:0;padding:5px 8px;border:0;border-radius:4px;font-size:11px;background:transparent;color:#78869c;}
+  .focused-groups button[aria-selected=true] {background:#f0f3fa;color:#405abd;font-weight:600;}
   .contextual .style-group > summary {display:none;}
   .contextual .style-group > section {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 12px;padding:4px 0;}
   .contextual .style-group > section :global(.spacing) {grid-column:1 / -1;}

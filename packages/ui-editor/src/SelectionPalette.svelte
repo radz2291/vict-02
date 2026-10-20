@@ -35,7 +35,7 @@
   .palette {font:11px/1.4 'Segoe UI',system-ui,sans-serif; color:#34425a;}
   .palette-header {display:flex;align-items:center;gap:8px;padding:4px 7px;border-bottom:1px solid #e4e8f0;}
   [role=tablist] {display:flex;gap:2px;flex-shrink:0;}
-  [role=tab] {border:0;border-radius:4px;background:transparent;color:#78869c;padding:5px 8px;font:inherit;cursor:pointer;}
+  [role=tab] {width:58px;text-align:center;border:0;border-radius:4px;background:transparent;color:#78869c;padding:5px 8px;font:inherit;cursor:pointer;}
   [role=tab][aria-selected=true] {background:#edf1ff;color:#405abd;font-weight:600;}
   .palette-header > span {margin-left:auto;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;color:#8a96a8;font-size:10px;}
   .palette-body {min-height:52px;max-height:min(166px,calc(100dvh - 220px));overflow:auto;padding:7px;box-sizing:border-box;overscroll-behavior:contain;}
