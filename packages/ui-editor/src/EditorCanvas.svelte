@@ -12,6 +12,7 @@
   import { literalTextTarget, editLiteralText } from './selection-tools.js';
   import { resolveOccurrence } from './occurrence.js';
   import type { TransactionDraft } from './commands.js';
+  import { compositionParent } from './composition.js';
   import {
     DocumentHost,
     type UiSvelteComponentImplementation,
@@ -39,6 +40,7 @@
     /** Authoring-only tools anchored to the selected rendered occurrence. F10 focuses them. */
     readonly selectionTools?: Snippet;
     readonly selectionToolsReveal?: symbol;
+    readonly selectionToolsPlacement?: 'above' | 'below';
     readonly catalogs?: UiCatalogs;
     readonly extensions?: readonly UiExtensionDescriptor[];
     readonly extensionImplementations?: readonly (
@@ -75,6 +77,7 @@
     onTextEditingChange,
     selectionTools,
     selectionToolsReveal,
+    selectionToolsPlacement,
     catalogs,
     extensions = [],
     extensionImplementations = [],
@@ -137,7 +140,13 @@
     const report = resolveOccurrence(occurrence, document);
     if (report.instancePath.length || report.repeatKeys.length) return;
     const content = literalTextTarget(document, report.sourceNodeId);
-    let element = target ?? [...canvasEl.querySelectorAll<HTMLElement>('[data-ui-occ]')].find(el => el.dataset.uiOcc === occurrence);
+    const owner = canvasEl.querySelector<HTMLElement>('[data-ui-owner-root]')?.dataset.uiOwnerRoot;
+    const elements = [...globalThis.document.querySelectorAll<HTMLElement>('[data-ui-occ]')].filter(el => el.dataset.uiOwner === owner);
+    let element = target ?? elements.find(el => el.dataset.uiOcc === occurrence);
+    if (!element) for (const ancestor of toolAncestors) {
+      element = elements.find(el => el.dataset.uiOcc === ancestor && el.getBoundingClientRect().width > 0);
+      if (element) break;
+    }
     if (!content || !element) return;
     while (element && element !== canvasEl && element.getBoundingClientRect().width === 0) element = element.parentElement ?? undefined;
     if (!element) return;
@@ -217,11 +226,25 @@
   const canvasClasses = $derived(
     selectedOccurrence !== undefined ? 'uv-canvas uv-canvas-has-selection' : 'uv-canvas',
   );
+  const toolAncestors = $derived.by(() => {
+    if (!selectedOccurrence) return [];
+    const selected = resolveOccurrence(selectedOccurrence, document);
+    if (selected.instancePath.length || selected.repeatKeys.length) return [];
+    const ancestors: string[] = [], seen = new Set<string>();
+    let id = selected.sourceNodeId;
+    while (!seen.has(id)) {
+      seen.add(id);
+      const parent = compositionParent(document, id);
+      if (!parent) break;
+      id = parent.nodeId; ancestors.push(`${document.id}|${id}`);
+    }
+    return ancestors;
+  });
 </script>
 
 {#if compiled.ok}
   {#if canvasEl && selectedOccurrence && selectionTools && interactionMode === 'design' && !inlineEdit}
-    <FloatingSelection canvas={canvasEl} occurrence={selectedOccurrence} revealSignal={selectionToolsReveal}>{@render selectionTools()}</FloatingSelection>
+    <FloatingSelection canvas={canvasEl} occurrence={selectedOccurrence} fallbackOccurrences={toolAncestors} revealSignal={selectionToolsReveal} preferred={selectionToolsPlacement}>{@render selectionTools()}</FloatingSelection>
   {/if}
   <div class={canvasClasses} class:uv-canvas-design={interactionMode === 'design'} bind:this={canvasEl} tabindex="-1" style:position="relative">
     {#if inlineEdit}

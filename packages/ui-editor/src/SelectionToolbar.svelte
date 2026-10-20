@@ -4,10 +4,11 @@
   import { setBaseStyle, type TransactionDraft } from './commands.js';
   import { editableStyle } from './inspector-ux.js';
   import { literalTextTarget } from './selection-tools.js';
-  let { document, nodeId, onApply, onEdit, onDuplicate, onRemove, floating = false }: {
+  let { document, nodeId, onApply, onEdit, onDuplicate, onRemove, floating = false, showArrange = true, onInspect }: {
     document: UiDocument; nodeId?: string; onApply: (draft: TransactionDraft) => boolean;
     onEdit: () => void; onDuplicate: () => void; onRemove: () => void;
     floating?: boolean;
+    showArrange?: boolean; onInspect?: () => void;
   } = $props();
   const node = $derived(nodeId ? document.nodes[nodeId] : undefined);
   const parent = $derived(nodeId ? compositionParent(document, nodeId) : undefined);
@@ -55,7 +56,8 @@
   <button type="button" disabled={!parent} onclick={onDuplicate} title="Duplicate · Ctrl+D">Duplicate</button>
   <button type="button" disabled={!parent} onclick={onRemove} title="Delete selection · Delete">Delete</button>
   {/snippet}
-  {#if floating}<details><summary aria-label="More selection tools">More</summary><div class="more-tools">{@render arrangement()}</div></details>{:else}<span class="spacer"></span>{@render arrangement()}{/if}
+  {#if onInspect}<button type="button" onclick={onInspect}>Properties…</button>{/if}
+  {#if showArrange}{#if floating}<details><summary aria-label="More selection tools">More</summary><div class="more-tools">{@render arrangement()}</div></details>{:else}<span class="spacer"></span>{@render arrangement()}{/if}{/if}
 </div>
 <style>
   .selection-toolbar { display:flex; align-items:center; gap:5px; padding:5px 10px; min-height:38px; border-bottom:1px solid #dce2eb; background:#fff; overflow-x:auto; flex-shrink:0; font:11px/1.4 system-ui,sans-serif; color:#536176; }

@@ -9,6 +9,7 @@ export function floatingPlacement(
   anchor: FloatingBounds,
   visible: FloatingBounds,
   height: number,
+  preferred: 'above' | 'below' = 'above',
 ): { left: number; top: number; width: number } | undefined {
   const { left, right, top, bottom } = visible;
   if (
@@ -22,7 +23,15 @@ export function floatingPlacement(
     return undefined;
   const width = Math.min(480, right - left);
   const above = anchor.top - height - 10;
-  const y = above >= top ? above : anchor.bottom + height + 10 <= bottom ? anchor.bottom + 10 : top;
+  const below = anchor.bottom + height + 10 <= bottom;
+  const y =
+    preferred === 'below' && below
+      ? anchor.bottom + 10
+      : above >= top
+        ? above
+        : below
+          ? anchor.bottom + 10
+          : top;
   return {
     left: Math.max(left, Math.min(anchor.left, right - width)),
     top: Math.max(top, Math.min(y, bottom - height)),

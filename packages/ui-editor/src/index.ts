@@ -7,6 +7,7 @@
 export { default as EditorCanvas } from './EditorCanvas.svelte';
 export { default as Composer } from './Composer.svelte';
 export { default as SelectionToolbar } from './SelectionToolbar.svelte';
+export { default as SelectionPalette } from './SelectionPalette.svelte';
 export { literalTextTarget, editLiteralText, duplicateSubtree } from './selection-tools.js';
 export { default as PanelResizer } from './PanelResizer.svelte';
 export {

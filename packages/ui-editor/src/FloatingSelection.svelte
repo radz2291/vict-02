@@ -1,7 +1,7 @@
 <script lang="ts">
   import { tick, untrack, type Snippet } from 'svelte';
   import { floatingPlacement } from './floating-position.js';
-  let { canvas, occurrence, children, revealSignal }: { canvas: HTMLElement; occurrence: string; children: Snippet; revealSignal?: symbol } = $props();
+  let { canvas, occurrence, children, revealSignal, preferred = 'above', fallbackOccurrences = [] }: { canvas: HTMLElement; occurrence: string; children: Snippet; revealSignal?: symbol; preferred?: 'above' | 'below'; fallbackOccurrences?: readonly string[] } = $props();
   let palette = $state<HTMLElement>();
   let placement = $state<{ left: number; top: number; width: number }>();
   let dismissed = $state(false);
@@ -12,7 +12,7 @@
   }
   $effect(() => { occurrence; revealSignal; dismissed = false; });
   $effect(() => {
-    const root = canvas, selected = occurrence;
+    const root = canvas, selected = occurrence, preference = preferred, ancestors = fallbackOccurrences;
     let frame = 0, disposed = false;
     let observed: Element | undefined;
     const observer = new ResizeObserver(() => schedule());
@@ -20,8 +20,15 @@
       frame = 0;
       if (disposed || !palette) return;
       const owner = root.querySelector<HTMLElement>('[data-ui-owner-root]')?.dataset.uiOwnerRoot;
-      const matches = [...globalThis.document.querySelectorAll<HTMLElement>('[data-ui-occ]')].filter(el => el.dataset.uiOwner === owner && el.dataset.uiOcc === selected);
-      let target: HTMLElement | undefined = matches.find(el => el.hasAttribute('data-ui-primary')) ?? matches.find(el => el.getBoundingClientRect().width > 0) ?? matches[0];
+      const owned = [...globalThis.document.querySelectorAll<HTMLElement>('[data-ui-occ]')].filter(el => el.dataset.uiOwner === owner);
+      let target: HTMLElement | undefined;
+      // Closed slot contents can have source selection without a rendered occurrence.
+      // Anchor their tools to the nearest visible owner without changing source selection.
+      for (const key of [selected, ...ancestors]) {
+        const matches = owned.filter(el => el.dataset.uiOcc === key);
+        target = matches.find(el => el.hasAttribute('data-ui-primary') && el.getBoundingClientRect().width > 0) ?? matches.find(el => el.getBoundingClientRect().width > 0);
+        if (target) break;
+      }
       while (target && target !== root && !target.getBoundingClientRect().width) target = target.parentElement ?? undefined;
       if (!owner || !target) { placement = undefined; return; }
       if (observed !== target) { if (observed) observer.unobserve(observed); observer.observe(target); observed = target; }
@@ -34,7 +41,7 @@
         if (/(auto|scroll|hidden|clip)/.test(style.overflowY)) { top = Math.max(top, bounds.top + 8); bottom = Math.min(bottom, bounds.bottom - 8); }
       }
       const height = palette.getBoundingClientRect().height || 42;
-      const next = floatingPlacement(box, { left, right, top, bottom }, height);
+      const next = floatingPlacement(box, { left, right, top, bottom }, height, preference);
       if (JSON.stringify(next) !== JSON.stringify(untrack(() => placement))) placement = next;
     }
     function schedule() { if (!frame && !disposed) frame = requestAnimationFrame(measure); }
@@ -48,7 +55,7 @@
   });
   function keyboard(event: KeyboardEvent) {
     const editable = event.target instanceof HTMLElement && (event.target.matches('input,textarea,select') || event.target.isContentEditable);
-    if (event.key === 'F10' && !editable) { event.preventDefault(); dismissed = false; void tick().then(() => palette?.querySelector<HTMLElement>('button:not(:disabled),input,select')?.focus()); }
+    if (event.key === 'F10' && !editable) { event.preventDefault(); dismissed = false; void tick().then(() => (palette?.querySelector<HTMLElement>('[role=tab][aria-selected=true]') ?? palette?.querySelector<HTMLElement>('button:not(:disabled),input,select'))?.focus()); }
     if (event.key === 'Escape' && palette?.contains(event.target as Node)) { event.preventDefault(); event.stopPropagation(); dismissed = true; canvas.focus({ preventScroll: true }); }
   }
   function pointer(event: PointerEvent) {

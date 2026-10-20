@@ -2,7 +2,7 @@
   import { onMount, tick, untrack } from 'svelte';
   import { beforeNavigate } from '$app/navigation';
   import { ControlScope } from '@victframework/ui-svelte';
-  import { Composer, EditorBridge, EditorCanvas, Inspector, Layers, StateValuesPanel, PanelResizer, SelectionToolbar, resolveOccurrence, compositionParent, compositionTargets, compositionName, insertSubtree, duplicateSubtree, type InsertRecipe, type TransactionDraft } from '@victframework/ui-editor';
+  import { Composer, EditorBridge, EditorCanvas, Inspector, Layers, StateValuesPanel, PanelResizer, SelectionToolbar, SelectionPalette, resolveOccurrence, compositionParent, compositionName, duplicateSubtree, type TransactionDraft } from '@victframework/ui-editor';
   import { createPreviewSession } from '@victframework/ui-preview';
   import type { UiDocument, UiRenderPlan, UiValue } from '@victframework/ui';
   import { newScreen, compileScreen, screenIssues, screenApplication, screenName, screenActionState, designerCatalogs, actionInputs, catalogDescriptors, catalogImplementations } from './application.js';
@@ -31,7 +31,9 @@
   let editTextSignal = $state<symbol>();
   let selectionToolsReveal = $state<symbol>();
   let canvasTextEditing = $state(false);
-  let insertOpen = $state(false);
+  let palettePage = $state<'format' | 'insert' | 'arrange'>('format');
+  let paletteRequested = $state(false);
+  let paletteFocus = $state<symbol>();
   let mobilePane = $state('Canvas');
   let width = $state('fluid');
   let mode = $state<'design' | 'interact'>('design');
@@ -48,6 +50,7 @@
       if (owner?.kind === 'element' && owner.children.length === 1) occurrence = `${source.id}|${owner.id}`;
     }
     bridge?.select(occurrence);
+    palettePage = 'format'; paletteRequested = false;
     selectionToolsReveal = Symbol('selection-tools');
   }
   function changeMode(next: 'design' | 'interact') { if (canvasTextEditing) { notice = 'Apply or cancel your canvas text edit first.'; return; } mode = next; resetRuntime(); notice = next === 'design' ? 'Design mode · select and edit without running behavior.' : 'Interact mode · simulated behavior, no live effects.'; }
@@ -83,6 +86,7 @@
     runtimeValues = {}; resetSignal = Symbol('reset'); activity = [];
   }
   function openSession(next: EditorBridge) {
+    palettePage = 'format'; paletteRequested = false;
     unsubscribe?.(); bridge = next; version++;
     unsubscribe = next.subscribe(() => version++);
     plan = undefined; issues = []; resetRuntime();
@@ -171,7 +175,6 @@
   }
   function shortcuts(event: KeyboardEvent) {
     if (event.key === 'Escape' && compactWorkspace) rightOpen = false;
-    if (event.key === 'Escape') insertOpen = false;
     const editable = event.target instanceof HTMLElement && (event.target.matches('input,textarea,select') || event.target.isContentEditable);
     if (!editable && mode === 'design') {
       if (['Delete', 'Backspace'].includes(event.key)) { event.preventDefault(); removeSelection(); }
@@ -202,25 +205,12 @@
     if (index < 0 || index >= parent.children.length) return;
     apply({ requestId: crypto.randomUUID(), reason: 'Reorder selection', commands: [{ op: 'move', nodeId: selectedNode.id, newParentId: parent.nodeId, slotName: parent.slotName, index }] });
   }
-  const insertionTarget = $derived.by(() => {
-    if (!source) return undefined;
-    const targets = compositionTargets(source, catalogDescriptors);
-    const matches = targets.filter(target => target.nodeId === selectedNode?.id);
-    if (matches.length === 1) return matches[0];
-    if (matches.length > 1) return undefined;
-    let anchor = selectedNode?.id;
-    while (anchor) {
-      const parent = compositionParent(source, anchor);
-      if (!parent) break;
-      if (targets.some(target => target.nodeId === parent.nodeId && target.slotName === parent.slotName)) return { ...parent, index: parent.children.indexOf(anchor) + 1, label: `after ${compositionName(source, anchor)}` };
-      anchor = parent.nodeId;
-    }
-    return targets.find(target => target.nodeId === source.root);
-  });
-  function quickInsert(recipe: InsertRecipe) {
-    if (!source || !insertionTarget) { leftTab = 'Insert'; leftOpen = true; mobilePane = 'Insert'; insertOpen = false; notice = 'Choose the component slot in Insert, then add your element.'; return; }
-    const id = `${recipe.id}-${crypto.randomUUID().slice(0, 8)}`;
-    if (apply(insertSubtree(crypto.randomUUID(), recipe.create(id), insertionTarget))) { selectOccurrence(`${source.id}|${id}`); insertOpen = false; mobilePane = 'Canvas'; notice = `Added ${recipe.label}. Double-click text to edit; drag in Layers to arrange.`; }
+  function openInsert() {
+    if (!source || !bridge) return;
+    if (canvasTextEditing) { notice = 'Apply or cancel your canvas text edit first.'; return; }
+    if (!selectedNode) bridge.select(`${source.id}|${source.root}`);
+    palettePage = 'insert'; paletteRequested = true; mobilePane = 'Canvas';
+    selectionToolsReveal = Symbol('add'); paletteFocus = Symbol('focus-insert');
   }
   async function beginCreate() { if (canvasTextEditing || sourceDraftDirty) { notice = 'Apply or cancel your text/source draft before creating a screen.'; return; } createDialog.showModal(); await tick(); nameInput.focus(); nameInput.select(); }
   function exportSource() {
@@ -250,32 +240,25 @@
     <div class="screen-picker"><label class="sr-only" for="screen-picker">Screen</label><select id="screen-picker" value={source?.id ?? ''} onchange={event => openScreen(event.currentTarget.value)}>{#each library as item (item.id)}<option value={item.id}>{item.name}</option>{/each}</select><button type="button" onclick={beginCreate} aria-label="New screen">＋ New</button></div>
     <div class="history-controls"><button type="button" disabled={!snapshot?.canUndo} onclick={undo} title="Undo · Ctrl+Z">Undo</button><button type="button" disabled={!snapshot?.canRedo} onclick={redo} title="Redo · Ctrl+Shift+Z">Redo</button></div>
     <div class="canvas-modes" aria-label="Canvas mode"><button type="button" aria-pressed={mode === 'design'} onclick={() => changeMode('design')}>Design</button><button type="button" aria-pressed={mode === 'interact'} onclick={() => changeMode('interact')}>Interact</button></div>
+    {#if mode === 'design'}<button type="button" class="add-element" onclick={openInsert}>＋ Add</button>{/if}
     <span class="save-state">{sourceDraftDirty ? '● Unapplied JSON draft' : snapshot?.dirty ? '● Unsaved changes' : snapshot?.storedRevision === 'r1' ? '○ New screen' : '✓ Saved'}</span>
     <div class="toolbar-end"><button type="button" class="panel-toggle" aria-label={leftOpen ? 'Hide document panel' : 'Show document panel'} aria-pressed={leftOpen} onclick={() => leftOpen = !leftOpen}>Document</button><button type="button" class="panel-toggle" aria-label={rightOpen ? 'Hide Inspector' : 'Show Inspector'} aria-pressed={rightOpen} onclick={() => rightOpen = !rightOpen}>Inspector</button><button type="button" onclick={reopen} disabled={!source || snapshot?.dirty || sourceDraftDirty || snapshot?.storedRevision === 'r1'}>Reopen</button><button type="button" onclick={save} disabled={!compilation?.ok || sourceDraftDirty}>Save</button><a class="run-button" aria-disabled={!source || snapshot?.dirty || sourceDraftDirty || snapshot?.storedRevision === 'r1'} href={source && !snapshot?.dirty && !sourceDraftDirty && snapshot?.storedRevision !== 'r1' ? `/run-screen?screen=${encodeURIComponent(source.id)}` : undefined}>Run saved ↗</a></div>
   </div>
-  {#if source && mode === 'design'}
-    <div class="insert-ribbon" aria-label="Insert elements">
-      <strong>Insert</strong>
-      {#each screenRecipes.slice(0, 6) as recipe}<button type="button" onclick={() => quickInsert(recipe)} title={recipe.description}>＋ {recipe.label}</button>{/each}
-      <div class="more-insert"><button type="button" aria-expanded={insertOpen} onclick={() => insertOpen = !insertOpen}>More ▾</button>
-        {#if insertOpen}<div class="insert-menu">{#each screenRecipes.slice(6) as recipe}<button type="button" onclick={() => quickInsert(recipe)}>{recipe.label}</button>{/each}<button type="button" onclick={() => { leftTab = 'Insert'; leftOpen = true; mobilePane = 'Insert'; insertOpen = false; }}>Choose placement…</button></div>{/if}
-      </div>
-      <span class="insert-destination">{insertionTarget ? `Add ${insertionTarget.label.startsWith('after ') ? insertionTarget.label : `inside ${insertionTarget.label}`}` : 'Choose a slot in Insert'}</span>
-    </div>
-  {/if}
-  <nav class="mobile-panes" aria-label="Designer panels">{#each ['Insert', 'Layers', 'Canvas', 'Inspect', 'Source'] as pane}<button type="button" aria-pressed={mobilePane === pane} onclick={() => { mobilePane = pane; if (['Insert', 'Layers', 'Source'].includes(pane)) leftTab = pane; }}>{pane}</button>{/each}</nav>
+  <nav class="mobile-panes" aria-label="Designer panels">{#each ['Layers', 'Canvas', 'Inspect', 'Source'] as pane}<button type="button" aria-pressed={mobilePane === pane} onclick={() => { mobilePane = pane; if (['Layers', 'Source'].includes(pane)) leftTab = pane; }}>{pane}</button>{/each}</nav>
   {#if source && bridge}
-  {#snippet floatingTools()}<SelectionToolbar document={source} nodeId={selectedNode?.id} floating onApply={apply} onEdit={() => editTextSignal = Symbol('edit')} onDuplicate={duplicateSelection} onRemove={removeSelection} />{/snippet}
+  {#snippet floatingTools()}
+    <SelectionPalette bind:page={palettePage} name={compositionName(source, selectedNode?.id ?? source.root)} focusSignal={paletteFocus}>
+      {#snippet format()}<SelectionToolbar document={source} nodeId={selectedNode?.id} floating showArrange={false} onApply={apply} onEdit={() => editTextSignal = Symbol('edit')} onDuplicate={duplicateSelection} onRemove={removeSelection} onInspect={() => { rightOpen = true; mobilePane = 'Inspect'; }} />{/snippet}
+      {#snippet insert()}<Composer document={source} selectedNodeId={selectedNode?.id} recipes={screenRecipes} descriptors={catalogDescriptors} compact showArrange={false} onApply={apply} onInserted={(id: string) => { selectOccurrence(`${source.id}|${id}`); notice = 'Added to your screen. Double-click text to edit.'; }} />{/snippet}
+      {#snippet arrange()}<Composer document={source} selectedNodeId={selectedNode?.id} recipes={[]} descriptors={catalogDescriptors} compact showInsert={false} onApply={apply} onDuplicate={duplicateSelection} />{#if !selectedNode || selectedNode.id === source.root}<p class="palette-hint">Select an element to move, duplicate or delete it.</p>{/if}{/snippet}
+    </SelectionPalette>
+  {/snippet}
   <div class="design-workspace" class:left-hidden={!leftOpen} class:right-hidden={!rightOpen} style:--left-width={`${leftWidth}px`} style:--right-width={`${rightWidth}px`}>
-    <aside class:mobile-active={['Insert', 'Layers', 'Source'].includes(mobilePane)} class="design-sidebar">
-      <nav class="sidebar-tabs" aria-label="Document panels">{#each ['Insert', 'Layers', 'Source'] as tab}<button type="button" aria-pressed={leftTab === tab} onclick={() => leftTab = tab}>{tab}</button>{/each}</nav>
+    <aside class:mobile-active={['Layers', 'Source'].includes(mobilePane)} class="design-sidebar">
+      <nav class="sidebar-tabs" aria-label="Document panels">{#each ['Layers', 'Source'] as tab}<button type="button" aria-pressed={leftTab === tab} onclick={() => leftTab = tab}>{tab}</button>{/each}</nav>
       <div class="sidebar-body">
-        {#if leftTab === 'Insert'}
-          <p class="panel-eyebrow">BUILD YOUR SCREEN</p><p class="panel-hint">Add to the selection, or choose a parent. Every addition is undoable.</p>
-          <Composer document={source} selectedNodeId={selectedNode?.id} recipes={screenRecipes} descriptors={catalogDescriptors} showArrange={false} onApply={apply} onInserted={(id: string) => { selectOccurrence(`${source.id}|${id}`); notice = 'Added to your screen. Configure it in the Inspector.'; }} />
-        {:else if leftTab === 'Layers'}
+        {#if leftTab === 'Layers'}
           {#if plan}<Layers {plan} document={source} selectedOccurrence={selected} onSelect={selectOccurrence} onApply={apply} componentDescriptors={catalogDescriptors} />{/if}
-          <details class="advanced-arrange"><summary>Arrange & move…</summary><Composer document={source} selectedNodeId={selectedNode?.id} recipes={[]} descriptors={catalogDescriptors} showInsert={false} onApply={apply} /></details>
         {:else}
           <p class="panel-eyebrow">CANONICAL SOURCE</p><p class="panel-hint">Humans and agents edit this same UI document. Keep its id and revision. Apply validates the source and creates one undoable change.</p>
           <label class="sr-only" for="canonical-source">Canonical UI document</label><textarea id="canonical-source" class="source-editor" spellcheck="false" bind:value={sourceDraft} oninput={() => sourceDraftDirty = true}></textarea>
@@ -291,14 +274,15 @@
       <div class="canvas-scroll"><div class="canvas-caption">{screenName(source)} <span>{width === 'fluid' ? 'Responsive' : `${width}px`}</span></div>
         <div class="design-frame" style:max-width={width === 'fluid' ? 'none' : `${width}px`}>
           <EditorCanvas document={source} catalogs={designerCatalogs} extensions={catalogDescriptors} extensionImplementations={catalogImplementations}
-            selectionTools={selectedNode && selectedNode.id !== source.root ? floatingTools : undefined}
+            selectionTools={selectedNode && (selectedNode.id !== source.root || paletteRequested) ? floatingTools : undefined}
             {selectionToolsReveal}
+            selectionToolsPlacement="below"
             onApply={(draft: TransactionDraft) => { canvasTextEditing = false; return apply(draft); }} {editTextSignal} onTextEditingChange={(editing: boolean) => canvasTextEditing = editing}
             interactionMode={mode} selectedOccurrence={mode === 'design' ? selected : undefined} onSelect={mode === 'design' ? selectOccurrence : () => {}} {dispatch} navigate={() => { notice = 'This application contains one screen.'; }}
             stateValues={runtimeValues} onStateChange={(key: string, value: UiValue) => runtimeValues = { ...runtimeValues, [key]: value }} {resetSignal}
             actionState={screenActionState} onPlan={(next: UiRenderPlan) => { plan = next; }}
             onRenderDiagnostic={(diagnostic: { code: string; message: string }) => { issues = [...issues.slice(-4), diagnostic]; }} ariaLabel="Screen canvas" />
-          {#if Object.keys(source.nodes).length === 1}<div class="empty-canvas"><span>＋</span><h1>What will you make?</h1><p>Start with a title. Double-click it to write your own.</p><button type="button" onclick={() => quickInsert(screenRecipes.find(recipe => recipe.id === 'heading')!)}>＋ Add a heading</button><button type="button" onclick={() => quickInsert(screenRecipes[0]!)}>＋ Add a section</button></div>{/if}
+          {#if Object.keys(source.nodes).length === 1}<div class="empty-canvas"><span>＋</span><h1>What will you make?</h1><p>Choose ＋ Add to start. Select anything to open its tools.</p></div>{/if}
         </div>
       </div>
       <details class="simulation-panel"><summary>Simulated execution <span>Local preview · no live effects</span></summary><div class="simulation-body"><label><input type="checkbox" bind:checked={simulation.denied} /> Deny demo writes</label><label><input type="checkbox" bind:checked={simulation.failNext} /> Fail next action</label><StateValuesPanel localState={source.localState} stateValues={runtimeValues} onChange={(key: string, value: UiValue | undefined) => { const next = { ...runtimeValues }; if (value === undefined) delete next[key]; else next[key] = value; runtimeValues = next; }} />{#each activity as entry}<p role="status">{entry}</p>{/each}<p class="panel-hint">Connect checkedChange to accepted, bind checked to state.accepted, then map a Button's press → Submit using state.message and state.accepted. Runtime values never enter undo history.</p></div></details>

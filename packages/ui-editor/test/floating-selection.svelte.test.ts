@@ -2,6 +2,7 @@ import { expect, it, vi } from 'vitest';
 import { mount, unmount, tick, flushSync, createRawSnippet } from 'svelte';
 import type { UiDocument } from '@victframework/ui';
 import EditorCanvas from '../src/EditorCanvas.svelte';
+import FloatingSelection from '../src/FloatingSelection.svelte';
 
 it('anchors tools to selection, dismisses outside, and restores keyboard focus without authoring', async () => {
   const source: UiDocument = {
@@ -84,6 +85,51 @@ it('anchors tools to selection, dismisses outside, and restores keyboard focus w
   } finally {
     await unmount(canvas);
     target.remove();
+    bounds.mockRestore();
+  }
+});
+it('keeps tools available for closed slot content by anchoring to its visible owner', async () => {
+  const canvas = document.createElement('div');
+  const owner = document.createElement('div');
+  owner.dataset.uiOwnerRoot = 'slot-owner';
+  const trigger = document.createElement('button');
+  trigger.dataset.uiOwner = 'slot-owner';
+  trigger.dataset.uiOcc = 'doc|dialog';
+  owner.append(trigger);
+  canvas.append(owner);
+  document.body.append(canvas);
+  const bounds = vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockReturnValue({
+    left: 100,
+    right: 400,
+    top: 250,
+    bottom: 290,
+    width: 300,
+    height: 40,
+    x: 100,
+    y: 250,
+    toJSON: () => ({}),
+  });
+  const tools = mount(FloatingSelection, {
+    target: canvas,
+    props: {
+      canvas,
+      occurrence: 'doc|body-text',
+      fallbackOccurrences: ['doc|dialog'],
+      children: createRawSnippet(() => ({ render: () => '<button>Body text tools</button>' })),
+    },
+  });
+  try {
+    flushSync();
+    await tick();
+    await vi.waitFor(() =>
+      expect(document.querySelector<HTMLElement>('.floating-selection')?.style.visibility).toBe(
+        'visible',
+      ),
+    );
+    expect(document.querySelector('.floating-selection')?.textContent).toBe('Body text tools');
+  } finally {
+    await unmount(tools);
+    canvas.remove();
     bounds.mockRestore();
   }
 });

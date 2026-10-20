@@ -156,7 +156,7 @@
     {/each}
   </ul>
   {#if query && !matches.length}<p class="empty" role="status">No matching elements. Clear search to return to the page.</p>{/if}
-  <footer><p>↑ ↓ navigate · → expand · ← collapse · Enter select</p>{#if onApply}<p>Drag to move, or use Arrange selection.</p><p role="status">{moveMessage}</p>{/if}<details><summary>Selection details & provenance</summary><p><strong>{all.find(e => e.key === selectedOccurrence)?.label ?? 'No selected element'}</strong></p><p>{all.find(e => e.key === selectedOccurrence)?.detail}</p><code>{selectedOccurrence ?? ''}</code></details></footer>
+  <footer><p>↑ ↓ navigate · → expand · ← collapse · Enter select</p>{#if onApply}<p>Drag to move, or use Arrange tools.</p><p role="status">{moveMessage}</p>{/if}<details><summary>Selection details & provenance</summary><p><strong>{all.find(e => e.key === selectedOccurrence)?.label ?? 'No selected element'}</strong></p><p>{all.find(e => e.key === selectedOccurrence)?.detail}</p><code>{selectedOccurrence ?? ''}</code></details></footer>
 </nav>
 <style>
   .uv-layers { font: 12px/1.5 var(--ui-editor-font, 'Segoe UI', sans-serif); color: var(--ui-editor-ink, #202938); background: var(--ui-editor-panel, #f8f9fb); min-width: 0; display: flex; flex-direction: column; height: 100%; }
