@@ -73,8 +73,8 @@
   });
   function keyboard(event: KeyboardEvent) {
     const editable = event.target instanceof HTMLElement && (event.target.matches('input,textarea,select') || event.target.isContentEditable);
-    if (event.key === 'F10' && !editable) { event.preventDefault(); dismissed = false; void tick().then(() => (palette?.querySelector<HTMLElement>('[role=tab][aria-selected=true]') ?? palette?.querySelector<HTMLElement>('button:not(:disabled):not([data-ui-dismiss]),input,select'))?.focus()); }
-    if (!pinned && event.key === 'Escape' && palette?.contains(event.target as Node)) { event.preventDefault(); event.stopPropagation(); dismissed = true; canvas.focus({ preventScroll: true }); }
+    if (event.key === 'F10' && !editable) { event.preventDefault(); dismissed = false; void tick().then(() => (palette?.querySelector<HTMLElement>('[role=tab][tabindex="0"]') ?? palette?.querySelector<HTMLElement>('button:not(:disabled):not([data-ui-dismiss]),input,select'))?.focus()); }
+    if (!pinned && !dismissed && !event.defaultPrevented && event.key === 'Escape') { event.preventDefault(); event.stopPropagation(); dismissed = true; canvas.focus({ preventScroll: true }); }
   }
   function pointer(event: PointerEvent) {
     const target = event.target instanceof Element ? event.target : undefined;

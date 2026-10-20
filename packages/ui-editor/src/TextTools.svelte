@@ -11,13 +11,14 @@
   } = $props();
   const pages = $derived<readonly ('Content' | 'Font' | 'Paragraph')[]>(editableContent ? ['Content', 'Font', 'Paragraph'] as const : ['Font', 'Paragraph'] as const);
   let page = $state<typeof pages[number]>('Font');
+  let collapsed = $state(false);
   const uid = $props.id();
   let draft = $state('');
   let dirty = $state(false);
   let input = $state<HTMLTextAreaElement>();
   function setDirty(next: boolean) { dirty = next; onTextDraftChange(next); }
   $effect(() => { contentRevision; const saved = content; untrack(() => { draft = saved; setDirty(false); }); });
-  $effect(() => { if (editableContent && editTextSignal) untrack(() => { page = 'Content'; void tick().then(() => { input?.focus(); input?.select(); }); }); });
+  $effect(() => { if (editableContent && editTextSignal) untrack(() => { page = 'Content'; collapsed=false; void tick().then(() => { input?.focus(); input?.select(); }); }); });
   $effect(() => { if(!editableContent && page === 'Content') page='Font'; });
   function finish(commit: boolean) {
     if (commit && (!dirty || disabled)) return;
@@ -35,16 +36,18 @@
     if (dirty) return;
     if (!['ArrowLeft','ArrowRight','Home','End'].includes(event.key)) return;
     event.preventDefault();event.stopPropagation();
+    collapsed=false;
     const index = pages.indexOf(page);
     page = pages[event.key === 'Home' ? 0 : event.key === 'End' ? pages.length-1 : (index + (event.key === 'ArrowRight' ? 1 : pages.length-1)) % pages.length]!;
     void tick().then(()=>document.getElementById(`${uid}-${page}`)?.focus());
   }
 </script>
+<svelte:window onkeydown={event=>{if(event.key==='Escape' && dirty && !event.defaultPrevented){event.preventDefault();event.stopPropagation();finish(false);}}}/>
 <div class="text-tools">
-  <div class="pages" role="tablist" aria-label="Text pages">{#each pages as item}<button type="button" role="tab" id={`${uid}-${item}`} aria-controls={`${uid}-panel`} aria-selected={page===item} tabindex={page===item ? 0 : -1} disabled={dirty && item!==page} onclick={()=>page=item} onkeydown={navigate}>{item}</button>{/each}</div>
-  <div class="page" role="tabpanel" id={`${uid}-panel`} aria-labelledby={`${uid}-${page}`}>
+  <div class="pages" role="tablist" aria-label="Text pages">{#each pages as item}<button type="button" role="tab" id={`${uid}-${item}`} aria-controls={`${uid}-panel`} aria-selected={page===item && !collapsed} aria-expanded={page===item && !collapsed} tabindex={page===item ? 0 : -1} disabled={dirty && item!==page} onclick={()=>{if(dirty && item!==page)return;collapsed=item===page?!collapsed:false;page=item;}} onkeydown={navigate}>{item}</button>{/each}</div>
+  <div class="page" hidden={collapsed} role="tabpanel" id={`${uid}-panel`} aria-labelledby={`${uid}-${page}`}>
     {#if page === 'Content'}
-      <div class="content"><textarea aria-label="Text content" bind:this={input} value={draft} {disabled} oninput={event => { draft = event.currentTarget.value; setDirty(draft !== content); }} onkeydown={event => { if (event.key === 'Escape') { event.preventDefault(); event.stopPropagation(); finish(false); } else if (event.key === 'Enter' && (event.ctrlKey || event.metaKey)) { event.preventDefault(); event.stopPropagation(); finish(true); } }}></textarea><div class="content-actions"><button type="button" disabled={disabled || !dirty} onclick={()=>finish(true)}>Apply text</button><button type="button" disabled={!dirty} onclick={()=>finish(false)}>Cancel</button><span>Ctrl+Enter · apply</span></div></div>
+      <div class="content"><textarea aria-label="Text content" bind:this={input} value={draft} {disabled} oninput={event => { draft = event.currentTarget.value; setDirty(draft !== content); }} onkeydown={event => { if (event.key === 'Escape' && dirty) { event.preventDefault(); event.stopPropagation(); finish(false); } else if (event.key === 'Enter' && (event.ctrlKey || event.metaKey)) { event.preventDefault(); event.stopPropagation(); finish(true); } }}></textarea><div class="content-actions"><button type="button" disabled={disabled || !dirty} onclick={()=>finish(true)}>Apply text</button><button type="button" disabled={!dirty} onclick={()=>finish(false)}>Cancel</button><span>Ctrl+Enter · apply</span></div></div>
     {:else if page === 'Font'}
       <div class="fields">
         <label class="row">Font<input aria-label="Font family" value={value('font-family')} disabled={blocked('font-family')} onchange={e=>commit('font-family',e.currentTarget.value)} /></label>
@@ -57,7 +60,7 @@
 
     {/if}
   </div>
-  <div class="context-label">{contextLabel}</div>
+  <div class="context-label" hidden={collapsed}>{contextLabel}</div>
 </div>
 <style>
   .text-tools {height:auto;min-height:0;display:flex;flex-direction:column;font:11px/1.4 'Segoe UI',system-ui,sans-serif;color:#536176;}

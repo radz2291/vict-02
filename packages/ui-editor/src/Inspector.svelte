@@ -382,7 +382,7 @@
           </ToolPages>
         {:else}<p>This selection exposes no component events. Select an interactive element to connect behavior.</p>{/if}
       {:else}
-        <ToolPages pages={objectCategories} bind:active={toolCategory} label="Format categories" locked={textDraftDirty}>
+        <ToolPages pages={objectCategories} bind:active={toolCategory} revealSignal={editTextSignal} label="Format categories" locked={textDraftDirty}>
           {#snippet children(category)}
             {#if category==='Content'}
               {#if node.kind==='element' && ['input','textarea'].includes(node.tag)}

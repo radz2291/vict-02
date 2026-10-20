@@ -282,6 +282,13 @@ it('uses non-expanding text pages with exclusive controls and undoable edits', a
     flushSync();
     expect(session.document.nodes).toEqual(literal.nodes);
     expect(page('Font').disabled).toBe(true);
+    page('Content').click();
+    flushSync();
+    expect(content.closest('[hidden]')).not.toBeNull();
+    expect(content.value).toBe('A toolbar draft');
+    page('Content').click();
+    flushSync();
+    expect(content.closest('[hidden]')).toBeNull();
     expect(
       [...categories.querySelectorAll<HTMLButtonElement>('button')].find(
         (button) => button.textContent === 'Fill',
@@ -368,6 +375,55 @@ it('retains rejected property drafts and locks context until cancellation', asyn
     expect(dirty).toBe(false);
     expect(input.value).toBe(original);
     expect(target.querySelector('details')).toBeNull();
+  } finally {
+    await unmount(editor);
+    target.remove();
+  }
+});
+
+it('toggles categories, settings and text pages independently while keeping their contents mounted', async () => {
+  const target = document.createElement('div');
+  document.body.append(target);
+  const editor = mount(Inspector, {
+    target,
+    props: {
+      contextual: true,
+      document: source,
+      selectedOccurrence: 'input-content|input',
+      onApply: () => true,
+    },
+  });
+  try {
+    flushSync();
+    const tab = (name: string) =>
+      [...target.querySelectorAll<HTMLButtonElement>('[role=tab]')].find(
+        (button) => button.textContent === name,
+      )!;
+    const content = tab('Content');
+    content.click();
+    flushSync();
+    expect(content.getAttribute('aria-expanded')).toBe('false');
+    expect(target.querySelector('[aria-label="value source"]')?.closest('[hidden]')).not.toBeNull();
+    content.click();
+    flushSync();
+    expect(target.querySelector('[aria-label="value source"]')?.closest('[hidden]')).toBeNull();
+    const value = tab('Value');
+    value.click();
+    flushSync();
+    expect(value.getAttribute('aria-selected')).toBe('false');
+    expect(target.querySelector('[aria-label="value source"]')?.closest('[hidden]')).not.toBeNull();
+    value.click();
+    flushSync();
+    expect(target.querySelector('[aria-label="value source"]')?.closest('[hidden]')).toBeNull();
+    tab('Text').click();
+    flushSync();
+    const font = tab('Font');
+    font.click();
+    flushSync();
+    expect(target.querySelector('[aria-label="Font family"]')?.closest('[hidden]')).not.toBeNull();
+    font.click();
+    flushSync();
+    expect(target.querySelector('[aria-label="Font family"]')?.closest('[hidden]')).toBeNull();
   } finally {
     await unmount(editor);
     target.remove();

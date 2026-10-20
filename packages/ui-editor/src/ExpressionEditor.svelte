@@ -51,6 +51,7 @@
   }
 </script>
 
+<svelte:window onkeydown={event=>{if(event.key==='Escape' && dirty && onDraftChange && !event.defaultPrevented){event.preventDefault();event.stopPropagation();reset();}}}/>
 <div class="expression-editor" class:compact>
   <label>{displayLabel ?? label} {#if !displayLabel}<span>({type})</span>{/if}
     <select aria-label={`${label} source`} value={mode} onchange={event => choose(event.currentTarget.value)}>
@@ -68,7 +69,7 @@
       </select>
       <button type="button" onclick={literal}>Apply value</button>
     {:else}
-      <input aria-label={`${label} value`} value={raw} oninput={event => { raw = event.currentTarget.value; if(onDraftChange) mark(true); }} onkeydown={event => { if (event.key === 'Enter') {event.preventDefault(); literal();} else if(event.key==='Escape' && onDraftChange){event.preventDefault();event.stopPropagation();reset();} }} />
+      <input aria-label={`${label} value`} value={raw} oninput={event => { raw = event.currentTarget.value; if(onDraftChange) mark(true); }} onkeydown={event => { if (event.key === 'Enter') {event.preventDefault(); literal();} else if(event.key==='Escape' && onDraftChange && dirty){event.preventDefault();event.stopPropagation();reset();} }} />
       <button type="button" onclick={literal}>Apply value</button>
     {/if}
   {:else}

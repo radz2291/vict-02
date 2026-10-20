@@ -1,17 +1,20 @@
 <script lang="ts">
   import { tick, untrack, type Snippet } from 'svelte';
-  let { page = $bindable('format'), name, format, insert, arrange, connect, focusSignal, locked = false }: {
+  let { page = $bindable('format'), name, format, insert, arrange, connect, focusSignal, revealSignal, locked = false }: {
     locked?: boolean;
     page?: 'format' | 'insert' | 'arrange' | 'connect'; name: string;
-    format: Snippet; insert: Snippet; arrange: Snippet; connect?: Snippet; focusSignal?: symbol;
+    format: Snippet; insert: Snippet; arrange: Snippet; connect?: Snippet; focusSignal?: symbol; revealSignal?: symbol;
   } = $props();
   const pages: readonly ('format' | 'insert' | 'arrange' | 'connect')[] = $derived(connect ? ['format', 'insert', 'arrange', 'connect'] as const : ['format', 'insert', 'arrange'] as const);
   const uid = $props.id();
+  let collapsed = $state(false);
+  $effect(() => { if(revealSignal) collapsed=false; });
   let root = $state<HTMLElement>();
-  function change(next: typeof page, focus = false) {
-    if (locked) return;
+  function change(next: typeof page, focus = false, toggle = false) {
+    if (locked && next !== page) return;
+    collapsed = toggle && next === page ? !collapsed : false;
     page = next;
-    if (focus) void tick().then(() => root?.querySelector<HTMLElement>('[role=tab][aria-selected=true]')?.focus());
+    if (focus) void tick().then(() => root?.querySelector<HTMLElement>('[role=tab][tabindex="0"]')?.focus());
   }
   function navigate(event: KeyboardEvent) {
     if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
@@ -20,16 +23,16 @@
     change(pages[event.key === 'Home' ? 0 : event.key === 'End' ? pages.length - 1 : (index + (event.key === 'ArrowRight' ? 1 : pages.length - 1)) % pages.length]!, true);
   }
   // A newly opened floating surface is positioned on the next layout frame.
-  $effect(() => { if (focusSignal) untrack(() => { void tick().then(() => requestAnimationFrame(() => requestAnimationFrame(() => root?.querySelector<HTMLElement>('[role=tab][aria-selected=true]')?.focus()))); }); });
+  $effect(() => { if (focusSignal) untrack(() => { void tick().then(() => requestAnimationFrame(() => requestAnimationFrame(() => root?.querySelector<HTMLElement>('[role=tab][tabindex="0"]')?.focus()))); }); });
 </script>
 <div class="palette" bind:this={root} aria-label={`Tools for ${name}`}>
   <div class="palette-header">
     <div role="tablist" aria-label="Tool pages">
-      {#each pages as item}<button type="button" role="tab" id={`${uid}-${item}`} aria-controls={`${uid}-panel`} aria-label={`${item[0]!.toUpperCase()}${item.slice(1)} tools`} aria-selected={page === item} tabindex={page === item ? 0 : -1} disabled={locked && page !== item} onclick={() => change(item)} onkeydown={navigate}>{item[0]!.toUpperCase()}{item.slice(1)}</button>{/each}
+      {#each pages as item}<button type="button" role="tab" id={`${uid}-${item}`} aria-controls={`${uid}-panel`} aria-label={`${item[0]!.toUpperCase()}${item.slice(1)} tools`} aria-selected={page === item && !collapsed} aria-expanded={page === item && !collapsed} tabindex={page === item ? 0 : -1} disabled={locked && page !== item} onclick={() => change(item, false, true)} onkeydown={navigate}>{item[0]!.toUpperCase()}{item.slice(1)}</button>{/each}
     </div>
     <span title={name}>{name}</span>
   </div>
-  <div role="tabpanel" id={`${uid}-panel`} aria-labelledby={`${uid}-${page}`} tabindex="0" class="palette-body" data-ui-tool-body>
+  <div role="tabpanel" id={`${uid}-panel`} aria-labelledby={`${uid}-${page}`} tabindex="0" class="palette-body" data-ui-tool-body hidden={collapsed}>
     {#if page === 'format'}{@render format()}{:else if page === 'insert'}{@render insert()}{:else if page === 'arrange'}{@render arrange()}{:else}{@render connect?.()}{/if}
   </div>
 </div>

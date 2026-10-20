@@ -261,7 +261,7 @@
   </div>
   {#if source && bridge}
   {#snippet floatingTools()}
-    <SelectionPalette locked={textDraftDirty} bind:page={palettePage} name={compositionName(source, selectedNode?.id ?? source.root)} focusSignal={paletteFocus}>
+    <SelectionPalette revealSignal={selectionToolsReveal} locked={textDraftDirty} bind:page={palettePage} name={compositionName(source, selectedNode?.id ?? source.root)} focusSignal={paletteFocus}>
       {#snippet objectProperties(section: 'Content' | 'Style' | 'Behavior')}
         <Inspector contextual editTextSignal={section === 'Behavior' ? undefined : editTextSignal} onTextDraftChange={(dirty: boolean) => textDraftDirty = dirty} {section} document={source} selectedOccurrence={selected} onApply={apply} lastIssues={issues} componentDescriptors={catalogDescriptors} knownActionIds={designerCatalogs.actionIds} {actionInputs} knownRouteIds={['screen']} labels={editorLabels} styleConditions={[{ id: 'compact', label: 'Compact · ≤600px' }]} readEffective={effective} />
       {/snippet}

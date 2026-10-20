@@ -54,6 +54,14 @@ it('provides named tool pages with roving keyboard focus and stable selection co
     flushSync();
     const tabs = target.querySelectorAll<HTMLButtonElement>('[role=tab]');
     expect([...tabs].map((t) => t.textContent)).toEqual(['Format', 'Insert', 'Arrange']);
+    tabs[0]!.click();
+    flushSync();
+    expect(target.querySelector<HTMLElement>('[role=tabpanel]')?.hidden).toBe(true);
+    expect(tabs[0]!.getAttribute('aria-selected')).toBe('false');
+    expect(tabs[0]!.getAttribute('aria-expanded')).toBe('false');
+    tabs[0]!.click();
+    flushSync();
+    expect(target.querySelector<HTMLElement>('[role=tabpanel]')?.hidden).toBe(false);
     tabs[0]!.focus();
     tabs[0]!.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
     await tick();
