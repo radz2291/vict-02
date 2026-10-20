@@ -15,7 +15,7 @@
   import StateInitialEditor from './StateInitialEditor.svelte';
   import { conditionalStyleConflicts, allowConditionalStyles } from './responsive-style.js';
   interface Props {
-    document: UiDocument; selectedOccurrence?: string; onApply: (draft: TransactionDraft) => void;
+    document: UiDocument; selectedOccurrence?: string; onApply: (draft: TransactionDraft) => boolean | void;
     lastIssues?: readonly { code: string; message: string }[];
     knownActionIds?: readonly string[]; knownRouteIds?: readonly string[]; knownTokenIds?: readonly string[];
     styleConditions?: readonly { id: string; label: string }[];
@@ -27,11 +27,12 @@
     knownViewFields?: UiFieldTypes;
     /** Focused object tools; default retains the full docked Inspector. */
     contextual?: boolean;
-    onEditText?: () => void;
+    editTextSignal?: symbol;
+    onTextDraftChange?: (dirty: boolean) => void;
     section?: 'Content' | 'Style' | 'Behavior';
     actionInputs?: Readonly<Record<string, Readonly<Record<string, UiValueType>>>>;
   }
-  let { onEditText, contextual = false, section: tab = $bindable('Content'), document, selectedOccurrence, onApply, lastIssues = [], knownActionIds = [], knownRouteIds = [], knownTokenIds = [], styleConditions = [], readEffective, labels = {}, componentDescriptors = [], knownViewFields = {}, actionInputs = {} }: Props = $props();
+  let { editTextSignal, onTextDraftChange, contextual = false, section: tab = $bindable('Content'), document, selectedOccurrence, onApply, lastIssues = [], knownActionIds = [], knownRouteIds = [], knownTokenIds = [], styleConditions = [], readEffective, labels = {}, componentDescriptors = [], knownViewFields = {}, actionInputs = {} }: Props = $props();
   // DOM measurements must run again after the canvas consumes new source/selection.
   let measurementVersion = $state(0);
   $effect(() => {
@@ -66,6 +67,9 @@
   let groupName = $state('Quick');
   const formatId = $props.id();
   let text = $state('');
+  let textDraftDirty = $state(false);
+  function textDraftChange(dirty: boolean) { textDraftDirty = dirty; onTextDraftChange?.(dirty); }
+  $effect(() => { if (editTextSignal) { groupName = 'Quick'; tab = 'Style'; } });
   let property = $state('color');
   let value = $state('');
   let token = $state(false);
@@ -227,6 +231,7 @@
     else if (item.left < bounds.left) row.scrollLeft -= bounds.left - item.left;
   }
   function chooseCategory(category: string) {
+    if (textDraftDirty) return;
     if (category === 'Content') tab = 'Content';
     else { groupName = category; tab = 'Style'; }
     void tick().then(() => revealCategory(category));
@@ -361,7 +366,7 @@
   {#if node}
     {#if contextual && tab !== 'Behavior'}
       <div class="focused-groups" role="tablist" aria-label="Format categories">
-        {#each formatCategories as category}<button type="button" role="tab" id={`${formatId}-${formatCategories.indexOf(category)}`} aria-controls={`${formatId}-properties`} aria-selected={activeCategory === category} tabindex={activeCategory === category ? 0 : -1} title={category === 'Quick' ? (container ? 'Layout essentials' : 'Text essentials') : category} onclick={() => chooseCategory(category)} onkeydown={event => navigateCategory(event, category)}>{categoryLabel(category)}</button>{/each}
+        {#each formatCategories as category}<button type="button" role="tab" id={`${formatId}-${formatCategories.indexOf(category)}`} aria-controls={`${formatId}-properties`} aria-selected={activeCategory === category} tabindex={activeCategory === category ? 0 : -1} title={category === 'Quick' ? (container ? 'Layout essentials' : 'Text essentials') : category} disabled={textDraftDirty && activeCategory !== category} onclick={() => chooseCategory(category)} onkeydown={event => navigateCategory(event, category)}>{categoryLabel(category)}</button>{/each}
       </div>
     {/if}
     <div role={contextual && tab !== 'Behavior' ? 'tabpanel' : undefined} id={`${formatId}-properties`} aria-labelledby={contextual && tab !== 'Behavior' ? `${formatId}-${formatCategories.indexOf(activeCategory)}` : undefined}>
@@ -400,7 +405,7 @@
       {/if}
       {#if !(simpleText && groupName === 'Quick')}{@render styleContext()}{/if}
       {#if simpleText && groupName === 'Quick'}
-        <TextTools value={display} {origin} authored={property => ownStyle(property) !== undefined} locked={property => ownStyle(property)?.type === 'binding'} disabled={unsupportedTarget || (shared && scope === 'instance')} onEdit={onEditText} onChange={(property, value) => changeStyle(property, { type: 'text', value })} onReset={property => changeStyle(property)} contextLabel={`${styleConditions.find(c => c.id === condition)?.label ?? (condition || 'All sizes')}${pseudo ? ` · ${pseudo}` : ' · normal'}`}>
+        <TextTools value={display} {origin} authored={property => ownStyle(property) !== undefined} locked={property => ownStyle(property)?.type === 'binding'} disabled={unsupportedTarget || (shared && scope === 'instance')} content={textNode?.kind === 'text' && textNode.content.type === 'literal' ? textNode.content.value : ''} contentRevision={JSON.stringify(document)} {editTextSignal} onTextDraftChange={textDraftChange} onTextApply={value => textNode ? onApply(setTextLiteral({ requestId: request(), nodeId: textNode.id, value })) : false} onChange={(property, value) => changeStyle(property, { type: 'text', value })} onReset={property => changeStyle(property)} contextLabel={`${styleConditions.find(c => c.id === condition)?.label ?? (condition || 'All sizes')}${pseudo ? ` · ${pseudo}` : ' · normal'}`}>
           {#snippet rules()}{@render ruleControls()}{/snippet}
         </TextTools>
       {:else if canStyle}

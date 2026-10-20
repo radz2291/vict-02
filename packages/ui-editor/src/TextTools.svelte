@@ -1,15 +1,30 @@
 <script lang="ts">
-  import { tick, type Snippet } from 'svelte';
+  import { tick, untrack, type Snippet } from 'svelte';
   import { resolvePanelColor, colorWithAlpha } from './color-ux.js';
-  let { value, origin, authored, locked, disabled = false, onEdit, onChange, onReset, rules, contextLabel }: {
+  let { value, origin, authored, locked, disabled = false, content, contentRevision, editTextSignal, onTextApply, onTextDraftChange, onChange, onReset, rules, contextLabel }: {
     value: (property: string) => string; origin: (property: string) => string;
     authored: (property: string) => boolean; locked: (property: string) => boolean; disabled?: boolean;
-    onEdit?: () => void; onChange: (property: string, value: string) => void;
+    content: string; contentRevision: string; editTextSignal?: symbol;
+    onTextApply: (text: string) => boolean | void; onTextDraftChange: (dirty: boolean) => void; onChange: (property: string, value: string) => void;
     onReset: (property: string) => void; rules: Snippet; contextLabel: string;
   } = $props();
   const pages = ['Content', 'Font', 'Paragraph', 'Rules', 'Reset'] as const;
   let page = $state<typeof pages[number]>('Font');
   const uid = $props.id();
+  let draft = $state('');
+  let dirty = $state(false);
+  let input = $state<HTMLTextAreaElement>();
+  function setDirty(next: boolean) { dirty = next; onTextDraftChange(next); }
+  $effect(() => { contentRevision; const saved = content; untrack(() => { draft = saved; setDirty(false); }); });
+  $effect(() => { if (editTextSignal) untrack(() => { page = 'Content'; void tick().then(() => { input?.focus(); input?.select(); }); }); });
+  function finish(commit: boolean) {
+    if (commit && (!dirty || disabled)) return;
+    const pending = draft;
+    setDirty(false);
+    if (commit && onTextApply(pending) === false) { setDirty(true); return; }
+    if (!commit) draft = content;
+    input?.focus();
+  }
   let sourceProperty = $state('font-size');
   const color = $derived(resolvePanelColor(value('color')));
   const properties = [['font-family','Font family'],['font-size','Text size'],['font-weight','Weight'],['color','Text color'],['text-align','Alignment'],['line-height','Line height'],['letter-spacing','Letter spacing']];
@@ -17,6 +32,7 @@
   const blocked = (property: string) => disabled || locked(property);
   function commit(property: string, raw: string, pixels = false) {const text = raw.trim();if(text) onChange(property, pixels && /^-?\d*\.?\d+$/.test(text) ? `${text}px` : text);}
   function navigate(event: KeyboardEvent) {
+    if (dirty) return;
     if (!['ArrowLeft','ArrowRight','Home','End'].includes(event.key)) return;
     event.preventDefault();event.stopPropagation();
     const index = pages.indexOf(page);
@@ -25,10 +41,10 @@
   }
 </script>
 <div class="text-tools">
-  <div class="pages" role="tablist" aria-label="Text pages">{#each pages as item}<button type="button" role="tab" id={`${uid}-${item}`} aria-controls={`${uid}-panel`} aria-selected={page===item} tabindex={page===item ? 0 : -1} onclick={()=>page=item} onkeydown={navigate}>{item}</button>{/each}</div>
+  <div class="pages" role="tablist" aria-label="Text pages">{#each pages as item}<button type="button" role="tab" id={`${uid}-${item}`} aria-controls={`${uid}-panel`} aria-selected={page===item} tabindex={page===item ? 0 : -1} disabled={dirty && item!==page} onclick={()=>page=item} onkeydown={navigate}>{item}</button>{/each}</div>
   <div class="page" role="tabpanel" id={`${uid}-panel`} aria-labelledby={`${uid}-${page}`}>
     {#if page === 'Content'}
-      <div class="content"><button type="button" disabled={disabled || !onEdit} onclick={onEdit}>Edit on canvas</button><p>{onEdit ? 'Edit the selected text directly. Apply to keep it; Escape cancels.' : 'This host has not connected a canvas text editor.'}</p></div>
+      <div class="content"><textarea aria-label="Text content" bind:this={input} value={draft} {disabled} oninput={event => { draft = event.currentTarget.value; setDirty(draft !== content); }} onkeydown={event => { if (event.key === 'Escape') { event.preventDefault(); event.stopPropagation(); finish(false); } else if (event.key === 'Enter' && (event.ctrlKey || event.metaKey)) { event.preventDefault(); event.stopPropagation(); finish(true); } }}></textarea><div class="content-actions"><button type="button" disabled={disabled || !dirty} onclick={()=>finish(true)}>Apply text</button><button type="button" disabled={!dirty} onclick={()=>finish(false)}>Cancel</button><span>Ctrl+Enter · apply</span></div></div>
     {:else if page === 'Font'}
       <div class="fields">
         <label class="row">Font<input aria-label="Font family" value={value('font-family')} disabled={blocked('font-family')} onchange={e=>commit('font-family',e.currentTarget.value)} /></label>
@@ -52,6 +68,7 @@
   .page {flex:1;min-height:0;overflow:auto;padding:8px 0;overscroll-behavior:contain;}
   .fields {display:grid;gap:6px;}.row,label {display:flex;align-items:center;gap:6px;min-width:0;}.row>input,.row>select {flex:1;}.row {flex-wrap:nowrap;}
   input {min-width:0;width:100%;}.short {width:65px;}.opacity {width:50px;padding:3px;}.color-value {flex:1;}.color-value input:not(.swatch) {flex:1;width:65px;}.swatch {width:27px;flex:0 0 27px;padding:2px;}
+  .content {height:100%;display:flex;flex-direction:column;gap:5px;}.content textarea {flex:1;min-height:35px;width:100%;resize:none;box-sizing:border-box;border:1px solid #dce2eb;border-radius:4px;padding:6px;font:12px/1.4 "Segoe UI",system-ui,sans-serif;color:#34425a;background:white;}.content-actions {display:flex;align-items:center;gap:5px;}.content-actions span {margin-left:auto;font-size:10px;color:#8a96a8;}
   .context-label {font-size:10px;color:#8a96a8;flex-shrink:0;border-top:1px solid #eef0f5;padding-top:4px;}
   p {font-size:11px;color:#78869c;margin:7px 0;overflow-wrap:anywhere;}.source-value {max-height:45px;overflow:auto;}
   :disabled {opacity:.4;cursor:default;}:focus-visible {outline:2px solid #5269bd;outline-offset:-1px;}

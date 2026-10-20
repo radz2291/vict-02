@@ -177,3 +177,33 @@ it('edits selected slot text even when the current definition does not render th
     bounds.mockRestore();
   }
 });
+
+it('routes text editing to a host tool without mounting the canvas overlay', async () => {
+  const target = document.createElement('div');
+  document.body.append(target);
+  const edit = vi.fn();
+  const canvas = mount(EditorCanvas, {
+    target,
+    props: {
+      document: source,
+      interactionMode: 'design',
+      onEditTextRequest: edit,
+      onSelect: () => {},
+      dispatch: async () => {},
+      navigate: () => {},
+    },
+  });
+  try {
+    flushSync();
+    await tick();
+    target
+      .querySelector('h1')!
+      .dispatchEvent(new MouseEvent('dblclick', { bubbles: true, cancelable: true }));
+    await tick();
+    expect(edit).toHaveBeenCalledWith('inline|heading');
+    expect(target.querySelector('[data-ui-inline-editor]')).toBeNull();
+  } finally {
+    await unmount(canvas);
+    target.remove();
+  }
+});

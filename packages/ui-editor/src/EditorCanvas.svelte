@@ -35,6 +35,8 @@
     readonly interactionMode?: 'design' | 'interact';
     /** Enables literal text editing in Design through the canonical transaction boundary. */
     readonly onApply?: (draft: TransactionDraft) => boolean;
+    /** Host-owned text editor replaces the default canvas overlay when supplied. */
+    readonly onEditTextRequest?: (occurrence: string) => void;
     readonly editTextSignal?: symbol;
     readonly onTextEditingChange?: (editing: boolean) => void;
     /** Authoring-only tools anchored to the selected rendered occurrence. F10 focuses them. */
@@ -74,6 +76,7 @@
     interactionMode = 'interact',
     onApply,
     editTextSignal,
+    onEditTextRequest,
     onTextEditingChange,
     selectionTools,
     selectionToolsReveal,
@@ -136,10 +139,13 @@
   let textInput = $state<HTMLTextAreaElement>();
   $effect(() => { const editing = inlineEdit !== undefined; untrack(() => onTextEditingChange?.(editing)); });
   async function beginText(occurrence: string, target?: HTMLElement) {
-    if (!onApply || interactionMode !== 'design' || !canvasEl) return;
+    if (interactionMode !== 'design' || !canvasEl) return;
     const report = resolveOccurrence(occurrence, document);
     if (report.instancePath.length || report.repeatKeys.length) return;
     const content = literalTextTarget(document, report.sourceNodeId);
+    if (!content) return;
+    if (onEditTextRequest) { onEditTextRequest(occurrence); return; }
+    if (!onApply) return;
     const owner = canvasEl.querySelector<HTMLElement>('[data-ui-owner-root]')?.dataset.uiOwnerRoot;
     const elements = [...globalThis.document.querySelectorAll<HTMLElement>('[data-ui-occ]')].filter(el => el.dataset.uiOwner === owner);
     let element = target ?? elements.find(el => el.dataset.uiOcc === occurrence);
@@ -174,7 +180,7 @@
       const owner = canvasEl?.querySelector<HTMLElement>('[data-ui-owner-root]')?.dataset.uiOwnerRoot;
       if (!owner || target?.dataset.uiOwner !== owner) return;
       if (selectionTools && event instanceof KeyboardEvent && event.key === 'F10') return;
-      if (onApply && event instanceof KeyboardEvent && (['F2', 'Delete', 'Backspace'].includes(event.key) || (event.altKey && ['ArrowUp', 'ArrowDown'].includes(event.key)))) return;
+      if ((onApply || onEditTextRequest) && event instanceof KeyboardEvent && (['F2', 'Delete', 'Backspace'].includes(event.key) || (event.altKey && ['ArrowUp', 'ArrowDown'].includes(event.key)))) return;
       if (event.type === 'dblclick' && target.dataset.uiOcc) { void beginText(target.dataset.uiOcc, target); }
       // Tab and Escape remain available for navigation and overlay dismissal. Activation/editing
       // events stop before catalog handlers, native inputs and form submission.

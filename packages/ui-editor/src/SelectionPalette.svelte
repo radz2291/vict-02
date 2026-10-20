@@ -1,6 +1,7 @@
 <script lang="ts">
   import { tick, untrack, type Snippet } from 'svelte';
-  let { page = $bindable('format'), name, format, insert, arrange, connect, focusSignal }: {
+  let { page = $bindable('format'), name, format, insert, arrange, connect, focusSignal, locked = false }: {
+    locked?: boolean;
     page?: 'format' | 'insert' | 'arrange' | 'connect'; name: string;
     format: Snippet; insert: Snippet; arrange: Snippet; connect?: Snippet; focusSignal?: symbol;
   } = $props();
@@ -8,6 +9,7 @@
   const uid = $props.id();
   let root = $state<HTMLElement>();
   function change(next: typeof page, focus = false) {
+    if (locked) return;
     page = next;
     if (focus) void tick().then(() => root?.querySelector<HTMLElement>('[role=tab][aria-selected=true]')?.focus());
   }
@@ -23,7 +25,7 @@
 <div class="palette" bind:this={root} aria-label={`Tools for ${name}`}>
   <div class="palette-header">
     <div role="tablist" aria-label="Tool pages">
-      {#each pages as item}<button type="button" role="tab" id={`${uid}-${item}`} aria-controls={`${uid}-panel`} aria-label={`${item[0]!.toUpperCase()}${item.slice(1)} tools`} aria-selected={page === item} tabindex={page === item ? 0 : -1} onclick={() => change(item)} onkeydown={navigate}>{item[0]!.toUpperCase()}{item.slice(1)}</button>{/each}
+      {#each pages as item}<button type="button" role="tab" id={`${uid}-${item}`} aria-controls={`${uid}-panel`} aria-label={`${item[0]!.toUpperCase()}${item.slice(1)} tools`} aria-selected={page === item} tabindex={page === item ? 0 : -1} disabled={locked && page !== item} onclick={() => change(item)} onkeydown={navigate}>{item[0]!.toUpperCase()}{item.slice(1)}</button>{/each}
     </div>
     <span title={name}>{name}</span>
   </div>

@@ -2,7 +2,7 @@
   import { onMount, tick, untrack } from 'svelte';
   import { beforeNavigate } from '$app/navigation';
   import { ControlScope } from '@victframework/ui-svelte';
-  import { Composer, EditorBridge, EditorCanvas, Inspector, Layers, StateValuesPanel, PanelResizer, StateInitialEditor, SelectionPalette, setAttribute, resolveOccurrence, compositionParent, compositionName, duplicateSubtree, type TransactionDraft } from '@victframework/ui-editor';
+  import { Composer, EditorBridge, EditorCanvas, Inspector, Layers, StateValuesPanel, PanelResizer, StateInitialEditor, SelectionPalette, setAttribute, resolveOccurrence, compositionParent, compositionName, literalTextTarget, duplicateSubtree, type TransactionDraft } from '@victframework/ui-editor';
   import { createPreviewSession } from '@victframework/ui-preview';
   import type { UiDocument, UiRenderPlan, UiValue } from '@victframework/ui';
   import { newScreen, compileScreen, screenIssues, screenApplication, screenName, screenActionState, designerCatalogs, actionInputs, catalogDescriptors, catalogImplementations } from './application.js';
@@ -31,7 +31,7 @@
   let formatSection = $state<'Content' | 'Style' | 'Behavior'>('Style');
   let editTextSignal = $state<symbol>();
   let selectionToolsReveal = $state<symbol>();
-  let canvasTextEditing = $state(false);
+  let textDraftDirty = $state(false);
   let palettePage = $state<'format' | 'insert' | 'arrange' | 'connect'>('format');
   let paletteRequested = $state(false);
   let paletteFocus = $state<symbol>();
@@ -45,6 +45,7 @@
     state: { message: 'Message', accepted: 'Agreement', dialogOpen: 'Dialog open', busy: 'Submitting', actionError: 'Action error', actionResult: 'Action result' },
     actionInputs: { message: 'Message', accepted: 'Agreement' } };
   function selectOccurrence(occurrence: string) {
+    if (textDraftDirty) { notice = 'Apply or cancel your text edit first.'; return; }
     if (source) {
       const report = resolveOccurrence(occurrence, source);
       const parent = report.node?.kind === 'text' && !report.instancePath.length && !report.repeatKeys.length ? compositionParent(source, report.node.id) : undefined;
@@ -57,11 +58,18 @@
     if (matchMedia('(max-width: 760px)').matches) drawerOpen = false;
     selectionToolsReveal = Symbol('selection-tools');
   }
+  function editSelectedText(occurrence = selected) {
+    if (!occurrence || !source || textDraftDirty) return;
+    const report = resolveOccurrence(occurrence, source);
+    if (report.instancePath.length || report.repeatKeys.length || !literalTextTarget(source, report.sourceNodeId)) return;
+    selectOccurrence(occurrence);
+    editTextSignal = Symbol('edit');
+  }
   function reportSection(occurrence: string): 'Content' | 'Style' {
     const node = source && resolveOccurrence(occurrence, source).node;
     return node?.kind === 'component' || (node?.kind === 'element' && ['input', 'textarea'].includes(node.tag)) ? 'Content' : 'Style';
   }
-  function changeMode(next: 'design' | 'interact') { if (canvasTextEditing) { notice = 'Apply or cancel your canvas text edit first.'; return; } mode = next; resetRuntime(); notice = next === 'design' ? 'Design mode · select and edit without running behavior.' : 'Interact mode · simulated behavior, no live effects.'; }
+  function changeMode(next: 'design' | 'interact') { if (textDraftDirty) { notice = 'Apply or cancel your text edit first.'; return; } mode = next; resetRuntime(); notice = next === 'design' ? 'Design mode · select and edit without running behavior.' : 'Interact mode · simulated behavior, no live effects.'; }
   let createDialog: HTMLDialogElement;
   let nameInput: HTMLInputElement;
   let screenTitle = $state('My first screen');
@@ -70,7 +78,7 @@
   let sourceDraftDirty = $state(false);
   $effect(() => { if (source && !untrack(() => sourceDraftDirty)) { sourceDraft = JSON.stringify(source, null, 2); sourceDraftRevision = snapshot?.revision ?? ''; } });
   beforeNavigate(navigation => {
-    if (!navigation.willUnload && (canvasTextEditing || sourceDraftDirty || [...sessions.values()].some(session => session.getSnapshot().dirty))) {
+    if (!navigation.willUnload && (textDraftDirty || sourceDraftDirty || [...sessions.values()].some(session => session.getSnapshot().dirty))) {
       navigation.cancel(); notice = 'Save or undo your authored changes before leaving the designer.';
     }
   });
@@ -110,7 +118,7 @@
     notice = 'New screen · not saved yet.';
   }
   function openScreen(id: string) {
-    if (canvasTextEditing) { notice = 'Apply or cancel your canvas text edit before switching screens.'; return; }
+    if (textDraftDirty) { notice = 'Apply or cancel your text edit before switching screens.'; return; }
     if (sourceDraftDirty) { notice = 'Apply or discard your JSON draft before switching screens.'; return; }
     const existing = sessions.get(id);
     if (existing) { openSession(existing); notice = 'Screen opened. In-session edits are retained.'; return; }
@@ -131,7 +139,7 @@
     return () => { unsubscribe?.(); };
   });
   function apply(draft: TransactionDraft): boolean {
-    if (canvasTextEditing) { notice = 'Apply or cancel your canvas text edit first.'; return false; }
+    if (textDraftDirty) { notice = 'Apply or cancel your text edit first.'; return false; }
     if (!bridge) return false;
     const result = bridge.apply(draft);
     issues = result.ok ? [] : result.issues;
@@ -141,10 +149,10 @@
     }
     return result.ok;
   }
-  function undo() { if (!bridge) return; if (canvasTextEditing) { notice = 'Apply or cancel your canvas text edit first.'; return; } const result = bridge.undo(); issues = result.ok ? [] : result.issues; notice = result.ok ? 'Undid the last authored change.' : 'Nothing to undo.'; }
-  function redo() { if (!bridge) return; if (canvasTextEditing) { notice = 'Apply or cancel your canvas text edit first.'; return; } const result = bridge.redo(); issues = result.ok ? [] : result.issues; notice = result.ok ? 'Redid the authored change.' : 'Nothing to redo.'; }
+  function undo() { if (!bridge) return; if (textDraftDirty) { notice = 'Apply or cancel your text edit first.'; return; } const result = bridge.undo(); issues = result.ok ? [] : result.issues; notice = result.ok ? 'Undid the last authored change.' : 'Nothing to undo.'; }
+  function redo() { if (!bridge) return; if (textDraftDirty) { notice = 'Apply or cancel your text edit first.'; return; } const result = bridge.redo(); issues = result.ok ? [] : result.issues; notice = result.ok ? 'Redid the authored change.' : 'Nothing to redo.'; }
   function save(): boolean {
-    if (canvasTextEditing) { notice = 'Apply or cancel your canvas text edit before saving.'; return false; }
+    if (textDraftDirty) { notice = 'Apply or cancel your text edit before saving.'; return false; }
     if (sourceDraftDirty) { notice = 'Apply or discard your JSON draft before saving.'; return false; }
     if (!bridge || !compilation?.ok) { notice = 'Resolve source diagnostics before saving.'; return false; }
     const result = bridge.save(); issues = result.ok ? [] : result.issues;
@@ -154,7 +162,7 @@
     return true;
   }
   function reopen() {
-    if (canvasTextEditing) { notice = 'Apply or cancel your canvas text edit before reopening.'; return; }
+    if (textDraftDirty) { notice = 'Apply or cancel your text edit before reopening.'; return; }
     if (!bridge) return;
     if (sourceDraftDirty) { notice = 'Apply or discard your JSON draft before reopening.'; return; }
     if (snapshot?.dirty) { notice = 'Save or undo your changes before reopening the stored source.'; return; }
@@ -184,7 +192,7 @@
     const editable = event.target instanceof HTMLElement && (event.target.matches('input,textarea,select') || event.target.isContentEditable);
     if (!editable && mode === 'design') {
       if (['Delete', 'Backspace'].includes(event.key)) { event.preventDefault(); removeSelection(); }
-      if (event.key === 'F2') { event.preventDefault(); editTextSignal = Symbol('edit'); }
+      if (event.key === 'F2') { event.preventDefault(); editSelectedText(); }
       if (event.altKey && ['ArrowUp', 'ArrowDown'].includes(event.key)) { event.preventDefault(); reorderSelection(event.key === 'ArrowUp' ? -1 : 1); }
       if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'd') { event.preventDefault(); duplicateSelection(); }
     }
@@ -213,12 +221,12 @@
   }
   function openInsert() {
     if (!source || !bridge) return;
-    if (canvasTextEditing) { notice = 'Apply or cancel your canvas text edit first.'; return; }
+    if (textDraftDirty) { notice = 'Apply or cancel your text edit first.'; return; }
     if (!selectedNode) bridge.select(`${source.id}|${source.root}`);
     palettePage = 'insert'; paletteRequested = true;
     selectionToolsReveal = Symbol('add'); paletteFocus = Symbol('focus-insert');
   }
-  async function beginCreate() { if (canvasTextEditing || sourceDraftDirty) { notice = 'Apply or cancel your text/source draft before creating a screen.'; return; } createDialog.showModal(); await tick(); nameInput.focus(); nameInput.select(); }
+  async function beginCreate() { if (textDraftDirty || sourceDraftDirty) { notice = 'Apply or cancel your text/source draft before creating a screen.'; return; } createDialog.showModal(); await tick(); nameInput.focus(); nameInput.select(); }
   function exportSource() {
     if (!source) return;
     const url = URL.createObjectURL(new Blob([JSON.stringify({ application: screenApplication(source), uiDocuments: [{ document: source }] }, null, 2)], { type: 'application/json' }));
@@ -238,7 +246,7 @@
   $effect.pre(() => { if (authoredRevision) untrack(resetRuntime); });
 </script>
 
-<svelte:window onkeydown={shortcuts} onbeforeunload={event => { if (canvasTextEditing || sourceDraftDirty || [...sessions.values()].some(session => session.getSnapshot().dirty)) { event.preventDefault(); event.returnValue = ''; } }} />
+<svelte:window onkeydown={shortcuts} onbeforeunload={event => { if (textDraftDirty || sourceDraftDirty || [...sessions.values()].some(session => session.getSnapshot().dirty)) { event.preventDefault(); event.returnValue = ''; } }} />
 <ControlScope>
 <div class="vict-app studio-designer">
   <header class="studio-header"><a class="studio-brand" href="/design"><span class="brand-mark">V</span><strong>VICT <span>Studio</span></strong></a><span class="product-mode">DESIGNER</span><div class="header-spacer"></div><a class="operator-link" href="/">Operator tools ↗</a></header>
@@ -247,14 +255,14 @@
     <div class="history-controls"><button type="button" disabled={!snapshot?.canUndo} onclick={undo} title="Undo · Ctrl+Z">Undo</button><button type="button" disabled={!snapshot?.canRedo} onclick={redo} title="Redo · Ctrl+Shift+Z">Redo</button></div>
     <div class="canvas-modes" aria-label="Canvas mode"><button type="button" aria-pressed={mode === 'design'} onclick={() => changeMode('design')}>Design</button><button type="button" aria-pressed={mode === 'interact'} onclick={() => changeMode('interact')}>Interact</button></div>
     {#if mode === 'design'}<button type="button" class="add-element" onclick={openInsert}>＋ Add</button>{/if}
-    <span class="save-state">{sourceDraftDirty ? '● Unapplied JSON draft' : snapshot?.dirty ? '● Unsaved changes' : snapshot?.storedRevision === 'r1' ? '○ New screen' : '✓ Saved'}</span>
-    <div class="toolbar-end"><button type="button" bind:this={documentButton} class="panel-toggle" aria-expanded={drawerOpen} aria-controls="document-drawer" onclick={() => drawerOpen = !drawerOpen}>Document</button><button type="button" onclick={reopen} disabled={!source || snapshot?.dirty || sourceDraftDirty || snapshot?.storedRevision === 'r1'}>Reopen</button><button type="button" onclick={save} disabled={!compilation?.ok || sourceDraftDirty}>Save</button><a class="run-button" aria-disabled={!source || snapshot?.dirty || sourceDraftDirty || snapshot?.storedRevision === 'r1'} href={source && !snapshot?.dirty && !sourceDraftDirty && snapshot?.storedRevision !== 'r1' ? `/run-screen?screen=${encodeURIComponent(source.id)}` : undefined}>Run saved ↗</a></div>
+    <span class="save-state">{textDraftDirty ? '● Unapplied text' : sourceDraftDirty ? '● Unapplied JSON draft' : snapshot?.dirty ? '● Unsaved changes' : snapshot?.storedRevision === 'r1' ? '○ New screen' : '✓ Saved'}</span>
+    <div class="toolbar-end"><button type="button" bind:this={documentButton} class="panel-toggle" aria-expanded={drawerOpen} aria-controls="document-drawer" onclick={() => drawerOpen = !drawerOpen}>Document</button><button type="button" onclick={reopen} disabled={!source || snapshot?.dirty || sourceDraftDirty || textDraftDirty || snapshot?.storedRevision === 'r1'}>Reopen</button><button type="button" onclick={save} disabled={!compilation?.ok || sourceDraftDirty || textDraftDirty}>Save</button><a class="run-button" aria-disabled={!source || snapshot?.dirty || sourceDraftDirty || textDraftDirty || snapshot?.storedRevision === 'r1'} href={source && !snapshot?.dirty && !sourceDraftDirty && !textDraftDirty && snapshot?.storedRevision !== 'r1' ? `/run-screen?screen=${encodeURIComponent(source.id)}` : undefined}>Run saved ↗</a></div>
   </div>
   {#if source && bridge}
   {#snippet floatingTools()}
-    <SelectionPalette bind:page={palettePage} name={compositionName(source, selectedNode?.id ?? source.root)} focusSignal={paletteFocus}>
+    <SelectionPalette locked={textDraftDirty} bind:page={palettePage} name={compositionName(source, selectedNode?.id ?? source.root)} focusSignal={paletteFocus}>
       {#snippet objectProperties(section: 'Content' | 'Style' | 'Behavior')}
-        <Inspector contextual onEditText={() => editTextSignal = Symbol('edit')} {section} document={source} selectedOccurrence={selected} onApply={apply} lastIssues={issues} componentDescriptors={catalogDescriptors} knownActionIds={designerCatalogs.actionIds} {actionInputs} knownRouteIds={['screen']} labels={editorLabels} styleConditions={[{ id: 'compact', label: 'Compact · ≤600px' }]} readEffective={effective} />
+        <Inspector contextual editTextSignal={section === 'Behavior' ? undefined : editTextSignal} onTextDraftChange={(dirty: boolean) => textDraftDirty = dirty} {section} document={source} selectedOccurrence={selected} onApply={apply} lastIssues={issues} componentDescriptors={catalogDescriptors} knownActionIds={designerCatalogs.actionIds} {actionInputs} knownRouteIds={['screen']} labels={editorLabels} styleConditions={[{ id: 'compact', label: 'Compact · ≤600px' }]} readEffective={effective} />
       {/snippet}
       {#snippet format()}{@render objectProperties(formatSection)}{/snippet}
       {#snippet connect()}{@render objectProperties('Behavior')}{/snippet}
@@ -271,7 +279,7 @@
             selectionTools={selectedNode && (selectedNode.id !== source.root || paletteRequested) ? floatingTools : undefined}
             {selectionToolsReveal}
             selectionToolsPlacement="below"
-            onApply={(draft: TransactionDraft) => { canvasTextEditing = false; return apply(draft); }} {editTextSignal} onTextEditingChange={(editing: boolean) => canvasTextEditing = editing}
+            onEditTextRequest={editSelectedText}
             interactionMode={mode} selectedOccurrence={mode === 'design' ? selected : undefined} onSelect={mode === 'design' ? selectOccurrence : () => {}} {dispatch} navigate={() => { notice = 'This application contains one screen.'; }}
             stateValues={runtimeValues} onStateChange={(key: string, value: UiValue) => runtimeValues = { ...runtimeValues, [key]: value }} {resetSignal}
             actionState={screenActionState} onPlan={(next: UiRenderPlan) => { plan = next; }}

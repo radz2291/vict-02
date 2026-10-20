@@ -205,13 +205,9 @@ it('uses non-expanding text pages with exclusive controls and undoable edits', a
   const session = UiEditSession.open({ document: literal, storedRevision: '1' });
   const target = document.createElement('div');
   document.body.append(target);
-  let editRequested = false;
   const editor = mount(Inspector, {
     target,
     props: {
-      onEditText: () => {
-        editRequested = true;
-      },
       contextual: true,
       section: 'Style',
       document: literal,
@@ -279,12 +275,37 @@ it('uses non-expanding text pages with exclusive controls and undoable edits', a
     expect(target.querySelector('[aria-label="Text setting details"]')).not.toBeNull();
     page('Content').click();
     flushSync();
-    [...target.querySelectorAll<HTMLButtonElement>('button')]
-      .find((button) => button.textContent === 'Edit on canvas')!
-      .click();
-    expect(editRequested).toBe(true);
+    const content = target.querySelector<HTMLTextAreaElement>('[aria-label="Text content"]')!;
+    expect(content.value).toBe('Simple text');
+    const unchangedRevision = session.workingRevision;
+    content.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'Enter', ctrlKey: true, bubbles: true }),
+    );
+    flushSync();
+    expect(session.workingRevision).toBe(unchangedRevision);
+    content.value = 'A toolbar draft';
+    content.dispatchEvent(new Event('input', { bubbles: true }));
+    flushSync();
     expect(session.document.nodes).toEqual(literal.nodes);
-    expect(target.querySelector('[aria-label="Text content"]')).toBeNull();
+    expect(page('Font').disabled).toBe(true);
+    expect(categories.querySelector<HTMLButtonElement>('[title="Fill & border"]')?.disabled).toBe(
+      true,
+    );
+    content.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+    flushSync();
+    expect(content.value).toBe('Simple text');
+    expect(page('Font').disabled).toBe(false);
+    content.value = 'Edited in the toolbar';
+    content.dispatchEvent(new Event('input', { bubbles: true }));
+    content.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'Enter', ctrlKey: true, bubbles: true }),
+    );
+    flushSync();
+    expect(session.document.nodes.copy).toMatchObject({
+      content: { value: 'Edited in the toolbar' },
+    });
+    expect(session.undo().ok).toBe(true);
+    expect(session.document.nodes).toEqual(literal.nodes);
   } finally {
     await unmount(editor);
     target.remove();
