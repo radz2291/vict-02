@@ -100,7 +100,7 @@ it('uses one explicit insertion destination and creates an undoable sibling afte
     expect(target.querySelectorAll('select')).toHaveLength(1);
     const destination = target.querySelector('select')!;
     expect(destination.selectedOptions[0]?.textContent).toBe('After Heading · Title');
-    target.querySelector('button')!.click();
+    target.querySelector<HTMLButtonElement>('button.recipe')!.click();
     flushSync();
     expect(session.document.nodes.root).toMatchObject({ children: ['title', inserted] });
     expect(session.undo().ok).toBe(true);
@@ -159,7 +159,7 @@ it('requires a choice for multi-slot owners and preserves declared slot ownershi
   });
   try {
     flushSync();
-    const button = target.querySelector('button')!;
+    const button = target.querySelector<HTMLButtonElement>('button.recipe')!;
     expect(button.disabled).toBe(true);
     const select = target.querySelector('select')!;
     select.value = JSON.stringify(['card', 'body']);

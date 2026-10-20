@@ -13,6 +13,8 @@ export { default as PanelResizer } from './PanelResizer.svelte';
 export {
   insertSubtree,
   compositionTargets,
+  detachedContent,
+  detachSlotContent,
   compositionParent,
   compositionChildren,
   compositionName,

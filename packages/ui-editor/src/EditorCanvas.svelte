@@ -237,14 +237,19 @@
   const toolAncestors = $derived.by(() => {
     if (!selectedOccurrence) return [];
     const selected = resolveOccurrence(selectedOccurrence, document);
-    if (selected.instancePath.length || selected.repeatKeys.length) return [];
+    if (selected.repeatKeys.length || selected.instancePath.some(step => document.componentDefinitions[step.definitionId])) return [];
     const ancestors: string[] = [], seen = new Set<string>();
+    let context = selectedOccurrence.split('|').slice(2);
     let id = selected.sourceNodeId;
     while (!seen.has(id)) {
       seen.add(id);
       const parent = compositionParent(document, id);
       if (!parent) break;
-      id = parent.nodeId; ancestors.push(`${document.id}|${id}`);
+      id = parent.nodeId;
+      const ownerIndex = context.findIndex(segment => segment.startsWith(`${id}@`));
+      if (ownerIndex >= 0) context = context.slice(0, ownerIndex);
+      context = context.filter(segment => !segment.startsWith(`portal:${id}:`));
+      ancestors.push([document.id,id,...context].join('|'));
     }
     return ancestors;
   });

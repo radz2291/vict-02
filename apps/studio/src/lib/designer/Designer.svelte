@@ -268,7 +268,7 @@
       {#snippet format()}{@render objectProperties(formatSection)}{/snippet}
       {#snippet connect()}{@render objectProperties('Behavior')}{/snippet}
       {#snippet insert()}<Composer document={source} selectedNodeId={selectedNode?.id} recipes={screenRecipes} descriptors={catalogDescriptors} compact showArrange={false} onApply={apply} onInserted={(id: string) => { selectOccurrence(`${source.id}|${id}`); notice = 'Added to your screen. Double-click text to edit.'; }} />{/snippet}
-      {#snippet arrange()}<Composer document={source} selectedNodeId={selectedNode?.id} recipes={[]} descriptors={catalogDescriptors} compact showInsert={false} onApply={apply} onDuplicate={duplicateSelection} />{#if !selectedNode || selectedNode.id === source.root}<p class="palette-hint">Select an element to move, duplicate or delete it.</p>{/if}{/snippet}
+      {#snippet arrange()}<Composer document={source} selectedNodeId={selectedNode?.id} recipes={[]} descriptors={catalogDescriptors} compact showInsert={false} onApply={apply} onDuplicate={duplicateSelection} onDetached={(parentId: string)=>{selectOccurrence(`${source.id}|${parentId}`);notice='Content kept aside. Use Insert → Reuse to place it again.';}} />{#if !selectedNode || selectedNode.id === source.root}<p class="palette-hint">Select an element to move, duplicate or delete it.</p>{/if}{/snippet}
     </SelectionPalette>
   {/snippet}
   <div class="design-workspace" class:drawer-open={drawerOpen} class:has-object-tools={mode === 'design' && !!selectedNode && (selectedNode.id !== source.root || paletteRequested)} style:--drawer-width={`${drawerWidth}px`}>

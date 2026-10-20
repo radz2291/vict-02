@@ -1,6 +1,7 @@
 import { expect, it, vi } from 'vitest';
 import { mount, unmount, tick, flushSync, createRawSnippet } from 'svelte';
 import type { UiDocument } from '@victframework/ui';
+import { catalogDescriptors, catalogImplementations } from '@victframework/ui-svelte';
 import EditorCanvas from '../src/EditorCanvas.svelte';
 import FloatingSelection from '../src/FloatingSelection.svelte';
 
@@ -131,6 +132,78 @@ it('keeps tools available for closed slot content by anchoring to its visible ow
   } finally {
     await unmount(tools);
     canvas.remove();
+    bounds.mockRestore();
+  }
+});
+
+it('anchors a closed catalog slot occurrence selected through Layers to its visible owner', async () => {
+  const source: UiDocument = {
+    schema: 'vict.ui-document@1',
+    id: 'closed',
+    revision: '1',
+    root: 'root',
+    nodes: {
+      root: { id: 'root', kind: 'element', tag: 'main', children: ['dialog'] },
+      dialog: {
+        id: 'dialog',
+        kind: 'component',
+        definitionId: 'vict.catalog.dialog',
+        props: {
+          title: { type: 'literal', value: 'Details' },
+          open: { type: 'literal', value: false },
+        },
+        slots: { body: { name: 'body', children: ['copy'] } },
+      },
+      copy: { id: 'copy', kind: 'text', content: { type: 'literal', value: 'Hidden content' } },
+    },
+    componentDefinitions: {},
+    styleSources: {},
+    tokens: {},
+    assets: {},
+    localState: {},
+    conditions: {},
+  };
+  const bounds = vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockReturnValue({
+    left: 100,
+    right: 400,
+    top: 250,
+    bottom: 290,
+    width: 300,
+    height: 40,
+    x: 100,
+    y: 250,
+    toJSON: () => ({}),
+  });
+  const target = document.createElement('div');
+  document.body.append(target);
+  const canvas = mount(EditorCanvas, {
+    target,
+    props: {
+      document: source,
+      selectedOccurrence: 'closed|copy|dialog@vict.catalog.dialog',
+      interactionMode: 'design',
+      extensions: catalogDescriptors,
+      extensionImplementations: catalogImplementations,
+      onSelect: () => {},
+      dispatch: async () => {},
+      navigate: () => {},
+      selectionTools: createRawSnippet(() => ({
+        render: () => '<button>Hidden slot tools</button>',
+      })),
+    },
+  });
+  try {
+    flushSync();
+    await tick();
+    await vi.waitFor(() =>
+      expect(document.querySelector<HTMLElement>('.floating-selection')?.style.visibility).toBe(
+        'visible',
+      ),
+    );
+    expect(target.textContent).not.toContain('Hidden content');
+  } finally {
+    await unmount(canvas);
+    target.remove();
     bounds.mockRestore();
   }
 });

@@ -165,3 +165,45 @@ export function insertSubtree(
   if (nodes[0]) walk(nodes[0].id, target);
   return { requestId, reason: 'Insert authored subtree', commands };
 }
+
+/** Unowned source roots that can be reused; definition/template roots are not spare content. */
+export function detachedContent(document: UiDocument): readonly UiNode[] {
+  const owned = new Set<string>([document.root]);
+  for (const node of Object.values(document.nodes)) {
+    compositionChildren(node).forEach((id) => owned.add(id));
+    if (node.kind === 'repeat') owned.add(node.templateRoot);
+    if (node.kind === 'slot') node.fallback?.forEach((id) => owned.add(id));
+    if (node.kind === 'conditional')
+      node.branches.forEach((branch) => branch.children.forEach((id) => owned.add(id)));
+  }
+  for (const definition of Object.values(document.componentDefinitions)) {
+    owned.add(definition.root);
+    Object.values(definition.slots ?? {}).forEach((slot) =>
+      slot.fallback?.forEach((id) => owned.add(id)),
+    );
+  }
+  return Object.values(document.nodes).filter(
+    (node) => !owned.has(node.id) && ['element', 'text', 'component'].includes(node.kind),
+  );
+}
+/** Remove only a slot attachment. The node and its whole source subtree remain authored. */
+export function detachSlotContent(
+  requestId: string,
+  document: UiDocument,
+  nodeId: string,
+): TransactionDraft | undefined {
+  const parent = compositionParent(document, nodeId);
+  if (!parent?.slotName || document.nodes[parent.nodeId]?.kind !== 'component') return undefined;
+  return {
+    requestId,
+    reason: 'Keep slot content aside',
+    commands: [
+      {
+        op: 'fillSlot',
+        nodeId: parent.nodeId,
+        slotName: parent.slotName,
+        children: parent.children.filter((id) => id !== nodeId),
+      },
+    ],
+  };
+}

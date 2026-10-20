@@ -1,13 +1,18 @@
 <script lang="ts">
   import type { UiDocument, UiExtensionDescriptor } from '@victframework/ui';
-  import { compositionTargets, compositionParent, compositionName, insertSubtree, type InsertRecipe } from './composition.js';
+  import { compositionTargets, detachedContent, detachSlotContent, compositionParent, compositionName, insertSubtree, type InsertRecipe } from './composition.js';
+  import ToolPages from './ToolPages.svelte';
   import type { TransactionDraft } from './commands.js';
-  let { document, selectedNodeId, recipes, descriptors = [], showInsert = true, showArrange = true, compact = false, onApply, onInserted, onDuplicate }: {
+  let { document, selectedNodeId, recipes, descriptors = [], showInsert = true, showArrange = true, compact = false, onApply, onInserted, onDuplicate, onDetached }: {
     document: UiDocument; selectedNodeId?: string; recipes: readonly InsertRecipe[];
     descriptors?: readonly UiExtensionDescriptor[]; showInsert?: boolean; showArrange?: boolean; onApply: (draft: TransactionDraft) => boolean;
     onInserted?: (nodeId: string) => void;
+    onDetached?: (parentId: string) => void;
     compact?: boolean; onDuplicate?: () => void;
   } = $props();
+  let reuseId = $state('');
+  const reusable = $derived(detachedContent(document));
+  const reuseTargets = $derived(compositionTargets(document,descriptors,reuseId));
   let search = $state('');
   let destination = $state('');
   let moveDestination = $state('');
@@ -34,6 +39,19 @@
     const id = `${recipe.id}-${globalThis.crypto.randomUUID().slice(0, 8)}`;
     if (onApply(insertSubtree(globalThis.crypto.randomUUID(), recipe.create(id), target))) onInserted?.(id);
   }
+  function detachSelection() {
+    if(!selectedNodeId || !parent) return;
+    const parentId=parent.nodeId;
+    const draft=detachSlotContent(crypto.randomUUID(),document,selectedNodeId);
+    if(draft && onApply(draft)) onDetached?.(parentId);
+  }
+  function reuse() {
+    if(!reusable.some(node=>node.id===reuseId)) return;
+    const chosen=reuseTargets.find(target=>key(target)===destination);
+    const into=placement!=='inside' && parent && selectedNodeId?{...parent,index:parent.children.indexOf(selectedNodeId)+(placement==='after'?1:0)}:chosen;
+    if(!into) return;
+    if(onApply({requestId:crypto.randomUUID(),reason:'Reuse detached source',commands:[{op:'move',nodeId:reuseId,newParentId:into.nodeId,slotName:into.slotName,index:into.index}]})) onInserted?.(reuseId);
+  }
   function reorder(delta: number) {
     if (!parent || !selectedNodeId) return;
     onApply({ requestId: globalThis.crypto.randomUUID(), reason: 'Reorder element', commands: [{ op: 'move', nodeId: selectedNodeId, newParentId: parent.nodeId, slotName: parent.slotName, index: position + delta }] });
@@ -56,6 +74,7 @@
         <label><span>Move into</span><select aria-label="Move into" bind:value={moveDestination}><option value="">Choose a parent or slot…</option>{#each moveTargets as target (key(target))}<option value={key(target)}>{target.label}</option>{/each}</select></label>
         <button type="button" class="move" aria-label="Move selection" disabled={!moveDestination} onclick={() => { const target = moveTargets.find(t => key(t) === moveDestination); if (target) onApply({ requestId: globalThis.crypto.randomUUID(), reason: 'Move selection', commands: [{ op: 'move', nodeId: selectedNodeId!, newParentId: target.nodeId, slotName: target.slotName }] }); }}>{compact ? 'Move' : 'Move selection'}</button>
       </div>
+      {#if parent?.slotName}<div class="keep-aside"><button type="button" onclick={detachSelection}>Keep aside</button><span>Detach from this slot and keep the content for reuse.</span></div>{/if}
     </div>
   {/if}
   {#if showInsert}
@@ -70,12 +89,16 @@
   <label>Insert into<select aria-label="Insert into" bind:value={destination} disabled={placement !== 'inside'}>{#each targets as target (key(target))}<option value={key(target)}>{target.label}</option>{/each}</select></label>
   <input type="search" aria-label="Search elements" placeholder="Find an element or component…" bind:value={search} />
   {/if}
-  <div class="recipes">{#each recipes.filter(r => `${r.label} ${r.description}`.toLowerCase().includes(search.toLowerCase())) as recipe (recipe.id)}
+  <ToolPages pages={[{id:'new',label:'New element'},{id:'reuse',label:`Reuse (${reusable.length})`}]} label="Insert content pages">{#snippet children(page)}
+  {#if page==='new'}<div class="recipes">{#each recipes.filter(r => `${r.label} ${r.description}`.toLowerCase().includes(search.toLowerCase())) as recipe (recipe.id)}
     <button class="recipe" type="button" disabled={placement === 'inside' ? !destination : !parent} onclick={() => insert(recipe)} title={recipe.description}><span class="plus">+</span><span><strong>{recipe.label}</strong>{#if !compact}<small>{recipe.description}</small>{/if}</span></button>
   {/each}</div>
+  {:else}<div class="reuse"><label>Kept content<select aria-label="Kept content" value={reuseId} onchange={event=>reuseId=event.currentTarget.value}><option value="">Choose content…</option>{#each reusable as node}<option value={node.id}>{compositionName(document,node.id)}</option>{/each}</select></label><button type="button" disabled={!reuseId || (placement==='inside'?!reuseTargets.some(target=>key(target)===destination):!parent)} onclick={reuse}>Place content</button><p>Moves the same saved source, including its styles and connections. Undo returns it here.</p>{#if !reusable.length}<p>No detached content. Select a slot child and use Arrange → Keep aside.</p>{/if}</div>{/if}
+  {/snippet}</ToolPages>
   {/if}
 </section>
 <style>
+  .keep-aside {display:flex;align-items:center;gap:7px;}.keep-aside span,.reuse p {font-size:11px;color:#758195;}.reuse button {border:1px solid #dce2ea;background:white;border-radius:4px;padding:5px 7px;margin-top:5px;}
   .composer { display:grid; gap:12px; font:13px/1.45 system-ui,sans-serif; }
   label { display:grid; gap:5px; color:#536176; font-size:11px; font-weight:600; }
   input,select,button { font:inherit; min-width:0; }

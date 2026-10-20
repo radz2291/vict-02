@@ -8,6 +8,7 @@
   import { nodeLabel, sourceBreadcrumb, editableStyle, sourceStyles, styleText, styleGroups, type EditorLabels } from './inspector-ux.js';
   import ExpressionEditor from './ExpressionEditor.svelte';
   import InspectorControl from './InspectorControl.svelte';
+  import CustomSettings from './CustomSettings.svelte';
   import ToolPages from './ToolPages.svelte';
   import TextTools from './TextTools.svelte';
   import InspectorSpacing from './InspectorSpacing.svelte';
@@ -242,7 +243,7 @@
   }
   function changeStyle(property: string, value?: UiStyleValue) {
     const input = { requestId: request(), nodeId: target, property, ...(value ? { value } : {}) };
-    onApply(styleDraft(input));
+    return onApply(styleDraft(input));
   }
   function changeStyles(values: readonly { property: string; value?: string }[]) {
     const requestId = request();
@@ -290,6 +291,8 @@
   }
   let toolCategory = $state('');
   let valueProperty = $state('font-size');
+  const namedValues=$derived(Object.keys(document.tokens));
+  function groupProperties(type:string){return [type,...['top','right','bottom','left'].map(side=>`${type}-${side}`)].filter(property=>ownStyle(property) && ownStyle(property)?.type!=='binding');}
   const nativeFields = $derived(node?.kind === 'element' ? (node.tag === 'img' ? [{name:'src',label:'Image URL'},{name:'alt',label:'Alternative text'}] : node.tag === 'a' ? [{name:'href',label:'Link URL'},{name:'target',label:'Link target'},{name:'aria-label',label:'Accessibility'}] : [{name:'aria-label',label:'Accessibility'},{name:'title',label:'Tooltip'}]) : []);
   const objectCategories = $derived([
     ...(!simpleText ? [{id:'Content',label:componentDescriptor?'Properties':'Content'}] : []),
@@ -299,7 +302,7 @@
   $effect(() => { selectedOccurrence; toolCategory = simpleText ? 'Text' : container ? 'Layout' : 'Content'; });
   $effect(() => { if(editTextSignal && simpleText) toolCategory = 'Text'; });
   const allControls = styleGroups.flatMap(group => [...group.controls]);
-  const valueProperties = [...allControls.map(control=>({id:control.property,label:control.label})),{id:'letter-spacing',label:'Letter spacing'},...['padding','margin'].flatMap(type=>['top','right','bottom','left'].map(side=>({id:`${type}-${side}`,label:`${type} ${side}`})))];
+  const valueProperties = [...allControls.map(control=>({id:control.property,label:control.label})),{id:'letter-spacing',label:'Letter spacing'},{id:'padding',label:'All padding sides'},{id:'margin',label:'All margin sides'},...['padding','margin'].flatMap(type=>['top','right','bottom','left'].map(side=>({id:`${type}-${side}`,label:`${type} ${side}`})))];
   const stylePageSets: Readonly<Record<string,readonly {id:string;label:string;properties:readonly string[]}[]>> = {
     Fill:[{id:'background',label:'Background',properties:['background-color']},{id:'border',label:'Border',properties:['border-color','border-width','border-style']},{id:'corners',label:'Corners',properties:['border-radius']}],
     Spacing:[{id:'size',label:'Size',properties:['width','height']},{id:'limits',label:'Limits',properties:['min-width','max-width']},{id:'padding',label:'Padding',properties:[]},{id:'margin',label:'Margin',properties:[]}],
@@ -402,10 +405,20 @@
             {:else if category==='Text'}
               <TextTools value={display} locked={property=>ownStyle(property)?.type==='binding'} disabled={unsupportedTarget || (shared && scope==='instance')} editableContent={!!simpleText} content={textNode?.kind==='text' && textNode.content.type==='literal'?textNode.content.value:''} contentRevision={JSON.stringify(document)} {editTextSignal} onTextDraftChange={textDraftChange} onTextApply={value=>textNode?onApply(setTextLiteral({requestId:request(),nodeId:textNode.id,value})):false} onChange={(property,value)=>changeStyle(property,{type:'text',value})} contextLabel={`${styleConditions.find(c=>c.id===condition)?.label ?? (condition || 'All sizes')}${pseudo?` · ${pseudo}`:' · normal'}`}/>
             {:else if category==='Rules'}
-              <ToolPages pages={[{id:'conditions',label:'Conditions'},{id:'values',label:'Values & reset'},{id:'ownership',label:'Ownership'}]} label="Style rule pages" locked={textDraftDirty}>
+              <ToolPages pages={[{id:'conditions',label:'Conditions'},{id:'values',label:'Values & reset'},{id:'ownership',label:'Ownership'},{id:'custom',label:'Custom'},{id:'details',label:'Details'}]} label="Style rule pages" locked={textDraftDirty}>
                 {#snippet children(page)}
                   {#if page==='conditions'}{@render ruleControls()}
-                  {:else if page==='values'}<label>Setting<select aria-label="Setting details" bind:value={valueProperty}>{#each valueProperties as property}<option value={property.id}>{property.label}</option>{/each}</select></label><p>{display(valueProperty) || 'Not set'} · {origin(valueProperty)}</p>{#if effective(valueProperty)}<p>Browser now: {effective(valueProperty)}</p>{/if}<button type="button" disabled={!ownStyle(valueProperty) || ownStyle(valueProperty)?.type==='binding' || unsupportedTarget} onclick={()=>changeStyle(valueProperty)}>Reset setting</button>{#if !ownStyle(valueProperty) && display(valueProperty)}<button type="button" disabled={unsupportedTarget} onclick={()=>changeStyle(valueProperty,{type:'text',value:display(valueProperty)})}>Override preview value</button>{/if}
+                  {:else if page==='values'}
+                    <label>Setting<select aria-label="Setting details" value={valueProperty} onchange={event=>valueProperty=event.currentTarget.value}>{#each valueProperties as property}<option value={property.id}>{property.label}</option>{/each}</select></label>
+                    {#if valueProperty==='padding' || valueProperty==='margin'}
+                      <div class="group-values">{#each ['top','right','bottom','left'] as side}<span>{side}: {display(`${valueProperty}-${side}`) || 'Not set'}</span>{/each}</div>
+                      <button type="button" disabled={!canStyle || !groupProperties(valueProperty).length || unsupportedTarget} onclick={()=>changeStyles(groupProperties(valueProperty).map(property=>({property})))}>Reset all {valueProperty}</button><p>Removes this rule's editable shorthand and side overrides in one undo step. Bound values remain.</p>
+                    {:else}<p>{display(valueProperty) || 'Not set'} · {origin(valueProperty)}</p>{#if effective(valueProperty)}<p>Browser now: {effective(valueProperty)}</p>{/if}<button type="button" disabled={!canStyle || !ownStyle(valueProperty) || ownStyle(valueProperty)?.type==='binding' || unsupportedTarget} onclick={()=>changeStyle(valueProperty)}>Reset setting</button>{#if !ownStyle(valueProperty) && display(valueProperty)}<button type="button" disabled={unsupportedTarget} onclick={()=>changeStyle(valueProperty,{type:'text',value:display(valueProperty)})}>Override preview value</button>{/if}{/if}
+                    <label>Use named value<select aria-label="Named style value" value={ownStyle(valueProperty)?.type==='token'?(ownStyle(valueProperty) as {id:string}).id:''} disabled={unsupportedTarget || !canStyle || ownStyle(valueProperty)?.type==='binding'} onchange={event=>{if(namedValues.includes(event.currentTarget.value))changeStyle(valueProperty,{type:'token',id:event.currentTarget.value});}}><option value="">Choose a named value…</option>{#each namedValues as id}<option value={id}>{id} · {document.tokens[id]?.value}</option>{/each}</select></label>{#if !namedValues.length}<p>No named values declared. Define them in Document → Source → tokens.</p>{/if}
+                  {:else if page==='custom'}<CustomSettings {document} attributeNodeId={node.kind==='element' && !(shared && scope==='instance')?node.id:undefined} disabled={unsupportedTarget || !canStyle} blockedProperties={valueProperties.map(property=>property.id)} blockedAttributes={simpleText?[]:node.kind==='element' && ['input','textarea'].includes(node.tag)?['value','placeholder','aria-label']:nativeFields.map(field=>field.name)} readStyle={ownStyle} {origin} onStyle={changeStyle} onAttribute={(name,value)=>node.kind==='element'?onApply(setAttribute({requestId:request(),nodeId:node.id,name,...(value===undefined?{}:{value})})):false} onDraftChange={textDraftChange}/>
+                  {:else if page==='details'}
+                    <dl class="technical"><dt>Source node</dt><dd>{node.id}</dd><dt>Kind</dt><dd>{node.kind}</dd><dt>Component path</dt><dd>{report?.instancePath.map(step=>`${step.sourceNodeId}@${step.definitionId}`).join(' / ') || 'None'}</dd><dt>Repeat keys</dt><dd>{report?.repeatKeys.join(' / ') || 'None'}</dd><dt>Portal ownership</dt><dd>{JSON.stringify(report?.portalPath)}</dd></dl>
+                    {#if componentDescriptor}<p>{componentDescriptor.id} · revision {componentDescriptor.revision}</p>{#each componentDescriptor.outputs ?? [] as output}<p><strong>{output.name}</strong> · {output.payload}<br/>{output.description ?? 'Declared component event.'}</p>{/each}{/if}
                   {:else}{#if shared}<label>Edits apply to<select aria-label="Edits apply to" bind:value={scope}><option value="shared">Shared component</option><option value="instance">This instance · wrapper</option></select></label><p>{count} authored instances. Shared source edits affect every occurrence.</p>{:else}<p>Source element · {location.join(' / ')}</p>{/if}{#if componentDescriptor}<p>{componentDescriptor.id} · revision {componentDescriptor.revision}. Styling targets {componentDescriptor.styleTargets?.join(', ') || 'no exposed part'}. {componentDescriptor.inspectionLimits?.join(' ')}</p>{/if}<p>Canonical source and declarations are in Document → Source.</p>{/if}
                 {/snippet}
               </ToolPages>
@@ -571,6 +584,7 @@
   .issues { background: #fff0ef; }
   .contextual {height:auto;min-height:0;overflow:visible;background:#fff;font-size:11px;--ui-editor-section-padding:6px 2px;}
   .contextual .selection-bar {position:static;box-shadow:none;}
+  .group-values {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px;font-size:11px;margin:6px 0;}.technical {font-size:11px;}
   .content-boundary {border:0;padding:0;margin:0;min-width:0;}.content-boundary.full {height:auto;}
   .compact-grid {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 10px;}.rule-context {font-size:10px;color:#8a96a8;} .contextual button {padding:4px 7px;font-size:11px;margin:2px 3px 2px 0;}.contextual label {margin:3px 0;font-size:11px;}.contextual label select {padding:4px 6px;min-height:27px;font-size:11px;}
   .contextual h3 {font-size:11px;margin-bottom:5px;}
