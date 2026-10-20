@@ -187,7 +187,7 @@ it('gives contextual properties one category at a time and leaves state definiti
   }
 });
 
-it('merges literal text into one compact category and keeps edits undoable', async () => {
+it('uses non-expanding text pages with exclusive controls and undoable edits', async () => {
   const literal: UiDocument = {
     ...source,
     nodes: {
@@ -205,9 +205,13 @@ it('merges literal text into one compact category and keeps edits undoable', asy
   const session = UiEditSession.open({ document: literal, storedRevision: '1' });
   const target = document.createElement('div');
   document.body.append(target);
+  let editRequested = false;
   const editor = mount(Inspector, {
     target,
     props: {
+      onEditText: () => {
+        editRequested = true;
+      },
       contextual: true,
       section: 'Style',
       document: literal,
@@ -222,16 +226,27 @@ it('merges literal text into one compact category and keeps edits undoable', asy
   });
   try {
     flushSync();
-    expect([...target.querySelectorAll('[role=tab]')].map((tab) => tab.textContent)).toEqual([
+    const categories = target.querySelector('[aria-label="Format categories"]')!;
+    expect([...categories.querySelectorAll('[role=tab]')].map((tab) => tab.textContent)).toEqual([
       'Text',
       'Fill',
       'Spacing',
       'Layout',
     ]);
+    const pages = target.querySelector('[aria-label="Text pages"]')!;
+    expect([...pages.querySelectorAll('[role=tab]')].map((tab) => tab.textContent)).toEqual([
+      'Content',
+      'Font',
+      'Paragraph',
+      'Rules',
+      'Reset',
+    ]);
+    expect(target.querySelector('details')).toBeNull();
     expect(target.querySelector('[aria-label="Text content"]')).toBeNull();
-    expect(target.querySelector('[aria-label="Text color"]')).toBeNull();
     expect(target.querySelectorAll('[aria-label="Text size"]')).toHaveLength(1);
-    target.querySelector<HTMLButtonElement>('[aria-label="Bold"]')!.click();
+    const weight = target.querySelector<HTMLSelectElement>('[aria-label="Weight"]')!;
+    weight.value = '400';
+    weight.dispatchEvent(new Event('change', { bubbles: true }));
     flushSync();
     expect(session.document.nodes.title?.localStyle).toContainEqual({
       property: 'font-weight',
@@ -239,23 +254,37 @@ it('merges literal text into one compact category and keeps edits undoable', asy
     });
     expect(session.undo().ok).toBe(true);
     expect(session.document.nodes).toEqual(literal.nodes);
-    [...target.querySelectorAll('button')]
-      .find((button) => button.textContent === 'Edit text')!
-      .click();
+    const page = (name: string) =>
+      [...pages.querySelectorAll<HTMLButtonElement>('button')].find(
+        (button) => button.textContent === name,
+      )!;
+    page('Paragraph').click();
     flushSync();
-    const text = target.querySelector<HTMLTextAreaElement>('[aria-label="Text content"]')!;
-    text.value = 'Edited text';
-    text.dispatchEvent(new Event('input', { bubbles: true }));
+    expect(target.querySelector('[aria-label="Text size"]')).toBeNull();
+    const spacing = target.querySelector<HTMLInputElement>('[aria-label="Letter spacing"]')!;
+    spacing.value = '2';
+    spacing.dispatchEvent(new Event('change', { bubbles: true }));
     flushSync();
-    [...target.querySelectorAll('button')]
-      .find((button) => button.textContent === 'Apply text')!
-      .click();
-    flushSync();
-    expect(session.document.nodes.copy).toMatchObject({
-      content: { type: 'literal', value: 'Edited text' },
+    expect(session.document.nodes.title?.localStyle).toContainEqual({
+      property: 'letter-spacing',
+      value: { type: 'text', value: '2px' },
     });
     expect(session.undo().ok).toBe(true);
+    page('Rules').click();
+    flushSync();
+    expect(target.querySelector('[aria-label="Style target"]')).not.toBeNull();
+    expect(target.querySelector('details')).toBeNull();
+    page('Reset').click();
+    flushSync();
+    expect(target.querySelector('[aria-label="Text setting details"]')).not.toBeNull();
+    page('Content').click();
+    flushSync();
+    [...target.querySelectorAll<HTMLButtonElement>('button')]
+      .find((button) => button.textContent === 'Edit on canvas')!
+      .click();
+    expect(editRequested).toBe(true);
     expect(session.document.nodes).toEqual(literal.nodes);
+    expect(target.querySelector('[aria-label="Text content"]')).toBeNull();
   } finally {
     await unmount(editor);
     target.remove();

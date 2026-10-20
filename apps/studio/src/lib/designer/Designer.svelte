@@ -160,6 +160,7 @@
     if (snapshot?.dirty) { notice = 'Save or undo your changes before reopening the stored source.'; return; }
     const result = bridge.reopen();
     if (!result.ok) { issues = [{ code: result.code, message: result.message ?? 'Reopen failed.' }]; return; }
+    paletteRequested = false; palettePage = 'format';
     resetRuntime(); bridge.select(`${bridge.document.id}|${bridge.document.root}`); issues = []; notice = `Reopened revision ${result.storedRevision}; runtime state reset.`;
   }
   async function dispatch(actionId: string, input?: unknown) {
@@ -253,7 +254,7 @@
   {#snippet floatingTools()}
     <SelectionPalette bind:page={palettePage} name={compositionName(source, selectedNode?.id ?? source.root)} focusSignal={paletteFocus}>
       {#snippet objectProperties(section: 'Content' | 'Style' | 'Behavior')}
-        <Inspector contextual {section} document={source} selectedOccurrence={selected} onApply={apply} lastIssues={issues} componentDescriptors={catalogDescriptors} knownActionIds={designerCatalogs.actionIds} {actionInputs} knownRouteIds={['screen']} labels={editorLabels} styleConditions={[{ id: 'compact', label: 'Compact · ≤600px' }]} readEffective={effective} />
+        <Inspector contextual onEditText={() => editTextSignal = Symbol('edit')} {section} document={source} selectedOccurrence={selected} onApply={apply} lastIssues={issues} componentDescriptors={catalogDescriptors} knownActionIds={designerCatalogs.actionIds} {actionInputs} knownRouteIds={['screen']} labels={editorLabels} styleConditions={[{ id: 'compact', label: 'Compact · ≤600px' }]} readEffective={effective} />
       {/snippet}
       {#snippet format()}{@render objectProperties(formatSection)}{/snippet}
       {#snippet connect()}{@render objectProperties('Behavior')}{/snippet}

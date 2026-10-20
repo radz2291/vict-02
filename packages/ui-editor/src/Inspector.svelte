@@ -27,10 +27,11 @@
     knownViewFields?: UiFieldTypes;
     /** Focused object tools; default retains the full docked Inspector. */
     contextual?: boolean;
+    onEditText?: () => void;
     section?: 'Content' | 'Style' | 'Behavior';
     actionInputs?: Readonly<Record<string, Readonly<Record<string, UiValueType>>>>;
   }
-  let { contextual = false, section: tab = $bindable('Content'), document, selectedOccurrence, onApply, lastIssues = [], knownActionIds = [], knownRouteIds = [], knownTokenIds = [], styleConditions = [], readEffective, labels = {}, componentDescriptors = [], knownViewFields = {}, actionInputs = {} }: Props = $props();
+  let { onEditText, contextual = false, section: tab = $bindable('Content'), document, selectedOccurrence, onApply, lastIssues = [], knownActionIds = [], knownRouteIds = [], knownTokenIds = [], styleConditions = [], readEffective, labels = {}, componentDescriptors = [], knownViewFields = {}, actionInputs = {} }: Props = $props();
   // DOM measurements must run again after the canvas consumes new source/selection.
   let measurementVersion = $state(0);
   $effect(() => {
@@ -324,14 +325,13 @@
   }
 </script>
 
-{#snippet styleContext()}
-      <details class="context" open={!!(condition || pseudo)}><summary>Editing · {styleConditions.find(c => c.id === condition)?.label ?? (condition || 'Base · all sizes')}{pseudo ? ` · ${pseudo}` : ' · normal'}</summary><section><label>Editing condition<select aria-label="Style target" value={condition} onchange={e => condition = e.currentTarget.value}><option value="">Base · all sizes</option>{#each styleConditions as c}<option value={c.id}>{c.label}</option>{/each}</select></label>
+{#snippet ruleControls()}<section><label>Editing condition<select aria-label="Style target" value={condition} onchange={e => condition = e.currentTarget.value}><option value="">Base · all sizes</option>{#each styleConditions as c}<option value={c.id}>{c.label}</option>{/each}</select></label>
         <label>Element state<select aria-label="Pseudo state" value={pseudo ?? ''} onchange={e => pseudo = (e.currentTarget.value || undefined) as UiPseudoState | undefined}><option value="">Normal</option>{#each ['hover', 'focus', 'active', 'disabled'] as p}<option value={p}>{p}</option>{/each}</select></label>
         <p>{condition ? 'Edits are saved in this condition. Resize the preview to test its query.' : 'Base styling applies at every size.'} {pseudo ? `Editing ${pseudo}; this does not force the browser into that state.` : ''}</p>
         {#if unsupportedTarget}<p role="status">Condition and state editing is unavailable on component wrappers. Use base styling or select a shared inner element.</p><button type="button" onclick={() => { condition = ''; pseudo = undefined; }}>Edit base styles</button>{/if}
         {#if node?.kind === 'text'}<p>Text appearance applies to its containing {nodeLabel(document, styleSourceId, labels)}.</p>{/if}
         {#if condition || pseudo}<p>These rules apply only in the selected condition or state.</p>{/if}
-      </section></details>
+      </section>
       {#if conflicts.length}
         <section class="style-conflict" aria-label="Style conflicts"><h3>Base styles are masking this rule</h3>
           <p>Local base overrides mask: {conflicts.map(declaration => declaration.property).join(', ')}. The saved conditional values cannot win against them.</p>
@@ -341,6 +341,7 @@
         </section>
       {/if}
 {/snippet}
+{#snippet styleContext()}<details class="context" open={!!(condition || pseudo)}><summary>Editing · {styleConditions.find(c => c.id === condition)?.label ?? (condition || 'Base · all sizes')}{pseudo ? ` · ${pseudo}` : ' · normal'}</summary>{@render ruleControls()}</details>{/snippet}
 
 <aside class="uv-inspector ux-panel" class:contextual aria-label={contextual ? "Object properties" : "Inspector"} style:scroll-padding-top={`${headerSize + 8}px`}>
   {#if !contextual || shared}<div class="selection-bar" bind:this={selectionBar}>{#if !contextual}<header>
@@ -399,14 +400,8 @@
       {/if}
       {#if !(simpleText && groupName === 'Quick')}{@render styleContext()}{/if}
       {#if simpleText && groupName === 'Quick'}
-        <TextTools bind:text value={display} {origin} authored={property => ownStyle(property) !== undefined} locked={property => ownStyle(property)?.type === 'binding'} disabled={unsupportedTarget || (shared && scope === 'instance')} onText={value => { if (textNode) onApply(setTextLiteral({ requestId: request(), nodeId: textNode.id, value })); }} onChange={(property, value) => changeStyle(property, { type: 'text', value })} onReset={property => changeStyle(property)}>
-          {#snippet more()}
-            {@render styleContext()}
-            {#each styleGroups.find(group => group.title === 'Typography')!.controls.filter(control => !quickProperties.includes(control.property)) as control}
-              {@const own = ownStyle(control.property)}
-              <InspectorControl label={control.label} kind={control.kind} value={display(control.property)} authored={own !== undefined} origin={origin(control.property)} originLabel={originLabel(control.property)} effective={effective(control.property)} disabled={unsupportedTarget || own?.type === 'binding'} onChange={value => changeStyle(control.property, {type:'text',value})} onReset={() => changeStyle(control.property)} />
-            {/each}
-          {/snippet}
+        <TextTools value={display} {origin} authored={property => ownStyle(property) !== undefined} locked={property => ownStyle(property)?.type === 'binding'} disabled={unsupportedTarget || (shared && scope === 'instance')} onEdit={onEditText} onChange={(property, value) => changeStyle(property, { type: 'text', value })} onReset={property => changeStyle(property)} contextLabel={`${styleConditions.find(c => c.id === condition)?.label ?? (condition || 'All sizes')}${pseudo ? ` · ${pseudo}` : ' · normal'}`}>
+          {#snippet rules()}{@render ruleControls()}{/snippet}
         </TextTools>
       {:else if canStyle}
         {#key `${target}:${container}`}{#each shownGroups as group, index}<details class="style-group" open={contextual || index < 2}><summary>{group.title}</summary><section>
