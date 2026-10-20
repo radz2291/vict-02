@@ -47,11 +47,15 @@
 <section class="composer" class:compact aria-label="Compose screen">
   {#if showArrange && selectedNodeId && selectedNodeId !== document.root}
     <div class="arrange">{#if !compact}<h3>Arrange selection</h3>{/if}
-      <div class="order"><button type="button" disabled={!parent || position < 1} onclick={() => reorder(-1)}>Move up</button><button type="button" disabled={!parent || position >= parent.children.length - 1} onclick={() => reorder(1)}>Move down</button></div>
-      <label>Move into<select aria-label="Move into" bind:value={moveDestination}><option value="">Choose a parent or slot…</option>{#each moveTargets as target (key(target))}<option value={key(target)}>{target.label}</option>{/each}</select></label>
-      <button type="button" disabled={!moveDestination} onclick={() => { const target = moveTargets.find(t => key(t) === moveDestination); if (target) onApply({ requestId: globalThis.crypto.randomUUID(), reason: 'Move selection', commands: [{ op: 'move', nodeId: selectedNodeId!, newParentId: target.nodeId, slotName: target.slotName }] }); }}>Move selection</button>
-      {#if onDuplicate}<button type="button" onclick={onDuplicate}>Duplicate</button>{/if}
-      <button class="remove" type="button" onclick={() => onApply({ requestId: globalThis.crypto.randomUUID(), reason: 'Remove selection', commands: [{ op: 'remove', nodeId: selectedNodeId!, detachFromParent: true }] })}>Remove selection</button>
+      <div class="arrange-actions">
+        <div class="order"><button type="button" aria-label="Move up" title="Move up" disabled={!parent || position < 1} onclick={() => reorder(-1)}>{compact ? '↑ Up' : 'Move up'}</button><button type="button" aria-label="Move down" title="Move down" disabled={!parent || position >= parent.children.length - 1} onclick={() => reorder(1)}>{compact ? '↓ Down' : 'Move down'}</button></div>
+        {#if onDuplicate}<button class="duplicate" type="button" onclick={onDuplicate}>Duplicate</button>{/if}
+        <button class="remove" type="button" aria-label="Remove selection" onclick={() => onApply({ requestId: globalThis.crypto.randomUUID(), reason: 'Remove selection', commands: [{ op: 'remove', nodeId: selectedNodeId!, detachFromParent: true }] })}>{compact ? 'Remove' : 'Remove selection'}</button>
+      </div>
+      <div class="move-target">
+        <label><span>Move into</span><select aria-label="Move into" bind:value={moveDestination}><option value="">Choose a parent or slot…</option>{#each moveTargets as target (key(target))}<option value={key(target)}>{target.label}</option>{/each}</select></label>
+        <button type="button" class="move" aria-label="Move selection" disabled={!moveDestination} onclick={() => { const target = moveTargets.find(t => key(t) === moveDestination); if (target) onApply({ requestId: globalThis.crypto.randomUUID(), reason: 'Move selection', commands: [{ op: 'move', nodeId: selectedNodeId!, newParentId: target.nodeId, slotName: target.slotName }] }); }}>{compact ? 'Move' : 'Move selection'}</button>
+      </div>
     </div>
   {/if}
   {#if showInsert}
@@ -83,6 +87,7 @@
   strong,small { display:block; } strong {font-weight:550;} small { color:#758195; font-size:11px; margin-top:2px; }
   .arrange { display:grid; gap:8px; border-top:1px solid #e3e7ed; padding-top:14px; }
   h3 { font-size:11px; text-transform:uppercase; letter-spacing:.07em; margin:0; color:#617086; }
+  .arrange-actions, .move-target {display:contents;}
   .order { display:flex; gap:6px; } .order button {flex:1;}
   .arrange button { border:1px solid #dce2ea; border-radius:5px; padding:7px; background:white; cursor:pointer; }
   .arrange .remove {color:#a13c4b;}
@@ -91,8 +96,16 @@
   .compact .recipes { grid-template-columns:repeat(3,minmax(0,1fr)); gap:4px; }
   .compact .recipe { align-items:center; gap:5px; padding:4px 6px; min-height:25px; border-radius:4px; }
   .compact .plus { font-size:14px; } .compact strong {font-size:11px;}
-  .compact .arrange { padding:0; border:0; gap:5px; grid-template-columns:1fr 1fr; }
-  .compact .arrange label { grid-column:1 / -1; }
-  .compact .arrange button {padding:4px 6px;min-height:27px;font-size:11px;}
-  .compact .order {grid-column:1 / -1;}
+  .compact .arrange { padding:0; border:0; gap:6px; }
+  .compact .arrange-actions {display:flex;align-items:center;gap:4px;}
+  .compact .order {display:contents;}
+  .compact .order button {flex:initial;}
+  .compact .duplicate {margin-left:4px;}
+  .compact .move-target {display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:6px;}
+  .compact .move-target label {display:contents;font-weight:400;}
+  .compact .move-target span {white-space:nowrap;}
+  .compact .arrange button {padding:4px 7px;min-height:27px;font-size:11px;white-space:nowrap;color:#34425a;}
+  .compact .arrange .remove {color:#a13c4b;}
+  .compact .arrange button:not(:disabled):hover {background:#f5f7ff;border-color:#8298d4;}
+  .compact .move-target .move {color:#405abd;background:#f5f7ff;}
 </style>
