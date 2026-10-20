@@ -29,6 +29,7 @@
   let notice = $state('Start with an empty screen. Add a heading or section to begin.');
   let leftTab = $state('Layers');
   let editTextSignal = $state<symbol>();
+  let selectionToolsReveal = $state<symbol>();
   let canvasTextEditing = $state(false);
   let insertOpen = $state(false);
   let mobilePane = $state('Canvas');
@@ -47,6 +48,7 @@
       if (owner?.kind === 'element' && owner.children.length === 1) occurrence = `${source.id}|${owner.id}`;
     }
     bridge?.select(occurrence);
+    selectionToolsReveal = Symbol('selection-tools');
   }
   function changeMode(next: 'design' | 'interact') { if (canvasTextEditing) { notice = 'Apply or cancel your canvas text edit first.'; return; } mode = next; resetRuntime(); notice = next === 'design' ? 'Design mode · select and edit without running behavior.' : 'Interact mode · simulated behavior, no live effects.'; }
   let createDialog: HTMLDialogElement;
@@ -263,6 +265,7 @@
   {/if}
   <nav class="mobile-panes" aria-label="Designer panels">{#each ['Insert', 'Layers', 'Canvas', 'Inspect', 'Source'] as pane}<button type="button" aria-pressed={mobilePane === pane} onclick={() => { mobilePane = pane; if (['Insert', 'Layers', 'Source'].includes(pane)) leftTab = pane; }}>{pane}</button>{/each}</nav>
   {#if source && bridge}
+  {#snippet floatingTools()}<SelectionToolbar document={source} nodeId={selectedNode?.id} floating onApply={apply} onEdit={() => editTextSignal = Symbol('edit')} onDuplicate={duplicateSelection} onRemove={removeSelection} />{/snippet}
   <div class="design-workspace" class:left-hidden={!leftOpen} class:right-hidden={!rightOpen} style:--left-width={`${leftWidth}px`} style:--right-width={`${rightWidth}px`}>
     <aside class:mobile-active={['Insert', 'Layers', 'Source'].includes(mobilePane)} class="design-sidebar">
       <nav class="sidebar-tabs" aria-label="Document panels">{#each ['Insert', 'Layers', 'Source'] as tab}<button type="button" aria-pressed={leftTab === tab} onclick={() => leftTab = tab}>{tab}</button>{/each}</nav>
@@ -284,11 +287,12 @@
     </aside>
     <div class="left-resizer"><PanelResizer label="Document panel width" value={leftWidth} min={180} max={360} onChange={(value: number) => leftWidth = value} /></div>
     <main class:mobile-active={mobilePane === 'Canvas'} class="design-stage">
-      {#if mode === 'design'}<SelectionToolbar document={source} nodeId={selectedNode?.id} onApply={apply} onEdit={() => editTextSignal = Symbol('edit')} onDuplicate={duplicateSelection} onRemove={removeSelection} />{/if}
       <div class="canvas-toolbar"><span><span class="live-dot"></span>{mode === 'design' ? 'Design · selection only' : 'Interact · simulated'}</span><label><span class="sr-only">Canvas width</span><select aria-label="Canvas width" bind:value={width}><option value="fluid">Fit canvas</option><option value="768">Tablet · 768</option><option value="390">Phone · 390</option></select></label><button type="button" onclick={resetRuntime} title="Reset ephemeral runtime values">Reset preview</button></div>
       <div class="canvas-scroll"><div class="canvas-caption">{screenName(source)} <span>{width === 'fluid' ? 'Responsive' : `${width}px`}</span></div>
         <div class="design-frame" style:max-width={width === 'fluid' ? 'none' : `${width}px`}>
           <EditorCanvas document={source} catalogs={designerCatalogs} extensions={catalogDescriptors} extensionImplementations={catalogImplementations}
+            selectionTools={selectedNode && selectedNode.id !== source.root ? floatingTools : undefined}
+            {selectionToolsReveal}
             onApply={(draft: TransactionDraft) => { canvasTextEditing = false; return apply(draft); }} {editTextSignal} onTextEditingChange={(editing: boolean) => canvasTextEditing = editing}
             interactionMode={mode} selectedOccurrence={mode === 'design' ? selected : undefined} onSelect={mode === 'design' ? selectOccurrence : () => {}} {dispatch} navigate={() => { notice = 'This application contains one screen.'; }}
             stateValues={runtimeValues} onStateChange={(key: string, value: UiValue) => runtimeValues = { ...runtimeValues, [key]: value }} {resetSignal}

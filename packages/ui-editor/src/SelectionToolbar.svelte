@@ -4,9 +4,10 @@
   import { setBaseStyle, type TransactionDraft } from './commands.js';
   import { editableStyle } from './inspector-ux.js';
   import { literalTextTarget } from './selection-tools.js';
-  let { document, nodeId, onApply, onEdit, onDuplicate, onRemove }: {
+  let { document, nodeId, onApply, onEdit, onDuplicate, onRemove, floating = false }: {
     document: UiDocument; nodeId?: string; onApply: (draft: TransactionDraft) => boolean;
     onEdit: () => void; onDuplicate: () => void; onRemove: () => void;
+    floating?: boolean;
   } = $props();
   const node = $derived(nodeId ? document.nodes[nodeId] : undefined);
   const parent = $derived(nodeId ? compositionParent(document, nodeId) : undefined);
@@ -32,8 +33,8 @@
     onApply({ requestId: crypto.randomUUID(), reason: 'Reorder selection', commands: [{ op: 'move', nodeId, newParentId: parent.nodeId, slotName: parent.slotName, index: parent.children.indexOf(nodeId) + delta }] });
   }
 </script>
-<div class="selection-toolbar" aria-label="Selection tools">
-  <span class="selection-name" title="Formatting edits the base presentation. Use Inspector for responsive rules.">{nodeId ? compositionName(document, nodeId) : 'Select an element'}</span>
+<div class="selection-toolbar" class:floating aria-label="Selection tools">
+  {#if !floating}<span class="selection-name" title="Formatting edits the base presentation. Use Inspector for responsive rules.">{nodeId ? compositionName(document, nodeId) : 'Select an element'}</span>{/if}
   {#if text}<button type="button" onclick={onEdit} title="Edit text · F2 or double-click">Edit text</button>{/if}
   {#if stylable}
     {#if !container}
@@ -48,11 +49,13 @@
       <label>Fill<input aria-label="Container fill" type="color" value={/^#[\da-f]{6}$/i.test(value('background-color')) ? value('background-color') : '#ffffff'} onchange={event => style('background-color', event.currentTarget.value)} /></label>
     {/if}
   {/if}
-  <span class="spacer"></span>
+  {#snippet arrangement()}
   <button type="button" aria-label="Move earlier" disabled={!parent || !nodeId || parent.children.indexOf(nodeId) < 1} onclick={() => reorder(-1)} title="Move earlier · Alt+↑">↑</button>
   <button type="button" aria-label="Move later" disabled={!parent || !nodeId || parent.children.indexOf(nodeId) >= parent.children.length - 1} onclick={() => reorder(1)} title="Move later · Alt+↓">↓</button>
   <button type="button" disabled={!parent} onclick={onDuplicate} title="Duplicate · Ctrl+D">Duplicate</button>
   <button type="button" disabled={!parent} onclick={onRemove} title="Delete selection · Delete">Delete</button>
+  {/snippet}
+  {#if floating}<details><summary aria-label="More selection tools">More</summary><div class="more-tools">{@render arrangement()}</div></details>{:else}<span class="spacer"></span>{@render arrangement()}{/if}
 </div>
 <style>
   .selection-toolbar { display:flex; align-items:center; gap:5px; padding:5px 10px; min-height:38px; border-bottom:1px solid #dce2eb; background:#fff; overflow-x:auto; flex-shrink:0; font:11px/1.4 system-ui,sans-serif; color:#536176; }
@@ -62,4 +65,8 @@
   button { cursor:pointer; white-space:nowrap; } button:hover,button[aria-pressed=true] { background:#edf1ff; color:#405abd; } button:disabled { opacity:.35; }
   input[type=number] { width:52px; } input[type=color] { width:27px; padding:2px; } .spacer { flex:1; }
   :focus-visible { outline:2px solid #5269bd; outline-offset:1px; }
+  .floating { flex-wrap:wrap; overflow:visible; border:0; border-radius:8px; padding:6px; min-height:0; gap:5px; }
+  .floating, .floating * { box-sizing:border-box; }
+  details { position:relative; } summary { cursor:pointer; padding:6px; color:#5269bd; font-size:11px; }
+  .more-tools { display:flex; flex-wrap:wrap; gap:4px; padding-top:5px; }
 </style>

@@ -7,7 +7,8 @@
    * The selection outline is a canvas-level presentation rule — never
    * document source.
    */
-  import { tick, untrack } from 'svelte';
+  import { tick, untrack, type Snippet } from 'svelte';
+  import FloatingSelection from './FloatingSelection.svelte';
   import { literalTextTarget, editLiteralText } from './selection-tools.js';
   import { resolveOccurrence } from './occurrence.js';
   import type { TransactionDraft } from './commands.js';
@@ -35,6 +36,9 @@
     readonly onApply?: (draft: TransactionDraft) => boolean;
     readonly editTextSignal?: symbol;
     readonly onTextEditingChange?: (editing: boolean) => void;
+    /** Authoring-only tools anchored to the selected rendered occurrence. F10 focuses them. */
+    readonly selectionTools?: Snippet;
+    readonly selectionToolsReveal?: symbol;
     readonly catalogs?: UiCatalogs;
     readonly extensions?: readonly UiExtensionDescriptor[];
     readonly extensionImplementations?: readonly (
@@ -69,6 +73,8 @@
     onApply,
     editTextSignal,
     onTextEditingChange,
+    selectionTools,
+    selectionToolsReveal,
     catalogs,
     extensions = [],
     extensionImplementations = [],
@@ -158,6 +164,7 @@
       const target = event.target instanceof Element ? event.target.closest<HTMLElement>('[data-ui-occ]') : null;
       const owner = canvasEl?.querySelector<HTMLElement>('[data-ui-owner-root]')?.dataset.uiOwnerRoot;
       if (!owner || target?.dataset.uiOwner !== owner) return;
+      if (selectionTools && event instanceof KeyboardEvent && event.key === 'F10') return;
       if (onApply && event instanceof KeyboardEvent && (['F2', 'Delete', 'Backspace'].includes(event.key) || (event.altKey && ['ArrowUp', 'ArrowDown'].includes(event.key)))) return;
       if (event.type === 'dblclick' && target.dataset.uiOcc) { void beginText(target.dataset.uiOcc, target); }
       // Tab and Escape remain available for navigation and overlay dismissal. Activation/editing
@@ -213,6 +220,9 @@
 </script>
 
 {#if compiled.ok}
+  {#if canvasEl && selectedOccurrence && selectionTools && interactionMode === 'design' && !inlineEdit}
+    <FloatingSelection canvas={canvasEl} occurrence={selectedOccurrence} revealSignal={selectionToolsReveal}>{@render selectionTools()}</FloatingSelection>
+  {/if}
   <div class={canvasClasses} class:uv-canvas-design={interactionMode === 'design'} bind:this={canvasEl} tabindex="-1" style:position="relative">
     {#if inlineEdit}
       <div data-ui-inline-editor class="inline-text-editor" style:left={`${inlineEdit.left}px`} style:top={`${inlineEdit.top}px`} style:width={`${inlineEdit.width}px`}>
