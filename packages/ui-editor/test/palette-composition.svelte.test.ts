@@ -168,3 +168,34 @@ it('requires a choice for multi-slot owners and preserves declared slot ownershi
     target.remove();
   }
 });
+
+it('includes an optional Connect page in keyboard navigation without changing the three-page default', async () => {
+  const target = document.createElement('div');
+  document.body.append(target);
+  const snippet = createRawSnippet(() => ({ render: () => '<span>Tools</span>' }));
+  const palette = mount(SelectionPalette, {
+    target,
+    props: {
+      name: 'Button',
+      format: snippet,
+      insert: snippet,
+      arrange: snippet,
+      connect: snippet,
+    },
+  });
+  try {
+    flushSync();
+    const tabs = target.querySelectorAll<HTMLButtonElement>('[role=tab]');
+    expect(tabs).toHaveLength(4);
+    tabs[0]!.dispatchEvent(new KeyboardEvent('keydown', { key: 'End', bubbles: true }));
+    await tick();
+    expect(document.activeElement).toBe(tabs[3]);
+    expect(tabs[3]!.textContent).toBe('Connect');
+    tabs[3]!.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
+    await tick();
+    expect(document.activeElement).toBe(tabs[0]);
+  } finally {
+    await unmount(palette);
+    target.remove();
+  }
+});

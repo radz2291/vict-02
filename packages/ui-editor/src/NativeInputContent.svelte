@@ -5,9 +5,9 @@
   import type { EditorLabels } from './inspector-ux.js';
   import ExpressionEditor from './ExpressionEditor.svelte';
   import StateInitialEditor from './StateInitialEditor.svelte';
-  let { document, node, references, referenceLabels, labels, disabled = false, onApply }: {
+  let { document, node, references, referenceLabels, labels, disabled = false, showStateInitial = true, onApply }: {
     document: UiDocument; node: Extract<UiNode,{kind:'element'}>; references: readonly string[];
-    referenceLabels: Readonly<Record<string,string>>; labels: EditorLabels; disabled?: boolean;
+    referenceLabels: Readonly<Record<string,string>>; labels: EditorLabels; disabled?: boolean; showStateInitial?: boolean;
     onApply: (draft: TransactionDraft) => void;
   } = $props();
   const fields = [{name:'value',label:'Value'},{name:'placeholder',label:'Placeholder'},{name:'aria-label',label:'Accessible name'}];
@@ -22,7 +22,7 @@
     {#key `${node.id}:${field.name}`}
       <ExpressionEditor label={field.name} displayLabel={field.label} type="string" value={expression(field.name)} {references} {referenceLabels}
         onCommit={value => onApply(setAttribute({requestId:crypto.randomUUID(),nodeId:node.id,name:field.name,...(value === undefined ? {} : {value})}))} />
-      <StateInitialEditor {document} expression={expression(field.name)} {labels} {onApply} />
+      {#if showStateInitial}<StateInitialEditor {document} expression={expression(field.name)} {labels} {onApply} />{/if}
     {/key}
   {/each}
 </fieldset>

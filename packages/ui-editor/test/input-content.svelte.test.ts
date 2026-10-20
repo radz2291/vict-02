@@ -136,3 +136,39 @@ describe('input content and composition affordances', () => {
     }
   });
 });
+
+it('gives contextual properties one category at a time and leaves state definitions to the document', async () => {
+  const target = document.createElement('div');
+  document.body.append(target);
+  const editor = mount(Inspector, {
+    target,
+    props: {
+      contextual: true,
+      section: 'Style',
+      document: source,
+      selectedOccurrence: 'input-content|input',
+      onApply: () => {},
+    },
+  });
+  try {
+    flushSync();
+    expect(target.querySelector('[aria-label="Text size"]')).not.toBeNull();
+    expect(target.querySelector('[aria-label="Font family"]')).toBeNull();
+    expect(target.querySelector('[aria-label="Inspector sections"]')).toBeNull();
+    const category = target.querySelector<HTMLSelectElement>('[aria-label="Format category"]')!;
+    category.value = 'Typography';
+    category.dispatchEvent(new Event('change', { bubbles: true }));
+    flushSync();
+    expect(target.querySelector('[aria-label="Font family"]')).not.toBeNull();
+    expect(target.querySelector('[aria-label="Text size"]')).toBeNull();
+    category.value = 'Content';
+    category.dispatchEvent(new Event('change', { bubbles: true }));
+    flushSync();
+    expect(target.querySelector('[aria-label="placeholder value"]')).not.toBeNull();
+    expect(target.querySelector('[aria-label="Starting value"]')).toBeNull();
+    expect(target.textContent).not.toContain('Advanced · source & declarations');
+  } finally {
+    await unmount(editor);
+    target.remove();
+  }
+});

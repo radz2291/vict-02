@@ -24,9 +24,12 @@
     componentDescriptors?: readonly UiExtensionDescriptor[];
     /** View-field types for array-prop reference binding (type-filtered). */
     knownViewFields?: UiFieldTypes;
+    /** Focused object tools; default retains the full docked Inspector. */
+    contextual?: boolean;
+    section?: 'Content' | 'Style' | 'Behavior';
     actionInputs?: Readonly<Record<string, Readonly<Record<string, UiValueType>>>>;
   }
-  let { document, selectedOccurrence, onApply, lastIssues = [], knownActionIds = [], knownRouteIds = [], knownTokenIds = [], styleConditions = [], readEffective, labels = {}, componentDescriptors = [], knownViewFields = {}, actionInputs = {} }: Props = $props();
+  let { contextual = false, section: tab = $bindable('Content'), document, selectedOccurrence, onApply, lastIssues = [], knownActionIds = [], knownRouteIds = [], knownTokenIds = [], styleConditions = [], readEffective, labels = {}, componentDescriptors = [], knownViewFields = {}, actionInputs = {} }: Props = $props();
   // DOM measurements must run again after the canvas consumes new source/selection.
   let measurementVersion = $state(0);
   $effect(() => {
@@ -58,7 +61,7 @@
   let scope = $state<'shared' | 'instance'>('shared');
   let condition = $state('');
   let pseudo = $state<UiPseudoState | undefined>(undefined);
-  let tab = $state('Content');
+  let groupName = $state('Quick');
   let text = $state('');
   let property = $state('color');
   let value = $state('');
@@ -194,6 +197,12 @@
     const order = container ? ['Layout', 'Size & spacing', 'Fill & border', 'Typography'] : ['Typography', 'Fill & border', 'Size & spacing', 'Layout'];
     return order.indexOf(a.title) - order.indexOf(b.title);
   }));
+  const quickProperties = $derived(container ? ['display', 'flex-direction', 'gap', 'background-color'] : ['font-size', 'font-weight', 'text-align', 'color']);
+  const contextualGroups = $derived([
+    { title: 'Quick', controls: styleGroups.flatMap(group => [...group.controls]).filter(control => quickProperties.includes(control.property)) },
+    ...orderedGroups.map(group => ({ ...group, controls: group.controls.filter(control => !quickProperties.includes(control.property)) })),
+  ]);
+  const shownGroups = $derived(contextual ? contextualGroups.filter(group => group.title === groupName) : orderedGroups);
   const referenceLabels = $derived(Object.fromEntries(Object.entries(labels.state ?? {}).map(([key, label]) => [`state.${key}`, label])));
   function friendly(value: string) { return value.replace(/([a-z])([A-Z])/g, '$1 $2').replaceAll('-', ' ').replace(/^./, c => c.toUpperCase()); }
   function outputTitle(name: string) { return ({ press: 'When pressed', checkedChange: 'When toggled', valueChange: 'When the value changes', openChange: 'When opened or closed' } as Record<string, string>)[name] ?? `When ${friendly(name).toLowerCase()}`; }
@@ -257,7 +266,7 @@
   function effective(property: string) { measurementVersion; return selectedOccurrence ? readEffective?.(selectedOccurrence, property)?.trim() ?? '' : ''; }
   function origin(property: string) {
     const local = editableStyle(document, target, property, condition || undefined, pseudo);
-    if (local) return local.type === 'token' ? `Override uses token ${local.id}` : local.type === 'binding' ? 'Bound expression; edit in Advanced' : `${shared && scope === 'shared' ? 'Shared definition' : 'Local'} override${condition ? ' · selected condition' : ''}${pseudo ? ` · ${pseudo}` : ''}`;
+    if (local) return local.type === 'token' ? `Override uses token ${local.id}` : local.type === 'binding' ? (contextual ? 'Bound expression; edit in Document → Source' : 'Bound expression; edit in Advanced') : `${shared && scope === 'shared' ? 'Shared definition' : 'Local'} override${condition ? ' · selected condition' : ''}${pseudo ? ` · ${pseudo}` : ''}`;
     const sources = sourceStyles(document, target, property);
     if (sources.length) return sources.join('; ');
     if (['color', 'font-family', 'font-size', 'font-weight', 'line-height', 'text-align'].includes(property) && node) {
@@ -280,11 +289,11 @@
   }
 </script>
 
-<aside class="uv-inspector ux-panel" aria-label="Inspector" style:scroll-padding-top={`${headerSize + 8}px`}>
-  <div class="selection-bar" bind:this={selectionBar}><header>
+<aside class="uv-inspector ux-panel" class:contextual aria-label={contextual ? "Object properties" : "Inspector"} style:scroll-padding-top={`${headerSize + 8}px`}>
+  {#if !contextual || shared}<div class="selection-bar" bind:this={selectionBar}>{#if !contextual}<header>
     {#if node}<h2 title={nodeLabel(document, node.id, labels)}>{nodeLabel(document, node.id, labels)}</h2><details class="breadcrumb"><summary>Location · {location.length > 1 ? location.at(-2) : 'Document root'}</summary><p>{location.join(' / ')}</p></details>
     {:else}<h2>Make a selection</h2><p>Choose an element on the canvas or in Layers to edit it.</p>{/if}
-  </header>
+  </header>{/if}
   {#if node}
     <div class="scope">
       {#if shared}
@@ -293,18 +302,19 @@
         <details class="scope-help"><summary>Editing boundary</summary><p>{scope === 'shared' ? 'Shared source changes update every occurrence of this component. Count shows authored instances, not repeated runtime records.' : 'Styles apply to this component wrapper. Inner-element overrides and instance text replacement are unavailable.'}</p></details>
       {:else}<span class="source-context">{node.kind === 'text' ? 'Text · appearance on containing element' : 'Source element'}{node.kind === 'repeat' || report?.repeatKeys.length ? ' · repeated occurrences' : ''}</span>{/if}
     </div>
-    <nav class="tabs" aria-label="Inspector sections">{#each ['Content', 'Style', 'Behavior'] as section}<button type="button" aria-pressed={tab === section} onclick={() => tab = section}>{section}</button>{/each}</nav>
-  {/if}</div>
+    {#if !contextual}<nav class="tabs" aria-label="Inspector sections">{#each ['Content', 'Style', 'Behavior'] as const as section}<button type="button" aria-pressed={tab === section} onclick={() => tab = section}>{section}</button>{/each}</nav>{/if}
+  {/if}</div>{/if}
   {#if node}
+    {#if contextual && tab !== 'Behavior'}<div class="focused-groups"><label class="sr-only" for={`${epoch}-group`}>Format category</label><select id={`${epoch}-group`} aria-label="Format category" value={tab === 'Content' ? 'Content' : groupName} onchange={event => { if (event.currentTarget.value === 'Content') tab = 'Content'; else { groupName = event.currentTarget.value; tab = 'Style'; } }}><option value="Content">Content</option>{#each contextualGroups as group}<option value={group.title}>{group.title === 'Quick' ? (container ? 'Layout essentials' : 'Text essentials') : group.title === 'Typography' ? 'More typography' : group.title === 'Layout' && container ? 'More layout' : group.title}</option>{/each}</select></div>{/if}
     {#if tab === 'Content'}
       <section><h3>Content</h3>
         {#if node.kind === 'element' && ['input','textarea'].includes(node.tag)}
-          <NativeInputContent {document} {node} references={refs('string')} {referenceLabels} {labels} disabled={shared && scope === 'instance'} {onApply} />
+          <NativeInputContent showStateInitial={!contextual} {document} {node} references={refs('string')} {referenceLabels} {labels} disabled={shared && scope === 'instance'} {onApply} />
         {:else if textNode?.kind === 'text' && textNode.content.type === 'literal'}
           <label>Text content<textarea aria-label="Text content" bind:value={text} disabled={shared && scope === 'instance'} rows="4"></textarea></label>
           {#if shared}<p>Text edits change the shared source. This instance cannot replace definition text.</p>{/if}
           <button type="button" class="primary" disabled={shared && scope === 'instance'} onclick={() => onApply(setTextLiteral({ requestId: request(), nodeId: textNode.id, value: text }))}>Apply text</button>
-        {:else if textNode?.kind === 'text'}<p>Text comes from a binding. Its expression is available in Advanced; literal editing would replace that binding.</p>
+        {:else if textNode?.kind === 'text'}<p>Text comes from a binding. Edit its expression in {contextual ? 'Document → Source' : 'Advanced'}; literal editing would replace that binding.</p>
           {:else if !componentNode}<p>{container ? 'Arrange this container and style its children.' : 'No direct text content. Expand this element in Layers to select its content.'}</p>{#if container}<button type="button" onclick={() => tab = 'Style'}>Edit layout and spacing</button>{/if}{/if}
       </section>
       {#if componentNode && componentDescriptor}
@@ -315,13 +325,13 @@
             {#key `${componentNode.id}:${propDecl.name}`}
               <ExpressionEditor label={propDecl.name} displayLabel={friendly(propDecl.name)} {referenceLabels} type={propDecl.type} value={componentNode.props?.[propDecl.name]}
                 defaultValue={propDecl.default} references={refs(propDecl.type)} onCommit={expression => applyProp(propDecl.name, expression)} />
-              <StateInitialEditor {document} expression={componentNode.props?.[propDecl.name]} {labels} {onApply} />
+              {#if !contextual}<StateInitialEditor {document} expression={componentNode.props?.[propDecl.name]} {labels} {onApply} />{/if}
               {#if ownedBySlot}<p class="muted">Shown from the “{ownedBySlot}” slot content while that slot is filled; this value is the fallback text.</p>{/if}
             {/key}
           {/each}
         </section>
       {/if}
-      {#if componentNode && componentDescriptor}
+      {#if componentNode && componentDescriptor && !contextual}
         <ComponentComposition {document} node={componentNode} descriptor={componentDescriptor} {onApply} {labels} />
       {/if}
     {:else if tab === 'Style'}
@@ -344,7 +354,7 @@
         </section>
       {/if}
       {#if canStyle}
-        {#key `${target}:${container}`}{#each orderedGroups as group, index}<details open={index < 2}><summary>{group.title}</summary><section>
+        {#key `${target}:${container}`}{#each shownGroups as group, index}<details class="style-group" open={contextual || index < 2}><summary>{group.title}</summary><section>
           {#if group.title === 'Size & spacing'}{#each ['padding', 'margin'] as type}{#key `${target}:${condition}:${pseudo}:${type}`}<InspectorSpacing type={type as 'padding' | 'margin'} value={display} {effective} {origin} authored={p => ownStyle(p) !== undefined} locked={p => ownStyle(p)?.type === 'binding'} disabled={unsupportedTarget} onChange={changeStyles} onReset={properties => changeStyles(properties.map(property => ({ property })))} />{/key}{/each}{/if}
           {#each group.controls as control}
             {@const own = editableStyle(document, target, control.property, condition || undefined, pseudo)}
@@ -410,7 +420,7 @@
         <section><h3>Component outputs</h3><p class="muted">{componentDescriptor.id} declares no outputs.</p></section>
       {/if}
     {/if}
-    <details class="advanced"><summary>Advanced · source & declarations</summary><section>
+    {#if !contextual}<details class="advanced"><summary>Advanced · source & declarations</summary><section>
       <dl><dt>Source node</dt><dd>{node.id}</dd><dt>Component path</dt><dd>{report?.instancePath.map(p => `${p.sourceNodeId}@${p.definitionId}`).join(' / ') || 'None'}</dd><dt>Repeat record keys</dt><dd>{report?.repeatKeys.join(' / ') || 'None'}</dd><dt>Portal ownership</dt><dd>{JSON.stringify(report?.portalPath)}</dd></dl>
       {#if canStyle}<label>CSS property<input aria-label="Style property" bind:value={property} /></label><label><input type="checkbox" bind:checked={token} /> Use token</label>
         {#if token}<label>Token<select aria-label="Token id" bind:value={value}><option value="">Choose…</option>{#each knownTokenIds as id}<option value={id}>{id}</option>{/each}</select></label>{:else}<label>CSS value<input aria-label="Style value" bind:value={value} /></label>{/if}
@@ -418,7 +428,7 @@
       {/if}
       {#if node.kind === 'element'}<label>Attribute name<input aria-label="Attribute name" bind:value={attr} /></label><label>Attribute value<input aria-label="Attribute value" bind:value={attrValue} /></label><button type="button" onclick={() => onApply(setAttribute({ requestId: request(), nodeId: node.id, name: attr, value: attrValue }))}>Set attribute</button>{/if}
       <h3>Canonical source (read only)</h3><pre>{JSON.stringify(node, null, 2)}</pre>
-    </section></details>
+    </section></details>{/if}
   {/if}
   {#if lastIssues.length}<section role="alert" class="issues"><strong>Change rejected · source unchanged</strong>{#each lastIssues as issue}<p>{issue.code}: {issue.message}</p>{/each}</section>{/if}
 </aside>
@@ -455,4 +465,20 @@
   .connection-summary {color:var(--ui-editor-accent,#355cc9);font-weight:600;}
   .output-row { border: 1px solid var(--ui-editor-line, #d7dce5); border-radius: 5px; padding: 6px 8px; margin: 6px 0; background: var(--ui-editor-input, #fff); }
   .issues { background: #fff0ef; }
+  .contextual {height:auto;overflow:visible;background:#fff;font-size:11px;--ui-editor-section-padding:6px 2px;}
+  .contextual .selection-bar {position:static;box-shadow:none;}
+  .focused-groups {padding:0 0 6px;}
+  .focused-groups select {padding:4px 6px;height:27px;margin:0;font-size:11px;}
+  .contextual .style-group > summary {display:none;}
+  .contextual .style-group > section {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 12px;padding:4px 0;}
+  .contextual .style-group > section :global(.spacing) {grid-column:1 / -1;}
+  .contextual .style-group :global(.caption) {font-size:11px;margin:0;}
+  .contextual .style-group :global(.origin:not([open]) summary) {font-size:0;}
+  .contextual .style-group :global(.origin:not([open]) summary::after) {content:'ⓘ';font-size:11px;}
+  .contextual .style-group :global(.control) {padding:2px 0;}
+  .contextual .style-group :global(.inputs > input), .contextual .style-group :global(.inputs > select), .contextual .style-group :global(.inputs > button), .contextual .style-group :global(.segments button) {min-height:27px;font-size:11px;}
+  .contextual .style-group :global(.inputs > .reset) {font-size:0;width:24px;max-width:24px;flex:0 0 24px;padding:2px;}
+  .contextual .style-group :global(.inputs > .reset::after) {content:'↺';font-size:12px;}
+  .contextual summary {padding:5px 2px;font-size:11px;}
+  .contextual h3 {font-size:11px;margin-bottom:5px;}
 </style>

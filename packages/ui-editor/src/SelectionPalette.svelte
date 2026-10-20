@@ -1,10 +1,10 @@
 <script lang="ts">
   import { tick, untrack, type Snippet } from 'svelte';
-  let { page = $bindable('format'), name, format, insert, arrange, focusSignal }: {
-    page?: 'format' | 'insert' | 'arrange'; name: string;
-    format: Snippet; insert: Snippet; arrange: Snippet; focusSignal?: symbol;
+  let { page = $bindable('format'), name, format, insert, arrange, connect, focusSignal }: {
+    page?: 'format' | 'insert' | 'arrange' | 'connect'; name: string;
+    format: Snippet; insert: Snippet; arrange: Snippet; connect?: Snippet; focusSignal?: symbol;
   } = $props();
-  const pages = ['format', 'insert', 'arrange'] as const;
+  const pages: readonly ('format' | 'insert' | 'arrange' | 'connect')[] = $derived(connect ? ['format', 'insert', 'arrange', 'connect'] as const : ['format', 'insert', 'arrange'] as const);
   const uid = $props.id();
   let root = $state<HTMLElement>();
   function change(next: typeof page, focus = false) {
@@ -15,7 +15,7 @@
     if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
     event.preventDefault(); event.stopPropagation();
     const index = pages.indexOf(page);
-    change(pages[event.key === 'Home' ? 0 : event.key === 'End' ? 2 : (index + (event.key === 'ArrowRight' ? 1 : 2)) % 3]!, true);
+    change(pages[event.key === 'Home' ? 0 : event.key === 'End' ? pages.length - 1 : (index + (event.key === 'ArrowRight' ? 1 : pages.length - 1)) % pages.length]!, true);
   }
   // A newly opened floating surface is positioned on the next layout frame.
   $effect(() => { if (focusSignal) untrack(() => { void tick().then(() => requestAnimationFrame(() => requestAnimationFrame(() => root?.querySelector<HTMLElement>('[role=tab][aria-selected=true]')?.focus()))); }); });
@@ -27,8 +27,8 @@
     </div>
     <span title={name}>{name}</span>
   </div>
-  <div role="tabpanel" id={`${uid}-panel`} aria-labelledby={`${uid}-${page}`} tabindex="0" class="palette-body">
-    {#if page === 'format'}{@render format()}{:else if page === 'insert'}{@render insert()}{:else}{@render arrange()}{/if}
+  <div role="tabpanel" id={`${uid}-panel`} aria-labelledby={`${uid}-${page}`} tabindex="0" class="palette-body" class:expanded={page === 'connect' || page === 'format'}>
+    {#if page === 'format'}{@render format()}{:else if page === 'insert'}{@render insert()}{:else if page === 'arrange'}{@render arrange()}{:else}{@render connect?.()}{/if}
   </div>
 </div>
 <style>
@@ -39,5 +39,6 @@
   [role=tab][aria-selected=true] {background:#edf1ff;color:#405abd;font-weight:600;}
   .palette-header > span {margin-left:auto;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;color:#8a96a8;font-size:10px;}
   .palette-body {min-height:52px;max-height:min(166px,calc(100dvh - 220px));overflow:auto;padding:7px;box-sizing:border-box;overscroll-behavior:contain;}
+  .palette-body.expanded {max-height:min(440px,calc(100dvh - 200px));}
   :focus-visible {outline:2px solid #5269bd;outline-offset:-1px;}
 </style>

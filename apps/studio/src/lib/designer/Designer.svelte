@@ -2,7 +2,7 @@
   import { onMount, tick, untrack } from 'svelte';
   import { beforeNavigate } from '$app/navigation';
   import { ControlScope } from '@victframework/ui-svelte';
-  import { Composer, EditorBridge, EditorCanvas, Inspector, Layers, StateValuesPanel, PanelResizer, SelectionToolbar, SelectionPalette, resolveOccurrence, compositionParent, compositionName, duplicateSubtree, type TransactionDraft } from '@victframework/ui-editor';
+  import { Composer, EditorBridge, EditorCanvas, Inspector, Layers, StateValuesPanel, PanelResizer, StateInitialEditor, SelectionPalette, setAttribute, resolveOccurrence, compositionParent, compositionName, duplicateSubtree, type TransactionDraft } from '@victframework/ui-editor';
   import { createPreviewSession } from '@victframework/ui-preview';
   import type { UiDocument, UiRenderPlan, UiValue } from '@victframework/ui';
   import { newScreen, compileScreen, screenIssues, screenApplication, screenName, screenActionState, designerCatalogs, actionInputs, catalogDescriptors, catalogImplementations } from './application.js';
@@ -27,18 +27,20 @@
   let plan = $state<UiRenderPlan>();
   let issues = $state<readonly { code: string; message: string }[]>([]);
   let notice = $state('Start with an empty screen. Add a heading or section to begin.');
-  let leftTab = $state('Layers');
+  let drawerTab = $state('Structure');
+  let formatSection = $state<'Content' | 'Style' | 'Behavior'>('Style');
   let editTextSignal = $state<symbol>();
   let selectionToolsReveal = $state<symbol>();
   let canvasTextEditing = $state(false);
-  let palettePage = $state<'format' | 'insert' | 'arrange'>('format');
+  let palettePage = $state<'format' | 'insert' | 'arrange' | 'connect'>('format');
   let paletteRequested = $state(false);
   let paletteFocus = $state<symbol>();
-  let mobilePane = $state('Canvas');
   let width = $state('fluid');
   let mode = $state<'design' | 'interact'>('design');
-  let leftOpen = $state(true), rightOpen = $state(true), compactWorkspace = $state(false);
-  let leftWidth = $state(200), rightWidth = $state(280);
+  let drawerOpen = $state(false);
+  let drawerWidth = $state(320);
+  let documentButton: HTMLButtonElement;
+  function closeDrawer() { drawerOpen = false; documentButton?.focus(); }
   const editorLabels = { actions: { 'demo.submit': 'Submit (simulated)' }, nodes: { screen: 'Screen' },
     state: { message: 'Message', accepted: 'Agreement', dialogOpen: 'Dialog open', busy: 'Submitting', actionError: 'Action error', actionResult: 'Action result' },
     actionInputs: { message: 'Message', accepted: 'Agreement' } };
@@ -50,8 +52,14 @@
       if (owner?.kind === 'element' && owner.children.length === 1) occurrence = `${source.id}|${owner.id}`;
     }
     bridge?.select(occurrence);
-    palettePage = 'format'; paletteRequested = false;
+    palettePage = 'format'; paletteRequested = true;
+    formatSection = reportSection(occurrence);
+    if (matchMedia('(max-width: 760px)').matches) drawerOpen = false;
     selectionToolsReveal = Symbol('selection-tools');
+  }
+  function reportSection(occurrence: string): 'Content' | 'Style' {
+    const node = source && resolveOccurrence(occurrence, source).node;
+    return node?.kind === 'component' || (node?.kind === 'element' && ['input', 'textarea'].includes(node.tag)) ? 'Content' : 'Style';
   }
   function changeMode(next: 'design' | 'interact') { if (canvasTextEditing) { notice = 'Apply or cancel your canvas text edit first.'; return; } mode = next; resetRuntime(); notice = next === 'design' ? 'Design mode · select and edit without running behavior.' : 'Interact mode · simulated behavior, no live effects.'; }
   let createDialog: HTMLDialogElement;
@@ -98,7 +106,7 @@
     const next = new EditorBridge({ catalogs: designerCatalogs, store: screenStore(localStorage, document.id), initial: { document, storedRevision: 'r1' } });
     sessions.set(document.id, next);
     library = [...library, { id: document.id, name: title }];
-    openSession(next); leftTab = 'Layers'; mobilePane = 'Canvas';
+    openSession(next); drawerTab = 'Structure'; drawerOpen = false;
     notice = 'New screen · not saved yet.';
   }
   function openScreen(id: string) {
@@ -113,9 +121,6 @@
     sessions.set(id, next); openSession(next); notice = 'Reopened the saved source.';
   }
   onMount(() => {
-    const media = matchMedia('(max-width: 1100px)');
-    const adapt = () => { compactWorkspace = media.matches; rightOpen = !media.matches; };
-    adapt(); media.addEventListener('change', adapt);
     try {
       library = savedScreens(localStorage);
       const active = localStorage.getItem('vict.studio.active-screen');
@@ -123,7 +128,7 @@
       else if (library[0]) openScreen(library[0].id);
       else createScreen('Untitled screen');
     } catch { issues = [{ code: 'STUDIO_STORAGE_UNAVAILABLE', message: 'Browser storage is unavailable. Enable storage to author and save screens.' }]; }
-    return () => { unsubscribe?.(); media.removeEventListener('change', adapt); };
+    return () => { unsubscribe?.(); };
   });
   function apply(draft: TransactionDraft): boolean {
     if (canvasTextEditing) { notice = 'Apply or cancel your canvas text edit first.'; return false; }
@@ -174,7 +179,7 @@
     return element ? getComputedStyle(element).getPropertyValue(property) : undefined;
   }
   function shortcuts(event: KeyboardEvent) {
-    if (event.key === 'Escape' && compactWorkspace) rightOpen = false;
+    if (event.key === 'Escape' && drawerOpen) { event.preventDefault(); closeDrawer(); return; }
     const editable = event.target instanceof HTMLElement && (event.target.matches('input,textarea,select') || event.target.isContentEditable);
     if (!editable && mode === 'design') {
       if (['Delete', 'Backspace'].includes(event.key)) { event.preventDefault(); removeSelection(); }
@@ -209,7 +214,7 @@
     if (!source || !bridge) return;
     if (canvasTextEditing) { notice = 'Apply or cancel your canvas text edit first.'; return; }
     if (!selectedNode) bridge.select(`${source.id}|${source.root}`);
-    palettePage = 'insert'; paletteRequested = true; mobilePane = 'Canvas';
+    palettePage = 'insert'; paletteRequested = true;
     selectionToolsReveal = Symbol('add'); paletteFocus = Symbol('focus-insert');
   }
   async function beginCreate() { if (canvasTextEditing || sourceDraftDirty) { notice = 'Apply or cancel your text/source draft before creating a screen.'; return; } createDialog.showModal(); await tick(); nameInput.focus(); nameInput.select(); }
@@ -242,34 +247,22 @@
     <div class="canvas-modes" aria-label="Canvas mode"><button type="button" aria-pressed={mode === 'design'} onclick={() => changeMode('design')}>Design</button><button type="button" aria-pressed={mode === 'interact'} onclick={() => changeMode('interact')}>Interact</button></div>
     {#if mode === 'design'}<button type="button" class="add-element" onclick={openInsert}>＋ Add</button>{/if}
     <span class="save-state">{sourceDraftDirty ? '● Unapplied JSON draft' : snapshot?.dirty ? '● Unsaved changes' : snapshot?.storedRevision === 'r1' ? '○ New screen' : '✓ Saved'}</span>
-    <div class="toolbar-end"><button type="button" class="panel-toggle" aria-label={leftOpen ? 'Hide document panel' : 'Show document panel'} aria-pressed={leftOpen} onclick={() => leftOpen = !leftOpen}>Document</button><button type="button" class="panel-toggle" aria-label={rightOpen ? 'Hide Inspector' : 'Show Inspector'} aria-pressed={rightOpen} onclick={() => rightOpen = !rightOpen}>Inspector</button><button type="button" onclick={reopen} disabled={!source || snapshot?.dirty || sourceDraftDirty || snapshot?.storedRevision === 'r1'}>Reopen</button><button type="button" onclick={save} disabled={!compilation?.ok || sourceDraftDirty}>Save</button><a class="run-button" aria-disabled={!source || snapshot?.dirty || sourceDraftDirty || snapshot?.storedRevision === 'r1'} href={source && !snapshot?.dirty && !sourceDraftDirty && snapshot?.storedRevision !== 'r1' ? `/run-screen?screen=${encodeURIComponent(source.id)}` : undefined}>Run saved ↗</a></div>
+    <div class="toolbar-end"><button type="button" bind:this={documentButton} class="panel-toggle" aria-expanded={drawerOpen} aria-controls="document-drawer" onclick={() => drawerOpen = !drawerOpen}>Document</button><button type="button" onclick={reopen} disabled={!source || snapshot?.dirty || sourceDraftDirty || snapshot?.storedRevision === 'r1'}>Reopen</button><button type="button" onclick={save} disabled={!compilation?.ok || sourceDraftDirty}>Save</button><a class="run-button" aria-disabled={!source || snapshot?.dirty || sourceDraftDirty || snapshot?.storedRevision === 'r1'} href={source && !snapshot?.dirty && !sourceDraftDirty && snapshot?.storedRevision !== 'r1' ? `/run-screen?screen=${encodeURIComponent(source.id)}` : undefined}>Run saved ↗</a></div>
   </div>
-  <nav class="mobile-panes" aria-label="Designer panels">{#each ['Layers', 'Canvas', 'Inspect', 'Source'] as pane}<button type="button" aria-pressed={mobilePane === pane} onclick={() => { mobilePane = pane; if (['Layers', 'Source'].includes(pane)) leftTab = pane; }}>{pane}</button>{/each}</nav>
   {#if source && bridge}
   {#snippet floatingTools()}
     <SelectionPalette bind:page={palettePage} name={compositionName(source, selectedNode?.id ?? source.root)} focusSignal={paletteFocus}>
-      {#snippet format()}<SelectionToolbar document={source} nodeId={selectedNode?.id} floating showArrange={false} onApply={apply} onEdit={() => editTextSignal = Symbol('edit')} onDuplicate={duplicateSelection} onRemove={removeSelection} onInspect={() => { rightOpen = true; mobilePane = 'Inspect'; }} />{/snippet}
+      {#snippet objectProperties(section: 'Content' | 'Style' | 'Behavior')}
+        <Inspector contextual {section} document={source} selectedOccurrence={selected} onApply={apply} lastIssues={issues} componentDescriptors={catalogDescriptors} knownActionIds={designerCatalogs.actionIds} {actionInputs} knownRouteIds={['screen']} labels={editorLabels} styleConditions={[{ id: 'compact', label: 'Compact · ≤600px' }]} readEffective={effective} />
+      {/snippet}
+      {#snippet format()}{@render objectProperties(formatSection)}{/snippet}
+      {#snippet connect()}{@render objectProperties('Behavior')}{/snippet}
       {#snippet insert()}<Composer document={source} selectedNodeId={selectedNode?.id} recipes={screenRecipes} descriptors={catalogDescriptors} compact showArrange={false} onApply={apply} onInserted={(id: string) => { selectOccurrence(`${source.id}|${id}`); notice = 'Added to your screen. Double-click text to edit.'; }} />{/snippet}
       {#snippet arrange()}<Composer document={source} selectedNodeId={selectedNode?.id} recipes={[]} descriptors={catalogDescriptors} compact showInsert={false} onApply={apply} onDuplicate={duplicateSelection} />{#if !selectedNode || selectedNode.id === source.root}<p class="palette-hint">Select an element to move, duplicate or delete it.</p>{/if}{/snippet}
     </SelectionPalette>
   {/snippet}
-  <div class="design-workspace" class:left-hidden={!leftOpen} class:right-hidden={!rightOpen} style:--left-width={`${leftWidth}px`} style:--right-width={`${rightWidth}px`}>
-    <aside class:mobile-active={['Layers', 'Source'].includes(mobilePane)} class="design-sidebar">
-      <nav class="sidebar-tabs" aria-label="Document panels">{#each ['Layers', 'Source'] as tab}<button type="button" aria-pressed={leftTab === tab} onclick={() => leftTab = tab}>{tab}</button>{/each}</nav>
-      <div class="sidebar-body">
-        {#if leftTab === 'Layers'}
-          {#if plan}<Layers {plan} document={source} selectedOccurrence={selected} onSelect={selectOccurrence} onApply={apply} componentDescriptors={catalogDescriptors} />{/if}
-        {:else}
-          <p class="panel-eyebrow">CANONICAL SOURCE</p><p class="panel-hint">Humans and agents edit this same UI document. Keep its id and revision. Apply validates the source and creates one undoable change.</p>
-          <label class="sr-only" for="canonical-source">Canonical UI document</label><textarea id="canonical-source" class="source-editor" spellcheck="false" bind:value={sourceDraft} oninput={() => sourceDraftDirty = true}></textarea>
-          <div class="source-actions"><button type="button" disabled={!sourceDraftDirty} onclick={applySource}>Apply source</button><button type="button" disabled={!sourceDraftDirty} onclick={() => { sourceDraftDirty = false; sourceDraft = JSON.stringify(source, null, 2); sourceDraftRevision = snapshot?.revision ?? ''; issues = []; }}>Discard JSON draft</button></div>
-          <details><summary>Application attachment</summary><pre class="source-preview">{JSON.stringify(screenApplication(source), null, 2)}</pre></details>
-          <button type="button" onclick={exportSource}>Export application + source</button>
-        {/if}
-      </div>
-    </aside>
-    <div class="left-resizer"><PanelResizer label="Document panel width" value={leftWidth} min={180} max={360} onChange={(value: number) => leftWidth = value} /></div>
-    <main class:mobile-active={mobilePane === 'Canvas'} class="design-stage">
+  <div class="design-workspace" class:drawer-open={drawerOpen} style:--drawer-width={`${drawerWidth}px`}>
+    <main class="design-stage">
       <div class="canvas-toolbar"><span><span class="live-dot"></span>{mode === 'design' ? 'Design · selection only' : 'Interact · simulated'}</span><label><span class="sr-only">Canvas width</span><select aria-label="Canvas width" bind:value={width}><option value="fluid">Fit canvas</option><option value="768">Tablet · 768</option><option value="390">Phone · 390</option></select></label><button type="button" onclick={resetRuntime} title="Reset ephemeral runtime values">Reset preview</button></div>
       <div class="canvas-scroll"><div class="canvas-caption">{screenName(source)} <span>{width === 'fluid' ? 'Responsive' : `${width}px`}</span></div>
         <div class="design-frame" style:max-width={width === 'fluid' ? 'none' : `${width}px`}>
@@ -287,8 +280,32 @@
       </div>
       <details class="simulation-panel"><summary>Simulated execution <span>Local preview · no live effects</span></summary><div class="simulation-body"><label><input type="checkbox" bind:checked={simulation.denied} /> Deny demo writes</label><label><input type="checkbox" bind:checked={simulation.failNext} /> Fail next action</label><StateValuesPanel localState={source.localState} stateValues={runtimeValues} onChange={(key: string, value: UiValue | undefined) => { const next = { ...runtimeValues }; if (value === undefined) delete next[key]; else next[key] = value; runtimeValues = next; }} />{#each activity as entry}<p role="status">{entry}</p>{/each}<p class="panel-hint">Connect checkedChange to accepted, bind checked to state.accepted, then map a Button's press → Submit using state.message and state.accepted. Runtime values never enter undo history.</p></div></details>
     </main>
-    <div class="right-resizer"><PanelResizer label="Inspector width" value={rightWidth} min={280} max={420} reverse onChange={(value: number) => rightWidth = value} /></div>
-    <aside class:mobile-active={mobilePane === 'Inspect'} class="design-inspector"><Inspector document={source} selectedOccurrence={selected} onApply={apply} lastIssues={issues} componentDescriptors={catalogDescriptors} knownActionIds={designerCatalogs.actionIds} {actionInputs} knownRouteIds={['screen']} labels={editorLabels} styleConditions={[{ id: 'compact', label: 'Compact · ≤600px' }]} readEffective={effective} /></aside>
+    {#if drawerOpen}
+    <div class="drawer-resizer"><PanelResizer label="Document drawer width" value={drawerWidth} min={280} max={460} reverse onChange={(value: number) => drawerWidth = value} /></div>
+    <aside id="document-drawer" class="document-drawer" aria-label="Document">
+      <div class="drawer-heading"><strong>Document</strong><button type="button" aria-label="Close document" onclick={closeDrawer}>×</button></div>
+      <nav class="sidebar-tabs" aria-label="Document sections">{#each ['Structure', 'Logic', 'Source'] as tab}<button type="button" aria-pressed={drawerTab === tab} onclick={() => drawerTab = tab}>{tab}</button>{/each}</nav>
+      <div class="sidebar-body">
+        {#if drawerTab === 'Structure'}
+          <label class="document-name">Screen name<input aria-label="Screen name" value={screenName(source)} onchange={event => apply(setAttribute({ requestId: crypto.randomUUID(), nodeId: source.root, name: 'aria-label', value: event.currentTarget.value }))} /></label>
+          {#if plan}<Layers {plan} document={source} selectedOccurrence={selected} onSelect={selectOccurrence} componentDescriptors={catalogDescriptors} />{/if}
+        {:else if drawerTab === 'Logic'}
+          <p class="panel-hint">Define starting values here. Select an object to connect it through its tools.</p>
+          <h3>State</h3>
+          {#each Object.entries(source.localState) as [key, declaration] (key)}<details class="state-definition"><summary>{editorLabels.state[key as keyof typeof editorLabels.state] ?? key}<small>{declaration.type}</small></summary><StateInitialEditor document={source} expression={{ type: 'ref', path: `state.${key}` }} labels={editorLabels} onApply={apply} /></details>{/each}
+          <h3>Declared actions</h3>
+          {#each designerCatalogs.actionIds as id}<div class="declared-action"><strong>{editorLabels.actions[id as keyof typeof editorLabels.actions] ?? id}</strong><span>Simulated · no live effects</span><small>Inputs: {Object.keys(actionInputs[id] ?? {}).join(', ') || 'None'}</small></div>{/each}
+          <p class="panel-hint">The supported action is supplied by the application. Edit state declarations in Source; Connect assigns them to objects.</p>
+        {:else}
+          <p class="panel-eyebrow">CANONICAL SOURCE</p><p class="panel-hint">Humans and agents edit this same UI document. Keep its id and revision. Apply validates the source and creates one undoable change.</p>
+          <label class="sr-only" for="canonical-source">Canonical UI document</label><textarea id="canonical-source" class="source-editor" spellcheck="false" bind:value={sourceDraft} oninput={() => sourceDraftDirty = true}></textarea>
+          <div class="source-actions"><button type="button" disabled={!sourceDraftDirty} onclick={applySource}>Apply source</button><button type="button" disabled={!sourceDraftDirty} onclick={() => { sourceDraftDirty = false; sourceDraft = JSON.stringify(source, null, 2); sourceDraftRevision = snapshot?.revision ?? ''; issues = []; }}>Discard JSON draft</button></div>
+          <details><summary>Application attachment</summary><pre class="source-preview">{JSON.stringify(screenApplication(source), null, 2)}</pre></details>
+          <button type="button" onclick={exportSource}>Export application + source</button>
+        {/if}
+      </div>
+    </aside>
+    {/if}
   </div>
   {/if}
   <footer class="design-status"><span role="status">{notice}</span><span title={compilation?.ok ? compilation.plan.applicationVersion : 'Application compilation pending'}>{compilation?.ok ? `@3 · ${compilation.plan.applicationVersion.slice(0, 15)}…` : 'Application source pending'}</span></footer>
