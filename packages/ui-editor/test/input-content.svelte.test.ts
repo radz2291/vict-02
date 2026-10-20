@@ -186,3 +186,78 @@ it('gives contextual properties one category at a time and leaves state definiti
     target.remove();
   }
 });
+
+it('merges literal text into one compact category and keeps edits undoable', async () => {
+  const literal: UiDocument = {
+    ...source,
+    nodes: {
+      root: { id: 'root', kind: 'element', tag: 'main', children: ['title'] },
+      title: {
+        id: 'title',
+        kind: 'element',
+        tag: 'h1',
+        children: ['copy'],
+        localStyle: [{ property: 'font-weight', value: { type: 'text', value: '600' } }],
+      },
+      copy: { id: 'copy', kind: 'text', content: { type: 'literal', value: 'Simple text' } },
+    },
+  };
+  const session = UiEditSession.open({ document: literal, storedRevision: '1' });
+  const target = document.createElement('div');
+  document.body.append(target);
+  const editor = mount(Inspector, {
+    target,
+    props: {
+      contextual: true,
+      section: 'Style',
+      document: literal,
+      selectedOccurrence: 'input-content|title',
+      onApply: (draft: TransactionDraft) => {
+        expect(
+          session.applyTransaction({ ...draft, expectedDocumentRevision: session.workingRevision })
+            .ok,
+        ).toBe(true);
+      },
+    },
+  });
+  try {
+    flushSync();
+    expect([...target.querySelectorAll('[role=tab]')].map((tab) => tab.textContent)).toEqual([
+      'Text',
+      'Fill',
+      'Spacing',
+      'Layout',
+    ]);
+    expect(target.querySelector('[aria-label="Text content"]')).toBeNull();
+    expect(target.querySelector('[aria-label="Text color"]')).toBeNull();
+    expect(target.querySelectorAll('[aria-label="Text size"]')).toHaveLength(1);
+    target.querySelector<HTMLButtonElement>('[aria-label="Bold"]')!.click();
+    flushSync();
+    expect(session.document.nodes.title?.localStyle).toContainEqual({
+      property: 'font-weight',
+      value: { type: 'text', value: '400' },
+    });
+    expect(session.undo().ok).toBe(true);
+    expect(session.document.nodes).toEqual(literal.nodes);
+    [...target.querySelectorAll('button')]
+      .find((button) => button.textContent === 'Edit text')!
+      .click();
+    flushSync();
+    const text = target.querySelector<HTMLTextAreaElement>('[aria-label="Text content"]')!;
+    text.value = 'Edited text';
+    text.dispatchEvent(new Event('input', { bubbles: true }));
+    flushSync();
+    [...target.querySelectorAll('button')]
+      .find((button) => button.textContent === 'Apply text')!
+      .click();
+    flushSync();
+    expect(session.document.nodes.copy).toMatchObject({
+      content: { type: 'literal', value: 'Edited text' },
+    });
+    expect(session.undo().ok).toBe(true);
+    expect(session.document.nodes).toEqual(literal.nodes);
+  } finally {
+    await unmount(editor);
+    target.remove();
+  }
+});

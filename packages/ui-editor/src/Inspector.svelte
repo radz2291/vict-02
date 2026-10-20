@@ -8,6 +8,7 @@
   import { nodeLabel, sourceBreadcrumb, editableStyle, sourceStyles, styleText, styleGroups, type EditorLabels } from './inspector-ux.js';
   import ExpressionEditor from './ExpressionEditor.svelte';
   import InspectorControl from './InspectorControl.svelte';
+  import TextTools from './TextTools.svelte';
   import InspectorSpacing from './InspectorSpacing.svelte';
   import ComponentComposition from './ComponentComposition.svelte';
   import NativeInputContent from './NativeInputContent.svelte';
@@ -203,7 +204,10 @@
     { title: 'Quick', controls: styleGroups.flatMap(group => [...group.controls]).filter(control => quickProperties.includes(control.property)) },
     ...orderedGroups.map(group => ({ ...group, controls: group.controls.filter(control => !quickProperties.includes(control.property)) })),
   ]);
-  const formatCategories = $derived(['Content', ...contextualGroups.map(group => group.title)]);
+  const textNode = $derived(node?.kind === 'text' ? node : node?.kind === 'element' ? node.children.map(id => document.nodes[id]).find(n => n?.kind === 'text') : undefined);
+  const simpleText = $derived(contextual && textNode?.kind === 'text' && textNode.content.type === 'literal' && targetNode?.kind === 'element' && !['input', 'textarea'].includes(targetNode.tag));
+  const formatCategories = $derived(simpleText ? ['Quick', ...contextualGroups.filter(group => !['Quick', 'Typography'].includes(group.title)).map(group => group.title)] : ['Content', ...contextualGroups.map(group => group.title)]);
+  $effect(() => { if (simpleText && (tab === 'Content' || groupName === 'Typography')) { tab = 'Style'; groupName = 'Quick'; } });
   const activeCategory = $derived(tab === 'Content' ? 'Content' : groupName);
   function categoryLabel(category: string) {
     if (category === 'Quick') return container ? 'Layout' : 'Text';
@@ -239,7 +243,6 @@
   function friendly(value: string) { return value.replace(/([a-z])([A-Z])/g, '$1 $2').replaceAll('-', ' ').replace(/^./, c => c.toUpperCase()); }
   function outputTitle(name: string) { return ({ press: 'When pressed', checkedChange: 'When toggled', valueChange: 'When the value changes', openChange: 'When opened or closed' } as Record<string, string>)[name] ?? `When ${friendly(name).toLowerCase()}`; }
   const count = $derived(Object.values(document.nodes).filter(n => n.kind === 'component' && n.definitionId === owner).length);
-  const textNode = $derived(node?.kind === 'text' ? node : node?.kind === 'element' ? node.children.map(id => document.nodes[id]).find(n => n?.kind === 'text') : undefined);
   const canStyle = $derived(targetNode?.kind === 'element' || (targetNode?.kind === 'component' && (!componentDescriptor || (componentDescriptor.styleTargets?.length ?? 0) > 0)));
   const unsupportedTarget = $derived(!!(condition || pseudo) && targetNode?.kind !== 'element');
   const breadcrumb = $derived(node ? sourceBreadcrumb(document, node.id, labels) : []);
@@ -321,6 +324,24 @@
   }
 </script>
 
+{#snippet styleContext()}
+      <details class="context" open={!!(condition || pseudo)}><summary>Editing · {styleConditions.find(c => c.id === condition)?.label ?? (condition || 'Base · all sizes')}{pseudo ? ` · ${pseudo}` : ' · normal'}</summary><section><label>Editing condition<select aria-label="Style target" value={condition} onchange={e => condition = e.currentTarget.value}><option value="">Base · all sizes</option>{#each styleConditions as c}<option value={c.id}>{c.label}</option>{/each}</select></label>
+        <label>Element state<select aria-label="Pseudo state" value={pseudo ?? ''} onchange={e => pseudo = (e.currentTarget.value || undefined) as UiPseudoState | undefined}><option value="">Normal</option>{#each ['hover', 'focus', 'active', 'disabled'] as p}<option value={p}>{p}</option>{/each}</select></label>
+        <p>{condition ? 'Edits are saved in this condition. Resize the preview to test its query.' : 'Base styling applies at every size.'} {pseudo ? `Editing ${pseudo}; this does not force the browser into that state.` : ''}</p>
+        {#if unsupportedTarget}<p role="status">Condition and state editing is unavailable on component wrappers. Use base styling or select a shared inner element.</p><button type="button" onclick={() => { condition = ''; pseudo = undefined; }}>Edit base styles</button>{/if}
+        {#if node?.kind === 'text'}<p>Text appearance applies to its containing {nodeLabel(document, styleSourceId, labels)}.</p>{/if}
+        {#if condition || pseudo}<p>These rules apply only in the selected condition or state.</p>{/if}
+      </section></details>
+      {#if conflicts.length}
+        <section class="style-conflict" aria-label="Style conflicts"><h3>Base styles are masking this rule</h3>
+          <p>Local base overrides mask: {conflicts.map(declaration => declaration.property).join(', ')}. The saved conditional values cannot win against them.</p>
+          <button type="button" onclick={() => onApply(allowConditionalStyles(request(), document, target, condition || undefined, pseudo))}>Allow conditional overrides</button>
+          <p>Keeps the base values for other sizes and states. Undo restores the original overrides.</p>
+          <button type="button" onclick={() => { condition = ''; pseudo = undefined; }}>Edit base styles instead</button>
+        </section>
+      {/if}
+{/snippet}
+
 <aside class="uv-inspector ux-panel" class:contextual aria-label={contextual ? "Object properties" : "Inspector"} style:scroll-padding-top={`${headerSize + 8}px`}>
   {#if !contextual || shared}<div class="selection-bar" bind:this={selectionBar}>{#if !contextual}<header>
     {#if node}<h2 title={nodeLabel(document, node.id, labels)}>{nodeLabel(document, node.id, labels)}</h2><details class="breadcrumb"><summary>Location · {location.length > 1 ? location.at(-2) : 'Document root'}</summary><p>{location.join(' / ')}</p></details>
@@ -376,22 +397,18 @@
       {#if componentDescriptor}
         <p>Instance styling targets {componentDescriptor.styleTargets?.[0] ?? 'no exposed part'}. {componentDescriptor.inspectionLimits?.join(' ') ?? ''}</p>
       {/if}
-      <details class="context" open={!!(condition || pseudo)}><summary>Editing · {styleConditions.find(c => c.id === condition)?.label ?? (condition || 'Base · all sizes')}{pseudo ? ` · ${pseudo}` : ' · normal'}</summary><section><label>Editing condition<select aria-label="Style target" value={condition} onchange={e => condition = e.currentTarget.value}><option value="">Base · all sizes</option>{#each styleConditions as c}<option value={c.id}>{c.label}</option>{/each}</select></label>
-        <label>Element state<select aria-label="Pseudo state" value={pseudo ?? ''} onchange={e => pseudo = (e.currentTarget.value || undefined) as UiPseudoState | undefined}><option value="">Normal</option>{#each ['hover', 'focus', 'active', 'disabled'] as p}<option value={p}>{p}</option>{/each}</select></label>
-        <p>{condition ? 'Edits are saved in this condition. Resize the preview to test its query.' : 'Base styling applies at every size.'} {pseudo ? `Editing ${pseudo}; this does not force the browser into that state.` : ''}</p>
-        {#if unsupportedTarget}<p role="status">Condition and state editing is unavailable on component wrappers. Use base styling or select a shared inner element.</p><button type="button" onclick={() => { condition = ''; pseudo = undefined; }}>Edit base styles</button>{/if}
-        {#if node.kind === 'text'}<p>Text appearance applies to its containing {nodeLabel(document, styleSourceId, labels)}.</p>{/if}
-        {#if condition || pseudo}<p>These rules apply only in the selected condition or state.</p>{/if}
-      </section></details>
-      {#if conflicts.length}
-        <section class="style-conflict" aria-label="Style conflicts"><h3>Base styles are masking this rule</h3>
-          <p>Local base overrides mask: {conflicts.map(declaration => declaration.property).join(', ')}. The saved conditional values cannot win against them.</p>
-          <button type="button" onclick={() => onApply(allowConditionalStyles(request(), document, target, condition || undefined, pseudo))}>Allow conditional overrides</button>
-          <p>Keeps the base values for other sizes and states. Undo restores the original overrides.</p>
-          <button type="button" onclick={() => { condition = ''; pseudo = undefined; }}>Edit base styles instead</button>
-        </section>
-      {/if}
-      {#if canStyle}
+      {#if !(simpleText && groupName === 'Quick')}{@render styleContext()}{/if}
+      {#if simpleText && groupName === 'Quick'}
+        <TextTools bind:text value={display} {origin} authored={property => ownStyle(property) !== undefined} locked={property => ownStyle(property)?.type === 'binding'} disabled={unsupportedTarget || (shared && scope === 'instance')} onText={value => { if (textNode) onApply(setTextLiteral({ requestId: request(), nodeId: textNode.id, value })); }} onChange={(property, value) => changeStyle(property, { type: 'text', value })} onReset={property => changeStyle(property)}>
+          {#snippet more()}
+            {@render styleContext()}
+            {#each styleGroups.find(group => group.title === 'Typography')!.controls.filter(control => !quickProperties.includes(control.property)) as control}
+              {@const own = ownStyle(control.property)}
+              <InspectorControl label={control.label} kind={control.kind} value={display(control.property)} authored={own !== undefined} origin={origin(control.property)} originLabel={originLabel(control.property)} effective={effective(control.property)} disabled={unsupportedTarget || own?.type === 'binding'} onChange={value => changeStyle(control.property, {type:'text',value})} onReset={() => changeStyle(control.property)} />
+            {/each}
+          {/snippet}
+        </TextTools>
+      {:else if canStyle}
         {#key `${target}:${container}`}{#each shownGroups as group, index}<details class="style-group" open={contextual || index < 2}><summary>{group.title}</summary><section>
           {#if group.title === 'Size & spacing'}{#each ['padding', 'margin'] as type}{#key `${target}:${condition}:${pseudo}:${type}`}<InspectorSpacing type={type as 'padding' | 'margin'} value={display} {effective} {origin} authored={p => ownStyle(p) !== undefined} locked={p => ownStyle(p)?.type === 'binding'} disabled={unsupportedTarget} onChange={changeStyles} onReset={properties => changeStyles(properties.map(property => ({ property })))} />{/key}{/each}{/if}
           {#each group.controls as control}
