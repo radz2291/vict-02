@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { untrack } from 'svelte';
   import { isUiValueOfType, type UiExpression, type UiValue, type UiValueType } from '@victframework/ui';
   interface Props {
     label: string;
@@ -8,19 +9,23 @@
     value?: UiExpression;
     defaultValue?: UiValue;
     references: readonly string[];
-    onCommit: (expression: UiExpression | undefined) => void;
+    compact?: boolean;
+    onDraftChange?: (dirty: boolean) => void;
+    onCommit: (expression: UiExpression | undefined) => boolean | void;
   }
-  let { label, displayLabel, referenceLabels = {}, type, value, defaultValue, references, onCommit }: Props = $props();
+  let { label, displayLabel, referenceLabels = {}, type, value, defaultValue, references, compact = false, onDraftChange, onCommit }: Props = $props();
+  let dirty = $state(false);
+  function mark(next: boolean) { dirty = next; onDraftChange?.(next); }
+  function commit(expression: UiExpression | undefined) { mark(false); if(onCommit(expression) === false) mark(true); }
+  function reset() { mode = value === undefined ? 'default' : value.type === 'literal' ? 'literal' : 'binding'; raw = value?.type === 'literal' ? String(value.value ?? '') : value?.type === 'ref' ? value.path : ''; error = ''; mark(false); }
   let mode = $state('default');
   let raw = $state('');
   let error = $state('');
   const list = $derived(type === 'array' || type === 'stringList' || type === 'numberList');
   const binding = $derived(value?.type === 'ref' ? value.path : undefined);
-  $effect(() => {
-    mode = value === undefined ? 'default' : value.type === 'literal' ? 'literal' : 'binding';
-    raw = value?.type === 'literal' ? String(value.value ?? '') : value?.type === 'ref' ? value.path : '';
-    error = '';
-  });
+  const sourceKey = $derived(JSON.stringify(value));
+  $effect(() => { sourceKey; untrack(reset); });
+
   function describe(expression: UiExpression): string {
     switch (expression.type) {
       case 'ref': return expression.path;
@@ -37,16 +42,16 @@
       error = `Enter a valid ${type} value.`; return;
     }
     error = '';
-    onCommit({ type: 'literal', value: candidate });
+    commit({ type: 'literal', value: candidate });
   }
   function choose(next: string): void {
     mode = next; error = '';
-    if (next === 'default') onCommit(undefined);
+    if (next === 'default') commit(undefined); else if(onDraftChange) mark(true);
     if (next === 'literal') raw = value?.type === 'literal' ? String(value.value ?? '') : String(defaultValue ?? (type === 'boolean' ? false : ''));
   }
 </script>
 
-<div class="expression-editor">
+<div class="expression-editor" class:compact>
   <label>{displayLabel ?? label} {#if !displayLabel}<span>({type})</span>{/if}
     <select aria-label={`${label} source`} value={mode} onchange={event => choose(event.currentTarget.value)}>
       <option value="default">{defaultValue === undefined ? 'Unset' : 'Default'}</option>
@@ -63,22 +68,24 @@
       </select>
       <button type="button" onclick={literal}>Apply value</button>
     {:else}
-      <input aria-label={`${label} value`} value={raw} oninput={event => raw = event.currentTarget.value} onkeydown={event => { if (event.key === 'Enter') literal(); }} />
+      <input aria-label={`${label} value`} value={raw} oninput={event => { raw = event.currentTarget.value; if(onDraftChange) mark(true); }} onkeydown={event => { if (event.key === 'Enter') {event.preventDefault(); literal();} else if(event.key==='Escape' && onDraftChange){event.preventDefault();event.stopPropagation();reset();} }} />
       <button type="button" onclick={literal}>Apply value</button>
     {/if}
   {:else}
     {#if value !== undefined && value.type !== 'literal'}<p>Bound to: {value.type === 'ref' ? referenceLabels[value.path] ?? describe(value) : describe(value)}</p>{/if}
-    <select aria-label={`${label} reference`} value={binding ?? ''} onchange={event => { if (event.currentTarget.value) onCommit({ type: 'ref', path: event.currentTarget.value }); }}>
+    <select aria-label={`${label} reference`} value={binding ?? ''} onchange={event => { if (event.currentTarget.value) commit({ type: 'ref', path: event.currentTarget.value }); }}>
       <option value="">Choose a compatible reference…</option>
       {#if binding && !references.includes(binding)}<option value={binding}>{binding} (existing)</option>{/if}
       {#each references as reference (reference)}<option value={reference}>{referenceLabels[reference] ?? reference}</option>{/each}
     </select>
     {#if !references.length}<p>No compatible references are declared.</p>{/if}
   {/if}
+  {#if onDraftChange && dirty}<button type="button" onclick={reset}>Cancel</button>{/if}
   {#if error}<p role="alert">{error}</p>{/if}
 </div>
 
 <style>
+  .compact {margin-block:0;}.compact :is(input,select,button) {min-height:27px;padding:4px 6px;font-size:11px;}.compact p {margin:5px 0;}
   .expression-editor { margin-block: 8px; }
   label { display: grid; gap: 4px; font-size: 11px; }
   label span, p { color: var(--ui-editor-muted,#667085); font-size: 11px; line-height:1.5; }

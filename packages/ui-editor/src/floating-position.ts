@@ -10,6 +10,7 @@ export function floatingPlacement(
   visible: FloatingBounds,
   height: number,
   preferred: 'above' | 'below' = 'above',
+  previous?: { left: number; top: number; width: number },
 ): { left: number; top: number; width: number } | undefined {
   const { left, right, top, bottom } = visible;
   if (
@@ -22,6 +23,21 @@ export function floatingPlacement(
   )
     return undefined;
   const width = Math.min(480, right - left);
+  // Keep a usable screen position across selection changes. Changing tools must
+  // never cause an automatic flip; only a collision or viewport change does.
+  if (
+    previous &&
+    previous.left >= left &&
+    previous.left + width <= right &&
+    previous.top >= top &&
+    previous.top + height <= bottom &&
+    (anchor.bottom + 8 <= previous.top ||
+      anchor.top >= previous.top + height + 8 ||
+      anchor.right + 8 <= previous.left ||
+      anchor.left >= previous.left + width + 8)
+  ) {
+    return { left: previous.left, top: previous.top, width };
+  }
   const above = anchor.top - height - 10;
   const below = anchor.bottom + height + 10 <= bottom;
   const y =

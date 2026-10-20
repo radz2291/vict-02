@@ -623,3 +623,5 @@ body:has(.finished-screen) {
     box-shadow: -12px 0 40px #24304720;
   }
 }
+
+.has-object-tools .canvas-scroll {padding-bottom:290px;}

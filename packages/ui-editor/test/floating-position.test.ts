@@ -32,3 +32,25 @@ it('hides offscreen selections and tolerates oversized containers without escapi
     width: 480,
   });
 });
+
+it('retains a clear position and relocates only when the new selection collides', () => {
+  const previous = { left: 300, top: 360, width: 480 };
+  expect(
+    floatingPlacement(
+      { left: 300, right: 800, top: 150, bottom: 190 },
+      visible,
+      240,
+      'below',
+      previous,
+    ),
+  ).toEqual(previous);
+  expect(
+    floatingPlacement(
+      { left: 300, right: 800, top: 370, bottom: 400 },
+      visible,
+      240,
+      'below',
+      previous,
+    )?.top,
+  ).not.toBe(previous.top);
+});

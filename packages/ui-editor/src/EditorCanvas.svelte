@@ -41,6 +41,7 @@
     readonly onTextEditingChange?: (editing: boolean) => void;
     /** Authoring-only tools anchored to the selected rendered occurrence. F10 focuses them. */
     readonly selectionTools?: Snippet;
+    readonly selectionToolsPinned?: boolean;
     readonly selectionToolsReveal?: symbol;
     readonly selectionToolsPlacement?: 'above' | 'below';
     readonly catalogs?: UiCatalogs;
@@ -79,6 +80,7 @@
     onEditTextRequest,
     onTextEditingChange,
     selectionTools,
+    selectionToolsPinned = false,
     selectionToolsReveal,
     selectionToolsPlacement,
     catalogs,
@@ -250,7 +252,7 @@
 
 {#if compiled.ok}
   {#if canvasEl && selectedOccurrence && selectionTools && interactionMode === 'design' && !inlineEdit}
-    <FloatingSelection canvas={canvasEl} occurrence={selectedOccurrence} fallbackOccurrences={toolAncestors} revealSignal={selectionToolsReveal} preferred={selectionToolsPlacement}>{@render selectionTools()}</FloatingSelection>
+    <FloatingSelection canvas={canvasEl} occurrence={selectedOccurrence} fallbackOccurrences={toolAncestors} revealSignal={selectionToolsReveal} preferred={selectionToolsPlacement} pinned={selectionToolsPinned}>{@render selectionTools()}</FloatingSelection>
   {/if}
   <div class={canvasClasses} class:uv-canvas-design={interactionMode === 'design'} bind:this={canvasEl} tabindex="-1" style:position="relative">
     {#if inlineEdit}

@@ -1,6 +1,6 @@
 <script lang="ts">
-  let { type, value, effective, origin, authored, locked, disabled = false, onChange, onReset }: {
-    type: 'padding' | 'margin'; value: (property: string) => string; effective: (property: string) => string; origin: (property: string) => string;
+  let { type, compact = false, value, effective, origin, authored, locked, disabled = false, onChange, onReset }: {
+    type: 'padding' | 'margin'; compact?: boolean; value: (property: string) => string; effective: (property: string) => string; origin: (property: string) => string;
     authored: (property: string) => boolean; locked: (property: string) => boolean; disabled?: boolean;
     onChange: (values: readonly { property: string; value: string }[]) => void; onReset: (properties: readonly string[]) => void;
   } = $props();
@@ -14,15 +14,16 @@
     onChange((linked ? sides : [side]).map(s => ({ property: `${type}-${s}`, value: next })));
   }
 </script>
-<div class="spacing">
-  <div class="heading"><strong>{type === 'padding' ? 'Padding · inside' : 'Margin · outside'}</strong><button type="button" aria-label={`Link ${type} sides`} aria-pressed={linked} disabled={blocked} title="Linked sides change together in one undo step" onclick={() => linked = !linked}>{linked ? 'Linked' : 'Link sides'}</button><button type="button" aria-label={`Reset ${type}`} disabled={disabled || !owned.length} title="Remove owned side overrides; retain shared values" onclick={() => onReset(owned)}>↺</button></div>
+<div class="spacing" class:compact>
+  <div class="heading"><strong>{type === 'padding' ? 'Padding · inside' : 'Margin · outside'}</strong><button type="button" aria-label={`Link ${type} sides`} aria-pressed={linked} disabled={blocked} title="Linked sides change together in one undo step" onclick={() => linked = !linked}>{linked ? 'Linked' : 'Link sides'}</button>{#if !compact}<button type="button" aria-label={`Reset ${type}`} disabled={disabled || !owned.length} title="Remove owned side overrides; retain shared values" onclick={() => onReset(owned)}>↺</button>{/if}</div>
   <div class="box" class:margin={type === 'margin'}>
     {#each sides as side}<label class={side}><span>{side}</span><input type="text" inputmode="decimal" aria-label={`${type} ${side}`} value={value(`${type}-${side}`)} placeholder="Auto" disabled={disabled || locked(`${type}-${side}`) || (linked && blocked)} onchange={e => change(side, e.currentTarget.value)} />{#if effective(`${type}-${side}`) && value(`${type}-${side}`) !== effective(`${type}-${side}`)}<small title="Browser now">Now {effective(`${type}-${side}`)}</small>{/if}</label>{/each}
     <span class="center" aria-hidden="true">{type === 'padding' ? 'Content' : 'Element'}</span>
   </div>
-  <details><summary>{owned.length ? `${owned.length} side overrides` : 'Source / preview'} · value details</summary>{#each sides as side}<p><strong>{side}</strong>: {value(`${type}-${side}`) || 'Not set'} · {origin(`${type}-${side}`)}</p>{/each}<p>{linked ? 'Editing one side replaces all four sides; Undo restores them together.' : 'Sides edit independently. Numbers without units use px.'}</p></details>
+  {#if !compact}<details><summary>{owned.length ? `${owned.length} side overrides` : 'Source / preview'} · value details</summary>{#each sides as side}<p><strong>{side}</strong>: {value(`${type}-${side}`) || 'Not set'} · {origin(`${type}-${side}`)}</p>{/each}<p>{linked ? 'Editing one side replaces all four sides; Undo restores them together.' : 'Sides edit independently. Numbers without units use px.'}</p></details>{/if}
 </div>
 <style>
+  .compact {margin:0;}.compact .box {grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:auto;}.compact .box label {grid-area:auto;}.compact .center {display:none;}
   .spacing { margin: 8px 0 12px; min-width: 0; } .heading { display: flex; align-items: center; gap: 4px; font-size: 11px; margin-bottom: 5px; } strong { flex: 1; font-weight: 600; }
   button, input { font: inherit; font-size: 11px; border: 1px solid var(--ui-editor-line, #d7dce5); background: var(--ui-editor-input, #fff); color: inherit; border-radius: 4px; min-width: 0; } button { cursor: pointer; min-height: 28px; padding: 3px 6px; } [aria-pressed=true] { color: var(--ui-editor-accent, #355cc9); background: var(--ui-editor-selection, #edf1ff); }
   .box { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: auto auto auto; gap: 4px; padding: 6px; background: var(--ui-editor-selection, #edf1ff); border: 1px solid var(--ui-editor-line, #d7dce5); border-radius: 5px; } .box.margin { background: var(--ui-editor-panel, #f8f9fb); border-style: dashed; }

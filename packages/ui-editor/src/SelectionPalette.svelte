@@ -29,18 +29,18 @@
     </div>
     <span title={name}>{name}</span>
   </div>
-  <div role="tabpanel" id={`${uid}-panel`} aria-labelledby={`${uid}-${page}`} tabindex="0" class="palette-body" class:expanded={page === 'connect' || page === 'format'}>
+  <div role="tabpanel" id={`${uid}-panel`} aria-labelledby={`${uid}-${page}`} tabindex="0" class="palette-body">
     {#if page === 'format'}{@render format()}{:else if page === 'insert'}{@render insert()}{:else if page === 'arrange'}{@render arrange()}{:else}{@render connect?.()}{/if}
   </div>
 </div>
 <style>
   .palette {font:11px/1.4 'Segoe UI',system-ui,sans-serif; color:#34425a;}
-  .palette-header {display:flex;align-items:center;gap:8px;padding:4px 7px;border-bottom:1px solid #e4e8f0;}
+  .palette-header {display:flex;align-items:center;gap:8px;padding:4px 30px 4px 7px;border-bottom:1px solid #e4e8f0;}
   [role=tablist] {display:flex;gap:2px;flex-shrink:0;}
   [role=tab] {width:58px;text-align:center;border:0;border-radius:4px;background:transparent;color:#78869c;padding:5px 8px;font:inherit;cursor:pointer;}
   [role=tab][aria-selected=true] {background:#edf1ff;color:#405abd;font-weight:600;}
   .palette-header > span {margin-left:auto;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;color:#8a96a8;font-size:10px;}
-  .palette-body {min-height:52px;max-height:min(166px,calc(100dvh - 220px));overflow:auto;padding:7px;box-sizing:border-box;overscroll-behavior:contain;}
-  .palette-body.expanded {max-height:min(440px,calc(100dvh - 200px));}
+  .palette-body {height:min(244px,calc(100dvh - 220px));min-height:120px;overflow:auto;padding:7px;box-sizing:border-box;overscroll-behavior:contain;}
+  .palette-body > :global(*) {max-width:100%;} :disabled {opacity:.4;cursor:default;}
   :focus-visible {outline:2px solid #5269bd;outline-offset:-1px;}
 </style>

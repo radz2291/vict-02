@@ -126,7 +126,8 @@ it('keeps tools available for closed slot content by anchoring to its visible ow
         'visible',
       ),
     );
-    expect(document.querySelector('.floating-selection')?.textContent).toBe('Body text tools');
+    expect(document.querySelector('.floating-selection')?.textContent).toContain('Body text tools');
+    expect(document.querySelector('[aria-label="Hide tools"]')).not.toBeNull();
   } finally {
     await unmount(tools);
     canvas.remove();

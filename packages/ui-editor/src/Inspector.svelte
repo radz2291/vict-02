@@ -8,6 +8,7 @@
   import { nodeLabel, sourceBreadcrumb, editableStyle, sourceStyles, styleText, styleGroups, type EditorLabels } from './inspector-ux.js';
   import ExpressionEditor from './ExpressionEditor.svelte';
   import InspectorControl from './InspectorControl.svelte';
+  import ToolPages from './ToolPages.svelte';
   import TextTools from './TextTools.svelte';
   import InspectorSpacing from './InspectorSpacing.svelte';
   import ComponentComposition from './ComponentComposition.svelte';
@@ -64,12 +65,9 @@
   let scope = $state<'shared' | 'instance'>('shared');
   let condition = $state('');
   let pseudo = $state<UiPseudoState | undefined>(undefined);
-  let groupName = $state('Quick');
-  const formatId = $props.id();
   let text = $state('');
   let textDraftDirty = $state(false);
   function textDraftChange(dirty: boolean) { textDraftDirty = dirty; onTextDraftChange?.(dirty); }
-  $effect(() => { if (editTextSignal) { groupName = 'Quick'; tab = 'Style'; } });
   let property = $state('color');
   let value = $state('');
   let token = $state(false);
@@ -164,14 +162,14 @@
     if (payload !== 'void' && payload !== undefined && compatible(payload)) references.unshift('$output');
     return [...new Set(references)];
   }
-  function applyProp(name: string, expression?: UiExpression): void {
+  function applyProp(name: string, expression?: UiExpression): boolean | void {
     if (!componentNode) return;
-    onApply(bindExpression({ requestId: request(), nodeId: componentNode.id, target: { kind: 'prop', name }, expression }));
+    return onApply(bindExpression({ requestId: request(), nodeId: componentNode.id, target: { kind: 'prop', name }, expression }));
   }
   function outputBindingRaw(output: string): UiOutputBinding | undefined { return componentNode?.outputs?.[output]; }
-  function commitBinding(output: string, binding?: UiOutputBinding): void {
+  function commitBinding(output: string, binding?: UiOutputBinding): boolean | void {
     if (!componentNode) return;
-    onApply(setOutputBinding({ requestId: request(), nodeId: componentNode.id, output, binding }));
+    return onApply(setOutputBinding({ requestId: request(), nodeId: componentNode.id, output, binding }));
   }
   function applySetStateBinding(output: string, key: string): void {
     if (!key) return;
@@ -183,12 +181,12 @@
     const prior = outputBindingRaw(output);
     commitBinding(output, { invokeAction: { actionId, ...(prior && 'invokeAction' in prior ? { input: prior.invokeAction.input } : {}) } });
   }
-  function mapInput(output: string, name: string, expression?: UiExpression): void {
+  function mapInput(output: string, name: string, expression?: UiExpression): boolean | void {
     const prior = outputBindingRaw(output);
     if (!prior || !('invokeAction' in prior)) return;
     const input = { ...prior.invokeAction.input };
     if (expression === undefined) delete input[name]; else input[name] = expression;
-    commitBinding(output, { invokeAction: { ...prior.invokeAction, input } });
+    return commitBinding(output, { invokeAction: { ...prior.invokeAction, input } });
   }
   function clearBinding(output: string): void { commitBinding(output); }
   // Descriptor slot ownership is composition, not a shared stored-definition body.
@@ -204,47 +202,9 @@
     const order = container ? ['Layout', 'Size & spacing', 'Fill & border', 'Typography'] : ['Typography', 'Fill & border', 'Size & spacing', 'Layout'];
     return order.indexOf(a.title) - order.indexOf(b.title);
   }));
-  const quickProperties = $derived(container ? ['display', 'flex-direction', 'gap', 'background-color'] : ['font-size', 'font-weight', 'text-align', 'color']);
-  const contextualGroups = $derived([
-    { title: 'Quick', controls: styleGroups.flatMap(group => [...group.controls]).filter(control => quickProperties.includes(control.property)) },
-    ...orderedGroups.map(group => ({ ...group, controls: group.controls.filter(control => !quickProperties.includes(control.property)) })),
-  ]);
   const textNode = $derived(node?.kind === 'text' ? node : node?.kind === 'element' ? node.children.map(id => document.nodes[id]).find(n => n?.kind === 'text') : undefined);
   const simpleText = $derived(contextual && textNode?.kind === 'text' && textNode.content.type === 'literal' && targetNode?.kind === 'element' && !['input', 'textarea'].includes(targetNode.tag));
-  const formatCategories = $derived(simpleText ? ['Quick', ...contextualGroups.filter(group => !['Quick', 'Typography'].includes(group.title)).map(group => group.title)] : ['Content', ...contextualGroups.map(group => group.title)]);
-  $effect(() => { if (simpleText && (tab === 'Content' || groupName === 'Typography')) { tab = 'Style'; groupName = 'Quick'; } });
-  const activeCategory = $derived(tab === 'Content' ? 'Content' : groupName);
-  function categoryLabel(category: string) {
-    if (category === 'Quick') return container ? 'Layout' : 'Text';
-    if (category === 'Size & spacing') return 'Spacing';
-    if (category === 'Fill & border') return 'Fill';
-    if (category === 'Layout' && container) return 'Alignment';
-    return category;
-  }
-  function revealCategory(category: string, focus = false) {
-    const button = globalThis.document.getElementById(`${formatId}-${formatCategories.indexOf(category)}`);
-    if (focus) button?.focus();
-    const row = button?.parentElement;
-    if (!button || !row) return;
-    const item = button.getBoundingClientRect(), bounds = row.getBoundingClientRect();
-    if (item.right > bounds.right) row.scrollLeft += item.right - bounds.right;
-    else if (item.left < bounds.left) row.scrollLeft -= bounds.left - item.left;
-  }
-  function chooseCategory(category: string) {
-    if (textDraftDirty) return;
-    if (category === 'Content') tab = 'Content';
-    else { groupName = category; tab = 'Style'; }
-    void tick().then(() => revealCategory(category));
-  }
-  function navigateCategory(event: KeyboardEvent, category: string) {
-    if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
-    event.preventDefault(); event.stopPropagation();
-    const index = formatCategories.indexOf(category);
-    const next = formatCategories[event.key === 'Home' ? 0 : event.key === 'End' ? formatCategories.length - 1 : (index + (event.key === 'ArrowRight' ? 1 : formatCategories.length - 1)) % formatCategories.length]!;
-    chooseCategory(next);
-    void tick().then(() => revealCategory(next, true));
-  }
-  const shownGroups = $derived(contextual ? contextualGroups.filter(group => group.title === groupName) : orderedGroups);
+  const shownGroups = $derived(orderedGroups);
   const referenceLabels = $derived(Object.fromEntries(Object.entries(labels.state ?? {}).map(([key, label]) => [`state.${key}`, label])));
   function friendly(value: string) { return value.replace(/([a-z])([A-Z])/g, '$1 $2').replaceAll('-', ' ').replace(/^./, c => c.toUpperCase()); }
   function outputTitle(name: string) { return ({ press: 'When pressed', checkedChange: 'When toggled', valueChange: 'When the value changes', openChange: 'When opened or closed' } as Record<string, string>)[name] ?? `When ${friendly(name).toLowerCase()}`; }
@@ -328,6 +288,32 @@
     }
     return 'No declaration here. Browser preview includes inheritance and defaults; origin unavailable.';
   }
+  let toolCategory = $state('');
+  let valueProperty = $state('font-size');
+  const nativeFields = $derived(node?.kind === 'element' ? (node.tag === 'img' ? [{name:'src',label:'Image URL'},{name:'alt',label:'Alternative text'}] : node.tag === 'a' ? [{name:'href',label:'Link URL'},{name:'target',label:'Link target'},{name:'aria-label',label:'Accessibility'}] : [{name:'aria-label',label:'Accessibility'},{name:'title',label:'Tooltip'}]) : []);
+  const objectCategories = $derived([
+    ...(!simpleText ? [{id:'Content',label:componentDescriptor?'Properties':'Content'}] : []),
+    ...(canStyle ? [{id:'Text',label:'Text'},{id:'Fill',label:'Fill'},{id:'Spacing',label:'Spacing'},{id:'Layout',label:'Layout'}] : []),
+    {id:'Rules',label:'Rules'},
+  ]);
+  $effect(() => { selectedOccurrence; toolCategory = simpleText ? 'Text' : container ? 'Layout' : 'Content'; });
+  $effect(() => { if(editTextSignal && simpleText) toolCategory = 'Text'; });
+  const allControls = styleGroups.flatMap(group => [...group.controls]);
+  const valueProperties = [...allControls.map(control=>({id:control.property,label:control.label})),{id:'letter-spacing',label:'Letter spacing'},...['padding','margin'].flatMap(type=>['top','right','bottom','left'].map(side=>({id:`${type}-${side}`,label:`${type} ${side}`})))];
+  const stylePageSets: Readonly<Record<string,readonly {id:string;label:string;properties:readonly string[]}[]>> = {
+    Fill:[{id:'background',label:'Background',properties:['background-color']},{id:'border',label:'Border',properties:['border-color','border-width','border-style']},{id:'corners',label:'Corners',properties:['border-radius']}],
+    Spacing:[{id:'size',label:'Size',properties:['width','height']},{id:'limits',label:'Limits',properties:['min-width','max-width']},{id:'padding',label:'Padding',properties:[]},{id:'margin',label:'Margin',properties:[]}],
+    Layout:[{id:'flow',label:'Flow',properties:['display','flex-direction','flex-wrap','gap']},{id:'alignment',label:'Alignment',properties:['align-items','justify-content']},{id:'grid',label:'Grid',properties:['grid-template-columns']}],
+  };
+  const connectionPages = $derived(componentDescriptor ? (componentDescriptor.outputs ?? []).flatMap(output=>{
+    const binding=outputBindingRaw(output.name);
+    const declared=binding && 'invokeAction' in binding?actionInputs[binding.invokeAction.actionId] ?? {}:{};
+    const mappings=binding && 'invokeAction' in binding ? [...new Set([...Object.keys(declared),...Object.keys(binding.invokeAction.input ?? {})])].map(name=>({id:`input:${output.name}:${name}`,label:friendly(name),output:output.name,input:name})) : [];
+    const stateValue=binding && 'setState' in binding && binding.setState.value?[{id:`state:${output.name}`,label:'State value',output:output.name,input:''}]:[];
+    return [{id:`event:${output.name}`,label:outputTitle(output.name),output:output.name,input:''},...mappings,...stateValue];
+  }) : []);
+  function nativeAttribute(name:string):UiExpression | undefined { const value=node?.kind==='element'?node.attributes?.[name]:undefined;return typeof value==='string'?{type:'literal',value}:value; }
+
 </script>
 
 {#snippet ruleControls()}<section><label>Editing condition<select aria-label="Style target" value={condition} onchange={e => condition = e.currentTarget.value}><option value="">Base · all sizes</option>{#each styleConditions as c}<option value={c.id}>{c.label}</option>{/each}</select></label>
@@ -349,7 +335,7 @@
 {#snippet styleContext()}<details class="context" open={!!(condition || pseudo)}><summary>Editing · {styleConditions.find(c => c.id === condition)?.label ?? (condition || 'Base · all sizes')}{pseudo ? ` · ${pseudo}` : ' · normal'}</summary>{@render ruleControls()}</details>{/snippet}
 
 <aside class="uv-inspector ux-panel" class:contextual aria-label={contextual ? "Object properties" : "Inspector"} style:scroll-padding-top={`${headerSize + 8}px`}>
-  {#if !contextual || shared}<div class="selection-bar" bind:this={selectionBar}>{#if !contextual}<header>
+  {#if !contextual}<div class="selection-bar" bind:this={selectionBar}>{#if !contextual}<header>
     {#if node}<h2 title={nodeLabel(document, node.id, labels)}>{nodeLabel(document, node.id, labels)}</h2><details class="breadcrumb"><summary>Location · {location.length > 1 ? location.at(-2) : 'Document root'}</summary><p>{location.join(' / ')}</p></details>
     {:else}<h2>Make a selection</h2><p>Choose an element on the canvas or in Layers to edit it.</p>{/if}
   </header>{/if}
@@ -364,13 +350,78 @@
     {#if !contextual}<nav class="tabs" aria-label="Inspector sections">{#each ['Content', 'Style', 'Behavior'] as const as section}<button type="button" aria-pressed={tab === section} onclick={() => tab = section}>{section}</button>{/each}</nav>{/if}
   {/if}</div>{/if}
   {#if node}
-    {#if contextual && tab !== 'Behavior'}
-      <div class="focused-groups" role="tablist" aria-label="Format categories">
-        {#each formatCategories as category}<button type="button" role="tab" id={`${formatId}-${formatCategories.indexOf(category)}`} aria-controls={`${formatId}-properties`} aria-selected={activeCategory === category} tabindex={activeCategory === category ? 0 : -1} title={category === 'Quick' ? (container ? 'Layout essentials' : 'Text essentials') : category} disabled={textDraftDirty && activeCategory !== category} onclick={() => chooseCategory(category)} onkeydown={event => navigateCategory(event, category)}>{categoryLabel(category)}</button>{/each}
-      </div>
-    {/if}
-    <div role={contextual && tab !== 'Behavior' ? 'tabpanel' : undefined} id={`${formatId}-properties`} aria-labelledby={contextual && tab !== 'Behavior' ? `${formatId}-${formatCategories.indexOf(activeCategory)}` : undefined}>
-
+    {#if contextual}
+      {#if tab === 'Behavior'}
+        {#if node.kind === 'element'}
+          <ToolPages pages={[{id:'action',label:'Action'},{id:'navigation',label:'Navigation'}]} label="Click connection pages" locked={textDraftDirty}>
+            {#snippet children(page)}
+              {#if page==='action'}<label>When clicked · declared action<select aria-label="Declared action" bind:value={action}><option value="">Choose an action…</option>{#each knownActionIds as id}<option value={id}>{labels.actions?.[id] ?? id}</option>{/each}</select></label><button type="button" disabled={!knownActionIds.includes(action)} onclick={()=>onApply(connectInteraction({requestId:request(),nodeId:node.id,interaction:{on:'click',action:'invokeAction',actionId:action,...(node.interactions?.find(i=>i.on==='click' && i.action==='invokeAction')?.action==='invokeAction'?{input:(node.interactions.find(i=>i.on==='click' && i.action==='invokeAction') as {input?:Readonly<Record<string,UiExpression>>}).input}:{})}}))}>Connect action</button><p>Uses an application-declared action. Connecting replaces the click interaction.</p>
+              {:else}<label>When clicked · destination<select aria-label="Route id" bind:value={route}><option value="">Choose…</option>{#each knownRouteIds as id}<option value={id}>{labels.routes?.[id] ?? id}</option>{/each}</select></label><button type="button" disabled={!knownRouteIds.includes(route)} onclick={connectRoute}>Connect navigation</button>{/if}
+            {/snippet}
+          </ToolPages>
+        {:else if componentDescriptor && connectionPages.length}
+          <ToolPages pages={connectionPages} label="Component connection pages" locked={textDraftDirty}>
+            {#snippet children(page)}
+              {@const entry=connectionPages.find(entry=>entry.id===page)!}
+              {@const output=componentDescriptor.outputs!.find(output=>output.name===entry.output)!}
+              {@const binding=outputBindingRaw(output.name)}
+              {#if page.startsWith('state:') && binding && 'setState' in binding}
+                <ExpressionEditor compact label={`${output.name} state value`} type={output.payload==='void'?'string':output.payload} value={binding.setState.value} references={refs(output.payload,output.payload)} onDraftChange={textDraftChange} onCommit={value=>commitBinding(output.name,{setState:{key:binding.setState.key,...(value?{value}:{})}})}/>
+              {:else if entry.input && binding && 'invokeAction' in binding}
+                <p>{outputTitle(output.name)} → {labels.actions?.[binding.invokeAction.actionId] ?? binding.invokeAction.actionId}</p>
+                {#if actionInputs[binding.invokeAction.actionId]?.[entry.input]}<ExpressionEditor compact label={`${output.name} input ${entry.input}`} displayLabel={labels.actionInputs?.[entry.input] ?? friendly(entry.input)} {referenceLabels} type={actionInputs[binding.invokeAction.actionId]![entry.input]!} value={binding.invokeAction.input?.[entry.input]} references={refs(actionInputs[binding.invokeAction.actionId]![entry.input]!,output.payload)} onDraftChange={textDraftChange} onCommit={expression=>mapInput(output.name,entry.input,expression)} />{:else}<p>Existing mapping; static input type is unavailable. Runtime contracts validate it.</p><pre>{JSON.stringify(binding.invokeAction.input?.[entry.input],null,2)}</pre><button type="button" onclick={()=>mapInput(output.name,entry.input)}>Remove {entry.input} mapping</button>{/if}
+              {:else}
+                <div class="compact-grid">
+                  {#if output.payload!=='void'}<label>Update state<select aria-label={`${output.name} state target`} value={binding && 'setState' in binding?binding.setState.key:''} onchange={e=>applySetStateBinding(output.name,e.currentTarget.value)}><option value="">Choose a state key…</option>{#each stateKeysTyped.filter(entry=>entry.type===output.payload) as entry}<option value={entry.key}>{labels.state?.[entry.key] ?? entry.key}</option>{/each}</select></label>{/if}
+                  <label>Run action<select aria-label={`${output.name} action`} value={binding && 'invokeAction' in binding?binding.invokeAction.actionId:''} onchange={e=>applyActionBinding(output.name,e.currentTarget.value)}><option value="">Choose an action…</option>{#each knownActionIds as id}<option value={id}>{labels.actions?.[id] ?? id}</option>{/each}</select></label>
+                </div>
+                <p>{output.description ?? `Declared ${output.payload} event.`}</p>
+                {#if binding}<p class="connection-summary">→ {'invokeAction' in binding?labels.actions?.[binding.invokeAction.actionId] ?? binding.invokeAction.actionId:labels.state?.[binding.setState.key] ?? binding.setState.key}</p><button type="button" onclick={()=>clearBinding(output.name)}>Remove connection</button>{/if}
+              {/if}
+            {/snippet}
+          </ToolPages>
+        {:else}<p>This selection exposes no component events. Select an interactive element to connect behavior.</p>{/if}
+      {:else}
+        <ToolPages pages={objectCategories} bind:active={toolCategory} label="Format categories" locked={textDraftDirty}>
+          {#snippet children(category)}
+            {#if category==='Content'}
+              {#if node.kind==='element' && ['input','textarea'].includes(node.tag)}
+                <NativeInputContent compact showStateInitial={false} {document} {node} references={refs('string')} {referenceLabels} {labels} disabled={shared && scope==='instance'} onDraftChange={textDraftChange} {onApply}/>
+              {:else if componentDescriptor && componentNode}
+                <ToolPages pages={componentDescriptor.props.map(prop=>({id:prop.name,label:friendly(prop.name)}))} label="Component property pages" locked={textDraftDirty}>
+                  {#snippet children(name)}
+                    {@const prop=componentDescriptor.props.find(prop=>prop.name===name)}
+                    {#if prop}<fieldset class="content-boundary" disabled={shared && scope==='instance'}>{#key `${componentNode.id}:${name}`}<ExpressionEditor compact label={name} displayLabel={friendly(name)} {referenceLabels} type={prop.type} value={componentNode.props?.[name]} defaultValue={prop.default} references={refs(prop.type)} onDraftChange={textDraftChange} onCommit={expression=>applyProp(name,expression)}/>{/key}</fieldset>
+                    {@const slot=slotOwnedLabelSlot(componentDescriptor.id,name,componentNode)}{#if slot}<p>The {slot} slot supplies the visible text. This property is its fallback. Edit that slot's text through Document → Structure.</p>{/if}
+                    {:else}<p>This component exposes no properties. Add content through Insert and its declared slots.</p>{/if}
+                  {/snippet}
+                </ToolPages>
+              {:else if textNode?.kind==='text'}<p>Text comes from an expression. Edit that expression in Document → Source; it is preserved here.</p>
+              {:else if nativeFields.length}<fieldset class="content-boundary full" disabled={shared && scope==='instance'}><ToolPages pages={nativeFields.map(field=>({id:field.name,label:field.label}))} label="Element content pages" locked={textDraftDirty}>{#snippet children(name)}{#key `${node.id}:${name}`}<ExpressionEditor compact label={name} displayLabel={nativeFields.find(field=>field.name===name)?.label} type="string" value={nativeAttribute(name)} references={refs('string')} {referenceLabels} onDraftChange={textDraftChange} onCommit={value=>onApply(setAttribute({requestId:request(),nodeId:node.id,name,...(value===undefined?{}:{value})}))}/>{/key}{/snippet}</ToolPages></fieldset>
+              {:else}<p>Select a source element or catalog component to edit its exposed properties.</p>{/if}
+            {:else if category==='Text'}
+              <TextTools value={display} locked={property=>ownStyle(property)?.type==='binding'} disabled={unsupportedTarget || (shared && scope==='instance')} editableContent={!!simpleText} content={textNode?.kind==='text' && textNode.content.type==='literal'?textNode.content.value:''} contentRevision={JSON.stringify(document)} {editTextSignal} onTextDraftChange={textDraftChange} onTextApply={value=>textNode?onApply(setTextLiteral({requestId:request(),nodeId:textNode.id,value})):false} onChange={(property,value)=>changeStyle(property,{type:'text',value})} contextLabel={`${styleConditions.find(c=>c.id===condition)?.label ?? (condition || 'All sizes')}${pseudo?` · ${pseudo}`:' · normal'}`}/>
+            {:else if category==='Rules'}
+              <ToolPages pages={[{id:'conditions',label:'Conditions'},{id:'values',label:'Values & reset'},{id:'ownership',label:'Ownership'}]} label="Style rule pages" locked={textDraftDirty}>
+                {#snippet children(page)}
+                  {#if page==='conditions'}{@render ruleControls()}
+                  {:else if page==='values'}<label>Setting<select aria-label="Setting details" bind:value={valueProperty}>{#each valueProperties as property}<option value={property.id}>{property.label}</option>{/each}</select></label><p>{display(valueProperty) || 'Not set'} · {origin(valueProperty)}</p>{#if effective(valueProperty)}<p>Browser now: {effective(valueProperty)}</p>{/if}<button type="button" disabled={!ownStyle(valueProperty) || ownStyle(valueProperty)?.type==='binding' || unsupportedTarget} onclick={()=>changeStyle(valueProperty)}>Reset setting</button>{#if !ownStyle(valueProperty) && display(valueProperty)}<button type="button" disabled={unsupportedTarget} onclick={()=>changeStyle(valueProperty,{type:'text',value:display(valueProperty)})}>Override preview value</button>{/if}
+                  {:else}{#if shared}<label>Edits apply to<select aria-label="Edits apply to" bind:value={scope}><option value="shared">Shared component</option><option value="instance">This instance · wrapper</option></select></label><p>{count} authored instances. Shared source edits affect every occurrence.</p>{:else}<p>Source element · {location.join(' / ')}</p>{/if}{#if componentDescriptor}<p>{componentDescriptor.id} · revision {componentDescriptor.revision}. Styling targets {componentDescriptor.styleTargets?.join(', ') || 'no exposed part'}. {componentDescriptor.inspectionLimits?.join(' ')}</p>{/if}<p>Canonical source and declarations are in Document → Source.</p>{/if}
+                {/snippet}
+              </ToolPages>
+            {:else}
+              {@const pages=stylePageSets[category] ?? []}
+              <ToolPages {pages} label={`${category} pages`} locked={textDraftDirty}>{#snippet children(page)}
+                {#if page==='padding' || page==='margin'}<InspectorSpacing compact type={page} value={display} {effective} {origin} authored={property=>ownStyle(property)!==undefined} locked={property=>ownStyle(property)?.type==='binding'} disabled={unsupportedTarget} onChange={changeStyles} onReset={properties=>changeStyles(properties.map(property=>({property})))}/>
+                {:else}<div class="compact-grid">{#each allControls.filter(control=>pages.find(entry=>entry.id===page)?.properties.includes(control.property)) as control}{#key `${target}:${condition}:${pseudo}:${control.property}`}<InspectorControl compact label={control.label} kind={control.kind} value={display(control.property)} options={'options' in control?control.options:[]} disabled={unsupportedTarget || ownStyle(control.property)?.type==='binding'} onChange={value=>changeStyle(control.property,{type:'text',value})} onReset={()=>changeStyle(control.property)}/>{/key}{/each}</div>{/if}
+                <p class="rule-context">{styleConditions.find(c=>c.id===condition)?.label ?? (condition || 'All sizes')} · {pseudo || 'normal'}</p>
+              {/snippet}</ToolPages>
+            {/if}
+          {/snippet}
+        </ToolPages>
+      {/if}
+    {:else}
+    <div>
     {#if tab === 'Content'}
       <section><h3>Content</h3>
         {#if node.kind === 'element' && ['input','textarea'].includes(node.tag)}
@@ -403,12 +454,8 @@
       {#if componentDescriptor}
         <p>Instance styling targets {componentDescriptor.styleTargets?.[0] ?? 'no exposed part'}. {componentDescriptor.inspectionLimits?.join(' ') ?? ''}</p>
       {/if}
-      {#if !(simpleText && groupName === 'Quick')}{@render styleContext()}{/if}
-      {#if simpleText && groupName === 'Quick'}
-        <TextTools value={display} {origin} authored={property => ownStyle(property) !== undefined} locked={property => ownStyle(property)?.type === 'binding'} disabled={unsupportedTarget || (shared && scope === 'instance')} content={textNode?.kind === 'text' && textNode.content.type === 'literal' ? textNode.content.value : ''} contentRevision={JSON.stringify(document)} {editTextSignal} onTextDraftChange={textDraftChange} onTextApply={value => textNode ? onApply(setTextLiteral({ requestId: request(), nodeId: textNode.id, value })) : false} onChange={(property, value) => changeStyle(property, { type: 'text', value })} onReset={property => changeStyle(property)} contextLabel={`${styleConditions.find(c => c.id === condition)?.label ?? (condition || 'All sizes')}${pseudo ? ` · ${pseudo}` : ' · normal'}`}>
-          {#snippet rules()}{@render ruleControls()}{/snippet}
-        </TextTools>
-      {:else if canStyle}
+      {@render styleContext()}
+      {#if canStyle}
         {#key `${target}:${container}`}{#each shownGroups as group, index}<details class="style-group" open={contextual || index < 2}><summary>{group.title}</summary><section>
           {#if group.title === 'Size & spacing'}{#each ['padding', 'margin'] as type}{#key `${target}:${condition}:${pseudo}:${type}`}<InspectorSpacing type={type as 'padding' | 'margin'} value={display} {effective} {origin} authored={p => ownStyle(p) !== undefined} locked={p => ownStyle(p)?.type === 'binding'} disabled={unsupportedTarget} onChange={changeStyles} onReset={properties => changeStyles(properties.map(property => ({ property })))} />{/key}{/each}{/if}
           {#each group.controls as control}
@@ -485,6 +532,7 @@
       <h3>Canonical source (read only)</h3><pre>{JSON.stringify(node, null, 2)}</pre>
     </section></details>{/if}
     </div>
+    {/if}
   {/if}
   {#if lastIssues.length}<section role="alert" class="issues"><strong>Change rejected · source unchanged</strong>{#each lastIssues as issue}<p>{issue.code}: {issue.message}</p>{/each}</section>{/if}
 </aside>
@@ -521,21 +569,9 @@
   .connection-summary {color:var(--ui-editor-accent,#355cc9);font-weight:600;}
   .output-row { border: 1px solid var(--ui-editor-line, #d7dce5); border-radius: 5px; padding: 6px 8px; margin: 6px 0; background: var(--ui-editor-input, #fff); }
   .issues { background: #fff0ef; }
-  .contextual {height:auto;overflow:visible;background:#fff;font-size:11px;--ui-editor-section-padding:6px 2px;}
+  .contextual {height:100%;min-height:0;overflow:auto;background:#fff;font-size:11px;--ui-editor-section-padding:6px 2px;}
   .contextual .selection-bar {position:static;box-shadow:none;}
-  .focused-groups {display:flex;gap:2px;overflow-x:auto;scrollbar-width:thin;overscroll-behavior-x:contain;position:sticky;top:-7px;z-index:3;background:#fff;margin:-4px -2px 5px;padding:0 0 3px;border-bottom:1px solid #e4e8f0;}
-  .focused-groups button {flex-shrink:0;white-space:nowrap;margin:0;padding:5px 8px;border:0;border-radius:4px;font-size:11px;background:transparent;color:#78869c;}
-  .focused-groups button[aria-selected=true] {background:#f0f3fa;color:#405abd;font-weight:600;}
-  .contextual .style-group > summary {display:none;}
-  .contextual .style-group > section {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 12px;padding:4px 0;}
-  .contextual .style-group > section :global(.spacing) {grid-column:1 / -1;}
-  .contextual .style-group :global(.caption) {font-size:11px;margin:0;}
-  .contextual .style-group :global(.origin:not([open]) summary) {font-size:0;}
-  .contextual .style-group :global(.origin:not([open]) summary::after) {content:'ⓘ';font-size:11px;}
-  .contextual .style-group :global(.control) {padding:2px 0;}
-  .contextual .style-group :global(.inputs > input), .contextual .style-group :global(.inputs > select), .contextual .style-group :global(.inputs > button), .contextual .style-group :global(.segments button) {min-height:27px;font-size:11px;}
-  .contextual .style-group :global(.inputs > .reset) {font-size:0;width:24px;max-width:24px;flex:0 0 24px;padding:2px;}
-  .contextual .style-group :global(.inputs > .reset::after) {content:'↺';font-size:12px;}
-  .contextual summary {padding:5px 2px;font-size:11px;}
+  .content-boundary {border:0;padding:0;margin:0;min-width:0;}.content-boundary.full {height:100%;}
+  .compact-grid {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 10px;}.rule-context {font-size:10px;color:#8a96a8;} .contextual button {padding:4px 7px;font-size:11px;margin:2px 3px 2px 0;}.contextual label {margin:3px 0;font-size:11px;}.contextual label select {padding:4px 6px;min-height:27px;font-size:11px;}
   .contextual h3 {font-size:11px;margin-bottom:5px;}
 </style>
