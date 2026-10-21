@@ -57,7 +57,9 @@ it('opens a closed composition without authored or runtime changes, guards draft
   trigger.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, cancelable: true }));
   trigger.click();
   await tick();
-  const entry = document.querySelector<HTMLButtonElement>('[aria-label="Open Details composition"]');
+  const entry = document.querySelector<HTMLButtonElement>(
+    '[aria-label="Open Details composition"]',
+  );
   expect(entry?.closest('.palette-header')).not.toBeNull();
   expect(document.querySelector('.composition-entry')).toBeNull();
   entry!.click();
@@ -114,4 +116,56 @@ it('opens a closed composition without authored or runtime changes, guards draft
   button('Reload');
   await tick();
   expect(document.querySelector('[aria-label="Composition navigation"]')).toBeNull();
+});
+
+it('keeps data drafts safe across document navigation and saves applied starting values', async () => {
+  const source = { ...newScreen('Document trial', 'document-trial'), revision: 'r1.r1' };
+  const store = screenStore(localStorage, source.id);
+  expect(
+    store.save({ document: source, expectedStoredRevision: 'r1', newStoredRevision: 'r1.r1' }).ok,
+  ).toBe(true);
+  editor = mount(Designer, { target: document.body });
+  await tick();
+  await tick();
+  button('Document');
+  await tick();
+  button('Data');
+  await tick();
+  const row = [...document.querySelectorAll<HTMLButtonElement>('.data-row')].find((item) =>
+    item.textContent?.includes('Message'),
+  )!;
+  row.click();
+  await tick();
+  const field = document.querySelector<HTMLTextAreaElement>('[aria-label="Starting value"]')!;
+  field.value = 'Saved from the document data editor';
+  field.dispatchEvent(new Event('input', { bubbles: true }));
+  await tick();
+  await tick();
+  expect(
+    document.querySelector<HTMLButtonElement>('.sidebar-tabs button:last-child')?.disabled,
+  ).toBe(true);
+  document.querySelector<HTMLButtonElement>('[aria-label="Close document"]')!.click();
+  await tick();
+  expect(document.querySelector('#document-drawer')).not.toBeNull();
+  button('Cancel');
+  await tick();
+  expect(field.value).toBe(String(source.localState.message!.initial));
+  field.value = 'Saved from the document data editor';
+  field.dispatchEvent(new Event('input', { bubbles: true }));
+  await tick();
+  await tick();
+  button('Apply');
+  await tick();
+  await tick();
+  button('Save');
+  await tick();
+  const saved = store.rawLoad();
+  if (saved.status !== 'loaded') throw Error('Missing saved document');
+  expect(saved.document.localState.message!.initial).toBe('Saved from the document data editor');
+  button('Source');
+  await tick();
+  expect(document.querySelector('.source-drawer')).not.toBeNull();
+  expect(document.querySelector<HTMLTextAreaElement>('#canonical-source')?.value).toContain(
+    'Saved from the document data editor',
+  );
 });

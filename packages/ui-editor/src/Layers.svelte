@@ -7,11 +7,13 @@
   import { compositionName, moveRelative, type CompositionPlacement } from './composition.js';
   import type { TransactionDraft } from './commands.js';
   import {compositionSlots,type CompositionFocus} from './composition-focus.js';
-  let { plan, document, selectedOccurrence, onSelect, ariaLabel = 'Layers', labels = {}, scope, onApply, componentDescriptors = [], onOpenComposition }: {
+  let { plan, document, selectedOccurrence, onSelect, ariaLabel = 'Layers', labels = {}, scope, onApply, componentDescriptors = [], onOpenComposition, compact = false }: {
     plan: UiRenderPlan; document?: UiDocument; selectedOccurrence?: string; onSelect?: (occurrence: string) => void;
     ariaLabel?: string; labels?: EditorLabels; scope?: DocumentScope;
     onApply?: (draft: TransactionDraft) => boolean; componentDescriptors?: readonly import('@victframework/ui').UiExtensionDescriptor[];
     onOpenComposition?:(focus:CompositionFocus)=>void;
+    /** Dense single-line rows for a document browser. Full labels remain accessible. */
+    compact?: boolean;
   } = $props();
   interface Entry { key: string; nodeId: string; label: string; detail: string; parent?: string; depth: number; children: boolean; component: boolean; compact: boolean; selectable: boolean; composition?:CompositionFocus; }
   let expanded = $state(new Set<string>());
@@ -152,7 +154,7 @@
     if (next) void focus(next);
   }
 </script>
-<nav class="uv-layers" aria-label={ariaLabel} bind:this={root}>
+<nav class="uv-layers" class:compact aria-label={ariaLabel} bind:this={root}>
   <header><h2>{ariaLabel}</h2><div class="search"><input type="search" aria-label="Search layers" placeholder="Find an element…" bind:value={search} onkeydown={e => { if (e.key === 'Escape') search = ''; if (e.key === 'ArrowDown' && entries[0]) { e.preventDefault(); void focus(entries[0].key); } }} />{#if query}<button type="button" aria-label="Clear layers search" onclick={() => search = ''}>×</button>{/if}</div>{#if query}<p role="status">{matches.length} matches · ancestors shown</p>{/if}</header>
   <ul role="tree" aria-label="Document layers">
     {#each entries as entry (entry.key)}
@@ -161,7 +163,7 @@
         <button type="button" role="treeitem" data-key={entry.key} data-drop={dropKey === entry.key ? dropPosition : undefined} aria-level={entry.depth + 1} aria-expanded={entry.children ? !!query || isOpen(entry) : undefined} aria-selected={entry.key === selectedOccurrence} tabindex={entry.key === tabStop ? 0 : -1} title={`${entry.label} · ${entry.detail}`} onclick={() => select(entry)} onkeydown={e => keyboard(e, entry)} onfocus={() => focusKey = entry.key}
           draggable={!!onApply && direct(entry) && !query} ondragstart={event => { if (!direct(entry)) { event.preventDefault(); return; } draggedId = entry.nodeId; if (event.dataTransfer) { event.dataTransfer.effectAllowed = 'move'; event.dataTransfer.setData('text/plain', entry.nodeId); } }}
           ondragover={event => dragOver(event, entry)} ondrop={event => drop(event, entry)} ondragleave={() => { dropKey = ''; }} ondragend={() => { draggedId = ''; dropKey = ''; moveMessage = ''; }}>
-          <span class="icon" aria-hidden="true">{entry.component ? '◇' : entry.children ? '▤' : '·'}</span><span class="name">{visibleLabel(entry)}</span>{#if entry.component}<span class="badge" title="Component" aria-label="Component">◇</span>{/if}
+          <span class="icon" aria-hidden="true">{entry.component ? '◇' : entry.children ? '▤' : '·'}</span><span class="name" title={visibleLabel(entry)}>{visibleLabel(entry)}</span>{#if entry.component}<span class="badge" title="Component" aria-label="Component">◇</span>{/if}
         </button>
       </li>
     {/each}
@@ -184,6 +186,12 @@
   .icon { color: var(--ui-editor-muted, #667085); }
   .badge { font-size: 9px; color: var(--ui-editor-muted, #667085); }
   :focus-visible { outline: 2px solid var(--ui-editor-accent, #355cc9); outline-offset: -2px; }
+  .compact {background:var(--ui-editor-input,#fff);}
+  .compact header {padding:0 0 8px;border:0;} .compact h2 {display:none;}
+  .compact .search {margin:0;} .compact ul {padding:0;}
+  .compact li {min-height:28px;} .compact [role=treeitem] {padding:4px;}
+  .compact .name {display:block;white-space:nowrap;text-overflow:ellipsis;overflow-wrap:normal;}
+  .compact footer {padding:6px 0;border:0;} .compact footer > p {display:none;}
   footer { padding: 10px 12px; border-top: 1px solid var(--ui-editor-line, #d7dce5); } summary { cursor: pointer; font-size: 11px; } code { font-size: 10px; overflow-wrap: anywhere; }
 </style>
 

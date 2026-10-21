@@ -58,15 +58,26 @@
       }
     }
     selectOccurrence(occurrence);
+    if(!textDraftDirty && !sourceDraftDirty) drawerOpen=false;
   }
   let plan = $state<UiRenderPlan>();
   let issues = $state<readonly { code: string; message: string }[]>([]);
   let notice = $state('Start with an empty screen. Add a heading or section to begin.');
-  let drawerTab = $state('Structure');
+  let drawerTab = $state('Layers');
   let formatSection = $state<'Content' | 'Style' | 'Behavior'>('Style');
   let editTextSignal = $state<symbol>();
   let selectionToolsReveal = $state<symbol>();
-  let textDraftDirty = $state(false);
+  let propertyDraftDirty = $state(false);
+  let dataDraftDirty = $state(false);
+  const textDraftDirty = $derived(propertyDraftDirty || dataDraftDirty);
+  let selectedData = $state<string>();
+  const dataName = (key:string) => editorLabels.state[key as keyof typeof editorLabels.state] ?? key;
+  const dataType = (type:string) => ({string:'Text',boolean:'Yes / No',number:'Number',stringList:'Text list',numberList:'Number list'}[type] ?? type);
+  function dataPreview(value:unknown) {return Array.isArray(value) ? `${value.length} items` : typeof value==='boolean' ? value?'Yes':'No' : value === '' ? 'Empty' : String(value);}
+  function changeDocumentTab(tab:string) {if(dataDraftDirty || sourceDraftDirty) {notice='Apply or cancel your draft first.';return;} drawerTab=tab;selectedData=undefined;}
+  function openData(key?:string) {if(dataDraftDirty) {notice='Apply or cancel your draft first.';return;} selectedData=key;}
+  async function toggleDocument() {if(drawerOpen)closeDrawer();else {if(textDraftDirty){notice='Apply or cancel your edit first.';return;} drawerOpen=true;await tick();globalThis.document.querySelector<HTMLButtonElement>('.sidebar-tabs button[aria-pressed=true]')?.focus();}}
+
   let palettePage = $state<'format' | 'insert' | 'arrange' | 'connect'>('format');
   let paletteRequested = $state(false);
   let paletteFocus = $state<symbol>();
@@ -75,12 +86,13 @@
   let drawerOpen = $state(false);
   let drawerWidth = $state(320);
   let documentButton: HTMLButtonElement;
-  function closeDrawer() { drawerOpen = false; documentButton?.focus(); }
+  function closeDrawer() { if(dataDraftDirty || sourceDraftDirty) {notice='Apply or cancel your draft before closing Document.';return;} drawerOpen = false; documentButton?.focus(); }
   const editorLabels = { actions: { 'demo.submit': 'Submit (simulated)' }, nodes: { screen: 'Screen' },
     state: { message: 'Message', accepted: 'Agreement', dialogOpen: 'Dialog open', busy: 'Submitting', actionError: 'Action error', actionResult: 'Action result' },
     actionInputs: { message: 'Message', accepted: 'Agreement' } };
   function selectOccurrence(occurrence: string) {
-    if (textDraftDirty) { notice = 'Apply or cancel your property edit first.'; return; }
+    if (textDraftDirty || (drawerOpen && sourceDraftDirty)) { notice = 'Apply or cancel your edit first.'; return; }
+    drawerOpen=false;
     editTextSignal = undefined;
     if (source) {
       const report = resolveOccurrence(occurrence, source);
@@ -155,7 +167,7 @@
     const next = new EditorBridge({ catalogs: designerCatalogs, store: screenStore(localStorage, document.id), initial: { document, storedRevision: 'r1' } });
     sessions.set(document.id, next);
     library = [...library, { id: document.id, name: title }];
-    openSession(next); drawerTab = 'Structure'; drawerOpen = false;
+    openSession(next); drawerTab = 'Layers'; drawerOpen = false;
     notice = 'New screen · not saved yet.';
   }
   function openScreen(id: string) {
@@ -297,13 +309,13 @@
     <div class="canvas-modes" aria-label="Canvas mode"><button type="button" aria-pressed={mode === 'design'} onclick={() => changeMode('design')}>Design</button><button type="button" aria-pressed={mode === 'interact'} onclick={() => changeMode('interact')}>Interact</button></div>
     {#if mode === 'design'}<button type="button" class="add-element" onclick={openInsert}>＋ Add</button>{/if}
     <span class="save-state">{textDraftDirty ? '● Unapplied property draft' : sourceDraftDirty ? '● Unapplied JSON draft' : snapshot?.dirty ? '● Unsaved changes' : snapshot?.storedRevision === 'r1' ? '○ New screen' : '✓ Saved'}</span>
-    <div class="toolbar-end"><button type="button" bind:this={documentButton} class="panel-toggle" aria-expanded={drawerOpen} aria-controls="document-drawer" onclick={() => drawerOpen = !drawerOpen}>Document</button><button type="button" onclick={reopen} title="Reload the saved screen and reset the preview" disabled={!source || snapshot?.dirty || sourceDraftDirty || textDraftDirty || snapshot?.storedRevision === 'r1'}>Reload</button><button type="button" onclick={save} disabled={!compilation?.ok || sourceDraftDirty || textDraftDirty}>Save</button><a class="run-button" aria-disabled={!source || snapshot?.dirty || sourceDraftDirty || textDraftDirty || snapshot?.storedRevision === 'r1'} href={source && !snapshot?.dirty && !sourceDraftDirty && !textDraftDirty && snapshot?.storedRevision !== 'r1' ? `/run-screen?screen=${encodeURIComponent(source.id)}` : undefined}>Run saved ↗</a></div>
+    <div class="toolbar-end"><button type="button" bind:this={documentButton} class="panel-toggle" aria-expanded={drawerOpen} aria-controls="document-drawer" onclick={toggleDocument}>Document</button><button type="button" onclick={reopen} title="Reload the saved screen and reset the preview" disabled={!source || snapshot?.dirty || sourceDraftDirty || textDraftDirty || snapshot?.storedRevision === 'r1'}>Reload</button><button type="button" onclick={save} disabled={!compilation?.ok || sourceDraftDirty || textDraftDirty}>Save</button><a class="run-button" aria-disabled={!source || snapshot?.dirty || sourceDraftDirty || textDraftDirty || snapshot?.storedRevision === 'r1'} href={source && !snapshot?.dirty && !sourceDraftDirty && !textDraftDirty && snapshot?.storedRevision !== 'r1' ? `/run-screen?screen=${encodeURIComponent(source.id)}` : undefined}>Run saved ↗</a></div>
   </div>
   {#if source && bridge}
   {#snippet floatingTools()}
     <SelectionPalette revealSignal={selectionToolsReveal} locked={textDraftDirty || sourceDraftDirty} onOpenComposition={selectedSlots.length && selectedNode?.id!==compositionFocus?.nodeId ? ()=>openComposition() : undefined} bind:page={palettePage} name={compositionName(source, selectedNode?.id ?? source.root)} focusSignal={paletteFocus}>
       {#snippet objectProperties(section: 'Content' | 'Style' | 'Behavior')}
-        <Inspector contextual editTextSignal={section === 'Behavior' ? undefined : editTextSignal} onTextDraftChange={(dirty: boolean) => textDraftDirty = dirty} {section} document={source} selectedOccurrence={selected} onApply={apply} lastIssues={issues} componentDescriptors={catalogDescriptors} knownActionIds={designerCatalogs.actionIds} {actionInputs} knownRouteIds={['screen']} labels={editorLabels} styleConditions={[{ id: 'compact', label: 'Compact · ≤600px' }]} readEffective={effective} />
+        <Inspector contextual editTextSignal={section === 'Behavior' ? undefined : editTextSignal} onTextDraftChange={(dirty: boolean) => propertyDraftDirty = dirty} {section} document={source} selectedOccurrence={selected} onApply={apply} lastIssues={issues} componentDescriptors={catalogDescriptors} knownActionIds={designerCatalogs.actionIds} {actionInputs} knownRouteIds={['screen']} labels={editorLabels} styleConditions={[{ id: 'compact', label: 'Compact · ≤600px' }]} readEffective={effective} />
       {/snippet}
       {#snippet format()}{@render objectProperties(formatSection)}{/snippet}
       {#snippet connect()}{@render objectProperties('Behavior')}{/snippet}
@@ -311,7 +323,7 @@
       {#snippet arrange()}<Composer document={source} selectedNodeId={selectedNode?.id} recipes={[]} descriptors={catalogDescriptors} compact showInsert={false} onApply={apply} onDuplicate={duplicateSelection} onDetached={(parentId: string)=>{selectOccurrence(`${source.id}|${parentId}`);notice='Content kept aside. Use Insert → Reuse to place it again.';}} />{#if !selectedNode || selectedNode.id === source.root}<p class="palette-hint">Select an element to move, duplicate or delete it.</p>{/if}{/snippet}
     </SelectionPalette>
   {/snippet}
-  <div class="design-workspace" class:drawer-open={drawerOpen} class:has-object-tools={mode === 'design' && !!selectedNode && (selectedNode.id !== source.root || paletteRequested)} style:--drawer-width={`${drawerWidth}px`}>
+  <div class="design-workspace" class:drawer-open={drawerOpen} class:source-open={drawerOpen && drawerTab==='Source'} class:has-object-tools={mode === 'design' && !!selectedNode && (selectedNode.id !== source.root || paletteRequested)} style:--drawer-width={`${drawerWidth}px`}>
     <main class="design-stage">
       <div class="canvas-toolbar"><label><span class="sr-only">Canvas width</span><select aria-label="Canvas width" bind:value={width}><option value="fluid">Fit canvas</option><option value="768">Tablet · 768</option><option value="390">Phone · 390</option></select></label><button type="button" onclick={resetRuntime} title="Reset ephemeral runtime values">Reset preview</button></div>
       {#if compositionFocus}<CompositionNavigator document={source} focus={compositionFocus} descriptors={catalogDescriptors} disabled={textDraftDirty || sourceDraftDirty} onNavigate={navigateComposition} />{/if}
@@ -319,7 +331,7 @@
         <div class="design-frame" style:max-width={width === 'fluid' ? 'none' : `${width}px`}>
           <EditorCanvas document={source} catalogs={designerCatalogs} extensions={catalogDescriptors} extensionImplementations={catalogImplementations}
             {compositionFocus} onOpenComposition={openComposition}
-            selectionTools={selectedNode && (selectedNode.id !== source.root || paletteRequested) ? floatingTools : undefined}
+            selectionTools={!drawerOpen && selectedNode && (selectedNode.id !== source.root || paletteRequested) ? floatingTools : undefined}
             {selectionToolsReveal} selectionToolsPinned={textDraftDirty}
             selectionToolsPlacement="below"
             onEditTextRequest={editSelectedText}
@@ -333,27 +345,32 @@
       <details class="simulation-panel"><summary>Simulated execution <span>Local preview · no live effects</span></summary><div class="simulation-body"><label><input type="checkbox" bind:checked={simulation.denied} /> Deny demo writes</label><label><input type="checkbox" bind:checked={simulation.failNext} /> Fail next action</label><StateValuesPanel localState={source.localState} stateValues={runtimeValues} onChange={(key: string, value: UiValue | undefined) => { const next = { ...runtimeValues }; if (value === undefined) delete next[key]; else next[key] = value; runtimeValues = next; }} />{#each activity as entry}<p role="status">{entry}</p>{/each}<p class="panel-hint">Connect checkedChange to accepted, bind checked to state.accepted, then map a Button's press → Submit using state.message and state.accepted. Runtime values never enter undo history.</p></div></details>
     </main>
     {#if drawerOpen}
-    <div class="drawer-resizer"><PanelResizer label="Document drawer width" value={drawerWidth} min={280} max={460} reverse onChange={(value: number) => drawerWidth = value} /></div>
-    <aside id="document-drawer" class="document-drawer" aria-label="Document">
-      <div class="drawer-heading"><strong>Document</strong><button type="button" aria-label="Close document" onclick={closeDrawer}>×</button></div>
-      <nav class="sidebar-tabs" aria-label="Document sections">{#each ['Structure', 'Logic', 'Source'] as tab}<button type="button" aria-pressed={drawerTab === tab} onclick={() => drawerTab = tab}>{tab}</button>{/each}</nav>
-      <div class="sidebar-body">
-        {#if drawerTab === 'Structure'}
+    {#if drawerTab!=='Source'}<div class="drawer-resizer"><PanelResizer label="Document drawer width" value={drawerWidth} min={280} max={460} reverse onChange={(value: number) => drawerWidth = value} /></div>{/if}
+    <aside id="document-drawer" class="document-drawer" class:source-drawer={drawerTab==='Source'} aria-label="Document">
+      <div class="drawer-heading"><strong>Document</strong><span>{screenName(source)}</span><button type="button" aria-label="Close document" onclick={closeDrawer}>×</button></div>
+      <nav class="sidebar-tabs" aria-label="Document sections">{#each ['Layers', 'Data', 'Actions', 'Source'] as tab}<button type="button" aria-pressed={drawerTab === tab} disabled={(dataDraftDirty || sourceDraftDirty) && drawerTab!==tab} onclick={() => changeDocumentTab(tab)}>{tab}</button>{/each}</nav>
+      <div class="sidebar-body" class:source-body={drawerTab==='Source'}>
+        {#if drawerTab === 'Layers'}
           <label class="document-name">Screen name<input aria-label="Screen name" value={screenName(source)} onchange={event => apply(setAttribute({ requestId: crypto.randomUUID(), nodeId: source.root, name: 'aria-label', value: event.currentTarget.value }))} /></label>
-          {#if plan}<Layers {plan} document={source} selectedOccurrence={selected} onSelect={selectFromStructure} onOpenComposition={navigateComposition} componentDescriptors={catalogDescriptors} />{/if}
-        {:else if drawerTab === 'Logic'}
-          <p class="panel-hint">Define starting values here. Select an object to connect it through its tools.</p>
-          <h3>State</h3>
-          {#each Object.entries(source.localState) as [key, declaration] (key)}<details class="state-definition"><summary>{editorLabels.state[key as keyof typeof editorLabels.state] ?? key}<small>{declaration.type}</small></summary><StateInitialEditor document={source} expression={{ type: 'ref', path: `state.${key}` }} labels={editorLabels} onApply={apply} /></details>{/each}
-          <h3>Declared actions</h3>
-          {#each designerCatalogs.actionIds as id}<div class="declared-action"><strong>{editorLabels.actions[id as keyof typeof editorLabels.actions] ?? id}</strong><span>Simulated · no live effects</span><small>Inputs: {Object.keys(actionInputs[id] ?? {}).join(', ') || 'None'}</small></div>{/each}
-          <p class="panel-hint">The supported action is supplied by the application. Edit state declarations in Source; Connect assigns them to objects.</p>
+          {#if plan}<Layers compact {plan} document={source} selectedOccurrence={selected} onSelect={selectFromStructure} onOpenComposition={navigateComposition} componentDescriptors={catalogDescriptors} />{/if}
+        {:else if drawerTab === 'Data'}
+          {#if selectedData && source.localState[selectedData]}
+            <button class="data-back" type="button" disabled={dataDraftDirty} onclick={()=>openData()}>← All data</button>
+            <div class="data-heading"><h2>{dataName(selectedData)}</h2><span>{dataType(source.localState[selectedData]!.type)}</span></div>
+            {#key selectedData}<StateInitialEditor compact document={source} expression={{type:'ref',path:`state.${selectedData}`}} labels={editorLabels} onApply={apply} onDirtyChange={(dirty:boolean)=>dataDraftDirty=dirty} />{/key}
+          {:else}
+            <div class="section-heading"><h2>Screen data</h2><span>Saved starting values</span></div>
+            <div class="data-list">{#each Object.entries(source.localState) as [key,declaration] (key)}<button type="button" class="data-row" onclick={()=>openData(key)}><span><strong>{dataName(key)}</strong><small>{dataType(declaration.type)}</small></span><span class="data-preview">{dataPreview(declaration.initial)}</span><span aria-hidden="true">›</span></button>{/each}</div>
+            {#if !Object.keys(source.localState).length}<p class="panel-hint">This screen has no saved data.</p>{/if}
+          {/if}
+        {:else if drawerTab === 'Actions'}
+          <div class="section-heading"><h2>Available actions</h2><span>Connect them from an object's tools</span></div>
+          {#each designerCatalogs.actionIds as id}<section class="action-card"><div><h3>{(editorLabels.actions[id as keyof typeof editorLabels.actions] ?? id).replace(' (simulated)','')}</h3><span class="simulation-badge" title="Local preview only; no live effects">Simulated</span></div><p>Uses</p><div class="action-inputs">{#each Object.keys(actionInputs[id] ?? {}) as key}<span>{editorLabels.actionInputs[key as keyof typeof editorLabels.actionInputs] ?? key}</span>{:else}<span>No inputs</span>{/each}</div></section>{/each}
         {:else}
-          <p class="panel-eyebrow">CANONICAL SOURCE</p><p class="panel-hint">Humans and agents edit this same UI document. Keep its id and revision. Apply validates the source and creates one undoable change.</p>
+          <div class="source-caption"><span>Screen source</span><small>Changes apply together and can be undone.</small><button type="button" onclick={exportSource}>Export</button></div>
           <label class="sr-only" for="canonical-source">Canonical UI document</label><textarea id="canonical-source" class="source-editor" spellcheck="false" bind:value={sourceDraft} oninput={() => sourceDraftDirty = true}></textarea>
-          <div class="source-actions"><button type="button" disabled={!sourceDraftDirty} onclick={applySource}>Apply source</button><button type="button" disabled={!sourceDraftDirty} onclick={() => { sourceDraftDirty = false; sourceDraft = JSON.stringify(source, null, 2); sourceDraftRevision = snapshot?.revision ?? ''; issues = []; }}>Discard JSON draft</button></div>
-          <details><summary>Application attachment</summary><pre class="source-preview">{JSON.stringify(screenApplication(source), null, 2)}</pre></details>
-          <button type="button" onclick={exportSource}>Export application + source</button>
+          <div class="source-actions"><button type="button" disabled={!sourceDraftDirty} onclick={applySource}>Apply source</button><button type="button" disabled={!sourceDraftDirty} onclick={() => { sourceDraftDirty = false; sourceDraft = JSON.stringify(source, null, 2); sourceDraftRevision = snapshot?.revision ?? ''; issues = []; }}>Discard draft</button></div>
+          <details class="application-attachment"><summary>Application attachment</summary><pre class="source-preview">{JSON.stringify(screenApplication(source), null, 2)}</pre></details>
         {/if}
       </div>
     </aside>

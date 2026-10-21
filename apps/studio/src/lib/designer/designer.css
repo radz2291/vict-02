@@ -186,7 +186,7 @@ body:has(.finished-screen) {
   overflow: hidden;
 }
 .design-workspace.drawer-open {
-  grid-template-columns: minmax(0, 1fr) 6px var(--drawer-width);
+  grid-template-columns: minmax(0, 1fr);
 }
 .design-stage {
   display: flex;
@@ -274,6 +274,13 @@ body:has(.finished-screen) {
   font-size: 12px;
 }
 .document-drawer {
+  position: absolute;
+  inset: 8px 10px 8px auto;
+  width: min(var(--drawer-width), calc(100% - 20px));
+  z-index: 20;
+  border: 1px solid #dce2eb;
+  border-radius: 9px;
+  box-shadow: 0 12px 36px #24304724;
   min-width: 0;
   min-height: 0;
   display: flex;
@@ -284,6 +291,10 @@ body:has(.finished-screen) {
 }
 .drawer-resizer {
   display: grid;
+  position:absolute;
+  inset:8px calc(var(--drawer-width) + 10px) 8px auto;
+  width:6px;
+  z-index:21;
 }
 .drawer-heading {
   display: flex;
@@ -362,32 +373,6 @@ body:has(.finished-screen) {
 }
 .document-drawer .uv-layers footer {
   padding: 7px;
-}
-.state-definition {
-  border-bottom: 1px solid #e8ebf1;
-}
-.state-definition summary {
-  display: flex;
-  justify-content: space-between;
-  gap: 8px;
-  padding: 9px 2px;
-  cursor: pointer;
-}
-.state-definition small {
-  color: #8b98ab;
-}
-.declared-action {
-  display: grid;
-  gap: 4px;
-  padding: 10px;
-  border: 1px solid #e8ebf1;
-  border-radius: 5px;
-  margin-bottom: 10px;
-}
-.declared-action span,
-.declared-action small {
-  color: #8290a4;
-  font-size: 11px;
 }
 .panel-eyebrow {
   font-size: 10px;
@@ -602,15 +587,41 @@ body:has(.finished-screen) {
   .drawer-resizer {
     display: none;
   }
-  .document-drawer {
-    position: absolute;
-    inset: 0 0 0 auto;
-    width: min(360px, 100%);
-    z-index: 8;
-    box-shadow: -12px 0 40px #24304720;
-  }
+  .document-drawer {inset:4px 4px 4px auto;width:min(var(--drawer-width),calc(100% - 8px));}
+  .document-drawer.source-drawer {width:calc(100% - 8px);}
 }
 
 .has-object-tools .canvas-scroll {padding-bottom:290px;}
 .empty-composition {position:absolute;inset:70px 20px auto;text-align:center;color:#7b879c;pointer-events:none;}
 .empty-composition h2 {font-size:16px;font-weight:500;}
+
+/* Document tools float independently of the authored viewport. */
+.document-drawer.source-drawer {width:min(860px,calc(100% - 20px));}
+.drawer-heading > span {margin-left:auto;max-width:55%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:10px;color:#8390a4;}
+.document-drawer .sidebar-body {display:flex;flex-direction:column;gap:0;padding:12px;}
+.document-drawer .uv-layers {flex:1;min-height:0;height:auto;}
+.document-drawer .document-name {margin-bottom:10px;}
+.section-heading {margin:2px 0 14px;} .section-heading h2,.data-heading h2 {font-size:13px;font-weight:600;color:#34425a;margin:0 0 4px;}
+.section-heading > span,.data-heading > span {font-size:10px;color:#7d8a9d;}
+.data-list {display:flex;flex-direction:column;}
+.data-row {display:flex;align-items:center;gap:10px;padding:11px 4px;text-align:left;background:transparent;border:0;border-bottom:1px solid #edf0f5;cursor:pointer;}
+.data-row:hover {background:#f5f7fc;}
+.data-row > span:first-child {display:grid;gap:3px;min-width:0;flex:1;}
+.data-row strong {font-size:11px;font-weight:500;}
+.data-row small {font-size:10px;color:#8a96a8;}
+.data-preview {max-width:45%;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-size:11px;color:#78869c;}
+.data-row > span:last-child {color:#9ba6b6;}
+.data-back {align-self:flex-start;background:transparent;border:0;color:#5269bd;padding:2px 0 14px;font-size:11px;cursor:pointer;}
+.data-heading {margin:0 0 20px;}
+.action-card {padding:12px;border:1px solid #e5e9f1;border-radius:6px;margin-bottom:10px;}
+.action-card > div:first-child {display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.action-card h3 {margin:0;font-size:12px;font-weight:600;color:#34425a;}
+.action-card p {font-size:10px;color:#8a96a8;margin:15px 0 6px;}
+.simulation-badge {border-radius:4px;background:#f0f3fa;padding:3px 5px;font-size:9px;color:#70809b;}
+.action-inputs {display:flex;flex-wrap:wrap;gap:5px;} .action-inputs > span {padding:4px 7px;background:#f7f8fb;border-radius:4px;font-size:10px;color:#65748d;}
+.source-caption {display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:10px;font-size:11px;}
+.source-caption small {color:#8a96a8;font-size:10px;} .source-caption button {margin-left:auto;}
+.source-body .source-editor {flex:1;min-height:160px;resize:none;height:auto;font-size:12px;line-height:1.65;padding:12px;}
+.source-body .source-actions {flex:none;margin:10px 0;}
+.application-attachment {flex:none;font-size:10px;color:#7b879c;max-height:25%;overflow:auto;}
+.document-drawer :focus-visible {outline:2px solid #5269bd;outline-offset:-1px;}
