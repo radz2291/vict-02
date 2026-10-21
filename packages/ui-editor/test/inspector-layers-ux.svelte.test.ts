@@ -44,6 +44,39 @@ function click(target: HTMLElement, label: string) {
 }
 
 describe('Inspector / Layers UX semantic regressions', () => {
+  it('hides redirected text rows without merging labels or losing content search', async () => {
+    const compiled = compileUiDocument(fixture, defaultSemanticElementCatalog());
+    if (!compiled.ok) throw Error('Invalid fixture');
+    const before = JSON.stringify(fixture);
+    const target = document.createElement('div');
+    document.body.append(target);
+    const layers = mount(Layers, {
+      target,
+      props: { plan: compiled.plan, document: fixture, compact: true, hideTextContent: true },
+    });
+    try {
+      flushSync();
+      const heading = target.querySelector('[data-key="ux|title"]')!;
+      expect(heading.querySelector('.name')?.textContent).toBe('Heading');
+      expect(heading.getAttribute('aria-expanded')).toBeNull();
+      expect(heading.querySelector('.child-count')).toBeNull();
+      const search = target.querySelector<HTMLInputElement>('[aria-label="Search layers"]')!;
+      search.value = 'A useful heading';
+      search.dispatchEvent(new Event('input', { bubbles: true }));
+      flushSync();
+      expect(target.querySelector('[data-key="ux|title"]')).not.toBeNull();
+      expect(target.querySelector('[data-key="ux|text"]')).toBeNull();
+      search.value = 'Shared card';
+      search.dispatchEvent(new Event('input', { bubbles: true }));
+      flushSync();
+      expect(target.querySelector('[data-key="ux|copy|a@card"]')).not.toBeNull();
+      expect(JSON.stringify(fixture)).toBe(before);
+    } finally {
+      await unmount(layers);
+      target.remove();
+    }
+  });
+
   it('edits and resets a promoted base source without reintroducing a masking local override', async () => {
     const base = {
       id: 'src.title.always.plain',

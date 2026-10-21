@@ -352,7 +352,7 @@
       <div class="sidebar-body" class:source-body={drawerTab==='Source'}>
         {#if drawerTab === 'Layers'}
           <label class="document-name">Screen name<input aria-label="Screen name" value={screenName(source)} onchange={event => apply(setAttribute({ requestId: crypto.randomUUID(), nodeId: source.root, name: 'aria-label', value: event.currentTarget.value }))} /></label>
-          {#if plan}<Layers compact {plan} document={source} selectedOccurrence={selected} onSelect={selectFromStructure} onOpenComposition={navigateComposition} componentDescriptors={catalogDescriptors} />{/if}
+          {#if plan}<Layers compact hideTextContent {plan} document={source} selectedOccurrence={selected} onSelect={selectFromStructure} onOpenComposition={navigateComposition} componentDescriptors={catalogDescriptors} />{/if}
         {:else if drawerTab === 'Data'}
           {#if selectedData && source.localState[selectedData]}
             <button class="data-back" type="button" disabled={dataDraftDirty} onclick={()=>openData()}>← All data</button>

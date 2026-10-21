@@ -2,20 +2,23 @@
   import type { UiDocument, UiRenderPlan, UiRenderInstruction } from '@victframework/ui';
   import { occurrenceKey, resolveValue, uniqueRepeatKeys, asRecord, evaluatedComponentProps, conditionsOf, evaluateCondition, type DocumentScope } from '@victframework/ui-svelte';
   import { type EditorLabels } from './inspector-ux.js';
+  import { resolveOccurrence } from './occurrence.js';
   import { tick, untrack } from 'svelte';
   import { previewValues } from './preview-values.js';
   import { compositionName, moveRelative, type CompositionPlacement } from './composition.js';
   import type { TransactionDraft } from './commands.js';
   import {compositionSlots,type CompositionFocus} from './composition-focus.js';
-  let { plan, document, selectedOccurrence, onSelect, ariaLabel = 'Layers', labels = {}, scope, onApply, componentDescriptors = [], onOpenComposition, compact = false }: {
+  let { plan, document, selectedOccurrence, onSelect, ariaLabel = 'Layers', labels = {}, scope, onApply, componentDescriptors = [], onOpenComposition, compact = false, hideTextContent = false }: {
     plan: UiRenderPlan; document?: UiDocument; selectedOccurrence?: string; onSelect?: (occurrence: string) => void;
     ariaLabel?: string; labels?: EditorLabels; scope?: DocumentScope;
     onApply?: (draft: TransactionDraft) => boolean; componentDescriptors?: readonly import('@victframework/ui').UiExtensionDescriptor[];
     onOpenComposition?:(focus:CompositionFocus)=>void;
     /** Dense single-line rows for a document browser. Full labels remain accessible. */
     compact?: boolean;
+    /** Hide sole source-owned text children when the host selects their parent. */
+    hideTextContent?: boolean;
   } = $props();
-  interface Entry { key: string; nodeId: string; label: string; detail: string; parent?: string; depth: number; children: boolean; component: boolean; compact: boolean; selectable: boolean; composition?:CompositionFocus; }
+  interface Entry { hiddenText?: boolean; key: string; nodeId: string; label: string; detail: string; parent?: string; depth: number; children: boolean; component: boolean; compact: boolean; selectable: boolean; composition?:CompositionFocus; }
   let expanded = $state(new Set<string>());
   let closed = $state(new Set<string>());
   let focusKey = $state('');
@@ -54,10 +57,15 @@
     function walk(i: UiRenderInstruction, depth: number, keys: readonly string[], parent?: string, values?: DocumentScope, fills: Readonly<Record<string, readonly UiRenderInstruction[]>> = {}, template = false, fillScope?: DocumentScope) {
       const key = occurrenceKey(i.occurrenceKey, keys);
       const label = document ? compositionName(document, i.nodeId, labels) : i.kind === 'text' && i.content.type === 'literal' ? i.content.value : i.kind === 'element' ? i.tag : i.kind === 'component' ? labels.definitions?.[i.definitionId] ?? 'Component' : i.kind;
+      const sourceNode = document?.nodes[i.nodeId];
+      const hiddenText = !!(hideTextContent && document && !template && !keys.length &&
+        i.kind==='element' && i.children.length===1 && i.children[0]?.kind==='text' &&
+        sourceNode?.kind==='element' && sourceNode.children.length===1 &&
+        !resolveOccurrence(key,document).instancePath.some(step=>document.componentDefinitions[step.definitionId]));
       const start = out.length;
-      out.push({ key, nodeId: i.nodeId, label, depth, parent, children: false, component: i.kind === 'component' || i.kind === 'extension', compact: i.kind === 'component' || i.kind === 'extension' || (i.kind === 'element' && i.children.every(c => c.kind === 'text')), selectable: !template && !['component', 'repeat', 'conditional', 'slot'].includes(i.kind), detail: `${i.nodeId}${i.kind === 'component' ? ` · definition ${i.definitionId} @ ${i.definitionRevision}` : ''}${keys.length ? ` · record ${keys.join(' / ')}` : ''}${template ? ' · template (runtime scope unavailable)' : ''}` });
+      out.push({ hiddenText, key, nodeId: i.nodeId, label, depth, parent, children: false, component: i.kind === 'component' || i.kind === 'extension', compact: i.kind === 'component' || i.kind === 'extension' || (i.kind === 'element' && i.children.every(c => c.kind === 'text')), selectable: !template && !['component', 'repeat', 'conditional', 'slot'].includes(i.kind), detail: `${i.nodeId}${i.kind === 'component' ? ` · definition ${i.definitionId} @ ${i.definitionRevision}` : ''}${keys.length ? ` · record ${keys.join(' / ')}` : ''}${template ? ' · template (runtime scope unavailable)' : ''}` });
       const child = (instruction: UiRenderInstruction, childValues = values, childKeys = keys, childFills = fills, isTemplate = template, childFillScope = fillScope) => walk(instruction, depth + 1, childKeys, key, childValues, childFills, isTemplate, childFillScope);
-      if (i.kind === 'element' || i.kind === 'unsupported') i.children.forEach(c => child(c));
+      if (i.kind === 'element' || i.kind === 'unsupported') i.children.filter(c=>!hiddenText || c.kind!=='text').forEach(c => child(c));
       if (i.kind === 'extension') {
         const slots=document && onOpenComposition?compositionSlots(document,i.nodeId,componentDescriptors):[];
         if(slots.length) for(const name of slots){
@@ -149,6 +157,7 @@
     return 'M2 3h12v10H2z M2 6h12';
   }
   function visibleLabel(entry: Entry) {
+    if(entry.hiddenText && !labels.nodes?.[entry.nodeId]) return entry.label.split(' · ')[0];
     // Expanded text-only elements use their role; the child carries the content.
     if (entry.compact && !entry.component && (query || isOpen(entry)) && !labels.nodes?.[entry.nodeId]) return entry.label.split(' · ')[0];
     return entry.label;
