@@ -251,3 +251,10 @@ Genuine pointer/keyboard checks: open Field notes' Dialog, select its Close and 
 Saved trial: Nested compositions r1.r2, `screen-0d550e46-8e35-41d9-8f05-aedb2f40b624`, replay `vict.application@3` identity `v1_b1b00447bbf9ae3edaed6d7c5abe389b8401c346305785ec31fc2c5d9e851227`. Owner Field notes remains r1.r13 / `v1_67b8bd5bcd76…`, unchanged, with its full Dialog composition open on the latest production build at http://127.0.0.1:5480/design. Launch commands above remain applicable; login is the existing local operator credential.
 
 Challenge next: style inheritance and overrides on generated chrome, nested occurrence selection, keyboard focus and toolbox placement, tall/wide content and viewport scrolling, exact adapter capability matching, normal runtime portal/focus lifecycle, saved identity and finished-bundle separation. Other component adapters still use content-only composition surfaces; Keep aside/required-slot behavior remains deferred. No merge to main. Independent verification and owner acceptance remain pending. [Full Dialog composition](full-dialog-composition.png).
+
+
+## Composition entry in the toolbox header — 2026-10-21
+
+Owner-approved refinement from `79b13e2bb0b39f1a10c6ec281c74047fd3ab0b7a`. The component name in the SelectionPalette header is now the composition entry, with an arrow, explicit accessible name and Open composition tooltip. It is available from every tool page, keyboard accessible and disabled during drafts. Components without an available composition retain a plain name. The separate Edit contents row and its CSS are removed. Double-click and breadcrumbs retain their existing navigation.
+
+Shared interface: replace SelectionPalette's unused body `context` snippet with optional `onOpenComposition`. No canonical document, application identity or runtime behavior changes. Builder validation: existing Studio composition/save/reopen regression, shared editor build, production Studio build and designer check; native pointer/keyboard entry and return on Field notes. Owner source remains unchanged. Independent verification remains pending.

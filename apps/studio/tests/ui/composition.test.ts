@@ -57,7 +57,10 @@ it('opens a closed composition without authored or runtime changes, guards draft
   trigger.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, cancelable: true }));
   trigger.click();
   await tick();
-  button('Edit contents →');
+  const entry = document.querySelector<HTMLButtonElement>('[aria-label="Open Details composition"]');
+  expect(entry?.closest('.palette-header')).not.toBeNull();
+  expect(document.querySelector('.composition-entry')).toBeNull();
+  entry!.click();
   await tick();
   expect(document.querySelector('[aria-label="Composition navigation"]')).not.toBeNull();
   await tick();

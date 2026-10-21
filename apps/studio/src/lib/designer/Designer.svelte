@@ -301,8 +301,7 @@
   </div>
   {#if source && bridge}
   {#snippet floatingTools()}
-    <SelectionPalette revealSignal={selectionToolsReveal} locked={textDraftDirty} bind:page={palettePage} name={compositionName(source, selectedNode?.id ?? source.root)} focusSignal={paletteFocus}>
-      {#snippet context()}{#if selectedSlots.length && selectedNode?.id!==compositionFocus?.nodeId}<div class="composition-entry"><button type="button" disabled={textDraftDirty || sourceDraftDirty} onclick={()=>openComposition()}>Edit contents →</button><span>{selectedSlots.length===1?'Open this composition':`${selectedSlots.length} content areas`}</span></div>{/if}{/snippet}
+    <SelectionPalette revealSignal={selectionToolsReveal} locked={textDraftDirty || sourceDraftDirty} onOpenComposition={selectedSlots.length && selectedNode?.id!==compositionFocus?.nodeId ? ()=>openComposition() : undefined} bind:page={palettePage} name={compositionName(source, selectedNode?.id ?? source.root)} focusSignal={paletteFocus}>
       {#snippet objectProperties(section: 'Content' | 'Style' | 'Behavior')}
         <Inspector contextual editTextSignal={section === 'Behavior' ? undefined : editTextSignal} onTextDraftChange={(dirty: boolean) => textDraftDirty = dirty} {section} document={source} selectedOccurrence={selected} onApply={apply} lastIssues={issues} componentDescriptors={catalogDescriptors} knownActionIds={designerCatalogs.actionIds} {actionInputs} knownRouteIds={['screen']} labels={editorLabels} styleConditions={[{ id: 'compact', label: 'Compact · ≤600px' }]} readEffective={effective} />
       {/snippet}

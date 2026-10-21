@@ -1,10 +1,11 @@
 <script lang="ts">
   import { tick, untrack, type Snippet } from 'svelte';
-  let { page = $bindable('format'), name, format, insert, arrange, connect, context, focusSignal, revealSignal, locked = false }: {
+  let { page = $bindable('format'), name, format, insert, arrange, connect, onOpenComposition, focusSignal, revealSignal, locked = false }: {
     locked?: boolean;
     page?: 'format' | 'insert' | 'arrange' | 'connect'; name: string;
     format: Snippet; insert: Snippet; arrange: Snippet; connect?: Snippet; focusSignal?: symbol; revealSignal?: symbol;
-    context?: Snippet;
+    /** Open the selected component as an editable composition. */
+    onOpenComposition?: () => void;
   } = $props();
   const pages: readonly ('format' | 'insert' | 'arrange' | 'connect')[] = $derived(connect ? ['format', 'insert', 'arrange', 'connect'] as const : ['format', 'insert', 'arrange'] as const);
   const uid = $props.id();
@@ -31,10 +32,14 @@
     <div role="tablist" aria-label="Tool pages">
       {#each pages as item}<button type="button" role="tab" id={`${uid}-${item}`} aria-controls={`${uid}-panel`} aria-label={`${item[0]!.toUpperCase()}${item.slice(1)} tools`} aria-selected={page === item && !collapsed} aria-expanded={page === item && !collapsed} tabindex={page === item ? 0 : -1} disabled={locked && page !== item} onclick={() => change(item, false, true)} onkeydown={navigate}>{item[0]!.toUpperCase()}{item.slice(1)}</button>{/each}
     </div>
-    <span title={name}>{name}</span>
+    {#if onOpenComposition}
+      <button class="composition-link" type="button" title="Open composition" aria-label={`Open ${name} composition`} disabled={locked} onclick={onOpenComposition}><span>{name}</span><span aria-hidden="true">↗</span></button>
+    {:else}
+      <span class="selection-name" title={name}>{name}</span>
+    {/if}
   </div>
   <div role="tabpanel" id={`${uid}-panel`} aria-labelledby={`${uid}-${page}`} tabindex="0" class="palette-body" data-ui-tool-body hidden={collapsed}>
-    {#if context}{@render context()}{/if}{#if page === 'format'}{@render format()}{:else if page === 'insert'}{@render insert()}{:else if page === 'arrange'}{@render arrange()}{:else}{@render connect?.()}{/if}
+    {#if page === 'format'}{@render format()}{:else if page === 'insert'}{@render insert()}{:else if page === 'arrange'}{@render arrange()}{:else}{@render connect?.()}{/if}
   </div>
 </div>
 <style>
@@ -43,7 +48,11 @@
   [role=tablist] {display:flex;gap:2px;flex-shrink:0;}
   [role=tab] {width:58px;text-align:center;border:0;border-radius:4px;background:transparent;color:#78869c;padding:5px 8px;font:inherit;cursor:pointer;}
   [role=tab][aria-selected=true] {background:#edf1ff;color:#405abd;font-weight:600;}
-  .palette-header > span {margin-left:auto;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;color:#8a96a8;font-size:10px;}
+  .selection-name, .composition-link {margin-left:auto;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;color:#8a96a8;font-size:10px;}
+  .composition-link {display:flex;align-items:center;gap:4px;min-width:0;border:0;border-radius:4px;background:transparent;padding:4px;font:inherit;font-size:10px;color:#5269bd;cursor:pointer;}
+  .composition-link > span:first-child {overflow:hidden;text-overflow:ellipsis;}
+  .composition-link > span:last-child {flex:none;}
+  .composition-link:hover:not(:disabled) {background:#edf1ff;}
   .palette-body {height:auto;max-height:min(244px,calc(100dvh - 220px));min-height:0;overflow:auto;padding:7px;box-sizing:border-box;overscroll-behavior:contain;}
   .palette-body > :global(*) {max-width:100%;} :disabled {opacity:.4;cursor:default;}
   :focus-visible {outline:2px solid #5269bd;outline-offset:-1px;}
