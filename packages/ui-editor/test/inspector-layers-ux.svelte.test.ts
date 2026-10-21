@@ -247,6 +247,7 @@ describe('Inspector / Layers UX semantic regressions', () => {
       );
       expect(visibleTabStops).toHaveLength(1);
       expect(visibleTabStops[0]?.getAttribute('data-key')).toBe('ux|a');
+      expect(visibleTabStops[0]?.querySelector('.child-count')?.textContent).toBe('1');
     } finally {
       await unmount(layers);
       target.remove();

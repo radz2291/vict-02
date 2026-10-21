@@ -108,6 +108,7 @@ it('opens a closed composition without authored or runtime changes, guards draft
   await tick();
   expect(document.querySelector('[aria-label="Composition navigation"]')).not.toBeNull();
   expect(document.querySelector('#document-drawer')).not.toBeNull();
+  expect(document.querySelector('[aria-label="Floating selection tools"]')).toBeNull();
   button('← Screen');
   await tick();
   expect(document.querySelector('#document-drawer')).not.toBeNull();
@@ -144,6 +145,16 @@ it('keeps data drafts safe across document navigation and saves applied starting
   document.querySelector<HTMLButtonElement>('.uv-layers [role="treeitem"]')!.click();
   await tick();
   expect(document.querySelector('#document-drawer')).not.toBeNull();
+  expect(document.querySelector('[aria-label="Floating selection tools"]')).toBeNull();
+  const canvasRoot = document.querySelector<HTMLElement>('.design-frame [data-ui-node="screen"]')!;
+  canvasRoot.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, cancelable: true }));
+  canvasRoot.click();
+  await tick();
+  await tick();
+  expect(document.querySelector('[aria-label="Floating selection tools"]')).not.toBeNull();
+  document.querySelector<HTMLButtonElement>('.uv-layers [role="treeitem"]')!.click();
+  await tick();
+  expect(document.querySelector('[aria-label="Floating selection tools"]')).toBeNull();
   button('Data');
   await tick();
   const row = [...document.querySelectorAll<HTMLButtonElement>('.data-row')].find((item) =>

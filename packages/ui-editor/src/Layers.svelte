@@ -92,6 +92,12 @@
     plan.structure.forEach(i => walk(i, 0, [], undefined, effectiveScope));
     return out;
   });
+  // Count immediate children in the complete outline, independent of search/collapse.
+  const childCounts = $derived.by(() => {
+    const counts = new Map<string,number>();
+    for(const entry of all) if(entry.parent) counts.set(entry.parent,(counts.get(entry.parent) ?? 0)+1);
+    return counts;
+  });
   function isOpen(entry: Entry) { return !closed.has(entry.key) && (!entry.compact || expanded.has(entry.key)); }
   const matches = $derived(all.filter(entry => `${entry.label} ${entry.detail}`.toLocaleLowerCase().includes(query)));
   const searchKeys = $derived.by(() => {
@@ -196,7 +202,7 @@
         <button type="button" role="treeitem" data-key={entry.key} data-drop={dropKey === entry.key ? dropPosition : undefined} aria-level={entry.depth + 1} aria-expanded={entry.children ? !!query || isOpen(entry) : undefined} aria-selected={entry.key === selectedOccurrence} tabindex={entry.key === tabStop ? 0 : -1} title={`${entry.label} · ${entry.detail}`} onclick={() => select(entry)} onkeydown={e => keyboard(e, entry)} onfocus={() => focusKey = entry.key}
           draggable={!!onApply && direct(entry) && !query} ondragstart={event => { if (!direct(entry)) { event.preventDefault(); return; } draggedId = entry.nodeId; if (event.dataTransfer) { event.dataTransfer.effectAllowed = 'move'; event.dataTransfer.setData('text/plain', entry.nodeId); } }}
           ondragover={event => dragOver(event, entry)} ondrop={event => drop(event, entry)} ondragleave={() => { dropKey = ''; }} ondragend={() => { draggedId = ''; dropKey = ''; moveMessage = ''; }}>
-          <span class="icon" aria-hidden="true"><svg viewBox="0 0 16 16"><path d={iconPath(entry)} /></svg></span><span class="name" title={visibleLabel(entry)}>{visibleLabel(entry)}</span>{#if entry.component}<span class="badge" title="Component" aria-label="Component">◇</span>{/if}
+          <span class="icon" aria-hidden="true"><svg viewBox="0 0 16 16"><path d={iconPath(entry)} /></svg></span><span class="name" title={visibleLabel(entry)}>{visibleLabel(entry)}</span>{#if entry.children && !query && !isOpen(entry)}<span class="child-count" title="Direct children" aria-label={`${childCounts.get(entry.key) ?? 0} direct ${childCounts.get(entry.key) === 1 ? 'child' : 'children'}`}>{childCounts.get(entry.key)}</span>{/if}{#if entry.component}<span class="badge" title="Component" aria-label="Component">◇</span>{/if}
         </button>
       </li>
     {/each}
@@ -231,7 +237,8 @@
   .is-selected .tree-guide::before,.is-selected .tree-guide::after,.is-ancestor .tree-guide::before,.is-ancestor .tree-guide::after {border-color:#9aabd3;}
   .is-selected .name,.is-selected .icon {color:var(--ui-editor-accent,#355cc9);}
   [role=treeitem]:hover {background:#f0f3f9;}
-  [role=treeitem][aria-selected=true] {background:var(--ui-editor-selection,#edf1ff);box-shadow:inset 2px 0 #5269bd;}
+  [role=treeitem][aria-selected=true] {background:var(--ui-editor-selection,#edf1ff);}
+  .child-count {flex:none;font-size:10px;font-variant-numeric:tabular-nums;color:var(--ui-editor-muted,#667085);padding-inline:4px;}
   .badge { font-size: 9px; color: var(--ui-editor-muted, #667085); }
   :focus-visible { outline: 2px solid var(--ui-editor-accent, #355cc9); outline-offset: -2px; }
   .compact {background:var(--ui-editor-input,#fff);}

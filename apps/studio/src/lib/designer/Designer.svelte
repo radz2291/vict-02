@@ -57,7 +57,7 @@
         if(nearest && compositionSlots(source,nearest.nodeId,catalogDescriptors).includes(nearest.slotName))compositionFocus=nearest;
       }
     }
-    selectOccurrence(occurrence);
+    selectOccurrence(occurrence, false);
 
   }
   let plan = $state<UiRenderPlan>();
@@ -90,7 +90,7 @@
   const editorLabels = { actions: { 'demo.submit': 'Submit (simulated)' }, nodes: { screen: 'Screen' },
     state: { message: 'Message', accepted: 'Agreement', dialogOpen: 'Dialog open', busy: 'Submitting', actionError: 'Action error', actionResult: 'Action result' },
     actionInputs: { message: 'Message', accepted: 'Agreement' } };
-  function selectOccurrence(occurrence: string) {
+  function selectOccurrence(occurrence: string, revealTools = true) {
     if (textDraftDirty || (drawerOpen && sourceDraftDirty)) { notice = 'Apply or cancel your edit first.'; return; }
     if(drawerTab!=='Layers') drawerOpen=false;
     editTextSignal = undefined;
@@ -105,10 +105,10 @@
       if(compositionFocus && id!==compositionFocus.nodeId && !focusedMembers?.has(id))compositionFocus=undefined;
     }
     bridge?.select(occurrence);
-    palettePage = 'format'; paletteRequested = true;
+    palettePage = 'format'; paletteRequested = revealTools;
     formatSection = reportSection(occurrence);
-    if (matchMedia('(max-width: 760px)').matches) drawerOpen = false;
-    selectionToolsReveal = Symbol('selection-tools');
+    if (revealTools && matchMedia('(max-width: 760px)').matches) drawerOpen = false;
+    if(revealTools) selectionToolsReveal = Symbol('selection-tools');
   }
   function editSelectedText(occurrence = selected) {
     if (!occurrence || !source || textDraftDirty) return;
@@ -323,7 +323,7 @@
       {#snippet arrange()}<Composer document={source} selectedNodeId={selectedNode?.id} recipes={[]} descriptors={catalogDescriptors} compact showInsert={false} onApply={apply} onDuplicate={duplicateSelection} onDetached={(parentId: string)=>{selectOccurrence(`${source.id}|${parentId}`);notice='Content kept aside. Use Insert → Reuse to place it again.';}} />{#if !selectedNode || selectedNode.id === source.root}<p class="palette-hint">Select an element to move, duplicate or delete it.</p>{/if}{/snippet}
     </SelectionPalette>
   {/snippet}
-  <div class="design-workspace" class:drawer-open={drawerOpen} class:source-open={drawerOpen && drawerTab==='Source'} class:has-object-tools={mode === 'design' && !!selectedNode && (selectedNode.id !== source.root || paletteRequested)} style:--drawer-width={`${drawerWidth}px`}>
+  <div class="design-workspace" class:drawer-open={drawerOpen} class:source-open={drawerOpen && drawerTab==='Source'} class:has-object-tools={mode === 'design' && !!selectedNode && paletteRequested} style:--drawer-width={`${drawerWidth}px`}>
     <main class="design-stage">
       <div class="canvas-toolbar"><label><span class="sr-only">Canvas width</span><select aria-label="Canvas width" bind:value={width}><option value="fluid">Fit canvas</option><option value="768">Tablet · 768</option><option value="390">Phone · 390</option></select></label><button type="button" onclick={resetRuntime} title="Reset ephemeral runtime values">Reset preview</button></div>
       {#if compositionFocus}<CompositionNavigator document={source} focus={compositionFocus} descriptors={catalogDescriptors} disabled={textDraftDirty || sourceDraftDirty} onNavigate={navigateComposition} />{/if}
@@ -331,7 +331,7 @@
         <div class="design-frame" style:max-width={width === 'fluid' ? 'none' : `${width}px`}>
           <EditorCanvas document={source} catalogs={designerCatalogs} extensions={catalogDescriptors} extensionImplementations={catalogImplementations}
             {compositionFocus} onOpenComposition={openComposition}
-            selectionTools={(!drawerOpen || drawerTab==='Layers') && selectedNode && (selectedNode.id !== source.root || paletteRequested) ? floatingTools : undefined}
+            selectionTools={(!drawerOpen || drawerTab==='Layers') && selectedNode && paletteRequested ? floatingTools : undefined}
             {selectionToolsReveal} selectionToolsPinned={textDraftDirty}
             selectionToolsPlacement="below"
             onEditTextRequest={editSelectedText}
