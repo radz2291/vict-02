@@ -37,6 +37,8 @@
   interface Props {
     readonly instruction: UiRenderInstruction;
     readonly plan: UiRenderPlan;
+    /** Exact occurrence requesting an adapter-owned inline surface. Never authored. */
+    readonly componentSurface?: { readonly occurrenceKey: string; readonly slotName: string };
     readonly generation?: symbol;
     /** @deprecated Generation tokens fence outputs; retained for existing direct consumers. */
     readonly planHolder?: { readonly plan: UiRenderPlan };
@@ -67,6 +69,7 @@
   let {
     instruction,
     plan,
+    componentSurface,
     generation,
     ownerId,
     slotScope,
@@ -164,7 +167,7 @@
   const presentation = $derived.by(() => {
     const owner = instruction;
     const root = rootClassFor(plan);
-    return { scopeClass: root, target(name: string) {
+    return { scopeClass: root, compositionSlot: componentSurface?.occurrenceKey === occ && extension?.ok && extension.kind === 'component' && extension.compositionSlots?.includes(componentSurface.slotName) ? componentSurface.slotName : undefined, target(name: string) {
       if (owner.kind !== 'extension' || !owner.styleTargets?.includes(name)) return { class: '' };
       const primary = name === owner.styleTargets[0];
       return {
@@ -276,7 +279,7 @@
       <Self
         instruction={child}
         {plan}
-    {generation}
+    {generation} {componentSurface}
         {ownerId}
         {slotScope}
         {actionStatuses}
@@ -324,7 +327,7 @@
   <Self
     instruction={instruction.body}
     {plan}
-    {generation}
+    {generation} {componentSurface}
         {ownerId}
         {actionStatuses}
     {extensionDescriptors}
@@ -349,7 +352,7 @@
     {@const extensionInstruction = instruction}
     {#snippet renderFill(children: readonly UiRenderInstruction[])}
       {#each children as child (child.occurrenceKey)}
-        <Self instruction={child} {plan} {generation}
+        <Self instruction={child} {plan} {generation} {componentSurface}
         {ownerId}
         {slotScope}
         {actionStatuses} {extensionDescriptors} {extensionImplementations}
@@ -382,7 +385,7 @@
       <Self
         instruction={instruction.template}
         {plan}
-    {generation}
+    {generation} {componentSurface}
         {ownerId}
         {slotScope}
         {actionStatuses}
@@ -407,7 +410,7 @@
     <Self
       instruction={child}
       {plan}
-    {generation}
+    {generation} {componentSurface}
         {ownerId}
         {slotScope}
         {actionStatuses}
@@ -431,7 +434,7 @@
       <Self
         instruction={child}
         {plan}
-    {generation}
+    {generation} {componentSurface}
         {ownerId}
         slotScope={undefined}
         {actionStatuses}
@@ -453,7 +456,7 @@
       <Self
         instruction={child}
         {plan}
-    {generation}
+    {generation} {componentSurface}
         {ownerId}
         {slotScope}
         {actionStatuses}
@@ -478,7 +481,7 @@
       <Self
         instruction={child}
         {plan}
-    {generation}
+    {generation} {componentSurface}
         {ownerId}
         {slotScope}
         {actionStatuses}

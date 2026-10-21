@@ -21,6 +21,8 @@
 
   interface Props {
     readonly plan: UiRenderPlan;
+    /** Exact occurrence requesting an adapter-owned inline surface. Never authored. */
+    readonly componentSurface?: { readonly occurrenceKey: string; readonly slotName: string };
     /** Explicit metadata/code registration, shared by product and editor. */
     readonly extensionDescriptors?: readonly UiExtensionDescriptor[];
     readonly extensionImplementations?: readonly (
@@ -54,6 +56,7 @@
 
   let {
     plan,
+    componentSurface,
     extensionDescriptors = [],
     extensionImplementations = [],
     view = {},
@@ -248,7 +251,7 @@
       <RenderNode
         {instruction}
         {plan}
-        {generation}
+        {generation} {componentSurface}
         {ownerId}
         {extensionDescriptors}
         {extensionImplementations}

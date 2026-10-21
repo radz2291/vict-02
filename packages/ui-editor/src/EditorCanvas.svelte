@@ -13,7 +13,7 @@
   import { resolveOccurrence } from './occurrence.js';
   import type { TransactionDraft } from './commands.js';
   import { compositionParent } from './composition.js';
-  import {projectComposition,compositionSlots,type CompositionFocus} from './composition-focus.js';
+  import {projectComposition,authoredOccurrence,compositionSlots,type CompositionFocus} from './composition-focus.js';
   import {
     DocumentHost,
     type UiSvelteComponentImplementation,
@@ -128,7 +128,7 @@
     priorCompilation = { source: document, inputs, result };
     return result;
   });
-  const focusedPlan=$derived(compiled.ok && interactionMode==='design' && compositionFocus?projectComposition(compiled.plan,document,compositionFocus,extensions,extensionImplementations.filter(entry=>'requiresParentContext' in entry && entry.requiresParentContext).map(entry=>entry.extensionId)):undefined);
+  const focusedPlan=$derived(compiled.ok && interactionMode==='design' && compositionFocus?projectComposition(compiled.plan,document,compositionFocus,extensions,extensionImplementations.filter(entry=>'requiresParentContext' in entry && entry.requiresParentContext).map(entry=>entry.extensionId),extensionImplementations.filter(entry=>'compositionSlots' in entry && entry.compositionSlots?.includes(compositionFocus.slotName)).map(entry=>`${entry.extensionId}@${entry.revision}`)):undefined);
 
   function handleSelect(occurrence: string): void {
     onSelect(occurrence);
@@ -296,6 +296,7 @@
     </style>
     <DocumentHost
       plan={focusedPlan ?? compiled.plan}
+      componentSurface={focusedPlan && compositionFocus ? {occurrenceKey: authoredOccurrence(document,compositionFocus.nodeId) ?? '',slotName:compositionFocus.slotName} : undefined}
       extensionDescriptors={extensions}
       {extensionImplementations}
       {stateValues}

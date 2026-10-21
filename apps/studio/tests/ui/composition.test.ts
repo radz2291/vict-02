@@ -51,6 +51,8 @@ it('opens a closed composition without authored or runtime changes, guards draft
   editor = mount(Designer, { target: document.body });
   await tick();
   await tick();
+  const scroll = document.querySelector<HTMLElement>('.canvas-scroll')!;
+  scroll.scrollTop = 100;
   const trigger = document.querySelector<HTMLElement>('[data-testid=dialog-trigger]')!;
   trigger.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, cancelable: true }));
   trigger.click();
@@ -58,8 +60,12 @@ it('opens a closed composition without authored or runtime changes, guards draft
   button('Edit contents →');
   await tick();
   expect(document.querySelector('[aria-label="Composition navigation"]')).not.toBeNull();
+  await tick();
+  expect(scroll.scrollTop).toBe(0);
   expect(document.querySelector('.design-frame')?.textContent).toContain('Original body');
-  expect(document.querySelector('[data-testid=dialog-panel]')).toBeNull();
+  expect(
+    document.querySelector('[data-testid=dialog-panel][data-ui-composition-surface=body]'),
+  ).not.toBeNull();
   expect(document.querySelector('.save-state')?.textContent).toContain('Saved');
   expect(document.querySelector<HTMLButtonElement>('[title="Undo · Ctrl+Z"]')?.disabled).toBe(true);
   const paragraph = document.querySelector<HTMLElement>('[data-ui-node=paragraph]')!;

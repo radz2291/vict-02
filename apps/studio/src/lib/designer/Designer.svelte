@@ -26,6 +26,7 @@
   const selected = $derived(snapshot?.selectedOccurrence);
   const selectedNode = $derived(source && selected ? resolveOccurrence(selected, source).node : undefined);
   let compositionFocus=$state<CompositionFocus>();
+  let canvasScroll=$state<HTMLDivElement>();
   const selectedSlots=$derived(source && selectedNode?compositionSlots(source,selectedNode.id,catalogDescriptors):[]);
   const focusedMembers=$derived(source && compositionFocus?compositionMembers(source,compositionFocus):undefined);
   $effect(()=>{if(source && compositionFocus && !compositionSlots(source,compositionFocus.nodeId,catalogDescriptors).includes(compositionFocus.slotName)) {compositionFocus=undefined;notice='Composition is no longer available. Returned to the screen.';}});
@@ -38,7 +39,8 @@
     bridge?.select(authoredOccurrence(source,nodeId) ?? `${source.id}|${source.root}`);
     editTextSignal=undefined;paletteRequested=false;drawerOpen=false;
     notice=next?`Editing ${compositionName(source,next.nodeId)} / ${next.slotName}. App visibility is unchanged.`:'Returned to the screen.';
-    await tick(); globalThis.document.querySelector<HTMLElement>('.design-frame .uv-canvas')?.focus();
+    await tick(); globalThis.document.querySelector<HTMLElement>('.design-frame .uv-canvas')?.focus({preventScroll:true});
+    if(canvasScroll) {canvasScroll.scrollTop=0;canvasScroll.scrollLeft=0;}
   }
   function openComposition(occurrence=selected) {
     if(!source || !occurrence)return;
@@ -314,7 +316,7 @@
     <main class="design-stage">
       <div class="canvas-toolbar"><span><span class="live-dot"></span>{mode === 'design' ? 'Design · selection only' : 'Interact · simulated'}</span><label><span class="sr-only">Canvas width</span><select aria-label="Canvas width" bind:value={width}><option value="fluid">Fit canvas</option><option value="768">Tablet · 768</option><option value="390">Phone · 390</option></select></label><button type="button" onclick={resetRuntime} title="Reset ephemeral runtime values">Reset preview</button></div>
       {#if compositionFocus}<CompositionNavigator document={source} focus={compositionFocus} descriptors={catalogDescriptors} disabled={textDraftDirty || sourceDraftDirty} onNavigate={navigateComposition} />{/if}
-      <div class="canvas-scroll"><div class="canvas-caption">{screenName(source)} <span>{width === 'fluid' ? 'Responsive' : `${width}px`}</span></div>
+      <div class="canvas-scroll" bind:this={canvasScroll}><div class="canvas-caption">{screenName(source)} <span>{width === 'fluid' ? 'Responsive' : `${width}px`}</span></div>
         <div class="design-frame" style:max-width={width === 'fluid' ? 'none' : `${width}px`}>
           <EditorCanvas document={source} catalogs={designerCatalogs} extensions={catalogDescriptors} extensionImplementations={catalogImplementations}
             {compositionFocus} onOpenComposition={openComposition}

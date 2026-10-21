@@ -46,7 +46,6 @@ export interface UiSvelteComponentIO {
 /** Props + IO contract for a component-ABI implementation (amendment §3.4). */
 export interface UiSvelteComponentProps extends UiSvelteExtensionProps {
   readonly io?: UiSvelteComponentIO;
-
 }
 
 /**
@@ -68,6 +67,8 @@ export interface UiSvelteComponentImplementation {
   readonly required?: readonly string[];
   /** Context-only parts cannot be mounted as standalone composition previews. */
   readonly requiresParentContext?: boolean;
+  /** Slots supporting an inline, noninteractive component frame. */
+  readonly compositionSlots?: readonly string[];
   readonly component: Component<UiSvelteComponentProps>;
 }
 
@@ -85,6 +86,7 @@ export type UiSvelteComponentResolution =
   | {
       readonly ok: true;
       readonly kind: 'component';
+      readonly compositionSlots?: readonly string[];
       readonly component: Component<UiSvelteComponentProps>;
       readonly descriptor: UiExtensionDescriptor;
       readonly outputDecls: readonly UiOutputDecl[];
@@ -212,8 +214,14 @@ export function resolveSvelteComponent(
     );
   }
   if ((instruction.styleRuleIds?.length ?? 0) > 0 || (instruction.classes?.length ?? 0) > 1) {
-    if ((descriptor.styleTargets?.length ?? 0) === 0 || descriptor.styleTargets?.some(target => !implementation.styleTargets?.includes(target))) {
-      return fail('UI_COMPONENT_UNAVAILABLE', 'The implementation cannot forward the declared style target.');
+    if (
+      (descriptor.styleTargets?.length ?? 0) === 0 ||
+      descriptor.styleTargets?.some((target) => !implementation.styleTargets?.includes(target))
+    ) {
+      return fail(
+        'UI_COMPONENT_UNAVAILABLE',
+        'The implementation cannot forward the declared style target.',
+      );
     }
   }
   const filledSlots = Object.keys(instruction.slots ?? {});
@@ -237,6 +245,7 @@ export function resolveSvelteComponent(
     component: implementation.component,
     descriptor,
     outputDecls: instruction.outputDecls,
+    compositionSlots: implementation.compositionSlots,
   };
 }
 
@@ -278,6 +287,8 @@ export interface UiComponentTargetAttributes {
   readonly onpointerdowncapture?: (event: PointerEvent) => void;
 }
 export interface UiComponentPresentation {
+  /** Ephemeral inline surface, accepted only by explicitly capable adapters. */
+  readonly compositionSlot?: string;
   /** Canonical document scope placed on an ancestor of portaled parts. */
   readonly scopeClass?: string;
   /** The first declared style target owns instance styles; other targets expose inspection. */

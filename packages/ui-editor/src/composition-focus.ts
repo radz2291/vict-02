@@ -109,6 +109,7 @@ export function projectComposition(
   focus: CompositionFocus,
   descriptors: readonly UiExtensionDescriptor[],
   contextParts: readonly string[] = [],
+  surfaceComponents: readonly string[] = [],
 ): UiRenderPlan | undefined {
   if (!compositionSlots(document, focus.nodeId, descriptors).includes(focus.slotName))
     return undefined;
@@ -177,7 +178,14 @@ export function projectComposition(
     for (const node of nodes) {
       if (node.kind === 'extension') {
         if (node.nodeId === focus.nodeId)
-          return [frame(node, (node.slots?.[focus.slotName] ?? []).map(content))];
+          return surfaceComponents.includes(`${node.extensionId}@${node.revision}`)
+            ? [
+                {
+                  ...node,
+                  slots: { [focus.slotName]: (node.slots?.[focus.slotName] ?? []).map(content) },
+                },
+              ]
+            : [frame(node, (node.slots?.[focus.slotName] ?? []).map(content))];
         for (const children of Object.values(node.slots ?? {})) {
           const found = find(children);
           if (found)

@@ -437,6 +437,16 @@
   background: var(--vict-color-surface);
   box-shadow: var(--vict-elevation-high);
 }
+/* Inline adapter surface: retain the runtime frame, remove modal placement. */
+.vict-controls [data-dialog-content][data-ui-composition-surface] {
+  position: relative;
+  inset: auto;
+  transform: none;
+  z-index: auto;
+  max-width: 100%;
+  max-height: none;
+  margin-inline: auto;
+}
 .vict-controls :where([data-dialog-title], [data-alert-dialog-title]) {
   display: block;
   margin: 0;

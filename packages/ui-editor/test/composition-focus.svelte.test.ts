@@ -114,6 +114,32 @@ it('projects the same canonical slot instructions without changing source, state
   expect(list.find((node) => node.nodeId === 'nested')?.kind).toBe('element');
   expect(list.some((node) => node.nodeId === 'nested-copy')).toBe(false);
   expect(list.find((node) => node.nodeId === 'button')?.kind).toBe('extension');
+  const surface = projectComposition(
+    full,
+    source,
+    { nodeId: 'dialog', slotName: 'body' },
+    catalogDescriptors,
+    [],
+    ['vict.catalog.dialog@1'],
+  )!;
+  const dialog = instructions(surface.structure).find((node) => node.nodeId === 'dialog')!;
+  expect(dialog.kind).toBe('extension');
+  if (dialog.kind !== 'extension') throw Error('Missing adapter surface');
+  const originalDialog = instructions(full.structure).find((node) => node.nodeId === 'dialog')!;
+  if (originalDialog.kind !== 'extension') throw Error('Missing original adapter');
+  expect({ ...dialog, slots: originalDialog.slots }).toEqual(originalDialog);
+  expect(dialog.occurrenceKey).toBe(originalDialog.occurrenceKey);
+  const wrongRevision = projectComposition(
+    full,
+    source,
+    { nodeId: 'dialog', slotName: 'body' },
+    catalogDescriptors,
+    [],
+    ['vict.catalog.dialog@2'],
+  )!;
+  expect(instructions(wrongRevision.structure).find((node) => node.nodeId === 'dialog')?.kind).toBe(
+    'element',
+  );
   expect(focused.sourceDigest).toBe(full.sourceDigest);
   expect(focused.style).toBe(full.style);
   expect(JSON.stringify([source, full])).toBe(before);
@@ -165,7 +191,14 @@ it('renders editable closed contents using the real renderer and leaf adapters, 
     await tick();
     expect(target.textContent).toContain('Editable hidden content');
     expect(target.textContent).not.toContain('Outside the composition');
-    expect(target.querySelector('[data-testid=dialog-panel]')).toBeNull();
+    expect(
+      target.querySelector('[data-testid=dialog-panel][data-ui-composition-surface=body]'),
+    ).not.toBeNull();
+    expect(target.querySelector('[data-dialog-title]')?.textContent).toContain('Details');
+    expect(target.querySelector('[data-testid=dialog-overlay]')).toBeNull();
+    expect(target.querySelector('[data-testid=dialog-trigger]')).toBeNull();
+    target.querySelector<HTMLButtonElement>('[data-testid=dialog-close]')!.click();
+    expect(target.querySelector('[data-ui-composition-surface]')).not.toBeNull();
     expect(target.querySelector('[data-testid=catalog-button]')).not.toBeNull();
     const tile = target.querySelector<HTMLElement>('.uv-composition-tile')!;
     tile.dispatchEvent(new MouseEvent('dblclick', { bubbles: true, cancelable: true }));

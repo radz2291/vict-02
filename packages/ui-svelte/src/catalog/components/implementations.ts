@@ -45,6 +45,7 @@ export const b1CatalogImplementations: readonly UiSvelteComponentImplementation[
   },
   {
     extensionId: 'vict.catalog.dialog',
+    compositionSlots: ['body'],
     revision: '1',
     rendererImplementationId: 'vict.svelte.catalog',
     abi: 'vict.ui-component-abi@1',
