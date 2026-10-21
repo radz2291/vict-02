@@ -258,3 +258,6 @@ Challenge next: style inheritance and overrides on generated chrome, nested occu
 Owner-approved refinement from `79b13e2bb0b39f1a10c6ec281c74047fd3ab0b7a`. The component name in the SelectionPalette header is now the composition entry, with an arrow, explicit accessible name and Open composition tooltip. It is available from every tool page, keyboard accessible and disabled during drafts. Components without an available composition retain a plain name. The separate Edit contents row and its CSS are removed. Double-click and breadcrumbs retain their existing navigation.
 
 Shared interface: replace SelectionPalette's unused body `context` snippet with optional `onOpenComposition`. No canonical document, application identity or runtime behavior changes. Builder validation: existing Studio composition/save/reopen regression, shared editor build, production Studio build and designer check; native pointer/keyboard entry and return on Field notes. Owner source remains unchanged. Independent verification remains pending.
+
+
+Breadcrumb refinement: CompositionNavigator now omits the slot label for components with one editable area (Screen / More details). Multiple-area components retain their slot label and area picker. Designer check and production build checked; live Field notes source unchanged.

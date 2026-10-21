@@ -8,7 +8,7 @@
   const name=(slot:string)=>slot.replace(/[-_]/g,' ').replace(/^./,c=>c.toUpperCase());
 </script>
 <nav aria-label="Composition navigation">
- <div class="trail"><button type="button" {disabled} onclick={()=>onNavigate(undefined)}>← Screen</button>{#each trail as item,index}<span aria-hidden="true">/</span><button type="button" {disabled} aria-current={index===trail.length-1?'location':undefined} onclick={()=>onNavigate(item)}>{compositionName(document,item.nodeId)}<small>{name(item.slotName)}</small></button>{/each}</div>
+ <div class="trail"><button type="button" {disabled} onclick={()=>onNavigate(undefined)}>← Screen</button>{#each trail as item,index}<span aria-hidden="true">/</span><button type="button" {disabled} aria-current={index===trail.length-1?'location':undefined} onclick={()=>onNavigate(item)}>{compositionName(document,item.nodeId)}{#if compositionSlots(document,item.nodeId,descriptors).length>1}<small>{name(item.slotName)}</small>{/if}</button>{/each}</div>
  {#if slots.length>1}<label>Content area<select aria-label="Composition slot" value={focus.slotName} {disabled} onchange={event=>onNavigate({...focus,slotName:event.currentTarget.value})}>{#each slots as slot}<option value={slot}>{name(slot)}</option>{/each}</select></label>{/if}
  <span class="hint">Content composition · app visibility unchanged</span>
 </nav>
