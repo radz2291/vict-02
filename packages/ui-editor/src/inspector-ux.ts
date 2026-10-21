@@ -27,13 +27,17 @@ export function nodeLabel(document: UiDocument, id: string, labels: EditorLabels
       )
         return expression.value;
     }
-    return node.definitionId.startsWith('vict.catalog.')
+    const family = node.definitionId.startsWith('vict.catalog.')
       ? node.definitionId
           .slice('vict.catalog.'.length)
           .split('-')
           .map((word) => word[0]?.toUpperCase() + word.slice(1))
           .join(' ')
       : 'Component';
+    const value = node.props?.value;
+    return value?.type === 'literal' && typeof value.value === 'string' && value.value.trim()
+      ? `${family} · ${value.value}`
+      : family;
   }
   if (node.kind === 'element') {
     const accessible = node.attributes?.['aria-label'];

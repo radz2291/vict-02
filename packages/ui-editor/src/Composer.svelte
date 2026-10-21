@@ -2,12 +2,14 @@
   import type { UiDocument, UiExtensionDescriptor } from '@victframework/ui';
   import { compositionTargets, detachedContent, detachSlotContent, compositionParent, compositionName, insertSubtree, type InsertRecipe } from './composition.js';
   import ToolPages from './ToolPages.svelte';
+  import {compositionMembers,type CompositionFocus} from './composition-focus.js';
   import type { TransactionDraft } from './commands.js';
-  let { document, selectedNodeId, recipes, descriptors = [], showInsert = true, showArrange = true, compact = false, onApply, onInserted, onDuplicate, onDetached }: {
+  let { document, selectedNodeId, recipes, descriptors = [], showInsert = true, showArrange = true, compact = false, onApply, onInserted, onDuplicate, onDetached, compositionFocus }: {
     document: UiDocument; selectedNodeId?: string; recipes: readonly InsertRecipe[];
     descriptors?: readonly UiExtensionDescriptor[]; showInsert?: boolean; showArrange?: boolean; onApply: (draft: TransactionDraft) => boolean;
     onInserted?: (nodeId: string) => void;
     onDetached?: (parentId: string) => void;
+    compositionFocus?: CompositionFocus;
     compact?: boolean; onDuplicate?: () => void;
   } = $props();
   let reuseId = $state('');
@@ -17,9 +19,10 @@
   let destination = $state('');
   let moveDestination = $state('');
   let placement = $state<'inside' | 'before' | 'after'>('inside');
-  const targets = $derived(compositionTargets(document, descriptors));
+  const members=$derived(compositionFocus?compositionMembers(document,compositionFocus):undefined);
+  const targets = $derived(compositionTargets(document, descriptors).filter(target=>!compositionFocus || (target.nodeId===compositionFocus.nodeId?target.slotName===compositionFocus.slotName:members?.has(target.nodeId))));
   const moveTargets = $derived(compositionTargets(document, descriptors, selectedNodeId));
-  const parent = $derived(selectedNodeId ? compositionParent(document, selectedNodeId) : undefined);
+  const parent = $derived(selectedNodeId && selectedNodeId!==compositionFocus?.nodeId ? compositionParent(document, selectedNodeId) : undefined);
   const position = $derived(parent && selectedNodeId ? parent.children.indexOf(selectedNodeId) : -1);
   const key = (target: { nodeId: string; slotName?: string }) => JSON.stringify([target.nodeId, target.slotName ?? '']);
   $effect(() => {

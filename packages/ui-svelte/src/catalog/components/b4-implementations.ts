@@ -210,6 +210,7 @@ export const b4CatalogImplementations: readonly UiSvelteComponentImplementation[
     ],
     "slots": [],
     "required": [],
+    "requiresParentContext": true,
     "component": B4MenuSeparator
   },
   {
@@ -331,6 +332,7 @@ export const b4CatalogImplementations: readonly UiSvelteComponentImplementation[
     ],
     "slots": [],
     "required": [],
+    "requiresParentContext": true,
     "component": B4MenuSeparator
   },
   {
@@ -452,6 +454,7 @@ export const b4CatalogImplementations: readonly UiSvelteComponentImplementation[
     ],
     "slots": [],
     "required": [],
+    "requiresParentContext": true,
     "component": B4MenuSeparator
   },
   {

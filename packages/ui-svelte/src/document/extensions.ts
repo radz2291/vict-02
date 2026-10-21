@@ -66,6 +66,8 @@ export interface UiSvelteComponentImplementation {
   readonly styleTargets?: readonly string[];
   /** Subset of `slots` the implementation contract requires to be filled. */
   readonly required?: readonly string[];
+  /** Context-only parts cannot be mounted as standalone composition previews. */
+  readonly requiresParentContext?: boolean;
   readonly component: Component<UiSvelteComponentProps>;
 }
 

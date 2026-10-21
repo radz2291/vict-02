@@ -625,3 +625,8 @@ body:has(.finished-screen) {
 }
 
 .has-object-tools .canvas-scroll {padding-bottom:290px;}
+.composition-entry {display:flex;align-items:center;gap:8px;margin-bottom:6px;padding-bottom:6px;border-bottom:1px solid #e4e8f0;}
+.composition-entry button {font:11px 'Segoe UI',system-ui,sans-serif;border:1px solid #cfd8ee;background:#f5f7ff;color:#405abd;padding:5px 8px;border-radius:4px;cursor:pointer;}
+.composition-entry span {font-size:10px;color:#7b879c;}
+.empty-composition {position:absolute;inset:70px 20px auto;text-align:center;color:#7b879c;pointer-events:none;}
+.empty-composition h2 {font-size:16px;font-weight:500;}

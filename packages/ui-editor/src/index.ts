@@ -6,6 +6,9 @@
 
 export { default as EditorCanvas } from './EditorCanvas.svelte';
 export { default as Composer } from './Composer.svelte';
+export { default as CompositionNavigator } from './CompositionNavigator.svelte';
+export { authoredOccurrence, compositionSlots, compositionMembers, compositionTrail, firstCompositionSlot, projectComposition } from './composition-focus.js';
+export type { CompositionFocus } from './composition-focus.js';
 export { default as SelectionToolbar } from './SelectionToolbar.svelte';
 export { default as SelectionPalette } from './SelectionPalette.svelte';
 export { literalTextTarget, editLiteralText, duplicateSubtree } from './selection-tools.js';

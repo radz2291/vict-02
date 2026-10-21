@@ -1,9 +1,10 @@
 <script lang="ts">
   import { tick, untrack, type Snippet } from 'svelte';
-  let { page = $bindable('format'), name, format, insert, arrange, connect, focusSignal, revealSignal, locked = false }: {
+  let { page = $bindable('format'), name, format, insert, arrange, connect, context, focusSignal, revealSignal, locked = false }: {
     locked?: boolean;
     page?: 'format' | 'insert' | 'arrange' | 'connect'; name: string;
     format: Snippet; insert: Snippet; arrange: Snippet; connect?: Snippet; focusSignal?: symbol; revealSignal?: symbol;
+    context?: Snippet;
   } = $props();
   const pages: readonly ('format' | 'insert' | 'arrange' | 'connect')[] = $derived(connect ? ['format', 'insert', 'arrange', 'connect'] as const : ['format', 'insert', 'arrange'] as const);
   const uid = $props.id();
@@ -33,7 +34,7 @@
     <span title={name}>{name}</span>
   </div>
   <div role="tabpanel" id={`${uid}-panel`} aria-labelledby={`${uid}-${page}`} tabindex="0" class="palette-body" data-ui-tool-body hidden={collapsed}>
-    {#if page === 'format'}{@render format()}{:else if page === 'insert'}{@render insert()}{:else if page === 'arrange'}{@render arrange()}{:else}{@render connect?.()}{/if}
+    {#if context}{@render context()}{/if}{#if page === 'format'}{@render format()}{:else if page === 'insert'}{@render insert()}{:else if page === 'arrange'}{@render arrange()}{:else}{@render connect?.()}{/if}
   </div>
 </div>
 <style>

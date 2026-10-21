@@ -13,6 +13,7 @@
   import { resolveOccurrence } from './occurrence.js';
   import type { TransactionDraft } from './commands.js';
   import { compositionParent } from './composition.js';
+  import {projectComposition,compositionSlots,type CompositionFocus} from './composition-focus.js';
   import {
     DocumentHost,
     type UiSvelteComponentImplementation,
@@ -41,6 +42,9 @@
     readonly onTextEditingChange?: (editing: boolean) => void;
     /** Authoring-only tools anchored to the selected rendered occurrence. F10 focuses them. */
     readonly selectionTools?: Snippet;
+    /** Source-slot viewport. Navigation only; the full document still compiles unchanged. */
+    readonly compositionFocus?: CompositionFocus;
+    readonly onOpenComposition?: (occurrence: string) => void;
     readonly selectionToolsPinned?: boolean;
     readonly selectionToolsReveal?: symbol;
     readonly selectionToolsPlacement?: 'above' | 'below';
@@ -80,6 +84,8 @@
     onEditTextRequest,
     onTextEditingChange,
     selectionTools,
+    compositionFocus,
+    onOpenComposition,
     selectionToolsPinned = false,
     selectionToolsReveal,
     selectionToolsPlacement,
@@ -122,6 +128,7 @@
     priorCompilation = { source: document, inputs, result };
     return result;
   });
+  const focusedPlan=$derived(compiled.ok && interactionMode==='design' && compositionFocus?projectComposition(compiled.plan,document,compositionFocus,extensions,extensionImplementations.filter(entry=>'requiresParentContext' in entry && entry.requiresParentContext).map(entry=>entry.extensionId)):undefined);
 
   function handleSelect(occurrence: string): void {
     onSelect(occurrence);
@@ -143,7 +150,7 @@
   async function beginText(occurrence: string, target?: HTMLElement) {
     if (interactionMode !== 'design' || !canvasEl) return;
     const report = resolveOccurrence(occurrence, document);
-    if (report.instancePath.length || report.repeatKeys.length) return;
+    if (report.instancePath.some(step=>document.componentDefinitions[step.definitionId]) || report.repeatKeys.length) return;
     const content = literalTextTarget(document, report.sourceNodeId);
     if (!content) return;
     if (onEditTextRequest) { onEditTextRequest(occurrence); return; }
@@ -183,7 +190,11 @@
       if (!owner || target?.dataset.uiOwner !== owner) return;
       if (selectionTools && event instanceof KeyboardEvent && event.key === 'F10') return;
       if ((onApply || onEditTextRequest) && event instanceof KeyboardEvent && (['F2', 'Delete', 'Backspace'].includes(event.key) || (event.altKey && ['ArrowUp', 'ArrowDown'].includes(event.key)))) return;
-      if (event.type === 'dblclick' && target.dataset.uiOcc) { void beginText(target.dataset.uiOcc, target); }
+      if (event.type === 'dblclick' && target.dataset.uiOcc) {
+        const node=resolveOccurrence(target.dataset.uiOcc,document).node;
+        if(onOpenComposition && node && compositionSlots(document,node.id,extensions).length) onOpenComposition(target.dataset.uiOcc);
+        else void beginText(target.dataset.uiOcc, target);
+      }
       // Tab and Escape remain available for navigation and overlay dismissal. Activation/editing
       // events stop before catalog handlers, native inputs and form submission.
       if (event instanceof KeyboardEvent && (['Tab', 'Escape'].includes(event.key) || event.ctrlKey || event.metaKey)) return;
@@ -284,7 +295,7 @@
       }
     </style>
     <DocumentHost
-      plan={compiled.plan}
+      plan={focusedPlan ?? compiled.plan}
       extensionDescriptors={extensions}
       {extensionImplementations}
       {stateValues}
@@ -317,4 +328,7 @@
   .inline-text-editor > div { display:flex; align-items:center; gap:5px; margin-top:4px; }
   .inline-text-editor button { font:12px system-ui,sans-serif; padding:4px 8px; background:#fff; border:1px solid #dce2eb; border-radius:4px; cursor:pointer; }
   .inline-text-editor span { font:10px system-ui,sans-serif; color:#74829a; }
+ :global(.uv-composition-context){display:block!important;position:relative!important;visibility:visible!important;}
+ :global(.uv-composition-surface){display:block!important;position:relative!important;visibility:visible!important;min-height:160px;box-sizing:border-box;}
+ :global(.uv-composition-tile){display:block!important;position:relative!important;visibility:visible!important;min-height:44px;border:1px dashed #a9b6d0;border-radius:6px;padding:12px;margin:6px 0;color:#5d6f95;background:#f6f8fc;cursor:pointer;font:12px/1.5 system-ui,sans-serif;}
 </style>

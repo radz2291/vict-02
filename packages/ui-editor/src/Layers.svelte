@@ -6,12 +6,14 @@
   import { previewValues } from './preview-values.js';
   import { compositionName, moveRelative, type CompositionPlacement } from './composition.js';
   import type { TransactionDraft } from './commands.js';
-  let { plan, document, selectedOccurrence, onSelect, ariaLabel = 'Layers', labels = {}, scope, onApply, componentDescriptors = [] }: {
+  import {compositionSlots,type CompositionFocus} from './composition-focus.js';
+  let { plan, document, selectedOccurrence, onSelect, ariaLabel = 'Layers', labels = {}, scope, onApply, componentDescriptors = [], onOpenComposition }: {
     plan: UiRenderPlan; document?: UiDocument; selectedOccurrence?: string; onSelect?: (occurrence: string) => void;
     ariaLabel?: string; labels?: EditorLabels; scope?: DocumentScope;
     onApply?: (draft: TransactionDraft) => boolean; componentDescriptors?: readonly import('@victframework/ui').UiExtensionDescriptor[];
+    onOpenComposition?:(focus:CompositionFocus)=>void;
   } = $props();
-  interface Entry { key: string; nodeId: string; label: string; detail: string; parent?: string; depth: number; children: boolean; component: boolean; compact: boolean; selectable: boolean; }
+  interface Entry { key: string; nodeId: string; label: string; detail: string; parent?: string; depth: number; children: boolean; component: boolean; compact: boolean; selectable: boolean; composition?:CompositionFocus; }
   let expanded = $state(new Set<string>());
   let closed = $state(new Set<string>());
   let focusKey = $state('');
@@ -54,7 +56,16 @@
       out.push({ key, nodeId: i.nodeId, label, depth, parent, children: false, component: i.kind === 'component' || i.kind === 'extension', compact: i.kind === 'component' || i.kind === 'extension' || (i.kind === 'element' && i.children.every(c => c.kind === 'text')), selectable: !template && !['component', 'repeat', 'conditional', 'slot'].includes(i.kind), detail: `${i.nodeId}${i.kind === 'component' ? ` · definition ${i.definitionId} @ ${i.definitionRevision}` : ''}${keys.length ? ` · record ${keys.join(' / ')}` : ''}${template ? ' · template (runtime scope unavailable)' : ''}` });
       const child = (instruction: UiRenderInstruction, childValues = values, childKeys = keys, childFills = fills, isTemplate = template, childFillScope = fillScope) => walk(instruction, depth + 1, childKeys, key, childValues, childFills, isTemplate, childFillScope);
       if (i.kind === 'element' || i.kind === 'unsupported') i.children.forEach(c => child(c));
-      if (i.kind === 'extension') Object.values(i.slots ?? {}).forEach(children => children.forEach(c => child(c, values, keys, {})));
+      if (i.kind === 'extension') {
+        const slots=document && onOpenComposition?compositionSlots(document,i.nodeId,componentDescriptors):[];
+        if(slots.length) for(const name of slots){
+          const children=i.slots?.[name] ?? [];
+          const slotKey=`${key}|slot:${name}`;
+          out.push({key:slotKey,nodeId:i.nodeId,label:`${name.replace(/^./,c=>c.toUpperCase())} · composition`,detail:`${children.length} ${children.length===1?'item':'items'} · open to edit`,parent:key,depth:depth+1,children:!!children.length,component:false,compact:false,selectable:false,composition:{nodeId:i.nodeId,slotName:name}});
+          children.forEach(c=>walk(c,depth+2,keys,slotKey,values,{},template));
+        }
+        else Object.values(i.slots ?? {}).forEach(children => children.forEach(c => child(c, values, keys, {})));
+      }
       if (i.kind === 'component') child(i.body, values ? { ...values, props: evaluatedComponentProps(i, values) } : undefined, keys, i.slots, template, values);
       if (i.kind === 'slot') {
         const filled = (fills[i.name]?.length ?? 0) > 0;
@@ -127,7 +138,7 @@
     else { closed = new Set([...closed].filter(k => k !== entry.key)); expanded = new Set([...expanded, entry.key]); }
   }
   async function focus(key: string) { focusKey = key; await tick(); Array.from(root.querySelectorAll<HTMLElement>('[role=treeitem]')).find(e => e.dataset.key === key)?.focus(); }
-  function select(entry: Entry) { focusKey = entry.key; if (entry.selectable) onSelect?.(entry.key); else if (entry.children && !query) toggle(entry); }
+  function select(entry: Entry) { focusKey = entry.key; if(entry.composition)onOpenComposition?.(entry.composition); else if (entry.selectable) onSelect?.(entry.key); else if (entry.children && !query) toggle(entry); }
   function keyboard(event: KeyboardEvent, entry: Entry) {
     const index = entries.findIndex(e => e.key === entry.key);
     let next: string | undefined;

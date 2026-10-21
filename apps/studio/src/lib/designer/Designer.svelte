@@ -4,6 +4,7 @@
   import { ControlScope } from '@victframework/ui-svelte';
   import { Composer, EditorBridge, EditorCanvas, Inspector, Layers, StateValuesPanel, PanelResizer, StateInitialEditor, SelectionPalette, setAttribute, resolveOccurrence, compositionParent, compositionName, literalTextTarget, duplicateSubtree, type TransactionDraft } from '@victframework/ui-editor';
   import { createPreviewSession } from '@victframework/ui-preview';
+  import { CompositionNavigator, authoredOccurrence, compositionSlots, compositionMembers, compositionTrail, firstCompositionSlot, type CompositionFocus } from '@victframework/ui-editor';
   import type { UiDocument, UiRenderPlan, UiValue } from '@victframework/ui';
   import { newScreen, compileScreen, screenIssues, screenApplication, screenName, screenActionState, designerCatalogs, actionInputs, catalogDescriptors, catalogImplementations } from './application.js';
   import { screenStore, savedScreens } from './storage.js';
@@ -24,6 +25,38 @@
   const compilation = $derived(source ? compileScreen(source) : undefined);
   const selected = $derived(snapshot?.selectedOccurrence);
   const selectedNode = $derived(source && selected ? resolveOccurrence(selected, source).node : undefined);
+  let compositionFocus=$state<CompositionFocus>();
+  const selectedSlots=$derived(source && selectedNode?compositionSlots(source,selectedNode.id,catalogDescriptors):[]);
+  const focusedMembers=$derived(source && compositionFocus?compositionMembers(source,compositionFocus):undefined);
+  $effect(()=>{if(source && compositionFocus && !compositionSlots(source,compositionFocus.nodeId,catalogDescriptors).includes(compositionFocus.slotName)) {compositionFocus=undefined;notice='Composition is no longer available. Returned to the screen.';}});
+  async function navigateComposition(next:CompositionFocus|undefined) {
+    if(!source || textDraftDirty || sourceDraftDirty){notice='Apply or cancel your property or source edit before changing composition.';return;}
+    if(next && !compositionSlots(source,next.nodeId,catalogDescriptors).includes(next.slotName))return;
+    const previous=compositionFocus;
+    compositionFocus=next;
+    const nodeId=next?.nodeId ?? (previous?compositionTrail(source,previous)[0]?.nodeId:undefined) ?? source.root;
+    bridge?.select(authoredOccurrence(source,nodeId) ?? `${source.id}|${source.root}`);
+    editTextSignal=undefined;paletteRequested=false;drawerOpen=false;
+    notice=next?`Editing ${compositionName(source,next.nodeId)} / ${next.slotName}. App visibility is unchanged.`:'Returned to the screen.';
+    await tick(); globalThis.document.querySelector<HTMLElement>('.design-frame .uv-canvas')?.focus();
+  }
+  function openComposition(occurrence=selected) {
+    if(!source || !occurrence)return;
+    const report=resolveOccurrence(occurrence,source);
+    if(report.repeatKeys.length || report.instancePath.some(step=>source.componentDefinitions[step.definitionId]))return;
+    const slotName=firstCompositionSlot(compositionSlots(source,report.sourceNodeId,catalogDescriptors));
+    if(slotName)void navigateComposition({nodeId:report.sourceNodeId,slotName});
+  }
+  function selectFromStructure(occurrence:string) {
+    if(source && !textDraftDirty && !sourceDraftDirty){
+      const report=resolveOccurrence(occurrence,source);
+      if(!report.repeatKeys.length && !report.instancePath.some(step=>source.componentDefinitions[step.definitionId])){
+        const nearest=compositionTrail(source,{nodeId:report.sourceNodeId,slotName:''}).at(-2);
+        if(nearest && compositionSlots(source,nearest.nodeId,catalogDescriptors).includes(nearest.slotName))compositionFocus=nearest;
+      }
+    }
+    selectOccurrence(occurrence);
+  }
   let plan = $state<UiRenderPlan>();
   let issues = $state<readonly { code: string; message: string }[]>([]);
   let notice = $state('Start with an empty screen. Add a heading or section to begin.');
@@ -49,9 +82,13 @@
     editTextSignal = undefined;
     if (source) {
       const report = resolveOccurrence(occurrence, source);
-      const parent = report.node?.kind === 'text' && !report.instancePath.length && !report.repeatKeys.length ? compositionParent(source, report.node.id) : undefined;
+      const direct=!report.instancePath.some(step=>source.componentDefinitions[step.definitionId]) && !report.repeatKeys.length;
+      const parent = report.node?.kind === 'text' && direct ? compositionParent(source, report.node.id) : undefined;
       const owner = parent ? source.nodes[parent.nodeId] : undefined;
-      if (owner?.kind === 'element' && owner.children.length === 1) occurrence = `${source.id}|${owner.id}`;
+      if (owner?.kind === 'element' && owner.children.length === 1) occurrence = authoredOccurrence(source,owner.id) ?? occurrence;
+      else if(direct && occurrence.split('|').length===2) occurrence=authoredOccurrence(source,report.sourceNodeId) ?? occurrence;
+      const id=resolveOccurrence(occurrence,source).sourceNodeId;
+      if(compositionFocus && id!==compositionFocus.nodeId && !focusedMembers?.has(id))compositionFocus=undefined;
     }
     bridge?.select(occurrence);
     palettePage = 'format'; paletteRequested = true;
@@ -62,7 +99,7 @@
   function editSelectedText(occurrence = selected) {
     if (!occurrence || !source || textDraftDirty) return;
     const report = resolveOccurrence(occurrence, source);
-    if (report.instancePath.length || report.repeatKeys.length || !literalTextTarget(source, report.sourceNodeId)) return;
+    if (report.instancePath.some(step=>source.componentDefinitions[step.definitionId]) || report.repeatKeys.length || !literalTextTarget(source, report.sourceNodeId)) return;
     selectOccurrence(occurrence);
     editTextSignal = Symbol('edit');
   }
@@ -70,7 +107,7 @@
     const node = source && resolveOccurrence(occurrence, source).node;
     return node?.kind === 'component' || (node?.kind === 'element' && ['input', 'textarea'].includes(node.tag)) ? 'Content' : 'Style';
   }
-  function changeMode(next: 'design' | 'interact') { if (textDraftDirty) { notice = 'Apply or cancel your property edit first.'; return; } mode = next; resetRuntime(); notice = next === 'design' ? 'Design mode · select and edit without running behavior.' : 'Interact mode · simulated behavior, no live effects.'; }
+  function changeMode(next: 'design' | 'interact') { if (textDraftDirty) { notice = 'Apply or cancel your property edit first.'; return; } compositionFocus=undefined;mode = next; resetRuntime(); notice = next === 'design' ? 'Design mode · select and edit without running behavior.' : 'Interact mode · simulated behavior, no live effects.'; }
   let createDialog: HTMLDialogElement;
   let nameInput: HTMLInputElement;
   let screenTitle = $state('My first screen');
@@ -103,6 +140,7 @@
     runtimeValues = {}; resetSignal = Symbol('reset'); activity = [];
   }
   function openSession(next: EditorBridge) {
+    compositionFocus=undefined;
     palettePage = 'format'; paletteRequested = false;
     unsubscribe?.(); bridge = next; version++;
     unsubscribe = next.subscribe(() => version++);
@@ -169,7 +207,7 @@
     if (snapshot?.dirty) { notice = 'Save or undo your changes before reopening the stored source.'; return; }
     const result = bridge.reopen();
     if (!result.ok) { issues = [{ code: result.code, message: result.message ?? 'Reopen failed.' }]; return; }
-    paletteRequested = false; palettePage = 'format';
+    compositionFocus=undefined;paletteRequested = false; palettePage = 'format';
     resetRuntime(); bridge.select(`${bridge.document.id}|${bridge.document.root}`); issues = []; notice = `Reopened revision ${result.storedRevision}; runtime state reset.`;
   }
   async function dispatch(actionId: string, input?: unknown) {
@@ -240,7 +278,7 @@
       const document = JSON.parse(sourceDraft) as UiDocument;
       const problems = screenIssues(document);
       if (problems.length) { issues = problems; return; }
-      if (apply({ requestId: crypto.randomUUID(), reason: 'Apply canonical source', commands: [{ op: 'replaceDocument', document }] })) { sourceDraftDirty = false; bridge.select(`${source.id}|${source.root}`); }
+      if (apply({ requestId: crypto.randomUUID(), reason: 'Apply canonical source', commands: [{ op: 'replaceDocument', document }] })) { sourceDraftDirty = false; compositionFocus=undefined; bridge.select(`${source.id}|${source.root}`); }
     } catch { issues = [{ code: 'STUDIO_JSON_INVALID', message: 'Enter valid canonical UI document JSON.' }]; }
   }
   // Authored revisions invalidate any in-flight simulation without adding history.
@@ -262,21 +300,24 @@
   {#if source && bridge}
   {#snippet floatingTools()}
     <SelectionPalette revealSignal={selectionToolsReveal} locked={textDraftDirty} bind:page={palettePage} name={compositionName(source, selectedNode?.id ?? source.root)} focusSignal={paletteFocus}>
+      {#snippet context()}{#if selectedSlots.length && selectedNode?.id!==compositionFocus?.nodeId}<div class="composition-entry"><button type="button" disabled={textDraftDirty || sourceDraftDirty} onclick={()=>openComposition()}>Edit contents →</button><span>{selectedSlots.length===1?'Open this composition':`${selectedSlots.length} content areas`}</span></div>{/if}{/snippet}
       {#snippet objectProperties(section: 'Content' | 'Style' | 'Behavior')}
         <Inspector contextual editTextSignal={section === 'Behavior' ? undefined : editTextSignal} onTextDraftChange={(dirty: boolean) => textDraftDirty = dirty} {section} document={source} selectedOccurrence={selected} onApply={apply} lastIssues={issues} componentDescriptors={catalogDescriptors} knownActionIds={designerCatalogs.actionIds} {actionInputs} knownRouteIds={['screen']} labels={editorLabels} styleConditions={[{ id: 'compact', label: 'Compact · ≤600px' }]} readEffective={effective} />
       {/snippet}
       {#snippet format()}{@render objectProperties(formatSection)}{/snippet}
       {#snippet connect()}{@render objectProperties('Behavior')}{/snippet}
-      {#snippet insert()}<Composer document={source} selectedNodeId={selectedNode?.id} recipes={screenRecipes} descriptors={catalogDescriptors} compact showArrange={false} onApply={apply} onInserted={(id: string) => { selectOccurrence(`${source.id}|${id}`); notice = 'Added to your screen. Double-click text to edit.'; }} />{/snippet}
+      {#snippet insert()}<Composer {compositionFocus} document={source} selectedNodeId={selectedNode?.id} recipes={screenRecipes} descriptors={catalogDescriptors} compact showArrange={false} onApply={apply} onInserted={(id: string) => { selectOccurrence(`${source.id}|${id}`); notice = 'Added to your screen. Double-click text to edit.'; }} />{/snippet}
       {#snippet arrange()}<Composer document={source} selectedNodeId={selectedNode?.id} recipes={[]} descriptors={catalogDescriptors} compact showInsert={false} onApply={apply} onDuplicate={duplicateSelection} onDetached={(parentId: string)=>{selectOccurrence(`${source.id}|${parentId}`);notice='Content kept aside. Use Insert → Reuse to place it again.';}} />{#if !selectedNode || selectedNode.id === source.root}<p class="palette-hint">Select an element to move, duplicate or delete it.</p>{/if}{/snippet}
     </SelectionPalette>
   {/snippet}
   <div class="design-workspace" class:drawer-open={drawerOpen} class:has-object-tools={mode === 'design' && !!selectedNode && (selectedNode.id !== source.root || paletteRequested)} style:--drawer-width={`${drawerWidth}px`}>
     <main class="design-stage">
       <div class="canvas-toolbar"><span><span class="live-dot"></span>{mode === 'design' ? 'Design · selection only' : 'Interact · simulated'}</span><label><span class="sr-only">Canvas width</span><select aria-label="Canvas width" bind:value={width}><option value="fluid">Fit canvas</option><option value="768">Tablet · 768</option><option value="390">Phone · 390</option></select></label><button type="button" onclick={resetRuntime} title="Reset ephemeral runtime values">Reset preview</button></div>
+      {#if compositionFocus}<CompositionNavigator document={source} focus={compositionFocus} descriptors={catalogDescriptors} disabled={textDraftDirty || sourceDraftDirty} onNavigate={navigateComposition} />{/if}
       <div class="canvas-scroll"><div class="canvas-caption">{screenName(source)} <span>{width === 'fluid' ? 'Responsive' : `${width}px`}</span></div>
         <div class="design-frame" style:max-width={width === 'fluid' ? 'none' : `${width}px`}>
           <EditorCanvas document={source} catalogs={designerCatalogs} extensions={catalogDescriptors} extensionImplementations={catalogImplementations}
+            {compositionFocus} onOpenComposition={openComposition}
             selectionTools={selectedNode && (selectedNode.id !== source.root || paletteRequested) ? floatingTools : undefined}
             {selectionToolsReveal} selectionToolsPinned={textDraftDirty}
             selectionToolsPlacement="below"
@@ -285,7 +326,7 @@
             stateValues={runtimeValues} onStateChange={(key: string, value: UiValue) => runtimeValues = { ...runtimeValues, [key]: value }} {resetSignal}
             actionState={screenActionState} onPlan={(next: UiRenderPlan) => { plan = next; }}
             onRenderDiagnostic={(diagnostic: { code: string; message: string }) => { issues = [...issues.slice(-4), diagnostic]; }} ariaLabel="Screen canvas" />
-          {#if Object.keys(source.nodes).length === 1}<div class="empty-canvas"><span>＋</span><h1>What will you make?</h1><p>Choose ＋ Add to start. Select anything to open its tools.</p></div>{/if}
+          {#if compositionFocus && !focusedMembers?.size}<div class="empty-composition"><h2>This composition is empty</h2><p>Choose ＋ Add to place content here.</p></div>{:else if Object.keys(source.nodes).length === 1}<div class="empty-canvas"><span>＋</span><h1>What will you make?</h1><p>Choose ＋ Add to start. Select anything to open its tools.</p></div>{/if}
         </div>
       </div>
       <details class="simulation-panel"><summary>Simulated execution <span>Local preview · no live effects</span></summary><div class="simulation-body"><label><input type="checkbox" bind:checked={simulation.denied} /> Deny demo writes</label><label><input type="checkbox" bind:checked={simulation.failNext} /> Fail next action</label><StateValuesPanel localState={source.localState} stateValues={runtimeValues} onChange={(key: string, value: UiValue | undefined) => { const next = { ...runtimeValues }; if (value === undefined) delete next[key]; else next[key] = value; runtimeValues = next; }} />{#each activity as entry}<p role="status">{entry}</p>{/each}<p class="panel-hint">Connect checkedChange to accepted, bind checked to state.accepted, then map a Button's press → Submit using state.message and state.accepted. Runtime values never enter undo history.</p></div></details>
@@ -298,7 +339,7 @@
       <div class="sidebar-body">
         {#if drawerTab === 'Structure'}
           <label class="document-name">Screen name<input aria-label="Screen name" value={screenName(source)} onchange={event => apply(setAttribute({ requestId: crypto.randomUUID(), nodeId: source.root, name: 'aria-label', value: event.currentTarget.value }))} /></label>
-          {#if plan}<Layers {plan} document={source} selectedOccurrence={selected} onSelect={selectOccurrence} componentDescriptors={catalogDescriptors} />{/if}
+          {#if plan}<Layers {plan} document={source} selectedOccurrence={selected} onSelect={selectFromStructure} onOpenComposition={navigateComposition} componentDescriptors={catalogDescriptors} />{/if}
         {:else if drawerTab === 'Logic'}
           <p class="panel-hint">Define starting values here. Select an object to connect it through its tools.</p>
           <h3>State</h3>
