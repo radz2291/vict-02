@@ -167,7 +167,7 @@
     const loaded = store.rawLoad();
     if (loaded.status !== 'loaded') { notice = loaded.status === 'invalid' ? loaded.message : 'This screen has not been saved.'; issues = [{ code: 'STUDIO_OPEN_REFUSED', message: notice }]; return; }
     const next = new EditorBridge({ catalogs: designerCatalogs, store, initial: loaded });
-    sessions.set(id, next); openSession(next); notice = 'Reopened the saved source.';
+    sessions.set(id, next); openSession(next); notice = 'Loaded the saved screen.';
   }
   onMount(() => {
     try {
@@ -203,14 +203,14 @@
     return true;
   }
   function reopen() {
-    if (textDraftDirty) { notice = 'Apply or cancel your property edit before reopening.'; return; }
+    if (textDraftDirty) { notice = 'Apply or cancel your property edit before reloading.'; return; }
     if (!bridge) return;
-    if (sourceDraftDirty) { notice = 'Apply or discard your JSON draft before reopening.'; return; }
-    if (snapshot?.dirty) { notice = 'Save or undo your changes before reopening the stored source.'; return; }
+    if (sourceDraftDirty) { notice = 'Apply or discard your JSON draft before reloading.'; return; }
+    if (snapshot?.dirty) { notice = 'Save or undo your changes before reloading the saved screen.'; return; }
     const result = bridge.reopen();
-    if (!result.ok) { issues = [{ code: result.code, message: result.message ?? 'Reopen failed.' }]; return; }
+    if (!result.ok) { issues = [{ code: result.code, message: result.message ?? 'Reload failed.' }]; return; }
     compositionFocus=undefined;paletteRequested = false; palettePage = 'format';
-    resetRuntime(); bridge.select(`${bridge.document.id}|${bridge.document.root}`); issues = []; notice = `Reopened revision ${result.storedRevision}; runtime state reset.`;
+    resetRuntime(); bridge.select(`${bridge.document.id}|${bridge.document.root}`); issues = []; notice = `Reloaded revision ${result.storedRevision}; runtime state reset.`;
   }
   async function dispatch(actionId: string, input?: unknown) {
     if (mode === 'design') return { ok: false, code: 'UI_EDITOR_DESIGN_MODE', message: 'Switch to Interact to run behavior.' };
@@ -297,7 +297,7 @@
     <div class="canvas-modes" aria-label="Canvas mode"><button type="button" aria-pressed={mode === 'design'} onclick={() => changeMode('design')}>Design</button><button type="button" aria-pressed={mode === 'interact'} onclick={() => changeMode('interact')}>Interact</button></div>
     {#if mode === 'design'}<button type="button" class="add-element" onclick={openInsert}>＋ Add</button>{/if}
     <span class="save-state">{textDraftDirty ? '● Unapplied property draft' : sourceDraftDirty ? '● Unapplied JSON draft' : snapshot?.dirty ? '● Unsaved changes' : snapshot?.storedRevision === 'r1' ? '○ New screen' : '✓ Saved'}</span>
-    <div class="toolbar-end"><button type="button" bind:this={documentButton} class="panel-toggle" aria-expanded={drawerOpen} aria-controls="document-drawer" onclick={() => drawerOpen = !drawerOpen}>Document</button><button type="button" onclick={reopen} disabled={!source || snapshot?.dirty || sourceDraftDirty || textDraftDirty || snapshot?.storedRevision === 'r1'}>Reopen</button><button type="button" onclick={save} disabled={!compilation?.ok || sourceDraftDirty || textDraftDirty}>Save</button><a class="run-button" aria-disabled={!source || snapshot?.dirty || sourceDraftDirty || textDraftDirty || snapshot?.storedRevision === 'r1'} href={source && !snapshot?.dirty && !sourceDraftDirty && !textDraftDirty && snapshot?.storedRevision !== 'r1' ? `/run-screen?screen=${encodeURIComponent(source.id)}` : undefined}>Run saved ↗</a></div>
+    <div class="toolbar-end"><button type="button" bind:this={documentButton} class="panel-toggle" aria-expanded={drawerOpen} aria-controls="document-drawer" onclick={() => drawerOpen = !drawerOpen}>Document</button><button type="button" onclick={reopen} title="Reload the saved screen and reset the preview" disabled={!source || snapshot?.dirty || sourceDraftDirty || textDraftDirty || snapshot?.storedRevision === 'r1'}>Reload</button><button type="button" onclick={save} disabled={!compilation?.ok || sourceDraftDirty || textDraftDirty}>Save</button><a class="run-button" aria-disabled={!source || snapshot?.dirty || sourceDraftDirty || textDraftDirty || snapshot?.storedRevision === 'r1'} href={source && !snapshot?.dirty && !sourceDraftDirty && !textDraftDirty && snapshot?.storedRevision !== 'r1' ? `/run-screen?screen=${encodeURIComponent(source.id)}` : undefined}>Run saved ↗</a></div>
   </div>
   {#if source && bridge}
   {#snippet floatingTools()}
@@ -313,7 +313,7 @@
   {/snippet}
   <div class="design-workspace" class:drawer-open={drawerOpen} class:has-object-tools={mode === 'design' && !!selectedNode && (selectedNode.id !== source.root || paletteRequested)} style:--drawer-width={`${drawerWidth}px`}>
     <main class="design-stage">
-      <div class="canvas-toolbar"><span><span class="live-dot"></span>{mode === 'design' ? 'Design · selection only' : 'Interact · simulated'}</span><label><span class="sr-only">Canvas width</span><select aria-label="Canvas width" bind:value={width}><option value="fluid">Fit canvas</option><option value="768">Tablet · 768</option><option value="390">Phone · 390</option></select></label><button type="button" onclick={resetRuntime} title="Reset ephemeral runtime values">Reset preview</button></div>
+      <div class="canvas-toolbar"><label><span class="sr-only">Canvas width</span><select aria-label="Canvas width" bind:value={width}><option value="fluid">Fit canvas</option><option value="768">Tablet · 768</option><option value="390">Phone · 390</option></select></label><button type="button" onclick={resetRuntime} title="Reset ephemeral runtime values">Reset preview</button></div>
       {#if compositionFocus}<CompositionNavigator document={source} focus={compositionFocus} descriptors={catalogDescriptors} disabled={textDraftDirty || sourceDraftDirty} onNavigate={navigateComposition} />{/if}
       <div class="canvas-scroll" bind:this={canvasScroll}><div class="canvas-caption">{screenName(source)} <span>{width === 'fluid' ? 'Responsive' : `${width}px`}</span></div>
         <div class="design-frame" style:max-width={width === 'fluid' ? 'none' : `${width}px`}>

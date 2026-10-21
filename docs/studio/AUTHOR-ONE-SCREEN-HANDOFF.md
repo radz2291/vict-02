@@ -261,3 +261,6 @@ Shared interface: replace SelectionPalette's unused body `context` snippet with 
 
 
 Breadcrumb refinement: CompositionNavigator now omits the slot label for components with one editable area (Screen / More details). Multiple-area components retain their slot label and area picker. Designer check and production build checked; live Field notes source unchanged.
+
+
+Toolbar wording refinement: removed the redundant canvas mode note; the Design/Interact toggle remains the mode indicator. Renamed Reopen to Reload, clarified its tooltip and feedback, and kept existing saved-source/draft guards. Canvas width and Reset preview retain their right alignment. Builder checks: composition/save/reload regression, production build and live tab inspection. No source or runtime contract change.

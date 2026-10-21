@@ -196,17 +196,13 @@ body:has(.finished-screen) {
 }
 .canvas-toolbar {
   display: flex;
+  justify-content: flex-end;
   align-items: center;
   gap: 6px;
   min-height: 31px;
   padding: 4px 10px;
   border-bottom: 1px solid #e1e6ee;
   font-size: 11px;
-}
-.canvas-toolbar > span {
-  margin-right: auto;
-  color: #728098;
-  white-space: nowrap;
 }
 .canvas-toolbar select {
   border: 0;
@@ -219,14 +215,6 @@ body:has(.finished-screen) {
   border-color: transparent;
   background: transparent;
   font-size: 11px;
-}
-.live-dot {
-  display: inline-block;
-  width: 5px;
-  height: 5px;
-  border-radius: 100%;
-  background: #8394b9;
-  margin-right: 6px;
 }
 .canvas-scroll {
   overflow: auto;
@@ -604,7 +592,6 @@ body:has(.finished-screen) {
   .canvas-scroll {
     padding: 12px 10px 24px;
   }
-  .canvas-toolbar > span,
   .simulation-panel > summary span,
   .design-status span:last-child {
     display: none;

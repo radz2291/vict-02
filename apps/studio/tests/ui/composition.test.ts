@@ -111,7 +111,7 @@ it('opens a closed composition without authored or runtime changes, guards draft
   expect(
     original.ok && saved.ok && original.plan.applicationVersion !== saved.plan.applicationVersion,
   ).toBe(true);
-  button('Reopen');
+  button('Reload');
   await tick();
   expect(document.querySelector('[aria-label="Composition navigation"]')).toBeNull();
 });
