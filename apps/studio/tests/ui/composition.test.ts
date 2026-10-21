@@ -99,6 +99,18 @@ it('opens a closed composition without authored or runtime changes, guards draft
   expect(document.querySelector('.design-frame')?.textContent).not.toContain(
     'Edited composition body',
   );
+  button('Document');
+  await tick();
+  document.querySelector<HTMLButtonElement>('[aria-label="Expand Details"]')!.click();
+  await tick();
+  document.querySelector<HTMLButtonElement>('[role="treeitem"][data-key$="slot:body"]')!.click();
+  await tick();
+  await tick();
+  expect(document.querySelector('[aria-label="Composition navigation"]')).not.toBeNull();
+  expect(document.querySelector('#document-drawer')).not.toBeNull();
+  button('← Screen');
+  await tick();
+  expect(document.querySelector('#document-drawer')).not.toBeNull();
   button('Save');
   await tick();
   const loaded = store.rawLoad();

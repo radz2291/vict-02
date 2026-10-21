@@ -37,7 +37,7 @@
     compositionFocus=next;
     const nodeId=next?.nodeId ?? (previous?compositionTrail(source,previous)[0]?.nodeId:undefined) ?? source.root;
     bridge?.select(authoredOccurrence(source,nodeId) ?? `${source.id}|${source.root}`);
-    editTextSignal=undefined;paletteRequested=false;drawerOpen=false;
+    editTextSignal=undefined;paletteRequested=false;
     notice=next?`Editing ${compositionName(source,next.nodeId)} / ${next.slotName}. App visibility is unchanged.`:'Returned to the screen.';
     await tick(); globalThis.document.querySelector<HTMLElement>('.design-frame .uv-canvas')?.focus({preventScroll:true});
     if(canvasScroll) {canvasScroll.scrollTop=0;canvasScroll.scrollLeft=0;}
