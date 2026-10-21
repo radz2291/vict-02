@@ -129,6 +129,9 @@ it('keeps data drafts safe across document navigation and saves applied starting
   await tick();
   button('Document');
   await tick();
+  document.querySelector<HTMLButtonElement>('.uv-layers [role="treeitem"]')!.click();
+  await tick();
+  expect(document.querySelector('#document-drawer')).not.toBeNull();
   button('Data');
   await tick();
   const row = [...document.querySelectorAll<HTMLButtonElement>('.data-row')].find((item) =>

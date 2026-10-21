@@ -58,7 +58,7 @@
       }
     }
     selectOccurrence(occurrence);
-    if(!textDraftDirty && !sourceDraftDirty) drawerOpen=false;
+
   }
   let plan = $state<UiRenderPlan>();
   let issues = $state<readonly { code: string; message: string }[]>([]);
@@ -92,7 +92,7 @@
     actionInputs: { message: 'Message', accepted: 'Agreement' } };
   function selectOccurrence(occurrence: string) {
     if (textDraftDirty || (drawerOpen && sourceDraftDirty)) { notice = 'Apply or cancel your edit first.'; return; }
-    drawerOpen=false;
+    if(drawerTab!=='Layers') drawerOpen=false;
     editTextSignal = undefined;
     if (source) {
       const report = resolveOccurrence(occurrence, source);
@@ -331,7 +331,7 @@
         <div class="design-frame" style:max-width={width === 'fluid' ? 'none' : `${width}px`}>
           <EditorCanvas document={source} catalogs={designerCatalogs} extensions={catalogDescriptors} extensionImplementations={catalogImplementations}
             {compositionFocus} onOpenComposition={openComposition}
-            selectionTools={!drawerOpen && selectedNode && (selectedNode.id !== source.root || paletteRequested) ? floatingTools : undefined}
+            selectionTools={(!drawerOpen || drawerTab==='Layers') && selectedNode && (selectedNode.id !== source.root || paletteRequested) ? floatingTools : undefined}
             {selectionToolsReveal} selectionToolsPinned={textDraftDirty}
             selectionToolsPlacement="below"
             onEditTextRequest={editSelectedText}

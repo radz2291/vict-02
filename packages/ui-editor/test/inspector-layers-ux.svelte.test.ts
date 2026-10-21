@@ -211,6 +211,7 @@ describe('Inspector / Layers UX semantic regressions', () => {
         plan: compiled.plan,
         document: fixture,
         selectedOccurrence: 'ux|card|a@card',
+        compact: true,
         onSelect: (key: string) => selected.push(key),
       },
     });
@@ -219,6 +220,14 @@ describe('Inspector / Layers UX semantic regressions', () => {
       const item = target.querySelector<HTMLButtonElement>('[data-key="ux|card|a@card"]');
       expect(item).not.toBeNull();
       expect(item?.getAttribute('aria-selected')).toBe('true');
+      expect(
+        target.querySelector('[data-key="ux|a"]')?.closest('li')?.classList.contains('is-ancestor'),
+      ).toBe(true);
+      expect(
+        target.querySelector('[data-key="ux|b"]')?.closest('li')?.classList.contains('is-ancestor'),
+      ).toBe(false);
+      expect(item?.closest('li')?.querySelector('.tree-guides[aria-hidden="true"]')).not.toBeNull();
+
       item?.click();
       flushSync();
       expect(selected).toEqual(['ux|card|a@card']);

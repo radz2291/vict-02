@@ -110,6 +110,38 @@
     while (parent) { const ancestor = all.find(e => e.key === parent); if (!ancestor || !isOpen(ancestor)) return false; parent = ancestor.parent; }
     return true;
   }));
+  const selectedAncestors = $derived.by(() => {
+    const keys = new Set<string>();
+    let parent = all.find(entry => entry.key === selectedOccurrence)?.parent;
+    while(parent) {keys.add(parent);parent=all.find(entry=>entry.key===parent)?.parent;}
+    return keys;
+  });
+  const treeGuides = $derived.by(() => {
+    const guides = new Map<string, {level:number;end:boolean;continues:boolean}[]>();
+    const siblings = new Map<string|undefined, string>();
+    for(const entry of entries) siblings.set(entry.parent,entry.key);
+    for(const entry of entries) {
+      const path:Entry[]=[entry];
+      let parent=all.find(item=>item.key===entry.parent);
+      while(parent) {path.unshift(parent);parent=all.find(item=>item.key===parent?.parent);}
+      guides.set(entry.key,path.slice(1).map((branch,level)=>({level,end:level===path.length-2,continues:siblings.get(branch.parent)!==branch.key})));
+    }
+    return guides;
+  });
+  function iconPath(entry:Entry):string {
+    if(entry.composition) return 'M2 4h5l2 2h5v7H2z';
+    const node=document?.nodes[entry.nodeId];
+    const tag=node?.kind==='element'?node.tag:'';
+    const definition=node?.kind==='component'?node.definitionId:'';
+    if(tag==='input' || tag==='textarea') return 'M2 4h12v8H2z M5 6v4';
+    if(definition.endsWith('.checkbox')) return 'M3 3h10v10H3z M5 8l2 2 4-4';
+    if(tag==='button' || definition.endsWith('.button')) return 'M3 4h10l1 1v6l-1 1H3l-1-1V5z M5 8h6';
+    if(definition.endsWith('.dialog') || definition.endsWith('.popover')) return 'M2 3h12v10H2z M2 6h12 M11 4.5h1';
+    if(/^h[1-6]$/.test(tag)) return 'M4 3v10 M12 3v10 M4 8h8';
+    if(node?.kind==='text' || ['p','span','label','a'].includes(tag)) return 'M3 4h10 M8 4v9 M5 13h6';
+    if(entry.component) return 'M8 2l6 6-6 6-6-6z';
+    return 'M2 3h12v10H2z M2 6h12';
+  }
   function visibleLabel(entry: Entry) {
     // Expanded text-only elements use their role; the child carries the content.
     if (entry.compact && !entry.component && (query || isOpen(entry)) && !labels.nodes?.[entry.nodeId]) return entry.label.split(' · ')[0];
@@ -158,12 +190,13 @@
   <header><h2>{ariaLabel}</h2><div class="search"><input type="search" aria-label="Search layers" placeholder="Find an element…" bind:value={search} onkeydown={e => { if (e.key === 'Escape') search = ''; if (e.key === 'ArrowDown' && entries[0]) { e.preventDefault(); void focus(entries[0].key); } }} />{#if query}<button type="button" aria-label="Clear layers search" onclick={() => search = ''}>×</button>{/if}</div>{#if query}<p role="status">{matches.length} matches · ancestors shown</p>{/if}</header>
   <ul role="tree" aria-label="Document layers">
     {#each entries as entry (entry.key)}
-      <li role="none" style:padding-left={`${entry.depth * 12}px`}>
-        {#if entry.children}<button class="disclosure" type="button" tabindex="-1" disabled={!!query} aria-label={`${query || isOpen(entry) ? 'Collapse' : 'Expand'} ${entry.label}`} onclick={() => toggle(entry)}>{query || isOpen(entry) ? '⌄' : '›'}</button>{:else}<span class="spacer"></span>{/if}
+      <li role="none" class:is-parent={entry.children && (!entry.compact || entry.component)} class:is-ancestor={selectedAncestors.has(entry.key)} class:is-selected={entry.key===selectedOccurrence} style:padding-left={`${entry.depth * 16}px`}>
+        <span class="tree-guides" aria-hidden="true">{#each treeGuides.get(entry.key) ?? [] as guide}{#if guide.continues || guide.end}<span class="tree-guide" class:branch={guide.end} class:last={!guide.continues} style:left={`${guide.level*16+10}px`}></span>{/if}{/each}</span>
+        {#if entry.children}<button class="disclosure" type="button" tabindex="-1" disabled={!!query} aria-label={`${query || isOpen(entry) ? 'Collapse' : 'Expand'} ${entry.label}`} onclick={() => toggle(entry)}><svg viewBox="0 0 16 16" aria-hidden="true" class:expanded={!!query || isOpen(entry)}><path d="m6 4 4 4-4 4" /></svg></button>{:else}<span class="spacer"></span>{/if}
         <button type="button" role="treeitem" data-key={entry.key} data-drop={dropKey === entry.key ? dropPosition : undefined} aria-level={entry.depth + 1} aria-expanded={entry.children ? !!query || isOpen(entry) : undefined} aria-selected={entry.key === selectedOccurrence} tabindex={entry.key === tabStop ? 0 : -1} title={`${entry.label} · ${entry.detail}`} onclick={() => select(entry)} onkeydown={e => keyboard(e, entry)} onfocus={() => focusKey = entry.key}
           draggable={!!onApply && direct(entry) && !query} ondragstart={event => { if (!direct(entry)) { event.preventDefault(); return; } draggedId = entry.nodeId; if (event.dataTransfer) { event.dataTransfer.effectAllowed = 'move'; event.dataTransfer.setData('text/plain', entry.nodeId); } }}
           ondragover={event => dragOver(event, entry)} ondrop={event => drop(event, entry)} ondragleave={() => { dropKey = ''; }} ondragend={() => { draggedId = ''; dropKey = ''; moveMessage = ''; }}>
-          <span class="icon" aria-hidden="true">{entry.component ? '◇' : entry.children ? '▤' : '·'}</span><span class="name" title={visibleLabel(entry)}>{visibleLabel(entry)}</span>{#if entry.component}<span class="badge" title="Component" aria-label="Component">◇</span>{/if}
+          <span class="icon" aria-hidden="true"><svg viewBox="0 0 16 16"><path d={iconPath(entry)} /></svg></span><span class="name" title={visibleLabel(entry)}>{visibleLabel(entry)}</span>{#if entry.component}<span class="badge" title="Component" aria-label="Component">◇</span>{/if}
         </button>
       </li>
     {/each}
@@ -176,14 +209,29 @@
   header { padding: 14px 12px; border-bottom: 1px solid var(--ui-editor-line, #d7dce5); } h2 { font-size: 13px; margin: 0; } p { font-size: 10px; color: var(--ui-editor-muted, #667085); margin: 3px 0; overflow-wrap: anywhere; }
   .search { display: flex; gap: 3px; margin-top: 6px; } .search input { width: 100%; min-width: 0; font: inherit; border: 1px solid var(--ui-editor-line, #d7dce5); border-radius: 4px; background: var(--ui-editor-input, #fff); color: inherit; padding: 5px; } .search button { padding: 0 4px; } .empty { padding: 8px 12px; }
   ul { margin: 0; padding: 8px; list-style: none; overflow: auto; flex: 1; min-height: 100px; }
-  li { display: flex; align-items: stretch; min-height: 32px; }
+  li { position:relative;display: flex; align-items: stretch; min-height: 32px; }
   button { border: 0; background: transparent; color: inherit; font: inherit; cursor: pointer; border-radius: 4px; min-width: 0; }
   [role=treeitem] { display: flex; align-items: center; gap: 5px; flex: 1; padding: 5px; text-align: left; }
   [aria-selected=true] { background: var(--ui-editor-selection, #edf1ff); color: var(--ui-editor-accent, #355cc9); }
   .disclosure, .spacer { flex: 0 0 20px; width: 20px; }
   [data-drop=before] {box-shadow:inset 0 2px #5269bd;} [data-drop=after] {box-shadow:inset 0 -2px #5269bd;} [data-drop=inside] {outline:2px solid #5269bd;outline-offset:-2px;} [draggable=true] {cursor:grab;}
   .name { overflow-wrap: anywhere; min-width: 0; flex: 1; display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-  .icon { color: var(--ui-editor-muted, #667085); }
+  .icon {display:flex;align-items:center;flex:none;width:16px; color: var(--ui-editor-muted, #667085); }
+  .icon svg,.disclosure svg {width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.35;stroke-linecap:round;stroke-linejoin:round;}
+  .disclosure {display:grid;place-items:center;position:relative;z-index:1;}
+  .disclosure svg {width:12px;height:12px;transition:transform .1s;} .disclosure svg.expanded {transform:rotate(90deg);}
+  .tree-guides {position:absolute;inset:0;pointer-events:none;}
+  .tree-guide {position:absolute;top:0;bottom:0;width:12px;}
+  .tree-guide::before {content:'';position:absolute;left:0;top:0;bottom:0;border-left:1px solid #d7deea;}
+  .tree-guide.branch::after {content:'';position:absolute;left:0;right:0;top:50%;border-top:1px solid #d7deea;}
+  .tree-guide.branch.last::before {bottom:50%;}
+  .is-parent .name {font-weight:600;color:#46556e;}
+  .is-ancestor > [role=treeitem] {background:#f3f5fb;}
+  .is-ancestor > [role=treeitem] .name,.is-ancestor > .disclosure {color:#5269a5;}
+  .is-selected .tree-guide::before,.is-selected .tree-guide::after,.is-ancestor .tree-guide::before,.is-ancestor .tree-guide::after {border-color:#9aabd3;}
+  .is-selected .name,.is-selected .icon {color:var(--ui-editor-accent,#355cc9);}
+  [role=treeitem]:hover {background:#f0f3f9;}
+  [role=treeitem][aria-selected=true] {background:var(--ui-editor-selection,#edf1ff);box-shadow:inset 2px 0 #5269bd;}
   .badge { font-size: 9px; color: var(--ui-editor-muted, #667085); }
   :focus-visible { outline: 2px solid var(--ui-editor-accent, #355cc9); outline-offset: -2px; }
   .compact {background:var(--ui-editor-input,#fff);}
