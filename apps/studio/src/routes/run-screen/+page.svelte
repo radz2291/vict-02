@@ -43,7 +43,6 @@
 <ControlScope><div class="vict-app finished-screen studio-workspace">
   <header class="workspace-header">
     <a class="workspace-mark" href="/design" aria-label="VICT Studio" title="VICT Studio">V</a>
-    <a class="designer-link" href="/design">← Designer</a><span class="run-context">Run saved</span>
     <span class="run-screen-name">{source?screenName(source):'Saved screen'}</span>
   </header>
   <div class="workspace-tools">
@@ -51,7 +50,7 @@
       {#if matchedWidth}<option value="match">Match designer · {matchedWidth}px</option>{/if}
       <option value="fluid">Fit canvas</option><option value="768">Tablet · 768</option><option value="390">Phone · 390</option>
     </select></label>
-    <button type="button" onclick={() => { adapter.reset(); resetSignal = Symbol('reset'); activity = ''; }}>Restart run</button>
+    <div class="run-actions"><button type="button" onclick={() => { adapter.reset(); resetSignal = Symbol('reset'); activity = ''; }}>Restart</button><a class="run-exit" href="/design">Exit</a></div>
   </div>
   <div class="workspace-scroll">
     {#if failure}<p class="failure" role="alert">{failure}</p>
@@ -63,14 +62,13 @@
 </div></ControlScope>
 <style>
   :global(body:has(.finished-screen)){margin:0;}
-  .designer-link {color:#5269bd;text-decoration:none;font-size:11px;}
-  .run-context {font-size:10px;color:#8a96a8;border-left:1px solid #e1e6ee;padding-left:12px;}
   .run-screen-name {margin-left:auto;font-size:12px;font-weight:550;max-width:45%;overflow:hidden;text-overflow:ellipsis;}
-  button,select {font:inherit;border:1px solid #dce2eb;background:white;color:#65748d;border-radius:4px;padding:4px 7px;cursor:pointer;font-size:11px;}
+  button,select,.run-exit {font:inherit;border:1px solid #dce2eb;background:white;color:#65748d;border-radius:4px;padding:4px 7px;cursor:pointer;font-size:11px;}
+  .run-actions {display:flex;align-items:center;gap:6px;}
+  .run-exit {text-decoration:none;}
   .run-view-size select {border-color:transparent;background:transparent;max-width:230px;}
   .simulation-controls {padding:0 14px 14px;display:flex;gap:14px;flex-wrap:wrap;}
   .simulation-controls label {display:inline-flex;align-items:center;gap:6px;}
   .failure {margin:20px;padding:12px;border:1px solid #dce2eb;border-radius:6px;}
   .sr-only {position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;}
-  @media(max-width:480px){.run-context{display:none;}}
 </style>
