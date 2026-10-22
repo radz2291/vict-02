@@ -1,0 +1,35 @@
+
+> vict-studio@0.1.0 test
+> vitest run tests/ui/agent-chat.test.ts tests/ui/chat-message.test.ts
+
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/apps/studio
+
+12:24:47 am [vite-plugin-svelte] src/lib/designer/AgentChat.svelte:23:6 `panel` is updated, but is not declared with `$state(...)`. Changing its value will not correctly trigger updates
+https://svelte.dev/e/non_reactive_update
+12:24:47 am [vite-plugin-svelte] src/lib/designer/MessageNode.svelte:22:35 Empty block
+https://svelte.dev/e/block_empty
+ ✓ tests/ui/chat-message.test.ts (3 tests) 182ms
+12:24:59 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/DocumentHost.svelte:105:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+12:25:00 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:303:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+12:25:00 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:303:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+12:25:00 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:370:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+12:25:00 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:370:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+12:25:01 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/Conversation.svelte:102:10 The attribute 'aria-description' is not supported by the role 'textbox'. This role is implicit on the element `<textarea>`
+https://svelte.dev/e/a11y_role_supports_aria_props_implicit
+12:25:01 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/Conversation.svelte:35:6 `inputElement` is updated, but is not declared with `$state(...)`. Changing its value will not correctly trigger updates
+https://svelte.dev/e/non_reactive_update
+12:25:07 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-editor/src/StateValuesPanel.svelte:106:6 A form label must be associated with a control
+https://svelte.dev/e/a11y_label_has_associated_control
+ ✓ tests/ui/agent-chat.test.ts (2 tests) 330ms
+
+ Test Files  2 passed (2)
+      Tests  5 passed (5)
+   Start at  00:24:41
+   Duration  26.52s (transform 16.80s, setup 0ms, collect 28.20s, tests 512ms, environment 3.06s, prepare 755ms)
+

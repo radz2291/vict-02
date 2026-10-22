@@ -1,5 +1,17 @@
 # Studio Designer — current delivery state
 
+## 2026-10-23 — Cycle 1.1 chat UI repair IN PROGRESS
+
+Owner authorized repair of the populated chat layout and supplied professional
+creative-software UI preferences. Isolated branch
+`codex/studio-cycle-1-1-chat-layout`, clean remote-equal base
+`63ae937cdcbbe1839b78d85bbb9a8a2ef32dac4f`; main remains
+`d7401bef6e48330796c74ec00c86db9622d48cdf`.
+[Bounded scope, checks and failed observations](CYCLE-1-1-CHAT-UI-REPAIR.md).
+Builder Studio 140/140 and shared renderer 51/51 pass; independent exact-commit
+visual/production/real-agent verification is pending. Earlier gates remain
+historical. No owner acceptance, main merge or Cycle 1.2 is claimed.
+
 ## 2026-10-23 — Cycle 1.1 busy/completion repair verified and locally active
 
 Independent **PASS WITH NON-BLOCKING FINDINGS** on exact product

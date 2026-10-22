@@ -1,6 +1,8 @@
 <script lang="ts">
   import { onDestroy, onMount } from 'svelte';
   import { Conversation } from '@victframework/ui-svelte';
+  import { Popover } from '@victframework/ui-svelte/primitives';
+  import ChatMessage from './ChatMessage.svelte';
   import type { UiConversationMessage, UiDocument } from '@victframework/ui';
   import type { AgentCursor, AgentProposal, EditReceipt } from './agent-edits.js';
   interface Props {
@@ -18,10 +20,12 @@
   let controller:AbortController|undefined;
   let evidence=$state('');
   let disposed=false;
+  let panel=$state<HTMLElement>();
+  let failed=$state(false);
   function note(message:string){progress=[...progress.slice(-7),message];status=message;}
   async function configure(){
-    try{const response=await fetch('/api/designer-agent',{cache:'no-store'});const data=await response.json();if(!response.ok)throw new Error();csrf=data.csrf;model=data.model;ready=data.ready;status=ready?'Ready to build with you.':'Configure a server-side model and provider key to connect.';}
-    catch{ready=false;status='Agent connection unavailable. Sign in again or retry the connection.';}
+    try{const response=await fetch('/api/designer-agent',{cache:'no-store'});const data=await response.json();if(!response.ok)throw new Error();csrf=data.csrf;model=data.model;ready=data.ready;failed=!ready;status=ready?'Ready':'Configure a server-side model and provider key to connect.';}
+    catch{ready=false;failed=true;status='Agent connection unavailable. Sign in again or reconnect in Chat details.';}
   }
   onMount(()=>{void configure();});
   const headers=()=>({'content-type':'application/json','x-vict-csrf':csrf});
@@ -36,7 +40,7 @@
     if(code==='STUDIO_AGENT_BUSY')return `Another agent turn is still running in this session. Wait for it to finish, or stop it in its Designer tab, then retry. ${effects}`;
     if(code==='STUDIO_AGENT_CAPACITY')return `The agent server is finishing other turns. Wait a moment and retry. ${effects}`;
     if(code==='STUDIO_AGENT_UNCONFIGURED')return `The agent needs a server-side provider configuration. Reconnect after configuring it. ${effects}`;
-    return `${code==='STUDIO_AGENT_PROVIDER_FAILED'?'The provider could not complete this turn. Check the connection and retry.':'The agent stopped before finishing. Check Activity and retry.'} ${effects}`;
+    return `${code==='STUDIO_AGENT_PROVIDER_FAILED'?'The provider could not complete this turn. Check the connection and retry.':'The agent stopped before finishing. Check Chat details and retry.'} ${effects}`;
   }
   async function send(text:string){
     if(busy)return {ok:false,message:'Wait for this turn or stop it first.'};
@@ -46,7 +50,7 @@
     const history=messages.slice(-12).map(({participant,text})=>({participant:participant==='user'?'user':'assistant',text:text.slice(0,6000)}));
     messages=[...messages,{author:'You',participant:'user',text},{author:'Studio agent',participant:'assistant',text:''}];
     const responseIndex=messages.length-1;
-    busy=true;progress=[];evidence='';runId='';controller=new AbortController();let done=false;let sent=false;let applied=0;let lastRefusal='';
+    busy=true;failed=false;progress=[];evidence='';runId='';controller=new AbortController();let done=false;let sent=false;let applied=0;let lastRefusal='';let separateReply=false;
     note('Connecting…');
     try{
       const response=await fetch('/api/designer-agent',{method:'POST',headers:headers(),signal:controller.signal,body:JSON.stringify({...context,prompt:text,history})});
@@ -60,20 +64,25 @@
           while((newline=buffer.indexOf('\n'))>=0){
             const line=buffer.slice(0,newline);buffer=buffer.slice(newline+1);if(!line.trim())continue;
             const event=JSON.parse(line);
-            if(event.type==='started'){sent=true;runId=event.runId;model=event.model;note(`Connected · ${event.engine}`);}
-            if(event.type==='progress')note(event.message);
-            if(event.type==='text')messages=messages.map((message,index)=>index===responseIndex?{...message,text:(message.text+event.delta).slice(0,100_000)}:message);
+            if(event.type==='started'){sent=true;runId=event.runId;model=event.model;note('Reading screen…');}
+            if(event.type==='progress'){note(event.message);separateReply=true;}
+            if(event.type==='text'){
+              messages=messages.map((message,index)=>index===responseIndex?{...message,text:(message.text+(separateReply&&message.text?'\n\n':'')+event.delta).slice(0,100_000)}:message);
+              separateReply=false;
+            }
             if(event.type==='proposal'){
               const receipt=controller.signal.aborted?{ok:false as const,code:'STUDIO_AGENT_CANCELLED',message:'The agent was stopped.'}:applyProposal(event.proposal);
               lastRefusal=receipt.ok?'':receipt.message;
-              if(receipt.ok){applied++;note('Validated edit applied · available in Undo');}else note(receipt.message);
+              if(receipt.ok){applied++;status='Applying edit…';}else note(receipt.message);
+              separateReply=true;
               const ack=await fetch('/api/designer-agent/ack',{method:'POST',headers:headers(),signal:controller.signal,body:JSON.stringify({runId,proposalId:event.proposal.proposalId,receipt})});
               if(!ack.ok)throw new Error('ack');
             }
-            if(event.type==='edit-result'){lastRefusal=event.result.ok?'':event.result.message;note(event.result.ok?`${event.reason} · applied`:event.result.message);}
+            if(event.type==='edit-result'){lastRefusal=event.result.ok?'':event.result.message;note(event.result.ok?`${event.reason} · applied`:event.result.message);separateReply=true;}
             if(event.type==='done'){
               done=true;applied=Math.max(applied,event.applied??0);
-              status=event.status==='completed'?(lastRefusal?`${lastRefusal} ${applied?`${applied} earlier edits remain undoable.`:''}`:`Finished · ${applied} edit${applied===1?'':'s'} applied · save when ready.`):event.status==='cancelled'?`Stopped · ${applied} applied edits remain undoable.`:failedStatus(event.code,applied);
+              failed=event.status==='failed'||Boolean(lastRefusal);
+              status=event.status==='completed'?(lastRefusal?`${lastRefusal} ${applied?`${applied} earlier edits remain undoable.`:''}`:`${applied} edit${applied===1?'':'s'} applied`):event.status==='cancelled'?`Stopped · ${applied} applied edits remain undoable.`:failedStatus(event.code,applied);
               evidence=[event.turnId?`VICT turn ${event.turnId} · profile ${event.profileVersion}`:'',event.code??''].filter(Boolean).join(' · ');
               if(!messages[responseIndex]?.text)messages=messages.map((message,index)=>index===responseIndex?{...message,text:status}:message);
             }
@@ -83,29 +92,88 @@
       if(!done)throw new Error('incomplete');
       return sent?true:{ok:false,message:status};
     }catch{
-      if(!disposed){note(controller.signal.aborted?`Stopped · ${applied} applied edits remain undoable.`:`Connection interrupted · ${applied} edits applied locally. Inspect the canvas before retrying; Undo is available.`);if(!messages[responseIndex]?.text)messages=messages.map((message,index)=>index===responseIndex?{...message,text:status}:message);}
+      if(!disposed){failed=!controller.signal.aborted;note(controller.signal.aborted?`Stopped · ${applied} applied edits remain undoable.`:`Connection interrupted · ${applied} edits applied locally. Inspect the canvas before retrying; Undo is available.`);if(!messages[responseIndex]?.text)messages=messages.map((message,index)=>index===responseIndex?{...message,text:status}:message);}
       return sent?true:{ok:false,message:'The request could not reach the agent. Your draft is still here.'};
     }finally{const unfinished=runId;runId='';busy=false;if(unfinished&&!done)void fetch('/api/designer-agent',{method:'DELETE',headers:headers(),body:JSON.stringify({runId:unfinished})}).catch(()=>undefined);}
   }
 </script>
 
-<aside class="agent-chat" aria-label="Studio agent">
-  <header><div><h2>Studio agent</h2><p>{model || 'VICT / Mastra'}</p></div>{#if busy}<button type="button" onclick={()=>void stop()}>Stop</button>{:else}<button type="button" onclick={()=>void configure()} aria-label="Reconnect agent">↻</button>{/if}</header>
-  <div class="agent-context"><span title={screenLabel}>{screenLabel}</span><strong title={selectionLabel}>Selected: {selectionLabel}</strong></div>
-  <Conversation surfaceId="studio-agent" {messages} emptyMessage="Describe the screen you want to make. Try “Create a registration form with name, email and password.” Select an element to ask for a focused change." inputLabel="Message Studio agent" inputPlaceholder="Build a screen or edit the selection…" onSend={send}/>
-  <div class="agent-status" role="status" aria-live="polite">{status}</div>
-  {#if blocked}<p class="agent-draft-note">Apply or cancel the current draft before asking the agent to edit.</p>{/if}
-  {#if !ready}<p class="agent-setup">On the Studio server, set <code>STUDIO_AGENT_MODEL</code> and the matching provider key (OpenAI, Anthropic, OpenRouter, Ollama Cloud or z.ai), then restart. Keys stay on the server.</p>{/if}
-  {#if progress.length}<details class="agent-progress"><summary>Activity ({progress.length})</summary><ol>{#each progress as message}<li>{message}</li>{/each}</ol></details>{/if}
-  {#if evidence}<details class="agent-progress"><summary>Connection record</summary><p>{evidence}</p></details>{/if}
-  <p class="agent-footnote">Edits share your history. Save explicitly. Form actions remain local preview. Chat clears when you leave Designer.</p>
+<aside class="agent-chat" aria-label="Studio agent" bind:this={panel}>
+  <header>
+    <h2>Studio agent</h2>
+    <div class="agent-actions">
+      {#if busy}<button type="button" class="agent-stop" onclick={()=>void stop()}>Stop</button>{/if}
+      <Popover.Root>
+        <Popover.Trigger class="agent-details-trigger" aria-label="Chat details" title="Chat details">···</Popover.Trigger>
+        <Popover.Content class="studio-chat-details" side="bottom" align="end" sideOffset={4} collisionPadding={8} collisionBoundary={panel ?? null} aria-label="Chat details">
+          <div class="details-heading"><h3>Chat details</h3><Popover.Close aria-label="Close chat details">×</Popover.Close></div>
+          <p class="details-model">{model || 'VICT / Mastra'}</p>
+          <p>{status}</p>
+          {#if !ready}<p>Set the server’s model and provider key, then restart Studio. Credentials stay on the server.</p>{/if}
+          <button type="button" class="details-reconnect" disabled={busy} onclick={()=>void configure()}>Reconnect agent</button>
+          {#if progress.length}<h4>Recent activity</h4><ol>{#each progress as message}<li>{message}</li>{/each}</ol>{/if}
+          {#if evidence}<h4>Connection record</h4><p class="details-record">{evidence}</p>{/if}
+        </Popover.Content>
+      </Popover.Root>
+    </div>
+  </header>
+  <div class="agent-context">
+    <span title={screenLabel}>{screenLabel}</span>
+    {#if selectionLabel && selectionLabel!=='Screen' && selectionLabel!==screenLabel}<span class="agent-selection" title={`Selected: ${selectionLabel}`}>{selectionLabel}</span>{/if}
+  </div>
+  <Conversation surfaceId="studio-agent" {messages}
+    emptyMessage="Describe a screen, or select an element to edit it."
+    inputLabel="Message Studio agent" inputPlaceholder="Ask for a change…"
+    multiline followUpdates onSend={send}>
+    {#snippet messageBody(message)}
+      {#if message.participant==='assistant'}<ChatMessage text={message.text}/>
+      {:else}<span class="agent-user-message">{message.text}</span>{/if}
+    {/snippet}
+  </Conversation>
+  <div class="agent-status" class:agent-status--failed={failed} role="status" aria-live="polite" title={blocked?'Apply or cancel the current draft before asking the agent to edit.':status}>
+    <span class="status-dot" class:status-dot--busy={busy} aria-hidden="true"></span>
+    <span>{blocked?'Apply or cancel the current draft first.':status}</span>
+  </div>
 </aside>
 
 <style>
-  .agent-chat{display:flex;flex-direction:column;min-height:0;min-width:0;width:320px;border-right:1px solid #e0e5ee;background:#fff;color:#263246;overflow:auto;font-size:12px}
-  header{display:flex;align-items:center;justify-content:space-between;padding:15px 14px 10px;gap:8px}h2{font-size:13px;margin:0}header p{font-size:10px;color:#78869c;margin:4px 0 0;overflow-wrap:anywhere}button{border:1px solid #dce2eb;border-radius:5px;padding:4px 8px;background:#fff;color:#5269bd}
-  .agent-context{display:flex;flex-direction:column;gap:4px;background:#f5f7fb;padding:9px 14px;font-size:11px}.agent-context span,.agent-context strong{overflow:hidden;white-space:nowrap;text-overflow:ellipsis}.agent-context strong{font-weight:500;color:#67758b}
-  .agent-chat :global(.vict-conversation-panel){flex:1;display:flex;flex-direction:column;min-height:200px;padding:12px 14px 4px;gap:12px}.agent-chat :global(.vict-conversation){flex:1;max-height:none;min-height:100px;padding:0}.agent-chat :global(.vict-conversation-message){padding:9px;margin-bottom:8px;overflow-wrap:anywhere}.agent-chat :global(.vict-conversation-body){white-space:pre-wrap;font-size:12px}.agent-chat :global(.vict-conversation-meta){font-size:10px}.agent-chat :global(.vict-conversation-input-row){display:flex;gap:6px}.agent-chat :global(.vict-input){min-width:0;width:100%;font-size:12px}.agent-chat :global(.vict-btn){font-size:11px;padding:6px 9px}.agent-chat :global(.vict-field-label){font-size:11px}.agent-chat :global(.vict-state){font-size:12px;line-height:1.7;background:transparent;padding:5px 0}.agent-chat :global(.vict-send-error:empty){display:none}
-  .agent-status{margin:4px 14px 7px;font-size:11px;line-height:1.5;color:#5269bd;overflow-wrap:anywhere}.agent-setup,.agent-draft-note{margin:4px 14px 8px;font-size:11px;line-height:1.6;color:#6a7690}.agent-setup code{font-size:10px;overflow-wrap:anywhere}.agent-progress{margin:3px 14px 7px;font-size:11px;color:#6a7690}.agent-progress p,.agent-progress li{overflow-wrap:anywhere;line-height:1.5}.agent-progress ol{padding-left:17px}.agent-footnote{margin:8px 14px 12px;font-size:10px;line-height:1.5;color:#8a94a6}
-  @media(max-width:760px){.agent-chat{width:100%;height:320px;max-height:45vh;border-right:0;border-bottom:1px solid #e0e5ee;flex-shrink:0}.agent-chat :global(.vict-conversation-panel){min-height:110px}.agent-context,.agent-footnote{display:none}header{padding:8px 14px}.agent-progress{display:none}}
+  .agent-chat{display:flex;flex-direction:column;min-height:0;min-width:0;width:320px;border-right:1px solid #e0e5ee;background:#fff;color:#263246;overflow:hidden;font-size:12px}
+  header{display:flex;flex:none;align-items:center;justify-content:space-between;padding:10px 12px 6px;gap:8px}
+  h2{font-size:13px;font-weight:650;margin:0}.agent-actions{display:flex;gap:6px;align-items:center}
+  .agent-stop,:global(.agent-details-trigger){height:28px;border:1px solid transparent;border-radius:5px;background:transparent;color:#63718a;cursor:pointer;padding:3px 8px;font-size:12px}
+  .agent-stop{border-color:#dce2eb;color:#35445d}:global(.agent-details-trigger){width:28px;font-size:20px;line-height:1}
+  :global(.agent-details-trigger:hover),:global(.agent-details-trigger[data-state="open"]){background:#f0f3f8}
+  .agent-context{display:flex;flex:none;gap:8px;align-items:center;padding:0 14px 9px;color:#788398;font-size:11px;min-width:0}
+  .agent-context span{overflow:hidden;white-space:nowrap;text-overflow:ellipsis}.agent-selection{border-left:1px solid #dce2eb;padding-left:8px;color:#5269a2}
+  .agent-chat :global(.vict-conversation-panel){flex:1;display:flex;flex-direction:column;min-height:0;min-width:0;padding:0 12px;border:0;border-radius:0;gap:0;background:transparent}
+  .agent-chat :global(.vict-conversation){flex:1;max-height:none;min-height:0;padding:8px 2px 12px;gap:18px;overscroll-behavior:contain}
+  .agent-chat :global(.vict-conversation-message){max-width:100%;padding:0;margin:0;min-width:0;width:100%}
+  .agent-chat :global(.vict-conversation-message--user){width:auto;max-width:94%;padding:9px 11px;background:#f3f5f9;border:0;border-radius:8px}
+  .agent-chat :global(.vict-conversation-body){white-space:normal;font-size:12px;line-height:1.6}
+  .agent-user-message{white-space:pre-wrap}
+  .agent-chat :global(.vict-conversation-meta){font-size:10px;color:#778297;margin:0 0 5px;gap:0;font-weight:500}
+  .agent-chat :global(.vict-avatar),.agent-chat :global(.vict-message-role){display:none}
+  .agent-chat :global(.vict-conversation-input){flex:none;margin:0;padding:10px 0 0;border-top:1px solid #e5e9f0;gap:0}
+  .agent-chat :global(.vict-conversation-input-row){display:flex;flex-wrap:nowrap;align-items:flex-end;gap:6px}
+  .agent-chat :global(.vict-input){min-width:0;width:100%;flex:1 1 auto}
+  .agent-chat :global(.vict-conversation-textarea){font-size:12px;line-height:1.5;font-family:inherit;min-height:64px;max-height:112px;field-sizing:content;resize:none;padding:9px 10px;box-sizing:border-box;border-radius:7px}
+  .agent-chat :global(.vict-btn){flex:none;font-size:11px;padding:7px 10px;min-height:32px;margin:0 0 1px}
+  .agent-chat :global(.vict-field-label){position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+  .agent-chat :global(.vict-state){font-size:12px;line-height:1.7;color:#788398;background:transparent;padding:7px 0}
+  .agent-chat :global(.vict-send-error){font-size:11px;line-height:1.5;margin:6px 0 0;max-height:66px;overflow:auto}
+  .agent-chat :global(.vict-send-error:empty){display:none}
+  .agent-status{flex:none;display:flex;align-items:flex-start;gap:6px;margin:7px 14px 10px;color:#748098;font-size:10px;line-height:1.5;min-height:15px;overflow-wrap:anywhere}
+  .agent-status>span:last-child{display:-webkit-box;line-clamp:2;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .status-dot{flex:none;width:5px;height:5px;border-radius:50%;background:#a2b0c0;margin-top:5px}.status-dot--busy{background:#5874bb}.agent-status--failed{color:#9a5547}.agent-status--failed .status-dot{background:#b87865}
+  :global(.studio-chat-details){z-index:50;width:280px;max-width:calc(100vw - 32px);max-height:min(320px,calc(100dvh - 220px),var(--bits-floating-available-height,320px));overflow:auto;overscroll-behavior:contain;box-sizing:border-box;border:1px solid #dce2eb;border-radius:8px;background:#fff;padding:12px;color:#526078;box-shadow:0 8px 24px #24334c1c;font:11px/1.6 Inter,system-ui,sans-serif;overflow-wrap:anywhere}
+  :global(.studio-chat-details h3){font-size:12px;margin:0;color:#263246}
+  :global(.studio-chat-details h4){font-size:10px;font-weight:600;margin:14px 0 5px;color:#7a8598}
+  :global(.studio-chat-details p){margin:6px 0}:global(.details-model){font-size:10px;color:#7a8598}
+  :global(.details-heading){display:flex;align-items:center;justify-content:space-between}
+  :global(.details-heading button){border:0;background:transparent;color:#718098;font-size:18px;cursor:pointer;line-height:1;padding:2px 4px}
+  :global(.details-reconnect){border:1px solid #dce2eb;border-radius:5px;background:#fff;color:#5269a2;padding:5px 8px;font:inherit;cursor:pointer;margin-top:5px}
+  :global(.details-reconnect:disabled){opacity:.5;cursor:default}
+  :global(.studio-chat-details ol){padding-left:17px;margin:0}:global(.studio-chat-details li){margin:5px 0}
+  :global(.details-record){font:10px/1.6 ui-monospace,monospace;color:#788398}
+  @media(max-width:760px){.agent-chat{width:100%;height:320px;max-height:46vh;border-right:0;border-bottom:1px solid #e0e5ee;flex-shrink:0}header{padding:6px 12px 2px}.agent-context{padding-bottom:5px}.agent-chat :global(.vict-conversation-textarea){min-height:52px;max-height:76px}.agent-status{margin-bottom:6px}:global(.studio-chat-details){max-height:min(160px,calc(46vh - 140px),var(--bits-floating-available-height,160px))}}
 </style>

@@ -108,3 +108,13 @@ and same-runtime-dependency checks. Current canvas/draft/chat were preserved
 without an owner-tab refresh. Existing loaded chat code updates on a safe refresh;
 Save first if dirty. [Repair report](CYCLE-1-1-BUSY-REPAIR.md). Next action remains
 owner review; Stage 9 stays reopened and Cycle 1.2 is not authorized.
+
+## Owner-authorized chat layout correction — 2026-10-23
+
+The owner accepted the visual review and directed implementation, then supplied
+professional creative-software UI preferences. [Executable bounded repair and
+shared-component necessity reconciliation](CYCLE-1-1-CHAT-UI-REPAIR.md).
+Allowed paths additionally include only Conversation.svelte and focused component
+tests under packages/ui-svelte. Optional presentation APIs preserve defaults; no
+agent/backend/editing or catalog contract changes. Stage 9 stays reopened, owner
+acceptance pending; Cycle 1.2 remains excluded.

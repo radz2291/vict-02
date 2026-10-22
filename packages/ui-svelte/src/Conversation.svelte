@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { tick } from 'svelte';
+  import { tick, type Snippet } from 'svelte';
   import type { UiConversationMessage } from '@victframework/ui';
   interface Props {
     surfaceId: string;
@@ -7,9 +7,12 @@
     emptyMessage: string;
     inputLabel: string;
     inputPlaceholder?: string;
+    multiline?: boolean;
+    followUpdates?: boolean;
+    messageBody?: Snippet<[UiConversationMessage]>;
     onSend: (text: string) => Promise<boolean | { ok: boolean; message?: string; dataStale?: boolean }>;
   }
-  let { surfaceId, messages, emptyMessage, inputLabel, inputPlaceholder = '', onSend }: Props = $props();
+  let { surfaceId, messages, emptyMessage, inputLabel, inputPlaceholder = '', multiline = false, followUpdates = false, messageBody, onSend }: Props = $props();
   let draft = $state('');
   let sending = $state(false);
   let sendError = $state('');
@@ -17,15 +20,24 @@
   let feedElement: HTMLDivElement;
   let following = true;
   let previousMessageCount: number | undefined;
+  let previousTail: string | undefined;
   $effect(() => {
-    const appended = previousMessageCount !== undefined && messages.length > previousMessageCount;
+    const tail = followUpdates ? messages.at(-1)?.text : undefined;
+    const changed = previousMessageCount !== undefined &&
+      (messages.length > previousMessageCount || (followUpdates && tail !== previousTail));
     previousMessageCount = messages.length;
-    if (!appended) return;
+    previousTail = tail;
+    if (!changed) return;
     void tick().then(() => {
       if (following && feedElement) feedElement.scrollTop = feedElement.scrollHeight;
     });
   });
-  let inputElement: HTMLInputElement;
+  let inputElement = $state<HTMLInputElement | HTMLTextAreaElement>();
+  function composerKeydown(event: KeyboardEvent): void {
+    if (event.key !== 'Enter' || event.shiftKey || event.isComposing) return;
+    event.preventDefault();
+    if (!sending && draft.trim()) formElement?.requestSubmit();
+  }
   let formElement: HTMLFormElement;
 
   async function send(event: SubmitEvent): Promise<void> {
@@ -72,7 +84,11 @@
           class:vict-conversation-message--assistant={message.participant === 'assistant'}
           data-testid="conversation-message" data-participant={message.participant}>
           <p class="vict-conversation-meta"><span class="vict-avatar" aria-hidden="true">{message.author.slice(0, 1)}</span>{message.author}<span class="vict-message-role">{message.participant}</span></p>
-          <p class="vict-conversation-body">{message.text}</p>
+          {#if messageBody}
+            <div class="vict-conversation-body">{@render messageBody(message)}</div>
+          {:else}
+            <p class="vict-conversation-body">{message.text}</p>
+          {/if}
         </article>
       {/each}
     {/if}
@@ -80,8 +96,15 @@
   <form class="vict-conversation-input" aria-busy={sending} bind:this={formElement} onsubmit={(event) => void send(event)}>
     <label class="vict-field-label" for="vict-conversation-input-{surfaceId}">{inputLabel}</label>
     <div class="vict-conversation-input-row">
-      <input class="vict-input" id="vict-conversation-input-{surfaceId}" data-testid="conversation-input"
-        name="message" autocomplete="off" placeholder={inputPlaceholder} bind:value={draft} bind:this={inputElement} />
+      {#if multiline}
+        <textarea class="vict-input vict-conversation-textarea" id="vict-conversation-input-{surfaceId}" data-testid="conversation-input"
+          name="message" rows="2" maxlength="6000" autocomplete="off" placeholder={inputPlaceholder}
+          title="Enter to send. Shift+Enter for a new line." onkeydown={composerKeydown}
+          bind:value={draft} bind:this={inputElement}></textarea>
+      {:else}
+        <input class="vict-input" id="vict-conversation-input-{surfaceId}" data-testid="conversation-input"
+          name="message" autocomplete="off" placeholder={inputPlaceholder} bind:value={draft} bind:this={inputElement} />
+      {/if}
       <button class="vict-btn" type="submit" data-testid="conversation-send" disabled={sending || draft.trim() === ''}>
         {sending ? 'Sending…' : 'Send'}
       </button>

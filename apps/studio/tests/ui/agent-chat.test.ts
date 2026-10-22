@@ -43,10 +43,10 @@ describe('rejected Studio chat admission', () => {
           },
         },
       });
-      await vi.waitFor(() =>
-        expect(document.body.textContent).toContain('Ready to build with you.'),
-      );
-      const input = document.querySelector<HTMLInputElement>('[data-testid="conversation-input"]')!;
+      await vi.waitFor(() => expect(document.body.textContent).toContain('Ready'));
+      const input = document.querySelector<HTMLTextAreaElement>(
+        '[data-testid="conversation-input"]',
+      )!;
       input.value = 'Create a WhatsApp screen';
       input.dispatchEvent(new Event('input', { bubbles: true }));
       flushSync();
