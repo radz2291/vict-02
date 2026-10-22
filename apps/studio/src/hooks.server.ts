@@ -12,7 +12,8 @@ import {
  *
  * Fail-closed rules, in order:
  * 1. Cookie -> `locals.session` (null when absent/expired; the session id
- *    and CSRF token never enter a response body or hydration data).
+ *    never enters a response body or hydration data; the authenticated Designer bootstrap
+ *    exposes only the session-bound CSRF nonce (not an authentication credential)).
  * 2. EVERY non-GET/HEAD request requires a present Origin header that is
  *    same-origin with the Host (scheme http/https, host equality); else
  *    403 VICT_STUDIO_ORIGIN (non-echoing).

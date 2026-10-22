@@ -404,3 +404,11 @@ body:has(.finished-screen) {
 .screen-picker .screen-name-edit {width:180px;min-width:0;font:12px 'Segoe UI',system-ui,sans-serif;padding:4px 6px;border:1px solid #5269bd;border-radius:4px;background:white;color:#34425a;}
 .open-screen-menu {max-height:min(320px,calc(100dvh - 16px));}
 .screen-menu-name {min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+
+.agent-workspace {display:flex;flex:1;min-height:0;min-width:0;overflow:hidden;}
+.agent-workspace > .design-workspace {min-width:0;}
+@media(max-width:760px){.agent-workspace{flex-direction:column;}}
+
+.agent-panel {display:flex;min-height:0;flex-shrink:0;}
+.agent-panel[hidden] {display:none;}
+@media(max-width:760px){.agent-panel{width:100%;}}

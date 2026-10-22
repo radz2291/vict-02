@@ -13,6 +13,10 @@
   import { Menubar } from '@victframework/ui-svelte/catalog/menubar';
   import WorkspaceMenu from './WorkspaceMenu.svelte';
   import WorkspaceBrand from './WorkspaceBrand.svelte';
+  import AgentChat from './AgentChat.svelte';
+  import { documentCursor, applyAgentProposal, type AgentProposal } from './agent-edits.js';
+  let agentEpoch = $state(crypto.randomUUID());
+  let chatOpen = $state(true);
   import '@victframework/ui-svelte/styles.css';
   import '@victframework/ui-svelte/catalog.css';
   import './workspace.css';
@@ -179,6 +183,7 @@
     runtimeValues = {}; resetSignal = Symbol('reset'); activity = [];
   }
   function openSession(next: EditorBridge) {
+    agentEpoch = crypto.randomUUID();
     compositionFocus=undefined;
     palettePage = 'format'; paletteRequested = false;
     unsubscribe?.(); bridge = next; version++;
@@ -216,6 +221,15 @@
     } catch { issues = [{ code: 'STUDIO_STORAGE_UNAVAILABLE', message: 'Browser storage is unavailable. Enable storage to author and save screens.' }]; }
     return () => { unsubscribe?.(); };
   });
+  function receiveAgentProposal(proposal: AgentProposal) {
+    if (!bridge) return {ok:false as const,code:"UI_DOC_STALE_REVISION",message:"The screen is no longer open."};
+    const result = applyAgentProposal(bridge, proposal, agentEpoch, textDraftDirty || sourceDraftDirty || renamingScreen || !!createDialog?.open);
+    if (result.ok) {
+      notice = `${proposal.edit.reason} · agent edit · unsaved`; issues = [];
+      if (selected && !resolveOccurrence(selected, bridge.document).node) bridge.select(`${bridge.document.id}|${bridge.document.root}`);
+    } else notice = result.message;
+    return result;
+  }
   function apply(draft: TransactionDraft): boolean {
     if (textDraftDirty) { notice = 'Apply or cancel your property edit first.'; return false; }
     if (!bridge) return false;
@@ -245,6 +259,7 @@
     if (sourceDraftDirty) { notice = 'Apply or discard your JSON draft before reloading.'; return; }
     if (snapshot?.dirty) { notice = 'Save or undo your changes before reloading the saved screen.'; return; }
     const result = bridge.reopen();
+    if (result.ok) agentEpoch = crypto.randomUUID();
     if (!result.ok) { issues = [{ code: result.code, message: result.message ?? 'Reload failed.' }]; return; }
     compositionFocus=undefined;paletteRequested = false; palettePage = 'format';
     resetRuntime(); bridge.select(`${bridge.document.id}|${bridge.document.root}`); issues = []; notice = `Reloaded revision ${result.storedRevision}; runtime state reset.`;
@@ -348,6 +363,7 @@
         <Menubar.Item aria-label="Redo" disabled={!snapshot?.canRedo} onSelect={redo}>Redo <kbd>Ctrl+Shift+Z</kbd></Menubar.Item>
       </WorkspaceMenu>
       <WorkspaceMenu label="View" value="view" {activeMenu}>
+        <Menubar.Item onSelect={() => chatOpen = !chatOpen}>{chatOpen ? "Hide agent chat" : "Show agent chat"}</Menubar.Item>
         <Menubar.RadioGroup bind:value={width} aria-label="Canvas size">
           {#each [{value:'fluid',label:'Fit canvas'},{value:'768',label:'Tablet · 768'},{value:'390',label:'Phone · 390'}] as option}<Menubar.RadioItem value={option.value} closeOnSelect>{option.label}<span aria-hidden="true">{width===option.value?'\u2713':''}</span></Menubar.RadioItem>{/each}
         </Menubar.RadioGroup>
@@ -373,6 +389,8 @@
       {#snippet arrange()}<Composer document={source} selectedNodeId={selectedNode?.id} recipes={[]} descriptors={catalogDescriptors} compact showInsert={false} onApply={apply} onDuplicate={duplicateSelection} onDetached={(parentId: string)=>{selectOccurrence(`${source.id}|${parentId}`);notice='Content kept aside. Use Insert → Reuse to place it again.';}} />{#if !selectedNode || selectedNode.id === source.root}<p class="palette-hint">Select an element to move, duplicate or delete it.</p>{/if}{/snippet}
     </SelectionPalette>
   {/snippet}
+  <div class="agent-workspace" class:chat-open={chatOpen}>
+  <div class="agent-panel" hidden={!chatOpen}><AgentChat screenLabel={screenName(source)} selectionLabel={selectedNode ? compositionName(source, selectedNode.id) : "None"} blocked={textDraftDirty || sourceDraftDirty || renamingScreen} getContext={() => bridge ? {document:bridge.document, cursor:documentCursor(bridge.document,bridge.getSnapshot().revision,agentEpoch), ...(selected ? {selection:selected} : {})} : undefined} applyProposal={receiveAgentProposal} /></div>
   <div class="design-workspace" class:drawer-open={drawerOpen} class:has-object-tools={mode === 'design' && !!selectedNode && paletteRequested} style:--drawer-width={`${drawerWidth}px`}>
     <main class="design-stage">
       <div class="canvas-toolbar workspace-tools"><div class="canvas-modes" aria-label="Canvas mode"><button type="button" aria-pressed={mode === 'design'} onclick={() => changeMode('design')}>Design</button><button type="button" aria-pressed={mode === 'interact'} onclick={() => changeMode('interact')}>Interact</button></div>{#if compositionFocus}<div class="composition-back"><CompositionNavigator compact document={source} focus={compositionFocus} descriptors={catalogDescriptors} disabled={textDraftDirty || sourceDraftDirty} onNavigate={navigateComposition} /></div>{/if}<button type="button" bind:this={documentButton} class="panel-toggle" aria-expanded={drawerOpen} aria-controls="document-drawer" onclick={toggleDocument}>Document</button></div>
@@ -422,6 +440,7 @@
       </div>
     </aside>
     {/if}
+  </div>
   </div>
   {/if}
   <footer class="design-status workspace-status"><span role="status">{notice}</span><span title={compilation?.ok ? compilation.plan.applicationVersion : 'Application compilation pending'}>{compilation?.ok ? `@3 · ${compilation.plan.applicationVersion.slice(0, 15)}…` : 'Application source pending'}</span></footer>
