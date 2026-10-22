@@ -1,0 +1,628 @@
+{
+  "records": [
+    {
+      "at": "2026-10-22T14:37:05.748Z",
+      "name": "unauthenticated page redirects",
+      "data": {
+        "ok": true,
+        "url": "http://127.0.0.1:5592/login"
+      }
+    },
+    {
+      "at": "2026-10-22T14:37:06.939Z",
+      "name": "initial UI",
+      "data": {
+        "text": "V\nFile\nEdit\nView\nPreview\nUntitled screen\n○ New screen\n↗\nStudio agent\n\nzai/glm-5.3-flash\n\n↻\nUntitled screen\nSelected: Untitled screen\n\nDescribe the screen you want to make. Try “Create a registration form with name, email and password.” Select an element to ask for a focused change.\n\nMessage Studio agent\nSend\nReady to build with you.\n\nEdits share your history. Save explicitly. Form actions remain local preview. Chat clears when you leave Designer.\n\nDesign\nInteract\nDocument\n＋\nWhat will you make?\n\nSelect this screen to open its tools, then choose Insert.\n\nSimulated execution\nLocal preview · no live effects\nNew screen · not saved yet.\n@3 · v1_2e8a5ceabd22…"
+      }
+    },
+    {
+      "at": "2026-10-22T14:37:08.038Z",
+      "name": "saved source reopens byte-equal including stored revision",
+      "data": {
+        "ok": true
+      }
+    },
+    {
+      "at": "2026-10-22T14:37:49.623Z",
+      "name": "turn",
+      "data": {
+        "prompt": "Change the registration heading text to \"This stale edit must not apply\".",
+        "status": "The screen changed while the agent was working. No edit was applied; send a new request using the current screen. ",
+        "events": [
+          {
+            "type": "started",
+            "runId": "17c79a42-3231-4a4a-a774-edf11728aa0f",
+            "model": "zai/glm-5.3-flash",
+            "engine": "VICT / Mastra"
+          },
+          {
+            "type": "progress",
+            "message": "Connecting to the VICT / Mastra agent…"
+          },
+          {
+            "type": "progress",
+            "message": "Agent is working on your request…"
+          },
+          {
+            "type": "text",
+            "delta": "I"
+          },
+          {
+            "type": "text",
+            "delta": "'ll"
+          },
+          {
+            "type": "text",
+            "delta": " read"
+          },
+          {
+            "type": "text",
+            "delta": " the"
+          },
+          {
+            "type": "text",
+            "delta": " current"
+          },
+          {
+            "type": "text",
+            "delta": " document"
+          },
+          {
+            "type": "text",
+            "delta": " first"
+          },
+          {
+            "type": "text",
+            "delta": " to"
+          },
+          {
+            "type": "text",
+            "delta": " get"
+          },
+          {
+            "type": "text",
+            "delta": " the"
+          },
+          {
+            "type": "text",
+            "delta": " exact"
+          },
+          {
+            "type": "text",
+            "delta": " working"
+          },
+          {
+            "type": "text",
+            "delta": " revision"
+          },
+          {
+            "type": "text",
+            "delta": " before"
+          },
+          {
+            "type": "text",
+            "delta": " editing"
+          },
+          {
+            "type": "text",
+            "delta": "."
+          },
+          {
+            "type": "progress",
+            "message": "Reading the screen and selection…"
+          },
+          {
+            "type": "text",
+            "delta": "Current"
+          },
+          {
+            "type": "text",
+            "delta": " revision"
+          },
+          {
+            "type": "text",
+            "delta": " confirmed"
+          },
+          {
+            "type": "text",
+            "delta": " at"
+          },
+          {
+            "type": "text",
+            "delta": " `"
+          },
+          {
+            "type": "text",
+            "delta": "r"
+          },
+          {
+            "type": "text",
+            "delta": "1"
+          },
+          {
+            "type": "text",
+            "delta": ".r"
+          },
+          {
+            "type": "text",
+            "delta": "1"
+          },
+          {
+            "type": "text",
+            "delta": "#"
+          },
+          {
+            "type": "text",
+            "delta": "0"
+          },
+          {
+            "type": "text",
+            "delta": "`."
+          },
+          {
+            "type": "text",
+            "delta": " Applying"
+          },
+          {
+            "type": "text",
+            "delta": " the"
+          },
+          {
+            "type": "text",
+            "delta": " heading"
+          },
+          {
+            "type": "text",
+            "delta": " text"
+          },
+          {
+            "type": "text",
+            "delta": " change"
+          },
+          {
+            "type": "text",
+            "delta": " now"
+          },
+          {
+            "type": "text",
+            "delta": "."
+          },
+          {
+            "type": "progress",
+            "message": "Preparing and validating an edit…"
+          },
+          {
+            "type": "proposal",
+            "proposal": {
+              "proposalId": "f68f0432-1947-4fd3-9dd7-35d220a1ca67",
+              "cursor": {
+                "documentId": "screen-72441e5a-4638-4bae-bf40-8b371b20d5b0",
+                "revision": "r1.r1#0",
+                "digest": "da2c6beabec8e10d539fcc257f8641ef4e6861c0ea0cdd0725e14828cb75a027",
+                "epoch": "15efc33c-f7d8-470f-9da0-cfbc84810d20"
+              },
+              "edit": {
+                "expectedRevision": "r1.r1#0",
+                "reason": "User requested changing the registration heading text to \"This stale edit must not apply\".",
+                "operations": [
+                  {
+                    "op": "modify",
+                    "nodeId": "heading-register-text",
+                    "text": "This stale edit must not apply"
+                  }
+                ]
+              },
+              "resultDigest": "6dfc6da30dad4a3de402cfaf35791a93dd07b1ef2f689d5b36750f4561ae0a91"
+            }
+          },
+          {
+            "type": "edit-result",
+            "result": {
+              "ok": false,
+              "code": "UI_DOC_STALE_REVISION",
+              "message": "The screen changed while the agent was working. No edit was applied; send a new request using the current screen."
+            },
+            "reason": "Canvas refused the edit"
+          },
+          {
+            "type": "text",
+            "delta": "The"
+          },
+          {
+            "type": "text",
+            "delta": " edit"
+          },
+          {
+            "type": "text",
+            "delta": " did"
+          },
+          {
+            "type": "text",
+            "delta": " not"
+          },
+          {
+            "type": "text",
+            "delta": " apply"
+          },
+          {
+            "type": "text",
+            "delta": "."
+          },
+          {
+            "type": "text",
+            "delta": " The"
+          },
+          {
+            "type": "text",
+            "delta": " studio"
+          },
+          {
+            "type": "text",
+            "delta": " rejected"
+          },
+          {
+            "type": "text",
+            "delta": " it"
+          },
+          {
+            "type": "text",
+            "delta": " with"
+          },
+          {
+            "type": "text",
+            "delta": " `"
+          },
+          {
+            "type": "text",
+            "delta": "UI"
+          },
+          {
+            "type": "text",
+            "delta": "_DOC"
+          },
+          {
+            "type": "text",
+            "delta": "_ST"
+          },
+          {
+            "type": "text",
+            "delta": "ALE"
+          },
+          {
+            "type": "text",
+            "delta": "_RE"
+          },
+          {
+            "type": "text",
+            "delta": "VISION"
+          },
+          {
+            "type": "text",
+            "delta": "`:"
+          },
+          {
+            "type": "text",
+            "delta": " the"
+          },
+          {
+            "type": "text",
+            "delta": " screen"
+          },
+          {
+            "type": "text",
+            "delta": " changed"
+          },
+          {
+            "type": "text",
+            "delta": " while"
+          },
+          {
+            "type": "text",
+            "delta": " I"
+          },
+          {
+            "type": "text",
+            "delta": " was"
+          },
+          {
+            "type": "text",
+            "delta": " working"
+          },
+          {
+            "type": "text",
+            "delta": ","
+          },
+          {
+            "type": "text",
+            "delta": " so"
+          },
+          {
+            "type": "text",
+            "delta": " the"
+          },
+          {
+            "type": "text",
+            "delta": " revision"
+          },
+          {
+            "type": "text",
+            "delta": " I"
+          },
+          {
+            "type": "text",
+            "delta": " read"
+          },
+          {
+            "type": "text",
+            "delta": " is"
+          },
+          {
+            "type": "text",
+            "delta": " no"
+          },
+          {
+            "type": "text",
+            "delta": " longer"
+          },
+          {
+            "type": "text",
+            "delta": " current"
+          },
+          {
+            "type": "text",
+            "delta": "."
+          },
+          {
+            "type": "text",
+            "delta": " Per"
+          },
+          {
+            "type": "text",
+            "delta": " policy"
+          },
+          {
+            "type": "text",
+            "delta": " I"
+          },
+          {
+            "type": "text",
+            "delta": "'ve"
+          },
+          {
+            "type": "text",
+            "delta": " stopped"
+          },
+          {
+            "type": "text",
+            "delta": " —"
+          },
+          {
+            "type": "text",
+            "delta": " no"
+          },
+          {
+            "type": "text",
+            "delta": " retry"
+          },
+          {
+            "type": "text",
+            "delta": ","
+          },
+          {
+            "type": "text",
+            "delta": " nothing"
+          },
+          {
+            "type": "text",
+            "delta": " was"
+          },
+          {
+            "type": "text",
+            "delta": " modified"
+          },
+          {
+            "type": "text",
+            "delta": ".\n\n"
+          },
+          {
+            "type": "text",
+            "delta": "Please"
+          },
+          {
+            "type": "text",
+            "delta": " send"
+          },
+          {
+            "type": "text",
+            "delta": " a"
+          },
+          {
+            "type": "text",
+            "delta": " fresh"
+          },
+          {
+            "type": "text",
+            "delta": " request"
+          },
+          {
+            "type": "text",
+            "delta": " ("
+          },
+          {
+            "type": "text",
+            "delta": "e"
+          },
+          {
+            "type": "text",
+            "delta": ".g"
+          },
+          {
+            "type": "text",
+            "delta": ".,"
+          },
+          {
+            "type": "text",
+            "delta": " \""
+          },
+          {
+            "type": "text",
+            "delta": "set"
+          },
+          {
+            "type": "text",
+            "delta": " the"
+          },
+          {
+            "type": "text",
+            "delta": " heading"
+          },
+          {
+            "type": "text",
+            "delta": " text"
+          },
+          {
+            "type": "text",
+            "delta": " to"
+          },
+          {
+            "type": "text",
+            "delta": " …"
+          },
+          {
+            "type": "text",
+            "delta": "\")"
+          },
+          {
+            "type": "text",
+            "delta": " and"
+          },
+          {
+            "type": "text",
+            "delta": " I"
+          },
+          {
+            "type": "text",
+            "delta": "'ll"
+          },
+          {
+            "type": "text",
+            "delta": " re"
+          },
+          {
+            "type": "text",
+            "delta": "-read"
+          },
+          {
+            "type": "text",
+            "delta": " the"
+          },
+          {
+            "type": "text",
+            "delta": " current"
+          },
+          {
+            "type": "text",
+            "delta": " document"
+          },
+          {
+            "type": "text",
+            "delta": " and"
+          },
+          {
+            "type": "text",
+            "delta": " apply"
+          },
+          {
+            "type": "text",
+            "delta": " the"
+          },
+          {
+            "type": "text",
+            "delta": " change"
+          },
+          {
+            "type": "text",
+            "delta": " against"
+          },
+          {
+            "type": "text",
+            "delta": " its"
+          },
+          {
+            "type": "text",
+            "delta": " new"
+          },
+          {
+            "type": "text",
+            "delta": " revision."
+          },
+          {
+            "type": "done",
+            "status": "completed",
+            "applied": 0,
+            "turnId": "turn-d493c742-060d-4274-b2a4-2caf461949e4",
+            "profileVersion": "v1_9a8331caffc726ac5c9c051a5e77d1a2a05217a8582a1c76b7538514d5db960d"
+          }
+        ]
+      }
+    },
+    {
+      "at": "2026-10-22T14:37:49.753Z",
+      "name": "manual edit makes live proposal stale",
+      "data": {
+        "ok": true
+      }
+    },
+    {
+      "at": "2026-10-22T14:37:50.014Z",
+      "name": "dirty source draft blocks send and retains composer",
+      "data": {
+        "ok": true,
+        "feedback": "Apply or cancel your property, data, rename or source draft first."
+      }
+    },
+    {
+      "at": "2026-10-22T14:38:12.864Z",
+      "name": "live edit acknowledged before disconnect",
+      "data": {
+        "ok": true
+      }
+    },
+    {
+      "at": "2026-10-22T14:38:24.394Z",
+      "name": "disconnect keeps locally applied edit visible",
+      "data": {
+        "ok": true,
+        "status": "Connection interrupted · 2 edits applied locally. Inspect the canvas before retrying; Undo is available."
+      }
+    },
+    {
+      "at": "2026-10-22T14:38:25.001Z",
+      "name": "disconnect applied edits remain undoable",
+      "data": {
+        "ok": true
+      }
+    },
+    {
+      "at": "2026-10-22T14:38:25.175Z",
+      "name": "phone layout",
+      "data": {
+        "width": 390,
+        "bodyWidth": 390,
+        "chat": {
+          "height": 320,
+          "width": 390
+        }
+      }
+    },
+    {
+      "at": "2026-10-22T14:38:25.180Z",
+      "name": "browser end",
+      "data": {
+        "text": "V\nFile\nEdit\nView\nPreview\nIndependent manual rename\n↗\nStudio agent\n\nzai/glm-5.3-flash\n\n↻\n\nY\nYou\nuser\n\nChange the registration heading text to \"This stale edit must not apply\".\n\nS\nStudio agent\nassistant\n\nI'll read the current document first to get the exact working revision before editing.Current revision confirmed at `r1.r1#0`. Applying the heading text change now.The edit did not apply. The studio rejected it with `UI_DOC_STALE_REVISION`: the screen changed while I was working, so the revision I read is no longer current. Per policy I've stopped — no retry, nothing was modified.\n\nPlease send a fresh request (e.g., \"set the heading text to …\") and I'll re-read the current document and apply the change against its new revision.\n\nY\nYou\nuser\n\nFirst add a text note \"Disconnect audit probe\". After that succeeds, read the screen and in another batch add a second text note \"Second disconnect probe\".\n\nS\nStudio agent\nassistant\n\nI'll start by reading the current document to get the exact working revision before making any edit.Current revision confirmed: `r1.r1#1`. Adding the first text note now.First note applied — revision is now `r1.r1#2`. Reading the screen again before the second batch, as requested.Read confirms the first note is on screen (`text-probe-1`) and the current revision is `r1.r1#2`. Applying the second batch now.\n\nMessage Studio agent\nSend\nConnection interrupted · 2 edits applied locally. Inspect the canvas before retrying; Undo is available.\nDesign\nInteract\nDocument\nCreate an account\nRegister\n\nSimulated execution\nUndid the last authored change.",
+        "errors": []
+      }
+    }
+  ],
+  "errors": []
+}

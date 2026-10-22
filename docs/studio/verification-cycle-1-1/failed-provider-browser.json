@@ -1,0 +1,76 @@
+{
+  "records": [
+    {
+      "at": "2026-10-22T14:41:26.570Z",
+      "name": "unauthenticated page redirects",
+      "data": {
+        "ok": true,
+        "url": "http://127.0.0.1:5593/login"
+      }
+    },
+    {
+      "at": "2026-10-22T14:41:29.827Z",
+      "name": "initial UI",
+      "data": {
+        "text": "V\nFile\nEdit\nView\nPreview\nUntitled screen\n○ New screen\n↗\nStudio agent\n\nzai/glm-5.3-flash\n\n↻\nUntitled screen\nSelected: Untitled screen\n\nDescribe the screen you want to make. Try “Create a registration form with name, email and password.” Select an element to ask for a focused change.\n\nMessage Studio agent\nSend\nReady to build with you.\n\nEdits share your history. Save explicitly. Form actions remain local preview. Chat clears when you leave Designer.\n\nDesign\nInteract\nDocument\n＋\nWhat will you make?\n\nSelect this screen to open its tools, then choose Insert.\n\nSimulated execution\nLocal preview · no live effects\nNew screen · not saved yet.\n@3 · v1_aa9ab84689a1…"
+      }
+    },
+    {
+      "at": "2026-10-22T14:41:44.919Z",
+      "name": "turn",
+      "data": {
+        "prompt": "Add a heading \"Provider failure must preserve source\" to this empty screen.",
+        "status": "The agent could not finish. Check the provider connection and retry. 0 applied edits remain undoable.",
+        "events": [
+          {
+            "type": "started",
+            "runId": "654140ec-6fe9-4d7b-8dfc-f4fd8feeca12",
+            "model": "zai/glm-5.3-flash",
+            "engine": "VICT / Mastra"
+          },
+          {
+            "type": "progress",
+            "message": "Connecting to the VICT / Mastra agent…"
+          },
+          {
+            "type": "progress",
+            "message": "Agent is working on your request…"
+          },
+          {
+            "type": "done",
+            "status": "failed",
+            "code": "STUDIO_AGENT_PROVIDER_FAILED",
+            "applied": 0,
+            "turnId": "turn-1d502d99-9e03-4997-ba47-0c848e82bdf5",
+            "profileVersion": "v1_9a8331caffc726ac5c9c051a5e77d1a2a05217a8582a1c76b7538514d5db960d"
+          }
+        ]
+      }
+    },
+    {
+      "at": "2026-10-22T14:41:45.052Z",
+      "name": "actual z.ai invalid-key failure is safe and has zero edits",
+      "data": {
+        "ok": true,
+        "elapsedMs": 14835,
+        "done": {
+          "type": "done",
+          "status": "failed",
+          "code": "STUDIO_AGENT_PROVIDER_FAILED",
+          "applied": 0,
+          "turnId": "turn-1d502d99-9e03-4997-ba47-0c848e82bdf5",
+          "profileVersion": "v1_9a8331caffc726ac5c9c051a5e77d1a2a05217a8582a1c76b7538514d5db960d"
+        }
+      }
+    },
+    {
+      "at": "2026-10-22T14:41:45.226Z",
+      "name": "browser end",
+      "data": {
+        "text": "V\nFile\nEdit\nView\nPreview\nUntitled screen\n○ New screen\n↗\nStudio agent\n\nzai/glm-5.3-flash\n\n↻\nUntitled screen\nSelected: Untitled screen\n\nY\nYou\nuser\n\nAdd a heading \"Provider failure must preserve source\" to this empty screen.\n\nS\nStudio agent\nassistant\n\nThe agent could not finish. Check the provider connection and retry. 0 applied edits remain undoable.\n\nMessage Studio agent\nSend\nThe agent could not finish. Check the provider connection and retry. 0 applied edits remain undoable.\nActivity (4)\nConnection record\n\nEdits share your history. Save explicitly. Form actions remain local preview. Chat clears when you leave Designer.\n\nDesign\nInteract\nDocument\n＋\nWhat will you make?\n\nSelect this screen to open its tools, then choose Insert.\n\nSimulated execution\nLocal preview · no live effects\nNew screen · not saved yet.\n@3 · v1_aa9ab84689a1…",
+        "errors": []
+      }
+    }
+  ],
+  "errors": []
+}

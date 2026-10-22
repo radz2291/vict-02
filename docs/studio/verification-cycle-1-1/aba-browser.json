@@ -1,0 +1,2145 @@
+{
+  "records": [
+    {
+      "at": "2026-10-22T14:37:34.377Z",
+      "name": "unauthenticated page redirects",
+      "data": {
+        "ok": true,
+        "url": "http://127.0.0.1:5592/login"
+      }
+    },
+    {
+      "at": "2026-10-22T14:37:35.703Z",
+      "name": "initial UI",
+      "data": {
+        "text": "V\nFile\nEdit\nView\nPreview\nUntitled screen\n○ New screen\n↗\nStudio agent\n\nzai/glm-5.3-flash\n\n↻\nUntitled screen\nSelected: Untitled screen\n\nDescribe the screen you want to make. Try “Create a registration form with name, email and password.” Select an element to ask for a focused change.\n\nMessage Studio agent\nSend\nReady to build with you.\n\nEdits share your history. Save explicitly. Form actions remain local preview. Chat clears when you leave Designer.\n\nDesign\nInteract\nDocument\n＋\nWhat will you make?\n\nSelect this screen to open its tools, then choose Insert.\n\nSimulated execution\nLocal preview · no live effects\nNew screen · not saved yet.\n@3 · v1_162f98f6aba3…"
+      }
+    },
+    {
+      "at": "2026-10-22T14:38:02.250Z",
+      "name": "turn",
+      "data": {
+        "prompt": "Change the existing registration heading text to \"Forbidden reopen ABA change\". Apply one edit.",
+        "status": "The screen changed while the agent was working. No edit was applied; send a new request using the current screen. ",
+        "events": [
+          {
+            "type": "started",
+            "runId": "d4c1e8c9-08bf-46e3-b9c4-9fea85d5c51c",
+            "model": "zai/glm-5.3-flash",
+            "engine": "VICT / Mastra"
+          },
+          {
+            "type": "progress",
+            "message": "Connecting to the VICT / Mastra agent…"
+          },
+          {
+            "type": "progress",
+            "message": "Agent is working on your request…"
+          },
+          {
+            "type": "progress",
+            "message": "Preparing and validating an edit…"
+          },
+          {
+            "type": "proposal",
+            "proposal": {
+              "proposalId": "fa7b5b50-9eff-4b16-90f2-42856c93c500",
+              "cursor": {
+                "documentId": "screen-72441e5a-4638-4bae-bf40-8b371b20d5b0",
+                "revision": "r1.r1#0",
+                "digest": "da2c6beabec8e10d539fcc257f8641ef4e6861c0ea0cdd0725e14828cb75a027",
+                "epoch": "fe02e529-9f04-46e2-a7e7-5ec2558e872c"
+              },
+              "edit": {
+                "expectedRevision": "r1.r1#0",
+                "reason": "User requested changing the registration heading literal text.",
+                "operations": [
+                  {
+                    "op": "modify",
+                    "nodeId": "heading-register-text",
+                    "text": "Forbidden reopen ABA change"
+                  }
+                ]
+              },
+              "resultDigest": "f983c0567f56ae453f3711dccb418e767e7bfe833ad5bafd3939ee64205620f5"
+            }
+          },
+          {
+            "type": "edit-result",
+            "result": {
+              "ok": false,
+              "code": "UI_DOC_STALE_REVISION",
+              "message": "The screen changed while the agent was working. No edit was applied; send a new request using the current screen."
+            },
+            "reason": "Canvas refused the edit"
+          },
+          {
+            "type": "text",
+            "delta": "The"
+          },
+          {
+            "type": "text",
+            "delta": " edit"
+          },
+          {
+            "type": "text",
+            "delta": " was"
+          },
+          {
+            "type": "text",
+            "delta": " refused"
+          },
+          {
+            "type": "text",
+            "delta": " —"
+          },
+          {
+            "type": "text",
+            "delta": " the"
+          },
+          {
+            "type": "text",
+            "delta": " screen"
+          },
+          {
+            "type": "text",
+            "delta": " changed"
+          },
+          {
+            "type": "text",
+            "delta": " while"
+          },
+          {
+            "type": "text",
+            "delta": " I"
+          },
+          {
+            "type": "text",
+            "delta": " was"
+          },
+          {
+            "type": "text",
+            "delta": " working"
+          },
+          {
+            "type": "text",
+            "delta": " ("
+          },
+          {
+            "type": "text",
+            "delta": "st"
+          },
+          {
+            "type": "text",
+            "delta": "ale"
+          },
+          {
+            "type": "text",
+            "delta": " revision"
+          },
+          {
+            "type": "text",
+            "delta": "),"
+          },
+          {
+            "type": "text",
+            "delta": " so"
+          },
+          {
+            "type": "text",
+            "delta": " nothing"
+          },
+          {
+            "type": "text",
+            "delta": " was"
+          },
+          {
+            "type": "text",
+            "delta": " applied"
+          },
+          {
+            "type": "text",
+            "delta": "."
+          },
+          {
+            "type": "text",
+            "delta": " Let"
+          },
+          {
+            "type": "text",
+            "delta": " me"
+          },
+          {
+            "type": "text",
+            "delta": " check"
+          },
+          {
+            "type": "text",
+            "delta": " the"
+          },
+          {
+            "type": "text",
+            "delta": " current"
+          },
+          {
+            "type": "text",
+            "delta": " state"
+          },
+          {
+            "type": "text",
+            "delta": ":"
+          },
+          {
+            "type": "progress",
+            "message": "Reading the screen and selection…"
+          },
+          {
+            "type": "text",
+            "delta": "The"
+          },
+          {
+            "type": "text",
+            "delta": " edit"
+          },
+          {
+            "type": "text",
+            "delta": " was"
+          },
+          {
+            "type": "text",
+            "delta": " refused"
+          },
+          {
+            "type": "text",
+            "delta": " with"
+          },
+          {
+            "type": "text",
+            "delta": " a"
+          },
+          {
+            "type": "text",
+            "delta": " stale"
+          },
+          {
+            "type": "text",
+            "delta": "-re"
+          },
+          {
+            "type": "text",
+            "delta": "vision"
+          },
+          {
+            "type": "text",
+            "delta": " guard"
+          },
+          {
+            "type": "text",
+            "delta": ","
+          },
+          {
+            "type": "text",
+            "delta": " so"
+          },
+          {
+            "type": "text",
+            "delta": " **"
+          },
+          {
+            "type": "text",
+            "delta": "no"
+          },
+          {
+            "type": "text",
+            "delta": " change"
+          },
+          {
+            "type": "text",
+            "delta": " was"
+          },
+          {
+            "type": "text",
+            "delta": " applied"
+          },
+          {
+            "type": "text",
+            "delta": "**"
+          },
+          {
+            "type": "text",
+            "delta": "."
+          },
+          {
+            "type": "text",
+            "delta": " A"
+          },
+          {
+            "type": "text",
+            "delta": " fresh"
+          },
+          {
+            "type": "text",
+            "delta": " read"
+          },
+          {
+            "type": "text",
+            "delta": " shows"
+          },
+          {
+            "type": "text",
+            "delta": " the"
+          },
+          {
+            "type": "text",
+            "delta": " document"
+          },
+          {
+            "type": "text",
+            "delta": " unchanged"
+          },
+          {
+            "type": "text",
+            "delta": " ("
+          },
+          {
+            "type": "text",
+            "delta": "still"
+          },
+          {
+            "type": "text",
+            "delta": " revision"
+          },
+          {
+            "type": "text",
+            "delta": " `"
+          },
+          {
+            "type": "text",
+            "delta": "r"
+          },
+          {
+            "type": "text",
+            "delta": "1"
+          },
+          {
+            "type": "text",
+            "delta": ".r"
+          },
+          {
+            "type": "text",
+            "delta": "1"
+          },
+          {
+            "type": "text",
+            "delta": "`,"
+          },
+          {
+            "type": "text",
+            "delta": " heading"
+          },
+          {
+            "type": "text",
+            "delta": " text"
+          },
+          {
+            "type": "text",
+            "delta": " \""
+          },
+          {
+            "type": "text",
+            "delta": "Create"
+          },
+          {
+            "type": "text",
+            "delta": " an"
+          },
+          {
+            "type": "text",
+            "delta": " account"
+          },
+          {
+            "type": "text",
+            "delta": "\").\n\n"
+          },
+          {
+            "type": "text",
+            "delta": "Per"
+          },
+          {
+            "type": "text",
+            "delta": " policy"
+          },
+          {
+            "type": "text",
+            "delta": ","
+          },
+          {
+            "type": "text",
+            "delta": " after"
+          },
+          {
+            "type": "text",
+            "delta": " a"
+          },
+          {
+            "type": "text",
+            "delta": " stale"
+          },
+          {
+            "type": "text",
+            "delta": "-ref"
+          },
+          {
+            "type": "text",
+            "delta": "usal"
+          },
+          {
+            "type": "text",
+            "delta": " I"
+          },
+          {
+            "type": "text",
+            "delta": " stop"
+          },
+          {
+            "type": "text",
+            "delta": " rather"
+          },
+          {
+            "type": "text",
+            "delta": " than"
+          },
+          {
+            "type": "text",
+            "delta": " retry"
+          },
+          {
+            "type": "text",
+            "delta": " blindly"
+          },
+          {
+            "type": "text",
+            "delta": "."
+          },
+          {
+            "type": "text",
+            "delta": " Please"
+          },
+          {
+            "type": "text",
+            "delta": " send"
+          },
+          {
+            "type": "text",
+            "delta": " a"
+          },
+          {
+            "type": "text",
+            "delta": " new"
+          },
+          {
+            "type": "text",
+            "delta": " request"
+          },
+          {
+            "type": "text",
+            "delta": " ("
+          },
+          {
+            "type": "text",
+            "delta": "e"
+          },
+          {
+            "type": "text",
+            "delta": ".g"
+          },
+          {
+            "type": "text",
+            "delta": ".,"
+          },
+          {
+            "type": "text",
+            "delta": " \""
+          },
+          {
+            "type": "text",
+            "delta": "Change"
+          },
+          {
+            "type": "text",
+            "delta": " the"
+          },
+          {
+            "type": "text",
+            "delta": " heading"
+          },
+          {
+            "type": "text",
+            "delta": " to"
+          },
+          {
+            "type": "text",
+            "delta": " '"
+          },
+          {
+            "type": "text",
+            "delta": "Forbidden"
+          },
+          {
+            "type": "text",
+            "delta": " reopen"
+          },
+          {
+            "type": "text",
+            "delta": " A"
+          },
+          {
+            "type": "text",
+            "delta": "BA"
+          },
+          {
+            "type": "text",
+            "delta": " change"
+          },
+          {
+            "type": "text",
+            "delta": "'"
+          },
+          {
+            "type": "text",
+            "delta": "\")"
+          },
+          {
+            "type": "text",
+            "delta": " and"
+          },
+          {
+            "type": "text",
+            "delta": " I"
+          },
+          {
+            "type": "text",
+            "delta": "'ll"
+          },
+          {
+            "type": "text",
+            "delta": " apply"
+          },
+          {
+            "type": "text",
+            "delta": " it"
+          },
+          {
+            "type": "text",
+            "delta": " against"
+          },
+          {
+            "type": "text",
+            "delta": " the"
+          },
+          {
+            "type": "text",
+            "delta": " current"
+          },
+          {
+            "type": "text",
+            "delta": " revision."
+          },
+          {
+            "type": "done",
+            "status": "completed",
+            "applied": 0,
+            "turnId": "turn-8488aad1-144b-4ab1-a63f-5f80001cddba",
+            "profileVersion": "v1_9a8331caffc726ac5c9c051a5e77d1a2a05217a8582a1c76b7538514d5db960d"
+          }
+        ]
+      }
+    },
+    {
+      "at": "2026-10-22T14:38:02.389Z",
+      "name": "live reopen ABA refuses stale epoch with same saved content",
+      "data": {
+        "ok": true
+      }
+    },
+    {
+      "at": "2026-10-22T14:40:59.001Z",
+      "name": "turn",
+      "data": {
+        "prompt": "Change the registration heading text to \"Forbidden undo ABA change\". Apply one edit.",
+        "status": "The screen changed while the agent was working. No edit was applied; send a new request using the current screen. ",
+        "events": [
+          {
+            "type": "started",
+            "runId": "12e8716d-8c89-4515-b1f9-84405ffb6fca",
+            "model": "zai/glm-5.3-flash",
+            "engine": "VICT / Mastra"
+          },
+          {
+            "type": "progress",
+            "message": "Connecting to the VICT / Mastra agent…"
+          },
+          {
+            "type": "progress",
+            "message": "Agent is working on your request…"
+          },
+          {
+            "type": "progress",
+            "message": "Preparing and validating an edit…"
+          },
+          {
+            "type": "proposal",
+            "proposal": {
+              "proposalId": "9618df62-7609-4398-9500-dcb5fdcab3e6",
+              "cursor": {
+                "documentId": "screen-72441e5a-4638-4bae-bf40-8b371b20d5b0",
+                "revision": "r1.r1#0",
+                "digest": "da2c6beabec8e10d539fcc257f8641ef4e6861c0ea0cdd0725e14828cb75a027",
+                "epoch": "98bd757a-e28b-480d-a720-1024320cad26"
+              },
+              "edit": {
+                "expectedRevision": "r1.r1#0",
+                "reason": "User request: change the existing registration heading literal text to the new value; single atomic edit.",
+                "operations": [
+                  {
+                    "op": "modify",
+                    "nodeId": "heading-register-text",
+                    "text": "Forbidden undo ABA change"
+                  }
+                ]
+              },
+              "resultDigest": "3f66afa0b5bf0a62bd93539fe300c7271e7b2004242eb487443e5ffaa122fb6a"
+            }
+          },
+          {
+            "type": "edit-result",
+            "result": {
+              "ok": false,
+              "code": "UI_DOC_STALE_REVISION",
+              "message": "The screen changed while the agent was working. No edit was applied; send a new request using the current screen."
+            },
+            "reason": "Canvas refused the edit"
+          },
+          {
+            "type": "text",
+            "delta": "The"
+          },
+          {
+            "type": "text",
+            "delta": " edit"
+          },
+          {
+            "type": "text",
+            "delta": " was"
+          },
+          {
+            "type": "text",
+            "delta": " refused"
+          },
+          {
+            "type": "text",
+            "delta": " again"
+          },
+          {
+            "type": "text",
+            "delta": " by"
+          },
+          {
+            "type": "text",
+            "delta": " the"
+          },
+          {
+            "type": "text",
+            "delta": " stale"
+          },
+          {
+            "type": "text",
+            "delta": "-re"
+          },
+          {
+            "type": "text",
+            "delta": "vision"
+          },
+          {
+            "type": "text",
+            "delta": " guard"
+          },
+          {
+            "type": "text",
+            "delta": " —"
+          },
+          {
+            "type": "text",
+            "delta": " nothing"
+          },
+          {
+            "type": "text",
+            "delta": " was"
+          },
+          {
+            "type": "text",
+            "delta": " applied"
+          },
+          {
+            "type": "text",
+            "delta": "."
+          },
+          {
+            "type": "text",
+            "delta": " Let"
+          },
+          {
+            "type": "text",
+            "delta": " me"
+          },
+          {
+            "type": "text",
+            "delta": " confirm"
+          },
+          {
+            "type": "text",
+            "delta": " the"
+          },
+          {
+            "type": "text",
+            "delta": " current"
+          },
+          {
+            "type": "text",
+            "delta": " state"
+          },
+          {
+            "type": "text",
+            "delta": ":"
+          },
+          {
+            "type": "progress",
+            "message": "Reading the screen and selection…"
+          },
+          {
+            "type": "text",
+            "delta": "The"
+          },
+          {
+            "type": "text",
+            "delta": " edit"
+          },
+          {
+            "type": "text",
+            "delta": " was"
+          },
+          {
+            "type": "text",
+            "delta": " refused"
+          },
+          {
+            "type": "text",
+            "delta": " by"
+          },
+          {
+            "type": "text",
+            "delta": " the"
+          },
+          {
+            "type": "text",
+            "delta": " stale"
+          },
+          {
+            "type": "text",
+            "delta": "-re"
+          },
+          {
+            "type": "text",
+            "delta": "vision"
+          },
+          {
+            "type": "text",
+            "delta": " guard"
+          },
+          {
+            "type": "text",
+            "delta": " (`"
+          },
+          {
+            "type": "text",
+            "delta": "UI"
+          },
+          {
+            "type": "text",
+            "delta": "_DOC"
+          },
+          {
+            "type": "text",
+            "delta": "_ST"
+          },
+          {
+            "type": "text",
+            "delta": "ALE"
+          },
+          {
+            "type": "text",
+            "delta": "_RE"
+          },
+          {
+            "type": "text",
+            "delta": "VISION"
+          },
+          {
+            "type": "text",
+            "delta": "`)"
+          },
+          {
+            "type": "text",
+            "delta": " —"
+          },
+          {
+            "type": "text",
+            "delta": " **"
+          },
+          {
+            "type": "text",
+            "delta": "no"
+          },
+          {
+            "type": "text",
+            "delta": " change"
+          },
+          {
+            "type": "text",
+            "delta": " was"
+          },
+          {
+            "type": "text",
+            "delta": " applied"
+          },
+          {
+            "type": "text",
+            "delta": "**"
+          },
+          {
+            "type": "text",
+            "delta": ".\n\n"
+          },
+          {
+            "type": "text",
+            "delta": "A"
+          },
+          {
+            "type": "text",
+            "delta": " fresh"
+          },
+          {
+            "type": "text",
+            "delta": " read"
+          },
+          {
+            "type": "text",
+            "delta": " confirms"
+          },
+          {
+            "type": "text",
+            "delta": " the"
+          },
+          {
+            "type": "text",
+            "delta": " screen"
+          },
+          {
+            "type": "text",
+            "delta": " is"
+          },
+          {
+            "type": "text",
+            "delta": " unchanged"
+          },
+          {
+            "type": "text",
+            "delta": ":"
+          },
+          {
+            "type": "text",
+            "delta": " revision"
+          },
+          {
+            "type": "text",
+            "delta": " `"
+          },
+          {
+            "type": "text",
+            "delta": "r"
+          },
+          {
+            "type": "text",
+            "delta": "1"
+          },
+          {
+            "type": "text",
+            "delta": ".r"
+          },
+          {
+            "type": "text",
+            "delta": "1"
+          },
+          {
+            "type": "text",
+            "delta": "`"
+          },
+          {
+            "type": "text",
+            "delta": " ("
+          },
+          {
+            "type": "text",
+            "delta": "cursor"
+          },
+          {
+            "type": "text",
+            "delta": " `"
+          },
+          {
+            "type": "text",
+            "delta": "r"
+          },
+          {
+            "type": "text",
+            "delta": "1"
+          },
+          {
+            "type": "text",
+            "delta": ".r"
+          },
+          {
+            "type": "text",
+            "delta": "1"
+          },
+          {
+            "type": "text",
+            "delta": "#"
+          },
+          {
+            "type": "text",
+            "delta": "0"
+          },
+          {
+            "type": "text",
+            "delta": "`,"
+          },
+          {
+            "type": "text",
+            "delta": " same"
+          },
+          {
+            "type": "text",
+            "delta": " digest"
+          },
+          {
+            "type": "text",
+            "delta": "/"
+          },
+          {
+            "type": "text",
+            "delta": "epoch"
+          },
+          {
+            "type": "text",
+            "delta": "),"
+          },
+          {
+            "type": "text",
+            "delta": " heading"
+          },
+          {
+            "type": "text",
+            "delta": " still"
+          },
+          {
+            "type": "text",
+            "delta": " reads"
+          },
+          {
+            "type": "text",
+            "delta": " \""
+          },
+          {
+            "type": "text",
+            "delta": "Create"
+          },
+          {
+            "type": "text",
+            "delta": " an"
+          },
+          {
+            "type": "text",
+            "delta": " account"
+          },
+          {
+            "type": "text",
+            "delta": "\"."
+          },
+          {
+            "type": "text",
+            "delta": " This"
+          },
+          {
+            "type": "text",
+            "delta": " looks"
+          },
+          {
+            "type": "text",
+            "delta": " like"
+          },
+          {
+            "type": "text",
+            "delta": " an"
+          },
+          {
+            "type": "text",
+            "delta": " A"
+          },
+          {
+            "type": "text",
+            "delta": "BA"
+          },
+          {
+            "type": "text",
+            "delta": " situation"
+          },
+          {
+            "type": "text",
+            "delta": " ("
+          },
+          {
+            "type": "text",
+            "delta": "the"
+          },
+          {
+            "type": "text",
+            "delta": " guard"
+          },
+          {
+            "type": "text",
+            "delta": " sees"
+          },
+          {
+            "type": "text",
+            "delta": " a"
+          },
+          {
+            "type": "text",
+            "delta": " mismatch"
+          },
+          {
+            "type": "text",
+            "delta": " even"
+          },
+          {
+            "type": "text",
+            "delta": " though"
+          },
+          {
+            "type": "text",
+            "delta": " the"
+          },
+          {
+            "type": "text",
+            "delta": " revision"
+          },
+          {
+            "type": "text",
+            "delta": " string"
+          },
+          {
+            "type": "text",
+            "delta": " appears"
+          },
+          {
+            "type": "text",
+            "delta": " the"
+          },
+          {
+            "type": "text",
+            "delta": " same"
+          },
+          {
+            "type": "text",
+            "delta": ").\n\n"
+          },
+          {
+            "type": "text",
+            "delta": "Per"
+          },
+          {
+            "type": "text",
+            "delta": " policy"
+          },
+          {
+            "type": "text",
+            "delta": " I"
+          },
+          {
+            "type": "text",
+            "delta": " stop"
+          },
+          {
+            "type": "text",
+            "delta": " here"
+          },
+          {
+            "type": "text",
+            "delta": " rather"
+          },
+          {
+            "type": "text",
+            "delta": " than"
+          },
+          {
+            "type": "text",
+            "delta": " retry"
+          },
+          {
+            "type": "text",
+            "delta": " blindly"
+          },
+          {
+            "type": "text",
+            "delta": "."
+          },
+          {
+            "type": "text",
+            "delta": " Please"
+          },
+          {
+            "type": "text",
+            "delta": " send"
+          },
+          {
+            "type": "text",
+            "delta": " a"
+          },
+          {
+            "type": "text",
+            "delta": " new"
+          },
+          {
+            "type": "text",
+            "delta": " request"
+          },
+          {
+            "type": "text",
+            "delta": " ("
+          },
+          {
+            "type": "text",
+            "delta": "e"
+          },
+          {
+            "type": "text",
+            "delta": ".g"
+          },
+          {
+            "type": "text",
+            "delta": ".,"
+          },
+          {
+            "type": "text",
+            "delta": " \""
+          },
+          {
+            "type": "text",
+            "delta": "Change"
+          },
+          {
+            "type": "text",
+            "delta": " the"
+          },
+          {
+            "type": "text",
+            "delta": " heading"
+          },
+          {
+            "type": "text",
+            "delta": " to"
+          },
+          {
+            "type": "text",
+            "delta": " '"
+          },
+          {
+            "type": "text",
+            "delta": "Forbidden"
+          },
+          {
+            "type": "text",
+            "delta": " undo"
+          },
+          {
+            "type": "text",
+            "delta": " A"
+          },
+          {
+            "type": "text",
+            "delta": "BA"
+          },
+          {
+            "type": "text",
+            "delta": " change"
+          },
+          {
+            "type": "text",
+            "delta": "'"
+          },
+          {
+            "type": "text",
+            "delta": "\")"
+          },
+          {
+            "type": "text",
+            "delta": " and"
+          },
+          {
+            "type": "text",
+            "delta": " I"
+          },
+          {
+            "type": "text",
+            "delta": "'ll"
+          },
+          {
+            "type": "text",
+            "delta": " apply"
+          },
+          {
+            "type": "text",
+            "delta": " it"
+          },
+          {
+            "type": "text",
+            "delta": " against"
+          },
+          {
+            "type": "text",
+            "delta": " the"
+          },
+          {
+            "type": "text",
+            "delta": " current"
+          },
+          {
+            "type": "text",
+            "delta": " revision"
+          },
+          {
+            "type": "text",
+            "delta": "."
+          },
+          {
+            "type": "done",
+            "status": "completed",
+            "applied": 0,
+            "turnId": "turn-05c034dc-6ec8-45ac-aede-b76675b647dc",
+            "profileVersion": "v1_9a8331caffc726ac5c9c051a5e77d1a2a05217a8582a1c76b7538514d5db960d"
+          }
+        ]
+      }
+    },
+    {
+      "at": "2026-10-22T14:40:59.112Z",
+      "name": "live undo ABA refuses despite restored content",
+      "data": {
+        "ok": true
+      }
+    },
+    {
+      "at": "2026-10-22T14:43:11.506Z",
+      "name": "turn",
+      "data": {
+        "prompt": "Change the registration heading text to \"Forbidden draft change\". Apply one edit.",
+        "status": "Apply or cancel the pending property, data, rename or source draft, then send a new request. ",
+        "events": [
+          {
+            "type": "started",
+            "runId": "fe3f605a-4883-4ef9-af93-d99196dc0b7e",
+            "model": "zai/glm-5.3-flash",
+            "engine": "VICT / Mastra"
+          },
+          {
+            "type": "progress",
+            "message": "Connecting to the VICT / Mastra agent…"
+          },
+          {
+            "type": "progress",
+            "message": "Agent is working on your request…"
+          },
+          {
+            "type": "text",
+            "delta": "I"
+          },
+          {
+            "type": "text",
+            "delta": "'ll"
+          },
+          {
+            "type": "text",
+            "delta": " read"
+          },
+          {
+            "type": "text",
+            "delta": " the"
+          },
+          {
+            "type": "text",
+            "delta": " current"
+          },
+          {
+            "type": "text",
+            "delta": " document"
+          },
+          {
+            "type": "text",
+            "delta": " first"
+          },
+          {
+            "type": "text",
+            "delta": " ("
+          },
+          {
+            "type": "text",
+            "delta": "given"
+          },
+          {
+            "type": "text",
+            "delta": " the"
+          },
+          {
+            "type": "text",
+            "delta": " earlier"
+          },
+          {
+            "type": "text",
+            "delta": " ref"
+          },
+          {
+            "type": "text",
+            "delta": "us"
+          },
+          {
+            "type": "text",
+            "delta": "als"
+          },
+          {
+            "type": "text",
+            "delta": "),"
+          },
+          {
+            "type": "text",
+            "delta": " then"
+          },
+          {
+            "type": "text",
+            "delta": " apply"
+          },
+          {
+            "type": "text",
+            "delta": " the"
+          },
+          {
+            "type": "text",
+            "delta": " single"
+          },
+          {
+            "type": "text",
+            "delta": " edit"
+          },
+          {
+            "type": "text",
+            "delta": " against"
+          },
+          {
+            "type": "text",
+            "delta": " the"
+          },
+          {
+            "type": "text",
+            "delta": " exact"
+          },
+          {
+            "type": "text",
+            "delta": " working"
+          },
+          {
+            "type": "text",
+            "delta": " revision"
+          },
+          {
+            "type": "text",
+            "delta": "."
+          },
+          {
+            "type": "progress",
+            "message": "Reading the screen and selection…"
+          },
+          {
+            "type": "text",
+            "delta": "Fresh"
+          },
+          {
+            "type": "text",
+            "delta": " read"
+          },
+          {
+            "type": "text",
+            "delta": " done"
+          },
+          {
+            "type": "text",
+            "delta": " —"
+          },
+          {
+            "type": "text",
+            "delta": " working"
+          },
+          {
+            "type": "text",
+            "delta": " revision"
+          },
+          {
+            "type": "text",
+            "delta": " `"
+          },
+          {
+            "type": "text",
+            "delta": "r"
+          },
+          {
+            "type": "text",
+            "delta": "1"
+          },
+          {
+            "type": "text",
+            "delta": ".r"
+          },
+          {
+            "type": "text",
+            "delta": "1"
+          },
+          {
+            "type": "text",
+            "delta": "#"
+          },
+          {
+            "type": "text",
+            "delta": "2"
+          },
+          {
+            "type": "text",
+            "delta": "`"
+          },
+          {
+            "type": "text",
+            "delta": " ("
+          },
+          {
+            "type": "text",
+            "delta": "epoch"
+          },
+          {
+            "type": "text",
+            "delta": " `"
+          },
+          {
+            "type": "text",
+            "delta": "98"
+          },
+          {
+            "type": "text",
+            "delta": "bd"
+          },
+          {
+            "type": "text",
+            "delta": "75"
+          },
+          {
+            "type": "text",
+            "delta": "7"
+          },
+          {
+            "type": "text",
+            "delta": "a"
+          },
+          {
+            "type": "text",
+            "delta": "…"
+          },
+          {
+            "type": "text",
+            "delta": "`"
+          },
+          {
+            "type": "text",
+            "delta": "),"
+          },
+          {
+            "type": "text",
+            "delta": " heading"
+          },
+          {
+            "type": "text",
+            "delta": " text"
+          },
+          {
+            "type": "text",
+            "delta": " node"
+          },
+          {
+            "type": "text",
+            "delta": " `"
+          },
+          {
+            "type": "text",
+            "delta": "heading"
+          },
+          {
+            "type": "text",
+            "delta": "-register"
+          },
+          {
+            "type": "text",
+            "delta": "-text"
+          },
+          {
+            "type": "text",
+            "delta": "`"
+          },
+          {
+            "type": "text",
+            "delta": " still"
+          },
+          {
+            "type": "text",
+            "delta": " reads"
+          },
+          {
+            "type": "text",
+            "delta": " \""
+          },
+          {
+            "type": "text",
+            "delta": "Create"
+          },
+          {
+            "type": "text",
+            "delta": " an"
+          },
+          {
+            "type": "text",
+            "delta": " account"
+          },
+          {
+            "type": "text",
+            "delta": "\"."
+          },
+          {
+            "type": "text",
+            "delta": " Applying"
+          },
+          {
+            "type": "text",
+            "delta": " the"
+          },
+          {
+            "type": "text",
+            "delta": " single"
+          },
+          {
+            "type": "text",
+            "delta": " edit"
+          },
+          {
+            "type": "text",
+            "delta": " now"
+          },
+          {
+            "type": "text",
+            "delta": "."
+          },
+          {
+            "type": "progress",
+            "message": "Preparing and validating an edit…"
+          },
+          {
+            "type": "proposal",
+            "proposal": {
+              "proposalId": "ec7573ff-610e-4cf7-a2a7-85802c230200",
+              "cursor": {
+                "documentId": "screen-72441e5a-4638-4bae-bf40-8b371b20d5b0",
+                "revision": "r1.r1#2",
+                "digest": "da2c6beabec8e10d539fcc257f8641ef4e6861c0ea0cdd0725e14828cb75a027",
+                "epoch": "98bd757a-e28b-480d-a720-1024320cad26"
+              },
+              "edit": {
+                "expectedRevision": "r1.r1#2",
+                "reason": "User request: change registration heading literal text to \\\"Forbidden draft change\\\" in one edit.",
+                "operations": [
+                  {
+                    "op": "modify",
+                    "nodeId": "heading-register-text",
+                    "text": "Forbidden draft change"
+                  }
+                ]
+              },
+              "resultDigest": "95cbba9fa251871aaab9ec59055cf86bdb5eb291e8ae00e2e44bc3d43f3532a5"
+            }
+          },
+          {
+            "type": "edit-result",
+            "result": {
+              "ok": false,
+              "code": "STUDIO_AGENT_DRAFT",
+              "message": "Apply or cancel the pending property, data, rename or source draft, then send a new request."
+            },
+            "reason": "Canvas refused the edit"
+          },
+          {
+            "type": "text",
+            "delta": "The"
+          },
+          {
+            "type": "text",
+            "delta": " edit"
+          },
+          {
+            "type": "text",
+            "delta": " was"
+          },
+          {
+            "type": "text",
+            "delta": " refused"
+          },
+          {
+            "type": "text",
+            "delta": " with"
+          },
+          {
+            "type": "text",
+            "delta": " a"
+          },
+          {
+            "type": "text",
+            "delta": " **"
+          },
+          {
+            "type": "text",
+            "delta": "draft"
+          },
+          {
+            "type": "text",
+            "delta": " guard"
+          },
+          {
+            "type": "text",
+            "delta": "**"
+          },
+          {
+            "type": "text",
+            "delta": " (`"
+          },
+          {
+            "type": "text",
+            "delta": "ST"
+          },
+          {
+            "type": "text",
+            "delta": "UDIO"
+          },
+          {
+            "type": "text",
+            "delta": "_AGENT"
+          },
+          {
+            "type": "text",
+            "delta": "_D"
+          },
+          {
+            "type": "text",
+            "delta": "RAFT"
+          },
+          {
+            "type": "text",
+            "delta": "`)"
+          },
+          {
+            "type": "text",
+            "delta": " —"
+          },
+          {
+            "type": "text",
+            "delta": " **"
+          },
+          {
+            "type": "text",
+            "delta": "no"
+          },
+          {
+            "type": "text",
+            "delta": " change"
+          },
+          {
+            "type": "text",
+            "delta": " was"
+          },
+          {
+            "type": "text",
+            "delta": " applied"
+          },
+          {
+            "type": "text",
+            "delta": "**"
+          },
+          {
+            "type": "text",
+            "delta": ".\n\n"
+          },
+          {
+            "type": "text",
+            "delta": "The"
+          },
+          {
+            "type": "text",
+            "delta": " fresh"
+          },
+          {
+            "type": "text",
+            "delta": " read"
+          },
+          {
+            "type": "text",
+            "delta": " confirmed"
+          },
+          {
+            "type": "text",
+            "delta": " the"
+          },
+          {
+            "type": "text",
+            "delta": " document"
+          },
+          {
+            "type": "text",
+            "delta": " was"
+          },
+          {
+            "type": "text",
+            "delta": " current"
+          },
+          {
+            "type": "text",
+            "delta": " ("
+          },
+          {
+            "type": "text",
+            "delta": "revision"
+          },
+          {
+            "type": "text",
+            "delta": " `"
+          },
+          {
+            "type": "text",
+            "delta": "r"
+          },
+          {
+            "type": "text",
+            "delta": "1"
+          },
+          {
+            "type": "text",
+            "delta": ".r"
+          },
+          {
+            "type": "text",
+            "delta": "1"
+          },
+          {
+            "type": "text",
+            "delta": "#"
+          },
+          {
+            "type": "text",
+            "delta": "2"
+          },
+          {
+            "type": "text",
+            "delta": "`,"
+          },
+          {
+            "type": "text",
+            "delta": " heading"
+          },
+          {
+            "type": "text",
+            "delta": " still"
+          },
+          {
+            "type": "text",
+            "delta": " \""
+          },
+          {
+            "type": "text",
+            "delta": "Create"
+          },
+          {
+            "type": "text",
+            "delta": " an"
+          },
+          {
+            "type": "text",
+            "delta": " account"
+          },
+          {
+            "type": "text",
+            "delta": "\"),"
+          },
+          {
+            "type": "text",
+            "delta": " but"
+          },
+          {
+            "type": "text",
+            "delta": " the"
+          },
+          {
+            "type": "text",
+            "delta": " editor"
+          },
+          {
+            "type": "text",
+            "delta": " has"
+          },
+          {
+            "type": "text",
+            "delta": " a"
+          },
+          {
+            "type": "text",
+            "delta": " **"
+          },
+          {
+            "type": "text",
+            "delta": "pending"
+          },
+          {
+            "type": "text",
+            "delta": " draft"
+          },
+          {
+            "type": "text",
+            "delta": "**"
+          },
+          {
+            "type": "text",
+            "delta": " ("
+          },
+          {
+            "type": "text",
+            "delta": "a"
+          },
+          {
+            "type": "text",
+            "delta": " property"
+          },
+          {
+            "type": "text",
+            "delta": ","
+          },
+          {
+            "type": "text",
+            "delta": " data"
+          },
+          {
+            "type": "text",
+            "delta": ","
+          },
+          {
+            "type": "text",
+            "delta": " rename"
+          },
+          {
+            "type": "text",
+            "delta": ","
+          },
+          {
+            "type": "text",
+            "delta": " or"
+          },
+          {
+            "type": "text",
+            "delta": " source"
+          },
+          {
+            "type": "text",
+            "delta": " draft"
+          },
+          {
+            "type": "text",
+            "delta": ")"
+          },
+          {
+            "type": "text",
+            "delta": " blocking"
+          },
+          {
+            "type": "text",
+            "delta": " new"
+          },
+          {
+            "type": "text",
+            "delta": " edits"
+          },
+          {
+            "type": "text",
+            "delta": ".\n\n"
+          },
+          {
+            "type": "text",
+            "delta": "Per"
+          },
+          {
+            "type": "text",
+            "delta": " policy"
+          },
+          {
+            "type": "text",
+            "delta": " I"
+          },
+          {
+            "type": "text",
+            "delta": " stop"
+          },
+          {
+            "type": "text",
+            "delta": " here"
+          },
+          {
+            "type": "text",
+            "delta": " rather"
+          },
+          {
+            "type": "text",
+            "delta": " than"
+          },
+          {
+            "type": "text",
+            "delta": " retry"
+          },
+          {
+            "type": "text",
+            "delta": "."
+          },
+          {
+            "type": "text",
+            "delta": " Please"
+          },
+          {
+            "type": "text",
+            "delta": " **"
+          },
+          {
+            "type": "text",
+            "delta": "apply"
+          },
+          {
+            "type": "text",
+            "delta": " or"
+          },
+          {
+            "type": "text",
+            "delta": " cancel"
+          },
+          {
+            "type": "text",
+            "delta": " the"
+          },
+          {
+            "type": "text",
+            "delta": " pending"
+          },
+          {
+            "type": "text",
+            "delta": " draft"
+          },
+          {
+            "type": "text",
+            "delta": " in"
+          },
+          {
+            "type": "text",
+            "delta": " the"
+          },
+          {
+            "type": "text",
+            "delta": " editor"
+          },
+          {
+            "type": "text",
+            "delta": "**,"
+          },
+          {
+            "type": "text",
+            "delta": " then"
+          },
+          {
+            "type": "text",
+            "delta": " send"
+          },
+          {
+            "type": "text",
+            "delta": " a"
+          },
+          {
+            "type": "text",
+            "delta": " new"
+          },
+          {
+            "type": "text",
+            "delta": " request"
+          },
+          {
+            "type": "text",
+            "delta": " ("
+          },
+          {
+            "type": "text",
+            "delta": "e"
+          },
+          {
+            "type": "text",
+            "delta": ".g"
+          },
+          {
+            "type": "text",
+            "delta": ".,"
+          },
+          {
+            "type": "text",
+            "delta": " \""
+          },
+          {
+            "type": "text",
+            "delta": "Change"
+          },
+          {
+            "type": "text",
+            "delta": " the"
+          },
+          {
+            "type": "text",
+            "delta": " heading"
+          },
+          {
+            "type": "text",
+            "delta": " to"
+          },
+          {
+            "type": "text",
+            "delta": " '"
+          },
+          {
+            "type": "text",
+            "delta": "Forbidden"
+          },
+          {
+            "type": "text",
+            "delta": " draft"
+          },
+          {
+            "type": "text",
+            "delta": " change"
+          },
+          {
+            "type": "text",
+            "delta": "'"
+          },
+          {
+            "type": "text",
+            "delta": "\")"
+          },
+          {
+            "type": "text",
+            "delta": " and"
+          },
+          {
+            "type": "text",
+            "delta": " I"
+          },
+          {
+            "type": "text",
+            "delta": "'ll"
+          },
+          {
+            "type": "text",
+            "delta": " apply"
+          },
+          {
+            "type": "text",
+            "delta": " it"
+          },
+          {
+            "type": "text",
+            "delta": " in"
+          },
+          {
+            "type": "text",
+            "delta": " one"
+          },
+          {
+            "type": "text",
+            "delta": " edit"
+          },
+          {
+            "type": "text",
+            "delta": " against"
+          },
+          {
+            "type": "text",
+            "delta": " the"
+          },
+          {
+            "type": "text",
+            "delta": " then"
+          },
+          {
+            "type": "text",
+            "delta": "-current"
+          },
+          {
+            "type": "text",
+            "delta": " revision."
+          },
+          {
+            "type": "done",
+            "status": "completed",
+            "applied": 0,
+            "turnId": "turn-cf914855-11e7-416e-b4c2-def4cc6a1421",
+            "profileVersion": "v1_9a8331caffc726ac5c9c051a5e77d1a2a05217a8582a1c76b7538514d5db960d"
+          }
+        ]
+      }
+    },
+    {
+      "at": "2026-10-22T14:43:11.521Z",
+      "name": "in-flight source draft refuses arriving live proposal",
+      "data": {
+        "ok": true
+      }
+    },
+    {
+      "at": "2026-10-22T14:43:11.779Z",
+      "name": "browser end",
+      "data": {
+        "text": "V\nFile\nEdit\nView\nPreview\nUntitled screen\n✓ Saved\n↗\nStudio agent\n\nzai/glm-5.3-flash\n\n↻\nUntitled screen\nSelected: Untitled screen\n\nY\nYou\nuser\n\nChange the existing registration heading text to \"Forbidden reopen ABA change\". Apply one edit.\n\nS\nStudio agent\nassistant\n\nThe edit was refused — the screen changed while I was working (stale revision), so nothing was applied. Let me check the current state:The edit was refused with a stale-revision guard, so **no change was applied**. A fresh read shows the document unchanged (still revision `r1.r1`, heading text \"Create an account\").\n\nPer policy, after a stale-refusal I stop rather than retry blindly. Please send a new request (e.g., \"Change the heading to 'Forbidden reopen ABA change'\") and I'll apply it against the current revision.\n\nY\nYou\nuser\n\nChange the registration heading text to \"Forbidden undo ABA change\". Apply one edit.\n\nS\nStudio agent\nassistant\n\nThe edit was refused again by the stale-revision guard — nothing was applied. Let me confirm the current state:The edit was refused by the stale-revision guard (`UI_DOC_STALE_REVISION`) — **no change was applied**.\n\nA fresh read confirms the screen is unchanged: revision `r1.r1` (cursor `r1.r1#0`, same digest/epoch), heading still reads \"Create an account\". This looks like an ABA situation (the guard sees a mismatch even though the revision string appears the same).\n\nPer policy I stop here rather than retry blindly. Please send a new request (e.g., \"Change the heading to 'Forbidden undo ABA change'\") and I'll apply it against the current revision.\n\nY\nYou\nuser\n\nChange the registration heading text to \"Forbidden draft change\". Apply one edit.\n\nS\nStudio agent\nassistant\n\nI'll read the current document first (given the earlier refusals), then apply the single edit against the exact working revision.Fresh read done — working revision `r1.r1#2` (epoch `98bd757a…`), heading text node `heading-register-text` still reads \"Create an account\". Applying the single edit now.The edit was refused with a **draft guard** (`STUDIO_AGENT_DRAFT`) — **no change was applied**.\n\nThe fresh read confirmed the document was current (revision `r1.r1#2`, heading still \"Create an account\"), but the editor has a **pending draft** (a property, data, rename, or source draft) blocking new edits.\n\nPer policy I stop here rather than retry. Please **apply or cancel the pending draft in the editor**, then send a new request (e.g., \"Change the heading to 'Forbidden draft change'\") and I'll apply it in one edit against the then-current revision.\n\nMessage Studio agent\nSend\nApply or cancel the pending property, data, rename or source draft, then send a new request.\nActivity (8)\nConnection record\n\nEdits share your history. Save explicitly. Form actions remain local preview. Chat clears when you leave Designer.\n\nDesign\nInteract\nDocument\nCreate an account\nRegister\n\nSimulated execution\nLocal preview · no live effects\nApply or cancel the pending property, data, rename or source draft, then send a new request.\n@3 · v1_bb7a113ab162…",
+        "errors": []
+      }
+    }
+  ],
+  "errors": []
+}

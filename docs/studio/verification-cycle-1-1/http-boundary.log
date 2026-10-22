@@ -1,0 +1,33 @@
+{"name":"unauthenticated bootstrap","status":401,"expected":401,"ok":true,"result":{"ok":false,"code":"VICT_STUDIO_UNAUTHENTICATED"},"cache":null}
+{"name":"authenticated bootstrap","status":200,"expected":200,"ok":true,"result":{"model":"zai/glm-5.3-flash","ready":true,"csrfPresent":true},"cache":"no-store"}
+{"name":"no session POST/api/designer-agent","status":401,"expected":401,"ok":true,"result":{"ok":false,"code":"VICT_STUDIO_UNAUTHENTICATED"},"cache":null}
+{"name":"missing origin POST/api/designer-agent","status":403,"expected":403,"ok":true,"result":{"ok":false,"code":"VICT_STUDIO_ORIGIN"},"cache":null}
+{"name":"foreign origin POST/api/designer-agent","status":403,"expected":403,"ok":true,"result":{"ok":false,"code":"VICT_STUDIO_ORIGIN"},"cache":null}
+{"name":"missing CSRF POST/api/designer-agent","status":403,"expected":403,"ok":true,"result":{"ok":false,"code":"VICT_STUDIO_CSRF"},"cache":null}
+{"name":"wrong content type text/plain POST/api/designer-agent","status":415,"expected":415,"ok":true,"result":{"ok":false,"code":"STUDIO_AGENT_CONTENT_TYPE"},"cache":null}
+{"name":"wrong content type application/x-www-form-urlencoded POST/api/designer-agent","status":415,"expected":415,"ok":true,"result":{"ok":false,"code":"STUDIO_AGENT_CONTENT_TYPE"},"cache":null}
+{"name":"wrong content type application/jsonx POST/api/designer-agent","status":415,"expected":415,"ok":true,"result":{"ok":false,"code":"STUDIO_AGENT_CONTENT_TYPE"},"cache":null}
+{"name":"malformed JSON POST/api/designer-agent","status":400,"expected":400,"ok":true,"result":{"ok":false,"code":"STUDIO_AGENT_REQUEST"},"cache":null}
+{"name":"oversized POST/api/designer-agent","status":"connection-reset","expected":413,"ok":false,"errorCode":"UND_ERR_SOCKET"}
+{"name":"closed schema POST/api/designer-agent","status":400,"expected":400,"ok":true,"result":{"ok":false,"code":"STUDIO_AGENT_REQUEST","message":"The request needs a bounded prompt and current screen."},"cache":null}
+{"name":"no session DELETE/api/designer-agent","status":401,"expected":401,"ok":true,"result":{"ok":false,"code":"VICT_STUDIO_UNAUTHENTICATED"},"cache":null}
+{"name":"missing origin DELETE/api/designer-agent","status":403,"expected":403,"ok":true,"result":{"ok":false,"code":"VICT_STUDIO_ORIGIN"},"cache":null}
+{"name":"foreign origin DELETE/api/designer-agent","status":403,"expected":403,"ok":true,"result":{"ok":false,"code":"VICT_STUDIO_ORIGIN"},"cache":null}
+{"name":"missing CSRF DELETE/api/designer-agent","status":403,"expected":403,"ok":true,"result":{"ok":false,"code":"VICT_STUDIO_CSRF"},"cache":null}
+{"name":"wrong content type text/plain DELETE/api/designer-agent","status":415,"expected":415,"ok":true,"result":{"ok":false,"code":"STUDIO_AGENT_CONTENT_TYPE"},"cache":null}
+{"name":"wrong content type application/x-www-form-urlencoded DELETE/api/designer-agent","status":415,"expected":415,"ok":true,"result":{"ok":false,"code":"STUDIO_AGENT_CONTENT_TYPE"},"cache":null}
+{"name":"wrong content type application/jsonx DELETE/api/designer-agent","status":415,"expected":415,"ok":true,"result":{"ok":false,"code":"STUDIO_AGENT_CONTENT_TYPE"},"cache":null}
+{"name":"malformed JSON DELETE/api/designer-agent","status":400,"expected":400,"ok":true,"result":{"ok":false,"code":"STUDIO_AGENT_REQUEST"},"cache":null}
+{"name":"oversized DELETE/api/designer-agent","status":"connection-reset","expected":413,"ok":false,"errorCode":"UND_ERR_SOCKET"}
+{"name":"closed schema DELETE/api/designer-agent","status":400,"expected":400,"ok":true,"result":{"ok":false,"code":"STUDIO_AGENT_REQUEST"},"cache":null}
+{"name":"no session POST/api/designer-agent/ack","status":401,"expected":401,"ok":true,"result":{"ok":false,"code":"VICT_STUDIO_UNAUTHENTICATED"},"cache":null}
+{"name":"missing origin POST/api/designer-agent/ack","status":403,"expected":403,"ok":true,"result":{"ok":false,"code":"VICT_STUDIO_ORIGIN"},"cache":null}
+{"name":"foreign origin POST/api/designer-agent/ack","status":403,"expected":403,"ok":true,"result":{"ok":false,"code":"VICT_STUDIO_ORIGIN"},"cache":null}
+{"name":"missing CSRF POST/api/designer-agent/ack","status":403,"expected":403,"ok":true,"result":{"ok":false,"code":"VICT_STUDIO_CSRF"},"cache":null}
+{"name":"wrong content type text/plain POST/api/designer-agent/ack","status":415,"expected":415,"ok":true,"result":{"ok":false,"code":"STUDIO_AGENT_CONTENT_TYPE"},"cache":null}
+{"name":"wrong content type application/x-www-form-urlencoded POST/api/designer-agent/ack","status":415,"expected":415,"ok":true,"result":{"ok":false,"code":"STUDIO_AGENT_CONTENT_TYPE"},"cache":null}
+{"name":"wrong content type application/jsonx POST/api/designer-agent/ack","status":415,"expected":415,"ok":true,"result":{"ok":false,"code":"STUDIO_AGENT_CONTENT_TYPE"},"cache":null}
+{"name":"malformed JSON POST/api/designer-agent/ack","status":400,"expected":400,"ok":true,"result":{"ok":false,"code":"STUDIO_AGENT_REQUEST"},"cache":null}
+{"name":"oversized POST/api/designer-agent/ack","status":"connection-reset","expected":413,"ok":false,"errorCode":"UND_ERR_SOCKET"}
+{"name":"closed schema POST/api/designer-agent/ack","status":400,"expected":400,"ok":true,"result":{"ok":false,"code":"STUDIO_AGENT_REQUEST"},"cache":null}
+{"name":"unknown ack session isolated","status":409,"expected":409,"ok":true,"result":{"ok":false},"cache":null}

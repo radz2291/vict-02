@@ -1,0 +1,245 @@
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1-verification/260831-VCT-02/apps/studio
+
+10:26:59 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/DocumentHost.svelte:105:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+ ✓ tests/quellight-transport.test.ts (10 tests) 29ms
+ ✓ tests/boundary.test.ts (13 tests) 89ms
+ ✓ tests/targets.test.ts (5 tests) 72ms
+ ✓ tests/run-detail.test.ts (12 tests) 94ms
+ ✓ tests/adapter.test.ts (9 tests) 115ms
+ ✓ tests/designer-model.test.ts (3 tests) 117ms
+ ✓ tests/confirmation-contract.test.ts (11 tests) 27ms
+ ✓ tests/target-selection.test.ts (6 tests) 25ms
+ ✓ tests/changeset-contract.test.ts (12 tests) 31ms
+10:27:28 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/DocumentHost.svelte:105:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+10:27:29 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:303:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+10:27:29 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:303:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+10:27:29 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:370:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+10:27:29 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:370:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+10:27:35 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-editor/src/StateValuesPanel.svelte:106:6 A form label must be associated with a control
+https://svelte.dev/e/a11y_label_has_associated_control
+stderr | tests/ui/composition.test.ts
+AggregateError: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1712:7) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 3000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 3000
+    }
+  ]
+}
+
+stderr | tests/ui/composition.test.ts
+AggregateError: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1712:7) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 3000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 3000
+    }
+  ]
+}
+
+stderr | tests/ui/composition.test.ts
+AggregateError: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1712:7) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 3000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 3000
+    }
+  ]
+}
+
+ ✓ tests/ui/composition.test.ts (3 tests) 2013ms
+   ✓ opens another saved screen through File and guards the cascading menu during a source draft  885ms
+   ✓ opens a closed composition without authored or runtime changes, guards drafts, and saves the same edited source for replay  697ms
+   ✓ keeps data drafts safe across document navigation and saves applied starting values  427ms
+stderr | tests/ui/designer-runtime.test.ts > keeps runtime input and checkbox state across pointer selection and leaves authored history clean
+[svelte] dynamic_void_element_content
+`<svelte:element this="input">` is a void element — it cannot have content
+https://svelte.dev/e/dynamic_void_element_content
+[svelte] dynamic_void_element_content
+`<svelte:element this="input">` is a void element — it cannot have content
+https://svelte.dev/e/dynamic_void_element_content
+
+stderr | tests/ui/designer-runtime.test.ts > keeps runtime input and checkbox state across pointer selection and leaves authored history clean
+[svelte] dynamic_void_element_content
+`<svelte:element this="input">` is a void element — it cannot have content
+https://svelte.dev/e/dynamic_void_element_content
+
+stderr | tests/ui/designer-runtime.test.ts > keeps runtime input and checkbox state across pointer selection and leaves authored history clean
+AggregateError: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1712:7) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 3000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 3000
+    }
+  ]
+}
+
+ ✓ tests/ui/designer-runtime.test.ts (1 test) 1210ms
+   ✓ keeps runtime input and checkbox state across pointer selection and leaves authored history clean  1208ms
+ ✓ tests/ui/saved-run.test.ts (3 tests) 418ms
+ ✓ tests/ui/render.test.ts (7 tests) 289ms
+ ✓ tests/ui/confirmation.test.ts (5 tests) 71ms
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 8 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/app-definition.test.ts [ tests/app-definition.test.ts ]
+Error: Cannot find module 'C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/sdk/dist/index.js' imported from 'C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1-verification/260831-VCT-02/apps/studio/src/lib/application/definition.ts'
+ ❯ src/lib/application/definition.ts:1:1
+      1| import {
+       | ^
+      2|   APPLICATION_DEFINITION_SCHEMA_V2,
+      3|   RESOURCE_DEFINITION_SCHEMA,
+
+Caused by: Error: Failed to load url C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/sdk/dist/index.js (resolved id: C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/sdk/dist/index.js). Does the file exist?
+ ❯ loadAndTransform ../../../../studio-cycle-1-1/260831-VCT-02/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:35835:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/8]⎯
+
+ FAIL  tests/designer-agent-mastra.test.ts [ tests/designer-agent-mastra.test.ts ]
+Error: Cannot find module 'C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/sdk/dist/index.js' imported from 'C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/kernel/dist/types.js'
+ ❯ ../../../../studio-cycle-1-1/260831-VCT-02/packages/kernel/src/types.ts:36:1
+
+Caused by: Error: Failed to load url C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/sdk/dist/index.js (resolved id: C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/sdk/dist/index.js). Does the file exist?
+ ❯ loadAndTransform ../../../../studio-cycle-1-1/260831-VCT-02/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:35835:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/8]⎯
+
+ FAIL  tests/designer-agent.test.ts [ tests/designer-agent.test.ts ]
+ FAIL  tests/designer-independent-verification.test.ts [ tests/designer-independent-verification.test.ts ]
+Error: Cannot find module 'C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui/dist/index.js' imported from 'C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/DocumentHost.svelte'
+ ❯ ../../../../studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/DocumentHost.svelte:13:3
+     11|    */
+     12|   import type { UiRenderPlan, UiLocalStateDecl, UiExtensionDescriptor,…
+     13|   import { isUiValueOfType, copyUiValue, actionFeedback } from '@victf…
+       |   ^
+     14|   import { untrack, onDestroy } from 'svelte';
+     15|   import type {
+
+Caused by: Error: Failed to load url C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui/dist/index.js (resolved id: C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui/dist/index.js). Does the file exist?
+ ❯ loadAndTransform ../../../../studio-cycle-1-1/260831-VCT-02/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:35835:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/8]⎯
+
+ FAIL  tests/designer-preflight-independent.test.ts [ tests/designer-preflight-independent.test.ts ]
+ FAIL  tests/designer-required-slot-verification.test.ts [ tests/designer-required-slot-verification.test.ts ]
+Error: Cannot find module 'C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/application/dist/index.js' imported from 'C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1-verification/260831-VCT-02/apps/studio/src/lib/designer/application.ts'
+ ❯ src/lib/designer/application.ts:2:1
+      1| /** Canonical source attachment shared by authoring, storage validatio…
+      2| import { compileApplication, deriveActionInputCatalog } from '@victfra…
+       | ^
+      3| import type { ApplicationDefinitionV3, ResourceDefinition } from '@vic…
+      4| import { defaultSemanticElementCatalog, type UiDocument } from '@victf…
+
+Caused by: Error: Failed to load url C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/application/dist/index.js (resolved id: C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/application/dist/index.js). Does the file exist?
+ ❯ loadAndTransform ../../../../studio-cycle-1-1/260831-VCT-02/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:35835:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/8]⎯
+
+ FAIL  tests/designer-required-slots.test.ts [ tests/designer-required-slots.test.ts ]
+Error: Cannot find module 'C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui/dist/index.js' imported from 'C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1-verification/260831-VCT-02/apps/studio/tests/designer-required-slots.test.ts'
+ ❯ tests/designer-required-slots.test.ts:2:1
+      1| import { describe, expect, it } from 'vitest';
+      2| import { applyUiEdit, type UiDocument } from '@victframework/ui';
+       | ^
+      3| import {
+      4|   compileScreen,
+
+Caused by: Error: Failed to load url C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui/dist/index.js (resolved id: C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui/dist/index.js). Does the file exist?
+ ❯ loadAndTransform ../../../../studio-cycle-1-1/260831-VCT-02/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:35835:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/8]⎯
+
+ FAIL  tests/designer.test.ts [ tests/designer.test.ts ]
+Error: Cannot find module 'C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui/dist/index.js' imported from 'C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1-verification/260831-VCT-02/apps/studio/tests/designer.test.ts'
+ ❯ tests/designer.test.ts:2:1
+      1| import { describe, expect, it } from 'vitest';
+      2| import { applyUiEdit } from '@victframework/ui';
+       | ^
+      3| import {
+      4|   newScreen,
+
+Caused by: Error: Failed to load url C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui/dist/index.js (resolved id: C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui/dist/index.js). Does the file exist?
+ ❯ loadAndTransform ../../../../studio-cycle-1-1/260831-VCT-02/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:35835:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/8]⎯
+
+
+ Test Files  8 failed | 14 passed (22)
+      Tests  100 passed (100)
+   Start at  22:26:42
+   Duration  73.37s (transform 24.65s, setup 0ms, collect 32.23s, tests 4.60s, environment 5.00s, prepare 5.72s)

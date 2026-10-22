@@ -1,0 +1,70 @@
+[
+  {
+    "kind": "throw",
+    "pass": true,
+    "elapsedMs": 3,
+    "types": [
+      "stream-start",
+      "error"
+    ],
+    "safeCode": "STUDIO_AGENT_PROVIDER_FAILED"
+  },
+  {
+    "kind": "error-chunk",
+    "pass": true,
+    "elapsedMs": 6,
+    "types": [
+      "stream-start",
+      "error"
+    ],
+    "safeCode": "STUDIO_AGENT_PROVIDER_FAILED"
+  },
+  {
+    "kind": "stream-reject",
+    "pass": true,
+    "elapsedMs": 1,
+    "types": [
+      "stream-start",
+      "error"
+    ],
+    "safeCode": "STUDIO_AGENT_PROVIDER_FAILED"
+  },
+  {
+    "kind": "hung-promise",
+    "pass": true,
+    "elapsedMs": 81,
+    "types": [
+      "stream-start",
+      "error"
+    ],
+    "safeCode": "STUDIO_AGENT_PROVIDER_FAILED"
+  },
+  {
+    "kind": "hung-stream",
+    "pass": true,
+    "elapsedMs": 96,
+    "types": [
+      "stream-start",
+      "error"
+    ],
+    "safeCode": "STUDIO_AGENT_PROVIDER_FAILED"
+  },
+  {
+    "kind": "pre-aborted",
+    "pass": true,
+    "elapsedMs": 1,
+    "types": [
+      "stream-start",
+      "error"
+    ],
+    "safeCode": "STUDIO_AGENT_CANCELLED"
+  },
+  {
+    "kind": "valid-chunks-preserved",
+    "pass": true
+  },
+  {
+    "kind": "consumer-cancel-aborts-provider",
+    "pass": true
+  }
+]
