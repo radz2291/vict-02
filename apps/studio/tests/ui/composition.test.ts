@@ -6,6 +6,7 @@ import Designer from '../../src/lib/designer/Designer.svelte';
 import { newScreen, compileScreen } from '../../src/lib/designer/application.js';
 import { screenStore } from '../../src/lib/designer/storage.js';
 import type { UiDocument } from '@victframework/ui';
+import { openStudioMenu } from './studio-menu.js';
 let editor: ReturnType<typeof mount> | undefined;
 afterEach(async () => {
   if (editor) await unmount(editor);
@@ -14,7 +15,7 @@ afterEach(async () => {
 });
 const button = (name: string) => {
   const item = [...document.querySelectorAll<HTMLButtonElement>('button')].find(
-    (item) => item.textContent?.trim() === name,
+    (item) => item.getAttribute('aria-label') === name || item.textContent?.trim() === name,
   );
   expect(item, name).toBeDefined();
   item!.click();
@@ -72,7 +73,9 @@ it('opens a closed composition without authored or runtime changes, guards draft
     document.querySelector('[data-testid=dialog-panel][data-ui-composition-surface=body]'),
   ).not.toBeNull();
   expect(document.querySelector('.save-state')?.textContent).toContain('Saved');
+  await openStudioMenu('Edit');
   expect(document.querySelector<HTMLButtonElement>('[title="Undo · Ctrl+Z"]')?.disabled).toBe(true);
+  window.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', cancelable: true }));
   const paragraph = document.querySelector<HTMLElement>('[data-ui-node=paragraph]')!;
   paragraph.dispatchEvent(new MouseEvent('dblclick', { bubbles: true, cancelable: true }));
   await tick();
@@ -112,6 +115,7 @@ it('opens a closed composition without authored or runtime changes, guards draft
   button('← Screen');
   await tick();
   expect(document.querySelector('#document-drawer')).not.toBeNull();
+  await openStudioMenu('File');
   button('Save');
   await tick();
   const loaded = store.rawLoad();
@@ -126,7 +130,8 @@ it('opens a closed composition without authored or runtime changes, guards draft
   expect(
     original.ok && saved.ok && original.plan.applicationVersion !== saved.plan.applicationVersion,
   ).toBe(true);
-  button('Reload');
+  await openStudioMenu('File');
+  button('Reload saved version');
   await tick();
   expect(document.querySelector('[aria-label="Composition navigation"]')).toBeNull();
 });
@@ -168,7 +173,9 @@ it('keeps data drafts safe across document navigation and saves applied starting
   await tick();
   await tick();
   expect(
-    document.querySelector<HTMLButtonElement>('.sidebar-tabs button:last-child')?.disabled,
+    [...document.querySelectorAll<HTMLButtonElement>('.sidebar-tabs button')].find(
+      item => item.textContent === 'Source',
+    )?.disabled,
   ).toBe(true);
   document.querySelector<HTMLButtonElement>('[aria-label="Close document"]')!.click();
   await tick();
@@ -183,6 +190,7 @@ it('keeps data drafts safe across document navigation and saves applied starting
   button('Apply');
   await tick();
   await tick();
+  await openStudioMenu('File');
   button('Save');
   await tick();
   const saved = store.rawLoad();

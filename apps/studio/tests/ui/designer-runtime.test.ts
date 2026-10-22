@@ -3,6 +3,7 @@ import { afterEach, expect, it, vi } from 'vitest';
 import { mount, unmount, tick } from 'svelte';
 vi.mock('$app/navigation', () => ({ beforeNavigate: () => {} }));
 import Designer from '../../src/lib/designer/Designer.svelte';
+import { openStudioMenu } from './studio-menu.js';
 import { newScreen } from '../../src/lib/designer/application.js';
 import { screenStore } from '../../src/lib/designer/storage.js';
 
@@ -127,6 +128,7 @@ it('keeps runtime input and checkbox state across pointer selection and leaves a
   await tick();
   expect(document.body.textContent).toContain('Simulated submission: Runtime stays separate');
   expect(document.querySelector('.save-state')?.textContent).toContain('Saved');
+  await openStudioMenu('Edit');
   expect(
     (document.querySelector('button[title="Undo · Ctrl+Z"]') as HTMLButtonElement).disabled,
   ).toBe(true);

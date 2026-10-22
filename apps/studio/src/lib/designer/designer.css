@@ -75,12 +75,11 @@ body:has(.finished-screen) {
   flex-shrink: 0;
 }
 .design-toolbar > * {flex-shrink:0;}
-.screen-picker,
-.history-controls,
-.toolbar-end {
+.screen-picker {
   display: flex;
   align-items: center;
   gap: 6px;
+  margin-left:auto;
 }
 .screen-picker select {
   max-width: 180px;
@@ -101,14 +100,6 @@ body:has(.finished-screen) {
   color: #47566e;
   font-size: 11px;
 }
-.history-controls {
-  padding-left: 7px;
-  border-left: 1px solid #e1e6ee;
-  gap: 2px;
-}
-.history-controls button {
-  border-color: transparent;
-}
 .canvas-modes {
   display: flex;
   gap: 2px;
@@ -126,17 +117,9 @@ body:has(.finished-screen) {
   color: #5269bd;
   box-shadow: 0 1px 4px #25334f14;
 }
-.design-toolbar .add-element {
-  color: #405abd;
-  border-color: #d5ddf4;
-  background: #f2f5ff;
-}
 .save-state {
   color: #8c96a5;
   font-size: 11px;
-}
-.toolbar-end {
-  margin-left: auto;
 }
 .run-button {
   padding: 6px 10px;
@@ -173,7 +156,7 @@ body:has(.finished-screen) {
 }
 .canvas-toolbar {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
   gap: 6px;
   height: 38px;
@@ -181,12 +164,6 @@ body:has(.finished-screen) {
   padding: 0 10px;
   border-bottom: 1px solid #e1e6ee;
   font-size: 11px;
-}
-.canvas-toolbar select {
-  border: 0;
-  background: transparent;
-  font-size: 11px;
-  color: #5e6e87;
 }
 .canvas-toolbar button {
   padding: 4px 7px;
@@ -480,13 +457,6 @@ body:has(.finished-screen) {
   .screen-picker select {
     max-width: 150px;
   }
-  .history-controls {
-    border: 0;
-    padding: 0;
-  }
-  .toolbar-end {
-    margin-left: 0;
-  }
   .canvas-scroll {
     padding: 12px 10px 24px;
   }
@@ -533,9 +503,14 @@ body:has(.finished-screen) {
 .application-attachment {flex:none;font-size:10px;color:#7b879c;max-height:25%;overflow:auto;}
 .document-drawer :focus-visible {outline:2px solid #5269bd;outline-offset:-1px;}
 
-.screen-picker .screen-options {border-color:transparent;color:#78849a;padding:3px 6px;font-size:16px;line-height:1;}
-.screen-picker .screen-options:hover {background:#f3f5fb;border-color:#e1e6ee;}
 .screen-picker .screen-name-edit {width:180px;min-width:0;font:12px 'Segoe UI',system-ui,sans-serif;padding:4px 6px;border:1px solid #5269bd;border-radius:4px;background:white;color:#34425a;}
-.screen-menu {position:fixed;inset:auto;margin:0;padding:5px;width:200px;max-height:calc(100dvh - 60px);overflow:auto;border:1px solid #dce2eb;border-radius:6px;background:white;box-shadow:0 8px 24px #25334f20;color:#47566e;}
-.screen-menu button {display:block;width:100%;text-align:left;padding:8px 10px;border:0;border-radius:3px;background:transparent;color:inherit;font-size:12px;}
-.screen-menu button:hover:not(:disabled) {background:#f0f3fa;}
+.studio-menus {display:flex;align-items:center;gap:2px;}
+.studio-menus > button {border-color:transparent;padding:5px 9px;background:transparent;}
+.studio-menus > button:hover,.studio-menus > button[aria-expanded='true'] {background:#edf1ff;color:#405abd;}
+.screen-menu {position:fixed;inset:auto;margin:0;padding:5px;width:220px;max-height:calc(100dvh - 60px);overflow:auto;border:1px solid #dce2eb;border-radius:6px;background:white;box-shadow:0 8px 24px #25334f20;color:#47566e;}
+.screen-menu button,.screen-menu a {display:flex;align-items:center;justify-content:space-between;gap:16px;width:100%;text-align:left;padding:8px 10px;border:0;border-radius:3px;background:transparent;color:inherit;font-size:12px;text-decoration:none;}
+.screen-menu button:hover:not(:disabled),.screen-menu a:hover:not([aria-disabled='true']) {background:#f0f3fa;}
+.screen-menu a[aria-disabled='true'] {opacity:.4;cursor:default;}
+.screen-menu kbd {font:10px 'Segoe UI',system-ui,sans-serif;color:#8a96a8;}
+.screen-menu hr {border:0;border-top:1px solid #e8ebf1;margin:4px 5px;}
+.menu-caption {font-size:10px;color:#8a96a8;margin:6px 10px;}

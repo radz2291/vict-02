@@ -92,13 +92,33 @@
   let screenMenu=$state<HTMLDivElement>();
   let screenMenuOpen=$state(false);
   let screenMenuPosition=$state({left:8,top:44});
-  function toggleScreenMenu() {
-    if(screenMenu?.matches(':popover-open')) {screenMenu.hidePopover();return;}
-    const rect=renameButton?.getBoundingClientRect();
+  const menuNames=['File','Edit','View','Insert','Preview'] as const;
+  type StudioMenu=typeof menuNames[number];
+  let activeMenu=$state<StudioMenu>('File');
+  async function openMenu(name:StudioMenu,trigger:HTMLButtonElement,last=false) {
+    screenMenu?.hidePopover();
+    activeMenu=name;renameButton=trigger;
+    const rect=trigger.getBoundingClientRect();
     if(!rect || !screenMenu)return;
-    screenMenuPosition={left:Math.max(8,Math.min(rect.left,globalThis.innerWidth-208)),top:rect.bottom+6};
+    screenMenuPosition={left:Math.max(8,Math.min(rect.left,globalThis.innerWidth-228)),top:rect.bottom+6};
+    await tick();
     screenMenu.showPopover();
-    screenMenu.querySelector<HTMLButtonElement>('button:not(:disabled)')?.focus();
+    trigger.focus();
+    const items=menuItems();(last?items.at(-1):items[0])?.focus();
+  }
+  function closeMenu() {screenMenu?.hidePopover();renameButton?.focus();}
+  function menuItems() {return [...(screenMenu?.querySelectorAll<HTMLElement>('[role^="menuitem"]')??[])].filter(item=>!item.matches(':disabled,[aria-disabled="true"]'));}
+  function toggleMenu(name:StudioMenu,trigger:HTMLButtonElement) {
+    if(screenMenu?.matches(':popover-open') && activeMenu===name)closeMenu();else void openMenu(name,trigger);
+  }
+  function menuTriggerKey(event:KeyboardEvent,name:StudioMenu) {
+    if(['ArrowDown','ArrowUp'].includes(event.key)){event.preventDefault();event.stopPropagation();void openMenu(name,event.currentTarget as HTMLButtonElement,event.key==='ArrowUp');}
+    if(['ArrowLeft','ArrowRight'].includes(event.key)) {
+      event.preventDefault();event.stopPropagation();
+      const index=(menuNames.indexOf(name)+(event.key==='ArrowRight'?1:4))%5;
+      const next=globalThis.document.querySelectorAll<HTMLButtonElement>('.studio-menus > button')[index];next?.focus();
+      if(next && screenMenu?.matches(':popover-open'))void openMenu(menuNames[index]!,next);
+    }
   }
   async function beginRename() {
     if(!source || textDraftDirty || sourceDraftDirty)return;
@@ -115,7 +135,7 @@
     if(event.key==='Escape') {event.preventDefault();event.stopPropagation();renamingScreen=false;void tick().then(()=>renameButton?.focus());}
     if(event.key==='Enter') {event.preventDefault();finishRename();void tick().then(()=>renameButton?.focus());}
   }
-  let documentButton: HTMLButtonElement;
+  let documentButton=$state<HTMLButtonElement>();
   function closeDrawer() { if(dataDraftDirty || sourceDraftDirty) {notice='Apply or cancel your draft before closing Document.';return;} drawerOpen = false; documentButton?.focus(); }
   const editorLabels = { actions: { 'demo.submit': 'Submit (simulated)' }, nodes: { screen: 'Screen' },
     state: { message: 'Message', accepted: 'Agreement', dialogOpen: 'Dialog open', busy: 'Submitting', actionError: 'Action error', actionResult: 'Action result' },
@@ -271,7 +291,16 @@
     return element ? getComputedStyle(element).getPropertyValue(property) : undefined;
   }
   function shortcuts(event: KeyboardEvent) {
-    if(screenMenu?.matches(':popover-open')) {if(event.key==='Escape'){event.preventDefault();screenMenu.hidePopover();renameButton?.focus();}return;}
+    if(screenMenu?.matches(':popover-open')) {
+      if((event.ctrlKey || event.metaKey) && event.key.toLowerCase()==='s'){event.preventDefault();closeMenu();void save();return;}
+      if(event.key==='Escape'){event.preventDefault();closeMenu();}
+      else if(event.key==='Tab')closeMenu();
+      else if(['ArrowDown','ArrowUp','Home','End'].includes(event.key)) {
+        event.preventDefault();const items=menuItems();const index=items.indexOf(globalThis.document.activeElement as HTMLElement);
+        const next=event.key==='Home'?0:event.key==='End'?items.length-1:(index+(event.key==='ArrowDown'?1:items.length-1))%items.length;items[next]?.focus();
+      } else if(['ArrowLeft','ArrowRight'].includes(event.key)) {event.preventDefault();const index=(menuNames.indexOf(activeMenu)+(event.key==='ArrowRight'?1:4))%5;const next=globalThis.document.querySelectorAll<HTMLButtonElement>('.studio-menus > button')[index];if(next)void openMenu(menuNames[index]!,next);}
+      return;
+    }
     if (event.key === 'Escape' && drawerOpen) { event.preventDefault(); closeDrawer(); return; }
     const editable = event.target instanceof HTMLElement && (event.target.matches('input,textarea,select') || event.target.isContentEditable);
     if (!editable && mode === 'design') {
@@ -335,18 +364,30 @@
 <div class="vict-app studio-designer">
   <header class="design-toolbar">
     <a class="studio-brand" href="/design" aria-label="VICT Studio" title="VICT Studio"><span class="brand-mark">V</span></a>
-    <div class="screen-picker">{#if renamingScreen}<input class="screen-name-edit" aria-label="Screen name" bind:this={screenNameInput} bind:value={screenNameDraft} maxlength="80" onkeydown={renameKey} onblur={finishRename} />{:else}<label class="sr-only" for="screen-picker">Screen</label><select id="screen-picker" value={source?.id ?? ''} onchange={event => openScreen(event.currentTarget.value)}>{#each library as item (item.id)}<option value={item.id}>{item.name}</option>{/each}</select>{/if}<button class="screen-options" type="button" bind:this={renameButton} title="Screen options" aria-label="Screen options" aria-controls="screen-options" aria-expanded={screenMenuOpen} onclick={toggleScreenMenu}>⋯</button></div>
-    <div class="history-controls"><button type="button" disabled={!snapshot?.canUndo} onclick={undo} title="Undo · Ctrl+Z">Undo</button><button type="button" disabled={!snapshot?.canRedo} onclick={redo} title="Redo · Ctrl+Shift+Z">Redo</button></div>
-    <div class="canvas-modes" aria-label="Canvas mode"><button type="button" aria-pressed={mode === 'design'} onclick={() => changeMode('design')}>Design</button><button type="button" aria-pressed={mode === 'interact'} onclick={() => changeMode('interact')}>Interact</button></div>
-    {#if mode === 'design'}<button type="button" class="add-element" onclick={openInsert}>＋ Add</button>{/if}
+    <nav class="studio-menus" aria-label="Studio menus">{#each menuNames as name}<button type="button" aria-haspopup="menu" aria-expanded={screenMenuOpen && activeMenu===name} aria-controls="studio-menu" onclick={event=>toggleMenu(name,event.currentTarget)} onkeydown={event=>menuTriggerKey(event,name)}>{name}</button>{/each}</nav>
+    <div class="screen-picker">{#if renamingScreen}<input class="screen-name-edit" aria-label="Screen name" bind:this={screenNameInput} bind:value={screenNameDraft} maxlength="80" onkeydown={renameKey} onblur={finishRename} />{:else}<label class="sr-only" for="screen-picker">Screen</label><select id="screen-picker" value={source?.id ?? ''} onchange={event => openScreen(event.currentTarget.value)}>{#each library as item (item.id)}<option value={item.id}>{item.name}</option>{/each}</select>{/if}</div>
     <span class="save-state">{textDraftDirty ? '● Unapplied property draft' : sourceDraftDirty ? '● Unapplied JSON draft' : snapshot?.dirty ? '● Unsaved changes' : snapshot?.storedRevision === 'r1' ? '○ New screen' : '✓ Saved'}</span>
-    <div class="toolbar-end"><button type="button" bind:this={documentButton} class="panel-toggle" aria-expanded={drawerOpen} aria-controls="document-drawer" onclick={toggleDocument}>Document</button><button type="button" onclick={save} disabled={!compilation?.ok || sourceDraftDirty || textDraftDirty}>Save</button><a class="run-button" aria-disabled={!source || snapshot?.dirty || sourceDraftDirty || textDraftDirty || snapshot?.storedRevision === 'r1'} href={source && !snapshot?.dirty && !sourceDraftDirty && !textDraftDirty && snapshot?.storedRevision !== 'r1' ? `/run-screen?screen=${encodeURIComponent(source.id)}` : undefined}>Run saved ↗</a></div>
     <a class="operator-link" href="/" aria-label="Operator tools" title="Operator tools">↗</a>
   </header>
-  <div id="screen-options" class="screen-menu" popover="auto" ontoggle={event=>screenMenuOpen=event.newState==='open'} role="group" aria-label="Screen options" bind:this={screenMenu} style:left={`${screenMenuPosition.left}px`} style:top={`${screenMenuPosition.top}px`}>
-    <button type="button" disabled={textDraftDirty || sourceDraftDirty} onclick={()=>{screenMenu?.hidePopover();void beginCreate();}}>New screen</button>
-    <button type="button" disabled={!source || textDraftDirty || sourceDraftDirty} onclick={()=>{screenMenu?.hidePopover();void beginRename();}}>Rename screen</button>
-    <button type="button" title="Reload the saved screen and reset the preview" disabled={!source || snapshot?.dirty || sourceDraftDirty || textDraftDirty || snapshot?.storedRevision === 'r1'} onclick={()=>{screenMenu?.hidePopover();renameButton?.focus();void reopen();}}>Reload</button>
+  <div id="studio-menu" class="screen-menu" popover="auto" ontoggle={event=>screenMenuOpen=event.newState==='open'} role="menu" aria-label={activeMenu} bind:this={screenMenu} style:left={`${screenMenuPosition.left}px`} style:top={`${screenMenuPosition.top}px`}>
+    {#if activeMenu==='File'}
+      <button role="menuitem" type="button" disabled={textDraftDirty || sourceDraftDirty} onclick={()=>{closeMenu();void beginCreate();}}>New screen</button>
+      <button role="menuitem" type="button" disabled={!source || textDraftDirty || sourceDraftDirty} onclick={()=>{closeMenu();void beginRename();}}>Rename screen</button>
+      <hr />
+      <button role="menuitem" type="button" aria-label="Save" disabled={!compilation?.ok || sourceDraftDirty || textDraftDirty} onclick={()=>{closeMenu();void save();}}>Save <kbd>Ctrl+S</kbd></button>
+      <button role="menuitem" type="button" title="Reload the saved screen and reset the preview" disabled={!source || snapshot?.dirty || sourceDraftDirty || textDraftDirty || snapshot?.storedRevision === 'r1'} onclick={()=>{closeMenu();void reopen();}}>Reload saved version</button>
+    {:else if activeMenu==='Edit'}
+      <button role="menuitem" type="button" title="Undo · Ctrl+Z" aria-label="Undo" disabled={!snapshot?.canUndo} onclick={()=>{closeMenu();undo();}}>Undo <kbd>Ctrl+Z</kbd></button>
+      <button role="menuitem" type="button" aria-label="Redo" disabled={!snapshot?.canRedo} onclick={()=>{closeMenu();redo();}}>Redo <kbd>Ctrl+Shift+Z</kbd></button>
+    {:else if activeMenu==='View'}
+      <p class="menu-caption">Canvas size</p>
+      {#each [{value:'fluid',label:'Fit canvas'},{value:'768',label:'Tablet · 768'},{value:'390',label:'Phone · 390'}] as option}<button role="menuitemradio" aria-checked={width===option.value} type="button" onclick={()=>{width=option.value;closeMenu();}}>{option.label}<span aria-hidden="true">{width===option.value?'✓':''}</span></button>{/each}
+    {:else if activeMenu==='Insert'}
+      <button role="menuitem" type="button" disabled={mode!=='design' || textDraftDirty || sourceDraftDirty} onclick={()=>{closeMenu();openInsert();}}>Add elements…</button>
+    {:else}
+      <a role="menuitem" aria-disabled={!source || snapshot?.dirty || sourceDraftDirty || textDraftDirty || snapshot?.storedRevision==='r1'} href={source && !snapshot?.dirty && !sourceDraftDirty && !textDraftDirty && snapshot?.storedRevision!=='r1'?`/run-screen?screen=${encodeURIComponent(source.id)}`:undefined} onclick={event=>{if(!source || snapshot?.dirty || sourceDraftDirty || textDraftDirty || snapshot?.storedRevision==='r1')event.preventDefault();else closeMenu();}}>Run saved ↗</a>
+      <button role="menuitem" type="button" onclick={()=>{closeMenu();resetRuntime();}}>Reset preview</button>
+    {/if}
   </div>
   {#if source && bridge}
   {#snippet floatingTools()}
@@ -362,7 +403,7 @@
   {/snippet}
   <div class="design-workspace" class:drawer-open={drawerOpen} class:has-object-tools={mode === 'design' && !!selectedNode && paletteRequested} style:--drawer-width={`${drawerWidth}px`}>
     <main class="design-stage">
-      <div class="canvas-toolbar"><label><span class="sr-only">Canvas width</span><select aria-label="Canvas width" bind:value={width}><option value="fluid">Fit canvas</option><option value="768">Tablet · 768</option><option value="390">Phone · 390</option></select></label><button type="button" onclick={resetRuntime} title="Reset ephemeral runtime values">Reset preview</button></div>
+      <div class="canvas-toolbar"><div class="canvas-modes" aria-label="Canvas mode"><button type="button" aria-pressed={mode === 'design'} onclick={() => changeMode('design')}>Design</button><button type="button" aria-pressed={mode === 'interact'} onclick={() => changeMode('interact')}>Interact</button></div><button type="button" bind:this={documentButton} class="panel-toggle" aria-expanded={drawerOpen} aria-controls="document-drawer" onclick={toggleDocument}>Document</button></div>
       {#if compositionFocus}<CompositionNavigator document={source} focus={compositionFocus} descriptors={catalogDescriptors} disabled={textDraftDirty || sourceDraftDirty} onNavigate={navigateComposition} />{/if}
       <div class="canvas-scroll" bind:this={canvasScroll}>
         <div class="design-frame" style:max-width={width === 'fluid' ? 'none' : `${width}px`}>
@@ -376,7 +417,7 @@
             stateValues={runtimeValues} onStateChange={(key: string, value: UiValue) => runtimeValues = { ...runtimeValues, [key]: value }} {resetSignal}
             actionState={screenActionState} onPlan={(next: UiRenderPlan) => { plan = next; }}
             onRenderDiagnostic={(diagnostic: { code: string; message: string }) => { issues = [...issues.slice(-4), diagnostic]; }} ariaLabel="Screen canvas" />
-          {#if compositionFocus && !focusedMembers?.size}<div class="empty-composition"><h2>This composition is empty</h2><p>Choose ＋ Add to place content here.</p></div>{:else if Object.keys(source.nodes).length === 1}<div class="empty-canvas"><span>＋</span><h1>What will you make?</h1><p>Choose ＋ Add to start. Select anything to open its tools.</p></div>{/if}
+          {#if compositionFocus && !focusedMembers?.size}<div class="empty-composition"><h2>This composition is empty</h2><p>Choose Insert → Add elements to place content here.</p></div>{:else if Object.keys(source.nodes).length === 1}<div class="empty-canvas"><span>＋</span><h1>What will you make?</h1><p>Choose Insert → Add elements to start. Select anything to open its tools.</p></div>{/if}
         </div>
       </div>
       <details class="simulation-panel"><summary>Simulated execution <span>Local preview · no live effects</span></summary><div class="simulation-body"><label><input type="checkbox" bind:checked={simulation.denied} /> Deny demo writes</label><label><input type="checkbox" bind:checked={simulation.failNext} /> Fail next action</label><StateValuesPanel localState={source.localState} stateValues={runtimeValues} onChange={(key: string, value: UiValue | undefined) => { const next = { ...runtimeValues }; if (value === undefined) delete next[key]; else next[key] = value; runtimeValues = next; }} />{#each activity as entry}<p role="status">{entry}</p>{/each}<p class="panel-hint">Connect checkedChange to accepted, bind checked to state.accepted, then map a Button's press → Submit using state.message and state.accepted. Runtime values never enter undo history.</p></div></details>
