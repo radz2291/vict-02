@@ -1,0 +1,1405 @@
+{
+  "records": [
+    {
+      "at": "2026-10-22T16:39:49.649Z",
+      "name": "empty selection omitted",
+      "data": {
+        "ok": true,
+        "context": "Untitled screen "
+      }
+    },
+    {
+      "at": "2026-10-22T16:40:13.066Z",
+      "name": "observed real provider text during stream",
+      "data": {
+        "busy": "true",
+        "turn": {
+          "events": [
+            {
+              "type": "started",
+              "runId": "5afefc2e-c670-4fba-a9a1-2301b32b32a5",
+              "model": "zai/glm-5.3-flash",
+              "engine": "VICT / Mastra",
+              "observedAt": 1792687191586
+            },
+            {
+              "type": "progress",
+              "message": "Connecting to the VICT / Mastra agent…",
+              "observedAt": 1792687191586
+            },
+            {
+              "type": "progress",
+              "message": "Agent is working on your request…",
+              "observedAt": 1792687191930
+            },
+            {
+              "type": "progress",
+              "message": "Preparing and validating an edit…",
+              "observedAt": 1792687209827
+            },
+            {
+              "type": "proposal",
+              "proposal": {
+                "proposalId": "3449fa95-07cd-4a20-a4d6-b24d9faac93b",
+                "cursor": {
+                  "documentId": "screen-209c733d-fd7f-4949-b911-3198f4fd8a1c",
+                  "revision": "r1#0",
+                  "digest": "762e1014c650fc2b199ee5d6285f67a6dc2ead8ff62f4b94a45ccbded9b5df6d",
+                  "epoch": "860f82a5-1e02-4cd9-b089-d4522683cdf0"
+                },
+                "edit": {
+                  "expectedRevision": "r1#0",
+                  "reason": "User request: add exactly one heading with the specified literal text to the empty screen.",
+                  "operations": [
+                    {
+                      "op": "add",
+                      "recipe": "heading",
+                      "nodeId": "heading-verified",
+                      "parentId": "screen",
+                      "text": "Chat layout independently verified"
+                    }
+                  ]
+                },
+                "resultDigest": "0fea40513bde8ea89d66d9004945bb9d82f27f5deaf49836c2b28b47d41b9588"
+              },
+              "observedAt": 1792687209879
+            },
+            {
+              "type": "edit-result",
+              "result": {
+                "ok": true,
+                "revision": "r1#1",
+                "digest": "0fea40513bde8ea89d66d9004945bb9d82f27f5deaf49836c2b28b47d41b9588"
+              },
+              "reason": "User request: add exactly one heading with the specified literal text to the empty screen.",
+              "observedAt": 1792687209934
+            },
+            {
+              "type": "text",
+              "delta": "##",
+              "observedAt": 1792687213026
+            },
+            {
+              "type": "text",
+              "delta": " Heading",
+              "observedAt": 1792687213026
+            },
+            {
+              "type": "text",
+              "delta": " added",
+              "observedAt": 1792687213026
+            },
+            {
+              "type": "text",
+              "delta": "\n\n",
+              "observedAt": 1792687213026
+            },
+            {
+              "type": "text",
+              "delta": "-",
+              "observedAt": 1792687213026
+            },
+            {
+              "type": "text",
+              "delta": " Added",
+              "observedAt": 1792687213026
+            },
+            {
+              "type": "text",
+              "delta": " a",
+              "observedAt": 1792687213043
+            },
+            {
+              "type": "text",
+              "delta": " single",
+              "observedAt": 1792687213043
+            },
+            {
+              "type": "text",
+              "delta": " `",
+              "observedAt": 1792687213043
+            },
+            {
+              "type": "text",
+              "delta": "heading",
+              "observedAt": 1792687213043
+            },
+            {
+              "type": "text",
+              "delta": "`",
+              "observedAt": 1792687213043
+            },
+            {
+              "type": "text",
+              "delta": " element",
+              "observedAt": 1792687213043
+            },
+            {
+              "type": "text",
+              "delta": " with",
+              "observedAt": 1792687213043
+            },
+            {
+              "type": "text",
+              "delta": " the",
+              "observedAt": 1792687213043
+            },
+            {
+              "type": "text",
+              "delta": " text",
+              "observedAt": 1792687213043
+            },
+            {
+              "type": "text",
+              "delta": " **",
+              "observedAt": 1792687213043
+            },
+            {
+              "type": "text",
+              "delta": "\"",
+              "observedAt": 1792687213043
+            },
+            {
+              "type": "text",
+              "delta": "Chat",
+              "observedAt": 1792687213043
+            },
+            {
+              "type": "text",
+              "delta": " layout",
+              "observedAt": 1792687213043
+            },
+            {
+              "type": "text",
+              "delta": " independently",
+              "observedAt": 1792687213043
+            },
+            {
+              "type": "text",
+              "delta": " verified",
+              "observedAt": 1792687213052
+            },
+            {
+              "type": "text",
+              "delta": "\"",
+              "observedAt": 1792687213052
+            },
+            {
+              "type": "text",
+              "delta": "**",
+              "observedAt": 1792687213052
+            },
+            {
+              "type": "text",
+              "delta": " to",
+              "observedAt": 1792687213052
+            },
+            {
+              "type": "text",
+              "delta": " the",
+              "observedAt": 1792687213052
+            },
+            {
+              "type": "text",
+              "delta": " screen",
+              "observedAt": 1792687213052
+            },
+            {
+              "type": "text",
+              "delta": " root",
+              "observedAt": 1792687213052
+            },
+            {
+              "type": "text",
+              "delta": ".\n",
+              "observedAt": 1792687213052
+            },
+            {
+              "type": "text",
+              "delta": "-",
+              "observedAt": 1792687213059
+            },
+            {
+              "type": "text",
+              "delta": " The",
+              "observedAt": 1792687213059
+            },
+            {
+              "type": "text",
+              "delta": " edit",
+              "observedAt": 1792687213059
+            },
+            {
+              "type": "text",
+              "delta": " was",
+              "observedAt": 1792687213059
+            },
+            {
+              "type": "text",
+              "delta": " validated",
+              "observedAt": 1792687213059
+            },
+            {
+              "type": "text",
+              "delta": " and",
+              "observedAt": 1792687213059
+            },
+            {
+              "type": "text",
+              "delta": " acknowledged",
+              "observedAt": 1792687213059
+            }
+          ],
+          "complete": false,
+          "startedAt": 1792687191580
+        }
+      }
+    },
+    {
+      "at": "2026-10-22T16:40:14.716Z",
+      "name": "real provider completed with visible canonical edit",
+      "data": {
+        "ok": true,
+        "turn": {
+          "events": [
+            {
+              "type": "started",
+              "runId": "5afefc2e-c670-4fba-a9a1-2301b32b32a5",
+              "model": "zai/glm-5.3-flash",
+              "engine": "VICT / Mastra",
+              "observedAt": 1792687191586
+            },
+            {
+              "type": "progress",
+              "message": "Connecting to the VICT / Mastra agent…",
+              "observedAt": 1792687191586
+            },
+            {
+              "type": "progress",
+              "message": "Agent is working on your request…",
+              "observedAt": 1792687191930
+            },
+            {
+              "type": "progress",
+              "message": "Preparing and validating an edit…",
+              "observedAt": 1792687209827
+            },
+            {
+              "type": "proposal",
+              "proposal": {
+                "proposalId": "3449fa95-07cd-4a20-a4d6-b24d9faac93b",
+                "cursor": {
+                  "documentId": "screen-209c733d-fd7f-4949-b911-3198f4fd8a1c",
+                  "revision": "r1#0",
+                  "digest": "762e1014c650fc2b199ee5d6285f67a6dc2ead8ff62f4b94a45ccbded9b5df6d",
+                  "epoch": "860f82a5-1e02-4cd9-b089-d4522683cdf0"
+                },
+                "edit": {
+                  "expectedRevision": "r1#0",
+                  "reason": "User request: add exactly one heading with the specified literal text to the empty screen.",
+                  "operations": [
+                    {
+                      "op": "add",
+                      "recipe": "heading",
+                      "nodeId": "heading-verified",
+                      "parentId": "screen",
+                      "text": "Chat layout independently verified"
+                    }
+                  ]
+                },
+                "resultDigest": "0fea40513bde8ea89d66d9004945bb9d82f27f5deaf49836c2b28b47d41b9588"
+              },
+              "observedAt": 1792687209879
+            },
+            {
+              "type": "edit-result",
+              "result": {
+                "ok": true,
+                "revision": "r1#1",
+                "digest": "0fea40513bde8ea89d66d9004945bb9d82f27f5deaf49836c2b28b47d41b9588"
+              },
+              "reason": "User request: add exactly one heading with the specified literal text to the empty screen.",
+              "observedAt": 1792687209934
+            },
+            {
+              "type": "text",
+              "delta": "##",
+              "observedAt": 1792687213026
+            },
+            {
+              "type": "text",
+              "delta": " Heading",
+              "observedAt": 1792687213026
+            },
+            {
+              "type": "text",
+              "delta": " added",
+              "observedAt": 1792687213026
+            },
+            {
+              "type": "text",
+              "delta": "\n\n",
+              "observedAt": 1792687213026
+            },
+            {
+              "type": "text",
+              "delta": "-",
+              "observedAt": 1792687213026
+            },
+            {
+              "type": "text",
+              "delta": " Added",
+              "observedAt": 1792687213026
+            },
+            {
+              "type": "text",
+              "delta": " a",
+              "observedAt": 1792687213043
+            },
+            {
+              "type": "text",
+              "delta": " single",
+              "observedAt": 1792687213043
+            },
+            {
+              "type": "text",
+              "delta": " `",
+              "observedAt": 1792687213043
+            },
+            {
+              "type": "text",
+              "delta": "heading",
+              "observedAt": 1792687213043
+            },
+            {
+              "type": "text",
+              "delta": "`",
+              "observedAt": 1792687213043
+            },
+            {
+              "type": "text",
+              "delta": " element",
+              "observedAt": 1792687213043
+            },
+            {
+              "type": "text",
+              "delta": " with",
+              "observedAt": 1792687213043
+            },
+            {
+              "type": "text",
+              "delta": " the",
+              "observedAt": 1792687213043
+            },
+            {
+              "type": "text",
+              "delta": " text",
+              "observedAt": 1792687213043
+            },
+            {
+              "type": "text",
+              "delta": " **",
+              "observedAt": 1792687213043
+            },
+            {
+              "type": "text",
+              "delta": "\"",
+              "observedAt": 1792687213043
+            },
+            {
+              "type": "text",
+              "delta": "Chat",
+              "observedAt": 1792687213043
+            },
+            {
+              "type": "text",
+              "delta": " layout",
+              "observedAt": 1792687213043
+            },
+            {
+              "type": "text",
+              "delta": " independently",
+              "observedAt": 1792687213043
+            },
+            {
+              "type": "text",
+              "delta": " verified",
+              "observedAt": 1792687213052
+            },
+            {
+              "type": "text",
+              "delta": "\"",
+              "observedAt": 1792687213052
+            },
+            {
+              "type": "text",
+              "delta": "**",
+              "observedAt": 1792687213052
+            },
+            {
+              "type": "text",
+              "delta": " to",
+              "observedAt": 1792687213052
+            },
+            {
+              "type": "text",
+              "delta": " the",
+              "observedAt": 1792687213052
+            },
+            {
+              "type": "text",
+              "delta": " screen",
+              "observedAt": 1792687213052
+            },
+            {
+              "type": "text",
+              "delta": " root",
+              "observedAt": 1792687213052
+            },
+            {
+              "type": "text",
+              "delta": ".\n",
+              "observedAt": 1792687213052
+            },
+            {
+              "type": "text",
+              "delta": "-",
+              "observedAt": 1792687213059
+            },
+            {
+              "type": "text",
+              "delta": " The",
+              "observedAt": 1792687213059
+            },
+            {
+              "type": "text",
+              "delta": " edit",
+              "observedAt": 1792687213059
+            },
+            {
+              "type": "text",
+              "delta": " was",
+              "observedAt": 1792687213059
+            },
+            {
+              "type": "text",
+              "delta": " validated",
+              "observedAt": 1792687213059
+            },
+            {
+              "type": "text",
+              "delta": " and",
+              "observedAt": 1792687213059
+            },
+            {
+              "type": "text",
+              "delta": " acknowledged",
+              "observedAt": 1792687213059
+            },
+            {
+              "type": "text",
+              "delta": " by",
+              "observedAt": 1792687213067
+            },
+            {
+              "type": "text",
+              "delta": " the",
+              "observedAt": 1792687213067
+            },
+            {
+              "type": "text",
+              "delta": " browser",
+              "observedAt": 1792687213067
+            },
+            {
+              "type": "text",
+              "delta": " Editor",
+              "observedAt": 1792687213067
+            },
+            {
+              "type": "text",
+              "delta": "Bridge",
+              "observedAt": 1792687213067
+            },
+            {
+              "type": "text",
+              "delta": ",",
+              "observedAt": 1792687213067
+            },
+            {
+              "type": "text",
+              "delta": " advancing",
+              "observedAt": 1792687213067
+            },
+            {
+              "type": "text",
+              "delta": " the",
+              "observedAt": 1792687213067
+            },
+            {
+              "type": "text",
+              "delta": " document",
+              "observedAt": 1792687214198
+            },
+            {
+              "type": "text",
+              "delta": " to",
+              "observedAt": 1792687214198
+            },
+            {
+              "type": "text",
+              "delta": " revision",
+              "observedAt": 1792687214198
+            },
+            {
+              "type": "text",
+              "delta": " `",
+              "observedAt": 1792687214198
+            },
+            {
+              "type": "text",
+              "delta": "r",
+              "observedAt": 1792687214198
+            },
+            {
+              "type": "text",
+              "delta": "1",
+              "observedAt": 1792687214198
+            },
+            {
+              "type": "text",
+              "delta": "#",
+              "observedAt": 1792687214198
+            },
+            {
+              "type": "text",
+              "delta": "1",
+              "observedAt": 1792687214198
+            },
+            {
+              "type": "text",
+              "delta": "`.\n\n",
+              "observedAt": 1792687214198
+            },
+            {
+              "type": "text",
+              "delta": "**",
+              "observedAt": 1792687214198
+            },
+            {
+              "type": "text",
+              "delta": "One",
+              "observedAt": 1792687214198
+            },
+            {
+              "type": "text",
+              "delta": " heading",
+              "observedAt": 1792687214198
+            },
+            {
+              "type": "text",
+              "delta": " was",
+              "observedAt": 1792687214198
+            },
+            {
+              "type": "text",
+              "delta": " added",
+              "observedAt": 1792687214198
+            },
+            {
+              "type": "text",
+              "delta": " and",
+              "observedAt": 1792687214198
+            },
+            {
+              "type": "text",
+              "delta": " confirmed",
+              "observedAt": 1792687214212
+            },
+            {
+              "type": "text",
+              "delta": " on",
+              "observedAt": 1792687214212
+            },
+            {
+              "type": "text",
+              "delta": " screen",
+              "observedAt": 1792687214212
+            },
+            {
+              "type": "text",
+              "delta": ".",
+              "observedAt": 1792687214212
+            },
+            {
+              "type": "text",
+              "delta": "**",
+              "observedAt": 1792687214212
+            },
+            {
+              "type": "text",
+              "delta": " (",
+              "observedAt": 1792687214212
+            },
+            {
+              "type": "text",
+              "delta": "Remember",
+              "observedAt": 1792687214212
+            },
+            {
+              "type": "text",
+              "delta": ":",
+              "observedAt": 1792687214212
+            },
+            {
+              "type": "text",
+              "delta": " this",
+              "observedAt": 1792687214212
+            },
+            {
+              "type": "text",
+              "delta": " is",
+              "observedAt": 1792687214212
+            },
+            {
+              "type": "text",
+              "delta": " a",
+              "observedAt": 1792687214212
+            },
+            {
+              "type": "text",
+              "delta": " local",
+              "observedAt": 1792687214212
+            },
+            {
+              "type": "text",
+              "delta": " preview",
+              "observedAt": 1792687214212
+            },
+            {
+              "type": "text",
+              "delta": " —",
+              "observedAt": 1792687214212
+            },
+            {
+              "type": "text",
+              "delta": " nothing",
+              "observedAt": 1792687214217
+            },
+            {
+              "type": "text",
+              "delta": " is",
+              "observedAt": 1792687214217
+            },
+            {
+              "type": "text",
+              "delta": " saved",
+              "observedAt": 1792687214217
+            },
+            {
+              "type": "text",
+              "delta": " until",
+              "observedAt": 1792687214217
+            },
+            {
+              "type": "text",
+              "delta": " you save.)",
+              "observedAt": 1792687214217
+            },
+            {
+              "type": "done",
+              "status": "completed",
+              "applied": 1,
+              "turnId": "turn-d7bc5647-0c4e-4633-a4cc-5c59f7797106",
+              "profileVersion": "v1_9a8331caffc726ac5c9c051a5e77d1a2a05217a8582a1c76b7538514d5db960d",
+              "observedAt": 1792687214527
+            }
+          ],
+          "complete": true,
+          "startedAt": 1792687191580,
+          "endedAt": 1792687214528
+        },
+        "document": {
+          "schema": "vict.ui-document@1",
+          "id": "screen-209c733d-fd7f-4949-b911-3198f4fd8a1c",
+          "revision": "r1",
+          "root": "screen",
+          "nodes": {
+            "screen": {
+              "kind": "element",
+              "id": "screen",
+              "tag": "main",
+              "attributes": {
+                "aria-label": "Untitled screen"
+              },
+              "children": [
+                "heading-verified"
+              ],
+              "localStyle": [
+                {
+                  "property": "display",
+                  "value": {
+                    "type": "text",
+                    "value": "flex"
+                  }
+                },
+                {
+                  "property": "flex-direction",
+                  "value": {
+                    "type": "text",
+                    "value": "column"
+                  }
+                },
+                {
+                  "property": "gap",
+                  "value": {
+                    "type": "text",
+                    "value": "20px"
+                  }
+                },
+                {
+                  "property": "padding",
+                  "value": {
+                    "type": "text",
+                    "value": "40px"
+                  }
+                },
+                {
+                  "property": "min-height",
+                  "value": {
+                    "type": "text",
+                    "value": "560px"
+                  }
+                },
+                {
+                  "property": "background-color",
+                  "value": {
+                    "type": "text",
+                    "value": "#ffffff"
+                  }
+                },
+                {
+                  "property": "color",
+                  "value": {
+                    "type": "text",
+                    "value": "#243047"
+                  }
+                },
+                {
+                  "property": "font-family",
+                  "value": {
+                    "type": "text",
+                    "value": "system-ui, sans-serif"
+                  }
+                }
+              ]
+            },
+            "heading-verified": {
+              "kind": "element",
+              "id": "heading-verified",
+              "tag": "h1",
+              "children": [
+                "heading-verified-text"
+              ],
+              "localStyle": [
+                {
+                  "property": "font-size",
+                  "value": {
+                    "type": "text",
+                    "value": "32px"
+                  }
+                },
+                {
+                  "property": "font-weight",
+                  "value": {
+                    "type": "text",
+                    "value": "600"
+                  }
+                },
+                {
+                  "property": "line-height",
+                  "value": {
+                    "type": "text",
+                    "value": "1.2"
+                  }
+                },
+                {
+                  "property": "margin",
+                  "value": {
+                    "type": "text",
+                    "value": "0"
+                  }
+                }
+              ]
+            },
+            "heading-verified-text": {
+              "kind": "text",
+              "id": "heading-verified-text",
+              "content": {
+                "type": "literal",
+                "value": "Chat layout independently verified"
+              }
+            }
+          },
+          "componentDefinitions": {},
+          "styleSources": {},
+          "assets": {},
+          "tokens": {},
+          "conditions": {
+            "compact": {
+              "id": "compact",
+              "kind": "container",
+              "name": "studio-screen",
+              "query": "(max-width: 600px)"
+            }
+          },
+          "localState": {
+            "message": {
+              "key": "message",
+              "type": "string",
+              "initial": "Hello from my screen"
+            },
+            "accepted": {
+              "key": "accepted",
+              "type": "boolean",
+              "initial": false
+            },
+            "dialogOpen": {
+              "key": "dialogOpen",
+              "type": "boolean",
+              "initial": false
+            },
+            "busy": {
+              "key": "busy",
+              "type": "boolean",
+              "initial": false
+            },
+            "actionError": {
+              "key": "actionError",
+              "type": "string",
+              "initial": ""
+            },
+            "actionResult": {
+              "key": "actionResult",
+              "type": "string",
+              "initial": ""
+            }
+          }
+        },
+        "status": " 1 edit applied"
+      }
+    },
+    {
+      "at": "2026-10-22T16:40:14.726Z",
+      "name": "terminal clears composer and permits next send",
+      "data": {
+        "ok": true
+      }
+    },
+    {
+      "at": "2026-10-22T16:40:14.832Z",
+      "name": "terminal send enabled",
+      "data": {
+        "ok": true
+      }
+    },
+    {
+      "at": "2026-10-22T16:40:15.063Z",
+      "name": "Undo removes canonical heading",
+      "data": {
+        "ok": true
+      }
+    },
+    {
+      "at": "2026-10-22T16:40:15.244Z",
+      "name": "Redo restores canonical source",
+      "data": {
+        "ok": true
+      }
+    },
+    {
+      "at": "2026-10-22T16:40:15.343Z",
+      "name": "saved",
+      "data": {
+        "status": "✓ Saved"
+      }
+    },
+    {
+      "at": "2026-10-22T16:40:15.582Z",
+      "name": "reload saved version preserves canonical edit",
+      "data": {
+        "ok": false
+      }
+    },
+    {
+      "at": "2026-10-22T16:40:15.591Z",
+      "name": "failure",
+      "data": {
+        "error": "Error: reload saved version preserves canonical edit",
+        "body": "V\nFile\nEdit\nView\nPreview\nUntitled screen\n✓ Saved\n↗\nStudio agent\n···\nUntitled screen\n\nYou\n\nUse the palette to add exactly one heading reading \"Chat layout independently verified\" to this empty screen. Apply it through the screen edit tool. Then reply with a Markdown heading, a short two-item bullet list and one bold phrase explaining the result.\n\nStudio agent\n\nHeading added\n\nAdded a single heading element with the text \"Chat layout independently verified\" to the screen root.\n\nThe edit was validated and acknowledged by the browser EditorBridge, advancing the document to revision r1#1.\n\nOne heading was added and confirmed on screen. (Remember: this is a local preview — nothing is saved until you save.)\n\nMessage Studio agent\nSend\n1 edit applied\nDesign\nInteract\nDocument\nChat layout independently verified\nSimulated execution\nLocal preview · no live effects\nLayers\nData\nActions\nSource\n×\nCanonical UI document\nApply source\nDiscard draft\nExport\nApplication attachment\nReloaded revision r1.r1; runtime state reset.\n@3 · v1_916f8f5b7ae5…",
+        "turns": [
+          {
+            "events": [
+              {
+                "type": "started",
+                "runId": "5afefc2e-c670-4fba-a9a1-2301b32b32a5",
+                "model": "zai/glm-5.3-flash",
+                "engine": "VICT / Mastra",
+                "observedAt": 1792687191586
+              },
+              {
+                "type": "progress",
+                "message": "Connecting to the VICT / Mastra agent…",
+                "observedAt": 1792687191586
+              },
+              {
+                "type": "progress",
+                "message": "Agent is working on your request…",
+                "observedAt": 1792687191930
+              },
+              {
+                "type": "progress",
+                "message": "Preparing and validating an edit…",
+                "observedAt": 1792687209827
+              },
+              {
+                "type": "proposal",
+                "proposal": {
+                  "proposalId": "3449fa95-07cd-4a20-a4d6-b24d9faac93b",
+                  "cursor": {
+                    "documentId": "screen-209c733d-fd7f-4949-b911-3198f4fd8a1c",
+                    "revision": "r1#0",
+                    "digest": "762e1014c650fc2b199ee5d6285f67a6dc2ead8ff62f4b94a45ccbded9b5df6d",
+                    "epoch": "860f82a5-1e02-4cd9-b089-d4522683cdf0"
+                  },
+                  "edit": {
+                    "expectedRevision": "r1#0",
+                    "reason": "User request: add exactly one heading with the specified literal text to the empty screen.",
+                    "operations": [
+                      {
+                        "op": "add",
+                        "recipe": "heading",
+                        "nodeId": "heading-verified",
+                        "parentId": "screen",
+                        "text": "Chat layout independently verified"
+                      }
+                    ]
+                  },
+                  "resultDigest": "0fea40513bde8ea89d66d9004945bb9d82f27f5deaf49836c2b28b47d41b9588"
+                },
+                "observedAt": 1792687209879
+              },
+              {
+                "type": "edit-result",
+                "result": {
+                  "ok": true,
+                  "revision": "r1#1",
+                  "digest": "0fea40513bde8ea89d66d9004945bb9d82f27f5deaf49836c2b28b47d41b9588"
+                },
+                "reason": "User request: add exactly one heading with the specified literal text to the empty screen.",
+                "observedAt": 1792687209934
+              },
+              {
+                "type": "text",
+                "delta": "##",
+                "observedAt": 1792687213026
+              },
+              {
+                "type": "text",
+                "delta": " Heading",
+                "observedAt": 1792687213026
+              },
+              {
+                "type": "text",
+                "delta": " added",
+                "observedAt": 1792687213026
+              },
+              {
+                "type": "text",
+                "delta": "\n\n",
+                "observedAt": 1792687213026
+              },
+              {
+                "type": "text",
+                "delta": "-",
+                "observedAt": 1792687213026
+              },
+              {
+                "type": "text",
+                "delta": " Added",
+                "observedAt": 1792687213026
+              },
+              {
+                "type": "text",
+                "delta": " a",
+                "observedAt": 1792687213043
+              },
+              {
+                "type": "text",
+                "delta": " single",
+                "observedAt": 1792687213043
+              },
+              {
+                "type": "text",
+                "delta": " `",
+                "observedAt": 1792687213043
+              },
+              {
+                "type": "text",
+                "delta": "heading",
+                "observedAt": 1792687213043
+              },
+              {
+                "type": "text",
+                "delta": "`",
+                "observedAt": 1792687213043
+              },
+              {
+                "type": "text",
+                "delta": " element",
+                "observedAt": 1792687213043
+              },
+              {
+                "type": "text",
+                "delta": " with",
+                "observedAt": 1792687213043
+              },
+              {
+                "type": "text",
+                "delta": " the",
+                "observedAt": 1792687213043
+              },
+              {
+                "type": "text",
+                "delta": " text",
+                "observedAt": 1792687213043
+              },
+              {
+                "type": "text",
+                "delta": " **",
+                "observedAt": 1792687213043
+              },
+              {
+                "type": "text",
+                "delta": "\"",
+                "observedAt": 1792687213043
+              },
+              {
+                "type": "text",
+                "delta": "Chat",
+                "observedAt": 1792687213043
+              },
+              {
+                "type": "text",
+                "delta": " layout",
+                "observedAt": 1792687213043
+              },
+              {
+                "type": "text",
+                "delta": " independently",
+                "observedAt": 1792687213043
+              },
+              {
+                "type": "text",
+                "delta": " verified",
+                "observedAt": 1792687213052
+              },
+              {
+                "type": "text",
+                "delta": "\"",
+                "observedAt": 1792687213052
+              },
+              {
+                "type": "text",
+                "delta": "**",
+                "observedAt": 1792687213052
+              },
+              {
+                "type": "text",
+                "delta": " to",
+                "observedAt": 1792687213052
+              },
+              {
+                "type": "text",
+                "delta": " the",
+                "observedAt": 1792687213052
+              },
+              {
+                "type": "text",
+                "delta": " screen",
+                "observedAt": 1792687213052
+              },
+              {
+                "type": "text",
+                "delta": " root",
+                "observedAt": 1792687213052
+              },
+              {
+                "type": "text",
+                "delta": ".\n",
+                "observedAt": 1792687213052
+              },
+              {
+                "type": "text",
+                "delta": "-",
+                "observedAt": 1792687213059
+              },
+              {
+                "type": "text",
+                "delta": " The",
+                "observedAt": 1792687213059
+              },
+              {
+                "type": "text",
+                "delta": " edit",
+                "observedAt": 1792687213059
+              },
+              {
+                "type": "text",
+                "delta": " was",
+                "observedAt": 1792687213059
+              },
+              {
+                "type": "text",
+                "delta": " validated",
+                "observedAt": 1792687213059
+              },
+              {
+                "type": "text",
+                "delta": " and",
+                "observedAt": 1792687213059
+              },
+              {
+                "type": "text",
+                "delta": " acknowledged",
+                "observedAt": 1792687213059
+              },
+              {
+                "type": "text",
+                "delta": " by",
+                "observedAt": 1792687213067
+              },
+              {
+                "type": "text",
+                "delta": " the",
+                "observedAt": 1792687213067
+              },
+              {
+                "type": "text",
+                "delta": " browser",
+                "observedAt": 1792687213067
+              },
+              {
+                "type": "text",
+                "delta": " Editor",
+                "observedAt": 1792687213067
+              },
+              {
+                "type": "text",
+                "delta": "Bridge",
+                "observedAt": 1792687213067
+              },
+              {
+                "type": "text",
+                "delta": ",",
+                "observedAt": 1792687213067
+              },
+              {
+                "type": "text",
+                "delta": " advancing",
+                "observedAt": 1792687213067
+              },
+              {
+                "type": "text",
+                "delta": " the",
+                "observedAt": 1792687213067
+              },
+              {
+                "type": "text",
+                "delta": " document",
+                "observedAt": 1792687214198
+              },
+              {
+                "type": "text",
+                "delta": " to",
+                "observedAt": 1792687214198
+              },
+              {
+                "type": "text",
+                "delta": " revision",
+                "observedAt": 1792687214198
+              },
+              {
+                "type": "text",
+                "delta": " `",
+                "observedAt": 1792687214198
+              },
+              {
+                "type": "text",
+                "delta": "r",
+                "observedAt": 1792687214198
+              },
+              {
+                "type": "text",
+                "delta": "1",
+                "observedAt": 1792687214198
+              },
+              {
+                "type": "text",
+                "delta": "#",
+                "observedAt": 1792687214198
+              },
+              {
+                "type": "text",
+                "delta": "1",
+                "observedAt": 1792687214198
+              },
+              {
+                "type": "text",
+                "delta": "`.\n\n",
+                "observedAt": 1792687214198
+              },
+              {
+                "type": "text",
+                "delta": "**",
+                "observedAt": 1792687214198
+              },
+              {
+                "type": "text",
+                "delta": "One",
+                "observedAt": 1792687214198
+              },
+              {
+                "type": "text",
+                "delta": " heading",
+                "observedAt": 1792687214198
+              },
+              {
+                "type": "text",
+                "delta": " was",
+                "observedAt": 1792687214198
+              },
+              {
+                "type": "text",
+                "delta": " added",
+                "observedAt": 1792687214198
+              },
+              {
+                "type": "text",
+                "delta": " and",
+                "observedAt": 1792687214198
+              },
+              {
+                "type": "text",
+                "delta": " confirmed",
+                "observedAt": 1792687214212
+              },
+              {
+                "type": "text",
+                "delta": " on",
+                "observedAt": 1792687214212
+              },
+              {
+                "type": "text",
+                "delta": " screen",
+                "observedAt": 1792687214212
+              },
+              {
+                "type": "text",
+                "delta": ".",
+                "observedAt": 1792687214212
+              },
+              {
+                "type": "text",
+                "delta": "**",
+                "observedAt": 1792687214212
+              },
+              {
+                "type": "text",
+                "delta": " (",
+                "observedAt": 1792687214212
+              },
+              {
+                "type": "text",
+                "delta": "Remember",
+                "observedAt": 1792687214212
+              },
+              {
+                "type": "text",
+                "delta": ":",
+                "observedAt": 1792687214212
+              },
+              {
+                "type": "text",
+                "delta": " this",
+                "observedAt": 1792687214212
+              },
+              {
+                "type": "text",
+                "delta": " is",
+                "observedAt": 1792687214212
+              },
+              {
+                "type": "text",
+                "delta": " a",
+                "observedAt": 1792687214212
+              },
+              {
+                "type": "text",
+                "delta": " local",
+                "observedAt": 1792687214212
+              },
+              {
+                "type": "text",
+                "delta": " preview",
+                "observedAt": 1792687214212
+              },
+              {
+                "type": "text",
+                "delta": " —",
+                "observedAt": 1792687214212
+              },
+              {
+                "type": "text",
+                "delta": " nothing",
+                "observedAt": 1792687214217
+              },
+              {
+                "type": "text",
+                "delta": " is",
+                "observedAt": 1792687214217
+              },
+              {
+                "type": "text",
+                "delta": " saved",
+                "observedAt": 1792687214217
+              },
+              {
+                "type": "text",
+                "delta": " until",
+                "observedAt": 1792687214217
+              },
+              {
+                "type": "text",
+                "delta": " you save.)",
+                "observedAt": 1792687214217
+              },
+              {
+                "type": "done",
+                "status": "completed",
+                "applied": 1,
+                "turnId": "turn-d7bc5647-0c4e-4633-a4cc-5c59f7797106",
+                "profileVersion": "v1_9a8331caffc726ac5c9c051a5e77d1a2a05217a8582a1c76b7538514d5db960d",
+                "observedAt": 1792687214527
+              }
+            ],
+            "complete": true,
+            "startedAt": 1792687191580,
+            "endedAt": 1792687214528
+          }
+        ]
+      }
+    }
+  ],
+  "errors": []
+}
