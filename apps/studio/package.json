@@ -24,7 +24,11 @@
     "@victframework/mastra": "0.4.0-rc.1",
     "@victframework/runtime": "0.4.0-rc.1",
     "@victframework/control": "0.4.0-rc.1",
-    "zod": "^3.25.76"
+    "zod": "^3.25.76",
+    "@mastra/core": "1.64.0",
+    "@mastra/libsql": "1.22.3",
+    "@mastra/memory": "1.28.2",
+    "@mastra/observability": "1.17.5"
   },
   "devDependencies": {
     "@sveltejs/adapter-node": "^5.2.12",

@@ -33,6 +33,7 @@ import {
 } from '$lib/designer/agent-edits.js';
 import { screenIssues } from '$lib/designer/application.js';
 import type { UiDocument } from '@victframework/ui';
+import { boundedProviderModel, studioProviderModel } from './designer-model.js';
 
 export type StudioAgentEvent =
   | { type: 'started'; runId: string; model: string; engine: 'VICT / Mastra' }
@@ -133,6 +134,8 @@ interface ActiveRun {
   owner: string;
   runId: string;
   aborted: boolean;
+  fenced?: boolean;
+  controller: AbortController;
   applied: number;
   pending?: { proposalId: string; resolve: (receipt: EditReceipt) => void };
   cancel?: () => Promise<void>;
@@ -145,7 +148,13 @@ export function acknowledgeAgentEdit(
   receipt: EditReceipt,
 ): boolean {
   const run = runs.get(runId);
-  if (!run || run.owner !== owner || run.aborted || run.pending?.proposalId !== proposalId)
+  if (
+    !run ||
+    run.owner !== owner ||
+    run.aborted ||
+    run.fenced ||
+    run.pending?.proposalId !== proposalId
+  )
     return false;
   const pending = run.pending;
   run.pending = undefined;
@@ -156,6 +165,7 @@ export function cancelAgentRun(owner: string, runId: string): boolean {
   const run = runs.get(runId);
   if (!run || run.owner !== owner) return false;
   run.aborted = true;
+  run.controller.abort();
   run.pending?.resolve(
     failure('STUDIO_AGENT_CANCELLED', 'Stopped. Previously applied edits remain in history.'),
   );
@@ -234,11 +244,23 @@ export function openAgentRun(
   const configuration = agentConfiguration();
   if (!options && !configuration.ready)
     return { ok: false as const, code: 'STUDIO_AGENT_UNCONFIGURED' };
-  const run: ActiveRun = { owner, runId: randomUUID(), aborted: false, applied: 0 };
+  const run: ActiveRun = {
+    owner,
+    runId: randomUUID(),
+    aborted: false,
+    applied: 0,
+    controller: new AbortController(),
+  };
   runs.set(run.runId, run);
   const model = options?.model ?? configuration.model;
-  emit({ type: 'started', runId: run.runId, model, engine: 'VICT / Mastra' });
-  const finished = execute(run, start, emit, model, options?.modelFactory).finally(() =>
+  let terminalSent = false;
+  const send = (event: StudioAgentEvent) => {
+    if (terminalSent) return;
+    emit(event);
+    if (event.type === 'done') terminalSent = true;
+  };
+  send({ type: 'started', runId: run.runId, model, engine: 'VICT / Mastra' });
+  const finished = execute(run, start, send, model, options?.modelFactory).finally(() =>
     runs.delete(run.runId),
   );
   return { ok: true as const, runId: run.runId, finished };
@@ -261,6 +283,15 @@ async function execute(
   let document = start.document;
   let cursor: AgentCursor = start.cursor;
   let editChain = Promise.resolve();
+  let providerFailed!: () => void;
+  const providerFailure = new Promise<null>((resolve) => {
+    providerFailed = () => {
+      run.fenced = true;
+      resolve(null);
+    };
+  });
+  run.controller.signal.addEventListener('abort', providerFailed, { once: true });
+  if (run.controller.signal.aborted) providerFailed();
   try {
     emit({ type: 'progress', message: 'Connecting to the VICT / Mastra agent…' });
     directory = await mkdtemp(join(tmpdir(), 'vict-studio-agent-'));
@@ -323,7 +354,8 @@ async function execute(
         editChain = new Promise<void>((resolve) => (release = resolve));
         await previous;
         try {
-          if (run.aborted) return failure('STUDIO_AGENT_CANCELLED', 'This turn has stopped.');
+          if (run.aborted || run.fenced)
+            return failure('STUDIO_AGENT_CANCELLED', 'This turn has stopped.');
           if (refusal) return refusal;
           const proposalId = randomUUID();
           const prepared = prepareAgentEdit(document, cursor, input, proposalId);
@@ -459,12 +491,15 @@ async function execute(
       agentConfig: {
         store: dedicated.store,
         threadCoordinator: new MastraThreadCoordinator(),
-        modelFactory:
-          modelFactory ??
-          (() =>
-            model.startsWith('zai/')
-              ? { id: model, url: agentConfiguration().baseUrl, apiKey: process.env['ZAI_API_KEY'] }
-              : model),
+        modelFactory: (profile) =>
+          boundedProviderModel(
+            (modelFactory
+              ? modelFactory(profile)
+              : studioProviderModel(model, agentConfiguration().baseUrl)) as object,
+            run.controller.signal,
+            Date.now() + 180_000,
+            providerFailed,
+          ),
         tracing: { sampling: { type: 'never' } },
       },
       capabilityBridge: {
@@ -529,7 +564,33 @@ async function execute(
       },
     });
     removeSubscription = () => hub.unsubscribe(started.turn.streamId, run.runId);
-    const outcome = await started.outcomePromise;
+    const outcome = await Promise.race([started.outcomePromise, providerFailure]);
+    if (outcome === null) {
+      run.pending?.resolve(
+        failure(
+          'STUDIO_AGENT_CANCELLED',
+          'The provider stopped. Check the canvas before retrying.',
+        ),
+      );
+      run.pending = undefined;
+      if (!run.aborted)
+        await settleWithin(
+          composition.turnService.cancelTurn(actor, {
+            turnId,
+            reasonCode: run.aborted ? 'user' : 'provider-failed',
+          }),
+          1000,
+        );
+      emit({
+        type: 'done',
+        status: run.aborted ? 'cancelled' : 'failed',
+        code: run.aborted ? 'STUDIO_AGENT_CANCELLED' : 'STUDIO_AGENT_PROVIDER_FAILED',
+        applied: run.applied,
+        turnId,
+        profileVersion,
+      });
+      return;
+    }
     emit({
       type: 'done',
       status:
@@ -553,6 +614,7 @@ async function execute(
       ...(profileVersion ? { profileVersion } : {}),
     });
   } finally {
+    run.controller.signal.removeEventListener('abort', providerFailed);
     if (timeout) clearTimeout(timeout);
     run.pending?.resolve(failure('STUDIO_AGENT_STOPPED', 'The agent stopped.'));
     run.pending = undefined;
