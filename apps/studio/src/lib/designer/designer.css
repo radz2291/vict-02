@@ -592,10 +592,7 @@ body:has(.finished-screen) {
 .source-caption small {color:#8a96a8;font-size:10px;} .source-caption button {margin-left:auto;}
 .source-body .source-editor {white-space:pre;overflow:auto;flex:1;min-height:160px;resize:none;height:auto;font-size:12px;line-height:1.65;padding:12px;}
 .source-body .source-actions {flex:none;margin:10px 0;}
-.source-technical {flex:none;font-size:11px;color:#7b879c;max-height:25%;overflow:auto;}
-.source-technical summary {cursor:pointer;}
-.source-technical h3 {font-size:11px;color:#47566e;margin:12px 0 4px;}
-.source-technical p {margin:0 0 8px;}
+.application-attachment {flex:none;font-size:10px;color:#7b879c;max-height:25%;overflow:auto;}
 .document-drawer :focus-visible {outline:2px solid #5269bd;outline-offset:-1px;}
 
 .drawer-heading .screen-name-button,.drawer-heading .screen-name-edit {margin-left:auto;max-width:60%;min-width:0;box-sizing:border-box;font:11px/1.4 'Segoe UI',system-ui,sans-serif;color:#65748d;padding:4px 6px;border:1px solid transparent;border-radius:4px;}
