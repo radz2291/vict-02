@@ -17,7 +17,7 @@ it.each([
   { requested: '390', expected: 'match', maxWidth: '390px' },
   { requested: 'invalid', expected: 'fluid', maxWidth: 'none' },
   { requested: '-10', expected: 'fluid', maxWidth: 'none' },
-])('keeps saved source unchanged when running with width=$requested', async ({ requested, expected, maxWidth }) => {
+])('keeps saved source unchanged when running with width=$requested', async ({ requested, maxWidth }) => {
   const source = { ...newScreen('Saved replay', 'saved-replay'), revision: 'r1.r1' };
   const store = screenStore(localStorage, source.id);
   expect(store.save({ document: source, expectedStoredRevision: 'r1', newStoredRevision: 'r1.r1' }).ok).toBe(true);
@@ -25,11 +25,9 @@ it.each([
   instance = mount(SavedRun, { target: document.body });
   await tick();
   await tick();
-  const size = document.querySelector<HTMLSelectElement>('[aria-label="Canvas width"]')!;
-  expect(size.value).toBe(expected);
+  expect(document.querySelector('[aria-label="Run menus"]')!.textContent!.replace(/\s/g, '')).toBe('FileViewRun');
   expect(document.querySelector<HTMLElement>('.finished-frame')!.style.maxWidth).toBe(maxWidth);
   expect(document.querySelector('.workspace-simulation')!.hasAttribute('open')).toBe(false);
-  // Size switching is checked with real browser input; Happy DOM's select
-  // binding does not reliably model native selection changes.
+  // Menu size switching and runtime commands are checked with real browser input.
   expect(store.rawLoad()).toMatchObject({ status: 'loaded', document: source });
 });

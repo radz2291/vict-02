@@ -403,15 +403,5 @@ body:has(.finished-screen) {
 .document-drawer :focus-visible {outline:2px solid #5269bd;outline-offset:-1px;}
 
 .screen-picker .screen-name-edit {width:180px;min-width:0;font:12px 'Segoe UI',system-ui,sans-serif;padding:4px 6px;border:1px solid #5269bd;border-radius:4px;background:white;color:#34425a;}
-.studio-menus {display:flex;align-items:center;gap:2px;}
-.studio-menus > button {border-color:transparent;padding:5px 9px;background:transparent;}
-.studio-menus > button:hover,.studio-menus > button[aria-expanded='true'] {background:#edf1ff;color:#405abd;}
-.screen-menu {position:fixed;inset:auto;margin:0;padding:5px;width:max-content;max-width:min(320px,calc(100dvw - 16px));max-height:calc(100dvh - 60px);overflow:auto;border:1px solid #dce2eb;border-radius:6px;background:white;box-shadow:0 8px 24px #25334f20;color:#47566e;}
-.screen-menu button,.screen-menu a {display:flex;align-items:center;justify-content:space-between;gap:16px;width:100%;text-align:left;padding:8px 10px;border:0;border-radius:3px;background:transparent;color:inherit;font-size:12px;text-decoration:none;}
-.screen-menu button:hover:not(:disabled),.screen-menu a:hover:not([aria-disabled='true']) {background:#f0f3fa;}
-.screen-menu a[aria-disabled='true'] {opacity:.4;cursor:default;}
-.screen-menu kbd {font:10px 'Segoe UI',system-ui,sans-serif;color:#8a96a8;}
-.screen-menu hr {border:0;border-top:1px solid #e8ebf1;margin:4px 5px;}
-.menu-caption {font-size:10px;color:#8a96a8;margin:6px 10px;}
 .open-screen-menu {max-height:min(320px,calc(100dvh - 16px));}
 .screen-menu-name {min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}

@@ -31,3 +31,23 @@
   .workspace-scroll {padding:12px 10px 24px;}
   .workspace-simulation > summary span,.workspace-status > :last-child {display:none;}
 }
+
+:is(.studio-menus,.workspace-menus) {display:flex;align-items:center;gap:2px;}
+:is(.studio-menus,.workspace-menus) > button {min-height:0;height:auto;border:1px solid transparent;border-radius:4px;padding:5px 9px;background:transparent;color:#65748d;font:12px/1.45 'Segoe UI',system-ui,sans-serif;cursor:pointer;}
+:is(.studio-menus,.workspace-menus) > button:hover,:is(.studio-menus,.workspace-menus) > button[aria-expanded='true'] {background:#edf1ff;color:#405abd;}
+:is(.screen-menu,.workspace-menu) {margin:0;padding:5px;width:max-content;max-width:min(320px,calc(100dvw - 16px));max-height:calc(100dvh - 60px);overflow:auto;border:1px solid #dce2eb;border-radius:6px;background:white;box-shadow:0 8px 24px #25334f20;color:#47566e;}
+:is(.screen-menu,.workspace-menu) button,:is(.screen-menu,.workspace-menu) a {display:flex;align-items:center;justify-content:space-between;gap:16px;width:100%;text-align:left;padding:8px 10px;border:0;border-radius:3px;background:transparent;color:inherit;font-size:12px;text-decoration:none;}
+:is(.screen-menu,.workspace-menu) button:hover:not(:disabled),:is(.screen-menu,.workspace-menu) a:hover:not([aria-disabled='true']) {background:#f0f3fa;}
+:is(.screen-menu,.workspace-menu) a[aria-disabled='true'] {opacity:.4;cursor:default;}
+:is(.screen-menu,.workspace-menu) kbd {font:10px 'Segoe UI',system-ui,sans-serif;color:#8a96a8;}
+:is(.screen-menu,.workspace-menu) hr {border:0;border-top:1px solid #e8ebf1;margin:4px 5px;}
+.menu-caption {font-size:10px;color:#8a96a8;margin:6px 10px;}
+
+.screen-menu {position:fixed;inset:auto;}
+.workspace-menu {min-width:0;box-sizing:border-box;z-index:100;font:12px/1.45 'Segoe UI',system-ui,sans-serif;outline:none;}
+.workspace-menu [role^="menuitem"] {min-height:0;height:auto;text-align:left;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:8px 10px;border-radius:3px;cursor:pointer;outline:none;}
+.workspace-menu [data-highlighted] {background:#f0f3fa;}
+.workspace-menu [role="separator"] {border-top:1px solid #e8ebf1;margin:4px 5px;}
+
+.workspace-menu [role^="menuitem"]::before {display:none;}
+.workspace-menu .menu-caption {padding:0;margin:6px 10px;font-size:10px;}
