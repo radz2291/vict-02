@@ -1,5 +1,27 @@
 # Studio Designer — current delivery state
 
+## 2026-10-23 — Cycle 1.1 busy/completion repair verified and locally active
+
+Independent **PASS WITH NON-BLOCKING FINDINGS** on exact product
+`a811e2d22b60c9d30681c979fcbdf2b4960503a5`, branch
+`codex/studio-cycle-1-1-busy-repair`. Independent evidence
+`7bf55462acb96764bb25a5889dae4639894c2c09` on
+`codex/studio-cycle-1-1-busy-verification-final` is pushed/remote verified.
+[Repair report and activation evidence](CYCLE-1-1-BUSY-REPAIR.md),
+[independent final gate](verification-cycle-1-1-busy-repair/FINAL-VERIFICATION.md).
+Builder 137/137 and independent 10/10 affected checks pass; production and real z.ai
+busy/Stop/retained retry/visible edit/terminal EOF pass. cb5 HELD and earlier failed
+observations remain retained.
+
+The manifest-checked 202-file artifact is locally active at 5591. Session renewal
+used a separate tab; the current owner's canvas DOM, composer and chat feed were
+identical across activation. The owner had changed to a saved Untitled screen
+before activation. No owner-tab refresh/navigation was performed. Already loaded
+chat code remains old until a safe refresh; save first if dirty to load improved
+refusal messages. Server lifecycle fixes are active now. Broader Stage 9 remains
+REOPENED / IN PROGRESS; Cycle 1.1 is ready for owner review, not owner accepted.
+No main merge or Cycle 1.2 work was begun.
+
 ## 2026-10-22 — Cycle 1.1 owner-observed busy repair IN PROGRESS
 
 The owner reported generic provider-failure feedback while requesting a WhatsApp

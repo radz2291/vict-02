@@ -97,3 +97,14 @@ The same bounded repair also ends terminal response streams independently of
 private cleanup and bounds the previously unbounded filesystem-removal wait,
 after independent tracing found completion delivered while cleanup remained
 pending. No shared framework or editing contract changes are authorized/required.
+
+## Busy/completion repair delivery — 2026-10-23
+
+Exact product `a811e2d22b60c9d30681c979fcbdf2b4960503a5` on
+`codex/studio-cycle-1-1-busy-repair` is independently PASS WITH NON-BLOCKING
+FINDINGS. Evidence `7bf55462acb96764bb25a5889dae4639894c2c09` is pushed and remote
+verified. Its 202-file production artifact is locally active at 5591 after manifest
+and same-runtime-dependency checks. Current canvas/draft/chat were preserved
+without an owner-tab refresh. Existing loaded chat code updates on a safe refresh;
+Save first if dirty. [Repair report](CYCLE-1-1-BUSY-REPAIR.md). Next action remains
+owner review; Stage 9 stays reopened and Cycle 1.2 is not authorized.

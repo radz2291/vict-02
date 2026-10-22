@@ -1,0 +1,11 @@
+{
+  "producingCommit": "a811e2d22b60c9d30681c979fcbdf2b4960503a5",
+  "dependencies": [
+    "@mastra/core/llm",
+    "@mastra/libsql",
+    "@mastra/memory",
+    "@mastra/observability",
+    "@libsql/win32-x64-msvc"
+  ],
+  "resolveToSamePhysicalFiles": true
+}
