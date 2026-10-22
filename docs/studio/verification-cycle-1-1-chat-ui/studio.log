@@ -1,0 +1,23 @@
+X [ERROR] Could not resolve "C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle-1-1-chat-ui-verification\\260831-VCT-02\\apps\\studio\\apps\\studio\\vitest.config.ts"
+
+failed to load config from C:\Users\RZ1\.codex\worktrees\studio-cycle-1-1-chat-ui-verification\260831-VCT-02\apps\studio\apps\studio\vitest.config.ts
+
+⎯⎯⎯⎯⎯⎯⎯ Startup Error ⎯⎯⎯⎯⎯⎯⎯⎯
+Error: Build failed with 1 error:
+error: Could not resolve "C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle-1-1-chat-ui-verification\\260831-VCT-02\\apps\\studio\\apps\\studio\\vitest.config.ts"
+    at failureErrorWithLog (C:\Users\RZ1\.codex\worktrees\studio-cycle-1-1\260831-VCT-02\node_modules\vite\node_modules\esbuild\lib\main.js:1467:15)
+    at C:\Users\RZ1\.codex\worktrees\studio-cycle-1-1\260831-VCT-02\node_modules\vite\node_modules\esbuild\lib\main.js:926:25
+    at runOnEndCallbacks (C:\Users\RZ1\.codex\worktrees\studio-cycle-1-1\260831-VCT-02\node_modules\vite\node_modules\esbuild\lib\main.js:1307:45)
+    at buildResponseToResult (C:\Users\RZ1\.codex\worktrees\studio-cycle-1-1\260831-VCT-02\node_modules\vite\node_modules\esbuild\lib\main.js:924:7)
+    at C:\Users\RZ1\.codex\worktrees\studio-cycle-1-1\260831-VCT-02\node_modules\vite\node_modules\esbuild\lib\main.js:951:16
+    at responseCallbacks.<computed> (C:\Users\RZ1\.codex\worktrees\studio-cycle-1-1\260831-VCT-02\node_modules\vite\node_modules\esbuild\lib\main.js:603:9)
+    at handleIncomingPacket (C:\Users\RZ1\.codex\worktrees\studio-cycle-1-1\260831-VCT-02\node_modules\vite\node_modules\esbuild\lib\main.js:658:12)
+    at Socket.readFromStdout (C:\Users\RZ1\.codex\worktrees\studio-cycle-1-1\260831-VCT-02\node_modules\vite\node_modules\esbuild\lib\main.js:581:7)
+    at Socket.emit (node:events:524:28)
+    at addChunk (node:internal/streams/readable:561:12) {
+  errors: [Getter/Setter],
+  warnings: [Getter/Setter]
+}
+
+
+

@@ -1,0 +1,337 @@
+{
+  "records": [
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "geometry": {
+        "panel": {
+          "x": 0,
+          "y": 36,
+          "right": 321,
+          "bottom": 720,
+          "width": 321,
+          "height": 684
+        },
+        "feed": {
+          "x": 12,
+          "y": 104,
+          "right": 308,
+          "bottom": 613,
+          "width": 296,
+          "height": 509
+        },
+        "composer": {
+          "x": 12,
+          "y": 613,
+          "right": 308,
+          "bottom": 688,
+          "width": 296,
+          "height": 75
+        },
+        "input": {
+          "x": 12,
+          "y": 624,
+          "right": 255.109375,
+          "bottom": 688,
+          "width": 243.109375,
+          "height": 64
+        },
+        "status": {
+          "x": 14,
+          "y": 695,
+          "right": 306,
+          "bottom": 710,
+          "width": 292,
+          "height": 15
+        },
+        "details": {
+          "x": 28,
+          "y": 78,
+          "right": 308,
+          "bottom": 398,
+          "width": 280,
+          "height": 320
+        },
+        "canvas": {
+          "x": 321,
+          "y": 36,
+          "right": 1280,
+          "bottom": 720,
+          "width": 959,
+          "height": 684
+        },
+        "scroll": {
+          "top": 468,
+          "height": 977,
+          "client": 509
+        },
+        "activity": 8
+      }
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 500
+      },
+      "geometry": {
+        "panel": {
+          "x": 0,
+          "y": 36,
+          "right": 321,
+          "bottom": 500,
+          "width": 321,
+          "height": 464
+        },
+        "feed": {
+          "x": 12,
+          "y": 104,
+          "right": 308,
+          "bottom": 393,
+          "width": 296,
+          "height": 289
+        },
+        "composer": {
+          "x": 12,
+          "y": 393,
+          "right": 308,
+          "bottom": 468,
+          "width": 296,
+          "height": 75
+        },
+        "input": {
+          "x": 12,
+          "y": 404,
+          "right": 255.109375,
+          "bottom": 468,
+          "width": 243.109375,
+          "height": 64
+        },
+        "status": {
+          "x": 14,
+          "y": 475,
+          "right": 306,
+          "bottom": 490,
+          "width": 292,
+          "height": 15
+        },
+        "details": {
+          "x": 28,
+          "y": 78,
+          "right": 308,
+          "bottom": 358,
+          "width": 280,
+          "height": 280
+        },
+        "canvas": {
+          "x": 321,
+          "y": 36,
+          "right": 1280,
+          "bottom": 500,
+          "width": 959,
+          "height": 464
+        },
+        "scroll": {
+          "top": 688,
+          "height": 977,
+          "client": 289
+        },
+        "activity": 8
+      }
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 700
+      },
+      "geometry": {
+        "panel": {
+          "x": 0,
+          "y": 36,
+          "right": 390,
+          "bottom": 357,
+          "width": 390,
+          "height": 321
+        },
+        "feed": {
+          "x": 12,
+          "y": 92,
+          "right": 378,
+          "bottom": 265,
+          "width": 366,
+          "height": 173
+        },
+        "composer": {
+          "x": 12,
+          "y": 265,
+          "right": 378,
+          "bottom": 328,
+          "width": 366,
+          "height": 63
+        },
+        "input": {
+          "x": 12,
+          "y": 276,
+          "right": 325.109375,
+          "bottom": 328,
+          "width": 313.109375,
+          "height": 52
+        },
+        "status": {
+          "x": 14,
+          "y": 335,
+          "right": 376,
+          "bottom": 350,
+          "width": 362,
+          "height": 15
+        },
+        "details": {
+          "x": 98,
+          "y": 74,
+          "right": 378,
+          "bottom": 234,
+          "width": 280,
+          "height": 160
+        },
+        "canvas": {
+          "x": 0,
+          "y": 357,
+          "right": 390,
+          "bottom": 700,
+          "width": 390,
+          "height": 343
+        },
+        "scroll": {
+          "top": 631,
+          "height": 804,
+          "client": 173
+        },
+        "activity": 8
+      }
+    },
+    {
+      "scenario": "failure",
+      "geometry": {
+        "panel": {
+          "x": 0,
+          "y": 36,
+          "right": 390,
+          "bottom": 357,
+          "width": 390,
+          "height": 321
+        },
+        "feed": {
+          "x": 12,
+          "y": 92,
+          "right": 378,
+          "bottom": 250,
+          "width": 366,
+          "height": 158
+        },
+        "composer": {
+          "x": 12,
+          "y": 250,
+          "right": 378,
+          "bottom": 313,
+          "width": 366,
+          "height": 63
+        },
+        "input": {
+          "x": 12,
+          "y": 261,
+          "right": 300.25,
+          "bottom": 313,
+          "width": 288.25,
+          "height": 52
+        },
+        "status": {
+          "x": 14,
+          "y": 320,
+          "right": 376,
+          "bottom": 350,
+          "width": 362,
+          "height": 30
+        },
+        "details": null,
+        "canvas": {
+          "x": 0,
+          "y": 357,
+          "right": 390,
+          "bottom": 700,
+          "width": 390,
+          "height": 343
+        },
+        "scroll": {
+          "top": 631,
+          "height": 804,
+          "client": 158
+        },
+        "activity": 0
+      },
+      "status": " The provider could not complete this turn. Check the connection and retry. 3 applied edits remain undoable."
+    },
+    {
+      "scenario": "offline",
+      "geometry": {
+        "panel": {
+          "x": 0,
+          "y": 36,
+          "right": 390,
+          "bottom": 357,
+          "width": 390,
+          "height": 321
+        },
+        "feed": {
+          "x": 12,
+          "y": 92,
+          "right": 378,
+          "bottom": 226,
+          "width": 366,
+          "height": 134
+        },
+        "composer": {
+          "x": 12,
+          "y": 226,
+          "right": 378,
+          "bottom": 328,
+          "width": 366,
+          "height": 102
+        },
+        "input": {
+          "x": 12,
+          "y": 237,
+          "right": 325.109375,
+          "bottom": 289,
+          "width": 313.109375,
+          "height": 52
+        },
+        "status": {
+          "x": 14,
+          "y": 335,
+          "right": 376,
+          "bottom": 350,
+          "width": 362,
+          "height": 15
+        },
+        "details": null,
+        "canvas": {
+          "x": 0,
+          "y": 357,
+          "right": 390,
+          "bottom": 700,
+          "width": 390,
+          "height": 343
+        },
+        "scroll": {
+          "top": 0,
+          "height": 134,
+          "client": 134
+        },
+        "activity": 0
+      },
+      "draftRetained": true
+    }
+  ],
+  "errors": []
+}
