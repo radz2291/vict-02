@@ -106,6 +106,13 @@ Evidence: [saved-invalid screenshot](required-slot-saved-invalid.jpg),
 Identity of the invalid saved application:
 `v1_fff7633222ff224ac0453e35b1fc57f36ac61c6cc59de0c03826f08aaed71ca0`.
 
+Supplementary same-candidate check reproduced the handoff's exact last-child case:
+filled Body with Text and saved valid r1.r2; Arrange/Remove selection deleted its
+final Paragraph; Ctrl+S still saved invalid r1.r3. See
+[final-child screenshot](required-slot-final-child-red.jpg) and
+[exact resulting source](required-slot-final-child-source.json). This preserves
+both missing-slot and explicit-empty-slot variants.
+
 Source mechanism: `application.ts:130` delegates screenIssues to compileScreen;
 `storage.ts:9` uses screenIssues as its validator. Designer save at lines 232–240
 checks compilation and the store. The renderer's `document/extensions.ts:235–239`
