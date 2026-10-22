@@ -8,8 +8,11 @@
   import { createScreenSimulation, screenDispatcher } from '$lib/designer/execution.js';
   import '@victframework/ui-svelte/styles.css';
   import '@victframework/ui-svelte/catalog.css';
+  import '$lib/designer/workspace.css';
   let source = $state<UiDocument>();
   let failure = $state('');
+  let matchedWidth=$state<number>();
+  let width=$state('fluid');
   let activity = $state('');
   let simulation = $state({ denied: false, failNext: false });
   let resetSignal = $state(Symbol('finished-run'));
@@ -18,7 +21,10 @@
   const plan = $derived(compiled?.ok && source ? compiled.plan.documentPlans?.[`${source.id}@${source.revision}`] : undefined);
   onMount(() => {
     try {
-      const id = new URLSearchParams(location.search).get('screen');
+      const params = new URLSearchParams(location.search);
+      const id = params.get('screen');
+      const requestedWidth=Number(params.get('width'));
+      if(Number.isInteger(requestedWidth) && requestedWidth>=160 && requestedWidth<=8192){matchedWidth=requestedWidth;width='match';}
       if (!id) { failure = 'Choose a saved screen in the designer.'; return; }
       const result = screenStore(localStorage, id).rawLoad();
       if (result.status !== 'loaded') { failure = result.status === 'invalid' ? result.message : 'No saved source exists for this screen.'; return; }
@@ -34,25 +40,37 @@
   }
 </script>
 <svelte:head><title>{source ? screenName(source) : 'Saved screen'} — VICT</title></svelte:head>
-<ControlScope><div class="vict-app finished-screen">
-  <header><a href="/design">← Designer</a><span>Saved application · {source?.revision ?? 'loading'}</span><button type="button" onclick={() => { adapter.reset(); resetSignal = Symbol('reset'); activity = ''; }}>Restart run</button></header>
-  <div class="simulation-notice">Simulated execution · local demo adapter · no live effects <details><summary>Simulation controls</summary><label><input type="checkbox" bind:checked={simulation.denied} /> Deny demo writes</label><label><input type="checkbox" bind:checked={simulation.failNext} /> Fail next action</label></details></div>
-  {#if failure}<p class="failure" role="alert">{failure}</p>
-  {:else if source && plan}<main class="finished-frame"><DocumentHost {plan} extensionDescriptors={catalogDescriptors} extensionImplementations={catalogImplementations} localState={source.localState} actionState={screenActionState} {resetSignal} {dispatch} navigate={() => {}} ariaLabel={screenName(source)} /></main>
-  {:else if compiled && !compiled.ok}<p class="failure" role="alert">Saved application compilation failed.</p>{/if}
-  {#if activity}<p class="action-result" role="status">{activity}</p>{/if}
-  {#if compiled?.ok}<footer title={compiled.plan.applicationVersion}>vict.application@3 · {compiled.plan.applicationVersion}</footer>{/if}
+<ControlScope><div class="vict-app finished-screen studio-workspace">
+  <header class="workspace-header">
+    <a class="workspace-mark" href="/design" aria-label="VICT Studio" title="VICT Studio">V</a>
+    <a class="designer-link" href="/design">← Designer</a><span class="run-context">Run saved</span>
+    <span class="run-screen-name">{source?screenName(source):'Saved screen'}</span>
+  </header>
+  <div class="workspace-tools">
+    <label class="run-view-size"><span class="sr-only">Canvas width</span><select aria-label="Canvas width" bind:value={width}>
+      {#if matchedWidth}<option value="match">Match designer · {matchedWidth}px</option>{/if}
+      <option value="fluid">Fit canvas</option><option value="768">Tablet · 768</option><option value="390">Phone · 390</option>
+    </select></label>
+    <button type="button" onclick={() => { adapter.reset(); resetSignal = Symbol('reset'); activity = ''; }}>Restart run</button>
+  </div>
+  <div class="workspace-scroll">
+    {#if failure}<p class="failure" role="alert">{failure}</p>
+    {:else if source && plan}<main class="finished-frame workspace-screen" style:max-width={width==='fluid'?'none':`${width==='match'?matchedWidth:width}px`}><DocumentHost {plan} extensionDescriptors={catalogDescriptors} extensionImplementations={catalogImplementations} localState={source.localState} actionState={screenActionState} {resetSignal} {dispatch} navigate={() => {}} ariaLabel={screenName(source)} /></main>
+    {:else if compiled && !compiled.ok}<p class="failure" role="alert">Saved application compilation failed.</p>{/if}
+  </div>
+  <details class="workspace-simulation"><summary>Simulated execution <span>Local preview · no live effects</span></summary><div class="simulation-controls"><label><input type="checkbox" bind:checked={simulation.denied} /> Deny demo writes</label><label><input type="checkbox" bind:checked={simulation.failNext} /> Fail next action</label></div></details>
+  <footer class="workspace-status"><span role="status">{activity || (source?`Saved application · ${source.revision}`:'Loading saved application…')}</span><span title={compiled?.ok?compiled.plan.applicationVersion:undefined}>{compiled?.ok?`@3 · ${compiled.plan.applicationVersion.slice(0,15)}…`:''}</span></footer>
 </div></ControlScope>
 <style>
   :global(body:has(.finished-screen)){margin:0;}
-  .finished-screen {min-height:100dvh;background:#fff;color:#263246;font:12px/1.5 system-ui,sans-serif;}
-  header {display:flex;align-items:center;gap:20px;border-bottom:1px solid #e1e6ee;padding:12px 20px;background:#f9fafc;flex-wrap:wrap;}
-  header a {color:#5269bd;text-decoration:none;} header span {color:#8190a5;margin-right:auto;}
-  button {font:inherit;border:1px solid #dce2eb;background:white;color:#65748d;border-radius:5px;padding:5px 10px;cursor:pointer;}
-  .simulation-notice {padding:9px 20px;background:#f4f0df;color:#817247;font-size:11px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;}
-  summary {cursor:pointer;} details label {display:block;margin:8px;}
-  .finished-frame {container:studio-screen / inline-size;}
-  .failure,.action-result {margin:20px;padding:12px;border:1px solid #dce2eb;border-radius:6px;}
-  footer {padding:12px 20px;font:10px/1.6 ui-monospace,monospace;color:#9aa5b6;overflow-wrap:anywhere;border-top:1px solid #e1e6ee;}
-  :focus-visible {outline:2px solid #5269bd;outline-offset:3px;}
+  .designer-link {color:#5269bd;text-decoration:none;font-size:11px;}
+  .run-context {font-size:10px;color:#8a96a8;border-left:1px solid #e1e6ee;padding-left:12px;}
+  .run-screen-name {margin-left:auto;font-size:12px;font-weight:550;max-width:45%;overflow:hidden;text-overflow:ellipsis;}
+  button,select {font:inherit;border:1px solid #dce2eb;background:white;color:#65748d;border-radius:4px;padding:4px 7px;cursor:pointer;font-size:11px;}
+  .run-view-size select {border-color:transparent;background:transparent;max-width:230px;}
+  .simulation-controls {padding:0 14px 14px;display:flex;gap:14px;flex-wrap:wrap;}
+  .simulation-controls label {display:inline-flex;align-items:center;gap:6px;}
+  .failure {margin:20px;padding:12px;border:1px solid #dce2eb;border-radius:6px;}
+  .sr-only {position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;}
+  @media(max-width:480px){.run-context{display:none;}}
 </style>

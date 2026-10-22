@@ -1,0 +1,34 @@
+/* Studio-owned chrome and preview surface, shared by designer and saved replay.
+   No editor dependency: authored styles still belong to DocumentHost's source. */
+.studio-workspace {
+  display:flex;flex-direction:column;height:100dvh;overflow:hidden;
+  font:12px/1.45 'Segoe UI',system-ui,sans-serif;color:#263246;background:#f4f6f9;
+}
+.studio-workspace * {box-sizing:border-box;}
+.studio-workspace :focus-visible {outline:2px solid #5269bd;outline-offset:2px;}
+.workspace-header {
+  min-height:44px;display:flex;align-items:center;gap:12px;padding:5px 10px;
+  flex-wrap:nowrap;overflow-x:auto;white-space:nowrap;background:white;
+  border-bottom:1px solid #e1e6ee;flex-shrink:0;
+}
+.workspace-header > * {flex-shrink:0;}
+.workspace-mark {display:grid;place-items:center;width:21px;height:21px;border-radius:5px;background:#5269bd;color:white;font-weight:700;text-decoration:none;}
+.workspace-tools {display:flex;justify-content:space-between;align-items:center;gap:6px;height:38px;flex-shrink:0;padding:0 10px;border-bottom:1px solid #e1e6ee;font-size:11px;}
+.workspace-scroll {overflow:auto;scrollbar-gutter:stable;flex:1;min-height:0;padding:16px 18px 30px;background-image:radial-gradient(#d5dce6 .65px,transparent .65px);background-size:12px 12px;}
+.workspace-screen {
+  width:100%;margin:0 auto;position:relative;background:white;
+  box-shadow:0 3px 18px #25334f0a,0 0 0 1px #dfe5ee;border-radius:2px;
+  container:studio-screen / inline-size;
+  /* Keep application typography independent from surrounding toolbar styles. */
+  font:12px/1.45 'Segoe UI',system-ui,sans-serif;color:#263246;
+}
+.workspace-simulation {background:white;border-top:1px solid #e1e6ee;max-height:40%;overflow:auto;flex-shrink:0;}
+.workspace-simulation > summary {padding:7px 10px;color:#687994;font-size:10px;cursor:pointer;}
+.workspace-simulation > summary span {float:right;color:#9ba6b8;}
+.workspace-status {min-height:24px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:4px 10px;background:white;border-top:1px solid #e1e6ee;color:#8190a5;font-size:10px;flex-shrink:0;}
+.workspace-status > :last-child {font-family:ui-monospace,monospace;white-space:nowrap;}
+@media(max-width:760px) {
+  .workspace-header {padding:4px 8px;gap:5px;}
+  .workspace-scroll {padding:12px 10px 24px;}
+  .workspace-simulation > summary span,.workspace-status > :last-child {display:none;}
+}

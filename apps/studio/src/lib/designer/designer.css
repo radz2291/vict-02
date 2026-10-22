@@ -6,19 +6,6 @@ body:has(.finished-screen) {
 .studio-designer {
   --studio-accent: #5269bd;
   --ui-editor-section-padding: 8px 10px;
-  display: flex;
-  flex-direction: column;
-  height: 100dvh;
-  overflow: hidden;
-  font:
-    12px/1.45 'Segoe UI',
-    system-ui,
-    sans-serif;
-  color: #263246;
-  background: #f4f6f9;
-}
-.studio-designer * {
-  box-sizing: border-box;
 }
 .studio-designer button,
 .studio-designer input,
@@ -45,36 +32,13 @@ body:has(.finished-screen) {
   font-size: 13px;
   color: #253048;
 }
-.brand-mark {
-  display: grid;
-  place-items: center;
-  width: 21px;
-  height: 21px;
-  border-radius: 5px;
-  background: #5269bd;
-  color: white;
-  font-weight: 700;
-}
 .operator-link {
   padding: 5px;
   font-size: 16px;
   color: #65748d;
   text-decoration: none;
 }
-.design-toolbar {
-  min-height: 44px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 5px 10px;
-  flex-wrap: nowrap;
-  overflow-x: auto;
-  white-space: nowrap;
-  background: white;
-  border-bottom: 1px solid #e1e6ee;
-  flex-shrink: 0;
-}
-.design-toolbar > * {flex-shrink:0;}
+
 .screen-picker {
   display: flex;
   align-items: center;
@@ -158,17 +122,6 @@ body:has(.finished-screen) {
   min-width: 0;
   min-height: 0;
 }
-.canvas-toolbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 6px;
-  height: 38px;
-  flex-shrink: 0;
-  padding: 0 10px;
-  border-bottom: 1px solid #e1e6ee;
-  font-size: 11px;
-}
 .canvas-toolbar button {
   padding: 4px 7px;
   border-color: transparent;
@@ -176,24 +129,6 @@ body:has(.finished-screen) {
   font-size: 11px;
 }
 .composition-back {display:flex;justify-content:center;min-width:0;flex:1;}
-.canvas-scroll {
-  overflow: auto;
-  flex: 1;
-  padding: 16px 18px 30px;
-  background-image: radial-gradient(#d5dce6 0.65px, transparent 0.65px);
-  background-size: 12px 12px;
-}
-.design-frame {
-  width: 100%;
-  margin: 0 auto;
-  position: relative;
-  background: white;
-  box-shadow:
-    0 3px 18px #25334f0a,
-    0 0 0 1px #dfe5ee;
-  border-radius: 2px;
-  container: studio-screen / inline-size;
-}
 .design-frame .uv-canvas {
   min-height: 560px;
 }
@@ -329,22 +264,6 @@ body:has(.finished-screen) {
   padding: 10px;
   border-radius: 5px;
 }
-.simulation-panel {
-  background: white;
-  border-top: 1px solid #e1e6ee;
-  max-height: 40%;
-  overflow: auto;
-}
-.simulation-panel > summary {
-  padding: 7px 10px;
-  color: #687994;
-  font-size: 10px;
-  cursor: pointer;
-}
-.simulation-panel > summary span {
-  float: right;
-  color: #9ba6b8;
-}
 .simulation-body {
   padding: 0 14px 14px;
 }
@@ -360,23 +279,6 @@ body:has(.finished-screen) {
   padding: 8px;
   background: #f1f4fb;
   border-radius: 5px;
-}
-.design-status {
-  min-height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 4px 10px;
-  background: white;
-  border-top: 1px solid #e1e6ee;
-  color: #8190a5;
-  font-size: 10px;
-  flex-shrink: 0;
-}
-.design-status span:last-child {
-  font-family: ui-monospace, monospace;
-  white-space: nowrap;
 }
 .design-errors {
   padding: 8px 20px;
