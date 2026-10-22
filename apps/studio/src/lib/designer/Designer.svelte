@@ -332,7 +332,7 @@
         <Menubar.Item disabled={textDraftDirty || sourceDraftDirty} onSelect={()=>void beginCreate()}>New screen</Menubar.Item>
         <Menubar.Sub>
           <Menubar.SubTrigger disabled={!library.length || textDraftDirty || sourceDraftDirty}>Open screen<span aria-hidden="true">›</span></Menubar.SubTrigger>
-          <Menubar.Portal><Menubar.SubContent aria-label="Open screen" class="workspace-menu open-screen-menu" sideOffset={4} collisionPadding={8}>
+          <Menubar.Portal><Menubar.SubContent aria-label="Open screen" class="workspace-menu open-screen-menu" align="start" alignOffset={-5} sideOffset={2} collisionPadding={8}>
             <Menubar.RadioGroup value={source?.id ?? ''}>
               {#each library as item (item.id)}<Menubar.RadioItem value={item.id} closeOnSelect onSelect={()=>openScreen(item.id)}><span class="screen-menu-name" title={item.name}>{item.name}</span><span aria-hidden="true">{source?.id===item.id?'\u2713':''}</span></Menubar.RadioItem>{/each}
             </Menubar.RadioGroup>

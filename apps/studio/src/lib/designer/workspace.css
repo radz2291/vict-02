@@ -47,3 +47,7 @@
 .workspace-menu .menu-caption {padding:0;margin:6px 10px;font-size:10px;}
 
 .workspace-menu [data-disabled] {opacity:.4;cursor:default;}
+
+/* Cascades line up their first row with the parent command. */
+.workspace-menu [role="menuitem"][aria-haspopup="menu"]::after {display:none;}
+.workspace-menu [role="menuitem"][aria-haspopup="menu"][data-state="open"] {background:#edf1ff;color:#405abd;}
