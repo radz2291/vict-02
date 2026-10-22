@@ -1,5 +1,29 @@
 # Studio Designer — current delivery state
 
+## 2026-10-23 — Cycle 1.1 chat layout repair verified and locally active
+
+Independent **PASS WITH NON-BLOCKING FINDINGS** on exact product
+`3e2717f0377209cc9c777fb2531ab19349ba08a4`, branch
+`codex/studio-cycle-1-1-chat-layout`. Remote-verified independent evidence
+`f9b0560a2f5141db77bebe220c3099e3c2ec9e27` is on
+`codex/studio-cycle-1-1-chat-ui-verification-final`.
+[Delivery report, launch, walkthrough and retained findings](CYCLE-1-1-CHAT-UI-REPAIR.md);
+[independent final gate](verification-cycle-1-1-chat-ui-final/FINAL-VERIFICATION.md).
+
+Final exact build, six affected Studio checks, 12 shared checks, real z.ai
+streaming/canonical edit/Undo/Redo/Save/reopen and actual-shell responsive/dynamic
+failure checks pass. Earlier full 140/140 is initial presentation-candidate
+evidence, not relabeled as a new full-suite run. The initial chat candidate's
+actual-shell FAIL remains retained and was repaired before activation.
+
+All 202 artifact hashes match the independent manifest. Updated UI is active
+on 5591 and open in a new review tab with the existing saved screen. Original
+owner canvas/draft/feed are identical and its tab was not reloaded/navigated.
+One synthetic 5px form-gutter resize limit and readable-text reference links
+remain nonblocking; details and inherited findings are documented in the report.
+Owner acceptance remains separate. Broader Stage 9 stays REOPENED / IN PROGRESS;
+Cycle 1.1 is ready for owner review. No main merge or Cycle 1.2 was begun.
+
 ## 2026-10-23 — Cycle 1.1 chat UI repair IN PROGRESS
 
 Owner authorized repair of the populated chat layout and supplied professional
