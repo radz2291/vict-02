@@ -2,7 +2,11 @@
 import { compileApplication, deriveActionInputCatalog } from '@victframework/application';
 import type { ApplicationDefinitionV3, ResourceDefinition } from '@victframework/sdk';
 import { defaultSemanticElementCatalog, type UiDocument } from '@victframework/ui';
-import { catalogDescriptors, catalogImplementations } from '@victframework/ui-svelte';
+import {
+  catalogDescriptors,
+  catalogImplementations,
+  validateSvelteComponentPlan,
+} from '@victframework/ui-svelte';
 import { defineContract } from '@victframework/contracts';
 
 export const submitInput = defineContract<{ message: string; accepted: boolean }>({
@@ -119,13 +123,18 @@ export function screenApplication(document: UiDocument): ApplicationDefinitionV3
   };
 }
 export function compileScreen(document: UiDocument) {
-  return compileApplication({
+  const compiled = compileApplication({
     application: screenApplication(document),
     resources: [demoResource],
     contracts: contractCatalog,
     uiDocuments: [{ document }],
     uiExtensions: catalogDescriptors,
   });
+  if (!compiled.ok) return compiled;
+  const issues = Object.values(compiled.plan.documentPlans ?? {}).flatMap((plan) =>
+    validateSvelteComponentPlan(plan, catalogDescriptors, catalogImplementations),
+  );
+  return issues.length ? { ok: false as const, issues, uiIssues: [] } : compiled;
 }
 export function screenIssues(document: UiDocument) {
   try {
