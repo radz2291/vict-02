@@ -1,0 +1,19 @@
+file:///C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/node_modules/puppeteer-core/lib/esm/puppeteer/common/util.js:225
+            throw new TimeoutError(`Timed out after waiting ${ms}ms`, { cause });
+                  ^
+
+TimeoutError: Timed out after waiting 30000ms
+    at file:///C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/node_modules/puppeteer-core/lib/esm/puppeteer/common/util.js:225:19
+    at file:///C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/node_modules/puppeteer-core/lib/esm/third_party/rxjs/rxjs.js:1944:31
+    at OperatorSubscriber2._this._next (file:///C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/node_modules/puppeteer-core/lib/esm/third_party/rxjs/rxjs.js:1001:9)
+    at Subscriber2.next (file:///C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/node_modules/puppeteer-core/lib/esm/third_party/rxjs/rxjs.js:704:12)
+    at AsyncAction2.<anonymous> (file:///C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/node_modules/puppeteer-core/lib/esm/third_party/rxjs/rxjs.js:2288:20)
+    at AsyncAction2._execute (file:///C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/node_modules/puppeteer-core/lib/esm/third_party/rxjs/rxjs.js:1368:12)
+    at AsyncAction2.execute (file:///C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/node_modules/puppeteer-core/lib/esm/third_party/rxjs/rxjs.js:1357:22)
+    at AsyncScheduler2.flush (file:///C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/node_modules/puppeteer-core/lib/esm/third_party/rxjs/rxjs.js:1435:26)
+    at listOnTimeout (node:internal/timers:594:17)
+    at process.processTimers (node:internal/timers:529:7) {
+  [cause]: undefined
+}
+
+Node.js v22.13.1

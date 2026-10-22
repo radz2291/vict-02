@@ -1,0 +1,23 @@
+{
+  "records": [
+    {
+      "at": "2026-10-22T15:54:36.528Z",
+      "name": "same-origin login action",
+      "data": {
+        "status": 200,
+        "type": "basic"
+      }
+    },
+    {
+      "at": "2026-10-22T15:55:06.760Z",
+      "name": "driver failure",
+      "data": {
+        "error": "TimeoutError: Waiting failed: 30000ms exceeded",
+        "primary": "V\nFile\nEdit\nView\nPreview\nUntitled screen\n○ New screen\n↗\nStudio agent\n\nzai/glm-5.3-flash\n\n↻\nUntitled screen\nSelected: Untitled screen\n\nDescribe the screen you want to make. Try “Create a registration form with name, email and password.” Select an element to ask for a focused change.\n\nMessage Studio agent\nSend\nReady to build with you.\n\nEdits share your history. Save explicitly. Form actions remain local preview. Chat clears when you leave Designer.\n\nDesign\nInteract\nDocument\n＋\nWhat will you make?\n\nSelect this screen to open its tools, then choose Insert.\n\nSimulated execution\nLocal preview · no live effects\nNew screen · not saved yet.\n@3 · v1_13e4068eac57…",
+        "secondary": "V\nFile\nEdit\nView\nPreview\nUntitled screen\n○ New screen\n↗\nStudio agent\n\nzai/glm-5.3-flash\n\n↻\nUntitled screen\nSelected: Untitled screen\n\nDescribe the screen you want to make. Try “Create a registration form with name, email and password.” Select an element to ask for a focused change.\n\nMessage Studio agent\nSend\nReady to build with you.\n\nEdits share your history. Save explicitly. Form actions remain local preview. Chat clears when you leave Designer.\n\nDesign\nInteract\nDocument\n＋\nWhat will you make?\n\nSelect this screen to open its tools, then choose Insert.\n\nSimulated execution\nLocal preview · no live effects\nNew screen · not saved yet.\n@3 · v1_9b287e9ed5a5…",
+        "turns": []
+      }
+    }
+  ],
+  "errors": []
+}

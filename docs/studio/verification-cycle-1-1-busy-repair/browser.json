@@ -1,0 +1,861 @@
+{
+  "records": [
+    {
+      "at": "2026-10-22T15:56:30.674Z",
+      "name": "same-origin login action",
+      "data": {
+        "status": 200,
+        "type": "basic"
+      }
+    },
+    {
+      "at": "2026-10-22T15:56:31.995Z",
+      "name": "real active same-session turn refuses with BUSY and accurate feedback",
+      "data": {
+        "ok": true,
+        "status": "Another agent turn is still running in this session. Wait for it to finish, or stop it in its Designer tab, then retry. No edits were applied.",
+        "events": [
+          {
+            "type": "done",
+            "status": "failed",
+            "code": "STUDIO_AGENT_BUSY",
+            "applied": 0
+          }
+        ]
+      }
+    },
+    {
+      "at": "2026-10-22T15:56:32.106Z",
+      "name": "busy refusal retains draft and has zero document effects",
+      "data": {
+        "ok": true
+      }
+    },
+    {
+      "at": "2026-10-22T15:56:32.350Z",
+      "name": "primary Stop accepted or already ended",
+      "data": {
+        "ok": true,
+        "httpStatus": 200
+      }
+    },
+    {
+      "at": "2026-10-22T15:56:32.504Z",
+      "name": "retry admitted after Stop",
+      "data": {
+        "elapsedMs": 153
+      }
+    },
+    {
+      "at": "2026-10-22T15:57:15.910Z",
+      "name": "retained request retries through real z.ai and visibly commits",
+      "data": {
+        "ok": true,
+        "events": [
+          {
+            "type": "started",
+            "runId": "e23f9d60-bf6f-4730-a9c5-5c51319c0df2",
+            "model": "zai/glm-5.3-flash",
+            "engine": "VICT / Mastra"
+          },
+          {
+            "type": "progress",
+            "message": "Connecting to the VICT / Mastra agent…"
+          },
+          {
+            "type": "progress",
+            "message": "Agent is working on your request…"
+          },
+          {
+            "type": "progress",
+            "message": "Reading the screen and selection…"
+          },
+          {
+            "type": "progress",
+            "message": "Preparing and validating an edit…"
+          },
+          {
+            "type": "edit-result",
+            "result": {
+              "ok": false,
+              "code": "STUDIO_AGENT_VALIDATION",
+              "message": "Edit rejected: UI_EDIT_VALIDATION_FAILED"
+            },
+            "reason": "Validation refused an edit"
+          },
+          {
+            "type": "text",
+            "delta": "The"
+          },
+          {
+            "type": "text",
+            "delta": " edit"
+          },
+          {
+            "type": "text",
+            "delta": " was"
+          },
+          {
+            "type": "text",
+            "delta": " rejected"
+          },
+          {
+            "type": "text",
+            "delta": " by"
+          },
+          {
+            "type": "text",
+            "delta": " validation"
+          },
+          {
+            "type": "text",
+            "delta": "."
+          },
+          {
+            "type": "text",
+            "delta": " Let"
+          },
+          {
+            "type": "text",
+            "delta": " me"
+          },
+          {
+            "type": "text",
+            "delta": " re"
+          },
+          {
+            "type": "text",
+            "delta": "-read"
+          },
+          {
+            "type": "text",
+            "delta": " and"
+          },
+          {
+            "type": "text",
+            "delta": " retry"
+          },
+          {
+            "type": "text",
+            "delta": " with"
+          },
+          {
+            "type": "text",
+            "delta": " a"
+          },
+          {
+            "type": "text",
+            "delta": " simpler"
+          },
+          {
+            "type": "text",
+            "delta": " payload"
+          },
+          {
+            "type": "text",
+            "delta": "."
+          },
+          {
+            "type": "progress",
+            "message": "Reading the screen and selection…"
+          },
+          {
+            "type": "text",
+            "delta": "Document"
+          },
+          {
+            "type": "text",
+            "delta": " unchanged"
+          },
+          {
+            "type": "text",
+            "delta": " ("
+          },
+          {
+            "type": "text",
+            "delta": "r"
+          },
+          {
+            "type": "text",
+            "delta": "1"
+          },
+          {
+            "type": "text",
+            "delta": "#"
+          },
+          {
+            "type": "text",
+            "delta": "0"
+          },
+          {
+            "type": "text",
+            "delta": ","
+          },
+          {
+            "type": "text",
+            "delta": " screen"
+          },
+          {
+            "type": "text",
+            "delta": " still"
+          },
+          {
+            "type": "text",
+            "delta": " empty"
+          },
+          {
+            "type": "text",
+            "delta": ")."
+          },
+          {
+            "type": "text",
+            "delta": " The"
+          },
+          {
+            "type": "text",
+            "delta": " numeric"
+          },
+          {
+            "type": "text",
+            "delta": " attribute"
+          },
+          {
+            "type": "text",
+            "delta": " was"
+          },
+          {
+            "type": "text",
+            "delta": " likely"
+          },
+          {
+            "type": "text",
+            "delta": " the"
+          },
+          {
+            "type": "text",
+            "delta": " issue"
+          },
+          {
+            "type": "text",
+            "delta": " —"
+          },
+          {
+            "type": "text",
+            "delta": " retry"
+          },
+          {
+            "type": "text",
+            "delta": "ing"
+          },
+          {
+            "type": "text",
+            "delta": " with"
+          },
+          {
+            "type": "text",
+            "delta": " a"
+          },
+          {
+            "type": "text",
+            "delta": " minimal"
+          },
+          {
+            "type": "text",
+            "delta": " add"
+          },
+          {
+            "type": "text",
+            "delta": "."
+          },
+          {
+            "type": "progress",
+            "message": "Preparing and validating an edit…"
+          },
+          {
+            "type": "proposal",
+            "proposal": {
+              "proposalId": "effbc0fc-5b79-4f07-a37a-146805759118",
+              "cursor": {
+                "documentId": "screen-95b5775a-1b3c-4682-b3a5-379fa0c705ba",
+                "revision": "r1#0",
+                "digest": "56e46f90a9d4aa1d12880c5aaccad8297ac7c999d207c9b1b3527971850169f5",
+                "epoch": "706f1c02-a2c2-4321-990c-a54b555df398"
+              },
+              "edit": {
+                "expectedRevision": "r1#0",
+                "reason": "Retry after validation refusal: minimal heading add without extra attributes, per user request for one heading titled \\\"Busy repair verified\\\".",
+                "operations": [
+                  {
+                    "op": "add",
+                    "recipe": "heading",
+                    "nodeId": "heading-verified",
+                    "parentId": "screen",
+                    "text": "Busy repair verified"
+                  }
+                ]
+              },
+              "resultDigest": "957152a2491052828056892107fbef716aba2e04d0440c0186d8340462686c93"
+            }
+          },
+          {
+            "type": "edit-result",
+            "result": {
+              "ok": true,
+              "revision": "r1#1",
+              "digest": "957152a2491052828056892107fbef716aba2e04d0440c0186d8340462686c93"
+            },
+            "reason": "Retry after validation refusal: minimal heading add without extra attributes, per user request for one heading titled \\\"Busy repair verified\\\"."
+          },
+          {
+            "type": "text",
+            "delta": "Done"
+          },
+          {
+            "type": "text",
+            "delta": "."
+          },
+          {
+            "type": "text",
+            "delta": " One"
+          },
+          {
+            "type": "text",
+            "delta": " heading"
+          },
+          {
+            "type": "text",
+            "delta": " \""
+          },
+          {
+            "type": "text",
+            "delta": "Busy"
+          },
+          {
+            "type": "text",
+            "delta": " repair"
+          },
+          {
+            "type": "text",
+            "delta": " verified"
+          },
+          {
+            "type": "text",
+            "delta": "\""
+          },
+          {
+            "type": "text",
+            "delta": " was"
+          },
+          {
+            "type": "text",
+            "delta": " added"
+          },
+          {
+            "type": "text",
+            "delta": " to"
+          },
+          {
+            "type": "text",
+            "delta": " the"
+          },
+          {
+            "type": "text",
+            "delta": " screen"
+          },
+          {
+            "type": "text",
+            "delta": " using"
+          },
+          {
+            "type": "text",
+            "delta": " the"
+          },
+          {
+            "type": "text",
+            "delta": " Heading"
+          },
+          {
+            "type": "text",
+            "delta": " palette"
+          },
+          {
+            "type": "text",
+            "delta": " recipe"
+          },
+          {
+            "type": "text",
+            "delta": " ("
+          },
+          {
+            "type": "text",
+            "delta": "root"
+          },
+          {
+            "type": "text",
+            "delta": " parent"
+          },
+          {
+            "type": "text",
+            "delta": ","
+          },
+          {
+            "type": "text",
+            "delta": " no"
+          },
+          {
+            "type": "text",
+            "delta": " extra"
+          },
+          {
+            "type": "text",
+            "delta": " attributes"
+          },
+          {
+            "type": "text",
+            "delta": ")."
+          },
+          {
+            "type": "text",
+            "delta": " The"
+          },
+          {
+            "type": "text",
+            "delta": " working"
+          },
+          {
+            "type": "text",
+            "delta": " revision"
+          },
+          {
+            "type": "text",
+            "delta": " is"
+          },
+          {
+            "type": "text",
+            "delta": " now"
+          },
+          {
+            "type": "text",
+            "delta": " **"
+          },
+          {
+            "type": "text",
+            "delta": "r"
+          },
+          {
+            "type": "text",
+            "delta": "1"
+          },
+          {
+            "type": "text",
+            "delta": "#"
+          },
+          {
+            "type": "text",
+            "delta": "1"
+          },
+          {
+            "type": "text",
+            "delta": "**,"
+          },
+          {
+            "type": "text",
+            "delta": " confirmed"
+          },
+          {
+            "type": "text",
+            "delta": " by"
+          },
+          {
+            "type": "text",
+            "delta": " the"
+          },
+          {
+            "type": "text",
+            "delta": " browser"
+          },
+          {
+            "type": "text",
+            "delta": " Editor"
+          },
+          {
+            "type": "text",
+            "delta": "Bridge"
+          },
+          {
+            "type": "text",
+            "delta": ".\n\n"
+          },
+          {
+            "type": "text",
+            "delta": "Note"
+          },
+          {
+            "type": "text",
+            "delta": ":"
+          },
+          {
+            "type": "text",
+            "delta": " the"
+          },
+          {
+            "type": "text",
+            "delta": " first"
+          },
+          {
+            "type": "text",
+            "delta": " attempt"
+          },
+          {
+            "type": "text",
+            "delta": " was"
+          },
+          {
+            "type": "text",
+            "delta": " rejected"
+          },
+          {
+            "type": "text",
+            "delta": " by"
+          },
+          {
+            "type": "text",
+            "delta": " validation"
+          },
+          {
+            "type": "text",
+            "delta": " ("
+          },
+          {
+            "type": "text",
+            "delta": "I"
+          },
+          {
+            "type": "text",
+            "delta": " had"
+          },
+          {
+            "type": "text",
+            "delta": " included"
+          },
+          {
+            "type": "text",
+            "delta": " an"
+          },
+          {
+            "type": "text",
+            "delta": " extra"
+          },
+          {
+            "type": "text",
+            "delta": " `"
+          },
+          {
+            "type": "text",
+            "delta": "aria"
+          },
+          {
+            "type": "text",
+            "delta": "-level"
+          },
+          {
+            "type": "text",
+            "delta": "`"
+          },
+          {
+            "type": "text",
+            "delta": " attribute"
+          },
+          {
+            "type": "text",
+            "delta": ");"
+          },
+          {
+            "type": "text",
+            "delta": " the"
+          },
+          {
+            "type": "text",
+            "delta": " clean"
+          },
+          {
+            "type": "text",
+            "delta": " retry"
+          },
+          {
+            "type": "text",
+            "delta": " applied"
+          },
+          {
+            "type": "text",
+            "delta": " successfully"
+          },
+          {
+            "type": "text",
+            "delta": "."
+          },
+          {
+            "type": "text",
+            "delta": " This"
+          },
+          {
+            "type": "text",
+            "delta": " is"
+          },
+          {
+            "type": "text",
+            "delta": " an"
+          },
+          {
+            "type": "text",
+            "delta": " uns"
+          },
+          {
+            "type": "text",
+            "delta": "aved"
+          },
+          {
+            "type": "text",
+            "delta": " draft"
+          },
+          {
+            "type": "text",
+            "delta": " —"
+          },
+          {
+            "type": "text",
+            "delta": " you"
+          },
+          {
+            "type": "text",
+            "delta": " save"
+          },
+          {
+            "type": "text",
+            "delta": " when ready."
+          },
+          {
+            "type": "done",
+            "status": "completed",
+            "applied": 1,
+            "turnId": "turn-aaa7b456-6b92-4c8c-b8c4-5d50eb2ea543",
+            "profileVersion": "v1_9a8331caffc726ac5c9c051a5e77d1a2a05217a8582a1c76b7538514d5db960d"
+          }
+        ],
+        "document": {
+          "schema": "vict.ui-document@1",
+          "id": "screen-95b5775a-1b3c-4682-b3a5-379fa0c705ba",
+          "revision": "r1",
+          "root": "screen",
+          "nodes": {
+            "screen": {
+              "kind": "element",
+              "id": "screen",
+              "tag": "main",
+              "attributes": {
+                "aria-label": "Untitled screen"
+              },
+              "children": [
+                "heading-verified"
+              ],
+              "localStyle": [
+                {
+                  "property": "display",
+                  "value": {
+                    "type": "text",
+                    "value": "flex"
+                  }
+                },
+                {
+                  "property": "flex-direction",
+                  "value": {
+                    "type": "text",
+                    "value": "column"
+                  }
+                },
+                {
+                  "property": "gap",
+                  "value": {
+                    "type": "text",
+                    "value": "20px"
+                  }
+                },
+                {
+                  "property": "padding",
+                  "value": {
+                    "type": "text",
+                    "value": "40px"
+                  }
+                },
+                {
+                  "property": "min-height",
+                  "value": {
+                    "type": "text",
+                    "value": "560px"
+                  }
+                },
+                {
+                  "property": "background-color",
+                  "value": {
+                    "type": "text",
+                    "value": "#ffffff"
+                  }
+                },
+                {
+                  "property": "color",
+                  "value": {
+                    "type": "text",
+                    "value": "#243047"
+                  }
+                },
+                {
+                  "property": "font-family",
+                  "value": {
+                    "type": "text",
+                    "value": "system-ui, sans-serif"
+                  }
+                }
+              ]
+            },
+            "heading-verified": {
+              "kind": "element",
+              "id": "heading-verified",
+              "tag": "h1",
+              "children": [
+                "heading-verified-text"
+              ],
+              "localStyle": [
+                {
+                  "property": "font-size",
+                  "value": {
+                    "type": "text",
+                    "value": "32px"
+                  }
+                },
+                {
+                  "property": "font-weight",
+                  "value": {
+                    "type": "text",
+                    "value": "600"
+                  }
+                },
+                {
+                  "property": "line-height",
+                  "value": {
+                    "type": "text",
+                    "value": "1.2"
+                  }
+                },
+                {
+                  "property": "margin",
+                  "value": {
+                    "type": "text",
+                    "value": "0"
+                  }
+                }
+              ]
+            },
+            "heading-verified-text": {
+              "kind": "text",
+              "id": "heading-verified-text",
+              "content": {
+                "type": "literal",
+                "value": "Busy repair verified"
+              }
+            }
+          },
+          "componentDefinitions": {},
+          "styleSources": {},
+          "assets": {},
+          "tokens": {},
+          "conditions": {
+            "compact": {
+              "id": "compact",
+              "kind": "container",
+              "name": "studio-screen",
+              "query": "(max-width: 600px)"
+            }
+          },
+          "localState": {
+            "message": {
+              "key": "message",
+              "type": "string",
+              "initial": "Hello from my screen"
+            },
+            "accepted": {
+              "key": "accepted",
+              "type": "boolean",
+              "initial": false
+            },
+            "dialogOpen": {
+              "key": "dialogOpen",
+              "type": "boolean",
+              "initial": false
+            },
+            "busy": {
+              "key": "busy",
+              "type": "boolean",
+              "initial": false
+            },
+            "actionError": {
+              "key": "actionError",
+              "type": "string",
+              "initial": ""
+            },
+            "actionResult": {
+              "key": "actionResult",
+              "type": "string",
+              "initial": ""
+            }
+          }
+        },
+        "status": "Finished · 1 edit applied · save when ready."
+      }
+    },
+    {
+      "at": "2026-10-22T15:57:15.917Z",
+      "name": "accepted request clears composer after actual start",
+      "data": {
+        "ok": true
+      }
+    },
+    {
+      "at": "2026-10-22T15:57:16.094Z",
+      "name": "primary end",
+      "data": {
+        "turns": [
+          {
+            "events": [
+              {
+                "type": "started",
+                "runId": "14aa9f2c-51d0-487c-a81d-9545859979d5",
+                "model": "zai/glm-5.3-flash",
+                "engine": "VICT / Mastra"
+              },
+              {
+                "type": "progress",
+                "message": "Connecting to the VICT / Mastra agent…"
+              },
+              {
+                "type": "progress",
+                "message": "Agent is working on your request…"
+              }
+            ],
+            "complete": true,
+            "error": "AbortError: signal is aborted without reason"
+          }
+        ],
+        "status": "Stopped. Applied edits remain on the canvas and in Undo."
+      }
+    },
+    {
+      "at": "2026-10-22T15:57:16.095Z",
+      "name": "production browser has no page errors",
+      "data": {
+        "ok": true,
+        "errors": []
+      }
+    }
+  ],
+  "errors": []
+}
