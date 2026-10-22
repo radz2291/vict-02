@@ -1,0 +1,3713 @@
+{
+  "records": [
+    {
+      "at": "2026-10-22T17:45:05.324Z",
+      "name": "existing nonempty authored screen saved twice and reopened",
+      "data": {
+        "ok": true,
+        "document": {
+          "schema": "vict.ui-document@1",
+          "id": "screen-4ea330f8-841a-48df-8b07-73cbc81f83da",
+          "revision": "r1.r2",
+          "root": "screen",
+          "nodes": {
+            "screen": {
+              "kind": "element",
+              "id": "screen",
+              "tag": "main",
+              "attributes": {
+                "aria-label": "Untitled screen"
+              },
+              "children": [
+                "existing-heading"
+              ],
+              "localStyle": [
+                {
+                  "property": "display",
+                  "value": {
+                    "type": "text",
+                    "value": "flex"
+                  }
+                },
+                {
+                  "property": "flex-direction",
+                  "value": {
+                    "type": "text",
+                    "value": "column"
+                  }
+                },
+                {
+                  "property": "gap",
+                  "value": {
+                    "type": "text",
+                    "value": "20px"
+                  }
+                },
+                {
+                  "property": "padding",
+                  "value": {
+                    "type": "text",
+                    "value": "40px"
+                  }
+                },
+                {
+                  "property": "min-height",
+                  "value": {
+                    "type": "text",
+                    "value": "560px"
+                  }
+                },
+                {
+                  "property": "background-color",
+                  "value": {
+                    "type": "text",
+                    "value": "#ffffff"
+                  }
+                },
+                {
+                  "property": "color",
+                  "value": {
+                    "type": "text",
+                    "value": "#243047"
+                  }
+                },
+                {
+                  "property": "font-family",
+                  "value": {
+                    "type": "text",
+                    "value": "system-ui, sans-serif"
+                  }
+                }
+              ]
+            },
+            "existing-heading": {
+              "id": "existing-heading",
+              "kind": "element",
+              "tag": "h1",
+              "children": [
+                "existing-heading-text"
+              ]
+            },
+            "existing-heading-text": {
+              "id": "existing-heading-text",
+              "kind": "text",
+              "content": {
+                "type": "literal",
+                "value": "Existing saved placeholder"
+              }
+            }
+          },
+          "componentDefinitions": {},
+          "styleSources": {},
+          "assets": {},
+          "tokens": {},
+          "conditions": {
+            "compact": {
+              "id": "compact",
+              "kind": "container",
+              "name": "studio-screen",
+              "query": "(max-width: 600px)"
+            }
+          },
+          "localState": {
+            "message": {
+              "key": "message",
+              "type": "string",
+              "initial": "Hello from my screen"
+            },
+            "accepted": {
+              "key": "accepted",
+              "type": "boolean",
+              "initial": false
+            },
+            "dialogOpen": {
+              "key": "dialogOpen",
+              "type": "boolean",
+              "initial": false
+            },
+            "busy": {
+              "key": "busy",
+              "type": "boolean",
+              "initial": false
+            },
+            "actionError": {
+              "key": "actionError",
+              "type": "string",
+              "initial": ""
+            },
+            "actionResult": {
+              "key": "actionResult",
+              "type": "string",
+              "initial": ""
+            }
+          }
+        },
+        "saveState": "✓ Saved"
+      }
+    },
+    {
+      "at": "2026-10-22T17:46:38.788Z",
+      "name": "real provider edits existing saved screen in multiple acknowledged batches",
+      "data": {
+        "ok": true,
+        "turn": {
+          "request": {
+            "document": {
+              "schema": "vict.ui-document@1",
+              "id": "screen-4ea330f8-841a-48df-8b07-73cbc81f83da",
+              "revision": "r1.r2",
+              "root": "screen",
+              "nodes": {
+                "screen": {
+                  "kind": "element",
+                  "id": "screen",
+                  "tag": "main",
+                  "attributes": {
+                    "aria-label": "Untitled screen"
+                  },
+                  "children": [
+                    "existing-heading"
+                  ],
+                  "localStyle": [
+                    {
+                      "property": "display",
+                      "value": {
+                        "type": "text",
+                        "value": "flex"
+                      }
+                    },
+                    {
+                      "property": "flex-direction",
+                      "value": {
+                        "type": "text",
+                        "value": "column"
+                      }
+                    },
+                    {
+                      "property": "gap",
+                      "value": {
+                        "type": "text",
+                        "value": "20px"
+                      }
+                    },
+                    {
+                      "property": "padding",
+                      "value": {
+                        "type": "text",
+                        "value": "40px"
+                      }
+                    },
+                    {
+                      "property": "min-height",
+                      "value": {
+                        "type": "text",
+                        "value": "560px"
+                      }
+                    },
+                    {
+                      "property": "background-color",
+                      "value": {
+                        "type": "text",
+                        "value": "#ffffff"
+                      }
+                    },
+                    {
+                      "property": "color",
+                      "value": {
+                        "type": "text",
+                        "value": "#243047"
+                      }
+                    },
+                    {
+                      "property": "font-family",
+                      "value": {
+                        "type": "text",
+                        "value": "system-ui, sans-serif"
+                      }
+                    }
+                  ]
+                },
+                "existing-heading": {
+                  "id": "existing-heading",
+                  "kind": "element",
+                  "tag": "h1",
+                  "children": [
+                    "existing-heading-text"
+                  ]
+                },
+                "existing-heading-text": {
+                  "id": "existing-heading-text",
+                  "kind": "text",
+                  "content": {
+                    "type": "literal",
+                    "value": "Existing saved placeholder"
+                  }
+                }
+              },
+              "componentDefinitions": {},
+              "styleSources": {},
+              "assets": {},
+              "tokens": {},
+              "conditions": {
+                "compact": {
+                  "id": "compact",
+                  "kind": "container",
+                  "name": "studio-screen",
+                  "query": "(max-width: 600px)"
+                }
+              },
+              "localState": {
+                "message": {
+                  "key": "message",
+                  "type": "string",
+                  "initial": "Hello from my screen"
+                },
+                "accepted": {
+                  "key": "accepted",
+                  "type": "boolean",
+                  "initial": false
+                },
+                "dialogOpen": {
+                  "key": "dialogOpen",
+                  "type": "boolean",
+                  "initial": false
+                },
+                "busy": {
+                  "key": "busy",
+                  "type": "boolean",
+                  "initial": false
+                },
+                "actionError": {
+                  "key": "actionError",
+                  "type": "string",
+                  "initial": ""
+                },
+                "actionResult": {
+                  "key": "actionResult",
+                  "type": "string",
+                  "initial": ""
+                }
+              }
+            },
+            "cursor": {
+              "documentId": "screen-4ea330f8-841a-48df-8b07-73cbc81f83da",
+              "revision": "r1.r2#0",
+              "digest": "bef1e53c75f4f28ebddbdbbca5771078ccd2524d924014454e364ec736e16d1d",
+              "epoch": "b73ad8ba-a83f-4363-aedb-bdf2e88ebd52"
+            },
+            "selection": "screen-4ea330f8-841a-48df-8b07-73cbc81f83da|screen",
+            "prompt": "Edit this existing saved screen directly into a Quellight AI platform landing page. Replace the existing placeholder heading. Apply exactly two small successive edit batches so I can undo each: first build the hero heading and description, then add a short features section and a Get started button. Use only the palette and do not create a new screen.",
+            "history": []
+          },
+          "events": [
+            {
+              "type": "started",
+              "runId": "0fa1b6c0-0c88-4a31-9ee6-024d83c83ac0",
+              "model": "zai/glm-5.3-flash",
+              "engine": "VICT / Mastra",
+              "observedAt": 1792691106645
+            },
+            {
+              "type": "progress",
+              "message": "Connecting to the VICT / Mastra agent…",
+              "observedAt": 1792691106645
+            },
+            {
+              "type": "progress",
+              "message": "Agent is working on your request…",
+              "observedAt": 1792691106860
+            },
+            {
+              "type": "text",
+              "delta": "I",
+              "observedAt": 1792691169852
+            },
+            {
+              "type": "text",
+              "delta": "'ll",
+              "observedAt": 1792691169852
+            },
+            {
+              "type": "text",
+              "delta": " start",
+              "observedAt": 1792691169863
+            },
+            {
+              "type": "text",
+              "delta": " by",
+              "observedAt": 1792691169863
+            },
+            {
+              "type": "text",
+              "delta": " reading",
+              "observedAt": 1792691169863
+            },
+            {
+              "type": "text",
+              "delta": " the",
+              "observedAt": 1792691169863
+            },
+            {
+              "type": "text",
+              "delta": " current",
+              "observedAt": 1792691169863
+            },
+            {
+              "type": "text",
+              "delta": " screen",
+              "observedAt": 1792691169863
+            },
+            {
+              "type": "text",
+              "delta": " state",
+              "observedAt": 1792691169863
+            },
+            {
+              "type": "text",
+              "delta": " to",
+              "observedAt": 1792691169863
+            },
+            {
+              "type": "text",
+              "delta": " confirm",
+              "observedAt": 1792691169863
+            },
+            {
+              "type": "text",
+              "delta": " the",
+              "observedAt": 1792691169863
+            },
+            {
+              "type": "text",
+              "delta": " revision",
+              "observedAt": 1792691169863
+            },
+            {
+              "type": "text",
+              "delta": " token",
+              "observedAt": 1792691169863
+            },
+            {
+              "type": "text",
+              "delta": " and",
+              "observedAt": 1792691169863
+            },
+            {
+              "type": "text",
+              "delta": " node",
+              "observedAt": 1792691169863
+            },
+            {
+              "type": "text",
+              "delta": " structure",
+              "observedAt": 1792691169868
+            },
+            {
+              "type": "text",
+              "delta": ".",
+              "observedAt": 1792691169868
+            },
+            {
+              "type": "progress",
+              "message": "Reading the screen and selection…",
+              "observedAt": 1792691169891
+            },
+            {
+              "type": "text",
+              "delta": "Confirmed",
+              "observedAt": 1792691175670
+            },
+            {
+              "type": "text",
+              "delta": " the",
+              "observedAt": 1792691175670
+            },
+            {
+              "type": "text",
+              "delta": " structure",
+              "observedAt": 1792691175670
+            },
+            {
+              "type": "text",
+              "delta": ".",
+              "observedAt": 1792691175670
+            },
+            {
+              "type": "text",
+              "delta": " Applying",
+              "observedAt": 1792691175670
+            },
+            {
+              "type": "text",
+              "delta": " **",
+              "observedAt": 1792691175670
+            },
+            {
+              "type": "text",
+              "delta": "Batch",
+              "observedAt": 1792691175670
+            },
+            {
+              "type": "text",
+              "delta": " ",
+              "observedAt": 1792691175670
+            },
+            {
+              "type": "text",
+              "delta": "1",
+              "observedAt": 1792691175670
+            },
+            {
+              "type": "text",
+              "delta": "**:",
+              "observedAt": 1792691175685
+            },
+            {
+              "type": "text",
+              "delta": " replace",
+              "observedAt": 1792691175685
+            },
+            {
+              "type": "text",
+              "delta": " the",
+              "observedAt": 1792691175685
+            },
+            {
+              "type": "text",
+              "delta": " placeholder",
+              "observedAt": 1792691175685
+            },
+            {
+              "type": "text",
+              "delta": " heading",
+              "observedAt": 1792691175685
+            },
+            {
+              "type": "text",
+              "delta": " with",
+              "observedAt": 1792691175685
+            },
+            {
+              "type": "text",
+              "delta": " the",
+              "observedAt": 1792691175685
+            },
+            {
+              "type": "text",
+              "delta": " Qu",
+              "observedAt": 1792691175685
+            },
+            {
+              "type": "text",
+              "delta": "ell",
+              "observedAt": 1792691175685
+            },
+            {
+              "type": "text",
+              "delta": "ight",
+              "observedAt": 1792691175685
+            },
+            {
+              "type": "text",
+              "delta": " hero",
+              "observedAt": 1792691175685
+            },
+            {
+              "type": "text",
+              "delta": " title",
+              "observedAt": 1792691175685
+            },
+            {
+              "type": "text",
+              "delta": " and",
+              "observedAt": 1792691175685
+            },
+            {
+              "type": "text",
+              "delta": " add",
+              "observedAt": 1792691175685
+            },
+            {
+              "type": "text",
+              "delta": " the",
+              "observedAt": 1792691175685
+            },
+            {
+              "type": "text",
+              "delta": " description",
+              "observedAt": 1792691175690
+            },
+            {
+              "type": "text",
+              "delta": ".",
+              "observedAt": 1792691175690
+            },
+            {
+              "type": "progress",
+              "message": "Preparing and validating an edit…",
+              "observedAt": 1792691175702
+            },
+            {
+              "type": "proposal",
+              "proposal": {
+                "proposalId": "71561f87-a663-4b6c-8b89-6988d30bd74f",
+                "cursor": {
+                  "documentId": "screen-4ea330f8-841a-48df-8b07-73cbc81f83da",
+                  "revision": "r1.r2#0",
+                  "digest": "bef1e53c75f4f28ebddbdbbca5771078ccd2524d924014454e364ec736e16d1d",
+                  "epoch": "b73ad8ba-a83f-4363-aedb-bdf2e88ebd52"
+                },
+                "edit": {
+                  "expectedRevision": "r1.r2#0",
+                  "reason": "Hero batch 1: replace placeholder heading with Quellight hero title and add supporting description",
+                  "operations": [
+                    {
+                      "op": "modify",
+                      "nodeId": "existing-heading-text",
+                      "text": "Quellight — AI that lights up your data"
+                    },
+                    {
+                      "op": "modify",
+                      "nodeId": "existing-heading",
+                      "styles": {
+                        "font-size": "48px",
+                        "font-weight": "700",
+                        "letter-spacing": "-0.5px",
+                        "line-height": "1.15",
+                        "margin": "0",
+                        "max-width": "720px"
+                      }
+                    },
+                    {
+                      "op": "add",
+                      "recipe": "text",
+                      "nodeId": "hero-description",
+                      "parentId": "screen",
+                      "index": 1,
+                      "text": "Quellight brings models, pipelines, and copilots together in one platform — build, deploy, and scale AI in minutes, not months.",
+                      "attributes": {
+                        "aria-label": "Quellight platform description"
+                      },
+                      "styles": {
+                        "color": "#5a6a85",
+                        "font-size": "18px",
+                        "line-height": "1.6",
+                        "margin": "0",
+                        "max-width": "560px"
+                      }
+                    }
+                  ]
+                },
+                "resultDigest": "707834bb87b7c657246bdce5593c86b092490b17c2a26adcff047d4ee50ee3c3"
+              },
+              "observedAt": 1792691175746
+            },
+            {
+              "type": "edit-result",
+              "result": {
+                "ok": true,
+                "revision": "r1.r2#1",
+                "digest": "707834bb87b7c657246bdce5593c86b092490b17c2a26adcff047d4ee50ee3c3"
+              },
+              "reason": "Hero batch 1: replace placeholder heading with Quellight hero title and add supporting description",
+              "observedAt": 1792691175790
+            },
+            {
+              "type": "text",
+              "delta": "Batch",
+              "observedAt": 1792691190018
+            },
+            {
+              "type": "text",
+              "delta": " ",
+              "observedAt": 1792691190018
+            },
+            {
+              "type": "text",
+              "delta": "1",
+              "observedAt": 1792691190018
+            },
+            {
+              "type": "text",
+              "delta": " applied",
+              "observedAt": 1792691190018
+            },
+            {
+              "type": "text",
+              "delta": " (",
+              "observedAt": 1792691190018
+            },
+            {
+              "type": "text",
+              "delta": "one",
+              "observedAt": 1792691190018
+            },
+            {
+              "type": "text",
+              "delta": " undo",
+              "observedAt": 1792691190018
+            },
+            {
+              "type": "text",
+              "delta": "able",
+              "observedAt": 1792691190018
+            },
+            {
+              "type": "text",
+              "delta": " change",
+              "observedAt": 1792691190018
+            },
+            {
+              "type": "text",
+              "delta": ").",
+              "observedAt": 1792691190018
+            },
+            {
+              "type": "text",
+              "delta": " Now",
+              "observedAt": 1792691190018
+            },
+            {
+              "type": "text",
+              "delta": " applying",
+              "observedAt": 1792691190018
+            },
+            {
+              "type": "text",
+              "delta": " **",
+              "observedAt": 1792691190018
+            },
+            {
+              "type": "text",
+              "delta": "Batch",
+              "observedAt": 1792691190018
+            },
+            {
+              "type": "text",
+              "delta": " ",
+              "observedAt": 1792691190030
+            },
+            {
+              "type": "text",
+              "delta": "2",
+              "observedAt": 1792691190030
+            },
+            {
+              "type": "text",
+              "delta": "**:",
+              "observedAt": 1792691190030
+            },
+            {
+              "type": "text",
+              "delta": " features",
+              "observedAt": 1792691190030
+            },
+            {
+              "type": "text",
+              "delta": " section",
+              "observedAt": 1792691190030
+            },
+            {
+              "type": "text",
+              "delta": " and",
+              "observedAt": 1792691190030
+            },
+            {
+              "type": "text",
+              "delta": " the",
+              "observedAt": 1792691190030
+            },
+            {
+              "type": "text",
+              "delta": " Get",
+              "observedAt": 1792691190030
+            },
+            {
+              "type": "text",
+              "delta": " started",
+              "observedAt": 1792691190030
+            },
+            {
+              "type": "text",
+              "delta": " button",
+              "observedAt": 1792691190030
+            },
+            {
+              "type": "text",
+              "delta": ".",
+              "observedAt": 1792691190030
+            },
+            {
+              "type": "progress",
+              "message": "Preparing and validating an edit…",
+              "observedAt": 1792691190039
+            },
+            {
+              "type": "proposal",
+              "proposal": {
+                "proposalId": "67fe922c-7e3c-4e2a-8f06-16ea5acc7364",
+                "cursor": {
+                  "documentId": "screen-4ea330f8-841a-48df-8b07-73cbc81f83da",
+                  "revision": "r1.r2#1",
+                  "digest": "707834bb87b7c657246bdce5593c86b092490b17c2a26adcff047d4ee50ee3c3",
+                  "epoch": "b73ad8ba-a83f-4363-aedb-bdf2e88ebd52"
+                },
+                "edit": {
+                  "expectedRevision": "r1.r2#1",
+                  "reason": "Batch 2: add short features section (heading + three blurbs) and a Get started button",
+                  "operations": [
+                    {
+                      "op": "add",
+                      "recipe": "section",
+                      "nodeId": "features-section",
+                      "parentId": "screen",
+                      "index": 2,
+                      "styles": {
+                        "display": "flex",
+                        "flex-direction": "column",
+                        "gap": "12px",
+                        "padding": "8px 0"
+                      }
+                    },
+                    {
+                      "op": "add",
+                      "recipe": "heading",
+                      "nodeId": "features-heading",
+                      "parentId": "features-section",
+                      "index": 0,
+                      "text": "Why teams choose Quellight",
+                      "styles": {
+                        "font-size": "22px",
+                        "font-weight": "600",
+                        "margin": "0"
+                      }
+                    },
+                    {
+                      "op": "add",
+                      "recipe": "row",
+                      "nodeId": "features-row",
+                      "parentId": "features-section",
+                      "index": 1,
+                      "styles": {
+                        "flex-wrap": "wrap",
+                        "gap": "16px"
+                      }
+                    },
+                    {
+                      "op": "add",
+                      "recipe": "text",
+                      "nodeId": "feature-1",
+                      "parentId": "features-row",
+                      "index": 0,
+                      "text": "Build fast — connect your data and launch pipelines in minutes, no MLOps degree required.",
+                      "styles": {
+                        "flex": "1 1 220px",
+                        "font-size": "15px",
+                        "line-height": "1.5",
+                        "margin": "0"
+                      }
+                    },
+                    {
+                      "op": "add",
+                      "recipe": "text",
+                      "nodeId": "feature-2",
+                      "parentId": "features-row",
+                      "index": 1,
+                      "text": "Deploy anywhere — one-click model serving across cloud, edge, and on-prem.",
+                      "styles": {
+                        "flex": "1 1 220px",
+                        "font-size": "15px",
+                        "line-height": "1.5",
+                        "margin": "0"
+                      }
+                    },
+                    {
+                      "op": "add",
+                      "recipe": "text",
+                      "nodeId": "feature-3",
+                      "parentId": "features-row",
+                      "index": 2,
+                      "text": "Scale with confidence — monitoring, guardrails, and cost controls built in from day one.",
+                      "styles": {
+                        "flex": "1 1 220px",
+                        "font-size": "15px",
+                        "line-height": "1.5",
+                        "margin": "0"
+                      }
+                    },
+                    {
+                      "op": "add",
+                      "recipe": "button",
+                      "nodeId": "get-started-btn",
+                      "parentId": "screen",
+                      "index": 3,
+                      "props": {
+                        "label": "Get started"
+                      },
+                      "styles": {
+                        "align-self": "flex-start",
+                        "background-color": "#4f46e5",
+                        "border-radius": "8px",
+                        "color": "#ffffff",
+                        "font-size": "16px",
+                        "font-weight": "600",
+                        "padding": "12px 24px"
+                      }
+                    }
+                  ]
+                },
+                "resultDigest": "9630aaede95a7fa0f55c19aacbd4b50c62afdafa2ab2d674fe31c9ea898d00cf"
+              },
+              "observedAt": 1792691190097
+            },
+            {
+              "type": "edit-result",
+              "result": {
+                "ok": true,
+                "revision": "r1.r2#2",
+                "digest": "9630aaede95a7fa0f55c19aacbd4b50c62afdafa2ab2d674fe31c9ea898d00cf"
+              },
+              "reason": "Batch 2: add short features section (heading + three blurbs) and a Get started button",
+              "observedAt": 1792691190126
+            },
+            {
+              "type": "text",
+              "delta": "Done",
+              "observedAt": 1792691195948
+            },
+            {
+              "type": "text",
+              "delta": " —",
+              "observedAt": 1792691195948
+            },
+            {
+              "type": "text",
+              "delta": " both",
+              "observedAt": 1792691195948
+            },
+            {
+              "type": "text",
+              "delta": " batches",
+              "observedAt": 1792691195948
+            },
+            {
+              "type": "text",
+              "delta": " were",
+              "observedAt": 1792691197179
+            },
+            {
+              "type": "text",
+              "delta": " applied",
+              "observedAt": 1792691197179
+            },
+            {
+              "type": "text",
+              "delta": " and",
+              "observedAt": 1792691197179
+            },
+            {
+              "type": "text",
+              "delta": " acknowledged",
+              "observedAt": 1792691197179
+            },
+            {
+              "type": "text",
+              "delta": " by",
+              "observedAt": 1792691197179
+            },
+            {
+              "type": "text",
+              "delta": " the",
+              "observedAt": 1792691197179
+            },
+            {
+              "type": "text",
+              "delta": " browser",
+              "observedAt": 1792691197179
+            },
+            {
+              "type": "text",
+              "delta": ":\n\n",
+              "observedAt": 1792691197179
+            },
+            {
+              "type": "text",
+              "delta": "**",
+              "observedAt": 1792691197179
+            },
+            {
+              "type": "text",
+              "delta": "Batch",
+              "observedAt": 1792691197179
+            },
+            {
+              "type": "text",
+              "delta": " ",
+              "observedAt": 1792691197179
+            },
+            {
+              "type": "text",
+              "delta": "1",
+              "observedAt": 1792691197179
+            },
+            {
+              "type": "text",
+              "delta": " (",
+              "observedAt": 1792691197179
+            },
+            {
+              "type": "text",
+              "delta": "hero",
+              "observedAt": 1792691197179
+            },
+            {
+              "type": "text",
+              "delta": "):",
+              "observedAt": 1792691197179
+            },
+            {
+              "type": "text",
+              "delta": "**",
+              "observedAt": 1792691197195
+            },
+            {
+              "type": "text",
+              "delta": " Re",
+              "observedAt": 1792691197195
+            },
+            {
+              "type": "text",
+              "delta": "placed",
+              "observedAt": 1792691197195
+            },
+            {
+              "type": "text",
+              "delta": " the",
+              "observedAt": 1792691197195
+            },
+            {
+              "type": "text",
+              "delta": " placeholder",
+              "observedAt": 1792691197195
+            },
+            {
+              "type": "text",
+              "delta": " heading",
+              "observedAt": 1792691197195
+            },
+            {
+              "type": "text",
+              "delta": " with",
+              "observedAt": 1792691197195
+            },
+            {
+              "type": "text",
+              "delta": " \"",
+              "observedAt": 1792691197195
+            },
+            {
+              "type": "text",
+              "delta": "Qu",
+              "observedAt": 1792691197195
+            },
+            {
+              "type": "text",
+              "delta": "ell",
+              "observedAt": 1792691197195
+            },
+            {
+              "type": "text",
+              "delta": "ight",
+              "observedAt": 1792691197195
+            },
+            {
+              "type": "text",
+              "delta": " —",
+              "observedAt": 1792691197195
+            },
+            {
+              "type": "text",
+              "delta": " AI",
+              "observedAt": 1792691197195
+            },
+            {
+              "type": "text",
+              "delta": " that",
+              "observedAt": 1792691197195
+            },
+            {
+              "type": "text",
+              "delta": " lights",
+              "observedAt": 1792691197212
+            },
+            {
+              "type": "text",
+              "delta": " up",
+              "observedAt": 1792691197212
+            },
+            {
+              "type": "text",
+              "delta": " your",
+              "observedAt": 1792691197212
+            },
+            {
+              "type": "text",
+              "delta": " data",
+              "observedAt": 1792691197212
+            },
+            {
+              "type": "text",
+              "delta": "\",",
+              "observedAt": 1792691197212
+            },
+            {
+              "type": "text",
+              "delta": " styled",
+              "observedAt": 1792691197212
+            },
+            {
+              "type": "text",
+              "delta": " it",
+              "observedAt": 1792691197212
+            },
+            {
+              "type": "text",
+              "delta": " as",
+              "observedAt": 1792691197212
+            },
+            {
+              "type": "text",
+              "delta": " a",
+              "observedAt": 1792691197212
+            },
+            {
+              "type": "text",
+              "delta": " hero",
+              "observedAt": 1792691197212
+            },
+            {
+              "type": "text",
+              "delta": " title",
+              "observedAt": 1792691197212
+            },
+            {
+              "type": "text",
+              "delta": ",",
+              "observedAt": 1792691197212
+            },
+            {
+              "type": "text",
+              "delta": " and",
+              "observedAt": 1792691197212
+            },
+            {
+              "type": "text",
+              "delta": " added",
+              "observedAt": 1792691197212
+            },
+            {
+              "type": "text",
+              "delta": " a",
+              "observedAt": 1792691197212
+            },
+            {
+              "type": "text",
+              "delta": " supporting",
+              "observedAt": 1792691197225
+            },
+            {
+              "type": "text",
+              "delta": " description",
+              "observedAt": 1792691197225
+            },
+            {
+              "type": "text",
+              "delta": " below",
+              "observedAt": 1792691197225
+            },
+            {
+              "type": "text",
+              "delta": " it",
+              "observedAt": 1792691197225
+            },
+            {
+              "type": "text",
+              "delta": ".\n\n",
+              "observedAt": 1792691197225
+            },
+            {
+              "type": "text",
+              "delta": "**",
+              "observedAt": 1792691197225
+            },
+            {
+              "type": "text",
+              "delta": "Batch",
+              "observedAt": 1792691197225
+            },
+            {
+              "type": "text",
+              "delta": " ",
+              "observedAt": 1792691197225
+            },
+            {
+              "type": "text",
+              "delta": "2",
+              "observedAt": 1792691197225
+            },
+            {
+              "type": "text",
+              "delta": " (",
+              "observedAt": 1792691197225
+            },
+            {
+              "type": "text",
+              "delta": "features",
+              "observedAt": 1792691197225
+            },
+            {
+              "type": "text",
+              "delta": " +",
+              "observedAt": 1792691197225
+            },
+            {
+              "type": "text",
+              "delta": " C",
+              "observedAt": 1792691197225
+            },
+            {
+              "type": "text",
+              "delta": "TA",
+              "observedAt": 1792691197225
+            },
+            {
+              "type": "text",
+              "delta": "):",
+              "observedAt": 1792691197225
+            },
+            {
+              "type": "text",
+              "delta": "**",
+              "observedAt": 1792691197239
+            },
+            {
+              "type": "text",
+              "delta": " Added",
+              "observedAt": 1792691197239
+            },
+            {
+              "type": "text",
+              "delta": " a",
+              "observedAt": 1792691197239
+            },
+            {
+              "type": "text",
+              "delta": " \"",
+              "observedAt": 1792691197239
+            },
+            {
+              "type": "text",
+              "delta": "Why",
+              "observedAt": 1792691197239
+            },
+            {
+              "type": "text",
+              "delta": " teams",
+              "observedAt": 1792691197239
+            },
+            {
+              "type": "text",
+              "delta": " choose",
+              "observedAt": 1792691197239
+            },
+            {
+              "type": "text",
+              "delta": " Qu",
+              "observedAt": 1792691197239
+            },
+            {
+              "type": "text",
+              "delta": "ell",
+              "observedAt": 1792691197239
+            },
+            {
+              "type": "text",
+              "delta": "ight",
+              "observedAt": 1792691197239
+            },
+            {
+              "type": "text",
+              "delta": "\"",
+              "observedAt": 1792691197239
+            },
+            {
+              "type": "text",
+              "delta": " section",
+              "observedAt": 1792691197239
+            },
+            {
+              "type": "text",
+              "delta": " with",
+              "observedAt": 1792691197239
+            },
+            {
+              "type": "text",
+              "delta": " three",
+              "observedAt": 1792691197239
+            },
+            {
+              "type": "text",
+              "delta": " short",
+              "observedAt": 1792691197239
+            },
+            {
+              "type": "text",
+              "delta": " feature",
+              "observedAt": 1792691197248
+            },
+            {
+              "type": "text",
+              "delta": " blur",
+              "observedAt": 1792691197248
+            },
+            {
+              "type": "text",
+              "delta": "bs",
+              "observedAt": 1792691197248
+            },
+            {
+              "type": "text",
+              "delta": " in",
+              "observedAt": 1792691197248
+            },
+            {
+              "type": "text",
+              "delta": " a",
+              "observedAt": 1792691197248
+            },
+            {
+              "type": "text",
+              "delta": " wrapping",
+              "observedAt": 1792691197248
+            },
+            {
+              "type": "text",
+              "delta": " row",
+              "observedAt": 1792691197248
+            },
+            {
+              "type": "text",
+              "delta": ",",
+              "observedAt": 1792691198218
+            },
+            {
+              "type": "text",
+              "delta": " plus",
+              "observedAt": 1792691198218
+            },
+            {
+              "type": "text",
+              "delta": " a",
+              "observedAt": 1792691198218
+            },
+            {
+              "type": "text",
+              "delta": " \"",
+              "observedAt": 1792691198218
+            },
+            {
+              "type": "text",
+              "delta": "Get",
+              "observedAt": 1792691198218
+            },
+            {
+              "type": "text",
+              "delta": " started",
+              "observedAt": 1792691198218
+            },
+            {
+              "type": "text",
+              "delta": "\"",
+              "observedAt": 1792691198218
+            },
+            {
+              "type": "text",
+              "delta": " catalog",
+              "observedAt": 1792691198218
+            },
+            {
+              "type": "text",
+              "delta": " button",
+              "observedAt": 1792691198218
+            },
+            {
+              "type": "text",
+              "delta": ".\n\n",
+              "observedAt": 1792691198218
+            },
+            {
+              "type": "text",
+              "delta": "Each",
+              "observedAt": 1792691198218
+            },
+            {
+              "type": "text",
+              "delta": " batch",
+              "observedAt": 1792691198218
+            },
+            {
+              "type": "text",
+              "delta": " is",
+              "observedAt": 1792691198218
+            },
+            {
+              "type": "text",
+              "delta": " its",
+              "observedAt": 1792691198218
+            },
+            {
+              "type": "text",
+              "delta": " own",
+              "observedAt": 1792691198218
+            },
+            {
+              "type": "text",
+              "delta": " undo",
+              "observedAt": 1792691198232
+            },
+            {
+              "type": "text",
+              "delta": "able",
+              "observedAt": 1792691198232
+            },
+            {
+              "type": "text",
+              "delta": " change",
+              "observedAt": 1792691198232
+            },
+            {
+              "type": "text",
+              "delta": ",",
+              "observedAt": 1792691198232
+            },
+            {
+              "type": "text",
+              "delta": " so",
+              "observedAt": 1792691198232
+            },
+            {
+              "type": "text",
+              "delta": " you",
+              "observedAt": 1792691198232
+            },
+            {
+              "type": "text",
+              "delta": " can",
+              "observedAt": 1792691198232
+            },
+            {
+              "type": "text",
+              "delta": " revert",
+              "observedAt": 1792691198232
+            },
+            {
+              "type": "text",
+              "delta": " them",
+              "observedAt": 1792691198232
+            },
+            {
+              "type": "text",
+              "delta": " one",
+              "observedAt": 1792691198232
+            },
+            {
+              "type": "text",
+              "delta": " at",
+              "observedAt": 1792691198232
+            },
+            {
+              "type": "text",
+              "delta": " a",
+              "observedAt": 1792691198232
+            },
+            {
+              "type": "text",
+              "delta": " time",
+              "observedAt": 1792691198232
+            },
+            {
+              "type": "text",
+              "delta": ".",
+              "observedAt": 1792691198232
+            },
+            {
+              "type": "text",
+              "delta": " The",
+              "observedAt": 1792691198232
+            },
+            {
+              "type": "text",
+              "delta": " button",
+              "observedAt": 1792691198245
+            },
+            {
+              "type": "text",
+              "delta": "'s",
+              "observedAt": 1792691198245
+            },
+            {
+              "type": "text",
+              "delta": " press",
+              "observedAt": 1792691198245
+            },
+            {
+              "type": "text",
+              "delta": " action",
+              "observedAt": 1792691198245
+            },
+            {
+              "type": "text",
+              "delta": " is",
+              "observedAt": 1792691198245
+            },
+            {
+              "type": "text",
+              "delta": " a",
+              "observedAt": 1792691198245
+            },
+            {
+              "type": "text",
+              "delta": " local",
+              "observedAt": 1792691198245
+            },
+            {
+              "type": "text",
+              "delta": " preview",
+              "observedAt": 1792691198245
+            },
+            {
+              "type": "text",
+              "delta": " only",
+              "observedAt": 1792691198245
+            },
+            {
+              "type": "text",
+              "delta": " —",
+              "observedAt": 1792691198245
+            },
+            {
+              "type": "text",
+              "delta": " nothing",
+              "observedAt": 1792691198245
+            },
+            {
+              "type": "text",
+              "delta": " is",
+              "observedAt": 1792691198245
+            },
+            {
+              "type": "text",
+              "delta": " wired",
+              "observedAt": 1792691198245
+            },
+            {
+              "type": "text",
+              "delta": " to",
+              "observedAt": 1792691198245
+            },
+            {
+              "type": "text",
+              "delta": " a",
+              "observedAt": 1792691198245
+            },
+            {
+              "type": "text",
+              "delta": " backend",
+              "observedAt": 1792691198252
+            },
+            {
+              "type": "text",
+              "delta": ",",
+              "observedAt": 1792691198252
+            },
+            {
+              "type": "text",
+              "delta": " and",
+              "observedAt": 1792691198252
+            },
+            {
+              "type": "text",
+              "delta": " saving",
+              "observedAt": 1792691198252
+            },
+            {
+              "type": "text",
+              "delta": " is",
+              "observedAt": 1792691198252
+            },
+            {
+              "type": "text",
+              "delta": " up",
+              "observedAt": 1792691198252
+            },
+            {
+              "type": "text",
+              "delta": " to you.",
+              "observedAt": 1792691198252
+            },
+            {
+              "type": "done",
+              "status": "completed",
+              "applied": 2,
+              "turnId": "turn-ca313149-9705-4c97-bbc7-da08a54049b2",
+              "profileVersion": "v1_9a8331caffc726ac5c9c051a5e77d1a2a05217a8582a1c76b7538514d5db960d",
+              "observedAt": 1792691198564
+            }
+          ],
+          "acks": [
+            {
+              "runId": "0fa1b6c0-0c88-4a31-9ee6-024d83c83ac0",
+              "proposalId": "71561f87-a663-4b6c-8b89-6988d30bd74f",
+              "receipt": {
+                "ok": true,
+                "revision": "r1.r2#1",
+                "digest": "707834bb87b7c657246bdce5593c86b092490b17c2a26adcff047d4ee50ee3c3"
+              }
+            },
+            {
+              "runId": "0fa1b6c0-0c88-4a31-9ee6-024d83c83ac0",
+              "proposalId": "67fe922c-7e3c-4e2a-8f06-16ea5acc7364",
+              "receipt": {
+                "ok": true,
+                "revision": "r1.r2#2",
+                "digest": "9630aaede95a7fa0f55c19aacbd4b50c62afdafa2ab2d674fe31c9ea898d00cf"
+              }
+            }
+          ],
+          "complete": true,
+          "startedAt": 1792691106644,
+          "endedAt": 1792691198564
+        },
+        "document": {
+          "schema": "vict.ui-document@1",
+          "id": "screen-4ea330f8-841a-48df-8b07-73cbc81f83da",
+          "revision": "r1.r2",
+          "root": "screen",
+          "nodes": {
+            "screen": {
+              "kind": "element",
+              "id": "screen",
+              "tag": "main",
+              "attributes": {
+                "aria-label": "Untitled screen"
+              },
+              "children": [
+                "existing-heading",
+                "hero-description",
+                "features-section",
+                "get-started-btn"
+              ],
+              "localStyle": [
+                {
+                  "property": "display",
+                  "value": {
+                    "type": "text",
+                    "value": "flex"
+                  }
+                },
+                {
+                  "property": "flex-direction",
+                  "value": {
+                    "type": "text",
+                    "value": "column"
+                  }
+                },
+                {
+                  "property": "gap",
+                  "value": {
+                    "type": "text",
+                    "value": "20px"
+                  }
+                },
+                {
+                  "property": "padding",
+                  "value": {
+                    "type": "text",
+                    "value": "40px"
+                  }
+                },
+                {
+                  "property": "min-height",
+                  "value": {
+                    "type": "text",
+                    "value": "560px"
+                  }
+                },
+                {
+                  "property": "background-color",
+                  "value": {
+                    "type": "text",
+                    "value": "#ffffff"
+                  }
+                },
+                {
+                  "property": "color",
+                  "value": {
+                    "type": "text",
+                    "value": "#243047"
+                  }
+                },
+                {
+                  "property": "font-family",
+                  "value": {
+                    "type": "text",
+                    "value": "system-ui, sans-serif"
+                  }
+                }
+              ]
+            },
+            "existing-heading": {
+              "id": "existing-heading",
+              "kind": "element",
+              "tag": "h1",
+              "children": [
+                "existing-heading-text"
+              ],
+              "localStyle": [
+                {
+                  "property": "font-size",
+                  "value": {
+                    "type": "text",
+                    "value": "48px"
+                  }
+                },
+                {
+                  "property": "font-weight",
+                  "value": {
+                    "type": "text",
+                    "value": "700"
+                  }
+                },
+                {
+                  "property": "letter-spacing",
+                  "value": {
+                    "type": "text",
+                    "value": "-0.5px"
+                  }
+                },
+                {
+                  "property": "line-height",
+                  "value": {
+                    "type": "text",
+                    "value": "1.15"
+                  }
+                },
+                {
+                  "property": "margin",
+                  "value": {
+                    "type": "text",
+                    "value": "0"
+                  }
+                },
+                {
+                  "property": "max-width",
+                  "value": {
+                    "type": "text",
+                    "value": "720px"
+                  }
+                }
+              ]
+            },
+            "existing-heading-text": {
+              "id": "existing-heading-text",
+              "kind": "text",
+              "content": {
+                "type": "literal",
+                "value": "Quellight — AI that lights up your data"
+              }
+            },
+            "hero-description": {
+              "kind": "element",
+              "id": "hero-description",
+              "tag": "p",
+              "children": [
+                "hero-description-text"
+              ],
+              "localStyle": [
+                {
+                  "property": "font-size",
+                  "value": {
+                    "type": "text",
+                    "value": "18px"
+                  }
+                },
+                {
+                  "property": "line-height",
+                  "value": {
+                    "type": "text",
+                    "value": "1.6"
+                  }
+                },
+                {
+                  "property": "margin",
+                  "value": {
+                    "type": "text",
+                    "value": "0"
+                  }
+                },
+                {
+                  "property": "color",
+                  "value": {
+                    "type": "text",
+                    "value": "#5a6a85"
+                  }
+                },
+                {
+                  "property": "max-width",
+                  "value": {
+                    "type": "text",
+                    "value": "560px"
+                  }
+                }
+              ],
+              "attributes": {
+                "aria-label": "Quellight platform description"
+              }
+            },
+            "hero-description-text": {
+              "kind": "text",
+              "id": "hero-description-text",
+              "content": {
+                "type": "literal",
+                "value": "Quellight brings models, pipelines, and copilots together in one platform — build, deploy, and scale AI in minutes, not months."
+              }
+            },
+            "features-section": {
+              "kind": "element",
+              "id": "features-section",
+              "tag": "section",
+              "attributes": {
+                "aria-label": "Section"
+              },
+              "children": [
+                "features-heading",
+                "features-row"
+              ],
+              "localStyle": [
+                {
+                  "property": "display",
+                  "value": {
+                    "type": "text",
+                    "value": "flex"
+                  }
+                },
+                {
+                  "property": "flex-direction",
+                  "value": {
+                    "type": "text",
+                    "value": "column"
+                  }
+                },
+                {
+                  "property": "gap",
+                  "value": {
+                    "type": "text",
+                    "value": "12px"
+                  }
+                },
+                {
+                  "property": "padding",
+                  "value": {
+                    "type": "text",
+                    "value": "8px 0"
+                  }
+                },
+                {
+                  "property": "min-height",
+                  "value": {
+                    "type": "text",
+                    "value": "100px"
+                  }
+                },
+                {
+                  "property": "background-color",
+                  "value": {
+                    "type": "text",
+                    "value": "#f5f7fb"
+                  }
+                },
+                {
+                  "property": "border-radius",
+                  "value": {
+                    "type": "text",
+                    "value": "12px"
+                  }
+                }
+              ]
+            },
+            "features-heading": {
+              "kind": "element",
+              "id": "features-heading",
+              "tag": "h1",
+              "children": [
+                "features-heading-text"
+              ],
+              "localStyle": [
+                {
+                  "property": "font-size",
+                  "value": {
+                    "type": "text",
+                    "value": "22px"
+                  }
+                },
+                {
+                  "property": "font-weight",
+                  "value": {
+                    "type": "text",
+                    "value": "600"
+                  }
+                },
+                {
+                  "property": "line-height",
+                  "value": {
+                    "type": "text",
+                    "value": "1.2"
+                  }
+                },
+                {
+                  "property": "margin",
+                  "value": {
+                    "type": "text",
+                    "value": "0"
+                  }
+                }
+              ]
+            },
+            "features-heading-text": {
+              "kind": "text",
+              "id": "features-heading-text",
+              "content": {
+                "type": "literal",
+                "value": "Why teams choose Quellight"
+              }
+            },
+            "features-row": {
+              "kind": "element",
+              "id": "features-row",
+              "tag": "div",
+              "children": [
+                "feature-1",
+                "feature-2",
+                "feature-3"
+              ],
+              "localStyle": [
+                {
+                  "property": "display",
+                  "value": {
+                    "type": "text",
+                    "value": "flex"
+                  }
+                },
+                {
+                  "property": "flex-wrap",
+                  "value": {
+                    "type": "text",
+                    "value": "wrap"
+                  }
+                },
+                {
+                  "property": "gap",
+                  "value": {
+                    "type": "text",
+                    "value": "16px"
+                  }
+                },
+                {
+                  "property": "align-items",
+                  "value": {
+                    "type": "text",
+                    "value": "center"
+                  }
+                },
+                {
+                  "property": "min-height",
+                  "value": {
+                    "type": "text",
+                    "value": "60px"
+                  }
+                }
+              ]
+            },
+            "feature-1": {
+              "kind": "element",
+              "id": "feature-1",
+              "tag": "p",
+              "children": [
+                "feature-1-text"
+              ],
+              "localStyle": [
+                {
+                  "property": "font-size",
+                  "value": {
+                    "type": "text",
+                    "value": "15px"
+                  }
+                },
+                {
+                  "property": "line-height",
+                  "value": {
+                    "type": "text",
+                    "value": "1.5"
+                  }
+                },
+                {
+                  "property": "margin",
+                  "value": {
+                    "type": "text",
+                    "value": "0"
+                  }
+                },
+                {
+                  "property": "color",
+                  "value": {
+                    "type": "text",
+                    "value": "#647187"
+                  }
+                },
+                {
+                  "property": "flex",
+                  "value": {
+                    "type": "text",
+                    "value": "1 1 220px"
+                  }
+                }
+              ]
+            },
+            "feature-1-text": {
+              "kind": "text",
+              "id": "feature-1-text",
+              "content": {
+                "type": "literal",
+                "value": "Build fast — connect your data and launch pipelines in minutes, no MLOps degree required."
+              }
+            },
+            "feature-2": {
+              "kind": "element",
+              "id": "feature-2",
+              "tag": "p",
+              "children": [
+                "feature-2-text"
+              ],
+              "localStyle": [
+                {
+                  "property": "font-size",
+                  "value": {
+                    "type": "text",
+                    "value": "15px"
+                  }
+                },
+                {
+                  "property": "line-height",
+                  "value": {
+                    "type": "text",
+                    "value": "1.5"
+                  }
+                },
+                {
+                  "property": "margin",
+                  "value": {
+                    "type": "text",
+                    "value": "0"
+                  }
+                },
+                {
+                  "property": "color",
+                  "value": {
+                    "type": "text",
+                    "value": "#647187"
+                  }
+                },
+                {
+                  "property": "flex",
+                  "value": {
+                    "type": "text",
+                    "value": "1 1 220px"
+                  }
+                }
+              ]
+            },
+            "feature-2-text": {
+              "kind": "text",
+              "id": "feature-2-text",
+              "content": {
+                "type": "literal",
+                "value": "Deploy anywhere — one-click model serving across cloud, edge, and on-prem."
+              }
+            },
+            "feature-3": {
+              "kind": "element",
+              "id": "feature-3",
+              "tag": "p",
+              "children": [
+                "feature-3-text"
+              ],
+              "localStyle": [
+                {
+                  "property": "font-size",
+                  "value": {
+                    "type": "text",
+                    "value": "15px"
+                  }
+                },
+                {
+                  "property": "line-height",
+                  "value": {
+                    "type": "text",
+                    "value": "1.5"
+                  }
+                },
+                {
+                  "property": "margin",
+                  "value": {
+                    "type": "text",
+                    "value": "0"
+                  }
+                },
+                {
+                  "property": "color",
+                  "value": {
+                    "type": "text",
+                    "value": "#647187"
+                  }
+                },
+                {
+                  "property": "flex",
+                  "value": {
+                    "type": "text",
+                    "value": "1 1 220px"
+                  }
+                }
+              ]
+            },
+            "feature-3-text": {
+              "kind": "text",
+              "id": "feature-3-text",
+              "content": {
+                "type": "literal",
+                "value": "Scale with confidence — monitoring, guardrails, and cost controls built in from day one."
+              }
+            },
+            "get-started-btn": {
+              "kind": "component",
+              "id": "get-started-btn",
+              "definitionId": "vict.catalog.button",
+              "props": {
+                "label": {
+                  "type": "literal",
+                  "value": "Get started"
+                },
+                "loading": {
+                  "type": "ref",
+                  "path": "state.busy"
+                }
+              },
+              "slots": {},
+              "localStyle": [
+                {
+                  "property": "align-self",
+                  "value": {
+                    "type": "text",
+                    "value": "flex-start"
+                  }
+                },
+                {
+                  "property": "background-color",
+                  "value": {
+                    "type": "text",
+                    "value": "#4f46e5"
+                  }
+                },
+                {
+                  "property": "border-radius",
+                  "value": {
+                    "type": "text",
+                    "value": "8px"
+                  }
+                },
+                {
+                  "property": "color",
+                  "value": {
+                    "type": "text",
+                    "value": "#ffffff"
+                  }
+                },
+                {
+                  "property": "font-size",
+                  "value": {
+                    "type": "text",
+                    "value": "16px"
+                  }
+                },
+                {
+                  "property": "font-weight",
+                  "value": {
+                    "type": "text",
+                    "value": "600"
+                  }
+                },
+                {
+                  "property": "padding",
+                  "value": {
+                    "type": "text",
+                    "value": "12px 24px"
+                  }
+                }
+              ]
+            }
+          },
+          "componentDefinitions": {},
+          "styleSources": {},
+          "assets": {},
+          "tokens": {},
+          "conditions": {
+            "compact": {
+              "id": "compact",
+              "kind": "container",
+              "name": "studio-screen",
+              "query": "(max-width: 600px)"
+            }
+          },
+          "localState": {
+            "message": {
+              "key": "message",
+              "type": "string",
+              "initial": "Hello from my screen"
+            },
+            "accepted": {
+              "key": "accepted",
+              "type": "boolean",
+              "initial": false
+            },
+            "dialogOpen": {
+              "key": "dialogOpen",
+              "type": "boolean",
+              "initial": false
+            },
+            "busy": {
+              "key": "busy",
+              "type": "boolean",
+              "initial": false
+            },
+            "actionError": {
+              "key": "actionError",
+              "type": "string",
+              "initial": ""
+            },
+            "actionResult": {
+              "key": "actionResult",
+              "type": "string",
+              "initial": ""
+            }
+          }
+        },
+        "status": " 2 edits applied"
+      }
+    },
+    {
+      "at": "2026-10-22T17:46:38.792Z",
+      "name": "opaque working revision differs from source and advances between batches",
+      "data": {
+        "ok": true,
+        "sourceRevision": "r1.r2",
+        "initialWorkingRevision": "r1.r2#0",
+        "firstEditRevision": "r1.r2#0",
+        "firstAcknowledgedNextRevision": "r1.r2#1",
+        "secondEditRevision": "r1.r2#1"
+      }
+    },
+    {
+      "at": "2026-10-22T17:46:38.798Z",
+      "name": "no repeated fresh-go loop or forced new screen",
+      "data": {
+        "ok": true,
+        "requestCount": 1
+      }
+    },
+    {
+      "at": "2026-10-22T17:46:39.131Z",
+      "name": "Undo reverses only last acknowledged batch",
+      "data": {
+        "ok": true
+      }
+    },
+    {
+      "at": "2026-10-22T17:46:39.322Z",
+      "name": "Redo restores exact canonical document",
+      "data": {
+        "ok": true
+      }
+    },
+    {
+      "at": "2026-10-22T17:46:39.966Z",
+      "name": "Save and reopen preserve landing page",
+      "data": {
+        "ok": true
+      }
+    },
+    {
+      "at": "2026-10-22T17:46:40.181Z",
+      "name": "full browser turns",
+      "data": {
+        "turns": [
+          {
+            "request": {
+              "document": {
+                "schema": "vict.ui-document@1",
+                "id": "screen-4ea330f8-841a-48df-8b07-73cbc81f83da",
+                "revision": "r1.r2",
+                "root": "screen",
+                "nodes": {
+                  "screen": {
+                    "kind": "element",
+                    "id": "screen",
+                    "tag": "main",
+                    "attributes": {
+                      "aria-label": "Untitled screen"
+                    },
+                    "children": [
+                      "existing-heading"
+                    ],
+                    "localStyle": [
+                      {
+                        "property": "display",
+                        "value": {
+                          "type": "text",
+                          "value": "flex"
+                        }
+                      },
+                      {
+                        "property": "flex-direction",
+                        "value": {
+                          "type": "text",
+                          "value": "column"
+                        }
+                      },
+                      {
+                        "property": "gap",
+                        "value": {
+                          "type": "text",
+                          "value": "20px"
+                        }
+                      },
+                      {
+                        "property": "padding",
+                        "value": {
+                          "type": "text",
+                          "value": "40px"
+                        }
+                      },
+                      {
+                        "property": "min-height",
+                        "value": {
+                          "type": "text",
+                          "value": "560px"
+                        }
+                      },
+                      {
+                        "property": "background-color",
+                        "value": {
+                          "type": "text",
+                          "value": "#ffffff"
+                        }
+                      },
+                      {
+                        "property": "color",
+                        "value": {
+                          "type": "text",
+                          "value": "#243047"
+                        }
+                      },
+                      {
+                        "property": "font-family",
+                        "value": {
+                          "type": "text",
+                          "value": "system-ui, sans-serif"
+                        }
+                      }
+                    ]
+                  },
+                  "existing-heading": {
+                    "id": "existing-heading",
+                    "kind": "element",
+                    "tag": "h1",
+                    "children": [
+                      "existing-heading-text"
+                    ]
+                  },
+                  "existing-heading-text": {
+                    "id": "existing-heading-text",
+                    "kind": "text",
+                    "content": {
+                      "type": "literal",
+                      "value": "Existing saved placeholder"
+                    }
+                  }
+                },
+                "componentDefinitions": {},
+                "styleSources": {},
+                "assets": {},
+                "tokens": {},
+                "conditions": {
+                  "compact": {
+                    "id": "compact",
+                    "kind": "container",
+                    "name": "studio-screen",
+                    "query": "(max-width: 600px)"
+                  }
+                },
+                "localState": {
+                  "message": {
+                    "key": "message",
+                    "type": "string",
+                    "initial": "Hello from my screen"
+                  },
+                  "accepted": {
+                    "key": "accepted",
+                    "type": "boolean",
+                    "initial": false
+                  },
+                  "dialogOpen": {
+                    "key": "dialogOpen",
+                    "type": "boolean",
+                    "initial": false
+                  },
+                  "busy": {
+                    "key": "busy",
+                    "type": "boolean",
+                    "initial": false
+                  },
+                  "actionError": {
+                    "key": "actionError",
+                    "type": "string",
+                    "initial": ""
+                  },
+                  "actionResult": {
+                    "key": "actionResult",
+                    "type": "string",
+                    "initial": ""
+                  }
+                }
+              },
+              "cursor": {
+                "documentId": "screen-4ea330f8-841a-48df-8b07-73cbc81f83da",
+                "revision": "r1.r2#0",
+                "digest": "bef1e53c75f4f28ebddbdbbca5771078ccd2524d924014454e364ec736e16d1d",
+                "epoch": "b73ad8ba-a83f-4363-aedb-bdf2e88ebd52"
+              },
+              "selection": "screen-4ea330f8-841a-48df-8b07-73cbc81f83da|screen",
+              "prompt": "Edit this existing saved screen directly into a Quellight AI platform landing page. Replace the existing placeholder heading. Apply exactly two small successive edit batches so I can undo each: first build the hero heading and description, then add a short features section and a Get started button. Use only the palette and do not create a new screen.",
+              "history": []
+            },
+            "events": [
+              {
+                "type": "started",
+                "runId": "0fa1b6c0-0c88-4a31-9ee6-024d83c83ac0",
+                "model": "zai/glm-5.3-flash",
+                "engine": "VICT / Mastra",
+                "observedAt": 1792691106645
+              },
+              {
+                "type": "progress",
+                "message": "Connecting to the VICT / Mastra agent…",
+                "observedAt": 1792691106645
+              },
+              {
+                "type": "progress",
+                "message": "Agent is working on your request…",
+                "observedAt": 1792691106860
+              },
+              {
+                "type": "text",
+                "delta": "I",
+                "observedAt": 1792691169852
+              },
+              {
+                "type": "text",
+                "delta": "'ll",
+                "observedAt": 1792691169852
+              },
+              {
+                "type": "text",
+                "delta": " start",
+                "observedAt": 1792691169863
+              },
+              {
+                "type": "text",
+                "delta": " by",
+                "observedAt": 1792691169863
+              },
+              {
+                "type": "text",
+                "delta": " reading",
+                "observedAt": 1792691169863
+              },
+              {
+                "type": "text",
+                "delta": " the",
+                "observedAt": 1792691169863
+              },
+              {
+                "type": "text",
+                "delta": " current",
+                "observedAt": 1792691169863
+              },
+              {
+                "type": "text",
+                "delta": " screen",
+                "observedAt": 1792691169863
+              },
+              {
+                "type": "text",
+                "delta": " state",
+                "observedAt": 1792691169863
+              },
+              {
+                "type": "text",
+                "delta": " to",
+                "observedAt": 1792691169863
+              },
+              {
+                "type": "text",
+                "delta": " confirm",
+                "observedAt": 1792691169863
+              },
+              {
+                "type": "text",
+                "delta": " the",
+                "observedAt": 1792691169863
+              },
+              {
+                "type": "text",
+                "delta": " revision",
+                "observedAt": 1792691169863
+              },
+              {
+                "type": "text",
+                "delta": " token",
+                "observedAt": 1792691169863
+              },
+              {
+                "type": "text",
+                "delta": " and",
+                "observedAt": 1792691169863
+              },
+              {
+                "type": "text",
+                "delta": " node",
+                "observedAt": 1792691169863
+              },
+              {
+                "type": "text",
+                "delta": " structure",
+                "observedAt": 1792691169868
+              },
+              {
+                "type": "text",
+                "delta": ".",
+                "observedAt": 1792691169868
+              },
+              {
+                "type": "progress",
+                "message": "Reading the screen and selection…",
+                "observedAt": 1792691169891
+              },
+              {
+                "type": "text",
+                "delta": "Confirmed",
+                "observedAt": 1792691175670
+              },
+              {
+                "type": "text",
+                "delta": " the",
+                "observedAt": 1792691175670
+              },
+              {
+                "type": "text",
+                "delta": " structure",
+                "observedAt": 1792691175670
+              },
+              {
+                "type": "text",
+                "delta": ".",
+                "observedAt": 1792691175670
+              },
+              {
+                "type": "text",
+                "delta": " Applying",
+                "observedAt": 1792691175670
+              },
+              {
+                "type": "text",
+                "delta": " **",
+                "observedAt": 1792691175670
+              },
+              {
+                "type": "text",
+                "delta": "Batch",
+                "observedAt": 1792691175670
+              },
+              {
+                "type": "text",
+                "delta": " ",
+                "observedAt": 1792691175670
+              },
+              {
+                "type": "text",
+                "delta": "1",
+                "observedAt": 1792691175670
+              },
+              {
+                "type": "text",
+                "delta": "**:",
+                "observedAt": 1792691175685
+              },
+              {
+                "type": "text",
+                "delta": " replace",
+                "observedAt": 1792691175685
+              },
+              {
+                "type": "text",
+                "delta": " the",
+                "observedAt": 1792691175685
+              },
+              {
+                "type": "text",
+                "delta": " placeholder",
+                "observedAt": 1792691175685
+              },
+              {
+                "type": "text",
+                "delta": " heading",
+                "observedAt": 1792691175685
+              },
+              {
+                "type": "text",
+                "delta": " with",
+                "observedAt": 1792691175685
+              },
+              {
+                "type": "text",
+                "delta": " the",
+                "observedAt": 1792691175685
+              },
+              {
+                "type": "text",
+                "delta": " Qu",
+                "observedAt": 1792691175685
+              },
+              {
+                "type": "text",
+                "delta": "ell",
+                "observedAt": 1792691175685
+              },
+              {
+                "type": "text",
+                "delta": "ight",
+                "observedAt": 1792691175685
+              },
+              {
+                "type": "text",
+                "delta": " hero",
+                "observedAt": 1792691175685
+              },
+              {
+                "type": "text",
+                "delta": " title",
+                "observedAt": 1792691175685
+              },
+              {
+                "type": "text",
+                "delta": " and",
+                "observedAt": 1792691175685
+              },
+              {
+                "type": "text",
+                "delta": " add",
+                "observedAt": 1792691175685
+              },
+              {
+                "type": "text",
+                "delta": " the",
+                "observedAt": 1792691175685
+              },
+              {
+                "type": "text",
+                "delta": " description",
+                "observedAt": 1792691175690
+              },
+              {
+                "type": "text",
+                "delta": ".",
+                "observedAt": 1792691175690
+              },
+              {
+                "type": "progress",
+                "message": "Preparing and validating an edit…",
+                "observedAt": 1792691175702
+              },
+              {
+                "type": "proposal",
+                "proposal": {
+                  "proposalId": "71561f87-a663-4b6c-8b89-6988d30bd74f",
+                  "cursor": {
+                    "documentId": "screen-4ea330f8-841a-48df-8b07-73cbc81f83da",
+                    "revision": "r1.r2#0",
+                    "digest": "bef1e53c75f4f28ebddbdbbca5771078ccd2524d924014454e364ec736e16d1d",
+                    "epoch": "b73ad8ba-a83f-4363-aedb-bdf2e88ebd52"
+                  },
+                  "edit": {
+                    "expectedRevision": "r1.r2#0",
+                    "reason": "Hero batch 1: replace placeholder heading with Quellight hero title and add supporting description",
+                    "operations": [
+                      {
+                        "op": "modify",
+                        "nodeId": "existing-heading-text",
+                        "text": "Quellight — AI that lights up your data"
+                      },
+                      {
+                        "op": "modify",
+                        "nodeId": "existing-heading",
+                        "styles": {
+                          "font-size": "48px",
+                          "font-weight": "700",
+                          "letter-spacing": "-0.5px",
+                          "line-height": "1.15",
+                          "margin": "0",
+                          "max-width": "720px"
+                        }
+                      },
+                      {
+                        "op": "add",
+                        "recipe": "text",
+                        "nodeId": "hero-description",
+                        "parentId": "screen",
+                        "index": 1,
+                        "text": "Quellight brings models, pipelines, and copilots together in one platform — build, deploy, and scale AI in minutes, not months.",
+                        "attributes": {
+                          "aria-label": "Quellight platform description"
+                        },
+                        "styles": {
+                          "color": "#5a6a85",
+                          "font-size": "18px",
+                          "line-height": "1.6",
+                          "margin": "0",
+                          "max-width": "560px"
+                        }
+                      }
+                    ]
+                  },
+                  "resultDigest": "707834bb87b7c657246bdce5593c86b092490b17c2a26adcff047d4ee50ee3c3"
+                },
+                "observedAt": 1792691175746
+              },
+              {
+                "type": "edit-result",
+                "result": {
+                  "ok": true,
+                  "revision": "r1.r2#1",
+                  "digest": "707834bb87b7c657246bdce5593c86b092490b17c2a26adcff047d4ee50ee3c3"
+                },
+                "reason": "Hero batch 1: replace placeholder heading with Quellight hero title and add supporting description",
+                "observedAt": 1792691175790
+              },
+              {
+                "type": "text",
+                "delta": "Batch",
+                "observedAt": 1792691190018
+              },
+              {
+                "type": "text",
+                "delta": " ",
+                "observedAt": 1792691190018
+              },
+              {
+                "type": "text",
+                "delta": "1",
+                "observedAt": 1792691190018
+              },
+              {
+                "type": "text",
+                "delta": " applied",
+                "observedAt": 1792691190018
+              },
+              {
+                "type": "text",
+                "delta": " (",
+                "observedAt": 1792691190018
+              },
+              {
+                "type": "text",
+                "delta": "one",
+                "observedAt": 1792691190018
+              },
+              {
+                "type": "text",
+                "delta": " undo",
+                "observedAt": 1792691190018
+              },
+              {
+                "type": "text",
+                "delta": "able",
+                "observedAt": 1792691190018
+              },
+              {
+                "type": "text",
+                "delta": " change",
+                "observedAt": 1792691190018
+              },
+              {
+                "type": "text",
+                "delta": ").",
+                "observedAt": 1792691190018
+              },
+              {
+                "type": "text",
+                "delta": " Now",
+                "observedAt": 1792691190018
+              },
+              {
+                "type": "text",
+                "delta": " applying",
+                "observedAt": 1792691190018
+              },
+              {
+                "type": "text",
+                "delta": " **",
+                "observedAt": 1792691190018
+              },
+              {
+                "type": "text",
+                "delta": "Batch",
+                "observedAt": 1792691190018
+              },
+              {
+                "type": "text",
+                "delta": " ",
+                "observedAt": 1792691190030
+              },
+              {
+                "type": "text",
+                "delta": "2",
+                "observedAt": 1792691190030
+              },
+              {
+                "type": "text",
+                "delta": "**:",
+                "observedAt": 1792691190030
+              },
+              {
+                "type": "text",
+                "delta": " features",
+                "observedAt": 1792691190030
+              },
+              {
+                "type": "text",
+                "delta": " section",
+                "observedAt": 1792691190030
+              },
+              {
+                "type": "text",
+                "delta": " and",
+                "observedAt": 1792691190030
+              },
+              {
+                "type": "text",
+                "delta": " the",
+                "observedAt": 1792691190030
+              },
+              {
+                "type": "text",
+                "delta": " Get",
+                "observedAt": 1792691190030
+              },
+              {
+                "type": "text",
+                "delta": " started",
+                "observedAt": 1792691190030
+              },
+              {
+                "type": "text",
+                "delta": " button",
+                "observedAt": 1792691190030
+              },
+              {
+                "type": "text",
+                "delta": ".",
+                "observedAt": 1792691190030
+              },
+              {
+                "type": "progress",
+                "message": "Preparing and validating an edit…",
+                "observedAt": 1792691190039
+              },
+              {
+                "type": "proposal",
+                "proposal": {
+                  "proposalId": "67fe922c-7e3c-4e2a-8f06-16ea5acc7364",
+                  "cursor": {
+                    "documentId": "screen-4ea330f8-841a-48df-8b07-73cbc81f83da",
+                    "revision": "r1.r2#1",
+                    "digest": "707834bb87b7c657246bdce5593c86b092490b17c2a26adcff047d4ee50ee3c3",
+                    "epoch": "b73ad8ba-a83f-4363-aedb-bdf2e88ebd52"
+                  },
+                  "edit": {
+                    "expectedRevision": "r1.r2#1",
+                    "reason": "Batch 2: add short features section (heading + three blurbs) and a Get started button",
+                    "operations": [
+                      {
+                        "op": "add",
+                        "recipe": "section",
+                        "nodeId": "features-section",
+                        "parentId": "screen",
+                        "index": 2,
+                        "styles": {
+                          "display": "flex",
+                          "flex-direction": "column",
+                          "gap": "12px",
+                          "padding": "8px 0"
+                        }
+                      },
+                      {
+                        "op": "add",
+                        "recipe": "heading",
+                        "nodeId": "features-heading",
+                        "parentId": "features-section",
+                        "index": 0,
+                        "text": "Why teams choose Quellight",
+                        "styles": {
+                          "font-size": "22px",
+                          "font-weight": "600",
+                          "margin": "0"
+                        }
+                      },
+                      {
+                        "op": "add",
+                        "recipe": "row",
+                        "nodeId": "features-row",
+                        "parentId": "features-section",
+                        "index": 1,
+                        "styles": {
+                          "flex-wrap": "wrap",
+                          "gap": "16px"
+                        }
+                      },
+                      {
+                        "op": "add",
+                        "recipe": "text",
+                        "nodeId": "feature-1",
+                        "parentId": "features-row",
+                        "index": 0,
+                        "text": "Build fast — connect your data and launch pipelines in minutes, no MLOps degree required.",
+                        "styles": {
+                          "flex": "1 1 220px",
+                          "font-size": "15px",
+                          "line-height": "1.5",
+                          "margin": "0"
+                        }
+                      },
+                      {
+                        "op": "add",
+                        "recipe": "text",
+                        "nodeId": "feature-2",
+                        "parentId": "features-row",
+                        "index": 1,
+                        "text": "Deploy anywhere — one-click model serving across cloud, edge, and on-prem.",
+                        "styles": {
+                          "flex": "1 1 220px",
+                          "font-size": "15px",
+                          "line-height": "1.5",
+                          "margin": "0"
+                        }
+                      },
+                      {
+                        "op": "add",
+                        "recipe": "text",
+                        "nodeId": "feature-3",
+                        "parentId": "features-row",
+                        "index": 2,
+                        "text": "Scale with confidence — monitoring, guardrails, and cost controls built in from day one.",
+                        "styles": {
+                          "flex": "1 1 220px",
+                          "font-size": "15px",
+                          "line-height": "1.5",
+                          "margin": "0"
+                        }
+                      },
+                      {
+                        "op": "add",
+                        "recipe": "button",
+                        "nodeId": "get-started-btn",
+                        "parentId": "screen",
+                        "index": 3,
+                        "props": {
+                          "label": "Get started"
+                        },
+                        "styles": {
+                          "align-self": "flex-start",
+                          "background-color": "#4f46e5",
+                          "border-radius": "8px",
+                          "color": "#ffffff",
+                          "font-size": "16px",
+                          "font-weight": "600",
+                          "padding": "12px 24px"
+                        }
+                      }
+                    ]
+                  },
+                  "resultDigest": "9630aaede95a7fa0f55c19aacbd4b50c62afdafa2ab2d674fe31c9ea898d00cf"
+                },
+                "observedAt": 1792691190097
+              },
+              {
+                "type": "edit-result",
+                "result": {
+                  "ok": true,
+                  "revision": "r1.r2#2",
+                  "digest": "9630aaede95a7fa0f55c19aacbd4b50c62afdafa2ab2d674fe31c9ea898d00cf"
+                },
+                "reason": "Batch 2: add short features section (heading + three blurbs) and a Get started button",
+                "observedAt": 1792691190126
+              },
+              {
+                "type": "text",
+                "delta": "Done",
+                "observedAt": 1792691195948
+              },
+              {
+                "type": "text",
+                "delta": " —",
+                "observedAt": 1792691195948
+              },
+              {
+                "type": "text",
+                "delta": " both",
+                "observedAt": 1792691195948
+              },
+              {
+                "type": "text",
+                "delta": " batches",
+                "observedAt": 1792691195948
+              },
+              {
+                "type": "text",
+                "delta": " were",
+                "observedAt": 1792691197179
+              },
+              {
+                "type": "text",
+                "delta": " applied",
+                "observedAt": 1792691197179
+              },
+              {
+                "type": "text",
+                "delta": " and",
+                "observedAt": 1792691197179
+              },
+              {
+                "type": "text",
+                "delta": " acknowledged",
+                "observedAt": 1792691197179
+              },
+              {
+                "type": "text",
+                "delta": " by",
+                "observedAt": 1792691197179
+              },
+              {
+                "type": "text",
+                "delta": " the",
+                "observedAt": 1792691197179
+              },
+              {
+                "type": "text",
+                "delta": " browser",
+                "observedAt": 1792691197179
+              },
+              {
+                "type": "text",
+                "delta": ":\n\n",
+                "observedAt": 1792691197179
+              },
+              {
+                "type": "text",
+                "delta": "**",
+                "observedAt": 1792691197179
+              },
+              {
+                "type": "text",
+                "delta": "Batch",
+                "observedAt": 1792691197179
+              },
+              {
+                "type": "text",
+                "delta": " ",
+                "observedAt": 1792691197179
+              },
+              {
+                "type": "text",
+                "delta": "1",
+                "observedAt": 1792691197179
+              },
+              {
+                "type": "text",
+                "delta": " (",
+                "observedAt": 1792691197179
+              },
+              {
+                "type": "text",
+                "delta": "hero",
+                "observedAt": 1792691197179
+              },
+              {
+                "type": "text",
+                "delta": "):",
+                "observedAt": 1792691197179
+              },
+              {
+                "type": "text",
+                "delta": "**",
+                "observedAt": 1792691197195
+              },
+              {
+                "type": "text",
+                "delta": " Re",
+                "observedAt": 1792691197195
+              },
+              {
+                "type": "text",
+                "delta": "placed",
+                "observedAt": 1792691197195
+              },
+              {
+                "type": "text",
+                "delta": " the",
+                "observedAt": 1792691197195
+              },
+              {
+                "type": "text",
+                "delta": " placeholder",
+                "observedAt": 1792691197195
+              },
+              {
+                "type": "text",
+                "delta": " heading",
+                "observedAt": 1792691197195
+              },
+              {
+                "type": "text",
+                "delta": " with",
+                "observedAt": 1792691197195
+              },
+              {
+                "type": "text",
+                "delta": " \"",
+                "observedAt": 1792691197195
+              },
+              {
+                "type": "text",
+                "delta": "Qu",
+                "observedAt": 1792691197195
+              },
+              {
+                "type": "text",
+                "delta": "ell",
+                "observedAt": 1792691197195
+              },
+              {
+                "type": "text",
+                "delta": "ight",
+                "observedAt": 1792691197195
+              },
+              {
+                "type": "text",
+                "delta": " —",
+                "observedAt": 1792691197195
+              },
+              {
+                "type": "text",
+                "delta": " AI",
+                "observedAt": 1792691197195
+              },
+              {
+                "type": "text",
+                "delta": " that",
+                "observedAt": 1792691197195
+              },
+              {
+                "type": "text",
+                "delta": " lights",
+                "observedAt": 1792691197212
+              },
+              {
+                "type": "text",
+                "delta": " up",
+                "observedAt": 1792691197212
+              },
+              {
+                "type": "text",
+                "delta": " your",
+                "observedAt": 1792691197212
+              },
+              {
+                "type": "text",
+                "delta": " data",
+                "observedAt": 1792691197212
+              },
+              {
+                "type": "text",
+                "delta": "\",",
+                "observedAt": 1792691197212
+              },
+              {
+                "type": "text",
+                "delta": " styled",
+                "observedAt": 1792691197212
+              },
+              {
+                "type": "text",
+                "delta": " it",
+                "observedAt": 1792691197212
+              },
+              {
+                "type": "text",
+                "delta": " as",
+                "observedAt": 1792691197212
+              },
+              {
+                "type": "text",
+                "delta": " a",
+                "observedAt": 1792691197212
+              },
+              {
+                "type": "text",
+                "delta": " hero",
+                "observedAt": 1792691197212
+              },
+              {
+                "type": "text",
+                "delta": " title",
+                "observedAt": 1792691197212
+              },
+              {
+                "type": "text",
+                "delta": ",",
+                "observedAt": 1792691197212
+              },
+              {
+                "type": "text",
+                "delta": " and",
+                "observedAt": 1792691197212
+              },
+              {
+                "type": "text",
+                "delta": " added",
+                "observedAt": 1792691197212
+              },
+              {
+                "type": "text",
+                "delta": " a",
+                "observedAt": 1792691197212
+              },
+              {
+                "type": "text",
+                "delta": " supporting",
+                "observedAt": 1792691197225
+              },
+              {
+                "type": "text",
+                "delta": " description",
+                "observedAt": 1792691197225
+              },
+              {
+                "type": "text",
+                "delta": " below",
+                "observedAt": 1792691197225
+              },
+              {
+                "type": "text",
+                "delta": " it",
+                "observedAt": 1792691197225
+              },
+              {
+                "type": "text",
+                "delta": ".\n\n",
+                "observedAt": 1792691197225
+              },
+              {
+                "type": "text",
+                "delta": "**",
+                "observedAt": 1792691197225
+              },
+              {
+                "type": "text",
+                "delta": "Batch",
+                "observedAt": 1792691197225
+              },
+              {
+                "type": "text",
+                "delta": " ",
+                "observedAt": 1792691197225
+              },
+              {
+                "type": "text",
+                "delta": "2",
+                "observedAt": 1792691197225
+              },
+              {
+                "type": "text",
+                "delta": " (",
+                "observedAt": 1792691197225
+              },
+              {
+                "type": "text",
+                "delta": "features",
+                "observedAt": 1792691197225
+              },
+              {
+                "type": "text",
+                "delta": " +",
+                "observedAt": 1792691197225
+              },
+              {
+                "type": "text",
+                "delta": " C",
+                "observedAt": 1792691197225
+              },
+              {
+                "type": "text",
+                "delta": "TA",
+                "observedAt": 1792691197225
+              },
+              {
+                "type": "text",
+                "delta": "):",
+                "observedAt": 1792691197225
+              },
+              {
+                "type": "text",
+                "delta": "**",
+                "observedAt": 1792691197239
+              },
+              {
+                "type": "text",
+                "delta": " Added",
+                "observedAt": 1792691197239
+              },
+              {
+                "type": "text",
+                "delta": " a",
+                "observedAt": 1792691197239
+              },
+              {
+                "type": "text",
+                "delta": " \"",
+                "observedAt": 1792691197239
+              },
+              {
+                "type": "text",
+                "delta": "Why",
+                "observedAt": 1792691197239
+              },
+              {
+                "type": "text",
+                "delta": " teams",
+                "observedAt": 1792691197239
+              },
+              {
+                "type": "text",
+                "delta": " choose",
+                "observedAt": 1792691197239
+              },
+              {
+                "type": "text",
+                "delta": " Qu",
+                "observedAt": 1792691197239
+              },
+              {
+                "type": "text",
+                "delta": "ell",
+                "observedAt": 1792691197239
+              },
+              {
+                "type": "text",
+                "delta": "ight",
+                "observedAt": 1792691197239
+              },
+              {
+                "type": "text",
+                "delta": "\"",
+                "observedAt": 1792691197239
+              },
+              {
+                "type": "text",
+                "delta": " section",
+                "observedAt": 1792691197239
+              },
+              {
+                "type": "text",
+                "delta": " with",
+                "observedAt": 1792691197239
+              },
+              {
+                "type": "text",
+                "delta": " three",
+                "observedAt": 1792691197239
+              },
+              {
+                "type": "text",
+                "delta": " short",
+                "observedAt": 1792691197239
+              },
+              {
+                "type": "text",
+                "delta": " feature",
+                "observedAt": 1792691197248
+              },
+              {
+                "type": "text",
+                "delta": " blur",
+                "observedAt": 1792691197248
+              },
+              {
+                "type": "text",
+                "delta": "bs",
+                "observedAt": 1792691197248
+              },
+              {
+                "type": "text",
+                "delta": " in",
+                "observedAt": 1792691197248
+              },
+              {
+                "type": "text",
+                "delta": " a",
+                "observedAt": 1792691197248
+              },
+              {
+                "type": "text",
+                "delta": " wrapping",
+                "observedAt": 1792691197248
+              },
+              {
+                "type": "text",
+                "delta": " row",
+                "observedAt": 1792691197248
+              },
+              {
+                "type": "text",
+                "delta": ",",
+                "observedAt": 1792691198218
+              },
+              {
+                "type": "text",
+                "delta": " plus",
+                "observedAt": 1792691198218
+              },
+              {
+                "type": "text",
+                "delta": " a",
+                "observedAt": 1792691198218
+              },
+              {
+                "type": "text",
+                "delta": " \"",
+                "observedAt": 1792691198218
+              },
+              {
+                "type": "text",
+                "delta": "Get",
+                "observedAt": 1792691198218
+              },
+              {
+                "type": "text",
+                "delta": " started",
+                "observedAt": 1792691198218
+              },
+              {
+                "type": "text",
+                "delta": "\"",
+                "observedAt": 1792691198218
+              },
+              {
+                "type": "text",
+                "delta": " catalog",
+                "observedAt": 1792691198218
+              },
+              {
+                "type": "text",
+                "delta": " button",
+                "observedAt": 1792691198218
+              },
+              {
+                "type": "text",
+                "delta": ".\n\n",
+                "observedAt": 1792691198218
+              },
+              {
+                "type": "text",
+                "delta": "Each",
+                "observedAt": 1792691198218
+              },
+              {
+                "type": "text",
+                "delta": " batch",
+                "observedAt": 1792691198218
+              },
+              {
+                "type": "text",
+                "delta": " is",
+                "observedAt": 1792691198218
+              },
+              {
+                "type": "text",
+                "delta": " its",
+                "observedAt": 1792691198218
+              },
+              {
+                "type": "text",
+                "delta": " own",
+                "observedAt": 1792691198218
+              },
+              {
+                "type": "text",
+                "delta": " undo",
+                "observedAt": 1792691198232
+              },
+              {
+                "type": "text",
+                "delta": "able",
+                "observedAt": 1792691198232
+              },
+              {
+                "type": "text",
+                "delta": " change",
+                "observedAt": 1792691198232
+              },
+              {
+                "type": "text",
+                "delta": ",",
+                "observedAt": 1792691198232
+              },
+              {
+                "type": "text",
+                "delta": " so",
+                "observedAt": 1792691198232
+              },
+              {
+                "type": "text",
+                "delta": " you",
+                "observedAt": 1792691198232
+              },
+              {
+                "type": "text",
+                "delta": " can",
+                "observedAt": 1792691198232
+              },
+              {
+                "type": "text",
+                "delta": " revert",
+                "observedAt": 1792691198232
+              },
+              {
+                "type": "text",
+                "delta": " them",
+                "observedAt": 1792691198232
+              },
+              {
+                "type": "text",
+                "delta": " one",
+                "observedAt": 1792691198232
+              },
+              {
+                "type": "text",
+                "delta": " at",
+                "observedAt": 1792691198232
+              },
+              {
+                "type": "text",
+                "delta": " a",
+                "observedAt": 1792691198232
+              },
+              {
+                "type": "text",
+                "delta": " time",
+                "observedAt": 1792691198232
+              },
+              {
+                "type": "text",
+                "delta": ".",
+                "observedAt": 1792691198232
+              },
+              {
+                "type": "text",
+                "delta": " The",
+                "observedAt": 1792691198232
+              },
+              {
+                "type": "text",
+                "delta": " button",
+                "observedAt": 1792691198245
+              },
+              {
+                "type": "text",
+                "delta": "'s",
+                "observedAt": 1792691198245
+              },
+              {
+                "type": "text",
+                "delta": " press",
+                "observedAt": 1792691198245
+              },
+              {
+                "type": "text",
+                "delta": " action",
+                "observedAt": 1792691198245
+              },
+              {
+                "type": "text",
+                "delta": " is",
+                "observedAt": 1792691198245
+              },
+              {
+                "type": "text",
+                "delta": " a",
+                "observedAt": 1792691198245
+              },
+              {
+                "type": "text",
+                "delta": " local",
+                "observedAt": 1792691198245
+              },
+              {
+                "type": "text",
+                "delta": " preview",
+                "observedAt": 1792691198245
+              },
+              {
+                "type": "text",
+                "delta": " only",
+                "observedAt": 1792691198245
+              },
+              {
+                "type": "text",
+                "delta": " —",
+                "observedAt": 1792691198245
+              },
+              {
+                "type": "text",
+                "delta": " nothing",
+                "observedAt": 1792691198245
+              },
+              {
+                "type": "text",
+                "delta": " is",
+                "observedAt": 1792691198245
+              },
+              {
+                "type": "text",
+                "delta": " wired",
+                "observedAt": 1792691198245
+              },
+              {
+                "type": "text",
+                "delta": " to",
+                "observedAt": 1792691198245
+              },
+              {
+                "type": "text",
+                "delta": " a",
+                "observedAt": 1792691198245
+              },
+              {
+                "type": "text",
+                "delta": " backend",
+                "observedAt": 1792691198252
+              },
+              {
+                "type": "text",
+                "delta": ",",
+                "observedAt": 1792691198252
+              },
+              {
+                "type": "text",
+                "delta": " and",
+                "observedAt": 1792691198252
+              },
+              {
+                "type": "text",
+                "delta": " saving",
+                "observedAt": 1792691198252
+              },
+              {
+                "type": "text",
+                "delta": " is",
+                "observedAt": 1792691198252
+              },
+              {
+                "type": "text",
+                "delta": " up",
+                "observedAt": 1792691198252
+              },
+              {
+                "type": "text",
+                "delta": " to you.",
+                "observedAt": 1792691198252
+              },
+              {
+                "type": "done",
+                "status": "completed",
+                "applied": 2,
+                "turnId": "turn-ca313149-9705-4c97-bbc7-da08a54049b2",
+                "profileVersion": "v1_9a8331caffc726ac5c9c051a5e77d1a2a05217a8582a1c76b7538514d5db960d",
+                "observedAt": 1792691198564
+              }
+            ],
+            "acks": [
+              {
+                "runId": "0fa1b6c0-0c88-4a31-9ee6-024d83c83ac0",
+                "proposalId": "71561f87-a663-4b6c-8b89-6988d30bd74f",
+                "receipt": {
+                  "ok": true,
+                  "revision": "r1.r2#1",
+                  "digest": "707834bb87b7c657246bdce5593c86b092490b17c2a26adcff047d4ee50ee3c3"
+                }
+              },
+              {
+                "runId": "0fa1b6c0-0c88-4a31-9ee6-024d83c83ac0",
+                "proposalId": "67fe922c-7e3c-4e2a-8f06-16ea5acc7364",
+                "receipt": {
+                  "ok": true,
+                  "revision": "r1.r2#2",
+                  "digest": "9630aaede95a7fa0f55c19aacbd4b50c62afdafa2ab2d674fe31c9ea898d00cf"
+                }
+              }
+            ],
+            "complete": true,
+            "startedAt": 1792691106644,
+            "endedAt": 1792691198564
+          }
+        ]
+      }
+    },
+    {
+      "at": "2026-10-22T17:46:40.184Z",
+      "name": "no browser errors",
+      "data": {
+        "ok": true,
+        "errors": []
+      }
+    }
+  ],
+  "errors": []
+}
