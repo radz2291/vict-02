@@ -1,0 +1,16 @@
+Retained independent verification setup observation, 2026-10-23.
+
+First suite invocation was issued from repository root:
+node apps/studio/node_modules/vitest/vitest.mjs run --config docs/studio/verification-cycle-1-1-revision-repair/studio.config.ts
+
+It selected Studio Vitest 3.2.7, but used repository-root paths, reporting:
+No Svelte config file found ... using SvelteKit's default configuration without an adapter.
+src\app.html does not exist
+No test files found, exiting with code 1
+include: tests/**/*.test.ts
+
+Corrected invocation used cwd apps/studio and the same test-only config:
+node node_modules/vitest/vitest.mjs run --config ../../docs/studio/verification-cycle-1-1-revision-repair/studio.config.ts
+
+The complete corrected full run is full-suite.log: 26 files / 145 tests PASS.
+The setup observation is not a product failure or a passed test run.

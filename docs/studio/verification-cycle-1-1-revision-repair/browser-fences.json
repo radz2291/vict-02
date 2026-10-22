@@ -1,0 +1,2196 @@
+{
+  "records": [
+    {
+      "at": "2026-10-22T17:48:37.927Z",
+      "name": "genuine manual edit refuses real proposal with zero agent effects",
+      "data": {
+        "ok": true,
+        "turn": {
+          "request": {
+            "document": {
+              "schema": "vict.ui-document@1",
+              "id": "screen-f3fbb5bd-cd52-46a2-8a69-43f03fa352a7",
+              "revision": "r1",
+              "root": "screen",
+              "nodes": {
+                "screen": {
+                  "kind": "element",
+                  "id": "screen",
+                  "tag": "main",
+                  "attributes": {
+                    "aria-label": "Untitled screen"
+                  },
+                  "children": [],
+                  "localStyle": [
+                    {
+                      "property": "display",
+                      "value": {
+                        "type": "text",
+                        "value": "flex"
+                      }
+                    },
+                    {
+                      "property": "flex-direction",
+                      "value": {
+                        "type": "text",
+                        "value": "column"
+                      }
+                    },
+                    {
+                      "property": "gap",
+                      "value": {
+                        "type": "text",
+                        "value": "20px"
+                      }
+                    },
+                    {
+                      "property": "padding",
+                      "value": {
+                        "type": "text",
+                        "value": "40px"
+                      }
+                    },
+                    {
+                      "property": "min-height",
+                      "value": {
+                        "type": "text",
+                        "value": "560px"
+                      }
+                    },
+                    {
+                      "property": "background-color",
+                      "value": {
+                        "type": "text",
+                        "value": "#ffffff"
+                      }
+                    },
+                    {
+                      "property": "color",
+                      "value": {
+                        "type": "text",
+                        "value": "#243047"
+                      }
+                    },
+                    {
+                      "property": "font-family",
+                      "value": {
+                        "type": "text",
+                        "value": "system-ui, sans-serif"
+                      }
+                    }
+                  ]
+                }
+              },
+              "componentDefinitions": {},
+              "styleSources": {},
+              "assets": {},
+              "tokens": {},
+              "conditions": {
+                "compact": {
+                  "id": "compact",
+                  "kind": "container",
+                  "name": "studio-screen",
+                  "query": "(max-width: 600px)"
+                }
+              },
+              "localState": {
+                "message": {
+                  "key": "message",
+                  "type": "string",
+                  "initial": "Hello from my screen"
+                },
+                "accepted": {
+                  "key": "accepted",
+                  "type": "boolean",
+                  "initial": false
+                },
+                "dialogOpen": {
+                  "key": "dialogOpen",
+                  "type": "boolean",
+                  "initial": false
+                },
+                "busy": {
+                  "key": "busy",
+                  "type": "boolean",
+                  "initial": false
+                },
+                "actionError": {
+                  "key": "actionError",
+                  "type": "string",
+                  "initial": ""
+                },
+                "actionResult": {
+                  "key": "actionResult",
+                  "type": "string",
+                  "initial": ""
+                }
+              }
+            },
+            "cursor": {
+              "documentId": "screen-f3fbb5bd-cd52-46a2-8a69-43f03fa352a7",
+              "revision": "r1#0",
+              "digest": "6406126f044c3241f36673636bf230ecab13110a0fe155863be19c2417b3daad",
+              "epoch": "e9746d88-be23-41bf-a651-3b0556c3be9b"
+            },
+            "selection": "screen-f3fbb5bd-cd52-46a2-8a69-43f03fa352a7|screen",
+            "prompt": "Add exactly one heading reading \"Stale proposal must stay absent\" to this open screen using the edit tool.",
+            "history": []
+          },
+          "events": [
+            {
+              "type": "started",
+              "runId": "663ae144-3504-4ffd-87a3-d6862deb95d2",
+              "model": "zai/glm-5.3-flash",
+              "engine": "VICT / Mastra",
+              "observedAt": 1792691303028
+            },
+            {
+              "type": "progress",
+              "message": "Connecting to the VICT / Mastra agent…",
+              "observedAt": 1792691303028
+            },
+            {
+              "type": "progress",
+              "message": "Agent is working on your request…",
+              "observedAt": 1792691303132
+            },
+            {
+              "type": "progress",
+              "message": "Preparing and validating an edit…",
+              "observedAt": 1792691313375
+            },
+            {
+              "type": "proposal",
+              "proposal": {
+                "proposalId": "fa23c266-7b22-4a7e-96e6-abf095bb8fd1",
+                "cursor": {
+                  "documentId": "screen-f3fbb5bd-cd52-46a2-8a69-43f03fa352a7",
+                  "revision": "r1#0",
+                  "digest": "6406126f044c3241f36673636bf230ecab13110a0fe155863be19c2417b3daad",
+                  "epoch": "e9746d88-be23-41bf-a651-3b0556c3be9b"
+                },
+                "edit": {
+                  "expectedRevision": "r1#0",
+                  "reason": "Add the single requested heading to the otherwise empty screen.",
+                  "operations": [
+                    {
+                      "op": "add",
+                      "recipe": "heading",
+                      "nodeId": "heading-stale-proposal-1",
+                      "parentId": "screen",
+                      "text": "Stale proposal must stay absent",
+                      "attributes": {
+                        "aria-label": "Stale proposal must stay absent"
+                      }
+                    }
+                  ]
+                },
+                "resultDigest": "c919083fe8a78aaa9701ed71990850897d4b959b0193824f83b9d3ead42d6788"
+              },
+              "observedAt": 1792691313382
+            },
+            {
+              "type": "edit-result",
+              "result": {
+                "ok": false,
+                "code": "UI_DOC_STALE_REVISION",
+                "message": "The screen changed while the agent was working. No edit was applied; send a new request using the current screen."
+              },
+              "reason": "Canvas refused the edit",
+              "observedAt": 1792691313709
+            },
+            {
+              "type": "text",
+              "delta": "The",
+              "observedAt": 1792691317295
+            },
+            {
+              "type": "text",
+              "delta": " edit",
+              "observedAt": 1792691317295
+            },
+            {
+              "type": "text",
+              "delta": " was",
+              "observedAt": 1792691317295
+            },
+            {
+              "type": "text",
+              "delta": " refused",
+              "observedAt": 1792691317295
+            },
+            {
+              "type": "text",
+              "delta": " by",
+              "observedAt": 1792691317310
+            },
+            {
+              "type": "text",
+              "delta": " the",
+              "observedAt": 1792691317310
+            },
+            {
+              "type": "text",
+              "delta": " studio",
+              "observedAt": 1792691317310
+            },
+            {
+              "type": "text",
+              "delta": ":",
+              "observedAt": 1792691317310
+            },
+            {
+              "type": "text",
+              "delta": " the",
+              "observedAt": 1792691317310
+            },
+            {
+              "type": "text",
+              "delta": " screen",
+              "observedAt": 1792691317310
+            },
+            {
+              "type": "text",
+              "delta": " changed",
+              "observedAt": 1792691317310
+            },
+            {
+              "type": "text",
+              "delta": " while",
+              "observedAt": 1792691317310
+            },
+            {
+              "type": "text",
+              "delta": " I",
+              "observedAt": 1792691317310
+            },
+            {
+              "type": "text",
+              "delta": " was",
+              "observedAt": 1792691317310
+            },
+            {
+              "type": "text",
+              "delta": " working",
+              "observedAt": 1792691317310
+            },
+            {
+              "type": "text",
+              "delta": " (`",
+              "observedAt": 1792691317310
+            },
+            {
+              "type": "text",
+              "delta": "UI",
+              "observedAt": 1792691317310
+            },
+            {
+              "type": "text",
+              "delta": "_DOC",
+              "observedAt": 1792691317310
+            },
+            {
+              "type": "text",
+              "delta": "_ST",
+              "observedAt": 1792691317310
+            },
+            {
+              "type": "text",
+              "delta": "ALE",
+              "observedAt": 1792691317324
+            },
+            {
+              "type": "text",
+              "delta": "_RE",
+              "observedAt": 1792691317324
+            },
+            {
+              "type": "text",
+              "delta": "VISION",
+              "observedAt": 1792691317324
+            },
+            {
+              "type": "text",
+              "delta": "`",
+              "observedAt": 1792691317324
+            },
+            {
+              "type": "text",
+              "delta": "),",
+              "observedAt": 1792691317324
+            },
+            {
+              "type": "text",
+              "delta": " so",
+              "observedAt": 1792691317324
+            },
+            {
+              "type": "text",
+              "delta": " nothing",
+              "observedAt": 1792691317324
+            },
+            {
+              "type": "text",
+              "delta": " was",
+              "observedAt": 1792691317324
+            },
+            {
+              "type": "text",
+              "delta": " applied",
+              "observedAt": 1792691317324
+            },
+            {
+              "type": "text",
+              "delta": ".\n\n",
+              "observedAt": 1792691317324
+            },
+            {
+              "type": "text",
+              "delta": "Per",
+              "observedAt": 1792691317324
+            },
+            {
+              "type": "text",
+              "delta": " policy",
+              "observedAt": 1792691317324
+            },
+            {
+              "type": "text",
+              "delta": " I",
+              "observedAt": 1792691317324
+            },
+            {
+              "type": "text",
+              "delta": " can",
+              "observedAt": 1792691317324
+            },
+            {
+              "type": "text",
+              "delta": "'t",
+              "observedAt": 1792691317324
+            },
+            {
+              "type": "text",
+              "delta": " bypass",
+              "observedAt": 1792691317342
+            },
+            {
+              "type": "text",
+              "delta": " that",
+              "observedAt": 1792691317342
+            },
+            {
+              "type": "text",
+              "delta": " refusal",
+              "observedAt": 1792691317342
+            },
+            {
+              "type": "text",
+              "delta": " —",
+              "observedAt": 1792691317342
+            },
+            {
+              "type": "text",
+              "delta": " please",
+              "observedAt": 1792691317342
+            },
+            {
+              "type": "text",
+              "delta": " send",
+              "observedAt": 1792691317342
+            },
+            {
+              "type": "text",
+              "delta": " a",
+              "observedAt": 1792691317342
+            },
+            {
+              "type": "text",
+              "delta": " fresh",
+              "observedAt": 1792691317342
+            },
+            {
+              "type": "text",
+              "delta": " request",
+              "observedAt": 1792691317342
+            },
+            {
+              "type": "text",
+              "delta": " (",
+              "observedAt": 1792691317342
+            },
+            {
+              "type": "text",
+              "delta": "e",
+              "observedAt": 1792691317342
+            },
+            {
+              "type": "text",
+              "delta": ".g",
+              "observedAt": 1792691317342
+            },
+            {
+              "type": "text",
+              "delta": ".,",
+              "observedAt": 1792691317342
+            },
+            {
+              "type": "text",
+              "delta": " \"",
+              "observedAt": 1792691317342
+            },
+            {
+              "type": "text",
+              "delta": "add",
+              "observedAt": 1792691317342
+            },
+            {
+              "type": "text",
+              "delta": " the",
+              "observedAt": 1792691317357
+            },
+            {
+              "type": "text",
+              "delta": " heading",
+              "observedAt": 1792691317357
+            },
+            {
+              "type": "text",
+              "delta": " again",
+              "observedAt": 1792691317357
+            },
+            {
+              "type": "text",
+              "delta": "\")",
+              "observedAt": 1792691317357
+            },
+            {
+              "type": "text",
+              "delta": " and",
+              "observedAt": 1792691317357
+            },
+            {
+              "type": "text",
+              "delta": " I",
+              "observedAt": 1792691317357
+            },
+            {
+              "type": "text",
+              "delta": "'ll",
+              "observedAt": 1792691317357
+            },
+            {
+              "type": "text",
+              "delta": " re",
+              "observedAt": 1792691317357
+            },
+            {
+              "type": "text",
+              "delta": "-read",
+              "observedAt": 1792691317357
+            },
+            {
+              "type": "text",
+              "delta": " the",
+              "observedAt": 1792691317357
+            },
+            {
+              "type": "text",
+              "delta": " current",
+              "observedAt": 1792691317357
+            },
+            {
+              "type": "text",
+              "delta": " document",
+              "observedAt": 1792691317357
+            },
+            {
+              "type": "text",
+              "delta": " and",
+              "observedAt": 1792691317357
+            },
+            {
+              "type": "text",
+              "delta": " add",
+              "observedAt": 1792691317357
+            },
+            {
+              "type": "text",
+              "delta": " the",
+              "observedAt": 1792691317357
+            },
+            {
+              "type": "text",
+              "delta": " heading",
+              "observedAt": 1792691317357
+            },
+            {
+              "type": "text",
+              "delta": " \"",
+              "observedAt": 1792691317357
+            },
+            {
+              "type": "text",
+              "delta": "St",
+              "observedAt": 1792691317357
+            },
+            {
+              "type": "text",
+              "delta": "ale",
+              "observedAt": 1792691317357
+            },
+            {
+              "type": "text",
+              "delta": " proposal",
+              "observedAt": 1792691317357
+            },
+            {
+              "type": "text",
+              "delta": " must",
+              "observedAt": 1792691317357
+            },
+            {
+              "type": "text",
+              "delta": " stay",
+              "observedAt": 1792691317357
+            },
+            {
+              "type": "text",
+              "delta": " absent",
+              "observedAt": 1792691317415
+            },
+            {
+              "type": "text",
+              "delta": "\"",
+              "observedAt": 1792691317415
+            },
+            {
+              "type": "text",
+              "delta": " then",
+              "observedAt": 1792691317415
+            },
+            {
+              "type": "text",
+              "delta": ".",
+              "observedAt": 1792691317415
+            },
+            {
+              "type": "done",
+              "status": "completed",
+              "applied": 0,
+              "turnId": "turn-13ef7b31-a2e4-4ed1-bb6a-3f39f39d7cdf",
+              "profileVersion": "v1_9a8331caffc726ac5c9c051a5e77d1a2a05217a8582a1c76b7538514d5db960d",
+              "observedAt": 1792691317723
+            }
+          ],
+          "acks": [
+            {
+              "runId": "663ae144-3504-4ffd-87a3-d6862deb95d2",
+              "proposalId": "fa23c266-7b22-4a7e-96e6-abf095bb8fd1",
+              "receipt": {
+                "ok": false,
+                "code": "UI_DOC_STALE_REVISION",
+                "message": "The screen changed while the agent was working. No edit was applied; send a new request using the current screen."
+              }
+            }
+          ],
+          "complete": true,
+          "startedAt": 1792691303027,
+          "endedAt": 1792691317724
+        },
+        "document": {
+          "schema": "vict.ui-document@1",
+          "id": "screen-f3fbb5bd-cd52-46a2-8a69-43f03fa352a7",
+          "revision": "r1",
+          "root": "screen",
+          "nodes": {
+            "screen": {
+              "kind": "element",
+              "id": "screen",
+              "tag": "main",
+              "attributes": {
+                "aria-label": "Independent manual intervention"
+              },
+              "children": [],
+              "localStyle": [
+                {
+                  "property": "display",
+                  "value": {
+                    "type": "text",
+                    "value": "flex"
+                  }
+                },
+                {
+                  "property": "flex-direction",
+                  "value": {
+                    "type": "text",
+                    "value": "column"
+                  }
+                },
+                {
+                  "property": "gap",
+                  "value": {
+                    "type": "text",
+                    "value": "20px"
+                  }
+                },
+                {
+                  "property": "padding",
+                  "value": {
+                    "type": "text",
+                    "value": "40px"
+                  }
+                },
+                {
+                  "property": "min-height",
+                  "value": {
+                    "type": "text",
+                    "value": "560px"
+                  }
+                },
+                {
+                  "property": "background-color",
+                  "value": {
+                    "type": "text",
+                    "value": "#ffffff"
+                  }
+                },
+                {
+                  "property": "color",
+                  "value": {
+                    "type": "text",
+                    "value": "#243047"
+                  }
+                },
+                {
+                  "property": "font-family",
+                  "value": {
+                    "type": "text",
+                    "value": "system-ui, sans-serif"
+                  }
+                }
+              ]
+            }
+          },
+          "componentDefinitions": {},
+          "styleSources": {},
+          "assets": {},
+          "tokens": {},
+          "conditions": {
+            "compact": {
+              "id": "compact",
+              "kind": "container",
+              "name": "studio-screen",
+              "query": "(max-width: 600px)"
+            }
+          },
+          "localState": {
+            "message": {
+              "key": "message",
+              "type": "string",
+              "initial": "Hello from my screen"
+            },
+            "accepted": {
+              "key": "accepted",
+              "type": "boolean",
+              "initial": false
+            },
+            "dialogOpen": {
+              "key": "dialogOpen",
+              "type": "boolean",
+              "initial": false
+            },
+            "busy": {
+              "key": "busy",
+              "type": "boolean",
+              "initial": false
+            },
+            "actionError": {
+              "key": "actionError",
+              "type": "string",
+              "initial": ""
+            },
+            "actionResult": {
+              "key": "actionResult",
+              "type": "string",
+              "initial": ""
+            }
+          }
+        },
+        "status": " The screen changed while the agent was working. No edit was applied; send a new request using the current screen. "
+      }
+    },
+    {
+      "at": "2026-10-22T17:49:22.334Z",
+      "name": "unapplied source draft refuses real proposal and remains intact",
+      "data": {
+        "ok": true,
+        "turn": {
+          "request": {
+            "document": {
+              "schema": "vict.ui-document@1",
+              "id": "screen-f3fbb5bd-cd52-46a2-8a69-43f03fa352a7",
+              "revision": "r1",
+              "root": "screen",
+              "nodes": {
+                "screen": {
+                  "kind": "element",
+                  "id": "screen",
+                  "tag": "main",
+                  "attributes": {
+                    "aria-label": "Independent manual intervention"
+                  },
+                  "children": [],
+                  "localStyle": [
+                    {
+                      "property": "display",
+                      "value": {
+                        "type": "text",
+                        "value": "flex"
+                      }
+                    },
+                    {
+                      "property": "flex-direction",
+                      "value": {
+                        "type": "text",
+                        "value": "column"
+                      }
+                    },
+                    {
+                      "property": "gap",
+                      "value": {
+                        "type": "text",
+                        "value": "20px"
+                      }
+                    },
+                    {
+                      "property": "padding",
+                      "value": {
+                        "type": "text",
+                        "value": "40px"
+                      }
+                    },
+                    {
+                      "property": "min-height",
+                      "value": {
+                        "type": "text",
+                        "value": "560px"
+                      }
+                    },
+                    {
+                      "property": "background-color",
+                      "value": {
+                        "type": "text",
+                        "value": "#ffffff"
+                      }
+                    },
+                    {
+                      "property": "color",
+                      "value": {
+                        "type": "text",
+                        "value": "#243047"
+                      }
+                    },
+                    {
+                      "property": "font-family",
+                      "value": {
+                        "type": "text",
+                        "value": "system-ui, sans-serif"
+                      }
+                    }
+                  ]
+                }
+              },
+              "componentDefinitions": {},
+              "styleSources": {},
+              "assets": {},
+              "tokens": {},
+              "conditions": {
+                "compact": {
+                  "id": "compact",
+                  "kind": "container",
+                  "name": "studio-screen",
+                  "query": "(max-width: 600px)"
+                }
+              },
+              "localState": {
+                "message": {
+                  "key": "message",
+                  "type": "string",
+                  "initial": "Hello from my screen"
+                },
+                "accepted": {
+                  "key": "accepted",
+                  "type": "boolean",
+                  "initial": false
+                },
+                "dialogOpen": {
+                  "key": "dialogOpen",
+                  "type": "boolean",
+                  "initial": false
+                },
+                "busy": {
+                  "key": "busy",
+                  "type": "boolean",
+                  "initial": false
+                },
+                "actionError": {
+                  "key": "actionError",
+                  "type": "string",
+                  "initial": ""
+                },
+                "actionResult": {
+                  "key": "actionResult",
+                  "type": "string",
+                  "initial": ""
+                }
+              }
+            },
+            "cursor": {
+              "documentId": "screen-f3fbb5bd-cd52-46a2-8a69-43f03fa352a7",
+              "revision": "r1#1",
+              "digest": "9a5f18e47e0713f7c7f2ba91087bd5e2bee3b4365162392cd60f38800d8fb6c7",
+              "epoch": "e9746d88-be23-41bf-a651-3b0556c3be9b"
+            },
+            "selection": "screen-f3fbb5bd-cd52-46a2-8a69-43f03fa352a7|screen",
+            "prompt": "Fresh request: add exactly one heading reading \"Draft proposal must stay absent\" to this open screen using the edit tool.",
+            "history": [
+              {
+                "participant": "user",
+                "text": "Add exactly one heading reading \"Stale proposal must stay absent\" to this open screen using the edit tool."
+              },
+              {
+                "participant": "assistant",
+                "text": "The edit was refused by the studio: the screen changed while I was working (`UI_DOC_STALE_REVISION`), so nothing was applied.\n\nPer policy I can't bypass that refusal — please send a fresh request (e.g., \"add the heading again\") and I'll re-read the current document and add the heading \"Stale proposal must stay absent\" then."
+              }
+            ]
+          },
+          "events": [
+            {
+              "type": "started",
+              "runId": "8e51ac2d-92e5-4759-9d4b-18e77d502cac",
+              "model": "zai/glm-5.3-flash",
+              "engine": "VICT / Mastra",
+              "observedAt": 1792691318416
+            },
+            {
+              "type": "progress",
+              "message": "Connecting to the VICT / Mastra agent…",
+              "observedAt": 1792691318416
+            },
+            {
+              "type": "progress",
+              "message": "Agent is working on your request…",
+              "observedAt": 1792691318516
+            },
+            {
+              "type": "progress",
+              "message": "Preparing and validating an edit…",
+              "observedAt": 1792691332675
+            },
+            {
+              "type": "edit-result",
+              "result": {
+                "ok": false,
+                "code": "STUDIO_AGENT_VALIDATION",
+                "message": "Edit rejected: UI_EDIT_VALIDATION_FAILED"
+              },
+              "reason": "Validation refused an edit",
+              "observedAt": 1792691332692
+            },
+            {
+              "type": "text",
+              "delta": "The",
+              "observedAt": 1792691337953
+            },
+            {
+              "type": "text",
+              "delta": " edit",
+              "observedAt": 1792691337953
+            },
+            {
+              "type": "text",
+              "delta": " was",
+              "observedAt": 1792691337953
+            },
+            {
+              "type": "text",
+              "delta": " rejected",
+              "observedAt": 1792691337953
+            },
+            {
+              "type": "text",
+              "delta": " by",
+              "observedAt": 1792691337953
+            },
+            {
+              "type": "text",
+              "delta": " validation",
+              "observedAt": 1792691337953
+            },
+            {
+              "type": "text",
+              "delta": ",",
+              "observedAt": 1792691337953
+            },
+            {
+              "type": "text",
+              "delta": " so",
+              "observedAt": 1792691337953
+            },
+            {
+              "type": "text",
+              "delta": " let",
+              "observedAt": 1792691337953
+            },
+            {
+              "type": "text",
+              "delta": " me",
+              "observedAt": 1792691337953
+            },
+            {
+              "type": "text",
+              "delta": " re",
+              "observedAt": 1792691337953
+            },
+            {
+              "type": "text",
+              "delta": "-read",
+              "observedAt": 1792691337953
+            },
+            {
+              "type": "text",
+              "delta": " the",
+              "observedAt": 1792691337953
+            },
+            {
+              "type": "text",
+              "delta": " current",
+              "observedAt": 1792691337963
+            },
+            {
+              "type": "text",
+              "delta": " screen",
+              "observedAt": 1792691337963
+            },
+            {
+              "type": "text",
+              "delta": " and",
+              "observedAt": 1792691337963
+            },
+            {
+              "type": "text",
+              "delta": " edit",
+              "observedAt": 1792691337963
+            },
+            {
+              "type": "text",
+              "delta": " contract",
+              "observedAt": 1792691337963
+            },
+            {
+              "type": "text",
+              "delta": " before",
+              "observedAt": 1792691337963
+            },
+            {
+              "type": "text",
+              "delta": " retry",
+              "observedAt": 1792691337963
+            },
+            {
+              "type": "text",
+              "delta": "ing",
+              "observedAt": 1792691337963
+            },
+            {
+              "type": "text",
+              "delta": ".",
+              "observedAt": 1792691337976
+            },
+            {
+              "type": "progress",
+              "message": "Reading the screen and selection…",
+              "observedAt": 1792691337982
+            },
+            {
+              "type": "text",
+              "delta": "The",
+              "observedAt": 1792691348604
+            },
+            {
+              "type": "text",
+              "delta": " document",
+              "observedAt": 1792691348614
+            },
+            {
+              "type": "text",
+              "delta": " is",
+              "observedAt": 1792691348614
+            },
+            {
+              "type": "text",
+              "delta": " unchanged",
+              "observedAt": 1792691348614
+            },
+            {
+              "type": "text",
+              "delta": " (`",
+              "observedAt": 1792691348614
+            },
+            {
+              "type": "text",
+              "delta": "r",
+              "observedAt": 1792691348614
+            },
+            {
+              "type": "text",
+              "delta": "1",
+              "observedAt": 1792691348614
+            },
+            {
+              "type": "text",
+              "delta": "#",
+              "observedAt": 1792691348614
+            },
+            {
+              "type": "text",
+              "delta": "1",
+              "observedAt": 1792691348614
+            },
+            {
+              "type": "text",
+              "delta": "`,",
+              "observedAt": 1792691351058
+            },
+            {
+              "type": "text",
+              "delta": " root",
+              "observedAt": 1792691351058
+            },
+            {
+              "type": "text",
+              "delta": " still",
+              "observedAt": 1792691351058
+            },
+            {
+              "type": "text",
+              "delta": " empty",
+              "observedAt": 1792691351058
+            },
+            {
+              "type": "text",
+              "delta": "),",
+              "observedAt": 1792691351058
+            },
+            {
+              "type": "text",
+              "delta": " so",
+              "observedAt": 1792691351058
+            },
+            {
+              "type": "text",
+              "delta": " the",
+              "observedAt": 1792691351058
+            },
+            {
+              "type": "text",
+              "delta": " rejection",
+              "observedAt": 1792691351058
+            },
+            {
+              "type": "text",
+              "delta": " was",
+              "observedAt": 1792691351058
+            },
+            {
+              "type": "text",
+              "delta": " about",
+              "observedAt": 1792691351058
+            },
+            {
+              "type": "text",
+              "delta": " my",
+              "observedAt": 1792691351058
+            },
+            {
+              "type": "text",
+              "delta": " operation",
+              "observedAt": 1792691351058
+            },
+            {
+              "type": "text",
+              "delta": " payload",
+              "observedAt": 1792691351058
+            },
+            {
+              "type": "text",
+              "delta": " —",
+              "observedAt": 1792691351058
+            },
+            {
+              "type": "text",
+              "delta": " most",
+              "observedAt": 1792691351079
+            },
+            {
+              "type": "text",
+              "delta": " likely",
+              "observedAt": 1792691351079
+            },
+            {
+              "type": "text",
+              "delta": " the",
+              "observedAt": 1792691351079
+            },
+            {
+              "type": "text",
+              "delta": " extra",
+              "observedAt": 1792691351079
+            },
+            {
+              "type": "text",
+              "delta": " `",
+              "observedAt": 1792691351079
+            },
+            {
+              "type": "text",
+              "delta": "attributes",
+              "observedAt": 1792691351079
+            },
+            {
+              "type": "text",
+              "delta": "`",
+              "observedAt": 1792691351079
+            },
+            {
+              "type": "text",
+              "delta": " I",
+              "observedAt": 1792691351079
+            },
+            {
+              "type": "text",
+              "delta": " attached",
+              "observedAt": 1792691351079
+            },
+            {
+              "type": "text",
+              "delta": " to",
+              "observedAt": 1792691351079
+            },
+            {
+              "type": "text",
+              "delta": " the",
+              "observedAt": 1792691351079
+            },
+            {
+              "type": "text",
+              "delta": " heading",
+              "observedAt": 1792691351079
+            },
+            {
+              "type": "text",
+              "delta": " recipe",
+              "observedAt": 1792691351079
+            },
+            {
+              "type": "text",
+              "delta": ".",
+              "observedAt": 1792691351079
+            },
+            {
+              "type": "text",
+              "delta": " Ret",
+              "observedAt": 1792691351079
+            },
+            {
+              "type": "text",
+              "delta": "rying",
+              "observedAt": 1792691351100
+            },
+            {
+              "type": "text",
+              "delta": " with",
+              "observedAt": 1792691351100
+            },
+            {
+              "type": "text",
+              "delta": " the",
+              "observedAt": 1792691351100
+            },
+            {
+              "type": "text",
+              "delta": " minimal",
+              "observedAt": 1792691351100
+            },
+            {
+              "type": "text",
+              "delta": " valid",
+              "observedAt": 1792691351100
+            },
+            {
+              "type": "text",
+              "delta": " add",
+              "observedAt": 1792691351100
+            },
+            {
+              "type": "text",
+              "delta": ":",
+              "observedAt": 1792691351100
+            },
+            {
+              "type": "progress",
+              "message": "Preparing and validating an edit…",
+              "observedAt": 1792691351108
+            },
+            {
+              "type": "proposal",
+              "proposal": {
+                "proposalId": "9098169a-856e-489f-adee-c3705f47221a",
+                "cursor": {
+                  "documentId": "screen-f3fbb5bd-cd52-46a2-8a69-43f03fa352a7",
+                  "revision": "r1#1",
+                  "digest": "9a5f18e47e0713f7c7f2ba91087bd5e2bee3b4365162392cd60f38800d8fb6c7",
+                  "epoch": "e9746d88-be23-41bf-a651-3b0556c3be9b"
+                },
+                "edit": {
+                  "expectedRevision": "r1#1",
+                  "reason": "Add exactly one heading with the requested literal text; prior attempt rejected likely due to extra attributes, now omitted.",
+                  "operations": [
+                    {
+                      "op": "add",
+                      "recipe": "heading",
+                      "nodeId": "heading-draft-proposal",
+                      "parentId": "screen",
+                      "text": "Draft proposal must stay absent"
+                    }
+                  ]
+                },
+                "resultDigest": "b9a7661e3b8ba35d888ecb8a7c9c0e2039131854fba92389db124f7e8b1b84d3"
+              },
+              "observedAt": 1792691351119
+            },
+            {
+              "type": "edit-result",
+              "result": {
+                "ok": false,
+                "code": "STUDIO_AGENT_DRAFT",
+                "message": "Apply or cancel the pending property, data, rename or source draft, then send a new request."
+              },
+              "reason": "Canvas refused the edit",
+              "observedAt": 1792691351378
+            },
+            {
+              "type": "text",
+              "delta": "The",
+              "observedAt": 1792691358922
+            },
+            {
+              "type": "text",
+              "delta": " studio",
+              "observedAt": 1792691358922
+            },
+            {
+              "type": "text",
+              "delta": " refused",
+              "observedAt": 1792691358922
+            },
+            {
+              "type": "text",
+              "delta": " this",
+              "observedAt": 1792691358922
+            },
+            {
+              "type": "text",
+              "delta": " edit",
+              "observedAt": 1792691358922
+            },
+            {
+              "type": "text",
+              "delta": ":",
+              "observedAt": 1792691358922
+            },
+            {
+              "type": "text",
+              "delta": " the",
+              "observedAt": 1792691358922
+            },
+            {
+              "type": "text",
+              "delta": " canvas",
+              "observedAt": 1792691358922
+            },
+            {
+              "type": "text",
+              "delta": " has",
+              "observedAt": 1792691358922
+            },
+            {
+              "type": "text",
+              "delta": " a",
+              "observedAt": 1792691358922
+            },
+            {
+              "type": "text",
+              "delta": " **",
+              "observedAt": 1792691358932
+            },
+            {
+              "type": "text",
+              "delta": "pending",
+              "observedAt": 1792691358932
+            },
+            {
+              "type": "text",
+              "delta": " draft",
+              "observedAt": 1792691358932
+            },
+            {
+              "type": "text",
+              "delta": "**",
+              "observedAt": 1792691358932
+            },
+            {
+              "type": "text",
+              "delta": " (`",
+              "observedAt": 1792691358932
+            },
+            {
+              "type": "text",
+              "delta": "ST",
+              "observedAt": 1792691358932
+            },
+            {
+              "type": "text",
+              "delta": "UDIO",
+              "observedAt": 1792691358932
+            },
+            {
+              "type": "text",
+              "delta": "_AGENT",
+              "observedAt": 1792691358942
+            },
+            {
+              "type": "text",
+              "delta": "_D",
+              "observedAt": 1792691358942
+            },
+            {
+              "type": "text",
+              "delta": "RAFT",
+              "observedAt": 1792691358942
+            },
+            {
+              "type": "text",
+              "delta": "`)",
+              "observedAt": 1792691358942
+            },
+            {
+              "type": "text",
+              "delta": " —",
+              "observedAt": 1792691358942
+            },
+            {
+              "type": "text",
+              "delta": " some",
+              "observedAt": 1792691358942
+            },
+            {
+              "type": "text",
+              "delta": " property",
+              "observedAt": 1792691358942
+            },
+            {
+              "type": "text",
+              "delta": ",",
+              "observedAt": 1792691358942
+            },
+            {
+              "type": "text",
+              "delta": " data",
+              "observedAt": 1792691358955
+            },
+            {
+              "type": "text",
+              "delta": ",",
+              "observedAt": 1792691358955
+            },
+            {
+              "type": "text",
+              "delta": " rename",
+              "observedAt": 1792691358956
+            },
+            {
+              "type": "text",
+              "delta": ",",
+              "observedAt": 1792691358956
+            },
+            {
+              "type": "text",
+              "delta": " or",
+              "observedAt": 1792691358956
+            },
+            {
+              "type": "text",
+              "delta": " source",
+              "observedAt": 1792691358956
+            },
+            {
+              "type": "text",
+              "delta": " draft",
+              "observedAt": 1792691358956
+            },
+            {
+              "type": "text",
+              "delta": " is",
+              "observedAt": 1792691358956
+            },
+            {
+              "type": "text",
+              "delta": " open",
+              "observedAt": 1792691358956
+            },
+            {
+              "type": "text",
+              "delta": " in",
+              "observedAt": 1792691358956
+            },
+            {
+              "type": "text",
+              "delta": " the",
+              "observedAt": 1792691358956
+            },
+            {
+              "type": "text",
+              "delta": " editor",
+              "observedAt": 1792691358956
+            },
+            {
+              "type": "text",
+              "delta": ".",
+              "observedAt": 1792691358956
+            },
+            {
+              "type": "text",
+              "delta": " Policy",
+              "observedAt": 1792691358956
+            },
+            {
+              "type": "text",
+              "delta": " says",
+              "observedAt": 1792691358969
+            },
+            {
+              "type": "text",
+              "delta": " I",
+              "observedAt": 1792691358969
+            },
+            {
+              "type": "text",
+              "delta": " can",
+              "observedAt": 1792691358969
+            },
+            {
+              "type": "text",
+              "delta": "'t",
+              "observedAt": 1792691358969
+            },
+            {
+              "type": "text",
+              "delta": " bypass",
+              "observedAt": 1792691358969
+            },
+            {
+              "type": "text",
+              "delta": " that",
+              "observedAt": 1792691358969
+            },
+            {
+              "type": "text",
+              "delta": " refusal",
+              "observedAt": 1792691358969
+            },
+            {
+              "type": "text",
+              "delta": ".\n\n",
+              "observedAt": 1792691358969
+            },
+            {
+              "type": "text",
+              "delta": "Status",
+              "observedAt": 1792691361198
+            },
+            {
+              "type": "text",
+              "delta": ":\n",
+              "observedAt": 1792691361198
+            },
+            {
+              "type": "text",
+              "delta": "-",
+              "observedAt": 1792691361198
+            },
+            {
+              "type": "text",
+              "delta": " Nothing",
+              "observedAt": 1792691361198
+            },
+            {
+              "type": "text",
+              "delta": " was",
+              "observedAt": 1792691361198
+            },
+            {
+              "type": "text",
+              "delta": " applied",
+              "observedAt": 1792691361198
+            },
+            {
+              "type": "text",
+              "delta": ";",
+              "observedAt": 1792691361198
+            },
+            {
+              "type": "text",
+              "delta": " the",
+              "observedAt": 1792691361198
+            },
+            {
+              "type": "text",
+              "delta": " screen",
+              "observedAt": 1792691361198
+            },
+            {
+              "type": "text",
+              "delta": " is",
+              "observedAt": 1792691361198
+            },
+            {
+              "type": "text",
+              "delta": " unchanged",
+              "observedAt": 1792691361198
+            },
+            {
+              "type": "text",
+              "delta": " and",
+              "observedAt": 1792691361198
+            },
+            {
+              "type": "text",
+              "delta": " still",
+              "observedAt": 1792691361198
+            },
+            {
+              "type": "text",
+              "delta": " contains",
+              "observedAt": 1792691361198
+            },
+            {
+              "type": "text",
+              "delta": " **",
+              "observedAt": 1792691361239
+            },
+            {
+              "type": "text",
+              "delta": "no",
+              "observedAt": 1792691361239
+            },
+            {
+              "type": "text",
+              "delta": " headings",
+              "observedAt": 1792691361239
+            },
+            {
+              "type": "text",
+              "delta": "**",
+              "observedAt": 1792691361239
+            },
+            {
+              "type": "text",
+              "delta": " (",
+              "observedAt": 1792691361239
+            },
+            {
+              "type": "text",
+              "delta": "so",
+              "observedAt": 1792691361239
+            },
+            {
+              "type": "text",
+              "delta": " \"",
+              "observedAt": 1792691361239
+            },
+            {
+              "type": "text",
+              "delta": "Draft",
+              "observedAt": 1792691361239
+            },
+            {
+              "type": "text",
+              "delta": " proposal",
+              "observedAt": 1792691361239
+            },
+            {
+              "type": "text",
+              "delta": " must",
+              "observedAt": 1792691361239
+            },
+            {
+              "type": "text",
+              "delta": " stay",
+              "observedAt": 1792691361239
+            },
+            {
+              "type": "text",
+              "delta": " absent",
+              "observedAt": 1792691361239
+            },
+            {
+              "type": "text",
+              "delta": "\"",
+              "observedAt": 1792691361239
+            },
+            {
+              "type": "text",
+              "delta": " is",
+              "observedAt": 1792691361239
+            },
+            {
+              "type": "text",
+              "delta": " indeed",
+              "observedAt": 1792691361239
+            },
+            {
+              "type": "text",
+              "delta": " absent",
+              "observedAt": 1792691361278
+            },
+            {
+              "type": "text",
+              "delta": ",",
+              "observedAt": 1792691361278
+            },
+            {
+              "type": "text",
+              "delta": " as",
+              "observedAt": 1792691361278
+            },
+            {
+              "type": "text",
+              "delta": " is",
+              "observedAt": 1792691361278
+            },
+            {
+              "type": "text",
+              "delta": " any",
+              "observedAt": 1792691361278
+            },
+            {
+              "type": "text",
+              "delta": " other",
+              "observedAt": 1792691361278
+            },
+            {
+              "type": "text",
+              "delta": " heading",
+              "observedAt": 1792691361278
+            },
+            {
+              "type": "text",
+              "delta": ").\n",
+              "observedAt": 1792691361278
+            },
+            {
+              "type": "text",
+              "delta": "-",
+              "observedAt": 1792691361278
+            },
+            {
+              "type": "text",
+              "delta": " My",
+              "observedAt": 1792691361278
+            },
+            {
+              "type": "text",
+              "delta": " first",
+              "observedAt": 1792691361278
+            },
+            {
+              "type": "text",
+              "delta": " attempt",
+              "observedAt": 1792691361278
+            },
+            {
+              "type": "text",
+              "delta": " was",
+              "observedAt": 1792691361278
+            },
+            {
+              "type": "text",
+              "delta": " rejected",
+              "observedAt": 1792691361278
+            },
+            {
+              "type": "text",
+              "delta": " for",
+              "observedAt": 1792691361278
+            },
+            {
+              "type": "text",
+              "delta": " validation",
+              "observedAt": 1792691361313
+            },
+            {
+              "type": "text",
+              "delta": ",",
+              "observedAt": 1792691361313
+            },
+            {
+              "type": "text",
+              "delta": " and",
+              "observedAt": 1792691361313
+            },
+            {
+              "type": "text",
+              "delta": " the",
+              "observedAt": 1792691361313
+            },
+            {
+              "type": "text",
+              "delta": " second",
+              "observedAt": 1792691361313
+            },
+            {
+              "type": "text",
+              "delta": " was",
+              "observedAt": 1792691361313
+            },
+            {
+              "type": "text",
+              "delta": " refused",
+              "observedAt": 1792691361313
+            },
+            {
+              "type": "text",
+              "delta": " due",
+              "observedAt": 1792691361313
+            },
+            {
+              "type": "text",
+              "delta": " to",
+              "observedAt": 1792691361313
+            },
+            {
+              "type": "text",
+              "delta": " that",
+              "observedAt": 1792691361313
+            },
+            {
+              "type": "text",
+              "delta": " pending",
+              "observedAt": 1792691361313
+            },
+            {
+              "type": "text",
+              "delta": " draft",
+              "observedAt": 1792691361313
+            },
+            {
+              "type": "text",
+              "delta": ".\n\n",
+              "observedAt": 1792691361313
+            },
+            {
+              "type": "text",
+              "delta": "Please",
+              "observedAt": 1792691361313
+            },
+            {
+              "type": "text",
+              "delta": " **",
+              "observedAt": 1792691361313
+            },
+            {
+              "type": "text",
+              "delta": "apply",
+              "observedAt": 1792691361342
+            },
+            {
+              "type": "text",
+              "delta": " or",
+              "observedAt": 1792691361342
+            },
+            {
+              "type": "text",
+              "delta": " cancel",
+              "observedAt": 1792691361342
+            },
+            {
+              "type": "text",
+              "delta": " the",
+              "observedAt": 1792691361342
+            },
+            {
+              "type": "text",
+              "delta": " pending",
+              "observedAt": 1792691361342
+            },
+            {
+              "type": "text",
+              "delta": " draft",
+              "observedAt": 1792691361342
+            },
+            {
+              "type": "text",
+              "delta": " in",
+              "observedAt": 1792691361342
+            },
+            {
+              "type": "text",
+              "delta": " the",
+              "observedAt": 1792691361342
+            },
+            {
+              "type": "text",
+              "delta": " studio",
+              "observedAt": 1792691361342
+            },
+            {
+              "type": "text",
+              "delta": "**,",
+              "observedAt": 1792691361342
+            },
+            {
+              "type": "text",
+              "delta": " then",
+              "observedAt": 1792691361342
+            },
+            {
+              "type": "text",
+              "delta": " send",
+              "observedAt": 1792691361342
+            },
+            {
+              "type": "text",
+              "delta": " a",
+              "observedAt": 1792691361342
+            },
+            {
+              "type": "text",
+              "delta": " fresh",
+              "observedAt": 1792691361342
+            },
+            {
+              "type": "text",
+              "delta": " request",
+              "observedAt": 1792691361342
+            },
+            {
+              "type": "text",
+              "delta": " (",
+              "observedAt": 1792691361342
+            },
+            {
+              "type": "text",
+              "delta": "e",
+              "observedAt": 1792691361343
+            },
+            {
+              "type": "text",
+              "delta": ".g",
+              "observedAt": 1792691361343
+            },
+            {
+              "type": "text",
+              "delta": ".,",
+              "observedAt": 1792691361343
+            },
+            {
+              "type": "text",
+              "delta": " \"",
+              "observedAt": 1792691361343
+            },
+            {
+              "type": "text",
+              "delta": "add",
+              "observedAt": 1792691361343
+            },
+            {
+              "type": "text",
+              "delta": " the",
+              "observedAt": 1792691361343
+            },
+            {
+              "type": "text",
+              "delta": " heading",
+              "observedAt": 1792691361574
+            },
+            {
+              "type": "text",
+              "delta": " now",
+              "observedAt": 1792691361574
+            },
+            {
+              "type": "text",
+              "delta": "\")",
+              "observedAt": 1792691361574
+            },
+            {
+              "type": "text",
+              "delta": " —",
+              "observedAt": 1792691361574
+            },
+            {
+              "type": "text",
+              "delta": " I",
+              "observedAt": 1792691361574
+            },
+            {
+              "type": "text",
+              "delta": "'ll",
+              "observedAt": 1792691361574
+            },
+            {
+              "type": "text",
+              "delta": " re",
+              "observedAt": 1792691361574
+            },
+            {
+              "type": "text",
+              "delta": "-read",
+              "observedAt": 1792691361574
+            },
+            {
+              "type": "text",
+              "delta": " the",
+              "observedAt": 1792691361574
+            },
+            {
+              "type": "text",
+              "delta": " document",
+              "observedAt": 1792691361574
+            },
+            {
+              "type": "text",
+              "delta": " and",
+              "observedAt": 1792691361574
+            },
+            {
+              "type": "text",
+              "delta": " add",
+              "observedAt": 1792691361574
+            },
+            {
+              "type": "text",
+              "delta": " the",
+              "observedAt": 1792691361574
+            },
+            {
+              "type": "text",
+              "delta": " single",
+              "observedAt": 1792691361574
+            },
+            {
+              "type": "text",
+              "delta": " heading",
+              "observedAt": 1792691361574
+            },
+            {
+              "type": "text",
+              "delta": " \"",
+              "observedAt": 1792691361617
+            },
+            {
+              "type": "text",
+              "delta": "Draft",
+              "observedAt": 1792691361617
+            },
+            {
+              "type": "text",
+              "delta": " proposal",
+              "observedAt": 1792691361617
+            },
+            {
+              "type": "text",
+              "delta": " must",
+              "observedAt": 1792691361617
+            },
+            {
+              "type": "text",
+              "delta": " stay",
+              "observedAt": 1792691361617
+            },
+            {
+              "type": "text",
+              "delta": " absent",
+              "observedAt": 1792691361617
+            },
+            {
+              "type": "text",
+              "delta": "\".",
+              "observedAt": 1792691361617
+            },
+            {
+              "type": "done",
+              "status": "completed",
+              "applied": 0,
+              "turnId": "turn-140e2504-68db-4099-910a-3b9c4c647777",
+              "profileVersion": "v1_9a8331caffc726ac5c9c051a5e77d1a2a05217a8582a1c76b7538514d5db960d",
+              "observedAt": 1792691361923
+            }
+          ],
+          "acks": [
+            {
+              "runId": "8e51ac2d-92e5-4759-9d4b-18e77d502cac",
+              "proposalId": "9098169a-856e-489f-adee-c3705f47221a",
+              "receipt": {
+                "ok": false,
+                "code": "STUDIO_AGENT_DRAFT",
+                "message": "Apply or cancel the pending property, data, rename or source draft, then send a new request."
+              }
+            }
+          ],
+          "complete": true,
+          "startedAt": 1792691318415,
+          "endedAt": 1792691361924
+        },
+        "draft": {
+          "schema": "vict.ui-document@1",
+          "id": "screen-f3fbb5bd-cd52-46a2-8a69-43f03fa352a7",
+          "revision": "r1",
+          "root": "screen",
+          "nodes": {
+            "screen": {
+              "kind": "element",
+              "id": "screen",
+              "tag": "main",
+              "attributes": {
+                "aria-label": "Unapplied source draft retained"
+              },
+              "children": [],
+              "localStyle": [
+                {
+                  "property": "display",
+                  "value": {
+                    "type": "text",
+                    "value": "flex"
+                  }
+                },
+                {
+                  "property": "flex-direction",
+                  "value": {
+                    "type": "text",
+                    "value": "column"
+                  }
+                },
+                {
+                  "property": "gap",
+                  "value": {
+                    "type": "text",
+                    "value": "20px"
+                  }
+                },
+                {
+                  "property": "padding",
+                  "value": {
+                    "type": "text",
+                    "value": "40px"
+                  }
+                },
+                {
+                  "property": "min-height",
+                  "value": {
+                    "type": "text",
+                    "value": "560px"
+                  }
+                },
+                {
+                  "property": "background-color",
+                  "value": {
+                    "type": "text",
+                    "value": "#ffffff"
+                  }
+                },
+                {
+                  "property": "color",
+                  "value": {
+                    "type": "text",
+                    "value": "#243047"
+                  }
+                },
+                {
+                  "property": "font-family",
+                  "value": {
+                    "type": "text",
+                    "value": "system-ui, sans-serif"
+                  }
+                }
+              ]
+            }
+          },
+          "componentDefinitions": {},
+          "styleSources": {},
+          "assets": {},
+          "tokens": {},
+          "conditions": {
+            "compact": {
+              "id": "compact",
+              "kind": "container",
+              "name": "studio-screen",
+              "query": "(max-width: 600px)"
+            }
+          },
+          "localState": {
+            "message": {
+              "key": "message",
+              "type": "string",
+              "initial": "Hello from my screen"
+            },
+            "accepted": {
+              "key": "accepted",
+              "type": "boolean",
+              "initial": false
+            },
+            "dialogOpen": {
+              "key": "dialogOpen",
+              "type": "boolean",
+              "initial": false
+            },
+            "busy": {
+              "key": "busy",
+              "type": "boolean",
+              "initial": false
+            },
+            "actionError": {
+              "key": "actionError",
+              "type": "string",
+              "initial": ""
+            },
+            "actionResult": {
+              "key": "actionResult",
+              "type": "string",
+              "initial": ""
+            }
+          }
+        },
+        "saveState": "● Unapplied JSON draft"
+      }
+    },
+    {
+      "at": "2026-10-22T17:49:22.685Z",
+      "name": "discarding draft reveals unchanged canonical document",
+      "data": {
+        "ok": true
+      }
+    },
+    {
+      "at": "2026-10-22T17:49:22.689Z",
+      "name": "no browser errors",
+      "data": {
+        "ok": true,
+        "errors": []
+      }
+    }
+  ],
+  "errors": []
+}
