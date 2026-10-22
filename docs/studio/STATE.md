@@ -1,5 +1,10 @@
 # Studio Designer — current delivery state
 
+## 2026-10-22 — Stage 9 REOPENED; Cycle 1.1 IN PROGRESS
+
+The owner authorized the broader Studio objective and only Cycle 1.1 implementation: live agent chat connected to the accepted Designer. [Current authority, baseline, paths and verification gate](CYCLE-1-1-HANDOFF.md). Historical Designer acceptance and Stage 9 operator closure below remain intact. Cycle 1.1 is not yet verified or owner accepted; Cycle 1.2 is not authorized.
+
+
 ## Mainline integration — 2026-10-22
 
 The accepted Designer and its UI-foundation ancestry are delivered to `origin/main`

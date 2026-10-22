@@ -1,5 +1,8 @@
 # VICT Stage 09 — Studio, Diagnosis, and Controlled Recovery
 
+> 2026-10-22 continuation: Stage 9 is reopened for the broader Studio objective. Only [Studio Cycle 1.1](../studio/CYCLE-1-1-HANDOFF.md) is issued: the existing Mastra boundary and canonical Designer source/edit/history mechanisms are composed, not replaced. Historical operator contracts and closure remain intact.
+
+
 > **Status: RATIFIED — G0 contract FROZEN (owner decisions recorded 2026-09-29; see §7.1 and `docs/governance/VICT-STAGE-09-G0-RATIFICATION-2026-09-29.md`).** The frozen bytes are pinned by SHA-256 in the ratification record; changes require a dated amendment. Written against VICT `main` at `516948ac8bc55bbae8624bb91b3b35de34b3146c` (Stage 8 owner closure, 2026-09-29). The separate Quellight `main` was observed at `5f709a536ab1f4d5fea0407db1b9537e0aa7c0f6`; recheck both before each gate. **The ratified contract is a decision record, not implementation evidence: nothing in this document evidences that any Studio, command, route, session, registry, or receipt exists.** Reference: `docs/VICT-SYSTEM-REFERENCE.md` §23 Stage 9 and §27; predecessor: `docs/governance/VICT-STAGE-08-G4-CLOSURE-2026-09-29.md`.
 
 ## 1. Outcome and limits

@@ -1,0 +1,69 @@
+# Stage 9 reopened — Studio Cycle 1.1
+
+Authority: owner's 2026-10-22 request to own Stage 9 Cycle 1.1 end to end.
+This is the current executable handoff for this cycle. Earlier G0–G3 and
+Designer closures remain historical accepted increments, not whole-Studio closure.
+
+## Baseline reconciliation
+
+Repository `https://github.com/radz2291/vict-02.git`; fetched main
+`d7401bef6e48330796c74ec00c86db9622d48cdf`. Accepted designer product
+`ba0304693487292e354374b1bd93908506eb2da9`, closure
+`9010c5aff2afb1fb792bf1a1cb15ddf9a92cae55`, both ancestors of main.
+The main integration descendant changes documentation/evidence only.
+Original local main `4d2df037d8a82d36c60bf1bff16919650643ce22` is behind,
+with untracked `victframework-builder-kit-0.1.0.tgz`; it is untouched.
+Clean isolated working branch: `codex/studio-cycle-1-1`, created from fetched
+main. Existing designer branches, browser origins/storage and servers are preserved.
+
+## Authorized implementation
+
+Chat beside the accepted canvas; existing VICT Mastra composition and capability
+bridge; current document/selection/component/editing context; palette-backed
+add/modify/move/remove; validated visible edits through the SAME EditorBridge,
+UiEditSession, history and expected-revision save. Server credentials only.
+No separate UI source or agent framework. Only Cycle 1.1 is issued.
+
+Allowed paths: `apps/studio/**`, its workspace dependency declarations in
+`package-lock.json`, `docs/studio/**`, and additive current-authorization pointers
+in `docs/governance/VICT-STAGE-09-STATE.md`, the Stage 9 architecture/handoff and
+system reference. Framework source changes require demonstrated necessity and
+recorded bounded reconciliation; none are planned. No other product edits,
+publication, deployment, merge to main, owner acceptance or Cycle 1.2.
+
+## Editing boundary
+
+The browser owns its local document. A turn captures document, working revision,
+content digest, selection and a fresh editor epoch. The server composes the
+existing governed Mastra executor with only read and palette-edit capabilities.
+Model tools expand palette recipes and bounded edit operations into canonical
+transactions. Server validation precedes a proposal; the browser repeats validation
+and checks epoch/revision/digest before applying through EditorBridge. Each applied
+tool transaction is one undoable history entry. The tool receives acknowledgement
+of the applied result before continuing. A refused/stale/disconnected edit has no
+new document effect; previously applied edits remain visible and undoable.
+Save/reopen continue using the existing local store and keys. Draft guards apply.
+No automatic save. Conversation/session state is ephemeral for this cycle.
+
+## Verification and stop
+
+Fresh independent agent, separate checkout, exact committed/pushed candidate.
+Challenge blank registration form; streamed valid edits; selected-field change;
+add/move/remove; undo/redo/save/reopen; invalid atomic transaction, stale revision
+(including undo/reopen ABA), draft guard, disconnected/failed provider, authentication,
+CSRF and credential isolation. Real Mastra execution is required; offline fixtures
+alone do not establish live provider acceptance. Missing credentials are recorded
+as missing proof, never promoted to PASS. Builder repairs and verifier rechecks
+are managed here without owner relay. Commit/push evidence and compare remote SHA.
+Stop at independently verified Cycle 1.1 ready for owner review. Stage 9 remains
+reopened; owner acceptance and Cycle 1.2 are not claimed or begun.
+
+## Reuse investigation
+
+Existing `@victframework/ui-svelte` exports Conversation (draft retention, bounded
+scroll feed, labels, polite announcements, pending send). Reuse it with Studio
+progress/context chrome and the existing component palette. Reviewed the upstream
+[shadcn-svelte AI Elements](https://shadcn-svelte.com/docs/ai-elements) and
+[Prompt Input](https://www.shadcn-svelte.com/docs/ai-elements/prompt-input).
+Their additional input-group/attachment/dropdown and AI SDK integration are
+unnecessary for this bounded composer. No new chat dependency or framework.

@@ -1,5 +1,8 @@
 # VICT Stage 09 — Entry and Gate Handoff
 
+> Current continuation (2026-10-22): the owner reopened Stage 9 for the broader Studio objective, authorizing only [Cycle 1.1](../studio/CYCLE-1-1-HANDOFF.md). That handoff reconciles current main and controls this cycle. The operator gate handoff below remains historical.
+
+
 > **RATIFIED 2026-09-29 — G0 contract FROZEN.** The owner resolved D-1–D-10 and adopted the root `AGENTS.md` (see `docs/governance/VICT-STAGE-09-G0-RATIFICATION-2026-09-29.md` and `docs/governance/VICT-STAGE-09-STATE.md`). **Decisions are not implementation evidence**; the work packages below are issued ONLY at the bounds of §"Current authorization". Baseline for the ratified contract: VICT `main` `516948ac8bc55bbae8624bb91b3b35de34b3146c`; Quellight read-only observation `5f709a536ab1f4d5fea0407db1b9537e0aa7c0f6`. Frozen bytes are pinned by SHA-256 in the ratification record; the freeze commit is independently verified and remote-checked before PR #2 merges. Check remote and clean local state again before work. Read `docs/governance/VICT-STAGE-09-STATE.md` for live status and `docs/architecture/STAGE-09-STUDIO-AND-RECOVERY.md` for the ratified contract.
 
 ## Current authorization — G0 RATIFIED; G1 issued and bounded
