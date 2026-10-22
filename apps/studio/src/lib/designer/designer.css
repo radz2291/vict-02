@@ -188,7 +188,6 @@ body:has(.finished-screen) {
 .design-workspace.drawer-open {
   grid-template-columns: minmax(0, 1fr) 6px var(--drawer-width);
 }
-.design-workspace.source-open {grid-template-columns:minmax(180px,1fr) min(860px,65%);}
 .design-stage {
   display: flex;
   flex-direction: column;
@@ -555,21 +554,20 @@ body:has(.finished-screen) {
   .design-status span:last-child {
     display: none;
   }
-  .design-workspace.drawer-open, .design-workspace.source-open {
+  .design-workspace.drawer-open {
     grid-template-columns: minmax(0, 1fr);
   }
   .drawer-resizer {
     display: none;
   }
   .document-drawer {position:absolute;inset:0 0 0 auto;width:min(var(--drawer-width),100%);z-index:20;}
-  .document-drawer.source-drawer {width:100%;}
 }
 
 .has-object-tools .canvas-scroll {padding-bottom:290px;}
 .empty-composition {position:absolute;inset:70px 20px auto;text-align:center;color:#7b879c;pointer-events:none;}
 .empty-composition h2 {font-size:16px;font-weight:500;}
 
-/* Source gets a wider dock; narrow screens use an edge-to-edge drawer. */
+/* All Document sections share the same drawer width. */
 .document-drawer .sidebar-body {display:flex;flex-direction:column;gap:0;padding:12px;}
 .document-drawer .uv-layers {flex:1;min-height:0;height:auto;}
 .section-heading {margin:2px 0 14px;} .section-heading h2,.data-heading h2 {font-size:13px;font-weight:600;color:#34425a;margin:0 0 4px;}
@@ -592,7 +590,7 @@ body:has(.finished-screen) {
 .action-inputs {display:flex;flex-wrap:wrap;gap:5px;} .action-inputs > span {padding:4px 7px;background:#f7f8fb;border-radius:4px;font-size:10px;color:#65748d;}
 .source-caption {display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:10px;font-size:11px;}
 .source-caption small {color:#8a96a8;font-size:10px;} .source-caption button {margin-left:auto;}
-.source-body .source-editor {flex:1;min-height:160px;resize:none;height:auto;font-size:12px;line-height:1.65;padding:12px;}
+.source-body .source-editor {white-space:pre;overflow:auto;flex:1;min-height:160px;resize:none;height:auto;font-size:12px;line-height:1.65;padding:12px;}
 .source-body .source-actions {flex:none;margin:10px 0;}
 .application-attachment {flex:none;font-size:10px;color:#7b879c;max-height:25%;overflow:auto;}
 .document-drawer :focus-visible {outline:2px solid #5269bd;outline-offset:-1px;}
