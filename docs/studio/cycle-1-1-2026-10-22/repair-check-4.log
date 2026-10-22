@@ -1,0 +1,3 @@
+
+> vict-studio@0.1.0 check
+> svelte-kit sync && tsc --noEmit

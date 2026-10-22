@@ -1,0 +1,18 @@
+{
+  "sourceCommit": "8be9ce86dc981ae8c284b4f354a12a3afad8fc8e",
+  "turnId": "turn-aee0f7f8-f7dd-4f5d-b469-5d03a4f0fa33",
+  "savedRevision": "r1.r2",
+  "reopenedPlaceholder": "Company email",
+  "differences": [
+    {
+      "path": "/revision",
+      "before": "r1",
+      "after": "r1.r2"
+    },
+    {
+      "path": "/nodes/input-email/attributes/placeholder",
+      "before": "Work email address",
+      "after": "Company email"
+    }
+  ]
+}

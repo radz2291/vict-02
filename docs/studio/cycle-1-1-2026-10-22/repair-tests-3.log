@@ -1,0 +1,40 @@
+
+> vict-studio@0.1.0 test
+> vitest run tests/designer-agent-mastra.test.ts tests/designer-model.test.ts --maxWorkers=1
+
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/apps/studio
+
+10:13:49 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/DocumentHost.svelte:105:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+10:13:49 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:303:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+10:13:49 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:303:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+10:13:49 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:370:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+10:13:49 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:370:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+10:13:54 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-editor/src/StateValuesPanel.svelte:106:6 A form label must be associated with a control
+https://svelte.dev/e/a11y_label_has_associated_control
+stderr | tests/designer-agent-mastra.test.ts > Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > sanitizes a genuine Mastra model failure after an acknowledged edit and preserves Undo
+Error in agent stream {
+  error: Error: STUDIO_AGENT_PROVIDER_FAILED
+      at safeError (C:\Users\RZ1\.codex\worktrees\studio-cycle-1-1\260831-VCT-02\apps\studio\src\lib\server\designer-model.ts:33:7)
+      at fail (C:\Users\RZ1\.codex\worktrees\studio-cycle-1-1\260831-VCT-02\apps\studio\src\lib\server\designer-model.ts:57:56)
+      at C:\Users\RZ1\.codex\worktrees\studio-cycle-1-1\260831-VCT-02\apps\studio\src\lib\server\designer-model.ts:97:13,
+  runId: 'c346442d-1cd3-4f63-8ce9-fbe808edf6cb',
+  provider: 'offline-fixture',
+  modelId: 'deterministic-1'
+}
+
+ ✓ tests/designer-agent-mastra.test.ts (3 tests) 19938ms
+   ✓ Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > runs governed read and edit tools; acknowledges only after EditorBridge commit; streams completion  9010ms
+   ✓ Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > sanitizes a genuine Mastra model failure after an acknowledged edit and preserves Undo  9176ms
+   ✓ Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > cancels a proposal before acknowledgement with zero edits and no cross-session cancellation  1749ms
+ ✓ tests/designer-model.test.ts (3 tests) 58ms
+
+ Test Files  2 passed (2)
+      Tests  6 passed (6)
+   Start at  22:13:32
+   Duration  43.87s (transform 13.93s, setup 0ms, collect 22.80s, tests 20.00s, environment 2ms, prepare 441ms)

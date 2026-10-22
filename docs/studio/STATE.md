@@ -1,5 +1,32 @@
 # Studio Designer — current delivery state
 
+## 2026-10-22 — Cycle 1.1 independently verified; ready for owner review
+
+Independent verdict: **PASS WITH NON-BLOCKING FINDINGS** on exact product
+`8be9ce86dc981ae8c284b4f354a12a3afad8fc8e`, branch
+`codex/studio-cycle-1-1`. [Delivery report, checks, launch and walkthrough](CYCLE-1-1-REPORT.md).
+Real owner-selected z.ai `glm-5.3-flash` production proof covers registration,
+selected-field modification, add/move/remove, Undo/Redo, Save/reopen, invalid and
+stale proposals, draft refusal, disconnect and provider-failure feedback. Both
+builder and independent Studio suites pass 132/132. Server credentials remain
+server-side; existing saved screens and accepted framework source are preserved.
+
+Original candidate `9c3675c42fc28f719b7052932177eb8461db5a30` received FAIL for
+production native-import resolution; that report and intermediate failures remain
+retained. Repaired product bytes stay fixed while final evidence/state is added.
+Remaining findings include oversized-request socket reset instead of structured
+413, inherited exact field selection through Layers, and load-sensitive settle
+timings; full dispositions are in the independent report and delivery report.
+
+Stage 9 remains **REOPENED / IN PROGRESS** for the broader Studio objective.
+Cycle 1.1 is ready for owner review, **not owner accepted**. No main merge,
+publication, deployment, full collaboration polish or Cycle 1.2 is authorized or
+begun. Next allowed action: owner hands-on review of this Cycle 1.1 candidate.
+
+Independent Cycle 1.1 evidence: [final verification](verification-cycle-1-1/FINAL-VERIFICATION.md),
+`codex/studio-cycle-1-1-verification-final` at
+`6610c4db571868b299747d3da4995f5f180e2e38` (remote verified).
+
 ## 2026-10-22 — Stage 9 REOPENED; Cycle 1.1 IN PROGRESS
 
 The owner authorized the broader Studio objective and only Cycle 1.1 implementation: live agent chat connected to the accepted Designer. [Current authority, baseline, paths and verification gate](CYCLE-1-1-HANDOFF.md). Historical Designer acceptance and Stage 9 operator closure below remain intact. Cycle 1.1 is not yet verified or owner accepted; Cycle 1.2 is not authorized.

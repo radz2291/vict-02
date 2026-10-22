@@ -1,0 +1,107 @@
+
+> vict-studio@0.1.0 test
+> vitest run tests/designer-agent-mastra.test.ts tests/designer-model.test.ts --maxWorkers=1
+
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/apps/studio
+
+10:07:17 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/DocumentHost.svelte:105:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+10:07:18 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:303:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+10:07:18 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:303:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+10:07:18 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:370:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+10:07:18 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:370:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+10:07:24 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-editor/src/StateValuesPanel.svelte:106:6 A form label must be associated with a control
+https://svelte.dev/e/a11y_label_has_associated_control
+ ❯ tests/designer-agent-mastra.test.ts (3 tests | 3 failed) 127612ms
+   × Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > runs governed read and edit tools; acknowledges only after EditorBridge commit; streams completion 120023ms
+     → Test timed out in 120000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+   × Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > sanitizes a genuine Mastra model failure after an acknowledged edit and preserves Undo 154ms
+     → expected { Object (type, status, ...) } to match object { Object (type, status, ...) }
+(2 matching properties omitted from actual)
+   × Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > cancels a proposal before acknowledgement with zero edits and no cross-session cancellation 7431ms
+     → expected { Object (type, status, ...) } to match object { type: 'done', …(2) }
+(2 matching properties omitted from actual)
+ ✓ tests/designer-model.test.ts (3 tests) 50ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/designer-agent-mastra.test.ts > Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > runs governed read and edit tools; acknowledges only after EditorBridge commit; streams completion
+Error: Test timed out in 120000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/designer-agent-mastra.test.ts:39:3
+     37| }
+     38| describe('Studio composes existing real pinned Mastra executor (offlin…
+     39|   it('runs governed read and edit tools; acknowledges only after Edito…
+       |   ^
+     40|     const { bridge, epoch, start, input } = context();
+     41|     const events: StudioAgentEvent[] = [];
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  tests/designer-agent-mastra.test.ts > Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > sanitizes a genuine Mastra model failure after an acknowledged edit and preserves Undo
+AssertionError: expected { Object (type, status, ...) } to match object { Object (type, status, ...) }
+(2 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "applied": 1,
++   "applied": 0,
+    "status": "failed",
+    "type": "done",
+  }
+
+ ❯ tests/designer-agent-mastra.test.ts:160:27
+    158|     if (!opened.ok) throw new Error(opened.code);
+    159|     await opened.finished;
+    160|     expect(events.at(-1)).toMatchObject({ type: 'done', status: 'faile…
+       |                           ^
+    161|     expect(JSON.stringify(events)).not.toContain('SECRET_PROVIDER_CANA…
+    162|     expect(bridge.document.nodes.title).toBeDefined();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  tests/designer-agent-mastra.test.ts > Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > cancels a proposal before acknowledgement with zero edits and no cross-session cancellation
+AssertionError: expected { Object (type, status, ...) } to match object { type: 'done', …(2) }
+(2 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+    "applied": 0,
+-   "status": "cancelled",
++   "status": "failed",
+    "type": "done",
+  }
+
+ ❯ tests/designer-agent-mastra.test.ts:199:27
+    197|     if (!opened.ok) throw new Error(opened.code);
+    198|     await opened.finished;
+    199|     expect(events.at(-1)).toMatchObject({ type: 'done', status: 'cance…
+       |                           ^
+    200|     expect(bridge.document.nodes.title).toBeUndefined();
+    201|     expect(bridge.getSnapshot().canUndo).toBe(false);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  3 failed | 3 passed (6)
+   Start at  22:06:58
+   Duration  155.12s (transform 16.15s, setup 0ms, collect 26.29s, tests 127.66s, environment 1ms, prepare 473ms)
+
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path C:\Users\RZ1\.codex\worktrees\studio-cycle-1-1\260831-VCT-02\apps\studio
+npm error workspace vict-studio@0.1.0
+npm error location C:\Users\RZ1\.codex\worktrees\studio-cycle-1-1\260831-VCT-02\apps\studio
+npm error command failed
+npm error command C:\WINDOWS\system32\cmd.exe /d /s /c vitest run tests/designer-agent-mastra.test.ts tests/designer-model.test.ts --maxWorkers=1

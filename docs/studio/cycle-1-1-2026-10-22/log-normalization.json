@@ -1,0 +1,150 @@
+{
+  "method": "Normalize CRLF to LF, remove trailing spaces/tabs and empty terminal lines only. Test results, failures and diagnostics retained.",
+  "files": [
+    {
+      "file": "agent-mastra-diagnostic-2.log",
+      "originalSha256": "57d1ceb5bedbe39cf90648c1b586eaa0dd6a16bd000cfcc0f9adb481d32492f3",
+      "storedSha256": "f43ed8a47c464a3f3986ee4e89f056b84dd6fe17668a13d835fc147514feeec2"
+    },
+    {
+      "file": "agent-mastra-diagnostic.log",
+      "originalSha256": "88ef350b9f61840790ecaf0460bdb644252d58387f6fe023ad4896c4f5027546",
+      "storedSha256": "fee944ec0320a4688d44f9616f792ea0292c4015384cf8894a538fbf72e425cc"
+    },
+    {
+      "file": "agent-mastra-recheck-2.log",
+      "originalSha256": "2c87bb21928695b12cf7daa327c734ba4448497196d51a4ac4d6e06c2d079bb4",
+      "storedSha256": "a625403ec909a59d0e9f35d63b75c5612c6b5238b717a6ad3ff8c6e199fbdd71"
+    },
+    {
+      "file": "agent-mastra-recheck-3.log",
+      "originalSha256": "d95684101966741a838b9c11806ead40e200436b72d3bda3b243da427308a31f",
+      "storedSha256": "dae2dc49a0e1b1a5bd11ab797b106761621ced63a3f538bcddcea93d34521cc9"
+    },
+    {
+      "file": "agent-mastra-recheck.log",
+      "originalSha256": "d6485d7efc10835f101db05e0ccbfb4255bb7dffe9ca72faa14d0978b0f344ca",
+      "storedSha256": "f62403d97a26f21719168addf559d5c321a9682caca12777fcfb0703618e315f"
+    },
+    {
+      "file": "agent-mastra-tests.log",
+      "originalSha256": "67fea581854518cd9e21740b639b02ff723d0916dd24870bf36ef7ba64102a2c",
+      "storedSha256": "a72302587bc1fd079dce90efbdd90b72dd93ef0d1a0262243a2b43f2842c345c"
+    },
+    {
+      "file": "cycle-build.log",
+      "originalSha256": "ea95070e65d57969856a99dcdb9e7b8bb485dd4bccd7ede602d031cb171040db",
+      "storedSha256": "a75c64aae5a92dd4908a5d9102d773bb503ec670d07e421161801f9bd59cdcfc"
+    },
+    {
+      "file": "cycle-typecheck.log",
+      "originalSha256": "bd65a805725be39f9645e5bdd2cb26026e1a75a3173a9997c103ad107f6c411a",
+      "storedSha256": "4f7a5882085aa4f5393b3d79cae0a4ec574fc5aa15ca1c863d4b7229cccf9214"
+    },
+    {
+      "file": "designer-check-final.log",
+      "originalSha256": "44eba34bbe59988b0006f84d047fff61ba65f383effa605fd90b51a3a20249a1",
+      "storedSha256": "ce1bed9199dcfb9c81dff6af0da072f01d0dd462f40e9102419bbfad7a2f3153"
+    },
+    {
+      "file": "native-lock.log",
+      "originalSha256": "1df1c566a07fe8979ab8258a170d28db4d0242fce1d7260a8816020b556113eb",
+      "storedSha256": "7317cb95d3440987331f1013b2a05b76572c214638fa004f1f5dabf9e7ee2a8f"
+    },
+    {
+      "file": "production-build-8be.log",
+      "originalSha256": "03bea6038063a5c73eac87c02058da9c3493cf9381b3b6dad00abf1e0234d78f",
+      "storedSha256": "5f901b4a650dd17f8101a54ae8ad3d47e444541564489de32464e03a4f9c2f25"
+    },
+    {
+      "file": "repair-check-2.log",
+      "originalSha256": "3b60fb077fa856d3551b84840f7c025e869ecdb01add9d0e01d3d7cc22953619",
+      "storedSha256": "7e6b804c41793874011d2688a6c470f6be96cc282d634b06525f873d97b92bb1"
+    },
+    {
+      "file": "repair-check-3.log",
+      "originalSha256": "3b60fb077fa856d3551b84840f7c025e869ecdb01add9d0e01d3d7cc22953619",
+      "storedSha256": "7e6b804c41793874011d2688a6c470f6be96cc282d634b06525f873d97b92bb1"
+    },
+    {
+      "file": "repair-check-4.log",
+      "originalSha256": "3b60fb077fa856d3551b84840f7c025e869ecdb01add9d0e01d3d7cc22953619",
+      "storedSha256": "7e6b804c41793874011d2688a6c470f6be96cc282d634b06525f873d97b92bb1"
+    },
+    {
+      "file": "repair-check.log",
+      "originalSha256": "2db7f87b5c0ba18bfd39615d467500321524bd6be2c612c72b274561db4940cc",
+      "storedSha256": "89ce2e5350358b43815a65c3ed4bf7f73a8b1d79e2bd751e2ced1a5e4bfef70f"
+    },
+    {
+      "file": "repair-lock.log",
+      "originalSha256": "1df1c566a07fe8979ab8258a170d28db4d0242fce1d7260a8816020b556113eb",
+      "storedSha256": "7317cb95d3440987331f1013b2a05b76572c214638fa004f1f5dabf9e7ee2a8f"
+    },
+    {
+      "file": "repair-tests-2.log",
+      "originalSha256": "63258bbe363135214660c8af6fc00659e2aa5dd7bc7a59017e130535a33203b4",
+      "storedSha256": "7606a4683049cec6bff9f559c656643a8d2a43e21d84f914f2283454165eb9b5"
+    },
+    {
+      "file": "repair-tests-3.log",
+      "originalSha256": "030021488275833bcb5161046eb407be7398f30f821835615160835a3c8c4172",
+      "storedSha256": "f2fbb0ea2a9ef1471d868193088d151ff8c6b752761f8e9008da69c5e9475c30"
+    },
+    {
+      "file": "repair-tests-4.log",
+      "originalSha256": "ff8630df6ecfd447465b50288b2d59c178221babaed16e7a53be374988c3fef9",
+      "storedSha256": "7a8249e7c9e7e6de95348f85a766d961815efee46866e847753648d23ffc68b7"
+    },
+    {
+      "file": "repair-tests-5.log",
+      "originalSha256": "5870e87591f8ad8806685380d7709bac687bb4d131f3c5862625892940d7aaed",
+      "storedSha256": "d36dd3317f0b0412772ac12f497aafe5d9e3bc461e99b6d5cd6429959fe58606"
+    },
+    {
+      "file": "repair-tests.log",
+      "originalSha256": "3c3b19a2b980745a6fb2d5fcce4ad552567853e392e55f3a1142bfe6bf628a44",
+      "storedSha256": "69c0b7de3fc14f6f652cf978adb05ac976306572aae3ca1bba819a0b12147dc1"
+    },
+    {
+      "file": "seam-diagnostic.log",
+      "originalSha256": "47346fc37c02115445e7cf3e99c45f8d11b0fc696e0d85ee61775b09038e0ef1",
+      "storedSha256": "990ac08c54cce9a83fb5faf63e46ea7e51d5e9b45ca9a7deb5562524ae83116d"
+    },
+    {
+      "file": "studio-build-final.log",
+      "originalSha256": "f4dc582e75be362945eb44edba3783423246ee05f01a52d56d801c4a97504a5d",
+      "storedSha256": "195bfe6a3f2899de8f7ee02972a5aa14cb255b9f889f5cdbeff760fd10a96eb5"
+    },
+    {
+      "file": "studio-build-repaired.log",
+      "originalSha256": "9e6ce9c50757b6e64d8056d480523748e349de40c14340d13c5e42fafec3138c",
+      "storedSha256": "c5b4638ee3b3560e33188e2edd4c3e8388b7206f4f6834176d7966c469997718"
+    },
+    {
+      "file": "studio-check-final.log",
+      "originalSha256": "3b60fb077fa856d3551b84840f7c025e869ecdb01add9d0e01d3d7cc22953619",
+      "storedSha256": "7e6b804c41793874011d2688a6c470f6be96cc282d634b06525f873d97b92bb1"
+    },
+    {
+      "file": "studio-cycle-build-final.log",
+      "originalSha256": "79645afd57cafce797954250023584c8c5bb4dd7aab6cf7bd79f353c916fcfad",
+      "storedSha256": "03e9f3b6688e17c962e70d7a359d2a29159cde338c359f4a557cefce7bf64c70"
+    },
+    {
+      "file": "studio-cycle-build.log",
+      "originalSha256": "4debe0783775680202be5299a7f9bbfff42f1ea90e6dc9d54c24aaaca4b0c816",
+      "storedSha256": "d761546cbdc43d0d6bc90efad6a0db49db9c5c5315c0892e73ddd38eb16f0826"
+    },
+    {
+      "file": "studio-tests-final.log",
+      "originalSha256": "c75f625f28570ed7c89967a30384d26e0e5a0cba3dd54a658c9dafa4f5e33474",
+      "storedSha256": "a1e0f2085fa7dd188fb9ebf4e14473a093e7e3821819ed6d4a9e2d6431b31043"
+    },
+    {
+      "file": "studio-tests-repaired.log",
+      "originalSha256": "c855fdbd5fc3ca61d88a8a3bc4aa6c077fba103b0025ef9406e120c179228a1a",
+      "storedSha256": "2fefa48f9a0788b8edc3bc2c51cffa20540761ea90b48a6d3a3ddc12fadc4da0"
+    }
+  ]
+}

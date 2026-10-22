@@ -1,0 +1,18 @@
+[
+  {
+    "check": "studio-check",
+    "exitCode": 0
+  },
+  {
+    "check": "designer-check",
+    "exitCode": 0
+  },
+  {
+    "check": "studio-tests",
+    "exitCode": 1
+  },
+  {
+    "check": "studio-build",
+    "exitCode": 0
+  }
+]

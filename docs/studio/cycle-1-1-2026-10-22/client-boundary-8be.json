@@ -1,0 +1,23 @@
+{
+  "sourceCommit": "8be9ce86dc981ae8c284b4f354a12a3afad8fc8e",
+  "replayFiles": 22,
+  "designerFiles": 18,
+  "allClientFiles": 45,
+  "authoringMarkers": [
+    "Floating selection tools",
+    "uv-inspector",
+    "studio.screen-preview",
+    "Apply canonical source",
+    "Message Studio agent"
+  ],
+  "serverMarkers": [
+    "MastraProductAgent",
+    "createDedicatedMastraStore",
+    "ZAI_API_KEY",
+    "OPENAI_API_KEY",
+    "quietWriteApprovals"
+  ],
+  "credentialChecked": true,
+  "verdict": "PASS",
+  "limit": "Static dependency/byte scan; lazy router references remain. This is not a browser network trace."
+}

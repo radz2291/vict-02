@@ -1,0 +1,154 @@
+
+> vict-studio@0.1.0 build
+> svelte-kit sync && vite build
+
+vite v6.4.3 building SSR bundle for production...
+transforming...
+10:24:50 pm [vite-plugin-svelte] src/routes/confirmations/+page.svelte:22:24 This reference only captures the initial value of `data`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+20:   let { data, form }: { data: { targets: readonly { id: string; label: string }[] }; form: Record<string, unknown> | null } = $props();
+21:
+22:   const targetChoices = data?.targets ?? [];
+                                ^
+23:   const defaultTarget = targetChoices.find((entry) => entry.id.startsWith('g2-mutator'))?.id ?? targetChoices[0]?.id ?? 'local';
+24:   let selectedTarget = $state(defaultTarget);
+10:24:50 pm [vite-plugin-svelte] src/routes/changesets/+page.svelte:26:24 This reference only captures the initial value of `data`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+24:   } = $props();
+25:
+26:   const targetChoices = data?.targets ?? [];
+                                ^
+27:   const changesetRows = data?.changesets ?? [];
+28:   const defaultTarget = targetChoices[0]?.id ?? 'local';
+10:24:50 pm [vite-plugin-svelte] src/routes/changesets/+page.svelte:27:24 This reference only captures the initial value of `data`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+25:
+26:   const targetChoices = data?.targets ?? [];
+27:   const changesetRows = data?.changesets ?? [];
+                                ^
+28:   const defaultTarget = targetChoices[0]?.id ?? 'local';
+29:   let selectedTarget = $state(defaultTarget);
+10:24:54 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-editor/src/StateValuesPanel.svelte:106:6 A form label must be associated with a control
+https://svelte.dev/e/a11y_label_has_associated_control
+104:   {#each declarations as decl (decl.key)}
+105:     <div class="state-row">
+106:       <label class="state-label">
+                   ^
+107:         <code>{decl.key}</code>
+108:         <span class="state-type">{typeLabel(decl.type)}</span>
+10:24:54 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/DocumentHost.svelte:105:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+103:   let stateBag: Record<string, unknown> = $state(initialValues());
+104:   let acceptedSupplied: Record<string, UiValue> = {};
+105:   let lastDocumentId = $state(plan.documentId);
+                                       ^
+106:   let lastSignal: symbol | undefined = $state<symbol | undefined>(undefined);
+107:
+10:24:54 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:303:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+301:   </svelte:element>
+302: {:else if instruction.kind === 'text'}
+303:   <span
+            ^
+304:     class="uv-text"
+305:     data-ui-owner={ownerId}
+10:24:54 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:303:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+301:   </svelte:element>
+302: {:else if instruction.kind === 'text'}
+303:   <span
+            ^
+304:     class="uv-text"
+305:     data-ui-owner={ownerId}
+10:24:54 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:370:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+368:   {:else if extension?.ok}
+369:     {@const Implementation = extension.component}
+370:     <span style="display: contents" data-extension-id={instruction.extensionId} data-ui-owner={ownerId} data-ui-occ={occ} data-ui-node={instruction.nodeId}
+                ^
+371:       onclick={event => { event.stopPropagation(); selectOccurrence?.(occ); }}>
+372:       <Implementation props={extensionProps} occurrenceKey={occ} nodeId={instruction.nodeId} {presentation} />
+10:24:54 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:370:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+368:   {:else if extension?.ok}
+369:     {@const Implementation = extension.component}
+370:     <span style="display: contents" data-extension-id={instruction.extensionId} data-ui-owner={ownerId} data-ui-occ={occ} data-ui-node={instruction.nodeId}
+                ^
+371:       onclick={event => { event.stopPropagation(); selectOccurrence?.(occ); }}>
+372:       <Implementation props={extensionProps} occurrenceKey={occ} nodeId={instruction.nodeId} {presentation} />
+✓ 1091 modules transformed.
+rendering chunks...
+vite v6.4.3 building for production...
+transforming...
+10:25:21 pm [vite-plugin-svelte] src/routes/changesets/+page.svelte:26:24 This reference only captures the initial value of `data`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+24:   } = $props();
+25:
+26:   const targetChoices = data?.targets ?? [];
+                                ^
+27:   const changesetRows = data?.changesets ?? [];
+28:   const defaultTarget = targetChoices[0]?.id ?? 'local';
+10:25:21 pm [vite-plugin-svelte] src/routes/changesets/+page.svelte:27:24 This reference only captures the initial value of `data`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+25:
+26:   const targetChoices = data?.targets ?? [];
+27:   const changesetRows = data?.changesets ?? [];
+                                ^
+28:   const defaultTarget = targetChoices[0]?.id ?? 'local';
+29:   let selectedTarget = $state(defaultTarget);
+10:25:21 pm [vite-plugin-svelte] src/routes/confirmations/+page.svelte:22:24 This reference only captures the initial value of `data`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+20:   let { data, form }: { data: { targets: readonly { id: string; label: string }[] }; form: Record<string, unknown> | null } = $props();
+21:
+22:   const targetChoices = data?.targets ?? [];
+                                ^
+23:   const defaultTarget = targetChoices.find((entry) => entry.id.startsWith('g2-mutator'))?.id ?? targetChoices[0]?.id ?? 'local';
+24:   let selectedTarget = $state(defaultTarget);
+10:25:23 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/DocumentHost.svelte:105:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+103:   let stateBag: Record<string, unknown> = $state(initialValues());
+104:   let acceptedSupplied: Record<string, UiValue> = {};
+105:   let lastDocumentId = $state(plan.documentId);
+                                       ^
+106:   let lastSignal: symbol | undefined = $state<symbol | undefined>(undefined);
+107:
+10:25:23 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:303:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+301:   </svelte:element>
+302: {:else if instruction.kind === 'text'}
+303:   <span
+            ^
+304:     class="uv-text"
+305:     data-ui-owner={ownerId}
+10:25:23 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:303:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+301:   </svelte:element>
+302: {:else if instruction.kind === 'text'}
+303:   <span
+            ^
+304:     class="uv-text"
+305:     data-ui-owner={ownerId}
+10:25:23 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:370:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+368:   {:else if extension?.ok}
+369:     {@const Implementation = extension.component}
+370:     <span style="display: contents" data-extension-id={instruction.extensionId} data-ui-owner={ownerId} data-ui-occ={occ} data-ui-node={instruction.nodeId}
+                ^
+371:       onclick={event => { event.stopPropagation(); selectOccurrence?.(occ); }}>
+372:       <Implementation props={extensionProps} occurrenceKey={occ} nodeId={instruction.nodeId} {presentation} />
+10:25:23 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:370:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+368:   {:else if extension?.ok}
+369:     {@const Implementation = extension.component}
+370:     <span style="display: contents" data-extension-id={instruction.extensionId} data-ui-owner={ownerId} data-ui-occ={occ} data-ui-node={instruction.nodeId}
+                ^
+371:       onclick={event => { event.stopPropagation(); selectOccurrence?.(occ); }}>
+372:       <Implementation props={extensionProps} occurrenceKey={occ} nodeId={instruction.nodeId} {presentation} />
+10:25:25 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-editor/src/StateValuesPanel.svelte:106:6 A form label must be associated with a control
+https://svelte.dev/e/a11y_label_has_associated_control
+104:   {#each declarations as decl (decl.key)}
+105:     <div class="state-row">
+106:       <label class="state-label">
+                   ^
+107:         <code>{decl.key}</code>
+108:         <span class="state-type">{typeLabel(decl.type)}</span>

@@ -1,0 +1,156 @@
+
+> vict-studio@0.1.0 test
+> vitest run tests/designer-agent-mastra.test.ts
+
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/apps/studio
+
+9:35:37 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/DocumentHost.svelte:105:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+9:35:38 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:303:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+9:35:38 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:303:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+9:35:38 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:370:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+9:35:38 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:370:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+9:35:43 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-editor/src/StateValuesPanel.svelte:106:6 A form label must be associated with a control
+https://svelte.dev/e/a11y_label_has_associated_control
+stderr | tests/designer-agent-mastra.test.ts > Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > runs governed read and edit tools; acknowledges only after EditorBridge commit; streams completion
+VictPresentationError: capability presentation rejected (VICT_PRESENTATION_INVALID): capability 'studio.screen.edit' input schema.properties.operations.items.anyOf[0].properties.attributes.additionalProperties.anyOf: nesting exceeds the depth bound 8
+    at captureValue (C:\Users\RZ1\.codex\worktrees\studio-cycle-1-1\260831-VCT-02\packages\mastra\src\presentation.ts:92:11)
+    at captureValue (C:\Users\RZ1\.codex\worktrees\studio-cycle-1-1\260831-VCT-02\packages\mastra\src\presentation.ts:216:18)
+    at captureValue (C:\Users\RZ1\.codex\worktrees\studio-cycle-1-1\260831-VCT-02\packages\mastra\src\presentation.ts:216:18)
+    at captureValue (C:\Users\RZ1\.codex\worktrees\studio-cycle-1-1\260831-VCT-02\packages\mastra\src\presentation.ts:216:18)
+    at captureValue (C:\Users\RZ1\.codex\worktrees\studio-cycle-1-1\260831-VCT-02\packages\mastra\src\presentation.ts:216:18)
+    at captureValue (C:\Users\RZ1\.codex\worktrees\studio-cycle-1-1\260831-VCT-02\packages\mastra\src\presentation.ts:156:18)
+    at captureValue (C:\Users\RZ1\.codex\worktrees\studio-cycle-1-1\260831-VCT-02\packages\mastra\src\presentation.ts:216:18)
+    at captureValue (C:\Users\RZ1\.codex\worktrees\studio-cycle-1-1\260831-VCT-02\packages\mastra\src\presentation.ts:216:18)
+    at captureValue (C:\Users\RZ1\.codex\worktrees\studio-cycle-1-1\260831-VCT-02\packages\mastra\src\presentation.ts:216:18)
+    at captureValue (C:\Users\RZ1\.codex\worktrees\studio-cycle-1-1\260831-VCT-02\packages\mastra\src\presentation.ts:216:18) {
+  code: 'VICT_PRESENTATION_INVALID',
+  detail: "capability 'studio.screen.edit' input schema.properties.operations.items.anyOf[0].properties.attributes.additionalProperties.anyOf: nesting exceeds the depth bound 8"
+}
+
+stderr | tests/designer-agent-mastra.test.ts > Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > sanitizes a genuine Mastra model failure after an acknowledged edit and preserves Undo
+VictPresentationError: capability presentation rejected (VICT_PRESENTATION_INVALID): capability 'studio.screen.edit' input schema.properties.operations.items.anyOf[0].properties.attributes.additionalProperties.anyOf: nesting exceeds the depth bound 8
+    at captureValue (C:\Users\RZ1\.codex\worktrees\studio-cycle-1-1\260831-VCT-02\packages\mastra\src\presentation.ts:92:11)
+    at captureValue (C:\Users\RZ1\.codex\worktrees\studio-cycle-1-1\260831-VCT-02\packages\mastra\src\presentation.ts:216:18)
+    at captureValue (C:\Users\RZ1\.codex\worktrees\studio-cycle-1-1\260831-VCT-02\packages\mastra\src\presentation.ts:216:18)
+    at captureValue (C:\Users\RZ1\.codex\worktrees\studio-cycle-1-1\260831-VCT-02\packages\mastra\src\presentation.ts:216:18)
+    at captureValue (C:\Users\RZ1\.codex\worktrees\studio-cycle-1-1\260831-VCT-02\packages\mastra\src\presentation.ts:216:18)
+    at captureValue (C:\Users\RZ1\.codex\worktrees\studio-cycle-1-1\260831-VCT-02\packages\mastra\src\presentation.ts:156:18)
+    at captureValue (C:\Users\RZ1\.codex\worktrees\studio-cycle-1-1\260831-VCT-02\packages\mastra\src\presentation.ts:216:18)
+    at captureValue (C:\Users\RZ1\.codex\worktrees\studio-cycle-1-1\260831-VCT-02\packages\mastra\src\presentation.ts:216:18)
+    at captureValue (C:\Users\RZ1\.codex\worktrees\studio-cycle-1-1\260831-VCT-02\packages\mastra\src\presentation.ts:216:18)
+    at captureValue (C:\Users\RZ1\.codex\worktrees\studio-cycle-1-1\260831-VCT-02\packages\mastra\src\presentation.ts:216:18) {
+  code: 'VICT_PRESENTATION_INVALID',
+  detail: "capability 'studio.screen.edit' input schema.properties.operations.items.anyOf[0].properties.attributes.additionalProperties.anyOf: nesting exceeds the depth bound 8"
+}
+
+stderr | tests/designer-agent-mastra.test.ts > Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > cancels a proposal before acknowledgement with zero edits and no cross-session cancellation
+VictPresentationError: capability presentation rejected (VICT_PRESENTATION_INVALID): capability 'studio.screen.edit' input schema.properties.operations.items.anyOf[0].properties.attributes.additionalProperties.anyOf: nesting exceeds the depth bound 8
+    at captureValue (C:\Users\RZ1\.codex\worktrees\studio-cycle-1-1\260831-VCT-02\packages\mastra\src\presentation.ts:92:11)
+    at captureValue (C:\Users\RZ1\.codex\worktrees\studio-cycle-1-1\260831-VCT-02\packages\mastra\src\presentation.ts:216:18)
+    at captureValue (C:\Users\RZ1\.codex\worktrees\studio-cycle-1-1\260831-VCT-02\packages\mastra\src\presentation.ts:216:18)
+    at captureValue (C:\Users\RZ1\.codex\worktrees\studio-cycle-1-1\260831-VCT-02\packages\mastra\src\presentation.ts:216:18)
+    at captureValue (C:\Users\RZ1\.codex\worktrees\studio-cycle-1-1\260831-VCT-02\packages\mastra\src\presentation.ts:216:18)
+    at captureValue (C:\Users\RZ1\.codex\worktrees\studio-cycle-1-1\260831-VCT-02\packages\mastra\src\presentation.ts:156:18)
+    at captureValue (C:\Users\RZ1\.codex\worktrees\studio-cycle-1-1\260831-VCT-02\packages\mastra\src\presentation.ts:216:18)
+    at captureValue (C:\Users\RZ1\.codex\worktrees\studio-cycle-1-1\260831-VCT-02\packages\mastra\src\presentation.ts:216:18)
+    at captureValue (C:\Users\RZ1\.codex\worktrees\studio-cycle-1-1\260831-VCT-02\packages\mastra\src\presentation.ts:216:18)
+    at captureValue (C:\Users\RZ1\.codex\worktrees\studio-cycle-1-1\260831-VCT-02\packages\mastra\src\presentation.ts:216:18) {
+  code: 'VICT_PRESENTATION_INVALID',
+  detail: "capability 'studio.screen.edit' input schema.properties.operations.items.anyOf[0].properties.attributes.additionalProperties.anyOf: nesting exceeds the depth bound 8"
+}
+
+ ❯ tests/designer-agent-mastra.test.ts (3 tests | 3 failed) 53469ms
+   × Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > runs governed read and edit tools; acknowledges only after EditorBridge commit; streams completion 41470ms
+     → expected { Object (type, status, ...) } to match object { type: 'done', …(2) }
+(2 matching properties omitted from actual)
+   × Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > sanitizes a genuine Mastra model failure after an acknowledged edit and preserves Undo 7422ms
+     → expected { Object (type, status, ...) } to match object { Object (type, status, ...) }
+(2 matching properties omitted from actual)
+   × Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > cancels a proposal before acknowledgement with zero edits and no cross-session cancellation 4574ms
+     → expected { Object (type, status, ...) } to match object { type: 'done', …(2) }
+(2 matching properties omitted from actual)
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/designer-agent-mastra.test.ts > Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > runs governed read and edit tools; acknowledges only after EditorBridge commit; streams completion
+AssertionError: expected { Object (type, status, ...) } to match object { type: 'done', …(2) }
+(2 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "applied": 1,
+-   "status": "completed",
++   "applied": 0,
++   "status": "failed",
+    "type": "done",
+  }
+
+ ❯ tests/designer-agent-mastra.test.ts:33:27
+     31|     },{modelFactory:()=>model,model:OFFLINE_MODEL_IDENTITY});
+     32|     expect(opened.ok).toBe(true);if(!opened.ok)return;await opened.fin…
+     33|     expect(events.at(-1)).toMatchObject({type:'done',status:'completed…
+       |                           ^
+     34|     expect(events.filter(event=>event.type==='text').map(event=>event.…
+     35|     expect(bridge.undo().ok).toBe(true);expect(bridge.document.nodes.t…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  tests/designer-agent-mastra.test.ts > Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > sanitizes a genuine Mastra model failure after an acknowledged edit and preserves Undo
+AssertionError: expected { Object (type, status, ...) } to match object { Object (type, status, ...) }
+(2 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "applied": 1,
++   "applied": 0,
+    "status": "failed",
+    "type": "done",
+  }
+
+ ❯ tests/designer-agent-mastra.test.ts:43:27
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  tests/designer-agent-mastra.test.ts > Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > cancels a proposal before acknowledgement with zero edits and no cross-session cancellation
+AssertionError: expected { Object (type, status, ...) } to match object { type: 'done', …(2) }
+(2 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+    "applied": 0,
+-   "status": "cancelled",
++   "status": "failed",
+    "type": "done",
+  }
+
+ ❯ tests/designer-agent-mastra.test.ts:50:27
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed (3)
+   Start at  21:35:14
+   Duration  82.95s (transform 17.67s, setup 0ms, collect 28.34s, tests 53.47s, environment 1ms, prepare 472ms)
+
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path C:\Users\RZ1\.codex\worktrees\studio-cycle-1-1\260831-VCT-02\apps\studio
+npm error workspace vict-studio@0.1.0
+npm error location C:\Users\RZ1\.codex\worktrees\studio-cycle-1-1\260831-VCT-02\apps\studio
+npm error command failed
+npm error command C:\WINDOWS\system32\cmd.exe /d /s /c vitest run tests/designer-agent-mastra.test.ts

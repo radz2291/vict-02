@@ -1,0 +1,228 @@
+
+> vict-studio@0.1.0 test
+> vitest run --maxWorkers=2
+
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/apps/studio
+
+ ✓ tests/quellight-transport.test.ts (10 tests) 32ms
+ ✓ tests/changeset-contract.test.ts (12 tests) 29ms
+ ✓ tests/boundary.test.ts (13 tests) 136ms
+ ✓ tests/run-detail.test.ts (12 tests) 131ms
+ ✓ tests/confirmation-contract.test.ts (11 tests) 22ms
+9:59:28 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/DocumentHost.svelte:105:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+9:59:29 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:303:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+9:59:29 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:303:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+9:59:29 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:370:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+9:59:29 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:370:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+9:59:34 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-editor/src/StateValuesPanel.svelte:106:6 A form label must be associated with a control
+https://svelte.dev/e/a11y_label_has_associated_control
+ ✓ tests/designer-agent.test.ts (4 tests) 373ms
+ ✓ tests/adapter.test.ts (9 tests) 75ms
+ ✓ tests/app-definition.test.ts (8 tests) 73ms
+ ✓ tests/designer-required-slots.test.ts (5 tests) 170ms
+ ✓ tests/target-selection.test.ts (6 tests) 13ms
+ ✓ tests/designer.test.ts (4 tests) 1016ms
+   ✓ Studio canonical screen integration > fails closed on undeclared actions, missing inputs, denied permission and reset during execution  937ms
+ ✓ tests/designer-independent-verification.test.ts (4 tests) 1486ms
+   ✓ clears fail-next exactly once and fences two pending actions across reset  1388ms
+ ✓ tests/targets.test.ts (5 tests) 60ms
+ ✓ tests/designer-preflight-independent.test.ts (2 tests) 72ms
+ ✓ tests/designer-required-slot-verification.test.ts (2 tests) 49ms
+stderr | tests/designer-agent-mastra.test.ts > Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > sanitizes a genuine Mastra model failure after an acknowledged edit and preserves Undo
+Error in agent stream {
+  error: Error: SECRET_PROVIDER_CANARY_NEVER_RETURN
+      at Object.model.doStream (C:\Users\RZ1\.codex\worktrees\studio-cycle-1-1\260831-VCT-02\apps\studio\tests\designer-agent-mastra.test.ts:139:28)
+      at AISDKV5LanguageModel.doStream (file:///C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/node_modules/@mastra/core/src/llm/model/aisdk/v5/model.ts:111:30)
+      at retryResult.default.retries (file:///C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/node_modules/@mastra/core/src/stream/aisdk/v5/execute.ts:283:20)
+      at Module.pRetry (file:///C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/node_modules/p-retry/index.js:197:25)
+      at createStream (file:///C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/node_modules/@mastra/core/src/stream/aisdk/v5/execute.ts:274:12)
+      at Object.start (file:///C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/node_modules/@mastra/core/src/stream/base/input.ts:67:26),
+  runId: 'cc931443-139c-4df9-94a8-edf09b9a9d4e',
+  provider: 'offline-fixture',
+  modelId: 'deterministic-1'
+}
+
+10:00:15 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/DocumentHost.svelte:105:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+10:00:16 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:303:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+10:00:16 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:303:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+10:00:16 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:370:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+10:00:16 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:370:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+10:00:21 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-editor/src/StateValuesPanel.svelte:106:6 A form label must be associated with a control
+https://svelte.dev/e/a11y_label_has_associated_control
+stderr | tests/ui/composition.test.ts
+AggregateError:
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1712:7) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 3000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 3000
+    }
+  ]
+}
+
+stderr | tests/ui/composition.test.ts
+AggregateError:
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1712:7) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 3000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 3000
+    }
+  ]
+}
+
+stderr | tests/ui/composition.test.ts
+AggregateError:
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1712:7) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 3000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 3000
+    }
+  ]
+}
+
+ ✓ tests/ui/composition.test.ts (3 tests) 1598ms
+   ✓ opens another saved screen through File and guards the cascading menu during a source draft  674ms
+   ✓ opens a closed composition without authored or runtime changes, guards drafts, and saves the same edited source for replay  617ms
+   ✓ keeps data drafts safe across document navigation and saves applied starting values  301ms
+ ✓ tests/ui/render.test.ts (7 tests) 274ms
+stderr | tests/ui/designer-runtime.test.ts > keeps runtime input and checkbox state across pointer selection and leaves authored history clean
+[svelte] dynamic_void_element_content
+`<svelte:element this="input">` is a void element — it cannot have content
+https://svelte.dev/e/dynamic_void_element_content
+[svelte] dynamic_void_element_content
+`<svelte:element this="input">` is a void element — it cannot have content
+https://svelte.dev/e/dynamic_void_element_content
+
+stderr | tests/ui/designer-runtime.test.ts > keeps runtime input and checkbox state across pointer selection and leaves authored history clean
+[svelte] dynamic_void_element_content
+`<svelte:element this="input">` is a void element — it cannot have content
+https://svelte.dev/e/dynamic_void_element_content
+
+stderr | tests/ui/designer-runtime.test.ts > keeps runtime input and checkbox state across pointer selection and leaves authored history clean
+AggregateError:
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1712:7) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 3000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 3000
+    }
+  ]
+}
+
+ ✓ tests/ui/designer-runtime.test.ts (1 test) 1181ms
+   ✓ keeps runtime input and checkbox state across pointer selection and leaves authored history clean  1179ms
+ ✓ tests/ui/confirmation.test.ts (5 tests) 55ms
+ ✓ tests/ui/saved-run.test.ts (3 tests) 587ms
+   ✓ keeps saved source unchanged when running with width='390'  329ms
+ ❯ tests/designer-agent-mastra.test.ts (3 tests | 1 failed) 155985ms
+   ✓ Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > runs governed read and edit tools; acknowledges only after EditorBridge commit; streams completion  35390ms
+   × Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > sanitizes a genuine Mastra model failure after an acknowledged edit and preserves Undo 120025ms
+     → Test timed out in 120000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+   ✓ Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > cancels a proposal before acknowledgement with zero edits and no cross-session cancellation  566ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/designer-agent-mastra.test.ts > Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > sanitizes a genuine Mastra model failure after an acknowledged edit and preserves Undo
+Error: Test timed out in 120000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/designer-agent-mastra.test.ts:117:3
+    115|     expect(bridge.document.nodes.title).toBeUndefined();
+    116|   }, 120_000);
+    117|   it('sanitizes a genuine Mastra model failure after an acknowledged e…
+       |   ^
+    118|     const { bridge, epoch, start, input } = context();
+    119|     const events: StudioAgentEvent[] = [];
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 20 passed (21)
+      Tests  1 failed | 128 passed (129)
+   Start at  21:59:10
+   Duration  180.21s (transform 30.82s, setup 0ms, collect 87.13s, tests 163.42s, environment 9.09s, prepare 4.99s)
+
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path C:\Users\RZ1\.codex\worktrees\studio-cycle-1-1\260831-VCT-02\apps\studio
+npm error workspace vict-studio@0.1.0
+npm error location C:\Users\RZ1\.codex\worktrees\studio-cycle-1-1\260831-VCT-02\apps\studio
+npm error command failed
+npm error command C:\WINDOWS\system32\cmd.exe /d /s /c vitest run --maxWorkers=2

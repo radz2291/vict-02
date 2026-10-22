@@ -1,0 +1,42 @@
+
+> vict-studio@0.1.0 test
+> vitest run tests/designer-agent-mastra.test.ts
+
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/apps/studio
+
+9:43:40 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/DocumentHost.svelte:105:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+9:43:41 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:303:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+9:43:41 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:303:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+9:43:41 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:370:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+9:43:41 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:370:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+9:43:51 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-editor/src/StateValuesPanel.svelte:106:6 A form label must be associated with a control
+https://svelte.dev/e/a11y_label_has_associated_control
+stderr | tests/designer-agent-mastra.test.ts > Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > sanitizes a genuine Mastra model failure after an acknowledged edit and preserves Undo
+Error in agent stream {
+  error: Error: SECRET_PROVIDER_CANARY_NEVER_RETURN
+      at Object.model.doStream (C:\Users\RZ1\.codex\worktrees\studio-cycle-1-1\260831-VCT-02\apps\studio\tests\designer-agent-mastra.test.ts:40:103)
+      at AISDKV5LanguageModel.doStream (file:///C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/node_modules/@mastra/core/src/llm/model/aisdk/v5/model.ts:111:30)
+      at retryResult.default.retries (file:///C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/node_modules/@mastra/core/src/stream/aisdk/v5/execute.ts:283:20)
+      at Module.pRetry (file:///C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/node_modules/p-retry/index.js:197:25)
+      at createStream (file:///C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/node_modules/@mastra/core/src/stream/aisdk/v5/execute.ts:274:12)
+      at Object.start (file:///C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/node_modules/@mastra/core/src/stream/base/input.ts:67:26),
+  runId: '23694bfd-e57b-4f2a-8db6-53ab7e60fd9e',
+  provider: 'offline-fixture',
+  modelId: 'deterministic-1'
+}
+
+ ✓ tests/designer-agent-mastra.test.ts (3 tests) 26973ms
+   ✓ Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > runs governed read and edit tools; acknowledges only after EditorBridge commit; streams completion  24714ms
+   ✓ Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > sanitizes a genuine Mastra model failure after an acknowledged edit and preserves Undo  1232ms
+   ✓ Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > cancels a proposal before acknowledgement with zero edits and no cross-session cancellation  1018ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  21:43:03
+   Duration  76.01s (transform 28.97s, setup 0ms, collect 47.15s, tests 26.97s, environment 0ms, prepare 514ms)
