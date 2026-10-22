@@ -1,5 +1,17 @@
 # Studio Designer — current delivery state
 
+## 2026-10-23 — Existing-screen agent revision repair IN PROGRESS
+
+Owner reported false stale rejection on the open saved screen. New-screen
+creation is not required. [Bounded repair, observed cause and gate](CYCLE-1-1-REVISION-REPAIR.md).
+Branch `codex/studio-cycle-1-1-revision-repair` starts from remote-equal
+`8fd417c91916dfa2f6d801306cf89b7a66f713f7`; main remains
+`d7401bef6e48330796c74ec00c86db9622d48cdf`.
+The previous chat-layout gate remains historical; current Cycle 1.1 readiness
+is held pending this functional repair's independent existing-screen proof.
+Owner tab/canvas/chat/draft are preserved. Stage 9 remains reopened; no owner
+acceptance, main merge or Cycle 1.2.
+
 ## 2026-10-23 — Cycle 1.1 chat layout repair verified and locally active
 
 Independent **PASS WITH NON-BLOCKING FINDINGS** on exact product

@@ -1,0 +1,85 @@
+
+> vict-studio@0.1.0 test
+> vitest run tests/designer-agent.test.ts tests/designer-agent-mastra.test.ts
+
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/apps/studio
+
+1:34:56 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/DocumentHost.svelte:105:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+1:34:56 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:303:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+1:34:56 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:303:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+1:34:56 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:370:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+1:34:56 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:370:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+1:35:01 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-editor/src/StateValuesPanel.svelte:106:6 A form label must be associated with a control
+https://svelte.dev/e/a11y_label_has_associated_control
+ ✓ tests/designer-agent.test.ts (6 tests) 579ms
+ ❯ tests/designer-agent-mastra.test.ts (6 tests | 2 failed) 7652ms
+   × Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > recovers a wrong source-version argument on an existing saved screen in the same governed turn 85ms
+     → expected false to be true // Object.is equality
+   × Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > keeps a genuine browser revision refusal fenced even after a model re-read and retry 34ms
+     → expected false to be true // Object.is equality
+   ✓ Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > runs governed read and edit tools; acknowledges only after EditorBridge commit; streams completion  2283ms
+   ✓ Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > sanitizes a genuine Mastra model failure after an acknowledged edit and preserves Undo  1412ms
+   ✓ Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > cancels a proposal before acknowledgement with zero edits and no cross-session cancellation  1784ms
+   ✓ Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > admits the next turn at terminal delivery while private cleanup is still pending  2049ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/designer-agent-mastra.test.ts > Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > recovers a wrong source-version argument on an existing saved screen in the same governed turn
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ context tests/designer-agent-mastra.test.ts:44:30
+     42|       ).ok,
+     43|     ).toBe(true);
+     44|     expect(bridge.save().ok).toBe(true);
+       |                              ^
+     45|     expect(bridge.save().ok).toBe(true);
+     46|     expect(bridge.reopen().ok).toBe(true);
+ ❯ tests/designer-agent-mastra.test.ts:62:45
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/designer-agent-mastra.test.ts > Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > keeps a genuine browser revision refusal fenced even after a model re-read and retry
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ context tests/designer-agent-mastra.test.ts:44:30
+     42|       ).ok,
+     43|     ).toBe(true);
+     44|     expect(bridge.save().ok).toBe(true);
+       |                              ^
+     45|     expect(bridge.save().ok).toBe(true);
+     46|     expect(bridge.reopen().ok).toBe(true);
+ ❯ tests/designer-agent-mastra.test.ts:142:45
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  2 failed | 10 passed (12)
+   Start at  01:34:38
+   Duration  31.00s (transform 17.43s, setup 0ms, collect 44.32s, tests 8.23s, environment 1ms, prepare 926ms)
+
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path C:\Users\RZ1\.codex\worktrees\studio-cycle-1-1\260831-VCT-02\apps\studio
+npm error workspace vict-studio@0.1.0
+npm error location C:\Users\RZ1\.codex\worktrees\studio-cycle-1-1\260831-VCT-02\apps\studio
+npm error command failed
+npm error command C:\WINDOWS\system32\cmd.exe /d /s /c vitest run tests/designer-agent.test.ts tests/designer-agent-mastra.test.ts

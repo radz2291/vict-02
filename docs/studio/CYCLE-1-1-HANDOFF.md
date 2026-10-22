@@ -1,5 +1,13 @@
 # Stage 9 reopened — Studio Cycle 1.1
 
+Current owner-observed functional repair (2026-10-23):
+[existing-screen revision handoff](CYCLE-1-1-REVISION-REPAIR.md). The owner's
+direct request on an existing saved screen must work without creating a blank
+screen. Allowed Studio-only repair: explicit read/edit revision guidance,
+distinguish wrong tool arguments from genuine stale state, preserve all edit
+fences and verify with a real provider on saved nonempty content. No later
+cycle or shared framework change is authorized by this repair.
+
 Authority: owner's 2026-10-22 request to own Stage 9 Cycle 1.1 end to end.
 This is the current executable handoff for this cycle. Earlier G0–G3 and
 Designer closures remain historical accepted increments, not whole-Studio closure.

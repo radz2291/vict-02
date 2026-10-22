@@ -43,6 +43,83 @@ function proposal(
   return { proposalId, cursor, edit, resultDigest: prepared.digest };
 }
 describe('agent canonical editing boundary', () => {
+  it('edits an existing saved screen using its working token, and explains a source-version mistake without claiming the canvas changed', () => {
+    const { bridge } = setup();
+    expect(
+      applyAgentProposal(
+        bridge,
+        proposal(bridge, [
+          {
+            op: 'add',
+            recipe: 'heading',
+            nodeId: 'existing-title',
+            parentId: 'screen',
+            text: 'Existing content',
+          },
+        ]),
+        epoch,
+        false,
+      ).ok,
+    ).toBe(true);
+    expect(bridge.save().ok).toBe(true);
+    expect(bridge.save().ok).toBe(true);
+    expect(bridge.reopen().ok).toBe(true);
+    const before = bridge.getSnapshot();
+    const source = bridge.document;
+    const cursor = documentCursor(source, before.revision, epoch);
+    const context = agentContext(source, cursor);
+    expect(context.expectedRevision).toBe(before.revision);
+    expect(context.expectedRevision).not.toBe(source.revision);
+    const edit = {
+      expectedRevision: source.revision,
+      reason: 'Add a landing page section',
+      operations: [{ op: 'add', recipe: 'section', nodeId: 'features', parentId: 'screen' }],
+    };
+    expect(prepareAgentEdit(source, cursor, edit, 'wrong-token')).toMatchObject({
+      ok: false,
+      code: 'STUDIO_AGENT_REVISION_MISMATCH',
+      message: expect.stringContaining(JSON.stringify(context.expectedRevision)),
+    });
+    expect(bridge.document).toBe(source);
+    expect(bridge.getSnapshot()).toEqual(before);
+    const corrected = proposal(bridge, [
+      { op: 'add', recipe: 'section', nodeId: 'features', parentId: 'screen' },
+    ]);
+    expect(applyAgentProposal(bridge, corrected, epoch, false).ok).toBe(true);
+    expect(bridge.document.nodes['existing-title']).toBeDefined();
+    expect(bridge.document.nodes.features).toBeDefined();
+    expect(bridge.undo().ok).toBe(true);
+    expect(bridge.document).toEqual(source);
+  });
+
+  it('keeps a changed captured document stale even when the supplied revision is also wrong', () => {
+    const { bridge } = setup();
+    const original = bridge.document;
+    const cursor = documentCursor(original, bridge.getSnapshot().revision, epoch);
+    expect(
+      applyAgentProposal(
+        bridge,
+        proposal(bridge, [{ op: 'add', recipe: 'heading', nodeId: 'manual', parentId: 'screen' }]),
+        epoch,
+        false,
+      ).ok,
+    ).toBe(true);
+    const before = bridge.getSnapshot();
+    expect(
+      prepareAgentEdit(
+        bridge.document,
+        cursor,
+        {
+          expectedRevision: original.revision,
+          reason: 'Wrong snapshot',
+          operations: [{ op: 'remove', nodeId: 'manual' }],
+        },
+        'stale-source',
+      ),
+    ).toMatchObject({ ok: false, code: 'UI_DOC_STALE_REVISION' });
+    expect(bridge.getSnapshot()).toEqual(before);
+    expect(bridge.document.nodes.manual).toBeDefined();
+  });
   it('builds a palette registration screen; modifies selection; moves/removes; undo/redo/save/reopen share history', () => {
     const { bridge, storage } = setup();
     const form = proposal(bridge, [

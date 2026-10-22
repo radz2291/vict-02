@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { createDeterministicOfflineModel, OFFLINE_MODEL_IDENTITY } from '@victframework/mastra';
-import { EditorBridge } from '@victframework/ui-editor';
+import { EditorBridge, insertSubtree } from '@victframework/ui-editor';
+import { screenRecipes } from '../src/lib/designer/recipes.js';
 import { newScreen, designerCatalogs } from '../src/lib/designer/application.js';
 import { screenStore } from '../src/lib/designer/storage.js';
 import {
@@ -16,14 +17,35 @@ import {
   type StudioAgentEvent,
 } from '../src/lib/server/designer-agent.js';
 
-function context() {
-  const storage = { getItem: () => null, setItem: () => {} };
-  const document = newScreen('Live loop fixture', 'loop-test');
+function context(existing = false) {
+  const values = new Map<string, string>();
+  const storage = {
+    getItem: (key: string) => values.get(key) ?? null,
+    setItem: (key: string, value: string) => {
+      values.set(key, value);
+    },
+  };
+  let document = newScreen('Live loop fixture', 'loop-test');
   const bridge = new EditorBridge({
     catalogs: designerCatalogs,
     store: screenStore(storage, document.id),
     initial: { document, storedRevision: 'r1' },
   });
+  if (existing) {
+    expect(
+      bridge.apply(
+        insertSubtree(
+          'seed-existing-heading',
+          screenRecipes.find((recipe) => recipe.id === 'heading')!.create('placeholder'),
+          { nodeId: 'screen' },
+        ),
+      ).ok,
+    ).toBe(true);
+    expect(bridge.save().ok).toBe(true);
+    expect(bridge.save().ok).toBe(true);
+    expect(bridge.reopen().ok).toBe(true);
+    document = bridge.document;
+  }
   const epoch = crypto.randomUUID();
   const cursor = documentCursor(document, bridge.getSnapshot().revision, epoch);
   const parsed = validateAgentStart({ document, cursor, prompt: 'Build a heading', history: [] });
@@ -36,6 +58,150 @@ function context() {
   return { bridge, epoch, start: parsed.value, input };
 }
 describe('Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance)', () => {
+  it('recovers a wrong source-version argument on an existing saved screen in the same governed turn', async () => {
+    const { bridge, epoch, start, input } = context(true);
+    const before = bridge.document;
+    const results: string[] = [];
+    const events: StudioAgentEvent[] = [];
+    let runId = '';
+    const model = createDeterministicOfflineModel({
+      script: {
+        [input]: {
+          kind: 'tool-chain',
+          calls: [
+            { toolName: 'studio_screen_read', args: {} },
+            {
+              toolName: 'studio_screen_edit',
+              args: {
+                expectedRevision: start.document.revision,
+                reason: 'Remove placeholder',
+                operations: [{ op: 'remove', nodeId: 'placeholder' }],
+              },
+            },
+            { toolName: 'studio_screen_read', args: {} },
+            {
+              toolName: 'studio_screen_edit',
+              args: {
+                expectedRevision: start.cursor.revision,
+                reason: 'Build a Quellight hero on the open screen',
+                operations: [
+                  { op: 'remove', nodeId: 'placeholder' },
+                  {
+                    op: 'add',
+                    recipe: 'heading',
+                    nodeId: 'quellight',
+                    parentId: 'screen',
+                    text: 'Quellight — your AI workspace',
+                  },
+                ],
+              },
+            },
+          ],
+          thenText: 'Quellight is on the existing canvas.',
+        },
+      },
+      onToolResult: (event) => {
+        results.push(JSON.stringify(event.output));
+      },
+    });
+    const opened = openAgentRun(
+      'existing-screen-revision-owner',
+      start,
+      (event) => {
+        events.push(event);
+        if (event.type === 'started') runId = event.runId;
+        if (event.type === 'proposal')
+          acknowledgeAgentEdit(
+            'existing-screen-revision-owner',
+            runId,
+            event.proposal.proposalId,
+            applyAgentProposal(bridge, event.proposal, epoch, false),
+          );
+      },
+      { modelFactory: () => model, model: OFFLINE_MODEL_IDENTITY },
+    );
+    if (!opened.ok) throw new Error(opened.code);
+    await opened.finished;
+    expect(events.filter((event) => event.type === 'proposal')).toHaveLength(1);
+    expect(events).toContainEqual(
+      expect.objectContaining({
+        type: 'edit-result',
+        result: expect.objectContaining({ code: 'STUDIO_AGENT_REVISION_MISMATCH' }),
+      }),
+    );
+    expect(events.at(-1)).toMatchObject({ type: 'done', status: 'completed', applied: 1 });
+    expect(results.join('\n')).toContain('expectedRevision');
+    expect(results.join('\n')).not.toContain('UI_DOC_STALE_REVISION');
+    expect(bridge.document.nodes.placeholder).toBeUndefined();
+    expect(bridge.document.nodes.quellight).toBeDefined();
+    expect(bridge.undo().ok).toBe(true);
+    expect(bridge.document).toEqual(before);
+  }, 120_000);
+
+  it('keeps a genuine browser revision refusal fenced even after a model re-read and retry', async () => {
+    const { bridge, epoch, start, input } = context(true);
+    const events: StudioAgentEvent[] = [];
+    let runId = '';
+    const args = {
+      expectedRevision: start.cursor.revision,
+      reason: 'Remove placeholder',
+      operations: [{ op: 'remove', nodeId: 'placeholder' }],
+    };
+    const model = createDeterministicOfflineModel({
+      script: {
+        [input]: {
+          kind: 'tool-chain',
+          calls: [
+            { toolName: 'studio_screen_read', args: {} },
+            { toolName: 'studio_screen_edit', args },
+            { toolName: 'studio_screen_read', args: {} },
+            { toolName: 'studio_screen_edit', args },
+          ],
+          thenText: 'Stopped after the screen changed.',
+        },
+      },
+    });
+    const opened = openAgentRun(
+      'real-stale-revision-owner',
+      start,
+      (event) => {
+        events.push(event);
+        if (event.type === 'started') runId = event.runId;
+        if (event.type === 'proposal') {
+          expect(
+            bridge.apply({
+              requestId: 'manual-intervention',
+              commands: [
+                {
+                  op: 'setAttribute',
+                  nodeId: 'screen',
+                  name: 'aria-label',
+                  value: 'Manual change',
+                },
+              ],
+            }).ok,
+          ).toBe(true);
+          const receipt = applyAgentProposal(bridge, event.proposal, epoch, false);
+          expect(receipt).toMatchObject({ ok: false, code: 'UI_DOC_STALE_REVISION' });
+          acknowledgeAgentEdit(
+            'real-stale-revision-owner',
+            runId,
+            event.proposal.proposalId,
+            receipt,
+          );
+        }
+      },
+      { modelFactory: () => model, model: OFFLINE_MODEL_IDENTITY },
+    );
+    if (!opened.ok) throw new Error(opened.code);
+    await opened.finished;
+    expect(events.filter((event) => event.type === 'proposal')).toHaveLength(1);
+    expect(events.at(-1)).toMatchObject({ type: 'done', applied: 0 });
+    expect(bridge.document.nodes.placeholder).toBeDefined();
+    expect(bridge.document.nodes.screen).toMatchObject({
+      attributes: { 'aria-label': 'Manual change' },
+    });
+  }, 120_000);
   it('runs governed read and edit tools; acknowledges only after EditorBridge commit; streams completion', async () => {
     const { bridge, epoch, start, input } = context();
     const events: StudioAgentEvent[] = [];

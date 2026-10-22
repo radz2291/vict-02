@@ -106,13 +106,17 @@ export function prepareAgentEdit(
       'Use the declared add, modify, move or remove contract.',
     );
   if (
-    parsed.data.expectedRevision !== cursor.revision ||
     document.id !== cursor.documentId ||
     canonicalUiDocument(document).contentDigest !== cursor.digest
   )
     return failure(
       'UI_DOC_STALE_REVISION',
       'The screen changed. Read the current screen before requesting another edit.',
+    );
+  if (parsed.data.expectedRevision !== cursor.revision)
+    return failure(
+      'STUDIO_AGENT_REVISION_MISMATCH',
+      `The edit supplied the wrong working revision. Read the screen and copy expectedRevision exactly: ${JSON.stringify(cursor.revision)}. document.revision is source metadata, not the editing revision. This request applied no edits.`,
     );
   let working = document;
   const commands: UiEditCommand[] = [];
@@ -283,6 +287,9 @@ export function applyAgentProposal(
 export function agentContext(document: UiDocument, cursor: AgentCursor, selection?: string) {
   const occurrence = selection ? resolveOccurrence(selection, document) : undefined;
   return {
+    // Match the edit argument's name so the model need not infer a token from
+    // saved source metadata. This remains an opaque compare-and-apply guard.
+    expectedRevision: cursor.revision,
     cursor,
     document,
     selection: occurrence
@@ -304,6 +311,6 @@ export function agentContext(document: UiDocument, cursor: AgentCursor, selectio
     actionInputs,
     actions: designerCatalogs.actionIds,
     editing:
-      'add(recipe,nodeId,parentId,slotName?,index?,text?,attributes?,props?,styles?), modify(nodeId,text?,attributes?,props?,styles?), move(nodeId,newParentId,slotName?,index?), remove(nodeId). Use exact existing node IDs. Each batch is atomic and one Undo. Never claim save or backend implementation. Form fields are independent local preview inputs; backend authoring is outside Cycle 1.1.',
+      'Copy top-level expectedRevision exactly into each edit; document.revision is saved source metadata and MUST NOT be used as expectedRevision. add(recipe,nodeId,parentId,slotName?,index?,text?,attributes?,props?,styles?), modify(nodeId,text?,attributes?,props?,styles?), move(nodeId,newParentId,slotName?,index?), remove(nodeId). Use exact existing node IDs. Each batch is atomic and one Undo. Never claim save or backend implementation. Form fields are independent local preview inputs; backend authoring is outside Cycle 1.1.',
   };
 }
