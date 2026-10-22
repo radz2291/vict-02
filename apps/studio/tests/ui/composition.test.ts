@@ -23,6 +23,44 @@ const button = (name: string) => {
   return item!;
 };
 
+it('opens another saved screen through File and guards the cascading menu during a source draft', async () => {
+  const first = { ...newScreen('First screen', 'first-screen'), revision: 'r1.r1' };
+  const second = { ...newScreen('Second screen', 'second-screen'), revision: 'r1.r1' };
+  for (const source of [first, second]) {
+    expect(screenStore(localStorage, source.id).save({
+      document: source, expectedStoredRevision: 'r1', newStoredRevision: 'r1.r1',
+    }).ok).toBe(true);
+  }
+  localStorage.setItem('vict.studio.active-screen', first.id);
+  editor = mount(Designer, { target: document.body });
+  await tick();
+  await tick();
+  expect(document.querySelector('#screen-picker')).toBeNull();
+  expect(document.querySelector('.current-screen')?.textContent).toBe('First screen');
+  expect([...document.querySelectorAll('.studio-menus > button')].map(item => item.textContent))
+    .toEqual(['File', 'Edit', 'View', 'Preview']);
+  await openStudioMenu('File');
+  document.querySelector<HTMLButtonElement>('[aria-controls="open-screen-menu"]')!.click();
+  await tick();
+  await tick();
+  const screens = [...document.querySelectorAll<HTMLButtonElement>('#open-screen-menu button')];
+  expect(screens.find(item => item.textContent?.includes('First screen'))?.getAttribute('aria-checked')).toBe('true');
+  screens.find(item => item.textContent?.includes('Second screen'))!.click();
+  await tick();
+  expect(document.querySelector('.current-screen')?.textContent).toBe('Second screen');
+  expect(screenStore(localStorage, second.id).rawLoad()).toMatchObject({ document: second });
+  button('Document');
+  await tick();
+  button('Source');
+  await tick();
+  document.querySelector<HTMLTextAreaElement>('#canonical-source')!
+    .dispatchEvent(new Event('input', { bubbles: true }));
+  await tick();
+  await openStudioMenu('File');
+  expect(document.querySelector<HTMLButtonElement>('[aria-controls="open-screen-menu"]')!.disabled).toBe(true);
+  expect(document.querySelector('.current-screen')?.textContent).toBe('Second screen');
+});
+
 it('opens a closed composition without authored or runtime changes, guards drafts, and saves the same edited source for replay', async () => {
   const seed = newScreen('Composition trial', 'composition-trial');
   const source: UiDocument = {

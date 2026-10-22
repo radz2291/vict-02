@@ -81,13 +81,17 @@ body:has(.finished-screen) {
   gap: 6px;
   margin-left:auto;
 }
-.screen-picker select {
+.screen-picker .current-screen {
   max-width: 180px;
   border: 0;
   background: transparent;
   font-size: 12px;
   font-weight: 550;
   color: #263246;
+  display:block;
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
 }
 .design-toolbar button,
 .canvas-toolbar button,
@@ -454,7 +458,7 @@ body:has(.finished-screen) {
     padding: 4px 8px;
     gap: 5px;
   }
-  .screen-picker select {
+  .screen-picker .current-screen {
     max-width: 150px;
   }
   .canvas-scroll {
@@ -514,3 +518,5 @@ body:has(.finished-screen) {
 .screen-menu kbd {font:10px 'Segoe UI',system-ui,sans-serif;color:#8a96a8;}
 .screen-menu hr {border:0;border-top:1px solid #e8ebf1;margin:4px 5px;}
 .menu-caption {font-size:10px;color:#8a96a8;margin:6px 10px;}
+.open-screen-menu {max-height:min(320px,calc(100dvh - 16px));}
+.screen-menu-name {min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
