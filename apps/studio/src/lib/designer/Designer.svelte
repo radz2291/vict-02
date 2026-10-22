@@ -89,6 +89,17 @@
   let screenNameDraft=$state('');
   let screenNameInput=$state<HTMLInputElement>();
   let renameButton=$state<HTMLButtonElement>();
+  let screenMenu=$state<HTMLDivElement>();
+  let screenMenuOpen=$state(false);
+  let screenMenuPosition=$state({left:8,top:44});
+  function toggleScreenMenu() {
+    if(screenMenu?.matches(':popover-open')) {screenMenu.hidePopover();return;}
+    const rect=renameButton?.getBoundingClientRect();
+    if(!rect || !screenMenu)return;
+    screenMenuPosition={left:Math.max(8,Math.min(rect.left,globalThis.innerWidth-208)),top:rect.bottom+6};
+    screenMenu.showPopover();
+    screenMenu.querySelector<HTMLButtonElement>('button:not(:disabled)')?.focus();
+  }
   async function beginRename() {
     if(!source || textDraftDirty || sourceDraftDirty)return;
     screenNameDraft=screenName(source);renamingScreen=true;
@@ -260,6 +271,7 @@
     return element ? getComputedStyle(element).getPropertyValue(property) : undefined;
   }
   function shortcuts(event: KeyboardEvent) {
+    if(screenMenu?.matches(':popover-open')) {if(event.key==='Escape'){event.preventDefault();screenMenu.hidePopover();renameButton?.focus();}return;}
     if (event.key === 'Escape' && drawerOpen) { event.preventDefault(); closeDrawer(); return; }
     const editable = event.target instanceof HTMLElement && (event.target.matches('input,textarea,select') || event.target.isContentEditable);
     if (!editable && mode === 'design') {
@@ -323,14 +335,19 @@
 <div class="vict-app studio-designer">
   <header class="design-toolbar">
     <a class="studio-brand" href="/design" aria-label="VICT Studio" title="VICT Studio"><span class="brand-mark">V</span></a>
-    <div class="screen-picker">{#if renamingScreen}<input class="screen-name-edit" aria-label="Screen name" bind:this={screenNameInput} bind:value={screenNameDraft} maxlength="80" onkeydown={renameKey} onblur={finishRename} />{:else}<label class="sr-only" for="screen-picker">Screen</label><select id="screen-picker" value={source?.id ?? ''} onchange={event => openScreen(event.currentTarget.value)}>{#each library as item (item.id)}<option value={item.id}>{item.name}</option>{/each}</select>{/if}<button class="screen-name-button" type="button" bind:this={renameButton} title="Rename screen" aria-label="Rename screen" disabled={!source || textDraftDirty || sourceDraftDirty} onclick={beginRename}>✎</button><button type="button" onclick={beginCreate} aria-label="New screen">＋ New</button></div>
+    <div class="screen-picker">{#if renamingScreen}<input class="screen-name-edit" aria-label="Screen name" bind:this={screenNameInput} bind:value={screenNameDraft} maxlength="80" onkeydown={renameKey} onblur={finishRename} />{:else}<label class="sr-only" for="screen-picker">Screen</label><select id="screen-picker" value={source?.id ?? ''} onchange={event => openScreen(event.currentTarget.value)}>{#each library as item (item.id)}<option value={item.id}>{item.name}</option>{/each}</select>{/if}<button class="screen-options" type="button" bind:this={renameButton} title="Screen options" aria-label="Screen options" aria-controls="screen-options" aria-expanded={screenMenuOpen} onclick={toggleScreenMenu}>⋯</button></div>
     <div class="history-controls"><button type="button" disabled={!snapshot?.canUndo} onclick={undo} title="Undo · Ctrl+Z">Undo</button><button type="button" disabled={!snapshot?.canRedo} onclick={redo} title="Redo · Ctrl+Shift+Z">Redo</button></div>
     <div class="canvas-modes" aria-label="Canvas mode"><button type="button" aria-pressed={mode === 'design'} onclick={() => changeMode('design')}>Design</button><button type="button" aria-pressed={mode === 'interact'} onclick={() => changeMode('interact')}>Interact</button></div>
     {#if mode === 'design'}<button type="button" class="add-element" onclick={openInsert}>＋ Add</button>{/if}
     <span class="save-state">{textDraftDirty ? '● Unapplied property draft' : sourceDraftDirty ? '● Unapplied JSON draft' : snapshot?.dirty ? '● Unsaved changes' : snapshot?.storedRevision === 'r1' ? '○ New screen' : '✓ Saved'}</span>
-    <div class="toolbar-end"><button type="button" bind:this={documentButton} class="panel-toggle" aria-expanded={drawerOpen} aria-controls="document-drawer" onclick={toggleDocument}>Document</button><button type="button" onclick={reopen} title="Reload the saved screen and reset the preview" disabled={!source || snapshot?.dirty || sourceDraftDirty || textDraftDirty || snapshot?.storedRevision === 'r1'}>Reload</button><button type="button" onclick={save} disabled={!compilation?.ok || sourceDraftDirty || textDraftDirty}>Save</button><a class="run-button" aria-disabled={!source || snapshot?.dirty || sourceDraftDirty || textDraftDirty || snapshot?.storedRevision === 'r1'} href={source && !snapshot?.dirty && !sourceDraftDirty && !textDraftDirty && snapshot?.storedRevision !== 'r1' ? `/run-screen?screen=${encodeURIComponent(source.id)}` : undefined}>Run saved ↗</a></div>
+    <div class="toolbar-end"><button type="button" bind:this={documentButton} class="panel-toggle" aria-expanded={drawerOpen} aria-controls="document-drawer" onclick={toggleDocument}>Document</button><button type="button" onclick={save} disabled={!compilation?.ok || sourceDraftDirty || textDraftDirty}>Save</button><a class="run-button" aria-disabled={!source || snapshot?.dirty || sourceDraftDirty || textDraftDirty || snapshot?.storedRevision === 'r1'} href={source && !snapshot?.dirty && !sourceDraftDirty && !textDraftDirty && snapshot?.storedRevision !== 'r1' ? `/run-screen?screen=${encodeURIComponent(source.id)}` : undefined}>Run saved ↗</a></div>
     <a class="operator-link" href="/" aria-label="Operator tools" title="Operator tools">↗</a>
   </header>
+  <div id="screen-options" class="screen-menu" popover="auto" ontoggle={event=>screenMenuOpen=event.newState==='open'} role="group" aria-label="Screen options" bind:this={screenMenu} style:left={`${screenMenuPosition.left}px`} style:top={`${screenMenuPosition.top}px`}>
+    <button type="button" disabled={textDraftDirty || sourceDraftDirty} onclick={()=>{screenMenu?.hidePopover();void beginCreate();}}>New screen</button>
+    <button type="button" disabled={!source || textDraftDirty || sourceDraftDirty} onclick={()=>{screenMenu?.hidePopover();void beginRename();}}>Rename screen</button>
+    <button type="button" title="Reload the saved screen and reset the preview" disabled={!source || snapshot?.dirty || sourceDraftDirty || textDraftDirty || snapshot?.storedRevision === 'r1'} onclick={()=>{screenMenu?.hidePopover();renameButton?.focus();void reopen();}}>Reload</button>
+  </div>
   {#if source && bridge}
   {#snippet floatingTools()}
     <SelectionPalette revealSignal={selectionToolsReveal} locked={textDraftDirty || sourceDraftDirty} onOpenComposition={selectedSlots.length && selectedNode?.id!==compositionFocus?.nodeId ? ()=>openComposition() : undefined} bind:page={palettePage} name={compositionName(source, selectedNode?.id ?? source.root)} focusSignal={paletteFocus}>
@@ -347,7 +364,7 @@
     <main class="design-stage">
       <div class="canvas-toolbar"><label><span class="sr-only">Canvas width</span><select aria-label="Canvas width" bind:value={width}><option value="fluid">Fit canvas</option><option value="768">Tablet · 768</option><option value="390">Phone · 390</option></select></label><button type="button" onclick={resetRuntime} title="Reset ephemeral runtime values">Reset preview</button></div>
       {#if compositionFocus}<CompositionNavigator document={source} focus={compositionFocus} descriptors={catalogDescriptors} disabled={textDraftDirty || sourceDraftDirty} onNavigate={navigateComposition} />{/if}
-      <div class="canvas-scroll" bind:this={canvasScroll}><div class="canvas-caption">{screenName(source)} <span>{width === 'fluid' ? 'Responsive' : `${width}px`}</span></div>
+      <div class="canvas-scroll" bind:this={canvasScroll}>
         <div class="design-frame" style:max-width={width === 'fluid' ? 'none' : `${width}px`}>
           <EditorCanvas document={source} catalogs={designerCatalogs} extensions={catalogDescriptors} extensionImplementations={catalogImplementations}
             {compositionFocus} onOpenComposition={openComposition}
@@ -397,6 +414,6 @@
   <footer class="design-status"><span role="status">{notice}</span><span title={compilation?.ok ? compilation.plan.applicationVersion : 'Application compilation pending'}>{compilation?.ok ? `@3 · ${compilation.plan.applicationVersion.slice(0, 15)}…` : 'Application source pending'}</span></footer>
   {#if issues.length}<div class="design-errors" role="alert">{#each issues as issue}<p>{issue.code}: {issue.message}</p>{/each}</div>{/if}
   {#if compilation && !compilation.ok}<div class="design-errors" role="alert">{#each [...compilation.issues, ...(compilation.uiIssues ?? [])] as issue}<p>{issue.code}: {issue.message}</p>{/each}</div>{/if}
-  <dialog class="create-screen-dialog" bind:this={createDialog} onclose={() => { globalThis.document.querySelector<HTMLButtonElement>('[aria-label="New screen"]')?.focus(); }}><form onsubmit={event => { event.preventDefault(); if (!screenTitle.trim()) return; createScreen(screenTitle.trim()); createDialog.close(); }}><p class="panel-eyebrow">A BLANK CANVAS</p><h2>Create a screen</h2><p>Start small. Add content, connect behavior, and run what you save.</p><label>Screen name<input bind:this={nameInput} bind:value={screenTitle} maxlength="80" required /></label><div><button type="button" onclick={() => createDialog.close()}>Cancel</button><button class="primary" type="submit">Create screen</button></div></form></dialog>
+  <dialog class="create-screen-dialog" bind:this={createDialog} onclose={() => renameButton?.focus()}><form onsubmit={event => { event.preventDefault(); if (!screenTitle.trim()) return; createScreen(screenTitle.trim()); createDialog.close(); }}><p class="panel-eyebrow">A BLANK CANVAS</p><h2>Create a screen</h2><p>Start small. Add content, connect behavior, and run what you save.</p><label>Screen name<input bind:this={nameInput} bind:value={screenTitle} maxlength="80" required /></label><div><button type="button" onclick={() => createDialog.close()}>Cancel</button><button class="primary" type="submit">Create screen</button></div></form></dialog>
 </div>
 </ControlScope>
