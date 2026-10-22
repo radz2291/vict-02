@@ -1,0 +1,54 @@
+== 1. pack the closure ==
+  packed @victframework/ui -> victframework-ui-0.4.0-rc.1.tgz
+  packed @victframework/ui-svelte -> victframework-ui-svelte-0.4.0-rc.1.tgz
+  packed @victframework/ui-editor -> victframework-ui-editor-0.4.0-rc.1.tgz
+  packed @victframework/ui-preview -> victframework-ui-preview-0.4.0-rc.1.tgz
+  packed @victframework/application -> victframework-application-0.4.0-rc.1.tgz
+  packed @victframework/sdk -> victframework-sdk-0.4.0-rc.1.tgz
+  packed @victframework/contracts -> victframework-contracts-0.4.0-rc.1.tgz
+  packed @victframework/kernel -> victframework-kernel-0.4.0-rc.1.tgz
+  packed @victframework/runtime -> victframework-runtime-0.4.0-rc.1.tgz
+  packed @victframework/control -> victframework-control-0.4.0-rc.1.tgz
+== 2. isolate the consumer ==
+== 3. rewrite deps to vendor tarballs + install ==
+
+added 98 packages in 2m
+npm warn install-scripts 1 package has install scripts not yet covered by allowScripts:
+npm warn install-scripts   esbuild@0.25.12 (postinstall: node install.js)
+npm warn install-scripts
+npm warn install-scripts Run `npm install-scripts ls` to review, or `npm install-scripts approve <pkg>` to allow.
+== 3b. build from packed artifacts ==
+vite v6.4.3 building for production...
+transforming...
+✓ 930 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/app.html                         0.49 kB │ gzip:   0.31 kB
+dist/index.html                       0.57 kB │ gzip:   0.32 kB
+dist/assets/authoring-cZEHit4V.css   29.14 kB │ gzip:   5.59 kB
+dist/assets/execution-DW3QEeyg.css   43.27 kB │ gzip:   7.88 kB
+dist/assets/app-BUwD42IN.js           2.37 kB │ gzip:   1.34 kB
+dist/assets/authoring-BVxx3wQf.js   185.98 kB │ gzip:  58.56 kB
+dist/assets/execution-DgB0yNgE.js   976.54 kB │ gzip: 245.29 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 39.21s
+== 4. verify isolation ==
+== 5. tests from packed artifacts ==
+
+ RUN  v4.1.11 C:/Users/RZ1/.codex/worktrees/studio-designer-verification/packed-67a47c3/u4-consumer
+
+
+ Test Files  1 passed (1)
+      Tests  16 passed (16)
+   Start at  19:07:21
+   Duration  23.11s (transform 17.01s, setup 0ms, import 20.80s, tests 60ms, environment 1.59s)
+
+
+ISOLATED PACKED-ARTIFACT VERIFICATION: OK
+  isolated root: C:\Users\RZ1\.codex\worktrees\studio-designer-verification\packed-67a47c3
+  tarballs: 10
+  built assets: 5

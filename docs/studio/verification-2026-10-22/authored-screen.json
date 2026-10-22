@@ -1,0 +1,556 @@
+{
+  "schema": "vict.ui-document@1",
+  "id": "screen-755cd9f6-918c-44af-a104-bc7a7bbe10d9",
+  "revision": "r1.r3",
+  "root": "screen",
+  "nodes": {
+    "screen": {
+      "kind": "element",
+      "id": "screen",
+      "tag": "main",
+      "attributes": {
+        "aria-label": "Independent field journal continued"
+      },
+      "children": [
+        "section-b2f5d719",
+        "dialog-6c707b76"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "20px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "40px"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "560px"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#ffffff"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#243047"
+          }
+        },
+        {
+          "property": "font-family",
+          "value": {
+            "type": "text",
+            "value": "system-ui, sans-serif"
+          }
+        }
+      ]
+    },
+    "section-b2f5d719": {
+      "kind": "element",
+      "id": "section-b2f5d719",
+      "tag": "section",
+      "attributes": {
+        "aria-label": "Section"
+      },
+      "children": [
+        "heading-47c8b4f0",
+        "checkbox-14653b2d",
+        "input-18f44253",
+        "button-88fb1372"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "24px"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "100px"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#f5f7fb"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "padding-top",
+          "value": {
+            "type": "text",
+            "value": "28px"
+          }
+        },
+        {
+          "property": "padding-right",
+          "value": {
+            "type": "text",
+            "value": "28px"
+          }
+        },
+        {
+          "property": "padding-bottom",
+          "value": {
+            "type": "text",
+            "value": "28px"
+          }
+        },
+        {
+          "property": "padding-left",
+          "value": {
+            "type": "text",
+            "value": "28px"
+          }
+        }
+      ],
+      "styleSources": [
+        "src.section-b2f5d719.compact.plain",
+        "src.section-b2f5d719.always.plain"
+      ]
+    },
+    "heading-47c8b4f0": {
+      "kind": "element",
+      "id": "heading-47c8b4f0",
+      "tag": "h1",
+      "children": [
+        "heading-47c8b4f0-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "36px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "600"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.2"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#2457a8"
+          }
+        }
+      ]
+    },
+    "heading-47c8b4f0-text": {
+      "kind": "text",
+      "id": "heading-47c8b4f0-text",
+      "content": {
+        "type": "literal",
+        "value": "Journal acceptance trial"
+      }
+    },
+    "input-18f44253": {
+      "kind": "element",
+      "id": "input-18f44253",
+      "tag": "input",
+      "children": [],
+      "attributes": {
+        "type": "text",
+        "aria-label": "Message",
+        "placeholder": "Your message",
+        "value": {
+          "type": "ref",
+          "path": "state.message"
+        }
+      },
+      "interactions": [
+        {
+          "on": "change",
+          "action": "setState",
+          "key": "message",
+          "value": {
+            "type": "ref",
+            "path": "state.message"
+          }
+        }
+      ],
+      "localStyle": [
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "12px"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "type": "text",
+            "value": "8px"
+          }
+        },
+        {
+          "property": "border",
+          "value": {
+            "type": "text",
+            "value": "1px solid #cbd3e1"
+          }
+        },
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "16px"
+          }
+        },
+        {
+          "property": "width",
+          "value": {
+            "type": "text",
+            "value": "100%"
+          }
+        },
+        {
+          "property": "box-sizing",
+          "value": {
+            "type": "text",
+            "value": "border-box"
+          }
+        }
+      ]
+    },
+    "checkbox-14653b2d": {
+      "kind": "component",
+      "id": "checkbox-14653b2d",
+      "definitionId": "vict.catalog.checkbox",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "I agree to continue"
+        },
+        "checked": {
+          "type": "ref",
+          "path": "state.accepted"
+        }
+      },
+      "slots": {},
+      "outputs": {
+        "checkedChange": {
+          "setState": {
+            "key": "accepted"
+          }
+        }
+      }
+    },
+    "button-88fb1372": {
+      "kind": "component",
+      "id": "button-88fb1372",
+      "definitionId": "vict.catalog.button",
+      "props": {
+        "label": {
+          "type": "literal",
+          "value": "Submit journal"
+        },
+        "loading": {
+          "type": "ref",
+          "path": "state.busy"
+        }
+      },
+      "slots": {},
+      "outputs": {
+        "press": {
+          "invokeAction": {
+            "actionId": "demo.submit",
+            "input": {
+              "message": {
+                "type": "ref",
+                "path": "state.message"
+              },
+              "accepted": {
+                "type": "ref",
+                "path": "state.accepted"
+              }
+            }
+          }
+        }
+      }
+    },
+    "dialog-6c707b76": {
+      "kind": "component",
+      "id": "dialog-6c707b76",
+      "definitionId": "vict.catalog.dialog",
+      "props": {
+        "title": {
+          "type": "literal",
+          "value": "More details"
+        },
+        "open": {
+          "type": "literal",
+          "value": false
+        }
+      },
+      "slots": {
+        "body": {
+          "name": "body",
+          "children": [
+            "text-bb826452",
+            "dialog-8fdf81e5"
+          ]
+        }
+      }
+    },
+    "text-bb826452": {
+      "kind": "element",
+      "id": "text-bb826452",
+      "tag": "p",
+      "children": [
+        "text-bb826452-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "16px"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.6"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#647187"
+          }
+        }
+      ]
+    },
+    "text-bb826452-text": {
+      "kind": "text",
+      "id": "text-bb826452-text",
+      "content": {
+        "type": "literal",
+        "value": "Give your screen a little context."
+      }
+    },
+    "dialog-8fdf81e5": {
+      "kind": "component",
+      "id": "dialog-8fdf81e5",
+      "definitionId": "vict.catalog.dialog",
+      "props": {
+        "title": {
+          "type": "literal",
+          "value": "More details"
+        },
+        "open": {
+          "type": "literal",
+          "value": false
+        }
+      },
+      "slots": {
+        "body": {
+          "name": "body",
+          "children": [
+            "text-aa5b3398"
+          ]
+        }
+      }
+    },
+    "text-aa5b3398": {
+      "kind": "element",
+      "id": "text-aa5b3398",
+      "tag": "p",
+      "children": [
+        "text-aa5b3398-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "16px"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.6"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#647187"
+          }
+        }
+      ]
+    },
+    "text-aa5b3398-text": {
+      "kind": "text",
+      "id": "text-aa5b3398-text",
+      "content": {
+        "type": "literal",
+        "value": "Give your screen a little context."
+      }
+    }
+  },
+  "componentDefinitions": {},
+  "styleSources": {
+    "src.section-b2f5d719.compact.plain": {
+      "id": "src.section-b2f5d719.compact.plain",
+      "declarations": [
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "10px"
+          }
+        }
+      ],
+      "conditionId": "compact"
+    },
+    "src.section-b2f5d719.always.plain": {
+      "id": "src.section-b2f5d719.always.plain",
+      "declarations": [
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "22px"
+          }
+        }
+      ]
+    }
+  },
+  "assets": {},
+  "tokens": {},
+  "conditions": {
+    "compact": {
+      "id": "compact",
+      "kind": "container",
+      "name": "studio-screen",
+      "query": "(max-width: 600px)"
+    }
+  },
+  "localState": {
+    "message": {
+      "key": "message",
+      "type": "string",
+      "initial": "Saved journal seed"
+    },
+    "accepted": {
+      "key": "accepted",
+      "type": "boolean",
+      "initial": false
+    },
+    "dialogOpen": {
+      "key": "dialogOpen",
+      "type": "boolean",
+      "initial": false
+    },
+    "busy": {
+      "key": "busy",
+      "type": "boolean",
+      "initial": false
+    },
+    "actionError": {
+      "key": "actionError",
+      "type": "string",
+      "initial": ""
+    },
+    "actionResult": {
+      "key": "actionResult",
+      "type": "string",
+      "initial": ""
+    }
+  }
+}

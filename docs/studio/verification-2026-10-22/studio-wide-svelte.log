@@ -1,0 +1,159 @@
+Loading svelte-check in workspace: c:\Users\RZ1\.codex\worktrees\studio-designer-verification\260831-VCT-02\apps\studio
+Getting Svelte diagnostics...
+
+c:\Users\RZ1\.codex\worktrees\studio-designer-verification\260831-VCT-02\apps\studio\..\..\packages\ui-svelte\src\document\RenderNode.svelte:303:3
+Warn: Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events (svelte)
+{:else if instruction.kind === 'text'}
+  <span
+    class="uv-text"
+    data-ui-owner={ownerId}
+    data-ui-node={instruction.nodeId}
+    data-ui-occ={occ}
+    style="display: contents"
+    onclick={(event) => {
+      if (selectOccurrence !== undefined) {
+        event.stopPropagation();
+        selectOccurrence(occ);
+      }
+    }}
+  >
+    {#if instruction.content.type === 'literal'}
+      {instruction.content.value}
+    {:else}
+      {String(resolveValue({ type: 'expression', expression: instruction.content.expression }, scope) ?? '')}
+    {/if}
+  </span>
+{:else if (instruction.kind === 'component' || instruction.kind === 'extension') && componentValues.invalidNames.length}
+
+c:\Users\RZ1\.codex\worktrees\studio-designer-verification\260831-VCT-02\apps\studio\..\..\packages\ui-svelte\src\document\RenderNode.svelte:303:3
+Warn: `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions (svelte)
+{:else if instruction.kind === 'text'}
+  <span
+    class="uv-text"
+    data-ui-owner={ownerId}
+    data-ui-node={instruction.nodeId}
+    data-ui-occ={occ}
+    style="display: contents"
+    onclick={(event) => {
+      if (selectOccurrence !== undefined) {
+        event.stopPropagation();
+        selectOccurrence(occ);
+      }
+    }}
+  >
+    {#if instruction.content.type === 'literal'}
+      {instruction.content.value}
+    {:else}
+      {String(resolveValue({ type: 'expression', expression: instruction.content.expression }, scope) ?? '')}
+    {/if}
+  </span>
+{:else if (instruction.kind === 'component' || instruction.kind === 'extension') && componentValues.invalidNames.length}
+
+c:\Users\RZ1\.codex\worktrees\studio-designer-verification\260831-VCT-02\apps\studio\..\..\packages\ui-svelte\src\document\RenderNode.svelte:370:5
+Warn: Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events (svelte)
+    {@const Implementation = extension.component}
+    <span style="display: contents" data-extension-id={instruction.extensionId} data-ui-owner={ownerId} data-ui-occ={occ} data-ui-node={instruction.nodeId}
+      onclick={event => { event.stopPropagation(); selectOccurrence?.(occ); }}>
+      <Implementation props={extensionProps} occurrenceKey={occ} nodeId={instruction.nodeId} {presentation} />
+    </span>
+  {:else}
+
+c:\Users\RZ1\.codex\worktrees\studio-designer-verification\260831-VCT-02\apps\studio\..\..\packages\ui-svelte\src\document\RenderNode.svelte:370:5
+Warn: `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions (svelte)
+    {@const Implementation = extension.component}
+    <span style="display: contents" data-extension-id={instruction.extensionId} data-ui-owner={ownerId} data-ui-occ={occ} data-ui-node={instruction.nodeId}
+      onclick={event => { event.stopPropagation(); selectOccurrence?.(occ); }}>
+      <Implementation props={extensionProps} occurrenceKey={occ} nodeId={instruction.nodeId} {presentation} />
+    </span>
+  {:else}
+
+c:\Users\RZ1\.codex\worktrees\studio-designer-verification\260831-VCT-02\apps\studio\..\..\packages\ui-svelte\src\document\DocumentHost.svelte:105:31
+Warn: This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+  let acceptedSupplied: Record<string, UiValue> = {};
+  let lastDocumentId = $state(plan.documentId);
+  let lastSignal: symbol | undefined = $state<symbol | undefined>(undefined);
+
+c:\Users\RZ1\.codex\worktrees\studio-designer-verification\260831-VCT-02\apps\studio\src\routes\changesets\+page.svelte:26:25
+Warn: This reference only captures the initial value of `data`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+
+  const targetChoices = data?.targets ?? [];
+  const changesetRows = data?.changesets ?? [];
+
+c:\Users\RZ1\.codex\worktrees\studio-designer-verification\260831-VCT-02\apps\studio\src\routes\changesets\+page.svelte:27:25
+Warn: This reference only captures the initial value of `data`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+  const targetChoices = data?.targets ?? [];
+  const changesetRows = data?.changesets ?? [];
+  const defaultTarget = targetChoices[0]?.id ?? 'local';
+
+c:\Users\RZ1\.codex\worktrees\studio-designer-verification\260831-VCT-02\apps\studio\src\routes\changesets\+page.svelte:126:35
+Error: Property 'length' does not exist on type 'never'. (ts)
+        <dd>
+          {#if summary.operations.length === 0}
+            none reported
+
+c:\Users\RZ1\.codex\worktrees\studio-designer-verification\260831-VCT-02\apps\studio\src\routes\changesets\+page.svelte:130:40
+Error: Type 'never' must have a '[Symbol.iterator]()' method that returns an iterator. (ts)
+            <ul>
+              {#each summary.operations as op, i (i)}
+                <li>#{op.index} {op.kind} → {op.subject}</li>
+
+c:\Users\RZ1\.codex\worktrees\studio-designer-verification\260831-VCT-02\apps\studio\src\routes\changesets\+page.svelte:231:34
+Error: Property 'join' does not exist on type 'never'. (ts)
+          {summary.appliedCount} operation receipt(s) applied exactly once
+          ({summary.appliedKinds.join(', ') || 'none reported'}); status {summary.status}
+        </dd>
+
+c:\Users\RZ1\.codex\worktrees\studio-designer-verification\260831-VCT-02\apps\studio\src\routes\confirmations\+page.svelte:22:25
+Warn: This reference only captures the initial value of `data`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+
+  const targetChoices = data?.targets ?? [];
+  const defaultTarget = targetChoices.find((entry) => entry.id.startsWith('g2-mutator'))?.id ?? targetChoices[0]?.id ?? 'local';
+
+c:\Users\RZ1\.codex\worktrees\studio-designer-verification\260831-VCT-02\apps\studio\src\routes\confirmations\+page.svelte:216:92
+Error: Property 'before' does not exist on type 'WaitRow'. (ts)
+          {#each unifiedWaitRows(effect.before.waits.waits, effect.after.waits.waits) as row (row.waitId)}
+            <tr><td><code>{row.waitId}</code></td><td>{row.signalName ?? '—'}</td><td>{row.before}</td><td>{row.after}</td><td>{row.resolvedBy ?? '—'}</td></tr>
+          {/each}
+
+c:\Users\RZ1\.codex\worktrees\studio-designer-verification\260831-VCT-02\apps\studio\src\routes\confirmations\+page.svelte:216:113
+Error: Property 'after' does not exist on type 'WaitRow'. (ts)
+          {#each unifiedWaitRows(effect.before.waits.waits, effect.after.waits.waits) as row (row.waitId)}
+            <tr><td><code>{row.waitId}</code></td><td>{row.signalName ?? '—'}</td><td>{row.before}</td><td>{row.after}</td><td>{row.resolvedBy ?? '—'}</td></tr>
+          {/each}
+
+c:\Users\RZ1\.codex\worktrees\studio-designer-verification\260831-VCT-02\apps\studio\src\routes\confirmations\+page.svelte:115:7
+Error: Type 'Record<string, never> | null' is not assignable to type 'ConfirmationPrepareSummary | null | undefined'.
+  Type 'Record<string, never>' is missing the following properties from type 'ConfirmationPrepareSummary': receiptId, command, payloadDigest, expectedRevision, and 3 more. (ts)
+    <ConfirmationReview
+      summary={(form?.summary as Record<string, never> | undefined) ?? null}
+      status={null}
+
+c:\Users\RZ1\.codex\worktrees\studio-designer-verification\260831-VCT-02\apps\studio\src\routes\confirmations\+page.svelte:141:9
+Error: Type 'Record<string, never> | null' is not assignable to type 'ConfirmationStatusResult | null | undefined'.
+  Property 'name' is missing in type 'Record<string, never>' but required in type 'ConfirmationStatusResult'. (ts)
+      <ConfirmationReview
+        status={(form.status as Record<string, never> | undefined) ?? null}
+        label="Receipt status"
+
+c:\Users\RZ1\.codex\worktrees\studio-designer-verification\260831-VCT-02\apps\studio\src\routes\product\+page.svelte:85:42
+Error: Object is of type 'unknown'. (ts)
+      <div class="panel" data-testid="same-turn-panel">
+        <p class="banner" class:aligned={panel['banner']['state'] === 'aligned'} data-testid="same-turn-banner">
+          {panel['banner']['text']}
+
+c:\Users\RZ1\.codex\worktrees\studio-designer-verification\260831-VCT-02\apps\studio\src\routes\product\+page.svelte:86:12
+Error: Object is of type 'unknown'. (ts)
+        <p class="banner" class:aligned={panel['banner']['state'] === 'aligned'} data-testid="same-turn-banner">
+          {panel['banner']['text']}
+        </p>
+
+====================================
+svelte-check found 9 errors and 8 warnings in 5 files

@@ -1,5 +1,13 @@
 # Studio: author one screen, run it
 
+> Independent verification update, 2026-10-22: the original candidate
+> `67a47c3732a2527c8c7086dfcae184672f1aae96` received **FAIL** for B-1 (required
+> catalog slot persistence/execution refusal). The builder statements below are
+> preserved as historical evidence; in particular, the claimed empty-required-slot
+> Save/Run block was falsified. See [current Designer state](STATE.md) and the
+> [independent red assessment](verification-2026-10-22/CANDIDATE-67A47C3.md).
+> A repair and exact-candidate recheck are required; owner acceptance is pending.
+
 Implementation work completed at the owner's request on 2026-10-22. This is the builder handoff; independent verification, packaging, governance records and formal acceptance remain separate. The owner concluded the current UI iteration and requested wrap-up. No independent gate verdict is claimed.
 
 ## Final handoff — read first

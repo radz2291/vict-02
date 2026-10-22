@@ -1,0 +1,69 @@
+
+> vict-studio@0.1.0 test
+> vitest run tests/designer-required-slot-verification.test.ts
+
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/studio-designer-verification/260831-VCT-02/apps/studio
+
+7:30:44 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-designer-verification/260831-VCT-02/packages/ui-svelte/src/document/DocumentHost.svelte:105:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+7:30:45 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-designer-verification/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:303:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+7:30:45 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-designer-verification/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:303:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+7:30:45 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-designer-verification/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:370:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+7:30:45 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-designer-verification/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:370:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+ ❯ tests/designer-required-slot-verification.test.ts (2 tests | 2 failed) 117ms
+   × reports an unfilled catalog Dialog body at the canonical source boundary 96ms
+     → expected 0 to be greater than 0
+   × refuses to persist a screen whose required catalog slot is empty 17ms
+     → expected true to be false // Object.is equality
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/designer-required-slot-verification.test.ts > reports an unfilled catalog Dialog body at the canonical source boundary
+AssertionError: expected 0 to be greater than 0
+ ❯ tests/designer-required-slot-verification.test.ts:13:25
+     11| it('reports an unfilled catalog Dialog body at the canonical source bo…
+     12|   const issues = screenIssues(invalid());
+     13|   expect(issues.length).toBeGreaterThan(0);
+       |                         ^
+     14| });
+     15| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/designer-required-slot-verification.test.ts > refuses to persist a screen whose required catalog slot is empty
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/designer-required-slot-verification.test.ts:24:21
+     22|   }, document.id);
+     23|   const result = store.save({ document, expectedStoredRevision: 'r1', …
+     24|   expect(result.ok).toBe(false);
+       |                     ^
+     25|   expect(bytes.size).toBe(0);
+     26| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed (2)
+   Start at  19:30:21
+   Duration  30.63s (transform 19.65s, setup 0ms, collect 28.84s, tests 117ms, environment 0ms, prepare 431ms)
+
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path C:\Users\RZ1\.codex\worktrees\studio-designer-verification\260831-VCT-02\apps\studio
+npm error workspace vict-studio@0.1.0
+npm error location C:\Users\RZ1\.codex\worktrees\studio-designer-verification\260831-VCT-02\apps\studio
+npm error command failed
+npm error command C:\WINDOWS\system32\cmd.exe /d /s /c vitest run tests/designer-required-slot-verification.test.ts

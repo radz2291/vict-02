@@ -1,0 +1,53 @@
+{
+  "candidate": "67a47c3732a2527c8c7086dfcae184672f1aae96",
+  "replay": [
+    "_app/immutable/nodes/7.D6u_jhIP.js",
+    "_app/immutable/chunks/Bzak7iHL.js",
+    "_app/immutable/chunks/BwYOLCtl.js",
+    "_app/immutable/chunks/CHjBlHdv.js",
+    "_app/immutable/chunks/BtsjPHEh.js",
+    "_app/immutable/chunks/AXF4effm.js",
+    "_app/immutable/chunks/CCJTK8O3.js",
+    "_app/immutable/chunks/DCowaBD9.js",
+    "_app/immutable/chunks/Cbk1pXfz.js",
+    "_app/immutable/chunks/97MdAdj_.js",
+    "_app/immutable/chunks/oUgQPQ2M.js",
+    "_app/immutable/chunks/CCRRPCXe.js",
+    "_app/immutable/chunks/DOrO6r8D.js",
+    "_app/immutable/chunks/BSzb-5-1.js",
+    "_app/immutable/chunks/B6zleb2q.js"
+  ],
+  "loadedStaticClosure": [
+    "_app/immutable/nodes/7.D6u_jhIP.js",
+    "_app/immutable/chunks/Bzak7iHL.js",
+    "_app/immutable/chunks/BwYOLCtl.js",
+    "_app/immutable/chunks/CHjBlHdv.js",
+    "_app/immutable/chunks/BtsjPHEh.js",
+    "_app/immutable/chunks/AXF4effm.js",
+    "_app/immutable/chunks/CCJTK8O3.js",
+    "_app/immutable/chunks/DCowaBD9.js",
+    "_app/immutable/chunks/Cbk1pXfz.js",
+    "_app/immutable/chunks/97MdAdj_.js",
+    "_app/immutable/chunks/oUgQPQ2M.js",
+    "_app/immutable/chunks/CCRRPCXe.js",
+    "_app/immutable/chunks/DOrO6r8D.js",
+    "_app/immutable/chunks/BSzb-5-1.js",
+    "_app/immutable/chunks/B6zleb2q.js",
+    "_app/immutable/nodes/0.BBfaIynY.js",
+    "_app/immutable/nodes/1.B9by7iha.js",
+    "_app/immutable/chunks/nYwgBkln.js",
+    "_app/immutable/chunks/lnpBRoTu.js",
+    "_app/immutable/entry/start.BWfmW_T-.js",
+    "_app/immutable/chunks/CCjLmwMf.js",
+    "_app/immutable/entry/app.BEk9vH_m.js"
+  ],
+  "designerEntry": "_app/immutable/nodes/4.CRlhPMgn.js",
+  "markers": [
+    "Floating selection tools",
+    "uv-inspector",
+    "studio.screen-preview",
+    "Apply canonical source"
+  ],
+  "verdict": "PASS",
+  "limit": "Static closure includes replay, root layout/error and all boot entries. Router dynamic authoring references remain lazy; no browser network trace was captured."
+}

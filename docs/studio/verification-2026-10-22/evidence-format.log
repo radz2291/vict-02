@@ -1,0 +1,3 @@
+apps/studio/tests/designer-independent-verification.test.ts 240ms
+apps/studio/tests/designer-required-slot-verification.test.ts 31ms
+docs/studio/verification-2026-10-22/check-bundle.mjs 96ms
