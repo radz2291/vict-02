@@ -422,8 +422,8 @@
   {/snippet}
   <div class="design-workspace" class:drawer-open={drawerOpen} class:has-object-tools={mode === 'design' && !!selectedNode && paletteRequested} style:--drawer-width={`${drawerWidth}px`}>
     <main class="design-stage">
-      <div class="canvas-toolbar"><div class="canvas-modes" aria-label="Canvas mode"><button type="button" aria-pressed={mode === 'design'} onclick={() => changeMode('design')}>Design</button><button type="button" aria-pressed={mode === 'interact'} onclick={() => changeMode('interact')}>Interact</button></div><button type="button" bind:this={documentButton} class="panel-toggle" aria-expanded={drawerOpen} aria-controls="document-drawer" onclick={toggleDocument}>Document</button></div>
-      {#if compositionFocus}<CompositionNavigator document={source} focus={compositionFocus} descriptors={catalogDescriptors} disabled={textDraftDirty || sourceDraftDirty} onNavigate={navigateComposition} />{/if}
+      <div class="canvas-toolbar"><div class="canvas-modes" aria-label="Canvas mode"><button type="button" aria-pressed={mode === 'design'} onclick={() => changeMode('design')}>Design</button><button type="button" aria-pressed={mode === 'interact'} onclick={() => changeMode('interact')}>Interact</button></div>{#if compositionFocus}<div class="composition-back"><CompositionNavigator compact document={source} focus={compositionFocus} descriptors={catalogDescriptors} disabled={textDraftDirty || sourceDraftDirty} onNavigate={navigateComposition} /></div>{/if}<button type="button" bind:this={documentButton} class="panel-toggle" aria-expanded={drawerOpen} aria-controls="document-drawer" onclick={toggleDocument}>Document</button></div>
+
       <div class="canvas-scroll" bind:this={canvasScroll}>
         <div class="design-frame" style:max-width={width === 'fluid' ? 'none' : `${width}px`}>
           <EditorCanvas document={source} catalogs={designerCatalogs} extensions={catalogDescriptors} extensionImplementations={catalogImplementations}

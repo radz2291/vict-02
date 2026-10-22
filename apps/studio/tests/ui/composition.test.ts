@@ -134,7 +134,7 @@ it('opens a closed composition without authored or runtime changes, guards draft
   );
   await tick();
   expect(document.querySelector('.design-frame')?.textContent).toContain('Edited composition body');
-  button('← Screen');
+  button('← Back');
   await tick();
   expect(document.querySelector('[aria-label="Composition navigation"]')).toBeNull();
   expect(document.querySelector('.design-frame')?.textContent).not.toContain(
@@ -150,7 +150,7 @@ it('opens a closed composition without authored or runtime changes, guards draft
   expect(document.querySelector('[aria-label="Composition navigation"]')).not.toBeNull();
   expect(document.querySelector('#document-drawer')).not.toBeNull();
   expect(document.querySelector('[aria-label="Floating selection tools"]')).toBeNull();
-  button('← Screen');
+  button('← Back');
   await tick();
   expect(document.querySelector('#document-drawer')).not.toBeNull();
   await openStudioMenu('File');

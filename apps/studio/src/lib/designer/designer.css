@@ -175,6 +175,7 @@ body:has(.finished-screen) {
   background: transparent;
   font-size: 11px;
 }
+.composition-back {display:flex;justify-content:center;min-width:0;flex:1;}
 .canvas-scroll {
   overflow: auto;
   flex: 1;
