@@ -1,5 +1,12 @@
 # Stage 9 reopened — Studio Cycle 1.1
 
+Current verified delivery (2026-10-23): existing-screen revision repair product
+`4700689bf985c83cd3f944ad4cd324f2bfe8d724`; independent PASS WITH NON-BLOCKING
+FINDINGS, evidence `192d6380490ab87880e206a27dceffacd51e18c3`.
+[Cause, final gate and preserved local activation](CYCLE-1-1-REVISION-REPAIR.md).
+Direct requests on the current saved screen are supported. Next action is
+owner review; no owner acceptance or Cycle 1.2 is implied.
+
 Current owner-observed functional repair (2026-10-23):
 [existing-screen revision handoff](CYCLE-1-1-REVISION-REPAIR.md). The owner's
 direct request on an existing saved screen must work without creating a blank

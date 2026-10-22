@@ -1,4 +1,4 @@
-# Cycle 1.1 existing-screen revision repair — in progress
+# Cycle 1.1 existing-screen revision repair — verified and locally active
 
 2026-10-23. Owner reported rejection when requesting a Quellight landing page
 directly on the open saved screen, then asked whether agent/system instructions
@@ -79,5 +79,72 @@ as a fixture observation, not claimed as a product failure or live provider proo
 [Builder evidence](cycle-1-1-revision-repair-2026-10-23/).
 
 No live owner request was retried, no owner screen was edited, and no owner tab
-was refreshed during diagnosis. Exact-candidate independent production and
-real-provider proof remain pending.
+was refreshed during diagnosis.
+
+## Independent final gate
+
+Exact product `4700689bf985c83cd3f944ad4cd324f2bfe8d724` on
+`codex/studio-cycle-1-1-revision-repair`: **PASS WITH NON-BLOCKING FINDINGS**.
+Fresh independent evidence `192d6380490ab87880e206a27dceffacd51e18c3` on
+`codex/studio-cycle-1-1-revision-verification` is pushed and remote-verified.
+[Independent report](verification-cycle-1-1-revision-repair/FINAL-VERIFICATION.md).
+Studio source tree `2922600773758df5dde65c369d5fdca3f6423b18` stays unchanged
+after that product; later delivery changes are documentation/evidence only.
+
+Independent full suite **145/145**, 26 files, 65.10s; TypeScript, scoped lint and
+production build pass. Real z.ai used a manually authored, saved-twice, reopened,
+nonempty screen. A single Quellight landing-page request produced two accepted
+browser-acknowledged batches on the same screen ID, with no refusals, new screen,
+fresh-go loop or registration-form substitution:
+
+| Step | Saved source version | Expected and cursor working revision | Acknowledged next revision |
+| --- | --- | --- | --- |
+| Hero and description | `r1.r2` | `r1.r2#0` | `r1.r2#1` |
+| Features and action | `r1.r2` | `r1.r2#1` | `r1.r2#2` |
+
+Turn `turn-ca313149-9705-4c97-bbc7-da08a54049b2` took 91.920s in this sample;
+that is not a latency guarantee. Undo/Redo preserved exact canonical source, and
+Save/reopen passed. [Observed existing-screen result](verification-cycle-1-1-revision-repair/production-quellight-existing.png).
+
+Two additional real-provider controls delayed an unchanged proposal before actual
+Designer consumption: a manual canonical edit caused `UI_DOC_STALE_REVISION`
+with zero agent effects and the manual change retained; an unapplied source draft
+caused `STUDIO_AGENT_DRAFT`, zero agent effects and the exact draft retained.
+The draft control first had a safely refused invalid model operation, followed
+by re-read/correction within the same request; that intermediate failure is
+retained. The positive saved-screen run had zero refusals. No browser errors
+were observed. The selected-credential/client-marker scans pass.
+
+The original raw owner tool arguments remain unavailable, as noted above.
+No new gating defect was found. Prior local-preview, chat, selection/diagnostics
+and synthetic popover-resize limits remain recorded in earlier reports; this
+repair does not claim complete model correctness or general deployment readiness.
+
+## Local activation and owner continuation
+
+The independent 202-file artifact was reused after manifest and same-physical-file
+dependency checks. [Activation](cycle-1-1-revision-repair-2026-10-23/activation.json)
+verifies every copied file hash, retaining old hashed client assets. Only the
+idle owned 5591 server was restarted through the existing secure launcher with
+the designated temporary z.ai files. External credential/model files were not
+copied or modified. A temporary same-origin login tab renewed the session and
+was closed; both loaded Designer tabs reconnected without reload/navigation.
+
+[Preservation record](cycle-1-1-revision-repair-2026-10-23/owner-preservation.json)
+confirms identical canvas DOM, chat feed and composer draft in both existing
+tabs. Their mounted editors/history remain intact. The original owner's failed
+chat stays as history; no owner request was automatically retried, no screen
+was created, and no saved source was overwritten. Existing clients use the
+repaired server prompt/context immediately because the wire contract remains
+compatible. The owner tab shows Ready.
+
+Continue at `http://127.0.0.1:5591/design`: retry the original Quellight landing-page
+request directly on the current screen. A blank screen was only an acceptance
+walkthrough starting point. For a later fresh launch, use the prepared-checkout
+[secure launcher commands](CYCLE-1-1-CHAT-UI-REPAIR.md#launch-and-hands-on-review);
+stop the existing owned instance before rebuilding. The provider remains
+`zai/glm-5.3-flash`, with credentials held server-side.
+
+Cycle 1.1 is independently verified and ready for owner review. Owner acceptance
+is separate; broader Stage 9 remains reopened. No main merge, publication,
+Quellight product/backend change or Cycle 1.2 was begun.

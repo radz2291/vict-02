@@ -1,5 +1,30 @@
 # Studio Designer — current delivery state
 
+## 2026-10-23 — Existing-screen revision repair verified and locally active
+
+Independent **PASS WITH NON-BLOCKING FINDINGS** on exact product
+`4700689bf985c83cd3f944ad4cd324f2bfe8d724`, branch
+`codex/studio-cycle-1-1-revision-repair`. Remote-verified independent evidence
+`192d6380490ab87880e206a27dceffacd51e18c3` is on
+`codex/studio-cycle-1-1-revision-verification`.
+[Repair cause, checks, activation and continuation](CYCLE-1-1-REVISION-REPAIR.md);
+[independent report](verification-cycle-1-1-revision-repair/FINAL-VERIFICATION.md).
+
+Builder and independent full suites pass 145/145. Exact production build,
+TypeScript/lint and real z.ai proof pass: one request on saved nonempty
+`r1.r2` source, two acknowledged batches using `r1.r2#0` then `r1.r2#1`,
+no forced new screen/go loop/form substitution, plus Undo/Redo/Save/reopen.
+Actual manual-edit stale and pending-draft controls refuse with zero agent
+effects. Wrong tool revision arguments remain effect-free and correctable.
+
+The manifest-checked 202-file artifact is active at 5591. Both loaded Designer
+canvases/chat feeds/drafts are identical across activation; neither tab was
+reloaded/navigated, and no owner request was retried. Owner tab shows Ready.
+Original raw model arguments were not retained; the diagnosis inference and
+all earlier failed observations/remaining findings are explicitly preserved.
+Cycle 1.1 is ready for owner review, not owner accepted. Broader Stage 9 stays
+REOPENED / IN PROGRESS. No main merge or Cycle 1.2.
+
 ## 2026-10-23 — Existing-screen agent revision repair IN PROGRESS
 
 Owner reported false stale rejection on the open saved screen. New-screen

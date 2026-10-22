@@ -1,0 +1,19 @@
+{
+  "producingCommit": "4700689bf985c83cd3f944ad4cd324f2bfe8d724",
+  "owner": {
+    "canvasDomIdentical": true,
+    "chatFeedIdentical": true,
+    "composerDraftIdentical": true
+  },
+  "otherLoadedTab": {
+    "canvasDomIdentical": true,
+    "chatFeedIdentical": true,
+    "composerDraftIdentical": true
+  },
+  "designerTabsReloaded": false,
+  "designerTabsNavigated": false,
+  "sessionRenewedInTemporaryTab": true,
+  "temporaryTabClosed": true,
+  "backendRepairActiveForExistingLoadedClients": true,
+  "ownerRequestRetried": false
+}
