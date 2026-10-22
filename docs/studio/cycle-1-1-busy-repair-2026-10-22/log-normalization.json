@@ -15,6 +15,21 @@
       "file": "full-tests.log",
       "originalSha256": "75dcc57ab698e855129ea71a5e3085e07dda644d76ad9dfe5918e70ffd7eb3d0",
       "storedSha256": "a70504e22241b1c383ff00778eea8cb0960cbad0383f29b899abab5b998f6189"
+    },
+    {
+      "file": "check-cleanup-repair.log",
+      "originalSha256": "3b60fb077fa856d3551b84840f7c025e869ecdb01add9d0e01d3d7cc22953619",
+      "storedSha256": "7e6b804c41793874011d2688a6c470f6be96cc282d634b06525f873d97b92bb1"
+    },
+    {
+      "file": "full-tests-cleanup-repair.log",
+      "originalSha256": "a0eb2f9e2cad1d3b0b3039c78b88f1fe5d5095179b7d757e6ee42f0dfaf5d2be",
+      "storedSha256": "169030b2e2101e4465900bf2d327657197992c0ec978146ba7720a81333a0e9b"
+    },
+    {
+      "file": "single-worker-happy-recheck.log",
+      "originalSha256": "71c74a2b1132d5615c4e0e24692d6f60ff4d0f50c561857955e73843e29a64c9",
+      "storedSha256": "fe3da3e27f80fd695000ff7622f6e090dc93d605a8ac21e23dd848e95d67a784"
     }
   ]
 }

@@ -49,3 +49,34 @@ independent re-verification and activation results will be appended below.
 Builder logs retain their results/failures, with whitespace-only normalization
 recorded in the evidence directory. Original successful product and independent
 records remain ancestors of this repair rather than being overwritten.
+
+## Retained candidate cb5 red and bounded completion repair
+
+First repair candidate `cb5a63660498b50daa63cfa6f9dc3ed0c7a05290` was pushed and
+remote verified. Independent targeted checks passed 7/8; the existing read/edit
+success test repeatedly timed out at 120 seconds. Builder's same single-worker
+case passed in 8.36 seconds. This is not relabelled an environment PASS.
+Independent event instrumentation observed real read, validated proposal,
+EditorBridge receipt, model tool result, text and completed terminal event all
+within 946ms, followed by `finished` still pending beyond 120 seconds. A separate
+cleanup-phase probe passed in 8.4 seconds, with roughly 7.3 seconds spent in file
+removal. It did not directly reproduce a 120 second removal in that instrumented
+sample. Source confirms filesystem removal was the only unbounded awaited
+cleanup operation. Those precise observations and red logs remain retained.
+
+Bounded follow-up within the same repair: limit best-effort temporary directory
+removal to 1 second of host waiting, following existing bounded flush/close.
+End NDJSON when the terminal event is enqueued, independently of private cleanup.
+The terminal edit/ack fence and global cleanup capacity remain in place. The
+browser can finish the accepted request without waiting for file deletion. OS
+cleanup may continue in the background; immediate physical removal is not claimed.
+
+Two regressions were added: a deliberately never-settling filesystem removal
+through the genuine Mastra host, and terminal NDJSON EOF while mocked host cleanup
+remains pending. The latter is a transport-only test, not a live agent claim.
+Builder full suite now **137/137 PASS in 25 files**, 56.93 seconds; Studio check and
+scoped ESLint PASS. Logs in the evidence directory include the first 135-suite,
+focused checks, single-worker comparison and final 137-suite. A new exact commit
+must receive independent re-verification; cb5 is not promoted to PASS by this text.
+The owner's current 5591 session remains on its working earlier build, with no
+refresh/discard during these checks.

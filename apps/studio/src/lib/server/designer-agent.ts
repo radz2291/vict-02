@@ -633,8 +633,9 @@ async function execute(
       resolve(directory).startsWith(resolve(tmpdir()) + sep) &&
       directory.split(/[\\/]/).at(-1)?.startsWith('vict-studio-agent-')
     )
-      await rm(directory, { recursive: true, force: true, maxRetries: 5, retryDelay: 200 }).catch(
-        () => undefined,
+      await settleWithin(
+        rm(directory, { recursive: true, force: true, maxRetries: 5, retryDelay: 200 }),
+        1000,
       );
   }
 }

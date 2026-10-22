@@ -92,3 +92,8 @@ feedback, draft retention and regression checks only. The allowed path/scope and
 independent exact-candidate gate above are unchanged. [Repair record](CYCLE-1-1-BUSY-REPAIR.md).
 The owner's current unsaved WhatsApp screen remains open; do not reload or discard
 it during activation. No later cycle or main merge is authorized.
+
+The same bounded repair also ends terminal response streams independently of
+private cleanup and bounds the previously unbounded filesystem-removal wait,
+after independent tracing found completion delivered while cleanup remained
+pending. No shared framework or editing contract changes are authorized/required.

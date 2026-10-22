@@ -44,6 +44,12 @@ export const POST: RequestHandler = async ({ request, locals }) => {
           }
           try {
             controller.enqueue(chunk);
+            // Terminal delivery ends the client request. Private store cleanup
+            // continues within the host's bounded lifecycle/capacity accounting.
+            if (event.type === 'done') {
+              closed = true;
+              controller.close();
+            }
           } catch {
             closed = true;
             if (runId) cancelAgentRun(owner, runId);

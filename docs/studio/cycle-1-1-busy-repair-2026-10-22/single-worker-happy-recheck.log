@@ -1,0 +1,22 @@
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/apps/studio
+
+11:43:04 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/DocumentHost.svelte:105:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+11:43:04 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:303:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+11:43:04 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:303:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+11:43:04 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:370:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+11:43:04 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:370:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+11:43:09 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-editor/src/StateValuesPanel.svelte:106:6 A form label must be associated with a control
+https://svelte.dev/e/a11y_label_has_associated_control
+ ✓ tests/designer-agent-mastra.test.ts (4 tests | 3 skipped) 8359ms
+   ✓ Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > runs governed read and edit tools; acknowledges only after EditorBridge commit; streams completion  8355ms
+
+ Test Files  1 passed (1)
+      Tests  1 passed | 3 skipped (4)
+   Start at  23:42:44
+   Duration  33.86s (transform 15.65s, setup 0ms, collect 24.81s, tests 8.36s, environment 1ms, prepare 332ms)
