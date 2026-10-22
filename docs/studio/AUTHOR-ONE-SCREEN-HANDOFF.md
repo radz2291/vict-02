@@ -350,3 +350,6 @@ Minimal run controls — 2026-10-22: Removed the Run saved context label and Des
 
 
 Shared workspace logo — 2026-10-22: Owner noticed run logo differed. Native inspection found the run's direct-text anchor rendered green at 12px, while the designer's inner span stayed white at 13px. Replaced both markup variants with one Studio-owned WorkspaceBrand component using scoped, explicit 13px/700 white glyph styling in the existing 21px blue mark; removed duplicate brand CSS. No source, renderer or shared package interfaces changed. Production build and diff checks pass. Native computed comparison in designer and saved run is identical: white rgb(255,255,255), blue rgb(82,105,189), font13px, box21x21px. [Shared logo](shared-workspace-logo.png). Field notes r1.r14 / v1_985769c99edd… unchanged. Owner tab left on updated saved run. Independent verification/acceptance pending; main and launch unchanged.
+
+
+Run label — 2026-10-22: Removed the arrow from Preview → Run saved. Label-only change; production build, diff check and native visible-menu check pass. [Label](run-saved-label.png). Owner tab updated; saved source unchanged. Independent verification/acceptance pending.

@@ -407,7 +407,7 @@
       <p class="menu-caption">Canvas size</p>
       {#each [{value:'fluid',label:'Fit canvas'},{value:'768',label:'Tablet · 768'},{value:'390',label:'Phone · 390'}] as option}<button role="menuitemradio" aria-checked={width===option.value} type="button" onclick={()=>{width=option.value;closeMenu();}}>{option.label}<span aria-hidden="true">{width===option.value?'✓':''}</span></button>{/each}
     {:else}
-      <a role="menuitem" aria-disabled={!source || snapshot?.dirty || sourceDraftDirty || textDraftDirty || snapshot?.storedRevision==='r1'} href={source && !snapshot?.dirty && !sourceDraftDirty && !textDraftDirty && snapshot?.storedRevision!=='r1'?`/run-screen?screen=${encodeURIComponent(source.id)}${canvasWidth>0?`&width=${canvasWidth}`:''}`:undefined} onclick={event=>{if(!source || snapshot?.dirty || sourceDraftDirty || textDraftDirty || snapshot?.storedRevision==='r1')event.preventDefault();else closeMenu();}}>Run saved ↗</a>
+      <a role="menuitem" aria-disabled={!source || snapshot?.dirty || sourceDraftDirty || textDraftDirty || snapshot?.storedRevision==='r1'} href={source && !snapshot?.dirty && !sourceDraftDirty && !textDraftDirty && snapshot?.storedRevision!=='r1'?`/run-screen?screen=${encodeURIComponent(source.id)}${canvasWidth>0?`&width=${canvasWidth}`:''}`:undefined} onclick={event=>{if(!source || snapshot?.dirty || sourceDraftDirty || textDraftDirty || snapshot?.storedRevision==='r1')event.preventDefault();else closeMenu();}}>Run saved</a>
       <button role="menuitem" type="button" onclick={()=>{closeMenu();resetRuntime();}}>Reset preview</button>
     {/if}
   </div>
