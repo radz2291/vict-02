@@ -25,7 +25,7 @@ https://svelte.dev/e/a11y_no_static_element_interactions
 10:27:35 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-editor/src/StateValuesPanel.svelte:106:6 A form label must be associated with a control
 https://svelte.dev/e/a11y_label_has_associated_control
 stderr | tests/ui/composition.test.ts
-AggregateError: 
+AggregateError:
     at internalConnectMultiple (node:net:1139:18)
     at afterConnectMultiple (node:net:1712:7) {
   code: 'ECONNREFUSED',
@@ -52,7 +52,7 @@ AggregateError:
 }
 
 stderr | tests/ui/composition.test.ts
-AggregateError: 
+AggregateError:
     at internalConnectMultiple (node:net:1139:18)
     at afterConnectMultiple (node:net:1712:7) {
   code: 'ECONNREFUSED',
@@ -79,7 +79,7 @@ AggregateError:
 }
 
 stderr | tests/ui/composition.test.ts
-AggregateError: 
+AggregateError:
     at internalConnectMultiple (node:net:1139:18)
     at afterConnectMultiple (node:net:1712:7) {
   code: 'ECONNREFUSED',
@@ -123,7 +123,7 @@ stderr | tests/ui/designer-runtime.test.ts > keeps runtime input and checkbox st
 https://svelte.dev/e/dynamic_void_element_content
 
 stderr | tests/ui/designer-runtime.test.ts > keeps runtime input and checkbox state across pointer selection and leaves authored history clean
-AggregateError: 
+AggregateError:
     at internalConnectMultiple (node:net:1139:18)
     at afterConnectMultiple (node:net:1712:7) {
   code: 'ECONNREFUSED',
