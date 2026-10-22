@@ -1,0 +1,251 @@
+{
+  "mode": "Actual production shell, recorded provider text plus labeled activity replay; no live provider request or new edit",
+  "results": [
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "pass": true,
+      "rects": {
+        "panel": {
+          "x": 0,
+          "y": 44.1875,
+          "right": 320,
+          "bottom": 696,
+          "width": 320,
+          "height": 651.8125
+        },
+        "details": {
+          "x": 20,
+          "y": 98,
+          "right": 284,
+          "bottom": 418,
+          "width": 264,
+          "height": 320
+        },
+        "composer": {
+          "x": 12,
+          "y": 589,
+          "right": 307,
+          "bottom": 664,
+          "width": 295,
+          "height": 75
+        },
+        "input": {
+          "x": 12,
+          "y": 600,
+          "right": 254.6875,
+          "bottom": 664,
+          "width": 242.6875,
+          "height": 64
+        },
+        "feed": {
+          "x": 12,
+          "y": 125.125,
+          "right": 307,
+          "bottom": 589,
+          "width": 295,
+          "height": 463.875
+        },
+        "canvas": {
+          "x": 320,
+          "y": 82.1875,
+          "right": 1280,
+          "bottom": 666.5,
+          "width": 960,
+          "height": 584.3125
+        },
+        "status": {
+          "x": 14,
+          "y": 671,
+          "right": 305,
+          "bottom": 686,
+          "width": 291,
+          "height": 15
+        },
+        "header": {
+          "x": 0,
+          "y": 0,
+          "right": 1280,
+          "bottom": 44.1875,
+          "width": 1280,
+          "height": 44.1875
+        },
+        "footer": {
+          "x": 0,
+          "y": 696,
+          "right": 1280,
+          "bottom": 720,
+          "width": 1280,
+          "height": 24
+        },
+        "activity": 8
+      }
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 500
+      },
+      "pass": true,
+      "rects": {
+        "panel": {
+          "x": 0,
+          "y": 44.1875,
+          "right": 320,
+          "bottom": 476,
+          "width": 320,
+          "height": 431.8125
+        },
+        "details": {
+          "x": 20,
+          "y": 98,
+          "right": 284,
+          "bottom": 326,
+          "width": 264,
+          "height": 228
+        },
+        "composer": {
+          "x": 12,
+          "y": 369,
+          "right": 307,
+          "bottom": 444,
+          "width": 295,
+          "height": 75
+        },
+        "input": {
+          "x": 12,
+          "y": 380,
+          "right": 254.6875,
+          "bottom": 444,
+          "width": 242.6875,
+          "height": 64
+        },
+        "feed": {
+          "x": 12,
+          "y": 125.125,
+          "right": 307,
+          "bottom": 369,
+          "width": 295,
+          "height": 243.875
+        },
+        "canvas": {
+          "x": 320,
+          "y": 82.1875,
+          "right": 1280,
+          "bottom": 446.5,
+          "width": 960,
+          "height": 364.3125
+        },
+        "status": {
+          "x": 14,
+          "y": 451,
+          "right": 305,
+          "bottom": 466,
+          "width": 291,
+          "height": 15
+        },
+        "header": {
+          "x": 0,
+          "y": 0,
+          "right": 1280,
+          "bottom": 44.1875,
+          "width": 1280,
+          "height": 44.1875
+        },
+        "footer": {
+          "x": 0,
+          "y": 476,
+          "right": 1280,
+          "bottom": 500,
+          "width": 1280,
+          "height": 24
+        },
+        "activity": 8
+      }
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 700
+      },
+      "pass": true,
+      "rects": {
+        "panel": {
+          "x": 0,
+          "y": 44,
+          "right": 390,
+          "bottom": 364,
+          "width": 390,
+          "height": 320
+        },
+        "details": {
+          "x": 75,
+          "y": 98,
+          "right": 355,
+          "bottom": 237,
+          "width": 280,
+          "height": 139
+        },
+        "composer": {
+          "x": 12,
+          "y": 272,
+          "right": 378,
+          "bottom": 335,
+          "width": 366,
+          "height": 63
+        },
+        "input": {
+          "x": 12,
+          "y": 283,
+          "right": 325.6875,
+          "bottom": 335,
+          "width": 313.6875,
+          "height": 52
+        },
+        "feed": {
+          "x": 12,
+          "y": 116.9375,
+          "right": 378,
+          "bottom": 272,
+          "width": 366,
+          "height": 155.0625
+        },
+        "canvas": {
+          "x": 0,
+          "y": 402,
+          "right": 390,
+          "bottom": 646.5,
+          "width": 390,
+          "height": 244.5
+        },
+        "status": {
+          "x": 14,
+          "y": 342,
+          "right": 376,
+          "bottom": 357,
+          "width": 362,
+          "height": 15
+        },
+        "header": {
+          "x": 0,
+          "y": 0,
+          "right": 390,
+          "bottom": 44,
+          "width": 390,
+          "height": 44
+        },
+        "footer": {
+          "x": 0,
+          "y": 676,
+          "right": 390,
+          "bottom": 700,
+          "width": 390,
+          "height": 24
+        },
+        "activity": 8
+      }
+    }
+  ]
+}
