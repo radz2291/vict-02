@@ -21,13 +21,17 @@
   let evidence=$state('');
   let disposed=false;
   let panel=$state<HTMLElement>();
+  let detailsBoundary=$state<HTMLElement>();
   let failed=$state(false);
   function note(message:string){progress=[...progress.slice(-7),message];status=message;}
   async function configure(){
     try{const response=await fetch('/api/designer-agent',{cache:'no-store'});const data=await response.json();if(!response.ok)throw new Error();csrf=data.csrf;model=data.model;ready=data.ready;failed=!ready;status=ready?'Ready':'Configure a server-side model and provider key to connect.';}
     catch{ready=false;failed=true;status='Agent connection unavailable. Sign in again or reconnect in Chat details.';}
   }
-  onMount(()=>{void configure();});
+  onMount(()=>{
+    detailsBoundary=panel?.querySelector<HTMLElement>('.vict-conversation') ?? undefined;
+    void configure();
+  });
   const headers=()=>({'content-type':'application/json','x-vict-csrf':csrf});
   async function stop(){
     const id=runId;runId='';controller?.abort();
@@ -105,7 +109,7 @@
       {#if busy}<button type="button" class="agent-stop" onclick={()=>void stop()}>Stop</button>{/if}
       <Popover.Root>
         <Popover.Trigger class="agent-details-trigger" aria-label="Chat details" title="Chat details">···</Popover.Trigger>
-        <Popover.Content class="studio-chat-details" side="bottom" align="end" sideOffset={4} collisionPadding={8} collisionBoundary={panel ?? null} aria-label="Chat details">
+        <Popover.Content class="studio-chat-details" side="bottom" align="end" sideOffset={4} collisionPadding={8} collisionBoundary={detailsBoundary ?? panel ?? null} aria-label="Chat details">
           <div class="details-heading"><h3>Chat details</h3><Popover.Close aria-label="Close chat details">×</Popover.Close></div>
           <p class="details-model">{model || 'VICT / Mastra'}</p>
           <p>{status}</p>
@@ -165,15 +169,17 @@
   .agent-status{flex:none;display:flex;align-items:flex-start;gap:6px;margin:7px 14px 10px;color:#748098;font-size:10px;line-height:1.5;min-height:15px;overflow-wrap:anywhere}
   .agent-status>span:last-child{display:-webkit-box;line-clamp:2;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
   .status-dot{flex:none;width:5px;height:5px;border-radius:50%;background:#a2b0c0;margin-top:5px}.status-dot--busy{background:#5874bb}.agent-status--failed{color:#9a5547}.agent-status--failed .status-dot{background:#b87865}
-  :global(.studio-chat-details){z-index:50;width:280px;max-width:calc(100vw - 32px);max-height:min(320px,calc(100dvh - 220px),var(--bits-floating-available-height,320px));overflow:auto;overscroll-behavior:contain;box-sizing:border-box;border:1px solid #dce2eb;border-radius:8px;background:#fff;padding:12px;color:#526078;box-shadow:0 8px 24px #24334c1c;font:11px/1.6 Inter,system-ui,sans-serif;overflow-wrap:anywhere}
-  :global(.studio-chat-details h3){font-size:12px;margin:0;color:#263246}
-  :global(.studio-chat-details h4){font-size:10px;font-weight:600;margin:14px 0 5px;color:#7a8598}
-  :global(.studio-chat-details p){margin:6px 0}:global(.details-model){font-size:10px;color:#7a8598}
-  :global(.details-heading){display:flex;align-items:center;justify-content:space-between}
-  :global(.details-heading button){border:0;background:transparent;color:#718098;font-size:18px;cursor:pointer;line-height:1;padding:2px 4px}
-  :global(.details-reconnect){border:1px solid #dce2eb;border-radius:5px;background:#fff;color:#5269a2;padding:5px 8px;font:inherit;cursor:pointer;margin-top:5px}
-  :global(.details-reconnect:disabled){opacity:.5;cursor:default}
-  :global(.studio-chat-details ol){padding-left:17px;margin:0}:global(.studio-chat-details li){margin:5px 0}
-  :global(.details-record){font:10px/1.6 ui-monospace,monospace;color:#788398}
-  @media(max-width:760px){.agent-chat{width:100%;height:320px;max-height:46vh;border-right:0;border-bottom:1px solid #e0e5ee;flex-shrink:0}header{padding:6px 12px 2px}.agent-context{padding-bottom:5px}.agent-chat :global(.vict-conversation-textarea){min-height:52px;max-height:76px}.agent-status{margin-bottom:6px}:global(.studio-chat-details){max-height:min(160px,calc(46vh - 140px),var(--bits-floating-available-height,160px))}}
+  /* Own this surface over the catalog's generic ControlScope popover recipe. */
+  .agent-chat :global(.studio-chat-details[data-popover-content]){display:block;gap:0;z-index:50;width:280px;min-width:0;max-width:min(280px,var(--bits-floating-available-width,calc(100vw - 32px)));max-height:min(320px,var(--bits-floating-available-height,320px));overflow:auto;overscroll-behavior:contain;box-sizing:border-box;border:1px solid #dce2eb;border-radius:8px;background:#fff;padding:12px;color:#526078;box-shadow:0 8px 24px #24334c1c;font:11px/1.6 'Segoe UI',system-ui,sans-serif;overflow-wrap:anywhere}
+  .agent-chat :global(.studio-chat-details h3){font-size:12px;margin:0;color:#263246}
+  .agent-chat :global(.studio-chat-details h4){font-size:10px;font-weight:600;margin:14px 0 5px;color:#7a8598}
+  .agent-chat :global(.studio-chat-details p){margin:6px 0;color:inherit}
+  .agent-chat :global(.studio-chat-details .details-model){font-size:10px;color:#7a8598}
+  .agent-chat :global(.details-heading){display:flex;align-items:center;justify-content:space-between}
+  .agent-chat :global(.details-heading button){border:0;background:transparent;color:#718098;font-size:18px;cursor:pointer;line-height:1;padding:2px 4px}
+  .agent-chat :global(.details-reconnect){border:1px solid #dce2eb;border-radius:5px;background:#fff;color:#5269a2;padding:5px 8px;font:inherit;cursor:pointer;margin-top:5px}
+  .agent-chat :global(.details-reconnect:disabled){opacity:.5;cursor:default}
+  .agent-chat :global(.studio-chat-details ol){padding-left:17px;margin:0}.agent-chat :global(.studio-chat-details li){margin:5px 0}
+  .agent-chat :global(.studio-chat-details .details-record){font:10px/1.6 ui-monospace,monospace;color:#788398}
+  @media(max-width:760px){.agent-chat{width:100%;height:320px;max-height:46vh;border-right:0;border-bottom:1px solid #e0e5ee;flex-shrink:0}header{padding:6px 12px 2px}.agent-context{padding-bottom:5px}.agent-chat :global(.vict-conversation-textarea){min-height:52px;max-height:76px}.agent-status{margin-bottom:6px}}
 </style>

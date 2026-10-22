@@ -18,7 +18,7 @@
 {:else if node.type==='break'}<br/>
 {:else if node.type==='thematicBreak'}<hr/>
 {:else if node.type==='link' && href}<a {href} target="_blank" rel="noopener noreferrer">{@render children()}</a>
-{:else if node.type==='image'}<span>{node.alt??'Image'}</span>
+{:else if node.type==='image'||node.type==='imageReference'}<span>{node.alt??'Image'}</span>
 {:else if node.type==='definition'}<!-- Definitions are resolved only by explicit link nodes. -->
 {:else if node.children}{@render children()}
 {:else}{node.value??''}{/if}

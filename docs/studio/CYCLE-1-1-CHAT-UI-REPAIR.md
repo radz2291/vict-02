@@ -72,5 +72,35 @@ two new type errors, now fixed. A fixture-only Vite restart after formatting lef
 a blank page; blank captures are explicitly named, reload restored the fixture.
 No production failure is inferred from that development-server restart.
 
-Independent exact-commit production build, real-agent smoke and visual verdict
+## Actual-shell failure and repair loop
+
+Initial product `0f36438f8c8a7f25f9878f7ff626b86f4e25afae` received an
+initial independent PASS at evidence `f4e63d72fa34a1a21c9ef217bafdcb564de5aec8`.
+A parent-requested challenge in the actual production Designer shell then found
+the global ControlScope catalog popover recipe overriding width/padding/display.
+At 1280×500, details were 360px wide and extended 48px beyond the chat, with 9px
+of composer-region overlap. The standalone fixture lacked those global styles
+and the real toolbar/footer. The initial PASS is **superseded by FAIL**, evidence
+`8ac2040a3b2c0ae40fac6f3b4d9e1c765882b06a`.
+[Failed actual-shell challenge](verification-cycle-1-1-chat-ui/FAIL-0F36438-PRODUCTION-SHELL.md).
+That failed artifact was never activated. Earlier reports and screenshots stay.
+
+Repair: Studio details now explicitly owns block layout, spacing and sizing
+with a scoped selector that wins the generic catalog recipe. Floating collision
+and available-size bounds use the actual transcript element rather than the
+whole panel or viewport-height arithmetic, accounting for toolbar, footer,
+composer growth and errors. The fixture now includes the same ControlScope,
+catalog/workspace CSS, 44px toolbar and 24px footer. No global catalog CSS changed.
+Also preserve reference-image alt text without fetching the image; reference
+links intentionally remain text rather than complete CommonMark resolution.
+
+Builder repaired-shell observations: 1280×500 details are 264×228, contained
+within the 320px panel and ending at y326 before composer y369. At 390×700,
+details are 280×139 ending at y237 before composer y272. The corrected fixture
+screenshots/rects are retained. Six affected UI/formatting tests pass (27.60s);
+Designer check passes with zero errors and the same six inherited warnings;
+scoped lint passes. Earlier full 140/140 and shared 51/51 apply to the initial
+presentation candidate; they are not silently relabeled as a new full-suite run.
+
+Independent exact-repair build, actual-shell geometry and real-agent recheck
 are pending. This builder report is a candidate, not a gate verdict.

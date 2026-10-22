@@ -9,7 +9,10 @@ creative-software UI preferences. Isolated branch
 `d7401bef6e48330796c74ec00c86db9622d48cdf`.
 [Bounded scope, checks and failed observations](CYCLE-1-1-CHAT-UI-REPAIR.md).
 Builder Studio 140/140 and shared renderer 51/51 pass; independent exact-commit
-visual/production/real-agent verification is pending. Earlier gates remain
+initial checks passed, but an actual-shell global-style collision superseded the
+initial independent PASS with FAIL. That artifact was never activated. A scoped
+layout repair and faithful fixture now pass six affected builder checks;
+independent exact-repair visual/production/real-agent verification is pending. Earlier gates remain
 historical. No owner acceptance, main merge or Cycle 1.2 is claimed.
 
 ## 2026-10-23 — Cycle 1.1 busy/completion repair verified and locally active

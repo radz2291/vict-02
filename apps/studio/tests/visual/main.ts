@@ -1,5 +1,7 @@
 import { mount } from 'svelte';
 import '@victframework/ui-svelte/styles.css';
+import '@victframework/ui-svelte/catalog.css';
+import '../../src/lib/designer/workspace.css';
 import '../../src/lib/designer/designer.css';
 import Fixture from './Fixture.svelte';
 

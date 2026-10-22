@@ -1,17 +1,21 @@
 <script lang="ts">
   import AgentChat from '../../src/lib/designer/AgentChat.svelte';
+  import { ControlScope } from '@victframework/ui-svelte';
   import { newScreen } from '../../src/lib/designer/application.js';
   import { documentCursor } from '../../src/lib/designer/agent-edits.js';
   const document = newScreen('Registration', 'layout-fixture');
   const cursor = documentCursor(document, 'r1#0', crypto.randomUUID());
 </script>
-<main class="studio-designer">
-  <div class="fixture-label">UI layout fixture · simulated stream · no provider or saved-screen access</div>
+<ControlScope>
+<main class="studio-designer studio-workspace">
+  <div class="fixture-label workspace-header">UI layout fixture · simulated stream · no provider or saved-screen access</div>
   <div class="fixture-workspace">
     <AgentChat screenLabel="Registration" selectionLabel="Email" blocked={false} getContext={()=>({ document, cursor })} applyProposal={()=>{throw new Error('This fixture never proposes edits');}}/>
     <div class="fixture-canvas"><span>Canvas area</span></div>
   </div>
+  <footer class="workspace-status">UI layout fixture · no saved-screen access</footer>
 </main>
+</ControlScope>
 <style>
   :global(body){margin:0;font-family:Inter,system-ui,sans-serif}
   main{height:100dvh;display:flex;flex-direction:column;overflow:hidden}

@@ -15,6 +15,11 @@ function render(text: string) {
   flushSync();
 }
 describe('Studio agent message formatting', () => {
+  it('preserves reference-style image alt text without fetching an image', () => {
+    render('![Chart description][chart]\n\n[chart]: https://example.com/chart.png');
+    expect(document.body.textContent).toContain('Chart description');
+    expect(document.querySelector('img')).toBeNull();
+  });
   it('formats headings, lists, emphasis and code without oversized document headings', () => {
     render('# Registration\n\n- **Name** field\n- Email with `validation`\n\nDone.');
     expect(document.querySelector('h3')?.textContent).toBe('Registration');
