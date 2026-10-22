@@ -400,3 +400,8 @@ Builder checks: designer diagnostics0 errors/6 inherited warnings; production bu
 
 
 Submenu visual alignment — 2026-10-22: Open screen SubContent now uses start alignment, minus5px offset and2px side gap, aligning its first row with its parent command instead of centering the entire popup above it. Hid the catalog-generated duplicate trailing arrow and styled the open parent with the shared blue highlight. No command/state/canonical interface changes. Production build and diff check pass; native pointer opens the flyout and keyboard Escape dismisses. Measured parent top81.6px, submenu first row82.6px (previous submenu panel top8.8px, now76.8px). Current screen/revision/application identity unchanged. [Aligned submenu](aligned-open-screen-menu.png). Owner tab updated; independent verification/acceptance pending; main/launch unchanged.
+
+
+## Independent B-1 repair candidate — 2026-10-22
+
+Independent verification at67a47c3 falsified the historical claim that an empty required catalog slot blocked Save/Run: the original boundary only refused rendering. That earlier claim and its decisions remain preserved above. The isolated `codex/studio-required-slot-repair` candidate composes shared renderer preflight with canonical screen validation and enforces the existing host validator on direct store writes. It retains repairable authoring and refuses invalid persistence/replay. Scope, changed interfaces, tests, failed observations and builder browser checks are in [the repair handoff](REQUIRED-SLOT-REPAIR.md). The original authoring branch and both existing servers remain unchanged. This is a repair candidate awaiting independent re-verification, not a gate verdict or closure.

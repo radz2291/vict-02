@@ -3,6 +3,7 @@ import type {
   UiExtensionDescriptor,
   UiOutputDecl,
   UiRenderInstruction,
+  UiRenderPlan,
   UiValue,
 } from '@victframework/ui';
 
@@ -305,4 +306,53 @@ export interface UiActionStateConnection {
   readonly error?: string;
   readonly result?: string;
   readonly successValues?: Readonly<Record<string, UiValue>>;
+}
+
+/** Preflight every authored component occurrence before persistence/execution.
+ * Uses the exact renderer resolver, including implementation-owned required
+ * slots. No component is mounted and no runtime conditions or actions run.
+ * All branches/templates/slot fills are checked, including currently hidden UI.
+ * Editors can still render incomplete drafts using the ordinary resolver.
+ */
+export function validateSvelteComponentPlan(
+  plan: UiRenderPlan,
+  descriptors: readonly UiExtensionDescriptor[],
+  implementations: readonly (UiSvelteExtensionImplementation | UiSvelteComponentImplementation)[],
+): readonly UiExtensionRenderDiagnostic[] {
+  const issues: UiExtensionRenderDiagnostic[] = [];
+  const seen = new Set<UiRenderInstruction>();
+  function visit(instruction: UiRenderInstruction): void {
+    if (seen.has(instruction)) return;
+    seen.add(instruction);
+    switch (instruction.kind) {
+      case 'extension': {
+        const resolution = resolveSvelteComponent(instruction, descriptors, implementations);
+        if (!resolution.ok)
+          issues.push({
+            ...resolution.diagnostic,
+            detail: { ...resolution.diagnostic.detail, occurrenceKey: instruction.occurrenceKey },
+          });
+        for (const fill of Object.values(instruction.slots ?? {})) fill.forEach(visit);
+        break;
+      }
+      case 'element':
+        instruction.children.forEach(visit);
+        break;
+      case 'component':
+        visit(instruction.body);
+        for (const fill of Object.values(instruction.slots)) fill.forEach(visit);
+        break;
+      case 'repeat':
+        visit(instruction.template);
+        break;
+      case 'conditional':
+        for (const branch of instruction.branches) branch.children.forEach(visit);
+        break;
+      case 'slot':
+        instruction.fallback.forEach(visit);
+        break;
+    }
+  }
+  plan.structure.forEach(visit);
+  return issues;
 }

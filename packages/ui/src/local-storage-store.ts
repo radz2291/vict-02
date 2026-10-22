@@ -73,7 +73,8 @@ export interface LocalStorageStoreOptions {
    * Optional host validation gate (the layered validation authority): when
    * provided, a READABLE envelope whose document fails validation classifies
    * as invalid+overwritable with the RECORDED revision (a replacement save
-   * is accepted) instead of silently reopening broken bytes.
+   * is accepted) instead of silently reopening broken bytes. The same gate
+   * refuses an invalid incoming document before save writes any bytes.
    */
   readonly validateDocument?: (document: UiDocument) => readonly {
     readonly code: string;
@@ -206,6 +207,19 @@ export function createLocalStorageDocumentStore(
           ok: false,
           code: 'UI_DOC_STALE_REVISION',
           reason: `stored revision is ${authoritative ?? 'absent (empty store)'}, editor expected ${input.expectedStoredRevision}`,
+        };
+      }
+      // Validate the candidate as well as loaded envelopes: callers cannot
+      // bypass the host's persistence gate by using the store port directly.
+      try {
+        const invalid = invalidBecauseDocument(input.document, input.newStoredRevision);
+        if (invalid)
+          return { ok: false, code: 'UI_EDIT_VALIDATION_FAILED', reason: invalid.message };
+      } catch {
+        return {
+          ok: false,
+          code: 'UI_EDIT_VALIDATION_FAILED',
+          reason: 'Document validation failed.',
         };
       }
       try {
