@@ -588,8 +588,6 @@ body:has(.finished-screen) {
 .action-card p {font-size:10px;color:#8a96a8;margin:15px 0 6px;}
 .simulation-badge {border-radius:4px;background:#f0f3fa;padding:3px 5px;font-size:9px;color:#70809b;}
 .action-inputs {display:flex;flex-wrap:wrap;gap:5px;} .action-inputs > span {padding:4px 7px;background:#f7f8fb;border-radius:4px;font-size:10px;color:#65748d;}
-.source-caption {display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:10px;font-size:11px;}
-.source-caption small {color:#8a96a8;font-size:10px;} .source-caption button {margin-left:auto;}
 .source-body .source-editor {white-space:pre;overflow:auto;flex:1;min-height:160px;resize:none;height:auto;font-size:12px;line-height:1.65;padding:12px;}
 .source-body .source-actions {flex:none;margin:10px 0;}
 .application-attachment {flex:none;font-size:10px;color:#7b879c;max-height:25%;overflow:auto;}
