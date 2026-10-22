@@ -1,0 +1,22 @@
+[
+  {
+    "name": "unauthenticated bootstrap",
+    "status": 500,
+    "expected": 401,
+    "ok": false,
+    "result": {
+      "message": "Internal Error"
+    },
+    "cache": null
+  },
+  {
+    "name": "authenticated bootstrap",
+    "status": 500,
+    "expected": 200,
+    "ok": false,
+    "result": {
+      "message": "Internal Error"
+    },
+    "cache": null
+  }
+]

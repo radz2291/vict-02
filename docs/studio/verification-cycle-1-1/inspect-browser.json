@@ -1,0 +1,35 @@
+{
+  "records": [
+    {
+      "at": "2026-10-22T14:08:42.546Z",
+      "name": "unauthenticated page redirects",
+      "data": {
+        "ok": true,
+        "url": "http://127.0.0.1:5592/login"
+      }
+    },
+    {
+      "at": "2026-10-22T14:08:44.643Z",
+      "name": "initial UI",
+      "data": {
+        "text": "V\nFile\nEdit\nView\nPreview\nUntitled screen\n○ New screen\n↗\nStudio agent\n\nVICT / Mastra\n\n↻\nUntitled screen\nSelected: Untitled screen\n\nDescribe the screen you want to make. Try “Create a registration form with name, email and password.” Select an element to ask for a focused change.\n\nMessage Studio agent\nSend\nAgent connection unavailable. Sign in again or retry the connection.\n\nOn the Studio server, set STUDIO_AGENT_MODEL and the matching provider key (OpenAI, Anthropic, OpenRouter, Ollama Cloud or z.ai), then restart. Keys stay on the server.\n\nEdits share your history. Save explicitly. Form actions remain local preview. Chat clears when you leave Designer.\n\nDesign\nInteract\nDocument\n＋\nWhat will you make?\n\nSelect this screen to open its tools, then choose Insert.\n\nSimulated execution\nLocal preview · no live effects\nNew screen · not saved yet.\n@3 · v1_48e6cc77698d…"
+      }
+    },
+    {
+      "at": "2026-10-22T14:08:44.860Z",
+      "name": "document UI",
+      "data": {
+        "text": "V\nFile\nEdit\nView\nPreview\nUntitled screen\n○ New screen\n↗\nStudio agent\n\nVICT / Mastra\n\n↻\nUntitled screen\nSelected: Untitled screen\n\nDescribe the screen you want to make. Try “Create a registration form with name, email and password.” Select an element to ask for a focused change.\n\nMessage Studio agent\nSend\nAgent connection unavailable. Sign in again or retry the connection.\n\nOn the Studio server, set STUDIO_AGENT_MODEL and the matching provider key (OpenAI, Anthropic, OpenRouter, Ollama Cloud or z.ai), then restart. Keys stay on the server.\n\nEdits share your history. Save explicitly. Form actions remain local preview. Chat clears when you leave Designer.\n\nDesign\nInteract\nDocument\n＋\nWhat will you make?\n\nSelect this screen to open its tools, then choose Insert.\n\nSimulated execution\nLocal preview · no live effects\nLayers\nData\nActions\nSource\n×\nUntitled screen\nSelection details & provenance\nNew screen · not saved yet.\n@3 · v1_48e6cc77698d…"
+      }
+    },
+    {
+      "at": "2026-10-22T14:08:44.971Z",
+      "name": "browser end",
+      "data": {
+        "text": "V\nFile\nEdit\nView\nPreview\nUntitled screen\n○ New screen\n↗\nStudio agent\n\nVICT / Mastra\n\n↻\nUntitled screen\nSelected: Untitled screen\n\nDescribe the screen you want to make. Try “Create a registration form with name, email and password.” Select an element to ask for a focused change.\n\nMessage Studio agent\nSend\nAgent connection unavailable. Sign in again or retry the connection.\n\nOn the Studio server, set STUDIO_AGENT_MODEL and the matching provider key (OpenAI, Anthropic, OpenRouter, Ollama Cloud or z.ai), then restart. Keys stay on the server.\n\nEdits share your history. Save explicitly. Form actions remain local preview. Chat clears when you leave Designer.\n\nDesign\nInteract\nDocument\n＋\nWhat will you make?\n\nSelect this screen to open its tools, then choose Insert.\n\nSimulated execution\nLocal preview · no live effects\nLayers\nData\nActions\nSource\n×\nCanonical UI document\nApply source\nDiscard draft\nExport\nApplication attachment\nNew screen · not saved yet.\n@3 · v1_48e6cc77698d…",
+        "errors": []
+      }
+    }
+  ],
+  "errors": []
+}

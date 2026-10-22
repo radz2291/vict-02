@@ -1,0 +1,11 @@
+npm warn "../../docs/studio/verification-cycle-1-1/vitest.config.ts" is being parsed as a normal command line argument.
+npm warn Unknown cli config "--config". This will stop working in the next major version of npm.
+
+ RUN  v4.1.11 C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1-verification/260831-VCT-02/apps/studio
+
+No test files found, exiting with code 1
+
+filter: ../../docs/studio/verification-cycle-1-1/vitest.config.ts
+include: tests/**/*.test.ts
+exclude:  **/node_modules/**, **/.git/**
+
