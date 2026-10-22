@@ -37,16 +37,6 @@ body:has(.finished-screen) {
   outline: 2px solid #5269bd;
   outline-offset: 2px;
 }
-.studio-header {
-  height: 36px;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 0 12px;
-  background: white;
-  border-bottom: 1px solid #e1e6ee;
-  flex-shrink: 0;
-}
 .studio-brand {
   display: flex;
   align-items: center;
@@ -54,13 +44,6 @@ body:has(.finished-screen) {
   text-decoration: none;
   font-size: 13px;
   color: #253048;
-}
-.studio-brand strong {
-  font-weight: 650;
-}
-.studio-brand strong span {
-  font-weight: 400;
-  color: #6c788b;
 }
 .brand-mark {
   display: grid;
@@ -72,32 +55,26 @@ body:has(.finished-screen) {
   color: white;
   font-weight: 700;
 }
-.product-mode {
-  color: #7d8ba1;
-  font-size: 9px;
-  letter-spacing: 0.16em;
-  border-left: 1px solid #e1e6ee;
-  padding-left: 14px;
-}
-.header-spacer {
-  flex: 1;
-}
 .operator-link {
-  font-size: 10px;
+  padding: 5px;
+  font-size: 16px;
   color: #65748d;
   text-decoration: none;
 }
 .design-toolbar {
-  min-height: 42px;
+  min-height: 44px;
   display: flex;
   align-items: center;
   gap: 7px;
   padding: 5px 10px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  white-space: nowrap;
   background: white;
   border-bottom: 1px solid #e1e6ee;
   flex-shrink: 0;
 }
+.design-toolbar > * {flex-shrink:0;}
 .screen-picker,
 .history-controls,
 .toolbar-end {
@@ -199,8 +176,9 @@ body:has(.finished-screen) {
   justify-content: flex-end;
   align-items: center;
   gap: 6px;
-  min-height: 31px;
-  padding: 4px 10px;
+  height: 38px;
+  flex-shrink: 0;
+  padding: 0 10px;
   border-bottom: 1px solid #e1e6ee;
   font-size: 11px;
 }
@@ -283,29 +261,10 @@ body:has(.finished-screen) {
   overflow: hidden;
 }
 .drawer-resizer {display:grid;}
-.drawer-heading {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  padding: 8px 12px;
-  border-bottom: 1px solid #e8ebf1;
-}
-.drawer-heading strong {
-  font-size: 12px;
-  font-weight: 600;
-}
-.drawer-heading button {
-  background: transparent;
-  border: 0;
-  color: #78849a;
-  font-size: 20px;
-  line-height: 1;
-}
 .sidebar-tabs {
   display: flex;
   flex-shrink: 0;
-  min-height: 34px;
+  height: 38px;
   background: #fff;
   border-bottom: 1px solid #e8ebf1;
   padding: 0 6px;
@@ -324,6 +283,7 @@ body:has(.finished-screen) {
   color: #5269bd;
   border-bottom-color: #5269bd;
 }
+.sidebar-tabs .close-document {flex:0 0 24px;font-size:18px;padding:0;border-bottom:0;}
 .sidebar-body {
   padding: 10px;
   overflow: auto;
@@ -524,18 +484,9 @@ body:has(.finished-screen) {
   }
 }
 @media (max-width: 760px) {
-  .studio-header {
-    height: 32px;
-  }
-  .product-mode {
-    display: none;
-  }
   .design-toolbar {
     padding: 4px 8px;
     gap: 5px;
-  }
-  .screen-picker {
-    flex: 1;
   }
   .screen-picker select {
     max-width: 150px;
@@ -593,7 +544,6 @@ body:has(.finished-screen) {
 .application-attachment {flex:none;font-size:10px;color:#7b879c;max-height:25%;overflow:auto;}
 .document-drawer :focus-visible {outline:2px solid #5269bd;outline-offset:-1px;}
 
-.drawer-heading .screen-name-button,.drawer-heading .screen-name-edit {margin-left:auto;max-width:60%;min-width:0;box-sizing:border-box;font:11px/1.4 'Segoe UI',system-ui,sans-serif;color:#65748d;padding:4px 6px;border:1px solid transparent;border-radius:4px;}
-.drawer-heading .screen-name-button {white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:text;}
-.drawer-heading .screen-name-button:hover {background:#f3f5fb;border-color:#e1e6ee;}
-.drawer-heading .screen-name-edit {width:60%;background:white;border-color:#5269bd;color:#34425a;}
+.screen-picker .screen-name-button {border-color:transparent;color:#78849a;padding:4px;font-size:14px;}
+.screen-picker .screen-name-button:hover {background:#f3f5fb;border-color:#e1e6ee;}
+.screen-picker .screen-name-edit {width:180px;min-width:0;font:12px 'Segoe UI',system-ui,sans-serif;padding:4px 6px;border:1px solid #5269bd;border-radius:4px;background:white;color:#34425a;}
