@@ -31,6 +31,13 @@
     if(!disposed)note('Stopped. Applied edits remain on the canvas and in Undo.');
   }
   onDestroy(()=>{disposed=true;void stop();});
+  function failedStatus(code:string|undefined,applied:number){
+    const effects=applied?`${applied} applied edits remain undoable.`:'No edits were applied.';
+    if(code==='STUDIO_AGENT_BUSY')return `Another agent turn is still running in this session. Wait for it to finish, or stop it in its Designer tab, then retry. ${effects}`;
+    if(code==='STUDIO_AGENT_CAPACITY')return `The agent server is finishing other turns. Wait a moment and retry. ${effects}`;
+    if(code==='STUDIO_AGENT_UNCONFIGURED')return `The agent needs a server-side provider configuration. Reconnect after configuring it. ${effects}`;
+    return `${code==='STUDIO_AGENT_PROVIDER_FAILED'?'The provider could not complete this turn. Check the connection and retry.':'The agent stopped before finishing. Check Activity and retry.'} ${effects}`;
+  }
   async function send(text:string){
     if(busy)return {ok:false,message:'Wait for this turn or stop it first.'};
     if(blocked)return {ok:false,message:'Apply or cancel your property, data, rename or source draft first.'};
@@ -44,7 +51,6 @@
     try{
       const response=await fetch('/api/designer-agent',{method:'POST',headers:headers(),signal:controller.signal,body:JSON.stringify({...context,prompt:text,history})});
       if(!response.ok || !response.body)throw new Error('connection');
-      sent=true;
       const reader=response.body.getReader();const decoder=new TextDecoder();let buffer='';
       try{
         while(true){
@@ -54,7 +60,7 @@
           while((newline=buffer.indexOf('\n'))>=0){
             const line=buffer.slice(0,newline);buffer=buffer.slice(newline+1);if(!line.trim())continue;
             const event=JSON.parse(line);
-            if(event.type==='started'){runId=event.runId;model=event.model;note(`Connected · ${event.engine}`);}
+            if(event.type==='started'){sent=true;runId=event.runId;model=event.model;note(`Connected · ${event.engine}`);}
             if(event.type==='progress')note(event.message);
             if(event.type==='text')messages=messages.map((message,index)=>index===responseIndex?{...message,text:(message.text+event.delta).slice(0,100_000)}:message);
             if(event.type==='proposal'){
@@ -67,7 +73,7 @@
             if(event.type==='edit-result'){lastRefusal=event.result.ok?'':event.result.message;note(event.result.ok?`${event.reason} · applied`:event.result.message);}
             if(event.type==='done'){
               done=true;applied=Math.max(applied,event.applied??0);
-              status=event.status==='completed'?(lastRefusal?`${lastRefusal} ${applied?`${applied} earlier edits remain undoable.`:''}`:`Finished · ${applied} edit${applied===1?'':'s'} applied · save when ready.`):event.status==='cancelled'?`Stopped · ${applied} applied edits remain undoable.`:`The agent could not finish. Check the provider connection and retry. ${applied} applied edits remain undoable.`;
+              status=event.status==='completed'?(lastRefusal?`${lastRefusal} ${applied?`${applied} earlier edits remain undoable.`:''}`:`Finished · ${applied} edit${applied===1?'':'s'} applied · save when ready.`):event.status==='cancelled'?`Stopped · ${applied} applied edits remain undoable.`:failedStatus(event.code,applied);
               evidence=[event.turnId?`VICT turn ${event.turnId} · profile ${event.profileVersion}`:'',event.code??''].filter(Boolean).join(' · ');
               if(!messages[responseIndex]?.text)messages=messages.map((message,index)=>index===responseIndex?{...message,text:status}:message);
             }
@@ -75,7 +81,7 @@
         }
       }finally{reader.releaseLock();}
       if(!done)throw new Error('incomplete');
-      return true;
+      return sent?true:{ok:false,message:status};
     }catch{
       if(!disposed){note(controller.signal.aborted?`Stopped · ${applied} applied edits remain undoable.`:`Connection interrupted · ${applied} edits applied locally. Inspect the canvas before retrying; Undo is available.`);if(!messages[responseIndex]?.text)messages=messages.map((message,index)=>index===responseIndex?{...message,text:status}:message);}
       return sent?true:{ok:false,message:'The request could not reach the agent. Your draft is still here.'};

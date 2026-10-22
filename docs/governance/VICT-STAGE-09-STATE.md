@@ -1,5 +1,15 @@
 # VICT Stage 09 — Current State
 
+## 2026-10-22 — Cycle 1.1 busy-feedback repair in progress
+
+An owner-observed `STUDIO_AGENT_BUSY` refusal was presented as provider failure.
+Bounded repair is authorized within Cycle 1.1 on
+`codex/studio-cycle-1-1-busy-repair`, from delivery
+`ecfa4787728c9132a98c00b24ff0c85934e8dc0a`; baseline main remains unchanged.
+[Repair evidence and current gate](../studio/CYCLE-1-1-BUSY-REPAIR.md).
+The original exact-candidate verdict below remains retained. No owner acceptance,
+whole-Stage 9 closure or Cycle 1.2 authorization is recorded.
+
 ## 2026-10-22 — Studio Cycle 1.1 independently verified; owner review pending
 
 Independent **PASS WITH NON-BLOCKING FINDINGS** on product

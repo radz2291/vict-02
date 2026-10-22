@@ -1,0 +1,38 @@
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/apps/studio
+
+11:22:20 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/DocumentHost.svelte:105:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+11:22:22 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:303:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+11:22:22 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:303:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+11:22:22 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:370:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+11:22:22 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:370:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+11:22:32 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/DocumentHost.svelte:105:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+11:22:33 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:303:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+11:22:33 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:303:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+11:22:33 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:370:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+11:22:33 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:370:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+11:22:37 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-editor/src/StateValuesPanel.svelte:106:6 A form label must be associated with a control
+https://svelte.dev/e/a11y_label_has_associated_control
+ ✓ tests/ui/agent-chat.test.ts (2 tests) 394ms
+11:22:42 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-editor/src/StateValuesPanel.svelte:106:6 A form label must be associated with a control
+https://svelte.dev/e/a11y_label_has_associated_control
+ ✓ tests/designer-agent-mastra.test.ts (4 tests) 89581ms
+   ✓ Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > runs governed read and edit tools; acknowledges only after EditorBridge commit; streams completion  8272ms
+   ✓ Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > sanitizes a genuine Mastra model failure after an acknowledged edit and preserves Undo  17801ms
+   ✓ Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > cancels a proposal before acknowledgement with zero edits and no cross-session cancellation  8919ms
+   ✓ Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > admits the next turn at terminal delivery while private cleanup is still pending  54580ms
+
+ Test Files  2 passed (2)
+      Tests  6 passed (6)
+   Start at  23:21:53
+   Duration  139.27s (transform 53.56s, setup 0ms, collect 89.81s, tests 89.97s, environment 1.65s, prepare 778ms)

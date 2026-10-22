@@ -1,5 +1,23 @@
 # Studio Designer — current delivery state
 
+## 2026-10-22 — Cycle 1.1 owner-observed busy repair IN PROGRESS
+
+The owner reported generic provider-failure feedback while requesting a WhatsApp
+screen. Browser Connection record identified `STUDIO_AGENT_BUSY`; this was a turn
+admission refusal, not evidence of a provider outage. A later real z.ai retry built
+the requested screen in three acknowledged batches. The owner's unsaved screen
+and current interaction state are preserved.
+
+Bounded repair on isolated branch `codex/studio-cycle-1-1-busy-repair`, from clean
+remote-equal delivery `ecfa4787728c9132a98c00b24ff0c85934e8dc0a`.
+`origin/main` remains `d7401bef6e48330796c74ec00c86db9622d48cdf`.
+Scope: release the session admission slot when a turn is terminal/cancelled while
+retaining global cleanup capacity and edit fences; explain busy/capacity refusal
+accurately and retain unsent drafts. Existing Cycle 1.1 authority covers this
+repair. Independent exact-commit re-verification is required before the repaired
+candidate is marked ready. Earlier verification/evidence below remain historical;
+owner acceptance and Cycle 1.2 remain unclaimed and unauthorized.
+
 ## 2026-10-22 — Cycle 1.1 independently verified; ready for owner review
 
 Independent verdict: **PASS WITH NON-BLOCKING FINDINGS** on exact product

@@ -1,0 +1,20 @@
+{
+  "method": "Only line endings, trailing spaces/tabs and terminal blank lines normalized; assertions/results retained.",
+  "files": [
+    {
+      "file": "check.log",
+      "originalSha256": "3b60fb077fa856d3551b84840f7c025e869ecdb01add9d0e01d3d7cc22953619",
+      "storedSha256": "7e6b804c41793874011d2688a6c470f6be96cc282d634b06525f873d97b92bb1"
+    },
+    {
+      "file": "focused-tests.log",
+      "originalSha256": "93fdf154f168a01ac8529d99fb4cfc6abf53ac61bf06ed996407ba86124cef0b",
+      "storedSha256": "5cbac8525c4013354c6888c281dceee2e918e73cf0c7a4f92d726bf47d96180d"
+    },
+    {
+      "file": "full-tests.log",
+      "originalSha256": "75dcc57ab698e855129ea71a5e3085e07dda644d76ad9dfe5918e70ffd7eb3d0",
+      "storedSha256": "a70504e22241b1c383ff00778eea8cb0960cbad0383f29b899abab5b998f6189"
+    }
+  ]
+}

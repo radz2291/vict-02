@@ -166,6 +166,7 @@ describe('Studio composes existing real pinned Mastra executor (offline model; n
   it('cancels a proposal before acknowledgement with zero edits and no cross-session cancellation', async () => {
     const { bridge, start, input } = context();
     let runId = '';
+    let replacement: ReturnType<typeof openAgentRun> | undefined;
     const events: StudioAgentEvent[] = [];
     const model = createDeterministicOfflineModel({
       script: {
@@ -190,6 +191,13 @@ describe('Studio composes existing real pinned Mastra executor (offline model; n
         if (event.type === 'proposal') {
           expect(cancelAgentRun('other-owner', runId)).toBe(false);
           expect(cancelAgentRun('cancel-owner', runId)).toBe(true);
+          replacement = openAgentRun('cancel-owner', start, () => {}, {
+            modelFactory: () =>
+              createDeterministicOfflineModel({
+                script: { [input]: { kind: 'text', text: 'Replacement ready.' } },
+              }),
+            model: OFFLINE_MODEL_IDENTITY,
+          });
         }
       },
       { modelFactory: () => model, model: OFFLINE_MODEL_IDENTITY },
@@ -199,5 +207,35 @@ describe('Studio composes existing real pinned Mastra executor (offline model; n
     expect(events.at(-1)).toMatchObject({ type: 'done', status: 'cancelled', applied: 0 });
     expect(bridge.document.nodes.title).toBeUndefined();
     expect(bridge.getSnapshot().canUndo).toBe(false);
+    expect(replacement?.ok).toBe(true);
+    if (replacement?.ok) await replacement.finished;
+  }, 120_000);
+  it('admits the next turn at terminal delivery while private cleanup is still pending', async () => {
+    const { start, input } = context();
+    let replacement: ReturnType<typeof openAgentRun> | undefined;
+    const options = {
+      modelFactory: () =>
+        createDeterministicOfflineModel({
+          script: { [input]: { kind: 'text' as const, text: 'Done.' } },
+        }),
+      model: OFFLINE_MODEL_IDENTITY,
+    };
+    const opened = openAgentRun(
+      'terminal-owner',
+      start,
+      (event) => {
+        if (event.type === 'done')
+          replacement = openAgentRun('terminal-owner', start, () => {}, options);
+      },
+      options,
+    );
+    expect(opened.ok).toBe(true);
+    expect(openAgentRun('terminal-owner', start, () => {}, options)).toMatchObject({
+      ok: false,
+      code: 'STUDIO_AGENT_BUSY',
+    });
+    if (opened.ok) await opened.finished;
+    expect(replacement?.ok).toBe(true);
+    if (replacement?.ok) await replacement.finished;
   }, 120_000);
 });

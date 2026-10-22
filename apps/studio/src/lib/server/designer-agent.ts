@@ -238,7 +238,10 @@ export function openAgentRun(
   emit: (event: StudioAgentEvent) => void,
   options?: { modelFactory: MastraProductAgentConfig['modelFactory']; model: string },
 ) {
-  if ([...runs.values()].some((run) => run.owner === owner))
+  // Completed/cancelled turns may still be flushing their private store. They
+  // remain counted toward global capacity until cleanup, but no longer own the
+  // session's edit slot. Their mutation/ack fences remain closed.
+  if ([...runs.values()].some((run) => run.owner === owner && !run.aborted && !run.fenced))
     return { ok: false as const, code: 'STUDIO_AGENT_BUSY' };
   if (runs.size >= 4) return { ok: false as const, code: 'STUDIO_AGENT_CAPACITY' };
   const configuration = agentConfiguration();
@@ -256,8 +259,11 @@ export function openAgentRun(
   let terminalSent = false;
   const send = (event: StudioAgentEvent) => {
     if (terminalSent) return;
+    if (event.type === 'done') {
+      terminalSent = true;
+      run.fenced = true;
+    }
     emit(event);
-    if (event.type === 'done') terminalSent = true;
   };
   send({ type: 'started', runId: run.runId, model, engine: 'VICT / Mastra' });
   const finished = execute(run, start, send, model, options?.modelFactory).finally(() =>

@@ -82,3 +82,13 @@ whole-Stage 9 closure or Cycle 1.2 authorization is implied.
 Independent Cycle 1.1 evidence: [final verification](verification-cycle-1-1/FINAL-VERIFICATION.md),
 `codex/studio-cycle-1-1-verification-final` at
 `6610c4db571868b299747d3da4995f5f180e2e38` (remote verified).
+
+## Owner-observed repair — 2026-10-22
+
+The owner's busy/error report authorizes a bounded Cycle 1.1 repair from delivery
+`ecfa4787728c9132a98c00b24ff0c85934e8dc0a` on isolated branch
+`codex/studio-cycle-1-1-busy-repair`: session admission lifecycle, truthful refusal
+feedback, draft retention and regression checks only. The allowed path/scope and
+independent exact-candidate gate above are unchanged. [Repair record](CYCLE-1-1-BUSY-REPAIR.md).
+The owner's current unsaved WhatsApp screen remains open; do not reload or discard
+it during activation. No later cycle or main merge is authorized.
