@@ -1,0 +1,77 @@
+{
+  "packedAt": "2026-10-22T11:54:03.829Z",
+  "tarballs": {
+    "@victframework/ui": {
+      "tarball": "victframework-ui-0.4.0-rc.1.tgz",
+      "sha256": "ffc8f33def693b4d7bfa7a9b5988da73ea3290d372ce9db967847f5c1c045f18",
+      "bytes": 88197,
+      "integrity": "sha512-gLwvzLPQPEbm0uQiqNAwpIohVjkN1JJjXJ99SHxkk020di0eGy6tYHvWIyjZcTog2v9aT3ZTBuQbx+fqB2N9zw=="
+    },
+    "@victframework/ui-svelte": {
+      "tarball": "victframework-ui-svelte-0.4.0-rc.1.tgz",
+      "sha256": "27d6a4cc5f2aa8ed7c842009ea399e131ef92b1f2c5c4e5ec0a6b8cbdd05f9f5",
+      "bytes": 104117,
+      "integrity": "sha512-PbcFOMnJ9dR8/+QHJApmcH+jpwVfP520Nn5+8K3zpVS39Xpv68FCPoHtsxcrNaQAovttYVekcitoGqxkhdBLaQ=="
+    },
+    "@victframework/ui-editor": {
+      "tarball": "victframework-ui-editor-0.4.0-rc.1.tgz",
+      "sha256": "e7259542fd9810835be0ab027759db330e71c3dea456ca2bf31e5a573bf82ce1",
+      "bytes": 92867,
+      "integrity": "sha512-wnd1eQuxch6LHL/ikMjn2EZ+pw+vOXpIFHPzYqeAzlUfbeb6ThF4h/2BBoGm2Xe8AB6CHVtQPdxrF3U86xtR5g=="
+    },
+    "@victframework/ui-preview": {
+      "tarball": "victframework-ui-preview-0.4.0-rc.1.tgz",
+      "sha256": "38fc0dffc878751b29a0b9f1963d87fa113afa6e9a7d0588b2982cc94d690f45",
+      "bytes": 9986,
+      "integrity": "sha512-35bOQRmr7MADqEm6C8Hnx3M8sTNWWp5bqXZnhrG4ux9xSV60wh6TzWZ+Y/xrSGlxl3gehMXcTN1AtOzrNyiYFQ=="
+    },
+    "@victframework/application": {
+      "tarball": "victframework-application-0.4.0-rc.1.tgz",
+      "sha256": "ea0fdde59f165379154517f4be4ca99e3c8790033862e4a56f6df5fdb09b5db7",
+      "bytes": 104817,
+      "integrity": "sha512-In1UqfocrTrjBQ/9B6QzPGxadtJQERbW9r+CX9FWB3LWbI6ADXuJB4OHEYoKJ43uokupx5PHRydCp2KPlTCkDg=="
+    },
+    "@victframework/sdk": {
+      "tarball": "victframework-sdk-0.4.0-rc.1.tgz",
+      "sha256": "26ba8993f73f70071e57cec97471bf9c4bc4abde3137084be4fd4ee064f338f4",
+      "bytes": 39172,
+      "integrity": "sha512-EDJQJrTsEh/yp3IqFSYruaW2HMdnJVHKDBMyRrBMkC1MXb/4c0lbRfGdHAQBsuY2vN8tIfERdluSjnqxpvlVtA=="
+    },
+    "@victframework/contracts": {
+      "tarball": "victframework-contracts-0.4.0-rc.1.tgz",
+      "sha256": "017c0587843869653f6bd723566dcaf39f2e89b2fb55bc923f35667be9d618de",
+      "bytes": 25610,
+      "integrity": "sha512-3IIitqyuG38bYE4D4ByLxTiwGeUbKncjkAyfKLmv0dPzR1W2/RVEAjLsuCqdJgv9tvuB1vWslidUA0+FB/ClrQ=="
+    },
+    "@victframework/kernel": {
+      "tarball": "victframework-kernel-0.4.0-rc.1.tgz",
+      "sha256": "c40b7377be433f4b5e731fcfc26607d45200c0e44fd7a38c1701ac26b4565ddd",
+      "bytes": 57501,
+      "integrity": "sha512-LAXNOGARIORv1Sk021Rn7N5a5n5r574iV0a8Pa3cGg6xUT0w4Qfk5QpOiqQkMUyHX2DpEQX1J+yTLvMEAjE5Qw=="
+    },
+    "@victframework/runtime": {
+      "tarball": "victframework-runtime-0.4.0-rc.1.tgz",
+      "sha256": "92e12395499c029be449f0bfda309cffbbe54d4af880d1c8887db31596a1d8a3",
+      "bytes": 308226,
+      "integrity": "sha512-x7nWTPXDHcMrdq6ihSi6zE8KUk8/KuYm+KeMdT2M5EBGvwcmy5uMKhnGX27HHjlrNDEq+m7o8lhZOmQe0jC6Ng=="
+    },
+    "@victframework/control": {
+      "tarball": "victframework-control-0.4.0-rc.1.tgz",
+      "sha256": "3cf09cb1bf97f90f50e6f4bbf76a690f309b9a3d39833e54bac0d361ab61386f",
+      "bytes": 36577,
+      "integrity": "sha512-Y39NXqHGydV4bf4R6yHQhBXWst1zlkdlDbtiyaoXFk0GBPcfSevGLUTbrz8NuCbgshLBNJy9rntlPvb48Fh9HA=="
+    }
+  },
+  "isolation": {
+    "root": "C:\\Users\\RZ1\\.codex\\worktrees\\studio-designer-verification\\packed-ba03046",
+    "workspaceLinkViolations": [],
+    "builtAssets": [
+      "app-DXVODaWR.js",
+      "authoring-cZEHit4V.css",
+      "authoring-yqEcF7Qu.js",
+      "execution-B2W4NXyb.js",
+      "execution-DW3QEeyg.css"
+    ],
+    "verifiedAt": "2026-10-22T11:59:30.616Z"
+  }
+}

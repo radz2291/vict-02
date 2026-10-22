@@ -1,0 +1,23 @@
+import { expect, it } from 'vitest';
+import { compileUiDocument, defaultSemanticElementCatalog, type UiDocument } from '@victframework/ui';
+import { validateSvelteComponentPlan, catalogDescriptors, catalogImplementations } from '@victframework/ui-svelte';
+
+it('consumes the new shared preflight through packed public exports with a filled positive control', () => {
+  expect(typeof validateSvelteComponentPlan).toBe('function');
+  for (const filled of [false, true]) {
+    const document: UiDocument = {
+      schema: 'vict.ui-document@1', id: 'packed-preflight', revision: '1', root: 'root',
+      nodes: {
+        root: { id: 'root', kind: 'element', tag: 'main', children: ['dialog'] },
+        dialog: { id: 'dialog', kind: 'component', definitionId: 'vict.catalog.dialog', slots: { body: { name: 'body', children: filled ? ['body'] : [] } } },
+        ...(filled ? { body: { id: 'body', kind: 'text' as const, content: { type: 'literal' as const, value: 'Packed body' } } } : {}),
+      },
+      componentDefinitions: {}, styleSources: {}, assets: {}, tokens: {}, conditions: {}, localState: {},
+    };
+    const compiled = compileUiDocument(document, defaultSemanticElementCatalog(), catalogDescriptors);
+    expect(compiled.ok).toBe(true);
+    if (!compiled.ok) throw new Error('Invalid independent consumer fixture');
+    const issues = validateSvelteComponentPlan(compiled.plan, catalogDescriptors, catalogImplementations);
+    expect(issues.map(issue => issue.code)).toEqual(filled ? [] : ['UI_COMPONENT_SLOT_REQUIRED']);
+  }
+});

@@ -1,0 +1,9 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/.codex/worktrees/studio-designer-verification/260831-VCT-02
+
+
+ Test Files  30 passed (30)
+      Tests  1138 passed (1138)
+   Start at  19:52:45
+   Duration  14.21s (transform 27.41s, setup 0ms, import 34.43s, tests 10.90s, environment 77ms)
+

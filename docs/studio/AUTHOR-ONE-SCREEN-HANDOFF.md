@@ -1,6 +1,12 @@
 # Studio: author one screen, run it
 
-> Independent verification update, 2026-10-22: the original candidate
+> Final independent update, 2026-10-22: **PASS WITH NON-BLOCKING FINDINGS** for
+> tested product `ba0304693487292e354374b1bd93908506eb2da9`, incorporating repair
+> `b69a4532d8cf09a59240ce2680f9bc68413cbc9a`. B-1 is independently closed;
+> owner acceptance remains pending. See [final verification](verification-2026-10-22/FINAL-VERIFICATION.md)
+> and [current state](STATE.md). Original FAIL and builder history below are retained.
+
+> Historical independent verification update, 2026-10-22: the original candidate
 > `67a47c3732a2527c8c7086dfcae184672f1aae96` received **FAIL** for B-1 (required
 > catalog slot persistence/execution refusal). The builder statements below are
 > preserved as historical evidence; in particular, the claimed empty-required-slot

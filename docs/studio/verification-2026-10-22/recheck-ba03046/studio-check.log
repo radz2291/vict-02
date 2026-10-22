@@ -1,0 +1,12 @@
+
+> vict-studio@0.1.0 check
+> svelte-kit sync && tsc --noEmit
+
+tests/designer-preflight-independent.test.ts(27,42): error TS2322: Type 'never[]' is not assignable to type 'string | number | boolean | null'.
+npm error Lifecycle script `check` failed with error:
+npm error code 2
+npm error path C:\Users\RZ1\.codex\worktrees\studio-designer-verification\260831-VCT-02\apps\studio
+npm error workspace vict-studio@0.1.0
+npm error location C:\Users\RZ1\.codex\worktrees\studio-designer-verification\260831-VCT-02\apps\studio
+npm error command failed
+npm error command C:\WINDOWS\system32\cmd.exe /d /s /c svelte-kit sync && tsc --noEmit

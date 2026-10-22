@@ -1,0 +1,9 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/.codex/worktrees/studio-designer-verification/packed-ba03046/u4-consumer
+
+
+ Test Files  1 passed (1)
+      Tests  1 passed (1)
+   Start at  20:03:52
+   Duration  15.39s (transform 11.45s, setup 0ms, import 14.15s, tests 15ms, environment 858ms)
+
