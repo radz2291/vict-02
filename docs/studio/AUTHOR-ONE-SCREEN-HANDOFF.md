@@ -1,5 +1,27 @@
 # Studio: author one screen, run it
 
+## Current status — owner-accepted closure, 2026-10-22
+
+**CLOSED — PASS WITH NON-BLOCKING FINDINGS; OWNER ACCEPTED**.
+Accepted product: `ba0304693487292e354374b1bd93908506eb2da9`; verification
+records: `e67a7ef460146b4b0c3158c625ef28d1d8f17e73`, on
+`codex/studio-designer-independent-verification`.
+The owner confirmed: “I have done that.. all are good my side..”
+See [closure and continuation boundary](DESIGNER-CLOSURE-2026-10-22.md),
+[current state](STATE.md) and [independent report with launch instructions](verification-2026-10-22/FINAL-VERIFICATION.md).
+Acceptance covers the verified local-first authoring/editing, undo/redo,
+save/reopen and simulated saved execution; retained findings and limitations stand.
+Browser-saved documents are local runtime data, separate from committed source.
+
+All pending acceptance, repair-required and verification-required statements below
+are historical reports of their respective candidates, superseded for current
+status by this closure. The original FAIL, B-1 repair lineage and passing recheck
+remain intact. The older builder branch and launch details below identify their
+historical iterations; use the accepted SHA and independent report above for
+reproduction. This cycle is complete; further work requires separate owner scope.
+
+## Historical verification and builder reports
+
 > Final independent update, 2026-10-22: **PASS WITH NON-BLOCKING FINDINGS** for
 > tested product `ba0304693487292e354374b1bd93908506eb2da9`, incorporating repair
 > `b69a4532d8cf09a59240ce2680f9bc68413cbc9a`. B-1 is independently closed;

@@ -1,5 +1,26 @@
 # Independent Designer verification — final delivery
 
+## Owner-acceptance continuation — 2026-10-22
+
+**CLOSED — PASS WITH NON-BLOCKING FINDINGS; OWNER ACCEPTED**.
+The owner completed the walkthrough and confirmed verbatim:
+
+> I have done that.. all are good my side..
+
+See [owner acceptance and closure](../DESIGNER-CLOSURE-2026-10-22.md).
+Acceptance covers the verified authoring, editing, undo/redo, save/reopen and
+saved-screen execution at product `ba0304693487292e354374b1bd93908506eb2da9`.
+Verification records are `e67a7ef460146b4b0c3158c625ef28d1d8f17e73`.
+The independent technical verdict, findings, scope and reproducible launch
+instructions below stand. Pending acceptance and next-action statements below
+are preserved historical status at technical delivery, now superseded by this
+continuation. Acceptance applies to the local-first, simulated experience; it
+establishes neither production readiness nor all future Studio capabilities.
+Browser-saved documents remain local runtime data, separate from committed source.
+This cycle is complete; future work requires a separately scoped owner request.
+
+## Retained independent technical delivery report
+
 **Verdict: PASS WITH NON-BLOCKING FINDINGS.** Independent recheck completed
 2026-10-22 (Asia/Kuala_Lumpur). Owner acceptance remains **pending**. This closes
 the technical verification cycle for the first working Designer, not a merge,
