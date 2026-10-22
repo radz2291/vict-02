@@ -6,6 +6,7 @@
   import { compileScreen, screenName, screenActionState, catalogDescriptors, catalogImplementations } from '$lib/designer/application.js';
   import { screenStore } from '$lib/designer/storage.js';
   import { createScreenSimulation, screenDispatcher } from '$lib/designer/execution.js';
+  import WorkspaceBrand from '$lib/designer/WorkspaceBrand.svelte';
   import '@victframework/ui-svelte/styles.css';
   import '@victframework/ui-svelte/catalog.css';
   import '$lib/designer/workspace.css';
@@ -42,7 +43,7 @@
 <svelte:head><title>{source ? screenName(source) : 'Saved screen'} — VICT</title></svelte:head>
 <ControlScope><div class="vict-app finished-screen studio-workspace">
   <header class="workspace-header">
-    <a class="workspace-mark" href="/design" aria-label="VICT Studio" title="VICT Studio">V</a>
+    <WorkspaceBrand />
     <span class="run-screen-name">{source?screenName(source):'Saved screen'}</span>
   </header>
   <div class="workspace-tools">

@@ -12,7 +12,6 @@
   border-bottom:1px solid #e1e6ee;flex-shrink:0;
 }
 .workspace-header > * {flex-shrink:0;}
-.workspace-mark {display:grid;place-items:center;width:21px;height:21px;border-radius:5px;background:#5269bd;color:white;font-weight:700;text-decoration:none;}
 .workspace-tools {display:flex;justify-content:space-between;align-items:center;gap:6px;height:38px;flex-shrink:0;padding:0 10px;border-bottom:1px solid #e1e6ee;font-size:11px;}
 .workspace-scroll {overflow:auto;scrollbar-gutter:stable;flex:1;min-height:0;padding:16px 18px 30px;background-image:radial-gradient(#d5dce6 .65px,transparent .65px);background-size:12px 12px;}
 .workspace-screen {

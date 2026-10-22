@@ -10,6 +10,7 @@
   import { screenStore, savedScreens } from './storage.js';
   import { screenRecipes } from './recipes.js';
   import { createScreenSimulation, screenDispatcher } from './execution.js';
+  import WorkspaceBrand from './WorkspaceBrand.svelte';
   import '@victframework/ui-svelte/styles.css';
   import '@victframework/ui-svelte/catalog.css';
   import './workspace.css';
@@ -382,7 +383,7 @@
 <ControlScope>
 <div class="vict-app studio-designer studio-workspace">
   <header class="design-toolbar workspace-header">
-    <a class="studio-brand" href="/design" aria-label="VICT Studio" title="VICT Studio"><span class="brand-mark workspace-mark">V</span></a>
+    <WorkspaceBrand />
     <nav class="studio-menus" aria-label="Studio menus">{#each menuNames as name}<button type="button" aria-haspopup="menu" aria-expanded={screenMenuOpen && activeMenu===name} aria-controls="studio-menu" onclick={event=>toggleMenu(name,event.currentTarget)} onkeydown={event=>menuTriggerKey(event,name)}>{name}</button>{/each}</nav>
     <div class="screen-picker">{#if renamingScreen}<input class="screen-name-edit" aria-label="Screen name" bind:this={screenNameInput} bind:value={screenNameDraft} maxlength="80" onkeydown={renameKey} onblur={finishRename} />{:else}<span class="current-screen" title={source?screenName(source):'No screen'}>{source?screenName(source):'No screen'}</span>{/if}</div>
     <span class="save-state">{textDraftDirty ? '● Unapplied property draft' : sourceDraftDirty ? '● Unapplied JSON draft' : snapshot?.dirty ? '● Unsaved changes' : snapshot?.storedRevision === 'r1' ? '○ New screen' : '✓ Saved'}</span>

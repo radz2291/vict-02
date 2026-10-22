@@ -24,14 +24,6 @@ body:has(.finished-screen) {
   outline: 2px solid #5269bd;
   outline-offset: 2px;
 }
-.studio-brand {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  text-decoration: none;
-  font-size: 13px;
-  color: #253048;
-}
 .operator-link {
   padding: 5px;
   font-size: 16px;
