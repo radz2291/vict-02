@@ -98,6 +98,7 @@
   let openScreenButton=$state<HTMLButtonElement>();
   let openScreenMenu=$state<HTMLDivElement>();
   let openScreenMenuOpen=$state(false);
+  let openScreenMenuMeasuring=$state(false);
   let openScreenMenuPosition=$state({left:8,top:44});
   const menuNames=['File','Edit','View','Preview'] as const;
   type StudioMenu=typeof menuNames[number];
@@ -107,9 +108,12 @@
     activeMenu=name;renameButton=trigger;
     const rect=trigger.getBoundingClientRect();
     if(!rect || !screenMenu)return;
-    screenMenuPosition={left:Math.max(8,Math.min(rect.left,globalThis.innerWidth-228)),top:rect.bottom+6};
+    screenMenuPosition={left:rect.left,top:rect.bottom+6};
     await tick();
     screenMenu.showPopover();
+    const menuBounds=screenMenu.getBoundingClientRect();
+    screenMenuPosition={left:Math.max(8,Math.min(rect.left,globalThis.innerWidth-menuBounds.width-8)),top:Math.max(8,Math.min(rect.bottom+6,globalThis.innerHeight-menuBounds.height-8))};
+    await tick();
     trigger.focus();
     const items=menuItems();(last?items.at(-1):items[0])?.focus();
   }
@@ -117,17 +121,23 @@
   function closeOpenScreenMenu() {openScreenMenu?.hidePopover();}
   async function showOpenScreenMenu(focus=false) {
     if(!openScreenButton || openScreenButton.disabled || !openScreenMenu)return;
+    if(openScreenMenu.matches(':popover-open')){if(focus)menuItems(openScreenMenu)[0]?.focus();return;}
+    // Measure intrinsic content width before deciding which side has room.
+    openScreenMenuMeasuring=true;
+    await tick();
+    if(!screenMenu?.matches(':popover-open')){openScreenMenuMeasuring=false;return;}
+    openScreenMenu.showPopover();
     const rect=openScreenButton.getBoundingClientRect();
-    const fitsRight=rect.right+224<=globalThis.innerWidth-8;
-    const fitsLeft=rect.left-224>=8;
+    const menuBounds=openScreenMenu.getBoundingClientRect();
+    const fitsRight=rect.right+4+menuBounds.width<=globalThis.innerWidth-8;
+    const fitsLeft=rect.left-4-menuBounds.width>=8;
     // An overlapping hover flyout would move a screen choice under the pointer
     // before the parent item's click. Require explicit activation in that case.
-    if(!focus && !fitsRight && !fitsLeft)return;
-    const left=fitsRight?rect.right+4:Math.max(8,rect.left-224);
-    openScreenMenuPosition={left,top:Math.min(rect.top,Math.max(8,globalThis.innerHeight-Math.min(library.length*34+12,320)-8))};
+    if(!focus && !fitsRight && !fitsLeft){openScreenMenu.hidePopover();openScreenMenuMeasuring=false;return;}
+    const left=fitsRight?rect.right+4:Math.max(8,rect.left-menuBounds.width-4);
+    openScreenMenuPosition={left,top:Math.max(8,Math.min(rect.top,globalThis.innerHeight-menuBounds.height-8))};
+    openScreenMenuMeasuring=false;
     await tick();
-    if(!screenMenu?.matches(':popover-open'))return;
-    if(!openScreenMenu.matches(':popover-open'))openScreenMenu.showPopover();
     if(focus)menuItems(openScreenMenu)[0]?.focus();
   }
   function menuItems(root=screenMenu) {return [...(root?.querySelectorAll<HTMLElement>('[role^="menuitem"]')??[])].filter(item=>item.closest('[role="menu"]')===root && !item.matches(':disabled,[aria-disabled="true"]'));}
@@ -393,7 +403,7 @@
     {#if activeMenu==='File'}
       <button role="menuitem" type="button" disabled={textDraftDirty || sourceDraftDirty} onpointerenter={closeOpenScreenMenu} onclick={()=>{closeMenu();void beginCreate();}}>New screen</button>
       <button role="menuitem" type="button" bind:this={openScreenButton} aria-haspopup="menu" aria-expanded={openScreenMenuOpen} aria-controls="open-screen-menu" disabled={!library.length || textDraftDirty || sourceDraftDirty} onpointerenter={()=>void showOpenScreenMenu()} onclick={()=>void showOpenScreenMenu(true)}>Open screen<span aria-hidden="true">›</span></button>
-      <div id="open-screen-menu" class="screen-menu open-screen-menu" popover="auto" role="menu" aria-label="Open screen" bind:this={openScreenMenu} ontoggle={event=>openScreenMenuOpen=event.newState==='open'} style:left={`${openScreenMenuPosition.left}px`} style:top={`${openScreenMenuPosition.top}px`}>
+      <div id="open-screen-menu" class="screen-menu open-screen-menu" popover="auto" role="menu" aria-label="Open screen" bind:this={openScreenMenu} ontoggle={event=>openScreenMenuOpen=event.newState==='open'} style:visibility={openScreenMenuMeasuring?'hidden':undefined} style:left={`${openScreenMenuPosition.left}px`} style:top={`${openScreenMenuPosition.top}px`}>
         {#each library as item (item.id)}<button role="menuitemradio" aria-checked={source?.id===item.id} type="button" onclick={()=>{closeMenu();openScreen(item.id);}}><span class="screen-menu-name" title={item.name}>{item.name}</span><span aria-hidden="true">{source?.id===item.id?'✓':''}</span></button>{/each}
       </div>
       <button role="menuitem" type="button" disabled={!source || textDraftDirty || sourceDraftDirty} onpointerenter={closeOpenScreenMenu} onclick={()=>{closeMenu();void beginRename();}}>Rename screen</button>
