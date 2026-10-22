@@ -1,0 +1,20 @@
+{
+  "candidate": "9010c5aff2afb1fb792bf1a1cb15ddf9a92cae55",
+  "origin": "http://127.0.0.1:5588",
+  "documentId": "screen-1051d55c-446d-48e1-acec-9644ed8b3b3c",
+  "revision": "r1.r1",
+  "designerIdentity": "v1_427bb335b6d575ca9cd7a41d3382bd5a592e6d40a9cb1407fe01a9b979816553",
+  "savedRunIdentity": "v1_427bb335b6d575ca9cd7a41d3382bd5a592e6d40a9cb1407fe01a9b979816553",
+  "reopenedSourceEqual": true,
+  "journey": [
+    "Studio navigation to Designer",
+    "File New screen",
+    "Insert Heading",
+    "Text content edit and Ctrl+Enter",
+    "Ctrl+S",
+    "reload saved screen",
+    "reopened Source exact equality",
+    "Preview Run saved"
+  ],
+  "verdict": "PASS"
+}

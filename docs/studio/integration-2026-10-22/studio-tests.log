@@ -1,0 +1,138 @@
+
+> vict-studio@0.1.0 test
+> vitest run
+
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/studio-designer-main-integration/260831-VCT-02/apps/studio
+
+ ✓ tests/confirmation-contract.test.ts (11 tests) 29ms
+ ✓ tests/changeset-contract.test.ts (12 tests) 49ms
+ ✓ tests/quellight-transport.test.ts (10 tests) 93ms
+ ✓ tests/boundary.test.ts (13 tests) 373ms
+ ✓ tests/run-detail.test.ts (12 tests) 328ms
+ ✓ tests/adapter.test.ts (9 tests) 232ms
+ ✓ tests/target-selection.test.ts (6 tests) 24ms
+ ✓ tests/targets.test.ts (5 tests) 147ms
+ ✓ tests/ui/confirmation.test.ts (5 tests) 278ms
+8:53:35 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-designer-main-integration/260831-VCT-02/packages/ui-svelte/src/document/DocumentHost.svelte:105:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+8:53:36 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-designer-main-integration/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:303:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+8:53:36 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-designer-main-integration/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:303:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+8:53:36 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-designer-main-integration/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:370:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+8:53:36 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-designer-main-integration/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:370:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 10 ⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/app-definition.test.ts [ tests/app-definition.test.ts ]
+ FAIL  tests/designer-preflight-independent.test.ts [ tests/designer-preflight-independent.test.ts ]
+ FAIL  tests/designer-required-slot-verification.test.ts [ tests/designer-required-slot-verification.test.ts ]
+ FAIL  tests/designer-required-slots.test.ts [ tests/designer-required-slots.test.ts ]
+ FAIL  tests/designer.test.ts [ tests/designer.test.ts ]
+Error: Failed to resolve entry for package "@victframework/application". The package may have incorrect main/module/exports specified in its package.json.
+ ❯ packageEntryFailure ../../node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:16198:15
+ ❯ resolvePackageEntry ../../node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:16195:3
+ ❯ tryNodeResolve ../../node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:16060:18
+ ❯ ResolveIdContext.resolveId ../../node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:15831:19
+ ❯ EnvironmentPluginContainer.resolveId ../../node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42372:17
+ ❯ ResolveIdContext.resolve ../../node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42579:15
+ ❯ ResolveIdContext.resolveId ../../node_modules/@sveltejs/kit/src/exports/vite/index.js:707:22
+ ❯ EnvironmentPluginContainer.resolveId ../../node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42371:22
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/10]⎯
+
+ FAIL  tests/designer-independent-verification.test.ts [ tests/designer-independent-verification.test.ts ]
+Error: Cannot find package '@victframework/application/renderer' imported from 'C:/Users/RZ1/.codex/worktrees/studio-designer-main-integration/260831-VCT-02/packages/ui-svelte/src/VitApp.svelte'
+ ❯ ../../packages/ui-svelte/src/VitApp.svelte:14:3
+     12|    * registry updates propagate WITHOUT remounting and never go stale.
+     13|    */
+     14|   import { RendererDiagnostic, type ComponentRegistry } from '@victfra…
+       |   ^
+     15|   import { deriveUiPlan, resolvePageComposition, actionFeedback } from…
+     16|   import AppShell from './AppShell.svelte';
+
+Caused by: Error: Failed to load url @victframework/application/renderer (resolved id: @victframework/application/renderer) in C:/Users/RZ1/.codex/worktrees/studio-designer-main-integration/260831-VCT-02/packages/ui-svelte/src/index.ts. Does the file exist?
+ ❯ loadAndTransform ../../node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:35835:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/10]⎯
+
+ FAIL  tests/ui/composition.test.ts [ tests/ui/composition.test.ts ]
+ FAIL  tests/ui/designer-runtime.test.ts [ tests/ui/designer-runtime.test.ts ]
+Error: Failed to resolve entry for package "@victframework/ui-preview". The package may have incorrect main/module/exports specified in its package.json.
+  Plugin: vite:import-analysis
+  File: C:/Users/RZ1/.codex/worktrees/studio-designer-main-integration/260831-VCT-02/apps/studio/src/lib/designer/Designer.svelte:6:39
+  26 |  } from '@victframework/ui-editor';
+  27 |  
+  28 |  import { createPreviewSession } from '@victframework/ui-preview';
+     |                                        ^
+  29 |  
+  30 |  import {
+ ❯ packageEntryFailure ../../node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:16198:15
+ ❯ resolvePackageEntry ../../node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:16195:3
+ ❯ tryNodeResolve ../../node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:16060:18
+ ❯ ResolveIdContext.resolveId ../../node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:15831:19
+ ❯ EnvironmentPluginContainer.resolveId ../../node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42372:17
+ ❯ ResolveIdContext.resolve ../../node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42579:15
+ ❯ ResolveIdContext.resolveId ../../node_modules/@sveltejs/kit/src/exports/vite/index.js:707:22
+ ❯ EnvironmentPluginContainer.resolveId ../../node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42371:22
+ ❯ TransformPluginContext.resolve ../../node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42579:15
+ ❯ normalizeUrl ../../node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:40622:26
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/10]⎯
+
+ FAIL  tests/ui/render.test.ts [ tests/ui/render.test.ts ]
+Error: Failed to resolve import "@victframework/application/renderer" from "../../packages/ui-svelte/src/index.ts". Does the file exist?
+  Plugin: vite:import-analysis
+  File: C:/Users/RZ1/.codex/worktrees/studio-designer-main-integration/260831-VCT-02/packages/ui-svelte/src/index.ts:69:35
+  53 |    BUILT_IN_ROLES
+  54 |  } from "./logic.js";
+  55 |  export { RendererDiagnostic } from "@victframework/application/renderer";
+     |                                      ^
+  56 |  export * from "./document/logic.js";
+  57 |  export { b2CatalogDescriptors } from "./catalog/components/b2-descriptors.js";
+ ❯ TransformPluginContext._formatLog ../../node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42658:41
+ ❯ TransformPluginContext.error ../../node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42655:16
+ ❯ normalizeUrl ../../node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:40634:23
+ ❯ ../../node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:40753:37
+ ❯ TransformPluginContext.transform ../../node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:40680:7
+ ❯ EnvironmentPluginContainer.transform ../../node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42453:18
+ ❯ loadAndTransform ../../node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:35845:27
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/10]⎯
+
+ FAIL  tests/ui/saved-run.test.ts [ tests/ui/saved-run.test.ts ]
+Error: Failed to resolve import "@victframework/application/renderer" from "../../packages/ui-svelte/src/index.ts". Does the file exist?
+  Plugin: vite:import-analysis
+  File: C:/Users/RZ1/.codex/worktrees/studio-designer-main-integration/260831-VCT-02/packages/ui-svelte/src/index.ts:69:35
+  53 |    BUILT_IN_ROLES
+  54 |  } from "./logic.js";
+  55 |  export { RendererDiagnostic } from "@victframework/application/renderer";
+     |                                      ^
+  56 |  export * from "./document/logic.js";
+  57 |  export { b2CatalogDescriptors } from "./catalog/components/b2-descriptors.js";
+ ❯ TransformPluginContext._formatLog ../../node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42658:41
+ ❯ TransformPluginContext.error ../../node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42655:16
+ ❯ normalizeUrl ../../node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:40634:23
+ ❯ ../../node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:40753:37
+ ❯ TransformPluginContext.transform ../../node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:40680:7
+ ❯ EnvironmentPluginContainer.transform ../../node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42453:18
+ ❯ loadAndTransform ../../node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:35845:27
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/10]⎯
+
+
+ Test Files  10 failed | 9 passed (19)
+      Tests  83 passed (83)
+   Start at  20:52:44
+   Duration  54.58s (transform 51.04s, setup 0ms, collect 21.73s, tests 1.55s, environment 25.70s, prepare 26.73s)
+
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path C:\Users\RZ1\.codex\worktrees\studio-designer-main-integration\260831-VCT-02\apps\studio
+npm error workspace vict-studio@0.1.0
+npm error location C:\Users\RZ1\.codex\worktrees\studio-designer-main-integration\260831-VCT-02\apps\studio
+npm error command failed
+npm error command C:\WINDOWS\system32\cmd.exe /d /s /c vitest run

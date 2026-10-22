@@ -1,0 +1,267 @@
+
+> vict-studio@0.1.0 build
+> svelte-kit sync && vite build
+
+vite v6.4.3 building SSR bundle for production...
+transforming...
+8:55:36 pm [vite-plugin-svelte] src/routes/changesets/+page.svelte:26:24 This reference only captures the initial value of `data`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+24:   } = $props();
+25: 
+26:   const targetChoices = data?.targets ?? [];
+                                ^
+27:   const changesetRows = data?.changesets ?? [];
+28:   const defaultTarget = targetChoices[0]?.id ?? 'local';
+8:55:36 pm [vite-plugin-svelte] src/routes/changesets/+page.svelte:27:24 This reference only captures the initial value of `data`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+25: 
+26:   const targetChoices = data?.targets ?? [];
+27:   const changesetRows = data?.changesets ?? [];
+                                ^
+28:   const defaultTarget = targetChoices[0]?.id ?? 'local';
+29:   let selectedTarget = $state(defaultTarget);
+8:55:36 pm [vite-plugin-svelte] src/routes/confirmations/+page.svelte:22:24 This reference only captures the initial value of `data`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+20:   let { data, form }: { data: { targets: readonly { id: string; label: string }[] }; form: Record<string, unknown> | null } = $props();
+21: 
+22:   const targetChoices = data?.targets ?? [];
+                                ^
+23:   const defaultTarget = targetChoices.find((entry) => entry.id.startsWith('g2-mutator'))?.id ?? targetChoices[0]?.id ?? 'local';
+24:   let selectedTarget = $state(defaultTarget);
+8:55:41 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-designer-main-integration/260831-VCT-02/packages/ui-editor/src/StateValuesPanel.svelte:106:6 A form label must be associated with a control
+https://svelte.dev/e/a11y_label_has_associated_control
+104:   {#each declarations as decl (decl.key)}
+105:     <div class="state-row">
+106:       <label class="state-label">
+                   ^
+107:         <code>{decl.key}</code>
+108:         <span class="state-type">{typeLabel(decl.type)}</span>
+8:55:44 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-designer-main-integration/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:303:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+301:   </svelte:element>
+302: {:else if instruction.kind === 'text'}
+303:   <span
+            ^
+304:     class="uv-text"
+305:     data-ui-owner={ownerId}
+8:55:44 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-designer-main-integration/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:303:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+301:   </svelte:element>
+302: {:else if instruction.kind === 'text'}
+303:   <span
+            ^
+304:     class="uv-text"
+305:     data-ui-owner={ownerId}
+8:55:44 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-designer-main-integration/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:370:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+368:   {:else if extension?.ok}
+369:     {@const Implementation = extension.component}
+370:     <span style="display: contents" data-extension-id={instruction.extensionId} data-ui-owner={ownerId} data-ui-occ={occ} data-ui-node={instruction.nodeId}
+                ^
+371:       onclick={event => { event.stopPropagation(); selectOccurrence?.(occ); }}>
+372:       <Implementation props={extensionProps} occurrenceKey={occ} nodeId={instruction.nodeId} {presentation} />
+8:55:44 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-designer-main-integration/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:370:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+368:   {:else if extension?.ok}
+369:     {@const Implementation = extension.component}
+370:     <span style="display: contents" data-extension-id={instruction.extensionId} data-ui-owner={ownerId} data-ui-occ={occ} data-ui-node={instruction.nodeId}
+                ^
+371:       onclick={event => { event.stopPropagation(); selectOccurrence?.(occ); }}>
+372:       <Implementation props={extensionProps} occurrenceKey={occ} nodeId={instruction.nodeId} {presentation} />
+8:55:44 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-designer-main-integration/260831-VCT-02/packages/ui-svelte/src/document/DocumentHost.svelte:105:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+103:   let stateBag: Record<string, unknown> = $state(initialValues());
+104:   let acceptedSupplied: Record<string, UiValue> = {};
+105:   let lastDocumentId = $state(plan.documentId);
+                                       ^
+106:   let lastSignal: symbol | undefined = $state<symbol | undefined>(undefined);
+107: 
+✓ 1029 modules transformed.
+rendering chunks...
+vite v6.4.3 building for production...
+transforming...
+8:56:29 pm [vite-plugin-svelte] src/routes/changesets/+page.svelte:26:24 This reference only captures the initial value of `data`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+24:   } = $props();
+25: 
+26:   const targetChoices = data?.targets ?? [];
+                                ^
+27:   const changesetRows = data?.changesets ?? [];
+28:   const defaultTarget = targetChoices[0]?.id ?? 'local';
+8:56:29 pm [vite-plugin-svelte] src/routes/changesets/+page.svelte:27:24 This reference only captures the initial value of `data`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+25: 
+26:   const targetChoices = data?.targets ?? [];
+27:   const changesetRows = data?.changesets ?? [];
+                                ^
+28:   const defaultTarget = targetChoices[0]?.id ?? 'local';
+29:   let selectedTarget = $state(defaultTarget);
+8:56:30 pm [vite-plugin-svelte] src/routes/confirmations/+page.svelte:22:24 This reference only captures the initial value of `data`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+20:   let { data, form }: { data: { targets: readonly { id: string; label: string }[] }; form: Record<string, unknown> | null } = $props();
+21: 
+22:   const targetChoices = data?.targets ?? [];
+                                ^
+23:   const defaultTarget = targetChoices.find((entry) => entry.id.startsWith('g2-mutator'))?.id ?? targetChoices[0]?.id ?? 'local';
+24:   let selectedTarget = $state(defaultTarget);
+8:56:35 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-designer-main-integration/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:303:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+301:   </svelte:element>
+302: {:else if instruction.kind === 'text'}
+303:   <span
+            ^
+304:     class="uv-text"
+305:     data-ui-owner={ownerId}
+8:56:35 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-designer-main-integration/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:303:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+301:   </svelte:element>
+302: {:else if instruction.kind === 'text'}
+303:   <span
+            ^
+304:     class="uv-text"
+305:     data-ui-owner={ownerId}
+8:56:35 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-designer-main-integration/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:370:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+368:   {:else if extension?.ok}
+369:     {@const Implementation = extension.component}
+370:     <span style="display: contents" data-extension-id={instruction.extensionId} data-ui-owner={ownerId} data-ui-occ={occ} data-ui-node={instruction.nodeId}
+                ^
+371:       onclick={event => { event.stopPropagation(); selectOccurrence?.(occ); }}>
+372:       <Implementation props={extensionProps} occurrenceKey={occ} nodeId={instruction.nodeId} {presentation} />
+8:56:35 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-designer-main-integration/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:370:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+368:   {:else if extension?.ok}
+369:     {@const Implementation = extension.component}
+370:     <span style="display: contents" data-extension-id={instruction.extensionId} data-ui-owner={ownerId} data-ui-occ={occ} data-ui-node={instruction.nodeId}
+                ^
+371:       onclick={event => { event.stopPropagation(); selectOccurrence?.(occ); }}>
+372:       <Implementation props={extensionProps} occurrenceKey={occ} nodeId={instruction.nodeId} {presentation} />
+8:56:35 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-designer-main-integration/260831-VCT-02/packages/ui-svelte/src/document/DocumentHost.svelte:105:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+103:   let stateBag: Record<string, unknown> = $state(initialValues());
+104:   let acceptedSupplied: Record<string, UiValue> = {};
+105:   let lastDocumentId = $state(plan.documentId);
+                                       ^
+106:   let lastSignal: symbol | undefined = $state<symbol | undefined>(undefined);
+107: 
+8:56:38 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-designer-main-integration/260831-VCT-02/packages/ui-editor/src/StateValuesPanel.svelte:106:6 A form label must be associated with a control
+https://svelte.dev/e/a11y_label_has_associated_control
+104:   {#each declarations as decl (decl.key)}
+105:     <div class="state-row">
+106:       <label class="state-label">
+                   ^
+107:         <code>{decl.key}</code>
+108:         <span class="state-type">{typeLabel(decl.type)}</span>
+✓ 1009 modules transformed.
+rendering chunks...
+computing gzip size...
+.svelte-kit/output/client/_app/version.json                                        0.03 kB │ gzip:   0.05 kB
+.svelte-kit/output/client/.vite/manifest.json                                     10.45 kB │ gzip:   1.39 kB
+.svelte-kit/output/client/_app/immutable/assets/5.CYF48lYO.css                     0.35 kB │ gzip:   0.21 kB
+.svelte-kit/output/client/_app/immutable/assets/8.D_uo2yW4.css                     0.44 kB │ gzip:   0.25 kB
+.svelte-kit/output/client/_app/immutable/assets/7.BAE0cVP_.css                     0.51 kB │ gzip:   0.29 kB
+.svelte-kit/output/client/_app/immutable/assets/ConfirmationReview.DV38rRoU.css    0.55 kB │ gzip:   0.26 kB
+.svelte-kit/output/client/_app/immutable/assets/6.BvpmCmjF.css                     0.56 kB │ gzip:   0.26 kB
+.svelte-kit/output/client/_app/immutable/assets/2.DslJHd2o.css                     0.69 kB │ gzip:   0.33 kB
+.svelte-kit/output/client/_app/immutable/assets/3.Duagdj8F.css                     0.79 kB │ gzip:   0.35 kB
+.svelte-kit/output/client/_app/immutable/assets/9.k024cptj.css                     2.30 kB │ gzip:   0.72 kB
+.svelte-kit/output/client/_app/immutable/assets/styles.BVDO3b5F.css               23.36 kB │ gzip:   4.86 kB
+.svelte-kit/output/client/_app/immutable/assets/workspace.B4yfKu0l.css            23.62 kB │ gzip:   4.73 kB
+.svelte-kit/output/client/_app/immutable/assets/4.4zBNTaqs.css                    42.70 kB │ gzip:   8.19 kB
+.svelte-kit/output/client/_app/immutable/chunks/Bzak7iHL.js                        0.10 kB │ gzip:   0.10 kB
+.svelte-kit/output/client/_app/immutable/entry/start.Djh9bFZr.js                   0.12 kB │ gzip:   0.11 kB
+.svelte-kit/output/client/_app/immutable/chunks/SAdcf8Ec.js                        0.15 kB │ gzip:   0.13 kB
+.svelte-kit/output/client/_app/immutable/chunks/DOrO6r8D.js                        0.19 kB │ gzip:   0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/0.BBfaIynY.js                       0.21 kB │ gzip:   0.17 kB
+.svelte-kit/output/client/_app/immutable/chunks/AXF4effm.js                        0.40 kB │ gzip:   0.29 kB
+.svelte-kit/output/client/_app/immutable/nodes/1.rgYWNwve.js                       0.41 kB │ gzip:   0.28 kB
+.svelte-kit/output/client/_app/immutable/chunks/97MdAdj_.js                        0.47 kB │ gzip:   0.32 kB
+.svelte-kit/output/client/_app/immutable/chunks/BwYOLCtl.js                        0.65 kB │ gzip:   0.43 kB
+.svelte-kit/output/client/_app/immutable/chunks/Cbk1pXfz.js                        0.81 kB │ gzip:   0.48 kB
+.svelte-kit/output/client/_app/immutable/nodes/5.B1HXPsJ1.js                       1.19 kB │ gzip:   0.63 kB
+.svelte-kit/output/client/_app/immutable/chunks/wbPk3Yxo.js                        1.37 kB │ gzip:   0.66 kB
+.svelte-kit/output/client/_app/immutable/chunks/CCJTK8O3.js                        2.24 kB │ gzip:   0.99 kB
+.svelte-kit/output/client/_app/immutable/chunks/BSzb-5-1.js                        2.25 kB │ gzip:   1.06 kB
+.svelte-kit/output/client/_app/immutable/chunks/C6XtgtUy.js                        2.50 kB │ gzip:   1.15 kB
+.svelte-kit/output/client/_app/immutable/chunks/oUgQPQ2M.js                        6.32 kB │ gzip:   2.84 kB
+.svelte-kit/output/client/_app/immutable/nodes/7.D99x9WXb.js                       6.34 kB │ gzip:   2.75 kB
+.svelte-kit/output/client/_app/immutable/chunks/DCowaBD9.js                        6.55 kB │ gzip:   3.06 kB
+.svelte-kit/output/client/_app/immutable/nodes/6.C5Jlg4g9.js                       6.73 kB │ gzip:   2.56 kB
+.svelte-kit/output/client/_app/immutable/chunks/8zzTvlvn.js                        6.90 kB │ gzip:   3.13 kB
+.svelte-kit/output/client/_app/immutable/entry/app.Am2oexHO.js                     7.73 kB │ gzip:   3.33 kB
+.svelte-kit/output/client/_app/immutable/chunks/BtsjPHEh.js                        9.92 kB │ gzip:   4.15 kB
+.svelte-kit/output/client/_app/immutable/nodes/8.CKLZJnmp.js                      10.62 kB │ gzip:   3.35 kB
+.svelte-kit/output/client/_app/immutable/nodes/3.DU4a_mG_.js                      12.81 kB │ gzip:   4.16 kB
+.svelte-kit/output/client/_app/immutable/nodes/2.CugSqZfa.js                      15.96 kB │ gzip:   4.32 kB
+.svelte-kit/output/client/_app/immutable/chunks/C93lXSQo.js                       30.53 kB │ gzip:  11.57 kB
+.svelte-kit/output/client/_app/immutable/chunks/CHjBlHdv.js                       31.79 kB │ gzip:  12.08 kB
+.svelte-kit/output/client/_app/immutable/nodes/9.SNq6ElPw.js                      63.76 kB │ gzip:  21.05 kB
+.svelte-kit/output/client/_app/immutable/chunks/B6zleb2q.js                      153.86 kB │ gzip:  44.65 kB
+.svelte-kit/output/client/_app/immutable/nodes/4.BxplKQ6A.js                     231.95 kB │ gzip:  73.43 kB
+.svelte-kit/output/client/_app/immutable/chunks/Dm511my_.js                      737.89 kB │ gzip: 173.26 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 46.06s
+.svelte-kit/output/server/.vite/manifest.json                                     10.18 kB
+.svelte-kit/output/server/_app/immutable/assets/_page.CYF48lYO.css                 0.35 kB
+.svelte-kit/output/server/_app/immutable/assets/_page.D_uo2yW4.css                 0.44 kB
+.svelte-kit/output/server/_app/immutable/assets/_page.BAE0cVP_.css                 0.51 kB
+.svelte-kit/output/server/_app/immutable/assets/ConfirmationReview.DV38rRoU.css    0.55 kB
+.svelte-kit/output/server/_app/immutable/assets/_page.BvpmCmjF.css                 0.56 kB
+.svelte-kit/output/server/_app/immutable/assets/_page.DslJHd2o.css                 0.69 kB
+.svelte-kit/output/server/_app/immutable/assets/_page.Duagdj8F.css                 0.79 kB
+.svelte-kit/output/server/_app/immutable/assets/_page.k024cptj.css                 2.30 kB
+.svelte-kit/output/server/_app/immutable/assets/styles.B5Bgx3F5.css               23.28 kB
+.svelte-kit/output/server/_app/immutable/assets/workspace.BSv056I6.css            23.54 kB
+.svelte-kit/output/server/_app/immutable/assets/_page.D_7ldnva.css                41.98 kB
+.svelte-kit/output/server/entries/pages/design/_page.ts.js                         0.04 kB
+.svelte-kit/output/server/entries/pages/run-screen/_page.ts.js                     0.04 kB
+.svelte-kit/output/server/entries/fallbacks/layout.svelte.js                       0.17 kB
+.svelte-kit/output/server/env.js                                                   0.23 kB
+.svelte-kit/output/server/internal.js                                              0.35 kB
+.svelte-kit/output/server/entries/fallbacks/error.svelte.js                        0.35 kB
+.svelte-kit/output/server/chunks/state.svelte.js                                   0.45 kB
+.svelte-kit/output/server/chunks/index2.js                                         0.51 kB
+.svelte-kit/output/server/chunks/server.js                                         0.62 kB
+.svelte-kit/output/server/entries/pages/login/_page.server.ts.js                   0.85 kB
+.svelte-kit/output/server/chunks/utils.js                                          1.09 kB
+.svelte-kit/output/server/entries/pages/login/_page.svelte.js                      1.28 kB
+.svelte-kit/output/server/chunks/session.js                                        2.42 kB
+.svelte-kit/output/server/entries/hooks.server.js                                  2.46 kB
+.svelte-kit/output/server/chunks/ConfirmationReview.js                             2.80 kB
+.svelte-kit/output/server/chunks/internal.js                                       3.40 kB
+.svelte-kit/output/server/chunks/feedback.js                                       5.00 kB
+.svelte-kit/output/server/chunks/exports.js                                        5.54 kB
+.svelte-kit/output/server/entries/pages/product/_page.svelte.js                    9.02 kB
+.svelte-kit/output/server/chunks/targets.js                                        9.31 kB
+.svelte-kit/output/server/chunks/confirmation.js                                   9.35 kB
+.svelte-kit/output/server/entries/pages/runs/_runId_/_page.svelte.js              11.85 kB
+.svelte-kit/output/server/entries/pages/run-screen/_page.svelte.js                11.86 kB
+.svelte-kit/output/server/entries/pages/runs/_runId_/_page.server.ts.js           12.73 kB
+.svelte-kit/output/server/chunks/logic.js                                         14.18 kB
+.svelte-kit/output/server/entries/pages/confirmations/_page.server.ts.js          14.63 kB
+.svelte-kit/output/server/entries/pages/confirmations/_page.svelte.js             14.65 kB
+.svelte-kit/output/server/entries/pages/product/_page.server.ts.js                16.27 kB
+.svelte-kit/output/server/entries/pages/changesets/_page.svelte.js                16.66 kB
+.svelte-kit/output/server/chunks/root.js                                          26.46 kB
+.svelte-kit/output/server/entries/pages/changesets/_page.server.ts.js             30.27 kB
+.svelte-kit/output/server/chunks/utils2.js                                        34.21 kB
+.svelte-kit/output/server/remote-entry.js                                         36.81 kB
+.svelte-kit/output/server/chunks/index.js                                         44.87 kB
+.svelte-kit/output/server/entries/pages/_...vict_/_page.server.ts.js              47.64 kB
+.svelte-kit/output/server/chunks/events.js                                        64.92 kB
+.svelte-kit/output/server/entries/pages/_...vict_/_page.svelte.js                 80.85 kB
+.svelte-kit/output/server/index.js                                               132.25 kB
+.svelte-kit/output/server/chunks/styles.js                                       187.97 kB
+.svelte-kit/output/server/chunks/vocabulary.js                                   215.23 kB
+.svelte-kit/output/server/entries/pages/design/_page.svelte.js                   352.81 kB
+.svelte-kit/output/server/chunks/workspace.js                                    973.51 kB
+✓ built in 1m 47s
+
+Run npm run preview to preview your production build locally.
+
+> Using @sveltejs/adapter-node
+  ✔ done

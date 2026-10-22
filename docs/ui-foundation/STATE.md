@@ -1,5 +1,12 @@
 # UI foundation — current state
 
+**2026-10-22 — Mainline integration continuation.** The owner-accepted UI-foundation
+lineage is included with the closed first working Designer in the normal main
+fast-forward. See [integration checks and main-based launch](../studio/DESIGNER-MAIN-INTEGRATION-2026-10-22.md).
+The scoped foundation acceptance, evidence tiers and retained findings below stand;
+this continuation supersedes historical pending/next-action language only for
+mainline location. No new foundation gate, Stage 9 change or feature scope is opened.
+
 **2026-10-13 — ROUND 5 FINAL: COMBINED CANDIDATE RE-PINNED AND FULLY
 VERIFIED; COMBINED GATE PASS WITH FINDINGS (AFTER REMEDY); FOUNDER
 CHECKPOINT NEXT; OWNER ACCEPTANCE PENDING.** The independent technical

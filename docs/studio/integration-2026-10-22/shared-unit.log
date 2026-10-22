@@ -1,0 +1,9 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/.codex/worktrees/studio-designer-main-integration/260831-VCT-02
+
+
+ Test Files  37 passed (37)
+      Tests  1216 passed (1216)
+   Start at  20:52:46
+   Duration  65.49s (transform 52.11s, setup 0ms, import 58.59s, tests 11.05s, environment 31ms)
+

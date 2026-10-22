@@ -1,0 +1,127 @@
+
+> vict-studio@0.1.0 check:designer
+> svelte-kit sync && svelte-check --tsconfig ./tsconfig.designer.json
+
+Loading svelte-check in workspace: c:\Users\RZ1\.codex\worktrees\studio-designer-main-integration\260831-VCT-02\apps\studio
+Getting Svelte diagnostics...
+
+c:\Users\RZ1\.codex\worktrees\studio-designer-main-integration\260831-VCT-02\apps\studio\..\..\packages\ui-svelte\src\document\RenderNode.svelte:303:3
+Warn: Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events (svelte)
+{:else if instruction.kind === 'text'}
+  <span
+    class="uv-text"
+    data-ui-owner={ownerId}
+    data-ui-node={instruction.nodeId}
+    data-ui-occ={occ}
+    style="display: contents"
+    onclick={(event) => {
+      if (selectOccurrence !== undefined) {
+        event.stopPropagation();
+        selectOccurrence(occ);
+      }
+    }}
+  >
+    {#if instruction.content.type === 'literal'}
+      {instruction.content.value}
+    {:else}
+      {String(resolveValue({ type: 'expression', expression: instruction.content.expression }, scope) ?? '')}
+    {/if}
+  </span>
+{:else if (instruction.kind === 'component' || instruction.kind === 'extension') && componentValues.invalidNames.length}
+
+c:\Users\RZ1\.codex\worktrees\studio-designer-main-integration\260831-VCT-02\apps\studio\..\..\packages\ui-svelte\src\document\RenderNode.svelte:303:3
+Warn: `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions (svelte)
+{:else if instruction.kind === 'text'}
+  <span
+    class="uv-text"
+    data-ui-owner={ownerId}
+    data-ui-node={instruction.nodeId}
+    data-ui-occ={occ}
+    style="display: contents"
+    onclick={(event) => {
+      if (selectOccurrence !== undefined) {
+        event.stopPropagation();
+        selectOccurrence(occ);
+      }
+    }}
+  >
+    {#if instruction.content.type === 'literal'}
+      {instruction.content.value}
+    {:else}
+      {String(resolveValue({ type: 'expression', expression: instruction.content.expression }, scope) ?? '')}
+    {/if}
+  </span>
+{:else if (instruction.kind === 'component' || instruction.kind === 'extension') && componentValues.invalidNames.length}
+
+c:\Users\RZ1\.codex\worktrees\studio-designer-main-integration\260831-VCT-02\apps\studio\..\..\packages\ui-svelte\src\document\RenderNode.svelte:370:5
+Warn: Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events (svelte)
+    {@const Implementation = extension.component}
+    <span style="display: contents" data-extension-id={instruction.extensionId} data-ui-owner={ownerId} data-ui-occ={occ} data-ui-node={instruction.nodeId}
+      onclick={event => { event.stopPropagation(); selectOccurrence?.(occ); }}>
+      <Implementation props={extensionProps} occurrenceKey={occ} nodeId={instruction.nodeId} {presentation} />
+    </span>
+  {:else}
+
+c:\Users\RZ1\.codex\worktrees\studio-designer-main-integration\260831-VCT-02\apps\studio\..\..\packages\ui-svelte\src\document\RenderNode.svelte:370:5
+Warn: `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions (svelte)
+    {@const Implementation = extension.component}
+    <span style="display: contents" data-extension-id={instruction.extensionId} data-ui-owner={ownerId} data-ui-occ={occ} data-ui-node={instruction.nodeId}
+      onclick={event => { event.stopPropagation(); selectOccurrence?.(occ); }}>
+      <Implementation props={extensionProps} occurrenceKey={occ} nodeId={instruction.nodeId} {presentation} />
+    </span>
+  {:else}
+
+c:\Users\RZ1\.codex\worktrees\studio-designer-main-integration\260831-VCT-02\apps\studio\..\..\packages\ui-svelte\src\document\DocumentHost.svelte:105:31
+Warn: This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+  let acceptedSupplied: Record<string, UiValue> = {};
+  let lastDocumentId = $state(plan.documentId);
+  let lastSignal: symbol | undefined = $state<symbol | undefined>(undefined);
+
+c:\Users\RZ1\.codex\worktrees\studio-designer-main-integration\260831-VCT-02\apps\studio\..\..\packages\ui-editor\src\StateValuesPanel.svelte:106:7
+Warn: A form label must be associated with a control
+https://svelte.dev/e/a11y_label_has_associated_control (svelte)
+    <div class="state-row">
+      <label class="state-label">
+        <code>{decl.key}</code>
+        <span class="state-type">{typeLabel(decl.type)}</span>
+      </label>
+      {#if decl.type === 'boolean'}
+
+c:\Users\RZ1\.codex\worktrees\studio-designer-main-integration\260831-VCT-02\apps\studio\src\lib\designer\Designer.svelte:6:40
+Error: Cannot find module '@victframework/ui-preview' or its corresponding type declarations. (ts)
+  import { Composer, EditorBridge, EditorCanvas, Inspector, Layers, StateValuesPanel, PanelResizer, StateInitialEditor, SelectionPalette, setAttribute, resolveOccurrence, compositionParent, compositionName, literalTextTarget, duplicateSubtree, type TransactionDraft } from '@victframework/ui-editor';
+  import { createPreviewSession } from '@victframework/ui-preview';
+  import { CompositionNavigator, authoredOccurrence, compositionSlots, compositionMembers, compositionTrail, firstCompositionSlot, type CompositionFocus } from '@victframework/ui-editor';
+
+c:\Users\RZ1\.codex\worktrees\studio-designer-main-integration\260831-VCT-02\apps\studio\src\lib\designer\Designer.svelte:171:83
+Error: Parameter 'actor' implicitly has an 'any' type. (ts)
+    operations: [{ op: 'studio.demo:submit', implementation: 'simulated' }], resetBoundary: 'session' } as const;
+  let preview = createPreviewSession({ scenario, dataAdapter: { adapter, context: actor => ({ permissions: actor.permissions, effect: 'write', actor: actor.actorId }) } });
+  function resetRuntime() {
+
+c:\Users\RZ1\.codex\worktrees\studio-designer-main-integration\260831-VCT-02\apps\studio\src\lib\designer\Designer.svelte:178:43
+Error: Parameter 'actor' implicitly has an 'any' type. (ts)
+      documents: document ? { [document.id]: document.revision } : {},
+    } }, dataAdapter: { adapter, context: actor => ({ permissions: actor.permissions, effect: 'write', actor: actor.actorId }) } });
+    runtimeValues = {}; resetSignal = Symbol('reset'); activity = [];
+
+c:\Users\RZ1\.codex\worktrees\studio-designer-main-integration\260831-VCT-02\apps\studio\src\lib\designer\Designer.svelte:367:17
+Error: Object literal may only specify known properties, and 'objectProperties' does not exist in type '$$ComponentProps'. (ts)
+    <SelectionPalette revealSignal={selectionToolsReveal} locked={textDraftDirty || sourceDraftDirty} onOpenComposition={selectedSlots.length && selectedNode?.id!==compositionFocus?.nodeId ? ()=>openComposition() : undefined} bind:page={palettePage} name={compositionName(source, selectedNode?.id ?? source.root)} focusSignal={paletteFocus}>
+      {#snippet objectProperties(section: 'Content' | 'Style' | 'Behavior')}
+        <Inspector contextual editTextSignal={section === 'Behavior' ? undefined : editTextSignal} onTextDraftChange={(dirty: boolean) => propertyDraftDirty = dirty} {section} document={source} selectedOccurrence={selected} onApply={apply} lastIssues={issues} componentDescriptors={catalogDescriptors} knownActionIds={designerCatalogs.actionIds} {actionInputs} knownRouteIds={['screen']} labels={editorLabels} styleConditions={[{ id: 'compact', label: 'Compact · ≤600px' }]} readEffective={effective} />
+
+====================================
+svelte-check found 4 errors and 6 warnings in 4 files
+npm error Lifecycle script `check:designer` failed with error:
+npm error code 1
+npm error path C:\Users\RZ1\.codex\worktrees\studio-designer-main-integration\260831-VCT-02\apps\studio
+npm error workspace vict-studio@0.1.0
+npm error location C:\Users\RZ1\.codex\worktrees\studio-designer-main-integration\260831-VCT-02\apps\studio
+npm error command failed
+npm error command C:\WINDOWS\system32\cmd.exe /d /s /c svelte-kit sync && svelte-check --tsconfig ./tsconfig.designer.json

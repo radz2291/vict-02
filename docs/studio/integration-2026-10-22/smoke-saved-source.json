@@ -1,0 +1,167 @@
+{
+  "schema": "vict.ui-document@1",
+  "id": "screen-1051d55c-446d-48e1-acec-9644ed8b3b3c",
+  "revision": "r1.r1",
+  "root": "screen",
+  "nodes": {
+    "screen": {
+      "kind": "element",
+      "id": "screen",
+      "tag": "main",
+      "attributes": {
+        "aria-label": "Main integration smoke"
+      },
+      "children": [
+        "heading-ad4dab11"
+      ],
+      "localStyle": [
+        {
+          "property": "display",
+          "value": {
+            "type": "text",
+            "value": "flex"
+          }
+        },
+        {
+          "property": "flex-direction",
+          "value": {
+            "type": "text",
+            "value": "column"
+          }
+        },
+        {
+          "property": "gap",
+          "value": {
+            "type": "text",
+            "value": "20px"
+          }
+        },
+        {
+          "property": "padding",
+          "value": {
+            "type": "text",
+            "value": "40px"
+          }
+        },
+        {
+          "property": "min-height",
+          "value": {
+            "type": "text",
+            "value": "560px"
+          }
+        },
+        {
+          "property": "background-color",
+          "value": {
+            "type": "text",
+            "value": "#ffffff"
+          }
+        },
+        {
+          "property": "color",
+          "value": {
+            "type": "text",
+            "value": "#243047"
+          }
+        },
+        {
+          "property": "font-family",
+          "value": {
+            "type": "text",
+            "value": "system-ui, sans-serif"
+          }
+        }
+      ]
+    },
+    "heading-ad4dab11": {
+      "kind": "element",
+      "id": "heading-ad4dab11",
+      "tag": "h1",
+      "children": [
+        "heading-ad4dab11-text"
+      ],
+      "localStyle": [
+        {
+          "property": "font-size",
+          "value": {
+            "type": "text",
+            "value": "32px"
+          }
+        },
+        {
+          "property": "font-weight",
+          "value": {
+            "type": "text",
+            "value": "600"
+          }
+        },
+        {
+          "property": "line-height",
+          "value": {
+            "type": "text",
+            "value": "1.2"
+          }
+        },
+        {
+          "property": "margin",
+          "value": {
+            "type": "text",
+            "value": "0"
+          }
+        }
+      ]
+    },
+    "heading-ad4dab11-text": {
+      "kind": "text",
+      "id": "heading-ad4dab11-text",
+      "content": {
+        "type": "literal",
+        "value": "Accepted Designer on main"
+      }
+    }
+  },
+  "componentDefinitions": {},
+  "styleSources": {},
+  "assets": {},
+  "tokens": {},
+  "conditions": {
+    "compact": {
+      "id": "compact",
+      "kind": "container",
+      "name": "studio-screen",
+      "query": "(max-width: 600px)"
+    }
+  },
+  "localState": {
+    "message": {
+      "key": "message",
+      "type": "string",
+      "initial": "Hello from my screen"
+    },
+    "accepted": {
+      "key": "accepted",
+      "type": "boolean",
+      "initial": false
+    },
+    "dialogOpen": {
+      "key": "dialogOpen",
+      "type": "boolean",
+      "initial": false
+    },
+    "busy": {
+      "key": "busy",
+      "type": "boolean",
+      "initial": false
+    },
+    "actionError": {
+      "key": "actionError",
+      "type": "string",
+      "initial": ""
+    },
+    "actionResult": {
+      "key": "actionResult",
+      "type": "string",
+      "initial": ""
+    }
+  }
+}

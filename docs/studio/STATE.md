@@ -1,5 +1,14 @@
 # Studio Designer — current delivery state
 
+## Mainline integration — 2026-10-22
+
+The accepted Designer and its UI-foundation ancestry are delivered to `origin/main`
+by normal fast-forward. [Main integration record, checks and launch](DESIGNER-MAIN-INTEGRATION-2026-10-22.md).
+Tested integration source: `9010c5aff2afb1fb792bf1a1cb15ddf9a92cae55`; product
+bytes match accepted `ba0304693487292e354374b1bd93908506eb2da9`. The integration
+records descendant adds documentation/evidence only. Owner-accepted closure below
+stands, including all retained findings and scope limits. No publication/deployment.
+
 2026-10-22: **CLOSED — PASS WITH NON-BLOCKING FINDINGS; OWNER ACCEPTED**.
 Accepted product: `ba0304693487292e354374b1bd93908506eb2da9` on
 `codex/studio-designer-independent-verification`. Verification/delivery records:
@@ -26,8 +35,8 @@ browser-saved documents are runtime data separate from committed source.
 Deployment, collaboration, SSR and performance guarantees remain unclaimed.
 
 This development cycle is complete. Continuation requires a separately scoped
-owner request; no merge, publication, deployment, next feature or unrelated Stage 9
-work is authorized. U0–U4 and historical Stage 9 closure remain unchanged.
+owner request. The separately authorized main integration above is complete;
+publication, deployment, next features and unrelated Stage 9 work remain outside scope. U0–U4 and historical Stage 9 closure remain unchanged.
 Launch instructions remain in the independent report.
 
 ## Historical original verdict — retained

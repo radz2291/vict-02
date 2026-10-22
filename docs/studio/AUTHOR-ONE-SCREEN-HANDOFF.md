@@ -2,6 +2,8 @@
 
 ## Current status — owner-accepted closure, 2026-10-22
 
+Mainline continuation: [accepted Designer and UI-foundation integration into main](DESIGNER-MAIN-INTEGRATION-2026-10-22.md). Use that record for main-based launch; historical candidate branches below remain preserved.
+
 **CLOSED — PASS WITH NON-BLOCKING FINDINGS; OWNER ACCEPTED**.
 Accepted product: `ba0304693487292e354374b1bd93908506eb2da9`; verification
 records: `e67a7ef460146b4b0c3158c625ef28d1d8f17e73`, on

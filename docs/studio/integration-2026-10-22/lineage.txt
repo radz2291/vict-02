@@ -1,0 +1,218 @@
+9010c5a docs(studio): close owner-accepted first Designer cycle
+e67a7ef docs(studio): deliver independent repaired Designer verification
+ba03046 Integrate independently authored required-slot repair for verification
+b69a453 Refuse invalid required-slot screens at persistence and replay boundaries
+f83eb1b Preserve original candidate final-child slot refusal counterexample
+9a681c8 Record independent Designer verification and required-slot gate failure
+67a47c3 Finalize Studio implementation handoff for independent verification
+48c3bb5 Align cascading screen menu with its parent command
+553e27c Unify Designer and saved-run menu controls
+2f66eb9 Use the Studio menu paradigm for saved runs
+70ffe82 Size Studio menus to their content within viewport limits
+704164d Remove the arrow from Run saved label
+6f465ca Use one consistent Studio logo in designer and saved replay
+a7f05d6 Simplify saved-run header and group Restart with Exit
+6cfa995 Unify Studio and saved-run canvas presentation and sizing
+a7f365a Move composition Back into the existing workspace toolbar
+82aeb09 Move screen switching into a cascading File submenu
+8678f3c Organize Studio commands into a compact creative-software menu bar
+f308526 Simplify screen header and group occasional screen commands
+1243641 Unify Studio commands and align workspace headers
+94418a9 Compact Source actions and match Export button styling
+eba439e Revert "Tuck application attachment into Source technical details"
+17b6669 Tuck application attachment into Source technical details
+0fce378 Keep Source at the shared Document drawer width
+c228c2a Move screen renaming into the Document header
+dfb9bf4 Hide redirected text children from Studio Layers
+ec23a3c Separate layer selection from canvas tools and show child counts
+7a55967 Keep Document open when navigating compositions
+fe56a91 Dock Document and strengthen the Layers hierarchy
+b8794fa Redesign Document as a focused floating workspace
+29988ea Simplify Studio mode and reload labels
+a911176 Simplify composition breadcrumbs for single-area components
+e07a19d Move composition entry into the selection toolbar header
+79b13e2 Show the complete Dialog frame in composition editing
+3fb0eb4 Add focused content compositions to Studio
+8507ada Restore inspector parity in contextual Studio tools
+3df7953 Toggle toolbox tiers closed and support Escape exit
+8770734 Fit toolbox height to content within a stable size limit
+397863e Unify contextual authoring tools with stable compact pages
+6f890b2 Keep Studio text editing inside the contextual toolbox
+3c20804 Replace expanding Text settings with fixed contextual pages
+5cc68c8 Simplify Text into compact essentials with progressive settings
+a69a549 Expand Format into contextual sub-tabs beneath fixed tool pages
+f8d17db Unify Studio into contextual object tools and one Document drawer
+68968f9 Compact contextual Arrange controls into two rows
+e70ed24 Consolidate Studio authoring into a paged contextual palette
+2c58dfa Float contextual authoring tools beside the selected canvas item
+693dedd Make Studio canvas-first with compact tools and direct text editing
+63e73ff Fix Studio content authoring and retain catalogs after reopen
+d0379d5 Improve Studio visual authoring workflow and responsive cascade
+7901d19 feat(studio): author one screen and replay saved canonical source
+e401cea U4 CLOSED: PASS WITH FINDINGS under owner scoped acceptance (docs-only)
+43a2c74 Round 5 remedy recheck: all R1-R7 VERIFIED; gate summary updated
+7a5372b Round 5 FINAL: combined gate reconciled (PASS WITH FINDINGS after remedy)
+dcd3cbe Round 5 RE-PINNED candidate: F17 Add-refusal + cold-start gate fixes in the candidate tree
+ea6c6e2 Round 5 records: STATE current block, handoff 14.5, decisions (pre-gate)
+60b95e6 Round 5 evidence: focused checks 10/10, journeys 50/50, records reconciled
+fe80036 Round 5 combined candidate: F14+F15+F16+F17 repairs, docs, corrected oracles
+4e2e4fe Integrate owner-UI track (954f93f) into verification track (143ffc4) — combined verify 05
+143ffc4 Round 4: three fresh reviews imported; battery provenance corrected after falsification
+a18b782 Round-4 evidence: real authoring coverage (50/50 packed-UI journeys), parity proof, records reconciliation
+674408d Round-4 gate: zero-failure battery (3113/0/3), packed closure OK; F14 recorded (root build omits ui-preview)
+954f93f fix(u4-consumer): space decisions and clarify assignment
+e1ab78a fix(ui-svelte): repair catalog layouts and nested overlay behavior
+b874205 Round-4 verifier oracles: supply-boundary correction, N1 label-search pins, numeric-list editor oracle, host-isolation oracle
+32d8465 fix(ui-editor): preserve numeric list drafts as text
+74a2216 fix(ui-svelte): search command items by authored labels
+1cb7447 fix(ui-svelte): mount and identify controlled authored tooltips
+78e66e2 fix(ui-svelte): preserve locale and ISO values in public TimeField
+6f24ca7 fix(ui-svelte): unify authored range transitions and external endpoints
+05c1f9a Report: record the branch-hygiene follow-up in the gate table
+41cf8ea Hygiene: remove build-generated scaffold-check temp dir from the branch; ignore the pattern
+599b612 Round 3a: oracle correction (date clearing), corrected calendar oracles, per-family authoring coverage, bits-ui exact pin
+f9aa58b Round-3 report: definitive full-battery run recorded (3020/10/3 — failures are exactly the pinned probes; zero inherited regressions)
+33a8caa U4 full-catalog verification round 3: FAIL — repair round required (report + records)
+bc65a6a Probe type hygiene: typecheck 0 errors across all round-3 probe files
+4affc9b B4 probes: environment-aligned assertions (portal content browser-verified)
+6fc3820 Verification probes (round 3): full-catalog interaction coverage B2-B5
+a924bac Verification probes (round 3): disclosed defects A and B pinned as failing evidence
+5174219 Match authored time-field hour announcements to the displayed hour cycle
+9b9a63f Repair Inspection Operations source collisions, feedback and stored route validation
+b0244c3 Keep shared nested menus within narrow viewports
+034a4fa Align editor preview defaults and seed document state before rendering
+7bcac59 Preserve focus during pending catalog actions and expose modal failure feedback
+b2ffa0e Repair B4 command input and nested menu reopening lifecycle
+01e67cb Repair B3 date identity, picker state and scoped calendar focus
+377baf5 Repair B2 selection labels and selected-value feedback
+bc4e08d Compose full catalog Inspection Operations in the U4 authored consumer
+3200281 Implement U4 B5 composition chrome and controlled supporting overlays
+1597231 Complete B4 command search binding through public catalog parts
+d7d3946 Use public VICT catalog entries throughout B3 adapters
+f7dff36 Share occurrence-owned close focus restoration for catalog overlays
+91db947 Complete B2 search bindings and atomic component slot transfers
+e6a2210 Implement U4 B4 authored menu command and navigation composition
+62e2a85 Implement U4 B3 numeric and date time catalog boundaries
+1155733 Implement U4 B2 typed selection modes and transactional slot authoring
+c76714e Use native Bits Dialog attachment ownership for modal focus lifecycle
+b6beb23 U4-B1 verification round 2 at 2f82fc05: repairs re-verified — FAIL on one focused residual (dialog focus)
+2f82fc0 Repair U4 B1 diagnostics, controlled portal lifetimes and preview state ownership
+53f12a2 U4-B1 verification round 1 at 098b84e3: delivery repairs + evidence — VERDICT FAIL (revision required)
+098b84e Use normal application compilation and simulated runtime boundaries in both B1 consumer entries
+d69d175 Author typed component properties and output mappings through transactional editor controls
+248199d Render named component slots and declared targets with fenced output lifetimes
+50889d1 Connect typed UI values and action contracts through shared compile and storage boundaries
+295064b U4-B1: owner-feedback repairs — reference reuse, CSS/theme infrastructure, provenance
+d03fbbf U4-B1: packed-artifact isolation GREEN — 9-tarball closure, zero violations
+b7b82a3 U4-B1: independent clean consumer (examples/u4-consumer) + pack-isolation script
+6e7b958 U4-B1: editor scope (descriptor-driven Inspector, output connections, preview-state lists) + F3 packaging repair
+9455fb9 U4-B1: component-ABI contract core — values carrier, widened boundaries, compile gates, bridge delivery
+e469145 U4 recalibration repair: freeze-check 04 VERIFIED recorded; superseding freeze final
+7554294 U4 recalibration repair SUPERSEDING freeze: payload 4cfe5b37 + 7 pins; F-1 pin closed
+4cfe5b3 CATALOG RECALIBRATION REPAIR FREEZE PAYLOAD (SUPERSEDING) — repaired governing contract bytes
+46c5064 U4 recalibration repair: R2 blocker fixed — handoff duplication removed
+cee2f0e U4 recalibration repair: R1 review PASS WNF recorded; F-2/F-3/F-4/F-5/F-8/F-9 repairs
+009befe U4 recalibration bounded repair: F1-F4 repairs, probes, reconciliation, B1 prompt
+b05d016 U4 catalog recalibration: freeze-check 03 VERIFIED recorded; superseding freeze final
+3da34cd U4 catalog recalibration SUPERSEDING freeze: payload 52684696 + 7 pins; review lineage recorded
+5268469 CATALOG RECALIBRATION FREEZE PAYLOAD (SUPERSEDING) — vict.ui-component-abi@1 + UiValueType extension
+7829411 U4 catalog recalibration: R1 round-2 recheck recorded; F-5' and cosmetic span repairs
+cf2edd3 U4 catalog recalibration: R1 review PASS WITH NON-BLOCKING FINDINGS recorded; F-1..F-9 repairs
+087d41e U4 catalog recalibration: full-catalog inventory, contract challenge, value-vocabulary extension, batch plan (candidate)
+7a9477f U4 amendment: freeze-check 02 VERIFIED recorded; checker report imported; superseding freeze final
+08cfe28 U4 amendment SUPERSEDING freeze: payload 460d963 + pins; MINOR-2 closed (handoff repointed); records reconciled
+460d963 AMENDMENT FREEZE PAYLOAD (SUPERSEDING) — vict.ui-component-abi@1, repair cycle
+10f2cbc U4 amendment: R2 round-2 affected recheck PASS WITH NON-BLOCKING FINDINGS recorded; residual plural claims scoped to the repo's one legacy consumer; recheck section imported
+9f5acdd U4 amendment repair: R2 review PASS WITH NON-BLOCKING FINDINGS recorded; MINOR-1 + INFO fixes
+0ad3a2a U4 amendment repair: compatibility gate rebuilt from verified legacy behavior; type fix; action-input ownership named
+24347a0 U4 amendment: freeze-check VERIFIED recorded; checker report imported; freeze final
+62ce2c8 U4 amendment freeze: payload 68e166f + pins recorded; review lineage (FAIL->PASS WNF->PASS) reconciled into handoff/STATE/DECISIONS
+68e166f AMENDMENT FREEZE PAYLOAD — vict.ui-component-abi@1 (immutable candidate)
+a765352 U4 amendment: round-3 PASS recorded; final review report imported (rounds 1-3)
+d78a309 U4 amendment: round-2 recheck PASS WITH NON-BLOCKING FINDINGS recorded; N-1/N-2 applied; round-2 report imported
+d84035a U4 amendment: repair all round-1 contract-review findings (B-1 blocker + 8 minors + actionable infos); round-1 report imported verbatim
+9c31fae U4 component amendment: contract, fixtures, design/matrix/handoff revision (candidate for review)
+cfbd6d3 U4 handoff delivery: round-4 PASS WITH NON-BLOCKING FINDINGS recorded; report imported; STATE/DECISIONS reconciliation
+2202499 U4 handoff: fix the round-3 defects for real (verified against file bytes this time)
+6b9e328 U4 handoff: round-2 recheck repairs (F-2 leftovers, truthful push record, table nits); round-2 report imported
+f6bca52 U4 handoff: repair all round-1 review findings (FAIL -> revision required); import review report verbatim
+ebc3461 U4 handoff: component reuse matrix, integration design, implementation-ready handoff; U3-HANDOFF status reconciled
+16df3bf U3 closure: combined verification PASS WITH NON-BLOCKING FINDINGS at 952d92d; owner feedback recorded; runnable examples documented; U4 handoff docs-only
+952d92d U3 integration: fast-forward to the reviewed experience repair; preserve imported evidence bytes verbatim
+9c34679 Record independent U3 experience repair reviews and integration handoff
+e0dd026 Clarify record presets and current-state recovery in demo experience
+8d99f36 Repair inspection experience through canonical documents and registered components
+aaeea16 U3 records: independent verification PASS WITH NON-BLOCKING FINDINGS at cbb3fb6; report imported verbatim; findings dispositioned
+cbb3fb6 U3 docs: coverage matrix, founder walkthrough, STATE/DECISIONS/HANDOFF reconciliation
+986a609 U3 performance: frozen budgets met on all affected surfaces
+5bb145f U3 restart proof: durable decisions survive a real process kill/restart, in the browser
+3b508b1 U3 durable replacement: scenario-1 approve over SQLite; shared conformance; mode switch
+db48707 U3 scenarios: the frozen eight-scenario matrix through the preview orchestration
+2c46115 U3 journey: server-hosted product boundary; complete rejection loop in the browser; host polish
+aefb498 U3 domain: one shared rule core; full journey dispatch; frozen diagnostics
+b4023bc U3 startup: owner authorization recorded; handoff corrections; branch from U2 closure records
+a837911 Records: closure-check PASS WITH NON-BLOCKING FINDINGS; two MINOR fixes; import checker report
+4c72228 Records: U2 closed PASS WITH NON-BLOCKING FINDINGS with owner acceptance; U3 handoff prepared (implementation not authorized)
+1fe5383 Records: round-2 verdict PASS WITH NON-BLOCKING FINDINGS at 471952b; NF-1 format scope fix; STATE + walkthrough updated
+471952b Repair independent verification findings F-1 (blocking) and F-2; import combined verdict round 1
+2a1ab4c Integrate the Inspector/Layers UX into the U2 workbench and execute manager-owned repairs
+1a61389 Integrate the reviewed Inspector/Layers UX track into U2
+f31477d docs(u2-ux): preserve N1 challenge and passing repair evidence
+1bd745a fix(u2-ux): fit reset labels and refresh live pseudo values
+e5931cf fix(u2-ux): clarify reset and refresh selected canvas measurements
+9c743c4 docs(u2-ux): preserve iteration review and final handoff
+a82ca8e fix(ui-editor): describe resolved style measurements without implying conflict
+349f09e fix(ui-editor): identify selected component instance in Inspector location
+d224233 feat(ui-editor): streamline panels, linked spacing, search and alpha colors
+7f9ab3e docs(u2-ux): retain final artifact whitespace observation
+814d2a3 docs(u2-ux): preserve independent recheck and integration handoff
+d0ba90c fix(ui-editor): repair independent Inspector UX findings
+4d7b067 U2 UX: reusable Inspector controls and keyboard Layers with canonical review host
+e0893fe U2 records: N1 reclassified (U2-01) -> repaired -> 'U2-N1-VERIFY: PASS WITH FINDINGS'; N2 closed with evidence; Codex Inspector/Layers UX track reserved + routed findings
+9983e91 records: reserve Inspector/Layers UX for the parallel Codex track (branch codex/ui-foundation-u2-inspector-ux created from the U2 tip; stage-manager track keeps compiler/renderer/session/bridge/storage)
+83ba87f U2 repair (round 3, N1): definition-body localStyle compiles as componentBase
+6610d3f U2 records final: implementation + verification cycle complete; founder checkpoint next
+ffa1bb6 U2 records: preserve the three independent review reports + evidence (hashes recorded in DECISIONS when the stage closes)
+36ec8eb U2 docs: founder walkthrough (plain-language, ~10 minutes, links + expected visible results)
+19bb4b9 U2 repairs (round 2): pseudo CSS, persisted product rendering, instance styling, corrupt-store gate
+ebac7bf renderer hygiene: void elements render no children slot (clears the dynamic_void_element_content console warning on form pages)
+fc071a7 U2 docs: coverage matrix + session-API orchestration guide
+9f5f3fc type hygiene: node types for proof typechecks; noUncheckedIndexedAccess-safe repeat keys
+904fb4d U2 measurement, tests, docs wiring (4/4)
+294c410 hygiene: ignore the design proof's build output (build/ was committed by accident)
+821e720 U2 proofs (3/4): examples/ui-design-proof — service page + workbench
+2e03e13 U2 tooling (2/4): condition-aware Inspector, Layers, canvas diagnostics
+cfb4bb4 U2 foundations (1/4): component diagnostics, provenance, presentation gates
+27ac6be records repair: restore SHA/path identifiers eaten by shell substitution in the acceptance entry
+301340c U2 opened: owner accepts U1 at round-4 candidate; U2-only authorized
+cb85393 U1 records: round 4 verified — 'U1-ROUND4 GATE: PASS'
+345b5c6 U1 repair (round 4): unified preservation policy, save-window ownership, diagnostic clearing
+03810ce records hygiene: drop duplicated round-3 evidence copies (kept under reviews/round3/)
+2723ceb U1 records: round 3 verified — 'U1-ROUND3 GATE: PASS'
+c1e3d0f U1 repair (round 3): history across saves, staged-commit guards, load diagnostics
+ba29828 U1 REOPENED (round 3): three bounded repairs directed by owner
+3de92c5 U1 records: reopen round verified — 'U1-REOPEN GATE: PASS'
+3bd03a5 U1 repair (reopen round): authoring persistence, save acknowledgment, fencing, snapshot immutability
+0a398d5 U1 REOPENED: owner follow-up review reproduced U1-04/U1-06 failures
+4d67c86 U1 records: verification cycle complete — GATE PASS, R2-1 correction of record
+5a81672 U1 repair: falsification findings BLOCKER-1/MAJOR-1/minors
+fbe2451 docs(ui-foundation): U1 candidate record — implementation history, disclosed decisions, evidence index, review pending
+351d3e5 chore: ignore the proof's build output; root tsconfig paths for the new packages
+4f8c1ab fix(ui-svelte,ui-editor,example): browser walkthrough repairs — styles, selection, viewport condition + evidence
+505e0b1 feat(ui-editor,ui-preview,ui-authoring-proof): the U1 runnable loop — exact candidate
+7f49cd0 feat(ui-editor, ui-preview): editor modules + preview orchestration
+9284888 feat(ui-svelte): the one document renderer — DocumentHost + recursive RenderNode
+4e69175 feat(application): vict.application@3 joint compilation — explicit UI attachments, A-01 cycles, A-03 identity
+b9e6573 feat(sdk): vict.application@3 authoring shape — document-mode screens, explicit catalog + pin inputs
+182caa9 feat(ui): vict.ui-document@1 neutral core — model, validation, compilation, transactions, sessions
+966c449 docs(ui-foundation): U1 handoff — owner authorization recorded, STATE cleaned (U0 closed, U1 in progress)
+9734690 docs(ui-foundation): U0 amendment closure — freeze-byte checker recorded (FREEZE VERIFIED, 22/22)
+ea47edd docs(ui-foundation): U0 AMENDMENT FREEZE RECORD — 22 pins at repaired candidate 9ec87f3, supersedes ffbafc0
+9ec87f3 docs(ui-foundation): amendment round-1 repairs F-A-01..F-A-05 + preserve amendment review
+df3d283 docs(ui-foundation): amendment ledger — reopening authorized, A-01..A-03 recorded, original freeze superseded
+33ae56f docs(ui-foundation): U0 amendment A-01/A-02/A-03 — cycle scope, revision loop, catalog total ordering
+a664c70 docs(ui-foundation): U0 closure evidence — freeze-byte verification recorded (FREEZE VERIFIED, U0-08 demonstrated)
+ffbafc0 docs(ui-foundation): U0 FREEZE RECORD — 19 contract file pins at candidate 54490a8 + freeze state
+54490a8 docs(ui-foundation): round-2 re-verification repairs (N-1, N-2) + preserve round-2 report — final U0 contract candidate
+6a2f7b9 docs(ui-foundation): U0 round-1 review repairs F-1..F-7 + manager fixture-semantics repair; preserve reviewer report
+f7767b2 docs(ui-foundation): U0 contract candidate — install VICT-UI-Foundation-Pack v0.1 verbatim + local reconciliation artifacts
