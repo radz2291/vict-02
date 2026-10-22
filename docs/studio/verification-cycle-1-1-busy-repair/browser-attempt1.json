@@ -1,0 +1,14 @@
+{
+  "records": [
+    {
+      "at": "2026-10-22T15:41:58.401Z",
+      "name": "driver failure",
+      "data": {
+        "error": "TimeoutError: Navigation timeout of 30000 ms exceeded",
+        "primary": "VICT Studio\n\nCredentials are provisioned by the deployment administrator.\n\nOperator label\nSecret\nSign in",
+        "secondary": ""
+      }
+    }
+  ],
+  "errors": []
+}
