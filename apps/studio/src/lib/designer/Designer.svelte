@@ -388,7 +388,7 @@
           <div class="source-caption"><span>Screen source</span><small>Changes apply together and can be undone.</small><button type="button" onclick={exportSource}>Export</button></div>
           <label class="sr-only" for="canonical-source">Canonical UI document</label><textarea id="canonical-source" class="source-editor" wrap="off" spellcheck="false" bind:value={sourceDraft} oninput={() => sourceDraftDirty = true}></textarea>
           <div class="source-actions"><button type="button" disabled={!sourceDraftDirty} onclick={applySource}>Apply source</button><button type="button" disabled={!sourceDraftDirty} onclick={() => { sourceDraftDirty = false; sourceDraft = JSON.stringify(source, null, 2); sourceDraftRevision = snapshot?.revision ?? ''; issues = []; }}>Discard draft</button></div>
-          <details class="application-attachment"><summary>Application attachment</summary><pre class="source-preview">{JSON.stringify(screenApplication(source), null, 2)}</pre></details>
+          <details class="source-technical"><summary>Technical details</summary><h3>Application attachment</h3><p>Read-only application source used to run this screen.</p><pre class="source-preview">{JSON.stringify(screenApplication(source), null, 2)}</pre></details>
         {/if}
       </div>
     </aside>
