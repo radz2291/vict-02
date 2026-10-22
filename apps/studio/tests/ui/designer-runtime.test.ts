@@ -130,8 +130,8 @@ it('keeps runtime input and checkbox state across pointer selection and leaves a
   expect(document.querySelector('.save-state')?.textContent).toContain('Saved');
   await openStudioMenu('Edit');
   expect(
-    (document.querySelector('button[title="Undo · Ctrl+Z"]') as HTMLButtonElement).disabled,
-  ).toBe(true);
+    document.querySelector('[title="Undo · Ctrl+Z"]')!.getAttribute('aria-disabled'),
+  ).toBe('true');
   expect(screenStore(localStorage, source.id).rawLoad()).toMatchObject({
     status: 'loaded',
     document: source,

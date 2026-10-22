@@ -10,6 +10,8 @@
   import { screenStore, savedScreens } from './storage.js';
   import { screenRecipes } from './recipes.js';
   import { createScreenSimulation, screenDispatcher } from './execution.js';
+  import { Menubar } from '@victframework/ui-svelte/catalog/menubar';
+  import WorkspaceMenu from './WorkspaceMenu.svelte';
   import WorkspaceBrand from './WorkspaceBrand.svelte';
   import '@victframework/ui-svelte/styles.css';
   import '@victframework/ui-svelte/catalog.css';
@@ -91,68 +93,8 @@
   let renamingScreen=$state(false);
   let screenNameDraft=$state('');
   let screenNameInput=$state<HTMLInputElement>();
-  let renameButton=$state<HTMLButtonElement>();
-  let screenMenu=$state<HTMLDivElement>();
-  let screenMenuOpen=$state(false);
-  let screenMenuPosition=$state({left:8,top:44});
-  let openScreenButton=$state<HTMLButtonElement>();
-  let openScreenMenu=$state<HTMLDivElement>();
-  let openScreenMenuOpen=$state(false);
-  let openScreenMenuMeasuring=$state(false);
-  let openScreenMenuPosition=$state({left:8,top:44});
-  const menuNames=['File','Edit','View','Preview'] as const;
-  type StudioMenu=typeof menuNames[number];
-  let activeMenu=$state<StudioMenu>('File');
-  async function openMenu(name:StudioMenu,trigger:HTMLButtonElement,last=false) {
-    closeOpenScreenMenu();screenMenu?.hidePopover();
-    activeMenu=name;renameButton=trigger;
-    const rect=trigger.getBoundingClientRect();
-    if(!rect || !screenMenu)return;
-    screenMenuPosition={left:rect.left,top:rect.bottom+6};
-    await tick();
-    screenMenu.showPopover();
-    const menuBounds=screenMenu.getBoundingClientRect();
-    screenMenuPosition={left:Math.max(8,Math.min(rect.left,globalThis.innerWidth-menuBounds.width-8)),top:Math.max(8,Math.min(rect.bottom+6,globalThis.innerHeight-menuBounds.height-8))};
-    await tick();
-    trigger.focus();
-    const items=menuItems();(last?items.at(-1):items[0])?.focus();
-  }
-  function closeMenu() {closeOpenScreenMenu();screenMenu?.hidePopover();renameButton?.focus();}
-  function closeOpenScreenMenu() {openScreenMenu?.hidePopover();}
-  async function showOpenScreenMenu(focus=false) {
-    if(!openScreenButton || openScreenButton.disabled || !openScreenMenu)return;
-    if(openScreenMenu.matches(':popover-open')){if(focus)menuItems(openScreenMenu)[0]?.focus();return;}
-    // Measure intrinsic content width before deciding which side has room.
-    openScreenMenuMeasuring=true;
-    await tick();
-    if(!screenMenu?.matches(':popover-open')){openScreenMenuMeasuring=false;return;}
-    openScreenMenu.showPopover();
-    const rect=openScreenButton.getBoundingClientRect();
-    const menuBounds=openScreenMenu.getBoundingClientRect();
-    const fitsRight=rect.right+4+menuBounds.width<=globalThis.innerWidth-8;
-    const fitsLeft=rect.left-4-menuBounds.width>=8;
-    // An overlapping hover flyout would move a screen choice under the pointer
-    // before the parent item's click. Require explicit activation in that case.
-    if(!focus && !fitsRight && !fitsLeft){openScreenMenu.hidePopover();openScreenMenuMeasuring=false;return;}
-    const left=fitsRight?rect.right+4:Math.max(8,rect.left-menuBounds.width-4);
-    openScreenMenuPosition={left,top:Math.max(8,Math.min(rect.top,globalThis.innerHeight-menuBounds.height-8))};
-    openScreenMenuMeasuring=false;
-    await tick();
-    if(focus)menuItems(openScreenMenu)[0]?.focus();
-  }
-  function menuItems(root=screenMenu) {return [...(root?.querySelectorAll<HTMLElement>('[role^="menuitem"]')??[])].filter(item=>item.closest('[role="menu"]')===root && !item.matches(':disabled,[aria-disabled="true"]'));}
-  function toggleMenu(name:StudioMenu,trigger:HTMLButtonElement) {
-    if(screenMenu?.matches(':popover-open') && activeMenu===name)closeMenu();else void openMenu(name,trigger);
-  }
-  function menuTriggerKey(event:KeyboardEvent,name:StudioMenu) {
-    if(['ArrowDown','ArrowUp'].includes(event.key)){event.preventDefault();event.stopPropagation();void openMenu(name,event.currentTarget as HTMLButtonElement,event.key==='ArrowUp');}
-    if(['ArrowLeft','ArrowRight'].includes(event.key)) {
-      event.preventDefault();event.stopPropagation();
-      const index=(menuNames.indexOf(name)+(event.key==='ArrowRight'?1:menuNames.length-1))%menuNames.length;
-      const next=globalThis.document.querySelectorAll<HTMLButtonElement>('.studio-menus > button')[index];next?.focus();
-      if(next && screenMenu?.matches(':popover-open'))void openMenu(menuNames[index]!,next);
-    }
-  }
+  let renameButton=$state<HTMLButtonElement|null>(null);
+  let activeMenu=$state('');
   async function beginRename() {
     if(!source || textDraftDirty || sourceDraftDirty)return;
     screenNameDraft=screenName(source);renamingScreen=true;
@@ -324,18 +266,9 @@
     return element ? getComputedStyle(element).getPropertyValue(property) : undefined;
   }
   function shortcuts(event: KeyboardEvent) {
-    if(screenMenu?.matches(':popover-open')) {
-      const inOpenScreenMenu=event.target instanceof Node && openScreenMenu?.contains(event.target);
-      if(event.key==='ArrowRight' && event.target===openScreenButton){event.preventDefault();void showOpenScreenMenu(true);return;}
-      if((event.key==='ArrowLeft' && inOpenScreenMenu) || (event.key==='Escape' && openScreenMenu?.matches(':popover-open'))){event.preventDefault();closeOpenScreenMenu();openScreenButton?.focus();return;}
-      if(event.key==='ArrowRight' && inOpenScreenMenu){event.preventDefault();return;}
-      if((event.ctrlKey || event.metaKey) && event.key.toLowerCase()==='s'){event.preventDefault();closeMenu();void save();return;}
-      if(event.key==='Escape'){event.preventDefault();closeMenu();}
-      else if(event.key==='Tab')closeMenu();
-      else if(['ArrowDown','ArrowUp','Home','End'].includes(event.key)) {
-        event.preventDefault();if(!inOpenScreenMenu)closeOpenScreenMenu();const items=menuItems(inOpenScreenMenu?openScreenMenu:screenMenu);const index=items.indexOf(globalThis.document.activeElement as HTMLElement);
-        const next=event.key==='Home'?0:event.key==='End'?items.length-1:(index+(event.key==='ArrowDown'?1:items.length-1))%items.length;items[next]?.focus();
-      } else if(['ArrowLeft','ArrowRight'].includes(event.key)) {event.preventDefault();const index=(menuNames.indexOf(activeMenu)+(event.key==='ArrowRight'?1:menuNames.length-1))%menuNames.length;const next=globalThis.document.querySelectorAll<HTMLButtonElement>('.studio-menus > button')[index];if(next)void openMenu(menuNames[index]!,next);}
+    if(event.defaultPrevented)return;
+    if(activeMenu) {
+      if((event.ctrlKey || event.metaKey) && event.key.toLowerCase()==='s'){event.preventDefault();activeMenu='';void save();}
       return;
     }
     if (event.key === 'Escape' && drawerOpen) { event.preventDefault(); closeDrawer(); return; }
@@ -394,33 +327,40 @@
 <div class="vict-app studio-designer studio-workspace">
   <header class="design-toolbar workspace-header">
     <WorkspaceBrand />
-    <nav class="studio-menus" aria-label="Studio menus">{#each menuNames as name}<button type="button" aria-haspopup="menu" aria-expanded={screenMenuOpen && activeMenu===name} aria-controls="studio-menu" onclick={event=>toggleMenu(name,event.currentTarget)} onkeydown={event=>menuTriggerKey(event,name)}>{name}</button>{/each}</nav>
+    <Menubar.Root class="studio-menus workspace-menus" aria-label="Studio menus" bind:value={activeMenu} loop>
+      <WorkspaceMenu label="File" value="file" {activeMenu} bind:trigger={renameButton}>
+        <Menubar.Item disabled={textDraftDirty || sourceDraftDirty} onSelect={()=>void beginCreate()}>New screen</Menubar.Item>
+        <Menubar.Sub>
+          <Menubar.SubTrigger disabled={!library.length || textDraftDirty || sourceDraftDirty}>Open screen<span aria-hidden="true">›</span></Menubar.SubTrigger>
+          <Menubar.Portal><Menubar.SubContent aria-label="Open screen" class="workspace-menu open-screen-menu" sideOffset={4} collisionPadding={8}>
+            <Menubar.RadioGroup value={source?.id ?? ''}>
+              {#each library as item (item.id)}<Menubar.RadioItem value={item.id} closeOnSelect onSelect={()=>openScreen(item.id)}><span class="screen-menu-name" title={item.name}>{item.name}</span><span aria-hidden="true">{source?.id===item.id?'\u2713':''}</span></Menubar.RadioItem>{/each}
+            </Menubar.RadioGroup>
+          </Menubar.SubContent></Menubar.Portal>
+        </Menubar.Sub>
+        <Menubar.Item disabled={!source || textDraftDirty || sourceDraftDirty} onSelect={()=>void beginRename()}>Rename screen</Menubar.Item>
+        <Menubar.Separator />
+        <Menubar.Item aria-label="Save" disabled={!compilation?.ok || sourceDraftDirty || textDraftDirty} onSelect={()=>void save()}>Save <kbd>Ctrl+S</kbd></Menubar.Item>
+        <Menubar.Item title="Reload the saved screen and reset the preview" disabled={!source || snapshot?.dirty || sourceDraftDirty || textDraftDirty || snapshot?.storedRevision === 'r1'} onSelect={()=>void reopen()}>Reload saved version</Menubar.Item>
+      </WorkspaceMenu>
+      <WorkspaceMenu label="Edit" value="edit" {activeMenu}>
+        <Menubar.Item title="Undo · Ctrl+Z" aria-label="Undo" disabled={!snapshot?.canUndo} onSelect={undo}>Undo <kbd>Ctrl+Z</kbd></Menubar.Item>
+        <Menubar.Item aria-label="Redo" disabled={!snapshot?.canRedo} onSelect={redo}>Redo <kbd>Ctrl+Shift+Z</kbd></Menubar.Item>
+      </WorkspaceMenu>
+      <WorkspaceMenu label="View" value="view" {activeMenu}>
+        <Menubar.RadioGroup bind:value={width} aria-label="Canvas size">
+          {#each [{value:'fluid',label:'Fit canvas'},{value:'768',label:'Tablet · 768'},{value:'390',label:'Phone · 390'}] as option}<Menubar.RadioItem value={option.value} closeOnSelect>{option.label}<span aria-hidden="true">{width===option.value?'\u2713':''}</span></Menubar.RadioItem>{/each}
+        </Menubar.RadioGroup>
+      </WorkspaceMenu>
+      <WorkspaceMenu label="Preview" value="preview" {activeMenu}>
+        <Menubar.Item disabled={!source || snapshot?.dirty || sourceDraftDirty || textDraftDirty || snapshot?.storedRevision==='r1'} onSelect={()=>{if(source && !snapshot?.dirty && !sourceDraftDirty && !textDraftDirty && snapshot?.storedRevision!=='r1')location.href=`/run-screen?screen=${encodeURIComponent(source.id)}${canvasWidth>0?`&width=${canvasWidth}`:''}`;}}>Run saved<span aria-hidden="true">↗</span></Menubar.Item>
+        <Menubar.Item onSelect={resetRuntime}>Reset preview</Menubar.Item>
+      </WorkspaceMenu>
+    </Menubar.Root>
     <div class="screen-picker">{#if renamingScreen}<input class="screen-name-edit" aria-label="Screen name" bind:this={screenNameInput} bind:value={screenNameDraft} maxlength="80" onkeydown={renameKey} onblur={finishRename} />{:else}<span class="current-screen" title={source?screenName(source):'No screen'}>{source?screenName(source):'No screen'}</span>{/if}</div>
     <span class="save-state">{textDraftDirty ? '● Unapplied property draft' : sourceDraftDirty ? '● Unapplied JSON draft' : snapshot?.dirty ? '● Unsaved changes' : snapshot?.storedRevision === 'r1' ? '○ New screen' : '✓ Saved'}</span>
     <a class="operator-link" href="/" aria-label="Operator tools" title="Operator tools">↗</a>
   </header>
-  <div id="studio-menu" class="screen-menu" popover="auto" ontoggle={event=>screenMenuOpen=event.newState==='open'} role="menu" aria-label={activeMenu} bind:this={screenMenu} style:left={`${screenMenuPosition.left}px`} style:top={`${screenMenuPosition.top}px`}>
-    {#if activeMenu==='File'}
-      <button role="menuitem" type="button" disabled={textDraftDirty || sourceDraftDirty} onpointerenter={closeOpenScreenMenu} onclick={()=>{closeMenu();void beginCreate();}}>New screen</button>
-      <button role="menuitem" type="button" bind:this={openScreenButton} aria-haspopup="menu" aria-expanded={openScreenMenuOpen} aria-controls="open-screen-menu" disabled={!library.length || textDraftDirty || sourceDraftDirty} onpointerenter={()=>void showOpenScreenMenu()} onclick={()=>void showOpenScreenMenu(true)}>Open screen<span aria-hidden="true">›</span></button>
-      <div id="open-screen-menu" class="screen-menu open-screen-menu" popover="auto" role="menu" aria-label="Open screen" bind:this={openScreenMenu} ontoggle={event=>openScreenMenuOpen=event.newState==='open'} style:visibility={openScreenMenuMeasuring?'hidden':undefined} style:left={`${openScreenMenuPosition.left}px`} style:top={`${openScreenMenuPosition.top}px`}>
-        {#each library as item (item.id)}<button role="menuitemradio" aria-checked={source?.id===item.id} type="button" onclick={()=>{closeMenu();openScreen(item.id);}}><span class="screen-menu-name" title={item.name}>{item.name}</span><span aria-hidden="true">{source?.id===item.id?'✓':''}</span></button>{/each}
-      </div>
-      <button role="menuitem" type="button" disabled={!source || textDraftDirty || sourceDraftDirty} onpointerenter={closeOpenScreenMenu} onclick={()=>{closeMenu();void beginRename();}}>Rename screen</button>
-      <hr />
-      <button role="menuitem" type="button" aria-label="Save" disabled={!compilation?.ok || sourceDraftDirty || textDraftDirty} onpointerenter={closeOpenScreenMenu} onclick={()=>{closeMenu();void save();}}>Save <kbd>Ctrl+S</kbd></button>
-      <button role="menuitem" type="button" title="Reload the saved screen and reset the preview" disabled={!source || snapshot?.dirty || sourceDraftDirty || textDraftDirty || snapshot?.storedRevision === 'r1'} onpointerenter={closeOpenScreenMenu} onclick={()=>{closeMenu();void reopen();}}>Reload saved version</button>
-    {:else if activeMenu==='Edit'}
-      <button role="menuitem" type="button" title="Undo · Ctrl+Z" aria-label="Undo" disabled={!snapshot?.canUndo} onclick={()=>{closeMenu();undo();}}>Undo <kbd>Ctrl+Z</kbd></button>
-      <button role="menuitem" type="button" aria-label="Redo" disabled={!snapshot?.canRedo} onclick={()=>{closeMenu();redo();}}>Redo <kbd>Ctrl+Shift+Z</kbd></button>
-    {:else if activeMenu==='View'}
-      <p class="menu-caption">Canvas size</p>
-      {#each [{value:'fluid',label:'Fit canvas'},{value:'768',label:'Tablet · 768'},{value:'390',label:'Phone · 390'}] as option}<button role="menuitemradio" aria-checked={width===option.value} type="button" onclick={()=>{width=option.value;closeMenu();}}>{option.label}<span aria-hidden="true">{width===option.value?'✓':''}</span></button>{/each}
-    {:else}
-      <a role="menuitem" aria-disabled={!source || snapshot?.dirty || sourceDraftDirty || textDraftDirty || snapshot?.storedRevision==='r1'} href={source && !snapshot?.dirty && !sourceDraftDirty && !textDraftDirty && snapshot?.storedRevision!=='r1'?`/run-screen?screen=${encodeURIComponent(source.id)}${canvasWidth>0?`&width=${canvasWidth}`:''}`:undefined} onclick={event=>{if(!source || snapshot?.dirty || sourceDraftDirty || textDraftDirty || snapshot?.storedRevision==='r1')event.preventDefault();else closeMenu();}}>Run saved</a>
-      <button role="menuitem" type="button" onclick={()=>{closeMenu();resetRuntime();}}>Reset preview</button>
-    {/if}
-  </div>
   {#if source && bridge}
   {#snippet floatingTools()}
     <SelectionPalette revealSignal={selectionToolsReveal} locked={textDraftDirty || sourceDraftDirty} onOpenComposition={selectedSlots.length && selectedNode?.id!==compositionFocus?.nodeId ? ()=>openComposition() : undefined} bind:page={palettePage} name={compositionName(source, selectedNode?.id ?? source.root)} focusSignal={paletteFocus}>

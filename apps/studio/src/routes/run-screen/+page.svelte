@@ -7,15 +7,12 @@
   import { screenStore } from '$lib/designer/storage.js';
   import { createScreenSimulation, screenDispatcher } from '$lib/designer/execution.js';
   import { Menubar } from '@victframework/ui-svelte/catalog/menubar';
+  import WorkspaceMenu from '$lib/designer/WorkspaceMenu.svelte';
   import WorkspaceBrand from '$lib/designer/WorkspaceBrand.svelte';
   import '@victframework/ui-svelte/styles.css';
   import '@victframework/ui-svelte/catalog.css';
   import '$lib/designer/workspace.css';
   let activeMenu=$state('');
-  let fileTrigger=$state<HTMLButtonElement|null>(null);
-  let viewTrigger=$state<HTMLButtonElement|null>(null);
-  let runTrigger=$state<HTMLButtonElement|null>(null);
-  function restoreMenuFocus(event:Event, trigger:HTMLButtonElement|null) {event.preventDefault();if(!activeMenu)trigger?.focus({preventScroll:true});}
   let source = $state<UiDocument>();
   let failure = $state('');
   let matchedWidth=$state<number>();
@@ -53,31 +50,22 @@
   <header class="workspace-header">
     <WorkspaceBrand />
     <Menubar.Root bind:value={activeMenu} class="workspace-menus" aria-label="Run menus" loop>
-      <Menubar.Menu value="file">
-        <Menubar.Trigger bind:ref={fileTrigger}>File</Menubar.Trigger>
-        <Menubar.Portal><Menubar.Content class="workspace-menu" sideOffset={6} collisionPadding={8} onCloseAutoFocus={event=>restoreMenuFocus(event,fileTrigger)}>
+      <WorkspaceMenu label="File" value="file" {activeMenu}>
           <Menubar.Item onSelect={() => { location.href='/design'; }}>Exit</Menubar.Item>
-        </Menubar.Content></Menubar.Portal>
-      </Menubar.Menu>
-      <Menubar.Menu value="view">
-        <Menubar.Trigger bind:ref={viewTrigger}>View</Menubar.Trigger>
-        <Menubar.Portal><Menubar.Content class="workspace-menu" sideOffset={6} collisionPadding={8} onCloseAutoFocus={event=>restoreMenuFocus(event,viewTrigger)}>
+      </WorkspaceMenu>
+      <WorkspaceMenu label="View" value="view" {activeMenu}>
           <Menubar.RadioGroup bind:value={width} aria-label="Canvas width">
             {#each sizes as size}<Menubar.RadioItem value={size.value} closeOnSelect>{size.label}<span aria-hidden="true">{width===size.value?'\u2713':''}</span></Menubar.RadioItem>{/each}
           </Menubar.RadioGroup>
-        </Menubar.Content></Menubar.Portal>
-      </Menubar.Menu>
-      <Menubar.Menu value="run">
-        <Menubar.Trigger bind:ref={runTrigger}>Run</Menubar.Trigger>
-        <Menubar.Portal><Menubar.Content class="workspace-menu" sideOffset={6} collisionPadding={8} onCloseAutoFocus={event=>restoreMenuFocus(event,runTrigger)}>
+      </WorkspaceMenu>
+      <WorkspaceMenu label="Run" value="run" {activeMenu}>
           <Menubar.Item onSelect={restart}>Restart</Menubar.Item>
           <Menubar.Separator />
           <Menubar.Group><Menubar.GroupHeading class="menu-caption">Simulation</Menubar.GroupHeading>
             <Menubar.CheckboxItem bind:checked={simulation.denied} closeOnSelect={false}>Deny demo writes<span aria-hidden="true">{simulation.denied?'\u2713':''}</span></Menubar.CheckboxItem>
             <Menubar.CheckboxItem bind:checked={simulation.failNext} closeOnSelect={false}>Fail next action<span aria-hidden="true">{simulation.failNext?'\u2713':''}</span></Menubar.CheckboxItem>
           </Menubar.Group>
-        </Menubar.Content></Menubar.Portal>
-      </Menubar.Menu>
+      </WorkspaceMenu>
     </Menubar.Root>
     <span class="run-screen-name">{source?screenName(source):'Saved screen'}</span>
   </header>

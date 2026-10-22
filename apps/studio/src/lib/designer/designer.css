@@ -49,7 +49,6 @@ body:has(.finished-screen) {
   white-space:nowrap;
   text-overflow:ellipsis;
 }
-.design-toolbar button,
 .canvas-toolbar button,
 .sidebar-body > button,
 .create-screen-dialog button {

@@ -14,7 +14,7 @@ afterEach(async () => {
   localStorage.clear();
 });
 const button = (name: string) => {
-  const item = [...document.querySelectorAll<HTMLButtonElement>('button')].find(
+  const item = [...document.querySelectorAll<HTMLElement>('button,[role="menuitem"]')].find(
     (item) => item.getAttribute('aria-label') === name || item.textContent?.trim() === name,
   );
   expect(item, name).toBeDefined();
@@ -40,10 +40,10 @@ it('opens another saved screen through File and guards the cascading menu during
   expect([...document.querySelectorAll('.studio-menus > button')].map(item => item.textContent))
     .toEqual(['File', 'Edit', 'View', 'Preview']);
   await openStudioMenu('File');
-  document.querySelector<HTMLButtonElement>('[aria-controls="open-screen-menu"]')!.click();
+  document.querySelector<HTMLElement>('.workspace-menu [role="menuitem"][aria-haspopup="menu"]')!.dispatchEvent(new KeyboardEvent('keydown',{key:'ArrowRight',bubbles:true,cancelable:true}));
   await tick();
   await tick();
-  const screens = [...document.querySelectorAll<HTMLButtonElement>('#open-screen-menu button')];
+  const screens = [...document.querySelectorAll<HTMLElement>('.open-screen-menu [role="menuitemradio"]')];
   expect(screens.find(item => item.textContent?.includes('First screen'))?.getAttribute('aria-checked')).toBe('true');
   screens.find(item => item.textContent?.includes('Second screen'))!.click();
   await tick();
@@ -57,7 +57,7 @@ it('opens another saved screen through File and guards the cascading menu during
     .dispatchEvent(new Event('input', { bubbles: true }));
   await tick();
   await openStudioMenu('File');
-  expect(document.querySelector<HTMLButtonElement>('[aria-controls="open-screen-menu"]')!.disabled).toBe(true);
+  expect(document.querySelector('.workspace-menu [role="menuitem"][aria-haspopup="menu"]')!.getAttribute('aria-disabled')).toBe('true');
   expect(document.querySelector('.current-screen')?.textContent).toBe('Second screen');
 });
 
@@ -112,8 +112,8 @@ it('opens a closed composition without authored or runtime changes, guards draft
   ).not.toBeNull();
   expect(document.querySelector('.save-state')?.textContent).toContain('Saved');
   await openStudioMenu('Edit');
-  expect(document.querySelector<HTMLButtonElement>('[title="Undo · Ctrl+Z"]')?.disabled).toBe(true);
-  window.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', cancelable: true }));
+  expect(document.querySelector('[title="Undo · Ctrl+Z"]')?.getAttribute('aria-disabled')).toBe('true');
+  document.querySelector('[role="menu"]')!.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles:true, cancelable: true }));
   const paragraph = document.querySelector<HTMLElement>('[data-ui-node=paragraph]')!;
   paragraph.dispatchEvent(new MouseEvent('dblclick', { bubbles: true, cancelable: true }));
   await tick();
