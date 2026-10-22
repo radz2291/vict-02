@@ -119,7 +119,7 @@
   </header>
   <div class="agent-context">
     <span title={screenLabel}>{screenLabel}</span>
-    {#if selectionLabel && selectionLabel!=='Screen' && selectionLabel!==screenLabel}<span class="agent-selection" title={`Selected: ${selectionLabel}`}>{selectionLabel}</span>{/if}
+    {#if selectionLabel && selectionLabel!=='None' && selectionLabel!=='Screen' && selectionLabel!==screenLabel}<span class="agent-selection" title={`Selected: ${selectionLabel}`}>{selectionLabel}</span>{/if}
   </div>
   <Conversation surfaceId="studio-agent" {messages}
     emptyMessage="Describe a screen, or select an element to edit it."
