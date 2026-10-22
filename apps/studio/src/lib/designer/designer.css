@@ -336,20 +336,6 @@ body:has(.finished-screen) {
   margin: 16px 0 6px;
   color: #65748d;
 }
-.document-name {
-  display: grid;
-  gap: 4px;
-  font-size: 11px;
-  color: #78849a;
-  margin-bottom: 12px;
-}
-.document-name input {
-  width: 100%;
-  padding: 6px 8px;
-  border: 1px solid #dce2eb;
-  border-radius: 4px;
-  color: #34425a;
-}
 .document-drawer .uv-layers header {
   padding: 7px;
 }
@@ -584,10 +570,8 @@ body:has(.finished-screen) {
 .empty-composition h2 {font-size:16px;font-weight:500;}
 
 /* Source gets a wider dock; narrow screens use an edge-to-edge drawer. */
-.drawer-heading > span {margin-left:auto;max-width:55%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:10px;color:#8390a4;}
 .document-drawer .sidebar-body {display:flex;flex-direction:column;gap:0;padding:12px;}
 .document-drawer .uv-layers {flex:1;min-height:0;height:auto;}
-.document-drawer .document-name {margin-bottom:10px;}
 .section-heading {margin:2px 0 14px;} .section-heading h2,.data-heading h2 {font-size:13px;font-weight:600;color:#34425a;margin:0 0 4px;}
 .section-heading > span,.data-heading > span {font-size:10px;color:#7d8a9d;}
 .data-list {display:flex;flex-direction:column;}
@@ -612,3 +596,8 @@ body:has(.finished-screen) {
 .source-body .source-actions {flex:none;margin:10px 0;}
 .application-attachment {flex:none;font-size:10px;color:#7b879c;max-height:25%;overflow:auto;}
 .document-drawer :focus-visible {outline:2px solid #5269bd;outline-offset:-1px;}
+
+.drawer-heading .screen-name-button,.drawer-heading .screen-name-edit {margin-left:auto;max-width:60%;min-width:0;box-sizing:border-box;font:11px/1.4 'Segoe UI',system-ui,sans-serif;color:#65748d;padding:4px 6px;border:1px solid transparent;border-radius:4px;}
+.drawer-heading .screen-name-button {white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:text;}
+.drawer-heading .screen-name-button:hover {background:#f3f5fb;border-color:#e1e6ee;}
+.drawer-heading .screen-name-edit {width:60%;background:white;border-color:#5269bd;color:#34425a;}

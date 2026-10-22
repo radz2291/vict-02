@@ -202,7 +202,7 @@
   }
 </script>
 <nav class="uv-layers" class:compact aria-label={ariaLabel} bind:this={root}>
-  <header><h2>{ariaLabel}</h2><div class="search"><input type="search" aria-label="Search layers" placeholder="Find an element…" bind:value={search} onkeydown={e => { if (e.key === 'Escape') search = ''; if (e.key === 'ArrowDown' && entries[0]) { e.preventDefault(); void focus(entries[0].key); } }} />{#if query}<button type="button" aria-label="Clear layers search" onclick={() => search = ''}>×</button>{/if}</div>{#if query}<p role="status">{matches.length} matches · ancestors shown</p>{/if}</header>
+  <header><h2>{ariaLabel}</h2><div class="search"><input type="search" aria-label="Search layers" placeholder="Search layers" bind:value={search} onkeydown={e => { if (e.key === 'Escape') search = ''; if (e.key === 'ArrowDown' && entries[0]) { e.preventDefault(); void focus(entries[0].key); } }} />{#if query}<button type="button" aria-label="Clear layers search" onclick={() => search = ''}>×</button>{/if}</div>{#if query}<p role="status">{matches.length} matches · ancestors shown</p>{/if}</header>
   <ul role="tree" aria-label="Document layers">
     {#each entries as entry (entry.key)}
       <li role="none" class:is-parent={entry.children && (!entry.compact || entry.component)} class:is-ancestor={selectedAncestors.has(entry.key)} class:is-selected={entry.key===selectedOccurrence} style:padding-left={`${entry.depth * 16}px`}>

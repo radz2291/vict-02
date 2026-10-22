@@ -85,6 +85,25 @@
   let mode = $state<'design' | 'interact'>('design');
   let drawerOpen = $state(false);
   let drawerWidth = $state(320);
+  let renamingScreen=$state(false);
+  let screenNameDraft=$state('');
+  let screenNameInput=$state<HTMLInputElement>();
+  let renameButton=$state<HTMLButtonElement>();
+  async function beginRename() {
+    if(!source || textDraftDirty || sourceDraftDirty)return;
+    screenNameDraft=screenName(source);renamingScreen=true;
+    await tick();screenNameInput?.focus();screenNameInput?.select();
+  }
+  function finishRename() {
+    if(!renamingScreen)return;
+    renamingScreen=false;
+    const name=screenNameDraft.trim();
+    if(source && name && name!==screenName(source)) apply(setAttribute({requestId:crypto.randomUUID(),nodeId:source.root,name:'aria-label',value:name}));
+  }
+  function renameKey(event:KeyboardEvent) {
+    if(event.key==='Escape') {event.preventDefault();event.stopPropagation();renamingScreen=false;void tick().then(()=>renameButton?.focus());}
+    if(event.key==='Enter') {event.preventDefault();finishRename();void tick().then(()=>renameButton?.focus());}
+  }
   let documentButton: HTMLButtonElement;
   function closeDrawer() { if(dataDraftDirty || sourceDraftDirty) {notice='Apply or cancel your draft before closing Document.';return;} drawerOpen = false; documentButton?.focus(); }
   const editorLabels = { actions: { 'demo.submit': 'Submit (simulated)' }, nodes: { screen: 'Screen' },
@@ -347,11 +366,10 @@
     {#if drawerOpen}
     {#if drawerTab!=='Source'}<div class="drawer-resizer"><PanelResizer label="Document drawer width" value={drawerWidth} min={280} max={460} reverse onChange={(value: number) => drawerWidth = value} /></div>{/if}
     <aside id="document-drawer" class="document-drawer" class:source-drawer={drawerTab==='Source'} aria-label="Document">
-      <div class="drawer-heading"><strong>Document</strong><span>{screenName(source)}</span><button type="button" aria-label="Close document" onclick={closeDrawer}>×</button></div>
+      <div class="drawer-heading"><strong>Document</strong>{#if renamingScreen}<input class="screen-name-edit" aria-label="Screen name" bind:this={screenNameInput} bind:value={screenNameDraft} maxlength="80" onkeydown={renameKey} onblur={finishRename} />{:else}<button class="screen-name-button" type="button" bind:this={renameButton} title="Rename screen" aria-label="Rename screen" disabled={textDraftDirty || sourceDraftDirty} onclick={beginRename}>{screenName(source)}</button>{/if}<button type="button" aria-label="Close document" onclick={closeDrawer}>×</button></div>
       <nav class="sidebar-tabs" aria-label="Document sections">{#each ['Layers', 'Data', 'Actions', 'Source'] as tab}<button type="button" aria-pressed={drawerTab === tab} disabled={(dataDraftDirty || sourceDraftDirty) && drawerTab!==tab} onclick={() => changeDocumentTab(tab)}>{tab}</button>{/each}</nav>
       <div class="sidebar-body" class:source-body={drawerTab==='Source'}>
         {#if drawerTab === 'Layers'}
-          <label class="document-name">Screen name<input aria-label="Screen name" value={screenName(source)} onchange={event => apply(setAttribute({ requestId: crypto.randomUUID(), nodeId: source.root, name: 'aria-label', value: event.currentTarget.value }))} /></label>
           {#if plan}<Layers compact hideTextContent {plan} document={source} selectedOccurrence={selected} onSelect={selectFromStructure} onOpenComposition={navigateComposition} componentDescriptors={catalogDescriptors} />{/if}
         {:else if drawerTab === 'Data'}
           {#if selectedData && source.localState[selectedData]}
