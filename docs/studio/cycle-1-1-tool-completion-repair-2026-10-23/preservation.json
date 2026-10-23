@@ -1,0 +1,16 @@
+{
+  "owner": {
+    "canvasSame": true,
+    "feedSame": true,
+    "draftSame": true,
+    "status": " Ready",
+    "reloaded": false,
+    "requestReplayed": false
+  },
+  "review": {
+    "canvasSame": true,
+    "feedSame": true,
+    "draftSame": true
+  },
+  "comparison": "Per-field rendered HTML and draft byte equality"
+}

@@ -1,4 +1,4 @@
-# Cycle 1.1 plain-request tool completion repair — IN PROGRESS
+# Cycle 1.1 full-thinking plain-request repair — verified and locally active
 
 2026-10-23. Owner reports “it is not working” after two ordinary requests:
 `Pls create a landing page for an Ai platform like chatgpt, called Quellight.`
@@ -120,3 +120,77 @@ The preview is visual UI only; application/backend authoring remains excluded.
 Do not reload the owner's unsaved screen to get new frontend failure wording.
 The backend fix is compatible with its loaded client. A fresh review tab can
 load the updated UI while preserving the existing canvas, draft and transcript.
+
+## Final independent gate and activation
+
+**PASS WITH NON-BLOCKING FINDINGS** on exact pushed product
+`3c54f5e525827b66abcee9ac03acc68642b9e8c3`, Studio tree
+`d806ebf394c50bd7bf2c0307b2fc89c147a8ea0c`. Independent evidence
+`638f0cb4f35ad48ad1bedfdd61d8090c973334c1` on
+`codex/studio-cycle-1-1-tool-completion-verification-final` was fetched and
+remote-compared before activation, then retained here by evidence-only
+cherry-pick `91f8c4083f0bd795f76d0a188f10a94b619c3a3e`.
+[Independent report and full evidence](verification-cycle-1-1-tool-completion/FINAL-VERIFICATION.md).
+
+- Independent full suite **159/159**, TypeScript, scoped lint (0 errors, an
+  explicitly retained ignored Svelte-file warning) and exact build PASS.
+- Real full Mastra probe and actual request bytes prove `max_tokens: 131072`,
+  streaming and no reasoning-effort override. First valid step consumes 5053
+  tokens, beyond the previous cap. Five acknowledged batches complete normally.
+- Three production browser requests use the owner's exact uncoached prompt:
+  blank runs complete with 8 and 6 batches; the saved nonempty `r1.r2` case
+  with two failed turns already in chat completes with 6. No refusals, forced
+  new screen or fresh-go loop. Selected follow-up changes exactly one text node.
+- Actual add/modify/move/remove, Undo/Redo/Save/reopen PASS. Explicit footer
+  removal changes exactly seven subtree nodes plus its parent edge; Undo
+  restores the precise previous page. Real stale and draft controls have zero
+  agent effects and preserve the manual edit/draft. A real provider refusal
+  with an invalid fixture credential is safely reported; no owner key change.
+- The initial interrupted browser run and initial overstrict footer-selection
+  assertion are retained, with bounded harness-only repairs/reruns. No product
+  source changed during independent verification. Prior historical failures
+  and closures are preserved. No mock-only acceptance claim is made.
+- Credential/client scan: 44 client files, actual key matches 0, server-only
+  markers 0. Eight externals plus Markdown/native dependencies resolve to the
+  same physical files at the activation destination.
+
+Manager reviewed actual first-edit/completed-page/provider-failure screenshots.
+Chat/canvas hierarchy is clear and controls do not overlap. Remaining findings:
+first visible edits take **96–131 seconds** and builds **166–218 seconds** with
+default thinking in these samples; assistant prose sometimes exposes technical
+editing details. Neither is hidden or promoted to a speed/copy-quality claim.
+Earlier layout-gate responsive limitations remain scoped historical findings.
+
+Both owner-origin tabs were idle before the update. Only our verified 5591
+listener PID 69644 was stopped. The independent 202-file artifact was checked,
+copied without removing old hashed assets, then every active destination hash
+was verified again after launch. [Activation](cycle-1-1-tool-completion-repair-2026-10-23/activation.json),
+[active artifact](cycle-1-1-tool-completion-repair-2026-10-23/active-artifact-verified.json),
+[server](cycle-1-1-tool-completion-repair-2026-10-23/active-server.json).
+New launcher session 66220 / child PID 85600 serves 5591, using the existing
+temporary auth/models files in server environment only. No file was modified
+or credential copied. Other owner servers and the original main checkout are
+untouched; original main remains `4d2df037…` with its untracked builder tarball.
+Fetched main is still `d7401bef6e48330796c74ec00c86db9622d48cdf`.
+
+Session renewal used a separate temporary login tab, then closed it. Reconnect
+refreshed the original chat's CSRF token without reloading its page. Owner tab 2
+remains on the unsaved blank Quellight screen with exactly the same canvas HTML,
+draft and failed chat feed, now Ready. No owner prompt was replayed or saved.
+Both loaded tabs were byte-identical across server activation before the review
+tab's deliberate fresh load. [Per-field comparison](cycle-1-1-tool-completion-repair-2026-10-23/preservation.json),
+[owner after update](cycle-1-1-tool-completion-repair-2026-10-23/owner-after-activation.jpg).
+
+Only the saved, empty-chat review tab 6 was reloaded to show the new frontend
+failure copy. The default registration screen initially reopened; File → Open
+restored its original saved Untitled screen, whose digest remains
+`v1_b30d4048eec3…`. No saved record was changed. [Review load](cycle-1-1-tool-completion-repair-2026-10-23/review-fresh-load.json).
+The owner's original loaded client gets the backend fix immediately; new
+code-specific failure wording requires its next safe page load. Its unsaved
+screen/transcript were deliberately retained instead of silently refreshed.
+
+The delivery branch adds only evidence/documentation after the verified product;
+its Studio tree remains byte-identical. All earlier source and evidence are
+preserved. **Stop: Cycle 1.1 ready for owner review.** Broader Stage 9 remains
+reopened/in progress; no owner acceptance, main merge, publication, deployment
+or Cycle 1.2 is claimed or begun.

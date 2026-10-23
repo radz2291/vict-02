@@ -1,6 +1,15 @@
 # Stage 9 reopened — Studio Cycle 1.1
 
-Current continuation (2026-10-23): owner reports another failed ordinary
+Current verified delivery (2026-10-23): full-thinking plain-request repair
+product `3c54f5e525827b66abcee9ac03acc68642b9e8c3`, independent PASS WITH
+NON-BLOCKING FINDINGS, remote-equal evidence
+`638f0cb4f35ad48ad1bedfdd61d8090c973334c1`. Exact artifact is locally active
+at 5591 with owner canvas/draft/chat preserved. Full provider output window,
+default thinking, real plain requests and failed-history retry are proven.
+[Final repair report, retained observations, launch and hands-on review](CYCLE-1-1-TOOL-COMPLETION-REPAIR.md).
+Next action is owner review only. No owner acceptance, main merge or Cycle 1.2.
+
+Historical repair entry (2026-10-23): owner reports another failed ordinary
 Quellight request. Read [tool completion repair](CYCLE-1-1-TOOL-COMPLETION-REPAIR.md)
 before the historical delivery below. Only bounded Studio provider generation,
 complete tool-input admission and truthful completion feedback repairs are

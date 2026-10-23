@@ -1,5 +1,31 @@
 # Studio Designer — current delivery state
 
+## 2026-10-23 — Full-thinking plain-request repair verified and locally active
+
+Independent **PASS WITH NON-BLOCKING FINDINGS** on exact product
+`3c54f5e525827b66abcee9ac03acc68642b9e8c3`, branch
+`codex/studio-cycle-1-1-tool-completion-repair`. Remote-equal evidence
+`638f0cb4f35ad48ad1bedfdd61d8090c973334c1` is on
+`codex/studio-cycle-1-1-tool-completion-verification-final`.
+[Cause, activation, launch and review](CYCLE-1-1-TOOL-COMPLETION-REPAIR.md);
+[independent gate](verification-cycle-1-1-tool-completion/FINAL-VERIFICATION.md).
+
+Actual provider requests use full 131072 output tokens with no reasoning-effort
+override. Independent 159/159, TypeScript/build and real z.ai proof pass: three
+uncoached exact-owner-prompt browser journeys (8/6/6 batches), including saved
+nonempty content and two failed turns in chat, selected-only modification,
+all four operations, Undo/Redo/Save/reopen, real stale/draft refusal and genuine
+provider failure. Original 4000-token exhaustion/false completion and incomplete
+harness observations remain retained. Latency and assistant copy remain nonblocking.
+
+All 202 active artifact hashes match the exact independent build at 5591.
+The owner's unsaved Quellight canvas, draft and feed are byte-identical, with
+Ready status and no reload or request replay. A separate existing saved,
+empty-chat review tab loads the new UI; its original Untitled screen is restored
+with the same saved source digest. Historical saved screens remain available.
+Cycle 1.1 is ready for owner review, not owner accepted. Broader Stage 9 remains
+REOPENED / IN PROGRESS. No main merge or Cycle 1.2.
+
 ## 2026-10-23 — Plain-request tool completion repair IN PROGRESS
 
 Owner's uncoached Quellight landing-page request failed twice on a blank
