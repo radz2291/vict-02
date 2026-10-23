@@ -1,0 +1,85 @@
+{
+  "reviewedAt": "2026-10-23T23:02:18.608Z",
+  "scope": "Read-only diagnosis of an owner-run all-component authoring turn. Platform behavior and efficiency only; example content, product facts, imagery and sales-design choices excluded.",
+  "baselineDelivery": "144611a7f642ac90c1384e07223a2a5289721e7f",
+  "product": "be893f29d44f595a8d9982575c2199636df69597",
+  "model": "zai/glm-5.3-flash",
+  "turnId": "turn-ef934123-49db-43fe-a6a0-1f227cef3d31",
+  "screenId": "screen-c6c347dc-cc14-49a6-9a37-093cfd57c8eb",
+  "savedRevisionAtReview": "r1.r1",
+  "confirmedTurnRevision": "r1#36",
+  "sourceUnchangedByReview": true,
+  "document": {
+    "nodes": 254,
+    "reachableNodes": 254,
+    "catalogDefinitions": 78,
+    "requestedRecipesReported": 83,
+    "declaredState": 47,
+    "unreferencedState": 14,
+    "unreferencedDateTimeStateDeclarations": 7,
+    "dateTimeComponentInstances": 7,
+    "dateTimeComponentInstancesWithAuthoredOutputs": 0,
+    "nestedButtonElementsObserved": 0
+  },
+  "retention": {
+    "visibleTimelineEntries": 240,
+    "earlierTimelineEntriesCompacted": 258,
+    "progressSummaryEntries": 100,
+    "progressSummaryLimit": 100,
+    "completeInvocationHistoryAvailable": false
+  },
+  "retainedProgress": {
+    "readStarts": 18,
+    "editPreparationStarts": 40,
+    "acknowledgedEdits": 36,
+    "editRefusals": 4,
+    "visualAttempts": 2,
+    "visualRefusals": 2,
+    "minimumToolStarts": 60,
+    "configuredToolCallLimit": 64,
+    "configuredModelStepLimit": 64,
+    "minimumToolAllowanceUsedPercent": 93.75,
+    "visibleEditAcceptancePercent": 90,
+    "interpretation": "Counts come from the retained 100-entry progress window. Acknowledged total36 is also in the terminal receipt. Other counts describe the retained evidence and may omit older attempts. Tool calls are not model steps or provider round trips; exact step count, timing and token cost are not established. No claim of a budget-limit termination."
+  },
+  "refusals": [
+    { "phase": "edit", "kind": "interactive-slot", "message": "A trigger/action/cancel slot already supplies a button. Use text or noninteractive content." },
+    { "phase": "edit", "code": "STUDIO_AGENT_VALIDATION", "diagnostics": ["UI_DOC_UNKNOWN_PROP"] },
+    { "phase": "edit", "code": "STUDIO_AGENT_VALIDATION", "diagnostics": ["UI_COMPONENT_BINDING_INCOMPATIBLE", "UI_COMPONENT_BINDING_INCOMPATIBLE"] },
+    { "phase": "edit", "code": "STUDIO_AGENT_VALIDATION", "diagnostics": ["UI_EXPR_TYPE_MISMATCH", "UI_COMPONENT_BINDING_INCOMPATIBLE", "UI_EXPR_TYPE_MISMATCH", "UI_COMPONENT_BINDING_INCOMPATIBLE", "UI_EXPR_TYPE_MISMATCH"] },
+    { "phase": "observe", "code": "STUDIO_CAPTURE_STALE", "attempts": 2, "rootCauseEstablished": false }
+  ],
+  "coverageRecovery": {
+    "recipesAddedLateBeforeManifestCheck": ["combobox-multiple", "accordion-multiple", "scroll-area"],
+    "catalogAuthoredAfterBatch35": 74,
+    "missingAtManifestCheck": ["context-menu.group", "menubar.checkbox-item", "menubar.checkbox-group", "menubar.group"],
+    "catalogAuthoredAfterBatch36": 78,
+    "missingFourRechecked": true,
+    "sourcePresenceIsBehaviorProof": false
+  },
+  "typedAuthoring": {
+    "canonicalAdditionalStateTypes": ["stringList", "numberList", "isoDate", "isoTime"],
+    "agentDeclareStateTypes": ["string", "number", "boolean"],
+    "listControlsAlreadyWired": [
+      { "nodeId": "selmulti-sw", "type": "stringList", "prop": "values", "output": "valuesChange" },
+      { "nodeId": "tgm-ports", "type": "stringList", "prop": "values", "output": "valuesChange" },
+      { "nodeId": "slider-trade", "type": "numberList", "prop": "value", "output": "valueChange" }
+    ],
+    "runtimeInteractionsRetestedByReviewer": false,
+    "finding": "The agent's final explanation understates existing list-state wiring. Typed date/time state exists in the framework but is not exposed by this scalar-only declaration tool."
+  },
+  "outcome": {
+    "engineTermination": "completed",
+    "studioCode": "STUDIO_AGENT_TOOL_FAILED",
+    "unresolvedTools": ["studio_screen_observe"],
+    "acknowledgedEditsPreserved": 36,
+    "visualObservationSucceeded": false,
+    "statusIssue": "Generic status says an edit could not complete, while the unresolved tool is observation."
+  },
+  "evidenceLimitations": [
+    "The historical capture refusal does not identify which freshness fence fired. No provider or browser-interaction replay was performed.",
+    "There is no reliable wall-clock duration, per-phase timing, exact main-model step/round-trip count, token/cost rollup or complete early-call history in the reviewed UI evidence.",
+    "No claim that every read was redundant, every binding was exercised, unused state is invalid, or an unbound demonstration control is a framework defect.",
+    "The owner's full document, conversation, screenshots and example content are not committed with this aggregate evidence."
+  ]
+}

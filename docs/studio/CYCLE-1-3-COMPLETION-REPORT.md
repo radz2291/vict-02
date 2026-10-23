@@ -1,5 +1,7 @@
 # Cycle 1.3 completion — candidate and verification record
 
+> Owner review update, 2026-10-24: **new platform findings OPEN; report-only follow-up.** Read the [owner-run platform and turn-efficiency assessment](CYCLE-1-3-AGENT-STRESS-REVIEW.md#2026-10-24-owner-run-follow-up--platform-behavior-and-turn-efficiency). Source coverage succeeded, but both visual attempts were stale; typed-state authoring, canonical diagnostics, phase-specific recovery and efficiency telemetry have open findings. Example content is excluded. Earlier independent PASS below remains valid for its recorded scope; it is not acceptance of this later task. Product remains `be893f29d44f595a8d9982575c2199636df69597`; no product repair in this report. Owner acceptance pending; Stage 9 remains REOPENED / IN PROGRESS.
+
 2026-10-24. **INDEPENDENT PASS — READY FOR OWNER REVIEW. Owner acceptance remains pending.** Stage 9 remains REOPENED / IN PROGRESS. Earlier candidates and failed observations are preserved in the linked historical record.
 
 Branch `codex/studio-cycle-1-3-completion`; first pushed product candidate `b67baf14ad6b0ef017adc7fdadc45747a6e874ad`, based on delivery `d47af9f869fa506943e04cd4a3fe921f5830bcb2`. Remote main remains `d7401bef6e48330796c74ec00c86db9622d48cdf`. Scope authority and complete criteria: [completion round](CYCLE-1-3-COMPLETION.md). The fresh verifier uses a separate checkout and its own dependencies. Earlier product candidates and repairs retain their exact-scope evidence.
