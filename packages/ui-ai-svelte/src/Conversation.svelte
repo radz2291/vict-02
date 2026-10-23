@@ -2,17 +2,23 @@
   import { onDestroy, tick, type Snippet } from 'svelte';
   import CopyIcon from '@lucide/svelte/icons/copy';
   import CheckIcon from '@lucide/svelte/icons/check';
+  import CircleCheckIcon from '@lucide/svelte/icons/circle-check';
+  import CircleXIcon from '@lucide/svelte/icons/circle-x';
+  import CircleDashedIcon from '@lucide/svelte/icons/circle-dashed';
+  import LoaderCircleIcon from '@lucide/svelte/icons/loader-circle';
+  import RotateCwIcon from '@lucide/svelte/icons/rotate-cw';
   import * as Message from './upstream/ui/message/index.js';
   import * as Bubble from './upstream/ui/bubble/index.js';
   import PromptInput from './patterns/PromptInput.svelte';
   import * as MessageScroller from './upstream/ui/message-scroller/index.js';
   import * as Trace from './upstream/ui/trace/index.js';
-  import { Button } from './upstream/ui/button/index.js';
+  import MessageAction from './MessageAction.svelte';
   import Markdown from './upstream/markdown/markdown.svelte';
   import type { ConversationMessage, SendResult } from './adapters.js';
 
   let { messages, busy = false, onSend, onStop, emptyMessage = 'How can I help?',
     inputLabel = 'Message', inputPlaceholder = 'Write a message…', footer,
+    title, description, onReset,
   }: {
     messages: readonly ConversationMessage[];
     busy?: boolean;
@@ -22,6 +28,9 @@
     inputLabel?: string;
     inputPlaceholder?: string;
     footer?: Snippet;
+    title?: string;
+    description?: string;
+    onReset?: () => void;
   } = $props();
   let draft = $state('');
   let sending = $state(false);
@@ -67,6 +76,15 @@
 <!-- Composition derived from the pinned shadcn-svelte AI Chat/Prompt Input/Tool patterns.
      VICT owns only callbacks and honest lifecycle state; there is no tutorial transport. -->
 <section class="vict-ai vict-ai-conversation" aria-label="Conversation">
+  {#if title || description || onReset}
+    <div class="flex items-start justify-between gap-4 px-6 pb-2 pt-6">
+      <div class="flex flex-col gap-1">
+        {#if title}<div class="font-medium">{title}</div>{/if}
+        {#if description}<div class="text-sm text-muted-foreground">{description}</div>{/if}
+      </div>
+      {#if onReset && !busy}<MessageAction label="Reset conversation" onclick={onReset}><RotateCwIcon aria-hidden="true"/></MessageAction>{/if}
+    </div>
+  {/if}
   <MessageScroller.Provider>
     <MessageScroller.Root class="vict-ai-feed-root">
       <MessageScroller.Viewport class="vict-conversation" data-testid="conversation-feed" role="region" aria-label={`Messages — ${inputLabel}`} tabindex={0}>
@@ -75,8 +93,8 @@
           {#each messages as message (message.id)}
             <MessageScroller.Item messageId={message.id} scrollAnchor={message.role === 'user'}>
               <Message.Root align={message.role === 'user' ? 'end' : 'start'} data-testid="conversation-message" data-participant={message.role}>
-                <Message.Content>
-                  <span class="vict-ai-author">{message.author ?? (message.role === 'user' ? 'You' : 'Assistant')}</span>
+                <Message.Content class="gap-2">
+                  <span class="vict-ai-sr">{message.author ?? (message.role === 'user' ? 'You' : 'Assistant')}</span>
                   {#if message.role === 'user'}
                     <Bubble.Root align="end" variant="muted"><Bubble.Content><span class="vict-ai-user-text">{message.text}</span></Bubble.Content></Bubble.Root>
                   {:else}
@@ -85,7 +103,13 @@
                         {#each message.activity as activity (activity.id)}
                           <Trace.Collapsible>
                             <Trace.CollapsibleTrigger><Trace.Line status={activity.state === 'completed' ? undefined : activity.state === 'failed' ? 'error' : activity.state}>
-                              <Trace.Title>{activity.title}</Trace.Title><span class="vict-ai-activity-state">{activity.state}</span>
+                              <Trace.Icon>
+                                {#if activity.state === 'running'}<LoaderCircleIcon class="animate-spin"/>
+                                {:else if activity.state === 'completed'}<CircleCheckIcon/>
+                                {:else if activity.state === 'failed'}<CircleXIcon/>
+                                {:else}<CircleDashedIcon/>{/if}
+                              </Trace.Icon>
+                              <Trace.Title>{activity.title}</Trace.Title><span class="vict-ai-sr">{activity.state}</span>
                             </Trace.Line></Trace.CollapsibleTrigger>
                             <Trace.CollapsibleContent>{activity.detail ?? activity.title}</Trace.CollapsibleContent>
                           </Trace.Collapsible>
@@ -93,15 +117,14 @@
                       </Trace.Root>
                     {/if}
                     <div class="vict-ai-markdown"><Markdown content={message.text}/></div>
-                    {#if message.text && !(busy && message === messages.at(-1))}
-                      <Message.Footer>
-                        <Button variant="ghost" size="icon" onclick={() => void copy(message)}
-                          aria-label="Copy message" title={copiedMessageId === message.id ? 'Copied' : 'Copy message'}
-                          data-copied={copiedMessageId === message.id || undefined}>
-                          {#if copiedMessageId === message.id}<CheckIcon aria-hidden="true"/>{:else}<CopyIcon aria-hidden="true"/>{/if}
-                        </Button>
-                      </Message.Footer>
-                    {/if}
+                  {/if}
+                  {#if message.text && !(busy && message === messages.at(-1))}
+                    <Message.Footer class={message.role === 'user' ? undefined : 'px-0'}>
+                      <MessageAction label="Copy message" hint={copiedMessageId === message.id ? 'Copied' : 'Copy message'}
+                        action="copy" copied={copiedMessageId === message.id} onclick={() => void copy(message)}>
+                        {#if copiedMessageId === message.id}<CheckIcon aria-hidden="true"/>{:else}<CopyIcon aria-hidden="true"/>{/if}
+                      </MessageAction>
+                    </Message.Footer>
                   {/if}
                 </Message.Content>
               </Message.Root>
@@ -126,12 +149,10 @@
   .vict-ai-conversation :global(.vict-ai-composer){border:1px solid var(--border,#d6dce5);border-radius:12px;background:var(--background,#fff)}
   .vict-ai-conversation :global(textarea){width:100%;min-height:64px;max-height:160px;overflow:auto;padding:10px 12px;field-sizing:content;font:inherit}
   .vict-ai-conversation.vict-ai :global(.vict-conversation-input-row){justify-content:flex-end;padding:4px 8px 8px}
-  .vict-ai-author{display:block;font-size:11px;font-weight:600;color:var(--muted-foreground,#64748b);margin-bottom:5px}
   .vict-ai-user-text{white-space:pre-wrap;overflow-wrap:anywhere}
   .vict-ai-markdown{min-width:0;overflow-wrap:anywhere}
   .vict-ai-markdown :global(pre){max-width:100%;overflow:auto}
   .vict-ai-empty{color:var(--muted-foreground,#64748b);margin:auto;text-align:center;padding:20px}
   .vict-ai-error{color:var(--destructive,#b42318);font-size:12px;margin:6px 0}
-  .vict-ai-activity-state{font-size:11px;margin-left:8px}
   .vict-ai-sr{position:absolute;width:1px;height:1px;padding:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
 </style>

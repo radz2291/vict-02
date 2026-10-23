@@ -831,127 +831,329 @@
       "id": "chain-of-thought",
       "source": "docs/content/ai-elements/chain-of-thought.md",
       "sourceSha256": "3e625bf8238f926453390c731ba01580e5f6a5b24bdeba224651899629e8e37e",
-      "disposition": "Reusable host-data composition and explicitly simulated gallery; backend requirements in COVERAGE.md"
+      "disposition": "Pinned primary composition with typed host callbacks; explicit visual/secondary-variant adaptations in PRESENTATION.md; runtime gate separate from provenance",
+      "exampleReferences": [
+        {
+          "name": "chain-of-thought-demo",
+          "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/chain-of-thought-demo.svelte",
+          "sha256": "2c975b37722ceedfb1e2c0771d45b6524f1d4d14a86a8b60ea3ddb05994c531c"
+        }
+      ]
     },
     {
       "id": "chat",
       "source": "docs/content/ai-elements/chat.md",
       "sourceSha256": "a419de860a2366ea668b15d1b34a7a4385954f94923a4d34f2f83486e18cb431",
-      "disposition": "Reusable host-data composition and explicitly simulated gallery; backend requirements in COVERAGE.md"
+      "disposition": "Pinned primary composition with typed host callbacks; explicit visual/secondary-variant adaptations in PRESENTATION.md; runtime gate separate from provenance",
+      "exampleReferences": [
+        {
+          "name": "chat-demo",
+          "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/chat-demo.svelte",
+          "sha256": "15f460ff9dc19a10b32fda9678673f34c0ebaa88aa98bb9b1e29ba348fa06655"
+        }
+      ]
     },
     {
       "id": "checkpoint",
       "source": "docs/content/ai-elements/checkpoint.md",
       "sourceSha256": "ed22b613efc1a988dee3411441a37eebdb4b4457dc4039521a3720df44f1e6b7",
-      "disposition": "Reusable host-data composition and explicitly simulated gallery; backend requirements in COVERAGE.md"
+      "disposition": "Pinned primary composition with typed host callbacks; explicit visual/secondary-variant adaptations in PRESENTATION.md; runtime gate separate from provenance",
+      "exampleReferences": [
+        {
+          "name": "checkpoint-demo",
+          "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/checkpoint-demo.svelte",
+          "sha256": "b114d8fdec0145df027bfe22299759982522f1f01f526d0f21c655d9d804252c"
+        }
+      ]
     },
     {
       "id": "confirmation",
       "source": "docs/content/ai-elements/confirmation.md",
       "sourceSha256": "0eb142c149ef94492c47f5f95ff1f2039cb524a0f1c849f25d1f858561b8313e",
-      "disposition": "Reusable host-data composition and explicitly simulated gallery; backend requirements in COVERAGE.md"
+      "disposition": "Pinned primary composition with typed host callbacks; explicit visual/secondary-variant adaptations in PRESENTATION.md; runtime gate separate from provenance",
+      "exampleReferences": [
+        {
+          "name": "confirmation-demo",
+          "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/confirmation-demo.svelte",
+          "sha256": "7853a0b1f1307c30990084bc556044f8633cfe723324001439585219976cd5f9"
+        }
+      ]
     },
     {
       "id": "context",
       "source": "docs/content/ai-elements/context.md",
       "sourceSha256": "681c62a49e2c1404c2381c63d222998e6cada1691f4943e713bfffab0535e294",
-      "disposition": "Reusable host-data composition and explicitly simulated gallery; backend requirements in COVERAGE.md"
+      "disposition": "Pinned primary composition with typed host callbacks; explicit visual/secondary-variant adaptations in PRESENTATION.md; runtime gate separate from provenance",
+      "exampleReferences": [
+        {
+          "name": "context-demo",
+          "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/context-demo.svelte",
+          "sha256": "634aa22b734da964c10916b489e44224640bab1217da12b7efe27ed096e79bfd"
+        }
+      ]
     },
     {
       "id": "file-tree",
       "source": "docs/content/ai-elements/file-tree.md",
       "sourceSha256": "e9fcd2dbd7d74ef556055e6a17ecf948b4c67c0a430b86abc61b77528a849dbb",
-      "disposition": "Reusable host-data composition and explicitly simulated gallery; backend requirements in COVERAGE.md"
+      "disposition": "Pinned primary composition with typed host callbacks; explicit visual/secondary-variant adaptations in PRESENTATION.md; runtime gate separate from provenance",
+      "exampleReferences": [
+        {
+          "name": "file-tree-demo",
+          "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/file-tree-demo.svelte",
+          "sha256": "03665b3117f58bde3ec0489ad0961b6329be4f217e287da65edbb8466c31e956"
+        }
+      ]
     },
     {
       "id": "inline-citation",
       "source": "docs/content/ai-elements/inline-citation.md",
       "sourceSha256": "58a615e47976fca592d5f9a2999c4842082a93e9fda5f98150cda9ea3da6ece0",
-      "disposition": "Reusable host-data composition and explicitly simulated gallery; backend requirements in COVERAGE.md"
+      "disposition": "Pinned primary composition with typed host callbacks; explicit visual/secondary-variant adaptations in PRESENTATION.md; runtime gate separate from provenance",
+      "exampleReferences": [
+        {
+          "name": "inline-citation-demo",
+          "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/inline-citation-demo.svelte",
+          "sha256": "f368552cd48e38583cea6e26bd48a714478ee6efff22a634e0180f8ea4319e63"
+        }
+      ]
     },
     {
       "id": "message",
       "source": "docs/content/ai-elements/message.md",
       "sourceSha256": "633474d1f09662bc6558197a08b8a737eeb05a28121ea15eda2d7189a5cfdbc8",
-      "disposition": "Reusable host-data composition and explicitly simulated gallery; backend requirements in COVERAGE.md"
+      "disposition": "Pinned primary composition with typed host callbacks; explicit visual/secondary-variant adaptations in PRESENTATION.md; runtime gate separate from provenance",
+      "exampleReferences": [
+        {
+          "name": "message-pattern",
+          "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/message-pattern.svelte",
+          "sha256": "050f11512c7adc1ad02a5faeda8cd156125cd0e4b35a18e2039dd09edc1cd292"
+        }
+      ]
     },
     {
       "id": "model-selector",
       "source": "docs/content/ai-elements/model-selector.md",
       "sourceSha256": "00842f32fcade6b7075d6a2e630c3c9068af5ba3ccdef846653fbb42216fd30c",
-      "disposition": "Reusable host-data composition and explicitly simulated gallery; backend requirements in COVERAGE.md"
+      "disposition": "Pinned primary composition with typed host callbacks; explicit visual/secondary-variant adaptations in PRESENTATION.md; runtime gate separate from provenance",
+      "exampleReferences": [
+        {
+          "name": "model-selector-demo",
+          "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/model-selector-demo.svelte",
+          "sha256": "f1d6b9cd26933b64b6ed8f89a6c0d67ecc0b3935e996e3f97bd2e9acd95891b2"
+        }
+      ]
     },
     {
       "id": "plan",
       "source": "docs/content/ai-elements/plan.md",
       "sourceSha256": "107bfa7a66544fb5981b9d76ead8e0b54dd44f1a8f97cd14b71548fcf5ca0719",
-      "disposition": "Reusable host-data composition and explicitly simulated gallery; backend requirements in COVERAGE.md"
+      "disposition": "Pinned primary composition with typed host callbacks; explicit visual/secondary-variant adaptations in PRESENTATION.md; runtime gate separate from provenance",
+      "exampleReferences": [
+        {
+          "name": "plan-demo",
+          "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/plan-demo.svelte",
+          "sha256": "80a9100c2ece162d1438f9ec708bdc6d214bcc5c2ada32a9271b388f7761b5d3"
+        },
+        {
+          "name": "plan-description",
+          "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/plan-description.svelte",
+          "sha256": "3b6a75ba057cb49466d8f8966ca7a98f1a2560ce8023a171fa67d764b1135064"
+        }
+      ]
     },
     {
       "id": "prompt-input",
       "source": "docs/content/ai-elements/prompt-input.md",
       "sourceSha256": "3ce8bb9a5a3ff58d025bf2ab875894197a4988613e509978ff118338ea33e06e",
-      "disposition": "Reusable host-data composition and explicitly simulated gallery; backend requirements in COVERAGE.md"
+      "disposition": "Pinned primary composition with typed host callbacks; explicit visual/secondary-variant adaptations in PRESENTATION.md; runtime gate separate from provenance",
+      "exampleReferences": [
+        {
+          "name": "prompt-input-demo",
+          "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/prompt-input-demo.svelte",
+          "sha256": "57e19f26a2c3e79c13056825fb096d7632f97bf1e38268f8e4a3bec6f2cf753d"
+        }
+      ]
     },
     {
       "id": "queue",
       "source": "docs/content/ai-elements/queue.md",
       "sourceSha256": "7963905a1a64218ec5c76d2ab8cd1707f536e5b8f9d7f9b3a63e6a43cbb3f3c9",
-      "disposition": "Reusable host-data composition and explicitly simulated gallery; backend requirements in COVERAGE.md"
+      "disposition": "Pinned primary composition with typed host callbacks; explicit visual/secondary-variant adaptations in PRESENTATION.md; runtime gate separate from provenance",
+      "exampleReferences": [
+        {
+          "name": "queue-demo",
+          "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/queue-demo.svelte",
+          "sha256": "af0d9e4ba2a74e7757c456a80eaa5ce5e037546d3b41aa49dc9b6a7e15043b53"
+        },
+        {
+          "name": "queue-descriptions",
+          "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/queue-descriptions.svelte",
+          "sha256": "94e459f0e822cd35a2254de79cfdcce1a419d8bc8d64d337f15963996a0f4020"
+        }
+      ]
     },
     {
       "id": "reasoning",
       "source": "docs/content/ai-elements/reasoning.md",
       "sourceSha256": "0f66f97f9e5594bdbe8a7388966d435338a5028c06a5f914eeaf5387ac5973eb",
-      "disposition": "Reusable host-data composition and explicitly simulated gallery; backend requirements in COVERAGE.md"
+      "disposition": "Pinned primary composition with typed host callbacks; explicit visual/secondary-variant adaptations in PRESENTATION.md; runtime gate separate from provenance",
+      "exampleReferences": [
+        {
+          "name": "reasoning-demo",
+          "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/reasoning-demo.svelte",
+          "sha256": "654928198ca88632da0e34f939fc7abc0f613fa1c909619f68e642f6c9299687"
+        },
+        {
+          "name": "reasoning-duration",
+          "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/reasoning-duration.svelte",
+          "sha256": "b17978defdd5a52d72e27273c215251dd52a1771f1fb328485a6f4b5b26f3147"
+        }
+      ]
     },
     {
       "id": "sources",
       "source": "docs/content/ai-elements/sources.md",
       "sourceSha256": "292392fd94a04a354dad4a010479dc44f806b00db40e3647034e0d25d116fdb1",
-      "disposition": "Reusable host-data composition and explicitly simulated gallery; backend requirements in COVERAGE.md"
+      "disposition": "Pinned primary composition with typed host callbacks; explicit visual/secondary-variant adaptations in PRESENTATION.md; runtime gate separate from provenance",
+      "exampleReferences": [
+        {
+          "name": "sources-demo",
+          "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/sources-demo.svelte",
+          "sha256": "421232da5a66414b47fa70cfa4ead081b6f7f7d930ee116e927ea6a549336b63"
+        }
+      ]
     },
     {
       "id": "stack-trace",
       "source": "docs/content/ai-elements/stack-trace.md",
       "sourceSha256": "e58e023928ec1ceb8f0e630e560e021702e2a6bb08cbe087124f3ab039cda99e",
-      "disposition": "Reusable host-data composition and explicitly simulated gallery; backend requirements in COVERAGE.md"
+      "disposition": "Pinned primary composition with typed host callbacks; explicit visual/secondary-variant adaptations in PRESENTATION.md; runtime gate separate from provenance",
+      "exampleReferences": [
+        {
+          "name": "stack-trace-demo",
+          "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/stack-trace-demo.svelte",
+          "sha256": "9739a8bb43d3cc5b3fed037b0cbfdf994a9b93b034cc932243b2acd90c153486"
+        },
+        {
+          "name": "stack-trace-frames",
+          "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/stack-trace-frames.svelte",
+          "sha256": "1245f2350a7c4283236ac29b028ffd9c98c51b10fcc637f32ee91165df009efe"
+        }
+      ]
     },
     {
       "id": "subagent",
       "source": "docs/content/ai-elements/subagent.md",
       "sourceSha256": "f667d89910f25b00ac78d1bb47de9243c8be40595d4677372b2adc59f93b7036",
-      "disposition": "Reusable host-data composition and explicitly simulated gallery; backend requirements in COVERAGE.md"
+      "disposition": "Pinned primary composition with typed host callbacks; explicit visual/secondary-variant adaptations in PRESENTATION.md; runtime gate separate from provenance",
+      "exampleReferences": [
+        {
+          "name": "subagent-demo",
+          "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/subagent-demo.svelte",
+          "sha256": "0719f1867d38432e639d00bf9efa0fc791bb75aa36887b3c17631b54da0ceb5c"
+        },
+        {
+          "name": "subagent-running",
+          "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/subagent-running.svelte",
+          "sha256": "8b12104868bc0645c53661b0decb5cc97d5c40421d65bb385d1101d215dc67dd"
+        },
+        {
+          "name": "subagent-details",
+          "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/subagent-details.svelte",
+          "sha256": "5cdde4ab3cbff4e40fde9842a0d00c91c49135c9489ea4897aa369f70112e483"
+        }
+      ]
     },
     {
       "id": "suggestion",
       "source": "docs/content/ai-elements/suggestion.md",
       "sourceSha256": "bc505977c2f7d6f970f957fee82a0adf60c3aaf11f3633ed97283bec0a4a5ea3",
-      "disposition": "Reusable host-data composition and explicitly simulated gallery; backend requirements in COVERAGE.md"
+      "disposition": "Pinned primary composition with typed host callbacks; explicit visual/secondary-variant adaptations in PRESENTATION.md; runtime gate separate from provenance",
+      "exampleReferences": [
+        {
+          "name": "suggestion-demo",
+          "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/suggestion-demo.svelte",
+          "sha256": "54f0ab3b465411cba33de9c4cba6f4df00a6456ea0c19f391638e25a3827e56e"
+        }
+      ]
     },
     {
       "id": "task",
       "source": "docs/content/ai-elements/task.md",
       "sourceSha256": "9c5fefc0fa0f848619d1fef6cbaea8525182bbfe72d955e16ac92e880c7cca01",
-      "disposition": "Reusable host-data composition and explicitly simulated gallery; backend requirements in COVERAGE.md"
+      "disposition": "Pinned primary composition with typed host callbacks; explicit visual/secondary-variant adaptations in PRESENTATION.md; runtime gate separate from provenance",
+      "exampleReferences": [
+        {
+          "name": "task-demo",
+          "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/task-demo.svelte",
+          "sha256": "c6b7b71e0686aae636fc81b418b62e72a4402c8c5e5163c696917dfc66fd1835"
+        }
+      ]
     },
     {
       "id": "terminal",
       "source": "docs/content/ai-elements/terminal.md",
       "sourceSha256": "2841dbb9ae1e394f3563031685f71d123369d70a45f9116964c20a0505b5ce7a",
-      "disposition": "Reusable host-data composition and explicitly simulated gallery; backend requirements in COVERAGE.md"
+      "disposition": "Pinned primary composition with typed host callbacks; explicit visual/secondary-variant adaptations in PRESENTATION.md; runtime gate separate from provenance",
+      "exampleReferences": [
+        {
+          "name": "terminal-demo",
+          "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/terminal-demo.svelte",
+          "sha256": "61df16c2a8fdf24b8c226577d67268661c74a1c828ba5768b208ae1229e544a5"
+        },
+        {
+          "name": "terminal-error",
+          "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/terminal-error.svelte",
+          "sha256": "87d68842f6c09dbe3913f551535a538628290d2425db4d2831de992a688a895c"
+        }
+      ]
     },
     {
       "id": "test-results",
       "source": "docs/content/ai-elements/test-results.md",
       "sourceSha256": "ac89f63e8aa2aa3bcd8885f7b89e45aea21e769ca6819a2a68350c07cabe641e",
-      "disposition": "Reusable host-data composition and explicitly simulated gallery; backend requirements in COVERAGE.md"
+      "disposition": "Pinned primary composition with typed host callbacks; explicit visual/secondary-variant adaptations in PRESENTATION.md; runtime gate separate from provenance",
+      "exampleReferences": [
+        {
+          "name": "test-results-demo",
+          "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/test-results-demo.svelte",
+          "sha256": "d6545b47d38b3d468d9c01cb363fee5b8bc21ce6afda494c4dbe191aa97cf4a8"
+        },
+        {
+          "name": "test-results-suites",
+          "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/test-results-suites.svelte",
+          "sha256": "dfb626b68d9640f46812e96c9ceef29a1c3a5d0b6b5afc20032e4781976e2bb4"
+        }
+      ]
     },
     {
       "id": "tool",
       "source": "docs/content/ai-elements/tool.md",
       "sourceSha256": "9446599d0c95ba69af12e480e9c2040077191aa6fa4f74870aec3b6e31b03f83",
-      "disposition": "Reusable host-data composition and explicitly simulated gallery; backend requirements in COVERAGE.md"
+      "disposition": "Pinned primary composition with typed host callbacks; explicit visual/secondary-variant adaptations in PRESENTATION.md; runtime gate separate from provenance",
+      "exampleReferences": [
+        {
+          "name": "tool-demo",
+          "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/tool-demo.svelte",
+          "sha256": "cf1e54616bdcc98ca0b7c267b3f5cd8a9bbbc50156e0833347ec4f80c1e0571b"
+        },
+        {
+          "name": "tool-states",
+          "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/tool-states.svelte",
+          "sha256": "e09974958bd2a0b358692093ac6f3535359ee2ddb0f3e215780f1c66be9b6c89"
+        },
+        {
+          "name": "tool-sheet",
+          "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/tool-sheet.svelte",
+          "sha256": "7007326057ec74d0f5687133402c8946614e1bf7cd8892d8f0a11f20c59e786a"
+        },
+        {
+          "name": "tool-approval",
+          "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/tool-approval.svelte",
+          "sha256": "93a194b396904f5fa71f3b32d85bf220a9b5d561455e0f2bdba8bda7fe721c03"
+        }
+      ]
     }
   ],
   "localSecurityFiles": [

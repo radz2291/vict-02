@@ -1,0 +1,53 @@
+{
+  "check": "Svelte compiler syntax only; not type/build/browser proof",
+  "results": [
+    {
+      "path": "packages/ui-ai-svelte/src/patterns/Checkpoint.svelte",
+      "sha256": "a1c87bd0ace0b43a06813298d57cd498f07448581ade49751a4fe7831e4992d2",
+      "warnings": [],
+      "compiled": true
+    },
+    {
+      "path": "packages/ui-ai-svelte/src/patterns/Confirmation.svelte",
+      "sha256": "3faf5c8f97f731ab84a75057e35fdff0e82f59499b9fdfc4b58012e6e1e6ac88",
+      "warnings": [],
+      "compiled": true
+    },
+    {
+      "path": "packages/ui-ai-svelte/src/patterns/Context.svelte",
+      "sha256": "889c820c88064a010440c942f9955815545080de809f81d0ee22ffce2594da85",
+      "warnings": [],
+      "compiled": true
+    },
+    {
+      "path": "packages/ui-ai-svelte/src/patterns/FileTree.svelte",
+      "sha256": "8e308861cbc4e43071d58b06bb75c339a030a5f81bd47e8d3da3c0cf46b20c64",
+      "warnings": [],
+      "compiled": true
+    },
+    {
+      "path": "packages/ui-ai-svelte/src/patterns/InlineCitation.svelte",
+      "sha256": "ffe5789d0bfecd42c496a0458d9dc8aa422b4f7b5efe2f56f21c706b70f8c9cf",
+      "warnings": [],
+      "compiled": true
+    },
+    {
+      "path": "packages/ui-ai-svelte/src/patterns/ModelSelector.svelte",
+      "sha256": "8330ad0197d5b0abf060552819bdb029928c9905cddb495c200f015a95c2d513",
+      "warnings": [],
+      "compiled": true
+    },
+    {
+      "path": "packages/ui-ai-svelte/src/patterns/Sources.svelte",
+      "sha256": "83014e2e70fa3b2560e0e8da33a3654dc18df6bdd1d00f3902d88a01bd2e49ac",
+      "warnings": [],
+      "compiled": true
+    },
+    {
+      "path": "packages/ui-ai-svelte/src/patterns/Suggestion.svelte",
+      "sha256": "8a187fffdf867ebe821b31ab865f3659ddf5d7b843e8e5686fadbf789872a41f",
+      "warnings": [],
+      "compiled": true
+    }
+  ]
+}

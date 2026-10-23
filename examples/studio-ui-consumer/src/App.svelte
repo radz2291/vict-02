@@ -26,7 +26,7 @@
 <svelte:head><title>VICT reusable UI showcase</title></svelte:head>
 <main>
   <header><p>VICT UI / Cycle 1.3</p><h1>Conversation and structure</h1><p>Public packages in a small standalone consumer. Demonstrations are simulated; they do not call an agent or execute workflows.</p></header>
-  <div class="surfaces"><section aria-label="Conversation showcase" class="chat"><Conversation {messages} {busy} onSend={send} onStop={busy?stop:undefined}/></section>
+  <div class="surfaces"><section aria-label="Conversation showcase" class="chat"><Conversation {messages} {busy} title="New Thread" description="Local streaming presentation fixture" onReset={()=>{generation++;busy=false;messages=[];}} onSend={send} onStop={busy?stop:undefined}/></section>
   <section aria-label="Node showcase"><h2>Node canvas</h2><p>{feedback}</p><div class="flow"><FlowCanvas bind:nodes bind:edges onconnect={connect} fitView aria-label="Reusable node canvas"/></div></section></div>
   <section class="patterns"><h2>All 21 AI Elements patterns</h2><PatternShowcase/></section>
   <section class="isolation"><h2>Unrelated host content</h2><button id="unrelated-button">Native host button</button><p>This area is outside the AI CSS scope.</p></section>

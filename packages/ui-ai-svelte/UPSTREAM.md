@@ -83,6 +83,11 @@ consumer checks are separately required by Cycle 1.3.
 7. Reusable patterns replace upstream tutorial AI SDK transports and fabricated
    tool executions with typed data/callbacks. The gallery labels fixtures and
    local callbacks. This is a presentation adaptation, not a provider migration.
+8. Owner review identified that the initial wrappers simplified official example
+   compositions. Primary structure/icons/grouping/states are corrected in the
+   presentation-fidelity pass. Each pattern now records immutable example hashes.
+   See `PRESENTATION.md` for retained host adaptations and secondary variants;
+   export counts and provenance alone do not prove visual fidelity.
 
 ## CSS consumption and isolation
 
@@ -94,8 +99,9 @@ The package builds Tailwind **4.3.3** utilities from its own source and Streamdo
 only; it does not require consumers to install Tailwind or scan package sources.
 It imports no global Preflight. Build output selectors are scoped to `.vict-ai`,
 tokens live on that scope, and utility properties/keyframes use VICT identities.
-The small reset is also scoped. Unlayered package selectors preserve the actual
-upstream appearance in hosts with unlayered element rules. No styling reaches
+The small reset is also scoped. Unlayered package selectors keep copied registry
+utilities active against host element rules; this alone does not prove pattern
+composition or pixel fidelity. No styling reaches
 the existing Bits catalog outside the AI scope. Importing CSS cannot establish
 that every host override is compatible: packed-host and Studio visual proofs
 remain part of the gate.

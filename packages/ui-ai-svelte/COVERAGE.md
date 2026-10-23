@@ -3,6 +3,8 @@
 Baseline: official shadcn-svelte commit
 `b10f153250b18abfccf49a06e1c4c68945edffa5`, Rhea style, October 2026 family.
 All 21 patterns below have reusable exports and a fixture in `PatternShowcase`.
+Visual fidelity and host/secondary-variant adaptations are separately recorded
+in [PRESENTATION.md](PRESENTATION.md), following owner review corrections.
 Names are exported through `/patterns` and the main `Patterns` namespace.
 Fixtures are **not** backend capability or product verification evidence.
 
@@ -25,7 +27,7 @@ Fixtures are **not** backend capability or product verification evidence.
 | Stack Trace | `StackTrace` | Trace, Code Block | Already-sanitized tool failure/frames; no secrets or local paths should be forwarded by the host. Fixture only; production chat uses safe existing errors. |
 | Subagent | `Subagent` | Trace, Code Block and Badge family available | Actual child run identity, statuses, public steps and result. Fixture only; no subagent launcher or fabricated run in Studio. |
 | Suggestion | `Suggestion` | Button | Explicit callback feeds an existing composer/send path; disabled without one. Fixture shown; no automatic prompt execution. |
-| Task | `Task` | Trace | Host observation of emerging steps; shares the TraceSteps composition with Plan/ChainOfThought. These remain distinct semantic inputs, not new execution models. |
+| Task | `Task` | Trace | Separate observed-work summary without a Plan counter or pending steps. Plan and ChainOfThought also have their own compositions; none adds execution semantics. |
 | Terminal | `Terminal` | Trace, Code Block | Sanitized command/output from an authorized backend. Presentation never executes shell text. Fixture-only command clearly labeled. |
 | Test Results | `TestResults` | Trace, Code Block | Actual suite records plus output; synthetic fixture is explicitly not gate evidence. No test runner is bundled. |
 | Tool | `Tool` | Trace, Code Block | Host tool identity/state/input/output with safe projection; Studio retains real commit acknowledgements, refusals and outcomes. Trace composition is shared; no tutorial endpoint. |

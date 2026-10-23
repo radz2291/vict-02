@@ -1,0 +1,486 @@
+[
+  {
+    "file": "packages\\ui-ai-svelte\\src\\Conversation.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\MessageAction.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\patterns\\ChainOfThought.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\patterns\\Checkpoint.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\patterns\\Confirmation.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\patterns\\Context.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\patterns\\FileTree.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\patterns\\InlineCitation.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\patterns\\Message.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\patterns\\ModelSelector.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\patterns\\PatternShowcase.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\patterns\\Plan.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\patterns\\PromptInput.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\patterns\\Queue.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\patterns\\Reasoning.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\patterns\\Sources.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\patterns\\StackTrace.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\patterns\\Subagent.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\patterns\\Suggestion.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\patterns\\Task.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\patterns\\Terminal.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\patterns\\TestResults.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\patterns\\Tool.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\patterns\\TraceSteps.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\markdown\\markdown-code-block.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\markdown\\markdown.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\attachment\\attachment-action.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\attachment\\attachment-actions.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\attachment\\attachment-content.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\attachment\\attachment-description.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\attachment\\attachment-group.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\attachment\\attachment-media.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\attachment\\attachment-title.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\attachment\\attachment-trigger.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\attachment\\attachment.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\badge\\badge.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\bubble\\bubble-content.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\bubble\\bubble-group.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\bubble\\bubble-reactions.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\bubble\\bubble.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\button\\button.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\code-block\\code-block-actions.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\code-block\\code-block-content.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\code-block\\code-block-copy-button.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\code-block\\code-block-footer.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\code-block\\code-block-header.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\code-block\\code-block-line.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\code-block\\code-block-title.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\code-block\\code-block.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\collapsible\\collapsible-content.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\collapsible\\collapsible-trigger.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\collapsible\\collapsible.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\dropdown-menu\\dropdown-menu-checkbox-group.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\dropdown-menu\\dropdown-menu-checkbox-item.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\dropdown-menu\\dropdown-menu-content.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\dropdown-menu\\dropdown-menu-group-heading.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\dropdown-menu\\dropdown-menu-group.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\dropdown-menu\\dropdown-menu-item.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\dropdown-menu\\dropdown-menu-label.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\dropdown-menu\\dropdown-menu-portal.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\dropdown-menu\\dropdown-menu-radio-group.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\dropdown-menu\\dropdown-menu-radio-item.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\dropdown-menu\\dropdown-menu-separator.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\dropdown-menu\\dropdown-menu-shortcut.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\dropdown-menu\\dropdown-menu-sub-content.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\dropdown-menu\\dropdown-menu-sub-trigger.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\dropdown-menu\\dropdown-menu-sub.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\dropdown-menu\\dropdown-menu-trigger.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\dropdown-menu\\dropdown-menu.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\hover-card\\hover-card-content.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\hover-card\\hover-card-portal.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\hover-card\\hover-card-trigger.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\hover-card\\hover-card.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\input\\input.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\input-group\\input-group-addon.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\input-group\\input-group-button.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\input-group\\input-group-input.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\input-group\\input-group-text.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\input-group\\input-group-textarea.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\input-group\\input-group.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\item\\item-actions.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\item\\item-content.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\item\\item-description.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\item\\item-footer.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\item\\item-group.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\item\\item-header.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\item\\item-media.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\item\\item-separator.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\item\\item-title.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\item\\item.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\marker\\marker-content.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\marker\\marker-icon.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\marker\\marker.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\message\\message-avatar.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\message\\message-content.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\message\\message-footer.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\message\\message-group.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\message\\message-header.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\message\\message.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\message-scroller\\message-scroller-button.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\message-scroller\\message-scroller-content.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\message-scroller\\message-scroller-item.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\message-scroller\\message-scroller-provider.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\message-scroller\\message-scroller-viewport.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\message-scroller\\message-scroller.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\progress\\progress.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\separator\\separator.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\textarea\\textarea.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\tooltip\\tooltip-content.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\tooltip\\tooltip-portal.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\tooltip\\tooltip-provider.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\tooltip\\tooltip-trigger.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\tooltip\\tooltip.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\trace\\trace-collapsible-content.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\trace\\trace-collapsible-trigger.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\trace\\trace-collapsible.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\trace\\trace-description.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\trace\\trace-icon.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\trace\\trace-line.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\trace\\trace-title.svelte",
+    "warnings": []
+  },
+  {
+    "file": "packages\\ui-ai-svelte\\src\\upstream\\ui\\trace\\trace.svelte",
+    "warnings": []
+  }
+]

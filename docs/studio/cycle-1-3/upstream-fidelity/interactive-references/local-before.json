@@ -1,0 +1,50 @@
+{
+  "head": "0291dfecbe6a885ad13ec722111d126fb14646f2",
+  "files": [
+    {
+      "path": "packages\\ui-ai-svelte\\src\\patterns\\Checkpoint.svelte",
+      "sha256": "53c828cdb2df14d0d61756f592dc59678845fe2094c33feb2238b1bd46a3dcde",
+      "bytes": 471
+    },
+    {
+      "path": "packages\\ui-ai-svelte\\src\\patterns\\Confirmation.svelte",
+      "sha256": "24d81a2d527afc00e8afca012deba4206bc6fbcb8c9f49519d4163f28b596bed",
+      "bytes": 801
+    },
+    {
+      "path": "packages\\ui-ai-svelte\\src\\patterns\\Context.svelte",
+      "sha256": "3959cd9c1d1652ba344384c20353d17908448bc9988ad635859da79af30f87e5",
+      "bytes": 730
+    },
+    {
+      "path": "packages\\ui-ai-svelte\\src\\patterns\\FileTree.svelte",
+      "sha256": "4952cf398e2f313956875f58399c057f554f6a9492b6982f8fcfa6ec473d092b",
+      "bytes": 1239
+    },
+    {
+      "path": "packages\\ui-ai-svelte\\src\\patterns\\InlineCitation.svelte",
+      "sha256": "005bdce2e10aefef000684048a433741e46cf2cbd868421261c2bed50715ce5b",
+      "bytes": 695
+    },
+    {
+      "path": "packages\\ui-ai-svelte\\src\\patterns\\ModelSelector.svelte",
+      "sha256": "6011b5ce48d4e80ad915ed0d1bac49417f1d5c17494707433cf54ea1154a2f40",
+      "bytes": 1685
+    },
+    {
+      "path": "packages\\ui-ai-svelte\\src\\patterns\\Sources.svelte",
+      "sha256": "ad9ba5da3f0db126f4b1d4773dcdb49008bc9efe3fafa8e91db7e468ad65d5af",
+      "bytes": 938
+    },
+    {
+      "path": "packages\\ui-ai-svelte\\src\\patterns\\Suggestion.svelte",
+      "sha256": "a51cc559c9dfd40f5586b76d6b422a1c5bda4040bc0ce4af51e8da675e4c402d",
+      "bytes": 266
+    },
+    {
+      "path": "packages\\ui-ai-svelte\\src\\patterns\\PatternShowcase.svelte",
+      "sha256": "e3e42554e47d569b6dda4002245cb705dfdfbb0327c94b05f28a010b7fc6ed99",
+      "bytes": 5845
+    }
+  ]
+}

@@ -7,7 +7,7 @@ export type Step = {
 };
 export type Citation = { id: string; title: string; url: string; excerpt?: string };
 export type FileNode = { path: string; name: string; children?: readonly FileNode[] };
-export type ModelOption = { id: string; label: string };
+export type ModelOption = { id: string; label: string; /** Optional host-supplied provider/group label. */ group?: string };
 export const aiElementPatterns = [
   'chain-of-thought',
   'chat',

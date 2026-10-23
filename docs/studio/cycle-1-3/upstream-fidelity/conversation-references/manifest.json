@@ -1,0 +1,32 @@
+[
+  {
+    "Path": "docs/content/ai-elements/chat.md",
+    "Url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/content/ai-elements/chat.md",
+    "Sha256": "a419de860a2366ea668b15d1b34a7a4385954f94923a4d34f2f83486e18cb431"
+  },
+  {
+    "Path": "docs/content/ai-elements/message.md",
+    "Url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/content/ai-elements/message.md",
+    "Sha256": "633474d1f09662bc6558197a08b8a737eeb05a28121ea15eda2d7189a5cfdbc8"
+  },
+  {
+    "Path": "docs/content/ai-elements/prompt-input.md",
+    "Url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/content/ai-elements/prompt-input.md",
+    "Sha256": "3ce8bb9a5a3ff58d025bf2ab875894197a4988613e509978ff118338ea33e06e"
+  },
+  {
+    "Path": "docs/src/lib/registry/examples/chat-demo.svelte",
+    "Url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/chat-demo.svelte",
+    "Sha256": "15f460ff9dc19a10b32fda9678673f34c0ebaa88aa98bb9b1e29ba348fa06655"
+  },
+  {
+    "Path": "docs/src/lib/registry/examples/message-pattern.svelte",
+    "Url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/message-pattern.svelte",
+    "Sha256": "050f11512c7adc1ad02a5faeda8cd156125cd0e4b35a18e2039dd09edc1cd292"
+  },
+  {
+    "Path": "docs/src/lib/registry/examples/prompt-input-demo.svelte",
+    "Url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/prompt-input-demo.svelte",
+    "Sha256": "57e19f26a2c3e79c13056825fb096d7632f97bf1e38268f8e4a3bec6f2cf753d"
+  }
+]

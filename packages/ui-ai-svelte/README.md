@@ -40,6 +40,11 @@ are available at `@victframework/ui-ai-svelte/components/*`. Standalone parts
 need a `.vict-ai` ancestor and the stylesheet import. The default conversation
 and showcase supply that ancestor.
 
+See [PRESENTATION.md](PRESENTATION.md) for primary-pattern fidelity, adaptations
+and secondary-variant limits. Optional title/description/reset remain host-owned.
+Message copy uses tooltip icon actions and confirmed clipboard success; optional
+edit/retry/feedback callbacks do not invent backend operations.
+
 See [COVERAGE.md](COVERAGE.md) for each pattern's host requirements and Studio
 disposition, and [UPSTREAM.md](UPSTREAM.md) for exact pins, source provenance,
 CSS isolation, license and upgrade instructions. The example workspace
