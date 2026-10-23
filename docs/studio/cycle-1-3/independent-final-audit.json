@@ -1,0 +1,677 @@
+{
+  "product": "e6fa5f976b71150d8c334d4a2bd973fd4a653012",
+  "checkoutHead": "29fcbea957161f30ebd5a5b6681b5225a4d4d732",
+  "at": "2026-10-23T09:17:31.836Z",
+  "manifest": {
+    "candidate": "e6fa5f976b71150d8c334d4a2bd973fd4a653012",
+    "count": 247,
+    "mismatches": []
+  },
+  "changedSinceProduct": [
+    "docs/VICT-SYSTEM-REFERENCE.md",
+    "docs/architecture/STAGE-09-STUDIO-AND-RECOVERY.md",
+    "docs/governance/VICT-STAGE-09-STATE.md",
+    "docs/handoff/VICT-STAGE-09-STUDIO-HANDOFF.md",
+    "docs/studio/CYCLE-1-3-CHECKPOINT.md",
+    "docs/studio/CYCLE-1-3-INDEPENDENT.md",
+    "docs/studio/CYCLE-1-3-REPORT.md",
+    "docs/studio/STATE.md",
+    "docs/studio/cycle-1-3/01-real-build.png",
+    "docs/studio/cycle-1-3/02-real-stopped-applied.png",
+    "docs/studio/cycle-1-3/ai-check-final.log",
+    "docs/studio/cycle-1-3/ai-css-final.log",
+    "docs/studio/cycle-1-3/build-final.log",
+    "docs/studio/cycle-1-3/build-initial.log",
+    "docs/studio/cycle-1-3/busy-1280x500.png",
+    "docs/studio/cycle-1-3/busy-1280x720.png",
+    "docs/studio/cycle-1-3/busy-390x700.png",
+    "docs/studio/cycle-1-3/consumer-disk-failure.log",
+    "docs/studio/cycle-1-3/consumer.json",
+    "docs/studio/cycle-1-3/consumer.log",
+    "docs/studio/cycle-1-3/context-designer-check.log",
+    "docs/studio/cycle-1-3/context-editor-build.log",
+    "docs/studio/cycle-1-3/context-root-typecheck.log",
+    "docs/studio/cycle-1-3/context-studio-typecheck.log",
+    "docs/studio/cycle-1-3/context-surfaces-diagnostic.log",
+    "docs/studio/cycle-1-3/context-surfaces-focused-2.log",
+    "docs/studio/cycle-1-3/context-surfaces-focused-3.log",
+    "docs/studio/cycle-1-3/context-surfaces-focused-4.log",
+    "docs/studio/cycle-1-3/context-surfaces-focused.log",
+    "docs/studio/cycle-1-3/context-tests-final.log",
+    "docs/studio/cycle-1-3/continuous-real-provider-disk-failure.log",
+    "docs/studio/cycle-1-3/continuous-real-provider-final.log",
+    "docs/studio/cycle-1-3/continuous-real-provider.json",
+    "docs/studio/cycle-1-3/continuous-real-provider.log",
+    "docs/studio/cycle-1-3/continuous-real-provider.mjs",
+    "docs/studio/cycle-1-3/dependencies.log",
+    "docs/studio/cycle-1-3/designer-browser-2026-10-23T08-21-56-992Z/failure.png",
+    "docs/studio/cycle-1-3/designer-browser-2026-10-23T08-21-56-992Z/results.json",
+    "docs/studio/cycle-1-3/designer-browser-2026-10-23T08-26-21-411Z/failure.png",
+    "docs/studio/cycle-1-3/designer-browser-2026-10-23T08-26-21-411Z/results.json",
+    "docs/studio/cycle-1-3/designer-browser-2026-10-23T08-51-10-084Z/failure.png",
+    "docs/studio/cycle-1-3/designer-browser-2026-10-23T08-51-10-084Z/results.json",
+    "docs/studio/cycle-1-3/designer-browser-2026-10-23T08-52-10-512Z/failure.png",
+    "docs/studio/cycle-1-3/designer-browser-2026-10-23T08-52-10-512Z/results.json",
+    "docs/studio/cycle-1-3/designer-browser-2026-10-23T09-01-10-091Z/01-structure-moved.png",
+    "docs/studio/cycle-1-3/designer-browser-2026-10-23T09-01-10-091Z/02-number-list-inspector.png",
+    "docs/studio/cycle-1-3/designer-browser-2026-10-23T09-01-10-091Z/03-output-binding.png",
+    "docs/studio/cycle-1-3/designer-browser-2026-10-23T09-01-10-091Z/04-saved-reopened.png",
+    "docs/studio/cycle-1-3/designer-browser-2026-10-23T09-01-10-091Z/results.json",
+    "docs/studio/cycle-1-3/designer-browser.log",
+    "docs/studio/cycle-1-3/designer-browser.mjs",
+    "docs/studio/cycle-1-3/designer-check-final.log",
+    "docs/studio/cycle-1-3/designer-check.log",
+    "docs/studio/cycle-1-3/details-record-scrolled.png",
+    "docs/studio/cycle-1-3/editor-build-repair.log",
+    "docs/studio/cycle-1-3/editor-regressions.log",
+    "docs/studio/cycle-1-3/failure-with-open-details.png",
+    "docs/studio/cycle-1-3/failure.png",
+    "docs/studio/cycle-1-3/hidden-expanded-canvas.png",
+    "docs/studio/cycle-1-3/independent-browser-inspect.mjs",
+    "docs/studio/cycle-1-3/independent-context-browser.json",
+    "docs/studio/cycle-1-3/independent-context-browser.mjs",
+    "docs/studio/cycle-1-3/independent-context-repair.mjs",
+    "docs/studio/cycle-1-3/independent-context-runtime.png",
+    "docs/studio/cycle-1-3/independent-legacy-recheck.mjs",
+    "docs/studio/cycle-1-3/independent-legacy.json",
+    "docs/studio/cycle-1-3/independent-legacy.mjs",
+    "docs/studio/cycle-1-3/independent-legacy.png",
+    "docs/studio/cycle-1-3/independent-package-bytes.json",
+    "docs/studio/cycle-1-3/independent-package-bytes.mjs",
+    "docs/studio/cycle-1-3/independent-provenance.json",
+    "docs/studio/cycle-1-3/independent-provenance.mjs",
+    "docs/studio/cycle-1-3/independent-real-evidence-review.json",
+    "docs/studio/cycle-1-3/independent-real-provider.mjs",
+    "docs/studio/cycle-1-3/independent-repair-probe.generated.mjs",
+    "docs/studio/cycle-1-3/independent-repair-probe.json",
+    "docs/studio/cycle-1-3/independent-repair-probe.mjs",
+    "docs/studio/cycle-1-3/independent-safe-markdown.json",
+    "docs/studio/cycle-1-3/independent-safe-markdown.mjs",
+    "docs/studio/cycle-1-3/independent-safe-markdown.png",
+    "docs/studio/cycle-1-3/independent-source-initial.json",
+    "docs/studio/cycle-1-3/independent-source-probe.generated.mjs",
+    "docs/studio/cycle-1-3/independent-source-probe.mjs",
+    "docs/studio/cycle-1-3/install.log",
+    "docs/studio/cycle-1-3/launch-review.ps1",
+    "docs/studio/cycle-1-3/lint-changed.log",
+    "docs/studio/cycle-1-3/lint-initial.log",
+    "docs/studio/cycle-1-3/lock-update.log",
+    "docs/studio/cycle-1-3/long-composer-1280x500.png",
+    "docs/studio/cycle-1-3/long-composer-1280x720.png",
+    "docs/studio/cycle-1-3/long-composer-390x700.png",
+    "docs/studio/cycle-1-3/open-popup-dynamic-growth.png",
+    "docs/studio/cycle-1-3/open-popup-viewport-resize.png",
+    "docs/studio/cycle-1-3/package-browser-final.log",
+    "docs/studio/cycle-1-3/package-browser-final/consumer-completed-markdown.png",
+    "docs/studio/cycle-1-3/package-browser-final/consumer-flow-connected.png",
+    "docs/studio/cycle-1-3/package-browser-final/consumer-gallery.png",
+    "docs/studio/cycle-1-3/package-browser-final/consumer-initial.png",
+    "docs/studio/cycle-1-3/package-browser-final/consumer-responsive-1440x1000.png",
+    "docs/studio/cycle-1-3/package-browser-final/consumer-responsive-390x844.png",
+    "docs/studio/cycle-1-3/package-browser-final/consumer-responsive-820x800.png",
+    "docs/studio/cycle-1-3/package-browser-final/consumer-stopped-draft.png",
+    "docs/studio/cycle-1-3/package-browser-final/package-browser.json",
+    "docs/studio/cycle-1-3/package-browser-output/consumer-completed-markdown.png",
+    "docs/studio/cycle-1-3/package-browser-output/consumer-flow-connected.png",
+    "docs/studio/cycle-1-3/package-browser-output/consumer-gallery.png",
+    "docs/studio/cycle-1-3/package-browser-output/consumer-initial.png",
+    "docs/studio/cycle-1-3/package-browser-output/consumer-responsive-1440x1000.png",
+    "docs/studio/cycle-1-3/package-browser-output/consumer-responsive-390x844.png",
+    "docs/studio/cycle-1-3/package-browser-output/consumer-responsive-820x800.png",
+    "docs/studio/cycle-1-3/package-browser-output/consumer-streaming.png",
+    "docs/studio/cycle-1-3/package-browser-output/keyboard-stream-stop-draft-failure.png",
+    "docs/studio/cycle-1-3/package-browser-output/package-browser.json",
+    "docs/studio/cycle-1-3/package-browser.log",
+    "docs/studio/cycle-1-3/package-browser.mjs",
+    "docs/studio/cycle-1-3/palette-regression-recheck.log",
+    "docs/studio/cycle-1-3/production-composer-before-mobile-polish.json",
+    "docs/studio/cycle-1-3/production-composer-initial-oracle.json",
+    "docs/studio/cycle-1-3/production-composer-initial-oracle.png",
+    "docs/studio/cycle-1-3/production-composer.json",
+    "docs/studio/cycle-1-3/production-composer.log",
+    "docs/studio/cycle-1-3/production-composer.mjs",
+    "docs/studio/cycle-1-3/production-manifest-67a024.json",
+    "docs/studio/cycle-1-3/production-manifest.json",
+    "docs/studio/cycle-1-3/real-provider-final/01-real-build.png",
+    "docs/studio/cycle-1-3/real-provider-final/02-real-stopped-applied.png",
+    "docs/studio/cycle-1-3/real-provider-final/03-real-reopened-continuation.png",
+    "docs/studio/cycle-1-3/real-provider-final/04-draft-refusal.png",
+    "docs/studio/cycle-1-3/real-provider-final/04-stale-refusal.png",
+    "docs/studio/cycle-1-3/real-provider-final/continuous-real-provider.json",
+    "docs/studio/cycle-1-3/review-server-disk-failure.log",
+    "docs/studio/cycle-1-3/review-server-final.log",
+    "docs/studio/cycle-1-3/review-server-flow-final.log",
+    "docs/studio/cycle-1-3/review-server.log",
+    "docs/studio/cycle-1-3/seal-production.mjs",
+    "docs/studio/cycle-1-3/studio-build-final.log",
+    "docs/studio/cycle-1-3/studio-build-flow-repair.log",
+    "docs/studio/cycle-1-3/studio-build-repair.log",
+    "docs/studio/cycle-1-3/studio-check-initial.log",
+    "docs/studio/cycle-1-3/studio-check.log",
+    "docs/studio/cycle-1-3/studio-tests-final.log",
+    "docs/studio/cycle-1-3/studio-tests-initial.log",
+    "docs/studio/cycle-1-3/studio-tests-repair.log",
+    "docs/studio/cycle-1-3/studio-tests-serial.log",
+    "docs/studio/cycle-1-3/typecheck-baseline-test-failure.log",
+    "docs/studio/cycle-1-3/typecheck-final.log"
+  ],
+  "productUnchanged": true,
+  "flow": {
+    "candidate": "e6fa5f976b71150d8c334d4a2bd973fd4a653012",
+    "assertions": [
+      {
+        "name": "Fresh isolated screen with existing boolean declaration",
+        "pass": true
+      },
+      {
+        "name": "Palette inserts Section",
+        "pass": true
+      },
+      {
+        "name": "Palette inserts Heading",
+        "pass": true
+      },
+      {
+        "name": "Structure source selection identifies authored content",
+        "pass": true
+      },
+      {
+        "name": "Structure selection is shared with the Design canvas",
+        "pass": true
+      },
+      {
+        "name": "Structure supported move writes canonical containment",
+        "pass": true
+      },
+      {
+        "name": "Structure refuses root/cycle move without canonical change",
+        "pass": true
+      },
+      {
+        "name": "Declared state remains an inspect-only reference",
+        "pass": true
+      },
+      {
+        "name": "Palette inserts Tabs",
+        "pass": true
+      },
+      {
+        "name": "Tabs recipe contains actual trigger and panel composition",
+        "pass": true
+      },
+      {
+        "name": "Palette inserts Accordion Multiple",
+        "pass": true
+      },
+      {
+        "name": "Accordion recipe seeds context-owned item",
+        "pass": true
+      },
+      {
+        "name": "Palette inserts Dropdown Menu",
+        "pass": true
+      },
+      {
+        "name": "Palette inserts Select Multiple",
+        "pass": true
+      },
+      {
+        "name": "Context-owned Select Item is absent at screen root",
+        "pass": true
+      },
+      {
+        "name": "Palette inserts Select Item",
+        "pass": true
+      },
+      {
+        "name": "values list inspector does not offer scalar literal mode",
+        "pass": true
+      },
+      {
+        "name": "Inspector edits values list through its canonical state declaration",
+        "pass": true
+      },
+      {
+        "name": "Palette inserts Slider",
+        "pass": true
+      },
+      {
+        "name": "value list inspector does not offer scalar literal mode",
+        "pass": true
+      },
+      {
+        "name": "Inspector edits value list through its canonical state declaration",
+        "pass": true
+      },
+      {
+        "name": "Palette inserts Toggle",
+        "pass": true
+      },
+      {
+        "name": "Manual property binds an existing compatible declaration",
+        "pass": true
+      },
+      {
+        "name": "Manual output connects existing boolean state",
+        "pass": true
+      },
+      {
+        "name": "Shared Undo restores mutation 13",
+        "pass": true
+      },
+      {
+        "name": "Shared Undo restores mutation 12",
+        "pass": true
+      },
+      {
+        "name": "Shared Undo restores mutation 11",
+        "pass": true
+      },
+      {
+        "name": "Shared Undo restores mutation 10",
+        "pass": true
+      },
+      {
+        "name": "Shared Undo restores mutation 9",
+        "pass": true
+      },
+      {
+        "name": "Shared Undo restores mutation 8",
+        "pass": true
+      },
+      {
+        "name": "Shared Undo restores mutation 7",
+        "pass": true
+      },
+      {
+        "name": "Shared Undo restores mutation 6",
+        "pass": true
+      },
+      {
+        "name": "Shared Undo restores mutation 5",
+        "pass": true
+      },
+      {
+        "name": "Shared Undo restores mutation 4",
+        "pass": true
+      },
+      {
+        "name": "Shared Undo restores mutation 3",
+        "pass": true
+      },
+      {
+        "name": "Shared Undo restores mutation 2",
+        "pass": true
+      },
+      {
+        "name": "Shared Undo restores mutation 1",
+        "pass": true
+      },
+      {
+        "name": "Shared Undo restores mutation 0",
+        "pass": true
+      },
+      {
+        "name": "Shared Redo restores mutation 1",
+        "pass": true
+      },
+      {
+        "name": "Shared Redo restores mutation 2",
+        "pass": true
+      },
+      {
+        "name": "Shared Redo restores mutation 3",
+        "pass": true
+      },
+      {
+        "name": "Shared Redo restores mutation 4",
+        "pass": true
+      },
+      {
+        "name": "Shared Redo restores mutation 5",
+        "pass": true
+      },
+      {
+        "name": "Shared Redo restores mutation 6",
+        "pass": true
+      },
+      {
+        "name": "Shared Redo restores mutation 7",
+        "pass": true
+      },
+      {
+        "name": "Shared Redo restores mutation 8",
+        "pass": true
+      },
+      {
+        "name": "Shared Redo restores mutation 9",
+        "pass": true
+      },
+      {
+        "name": "Shared Redo restores mutation 10",
+        "pass": true
+      },
+      {
+        "name": "Shared Redo restores mutation 11",
+        "pass": true
+      },
+      {
+        "name": "Shared Redo restores mutation 12",
+        "pass": true
+      },
+      {
+        "name": "Shared Redo restores mutation 13",
+        "pass": true
+      },
+      {
+        "name": "Shared Redo restores mutation 14",
+        "pass": true
+      },
+      {
+        "name": "Save and reopen preserve exact canonical document",
+        "pass": true
+      },
+      {
+        "name": "Saved number list reopens in Inspector",
+        "pass": true
+      },
+      {
+        "name": "No browser exceptions",
+        "pass": true
+      }
+    ],
+    "failures": [],
+    "completion": {
+      "at": "2026-10-23T09:02:02.897Z",
+      "name": "Journey complete",
+      "data": {
+        "mutationCount": 14,
+        "savedScreen": "screen-7113c81b-9e79-4f1f-97d1-f9a5cb5d565d",
+        "evidence": "C:\\Users\\RZ1\\.codex\\worktrees\\studio-cycle-1-3\\260831-VCT-02\\docs\\studio\\cycle-1-3\\designer-browser-2026-10-23T09-01-10-091Z"
+      }
+    }
+  },
+  "packed": {
+    "completed": true,
+    "assertions": [
+      {
+        "name": "initial public package conversation and Flow present",
+        "pass": true
+      },
+      {
+        "name": "Shift Enter inserts newline without sending",
+        "pass": true
+      },
+      {
+        "name": "streaming grows before completion",
+        "pass": true
+      },
+      {
+        "name": "Stop fences delayed fixture chunks and keeps next draft",
+        "pass": true
+      },
+      {
+        "name": "terminal Send is available",
+        "pass": true
+      },
+      {
+        "name": "completed streamed Markdown uses code block and actions",
+        "pass": true
+      },
+      {
+        "name": "message copy acknowledges successful write",
+        "pass": true
+      },
+      {
+        "name": "clipboard contains full Markdown reply",
+        "pass": true
+      },
+      {
+        "name": "upstream code copy reports copied state",
+        "pass": true
+      },
+      {
+        "name": "long transcript has a bounded scroll region",
+        "pass": true
+      },
+      {
+        "name": "upstream scroll-to-latest navigates transcript",
+        "pass": true
+      },
+      {
+        "name": "all 21 distinct patterns render with content",
+        "pass": true
+      },
+      {
+        "name": "optional actions disclose simulation and route to host callbacks",
+        "pass": true
+      },
+      {
+        "name": "model selector keyboard navigation changes fixture only",
+        "pass": true
+      },
+      {
+        "name": "portaled context uses isolated upstream styling",
+        "pass": true
+      },
+      {
+        "name": "source links have explicit safe external navigation",
+        "pass": true
+      },
+      {
+        "name": "unrelated host button retains native styles outside AI scope",
+        "pass": true
+      },
+      {
+        "name": "Flow node keyboard selection and navigation",
+        "pass": true
+      },
+      {
+        "name": "public addEdge callback connects view to output",
+        "pass": true
+      },
+      {
+        "name": "Flow controls alter viewport and minimap renders",
+        "pass": true
+      },
+      {
+        "name": "responsive containment 1440x1000",
+        "pass": true
+      },
+      {
+        "name": "responsive containment 820x800",
+        "pass": true
+      },
+      {
+        "name": "responsive containment 390x844",
+        "pass": true
+      },
+      {
+        "name": "presentation fixture makes no backend API calls",
+        "pass": true
+      },
+      {
+        "name": "no uncaught browser errors",
+        "pass": true
+      }
+    ]
+  },
+  "composer": {
+    "mode": "Actual exact production shell; deterministic transport fixtures only. No provider call or edit proposal.",
+    "assertions": [
+      {
+        "name": "single composer Send",
+        "pass": true
+      },
+      {
+        "name": "hide preserves mounted draft and expands canvas",
+        "pass": true
+      },
+      {
+        "name": "single composer Stop",
+        "pass": true
+      },
+      {
+        "name": "Enter while busy does not submit",
+        "pass": true
+      },
+      {
+        "name": "active hide/show preserves stream draft canvas and transport",
+        "pass": true
+      },
+      {
+        "name": "single composer Stop",
+        "pass": true
+      },
+      {
+        "name": "busy-1280x720",
+        "pass": true
+      },
+      {
+        "name": "busy reconnect disabled 1280x720",
+        "pass": true
+      },
+      {
+        "name": "busy-1280x500",
+        "pass": true
+      },
+      {
+        "name": "busy reconnect disabled 1280x500",
+        "pass": true
+      },
+      {
+        "name": "busy-390x700",
+        "pass": true
+      },
+      {
+        "name": "busy reconnect disabled 390x700",
+        "pass": true
+      },
+      {
+        "name": "single composer Send",
+        "pass": true
+      },
+      {
+        "name": "racing repeated Stop events send exactly one DELETE and preserve next draft",
+        "pass": true
+      },
+      {
+        "name": "single composer Send",
+        "pass": true
+      },
+      {
+        "name": "provider failure returns Send and preserves next draft",
+        "pass": true
+      },
+      {
+        "name": "failure-with-open-details",
+        "pass": true
+      },
+      {
+        "name": "single composer Send",
+        "pass": true
+      },
+      {
+        "name": "completion returns Send and preserves next draft",
+        "pass": true
+      },
+      {
+        "name": "long-composer-1280x720",
+        "pass": true
+      },
+      {
+        "name": "long-composer-1280x500",
+        "pass": true
+      },
+      {
+        "name": "long-composer-390x700",
+        "pass": true
+      },
+      {
+        "name": "open-popup-dynamic-growth",
+        "pass": true
+      },
+      {
+        "name": "open-popup-viewport-resize",
+        "pass": true
+      },
+      {
+        "name": "connection record reachable within scroll bounds",
+        "pass": true
+      },
+      {
+        "name": "no extra sends or cancels during popup/resizing",
+        "pass": true
+      }
+    ]
+  },
+  "provider": {
+    "checkoutHead": "29fcbea957161f30ebd5a5b6681b5225a4d4d732",
+    "mode": "Real provider; fetch clones observed only, no response/proposal delay or substitution",
+    "started": {
+      "type": "started",
+      "runId": "55b8917a-a89e-4979-a346-6ae7179c83de",
+      "model": "zai/glm-5.3-flash",
+      "engine": "VICT / Mastra"
+    },
+    "done": {
+      "type": "done",
+      "status": "completed",
+      "applied": 3,
+      "turnId": "turn-f6c55e05-3d6d-4aef-9a67-9f12ad04ab7d",
+      "profileVersion": "v1_d676998f18e52c1e75961acc181bb47a8dcfa44e271c12c0cb86016e6782170d"
+    },
+    "retainedRefusals": [
+      {
+        "type": "edit-result",
+        "result": {
+          "ok": false,
+          "code": "STUDIO_AGENT_VALIDATION",
+          "message": "Edit rejected: UI_EDIT_VALIDATION_FAILED"
+        },
+        "reason": "Validation refused an edit"
+      }
+    ],
+    "receipts": [
+      {
+        "proposalId": "3b0a27ce-b2da-40a4-be63-8cff93e83560",
+        "ok": true,
+        "digestMatches": true
+      },
+      {
+        "proposalId": "9e2de9ca-ac22-46b0-84a7-064203f70091",
+        "ok": true,
+        "digestMatches": true
+      },
+      {
+        "proposalId": "69c3fb17-bee2-464d-9954-119ece989feb",
+        "ok": true,
+        "digestMatches": true
+      }
+    ],
+    "assertions": [
+      {
+        "name": "manual palette inserts real Slider with typed state",
+        "pass": true
+      },
+      {
+        "name": "real provider preserves manual identity and authors typed list, Tabs, input/output binding",
+        "pass": true
+      },
+      {
+        "name": "new complex components and bindings survive Save/reopen",
+        "pass": true
+      },
+      {
+        "name": "declared output updates local preview state",
+        "pass": true
+      },
+      {
+        "name": "no browser exceptions",
+        "pass": true
+      }
+    ],
+    "errors": []
+  },
+  "pass": true
+}

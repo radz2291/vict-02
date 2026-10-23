@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "canonicalPreserved": true,
+  "candidate": "29fcbea957161f30ebd5a5b6681b5225a4d4d732",
+  "mode": "Canonical-source injection of exact accepted move result; not UI drag reproduction",
+  "before": {
+    "errors": [],
+    "text": "V\nFile\nEdit\nView\nPreview\nUntitled screen\n● Unsaved changes\n↗\n\nDescribe a screen, or select an element to edit it.\n\nScroll to end\nSend\nReady\n···\nDesign\nInteract\nStructure\nDocument\nOptions\nOptions\nSimulated execution\nLocal preview · no live effects\nLayers\nData\nActions\nSource\n×\nCanonical UI document\nApply source\nDiscard draft\nExport\nApplication attachment\nApply canonical source · unsaved\n@3 · v1_0fba9f6c6886…"
+  },
+  "after": {
+    "errors": [],
+    "text": "V\nFile\nEdit\nView\nPreview\nUntitled screen\n● Unapplied JSON draft\n↗\n\nDescribe a screen, or select an element to edit it.\n\nScroll to end\nSend\nApply or cancel the current draft first.\n···\nDesign\nInteract\nStructure\nDocument\nOptions\nOptions\nSimulated execution\nLocal preview · no live effects\nLayers\nData\nActions\nSource\n×\nCanonical UI document\nApply source\nDiscard draft\nExport\nApplication attachment\nApply canonical source · unsaved\n@3 · v1_0fba9f6c6886…\n\nUI_EDIT_VALIDATION_FAILED: vict.catalog.select-item (item) requires its declared component context and slot. Keep this part aside or place it inside a compatible composition."
+  }
+}

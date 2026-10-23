@@ -1,0 +1,2521 @@
+{
+  "candidate": "29fcbea957161f30ebd5a5b6681b5225a4d4d732",
+  "mode": "Real provider; fetch clones observed only, no response/proposal delay or substitution",
+  "records": [
+    {
+      "name": "manual palette inserts real Slider with typed state",
+      "data": {
+        "pass": true,
+        "document": {
+          "schema": "vict.ui-document@1",
+          "id": "screen-54376beb-9893-4686-b4a0-8f3be8130e09",
+          "revision": "r1",
+          "root": "screen",
+          "nodes": {
+            "screen": {
+              "kind": "element",
+              "id": "screen",
+              "tag": "main",
+              "attributes": {
+                "aria-label": "Untitled screen"
+              },
+              "children": [
+                "slider-28ae865d"
+              ],
+              "localStyle": [
+                {
+                  "property": "display",
+                  "value": {
+                    "type": "text",
+                    "value": "flex"
+                  }
+                },
+                {
+                  "property": "flex-direction",
+                  "value": {
+                    "type": "text",
+                    "value": "column"
+                  }
+                },
+                {
+                  "property": "gap",
+                  "value": {
+                    "type": "text",
+                    "value": "20px"
+                  }
+                },
+                {
+                  "property": "padding",
+                  "value": {
+                    "type": "text",
+                    "value": "40px"
+                  }
+                },
+                {
+                  "property": "min-height",
+                  "value": {
+                    "type": "text",
+                    "value": "560px"
+                  }
+                },
+                {
+                  "property": "background-color",
+                  "value": {
+                    "type": "text",
+                    "value": "#ffffff"
+                  }
+                },
+                {
+                  "property": "color",
+                  "value": {
+                    "type": "text",
+                    "value": "#243047"
+                  }
+                },
+                {
+                  "property": "font-family",
+                  "value": {
+                    "type": "text",
+                    "value": "system-ui, sans-serif"
+                  }
+                }
+              ]
+            },
+            "slider-28ae865d": {
+              "kind": "component",
+              "id": "slider-28ae865d",
+              "definitionId": "vict.catalog.slider",
+              "props": {
+                "value": {
+                  "type": "ref",
+                  "path": "state.catalog_slider-28ae865d_value"
+                },
+                "label": {
+                  "type": "literal",
+                  "value": "Slider"
+                }
+              },
+              "outputs": {
+                "valueChange": {
+                  "setState": {
+                    "key": "catalog_slider-28ae865d_value"
+                  }
+                }
+              },
+              "slots": {}
+            }
+          },
+          "componentDefinitions": {},
+          "styleSources": {},
+          "assets": {},
+          "tokens": {},
+          "conditions": {
+            "compact": {
+              "id": "compact",
+              "kind": "container",
+              "name": "studio-screen",
+              "query": "(max-width: 600px)"
+            }
+          },
+          "localState": {
+            "message": {
+              "key": "message",
+              "type": "string",
+              "initial": "Hello from my screen"
+            },
+            "accepted": {
+              "key": "accepted",
+              "type": "boolean",
+              "initial": false
+            },
+            "dialogOpen": {
+              "key": "dialogOpen",
+              "type": "boolean",
+              "initial": false
+            },
+            "busy": {
+              "key": "busy",
+              "type": "boolean",
+              "initial": false
+            },
+            "actionError": {
+              "key": "actionError",
+              "type": "string",
+              "initial": ""
+            },
+            "actionResult": {
+              "key": "actionResult",
+              "type": "string",
+              "initial": ""
+            },
+            "catalog_slider-28ae865d_value": {
+              "key": "catalog_slider-28ae865d_value",
+              "type": "numberList",
+              "initial": [
+                25
+              ]
+            }
+          }
+        }
+      },
+      "at": "2026-10-23T09:13:25.415Z"
+    },
+    {
+      "name": "real provider request admitted",
+      "data": {
+        "prompt": "Keep the existing Slider. Set its starting values to 15 and 65. Add a Tabs component with its usable seeded tab and panel. Add a Toggle labeled Consent; bind pressed to the existing state.accepted and connect pressedChange to that same state. Use the shared tools and preserve my manual slider."
+      },
+      "at": "2026-10-23T09:13:26.613Z"
+    },
+    {
+      "name": "real provider transport and acknowledgements",
+      "data": {
+        "turns": [
+          {
+            "request": {
+              "document": {
+                "schema": "vict.ui-document@1",
+                "id": "screen-54376beb-9893-4686-b4a0-8f3be8130e09",
+                "revision": "r1",
+                "root": "screen",
+                "nodes": {
+                  "screen": {
+                    "kind": "element",
+                    "id": "screen",
+                    "tag": "main",
+                    "attributes": {
+                      "aria-label": "Untitled screen"
+                    },
+                    "children": [
+                      "slider-28ae865d"
+                    ],
+                    "localStyle": [
+                      {
+                        "property": "display",
+                        "value": {
+                          "type": "text",
+                          "value": "flex"
+                        }
+                      },
+                      {
+                        "property": "flex-direction",
+                        "value": {
+                          "type": "text",
+                          "value": "column"
+                        }
+                      },
+                      {
+                        "property": "gap",
+                        "value": {
+                          "type": "text",
+                          "value": "20px"
+                        }
+                      },
+                      {
+                        "property": "padding",
+                        "value": {
+                          "type": "text",
+                          "value": "40px"
+                        }
+                      },
+                      {
+                        "property": "min-height",
+                        "value": {
+                          "type": "text",
+                          "value": "560px"
+                        }
+                      },
+                      {
+                        "property": "background-color",
+                        "value": {
+                          "type": "text",
+                          "value": "#ffffff"
+                        }
+                      },
+                      {
+                        "property": "color",
+                        "value": {
+                          "type": "text",
+                          "value": "#243047"
+                        }
+                      },
+                      {
+                        "property": "font-family",
+                        "value": {
+                          "type": "text",
+                          "value": "system-ui, sans-serif"
+                        }
+                      }
+                    ]
+                  },
+                  "slider-28ae865d": {
+                    "kind": "component",
+                    "id": "slider-28ae865d",
+                    "definitionId": "vict.catalog.slider",
+                    "props": {
+                      "value": {
+                        "type": "ref",
+                        "path": "state.catalog_slider-28ae865d_value"
+                      },
+                      "label": {
+                        "type": "literal",
+                        "value": "Slider"
+                      }
+                    },
+                    "outputs": {
+                      "valueChange": {
+                        "setState": {
+                          "key": "catalog_slider-28ae865d_value"
+                        }
+                      }
+                    },
+                    "slots": {}
+                  }
+                },
+                "componentDefinitions": {},
+                "styleSources": {},
+                "assets": {},
+                "tokens": {},
+                "conditions": {
+                  "compact": {
+                    "id": "compact",
+                    "kind": "container",
+                    "name": "studio-screen",
+                    "query": "(max-width: 600px)"
+                  }
+                },
+                "localState": {
+                  "message": {
+                    "key": "message",
+                    "type": "string",
+                    "initial": "Hello from my screen"
+                  },
+                  "accepted": {
+                    "key": "accepted",
+                    "type": "boolean",
+                    "initial": false
+                  },
+                  "dialogOpen": {
+                    "key": "dialogOpen",
+                    "type": "boolean",
+                    "initial": false
+                  },
+                  "busy": {
+                    "key": "busy",
+                    "type": "boolean",
+                    "initial": false
+                  },
+                  "actionError": {
+                    "key": "actionError",
+                    "type": "string",
+                    "initial": ""
+                  },
+                  "actionResult": {
+                    "key": "actionResult",
+                    "type": "string",
+                    "initial": ""
+                  },
+                  "catalog_slider-28ae865d_value": {
+                    "key": "catalog_slider-28ae865d_value",
+                    "type": "numberList",
+                    "initial": [
+                      25
+                    ]
+                  }
+                }
+              },
+              "cursor": {
+                "documentId": "screen-54376beb-9893-4686-b4a0-8f3be8130e09",
+                "revision": "r1#1",
+                "digest": "dc3d669dfd6e05b8f9ac10411bd33a569234e5107494b61b84377b1edb03ab62",
+                "epoch": "cf16dd3e-3a18-4bc2-ac40-6c4e08d6d64b"
+              },
+              "selection": "screen-54376beb-9893-4686-b4a0-8f3be8130e09|slider-28ae865d",
+              "prompt": "Keep the existing Slider. Set its starting values to 15 and 65. Add a Tabs component with its usable seeded tab and panel. Add a Toggle labeled Consent; bind pressed to the existing state.accepted and connect pressedChange to that same state. Use the shared tools and preserve my manual slider.",
+              "history": []
+            },
+            "status": 200,
+            "events": [
+              {
+                "type": "started",
+                "runId": "55b8917a-a89e-4979-a346-6ae7179c83de",
+                "model": "zai/glm-5.3-flash",
+                "engine": "VICT / Mastra"
+              },
+              {
+                "type": "progress",
+                "message": "Connecting to the VICT / Mastra agent…"
+              },
+              {
+                "type": "progress",
+                "message": "Agent is working on your request…"
+              },
+              {
+                "type": "text",
+                "delta": "I"
+              },
+              {
+                "type": "text",
+                "delta": "'ll"
+              },
+              {
+                "type": "text",
+                "delta": " work"
+              },
+              {
+                "type": "text",
+                "delta": " in"
+              },
+              {
+                "type": "text",
+                "delta": " two"
+              },
+              {
+                "type": "text",
+                "delta": " batches"
+              },
+              {
+                "type": "text",
+                "delta": ":"
+              },
+              {
+                "type": "text",
+                "delta": " first"
+              },
+              {
+                "type": "text",
+                "delta": " update"
+              },
+              {
+                "type": "text",
+                "delta": " the"
+              },
+              {
+                "type": "text",
+                "delta": " slider"
+              },
+              {
+                "type": "text",
+                "delta": "'s"
+              },
+              {
+                "type": "text",
+                "delta": " starting"
+              },
+              {
+                "type": "text",
+                "delta": " values"
+              },
+              {
+                "type": "text",
+                "delta": " and"
+              },
+              {
+                "type": "text",
+                "delta": " add"
+              },
+              {
+                "type": "text",
+                "delta": " the"
+              },
+              {
+                "type": "text",
+                "delta": " bound"
+              },
+              {
+                "type": "text",
+                "delta": " Consent"
+              },
+              {
+                "type": "text",
+                "delta": " toggle"
+              },
+              {
+                "type": "text",
+                "delta": ","
+              },
+              {
+                "type": "text",
+                "delta": " then"
+              },
+              {
+                "type": "text",
+                "delta": " seed"
+              },
+              {
+                "type": "text",
+                "delta": " the"
+              },
+              {
+                "type": "text",
+                "delta": " Tabs"
+              },
+              {
+                "type": "text",
+                "delta": "."
+              },
+              {
+                "type": "progress",
+                "message": "Preparing and validating an edit…"
+              },
+              {
+                "type": "edit-result",
+                "result": {
+                  "ok": false,
+                  "code": "STUDIO_AGENT_VALIDATION",
+                  "message": "Edit rejected: UI_EDIT_VALIDATION_FAILED"
+                },
+                "reason": "Validation refused an edit"
+              },
+              {
+                "type": "text",
+                "delta": "The"
+              },
+              {
+                "type": "text",
+                "delta": " edit"
+              },
+              {
+                "type": "text",
+                "delta": " was"
+              },
+              {
+                "type": "text",
+                "delta": " rejected"
+              },
+              {
+                "type": "text",
+                "delta": "."
+              },
+              {
+                "type": "text",
+                "delta": " Let"
+              },
+              {
+                "type": "text",
+                "delta": " me"
+              },
+              {
+                "type": "text",
+                "delta": " re"
+              },
+              {
+                "type": "text",
+                "delta": "-read"
+              },
+              {
+                "type": "text",
+                "delta": " the"
+              },
+              {
+                "type": "text",
+                "delta": " current"
+              },
+              {
+                "type": "text",
+                "delta": " document"
+              },
+              {
+                "type": "text",
+                "delta": " and"
+              },
+              {
+                "type": "text",
+                "delta": " contract"
+              },
+              {
+                "type": "text",
+                "delta": " to"
+              },
+              {
+                "type": "text",
+                "delta": " see"
+              },
+              {
+                "type": "text",
+                "delta": " what"
+              },
+              {
+                "type": "text",
+                "delta": "'s"
+              },
+              {
+                "type": "text",
+                "delta": " wrong"
+              },
+              {
+                "type": "text",
+                "delta": "."
+              },
+              {
+                "type": "progress",
+                "message": "Reading the screen and selection…"
+              },
+              {
+                "type": "text",
+                "delta": "Document"
+              },
+              {
+                "type": "text",
+                "delta": " unchanged"
+              },
+              {
+                "type": "text",
+                "delta": " —"
+              },
+              {
+                "type": "text",
+                "delta": " the"
+              },
+              {
+                "type": "text",
+                "delta": " whole"
+              },
+              {
+                "type": "text",
+                "delta": " batch"
+              },
+              {
+                "type": "text",
+                "delta": " was"
+              },
+              {
+                "type": "text",
+                "delta": " rejected"
+              },
+              {
+                "type": "text",
+                "delta": ","
+              },
+              {
+                "type": "text",
+                "delta": " likely"
+              },
+              {
+                "type": "text",
+                "delta": " by"
+              },
+              {
+                "type": "text",
+                "delta": " one"
+              },
+              {
+                "type": "text",
+                "delta": " specific"
+              },
+              {
+                "type": "text",
+                "delta": " operation"
+              },
+              {
+                "type": "text",
+                "delta": "."
+              },
+              {
+                "type": "text",
+                "delta": " I"
+              },
+              {
+                "type": "text",
+                "delta": "'ll"
+              },
+              {
+                "type": "text",
+                "delta": " split"
+              },
+              {
+                "type": "text",
+                "delta": " into"
+              },
+              {
+                "type": "text",
+                "delta": " smaller"
+              },
+              {
+                "type": "text",
+                "delta": " batches"
+              },
+              {
+                "type": "text",
+                "delta": " to"
+              },
+              {
+                "type": "text",
+                "delta": " isolate"
+              },
+              {
+                "type": "text",
+                "delta": " it"
+              },
+              {
+                "type": "text",
+                "delta": "."
+              },
+              {
+                "type": "text",
+                "delta": " First"
+              },
+              {
+                "type": "text",
+                "delta": ":"
+              },
+              {
+                "type": "text",
+                "delta": " the"
+              },
+              {
+                "type": "text",
+                "delta": " Consent"
+              },
+              {
+                "type": "text",
+                "delta": " toggle"
+              },
+              {
+                "type": "text",
+                "delta": " with"
+              },
+              {
+                "type": "text",
+                "delta": " its"
+              },
+              {
+                "type": "text",
+                "delta": " binding"
+              },
+              {
+                "type": "text",
+                "delta": " and"
+              },
+              {
+                "type": "text",
+                "delta": " connection"
+              },
+              {
+                "type": "text",
+                "delta": "."
+              },
+              {
+                "type": "progress",
+                "message": "Preparing and validating an edit…"
+              },
+              {
+                "type": "proposal",
+                "proposal": {
+                  "proposalId": "3b0a27ce-b2da-40a4-be63-8cff93e83560",
+                  "cursor": {
+                    "documentId": "screen-54376beb-9893-4686-b4a0-8f3be8130e09",
+                    "revision": "r1#1",
+                    "digest": "dc3d669dfd6e05b8f9ac10411bd33a569234e5107494b61b84377b1edb03ab62",
+                    "epoch": "cf16dd3e-3a18-4bc2-ac40-6c4e08d6d64b"
+                  },
+                  "edit": {
+                    "expectedRevision": "r1#1",
+                    "reason": "Add a Consent toggle whose pressed state reads from and writes to existing state.accepted.",
+                    "operations": [
+                      {
+                        "op": "add",
+                        "recipe": "toggle",
+                        "nodeId": "toggle-consent-01",
+                        "parentId": "screen",
+                        "props": {
+                          "label": "Consent"
+                        }
+                      },
+                      {
+                        "op": "bind",
+                        "nodeId": "toggle-consent-01",
+                        "prop": "pressed",
+                        "expression": {
+                          "type": "ref",
+                          "path": "state.accepted"
+                        }
+                      },
+                      {
+                        "op": "connect",
+                        "nodeId": "toggle-consent-01",
+                        "output": "pressedChange",
+                        "binding": {
+                          "setState": {
+                            "key": "accepted"
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "resultDigest": "2fdfef85b10db183822df3dbb2e3c23dcf910bed9329ee9d403467381f8fe33e"
+                }
+              },
+              {
+                "type": "edit-result",
+                "result": {
+                  "ok": true,
+                  "revision": "r1#2",
+                  "digest": "2fdfef85b10db183822df3dbb2e3c23dcf910bed9329ee9d403467381f8fe33e"
+                },
+                "reason": "Add a Consent toggle whose pressed state reads from and writes to existing state.accepted."
+              },
+              {
+                "type": "text",
+                "delta": "Toggle"
+              },
+              {
+                "type": "text",
+                "delta": " applied"
+              },
+              {
+                "type": "text",
+                "delta": "."
+              },
+              {
+                "type": "text",
+                "delta": " Now"
+              },
+              {
+                "type": "text",
+                "delta": " the"
+              },
+              {
+                "type": "text",
+                "delta": " Tabs"
+              },
+              {
+                "type": "text",
+                "delta": " with"
+              },
+              {
+                "type": "text",
+                "delta": " its"
+              },
+              {
+                "type": "text",
+                "delta": " seeded"
+              },
+              {
+                "type": "text",
+                "delta": " trigger"
+              },
+              {
+                "type": "text",
+                "delta": " and"
+              },
+              {
+                "type": "text",
+                "delta": " panel"
+              },
+              {
+                "type": "text",
+                "delta": "."
+              },
+              {
+                "type": "progress",
+                "message": "Preparing and validating an edit…"
+              },
+              {
+                "type": "proposal",
+                "proposal": {
+                  "proposalId": "9e2de9ca-ac22-46b0-84a7-064203f70091",
+                  "cursor": {
+                    "documentId": "screen-54376beb-9893-4686-b4a0-8f3be8130e09",
+                    "revision": "r1#2",
+                    "digest": "2fdfef85b10db183822df3dbb2e3c23dcf910bed9329ee9d403467381f8fe33e",
+                    "epoch": "cf16dd3e-3a18-4bc2-ac40-6c4e08d6d64b"
+                  },
+                  "edit": {
+                    "expectedRevision": "r1#2",
+                    "reason": "Add a Tabs component seeded with one usable Overview tab trigger and matching panel with starter content.",
+                    "operations": [
+                      {
+                        "op": "add",
+                        "recipe": "tabs",
+                        "nodeId": "tabs-overview-01",
+                        "parentId": "screen",
+                        "props": {
+                          "label": "Sections",
+                          "value": "overview"
+                        }
+                      },
+                      {
+                        "op": "add",
+                        "recipe": "tabs-trigger",
+                        "nodeId": "tab-trigger-overview-01",
+                        "parentId": "tabs-overview-01",
+                        "slotName": "tabs",
+                        "props": {
+                          "label": "Overview",
+                          "value": "overview"
+                        }
+                      },
+                      {
+                        "op": "add",
+                        "recipe": "tabs-panel",
+                        "nodeId": "tab-panel-overview-01",
+                        "parentId": "tabs-overview-01",
+                        "slotName": "panels",
+                        "props": {
+                          "value": "overview"
+                        }
+                      },
+                      {
+                        "op": "add",
+                        "recipe": "text",
+                        "nodeId": "tab-panel-overview-text-01",
+                        "parentId": "tab-panel-overview-01",
+                        "slotName": "content",
+                        "text": "Overview content goes here."
+                      }
+                    ]
+                  },
+                  "resultDigest": "c3e43ff279b37d1ed24e6ae56cdd907163b6886557a4b6f78a12ac540f2bdb48"
+                }
+              },
+              {
+                "type": "edit-result",
+                "result": {
+                  "ok": true,
+                  "revision": "r1#3",
+                  "digest": "c3e43ff279b37d1ed24e6ae56cdd907163b6886557a4b6f78a12ac540f2bdb48"
+                },
+                "reason": "Add a Tabs component seeded with one usable Overview tab trigger and matching panel with starter content."
+              },
+              {
+                "type": "text",
+                "delta": "Tabs"
+              },
+              {
+                "type": "text",
+                "delta": " applied"
+              },
+              {
+                "type": "text",
+                "delta": "."
+              },
+              {
+                "type": "text",
+                "delta": " Now"
+              },
+              {
+                "type": "text",
+                "delta": " the"
+              },
+              {
+                "type": "text",
+                "delta": " isolated"
+              },
+              {
+                "type": "text",
+                "delta": " slider"
+              },
+              {
+                "type": "text",
+                "delta": " starting"
+              },
+              {
+                "type": "text",
+                "delta": "-values"
+              },
+              {
+                "type": "text",
+                "delta": " change"
+              },
+              {
+                "type": "text",
+                "delta": "."
+              },
+              {
+                "type": "progress",
+                "message": "Preparing and validating an edit…"
+              },
+              {
+                "type": "proposal",
+                "proposal": {
+                  "proposalId": "69c3fb17-bee2-464d-9954-119ece989feb",
+                  "cursor": {
+                    "documentId": "screen-54376beb-9893-4686-b4a0-8f3be8130e09",
+                    "revision": "r1#3",
+                    "digest": "c3e43ff279b37d1ed24e6ae56cdd907163b6886557a4b6f78a12ac540f2bdb48",
+                    "epoch": "cf16dd3e-3a18-4bc2-ac40-6c4e08d6d64b"
+                  },
+                  "edit": {
+                    "expectedRevision": "r1#3",
+                    "reason": "Update the existing slider's starting values from [25] to [15, 65].",
+                    "operations": [
+                      {
+                        "op": "modify",
+                        "nodeId": "slider-28ae865d",
+                        "props": {
+                          "value": [
+                            15,
+                            65
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "resultDigest": "ef634f616594f7788d7959a80ee7b1df35df99a01e58c54678fec5a4a952349a"
+                }
+              },
+              {
+                "type": "edit-result",
+                "result": {
+                  "ok": true,
+                  "revision": "r1#4",
+                  "digest": "ef634f616594f7788d7959a80ee7b1df35df99a01e58c54678fec5a4a952349a"
+                },
+                "reason": "Update the existing slider's starting values from [25] to [15, 65]."
+              },
+              {
+                "type": "text",
+                "delta": "All"
+              },
+              {
+                "type": "text",
+                "delta": " three"
+              },
+              {
+                "type": "text",
+                "delta": " changes"
+              },
+              {
+                "type": "text",
+                "delta": " applied"
+              },
+              {
+                "type": "text",
+                "delta": "."
+              },
+              {
+                "type": "text",
+                "delta": " Let"
+              },
+              {
+                "type": "text",
+                "delta": " me"
+              },
+              {
+                "type": "text",
+                "delta": " verify"
+              },
+              {
+                "type": "text",
+                "delta": " the"
+              },
+              {
+                "type": "text",
+                "delta": " slider"
+              },
+              {
+                "type": "text",
+                "delta": "'s"
+              },
+              {
+                "type": "text",
+                "delta": " state"
+              },
+              {
+                "type": "text",
+                "delta": " binding"
+              },
+              {
+                "type": "text",
+                "delta": " and"
+              },
+              {
+                "type": "text",
+                "delta": " starting"
+              },
+              {
+                "type": "text",
+                "delta": " values"
+              },
+              {
+                "type": "text",
+                "delta": " are"
+              },
+              {
+                "type": "text",
+                "delta": " intact"
+              },
+              {
+                "type": "text",
+                "delta": "."
+              },
+              {
+                "type": "progress",
+                "message": "Reading the screen and selection…"
+              },
+              {
+                "type": "text",
+                "delta": "All"
+              },
+              {
+                "type": "text",
+                "delta": " three"
+              },
+              {
+                "type": "text",
+                "delta": " changes"
+              },
+              {
+                "type": "text",
+                "delta": " are"
+              },
+              {
+                "type": "text",
+                "delta": " confirmed"
+              },
+              {
+                "type": "text",
+                "delta": " in"
+              },
+              {
+                "type": "text",
+                "delta": " the"
+              },
+              {
+                "type": "text",
+                "delta": " document"
+              },
+              {
+                "type": "text",
+                "delta": " ("
+              },
+              {
+                "type": "text",
+                "delta": "revision"
+              },
+              {
+                "type": "text",
+                "delta": " r"
+              },
+              {
+                "type": "text",
+                "delta": "1"
+              },
+              {
+                "type": "text",
+                "delta": "#"
+              },
+              {
+                "type": "text",
+                "delta": "4"
+              },
+              {
+                "type": "text",
+                "delta": "):\n\n"
+              },
+              {
+                "type": "text",
+                "delta": "-"
+              },
+              {
+                "type": "text",
+                "delta": " **"
+              },
+              {
+                "type": "text",
+                "delta": "Slider"
+              },
+              {
+                "type": "text",
+                "delta": " preserved"
+              },
+              {
+                "type": "text",
+                "delta": "**"
+              },
+              {
+                "type": "text",
+                "delta": " —"
+              },
+              {
+                "type": "text",
+                "delta": " your"
+              },
+              {
+                "type": "text",
+                "delta": " existing"
+              },
+              {
+                "type": "text",
+                "delta": " `"
+              },
+              {
+                "type": "text",
+                "delta": "slider"
+              },
+              {
+                "type": "text",
+                "delta": "-"
+              },
+              {
+                "type": "text",
+                "delta": "28"
+              },
+              {
+                "type": "text",
+                "delta": "ae"
+              },
+              {
+                "type": "text",
+                "delta": "8"
+              },
+              {
+                "type": "text",
+                "delta": "65"
+              },
+              {
+                "type": "text",
+                "delta": "d"
+              },
+              {
+                "type": "text",
+                "delta": "`"
+              },
+              {
+                "type": "text",
+                "delta": " node"
+              },
+              {
+                "type": "text",
+                "delta": " is"
+              },
+              {
+                "type": "text",
+                "delta": " untouched"
+              },
+              {
+                "type": "text",
+                "delta": ";"
+              },
+              {
+                "type": "text",
+                "delta": " its"
+              },
+              {
+                "type": "text",
+                "delta": " `"
+              },
+              {
+                "type": "text",
+                "delta": "value"
+              },
+              {
+                "type": "text",
+                "delta": "`"
+              },
+              {
+                "type": "text",
+                "delta": " prop"
+              },
+              {
+                "type": "text",
+                "delta": " still"
+              },
+              {
+                "type": "text",
+                "delta": " references"
+              },
+              {
+                "type": "text",
+                "delta": " `"
+              },
+              {
+                "type": "text",
+                "delta": "state"
+              },
+              {
+                "type": "text",
+                "delta": ".catalog"
+              },
+              {
+                "type": "text",
+                "delta": "_slider"
+              },
+              {
+                "type": "text",
+                "delta": "-"
+              },
+              {
+                "type": "text",
+                "delta": "28"
+              },
+              {
+                "type": "text",
+                "delta": "ae"
+              },
+              {
+                "type": "text",
+                "delta": "8"
+              },
+              {
+                "type": "text",
+                "delta": "65"
+              },
+              {
+                "type": "text",
+                "delta": "d"
+              },
+              {
+                "type": "text",
+                "delta": "_value"
+              },
+              {
+                "type": "text",
+                "delta": "`"
+              },
+              {
+                "type": "text",
+                "delta": " and"
+              },
+              {
+                "type": "text",
+                "delta": " `"
+              },
+              {
+                "type": "text",
+                "delta": "value"
+              },
+              {
+                "type": "text",
+                "delta": "Change"
+              },
+              {
+                "type": "text",
+                "delta": "`"
+              },
+              {
+                "type": "text",
+                "delta": " still"
+              },
+              {
+                "type": "text",
+                "delta": " writes"
+              },
+              {
+                "type": "text",
+                "delta": " back"
+              },
+              {
+                "type": "text",
+                "delta": " to"
+              },
+              {
+                "type": "text",
+                "delta": " that"
+              },
+              {
+                "type": "text",
+                "delta": " state"
+              },
+              {
+                "type": "text",
+                "delta": "."
+              },
+              {
+                "type": "text",
+                "delta": " The"
+              },
+              {
+                "type": "text",
+                "delta": " starting"
+              },
+              {
+                "type": "text",
+                "delta": " values"
+              },
+              {
+                "type": "text",
+                "delta": " are"
+              },
+              {
+                "type": "text",
+                "delta": " now"
+              },
+              {
+                "type": "text",
+                "delta": " **"
+              },
+              {
+                "type": "text",
+                "delta": "["
+              },
+              {
+                "type": "text",
+                "delta": "15"
+              },
+              {
+                "type": "text",
+                "delta": ","
+              },
+              {
+                "type": "text",
+                "delta": " "
+              },
+              {
+                "type": "text",
+                "delta": "65"
+              },
+              {
+                "type": "text",
+                "delta": "]**"
+              },
+              {
+                "type": "text",
+                "delta": " ("
+              },
+              {
+                "type": "text",
+                "delta": "was"
+              },
+              {
+                "type": "text",
+                "delta": " ["
+              },
+              {
+                "type": "text",
+                "delta": "25"
+              },
+              {
+                "type": "text",
+                "delta": "]).\n"
+              },
+              {
+                "type": "text",
+                "delta": "-"
+              },
+              {
+                "type": "text",
+                "delta": " **"
+              },
+              {
+                "type": "text",
+                "delta": "Cons"
+              },
+              {
+                "type": "text",
+                "delta": "ent"
+              },
+              {
+                "type": "text",
+                "delta": " toggle"
+              },
+              {
+                "type": "text",
+                "delta": " added"
+              },
+              {
+                "type": "text",
+                "delta": "**"
+              },
+              {
+                "type": "text",
+                "delta": " —"
+              },
+              {
+                "type": "text",
+                "delta": " `"
+              },
+              {
+                "type": "text",
+                "delta": "toggle"
+              },
+              {
+                "type": "text",
+                "delta": "-cons"
+              },
+              {
+                "type": "text",
+                "delta": "ent"
+              },
+              {
+                "type": "text",
+                "delta": "-"
+              },
+              {
+                "type": "text",
+                "delta": "01"
+              },
+              {
+                "type": "text",
+                "delta": "`"
+              },
+              {
+                "type": "text",
+                "delta": " with"
+              },
+              {
+                "type": "text",
+                "delta": " label"
+              },
+              {
+                "type": "text",
+                "delta": " \""
+              },
+              {
+                "type": "text",
+                "delta": "Cons"
+              },
+              {
+                "type": "text",
+                "delta": "ent"
+              },
+              {
+                "type": "text",
+                "delta": "\","
+              },
+              {
+                "type": "text",
+                "delta": " `"
+              },
+              {
+                "type": "text",
+                "delta": "pressed"
+              },
+              {
+                "type": "text",
+                "delta": "`"
+              },
+              {
+                "type": "text",
+                "delta": " bound"
+              },
+              {
+                "type": "text",
+                "delta": " to"
+              },
+              {
+                "type": "text",
+                "delta": " the"
+              },
+              {
+                "type": "text",
+                "delta": " existing"
+              },
+              {
+                "type": "text",
+                "delta": " `"
+              },
+              {
+                "type": "text",
+                "delta": "state"
+              },
+              {
+                "type": "text",
+                "delta": ".accept"
+              },
+              {
+                "type": "text",
+                "delta": "ed"
+              },
+              {
+                "type": "text",
+                "delta": "`,"
+              },
+              {
+                "type": "text",
+                "delta": " and"
+              },
+              {
+                "type": "text",
+                "delta": " `"
+              },
+              {
+                "type": "text",
+                "delta": "pressed"
+              },
+              {
+                "type": "text",
+                "delta": "Change"
+              },
+              {
+                "type": "text",
+                "delta": "`"
+              },
+              {
+                "type": "text",
+                "delta": " connected"
+              },
+              {
+                "type": "text",
+                "delta": " via"
+              },
+              {
+                "type": "text",
+                "delta": " `"
+              },
+              {
+                "type": "text",
+                "delta": "setState"
+              },
+              {
+                "type": "text",
+                "delta": "`"
+              },
+              {
+                "type": "text",
+                "delta": " back"
+              },
+              {
+                "type": "text",
+                "delta": " to"
+              },
+              {
+                "type": "text",
+                "delta": " `"
+              },
+              {
+                "type": "text",
+                "delta": "accepted"
+              },
+              {
+                "type": "text",
+                "delta": "`.\n"
+              },
+              {
+                "type": "text",
+                "delta": "-"
+              },
+              {
+                "type": "text",
+                "delta": " **"
+              },
+              {
+                "type": "text",
+                "delta": "Tabs"
+              },
+              {
+                "type": "text",
+                "delta": " added"
+              },
+              {
+                "type": "text",
+                "delta": "**"
+              },
+              {
+                "type": "text",
+                "delta": " —"
+              },
+              {
+                "type": "text",
+                "delta": " `"
+              },
+              {
+                "type": "text",
+                "delta": "tabs"
+              },
+              {
+                "type": "text",
+                "delta": "-over"
+              },
+              {
+                "type": "text",
+                "delta": "view"
+              },
+              {
+                "type": "text",
+                "delta": "-"
+              },
+              {
+                "type": "text",
+                "delta": "01"
+              },
+              {
+                "type": "text",
+                "delta": "`"
+              },
+              {
+                "type": "text",
+                "delta": " (\""
+              },
+              {
+                "type": "text",
+                "delta": "Sections"
+              },
+              {
+                "type": "text",
+                "delta": "\")"
+              },
+              {
+                "type": "text",
+                "delta": " landed"
+              },
+              {
+                "type": "text",
+                "delta": " with"
+              },
+              {
+                "type": "text",
+                "delta": " a"
+              },
+              {
+                "type": "text",
+                "delta": " usable"
+              },
+              {
+                "type": "text",
+                "delta": " seeded"
+              },
+              {
+                "type": "text",
+                "delta": " pair"
+              },
+              {
+                "type": "text",
+                "delta": " plus"
+              },
+              {
+                "type": "text",
+                "delta": " my"
+              },
+              {
+                "type": "text",
+                "delta": " named"
+              },
+              {
+                "type": "text",
+                "delta": " pair"
+              },
+              {
+                "type": "text",
+                "delta": ":\n"
+              },
+              {
+                "type": "text",
+                "delta": " "
+              },
+              {
+                "type": "text",
+                "delta": " -"
+              },
+              {
+                "type": "text",
+                "delta": " \""
+              },
+              {
+                "type": "text",
+                "delta": "First"
+              },
+              {
+                "type": "text",
+                "delta": " tab"
+              },
+              {
+                "type": "text",
+                "delta": "\""
+              },
+              {
+                "type": "text",
+                "delta": " →"
+              },
+              {
+                "type": "text",
+                "delta": " \""
+              },
+              {
+                "type": "text",
+                "delta": "Tab"
+              },
+              {
+                "type": "text",
+                "delta": " content"
+              },
+              {
+                "type": "text",
+                "delta": "\""
+              },
+              {
+                "type": "text",
+                "delta": " ("
+              },
+              {
+                "type": "text",
+                "delta": "the"
+              },
+              {
+                "type": "text",
+                "delta": " component"
+              },
+              {
+                "type": "text",
+                "delta": "'s"
+              },
+              {
+                "type": "text",
+                "delta": " own"
+              },
+              {
+                "type": "text",
+                "delta": " seed"
+              },
+              {
+                "type": "text",
+                "delta": ")\n"
+              },
+              {
+                "type": "text",
+                "delta": " "
+              },
+              {
+                "type": "text",
+                "delta": " -"
+              },
+              {
+                "type": "text",
+                "delta": " \""
+              },
+              {
+                "type": "text",
+                "delta": "Overview"
+              },
+              {
+                "type": "text",
+                "delta": "\""
+              },
+              {
+                "type": "text",
+                "delta": " →"
+              },
+              {
+                "type": "text",
+                "delta": " \""
+              },
+              {
+                "type": "text",
+                "delta": "Overview"
+              },
+              {
+                "type": "text",
+                "delta": " content"
+              },
+              {
+                "type": "text",
+                "delta": " goes"
+              },
+              {
+                "type": "text",
+                "delta": " here"
+              },
+              {
+                "type": "text",
+                "delta": ".\""
+              },
+              {
+                "type": "text",
+                "delta": " ("
+              },
+              {
+                "type": "text",
+                "delta": "selected"
+              },
+              {
+                "type": "text",
+                "delta": " by"
+              },
+              {
+                "type": "text",
+                "delta": " default"
+              },
+              {
+                "type": "text",
+                "delta": ")\n\n"
+              },
+              {
+                "type": "text",
+                "delta": "Note"
+              },
+              {
+                "type": "text",
+                "delta": ":"
+              },
+              {
+                "type": "text",
+                "delta": " my"
+              },
+              {
+                "type": "text",
+                "delta": " first"
+              },
+              {
+                "type": "text",
+                "delta": " combined"
+              },
+              {
+                "type": "text",
+                "delta": " batch"
+              },
+              {
+                "type": "text",
+                "delta": " ("
+              },
+              {
+                "type": "text",
+                "delta": "8"
+              },
+              {
+                "type": "text",
+                "delta": " ops"
+              },
+              {
+                "type": "text",
+                "delta": ")"
+              },
+              {
+                "type": "text",
+                "delta": " was"
+              },
+              {
+                "type": "text",
+                "delta": " rejected"
+              },
+              {
+                "type": "text",
+                "delta": " atom"
+              },
+              {
+                "type": "text",
+                "delta": "ically"
+              },
+              {
+                "type": "text",
+                "delta": ","
+              },
+              {
+                "type": "text",
+                "delta": " so"
+              },
+              {
+                "type": "text",
+                "delta": " nothing"
+              },
+              {
+                "type": "text",
+                "delta": " from"
+              },
+              {
+                "type": "text",
+                "delta": " it"
+              },
+              {
+                "type": "text",
+                "delta": " applied"
+              },
+              {
+                "type": "text",
+                "delta": " —"
+              },
+              {
+                "type": "text",
+                "delta": " I"
+              },
+              {
+                "type": "text",
+                "delta": " re"
+              },
+              {
+                "type": "text",
+                "delta": "-ap"
+              },
+              {
+                "type": "text",
+                "delta": "plied"
+              },
+              {
+                "type": "text",
+                "delta": " everything"
+              },
+              {
+                "type": "text",
+                "delta": " in"
+              },
+              {
+                "type": "text",
+                "delta": " smaller"
+              },
+              {
+                "type": "text",
+                "delta": " batches"
+              },
+              {
+                "type": "text",
+                "delta": " instead"
+              },
+              {
+                "type": "text",
+                "delta": "."
+              },
+              {
+                "type": "text",
+                "delta": " The"
+              },
+              {
+                "type": "text",
+                "delta": " extra"
+              },
+              {
+                "type": "text",
+                "delta": " \""
+              },
+              {
+                "type": "text",
+                "delta": "First"
+              },
+              {
+                "type": "text",
+                "delta": " tab"
+              },
+              {
+                "type": "text",
+                "delta": "\""
+              },
+              {
+                "type": "text",
+                "delta": " seed"
+              },
+              {
+                "type": "text",
+                "delta": " is"
+              },
+              {
+                "type": "text",
+                "delta": " there"
+              },
+              {
+                "type": "text",
+                "delta": " because"
+              },
+              {
+                "type": "text",
+                "delta": " the"
+              },
+              {
+                "type": "text",
+                "delta": " Tabs"
+              },
+              {
+                "type": "text",
+                "delta": " component"
+              },
+              {
+                "type": "text",
+                "delta": " seeds"
+              },
+              {
+                "type": "text",
+                "delta": " itself"
+              },
+              {
+                "type": "text",
+                "delta": ";"
+              },
+              {
+                "type": "text",
+                "delta": " say"
+              },
+              {
+                "type": "text",
+                "delta": " the"
+              },
+              {
+                "type": "text",
+                "delta": " word"
+              },
+              {
+                "type": "text",
+                "delta": " if"
+              },
+              {
+                "type": "text",
+                "delta": " you"
+              },
+              {
+                "type": "text",
+                "delta": "'d"
+              },
+              {
+                "type": "text",
+                "delta": " like"
+              },
+              {
+                "type": "text",
+                "delta": " it"
+              },
+              {
+                "type": "text",
+                "delta": " removed"
+              },
+              {
+                "type": "text",
+                "delta": "."
+              },
+              {
+                "type": "text",
+                "delta": " Changes"
+              },
+              {
+                "type": "text",
+                "delta": " are"
+              },
+              {
+                "type": "text",
+                "delta": " uns"
+              },
+              {
+                "type": "text",
+                "delta": "aved"
+              },
+              {
+                "type": "text",
+                "delta": " —"
+              },
+              {
+                "type": "text",
+                "delta": " saving"
+              },
+              {
+                "type": "text",
+                "delta": " is"
+              },
+              {
+                "type": "text",
+                "delta": " up"
+              },
+              {
+                "type": "text",
+                "delta": " to you."
+              },
+              {
+                "type": "done",
+                "status": "completed",
+                "applied": 3,
+                "turnId": "turn-f6c55e05-3d6d-4aef-9a67-9f12ad04ab7d",
+                "profileVersion": "v1_d676998f18e52c1e75961acc181bb47a8dcfa44e271c12c0cb86016e6782170d"
+              }
+            ],
+            "complete": true
+          }
+        ],
+        "acks": [
+          {
+            "runId": "55b8917a-a89e-4979-a346-6ae7179c83de",
+            "proposalId": "3b0a27ce-b2da-40a4-be63-8cff93e83560",
+            "receipt": {
+              "ok": true,
+              "revision": "r1#2",
+              "digest": "2fdfef85b10db183822df3dbb2e3c23dcf910bed9329ee9d403467381f8fe33e"
+            }
+          },
+          {
+            "runId": "55b8917a-a89e-4979-a346-6ae7179c83de",
+            "proposalId": "9e2de9ca-ac22-46b0-84a7-064203f70091",
+            "receipt": {
+              "ok": true,
+              "revision": "r1#3",
+              "digest": "c3e43ff279b37d1ed24e6ae56cdd907163b6886557a4b6f78a12ac540f2bdb48"
+            }
+          },
+          {
+            "runId": "55b8917a-a89e-4979-a346-6ae7179c83de",
+            "proposalId": "69c3fb17-bee2-464d-9954-119ece989feb",
+            "receipt": {
+              "ok": true,
+              "revision": "r1#4",
+              "digest": "ef634f616594f7788d7959a80ee7b1df35df99a01e58c54678fec5a4a952349a"
+            }
+          }
+        ],
+        "status": " 3 edits applied"
+      },
+      "at": "2026-10-23T09:16:52.127Z"
+    },
+    {
+      "name": "real provider preserves manual identity and authors typed list, Tabs, input/output binding",
+      "data": {
+        "pass": true,
+        "document": {
+          "schema": "vict.ui-document@1",
+          "id": "screen-54376beb-9893-4686-b4a0-8f3be8130e09",
+          "revision": "r1",
+          "root": "screen",
+          "nodes": {
+            "screen": {
+              "kind": "element",
+              "id": "screen",
+              "tag": "main",
+              "attributes": {
+                "aria-label": "Untitled screen"
+              },
+              "children": [
+                "slider-28ae865d",
+                "toggle-consent-01",
+                "tabs-overview-01"
+              ],
+              "localStyle": [
+                {
+                  "property": "display",
+                  "value": {
+                    "type": "text",
+                    "value": "flex"
+                  }
+                },
+                {
+                  "property": "flex-direction",
+                  "value": {
+                    "type": "text",
+                    "value": "column"
+                  }
+                },
+                {
+                  "property": "gap",
+                  "value": {
+                    "type": "text",
+                    "value": "20px"
+                  }
+                },
+                {
+                  "property": "padding",
+                  "value": {
+                    "type": "text",
+                    "value": "40px"
+                  }
+                },
+                {
+                  "property": "min-height",
+                  "value": {
+                    "type": "text",
+                    "value": "560px"
+                  }
+                },
+                {
+                  "property": "background-color",
+                  "value": {
+                    "type": "text",
+                    "value": "#ffffff"
+                  }
+                },
+                {
+                  "property": "color",
+                  "value": {
+                    "type": "text",
+                    "value": "#243047"
+                  }
+                },
+                {
+                  "property": "font-family",
+                  "value": {
+                    "type": "text",
+                    "value": "system-ui, sans-serif"
+                  }
+                }
+              ]
+            },
+            "slider-28ae865d": {
+              "kind": "component",
+              "id": "slider-28ae865d",
+              "definitionId": "vict.catalog.slider",
+              "props": {
+                "value": {
+                  "type": "ref",
+                  "path": "state.catalog_slider-28ae865d_value"
+                },
+                "label": {
+                  "type": "literal",
+                  "value": "Slider"
+                }
+              },
+              "outputs": {
+                "valueChange": {
+                  "setState": {
+                    "key": "catalog_slider-28ae865d_value"
+                  }
+                }
+              },
+              "slots": {}
+            },
+            "toggle-consent-01": {
+              "kind": "component",
+              "id": "toggle-consent-01",
+              "definitionId": "vict.catalog.toggle",
+              "props": {
+                "label": {
+                  "type": "literal",
+                  "value": "Consent"
+                },
+                "pressed": {
+                  "type": "ref",
+                  "path": "state.accepted"
+                }
+              },
+              "slots": {},
+              "outputs": {
+                "pressedChange": {
+                  "setState": {
+                    "key": "accepted"
+                  }
+                }
+              }
+            },
+            "tabs-overview-01": {
+              "kind": "component",
+              "id": "tabs-overview-01",
+              "definitionId": "vict.catalog.tabs",
+              "props": {
+                "label": {
+                  "type": "literal",
+                  "value": "Sections"
+                },
+                "value": {
+                  "type": "literal",
+                  "value": "overview"
+                }
+              },
+              "slots": {
+                "tabs": {
+                  "name": "tabs",
+                  "children": [
+                    "tabs-overview-01-tabs-1",
+                    "tab-trigger-overview-01"
+                  ]
+                },
+                "panels": {
+                  "name": "panels",
+                  "children": [
+                    "tabs-overview-01-panels-1",
+                    "tab-panel-overview-01"
+                  ]
+                }
+              }
+            },
+            "tabs-overview-01-tabs-1": {
+              "kind": "component",
+              "id": "tabs-overview-01-tabs-1",
+              "definitionId": "vict.catalog.tabs-trigger",
+              "props": {
+                "label": {
+                  "type": "literal",
+                  "value": "First tab"
+                },
+                "value": {
+                  "type": "literal",
+                  "value": "first"
+                }
+              },
+              "slots": {}
+            },
+            "tabs-overview-01-panels-1": {
+              "kind": "component",
+              "id": "tabs-overview-01-panels-1",
+              "definitionId": "vict.catalog.tabs-panel",
+              "props": {
+                "value": {
+                  "type": "literal",
+                  "value": "first"
+                }
+              },
+              "slots": {
+                "content": {
+                  "name": "content",
+                  "children": [
+                    "tabs-overview-01-panels-1-content-1"
+                  ]
+                }
+              }
+            },
+            "tabs-overview-01-panels-1-content-1": {
+              "kind": "element",
+              "id": "tabs-overview-01-panels-1-content-1",
+              "tag": "p",
+              "children": [
+                "tabs-overview-01-panels-1-content-1-text"
+              ],
+              "localStyle": []
+            },
+            "tabs-overview-01-panels-1-content-1-text": {
+              "kind": "text",
+              "id": "tabs-overview-01-panels-1-content-1-text",
+              "content": {
+                "type": "literal",
+                "value": "Tab content"
+              }
+            },
+            "tab-trigger-overview-01": {
+              "kind": "component",
+              "id": "tab-trigger-overview-01",
+              "definitionId": "vict.catalog.tabs-trigger",
+              "props": {
+                "label": {
+                  "type": "literal",
+                  "value": "Overview"
+                },
+                "value": {
+                  "type": "literal",
+                  "value": "overview"
+                }
+              },
+              "slots": {}
+            },
+            "tab-panel-overview-01": {
+              "kind": "component",
+              "id": "tab-panel-overview-01",
+              "definitionId": "vict.catalog.tabs-panel",
+              "props": {
+                "value": {
+                  "type": "literal",
+                  "value": "overview"
+                }
+              },
+              "slots": {
+                "content": {
+                  "name": "content",
+                  "children": [
+                    "tab-panel-overview-01-content-1",
+                    "tab-panel-overview-text-01"
+                  ]
+                }
+              }
+            },
+            "tab-panel-overview-01-content-1": {
+              "kind": "element",
+              "id": "tab-panel-overview-01-content-1",
+              "tag": "p",
+              "children": [
+                "tab-panel-overview-01-content-1-text"
+              ],
+              "localStyle": []
+            },
+            "tab-panel-overview-01-content-1-text": {
+              "kind": "text",
+              "id": "tab-panel-overview-01-content-1-text",
+              "content": {
+                "type": "literal",
+                "value": "Tab content"
+              }
+            },
+            "tab-panel-overview-text-01": {
+              "kind": "element",
+              "id": "tab-panel-overview-text-01",
+              "tag": "p",
+              "children": [
+                "tab-panel-overview-text-01-text"
+              ],
+              "localStyle": [
+                {
+                  "property": "font-size",
+                  "value": {
+                    "type": "text",
+                    "value": "16px"
+                  }
+                },
+                {
+                  "property": "line-height",
+                  "value": {
+                    "type": "text",
+                    "value": "1.6"
+                  }
+                },
+                {
+                  "property": "margin",
+                  "value": {
+                    "type": "text",
+                    "value": "0"
+                  }
+                },
+                {
+                  "property": "color",
+                  "value": {
+                    "type": "text",
+                    "value": "#647187"
+                  }
+                }
+              ]
+            },
+            "tab-panel-overview-text-01-text": {
+              "kind": "text",
+              "id": "tab-panel-overview-text-01-text",
+              "content": {
+                "type": "literal",
+                "value": "Overview content goes here."
+              }
+            }
+          },
+          "componentDefinitions": {},
+          "styleSources": {},
+          "assets": {},
+          "tokens": {},
+          "conditions": {
+            "compact": {
+              "id": "compact",
+              "kind": "container",
+              "name": "studio-screen",
+              "query": "(max-width: 600px)"
+            }
+          },
+          "localState": {
+            "message": {
+              "key": "message",
+              "type": "string",
+              "initial": "Hello from my screen"
+            },
+            "accepted": {
+              "key": "accepted",
+              "type": "boolean",
+              "initial": false
+            },
+            "dialogOpen": {
+              "key": "dialogOpen",
+              "type": "boolean",
+              "initial": false
+            },
+            "busy": {
+              "key": "busy",
+              "type": "boolean",
+              "initial": false
+            },
+            "actionError": {
+              "key": "actionError",
+              "type": "string",
+              "initial": ""
+            },
+            "actionResult": {
+              "key": "actionResult",
+              "type": "string",
+              "initial": ""
+            },
+            "catalog_slider-28ae865d_value": {
+              "key": "catalog_slider-28ae865d_value",
+              "type": "numberList",
+              "initial": [
+                15,
+                65
+              ]
+            }
+          }
+        }
+      },
+      "at": "2026-10-23T09:16:52.497Z"
+    },
+    {
+      "name": "new complex components and bindings survive Save/reopen",
+      "data": {
+        "pass": true
+      },
+      "at": "2026-10-23T09:16:53.819Z"
+    },
+    {
+      "name": "declared output updates local preview state",
+      "data": {
+        "pass": true
+      },
+      "at": "2026-10-23T09:16:53.923Z"
+    },
+    {
+      "name": "no browser exceptions",
+      "data": {
+        "pass": true,
+        "errors": []
+      },
+      "at": "2026-10-23T09:16:54.068Z"
+    }
+  ],
+  "errors": []
+}
