@@ -1,0 +1,153 @@
+{
+  "kind": "deterministic synthetic source fixture benchmark; variable measured sizes supplied, browser dimensions verified separately",
+  "engines": {
+    "dagre": "1.1.5",
+    "elk": "0.11.0"
+  },
+  "results": [
+    {
+      "fixtureNodes": 12,
+      "engine": "dagre",
+      "direction": "RIGHT",
+      "projectionMs": 2.38,
+      "elapsedMs": 172.45,
+      "overlapCount": 0,
+      "width": 884,
+      "height": 1143,
+      "routedEdges": 0,
+      "edges": 11
+    },
+    {
+      "fixtureNodes": 12,
+      "engine": "dagre",
+      "direction": "DOWN",
+      "projectionMs": 2.38,
+      "elapsedMs": 13.9,
+      "overlapCount": 0,
+      "width": 2298,
+      "height": 492,
+      "routedEdges": 0,
+      "edges": 11
+    },
+    {
+      "fixtureNodes": 12,
+      "engine": "elk",
+      "direction": "RIGHT",
+      "projectionMs": 2.38,
+      "elapsedMs": 1539.42,
+      "overlapCount": 0,
+      "width": 924.8,
+      "height": 1102,
+      "routedEdges": 11,
+      "edges": 11
+    },
+    {
+      "fixtureNodes": 12,
+      "engine": "elk",
+      "direction": "DOWN",
+      "projectionMs": 2.38,
+      "elapsedMs": 82.71,
+      "overlapCount": 0,
+      "width": 2230,
+      "height": 532.8,
+      "routedEdges": 11,
+      "edges": 11
+    },
+    {
+      "fixtureNodes": 89,
+      "engine": "dagre",
+      "direction": "RIGHT",
+      "projectionMs": 64.25,
+      "elapsedMs": 160.42,
+      "overlapCount": 0,
+      "width": 1248,
+      "height": 10293,
+      "routedEdges": 0,
+      "edges": 88
+    },
+    {
+      "fixtureNodes": 89,
+      "engine": "dagre",
+      "direction": "DOWN",
+      "projectionMs": 64.25,
+      "elapsedMs": 84.25,
+      "overlapCount": 0,
+      "width": 20165,
+      "height": 680,
+      "routedEdges": 0,
+      "edges": 88
+    },
+    {
+      "fixtureNodes": 89,
+      "engine": "elk",
+      "direction": "RIGHT",
+      "projectionMs": 64.25,
+      "elapsedMs": 566.59,
+      "overlapCount": 0,
+      "width": 1303.2,
+      "height": 10071.111111111111,
+      "routedEdges": 88,
+      "edges": 88
+    },
+    {
+      "fixtureNodes": 89,
+      "engine": "elk",
+      "direction": "DOWN",
+      "projectionMs": 64.25,
+      "elapsedMs": 517.33,
+      "overlapCount": 0,
+      "width": 19703.11111111111,
+      "height": 735.1999999999999,
+      "routedEdges": 88,
+      "edges": 88
+    },
+    {
+      "fixtureNodes": 500,
+      "engine": "dagre",
+      "direction": "RIGHT",
+      "projectionMs": 1680.48,
+      "elapsedMs": 641.5,
+      "overlapCount": 0,
+      "width": 1248,
+      "height": 61616,
+      "routedEdges": 0,
+      "edges": 499
+    },
+    {
+      "fixtureNodes": 500,
+      "engine": "dagre",
+      "direction": "DOWN",
+      "projectionMs": 1680.48,
+      "elapsedMs": 589.01,
+      "overlapCount": 0,
+      "width": 120541.5,
+      "height": 680,
+      "routedEdges": 0,
+      "edges": 499
+    },
+    {
+      "fixtureNodes": 500,
+      "engine": "elk",
+      "direction": "RIGHT",
+      "projectionMs": 1680.48,
+      "elapsedMs": 48480.24,
+      "overlapCount": 0,
+      "width": 1303.2,
+      "height": 61582,
+      "routedEdges": 499,
+      "edges": 499
+    },
+    {
+      "fixtureNodes": 500,
+      "engine": "elk",
+      "direction": "DOWN",
+      "projectionMs": 1680.48,
+      "elapsedMs": 64588.96,
+      "overlapCount": 0,
+      "width": 120465,
+      "height": 735.1999999999999,
+      "routedEdges": 499,
+      "edges": 499
+    }
+  ]
+}
