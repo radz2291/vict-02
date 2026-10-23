@@ -1,0 +1,9 @@
+{
+  "Mode": "Incremental packed artifact update in independent consumer; no workspace links or aliases",
+  "AiTar": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-cycle13-final-artifacts-450533698de64cedabbbd3e8ea9f4ec5\\victframework-ui-ai-svelte-0.4.0-rc.1.tgz",
+  "Flow": "unchanged existing packed 1.7.0 wrapper",
+  "Consumer": "C:/Users/RZ1/AppData/Local/Temp/vict-cycle13-consumer-DbfrEI/consumer",
+  "Candidate": "8eb96dd8bcf7cfadd973e1f4fae7d11706a32797",
+  "AiTarSha256": "ca7964e2f2ba4639d7c3d456e1abe8f168f4288266d29b8024b7db8531960e82",
+  "Carry": "AI and Flow packages and consumer source/artifact unchanged from748d9a6; only new Studio showcase select/label/input scoped CSS changed"
+}

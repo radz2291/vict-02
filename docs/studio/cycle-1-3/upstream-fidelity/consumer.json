@@ -1,0 +1,8 @@
+{
+  "Candidate": "efbafcc41317d18ea6609c490f149452de8a98b0",
+  "Consumer": "C:/Users/RZ1/AppData/Local/Temp/vict-cycle13-consumer-DbfrEI/consumer",
+  "AiTar": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-cycle13-fidelity-artifacts-8ad5c1abc9624fcca841ef3308278036\\victframework-ui-ai-svelte-0.4.0-rc.1.tgz",
+  "AiTarSha256": "28074e38ab0d86c26466279aaa289c11c7375a52010fe10e4df3f55e4ee85713",
+  "Mode": "Updated packed AI artifact in prior independent consumer; no workspace links or aliases",
+  "Flow": "unchanged existing packed 1.7.0 wrapper"
+}

@@ -1,0 +1,303 @@
+[
+  {
+    "path": "docs/content/ai-elements/chain-of-thought.md",
+    "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/content/ai-elements/chain-of-thought.md",
+    "local": "trace-references/chain-of-thought.md",
+    "sha256": "3e625bf8238f926453390c731ba01580e5f6a5b24bdeba224651899629e8e37e",
+    "gitBlob": "b167b43bd3842bd50750a1280aeb5503c0133a3a"
+  },
+  {
+    "path": "docs/content/ai-elements/plan.md",
+    "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/content/ai-elements/plan.md",
+    "local": "trace-references/plan.md",
+    "sha256": "107bfa7a66544fb5981b9d76ead8e0b54dd44f1a8f97cd14b71548fcf5ca0719",
+    "gitBlob": "7c17125f0eafe4fd90976a58b387d9103f358a72"
+  },
+  {
+    "path": "docs/content/ai-elements/task.md",
+    "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/content/ai-elements/task.md",
+    "local": "trace-references/task.md",
+    "sha256": "9c5fefc0fa0f848619d1fef6cbaea8525182bbfe72d955e16ac92e880c7cca01",
+    "gitBlob": "4fe50c6c3eb4dc349ac5802582be0bd599d5c6ff"
+  },
+  {
+    "path": "docs/content/ai-elements/queue.md",
+    "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/content/ai-elements/queue.md",
+    "local": "trace-references/queue.md",
+    "sha256": "7963905a1a64218ec5c76d2ab8cd1707f536e5b8f9d7f9b3a63e6a43cbb3f3c9",
+    "gitBlob": "e7e0b34e66b52b92ba549caabbc301e52f89f488"
+  },
+  {
+    "path": "docs/content/ai-elements/reasoning.md",
+    "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/content/ai-elements/reasoning.md",
+    "local": "trace-references/reasoning.md",
+    "sha256": "0f66f97f9e5594bdbe8a7388966d435338a5028c06a5f914eeaf5387ac5973eb",
+    "gitBlob": "a0bb4e2d57db4f4ee4cb04ee826e6633d6ffc59b"
+  },
+  {
+    "path": "docs/content/ai-elements/subagent.md",
+    "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/content/ai-elements/subagent.md",
+    "local": "trace-references/subagent.md",
+    "sha256": "f667d89910f25b00ac78d1bb47de9243c8be40595d4677372b2adc59f93b7036",
+    "gitBlob": "3a266805ac73357e6c335a1bc34f6dc12c3194e7"
+  },
+  {
+    "path": "docs/content/ai-elements/tool.md",
+    "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/content/ai-elements/tool.md",
+    "local": "trace-references/tool.md",
+    "sha256": "9446599d0c95ba69af12e480e9c2040077191aa6fa4f74870aec3b6e31b03f83",
+    "gitBlob": "d4507765c46b9d615d7cd74bcb970c4ca02e06aa"
+  },
+  {
+    "path": "docs/content/ai-elements/terminal.md",
+    "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/content/ai-elements/terminal.md",
+    "local": "trace-references/terminal.md",
+    "sha256": "2841dbb9ae1e394f3563031685f71d123369d70a45f9116964c20a0505b5ce7a",
+    "gitBlob": "01baa52a0ac84b261721695f4ac05e938542938d"
+  },
+  {
+    "path": "docs/content/ai-elements/test-results.md",
+    "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/content/ai-elements/test-results.md",
+    "local": "trace-references/test-results.md",
+    "sha256": "ac89f63e8aa2aa3bcd8885f7b89e45aea21e769ca6819a2a68350c07cabe641e",
+    "gitBlob": "32059fdbfa4766b70c91deb54a3b979f741027f3"
+  },
+  {
+    "path": "docs/content/ai-elements/stack-trace.md",
+    "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/content/ai-elements/stack-trace.md",
+    "local": "trace-references/stack-trace.md",
+    "sha256": "e58e023928ec1ceb8f0e630e560e021702e2a6bb08cbe087124f3ab039cda99e",
+    "gitBlob": "b0318b1386db8d678d21dc989c67338251e578ec"
+  },
+  {
+    "path": "docs/src/lib/registry/examples/chain-of-thought-demo.svelte",
+    "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/chain-of-thought-demo.svelte",
+    "gitBlob": "42a0358833fd8b769f2aeeb93275d51c7ca95374",
+    "local": "trace-references/chain-of-thought-demo.svelte",
+    "sha256": "2c975b37722ceedfb1e2c0771d45b6524f1d4d14a86a8b60ea3ddb05994c531c"
+  },
+  {
+    "path": "docs/src/lib/registry/examples/plan-demo.svelte",
+    "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/plan-demo.svelte",
+    "gitBlob": "f48358405d387e393f67a74874c51bd88b05734a",
+    "local": "trace-references/plan-demo.svelte",
+    "sha256": "80a9100c2ece162d1438f9ec708bdc6d214bcc5c2ada32a9271b388f7761b5d3"
+  },
+  {
+    "path": "docs/src/lib/registry/examples/plan-description.svelte",
+    "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/plan-description.svelte",
+    "gitBlob": "2cee7a68f4d5f7c8fe156a1f285429b34c9a934c",
+    "local": "trace-references/plan-description.svelte",
+    "sha256": "3b6a75ba057cb49466d8f8966ca7a98f1a2560ce8023a171fa67d764b1135064"
+  },
+  {
+    "path": "docs/src/lib/registry/examples/queue-demo.svelte",
+    "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/queue-demo.svelte",
+    "gitBlob": "aea118e74bc70d95cbb046809d7573661a32c2d4",
+    "local": "trace-references/queue-demo.svelte",
+    "sha256": "af0d9e4ba2a74e7757c456a80eaa5ce5e037546d3b41aa49dc9b6a7e15043b53"
+  },
+  {
+    "path": "docs/src/lib/registry/examples/queue-descriptions.svelte",
+    "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/queue-descriptions.svelte",
+    "gitBlob": "6a87b2c540feca4e696101ac7c6459316f47cbef",
+    "local": "trace-references/queue-descriptions.svelte",
+    "sha256": "94e459f0e822cd35a2254de79cfdcce1a419d8bc8d64d337f15963996a0f4020"
+  },
+  {
+    "path": "docs/src/lib/registry/examples/reasoning-demo.svelte",
+    "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/reasoning-demo.svelte",
+    "gitBlob": "4d6fcff1daac47fa7f2b5422aad57cb093deed4a",
+    "local": "trace-references/reasoning-demo.svelte",
+    "sha256": "654928198ca88632da0e34f939fc7abc0f613fa1c909619f68e642f6c9299687"
+  },
+  {
+    "path": "docs/src/lib/registry/examples/reasoning-duration.svelte",
+    "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/reasoning-duration.svelte",
+    "gitBlob": "9ac651ed63e9521de7f90c41f4615b2244fdf0a4",
+    "local": "trace-references/reasoning-duration.svelte",
+    "sha256": "b17978defdd5a52d72e27273c215251dd52a1771f1fb328485a6f4b5b26f3147"
+  },
+  {
+    "path": "docs/src/lib/registry/examples/stack-trace-demo.svelte",
+    "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/stack-trace-demo.svelte",
+    "gitBlob": "124a9525622ca7ce536bdbff70dfd91782c2985d",
+    "local": "trace-references/stack-trace-demo.svelte",
+    "sha256": "9739a8bb43d3cc5b3fed037b0cbfdf994a9b93b034cc932243b2acd90c153486"
+  },
+  {
+    "path": "docs/src/lib/registry/examples/stack-trace-frames.svelte",
+    "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/stack-trace-frames.svelte",
+    "gitBlob": "9f393c7e60c0cd344c4d4e4de6f86028270e74c4",
+    "local": "trace-references/stack-trace-frames.svelte",
+    "sha256": "1245f2350a7c4283236ac29b028ffd9c98c51b10fcc637f32ee91165df009efe"
+  },
+  {
+    "path": "docs/src/lib/registry/examples/subagent-demo.svelte",
+    "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/subagent-demo.svelte",
+    "gitBlob": "a9dddf4ebc1f569042ee4ecf511b0cea18bde020",
+    "local": "trace-references/subagent-demo.svelte",
+    "sha256": "0719f1867d38432e639d00bf9efa0fc791bb75aa36887b3c17631b54da0ceb5c"
+  },
+  {
+    "path": "docs/src/lib/registry/examples/subagent-details.svelte",
+    "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/subagent-details.svelte",
+    "gitBlob": "6339d74840ef6fe58de2c488851c6270775eef70",
+    "local": "trace-references/subagent-details.svelte",
+    "sha256": "5cdde4ab3cbff4e40fde9842a0d00c91c49135c9489ea4897aa369f70112e483"
+  },
+  {
+    "path": "docs/src/lib/registry/examples/subagent-running.svelte",
+    "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/subagent-running.svelte",
+    "gitBlob": "573977cb9574b2dfaabfeee051492b21fbce028c",
+    "local": "trace-references/subagent-running.svelte",
+    "sha256": "8b12104868bc0645c53661b0decb5cc97d5c40421d65bb385d1101d215dc67dd"
+  },
+  {
+    "path": "docs/src/lib/registry/examples/task-demo.svelte",
+    "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/task-demo.svelte",
+    "gitBlob": "eeabf374181f1fc746c2709590f15d1e108fd4b3",
+    "local": "trace-references/task-demo.svelte",
+    "sha256": "c6b7b71e0686aae636fc81b418b62e72a4402c8c5e5163c696917dfc66fd1835"
+  },
+  {
+    "path": "docs/src/lib/registry/examples/terminal-demo.svelte",
+    "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/terminal-demo.svelte",
+    "gitBlob": "9877405915e24cd0d43cf288ed473f4f27f245f8",
+    "local": "trace-references/terminal-demo.svelte",
+    "sha256": "61df16c2a8fdf24b8c226577d67268661c74a1c828ba5768b208ae1229e544a5"
+  },
+  {
+    "path": "docs/src/lib/registry/examples/terminal-error.svelte",
+    "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/terminal-error.svelte",
+    "gitBlob": "9afd07549522a43e3eeb31dcb49328e7b8ec669e",
+    "local": "trace-references/terminal-error.svelte",
+    "sha256": "87d68842f6c09dbe3913f551535a538628290d2425db4d2831de992a688a895c"
+  },
+  {
+    "path": "docs/src/lib/registry/examples/test-results-demo.svelte",
+    "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/test-results-demo.svelte",
+    "gitBlob": "822c381a8ce0292a71108016a49f8552d7158632",
+    "local": "trace-references/test-results-demo.svelte",
+    "sha256": "d6545b47d38b3d468d9c01cb363fee5b8bc21ce6afda494c4dbe191aa97cf4a8"
+  },
+  {
+    "path": "docs/src/lib/registry/examples/test-results-suites.svelte",
+    "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/test-results-suites.svelte",
+    "gitBlob": "0803cdc0a627298fe78e21b4b6701d045782c499",
+    "local": "trace-references/test-results-suites.svelte",
+    "sha256": "dfb626b68d9640f46812e96c9ceef29a1c3a5d0b6b5afc20032e4781976e2bb4"
+  },
+  {
+    "path": "docs/src/lib/registry/examples/tool-approval.svelte",
+    "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/tool-approval.svelte",
+    "gitBlob": "10f048257f69702ec70cd19b4ebe6dfc00ccf9e8",
+    "local": "trace-references/tool-approval.svelte",
+    "sha256": "93a194b396904f5fa71f3b32d85bf220a9b5d561455e0f2bdba8bda7fe721c03"
+  },
+  {
+    "path": "docs/src/lib/registry/examples/tool-demo.svelte",
+    "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/tool-demo.svelte",
+    "gitBlob": "8d1cea53706f5aaa29a2b9f99389fcb30e0c3aa2",
+    "local": "trace-references/tool-demo.svelte",
+    "sha256": "cf1e54616bdcc98ca0b7c267b3f5cd8a9bbbc50156e0833347ec4f80c1e0571b"
+  },
+  {
+    "path": "docs/src/lib/registry/examples/tool-sheet.svelte",
+    "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/tool-sheet.svelte",
+    "gitBlob": "680113eabed3150ea75a467bd2a4dffd544df204",
+    "local": "trace-references/tool-sheet.svelte",
+    "sha256": "7007326057ec74d0f5687133402c8946614e1bf7cd8892d8f0a11f20c59e786a"
+  },
+  {
+    "path": "docs/src/lib/registry/examples/tool-states.svelte",
+    "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/examples/tool-states.svelte",
+    "gitBlob": "642dcb4e54377464c6430e3d34cb0a9649e7f4a6",
+    "local": "trace-references/tool-states.svelte",
+    "sha256": "e09974958bd2a0b358692093ac6f3535359ee2ddb0f3e215780f1c66be9b6c89"
+  },
+  {
+    "path": "docs/src/lib/registry/ui/trace/trace.svelte",
+    "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/ui/trace/trace.svelte",
+    "gitBlob": "6a52e54fb3ce938f9252e5251515c0bdc33f1dfb",
+    "local": "trace-references/dependency-trace-trace.svelte",
+    "sha256": "3382ef00f1efe3c581069a1651dc1fa4b56f2c95ceb0d17ae9ba9d034f11bb4e"
+  },
+  {
+    "path": "docs/src/lib/registry/ui/trace/trace-line.svelte",
+    "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/ui/trace/trace-line.svelte",
+    "gitBlob": "c123c57720cf5fe8ac7da5ff8dee7ffe9993b19a",
+    "local": "trace-references/dependency-trace-trace-line.svelte",
+    "sha256": "c4c82841e08e86d1479c93558c1f443b90f970b51f67859f57f1af53ce3543f6"
+  },
+  {
+    "path": "docs/src/lib/registry/ui/trace/trace-title.svelte",
+    "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/ui/trace/trace-title.svelte",
+    "gitBlob": "57f49c8a0790bea084598b9659543f4c9403a07b",
+    "local": "trace-references/dependency-trace-trace-title.svelte",
+    "sha256": "ab4707dfd0c4aa77bdcb16fffb99fb9b6cdbe9cb74a5ef8e7c3897e9a088a046"
+  },
+  {
+    "path": "docs/src/lib/registry/ui/trace/trace-description.svelte",
+    "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/ui/trace/trace-description.svelte",
+    "gitBlob": "4e3e1358317505a0f1ec8b78a7b87961cc25735b",
+    "local": "trace-references/dependency-trace-trace-description.svelte",
+    "sha256": "4a88e86148ea52399fb2b6aece94e9979f9814793cfc80b6696c27f2d509c69b"
+  },
+  {
+    "path": "docs/src/lib/registry/ui/trace/trace-icon.svelte",
+    "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/ui/trace/trace-icon.svelte",
+    "gitBlob": "ff3c3ca17248f9da0505359530e71b1fcc8150de",
+    "local": "trace-references/dependency-trace-trace-icon.svelte",
+    "sha256": "d34775ea1abb1edb8c717f518346997973bf80a19ca7d5b235a8ac6ec32f04ab"
+  },
+  {
+    "path": "docs/src/lib/registry/ui/trace/trace-collapsible.svelte",
+    "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/ui/trace/trace-collapsible.svelte",
+    "gitBlob": "8619322d0eb9451d85990c8481c87b68419273d8",
+    "local": "trace-references/dependency-trace-trace-collapsible.svelte",
+    "sha256": "3fd7ffc5645125d08b1fac3a3ca38fb5d64b2965e7708011298aad0c38d3a805"
+  },
+  {
+    "path": "docs/src/lib/registry/ui/trace/trace-collapsible-trigger.svelte",
+    "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/ui/trace/trace-collapsible-trigger.svelte",
+    "gitBlob": "b0e2a98afe7e71e736b6d2244cf665b72333434e",
+    "local": "trace-references/dependency-trace-trace-collapsible-trigger.svelte",
+    "sha256": "e8c84b70bf4c213a70771a64f85de0a0dc679e86889e89d3eff9fca8e40790fc"
+  },
+  {
+    "path": "docs/src/lib/registry/ui/trace/trace-collapsible-content.svelte",
+    "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/ui/trace/trace-collapsible-content.svelte",
+    "gitBlob": "1d947f059a3d67b2011adc0d62773adda9a34af4",
+    "local": "trace-references/dependency-trace-trace-collapsible-content.svelte",
+    "sha256": "21a478a480b47a28fe1495e680159cc07e1a1367f35b25b9a618b0f9451845ca"
+  },
+  {
+    "path": "docs/src/lib/registry/ui/code-block/code-block.svelte",
+    "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/ui/code-block/code-block.svelte",
+    "gitBlob": "940d6aa029d2c23fcc6da35c701d1fd669f852ae",
+    "local": "trace-references/dependency-code-block-code-block.svelte",
+    "sha256": "777d56b522e16bb35f7b1444b103e55ee857e3aa945233a67655845643532c46"
+  },
+  {
+    "path": "docs/src/lib/registry/ui/code-block/code-block-content.svelte",
+    "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/ui/code-block/code-block-content.svelte",
+    "gitBlob": "df14cf4ce471d8bb8a09273d9faa3dd7affb107d",
+    "local": "trace-references/dependency-code-block-code-block-content.svelte",
+    "sha256": "7e935f521f321b94e83c4a30e3ab7ab67f22e59bd8494be9e05bac618000c7b5"
+  },
+  {
+    "path": "docs/src/lib/registry/ui/code-block/code-block-header.svelte",
+    "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/ui/code-block/code-block-header.svelte",
+    "gitBlob": "b9f5f807f761cceec156c9d2adfd31a278067eb1",
+    "local": "trace-references/dependency-code-block-code-block-header.svelte",
+    "sha256": "e8c3134aedbb3ce20c059fba350cac36a7c6b351053a2675bded5d30deb0d948"
+  },
+  {
+    "path": "docs/src/lib/registry/ui/code-block/code-block-copy-button.svelte",
+    "url": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/b10f153250b18abfccf49a06e1c4c68945edffa5/docs/src/lib/registry/ui/code-block/code-block-copy-button.svelte",
+    "gitBlob": "e02e5237da22ed2372c0a2f968cc05e89577f536",
+    "local": "trace-references/dependency-code-block-code-block-copy-button.svelte",
+    "sha256": "a0bf759d50e744a407af8daa24cb3b8fe8a3edccd300ec9e2be8fa2ca80cc061"
+  }
+]

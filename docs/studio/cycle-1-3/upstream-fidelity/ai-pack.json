@@ -1,0 +1,876 @@
+[
+  {
+    "id": "@victframework/ui-ai-svelte@0.4.0-rc.1",
+    "name": "@victframework/ui-ai-svelte",
+    "version": "0.4.0-rc.1",
+    "size": 87262,
+    "unpackedSize": 420282,
+    "shasum": "9ef33439dc337088fe6a45b9c13b07df6ff81ab6",
+    "integrity": "sha512-eFKDmOTkbzkUYeIfj+00CpsPXyT/x9zpso7vU4JUg4JQJDlR9bpqhKdFAjp/OP4lByYKYc5hnRaB2uUXM03EhA==",
+    "filename": "victframework-ui-ai-svelte-0.4.0-rc.1.tgz",
+    "files": [
+      {
+        "path": "COVERAGE.md",
+        "size": 6292,
+        "mode": 420
+      },
+      {
+        "path": "LICENSE.upstream",
+        "size": 1192,
+        "mode": 420
+      },
+      {
+        "path": "PRESENTATION.md",
+        "size": 3462,
+        "mode": 420
+      },
+      {
+        "path": "README.md",
+        "size": 2836,
+        "mode": 420
+      },
+      {
+        "path": "UPSTREAM.md",
+        "size": 9014,
+        "mode": 420
+      },
+      {
+        "path": "dist/styles.css",
+        "size": 129878,
+        "mode": 420
+      },
+      {
+        "path": "package.json",
+        "size": 1913,
+        "mode": 420
+      },
+      {
+        "path": "src/adapters.ts",
+        "size": 1001,
+        "mode": 420
+      },
+      {
+        "path": "src/Conversation.svelte",
+        "size": 9075,
+        "mode": 420
+      },
+      {
+        "path": "src/index.ts",
+        "size": 1548,
+        "mode": 420
+      },
+      {
+        "path": "src/MessageAction.svelte",
+        "size": 940,
+        "mode": 420
+      },
+      {
+        "path": "src/patterns/ChainOfThought.svelte",
+        "size": 4312,
+        "mode": 420
+      },
+      {
+        "path": "src/patterns/Checkpoint.svelte",
+        "size": 732,
+        "mode": 420
+      },
+      {
+        "path": "src/patterns/Confirmation.svelte",
+        "size": 1790,
+        "mode": 420
+      },
+      {
+        "path": "src/patterns/Context.svelte",
+        "size": 1682,
+        "mode": 420
+      },
+      {
+        "path": "src/patterns/FileTree.svelte",
+        "size": 1878,
+        "mode": 420
+      },
+      {
+        "path": "src/patterns/index.ts",
+        "size": 1440,
+        "mode": 420
+      },
+      {
+        "path": "src/patterns/InlineCitation.svelte",
+        "size": 1329,
+        "mode": 420
+      },
+      {
+        "path": "src/patterns/Message.svelte",
+        "size": 2588,
+        "mode": 420
+      },
+      {
+        "path": "src/patterns/ModelSelector.svelte",
+        "size": 3204,
+        "mode": 420
+      },
+      {
+        "path": "src/patterns/PatternShowcase.svelte",
+        "size": 13315,
+        "mode": 420
+      },
+      {
+        "path": "src/patterns/Plan.svelte",
+        "size": 2268,
+        "mode": 420
+      },
+      {
+        "path": "src/patterns/PromptInput.svelte",
+        "size": 3432,
+        "mode": 420
+      },
+      {
+        "path": "src/patterns/Queue.svelte",
+        "size": 2498,
+        "mode": 420
+      },
+      {
+        "path": "src/patterns/Reasoning.svelte",
+        "size": 1565,
+        "mode": 420
+      },
+      {
+        "path": "src/patterns/Sources.svelte",
+        "size": 1879,
+        "mode": 420
+      },
+      {
+        "path": "src/patterns/StackTrace.svelte",
+        "size": 3165,
+        "mode": 420
+      },
+      {
+        "path": "src/patterns/Subagent.svelte",
+        "size": 3511,
+        "mode": 420
+      },
+      {
+        "path": "src/patterns/Suggestion.svelte",
+        "size": 333,
+        "mode": 420
+      },
+      {
+        "path": "src/patterns/Task.svelte",
+        "size": 2153,
+        "mode": 420
+      },
+      {
+        "path": "src/patterns/Terminal.svelte",
+        "size": 1558,
+        "mode": 420
+      },
+      {
+        "path": "src/patterns/TestResults.svelte",
+        "size": 5565,
+        "mode": 420
+      },
+      {
+        "path": "src/patterns/Tool.svelte",
+        "size": 3137,
+        "mode": 420
+      },
+      {
+        "path": "src/patterns/TraceSteps.svelte",
+        "size": 1771,
+        "mode": 420
+      },
+      {
+        "path": "src/patterns/types.ts",
+        "size": 981,
+        "mode": 420
+      },
+      {
+        "path": "src/styles.input.css",
+        "size": 1399,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/hooks/use-highlighted-code.svelte.ts",
+        "size": 2557,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/lib/highlighter.ts",
+        "size": 4005,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/markdown/markdown-code-block.svelte",
+        "size": 871,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/markdown/markdown.svelte",
+        "size": 1498,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/markdown/safe-url.ts",
+        "size": 448,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/tailwind.css",
+        "size": 15995,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/attachment/attachment-action.svelte",
+        "size": 379,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/attachment/attachment-actions.svelte",
+        "size": 667,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/attachment/attachment-content.svelte",
+        "size": 507,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/attachment/attachment-description.svelte",
+        "size": 563,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/attachment/attachment-group.svelte",
+        "size": 617,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/attachment/attachment-media.svelte",
+        "size": 734,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/attachment/attachment-media.variants.ts",
+        "size": 1194,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/attachment/attachment-title.svelte",
+        "size": 568,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/attachment/attachment-trigger.svelte",
+        "size": 722,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/attachment/attachment.svelte",
+        "size": 913,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/attachment/attachment.variants.ts",
+        "size": 1314,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/attachment/index.ts",
+        "size": 1067,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/badge/badge.svelte",
+        "size": 713,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/badge/badge.variants.ts",
+        "size": 1361,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/badge/index.ts",
+        "size": 123,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/bubble/bubble-content.svelte",
+        "size": 1014,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/bubble/bubble-group.svelte",
+        "size": 439,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/bubble/bubble-reactions.svelte",
+        "size": 818,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/bubble/bubble-reactions.variants.ts",
+        "size": 690,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/bubble/bubble.svelte",
+        "size": 747,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/bubble/bubble.variants.ts",
+        "size": 2444,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/bubble/index.ts",
+        "size": 671,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/button/button.svelte",
+        "size": 1081,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/button/button.variants.ts",
+        "size": 2796,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/button/index.ts",
+        "size": 307,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/code-block/code-block-actions.svelte",
+        "size": 1288,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/code-block/code-block-content.svelte",
+        "size": 2073,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/code-block/code-block-copy-button.svelte",
+        "size": 1284,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/code-block/code-block-footer.svelte",
+        "size": 563,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/code-block/code-block-header.svelte",
+        "size": 677,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/code-block/code-block-line.svelte",
+        "size": 1359,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/code-block/code-block-line.variants.ts",
+        "size": 1239,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/code-block/code-block-title.svelte",
+        "size": 779,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/code-block/code-block.svelte",
+        "size": 783,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/code-block/code-block.variants.ts",
+        "size": 828,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/code-block/index.ts",
+        "size": 1110,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/collapsible/collapsible-content.svelte",
+        "size": 276,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/collapsible/collapsible-trigger.svelte",
+        "size": 276,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/collapsible/collapsible.svelte",
+        "size": 304,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/collapsible/index.ts",
+        "size": 282,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/dropdown-menu/dropdown-menu-checkbox-group.svelte",
+        "size": 346,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/dropdown-menu/dropdown-menu-checkbox-item.svelte",
+        "size": 1518,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/dropdown-menu/dropdown-menu-content.svelte",
+        "size": 1428,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/dropdown-menu/dropdown-menu-group-heading.svelte",
+        "size": 566,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/dropdown-menu/dropdown-menu-group.svelte",
+        "size": 276,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/dropdown-menu/dropdown-menu-item.svelte",
+        "size": 1170,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/dropdown-menu/dropdown-menu-label.svelte",
+        "size": 529,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/dropdown-menu/dropdown-menu-portal.svelte",
+        "size": 328,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/dropdown-menu/dropdown-menu-radio-group.svelte",
+        "size": 335,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/dropdown-menu/dropdown-menu-radio-item.svelte",
+        "size": 1212,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/dropdown-menu/dropdown-menu-separator.svelte",
+        "size": 409,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/dropdown-menu/dropdown-menu-shortcut.svelte",
+        "size": 532,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/dropdown-menu/dropdown-menu-sub-content.svelte",
+        "size": 1307,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/dropdown-menu/dropdown-menu-sub-trigger.svelte",
+        "size": 1000,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/dropdown-menu/dropdown-menu-sub.svelte",
+        "size": 243,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/dropdown-menu/dropdown-menu-trigger.svelte",
+        "size": 282,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/dropdown-menu/dropdown-menu.svelte",
+        "size": 245,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/dropdown-menu/index.ts",
+        "size": 1769,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/hover-card/hover-card-content.svelte",
+        "size": 1258,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/hover-card/hover-card-portal.svelte",
+        "size": 315,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/hover-card/hover-card-trigger.svelte",
+        "size": 269,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/hover-card/hover-card.svelte",
+        "size": 235,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/hover-card/index.ts",
+        "size": 356,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/input-group/index.ts",
+        "size": 529,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/input-group/input-group-addon.svelte",
+        "size": 901,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/input-group/input-group-addon.variants.ts",
+        "size": 1048,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/input-group/input-group-button.svelte",
+        "size": 767,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/input-group/input-group-button.variants.ts",
+        "size": 544,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/input-group/input-group-input.svelte",
+        "size": 518,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/input-group/input-group-text.svelte",
+        "size": 507,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/input-group/input-group-textarea.svelte",
+        "size": 547,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/input-group/input-group.svelte",
+        "size": 1481,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/input/index.ts",
+        "size": 78,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/input/input.svelte",
+        "size": 2114,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/item/index.ts",
+        "size": 804,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/item/item-actions.svelte",
+        "size": 435,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/item/item-content.svelte",
+        "size": 518,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/item/item-description.svelte",
+        "size": 555,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/item/item-footer.svelte",
+        "size": 461,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/item/item-group.svelte",
+        "size": 518,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/item/item-header.svelte",
+        "size": 461,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/item/item-media.svelte",
+        "size": 697,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/item/item-media.variants.ts",
+        "size": 764,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/item/item-separator.svelte",
+        "size": 409,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/item/item-title.svelte",
+        "size": 504,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/item/item.svelte",
+        "size": 964,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/item/item.variants.ts",
+        "size": 873,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/marker/index.ts",
+        "size": 352,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/marker/marker-content.svelte",
+        "size": 607,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/marker/marker-icon.svelte",
+        "size": 486,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/marker/marker.svelte",
+        "size": 919,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/marker/marker.variants.ts",
+        "size": 706,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/message-scroller/index.ts",
+        "size": 763,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/message-scroller/message-scroller-button.svelte",
+        "size": 1977,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/message-scroller/message-scroller-content.svelte",
+        "size": 461,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/message-scroller/message-scroller-item.svelte",
+        "size": 541,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/message-scroller/message-scroller-provider.svelte",
+        "size": 265,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/message-scroller/message-scroller-viewport.svelte",
+        "size": 688,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/message-scroller/message-scroller.svelte",
+        "size": 497,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/message/index.ts",
+        "size": 497,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/message/message-avatar.svelte",
+        "size": 583,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/message/message-content.svelte",
+        "size": 519,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/message/message-footer.svelte",
+        "size": 591,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/message/message-group.svelte",
+        "size": 440,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/message/message-header.svelte",
+        "size": 541,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/message/message.svelte",
+        "size": 577,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/progress/index.ts",
+        "size": 84,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/progress/progress.svelte",
+        "size": 710,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/separator/index.ts",
+        "size": 86,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/separator/separator.svelte",
+        "size": 498,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/textarea/index.ts",
+        "size": 84,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/textarea/textarea.svelte",
+        "size": 1010,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/tooltip/index.ts",
+        "size": 434,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/tooltip/tooltip-content.svelte",
+        "size": 2200,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/tooltip/tooltip-portal.svelte",
+        "size": 303,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/tooltip/tooltip-provider.svelte",
+        "size": 233,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/tooltip/tooltip-trigger.svelte",
+        "size": 280,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/tooltip/tooltip.svelte",
+        "size": 249,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/trace/index.ts",
+        "size": 867,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/trace/trace-collapsible-content.svelte",
+        "size": 899,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/trace/trace-collapsible-trigger.svelte",
+        "size": 1057,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/trace/trace-collapsible.svelte",
+        "size": 480,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/trace/trace-description.svelte",
+        "size": 466,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/trace/trace-icon.svelte",
+        "size": 587,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/trace/trace-line.svelte",
+        "size": 944,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/trace/trace-line.variants.ts",
+        "size": 63,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/trace/trace-title.svelte",
+        "size": 457,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/ui/trace/trace.svelte",
+        "size": 846,
+        "mode": 420
+      },
+      {
+        "path": "src/upstream/utils.ts",
+        "size": 488,
+        "mode": 420
+      },
+      {
+        "path": "upstream-manifest.json",
+        "size": 66442,
+        "mode": 420
+      }
+    ],
+    "entryCount": 172,
+    "bundled": []
+  }
+]

@@ -1,0 +1,163 @@
+
+> vict-studio@0.1.0 check:designer
+> svelte-kit sync && svelte-check --tsconfig ./tsconfig.designer.json
+
+Loading svelte-check in workspace: c:\Users\RZ1\.codex\worktrees\studio-cycle-1-3\260831-VCT-02\apps\studio
+Getting Svelte diagnostics...
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle-1-3\260831-VCT-02\apps\studio\..\..\packages\ui-svelte\src\document\RenderNode.svelte:303:3
+Warn: Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events (svelte)
+{:else if instruction.kind === 'text'}
+  <span
+    class="uv-text"
+    data-ui-owner={ownerId}
+    data-ui-node={instruction.nodeId}
+    data-ui-occ={occ}
+    style="display: contents"
+    onclick={(event) => {
+      if (selectOccurrence !== undefined) {
+        event.stopPropagation();
+        selectOccurrence(occ);
+      }
+    }}
+  >
+    {#if instruction.content.type === 'literal'}
+      {instruction.content.value}
+    {:else}
+      {String(resolveValue({ type: 'expression', expression: instruction.content.expression }, scope) ?? '')}
+    {/if}
+  </span>
+{:else if (instruction.kind === 'component' || instruction.kind === 'extension') && componentValues.invalidNames.length}
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle-1-3\260831-VCT-02\apps\studio\..\..\packages\ui-svelte\src\document\RenderNode.svelte:303:3
+Warn: `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions (svelte)
+{:else if instruction.kind === 'text'}
+  <span
+    class="uv-text"
+    data-ui-owner={ownerId}
+    data-ui-node={instruction.nodeId}
+    data-ui-occ={occ}
+    style="display: contents"
+    onclick={(event) => {
+      if (selectOccurrence !== undefined) {
+        event.stopPropagation();
+        selectOccurrence(occ);
+      }
+    }}
+  >
+    {#if instruction.content.type === 'literal'}
+      {instruction.content.value}
+    {:else}
+      {String(resolveValue({ type: 'expression', expression: instruction.content.expression }, scope) ?? '')}
+    {/if}
+  </span>
+{:else if (instruction.kind === 'component' || instruction.kind === 'extension') && componentValues.invalidNames.length}
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle-1-3\260831-VCT-02\apps\studio\..\..\packages\ui-svelte\src\document\RenderNode.svelte:370:5
+Warn: Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events (svelte)
+    {@const Implementation = extension.component}
+    <span style="display: contents" data-extension-id={instruction.extensionId} data-ui-owner={ownerId} data-ui-occ={occ} data-ui-node={instruction.nodeId}
+      onclick={event => { event.stopPropagation(); selectOccurrence?.(occ); }}>
+      <Implementation props={extensionProps} occurrenceKey={occ} nodeId={instruction.nodeId} {presentation} />
+    </span>
+  {:else}
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle-1-3\260831-VCT-02\apps\studio\..\..\packages\ui-svelte\src\document\RenderNode.svelte:370:5
+Warn: `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions (svelte)
+    {@const Implementation = extension.component}
+    <span style="display: contents" data-extension-id={instruction.extensionId} data-ui-owner={ownerId} data-ui-occ={occ} data-ui-node={instruction.nodeId}
+      onclick={event => { event.stopPropagation(); selectOccurrence?.(occ); }}>
+      <Implementation props={extensionProps} occurrenceKey={occ} nodeId={instruction.nodeId} {presentation} />
+    </span>
+  {:else}
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle-1-3\260831-VCT-02\apps\studio\..\..\packages\ui-svelte\src\document\DocumentHost.svelte:105:31
+Warn: This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+  let acceptedSupplied: Record<string, UiValue> = {};
+  let lastDocumentId = $state(plan.documentId);
+  let lastSignal: symbol | undefined = $state<symbol | undefined>(undefined);
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle-1-3\260831-VCT-02\apps\studio\src\lib\designer\StudioShowcase.svelte:231:210
+Error: Parameter 'dirty' implicitly has an 'any' type. (ts)
+{/snippet}
+{#snippet formatTools()}{#if source}<Inspector contextual document={source} selectedOccurrence={selected} onApply={apply} componentDescriptors={catalogDescriptors} readEffective={effective} onTextDraftChange={dirty => propertyDraft = dirty} />{/if}{/snippet}
+{#snippet insertTools()}{#if source}<Composer compact document={source} {selectedNodeId} recipes={screenRecipes} descriptors={catalogDescriptors} {compositionFocus} showArrange={false} onApply={apply} onInserted={selectNode} />{/if}{/snippet}
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle-1-3\260831-VCT-02\apps\studio\src\lib\designer\StudioShowcase.svelte:202:61
+Error: Parameter 'key' implicitly has an 'any' type. (ts)
+                {dispatch} navigate={() => notice = 'This example has one screen.'}
+                stateValues={runtimeValues} onStateChange={(key, value) => runtimeValues = { ...runtimeValues, [key]: value }}
+                {resetSignal} actionState={screenActionState} onPlan={next => plan = next}
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle-1-3\260831-VCT-02\apps\studio\src\lib\designer\StudioShowcase.svelte:202:66
+Error: Parameter 'value' implicitly has an 'any' type. (ts)
+                {dispatch} navigate={() => notice = 'This example has one screen.'}
+                stateValues={runtimeValues} onStateChange={(key, value) => runtimeValues = { ...runtimeValues, [key]: value }}
+                {resetSignal} actionState={screenActionState} onPlan={next => plan = next}
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle-1-3\260831-VCT-02\apps\studio\src\lib\designer\StudioShowcase.svelte:203:71
+Error: Parameter 'next' implicitly has an 'any' type. (ts)
+                stateValues={runtimeValues} onStateChange={(key, value) => runtimeValues = { ...runtimeValues, [key]: value }}
+                {resetSignal} actionState={screenActionState} onPlan={next => plan = next}
+                onTextEditingChange={dirty => canvasDraft = dirty}
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle-1-3\260831-VCT-02\apps\studio\src\lib\designer\StudioShowcase.svelte:204:38
+Error: Parameter 'dirty' implicitly has an 'any' type. (ts)
+                {resetSignal} actionState={screenActionState} onPlan={next => plan = next}
+                onTextEditingChange={dirty => canvasDraft = dirty}
+                onRenderDiagnostic={diagnostic => issues = [...issues.slice(-4), diagnostic]} ariaLabel="Showcase canvas" />
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle-1-3\260831-VCT-02\apps\studio\src\lib\designer\StudioShowcase.svelte:205:37
+Error: Parameter 'diagnostic' implicitly has an 'any' type. (ts)
+                onTextEditingChange={dirty => canvasDraft = dirty}
+                onRenderDiagnostic={diagnostic => issues = [...issues.slice(-4), diagnostic]} ariaLabel="Showcase canvas" />
+          {/key}
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle-1-3\260831-VCT-02\apps\studio\src\lib\designer\StudioShowcase.svelte:212:194
+Error: Parameter 'dirty' implicitly has an 'any' type. (ts)
+          <label>State declaration <select aria-label="Authored state declaration" value={selectedData} disabled={blocked} onchange={event => selectedData = event.currentTarget.value}><option value="">Choose a value</option>{#each Object.values(source.localState) as declaration}<option value={declaration.key}>{declaration.key} · {declaration.type}</option>{/each}</select></label>
+          {#if selectedData}{#key `${recipeId}:${selectedData}`}<StateInitialEditor document={source} expression={{ type: 'ref', path: `state.${selectedData}` }} onApply={apply} onDirtyChange={dirty => dataDraft = dirty} />{/key}{/if}
+        </details>
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle-1-3\260831-VCT-02\apps\studio\src\lib\designer\StudioShowcase.svelte:214:283
+Error: Parameter 'key' implicitly has an 'any' type. (ts)
+        </details>
+        <details><summary>Preview values (temporary runtime data)</summary><p>Interact changes these values. Action calls use the local screen simulation with no live effects.</p>{#key recipeId}<StateValuesPanel localState={source.localState} stateValues={runtimeValues} onChange={(key, value) => { const next = { ...runtimeValues }; if (value === undefined) delete next[key]; else next[key] = value; runtimeValues = next; }} />{/key}</details>
+      </div>
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle-1-3\260831-VCT-02\apps\studio\src\lib\designer\StudioShowcase.svelte:214:288
+Error: Parameter 'value' implicitly has an 'any' type. (ts)
+        </details>
+        <details><summary>Preview values (temporary runtime data)</summary><p>Interact changes these values. Action calls use the local screen simulation with no live effects.</p>{#key recipeId}<StateValuesPanel localState={source.localState} stateValues={runtimeValues} onChange={(key, value) => { const next = { ...runtimeValues }; if (value === undefined) delete next[key]; else next[key] = value; runtimeValues = next; }} />{/key}</details>
+      </div>
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle-1-3\260831-VCT-02\apps\studio\src\lib\designer\StudioShowcase.svelte:218:319
+Error: Parameter 'dirty' implicitly has an 'any' type. (ts)
+        <div class="toolbar"><button type="button" disabled={blocked} aria-pressed={tools === 'inspector'} onclick={() => tools = 'inspector'}>Docked Inspector</button><button type="button" disabled={blocked} aria-pressed={tools === 'palette'} onclick={() => tools = 'palette'}>Selection palette</button></div>
+        {#if tools === 'inspector'}<Inspector document={source} selectedOccurrence={selected} onApply={apply} lastIssues={issues} componentDescriptors={catalogDescriptors} knownActionIds={designerCatalogs.actionIds} knownRouteIds={designerCatalogs.routeIds} {actionInputs} readEffective={effective} onTextDraftChange={dirty => propertyDraft = dirty} />{:else}<p>Select source on the design canvas to use its floating Format, Insert, Arrange and Connect tools. F10 focuses the palette.</p>{/if}
+      </aside>
+
+c:\Users\RZ1\.codex\worktrees\studio-cycle-1-3\260831-VCT-02\apps\studio\..\..\packages\ui-editor\src\StateValuesPanel.svelte:106:7
+Warn: A form label must be associated with a control
+https://svelte.dev/e/a11y_label_has_associated_control (svelte)
+    <div class="state-row">
+      <label class="state-label">
+        <code>{decl.key}</code>
+        <span class="state-type">{typeLabel(decl.type)}</span>
+      </label>
+      {#if decl.type === 'boolean'}
+
+====================================
+svelte-check found 10 errors and 6 warnings in 4 files
+npm error Lifecycle script `check:designer` failed with error:
+npm error code 1
+npm error path C:\Users\RZ1\.codex\worktrees\studio-cycle-1-3\260831-VCT-02\apps\studio
+npm error workspace vict-studio@0.1.0
+npm error location C:\Users\RZ1\.codex\worktrees\studio-cycle-1-3\260831-VCT-02\apps\studio
+npm error command failed
+npm error command C:\WINDOWS\system32\cmd.exe /d /s /c svelte-kit sync && svelte-check --tsconfig ./tsconfig.designer.json

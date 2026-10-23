@@ -1,0 +1,38 @@
+[
+  {
+    "path": "packages/ui-ai-svelte/src/patterns/TraceSteps.svelte",
+    "sha256": "81846d1f945600b3f8190a9b19c3e4ed45a901cefa95b1b90d470fc8d24c1ce7"
+  },
+  {
+    "path": "packages/ui-ai-svelte/src/patterns/Queue.svelte",
+    "sha256": "c382d917bbd04c184e1eaa2cd9c157fc42aa0c8b61f09f38022deb729161b7b9"
+  },
+  {
+    "path": "packages/ui-ai-svelte/src/patterns/Reasoning.svelte",
+    "sha256": "a8d11288d4bfa2bc8eb3b2bb396975696108e72590d5717c6be98f1124ea9c7e"
+  },
+  {
+    "path": "packages/ui-ai-svelte/src/patterns/Subagent.svelte",
+    "sha256": "b0e62c1a54844b4c16b898af12b8f9ef0372663209d74044d1ee4c0c1babaed1"
+  },
+  {
+    "path": "packages/ui-ai-svelte/src/patterns/Tool.svelte",
+    "sha256": "f4aba14fed608220efb4e30687472721c5cb6432e3457b6d9c520d8553fdca1a"
+  },
+  {
+    "path": "packages/ui-ai-svelte/src/patterns/Terminal.svelte",
+    "sha256": "653b23c507288cffa79cb7491d973b248db316418c3dca0c454750368d9c644d"
+  },
+  {
+    "path": "packages/ui-ai-svelte/src/patterns/TestResults.svelte",
+    "sha256": "fab6a11e5a194293bc92e75b872845c911990cfcb0995c34061fea1c6793cb3f"
+  },
+  {
+    "path": "packages/ui-ai-svelte/src/patterns/StackTrace.svelte",
+    "sha256": "4286080116160804e3ca47e50b0071eae87ee99c8e3055c0569d5546bde5b876"
+  },
+  {
+    "path": "packages/ui-ai-svelte/src/patterns/PatternShowcase.svelte",
+    "sha256": "e3e42554e47d569b6dda4002245cb705dfdfbb0327c94b05f28a010b7fc6ed99"
+  }
+]

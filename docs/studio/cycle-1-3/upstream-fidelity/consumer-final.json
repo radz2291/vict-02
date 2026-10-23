@@ -1,0 +1,8 @@
+{
+  "Mode": "Incremental packed artifact update in independent consumer; no workspace links or aliases",
+  "AiTar": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-cycle13-final-artifacts-450533698de64cedabbbd3e8ea9f4ec5\\victframework-ui-ai-svelte-0.4.0-rc.1.tgz",
+  "Flow": "unchanged existing packed 1.7.0 wrapper",
+  "Consumer": "C:/Users/RZ1/AppData/Local/Temp/vict-cycle13-consumer-DbfrEI/consumer",
+  "Candidate": "748d9a6fa4ca9b2dee0445fa06b55b4e56ab8467",
+  "AiTarSha256": "ca7964e2f2ba4639d7c3d456e1abe8f168f4288266d29b8024b7db8531960e82"
+}
