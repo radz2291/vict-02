@@ -1,5 +1,7 @@
 <script lang="ts">
-  import { tick, type Snippet } from 'svelte';
+  import { onDestroy, tick, type Snippet } from 'svelte';
+  import CopyIcon from '@lucide/svelte/icons/copy';
+  import CheckIcon from '@lucide/svelte/icons/check';
   import * as Message from './upstream/ui/message/index.js';
   import * as Bubble from './upstream/ui/bubble/index.js';
   import PromptInput from './patterns/PromptInput.svelte';
@@ -25,9 +27,12 @@
   let sending = $state(false);
   let error = $state('');
   let copyStatus = $state('');
+  let copiedMessageId = $state<string | null>(null);
+  let copyReset: ReturnType<typeof setTimeout> | undefined;
   let form = $state<HTMLFormElement>();
   let input = $state<HTMLTextAreaElement | null>(null);
   const pending = $derived(busy || sending);
+  onDestroy(() => clearTimeout(copyReset));
 
   async function submit(text: string) {
     if (!text || pending) return;
@@ -46,7 +51,15 @@
     }
   }
   async function copy(message: ConversationMessage) {
-    try { await navigator.clipboard.writeText(message.text); copyStatus = 'Message copied.'; }
+    clearTimeout(copyReset);
+    copiedMessageId = null;
+    copyStatus = '';
+    try {
+      await navigator.clipboard.writeText(message.text);
+      copiedMessageId = message.id;
+      copyStatus = 'Message copied.';
+      copyReset = setTimeout(() => { copiedMessageId = null; }, 2000);
+    }
     catch { copyStatus = 'Copy unavailable. Select the message text to copy it.'; }
   }
 </script>
@@ -81,7 +94,13 @@
                     {/if}
                     <div class="vict-ai-markdown"><Markdown content={message.text}/></div>
                     {#if message.text && !(busy && message === messages.at(-1))}
-                      <Message.Footer><Button variant="ghost" size="sm" onclick={() => void copy(message)} aria-label="Copy message">Copy</Button></Message.Footer>
+                      <Message.Footer>
+                        <Button variant="ghost" size="icon" onclick={() => void copy(message)}
+                          aria-label="Copy message" title={copiedMessageId === message.id ? 'Copied' : 'Copy message'}
+                          data-copied={copiedMessageId === message.id || undefined}>
+                          {#if copiedMessageId === message.id}<CheckIcon aria-hidden="true"/>{:else}<CopyIcon aria-hidden="true"/>{/if}
+                        </Button>
+                      </Message.Footer>
                     {/if}
                   {/if}
                 </Message.Content>
