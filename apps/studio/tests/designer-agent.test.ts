@@ -291,6 +291,15 @@ describe('agent canonical editing boundary', () => {
 });
 describe('agent HTTP request guard', () => {
   const session = { sessionId: 'test', actorLabel: 'operator', csrfToken: 'csrf' };
+  it('discards an oversized streamed body without cancelling the adapter socket before its JSON refusal',async()=>{
+    let reads=0,cancelled=false;
+    const body=new ReadableStream<Uint8Array>({pull(controller){reads++;if(reads<=13)controller.enqueue(new Uint8Array(100_000));else controller.close();},cancel(){cancelled=true;}});
+    const request=new Request('http://localhost',{method:'POST',headers:{'content-type':'application/json','x-vict-csrf':'csrf'},body,duplex:'half'} as RequestInit);
+    const result=await agentJson(request,session);
+    expect(result.ok).toBe(false);if(result.ok)throw Error('Expected bounded refusal');
+    expect(result.response.status).toBe(413);expect(await result.response.json()).toMatchObject({code:'STUDIO_AGENT_REQUEST_LIMIT'});
+    expect(reads).toBe(14);expect(cancelled).toBe(false);
+  });
   it('refuses unauthenticated, non-JSON, bad-CSRF, oversized and malformed requests', async () => {
     for (const [request, actor, status] of [
       [new Request('http://localhost', { method: 'POST', body: '{}' }), null, 401],

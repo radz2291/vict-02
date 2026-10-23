@@ -27,6 +27,7 @@ export async function agentJson(
       response: json({ ok: false, code: 'STUDIO_AGENT_REQUEST' }, { status: 400 }),
     };
   let length = 0;
+  let oversized = false;
   const chunks: Uint8Array[] = [];
   try {
     while (true) {
@@ -34,14 +35,19 @@ export async function agentJson(
       if (next.done) break;
       length += next.value.byteLength;
       if (length > AGENT_REQUEST_BYTES) {
-        await reader.cancel();
-        return {
-          ok: false,
-          response: json({ ok: false, code: 'STUDIO_AGENT_REQUEST_LIMIT', message: 'Aggregate UTF-8 request exceeds admission.', limitBytes: AGENT_REQUEST_BYTES }, { status: 413 }),
-        };
+        // adapter-node maps stream cancellation to IncomingMessage.destroy(),
+        // which closes the socket before a structured refusal can be delivered.
+        // Discard excess bytes under the host's 2M cap without retaining them.
+        oversized = true;
+        chunks.length = 0;
+        continue;
       }
       chunks.push(next.value);
     }
+    if (oversized) return {
+      ok: false,
+      response: json({ ok: false, code: 'STUDIO_AGENT_REQUEST_LIMIT', message: 'Aggregate UTF-8 request exceeds admission.', limitBytes: AGENT_REQUEST_BYTES }, { status: 413 }),
+    };
     const bytes = new Uint8Array(length);
     let offset = 0;
     for (const chunk of chunks) {

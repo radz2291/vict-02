@@ -48,11 +48,28 @@ describe('bounded visual observation boundary', () => {
     expect(acceptVisualCapture('session-a', firstCaptureId, metadata(), bytes)).toMatchObject({ ok: false, code: 'STUDIO_CAPTURE_UNAVAILABLE' });
     const current = await confirmation;
     expect(acceptVisualCapture('session-a', current.captureId, metadata(), bytes)).toEqual({ ok: true });
-    expect(await result).toMatchObject({ ok: true, evidence: 'observed-appearance', interactionVerified: false, simulatedModel: true, model: 'zai/glm-5.3-flash', validation: 'same-source-preview-and-viewport-after-inference' });
+    const observed = await result as { imageDigest: string; confirmedImageDigest: string };
+    expect(observed).toMatchObject({ ok: true, evidence: 'observed-appearance', interactionVerified: false, simulatedModel: true, model: 'zai/glm-5.3-flash', validation: 'same-source-preview-viewport-and-image-bytes-after-inference', imageComparison: 'sha256-identical' });
+    expect(observed.imageDigest).toMatch(/^[0-9a-f]{64}$/);
+    expect(observed.confirmedImageDigest).toBe(observed.imageDigest);
     expect(captures).toBe(2);
     expect((modelPrompt as { prompt: { content: unknown }[] }).prompt[1]!.content).toEqual(expect.arrayContaining([expect.objectContaining({ type: 'file', mediaType: 'image/jpeg', data: bytes })]));
     expect(JSON.stringify(await result)).not.toContain('base64');
     observer.dispose();
+  });
+  it('refuses changed JPEG bytes with identical metadata after inference and does not call the model twice', async () => {
+    let captures = 0; let modelCalls = 0;
+    const identicalMetadata = metadata();
+    const changedBytes = new Uint8Array(bytes); changedBytes[14] = 1;
+    expect(jpegDimensions(changedBytes)).toEqual(jpegDimensions(bytes));
+    const observer = createVisualObserver({ owner: 'session-a', runId: 'run', model: 'zai/glm-5.3-flash', getCursor: () => cursor, signal: new AbortController().signal,
+      emit: event => { captures++; expect(acceptVisualCapture('session-a', event.captureId, identicalMetadata, captures === 1 ? bytes : changedBytes)).toEqual({ ok: true }); },
+      modelFactory: () => ({ doStream: async () => { modelCalls++; return { stream: new ReadableStream({ start(controller) { controller.enqueue({ type: 'text-delta', delta: 'Old pixels from the first image.' }); controller.enqueue({ type: 'finish' }); controller.close(); } }) }; } }),
+    });
+    const result = await observer.capability.invoke({ focus: 'Current pixels' }, context);
+    expect(result).toMatchObject({ ok: false, code: 'STUDIO_CAPTURE_STALE', message: expect.stringContaining('rendered image bytes changed') });
+    expect(result).not.toHaveProperty('observation');
+    expect(captures).toBe(2); expect(modelCalls).toBe(1); observer.dispose();
   });
   it.each(['runtime', 'viewport', 'portal'] as const)('refuses %s changes during inference with a second capture and only one model call', async change => {
     let captures = 0; let modelCalls = 0;
