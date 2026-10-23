@@ -22,4 +22,4 @@ Current verdict: **HELD**, awaiting corrected full-family candidate and rebuilt 
 
 ## Final disposition
 
-The narrow icon-only proposal remained superseded. The completed full-family gate is recorded in `UPSTREAM-FIDELITY-INDEPENDENT.md` for product `8eb96dd8bcf7cfadd973e1f4fae7d11706a32797`. Final actual Studio/packed/Message Copy checks pass 23/23, including native clipboard source, keyboard/tooltip, success reset, failure and mobile behavior. The original 30×40 Studio leak, its diagnostic injection and the Windows CRLF oracle correction remain preserved in `cycle-1-3/copy-appearance/`. No separate icon-only acceptance is claimed.
+The narrow icon-only proposal remained superseded. The completed full-family gate is recorded in `UPSTREAM-FIDELITY-INDEPENDENT.md` for product `8eb96dd8bcf7cfadd973e1f4fae7d11706a32797`. Final actual Studio/packed/Message Copy checks pass 23/23, including native clipboard source, keyboard/tooltip, success reset, failure and mobile behavior. The original 30Ã—40 Studio leak, its diagnostic injection and the Windows CRLF oracle correction remain preserved in `cycle-1-3/copy-appearance/`. No separate icon-only acceptance is claimed.
