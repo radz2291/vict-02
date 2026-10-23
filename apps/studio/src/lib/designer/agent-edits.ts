@@ -77,7 +77,7 @@ export function agentEditDiagnostics(error:z.ZodError,input?:unknown) {
  const shape:Record<string,string>={add:'add(recipe,nodeId,parentId,slotName?,index?,text?,headingLevel?,attributes?,props?,styles?)',modify:'modify(nodeId,text?,headingLevel?,attributes?,props?,styles?)',move:'move(nodeId,newParentId,slotName?,index?)',remove:'remove(nodeId)',bind:'bind(nodeId,prop,expression?)',connect:'connect(nodeId,output,binding?)',declareState:'declareState(key,type:string|number|boolean,initial:matchingScalar)',wireInput:'wireInput(nodeId,key,initial?)'};
  return error.issues.slice(0,8).map(issue=>{
   const operation=typeof issue.path[1]==='number' ? issue.path[1] : undefined;
-  const path=issue.path.join('.');let expected='';
+  const rawPath=issue.path.join('.');const path=rawPath.length>500 ? rawPath.slice(0,470)+'[path truncated]' : rawPath;let expected='';
   if(path.includes('.expression'))expected='Expected exactly {type:"literal",value:scalar} OR {type:"ref",path:"state.key"}; no extra fields. Example: {"type":"ref","path":"state.accepted"}.';
   else if(path.includes('.binding'))expected='Expected {setState:{key,value?:literalOrRef}} OR {invokeAction:{actionId,input?:{field:literalOrRef}}}; no extra fields. Example: {"setState":{"key":"accepted"}}.';
   else if(path.includes('.props'))expected='Expected a property record of scalar values or homogeneous string[]/number[] (max100). Example: {"options":["one","two"]}; mixed lists and object arrays are unsupported.';
