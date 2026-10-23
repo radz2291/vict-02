@@ -1,0 +1,72 @@
+{
+  "name": "@victframework/ui-ai-svelte",
+  "version": "0.4.0-rc.1",
+  "type": "module",
+  "description": "VICT Svelte AI conversation presentation, derived from pinned shadcn-svelte AI Elements.",
+  "license": "Apache-2.0 AND MIT",
+  "files": [
+    "src",
+    "dist",
+    "UPSTREAM.md",
+    "COVERAGE.md",
+    "upstream-manifest.json",
+    "LICENSE.upstream"
+  ],
+  "main": "./src/index.ts",
+  "svelte": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "svelte": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./styles.css": "./dist/styles.css",
+    "./patterns": {
+      "types": "./src/patterns/index.ts",
+      "svelte": "./src/patterns/index.ts",
+      "default": "./src/patterns/index.ts"
+    },
+    "./components/*": {
+      "types": "./src/upstream/ui/*/index.ts",
+      "svelte": "./src/upstream/ui/*/index.ts",
+      "default": "./src/upstream/ui/*/index.ts"
+    },
+    "./markdown": {
+      "types": "./src/upstream/markdown/markdown.svelte",
+      "svelte": "./src/upstream/markdown/markdown.svelte",
+      "default": "./src/upstream/markdown/markdown.svelte"
+    }
+  },
+  "scripts": {
+    "build": "node scripts/build-css.mjs",
+    "build:css": "node scripts/build-css.mjs"
+  },
+  "dependencies": {
+    "@lucide/svelte": "1.27.0",
+    "@shadcn-svelte/primitives": "0.0.1",
+    "bits-ui": "2.19.3",
+    "cn": "0.5.0",
+    "runed": "0.37.1",
+    "shiki": "3.20.0",
+    "svelte-streamdown": "4.2.1",
+    "svelte-toolbelt": "0.10.6",
+    "tailwind-merge": "3.3.1",
+    "tailwind-variants": "3.3.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "4.3.3",
+    "postcss": "8.5.8",
+    "tailwindcss": "4.3.3",
+    "tw-animate-css": "1.4.0"
+  },
+  "peerDependencies": {
+    "svelte": "^5.33.0"
+  },
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "sideEffects": [
+    "**/*.css"
+  ]
+}
