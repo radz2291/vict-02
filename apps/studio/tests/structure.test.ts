@@ -5,7 +5,7 @@ import { EditorBridge } from '@victframework/ui-editor';
 import { newScreen, designerCatalogs, compileScreen } from '../src/lib/designer/application.js';
 import { screenRecipes } from '../src/lib/designer/recipes.js';
 import { screenStore } from '../src/lib/designer/storage.js';
-import { projectStructure, structureId, structureMove, structureOccurrence } from '../src/lib/designer/structure.js';
+import { projectStructure, structureId, parseStructureId, structureMove, structureOccurrence } from '../src/lib/designer/structure.js';
 
 function fixture(): UiDocument {
   const base = newScreen('Structure', 'structure');
@@ -19,6 +19,35 @@ function fixture(): UiDocument {
 const request = (source: string, target: string, revision = 'r1') => ({ documentId: 'structure', revision, source: structureId('structure', 'node', source), target: structureId('structure', 'node', target) });
 
 describe('source structure projection and canonical edits', () => {
+  it('encodes graph ids for upstream attribute selectors while preserving exact source tuples', () => {
+    const documentId = 'document"/%[one]\\';
+    const sourceId = 'child"/%[two]\\';
+    const targetId = 'target"/%[three]\\';
+    const base = fixture();
+    const document: UiDocument = { ...base, id: documentId, nodes: {
+      screen: { kind: 'element', id: 'screen', tag: 'main', children: [sourceId, targetId] },
+      [sourceId]: { kind: 'element', id: sourceId, tag: 'p', children: [] },
+      [targetId]: { kind: 'element', id: targetId, tag: 'section', children: [] },
+    } };
+    const graph = projectStructure(document);
+    for (const node of graph.nodes) {
+      expect(node.id).not.toMatch(/["\\\[\]]/);
+      expect(parseStructureId(node.id)).toEqual([documentId, node.data.kind, node.data.sourceId ?? parseStructureId(node.id)?.[2]]);
+    }
+    for (const edge of graph.edges) {
+      expect(edge.id).not.toMatch(/["\\\[\]]/);
+      expect(JSON.parse(decodeURIComponent(edge.id))).toEqual([edge.source, edge.target, edge.label, expect.any(String)]);
+    }
+    expect(parseStructureId(structureId(documentId, 'node', sourceId))).toEqual([documentId, 'node', sourceId]);
+    for (const malformed of ['%', '%E0%A4', 'null', '%5B1%2C2%2C3%5D', '%5B%22one%22%5D', '%7B%7D']) expect(parseStructureId(malformed)).toBeUndefined();
+    const attempt = { documentId, revision: 'r1', source: structureId(documentId, 'node', sourceId), target: structureId(documentId, 'node', targetId) };
+    const moved = structureMove(document, 'r1', attempt, false, []);
+    expect(moved.ok).toBe(true);
+    if (moved.ok) expect(moved.draft.commands).toEqual([{ op: 'move', nodeId: sourceId, newParentId: targetId, slotName: undefined }]);
+    expect(structureMove(document, 'r2', attempt, false, []).ok).toBe(false);
+    expect(structureMove(document, 'r1', { ...attempt, source: '%' }, false, []).ok).toBe(false);
+    expect(structureOccurrence(document, sourceId)).toBe(`${documentId}|${sourceId}`);
+  });
   it('preserves source identity across reorders, layout changes and selection without changing application identity', () => {
     const document = fixture();
     const before = canonicalUiDocument(document).contentDigest;

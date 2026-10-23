@@ -3,7 +3,16 @@ import { authoredOccurrence, moveRelative, canInsertRecipe, type InsertRecipe, t
 import type { Node, Edge } from '@victframework/ui-flow-svelte';
 
 /** Graph ids identify source, never a transient rendered occurrence or array position. */
-export const structureId = (documentId: string, kind: string, id: string) => JSON.stringify([documentId, kind, id]);
+// Flow interpolates these ids into quoted attribute selectors. Encode the entire
+// tuple so source quotes/backslashes cannot become selector syntax.
+export const structureId = (documentId: string, kind: string, id: string) => encodeURIComponent(JSON.stringify([documentId, kind, id]));
+export function parseStructureId(value: string): readonly [string, string, string] | undefined {
+  try {
+    const tuple: unknown = JSON.parse(decodeURIComponent(value));
+    return Array.isArray(tuple) && tuple.length === 3 && tuple.every(part => typeof part === 'string')
+      ? tuple as [string, string, string] : undefined;
+  } catch { return undefined; }
+}
 export type StructureNodeData = { label: string; sourceId?: string; occurrence?: string; kind: string };
 
 function children(node: UiNode): { id: string; label: string }[] {
@@ -46,7 +55,7 @@ export function projectStructure(document: UiDocument): { nodes: Node<StructureN
     return graphId;
   };
   const link = (source: string, target: string, label: string, path: string) => edges.push({
-    id: JSON.stringify([source, target, label, path]), source, target, label,
+    id: encodeURIComponent(JSON.stringify([source, target, label, path])), source, target, label,
     deletable: false, type: 'smoothstep',
     style: label === 'contains' || label.startsWith('slot:') ? 'stroke: #64748b' : 'stroke: #a78bfa; stroke-dasharray: 5 3',
   });

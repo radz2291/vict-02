@@ -88,3 +88,30 @@ node, drag it to rearrange the view and confirm the saved state is unchanged.
 Enable Move by connection, connect a child to a different ordinary container,
 then use shared Undo/Redo and Save/reopen. Attempt root/cycle/reference moves
 and confirm refusal. Use Design for multi-slot choices and behavior bindings.
+
+## Production connection finding and bounded repair
+
+Against product `67a024f21f1b2b423955c44e7e5a762beaf6af1a`, fresh isolated
+browser evidence `cycle-1-3/designer-browser-2026-10-23T08-52-10-512Z`
+confirmed manual palette insertion and shared graph/canvas selection, but a
+real connection gesture threw browser `querySelector` SyntaxErrors. Upstream
+xyflow/system 0.0.83 constructs a quoted data-id selector using node IDs. The
+raw JSON tuple IDs contained double quotes, so connection hit testing failed.
+This was a product integration defect, not a simulated-test failure or user
+gesture issue. The earlier 08-51-10 failure remains as well.
+
+Authorized bounded repair encodes the complete node and edge identity tuples
+with `encodeURIComponent(JSON.stringify(...))`. Graph IDs remain deterministic
+and reversible; original source IDs, labels and authored occurrences are
+unchanged. `parseStructureId` rejects malformed URI/JSON and wrong tuple shapes.
+Moves still resolve only exact graph IDs from the current source projection,
+so decoding cannot bypass source/revision/draft/context guards. Added regression
+coverage for quotes, percent signs, slashes, brackets and backslashes; exact
+source targeting and stale/malformed refusal. Browser script identifiers were
+updated to match. A rebuilt production browser rerun is still required to
+close this finding; no completion is claimed by this repair record alone.
+
+Bounded repair source check: `npm run test -w vict-studio -- tests/structure.test.ts`
+PASS 7/7 in 28.23 seconds. Existing DocumentHost/RenderNode/StateValuesPanel
+Svelte warnings remain. No build or browser rerun was performed concurrently
+with the coordinator's real-provider journey.
