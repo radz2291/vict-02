@@ -1,0 +1,85 @@
+
+> vict-studio@0.1.0 test
+> vitest run tests/ui/agent-handoff.test.ts
+
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/apps/studio
+
+1:32:08 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/DocumentHost.svelte:105:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+1:32:09 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:303:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+1:32:09 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:303:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+1:32:09 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:370:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+1:32:09 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:370:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+1:32:14 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-editor/src/StateValuesPanel.svelte:106:6 A form label must be associated with a control
+https://svelte.dev/e/a11y_label_has_associated_control
+ ❯ tests/ui/agent-handoff.test.ts (4 tests | 4 failed) 3751ms
+   × does not let delayed Stop cleanup replace the feedback for a newer turn 263ms
+     → expected 'Stopped. Applied edits remain on the …' to be 'Continuing from the current manual st…' // Object.is equality
+   × settles a genuine stale refusal without waiting for the model and admits fresh context only in a new request 1188ms
+     → expected null not to be null
+   × settles a genuine draft refusal without waiting for the model and admits fresh context only in a new request 1149ms
+     → expected null not to be null
+   × keeps an applied batch undoable and ignores late proposals/completion after Stop 1148ms
+     → expected null not to be null
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/ui/agent-handoff.test.ts > does not let delayed Stop cleanup replace the feedback for a newer turn
+AssertionError: expected 'Stopped. Applied edits remain on the …' to be 'Continuing from the current manual st…' // Object.is equality
+
+Expected: "Continuing from the current manual state"
+Received: "Stopped. Applied edits remain on the canvas and in Undo."
+
+ ❯ tests/ui/agent-handoff.test.ts:91:74
+     89|   app.finishDelete();
+     90|   await new Promise((resolve) => setTimeout(resolve, 0));
+     91|   expect(document.querySelector('.agent-status')?.getAttribute('title'…
+       |                                                                          ^
+     92|   expect(document.querySelector('[data-testid="conversation-stop"]')).…
+     93| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  tests/ui/agent-handoff.test.ts > settles a genuine stale refusal without waiting for the model and admits fresh context only in a new request
+ FAIL  tests/ui/agent-handoff.test.ts > settles a genuine draft refusal without waiting for the model and admits fresh context only in a new request
+AssertionError: expected null not to be null
+ ❯ tests/ui/agent-handoff.test.ts:104:98
+    102|   app.emit(0, { type: 'proposal', proposal: proposed });
+    103|   await vi.waitFor(() => expect(app.apply).toHaveBeenCalledOnce());
+    104|   await vi.waitFor(() => expect(document.querySelector('[data-testid="…
+       |                                                                                                  ^
+    105|   expect(app.bridge.document).toBe(manual);
+    106|   expect(app.bridge.document.nodes['agent-heading']).toBeUndefined();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  tests/ui/agent-handoff.test.ts > keeps an applied batch undoable and ignores late proposals/completion after Stop
+AssertionError: expected null not to be null
+ ❯ tests/ui/agent-handoff.test.ts:129:98
+    127|   app.emit(0, { type: 'proposal', proposal: app.proposal(0, 'late-head…
+    128|   app.emit(0, { type: 'done', status: 'completed', applied: 2 });
+    129|   await vi.waitFor(() => expect(document.querySelector('[data-testid="…
+       |                                                                                                  ^
+    130|   expect(app.apply).toHaveBeenCalledTimes(1);
+    131|   expect(app.bridge.document.nodes['late-heading']).toBeUndefined();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  4 failed (4)
+   Start at  13:31:53
+   Duration  25.93s (transform 14.14s, setup 0ms, collect 20.04s, tests 3.75s, environment 1.22s, prepare 382ms)
+
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path C:\Users\RZ1\.codex\worktrees\studio-cycle-1-1\260831-VCT-02\apps\studio
+npm error workspace vict-studio@0.1.0
+npm error location C:\Users\RZ1\.codex\worktrees\studio-cycle-1-1\260831-VCT-02\apps\studio
+npm error command failed
+npm error command C:\WINDOWS\system32\cmd.exe /d /s /c vitest run tests/ui/agent-handoff.test.ts
