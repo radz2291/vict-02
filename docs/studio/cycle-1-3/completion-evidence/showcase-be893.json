@@ -1,0 +1,117 @@
+{
+  "bundle": [],
+  "completion": "Completion round: ordered progress and actual rendered capture The conversation uses the actual public Conversation component with an explicitly simulated event fixture. The image demo captures its existing rendered DOM locally. Neither example calls a provider, edits saved screens, or proves canonical authoring. Chronological recovery fixture   You Create two independent contact fields and inspect the visible result.  Assistant Progress summary · I will inspect the current source before editing. Read current sourcecompleted  Simulated source observation: revision r1, two fields requested; no fields authored yet.Each field needs its own state reference and matching change output. Edit validation refusedfailed  Simulated operation 0 · operations.0.value · expected a typed expression, received a bare boolean. Nothing applied.The input shape was invalid. I will correct it and keep canonical typing. Corrected edit acknowledgedcompleted  Simulated receipt: revision r2, one undoable transaction. Both independent fields authored; interaction outcomes have not been exercised. Rendered observation still pendingpending  This timeline is a fixture. The real local capture demo beside it produces actual pixels, without calling a model. Earlier observation stoppedcancelled  Simulated Stop: the attempt ended without an observation. Late results cannot establish a current visual finding.Partial completion · one simulated edit confirmed. Remaining work: exercise both fields and inspect a current rendered image. Compilation and acknowledgement do not establish those results.     Scroll to end     Send    Actual capture, local preview Local browser fixture · current state People joining your workspace First person  Second person  Visible result: Avery and Morgan Capture rendered fixture Captured actual fixture pixels · 17,918 bytes. Appearance has not been inspected by a model.  Image provenance{\n  \"cursor\": {\n    \"documentId\": \"completion-capture-demo\",\n    \"revision\": \"r1\",\n    \"digest\": \"showcase-only\",\n    \"epoch\": \"6cbabef0-ced5-47df-815d-a51bacb53b7c\"\n  },\n  \"capturedAt\": \"2026-10-23T22:24:53.823Z\",\n  \"viewport\": {\n    \"width\": 564,\n    \"height\": 349,\n    \"scrollLeft\": 0,\n    \"scrollTop\": 0,\n    \"devicePixelRatio\": 1.25\n  },\n  \"image\": {\n    \"width\": 564,\n    \"height\": 349,\n    \"sourceWidth\": 564,\n    \"sourceHeight\": 349,\n    \"offsetLeft\": 0,\n    \"offsetTop\": 0,\n    \"cropped\": false\n  },\n  \"preview\": {\n    \"mode\": \"interact\",\n    \"fingerprint\": \"0a0cfab788baaa676497e4d94b84fa4784ae08efec176f0d170444de677efc88\"\n  }\n} These two fields use ordinary local Svelte state solely to make capture changes visible. Canonical native input wiring, independent state, shared manual/agent transactions and declared relationship diagnosis are available in the real Designer examples below. A screenshot cannot verify bindings or actions. Try native Input, Checkbox, Select and other recipes, then switch the disposable example to Structure for search, focus, collapse, relationship layers, measured layout and source facts. The full Designer adds real provider execution and source-aware capture.",
+  "events": [
+    {
+      "id": "fixture-intent",
+      "text": "Progress summary · I will inspect the current source before editing."
+    },
+    {
+      "id": "fixture-read",
+      "text": " Read current sourcecompleted  Simulated source observation: revision r1, two fields requested; no fields authored yet."
+    },
+    {
+      "id": "fixture-text",
+      "text": "Each field needs its own state reference and matching change output."
+    },
+    {
+      "id": "fixture-refused",
+      "text": " Edit validation refusedfailed  Simulated operation 0 · operations.0.value · expected a typed expression, received a bare boolean. Nothing applied."
+    },
+    {
+      "id": "fixture-retry",
+      "text": "The input shape was invalid. I will correct it and keep canonical typing."
+    },
+    {
+      "id": "fixture-ack",
+      "text": " Corrected edit acknowledgedcompleted  Simulated receipt: revision r2, one undoable transaction. Both independent fields authored; interaction outcomes have not been exercised."
+    },
+    {
+      "id": "fixture-observe",
+      "text": " Rendered observation still pendingpending  This timeline is a fixture. The real local capture demo beside it produces actual pixels, without calling a model."
+    },
+    {
+      "id": "fixture-cancelled",
+      "text": " Earlier observation stoppedcancelled  Simulated Stop: the attempt ended without an observation. Late results cannot establish a current visual finding."
+    },
+    {
+      "id": "fixture-partial",
+      "text": "Partial completion · one simulated edit confirmed. Remaining work: exercise both fields and inspect a current rendered image. Compilation and acknowledgement do not establish those results."
+    }
+  ],
+  "images": [
+    {
+      "alt": "Actual raster capture of the rendered local two-person fixture",
+      "height": 349,
+      "width": 564
+    }
+  ],
+  "selects": [
+    {
+      "label": null,
+      "options": 5
+    },
+    {
+      "label": "Showcase recipe",
+      "options": 83
+    },
+    {
+      "label": "Structure layout direction",
+      "options": 2
+    },
+    {
+      "label": "Structure source selection",
+      "options": 11
+    },
+    {
+      "label": "Move into",
+      "options": 2
+    },
+    {
+      "label": "Insert position",
+      "options": 3
+    },
+    {
+      "label": "Insert into",
+      "options": 2
+    },
+    {
+      "label": "Authored state declaration",
+      "options": 8
+    },
+    {
+      "label": "label source",
+      "options": 3
+    },
+    {
+      "label": "disabled source",
+      "options": 3
+    },
+    {
+      "label": "value source",
+      "options": 2
+    },
+    {
+      "label": "value reference",
+      "options": 2
+    },
+    {
+      "label": "min source",
+      "options": 3
+    },
+    {
+      "label": "max source",
+      "options": 3
+    },
+    {
+      "label": "step source",
+      "options": 3
+    },
+    {
+      "label": "orientation source",
+      "options": 3
+    }
+  ],
+  "productSha": "be893f29d44f595a8d9982575c2199636df69597",
+  "errors": []
+}
