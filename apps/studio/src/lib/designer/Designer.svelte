@@ -14,6 +14,19 @@
   import WorkspaceMenu from './WorkspaceMenu.svelte';
   import WorkspaceBrand from './WorkspaceBrand.svelte';
   import AgentChat from './AgentChat.svelte';
+  import StructureView from './StructureView.svelte';
+  import { structureMove, type StructureEditRequest } from './structure.js';
+  let structureOpen = $state(false);
+  function moveFromStructure(request: StructureEditRequest): boolean {
+    if (!bridge) return false;
+    const prepared = structureMove(bridge.document, bridge.getSnapshot().revision, request, textDraftDirty || sourceDraftDirty || renamingScreen, catalogDescriptors, screenRecipes);
+    if (!prepared.ok) { notice = prepared.message; return false; }
+    return apply(prepared.draft);
+  }
+  function toggleStructure(open: boolean) {
+    if (textDraftDirty || sourceDraftDirty) { notice = 'Apply or cancel your draft first.'; return; }
+    structureOpen = open; paletteRequested = false;
+  }
   import { documentCursor, applyAgentProposal, type AgentProposal } from './agent-edits.js';
   let agentEpoch = $state(crypto.randomUUID());
   let chatOpen = $state(true);
@@ -288,7 +301,7 @@
     }
     if (event.key === 'Escape' && drawerOpen) { event.preventDefault(); closeDrawer(); return; }
     const editable = event.target instanceof HTMLElement && (event.target.matches('input,textarea,select') || event.target.isContentEditable);
-    if (!editable && mode === 'design') {
+    if (!editable && mode === 'design' && !structureOpen) {
       if (['Delete', 'Backspace'].includes(event.key)) { event.preventDefault(); removeSelection(); }
       if (event.key === 'F2') { event.preventDefault(); editSelectedText(); }
       if (event.altKey && ['ArrowUp', 'ArrowDown'].includes(event.key)) { event.preventDefault(); reorderSelection(event.key === 'ArrowUp' ? -1 : 1); }
@@ -386,20 +399,21 @@
       {#snippet format()}{@render objectProperties(formatSection)}{/snippet}
       {#snippet connect()}{@render objectProperties('Behavior')}{/snippet}
       {#snippet insert()}<Composer {compositionFocus} document={source} selectedNodeId={selectedNode?.id} recipes={screenRecipes} descriptors={catalogDescriptors} compact showArrange={false} onApply={apply} onInserted={(id: string) => { selectOccurrence(`${source.id}|${id}`); notice = 'Added to your screen. Double-click text to edit.'; }} />{/snippet}
-      {#snippet arrange()}<Composer document={source} selectedNodeId={selectedNode?.id} recipes={[]} descriptors={catalogDescriptors} compact showInsert={false} onApply={apply} onDuplicate={duplicateSelection} onDetached={(parentId: string)=>{selectOccurrence(`${source.id}|${parentId}`);notice='Content kept aside. Use Insert → Reuse to place it again.';}} />{#if !selectedNode || selectedNode.id === source.root}<p class="palette-hint">Select an element to move, duplicate or delete it.</p>{/if}{/snippet}
+      {#snippet arrange()}<Composer document={source} selectedNodeId={selectedNode?.id} recipes={screenRecipes} descriptors={catalogDescriptors} compact showInsert={false} onApply={apply} onDuplicate={duplicateSelection} onDetached={(parentId: string)=>{selectOccurrence(`${source.id}|${parentId}`);notice='Content kept aside. Use Insert → Reuse to place it again.';}} />{#if !selectedNode || selectedNode.id === source.root}<p class="palette-hint">Select an element to move, duplicate or delete it.</p>{/if}{/snippet}
     </SelectionPalette>
   {/snippet}
   <div class="agent-workspace" class:chat-open={chatOpen}>
   <div class="agent-panel" hidden={!chatOpen}><AgentChat screenLabel={screenName(source)} selectionLabel={selectedNode ? compositionName(source, selectedNode.id) : "None"} blocked={textDraftDirty || sourceDraftDirty || renamingScreen} getContext={() => bridge ? {document:bridge.document, cursor:documentCursor(bridge.document,bridge.getSnapshot().revision,agentEpoch), ...(selected ? {selection:selected} : {})} : undefined} applyProposal={receiveAgentProposal} /></div>
   <div class="design-workspace" class:drawer-open={drawerOpen} class:has-object-tools={mode === 'design' && !!selectedNode && paletteRequested} style:--drawer-width={`${drawerWidth}px`}>
     <main class="design-stage">
-      <div class="canvas-toolbar workspace-tools"><div class="canvas-modes" aria-label="Canvas mode"><button type="button" aria-pressed={mode === 'design'} onclick={() => changeMode('design')}>Design</button><button type="button" aria-pressed={mode === 'interact'} onclick={() => changeMode('interact')}>Interact</button></div>{#if compositionFocus}<div class="composition-back"><CompositionNavigator compact document={source} focus={compositionFocus} descriptors={catalogDescriptors} disabled={textDraftDirty || sourceDraftDirty} onNavigate={navigateComposition} /></div>{/if}<button type="button" bind:this={documentButton} class="panel-toggle" aria-expanded={drawerOpen} aria-controls="document-drawer" onclick={toggleDocument}>Document</button></div>
+      <div class="canvas-toolbar workspace-tools"><div class="canvas-modes" aria-label="Canvas mode"><button type="button" aria-pressed={mode === 'design' && !structureOpen} onclick={() => { toggleStructure(false); changeMode('design'); }}>Design</button><button type="button" aria-pressed={mode === 'interact' && !structureOpen} onclick={() => { toggleStructure(false); changeMode('interact'); }}>Interact</button><button type="button" aria-pressed={structureOpen} onclick={() => toggleStructure(true)}>Structure</button></div>{#if compositionFocus}<div class="composition-back"><CompositionNavigator compact document={source} focus={compositionFocus} descriptors={catalogDescriptors} disabled={textDraftDirty || sourceDraftDirty} onNavigate={navigateComposition} /></div>{/if}<button type="button" bind:this={documentButton} class="panel-toggle" aria-expanded={drawerOpen} aria-controls="document-drawer" onclick={toggleDocument}>Document</button></div>
 
-      <div class="canvas-scroll workspace-scroll" bind:this={canvasScroll}>
+      {#if structureOpen}<StructureView document={source} revision={snapshot?.revision ?? ''} selectedNodeId={selectedNode?.id} blocked={textDraftDirty || sourceDraftDirty || renamingScreen} onSelect={occurrence => { selectFromStructure(occurrence); if (!textDraftDirty && !sourceDraftDirty) bridge?.select(occurrence); }} onMove={moveFromStructure} onNotice={message => notice = message} />{/if}
+      <div class="canvas-scroll workspace-scroll" style:display={structureOpen ? 'none' : undefined} bind:this={canvasScroll}>
         <div class="design-frame workspace-screen" bind:clientWidth={canvasWidth} style:max-width={width === 'fluid' ? 'none' : `${width}px`}>
           <EditorCanvas document={source} catalogs={designerCatalogs} extensions={catalogDescriptors} extensionImplementations={catalogImplementations}
             {compositionFocus} onOpenComposition={openComposition}
-            selectionTools={(!drawerOpen || drawerTab==='Layers') && selectedNode && paletteRequested ? floatingTools : undefined}
+            selectionTools={(!drawerOpen || drawerTab==='Layers') && !structureOpen && selectedNode && paletteRequested ? floatingTools : undefined}
             {selectionToolsReveal} selectionToolsPinned={textDraftDirty}
             selectionToolsPlacement="below"
             onEditTextRequest={editSelectedText}
