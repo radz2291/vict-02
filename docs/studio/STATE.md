@@ -1,6 +1,21 @@
 # Studio Designer — current delivery state
 
-## 2026-10-23 — Compact composer owner amendment in progress
+## 2026-10-23 — Compact composer verified and locally active
+
+Independent **PASS** on exact product `9ae689b487d610e3df0581885660fe096f645a88`,
+branch `codex/studio-cycle-1-1-chat-composer`. Remote-verified independent
+evidence `6d6ca50f57a65bcfe1b71601d614108188c47f4a` is incorporated. Shared6,
+Studio10, TypeScript, production build and 26 browser assertions pass; 202
+active artifact hashes match. No new findings. [Report/launch/review](CYCLE-1-1-CHAT-COMPOSER.md).
+
+One native composer button switches Send/Stop; no repeated screen name; working
+status and details occupy one row. Both earlier tabs retain canvas, chat, draft
+and history without reload; new visible tab contains an exact unsaved copy of
+the current purple Solehaus source. Saved records unchanged. Provider, full
+thinking/output, server, edit/history/save semantics remain unchanged. Ready for
+owner review only; no owner acceptance, main merge, Stage 9 closure or Cycle1.2.
+
+### Retained start-of-amendment scope
 
 Owner requests one Send/Stop action and one status/details row, with repeated
 screen name removed. [Scope and gate](CYCLE-1-1-CHAT-COMPOSER.md). Isolated

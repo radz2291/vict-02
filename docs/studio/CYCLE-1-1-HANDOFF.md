@@ -1,5 +1,17 @@
 # Stage 9 reopened — Studio Cycle 1.1
 
+Current verified delivery (2026-10-23): compact-composer product
+`9ae689b487d610e3df0581885660fe096f645a88`, independent **PASS**, remote-verified
+evidence `6d6ca50f57a65bcfe1b71601d614108188c47f4a`. Branch
+`codex/studio-cycle-1-1-chat-composer`. Shared6 + Studio10 tests, TypeScript/build
+and 26 production browser assertions pass. Exact 202-file build active at 5591;
+new visible tab holds exact unsaved purple Solehaus copy, earlier tabs preserve
+conversations/history. Saved screens unchanged. [Report and launch](CYCLE-1-1-CHAT-COMPOSER.md).
+No new findings. Next action: owner review only; no owner acceptance, main merge,
+Stage 9 closure or Cycle 1.2. Prior gates and failed observations remain.
+
+Historical start-of-amendment and previous delivery entries follow:
+
 Current owner amendment (2026-10-23): [compact composer](CYCLE-1-1-CHAT-COMPOSER.md).
 Single Send/Stop composer action; status/details one row; remove repeated screen
 name. Minimal optional shared Conversation onStop callback/test is included in

@@ -1,0 +1,37 @@
+{
+  "originalTabsReloaded": false,
+  "requestReplayed": false,
+  "savedScreensChanged": false,
+  "oldOriginalCanvasPreserved": true,
+  "oldOriginalTranscriptPreserved": true,
+  "oldOriginalDraftPreserved": true,
+  "currentPurpleCanvasPreserved": true,
+  "currentPurpleTranscriptPreserved": true,
+  "currentPurpleDraftPreserved": true,
+  "oldOriginalConnection": "Ready",
+  "currentConnection": "Ready",
+  "latestTab": "11",
+  "latestCanonicalSourceMatchesCurrent": true,
+  "latestCopySaved": false,
+  "latestUiProduct": "9ae689b487d610e3df0581885660fe096f645a88",
+  "visibleTab": "11",
+  "viewportOverrideReset": true,
+  "geometry": {
+    "composerActions": 1,
+    "details": {
+      "height": 40,
+      "width": 28,
+      "x": 279.20001220703125,
+      "y": 598
+    },
+    "height": 668,
+    "repeatedScreenName": false,
+    "status": {
+      "height": 15,
+      "width": 259.20001220703125,
+      "x": 12,
+      "y": 610.5
+    },
+    "width": 959
+  }
+}
