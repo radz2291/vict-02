@@ -239,7 +239,8 @@
   header p { max-width: 900px; color: #59677b; }
   .catalog-picker, .toolbar, .composition-tools { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
   .catalog-picker { align-items: end; padding: 16px; background: #edf1f7; border-radius: 10px; }
-  label { display: grid; gap: 4px; } button, input, select { font: inherit; color: inherit; padding: 7px 10px; border: 1px solid #bdc8d8; border-radius: 6px; background: white; }
+  label { display: grid; gap: 4px; min-width: 0; max-width: 100%; } button, input, select { font: inherit; color: inherit; padding: 7px 10px; border: 1px solid #bdc8d8; border-radius: 6px; background: white; }
+  input, select { min-width: 0; max-width: 100%; box-sizing: border-box; } select { width: 100%; }
   button { cursor: pointer; } button[aria-pressed=true] { background: #e3eaff; border-color: #627ccc; } :disabled { opacity: .5; cursor: default; }
   .notice { padding: 10px 12px; background: #eef3ff; border-radius: 6px; } .issues { color: #9d2828; }
   .editor-grid { display: grid; grid-template-columns: 210px minmax(350px, 1fr) 330px; gap: 12px; align-items: start; }
