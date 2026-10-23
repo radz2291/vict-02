@@ -1,0 +1,184 @@
+{
+  "candidate": "748d9a6fa4ca9b2dee0445fa06b55b4e56ab8467",
+  "records": [
+    {
+      "name": "83 distinct catalog recipes",
+      "pass": true,
+      "evidence": {
+        "ids": [
+          "section",
+          "row",
+          "heading",
+          "text",
+          "input",
+          "button",
+          "checkbox",
+          "switch",
+          "dialog",
+          "separator",
+          "select",
+          "toggle",
+          "select-multiple",
+          "select-item",
+          "combobox",
+          "combobox-multiple",
+          "combobox-item",
+          "toggle-group",
+          "toggle-group-multiple",
+          "toggle-group-item",
+          "accordion",
+          "accordion-multiple",
+          "accordion-item",
+          "slider",
+          "meter",
+          "progress",
+          "pagination",
+          "date-field",
+          "date-picker",
+          "calendar",
+          "time-field",
+          "date-range-field",
+          "date-range-picker",
+          "range-calendar",
+          "dropdown-menu",
+          "context-menu",
+          "menubar",
+          "menubar.menu",
+          "dropdown-menu.item",
+          "dropdown-menu.sub",
+          "dropdown-menu.checkbox-item",
+          "dropdown-menu.checkbox-group",
+          "dropdown-menu.radio-group",
+          "dropdown-menu.radio-item",
+          "dropdown-menu.group",
+          "dropdown-menu.separator",
+          "context-menu.item",
+          "context-menu.sub",
+          "context-menu.checkbox-item",
+          "context-menu.checkbox-group",
+          "context-menu.radio-group",
+          "context-menu.radio-item",
+          "context-menu.group",
+          "context-menu.separator",
+          "menubar.item",
+          "menubar.sub",
+          "menubar.checkbox-item",
+          "menubar.checkbox-group",
+          "menubar.radio-group",
+          "menubar.radio-item",
+          "menubar.group",
+          "menubar.separator",
+          "command",
+          "command.item",
+          "command.group",
+          "navigation-menu",
+          "navigation-menu.item",
+          "navigation-menu.link",
+          "navigation-menu.sub",
+          "avatar",
+          "aspect-ratio",
+          "label",
+          "scroll-area",
+          "toolbar",
+          "toolbar-button",
+          "link-preview",
+          "tooltip",
+          "popover",
+          "alert-dialog",
+          "tabs",
+          "tabs-trigger",
+          "tabs-panel",
+          "collapsible"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture section",
+      "pass": true,
+      "evidence": {
+        "recipe": "section",
+        "alerts": [],
+        "canvasNodes": 2,
+        "nodeIds": [
+          "screen",
+          "example-section"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture row",
+      "pass": true,
+      "evidence": {
+        "recipe": "row",
+        "alerts": [],
+        "canvasNodes": 2,
+        "nodeIds": [
+          "screen",
+          "example-row"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture heading",
+      "pass": true,
+      "evidence": {
+        "recipe": "heading",
+        "alerts": [],
+        "canvasNodes": 3,
+        "nodeIds": [
+          "screen",
+          "example-heading",
+          "example-heading-text"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture text",
+      "pass": true,
+      "evidence": {
+        "recipe": "text",
+        "alerts": [],
+        "canvasNodes": 3,
+        "nodeIds": [
+          "screen",
+          "example-text",
+          "example-text-text"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture input",
+      "pass": true,
+      "evidence": {
+        "recipe": "input",
+        "alerts": [],
+        "canvasNodes": 2,
+        "nodeIds": [
+          "screen",
+          "example-input"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture button",
+      "pass": false,
+      "evidence": {
+        "recipe": "button",
+        "alerts": [
+          ""
+        ],
+        "canvasNodes": 2,
+        "nodeIds": [
+          "screen",
+          "example-button"
+        ]
+      }
+    },
+    {
+      "failure": "Error: canonical rendered fixture button"
+    }
+  ],
+  "errors": [],
+  "requests": [],
+  "externalImages": []
+}

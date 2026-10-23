@@ -1,0 +1,118 @@
+{
+  "candidate": "efbafcc41317d18ea6609c490f149452de8a98b0",
+  "mode": "Diagnostic test-only CSS injection; not product PASS",
+  "before": {
+    "width": 30,
+    "height": 40,
+    "minHeight": "40px",
+    "minWidth": "auto",
+    "padding": "8px 14px",
+    "boxSizing": "border-box",
+    "border": "1px solid rgba(0, 0, 0, 0)",
+    "rules": [
+      {
+        "selector": ".vict-app *, .vict-app ::before, .vict-app ::after, .vict-popover, .vict-tooltip",
+        "style": "box-sizing: border-box;"
+      },
+      {
+        "selector": ".vict-controls *, .vict-controls ::before, .vict-controls ::after",
+        "style": "box-sizing: border-box;"
+      },
+      {
+        "selector": ".vict-controls :where([data-button-root], [data-dialog-trigger], [data-dialog-close], [data-dialog-cancel], [data-dialog-action], [data-alert-dialog-trigger], [data-alert-dialog-cancel], [data-alert-dialog-action], :is([data-dropdown-menu-trigger], [data-context-menu-trigger], [data-menubar-trigger]), [data-menubar-trigger], :is([data-select-trigger], [data-combobox-trigger]), [data-combobox-trigger], [data-popover-trigger], [data-popover-close], [data-tooltip-trigger], [data-collapsible-trigger], [data-navigation-menu-trigger], [data-pagination-page], [data-pagination-prev], [data-pagination-next], [data-toggle-root], [data-toggle-group-item], [data-toolbar-button], [data-toolbar-group-item])",
+        "style": "display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: var(--vict-control-height); padding: 8px 14px; border: 1px solid var(--vict-color-border); border-radius: 7px; background: var(--vict-color-surface); color: var(--vict-color-text); cursor: pointer; text-decoration: none; max-width: 100%;"
+      },
+      {
+        "selector": ".studio-workspace *",
+        "style": "box-sizing: border-box;"
+      },
+      {
+        "selector": ".vict-ai.vict-ai *, .vict-ai.vict-ai ::before, .vict-ai.vict-ai ::after",
+        "style": "box-sizing: border-box; border: 0 solid var(--border);"
+      },
+      {
+        "selector": ".vict-ai.vict-ai :where(button, input, textarea, select)",
+        "style": "font: inherit; color: inherit; letter-spacing: inherit; border-radius: 0px; background: transparent; box-shadow: none;"
+      },
+      {
+        "selector": ".vict-ai.vict-ai .rounded-2xl",
+        "style": "border-radius: calc(var(--radius) * 1.8);"
+      },
+      {
+        "selector": ".vict-ai.vict-ai .border",
+        "style": "border-style: var(--vict-ai-tw-border-style); border-width: 1px;"
+      },
+      {
+        "selector": ".vict-ai.vict-ai .border-transparent",
+        "style": "border-color: transparent;"
+      },
+      {
+        "selector": ".vict-ai.vict-ai .bg-clip-padding",
+        "style": "background-clip: padding-box;"
+      },
+      {
+        "selector": ".vict-ai.vict-ai *, .vict-ai.vict-ai ::before, .vict-ai.vict-ai ::after, .vict-ai.vict-ai ::backdrop",
+        "style": "--vict-ai-tw-translate-x: 0; --vict-ai-tw-translate-y: 0; --vict-ai-tw-translate-z: 0; --vict-ai-tw-rotate-x: initial; --vict-ai-tw-rotate-y: initial; --vict-ai-tw-rotate-z: initial; --vict-ai-tw-skew-x: initial; --vict-ai-tw-skew-y: initial; --vict-ai-tw-scroll-snap-strictness: proximity; --vict-ai-tw-space-y-reverse: 0; --vict-ai-tw-border-style: solid; --vict-ai-tw-leading: initial; --vict-ai-tw-font-weight: initial; --vict-ai-tw-tracking: initial; --vict-ai-tw-ordinal: initial; --vict-ai-tw-slashed-zero: initial; --vict-ai-tw-numeric-figure: initial; --vict-ai-tw-numeric-spacing: initial; --vict-ai-tw-numeric-fraction: initial; --vict-ai-tw-shadow: 0 0 #0000; --vict-ai-tw-shadow-color: initial; --vict-ai-tw-shadow-alpha: 100%; --vict-ai-tw-inset-shadow: 0 0 #0000; --vict-ai-tw-inset-shadow-color: initial; --vict-ai-tw-inset-shadow-alpha: 100%; --vict-ai-tw-ring-color: initial; --vict-ai-tw-ring-shadow: 0 0 #0000; --vict-ai-tw-inset-ring-color: initial; --vict-ai-tw-inset-ring-shadow: 0 0 #0000; --vict-ai-tw-ring-inset: initial; --vict-ai-tw-ring-offset-width: 0px; --vict-ai-tw-ring-offset-color: #fff; --vict-ai-tw-ring-offset-shadow: 0 0 #0000; --vict-ai-tw-outline-style: solid; --vict-ai-tw-blur: initial; --vict-ai-tw-brightness: initial; --vict-ai-tw-contrast: initial; --vict-ai-tw-grayscale: initial; --vict-ai-tw-hue-rotate: initial; --vict-ai-tw-invert: initial; --vict-ai-tw-opacity: initial; --vict-ai-tw-saturate: initial; --vict-ai-tw-sepia: initial; --vict-ai-tw-drop-shadow: initial; --vict-ai-tw-drop-shadow-color: initial; --vict-ai-tw-drop-shadow-alpha: 100%; --vict-ai-tw-drop-shadow-size: initial; --vict-ai-tw-duration: initial; --vict-ai-tw-ease: initial; --vict-ai-tw-content: \"\"; --vict-ai-tw-scrollbar-thumb: #0000; --vict-ai-tw-scrollbar-track: #0000; --vict-ai-tw-scale-x: 1; --vict-ai-tw-scale-y: 1; --vict-ai-tw-scale-z: 1; --vict-ai-tw-animation-delay: 0s; --vict-ai-tw-animation-direction: normal; --vict-ai-tw-animation-duration: initial; --vict-ai-tw-animation-fill-mode: none; --vict-ai-tw-animation-iteration-count: 1; --vict-ai-tw-enter-blur: 0; --vict-ai-tw-enter-opacity: 1; --vict-ai-tw-enter-rotate: 0; --vict-ai-tw-enter-scale: 1; --vict-ai-tw-enter-translate-x: 0; --vict-ai-tw-enter-translate-y: 0; --vict-ai-tw-exit-blur: 0; --vict-ai-tw-exit-opacity: 1; --vict-ai-tw-exit-rotate: 0; --vict-ai-tw-exit-scale: 1; --vict-ai-tw-exit-translate-x: 0; --vict-ai-tw-exit-translate-y: 0; --scroll-fade-t: 0px; --scroll-fade-b: 0px; --scroll-fade-s: 0px; --scroll-fade-e: 0px; --scroll-fade-mask: initial; --shimmer-image: initial; --shimmer-text-fill: initial;"
+      }
+    ]
+  },
+  "after": {
+    "width": 30,
+    "height": 40,
+    "minHeight": "40px",
+    "minWidth": "0px",
+    "padding": "8px 14px",
+    "boxSizing": "border-box",
+    "border": "1px solid rgba(0, 0, 0, 0)",
+    "rules": [
+      {
+        "selector": ".vict-app *, .vict-app ::before, .vict-app ::after, .vict-popover, .vict-tooltip",
+        "style": "box-sizing: border-box;"
+      },
+      {
+        "selector": ".vict-controls *, .vict-controls ::before, .vict-controls ::after",
+        "style": "box-sizing: border-box;"
+      },
+      {
+        "selector": ".vict-controls :where([data-button-root], [data-dialog-trigger], [data-dialog-close], [data-dialog-cancel], [data-dialog-action], [data-alert-dialog-trigger], [data-alert-dialog-cancel], [data-alert-dialog-action], :is([data-dropdown-menu-trigger], [data-context-menu-trigger], [data-menubar-trigger]), [data-menubar-trigger], :is([data-select-trigger], [data-combobox-trigger]), [data-combobox-trigger], [data-popover-trigger], [data-popover-close], [data-tooltip-trigger], [data-collapsible-trigger], [data-navigation-menu-trigger], [data-pagination-page], [data-pagination-prev], [data-pagination-next], [data-toggle-root], [data-toggle-group-item], [data-toolbar-button], [data-toolbar-group-item])",
+        "style": "display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: var(--vict-control-height); padding: 8px 14px; border: 1px solid var(--vict-color-border); border-radius: 7px; background: var(--vict-color-surface); color: var(--vict-color-text); cursor: pointer; text-decoration: none; max-width: 100%;"
+      },
+      {
+        "selector": ".studio-workspace *",
+        "style": "box-sizing: border-box;"
+      },
+      {
+        "selector": ".vict-ai.vict-ai *, .vict-ai.vict-ai ::before, .vict-ai.vict-ai ::after",
+        "style": "box-sizing: border-box; border: 0 solid var(--border);"
+      },
+      {
+        "selector": ".vict-ai.vict-ai :where(button, input, textarea, select)",
+        "style": "font: inherit; color: inherit; letter-spacing: inherit; border-radius: 0px; background: transparent; box-shadow: none;"
+      },
+      {
+        "selector": ".vict-ai.vict-ai .rounded-2xl",
+        "style": "border-radius: calc(var(--radius) * 1.8);"
+      },
+      {
+        "selector": ".vict-ai.vict-ai .border",
+        "style": "border-style: var(--vict-ai-tw-border-style); border-width: 1px;"
+      },
+      {
+        "selector": ".vict-ai.vict-ai .border-transparent",
+        "style": "border-color: transparent;"
+      },
+      {
+        "selector": ".vict-ai.vict-ai .bg-clip-padding",
+        "style": "background-clip: padding-box;"
+      },
+      {
+        "selector": ".vict-ai.vict-ai *, .vict-ai.vict-ai ::before, .vict-ai.vict-ai ::after, .vict-ai.vict-ai ::backdrop",
+        "style": "--vict-ai-tw-translate-x: 0; --vict-ai-tw-translate-y: 0; --vict-ai-tw-translate-z: 0; --vict-ai-tw-rotate-x: initial; --vict-ai-tw-rotate-y: initial; --vict-ai-tw-rotate-z: initial; --vict-ai-tw-skew-x: initial; --vict-ai-tw-skew-y: initial; --vict-ai-tw-scroll-snap-strictness: proximity; --vict-ai-tw-space-y-reverse: 0; --vict-ai-tw-border-style: solid; --vict-ai-tw-leading: initial; --vict-ai-tw-font-weight: initial; --vict-ai-tw-tracking: initial; --vict-ai-tw-ordinal: initial; --vict-ai-tw-slashed-zero: initial; --vict-ai-tw-numeric-figure: initial; --vict-ai-tw-numeric-spacing: initial; --vict-ai-tw-numeric-fraction: initial; --vict-ai-tw-shadow: 0 0 #0000; --vict-ai-tw-shadow-color: initial; --vict-ai-tw-shadow-alpha: 100%; --vict-ai-tw-inset-shadow: 0 0 #0000; --vict-ai-tw-inset-shadow-color: initial; --vict-ai-tw-inset-shadow-alpha: 100%; --vict-ai-tw-ring-color: initial; --vict-ai-tw-ring-shadow: 0 0 #0000; --vict-ai-tw-inset-ring-color: initial; --vict-ai-tw-inset-ring-shadow: 0 0 #0000; --vict-ai-tw-ring-inset: initial; --vict-ai-tw-ring-offset-width: 0px; --vict-ai-tw-ring-offset-color: #fff; --vict-ai-tw-ring-offset-shadow: 0 0 #0000; --vict-ai-tw-outline-style: solid; --vict-ai-tw-blur: initial; --vict-ai-tw-brightness: initial; --vict-ai-tw-contrast: initial; --vict-ai-tw-grayscale: initial; --vict-ai-tw-hue-rotate: initial; --vict-ai-tw-invert: initial; --vict-ai-tw-opacity: initial; --vict-ai-tw-saturate: initial; --vict-ai-tw-sepia: initial; --vict-ai-tw-drop-shadow: initial; --vict-ai-tw-drop-shadow-color: initial; --vict-ai-tw-drop-shadow-alpha: 100%; --vict-ai-tw-drop-shadow-size: initial; --vict-ai-tw-duration: initial; --vict-ai-tw-ease: initial; --vict-ai-tw-content: \"\"; --vict-ai-tw-scrollbar-thumb: #0000; --vict-ai-tw-scrollbar-track: #0000; --vict-ai-tw-scale-x: 1; --vict-ai-tw-scale-y: 1; --vict-ai-tw-scale-z: 1; --vict-ai-tw-animation-delay: 0s; --vict-ai-tw-animation-direction: normal; --vict-ai-tw-animation-duration: initial; --vict-ai-tw-animation-fill-mode: none; --vict-ai-tw-animation-iteration-count: 1; --vict-ai-tw-enter-blur: 0; --vict-ai-tw-enter-opacity: 1; --vict-ai-tw-enter-rotate: 0; --vict-ai-tw-enter-scale: 1; --vict-ai-tw-enter-translate-x: 0; --vict-ai-tw-enter-translate-y: 0; --vict-ai-tw-exit-blur: 0; --vict-ai-tw-exit-opacity: 1; --vict-ai-tw-exit-rotate: 0; --vict-ai-tw-exit-scale: 1; --vict-ai-tw-exit-translate-x: 0; --vict-ai-tw-exit-translate-y: 0; --scroll-fade-t: 0px; --scroll-fade-b: 0px; --scroll-fade-s: 0px; --scroll-fade-e: 0px; --scroll-fade-mask: initial; --shimmer-image: initial; --shimmer-text-fill: initial;"
+      },
+      {
+        "selector": ".vict-ai.vict-ai :where(button, input, textarea, select)",
+        "style": "min-height: 0px; min-width: 0px; padding: 0px; box-sizing: border-box;"
+      }
+    ]
+  }
+}

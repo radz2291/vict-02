@@ -1,0 +1,374 @@
+{
+  "candidate": "748d9a6fa4ca9b2dee0445fa06b55b4e56ab8467",
+  "mode": "Diagnostic test-only CSS, not production PASS",
+  "before": {
+    "width": 390,
+    "scrollWidth": 421,
+    "offenders": [
+      {
+        "tag": "BUTTON",
+        "label": null,
+        "classes": "focus-visible:border-ring focus-visible:ring-ring/30 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-2xl border bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&_svg:not([class*='size-'])]:size-4 group/button inline-flex items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 border-border bg-background dark:bg-transparent hover:bg-muted hover:text-foreground dark:hover:bg-input/30 aria-expanded:bg-muted aria-expanded:text-foreground h-7 gap-1 px-3 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2 shrink-0",
+        "right": 495.984375,
+        "width": 143.296875,
+        "overflow": "visible",
+        "minWidth": "0px",
+        "html": "<button data-slot=\"button\" class=\"focus-visible:border-ring focus-visible:ring-ring/30 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-2xl border bg-clip-padding text-sm font-me"
+      },
+      {
+        "tag": "DIV",
+        "label": null,
+        "classes": "rounded-2xl w-fit focus-within:ring-1 focus-within:ring-ring/30 group/attachment relative flex max-w-full shrink-0 flex-wrap border bg-card text-card-foreground transition-colors has-[>a,>button]:hover:bg-muted/50 data-[state=error]:border-destructive/30 data-[state=idle]:border-dashed gap-2.5 has-data-[slot=attachment-content]:px-2 has-data-[slot=attachment-content]:py-1.5 has-data-[slot=attachment-media]:p-1.5 text-xs min-w-40 items-center",
+        "right": 394.40625,
+        "width": 160,
+        "overflow": "visible",
+        "minWidth": "160px",
+        "html": "<div data-slot=\"attachment\" data-state=\"idle\" data-size=\"sm\" data-orientation=\"horizontal\" class=\"rounded-2xl w-fit focus-within:ring-1 focus-within:ring-ring/30 group/attachment relative flex max-w-full shrink-0 flex-wrap border bg-card text-card-foreground transition-colors has"
+      },
+      {
+        "tag": "DIV",
+        "label": null,
+        "classes": "rounded-2xl w-fit focus-within:ring-1 focus-within:ring-ring/30 group/attachment relative flex max-w-full shrink-0 flex-wrap border bg-card text-card-foreground transition-colors has-[>a,>button]:hover:bg-muted/50 data-[state=error]:border-destructive/30 data-[state=idle]:border-dashed gap-2.5 has-data-[slot=attachment-content]:px-2 has-data-[slot=attachment-content]:py-1.5 has-data-[slot=attachment-media]:p-1.5 text-xs min-w-40 items-center",
+        "right": 566.40625,
+        "width": 160,
+        "overflow": "visible",
+        "minWidth": "160px",
+        "html": "<div data-slot=\"attachment\" data-state=\"uploading\" data-size=\"sm\" data-orientation=\"horizontal\" class=\"rounded-2xl w-fit focus-within:ring-1 focus-within:ring-ring/30 group/attachment relative flex max-w-full shrink-0 flex-wrap border bg-card text-card-foreground transition-color"
+      },
+      {
+        "tag": "DIV",
+        "label": null,
+        "classes": "bg-muted text-foreground w-10 rounded-lg group-data-[size=sm]/attachment:w-8 group-data-[size=xs]/attachment:w-7 group-data-[size=xs]/attachment:rounded-md [&_svg:not([class*='size-'])]:size-4 group-data-[size=xs]/attachment:[&_svg:not([class*='size-'])]:size-3.5 group-data-[orientation=vertical]/attachment:w-full group-data-[orientation=vertical]/attachment:[&_svg:not([class*='size-'])]:size-6 group-data-[orientation=vertical]/attachment:*:data-[slot=spinner]:size-6! relative flex aspect-square shrink-0 items-center justify-center overflow-hidden group-data-[state=error]/attachment:bg-destructive/10 group-data-[state=error]/attachment:text-destructive [&_svg]:pointer-events-none",
+        "right": 445.40625,
+        "width": 32,
+        "overflow": "hidden",
+        "minWidth": "auto",
+        "html": "<div data-slot=\"attachment-media\" data-variant=\"icon\" class=\"bg-muted text-foreground w-10 rounded-lg group-data-[size=sm]/attachment:w-8 group-data-[size=xs]/attachment:w-7 group-data-[size=xs]/attachment:rounded-md [&amp;_svg:not([class*='size-'])]:size-4 group-data-[size=xs]/a"
+      },
+      {
+        "tag": "svg",
+        "label": null,
+        "classes": {},
+        "right": 437.40625,
+        "width": 16,
+        "overflow": "hidden",
+        "minWidth": "auto",
+        "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" class=\"lucide-icon lucide lucide-file-text\"><!----><path d=\"M6 22a2 2 0 0 1-2-2V"
+      },
+      {
+        "tag": "path",
+        "label": null,
+        "classes": {},
+        "right": 434.7395935058594,
+        "width": 10.66668701171875,
+        "overflow": "visible",
+        "minWidth": "0px",
+        "html": "<path d=\"M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z\"></path>"
+      },
+      {
+        "tag": "path",
+        "label": null,
+        "classes": {},
+        "right": 434.7395935058594,
+        "width": 4,
+        "overflow": "visible",
+        "minWidth": "0px",
+        "html": "<path d=\"M14 2v5a1 1 0 0 0 1 1h5\"></path>"
+      },
+      {
+        "tag": "path",
+        "label": null,
+        "classes": {},
+        "right": 428.0729064941406,
+        "width": 1.33331298828125,
+        "overflow": "visible",
+        "minWidth": "0px",
+        "html": "<path d=\"M10 9H8\"></path>"
+      },
+      {
+        "tag": "path",
+        "label": null,
+        "classes": {},
+        "right": 432.0729064941406,
+        "width": 5.33331298828125,
+        "overflow": "visible",
+        "minWidth": "0px",
+        "html": "<path d=\"M16 13H8\"></path>"
+      },
+      {
+        "tag": "path",
+        "label": null,
+        "classes": {},
+        "right": 432.0729064941406,
+        "width": 5.33331298828125,
+        "overflow": "visible",
+        "minWidth": "0px",
+        "html": "<path d=\"M16 17H8\"></path>"
+      },
+      {
+        "tag": "DIV",
+        "label": null,
+        "classes": "leading-tight group-data-[orientation=vertical]/attachment:px-1 max-w-full min-w-0 flex-1",
+        "right": 559.40625,
+        "width": 104,
+        "overflow": "visible",
+        "minWidth": "0px",
+        "html": "<div data-slot=\"attachment-content\" class=\"leading-tight group-data-[orientation=vertical]/attachment:px-1 max-w-full min-w-0 flex-1\"><!----><span data-slot=\"attachment-title\" class=\"font-medium block max-w-full min-w-0 truncate group-data-[state=processing]/attachment:shimmer gr"
+      },
+      {
+        "tag": "SPAN",
+        "label": null,
+        "classes": "font-medium block max-w-full min-w-0 truncate group-data-[state=processing]/attachment:shimmer group-data-[state=uploading]/attachment:shimmer",
+        "right": 559.40625,
+        "width": 104,
+        "overflow": "hidden",
+        "minWidth": "0px",
+        "html": "<span data-slot=\"attachment-title\" class=\"font-medium block max-w-full min-w-0 truncate group-data-[state=processing]/attachment:shimmer group-data-[state=uploading]/attachment:shimmer\">uploading.txt<!----></span>"
+      },
+      {
+        "tag": "SPAN",
+        "label": null,
+        "classes": "mt-0.5 text-xs block min-w-0 truncate text-muted-foreground group-data-[state=error]/attachment:text-destructive/80 max-w-full",
+        "right": 559.40625,
+        "width": 104,
+        "overflow": "hidden",
+        "minWidth": "0px",
+        "html": "<span data-slot=\"attachment-description\" class=\"mt-0.5 text-xs block min-w-0 truncate text-muted-foreground group-data-[state=error]/attachment:text-destructive/80 max-w-full\">uploading fixture<!----></span>"
+      },
+      {
+        "tag": "DIV",
+        "label": null,
+        "classes": "rounded-2xl w-fit focus-within:ring-1 focus-within:ring-ring/30 group/attachment relative flex max-w-full shrink-0 flex-wrap border bg-card text-card-foreground transition-colors has-[>a,>button]:hover:bg-muted/50 data-[state=error]:border-destructive/30 data-[state=idle]:border-dashed gap-2.5 has-data-[slot=attachment-content]:px-2 has-data-[slot=attachment-content]:py-1.5 has-data-[slot=attachment-media]:p-1.5 text-xs min-w-40 items-center",
+        "right": 738.40625,
+        "width": 160,
+        "overflow": "visible",
+        "minWidth": "160px",
+        "html": "<div data-slot=\"attachment\" data-state=\"processing\" data-size=\"sm\" data-orientation=\"horizontal\" class=\"rounded-2xl w-fit focus-within:ring-1 focus-within:ring-ring/30 group/attachment relative flex max-w-full shrink-0 flex-wrap border bg-card text-card-foreground transition-colo"
+      },
+      {
+        "tag": "DIV",
+        "label": null,
+        "classes": "bg-muted text-foreground w-10 rounded-lg group-data-[size=sm]/attachment:w-8 group-data-[size=xs]/attachment:w-7 group-data-[size=xs]/attachment:rounded-md [&_svg:not([class*='size-'])]:size-4 group-data-[size=xs]/attachment:[&_svg:not([class*='size-'])]:size-3.5 group-data-[orientation=vertical]/attachment:w-full group-data-[orientation=vertical]/attachment:[&_svg:not([class*='size-'])]:size-6 group-data-[orientation=vertical]/attachment:*:data-[slot=spinner]:size-6! relative flex aspect-square shrink-0 items-center justify-center overflow-hidden group-data-[state=error]/attachment:bg-destructive/10 group-data-[state=error]/attachment:text-destructive [&_svg]:pointer-events-none",
+        "right": 617.40625,
+        "width": 32,
+        "overflow": "hidden",
+        "minWidth": "auto",
+        "html": "<div data-slot=\"attachment-media\" data-variant=\"icon\" class=\"bg-muted text-foreground w-10 rounded-lg group-data-[size=sm]/attachment:w-8 group-data-[size=xs]/attachment:w-7 group-data-[size=xs]/attachment:rounded-md [&amp;_svg:not([class*='size-'])]:size-4 group-data-[size=xs]/a"
+      },
+      {
+        "tag": "svg",
+        "label": null,
+        "classes": {},
+        "right": 609.40625,
+        "width": 16,
+        "overflow": "hidden",
+        "minWidth": "auto",
+        "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" class=\"lucide-icon lucide lucide-file-text\"><!----><path d=\"M6 22a2 2 0 0 1-2-2V"
+      },
+      {
+        "tag": "path",
+        "label": null,
+        "classes": {},
+        "right": 606.7395629882812,
+        "width": 10.6666259765625,
+        "overflow": "visible",
+        "minWidth": "0px",
+        "html": "<path d=\"M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z\"></path>"
+      },
+      {
+        "tag": "path",
+        "label": null,
+        "classes": {},
+        "right": 606.7395629882812,
+        "width": 4,
+        "overflow": "visible",
+        "minWidth": "0px",
+        "html": "<path d=\"M14 2v5a1 1 0 0 0 1 1h5\"></path>"
+      },
+      {
+        "tag": "path",
+        "label": null,
+        "classes": {},
+        "right": 600.0729370117188,
+        "width": 1.3333740234375,
+        "overflow": "visible",
+        "minWidth": "0px",
+        "html": "<path d=\"M10 9H8\"></path>"
+      },
+      {
+        "tag": "path",
+        "label": null,
+        "classes": {},
+        "right": 604.0729370117188,
+        "width": 5.3333740234375,
+        "overflow": "visible",
+        "minWidth": "0px",
+        "html": "<path d=\"M16 13H8\"></path>"
+      },
+      {
+        "tag": "path",
+        "label": null,
+        "classes": {},
+        "right": 604.0729370117188,
+        "width": 5.3333740234375,
+        "overflow": "visible",
+        "minWidth": "0px",
+        "html": "<path d=\"M16 17H8\"></path>"
+      },
+      {
+        "tag": "DIV",
+        "label": null,
+        "classes": "leading-tight group-data-[orientation=vertical]/attachment:px-1 max-w-full min-w-0 flex-1",
+        "right": 731.40625,
+        "width": 104,
+        "overflow": "visible",
+        "minWidth": "0px",
+        "html": "<div data-slot=\"attachment-content\" class=\"leading-tight group-data-[orientation=vertical]/attachment:px-1 max-w-full min-w-0 flex-1\"><!----><span data-slot=\"attachment-title\" class=\"font-medium block max-w-full min-w-0 truncate group-data-[state=processing]/attachment:shimmer gr"
+      },
+      {
+        "tag": "SPAN",
+        "label": null,
+        "classes": "font-medium block max-w-full min-w-0 truncate group-data-[state=processing]/attachment:shimmer group-data-[state=uploading]/attachment:shimmer",
+        "right": 731.40625,
+        "width": 104,
+        "overflow": "hidden",
+        "minWidth": "0px",
+        "html": "<span data-slot=\"attachment-title\" class=\"font-medium block max-w-full min-w-0 truncate group-data-[state=processing]/attachment:shimmer group-data-[state=uploading]/attachment:shimmer\">processing.txt<!----></span>"
+      },
+      {
+        "tag": "SPAN",
+        "label": null,
+        "classes": "mt-0.5 text-xs block min-w-0 truncate text-muted-foreground group-data-[state=error]/attachment:text-destructive/80 max-w-full",
+        "right": 731.40625,
+        "width": 104,
+        "overflow": "hidden",
+        "minWidth": "0px",
+        "html": "<span data-slot=\"attachment-description\" class=\"mt-0.5 text-xs block min-w-0 truncate text-muted-foreground group-data-[state=error]/attachment:text-destructive/80 max-w-full\">processing fixture<!----></span>"
+      },
+      {
+        "tag": "DIV",
+        "label": null,
+        "classes": "rounded-2xl w-fit focus-within:ring-1 focus-within:ring-ring/30 group/attachment relative flex max-w-full shrink-0 flex-wrap border bg-card text-card-foreground transition-colors has-[>a,>button]:hover:bg-muted/50 data-[state=error]:border-destructive/30 data-[state=idle]:border-dashed gap-2.5 has-data-[slot=attachment-content]:px-2 has-data-[slot=attachment-content]:py-1.5 has-data-[slot=attachment-media]:p-1.5 text-xs min-w-40 items-center",
+        "right": 910.40625,
+        "width": 160,
+        "overflow": "visible",
+        "minWidth": "160px",
+        "html": "<div data-slot=\"attachment\" data-state=\"error\" data-size=\"sm\" data-orientation=\"horizontal\" class=\"rounded-2xl w-fit focus-within:ring-1 focus-within:ring-ring/30 group/attachment relative flex max-w-full shrink-0 flex-wrap border bg-card text-card-foreground transition-colors ha"
+      },
+      {
+        "tag": "DIV",
+        "label": null,
+        "classes": "bg-muted text-foreground w-10 rounded-lg group-data-[size=sm]/attachment:w-8 group-data-[size=xs]/attachment:w-7 group-data-[size=xs]/attachment:rounded-md [&_svg:not([class*='size-'])]:size-4 group-data-[size=xs]/attachment:[&_svg:not([class*='size-'])]:size-3.5 group-data-[orientation=vertical]/attachment:w-full group-data-[orientation=vertical]/attachment:[&_svg:not([class*='size-'])]:size-6 group-data-[orientation=vertical]/attachment:*:data-[slot=spinner]:size-6! relative flex aspect-square shrink-0 items-center justify-center overflow-hidden group-data-[state=error]/attachment:bg-destructive/10 group-data-[state=error]/attachment:text-destructive [&_svg]:pointer-events-none",
+        "right": 789.40625,
+        "width": 32,
+        "overflow": "hidden",
+        "minWidth": "auto",
+        "html": "<div data-slot=\"attachment-media\" data-variant=\"icon\" class=\"bg-muted text-foreground w-10 rounded-lg group-data-[size=sm]/attachment:w-8 group-data-[size=xs]/attachment:w-7 group-data-[size=xs]/attachment:rounded-md [&amp;_svg:not([class*='size-'])]:size-4 group-data-[size=xs]/a"
+      },
+      {
+        "tag": "svg",
+        "label": null,
+        "classes": {},
+        "right": 781.40625,
+        "width": 16,
+        "overflow": "hidden",
+        "minWidth": "auto",
+        "html": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" class=\"lucide-icon lucide lucide-file-text\"><!----><path d=\"M6 22a2 2 0 0 1-2-2V"
+      },
+      {
+        "tag": "path",
+        "label": null,
+        "classes": {},
+        "right": 778.7395629882812,
+        "width": 10.6666259765625,
+        "overflow": "visible",
+        "minWidth": "0px",
+        "html": "<path d=\"M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z\"></path>"
+      },
+      {
+        "tag": "path",
+        "label": null,
+        "classes": {},
+        "right": 778.7395629882812,
+        "width": 4,
+        "overflow": "visible",
+        "minWidth": "0px",
+        "html": "<path d=\"M14 2v5a1 1 0 0 0 1 1h5\"></path>"
+      },
+      {
+        "tag": "path",
+        "label": null,
+        "classes": {},
+        "right": 772.0729370117188,
+        "width": 1.3333740234375,
+        "overflow": "visible",
+        "minWidth": "0px",
+        "html": "<path d=\"M10 9H8\"></path>"
+      },
+      {
+        "tag": "path",
+        "label": null,
+        "classes": {},
+        "right": 776.0729370117188,
+        "width": 5.3333740234375,
+        "overflow": "visible",
+        "minWidth": "0px",
+        "html": "<path d=\"M16 13H8\"></path>"
+      },
+      {
+        "tag": "path",
+        "label": null,
+        "classes": {},
+        "right": 776.0729370117188,
+        "width": 5.3333740234375,
+        "overflow": "visible",
+        "minWidth": "0px",
+        "html": "<path d=\"M16 17H8\"></path>"
+      },
+      {
+        "tag": "DIV",
+        "label": null,
+        "classes": "leading-tight group-data-[orientation=vertical]/attachment:px-1 max-w-full min-w-0 flex-1",
+        "right": 903.40625,
+        "width": 104,
+        "overflow": "visible",
+        "minWidth": "0px",
+        "html": "<div data-slot=\"attachment-content\" class=\"leading-tight group-data-[orientation=vertical]/attachment:px-1 max-w-full min-w-0 flex-1\"><!----><span data-slot=\"attachment-title\" class=\"font-medium block max-w-full min-w-0 truncate group-data-[state=processing]/attachment:shimmer gr"
+      },
+      {
+        "tag": "SPAN",
+        "label": null,
+        "classes": "font-medium block max-w-full min-w-0 truncate group-data-[state=processing]/attachment:shimmer group-data-[state=uploading]/attachment:shimmer",
+        "right": 903.40625,
+        "width": 104,
+        "overflow": "hidden",
+        "minWidth": "0px",
+        "html": "<span data-slot=\"attachment-title\" class=\"font-medium block max-w-full min-w-0 truncate group-data-[state=processing]/attachment:shimmer group-data-[state=uploading]/attachment:shimmer\">error.txt<!----></span>"
+      },
+      {
+        "tag": "SPAN",
+        "label": null,
+        "classes": "mt-0.5 text-xs block min-w-0 truncate text-muted-foreground group-data-[state=error]/attachment:text-destructive/80 max-w-full",
+        "right": 903.40625,
+        "width": 104,
+        "overflow": "hidden",
+        "minWidth": "0px",
+        "html": "<span data-slot=\"attachment-description\" class=\"mt-0.5 text-xs block min-w-0 truncate text-muted-foreground group-data-[state=error]/attachment:text-destructive/80 max-w-full\">error fixture<!----></span>"
+      },
+      {
+        "tag": "SELECT",
+        "label": "Showcase recipe",
+        "classes": "svelte-1p34qmc",
+        "right": 421,
+        "width": 389,
+        "overflow": "clip",
+        "minWidth": "auto",
+        "html": "<select aria-label=\"Showcase recipe\" class=\"svelte-1p34qmc\"><!--[-1--><!--]--><!--[--><option value=\"section\" class=\"svelte-1p34qmc\">Section · Standalone</option><option value=\"row\" class=\"svelte-1p34qmc\">Row · Standalone</option><option value=\"heading\" class=\"svelte-1p34qmc\">Hea"
+      }
+    ]
+  },
+  "after": {
+    "width": 390,
+    "scrollWidth": 390
+  }
+}

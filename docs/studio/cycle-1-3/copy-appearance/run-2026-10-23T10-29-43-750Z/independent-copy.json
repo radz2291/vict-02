@@ -1,0 +1,79 @@
+{
+  "candidate": "748d9a6fa4ca9b2dee0445fa06b55b4e56ab8467",
+  "mode": "Actual Studio/packed UI; Studio reply explicitly simulated; native clipboard except labelled denied-write case; no provider call",
+  "records": [
+    {
+      "name": "studio compact named icon",
+      "pass": true,
+      "evidence": {
+        "text": "",
+        "label": "Copy message",
+        "title": "",
+        "width": 28,
+        "height": 28,
+        "iconWidth": 16,
+        "iconHeight": 16,
+        "hidden": "true",
+        "copied": false,
+        "viewport": 1440,
+        "documentWidth": 1440,
+        "focusVisible": false,
+        "shadow": "none"
+      }
+    },
+    {
+      "name": "studio keyboard focus visible",
+      "pass": true,
+      "evidence": {
+        "text": "",
+        "label": "Copy message",
+        "title": "",
+        "width": 28,
+        "height": 28,
+        "iconWidth": 16,
+        "iconHeight": 16,
+        "hidden": "true",
+        "copied": false,
+        "viewport": 1440,
+        "documentWidth": 1440,
+        "focusVisible": true,
+        "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0 0 0 / 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px"
+      }
+    },
+    {
+      "name": "studio keyboard tooltip is styled and scoped",
+      "pass": true,
+      "evidence": {
+        "text": "Copy message ",
+        "scope": true,
+        "background": "rgb(32, 35, 43)"
+      }
+    },
+    {
+      "name": "studio native clipboard exact Markdown and success",
+      "pass": false,
+      "evidence": {
+        "value": "Copy appearance **Markdown**\r\n\r\n- Original source\r\n\r\n```ts\r\nconst exact = \"✓\";\r\n```",
+        "copied": {
+          "text": "",
+          "label": "Copy message",
+          "title": "",
+          "width": 28,
+          "height": 28,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "hidden": "true",
+          "copied": true,
+          "viewport": 1440,
+          "documentWidth": 1440,
+          "focusVisible": true,
+          "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0.644274 0.00294778 -0.107387 / 0.290657) 0px 0px 0px 2.90657px, rgba(0, 0, 0, 0) 0px 0px 0px 0px"
+        }
+      }
+    },
+    {
+      "failure": "Error: studio native clipboard exact Markdown and success"
+    }
+  ],
+  "errors": []
+}

@@ -1,0 +1,240 @@
+{
+  "candidate": "8eb96dd8bcf7cfadd973e1f4fae7d11706a32797",
+  "mode": "Bounded native-selector CSS repair recheck; no injected styles",
+  "records": [
+    {
+      "name": "320px selected slider",
+      "pass": true,
+      "evidence": {
+        "width": 320,
+        "scrollWidth": 320,
+        "selectRight": 288,
+        "parentRight": 288,
+        "selectWidth": 256,
+        "recipe": "slider",
+        "source": "showcase-slider",
+        "alerts": []
+      }
+    },
+    {
+      "name": "320px selected menubar.checkbox-group",
+      "pass": true,
+      "evidence": {
+        "width": 320,
+        "scrollWidth": 320,
+        "selectRight": 288,
+        "parentRight": 288,
+        "selectWidth": 256,
+        "recipe": "menubar.checkbox-group",
+        "source": "showcase-menubar.checkbox-group",
+        "alerts": []
+      }
+    },
+    {
+      "name": "320px selected select-item",
+      "pass": true,
+      "evidence": {
+        "width": 320,
+        "scrollWidth": 320,
+        "selectRight": 288,
+        "parentRight": 288,
+        "selectWidth": 256,
+        "recipe": "select-item",
+        "source": "showcase-select-item",
+        "alerts": []
+      }
+    },
+    {
+      "name": "320px selected tabs",
+      "pass": true,
+      "evidence": {
+        "width": 320,
+        "scrollWidth": 320,
+        "selectRight": 288,
+        "parentRight": 288,
+        "selectWidth": 256,
+        "recipe": "tabs",
+        "source": "showcase-tabs",
+        "alerts": []
+      }
+    },
+    {
+      "name": "390px selected slider",
+      "pass": true,
+      "evidence": {
+        "width": 390,
+        "scrollWidth": 390,
+        "selectRight": 358,
+        "parentRight": 358,
+        "selectWidth": 326,
+        "recipe": "slider",
+        "source": "showcase-slider",
+        "alerts": []
+      }
+    },
+    {
+      "name": "390px selected menubar.checkbox-group",
+      "pass": true,
+      "evidence": {
+        "width": 390,
+        "scrollWidth": 390,
+        "selectRight": 358,
+        "parentRight": 358,
+        "selectWidth": 326,
+        "recipe": "menubar.checkbox-group",
+        "source": "showcase-menubar.checkbox-group",
+        "alerts": []
+      }
+    },
+    {
+      "name": "390px selected select-item",
+      "pass": true,
+      "evidence": {
+        "width": 390,
+        "scrollWidth": 390,
+        "selectRight": 358,
+        "parentRight": 358,
+        "selectWidth": 326,
+        "recipe": "select-item",
+        "source": "showcase-select-item",
+        "alerts": []
+      }
+    },
+    {
+      "name": "390px selected tabs",
+      "pass": true,
+      "evidence": {
+        "width": 390,
+        "scrollWidth": 390,
+        "selectRight": 358,
+        "parentRight": 358,
+        "selectWidth": 326,
+        "recipe": "tabs",
+        "source": "showcase-tabs",
+        "alerts": []
+      }
+    },
+    {
+      "name": "768px selected slider",
+      "pass": true,
+      "evidence": {
+        "width": 768,
+        "scrollWidth": 768,
+        "selectRight": 610,
+        "parentRight": 610,
+        "selectWidth": 389,
+        "recipe": "slider",
+        "source": "showcase-slider",
+        "alerts": []
+      }
+    },
+    {
+      "name": "768px selected menubar.checkbox-group",
+      "pass": true,
+      "evidence": {
+        "width": 768,
+        "scrollWidth": 768,
+        "selectRight": 610,
+        "parentRight": 610,
+        "selectWidth": 389,
+        "recipe": "menubar.checkbox-group",
+        "source": "showcase-menubar.checkbox-group",
+        "alerts": []
+      }
+    },
+    {
+      "name": "768px selected select-item",
+      "pass": true,
+      "evidence": {
+        "width": 768,
+        "scrollWidth": 768,
+        "selectRight": 610,
+        "parentRight": 610,
+        "selectWidth": 389,
+        "recipe": "select-item",
+        "source": "showcase-select-item",
+        "alerts": []
+      }
+    },
+    {
+      "name": "768px selected tabs",
+      "pass": true,
+      "evidence": {
+        "width": 768,
+        "scrollWidth": 768,
+        "selectRight": 610,
+        "parentRight": 610,
+        "selectWidth": 389,
+        "recipe": "tabs",
+        "source": "showcase-tabs",
+        "alerts": []
+      }
+    },
+    {
+      "name": "1440px selected slider",
+      "pass": true,
+      "evidence": {
+        "width": 1440,
+        "scrollWidth": 1440,
+        "selectRight": 626,
+        "parentRight": 626,
+        "selectWidth": 389,
+        "recipe": "slider",
+        "source": "showcase-slider",
+        "alerts": []
+      }
+    },
+    {
+      "name": "1440px selected menubar.checkbox-group",
+      "pass": true,
+      "evidence": {
+        "width": 1440,
+        "scrollWidth": 1440,
+        "selectRight": 626,
+        "parentRight": 626,
+        "selectWidth": 389,
+        "recipe": "menubar.checkbox-group",
+        "source": "showcase-menubar.checkbox-group",
+        "alerts": []
+      }
+    },
+    {
+      "name": "1440px selected select-item",
+      "pass": true,
+      "evidence": {
+        "width": 1440,
+        "scrollWidth": 1440,
+        "selectRight": 626,
+        "parentRight": 626,
+        "selectWidth": 389,
+        "recipe": "select-item",
+        "source": "showcase-select-item",
+        "alerts": []
+      }
+    },
+    {
+      "name": "1440px selected tabs",
+      "pass": true,
+      "evidence": {
+        "width": 1440,
+        "scrollWidth": 1440,
+        "selectRight": 626,
+        "parentRight": 626,
+        "selectWidth": 389,
+        "recipe": "tabs",
+        "source": "showcase-tabs",
+        "alerts": []
+      }
+    },
+    {
+      "name": "No new browser errors or backend calls",
+      "pass": true,
+      "evidence": {
+        "errors": [],
+        "requests": []
+      }
+    }
+  ],
+  "errors": [],
+  "requests": []
+}

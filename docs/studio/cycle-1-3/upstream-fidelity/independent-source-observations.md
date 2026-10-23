@@ -1,0 +1,10 @@
+# Independent pre-freeze source observations
+
+2026-10-23. These observations concern the builders' uncommitted fidelity repair during source review, **not** a verdict on a frozen candidate or a claim of browser execution. They were reported immediately to the responsible builder/coordinator for bounded correction. The final report must record their disposition and relevant state evidence.
+
+1. **Tool error payload selected in completed state.** Observed `const content = $derived(error ?? output)` irrespective of `state`. The simultaneously prepared gallery supplied both success output and failure text with initial `state='completed'`. Consequently the successful state would render the error payload; changing state would not select the proper body. Pending/running cases also require deliberate handling of pre-supplied terminal output.
+2. **Terminal stale exit code overrides running.** Observed `failed = status === 'error' || (exitCode !== undefined && exitCode !== 0)`. A running state with a retained prior nonzero exit code would be labelled exited/failed. The pinned primary gates failure with `!running` before considering terminal outcome.
+3. **Test Results running title with failed styling/details.** Observed active summary selection alongside `status={failed ? 'error' : active ? 'running' : undefined}` and unconditional settled-result hierarchy. `running=true` plus prior failed suites yields a running title but failure status and old terminal results. The pinned primary instead displays a running row before settled suite results.
+4. **Pending Chain/Subagent icon.** Early repair source's icon helper fell through to a completed check for pending Step data. Builder reports changing it to an unfilled Circle before freeze. A related type concern was clarified: Step.status is optional, so its indexed-access type already permits undefined; no compile failure is claimed for that concern.
+
+The primary/reference and important secondary-state criteria are in `independent-matrix.md`. Fixes must preserve host ownership and not fabricate backend actions merely to make a demo state advance.

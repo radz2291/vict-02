@@ -1,0 +1,10 @@
+import {readFile,writeFile} from 'node:fs/promises';import {execFileSync} from 'node:child_process';
+const candidate='efbafcc41317d18ea6609c490f149452de8a98b0';
+const git=(...args)=>execFileSync('git',args,{encoding:'utf8'}).trim();
+const manifest=JSON.parse(git('show',candidate+':packages/ui-ai-svelte/upstream-manifest.json'));
+const refs=JSON.parse(await readFile('docs/studio/cycle-1-3/copy-appearance/independent-reference/manifest.json','utf8'));
+const comparisons=manifest.patterns.map(p=>{const ref=refs.records.find(r=>r.pattern===p.id);return{pattern:p.id,docsMatch:p.sourceSha256===ref?.sha256,examples:(p.exampleReferences??[]).map(e=>({name:e.name,matched:ref?.examples.some(r=>r.name===e.name&&r.url===e.url&&r.sha256===e.sha256)})),allReferenceVariantsDeclared:ref?.examples.every(e=>p.exampleReferences?.some(r=>r.name===e.name&&r.sha256===e.sha256))}});
+const paths=git('diff','--name-only','e7644b13b1ed263c4beda8359ead6d3d1dfa088b',candidate).split('\n').filter(Boolean);
+const result={candidate,upstream:manifest.commit,independentlyFetchedReference:refs.upstream,comparisons,changedPaths:paths,unrelatedChanges:paths.filter(p=>!p.startsWith('docs/')&&!p.startsWith('packages/ui-ai-svelte/')&&p!=='examples/studio-ui-consumer/src/App.svelte'),vendorChanges:paths.filter(p=>p.startsWith('packages/ui-ai-svelte/src/upstream/')),runtimeCanonicalFlowChanges:paths.filter(p=>p.startsWith('apps/')||p.startsWith('packages/')&&!p.startsWith('packages/ui-ai-svelte/'))};
+result.pass=comparisons.length===21&&comparisons.every(r=>r.docsMatch&&r.examples.every(e=>e.matched)&&r.allReferenceVariantsDeclared)&&result.unrelatedChanges.length===0&&result.vendorChanges.length===0&&result.runtimeCanonicalFlowChanges.length===0;
+await writeFile('docs/studio/cycle-1-3/upstream-fidelity/independent-source-audit.json',JSON.stringify(result,null,2));console.log(JSON.stringify({candidate,patterns:comparisons.length,referenceExamples:comparisons.reduce((n,r)=>n+r.examples.length,0),pass:result.pass},null,2));if(!result.pass)process.exitCode=1;

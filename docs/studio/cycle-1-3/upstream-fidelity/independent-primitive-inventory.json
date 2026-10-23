@@ -1,0 +1,1799 @@
+{
+  "candidate": "407cafaa0c8121b264803e7bced741afbb8af7df",
+  "familyCount": 19,
+  "canonical": 95,
+  "aliases": 94,
+  "runtime": 11,
+  "types": 17,
+  "missing": [],
+  "families": [
+    {
+      "family": "attachment",
+      "parts": [
+        {
+          "name": "Root",
+          "path": "./attachment.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "Group",
+          "path": "./attachment-group.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "Media",
+          "path": "./attachment-media.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "Content",
+          "path": "./attachment-content.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "Title",
+          "path": "./attachment-title.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "Description",
+          "path": "./attachment-description.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "Actions",
+          "path": "./attachment-actions.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "Action",
+          "path": "./attachment-action.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "Trigger",
+          "path": "./attachment-trigger.svelte",
+          "represented": true,
+          "internalPortal": false
+        }
+      ],
+      "exports": [
+        {
+          "name": "Root",
+          "source": "Root",
+          "kind": "component"
+        },
+        {
+          "name": "Group",
+          "source": "Group",
+          "kind": "component"
+        },
+        {
+          "name": "Media",
+          "source": "Media",
+          "kind": "component"
+        },
+        {
+          "name": "Content",
+          "source": "Content",
+          "kind": "component"
+        },
+        {
+          "name": "Title",
+          "source": "Title",
+          "kind": "component"
+        },
+        {
+          "name": "Description",
+          "source": "Description",
+          "kind": "component"
+        },
+        {
+          "name": "Actions",
+          "source": "Actions",
+          "kind": "component"
+        },
+        {
+          "name": "Action",
+          "source": "Action",
+          "kind": "component"
+        },
+        {
+          "name": "Trigger",
+          "source": "Trigger",
+          "kind": "component"
+        },
+        {
+          "name": "attachmentVariants",
+          "source": "attachmentVariants",
+          "kind": "runtime"
+        },
+        {
+          "name": "AttachmentSize",
+          "source": "AttachmentSize",
+          "kind": "type"
+        },
+        {
+          "name": "AttachmentOrientation",
+          "source": "AttachmentOrientation",
+          "kind": "type"
+        },
+        {
+          "name": "AttachmentState",
+          "source": "AttachmentState",
+          "kind": "type"
+        },
+        {
+          "name": "Attachment",
+          "source": "Root",
+          "kind": "alias"
+        },
+        {
+          "name": "AttachmentGroup",
+          "source": "Group",
+          "kind": "alias"
+        },
+        {
+          "name": "AttachmentMedia",
+          "source": "Media",
+          "kind": "alias"
+        },
+        {
+          "name": "AttachmentContent",
+          "source": "Content",
+          "kind": "alias"
+        },
+        {
+          "name": "AttachmentTitle",
+          "source": "Title",
+          "kind": "alias"
+        },
+        {
+          "name": "AttachmentDescription",
+          "source": "Description",
+          "kind": "alias"
+        },
+        {
+          "name": "AttachmentActions",
+          "source": "Actions",
+          "kind": "alias"
+        },
+        {
+          "name": "AttachmentAction",
+          "source": "Action",
+          "kind": "alias"
+        },
+        {
+          "name": "AttachmentTrigger",
+          "source": "Trigger",
+          "kind": "alias"
+        }
+      ]
+    },
+    {
+      "family": "badge",
+      "parts": [
+        {
+          "name": "Badge",
+          "path": "./badge.svelte",
+          "represented": true,
+          "internalPortal": false
+        }
+      ],
+      "exports": [
+        {
+          "name": "Badge",
+          "source": "Badge",
+          "kind": "component"
+        },
+        {
+          "name": "badgeVariants",
+          "source": "badgeVariants",
+          "kind": "runtime"
+        },
+        {
+          "name": "BadgeVariant",
+          "source": "BadgeVariant",
+          "kind": "type"
+        }
+      ]
+    },
+    {
+      "family": "bubble",
+      "parts": [
+        {
+          "name": "Root",
+          "path": "./bubble.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "Group",
+          "path": "./bubble-group.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "Content",
+          "path": "./bubble-content.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "Reactions",
+          "path": "./bubble-reactions.svelte",
+          "represented": true,
+          "internalPortal": false
+        }
+      ],
+      "exports": [
+        {
+          "name": "Root",
+          "source": "Root",
+          "kind": "component"
+        },
+        {
+          "name": "Group",
+          "source": "Group",
+          "kind": "component"
+        },
+        {
+          "name": "Content",
+          "source": "Content",
+          "kind": "component"
+        },
+        {
+          "name": "Reactions",
+          "source": "Reactions",
+          "kind": "component"
+        },
+        {
+          "name": "bubbleVariants",
+          "source": "bubbleVariants",
+          "kind": "runtime"
+        },
+        {
+          "name": "bubbleReactionsVariants",
+          "source": "bubbleReactionsVariants",
+          "kind": "runtime"
+        },
+        {
+          "name": "BubbleVariant",
+          "source": "BubbleVariant",
+          "kind": "type"
+        },
+        {
+          "name": "BubbleReactionsSide",
+          "source": "BubbleReactionsSide",
+          "kind": "type"
+        },
+        {
+          "name": "BubbleReactionsAlign",
+          "source": "BubbleReactionsAlign",
+          "kind": "type"
+        },
+        {
+          "name": "Bubble",
+          "source": "Root",
+          "kind": "alias"
+        },
+        {
+          "name": "BubbleGroup",
+          "source": "Group",
+          "kind": "alias"
+        },
+        {
+          "name": "BubbleContent",
+          "source": "Content",
+          "kind": "alias"
+        },
+        {
+          "name": "BubbleReactions",
+          "source": "Reactions",
+          "kind": "alias"
+        }
+      ]
+    },
+    {
+      "family": "button",
+      "parts": [
+        {
+          "name": "Root",
+          "path": "./button.svelte",
+          "represented": true,
+          "internalPortal": false
+        }
+      ],
+      "exports": [
+        {
+          "name": "Root",
+          "source": "Root",
+          "kind": "component"
+        },
+        {
+          "name": "Props",
+          "source": "ButtonProps",
+          "kind": "type"
+        },
+        {
+          "name": "Button",
+          "source": "Root",
+          "kind": "alias"
+        },
+        {
+          "name": "buttonVariants",
+          "source": "buttonVariants",
+          "kind": "runtime"
+        },
+        {
+          "name": "ButtonProps",
+          "source": "ButtonProps",
+          "kind": "type"
+        },
+        {
+          "name": "ButtonSize",
+          "source": "ButtonSize",
+          "kind": "type"
+        },
+        {
+          "name": "ButtonVariant",
+          "source": "ButtonVariant",
+          "kind": "type"
+        }
+      ]
+    },
+    {
+      "family": "code-block",
+      "parts": [
+        {
+          "name": "Root",
+          "path": "./code-block.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "Header",
+          "path": "./code-block-header.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "Title",
+          "path": "./code-block-title.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "Actions",
+          "path": "./code-block-actions.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "CopyButton",
+          "path": "./code-block-copy-button.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "Content",
+          "path": "./code-block-content.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "Line",
+          "path": "./code-block-line.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "Footer",
+          "path": "./code-block-footer.svelte",
+          "represented": true,
+          "internalPortal": false
+        }
+      ],
+      "exports": [
+        {
+          "name": "Root",
+          "source": "Root",
+          "kind": "component"
+        },
+        {
+          "name": "Header",
+          "source": "Header",
+          "kind": "component"
+        },
+        {
+          "name": "Title",
+          "source": "Title",
+          "kind": "component"
+        },
+        {
+          "name": "Actions",
+          "source": "Actions",
+          "kind": "component"
+        },
+        {
+          "name": "CopyButton",
+          "source": "CopyButton",
+          "kind": "component"
+        },
+        {
+          "name": "Content",
+          "source": "Content",
+          "kind": "component"
+        },
+        {
+          "name": "Line",
+          "source": "Line",
+          "kind": "component"
+        },
+        {
+          "name": "Footer",
+          "source": "Footer",
+          "kind": "component"
+        },
+        {
+          "name": "codeBlockVariants",
+          "source": "codeBlockVariants",
+          "kind": "runtime"
+        },
+        {
+          "name": "codeBlockLineVariants",
+          "source": "codeBlockLineVariants",
+          "kind": "runtime"
+        },
+        {
+          "name": "CodeBlockVariant",
+          "source": "CodeBlockVariant",
+          "kind": "type"
+        },
+        {
+          "name": "CodeBlockSize",
+          "source": "CodeBlockSize",
+          "kind": "type"
+        },
+        {
+          "name": "CodeBlockLineVariant",
+          "source": "CodeBlockLineVariant",
+          "kind": "type"
+        },
+        {
+          "name": "CodeBlockLineToken",
+          "source": "CodeBlockLineToken",
+          "kind": "type"
+        },
+        {
+          "name": "CodeBlock",
+          "source": "Root",
+          "kind": "alias"
+        },
+        {
+          "name": "CodeBlockHeader",
+          "source": "Header",
+          "kind": "alias"
+        },
+        {
+          "name": "CodeBlockTitle",
+          "source": "Title",
+          "kind": "alias"
+        },
+        {
+          "name": "CodeBlockActions",
+          "source": "Actions",
+          "kind": "alias"
+        },
+        {
+          "name": "CodeBlockCopyButton",
+          "source": "CopyButton",
+          "kind": "alias"
+        },
+        {
+          "name": "CodeBlockContent",
+          "source": "Content",
+          "kind": "alias"
+        },
+        {
+          "name": "CodeBlockLine",
+          "source": "Line",
+          "kind": "alias"
+        },
+        {
+          "name": "CodeBlockFooter",
+          "source": "Footer",
+          "kind": "alias"
+        }
+      ]
+    },
+    {
+      "family": "collapsible",
+      "parts": [
+        {
+          "name": "Root",
+          "path": "./collapsible.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "Content",
+          "path": "./collapsible-content.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "Trigger",
+          "path": "./collapsible-trigger.svelte",
+          "represented": true,
+          "internalPortal": false
+        }
+      ],
+      "exports": [
+        {
+          "name": "Root",
+          "source": "Root",
+          "kind": "component"
+        },
+        {
+          "name": "Content",
+          "source": "Content",
+          "kind": "component"
+        },
+        {
+          "name": "Trigger",
+          "source": "Trigger",
+          "kind": "component"
+        },
+        {
+          "name": "Collapsible",
+          "source": "Root",
+          "kind": "alias"
+        },
+        {
+          "name": "CollapsibleContent",
+          "source": "Content",
+          "kind": "alias"
+        },
+        {
+          "name": "CollapsibleTrigger",
+          "source": "Trigger",
+          "kind": "alias"
+        }
+      ]
+    },
+    {
+      "family": "dropdown-menu",
+      "parts": [
+        {
+          "name": "CheckboxGroup",
+          "path": "./dropdown-menu-checkbox-group.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "CheckboxItem",
+          "path": "./dropdown-menu-checkbox-item.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "Content",
+          "path": "./dropdown-menu-content.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "Portal",
+          "path": "./dropdown-menu-portal.svelte",
+          "represented": false,
+          "internalPortal": true
+        },
+        {
+          "name": "Group",
+          "path": "./dropdown-menu-group.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "GroupHeading",
+          "path": "./dropdown-menu-group-heading.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "Item",
+          "path": "./dropdown-menu-item.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "Label",
+          "path": "./dropdown-menu-label.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "RadioGroup",
+          "path": "./dropdown-menu-radio-group.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "RadioItem",
+          "path": "./dropdown-menu-radio-item.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "Root",
+          "path": "./dropdown-menu.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "Separator",
+          "path": "./dropdown-menu-separator.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "Shortcut",
+          "path": "./dropdown-menu-shortcut.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "Sub",
+          "path": "./dropdown-menu-sub.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "SubContent",
+          "path": "./dropdown-menu-sub-content.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "SubTrigger",
+          "path": "./dropdown-menu-sub-trigger.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "Trigger",
+          "path": "./dropdown-menu-trigger.svelte",
+          "represented": true,
+          "internalPortal": false
+        }
+      ],
+      "exports": [
+        {
+          "name": "CheckboxGroup",
+          "source": "CheckboxGroup",
+          "kind": "component"
+        },
+        {
+          "name": "CheckboxItem",
+          "source": "CheckboxItem",
+          "kind": "component"
+        },
+        {
+          "name": "Content",
+          "source": "Content",
+          "kind": "component"
+        },
+        {
+          "name": "Portal",
+          "source": "Portal",
+          "kind": "component"
+        },
+        {
+          "name": "DropdownMenu",
+          "source": "Root",
+          "kind": "alias"
+        },
+        {
+          "name": "DropdownMenuCheckboxGroup",
+          "source": "CheckboxGroup",
+          "kind": "alias"
+        },
+        {
+          "name": "DropdownMenuCheckboxItem",
+          "source": "CheckboxItem",
+          "kind": "alias"
+        },
+        {
+          "name": "DropdownMenuContent",
+          "source": "Content",
+          "kind": "alias"
+        },
+        {
+          "name": "DropdownMenuPortal",
+          "source": "Portal",
+          "kind": "alias"
+        },
+        {
+          "name": "DropdownMenuGroup",
+          "source": "Group",
+          "kind": "alias"
+        },
+        {
+          "name": "DropdownMenuItem",
+          "source": "Item",
+          "kind": "alias"
+        },
+        {
+          "name": "DropdownMenuLabel",
+          "source": "Label",
+          "kind": "alias"
+        },
+        {
+          "name": "DropdownMenuRadioGroup",
+          "source": "RadioGroup",
+          "kind": "alias"
+        },
+        {
+          "name": "DropdownMenuRadioItem",
+          "source": "RadioItem",
+          "kind": "alias"
+        },
+        {
+          "name": "DropdownMenuSeparator",
+          "source": "Separator",
+          "kind": "alias"
+        },
+        {
+          "name": "DropdownMenuShortcut",
+          "source": "Shortcut",
+          "kind": "alias"
+        },
+        {
+          "name": "DropdownMenuSub",
+          "source": "Sub",
+          "kind": "alias"
+        },
+        {
+          "name": "DropdownMenuSubContent",
+          "source": "SubContent",
+          "kind": "alias"
+        },
+        {
+          "name": "DropdownMenuSubTrigger",
+          "source": "SubTrigger",
+          "kind": "alias"
+        },
+        {
+          "name": "DropdownMenuTrigger",
+          "source": "Trigger",
+          "kind": "alias"
+        },
+        {
+          "name": "DropdownMenuGroupHeading",
+          "source": "GroupHeading",
+          "kind": "alias"
+        },
+        {
+          "name": "Group",
+          "source": "Group",
+          "kind": "component"
+        },
+        {
+          "name": "GroupHeading",
+          "source": "GroupHeading",
+          "kind": "component"
+        },
+        {
+          "name": "Item",
+          "source": "Item",
+          "kind": "component"
+        },
+        {
+          "name": "Label",
+          "source": "Label",
+          "kind": "component"
+        },
+        {
+          "name": "RadioGroup",
+          "source": "RadioGroup",
+          "kind": "component"
+        },
+        {
+          "name": "RadioItem",
+          "source": "RadioItem",
+          "kind": "component"
+        },
+        {
+          "name": "Root",
+          "source": "Root",
+          "kind": "component"
+        },
+        {
+          "name": "Separator",
+          "source": "Separator",
+          "kind": "component"
+        },
+        {
+          "name": "Shortcut",
+          "source": "Shortcut",
+          "kind": "component"
+        },
+        {
+          "name": "Sub",
+          "source": "Sub",
+          "kind": "component"
+        },
+        {
+          "name": "SubContent",
+          "source": "SubContent",
+          "kind": "component"
+        },
+        {
+          "name": "SubTrigger",
+          "source": "SubTrigger",
+          "kind": "component"
+        },
+        {
+          "name": "Trigger",
+          "source": "Trigger",
+          "kind": "component"
+        }
+      ]
+    },
+    {
+      "family": "hover-card",
+      "parts": [
+        {
+          "name": "Root",
+          "path": "./hover-card.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "Content",
+          "path": "./hover-card-content.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "Trigger",
+          "path": "./hover-card-trigger.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "Portal",
+          "path": "./hover-card-portal.svelte",
+          "represented": false,
+          "internalPortal": true
+        }
+      ],
+      "exports": [
+        {
+          "name": "Root",
+          "source": "Root",
+          "kind": "component"
+        },
+        {
+          "name": "Content",
+          "source": "Content",
+          "kind": "component"
+        },
+        {
+          "name": "Trigger",
+          "source": "Trigger",
+          "kind": "component"
+        },
+        {
+          "name": "Portal",
+          "source": "Portal",
+          "kind": "component"
+        },
+        {
+          "name": "HoverCard",
+          "source": "Root",
+          "kind": "alias"
+        },
+        {
+          "name": "HoverCardContent",
+          "source": "Content",
+          "kind": "alias"
+        },
+        {
+          "name": "HoverCardTrigger",
+          "source": "Trigger",
+          "kind": "alias"
+        },
+        {
+          "name": "HoverCardPortal",
+          "source": "Portal",
+          "kind": "alias"
+        }
+      ]
+    },
+    {
+      "family": "input",
+      "parts": [
+        {
+          "name": "Root",
+          "path": "./input.svelte",
+          "represented": true,
+          "internalPortal": false
+        }
+      ],
+      "exports": [
+        {
+          "name": "Root",
+          "source": "Root",
+          "kind": "component"
+        },
+        {
+          "name": "Input",
+          "source": "Root",
+          "kind": "alias"
+        }
+      ]
+    },
+    {
+      "family": "input-group",
+      "parts": [
+        {
+          "name": "Root",
+          "path": "./input-group.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "Addon",
+          "path": "./input-group-addon.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "Button",
+          "path": "./input-group-button.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "Input",
+          "path": "./input-group-input.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "Text",
+          "path": "./input-group-text.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "Textarea",
+          "path": "./input-group-textarea.svelte",
+          "represented": true,
+          "internalPortal": false
+        }
+      ],
+      "exports": [
+        {
+          "name": "Root",
+          "source": "Root",
+          "kind": "component"
+        },
+        {
+          "name": "Addon",
+          "source": "Addon",
+          "kind": "component"
+        },
+        {
+          "name": "Button",
+          "source": "Button",
+          "kind": "component"
+        },
+        {
+          "name": "Input",
+          "source": "Input",
+          "kind": "component"
+        },
+        {
+          "name": "Text",
+          "source": "Text",
+          "kind": "component"
+        },
+        {
+          "name": "Textarea",
+          "source": "Textarea",
+          "kind": "component"
+        },
+        {
+          "name": "InputGroup",
+          "source": "Root",
+          "kind": "alias"
+        },
+        {
+          "name": "InputGroupAddon",
+          "source": "Addon",
+          "kind": "alias"
+        },
+        {
+          "name": "InputGroupButton",
+          "source": "Button",
+          "kind": "alias"
+        },
+        {
+          "name": "InputGroupInput",
+          "source": "Input",
+          "kind": "alias"
+        },
+        {
+          "name": "InputGroupText",
+          "source": "Text",
+          "kind": "alias"
+        },
+        {
+          "name": "InputGroupTextarea",
+          "source": "Textarea",
+          "kind": "alias"
+        }
+      ]
+    },
+    {
+      "family": "item",
+      "parts": [
+        {
+          "name": "Root",
+          "path": "./item.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "Group",
+          "path": "./item-group.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "Separator",
+          "path": "./item-separator.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "Header",
+          "path": "./item-header.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "Footer",
+          "path": "./item-footer.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "Content",
+          "path": "./item-content.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "Title",
+          "path": "./item-title.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "Description",
+          "path": "./item-description.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "Actions",
+          "path": "./item-actions.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "Media",
+          "path": "./item-media.svelte",
+          "represented": true,
+          "internalPortal": false
+        }
+      ],
+      "exports": [
+        {
+          "name": "Root",
+          "source": "Root",
+          "kind": "component"
+        },
+        {
+          "name": "Group",
+          "source": "Group",
+          "kind": "component"
+        },
+        {
+          "name": "Separator",
+          "source": "Separator",
+          "kind": "component"
+        },
+        {
+          "name": "Header",
+          "source": "Header",
+          "kind": "component"
+        },
+        {
+          "name": "Footer",
+          "source": "Footer",
+          "kind": "component"
+        },
+        {
+          "name": "Content",
+          "source": "Content",
+          "kind": "component"
+        },
+        {
+          "name": "Title",
+          "source": "Title",
+          "kind": "component"
+        },
+        {
+          "name": "Description",
+          "source": "Description",
+          "kind": "component"
+        },
+        {
+          "name": "Actions",
+          "source": "Actions",
+          "kind": "component"
+        },
+        {
+          "name": "Media",
+          "source": "Media",
+          "kind": "component"
+        },
+        {
+          "name": "Item",
+          "source": "Root",
+          "kind": "alias"
+        },
+        {
+          "name": "ItemGroup",
+          "source": "Group",
+          "kind": "alias"
+        },
+        {
+          "name": "ItemSeparator",
+          "source": "Separator",
+          "kind": "alias"
+        },
+        {
+          "name": "ItemHeader",
+          "source": "Header",
+          "kind": "alias"
+        },
+        {
+          "name": "ItemFooter",
+          "source": "Footer",
+          "kind": "alias"
+        },
+        {
+          "name": "ItemContent",
+          "source": "Content",
+          "kind": "alias"
+        },
+        {
+          "name": "ItemTitle",
+          "source": "Title",
+          "kind": "alias"
+        },
+        {
+          "name": "ItemDescription",
+          "source": "Description",
+          "kind": "alias"
+        },
+        {
+          "name": "ItemActions",
+          "source": "Actions",
+          "kind": "alias"
+        },
+        {
+          "name": "ItemMedia",
+          "source": "Media",
+          "kind": "alias"
+        }
+      ]
+    },
+    {
+      "family": "marker",
+      "parts": [
+        {
+          "name": "Root",
+          "path": "./marker.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "Icon",
+          "path": "./marker-icon.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "Content",
+          "path": "./marker-content.svelte",
+          "represented": true,
+          "internalPortal": false
+        }
+      ],
+      "exports": [
+        {
+          "name": "Root",
+          "source": "Root",
+          "kind": "component"
+        },
+        {
+          "name": "Icon",
+          "source": "Icon",
+          "kind": "component"
+        },
+        {
+          "name": "Content",
+          "source": "Content",
+          "kind": "component"
+        },
+        {
+          "name": "markerVariants",
+          "source": "markerVariants",
+          "kind": "runtime"
+        },
+        {
+          "name": "MarkerVariant",
+          "source": "MarkerVariant",
+          "kind": "type"
+        },
+        {
+          "name": "Marker",
+          "source": "Root",
+          "kind": "alias"
+        },
+        {
+          "name": "MarkerIcon",
+          "source": "Icon",
+          "kind": "alias"
+        },
+        {
+          "name": "MarkerContent",
+          "source": "Content",
+          "kind": "alias"
+        }
+      ]
+    },
+    {
+      "family": "message",
+      "parts": [
+        {
+          "name": "Root",
+          "path": "./message.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "Group",
+          "path": "./message-group.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "Avatar",
+          "path": "./message-avatar.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "Content",
+          "path": "./message-content.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "Header",
+          "path": "./message-header.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "Footer",
+          "path": "./message-footer.svelte",
+          "represented": true,
+          "internalPortal": false
+        }
+      ],
+      "exports": [
+        {
+          "name": "Root",
+          "source": "Root",
+          "kind": "component"
+        },
+        {
+          "name": "Group",
+          "source": "Group",
+          "kind": "component"
+        },
+        {
+          "name": "Avatar",
+          "source": "Avatar",
+          "kind": "component"
+        },
+        {
+          "name": "Content",
+          "source": "Content",
+          "kind": "component"
+        },
+        {
+          "name": "Header",
+          "source": "Header",
+          "kind": "component"
+        },
+        {
+          "name": "Footer",
+          "source": "Footer",
+          "kind": "component"
+        },
+        {
+          "name": "Message",
+          "source": "Root",
+          "kind": "alias"
+        },
+        {
+          "name": "MessageGroup",
+          "source": "Group",
+          "kind": "alias"
+        },
+        {
+          "name": "MessageAvatar",
+          "source": "Avatar",
+          "kind": "alias"
+        },
+        {
+          "name": "MessageContent",
+          "source": "Content",
+          "kind": "alias"
+        },
+        {
+          "name": "MessageHeader",
+          "source": "Header",
+          "kind": "alias"
+        },
+        {
+          "name": "MessageFooter",
+          "source": "Footer",
+          "kind": "alias"
+        }
+      ]
+    },
+    {
+      "family": "message-scroller",
+      "parts": [
+        {
+          "name": "Provider",
+          "path": "./message-scroller-provider.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "Root",
+          "path": "./message-scroller.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "Viewport",
+          "path": "./message-scroller-viewport.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "Content",
+          "path": "./message-scroller-content.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "Item",
+          "path": "./message-scroller-item.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "Button",
+          "path": "./message-scroller-button.svelte",
+          "represented": true,
+          "internalPortal": false
+        }
+      ],
+      "exports": [
+        {
+          "name": "useMessageScroller",
+          "source": "useMessageScroller",
+          "kind": "runtime"
+        },
+        {
+          "name": "useMessageScrollerScrollable",
+          "source": "useMessageScrollerScrollable",
+          "kind": "runtime"
+        },
+        {
+          "name": "useMessageScrollerVisibility",
+          "source": "useMessageScrollerVisibility",
+          "kind": "runtime"
+        },
+        {
+          "name": "Provider",
+          "source": "Provider",
+          "kind": "component"
+        },
+        {
+          "name": "Root",
+          "source": "Root",
+          "kind": "component"
+        },
+        {
+          "name": "Viewport",
+          "source": "Viewport",
+          "kind": "component"
+        },
+        {
+          "name": "Content",
+          "source": "Content",
+          "kind": "component"
+        },
+        {
+          "name": "Item",
+          "source": "Item",
+          "kind": "component"
+        },
+        {
+          "name": "Button",
+          "source": "Button",
+          "kind": "component"
+        },
+        {
+          "name": "MessageScrollerProvider",
+          "source": "Provider",
+          "kind": "alias"
+        },
+        {
+          "name": "MessageScroller",
+          "source": "Root",
+          "kind": "alias"
+        },
+        {
+          "name": "MessageScrollerViewport",
+          "source": "Viewport",
+          "kind": "alias"
+        },
+        {
+          "name": "MessageScrollerContent",
+          "source": "Content",
+          "kind": "alias"
+        },
+        {
+          "name": "MessageScrollerItem",
+          "source": "Item",
+          "kind": "alias"
+        },
+        {
+          "name": "MessageScrollerButton",
+          "source": "Button",
+          "kind": "alias"
+        }
+      ]
+    },
+    {
+      "family": "progress",
+      "parts": [
+        {
+          "name": "Root",
+          "path": "./progress.svelte",
+          "represented": true,
+          "internalPortal": false
+        }
+      ],
+      "exports": [
+        {
+          "name": "Root",
+          "source": "Root",
+          "kind": "component"
+        },
+        {
+          "name": "Progress",
+          "source": "Root",
+          "kind": "alias"
+        }
+      ]
+    },
+    {
+      "family": "separator",
+      "parts": [
+        {
+          "name": "Root",
+          "path": "./separator.svelte",
+          "represented": true,
+          "internalPortal": false
+        }
+      ],
+      "exports": [
+        {
+          "name": "Root",
+          "source": "Root",
+          "kind": "component"
+        },
+        {
+          "name": "Separator",
+          "source": "Root",
+          "kind": "alias"
+        }
+      ]
+    },
+    {
+      "family": "textarea",
+      "parts": [
+        {
+          "name": "Root",
+          "path": "./textarea.svelte",
+          "represented": true,
+          "internalPortal": false
+        }
+      ],
+      "exports": [
+        {
+          "name": "Root",
+          "source": "Root",
+          "kind": "component"
+        },
+        {
+          "name": "Textarea",
+          "source": "Root",
+          "kind": "alias"
+        }
+      ]
+    },
+    {
+      "family": "tooltip",
+      "parts": [
+        {
+          "name": "Root",
+          "path": "./tooltip.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "Trigger",
+          "path": "./tooltip-trigger.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "Content",
+          "path": "./tooltip-content.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "Provider",
+          "path": "./tooltip-provider.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "Portal",
+          "path": "./tooltip-portal.svelte",
+          "represented": false,
+          "internalPortal": true
+        }
+      ],
+      "exports": [
+        {
+          "name": "Root",
+          "source": "Root",
+          "kind": "component"
+        },
+        {
+          "name": "Trigger",
+          "source": "Trigger",
+          "kind": "component"
+        },
+        {
+          "name": "Content",
+          "source": "Content",
+          "kind": "component"
+        },
+        {
+          "name": "Provider",
+          "source": "Provider",
+          "kind": "component"
+        },
+        {
+          "name": "Portal",
+          "source": "Portal",
+          "kind": "component"
+        },
+        {
+          "name": "Tooltip",
+          "source": "Root",
+          "kind": "alias"
+        },
+        {
+          "name": "TooltipContent",
+          "source": "Content",
+          "kind": "alias"
+        },
+        {
+          "name": "TooltipTrigger",
+          "source": "Trigger",
+          "kind": "alias"
+        },
+        {
+          "name": "TooltipProvider",
+          "source": "Provider",
+          "kind": "alias"
+        },
+        {
+          "name": "TooltipPortal",
+          "source": "Portal",
+          "kind": "alias"
+        }
+      ]
+    },
+    {
+      "family": "trace",
+      "parts": [
+        {
+          "name": "Root",
+          "path": "./trace.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "Line",
+          "path": "./trace-line.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "Icon",
+          "path": "./trace-icon.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "Title",
+          "path": "./trace-title.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "Description",
+          "path": "./trace-description.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "Collapsible",
+          "path": "./trace-collapsible.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "CollapsibleTrigger",
+          "path": "./trace-collapsible-trigger.svelte",
+          "represented": true,
+          "internalPortal": false
+        },
+        {
+          "name": "CollapsibleContent",
+          "path": "./trace-collapsible-content.svelte",
+          "represented": true,
+          "internalPortal": false
+        }
+      ],
+      "exports": [
+        {
+          "name": "Root",
+          "source": "Root",
+          "kind": "component"
+        },
+        {
+          "name": "Line",
+          "source": "Line",
+          "kind": "component"
+        },
+        {
+          "name": "Icon",
+          "source": "Icon",
+          "kind": "component"
+        },
+        {
+          "name": "Title",
+          "source": "Title",
+          "kind": "component"
+        },
+        {
+          "name": "Description",
+          "source": "Description",
+          "kind": "component"
+        },
+        {
+          "name": "Collapsible",
+          "source": "Collapsible",
+          "kind": "component"
+        },
+        {
+          "name": "CollapsibleTrigger",
+          "source": "CollapsibleTrigger",
+          "kind": "component"
+        },
+        {
+          "name": "CollapsibleContent",
+          "source": "CollapsibleContent",
+          "kind": "component"
+        },
+        {
+          "name": "TraceLineStatus",
+          "source": "TraceLineStatus",
+          "kind": "type"
+        },
+        {
+          "name": "Trace",
+          "source": "Root",
+          "kind": "alias"
+        },
+        {
+          "name": "TraceLine",
+          "source": "Line",
+          "kind": "alias"
+        },
+        {
+          "name": "TraceIcon",
+          "source": "Icon",
+          "kind": "alias"
+        },
+        {
+          "name": "TraceTitle",
+          "source": "Title",
+          "kind": "alias"
+        },
+        {
+          "name": "TraceDescription",
+          "source": "Description",
+          "kind": "alias"
+        },
+        {
+          "name": "TraceCollapsible",
+          "source": "Collapsible",
+          "kind": "alias"
+        },
+        {
+          "name": "TraceCollapsibleTrigger",
+          "source": "CollapsibleTrigger",
+          "kind": "alias"
+        },
+        {
+          "name": "TraceCollapsibleContent",
+          "source": "CollapsibleContent",
+          "kind": "alias"
+        }
+      ]
+    }
+  ]
+}

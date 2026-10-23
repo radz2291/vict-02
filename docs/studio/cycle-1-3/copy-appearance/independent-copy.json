@@ -1,0 +1,29 @@
+{
+  "candidate": "efbafcc41317d18ea6609c490f149452de8a98b0",
+  "mode": "Actual Studio/packed UI; Studio reply explicitly simulated; native clipboard except labelled denied-write case; no provider call",
+  "records": [
+    {
+      "name": "studio compact named icon",
+      "pass": false,
+      "evidence": {
+        "text": "",
+        "label": "Copy message",
+        "title": "",
+        "width": 30,
+        "height": 40,
+        "iconWidth": 16,
+        "iconHeight": 16,
+        "hidden": "true",
+        "copied": false,
+        "viewport": 1440,
+        "documentWidth": 1440,
+        "focusVisible": false,
+        "shadow": "none"
+      }
+    },
+    {
+      "failure": "Error: studio compact named icon"
+    }
+  ],
+  "errors": []
+}

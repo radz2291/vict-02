@@ -1,0 +1,1509 @@
+{
+  "candidate": "748d9a6fa4ca9b2dee0445fa06b55b4e56ab8467",
+  "records": [
+    {
+      "name": "83 distinct catalog recipes",
+      "pass": true,
+      "evidence": {
+        "ids": [
+          "section",
+          "row",
+          "heading",
+          "text",
+          "input",
+          "button",
+          "checkbox",
+          "switch",
+          "dialog",
+          "separator",
+          "select",
+          "toggle",
+          "select-multiple",
+          "select-item",
+          "combobox",
+          "combobox-multiple",
+          "combobox-item",
+          "toggle-group",
+          "toggle-group-multiple",
+          "toggle-group-item",
+          "accordion",
+          "accordion-multiple",
+          "accordion-item",
+          "slider",
+          "meter",
+          "progress",
+          "pagination",
+          "date-field",
+          "date-picker",
+          "calendar",
+          "time-field",
+          "date-range-field",
+          "date-range-picker",
+          "range-calendar",
+          "dropdown-menu",
+          "context-menu",
+          "menubar",
+          "menubar.menu",
+          "dropdown-menu.item",
+          "dropdown-menu.sub",
+          "dropdown-menu.checkbox-item",
+          "dropdown-menu.checkbox-group",
+          "dropdown-menu.radio-group",
+          "dropdown-menu.radio-item",
+          "dropdown-menu.group",
+          "dropdown-menu.separator",
+          "context-menu.item",
+          "context-menu.sub",
+          "context-menu.checkbox-item",
+          "context-menu.checkbox-group",
+          "context-menu.radio-group",
+          "context-menu.radio-item",
+          "context-menu.group",
+          "context-menu.separator",
+          "menubar.item",
+          "menubar.sub",
+          "menubar.checkbox-item",
+          "menubar.checkbox-group",
+          "menubar.radio-group",
+          "menubar.radio-item",
+          "menubar.group",
+          "menubar.separator",
+          "command",
+          "command.item",
+          "command.group",
+          "navigation-menu",
+          "navigation-menu.item",
+          "navigation-menu.link",
+          "navigation-menu.sub",
+          "avatar",
+          "aspect-ratio",
+          "label",
+          "scroll-area",
+          "toolbar",
+          "toolbar-button",
+          "link-preview",
+          "tooltip",
+          "popover",
+          "alert-dialog",
+          "tabs",
+          "tabs-trigger",
+          "tabs-panel",
+          "collapsible"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture section",
+      "pass": true,
+      "evidence": {
+        "recipe": "section",
+        "alerts": [],
+        "canvasNodes": 2,
+        "nodeIds": [
+          "screen",
+          "example-section"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture row",
+      "pass": true,
+      "evidence": {
+        "recipe": "row",
+        "alerts": [],
+        "canvasNodes": 2,
+        "nodeIds": [
+          "screen",
+          "example-row"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture heading",
+      "pass": true,
+      "evidence": {
+        "recipe": "heading",
+        "alerts": [],
+        "canvasNodes": 3,
+        "nodeIds": [
+          "screen",
+          "example-heading",
+          "example-heading-text"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture text",
+      "pass": true,
+      "evidence": {
+        "recipe": "text",
+        "alerts": [],
+        "canvasNodes": 3,
+        "nodeIds": [
+          "screen",
+          "example-text",
+          "example-text-text"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture input",
+      "pass": true,
+      "evidence": {
+        "recipe": "input",
+        "alerts": [],
+        "canvasNodes": 2,
+        "nodeIds": [
+          "screen",
+          "example-input"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture button",
+      "pass": true,
+      "evidence": {
+        "recipe": "button",
+        "alerts": [],
+        "canvasNodes": 2,
+        "nodeIds": [
+          "screen",
+          "example-button"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture checkbox",
+      "pass": true,
+      "evidence": {
+        "recipe": "checkbox",
+        "alerts": [],
+        "canvasNodes": 2,
+        "nodeIds": [
+          "screen",
+          "example-checkbox"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture switch",
+      "pass": true,
+      "evidence": {
+        "recipe": "switch",
+        "alerts": [],
+        "canvasNodes": 2,
+        "nodeIds": [
+          "screen",
+          "example-switch"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture dialog",
+      "pass": true,
+      "evidence": {
+        "recipe": "dialog",
+        "alerts": [],
+        "canvasNodes": 2,
+        "nodeIds": [
+          "screen",
+          "example-dialog",
+          "example-dialog-body-1",
+          "example-dialog-body-1-text"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture separator",
+      "pass": true,
+      "evidence": {
+        "recipe": "separator",
+        "alerts": [],
+        "canvasNodes": 2,
+        "nodeIds": [
+          "screen",
+          "example-separator"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture select",
+      "pass": true,
+      "evidence": {
+        "recipe": "select",
+        "alerts": [],
+        "canvasNodes": 2,
+        "nodeIds": [
+          "screen",
+          "example-select",
+          "example-select-items-1",
+          "example-select-items-2"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture toggle",
+      "pass": true,
+      "evidence": {
+        "recipe": "toggle",
+        "alerts": [],
+        "canvasNodes": 2,
+        "nodeIds": [
+          "screen",
+          "example-toggle"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture select-multiple",
+      "pass": true,
+      "evidence": {
+        "recipe": "select-multiple",
+        "alerts": [],
+        "canvasNodes": 2,
+        "nodeIds": [
+          "screen",
+          "example-select-multiple",
+          "example-select-multiple-items-1",
+          "example-select-multiple-items-2"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture select-item",
+      "pass": true,
+      "evidence": {
+        "recipe": "select-item",
+        "alerts": [],
+        "canvasNodes": 8,
+        "nodeIds": [
+          "screen",
+          "ancestor-select",
+          "ancestor-select-items-1",
+          "ancestor-select-items-2",
+          "example-select-item"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture combobox",
+      "pass": true,
+      "evidence": {
+        "recipe": "combobox",
+        "alerts": [],
+        "canvasNodes": 2,
+        "nodeIds": [
+          "screen",
+          "example-combobox",
+          "example-combobox-items-1",
+          "example-combobox-items-2"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture combobox-multiple",
+      "pass": true,
+      "evidence": {
+        "recipe": "combobox-multiple",
+        "alerts": [],
+        "canvasNodes": 2,
+        "nodeIds": [
+          "screen",
+          "example-combobox-multiple",
+          "example-combobox-multiple-items-1",
+          "example-combobox-multiple-items-2"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture combobox-item",
+      "pass": true,
+      "evidence": {
+        "recipe": "combobox-item",
+        "alerts": [],
+        "canvasNodes": 8,
+        "nodeIds": [
+          "screen",
+          "ancestor-combobox",
+          "ancestor-combobox-items-1",
+          "ancestor-combobox-items-2",
+          "example-combobox-item"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture toggle-group",
+      "pass": true,
+      "evidence": {
+        "recipe": "toggle-group",
+        "alerts": [],
+        "canvasNodes": 4,
+        "nodeIds": [
+          "screen",
+          "example-toggle-group",
+          "example-toggle-group-items-1",
+          "example-toggle-group-items-2"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture toggle-group-multiple",
+      "pass": true,
+      "evidence": {
+        "recipe": "toggle-group-multiple",
+        "alerts": [],
+        "canvasNodes": 4,
+        "nodeIds": [
+          "screen",
+          "example-toggle-group-multiple",
+          "example-toggle-group-multiple-items-1",
+          "example-toggle-group-multiple-items-2"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture toggle-group-item",
+      "pass": true,
+      "evidence": {
+        "recipe": "toggle-group-item",
+        "alerts": [],
+        "canvasNodes": 8,
+        "nodeIds": [
+          "screen",
+          "ancestor-toggle-group",
+          "ancestor-toggle-group-items-1",
+          "ancestor-toggle-group-items-2",
+          "example-toggle-group-item"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture accordion",
+      "pass": true,
+      "evidence": {
+        "recipe": "accordion",
+        "alerts": [],
+        "canvasNodes": 5,
+        "nodeIds": [
+          "screen",
+          "example-accordion",
+          "example-accordion-items-1",
+          "example-accordion-items-1-content-1",
+          "example-accordion-items-1-content-1-text"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture accordion-multiple",
+      "pass": true,
+      "evidence": {
+        "recipe": "accordion-multiple",
+        "alerts": [],
+        "canvasNodes": 5,
+        "nodeIds": [
+          "screen",
+          "example-accordion-multiple",
+          "example-accordion-multiple-items-1",
+          "example-accordion-multiple-items-1-content-1",
+          "example-accordion-multiple-items-1-content-1-text"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture accordion-item",
+      "pass": true,
+      "evidence": {
+        "recipe": "accordion-item",
+        "alerts": [],
+        "canvasNodes": 6,
+        "nodeIds": [
+          "screen",
+          "ancestor-accordion",
+          "ancestor-accordion-items-1",
+          "ancestor-accordion-items-1-content-1",
+          "ancestor-accordion-items-1-content-1-text",
+          "example-accordion-item",
+          "example-accordion-item-content-1",
+          "example-accordion-item-content-1-text"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture slider",
+      "pass": true,
+      "evidence": {
+        "recipe": "slider",
+        "alerts": [],
+        "canvasNodes": 2,
+        "nodeIds": [
+          "screen",
+          "example-slider"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture meter",
+      "pass": true,
+      "evidence": {
+        "recipe": "meter",
+        "alerts": [],
+        "canvasNodes": 2,
+        "nodeIds": [
+          "screen",
+          "example-meter"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture progress",
+      "pass": true,
+      "evidence": {
+        "recipe": "progress",
+        "alerts": [],
+        "canvasNodes": 2,
+        "nodeIds": [
+          "screen",
+          "example-progress"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture pagination",
+      "pass": true,
+      "evidence": {
+        "recipe": "pagination",
+        "alerts": [],
+        "canvasNodes": 2,
+        "nodeIds": [
+          "screen",
+          "example-pagination"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture date-field",
+      "pass": true,
+      "evidence": {
+        "recipe": "date-field",
+        "alerts": [],
+        "canvasNodes": 2,
+        "nodeIds": [
+          "screen",
+          "example-date-field"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture date-picker",
+      "pass": true,
+      "evidence": {
+        "recipe": "date-picker",
+        "alerts": [],
+        "canvasNodes": 2,
+        "nodeIds": [
+          "screen",
+          "example-date-picker"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture calendar",
+      "pass": true,
+      "evidence": {
+        "recipe": "calendar",
+        "alerts": [],
+        "canvasNodes": 2,
+        "nodeIds": [
+          "screen",
+          "example-calendar"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture time-field",
+      "pass": true,
+      "evidence": {
+        "recipe": "time-field",
+        "alerts": [],
+        "canvasNodes": 2,
+        "nodeIds": [
+          "screen",
+          "example-time-field"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture date-range-field",
+      "pass": true,
+      "evidence": {
+        "recipe": "date-range-field",
+        "alerts": [],
+        "canvasNodes": 2,
+        "nodeIds": [
+          "screen",
+          "example-date-range-field"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture date-range-picker",
+      "pass": true,
+      "evidence": {
+        "recipe": "date-range-picker",
+        "alerts": [],
+        "canvasNodes": 2,
+        "nodeIds": [
+          "screen",
+          "example-date-range-picker"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture range-calendar",
+      "pass": true,
+      "evidence": {
+        "recipe": "range-calendar",
+        "alerts": [],
+        "canvasNodes": 2,
+        "nodeIds": [
+          "screen",
+          "example-range-calendar"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture dropdown-menu",
+      "pass": true,
+      "evidence": {
+        "recipe": "dropdown-menu",
+        "alerts": [],
+        "canvasNodes": 2,
+        "nodeIds": [
+          "screen",
+          "example-dropdown-menu",
+          "example-dropdown-menu-items-1"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture context-menu",
+      "pass": true,
+      "evidence": {
+        "recipe": "context-menu",
+        "alerts": [],
+        "canvasNodes": 2,
+        "nodeIds": [
+          "screen",
+          "example-context-menu",
+          "example-context-menu-items-1"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture menubar",
+      "pass": true,
+      "evidence": {
+        "recipe": "menubar",
+        "alerts": [],
+        "canvasNodes": 3,
+        "nodeIds": [
+          "screen",
+          "example-menubar",
+          "example-menubar-menus-1",
+          "example-menubar-menus-1-items-1"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture menubar.menu",
+      "pass": true,
+      "evidence": {
+        "recipe": "menubar.menu",
+        "alerts": [],
+        "canvasNodes": 6,
+        "nodeIds": [
+          "screen",
+          "ancestor-menubar",
+          "ancestor-menubar-menus-1",
+          "ancestor-menubar-menus-1-items-1",
+          "example-menubar.menu",
+          "example-menubar.menu-items-1"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture dropdown-menu.item",
+      "pass": true,
+      "evidence": {
+        "recipe": "dropdown-menu.item",
+        "alerts": [],
+        "canvasNodes": 6,
+        "nodeIds": [
+          "screen",
+          "ancestor-dropdown-menu",
+          "ancestor-dropdown-menu-items-1",
+          "example-dropdown-menu.item"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture dropdown-menu.sub",
+      "pass": true,
+      "evidence": {
+        "recipe": "dropdown-menu.sub",
+        "alerts": [],
+        "canvasNodes": 6,
+        "nodeIds": [
+          "screen",
+          "ancestor-dropdown-menu",
+          "ancestor-dropdown-menu-items-1",
+          "example-dropdown-menu.sub",
+          "example-dropdown-menu.sub-items-1"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture dropdown-menu.checkbox-item",
+      "pass": true,
+      "evidence": {
+        "recipe": "dropdown-menu.checkbox-item",
+        "alerts": [],
+        "canvasNodes": 6,
+        "nodeIds": [
+          "screen",
+          "ancestor-dropdown-menu",
+          "ancestor-dropdown-menu-items-1",
+          "example-dropdown-menu.checkbox-item"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture dropdown-menu.checkbox-group",
+      "pass": true,
+      "evidence": {
+        "recipe": "dropdown-menu.checkbox-group",
+        "alerts": [],
+        "canvasNodes": 6,
+        "nodeIds": [
+          "screen",
+          "ancestor-dropdown-menu",
+          "ancestor-dropdown-menu-items-1",
+          "example-dropdown-menu.checkbox-group",
+          "example-dropdown-menu.checkbox-group-items-1"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture dropdown-menu.radio-group",
+      "pass": true,
+      "evidence": {
+        "recipe": "dropdown-menu.radio-group",
+        "alerts": [],
+        "canvasNodes": 6,
+        "nodeIds": [
+          "screen",
+          "ancestor-dropdown-menu",
+          "ancestor-dropdown-menu-items-1",
+          "example-dropdown-menu.radio-group",
+          "example-dropdown-menu.radio-group-items-1"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture dropdown-menu.radio-item",
+      "pass": true,
+      "evidence": {
+        "recipe": "dropdown-menu.radio-item",
+        "alerts": [],
+        "canvasNodes": 7,
+        "nodeIds": [
+          "screen",
+          "ancestor-dropdown-menu",
+          "ancestor-dropdown-menu-items-1",
+          "ancestor-dropdown-menu.radio-group",
+          "ancestor-dropdown-menu.radio-group-items-1",
+          "example-dropdown-menu.radio-item"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture dropdown-menu.group",
+      "pass": true,
+      "evidence": {
+        "recipe": "dropdown-menu.group",
+        "alerts": [],
+        "canvasNodes": 6,
+        "nodeIds": [
+          "screen",
+          "ancestor-dropdown-menu",
+          "ancestor-dropdown-menu-items-1",
+          "example-dropdown-menu.group",
+          "example-dropdown-menu.group-items-1"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture dropdown-menu.separator",
+      "pass": true,
+      "evidence": {
+        "recipe": "dropdown-menu.separator",
+        "alerts": [],
+        "canvasNodes": 6,
+        "nodeIds": [
+          "screen",
+          "ancestor-dropdown-menu",
+          "ancestor-dropdown-menu-items-1",
+          "example-dropdown-menu.separator"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture context-menu.item",
+      "pass": true,
+      "evidence": {
+        "recipe": "context-menu.item",
+        "alerts": [],
+        "canvasNodes": 6,
+        "nodeIds": [
+          "screen",
+          "ancestor-context-menu",
+          "ancestor-context-menu-items-1",
+          "example-context-menu.item"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture context-menu.sub",
+      "pass": true,
+      "evidence": {
+        "recipe": "context-menu.sub",
+        "alerts": [],
+        "canvasNodes": 6,
+        "nodeIds": [
+          "screen",
+          "ancestor-context-menu",
+          "ancestor-context-menu-items-1",
+          "example-context-menu.sub",
+          "example-context-menu.sub-items-1"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture context-menu.checkbox-item",
+      "pass": true,
+      "evidence": {
+        "recipe": "context-menu.checkbox-item",
+        "alerts": [],
+        "canvasNodes": 6,
+        "nodeIds": [
+          "screen",
+          "ancestor-context-menu",
+          "ancestor-context-menu-items-1",
+          "example-context-menu.checkbox-item"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture context-menu.checkbox-group",
+      "pass": true,
+      "evidence": {
+        "recipe": "context-menu.checkbox-group",
+        "alerts": [],
+        "canvasNodes": 6,
+        "nodeIds": [
+          "screen",
+          "ancestor-context-menu",
+          "ancestor-context-menu-items-1",
+          "example-context-menu.checkbox-group",
+          "example-context-menu.checkbox-group-items-1"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture context-menu.radio-group",
+      "pass": true,
+      "evidence": {
+        "recipe": "context-menu.radio-group",
+        "alerts": [],
+        "canvasNodes": 6,
+        "nodeIds": [
+          "screen",
+          "ancestor-context-menu",
+          "ancestor-context-menu-items-1",
+          "example-context-menu.radio-group",
+          "example-context-menu.radio-group-items-1"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture context-menu.radio-item",
+      "pass": true,
+      "evidence": {
+        "recipe": "context-menu.radio-item",
+        "alerts": [],
+        "canvasNodes": 7,
+        "nodeIds": [
+          "screen",
+          "ancestor-context-menu",
+          "ancestor-context-menu-items-1",
+          "ancestor-context-menu.radio-group",
+          "ancestor-context-menu.radio-group-items-1",
+          "example-context-menu.radio-item"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture context-menu.group",
+      "pass": true,
+      "evidence": {
+        "recipe": "context-menu.group",
+        "alerts": [],
+        "canvasNodes": 6,
+        "nodeIds": [
+          "screen",
+          "ancestor-context-menu",
+          "ancestor-context-menu-items-1",
+          "example-context-menu.group",
+          "example-context-menu.group-items-1"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture context-menu.separator",
+      "pass": true,
+      "evidence": {
+        "recipe": "context-menu.separator",
+        "alerts": [],
+        "canvasNodes": 6,
+        "nodeIds": [
+          "screen",
+          "ancestor-context-menu",
+          "ancestor-context-menu-items-1",
+          "example-context-menu.separator"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture menubar.item",
+      "pass": true,
+      "evidence": {
+        "recipe": "menubar.item",
+        "alerts": [],
+        "canvasNodes": 7,
+        "nodeIds": [
+          "screen",
+          "ancestor-menubar",
+          "ancestor-menubar-menus-1",
+          "ancestor-menubar-menus-1-items-1",
+          "ancestor-menubar.menu",
+          "ancestor-menubar.menu-items-1",
+          "example-menubar.item"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture menubar.sub",
+      "pass": true,
+      "evidence": {
+        "recipe": "menubar.sub",
+        "alerts": [],
+        "canvasNodes": 7,
+        "nodeIds": [
+          "screen",
+          "ancestor-menubar",
+          "ancestor-menubar-menus-1",
+          "ancestor-menubar-menus-1-items-1",
+          "ancestor-menubar.menu",
+          "ancestor-menubar.menu-items-1",
+          "example-menubar.sub",
+          "example-menubar.sub-items-1"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture menubar.checkbox-item",
+      "pass": true,
+      "evidence": {
+        "recipe": "menubar.checkbox-item",
+        "alerts": [],
+        "canvasNodes": 7,
+        "nodeIds": [
+          "screen",
+          "ancestor-menubar",
+          "ancestor-menubar-menus-1",
+          "ancestor-menubar-menus-1-items-1",
+          "ancestor-menubar.menu",
+          "ancestor-menubar.menu-items-1",
+          "example-menubar.checkbox-item"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture menubar.checkbox-group",
+      "pass": true,
+      "evidence": {
+        "recipe": "menubar.checkbox-group",
+        "alerts": [],
+        "canvasNodes": 7,
+        "nodeIds": [
+          "screen",
+          "ancestor-menubar",
+          "ancestor-menubar-menus-1",
+          "ancestor-menubar-menus-1-items-1",
+          "ancestor-menubar.menu",
+          "ancestor-menubar.menu-items-1",
+          "example-menubar.checkbox-group",
+          "example-menubar.checkbox-group-items-1"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture menubar.radio-group",
+      "pass": true,
+      "evidence": {
+        "recipe": "menubar.radio-group",
+        "alerts": [],
+        "canvasNodes": 7,
+        "nodeIds": [
+          "screen",
+          "ancestor-menubar",
+          "ancestor-menubar-menus-1",
+          "ancestor-menubar-menus-1-items-1",
+          "ancestor-menubar.menu",
+          "ancestor-menubar.menu-items-1",
+          "example-menubar.radio-group",
+          "example-menubar.radio-group-items-1"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture menubar.radio-item",
+      "pass": true,
+      "evidence": {
+        "recipe": "menubar.radio-item",
+        "alerts": [],
+        "canvasNodes": 8,
+        "nodeIds": [
+          "screen",
+          "ancestor-menubar",
+          "ancestor-menubar-menus-1",
+          "ancestor-menubar-menus-1-items-1",
+          "ancestor-menubar.menu",
+          "ancestor-menubar.menu-items-1",
+          "ancestor-menubar.radio-group",
+          "ancestor-menubar.radio-group-items-1",
+          "example-menubar.radio-item"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture menubar.group",
+      "pass": true,
+      "evidence": {
+        "recipe": "menubar.group",
+        "alerts": [],
+        "canvasNodes": 7,
+        "nodeIds": [
+          "screen",
+          "ancestor-menubar",
+          "ancestor-menubar-menus-1",
+          "ancestor-menubar-menus-1-items-1",
+          "ancestor-menubar.menu",
+          "ancestor-menubar.menu-items-1",
+          "example-menubar.group",
+          "example-menubar.group-items-1"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture menubar.separator",
+      "pass": true,
+      "evidence": {
+        "recipe": "menubar.separator",
+        "alerts": [],
+        "canvasNodes": 7,
+        "nodeIds": [
+          "screen",
+          "ancestor-menubar",
+          "ancestor-menubar-menus-1",
+          "ancestor-menubar-menus-1-items-1",
+          "ancestor-menubar.menu",
+          "ancestor-menubar.menu-items-1",
+          "example-menubar.separator"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture command",
+      "pass": true,
+      "evidence": {
+        "recipe": "command",
+        "alerts": [],
+        "canvasNodes": 3,
+        "nodeIds": [
+          "screen",
+          "example-command",
+          "example-command-items-1"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture command.item",
+      "pass": true,
+      "evidence": {
+        "recipe": "command.item",
+        "alerts": [],
+        "canvasNodes": 6,
+        "nodeIds": [
+          "screen",
+          "ancestor-command",
+          "ancestor-command-items-1",
+          "example-command.item"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture command.group",
+      "pass": true,
+      "evidence": {
+        "recipe": "command.group",
+        "alerts": [],
+        "canvasNodes": 6,
+        "nodeIds": [
+          "screen",
+          "ancestor-command",
+          "ancestor-command-items-1",
+          "example-command.group",
+          "example-command.group-items-1"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture navigation-menu",
+      "pass": true,
+      "evidence": {
+        "recipe": "navigation-menu",
+        "alerts": [],
+        "canvasNodes": 3,
+        "nodeIds": [
+          "screen",
+          "example-navigation-menu",
+          "example-navigation-menu-items-1",
+          "example-navigation-menu-items-1-content-1"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture navigation-menu.item",
+      "pass": true,
+      "evidence": {
+        "recipe": "navigation-menu.item",
+        "alerts": [],
+        "canvasNodes": 6,
+        "nodeIds": [
+          "screen",
+          "ancestor-navigation-menu",
+          "ancestor-navigation-menu-items-1",
+          "ancestor-navigation-menu-items-1-content-1",
+          "example-navigation-menu.item",
+          "example-navigation-menu.item-content-1"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture navigation-menu.link",
+      "pass": true,
+      "evidence": {
+        "recipe": "navigation-menu.link",
+        "alerts": [],
+        "canvasNodes": 7,
+        "nodeIds": [
+          "screen",
+          "ancestor-navigation-menu",
+          "ancestor-navigation-menu-items-1",
+          "ancestor-navigation-menu-items-1-content-1",
+          "ancestor-navigation-menu.item",
+          "ancestor-navigation-menu.item-content-1",
+          "example-navigation-menu.link"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture navigation-menu.sub",
+      "pass": true,
+      "evidence": {
+        "recipe": "navigation-menu.sub",
+        "alerts": [],
+        "canvasNodes": 6,
+        "nodeIds": [
+          "screen",
+          "ancestor-navigation-menu",
+          "ancestor-navigation-menu-items-1",
+          "ancestor-navigation-menu-items-1-content-1",
+          "example-navigation-menu.sub",
+          "example-navigation-menu.sub-items-1",
+          "example-navigation-menu.sub-items-1-content-1"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture avatar",
+      "pass": true,
+      "evidence": {
+        "recipe": "avatar",
+        "alerts": [],
+        "canvasNodes": 4,
+        "nodeIds": [
+          "screen",
+          "example-avatar"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture aspect-ratio",
+      "pass": true,
+      "evidence": {
+        "recipe": "aspect-ratio",
+        "alerts": [],
+        "canvasNodes": 4,
+        "nodeIds": [
+          "screen",
+          "example-aspect-ratio",
+          "example-aspect-ratio-content-1",
+          "example-aspect-ratio-content-1-text"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture label",
+      "pass": true,
+      "evidence": {
+        "recipe": "label",
+        "alerts": [],
+        "canvasNodes": 2,
+        "nodeIds": [
+          "screen",
+          "example-label"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture scroll-area",
+      "pass": true,
+      "evidence": {
+        "recipe": "scroll-area",
+        "alerts": [],
+        "canvasNodes": 5,
+        "nodeIds": [
+          "screen",
+          "example-scroll-area",
+          "example-scroll-area-content-1",
+          "example-scroll-area-content-1-text"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture toolbar",
+      "pass": true,
+      "evidence": {
+        "recipe": "toolbar",
+        "alerts": [],
+        "canvasNodes": 3,
+        "nodeIds": [
+          "screen",
+          "example-toolbar",
+          "example-toolbar-tools-1"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture toolbar-button",
+      "pass": true,
+      "evidence": {
+        "recipe": "toolbar-button",
+        "alerts": [],
+        "canvasNodes": 6,
+        "nodeIds": [
+          "screen",
+          "ancestor-toolbar",
+          "ancestor-toolbar-tools-1",
+          "example-toolbar-button"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture link-preview",
+      "pass": true,
+      "evidence": {
+        "recipe": "link-preview",
+        "alerts": [],
+        "canvasNodes": 2,
+        "nodeIds": [
+          "screen",
+          "example-link-preview",
+          "example-link-preview-content-1",
+          "example-link-preview-content-1-text"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture tooltip",
+      "pass": true,
+      "evidence": {
+        "recipe": "tooltip",
+        "alerts": [],
+        "canvasNodes": 2,
+        "nodeIds": [
+          "screen",
+          "example-tooltip"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture popover",
+      "pass": true,
+      "evidence": {
+        "recipe": "popover",
+        "alerts": [],
+        "canvasNodes": 2,
+        "nodeIds": [
+          "screen",
+          "example-popover",
+          "example-popover-content-1",
+          "example-popover-content-1-text"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture alert-dialog",
+      "pass": true,
+      "evidence": {
+        "recipe": "alert-dialog",
+        "alerts": [],
+        "canvasNodes": 2,
+        "nodeIds": [
+          "screen",
+          "example-alert-dialog",
+          "example-alert-dialog-body-1",
+          "example-alert-dialog-body-1-text"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture tabs",
+      "pass": true,
+      "evidence": {
+        "recipe": "tabs",
+        "alerts": [],
+        "canvasNodes": 7,
+        "nodeIds": [
+          "screen",
+          "example-tabs",
+          "example-tabs-tabs-1",
+          "example-tabs-panels-1",
+          "example-tabs-panels-1-content-1",
+          "example-tabs-panels-1-content-1-text"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture tabs-trigger",
+      "pass": true,
+      "evidence": {
+        "recipe": "tabs-trigger",
+        "alerts": [],
+        "canvasNodes": 6,
+        "nodeIds": [
+          "screen",
+          "ancestor-tabs",
+          "ancestor-tabs-tabs-1",
+          "ancestor-tabs-panels-1",
+          "ancestor-tabs-panels-1-content-1",
+          "ancestor-tabs-panels-1-content-1-text",
+          "example-tabs-trigger"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture tabs-panel",
+      "pass": true,
+      "evidence": {
+        "recipe": "tabs-panel",
+        "alerts": [],
+        "canvasNodes": 6,
+        "nodeIds": [
+          "screen",
+          "ancestor-tabs",
+          "ancestor-tabs-tabs-1",
+          "ancestor-tabs-panels-1",
+          "ancestor-tabs-panels-1-content-1",
+          "ancestor-tabs-panels-1-content-1-text",
+          "example-tabs-panel",
+          "example-tabs-panel-content-1",
+          "example-tabs-panel-content-1-text"
+        ]
+      }
+    },
+    {
+      "name": "canonical rendered fixture collapsible",
+      "pass": true,
+      "evidence": {
+        "recipe": "collapsible",
+        "alerts": [],
+        "canvasNodes": 6,
+        "nodeIds": [
+          "screen",
+          "example-collapsible",
+          "example-collapsible-content-1",
+          "example-collapsible-content-1-text"
+        ]
+      }
+    },
+    {
+      "name": "Typed draft locks example switching",
+      "pass": true,
+      "evidence": {}
+    },
+    {
+      "name": "Actual data editor commits numberList",
+      "pass": true,
+      "evidence": {}
+    },
+    {
+      "name": "Actual Undo restores original list",
+      "pass": true,
+      "evidence": {}
+    },
+    {
+      "name": "Actual Redo restores authored list",
+      "pass": true,
+      "evidence": {}
+    },
+    {
+      "name": "actual memory Save visible",
+      "pass": true,
+      "evidence": {}
+    },
+    {
+      "name": "Later working copy differs",
+      "pass": true,
+      "evidence": {}
+    },
+    {
+      "name": "Memory reopen discards later edits",
+      "pass": true,
+      "evidence": {}
+    },
+    {
+      "name": "actual memory Reopen visible",
+      "pass": true,
+      "evidence": {}
+    },
+    {
+      "name": "owner storage unchanged",
+      "pass": true,
+      "evidence": {}
+    },
+    {
+      "name": "19 visual primitive families",
+      "pass": true,
+      "evidence": {
+        "families": [
+          "button",
+          "badge",
+          "bubble",
+          "message",
+          "message-scroller",
+          "trace",
+          "code-block",
+          "input-group",
+          "input",
+          "textarea",
+          "marker",
+          "item",
+          "attachment",
+          "progress",
+          "collapsible",
+          "tooltip",
+          "hover-card",
+          "dropdown-menu",
+          "separator"
+        ]
+      }
+    },
+    {
+      "name": "Progress updates accessible value",
+      "pass": true,
+      "evidence": {}
+    },
+    {
+      "name": "Primitive disclosure keyboard opens",
+      "pass": true,
+      "evidence": {}
+    },
+    {
+      "name": "Attachment overlay action reaches host",
+      "pass": true,
+      "evidence": {}
+    },
+    {
+      "name": "Attachment remove is independent",
+      "pass": true,
+      "evidence": {}
+    },
+    {
+      "name": "Nested CodeBlock copies original source after actual write",
+      "pass": true,
+      "evidence": {}
+    },
+    {
+      "name": "Nested CodeBlock success resets",
+      "pass": true,
+      "evidence": {}
+    },
+    {
+      "name": "Nested CodeBlock failure does not claim success",
+      "pass": true,
+      "evidence": {}
+    },
+    {
+      "name": "Primitive tooltip keyboard portal is scoped",
+      "pass": true,
+      "evidence": {}
+    },
+    {
+      "name": "Primitive HoverCard portal is scoped",
+      "pass": true,
+      "evidence": {}
+    },
+    {
+      "name": "Primitive checkbox menu selection updates host",
+      "pass": true,
+      "evidence": {}
+    },
+    {
+      "name": "MessageScroller appends stable local item",
+      "pass": true,
+      "evidence": {}
+    },
+    {
+      "name": "MessageScroller end control changes actual scroll position",
+      "pass": true,
+      "evidence": {}
+    },
+    {
+      "name": "Showcase narrow containment",
+      "pass": false,
+      "evidence": {
+        "scrollWidth": 421,
+        "width": 390
+      }
+    },
+    {
+      "failure": "Error: Showcase narrow containment"
+    }
+  ],
+  "errors": [],
+  "requests": [],
+  "externalImages": []
+}

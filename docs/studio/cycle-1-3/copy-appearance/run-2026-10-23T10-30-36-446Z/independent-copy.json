@@ -1,0 +1,342 @@
+{
+  "candidate": "748d9a6fa4ca9b2dee0445fa06b55b4e56ab8467",
+  "mode": "Actual Studio/packed UI; Studio reply explicitly simulated; native clipboard except labelled denied-write case; no provider call",
+  "records": [
+    {
+      "name": "studio compact named icon",
+      "pass": true,
+      "evidence": {
+        "text": "",
+        "label": "Copy message",
+        "title": "",
+        "width": 28,
+        "height": 28,
+        "iconWidth": 16,
+        "iconHeight": 16,
+        "hidden": "true",
+        "copied": false,
+        "viewport": 1440,
+        "documentWidth": 1440,
+        "focusVisible": false,
+        "shadow": "none"
+      }
+    },
+    {
+      "name": "studio keyboard focus visible",
+      "pass": true,
+      "evidence": {
+        "text": "",
+        "label": "Copy message",
+        "title": "",
+        "width": 28,
+        "height": 28,
+        "iconWidth": 16,
+        "iconHeight": 16,
+        "hidden": "true",
+        "copied": false,
+        "viewport": 1440,
+        "documentWidth": 1440,
+        "focusVisible": true,
+        "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0.644274 0.00294778 -0.107387 / 0.0508288) 0px 0px 0px 0.508288px, rgba(0, 0, 0, 0) 0px 0px 0px 0px"
+      }
+    },
+    {
+      "name": "studio keyboard tooltip is styled and scoped",
+      "pass": true,
+      "evidence": {
+        "text": "Copy message ",
+        "scope": true,
+        "background": "rgb(32, 35, 43)"
+      }
+    },
+    {
+      "name": "studio native clipboard exact Markdown and success",
+      "pass": true,
+      "evidence": {
+        "value": "Copy appearance **Markdown**\r\n\r\n- Original source\r\n\r\n```ts\r\nconst exact = \"✓\";\r\n```",
+        "writeArgument": "Copy appearance **Markdown**\n\n- Original source\n\n```ts\nconst exact = \"✓\";\n```",
+        "copied": {
+          "text": "",
+          "label": "Copy message",
+          "title": "",
+          "width": 28,
+          "height": 28,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "hidden": "true",
+          "copied": true,
+          "viewport": 1440,
+          "documentWidth": 1440,
+          "focusVisible": true,
+          "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0.644274 0.00294778 -0.107387 / 0.297772) 0px 0px 0px 2.97772px, rgba(0, 0, 0, 0) 0px 0px 0px 0px"
+        },
+        "normalization": "Windows native clipboard CRLF normalized for readback only"
+      }
+    },
+    {
+      "name": "studio success resets",
+      "pass": true,
+      "evidence": {}
+    },
+    {
+      "name": "studio mobile icon containment",
+      "pass": true,
+      "evidence": {
+        "text": "",
+        "label": "Copy message",
+        "title": "",
+        "width": 28,
+        "height": 28,
+        "iconWidth": 16,
+        "iconHeight": 16,
+        "hidden": "true",
+        "copied": false,
+        "viewport": 390,
+        "documentWidth": 390,
+        "focusVisible": true,
+        "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0.644274 0.00294778 -0.107387 / 0.3) 0px 0px 0px 3px, rgba(0, 0, 0, 0) 0px 0px 0px 0px"
+      }
+    },
+    {
+      "name": "studio clipboard failure never claims success",
+      "pass": true,
+      "evidence": {
+        "feedback": [
+          "Copy unavailable. Select the message text to copy it.",
+          " 0 edits applied",
+          "New screen · not saved yet."
+        ]
+      }
+    },
+    {
+      "name": "user bubble copy is right aligned and copies exact source",
+      "pass": true,
+      "evidence": {
+        "rightAligned": true,
+        "width": 28
+      }
+    },
+    {
+      "name": "packed compact named icon",
+      "pass": true,
+      "evidence": {
+        "text": "",
+        "label": "Copy message",
+        "title": "",
+        "width": 28,
+        "height": 28,
+        "iconWidth": 16,
+        "iconHeight": 16,
+        "hidden": "true",
+        "copied": false,
+        "viewport": 1440,
+        "documentWidth": 1440,
+        "focusVisible": false,
+        "shadow": "none"
+      }
+    },
+    {
+      "name": "packed keyboard focus visible",
+      "pass": true,
+      "evidence": {
+        "text": "",
+        "label": "Copy message",
+        "title": "",
+        "width": 28,
+        "height": 28,
+        "iconWidth": 16,
+        "iconHeight": 16,
+        "hidden": "true",
+        "copied": false,
+        "viewport": 1440,
+        "documentWidth": 1440,
+        "focusVisible": true,
+        "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0.644274 0.00294778 -0.107387 / 0.3) 0px 0px 0px 3px, rgba(0, 0, 0, 0) 0px 0px 0px 0px"
+      }
+    },
+    {
+      "name": "packed keyboard tooltip is styled and scoped",
+      "pass": true,
+      "evidence": {
+        "text": "Copy message ",
+        "scope": true,
+        "background": "rgb(32, 35, 43)"
+      }
+    },
+    {
+      "name": "packed native clipboard exact Markdown and success",
+      "pass": true,
+      "evidence": {
+        "value": "This is a **presentation fixture** with a `screen-1` identity.",
+        "writeArgument": "This is a **presentation fixture** with a `screen-1` identity.",
+        "copied": {
+          "text": "",
+          "label": "Copy message",
+          "title": "",
+          "width": 28,
+          "height": 28,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "hidden": "true",
+          "copied": true,
+          "viewport": 1440,
+          "documentWidth": 1440,
+          "focusVisible": true,
+          "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0.644274 0.00294778 -0.107387 / 0.3) 0px 0px 0px 3px, rgba(0, 0, 0, 0) 0px 0px 0px 0px"
+        },
+        "normalization": "Windows native clipboard CRLF normalized for readback only"
+      }
+    },
+    {
+      "name": "packed success resets",
+      "pass": true,
+      "evidence": {}
+    },
+    {
+      "name": "packed mobile icon containment",
+      "pass": true,
+      "evidence": {
+        "text": "",
+        "label": "Copy message",
+        "title": "",
+        "width": 28,
+        "height": 28,
+        "iconWidth": 16,
+        "iconHeight": 16,
+        "hidden": "true",
+        "copied": false,
+        "viewport": 390,
+        "documentWidth": 390,
+        "focusVisible": true,
+        "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0.644274 0.00294778 -0.107387 / 0.3) 0px 0px 0px 3px, rgba(0, 0, 0, 0) 0px 0px 0px 0px"
+      }
+    },
+    {
+      "name": "packed clipboard failure never claims success",
+      "pass": true,
+      "evidence": {
+        "feedback": [
+          "",
+          "No simulated action yet.",
+          "Copy unavailable. Select the message text to copy it.",
+          "No local action yet."
+        ]
+      }
+    },
+    {
+      "name": "message-host-callback compact named icon",
+      "pass": true,
+      "evidence": {
+        "text": "",
+        "label": "Copy message",
+        "title": "",
+        "width": 28,
+        "height": 28,
+        "iconWidth": 16,
+        "iconHeight": 16,
+        "hidden": "true",
+        "copied": false,
+        "viewport": 1440,
+        "documentWidth": 1440,
+        "focusVisible": false,
+        "shadow": "none"
+      }
+    },
+    {
+      "name": "message-host-callback keyboard focus visible",
+      "pass": true,
+      "evidence": {
+        "text": "",
+        "label": "Copy message",
+        "title": "",
+        "width": 28,
+        "height": 28,
+        "iconWidth": 16,
+        "iconHeight": 16,
+        "hidden": "true",
+        "copied": false,
+        "viewport": 1440,
+        "documentWidth": 1440,
+        "focusVisible": true,
+        "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0.644274 0.00294778 -0.107387 / 0.144041) 0px 0px 0px 1.44041px, rgba(0, 0, 0, 0) 0px 0px 0px 0px"
+      }
+    },
+    {
+      "name": "message-host-callback keyboard tooltip is styled and scoped",
+      "pass": true,
+      "evidence": {
+        "text": "Copy message ",
+        "scope": true,
+        "background": "rgb(32, 35, 43)"
+      }
+    },
+    {
+      "name": "message-host-callback native clipboard exact Markdown and success",
+      "pass": true,
+      "evidence": {
+        "value": "Install the dialog, then connect its trigger to the settings button.\r\n\r\n```ts\r\nconst screen = \"settings\";\r\n```\r\n\r\nThis is a **local presentation fixture**.",
+        "writeArgument": "Install the dialog, then connect its trigger to the settings button.\n\n```ts\nconst screen = \"settings\";\n```\n\nThis is a **local presentation fixture**.",
+        "copied": {
+          "text": "",
+          "label": "Copy message",
+          "title": "",
+          "width": 28,
+          "height": 28,
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "hidden": "true",
+          "copied": true,
+          "viewport": 1440,
+          "documentWidth": 1440,
+          "focusVisible": true,
+          "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0.644274 0.00294778 -0.107387 / 0.3) 0px 0px 0px 3px, rgba(0, 0, 0, 0) 0px 0px 0px 0px"
+        },
+        "normalization": "Windows native clipboard CRLF normalized for readback only"
+      }
+    },
+    {
+      "name": "message-host-callback success resets",
+      "pass": true,
+      "evidence": {}
+    },
+    {
+      "name": "message-host-callback mobile icon containment",
+      "pass": true,
+      "evidence": {
+        "text": "",
+        "label": "Copy message",
+        "title": "",
+        "width": 28,
+        "height": 28,
+        "iconWidth": 16,
+        "iconHeight": 16,
+        "hidden": "true",
+        "copied": false,
+        "viewport": 390,
+        "documentWidth": 390,
+        "focusVisible": true,
+        "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0.644274 0.00294778 -0.107387 / 0.3) 0px 0px 0px 3px, rgba(0, 0, 0, 0) 0px 0px 0px 0px"
+      }
+    },
+    {
+      "name": "message-host-callback clipboard failure never claims success",
+      "pass": true,
+      "evidence": {
+        "feedback": [
+          "",
+          "Copy unavailable. Select the text to copy it.",
+          "Copy unavailable. Select the message text to copy it.",
+          "No local action yet."
+        ]
+      }
+    },
+    {
+      "name": "no browser exceptions",
+      "pass": true,
+      "evidence": {
+        "errors": []
+      }
+    }
+  ],
+  "errors": []
+}

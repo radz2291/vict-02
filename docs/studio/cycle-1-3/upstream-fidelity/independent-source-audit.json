@@ -1,0 +1,405 @@
+{
+  "candidate": "efbafcc41317d18ea6609c490f149452de8a98b0",
+  "upstream": "b10f153250b18abfccf49a06e1c4c68945edffa5",
+  "independentlyFetchedReference": "b10f153250b18abfccf49a06e1c4c68945edffa5",
+  "comparisons": [
+    {
+      "pattern": "chain-of-thought",
+      "docsMatch": true,
+      "examples": [
+        {
+          "name": "chain-of-thought-demo",
+          "matched": true
+        }
+      ],
+      "allReferenceVariantsDeclared": true
+    },
+    {
+      "pattern": "chat",
+      "docsMatch": true,
+      "examples": [
+        {
+          "name": "chat-demo",
+          "matched": true
+        }
+      ],
+      "allReferenceVariantsDeclared": true
+    },
+    {
+      "pattern": "checkpoint",
+      "docsMatch": true,
+      "examples": [
+        {
+          "name": "checkpoint-demo",
+          "matched": true
+        }
+      ],
+      "allReferenceVariantsDeclared": true
+    },
+    {
+      "pattern": "confirmation",
+      "docsMatch": true,
+      "examples": [
+        {
+          "name": "confirmation-demo",
+          "matched": true
+        }
+      ],
+      "allReferenceVariantsDeclared": true
+    },
+    {
+      "pattern": "context",
+      "docsMatch": true,
+      "examples": [
+        {
+          "name": "context-demo",
+          "matched": true
+        }
+      ],
+      "allReferenceVariantsDeclared": true
+    },
+    {
+      "pattern": "file-tree",
+      "docsMatch": true,
+      "examples": [
+        {
+          "name": "file-tree-demo",
+          "matched": true
+        }
+      ],
+      "allReferenceVariantsDeclared": true
+    },
+    {
+      "pattern": "inline-citation",
+      "docsMatch": true,
+      "examples": [
+        {
+          "name": "inline-citation-demo",
+          "matched": true
+        }
+      ],
+      "allReferenceVariantsDeclared": true
+    },
+    {
+      "pattern": "message",
+      "docsMatch": true,
+      "examples": [
+        {
+          "name": "message-pattern",
+          "matched": true
+        }
+      ],
+      "allReferenceVariantsDeclared": true
+    },
+    {
+      "pattern": "model-selector",
+      "docsMatch": true,
+      "examples": [
+        {
+          "name": "model-selector-demo",
+          "matched": true
+        }
+      ],
+      "allReferenceVariantsDeclared": true
+    },
+    {
+      "pattern": "plan",
+      "docsMatch": true,
+      "examples": [
+        {
+          "name": "plan-demo",
+          "matched": true
+        },
+        {
+          "name": "plan-description",
+          "matched": true
+        }
+      ],
+      "allReferenceVariantsDeclared": true
+    },
+    {
+      "pattern": "prompt-input",
+      "docsMatch": true,
+      "examples": [
+        {
+          "name": "prompt-input-demo",
+          "matched": true
+        }
+      ],
+      "allReferenceVariantsDeclared": true
+    },
+    {
+      "pattern": "queue",
+      "docsMatch": true,
+      "examples": [
+        {
+          "name": "queue-demo",
+          "matched": true
+        },
+        {
+          "name": "queue-descriptions",
+          "matched": true
+        }
+      ],
+      "allReferenceVariantsDeclared": true
+    },
+    {
+      "pattern": "reasoning",
+      "docsMatch": true,
+      "examples": [
+        {
+          "name": "reasoning-demo",
+          "matched": true
+        },
+        {
+          "name": "reasoning-duration",
+          "matched": true
+        }
+      ],
+      "allReferenceVariantsDeclared": true
+    },
+    {
+      "pattern": "sources",
+      "docsMatch": true,
+      "examples": [
+        {
+          "name": "sources-demo",
+          "matched": true
+        }
+      ],
+      "allReferenceVariantsDeclared": true
+    },
+    {
+      "pattern": "stack-trace",
+      "docsMatch": true,
+      "examples": [
+        {
+          "name": "stack-trace-demo",
+          "matched": true
+        },
+        {
+          "name": "stack-trace-frames",
+          "matched": true
+        }
+      ],
+      "allReferenceVariantsDeclared": true
+    },
+    {
+      "pattern": "subagent",
+      "docsMatch": true,
+      "examples": [
+        {
+          "name": "subagent-demo",
+          "matched": true
+        },
+        {
+          "name": "subagent-running",
+          "matched": true
+        },
+        {
+          "name": "subagent-details",
+          "matched": true
+        }
+      ],
+      "allReferenceVariantsDeclared": true
+    },
+    {
+      "pattern": "suggestion",
+      "docsMatch": true,
+      "examples": [
+        {
+          "name": "suggestion-demo",
+          "matched": true
+        }
+      ],
+      "allReferenceVariantsDeclared": true
+    },
+    {
+      "pattern": "task",
+      "docsMatch": true,
+      "examples": [
+        {
+          "name": "task-demo",
+          "matched": true
+        }
+      ],
+      "allReferenceVariantsDeclared": true
+    },
+    {
+      "pattern": "terminal",
+      "docsMatch": true,
+      "examples": [
+        {
+          "name": "terminal-demo",
+          "matched": true
+        },
+        {
+          "name": "terminal-error",
+          "matched": true
+        }
+      ],
+      "allReferenceVariantsDeclared": true
+    },
+    {
+      "pattern": "test-results",
+      "docsMatch": true,
+      "examples": [
+        {
+          "name": "test-results-demo",
+          "matched": true
+        },
+        {
+          "name": "test-results-suites",
+          "matched": true
+        }
+      ],
+      "allReferenceVariantsDeclared": true
+    },
+    {
+      "pattern": "tool",
+      "docsMatch": true,
+      "examples": [
+        {
+          "name": "tool-demo",
+          "matched": true
+        },
+        {
+          "name": "tool-states",
+          "matched": true
+        },
+        {
+          "name": "tool-sheet",
+          "matched": true
+        },
+        {
+          "name": "tool-approval",
+          "matched": true
+        }
+      ],
+      "allReferenceVariantsDeclared": true
+    }
+  ],
+  "changedPaths": [
+    "docs/VICT-SYSTEM-REFERENCE.md",
+    "docs/architecture/STAGE-09-STUDIO-AND-RECOVERY.md",
+    "docs/governance/VICT-STAGE-09-STATE.md",
+    "docs/handoff/VICT-STAGE-09-STUDIO-HANDOFF.md",
+    "docs/studio/CYCLE-1-3-COPY-APPEARANCE.md",
+    "docs/studio/CYCLE-1-3-HANDOFF.md",
+    "docs/studio/CYCLE-1-3-REPORT.md",
+    "docs/studio/CYCLE-1-3-UPSTREAM-FIDELITY.md",
+    "docs/studio/STATE.md",
+    "docs/studio/cycle-1-3/upstream-fidelity/conversation-pattern-audit.md",
+    "docs/studio/cycle-1-3/upstream-fidelity/conversation-references/chat-demo.svelte",
+    "docs/studio/cycle-1-3/upstream-fidelity/conversation-references/chat.md",
+    "docs/studio/cycle-1-3/upstream-fidelity/conversation-references/manifest.json",
+    "docs/studio/cycle-1-3/upstream-fidelity/conversation-references/message-pattern.svelte",
+    "docs/studio/cycle-1-3/upstream-fidelity/conversation-references/message.md",
+    "docs/studio/cycle-1-3/upstream-fidelity/conversation-references/prompt-input-demo.svelte",
+    "docs/studio/cycle-1-3/upstream-fidelity/conversation-references/prompt-input.md",
+    "docs/studio/cycle-1-3/upstream-fidelity/interactive-pattern-audit.md",
+    "docs/studio/cycle-1-3/upstream-fidelity/interactive-references/checkpoint-demo.svelte",
+    "docs/studio/cycle-1-3/upstream-fidelity/interactive-references/checkpoint.md",
+    "docs/studio/cycle-1-3/upstream-fidelity/interactive-references/confirmation-demo.svelte",
+    "docs/studio/cycle-1-3/upstream-fidelity/interactive-references/confirmation.md",
+    "docs/studio/cycle-1-3/upstream-fidelity/interactive-references/context-demo.svelte",
+    "docs/studio/cycle-1-3/upstream-fidelity/interactive-references/context.md",
+    "docs/studio/cycle-1-3/upstream-fidelity/interactive-references/file-tree-demo.svelte",
+    "docs/studio/cycle-1-3/upstream-fidelity/interactive-references/file-tree-node.svelte",
+    "docs/studio/cycle-1-3/upstream-fidelity/interactive-references/file-tree.md",
+    "docs/studio/cycle-1-3/upstream-fidelity/interactive-references/inline-citation-demo.svelte",
+    "docs/studio/cycle-1-3/upstream-fidelity/interactive-references/inline-citation.md",
+    "docs/studio/cycle-1-3/upstream-fidelity/interactive-references/local-before.json",
+    "docs/studio/cycle-1-3/upstream-fidelity/interactive-references/manifest.json",
+    "docs/studio/cycle-1-3/upstream-fidelity/interactive-references/model-selector-demo.svelte",
+    "docs/studio/cycle-1-3/upstream-fidelity/interactive-references/model-selector.md",
+    "docs/studio/cycle-1-3/upstream-fidelity/interactive-references/repair-syntax.json",
+    "docs/studio/cycle-1-3/upstream-fidelity/interactive-references/sources-demo.svelte",
+    "docs/studio/cycle-1-3/upstream-fidelity/interactive-references/sources.md",
+    "docs/studio/cycle-1-3/upstream-fidelity/interactive-references/suggestion-demo.svelte",
+    "docs/studio/cycle-1-3/upstream-fidelity/interactive-references/suggestion.md",
+    "docs/studio/cycle-1-3/upstream-fidelity/syntax-candidate.json",
+    "docs/studio/cycle-1-3/upstream-fidelity/syntax-final.json",
+    "docs/studio/cycle-1-3/upstream-fidelity/syntax-initial.json",
+    "docs/studio/cycle-1-3/upstream-fidelity/trace-pattern-audit.md",
+    "docs/studio/cycle-1-3/upstream-fidelity/trace-references/chain-of-thought-demo.svelte",
+    "docs/studio/cycle-1-3/upstream-fidelity/trace-references/chain-of-thought.md",
+    "docs/studio/cycle-1-3/upstream-fidelity/trace-references/dependency-code-block-code-block-content.svelte",
+    "docs/studio/cycle-1-3/upstream-fidelity/trace-references/dependency-code-block-code-block-copy-button.svelte",
+    "docs/studio/cycle-1-3/upstream-fidelity/trace-references/dependency-code-block-code-block-header.svelte",
+    "docs/studio/cycle-1-3/upstream-fidelity/trace-references/dependency-code-block-code-block.svelte",
+    "docs/studio/cycle-1-3/upstream-fidelity/trace-references/dependency-trace-trace-collapsible-content.svelte",
+    "docs/studio/cycle-1-3/upstream-fidelity/trace-references/dependency-trace-trace-collapsible-trigger.svelte",
+    "docs/studio/cycle-1-3/upstream-fidelity/trace-references/dependency-trace-trace-collapsible.svelte",
+    "docs/studio/cycle-1-3/upstream-fidelity/trace-references/dependency-trace-trace-description.svelte",
+    "docs/studio/cycle-1-3/upstream-fidelity/trace-references/dependency-trace-trace-icon.svelte",
+    "docs/studio/cycle-1-3/upstream-fidelity/trace-references/dependency-trace-trace-line.svelte",
+    "docs/studio/cycle-1-3/upstream-fidelity/trace-references/dependency-trace-trace-title.svelte",
+    "docs/studio/cycle-1-3/upstream-fidelity/trace-references/dependency-trace-trace.svelte",
+    "docs/studio/cycle-1-3/upstream-fidelity/trace-references/plan-demo.svelte",
+    "docs/studio/cycle-1-3/upstream-fidelity/trace-references/plan-description.svelte",
+    "docs/studio/cycle-1-3/upstream-fidelity/trace-references/plan.md",
+    "docs/studio/cycle-1-3/upstream-fidelity/trace-references/queue-demo.svelte",
+    "docs/studio/cycle-1-3/upstream-fidelity/trace-references/queue-descriptions.svelte",
+    "docs/studio/cycle-1-3/upstream-fidelity/trace-references/queue.md",
+    "docs/studio/cycle-1-3/upstream-fidelity/trace-references/reasoning-demo.svelte",
+    "docs/studio/cycle-1-3/upstream-fidelity/trace-references/reasoning-duration.svelte",
+    "docs/studio/cycle-1-3/upstream-fidelity/trace-references/reasoning.md",
+    "docs/studio/cycle-1-3/upstream-fidelity/trace-references/stack-trace-demo.svelte",
+    "docs/studio/cycle-1-3/upstream-fidelity/trace-references/stack-trace-frames.svelte",
+    "docs/studio/cycle-1-3/upstream-fidelity/trace-references/stack-trace.md",
+    "docs/studio/cycle-1-3/upstream-fidelity/trace-references/subagent-demo.svelte",
+    "docs/studio/cycle-1-3/upstream-fidelity/trace-references/subagent-details.svelte",
+    "docs/studio/cycle-1-3/upstream-fidelity/trace-references/subagent-running.svelte",
+    "docs/studio/cycle-1-3/upstream-fidelity/trace-references/subagent.md",
+    "docs/studio/cycle-1-3/upstream-fidelity/trace-references/task-demo.svelte",
+    "docs/studio/cycle-1-3/upstream-fidelity/trace-references/task.md",
+    "docs/studio/cycle-1-3/upstream-fidelity/trace-references/terminal-demo.svelte",
+    "docs/studio/cycle-1-3/upstream-fidelity/trace-references/terminal-error.svelte",
+    "docs/studio/cycle-1-3/upstream-fidelity/trace-references/terminal.md",
+    "docs/studio/cycle-1-3/upstream-fidelity/trace-references/test-results-demo.svelte",
+    "docs/studio/cycle-1-3/upstream-fidelity/trace-references/test-results-suites.svelte",
+    "docs/studio/cycle-1-3/upstream-fidelity/trace-references/test-results.md",
+    "docs/studio/cycle-1-3/upstream-fidelity/trace-references/tool-approval.svelte",
+    "docs/studio/cycle-1-3/upstream-fidelity/trace-references/tool-demo.svelte",
+    "docs/studio/cycle-1-3/upstream-fidelity/trace-references/tool-sheet.svelte",
+    "docs/studio/cycle-1-3/upstream-fidelity/trace-references/tool-states.svelte",
+    "docs/studio/cycle-1-3/upstream-fidelity/trace-references/tool.md",
+    "examples/studio-ui-consumer/src/App.svelte",
+    "packages/ui-ai-svelte/COVERAGE.md",
+    "packages/ui-ai-svelte/PRESENTATION.md",
+    "packages/ui-ai-svelte/README.md",
+    "packages/ui-ai-svelte/UPSTREAM.md",
+    "packages/ui-ai-svelte/package.json",
+    "packages/ui-ai-svelte/src/Conversation.svelte",
+    "packages/ui-ai-svelte/src/MessageAction.svelte",
+    "packages/ui-ai-svelte/src/patterns/ChainOfThought.svelte",
+    "packages/ui-ai-svelte/src/patterns/Checkpoint.svelte",
+    "packages/ui-ai-svelte/src/patterns/Confirmation.svelte",
+    "packages/ui-ai-svelte/src/patterns/Context.svelte",
+    "packages/ui-ai-svelte/src/patterns/FileTree.svelte",
+    "packages/ui-ai-svelte/src/patterns/InlineCitation.svelte",
+    "packages/ui-ai-svelte/src/patterns/Message.svelte",
+    "packages/ui-ai-svelte/src/patterns/ModelSelector.svelte",
+    "packages/ui-ai-svelte/src/patterns/PatternShowcase.svelte",
+    "packages/ui-ai-svelte/src/patterns/Plan.svelte",
+    "packages/ui-ai-svelte/src/patterns/PromptInput.svelte",
+    "packages/ui-ai-svelte/src/patterns/Queue.svelte",
+    "packages/ui-ai-svelte/src/patterns/Reasoning.svelte",
+    "packages/ui-ai-svelte/src/patterns/Sources.svelte",
+    "packages/ui-ai-svelte/src/patterns/StackTrace.svelte",
+    "packages/ui-ai-svelte/src/patterns/Subagent.svelte",
+    "packages/ui-ai-svelte/src/patterns/Suggestion.svelte",
+    "packages/ui-ai-svelte/src/patterns/Task.svelte",
+    "packages/ui-ai-svelte/src/patterns/Terminal.svelte",
+    "packages/ui-ai-svelte/src/patterns/TestResults.svelte",
+    "packages/ui-ai-svelte/src/patterns/Tool.svelte",
+    "packages/ui-ai-svelte/src/patterns/index.ts",
+    "packages/ui-ai-svelte/src/patterns/types.ts",
+    "packages/ui-ai-svelte/upstream-manifest.json"
+  ],
+  "unrelatedChanges": [],
+  "vendorChanges": [],
+  "runtimeCanonicalFlowChanges": [],
+  "pass": true
+}
