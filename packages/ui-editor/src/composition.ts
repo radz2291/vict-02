@@ -1,4 +1,4 @@
-import type { UiDocument, UiNode, UiEditCommand, UiExtensionDescriptor } from '@victframework/ui';
+import type { UiDocument, UiNode, UiEditCommand, UiExtensionDescriptor, UiLocalStateDecl } from '@victframework/ui';
 import type { TransactionDraft } from './commands.js';
 import { nodeLabel, type EditorLabels } from './inspector-ux.js';
 
@@ -11,8 +11,30 @@ export interface InsertRecipe {
   readonly id: string;
   readonly label: string;
   readonly description: string;
+  /** Context-owned primitive parts may only be inserted into these declared slots. */
+  readonly placements?: readonly { readonly definitionId: string; readonly slotName: string }[];
+  /** Typed local presentation values for this recipe's reference-bound controls. */
+  readonly initialState?: (id: string) => Readonly<Record<string, UiLocalStateDecl>>;
   /** Source nodes only, with the subtree root first. */
   readonly create: (id: string) => readonly UiNode[];
+}
+/** Shared UI/tool affordance guard; the canonical compiler still validates the result. */
+export function canInsertRecipe(recipe: InsertRecipe, document: UiDocument, target: CompositionTarget): boolean {
+  if (!recipe.placements) return true;
+  const parent = document.nodes[target.nodeId];
+  return parent?.kind === 'component' && recipe.placements.some(placement =>
+    placement.definitionId === parent.definitionId && placement.slotName === target.slotName);
+}
+/** Seed local presentation state and source nodes as one canonical transaction. */
+export function insertRecipe(requestId: string, recipe: InsertRecipe, document: UiDocument, nodeId: string, target: CompositionTarget): TransactionDraft {
+  if (!canInsertRecipe(recipe, document, target)) throw new Error('This component requires a compatible parent slot.');
+  const state = recipe.initialState?.(nodeId) ?? {};
+  if (Object.keys(state).some(key => Object.hasOwn(document.localState, key))) throw new Error('Recipe state identity already exists.');
+  const tree = insertSubtree(requestId, recipe.create(nodeId), target);
+  return { ...tree, commands: [
+    ...(Object.keys(state).length ? [{ op: 'replaceDocument' as const, document: { ...document, localState: { ...document.localState, ...state } } }] : []),
+    ...tree.commands,
+  ] };
 }
 export function compositionChildren(node: UiNode): readonly string[] {
   return node.kind === 'element' || node.kind === 'portal'

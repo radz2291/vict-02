@@ -33,7 +33,7 @@
   let contentRef = $state<HTMLDivElement | null>(null);
   const disabled = $derived(props.disabled === true);
   const selectedLabel = $derived(
-    options.find((option) => option.value === value)?.label ?? 'Choose an option',
+    options.find((option) => option.value === value)?.label ?? (value || 'Choose an option'),
   );
 </script>
 

@@ -15,6 +15,8 @@ export { literalTextTarget, editLiteralText, duplicateSubtree } from './selectio
 export { default as PanelResizer } from './PanelResizer.svelte';
 export {
   insertSubtree,
+  canInsertRecipe,
+  insertRecipe,
   compositionTargets,
   detachedContent,
   detachSlotContent,

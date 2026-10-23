@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { createDeterministicOfflineModel, OFFLINE_MODEL_IDENTITY } from '@victframework/mastra';
+import { createDeterministicOfflineModel, OFFLINE_MODEL_IDENTITY, capturePresentationSchema } from '@victframework/mastra';
 import { EditorBridge, insertSubtree } from '@victframework/ui-editor';
 import { screenRecipes } from '../src/lib/designer/recipes.js';
 import { newScreen, designerCatalogs } from '../src/lib/designer/application.js';
@@ -14,6 +14,7 @@ import {
   acknowledgeAgentEdit,
   cancelAgentRun,
   validateAgentStart,
+  editPresentation,
   type StudioAgentEvent,
 } from '../src/lib/server/designer-agent.js';
 
@@ -58,6 +59,13 @@ function context(existing = false) {
   return { bridge, epoch, start: parsed.value, input };
 }
 describe('Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance)', () => {
+  it('fits the frozen provider presentation bounds without dropping expanded recipes', () => {
+    expect(() => capturePresentationSchema(editPresentation, 'expanded Studio edit')).not.toThrow();
+    const pattern = new RegExp(editPresentation.properties.operations.items.properties.recipe.pattern);
+    for (const recipe of screenRecipes) expect(pattern.test(recipe.id), recipe.id).toBe(true);
+    expect(pattern.test('unregistered')).toBe(false);
+    expect(pattern.test('dropdown-menuXitem')).toBe(false);
+  });
   it('does not mistake a successfully invoked but refused edit for recovery', async () => {
     const { bridge, start, input } = context();
     const events: StudioAgentEvent[] = [];

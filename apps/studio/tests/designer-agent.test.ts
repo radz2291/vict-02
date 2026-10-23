@@ -231,7 +231,12 @@ describe('agent canonical editing boundary', () => {
         { op: 'add', recipe: 'heading', nodeId: 'title', parentId: 'screen' },
         { op: 'move', nodeId: 'screen', newParentId: 'title' },
       ],
-      [{ op: 'add', recipe: 'dialog', nodeId: 'dialog', parentId: 'screen' }],
+      // Cycle 1.3 seeds the required body. Explicitly remove it to retain
+      // the original empty-required-slot refusal oracle.
+      [
+        { op: 'add', recipe: 'dialog', nodeId: 'dialog', parentId: 'screen' },
+        { op: 'remove', nodeId: 'dialog-body-1' },
+      ],
       [
         {
           op: 'add',

@@ -1,0 +1,299 @@
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3/260831-VCT-02/apps/studio
+
+3:59:32 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3/260831-VCT-02/packages/ui-svelte/src/document/DocumentHost.svelte:105:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+3:59:33 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:303:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+3:59:33 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:303:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+3:59:33 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:370:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+3:59:33 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:370:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+3:59:37 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3/260831-VCT-02/packages/ui-editor/src/ExpressionEditor.svelte:71:6 Self-closing HTML tags for non-void elements are ambiguous — use `<textarea ...></textarea>` rather than `<textarea ... />`
+https://svelte.dev/e/element_invalid_self_closing_tag
+3:59:38 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3/260831-VCT-02/packages/ui-editor/src/StateValuesPanel.svelte:106:6 A form label must be associated with a control
+https://svelte.dev/e/a11y_label_has_associated_control
+ ❯ tests/designer-agent-mastra.test.ts (13 tests | 12 failed) 13534ms
+   × Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > does not mistake a successfully invoked but refused edit for recovery 1281ms
+     → expected { Object (type, status, ...) } to match object { Object (type, status, ...) }
+(1 matching property omitted from actual)
+   × Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > gives GLM its full published output allowance without a thinking override (offline seam) 1167ms
+     → expected undefined to match object { maxOutputTokens: 131072 }
+   × Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > reports an unrecovered tool failure truthfully, with prior effects=false 1152ms
+     → expected { Object (type, status, ...) } to match object { Object (type, status, ...) }
+(1 matching property omitted from actual)
+   × Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > reports an unrecovered tool failure truthfully, with prior effects=true 1142ms
+     → expected { Object (type, status, ...) } to match object { Object (type, status, ...) }
+(1 matching property omitted from actual)
+   × Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > contains length provider output with zero proposals and truthful terminal code 1140ms
+     → expected { Object (type, status, ...) } to match object { Object (type, status, ...) }
+(1 matching property omitted from actual)
+   × Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > contains partial provider output with zero proposals and truthful terminal code 189ms
+     → expected { Object (type, status, ...) } to match object { Object (type, status, ...) }
+(1 matching property omitted from actual)
+   × Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > allows a successful ordinary answer without edits 1385ms
+     → expected { Object (type, status, ...) } to match object { type: 'done', …(2) }
+(2 matching properties omitted from actual)
+   × Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > recovers a wrong source-version argument on an existing saved screen in the same governed turn 1159ms
+     → expected [] to have a length of 1 but got +0
+   × Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > keeps a genuine browser revision refusal fenced even after a model re-read and retry 1220ms
+     → expected [] to have a length of 1 but got +0
+   × Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > runs governed read and edit tools; acknowledges only after EditorBridge commit; streams completion 1183ms
+     → expected { Object (type, status, ...) } to match object { type: 'done', …(2) }
+(2 matching properties omitted from actual)
+   × Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > sanitizes a genuine Mastra model failure after an acknowledged edit and preserves Undo 1140ms
+     → expected { Object (type, status, ...) } to match object { Object (type, status, ...) }
+(2 matching properties omitted from actual)
+   × Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > cancels a proposal before acknowledgement with zero edits and no cross-session cancellation 170ms
+     → expected { Object (type, status, ...) } to match object { type: 'done', …(2) }
+(2 matching properties omitted from actual)
+   ✓ Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > admits the next turn at terminal delivery while private cleanup is still pending  1203ms
+ ✓ tests/designer-agent.test.ts (6 tests) 532ms
+ ✓ tests/designer-coverage.test.ts (4 tests) 1228ms
+   ✓ Cycle 1.3 actual Designer coverage > compiles every standalone recipe through canonical edits and finished application validation  453ms
+   ✓ Cycle 1.3 actual Designer coverage > compiles every context-owned part in its declared parent slot and refuses standalone placement  609ms
+ ✓ tests/designer-required-slots.test.ts (5 tests) 258ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 12 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/designer-agent-mastra.test.ts > Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > does not mistake a successfully invoked but refused edit for recovery
+AssertionError: expected { Object (type, status, ...) } to match object { Object (type, status, ...) }
+(1 matching property omitted from actual)
+
+- Expected
++ Received
+
+  {
+    "applied": 0,
+-   "code": "STUDIO_AGENT_REVISION_MISMATCH",
++   "code": "STUDIO_AGENT_PROVIDER_FAILED",
+    "status": "failed",
+    "type": "done",
+  }
+
+ ❯ tests/designer-agent-mastra.test.ts:90:27
+     88|     if (!opened.ok) throw new Error(opened.code);
+     89|     await opened.finished;
+     90|     expect(events.at(-1)).toMatchObject({
+       |                           ^
+     91|       type: 'done',
+     92|       status: 'failed',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/12]⎯
+
+ FAIL  tests/designer-agent-mastra.test.ts > Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > gives GLM its full published output allowance without a thinking override (offline seam)
+AssertionError: expected undefined to match object { maxOutputTokens: 131072 }
+
+- Expected: 
+{
+  "maxOutputTokens": 131072,
+}
+
++ Received: 
+undefined
+
+ ❯ tests/designer-agent-mastra.test.ts:116:22
+    114|     if (!opened.ok) throw new Error(opened.code);
+    115|     await opened.finished;
+    116|     expect(settings).toMatchObject({ maxOutputTokens: 131_072 });
+       |                      ^
+    117|     expect(
+    118|       JSON.stringify((settings as { providerOptions?: unknown }).provi…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/12]⎯
+
+ FAIL  tests/designer-agent-mastra.test.ts > Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > reports an unrecovered tool failure truthfully, with prior effects=false
+ FAIL  tests/designer-agent-mastra.test.ts > Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > reports an unrecovered tool failure truthfully, with prior effects=true
+AssertionError: expected { Object (type, status, ...) } to match object { Object (type, status, ...) }
+(1 matching property omitted from actual)
+
+- Expected
++ Received
+
+  {
+    "applied": 0,
+-   "code": "STUDIO_AGENT_TOOL_FAILED",
++   "code": "STUDIO_AGENT_PROVIDER_FAILED",
+    "status": "failed",
+    "type": "done",
+  }
+
+ ❯ tests/designer-agent-mastra.test.ts:178:29
+    176|       if (!opened.ok) throw new Error(opened.code);
+    177|       await opened.finished;
+    178|       expect(events.at(-1)).toMatchObject({
+       |                             ^
+    179|         type: 'done',
+    180|         status: 'failed',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/12]⎯
+
+ FAIL  tests/designer-agent-mastra.test.ts > Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > contains length provider output with zero proposals and truthful terminal code
+ FAIL  tests/designer-agent-mastra.test.ts > Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > contains partial provider output with zero proposals and truthful terminal code
+AssertionError: expected { Object (type, status, ...) } to match object { Object (type, status, ...) }
+(1 matching property omitted from actual)
+
+- Expected
++ Received
+
+  {
+    "applied": 0,
+-   "code": "STUDIO_AGENT_OUTPUT_LIMIT",
++   "code": "STUDIO_AGENT_PROVIDER_FAILED",
+    "status": "failed",
+    "type": "done",
+  }
+
+ ❯ tests/designer-agent-mastra.test.ts:230:29
+    228|       if (!opened.ok) throw new Error(opened.code);
+    229|       await opened.finished;
+    230|       expect(events.at(-1)).toMatchObject({
+       |                             ^
+    231|         type: 'done',
+    232|         status: 'failed',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/12]⎯
+
+ FAIL  tests/designer-agent-mastra.test.ts > Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > allows a successful ordinary answer without edits
+AssertionError: expected { Object (type, status, ...) } to match object { type: 'done', …(2) }
+(2 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+    "applied": 0,
+-   "status": "completed",
++   "status": "failed",
+    "type": "done",
+  }
+
+ ❯ tests/designer-agent-mastra.test.ts:254:27
+    252|     if (!opened.ok) throw new Error(opened.code);
+    253|     await opened.finished;
+    254|     expect(events.at(-1)).toMatchObject({ type: 'done', status: 'compl…
+       |                           ^
+    255|   }, 120_000);
+    256|   it('recovers a wrong source-version argument on an existing saved sc…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/12]⎯
+
+ FAIL  tests/designer-agent-mastra.test.ts > Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > recovers a wrong source-version argument on an existing saved screen in the same governed turn
+AssertionError: expected [] to have a length of 1 but got +0
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ tests/designer-agent-mastra.test.ts:320:65
+    318|     if (!opened.ok) throw new Error(opened.code);
+    319|     await opened.finished;
+    320|     expect(events.filter((event) => event.type === 'proposal')).toHave…
+       |                                                                 ^
+    321|     expect(events).toContainEqual(
+    322|       expect.objectContaining({
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/12]⎯
+
+ FAIL  tests/designer-agent-mastra.test.ts > Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > keeps a genuine browser revision refusal fenced even after a model re-read and retry
+AssertionError: expected [] to have a length of 1 but got +0
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ tests/designer-agent-mastra.test.ts:393:65
+    391|     if (!opened.ok) throw new Error(opened.code);
+    392|     await opened.finished;
+    393|     expect(events.filter((event) => event.type === 'proposal')).toHave…
+       |                                                                 ^
+    394|     expect(events.at(-1)).toMatchObject({ type: 'done', applied: 0 });
+    395|     expect(bridge.document.nodes.placeholder).toBeDefined();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/12]⎯
+
+ FAIL  tests/designer-agent-mastra.test.ts > Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > runs governed read and edit tools; acknowledges only after EditorBridge commit; streams completion
+AssertionError: expected { Object (type, status, ...) } to match object { type: 'done', …(2) }
+(2 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "applied": 1,
+-   "status": "completed",
++   "applied": 0,
++   "status": "failed",
+    "type": "done",
+  }
+
+ ❯ tests/designer-agent-mastra.test.ts:467:27
+    465|     if (!opened.ok) return;
+    466|     await opened.finished;
+    467|     expect(events.at(-1)).toMatchObject({ type: 'done', status: 'compl…
+       |                           ^
+    468|     expect(observedResult).toBeDefined();
+    469|     expect(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/12]⎯
+
+ FAIL  tests/designer-agent-mastra.test.ts > Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > sanitizes a genuine Mastra model failure after an acknowledged edit and preserves Undo
+AssertionError: expected { Object (type, status, ...) } to match object { Object (type, status, ...) }
+(2 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "applied": 1,
++   "applied": 0,
+    "status": "failed",
+    "type": "done",
+  }
+
+ ❯ tests/designer-agent-mastra.test.ts:521:27
+    519|     if (!opened.ok) throw new Error(opened.code);
+    520|     await opened.finished;
+    521|     expect(events.at(-1)).toMatchObject({ type: 'done', status: 'faile…
+       |                           ^
+    522|     expect(JSON.stringify(events)).not.toContain('SECRET_PROVIDER_CANA…
+    523|     expect(bridge.document.nodes.title).toBeDefined();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/12]⎯
+
+ FAIL  tests/designer-agent-mastra.test.ts > Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > cancels a proposal before acknowledgement with zero edits and no cross-session cancellation
+AssertionError: expected { Object (type, status, ...) } to match object { type: 'done', …(2) }
+(2 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+    "applied": 0,
+-   "status": "cancelled",
++   "status": "failed",
+    "type": "done",
+  }
+
+ ❯ tests/designer-agent-mastra.test.ts:568:27
+    566|     if (!opened.ok) throw new Error(opened.code);
+    567|     await opened.finished;
+    568|     expect(events.at(-1)).toMatchObject({ type: 'done', status: 'cance…
+       |                           ^
+    569|     expect(bridge.document.nodes.title).toBeUndefined();
+    570|     expect(bridge.getSnapshot().canUndo).toBe(false);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/12]⎯
+
+
+ Test Files  1 failed | 3 passed (4)
+      Tests  12 failed | 16 passed (28)
+   Start at  15:59:10
+   Duration  55.33s (transform 16.94s, setup 0ms, collect 37.39s, tests 15.55s, environment 2ms, prepare 982ms)
+

@@ -3,18 +3,20 @@ import { z } from 'zod';
 import {
   applyUiEdit,
   canonicalUiDocument,
+  isUiValueOfType,
   type UiDocument,
   type UiEditCommand,
 } from '@victframework/ui';
 import {
-  insertSubtree,
+  insertRecipe,
+  canInsertRecipe,
   literalTextTarget,
   resolveOccurrence,
   type EditorBridge,
   type TransactionDraft,
 } from '@victframework/ui-editor';
 import { screenRecipes } from './recipes.js';
-import { catalogDescriptors, designerCatalogs, screenIssues, actionInputs } from './application.js';
+import { catalogDescriptors, designerCatalogs, screenIssues, compileScreen, actionInputs } from './application.js';
 
 const id = z
   .string()
@@ -23,10 +25,15 @@ const id = z
   .regex(/^[a-zA-Z0-9_.:-]+$/)
   .refine((value) => !['__proto__', 'constructor', 'prototype'].includes(value));
 const scalar = z.union([z.string().max(4000), z.number().finite(), z.boolean()]);
+const value = z.union([scalar, z.array(z.string().max(4000)).max(100), z.array(z.number().finite()).max(100)]);
+const expression = z.union([
+  z.object({ type: z.literal('literal'), value: scalar }).strict(),
+  z.object({ type: z.literal('ref'), path: z.string().min(1).max(300) }).strict(),
+]);
 const content = {
   text: z.string().max(4000).optional(),
   attributes: z.record(id, scalar).optional(),
-  props: z.record(id, scalar).optional(),
+  props: z.record(id, value).optional(),
   styles: z.record(z.string().min(1).max(80), z.string().max(500)).optional(),
 };
 const position = { slotName: id.optional(), index: z.number().int().min(0).max(1000).optional() };
@@ -34,18 +41,7 @@ export const agentOperationSchema = z.discriminatedUnion('op', [
   z
     .object({
       op: z.literal('add'),
-      recipe: z.enum([
-        'section',
-        'row',
-        'heading',
-        'text',
-        'input',
-        'button',
-        'checkbox',
-        'switch',
-        'dialog',
-        'separator',
-      ]),
+      recipe: z.enum(screenRecipes.map(recipe => recipe.id) as [string, ...string[]]),
       nodeId: id,
       parentId: id,
       ...position,
@@ -55,6 +51,11 @@ export const agentOperationSchema = z.discriminatedUnion('op', [
   z.object({ op: z.literal('modify'), nodeId: id, ...content }).strict(),
   z.object({ op: z.literal('move'), nodeId: id, newParentId: id, ...position }).strict(),
   z.object({ op: z.literal('remove'), nodeId: id }).strict(),
+  z.object({ op: z.literal('bind'), nodeId: id, prop: id, expression: expression.optional() }).strict(),
+  z.object({ op: z.literal('connect'), nodeId: id, output: id, binding: z.union([
+    z.object({ setState: z.object({ key: id, value: expression.optional() }).strict() }).strict(),
+    z.object({ invokeAction: z.object({ actionId: id, input: z.record(id, expression).optional() }).strict() }).strict(),
+  ]).optional() }).strict(),
 ]);
 export const agentEditSchema = z
   .object({
@@ -103,7 +104,7 @@ export function prepareAgentEdit(
   if (!parsed.success)
     return failure(
       'STUDIO_AGENT_INVALID_EDIT',
-      'Use the declared add, modify, move or remove contract.',
+      'Use the declared add, modify, move, remove, bind or connect contract.',
     );
   if (
     document.id !== cursor.documentId ||
@@ -125,8 +126,10 @@ export function prepareAgentEdit(
       const next: UiEditCommand[] = [];
       if (operation.op === 'add') {
         const recipe = screenRecipes.find((recipe) => recipe.id === operation.recipe)!;
+        if (!canInsertRecipe(recipe, working, { nodeId: operation.parentId, slotName: operation.slotName }))
+          return failure('STUDIO_AGENT_COMPONENT_CONTEXT', 'This component part requires a compatible parent and declared slot. Read the recipe placements.');
         next.push(
-          ...insertSubtree(requestId, recipe.create(operation.nodeId), {
+          ...insertRecipe(requestId, recipe, working, operation.nodeId, {
             nodeId: operation.parentId,
             slotName: operation.slotName,
             index: operation.index,
@@ -141,7 +144,11 @@ export function prepareAgentEdit(
           );
         }
       }
-      if (operation.op === 'move')
+      if (operation.op === 'move') {
+        const node = working.nodes[operation.nodeId];
+        const recipe = node?.kind === 'component' ? screenRecipes.find(recipe => recipe.id === node.definitionId.replace('vict.catalog.', '')) : undefined;
+        if (recipe && !canInsertRecipe(recipe, working, { nodeId: operation.newParentId, slotName: operation.slotName }))
+          return failure('STUDIO_AGENT_COMPONENT_CONTEXT', 'This component part cannot move outside its compatible parent slot.');
         next.push({
           op: 'move',
           nodeId: operation.nodeId,
@@ -149,8 +156,13 @@ export function prepareAgentEdit(
           slotName: operation.slotName,
           index: operation.index,
         });
+      }
       if (operation.op === 'remove')
         next.push({ op: 'remove', nodeId: operation.nodeId, detachFromParent: true });
+      if (operation.op === 'bind')
+        next.push({ op: 'bindExpression', nodeId: operation.nodeId, target: { kind: 'prop', name: operation.prop }, expression: operation.expression });
+      if (operation.op === 'connect')
+        next.push({ op: 'setOutputBinding', nodeId: operation.nodeId, output: operation.output, binding: operation.binding });
       if (operation.op === 'add' || operation.op === 'modify') {
         // Recipe IDs are known, so a fresh recipe's direct text child is addressable
         // before the assembled transaction is applied.
@@ -190,13 +202,37 @@ export function prepareAgentEdit(
             name,
             value: typeof value === 'string' ? value : { type: 'literal', value },
           });
-        for (const [name, value] of Object.entries(operation.props ?? {}))
+        for (const [name, value] of Object.entries(operation.props ?? {})) {
+          if (Array.isArray(value)) {
+            // Lists are canonical typed state values, never expression literals.
+            const staged = next.length ? applyUiEdit({ document: working, revision: cursor.revision },
+              { requestId, expectedDocumentRevision: cursor.revision, commands: next }, designerCatalogs)
+              : { ok: true as const, document: working };
+            if (!staged.ok) return failure('STUDIO_AGENT_VALIDATION', 'The component could not be prepared for its list value.');
+            const node = staged.document.nodes[operation.nodeId];
+            const descriptor = node?.kind === 'component' ? catalogDescriptors.find(entry => entry.id === node.definitionId) : undefined;
+            const prop = descriptor?.props.find(prop => prop.name === name);
+            if (!prop || (prop.type !== 'stringList' && prop.type !== 'numberList') || !isUiValueOfType(value, prop.type))
+              return failure('STUDIO_AGENT_VALIDATION', 'Use a homogeneous list matching the declared property type.');
+            const current = node?.kind === 'component' ? node.props?.[name] : undefined;
+            const boundKey = current?.type === 'ref' && current.path.startsWith('state.') ? current.path.slice(6) : undefined;
+            const key = boundKey && staged.document.localState[boundKey]?.type === prop.type ? boundKey
+              : `catalog_${operation.nodeId.replace(/[^a-zA-Z0-9_-]/g, '_')}_${name}`;
+            const existing = staged.document.localState[key];
+            if (existing && key !== boundKey) return failure('STUDIO_AGENT_VALIDATION', 'A local value already owns that identity; choose a different node ID.');
+            next.push({ op: 'replaceDocument', document: { ...staged.document, localState: {
+              ...staged.document.localState, [key]: { key, type: prop.type, initial: value },
+            } } });
+            next.push({ op: 'bindExpression', nodeId: operation.nodeId, target: { kind: 'prop', name }, expression: { type: 'ref', path: `state.${key}` } });
+            continue;
+          }
           next.push({
             op: 'bindExpression',
             nodeId: operation.nodeId,
             target: { kind: 'prop', name },
             expression: { type: 'literal', value },
           });
+        }
         for (const [property, value] of Object.entries(operation.styles ?? {}))
           next.push({
             op: 'setStyleDeclaration',
@@ -223,7 +259,14 @@ export function prepareAgentEdit(
       working = result.document;
       commands.push(...next);
     }
-    const issues = screenIssues(working);
+    // Neutral authoring deliberately returns partial plans with component diagnostics.
+    // An agent completion must not promote those error diagnostics to a valid edit.
+    const compiled = compileScreen(working);
+    const issues = [
+      ...screenIssues(working),
+      ...(compiled.ok ? Object.values(compiled.plan.documentPlans ?? {}).flatMap(plan =>
+        plan.diagnostics.filter(issue => issue.severity === 'error')) : []),
+    ];
     if (issues.length)
       return failure(
         'STUDIO_AGENT_VALIDATION',
@@ -300,7 +343,7 @@ export function agentContext(document: UiDocument, cursor: AgentCursor, selectio
           instancePath: occurrence.instancePath,
         }
       : null,
-    palette: screenRecipes.map(({ id, label, description }) => ({ id, label, description })),
+    palette: screenRecipes.map(({ id, label, description, placements }) => ({ id, label, description, ...(placements ? { placements } : {}) })),
     components: catalogDescriptors.filter((descriptor) =>
       screenRecipes.some((recipe) =>
         recipe
@@ -311,6 +354,6 @@ export function agentContext(document: UiDocument, cursor: AgentCursor, selectio
     actionInputs,
     actions: designerCatalogs.actionIds,
     editing:
-      'Copy top-level expectedRevision exactly into each edit; document.revision is saved source metadata and MUST NOT be used as expectedRevision. add(recipe,nodeId,parentId,slotName?,index?,text?,attributes?,props?,styles?), modify(nodeId,text?,attributes?,props?,styles?), move(nodeId,newParentId,slotName?,index?), remove(nodeId). Use exact existing node IDs. Each batch is atomic and one Undo. Never claim save or backend implementation. Form fields are independent local preview inputs; backend authoring is outside Cycle 1.1.',
+      'Copy top-level expectedRevision exactly into each edit; document.revision is saved source metadata and MUST NOT be used as expectedRevision. add(recipe,nodeId,parentId,slotName?,index?,text?,attributes?,props?,styles?), modify(nodeId,text?,attributes?,props?,styles?), move(nodeId,newParentId,slotName?,index?), remove(nodeId), bind(nodeId,prop,expression?), connect(nodeId,output,binding?). A bind expression is literal or ref; omit it to reset. A connection is {setState:{key,value?}} or {invokeAction:{actionId,input?}}; omit binding to disconnect. Use only existing compatible state keys and declared actions; $output is available in output mappings. Typed string/number prop lists become typed local-state initial values and reference bindings; edit them manually through Data starting values. Literal expressions remain scalar. Object arrays require existing view data. Context-owned recipes list required placements. Use exact existing node IDs. Each batch is atomic and one Undo. Never claim save or backend implementation. Form fields are independent local preview inputs; backend authoring is outside Cycle 1.3.',
   };
 }
