@@ -199,23 +199,23 @@
                 selectedOccurrence={mode === 'design' ? selected : undefined} onSelect={select} onApply={apply}
                 selectionTools={tools === 'palette' && mode === 'design' ? palette : undefined} selectionToolsPinned={blocked}
                 {dispatch} navigate={() => notice = 'This example has one screen.'}
-                stateValues={runtimeValues} onStateChange={(key, value) => runtimeValues = { ...runtimeValues, [key]: value }}
-                {resetSignal} actionState={screenActionState} onPlan={next => plan = next}
-                onTextEditingChange={dirty => canvasDraft = dirty}
-                onRenderDiagnostic={diagnostic => issues = [...issues.slice(-4), diagnostic]} ariaLabel="Showcase canvas" />
+                stateValues={runtimeValues} onStateChange={(key: string, value: UiValue) => runtimeValues = { ...runtimeValues, [key]: value }}
+                {resetSignal} actionState={screenActionState} onPlan={(next: UiRenderPlan) => plan = next}
+                onTextEditingChange={(dirty: boolean) => canvasDraft = dirty}
+                onRenderDiagnostic={(diagnostic: { code: string; message: string }) => issues = [...issues.slice(-4), diagnostic]} ariaLabel="Showcase canvas" />
           {/key}
         </div>
         {#if view === 'structure'}<div class="structure"><StructureView document={source} revision={snapshot.revision} {selectedNodeId} {blocked} onSelect={selectStructure} onMove={move} onNotice={message => notice = message} /></div>{/if}
         <details><summary>Insert and arrange (Composer)</summary><Composer document={source} {selectedNodeId} recipes={screenRecipes} descriptors={catalogDescriptors} {compositionFocus} onApply={apply} onInserted={selectNode} onDetached={selectNode} /></details>
         <details><summary>Data: authored starting values</summary>
           <label>State declaration <select aria-label="Authored state declaration" value={selectedData} disabled={blocked} onchange={event => selectedData = event.currentTarget.value}><option value="">Choose a value</option>{#each Object.values(source.localState) as declaration}<option value={declaration.key}>{declaration.key} · {declaration.type}</option>{/each}</select></label>
-          {#if selectedData}{#key `${recipeId}:${selectedData}`}<StateInitialEditor document={source} expression={{ type: 'ref', path: `state.${selectedData}` }} onApply={apply} onDirtyChange={dirty => dataDraft = dirty} />{/key}{/if}
+          {#if selectedData}{#key `${recipeId}:${selectedData}`}<StateInitialEditor document={source} expression={{ type: 'ref', path: `state.${selectedData}` }} onApply={apply} onDirtyChange={(dirty: boolean) => dataDraft = dirty} />{/key}{/if}
         </details>
-        <details><summary>Preview values (temporary runtime data)</summary><p>Interact changes these values. Action calls use the local screen simulation with no live effects.</p>{#key recipeId}<StateValuesPanel localState={source.localState} stateValues={runtimeValues} onChange={(key, value) => { const next = { ...runtimeValues }; if (value === undefined) delete next[key]; else next[key] = value; runtimeValues = next; }} />{/key}</details>
+        <details><summary>Preview values (temporary runtime data)</summary><p>Interact changes these values. Action calls use the local screen simulation with no live effects.</p>{#key recipeId}<StateValuesPanel localState={source.localState} stateValues={runtimeValues} onChange={(key: string, value: UiValue | undefined) => { const next = { ...runtimeValues }; if (value === undefined) delete next[key]; else next[key] = value; runtimeValues = next; }} />{/key}</details>
       </div>
       <aside class="inspector"><h3>Selected source</h3>
         <div class="toolbar"><button type="button" disabled={blocked} aria-pressed={tools === 'inspector'} onclick={() => tools = 'inspector'}>Docked Inspector</button><button type="button" disabled={blocked} aria-pressed={tools === 'palette'} onclick={() => tools = 'palette'}>Selection palette</button></div>
-        {#if tools === 'inspector'}<Inspector document={source} selectedOccurrence={selected} onApply={apply} lastIssues={issues} componentDescriptors={catalogDescriptors} knownActionIds={designerCatalogs.actionIds} knownRouteIds={designerCatalogs.routeIds} {actionInputs} readEffective={effective} onTextDraftChange={dirty => propertyDraft = dirty} />{:else}<p>Select source on the design canvas to use its floating Format, Insert, Arrange and Connect tools. F10 focuses the palette.</p>{/if}
+        {#if tools === 'inspector'}<Inspector document={source} selectedOccurrence={selected} onApply={apply} lastIssues={issues} componentDescriptors={catalogDescriptors} knownActionIds={designerCatalogs.actionIds} knownRouteIds={designerCatalogs.routeIds} {actionInputs} readEffective={effective} onTextDraftChange={(dirty: boolean) => propertyDraft = dirty} />{:else}<p>Select source on the design canvas to use its floating Format, Insert, Arrange and Connect tools. F10 focuses the palette.</p>{/if}
       </aside>
     </div>
     <details><summary>Canonical source (read only)</summary><pre>{JSON.stringify(source, null, 2)}</pre></details>
@@ -228,7 +228,7 @@
     <SelectionPalette name={compositionName(source, selectedNodeId)} format={formatTools} insert={insertTools} arrange={arrangeTools} connect={connectTools} locked={blocked} onOpenComposition={() => openComposition()} />
   {/if}
 {/snippet}
-{#snippet formatTools()}{#if source}<Inspector contextual document={source} selectedOccurrence={selected} onApply={apply} componentDescriptors={catalogDescriptors} readEffective={effective} onTextDraftChange={dirty => propertyDraft = dirty} />{/if}{/snippet}
+{#snippet formatTools()}{#if source}<Inspector contextual document={source} selectedOccurrence={selected} onApply={apply} componentDescriptors={catalogDescriptors} readEffective={effective} onTextDraftChange={(dirty: boolean) => propertyDraft = dirty} />{/if}{/snippet}
 {#snippet insertTools()}{#if source}<Composer compact document={source} {selectedNodeId} recipes={screenRecipes} descriptors={catalogDescriptors} {compositionFocus} showArrange={false} onApply={apply} onInserted={selectNode} />{/if}{/snippet}
 {#snippet arrangeTools()}{#if source}<Composer compact document={source} {selectedNodeId} recipes={screenRecipes} descriptors={catalogDescriptors} {compositionFocus} showInsert={false} onApply={apply} onDetached={selectNode} />{/if}{/snippet}
 {#snippet connectTools()}{#if source}<Inspector contextual section="Behavior" document={source} selectedOccurrence={selected} onApply={apply} componentDescriptors={catalogDescriptors} knownActionIds={designerCatalogs.actionIds} knownRouteIds={designerCatalogs.routeIds} {actionInputs} />{/if}{/snippet}
