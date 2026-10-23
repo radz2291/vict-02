@@ -1,0 +1,36 @@
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1-chat-ui-verification/260831-VCT-02/apps/studio
+
+8:31:22 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/DocumentHost.svelte:105:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+8:31:23 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:303:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+8:31:23 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:303:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+8:31:23 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:370:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+8:31:23 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:370:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+8:31:28 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1/260831-VCT-02/packages/ui-editor/src/StateValuesPanel.svelte:106:6 A form label must be associated with a control
+https://svelte.dev/e/a11y_label_has_associated_control
+8:31:30 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1-chat-ui-verification/260831-VCT-02/packages/ui-svelte/src/document/DocumentHost.svelte:105:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+8:31:30 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1-chat-ui-verification/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:303:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+8:31:30 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1-chat-ui-verification/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:303:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+8:31:30 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1-chat-ui-verification/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:370:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+8:31:30 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-1-chat-ui-verification/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:370:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+stdout | ../../docs/studio/verification-cycle-1-1-tool-completion/baseline-provider.test.ts > independent uncoached exact owner plain prompt against baseline real provider
+{"final":{"type":"done","status":"completed","applied":0,"turnId":"turn-8c286664-c3c7-4419-9796-9f491492240d","profileVersion":"v1_07c21324f2a924391b9ac68bbf9fa23a80c22d2bbd3c382924b6dfe233ccf22c"},"calls":[{"maxOutputTokens":4000,"reasoningCharacters":14736,"textCharacters":0,"toolInputs":{},"finish":[{"type":"finish","finishReason":{"unified":"length","raw":"length"},"usage":{"inputTokens":{"total":2360,"noCache":2360,"cacheRead":0},"outputTokens":{"total":4000,"text":0,"reasoning":4000},"raw":{"prompt_tokens":2360,"completion_tokens":4000,"total_tokens":6360,"prompt_tokens_details":{"cached_tokens":0},"completion_tokens_details":{"reasoning_tokens":4000}}}}]}],"nodes":1}
+
+ ✓ ../../docs/studio/verification-cycle-1-1-tool-completion/baseline-provider.test.ts (1 test) 73498ms
+   ✓ independent uncoached exact owner plain prompt against baseline real provider  73496ms
+
+ Test Files  1 passed (1)
+      Tests  1 passed (1)
+   Start at  08:30:58
+   Duration  121.68s (transform 29.07s, setup 0ms, collect 46.63s, tests 73.50s, environment 0ms, prepare 719ms)
+
