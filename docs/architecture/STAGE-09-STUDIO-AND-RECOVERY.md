@@ -1,5 +1,11 @@
 # VICT Stage 09 — Studio, Diagnosis, and Controlled Recovery
 
+> 2026-10-23 owner amendment: Studio [Cycle 1.1 is accepted and closed](../studio/CYCLE-1-1-OWNER-CLOSURE.md)
+> with retained findings; [Cycle 1.2](../studio/CYCLE-1-2-HANDOFF.md) is issued
+> for dependable mixed manual/agent editing. Stage 9 remains reopened. Reuse
+> accepted canonical editing/history and VICT/Mastra; preserve running owner
+> sessions. Historical frozen operator architecture remains unchanged below.
+
 > 2026-10-22 continuation: Stage 9 is reopened for the broader Studio objective. Only [Studio Cycle 1.1](../studio/CYCLE-1-1-HANDOFF.md) is issued: the existing Mastra boundary and canonical Designer source/edit/history mechanisms are composed, not replaced. Historical operator contracts and closure remain intact.
 
 

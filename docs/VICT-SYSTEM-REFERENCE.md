@@ -1,5 +1,11 @@
 # VICT System Reference
 
+> 2026-10-23 current Studio authority: the owner accepted and closed
+> [Cycle 1.1](studio/CYCLE-1-1-OWNER-CLOSURE.md) through delivery `de71260e…`,
+> retaining non-blocking findings, and issued [Cycle 1.2](studio/CYCLE-1-2-HANDOFF.md)
+> for mixed manual/agent editing. Stage 9 remains REOPENED / IN PROGRESS.
+> Historical frozen contracts and closure records below retain their scope.
+
 > 2026-10-22 current Stage 9 continuation: the owner reopened the broader Studio objective and authorized only [Studio Cycle 1.1](studio/CYCLE-1-1-HANDOFF.md), connecting existing Mastra infrastructure to the accepted canonical Designer. Historical operator and Designer closure evidence remains valid within its scope. Whole-Stage 9 completion and Cycle 1.2 are not claimed.
 
 

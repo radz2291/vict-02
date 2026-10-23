@@ -1,5 +1,11 @@
 # Stage 9 reopened — Studio Cycle 1.1
 
+> 2026-10-23: Cycle 1.1 is now **OWNER ACCEPTED AND CLOSED**, including all
+> repairs/refinements through `de71260e…`, with retained non-blocking findings.
+> [Closure](CYCLE-1-1-OWNER-CLOSURE.md). Stage 9 remains reopened. The current
+> executable authority is [Cycle 1.2](CYCLE-1-2-HANDOFF.md); the entries below
+> remain historical and are not rewritten as fresh acceptance decisions.
+
 Current verified delivery (2026-10-23): compact-composer product
 `9ae689b487d610e3df0581885660fe096f645a88`, independent **PASS**, remote-verified
 evidence `6d6ca50f57a65bcfe1b71601d614108188c47f4a`. Branch

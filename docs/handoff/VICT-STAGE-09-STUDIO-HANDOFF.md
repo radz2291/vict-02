@@ -1,5 +1,10 @@
 # VICT Stage 09 — Entry and Gate Handoff
 
+> Current continuation (2026-10-23): the owner accepted and closed Studio
+> [Cycle 1.1](../studio/CYCLE-1-1-OWNER-CLOSURE.md) with retained findings and
+> issued [Cycle 1.2](../studio/CYCLE-1-2-HANDOFF.md). Stage 9 remains reopened.
+> The current Studio handoff supersedes historical cycle/operator scope below.
+
 > Current continuation (2026-10-22): the owner reopened Stage 9 for the broader Studio objective, authorizing only [Cycle 1.1](../studio/CYCLE-1-1-HANDOFF.md). That handoff reconciles current main and controls this cycle. The operator gate handoff below remains historical.
 
 

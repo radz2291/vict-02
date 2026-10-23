@@ -1,5 +1,19 @@
 # Studio Designer — current delivery state
 
+## 2026-10-23 — Cycle 1.1 owner accepted and closed; Cycle 1.2 authorized
+
+The owner explicitly accepts Cycle 1.1, all hands-on repairs/refinements through
+delivery `de71260e07709aef610c028862d3cc5f3251b1df`, verified product
+`9ae689b487d610e3df0581885660fe096f645a88`, with retained non-blocking findings.
+[Owner closure](CYCLE-1-1-OWNER-CLOSURE.md). No repeated walkthrough is required.
+Stage 9 remains REOPENED / IN PROGRESS. Historical evidence below is unchanged.
+
+Only [Cycle 1.2](CYCLE-1-2-HANDOFF.md) is newly authorized: audit existing
+mixed-editing behavior/evidence, fill demonstrated gaps, prove continuous
+real-provider manual/agent/Stop/history/save/reopen use, and obtain fresh
+independent exact-candidate verification. Preserve owner tabs, sessions and data.
+No main merge/publication, Cycle 1.2 acceptance or Cycle 1.3.
+
 ## 2026-10-23 — Compact composer verified and locally active
 
 Independent **PASS** on exact product `9ae689b487d610e3df0581885660fe096f645a88`,
