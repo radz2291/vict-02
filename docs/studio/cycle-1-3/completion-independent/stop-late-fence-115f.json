@@ -1,0 +1,9 @@
+{
+  "stoppedAt": "2026-10-23T21:59:37.205Z",
+  "checkedAt": "2026-10-23T22:07:34.360Z",
+  "sourceExactlySavedBeforeNewStaleChallenge": true,
+  "lateStopSentinelAbsent": true,
+  "scope": "Actual Stop after Working before any tool attempt; separate deterministic test covers stalled capture cancellation and late upload.",
+  "sourceSnapshotCapturedBefore": "2026-10-23T22:06:10.183Z",
+  "note": "Compared the DOM source snapshot read immediately before the deliberate newer manual transaction; checkedAt is the comparison time, not a new source read after that transaction."
+}

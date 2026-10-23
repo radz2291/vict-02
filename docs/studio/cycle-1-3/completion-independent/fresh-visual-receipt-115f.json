@@ -1,0 +1,50 @@
+{
+  "productSha": "115f8242e5069191ea219c8ab6da50d45551b56a",
+  "marker": "CobaltMoth582",
+  "markerAbsentFromSource": true,
+  "promptContainsMarker": false,
+  "result": {
+    "ok": true,
+    "evidence": "observed-appearance",
+    "observation": "The first input field (topmost rounded text box, directly under the heading \"Independent form · manual check\") contains the visible rendered text **\"CobaltMoth582\"** — a single dark, left-aligned string near the field's left edge.\n\nDirect observation: the text appears in normal dark content color, similar to the text in the second field (\"Ada Lovace\"), suggesting both are rendered values rather than faded placeholder text. However, since placeholder versus value cannot be confirmed from pixels alone, this is an inference based on color/contrast.\n\nNo clipping or truncation is visible in the field; spacing and alignment appear consistent with the other inputs. Nothing beyond the imaged viewport was inspected.",
+    "metadata": {
+      "cursor": {
+        "documentId": "screen-288f8ae7-260b-4734-8850-7da959ca24bc",
+        "revision": "r1.r2#0",
+        "digest": "c1583149c27cc7fe871961c8f19df70236d23eeb852c514e37e7f4953c5a862e",
+        "epoch": "4f733655-800b-4d1b-a94b-f646dd5ddabf"
+      },
+      "capturedAt": "2026-10-23T21:54:20.652Z",
+      "viewport": {
+        "width": 960,
+        "height": 585,
+        "scrollLeft": 0,
+        "scrollTop": 21.600000381469727,
+        "devicePixelRatio": 1.25
+      },
+      "image": {
+        "width": 909,
+        "height": 555,
+        "sourceWidth": 909,
+        "sourceHeight": 560,
+        "offsetLeft": 0,
+        "offsetTop": 6,
+        "cropped": true
+      },
+      "preview": {
+        "mode": "interact",
+        "fingerprint": "91bdb5ed4bab7174155629247ffc9522f59c9e5939f606aa967f762ba1285ec1",
+        "selection": "screen-288f8ae7-260b-4734-8850-7da959ca24bc|screen"
+      }
+    },
+    "revalidatedAt": "2026-10-23T21:54:27.524Z",
+    "validation": "same-source-preview-viewport-and-image-bytes-after-inference",
+    "imageDigest": "4c96cc52bb74ca8c561b69d59b66fe7d91cf30ed9f76b719641db7e80ff37d7a",
+    "confirmedImageDigest": "4c96cc52bb74ca8c561b69d59b66fe7d91cf30ed9f76b719641db7e80ff37d7a",
+    "imageComparison": "sha256-identical",
+    "bytes": 23171,
+    "model": "zai/glm-5.3-flash",
+    "interactionVerified": false,
+    "limitation": "Only the captured preview frame region and stated preview state were inspected. Open preview-owned external portals refuse capture; unrelated Studio chrome is outside this image. Source relationships and interaction outcomes require separate checks."
+  }
+}

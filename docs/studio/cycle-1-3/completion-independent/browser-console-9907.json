@@ -1,0 +1,50 @@
+[
+  {
+    "level": "warn",
+    "message": "[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration",
+    "timestamp": "2026-10-23T21:48:28.019Z",
+    "url": "http://127.0.0.3:5596/_app/immutable/chunks/DHgUxEju.js"
+  },
+  {
+    "level": "warn",
+    "message": "[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration",
+    "timestamp": "2026-10-23T21:48:28.025Z",
+    "url": "http://127.0.0.3:5596/_app/immutable/chunks/DHgUxEju.js"
+  },
+  {
+    "level": "warn",
+    "message": "[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration",
+    "timestamp": "2026-10-23T21:48:33.065Z",
+    "url": "http://127.0.0.3:5596/_app/immutable/chunks/DHgUxEju.js"
+  },
+  {
+    "level": "warn",
+    "message": "[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration",
+    "timestamp": "2026-10-23T21:48:33.080Z",
+    "url": "http://127.0.0.3:5596/_app/immutable/chunks/DHgUxEju.js"
+  },
+  {
+    "level": "warn",
+    "message": "[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration",
+    "timestamp": "2026-10-23T21:48:37.053Z",
+    "url": "http://127.0.0.3:5596/_app/immutable/chunks/DHgUxEju.js"
+  },
+  {
+    "level": "warn",
+    "message": "[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration",
+    "timestamp": "2026-10-23T21:48:37.059Z",
+    "url": "http://127.0.0.3:5596/_app/immutable/chunks/DHgUxEju.js"
+  },
+  {
+    "level": "warn",
+    "message": "[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration",
+    "timestamp": "2026-10-23T21:50:56.857Z",
+    "url": "http://127.0.0.3:5596/_app/immutable/chunks/DHgUxEju.js"
+  },
+  {
+    "level": "warn",
+    "message": "[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration",
+    "timestamp": "2026-10-23T21:50:56.865Z",
+    "url": "http://127.0.0.3:5596/_app/immutable/chunks/DHgUxEju.js"
+  }
+]

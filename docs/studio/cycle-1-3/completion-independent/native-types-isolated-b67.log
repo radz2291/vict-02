@@ -1,0 +1,53 @@
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion-verify/260831-VCT-02/apps/studio
+
+5:05:56 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion-verify/260831-VCT-02/packages/ui-svelte/src/document/DocumentHost.svelte:105:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+5:05:56 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion-verify/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:304:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+5:05:56 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion-verify/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:304:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+5:05:56 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion-verify/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:371:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+5:05:56 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion-verify/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:371:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+5:06:04 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion-verify/260831-VCT-02/packages/ui-editor/src/StateValuesPanel.svelte:106:6 A form label must be associated with a control
+https://svelte.dev/e/a11y_label_has_associated_control
+ ❯ tests/designer-completion-independent.test.ts (3 tests | 1 failed) 205ms
+   ✓ independent challenge: agent can create a typed native number field in one batch 120ms
+   ✓ independent challenge: agent can create a typed native checkbox in one batch 42ms
+   × independent challenge: refuses nested interactive wrapper in a native trigger slot 40ms
+     → expected { ok: false, …(2) } to match object { ok: false, …(1) }
+(1 matching property omitted from actual)
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/designer-completion-independent.test.ts > independent challenge: refuses nested interactive wrapper in a native trigger slot
+AssertionError: expected { ok: false, …(2) } to match object { ok: false, …(1) }
+(1 matching property omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "code": "STUDIO_AGENT_INTERACTIVE_SLOT",
++   "code": "STUDIO_AGENT_VALIDATION",
+    "ok": false,
+  }
+
+ ❯ tests/designer-completion-independent.test.ts:40:18
+     38|     ],
+     39|   }, 'independent-nested-wrapper');
+     40|   expect(result).toMatchObject({ ok: false, code: 'STUDIO_AGENT_INTERA…
+       |                  ^
+     41| });
+     42| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 2 passed (3)
+   Start at  05:05:33
+   Duration  32.01s (transform 22.81s, setup 0ms, collect 29.97s, tests 205ms, environment 0ms, prepare 925ms)
+

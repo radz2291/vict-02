@@ -1,0 +1,58 @@
+{
+  "checkedAt": "2026-10-23T21:43:07.350Z",
+  "productSha": "990742db1dd143775c83997f52a69c8a749284b9",
+  "sealSha256": "0953abd6c95cc5984f9ac95ee030ec65e0a7168a2e27a40fb0d53ef65d49ce99",
+  "preparedAt": "2026-10-23T21:40:05.368Z",
+  "sealedAt": "2026-10-23T21:42:43.795Z",
+  "sources": 934,
+  "outputs": 289,
+  "outputMismatches": [],
+  "consumer": {
+    "sha": "3794c4a4dc75012c436df982f0532b6bbf68ee12",
+    "mode": "Incremental final package upgrade in the retained fresh independent install; no workspace links or aliases",
+    "files": 173,
+    "mismatches": [],
+    "packs": [
+      {
+        "name": "ui-ai-svelte",
+        "match": true
+      },
+      {
+        "name": "ui-flow-svelte",
+        "match": true
+      }
+    ]
+  },
+  "sealedSourceMismatches": [],
+  "checkoutByteVariations": [
+    {
+      "path": "apps/studio/src/lib/designer/recipes.ts",
+      "normalizedLFEqual": true
+    },
+    {
+      "path": "examples/studio-ui-consumer/src/cycle13-catalog.json",
+      "normalizedLFEqual": true
+    },
+    {
+      "path": "packages/ui-editor/src/NativeInputContent.svelte",
+      "normalizedLFEqual": true
+    },
+    {
+      "path": "packages/ui-editor/src/bridge.ts",
+      "normalizedLFEqual": true
+    },
+    {
+      "path": "packages/ui-editor/src/commands.ts",
+      "normalizedLFEqual": true
+    },
+    {
+      "path": "packages/ui-editor/src/index.ts",
+      "normalizedLFEqual": true
+    },
+    {
+      "path": "packages/ui-editor/src/interactive-slots.ts",
+      "normalizedLFEqual": true
+    }
+  ],
+  "note": "All seven checkout byte variations normalize to identical LF source; both Git production trees are clean. Builder source bytes and all sealed output bytes are checked against the manifest. Public consumer173 installed source bytes match exact own committed package source."
+}

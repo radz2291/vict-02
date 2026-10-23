@@ -1,0 +1,79 @@
+{
+  "kind": "Independent read-only audit of builder live-provider evidence; pre-final working-tree harness, not final browser proof",
+  "model": "zai/glm-5.3-flash",
+  "mixed": {
+    "path": "cycle-1-3/completion-evidence/authoring-real-provider-1792790104441.json",
+    "sha256": "A62BF69F65ED49B68F66533205FDBBDD7C67F05A9EE8DE071E348161B32282BD",
+    "elapsedMs": 157296,
+    "initialNodes": 226,
+    "finalNodes": 233,
+    "terminal": {
+      "type": "done",
+      "status": "completed",
+      "applied": 2,
+      "turnId": "turn-76a83666-213d-45e3-9015-1b7dff09702c",
+      "profileVersion": "v1_44b0efc033a305e436089d492696951ae9fda22054a9ae7ebe524393efff6671",
+      "termination": {
+        "status": "completed"
+      },
+      "confirmedRevision": "r1#2",
+      "coverage": {
+        "available": 78,
+        "authored": 2,
+        "catalogAuthored": 17,
+        "requested": 2,
+        "scope": "agent-declared-manifest",
+        "missing": [],
+        "evidence": "Declared source presence only. Does not prove appearance, interaction, requested intent, or completion."
+      },
+      "verification": "source-only",
+      "unresolvedTools": []
+    },
+    "toolEvents": 36,
+    "uniqueToolEventIds": 36
+  },
+  "all83": {
+    "path": "cycle-1-3/completion-evidence/authoring-all83-round-0-1792790585787.json",
+    "sha256": "27D42EDD4C96D1F99563A50CE05A75F0FCC01DD63C2C32C7D93B0F16BDDDC39F",
+    "after": {
+      "available": 78,
+      "authored": 83,
+      "catalogAuthored": 78,
+      "requested": 83,
+      "scope": "declared-request",
+      "missing": [],
+      "evidence": "Declared source presence only. Does not prove appearance, interaction, requested intent, or completion."
+    },
+    "terminal": {
+      "type": "done",
+      "status": "failed",
+      "code": "STUDIO_AGENT_TIME_LIMIT",
+      "applied": 17,
+      "turnId": "turn-ba5aea9f-9a95-4bef-b6b5-8a2e59f9775c",
+      "profileVersion": "v1_44b0efc033a305e436089d492696951ae9fda22054a9ae7ebe524393efff6671",
+      "termination": {
+        "status": "timeout",
+        "code": "STUDIO_AGENT_TIME_LIMIT"
+      },
+      "confirmedRevision": "r1#19",
+      "coverage": {
+        "available": 78,
+        "authored": 83,
+        "catalogAuthored": 78,
+        "requested": 83,
+        "scope": "agent-declared-manifest",
+        "missing": [],
+        "evidence": "Declared source presence only. Does not prove appearance, interaction, requested intent, or completion."
+      },
+      "verification": "source-only",
+      "unresolvedTools": []
+    },
+    "elapsedMs": 481308
+  },
+  "limitations": [
+    "Canonical acknowledgement harness, not actual browser edits or interactions.",
+    "All83 source inventory reached83/83 but turn timed out; does not prove completed request.",
+    "Source/read/schema/visual repairs continued after harness started; final affected provider proof remains required.",
+    "Multiple concurrent read starts have result traces without callId in retained evidence; final correlation repair needs recheck."
+  ]
+}

@@ -1,0 +1,88 @@
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion-verify/260831-VCT-02/apps/studio
+
+5:19:44 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion-verify/260831-VCT-02/packages/ui-svelte/src/document/DocumentHost.svelte:105:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+5:19:44 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion-verify/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:304:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+5:19:44 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion-verify/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:304:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+5:19:44 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion-verify/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:371:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+5:19:44 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion-verify/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:371:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+5:19:50 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion-verify/260831-VCT-02/packages/ui-editor/src/StateValuesPanel.svelte:106:6 A form label must be associated with a control
+https://svelte.dev/e/a11y_label_has_associated_control
+stderr | tests/designer-schema-independent.test.ts
+$ref: keywords ignored in schema at path "#/properties/operations/items"
+
+ ❯ tests/designer-schema-independent.test.ts (3 tests | 3 failed) 50ms
+   × independent challenge: provider expression schema rejects the same forbidden fields as authoritative input 31ms
+     → expected true to be false // Object.is equality
+   × independent challenge: provider prop lists reject mixed types accepted by neither canonical list shape 4ms
+     → expected true to be false // Object.is equality
+   × independent challenge: malformed expression refusal includes a recoverable expected shape 12ms
+     → expected '{"ok":false,"code":"STUDIO_AGENT_INVA…' to contain 'literal'
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/designer-schema-independent.test.ts > independent challenge: provider expression schema rejects the same forbidden fields as authoritative input
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/designer-schema-independent.test.ts:12:41
+     10|   const invalid = edit({ op: 'bind', nodeId: 'control', prop: 'checked…
+     11|   expect(agentEditSchema.safeParse(invalid).success).toBe(false);
+     12|   expect(validatePresentation(invalid)).toBe(false);
+       |                                         ^
+     13| });
+     14| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  tests/designer-schema-independent.test.ts > independent challenge: provider prop lists reject mixed types accepted by neither canonical list shape
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/designer-schema-independent.test.ts:18:41
+     16|   const invalid = edit({ op: 'modify', nodeId: 'control', props: { val…
+     17|   expect(agentEditSchema.safeParse(invalid).success).toBe(false);
+     18|   expect(validatePresentation(invalid)).toBe(false);
+       |                                         ^
+     19| });
+     20| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  tests/designer-schema-independent.test.ts > independent challenge: malformed expression refusal includes a recoverable expected shape
+AssertionError: expected '{"ok":false,"code":"STUDIO_AGENT_INVA…' to contain 'literal'
+
+Expected: "literal"
+Received: "{"ok":false,"code":"STUDIO_AGENT_INVALID_EDIT","message":"Use the exact operation fields. No edits applied.","diagnostics":[{"operation":0,"path":"operations.0.expression","message":"Invalid input"}]}"
+
+ ❯ tests/designer-schema-independent.test.ts:26:34
+     24|   const result = prepareAgentEdit(document, cursor, edit({ op: 'bind',…
+     25|   expect(result).toMatchObject({ ok: false, code: 'STUDIO_AGENT_INVALI…
+     26|   expect(JSON.stringify(result)).toContain('literal');
+       |                                  ^
+     27|   expect(JSON.stringify(result)).toContain('ref');
+     28| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed (3)
+   Start at  05:19:24
+   Duration  26.03s (transform 15.02s, setup 0ms, collect 25.35s, tests 50ms, environment 0ms, prepare 221ms)
+

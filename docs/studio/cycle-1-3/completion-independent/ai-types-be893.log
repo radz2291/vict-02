@@ -1,0 +1,7 @@
+npm error Lifecycle script `check` failed with error:
+npm error workspace @victframework/ui-ai-svelte@0.4.0-rc.1
+npm error location C:\Users\RZ1\.codex\worktrees\studio-cycle-1-3-completion-verify\260831-VCT-02\packages\ui-ai-svelte
+npm error Missing script: "check"
+npm error
+npm error To see a list of scripts, run:
+npm error   npm run --workspace=@victframework/ui-ai-svelte@0.4.0-rc.1

@@ -1,0 +1,277 @@
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion-verify/260831-VCT-02/apps/studio
+
+5:32:48 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion-verify/260831-VCT-02/packages/ui-svelte/src/document/DocumentHost.svelte:105:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+5:32:50 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion-verify/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:301:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+5:32:50 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion-verify/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:301:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+5:32:50 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion-verify/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:368:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+5:32:50 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion-verify/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:368:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+5:33:02 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion-verify/260831-VCT-02/packages/ui-editor/src/StateValuesPanel.svelte:106:6 A form label must be associated with a control
+https://svelte.dev/e/a11y_label_has_associated_control
+ ✓ tests/ui/completion-independent-stop-capture.test.ts (1 test) 678ms
+   ✓ independent challenge: Stop releases a stalled raster capture and fences its late upload  674ms
+stderr | tests/ui/composition.test.ts > opens another saved screen through File and guards the cascading menu during a source draft
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/composition.test.ts > opens another saved screen through File and guards the cascading menu during a source draft
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/composition.test.ts > opens another saved screen through File and guards the cascading menu during a source draft
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/composition.test.ts > opens a closed composition without authored or runtime changes, guards drafts, and saves the same edited source for replay
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/composition.test.ts > opens a closed composition without authored or runtime changes, guards drafts, and saves the same edited source for replay
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/composition.test.ts > opens a closed composition without authored or runtime changes, guards drafts, and saves the same edited source for replay
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/composition.test.ts > opens a closed composition without authored or runtime changes, guards drafts, and saves the same edited source for replay
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/composition.test.ts > keeps data drafts safe across document navigation and saves applied starting values
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/composition.test.ts
+AggregateError: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1712:7) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 3000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 3000
+    }
+  ]
+}
+
+stderr | tests/ui/composition.test.ts
+AggregateError: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1712:7) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 3000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 3000
+    }
+  ]
+}
+
+stderr | tests/ui/composition.test.ts
+AggregateError: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1712:7) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 3000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 3000
+    }
+  ]
+}
+
+ ✓ tests/ui/composition.test.ts (3 tests) 3093ms
+   ✓ opens another saved screen through File and guards the cascading menu during a source draft  1279ms
+   ✓ opens a closed composition without authored or runtime changes, guards drafts, and saves the same edited source for replay  1248ms
+   ✓ keeps data drafts safe across document navigation and saves applied starting values  558ms
+stderr | tests/ui/designer-runtime.test.ts > keeps runtime input and checkbox state across pointer selection and leaves authored history clean
+AggregateError: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1712:7) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 3000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 3000
+    }
+  ]
+}
+
+stderr | tests/ui/designer-runtime.test.ts > keeps runtime input and checkbox state across pointer selection and leaves authored history clean
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+ ✓ tests/ui/designer-runtime.test.ts (1 test) 3103ms
+   ✓ keeps runtime input and checkbox state across pointer selection and leaves authored history clean  3085ms
+ ✓ tests/ui/agent-handoff.test.ts (5 tests) 2045ms
+   ✓ does not let delayed Stop cleanup replace the feedback for a newer turn  546ms
+   ✓ settles a genuine stale refusal without waiting for the model and admits fresh context only in a new request  348ms
+   ✓ settles a genuine invalid refusal without waiting for the model and admits fresh context only in a new request  600ms
+   ✓ keeps an applied batch undoable and ignores late proposals/completion after Stop  326ms
+stderr | tests/ui/chat-controls.test.ts > keeps draft, feed and an active turn mounted through hiding; the single composer action stops
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/chat-controls.test.ts > keeps draft, feed and an active turn mounted through hiding; the single composer action stops
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/chat-controls.test.ts > keeps draft, feed and an active turn mounted through hiding; the single composer action stops
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/chat-controls.test.ts > keeps draft, feed and an active turn mounted through hiding; the single composer action stops
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+ ✓ tests/ui/chat-controls.test.ts (1 test) 1123ms
+   ✓ keeps draft, feed and an active turn mounted through hiding; the single composer action stops  1121ms
+ ✓ tests/ui/agent-chat.test.ts (5 tests) 1066ms
+   ✓ rejected Studio chat admission > shows an admitted failed turn as a failure (STUDIO_AGENT_OUTPUT_LIMIT)  463ms
+ ✓ tests/ui/completion-timeline.test.ts (6 tests) 1259ms
+   ✓ renders ordered text, refused attempt, corrected observation and acknowledged boundary through public presentation  391ms
+ ✓ tests/ui/saved-run.test.ts (3 tests) 983ms
+   ✓ keeps saved source unchanged when running with width='390'  483ms
+stderr | tests/ui/completion-legacy-triggers.test.ts
+[svelte] derived_inert
+Reading a derived belonging to a now-destroyed effect may result in stale values
+https://svelte.dev/e/derived_inert
+
+ ✓ tests/ui/completion-legacy-triggers.test.ts (3 tests) 493ms
+ ✓ tests/ui/structure.test.ts (4 tests) 516ms
+ ✓ tests/ui/designer-context-surfaces.test.ts (3 tests) 428ms
+ ✓ tests/ui/chat-message.test.ts (4 tests) 377ms
+ ✓ tests/ui/completion-independent-fields.test.ts (1 test) 309ms
+   ✓ changes two native fields and two boolean controls independently through real renderer events (DOM simulation)  306ms
+ ✓ tests/ui/render.test.ts (7 tests) 474ms
+ ✓ tests/ui/designer-capture-portals.test.ts (7 tests) 523ms
+   ✓ detects the real CatalogPortal created by an unbound catalog Popover under document.body  387ms
+ ✓ tests/ui/confirmation.test.ts (5 tests) 100ms
+5:34:21 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion-verify/260831-VCT-02/packages/ui-svelte/src/document/DocumentHost.svelte:105:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+5:34:21 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion-verify/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:301:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+5:34:21 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion-verify/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:301:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+5:34:21 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion-verify/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:368:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+5:34:21 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion-verify/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:368:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+5:34:25 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion-verify/260831-VCT-02/packages/ui-editor/src/StateValuesPanel.svelte:106:6 A form label must be associated with a control
+https://svelte.dev/e/a11y_label_has_associated_control
+ ✓ tests/designer-completion-independent.test.ts (4 tests) 138ms
+stderr | tests/designer-schema-independent.test.ts
+$ref: keywords ignored in schema at path "#/properties/operations/items"
+
+ ✓ tests/designer-schema-independent.test.ts (3 tests) 38ms
+ ✓ tests/structure-completion.test.ts (5 tests) 4337ms
+   ✓ compares real Dagre and ELK layouts at small, owner-sized and advertised-size fixtures  4295ms
+ ✓ tests/designer-agent-cleanup.test.ts (1 test) 1987ms
+   ✓ releases a completed host turn when filesystem removal never settles  1984ms
+ ✓ tests/designer-coverage.test.ts (4 tests) 960ms
+   ✓ Cycle 1.3 actual Designer coverage > compiles every standalone recipe through canonical edits and finished application validation  354ms
+   ✓ Cycle 1.3 actual Designer coverage > compiles every context-owned part in its declared parent slot and refuses standalone placement  499ms
+ ✓ tests/showcase.test.ts (4 tests) 1176ms
+   ✓ Cycle 1.3 complete showcase fixtures > indexes and compiles all 83 examples in valid ancestor contexts  1115ms
+ ✓ tests/designer-independent-verification.test.ts (4 tests) 1498ms
+   ✓ clears fail-next exactly once and fences two pending actions across reset  1377ms
+ ✓ tests/designer-agent-mastra.test.ts (17 tests) 29049ms
+   ✓ Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > does not mistake a successfully invoked but refused edit for recovery  2317ms
+   ✓ Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > gives GLM its full published output allowance without a thinking override (offline seam)  1709ms
+   ✓ Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > reports an unrecovered tool failure truthfully, with prior effects=false  1784ms
+   ✓ Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > reports an unrecovered tool failure truthfully, with prior effects=true  1949ms
+   ✓ Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > contains length provider output with zero proposals and truthful terminal code  1416ms
+   ✓ Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > contains partial provider output with zero proposals and truthful terminal code  1413ms
+   ✓ Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > allows a successful ordinary answer without edits  1717ms
+   ✓ Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > recovers a wrong source-version argument on an existing saved screen in the same governed turn  1860ms
+   ✓ Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > keeps a genuine browser revision refusal fenced even after a model re-read and retry  1927ms
+   ✓ Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > runs governed read and edit tools; acknowledges only after EditorBridge commit; streams completion  1912ms
+   ✓ Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > sanitizes a genuine Mastra model failure after an acknowledged edit and preserves Undo  1557ms
+   ✓ Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > cancels a proposal before acknowledgement with zero edits and no cross-session cancellation  2028ms
+   ✓ Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > admits the next turn at terminal delivery while private cleanup is still pending  2244ms
+   ✓ reports a host deadline separately from explicit Stop without waiting for production wall time (offline deadline seam)  1432ms
+   ✓ labels agent-declared subset coverage separately from the complete catalog inventory (offline fixture)  1935ms
+   ✓ makes bounded precise pre-invocation refusal guidance available to the model on the next overview read  1821ms
+ ✓ tests/designer-agent-completion.test.ts (14 tests) 716ms
+ ✓ tests/designer.test.ts (4 tests) 1041ms
+   ✓ Studio canonical screen integration > fails closed on undeclared actions, missing inputs, denied permission and reset during execution  921ms
+ ✓ tests/designer-agent.test.ts (6 tests) 840ms
+ ✓ tests/designer-context-placement.test.ts (6 tests) 251ms
+ ✓ tests/boundary.test.ts (13 tests) 146ms
+ ✓ tests/run-detail.test.ts (12 tests) 142ms
+ ✓ tests/designer-required-slots.test.ts (5 tests) 214ms
+ ✓ tests/app-definition.test.ts (8 tests) 123ms
+ ✓ tests/designer-preflight-independent.test.ts (2 tests) 104ms
+ ✓ tests/designer-visual.test.ts (10 tests) 143ms
+ ✓ tests/targets.test.ts (5 tests) 119ms
+ ✓ tests/adapter.test.ts (9 tests) 98ms
+ ✓ tests/structure.test.ts (7 tests) 121ms
+ ✓ tests/designer-transport-independent.test.ts (2 tests) 285ms
+ ✓ tests/designer-agent-stream.test.ts (1 test) 75ms
+ ✓ tests/designer-required-slot-verification.test.ts (2 tests) 71ms
+stderr | tests/designer-schema-completion.test.ts
+$ref: keywords ignored in schema at path "#/properties/operations/items"
+
+ ✓ tests/designer-schema-completion.test.ts (4 tests) 68ms
+ ✓ tests/designer-visual-client.test.ts (3 tests) 61ms
+ ✓ tests/designer-model.test.ts (7 tests) 94ms
+ ✓ tests/quellight-transport.test.ts (10 tests) 53ms
+ ✓ tests/changeset-contract.test.ts (12 tests) 35ms
+ ✓ tests/confirmation-contract.test.ts (11 tests) 26ms
+ ✓ tests/target-selection.test.ts (6 tests) 26ms
+ ↓ tests/designer-agent-live-completion.test.ts (1 test | 1 skipped)
+
+ Test Files  47 passed | 1 skipped (48)
+      Tests  260 passed | 1 skipped (261)
+   Start at  05:32:13
+   Duration  210.74s (transform 66.39s, setup 0ms, collect 282.46s, tests 60.60s, environment 26.33s, prepare 16.87s)
+

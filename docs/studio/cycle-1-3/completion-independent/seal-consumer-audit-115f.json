@@ -1,0 +1,58 @@
+{
+  "checkedAt": "2026-10-23T21:56:18.957Z",
+  "productSha": "115f8242e5069191ea219c8ab6da50d45551b56a",
+  "evidenceHead": "a04abbdb4329a6d0b242c2c74c1550cb8d5d8ad3",
+  "sealSha256": "04b7df2f9b7db6e9367c8ee05ddeb7ef8e0a07dd443ba7982d07be02c3399c0b",
+  "sources": 934,
+  "sealedSourceMismatches": [],
+  "checkoutByteVariations": [
+    {
+      "path": "apps/studio/src/lib/designer/recipes.ts",
+      "normalizedLFEqual": true
+    },
+    {
+      "path": "examples/studio-ui-consumer/src/cycle13-catalog.json",
+      "normalizedLFEqual": true
+    },
+    {
+      "path": "packages/ui-editor/src/NativeInputContent.svelte",
+      "normalizedLFEqual": true
+    },
+    {
+      "path": "packages/ui-editor/src/bridge.ts",
+      "normalizedLFEqual": true
+    },
+    {
+      "path": "packages/ui-editor/src/commands.ts",
+      "normalizedLFEqual": true
+    },
+    {
+      "path": "packages/ui-editor/src/index.ts",
+      "normalizedLFEqual": true
+    },
+    {
+      "path": "packages/ui-editor/src/interactive-slots.ts",
+      "normalizedLFEqual": true
+    }
+  ],
+  "outputs": 289,
+  "outputMismatches": [],
+  "consumer": {
+    "sha": "115f8242e5069191ea219c8ab6da50d45551b56a",
+    "mode": "Incremental final package upgrade in the retained fresh independent install; no workspace links or aliases",
+    "files": 173,
+    "mismatches": [],
+    "packs": [
+      {
+        "name": "ui-ai-svelte",
+        "sha256": "2037fea971d413828c079c94f6281699e9508571b0ab3f26e6d3e7a5c6ee2f87",
+        "match": true
+      },
+      {
+        "name": "ui-flow-svelte",
+        "sha256": "feacec984e5cdcf809e58d68c3b5df3121604b5fb7df52249fab44ce0501be7f",
+        "match": true
+      }
+    ]
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "ok": true,
+  "evidence": "observed-appearance",
+  "observation": "The first/topmost input field contains the visible text **\"CobaltMoth582\"**, rendered left-aligned with small left padding inside a white rounded rectangle with a light border.\n\nObserved: the text is dark (near-black/dark navy), matching the color of the second field's text (\"Ada Lovlace\") and the heading — not gray or faded.\n\nInference: because the text shows full-contrast dark styling rather than the lighter gray typically used for placeholders, it appears to be an actual entered value rather than placeholder text. This is a styling-based inference only; the capture is static, so caret focus or field state cannot be confirmed.\n\nSpacing and alignment appear normal; no clipping or overlap is visible in either input.",
+  "metadata": {
+    "cursor": {
+      "documentId": "screen-288f8ae7-260b-4734-8850-7da959ca24bc",
+      "revision": "r1.r2#0",
+      "digest": "c1583149c27cc7fe871961c8f19df70236d23eeb852c514e37e7f4953c5a862e",
+      "epoch": "4f733655-800b-4d1b-a94b-f646dd5ddabf"
+    },
+    "capturedAt": "2026-10-23T21:57:47.151Z",
+    "viewport": {
+      "width": 960,
+      "height": 585,
+      "scrollLeft": 0,
+      "scrollTop": 21.600000381469727,
+      "devicePixelRatio": 1.25
+    },
+    "image": {
+      "width": 909,
+      "height": 555,
+      "sourceWidth": 909,
+      "sourceHeight": 560,
+      "offsetLeft": 0,
+      "offsetTop": 6,
+      "cropped": true
+    },
+    "preview": {
+      "mode": "interact",
+      "fingerprint": "91bdb5ed4bab7174155629247ffc9522f59c9e5939f606aa967f762ba1285ec1",
+      "selection": "screen-288f8ae7-260b-4734-8850-7da959ca24bc|screen"
+    }
+  },
+  "revalidatedAt": "2026-10-23T21:57:54.612Z",
+  "validation": "same-source-preview-viewport-and-image-bytes-after-inference",
+  "imageDigest": "4c96cc52bb74ca8c561b69d59b66fe7d91cf30ed9f76b719641db7e80ff37d7a",
+  "confirmedImageDigest": "4c96cc52bb74ca8c561b69d59b66fe7d91cf30ed9f76b719641db7e80ff37d7a",
+  "imageComparison": "sha256-identical",
+  "bytes": 23171,
+  "model": "zai/glm-5.3-flash",
+  "interactionVerified": false,
+  "limitation": "Only the captured preview frame region and stated preview state were inspected. Open preview-owned external portals refuse capture; unrelated Studio chrome is outside this image. Source relationships and interaction outcomes require separate checks."
+}
