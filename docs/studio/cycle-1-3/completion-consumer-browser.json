@@ -1,0 +1,62 @@
+{
+  "productSha": "115f8242e5069191ea219c8ab6da50d45551b56a",
+  "kind": "Actual browser of independently installed packed packages; deterministic streaming fixture, no provider",
+  "copyButtons": [
+    {
+      "icons": 1,
+      "text": ""
+    },
+    {
+      "icons": 1,
+      "text": ""
+    },
+    {
+      "icons": 1,
+      "text": ""
+    }
+  ],
+  "events": [
+    {
+      "id": "before",
+      "text": "Simulated attempt: inspect the source."
+    },
+    {
+      "id": "refused",
+      "text": " Validation refusedfailed  Fixture only: operations.0.prop needs a declared property."
+    },
+    {
+      "id": "correction",
+      "text": "Simulated correction follows the refusal."
+    },
+    {
+      "id": "receipt",
+      "text": " Simulated receipt acknowledgedcompleted  No real source was edited by this package example."
+    },
+    {
+      "id": "cancelled",
+      "text": " Simulated observation stoppedcancelled  A stopped attempt has no confirmed observation. This is a presentation fixture."
+    }
+  ],
+  "handleSides": [
+    "right",
+    "left",
+    "right",
+    "left"
+  ],
+  "scrollWidth": 1265,
+  "sendEnabled": true,
+  "stopped": true,
+  "unrelatedButton": {
+    "background": "rgb(240, 240, 240)",
+    "border": "outset"
+  },
+  "width": 1280,
+  "copyTextMatches": true,
+  "noLateStreaming": true,
+  "comparisonAdjustment": {
+    "initialWholeConversationEquality": false,
+    "reason": "Copy confirmation live-region added Message copied.; the streamed reply stayed identical.",
+    "before": "New Thread Local streaming presentation fixture    Assistant  This is a packed-package consumer.Send a message to test streaming and Stop. This showcase uses a deterministic presentation fixture, with no provider or application effects.  You Final package stream check  Assistant  Fixture stoppedcancelled  Fixture stopped This reply streams from a local fixture. No backend a     Scroll to end     Send   ",
+    "after": "New Thread Local streaming presentation fixture    Assistant  This is a packed-package consumer.Send a message to test streaming and Stop. This showcase uses a deterministic presentation fixture, with no provider or application effects.  You Final package stream check  Assistant  Fixture stoppedcancelled  Fixture stopped This reply streams from a local fixture. No backend a     Scroll to end     Send   Message copied."
+  }
+}

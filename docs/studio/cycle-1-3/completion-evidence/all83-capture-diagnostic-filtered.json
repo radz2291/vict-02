@@ -1,0 +1,65 @@
+[
+  {
+    "stage": "source",
+    "sourceId": "live-completion",
+    "nodes": 151,
+    "sourceWidth": 909,
+    "sourceHeight": 4927.5,
+    "viewportWidth": 960,
+    "viewportHeight": 585,
+    "elements": 434,
+    "svgElements": 0,
+    "svgNamespaceSamples": []
+  },
+  {
+    "stage": "fonts-ready"
+  },
+  {
+    "stage": "diagnostic-image-filter",
+    "omittedDisplayNoneImages": 1,
+    "restriction": "Only HTML img with computed display:none. Visible images and SVG definitions are retained."
+  },
+  {
+    "stage": "toSvg",
+    "ok": true,
+    "urlCharacters": 4937375
+  },
+  {
+    "stage": "original-xml-parse",
+    "ok": true,
+    "root": "svg",
+    "error": null,
+    "svgElements": 1
+  },
+  {
+    "stage": "original-svg-image-load",
+    "ok": true,
+    "naturalWidth": 909,
+    "naturalHeight": 4928
+  },
+  {
+    "stage": "cropped-xml-parse",
+    "ok": true,
+    "error": null,
+    "characters": 3605097,
+    "width": 909,
+    "height": 585,
+    "left": 0,
+    "top": 60
+  },
+  {
+    "stage": "cropped-svg-image-load",
+    "ok": true,
+    "naturalWidth": 909,
+    "naturalHeight": 585
+  },
+  {
+    "stage": "drawImage",
+    "ok": true
+  },
+  {
+    "stage": "toBlob",
+    "ok": true,
+    "bytes": 28570
+  }
+]

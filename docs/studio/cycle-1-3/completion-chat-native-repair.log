@@ -1,0 +1,37 @@
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion/260831-VCT-02/apps/studio
+
+5:07:28 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion/260831-VCT-02/packages/ui-svelte/src/document/DocumentHost.svelte:105:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+5:07:29 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:301:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+5:07:29 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:301:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+5:07:29 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:368:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+5:07:29 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:368:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+5:07:36 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion/260831-VCT-02/packages/ui-editor/src/StateValuesPanel.svelte:106:6 A form label must be associated with a control
+https://svelte.dev/e/a11y_label_has_associated_control
+ ✓ tests/ui/agent-handoff.test.ts (5 tests) 2013ms
+   ✓ does not let delayed Stop cleanup replace the feedback for a newer turn  646ms
+   ✓ settles a genuine stale refusal without waiting for the model and admits fresh context only in a new request  466ms
+   ✓ keeps an applied batch undoable and ignores late proposals/completion after Stop  369ms
+ ✓ tests/ui/completion-timeline.test.ts (3 tests) 1628ms
+   ✓ renders ordered text, refused attempt, corrected observation and acknowledged boundary through public presentation  1120ms
+   ✓ shows aggregate UTF-8 admission failure with the unsent draft retained  493ms
+stderr | tests/ui/completion-legacy-triggers.test.ts
+[svelte] derived_inert
+Reading a derived belonging to a now-destroyed effect may result in stale values
+https://svelte.dev/e/derived_inert
+
+ ✓ tests/ui/completion-legacy-triggers.test.ts (3 tests) 892ms
+   ✓ preserves old popover source while rendering one native trigger with its authored label  511ms
+ ✓ tests/ui/completion-independent-fields.test.ts (1 test) 419ms
+   ✓ changes two native fields and two boolean controls independently through real renderer events (DOM simulation)  408ms
+
+ Test Files  4 passed (4)
+      Tests  12 passed (12)
+   Start at  05:06:54
+   Duration  89.23s (transform 33.82s, setup 0ms, collect 64.18s, tests 4.95s, environment 12.60s, prepare 2.74s)
+

@@ -1,0 +1,23 @@
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion/260831-VCT-02/apps/studio
+
+5:12:12 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion/260831-VCT-02/packages/ui-svelte/src/document/DocumentHost.svelte:105:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+5:12:13 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:301:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+5:12:13 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:301:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+5:12:13 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:368:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+5:12:13 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:368:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+5:12:19 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion/260831-VCT-02/packages/ui-editor/src/StateValuesPanel.svelte:106:6 A form label must be associated with a control
+https://svelte.dev/e/a11y_label_has_associated_control
+ ✓ tests/designer-agent-live-completion.test.ts (1 test) 638992ms
+   ✓ real configured provider reads a large mixed source, recovers from a requested invalid property, and authors independent fields  638989ms
+
+ Test Files  1 passed (1)
+      Tests  1 passed (1)
+   Start at  05:11:54
+   Duration  671.45s (transform 18.92s, setup 0ms, collect 31.10s, tests 638.99s, environment 0ms, prepare 327ms)
+

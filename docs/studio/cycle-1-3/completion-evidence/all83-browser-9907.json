@@ -1,0 +1,3740 @@
+{
+  "kind": "Actual CUA browser interaction on genuine provider document; carried forward unchanged UI/render paths to product115f",
+  "productTested": "990742db1dd143775c83997f52a69c8a749284b9",
+  "providerImportedSource": "3794c4a4dc75012c436df982f0532b6bbf68ee12",
+  "documentId": "screen-add47b46-acee-42e9-a45d-83e1c9fb58f9",
+  "normalizations": [
+    "Fresh screen id",
+    "Fresh screen revision",
+    "Root aria-label review title"
+  ],
+  "sourceNodes": 151,
+  "sourceUnchangedByInteractions": true,
+  "sourceReopenedExact": true,
+  "checks": [
+    "Full name and Name native fields change independently",
+    "Consent Space toggles without original checkbox or switch changes",
+    "Switch Space toggles independently",
+    "Slider ArrowRight25to26",
+    "Accordion closes and opens",
+    "Pagination Page3 current",
+    "Release notes expands",
+    "Dialog content visible,Escape closes,focus restored",
+    "Popover visible,Escape from Close closes",
+    "Alertdialog Keep draft cancels,focus restored",
+    "No nested button/button,input,anchor descendants",
+    "Runtime interactions do not change canonical source"
+  ],
+  "limitations": [
+    "Email type values masked by browser read surface; field-name exact value checks used two text controls instead",
+    "Representative interactions, not every possible83recipe state",
+    "Actual visual observation still pending final provider"
+  ],
+  "source": {
+    "schema": "vict.ui-document@1",
+    "id": "screen-add47b46-acee-42e9-a45d-83e1c9fb58f9",
+    "revision": "r1.r1",
+    "root": "screen",
+    "nodes": {
+      "screen": {
+        "kind": "element",
+        "id": "screen",
+        "tag": "main",
+        "attributes": {
+          "aria-label": "Completion all83 provider result"
+        },
+        "children": [
+          "hero-section",
+          "nav-section",
+          "forms-section",
+          "data-section",
+          "dates-section",
+          "overlays-section",
+          "live-recovery-section"
+        ],
+        "localStyle": [
+          {
+            "property": "display",
+            "value": {
+              "type": "text",
+              "value": "flex"
+            }
+          },
+          {
+            "property": "flex-direction",
+            "value": {
+              "type": "text",
+              "value": "column"
+            }
+          },
+          {
+            "property": "gap",
+            "value": {
+              "type": "text",
+              "value": "20px"
+            }
+          },
+          {
+            "property": "padding",
+            "value": {
+              "type": "text",
+              "value": "40px"
+            }
+          },
+          {
+            "property": "min-height",
+            "value": {
+              "type": "text",
+              "value": "560px"
+            }
+          },
+          {
+            "property": "background-color",
+            "value": {
+              "type": "text",
+              "value": "#ffffff"
+            }
+          },
+          {
+            "property": "color",
+            "value": {
+              "type": "text",
+              "value": "#243047"
+            }
+          },
+          {
+            "property": "font-family",
+            "value": {
+              "type": "text",
+              "value": "system-ui, sans-serif"
+            }
+          }
+        ]
+      },
+      "existing-0": {
+        "kind": "component",
+        "id": "existing-0",
+        "definitionId": "vict.catalog.button",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Preview action"
+          },
+          "loading": {
+            "type": "ref",
+            "path": "state.busy"
+          }
+        },
+        "slots": {}
+      },
+      "existing-1": {
+        "kind": "component",
+        "id": "existing-1",
+        "definitionId": "vict.catalog.checkbox",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "I agree to continue"
+          },
+          "checked": {
+            "type": "ref",
+            "path": "state.field_existing-1"
+          }
+        },
+        "outputs": {
+          "checkedChange": {
+            "setState": {
+              "key": "field_existing-1"
+            }
+          }
+        },
+        "slots": {}
+      },
+      "existing-2": {
+        "kind": "component",
+        "id": "existing-2",
+        "definitionId": "vict.catalog.switch",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Enable notifications"
+          },
+          "checked": {
+            "type": "ref",
+            "path": "state.field_existing-2"
+          }
+        },
+        "outputs": {
+          "checkedChange": {
+            "setState": {
+              "key": "field_existing-2"
+            }
+          }
+        },
+        "slots": {}
+      },
+      "existing-3": {
+        "kind": "component",
+        "id": "existing-3",
+        "definitionId": "vict.catalog.dialog",
+        "props": {
+          "title": {
+            "type": "literal",
+            "value": "More details"
+          },
+          "open": {
+            "type": "literal",
+            "value": false
+          }
+        },
+        "slots": {
+          "body": {
+            "name": "body",
+            "children": [
+              "existing-3-body-1"
+            ]
+          }
+        }
+      },
+      "existing-3-body-1": {
+        "kind": "element",
+        "id": "existing-3-body-1",
+        "tag": "p",
+        "children": [
+          "existing-3-body-1-text"
+        ],
+        "localStyle": []
+      },
+      "existing-3-body-1-text": {
+        "kind": "text",
+        "id": "existing-3-body-1-text",
+        "content": {
+          "type": "literal",
+          "value": "Dialog body: this example shows a composed overlay message."
+        }
+      },
+      "existing-4": {
+        "kind": "component",
+        "id": "existing-4",
+        "definitionId": "vict.catalog.select",
+        "props": {},
+        "slots": {
+          "items": {
+            "name": "items",
+            "children": [
+              "existing-4-items-1",
+              "existing-4-items-2"
+            ]
+          }
+        }
+      },
+      "existing-4-items-1": {
+        "kind": "component",
+        "id": "existing-4-items-1",
+        "definitionId": "vict.catalog.select-item",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Express delivery"
+          },
+          "value": {
+            "type": "literal",
+            "value": "first"
+          }
+        },
+        "slots": {}
+      },
+      "existing-4-items-2": {
+        "kind": "component",
+        "id": "existing-4-items-2",
+        "definitionId": "vict.catalog.select-item",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Standard delivery"
+          },
+          "value": {
+            "type": "literal",
+            "value": "second"
+          }
+        },
+        "slots": {}
+      },
+      "existing-5": {
+        "kind": "component",
+        "id": "existing-5",
+        "definitionId": "vict.catalog.slider",
+        "props": {
+          "value": {
+            "type": "ref",
+            "path": "state.catalog_existing-5_value"
+          },
+          "label": {
+            "type": "literal",
+            "value": "Slider"
+          }
+        },
+        "outputs": {
+          "valueChange": {
+            "setState": {
+              "key": "catalog_existing-5_value"
+            }
+          }
+        },
+        "slots": {}
+      },
+      "existing-6": {
+        "kind": "component",
+        "id": "existing-6",
+        "definitionId": "vict.catalog.toggle",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Toggle"
+          }
+        },
+        "slots": {}
+      },
+      "existing-7": {
+        "kind": "component",
+        "id": "existing-7",
+        "definitionId": "vict.catalog.accordion",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Accordion"
+          }
+        },
+        "slots": {
+          "items": {
+            "name": "items",
+            "children": [
+              "existing-7-items-1"
+            ]
+          }
+        }
+      },
+      "existing-7-items-1": {
+        "kind": "component",
+        "id": "existing-7-items-1",
+        "definitionId": "vict.catalog.accordion-item",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Details"
+          },
+          "value": {
+            "type": "literal",
+            "value": "first"
+          }
+        },
+        "slots": {
+          "content": {
+            "name": "content",
+            "children": [
+              "existing-7-items-1-content-1"
+            ]
+          }
+        }
+      },
+      "existing-7-items-1-content-1": {
+        "kind": "element",
+        "id": "existing-7-items-1-content-1",
+        "tag": "p",
+        "children": [
+          "existing-7-items-1-content-1-text"
+        ],
+        "localStyle": []
+      },
+      "existing-7-items-1-content-1-text": {
+        "kind": "text",
+        "id": "existing-7-items-1-content-1-text",
+        "content": {
+          "type": "literal",
+          "value": "Expandable content"
+        }
+      },
+      "existing-8": {
+        "kind": "component",
+        "id": "existing-8",
+        "definitionId": "vict.catalog.tabs",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Tabs"
+          },
+          "value": {
+            "type": "literal",
+            "value": "first"
+          }
+        },
+        "slots": {
+          "tabs": {
+            "name": "tabs",
+            "children": [
+              "existing-8-tabs-1"
+            ]
+          },
+          "panels": {
+            "name": "panels",
+            "children": [
+              "existing-8-panels-1"
+            ]
+          }
+        }
+      },
+      "existing-8-tabs-1": {
+        "kind": "component",
+        "id": "existing-8-tabs-1",
+        "definitionId": "vict.catalog.tabs-trigger",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "First tab"
+          },
+          "value": {
+            "type": "literal",
+            "value": "first"
+          }
+        },
+        "slots": {}
+      },
+      "existing-8-panels-1": {
+        "kind": "component",
+        "id": "existing-8-panels-1",
+        "definitionId": "vict.catalog.tabs-panel",
+        "props": {
+          "value": {
+            "type": "literal",
+            "value": "first"
+          }
+        },
+        "slots": {
+          "content": {
+            "name": "content",
+            "children": [
+              "existing-8-panels-1-content-1"
+            ]
+          }
+        }
+      },
+      "existing-8-panels-1-content-1": {
+        "kind": "element",
+        "id": "existing-8-panels-1-content-1",
+        "tag": "p",
+        "children": [
+          "existing-8-panels-1-content-1-text"
+        ],
+        "localStyle": []
+      },
+      "existing-8-panels-1-content-1-text": {
+        "kind": "text",
+        "id": "existing-8-panels-1-content-1-text",
+        "content": {
+          "type": "literal",
+          "value": "Tab content"
+        }
+      },
+      "existing-9": {
+        "kind": "component",
+        "id": "existing-9",
+        "definitionId": "vict.catalog.progress",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Progress"
+          },
+          "value": {
+            "type": "literal",
+            "value": 40
+          }
+        },
+        "slots": {}
+      },
+      "existing-10": {
+        "kind": "component",
+        "id": "existing-10",
+        "definitionId": "vict.catalog.popover",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Popover"
+          },
+          "title": {
+            "type": "literal",
+            "value": "Popover"
+          },
+          "description": {
+            "type": "literal",
+            "value": "Popover demo: short supporting description."
+          }
+        },
+        "slots": {
+          "content": {
+            "name": "content",
+            "children": [
+              "existing-10-content-1"
+            ]
+          }
+        }
+      },
+      "existing-10-content-1": {
+        "kind": "element",
+        "id": "existing-10-content-1",
+        "tag": "p",
+        "children": [
+          "existing-10-content-1-text"
+        ],
+        "localStyle": []
+      },
+      "existing-10-content-1-text": {
+        "kind": "text",
+        "id": "existing-10-content-1-text",
+        "content": {
+          "type": "literal",
+          "value": "Popover body: trigger content lives inside this slot."
+        }
+      },
+      "existing-11": {
+        "kind": "component",
+        "id": "existing-11",
+        "definitionId": "vict.catalog.separator",
+        "props": {
+          "orientation": {
+            "type": "literal",
+            "value": "horizontal"
+          },
+          "decorative": {
+            "type": "literal",
+            "value": true
+          }
+        },
+        "slots": {}
+      },
+      "live-recovery-section": {
+        "kind": "element",
+        "id": "live-recovery-section",
+        "tag": "section",
+        "attributes": {
+          "aria-label": "Live recovery form"
+        },
+        "children": [
+          "live-recovery-heading",
+          "live-label-email",
+          "live-email",
+          "live-label-name",
+          "live-name",
+          "live-label-consent",
+          "live-consent"
+        ],
+        "localStyle": [
+          {
+            "property": "display",
+            "value": {
+              "type": "text",
+              "value": "flex"
+            }
+          },
+          {
+            "property": "flex-direction",
+            "value": {
+              "type": "text",
+              "value": "column"
+            }
+          },
+          {
+            "property": "gap",
+            "value": {
+              "type": "text",
+              "value": "16px"
+            }
+          },
+          {
+            "property": "padding",
+            "value": {
+              "type": "text",
+              "value": "24px"
+            }
+          },
+          {
+            "property": "min-height",
+            "value": {
+              "type": "text",
+              "value": "100px"
+            }
+          },
+          {
+            "property": "background-color",
+            "value": {
+              "type": "text",
+              "value": "#f5f7fb"
+            }
+          },
+          {
+            "property": "border-radius",
+            "value": {
+              "type": "text",
+              "value": "12px"
+            }
+          }
+        ]
+      },
+      "live-label-email": {
+        "kind": "component",
+        "id": "live-label-email",
+        "definitionId": "vict.catalog.label",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Email"
+          },
+          "for": {
+            "type": "literal",
+            "value": "live-email"
+          }
+        },
+        "slots": {}
+      },
+      "live-email": {
+        "kind": "element",
+        "id": "live-email",
+        "tag": "input",
+        "children": [],
+        "attributes": {
+          "type": "email",
+          "aria-label": "Email",
+          "placeholder": "you@example.com",
+          "value": {
+            "type": "ref",
+            "path": "state.recovery-email"
+          },
+          "id": "live-email"
+        },
+        "interactions": [
+          {
+            "on": "change",
+            "action": "setState",
+            "key": "recovery-email",
+            "value": {
+              "type": "ref",
+              "path": "state.recovery-email"
+            }
+          }
+        ],
+        "localStyle": [
+          {
+            "property": "padding",
+            "value": {
+              "type": "text",
+              "value": "12px"
+            }
+          },
+          {
+            "property": "border-radius",
+            "value": {
+              "type": "text",
+              "value": "8px"
+            }
+          },
+          {
+            "property": "border",
+            "value": {
+              "type": "text",
+              "value": "1px solid #cbd3e1"
+            }
+          },
+          {
+            "property": "font-size",
+            "value": {
+              "type": "text",
+              "value": "16px"
+            }
+          },
+          {
+            "property": "width",
+            "value": {
+              "type": "text",
+              "value": "100%"
+            }
+          },
+          {
+            "property": "box-sizing",
+            "value": {
+              "type": "text",
+              "value": "border-box"
+            }
+          }
+        ]
+      },
+      "live-label-name": {
+        "kind": "component",
+        "id": "live-label-name",
+        "definitionId": "vict.catalog.label",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Name"
+          },
+          "for": {
+            "type": "literal",
+            "value": "live-name"
+          }
+        },
+        "slots": {}
+      },
+      "live-name": {
+        "kind": "element",
+        "id": "live-name",
+        "tag": "input",
+        "children": [],
+        "attributes": {
+          "type": "text",
+          "aria-label": "Name",
+          "placeholder": "Full name",
+          "value": {
+            "type": "ref",
+            "path": "state.recovery-name"
+          },
+          "id": "live-name"
+        },
+        "interactions": [
+          {
+            "on": "change",
+            "action": "setState",
+            "key": "recovery-name",
+            "value": {
+              "type": "ref",
+              "path": "state.recovery-name"
+            }
+          }
+        ],
+        "localStyle": [
+          {
+            "property": "padding",
+            "value": {
+              "type": "text",
+              "value": "12px"
+            }
+          },
+          {
+            "property": "border-radius",
+            "value": {
+              "type": "text",
+              "value": "8px"
+            }
+          },
+          {
+            "property": "border",
+            "value": {
+              "type": "text",
+              "value": "1px solid #cbd3e1"
+            }
+          },
+          {
+            "property": "font-size",
+            "value": {
+              "type": "text",
+              "value": "16px"
+            }
+          },
+          {
+            "property": "width",
+            "value": {
+              "type": "text",
+              "value": "100%"
+            }
+          },
+          {
+            "property": "box-sizing",
+            "value": {
+              "type": "text",
+              "value": "border-box"
+            }
+          }
+        ]
+      },
+      "live-label-consent": {
+        "kind": "component",
+        "id": "live-label-consent",
+        "definitionId": "vict.catalog.label",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Consent"
+          },
+          "for": {
+            "type": "literal",
+            "value": "live-consent"
+          }
+        },
+        "slots": {}
+      },
+      "live-consent": {
+        "kind": "component",
+        "id": "live-consent",
+        "definitionId": "vict.catalog.checkbox",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Consent"
+          },
+          "checked": {
+            "type": "ref",
+            "path": "state.recovery-consent"
+          }
+        },
+        "outputs": {
+          "checkedChange": {
+            "setState": {
+              "key": "recovery-consent"
+            }
+          }
+        },
+        "slots": {}
+      },
+      "hero-section": {
+        "kind": "element",
+        "id": "hero-section",
+        "tag": "section",
+        "attributes": {
+          "aria-label": "Hero"
+        },
+        "children": [
+          "hero-heading",
+          "hero-subtitle",
+          "hero-row"
+        ],
+        "localStyle": [
+          {
+            "property": "display",
+            "value": {
+              "type": "text",
+              "value": "flex"
+            }
+          },
+          {
+            "property": "flex-direction",
+            "value": {
+              "type": "text",
+              "value": "column"
+            }
+          },
+          {
+            "property": "gap",
+            "value": {
+              "type": "text",
+              "value": "16px"
+            }
+          },
+          {
+            "property": "padding",
+            "value": {
+              "type": "text",
+              "value": "24px"
+            }
+          },
+          {
+            "property": "min-height",
+            "value": {
+              "type": "text",
+              "value": "100px"
+            }
+          },
+          {
+            "property": "background-color",
+            "value": {
+              "type": "text",
+              "value": "#f5f7fb"
+            }
+          },
+          {
+            "property": "border-radius",
+            "value": {
+              "type": "text",
+              "value": "12px"
+            }
+          }
+        ]
+      },
+      "hero-heading": {
+        "kind": "element",
+        "id": "hero-heading",
+        "tag": "h1",
+        "children": [
+          "hero-heading-text"
+        ],
+        "localStyle": [
+          {
+            "property": "font-size",
+            "value": {
+              "type": "text",
+              "value": "32px"
+            }
+          },
+          {
+            "property": "font-weight",
+            "value": {
+              "type": "text",
+              "value": "600"
+            }
+          },
+          {
+            "property": "line-height",
+            "value": {
+              "type": "text",
+              "value": "1.2"
+            }
+          },
+          {
+            "property": "margin",
+            "value": {
+              "type": "text",
+              "value": "0"
+            }
+          }
+        ]
+      },
+      "hero-heading-text": {
+        "kind": "text",
+        "id": "hero-heading-text",
+        "content": {
+          "type": "literal",
+          "value": "Component Gallery"
+        }
+      },
+      "hero-subtitle": {
+        "kind": "element",
+        "id": "hero-subtitle",
+        "tag": "p",
+        "children": [
+          "hero-subtitle-text"
+        ],
+        "localStyle": [
+          {
+            "property": "font-size",
+            "value": {
+              "type": "text",
+              "value": "16px"
+            }
+          },
+          {
+            "property": "line-height",
+            "value": {
+              "type": "text",
+              "value": "1.6"
+            }
+          },
+          {
+            "property": "margin",
+            "value": {
+              "type": "text",
+              "value": "0"
+            }
+          },
+          {
+            "property": "color",
+            "value": {
+              "type": "text",
+              "value": "#647187"
+            }
+          }
+        ]
+      },
+      "hero-subtitle-text": {
+        "kind": "text",
+        "id": "hero-subtitle-text",
+        "content": {
+          "type": "literal",
+          "value": "Every catalog component, composed into one intentional landing page."
+        }
+      },
+      "hero-row": {
+        "kind": "element",
+        "id": "hero-row",
+        "tag": "div",
+        "children": [
+          "existing-0"
+        ],
+        "localStyle": [
+          {
+            "property": "display",
+            "value": {
+              "type": "text",
+              "value": "flex"
+            }
+          },
+          {
+            "property": "flex-wrap",
+            "value": {
+              "type": "text",
+              "value": "wrap"
+            }
+          },
+          {
+            "property": "gap",
+            "value": {
+              "type": "text",
+              "value": "16px"
+            }
+          },
+          {
+            "property": "align-items",
+            "value": {
+              "type": "text",
+              "value": "center"
+            }
+          },
+          {
+            "property": "min-height",
+            "value": {
+              "type": "text",
+              "value": "60px"
+            }
+          }
+        ],
+        "attributes": {
+          "aria-label": "Hero actions"
+        }
+      },
+      "nav-section": {
+        "kind": "element",
+        "id": "nav-section",
+        "tag": "section",
+        "attributes": {
+          "aria-label": "Navigation and menus"
+        },
+        "children": [
+          "nav-heading",
+          "nav-menubar",
+          "nav-ddm",
+          "nav-cm",
+          "nav-nm",
+          "nav-command",
+          "nav-toolbar",
+          "nav-tooltip",
+          "nav-link-preview"
+        ],
+        "localStyle": [
+          {
+            "property": "display",
+            "value": {
+              "type": "text",
+              "value": "flex"
+            }
+          },
+          {
+            "property": "flex-direction",
+            "value": {
+              "type": "text",
+              "value": "column"
+            }
+          },
+          {
+            "property": "gap",
+            "value": {
+              "type": "text",
+              "value": "16px"
+            }
+          },
+          {
+            "property": "padding",
+            "value": {
+              "type": "text",
+              "value": "24px"
+            }
+          },
+          {
+            "property": "min-height",
+            "value": {
+              "type": "text",
+              "value": "100px"
+            }
+          },
+          {
+            "property": "background-color",
+            "value": {
+              "type": "text",
+              "value": "#f5f7fb"
+            }
+          },
+          {
+            "property": "border-radius",
+            "value": {
+              "type": "text",
+              "value": "12px"
+            }
+          }
+        ]
+      },
+      "nav-heading": {
+        "kind": "element",
+        "id": "nav-heading",
+        "tag": "h2",
+        "children": [
+          "nav-heading-text"
+        ],
+        "localStyle": [
+          {
+            "property": "font-size",
+            "value": {
+              "type": "text",
+              "value": "32px"
+            }
+          },
+          {
+            "property": "font-weight",
+            "value": {
+              "type": "text",
+              "value": "600"
+            }
+          },
+          {
+            "property": "line-height",
+            "value": {
+              "type": "text",
+              "value": "1.2"
+            }
+          },
+          {
+            "property": "margin",
+            "value": {
+              "type": "text",
+              "value": "0"
+            }
+          }
+        ]
+      },
+      "nav-heading-text": {
+        "kind": "text",
+        "id": "nav-heading-text",
+        "content": {
+          "type": "literal",
+          "value": "Navigation & Menus"
+        }
+      },
+      "nav-menubar": {
+        "kind": "component",
+        "id": "nav-menubar",
+        "definitionId": "vict.catalog.menubar",
+        "props": {},
+        "slots": {
+          "menus": {
+            "name": "menus",
+            "children": [
+              "nav-menubar-menu-file",
+              "nav-menubar-menu-view"
+            ]
+          }
+        }
+      },
+      "nav-menubar-menu-file": {
+        "kind": "component",
+        "id": "nav-menubar-menu-file",
+        "definitionId": "vict.catalog.menubar.menu",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "File"
+          },
+          "value": {
+            "type": "literal",
+            "value": "file"
+          }
+        },
+        "slots": {
+          "items": {
+            "name": "items",
+            "children": [
+              "nav-menubar-item-new",
+              "nav-menubar-sub-export",
+              "nav-menubar-cbg",
+              "nav-menubar-rg",
+              "nav-menubar-group",
+              "nav-menubar-sep"
+            ]
+          }
+        }
+      },
+      "nav-menubar-item-new": {
+        "kind": "component",
+        "id": "nav-menubar-item-new",
+        "definitionId": "vict.catalog.menubar.item",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "New file"
+          },
+          "value": {
+            "type": "literal",
+            "value": "new-file"
+          }
+        },
+        "slots": {}
+      },
+      "nav-menubar-sub-export": {
+        "kind": "component",
+        "id": "nav-menubar-sub-export",
+        "definitionId": "vict.catalog.menubar.sub",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Export as"
+          }
+        },
+        "slots": {
+          "items": {
+            "name": "items",
+            "children": [
+              "nav-menubar-item-pdf"
+            ]
+          }
+        }
+      },
+      "nav-menubar-item-pdf": {
+        "kind": "component",
+        "id": "nav-menubar-item-pdf",
+        "definitionId": "vict.catalog.menubar.item",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "PDF"
+          },
+          "value": {
+            "type": "literal",
+            "value": "pdf"
+          }
+        },
+        "slots": {}
+      },
+      "nav-menubar-cbg": {
+        "kind": "component",
+        "id": "nav-menubar-cbg",
+        "definitionId": "vict.catalog.menubar.checkbox-group",
+        "props": {
+          "values": {
+            "type": "ref",
+            "path": "state.catalog_nav-menubar-cbg_values"
+          }
+        },
+        "outputs": {
+          "valuesChange": {
+            "setState": {
+              "key": "catalog_nav-menubar-cbg_values"
+            }
+          }
+        },
+        "slots": {
+          "items": {
+            "name": "items",
+            "children": [
+              "nav-menubar-cbi"
+            ]
+          }
+        }
+      },
+      "nav-menubar-cbi": {
+        "kind": "component",
+        "id": "nav-menubar-cbi",
+        "definitionId": "vict.catalog.menubar.checkbox-item",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Line numbers"
+          },
+          "checked": {
+            "type": "literal",
+            "value": true
+          },
+          "value": {
+            "type": "literal",
+            "value": "line-numbers"
+          }
+        },
+        "slots": {}
+      },
+      "nav-menubar-rg": {
+        "kind": "component",
+        "id": "nav-menubar-rg",
+        "definitionId": "vict.catalog.menubar.radio-group",
+        "props": {
+          "value": {
+            "type": "literal",
+            "value": "density"
+          }
+        },
+        "slots": {
+          "items": {
+            "name": "items",
+            "children": [
+              "nav-menubar-ri"
+            ]
+          }
+        }
+      },
+      "nav-menubar-ri": {
+        "kind": "component",
+        "id": "nav-menubar-ri",
+        "definitionId": "vict.catalog.menubar.radio-item",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Compact"
+          },
+          "value": {
+            "type": "literal",
+            "value": "compact"
+          }
+        },
+        "slots": {}
+      },
+      "nav-menubar-group": {
+        "kind": "component",
+        "id": "nav-menubar-group",
+        "definitionId": "vict.catalog.menubar.group",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Menubar Group"
+          }
+        },
+        "slots": {
+          "items": {
+            "name": "items",
+            "children": [
+              "nav-menubar-item-about"
+            ]
+          }
+        }
+      },
+      "nav-menubar-item-about": {
+        "kind": "component",
+        "id": "nav-menubar-item-about",
+        "definitionId": "vict.catalog.menubar.item",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "About this app"
+          },
+          "value": {
+            "type": "literal",
+            "value": "about"
+          }
+        },
+        "slots": {}
+      },
+      "nav-menubar-sep": {
+        "kind": "component",
+        "id": "nav-menubar-sep",
+        "definitionId": "vict.catalog.menubar.separator",
+        "props": {},
+        "slots": {}
+      },
+      "nav-menubar-menu-view": {
+        "kind": "component",
+        "id": "nav-menubar-menu-view",
+        "definitionId": "vict.catalog.menubar.menu",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Row actions"
+          },
+          "value": {
+            "type": "literal",
+            "value": "file"
+          }
+        },
+        "slots": {
+          "items": {
+            "name": "items",
+            "children": [
+              "nav-menubar-menu-view-items-1"
+            ]
+          }
+        }
+      },
+      "nav-menubar-menu-view-items-1": {
+        "kind": "component",
+        "id": "nav-menubar-menu-view-items-1",
+        "definitionId": "vict.catalog.menubar.item",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "New item"
+          },
+          "value": {
+            "type": "literal",
+            "value": "first"
+          }
+        },
+        "slots": {}
+      },
+      "nav-ddm": {
+        "kind": "component",
+        "id": "nav-ddm",
+        "definitionId": "vict.catalog.dropdown-menu",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Row actions"
+          }
+        },
+        "slots": {
+          "items": {
+            "name": "items",
+            "children": [
+              "nav-ddm-item-dup",
+              "nav-ddm-sub",
+              "nav-ddm-cbg",
+              "nav-ddm-rg",
+              "nav-ddm-group",
+              "nav-ddm-sep"
+            ]
+          }
+        }
+      },
+      "nav-ddm-item-dup": {
+        "kind": "component",
+        "id": "nav-ddm-item-dup",
+        "definitionId": "vict.catalog.dropdown-menu.item",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Duplicate row"
+          },
+          "value": {
+            "type": "literal",
+            "value": "duplicate"
+          }
+        },
+        "slots": {}
+      },
+      "nav-ddm-sub": {
+        "kind": "component",
+        "id": "nav-ddm-sub",
+        "definitionId": "vict.catalog.dropdown-menu.sub",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Move to"
+          }
+        },
+        "slots": {
+          "items": {
+            "name": "items",
+            "children": [
+              "nav-ddm-item-archive"
+            ]
+          }
+        }
+      },
+      "nav-ddm-item-archive": {
+        "kind": "component",
+        "id": "nav-ddm-item-archive",
+        "definitionId": "vict.catalog.dropdown-menu.item",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Archive"
+          },
+          "value": {
+            "type": "literal",
+            "value": "archive"
+          }
+        },
+        "slots": {}
+      },
+      "nav-ddm-cbg": {
+        "kind": "component",
+        "id": "nav-ddm-cbg",
+        "definitionId": "vict.catalog.dropdown-menu.checkbox-group",
+        "props": {
+          "values": {
+            "type": "ref",
+            "path": "state.catalog_nav-ddm-cbg_values"
+          }
+        },
+        "outputs": {
+          "valuesChange": {
+            "setState": {
+              "key": "catalog_nav-ddm-cbg_values"
+            }
+          }
+        },
+        "slots": {
+          "items": {
+            "name": "items",
+            "children": [
+              "nav-ddm-cbi"
+            ]
+          }
+        }
+      },
+      "nav-ddm-cbi": {
+        "kind": "component",
+        "id": "nav-ddm-cbi",
+        "definitionId": "vict.catalog.dropdown-menu.checkbox-item",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Show pinned"
+          },
+          "checked": {
+            "type": "literal",
+            "value": true
+          },
+          "value": {
+            "type": "literal",
+            "value": "pinned"
+          }
+        },
+        "slots": {}
+      },
+      "nav-ddm-rg": {
+        "kind": "component",
+        "id": "nav-ddm-rg",
+        "definitionId": "vict.catalog.dropdown-menu.radio-group",
+        "props": {
+          "value": {
+            "type": "literal",
+            "value": "sort"
+          }
+        },
+        "slots": {
+          "items": {
+            "name": "items",
+            "children": [
+              "nav-ddm-ri"
+            ]
+          }
+        }
+      },
+      "nav-ddm-ri": {
+        "kind": "component",
+        "id": "nav-ddm-ri",
+        "definitionId": "vict.catalog.dropdown-menu.radio-item",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Sort ascending"
+          },
+          "value": {
+            "type": "literal",
+            "value": "asc"
+          }
+        },
+        "slots": {}
+      },
+      "nav-ddm-group": {
+        "kind": "component",
+        "id": "nav-ddm-group",
+        "definitionId": "vict.catalog.dropdown-menu.group",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Dropdown Menu Group"
+          }
+        },
+        "slots": {
+          "items": {
+            "name": "items",
+            "children": [
+              "nav-ddm-item-link"
+            ]
+          }
+        }
+      },
+      "nav-ddm-item-link": {
+        "kind": "component",
+        "id": "nav-ddm-item-link",
+        "definitionId": "vict.catalog.dropdown-menu.item",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Copy link"
+          },
+          "value": {
+            "type": "literal",
+            "value": "copy-link"
+          }
+        },
+        "slots": {}
+      },
+      "nav-ddm-sep": {
+        "kind": "component",
+        "id": "nav-ddm-sep",
+        "definitionId": "vict.catalog.dropdown-menu.separator",
+        "props": {},
+        "slots": {}
+      },
+      "nav-cm": {
+        "kind": "component",
+        "id": "nav-cm",
+        "definitionId": "vict.catalog.context-menu",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Card options"
+          }
+        },
+        "slots": {
+          "items": {
+            "name": "items",
+            "children": [
+              "nav-cm-item-open",
+              "nav-cm-sub",
+              "nav-cm-cbg",
+              "nav-cm-rg",
+              "nav-cm-group",
+              "nav-cm-sep"
+            ]
+          }
+        }
+      },
+      "nav-cm-item-open": {
+        "kind": "component",
+        "id": "nav-cm-item-open",
+        "definitionId": "vict.catalog.context-menu.item",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Open card"
+          },
+          "value": {
+            "type": "literal",
+            "value": "open"
+          }
+        },
+        "slots": {}
+      },
+      "nav-cm-sub": {
+        "kind": "component",
+        "id": "nav-cm-sub",
+        "definitionId": "vict.catalog.context-menu.sub",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Share"
+          }
+        },
+        "slots": {
+          "items": {
+            "name": "items",
+            "children": [
+              "nav-cm-item-copy"
+            ]
+          }
+        }
+      },
+      "nav-cm-item-copy": {
+        "kind": "component",
+        "id": "nav-cm-item-copy",
+        "definitionId": "vict.catalog.context-menu.item",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Copy link"
+          },
+          "value": {
+            "type": "literal",
+            "value": "copy"
+          }
+        },
+        "slots": {}
+      },
+      "nav-cm-cbg": {
+        "kind": "component",
+        "id": "nav-cm-cbg",
+        "definitionId": "vict.catalog.context-menu.checkbox-group",
+        "props": {
+          "values": {
+            "type": "ref",
+            "path": "state.catalog_nav-cm-cbg_values"
+          }
+        },
+        "outputs": {
+          "valuesChange": {
+            "setState": {
+              "key": "catalog_nav-cm-cbg_values"
+            }
+          }
+        },
+        "slots": {
+          "items": {
+            "name": "items",
+            "children": [
+              "nav-cm-cbi"
+            ]
+          }
+        }
+      },
+      "nav-cm-cbi": {
+        "kind": "component",
+        "id": "nav-cm-cbi",
+        "definitionId": "vict.catalog.context-menu.checkbox-item",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Compact mode"
+          },
+          "checked": {
+            "type": "literal",
+            "value": true
+          },
+          "value": {
+            "type": "literal",
+            "value": "compact"
+          }
+        },
+        "slots": {}
+      },
+      "nav-cm-rg": {
+        "kind": "component",
+        "id": "nav-cm-rg",
+        "definitionId": "vict.catalog.context-menu.radio-group",
+        "props": {
+          "value": {
+            "type": "literal",
+            "value": "priority"
+          }
+        },
+        "slots": {
+          "items": {
+            "name": "items",
+            "children": [
+              "nav-cm-ri"
+            ]
+          }
+        }
+      },
+      "nav-cm-ri": {
+        "kind": "component",
+        "id": "nav-cm-ri",
+        "definitionId": "vict.catalog.context-menu.radio-item",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "High priority"
+          },
+          "value": {
+            "type": "literal",
+            "value": "high"
+          }
+        },
+        "slots": {}
+      },
+      "nav-cm-group": {
+        "kind": "component",
+        "id": "nav-cm-group",
+        "definitionId": "vict.catalog.context-menu.group",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Context Menu Group"
+          }
+        },
+        "slots": {
+          "items": {
+            "name": "items",
+            "children": [
+              "nav-cm-item-remove"
+            ]
+          }
+        }
+      },
+      "nav-cm-item-remove": {
+        "kind": "component",
+        "id": "nav-cm-item-remove",
+        "definitionId": "vict.catalog.context-menu.item",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Remove card"
+          },
+          "value": {
+            "type": "literal",
+            "value": "remove"
+          }
+        },
+        "slots": {}
+      },
+      "nav-cm-sep": {
+        "kind": "component",
+        "id": "nav-cm-sep",
+        "definitionId": "vict.catalog.context-menu.separator",
+        "props": {},
+        "slots": {}
+      },
+      "nav-nm": {
+        "kind": "component",
+        "id": "nav-nm",
+        "definitionId": "vict.catalog.navigation-menu",
+        "props": {
+          "value": {
+            "type": "literal",
+            "value": "home"
+          },
+          "orientation": {
+            "type": "literal",
+            "value": "horizontal"
+          }
+        },
+        "slots": {
+          "items": {
+            "name": "items",
+            "children": [
+              "nav-nm-item-product",
+              "nav-nm-sub"
+            ]
+          }
+        }
+      },
+      "nav-nm-item-product": {
+        "kind": "component",
+        "id": "nav-nm-item-product",
+        "definitionId": "vict.catalog.navigation-menu.item",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Product"
+          },
+          "value": {
+            "type": "literal",
+            "value": "product"
+          }
+        },
+        "slots": {
+          "content": {
+            "name": "content",
+            "children": [
+              "nav-nm-link"
+            ]
+          }
+        }
+      },
+      "nav-nm-link": {
+        "kind": "component",
+        "id": "nav-nm-link",
+        "definitionId": "vict.catalog.navigation-menu.link",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Product overview"
+          },
+          "href": {
+            "type": "literal",
+            "value": "#product-overview"
+          }
+        },
+        "slots": {}
+      },
+      "nav-nm-sub": {
+        "kind": "component",
+        "id": "nav-nm-sub",
+        "definitionId": "vict.catalog.navigation-menu.sub",
+        "props": {
+          "orientation": {
+            "type": "literal",
+            "value": "horizontal"
+          },
+          "value": {
+            "type": "literal",
+            "value": "resources"
+          }
+        },
+        "slots": {
+          "items": {
+            "name": "items",
+            "children": [
+              "nav-nm-sub-item-changelog"
+            ]
+          }
+        }
+      },
+      "nav-nm-sub-item-changelog": {
+        "kind": "component",
+        "id": "nav-nm-sub-item-changelog",
+        "definitionId": "vict.catalog.navigation-menu.item",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Changelog"
+          },
+          "value": {
+            "type": "literal",
+            "value": "changelog"
+          }
+        },
+        "slots": {
+          "content": {
+            "name": "content",
+            "children": [
+              "nav-nm-sub-item-changelog-content-1"
+            ]
+          }
+        }
+      },
+      "nav-nm-sub-item-changelog-content-1": {
+        "kind": "component",
+        "id": "nav-nm-sub-item-changelog-content-1",
+        "definitionId": "vict.catalog.navigation-menu.link",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Navigation Menu Link"
+          },
+          "href": {
+            "type": "literal",
+            "value": "#"
+          }
+        },
+        "slots": {}
+      },
+      "nav-command": {
+        "kind": "component",
+        "id": "nav-command",
+        "definitionId": "vict.catalog.command",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Command palette"
+          },
+          "placeholder": {
+            "type": "literal",
+            "value": "Type a command…"
+          }
+        },
+        "slots": {
+          "items": {
+            "name": "items",
+            "children": [
+              "nav-command-group",
+              "nav-command-item-theme"
+            ]
+          }
+        }
+      },
+      "nav-command-group": {
+        "kind": "component",
+        "id": "nav-command-group",
+        "definitionId": "vict.catalog.command.group",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Suggestions"
+          },
+          "value": {
+            "type": "literal",
+            "value": "suggestions"
+          }
+        },
+        "slots": {
+          "items": {
+            "name": "items",
+            "children": [
+              "nav-command-group-items-1",
+              "nav-command-item-settings"
+            ]
+          }
+        }
+      },
+      "nav-command-group-items-1": {
+        "kind": "component",
+        "id": "nav-command-group-items-1",
+        "definitionId": "vict.catalog.command.item",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Choose an action"
+          },
+          "value": {
+            "type": "literal",
+            "value": "first"
+          }
+        },
+        "slots": {}
+      },
+      "nav-command-item-settings": {
+        "kind": "component",
+        "id": "nav-command-item-settings",
+        "definitionId": "vict.catalog.command.item",
+        "props": {
+          "keywords": {
+            "type": "ref",
+            "path": "state.catalog_nav-command-item-settings_keywords"
+          },
+          "label": {
+            "type": "literal",
+            "value": "Open settings"
+          },
+          "value": {
+            "type": "literal",
+            "value": "settings"
+          }
+        },
+        "slots": {}
+      },
+      "nav-command-item-theme": {
+        "kind": "component",
+        "id": "nav-command-item-theme",
+        "definitionId": "vict.catalog.command.item",
+        "props": {
+          "keywords": {
+            "type": "ref",
+            "path": "state.catalog_nav-command-item-theme_keywords"
+          },
+          "label": {
+            "type": "literal",
+            "value": "Toggle theme"
+          },
+          "value": {
+            "type": "literal",
+            "value": "theme"
+          }
+        },
+        "slots": {}
+      },
+      "nav-toolbar": {
+        "kind": "component",
+        "id": "nav-toolbar",
+        "definitionId": "vict.catalog.toolbar",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Editor tools"
+          },
+          "orientation": {
+            "type": "literal",
+            "value": "horizontal"
+          }
+        },
+        "slots": {
+          "tools": {
+            "name": "tools",
+            "children": [
+              "nav-toolbar-btn-bold",
+              "nav-toolbar-btn-italic"
+            ]
+          }
+        }
+      },
+      "nav-toolbar-btn-bold": {
+        "kind": "component",
+        "id": "nav-toolbar-btn-bold",
+        "definitionId": "vict.catalog.toolbar-button",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Bold"
+          }
+        },
+        "slots": {}
+      },
+      "nav-toolbar-btn-italic": {
+        "kind": "component",
+        "id": "nav-toolbar-btn-italic",
+        "definitionId": "vict.catalog.toolbar-button",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Italic"
+          }
+        },
+        "slots": {}
+      },
+      "nav-tooltip": {
+        "kind": "component",
+        "id": "nav-tooltip",
+        "definitionId": "vict.catalog.tooltip",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Tips"
+          },
+          "title": {
+            "type": "literal",
+            "value": "Editor tips"
+          },
+          "description": {
+            "type": "literal",
+            "value": "Hints for faster editing"
+          }
+        },
+        "slots": {}
+      },
+      "nav-link-preview": {
+        "kind": "component",
+        "id": "nav-link-preview",
+        "definitionId": "vict.catalog.link-preview",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Design system docs"
+          },
+          "title": {
+            "type": "literal",
+            "value": "Design system docs"
+          },
+          "description": {
+            "type": "literal",
+            "value": "Docs, guides and API reference."
+          },
+          "href": {
+            "type": "literal",
+            "value": "https://example.com/docs"
+          }
+        },
+        "slots": {
+          "content": {
+            "name": "content",
+            "children": [
+              "nav-link-preview-content-1"
+            ]
+          }
+        }
+      },
+      "nav-link-preview-content-1": {
+        "kind": "element",
+        "id": "nav-link-preview-content-1",
+        "tag": "p",
+        "children": [
+          "nav-link-preview-content-1-text"
+        ],
+        "localStyle": []
+      },
+      "nav-link-preview-content-1-text": {
+        "kind": "text",
+        "id": "nav-link-preview-content-1-text",
+        "content": {
+          "type": "literal",
+          "value": "Link preview for the gallery navigation example."
+        }
+      },
+      "forms-section": {
+        "kind": "element",
+        "id": "forms-section",
+        "tag": "section",
+        "attributes": {
+          "aria-label": "Forms and inputs"
+        },
+        "children": [
+          "forms-heading",
+          "forms-label-email",
+          "showcase-email-input",
+          "showcase-name-input",
+          "existing-4",
+          "existing-1",
+          "existing-2",
+          "existing-6",
+          "existing-5",
+          "forms-select-multi",
+          "forms-combobox",
+          "forms-combobox-multi",
+          "forms-toggle-group",
+          "forms-tg-multi"
+        ],
+        "localStyle": [
+          {
+            "property": "display",
+            "value": {
+              "type": "text",
+              "value": "flex"
+            }
+          },
+          {
+            "property": "flex-direction",
+            "value": {
+              "type": "text",
+              "value": "column"
+            }
+          },
+          {
+            "property": "gap",
+            "value": {
+              "type": "text",
+              "value": "16px"
+            }
+          },
+          {
+            "property": "padding",
+            "value": {
+              "type": "text",
+              "value": "24px"
+            }
+          },
+          {
+            "property": "min-height",
+            "value": {
+              "type": "text",
+              "value": "100px"
+            }
+          },
+          {
+            "property": "background-color",
+            "value": {
+              "type": "text",
+              "value": "#f5f7fb"
+            }
+          },
+          {
+            "property": "border-radius",
+            "value": {
+              "type": "text",
+              "value": "12px"
+            }
+          }
+        ]
+      },
+      "forms-heading": {
+        "kind": "element",
+        "id": "forms-heading",
+        "tag": "h2",
+        "children": [
+          "forms-heading-text"
+        ],
+        "localStyle": [
+          {
+            "property": "font-size",
+            "value": {
+              "type": "text",
+              "value": "32px"
+            }
+          },
+          {
+            "property": "font-weight",
+            "value": {
+              "type": "text",
+              "value": "600"
+            }
+          },
+          {
+            "property": "line-height",
+            "value": {
+              "type": "text",
+              "value": "1.2"
+            }
+          },
+          {
+            "property": "margin",
+            "value": {
+              "type": "text",
+              "value": "0"
+            }
+          }
+        ]
+      },
+      "forms-heading-text": {
+        "kind": "text",
+        "id": "forms-heading-text",
+        "content": {
+          "type": "literal",
+          "value": "Forms & Inputs"
+        }
+      },
+      "forms-label-email": {
+        "kind": "component",
+        "id": "forms-label-email",
+        "definitionId": "vict.catalog.label",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Work email"
+          },
+          "for": {
+            "type": "literal",
+            "value": "showcase-email-input"
+          }
+        },
+        "slots": {}
+      },
+      "showcase-email-input": {
+        "kind": "element",
+        "id": "showcase-email-input",
+        "tag": "input",
+        "children": [],
+        "attributes": {
+          "type": "email",
+          "aria-label": "Work email",
+          "placeholder": "you@example.com",
+          "value": {
+            "type": "ref",
+            "path": "state.showcase-email"
+          }
+        },
+        "interactions": [
+          {
+            "on": "change",
+            "action": "setState",
+            "key": "showcase-email",
+            "value": {
+              "type": "ref",
+              "path": "state.showcase-email"
+            }
+          }
+        ],
+        "localStyle": [
+          {
+            "property": "padding",
+            "value": {
+              "type": "text",
+              "value": "12px"
+            }
+          },
+          {
+            "property": "border-radius",
+            "value": {
+              "type": "text",
+              "value": "8px"
+            }
+          },
+          {
+            "property": "border",
+            "value": {
+              "type": "text",
+              "value": "1px solid #cbd3e1"
+            }
+          },
+          {
+            "property": "font-size",
+            "value": {
+              "type": "text",
+              "value": "16px"
+            }
+          },
+          {
+            "property": "width",
+            "value": {
+              "type": "text",
+              "value": "100%"
+            }
+          },
+          {
+            "property": "box-sizing",
+            "value": {
+              "type": "text",
+              "value": "border-box"
+            }
+          }
+        ]
+      },
+      "showcase-name-input": {
+        "kind": "element",
+        "id": "showcase-name-input",
+        "tag": "input",
+        "children": [],
+        "attributes": {
+          "type": "text",
+          "aria-label": "Full name",
+          "placeholder": "Ada Lovelace",
+          "value": {
+            "type": "ref",
+            "path": "state.showcase-name"
+          }
+        },
+        "interactions": [
+          {
+            "on": "change",
+            "action": "setState",
+            "key": "showcase-name",
+            "value": {
+              "type": "ref",
+              "path": "state.showcase-name"
+            }
+          }
+        ],
+        "localStyle": [
+          {
+            "property": "padding",
+            "value": {
+              "type": "text",
+              "value": "12px"
+            }
+          },
+          {
+            "property": "border-radius",
+            "value": {
+              "type": "text",
+              "value": "8px"
+            }
+          },
+          {
+            "property": "border",
+            "value": {
+              "type": "text",
+              "value": "1px solid #cbd3e1"
+            }
+          },
+          {
+            "property": "font-size",
+            "value": {
+              "type": "text",
+              "value": "16px"
+            }
+          },
+          {
+            "property": "width",
+            "value": {
+              "type": "text",
+              "value": "100%"
+            }
+          },
+          {
+            "property": "box-sizing",
+            "value": {
+              "type": "text",
+              "value": "border-box"
+            }
+          }
+        ]
+      },
+      "forms-select-multi": {
+        "kind": "component",
+        "id": "forms-select-multi",
+        "definitionId": "vict.catalog.select-multiple",
+        "props": {
+          "values": {
+            "type": "ref",
+            "path": "state.catalog_forms-select-multi_values"
+          },
+          "label": {
+            "type": "literal",
+            "value": "Assign reviewers"
+          }
+        },
+        "outputs": {
+          "valuesChange": {
+            "setState": {
+              "key": "catalog_forms-select-multi_values"
+            }
+          }
+        },
+        "slots": {
+          "items": {
+            "name": "items",
+            "children": [
+              "forms-select-multi-item-ada",
+              "forms-select-multi-item-grace"
+            ]
+          }
+        }
+      },
+      "forms-select-multi-item-ada": {
+        "kind": "component",
+        "id": "forms-select-multi-item-ada",
+        "definitionId": "vict.catalog.select-item",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Ada Lovelace"
+          },
+          "value": {
+            "type": "literal",
+            "value": "ada"
+          }
+        },
+        "slots": {}
+      },
+      "forms-select-multi-item-grace": {
+        "kind": "component",
+        "id": "forms-select-multi-item-grace",
+        "definitionId": "vict.catalog.select-item",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Grace Hopper"
+          },
+          "value": {
+            "type": "literal",
+            "value": "grace"
+          }
+        },
+        "slots": {}
+      },
+      "forms-combobox": {
+        "kind": "component",
+        "id": "forms-combobox",
+        "definitionId": "vict.catalog.combobox",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Choose workspace"
+          }
+        },
+        "slots": {
+          "items": {
+            "name": "items",
+            "children": [
+              "forms-combobox-item-design"
+            ]
+          }
+        }
+      },
+      "forms-combobox-item-design": {
+        "kind": "component",
+        "id": "forms-combobox-item-design",
+        "definitionId": "vict.catalog.combobox-item",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Design"
+          },
+          "value": {
+            "type": "literal",
+            "value": "design"
+          }
+        },
+        "slots": {}
+      },
+      "forms-combobox-multi": {
+        "kind": "component",
+        "id": "forms-combobox-multi",
+        "definitionId": "vict.catalog.combobox-multiple",
+        "props": {
+          "values": {
+            "type": "ref",
+            "path": "state.catalog_forms-combobox-multi_values"
+          },
+          "label": {
+            "type": "literal",
+            "value": "Pick tags"
+          }
+        },
+        "outputs": {
+          "valuesChange": {
+            "setState": {
+              "key": "catalog_forms-combobox-multi_values"
+            }
+          }
+        },
+        "slots": {
+          "items": {
+            "name": "items",
+            "children": [
+              "forms-combobox-multi-item-research"
+            ]
+          }
+        }
+      },
+      "forms-combobox-multi-item-research": {
+        "kind": "component",
+        "id": "forms-combobox-multi-item-research",
+        "definitionId": "vict.catalog.combobox-item",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Research"
+          },
+          "value": {
+            "type": "literal",
+            "value": "research"
+          }
+        },
+        "slots": {}
+      },
+      "forms-toggle-group": {
+        "kind": "component",
+        "id": "forms-toggle-group",
+        "definitionId": "vict.catalog.toggle-group",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "View mode"
+          }
+        },
+        "slots": {
+          "items": {
+            "name": "items",
+            "children": [
+              "forms-tg-item-grid",
+              "forms-tg-item-list"
+            ]
+          }
+        }
+      },
+      "data-section": {
+        "kind": "element",
+        "id": "data-section",
+        "tag": "section",
+        "attributes": {
+          "aria-label": "Data and progress"
+        },
+        "children": [
+          "data-heading",
+          "data-accordion-multi",
+          "data-meter",
+          "data-avatar",
+          "data-aspect",
+          "data-scroll",
+          "existing-9",
+          "existing-11",
+          "existing-7",
+          "data-pagination",
+          "existing-8",
+          "data-collapsible"
+        ],
+        "localStyle": [
+          {
+            "property": "display",
+            "value": {
+              "type": "text",
+              "value": "flex"
+            }
+          },
+          {
+            "property": "flex-direction",
+            "value": {
+              "type": "text",
+              "value": "column"
+            }
+          },
+          {
+            "property": "gap",
+            "value": {
+              "type": "text",
+              "value": "16px"
+            }
+          },
+          {
+            "property": "padding",
+            "value": {
+              "type": "text",
+              "value": "24px"
+            }
+          },
+          {
+            "property": "min-height",
+            "value": {
+              "type": "text",
+              "value": "100px"
+            }
+          },
+          {
+            "property": "background-color",
+            "value": {
+              "type": "text",
+              "value": "#f5f7fb"
+            }
+          },
+          {
+            "property": "border-radius",
+            "value": {
+              "type": "text",
+              "value": "12px"
+            }
+          }
+        ]
+      },
+      "data-heading": {
+        "kind": "element",
+        "id": "data-heading",
+        "tag": "h2",
+        "children": [
+          "data-heading-text"
+        ],
+        "localStyle": [
+          {
+            "property": "font-size",
+            "value": {
+              "type": "text",
+              "value": "32px"
+            }
+          },
+          {
+            "property": "font-weight",
+            "value": {
+              "type": "text",
+              "value": "600"
+            }
+          },
+          {
+            "property": "line-height",
+            "value": {
+              "type": "text",
+              "value": "1.2"
+            }
+          },
+          {
+            "property": "margin",
+            "value": {
+              "type": "text",
+              "value": "0"
+            }
+          }
+        ]
+      },
+      "data-heading-text": {
+        "kind": "text",
+        "id": "data-heading-text",
+        "content": {
+          "type": "literal",
+          "value": "Data & Progress"
+        }
+      },
+      "forms-tg-item-grid": {
+        "kind": "component",
+        "id": "forms-tg-item-grid",
+        "definitionId": "vict.catalog.toggle-group-item",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Grid"
+          },
+          "value": {
+            "type": "literal",
+            "value": "grid"
+          }
+        },
+        "slots": {}
+      },
+      "forms-tg-item-list": {
+        "kind": "component",
+        "id": "forms-tg-item-list",
+        "definitionId": "vict.catalog.toggle-group-item",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "List"
+          },
+          "value": {
+            "type": "literal",
+            "value": "list"
+          }
+        },
+        "slots": {}
+      },
+      "forms-tg-multi": {
+        "kind": "component",
+        "id": "forms-tg-multi",
+        "definitionId": "vict.catalog.toggle-group-multiple",
+        "props": {
+          "values": {
+            "type": "ref",
+            "path": "state.catalog_forms-tg-multi_values"
+          },
+          "label": {
+            "type": "literal",
+            "value": "Filters"
+          }
+        },
+        "outputs": {
+          "valuesChange": {
+            "setState": {
+              "key": "catalog_forms-tg-multi_values"
+            }
+          }
+        },
+        "slots": {
+          "items": {
+            "name": "items",
+            "children": [
+              "forms-tgm-item-active"
+            ]
+          }
+        }
+      },
+      "forms-tgm-item-active": {
+        "kind": "component",
+        "id": "forms-tgm-item-active",
+        "definitionId": "vict.catalog.toggle-group-item",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Active"
+          },
+          "value": {
+            "type": "literal",
+            "value": "active"
+          }
+        },
+        "slots": {}
+      },
+      "data-accordion-multi": {
+        "kind": "component",
+        "id": "data-accordion-multi",
+        "definitionId": "vict.catalog.accordion-multiple",
+        "props": {
+          "values": {
+            "type": "ref",
+            "path": "state.catalog_data-accordion-multi_values"
+          },
+          "label": {
+            "type": "literal",
+            "value": "FAQ"
+          }
+        },
+        "outputs": {
+          "valuesChange": {
+            "setState": {
+              "key": "catalog_data-accordion-multi_values"
+            }
+          }
+        },
+        "slots": {
+          "items": {
+            "name": "items",
+            "children": [
+              "data-accordion-multi-item"
+            ]
+          }
+        }
+      },
+      "data-accordion-multi-item": {
+        "kind": "component",
+        "id": "data-accordion-multi-item",
+        "definitionId": "vict.catalog.accordion-item",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Getting started"
+          },
+          "value": {
+            "type": "literal",
+            "value": "getting-started"
+          }
+        },
+        "slots": {
+          "content": {
+            "name": "content",
+            "children": [
+              "data-accordion-multi-item-text"
+            ]
+          }
+        }
+      },
+      "data-accordion-multi-item-text": {
+        "kind": "element",
+        "id": "data-accordion-multi-item-text",
+        "tag": "p",
+        "children": [
+          "data-accordion-multi-item-text-text"
+        ],
+        "localStyle": [
+          {
+            "property": "font-size",
+            "value": {
+              "type": "text",
+              "value": "16px"
+            }
+          },
+          {
+            "property": "line-height",
+            "value": {
+              "type": "text",
+              "value": "1.6"
+            }
+          },
+          {
+            "property": "margin",
+            "value": {
+              "type": "text",
+              "value": "0"
+            }
+          },
+          {
+            "property": "color",
+            "value": {
+              "type": "text",
+              "value": "#647187"
+            }
+          }
+        ]
+      },
+      "data-accordion-multi-item-text-text": {
+        "kind": "text",
+        "id": "data-accordion-multi-item-text-text",
+        "content": {
+          "type": "literal",
+          "value": "Multiple panels can stay open at once."
+        }
+      },
+      "data-meter": {
+        "kind": "component",
+        "id": "data-meter",
+        "definitionId": "vict.catalog.meter",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Disk usage"
+          },
+          "value": {
+            "type": "literal",
+            "value": 72
+          },
+          "max": {
+            "type": "literal",
+            "value": 100
+          },
+          "min": {
+            "type": "literal",
+            "value": 0
+          }
+        },
+        "slots": {}
+      },
+      "data-avatar": {
+        "kind": "component",
+        "id": "data-avatar",
+        "definitionId": "vict.catalog.avatar",
+        "props": {
+          "fallback": {
+            "type": "literal",
+            "value": "V"
+          },
+          "alt": {
+            "type": "literal",
+            "value": "Team avatar"
+          }
+        },
+        "slots": {}
+      },
+      "data-aspect": {
+        "kind": "component",
+        "id": "data-aspect",
+        "definitionId": "vict.catalog.aspect-ratio",
+        "props": {
+          "ratio": {
+            "type": "literal",
+            "value": 1.7778
+          }
+        },
+        "slots": {
+          "content": {
+            "name": "content",
+            "children": [
+              "data-aspect-text"
+            ]
+          }
+        }
+      },
+      "data-scroll": {
+        "kind": "component",
+        "id": "data-scroll",
+        "definitionId": "vict.catalog.scroll-area",
+        "props": {
+          "type": {
+            "type": "literal",
+            "value": "hover"
+          }
+        },
+        "slots": {
+          "content": {
+            "name": "content",
+            "children": [
+              "data-scroll-text"
+            ]
+          }
+        }
+      },
+      "data-pagination": {
+        "kind": "component",
+        "id": "data-pagination",
+        "definitionId": "vict.catalog.pagination",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Results"
+          },
+          "count": {
+            "type": "literal",
+            "value": 120
+          },
+          "page": {
+            "type": "literal",
+            "value": 2
+          },
+          "perPage": {
+            "type": "literal",
+            "value": 10
+          }
+        },
+        "slots": {}
+      },
+      "data-collapsible": {
+        "kind": "component",
+        "id": "data-collapsible",
+        "definitionId": "vict.catalog.collapsible",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Release notes"
+          }
+        },
+        "slots": {
+          "content": {
+            "name": "content",
+            "children": [
+              "data-collapsible-text"
+            ]
+          }
+        }
+      },
+      "dates-section": {
+        "kind": "element",
+        "id": "dates-section",
+        "tag": "section",
+        "attributes": {
+          "aria-label": "Date and time"
+        },
+        "children": [
+          "dates-heading",
+          "dates-date-field",
+          "dates-date-picker",
+          "dates-calendar",
+          "dates-time-field",
+          "dates-range-field",
+          "dates-range-picker",
+          "dates-range-calendar"
+        ],
+        "localStyle": [
+          {
+            "property": "display",
+            "value": {
+              "type": "text",
+              "value": "flex"
+            }
+          },
+          {
+            "property": "flex-direction",
+            "value": {
+              "type": "text",
+              "value": "column"
+            }
+          },
+          {
+            "property": "gap",
+            "value": {
+              "type": "text",
+              "value": "16px"
+            }
+          },
+          {
+            "property": "padding",
+            "value": {
+              "type": "text",
+              "value": "24px"
+            }
+          },
+          {
+            "property": "min-height",
+            "value": {
+              "type": "text",
+              "value": "100px"
+            }
+          },
+          {
+            "property": "background-color",
+            "value": {
+              "type": "text",
+              "value": "#f5f7fb"
+            }
+          },
+          {
+            "property": "border-radius",
+            "value": {
+              "type": "text",
+              "value": "12px"
+            }
+          }
+        ]
+      },
+      "dates-heading": {
+        "kind": "element",
+        "id": "dates-heading",
+        "tag": "h2",
+        "children": [
+          "dates-heading-text"
+        ],
+        "localStyle": [
+          {
+            "property": "font-size",
+            "value": {
+              "type": "text",
+              "value": "32px"
+            }
+          },
+          {
+            "property": "font-weight",
+            "value": {
+              "type": "text",
+              "value": "600"
+            }
+          },
+          {
+            "property": "line-height",
+            "value": {
+              "type": "text",
+              "value": "1.2"
+            }
+          },
+          {
+            "property": "margin",
+            "value": {
+              "type": "text",
+              "value": "0"
+            }
+          }
+        ]
+      },
+      "dates-heading-text": {
+        "kind": "text",
+        "id": "dates-heading-text",
+        "content": {
+          "type": "literal",
+          "value": "Date & Time"
+        }
+      },
+      "dates-date-field": {
+        "kind": "component",
+        "id": "dates-date-field",
+        "definitionId": "vict.catalog.date-field",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Start date"
+          },
+          "value": {
+            "type": "literal",
+            "value": "2026-10-23"
+          },
+          "placeholder": {
+            "type": "literal",
+            "value": "2025-01-01"
+          }
+        },
+        "slots": {}
+      },
+      "dates-date-picker": {
+        "kind": "component",
+        "id": "dates-date-picker",
+        "definitionId": "vict.catalog.date-picker",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Launch date"
+          },
+          "value": {
+            "type": "literal",
+            "value": "2026-10-23"
+          },
+          "numberOfMonths": {
+            "type": "literal",
+            "value": 1
+          },
+          "placeholder": {
+            "type": "literal",
+            "value": "2025-03-01"
+          }
+        },
+        "slots": {}
+      },
+      "dates-calendar": {
+        "kind": "component",
+        "id": "dates-calendar",
+        "definitionId": "vict.catalog.calendar",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Editorial calendar"
+          },
+          "value": {
+            "type": "literal",
+            "value": "2026-10-23"
+          }
+        },
+        "slots": {}
+      },
+      "dates-time-field": {
+        "kind": "component",
+        "id": "dates-time-field",
+        "definitionId": "vict.catalog.time-field",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Reminder time"
+          },
+          "value": {
+            "type": "literal",
+            "value": "09:00"
+          },
+          "granularity": {
+            "type": "literal",
+            "value": "minute"
+          },
+          "hourCycle": {
+            "type": "literal",
+            "value": 24
+          }
+        },
+        "slots": {}
+      },
+      "dates-range-field": {
+        "kind": "component",
+        "id": "dates-range-field",
+        "definitionId": "vict.catalog.date-range-field",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Billing period"
+          },
+          "start": {
+            "type": "literal",
+            "value": "2025-04-01"
+          },
+          "end": {
+            "type": "literal",
+            "value": "2025-04-10"
+          }
+        },
+        "slots": {}
+      },
+      "dates-range-picker": {
+        "kind": "component",
+        "id": "dates-range-picker",
+        "definitionId": "vict.catalog.date-range-picker",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Booking window"
+          },
+          "start": {
+            "type": "literal",
+            "value": "2025-04-01"
+          },
+          "end": {
+            "type": "literal",
+            "value": "2025-04-10"
+          }
+        },
+        "slots": {}
+      },
+      "dates-range-calendar": {
+        "kind": "component",
+        "id": "dates-range-calendar",
+        "definitionId": "vict.catalog.range-calendar",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Conference days"
+          },
+          "start": {
+            "type": "literal",
+            "value": "2025-04-01"
+          },
+          "end": {
+            "type": "literal",
+            "value": "2025-04-10"
+          }
+        },
+        "slots": {}
+      },
+      "overlays-section": {
+        "kind": "element",
+        "id": "overlays-section",
+        "tag": "section",
+        "attributes": {
+          "aria-label": "Overlays and feedback"
+        },
+        "children": [
+          "overlays-heading",
+          "existing-3",
+          "existing-10",
+          "overlays-alert-dialog"
+        ],
+        "localStyle": [
+          {
+            "property": "display",
+            "value": {
+              "type": "text",
+              "value": "flex"
+            }
+          },
+          {
+            "property": "flex-direction",
+            "value": {
+              "type": "text",
+              "value": "column"
+            }
+          },
+          {
+            "property": "gap",
+            "value": {
+              "type": "text",
+              "value": "16px"
+            }
+          },
+          {
+            "property": "padding",
+            "value": {
+              "type": "text",
+              "value": "24px"
+            }
+          },
+          {
+            "property": "min-height",
+            "value": {
+              "type": "text",
+              "value": "100px"
+            }
+          },
+          {
+            "property": "background-color",
+            "value": {
+              "type": "text",
+              "value": "#f5f7fb"
+            }
+          },
+          {
+            "property": "border-radius",
+            "value": {
+              "type": "text",
+              "value": "12px"
+            }
+          }
+        ]
+      },
+      "overlays-heading": {
+        "kind": "element",
+        "id": "overlays-heading",
+        "tag": "h2",
+        "children": [
+          "overlays-heading-text"
+        ],
+        "localStyle": [
+          {
+            "property": "font-size",
+            "value": {
+              "type": "text",
+              "value": "32px"
+            }
+          },
+          {
+            "property": "font-weight",
+            "value": {
+              "type": "text",
+              "value": "600"
+            }
+          },
+          {
+            "property": "line-height",
+            "value": {
+              "type": "text",
+              "value": "1.2"
+            }
+          },
+          {
+            "property": "margin",
+            "value": {
+              "type": "text",
+              "value": "0"
+            }
+          }
+        ]
+      },
+      "overlays-heading-text": {
+        "kind": "text",
+        "id": "overlays-heading-text",
+        "content": {
+          "type": "literal",
+          "value": "Overlays & Feedback"
+        }
+      },
+      "overlays-alert-dialog": {
+        "kind": "component",
+        "id": "overlays-alert-dialog",
+        "definitionId": "vict.catalog.alert-dialog",
+        "props": {
+          "label": {
+            "type": "literal",
+            "value": "Discard draft"
+          },
+          "title": {
+            "type": "literal",
+            "value": "Discard this draft?"
+          },
+          "description": {
+            "type": "literal",
+            "value": "This will permanently remove the current draft."
+          },
+          "cancelLabel": {
+            "type": "literal",
+            "value": "Keep draft"
+          },
+          "confirmLabel": {
+            "type": "literal",
+            "value": "Discard"
+          }
+        },
+        "slots": {
+          "body": {
+            "name": "body",
+            "children": [
+              "overlays-alert-dialog-body-1"
+            ]
+          }
+        }
+      },
+      "overlays-alert-dialog-body-1": {
+        "kind": "element",
+        "id": "overlays-alert-dialog-body-1",
+        "tag": "p",
+        "children": [
+          "overlays-alert-dialog-body-1-text"
+        ],
+        "localStyle": []
+      },
+      "overlays-alert-dialog-body-1-text": {
+        "kind": "text",
+        "id": "overlays-alert-dialog-body-1-text",
+        "content": {
+          "type": "literal",
+          "value": "Review this local preview action before continuing."
+        }
+      },
+      "data-collapsible-text": {
+        "kind": "element",
+        "id": "data-collapsible-text",
+        "tag": "p",
+        "children": [
+          "data-collapsible-text-text"
+        ],
+        "localStyle": [
+          {
+            "property": "font-size",
+            "value": {
+              "type": "text",
+              "value": "16px"
+            }
+          },
+          {
+            "property": "line-height",
+            "value": {
+              "type": "text",
+              "value": "1.6"
+            }
+          },
+          {
+            "property": "margin",
+            "value": {
+              "type": "text",
+              "value": "0"
+            }
+          },
+          {
+            "property": "color",
+            "value": {
+              "type": "text",
+              "value": "#647187"
+            }
+          }
+        ]
+      },
+      "data-collapsible-text-text": {
+        "kind": "text",
+        "id": "data-collapsible-text-text",
+        "content": {
+          "type": "literal",
+          "value": "Highlights from the latest release notes."
+        }
+      },
+      "data-scroll-text": {
+        "kind": "element",
+        "id": "data-scroll-text",
+        "tag": "p",
+        "children": [
+          "data-scroll-text-text"
+        ],
+        "localStyle": [
+          {
+            "property": "font-size",
+            "value": {
+              "type": "text",
+              "value": "16px"
+            }
+          },
+          {
+            "property": "line-height",
+            "value": {
+              "type": "text",
+              "value": "1.6"
+            }
+          },
+          {
+            "property": "margin",
+            "value": {
+              "type": "text",
+              "value": "0"
+            }
+          },
+          {
+            "property": "color",
+            "value": {
+              "type": "text",
+              "value": "#647187"
+            }
+          }
+        ]
+      },
+      "data-scroll-text-text": {
+        "kind": "text",
+        "id": "data-scroll-text-text",
+        "content": {
+          "type": "literal",
+          "value": "Scrollable changelog entries appear here."
+        }
+      },
+      "data-aspect-text": {
+        "kind": "element",
+        "id": "data-aspect-text",
+        "tag": "p",
+        "children": [
+          "data-aspect-text-text"
+        ],
+        "localStyle": [
+          {
+            "property": "font-size",
+            "value": {
+              "type": "text",
+              "value": "16px"
+            }
+          },
+          {
+            "property": "line-height",
+            "value": {
+              "type": "text",
+              "value": "1.6"
+            }
+          },
+          {
+            "property": "margin",
+            "value": {
+              "type": "text",
+              "value": "0"
+            }
+          },
+          {
+            "property": "color",
+            "value": {
+              "type": "text",
+              "value": "#647187"
+            }
+          }
+        ]
+      },
+      "data-aspect-text-text": {
+        "kind": "text",
+        "id": "data-aspect-text-text",
+        "content": {
+          "type": "literal",
+          "value": "16:9 media frame"
+        }
+      },
+      "live-recovery-heading": {
+        "kind": "element",
+        "id": "live-recovery-heading",
+        "tag": "h2",
+        "children": [
+          "live-recovery-heading-text"
+        ],
+        "localStyle": [
+          {
+            "property": "font-size",
+            "value": {
+              "type": "text",
+              "value": "32px"
+            }
+          },
+          {
+            "property": "font-weight",
+            "value": {
+              "type": "text",
+              "value": "600"
+            }
+          },
+          {
+            "property": "line-height",
+            "value": {
+              "type": "text",
+              "value": "1.2"
+            }
+          },
+          {
+            "property": "margin",
+            "value": {
+              "type": "text",
+              "value": "0"
+            }
+          }
+        ]
+      },
+      "live-recovery-heading-text": {
+        "kind": "text",
+        "id": "live-recovery-heading-text",
+        "content": {
+          "type": "literal",
+          "value": "Live Recovery Form"
+        }
+      }
+    },
+    "componentDefinitions": {},
+    "styleSources": {},
+    "assets": {},
+    "tokens": {},
+    "conditions": {
+      "compact": {
+        "id": "compact",
+        "kind": "container",
+        "name": "studio-screen",
+        "query": "(max-width: 600px)"
+      }
+    },
+    "localState": {
+      "message": {
+        "key": "message",
+        "type": "string",
+        "initial": "Hello from my screen"
+      },
+      "accepted": {
+        "key": "accepted",
+        "type": "boolean",
+        "initial": false
+      },
+      "dialogOpen": {
+        "key": "dialogOpen",
+        "type": "boolean",
+        "initial": false
+      },
+      "busy": {
+        "key": "busy",
+        "type": "boolean",
+        "initial": false
+      },
+      "actionError": {
+        "key": "actionError",
+        "type": "string",
+        "initial": ""
+      },
+      "actionResult": {
+        "key": "actionResult",
+        "type": "string",
+        "initial": ""
+      },
+      "field_existing-1": {
+        "key": "field_existing-1",
+        "type": "boolean",
+        "initial": false
+      },
+      "field_existing-2": {
+        "key": "field_existing-2",
+        "type": "boolean",
+        "initial": false
+      },
+      "catalog_existing-5_value": {
+        "key": "catalog_existing-5_value",
+        "type": "numberList",
+        "initial": [
+          25
+        ]
+      },
+      "input_live-email": {
+        "key": "input_live-email",
+        "type": "string",
+        "initial": ""
+      },
+      "recovery-email": {
+        "key": "recovery-email",
+        "type": "string",
+        "initial": ""
+      },
+      "input_live-name": {
+        "key": "input_live-name",
+        "type": "string",
+        "initial": ""
+      },
+      "recovery-name": {
+        "key": "recovery-name",
+        "type": "string",
+        "initial": ""
+      },
+      "recovery-consent": {
+        "key": "recovery-consent",
+        "type": "boolean",
+        "initial": false
+      },
+      "field_live-consent": {
+        "key": "field_live-consent",
+        "type": "boolean",
+        "initial": false
+      },
+      "catalog_nav-menubar-cbg_values": {
+        "key": "catalog_nav-menubar-cbg_values",
+        "type": "stringList",
+        "initial": []
+      },
+      "catalog_nav-ddm-cbg_values": {
+        "key": "catalog_nav-ddm-cbg_values",
+        "type": "stringList",
+        "initial": []
+      },
+      "catalog_nav-cm-cbg_values": {
+        "key": "catalog_nav-cm-cbg_values",
+        "type": "stringList",
+        "initial": []
+      },
+      "catalog_nav-command-item-settings_keywords": {
+        "key": "catalog_nav-command-item-settings_keywords",
+        "type": "stringList",
+        "initial": []
+      },
+      "catalog_nav-command-item-theme_keywords": {
+        "key": "catalog_nav-command-item-theme_keywords",
+        "type": "stringList",
+        "initial": []
+      },
+      "input_showcase-email-input": {
+        "key": "input_showcase-email-input",
+        "type": "string",
+        "initial": ""
+      },
+      "showcase-email": {
+        "key": "showcase-email",
+        "type": "string",
+        "initial": ""
+      },
+      "input_showcase-name-input": {
+        "key": "input_showcase-name-input",
+        "type": "string",
+        "initial": ""
+      },
+      "showcase-name": {
+        "key": "showcase-name",
+        "type": "string",
+        "initial": ""
+      },
+      "catalog_forms-select-multi_values": {
+        "key": "catalog_forms-select-multi_values",
+        "type": "stringList",
+        "initial": [
+          "ada"
+        ]
+      },
+      "catalog_forms-combobox-multi_values": {
+        "key": "catalog_forms-combobox-multi_values",
+        "type": "stringList",
+        "initial": []
+      },
+      "catalog_forms-tg-multi_values": {
+        "key": "catalog_forms-tg-multi_values",
+        "type": "stringList",
+        "initial": [
+          "active"
+        ]
+      },
+      "catalog_data-accordion-multi_values": {
+        "key": "catalog_data-accordion-multi_values",
+        "type": "stringList",
+        "initial": [
+          "getting-started"
+        ]
+      }
+    }
+  }
+}

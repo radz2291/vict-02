@@ -1,0 +1,64 @@
+{
+  "kind": "Actual CUA browser journey; prior3794 UI paths unchanged at115f except separately retested SourceNode orientation",
+  "sourceDocumentId": "screen-7dbd4f74-38f0-4db4-aa65-c0f294a71776",
+  "fixture": "browser-fixture.json",
+  "testedBase": "3794c4a4dc75012c436df982f0532b6bbf68ee12",
+  "finalProduct": "115f8242e5069191ea219c8ab6da50d45551b56a",
+  "checks": {
+    "runtimeInputAndCheckboxRetained": true,
+    "viewStateExactlyRetained": true,
+    "nonemptySearchRetained": true,
+    "sourceExactlyUnchangedByPresentation": true,
+    "keyboardMoveAccepted": true,
+    "undoExact": true,
+    "redoAccepted": true,
+    "finalUndoExact": true,
+    "stateInitialValueRead": "Initial fixture name",
+    "layersSharedSelection": "Structure name",
+    "handoffs": [
+      "Data exactdeclaration",
+      "Actions availableSubmit",
+      "Inspector selectednativeinput independentwiring",
+      "Layers sharedselectedrow"
+    ],
+    "defaultLoadedCollapseCount": 6,
+    "noOverlapsVertical": true
+  },
+  "viewBefore": {
+    "direction": "DOWN",
+    "nodes": [
+      {
+        "id": "%5B%22screen-7dbd4f74-38f0-4db4-aa65-c0f294a71776%22%2C%22node%22%2C%22customer%22%5D",
+        "style": "width: 224px; z-index: 0; transform: translate(12px, 12px); visibility: visible; touch-action: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+      },
+      {
+        "id": "%5B%22screen-7dbd4f74-38f0-4db4-aa65-c0f294a71776%22%2C%22node%22%2C%22name-field%22%5D",
+        "style": "width: 224px; z-index: 1000; transform: translate(12px, 186.4px); visibility: visible; touch-action: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+      }
+    ],
+    "search": "",
+    "selection": "%5B%22screen-7dbd4f74-38f0-4db4-aa65-c0f294a71776%22%2C%22node%22%2C%22name-field%22%5D",
+    "transform": "transform: translate(476.32px, -129.128px) scale(1.32);"
+  },
+  "viewAfter": {
+    "direction": "DOWN",
+    "nodes": [
+      {
+        "id": "%5B%22screen-7dbd4f74-38f0-4db4-aa65-c0f294a71776%22%2C%22node%22%2C%22customer%22%5D",
+        "style": "width: 224px; z-index: 0; transform: translate(12px, 12px); visibility: visible; touch-action: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+      },
+      {
+        "id": "%5B%22screen-7dbd4f74-38f0-4db4-aa65-c0f294a71776%22%2C%22node%22%2C%22name-field%22%5D",
+        "style": "width: 224px; z-index: 1000; transform: translate(12px, 186.4px); visibility: visible; touch-action: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+      }
+    ],
+    "search": "",
+    "selection": "%5B%22screen-7dbd4f74-38f0-4db4-aa65-c0f294a71776%22%2C%22node%22%2C%22name-field%22%5D",
+    "transform": "transform: translate(476.32px, -129.128px) scale(1.32);"
+  },
+  "limitations": [
+    "Full15-node expanded graph requiresFit/collapse/focus atminimumzoom; freshloaddefaultcollapse6nodes isreadable",
+    "ResponsiveStructureverificationrecordedseparately",
+    "ActualdiagramSVGmethods unavailable in CUA DOMread; rawpaths+DOMrectangles transformedoutsidebrowser"
+  ]
+}

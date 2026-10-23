@@ -1,0 +1,92 @@
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion/260831-VCT-02/apps/studio
+
+4:45:41 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion/260831-VCT-02/packages/ui-svelte/src/document/DocumentHost.svelte:105:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+4:45:42 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:304:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+4:45:42 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:304:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+4:45:42 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:371:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+4:45:42 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:371:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+4:45:53 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion/260831-VCT-02/packages/ui-editor/src/StateValuesPanel.svelte:106:6 A form label must be associated with a control
+https://svelte.dev/e/a11y_label_has_associated_control
+ ❯ tests/designer-agent-mastra.test.ts (14 tests | 12 failed) 13989ms
+   ✓ Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > fits the frozen provider presentation bounds without dropping expanded recipes 21ms
+   × Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > does not mistake a successfully invoked but refused edit for recovery 1436ms
+     → expected { Object (type, status, ...) } to match object { Object (type, status, ...) }
+(14 matching properties omitted from actual)
+   × Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > gives GLM its full published output allowance without a thinking override (offline seam) 1342ms
+     → expected undefined to match object { maxOutputTokens: 131072 }
+   × Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > reports an unrecovered tool failure truthfully, with prior effects=false 1277ms
+     → expected { Object (type, status, ...) } to match object { Object (type, status, ...) }
+(14 matching properties omitted from actual)
+   × Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > reports an unrecovered tool failure truthfully, with prior effects=true 253ms
+     → expected { Object (type, status, ...) } to match object { Object (type, status, ...) }
+(14 matching properties omitted from actual)
+   × Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > contains length provider output with zero proposals and truthful terminal code 1228ms
+     → expected { Object (type, status, ...) } to match object { Object (type, status, ...) }
+(14 matching properties omitted from actual)
+   × Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > contains partial provider output with zero proposals and truthful terminal code 1200ms
+     → expected { Object (type, status, ...) } to match object { Object (type, status, ...) }
+(14 matching properties omitted from actual)
+   × Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > allows a successful ordinary answer without edits 338ms
+     → expected { Object (type, status, ...) } to match object { type: 'done', …(2) }
+(15 matching properties omitted from actual)
+   × Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > recovers a wrong source-version argument on an existing saved screen in the same governed turn 1294ms
+     → expected [] to have a length of 1 but got +0
+   × Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > keeps a genuine browser revision refusal fenced even after a model re-read and retry 1286ms
+     → expected [] to have a length of 1 but got +0
+   × Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > runs governed read and edit tools; acknowledges only after EditorBridge commit; streams completion 1211ms
+     → expected { Object (type, status, ...) } to match object { type: 'done', …(2) }
+(15 matching properties omitted from actual)
+   × Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > sanitizes a genuine Mastra model failure after an acknowledged edit and preserves Undo 339ms
+     → expected { Object (type, status, ...) } to match object { Object (type, status, ...) }
+(15 matching properties omitted from actual)
+   × Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > cancels a proposal before acknowledgement with zero edits and no cross-session cancellation 1176ms
+     → expected { Object (type, status, ...) } to match object { type: 'done', …(2) }
+(15 matching properties omitted from actual)
+   ✓ Studio composes existing real pinned Mastra executor (offline model; not live provider acceptance) > admits the next turn at terminal delivery while private cleanup is still pending  1580ms
+ ✓ tests/quellight-transport.test.ts (10 tests) 51ms
+ ✓ tests/designer-agent.test.ts (6 tests) 833ms
+   ✓ agent canonical editing boundary > builds a palette registration screen; modifies selection; moves/removes; undo/redo/save/reopen share history  331ms
+ ✓ tests/changeset-contract.test.ts (12 tests) 34ms
+ ✓ tests/run-detail.test.ts (12 tests) 158ms
+ ✓ tests/structure.test.ts (7 tests) 251ms
+ ✓ tests/designer-context-placement.test.ts (6 tests) 630ms
+ ✓ tests/boundary.test.ts (13 tests) 206ms
+ ✓ tests/confirmation-contract.test.ts (11 tests) 31ms
+ ✓ tests/structure-completion.test.ts (5 tests) 9974ms
+   ✓ compares real Dagre and ELK layouts at small, owner-sized and advertised-size fixtures  9907ms
+ ✓ tests/designer-coverage.test.ts (4 tests) 3618ms
+   ✓ Cycle 1.3 actual Designer coverage > compiles every standalone recipe through canonical edits and finished application validation  1398ms
+   ✓ Cycle 1.3 actual Designer coverage > compiles every context-owned part in its declared parent slot and refuses standalone placement  1972ms
+ ✓ tests/designer-agent-completion.test.ts (10 tests) 2146ms
+   ✓ completion round canonical authoring and bounded discovery > reads every node at the advertised 500 node boundary without bypassing delivery bounds  1053ms
+   ✓ completion round canonical authoring and bounded discovery > admits exactly 200000 source characters and refuses the next character explicitly  353ms
+ ✓ tests/designer-visual.test.ts (6 tests) 252ms
+ ❯ tests/showcase.test.ts (4 tests | 1 failed) 3306ms
+   ✓ Cycle 1.3 complete showcase fixtures > indexes and compiles all 83 examples in valid ancestor contexts  2928ms
+   × Cycle 1.3 complete showcase fixtures > keeps standalone catalog metadata identical to the actual recipe index 253ms
+     → expected [ { id: 'section', …(4) }, …(82) ] to deeply equal [ { id: 'section', …(4) }, …(82) ]
+   ✓ Cycle 1.3 complete showcase fixtures > edits typed lists with real undo/redo and save/reopen in a private memory store 61ms
+   ✓ Cycle 1.3 complete showcase fixtures > uses the real guarded Structure move and refuses stale, draft, and contextual moves 59ms
+ ↓ tests/designer-agent-live-completion.test.ts (1 test | 1 skipped)
+ ✓ tests/adapter.test.ts (9 tests) 178ms
+ ✓ tests/app-definition.test.ts (8 tests) 202ms
+ ✓ tests/designer-model.test.ts (7 tests) 183ms
+ ✓ tests/designer-required-slots.test.ts (5 tests) 646ms
+ ✓ tests/target-selection.test.ts (6 tests) 28ms
+ ✓ tests/designer.test.ts (4 tests) 1129ms
+   ✓ Studio canonical screen integration > fails closed on undeclared actions, missing inputs, denied permission and reset during execution  946ms
+ ✓ tests/designer-independent-verification.test.ts (4 tests) 1644ms
+   ✓ clears fail-next exactly once and fences two pending actions across reset  1413ms
+ ✓ tests/targets.test.ts (5 tests) 156ms
+ ❯ tests/designer-agent-cleanup.test.ts (1 test | 1 failed) 120040ms
+   × releases a completed host turn when filesystem removal never settles 120034ms
+     → Test timed out in 120000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ✓ tests/designer-preflight-independent.test.ts (2 tests) 98ms
+ ✓ tests/designer-agent-stream.test.ts (1 test) 73ms

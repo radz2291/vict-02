@@ -1,0 +1,23 @@
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+{
+  "mode": "Incremental final package upgrade in the retained fresh independent install; no workspace links or aliases",
+  "sha": "115f8242e5069191ea219c8ab6da50d45551b56a",
+  "consumer": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-cycle13-consumer-EaKMZK\\consumer",
+  "files": 173,
+  "packs": [
+    {
+      "name": "ui-ai-svelte",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-cycle13-consumer-EaKMZK\\completion-115f8242e506\\victframework-ui-ai-svelte-0.4.0-rc.1.tgz",
+      "sha256": "2037fea971d413828c079c94f6281699e9508571b0ab3f26e6d3e7a5c6ee2f87"
+    },
+    {
+      "name": "ui-flow-svelte",
+      "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-cycle13-consumer-EaKMZK\\completion-115f8242e506\\victframework-ui-flow-svelte-0.4.0-rc.1.tgz",
+      "sha256": "feacec984e5cdcf809e58d68c3b5df3121604b5fb7df52249fab44ce0501be7f"
+    }
+  ]
+}

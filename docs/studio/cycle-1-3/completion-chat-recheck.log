@@ -1,0 +1,46 @@
+npm warn Unknown cli config "--maxWorkers". This will stop working in the next major version of npm.
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion/260831-VCT-02/apps/studio
+
+4:37:43 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion/260831-VCT-02/packages/ui-svelte/src/document/DocumentHost.svelte:105:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+4:37:45 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:304:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+4:37:45 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:304:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+4:37:45 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:371:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+4:37:45 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:371:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+4:38:08 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion/260831-VCT-02/packages/ui-editor/src/StateValuesPanel.svelte:106:6 A form label must be associated with a control
+https://svelte.dev/e/a11y_label_has_associated_control
+stderr | tests/ui/completion-legacy-triggers.test.ts
+[svelte] derived_inert
+Reading a derived belonging to a now-destroyed effect may result in stale values
+https://svelte.dev/e/derived_inert
+
+ ✓ tests/ui/completion-legacy-triggers.test.ts (3 tests) 1483ms
+   ✓ preserves old popover source while rendering one native trigger with its authored label  851ms
+   ✓ preserves old alert-dialog source while rendering one native trigger with its authored label  307ms
+   ✓ preserves old tooltip source while rendering one native trigger with its authored label  318ms
+ ✓ tests/ui/completion-timeline.test.ts (3 tests) 1704ms
+   ✓ renders ordered text, refused attempt, corrected observation and acknowledged boundary through public presentation  984ms
+   ✓ shows aggregate UTF-8 admission failure with the unsent draft retained  699ms
+ ✓ tests/ui/agent-chat.test.ts (5 tests) 3123ms
+   ✓ rejected Studio chat admission > shows an admitted failed turn as a failure (STUDIO_AGENT_OUTPUT_LIMIT)  1698ms
+   ✓ rejected Studio chat admission > shows an admitted failed turn as a failure (STUDIO_AGENT_INCOMPLETE_TOOL)  349ms
+   ✓ rejected Studio chat admission > shows an admitted failed turn as a failure (STUDIO_AGENT_TOOL_FAILED)  385ms
+   ✓ rejected Studio chat admission > explains STUDIO_AGENT_BUSY without blaming the provider and retains the unsent draft  355ms
+   ✓ rejected Studio chat admission > explains STUDIO_AGENT_CAPACITY without blaming the provider and retains the unsent draft  330ms
+ ✓ tests/ui/agent-handoff.test.ts (5 tests) 3549ms
+   ✓ does not let delayed Stop cleanup replace the feedback for a newer turn  1367ms
+   ✓ settles a genuine stale refusal without waiting for the model and admits fresh context only in a new request  853ms
+   ✓ settles a genuine draft refusal without waiting for the model and admits fresh context only in a new request  344ms
+   ✓ settles a genuine invalid refusal without waiting for the model and admits fresh context only in a new request  427ms
+   ✓ keeps an applied batch undoable and ignores late proposals/completion after Stop  555ms
+
+ Test Files  4 passed (4)
+      Tests  16 passed (16)
+   Start at  04:37:05
+   Duration  72.16s (transform 61.92s, setup 0ms, collect 232.06s, tests 9.86s, environment 18.31s, prepare 2.69s)
+

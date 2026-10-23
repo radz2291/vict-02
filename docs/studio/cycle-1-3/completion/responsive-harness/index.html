@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8" /><meta name="viewport" content="width=device-width,initial-scale=1" /><title>Structure component responsive harness</title>
+<style>
+  body { margin: 16px; font: 14px/1.5 system-ui, sans-serif; color: #172033; background: #e8edf4; }
+  h1 { font-size: 19px; margin: 0 0 8px; } p { max-width: 900px; }
+  .controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 12px 0; }
+  button { padding: 7px 12px; border: 1px solid #94a3b8; border-radius: 6px; background: #fff; color: inherit; font: inherit; cursor: pointer; }
+  button[aria-pressed=true] { background: #dbeafe; border-color: #2563eb; } button:focus-visible { outline: 3px solid #6366f1; }
+  iframe { display: block; flex: none; width: 390px; height: 1100px; background: #fff; border: 1px solid #94a3b8; }
+  #context { font-weight: 600; }
+  .review { display: flex; flex-wrap: wrap; align-items: start; gap: 18px; }
+  .measurements { width: 520px; min-width: 280px; background: #fff; border: 1px solid #94a3b8; padding: 12px; }
+  .measurements h2 { font-size: 16px; margin: 0 0 6px; }
+  pre { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; max-height: 1080px; overflow: auto; font: 11px/1.4 ui-monospace, monospace; }
+</style></head>
+<body>
+<h1>Structure component responsive harness</h1>
+<p>Actual unchanged Studio StructureView and production Flow stylesheet, mounted with a synthetic 15-node fixture. This is component width simulation; it does not emulate a mobile device or prove the whole Studio application at narrow widths. Root's separate desktop journeys cover actual authoring integration.</p>
+<div class="controls" aria-label="Simulated component width">
+  <button type="button" aria-pressed="true" data-width="390">390 px</button>
+  <button type="button" aria-pressed="false" data-width="768">768 px</button>
+  <span id="context" role="status">Simulated component viewport: 390 px</span>
+</div>
+<div class="review"><iframe id="structure-frame" title="Actual Structure component at simulated width" src="./structure.html"></iframe>
+<section class="measurements" aria-label="Actual browser DOM measurements"><h2>Actual browser DOM measurements</h2><p>Child reports rendered rectangles after layout. Geometry only; keyboard and whole-app claims remain separate.</p><pre id="measurements" aria-live="polite">Waiting for the actual component to render…</pre><h2>Fixture diagnostics</h2><pre id="diagnostics" aria-live="polite">No diagnostics reported.</pre></section></div>
+<script type="module">
+  const frame = document.getElementById('structure-frame');
+  const diagnostics = [];
+  window.addEventListener('message', event => {
+    if (event.origin !== window.location.origin || event.source !== frame.contentWindow) return;
+    if (event.data?.type === 'vict-structure-responsive-dom') document.getElementById('measurements').textContent = JSON.stringify(event.data.metrics, null, 2);
+    else if (event.data?.type === 'vict-structure-responsive-diagnostic') { diagnostics.push(event.data.diagnostic); document.getElementById('diagnostics').textContent = JSON.stringify(diagnostics.slice(-20), null, 2); }
+  });
+  for (const button of document.querySelectorAll('[data-width]')) button.addEventListener('click', () => {
+    frame.style.width = `${button.dataset.width}px`;
+    document.getElementById('context').textContent = `Simulated component viewport: ${button.dataset.width} px`;
+    for (const choice of document.querySelectorAll('[data-width]')) choice.setAttribute('aria-pressed', String(choice === button));
+  });
+</script>
+</body></html>

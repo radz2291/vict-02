@@ -1,0 +1,27 @@
+6:06:27 am [vite] (client) Pre-transform error: Failed to resolve import "../../../../../../apps/studio/src/lib/designer/application.js" from "docs/studio/cycle-1-3/completion/capture-diagnostic-harness/App.svelte". Does the file exist?
+  Plugin: vite:import-analysis
+  File: C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion/260831-VCT-02/docs/studio/cycle-1-3/completion/capture-diagnostic-harness/App.svelte:5:76
+  7  |  import { captureRenderedElement } from '@victframework/ui-ai-svelte';
+  8  |  import { toSvg } from 'html-to-image';
+  9  |  import { compileScreen, catalogDescriptors, catalogImplementations } from '../../../../../../apps/studio/src/lib/designer/application.js';
+     |                                                                             ^
+  10 |  import source from '../../completion-evidence/authoring-final-1792791183630-document.json';
+  11 |  import '@victframework/ui-svelte/styles.css';
+6:06:36 am [vite] Internal server error: Failed to resolve import "../../../../../../apps/studio/src/lib/designer/application.js" from "docs/studio/cycle-1-3/completion/capture-diagnostic-harness/App.svelte". Does the file exist?
+  Plugin: vite:import-analysis
+  File: C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion/260831-VCT-02/docs/studio/cycle-1-3/completion/capture-diagnostic-harness/App.svelte:5:76
+  7  |  import { captureRenderedElement } from '@victframework/ui-ai-svelte';
+  8  |  import { toSvg } from 'html-to-image';
+  9  |  import { compileScreen, catalogDescriptors, catalogImplementations } from '../../../../../../apps/studio/src/lib/designer/application.js';
+     |                                                                             ^
+  10 |  import source from '../../completion-evidence/authoring-final-1792791183630-document.json';
+  11 |  import '@victframework/ui-svelte/styles.css';
+      at TransformPluginContext._formatLog (file:///C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion/260831-VCT-02/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42658:41)
+      at TransformPluginContext.error (file:///C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion/260831-VCT-02/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42655:16)
+      at normalizeUrl (file:///C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion/260831-VCT-02/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:40634:23)
+      at async file:///C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion/260831-VCT-02/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:40753:37
+      at async Promise.all (index 5)
+      at async TransformPluginContext.transform (file:///C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion/260831-VCT-02/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:40680:7)
+      at async EnvironmentPluginContainer.transform (file:///C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion/260831-VCT-02/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42453:18)
+      at async loadAndTransform (file:///C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion/260831-VCT-02/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:35845:27)
+      at async viteTransformMiddleware (file:///C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion/260831-VCT-02/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:37369:24)

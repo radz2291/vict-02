@@ -1,0 +1,27 @@
+[
+  {
+    "stage": "source",
+    "sourceId": "live-completion",
+    "nodes": 151,
+    "sourceWidth": 909,
+    "sourceHeight": 4927.5,
+    "viewportWidth": 960,
+    "viewportHeight": 585,
+    "elements": 434
+  },
+  {
+    "stage": "fonts-ready"
+  },
+  {
+    "stage": "capture-failed",
+    "kind": "Event",
+    "type": "error",
+    "target": {
+      "tag": "IMG",
+      "complete": true,
+      "naturalWidth": 0,
+      "naturalHeight": 0,
+      "sourceLength": 350
+    }
+  }
+]

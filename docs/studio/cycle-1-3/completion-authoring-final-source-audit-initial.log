@@ -1,0 +1,44 @@
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion/260831-VCT-02/apps/studio
+
+5:45:15 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion/260831-VCT-02/packages/ui-svelte/src/document/DocumentHost.svelte:105:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+5:45:16 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:301:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+5:45:16 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:301:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+5:45:16 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:368:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+5:45:16 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:368:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+5:45:21 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion/260831-VCT-02/packages/ui-editor/src/StateValuesPanel.svelte:106:6 A form label must be associated with a control
+https://svelte.dev/e/a11y_label_has_associated_control
+ ❯ tests/designer-final-source-evidence.test.ts (2 tests | 1 failed) 523ms
+   × retains a complete, intentional all-83 source and preserves it through canonical save/reopen and undo/redo 513ms
+     → expected '080d1f6c10870c211991b6f632c5c53cb6bc3…' to be 'd42543f611e710f8a13629b7a1c660aec9017…' // Object.is equality
+   ✓ keeps the real run failure honest and scopes the expected visual source delta explicitly 7ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/designer-final-source-evidence.test.ts > retains a complete, intentional all-83 source and preserves it through canonical save/reopen and undo/redo
+AssertionError: expected '080d1f6c10870c211991b6f632c5c53cb6bc3…' to be 'd42543f611e710f8a13629b7a1c660aec9017…' // Object.is equality
+
+Expected: "d42543f611e710f8a13629b7a1c660aec9017b24b90710e660d222f0ecc8ee16"
+Received: "080d1f6c10870c211991b6f632c5c53cb6bc32643c1cfde19726ddad83819656"
+
+ ❯ tests/designer-final-source-evidence.test.ts:31:45
+     29|  expect(bridge.undo().ok).toBe(true);
+     30|  expect(bridge.save().ok).toBe(true);expect(bridge.save().ok).toBe(tru…
+     31|  expect(bridge.getSnapshot().contentDigest).toBe(originalDigest);
+       |                                             ^
+     32|  expect(agentCoverage(bridge.document,requested).missing).toEqual([]);
+     33| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 1 passed (2)
+   Start at  05:44:55
+   Duration  27.68s (transform 17.50s, setup 0ms, collect 25.37s, tests 523ms, environment 0ms, prepare 545ms)
+

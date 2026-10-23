@@ -1,0 +1,52 @@
+# Cycle 1.3 completion — candidate and verification record
+
+2026-10-24. **Implementation candidate; independent verification and repair are in progress. Owner acceptance remains pending.** Stage 9 remains REOPENED / IN PROGRESS. This is not a readiness verdict.
+
+Branch `codex/studio-cycle-1-3-completion`; first pushed product candidate `b67baf14ad6b0ef017adc7fdadc45747a6e874ad`, based on delivery `d47af9f869fa506943e04cd4a3fe921f5830bcb2`. Remote main remains `d7401bef6e48330796c74ec00c86db9622d48cdf`. Scope authority and complete criteria: [completion round](CYCLE-1-3-COMPLETION.md). The fresh verifier uses a separate detached checkout and its own dependencies; its verdict is pending. Product repairs after this first candidate require a new SHA and affected re-verification.
+
+## Implemented behavior and finding disposition
+
+| Stress finding / owner addition | Implementation | Evidence and current disposition |
+| --- | --- | --- |
+| Growing full-context read fails framework bounds | Same bounded overview initially and on reads; paged node/palette/state discovery, targeted descriptor and lossless source text pages; original snapshot guards unchanged | `designer-agent-completion.test.ts`: valid reachable 500-node boundary, exact 200000 source characters, Unicode, read delivery snapshots. Builder passed; independent challenge pending. |
+| Aggregate UTF-8/body/stream errors blamed on connection | Shared byte admission, structured HTTP errors, explicit browser messages, bounded stream termination; launcher adapter body cap 2M above app admission | Timeline/admission and HTTP tests; production aggregate boundary proof pending. |
+| Misleading recipes and inaccessible independent native state | Independent input and boolean recipe state; shared `wireNativeInput`, manual binding control, agent `wireInput`/`declareState`; canonical typing retained | Builder canonical/manual parity plus real-renderer DOM events passed; actual browser mixed-field proof pending. |
+| Loose schemas / bad recovery / false same-batch restriction | Closed operation schemas through bounded schema definitions, exact property/output checks and operation/field diagnostics; compatible same-batch edits preserved | Builder Mastra 14 and focused authoring suites passed; actual provider recovery fixture in progress. |
+| Seed placeholders and nested interactive content | Explicit untouched-placeholder replacement; shared manual/agent guard for new interactive label-slot descendants; safe label presentation for legacy nested controls without rewriting source | Legacy popover/alert/tooltip DOM tests passed. Independent nested-wrapper and native-type challenge pending. |
+| Requested composition coverage incorrectly equated with completion | Source inventory and manifest counts; instructions and final boundary distinguish source presence, appearance and interaction evidence | Subset manifest scope label repair in progress; original all-available task/continuation provider proof pending. |
+| Tools grouped above prose; early refusals absent | Public ordered events interleave text, user-facing progress, starts, actual observations, validation refusals, proposals, commits and acknowledgements; stable identities and visible compaction | Public component and Chat lifecycle tests passed. Provider/browser chronology and exact-candidate long-turn evidence pending. |
+| Lost termination and poor continuation | Engine termination separate from unresolved failures, confirmed revision and applied count; bounded history retains tail and progress boundary; current source required before continuation; 64-step/64-tool Studio policy respects existing kernel maximum | Stop/stale/draft and receipt tests passed in focused suite. Deadline-versus-user-Stop repair and final regression are in progress. |
+| Actual rendered observation | Bounded JPEG from actual rendered DOM, source/preview/geometry fences and separate authenticated binary path; selected exact vision model receives bytes and returns appearance/provenance only | **Actual provider image-only marker proof passed on the intermediate preview**: `agent-stress-review/completion-live-visual-observation.json` and `.jpg`. Runtime input marker was absent from prompt and source; selected `zai/glm-5.3-flash` read it from the image. Final product and visible-portal refusal challenge pending. |
+| Unreadable/incoherent Structure | Containment-first cards, search, grouping/collapse/focus, optional relationships, precise facts and Design/Layers/Inspector/Data/Actions handoffs; guarded pointer/keyboard containment moves | Structure semantic/completion 12 and DOM 4 tests passed. Real browser geometry, keyboard/responsive and preserved Interact/viewport proof pending. |
+| Unpolished layout and lost view context | Measured dimensions, coherent orientation, async revision fences, mounted view/session retention; ELK routed layout through 120 visible nodes and enforced Dagre fallback above that | Actual two-engine synthetic comparison at 12/89/500 nodes and both directions, no node overlaps. Unbounded 500-node ELK 48–65 second failure retained; adaptive path approximately 0.7–1.7 seconds on loaded host. See `completion/structure/REPORT.md`. |
+| Showcase / public package support | New completion timeline/capture section, actual modified editor/Structure sandbox, public layout demonstration and installed package consumer | All 83 canonical fixtures compile. Fresh independent consumer install/build passed; final package upgrade and source hash proof in progress. |
+| Warnings / environment | Legacy rendering warnings retained. Native void-element content warning found during independent-field DOM tests and repaired with an actual childless render branch; verification pending | No owner data, old worktrees, provider settings or processes intentionally changed. Free disk varied from 5.3GB to 0.8GB and later 9.2GB; no owner cleanup or speculative failure attribution. |
+
+## Retained failed observations
+
+The first independent challenge found six additional repair groups. All remain subject to exact-candidate re-verification:
+
+| Independent finding | Candidate repair / evidence |
+| --- | --- |
+| IV-C1: external preview portals omitted from the image | Refuse visible preview-owned external portals with `STUDIO_CAPTURE_PORTAL_UNSUPPORTED`; unrelated host portals do not block. Actual mounted portal tests pass. Open-overlay image inspection remains unsupported. |
+| Preview state could change during model inference | A second capture validates cursor, geometry and preview fingerprint after inference, with no second model call. Changed state withholds the old observation as `STUDIO_CAPTURE_STALE`. |
+| IV-C3: a nested interactive wrapper could pass insertion then disappear on rendering | Shared guard includes interactive wrapper families and descendants; legacy source remains readable. New nested-trigger refusal tests pass. |
+| IV-C4: never-settling rasterization prevented Stop from restoring the composer | Abort/timeout race releases pending capture and fences late upload; the corrected DOM test verifies the next nonempty draft is sendable. The initial empty-draft test oracle failure is retained. |
+| IV-C5: long state values and non-node registries lacked lossless inspection | Targeted state-key and registry-key JSON paging, including prototype-name guards and reconstruction tests. |
+| IV-C6: advertised schema admitted values Zod refused; malformed union errors lacked recovery guidance | Closed expression/binding definitions, homogeneous property lists, matching bounds and shared operation/path/expected-shape diagnostics; 34 focused authoring/schema/Mastra checks pass. |
+
+Parallel tool observations now carry the governed call identity. Chat settles only the matching attempt; an unassociated pre-invocation refusal cannot complete other reads. The six-case timeline suite passes. New cancelled activity appears in both showcases. Native void rendering and Studio test callback typing were also repaired following the independent challenge.
+
+Genuine provider evidence is retained in `completion-evidence/authoring-real-provider-1792790104441.json` (157296ms, 226→233 nodes, deliberate invalid property refused then corrected, two acknowledged batches). The broad source task in `completion-evidence/authoring-all83-round-0-1792790585787.json` reached all 83 requested recipes and all 78 catalog definitions, with 17 acknowledged batches and 329 nodes. It ended **FAILED / STUDIO_AGENT_TIME_LIMIT** at the harness's 8-minute bound, confirmed revision `r1#19`, with no unresolved tools. These are working-tree source-harness records, not final-SHA browser interaction or visual-completion proof. Continuation and runtime inspection remain required; 180 retained synthetic filler nodes still need intentional disposition.
+
+Initial builder runs are retained under `cycle-1-3/completion-*.log`. They include the initial Zod-effects regex error, schema presentation-depth refusal, stale static consumer metadata, an attempted Studio tool budget of 128 rejected by the existing 64-call kernel maximum, layout typing errors, navigation reactive feedback and a stale native-select test/control issue. Repairs are exercised separately; old red runs remain red.
+
+The initial full suite ran while the profile was still being corrected and includes 12 Mastra failures, stale metadata and a cleanup timeout. A later root suite was interrupted to stop overlapping package builds/tests. The verifier's first dependency-reuse run encountered a shared dist build race; it is environment evidence, not a product verdict, and the verifier is installing independent dependencies. Final frozen-candidate suites are required.
+
+## Review launch and stop boundary
+
+After the final exact build, run `docs/studio/cycle-1-3/launch-completion-review.ps1` in this checkout. It reserves `http://127.0.0.3:5596`, checks listener ownership and uses the existing server-only provider configuration. Development login: label `operator`, secret `studio-local-pass`. Never stop an existing listener without ownership proof.
+
+Expected review routes: `/design` and `/showcase#completion`. The standalone consumer location and tarball hashes are recorded in `completion-consumer*.json`; final runtime links and walkthrough follow the independent verdict.
+
+No owner acceptance, Stage 9 closure, merge to main, package publication, deployment or next cycle is authorized by this candidate.

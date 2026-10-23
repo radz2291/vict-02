@@ -1,0 +1,52 @@
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion/260831-VCT-02/apps/studio
+
+5:32:47 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion/260831-VCT-02/packages/ui-svelte/src/document/DocumentHost.svelte:105:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+5:32:48 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:301:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+5:32:48 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:301:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+5:32:48 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:368:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+5:32:48 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion/260831-VCT-02/packages/ui-svelte/src/document/RenderNode.svelte:368:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+5:32:56 am [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/studio-cycle-1-3-completion/260831-VCT-02/packages/ui-editor/src/StateValuesPanel.svelte:106:6 A form label must be associated with a control
+https://svelte.dev/e/a11y_label_has_associated_control
+ ❯ tests/designer-agent-live-final.test.ts (1 test | 1 failed) 502405ms
+   × continues the actual all-83 source on a pinned product, recovers a malformed expression through overview diagnostics, and finishes intentional source cleanup 502402ms
+     → expected { …(10) } to deeply equal { …(10) }
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/designer-agent-live-final.test.ts > continues the actual all-83 source on a pinned product, recovers a malformed expression through overview diagnostics, and finishes intentional source cleanup
+AssertionError: expected { …(10) } to deeply equal { …(10) }
+
+- Expected
++ Received
+
+@@ -2,11 +2,11 @@
+    "apps/studio/src/lib/designer/agent-edits.ts": "b268f1e6ab022dadec69aa3e0c3cd5814b5644c4e78997b502da569c0eca75c3",
+    "apps/studio/src/lib/designer/agent-reads.ts": "1761a446685ac875a7d0f39bc73a50c8a3effc61dd9dfd0a0513199632af5269",
+    "apps/studio/src/lib/designer/recipes.ts": "16e37797b8900e0c5b8d3b153c5ae7025b359bcc8e2493eac9aec6a2ffb7f80a",
+    "apps/studio/src/lib/server/designer-agent.ts": "a7392c9f28e73be500718c546631b5c5284066bb6de51290e66e43586d344205",
+    "apps/studio/src/lib/server/designer-model.ts": "079a851d1d5e3a471ae33447dfa50fe0d3f83fcf4accdd1812fc01ec58890c23",
+-   "apps/studio/src/lib/server/designer-visual.ts": "bc91d8a2a886031b991452b7820e7aad8733468590b1dbb844f23a7c47f435af",
++   "apps/studio/src/lib/server/designer-visual.ts": "b41f94d7bc7f2b152214b11af54952c0efe721fa7ed1fd3afcce9f98e3b1d5be",
+    "packages/ui-editor/src/bridge.ts": "0e0434ba2630022f85ef62e1a5e66a37379b406a6f6d3f577c0530d1cbb1020b",
+    "packages/ui-editor/src/commands.ts": "23d9dfc83e01f624393a07ff3268316dd7ad1a51f39433fc45edd921bd69f05a",
+    "packages/ui-editor/src/interactive-slots.ts": "0a969d8b441b8f845235a3951bb5b7588e9210130c40a0722e5305188c16e896",
+    "packages/ui-svelte/src/document/RenderNode.svelte": "e2e14c6469783faf05d50951d9a099c3714e6ba74a905b85d01bf23d597c46c9",
+  }
+
+ ❯ tests/designer-agent-live-final.test.ts:37:19
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed (1)
+   Start at  05:32:19
+   Duration  545.49s (transform 26.46s, setup 0ms, collect 40.83s, tests 502.41s, environment 1ms, prepare 540ms)
+

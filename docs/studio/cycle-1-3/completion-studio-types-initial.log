@@ -1,0 +1,24 @@
+
+> vict-studio@0.1.0 check
+> svelte-kit sync && tsc --noEmit
+
+src/lib/designer/agent-edits.ts(55,53): error TS2339: Property 'regex' does not exist on type 'ZodEffects<ZodString, string, string>'.
+src/lib/designer/agent-edits.ts(56,62): error TS2339: Property 'regex' does not exist on type 'ZodEffects<ZodString, string, string>'.
+src/lib/designer/agent-edits.ts(157,47): error TS2345: Argument of type 'unknown' is not assignable to parameter of type 'PropertyKey'.
+src/lib/designer/agent-edits.ts(159,105): error TS2464: A computed property name must be of type 'string', 'number', 'symbol', or 'any'.
+src/lib/designer/agent-edits.ts(161,128): error TS2322: Type 'unknown' is not assignable to type 'string'.
+src/lib/designer/agent-edits.ts(161,148): error TS2322: Type 'unknown' is not assignable to type 'string | number | boolean | undefined'.
+src/lib/designer/agent-edits.ts(181,76): error TS2339: Property 'output' does not exist on type '{ [x: string]: any; op?: unknown; key?: unknown; type?: unknown; initial?: unknown; } | { [x: string]: any; op?: unknown; nodeId?: unknown; key?: unknown; initial?: unknown; } | { nodeId: string; op: "bind"; prop: string; expression?: { value: string | number | boolean; type: "literal"; } | { ...; } | undefined; } |...'.
+  Property 'output' does not exist on type '{ nodeId: string; op: "bind"; prop: string; expression?: { value: string | number | boolean; type: "literal"; } | { path: string; type: "ref"; } | undefined; }'.
+src/lib/designer/agent-edits.ts(225,13): error TS2322: Type '{ type: "literal"; value: unknown; }' is not assignable to type 'UiAttributeValue | undefined'.
+  Types of property 'value' are incompatible.
+    Type 'unknown' is not assignable to type 'string | number | boolean | null'.
+src/lib/designer/agent-edits.ts(255,44): error TS2322: Type 'unknown' is not assignable to type 'string | number | boolean | null'.
+src/lib/designer/agent-edits.ts(263,36): error TS2322: Type 'unknown' is not assignable to type 'string'.
+npm error Lifecycle script `check` failed with error:
+npm error code 2
+npm error path C:\Users\RZ1\.codex\worktrees\studio-cycle-1-3-completion\260831-VCT-02\apps\studio
+npm error workspace vict-studio@0.1.0
+npm error location C:\Users\RZ1\.codex\worktrees\studio-cycle-1-3-completion\260831-VCT-02\apps\studio
+npm error command failed
+npm error command C:\WINDOWS\system32\cmd.exe /d /s /c svelte-kit sync && tsc --noEmit
