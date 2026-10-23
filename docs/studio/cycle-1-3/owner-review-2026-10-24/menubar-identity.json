@@ -1,0 +1,30 @@
+{
+  "kind": "Read-only diagnosis of the owner's header menubar; no product or document repair",
+  "product": "be893f29d44f595a8d9982575c2199636df69597",
+  "baselineDelivery": "3c5101fcdf4eba47672ce39432f0b438dd3ff5e1",
+  "screenId": "screen-c6c347dc-cc14-49a6-9a37-093cfd57c8eb",
+  "savedRevision": "r1.r1",
+  "menubarNode": "top-menubar",
+  "boundState": { "key": "menubarChoice", "initial": "macbook" },
+  "children": [
+    { "nodeId": "mnu-store", "value": "file", "expandedOnArrival": true, "menuRectangle": { "x": 504, "y": 223.2, "width": 200, "height": 185.8 } },
+    { "nodeId": "mnu-product", "value": "file", "expandedOnArrival": true, "menuRectangle": { "x": 579.2, "y": 223.2, "width": 200, "height": 150.6 } },
+    { "nodeId": "mnu-support", "value": "file", "expandedOnArrival": true, "menuRectangle": { "x": 660.8, "y": 223.2, "width": 200, "height": 53.6 } }
+  ],
+  "evidence": [
+    "On arrival, actual browser screenshot and DOM showed all three header menus expanded and overlapping.",
+    "Each trigger had data-menu-value=file. Document/Source independently showed literal value=file for all three sibling menu nodes.",
+    "The insertion recipe seeds menubar.menu value=file; labels can change independently from that value.",
+    "B4MenubarMenu derives open from activeMenu() === value and passes the same value into Menubar.Menu.",
+    "The public descriptor exposes value as string without a sibling-uniqueness or active-menu-identity explanation; the duplicate-valued composition had been accepted."
+  ],
+  "diagnosis": "All three siblings share the same active-menu identity, so selecting that identity satisfies every child's open comparison. The overlap follows shared identity rather than a z-index or heading-text fault.",
+  "responsibility": ["Agent changed labels without assigning distinct menu identities", "Shared recipe default is reused across sibling insertions", "Metadata and authoring validation did not prevent this collision"],
+  "secondarySemantics": "Menubar value identifies the currently open menu, not a selected product/page. Initial state macbook matches none of the three file identities.",
+  "preservationAndLimits": [
+    "No source edits, Save, agent request, build, server restart or product fix.",
+    "Reading Document/Source dismissed the open menus. A subsequent Design-mode trigger click and ArrowDown left all menus closed; no switch to Interact, forced state change or successful single-action reproduction is claimed.",
+    "The original expanded state and source/code identity comparison establish this diagnosis. The raw owner document and page screenshot are not committed."
+  ],
+  "disposition": "OPEN OR-10; diagnosis/report only"
+}
